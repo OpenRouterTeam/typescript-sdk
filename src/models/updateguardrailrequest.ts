@@ -38,7 +38,7 @@ export type UpdateGuardrailRequest = {
   /**
    * New spending limit in USD
    */
-  limitUsd?: number | null | undefined;
+  limitUsd?: number | undefined;
   /**
    * New name for the guardrail
    */
@@ -57,7 +57,7 @@ export type UpdateGuardrailRequest$Outbound = {
   enforce_zdr?: boolean | null | undefined;
   ignored_models?: Array<string> | null | undefined;
   ignored_providers?: Array<string> | null | undefined;
-  limit_usd?: number | null | undefined;
+  limit_usd?: number | undefined;
   name?: string | undefined;
   reset_interval?: string | null | undefined;
 };
@@ -73,7 +73,7 @@ export const UpdateGuardrailRequest$outboundSchema: z.ZodType<
   enforceZdr: z.nullable(z.boolean()).optional(),
   ignoredModels: z.nullable(z.array(z.string())).optional(),
   ignoredProviders: z.nullable(z.array(z.string())).optional(),
-  limitUsd: z.nullable(z.number()).optional(),
+  limitUsd: z.number().optional(),
   name: z.string().optional(),
   resetInterval: z.nullable(GuardrailInterval$outboundSchema).optional(),
 }).transform((v) => {
