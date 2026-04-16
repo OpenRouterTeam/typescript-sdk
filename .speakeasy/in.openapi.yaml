@@ -7244,6 +7244,30 @@ components:
             - type
             - schema
           type: object
+        task_budget:
+          description: >-
+            Task budget for an agentic turn. The model sees a countdown of remaining tokens and uses it to prioritize
+            work and wind down gracefully. Advisory — does not enforce a hard cap.
+          example:
+            total: 400000
+            type: tokens
+          nullable: true
+          properties:
+            remaining:
+              minimum: 0
+              nullable: true
+              type: integer
+            total:
+              minimum: 20000
+              type: integer
+            type:
+              enum:
+                - tokens
+              type: string
+          required:
+            - type
+            - total
+          type: object
       type: object
     MessagesPingEvent:
       description: Keep-alive ping event
