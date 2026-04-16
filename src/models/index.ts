@@ -42,6 +42,7 @@ export * from "./chatformatjsonschemaconfig.js";
 export * from "./chatformatpythonconfig.js";
 export * from "./chatformattextconfig.js";
 export * from "./chatfunctiontool.js";
+export * from "./chatfusionservertool.js";
 export * from "./chatjsonschemaconfig.js";
 export * from "./chatmessages.js";
 export * from "./chatnamedtoolchoice.js";
