@@ -319,8 +319,8 @@ export const InputUnion$outboundSchema: z.ZodType<
 > = z.union([
   z.string(),
   z.array(z.string()),
-  z.array(z.number()),
-  z.array(z.array(z.number())),
+  z.array(z.int()),
+  z.array(z.array(z.int())),
   z.array(z.lazy(() => Input$outboundSchema)),
 ]);
 
@@ -354,8 +354,8 @@ export const CreateEmbeddingsRequestBody$outboundSchema: z.ZodType<
   input: z.union([
     z.string(),
     z.array(z.string()),
-    z.array(z.number()),
-    z.array(z.array(z.number())),
+    z.array(z.int()),
+    z.array(z.array(z.int())),
     z.array(z.lazy(() => Input$outboundSchema)),
   ]),
   inputType: z.string().optional(),
