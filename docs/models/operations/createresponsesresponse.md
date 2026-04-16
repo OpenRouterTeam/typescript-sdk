@@ -7,10 +7,10 @@
 
 ```typescript
 const value: models.OpenResponsesResult = {
-  completedAt: 728667,
+  completedAt: 311936,
   createdAt: 1704067200,
   error: null,
-  frequencyPenalty: 9990.37,
+  frequencyPenalty: 7286.67,
   id: "resp-abc123",
   incompleteDetails: null,
   instructions: null,
@@ -31,12 +31,12 @@ const value: models.OpenResponsesResult = {
     },
   ],
   parallelToolCalls: true,
-  presencePenalty: null,
+  presencePenalty: 3737.69,
   status: "completed",
-  temperature: null,
+  temperature: 9990.37,
   toolChoice: "auto",
   tools: [],
-  topP: null,
+  topP: 461.05,
 };
 ```
 
