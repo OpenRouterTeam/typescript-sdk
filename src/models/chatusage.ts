@@ -16,19 +16,19 @@ export type CompletionTokensDetails = {
   /**
    * Accepted prediction tokens
    */
-  acceptedPredictionTokens?: number | null | undefined;
+  acceptedPredictionTokens?: number | undefined;
   /**
    * Tokens used for audio output
    */
-  audioTokens?: number | null | undefined;
+  audioTokens?: number | undefined;
   /**
    * Tokens used for reasoning
    */
-  reasoningTokens?: number | null | undefined;
+  reasoningTokens?: number | undefined;
   /**
    * Rejected prediction tokens
    */
-  rejectedPredictionTokens?: number | null | undefined;
+  rejectedPredictionTokens?: number | undefined;
 };
 
 /**
@@ -84,10 +84,10 @@ export const CompletionTokensDetails$inboundSchema: z.ZodType<
   CompletionTokensDetails,
   unknown
 > = z.object({
-  accepted_prediction_tokens: z.nullable(z.int()).optional(),
-  audio_tokens: z.nullable(z.int()).optional(),
-  reasoning_tokens: z.nullable(z.int()).optional(),
-  rejected_prediction_tokens: z.nullable(z.int()).optional(),
+  accepted_prediction_tokens: z.int().optional(),
+  audio_tokens: z.int().optional(),
+  reasoning_tokens: z.int().optional(),
+  rejected_prediction_tokens: z.int().optional(),
 }).transform((v) => {
   return remap$(v, {
     "accepted_prediction_tokens": "acceptedPredictionTokens",
