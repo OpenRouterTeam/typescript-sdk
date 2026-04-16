@@ -9,10 +9,10 @@ import { StreamEventsResponseFailed } from "@openrouter/sdk/models";
 
 let value: StreamEventsResponseFailed = {
   response: {
-    completedAt: 671654,
+    completedAt: 879774,
     createdAt: 1704067200,
     error: null,
-    frequencyPenalty: 7790.29,
+    frequencyPenalty: 6716.54,
     id: "resp-abc123",
     incompleteDetails: null,
     instructions: null,
@@ -21,12 +21,12 @@ let value: StreamEventsResponseFailed = {
     object: "response",
     output: [],
     parallelToolCalls: true,
-    presencePenalty: null,
+    presencePenalty: 5198.53,
     status: "in_progress",
-    temperature: null,
+    temperature: 7790.29,
     toolChoice: "auto",
     tools: [],
-    topP: null,
+    topP: 425.88,
   },
   sequenceNumber: 0,
   type: "response.failed",
