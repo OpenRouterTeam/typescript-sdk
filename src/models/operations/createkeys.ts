@@ -62,7 +62,7 @@ export type CreateKeysRequestBody = {
   /**
    * Optional spending limit for the API key in USD
    */
-  limit?: number | null | undefined;
+  limit?: number | undefined;
   /**
    * Type of limit reset for the API key (daily, weekly, monthly, or null for no reset). Resets happen automatically at midnight UTC, and weeks are Monday through Sunday.
    */
@@ -147,11 +147,11 @@ export type CreateKeysData = {
   /**
    * Spending limit for the API key in USD
    */
-  limit: number | null;
+  limit: number;
   /**
    * Remaining spending limit in USD
    */
-  limitRemaining: number | null;
+  limitRemaining: number;
   /**
    * Type of limit reset for the API key
    */
@@ -207,7 +207,7 @@ export type CreateKeysRequestBody$Outbound = {
   creator_user_id?: string | null | undefined;
   expires_at?: string | null | undefined;
   include_byok_in_limit?: boolean | undefined;
-  limit?: number | null | undefined;
+  limit?: number | undefined;
   limit_reset?: string | null | undefined;
   name: string;
 };
@@ -220,7 +220,7 @@ export const CreateKeysRequestBody$outboundSchema: z.ZodType<
   creatorUserId: z.nullable(z.string()).optional(),
   expiresAt: z.nullable(z.date().transform(v => v.toISOString())).optional(),
   includeByokInLimit: z.boolean().optional(),
-  limit: z.nullable(z.number()).optional(),
+  limit: z.number().optional(),
   limitReset: z.nullable(CreateKeysLimitReset$outboundSchema).optional(),
   name: z.string(),
 }).transform((v) => {
@@ -288,8 +288,8 @@ export const CreateKeysData$inboundSchema: z.ZodType<CreateKeysData, unknown> =
     hash: z.string(),
     include_byok_in_limit: z.boolean(),
     label: z.string(),
-    limit: z.nullable(z.number()),
-    limit_remaining: z.nullable(z.number()),
+    limit: z.number(),
+    limit_remaining: z.number(),
     limit_reset: z.nullable(z.string()),
     name: z.string(),
     updated_at: z.nullable(z.string()),
