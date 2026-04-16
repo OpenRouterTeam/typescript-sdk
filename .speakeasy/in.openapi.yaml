@@ -14847,6 +14847,11 @@ paths:
                         description: User-Agent header from the request
                         nullable: true
                         type: string
+                      web_search_engine:
+                        description: The resolved web search engine used for this generation (e.g. exa, firecrawl, parallel)
+                        example: exa
+                        nullable: true
+                        type: string
                     required:
                       - id
                       - upstream_id
@@ -14874,6 +14879,7 @@ paths:
                       - num_input_audio_prompt
                       - num_media_completion
                       - num_search_results
+                      - web_search_engine
                       - origin
                       - usage
                       - is_byok
