@@ -30,7 +30,9 @@ const openRouter = new OpenRouter({
 async function run() {
   const result = await openRouter.models.list();
 
-  console.log(result);
+  for await (const page of result) {
+    console.log(page);
+  }
 }
 
 run();
@@ -57,7 +59,9 @@ async function run() {
   const res = await modelsList(openRouter);
   if (res.ok) {
     const { value: result } = res;
-    console.log(result);
+    for await (const page of result) {
+    console.log(page);
+  }
   } else {
     console.log("modelsList failed:", res.error);
   }
@@ -77,7 +81,7 @@ run();
 
 ### Response
 
-**Promise\<[models.ModelsListResponse](../../models/modelslistresponse.md)\>**
+**Promise\<[operations.GetModelsResponse](../../models/operations/getmodelsresponse.md)\>**
 
 ### Errors
 
@@ -185,7 +189,9 @@ async function run() {
     bearer: process.env["OPENROUTER_BEARER"] ?? "",
   });
 
-  console.log(result);
+  for await (const page of result) {
+    console.log(page);
+  }
 }
 
 run();
@@ -213,7 +219,9 @@ async function run() {
   });
   if (res.ok) {
     const { value: result } = res;
-    console.log(result);
+    for await (const page of result) {
+    console.log(page);
+  }
   } else {
     console.log("modelsListForUser failed:", res.error);
   }
@@ -234,7 +242,7 @@ run();
 
 ### Response
 
-**Promise\<[models.ModelsListResponse](../../models/modelslistresponse.md)\>**
+**Promise\<[operations.ListModelsUserResponse](../../models/operations/listmodelsuserresponse.md)\>**
 
 ### Errors
 

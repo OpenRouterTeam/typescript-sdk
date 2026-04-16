@@ -19,6 +19,10 @@ export type OutputImageGenerationServerToolItem = {
   id?: string | undefined;
   imageB64?: string | undefined;
   imageUrl?: string | undefined;
+  /**
+   * The generated image as a base64-encoded string or URL, matching OpenAI image_generation_call format
+   */
+  result?: string | null | undefined;
   revisedPrompt?: string | undefined;
   status: ToolCallStatus;
   type: "openrouter:image_generation";
@@ -32,6 +36,7 @@ export const OutputImageGenerationServerToolItem$inboundSchema: z.ZodType<
   id: z.string().optional(),
   imageB64: z.string().optional(),
   imageUrl: z.string().optional(),
+  result: z.nullable(z.string()).optional(),
   revisedPrompt: z.string().optional(),
   status: ToolCallStatus$inboundSchema,
   type: z.literal("openrouter:image_generation"),
