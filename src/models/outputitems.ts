@@ -74,10 +74,6 @@ import {
   OutputReasoningItem$inboundSchema,
 } from "./outputreasoningitem.js";
 import {
-  OutputSearchModelsServerToolItem,
-  OutputSearchModelsServerToolItem$inboundSchema,
-} from "./outputsearchmodelsservertoolitem.js";
-import {
   OutputTextEditorServerToolItem,
   OutputTextEditorServerToolItem$inboundSchema,
 } from "./outputtexteditorservertoolitem.js";
@@ -113,7 +109,6 @@ export type OutputItems =
   | OutputBrowserUseServerToolItem
   | OutputCodeInterpreterServerToolItem
   | (OutputDatetimeItem & { type: "openrouter:datetime" })
-  | OutputSearchModelsServerToolItem
   | OutputFileSearchServerToolItem
   | OutputImageGenerationServerToolItem
   | OutputMcpServerToolItem
@@ -149,8 +144,6 @@ export const OutputItems$inboundSchema: z.ZodType<OutputItems, unknown> =
     ["openrouter:datetime"]: OutputDatetimeItem$inboundSchema.and(
       z.object({ type: z.literal("openrouter:datetime") }),
     ),
-    ["openrouter:experimental__search_models"]:
-      OutputSearchModelsServerToolItem$inboundSchema,
     ["openrouter:file_search"]: OutputFileSearchServerToolItem$inboundSchema,
     ["openrouter:image_generation"]:
       OutputImageGenerationServerToolItem$inboundSchema,
