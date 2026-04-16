@@ -9544,6 +9544,7 @@ components:
           openrouter:browser_use: '#/components/schemas/OutputBrowserUseServerToolItem'
           openrouter:code_interpreter: '#/components/schemas/OutputCodeInterpreterServerToolItem'
           openrouter:datetime: '#/components/schemas/OutputDatetimeItem'
+          openrouter:experimental__search_models: '#/components/schemas/OutputSearchModelsServerToolItem'
           openrouter:file_search: '#/components/schemas/OutputFileSearchServerToolItem'
           openrouter:image_generation: '#/components/schemas/OutputImageGenerationServerToolItem'
           openrouter:mcp: '#/components/schemas/OutputMcpServerToolItem'
@@ -9585,6 +9586,7 @@ components:
         - $ref: '#/components/schemas/OutputToolSearchServerToolItem'
         - $ref: '#/components/schemas/OutputMemoryServerToolItem'
         - $ref: '#/components/schemas/OutputMcpServerToolItem'
+        - $ref: '#/components/schemas/OutputSearchModelsServerToolItem'
     OutputItemWebSearchCall:
       example:
         action:
@@ -9828,6 +9830,32 @@ components:
           - text: Analyzed the problem and found the optimal solution.
             type: summary_text
         type: reasoning
+    OutputSearchModelsServerToolItem:
+      description: An openrouter:experimental__search_models server tool output item
+      example:
+        arguments: '{"query":"Claude Opus"}'
+        id: sm_tmp_abc123
+        query: Claude Opus
+        status: completed
+        type: openrouter:experimental__search_models
+      properties:
+        arguments:
+          description: The JSON arguments submitted to the search tool (e.g. {"query":"Claude"})
+          type: string
+        id:
+          type: string
+        query:
+          type: string
+        status:
+          $ref: '#/components/schemas/ToolCallStatus'
+        type:
+          enum:
+            - openrouter:experimental__search_models
+          type: string
+      required:
+        - status
+        - type
+      type: object
     OutputTextEditorServerToolItem:
       description: An openrouter:text_editor server tool output item
       example:
