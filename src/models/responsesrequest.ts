@@ -98,6 +98,11 @@ import {
   ModerationPlugin$outboundSchema,
 } from "./moderationplugin.js";
 import {
+  NamespaceTool,
+  NamespaceTool$Outbound,
+  NamespaceTool$outboundSchema,
+} from "./namespacetool.js";
+import {
   OpenAIResponsesToolChoiceUnion,
   OpenAIResponsesToolChoiceUnion$Outbound,
   OpenAIResponsesToolChoiceUnion$outboundSchema,
@@ -155,6 +160,11 @@ import {
   TextExtendedConfig$outboundSchema,
 } from "./textextendedconfig.js";
 import {
+  ToolSearchTool,
+  ToolSearchTool$Outbound,
+  ToolSearchTool$outboundSchema,
+} from "./toolsearchtool.js";
+import {
   TraceConfig,
   TraceConfig$Outbound,
   TraceConfig$outboundSchema,
@@ -198,6 +208,7 @@ export type ResponsesRequestServiceTier = OpenEnum<
  * Function tool definition
  */
 export type ResponsesRequestToolFunction = {
+  deferLoading?: boolean | undefined;
   description?: string | null | undefined;
   name: string;
   parameters: { [k: string]: any | null } | null;
@@ -220,6 +231,8 @@ export type ResponsesRequestToolUnion =
   | ShellServerTool
   | ApplyPatchServerTool
   | CustomTool
+  | NamespaceTool
+  | ToolSearchTool
   | (DatetimeServerTool & { type: "openrouter:datetime" })
   | (ImageGenerationServerToolOpenRouter & {
     type: "openrouter:image_generation";
@@ -313,6 +326,8 @@ export type ResponsesRequest = {
       | ShellServerTool
       | ApplyPatchServerTool
       | CustomTool
+      | NamespaceTool
+      | ToolSearchTool
       | (DatetimeServerTool & { type: "openrouter:datetime" })
       | (ImageGenerationServerToolOpenRouter & {
         type: "openrouter:image_generation";
@@ -375,6 +390,7 @@ export const ResponsesRequestServiceTier$outboundSchema: z.ZodType<
 
 /** @internal */
 export type ResponsesRequestToolFunction$Outbound = {
+  defer_loading?: boolean | undefined;
   description?: string | null | undefined;
   name: string;
   parameters: { [k: string]: any | null } | null;
@@ -387,11 +403,16 @@ export const ResponsesRequestToolFunction$outboundSchema: z.ZodType<
   ResponsesRequestToolFunction$Outbound,
   ResponsesRequestToolFunction
 > = z.object({
+  deferLoading: z.boolean().optional(),
   description: z.nullable(z.string()).optional(),
   name: z.string(),
   parameters: z.nullable(z.record(z.string(), z.nullable(z.any()))),
   strict: z.nullable(z.boolean()).optional(),
   type: z.literal("function"),
+}).transform((v) => {
+  return remap$(v, {
+    deferLoading: "defer_loading",
+  });
 });
 
 export function responsesRequestToolFunctionToJSON(
@@ -420,6 +441,8 @@ export type ResponsesRequestToolUnion$Outbound =
   | ShellServerTool$Outbound
   | ApplyPatchServerTool$Outbound
   | CustomTool$Outbound
+  | NamespaceTool$Outbound
+  | ToolSearchTool$Outbound
   | (DatetimeServerTool$Outbound & { type: "openrouter:datetime" })
   | (ImageGenerationServerToolOpenRouter$Outbound & {
     type: "openrouter:image_generation";
@@ -448,6 +471,8 @@ export const ResponsesRequestToolUnion$outboundSchema: z.ZodType<
   ShellServerTool$outboundSchema,
   ApplyPatchServerTool$outboundSchema,
   CustomTool$outboundSchema,
+  NamespaceTool$outboundSchema,
+  ToolSearchTool$outboundSchema,
   DatetimeServerTool$outboundSchema.and(
     z.object({ type: z.literal("openrouter:datetime") }),
   ),
@@ -523,6 +548,8 @@ export type ResponsesRequest$Outbound = {
       | ShellServerTool$Outbound
       | ApplyPatchServerTool$Outbound
       | CustomTool$Outbound
+      | NamespaceTool$Outbound
+      | ToolSearchTool$Outbound
       | (DatetimeServerTool$Outbound & { type: "openrouter:datetime" })
       | (ImageGenerationServerToolOpenRouter$Outbound & {
         type: "openrouter:image_generation";
@@ -601,6 +628,8 @@ export const ResponsesRequest$outboundSchema: z.ZodType<
       ShellServerTool$outboundSchema,
       ApplyPatchServerTool$outboundSchema,
       CustomTool$outboundSchema,
+      NamespaceTool$outboundSchema,
+      ToolSearchTool$outboundSchema,
       DatetimeServerTool$outboundSchema.and(
         z.object({ type: z.literal("openrouter:datetime") }),
       ),
