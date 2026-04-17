@@ -5932,12 +5932,12 @@ components:
         quality, size, background, output_format, output_compression, moderation, etc.) plus a model field.
       example:
         aspect_ratio: '16:9'
-        model: openai/gpt-image-1
+        model: openai/gpt-5-image
         quality: high
       properties:
         model:
-          description: Which image generation model to use (e.g. "openai/gpt-image-1"). Defaults to "openai/gpt-image-1".
-          example: openai/gpt-image-1
+          description: Which image generation model to use (e.g. "openai/gpt-5-image"). Defaults to "openai/gpt-5-image".
+          example: openai/gpt-5-image
           type: string
       type: object
     ImageGenerationStatus:
@@ -9253,6 +9253,7 @@ components:
       example:
         id: ig_tmp_abc123
         imageUrl: https://example.com/image.png
+        result: https://example.com/image.png
         status: completed
         type: openrouter:image_generation
       properties:
@@ -9261,6 +9262,10 @@ components:
         imageB64:
           type: string
         imageUrl:
+          type: string
+        result:
+          description: The generated image as a base64-encoded string or URL, matching OpenAI image_generation_call format
+          nullable: true
           type: string
         revisedPrompt:
           type: string
