@@ -49,7 +49,6 @@ let value: GetGenerationResponse = {
     upstreamInferenceCost: 0.0012,
     usage: 0.0015,
     userAgent: "<value>",
-    webSearchEngine: "exa",
   },
 };
 ```
