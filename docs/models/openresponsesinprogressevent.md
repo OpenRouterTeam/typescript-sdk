@@ -9,10 +9,10 @@ import { OpenResponsesInProgressEvent } from "@openrouter/sdk/models";
 
 let value: OpenResponsesInProgressEvent = {
   response: {
-    completedAt: 950130,
+    completedAt: 244305,
     createdAt: 1704067200,
     error: null,
-    frequencyPenalty: 300.6,
+    frequencyPenalty: 9501.3,
     id: "resp-abc123",
     incompleteDetails: null,
     instructions: null,
@@ -21,12 +21,12 @@ let value: OpenResponsesInProgressEvent = {
     object: "response",
     output: [],
     parallelToolCalls: true,
-    presencePenalty: 8561.18,
+    presencePenalty: 5953.37,
     status: "in_progress",
-    temperature: null,
+    temperature: 300.6,
     toolChoice: "auto",
     tools: [],
-    topP: null,
+    topP: 5924.76,
   },
   sequenceNumber: 0,
   type: "response.in_progress",

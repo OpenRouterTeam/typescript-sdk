@@ -18,7 +18,7 @@ export type OutputTokensDetails = {
 };
 
 export type CostDetails = {
-  upstreamInferenceCost?: number | null | undefined;
+  upstreamInferenceCost?: number | undefined;
   upstreamInferenceInputCost: number;
   upstreamInferenceOutputCost: number;
 };
@@ -35,7 +35,7 @@ export type Usage = {
   /**
    * Cost of the completion
    */
-  cost?: number | null | undefined;
+  cost?: number | undefined;
   costDetails?: CostDetails | undefined;
   /**
    * Whether a request was made using a Bring Your Own Key configuration
@@ -90,7 +90,7 @@ export function outputTokensDetailsFromJSON(
 /** @internal */
 export const CostDetails$inboundSchema: z.ZodType<CostDetails, unknown> = z
   .object({
-    upstream_inference_cost: z.nullable(z.number()).optional(),
+    upstream_inference_cost: z.number().optional(),
     upstream_inference_input_cost: z.number(),
     upstream_inference_output_cost: z.number(),
   }).transform((v) => {
@@ -118,7 +118,7 @@ export const Usage$inboundSchema: z.ZodType<Usage, unknown> = z.object({
   output_tokens: z.int(),
   output_tokens_details: z.lazy(() => OutputTokensDetails$inboundSchema),
   total_tokens: z.int(),
-  cost: z.nullable(z.number()).optional(),
+  cost: z.number().optional(),
   cost_details: z.lazy(() => CostDetails$inboundSchema).optional(),
   is_byok: z.boolean().optional(),
 }).transform((v) => {
