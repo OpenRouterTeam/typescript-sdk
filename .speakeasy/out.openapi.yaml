@@ -9821,6 +9821,7 @@ components:
         - audio
         - video
         - rerank
+        - tts
       example: text
       type: string
       x-speakeasy-unknown-values: allow
@@ -14411,6 +14412,25 @@ paths:
                         description: Number of tokens in the input
                         example: 8
                         type: integer
+                      prompt_tokens_details:
+                        description: >-
+                          Per-modality token breakdown. Only present when the input contains 2+ modalities (e.g. text + image) and the upstream provider returns modality-level usage data. Only non-zero modality counts are included.
+                        properties:
+                          audio_tokens:
+                            description: Number of audio tokens in the input
+                            type: integer
+                          image_tokens:
+                            description: Number of image tokens in the input
+                            example: 258
+                            type: integer
+                          text_tokens:
+                            description: Number of text tokens in the input
+                            example: 8
+                            type: integer
+                          video_tokens:
+                            description: Number of video tokens in the input
+                            type: integer
+                        type: object
                       total_tokens:
                         description: Total number of tokens used
                         example: 8
@@ -14783,6 +14803,7 @@ paths:
                           - completions
                           - embeddings
                           - rerank
+                          - tts
                           - video
                           - null
                         nullable: true
@@ -16455,6 +16476,15 @@ paths:
             minimum: 0
             nullable: true
             type: integer
+        - description: Filter API keys by workspace ID. By default, keys in the default workspace are returned.
+          in: query
+          name: workspace_id
+          required: false
+          schema:
+            description: Filter API keys by workspace ID. By default, keys in the default workspace are returned.
+            example: 0df9e665-d932-5740-b2c7-b52af166bc11
+            format: uuid
+            type: string
       responses:
         '200':
           content:
@@ -16481,6 +16511,7 @@ paths:
                     usage_daily: 25.5
                     usage_monthly: 25.5
                     usage_weekly: 25.5
+                    workspace_id: 0df9e665-d932-5740-b2c7-b52af166bc11
               schema:
                 example:
                   data:
@@ -16504,6 +16535,7 @@ paths:
                       usage_daily: 25.5
                       usage_monthly: 25.5
                       usage_weekly: 25.5
+                      workspace_id: 0df9e665-d932-5740-b2c7-b52af166bc11
                 properties:
                   data:
                     description: List of API keys
@@ -16529,6 +16561,7 @@ paths:
                         usage_daily: 25.5
                         usage_monthly: 25.5
                         usage_weekly: 25.5
+                        workspace_id: 0df9e665-d932-5740-b2c7-b52af166bc11
                       properties:
                         byok_usage:
                           description: Total external BYOK usage (in USD) for the API key
@@ -16628,6 +16661,10 @@ paths:
                           example: 25.5
                           format: double
                           type: number
+                        workspace_id:
+                          description: The workspace ID this API key belongs to.
+                          example: 0df9e665-d932-5740-b2c7-b52af166bc11
+                          type: string
                       required:
                         - hash
                         - name
@@ -16648,6 +16685,7 @@ paths:
                         - created_at
                         - updated_at
                         - creator_user_id
+                        - workspace_id
                       type: object
                     type: array
                 required:
@@ -16780,6 +16818,7 @@ paths:
                   usage_daily: 0
                   usage_monthly: 0
                   usage_weekly: 0
+                  workspace_id: 0df9e665-d932-5740-b2c7-b52af166bc11
                 key: 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
               schema:
                 example:
@@ -16804,6 +16843,7 @@ paths:
                     usage_daily: 0
                     usage_monthly: 0
                     usage_weekly: 0
+                    workspace_id: 0df9e665-d932-5740-b2c7-b52af166bc11
                   key: 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
                 properties:
                   data:
@@ -16829,6 +16869,7 @@ paths:
                       usage_daily: 25.5
                       usage_monthly: 25.5
                       usage_weekly: 25.5
+                      workspace_id: 0df9e665-d932-5740-b2c7-b52af166bc11
                     properties:
                       byok_usage:
                         description: Total external BYOK usage (in USD) for the API key
@@ -16928,6 +16969,10 @@ paths:
                         example: 25.5
                         format: double
                         type: number
+                      workspace_id:
+                        description: The workspace ID this API key belongs to.
+                        example: 0df9e665-d932-5740-b2c7-b52af166bc11
+                        type: string
                     required:
                       - hash
                       - name
@@ -16948,6 +16993,7 @@ paths:
                       - created_at
                       - updated_at
                       - creator_user_id
+                      - workspace_id
                     type: object
                   key:
                     description: The actual API key string (only shown once)
@@ -17120,6 +17166,7 @@ paths:
                   usage_daily: 25.5
                   usage_monthly: 25.5
                   usage_weekly: 25.5
+                  workspace_id: 0df9e665-d932-5740-b2c7-b52af166bc11
               schema:
                 example:
                   data:
@@ -17143,6 +17190,7 @@ paths:
                     usage_daily: 25.5
                     usage_monthly: 25.5
                     usage_weekly: 25.5
+                    workspace_id: 0df9e665-d932-5740-b2c7-b52af166bc11
                 properties:
                   data:
                     description: The API key information
@@ -17167,6 +17215,7 @@ paths:
                       usage_daily: 25.5
                       usage_monthly: 25.5
                       usage_weekly: 25.5
+                      workspace_id: 0df9e665-d932-5740-b2c7-b52af166bc11
                     properties:
                       byok_usage:
                         description: Total external BYOK usage (in USD) for the API key
@@ -17266,6 +17315,10 @@ paths:
                         example: 25.5
                         format: double
                         type: number
+                      workspace_id:
+                        description: The workspace ID this API key belongs to.
+                        example: 0df9e665-d932-5740-b2c7-b52af166bc11
+                        type: string
                     required:
                       - hash
                       - name
@@ -17286,6 +17339,7 @@ paths:
                       - created_at
                       - updated_at
                       - creator_user_id
+                      - workspace_id
                     type: object
                 required:
                   - data
@@ -17422,6 +17476,7 @@ paths:
                   usage_daily: 25.5
                   usage_monthly: 25.5
                   usage_weekly: 25.5
+                  workspace_id: 0df9e665-d932-5740-b2c7-b52af166bc11
               schema:
                 example:
                   data:
@@ -17445,6 +17500,7 @@ paths:
                     usage_daily: 25.5
                     usage_monthly: 25.5
                     usage_weekly: 25.5
+                    workspace_id: 0df9e665-d932-5740-b2c7-b52af166bc11
                 properties:
                   data:
                     description: The updated API key information
@@ -17469,6 +17525,7 @@ paths:
                       usage_daily: 25.5
                       usage_monthly: 25.5
                       usage_weekly: 25.5
+                      workspace_id: 0df9e665-d932-5740-b2c7-b52af166bc11
                     properties:
                       byok_usage:
                         description: Total external BYOK usage (in USD) for the API key
@@ -17568,6 +17625,10 @@ paths:
                         example: 25.5
                         format: double
                         type: number
+                      workspace_id:
+                        description: The workspace ID this API key belongs to.
+                        example: 0df9e665-d932-5740-b2c7-b52af166bc11
+                        type: string
                     required:
                       - hash
                       - name
@@ -17588,6 +17649,7 @@ paths:
                       - created_at
                       - updated_at
                       - creator_user_id
+                      - workspace_id
                     type: object
                 required:
                   - data
