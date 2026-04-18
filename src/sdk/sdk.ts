@@ -18,6 +18,8 @@ import { OAuth } from "./oauth.js";
 import { Organization } from "./organization.js";
 import { Providers } from "./providers.js";
 import { Rerank } from "./rerank.js";
+import { Tools } from "./tools.js";
+import { Tts } from "./tts.js";
 import { VideoGeneration } from "./videogeneration.js";
 // #region imports
 import type { $ZodObject, $ZodShape, infer as zodInfer } from "zod/v4/core";
@@ -101,6 +103,16 @@ export class OpenRouter extends ClientSDK {
   private _beta?: Beta;
   get beta(): Beta {
     return (this._beta ??= new Beta(this._options));
+  }
+
+  private _tools?: Tools;
+  get tools(): Tools {
+    return (this._tools ??= new Tools(this._options));
+  }
+
+  private _tts?: Tts;
+  get tts(): Tts {
+    return (this._tts ??= new Tts(this._options));
   }
 
   private _videoGeneration?: VideoGeneration;
