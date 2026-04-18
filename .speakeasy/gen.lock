@@ -1,19 +1,19 @@
 lockVersion: ""
 id: ""
 management:
-  docChecksum: 8f6b9fd307f6bef92dd1a6ef3c92a92e
+  docChecksum: 4678e536e2d79ad8feeeeff963b383bb
   docVersion: 1.0.0
   speakeasyVersion: 1.761.0
   generationVersion: 2.879.1
-  releaseVersion: 0.12.14
-  configChecksum: 62a0dee33b9b19eee2aa9a57d141ed3f
+  releaseVersion: 0.12.15
+  configChecksum: 057d6bfe3a1226a8dc3ba709f0b88d56
   repoURL: https://github.com/OpenRouterTeam/typescript-sdk.git
   installationURL: https://github.com/OpenRouterTeam/typescript-sdk
   published: true
 persistentEdits:
-  generation_id: 6d87a1eb-f2e4-4b91-86b4-5485dd36d285
-  pristine_commit_hash: 7bf47018e734f00292541b49f0b4696fa0d83271
-  pristine_tree_hash: a4d739f5afef8c17a2fd632a124d650919a1d3a4
+  generation_id: f316e1aa-14dc-4a8b-99a5-2df0dcfeebbf
+  pristine_commit_hash: 14c04cb5b412d29731f75dd2e60a42e816e7d3c9
+  pristine_tree_hash: e17afdb4a03b4d85bf0fcb061068986978a2407b
 features:
   typescript:
     acceptHeaders: 2.81.2
@@ -2178,8 +2178,8 @@ trackedFiles:
     pristine_git_object: 9e4289201dc3a780a84bce809956165c859d68f0
   docs/models/operations/createembeddingsusage.md:
     id: 55932019377c
-    last_write_checksum: sha1:d0fc150cf4a59371ffe6b6ee66aa0f59d8d96330
-    pristine_git_object: f063db9cd4539b4073edea4f42a6b6d78784d3b4
+    last_write_checksum: sha1:4e1036698cbf1cde5f64c502e299ef10ec6be573
+    pristine_git_object: 0cdb5043bc853946775a40410d16f8dae570c030
     deleted: true
   docs/models/operations/createguardrailglobals.md:
     id: e77858413127
@@ -2639,6 +2639,10 @@ trackedFiles:
     id: 98bd2cd64286
     last_write_checksum: sha1:f9ff52c02c2cff4b24d7b4dad7101418ce372018
     pristine_git_object: 6319d7beaa2d9709e126f07a3207533fcf24c1b8
+  docs/models/operations/prompttokensdetails.md:
+    id: ed0db1d0b1b5
+    last_write_checksum: sha1:1156f88c97141f9aa0cb7bc4755aada14e9b74ca
+    pristine_git_object: c2e68ad92e5cd77652b3f97de8d4bcf254678e81
   docs/models/operations/ratelimit.md:
     id: 94a6ae30f279
     last_write_checksum: sha1:b857e420c518fc6b1cdbd44492f7eaab90dda799
@@ -4072,12 +4076,12 @@ trackedFiles:
     pristine_git_object: 410efafd6a7f50d91ccb87131fedbe0c3d47e15a
   jsr.json:
     id: 7f6ab7767282
-    last_write_checksum: sha1:3c477dcb851dfa2cb4a05c492d3fea841d501004
-    pristine_git_object: 53a3c5e7de470552c3e8fbc9e6aab0ea682d52fc
+    last_write_checksum: sha1:4fdb6b13138c2cf227777551164e350fc98e58d2
+    pristine_git_object: a3e2e56dba594a4fbd9c8a5ce7b4dd8db96d387e
   package.json:
     id: 7030d0b2f71b
-    last_write_checksum: sha1:b766f25754debd1d8245fdcee941da3eec8ec52a
-    pristine_git_object: c35d8d7ead7c0d15ffee6c0f46195a2414eac49b
+    last_write_checksum: sha1:1ece95ac761c0c448ac1688688602570299eec7d
+    pristine_git_object: 9cf586aafe1ff85b0269bd07c1ef159734358627
   src/core.ts:
     id: f431fdbcd144
     last_write_checksum: sha1:5aa66b0b6a5964f3eea7f3098c2eb3c0ee9c0131
@@ -4264,8 +4268,8 @@ trackedFiles:
     pristine_git_object: a187e58707bdb726ca2aff74941efe7493422d4e
   src/lib/config.ts:
     id: 320761608fb3
-    last_write_checksum: sha1:b215f08ba74276e13b64da8f1eb603985d8906cb
-    pristine_git_object: 704e510e082f3d9d7e4605768ea56101620b0147
+    last_write_checksum: sha1:0b028a504137a9fa4424071f6bc776ad3162aa84
+    pristine_git_object: d6a4ed4ea44713c193c88d57382810d98f0a654c
   src/lib/dlv.ts:
     id: b1988214835a
     last_write_checksum: sha1:eaac763b22717206a6199104e0403ed17a4e2711
@@ -5028,8 +5032,8 @@ trackedFiles:
     pristine_git_object: cc5964c47258d09aa2aaa230e2d851b953bbba8a
   src/models/operations/createembeddings.ts:
     id: 7c210337fdff
-    last_write_checksum: sha1:76c23562418be1af0ef01478227b9289dcc87ccd
-    pristine_git_object: 5c36e3bc794c3ea5529ae49b3343e691ea923d11
+    last_write_checksum: sha1:012fae2680d66bb136099dca578745f87b3d0a98
+    pristine_git_object: f3f7ee76fe88209fa245512436967bab6f1f39ee
   src/models/operations/createguardrail.ts:
     id: 36e5a2696dfd
     last_write_checksum: sha1:4c668c93e119266cfdc1c46da678151673696fdf
@@ -6414,6 +6418,3 @@ examples:
         "500":
           application/json: {"error": {"code": 500, "message": "Internal Server Error"}}
 examplesVersion: 1.0.2
-releaseNotes: |
-  ## Typescript SDK Changes:
-  * `openrouter.beta.responses.send()`:  `response` **Changed**
