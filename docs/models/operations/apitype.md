@@ -15,5 +15,5 @@ let value: ApiType = "rerank";
 ## Values
 
 ```typescript
-"completions" | "embeddings" | "rerank" | "video" | Unrecognized<string>
+"completions" | "embeddings" | "rerank" | "tts" | "video" | Unrecognized<string>
 ```
