@@ -38,6 +38,7 @@ export * from "./listmodelscount.js";
 export * from "./listmodelsuser.js";
 export * from "./listorganizationmembers.js";
 export * from "./listproviders.js";
+export * from "./listtools.js";
 export * from "./listvideoscontent.js";
 export * from "./listvideosmodels.js";
 export * from "./sendchatcompletionrequest.js";
