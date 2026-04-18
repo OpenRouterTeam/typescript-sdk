@@ -71,6 +71,10 @@ export type CreateKeysRequestBody = {
    * Name for the new API key
    */
   name: string;
+  /**
+   * The workspace to create the API key in. Defaults to the default workspace if not provided.
+   */
+  workspaceId?: string | undefined;
 };
 
 export type CreateKeysRequest = {
@@ -180,6 +184,10 @@ export type CreateKeysData = {
    * OpenRouter credit usage (in USD) for the current UTC week (Monday-Sunday)
    */
   usageWeekly: number;
+  /**
+   * The workspace ID this API key belongs to.
+   */
+  workspaceId: string;
 };
 
 /**
@@ -210,6 +218,7 @@ export type CreateKeysRequestBody$Outbound = {
   limit?: number | null | undefined;
   limit_reset?: string | null | undefined;
   name: string;
+  workspace_id?: string | undefined;
 };
 
 /** @internal */
@@ -223,12 +232,14 @@ export const CreateKeysRequestBody$outboundSchema: z.ZodType<
   limit: z.nullable(z.number()).optional(),
   limitReset: z.nullable(CreateKeysLimitReset$outboundSchema).optional(),
   name: z.string(),
+  workspaceId: z.string().optional(),
 }).transform((v) => {
   return remap$(v, {
     creatorUserId: "creator_user_id",
     expiresAt: "expires_at",
     includeByokInLimit: "include_byok_in_limit",
     limitReset: "limit_reset",
+    workspaceId: "workspace_id",
   });
 });
 
@@ -297,6 +308,7 @@ export const CreateKeysData$inboundSchema: z.ZodType<CreateKeysData, unknown> =
     usage_daily: z.number(),
     usage_monthly: z.number(),
     usage_weekly: z.number(),
+    workspace_id: z.string(),
   }).transform((v) => {
     return remap$(v, {
       "byok_usage": "byokUsage",
@@ -313,6 +325,7 @@ export const CreateKeysData$inboundSchema: z.ZodType<CreateKeysData, unknown> =
       "usage_daily": "usageDaily",
       "usage_monthly": "usageMonthly",
       "usage_weekly": "usageWeekly",
+      "workspace_id": "workspaceId",
     });
   });
 
