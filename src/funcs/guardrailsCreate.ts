@@ -42,6 +42,7 @@ export function guardrailsCreate(
     models.CreateGuardrailResponse,
     | errors.BadRequestResponseError
     | errors.UnauthorizedResponseError
+    | errors.ForbiddenResponseError
     | errors.InternalServerResponseError
     | OpenRouterError
     | ResponseValidationError
@@ -70,6 +71,7 @@ async function $do(
       models.CreateGuardrailResponse,
       | errors.BadRequestResponseError
       | errors.UnauthorizedResponseError
+      | errors.ForbiddenResponseError
       | errors.InternalServerResponseError
       | OpenRouterError
       | ResponseValidationError
@@ -164,7 +166,7 @@ async function $do(
 
   const doResult = await client._do(req, {
     context,
-    errorCodes: ["400", "401", "4XX", "500", "5XX"],
+    errorCodes: ["400", "401", "403", "4XX", "500", "5XX"],
     retryConfig: context.retryConfig,
     retryCodes: context.retryCodes,
   });
@@ -181,6 +183,7 @@ async function $do(
     models.CreateGuardrailResponse,
     | errors.BadRequestResponseError
     | errors.UnauthorizedResponseError
+    | errors.ForbiddenResponseError
     | errors.InternalServerResponseError
     | OpenRouterError
     | ResponseValidationError
@@ -194,6 +197,7 @@ async function $do(
     M.json(201, models.CreateGuardrailResponse$inboundSchema),
     M.jsonErr(400, errors.BadRequestResponseError$inboundSchema),
     M.jsonErr(401, errors.UnauthorizedResponseError$inboundSchema),
+    M.jsonErr(403, errors.ForbiddenResponseError$inboundSchema),
     M.jsonErr(500, errors.InternalServerResponseError$inboundSchema),
     M.fail("4XX"),
     M.fail("5XX"),
