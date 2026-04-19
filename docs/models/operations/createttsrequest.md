@@ -1,11 +1,17 @@
-# ListGuardrailsRequest
+# CreateTtsRequest
 
 ## Example Usage
 
 ```typescript
-import { ListGuardrailsRequest } from "@openrouter/sdk/models/operations";
+import { CreateTtsRequest } from "@openrouter/sdk/models/operations";
 
-let value: ListGuardrailsRequest = {};
+let value: CreateTtsRequest = {
+  requestBody: {
+    input: "Hello world",
+    model: "elevenlabs/eleven-turbo-v2",
+    voice: "alloy",
+  },
+};
 ```
 
 ## Fields
@@ -15,6 +21,4 @@ let value: ListGuardrailsRequest = {};
 | `httpReferer`                                                                                                                                     | *string*                                                                                                                                          | :heavy_minus_sign:                                                                                                                                | The app identifier should be your app's URL and is used as the primary identifier for rankings.<br/>This is used to track API usage per application.<br/> |                                                                                                                                                   |
 | `appTitle`                                                                                                                                        | *string*                                                                                                                                          | :heavy_minus_sign:                                                                                                                                | The app display name allows you to customize how your app appears in OpenRouter's dashboard.<br/>                                                 |                                                                                                                                                   |
 | `appCategories`                                                                                                                                   | *string*                                                                                                                                          | :heavy_minus_sign:                                                                                                                                | Comma-separated list of app categories (e.g. "cli-agent,cloud-agent"). Used for marketplace rankings.<br/>                                        |                                                                                                                                                   |
-| `offset`                                                                                                                                          | *number*                                                                                                                                          | :heavy_minus_sign:                                                                                                                                | Number of records to skip for pagination                                                                                                          | 0                                                                                                                                                 |
-| `limit`                                                                                                                                           | *number*                                                                                                                                          | :heavy_minus_sign:                                                                                                                                | Maximum number of records to return (max 100)                                                                                                     | 50                                                                                                                                                |
-| `workspaceId`                                                                                                                                     | *string*                                                                                                                                          | :heavy_minus_sign:                                                                                                                                | Filter guardrails by workspace ID. By default, guardrails in the default workspace are returned.                                                  | 0df9e665-d932-5740-b2c7-b52af166bc11                                                                                                              |
+| `requestBody`                                                                                                                                     | [operations.CreateTtsRequestBody](../../models/operations/createttsrequestbody.md)                                                                | :heavy_check_mark:                                                                                                                                | N/A                                                                                                                                               | {<br/>"input": "Hello world",<br/>"model": "elevenlabs/eleven-turbo-v2",<br/>"response_format": "pcm",<br/>"speed": 1,<br/>"voice": "alloy"<br/>} |

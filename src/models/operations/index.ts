@@ -13,6 +13,7 @@ export * from "./createguardrail.js";
 export * from "./createkeys.js";
 export * from "./creatererank.js";
 export * from "./createresponses.js";
+export * from "./createtts.js";
 export * from "./createvideos.js";
 export * from "./deleteguardrail.js";
 export * from "./deletekeys.js";
