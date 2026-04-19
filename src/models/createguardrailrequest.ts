@@ -47,6 +47,10 @@ export type CreateGuardrailRequest = {
    * Interval at which the limit resets (daily, weekly, monthly)
    */
   resetInterval?: GuardrailInterval | null | undefined;
+  /**
+   * The workspace to create the guardrail in. Defaults to the default workspace if not provided.
+   */
+  workspaceId?: string | undefined;
 };
 
 /** @internal */
@@ -60,6 +64,7 @@ export type CreateGuardrailRequest$Outbound = {
   limit_usd?: number | null | undefined;
   name: string;
   reset_interval?: string | null | undefined;
+  workspace_id?: string | undefined;
 };
 
 /** @internal */
@@ -76,6 +81,7 @@ export const CreateGuardrailRequest$outboundSchema: z.ZodType<
   limitUsd: z.nullable(z.number()).optional(),
   name: z.string(),
   resetInterval: z.nullable(GuardrailInterval$outboundSchema).optional(),
+  workspaceId: z.string().optional(),
 }).transform((v) => {
   return remap$(v, {
     allowedModels: "allowed_models",
@@ -85,6 +91,7 @@ export const CreateGuardrailRequest$outboundSchema: z.ZodType<
     ignoredProviders: "ignored_providers",
     limitUsd: "limit_usd",
     resetInterval: "reset_interval",
+    workspaceId: "workspace_id",
   });
 });
 

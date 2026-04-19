@@ -11,6 +11,7 @@ let value: ListGuardrailsResponse = {
       createdAt: "2025-08-24T10:30:00Z",
       id: "550e8400-e29b-41d4-a716-446655440000",
       name: "Production Guardrail",
+      workspaceId: "0df9e665-d932-5740-b2c7-b52af166bc11",
     },
   ],
   totalCount: 1,
