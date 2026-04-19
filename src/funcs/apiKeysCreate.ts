@@ -41,6 +41,7 @@ export function apiKeysCreate(
     operations.CreateKeysResponse,
     | errors.BadRequestResponseError
     | errors.UnauthorizedResponseError
+    | errors.ForbiddenResponseError
     | errors.TooManyRequestsResponseError
     | errors.InternalServerResponseError
     | OpenRouterError
@@ -70,6 +71,7 @@ async function $do(
       operations.CreateKeysResponse,
       | errors.BadRequestResponseError
       | errors.UnauthorizedResponseError
+      | errors.ForbiddenResponseError
       | errors.TooManyRequestsResponseError
       | errors.InternalServerResponseError
       | OpenRouterError
@@ -163,7 +165,7 @@ async function $do(
 
   const doResult = await client._do(req, {
     context,
-    errorCodes: ["400", "401", "429", "4XX", "500", "5XX"],
+    errorCodes: ["400", "401", "403", "429", "4XX", "500", "5XX"],
     retryConfig: context.retryConfig,
     retryCodes: context.retryCodes,
   });
@@ -180,6 +182,7 @@ async function $do(
     operations.CreateKeysResponse,
     | errors.BadRequestResponseError
     | errors.UnauthorizedResponseError
+    | errors.ForbiddenResponseError
     | errors.TooManyRequestsResponseError
     | errors.InternalServerResponseError
     | OpenRouterError
@@ -194,6 +197,7 @@ async function $do(
     M.json(201, operations.CreateKeysResponse$inboundSchema),
     M.jsonErr(400, errors.BadRequestResponseError$inboundSchema),
     M.jsonErr(401, errors.UnauthorizedResponseError$inboundSchema),
+    M.jsonErr(403, errors.ForbiddenResponseError$inboundSchema),
     M.jsonErr(429, errors.TooManyRequestsResponseError$inboundSchema),
     M.jsonErr(500, errors.InternalServerResponseError$inboundSchema),
     M.fail("4XX"),
