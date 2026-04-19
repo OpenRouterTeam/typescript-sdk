@@ -62,6 +62,10 @@ export type Guardrail = {
    * ISO 8601 timestamp of when the guardrail was last updated
    */
   updatedAt?: string | null | undefined;
+  /**
+   * The workspace ID this guardrail belongs to.
+   */
+  workspaceId: string;
 };
 
 /** @internal */
@@ -78,6 +82,7 @@ export const Guardrail$inboundSchema: z.ZodType<Guardrail, unknown> = z.object({
   name: z.string(),
   reset_interval: z.nullable(GuardrailInterval$inboundSchema).optional(),
   updated_at: z.nullable(z.string()).optional(),
+  workspace_id: z.string(),
 }).transform((v) => {
   return remap$(v, {
     "allowed_models": "allowedModels",
@@ -89,6 +94,7 @@ export const Guardrail$inboundSchema: z.ZodType<Guardrail, unknown> = z.object({
     "limit_usd": "limitUsd",
     "reset_interval": "resetInterval",
     "updated_at": "updatedAt",
+    "workspace_id": "workspaceId",
   });
 });
 
