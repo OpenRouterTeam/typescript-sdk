@@ -38,6 +38,11 @@ import {
   ComputerUseServerTool$outboundSchema,
 } from "./computeruseservertool.js";
 import {
+  ConfidenceScorePlugin,
+  ConfidenceScorePlugin$Outbound,
+  ConfidenceScorePlugin$outboundSchema,
+} from "./confidencescoreplugin.js";
+import {
   ContextCompressionPlugin,
   ContextCompressionPlugin$Outbound,
   ContextCompressionPlugin$outboundSchema,
@@ -177,6 +182,7 @@ import {
 
 export type ResponsesRequestPlugin =
   | AutoRouterPlugin
+  | ConfidenceScorePlugin
   | ContextCompressionPlugin
   | FileParserPlugin
   | ModerationPlugin
@@ -264,6 +270,7 @@ export type ResponsesRequest = {
   plugins?:
     | Array<
       | AutoRouterPlugin
+      | ConfidenceScorePlugin
       | ContextCompressionPlugin
       | FileParserPlugin
       | ModerationPlugin
@@ -340,6 +347,7 @@ export type ResponsesRequest = {
 /** @internal */
 export type ResponsesRequestPlugin$Outbound =
   | AutoRouterPlugin$Outbound
+  | ConfidenceScorePlugin$Outbound
   | ContextCompressionPlugin$Outbound
   | FileParserPlugin$Outbound
   | ModerationPlugin$Outbound
@@ -352,6 +360,7 @@ export const ResponsesRequestPlugin$outboundSchema: z.ZodType<
   ResponsesRequestPlugin
 > = z.union([
   AutoRouterPlugin$outboundSchema,
+  ConfidenceScorePlugin$outboundSchema,
   ContextCompressionPlugin$outboundSchema,
   FileParserPlugin$outboundSchema,
   ModerationPlugin$outboundSchema,
@@ -486,6 +495,7 @@ export type ResponsesRequest$Outbound = {
   plugins?:
     | Array<
       | AutoRouterPlugin$Outbound
+      | ConfidenceScorePlugin$Outbound
       | ContextCompressionPlugin$Outbound
       | FileParserPlugin$Outbound
       | ModerationPlugin$Outbound
@@ -562,6 +572,7 @@ export const ResponsesRequest$outboundSchema: z.ZodType<
   plugins: z.array(
     z.union([
       AutoRouterPlugin$outboundSchema,
+      ConfidenceScorePlugin$outboundSchema,
       ContextCompressionPlugin$outboundSchema,
       FileParserPlugin$outboundSchema,
       ModerationPlugin$outboundSchema,
