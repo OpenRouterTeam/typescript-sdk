@@ -1,14 +1,14 @@
-# GetGenerationData
+# GenerationResponseData
 
 Generation data
 
 ## Example Usage
 
 ```typescript
-import { GetGenerationData } from "@openrouter/sdk/models/operations";
+import { GenerationResponseData } from "@openrouter/sdk/models";
 
-let value: GetGenerationData = {
-  apiType: "embeddings",
+let value: GenerationResponseData = {
+  apiType: "rerank",
   appId: 12345,
   cacheDiscount: 0.0002,
   cancelled: false,
@@ -56,7 +56,7 @@ let value: GetGenerationData = {
 
 | Field                                                                                   | Type                                                                                    | Required                                                                                | Description                                                                             | Example                                                                                 |
 | --------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------- |
-| `apiType`                                                                               | [operations.ApiType](../../models/operations/apitype.md)                                | :heavy_check_mark:                                                                      | Type of API used for the generation                                                     |                                                                                         |
+| `apiType`                                                                               | [models.ApiType](../models/apitype.md)                                                  | :heavy_check_mark:                                                                      | Type of API used for the generation                                                     |                                                                                         |
 | `appId`                                                                                 | *number*                                                                                | :heavy_check_mark:                                                                      | ID of the app that made the request                                                     | 12345                                                                                   |
 | `cacheDiscount`                                                                         | *number*                                                                                | :heavy_check_mark:                                                                      | Discount applied due to caching                                                         | 0.0002                                                                                  |
 | `cancelled`                                                                             | *boolean*                                                                               | :heavy_check_mark:                                                                      | Whether the generation was cancelled                                                    | false                                                                                   |
@@ -82,7 +82,7 @@ let value: GetGenerationData = {
 | `numSearchResults`                                                                      | *number*                                                                                | :heavy_check_mark:                                                                      | Number of search results included                                                       | 5                                                                                       |
 | `origin`                                                                                | *string*                                                                                | :heavy_check_mark:                                                                      | Origin URL of the request                                                               | https://openrouter.ai/                                                                  |
 | `providerName`                                                                          | *string*                                                                                | :heavy_check_mark:                                                                      | Name of the provider that served the request                                            | Infermatic                                                                              |
-| `providerResponses`                                                                     | [models.ProviderResponse](../../models/providerresponse.md)[]                           | :heavy_check_mark:                                                                      | List of provider responses for this generation, including fallback attempts             |                                                                                         |
+| `providerResponses`                                                                     | [models.ProviderResponse](../models/providerresponse.md)[]                              | :heavy_check_mark:                                                                      | List of provider responses for this generation, including fallback attempts             |                                                                                         |
 | `requestId`                                                                             | *string*                                                                                | :heavy_minus_sign:                                                                      | Unique identifier grouping all generations from a single API request                    | req-1727282430-aBcDeFgHiJkLmNoPqRsT                                                     |
 | `router`                                                                                | *string*                                                                                | :heavy_check_mark:                                                                      | Router used for the request (e.g., openrouter/auto)                                     | openrouter/auto                                                                         |
 | `sessionId`                                                                             | *string*                                                                                | :heavy_minus_sign:                                                                      | Session identifier grouping multiple generations in the same session                    |                                                                                         |
