@@ -60,10 +60,6 @@ export type ListGuardrailsRequest = {
    * Maximum number of records to return (max 100)
    */
   limit?: number | undefined;
-  /**
-   * Filter guardrails by workspace ID. By default, guardrails in the default workspace are returned.
-   */
-  workspaceId?: string | undefined;
 };
 
 export type ListGuardrailsResponse = {
@@ -77,7 +73,6 @@ export type ListGuardrailsRequest$Outbound = {
   appCategories?: string | undefined;
   offset?: number | null | undefined;
   limit?: number | undefined;
-  workspace_id?: string | undefined;
 };
 
 /** @internal */
@@ -90,11 +85,9 @@ export const ListGuardrailsRequest$outboundSchema: z.ZodType<
   appCategories: z.string().optional(),
   offset: z.nullable(z.int()).optional(),
   limit: z.int().optional(),
-  workspaceId: z.string().optional(),
 }).transform((v) => {
   return remap$(v, {
     httpReferer: "HTTP-Referer",
-    workspaceId: "workspace_id",
   });
 });
 

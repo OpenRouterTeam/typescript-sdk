@@ -59,10 +59,6 @@ export type ListRequest = {
    * Number of API keys to skip for pagination
    */
   offset?: number | null | undefined;
-  /**
-   * Filter API keys by workspace ID. By default, keys in the default workspace are returned.
-   */
-  workspaceId?: string | undefined;
 };
 
 export type ListData = {
@@ -146,10 +142,6 @@ export type ListData = {
    * OpenRouter credit usage (in USD) for the current UTC week (Monday-Sunday)
    */
   usageWeekly: number;
-  /**
-   * The workspace ID this API key belongs to.
-   */
-  workspaceId: string;
 };
 
 /**
@@ -169,7 +161,6 @@ export type ListRequest$Outbound = {
   appCategories?: string | undefined;
   include_disabled?: boolean | undefined;
   offset?: number | null | undefined;
-  workspace_id?: string | undefined;
 };
 
 /** @internal */
@@ -182,12 +173,10 @@ export const ListRequest$outboundSchema: z.ZodType<
   appCategories: z.string().optional(),
   includeDisabled: z.boolean().optional(),
   offset: z.nullable(z.int()).optional(),
-  workspaceId: z.string().optional(),
 }).transform((v) => {
   return remap$(v, {
     httpReferer: "HTTP-Referer",
     includeDisabled: "include_disabled",
-    workspaceId: "workspace_id",
   });
 });
 
@@ -219,7 +208,6 @@ export const ListData$inboundSchema: z.ZodType<ListData, unknown> = z.object({
   usage_daily: z.number(),
   usage_monthly: z.number(),
   usage_weekly: z.number(),
-  workspace_id: z.string(),
 }).transform((v) => {
   return remap$(v, {
     "byok_usage": "byokUsage",
@@ -236,7 +224,6 @@ export const ListData$inboundSchema: z.ZodType<ListData, unknown> = z.object({
     "usage_daily": "usageDaily",
     "usage_monthly": "usageMonthly",
     "usage_weekly": "usageWeekly",
-    "workspace_id": "workspaceId",
   });
 });
 
