@@ -67,7 +67,6 @@ export const ApiType = {
   Completions: "completions",
   Embeddings: "embeddings",
   Rerank: "rerank",
-  Tts: "tts",
   Video: "video",
 } as const;
 /**
