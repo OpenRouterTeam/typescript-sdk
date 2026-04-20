@@ -14384,6 +14384,607 @@ paths:
       summary: Get user activity grouped by endpoint
       tags:
         - Analytics
+  /audio/speech:
+    post:
+      description: Synthesizes audio from the input text
+      operationId: createAudioSpeech
+      requestBody:
+        content:
+          application/json:
+            schema:
+              description: Text-to-speech request input
+              example:
+                input: Hello world
+                model: elevenlabs/eleven-turbo-v2
+                response_format: pcm
+                speed: 1
+                voice: alloy
+              properties:
+                input:
+                  description: Text to synthesize
+                  example: Hello world
+                  type: string
+                model:
+                  description: TTS model identifier
+                  example: elevenlabs/eleven-turbo-v2
+                  type: string
+                provider:
+                  description: Provider-specific passthrough configuration
+                  properties:
+                    options:
+                      description: >-
+                        Provider-specific options keyed by provider slug. The options for the matched provider are
+                        spread into the upstream request body.
+                      properties:
+                        01ai:
+                          additionalProperties:
+                            nullable: true
+                          type: object
+                        ai21:
+                          additionalProperties:
+                            nullable: true
+                          type: object
+                        aion-labs:
+                          additionalProperties:
+                            nullable: true
+                          type: object
+                        akashml:
+                          additionalProperties:
+                            nullable: true
+                          type: object
+                        alibaba:
+                          additionalProperties:
+                            nullable: true
+                          type: object
+                        amazon-bedrock:
+                          additionalProperties:
+                            nullable: true
+                          type: object
+                        amazon-nova:
+                          additionalProperties:
+                            nullable: true
+                          type: object
+                        ambient:
+                          additionalProperties:
+                            nullable: true
+                          type: object
+                        anthropic:
+                          additionalProperties:
+                            nullable: true
+                          type: object
+                        anyscale:
+                          additionalProperties:
+                            nullable: true
+                          type: object
+                        arcee-ai:
+                          additionalProperties:
+                            nullable: true
+                          type: object
+                        atlas-cloud:
+                          additionalProperties:
+                            nullable: true
+                          type: object
+                        atoma:
+                          additionalProperties:
+                            nullable: true
+                          type: object
+                        avian:
+                          additionalProperties:
+                            nullable: true
+                          type: object
+                        azure:
+                          additionalProperties:
+                            nullable: true
+                          type: object
+                        baidu:
+                          additionalProperties:
+                            nullable: true
+                          type: object
+                        baseten:
+                          additionalProperties:
+                            nullable: true
+                          type: object
+                        black-forest-labs:
+                          additionalProperties:
+                            nullable: true
+                          type: object
+                        byteplus:
+                          additionalProperties:
+                            nullable: true
+                          type: object
+                        centml:
+                          additionalProperties:
+                            nullable: true
+                          type: object
+                        cerebras:
+                          additionalProperties:
+                            nullable: true
+                          type: object
+                        chutes:
+                          additionalProperties:
+                            nullable: true
+                          type: object
+                        cirrascale:
+                          additionalProperties:
+                            nullable: true
+                          type: object
+                        clarifai:
+                          additionalProperties:
+                            nullable: true
+                          type: object
+                        cloudflare:
+                          additionalProperties:
+                            nullable: true
+                          type: object
+                        cohere:
+                          additionalProperties:
+                            nullable: true
+                          type: object
+                        crofai:
+                          additionalProperties:
+                            nullable: true
+                          type: object
+                        crusoe:
+                          additionalProperties:
+                            nullable: true
+                          type: object
+                        deepinfra:
+                          additionalProperties:
+                            nullable: true
+                          type: object
+                        deepseek:
+                          additionalProperties:
+                            nullable: true
+                          type: object
+                        dekallm:
+                          additionalProperties:
+                            nullable: true
+                          type: object
+                        enfer:
+                          additionalProperties:
+                            nullable: true
+                          type: object
+                        fake-provider:
+                          additionalProperties:
+                            nullable: true
+                          type: object
+                        featherless:
+                          additionalProperties:
+                            nullable: true
+                          type: object
+                        fireworks:
+                          additionalProperties:
+                            nullable: true
+                          type: object
+                        friendli:
+                          additionalProperties:
+                            nullable: true
+                          type: object
+                        gmicloud:
+                          additionalProperties:
+                            nullable: true
+                          type: object
+                        google-ai-studio:
+                          additionalProperties:
+                            nullable: true
+                          type: object
+                        google-vertex:
+                          additionalProperties:
+                            nullable: true
+                          type: object
+                        gopomelo:
+                          additionalProperties:
+                            nullable: true
+                          type: object
+                        groq:
+                          additionalProperties:
+                            nullable: true
+                          type: object
+                        huggingface:
+                          additionalProperties:
+                            nullable: true
+                          type: object
+                        hyperbolic:
+                          additionalProperties:
+                            nullable: true
+                          type: object
+                        hyperbolic-quantized:
+                          additionalProperties:
+                            nullable: true
+                          type: object
+                        inception:
+                          additionalProperties:
+                            nullable: true
+                          type: object
+                        inceptron:
+                          additionalProperties:
+                            nullable: true
+                          type: object
+                        inference-net:
+                          additionalProperties:
+                            nullable: true
+                          type: object
+                        infermatic:
+                          additionalProperties:
+                            nullable: true
+                          type: object
+                        inflection:
+                          additionalProperties:
+                            nullable: true
+                          type: object
+                        inocloud:
+                          additionalProperties:
+                            nullable: true
+                          type: object
+                        io-net:
+                          additionalProperties:
+                            nullable: true
+                          type: object
+                        ionstream:
+                          additionalProperties:
+                            nullable: true
+                          type: object
+                        klusterai:
+                          additionalProperties:
+                            nullable: true
+                          type: object
+                        lambda:
+                          additionalProperties:
+                            nullable: true
+                          type: object
+                        lepton:
+                          additionalProperties:
+                            nullable: true
+                          type: object
+                        liquid:
+                          additionalProperties:
+                            nullable: true
+                          type: object
+                        lynn:
+                          additionalProperties:
+                            nullable: true
+                          type: object
+                        lynn-private:
+                          additionalProperties:
+                            nullable: true
+                          type: object
+                        mancer:
+                          additionalProperties:
+                            nullable: true
+                          type: object
+                        mancer-old:
+                          additionalProperties:
+                            nullable: true
+                          type: object
+                        mara:
+                          additionalProperties:
+                            nullable: true
+                          type: object
+                        meta:
+                          additionalProperties:
+                            nullable: true
+                          type: object
+                        minimax:
+                          additionalProperties:
+                            nullable: true
+                          type: object
+                        mistral:
+                          additionalProperties:
+                            nullable: true
+                          type: object
+                        modal:
+                          additionalProperties:
+                            nullable: true
+                          type: object
+                        modelrun:
+                          additionalProperties:
+                            nullable: true
+                          type: object
+                        modular:
+                          additionalProperties:
+                            nullable: true
+                          type: object
+                        moonshotai:
+                          additionalProperties:
+                            nullable: true
+                          type: object
+                        morph:
+                          additionalProperties:
+                            nullable: true
+                          type: object
+                        ncompass:
+                          additionalProperties:
+                            nullable: true
+                          type: object
+                        nebius:
+                          additionalProperties:
+                            nullable: true
+                          type: object
+                        nextbit:
+                          additionalProperties:
+                            nullable: true
+                          type: object
+                        nineteen:
+                          additionalProperties:
+                            nullable: true
+                          type: object
+                        novita:
+                          additionalProperties:
+                            nullable: true
+                          type: object
+                        nvidia:
+                          additionalProperties:
+                            nullable: true
+                          type: object
+                        octoai:
+                          additionalProperties:
+                            nullable: true
+                          type: object
+                        open-inference:
+                          additionalProperties:
+                            nullable: true
+                          type: object
+                        openai:
+                          additionalProperties:
+                            nullable: true
+                          type: object
+                        parasail:
+                          additionalProperties:
+                            nullable: true
+                          type: object
+                        perplexity:
+                          additionalProperties:
+                            nullable: true
+                          type: object
+                        phala:
+                          additionalProperties:
+                            nullable: true
+                          type: object
+                        recraft:
+                          additionalProperties:
+                            nullable: true
+                          type: object
+                        recursal:
+                          additionalProperties:
+                            nullable: true
+                          type: object
+                        reflection:
+                          additionalProperties:
+                            nullable: true
+                          type: object
+                        reka:
+                          additionalProperties:
+                            nullable: true
+                          type: object
+                        relace:
+                          additionalProperties:
+                            nullable: true
+                          type: object
+                        replicate:
+                          additionalProperties:
+                            nullable: true
+                          type: object
+                        sambanova:
+                          additionalProperties:
+                            nullable: true
+                          type: object
+                        sambanova-cloaked:
+                          additionalProperties:
+                            nullable: true
+                          type: object
+                        seed:
+                          additionalProperties:
+                            nullable: true
+                          type: object
+                        sf-compute:
+                          additionalProperties:
+                            nullable: true
+                          type: object
+                        siliconflow:
+                          additionalProperties:
+                            nullable: true
+                          type: object
+                        sourceful:
+                          additionalProperties:
+                            nullable: true
+                          type: object
+                        stealth:
+                          additionalProperties:
+                            nullable: true
+                          type: object
+                        stepfun:
+                          additionalProperties:
+                            nullable: true
+                          type: object
+                        streamlake:
+                          additionalProperties:
+                            nullable: true
+                          type: object
+                        switchpoint:
+                          additionalProperties:
+                            nullable: true
+                          type: object
+                        targon:
+                          additionalProperties:
+                            nullable: true
+                          type: object
+                        together:
+                          additionalProperties:
+                            nullable: true
+                          type: object
+                        together-lite:
+                          additionalProperties:
+                            nullable: true
+                          type: object
+                        ubicloud:
+                          additionalProperties:
+                            nullable: true
+                          type: object
+                        upstage:
+                          additionalProperties:
+                            nullable: true
+                          type: object
+                        venice:
+                          additionalProperties:
+                            nullable: true
+                          type: object
+                        wandb:
+                          additionalProperties:
+                            nullable: true
+                          type: object
+                        xai:
+                          additionalProperties:
+                            nullable: true
+                          type: object
+                        xiaomi:
+                          additionalProperties:
+                            nullable: true
+                          type: object
+                        z-ai:
+                          additionalProperties:
+                            nullable: true
+                          type: object
+                      type: object
+                  type: object
+                response_format:
+                  default: pcm
+                  description: Audio output format
+                  enum:
+                    - mp3
+                    - pcm
+                  example: pcm
+                  type: string
+                speed:
+                  description: >-
+                    Playback speed multiplier. Only used by models that support it (e.g. OpenAI TTS). Ignored by other
+                    providers.
+                  example: 1
+                  format: double
+                  type: number
+                voice:
+                  description: Voice identifier (provider-specific).
+                  example: alloy
+                  type: string
+              required:
+                - model
+                - input
+                - voice
+              type: object
+        required: true
+      responses:
+        '200':
+          content:
+            application/octet-stream:
+              schema:
+                description: Raw audio bytestream. Content-Type varies by requested format (audio/mpeg for mp3, audio/L16 for pcm).
+                example: <binary audio data>
+                format: binary
+                type: string
+          description: Audio bytes stream
+        '400':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 400
+                  message: Invalid request parameters
+              schema:
+                $ref: '#/components/schemas/BadRequestResponse'
+          description: Bad Request - Invalid request parameters or malformed input
+        '401':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 401
+                  message: Missing Authentication header
+              schema:
+                $ref: '#/components/schemas/UnauthorizedResponse'
+          description: Unauthorized - Authentication required or invalid credentials
+        '402':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 402
+                  message: Insufficient credits. Add more using https://openrouter.ai/credits
+              schema:
+                $ref: '#/components/schemas/PaymentRequiredResponse'
+          description: Payment Required - Insufficient credits or quota to complete request
+        '404':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 404
+                  message: Resource not found
+              schema:
+                $ref: '#/components/schemas/NotFoundResponse'
+          description: Not Found - Resource does not exist
+        '429':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 429
+                  message: Rate limit exceeded
+              schema:
+                $ref: '#/components/schemas/TooManyRequestsResponse'
+          description: Too Many Requests - Rate limit exceeded
+        '500':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 500
+                  message: Internal Server Error
+              schema:
+                $ref: '#/components/schemas/InternalServerResponse'
+          description: Internal Server Error - Unexpected server error
+        '502':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 502
+                  message: Provider returned error
+              schema:
+                $ref: '#/components/schemas/BadGatewayResponse'
+          description: Bad Gateway - Provider/upstream API failure
+        '503':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 503
+                  message: Service temporarily unavailable
+              schema:
+                $ref: '#/components/schemas/ServiceUnavailableResponse'
+          description: Service Unavailable - Service temporarily unavailable
+        '524':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 524
+                  message: Request timed out. Please try again later.
+              schema:
+                $ref: '#/components/schemas/EdgeNetworkTimeoutResponse'
+          description: Infrastructure Timeout - Provider request timed out at edge network
+        '529':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 529
+                  message: Provider returned error
+              schema:
+                $ref: '#/components/schemas/ProviderOverloadedResponse'
+          description: Provider Overloaded - Provider is temporarily overloaded
+      summary: Create speech
+      tags:
+        - TTS
+      x-speakeasy-name-override: createSpeech
   /auth/keys:
     post:
       description: Exchange an authorization code from the PKCE flow for a user-controlled API key
@@ -20025,607 +20626,6 @@ paths:
         - beta.responses
       x-speakeasy-name-override: send
       x-speakeasy-stream-request-field: stream
-  /tts:
-    post:
-      description: Synthesizes audio from the input text
-      operationId: createTts
-      requestBody:
-        content:
-          application/json:
-            schema:
-              description: Text-to-speech request input
-              example:
-                input: Hello world
-                model: elevenlabs/eleven-turbo-v2
-                response_format: pcm
-                speed: 1
-                voice: alloy
-              properties:
-                input:
-                  description: Text to synthesize
-                  example: Hello world
-                  type: string
-                model:
-                  description: TTS model identifier
-                  example: elevenlabs/eleven-turbo-v2
-                  type: string
-                provider:
-                  description: Provider-specific passthrough configuration
-                  properties:
-                    options:
-                      description: >-
-                        Provider-specific options keyed by provider slug. The options for the matched provider are
-                        spread into the upstream request body.
-                      properties:
-                        01ai:
-                          additionalProperties:
-                            nullable: true
-                          type: object
-                        ai21:
-                          additionalProperties:
-                            nullable: true
-                          type: object
-                        aion-labs:
-                          additionalProperties:
-                            nullable: true
-                          type: object
-                        akashml:
-                          additionalProperties:
-                            nullable: true
-                          type: object
-                        alibaba:
-                          additionalProperties:
-                            nullable: true
-                          type: object
-                        amazon-bedrock:
-                          additionalProperties:
-                            nullable: true
-                          type: object
-                        amazon-nova:
-                          additionalProperties:
-                            nullable: true
-                          type: object
-                        ambient:
-                          additionalProperties:
-                            nullable: true
-                          type: object
-                        anthropic:
-                          additionalProperties:
-                            nullable: true
-                          type: object
-                        anyscale:
-                          additionalProperties:
-                            nullable: true
-                          type: object
-                        arcee-ai:
-                          additionalProperties:
-                            nullable: true
-                          type: object
-                        atlas-cloud:
-                          additionalProperties:
-                            nullable: true
-                          type: object
-                        atoma:
-                          additionalProperties:
-                            nullable: true
-                          type: object
-                        avian:
-                          additionalProperties:
-                            nullable: true
-                          type: object
-                        azure:
-                          additionalProperties:
-                            nullable: true
-                          type: object
-                        baidu:
-                          additionalProperties:
-                            nullable: true
-                          type: object
-                        baseten:
-                          additionalProperties:
-                            nullable: true
-                          type: object
-                        black-forest-labs:
-                          additionalProperties:
-                            nullable: true
-                          type: object
-                        byteplus:
-                          additionalProperties:
-                            nullable: true
-                          type: object
-                        centml:
-                          additionalProperties:
-                            nullable: true
-                          type: object
-                        cerebras:
-                          additionalProperties:
-                            nullable: true
-                          type: object
-                        chutes:
-                          additionalProperties:
-                            nullable: true
-                          type: object
-                        cirrascale:
-                          additionalProperties:
-                            nullable: true
-                          type: object
-                        clarifai:
-                          additionalProperties:
-                            nullable: true
-                          type: object
-                        cloudflare:
-                          additionalProperties:
-                            nullable: true
-                          type: object
-                        cohere:
-                          additionalProperties:
-                            nullable: true
-                          type: object
-                        crofai:
-                          additionalProperties:
-                            nullable: true
-                          type: object
-                        crusoe:
-                          additionalProperties:
-                            nullable: true
-                          type: object
-                        deepinfra:
-                          additionalProperties:
-                            nullable: true
-                          type: object
-                        deepseek:
-                          additionalProperties:
-                            nullable: true
-                          type: object
-                        dekallm:
-                          additionalProperties:
-                            nullable: true
-                          type: object
-                        enfer:
-                          additionalProperties:
-                            nullable: true
-                          type: object
-                        fake-provider:
-                          additionalProperties:
-                            nullable: true
-                          type: object
-                        featherless:
-                          additionalProperties:
-                            nullable: true
-                          type: object
-                        fireworks:
-                          additionalProperties:
-                            nullable: true
-                          type: object
-                        friendli:
-                          additionalProperties:
-                            nullable: true
-                          type: object
-                        gmicloud:
-                          additionalProperties:
-                            nullable: true
-                          type: object
-                        google-ai-studio:
-                          additionalProperties:
-                            nullable: true
-                          type: object
-                        google-vertex:
-                          additionalProperties:
-                            nullable: true
-                          type: object
-                        gopomelo:
-                          additionalProperties:
-                            nullable: true
-                          type: object
-                        groq:
-                          additionalProperties:
-                            nullable: true
-                          type: object
-                        huggingface:
-                          additionalProperties:
-                            nullable: true
-                          type: object
-                        hyperbolic:
-                          additionalProperties:
-                            nullable: true
-                          type: object
-                        hyperbolic-quantized:
-                          additionalProperties:
-                            nullable: true
-                          type: object
-                        inception:
-                          additionalProperties:
-                            nullable: true
-                          type: object
-                        inceptron:
-                          additionalProperties:
-                            nullable: true
-                          type: object
-                        inference-net:
-                          additionalProperties:
-                            nullable: true
-                          type: object
-                        infermatic:
-                          additionalProperties:
-                            nullable: true
-                          type: object
-                        inflection:
-                          additionalProperties:
-                            nullable: true
-                          type: object
-                        inocloud:
-                          additionalProperties:
-                            nullable: true
-                          type: object
-                        io-net:
-                          additionalProperties:
-                            nullable: true
-                          type: object
-                        ionstream:
-                          additionalProperties:
-                            nullable: true
-                          type: object
-                        klusterai:
-                          additionalProperties:
-                            nullable: true
-                          type: object
-                        lambda:
-                          additionalProperties:
-                            nullable: true
-                          type: object
-                        lepton:
-                          additionalProperties:
-                            nullable: true
-                          type: object
-                        liquid:
-                          additionalProperties:
-                            nullable: true
-                          type: object
-                        lynn:
-                          additionalProperties:
-                            nullable: true
-                          type: object
-                        lynn-private:
-                          additionalProperties:
-                            nullable: true
-                          type: object
-                        mancer:
-                          additionalProperties:
-                            nullable: true
-                          type: object
-                        mancer-old:
-                          additionalProperties:
-                            nullable: true
-                          type: object
-                        mara:
-                          additionalProperties:
-                            nullable: true
-                          type: object
-                        meta:
-                          additionalProperties:
-                            nullable: true
-                          type: object
-                        minimax:
-                          additionalProperties:
-                            nullable: true
-                          type: object
-                        mistral:
-                          additionalProperties:
-                            nullable: true
-                          type: object
-                        modal:
-                          additionalProperties:
-                            nullable: true
-                          type: object
-                        modelrun:
-                          additionalProperties:
-                            nullable: true
-                          type: object
-                        modular:
-                          additionalProperties:
-                            nullable: true
-                          type: object
-                        moonshotai:
-                          additionalProperties:
-                            nullable: true
-                          type: object
-                        morph:
-                          additionalProperties:
-                            nullable: true
-                          type: object
-                        ncompass:
-                          additionalProperties:
-                            nullable: true
-                          type: object
-                        nebius:
-                          additionalProperties:
-                            nullable: true
-                          type: object
-                        nextbit:
-                          additionalProperties:
-                            nullable: true
-                          type: object
-                        nineteen:
-                          additionalProperties:
-                            nullable: true
-                          type: object
-                        novita:
-                          additionalProperties:
-                            nullable: true
-                          type: object
-                        nvidia:
-                          additionalProperties:
-                            nullable: true
-                          type: object
-                        octoai:
-                          additionalProperties:
-                            nullable: true
-                          type: object
-                        open-inference:
-                          additionalProperties:
-                            nullable: true
-                          type: object
-                        openai:
-                          additionalProperties:
-                            nullable: true
-                          type: object
-                        parasail:
-                          additionalProperties:
-                            nullable: true
-                          type: object
-                        perplexity:
-                          additionalProperties:
-                            nullable: true
-                          type: object
-                        phala:
-                          additionalProperties:
-                            nullable: true
-                          type: object
-                        recraft:
-                          additionalProperties:
-                            nullable: true
-                          type: object
-                        recursal:
-                          additionalProperties:
-                            nullable: true
-                          type: object
-                        reflection:
-                          additionalProperties:
-                            nullable: true
-                          type: object
-                        reka:
-                          additionalProperties:
-                            nullable: true
-                          type: object
-                        relace:
-                          additionalProperties:
-                            nullable: true
-                          type: object
-                        replicate:
-                          additionalProperties:
-                            nullable: true
-                          type: object
-                        sambanova:
-                          additionalProperties:
-                            nullable: true
-                          type: object
-                        sambanova-cloaked:
-                          additionalProperties:
-                            nullable: true
-                          type: object
-                        seed:
-                          additionalProperties:
-                            nullable: true
-                          type: object
-                        sf-compute:
-                          additionalProperties:
-                            nullable: true
-                          type: object
-                        siliconflow:
-                          additionalProperties:
-                            nullable: true
-                          type: object
-                        sourceful:
-                          additionalProperties:
-                            nullable: true
-                          type: object
-                        stealth:
-                          additionalProperties:
-                            nullable: true
-                          type: object
-                        stepfun:
-                          additionalProperties:
-                            nullable: true
-                          type: object
-                        streamlake:
-                          additionalProperties:
-                            nullable: true
-                          type: object
-                        switchpoint:
-                          additionalProperties:
-                            nullable: true
-                          type: object
-                        targon:
-                          additionalProperties:
-                            nullable: true
-                          type: object
-                        together:
-                          additionalProperties:
-                            nullable: true
-                          type: object
-                        together-lite:
-                          additionalProperties:
-                            nullable: true
-                          type: object
-                        ubicloud:
-                          additionalProperties:
-                            nullable: true
-                          type: object
-                        upstage:
-                          additionalProperties:
-                            nullable: true
-                          type: object
-                        venice:
-                          additionalProperties:
-                            nullable: true
-                          type: object
-                        wandb:
-                          additionalProperties:
-                            nullable: true
-                          type: object
-                        xai:
-                          additionalProperties:
-                            nullable: true
-                          type: object
-                        xiaomi:
-                          additionalProperties:
-                            nullable: true
-                          type: object
-                        z-ai:
-                          additionalProperties:
-                            nullable: true
-                          type: object
-                      type: object
-                  type: object
-                response_format:
-                  default: pcm
-                  description: Audio output format
-                  enum:
-                    - mp3
-                    - pcm
-                  example: pcm
-                  type: string
-                speed:
-                  description: >-
-                    Playback speed multiplier. Only used by models that support it (e.g. OpenAI TTS). Ignored by other
-                    providers.
-                  example: 1
-                  format: double
-                  type: number
-                voice:
-                  description: Voice identifier
-                  example: alloy
-                  type: string
-              required:
-                - model
-                - input
-                - voice
-              type: object
-        required: true
-      responses:
-        '200':
-          content:
-            application/octet-stream:
-              schema:
-                description: Raw audio bytestream. Content-Type varies by requested format (audio/mpeg for mp3, audio/L16 for pcm).
-                example: <binary audio data>
-                format: binary
-                type: string
-          description: Audio bytes stream
-        '400':
-          content:
-            application/json:
-              example:
-                error:
-                  code: 400
-                  message: Invalid request parameters
-              schema:
-                $ref: '#/components/schemas/BadRequestResponse'
-          description: Bad Request - Invalid request parameters or malformed input
-        '401':
-          content:
-            application/json:
-              example:
-                error:
-                  code: 401
-                  message: Missing Authentication header
-              schema:
-                $ref: '#/components/schemas/UnauthorizedResponse'
-          description: Unauthorized - Authentication required or invalid credentials
-        '402':
-          content:
-            application/json:
-              example:
-                error:
-                  code: 402
-                  message: Insufficient credits. Add more using https://openrouter.ai/credits
-              schema:
-                $ref: '#/components/schemas/PaymentRequiredResponse'
-          description: Payment Required - Insufficient credits or quota to complete request
-        '404':
-          content:
-            application/json:
-              example:
-                error:
-                  code: 404
-                  message: Resource not found
-              schema:
-                $ref: '#/components/schemas/NotFoundResponse'
-          description: Not Found - Resource does not exist
-        '429':
-          content:
-            application/json:
-              example:
-                error:
-                  code: 429
-                  message: Rate limit exceeded
-              schema:
-                $ref: '#/components/schemas/TooManyRequestsResponse'
-          description: Too Many Requests - Rate limit exceeded
-        '500':
-          content:
-            application/json:
-              example:
-                error:
-                  code: 500
-                  message: Internal Server Error
-              schema:
-                $ref: '#/components/schemas/InternalServerResponse'
-          description: Internal Server Error - Unexpected server error
-        '502':
-          content:
-            application/json:
-              example:
-                error:
-                  code: 502
-                  message: Provider returned error
-              schema:
-                $ref: '#/components/schemas/BadGatewayResponse'
-          description: Bad Gateway - Provider/upstream API failure
-        '503':
-          content:
-            application/json:
-              example:
-                error:
-                  code: 503
-                  message: Service temporarily unavailable
-              schema:
-                $ref: '#/components/schemas/ServiceUnavailableResponse'
-          description: Service Unavailable - Service temporarily unavailable
-        '524':
-          content:
-            application/json:
-              example:
-                error:
-                  code: 524
-                  message: Request timed out. Please try again later.
-              schema:
-                $ref: '#/components/schemas/EdgeNetworkTimeoutResponse'
-          description: Infrastructure Timeout - Provider request timed out at edge network
-        '529':
-          content:
-            application/json:
-              example:
-                error:
-                  code: 529
-                  message: Provider returned error
-              schema:
-                $ref: '#/components/schemas/ProviderOverloadedResponse'
-          description: Provider Overloaded - Provider is temporarily overloaded
-      summary: Create speech
-      tags:
-        - TTS
-      x-speakeasy-name-override: createSpeech
   /videos:
     post:
       description: Submits a video generation request and returns a polling URL to check status
