@@ -141,10 +141,6 @@ export type GetKeyData = {
    * OpenRouter credit usage (in USD) for the current UTC week (Monday-Sunday)
    */
   usageWeekly: number;
-  /**
-   * The workspace ID this API key belongs to.
-   */
-  workspaceId: string;
 };
 
 /**
@@ -209,7 +205,6 @@ export const GetKeyData$inboundSchema: z.ZodType<GetKeyData, unknown> = z
     usage_daily: z.number(),
     usage_monthly: z.number(),
     usage_weekly: z.number(),
-    workspace_id: z.string(),
   }).transform((v) => {
     return remap$(v, {
       "byok_usage": "byokUsage",
@@ -226,7 +221,6 @@ export const GetKeyData$inboundSchema: z.ZodType<GetKeyData, unknown> = z
       "usage_daily": "usageDaily",
       "usage_monthly": "usageMonthly",
       "usage_weekly": "usageWeekly",
-      "workspace_id": "workspaceId",
     });
   });
 

@@ -110,7 +110,6 @@ async function $do(
   const query = encodeFormQuery({
     "limit": payload?.limit,
     "offset": payload?.offset,
-    "workspace_id": payload?.workspace_id,
   });
 
   const headers = new Headers(compactMap({
