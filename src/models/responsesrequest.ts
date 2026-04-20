@@ -111,6 +111,11 @@ import {
   OutputModalityEnum$outboundSchema,
 } from "./outputmodalityenum.js";
 import {
+  ParetoRouterPlugin,
+  ParetoRouterPlugin$Outbound,
+  ParetoRouterPlugin$outboundSchema,
+} from "./paretorouterplugin.js";
+import {
   Preview20250311WebSearchServerTool,
   Preview20250311WebSearchServerTool$Outbound,
   Preview20250311WebSearchServerTool$outboundSchema,
@@ -160,6 +165,11 @@ import {
   TraceConfig$outboundSchema,
 } from "./traceconfig.js";
 import {
+  WebFetchServerToolOpenRouter,
+  WebFetchServerToolOpenRouter$Outbound,
+  WebFetchServerToolOpenRouter$outboundSchema,
+} from "./webfetchservertoolopenrouter.js";
+import {
   WebSearchPlugin,
   WebSearchPlugin$Outbound,
   WebSearchPlugin$outboundSchema,
@@ -180,6 +190,7 @@ export type ResponsesRequestPlugin =
   | ContextCompressionPlugin
   | FileParserPlugin
   | ModerationPlugin
+  | ParetoRouterPlugin
   | ResponseHealingPlugin
   | WebSearchPlugin;
 
@@ -227,6 +238,7 @@ export type ResponsesRequestToolUnion =
   | (ChatSearchModelsServerTool & {
     type: "openrouter:experimental__search_models";
   })
+  | WebFetchServerToolOpenRouter
   | WebSearchServerToolOpenRouter;
 
 /**
@@ -267,6 +279,7 @@ export type ResponsesRequest = {
       | ContextCompressionPlugin
       | FileParserPlugin
       | ModerationPlugin
+      | ParetoRouterPlugin
       | ResponseHealingPlugin
       | WebSearchPlugin
     >
@@ -320,6 +333,7 @@ export type ResponsesRequest = {
       | (ChatSearchModelsServerTool & {
         type: "openrouter:experimental__search_models";
       })
+      | WebFetchServerToolOpenRouter
       | WebSearchServerToolOpenRouter
     >
     | undefined;
@@ -343,6 +357,7 @@ export type ResponsesRequestPlugin$Outbound =
   | ContextCompressionPlugin$Outbound
   | FileParserPlugin$Outbound
   | ModerationPlugin$Outbound
+  | ParetoRouterPlugin$Outbound
   | ResponseHealingPlugin$Outbound
   | WebSearchPlugin$Outbound;
 
@@ -355,6 +370,7 @@ export const ResponsesRequestPlugin$outboundSchema: z.ZodType<
   ContextCompressionPlugin$outboundSchema,
   FileParserPlugin$outboundSchema,
   ModerationPlugin$outboundSchema,
+  ParetoRouterPlugin$outboundSchema,
   ResponseHealingPlugin$outboundSchema,
   WebSearchPlugin$outboundSchema,
 ]);
@@ -427,6 +443,7 @@ export type ResponsesRequestToolUnion$Outbound =
   | (ChatSearchModelsServerTool$Outbound & {
     type: "openrouter:experimental__search_models";
   })
+  | WebFetchServerToolOpenRouter$Outbound
   | WebSearchServerToolOpenRouter$Outbound;
 
 /** @internal */
@@ -457,6 +474,7 @@ export const ResponsesRequestToolUnion$outboundSchema: z.ZodType<
   ChatSearchModelsServerTool$outboundSchema.and(
     z.object({ type: z.literal("openrouter:experimental__search_models") }),
   ),
+  WebFetchServerToolOpenRouter$outboundSchema,
   WebSearchServerToolOpenRouter$outboundSchema,
 ]);
 
@@ -489,6 +507,7 @@ export type ResponsesRequest$Outbound = {
       | ContextCompressionPlugin$Outbound
       | FileParserPlugin$Outbound
       | ModerationPlugin$Outbound
+      | ParetoRouterPlugin$Outbound
       | ResponseHealingPlugin$Outbound
       | WebSearchPlugin$Outbound
     >
@@ -530,6 +549,7 @@ export type ResponsesRequest$Outbound = {
       | (ChatSearchModelsServerTool$Outbound & {
         type: "openrouter:experimental__search_models";
       })
+      | WebFetchServerToolOpenRouter$Outbound
       | WebSearchServerToolOpenRouter$Outbound
     >
     | undefined;
@@ -565,6 +585,7 @@ export const ResponsesRequest$outboundSchema: z.ZodType<
       ContextCompressionPlugin$outboundSchema,
       FileParserPlugin$outboundSchema,
       ModerationPlugin$outboundSchema,
+      ParetoRouterPlugin$outboundSchema,
       ResponseHealingPlugin$outboundSchema,
       WebSearchPlugin$outboundSchema,
     ]),
@@ -610,6 +631,7 @@ export const ResponsesRequest$outboundSchema: z.ZodType<
       ChatSearchModelsServerTool$outboundSchema.and(
         z.object({ type: z.literal("openrouter:experimental__search_models") }),
       ),
+      WebFetchServerToolOpenRouter$outboundSchema,
       WebSearchServerToolOpenRouter$outboundSchema,
     ]),
   ).optional(),
