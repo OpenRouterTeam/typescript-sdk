@@ -1,16 +1,14 @@
-# ModelsCountResponse
+# Data
 
 Model count data
 
 ## Example Usage
 
 ```typescript
-import { ModelsCountResponse } from "@openrouter/sdk/models";
+import { Data } from "@openrouter/sdk/models";
 
-let value: ModelsCountResponse = {
-  data: {
-    count: 150,
-  },
+let value: Data = {
+  count: 150,
 };
 ```
 
@@ -18,4 +16,4 @@ let value: ModelsCountResponse = {
 
 | Field                            | Type                             | Required                         | Description                      | Example                          |
 | -------------------------------- | -------------------------------- | -------------------------------- | -------------------------------- | -------------------------------- |
-| `data`                           | [models.Data](../models/data.md) | :heavy_check_mark:               | Model count data                 | {<br/>"count": 150<br/>}         |
+| `count`                          | *number*                         | :heavy_check_mark:               | Total number of available models | 150                              |

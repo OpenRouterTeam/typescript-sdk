@@ -35,7 +35,6 @@ export * from "./list.js";
 export * from "./listembeddingsmodels.js";
 export * from "./listendpoints.js";
 export * from "./listendpointszdr.js";
-export * from "./listgenerationcontent.js";
 export * from "./listguardrailkeyassignments.js";
 export * from "./listguardrailmemberassignments.js";
 export * from "./listguardrails.js";
