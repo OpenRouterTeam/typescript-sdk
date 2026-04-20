@@ -1,0 +1,27 @@
+# BulkAddWorkspaceMembersRequest
+
+## Example Usage
+
+```typescript
+import { BulkAddWorkspaceMembersRequest } from "@openrouter/sdk/models/operations";
+
+let value: BulkAddWorkspaceMembersRequest = {
+  id: "production",
+  bulkAddWorkspaceMembersRequest: {
+    userIds: [
+      "user_abc123",
+      "user_def456",
+    ],
+  },
+};
+```
+
+## Fields
+
+| Field                                                                                                                                             | Type                                                                                                                                              | Required                                                                                                                                          | Description                                                                                                                                       | Example                                                                                                                                           |
+| ------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `httpReferer`                                                                                                                                     | *string*                                                                                                                                          | :heavy_minus_sign:                                                                                                                                | The app identifier should be your app's URL and is used as the primary identifier for rankings.<br/>This is used to track API usage per application.<br/> |                                                                                                                                                   |
+| `appTitle`                                                                                                                                        | *string*                                                                                                                                          | :heavy_minus_sign:                                                                                                                                | The app display name allows you to customize how your app appears in OpenRouter's dashboard.<br/>                                                 |                                                                                                                                                   |
+| `appCategories`                                                                                                                                   | *string*                                                                                                                                          | :heavy_minus_sign:                                                                                                                                | Comma-separated list of app categories (e.g. "cli-agent,cloud-agent"). Used for marketplace rankings.<br/>                                        |                                                                                                                                                   |
+| `id`                                                                                                                                              | *string*                                                                                                                                          | :heavy_check_mark:                                                                                                                                | The workspace ID (UUID) or slug                                                                                                                   | production                                                                                                                                        |
+| `bulkAddWorkspaceMembersRequest`                                                                                                                  | [models.BulkAddWorkspaceMembersRequest](../../models/bulkaddworkspacemembersrequest.md)                                                           | :heavy_check_mark:                                                                                                                                | N/A                                                                                                                                               | {<br/>"user_ids": [<br/>"user_abc123",<br/>"user_def456"<br/>]<br/>}                                                                              |
