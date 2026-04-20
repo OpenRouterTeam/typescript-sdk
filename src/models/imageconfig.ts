@@ -5,16 +5,25 @@
 
 import * as z from "zod/v4";
 
-export type ImageConfig = string | number | Array<any | null>;
+export type ImageConfig = string | number | Array<any | null> | {
+  [k: string]: any | null;
+};
 
 /** @internal */
-export type ImageConfig$Outbound = string | number | Array<any | null>;
+export type ImageConfig$Outbound = string | number | Array<any | null> | {
+  [k: string]: any | null;
+};
 
 /** @internal */
 export const ImageConfig$outboundSchema: z.ZodType<
   ImageConfig$Outbound,
   ImageConfig
-> = z.union([z.string(), z.number(), z.array(z.nullable(z.any()))]);
+> = z.union([
+  z.string(),
+  z.number(),
+  z.array(z.nullable(z.any())),
+  z.record(z.string(), z.nullable(z.any())),
+]);
 
 export function imageConfigToJSON(imageConfig: ImageConfig): string {
   return JSON.stringify(ImageConfig$outboundSchema.parse(imageConfig));

@@ -8,19 +8,26 @@ import * as z from "zod/v4";
 export type ImageGenerationServerToolConfigUnion =
   | string
   | number
-  | Array<any | null>;
+  | Array<any | null>
+  | { [k: string]: any | null };
 
 /** @internal */
 export type ImageGenerationServerToolConfigUnion$Outbound =
   | string
   | number
-  | Array<any | null>;
+  | Array<any | null>
+  | { [k: string]: any | null };
 
 /** @internal */
 export const ImageGenerationServerToolConfigUnion$outboundSchema: z.ZodType<
   ImageGenerationServerToolConfigUnion$Outbound,
   ImageGenerationServerToolConfigUnion
-> = z.union([z.string(), z.number(), z.array(z.nullable(z.any()))]);
+> = z.union([
+  z.string(),
+  z.number(),
+  z.array(z.nullable(z.any())),
+  z.record(z.string(), z.nullable(z.any())),
+]);
 
 export function imageGenerationServerToolConfigUnionToJSON(
   imageGenerationServerToolConfigUnion: ImageGenerationServerToolConfigUnion,
