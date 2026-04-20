@@ -3001,6 +3001,48 @@ components:
       description: Price per million prompt tokens
       example: 1000
       type: string
+    BulkAddWorkspaceMembersRequest:
+      example:
+        user_ids:
+          - user_abc123
+          - user_def456
+      properties:
+        user_ids:
+          description: List of user IDs to add to the workspace. Members are assigned the same role they hold in the organization.
+          example:
+            - user_abc123
+            - user_def456
+          items:
+            type: string
+          maxItems: 100
+          minItems: 1
+          type: array
+      required:
+        - user_ids
+      type: object
+    BulkAddWorkspaceMembersResponse:
+      example:
+        added_count: 1
+        data:
+          - created_at: '2025-08-24T10:30:00Z'
+            id: 660e8400-e29b-41d4-a716-446655440000
+            role: member
+            user_id: user_abc123
+            workspace_id: 550e8400-e29b-41d4-a716-446655440000
+      properties:
+        added_count:
+          description: Number of workspace memberships created or updated
+          example: 2
+          type: integer
+        data:
+          description: List of added workspace memberships
+          items:
+            $ref: '#/components/schemas/WorkspaceMember'
+          type: array
+      required:
+        - data
+        - added_count
+      type: object
     BulkAssignKeysRequest:
       example:
         key_hashes:
@@ -3058,6 +3100,36 @@ components:
           type: integer
       required:
         - assigned_count
+      type: object
+    BulkRemoveWorkspaceMembersRequest:
+      example:
+        user_ids:
+          - user_abc123
+          - user_def456
+      properties:
+        user_ids:
+          description: List of user IDs to remove from the workspace
+          example:
+            - user_abc123
+            - user_def456
+          items:
+            type: string
+          maxItems: 100
+          minItems: 1
+          type: array
+      required:
+        - user_ids
+      type: object
+    BulkRemoveWorkspaceMembersResponse:
+      example:
+        removed_count: 2
+      properties:
+        removed_count:
+          description: Number of members removed
+          example: 2
+          type: integer
+      required:
+        - removed_count
       type: object
     BulkUnassignKeysRequest:
       example:
@@ -5008,6 +5080,89 @@ components:
       required:
         - data
       type: object
+    CreateWorkspaceRequest:
+      example:
+        default_image_model: openai/dall-e-3
+        default_provider_sort: price
+        default_text_model: openai/gpt-4o
+        description: Production environment workspace
+        name: Production
+        slug: production
+      properties:
+        default_image_model:
+          description: Default image model for this workspace
+          example: openai/dall-e-3
+          nullable: true
+          type: string
+        default_provider_sort:
+          description: Default provider sort preference (price, throughput, latency, exacto)
+          example: price
+          nullable: true
+          type: string
+        default_text_model:
+          description: Default text model for this workspace
+          example: openai/gpt-4o
+          nullable: true
+          type: string
+        description:
+          description: Description of the workspace
+          example: Production environment workspace
+          maxLength: 500
+          nullable: true
+          type: string
+        is_data_discount_logging_enabled:
+          description: Whether data discount logging is enabled
+          example: true
+          type: boolean
+        is_observability_broadcast_enabled:
+          description: Whether broadcast is enabled
+          example: false
+          type: boolean
+        is_observability_io_logging_enabled:
+          description: Whether private logging is enabled
+          example: false
+          type: boolean
+        name:
+          description: Name for the new workspace
+          example: Production
+          maxLength: 100
+          minLength: 1
+          type: string
+        slug:
+          description: URL-friendly slug (lowercase alphanumeric and hyphens only)
+          example: production
+          maxLength: 50
+          minLength: 1
+          pattern: ^[a-z0-9-]+$
+          type: string
+      required:
+        - name
+        - slug
+      type: object
+    CreateWorkspaceResponse:
+      example:
+        data:
+          created_at: '2025-08-24T10:30:00Z'
+          created_by: user_abc123
+          default_image_model: openai/dall-e-3
+          default_provider_sort: price
+          default_text_model: openai/gpt-4o
+          description: Production environment workspace
+          id: 550e8400-e29b-41d4-a716-446655440000
+          is_data_discount_logging_enabled: true
+          is_observability_broadcast_enabled: false
+          is_observability_io_logging_enabled: false
+          name: Production
+          slug: production
+          updated_at: null
+      properties:
+        data:
+          allOf:
+            - $ref: '#/components/schemas/Workspace'
+            - description: The created workspace
+      required:
+        - data
+      type: object
     CustomTool:
       description: Custom tool configuration
       example:
@@ -5123,6 +5278,18 @@ components:
         deleted:
           const: true
           description: Confirmation that the guardrail was deleted
+          example: true
+          type: boolean
+      required:
+        - deleted
+      type: object
+    DeleteWorkspaceResponse:
+      example:
+        deleted: true
+      properties:
+        deleted:
+          const: true
+          description: Confirmation that the workspace was deleted
           example: true
           type: boolean
       required:
@@ -5655,6 +5822,364 @@ components:
         - name
         - parameters
       type: object
+    GenerationContentData:
+      description: Stored prompt and completion content
+      example:
+        input:
+          messages:
+            - content: What is the meaning of life?
+              role: user
+        output:
+          completion: The meaning of life is a philosophical question...
+          reasoning: null
+      properties:
+        input:
+          anyOf:
+            - properties:
+                prompt:
+                  example: What is the meaning of life?
+                  type: string
+              required:
+                - prompt
+              type: object
+            - properties:
+                messages:
+                  example:
+                    - content: What is the meaning of life?
+                      role: user
+                  items:
+                    nullable: true
+                  type: array
+              required:
+                - messages
+              type: object
+          description: The input to the generation — either a prompt string or an array of messages
+        output:
+          description: The output from the generation
+          properties:
+            completion:
+              description: The completion output
+              example: The meaning of life is a philosophical question...
+              nullable: true
+              type: string
+            reasoning:
+              description: Reasoning/thinking output, if any
+              example: null
+              nullable: true
+              type: string
+          required:
+            - reasoning
+            - completion
+          type: object
+      required:
+        - input
+        - output
+      type: object
+    GenerationContentResponse:
+      description: Stored prompt and completion content for a generation
+      example:
+        data:
+          input:
+            messages:
+              - content: What is the meaning of life?
+                role: user
+          output:
+            completion: The meaning of life is a philosophical question...
+            reasoning: null
+      properties:
+        data:
+          $ref: '#/components/schemas/GenerationContentData'
+      required:
+        - data
+      type: object
+    GenerationResponse:
+      description: Generation response
+      example:
+        data:
+          api_type: completions
+          app_id: 12345
+          cache_discount: null
+          cancelled: false
+          created_at: '2024-07-15T23:33:19.433273+00:00'
+          external_user: user-123
+          finish_reason: stop
+          generation_time: 1200
+          http_referer: https://openrouter.ai/
+          id: gen-3bhGkxlo4XFrqiabUM7NDtwDzWwG
+          is_byok: false
+          latency: 1250
+          model: sao10k/l3-stheno-8b
+          moderation_latency: 50
+          native_finish_reason: stop
+          native_tokens_cached: 3
+          native_tokens_completion: 25
+          native_tokens_completion_images: 0
+          native_tokens_prompt: 10
+          native_tokens_reasoning: 5
+          num_input_audio_prompt: 0
+          num_media_completion: 0
+          num_media_prompt: 1
+          num_search_results: 5
+          origin: https://openrouter.ai/
+          provider_name: Infermatic
+          provider_responses: null
+          request_id: req-1727282430-aBcDeFgHiJkLmNoPqRsT
+          router: openrouter/auto
+          session_id: null
+          streamed: true
+          tokens_completion: 25
+          tokens_prompt: 10
+          total_cost: 0.0015
+          upstream_id: chatcmpl-791bcf62-080e-4568-87d0-94c72e3b4946
+          upstream_inference_cost: 0.0012
+          usage: 0.0015
+          user_agent: Mozilla/5.0
+      properties:
+        data:
+          description: Generation data
+          properties:
+            api_type:
+              description: Type of API used for the generation
+              enum:
+                - completions
+                - embeddings
+                - rerank
+                - tts
+                - video
+                - null
+              nullable: true
+              type: string
+              x-speakeasy-unknown-values: allow
+            app_id:
+              description: ID of the app that made the request
+              example: 12345
+              nullable: true
+              type: integer
+            cache_discount:
+              description: Discount applied due to caching
+              example: 0.0002
+              format: double
+              nullable: true
+              type: number
+            cancelled:
+              description: Whether the generation was cancelled
+              example: false
+              nullable: true
+              type: boolean
+            created_at:
+              description: ISO 8601 timestamp of when the generation was created
+              example: '2024-07-15T23:33:19.433273+00:00'
+              type: string
+            external_user:
+              description: External user identifier
+              example: user-123
+              nullable: true
+              type: string
+            finish_reason:
+              description: Reason the generation finished
+              example: stop
+              nullable: true
+              type: string
+            generation_time:
+              description: Time taken for generation in milliseconds
+              example: 1200
+              format: double
+              nullable: true
+              type: number
+            http_referer:
+              description: Referer header from the request
+              nullable: true
+              type: string
+            id:
+              description: Unique identifier for the generation
+              example: gen-3bhGkxlo4XFrqiabUM7NDtwDzWwG
+              type: string
+            is_byok:
+              description: Whether this used bring-your-own-key
+              example: false
+              type: boolean
+            latency:
+              description: Total latency in milliseconds
+              example: 1250
+              format: double
+              nullable: true
+              type: number
+            model:
+              description: Model used for the generation
+              example: sao10k/l3-stheno-8b
+              type: string
+            moderation_latency:
+              description: Moderation latency in milliseconds
+              example: 50
+              format: double
+              nullable: true
+              type: number
+            native_finish_reason:
+              description: Native finish reason as reported by provider
+              example: stop
+              nullable: true
+              type: string
+            native_tokens_cached:
+              description: Native cached tokens as reported by provider
+              example: 3
+              nullable: true
+              type: integer
+            native_tokens_completion:
+              description: Native completion tokens as reported by provider
+              example: 25
+              nullable: true
+              type: integer
+            native_tokens_completion_images:
+              description: Native completion image tokens as reported by provider
+              example: 0
+              nullable: true
+              type: integer
+            native_tokens_prompt:
+              description: Native prompt tokens as reported by provider
+              example: 10
+              nullable: true
+              type: integer
+            native_tokens_reasoning:
+              description: Native reasoning tokens as reported by provider
+              example: 5
+              nullable: true
+              type: integer
+            num_input_audio_prompt:
+              description: Number of audio inputs in the prompt
+              example: 0
+              nullable: true
+              type: integer
+            num_media_completion:
+              description: Number of media items in the completion
+              example: 0
+              nullable: true
+              type: integer
+            num_media_prompt:
+              description: Number of media items in the prompt
+              example: 1
+              nullable: true
+              type: integer
+            num_search_results:
+              description: Number of search results included
+              example: 5
+              nullable: true
+              type: integer
+            origin:
+              description: Origin URL of the request
+              example: https://openrouter.ai/
+              type: string
+            provider_name:
+              description: Name of the provider that served the request
+              example: Infermatic
+              nullable: true
+              type: string
+            provider_responses:
+              description: List of provider responses for this generation, including fallback attempts
+              items:
+                $ref: '#/components/schemas/ProviderResponse'
+              nullable: true
+              type: array
+            request_id:
+              description: Unique identifier grouping all generations from a single API request
+              example: req-1727282430-aBcDeFgHiJkLmNoPqRsT
+              nullable: true
+              type: string
+            router:
+              description: Router used for the request (e.g., openrouter/auto)
+              example: openrouter/auto
+              nullable: true
+              type: string
+            session_id:
+              description: Session identifier grouping multiple generations in the same session
+              nullable: true
+              type: string
+            streamed:
+              description: Whether the response was streamed
+              example: true
+              nullable: true
+              type: boolean
+            tokens_completion:
+              description: Number of tokens in the completion
+              example: 25
+              nullable: true
+              type: integer
+            tokens_prompt:
+              description: Number of tokens in the prompt
+              example: 10
+              nullable: true
+              type: integer
+            total_cost:
+              description: Total cost of the generation in USD
+              example: 0.0015
+              format: double
+              type: number
+            upstream_id:
+              description: Upstream provider's identifier for this generation
+              example: chatcmpl-791bcf62-080e-4568-87d0-94c72e3b4946
+              nullable: true
+              type: string
+            upstream_inference_cost:
+              description: Cost charged by the upstream provider
+              example: 0.0012
+              format: double
+              nullable: true
+              type: number
+            usage:
+              description: Usage amount in USD
+              example: 0.0015
+              format: double
+              type: number
+            user_agent:
+              description: User-Agent header from the request
+              nullable: true
+              type: string
+            web_search_engine:
+              description: The resolved web search engine used for this generation (e.g. exa, firecrawl, parallel)
+              example: exa
+              nullable: true
+              type: string
+          required:
+            - id
+            - upstream_id
+            - total_cost
+            - cache_discount
+            - upstream_inference_cost
+            - created_at
+            - model
+            - app_id
+            - streamed
+            - cancelled
+            - provider_name
+            - latency
+            - moderation_latency
+            - generation_time
+            - finish_reason
+            - tokens_prompt
+            - tokens_completion
+            - native_tokens_prompt
+            - native_tokens_completion
+            - native_tokens_completion_images
+            - native_tokens_reasoning
+            - native_tokens_cached
+            - num_media_prompt
+            - num_input_audio_prompt
+            - num_media_completion
+            - num_search_results
+            - web_search_engine
+            - origin
+            - usage
+            - is_byok
+            - native_finish_reason
+            - external_user
+            - api_type
+            - router
+            - provider_responses
+            - user_agent
+            - http_referer
+          type: object
+      required:
+        - data
+      type: object
     GetGuardrailResponse:
       example:
         data:
@@ -5679,6 +6204,30 @@ components:
           allOf:
             - $ref: '#/components/schemas/Guardrail'
             - description: The guardrail
+      required:
+        - data
+      type: object
+    GetWorkspaceResponse:
+      example:
+        data:
+          created_at: '2025-08-24T10:30:00Z'
+          created_by: user_abc123
+          default_image_model: openai/dall-e-3
+          default_provider_sort: price
+          default_text_model: openai/gpt-4o
+          description: Production environment workspace
+          id: 550e8400-e29b-41d4-a716-446655440000
+          is_data_discount_logging_enabled: true
+          is_observability_broadcast_enabled: false
+          is_observability_io_logging_enabled: false
+          name: Production
+          slug: production
+          updated_at: '2025-08-24T15:45:00Z'
+      properties:
+        data:
+          allOf:
+            - $ref: '#/components/schemas/Workspace'
+            - description: The workspace
       required:
         - data
       type: object
@@ -6685,6 +7234,37 @@ components:
         total_count:
           description: Total number of member assignments
           example: 10
+          type: integer
+      required:
+        - data
+        - total_count
+      type: object
+    ListWorkspacesResponse:
+      example:
+        data:
+          - created_at: '2025-08-24T10:30:00Z'
+            created_by: user_abc123
+            default_image_model: openai/dall-e-3
+            default_provider_sort: price
+            default_text_model: openai/gpt-4o
+            description: Production environment workspace
+            id: 550e8400-e29b-41d4-a716-446655440000
+            is_data_discount_logging_enabled: true
+            is_observability_broadcast_enabled: false
+            is_observability_io_logging_enabled: false
+            name: Production
+            slug: production
+            updated_at: '2025-08-24T15:45:00Z'
+        total_count: 1
+      properties:
+        data:
+          description: List of workspaces
+          items:
+            $ref: '#/components/schemas/Workspace'
+          type: array
+        total_count:
+          description: Total number of workspaces
+          example: 5
           type: integer
       required:
         - data
@@ -12409,6 +12989,82 @@ components:
       required:
         - data
       type: object
+    UpdateWorkspaceRequest:
+      example:
+        name: Updated Workspace
+        slug: updated-workspace
+      properties:
+        default_image_model:
+          description: Default image model for this workspace
+          example: openai/dall-e-3
+          nullable: true
+          type: string
+        default_provider_sort:
+          description: Default provider sort preference (price, throughput, latency, exacto)
+          example: price
+          nullable: true
+          type: string
+        default_text_model:
+          description: Default text model for this workspace
+          example: openai/gpt-4o
+          nullable: true
+          type: string
+        description:
+          description: New description for the workspace
+          example: Updated description
+          maxLength: 500
+          nullable: true
+          type: string
+        is_data_discount_logging_enabled:
+          description: Whether data discount logging is enabled
+          example: true
+          type: boolean
+        is_observability_broadcast_enabled:
+          description: Whether broadcast is enabled
+          example: false
+          type: boolean
+        is_observability_io_logging_enabled:
+          description: Whether private logging is enabled
+          example: false
+          type: boolean
+        name:
+          description: New name for the workspace
+          example: Updated Workspace
+          maxLength: 100
+          minLength: 1
+          type: string
+        slug:
+          description: New URL-friendly slug
+          example: updated-workspace
+          maxLength: 50
+          minLength: 1
+          pattern: ^[a-z0-9-]+$
+          type: string
+      type: object
+    UpdateWorkspaceResponse:
+      example:
+        data:
+          created_at: '2025-08-24T10:30:00Z'
+          created_by: user_abc123
+          default_image_model: openai/dall-e-3
+          default_provider_sort: price
+          default_text_model: openai/gpt-4o
+          description: Production environment workspace
+          id: 550e8400-e29b-41d4-a716-446655440000
+          is_data_discount_logging_enabled: true
+          is_observability_broadcast_enabled: false
+          is_observability_io_logging_enabled: false
+          name: Updated Workspace
+          slug: updated-workspace
+          updated_at: '2025-08-25T10:00:00Z'
+      properties:
+        data:
+          allOf:
+            - $ref: '#/components/schemas/Workspace'
+            - description: The updated workspace
+      required:
+        - data
+      type: object
     URLCitation:
       example:
         end_index: 42
@@ -13516,6 +14172,137 @@ components:
           enum:
             - approximate
           type: string
+      type: object
+    Workspace:
+      example:
+        created_at: '2025-08-24T10:30:00Z'
+        created_by: user_abc123
+        default_image_model: openai/dall-e-3
+        default_provider_sort: price
+        default_text_model: openai/gpt-4o
+        description: Production environment workspace
+        id: 550e8400-e29b-41d4-a716-446655440000
+        is_data_discount_logging_enabled: true
+        is_observability_broadcast_enabled: false
+        is_observability_io_logging_enabled: false
+        name: Production
+        slug: production
+        updated_at: '2025-08-24T15:45:00Z'
+      properties:
+        created_at:
+          description: ISO 8601 timestamp of when the workspace was created
+          example: '2025-08-24T10:30:00Z'
+          type: string
+        created_by:
+          description: User ID of the workspace creator
+          example: user_abc123
+          nullable: true
+          type: string
+        default_image_model:
+          description: Default image model for this workspace
+          example: openai/dall-e-3
+          nullable: true
+          type: string
+        default_provider_sort:
+          description: Default provider sort preference (price, throughput, latency, exacto)
+          example: price
+          nullable: true
+          type: string
+        default_text_model:
+          description: Default text model for this workspace
+          example: openai/gpt-4o
+          nullable: true
+          type: string
+        description:
+          description: Description of the workspace
+          example: Production environment workspace
+          nullable: true
+          type: string
+        id:
+          description: Unique identifier for the workspace
+          example: 550e8400-e29b-41d4-a716-446655440000
+          format: uuid
+          type: string
+        is_data_discount_logging_enabled:
+          description: Whether data discount logging is enabled for this workspace
+          example: true
+          type: boolean
+        is_observability_broadcast_enabled:
+          description: Whether broadcast is enabled for this workspace
+          example: false
+          type: boolean
+        is_observability_io_logging_enabled:
+          description: Whether private logging is enabled for this workspace
+          example: false
+          type: boolean
+        name:
+          description: Name of the workspace
+          example: Production
+          type: string
+        slug:
+          description: URL-friendly slug for the workspace
+          example: production
+          type: string
+        updated_at:
+          description: ISO 8601 timestamp of when the workspace was last updated
+          example: '2025-08-24T15:45:00Z'
+          nullable: true
+          type: string
+      required:
+        - id
+        - name
+        - slug
+        - description
+        - default_text_model
+        - default_image_model
+        - default_provider_sort
+        - is_observability_io_logging_enabled
+        - is_observability_broadcast_enabled
+        - is_data_discount_logging_enabled
+        - created_at
+        - updated_at
+        - created_by
+      type: object
+    WorkspaceMember:
+      example:
+        created_at: '2025-08-24T10:30:00Z'
+        id: 660e8400-e29b-41d4-a716-446655440000
+        role: member
+        user_id: user_abc123
+        workspace_id: 550e8400-e29b-41d4-a716-446655440000
+      properties:
+        created_at:
+          description: ISO 8601 timestamp of when the membership was created
+          example: '2025-08-24T10:30:00Z'
+          type: string
+        id:
+          description: Unique identifier for the workspace membership
+          example: 660e8400-e29b-41d4-a716-446655440000
+          format: uuid
+          type: string
+        role:
+          description: Role of the member in the workspace
+          enum:
+            - admin
+            - member
+          example: member
+          type: string
+          x-speakeasy-unknown-values: allow
+        user_id:
+          description: Clerk user ID of the member
+          example: user_abc123
+          type: string
+        workspace_id:
+          description: ID of the workspace
+          example: 550e8400-e29b-41d4-a716-446655440000
+          format: uuid
+          type: string
+      required:
+        - id
+        - workspace_id
+        - user_id
+        - role
+        - created_at
       type: object
   securitySchemes:
     apiKey:
@@ -14769,15 +15556,15 @@ paths:
             application/json:
               example:
                 data:
-                  api_type: null
+                  api_type: completions
                   app_id: 12345
-                  cache_discount: 0.0002
+                  cache_discount: null
                   cancelled: false
                   created_at: '2024-07-15T23:33:19.433273+00:00'
                   external_user: user-123
                   finish_reason: stop
                   generation_time: 1200
-                  http_referer: null
+                  http_referer: https://openrouter.ai/
                   id: gen-3bhGkxlo4XFrqiabUM7NDtwDzWwG
                   is_byok: false
                   latency: 1250
@@ -14797,7 +15584,8 @@ paths:
                   provider_name: Infermatic
                   provider_responses: null
                   request_id: req-1727282430-aBcDeFgHiJkLmNoPqRsT
-                  router: null
+                  router: openrouter/auto
+                  session_id: null
                   streamed: true
                   tokens_completion: 25
                   tokens_prompt: 10
@@ -14805,255 +15593,9 @@ paths:
                   upstream_id: chatcmpl-791bcf62-080e-4568-87d0-94c72e3b4946
                   upstream_inference_cost: 0.0012
                   usage: 0.0015
-                  user_agent: null
+                  user_agent: Mozilla/5.0
               schema:
-                description: Generation response
-                properties:
-                  data:
-                    description: Generation data
-                    properties:
-                      api_type:
-                        description: Type of API used for the generation
-                        enum:
-                          - completions
-                          - embeddings
-                          - rerank
-                          - tts
-                          - video
-                          - null
-                        nullable: true
-                        type: string
-                        x-speakeasy-unknown-values: allow
-                      app_id:
-                        description: ID of the app that made the request
-                        example: 12345
-                        nullable: true
-                        type: integer
-                      cache_discount:
-                        description: Discount applied due to caching
-                        example: 0.0002
-                        format: double
-                        nullable: true
-                        type: number
-                      cancelled:
-                        description: Whether the generation was cancelled
-                        example: false
-                        nullable: true
-                        type: boolean
-                      created_at:
-                        description: ISO 8601 timestamp of when the generation was created
-                        example: '2024-07-15T23:33:19.433273+00:00'
-                        type: string
-                      external_user:
-                        description: External user identifier
-                        example: user-123
-                        nullable: true
-                        type: string
-                      finish_reason:
-                        description: Reason the generation finished
-                        example: stop
-                        nullable: true
-                        type: string
-                      generation_time:
-                        description: Time taken for generation in milliseconds
-                        example: 1200
-                        format: double
-                        nullable: true
-                        type: number
-                      http_referer:
-                        description: Referer header from the request
-                        nullable: true
-                        type: string
-                      id:
-                        description: Unique identifier for the generation
-                        example: gen-3bhGkxlo4XFrqiabUM7NDtwDzWwG
-                        type: string
-                      is_byok:
-                        description: Whether this used bring-your-own-key
-                        example: false
-                        type: boolean
-                      latency:
-                        description: Total latency in milliseconds
-                        example: 1250
-                        format: double
-                        nullable: true
-                        type: number
-                      model:
-                        description: Model used for the generation
-                        example: sao10k/l3-stheno-8b
-                        type: string
-                      moderation_latency:
-                        description: Moderation latency in milliseconds
-                        example: 50
-                        format: double
-                        nullable: true
-                        type: number
-                      native_finish_reason:
-                        description: Native finish reason as reported by provider
-                        example: stop
-                        nullable: true
-                        type: string
-                      native_tokens_cached:
-                        description: Native cached tokens as reported by provider
-                        example: 3
-                        nullable: true
-                        type: integer
-                      native_tokens_completion:
-                        description: Native completion tokens as reported by provider
-                        example: 25
-                        nullable: true
-                        type: integer
-                      native_tokens_completion_images:
-                        description: Native completion image tokens as reported by provider
-                        example: 0
-                        nullable: true
-                        type: integer
-                      native_tokens_prompt:
-                        description: Native prompt tokens as reported by provider
-                        example: 10
-                        nullable: true
-                        type: integer
-                      native_tokens_reasoning:
-                        description: Native reasoning tokens as reported by provider
-                        example: 5
-                        nullable: true
-                        type: integer
-                      num_input_audio_prompt:
-                        description: Number of audio inputs in the prompt
-                        example: 0
-                        nullable: true
-                        type: integer
-                      num_media_completion:
-                        description: Number of media items in the completion
-                        example: 0
-                        nullable: true
-                        type: integer
-                      num_media_prompt:
-                        description: Number of media items in the prompt
-                        example: 1
-                        nullable: true
-                        type: integer
-                      num_search_results:
-                        description: Number of search results included
-                        example: 5
-                        nullable: true
-                        type: integer
-                      origin:
-                        description: Origin URL of the request
-                        example: https://openrouter.ai/
-                        type: string
-                      provider_name:
-                        description: Name of the provider that served the request
-                        example: Infermatic
-                        nullable: true
-                        type: string
-                      provider_responses:
-                        description: List of provider responses for this generation, including fallback attempts
-                        items:
-                          $ref: '#/components/schemas/ProviderResponse'
-                        nullable: true
-                        type: array
-                      request_id:
-                        description: Unique identifier grouping all generations from a single API request
-                        example: req-1727282430-aBcDeFgHiJkLmNoPqRsT
-                        nullable: true
-                        type: string
-                      router:
-                        description: Router used for the request (e.g., openrouter/auto)
-                        example: openrouter/auto
-                        nullable: true
-                        type: string
-                      session_id:
-                        description: Session identifier grouping multiple generations in the same session
-                        nullable: true
-                        type: string
-                      streamed:
-                        description: Whether the response was streamed
-                        example: true
-                        nullable: true
-                        type: boolean
-                      tokens_completion:
-                        description: Number of tokens in the completion
-                        example: 25
-                        nullable: true
-                        type: integer
-                      tokens_prompt:
-                        description: Number of tokens in the prompt
-                        example: 10
-                        nullable: true
-                        type: integer
-                      total_cost:
-                        description: Total cost of the generation in USD
-                        example: 0.0015
-                        format: double
-                        type: number
-                      upstream_id:
-                        description: Upstream provider's identifier for this generation
-                        example: chatcmpl-791bcf62-080e-4568-87d0-94c72e3b4946
-                        nullable: true
-                        type: string
-                      upstream_inference_cost:
-                        description: Cost charged by the upstream provider
-                        example: 0.0012
-                        format: double
-                        nullable: true
-                        type: number
-                      usage:
-                        description: Usage amount in USD
-                        example: 0.0015
-                        format: double
-                        type: number
-                      user_agent:
-                        description: User-Agent header from the request
-                        nullable: true
-                        type: string
-                      web_search_engine:
-                        description: The resolved web search engine used for this generation (e.g. exa, firecrawl, parallel)
-                        example: exa
-                        nullable: true
-                        type: string
-                    required:
-                      - id
-                      - upstream_id
-                      - total_cost
-                      - cache_discount
-                      - upstream_inference_cost
-                      - created_at
-                      - model
-                      - app_id
-                      - streamed
-                      - cancelled
-                      - provider_name
-                      - latency
-                      - moderation_latency
-                      - generation_time
-                      - finish_reason
-                      - tokens_prompt
-                      - tokens_completion
-                      - native_tokens_prompt
-                      - native_tokens_completion
-                      - native_tokens_completion_images
-                      - native_tokens_reasoning
-                      - native_tokens_cached
-                      - num_media_prompt
-                      - num_input_audio_prompt
-                      - num_media_completion
-                      - num_search_results
-                      - web_search_engine
-                      - origin
-                      - usage
-                      - is_byok
-                      - native_finish_reason
-                      - external_user
-                      - api_type
-                      - router
-                      - provider_responses
-                      - user_agent
-                      - http_referer
-                    type: object
-                required:
-                  - data
-                type: object
+                $ref: '#/components/schemas/GenerationResponse'
           description: Returns the request metadata for this generation
         '401':
           content:
@@ -15136,6 +15678,122 @@ paths:
                 $ref: '#/components/schemas/ProviderOverloadedResponse'
           description: Provider Overloaded - Provider is temporarily overloaded
       summary: Get request & usage metadata for a generation
+      tags:
+        - Generations
+    parameters:
+      - $ref: "#/components/parameters/AppIdentifier"
+      - $ref: "#/components/parameters/AppDisplayName"
+      - $ref: "#/components/parameters/AppCategories"
+  /generation/content:
+    get:
+      operationId: listGenerationContent
+      parameters:
+        - description: The generation ID
+          in: query
+          name: id
+          required: true
+          schema:
+            description: The generation ID
+            example: gen-1234567890
+            minLength: 1
+            type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              example:
+                data:
+                  input:
+                    messages:
+                      - content: What is the meaning of life?
+                        role: user
+                  output:
+                    completion: The meaning of life is a philosophical question...
+                    reasoning: null
+              schema:
+                $ref: '#/components/schemas/GenerationContentResponse'
+          description: Returns the stored prompt and completion content
+        '401':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 401
+                  message: Missing Authentication header
+              schema:
+                $ref: '#/components/schemas/UnauthorizedResponse'
+          description: Unauthorized - Authentication required or invalid credentials
+        '403':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 403
+                  message: Only management keys can perform this operation
+              schema:
+                $ref: '#/components/schemas/ForbiddenResponse'
+          description: Forbidden - Authentication successful but insufficient permissions
+        '404':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 404
+                  message: Resource not found
+              schema:
+                $ref: '#/components/schemas/NotFoundResponse'
+          description: Not Found - Resource does not exist
+        '429':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 429
+                  message: Rate limit exceeded
+              schema:
+                $ref: '#/components/schemas/TooManyRequestsResponse'
+          description: Too Many Requests - Rate limit exceeded
+        '500':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 500
+                  message: Internal Server Error
+              schema:
+                $ref: '#/components/schemas/InternalServerResponse'
+          description: Internal Server Error - Unexpected server error
+        '502':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 502
+                  message: Provider returned error
+              schema:
+                $ref: '#/components/schemas/BadGatewayResponse'
+          description: Bad Gateway - Provider/upstream API failure
+        '524':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 524
+                  message: Request timed out. Please try again later.
+              schema:
+                $ref: '#/components/schemas/EdgeNetworkTimeoutResponse'
+          description: Infrastructure Timeout - Provider request timed out at edge network
+        '529':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 529
+                  message: Provider returned error
+              schema:
+                $ref: '#/components/schemas/ProviderOverloadedResponse'
+          description: Provider Overloaded - Provider is temporarily overloaded
+      summary: Get stored prompt and completion content for a generation
       tags:
         - Generations
     parameters:
@@ -20404,6 +21062,617 @@ paths:
       - $ref: "#/components/parameters/AppIdentifier"
       - $ref: "#/components/parameters/AppDisplayName"
       - $ref: "#/components/parameters/AppCategories"
+  /workspaces:
+    get:
+      description: >-
+        List all workspaces for the authenticated user. [Management key](/docs/guides/overview/auth/management-api-keys) required.
+      operationId: listWorkspaces
+      parameters:
+        - description: Number of records to skip for pagination
+          in: query
+          name: offset
+          required: false
+          schema:
+            description: Number of records to skip for pagination
+            example: 0
+            minimum: 0
+            nullable: true
+            type: integer
+        - description: Maximum number of records to return (max 100)
+          in: query
+          name: limit
+          required: false
+          schema:
+            description: Maximum number of records to return (max 100)
+            example: 50
+            maximum: 100
+            minimum: 1
+            type: integer
+      responses:
+        '200':
+          content:
+            application/json:
+              example:
+                data:
+                  - created_at: '2025-08-24T10:30:00Z'
+                    created_by: user_abc123
+                    default_image_model: openai/dall-e-3
+                    default_provider_sort: price
+                    default_text_model: openai/gpt-4o
+                    description: Production environment workspace
+                    id: 550e8400-e29b-41d4-a716-446655440000
+                    is_data_discount_logging_enabled: true
+                    is_observability_broadcast_enabled: false
+                    is_observability_io_logging_enabled: false
+                    name: Production
+                    slug: production
+                    updated_at: '2025-08-24T15:45:00Z'
+                total_count: 1
+              schema:
+                $ref: '#/components/schemas/ListWorkspacesResponse'
+          description: List of workspaces
+        '401':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 401
+                  message: Missing Authentication header
+              schema:
+                $ref: '#/components/schemas/UnauthorizedResponse'
+          description: Unauthorized - Authentication required or invalid credentials
+        '500':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 500
+                  message: Internal Server Error
+              schema:
+                $ref: '#/components/schemas/InternalServerResponse'
+          description: Internal Server Error - Unexpected server error
+      summary: List workspaces
+      tags:
+        - Workspaces
+      x-speakeasy-name-override: list
+      x-speakeasy-pagination:
+        inputs:
+          - in: parameters
+            name: offset
+            type: offset
+          - in: parameters
+            name: limit
+            type: limit
+        outputs:
+          results: $.data
+        type: offsetLimit
+    post:
+      description: >-
+        Create a new workspace for the authenticated user. [Management key](/docs/guides/overview/auth/management-api-keys) required.
+      operationId: createWorkspace
+      requestBody:
+        content:
+          application/json:
+            example:
+              default_image_model: openai/dall-e-3
+              default_provider_sort: price
+              default_text_model: openai/gpt-4o
+              description: Production environment workspace
+              name: Production
+              slug: production
+            schema:
+              $ref: '#/components/schemas/CreateWorkspaceRequest'
+        required: true
+      responses:
+        '201':
+          content:
+            application/json:
+              example:
+                data:
+                  created_at: '2025-08-24T10:30:00Z'
+                  created_by: user_abc123
+                  default_image_model: openai/dall-e-3
+                  default_provider_sort: price
+                  default_text_model: openai/gpt-4o
+                  description: Production environment workspace
+                  id: 550e8400-e29b-41d4-a716-446655440000
+                  is_data_discount_logging_enabled: true
+                  is_observability_broadcast_enabled: false
+                  is_observability_io_logging_enabled: false
+                  name: Production
+                  slug: production
+                  updated_at: null
+              schema:
+                $ref: '#/components/schemas/CreateWorkspaceResponse'
+          description: Workspace created successfully
+        '400':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 400
+                  message: Invalid request parameters
+              schema:
+                $ref: '#/components/schemas/BadRequestResponse'
+          description: Bad Request - Invalid request parameters or malformed input
+        '401':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 401
+                  message: Missing Authentication header
+              schema:
+                $ref: '#/components/schemas/UnauthorizedResponse'
+          description: Unauthorized - Authentication required or invalid credentials
+        '403':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 403
+                  message: Only management keys can perform this operation
+              schema:
+                $ref: '#/components/schemas/ForbiddenResponse'
+          description: Forbidden - Authentication successful but insufficient permissions
+        '500':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 500
+                  message: Internal Server Error
+              schema:
+                $ref: '#/components/schemas/InternalServerResponse'
+          description: Internal Server Error - Unexpected server error
+      summary: Create a workspace
+      tags:
+        - Workspaces
+      x-speakeasy-name-override: create
+    parameters:
+      - $ref: "#/components/parameters/AppIdentifier"
+      - $ref: "#/components/parameters/AppDisplayName"
+      - $ref: "#/components/parameters/AppCategories"
+  /workspaces/{id}:
+    delete:
+      description: >-
+        Delete an existing workspace. The default workspace cannot be deleted. Workspaces with active API keys cannot be deleted. [Management key](/docs/guides/overview/auth/management-api-keys) required.
+      operationId: deleteWorkspace
+      parameters:
+        - description: The workspace ID (UUID) or slug
+          in: path
+          name: id
+          required: true
+          schema:
+            description: The workspace ID (UUID) or slug
+            example: production
+            minLength: 1
+            type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              example:
+                deleted: true
+              schema:
+                $ref: '#/components/schemas/DeleteWorkspaceResponse'
+          description: Workspace deleted successfully
+        '400':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 400
+                  message: Invalid request parameters
+              schema:
+                $ref: '#/components/schemas/BadRequestResponse'
+          description: Bad Request - Invalid request parameters or malformed input
+        '401':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 401
+                  message: Missing Authentication header
+              schema:
+                $ref: '#/components/schemas/UnauthorizedResponse'
+          description: Unauthorized - Authentication required or invalid credentials
+        '403':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 403
+                  message: Only management keys can perform this operation
+              schema:
+                $ref: '#/components/schemas/ForbiddenResponse'
+          description: Forbidden - Authentication successful but insufficient permissions
+        '404':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 404
+                  message: Resource not found
+              schema:
+                $ref: '#/components/schemas/NotFoundResponse'
+          description: Not Found - Resource does not exist
+        '500':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 500
+                  message: Internal Server Error
+              schema:
+                $ref: '#/components/schemas/InternalServerResponse'
+          description: Internal Server Error - Unexpected server error
+      summary: Delete a workspace
+      tags:
+        - Workspaces
+      x-speakeasy-name-override: delete
+    get:
+      description: Get a single workspace by ID or slug. [Management key](/docs/guides/overview/auth/management-api-keys) required.
+      operationId: getWorkspace
+      parameters:
+        - description: The workspace ID (UUID) or slug
+          in: path
+          name: id
+          required: true
+          schema:
+            description: The workspace ID (UUID) or slug
+            example: production
+            minLength: 1
+            type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              example:
+                data:
+                  created_at: '2025-08-24T10:30:00Z'
+                  created_by: user_abc123
+                  default_image_model: openai/dall-e-3
+                  default_provider_sort: price
+                  default_text_model: openai/gpt-4o
+                  description: Production environment workspace
+                  id: 550e8400-e29b-41d4-a716-446655440000
+                  is_data_discount_logging_enabled: true
+                  is_observability_broadcast_enabled: false
+                  is_observability_io_logging_enabled: false
+                  name: Production
+                  slug: production
+                  updated_at: '2025-08-24T15:45:00Z'
+              schema:
+                $ref: '#/components/schemas/GetWorkspaceResponse'
+          description: Workspace details
+        '401':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 401
+                  message: Missing Authentication header
+              schema:
+                $ref: '#/components/schemas/UnauthorizedResponse'
+          description: Unauthorized - Authentication required or invalid credentials
+        '404':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 404
+                  message: Resource not found
+              schema:
+                $ref: '#/components/schemas/NotFoundResponse'
+          description: Not Found - Resource does not exist
+        '500':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 500
+                  message: Internal Server Error
+              schema:
+                $ref: '#/components/schemas/InternalServerResponse'
+          description: Internal Server Error - Unexpected server error
+      summary: Get a workspace
+      tags:
+        - Workspaces
+      x-speakeasy-name-override: get
+    patch:
+      description: >-
+        Update an existing workspace by ID or slug. [Management key](/docs/guides/overview/auth/management-api-keys) required.
+      operationId: updateWorkspace
+      parameters:
+        - description: The workspace ID (UUID) or slug
+          in: path
+          name: id
+          required: true
+          schema:
+            description: The workspace ID (UUID) or slug
+            example: production
+            minLength: 1
+            type: string
+      requestBody:
+        content:
+          application/json:
+            example:
+              name: Updated Workspace
+              slug: updated-workspace
+            schema:
+              $ref: '#/components/schemas/UpdateWorkspaceRequest'
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              example:
+                data:
+                  created_at: '2025-08-24T10:30:00Z'
+                  created_by: user_abc123
+                  default_image_model: openai/dall-e-3
+                  default_provider_sort: price
+                  default_text_model: openai/gpt-4o
+                  description: Production environment workspace
+                  id: 550e8400-e29b-41d4-a716-446655440000
+                  is_data_discount_logging_enabled: true
+                  is_observability_broadcast_enabled: false
+                  is_observability_io_logging_enabled: false
+                  name: Updated Workspace
+                  slug: updated-workspace
+                  updated_at: '2025-08-25T10:00:00Z'
+              schema:
+                $ref: '#/components/schemas/UpdateWorkspaceResponse'
+          description: Workspace updated successfully
+        '400':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 400
+                  message: Invalid request parameters
+              schema:
+                $ref: '#/components/schemas/BadRequestResponse'
+          description: Bad Request - Invalid request parameters or malformed input
+        '401':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 401
+                  message: Missing Authentication header
+              schema:
+                $ref: '#/components/schemas/UnauthorizedResponse'
+          description: Unauthorized - Authentication required or invalid credentials
+        '403':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 403
+                  message: Only management keys can perform this operation
+              schema:
+                $ref: '#/components/schemas/ForbiddenResponse'
+          description: Forbidden - Authentication successful but insufficient permissions
+        '404':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 404
+                  message: Resource not found
+              schema:
+                $ref: '#/components/schemas/NotFoundResponse'
+          description: Not Found - Resource does not exist
+        '500':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 500
+                  message: Internal Server Error
+              schema:
+                $ref: '#/components/schemas/InternalServerResponse'
+          description: Internal Server Error - Unexpected server error
+      summary: Update a workspace
+      tags:
+        - Workspaces
+      x-speakeasy-name-override: update
+    parameters:
+      - $ref: "#/components/parameters/AppIdentifier"
+      - $ref: "#/components/parameters/AppDisplayName"
+      - $ref: "#/components/parameters/AppCategories"
+  /workspaces/{id}/members/add:
+    post:
+      description: >-
+        Add multiple organization members to a workspace. Members are assigned the same role they hold in the organization. [Management key](/docs/guides/overview/auth/management-api-keys) required.
+      operationId: bulkAddWorkspaceMembers
+      parameters:
+        - description: The workspace ID (UUID) or slug
+          in: path
+          name: id
+          required: true
+          schema:
+            description: The workspace ID (UUID) or slug
+            example: production
+            minLength: 1
+            type: string
+      requestBody:
+        content:
+          application/json:
+            example:
+              user_ids:
+                - user_abc123
+                - user_def456
+            schema:
+              $ref: '#/components/schemas/BulkAddWorkspaceMembersRequest'
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              example:
+                added_count: 1
+                data:
+                  - created_at: '2025-08-24T10:30:00Z'
+                    id: 660e8400-e29b-41d4-a716-446655440000
+                    role: member
+                    user_id: user_abc123
+                    workspace_id: 550e8400-e29b-41d4-a716-446655440000
+              schema:
+                $ref: '#/components/schemas/BulkAddWorkspaceMembersResponse'
+          description: Members added successfully
+        '400':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 400
+                  message: Invalid request parameters
+              schema:
+                $ref: '#/components/schemas/BadRequestResponse'
+          description: Bad Request - Invalid request parameters or malformed input
+        '401':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 401
+                  message: Missing Authentication header
+              schema:
+                $ref: '#/components/schemas/UnauthorizedResponse'
+          description: Unauthorized - Authentication required or invalid credentials
+        '403':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 403
+                  message: Only management keys can perform this operation
+              schema:
+                $ref: '#/components/schemas/ForbiddenResponse'
+          description: Forbidden - Authentication successful but insufficient permissions
+        '404':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 404
+                  message: Resource not found
+              schema:
+                $ref: '#/components/schemas/NotFoundResponse'
+          description: Not Found - Resource does not exist
+        '500':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 500
+                  message: Internal Server Error
+              schema:
+                $ref: '#/components/schemas/InternalServerResponse'
+          description: Internal Server Error - Unexpected server error
+      summary: Bulk add members to a workspace
+      tags:
+        - Workspaces
+      x-speakeasy-name-override: bulkAddMembers
+    parameters:
+      - $ref: "#/components/parameters/AppIdentifier"
+      - $ref: "#/components/parameters/AppDisplayName"
+      - $ref: "#/components/parameters/AppCategories"
+  /workspaces/{id}/members/remove:
+    post:
+      description: >-
+        Remove multiple members from a workspace. Members with active API keys in the workspace cannot be removed. [Management key](/docs/guides/overview/auth/management-api-keys) required.
+      operationId: bulkRemoveWorkspaceMembers
+      parameters:
+        - description: The workspace ID (UUID) or slug
+          in: path
+          name: id
+          required: true
+          schema:
+            description: The workspace ID (UUID) or slug
+            example: production
+            minLength: 1
+            type: string
+      requestBody:
+        content:
+          application/json:
+            example:
+              user_ids:
+                - user_abc123
+                - user_def456
+            schema:
+              $ref: '#/components/schemas/BulkRemoveWorkspaceMembersRequest'
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              example:
+                removed_count: 2
+              schema:
+                $ref: '#/components/schemas/BulkRemoveWorkspaceMembersResponse'
+          description: Members removed successfully
+        '400':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 400
+                  message: Invalid request parameters
+              schema:
+                $ref: '#/components/schemas/BadRequestResponse'
+          description: Bad Request - Invalid request parameters or malformed input
+        '401':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 401
+                  message: Missing Authentication header
+              schema:
+                $ref: '#/components/schemas/UnauthorizedResponse'
+          description: Unauthorized - Authentication required or invalid credentials
+        '403':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 403
+                  message: Only management keys can perform this operation
+              schema:
+                $ref: '#/components/schemas/ForbiddenResponse'
+          description: Forbidden - Authentication successful but insufficient permissions
+        '404':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 404
+                  message: Resource not found
+              schema:
+                $ref: '#/components/schemas/NotFoundResponse'
+          description: Not Found - Resource does not exist
+        '500':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 500
+                  message: Internal Server Error
+              schema:
+                $ref: '#/components/schemas/InternalServerResponse'
+          description: Internal Server Error - Unexpected server error
+      summary: Bulk remove members from a workspace
+      tags:
+        - Workspaces
+      x-speakeasy-name-override: bulkRemoveMembers
+    parameters:
+      - $ref: "#/components/parameters/AppIdentifier"
+      - $ref: "#/components/parameters/AppDisplayName"
+      - $ref: "#/components/parameters/AppCategories"
 security:
   - apiKey: []
 servers:
@@ -20443,6 +21712,8 @@ tags:
     name: TTS
   - description: Video Generation endpoints
     name: Video Generation
+  - description: Workspaces endpoints
+    name: Workspaces
   - description: beta.responses endpoints
     name: beta.responses
 x-fern-base-path: /
