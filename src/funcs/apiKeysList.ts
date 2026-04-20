@@ -98,7 +98,6 @@ async function $do(
   const query = encodeFormQuery({
     "include_disabled": payload?.include_disabled,
     "offset": payload?.offset,
-    "workspace_id": payload?.workspace_id,
   });
 
   const headers = new Headers(compactMap({

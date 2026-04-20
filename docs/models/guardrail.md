@@ -9,7 +9,6 @@ let value: Guardrail = {
   createdAt: "2025-08-24T10:30:00Z",
   id: "550e8400-e29b-41d4-a716-446655440000",
   name: "Production Guardrail",
-  workspaceId: "0df9e665-d932-5740-b2c7-b52af166bc11",
 };
 ```
 
@@ -29,4 +28,3 @@ let value: Guardrail = {
 | `name`                                                                                                | *string*                                                                                              | :heavy_check_mark:                                                                                    | Name of the guardrail                                                                                 | Production Guardrail                                                                                  |
 | `resetInterval`                                                                                       | [models.GuardrailInterval](../models/guardrailinterval.md)                                            | :heavy_minus_sign:                                                                                    | Interval at which the limit resets (daily, weekly, monthly)                                           | monthly                                                                                               |
 | `updatedAt`                                                                                           | *string*                                                                                              | :heavy_minus_sign:                                                                                    | ISO 8601 timestamp of when the guardrail was last updated                                             | 2025-08-24T15:45:00Z                                                                                  |
-| `workspaceId`                                                                                         | *string*                                                                                              | :heavy_check_mark:                                                                                    | The workspace ID this guardrail belongs to.                                                           | 0df9e665-d932-5740-b2c7-b52af166bc11                                                                  |

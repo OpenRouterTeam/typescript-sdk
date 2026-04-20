@@ -166,28 +166,6 @@ export const ObjectT = {
 export type ObjectT = ClosedEnum<typeof ObjectT>;
 
 /**
- * Per-modality token breakdown. Only present when the input contains 2+ modalities (e.g. text + image) and the upstream provider returns modality-level usage data. Only non-zero modality counts are included.
- */
-export type PromptTokensDetails = {
-  /**
-   * Number of audio tokens in the input
-   */
-  audioTokens?: number | undefined;
-  /**
-   * Number of image tokens in the input
-   */
-  imageTokens?: number | undefined;
-  /**
-   * Number of text tokens in the input
-   */
-  textTokens?: number | undefined;
-  /**
-   * Number of video tokens in the input
-   */
-  videoTokens?: number | undefined;
-};
-
-/**
  * Token usage statistics
  */
 export type CreateEmbeddingsUsage = {
@@ -199,10 +177,6 @@ export type CreateEmbeddingsUsage = {
    * Number of tokens in the input
    */
   promptTokens: number;
-  /**
-   * Per-modality token breakdown. Only present when the input contains 2+ modalities (e.g. text + image) and the upstream provider returns modality-level usage data. Only non-zero modality counts are included.
-   */
-  promptTokensDetails?: PromptTokensDetails | undefined;
   /**
    * Total number of tokens used
    */
@@ -481,47 +455,16 @@ export function createEmbeddingsDataFromJSON(
 export const ObjectT$inboundSchema: z.ZodEnum<typeof ObjectT> = z.enum(ObjectT);
 
 /** @internal */
-export const PromptTokensDetails$inboundSchema: z.ZodType<
-  PromptTokensDetails,
-  unknown
-> = z.object({
-  audio_tokens: z.int().optional(),
-  image_tokens: z.int().optional(),
-  text_tokens: z.int().optional(),
-  video_tokens: z.int().optional(),
-}).transform((v) => {
-  return remap$(v, {
-    "audio_tokens": "audioTokens",
-    "image_tokens": "imageTokens",
-    "text_tokens": "textTokens",
-    "video_tokens": "videoTokens",
-  });
-});
-
-export function promptTokensDetailsFromJSON(
-  jsonString: string,
-): SafeParseResult<PromptTokensDetails, SDKValidationError> {
-  return safeParse(
-    jsonString,
-    (x) => PromptTokensDetails$inboundSchema.parse(JSON.parse(x)),
-    `Failed to parse 'PromptTokensDetails' from JSON`,
-  );
-}
-
-/** @internal */
 export const CreateEmbeddingsUsage$inboundSchema: z.ZodType<
   CreateEmbeddingsUsage,
   unknown
 > = z.object({
   cost: z.number().optional(),
   prompt_tokens: z.int(),
-  prompt_tokens_details: z.lazy(() => PromptTokensDetails$inboundSchema)
-    .optional(),
   total_tokens: z.int(),
 }).transform((v) => {
   return remap$(v, {
     "prompt_tokens": "promptTokens",
-    "prompt_tokens_details": "promptTokensDetails",
     "total_tokens": "totalTokens",
   });
 });
