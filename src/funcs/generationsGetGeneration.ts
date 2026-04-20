@@ -22,6 +22,7 @@ import * as errors from "../models/errors/index.js";
 import { OpenRouterError } from "../models/errors/openroutererror.js";
 import { ResponseValidationError } from "../models/errors/responsevalidationerror.js";
 import { SDKValidationError } from "../models/errors/sdkvalidationerror.js";
+import * as models from "../models/index.js";
 import * as operations from "../models/operations/index.js";
 import { APICall, APIPromise } from "../types/async.js";
 import { Result } from "../types/fp.js";
@@ -35,7 +36,7 @@ export function generationsGetGeneration(
   options?: RequestOptions,
 ): APIPromise<
   Result<
-    operations.GetGenerationResponse,
+    models.GenerationResponse,
     | errors.UnauthorizedResponseError
     | errors.PaymentRequiredResponseError
     | errors.NotFoundResponseError
@@ -68,7 +69,7 @@ async function $do(
 ): Promise<
   [
     Result<
-      operations.GetGenerationResponse,
+      models.GenerationResponse,
       | errors.UnauthorizedResponseError
       | errors.PaymentRequiredResponseError
       | errors.NotFoundResponseError
@@ -197,7 +198,7 @@ async function $do(
   };
 
   const [result] = await M.match<
-    operations.GetGenerationResponse,
+    models.GenerationResponse,
     | errors.UnauthorizedResponseError
     | errors.PaymentRequiredResponseError
     | errors.NotFoundResponseError
@@ -215,7 +216,7 @@ async function $do(
     | UnexpectedClientError
     | SDKValidationError
   >(
-    M.json(200, operations.GetGenerationResponse$inboundSchema),
+    M.json(200, models.GenerationResponse$inboundSchema),
     M.jsonErr(401, errors.UnauthorizedResponseError$inboundSchema),
     M.jsonErr(402, errors.PaymentRequiredResponseError$inboundSchema),
     M.jsonErr(404, errors.NotFoundResponseError$inboundSchema),
