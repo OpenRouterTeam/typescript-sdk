@@ -3,8 +3,10 @@
  * @generated-id: 0d9ffaf774d2
  */
 
+export * from "./bulkaddworkspacemembers.js";
 export * from "./bulkassignkeystoguardrail.js";
 export * from "./bulkassignmemberstoguardrail.js";
+export * from "./bulkremoveworkspacemembers.js";
 export * from "./bulkunassignkeysfromguardrail.js";
 export * from "./bulkunassignmembersfromguardrail.js";
 export * from "./createauthkeyscode.js";
@@ -15,8 +17,10 @@ export * from "./creatererank.js";
 export * from "./createresponses.js";
 export * from "./createtts.js";
 export * from "./createvideos.js";
+export * from "./createworkspace.js";
 export * from "./deleteguardrail.js";
 export * from "./deletekeys.js";
+export * from "./deleteworkspace.js";
 export * from "./exchangeauthcodeforapikey.js";
 export * from "./getcredits.js";
 export * from "./getcurrentkey.js";
@@ -26,10 +30,12 @@ export * from "./getkey.js";
 export * from "./getmodels.js";
 export * from "./getuseractivity.js";
 export * from "./getvideos.js";
+export * from "./getworkspace.js";
 export * from "./list.js";
 export * from "./listembeddingsmodels.js";
 export * from "./listendpoints.js";
 export * from "./listendpointszdr.js";
+export * from "./listgenerationcontent.js";
 export * from "./listguardrailkeyassignments.js";
 export * from "./listguardrailmemberassignments.js";
 export * from "./listguardrails.js";
@@ -41,6 +47,8 @@ export * from "./listorganizationmembers.js";
 export * from "./listproviders.js";
 export * from "./listvideoscontent.js";
 export * from "./listvideosmodels.js";
+export * from "./listworkspaces.js";
 export * from "./sendchatcompletionrequest.js";
 export * from "./updateguardrail.js";
 export * from "./updatekeys.js";
+export * from "./updateworkspace.js";
