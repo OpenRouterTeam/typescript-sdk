@@ -3001,6 +3001,48 @@ components:
       description: Price per million prompt tokens
       example: 1000
       type: string
+    BulkAddWorkspaceMembersRequest:
+      example:
+        user_ids:
+          - user_abc123
+          - user_def456
+      properties:
+        user_ids:
+          description: List of user IDs to add to the workspace. Members are assigned the same role they hold in the organization.
+          example:
+            - user_abc123
+            - user_def456
+          items:
+            type: string
+          maxItems: 100
+          minItems: 1
+          type: array
+      required:
+        - user_ids
+      type: object
+    BulkAddWorkspaceMembersResponse:
+      example:
+        added_count: 1
+        data:
+          - created_at: '2025-08-24T10:30:00Z'
+            id: 660e8400-e29b-41d4-a716-446655440000
+            role: member
+            user_id: user_abc123
+            workspace_id: 550e8400-e29b-41d4-a716-446655440000
+      properties:
+        added_count:
+          description: Number of workspace memberships created or updated
+          example: 2
+          type: integer
+        data:
+          description: List of added workspace memberships
+          items:
+            $ref: '#/components/schemas/WorkspaceMember'
+          type: array
+      required:
+        - data
+        - added_count
+      type: object
     BulkAssignKeysRequest:
       example:
         key_hashes:
@@ -3058,6 +3100,36 @@ components:
           type: integer
       required:
         - assigned_count
+      type: object
+    BulkRemoveWorkspaceMembersRequest:
+      example:
+        user_ids:
+          - user_abc123
+          - user_def456
+      properties:
+        user_ids:
+          description: List of user IDs to remove from the workspace
+          example:
+            - user_abc123
+            - user_def456
+          items:
+            type: string
+          maxItems: 100
+          minItems: 1
+          type: array
+      required:
+        - user_ids
+      type: object
+    BulkRemoveWorkspaceMembersResponse:
+      example:
+        removed_count: 2
+      properties:
+        removed_count:
+          description: Number of members removed
+          example: 2
+          type: integer
+      required:
+        - removed_count
       type: object
     BulkUnassignKeysRequest:
       example:
@@ -5008,6 +5080,89 @@ components:
       required:
         - data
       type: object
+    CreateWorkspaceRequest:
+      example:
+        default_image_model: openai/dall-e-3
+        default_provider_sort: price
+        default_text_model: openai/gpt-4o
+        description: Production environment workspace
+        name: Production
+        slug: production
+      properties:
+        default_image_model:
+          description: Default image model for this workspace
+          example: openai/dall-e-3
+          nullable: true
+          type: string
+        default_provider_sort:
+          description: Default provider sort preference (price, throughput, latency, exacto)
+          example: price
+          nullable: true
+          type: string
+        default_text_model:
+          description: Default text model for this workspace
+          example: openai/gpt-4o
+          nullable: true
+          type: string
+        description:
+          description: Description of the workspace
+          example: Production environment workspace
+          maxLength: 500
+          nullable: true
+          type: string
+        is_data_discount_logging_enabled:
+          description: Whether data discount logging is enabled
+          example: true
+          type: boolean
+        is_observability_broadcast_enabled:
+          description: Whether broadcast is enabled
+          example: false
+          type: boolean
+        is_observability_io_logging_enabled:
+          description: Whether private logging is enabled
+          example: false
+          type: boolean
+        name:
+          description: Name for the new workspace
+          example: Production
+          maxLength: 100
+          minLength: 1
+          type: string
+        slug:
+          description: URL-friendly slug (lowercase alphanumeric and hyphens only)
+          example: production
+          maxLength: 50
+          minLength: 1
+          pattern: ^[a-z0-9-]+$
+          type: string
+      required:
+        - name
+        - slug
+      type: object
+    CreateWorkspaceResponse:
+      example:
+        data:
+          created_at: '2025-08-24T10:30:00Z'
+          created_by: user_abc123
+          default_image_model: openai/dall-e-3
+          default_provider_sort: price
+          default_text_model: openai/gpt-4o
+          description: Production environment workspace
+          id: 550e8400-e29b-41d4-a716-446655440000
+          is_data_discount_logging_enabled: true
+          is_observability_broadcast_enabled: false
+          is_observability_io_logging_enabled: false
+          name: Production
+          slug: production
+          updated_at: null
+      properties:
+        data:
+          allOf:
+            - $ref: '#/components/schemas/Workspace'
+            - description: The created workspace
+      required:
+        - data
+      type: object
     CustomTool:
       description: Custom tool configuration
       example:
@@ -5123,6 +5278,18 @@ components:
         deleted:
           const: true
           description: Confirmation that the guardrail was deleted
+          example: true
+          type: boolean
+      required:
+        - deleted
+      type: object
+    DeleteWorkspaceResponse:
+      example:
+        deleted: true
+      properties:
+        deleted:
+          const: true
+          description: Confirmation that the workspace was deleted
           example: true
           type: boolean
       required:
@@ -5679,6 +5846,30 @@ components:
           allOf:
             - $ref: '#/components/schemas/Guardrail'
             - description: The guardrail
+      required:
+        - data
+      type: object
+    GetWorkspaceResponse:
+      example:
+        data:
+          created_at: '2025-08-24T10:30:00Z'
+          created_by: user_abc123
+          default_image_model: openai/dall-e-3
+          default_provider_sort: price
+          default_text_model: openai/gpt-4o
+          description: Production environment workspace
+          id: 550e8400-e29b-41d4-a716-446655440000
+          is_data_discount_logging_enabled: true
+          is_observability_broadcast_enabled: false
+          is_observability_io_logging_enabled: false
+          name: Production
+          slug: production
+          updated_at: '2025-08-24T15:45:00Z'
+      properties:
+        data:
+          allOf:
+            - $ref: '#/components/schemas/Workspace'
+            - description: The workspace
       required:
         - data
       type: object
@@ -6685,6 +6876,37 @@ components:
         total_count:
           description: Total number of member assignments
           example: 10
+          type: integer
+      required:
+        - data
+        - total_count
+      type: object
+    ListWorkspacesResponse:
+      example:
+        data:
+          - created_at: '2025-08-24T10:30:00Z'
+            created_by: user_abc123
+            default_image_model: openai/dall-e-3
+            default_provider_sort: price
+            default_text_model: openai/gpt-4o
+            description: Production environment workspace
+            id: 550e8400-e29b-41d4-a716-446655440000
+            is_data_discount_logging_enabled: true
+            is_observability_broadcast_enabled: false
+            is_observability_io_logging_enabled: false
+            name: Production
+            slug: production
+            updated_at: '2025-08-24T15:45:00Z'
+        total_count: 1
+      properties:
+        data:
+          description: List of workspaces
+          items:
+            $ref: '#/components/schemas/Workspace'
+          type: array
+        total_count:
+          description: Total number of workspaces
+          example: 5
           type: integer
       required:
         - data
@@ -12409,6 +12631,82 @@ components:
       required:
         - data
       type: object
+    UpdateWorkspaceRequest:
+      example:
+        name: Updated Workspace
+        slug: updated-workspace
+      properties:
+        default_image_model:
+          description: Default image model for this workspace
+          example: openai/dall-e-3
+          nullable: true
+          type: string
+        default_provider_sort:
+          description: Default provider sort preference (price, throughput, latency, exacto)
+          example: price
+          nullable: true
+          type: string
+        default_text_model:
+          description: Default text model for this workspace
+          example: openai/gpt-4o
+          nullable: true
+          type: string
+        description:
+          description: New description for the workspace
+          example: Updated description
+          maxLength: 500
+          nullable: true
+          type: string
+        is_data_discount_logging_enabled:
+          description: Whether data discount logging is enabled
+          example: true
+          type: boolean
+        is_observability_broadcast_enabled:
+          description: Whether broadcast is enabled
+          example: false
+          type: boolean
+        is_observability_io_logging_enabled:
+          description: Whether private logging is enabled
+          example: false
+          type: boolean
+        name:
+          description: New name for the workspace
+          example: Updated Workspace
+          maxLength: 100
+          minLength: 1
+          type: string
+        slug:
+          description: New URL-friendly slug
+          example: updated-workspace
+          maxLength: 50
+          minLength: 1
+          pattern: ^[a-z0-9-]+$
+          type: string
+      type: object
+    UpdateWorkspaceResponse:
+      example:
+        data:
+          created_at: '2025-08-24T10:30:00Z'
+          created_by: user_abc123
+          default_image_model: openai/dall-e-3
+          default_provider_sort: price
+          default_text_model: openai/gpt-4o
+          description: Production environment workspace
+          id: 550e8400-e29b-41d4-a716-446655440000
+          is_data_discount_logging_enabled: true
+          is_observability_broadcast_enabled: false
+          is_observability_io_logging_enabled: false
+          name: Updated Workspace
+          slug: updated-workspace
+          updated_at: '2025-08-25T10:00:00Z'
+      properties:
+        data:
+          allOf:
+            - $ref: '#/components/schemas/Workspace'
+            - description: The updated workspace
+      required:
+        - data
+      type: object
     URLCitation:
       example:
         end_index: 42
@@ -13516,6 +13814,137 @@ components:
           enum:
             - approximate
           type: string
+      type: object
+    Workspace:
+      example:
+        created_at: '2025-08-24T10:30:00Z'
+        created_by: user_abc123
+        default_image_model: openai/dall-e-3
+        default_provider_sort: price
+        default_text_model: openai/gpt-4o
+        description: Production environment workspace
+        id: 550e8400-e29b-41d4-a716-446655440000
+        is_data_discount_logging_enabled: true
+        is_observability_broadcast_enabled: false
+        is_observability_io_logging_enabled: false
+        name: Production
+        slug: production
+        updated_at: '2025-08-24T15:45:00Z'
+      properties:
+        created_at:
+          description: ISO 8601 timestamp of when the workspace was created
+          example: '2025-08-24T10:30:00Z'
+          type: string
+        created_by:
+          description: User ID of the workspace creator
+          example: user_abc123
+          nullable: true
+          type: string
+        default_image_model:
+          description: Default image model for this workspace
+          example: openai/dall-e-3
+          nullable: true
+          type: string
+        default_provider_sort:
+          description: Default provider sort preference (price, throughput, latency, exacto)
+          example: price
+          nullable: true
+          type: string
+        default_text_model:
+          description: Default text model for this workspace
+          example: openai/gpt-4o
+          nullable: true
+          type: string
+        description:
+          description: Description of the workspace
+          example: Production environment workspace
+          nullable: true
+          type: string
+        id:
+          description: Unique identifier for the workspace
+          example: 550e8400-e29b-41d4-a716-446655440000
+          format: uuid
+          type: string
+        is_data_discount_logging_enabled:
+          description: Whether data discount logging is enabled for this workspace
+          example: true
+          type: boolean
+        is_observability_broadcast_enabled:
+          description: Whether broadcast is enabled for this workspace
+          example: false
+          type: boolean
+        is_observability_io_logging_enabled:
+          description: Whether private logging is enabled for this workspace
+          example: false
+          type: boolean
+        name:
+          description: Name of the workspace
+          example: Production
+          type: string
+        slug:
+          description: URL-friendly slug for the workspace
+          example: production
+          type: string
+        updated_at:
+          description: ISO 8601 timestamp of when the workspace was last updated
+          example: '2025-08-24T15:45:00Z'
+          nullable: true
+          type: string
+      required:
+        - id
+        - name
+        - slug
+        - description
+        - default_text_model
+        - default_image_model
+        - default_provider_sort
+        - is_observability_io_logging_enabled
+        - is_observability_broadcast_enabled
+        - is_data_discount_logging_enabled
+        - created_at
+        - updated_at
+        - created_by
+      type: object
+    WorkspaceMember:
+      example:
+        created_at: '2025-08-24T10:30:00Z'
+        id: 660e8400-e29b-41d4-a716-446655440000
+        role: member
+        user_id: user_abc123
+        workspace_id: 550e8400-e29b-41d4-a716-446655440000
+      properties:
+        created_at:
+          description: ISO 8601 timestamp of when the membership was created
+          example: '2025-08-24T10:30:00Z'
+          type: string
+        id:
+          description: Unique identifier for the workspace membership
+          example: 660e8400-e29b-41d4-a716-446655440000
+          format: uuid
+          type: string
+        role:
+          description: Role of the member in the workspace
+          enum:
+            - admin
+            - member
+          example: member
+          type: string
+          x-speakeasy-unknown-values: allow
+        user_id:
+          description: Clerk user ID of the member
+          example: user_abc123
+          type: string
+        workspace_id:
+          description: ID of the workspace
+          example: 550e8400-e29b-41d4-a716-446655440000
+          format: uuid
+          type: string
+      required:
+        - id
+        - workspace_id
+        - user_id
+        - role
+        - created_at
       type: object
   securitySchemes:
     apiKey:
@@ -20404,6 +20833,617 @@ paths:
       - $ref: "#/components/parameters/AppIdentifier"
       - $ref: "#/components/parameters/AppDisplayName"
       - $ref: "#/components/parameters/AppCategories"
+  /workspaces:
+    get:
+      description: >-
+        List all workspaces for the authenticated user. [Management key](/docs/guides/overview/auth/management-api-keys) required.
+      operationId: listWorkspaces
+      parameters:
+        - description: Number of records to skip for pagination
+          in: query
+          name: offset
+          required: false
+          schema:
+            description: Number of records to skip for pagination
+            example: 0
+            minimum: 0
+            nullable: true
+            type: integer
+        - description: Maximum number of records to return (max 100)
+          in: query
+          name: limit
+          required: false
+          schema:
+            description: Maximum number of records to return (max 100)
+            example: 50
+            maximum: 100
+            minimum: 1
+            type: integer
+      responses:
+        '200':
+          content:
+            application/json:
+              example:
+                data:
+                  - created_at: '2025-08-24T10:30:00Z'
+                    created_by: user_abc123
+                    default_image_model: openai/dall-e-3
+                    default_provider_sort: price
+                    default_text_model: openai/gpt-4o
+                    description: Production environment workspace
+                    id: 550e8400-e29b-41d4-a716-446655440000
+                    is_data_discount_logging_enabled: true
+                    is_observability_broadcast_enabled: false
+                    is_observability_io_logging_enabled: false
+                    name: Production
+                    slug: production
+                    updated_at: '2025-08-24T15:45:00Z'
+                total_count: 1
+              schema:
+                $ref: '#/components/schemas/ListWorkspacesResponse'
+          description: List of workspaces
+        '401':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 401
+                  message: Missing Authentication header
+              schema:
+                $ref: '#/components/schemas/UnauthorizedResponse'
+          description: Unauthorized - Authentication required or invalid credentials
+        '500':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 500
+                  message: Internal Server Error
+              schema:
+                $ref: '#/components/schemas/InternalServerResponse'
+          description: Internal Server Error - Unexpected server error
+      summary: List workspaces
+      tags:
+        - Workspaces
+      x-speakeasy-name-override: list
+      x-speakeasy-pagination:
+        inputs:
+          - in: parameters
+            name: offset
+            type: offset
+          - in: parameters
+            name: limit
+            type: limit
+        outputs:
+          results: $.data
+        type: offsetLimit
+    post:
+      description: >-
+        Create a new workspace for the authenticated user. [Management key](/docs/guides/overview/auth/management-api-keys) required.
+      operationId: createWorkspace
+      requestBody:
+        content:
+          application/json:
+            example:
+              default_image_model: openai/dall-e-3
+              default_provider_sort: price
+              default_text_model: openai/gpt-4o
+              description: Production environment workspace
+              name: Production
+              slug: production
+            schema:
+              $ref: '#/components/schemas/CreateWorkspaceRequest'
+        required: true
+      responses:
+        '201':
+          content:
+            application/json:
+              example:
+                data:
+                  created_at: '2025-08-24T10:30:00Z'
+                  created_by: user_abc123
+                  default_image_model: openai/dall-e-3
+                  default_provider_sort: price
+                  default_text_model: openai/gpt-4o
+                  description: Production environment workspace
+                  id: 550e8400-e29b-41d4-a716-446655440000
+                  is_data_discount_logging_enabled: true
+                  is_observability_broadcast_enabled: false
+                  is_observability_io_logging_enabled: false
+                  name: Production
+                  slug: production
+                  updated_at: null
+              schema:
+                $ref: '#/components/schemas/CreateWorkspaceResponse'
+          description: Workspace created successfully
+        '400':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 400
+                  message: Invalid request parameters
+              schema:
+                $ref: '#/components/schemas/BadRequestResponse'
+          description: Bad Request - Invalid request parameters or malformed input
+        '401':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 401
+                  message: Missing Authentication header
+              schema:
+                $ref: '#/components/schemas/UnauthorizedResponse'
+          description: Unauthorized - Authentication required or invalid credentials
+        '403':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 403
+                  message: Only management keys can perform this operation
+              schema:
+                $ref: '#/components/schemas/ForbiddenResponse'
+          description: Forbidden - Authentication successful but insufficient permissions
+        '500':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 500
+                  message: Internal Server Error
+              schema:
+                $ref: '#/components/schemas/InternalServerResponse'
+          description: Internal Server Error - Unexpected server error
+      summary: Create a workspace
+      tags:
+        - Workspaces
+      x-speakeasy-name-override: create
+    parameters:
+      - $ref: "#/components/parameters/AppIdentifier"
+      - $ref: "#/components/parameters/AppDisplayName"
+      - $ref: "#/components/parameters/AppCategories"
+  /workspaces/{id}:
+    delete:
+      description: >-
+        Delete an existing workspace. The default workspace cannot be deleted. Workspaces with active API keys cannot be deleted. [Management key](/docs/guides/overview/auth/management-api-keys) required.
+      operationId: deleteWorkspace
+      parameters:
+        - description: The workspace ID (UUID) or slug
+          in: path
+          name: id
+          required: true
+          schema:
+            description: The workspace ID (UUID) or slug
+            example: production
+            minLength: 1
+            type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              example:
+                deleted: true
+              schema:
+                $ref: '#/components/schemas/DeleteWorkspaceResponse'
+          description: Workspace deleted successfully
+        '400':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 400
+                  message: Invalid request parameters
+              schema:
+                $ref: '#/components/schemas/BadRequestResponse'
+          description: Bad Request - Invalid request parameters or malformed input
+        '401':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 401
+                  message: Missing Authentication header
+              schema:
+                $ref: '#/components/schemas/UnauthorizedResponse'
+          description: Unauthorized - Authentication required or invalid credentials
+        '403':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 403
+                  message: Only management keys can perform this operation
+              schema:
+                $ref: '#/components/schemas/ForbiddenResponse'
+          description: Forbidden - Authentication successful but insufficient permissions
+        '404':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 404
+                  message: Resource not found
+              schema:
+                $ref: '#/components/schemas/NotFoundResponse'
+          description: Not Found - Resource does not exist
+        '500':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 500
+                  message: Internal Server Error
+              schema:
+                $ref: '#/components/schemas/InternalServerResponse'
+          description: Internal Server Error - Unexpected server error
+      summary: Delete a workspace
+      tags:
+        - Workspaces
+      x-speakeasy-name-override: delete
+    get:
+      description: Get a single workspace by ID or slug. [Management key](/docs/guides/overview/auth/management-api-keys) required.
+      operationId: getWorkspace
+      parameters:
+        - description: The workspace ID (UUID) or slug
+          in: path
+          name: id
+          required: true
+          schema:
+            description: The workspace ID (UUID) or slug
+            example: production
+            minLength: 1
+            type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              example:
+                data:
+                  created_at: '2025-08-24T10:30:00Z'
+                  created_by: user_abc123
+                  default_image_model: openai/dall-e-3
+                  default_provider_sort: price
+                  default_text_model: openai/gpt-4o
+                  description: Production environment workspace
+                  id: 550e8400-e29b-41d4-a716-446655440000
+                  is_data_discount_logging_enabled: true
+                  is_observability_broadcast_enabled: false
+                  is_observability_io_logging_enabled: false
+                  name: Production
+                  slug: production
+                  updated_at: '2025-08-24T15:45:00Z'
+              schema:
+                $ref: '#/components/schemas/GetWorkspaceResponse'
+          description: Workspace details
+        '401':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 401
+                  message: Missing Authentication header
+              schema:
+                $ref: '#/components/schemas/UnauthorizedResponse'
+          description: Unauthorized - Authentication required or invalid credentials
+        '404':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 404
+                  message: Resource not found
+              schema:
+                $ref: '#/components/schemas/NotFoundResponse'
+          description: Not Found - Resource does not exist
+        '500':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 500
+                  message: Internal Server Error
+              schema:
+                $ref: '#/components/schemas/InternalServerResponse'
+          description: Internal Server Error - Unexpected server error
+      summary: Get a workspace
+      tags:
+        - Workspaces
+      x-speakeasy-name-override: get
+    patch:
+      description: >-
+        Update an existing workspace by ID or slug. [Management key](/docs/guides/overview/auth/management-api-keys) required.
+      operationId: updateWorkspace
+      parameters:
+        - description: The workspace ID (UUID) or slug
+          in: path
+          name: id
+          required: true
+          schema:
+            description: The workspace ID (UUID) or slug
+            example: production
+            minLength: 1
+            type: string
+      requestBody:
+        content:
+          application/json:
+            example:
+              name: Updated Workspace
+              slug: updated-workspace
+            schema:
+              $ref: '#/components/schemas/UpdateWorkspaceRequest'
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              example:
+                data:
+                  created_at: '2025-08-24T10:30:00Z'
+                  created_by: user_abc123
+                  default_image_model: openai/dall-e-3
+                  default_provider_sort: price
+                  default_text_model: openai/gpt-4o
+                  description: Production environment workspace
+                  id: 550e8400-e29b-41d4-a716-446655440000
+                  is_data_discount_logging_enabled: true
+                  is_observability_broadcast_enabled: false
+                  is_observability_io_logging_enabled: false
+                  name: Updated Workspace
+                  slug: updated-workspace
+                  updated_at: '2025-08-25T10:00:00Z'
+              schema:
+                $ref: '#/components/schemas/UpdateWorkspaceResponse'
+          description: Workspace updated successfully
+        '400':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 400
+                  message: Invalid request parameters
+              schema:
+                $ref: '#/components/schemas/BadRequestResponse'
+          description: Bad Request - Invalid request parameters or malformed input
+        '401':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 401
+                  message: Missing Authentication header
+              schema:
+                $ref: '#/components/schemas/UnauthorizedResponse'
+          description: Unauthorized - Authentication required or invalid credentials
+        '403':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 403
+                  message: Only management keys can perform this operation
+              schema:
+                $ref: '#/components/schemas/ForbiddenResponse'
+          description: Forbidden - Authentication successful but insufficient permissions
+        '404':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 404
+                  message: Resource not found
+              schema:
+                $ref: '#/components/schemas/NotFoundResponse'
+          description: Not Found - Resource does not exist
+        '500':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 500
+                  message: Internal Server Error
+              schema:
+                $ref: '#/components/schemas/InternalServerResponse'
+          description: Internal Server Error - Unexpected server error
+      summary: Update a workspace
+      tags:
+        - Workspaces
+      x-speakeasy-name-override: update
+    parameters:
+      - $ref: "#/components/parameters/AppIdentifier"
+      - $ref: "#/components/parameters/AppDisplayName"
+      - $ref: "#/components/parameters/AppCategories"
+  /workspaces/{id}/members/add:
+    post:
+      description: >-
+        Add multiple organization members to a workspace. Members are assigned the same role they hold in the organization. [Management key](/docs/guides/overview/auth/management-api-keys) required.
+      operationId: bulkAddWorkspaceMembers
+      parameters:
+        - description: The workspace ID (UUID) or slug
+          in: path
+          name: id
+          required: true
+          schema:
+            description: The workspace ID (UUID) or slug
+            example: production
+            minLength: 1
+            type: string
+      requestBody:
+        content:
+          application/json:
+            example:
+              user_ids:
+                - user_abc123
+                - user_def456
+            schema:
+              $ref: '#/components/schemas/BulkAddWorkspaceMembersRequest'
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              example:
+                added_count: 1
+                data:
+                  - created_at: '2025-08-24T10:30:00Z'
+                    id: 660e8400-e29b-41d4-a716-446655440000
+                    role: member
+                    user_id: user_abc123
+                    workspace_id: 550e8400-e29b-41d4-a716-446655440000
+              schema:
+                $ref: '#/components/schemas/BulkAddWorkspaceMembersResponse'
+          description: Members added successfully
+        '400':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 400
+                  message: Invalid request parameters
+              schema:
+                $ref: '#/components/schemas/BadRequestResponse'
+          description: Bad Request - Invalid request parameters or malformed input
+        '401':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 401
+                  message: Missing Authentication header
+              schema:
+                $ref: '#/components/schemas/UnauthorizedResponse'
+          description: Unauthorized - Authentication required or invalid credentials
+        '403':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 403
+                  message: Only management keys can perform this operation
+              schema:
+                $ref: '#/components/schemas/ForbiddenResponse'
+          description: Forbidden - Authentication successful but insufficient permissions
+        '404':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 404
+                  message: Resource not found
+              schema:
+                $ref: '#/components/schemas/NotFoundResponse'
+          description: Not Found - Resource does not exist
+        '500':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 500
+                  message: Internal Server Error
+              schema:
+                $ref: '#/components/schemas/InternalServerResponse'
+          description: Internal Server Error - Unexpected server error
+      summary: Bulk add members to a workspace
+      tags:
+        - Workspaces
+      x-speakeasy-name-override: bulkAddMembers
+    parameters:
+      - $ref: "#/components/parameters/AppIdentifier"
+      - $ref: "#/components/parameters/AppDisplayName"
+      - $ref: "#/components/parameters/AppCategories"
+  /workspaces/{id}/members/remove:
+    post:
+      description: >-
+        Remove multiple members from a workspace. Members with active API keys in the workspace cannot be removed. [Management key](/docs/guides/overview/auth/management-api-keys) required.
+      operationId: bulkRemoveWorkspaceMembers
+      parameters:
+        - description: The workspace ID (UUID) or slug
+          in: path
+          name: id
+          required: true
+          schema:
+            description: The workspace ID (UUID) or slug
+            example: production
+            minLength: 1
+            type: string
+      requestBody:
+        content:
+          application/json:
+            example:
+              user_ids:
+                - user_abc123
+                - user_def456
+            schema:
+              $ref: '#/components/schemas/BulkRemoveWorkspaceMembersRequest'
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              example:
+                removed_count: 2
+              schema:
+                $ref: '#/components/schemas/BulkRemoveWorkspaceMembersResponse'
+          description: Members removed successfully
+        '400':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 400
+                  message: Invalid request parameters
+              schema:
+                $ref: '#/components/schemas/BadRequestResponse'
+          description: Bad Request - Invalid request parameters or malformed input
+        '401':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 401
+                  message: Missing Authentication header
+              schema:
+                $ref: '#/components/schemas/UnauthorizedResponse'
+          description: Unauthorized - Authentication required or invalid credentials
+        '403':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 403
+                  message: Only management keys can perform this operation
+              schema:
+                $ref: '#/components/schemas/ForbiddenResponse'
+          description: Forbidden - Authentication successful but insufficient permissions
+        '404':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 404
+                  message: Resource not found
+              schema:
+                $ref: '#/components/schemas/NotFoundResponse'
+          description: Not Found - Resource does not exist
+        '500':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 500
+                  message: Internal Server Error
+              schema:
+                $ref: '#/components/schemas/InternalServerResponse'
+          description: Internal Server Error - Unexpected server error
+      summary: Bulk remove members from a workspace
+      tags:
+        - Workspaces
+      x-speakeasy-name-override: bulkRemoveMembers
+    parameters:
+      - $ref: "#/components/parameters/AppIdentifier"
+      - $ref: "#/components/parameters/AppDisplayName"
+      - $ref: "#/components/parameters/AppCategories"
 security:
   - apiKey: []
 servers:
@@ -20443,6 +21483,8 @@ tags:
     name: TTS
   - description: Video Generation endpoints
     name: Video Generation
+  - description: Workspaces endpoints
+    name: Workspaces
   - description: beta.responses endpoints
     name: beta.responses
 x-fern-base-path: /
