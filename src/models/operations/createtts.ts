@@ -190,7 +190,7 @@ export type CreateTtsRequestBody = {
    */
   speed?: number | undefined;
   /**
-   * Voice identifier
+   * Voice identifier (provider-specific).
    */
   voice: string;
 };
