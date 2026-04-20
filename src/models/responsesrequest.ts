@@ -160,6 +160,11 @@ import {
   TraceConfig$outboundSchema,
 } from "./traceconfig.js";
 import {
+  WebFetchServerToolOpenRouter,
+  WebFetchServerToolOpenRouter$Outbound,
+  WebFetchServerToolOpenRouter$outboundSchema,
+} from "./webfetchservertoolopenrouter.js";
+import {
   WebSearchPlugin,
   WebSearchPlugin$Outbound,
   WebSearchPlugin$outboundSchema,
@@ -227,7 +232,8 @@ export type ResponsesRequestToolUnion =
   | (ChatSearchModelsServerTool & {
     type: "openrouter:experimental__search_models";
   })
-  | WebSearchServerToolOpenRouter;
+  | WebSearchServerToolOpenRouter
+  | WebFetchServerToolOpenRouter;
 
 /**
  * Request schema for Responses endpoint
@@ -321,6 +327,7 @@ export type ResponsesRequest = {
         type: "openrouter:experimental__search_models";
       })
       | WebSearchServerToolOpenRouter
+      | WebFetchServerToolOpenRouter
     >
     | undefined;
   topK?: number | undefined;
@@ -427,7 +434,8 @@ export type ResponsesRequestToolUnion$Outbound =
   | (ChatSearchModelsServerTool$Outbound & {
     type: "openrouter:experimental__search_models";
   })
-  | WebSearchServerToolOpenRouter$Outbound;
+  | WebSearchServerToolOpenRouter$Outbound
+  | WebFetchServerToolOpenRouter$Outbound;
 
 /** @internal */
 export const ResponsesRequestToolUnion$outboundSchema: z.ZodType<
@@ -458,6 +466,7 @@ export const ResponsesRequestToolUnion$outboundSchema: z.ZodType<
     z.object({ type: z.literal("openrouter:experimental__search_models") }),
   ),
   WebSearchServerToolOpenRouter$outboundSchema,
+  WebFetchServerToolOpenRouter$outboundSchema,
 ]);
 
 export function responsesRequestToolUnionToJSON(
@@ -531,6 +540,7 @@ export type ResponsesRequest$Outbound = {
         type: "openrouter:experimental__search_models";
       })
       | WebSearchServerToolOpenRouter$Outbound
+      | WebFetchServerToolOpenRouter$Outbound
     >
     | undefined;
   top_k?: number | undefined;
@@ -611,6 +621,7 @@ export const ResponsesRequest$outboundSchema: z.ZodType<
         z.object({ type: z.literal("openrouter:experimental__search_models") }),
       ),
       WebSearchServerToolOpenRouter$outboundSchema,
+      WebFetchServerToolOpenRouter$outboundSchema,
     ]),
   ).optional(),
   topK: z.int().optional(),

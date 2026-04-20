@@ -177,3 +177,11 @@ const value: models.WebSearchServerToolOpenRouter = {
 };
 ```
 
+### `models.WebFetchServerToolOpenRouter`
+
+```typescript
+const value: models.WebFetchServerToolOpenRouter = {
+  type: "openrouter:web_fetch",
+};
+```
+
