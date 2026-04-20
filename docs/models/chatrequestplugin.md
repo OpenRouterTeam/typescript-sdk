@@ -11,6 +11,14 @@ const value: models.AutoRouterPlugin = {
 };
 ```
 
+### `models.ConfidenceScorePlugin`
+
+```typescript
+const value: models.ConfidenceScorePlugin = {
+  id: "confidence-score",
+};
+```
+
 ### `models.ContextCompressionPlugin`
 
 ```typescript
