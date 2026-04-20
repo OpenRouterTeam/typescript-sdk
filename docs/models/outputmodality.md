@@ -13,5 +13,5 @@ let value: OutputModality = "text";
 ## Values
 
 ```typescript
-"text" | "image" | "embeddings" | "audio" | "video" | "rerank" | "tts" | Unrecognized<string>
+"text" | "image" | "embeddings" | "audio" | "video" | "rerank" | "tts" | "stt" | Unrecognized<string>
 ```
