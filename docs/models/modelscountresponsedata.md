@@ -1,13 +1,13 @@
-# Data
+# ModelsCountResponseData
 
 Model count data
 
 ## Example Usage
 
 ```typescript
-import { Data } from "@openrouter/sdk/models";
+import { ModelsCountResponseData } from "@openrouter/sdk/models";
 
-let value: Data = {
+let value: ModelsCountResponseData = {
   count: 150,
 };
 ```
