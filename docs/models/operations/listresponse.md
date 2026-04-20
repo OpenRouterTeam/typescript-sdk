@@ -29,7 +29,6 @@ let value: ListResponse = {
       usageDaily: 25.5,
       usageMonthly: 25.5,
       usageWeekly: 25.5,
-      workspaceId: "0df9e665-d932-5740-b2c7-b52af166bc11",
     },
   ],
 };
