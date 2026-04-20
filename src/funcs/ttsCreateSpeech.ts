@@ -3,7 +3,6 @@
  * @generated-id: ed304f5d6ad8
  */
 
-import * as z from "zod/v4";
 import { OpenRouterCore } from "../core.js";
 import { encodeJSON, encodeSimple } from "../lib/encodings.js";
 import * as M from "../lib/matchers.js";
@@ -35,11 +34,11 @@ import { Result } from "../types/fp.js";
  */
 export function ttsCreateSpeech(
   client: OpenRouterCore,
-  request: operations.CreateTtsRequest,
+  request: operations.CreateAudioSpeechRequest,
   options?: RequestOptions,
 ): APIPromise<
   Result<
-    ReadableStream<Uint8Array>,
+    operations.CreateAudioSpeechResponse,
     | errors.BadRequestResponseError
     | errors.UnauthorizedResponseError
     | errors.PaymentRequiredResponseError
@@ -69,12 +68,12 @@ export function ttsCreateSpeech(
 
 async function $do(
   client: OpenRouterCore,
-  request: operations.CreateTtsRequest,
+  request: operations.CreateAudioSpeechRequest,
   options?: RequestOptions,
 ): Promise<
   [
     Result<
-      ReadableStream<Uint8Array>,
+      operations.CreateAudioSpeechResponse,
       | errors.BadRequestResponseError
       | errors.UnauthorizedResponseError
       | errors.PaymentRequiredResponseError
@@ -99,20 +98,20 @@ async function $do(
 > {
   const parsed = safeParse(
     request,
-    (value) => operations.CreateTtsRequest$outboundSchema.parse(value),
+    (value) => operations.CreateAudioSpeechRequest$outboundSchema.parse(value),
     "Input validation failed",
   );
   if (!parsed.ok) {
     return [parsed, { status: "invalid" }];
   }
   const payload = parsed.value;
-  const body = encodeJSON("body", payload.RequestBody, { explode: true });
+  const body = encodeJSON("body", payload.SpeechRequest, { explode: true });
 
-  const path = pathToFunc("/tts")();
+  const path = pathToFunc("/audio/speech")();
 
   const headers = new Headers(compactMap({
     "Content-Type": "application/json",
-    Accept: "application/octet-stream",
+    Accept: "audio/L16;q=1, audio/mpeg;q=0",
     "HTTP-Referer": encodeSimple(
       "HTTP-Referer",
       payload["HTTP-Referer"] ?? client._options.httpReferer,
@@ -137,7 +136,7 @@ async function $do(
   const context = {
     options: client._options,
     baseURL: options?.serverURL ?? client._baseURL ?? "",
-    operationID: "createTts",
+    operationID: "createAudioSpeech",
     oAuth2Scopes: null,
 
     resolvedSecurity: requestSecurity,
@@ -203,7 +202,7 @@ async function $do(
   };
 
   const [result] = await M.match<
-    ReadableStream<Uint8Array>,
+    operations.CreateAudioSpeechResponse,
     | errors.BadRequestResponseError
     | errors.UnauthorizedResponseError
     | errors.PaymentRequiredResponseError
@@ -223,10 +222,12 @@ async function $do(
     | UnexpectedClientError
     | SDKValidationError
   >(
-    M.stream(
-      200,
-      z.custom<ReadableStream<Uint8Array>>(x => x instanceof ReadableStream),
-    ),
+    M.stream(200, operations.CreateAudioSpeechResponse$inboundSchema, {
+      ctype: "audio/L16",
+    }),
+    M.stream(200, operations.CreateAudioSpeechResponse$inboundSchema, {
+      ctype: "audio/mpeg",
+    }),
     M.jsonErr(400, errors.BadRequestResponseError$inboundSchema),
     M.jsonErr(401, errors.UnauthorizedResponseError$inboundSchema),
     M.jsonErr(402, errors.PaymentRequiredResponseError$inboundSchema),

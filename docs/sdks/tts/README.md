@@ -14,7 +14,7 @@ Synthesizes audio from the input text
 
 ### Example Usage
 
-<!-- UsageSnippet language="typescript" operationID="createTts" method="post" path="/tts" -->
+<!-- UsageSnippet language="typescript" operationID="createAudioSpeech" method="post" path="/audio/speech" -->
 ```typescript
 import { OpenRouter } from "@openrouter/sdk";
 
@@ -27,9 +27,10 @@ const openRouter = new OpenRouter({
 
 async function run() {
   const result = await openRouter.tts.createSpeech({
-    requestBody: {
+    speechRequest: {
       input: "Hello world",
       model: "elevenlabs/eleven-turbo-v2",
+      speed: 1,
       voice: "alloy",
     },
   });
@@ -59,9 +60,10 @@ const openRouter = new OpenRouterCore({
 
 async function run() {
   const res = await ttsCreateSpeech(openRouter, {
-    requestBody: {
+    speechRequest: {
       input: "Hello world",
       model: "elevenlabs/eleven-turbo-v2",
+      speed: 1,
       voice: "alloy",
     },
   });
@@ -80,14 +82,14 @@ run();
 
 | Parameter                                                                                                                                                                      | Type                                                                                                                                                                           | Required                                                                                                                                                                       | Description                                                                                                                                                                    |
 | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| `request`                                                                                                                                                                      | [operations.CreateTtsRequest](../../models/operations/createttsrequest.md)                                                                                                     | :heavy_check_mark:                                                                                                                                                             | The request object to use for the request.                                                                                                                                     |
+| `request`                                                                                                                                                                      | [operations.CreateAudioSpeechRequest](../../models/operations/createaudiospeechrequest.md)                                                                                     | :heavy_check_mark:                                                                                                                                                             | The request object to use for the request.                                                                                                                                     |
 | `options`                                                                                                                                                                      | RequestOptions                                                                                                                                                                 | :heavy_minus_sign:                                                                                                                                                             | Used to set various options for making HTTP requests.                                                                                                                          |
 | `options.fetchOptions`                                                                                                                                                         | [RequestInit](https://developer.mozilla.org/en-US/docs/Web/API/Request/Request#options)                                                                                        | :heavy_minus_sign:                                                                                                                                                             | Options that are passed to the underlying HTTP request. This can be used to inject extra headers for examples. All `Request` options, except `method` and `body`, are allowed. |
 | `options.retries`                                                                                                                                                              | [RetryConfig](../../lib/utils/retryconfig.md)                                                                                                                                  | :heavy_minus_sign:                                                                                                                                                             | Enables retrying HTTP requests under certain failure conditions.                                                                                                               |
 
 ### Response
 
-**Promise\<[ReadableStream<Uint8Array>](../../models/.md)\>**
+**Promise\<[operations.CreateAudioSpeechResponse](../../models/operations/createaudiospeechresponse.md)\>**
 
 ### Errors
 

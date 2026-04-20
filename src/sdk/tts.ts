@@ -16,9 +16,9 @@ export class Tts extends ClientSDK {
    * Synthesizes audio from the input text
    */
   async createSpeech(
-    request: operations.CreateTtsRequest,
+    request: operations.CreateAudioSpeechRequest,
     options?: RequestOptions,
-  ): Promise<ReadableStream<Uint8Array>> {
+  ): Promise<operations.CreateAudioSpeechResponse> {
     return unwrapAsync(ttsCreateSpeech(
       this,
       request,
