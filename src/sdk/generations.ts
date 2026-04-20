@@ -4,7 +4,9 @@
  */
 
 import { generationsGetGeneration } from "../funcs/generationsGetGeneration.js";
+import { generationsListGenerationContent } from "../funcs/generationsListGenerationContent.js";
 import { ClientSDK, RequestOptions } from "../lib/sdks.js";
+import * as models from "../models/index.js";
 import * as operations from "../models/operations/index.js";
 import { unwrapAsync } from "../types/fp.js";
 
@@ -15,8 +17,22 @@ export class Generations extends ClientSDK {
   async getGeneration(
     request: operations.GetGenerationRequest,
     options?: RequestOptions,
-  ): Promise<operations.GetGenerationResponse> {
+  ): Promise<models.GenerationResponse> {
     return unwrapAsync(generationsGetGeneration(
+      this,
+      request,
+      options,
+    ));
+  }
+
+  /**
+   * Get stored prompt and completion content for a generation
+   */
+  async listGenerationContent(
+    request: operations.ListGenerationContentRequest,
+    options?: RequestOptions,
+  ): Promise<models.GenerationContentResponse> {
+    return unwrapAsync(generationsListGenerationContent(
       this,
       request,
       options,
