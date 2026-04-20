@@ -111,6 +111,11 @@ import {
   OutputModalityEnum$outboundSchema,
 } from "./outputmodalityenum.js";
 import {
+  ParetoRouterPlugin,
+  ParetoRouterPlugin$Outbound,
+  ParetoRouterPlugin$outboundSchema,
+} from "./paretorouterplugin.js";
+import {
   Preview20250311WebSearchServerTool,
   Preview20250311WebSearchServerTool$Outbound,
   Preview20250311WebSearchServerTool$outboundSchema,
@@ -160,6 +165,11 @@ import {
   TraceConfig$outboundSchema,
 } from "./traceconfig.js";
 import {
+  WebFetchServerTool,
+  WebFetchServerTool$Outbound,
+  WebFetchServerTool$outboundSchema,
+} from "./webfetchservertool.js";
+import {
   WebSearchPlugin,
   WebSearchPlugin$Outbound,
   WebSearchPlugin$outboundSchema,
@@ -180,6 +190,7 @@ export type ResponsesRequestPlugin =
   | ContextCompressionPlugin
   | FileParserPlugin
   | ModerationPlugin
+  | ParetoRouterPlugin
   | ResponseHealingPlugin
   | WebSearchPlugin;
 
@@ -227,7 +238,8 @@ export type ResponsesRequestToolUnion =
   | (ChatSearchModelsServerTool & {
     type: "openrouter:experimental__search_models";
   })
-  | WebSearchServerToolOpenRouter;
+  | WebSearchServerToolOpenRouter
+  | WebFetchServerTool;
 
 /**
  * Request schema for Responses endpoint
@@ -267,6 +279,7 @@ export type ResponsesRequest = {
       | ContextCompressionPlugin
       | FileParserPlugin
       | ModerationPlugin
+      | ParetoRouterPlugin
       | ResponseHealingPlugin
       | WebSearchPlugin
     >
@@ -321,6 +334,7 @@ export type ResponsesRequest = {
         type: "openrouter:experimental__search_models";
       })
       | WebSearchServerToolOpenRouter
+      | WebFetchServerTool
     >
     | undefined;
   topK?: number | undefined;
@@ -343,6 +357,7 @@ export type ResponsesRequestPlugin$Outbound =
   | ContextCompressionPlugin$Outbound
   | FileParserPlugin$Outbound
   | ModerationPlugin$Outbound
+  | ParetoRouterPlugin$Outbound
   | ResponseHealingPlugin$Outbound
   | WebSearchPlugin$Outbound;
 
@@ -355,6 +370,7 @@ export const ResponsesRequestPlugin$outboundSchema: z.ZodType<
   ContextCompressionPlugin$outboundSchema,
   FileParserPlugin$outboundSchema,
   ModerationPlugin$outboundSchema,
+  ParetoRouterPlugin$outboundSchema,
   ResponseHealingPlugin$outboundSchema,
   WebSearchPlugin$outboundSchema,
 ]);
@@ -427,7 +443,8 @@ export type ResponsesRequestToolUnion$Outbound =
   | (ChatSearchModelsServerTool$Outbound & {
     type: "openrouter:experimental__search_models";
   })
-  | WebSearchServerToolOpenRouter$Outbound;
+  | WebSearchServerToolOpenRouter$Outbound
+  | WebFetchServerTool$Outbound;
 
 /** @internal */
 export const ResponsesRequestToolUnion$outboundSchema: z.ZodType<
@@ -458,6 +475,7 @@ export const ResponsesRequestToolUnion$outboundSchema: z.ZodType<
     z.object({ type: z.literal("openrouter:experimental__search_models") }),
   ),
   WebSearchServerToolOpenRouter$outboundSchema,
+  WebFetchServerTool$outboundSchema,
 ]);
 
 export function responsesRequestToolUnionToJSON(
@@ -489,6 +507,7 @@ export type ResponsesRequest$Outbound = {
       | ContextCompressionPlugin$Outbound
       | FileParserPlugin$Outbound
       | ModerationPlugin$Outbound
+      | ParetoRouterPlugin$Outbound
       | ResponseHealingPlugin$Outbound
       | WebSearchPlugin$Outbound
     >
@@ -531,6 +550,7 @@ export type ResponsesRequest$Outbound = {
         type: "openrouter:experimental__search_models";
       })
       | WebSearchServerToolOpenRouter$Outbound
+      | WebFetchServerTool$Outbound
     >
     | undefined;
   top_k?: number | undefined;
@@ -565,6 +585,7 @@ export const ResponsesRequest$outboundSchema: z.ZodType<
       ContextCompressionPlugin$outboundSchema,
       FileParserPlugin$outboundSchema,
       ModerationPlugin$outboundSchema,
+      ParetoRouterPlugin$outboundSchema,
       ResponseHealingPlugin$outboundSchema,
       WebSearchPlugin$outboundSchema,
     ]),
@@ -611,6 +632,7 @@ export const ResponsesRequest$outboundSchema: z.ZodType<
         z.object({ type: z.literal("openrouter:experimental__search_models") }),
       ),
       WebSearchServerToolOpenRouter$outboundSchema,
+      WebFetchServerTool$outboundSchema,
     ]),
   ).optional(),
   topK: z.int().optional(),
