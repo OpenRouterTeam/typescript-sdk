@@ -35,7 +35,7 @@ import { Result } from "../types/fp.js";
  */
 export function ttsCreateSpeech(
   client: OpenRouterCore,
-  request: operations.CreateTtsRequest,
+  request: operations.CreateAudioSpeechRequest,
   options?: RequestOptions,
 ): APIPromise<
   Result<
@@ -69,7 +69,7 @@ export function ttsCreateSpeech(
 
 async function $do(
   client: OpenRouterCore,
-  request: operations.CreateTtsRequest,
+  request: operations.CreateAudioSpeechRequest,
   options?: RequestOptions,
 ): Promise<
   [
@@ -99,7 +99,7 @@ async function $do(
 > {
   const parsed = safeParse(
     request,
-    (value) => operations.CreateTtsRequest$outboundSchema.parse(value),
+    (value) => operations.CreateAudioSpeechRequest$outboundSchema.parse(value),
     "Input validation failed",
   );
   if (!parsed.ok) {
@@ -108,7 +108,7 @@ async function $do(
   const payload = parsed.value;
   const body = encodeJSON("body", payload.RequestBody, { explode: true });
 
-  const path = pathToFunc("/tts")();
+  const path = pathToFunc("/audio/speech")();
 
   const headers = new Headers(compactMap({
     "Content-Type": "application/json",
@@ -137,7 +137,7 @@ async function $do(
   const context = {
     options: client._options,
     baseURL: options?.serverURL ?? client._baseURL ?? "",
-    operationID: "createTts",
+    operationID: "createAudioSpeech",
     oAuth2Scopes: null,
 
     resolvedSecurity: requestSecurity,
