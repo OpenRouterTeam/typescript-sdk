@@ -40,6 +40,11 @@ export class OpenRouter extends ClientSDK {
     return (this._analytics ??= new Analytics(this._options));
   }
 
+  private _tts?: Tts;
+  get tts(): Tts {
+    return (this._tts ??= new Tts(this._options));
+  }
+
   private _oAuth?: OAuth;
   get oAuth(): OAuth {
     return (this._oAuth ??= new OAuth(this._options));
@@ -103,11 +108,6 @@ export class OpenRouter extends ClientSDK {
   private _beta?: Beta;
   get beta(): Beta {
     return (this._beta ??= new Beta(this._options));
-  }
-
-  private _tts?: Tts;
-  get tts(): Tts {
-    return (this._tts ??= new Tts(this._options));
   }
 
   private _videoGeneration?: VideoGeneration;
