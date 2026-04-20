@@ -274,6 +274,9 @@ export type ResponsesRequest = {
   presencePenalty?: number | null | undefined;
   previousResponseId?: string | null | undefined;
   prompt?: StoredPromptTemplate | null | undefined;
+  /**
+   * A cache key for prompt caching. When provided, routes requests to the same provider to maintain prompt cache warmth and is forwarded to providers that support it. Takes priority over session_id for provider stickiness. Maximum of 256 characters.
+   */
   promptCacheKey?: string | null | undefined;
   /**
    * When multiple model providers are available, optionally indicate your routing preference.
