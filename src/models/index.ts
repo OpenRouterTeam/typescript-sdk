@@ -244,6 +244,7 @@ export * from "./searchqualitylevel.js";
 export * from "./security.js";
 export * from "./serviceunavailableresponseerrordata.js";
 export * from "./shellservertool.js";
+export * from "./speechrequest.js";
 export * from "./storedprompttemplate.js";
 export * from "./streamevents.js";
 export * from "./streameventsresponsecompleted.js";
