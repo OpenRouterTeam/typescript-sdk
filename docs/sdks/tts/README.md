@@ -27,10 +27,9 @@ const openRouter = new OpenRouter({
 
 async function run() {
   const result = await openRouter.tts.createSpeech({
-    speechRequest: {
+    requestBody: {
       input: "Hello world",
       model: "elevenlabs/eleven-turbo-v2",
-      speed: 1,
       voice: "alloy",
     },
   });
@@ -60,10 +59,9 @@ const openRouter = new OpenRouterCore({
 
 async function run() {
   const res = await ttsCreateSpeech(openRouter, {
-    speechRequest: {
+    requestBody: {
       input: "Hello world",
       model: "elevenlabs/eleven-turbo-v2",
-      speed: 1,
       voice: "alloy",
     },
   });
