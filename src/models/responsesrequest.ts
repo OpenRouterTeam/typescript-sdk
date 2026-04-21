@@ -111,6 +111,11 @@ import {
   OutputModalityEnum$outboundSchema,
 } from "./outputmodalityenum.js";
 import {
+  ParetoRouterPlugin,
+  ParetoRouterPlugin$Outbound,
+  ParetoRouterPlugin$outboundSchema,
+} from "./paretorouterplugin.js";
+import {
   Preview20250311WebSearchServerTool,
   Preview20250311WebSearchServerTool$Outbound,
   Preview20250311WebSearchServerTool$outboundSchema,
@@ -180,6 +185,7 @@ export type ResponsesRequestPlugin =
   | ContextCompressionPlugin
   | FileParserPlugin
   | ModerationPlugin
+  | ParetoRouterPlugin
   | ResponseHealingPlugin
   | WebSearchPlugin;
 
@@ -267,6 +273,7 @@ export type ResponsesRequest = {
       | ContextCompressionPlugin
       | FileParserPlugin
       | ModerationPlugin
+      | ParetoRouterPlugin
       | ResponseHealingPlugin
       | WebSearchPlugin
     >
@@ -343,6 +350,7 @@ export type ResponsesRequestPlugin$Outbound =
   | ContextCompressionPlugin$Outbound
   | FileParserPlugin$Outbound
   | ModerationPlugin$Outbound
+  | ParetoRouterPlugin$Outbound
   | ResponseHealingPlugin$Outbound
   | WebSearchPlugin$Outbound;
 
@@ -355,6 +363,7 @@ export const ResponsesRequestPlugin$outboundSchema: z.ZodType<
   ContextCompressionPlugin$outboundSchema,
   FileParserPlugin$outboundSchema,
   ModerationPlugin$outboundSchema,
+  ParetoRouterPlugin$outboundSchema,
   ResponseHealingPlugin$outboundSchema,
   WebSearchPlugin$outboundSchema,
 ]);
@@ -489,6 +498,7 @@ export type ResponsesRequest$Outbound = {
       | ContextCompressionPlugin$Outbound
       | FileParserPlugin$Outbound
       | ModerationPlugin$Outbound
+      | ParetoRouterPlugin$Outbound
       | ResponseHealingPlugin$Outbound
       | WebSearchPlugin$Outbound
     >
@@ -565,6 +575,7 @@ export const ResponsesRequest$outboundSchema: z.ZodType<
       ContextCompressionPlugin$outboundSchema,
       FileParserPlugin$outboundSchema,
       ModerationPlugin$outboundSchema,
+      ParetoRouterPlugin$outboundSchema,
       ResponseHealingPlugin$outboundSchema,
       WebSearchPlugin$outboundSchema,
     ]),
