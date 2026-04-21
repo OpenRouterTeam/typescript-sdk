@@ -147,6 +147,10 @@ export type GenerationResponseData = {
    */
   requestId?: string | null | undefined;
   /**
+   * If this generation was served from response cache, contains the original generation ID. Null otherwise.
+   */
+  responseCacheSourceId?: string | null | undefined;
+  /**
    * Router used for the request (e.g., openrouter/auto)
    */
   router: string | null;
@@ -239,6 +243,7 @@ export const GenerationResponseData$inboundSchema: z.ZodType<
   provider_name: z.nullable(z.string()),
   provider_responses: z.nullable(z.array(ProviderResponse$inboundSchema)),
   request_id: z.nullable(z.string()).optional(),
+  response_cache_source_id: z.nullable(z.string()).optional(),
   router: z.nullable(z.string()),
   session_id: z.nullable(z.string()).optional(),
   streamed: z.nullable(z.boolean()),
@@ -275,6 +280,7 @@ export const GenerationResponseData$inboundSchema: z.ZodType<
     "provider_name": "providerName",
     "provider_responses": "providerResponses",
     "request_id": "requestId",
+    "response_cache_source_id": "responseCacheSourceId",
     "session_id": "sessionId",
     "tokens_completion": "tokensCompletion",
     "tokens_prompt": "tokensPrompt",
