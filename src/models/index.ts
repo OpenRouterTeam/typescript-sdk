@@ -277,6 +277,7 @@ export * from "./videogenerationresponse.js";
 export * from "./videogenerationusage.js";
 export * from "./videomodel.js";
 export * from "./videomodelslistresponse.js";
+export * from "./webfetchservertoolopenrouter.js";
 export * from "./websearchcallcompletedevent.js";
 export * from "./websearchcallinprogressevent.js";
 export * from "./websearchcallsearchingevent.js";
