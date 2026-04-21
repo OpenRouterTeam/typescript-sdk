@@ -145,3 +145,27 @@ const value: models.CustomTool = {
 };
 ```
 
+### `models.NamespaceTool`
+
+```typescript
+const value: models.NamespaceTool = {
+  description: "CRM tools for customer lookup and order management.",
+  name: "crm",
+  tools: [
+    {
+      name: "get_customer_profile",
+      type: "function",
+    },
+  ],
+  type: "namespace",
+};
+```
+
+### `models.ToolSearchTool`
+
+```typescript
+const value: models.ToolSearchTool = {
+  type: "tool_search",
+};
+```
+
