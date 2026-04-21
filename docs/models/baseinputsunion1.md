@@ -24,6 +24,7 @@ const value: models.OpenAIResponseInputMessageItem = {
   ],
   id: "msg-abc123",
   role: "user",
+  type: "message",
 };
 ```
 

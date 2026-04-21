@@ -68,7 +68,7 @@ export type OpenAIResponseInputMessageItem = {
     | OpenAIResponseInputMessageItemRoleUser
     | OpenAIResponseInputMessageItemRoleSystem
     | OpenAIResponseInputMessageItemRoleDeveloper;
-  type?: OpenAIResponseInputMessageItemType | undefined;
+  type: OpenAIResponseInputMessageItemType;
 };
 
 /** @internal */
@@ -161,7 +161,7 @@ export const OpenAIResponseInputMessageItem$inboundSchema: z.ZodType<
     OpenAIResponseInputMessageItemRoleSystem$inboundSchema,
     OpenAIResponseInputMessageItemRoleDeveloper$inboundSchema,
   ]),
-  type: OpenAIResponseInputMessageItemType$inboundSchema.optional(),
+  type: OpenAIResponseInputMessageItemType$inboundSchema,
 });
 
 export function openAIResponseInputMessageItemFromJSON(

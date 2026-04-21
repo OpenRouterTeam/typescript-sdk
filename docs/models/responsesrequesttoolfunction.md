@@ -37,6 +37,7 @@ let value: ResponsesRequestToolFunction = {
 
 | Field                 | Type                  | Required              | Description           |
 | --------------------- | --------------------- | --------------------- | --------------------- |
+| `deferLoading`        | *boolean*             | :heavy_minus_sign:    | N/A                   |
 | `description`         | *string*              | :heavy_minus_sign:    | N/A                   |
 | `name`                | *string*              | :heavy_check_mark:    | N/A                   |
 | `parameters`          | Record<string, *any*> | :heavy_check_mark:    | N/A                   |

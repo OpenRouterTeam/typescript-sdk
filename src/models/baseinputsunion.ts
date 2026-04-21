@@ -128,9 +128,9 @@ export type BaseInputsMessage = {
 };
 
 export type BaseInputsUnion1 =
+  | OpenAIResponseInputMessageItem
   | OpenAIResponseFunctionToolCall
   | OutputMessage
-  | OpenAIResponseInputMessageItem
   | OpenAIResponseFunctionToolCallOutput
   | OutputItemImageGenerationCall
   | BaseInputsMessage;
@@ -138,9 +138,9 @@ export type BaseInputsUnion1 =
 export type BaseInputsUnion =
   | string
   | Array<
+    | OpenAIResponseInputMessageItem
     | OpenAIResponseFunctionToolCall
     | OutputMessage
-    | OpenAIResponseInputMessageItem
     | OpenAIResponseFunctionToolCallOutput
     | OutputItemImageGenerationCall
     | BaseInputsMessage
@@ -318,9 +318,9 @@ export const BaseInputsUnion1$inboundSchema: z.ZodType<
   BaseInputsUnion1,
   unknown
 > = z.union([
+  OpenAIResponseInputMessageItem$inboundSchema,
   OpenAIResponseFunctionToolCall$inboundSchema,
   OutputMessage$inboundSchema,
-  OpenAIResponseInputMessageItem$inboundSchema,
   OpenAIResponseFunctionToolCallOutput$inboundSchema,
   OutputItemImageGenerationCall$inboundSchema,
   z.lazy(() => BaseInputsMessage$inboundSchema),
@@ -344,9 +344,9 @@ export const BaseInputsUnion$inboundSchema: z.ZodType<
   z.string(),
   z.array(
     z.union([
+      OpenAIResponseInputMessageItem$inboundSchema,
       OpenAIResponseFunctionToolCall$inboundSchema,
       OutputMessage$inboundSchema,
-      OpenAIResponseInputMessageItem$inboundSchema,
       OpenAIResponseFunctionToolCallOutput$inboundSchema,
       OutputItemImageGenerationCall$inboundSchema,
       z.lazy(() => BaseInputsMessage$inboundSchema),

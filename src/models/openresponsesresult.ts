@@ -53,6 +53,7 @@ import {
   LegacyWebSearchServerTool$inboundSchema,
 } from "./legacywebsearchservertool.js";
 import { McpServerTool, McpServerTool$inboundSchema } from "./mcpservertool.js";
+import { NamespaceTool, NamespaceTool$inboundSchema } from "./namespacetool.js";
 import {
   OpenAIResponsesResponseStatus,
   OpenAIResponsesResponseStatus$inboundSchema,
@@ -86,6 +87,10 @@ import {
   TextExtendedConfig,
   TextExtendedConfig$inboundSchema,
 } from "./textextendedconfig.js";
+import {
+  ToolSearchTool,
+  ToolSearchTool$inboundSchema,
+} from "./toolsearchtool.js";
 import { Truncation, Truncation$inboundSchema } from "./truncation.js";
 import { Usage, Usage$inboundSchema } from "./usage.js";
 import {
@@ -104,6 +109,7 @@ export type OpenResponsesResultObject = ClosedEnum<
  * Function tool definition
  */
 export type OpenResponsesResultToolFunction = {
+  deferLoading?: boolean | undefined;
   description?: string | null | undefined;
   name: string;
   parameters: { [k: string]: any | null } | null;
@@ -126,6 +132,8 @@ export type OpenResponsesResultToolUnion =
   | ShellServerTool
   | ApplyPatchServerTool
   | CustomTool
+  | NamespaceTool
+  | ToolSearchTool
   | discriminatedUnionTypes.Unknown<"type">;
 
 /**
@@ -184,6 +192,8 @@ export type OpenResponsesResult = {
     | ShellServerTool
     | ApplyPatchServerTool
     | CustomTool
+    | NamespaceTool
+    | ToolSearchTool
     | discriminatedUnionTypes.Unknown<"type">
   >;
   topLogprobs?: number | null | undefined;
@@ -206,11 +216,16 @@ export const OpenResponsesResultToolFunction$inboundSchema: z.ZodType<
   OpenResponsesResultToolFunction,
   unknown
 > = z.object({
+  defer_loading: z.boolean().optional(),
   description: z.nullable(z.string()).optional(),
   name: z.string(),
   parameters: z.nullable(z.record(z.string(), z.nullable(z.any()))),
   strict: z.nullable(z.boolean()).optional(),
   type: z.literal("function"),
+}).transform((v) => {
+  return remap$(v, {
+    "defer_loading": "deferLoading",
+  });
 });
 
 export function openResponsesResultToolFunctionFromJSON(
@@ -243,6 +258,8 @@ export const OpenResponsesResultToolUnion$inboundSchema: z.ZodType<
   shell: ShellServerTool$inboundSchema,
   apply_patch: ApplyPatchServerTool$inboundSchema,
   custom: CustomTool$inboundSchema,
+  namespace: NamespaceTool$inboundSchema,
+  tool_search: ToolSearchTool$inboundSchema,
 });
 
 export function openResponsesResultToolUnionFromJSON(
@@ -304,6 +321,8 @@ export const OpenResponsesResult$inboundSchema: z.ZodType<
     shell: ShellServerTool$inboundSchema,
     apply_patch: ApplyPatchServerTool$inboundSchema,
     custom: CustomTool$inboundSchema,
+    namespace: NamespaceTool$inboundSchema,
+    tool_search: ToolSearchTool$inboundSchema,
   })),
   top_logprobs: z.nullable(z.int()).optional(),
   top_p: z.nullable(z.number()),

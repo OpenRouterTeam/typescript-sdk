@@ -14,6 +14,7 @@ let value: OpenAIResponseInputMessageItem = {
   ],
   id: "msg-abc123",
   role: "user",
+  type: "message",
 };
 ```
 
@@ -24,4 +25,4 @@ let value: OpenAIResponseInputMessageItem = {
 | `content`                                                                                    | *models.OpenAIResponseInputMessageItemContent*[]                                             | :heavy_check_mark:                                                                           | N/A                                                                                          |
 | `id`                                                                                         | *string*                                                                                     | :heavy_check_mark:                                                                           | N/A                                                                                          |
 | `role`                                                                                       | *models.OpenAIResponseInputMessageItemRoleUnion*                                             | :heavy_check_mark:                                                                           | N/A                                                                                          |
-| `type`                                                                                       | [models.OpenAIResponseInputMessageItemType](../models/openairesponseinputmessageitemtype.md) | :heavy_minus_sign:                                                                           | N/A                                                                                          |
+| `type`                                                                                       | [models.OpenAIResponseInputMessageItemType](../models/openairesponseinputmessageitemtype.md) | :heavy_check_mark:                                                                           | N/A                                                                                          |
