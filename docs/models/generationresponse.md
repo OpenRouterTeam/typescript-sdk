@@ -36,6 +36,7 @@ let value: GenerationResponse = {
     origin: "https://openrouter.ai/",
     providerName: "Infermatic",
     providerResponses: null,
+    responseCacheSourceId: "<id>",
     router: "openrouter/auto",
     streamed: true,
     tokensCompletion: 25,
