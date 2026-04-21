@@ -115,6 +115,10 @@ export type GenerationResponseData = {
    */
   nativeTokensReasoning: number | null;
   /**
+   * Number of web fetches performed
+   */
+  numFetches: number | null;
+  /**
    * Number of audio inputs in the prompt
    */
   numInputAudioPrompt: number | null;
@@ -146,6 +150,10 @@ export type GenerationResponseData = {
    * Unique identifier grouping all generations from a single API request
    */
   requestId?: string | null | undefined;
+  /**
+   * If this generation was served from response cache, contains the original generation ID. Null otherwise.
+   */
+  responseCacheSourceId?: string | null | undefined;
   /**
    * Router used for the request (e.g., openrouter/auto)
    */
@@ -231,6 +239,7 @@ export const GenerationResponseData$inboundSchema: z.ZodType<
   native_tokens_completion_images: z.nullable(z.int()),
   native_tokens_prompt: z.nullable(z.int()),
   native_tokens_reasoning: z.nullable(z.int()),
+  num_fetches: z.nullable(z.int()),
   num_input_audio_prompt: z.nullable(z.int()),
   num_media_completion: z.nullable(z.int()),
   num_media_prompt: z.nullable(z.int()),
@@ -239,6 +248,7 @@ export const GenerationResponseData$inboundSchema: z.ZodType<
   provider_name: z.nullable(z.string()),
   provider_responses: z.nullable(z.array(ProviderResponse$inboundSchema)),
   request_id: z.nullable(z.string()).optional(),
+  response_cache_source_id: z.nullable(z.string()).optional(),
   router: z.nullable(z.string()),
   session_id: z.nullable(z.string()).optional(),
   streamed: z.nullable(z.boolean()),
@@ -268,6 +278,7 @@ export const GenerationResponseData$inboundSchema: z.ZodType<
     "native_tokens_completion_images": "nativeTokensCompletionImages",
     "native_tokens_prompt": "nativeTokensPrompt",
     "native_tokens_reasoning": "nativeTokensReasoning",
+    "num_fetches": "numFetches",
     "num_input_audio_prompt": "numInputAudioPrompt",
     "num_media_completion": "numMediaCompletion",
     "num_media_prompt": "numMediaPrompt",
@@ -275,6 +286,7 @@ export const GenerationResponseData$inboundSchema: z.ZodType<
     "provider_name": "providerName",
     "provider_responses": "providerResponses",
     "request_id": "requestId",
+    "response_cache_source_id": "responseCacheSourceId",
     "session_id": "sessionId",
     "tokens_completion": "tokensCompletion",
     "tokens_prompt": "tokensPrompt",
