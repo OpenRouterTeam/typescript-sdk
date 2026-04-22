@@ -10,6 +10,10 @@ import { discriminatedUnion } from "../types/discriminatedUnion.js";
 import { Result as SafeParseResult } from "../types/fp.js";
 import { SDKValidationError } from "./errors/sdkvalidationerror.js";
 import {
+  OutputAdvisorServerToolItem,
+  OutputAdvisorServerToolItem$inboundSchema,
+} from "./outputadvisorservertoolitem.js";
+import {
   OutputApplyPatchServerToolItem,
   OutputApplyPatchServerToolItem$inboundSchema,
 } from "./outputapplypatchservertoolitem.js";
@@ -108,6 +112,7 @@ export type OutputItems =
   | (OutputFunctionCallItem & { type: "function_call" })
   | (OutputImageGenerationCallItem & { type: "image_generation_call" })
   | OutputMessageItem
+  | OutputAdvisorServerToolItem
   | OutputApplyPatchServerToolItem
   | OutputBashServerToolItem
   | OutputBrowserUseServerToolItem
@@ -141,6 +146,7 @@ export const OutputItems$inboundSchema: z.ZodType<OutputItems, unknown> =
       z.object({ type: z.literal("image_generation_call") }),
     ),
     message: OutputMessageItem$inboundSchema,
+    ["openrouter:advisor"]: OutputAdvisorServerToolItem$inboundSchema,
     ["openrouter:apply_patch"]: OutputApplyPatchServerToolItem$inboundSchema,
     ["openrouter:bash"]: OutputBashServerToolItem$inboundSchema,
     ["openrouter:browser_use"]: OutputBrowserUseServerToolItem$inboundSchema,
