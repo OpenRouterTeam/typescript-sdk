@@ -169,6 +169,14 @@ const value: models.ChatSearchModelsServerTool = {
 };
 ```
 
+### `models.WebFetchServerToolOpenRouter`
+
+```typescript
+const value: models.WebFetchServerToolOpenRouter = {
+  type: "openrouter:web_fetch",
+};
+```
+
 ### `models.WebSearchServerToolOpenRouter`
 
 ```typescript
