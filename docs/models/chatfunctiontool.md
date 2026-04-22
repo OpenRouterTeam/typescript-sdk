@@ -16,6 +16,14 @@ const value: models.ChatFunctionToolFunction = {
 };
 ```
 
+### `models.AdvisorServerTool`
+
+```typescript
+const value: models.AdvisorServerTool = {
+  type: "openrouter:advisor",
+};
+```
+
 ### `models.DatetimeServerTool`
 
 ```typescript
@@ -37,6 +45,14 @@ const value: models.ImageGenerationServerToolOpenRouter = {
 ```typescript
 const value: models.ChatSearchModelsServerTool = {
   type: "openrouter:experimental__search_models",
+};
+```
+
+### `models.WebFetchServerTool`
+
+```typescript
+const value: models.WebFetchServerTool = {
+  type: "openrouter:web_fetch",
 };
 ```
 
