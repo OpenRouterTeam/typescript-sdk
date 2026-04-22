@@ -29,7 +29,6 @@ let value: GenerationResponse = {
     nativeTokensCompletionImages: 0,
     nativeTokensPrompt: 10,
     nativeTokensReasoning: 5,
-    numFetches: 0,
     numInputAudioPrompt: 0,
     numMediaCompletion: 0,
     numMediaPrompt: 1,
