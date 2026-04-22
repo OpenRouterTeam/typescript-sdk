@@ -13,7 +13,11 @@ export type ParetoRouterPlugin = {
   enabled?: boolean | undefined;
   id: "pareto-router";
   /**
-   * Minimum desired coding score between 0 and 1, where 1 is best. Higher values select from stronger coding models (sourced from Artificial Analysis coding percentiles). Maps internally to one of three tiers (low, medium, high). Omit to use the router default tier.
+   * Minimum desired classification score between 0 and 1, where 1 is best. Higher values select from stronger classification models. Maps internally to one of three tiers (low, medium, high). Omit to use the router default tier. Only used with openrouter/pareto-classification.
+   */
+  minClassificationScore?: number | undefined;
+  /**
+   * Minimum desired coding score between 0 and 1, where 1 is best. Higher values select from stronger coding models (sourced from Artificial Analysis coding percentiles). Maps internally to one of three tiers (low, medium, high). Omit to use the router default tier. Only used with openrouter/pareto-code.
    */
   minCodingScore?: number | undefined;
 };
@@ -22,6 +26,7 @@ export type ParetoRouterPlugin = {
 export type ParetoRouterPlugin$Outbound = {
   enabled?: boolean | undefined;
   id: "pareto-router";
+  min_classification_score?: number | undefined;
   min_coding_score?: number | undefined;
 };
 
@@ -32,9 +37,11 @@ export const ParetoRouterPlugin$outboundSchema: z.ZodType<
 > = z.object({
   enabled: z.boolean().optional(),
   id: z.literal("pareto-router"),
+  minClassificationScore: z.number().optional(),
   minCodingScore: z.number().optional(),
 }).transform((v) => {
   return remap$(v, {
+    minClassificationScore: "min_classification_score",
     minCodingScore: "min_coding_score",
   });
 });
