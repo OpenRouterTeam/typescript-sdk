@@ -115,10 +115,6 @@ export type GenerationResponseData = {
    */
   nativeTokensReasoning: number | null;
   /**
-   * Number of web fetches performed
-   */
-  numFetches: number | null;
-  /**
    * Number of audio inputs in the prompt
    */
   numInputAudioPrompt: number | null;
@@ -235,7 +231,6 @@ export const GenerationResponseData$inboundSchema: z.ZodType<
   native_tokens_completion_images: z.nullable(z.int()),
   native_tokens_prompt: z.nullable(z.int()),
   native_tokens_reasoning: z.nullable(z.int()),
-  num_fetches: z.nullable(z.int()),
   num_input_audio_prompt: z.nullable(z.int()),
   num_media_completion: z.nullable(z.int()),
   num_media_prompt: z.nullable(z.int()),
@@ -273,7 +268,6 @@ export const GenerationResponseData$inboundSchema: z.ZodType<
     "native_tokens_completion_images": "nativeTokensCompletionImages",
     "native_tokens_prompt": "nativeTokensPrompt",
     "native_tokens_reasoning": "nativeTokensReasoning",
-    "num_fetches": "numFetches",
     "num_input_audio_prompt": "numInputAudioPrompt",
     "num_media_completion": "numMediaCompletion",
     "num_media_prompt": "numMediaPrompt",
