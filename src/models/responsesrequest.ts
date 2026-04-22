@@ -165,6 +165,11 @@ import {
   TraceConfig$outboundSchema,
 } from "./traceconfig.js";
 import {
+  WebFetchServerTool,
+  WebFetchServerTool$Outbound,
+  WebFetchServerTool$outboundSchema,
+} from "./webfetchservertool.js";
+import {
   WebSearchPlugin,
   WebSearchPlugin$Outbound,
   WebSearchPlugin$outboundSchema,
@@ -233,6 +238,7 @@ export type ResponsesRequestToolUnion =
   | (ChatSearchModelsServerTool & {
     type: "openrouter:experimental__search_models";
   })
+  | (WebFetchServerTool & { type: "openrouter:web_fetch" })
   | WebSearchServerToolOpenRouter;
 
 /**
@@ -327,6 +333,7 @@ export type ResponsesRequest = {
       | (ChatSearchModelsServerTool & {
         type: "openrouter:experimental__search_models";
       })
+      | (WebFetchServerTool & { type: "openrouter:web_fetch" })
       | WebSearchServerToolOpenRouter
     >
     | undefined;
@@ -436,6 +443,7 @@ export type ResponsesRequestToolUnion$Outbound =
   | (ChatSearchModelsServerTool$Outbound & {
     type: "openrouter:experimental__search_models";
   })
+  | (WebFetchServerTool$Outbound & { type: "openrouter:web_fetch" })
   | WebSearchServerToolOpenRouter$Outbound;
 
 /** @internal */
@@ -465,6 +473,9 @@ export const ResponsesRequestToolUnion$outboundSchema: z.ZodType<
   ),
   ChatSearchModelsServerTool$outboundSchema.and(
     z.object({ type: z.literal("openrouter:experimental__search_models") }),
+  ),
+  WebFetchServerTool$outboundSchema.and(
+    z.object({ type: z.literal("openrouter:web_fetch") }),
   ),
   WebSearchServerToolOpenRouter$outboundSchema,
 ]);
@@ -540,6 +551,7 @@ export type ResponsesRequest$Outbound = {
       | (ChatSearchModelsServerTool$Outbound & {
         type: "openrouter:experimental__search_models";
       })
+      | (WebFetchServerTool$Outbound & { type: "openrouter:web_fetch" })
       | WebSearchServerToolOpenRouter$Outbound
     >
     | undefined;
@@ -620,6 +632,9 @@ export const ResponsesRequest$outboundSchema: z.ZodType<
       ),
       ChatSearchModelsServerTool$outboundSchema.and(
         z.object({ type: z.literal("openrouter:experimental__search_models") }),
+      ),
+      WebFetchServerTool$outboundSchema.and(
+        z.object({ type: z.literal("openrouter:web_fetch") }),
       ),
       WebSearchServerToolOpenRouter$outboundSchema,
     ]),
