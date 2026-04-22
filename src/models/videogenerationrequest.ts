@@ -110,6 +110,7 @@ export type VideoGenerationRequestOptions = {
   morph?: { [k: string]: any | null } | undefined;
   ncompass?: { [k: string]: any | null } | undefined;
   nebius?: { [k: string]: any | null } | undefined;
+  nexAgi?: { [k: string]: any | null } | undefined;
   nextbit?: { [k: string]: any | null } | undefined;
   nineteen?: { [k: string]: any | null } | undefined;
   novita?: { [k: string]: any | null } | undefined;
@@ -292,6 +293,7 @@ export type VideoGenerationRequestOptions$Outbound = {
   morph?: { [k: string]: any | null } | undefined;
   ncompass?: { [k: string]: any | null } | undefined;
   nebius?: { [k: string]: any | null } | undefined;
+  "nex-agi"?: { [k: string]: any | null } | undefined;
   nextbit?: { [k: string]: any | null } | undefined;
   nineteen?: { [k: string]: any | null } | undefined;
   novita?: { [k: string]: any | null } | undefined;
@@ -406,6 +408,7 @@ export const VideoGenerationRequestOptions$outboundSchema: z.ZodType<
   morph: z.record(z.string(), z.nullable(z.any())).optional(),
   ncompass: z.record(z.string(), z.nullable(z.any())).optional(),
   nebius: z.record(z.string(), z.nullable(z.any())).optional(),
+  nexAgi: z.record(z.string(), z.nullable(z.any())).optional(),
   nextbit: z.record(z.string(), z.nullable(z.any())).optional(),
   nineteen: z.record(z.string(), z.nullable(z.any())).optional(),
   novita: z.record(z.string(), z.nullable(z.any())).optional(),
@@ -459,6 +462,7 @@ export const VideoGenerationRequestOptions$outboundSchema: z.ZodType<
     ioNet: "io-net",
     lynnPrivate: "lynn-private",
     mancerOld: "mancer-old",
+    nexAgi: "nex-agi",
     openInference: "open-inference",
     sambanovaCloaked: "sambanova-cloaked",
     sfCompute: "sf-compute",
