@@ -8,6 +8,11 @@ import { remap as remap$ } from "../lib/primitives.js";
 import * as openEnums from "../types/enums.js";
 import { OpenEnum } from "../types/enums.js";
 import {
+  AdvisorServerTool,
+  AdvisorServerTool$Outbound,
+  AdvisorServerTool$outboundSchema,
+} from "./advisorservertool.js";
+import {
   ApplyPatchServerTool,
   ApplyPatchServerTool$Outbound,
   ApplyPatchServerTool$outboundSchema,
@@ -165,6 +170,11 @@ import {
   TraceConfig$outboundSchema,
 } from "./traceconfig.js";
 import {
+  WebFetchServerTool,
+  WebFetchServerTool$Outbound,
+  WebFetchServerTool$outboundSchema,
+} from "./webfetchservertool.js";
+import {
   WebSearchPlugin,
   WebSearchPlugin$Outbound,
   WebSearchPlugin$outboundSchema,
@@ -226,6 +236,7 @@ export type ResponsesRequestToolUnion =
   | ShellServerTool
   | ApplyPatchServerTool
   | CustomTool
+  | (AdvisorServerTool & { type: "openrouter:advisor" })
   | (DatetimeServerTool & { type: "openrouter:datetime" })
   | (ImageGenerationServerToolOpenRouter & {
     type: "openrouter:image_generation";
@@ -233,6 +244,7 @@ export type ResponsesRequestToolUnion =
   | (ChatSearchModelsServerTool & {
     type: "openrouter:experimental__search_models";
   })
+  | (WebFetchServerTool & { type: "openrouter:web_fetch" })
   | WebSearchServerToolOpenRouter;
 
 /**
@@ -320,6 +332,7 @@ export type ResponsesRequest = {
       | ShellServerTool
       | ApplyPatchServerTool
       | CustomTool
+      | (AdvisorServerTool & { type: "openrouter:advisor" })
       | (DatetimeServerTool & { type: "openrouter:datetime" })
       | (ImageGenerationServerToolOpenRouter & {
         type: "openrouter:image_generation";
@@ -327,6 +340,7 @@ export type ResponsesRequest = {
       | (ChatSearchModelsServerTool & {
         type: "openrouter:experimental__search_models";
       })
+      | (WebFetchServerTool & { type: "openrouter:web_fetch" })
       | WebSearchServerToolOpenRouter
     >
     | undefined;
@@ -429,6 +443,7 @@ export type ResponsesRequestToolUnion$Outbound =
   | ShellServerTool$Outbound
   | ApplyPatchServerTool$Outbound
   | CustomTool$Outbound
+  | (AdvisorServerTool$Outbound & { type: "openrouter:advisor" })
   | (DatetimeServerTool$Outbound & { type: "openrouter:datetime" })
   | (ImageGenerationServerToolOpenRouter$Outbound & {
     type: "openrouter:image_generation";
@@ -436,6 +451,7 @@ export type ResponsesRequestToolUnion$Outbound =
   | (ChatSearchModelsServerTool$Outbound & {
     type: "openrouter:experimental__search_models";
   })
+  | (WebFetchServerTool$Outbound & { type: "openrouter:web_fetch" })
   | WebSearchServerToolOpenRouter$Outbound;
 
 /** @internal */
@@ -457,6 +473,9 @@ export const ResponsesRequestToolUnion$outboundSchema: z.ZodType<
   ShellServerTool$outboundSchema,
   ApplyPatchServerTool$outboundSchema,
   CustomTool$outboundSchema,
+  AdvisorServerTool$outboundSchema.and(
+    z.object({ type: z.literal("openrouter:advisor") }),
+  ),
   DatetimeServerTool$outboundSchema.and(
     z.object({ type: z.literal("openrouter:datetime") }),
   ),
@@ -465,6 +484,9 @@ export const ResponsesRequestToolUnion$outboundSchema: z.ZodType<
   ),
   ChatSearchModelsServerTool$outboundSchema.and(
     z.object({ type: z.literal("openrouter:experimental__search_models") }),
+  ),
+  WebFetchServerTool$outboundSchema.and(
+    z.object({ type: z.literal("openrouter:web_fetch") }),
   ),
   WebSearchServerToolOpenRouter$outboundSchema,
 ]);
@@ -533,6 +555,7 @@ export type ResponsesRequest$Outbound = {
       | ShellServerTool$Outbound
       | ApplyPatchServerTool$Outbound
       | CustomTool$Outbound
+      | (AdvisorServerTool$Outbound & { type: "openrouter:advisor" })
       | (DatetimeServerTool$Outbound & { type: "openrouter:datetime" })
       | (ImageGenerationServerToolOpenRouter$Outbound & {
         type: "openrouter:image_generation";
@@ -540,6 +563,7 @@ export type ResponsesRequest$Outbound = {
       | (ChatSearchModelsServerTool$Outbound & {
         type: "openrouter:experimental__search_models";
       })
+      | (WebFetchServerTool$Outbound & { type: "openrouter:web_fetch" })
       | WebSearchServerToolOpenRouter$Outbound
     >
     | undefined;
@@ -612,6 +636,9 @@ export const ResponsesRequest$outboundSchema: z.ZodType<
       ShellServerTool$outboundSchema,
       ApplyPatchServerTool$outboundSchema,
       CustomTool$outboundSchema,
+      AdvisorServerTool$outboundSchema.and(
+        z.object({ type: z.literal("openrouter:advisor") }),
+      ),
       DatetimeServerTool$outboundSchema.and(
         z.object({ type: z.literal("openrouter:datetime") }),
       ),
@@ -620,6 +647,9 @@ export const ResponsesRequest$outboundSchema: z.ZodType<
       ),
       ChatSearchModelsServerTool$outboundSchema.and(
         z.object({ type: z.literal("openrouter:experimental__search_models") }),
+      ),
+      WebFetchServerTool$outboundSchema.and(
+        z.object({ type: z.literal("openrouter:web_fetch") }),
       ),
       WebSearchServerToolOpenRouter$outboundSchema,
     ]),

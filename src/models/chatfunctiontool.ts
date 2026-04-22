@@ -7,6 +7,11 @@ import * as z from "zod/v4";
 import { remap as remap$ } from "../lib/primitives.js";
 import { ClosedEnum } from "../types/enums.js";
 import {
+  AdvisorServerTool,
+  AdvisorServerTool$Outbound,
+  AdvisorServerTool$outboundSchema,
+} from "./advisorservertool.js";
+import {
   ChatContentCacheControl,
   ChatContentCacheControl$Outbound,
   ChatContentCacheControl$outboundSchema,
@@ -36,6 +41,11 @@ import {
   OpenRouterWebSearchServerTool$Outbound,
   OpenRouterWebSearchServerTool$outboundSchema,
 } from "./openrouterwebsearchservertool.js";
+import {
+  WebFetchServerTool,
+  WebFetchServerTool$Outbound,
+  WebFetchServerTool$outboundSchema,
+} from "./webfetchservertool.js";
 
 /**
  * Function definition for tool calling
@@ -81,9 +91,11 @@ export type ChatFunctionToolFunction = {
  */
 export type ChatFunctionTool =
   | ChatFunctionToolFunction
+  | AdvisorServerTool
   | DatetimeServerTool
   | ImageGenerationServerToolOpenRouter
   | ChatSearchModelsServerTool
+  | WebFetchServerTool
   | OpenRouterWebSearchServerTool
   | ChatWebSearchShorthand;
 
@@ -153,9 +165,11 @@ export function chatFunctionToolFunctionToJSON(
 /** @internal */
 export type ChatFunctionTool$Outbound =
   | ChatFunctionToolFunction$Outbound
+  | AdvisorServerTool$Outbound
   | DatetimeServerTool$Outbound
   | ImageGenerationServerToolOpenRouter$Outbound
   | ChatSearchModelsServerTool$Outbound
+  | WebFetchServerTool$Outbound
   | OpenRouterWebSearchServerTool$Outbound
   | ChatWebSearchShorthand$Outbound;
 
@@ -165,9 +179,11 @@ export const ChatFunctionTool$outboundSchema: z.ZodType<
   ChatFunctionTool
 > = z.union([
   z.lazy(() => ChatFunctionToolFunction$outboundSchema),
+  AdvisorServerTool$outboundSchema,
   DatetimeServerTool$outboundSchema,
   ImageGenerationServerToolOpenRouter$outboundSchema,
   ChatSearchModelsServerTool$outboundSchema,
+  WebFetchServerTool$outboundSchema,
   OpenRouterWebSearchServerTool$outboundSchema,
   ChatWebSearchShorthand$outboundSchema,
 ]);

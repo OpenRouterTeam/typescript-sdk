@@ -5,6 +5,8 @@
 
 export * from "./activityitem.js";
 export * from "./activityresponse.js";
+export * from "./advisorservertool.js";
+export * from "./advisorservertoolconfig.js";
 export * from "./annotationaddedevent.js";
 export * from "./anthropiccachecontroldirective.js";
 export * from "./anthropiccachecontrolttl.js";
@@ -163,6 +165,7 @@ export * from "./openresponsescreatedevent.js";
 export * from "./openresponsesinprogressevent.js";
 export * from "./openresponsesresult.js";
 export * from "./openrouterwebsearchservertool.js";
+export * from "./outputadvisorservertoolitem.js";
 export * from "./outputapplypatchservertoolitem.js";
 export * from "./outputbashservertoolitem.js";
 export * from "./outputbrowseruseservertoolitem.js";
@@ -277,6 +280,9 @@ export * from "./videogenerationresponse.js";
 export * from "./videogenerationusage.js";
 export * from "./videomodel.js";
 export * from "./videomodelslistresponse.js";
+export * from "./webfetchengineenum.js";
+export * from "./webfetchservertool.js";
+export * from "./webfetchservertoolconfig.js";
 export * from "./websearchcallcompletedevent.js";
 export * from "./websearchcallinprogressevent.js";
 export * from "./websearchcallsearchingevent.js";
