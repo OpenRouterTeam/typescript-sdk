@@ -36,6 +36,16 @@ import {
   OpenRouterWebSearchServerTool$Outbound,
   OpenRouterWebSearchServerTool$outboundSchema,
 } from "./openrouterwebsearchservertool.js";
+import {
+  ToolSearchServerTool,
+  ToolSearchServerTool$Outbound,
+  ToolSearchServerTool$outboundSchema,
+} from "./toolsearchservertool.js";
+import {
+  WebFetchServerTool,
+  WebFetchServerTool$Outbound,
+  WebFetchServerTool$outboundSchema,
+} from "./webfetchservertool.js";
 
 /**
  * Function definition for tool calling
@@ -84,6 +94,8 @@ export type ChatFunctionTool =
   | DatetimeServerTool
   | ImageGenerationServerToolOpenRouter
   | ChatSearchModelsServerTool
+  | ToolSearchServerTool
+  | WebFetchServerTool
   | OpenRouterWebSearchServerTool
   | ChatWebSearchShorthand;
 
@@ -156,6 +168,8 @@ export type ChatFunctionTool$Outbound =
   | DatetimeServerTool$Outbound
   | ImageGenerationServerToolOpenRouter$Outbound
   | ChatSearchModelsServerTool$Outbound
+  | ToolSearchServerTool$Outbound
+  | WebFetchServerTool$Outbound
   | OpenRouterWebSearchServerTool$Outbound
   | ChatWebSearchShorthand$Outbound;
 
@@ -168,6 +182,8 @@ export const ChatFunctionTool$outboundSchema: z.ZodType<
   DatetimeServerTool$outboundSchema,
   ImageGenerationServerToolOpenRouter$outboundSchema,
   ChatSearchModelsServerTool$outboundSchema,
+  ToolSearchServerTool$outboundSchema,
+  WebFetchServerTool$outboundSchema,
   OpenRouterWebSearchServerTool$outboundSchema,
   ChatWebSearchShorthand$outboundSchema,
 ]);
