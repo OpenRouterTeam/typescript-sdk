@@ -32,10 +32,20 @@ import {
   ImageGenerationServerToolOpenRouter$outboundSchema,
 } from "./imagegenerationservertoolopenrouter.js";
 import {
+  McpServerToolOpenRouter,
+  McpServerToolOpenRouter$Outbound,
+  McpServerToolOpenRouter$outboundSchema,
+} from "./mcpservertoolopenrouter.js";
+import {
   OpenRouterWebSearchServerTool,
   OpenRouterWebSearchServerTool$Outbound,
   OpenRouterWebSearchServerTool$outboundSchema,
 } from "./openrouterwebsearchservertool.js";
+import {
+  WebFetchServerTool,
+  WebFetchServerTool$Outbound,
+  WebFetchServerTool$outboundSchema,
+} from "./webfetchservertool.js";
 
 /**
  * Function definition for tool calling
@@ -83,7 +93,9 @@ export type ChatFunctionTool =
   | ChatFunctionToolFunction
   | DatetimeServerTool
   | ImageGenerationServerToolOpenRouter
+  | McpServerToolOpenRouter
   | ChatSearchModelsServerTool
+  | WebFetchServerTool
   | OpenRouterWebSearchServerTool
   | ChatWebSearchShorthand;
 
@@ -155,7 +167,9 @@ export type ChatFunctionTool$Outbound =
   | ChatFunctionToolFunction$Outbound
   | DatetimeServerTool$Outbound
   | ImageGenerationServerToolOpenRouter$Outbound
+  | McpServerToolOpenRouter$Outbound
   | ChatSearchModelsServerTool$Outbound
+  | WebFetchServerTool$Outbound
   | OpenRouterWebSearchServerTool$Outbound
   | ChatWebSearchShorthand$Outbound;
 
@@ -167,7 +181,9 @@ export const ChatFunctionTool$outboundSchema: z.ZodType<
   z.lazy(() => ChatFunctionToolFunction$outboundSchema),
   DatetimeServerTool$outboundSchema,
   ImageGenerationServerToolOpenRouter$outboundSchema,
+  McpServerToolOpenRouter$outboundSchema,
   ChatSearchModelsServerTool$outboundSchema,
+  WebFetchServerTool$outboundSchema,
   OpenRouterWebSearchServerTool$outboundSchema,
   ChatWebSearchShorthand$outboundSchema,
 ]);
