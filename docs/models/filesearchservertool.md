@@ -19,7 +19,7 @@ let value: FileSearchServerTool = {
 
 | Field                                                | Type                                                 | Required                                             | Description                                          |
 | ---------------------------------------------------- | ---------------------------------------------------- | ---------------------------------------------------- | ---------------------------------------------------- |
-| `filters`                                            | *models.FiltersUnion*                                | :heavy_minus_sign:                                   | N/A                                                  |
+| `filters`                                            | *models.FileSearchServerToolFiltersUnion*            | :heavy_minus_sign:                                   | N/A                                                  |
 | `maxNumResults`                                      | *number*                                             | :heavy_minus_sign:                                   | N/A                                                  |
 | `rankingOptions`                                     | [models.RankingOptions](../models/rankingoptions.md) | :heavy_minus_sign:                                   | N/A                                                  |
 | `type`                                               | *"file_search"*                                      | :heavy_check_mark:                                   | N/A                                                  |

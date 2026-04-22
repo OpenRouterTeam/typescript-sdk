@@ -63,6 +63,11 @@ import {
   FileSearchServerTool$outboundSchema,
 } from "./filesearchservertool.js";
 import {
+  FileSearchServerToolOpenRouter,
+  FileSearchServerToolOpenRouter$Outbound,
+  FileSearchServerToolOpenRouter$outboundSchema,
+} from "./filesearchservertoolopenrouter.js";
+import {
   ImageConfig,
   ImageConfig$Outbound,
   ImageConfig$outboundSchema,
@@ -165,6 +170,11 @@ import {
   TraceConfig$outboundSchema,
 } from "./traceconfig.js";
 import {
+  WebFetchServerTool,
+  WebFetchServerTool$Outbound,
+  WebFetchServerTool$outboundSchema,
+} from "./webfetchservertool.js";
+import {
   WebSearchPlugin,
   WebSearchPlugin$Outbound,
   WebSearchPlugin$outboundSchema,
@@ -227,12 +237,14 @@ export type ResponsesRequestToolUnion =
   | ApplyPatchServerTool
   | CustomTool
   | (DatetimeServerTool & { type: "openrouter:datetime" })
+  | (FileSearchServerToolOpenRouter & { type: "openrouter:file_search" })
   | (ImageGenerationServerToolOpenRouter & {
     type: "openrouter:image_generation";
   })
   | (ChatSearchModelsServerTool & {
     type: "openrouter:experimental__search_models";
   })
+  | (WebFetchServerTool & { type: "openrouter:web_fetch" })
   | WebSearchServerToolOpenRouter;
 
 /**
@@ -321,12 +333,14 @@ export type ResponsesRequest = {
       | ApplyPatchServerTool
       | CustomTool
       | (DatetimeServerTool & { type: "openrouter:datetime" })
+      | (FileSearchServerToolOpenRouter & { type: "openrouter:file_search" })
       | (ImageGenerationServerToolOpenRouter & {
         type: "openrouter:image_generation";
       })
       | (ChatSearchModelsServerTool & {
         type: "openrouter:experimental__search_models";
       })
+      | (WebFetchServerTool & { type: "openrouter:web_fetch" })
       | WebSearchServerToolOpenRouter
     >
     | undefined;
@@ -430,12 +444,16 @@ export type ResponsesRequestToolUnion$Outbound =
   | ApplyPatchServerTool$Outbound
   | CustomTool$Outbound
   | (DatetimeServerTool$Outbound & { type: "openrouter:datetime" })
+  | (FileSearchServerToolOpenRouter$Outbound & {
+    type: "openrouter:file_search";
+  })
   | (ImageGenerationServerToolOpenRouter$Outbound & {
     type: "openrouter:image_generation";
   })
   | (ChatSearchModelsServerTool$Outbound & {
     type: "openrouter:experimental__search_models";
   })
+  | (WebFetchServerTool$Outbound & { type: "openrouter:web_fetch" })
   | WebSearchServerToolOpenRouter$Outbound;
 
 /** @internal */
@@ -460,11 +478,17 @@ export const ResponsesRequestToolUnion$outboundSchema: z.ZodType<
   DatetimeServerTool$outboundSchema.and(
     z.object({ type: z.literal("openrouter:datetime") }),
   ),
+  FileSearchServerToolOpenRouter$outboundSchema.and(
+    z.object({ type: z.literal("openrouter:file_search") }),
+  ),
   ImageGenerationServerToolOpenRouter$outboundSchema.and(
     z.object({ type: z.literal("openrouter:image_generation") }),
   ),
   ChatSearchModelsServerTool$outboundSchema.and(
     z.object({ type: z.literal("openrouter:experimental__search_models") }),
+  ),
+  WebFetchServerTool$outboundSchema.and(
+    z.object({ type: z.literal("openrouter:web_fetch") }),
   ),
   WebSearchServerToolOpenRouter$outboundSchema,
 ]);
@@ -534,12 +558,16 @@ export type ResponsesRequest$Outbound = {
       | ApplyPatchServerTool$Outbound
       | CustomTool$Outbound
       | (DatetimeServerTool$Outbound & { type: "openrouter:datetime" })
+      | (FileSearchServerToolOpenRouter$Outbound & {
+        type: "openrouter:file_search";
+      })
       | (ImageGenerationServerToolOpenRouter$Outbound & {
         type: "openrouter:image_generation";
       })
       | (ChatSearchModelsServerTool$Outbound & {
         type: "openrouter:experimental__search_models";
       })
+      | (WebFetchServerTool$Outbound & { type: "openrouter:web_fetch" })
       | WebSearchServerToolOpenRouter$Outbound
     >
     | undefined;
@@ -615,11 +643,17 @@ export const ResponsesRequest$outboundSchema: z.ZodType<
       DatetimeServerTool$outboundSchema.and(
         z.object({ type: z.literal("openrouter:datetime") }),
       ),
+      FileSearchServerToolOpenRouter$outboundSchema.and(
+        z.object({ type: z.literal("openrouter:file_search") }),
+      ),
       ImageGenerationServerToolOpenRouter$outboundSchema.and(
         z.object({ type: z.literal("openrouter:image_generation") }),
       ),
       ChatSearchModelsServerTool$outboundSchema.and(
         z.object({ type: z.literal("openrouter:experimental__search_models") }),
+      ),
+      WebFetchServerTool$outboundSchema.and(
+        z.object({ type: z.literal("openrouter:web_fetch") }),
       ),
       WebSearchServerToolOpenRouter$outboundSchema,
     ]),

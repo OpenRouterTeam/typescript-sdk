@@ -153,6 +153,14 @@ const value: models.DatetimeServerTool = {
 };
 ```
 
+### `models.FileSearchServerToolOpenRouter`
+
+```typescript
+const value: models.FileSearchServerToolOpenRouter = {
+  type: "openrouter:file_search",
+};
+```
+
 ### `models.ImageGenerationServerToolOpenRouter`
 
 ```typescript
@@ -166,6 +174,14 @@ const value: models.ImageGenerationServerToolOpenRouter = {
 ```typescript
 const value: models.ChatSearchModelsServerTool = {
   type: "openrouter:experimental__search_models",
+};
+```
+
+### `models.WebFetchServerTool`
+
+```typescript
+const value: models.WebFetchServerTool = {
+  type: "openrouter:web_fetch",
 };
 ```
 

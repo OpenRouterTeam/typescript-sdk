@@ -10,7 +10,7 @@ let value: RankingOptions = {};
 
 ## Fields
 
-| Field                                | Type                                 | Required                             | Description                          |
-| ------------------------------------ | ------------------------------------ | ------------------------------------ | ------------------------------------ |
-| `ranker`                             | [models.Ranker](../models/ranker.md) | :heavy_minus_sign:                   | N/A                                  |
-| `scoreThreshold`                     | *number*                             | :heavy_minus_sign:                   | N/A                                  |
+| Field                                                                        | Type                                                                         | Required                                                                     | Description                                                                  |
+| ---------------------------------------------------------------------------- | ---------------------------------------------------------------------------- | ---------------------------------------------------------------------------- | ---------------------------------------------------------------------------- |
+| `ranker`                                                                     | [models.FileSearchServerToolRanker](../models/filesearchservertoolranker.md) | :heavy_minus_sign:                                                           | N/A                                                                          |
+| `scoreThreshold`                                                             | *number*                                                                     | :heavy_minus_sign:                                                           | N/A                                                                          |
