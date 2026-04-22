@@ -23,6 +23,7 @@ export const ApiType = {
   Embeddings: "embeddings",
   Rerank: "rerank",
   Tts: "tts",
+  Transcriptions: "transcriptions",
   Video: "video",
 } as const;
 /**
