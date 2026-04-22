@@ -78,6 +78,10 @@ import {
   OutputSearchModelsServerToolItem$inboundSchema,
 } from "./outputsearchmodelsservertoolitem.js";
 import {
+  OutputSubagentServerToolItem,
+  OutputSubagentServerToolItem$inboundSchema,
+} from "./outputsubagentservertoolitem.js";
+import {
   OutputTextEditorServerToolItem,
   OutputTextEditorServerToolItem$inboundSchema,
 } from "./outputtexteditorservertoolitem.js";
@@ -118,6 +122,7 @@ export type OutputItems =
   | OutputImageGenerationServerToolItem
   | OutputMcpServerToolItem
   | OutputMemoryServerToolItem
+  | OutputSubagentServerToolItem
   | OutputTextEditorServerToolItem
   | OutputToolSearchServerToolItem
   | OutputWebFetchServerToolItem
@@ -156,6 +161,7 @@ export const OutputItems$inboundSchema: z.ZodType<OutputItems, unknown> =
       OutputImageGenerationServerToolItem$inboundSchema,
     ["openrouter:mcp"]: OutputMcpServerToolItem$inboundSchema,
     ["openrouter:memory"]: OutputMemoryServerToolItem$inboundSchema,
+    ["openrouter:subagent"]: OutputSubagentServerToolItem$inboundSchema,
     ["openrouter:text_editor"]: OutputTextEditorServerToolItem$inboundSchema,
     ["openrouter:tool_search"]: OutputToolSearchServerToolItem$inboundSchema,
     ["openrouter:web_fetch"]: OutputWebFetchServerToolItem$inboundSchema,
