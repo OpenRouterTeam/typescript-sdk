@@ -40,6 +40,22 @@ const value: models.ChatSearchModelsServerTool = {
 };
 ```
 
+### `models.ToolSearchServerTool`
+
+```typescript
+const value: models.ToolSearchServerTool = {
+  type: "openrouter:tool_search",
+};
+```
+
+### `models.WebFetchServerTool`
+
+```typescript
+const value: models.WebFetchServerTool = {
+  type: "openrouter:web_fetch",
+};
+```
+
 ### `models.OpenRouterWebSearchServerTool`
 
 ```typescript
