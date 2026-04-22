@@ -169,10 +169,10 @@ const value: models.ChatSearchModelsServerTool = {
 };
 ```
 
-### `models.WebFetchServerTool`
+### `models.WebFetchServerToolOpenRouter`
 
 ```typescript
-const value: models.WebFetchServerTool = {
+const value: models.WebFetchServerToolOpenRouter = {
   type: "openrouter:web_fetch",
 };
 ```

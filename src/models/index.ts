@@ -280,6 +280,7 @@ export * from "./videomodelslistresponse.js";
 export * from "./webfetchengineenum.js";
 export * from "./webfetchservertool.js";
 export * from "./webfetchservertoolconfig.js";
+export * from "./webfetchservertoolopenrouter.js";
 export * from "./websearchcallcompletedevent.js";
 export * from "./websearchcallinprogressevent.js";
 export * from "./websearchcallsearchingevent.js";
