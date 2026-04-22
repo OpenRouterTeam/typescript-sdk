@@ -85,6 +85,7 @@ let value: VideoGenerationRequestOptions = {};
 | `morph`               | Record<string, *any*> | :heavy_minus_sign:    | N/A                   |
 | `ncompass`            | Record<string, *any*> | :heavy_minus_sign:    | N/A                   |
 | `nebius`              | Record<string, *any*> | :heavy_minus_sign:    | N/A                   |
+| `nexAgi`              | Record<string, *any*> | :heavy_minus_sign:    | N/A                   |
 | `nextbit`             | Record<string, *any*> | :heavy_minus_sign:    | N/A                   |
 | `nineteen`            | Record<string, *any*> | :heavy_minus_sign:    | N/A                   |
 | `novita`              | Record<string, *any*> | :heavy_minus_sign:    | N/A                   |
