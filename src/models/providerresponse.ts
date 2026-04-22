@@ -95,6 +95,7 @@ export const ProviderResponseProviderName = {
   Morph: "Morph",
   NCompass: "NCompass",
   Nebius: "Nebius",
+  NexAGI: "Nex AGI",
   NextBit: "NextBit",
   Novita: "Novita",
   Nvidia: "Nvidia",
