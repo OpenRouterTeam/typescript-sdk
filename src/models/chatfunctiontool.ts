@@ -32,6 +32,11 @@ import {
   ImageGenerationServerToolOpenRouter$outboundSchema,
 } from "./imagegenerationservertoolopenrouter.js";
 import {
+  McpServerToolOpenRouter,
+  McpServerToolOpenRouter$Outbound,
+  McpServerToolOpenRouter$outboundSchema,
+} from "./mcpservertoolopenrouter.js";
+import {
   OpenRouterWebSearchServerTool,
   OpenRouterWebSearchServerTool$Outbound,
   OpenRouterWebSearchServerTool$outboundSchema,
@@ -86,6 +91,7 @@ export type ChatFunctionToolFunction = {
  */
 export type ChatFunctionTool =
   | ChatFunctionToolFunction
+  | McpServerToolOpenRouter
   | DatetimeServerTool
   | ImageGenerationServerToolOpenRouter
   | ChatSearchModelsServerTool
@@ -159,6 +165,7 @@ export function chatFunctionToolFunctionToJSON(
 /** @internal */
 export type ChatFunctionTool$Outbound =
   | ChatFunctionToolFunction$Outbound
+  | McpServerToolOpenRouter$Outbound
   | DatetimeServerTool$Outbound
   | ImageGenerationServerToolOpenRouter$Outbound
   | ChatSearchModelsServerTool$Outbound
@@ -172,6 +179,7 @@ export const ChatFunctionTool$outboundSchema: z.ZodType<
   ChatFunctionTool
 > = z.union([
   z.lazy(() => ChatFunctionToolFunction$outboundSchema),
+  McpServerToolOpenRouter$outboundSchema,
   DatetimeServerTool$outboundSchema,
   ImageGenerationServerToolOpenRouter$outboundSchema,
   ChatSearchModelsServerTool$outboundSchema,

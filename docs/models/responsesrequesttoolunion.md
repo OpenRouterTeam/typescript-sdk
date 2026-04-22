@@ -161,6 +161,17 @@ const value: models.ImageGenerationServerToolOpenRouter = {
 };
 ```
 
+### `models.McpServerToolOpenRouter`
+
+```typescript
+const value: models.McpServerToolOpenRouter = {
+  parameters: {
+    serverUrl: "https://example.com/mcp",
+  },
+  type: "openrouter:mcp",
+};
+```
+
 ### `models.ChatSearchModelsServerTool`
 
 ```typescript

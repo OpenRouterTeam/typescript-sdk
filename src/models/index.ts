@@ -142,6 +142,8 @@ export * from "./listkeyassignmentsresponse.js";
 export * from "./listmemberassignmentsresponse.js";
 export * from "./listworkspacesresponse.js";
 export * from "./mcpservertool.js";
+export * from "./mcpservertoolconfig.js";
+export * from "./mcpservertoolopenrouter.js";
 export * from "./memberassignment.js";
 export * from "./model.js";
 export * from "./modelarchitecture.js";
