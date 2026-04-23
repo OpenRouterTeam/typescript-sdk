@@ -16,6 +16,7 @@ import { Guardrails } from "./guardrails.js";
 import { Models } from "./models.js";
 import { OAuth } from "./oauth.js";
 import { Organization } from "./organization.js";
+import { Presets } from "./presets.js";
 import { Providers } from "./providers.js";
 import { Rerank } from "./rerank.js";
 import { Tts } from "./tts.js";
@@ -93,6 +94,11 @@ export class OpenRouter extends ClientSDK {
   private _organization?: Organization;
   get organization(): Organization {
     return (this._organization ??= new Organization(this._options));
+  }
+
+  private _presets?: Presets;
+  get presets(): Presets {
+    return (this._presets ??= new Presets(this._options));
   }
 
   private _providers?: Providers;
