@@ -5,12 +5,21 @@
 
 import * as z from "zod/v4";
 import { safeParse } from "../lib/schemas.js";
+import { ClosedEnum } from "../types/enums.js";
 import { Result as SafeParseResult } from "../types/fp.js";
 import { SDKValidationError } from "./errors/sdkvalidationerror.js";
 import {
   ToolCallStatus,
   ToolCallStatus$inboundSchema,
+  ToolCallStatus$outboundSchema,
 } from "./toolcallstatus.js";
+
+export const OutputImageGenerationServerToolItemType = {
+  OpenrouterImageGeneration: "openrouter:image_generation",
+} as const;
+export type OutputImageGenerationServerToolItemType = ClosedEnum<
+  typeof OutputImageGenerationServerToolItemType
+>;
 
 /**
  * An openrouter:image_generation server tool output item
@@ -25,8 +34,17 @@ export type OutputImageGenerationServerToolItem = {
   result?: string | null | undefined;
   revisedPrompt?: string | undefined;
   status: ToolCallStatus;
-  type: "openrouter:image_generation";
+  type: OutputImageGenerationServerToolItemType;
 };
+
+/** @internal */
+export const OutputImageGenerationServerToolItemType$inboundSchema: z.ZodEnum<
+  typeof OutputImageGenerationServerToolItemType
+> = z.enum(OutputImageGenerationServerToolItemType);
+/** @internal */
+export const OutputImageGenerationServerToolItemType$outboundSchema: z.ZodEnum<
+  typeof OutputImageGenerationServerToolItemType
+> = OutputImageGenerationServerToolItemType$inboundSchema;
 
 /** @internal */
 export const OutputImageGenerationServerToolItem$inboundSchema: z.ZodType<
@@ -39,9 +57,42 @@ export const OutputImageGenerationServerToolItem$inboundSchema: z.ZodType<
   result: z.nullable(z.string()).optional(),
   revisedPrompt: z.string().optional(),
   status: ToolCallStatus$inboundSchema,
-  type: z.literal("openrouter:image_generation"),
+  type: OutputImageGenerationServerToolItemType$inboundSchema,
+});
+/** @internal */
+export type OutputImageGenerationServerToolItem$Outbound = {
+  id?: string | undefined;
+  imageB64?: string | undefined;
+  imageUrl?: string | undefined;
+  result?: string | null | undefined;
+  revisedPrompt?: string | undefined;
+  status: string;
+  type: string;
+};
+
+/** @internal */
+export const OutputImageGenerationServerToolItem$outboundSchema: z.ZodType<
+  OutputImageGenerationServerToolItem$Outbound,
+  OutputImageGenerationServerToolItem
+> = z.object({
+  id: z.string().optional(),
+  imageB64: z.string().optional(),
+  imageUrl: z.string().optional(),
+  result: z.nullable(z.string()).optional(),
+  revisedPrompt: z.string().optional(),
+  status: ToolCallStatus$outboundSchema,
+  type: OutputImageGenerationServerToolItemType$outboundSchema,
 });
 
+export function outputImageGenerationServerToolItemToJSON(
+  outputImageGenerationServerToolItem: OutputImageGenerationServerToolItem,
+): string {
+  return JSON.stringify(
+    OutputImageGenerationServerToolItem$outboundSchema.parse(
+      outputImageGenerationServerToolItem,
+    ),
+  );
+}
 export function outputImageGenerationServerToolItemFromJSON(
   jsonString: string,
 ): SafeParseResult<OutputImageGenerationServerToolItem, SDKValidationError> {
