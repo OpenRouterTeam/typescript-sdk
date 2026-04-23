@@ -5070,6 +5070,18 @@ components:
           maxLength: 500
           nullable: true
           type: string
+        io_logging_api_key_ids:
+          description: Optional array of API key IDs to filter I/O logging
+          example: null
+          items:
+            type: integer
+          nullable: true
+          type: array
+        io_logging_sampling_rate:
+          description: Sampling rate for I/O logging (0.0001-1)
+          example: 1
+          format: double
+          type: number
         is_data_discount_logging_enabled:
           description: Whether data discount logging is enabled
           example: true
@@ -5109,6 +5121,8 @@ components:
           default_text_model: openai/gpt-4o
           description: Production environment workspace
           id: 550e8400-e29b-41d4-a716-446655440000
+          io_logging_api_key_ids: null
+          io_logging_sampling_rate: 1
           is_data_discount_logging_enabled: true
           is_observability_broadcast_enabled: false
           is_observability_io_logging_enabled: false
@@ -6178,6 +6192,8 @@ components:
           default_text_model: openai/gpt-4o
           description: Production environment workspace
           id: 550e8400-e29b-41d4-a716-446655440000
+          io_logging_api_key_ids: null
+          io_logging_sampling_rate: 1
           is_data_discount_logging_enabled: true
           is_observability_broadcast_enabled: false
           is_observability_io_logging_enabled: false
@@ -6792,8 +6808,22 @@ components:
               - $ref: '#/components/schemas/OutputWebSearchCallItem'
               - $ref: '#/components/schemas/OutputFileSearchCallItem'
               - $ref: '#/components/schemas/OutputImageGenerationCallItem'
+              - $ref: '#/components/schemas/OutputCodeInterpreterCallItem'
+              - $ref: '#/components/schemas/OutputComputerCallItem'
               - $ref: '#/components/schemas/OutputDatetimeItem'
               - $ref: '#/components/schemas/OutputWebSearchServerToolItem'
+              - $ref: '#/components/schemas/OutputCodeInterpreterServerToolItem'
+              - $ref: '#/components/schemas/OutputFileSearchServerToolItem'
+              - $ref: '#/components/schemas/OutputImageGenerationServerToolItem'
+              - $ref: '#/components/schemas/OutputBrowserUseServerToolItem'
+              - $ref: '#/components/schemas/OutputBashServerToolItem'
+              - $ref: '#/components/schemas/OutputTextEditorServerToolItem'
+              - $ref: '#/components/schemas/OutputApplyPatchServerToolItem'
+              - $ref: '#/components/schemas/OutputWebFetchServerToolItem'
+              - $ref: '#/components/schemas/OutputToolSearchServerToolItem'
+              - $ref: '#/components/schemas/OutputMemoryServerToolItem'
+              - $ref: '#/components/schemas/OutputMcpServerToolItem'
+              - $ref: '#/components/schemas/OutputSearchModelsServerToolItem'
           type: array
       description: Input for a response request - can be a string or array of items
       example:
@@ -7201,6 +7231,8 @@ components:
             default_text_model: openai/gpt-4o
             description: Production environment workspace
             id: 550e8400-e29b-41d4-a716-446655440000
+            io_logging_api_key_ids: null
+            io_logging_sampling_rate: 1
             is_data_discount_logging_enabled: true
             is_observability_broadcast_enabled: false
             is_observability_io_logging_enabled: false
@@ -13488,6 +13520,18 @@ components:
           maxLength: 500
           nullable: true
           type: string
+        io_logging_api_key_ids:
+          description: Optional array of API key IDs to filter I/O logging
+          example: null
+          items:
+            type: integer
+          nullable: true
+          type: array
+        io_logging_sampling_rate:
+          description: Sampling rate for I/O logging (0.0001-1)
+          example: 1
+          format: double
+          type: number
         is_data_discount_logging_enabled:
           description: Whether data discount logging is enabled
           example: true
@@ -13524,6 +13568,8 @@ components:
           default_text_model: openai/gpt-4o
           description: Production environment workspace
           id: 550e8400-e29b-41d4-a716-446655440000
+          io_logging_api_key_ids: null
+          io_logging_sampling_rate: 1
           is_data_discount_logging_enabled: true
           is_observability_broadcast_enabled: false
           is_observability_io_logging_enabled: false
@@ -14721,6 +14767,8 @@ components:
         default_text_model: openai/gpt-4o
         description: Production environment workspace
         id: 550e8400-e29b-41d4-a716-446655440000
+        io_logging_api_key_ids: null
+        io_logging_sampling_rate: 1
         is_data_discount_logging_enabled: true
         is_observability_broadcast_enabled: false
         is_observability_io_logging_enabled: false
@@ -14762,6 +14810,18 @@ components:
           example: 550e8400-e29b-41d4-a716-446655440000
           format: uuid
           type: string
+        io_logging_api_key_ids:
+          description: Optional array of API key IDs to filter I/O logging. Null means all keys are logged.
+          example: null
+          items:
+            type: integer
+          nullable: true
+          type: array
+        io_logging_sampling_rate:
+          description: Sampling rate for I/O logging (0.0001-1). 1 means 100% of requests are logged.
+          example: 1
+          format: double
+          type: number
         is_data_discount_logging_enabled:
           description: Whether data discount logging is enabled for this workspace
           example: true
@@ -14798,6 +14858,8 @@ components:
         - is_observability_io_logging_enabled
         - is_observability_broadcast_enabled
         - is_data_discount_logging_enabled
+        - io_logging_sampling_rate
+        - io_logging_api_key_ids
         - created_at
         - updated_at
         - created_by
@@ -21077,6 +21139,8 @@ paths:
                     default_text_model: openai/gpt-4o
                     description: Production environment workspace
                     id: 550e8400-e29b-41d4-a716-446655440000
+                    io_logging_api_key_ids: null
+                    io_logging_sampling_rate: 1
                     is_data_discount_logging_enabled: true
                     is_observability_broadcast_enabled: false
                     is_observability_io_logging_enabled: false
@@ -21153,6 +21217,8 @@ paths:
                   default_text_model: openai/gpt-4o
                   description: Production environment workspace
                   id: 550e8400-e29b-41d4-a716-446655440000
+                  io_logging_api_key_ids: null
+                  io_logging_sampling_rate: 1
                   is_data_discount_logging_enabled: true
                   is_observability_broadcast_enabled: false
                   is_observability_io_logging_enabled: false
@@ -21311,6 +21377,8 @@ paths:
                   default_text_model: openai/gpt-4o
                   description: Production environment workspace
                   id: 550e8400-e29b-41d4-a716-446655440000
+                  io_logging_api_key_ids: null
+                  io_logging_sampling_rate: 1
                   is_data_discount_logging_enabled: true
                   is_observability_broadcast_enabled: false
                   is_observability_io_logging_enabled: false
@@ -21391,6 +21459,8 @@ paths:
                   default_text_model: openai/gpt-4o
                   description: Production environment workspace
                   id: 550e8400-e29b-41d4-a716-446655440000
+                  io_logging_api_key_ids: null
+                  io_logging_sampling_rate: 1
                   is_data_discount_logging_enabled: true
                   is_observability_broadcast_enabled: false
                   is_observability_io_logging_enabled: false
