@@ -5,12 +5,21 @@
 
 import * as z from "zod/v4";
 import { safeParse } from "../lib/schemas.js";
+import { ClosedEnum } from "../types/enums.js";
 import { Result as SafeParseResult } from "../types/fp.js";
 import { SDKValidationError } from "./errors/sdkvalidationerror.js";
 import {
   ToolCallStatus,
   ToolCallStatus$inboundSchema,
+  ToolCallStatus$outboundSchema,
 } from "./toolcallstatus.js";
+
+export const OutputCodeInterpreterServerToolItemType = {
+  OpenrouterCodeInterpreter: "openrouter:code_interpreter",
+} as const;
+export type OutputCodeInterpreterServerToolItemType = ClosedEnum<
+  typeof OutputCodeInterpreterServerToolItemType
+>;
 
 /**
  * An openrouter:code_interpreter server tool output item
@@ -23,8 +32,17 @@ export type OutputCodeInterpreterServerToolItem = {
   status: ToolCallStatus;
   stderr?: string | undefined;
   stdout?: string | undefined;
-  type: "openrouter:code_interpreter";
+  type: OutputCodeInterpreterServerToolItemType;
 };
+
+/** @internal */
+export const OutputCodeInterpreterServerToolItemType$inboundSchema: z.ZodEnum<
+  typeof OutputCodeInterpreterServerToolItemType
+> = z.enum(OutputCodeInterpreterServerToolItemType);
+/** @internal */
+export const OutputCodeInterpreterServerToolItemType$outboundSchema: z.ZodEnum<
+  typeof OutputCodeInterpreterServerToolItemType
+> = OutputCodeInterpreterServerToolItemType$inboundSchema;
 
 /** @internal */
 export const OutputCodeInterpreterServerToolItem$inboundSchema: z.ZodType<
@@ -38,9 +56,44 @@ export const OutputCodeInterpreterServerToolItem$inboundSchema: z.ZodType<
   status: ToolCallStatus$inboundSchema,
   stderr: z.string().optional(),
   stdout: z.string().optional(),
-  type: z.literal("openrouter:code_interpreter"),
+  type: OutputCodeInterpreterServerToolItemType$inboundSchema,
+});
+/** @internal */
+export type OutputCodeInterpreterServerToolItem$Outbound = {
+  code?: string | undefined;
+  exitCode?: number | undefined;
+  id?: string | undefined;
+  language?: string | undefined;
+  status: string;
+  stderr?: string | undefined;
+  stdout?: string | undefined;
+  type: string;
+};
+
+/** @internal */
+export const OutputCodeInterpreterServerToolItem$outboundSchema: z.ZodType<
+  OutputCodeInterpreterServerToolItem$Outbound,
+  OutputCodeInterpreterServerToolItem
+> = z.object({
+  code: z.string().optional(),
+  exitCode: z.int().optional(),
+  id: z.string().optional(),
+  language: z.string().optional(),
+  status: ToolCallStatus$outboundSchema,
+  stderr: z.string().optional(),
+  stdout: z.string().optional(),
+  type: OutputCodeInterpreterServerToolItemType$outboundSchema,
 });
 
+export function outputCodeInterpreterServerToolItemToJSON(
+  outputCodeInterpreterServerToolItem: OutputCodeInterpreterServerToolItem,
+): string {
+  return JSON.stringify(
+    OutputCodeInterpreterServerToolItem$outboundSchema.parse(
+      outputCodeInterpreterServerToolItem,
+    ),
+  );
+}
 export function outputCodeInterpreterServerToolItemFromJSON(
   jsonString: string,
 ): SafeParseResult<OutputCodeInterpreterServerToolItem, SDKValidationError> {
