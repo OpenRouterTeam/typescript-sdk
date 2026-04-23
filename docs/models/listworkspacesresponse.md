@@ -15,6 +15,8 @@ let value: ListWorkspacesResponse = {
       defaultTextModel: "openai/gpt-4o",
       description: "Production environment workspace",
       id: "550e8400-e29b-41d4-a716-446655440000",
+      ioLoggingApiKeyIds: null,
+      ioLoggingSamplingRate: 1,
       isDataDiscountLoggingEnabled: true,
       isObservabilityBroadcastEnabled: false,
       isObservabilityIoLoggingEnabled: false,

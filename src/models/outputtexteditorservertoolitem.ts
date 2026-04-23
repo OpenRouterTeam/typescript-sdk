@@ -6,12 +6,13 @@
 import * as z from "zod/v4";
 import { safeParse } from "../lib/schemas.js";
 import * as openEnums from "../types/enums.js";
-import { OpenEnum } from "../types/enums.js";
+import { ClosedEnum, OpenEnum } from "../types/enums.js";
 import { Result as SafeParseResult } from "../types/fp.js";
 import { SDKValidationError } from "./errors/sdkvalidationerror.js";
 import {
   ToolCallStatus,
   ToolCallStatus$inboundSchema,
+  ToolCallStatus$outboundSchema,
 } from "./toolcallstatus.js";
 
 export const Command = {
@@ -22,6 +23,13 @@ export const Command = {
 } as const;
 export type Command = OpenEnum<typeof Command>;
 
+export const OutputTextEditorServerToolItemType = {
+  OpenrouterTextEditor: "openrouter:text_editor",
+} as const;
+export type OutputTextEditorServerToolItemType = ClosedEnum<
+  typeof OutputTextEditorServerToolItemType
+>;
+
 /**
  * An openrouter:text_editor server tool output item
  */
@@ -30,12 +38,24 @@ export type OutputTextEditorServerToolItem = {
   filePath?: string | undefined;
   id?: string | undefined;
   status: ToolCallStatus;
-  type: "openrouter:text_editor";
+  type: OutputTextEditorServerToolItemType;
 };
 
 /** @internal */
 export const Command$inboundSchema: z.ZodType<Command, unknown> = openEnums
   .inboundSchema(Command);
+/** @internal */
+export const Command$outboundSchema: z.ZodType<string, Command> = openEnums
+  .outboundSchema(Command);
+
+/** @internal */
+export const OutputTextEditorServerToolItemType$inboundSchema: z.ZodEnum<
+  typeof OutputTextEditorServerToolItemType
+> = z.enum(OutputTextEditorServerToolItemType);
+/** @internal */
+export const OutputTextEditorServerToolItemType$outboundSchema: z.ZodEnum<
+  typeof OutputTextEditorServerToolItemType
+> = OutputTextEditorServerToolItemType$inboundSchema;
 
 /** @internal */
 export const OutputTextEditorServerToolItem$inboundSchema: z.ZodType<
@@ -46,9 +66,38 @@ export const OutputTextEditorServerToolItem$inboundSchema: z.ZodType<
   filePath: z.string().optional(),
   id: z.string().optional(),
   status: ToolCallStatus$inboundSchema,
-  type: z.literal("openrouter:text_editor"),
+  type: OutputTextEditorServerToolItemType$inboundSchema,
+});
+/** @internal */
+export type OutputTextEditorServerToolItem$Outbound = {
+  command?: string | undefined;
+  filePath?: string | undefined;
+  id?: string | undefined;
+  status: string;
+  type: string;
+};
+
+/** @internal */
+export const OutputTextEditorServerToolItem$outboundSchema: z.ZodType<
+  OutputTextEditorServerToolItem$Outbound,
+  OutputTextEditorServerToolItem
+> = z.object({
+  command: Command$outboundSchema.optional(),
+  filePath: z.string().optional(),
+  id: z.string().optional(),
+  status: ToolCallStatus$outboundSchema,
+  type: OutputTextEditorServerToolItemType$outboundSchema,
 });
 
+export function outputTextEditorServerToolItemToJSON(
+  outputTextEditorServerToolItem: OutputTextEditorServerToolItem,
+): string {
+  return JSON.stringify(
+    OutputTextEditorServerToolItem$outboundSchema.parse(
+      outputTextEditorServerToolItem,
+    ),
+  );
+}
 export function outputTextEditorServerToolItemFromJSON(
   jsonString: string,
 ): SafeParseResult<OutputTextEditorServerToolItem, SDKValidationError> {
