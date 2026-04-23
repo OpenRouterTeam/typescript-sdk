@@ -9,10 +9,15 @@ An output item from the response
 
 ```typescript
 const value: models.OutputCodeInterpreterCallItem = {
-  code: "<value>",
-  containerId: "<id>",
-  id: "msg-abc123",
-  outputs: null,
+  code: "print(\"hello\")",
+  containerId: "ctr-xyz789",
+  id: "ci-abc123",
+  outputs: [
+    {
+      logs: "hello\n",
+      type: "logs",
+    },
+  ],
   status: "completed",
   type: "code_interpreter_call",
 };
@@ -22,7 +27,7 @@ const value: models.OutputCodeInterpreterCallItem = {
 
 ```typescript
 const value: models.OutputComputerCallItem = {
-  callId: "<id>",
+  callId: "call-abc123",
   pendingSafetyChecks: [],
   status: "completed",
   type: "computer_call",
