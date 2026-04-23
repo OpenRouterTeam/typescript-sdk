@@ -24,6 +24,14 @@ export type UpdateWorkspaceRequest = {
    */
   description?: string | null | undefined;
   /**
+   * Optional array of API key IDs to filter I/O logging
+   */
+  ioLoggingApiKeyIds?: Array<number> | null | undefined;
+  /**
+   * Sampling rate for I/O logging (0.0001-1)
+   */
+  ioLoggingSamplingRate?: number | undefined;
+  /**
    * Whether data discount logging is enabled
    */
   isDataDiscountLoggingEnabled?: boolean | undefined;
@@ -51,6 +59,8 @@ export type UpdateWorkspaceRequest$Outbound = {
   default_provider_sort?: string | null | undefined;
   default_text_model?: string | null | undefined;
   description?: string | null | undefined;
+  io_logging_api_key_ids?: Array<number> | null | undefined;
+  io_logging_sampling_rate?: number | undefined;
   is_data_discount_logging_enabled?: boolean | undefined;
   is_observability_broadcast_enabled?: boolean | undefined;
   is_observability_io_logging_enabled?: boolean | undefined;
@@ -67,6 +77,8 @@ export const UpdateWorkspaceRequest$outboundSchema: z.ZodType<
   defaultProviderSort: z.nullable(z.string()).optional(),
   defaultTextModel: z.nullable(z.string()).optional(),
   description: z.nullable(z.string()).optional(),
+  ioLoggingApiKeyIds: z.nullable(z.array(z.int())).optional(),
+  ioLoggingSamplingRate: z.number().optional(),
   isDataDiscountLoggingEnabled: z.boolean().optional(),
   isObservabilityBroadcastEnabled: z.boolean().optional(),
   isObservabilityIoLoggingEnabled: z.boolean().optional(),
@@ -77,6 +89,8 @@ export const UpdateWorkspaceRequest$outboundSchema: z.ZodType<
     defaultImageModel: "default_image_model",
     defaultProviderSort: "default_provider_sort",
     defaultTextModel: "default_text_model",
+    ioLoggingApiKeyIds: "io_logging_api_key_ids",
+    ioLoggingSamplingRate: "io_logging_sampling_rate",
     isDataDiscountLoggingEnabled: "is_data_discount_logging_enabled",
     isObservabilityBroadcastEnabled: "is_observability_broadcast_enabled",
     isObservabilityIoLoggingEnabled: "is_observability_io_logging_enabled",
