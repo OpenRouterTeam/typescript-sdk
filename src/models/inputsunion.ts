@@ -32,6 +32,36 @@ import {
   OpenAIResponsesRefusalContent$outboundSchema,
 } from "./openairesponsesrefusalcontent.js";
 import {
+  OutputApplyPatchServerToolItem,
+  OutputApplyPatchServerToolItem$Outbound,
+  OutputApplyPatchServerToolItem$outboundSchema,
+} from "./outputapplypatchservertoolitem.js";
+import {
+  OutputBashServerToolItem,
+  OutputBashServerToolItem$Outbound,
+  OutputBashServerToolItem$outboundSchema,
+} from "./outputbashservertoolitem.js";
+import {
+  OutputBrowserUseServerToolItem,
+  OutputBrowserUseServerToolItem$Outbound,
+  OutputBrowserUseServerToolItem$outboundSchema,
+} from "./outputbrowseruseservertoolitem.js";
+import {
+  OutputCodeInterpreterCallItem,
+  OutputCodeInterpreterCallItem$Outbound,
+  OutputCodeInterpreterCallItem$outboundSchema,
+} from "./outputcodeinterpretercallitem.js";
+import {
+  OutputCodeInterpreterServerToolItem,
+  OutputCodeInterpreterServerToolItem$Outbound,
+  OutputCodeInterpreterServerToolItem$outboundSchema,
+} from "./outputcodeinterpreterservertoolitem.js";
+import {
+  OutputComputerCallItem,
+  OutputComputerCallItem$Outbound,
+  OutputComputerCallItem$outboundSchema,
+} from "./outputcomputercallitem.js";
+import {
   OutputDatetimeItem,
   OutputDatetimeItem$Outbound,
   OutputDatetimeItem$outboundSchema,
@@ -42,6 +72,11 @@ import {
   OutputFileSearchCallItem$outboundSchema,
 } from "./outputfilesearchcallitem.js";
 import {
+  OutputFileSearchServerToolItem,
+  OutputFileSearchServerToolItem$Outbound,
+  OutputFileSearchServerToolItem$outboundSchema,
+} from "./outputfilesearchservertoolitem.js";
+import {
   OutputFunctionCallItem,
   OutputFunctionCallItem$Outbound,
   OutputFunctionCallItem$outboundSchema,
@@ -51,6 +86,41 @@ import {
   OutputImageGenerationCallItem$Outbound,
   OutputImageGenerationCallItem$outboundSchema,
 } from "./outputimagegenerationcallitem.js";
+import {
+  OutputImageGenerationServerToolItem,
+  OutputImageGenerationServerToolItem$Outbound,
+  OutputImageGenerationServerToolItem$outboundSchema,
+} from "./outputimagegenerationservertoolitem.js";
+import {
+  OutputMcpServerToolItem,
+  OutputMcpServerToolItem$Outbound,
+  OutputMcpServerToolItem$outboundSchema,
+} from "./outputmcpservertoolitem.js";
+import {
+  OutputMemoryServerToolItem,
+  OutputMemoryServerToolItem$Outbound,
+  OutputMemoryServerToolItem$outboundSchema,
+} from "./outputmemoryservertoolitem.js";
+import {
+  OutputSearchModelsServerToolItem,
+  OutputSearchModelsServerToolItem$Outbound,
+  OutputSearchModelsServerToolItem$outboundSchema,
+} from "./outputsearchmodelsservertoolitem.js";
+import {
+  OutputTextEditorServerToolItem,
+  OutputTextEditorServerToolItem$Outbound,
+  OutputTextEditorServerToolItem$outboundSchema,
+} from "./outputtexteditorservertoolitem.js";
+import {
+  OutputToolSearchServerToolItem,
+  OutputToolSearchServerToolItem$Outbound,
+  OutputToolSearchServerToolItem$outboundSchema,
+} from "./outputtoolsearchservertoolitem.js";
+import {
+  OutputWebFetchServerToolItem,
+  OutputWebFetchServerToolItem$Outbound,
+  OutputWebFetchServerToolItem$outboundSchema,
+} from "./outputwebfetchservertoolitem.js";
 import {
   OutputWebSearchCallItem,
   OutputWebSearchCallItem$Outbound,
@@ -224,17 +294,31 @@ export type InputsMessage = {
 };
 
 export type InputsUnion1 =
+  | OutputCodeInterpreterCallItem
   | FunctionCallItem
   | InputsMessage
   | OutputFunctionCallItem
   | OutputWebSearchCallItem
   | OutputFileSearchCallItem
+  | OutputComputerCallItem
   | OutputDatetimeItem
   | ReasoningItem
   | FunctionCallOutputItem
   | InputsReasoning
   | OutputImageGenerationCallItem
   | OutputWebSearchServerToolItem
+  | OutputCodeInterpreterServerToolItem
+  | OutputFileSearchServerToolItem
+  | OutputImageGenerationServerToolItem
+  | OutputBrowserUseServerToolItem
+  | OutputBashServerToolItem
+  | OutputTextEditorServerToolItem
+  | OutputApplyPatchServerToolItem
+  | OutputWebFetchServerToolItem
+  | OutputToolSearchServerToolItem
+  | OutputMemoryServerToolItem
+  | OutputMcpServerToolItem
+  | OutputSearchModelsServerToolItem
   | EasyInputMessage
   | InputMessageItem;
 
@@ -244,17 +328,31 @@ export type InputsUnion1 =
 export type InputsUnion =
   | string
   | Array<
+    | OutputCodeInterpreterCallItem
     | FunctionCallItem
     | InputsMessage
     | OutputFunctionCallItem
     | OutputWebSearchCallItem
     | OutputFileSearchCallItem
+    | OutputComputerCallItem
     | OutputDatetimeItem
     | ReasoningItem
     | FunctionCallOutputItem
     | InputsReasoning
     | OutputImageGenerationCallItem
     | OutputWebSearchServerToolItem
+    | OutputCodeInterpreterServerToolItem
+    | OutputFileSearchServerToolItem
+    | OutputImageGenerationServerToolItem
+    | OutputBrowserUseServerToolItem
+    | OutputBashServerToolItem
+    | OutputTextEditorServerToolItem
+    | OutputApplyPatchServerToolItem
+    | OutputWebFetchServerToolItem
+    | OutputToolSearchServerToolItem
+    | OutputMemoryServerToolItem
+    | OutputMcpServerToolItem
+    | OutputSearchModelsServerToolItem
     | EasyInputMessage
     | InputMessageItem
   >;
@@ -517,17 +615,31 @@ export function inputsMessageToJSON(inputsMessage: InputsMessage): string {
 
 /** @internal */
 export type InputsUnion1$Outbound =
+  | OutputCodeInterpreterCallItem$Outbound
   | FunctionCallItem$Outbound
   | InputsMessage$Outbound
   | OutputFunctionCallItem$Outbound
   | OutputWebSearchCallItem$Outbound
   | OutputFileSearchCallItem$Outbound
+  | OutputComputerCallItem$Outbound
   | OutputDatetimeItem$Outbound
   | ReasoningItem$Outbound
   | FunctionCallOutputItem$Outbound
   | InputsReasoning$Outbound
   | OutputImageGenerationCallItem$Outbound
   | OutputWebSearchServerToolItem$Outbound
+  | OutputCodeInterpreterServerToolItem$Outbound
+  | OutputFileSearchServerToolItem$Outbound
+  | OutputImageGenerationServerToolItem$Outbound
+  | OutputBrowserUseServerToolItem$Outbound
+  | OutputBashServerToolItem$Outbound
+  | OutputTextEditorServerToolItem$Outbound
+  | OutputApplyPatchServerToolItem$Outbound
+  | OutputWebFetchServerToolItem$Outbound
+  | OutputToolSearchServerToolItem$Outbound
+  | OutputMemoryServerToolItem$Outbound
+  | OutputMcpServerToolItem$Outbound
+  | OutputSearchModelsServerToolItem$Outbound
   | EasyInputMessage$Outbound
   | InputMessageItem$Outbound;
 
@@ -536,17 +648,31 @@ export const InputsUnion1$outboundSchema: z.ZodType<
   InputsUnion1$Outbound,
   InputsUnion1
 > = z.union([
+  OutputCodeInterpreterCallItem$outboundSchema,
   FunctionCallItem$outboundSchema,
   z.lazy(() => InputsMessage$outboundSchema),
   OutputFunctionCallItem$outboundSchema,
   OutputWebSearchCallItem$outboundSchema,
   OutputFileSearchCallItem$outboundSchema,
+  OutputComputerCallItem$outboundSchema,
   OutputDatetimeItem$outboundSchema,
   ReasoningItem$outboundSchema,
   FunctionCallOutputItem$outboundSchema,
   z.lazy(() => InputsReasoning$outboundSchema),
   OutputImageGenerationCallItem$outboundSchema,
   OutputWebSearchServerToolItem$outboundSchema,
+  OutputCodeInterpreterServerToolItem$outboundSchema,
+  OutputFileSearchServerToolItem$outboundSchema,
+  OutputImageGenerationServerToolItem$outboundSchema,
+  OutputBrowserUseServerToolItem$outboundSchema,
+  OutputBashServerToolItem$outboundSchema,
+  OutputTextEditorServerToolItem$outboundSchema,
+  OutputApplyPatchServerToolItem$outboundSchema,
+  OutputWebFetchServerToolItem$outboundSchema,
+  OutputToolSearchServerToolItem$outboundSchema,
+  OutputMemoryServerToolItem$outboundSchema,
+  OutputMcpServerToolItem$outboundSchema,
+  OutputSearchModelsServerToolItem$outboundSchema,
   EasyInputMessage$outboundSchema,
   InputMessageItem$outboundSchema,
 ]);
@@ -559,17 +685,31 @@ export function inputsUnion1ToJSON(inputsUnion1: InputsUnion1): string {
 export type InputsUnion$Outbound =
   | string
   | Array<
+    | OutputCodeInterpreterCallItem$Outbound
     | FunctionCallItem$Outbound
     | InputsMessage$Outbound
     | OutputFunctionCallItem$Outbound
     | OutputWebSearchCallItem$Outbound
     | OutputFileSearchCallItem$Outbound
+    | OutputComputerCallItem$Outbound
     | OutputDatetimeItem$Outbound
     | ReasoningItem$Outbound
     | FunctionCallOutputItem$Outbound
     | InputsReasoning$Outbound
     | OutputImageGenerationCallItem$Outbound
     | OutputWebSearchServerToolItem$Outbound
+    | OutputCodeInterpreterServerToolItem$Outbound
+    | OutputFileSearchServerToolItem$Outbound
+    | OutputImageGenerationServerToolItem$Outbound
+    | OutputBrowserUseServerToolItem$Outbound
+    | OutputBashServerToolItem$Outbound
+    | OutputTextEditorServerToolItem$Outbound
+    | OutputApplyPatchServerToolItem$Outbound
+    | OutputWebFetchServerToolItem$Outbound
+    | OutputToolSearchServerToolItem$Outbound
+    | OutputMemoryServerToolItem$Outbound
+    | OutputMcpServerToolItem$Outbound
+    | OutputSearchModelsServerToolItem$Outbound
     | EasyInputMessage$Outbound
     | InputMessageItem$Outbound
   >;
@@ -580,21 +720,37 @@ export const InputsUnion$outboundSchema: z.ZodType<
   InputsUnion
 > = z.union([
   z.string(),
-  z.array(z.union([
-    FunctionCallItem$outboundSchema,
-    z.lazy(() => InputsMessage$outboundSchema),
-    OutputFunctionCallItem$outboundSchema,
-    OutputWebSearchCallItem$outboundSchema,
-    OutputFileSearchCallItem$outboundSchema,
-    OutputDatetimeItem$outboundSchema,
-    ReasoningItem$outboundSchema,
-    FunctionCallOutputItem$outboundSchema,
-    z.lazy(() => InputsReasoning$outboundSchema),
-    OutputImageGenerationCallItem$outboundSchema,
-    OutputWebSearchServerToolItem$outboundSchema,
-    EasyInputMessage$outboundSchema,
-    InputMessageItem$outboundSchema,
-  ])),
+  z.array(
+    z.union([
+      OutputCodeInterpreterCallItem$outboundSchema,
+      FunctionCallItem$outboundSchema,
+      z.lazy(() => InputsMessage$outboundSchema),
+      OutputFunctionCallItem$outboundSchema,
+      OutputWebSearchCallItem$outboundSchema,
+      OutputFileSearchCallItem$outboundSchema,
+      OutputComputerCallItem$outboundSchema,
+      OutputDatetimeItem$outboundSchema,
+      ReasoningItem$outboundSchema,
+      FunctionCallOutputItem$outboundSchema,
+      z.lazy(() => InputsReasoning$outboundSchema),
+      OutputImageGenerationCallItem$outboundSchema,
+      OutputWebSearchServerToolItem$outboundSchema,
+      OutputCodeInterpreterServerToolItem$outboundSchema,
+      OutputFileSearchServerToolItem$outboundSchema,
+      OutputImageGenerationServerToolItem$outboundSchema,
+      OutputBrowserUseServerToolItem$outboundSchema,
+      OutputBashServerToolItem$outboundSchema,
+      OutputTextEditorServerToolItem$outboundSchema,
+      OutputApplyPatchServerToolItem$outboundSchema,
+      OutputWebFetchServerToolItem$outboundSchema,
+      OutputToolSearchServerToolItem$outboundSchema,
+      OutputMemoryServerToolItem$outboundSchema,
+      OutputMcpServerToolItem$outboundSchema,
+      OutputSearchModelsServerToolItem$outboundSchema,
+      EasyInputMessage$outboundSchema,
+      InputMessageItem$outboundSchema,
+    ]),
+  ),
 ]);
 
 export function inputsUnionToJSON(inputsUnion: InputsUnion): string {
