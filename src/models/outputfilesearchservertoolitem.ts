@@ -5,12 +5,21 @@
 
 import * as z from "zod/v4";
 import { safeParse } from "../lib/schemas.js";
+import { ClosedEnum } from "../types/enums.js";
 import { Result as SafeParseResult } from "../types/fp.js";
 import { SDKValidationError } from "./errors/sdkvalidationerror.js";
 import {
   ToolCallStatus,
   ToolCallStatus$inboundSchema,
+  ToolCallStatus$outboundSchema,
 } from "./toolcallstatus.js";
+
+export const OutputFileSearchServerToolItemType = {
+  OpenrouterFileSearch: "openrouter:file_search",
+} as const;
+export type OutputFileSearchServerToolItemType = ClosedEnum<
+  typeof OutputFileSearchServerToolItemType
+>;
 
 /**
  * An openrouter:file_search server tool output item
@@ -19,8 +28,17 @@ export type OutputFileSearchServerToolItem = {
   id?: string | undefined;
   queries?: Array<string> | undefined;
   status: ToolCallStatus;
-  type: "openrouter:file_search";
+  type: OutputFileSearchServerToolItemType;
 };
+
+/** @internal */
+export const OutputFileSearchServerToolItemType$inboundSchema: z.ZodEnum<
+  typeof OutputFileSearchServerToolItemType
+> = z.enum(OutputFileSearchServerToolItemType);
+/** @internal */
+export const OutputFileSearchServerToolItemType$outboundSchema: z.ZodEnum<
+  typeof OutputFileSearchServerToolItemType
+> = OutputFileSearchServerToolItemType$inboundSchema;
 
 /** @internal */
 export const OutputFileSearchServerToolItem$inboundSchema: z.ZodType<
@@ -30,9 +48,36 @@ export const OutputFileSearchServerToolItem$inboundSchema: z.ZodType<
   id: z.string().optional(),
   queries: z.array(z.string()).optional(),
   status: ToolCallStatus$inboundSchema,
-  type: z.literal("openrouter:file_search"),
+  type: OutputFileSearchServerToolItemType$inboundSchema,
+});
+/** @internal */
+export type OutputFileSearchServerToolItem$Outbound = {
+  id?: string | undefined;
+  queries?: Array<string> | undefined;
+  status: string;
+  type: string;
+};
+
+/** @internal */
+export const OutputFileSearchServerToolItem$outboundSchema: z.ZodType<
+  OutputFileSearchServerToolItem$Outbound,
+  OutputFileSearchServerToolItem
+> = z.object({
+  id: z.string().optional(),
+  queries: z.array(z.string()).optional(),
+  status: ToolCallStatus$outboundSchema,
+  type: OutputFileSearchServerToolItemType$outboundSchema,
 });
 
+export function outputFileSearchServerToolItemToJSON(
+  outputFileSearchServerToolItem: OutputFileSearchServerToolItem,
+): string {
+  return JSON.stringify(
+    OutputFileSearchServerToolItem$outboundSchema.parse(
+      outputFileSearchServerToolItem,
+    ),
+  );
+}
 export function outputFileSearchServerToolItemFromJSON(
   jsonString: string,
 ): SafeParseResult<OutputFileSearchServerToolItem, SDKValidationError> {
