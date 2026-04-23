@@ -5,12 +5,21 @@
 
 import * as z from "zod/v4";
 import { safeParse } from "../lib/schemas.js";
+import { ClosedEnum } from "../types/enums.js";
 import { Result as SafeParseResult } from "../types/fp.js";
 import { SDKValidationError } from "./errors/sdkvalidationerror.js";
 import {
   ToolCallStatus,
   ToolCallStatus$inboundSchema,
+  ToolCallStatus$outboundSchema,
 } from "./toolcallstatus.js";
+
+export const OutputMcpServerToolItemType = {
+  OpenrouterMcp: "openrouter:mcp",
+} as const;
+export type OutputMcpServerToolItemType = ClosedEnum<
+  typeof OutputMcpServerToolItemType
+>;
 
 /**
  * An openrouter:mcp server tool output item
@@ -20,8 +29,17 @@ export type OutputMcpServerToolItem = {
   serverLabel?: string | undefined;
   status: ToolCallStatus;
   toolName?: string | undefined;
-  type: "openrouter:mcp";
+  type: OutputMcpServerToolItemType;
 };
+
+/** @internal */
+export const OutputMcpServerToolItemType$inboundSchema: z.ZodEnum<
+  typeof OutputMcpServerToolItemType
+> = z.enum(OutputMcpServerToolItemType);
+/** @internal */
+export const OutputMcpServerToolItemType$outboundSchema: z.ZodEnum<
+  typeof OutputMcpServerToolItemType
+> = OutputMcpServerToolItemType$inboundSchema;
 
 /** @internal */
 export const OutputMcpServerToolItem$inboundSchema: z.ZodType<
@@ -32,9 +50,36 @@ export const OutputMcpServerToolItem$inboundSchema: z.ZodType<
   serverLabel: z.string().optional(),
   status: ToolCallStatus$inboundSchema,
   toolName: z.string().optional(),
-  type: z.literal("openrouter:mcp"),
+  type: OutputMcpServerToolItemType$inboundSchema,
+});
+/** @internal */
+export type OutputMcpServerToolItem$Outbound = {
+  id?: string | undefined;
+  serverLabel?: string | undefined;
+  status: string;
+  toolName?: string | undefined;
+  type: string;
+};
+
+/** @internal */
+export const OutputMcpServerToolItem$outboundSchema: z.ZodType<
+  OutputMcpServerToolItem$Outbound,
+  OutputMcpServerToolItem
+> = z.object({
+  id: z.string().optional(),
+  serverLabel: z.string().optional(),
+  status: ToolCallStatus$outboundSchema,
+  toolName: z.string().optional(),
+  type: OutputMcpServerToolItemType$outboundSchema,
 });
 
+export function outputMcpServerToolItemToJSON(
+  outputMcpServerToolItem: OutputMcpServerToolItem,
+): string {
+  return JSON.stringify(
+    OutputMcpServerToolItem$outboundSchema.parse(outputMcpServerToolItem),
+  );
+}
 export function outputMcpServerToolItemFromJSON(
   jsonString: string,
 ): SafeParseResult<OutputMcpServerToolItem, SDKValidationError> {
