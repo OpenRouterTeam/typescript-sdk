@@ -7,7 +7,7 @@ import * as z from "zod/v4";
 import { remap as remap$ } from "../lib/primitives.js";
 import { safeParse } from "../lib/schemas.js";
 import * as openEnums from "../types/enums.js";
-import { OpenEnum } from "../types/enums.js";
+import { ClosedEnum, OpenEnum } from "../types/enums.js";
 import { Result as SafeParseResult } from "../types/fp.js";
 import { SDKValidationError } from "./errors/sdkvalidationerror.js";
 
@@ -26,13 +26,20 @@ export type OutputComputerCallItemStatus = OpenEnum<
   typeof OutputComputerCallItemStatus
 >;
 
+export const OutputComputerCallItemType = {
+  ComputerCall: "computer_call",
+} as const;
+export type OutputComputerCallItemType = ClosedEnum<
+  typeof OutputComputerCallItemType
+>;
+
 export type OutputComputerCallItem = {
   action?: any | null | undefined;
   callId: string;
   id?: string | undefined;
   pendingSafetyChecks: Array<PendingSafetyCheck>;
   status: OutputComputerCallItemStatus;
-  type: "computer_call";
+  type: OutputComputerCallItemType;
 };
 
 /** @internal */
@@ -44,7 +51,30 @@ export const PendingSafetyCheck$inboundSchema: z.ZodType<
   id: z.string(),
   message: z.string(),
 });
+/** @internal */
+export type PendingSafetyCheck$Outbound = {
+  code: string;
+  id: string;
+  message: string;
+};
 
+/** @internal */
+export const PendingSafetyCheck$outboundSchema: z.ZodType<
+  PendingSafetyCheck$Outbound,
+  PendingSafetyCheck
+> = z.object({
+  code: z.string(),
+  id: z.string(),
+  message: z.string(),
+});
+
+export function pendingSafetyCheckToJSON(
+  pendingSafetyCheck: PendingSafetyCheck,
+): string {
+  return JSON.stringify(
+    PendingSafetyCheck$outboundSchema.parse(pendingSafetyCheck),
+  );
+}
 export function pendingSafetyCheckFromJSON(
   jsonString: string,
 ): SafeParseResult<PendingSafetyCheck, SDKValidationError> {
@@ -60,6 +90,20 @@ export const OutputComputerCallItemStatus$inboundSchema: z.ZodType<
   OutputComputerCallItemStatus,
   unknown
 > = openEnums.inboundSchema(OutputComputerCallItemStatus);
+/** @internal */
+export const OutputComputerCallItemStatus$outboundSchema: z.ZodType<
+  string,
+  OutputComputerCallItemStatus
+> = openEnums.outboundSchema(OutputComputerCallItemStatus);
+
+/** @internal */
+export const OutputComputerCallItemType$inboundSchema: z.ZodEnum<
+  typeof OutputComputerCallItemType
+> = z.enum(OutputComputerCallItemType);
+/** @internal */
+export const OutputComputerCallItemType$outboundSchema: z.ZodEnum<
+  typeof OutputComputerCallItemType
+> = OutputComputerCallItemType$inboundSchema;
 
 /** @internal */
 export const OutputComputerCallItem$inboundSchema: z.ZodType<
@@ -73,14 +117,48 @@ export const OutputComputerCallItem$inboundSchema: z.ZodType<
     z.lazy(() => PendingSafetyCheck$inboundSchema),
   ),
   status: OutputComputerCallItemStatus$inboundSchema,
-  type: z.literal("computer_call"),
+  type: OutputComputerCallItemType$inboundSchema,
 }).transform((v) => {
   return remap$(v, {
     "call_id": "callId",
     "pending_safety_checks": "pendingSafetyChecks",
   });
 });
+/** @internal */
+export type OutputComputerCallItem$Outbound = {
+  action?: any | null | undefined;
+  call_id: string;
+  id?: string | undefined;
+  pending_safety_checks: Array<PendingSafetyCheck$Outbound>;
+  status: string;
+  type: string;
+};
 
+/** @internal */
+export const OutputComputerCallItem$outboundSchema: z.ZodType<
+  OutputComputerCallItem$Outbound,
+  OutputComputerCallItem
+> = z.object({
+  action: z.nullable(z.any()).optional(),
+  callId: z.string(),
+  id: z.string().optional(),
+  pendingSafetyChecks: z.array(z.lazy(() => PendingSafetyCheck$outboundSchema)),
+  status: OutputComputerCallItemStatus$outboundSchema,
+  type: OutputComputerCallItemType$outboundSchema,
+}).transform((v) => {
+  return remap$(v, {
+    callId: "call_id",
+    pendingSafetyChecks: "pending_safety_checks",
+  });
+});
+
+export function outputComputerCallItemToJSON(
+  outputComputerCallItem: OutputComputerCallItem,
+): string {
+  return JSON.stringify(
+    OutputComputerCallItem$outboundSchema.parse(outputComputerCallItem),
+  );
+}
 export function outputComputerCallItemFromJSON(
   jsonString: string,
 ): SafeParseResult<OutputComputerCallItem, SDKValidationError> {
