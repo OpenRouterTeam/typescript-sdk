@@ -5,12 +5,21 @@
 
 import * as z from "zod/v4";
 import { safeParse } from "../lib/schemas.js";
+import { ClosedEnum } from "../types/enums.js";
 import { Result as SafeParseResult } from "../types/fp.js";
 import { SDKValidationError } from "./errors/sdkvalidationerror.js";
 import {
   ToolCallStatus,
   ToolCallStatus$inboundSchema,
+  ToolCallStatus$outboundSchema,
 } from "./toolcallstatus.js";
+
+export const OutputSearchModelsServerToolItemType = {
+  OpenrouterExperimentalSearchModels: "openrouter:experimental__search_models",
+} as const;
+export type OutputSearchModelsServerToolItemType = ClosedEnum<
+  typeof OutputSearchModelsServerToolItemType
+>;
 
 /**
  * An openrouter:experimental__search_models server tool output item
@@ -23,8 +32,17 @@ export type OutputSearchModelsServerToolItem = {
   id?: string | undefined;
   query?: string | undefined;
   status: ToolCallStatus;
-  type: "openrouter:experimental__search_models";
+  type: OutputSearchModelsServerToolItemType;
 };
+
+/** @internal */
+export const OutputSearchModelsServerToolItemType$inboundSchema: z.ZodEnum<
+  typeof OutputSearchModelsServerToolItemType
+> = z.enum(OutputSearchModelsServerToolItemType);
+/** @internal */
+export const OutputSearchModelsServerToolItemType$outboundSchema: z.ZodEnum<
+  typeof OutputSearchModelsServerToolItemType
+> = OutputSearchModelsServerToolItemType$inboundSchema;
 
 /** @internal */
 export const OutputSearchModelsServerToolItem$inboundSchema: z.ZodType<
@@ -35,9 +53,38 @@ export const OutputSearchModelsServerToolItem$inboundSchema: z.ZodType<
   id: z.string().optional(),
   query: z.string().optional(),
   status: ToolCallStatus$inboundSchema,
-  type: z.literal("openrouter:experimental__search_models"),
+  type: OutputSearchModelsServerToolItemType$inboundSchema,
+});
+/** @internal */
+export type OutputSearchModelsServerToolItem$Outbound = {
+  arguments?: string | undefined;
+  id?: string | undefined;
+  query?: string | undefined;
+  status: string;
+  type: string;
+};
+
+/** @internal */
+export const OutputSearchModelsServerToolItem$outboundSchema: z.ZodType<
+  OutputSearchModelsServerToolItem$Outbound,
+  OutputSearchModelsServerToolItem
+> = z.object({
+  arguments: z.string().optional(),
+  id: z.string().optional(),
+  query: z.string().optional(),
+  status: ToolCallStatus$outboundSchema,
+  type: OutputSearchModelsServerToolItemType$outboundSchema,
 });
 
+export function outputSearchModelsServerToolItemToJSON(
+  outputSearchModelsServerToolItem: OutputSearchModelsServerToolItem,
+): string {
+  return JSON.stringify(
+    OutputSearchModelsServerToolItem$outboundSchema.parse(
+      outputSearchModelsServerToolItem,
+    ),
+  );
+}
 export function outputSearchModelsServerToolItemFromJSON(
   jsonString: string,
 ): SafeParseResult<OutputSearchModelsServerToolItem, SDKValidationError> {
