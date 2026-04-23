@@ -102,25 +102,31 @@ import {
  * An output item from the response
  */
 export type OutputItems =
-  | OutputCodeInterpreterCallItem
-  | OutputComputerCallItem
+  | (OutputCodeInterpreterCallItem & { type: "code_interpreter_call" })
+  | (OutputComputerCallItem & { type: "computer_call" })
   | (OutputFileSearchCallItem & { type: "file_search_call" })
   | (OutputFunctionCallItem & { type: "function_call" })
   | (OutputImageGenerationCallItem & { type: "image_generation_call" })
   | OutputMessageItem
-  | OutputApplyPatchServerToolItem
-  | OutputBashServerToolItem
-  | OutputBrowserUseServerToolItem
-  | OutputCodeInterpreterServerToolItem
+  | (OutputApplyPatchServerToolItem & { type: "openrouter:apply_patch" })
+  | (OutputBashServerToolItem & { type: "openrouter:bash" })
+  | (OutputBrowserUseServerToolItem & { type: "openrouter:browser_use" })
+  | (OutputCodeInterpreterServerToolItem & {
+    type: "openrouter:code_interpreter";
+  })
   | (OutputDatetimeItem & { type: "openrouter:datetime" })
-  | OutputSearchModelsServerToolItem
-  | OutputFileSearchServerToolItem
-  | OutputImageGenerationServerToolItem
-  | OutputMcpServerToolItem
-  | OutputMemoryServerToolItem
-  | OutputTextEditorServerToolItem
-  | OutputToolSearchServerToolItem
-  | OutputWebFetchServerToolItem
+  | (OutputSearchModelsServerToolItem & {
+    type: "openrouter:experimental__search_models";
+  })
+  | (OutputFileSearchServerToolItem & { type: "openrouter:file_search" })
+  | (OutputImageGenerationServerToolItem & {
+    type: "openrouter:image_generation";
+  })
+  | (OutputMcpServerToolItem & { type: "openrouter:mcp" })
+  | (OutputMemoryServerToolItem & { type: "openrouter:memory" })
+  | (OutputTextEditorServerToolItem & { type: "openrouter:text_editor" })
+  | (OutputToolSearchServerToolItem & { type: "openrouter:tool_search" })
+  | (OutputWebFetchServerToolItem & { type: "openrouter:web_fetch" })
   | (OutputWebSearchServerToolItem & { type: "openrouter:web_search" })
   | OutputReasoningItem
   | (OutputWebSearchCallItem & { type: "web_search_call" })
@@ -129,8 +135,12 @@ export type OutputItems =
 /** @internal */
 export const OutputItems$inboundSchema: z.ZodType<OutputItems, unknown> =
   discriminatedUnion("type", {
-    code_interpreter_call: OutputCodeInterpreterCallItem$inboundSchema,
-    computer_call: OutputComputerCallItem$inboundSchema,
+    code_interpreter_call: OutputCodeInterpreterCallItem$inboundSchema.and(
+      z.object({ type: z.literal("code_interpreter_call") }),
+    ),
+    computer_call: OutputComputerCallItem$inboundSchema.and(
+      z.object({ type: z.literal("computer_call") }),
+    ),
     file_search_call: OutputFileSearchCallItem$inboundSchema.and(
       z.object({ type: z.literal("file_search_call") }),
     ),
@@ -141,24 +151,43 @@ export const OutputItems$inboundSchema: z.ZodType<OutputItems, unknown> =
       z.object({ type: z.literal("image_generation_call") }),
     ),
     message: OutputMessageItem$inboundSchema,
-    ["openrouter:apply_patch"]: OutputApplyPatchServerToolItem$inboundSchema,
-    ["openrouter:bash"]: OutputBashServerToolItem$inboundSchema,
-    ["openrouter:browser_use"]: OutputBrowserUseServerToolItem$inboundSchema,
+    ["openrouter:apply_patch"]: OutputApplyPatchServerToolItem$inboundSchema
+      .and(z.object({ type: z.literal("openrouter:apply_patch") })),
+    ["openrouter:bash"]: OutputBashServerToolItem$inboundSchema.and(
+      z.object({ type: z.literal("openrouter:bash") }),
+    ),
+    ["openrouter:browser_use"]: OutputBrowserUseServerToolItem$inboundSchema
+      .and(z.object({ type: z.literal("openrouter:browser_use") })),
     ["openrouter:code_interpreter"]:
-      OutputCodeInterpreterServerToolItem$inboundSchema,
+      OutputCodeInterpreterServerToolItem$inboundSchema.and(
+        z.object({ type: z.literal("openrouter:code_interpreter") }),
+      ),
     ["openrouter:datetime"]: OutputDatetimeItem$inboundSchema.and(
       z.object({ type: z.literal("openrouter:datetime") }),
     ),
     ["openrouter:experimental__search_models"]:
-      OutputSearchModelsServerToolItem$inboundSchema,
-    ["openrouter:file_search"]: OutputFileSearchServerToolItem$inboundSchema,
+      OutputSearchModelsServerToolItem$inboundSchema.and(
+        z.object({ type: z.literal("openrouter:experimental__search_models") }),
+      ),
+    ["openrouter:file_search"]: OutputFileSearchServerToolItem$inboundSchema
+      .and(z.object({ type: z.literal("openrouter:file_search") })),
     ["openrouter:image_generation"]:
-      OutputImageGenerationServerToolItem$inboundSchema,
-    ["openrouter:mcp"]: OutputMcpServerToolItem$inboundSchema,
-    ["openrouter:memory"]: OutputMemoryServerToolItem$inboundSchema,
-    ["openrouter:text_editor"]: OutputTextEditorServerToolItem$inboundSchema,
-    ["openrouter:tool_search"]: OutputToolSearchServerToolItem$inboundSchema,
-    ["openrouter:web_fetch"]: OutputWebFetchServerToolItem$inboundSchema,
+      OutputImageGenerationServerToolItem$inboundSchema.and(
+        z.object({ type: z.literal("openrouter:image_generation") }),
+      ),
+    ["openrouter:mcp"]: OutputMcpServerToolItem$inboundSchema.and(
+      z.object({ type: z.literal("openrouter:mcp") }),
+    ),
+    ["openrouter:memory"]: OutputMemoryServerToolItem$inboundSchema.and(
+      z.object({ type: z.literal("openrouter:memory") }),
+    ),
+    ["openrouter:text_editor"]: OutputTextEditorServerToolItem$inboundSchema
+      .and(z.object({ type: z.literal("openrouter:text_editor") })),
+    ["openrouter:tool_search"]: OutputToolSearchServerToolItem$inboundSchema
+      .and(z.object({ type: z.literal("openrouter:tool_search") })),
+    ["openrouter:web_fetch"]: OutputWebFetchServerToolItem$inboundSchema.and(
+      z.object({ type: z.literal("openrouter:web_fetch") }),
+    ),
     ["openrouter:web_search"]: OutputWebSearchServerToolItem$inboundSchema.and(
       z.object({ type: z.literal("openrouter:web_search") }),
     ),
