@@ -5,12 +5,21 @@
 
 import * as z from "zod/v4";
 import { safeParse } from "../lib/schemas.js";
+import { ClosedEnum } from "../types/enums.js";
 import { Result as SafeParseResult } from "../types/fp.js";
 import { SDKValidationError } from "./errors/sdkvalidationerror.js";
 import {
   ToolCallStatus,
   ToolCallStatus$inboundSchema,
+  ToolCallStatus$outboundSchema,
 } from "./toolcallstatus.js";
+
+export const OutputBrowserUseServerToolItemType = {
+  OpenrouterBrowserUse: "openrouter:browser_use",
+} as const;
+export type OutputBrowserUseServerToolItemType = ClosedEnum<
+  typeof OutputBrowserUseServerToolItemType
+>;
 
 /**
  * An openrouter:browser_use server tool output item
@@ -20,8 +29,17 @@ export type OutputBrowserUseServerToolItem = {
   id?: string | undefined;
   screenshotB64?: string | undefined;
   status: ToolCallStatus;
-  type: "openrouter:browser_use";
+  type: OutputBrowserUseServerToolItemType;
 };
+
+/** @internal */
+export const OutputBrowserUseServerToolItemType$inboundSchema: z.ZodEnum<
+  typeof OutputBrowserUseServerToolItemType
+> = z.enum(OutputBrowserUseServerToolItemType);
+/** @internal */
+export const OutputBrowserUseServerToolItemType$outboundSchema: z.ZodEnum<
+  typeof OutputBrowserUseServerToolItemType
+> = OutputBrowserUseServerToolItemType$inboundSchema;
 
 /** @internal */
 export const OutputBrowserUseServerToolItem$inboundSchema: z.ZodType<
@@ -32,9 +50,38 @@ export const OutputBrowserUseServerToolItem$inboundSchema: z.ZodType<
   id: z.string().optional(),
   screenshotB64: z.string().optional(),
   status: ToolCallStatus$inboundSchema,
-  type: z.literal("openrouter:browser_use"),
+  type: OutputBrowserUseServerToolItemType$inboundSchema,
+});
+/** @internal */
+export type OutputBrowserUseServerToolItem$Outbound = {
+  action?: string | undefined;
+  id?: string | undefined;
+  screenshotB64?: string | undefined;
+  status: string;
+  type: string;
+};
+
+/** @internal */
+export const OutputBrowserUseServerToolItem$outboundSchema: z.ZodType<
+  OutputBrowserUseServerToolItem$Outbound,
+  OutputBrowserUseServerToolItem
+> = z.object({
+  action: z.string().optional(),
+  id: z.string().optional(),
+  screenshotB64: z.string().optional(),
+  status: ToolCallStatus$outboundSchema,
+  type: OutputBrowserUseServerToolItemType$outboundSchema,
 });
 
+export function outputBrowserUseServerToolItemToJSON(
+  outputBrowserUseServerToolItem: OutputBrowserUseServerToolItem,
+): string {
+  return JSON.stringify(
+    OutputBrowserUseServerToolItem$outboundSchema.parse(
+      outputBrowserUseServerToolItem,
+    ),
+  );
+}
 export function outputBrowserUseServerToolItemFromJSON(
   jsonString: string,
 ): SafeParseResult<OutputBrowserUseServerToolItem, SDKValidationError> {
