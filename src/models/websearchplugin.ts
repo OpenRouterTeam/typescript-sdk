@@ -10,6 +10,17 @@ import {
   WebSearchEngine$outboundSchema,
 } from "./websearchengine.js";
 
+/**
+ * Approximate user location for location-biased search results. Passed through to native providers that support it (e.g. Anthropic).
+ */
+export type UserLocation = {
+  city?: string | null | undefined;
+  country?: string | null | undefined;
+  region?: string | null | undefined;
+  timezone?: string | null | undefined;
+  type: string;
+};
+
 export type WebSearchPlugin = {
   /**
    * Set to false to disable the web-search plugin for this request. Defaults to true.
@@ -29,8 +40,41 @@ export type WebSearchPlugin = {
    */
   includeDomains?: Array<string> | undefined;
   maxResults?: number | undefined;
+  /**
+   * Maximum number of times the model can invoke web search in a single turn. Passed through to native providers that support it (e.g. Anthropic).
+   */
+  maxUses?: number | undefined;
   searchPrompt?: string | undefined;
+  /**
+   * Approximate user location for location-biased search results. Passed through to native providers that support it (e.g. Anthropic).
+   */
+  userLocation?: UserLocation | undefined;
 };
+
+/** @internal */
+export type UserLocation$Outbound = {
+  city?: string | null | undefined;
+  country?: string | null | undefined;
+  region?: string | null | undefined;
+  timezone?: string | null | undefined;
+  type: string;
+};
+
+/** @internal */
+export const UserLocation$outboundSchema: z.ZodType<
+  UserLocation$Outbound,
+  UserLocation
+> = z.object({
+  city: z.nullable(z.string()).optional(),
+  country: z.nullable(z.string()).optional(),
+  region: z.nullable(z.string()).optional(),
+  timezone: z.nullable(z.string()).optional(),
+  type: z.string(),
+});
+
+export function userLocationToJSON(userLocation: UserLocation): string {
+  return JSON.stringify(UserLocation$outboundSchema.parse(userLocation));
+}
 
 /** @internal */
 export type WebSearchPlugin$Outbound = {
@@ -40,7 +84,9 @@ export type WebSearchPlugin$Outbound = {
   id: "web";
   include_domains?: Array<string> | undefined;
   max_results?: number | undefined;
+  max_uses?: number | undefined;
   search_prompt?: string | undefined;
+  user_location?: UserLocation$Outbound | undefined;
 };
 
 /** @internal */
@@ -54,13 +100,17 @@ export const WebSearchPlugin$outboundSchema: z.ZodType<
   id: z.literal("web"),
   includeDomains: z.array(z.string()).optional(),
   maxResults: z.int().optional(),
+  maxUses: z.int().optional(),
   searchPrompt: z.string().optional(),
+  userLocation: z.lazy(() => UserLocation$outboundSchema).optional(),
 }).transform((v) => {
   return remap$(v, {
     excludeDomains: "exclude_domains",
     includeDomains: "include_domains",
     maxResults: "max_results",
+    maxUses: "max_uses",
     searchPrompt: "search_prompt",
+    userLocation: "user_location",
   });
 });
 

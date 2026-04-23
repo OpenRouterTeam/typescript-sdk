@@ -6,12 +6,13 @@
 import * as z from "zod/v4";
 import { safeParse } from "../lib/schemas.js";
 import * as openEnums from "../types/enums.js";
-import { OpenEnum } from "../types/enums.js";
+import { ClosedEnum, OpenEnum } from "../types/enums.js";
 import { Result as SafeParseResult } from "../types/fp.js";
 import { SDKValidationError } from "./errors/sdkvalidationerror.js";
 import {
   ToolCallStatus,
   ToolCallStatus$inboundSchema,
+  ToolCallStatus$outboundSchema,
 } from "./toolcallstatus.js";
 
 export const ActionEnum = {
@@ -21,6 +22,13 @@ export const ActionEnum = {
 } as const;
 export type ActionEnum = OpenEnum<typeof ActionEnum>;
 
+export const OutputMemoryServerToolItemType = {
+  OpenrouterMemory: "openrouter:memory",
+} as const;
+export type OutputMemoryServerToolItemType = ClosedEnum<
+  typeof OutputMemoryServerToolItemType
+>;
+
 /**
  * An openrouter:memory server tool output item
  */
@@ -29,13 +37,25 @@ export type OutputMemoryServerToolItem = {
   id?: string | undefined;
   key?: string | undefined;
   status: ToolCallStatus;
-  type: "openrouter:memory";
+  type: OutputMemoryServerToolItemType;
   value?: any | null | undefined;
 };
 
 /** @internal */
 export const ActionEnum$inboundSchema: z.ZodType<ActionEnum, unknown> =
   openEnums.inboundSchema(ActionEnum);
+/** @internal */
+export const ActionEnum$outboundSchema: z.ZodType<string, ActionEnum> =
+  openEnums.outboundSchema(ActionEnum);
+
+/** @internal */
+export const OutputMemoryServerToolItemType$inboundSchema: z.ZodEnum<
+  typeof OutputMemoryServerToolItemType
+> = z.enum(OutputMemoryServerToolItemType);
+/** @internal */
+export const OutputMemoryServerToolItemType$outboundSchema: z.ZodEnum<
+  typeof OutputMemoryServerToolItemType
+> = OutputMemoryServerToolItemType$inboundSchema;
 
 /** @internal */
 export const OutputMemoryServerToolItem$inboundSchema: z.ZodType<
@@ -46,10 +66,39 @@ export const OutputMemoryServerToolItem$inboundSchema: z.ZodType<
   id: z.string().optional(),
   key: z.string().optional(),
   status: ToolCallStatus$inboundSchema,
-  type: z.literal("openrouter:memory"),
+  type: OutputMemoryServerToolItemType$inboundSchema,
+  value: z.nullable(z.any()).optional(),
+});
+/** @internal */
+export type OutputMemoryServerToolItem$Outbound = {
+  action?: string | undefined;
+  id?: string | undefined;
+  key?: string | undefined;
+  status: string;
+  type: string;
+  value?: any | null | undefined;
+};
+
+/** @internal */
+export const OutputMemoryServerToolItem$outboundSchema: z.ZodType<
+  OutputMemoryServerToolItem$Outbound,
+  OutputMemoryServerToolItem
+> = z.object({
+  action: ActionEnum$outboundSchema.optional(),
+  id: z.string().optional(),
+  key: z.string().optional(),
+  status: ToolCallStatus$outboundSchema,
+  type: OutputMemoryServerToolItemType$outboundSchema,
   value: z.nullable(z.any()).optional(),
 });
 
+export function outputMemoryServerToolItemToJSON(
+  outputMemoryServerToolItem: OutputMemoryServerToolItem,
+): string {
+  return JSON.stringify(
+    OutputMemoryServerToolItem$outboundSchema.parse(outputMemoryServerToolItem),
+  );
+}
 export function outputMemoryServerToolItemFromJSON(
   jsonString: string,
 ): SafeParseResult<OutputMemoryServerToolItem, SDKValidationError> {

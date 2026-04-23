@@ -181,6 +181,10 @@ export type VideoGenerationRequest = {
    */
   aspectRatio?: AspectRatio | undefined;
   /**
+   * URL to receive a webhook notification when the video generation job completes. Overrides the workspace-level default callback URL if set. Must be HTTPS.
+   */
+  callbackUrl?: string | undefined;
+  /**
    * Duration of the generated video in seconds
    */
   duration?: number | undefined;
@@ -512,6 +516,7 @@ export const Resolution$outboundSchema: z.ZodType<string, Resolution> =
 /** @internal */
 export type VideoGenerationRequest$Outbound = {
   aspect_ratio?: string | undefined;
+  callback_url?: string | undefined;
   duration?: number | undefined;
   frame_images?: Array<FrameImage$Outbound> | undefined;
   generate_audio?: boolean | undefined;
@@ -530,6 +535,7 @@ export const VideoGenerationRequest$outboundSchema: z.ZodType<
   VideoGenerationRequest
 > = z.object({
   aspectRatio: AspectRatio$outboundSchema.optional(),
+  callbackUrl: z.string().optional(),
   duration: z.int().optional(),
   frameImages: z.array(FrameImage$outboundSchema).optional(),
   generateAudio: z.boolean().optional(),
@@ -544,6 +550,7 @@ export const VideoGenerationRequest$outboundSchema: z.ZodType<
 }).transform((v) => {
   return remap$(v, {
     aspectRatio: "aspect_ratio",
+    callbackUrl: "callback_url",
     frameImages: "frame_images",
     generateAudio: "generate_audio",
     inputReferences: "input_references",
