@@ -136,6 +136,35 @@ const value: models.OutputImageGenerationCallItem = {
 };
 ```
 
+### `models.OutputCodeInterpreterCallItem`
+
+```typescript
+const value: models.OutputCodeInterpreterCallItem = {
+  code: "print(\"hello\")",
+  containerId: "ctr-xyz789",
+  id: "ci-abc123",
+  outputs: [
+    {
+      logs: "hello\n",
+      type: "logs",
+    },
+  ],
+  status: "completed",
+  type: "code_interpreter_call",
+};
+```
+
+### `models.OutputComputerCallItem`
+
+```typescript
+const value: models.OutputComputerCallItem = {
+  callId: "call-abc123",
+  pendingSafetyChecks: [],
+  status: "completed",
+  type: "computer_call",
+};
+```
+
 ### `models.OutputDatetimeItem`
 
 ```typescript
@@ -153,6 +182,114 @@ const value: models.OutputDatetimeItem = {
 const value: models.OutputWebSearchServerToolItem = {
   status: "completed",
   type: "openrouter:web_search",
+};
+```
+
+### `models.OutputCodeInterpreterServerToolItem`
+
+```typescript
+const value: models.OutputCodeInterpreterServerToolItem = {
+  status: "completed",
+  type: "openrouter:code_interpreter",
+};
+```
+
+### `models.OutputFileSearchServerToolItem`
+
+```typescript
+const value: models.OutputFileSearchServerToolItem = {
+  status: "completed",
+  type: "openrouter:file_search",
+};
+```
+
+### `models.OutputImageGenerationServerToolItem`
+
+```typescript
+const value: models.OutputImageGenerationServerToolItem = {
+  status: "completed",
+  type: "openrouter:image_generation",
+};
+```
+
+### `models.OutputBrowserUseServerToolItem`
+
+```typescript
+const value: models.OutputBrowserUseServerToolItem = {
+  status: "completed",
+  type: "openrouter:browser_use",
+};
+```
+
+### `models.OutputBashServerToolItem`
+
+```typescript
+const value: models.OutputBashServerToolItem = {
+  status: "completed",
+  type: "openrouter:bash",
+};
+```
+
+### `models.OutputTextEditorServerToolItem`
+
+```typescript
+const value: models.OutputTextEditorServerToolItem = {
+  status: "completed",
+  type: "openrouter:text_editor",
+};
+```
+
+### `models.OutputApplyPatchServerToolItem`
+
+```typescript
+const value: models.OutputApplyPatchServerToolItem = {
+  status: "completed",
+  type: "openrouter:apply_patch",
+};
+```
+
+### `models.OutputWebFetchServerToolItem`
+
+```typescript
+const value: models.OutputWebFetchServerToolItem = {
+  status: "completed",
+  type: "openrouter:web_fetch",
+};
+```
+
+### `models.OutputToolSearchServerToolItem`
+
+```typescript
+const value: models.OutputToolSearchServerToolItem = {
+  status: "completed",
+  type: "openrouter:tool_search",
+};
+```
+
+### `models.OutputMemoryServerToolItem`
+
+```typescript
+const value: models.OutputMemoryServerToolItem = {
+  status: "completed",
+  type: "openrouter:memory",
+};
+```
+
+### `models.OutputMcpServerToolItem`
+
+```typescript
+const value: models.OutputMcpServerToolItem = {
+  status: "completed",
+  type: "openrouter:mcp",
+};
+```
+
+### `models.OutputSearchModelsServerToolItem`
+
+```typescript
+const value: models.OutputSearchModelsServerToolItem = {
+  status: "completed",
+  type: "openrouter:experimental__search_models",
 };
 ```
 
