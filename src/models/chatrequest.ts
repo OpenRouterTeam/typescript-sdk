@@ -136,7 +136,7 @@ export type ChatRequestPlugin =
 /**
  * Constrains effort on reasoning for reasoning models
  */
-export const Effort = {
+export const ChatRequestEffort = {
   Xhigh: "xhigh",
   High: "high",
   Medium: "medium",
@@ -147,7 +147,7 @@ export const Effort = {
 /**
  * Constrains effort on reasoning for reasoning models
  */
-export type Effort = OpenEnum<typeof Effort>;
+export type ChatRequestEffort = OpenEnum<typeof ChatRequestEffort>;
 
 /**
  * Configuration options for reasoning models
@@ -156,7 +156,7 @@ export type Reasoning = {
   /**
    * Constrains effort on reasoning for reasoning models
    */
-  effort?: Effort | null | undefined;
+  effort?: ChatRequestEffort | null | undefined;
   summary?: ChatReasoningSummaryVerbosityEnum | null | undefined;
 };
 
@@ -374,8 +374,10 @@ export function chatRequestPluginToJSON(
 }
 
 /** @internal */
-export const Effort$outboundSchema: z.ZodType<string, Effort> = openEnums
-  .outboundSchema(Effort);
+export const ChatRequestEffort$outboundSchema: z.ZodType<
+  string,
+  ChatRequestEffort
+> = openEnums.outboundSchema(ChatRequestEffort);
 
 /** @internal */
 export type Reasoning$Outbound = {
@@ -388,7 +390,7 @@ export const Reasoning$outboundSchema: z.ZodType<
   Reasoning$Outbound,
   Reasoning
 > = z.object({
-  effort: z.nullable(Effort$outboundSchema).optional(),
+  effort: z.nullable(ChatRequestEffort$outboundSchema).optional(),
   summary: z.nullable(ChatReasoningSummaryVerbosityEnum$outboundSchema)
     .optional(),
 });
