@@ -5,12 +5,21 @@
 
 import * as z from "zod/v4";
 import { safeParse } from "../lib/schemas.js";
+import { ClosedEnum } from "../types/enums.js";
 import { Result as SafeParseResult } from "../types/fp.js";
 import { SDKValidationError } from "./errors/sdkvalidationerror.js";
 import {
   ToolCallStatus,
   ToolCallStatus$inboundSchema,
+  ToolCallStatus$outboundSchema,
 } from "./toolcallstatus.js";
+
+export const OutputApplyPatchServerToolItemType = {
+  OpenrouterApplyPatch: "openrouter:apply_patch",
+} as const;
+export type OutputApplyPatchServerToolItemType = ClosedEnum<
+  typeof OutputApplyPatchServerToolItemType
+>;
 
 /**
  * An openrouter:apply_patch server tool output item
@@ -20,8 +29,17 @@ export type OutputApplyPatchServerToolItem = {
   id?: string | undefined;
   patch?: string | undefined;
   status: ToolCallStatus;
-  type: "openrouter:apply_patch";
+  type: OutputApplyPatchServerToolItemType;
 };
+
+/** @internal */
+export const OutputApplyPatchServerToolItemType$inboundSchema: z.ZodEnum<
+  typeof OutputApplyPatchServerToolItemType
+> = z.enum(OutputApplyPatchServerToolItemType);
+/** @internal */
+export const OutputApplyPatchServerToolItemType$outboundSchema: z.ZodEnum<
+  typeof OutputApplyPatchServerToolItemType
+> = OutputApplyPatchServerToolItemType$inboundSchema;
 
 /** @internal */
 export const OutputApplyPatchServerToolItem$inboundSchema: z.ZodType<
@@ -32,9 +50,38 @@ export const OutputApplyPatchServerToolItem$inboundSchema: z.ZodType<
   id: z.string().optional(),
   patch: z.string().optional(),
   status: ToolCallStatus$inboundSchema,
-  type: z.literal("openrouter:apply_patch"),
+  type: OutputApplyPatchServerToolItemType$inboundSchema,
+});
+/** @internal */
+export type OutputApplyPatchServerToolItem$Outbound = {
+  filePath?: string | undefined;
+  id?: string | undefined;
+  patch?: string | undefined;
+  status: string;
+  type: string;
+};
+
+/** @internal */
+export const OutputApplyPatchServerToolItem$outboundSchema: z.ZodType<
+  OutputApplyPatchServerToolItem$Outbound,
+  OutputApplyPatchServerToolItem
+> = z.object({
+  filePath: z.string().optional(),
+  id: z.string().optional(),
+  patch: z.string().optional(),
+  status: ToolCallStatus$outboundSchema,
+  type: OutputApplyPatchServerToolItemType$outboundSchema,
 });
 
+export function outputApplyPatchServerToolItemToJSON(
+  outputApplyPatchServerToolItem: OutputApplyPatchServerToolItem,
+): string {
+  return JSON.stringify(
+    OutputApplyPatchServerToolItem$outboundSchema.parse(
+      outputApplyPatchServerToolItem,
+    ),
+  );
+}
 export function outputApplyPatchServerToolItemFromJSON(
   jsonString: string,
 ): SafeParseResult<OutputApplyPatchServerToolItem, SDKValidationError> {
