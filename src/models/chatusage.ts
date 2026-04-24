@@ -32,6 +32,24 @@ export type CompletionTokensDetails = {
 };
 
 /**
+ * Breakdown of upstream inference costs
+ */
+export type ChatUsageCostDetails = {
+  /**
+   * Upstream cost for completion/output tokens
+   */
+  upstreamInferenceCompletionsCost: number;
+  /**
+   * Total upstream inference cost (shown for BYOK requests)
+   */
+  upstreamInferenceCost?: number | null | undefined;
+  /**
+   * Upstream cost for prompt/input tokens
+   */
+  upstreamInferencePromptCost: number;
+};
+
+/**
  * Detailed prompt token usage
  */
 export type PromptTokensDetails = {
@@ -65,6 +83,18 @@ export type ChatUsage = {
    * Detailed completion token usage
    */
   completionTokensDetails?: CompletionTokensDetails | null | undefined;
+  /**
+   * Cost of the completion
+   */
+  cost?: number | null | undefined;
+  /**
+   * Breakdown of upstream inference costs
+   */
+  costDetails?: ChatUsageCostDetails | undefined;
+  /**
+   * Whether a request was made using a Bring Your Own Key configuration
+   */
+  isByok?: boolean | undefined;
   /**
    * Number of tokens in the prompt
    */
@@ -108,6 +138,32 @@ export function completionTokensDetailsFromJSON(
 }
 
 /** @internal */
+export const ChatUsageCostDetails$inboundSchema: z.ZodType<
+  ChatUsageCostDetails,
+  unknown
+> = z.object({
+  upstream_inference_completions_cost: z.number(),
+  upstream_inference_cost: z.nullable(z.number()).optional(),
+  upstream_inference_prompt_cost: z.number(),
+}).transform((v) => {
+  return remap$(v, {
+    "upstream_inference_completions_cost": "upstreamInferenceCompletionsCost",
+    "upstream_inference_cost": "upstreamInferenceCost",
+    "upstream_inference_prompt_cost": "upstreamInferencePromptCost",
+  });
+});
+
+export function chatUsageCostDetailsFromJSON(
+  jsonString: string,
+): SafeParseResult<ChatUsageCostDetails, SDKValidationError> {
+  return safeParse(
+    jsonString,
+    (x) => ChatUsageCostDetails$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'ChatUsageCostDetails' from JSON`,
+  );
+}
+
+/** @internal */
 export const PromptTokensDetails$inboundSchema: z.ZodType<
   PromptTokensDetails,
   unknown
@@ -141,6 +197,9 @@ export const ChatUsage$inboundSchema: z.ZodType<ChatUsage, unknown> = z.object({
   completion_tokens_details: z.nullable(
     z.lazy(() => CompletionTokensDetails$inboundSchema),
   ).optional(),
+  cost: z.nullable(z.number()).optional(),
+  cost_details: z.lazy(() => ChatUsageCostDetails$inboundSchema).optional(),
+  is_byok: z.boolean().optional(),
   prompt_tokens: z.int(),
   prompt_tokens_details: z.nullable(
     z.lazy(() => PromptTokensDetails$inboundSchema),
@@ -150,6 +209,8 @@ export const ChatUsage$inboundSchema: z.ZodType<ChatUsage, unknown> = z.object({
   return remap$(v, {
     "completion_tokens": "completionTokens",
     "completion_tokens_details": "completionTokensDetails",
+    "cost_details": "costDetails",
+    "is_byok": "isByok",
     "prompt_tokens": "promptTokens",
     "prompt_tokens_details": "promptTokensDetails",
     "total_tokens": "totalTokens",
