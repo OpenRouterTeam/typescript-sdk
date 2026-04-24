@@ -5,12 +5,21 @@
 
 import * as z from "zod/v4";
 import { safeParse } from "../lib/schemas.js";
+import { ClosedEnum } from "../types/enums.js";
 import { Result as SafeParseResult } from "../types/fp.js";
 import { SDKValidationError } from "./errors/sdkvalidationerror.js";
 import {
   ToolCallStatus,
   ToolCallStatus$inboundSchema,
+  ToolCallStatus$outboundSchema,
 } from "./toolcallstatus.js";
+
+export const OutputBashServerToolItemType = {
+  OpenrouterBash: "openrouter:bash",
+} as const;
+export type OutputBashServerToolItemType = ClosedEnum<
+  typeof OutputBashServerToolItemType
+>;
 
 /**
  * An openrouter:bash server tool output item
@@ -22,8 +31,17 @@ export type OutputBashServerToolItem = {
   status: ToolCallStatus;
   stderr?: string | undefined;
   stdout?: string | undefined;
-  type: "openrouter:bash";
+  type: OutputBashServerToolItemType;
 };
+
+/** @internal */
+export const OutputBashServerToolItemType$inboundSchema: z.ZodEnum<
+  typeof OutputBashServerToolItemType
+> = z.enum(OutputBashServerToolItemType);
+/** @internal */
+export const OutputBashServerToolItemType$outboundSchema: z.ZodEnum<
+  typeof OutputBashServerToolItemType
+> = OutputBashServerToolItemType$inboundSchema;
 
 /** @internal */
 export const OutputBashServerToolItem$inboundSchema: z.ZodType<
@@ -36,9 +54,40 @@ export const OutputBashServerToolItem$inboundSchema: z.ZodType<
   status: ToolCallStatus$inboundSchema,
   stderr: z.string().optional(),
   stdout: z.string().optional(),
-  type: z.literal("openrouter:bash"),
+  type: OutputBashServerToolItemType$inboundSchema,
+});
+/** @internal */
+export type OutputBashServerToolItem$Outbound = {
+  command?: string | undefined;
+  exitCode?: number | undefined;
+  id?: string | undefined;
+  status: string;
+  stderr?: string | undefined;
+  stdout?: string | undefined;
+  type: string;
+};
+
+/** @internal */
+export const OutputBashServerToolItem$outboundSchema: z.ZodType<
+  OutputBashServerToolItem$Outbound,
+  OutputBashServerToolItem
+> = z.object({
+  command: z.string().optional(),
+  exitCode: z.int().optional(),
+  id: z.string().optional(),
+  status: ToolCallStatus$outboundSchema,
+  stderr: z.string().optional(),
+  stdout: z.string().optional(),
+  type: OutputBashServerToolItemType$outboundSchema,
 });
 
+export function outputBashServerToolItemToJSON(
+  outputBashServerToolItem: OutputBashServerToolItem,
+): string {
+  return JSON.stringify(
+    OutputBashServerToolItem$outboundSchema.parse(outputBashServerToolItem),
+  );
+}
 export function outputBashServerToolItemFromJSON(
   jsonString: string,
 ): SafeParseResult<OutputBashServerToolItem, SDKValidationError> {
