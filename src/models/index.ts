@@ -77,6 +77,7 @@ export * from "./contentpartdoneevent.js";
 export * from "./contentpartimage.js";
 export * from "./contextcompressionengine.js";
 export * from "./contextcompressionplugin.js";
+export * from "./costdetails.js";
 export * from "./createguardrailrequest.js";
 export * from "./createguardrailresponse.js";
 export * from "./createworkspacerequest.js";
