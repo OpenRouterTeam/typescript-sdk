@@ -145,3 +145,26 @@ const value: models.CustomTool = {
 };
 ```
 
+### `models.NamespaceTool`
+
+```typescript
+const value: models.NamespaceTool = {
+  name: "my_mcp_server",
+  tools: [
+    {
+      name: "get_data",
+      type: "function",
+    },
+  ],
+  type: "namespace",
+};
+```
+
+### `models.ToolSearchTool`
+
+```typescript
+const value: models.ToolSearchTool = {
+  type: "tool_search",
+};
+```
+
