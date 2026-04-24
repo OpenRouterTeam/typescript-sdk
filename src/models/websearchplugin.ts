@@ -5,27 +5,10 @@
 
 import * as z from "zod/v4";
 import { remap as remap$ } from "../lib/primitives.js";
-import { ClosedEnum } from "../types/enums.js";
 import {
   WebSearchEngine,
   WebSearchEngine$outboundSchema,
 } from "./websearchengine.js";
-
-export const WebSearchPluginType = {
-  Approximate: "approximate",
-} as const;
-export type WebSearchPluginType = ClosedEnum<typeof WebSearchPluginType>;
-
-/**
- * Approximate user location for location-biased search results. Passed through to native providers that support it (e.g. Anthropic).
- */
-export type UserLocation = {
-  city?: string | null | undefined;
-  country?: string | null | undefined;
-  region?: string | null | undefined;
-  timezone?: string | null | undefined;
-  type: WebSearchPluginType;
-};
 
 export type WebSearchPlugin = {
   /**
@@ -46,43 +29,8 @@ export type WebSearchPlugin = {
    */
   includeDomains?: Array<string> | undefined;
   maxResults?: number | undefined;
-  /**
-   * Maximum number of times the model can invoke web search in a single turn. Passed through to native providers that support it (e.g. Anthropic).
-   */
-  maxUses?: number | undefined;
   searchPrompt?: string | undefined;
-  userLocation?: UserLocation | null | undefined;
 };
-
-/** @internal */
-export const WebSearchPluginType$outboundSchema: z.ZodEnum<
-  typeof WebSearchPluginType
-> = z.enum(WebSearchPluginType);
-
-/** @internal */
-export type UserLocation$Outbound = {
-  city?: string | null | undefined;
-  country?: string | null | undefined;
-  region?: string | null | undefined;
-  timezone?: string | null | undefined;
-  type: string;
-};
-
-/** @internal */
-export const UserLocation$outboundSchema: z.ZodType<
-  UserLocation$Outbound,
-  UserLocation
-> = z.object({
-  city: z.nullable(z.string()).optional(),
-  country: z.nullable(z.string()).optional(),
-  region: z.nullable(z.string()).optional(),
-  timezone: z.nullable(z.string()).optional(),
-  type: WebSearchPluginType$outboundSchema,
-});
-
-export function userLocationToJSON(userLocation: UserLocation): string {
-  return JSON.stringify(UserLocation$outboundSchema.parse(userLocation));
-}
 
 /** @internal */
 export type WebSearchPlugin$Outbound = {
@@ -92,9 +40,7 @@ export type WebSearchPlugin$Outbound = {
   id: "web";
   include_domains?: Array<string> | undefined;
   max_results?: number | undefined;
-  max_uses?: number | undefined;
   search_prompt?: string | undefined;
-  user_location?: UserLocation$Outbound | null | undefined;
 };
 
 /** @internal */
@@ -108,18 +54,13 @@ export const WebSearchPlugin$outboundSchema: z.ZodType<
   id: z.literal("web"),
   includeDomains: z.array(z.string()).optional(),
   maxResults: z.int().optional(),
-  maxUses: z.int().optional(),
   searchPrompt: z.string().optional(),
-  userLocation: z.nullable(z.lazy(() => UserLocation$outboundSchema))
-    .optional(),
 }).transform((v) => {
   return remap$(v, {
     excludeDomains: "exclude_domains",
     includeDomains: "include_domains",
     maxResults: "max_results",
-    maxUses: "max_uses",
     searchPrompt: "search_prompt",
-    userLocation: "user_location",
   });
 });
 
