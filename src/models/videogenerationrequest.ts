@@ -121,6 +121,7 @@ export type VideoGenerationRequestOptions = {
   parasail?: { [k: string]: any | null } | undefined;
   perplexity?: { [k: string]: any | null } | undefined;
   phala?: { [k: string]: any | null } | undefined;
+  poolside?: { [k: string]: any | null } | undefined;
   recraft?: { [k: string]: any | null } | undefined;
   recursal?: { [k: string]: any | null } | undefined;
   reflection?: { [k: string]: any | null } | undefined;
@@ -180,6 +181,10 @@ export type VideoGenerationRequest = {
    * Aspect ratio of the generated video
    */
   aspectRatio?: AspectRatio | undefined;
+  /**
+   * URL to receive a webhook notification when the video generation job completes. Overrides the workspace-level default callback URL if set. Must be HTTPS.
+   */
+  callbackUrl?: string | undefined;
   /**
    * Duration of the generated video in seconds
    */
@@ -304,6 +309,7 @@ export type VideoGenerationRequestOptions$Outbound = {
   parasail?: { [k: string]: any | null } | undefined;
   perplexity?: { [k: string]: any | null } | undefined;
   phala?: { [k: string]: any | null } | undefined;
+  poolside?: { [k: string]: any | null } | undefined;
   recraft?: { [k: string]: any | null } | undefined;
   recursal?: { [k: string]: any | null } | undefined;
   reflection?: { [k: string]: any | null } | undefined;
@@ -419,6 +425,7 @@ export const VideoGenerationRequestOptions$outboundSchema: z.ZodType<
   parasail: z.record(z.string(), z.nullable(z.any())).optional(),
   perplexity: z.record(z.string(), z.nullable(z.any())).optional(),
   phala: z.record(z.string(), z.nullable(z.any())).optional(),
+  poolside: z.record(z.string(), z.nullable(z.any())).optional(),
   recraft: z.record(z.string(), z.nullable(z.any())).optional(),
   recursal: z.record(z.string(), z.nullable(z.any())).optional(),
   reflection: z.record(z.string(), z.nullable(z.any())).optional(),
@@ -512,6 +519,7 @@ export const Resolution$outboundSchema: z.ZodType<string, Resolution> =
 /** @internal */
 export type VideoGenerationRequest$Outbound = {
   aspect_ratio?: string | undefined;
+  callback_url?: string | undefined;
   duration?: number | undefined;
   frame_images?: Array<FrameImage$Outbound> | undefined;
   generate_audio?: boolean | undefined;
@@ -530,6 +538,7 @@ export const VideoGenerationRequest$outboundSchema: z.ZodType<
   VideoGenerationRequest
 > = z.object({
   aspectRatio: AspectRatio$outboundSchema.optional(),
+  callbackUrl: z.string().optional(),
   duration: z.int().optional(),
   frameImages: z.array(FrameImage$outboundSchema).optional(),
   generateAudio: z.boolean().optional(),
@@ -544,6 +553,7 @@ export const VideoGenerationRequest$outboundSchema: z.ZodType<
 }).transform((v) => {
   return remap$(v, {
     aspectRatio: "aspect_ratio",
+    callbackUrl: "callback_url",
     frameImages: "frame_images",
     generateAudio: "generate_audio",
     inputReferences: "input_references",
