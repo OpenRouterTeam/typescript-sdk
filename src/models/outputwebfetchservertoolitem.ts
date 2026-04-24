@@ -5,12 +5,21 @@
 
 import * as z from "zod/v4";
 import { safeParse } from "../lib/schemas.js";
+import { ClosedEnum } from "../types/enums.js";
 import { Result as SafeParseResult } from "../types/fp.js";
 import { SDKValidationError } from "./errors/sdkvalidationerror.js";
 import {
   ToolCallStatus,
   ToolCallStatus$inboundSchema,
+  ToolCallStatus$outboundSchema,
 } from "./toolcallstatus.js";
+
+export const OutputWebFetchServerToolItemType = {
+  OpenrouterWebFetch: "openrouter:web_fetch",
+} as const;
+export type OutputWebFetchServerToolItemType = ClosedEnum<
+  typeof OutputWebFetchServerToolItemType
+>;
 
 /**
  * An openrouter:web_fetch server tool output item
@@ -20,9 +29,18 @@ export type OutputWebFetchServerToolItem = {
   id?: string | undefined;
   status: ToolCallStatus;
   title?: string | undefined;
-  type: "openrouter:web_fetch";
+  type: OutputWebFetchServerToolItemType;
   url?: string | undefined;
 };
+
+/** @internal */
+export const OutputWebFetchServerToolItemType$inboundSchema: z.ZodEnum<
+  typeof OutputWebFetchServerToolItemType
+> = z.enum(OutputWebFetchServerToolItemType);
+/** @internal */
+export const OutputWebFetchServerToolItemType$outboundSchema: z.ZodEnum<
+  typeof OutputWebFetchServerToolItemType
+> = OutputWebFetchServerToolItemType$inboundSchema;
 
 /** @internal */
 export const OutputWebFetchServerToolItem$inboundSchema: z.ZodType<
@@ -33,10 +51,41 @@ export const OutputWebFetchServerToolItem$inboundSchema: z.ZodType<
   id: z.string().optional(),
   status: ToolCallStatus$inboundSchema,
   title: z.string().optional(),
-  type: z.literal("openrouter:web_fetch"),
+  type: OutputWebFetchServerToolItemType$inboundSchema,
+  url: z.string().optional(),
+});
+/** @internal */
+export type OutputWebFetchServerToolItem$Outbound = {
+  content?: string | undefined;
+  id?: string | undefined;
+  status: string;
+  title?: string | undefined;
+  type: string;
+  url?: string | undefined;
+};
+
+/** @internal */
+export const OutputWebFetchServerToolItem$outboundSchema: z.ZodType<
+  OutputWebFetchServerToolItem$Outbound,
+  OutputWebFetchServerToolItem
+> = z.object({
+  content: z.string().optional(),
+  id: z.string().optional(),
+  status: ToolCallStatus$outboundSchema,
+  title: z.string().optional(),
+  type: OutputWebFetchServerToolItemType$outboundSchema,
   url: z.string().optional(),
 });
 
+export function outputWebFetchServerToolItemToJSON(
+  outputWebFetchServerToolItem: OutputWebFetchServerToolItem,
+): string {
+  return JSON.stringify(
+    OutputWebFetchServerToolItem$outboundSchema.parse(
+      outputWebFetchServerToolItem,
+    ),
+  );
+}
 export function outputWebFetchServerToolItemFromJSON(
   jsonString: string,
 ): SafeParseResult<OutputWebFetchServerToolItem, SDKValidationError> {
