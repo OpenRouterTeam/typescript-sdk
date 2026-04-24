@@ -43,6 +43,14 @@ const value: models.ParetoRouterPlugin = {
 };
 ```
 
+### `models.ResponseCachingPlugin`
+
+```typescript
+const value: models.ResponseCachingPlugin = {
+  id: "response-caching",
+};
+```
+
 ### `models.ResponseHealingPlugin`
 
 ```typescript

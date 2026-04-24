@@ -5,12 +5,21 @@
 
 import * as z from "zod/v4";
 import { safeParse } from "../lib/schemas.js";
+import { ClosedEnum } from "../types/enums.js";
 import { Result as SafeParseResult } from "../types/fp.js";
 import { SDKValidationError } from "./errors/sdkvalidationerror.js";
 import {
   ToolCallStatus,
   ToolCallStatus$inboundSchema,
+  ToolCallStatus$outboundSchema,
 } from "./toolcallstatus.js";
+
+export const OutputToolSearchServerToolItemType = {
+  OpenrouterToolSearch: "openrouter:tool_search",
+} as const;
+export type OutputToolSearchServerToolItemType = ClosedEnum<
+  typeof OutputToolSearchServerToolItemType
+>;
 
 /**
  * An openrouter:tool_search server tool output item
@@ -19,8 +28,17 @@ export type OutputToolSearchServerToolItem = {
   id?: string | undefined;
   query?: string | undefined;
   status: ToolCallStatus;
-  type: "openrouter:tool_search";
+  type: OutputToolSearchServerToolItemType;
 };
+
+/** @internal */
+export const OutputToolSearchServerToolItemType$inboundSchema: z.ZodEnum<
+  typeof OutputToolSearchServerToolItemType
+> = z.enum(OutputToolSearchServerToolItemType);
+/** @internal */
+export const OutputToolSearchServerToolItemType$outboundSchema: z.ZodEnum<
+  typeof OutputToolSearchServerToolItemType
+> = OutputToolSearchServerToolItemType$inboundSchema;
 
 /** @internal */
 export const OutputToolSearchServerToolItem$inboundSchema: z.ZodType<
@@ -30,9 +48,36 @@ export const OutputToolSearchServerToolItem$inboundSchema: z.ZodType<
   id: z.string().optional(),
   query: z.string().optional(),
   status: ToolCallStatus$inboundSchema,
-  type: z.literal("openrouter:tool_search"),
+  type: OutputToolSearchServerToolItemType$inboundSchema,
+});
+/** @internal */
+export type OutputToolSearchServerToolItem$Outbound = {
+  id?: string | undefined;
+  query?: string | undefined;
+  status: string;
+  type: string;
+};
+
+/** @internal */
+export const OutputToolSearchServerToolItem$outboundSchema: z.ZodType<
+  OutputToolSearchServerToolItem$Outbound,
+  OutputToolSearchServerToolItem
+> = z.object({
+  id: z.string().optional(),
+  query: z.string().optional(),
+  status: ToolCallStatus$outboundSchema,
+  type: OutputToolSearchServerToolItemType$outboundSchema,
 });
 
+export function outputToolSearchServerToolItemToJSON(
+  outputToolSearchServerToolItem: OutputToolSearchServerToolItem,
+): string {
+  return JSON.stringify(
+    OutputToolSearchServerToolItem$outboundSchema.parse(
+      outputToolSearchServerToolItem,
+    ),
+  );
+}
 export function outputToolSearchServerToolItemFromJSON(
   jsonString: string,
 ): SafeParseResult<OutputToolSearchServerToolItem, SDKValidationError> {

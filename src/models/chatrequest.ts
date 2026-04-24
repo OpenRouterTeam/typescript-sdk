@@ -102,6 +102,11 @@ import {
   ProviderPreferences$outboundSchema,
 } from "./providerpreferences.js";
 import {
+  ResponseCachingPlugin,
+  ResponseCachingPlugin$Outbound,
+  ResponseCachingPlugin$outboundSchema,
+} from "./responsecachingplugin.js";
+import {
   ResponseHealingPlugin,
   ResponseHealingPlugin$Outbound,
   ResponseHealingPlugin$outboundSchema,
@@ -130,6 +135,7 @@ export type ChatRequestPlugin =
   | FileParserPlugin
   | ModerationPlugin
   | ParetoRouterPlugin
+  | ResponseCachingPlugin
   | ResponseHealingPlugin
   | WebSearchPlugin;
 
@@ -257,6 +263,7 @@ export type ChatRequest = {
       | FileParserPlugin
       | ModerationPlugin
       | ParetoRouterPlugin
+      | ResponseCachingPlugin
       | ResponseHealingPlugin
       | WebSearchPlugin
     >
@@ -348,6 +355,7 @@ export type ChatRequestPlugin$Outbound =
   | FileParserPlugin$Outbound
   | ModerationPlugin$Outbound
   | ParetoRouterPlugin$Outbound
+  | ResponseCachingPlugin$Outbound
   | ResponseHealingPlugin$Outbound
   | WebSearchPlugin$Outbound;
 
@@ -361,6 +369,7 @@ export const ChatRequestPlugin$outboundSchema: z.ZodType<
   FileParserPlugin$outboundSchema,
   ModerationPlugin$outboundSchema,
   ParetoRouterPlugin$outboundSchema,
+  ResponseCachingPlugin$outboundSchema,
   ResponseHealingPlugin$outboundSchema,
   WebSearchPlugin$outboundSchema,
 ]);
@@ -464,6 +473,7 @@ export type ChatRequest$Outbound = {
       | FileParserPlugin$Outbound
       | ModerationPlugin$Outbound
       | ParetoRouterPlugin$Outbound
+      | ResponseCachingPlugin$Outbound
       | ResponseHealingPlugin$Outbound
       | WebSearchPlugin$Outbound
     >
@@ -519,6 +529,7 @@ export const ChatRequest$outboundSchema: z.ZodType<
       FileParserPlugin$outboundSchema,
       ModerationPlugin$outboundSchema,
       ParetoRouterPlugin$outboundSchema,
+      ResponseCachingPlugin$outboundSchema,
       ResponseHealingPlugin$outboundSchema,
       WebSearchPlugin$outboundSchema,
     ]),

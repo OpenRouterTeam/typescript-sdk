@@ -136,6 +136,11 @@ import {
   ReasoningConfig$outboundSchema,
 } from "./reasoningconfig.js";
 import {
+  ResponseCachingPlugin,
+  ResponseCachingPlugin$Outbound,
+  ResponseCachingPlugin$outboundSchema,
+} from "./responsecachingplugin.js";
+import {
   ResponseHealingPlugin,
   ResponseHealingPlugin$Outbound,
   ResponseHealingPlugin$outboundSchema,
@@ -191,6 +196,7 @@ export type ResponsesRequestPlugin =
   | FileParserPlugin
   | ModerationPlugin
   | ParetoRouterPlugin
+  | ResponseCachingPlugin
   | ResponseHealingPlugin
   | WebSearchPlugin;
 
@@ -280,6 +286,7 @@ export type ResponsesRequest = {
       | FileParserPlugin
       | ModerationPlugin
       | ParetoRouterPlugin
+      | ResponseCachingPlugin
       | ResponseHealingPlugin
       | WebSearchPlugin
     >
@@ -358,6 +365,7 @@ export type ResponsesRequestPlugin$Outbound =
   | FileParserPlugin$Outbound
   | ModerationPlugin$Outbound
   | ParetoRouterPlugin$Outbound
+  | ResponseCachingPlugin$Outbound
   | ResponseHealingPlugin$Outbound
   | WebSearchPlugin$Outbound;
 
@@ -371,6 +379,7 @@ export const ResponsesRequestPlugin$outboundSchema: z.ZodType<
   FileParserPlugin$outboundSchema,
   ModerationPlugin$outboundSchema,
   ParetoRouterPlugin$outboundSchema,
+  ResponseCachingPlugin$outboundSchema,
   ResponseHealingPlugin$outboundSchema,
   WebSearchPlugin$outboundSchema,
 ]);
@@ -510,6 +519,7 @@ export type ResponsesRequest$Outbound = {
       | FileParserPlugin$Outbound
       | ModerationPlugin$Outbound
       | ParetoRouterPlugin$Outbound
+      | ResponseCachingPlugin$Outbound
       | ResponseHealingPlugin$Outbound
       | WebSearchPlugin$Outbound
     >
@@ -588,6 +598,7 @@ export const ResponsesRequest$outboundSchema: z.ZodType<
       FileParserPlugin$outboundSchema,
       ModerationPlugin$outboundSchema,
       ParetoRouterPlugin$outboundSchema,
+      ResponseCachingPlugin$outboundSchema,
       ResponseHealingPlugin$outboundSchema,
       WebSearchPlugin$outboundSchema,
     ]),
