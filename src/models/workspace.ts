@@ -39,6 +39,14 @@ export type Workspace = {
    */
   id: string;
   /**
+   * Optional array of API key IDs to filter I/O logging. Null means all keys are logged.
+   */
+  ioLoggingApiKeyIds: Array<number> | null;
+  /**
+   * Sampling rate for I/O logging (0.0001-1). 1 means 100% of requests are logged.
+   */
+  ioLoggingSamplingRate: number;
+  /**
    * Whether data discount logging is enabled for this workspace
    */
   isDataDiscountLoggingEnabled: boolean;
@@ -73,6 +81,8 @@ export const Workspace$inboundSchema: z.ZodType<Workspace, unknown> = z.object({
   default_text_model: z.nullable(z.string()),
   description: z.nullable(z.string()),
   id: z.string(),
+  io_logging_api_key_ids: z.nullable(z.array(z.int())),
+  io_logging_sampling_rate: z.number(),
   is_data_discount_logging_enabled: z.boolean(),
   is_observability_broadcast_enabled: z.boolean(),
   is_observability_io_logging_enabled: z.boolean(),
@@ -86,6 +96,8 @@ export const Workspace$inboundSchema: z.ZodType<Workspace, unknown> = z.object({
     "default_image_model": "defaultImageModel",
     "default_provider_sort": "defaultProviderSort",
     "default_text_model": "defaultTextModel",
+    "io_logging_api_key_ids": "ioLoggingApiKeyIds",
+    "io_logging_sampling_rate": "ioLoggingSamplingRate",
     "is_data_discount_logging_enabled": "isDataDiscountLoggingEnabled",
     "is_observability_broadcast_enabled": "isObservabilityBroadcastEnabled",
     "is_observability_io_logging_enabled": "isObservabilityIoLoggingEnabled",
