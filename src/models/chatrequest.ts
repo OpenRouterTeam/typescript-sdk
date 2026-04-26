@@ -67,6 +67,11 @@ import {
   ChatToolChoice$outboundSchema,
 } from "./chattoolchoice.js";
 import {
+  ConfidenceScorePlugin,
+  ConfidenceScorePlugin$Outbound,
+  ConfidenceScorePlugin$outboundSchema,
+} from "./confidencescoreplugin.js";
+import {
   ContextCompressionPlugin,
   ContextCompressionPlugin$Outbound,
   ContextCompressionPlugin$outboundSchema,
@@ -126,6 +131,7 @@ export type Modality = OpenEnum<typeof Modality>;
 
 export type ChatRequestPlugin =
   | AutoRouterPlugin
+  | ConfidenceScorePlugin
   | ContextCompressionPlugin
   | FileParserPlugin
   | ModerationPlugin
@@ -253,6 +259,7 @@ export type ChatRequest = {
   plugins?:
     | Array<
       | AutoRouterPlugin
+      | ConfidenceScorePlugin
       | ContextCompressionPlugin
       | FileParserPlugin
       | ModerationPlugin
@@ -344,6 +351,7 @@ export const Modality$outboundSchema: z.ZodType<string, Modality> = openEnums
 /** @internal */
 export type ChatRequestPlugin$Outbound =
   | AutoRouterPlugin$Outbound
+  | ConfidenceScorePlugin$Outbound
   | ContextCompressionPlugin$Outbound
   | FileParserPlugin$Outbound
   | ModerationPlugin$Outbound
@@ -357,6 +365,7 @@ export const ChatRequestPlugin$outboundSchema: z.ZodType<
   ChatRequestPlugin
 > = z.union([
   AutoRouterPlugin$outboundSchema,
+  ConfidenceScorePlugin$outboundSchema,
   ContextCompressionPlugin$outboundSchema,
   FileParserPlugin$outboundSchema,
   ModerationPlugin$outboundSchema,
@@ -460,6 +469,7 @@ export type ChatRequest$Outbound = {
   plugins?:
     | Array<
       | AutoRouterPlugin$Outbound
+      | ConfidenceScorePlugin$Outbound
       | ContextCompressionPlugin$Outbound
       | FileParserPlugin$Outbound
       | ModerationPlugin$Outbound
@@ -515,6 +525,7 @@ export const ChatRequest$outboundSchema: z.ZodType<
   plugins: z.array(
     z.union([
       AutoRouterPlugin$outboundSchema,
+      ConfidenceScorePlugin$outboundSchema,
       ContextCompressionPlugin$outboundSchema,
       FileParserPlugin$outboundSchema,
       ModerationPlugin$outboundSchema,
