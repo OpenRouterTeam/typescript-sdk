@@ -6,7 +6,7 @@
 import * as z from "zod/v4";
 import { remap as remap$ } from "../lib/primitives.js";
 import * as openEnums from "../types/enums.js";
-import { OpenEnum } from "../types/enums.js";
+import { ClosedEnum, OpenEnum } from "../types/enums.js";
 import {
   ApplyPatchServerTool,
   ApplyPatchServerTool$Outbound,
@@ -205,6 +205,15 @@ export type ResponsesRequestServiceTier = OpenEnum<
   typeof ResponsesRequestServiceTier
 >;
 
+export type ResponsesRequestTool = {
+  type: string;
+};
+
+export const ResponsesRequestType = {
+  Function: "function",
+} as const;
+export type ResponsesRequestType = ClosedEnum<typeof ResponsesRequestType>;
+
 /**
  * Function tool definition
  */
@@ -213,33 +222,30 @@ export type ResponsesRequestToolFunction = {
   name: string;
   parameters: { [k: string]: any | null } | null;
   strict?: boolean | null | undefined;
-  type: "function";
+  type: ResponsesRequestType;
 };
 
 export type ResponsesRequestToolUnion =
+  | ComputerUseServerTool
   | ResponsesRequestToolFunction
+  | FileSearchServerTool
+  | CodeInterpreterServerTool
+  | McpServerTool
+  | CustomTool
   | PreviewWebSearchServerTool
   | Preview20250311WebSearchServerTool
   | LegacyWebSearchServerTool
   | WebSearchServerTool
-  | FileSearchServerTool
-  | ComputerUseServerTool
-  | CodeInterpreterServerTool
-  | McpServerTool
   | ImageGenerationServerTool
   | CodexLocalShellTool
   | ShellServerTool
   | ApplyPatchServerTool
-  | CustomTool
-  | (DatetimeServerTool & { type: "openrouter:datetime" })
-  | (ImageGenerationServerToolOpenRouter & {
-    type: "openrouter:image_generation";
-  })
-  | (ChatSearchModelsServerTool & {
-    type: "openrouter:experimental__search_models";
-  })
-  | (WebFetchServerTool & { type: "openrouter:web_fetch" })
-  | WebSearchServerToolOpenRouter;
+  | DatetimeServerTool
+  | ImageGenerationServerToolOpenRouter
+  | ChatSearchModelsServerTool
+  | WebFetchServerTool
+  | WebSearchServerToolOpenRouter
+  | ResponsesRequestTool;
 
 /**
  * Request schema for Responses endpoint
@@ -312,29 +318,26 @@ export type ResponsesRequest = {
   toolChoice?: OpenAIResponsesToolChoiceUnion | undefined;
   tools?:
     | Array<
+      | ComputerUseServerTool
       | ResponsesRequestToolFunction
+      | FileSearchServerTool
+      | CodeInterpreterServerTool
+      | McpServerTool
+      | CustomTool
       | PreviewWebSearchServerTool
       | Preview20250311WebSearchServerTool
       | LegacyWebSearchServerTool
       | WebSearchServerTool
-      | FileSearchServerTool
-      | ComputerUseServerTool
-      | CodeInterpreterServerTool
-      | McpServerTool
       | ImageGenerationServerTool
       | CodexLocalShellTool
       | ShellServerTool
       | ApplyPatchServerTool
-      | CustomTool
-      | (DatetimeServerTool & { type: "openrouter:datetime" })
-      | (ImageGenerationServerToolOpenRouter & {
-        type: "openrouter:image_generation";
-      })
-      | (ChatSearchModelsServerTool & {
-        type: "openrouter:experimental__search_models";
-      })
-      | (WebFetchServerTool & { type: "openrouter:web_fetch" })
+      | DatetimeServerTool
+      | ImageGenerationServerToolOpenRouter
+      | ChatSearchModelsServerTool
+      | WebFetchServerTool
       | WebSearchServerToolOpenRouter
+      | ResponsesRequestTool
     >
     | undefined;
   topK?: number | undefined;
@@ -390,12 +393,38 @@ export const ResponsesRequestServiceTier$outboundSchema: z.ZodType<
 > = openEnums.outboundSchema(ResponsesRequestServiceTier);
 
 /** @internal */
+export type ResponsesRequestTool$Outbound = {
+  type: string;
+};
+
+/** @internal */
+export const ResponsesRequestTool$outboundSchema: z.ZodType<
+  ResponsesRequestTool$Outbound,
+  ResponsesRequestTool
+> = z.object({
+  type: z.string(),
+});
+
+export function responsesRequestToolToJSON(
+  responsesRequestTool: ResponsesRequestTool,
+): string {
+  return JSON.stringify(
+    ResponsesRequestTool$outboundSchema.parse(responsesRequestTool),
+  );
+}
+
+/** @internal */
+export const ResponsesRequestType$outboundSchema: z.ZodEnum<
+  typeof ResponsesRequestType
+> = z.enum(ResponsesRequestType);
+
+/** @internal */
 export type ResponsesRequestToolFunction$Outbound = {
   description?: string | null | undefined;
   name: string;
   parameters: { [k: string]: any | null } | null;
   strict?: boolean | null | undefined;
-  type: "function";
+  type: string;
 };
 
 /** @internal */
@@ -407,7 +436,7 @@ export const ResponsesRequestToolFunction$outboundSchema: z.ZodType<
   name: z.string(),
   parameters: z.nullable(z.record(z.string(), z.nullable(z.any()))),
   strict: z.nullable(z.boolean()).optional(),
-  type: z.literal("function"),
+  type: ResponsesRequestType$outboundSchema,
 });
 
 export function responsesRequestToolFunctionToJSON(
@@ -422,62 +451,52 @@ export function responsesRequestToolFunctionToJSON(
 
 /** @internal */
 export type ResponsesRequestToolUnion$Outbound =
+  | ComputerUseServerTool$Outbound
   | ResponsesRequestToolFunction$Outbound
+  | FileSearchServerTool$Outbound
+  | CodeInterpreterServerTool$Outbound
+  | McpServerTool$Outbound
+  | CustomTool$Outbound
   | PreviewWebSearchServerTool$Outbound
   | Preview20250311WebSearchServerTool$Outbound
   | LegacyWebSearchServerTool$Outbound
   | WebSearchServerTool$Outbound
-  | FileSearchServerTool$Outbound
-  | ComputerUseServerTool$Outbound
-  | CodeInterpreterServerTool$Outbound
-  | McpServerTool$Outbound
   | ImageGenerationServerTool$Outbound
   | CodexLocalShellTool$Outbound
   | ShellServerTool$Outbound
   | ApplyPatchServerTool$Outbound
-  | CustomTool$Outbound
-  | (DatetimeServerTool$Outbound & { type: "openrouter:datetime" })
-  | (ImageGenerationServerToolOpenRouter$Outbound & {
-    type: "openrouter:image_generation";
-  })
-  | (ChatSearchModelsServerTool$Outbound & {
-    type: "openrouter:experimental__search_models";
-  })
-  | (WebFetchServerTool$Outbound & { type: "openrouter:web_fetch" })
-  | WebSearchServerToolOpenRouter$Outbound;
+  | DatetimeServerTool$Outbound
+  | ImageGenerationServerToolOpenRouter$Outbound
+  | ChatSearchModelsServerTool$Outbound
+  | WebFetchServerTool$Outbound
+  | WebSearchServerToolOpenRouter$Outbound
+  | ResponsesRequestTool$Outbound;
 
 /** @internal */
 export const ResponsesRequestToolUnion$outboundSchema: z.ZodType<
   ResponsesRequestToolUnion$Outbound,
   ResponsesRequestToolUnion
 > = z.union([
+  ComputerUseServerTool$outboundSchema,
   z.lazy(() => ResponsesRequestToolFunction$outboundSchema),
+  FileSearchServerTool$outboundSchema,
+  CodeInterpreterServerTool$outboundSchema,
+  McpServerTool$outboundSchema,
+  CustomTool$outboundSchema,
   PreviewWebSearchServerTool$outboundSchema,
   Preview20250311WebSearchServerTool$outboundSchema,
   LegacyWebSearchServerTool$outboundSchema,
   WebSearchServerTool$outboundSchema,
-  FileSearchServerTool$outboundSchema,
-  ComputerUseServerTool$outboundSchema,
-  CodeInterpreterServerTool$outboundSchema,
-  McpServerTool$outboundSchema,
   ImageGenerationServerTool$outboundSchema,
   CodexLocalShellTool$outboundSchema,
   ShellServerTool$outboundSchema,
   ApplyPatchServerTool$outboundSchema,
-  CustomTool$outboundSchema,
-  DatetimeServerTool$outboundSchema.and(
-    z.object({ type: z.literal("openrouter:datetime") }),
-  ),
-  ImageGenerationServerToolOpenRouter$outboundSchema.and(
-    z.object({ type: z.literal("openrouter:image_generation") }),
-  ),
-  ChatSearchModelsServerTool$outboundSchema.and(
-    z.object({ type: z.literal("openrouter:experimental__search_models") }),
-  ),
-  WebFetchServerTool$outboundSchema.and(
-    z.object({ type: z.literal("openrouter:web_fetch") }),
-  ),
+  DatetimeServerTool$outboundSchema,
+  ImageGenerationServerToolOpenRouter$outboundSchema,
+  ChatSearchModelsServerTool$outboundSchema,
+  WebFetchServerTool$outboundSchema,
   WebSearchServerToolOpenRouter$outboundSchema,
+  z.lazy(() => ResponsesRequestTool$outboundSchema),
 ]);
 
 export function responsesRequestToolUnionToJSON(
@@ -530,29 +549,26 @@ export type ResponsesRequest$Outbound = {
   tool_choice?: OpenAIResponsesToolChoiceUnion$Outbound | undefined;
   tools?:
     | Array<
+      | ComputerUseServerTool$Outbound
       | ResponsesRequestToolFunction$Outbound
+      | FileSearchServerTool$Outbound
+      | CodeInterpreterServerTool$Outbound
+      | McpServerTool$Outbound
+      | CustomTool$Outbound
       | PreviewWebSearchServerTool$Outbound
       | Preview20250311WebSearchServerTool$Outbound
       | LegacyWebSearchServerTool$Outbound
       | WebSearchServerTool$Outbound
-      | FileSearchServerTool$Outbound
-      | ComputerUseServerTool$Outbound
-      | CodeInterpreterServerTool$Outbound
-      | McpServerTool$Outbound
       | ImageGenerationServerTool$Outbound
       | CodexLocalShellTool$Outbound
       | ShellServerTool$Outbound
       | ApplyPatchServerTool$Outbound
-      | CustomTool$Outbound
-      | (DatetimeServerTool$Outbound & { type: "openrouter:datetime" })
-      | (ImageGenerationServerToolOpenRouter$Outbound & {
-        type: "openrouter:image_generation";
-      })
-      | (ChatSearchModelsServerTool$Outbound & {
-        type: "openrouter:experimental__search_models";
-      })
-      | (WebFetchServerTool$Outbound & { type: "openrouter:web_fetch" })
+      | DatetimeServerTool$Outbound
+      | ImageGenerationServerToolOpenRouter$Outbound
+      | ChatSearchModelsServerTool$Outbound
+      | WebFetchServerTool$Outbound
       | WebSearchServerToolOpenRouter$Outbound
+      | ResponsesRequestTool$Outbound
     >
     | undefined;
   top_k?: number | undefined;
@@ -610,33 +626,26 @@ export const ResponsesRequest$outboundSchema: z.ZodType<
   toolChoice: OpenAIResponsesToolChoiceUnion$outboundSchema.optional(),
   tools: z.array(
     z.union([
+      ComputerUseServerTool$outboundSchema,
       z.lazy(() => ResponsesRequestToolFunction$outboundSchema),
+      FileSearchServerTool$outboundSchema,
+      CodeInterpreterServerTool$outboundSchema,
+      McpServerTool$outboundSchema,
+      CustomTool$outboundSchema,
       PreviewWebSearchServerTool$outboundSchema,
       Preview20250311WebSearchServerTool$outboundSchema,
       LegacyWebSearchServerTool$outboundSchema,
       WebSearchServerTool$outboundSchema,
-      FileSearchServerTool$outboundSchema,
-      ComputerUseServerTool$outboundSchema,
-      CodeInterpreterServerTool$outboundSchema,
-      McpServerTool$outboundSchema,
       ImageGenerationServerTool$outboundSchema,
       CodexLocalShellTool$outboundSchema,
       ShellServerTool$outboundSchema,
       ApplyPatchServerTool$outboundSchema,
-      CustomTool$outboundSchema,
-      DatetimeServerTool$outboundSchema.and(
-        z.object({ type: z.literal("openrouter:datetime") }),
-      ),
-      ImageGenerationServerToolOpenRouter$outboundSchema.and(
-        z.object({ type: z.literal("openrouter:image_generation") }),
-      ),
-      ChatSearchModelsServerTool$outboundSchema.and(
-        z.object({ type: z.literal("openrouter:experimental__search_models") }),
-      ),
-      WebFetchServerTool$outboundSchema.and(
-        z.object({ type: z.literal("openrouter:web_fetch") }),
-      ),
+      DatetimeServerTool$outboundSchema,
+      ImageGenerationServerToolOpenRouter$outboundSchema,
+      ChatSearchModelsServerTool$outboundSchema,
+      WebFetchServerTool$outboundSchema,
       WebSearchServerToolOpenRouter$outboundSchema,
+      z.lazy(() => ResponsesRequestTool$outboundSchema),
     ]),
   ).optional(),
   topK: z.int().optional(),

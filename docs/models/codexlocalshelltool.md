@@ -14,6 +14,6 @@ let value: CodexLocalShellTool = {
 
 ## Fields
 
-| Field              | Type               | Required           | Description        |
-| ------------------ | ------------------ | ------------------ | ------------------ |
-| `type`             | *"local_shell"*    | :heavy_check_mark: | N/A                |
+| Field                                                                  | Type                                                                   | Required                                                               | Description                                                            |
+| ---------------------------------------------------------------------- | ---------------------------------------------------------------------- | ---------------------------------------------------------------------- | ---------------------------------------------------------------------- |
+| `type`                                                                 | [models.CodexLocalShellToolType](../models/codexlocalshelltooltype.md) | :heavy_check_mark:                                                     | N/A                                                                    |

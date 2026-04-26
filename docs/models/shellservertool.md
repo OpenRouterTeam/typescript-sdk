@@ -14,6 +14,6 @@ let value: ShellServerTool = {
 
 ## Fields
 
-| Field              | Type               | Required           | Description        |
-| ------------------ | ------------------ | ------------------ | ------------------ |
-| `type`             | *"shell"*          | :heavy_check_mark: | N/A                |
+| Field                                                          | Type                                                           | Required                                                       | Description                                                    |
+| -------------------------------------------------------------- | -------------------------------------------------------------- | -------------------------------------------------------------- | -------------------------------------------------------------- |
+| `type`                                                         | [models.ShellServerToolType](../models/shellservertooltype.md) | :heavy_check_mark:                                             | N/A                                                            |
