@@ -63,6 +63,11 @@ import {
   FileSearchServerTool$outboundSchema,
 } from "./filesearchservertool.js";
 import {
+  FusionServerTool,
+  FusionServerTool$Outbound,
+  FusionServerTool$outboundSchema,
+} from "./fusionservertool.js";
+import {
   ImageConfig,
   ImageConfig$Outbound,
   ImageConfig$outboundSchema,
@@ -239,7 +244,8 @@ export type ResponsesRequestToolUnion =
     type: "openrouter:experimental__search_models";
   })
   | (WebFetchServerTool & { type: "openrouter:web_fetch" })
-  | WebSearchServerToolOpenRouter;
+  | WebSearchServerToolOpenRouter
+  | FusionServerTool;
 
 /**
  * Request schema for Responses endpoint
@@ -335,6 +341,7 @@ export type ResponsesRequest = {
       })
       | (WebFetchServerTool & { type: "openrouter:web_fetch" })
       | WebSearchServerToolOpenRouter
+      | FusionServerTool
     >
     | undefined;
   topK?: number | undefined;
@@ -444,7 +451,8 @@ export type ResponsesRequestToolUnion$Outbound =
     type: "openrouter:experimental__search_models";
   })
   | (WebFetchServerTool$Outbound & { type: "openrouter:web_fetch" })
-  | WebSearchServerToolOpenRouter$Outbound;
+  | WebSearchServerToolOpenRouter$Outbound
+  | FusionServerTool$Outbound;
 
 /** @internal */
 export const ResponsesRequestToolUnion$outboundSchema: z.ZodType<
@@ -478,6 +486,7 @@ export const ResponsesRequestToolUnion$outboundSchema: z.ZodType<
     z.object({ type: z.literal("openrouter:web_fetch") }),
   ),
   WebSearchServerToolOpenRouter$outboundSchema,
+  FusionServerTool$outboundSchema,
 ]);
 
 export function responsesRequestToolUnionToJSON(
@@ -553,6 +562,7 @@ export type ResponsesRequest$Outbound = {
       })
       | (WebFetchServerTool$Outbound & { type: "openrouter:web_fetch" })
       | WebSearchServerToolOpenRouter$Outbound
+      | FusionServerTool$Outbound
     >
     | undefined;
   top_k?: number | undefined;
@@ -637,6 +647,7 @@ export const ResponsesRequest$outboundSchema: z.ZodType<
         z.object({ type: z.literal("openrouter:web_fetch") }),
       ),
       WebSearchServerToolOpenRouter$outboundSchema,
+      FusionServerTool$outboundSchema,
     ]),
   ).optional(),
   topK: z.int().optional(),
