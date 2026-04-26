@@ -71,6 +71,8 @@ export * from "./codeinterpreterservertool.js";
 export * from "./codexlocalshelltool.js";
 export * from "./compoundfilter.js";
 export * from "./computeruseservertool.js";
+export * from "./confidencescore.js";
+export * from "./confidencescoreplugin.js";
 export * from "./conflictresponseerrordata.js";
 export * from "./contentpartaddedevent.js";
 export * from "./contentpartdoneevent.js";
