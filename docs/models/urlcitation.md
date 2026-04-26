@@ -6,11 +6,11 @@
 import { URLCitation } from "@openrouter/sdk/models";
 
 let value: URLCitation = {
-  endIndex: 827156,
-  startIndex: 720244,
-  title: "<value>",
+  endIndex: 42,
+  startIndex: 0,
+  title: "OpenRouter Documentation",
   type: "url_citation",
-  url: "https://snappy-decision.biz",
+  url: "https://openrouter.ai/docs",
 };
 ```
 

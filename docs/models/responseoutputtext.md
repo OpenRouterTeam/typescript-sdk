@@ -15,7 +15,7 @@ let value: ResponseOutputText = {
 
 | Field                                    | Type                                     | Required                                 | Description                              |
 | ---------------------------------------- | ---------------------------------------- | ---------------------------------------- | ---------------------------------------- |
-| `annotations`                            | *models.OpenAIResponsesAnnotation*[]     | :heavy_minus_sign:                       | N/A                                      |
+| `annotations`                            | *models.Annotation*[]                    | :heavy_minus_sign:                       | N/A                                      |
 | `logprobs`                               | [models.Logprob](../models/logprob.md)[] | :heavy_minus_sign:                       | N/A                                      |
 | `text`                                   | *string*                                 | :heavy_check_mark:                       | N/A                                      |
 | `type`                                   | *"output_text"*                          | :heavy_check_mark:                       | N/A                                      |
