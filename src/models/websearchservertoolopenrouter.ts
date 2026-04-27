@@ -5,6 +5,7 @@
 
 import * as z from "zod/v4";
 import { remap as remap$ } from "../lib/primitives.js";
+import { ClosedEnum } from "../types/enums.js";
 
 export type ParametersT = {
   /**
@@ -17,12 +18,19 @@ export type ParametersT = {
   maxTotalResults?: number | undefined;
 };
 
+export const WebSearchServerToolOpenRouterType = {
+  OpenrouterWebSearch: "openrouter:web_search",
+} as const;
+export type WebSearchServerToolOpenRouterType = ClosedEnum<
+  typeof WebSearchServerToolOpenRouterType
+>;
+
 /**
  * OpenRouter built-in server tool: searches the web for current information
  */
 export type WebSearchServerToolOpenRouter = {
   parameters?: ParametersT | undefined;
-  type: "openrouter:web_search";
+  type: WebSearchServerToolOpenRouterType;
 };
 
 /** @internal */
@@ -50,9 +58,14 @@ export function parametersToJSON(parametersT: ParametersT): string {
 }
 
 /** @internal */
+export const WebSearchServerToolOpenRouterType$outboundSchema: z.ZodEnum<
+  typeof WebSearchServerToolOpenRouterType
+> = z.enum(WebSearchServerToolOpenRouterType);
+
+/** @internal */
 export type WebSearchServerToolOpenRouter$Outbound = {
   parameters?: ParametersT$Outbound | undefined;
-  type: "openrouter:web_search";
+  type: string;
 };
 
 /** @internal */
@@ -61,7 +74,7 @@ export const WebSearchServerToolOpenRouter$outboundSchema: z.ZodType<
   WebSearchServerToolOpenRouter
 > = z.object({
   parameters: z.lazy(() => ParametersT$outboundSchema).optional(),
-  type: z.literal("openrouter:web_search"),
+  type: WebSearchServerToolOpenRouterType$outboundSchema,
 });
 
 export function webSearchServerToolOpenRouterToJSON(
