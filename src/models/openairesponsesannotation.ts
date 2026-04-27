@@ -8,30 +8,20 @@ import { safeParse } from "../lib/schemas.js";
 import * as discriminatedUnionTypes from "../types/discriminatedUnion.js";
 import { discriminatedUnion } from "../types/discriminatedUnion.js";
 import { Result as SafeParseResult } from "../types/fp.js";
+import {
+  ConfidenceScore,
+  ConfidenceScore$inboundSchema,
+} from "./confidencescore.js";
 import { SDKValidationError } from "./errors/sdkvalidationerror.js";
-import {
-  FileCitation,
-  FileCitation$inboundSchema,
-  FileCitation$Outbound,
-  FileCitation$outboundSchema,
-} from "./filecitation.js";
-import {
-  FilePath,
-  FilePath$inboundSchema,
-  FilePath$Outbound,
-  FilePath$outboundSchema,
-} from "./filepath.js";
-import {
-  URLCitation,
-  URLCitation$inboundSchema,
-  URLCitation$Outbound,
-  URLCitation$outboundSchema,
-} from "./urlcitation.js";
+import { FileCitation, FileCitation$inboundSchema } from "./filecitation.js";
+import { FilePath, FilePath$inboundSchema } from "./filepath.js";
+import { URLCitation, URLCitation$inboundSchema } from "./urlcitation.js";
 
 export type OpenAIResponsesAnnotation =
   | FileCitation
   | URLCitation
   | FilePath
+  | ConfidenceScore
   | discriminatedUnionTypes.Unknown<"type">;
 
 /** @internal */
@@ -42,30 +32,9 @@ export const OpenAIResponsesAnnotation$inboundSchema: z.ZodType<
   file_citation: FileCitation$inboundSchema,
   url_citation: URLCitation$inboundSchema,
   file_path: FilePath$inboundSchema,
+  confidence_score: ConfidenceScore$inboundSchema,
 });
-/** @internal */
-export type OpenAIResponsesAnnotation$Outbound =
-  | FileCitation$Outbound
-  | URLCitation$Outbound
-  | FilePath$Outbound;
 
-/** @internal */
-export const OpenAIResponsesAnnotation$outboundSchema: z.ZodType<
-  OpenAIResponsesAnnotation$Outbound,
-  OpenAIResponsesAnnotation
-> = z.union([
-  FileCitation$outboundSchema,
-  URLCitation$outboundSchema,
-  FilePath$outboundSchema,
-]);
-
-export function openAIResponsesAnnotationToJSON(
-  openAIResponsesAnnotation: OpenAIResponsesAnnotation,
-): string {
-  return JSON.stringify(
-    OpenAIResponsesAnnotation$outboundSchema.parse(openAIResponsesAnnotation),
-  );
-}
 export function openAIResponsesAnnotationFromJSON(
   jsonString: string,
 ): SafeParseResult<OpenAIResponsesAnnotation, SDKValidationError> {
