@@ -185,3 +185,11 @@ const value: models.WebSearchServerToolOpenRouter = {
 };
 ```
 
+### `models.ResponsesRequestTool`
+
+```typescript
+const value: models.ResponsesRequestTool = {
+  type: "<value>",
+};
+```
+
