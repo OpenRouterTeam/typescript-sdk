@@ -17,7 +17,7 @@ export type OutputTokensDetails = {
   reasoningTokens: number;
 };
 
-export type CostDetails = {
+export type UsageCostDetails = {
   upstreamInferenceCost?: number | null | undefined;
   upstreamInferenceInputCost: number;
   upstreamInferenceOutputCost: number;
@@ -36,7 +36,7 @@ export type Usage = {
    * Cost of the completion
    */
   cost?: number | null | undefined;
-  costDetails?: CostDetails | undefined;
+  costDetails?: UsageCostDetails | undefined;
   /**
    * Whether a request was made using a Bring Your Own Key configuration
    */
@@ -88,26 +88,28 @@ export function outputTokensDetailsFromJSON(
 }
 
 /** @internal */
-export const CostDetails$inboundSchema: z.ZodType<CostDetails, unknown> = z
-  .object({
-    upstream_inference_cost: z.nullable(z.number()).optional(),
-    upstream_inference_input_cost: z.number(),
-    upstream_inference_output_cost: z.number(),
-  }).transform((v) => {
-    return remap$(v, {
-      "upstream_inference_cost": "upstreamInferenceCost",
-      "upstream_inference_input_cost": "upstreamInferenceInputCost",
-      "upstream_inference_output_cost": "upstreamInferenceOutputCost",
-    });
+export const UsageCostDetails$inboundSchema: z.ZodType<
+  UsageCostDetails,
+  unknown
+> = z.object({
+  upstream_inference_cost: z.nullable(z.number()).optional(),
+  upstream_inference_input_cost: z.number(),
+  upstream_inference_output_cost: z.number(),
+}).transform((v) => {
+  return remap$(v, {
+    "upstream_inference_cost": "upstreamInferenceCost",
+    "upstream_inference_input_cost": "upstreamInferenceInputCost",
+    "upstream_inference_output_cost": "upstreamInferenceOutputCost",
   });
+});
 
-export function costDetailsFromJSON(
+export function usageCostDetailsFromJSON(
   jsonString: string,
-): SafeParseResult<CostDetails, SDKValidationError> {
+): SafeParseResult<UsageCostDetails, SDKValidationError> {
   return safeParse(
     jsonString,
-    (x) => CostDetails$inboundSchema.parse(JSON.parse(x)),
-    `Failed to parse 'CostDetails' from JSON`,
+    (x) => UsageCostDetails$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'UsageCostDetails' from JSON`,
   );
 }
 
@@ -119,7 +121,7 @@ export const Usage$inboundSchema: z.ZodType<Usage, unknown> = z.object({
   output_tokens_details: z.lazy(() => OutputTokensDetails$inboundSchema),
   total_tokens: z.int(),
   cost: z.nullable(z.number()).optional(),
-  cost_details: z.lazy(() => CostDetails$inboundSchema).optional(),
+  cost_details: z.lazy(() => UsageCostDetails$inboundSchema).optional(),
   is_byok: z.boolean().optional(),
 }).transform((v) => {
   return remap$(v, {
