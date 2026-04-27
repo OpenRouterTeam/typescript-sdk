@@ -15,9 +15,9 @@ let value: CustomTool = {
 
 ## Fields
 
-| Field              | Type               | Required           | Description        |
-| ------------------ | ------------------ | ------------------ | ------------------ |
-| `description`      | *string*           | :heavy_minus_sign: | N/A                |
-| `format`           | *models.Format*    | :heavy_minus_sign: | N/A                |
-| `name`             | *string*           | :heavy_check_mark: | N/A                |
-| `type`             | *"custom"*         | :heavy_check_mark: | N/A                |
+| Field                                        | Type                                         | Required                                     | Description                                  |
+| -------------------------------------------- | -------------------------------------------- | -------------------------------------------- | -------------------------------------------- |
+| `description`                                | *string*                                     | :heavy_minus_sign:                           | N/A                                          |
+| `format`                                     | *models.Format*                              | :heavy_minus_sign:                           | N/A                                          |
+| `name`                                       | *string*                                     | :heavy_check_mark:                           | N/A                                          |
+| `type`                                       | [models.TypeCustom](../models/typecustom.md) | :heavy_check_mark:                           | N/A                                          |

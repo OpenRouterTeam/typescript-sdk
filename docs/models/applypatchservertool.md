@@ -14,6 +14,6 @@ let value: ApplyPatchServerTool = {
 
 ## Fields
 
-| Field              | Type               | Required           | Description        |
-| ------------------ | ------------------ | ------------------ | ------------------ |
-| `type`             | *"apply_patch"*    | :heavy_check_mark: | N/A                |
+| Field                                                                    | Type                                                                     | Required                                                                 | Description                                                              |
+| ------------------------------------------------------------------------ | ------------------------------------------------------------------------ | ------------------------------------------------------------------------ | ------------------------------------------------------------------------ |
+| `type`                                                                   | [models.ApplyPatchServerToolType](../models/applypatchservertooltype.md) | :heavy_check_mark:                                                       | N/A                                                                      |
