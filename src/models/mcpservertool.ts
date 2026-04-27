@@ -59,6 +59,11 @@ export type RequireApprovalUnion =
   | RequireApprovalNever
   | any;
 
+export const McpServerToolType = {
+  Mcp: "mcp",
+} as const;
+export type McpServerToolType = ClosedEnum<typeof McpServerToolType>;
+
 /**
  * MCP (Model Context Protocol) tool configuration
  */
@@ -77,7 +82,7 @@ export type McpServerTool = {
   serverDescription?: string | undefined;
   serverLabel: string;
   serverUrl?: string | undefined;
-  type: "mcp";
+  type: McpServerToolType;
 };
 
 /** @internal */
@@ -346,6 +351,15 @@ export function requireApprovalUnionFromJSON(
 }
 
 /** @internal */
+export const McpServerToolType$inboundSchema: z.ZodEnum<
+  typeof McpServerToolType
+> = z.enum(McpServerToolType);
+/** @internal */
+export const McpServerToolType$outboundSchema: z.ZodEnum<
+  typeof McpServerToolType
+> = McpServerToolType$inboundSchema;
+
+/** @internal */
 export const McpServerTool$inboundSchema: z.ZodType<McpServerTool, unknown> = z
   .object({
     allowed_tools: z.nullable(
@@ -369,7 +383,7 @@ export const McpServerTool$inboundSchema: z.ZodType<McpServerTool, unknown> = z
     server_description: z.string().optional(),
     server_label: z.string(),
     server_url: z.string().optional(),
-    type: z.literal("mcp"),
+    type: McpServerToolType$inboundSchema,
   }).transform((v) => {
     return remap$(v, {
       "allowed_tools": "allowedTools",
@@ -401,7 +415,7 @@ export type McpServerTool$Outbound = {
   server_description?: string | undefined;
   server_label: string;
   server_url?: string | undefined;
-  type: "mcp";
+  type: string;
 };
 
 /** @internal */
@@ -430,7 +444,7 @@ export const McpServerTool$outboundSchema: z.ZodType<
   serverDescription: z.string().optional(),
   serverLabel: z.string(),
   serverUrl: z.string().optional(),
-  type: z.literal("mcp"),
+  type: McpServerToolType$outboundSchema,
 }).transform((v) => {
   return remap$(v, {
     allowedTools: "allowed_tools",

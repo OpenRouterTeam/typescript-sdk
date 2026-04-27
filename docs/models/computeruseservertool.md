@@ -17,9 +17,9 @@ let value: ComputerUseServerTool = {
 
 ## Fields
 
-| Field                                          | Type                                           | Required                                       | Description                                    |
-| ---------------------------------------------- | ---------------------------------------------- | ---------------------------------------------- | ---------------------------------------------- |
-| `displayHeight`                                | *number*                                       | :heavy_check_mark:                             | N/A                                            |
-| `displayWidth`                                 | *number*                                       | :heavy_check_mark:                             | N/A                                            |
-| `environment`                                  | [models.Environment](../models/environment.md) | :heavy_check_mark:                             | N/A                                            |
-| `type`                                         | *"computer_use_preview"*                       | :heavy_check_mark:                             | N/A                                            |
+| Field                                                                      | Type                                                                       | Required                                                                   | Description                                                                |
+| -------------------------------------------------------------------------- | -------------------------------------------------------------------------- | -------------------------------------------------------------------------- | -------------------------------------------------------------------------- |
+| `displayHeight`                                                            | *number*                                                                   | :heavy_check_mark:                                                         | N/A                                                                        |
+| `displayWidth`                                                             | *number*                                                                   | :heavy_check_mark:                                                         | N/A                                                                        |
+| `environment`                                                              | [models.Environment](../models/environment.md)                             | :heavy_check_mark:                                                         | N/A                                                                        |
+| `type`                                                                     | [models.ComputerUseServerToolType](../models/computeruseservertooltype.md) | :heavy_check_mark:                                                         | N/A                                                                        |

@@ -15,7 +15,7 @@ let value: CodeInterpreterServerTool = {
 
 ## Fields
 
-| Field                | Type                 | Required             | Description          |
-| -------------------- | -------------------- | -------------------- | -------------------- |
-| `container`          | *models.Container*   | :heavy_check_mark:   | N/A                  |
-| `type`               | *"code_interpreter"* | :heavy_check_mark:   | N/A                  |
+| Field                                                          | Type                                                           | Required                                                       | Description                                                    |
+| -------------------------------------------------------------- | -------------------------------------------------------------- | -------------------------------------------------------------- | -------------------------------------------------------------- |
+| `container`                                                    | *models.Container*                                             | :heavy_check_mark:                                             | N/A                                                            |
+| `type`                                                         | [models.TypeCodeInterpreter](../models/typecodeinterpreter.md) | :heavy_check_mark:                                             | N/A                                                            |

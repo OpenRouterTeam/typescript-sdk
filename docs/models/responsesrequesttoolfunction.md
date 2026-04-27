@@ -35,10 +35,10 @@ let value: ResponsesRequestToolFunction = {
 
 ## Fields
 
-| Field                 | Type                  | Required              | Description           |
-| --------------------- | --------------------- | --------------------- | --------------------- |
-| `description`         | *string*              | :heavy_minus_sign:    | N/A                   |
-| `name`                | *string*              | :heavy_check_mark:    | N/A                   |
-| `parameters`          | Record<string, *any*> | :heavy_check_mark:    | N/A                   |
-| `strict`              | *boolean*             | :heavy_minus_sign:    | N/A                   |
-| `type`                | *"function"*          | :heavy_check_mark:    | N/A                   |
+| Field                                                            | Type                                                             | Required                                                         | Description                                                      |
+| ---------------------------------------------------------------- | ---------------------------------------------------------------- | ---------------------------------------------------------------- | ---------------------------------------------------------------- |
+| `description`                                                    | *string*                                                         | :heavy_minus_sign:                                               | N/A                                                              |
+| `name`                                                           | *string*                                                         | :heavy_check_mark:                                               | N/A                                                              |
+| `parameters`                                                     | Record<string, *any*>                                            | :heavy_check_mark:                                               | N/A                                                              |
+| `strict`                                                         | *boolean*                                                        | :heavy_minus_sign:                                               | N/A                                                              |
+| `type`                                                           | [models.ResponsesRequestType](../models/responsesrequesttype.md) | :heavy_check_mark:                                               | N/A                                                              |
