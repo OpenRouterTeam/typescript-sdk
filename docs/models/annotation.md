@@ -1,4 +1,4 @@
-# OpenAIResponsesAnnotation
+# Annotation
 
 
 ## Supported Types
@@ -33,18 +33,6 @@ const value: models.FilePath = {
   fileId: "file-xyz789",
   index: 0,
   type: "file_path",
-};
-```
-
-### `models.ConfidenceScore`
-
-```typescript
-const value: models.ConfidenceScore = {
-  confidenceScore: {
-    position: 17129,
-    score: 1336.58,
-  },
-  type: "confidence_score",
 };
 ```
 

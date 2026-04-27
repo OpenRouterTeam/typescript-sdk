@@ -6,14 +6,34 @@
 import * as z from "zod/v4";
 import { remap as remap$ } from "../lib/primitives.js";
 import { safeParse } from "../lib/schemas.js";
+import * as discriminatedUnionTypes from "../types/discriminatedUnion.js";
+import { discriminatedUnion } from "../types/discriminatedUnion.js";
 import { Result as SafeParseResult } from "../types/fp.js";
 import { SDKValidationError } from "./errors/sdkvalidationerror.js";
 import {
-  OpenAIResponsesAnnotation,
-  OpenAIResponsesAnnotation$inboundSchema,
-  OpenAIResponsesAnnotation$Outbound,
-  OpenAIResponsesAnnotation$outboundSchema,
-} from "./openairesponsesannotation.js";
+  FileCitation,
+  FileCitation$inboundSchema,
+  FileCitation$Outbound,
+  FileCitation$outboundSchema,
+} from "./filecitation.js";
+import {
+  FilePath,
+  FilePath$inboundSchema,
+  FilePath$Outbound,
+  FilePath$outboundSchema,
+} from "./filepath.js";
+import {
+  URLCitation,
+  URLCitation$inboundSchema,
+  URLCitation$Outbound,
+  URLCitation$outboundSchema,
+} from "./urlcitation.js";
+
+export type Annotation =
+  | FileCitation
+  | URLCitation
+  | FilePath
+  | discriminatedUnionTypes.Unknown<"type">;
 
 export type ResponseOutputTextTopLogprob = {
   bytes: Array<number>;
@@ -29,11 +49,54 @@ export type Logprob = {
 };
 
 export type ResponseOutputText = {
-  annotations?: Array<OpenAIResponsesAnnotation> | undefined;
+  annotations?:
+    | Array<
+      | FileCitation
+      | URLCitation
+      | FilePath
+      | discriminatedUnionTypes.Unknown<"type">
+    >
+    | undefined;
   logprobs?: Array<Logprob> | undefined;
   text: string;
   type: "output_text";
 };
+
+/** @internal */
+export const Annotation$inboundSchema: z.ZodType<Annotation, unknown> =
+  discriminatedUnion("type", {
+    file_citation: FileCitation$inboundSchema,
+    url_citation: URLCitation$inboundSchema,
+    file_path: FilePath$inboundSchema,
+  });
+/** @internal */
+export type Annotation$Outbound =
+  | FileCitation$Outbound
+  | URLCitation$Outbound
+  | FilePath$Outbound;
+
+/** @internal */
+export const Annotation$outboundSchema: z.ZodType<
+  Annotation$Outbound,
+  Annotation
+> = z.union([
+  FileCitation$outboundSchema,
+  URLCitation$outboundSchema,
+  FilePath$outboundSchema,
+]);
+
+export function annotationToJSON(annotation: Annotation): string {
+  return JSON.stringify(Annotation$outboundSchema.parse(annotation));
+}
+export function annotationFromJSON(
+  jsonString: string,
+): SafeParseResult<Annotation, SDKValidationError> {
+  return safeParse(
+    jsonString,
+    (x) => Annotation$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'Annotation' from JSON`,
+  );
+}
 
 /** @internal */
 export const ResponseOutputTextTopLogprob$inboundSchema: z.ZodType<
@@ -134,14 +197,22 @@ export const ResponseOutputText$inboundSchema: z.ZodType<
   ResponseOutputText,
   unknown
 > = z.object({
-  annotations: z.array(OpenAIResponsesAnnotation$inboundSchema).optional(),
+  annotations: z.array(
+    discriminatedUnion("type", {
+      file_citation: FileCitation$inboundSchema,
+      url_citation: URLCitation$inboundSchema,
+      file_path: FilePath$inboundSchema,
+    }),
+  ).optional(),
   logprobs: z.array(z.lazy(() => Logprob$inboundSchema)).optional(),
   text: z.string(),
   type: z.literal("output_text"),
 });
 /** @internal */
 export type ResponseOutputText$Outbound = {
-  annotations?: Array<OpenAIResponsesAnnotation$Outbound> | undefined;
+  annotations?:
+    | Array<FileCitation$Outbound | URLCitation$Outbound | FilePath$Outbound>
+    | undefined;
   logprobs?: Array<Logprob$Outbound> | undefined;
   text: string;
   type: "output_text";
@@ -152,7 +223,13 @@ export const ResponseOutputText$outboundSchema: z.ZodType<
   ResponseOutputText$Outbound,
   ResponseOutputText
 > = z.object({
-  annotations: z.array(OpenAIResponsesAnnotation$outboundSchema).optional(),
+  annotations: z.array(
+    z.union([
+      FileCitation$outboundSchema,
+      URLCitation$outboundSchema,
+      FilePath$outboundSchema,
+    ]),
+  ).optional(),
   logprobs: z.array(z.lazy(() => Logprob$outboundSchema)).optional(),
   text: z.string(),
   type: z.literal("output_text"),
