@@ -132,6 +132,10 @@ export type GenerationResponseData = {
    */
   numMediaPrompt: number | null;
   /**
+   * Number of audio output tokens reported by the provider
+   */
+  numOutputAudioCompletion: number | null;
+  /**
    * Number of search results included
    */
   numSearchResults: number | null;
@@ -244,6 +248,7 @@ export const GenerationResponseData$inboundSchema: z.ZodType<
   num_input_audio_prompt: z.nullable(z.int()),
   num_media_completion: z.nullable(z.int()),
   num_media_prompt: z.nullable(z.int()),
+  num_output_audio_completion: z.nullable(z.int()),
   num_search_results: z.nullable(z.int()),
   origin: z.string(),
   provider_name: z.nullable(z.string()),
@@ -283,6 +288,7 @@ export const GenerationResponseData$inboundSchema: z.ZodType<
     "num_input_audio_prompt": "numInputAudioPrompt",
     "num_media_completion": "numMediaCompletion",
     "num_media_prompt": "numMediaPrompt",
+    "num_output_audio_completion": "numOutputAudioCompletion",
     "num_search_results": "numSearchResults",
     "provider_name": "providerName",
     "provider_responses": "providerResponses",
