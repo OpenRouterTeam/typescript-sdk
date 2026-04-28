@@ -13,5 +13,5 @@ let value: OutputModalityEnum = "text";
 ## Values
 
 ```typescript
-"text" | "image" | Unrecognized<string>
+"text" | "image" | "audio" | Unrecognized<string>
 ```

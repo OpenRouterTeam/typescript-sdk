@@ -13,6 +13,11 @@ import {
   ApplyPatchServerTool$outboundSchema,
 } from "./applypatchservertool.js";
 import {
+  AudioOutputConfig,
+  AudioOutputConfig$Outbound,
+  AudioOutputConfig$outboundSchema,
+} from "./audiooutputconfig.js";
+import {
   AutoRouterPlugin,
   AutoRouterPlugin$Outbound,
   AutoRouterPlugin$outboundSchema,
@@ -245,6 +250,10 @@ export type ResponsesRequestToolUnion =
  * Request schema for Responses endpoint
  */
 export type ResponsesRequest = {
+  /**
+   * Configuration for audio output. Required when `modalities` includes `"audio"`.
+   */
+  audio?: AudioOutputConfig | null | undefined;
   background?: boolean | null | undefined;
   frequencyPenalty?: number | null | undefined;
   /**
@@ -264,7 +273,7 @@ export type ResponsesRequest = {
    */
   metadata?: { [k: string]: string } | null | undefined;
   /**
-   * Output modalities for the response. Supported values are "text" and "image".
+   * Output modalities for the response. Supported values are "text", "image", and "audio".
    */
   modalities?: Array<OutputModalityEnum> | undefined;
   model?: string | undefined;
@@ -490,6 +499,7 @@ export function responsesRequestToolUnionToJSON(
 
 /** @internal */
 export type ResponsesRequest$Outbound = {
+  audio?: AudioOutputConfig$Outbound | null | undefined;
   background?: boolean | null | undefined;
   frequency_penalty?: number | null | undefined;
   image_config?: { [k: string]: ImageConfig$Outbound } | undefined;
@@ -568,6 +578,7 @@ export const ResponsesRequest$outboundSchema: z.ZodType<
   ResponsesRequest$Outbound,
   ResponsesRequest
 > = z.object({
+  audio: z.nullable(AudioOutputConfig$outboundSchema).optional(),
   background: z.nullable(z.boolean()).optional(),
   frequencyPenalty: z.nullable(z.number()).optional(),
   imageConfig: z.record(z.string(), ImageConfig$outboundSchema).optional(),

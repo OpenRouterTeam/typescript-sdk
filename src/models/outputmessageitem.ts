@@ -14,6 +14,7 @@ import {
   OpenAIResponsesRefusalContent,
   OpenAIResponsesRefusalContent$inboundSchema,
 } from "./openairesponsesrefusalcontent.js";
+import { OutputAudio, OutputAudio$inboundSchema } from "./outputaudio.js";
 import {
   ResponseOutputText,
   ResponseOutputText$inboundSchema,
@@ -22,6 +23,7 @@ import {
 export type OutputMessageItemContent =
   | ResponseOutputText
   | OpenAIResponsesRefusalContent
+  | OutputAudio
   | discriminatedUnionTypes.Unknown<"type">;
 
 export const OutputMessageItemPhaseFinalAnswer = {
@@ -84,6 +86,7 @@ export type OutputMessageItem = {
   content: Array<
     | ResponseOutputText
     | OpenAIResponsesRefusalContent
+    | OutputAudio
     | discriminatedUnionTypes.Unknown<"type">
   >;
   id: string;
@@ -112,6 +115,7 @@ export const OutputMessageItemContent$inboundSchema: z.ZodType<
 > = discriminatedUnion("type", {
   output_text: ResponseOutputText$inboundSchema,
   refusal: OpenAIResponsesRefusalContent$inboundSchema,
+  output_audio: OutputAudio$inboundSchema,
 });
 
 export function outputMessageItemContentFromJSON(
@@ -203,6 +207,7 @@ export const OutputMessageItem$inboundSchema: z.ZodType<
     discriminatedUnion("type", {
       output_text: ResponseOutputText$inboundSchema,
       refusal: OpenAIResponsesRefusalContent$inboundSchema,
+      output_audio: OutputAudio$inboundSchema,
     }),
   ),
   id: z.string(),

@@ -21,3 +21,13 @@ const value: models.OpenAIResponsesRefusalContent = {
 };
 ```
 
+### `models.OutputAudio`
+
+```typescript
+const value: models.OutputAudio = {
+  data: "UklGRnoGAABXQVZFZm10IBAAAAABAAEA",
+  transcript: "Hello! How can I help you today?",
+  type: "output_audio",
+};
+```
+

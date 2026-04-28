@@ -17,6 +17,44 @@ const value: models.ErrorEvent = {
 };
 ```
 
+### `models.AudioDeltaEvent`
+
+```typescript
+const value: models.AudioDeltaEvent = {
+  delta: "<value>",
+  sequenceNumber: 0,
+  type: "response.audio.delta",
+};
+```
+
+### `models.AudioDoneEvent`
+
+```typescript
+const value: models.AudioDoneEvent = {
+  sequenceNumber: 0,
+  type: "response.audio.done",
+};
+```
+
+### `models.AudioTranscriptDeltaEvent`
+
+```typescript
+const value: models.AudioTranscriptDeltaEvent = {
+  delta: "<value>",
+  sequenceNumber: 0,
+  type: "response.audio.transcript.delta",
+};
+```
+
+### `models.AudioTranscriptDoneEvent`
+
+```typescript
+const value: models.AudioTranscriptDoneEvent = {
+  sequenceNumber: 0,
+  type: "response.audio.transcript.done",
+};
+```
+
 ### `models.StreamEventsResponseCompleted`
 
 ```typescript

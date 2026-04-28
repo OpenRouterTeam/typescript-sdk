@@ -10,6 +10,7 @@ import { OpenEnum } from "../types/enums.js";
 export const OutputModalityEnum = {
   Text: "text",
   Image: "image",
+  Audio: "audio",
 } as const;
 export type OutputModalityEnum = OpenEnum<typeof OutputModalityEnum>;
 

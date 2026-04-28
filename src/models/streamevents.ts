@@ -13,6 +13,22 @@ import {
   AnnotationAddedEvent$inboundSchema,
 } from "./annotationaddedevent.js";
 import {
+  AudioDeltaEvent,
+  AudioDeltaEvent$inboundSchema,
+} from "./audiodeltaevent.js";
+import {
+  AudioDoneEvent,
+  AudioDoneEvent$inboundSchema,
+} from "./audiodoneevent.js";
+import {
+  AudioTranscriptDeltaEvent,
+  AudioTranscriptDeltaEvent$inboundSchema,
+} from "./audiotranscriptdeltaevent.js";
+import {
+  AudioTranscriptDoneEvent,
+  AudioTranscriptDoneEvent$inboundSchema,
+} from "./audiotranscriptdoneevent.js";
+import {
   ContentPartAddedEvent,
   ContentPartAddedEvent$inboundSchema,
 } from "./contentpartaddedevent.js";
@@ -129,6 +145,10 @@ import {
  */
 export type StreamEvents =
   | ErrorEvent
+  | AudioDeltaEvent
+  | AudioDoneEvent
+  | AudioTranscriptDeltaEvent
+  | AudioTranscriptDoneEvent
   | StreamEventsResponseCompleted
   | ContentPartAddedEvent
   | ContentPartDoneEvent
@@ -164,6 +184,11 @@ export type StreamEvents =
 export const StreamEvents$inboundSchema: z.ZodType<StreamEvents, unknown> =
   discriminatedUnion("type", {
     error: ErrorEvent$inboundSchema,
+    ["response.audio.delta"]: AudioDeltaEvent$inboundSchema,
+    ["response.audio.done"]: AudioDoneEvent$inboundSchema,
+    ["response.audio.transcript.delta"]:
+      AudioTranscriptDeltaEvent$inboundSchema,
+    ["response.audio.transcript.done"]: AudioTranscriptDoneEvent$inboundSchema,
     ["response.completed"]: StreamEventsResponseCompleted$inboundSchema,
     ["response.content_part.added"]: ContentPartAddedEvent$inboundSchema,
     ["response.content_part.done"]: ContentPartDoneEvent$inboundSchema,

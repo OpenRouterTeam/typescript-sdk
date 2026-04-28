@@ -37,6 +37,11 @@ import {
   OutputApplyPatchServerToolItem$outboundSchema,
 } from "./outputapplypatchservertoolitem.js";
 import {
+  OutputAudio,
+  OutputAudio$Outbound,
+  OutputAudio$outboundSchema,
+} from "./outputaudio.js";
+import {
   OutputBashServerToolItem,
   OutputBashServerToolItem$Outbound,
   OutputBashServerToolItem$outboundSchema,
@@ -206,10 +211,13 @@ export type InputsReasoning = {
   signature?: string | null | undefined;
 };
 
-export type InputsContent1 = ResponseOutputText | OpenAIResponsesRefusalContent;
+export type InputsContent1 =
+  | ResponseOutputText
+  | OpenAIResponsesRefusalContent
+  | OutputAudio;
 
 export type InputsContent2 =
-  | Array<ResponseOutputText | OpenAIResponsesRefusalContent>
+  | Array<ResponseOutputText | OpenAIResponsesRefusalContent | OutputAudio>
   | string
   | any;
 
@@ -270,7 +278,7 @@ export type InputsTypeMessage = ClosedEnum<typeof InputsTypeMessage>;
  */
 export type InputsMessage = {
   content:
-    | Array<ResponseOutputText | OpenAIResponsesRefusalContent>
+    | Array<ResponseOutputText | OpenAIResponsesRefusalContent | OutputAudio>
     | string
     | any
     | null;
@@ -442,7 +450,8 @@ export function inputsReasoningToJSON(
 /** @internal */
 export type InputsContent1$Outbound =
   | ResponseOutputText$Outbound
-  | OpenAIResponsesRefusalContent$Outbound;
+  | OpenAIResponsesRefusalContent$Outbound
+  | OutputAudio$Outbound;
 
 /** @internal */
 export const InputsContent1$outboundSchema: z.ZodType<
@@ -451,6 +460,7 @@ export const InputsContent1$outboundSchema: z.ZodType<
 > = z.union([
   ResponseOutputText$outboundSchema,
   OpenAIResponsesRefusalContent$outboundSchema,
+  OutputAudio$outboundSchema,
 ]);
 
 export function inputsContent1ToJSON(inputsContent1: InputsContent1): string {
@@ -459,7 +469,11 @@ export function inputsContent1ToJSON(inputsContent1: InputsContent1): string {
 
 /** @internal */
 export type InputsContent2$Outbound =
-  | Array<ResponseOutputText$Outbound | OpenAIResponsesRefusalContent$Outbound>
+  | Array<
+    | ResponseOutputText$Outbound
+    | OpenAIResponsesRefusalContent$Outbound
+    | OutputAudio$Outbound
+  >
   | string
   | any;
 
@@ -472,6 +486,7 @@ export const InputsContent2$outboundSchema: z.ZodType<
     z.union([
       ResponseOutputText$outboundSchema,
       OpenAIResponsesRefusalContent$outboundSchema,
+      OutputAudio$outboundSchema,
     ]),
   ),
   z.string(),
@@ -563,7 +578,9 @@ export const InputsTypeMessage$outboundSchema: z.ZodEnum<
 export type InputsMessage$Outbound = {
   content:
     | Array<
-      ResponseOutputText$Outbound | OpenAIResponsesRefusalContent$Outbound
+      | ResponseOutputText$Outbound
+      | OpenAIResponsesRefusalContent$Outbound
+      | OutputAudio$Outbound
     >
     | string
     | any
@@ -586,6 +603,7 @@ export const InputsMessage$outboundSchema: z.ZodType<
         z.union([
           ResponseOutputText$outboundSchema,
           OpenAIResponsesRefusalContent$outboundSchema,
+          OutputAudio$outboundSchema,
         ]),
       ),
       z.string(),
