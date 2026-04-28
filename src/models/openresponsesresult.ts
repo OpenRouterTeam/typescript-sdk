@@ -37,6 +37,10 @@ import {
 import { CustomTool, CustomTool$inboundSchema } from "./customtool.js";
 import { SDKValidationError } from "./errors/sdkvalidationerror.js";
 import {
+  ExperimentalOpenRouterMetadata,
+  ExperimentalOpenRouterMetadata$inboundSchema,
+} from "./experimentalopenroutermetadata.js";
+import {
   FileSearchServerTool,
   FileSearchServerTool$inboundSchema,
 } from "./filesearchservertool.js";
@@ -194,6 +198,7 @@ export type OpenResponsesResult = {
    */
   usage?: Usage | null | undefined;
   user?: string | null | undefined;
+  experimentalOpenrouter?: ExperimentalOpenRouterMetadata | undefined;
 };
 
 /** @internal */
@@ -310,6 +315,8 @@ export const OpenResponsesResult$inboundSchema: z.ZodType<
   truncation: z.nullable(Truncation$inboundSchema).optional(),
   usage: z.nullable(Usage$inboundSchema).optional(),
   user: z.nullable(z.string()).optional(),
+  experimental_openrouter: ExperimentalOpenRouterMetadata$inboundSchema
+    .optional(),
 }).transform((v) => {
   return remap$(v, {
     "completed_at": "completedAt",
@@ -328,6 +335,7 @@ export const OpenResponsesResult$inboundSchema: z.ZodType<
     "tool_choice": "toolChoice",
     "top_logprobs": "topLogprobs",
     "top_p": "topP",
+    "experimental_openrouter": "experimentalOpenrouter",
   });
 });
 
