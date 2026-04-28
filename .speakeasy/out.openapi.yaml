@@ -4471,6 +4471,12 @@ components:
         completion_tokens: 15
         completion_tokens_details:
           reasoning_tokens: 5
+        cost: 0.0012
+        cost_details:
+          upstream_inference_completions_cost: 0.0004
+          upstream_inference_cost: null
+          upstream_inference_prompt_cost: 0.0008
+        is_byok: false
         prompt_tokens: 10
         prompt_tokens_details:
           cached_tokens: 2
@@ -4500,6 +4506,16 @@ components:
               nullable: true
               type: integer
           type: object
+        cost:
+          description: Cost of the completion
+          format: double
+          nullable: true
+          type: number
+        cost_details:
+          $ref: '#/components/schemas/CostDetails'
+        is_byok:
+          description: Whether a request was made using a Bring Your Own Key configuration
+          type: boolean
         prompt_tokens:
           description: Number of tokens in the prompt
           type: integer
@@ -4931,6 +4947,28 @@ components:
           type: string
       required:
         - id
+      type: object
+    CostDetails:
+      description: Breakdown of upstream inference costs
+      example:
+        upstream_inference_completions_cost: 0.0004
+        upstream_inference_cost: null
+        upstream_inference_prompt_cost: 0.0008
+      nullable: true
+      properties:
+        upstream_inference_completions_cost:
+          format: double
+          type: number
+        upstream_inference_cost:
+          format: double
+          nullable: true
+          type: number
+        upstream_inference_prompt_cost:
+          format: double
+          type: number
+      required:
+        - upstream_inference_prompt_cost
+        - upstream_inference_completions_cost
       type: object
     CreatedEvent:
       description: Event emitted when a response is created
@@ -5962,6 +6000,7 @@ components:
                 - embeddings
                 - rerank
                 - tts
+                - stt
                 - video
                 - null
               nullable: true
@@ -8415,22 +8454,7 @@ components:
                       nullable: true
                       type: number
                     cost_details:
-                      nullable: true
-                      properties:
-                        upstream_inference_completions_cost:
-                          format: double
-                          type: number
-                        upstream_inference_cost:
-                          format: double
-                          nullable: true
-                          type: number
-                        upstream_inference_prompt_cost:
-                          format: double
-                          type: number
-                      required:
-                        - upstream_inference_prompt_cost
-                        - upstream_inference_completions_cost
-                      type: object
+                      $ref: '#/components/schemas/CostDetails'
                     is_byok:
                       type: boolean
                     iterations:
@@ -10466,6 +10490,7 @@ components:
         - video
         - rerank
         - speech
+        - transcription
       example: text
       type: string
       x-speakeasy-unknown-values: allow
