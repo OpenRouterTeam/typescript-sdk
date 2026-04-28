@@ -5962,6 +5962,7 @@ components:
                 - embeddings
                 - rerank
                 - tts
+                - stt
                 - video
                 - null
               nullable: true
@@ -10466,6 +10467,7 @@ components:
         - video
         - rerank
         - speech
+        - transcription
       example: text
       type: string
       x-speakeasy-unknown-values: allow
