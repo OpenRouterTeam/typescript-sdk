@@ -33,6 +33,7 @@ let value: GenerationResponse = {
     numInputAudioPrompt: 0,
     numMediaCompletion: 0,
     numMediaPrompt: 1,
+    numOutputAudioCompletion: 0,
     numSearchResults: 5,
     origin: "https://openrouter.ai/",
     providerName: "Infermatic",
