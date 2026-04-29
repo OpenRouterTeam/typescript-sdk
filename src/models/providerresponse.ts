@@ -180,10 +180,10 @@ export const ProviderResponse$inboundSchema: z.ZodType<
   endpoint_id: z.string().optional(),
   id: z.string().optional(),
   is_byok: z.boolean().optional(),
-  latency: z.number().optional(),
+  latency: z.int().optional(),
   model_permaslug: z.string().optional(),
   provider_name: ProviderResponseProviderName$inboundSchema.optional(),
-  status: z.nullable(z.number()),
+  status: z.nullable(z.int()),
 }).transform((v) => {
   return remap$(v, {
     "endpoint_id": "endpointId",
