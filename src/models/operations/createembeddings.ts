@@ -202,7 +202,7 @@ export type CreateEmbeddingsUsage = {
   /**
    * Per-modality token breakdown. Only present when the input contains 2+ modalities (e.g. text + image) and the upstream provider returns modality-level usage data. Only non-zero modality counts are included.
    */
-  promptTokensDetails?: PromptTokensDetails | undefined;
+  promptTokensDetails?: PromptTokensDetails | null | undefined;
   /**
    * Total number of tokens used
    */
@@ -515,8 +515,9 @@ export const CreateEmbeddingsUsage$inboundSchema: z.ZodType<
 > = z.object({
   cost: z.number().optional(),
   prompt_tokens: z.int(),
-  prompt_tokens_details: z.lazy(() => PromptTokensDetails$inboundSchema)
-    .optional(),
+  prompt_tokens_details: z.nullable(
+    z.lazy(() => PromptTokensDetails$inboundSchema),
+  ).optional(),
   total_tokens: z.int(),
 }).transform((v) => {
   return remap$(v, {
