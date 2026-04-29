@@ -56,16 +56,6 @@ export type CreateResponsesRequest = {
   responsesRequest: models.ResponsesRequest;
 };
 
-/**
- * Successful response
- */
-export type CreateResponsesResponseBody = {
-  /**
-   * Union of all possible event types emitted during response streaming
-   */
-  data: models.StreamEvents;
-};
-
 export type CreateResponsesResponse =
   | models.OpenResponsesResult
   | EventStream<models.StreamEvents>;
@@ -103,35 +93,6 @@ export function createResponsesRequestToJSON(
 }
 
 /** @internal */
-export const CreateResponsesResponseBody$inboundSchema: z.ZodType<
-  CreateResponsesResponseBody,
-  unknown
-> = z.object({
-  data: z.string().transform((v, ctx) => {
-    try {
-      return JSON.parse(v);
-    } catch (err) {
-      ctx.addIssue({
-        input: v,
-        code: "custom",
-        message: `malformed json: ${err}`,
-      });
-      return z.NEVER;
-    }
-  }).pipe(models.StreamEvents$inboundSchema),
-});
-
-export function createResponsesResponseBodyFromJSON(
-  jsonString: string,
-): SafeParseResult<CreateResponsesResponseBody, SDKValidationError> {
-  return safeParse(
-    jsonString,
-    (x) => CreateResponsesResponseBody$inboundSchema.parse(JSON.parse(x)),
-    `Failed to parse 'CreateResponsesResponseBody' from JSON`,
-  );
-}
-
-/** @internal */
 export const CreateResponsesResponse$inboundSchema: z.ZodType<
   CreateResponsesResponse,
   unknown
@@ -143,7 +104,7 @@ export const CreateResponsesResponse$inboundSchema: z.ZodType<
         if (rawEvent.data === "[DONE]") return { done: true, value: undefined };
         return {
           done: false,
-          value: z.lazy(() => CreateResponsesResponseBody$inboundSchema).parse(
+          value: models.ResponsesIndexStreamResponse$inboundSchema.parse(
             rawEvent,
           )?.data,
         };
