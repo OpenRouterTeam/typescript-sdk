@@ -26,6 +26,14 @@ export type OutputWebFetchServerToolItemType = ClosedEnum<
  */
 export type OutputWebFetchServerToolItem = {
   content?: string | undefined;
+  /**
+   * The error message if the fetch failed.
+   */
+  error?: string | undefined;
+  /**
+   * The HTTP status code returned by the upstream URL fetch.
+   */
+  httpStatus?: number | undefined;
   id?: string | undefined;
   status: ToolCallStatus;
   title?: string | undefined;
@@ -48,6 +56,8 @@ export const OutputWebFetchServerToolItem$inboundSchema: z.ZodType<
   unknown
 > = z.object({
   content: z.string().optional(),
+  error: z.string().optional(),
+  httpStatus: z.int().optional(),
   id: z.string().optional(),
   status: ToolCallStatus$inboundSchema,
   title: z.string().optional(),
@@ -57,6 +67,8 @@ export const OutputWebFetchServerToolItem$inboundSchema: z.ZodType<
 /** @internal */
 export type OutputWebFetchServerToolItem$Outbound = {
   content?: string | undefined;
+  error?: string | undefined;
+  httpStatus?: number | undefined;
   id?: string | undefined;
   status: string;
   title?: string | undefined;
@@ -70,6 +82,8 @@ export const OutputWebFetchServerToolItem$outboundSchema: z.ZodType<
   OutputWebFetchServerToolItem
 > = z.object({
   content: z.string().optional(),
+  error: z.string().optional(),
+  httpStatus: z.int().optional(),
   id: z.string().optional(),
   status: ToolCallStatus$outboundSchema,
   title: z.string().optional(),
