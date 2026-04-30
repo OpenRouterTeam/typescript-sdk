@@ -4,10 +4,62 @@
  */
 
 import * as z from "zod/v4";
+import { remap as remap$ } from "../lib/primitives.js";
 import { safeParse } from "../lib/schemas.js";
+import * as discriminatedUnionTypes from "../types/discriminatedUnion.js";
+import { discriminatedUnion } from "../types/discriminatedUnion.js";
 import { Result as SafeParseResult } from "../types/fp.js";
 import { SDKValidationError } from "./errors/sdkvalidationerror.js";
 import { STTUsage, STTUsage$inboundSchema } from "./sttusage.js";
+
+/**
+ * Usage breakdown for token-based billing (e.g. gpt-4o-transcribe)
+ */
+export type UsageBreakdownTokens = {
+  /**
+   * Cost attributed to token-based billing
+   */
+  cost?: number | undefined;
+  /**
+   * Number of input tokens billed for this request
+   */
+  inputTokens?: number | undefined;
+  /**
+   * Number of output tokens generated
+   */
+  outputTokens?: number | undefined;
+  /**
+   * Total number of tokens used (input + output)
+   */
+  totalTokens: number;
+  /**
+   * Breakdown billing type — token-based billing
+   */
+  type: "tokens";
+};
+
+/**
+ * Usage breakdown for duration-based billing (e.g. whisper-1)
+ */
+export type UsageBreakdownDuration = {
+  /**
+   * Cost attributed to duration-based billing
+   */
+  cost?: number | undefined;
+  /**
+   * Duration of the input audio in seconds
+   */
+  seconds: number;
+  /**
+   * Breakdown billing type — duration-based billing
+   */
+  type: "duration";
+};
+
+export type UsageBreakdown =
+  | UsageBreakdownDuration
+  | UsageBreakdownTokens
+  | discriminatedUnionTypes.Unknown<"type">;
 
 /**
  * STT response containing transcribed text and optional usage statistics
@@ -21,13 +73,98 @@ export type STTResponse = {
    * Aggregated usage statistics for the request
    */
   usage?: STTUsage | undefined;
+  /**
+   * Per-billing-type usage breakdown. Each entry is discriminated by "type" (e.g. "duration", "tokens").
+   */
+  usageBreakdown?:
+    | Array<
+      | UsageBreakdownDuration
+      | UsageBreakdownTokens
+      | discriminatedUnionTypes.Unknown<"type">
+    >
+    | undefined;
 };
+
+/** @internal */
+export const UsageBreakdownTokens$inboundSchema: z.ZodType<
+  UsageBreakdownTokens,
+  unknown
+> = z.object({
+  cost: z.number().optional(),
+  input_tokens: z.int().optional(),
+  output_tokens: z.int().optional(),
+  total_tokens: z.int(),
+  type: z.literal("tokens"),
+}).transform((v) => {
+  return remap$(v, {
+    "input_tokens": "inputTokens",
+    "output_tokens": "outputTokens",
+    "total_tokens": "totalTokens",
+  });
+});
+
+export function usageBreakdownTokensFromJSON(
+  jsonString: string,
+): SafeParseResult<UsageBreakdownTokens, SDKValidationError> {
+  return safeParse(
+    jsonString,
+    (x) => UsageBreakdownTokens$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'UsageBreakdownTokens' from JSON`,
+  );
+}
+
+/** @internal */
+export const UsageBreakdownDuration$inboundSchema: z.ZodType<
+  UsageBreakdownDuration,
+  unknown
+> = z.object({
+  cost: z.number().optional(),
+  seconds: z.number(),
+  type: z.literal("duration"),
+});
+
+export function usageBreakdownDurationFromJSON(
+  jsonString: string,
+): SafeParseResult<UsageBreakdownDuration, SDKValidationError> {
+  return safeParse(
+    jsonString,
+    (x) => UsageBreakdownDuration$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'UsageBreakdownDuration' from JSON`,
+  );
+}
+
+/** @internal */
+export const UsageBreakdown$inboundSchema: z.ZodType<UsageBreakdown, unknown> =
+  discriminatedUnion("type", {
+    duration: z.lazy(() => UsageBreakdownDuration$inboundSchema),
+    tokens: z.lazy(() => UsageBreakdownTokens$inboundSchema),
+  });
+
+export function usageBreakdownFromJSON(
+  jsonString: string,
+): SafeParseResult<UsageBreakdown, SDKValidationError> {
+  return safeParse(
+    jsonString,
+    (x) => UsageBreakdown$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'UsageBreakdown' from JSON`,
+  );
+}
 
 /** @internal */
 export const STTResponse$inboundSchema: z.ZodType<STTResponse, unknown> = z
   .object({
     text: z.string(),
     usage: STTUsage$inboundSchema.optional(),
+    usage_breakdown: z.array(
+      discriminatedUnion("type", {
+        duration: z.lazy(() => UsageBreakdownDuration$inboundSchema),
+        tokens: z.lazy(() => UsageBreakdownTokens$inboundSchema),
+      }),
+    ).optional(),
+  }).transform((v) => {
+    return remap$(v, {
+      "usage_breakdown": "usageBreakdown",
+    });
   });
 
 export function sttResponseFromJSON(
