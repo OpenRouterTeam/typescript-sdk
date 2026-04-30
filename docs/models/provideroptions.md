@@ -1,13 +1,13 @@
-# Options
+# ProviderOptions
 
 Provider-specific options keyed by provider slug. The options for the matched provider are spread into the upstream request body.
 
 ## Example Usage
 
 ```typescript
-import { Options } from "@openrouter/sdk/models";
+import { ProviderOptions } from "@openrouter/sdk/models";
 
-let value: Options = {};
+let value: ProviderOptions = {};
 ```
 
 ## Fields
