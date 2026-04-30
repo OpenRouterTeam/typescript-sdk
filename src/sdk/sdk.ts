@@ -18,6 +18,7 @@ import { OAuth } from "./oauth.js";
 import { Organization } from "./organization.js";
 import { Providers } from "./providers.js";
 import { Rerank } from "./rerank.js";
+import { Stt } from "./stt.js";
 import { Tts } from "./tts.js";
 import { VideoGeneration } from "./videogeneration.js";
 import { Workspaces } from "./workspaces.js";
@@ -43,6 +44,11 @@ export class OpenRouter extends ClientSDK {
   private _tts?: Tts;
   get tts(): Tts {
     return (this._tts ??= new Tts(this._options));
+  }
+
+  private _stt?: Stt;
+  get stt(): Stt {
+    return (this._stt ??= new Stt(this._options));
   }
 
   private _oAuth?: OAuth;

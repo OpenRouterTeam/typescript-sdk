@@ -1,13 +1,13 @@
-# SpeechRequestProvider
+# STTRequestProvider
 
 Provider-specific passthrough configuration
 
 ## Example Usage
 
 ```typescript
-import { SpeechRequestProvider } from "@openrouter/sdk/models";
+import { STTRequestProvider } from "@openrouter/sdk/models";
 
-let value: SpeechRequestProvider = {};
+let value: STTRequestProvider = {};
 ```
 
 ## Fields
