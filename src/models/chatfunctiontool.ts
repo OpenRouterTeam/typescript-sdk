@@ -37,6 +37,11 @@ import {
   OpenRouterWebSearchServerTool$outboundSchema,
 } from "./openrouterwebsearchservertool.js";
 import {
+  SubagentServerTool,
+  SubagentServerTool$Outbound,
+  SubagentServerTool$outboundSchema,
+} from "./subagentservertool.js";
+import {
   WebFetchServerTool,
   WebFetchServerTool$Outbound,
   WebFetchServerTool$outboundSchema,
@@ -89,6 +94,7 @@ export type ChatFunctionTool =
   | DatetimeServerTool
   | ImageGenerationServerToolOpenRouter
   | ChatSearchModelsServerTool
+  | SubagentServerTool
   | WebFetchServerTool
   | OpenRouterWebSearchServerTool
   | ChatWebSearchShorthand;
@@ -162,6 +168,7 @@ export type ChatFunctionTool$Outbound =
   | DatetimeServerTool$Outbound
   | ImageGenerationServerToolOpenRouter$Outbound
   | ChatSearchModelsServerTool$Outbound
+  | SubagentServerTool$Outbound
   | WebFetchServerTool$Outbound
   | OpenRouterWebSearchServerTool$Outbound
   | ChatWebSearchShorthand$Outbound;
@@ -175,6 +182,7 @@ export const ChatFunctionTool$outboundSchema: z.ZodType<
   DatetimeServerTool$outboundSchema,
   ImageGenerationServerToolOpenRouter$outboundSchema,
   ChatSearchModelsServerTool$outboundSchema,
+  SubagentServerTool$outboundSchema,
   WebFetchServerTool$outboundSchema,
   OpenRouterWebSearchServerTool$outboundSchema,
   ChatWebSearchShorthand$outboundSchema,
