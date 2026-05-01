@@ -2,7 +2,7 @@
 
 ## Overview
 
-Video Generation endpoints
+Video generation endpoints
 
 ### Available Operations
 

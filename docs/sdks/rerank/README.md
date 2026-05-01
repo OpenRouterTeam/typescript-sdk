@@ -2,7 +2,7 @@
 
 ## Overview
 
-Rerank endpoints
+Reranking endpoints
 
 ### Available Operations
 
