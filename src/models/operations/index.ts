@@ -43,6 +43,8 @@ export * from "./listguardrails.js";
 export * from "./listkeyassignments.js";
 export * from "./listmemberassignments.js";
 export * from "./listmodelscount.js";
+export * from "./listmodelsprivatemodels.js";
+export * from "./listmodelsprivatemodelsendpoints.js";
 export * from "./listmodelsuser.js";
 export * from "./listorganizationmembers.js";
 export * from "./listproviders.js";

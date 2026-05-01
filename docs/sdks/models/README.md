@@ -8,6 +8,8 @@ Model information endpoints
 
 * [list](#list) - List all models and their properties
 * [count](#count) - Get total count of available models
+* [listModelsPrivateModels](#listmodelsprivatemodels) - Get a private model
+* [listModelsPrivateModelsEndpoints](#listmodelsprivatemodelsendpoints) - List endpoints for a private model
 * [listForUser](#listforuser) - List models filtered by user provider preferences, privacy settings, and guardrails
 
 ## list
@@ -161,6 +163,180 @@ run();
 | Error Type                         | Status Code                        | Content Type                       |
 | ---------------------------------- | ---------------------------------- | ---------------------------------- |
 | errors.BadRequestResponseError     | 400                                | application/json                   |
+| errors.InternalServerResponseError | 500                                | application/json                   |
+| errors.OpenRouterDefaultError      | 4XX, 5XX                           | \*/\*                              |
+
+## listModelsPrivateModels
+
+Get a private model
+
+### Example Usage
+
+<!-- UsageSnippet language="typescript" operationID="listModelsPrivateModels" method="get" path="/models/private/models/{author}/{slug}" -->
+```typescript
+import { OpenRouter } from "@openrouter/sdk";
+
+const openRouter = new OpenRouter({
+  httpReferer: "<value>",
+  appTitle: "<value>",
+  appCategories: "<value>",
+});
+
+async function run() {
+  const result = await openRouter.models.listModelsPrivateModels({
+    bearer: process.env["OPENROUTER_BEARER"] ?? "",
+  }, {
+    author: "openai",
+    slug: "gpt-4",
+  });
+
+  console.log(result);
+}
+
+run();
+```
+
+### Standalone function
+
+The standalone function version of this method:
+
+```typescript
+import { OpenRouterCore } from "@openrouter/sdk/core.js";
+import { modelsListModelsPrivateModels } from "@openrouter/sdk/funcs/modelsListModelsPrivateModels.js";
+
+// Use `OpenRouterCore` for best tree-shaking performance.
+// You can create one instance of it to use across an application.
+const openRouter = new OpenRouterCore({
+  httpReferer: "<value>",
+  appTitle: "<value>",
+  appCategories: "<value>",
+});
+
+async function run() {
+  const res = await modelsListModelsPrivateModels(openRouter, {
+    bearer: process.env["OPENROUTER_BEARER"] ?? "",
+  }, {
+    author: "openai",
+    slug: "gpt-4",
+  });
+  if (res.ok) {
+    const { value: result } = res;
+    console.log(result);
+  } else {
+    console.log("modelsListModelsPrivateModels failed:", res.error);
+  }
+}
+
+run();
+```
+
+### Parameters
+
+| Parameter                                                                                                                                                                      | Type                                                                                                                                                                           | Required                                                                                                                                                                       | Description                                                                                                                                                                    |
+| ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `request`                                                                                                                                                                      | [operations.ListModelsPrivateModelsRequest](../../models/operations/listmodelsprivatemodelsrequest.md)                                                                         | :heavy_check_mark:                                                                                                                                                             | The request object to use for the request.                                                                                                                                     |
+| `security`                                                                                                                                                                     | [operations.ListModelsPrivateModelsSecurity](../../models/operations/listmodelsprivatemodelssecurity.md)                                                                       | :heavy_check_mark:                                                                                                                                                             | The security requirements to use for the request.                                                                                                                              |
+| `options`                                                                                                                                                                      | RequestOptions                                                                                                                                                                 | :heavy_minus_sign:                                                                                                                                                             | Used to set various options for making HTTP requests.                                                                                                                          |
+| `options.fetchOptions`                                                                                                                                                         | [RequestInit](https://developer.mozilla.org/en-US/docs/Web/API/Request/Request#options)                                                                                        | :heavy_minus_sign:                                                                                                                                                             | Options that are passed to the underlying HTTP request. This can be used to inject extra headers for examples. All `Request` options, except `method` and `body`, are allowed. |
+| `options.retries`                                                                                                                                                              | [RetryConfig](../../lib/utils/retryconfig.md)                                                                                                                                  | :heavy_minus_sign:                                                                                                                                                             | Enables retrying HTTP requests under certain failure conditions.                                                                                                               |
+
+### Response
+
+**Promise\<[models.ModelsListResponse](../../models/modelslistresponse.md)\>**
+
+### Errors
+
+| Error Type                         | Status Code                        | Content Type                       |
+| ---------------------------------- | ---------------------------------- | ---------------------------------- |
+| errors.UnauthorizedResponseError   | 401                                | application/json                   |
+| errors.NotFoundResponseError       | 404                                | application/json                   |
+| errors.InternalServerResponseError | 500                                | application/json                   |
+| errors.OpenRouterDefaultError      | 4XX, 5XX                           | \*/\*                              |
+
+## listModelsPrivateModelsEndpoints
+
+List endpoints for a private model
+
+### Example Usage
+
+<!-- UsageSnippet language="typescript" operationID="listModelsPrivateModelsEndpoints" method="get" path="/models/private/models/{author}/{slug}/endpoints" -->
+```typescript
+import { OpenRouter } from "@openrouter/sdk";
+
+const openRouter = new OpenRouter({
+  httpReferer: "<value>",
+  appTitle: "<value>",
+  appCategories: "<value>",
+});
+
+async function run() {
+  const result = await openRouter.models.listModelsPrivateModelsEndpoints({
+    bearer: process.env["OPENROUTER_BEARER"] ?? "",
+  }, {
+    author: "openai",
+    slug: "gpt-4",
+  });
+
+  console.log(result);
+}
+
+run();
+```
+
+### Standalone function
+
+The standalone function version of this method:
+
+```typescript
+import { OpenRouterCore } from "@openrouter/sdk/core.js";
+import { modelsListModelsPrivateModelsEndpoints } from "@openrouter/sdk/funcs/modelsListModelsPrivateModelsEndpoints.js";
+
+// Use `OpenRouterCore` for best tree-shaking performance.
+// You can create one instance of it to use across an application.
+const openRouter = new OpenRouterCore({
+  httpReferer: "<value>",
+  appTitle: "<value>",
+  appCategories: "<value>",
+});
+
+async function run() {
+  const res = await modelsListModelsPrivateModelsEndpoints(openRouter, {
+    bearer: process.env["OPENROUTER_BEARER"] ?? "",
+  }, {
+    author: "openai",
+    slug: "gpt-4",
+  });
+  if (res.ok) {
+    const { value: result } = res;
+    console.log(result);
+  } else {
+    console.log("modelsListModelsPrivateModelsEndpoints failed:", res.error);
+  }
+}
+
+run();
+```
+
+### Parameters
+
+| Parameter                                                                                                                                                                      | Type                                                                                                                                                                           | Required                                                                                                                                                                       | Description                                                                                                                                                                    |
+| ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `request`                                                                                                                                                                      | [operations.ListModelsPrivateModelsEndpointsRequest](../../models/operations/listmodelsprivatemodelsendpointsrequest.md)                                                       | :heavy_check_mark:                                                                                                                                                             | The request object to use for the request.                                                                                                                                     |
+| `security`                                                                                                                                                                     | [operations.ListModelsPrivateModelsEndpointsSecurity](../../models/operations/listmodelsprivatemodelsendpointssecurity.md)                                                     | :heavy_check_mark:                                                                                                                                                             | The security requirements to use for the request.                                                                                                                              |
+| `options`                                                                                                                                                                      | RequestOptions                                                                                                                                                                 | :heavy_minus_sign:                                                                                                                                                             | Used to set various options for making HTTP requests.                                                                                                                          |
+| `options.fetchOptions`                                                                                                                                                         | [RequestInit](https://developer.mozilla.org/en-US/docs/Web/API/Request/Request#options)                                                                                        | :heavy_minus_sign:                                                                                                                                                             | Options that are passed to the underlying HTTP request. This can be used to inject extra headers for examples. All `Request` options, except `method` and `body`, are allowed. |
+| `options.retries`                                                                                                                                                              | [RetryConfig](../../lib/utils/retryconfig.md)                                                                                                                                  | :heavy_minus_sign:                                                                                                                                                             | Enables retrying HTTP requests under certain failure conditions.                                                                                                               |
+
+### Response
+
+**Promise\<[models.PrivateModelEndpointsResponse](../../models/privatemodelendpointsresponse.md)\>**
+
+### Errors
+
+| Error Type                         | Status Code                        | Content Type                       |
+| ---------------------------------- | ---------------------------------- | ---------------------------------- |
+| errors.UnauthorizedResponseError   | 401                                | application/json                   |
+| errors.NotFoundResponseError       | 404                                | application/json                   |
 | errors.InternalServerResponseError | 500                                | application/json                   |
 | errors.OpenRouterDefaultError      | 4XX, 5XX                           | \*/\*                              |
 
