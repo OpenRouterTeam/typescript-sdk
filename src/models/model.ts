@@ -93,6 +93,10 @@ export type Model = {
    */
   supportedParameters: Array<Parameter>;
   /**
+   * List of supported voice identifiers for TTS models. Null for non-TTS models.
+   */
+  supportedVoices: Array<string> | null;
+  /**
    * Information about the top provider for this model
    */
   topProvider: TopProviderInfo;
@@ -115,6 +119,7 @@ export const Model$inboundSchema: z.ZodType<Model, unknown> = z.object({
   per_request_limits: z.nullable(PerRequestLimits$inboundSchema),
   pricing: PublicPricing$inboundSchema,
   supported_parameters: z.array(Parameter$inboundSchema),
+  supported_voices: z.nullable(z.array(z.string())),
   top_provider: TopProviderInfo$inboundSchema,
 }).transform((v) => {
   return remap$(v, {
@@ -126,6 +131,7 @@ export const Model$inboundSchema: z.ZodType<Model, unknown> = z.object({
     "knowledge_cutoff": "knowledgeCutoff",
     "per_request_limits": "perRequestLimits",
     "supported_parameters": "supportedParameters",
+    "supported_voices": "supportedVoices",
     "top_provider": "topProvider",
   });
 });
