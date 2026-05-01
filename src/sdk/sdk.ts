@@ -18,8 +18,8 @@ import { OAuth } from "./oauth.js";
 import { Organization } from "./organization.js";
 import { Providers } from "./providers.js";
 import { Rerank } from "./rerank.js";
-import { Stt } from "./stt.js";
-import { Tts } from "./tts.js";
+import { Speech } from "./speech.js";
+import { Transcriptions } from "./transcriptions.js";
 import { VideoGeneration } from "./videogeneration.js";
 import { Workspaces } from "./workspaces.js";
 // #region imports
@@ -41,14 +41,14 @@ export class OpenRouter extends ClientSDK {
     return (this._analytics ??= new Analytics(this._options));
   }
 
-  private _tts?: Tts;
-  get tts(): Tts {
-    return (this._tts ??= new Tts(this._options));
+  private _speech?: Speech;
+  get speech(): Speech {
+    return (this._speech ??= new Speech(this._options));
   }
 
-  private _stt?: Stt;
-  get stt(): Stt {
-    return (this._stt ??= new Stt(this._options));
+  private _transcriptions?: Transcriptions;
+  get transcriptions(): Transcriptions {
+    return (this._transcriptions ??= new Transcriptions(this._options));
   }
 
   private _oAuth?: OAuth;
