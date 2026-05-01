@@ -7,6 +7,13 @@ import * as z from "zod/v4";
 import * as openEnums from "../types/enums.js";
 import { ClosedEnum, OpenEnum } from "../types/enums.js";
 
+export const PDFParserEngineOpenrouterOcr = {
+  OpenrouterOcr: "openrouter-ocr",
+} as const;
+export type PDFParserEngineOpenrouterOcr = ClosedEnum<
+  typeof PDFParserEngineOpenrouterOcr
+>;
+
 export const PDFParserEnginePDFText = {
   PdfText: "pdf-text",
 } as const;
@@ -22,7 +29,15 @@ export type PDFParserEngineEnum = OpenEnum<typeof PDFParserEngineEnum>;
 /**
  * The engine to use for parsing PDF files. "pdf-text" is deprecated and automatically redirected to "cloudflare-ai".
  */
-export type PDFParserEngine = PDFParserEngineEnum | PDFParserEnginePDFText;
+export type PDFParserEngine =
+  | PDFParserEngineEnum
+  | PDFParserEnginePDFText
+  | PDFParserEngineOpenrouterOcr;
+
+/** @internal */
+export const PDFParserEngineOpenrouterOcr$outboundSchema: z.ZodEnum<
+  typeof PDFParserEngineOpenrouterOcr
+> = z.enum(PDFParserEngineOpenrouterOcr);
 
 /** @internal */
 export const PDFParserEnginePDFText$outboundSchema: z.ZodEnum<
@@ -36,7 +51,7 @@ export const PDFParserEngineEnum$outboundSchema: z.ZodType<
 > = openEnums.outboundSchema(PDFParserEngineEnum);
 
 /** @internal */
-export type PDFParserEngine$Outbound = string | string;
+export type PDFParserEngine$Outbound = string | string | string;
 
 /** @internal */
 export const PDFParserEngine$outboundSchema: z.ZodType<
@@ -45,6 +60,7 @@ export const PDFParserEngine$outboundSchema: z.ZodType<
 > = z.union([
   PDFParserEngineEnum$outboundSchema,
   PDFParserEnginePDFText$outboundSchema,
+  PDFParserEngineOpenrouterOcr$outboundSchema,
 ]);
 
 export function pdfParserEngineToJSON(

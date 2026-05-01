@@ -17,3 +17,9 @@ const value: models.PDFParserEngineEnum = "cloudflare-ai";
 const value: models.PDFParserEnginePDFText = "pdf-text";
 ```
 
+### `models.PDFParserEngineOpenrouterOcr`
+
+```typescript
+const value: models.PDFParserEngineOpenrouterOcr = "openrouter-ocr";
+```
+
