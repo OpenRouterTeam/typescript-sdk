@@ -3,10 +3,10 @@
 
 ## Supported Types
 
-### `models.ActionSearch`
+### `models.OutputWebSearchCallItemActionSearch`
 
 ```typescript
-const value: models.ActionSearch = {
+const value: models.OutputWebSearchCallItemActionSearch = {
   query: "<value>",
   type: "search",
 };
