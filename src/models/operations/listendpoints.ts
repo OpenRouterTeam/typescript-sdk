@@ -6,6 +6,8 @@
 import * as z from "zod/v4";
 import { remap as remap$ } from "../../lib/primitives.js";
 import { safeParse } from "../../lib/schemas.js";
+import * as openEnums from "../../types/enums.js";
+import { OpenEnum } from "../../types/enums.js";
 import { Result as SafeParseResult } from "../../types/fp.js";
 import { SDKValidationError } from "../errors/sdkvalidationerror.js";
 import * as models from "../index.js";
@@ -63,13 +65,90 @@ export type ListEndpointsRequest = {
 };
 
 /**
+ * Tokenizer type used by the model
+ */
+export const Tokenizer = {
+  Router: "Router",
+  Media: "Media",
+  Other: "Other",
+  Gpt: "GPT",
+  Claude: "Claude",
+  Gemini: "Gemini",
+  Gemma: "Gemma",
+  Grok: "Grok",
+  Cohere: "Cohere",
+  Nova: "Nova",
+  Qwen: "Qwen",
+  Yi: "Yi",
+  DeepSeek: "DeepSeek",
+  Mistral: "Mistral",
+  Llama2: "Llama2",
+  Llama3: "Llama3",
+  Llama4: "Llama4",
+  PaLM: "PaLM",
+  Rwkv: "RWKV",
+  Qwen3: "Qwen3",
+} as const;
+/**
+ * Tokenizer type used by the model
+ */
+export type Tokenizer = OpenEnum<typeof Tokenizer>;
+
+/**
+ * Model architecture information
+ */
+export type Architecture = {
+  /**
+   * Supported input modalities
+   */
+  inputModalities: Array<models.InputModality>;
+  /**
+   * Instruction format type
+   */
+  instructType: models.InstructType | null;
+  /**
+   * Primary modality of the model
+   */
+  modality: string | null;
+  /**
+   * Supported output modalities
+   */
+  outputModalities: Array<models.OutputModality>;
+  tokenizer: Tokenizer | null;
+};
+
+/**
+ * List of available endpoints for a model
+ */
+export type ListEndpointsData = {
+  architecture: Architecture;
+  /**
+   * Unix timestamp of when the model was created
+   */
+  created: number;
+  /**
+   * Description of the model
+   */
+  description: string;
+  /**
+   * List of available endpoints for this model
+   */
+  endpoints: Array<models.PublicEndpoint>;
+  /**
+   * Unique identifier for the model
+   */
+  id: string;
+  /**
+   * Display name of the model
+   */
+  name: string;
+};
+
+/**
  * Returns a list of endpoints
  */
 export type ListEndpointsResponse = {
-  /**
-   * List of available endpoints for a model
-   */
-  data: models.ListEndpointsResponse;
+  data: ListEndpointsData;
 };
 
 /** @internal */
@@ -106,11 +185,64 @@ export function listEndpointsRequestToJSON(
 }
 
 /** @internal */
+export const Tokenizer$inboundSchema: z.ZodType<Tokenizer, unknown> = openEnums
+  .inboundSchema(Tokenizer);
+
+/** @internal */
+export const Architecture$inboundSchema: z.ZodType<Architecture, unknown> = z
+  .object({
+    input_modalities: z.array(models.InputModality$inboundSchema),
+    instruct_type: z.nullable(models.InstructType$inboundSchema),
+    modality: z.nullable(z.string()),
+    output_modalities: z.array(models.OutputModality$inboundSchema),
+    tokenizer: z.nullable(Tokenizer$inboundSchema),
+  }).transform((v) => {
+    return remap$(v, {
+      "input_modalities": "inputModalities",
+      "instruct_type": "instructType",
+      "output_modalities": "outputModalities",
+    });
+  });
+
+export function architectureFromJSON(
+  jsonString: string,
+): SafeParseResult<Architecture, SDKValidationError> {
+  return safeParse(
+    jsonString,
+    (x) => Architecture$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'Architecture' from JSON`,
+  );
+}
+
+/** @internal */
+export const ListEndpointsData$inboundSchema: z.ZodType<
+  ListEndpointsData,
+  unknown
+> = z.object({
+  architecture: z.lazy(() => Architecture$inboundSchema),
+  created: z.int(),
+  description: z.string(),
+  endpoints: z.array(models.PublicEndpoint$inboundSchema),
+  id: z.string(),
+  name: z.string(),
+});
+
+export function listEndpointsDataFromJSON(
+  jsonString: string,
+): SafeParseResult<ListEndpointsData, SDKValidationError> {
+  return safeParse(
+    jsonString,
+    (x) => ListEndpointsData$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'ListEndpointsData' from JSON`,
+  );
+}
+
+/** @internal */
 export const ListEndpointsResponse$inboundSchema: z.ZodType<
   ListEndpointsResponse,
   unknown
 > = z.object({
-  data: models.ListEndpointsResponse$inboundSchema,
+  data: z.lazy(() => ListEndpointsData$inboundSchema),
 });
 
 export function listEndpointsResponseFromJSON(
