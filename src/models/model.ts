@@ -69,6 +69,10 @@ export type Model = {
    */
   id: string;
   /**
+   * Whether this model response is backed by a private model or private endpoint that is only visible to explicitly granted users or organizations.
+   */
+  isPrivate?: boolean | undefined;
+  /**
    * The date up to which the model was trained on data. ISO 8601 date string (YYYY-MM-DD) or null if unknown.
    */
   knowledgeCutoff?: string | null | undefined;
@@ -109,6 +113,7 @@ export const Model$inboundSchema: z.ZodType<Model, unknown> = z.object({
   expiration_date: z.nullable(z.string()).optional(),
   hugging_face_id: z.nullable(z.string()).optional(),
   id: z.string(),
+  is_private: z.boolean().optional(),
   knowledge_cutoff: z.nullable(z.string()).optional(),
   links: ModelLinks$inboundSchema,
   name: z.string(),
@@ -123,6 +128,7 @@ export const Model$inboundSchema: z.ZodType<Model, unknown> = z.object({
     "default_parameters": "defaultParameters",
     "expiration_date": "expirationDate",
     "hugging_face_id": "huggingFaceId",
+    "is_private": "isPrivate",
     "knowledge_cutoff": "knowledgeCutoff",
     "per_request_limits": "perRequestLimits",
     "supported_parameters": "supportedParameters",
