@@ -6,6 +6,8 @@
 import { modelsCount } from "../funcs/modelsCount.js";
 import { modelsList } from "../funcs/modelsList.js";
 import { modelsListForUser } from "../funcs/modelsListForUser.js";
+import { modelsListPrivateModels } from "../funcs/modelsListPrivateModels.js";
+import { modelsListPrivateModelsEndpoints } from "../funcs/modelsListPrivateModelsEndpoints.js";
 import { ClientSDK, RequestOptions } from "../lib/sdks.js";
 import * as models from "../models/index.js";
 import * as operations from "../models/operations/index.js";
@@ -52,6 +54,38 @@ export class Models extends ClientSDK {
     options?: RequestOptions,
   ): Promise<models.ModelsListResponse> {
     return unwrapAsync(modelsListForUser(
+      this,
+      security,
+      request,
+      options,
+    ));
+  }
+
+  /**
+   * Get a private model
+   */
+  async listPrivateModels(
+    security: operations.ListPrivateModelsSecurity,
+    request: operations.ListPrivateModelsRequest,
+    options?: RequestOptions,
+  ): Promise<models.ModelsListResponse> {
+    return unwrapAsync(modelsListPrivateModels(
+      this,
+      security,
+      request,
+      options,
+    ));
+  }
+
+  /**
+   * List endpoints for a private model
+   */
+  async listPrivateModelsEndpoints(
+    security: operations.ListPrivateModelsEndpointsSecurity,
+    request: operations.ListPrivateModelsEndpointsRequest,
+    options?: RequestOptions,
+  ): Promise<models.PrivateModelEndpointsResponse> {
+    return unwrapAsync(modelsListPrivateModelsEndpoints(
       this,
       security,
       request,
