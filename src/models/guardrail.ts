@@ -31,9 +31,25 @@ export type Guardrail = {
    */
   description?: string | null | undefined;
   /**
-   * Whether to enforce zero data retention
+   * Whether to enforce zero data retention across all providers. Deprecated — use per-provider fields instead.
    */
   enforceZdr?: boolean | null | undefined;
+  /**
+   * Whether to enforce zero data retention for Anthropic endpoints
+   */
+  enforceZdrAnthropic?: boolean | null | undefined;
+  /**
+   * Whether to enforce zero data retention for Google endpoints
+   */
+  enforceZdrGoogle?: boolean | null | undefined;
+  /**
+   * Whether to enforce zero data retention for OpenAI endpoints
+   */
+  enforceZdrOpenai?: boolean | null | undefined;
+  /**
+   * Whether to enforce zero data retention for all other provider endpoints
+   */
+  enforceZdrOther?: boolean | null | undefined;
   /**
    * Unique identifier for the guardrail
    */
@@ -75,6 +91,10 @@ export const Guardrail$inboundSchema: z.ZodType<Guardrail, unknown> = z.object({
   created_at: z.string(),
   description: z.nullable(z.string()).optional(),
   enforce_zdr: z.nullable(z.boolean()).optional(),
+  enforce_zdr_anthropic: z.nullable(z.boolean()).optional(),
+  enforce_zdr_google: z.nullable(z.boolean()).optional(),
+  enforce_zdr_openai: z.nullable(z.boolean()).optional(),
+  enforce_zdr_other: z.nullable(z.boolean()).optional(),
   id: z.string(),
   ignored_models: z.nullable(z.array(z.string())).optional(),
   ignored_providers: z.nullable(z.array(z.string())).optional(),
@@ -89,6 +109,10 @@ export const Guardrail$inboundSchema: z.ZodType<Guardrail, unknown> = z.object({
     "allowed_providers": "allowedProviders",
     "created_at": "createdAt",
     "enforce_zdr": "enforceZdr",
+    "enforce_zdr_anthropic": "enforceZdrAnthropic",
+    "enforce_zdr_google": "enforceZdrGoogle",
+    "enforce_zdr_openai": "enforceZdrOpenai",
+    "enforce_zdr_other": "enforceZdrOther",
     "ignored_models": "ignoredModels",
     "ignored_providers": "ignoredProviders",
     "limit_usd": "limitUsd",
