@@ -31,7 +31,7 @@ import { Result } from "../types/fp.js";
  * Create transcription
  *
  * @remarks
- * Transcribes audio into text
+ * Transcribes audio into text. Accepts base64-encoded audio input and returns the transcribed text.
  */
 export function sttCreateTranscription(
   client: OpenRouterCore,
