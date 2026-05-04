@@ -94,6 +94,7 @@ let value: Options = {};
 | `openInference`       | Record<string, *any*> | :heavy_minus_sign:    | N/A                   |
 | `openai`              | Record<string, *any*> | :heavy_minus_sign:    | N/A                   |
 | `parasail`            | Record<string, *any*> | :heavy_minus_sign:    | N/A                   |
+| `perceptron`          | Record<string, *any*> | :heavy_minus_sign:    | N/A                   |
 | `perplexity`          | Record<string, *any*> | :heavy_minus_sign:    | N/A                   |
 | `phala`               | Record<string, *any*> | :heavy_minus_sign:    | N/A                   |
 | `poolside`            | Record<string, *any*> | :heavy_minus_sign:    | N/A                   |

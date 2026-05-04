@@ -90,6 +90,7 @@ export type ProviderOptions = {
   openInference?: { [k: string]: any | null } | undefined;
   openai?: { [k: string]: any | null } | undefined;
   parasail?: { [k: string]: any | null } | undefined;
+  perceptron?: { [k: string]: any | null } | undefined;
   perplexity?: { [k: string]: any | null } | undefined;
   phala?: { [k: string]: any | null } | undefined;
   poolside?: { [k: string]: any | null } | undefined;
@@ -203,6 +204,7 @@ export type ProviderOptions$Outbound = {
   "open-inference"?: { [k: string]: any | null } | undefined;
   openai?: { [k: string]: any | null } | undefined;
   parasail?: { [k: string]: any | null } | undefined;
+  perceptron?: { [k: string]: any | null } | undefined;
   perplexity?: { [k: string]: any | null } | undefined;
   phala?: { [k: string]: any | null } | undefined;
   poolside?: { [k: string]: any | null } | undefined;
@@ -319,6 +321,7 @@ export const ProviderOptions$outboundSchema: z.ZodType<
   openInference: z.record(z.string(), z.nullable(z.any())).optional(),
   openai: z.record(z.string(), z.nullable(z.any())).optional(),
   parasail: z.record(z.string(), z.nullable(z.any())).optional(),
+  perceptron: z.record(z.string(), z.nullable(z.any())).optional(),
   perplexity: z.record(z.string(), z.nullable(z.any())).optional(),
   phala: z.record(z.string(), z.nullable(z.any())).optional(),
   poolside: z.record(z.string(), z.nullable(z.any())).optional(),
