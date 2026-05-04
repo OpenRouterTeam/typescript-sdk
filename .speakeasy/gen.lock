@@ -1,19 +1,19 @@
 lockVersion: ""
 id: ""
 management:
-  docChecksum: 7105037467579acb4f170af08849a679
+  docChecksum: c7dbac94a8f3a5947f8ef14b99b1953d
   docVersion: 1.0.0
   speakeasyVersion: 1.761.0
   generationVersion: 2.879.1
-  releaseVersion: 0.12.25
-  configChecksum: 3255ae0a9aea6ba25a8f0fe47b0f69a7
+  releaseVersion: 0.12.26
+  configChecksum: fc3b30da0e0af267bafbd062f7ead310
   repoURL: https://github.com/OpenRouterTeam/typescript-sdk.git
   installationURL: https://github.com/OpenRouterTeam/typescript-sdk
   published: true
 persistentEdits:
-  generation_id: b94a12da-0253-46fa-9cc3-9db4e8aa6473
-  pristine_commit_hash: 5bf0eb86b5794c900554c5d08c693cb4de479fd5
-  pristine_tree_hash: 4984fc85a81368979ac65b53e260e58065fbe2b7
+  generation_id: c72d55ec-f7fa-448e-bb6e-3c0d0ad32902
+  pristine_commit_hash: 32e7ce75622080977fbc8024dc6e7c6165a0783c
+  pristine_tree_hash: 88d89e815f347ff0ed25d7db0d7d5f8e5c875f65
 features:
   typescript:
     acceptHeaders: 2.81.2
@@ -1939,8 +1939,8 @@ trackedFiles:
     deleted: true
   docs/models/model.md:
     id: 66e0236ac289
-    last_write_checksum: sha1:f89d5859e05f2e048722fc6a4095ead771a7ce40
-    pristine_git_object: 4d2da1d1813d0588fb89d1a26ed45cd33e99dd68
+    last_write_checksum: sha1:559beaa3916921dfe4ed9655208f29cbd9686d46
+    pristine_git_object: 4f459e51385cc166760941c2ab9747b26be75ab4
   docs/models/modelarchitecture.md:
     id: 7eab960e8441
     last_write_checksum: sha1:722c920e474bc5ce757280c8a80406dfd484eee1
@@ -1974,8 +1974,8 @@ trackedFiles:
     deleted: true
   docs/models/modelslistresponse.md:
     id: 62180dd98256
-    last_write_checksum: sha1:1c5260cdb49dad8f9c35bbbc67fe99477b865021
-    pristine_git_object: 940006ffd986795c86d2d19100e943446b32e88a
+    last_write_checksum: sha1:b963d154d616137035d5979bd6cfbff4ee5ec66a
+    pristine_git_object: 63438515553b50dbdae8638cc2f42da34c9215b7
   docs/models/moderation.md:
     id: ace7cb4ee27c
     last_write_checksum: sha1:bcd2fab3a1355e3cb37ce2963f22e061c6b012b4
@@ -3346,6 +3346,7 @@ trackedFiles:
     id: 59d246a34cd0
     last_write_checksum: sha1:9497c4b466be1ddedc09ee0b3a3eca002a01f121
     pristine_git_object: 4605158d097039ca889c65161dc61cdea407bfe1
+    deleted: true
   docs/models/outputwebsearchservertoolitem.md:
     id: 250df1e33399
     last_write_checksum: sha1:6407133706b452db363914b80e028f0cb70df37f
@@ -3355,6 +3356,7 @@ trackedFiles:
     id: 614a7b93f9b8
     last_write_checksum: sha1:b20f60990b4727a141ed2e9e77749004ee2fe68a
     pristine_git_object: ef411b4f05ada4d5d8943226a19fd01c521555df
+    deleted: true
   docs/models/outputwebsearchservertoolitemtype.md:
     id: 189176609ad1
     last_write_checksum: sha1:31c8c30167b5bed9814faabf50e886876f8c748b
@@ -3364,14 +3366,17 @@ trackedFiles:
     id: 87d80ed1a8e1
     last_write_checksum: sha1:fb07c8b14bec01841841769c2b2cae0769a6c64a
     pristine_git_object: 961f2654e6827677bb90dae65379f5217fd0b682
+    deleted: true
   docs/models/outputwebsearchservertoolitemtypesearch.md:
     id: f3ffb8b710c3
     last_write_checksum: sha1:dd3e462bdffc8ee40aca2587c9ac965a4cc02df4
     pristine_git_object: d70e95194ba68c63928150fd06b0fb8947c92259
+    deleted: true
   docs/models/outputwebsearchservertoolitemtypeurl.md:
     id: 420f791ae7e4
     last_write_checksum: sha1:3f541798a97cc1f45177ed21ab4dfe93d6f546a3
     pristine_git_object: d5f81fc50cbcda5f6176d4927812bf0b3f1b5025
+    deleted: true
   docs/models/parameter.md:
     id: 287afbf6f281
     last_write_checksum: sha1:c27ee6123f99f8a43e1a108a2bfc3782ccdb6877
@@ -4461,13 +4466,13 @@ trackedFiles:
     pristine_git_object: 7002690cc52491b4677db8ce5aff65d0a75e09ff
   docs/sdks/stt/README.md:
     id: 0806154492f9
-    last_write_checksum: sha1:a60e323188dbc406ed99aea9e8fc81204bac20ef
-    pristine_git_object: 48ed5ef2806d4e3d9d05f5d2ca40720c50ef552b
+    last_write_checksum: sha1:aa311f9602dfafdcb8dea4d91c4549876cecc37f
+    pristine_git_object: 6ef89e7b96e0584364d9f49c961edecf0a837dae
     deleted: true
   docs/sdks/tts/README.md:
     id: 0c425074d09f
-    last_write_checksum: sha1:604df85e794d48c8b4d2d57514cf312cca2244b3
-    pristine_git_object: fbff37d6250306bacb9f44f0a0b634610bd6b5c2
+    last_write_checksum: sha1:019ae6737c83daac03ebbe7d56c49b0d3ad11262
+    pristine_git_object: 21c15b3c5bf350761085a8b5d72ccfe247b1eb72
     deleted: true
   docs/sdks/videogeneration/README.md:
     id: b6dbf7b0729c
@@ -4501,12 +4506,12 @@ trackedFiles:
     pristine_git_object: 410efafd6a7f50d91ccb87131fedbe0c3d47e15a
   jsr.json:
     id: 7f6ab7767282
-    last_write_checksum: sha1:f486bfd1cd9b8faf9d10d508d7126eab5cce6c2f
-    pristine_git_object: ebb1ba947e9b6320be4f1759bc0200d3322eecbb
+    last_write_checksum: sha1:5938b2206d71fa58cece95d57ec5ebc5ddac9084
+    pristine_git_object: 3feab927a21ec814af450f176763d694ca3327b7
   package.json:
     id: 7030d0b2f71b
-    last_write_checksum: sha1:1b3ab381871be032aaa8d52b14f05694b0b0d05b
-    pristine_git_object: 408c8575405f5466da0e42b3b7a016b48b27d266
+    last_write_checksum: sha1:a81b7d5bb578d7c70eec4f87a36c08da8e314998
+    pristine_git_object: 4883f737fab5860c388a5a6f3cbca944c1a4c980
   src/core.ts:
     id: f431fdbcd144
     last_write_checksum: sha1:5aa66b0b6a5964f3eea7f3098c2eb3c0ee9c0131
@@ -4661,12 +4666,12 @@ trackedFiles:
     pristine_git_object: f39c3bac6a469e777ffcf039e5a1c1e2b3f2d0d9
   src/funcs/sttCreateTranscription.ts:
     id: 90b735003ac7
-    last_write_checksum: sha1:087a97b801a37408e744f9c8a5acadcc3e7b840f
-    pristine_git_object: 1a2a71b4625fb90b0d7325b76b988588d5a42a25
+    last_write_checksum: sha1:78a6cc4a024f2de8f634f7f3599e99906af0f068
+    pristine_git_object: e4e330abe3270173fbaa7217f4143a44527a55cd
   src/funcs/ttsCreateSpeech.ts:
     id: ed304f5d6ad8
-    last_write_checksum: sha1:0d169e553b6fce2646afbb00f13c43c2e06f070e
-    pristine_git_object: 7f10487571d4a048d8a588fbe5f9a369eb90e9b3
+    last_write_checksum: sha1:45c3dd45122354d3998025b069552dfde511afd6
+    pristine_git_object: a4054d795132c9a844f72d10819dc1ce286a12a2
   src/funcs/videoGenerationGenerate.ts:
     id: 6f3650ac9f5e
     last_write_checksum: sha1:aa39ddf072ed2ef7e8c0de1ccf90b00b6a45b100
@@ -4733,8 +4738,8 @@ trackedFiles:
     pristine_git_object: a187e58707bdb726ca2aff74941efe7493422d4e
   src/lib/config.ts:
     id: 320761608fb3
-    last_write_checksum: sha1:b755fd239a9955be34733e3cf8c52f3e780d9a79
-    pristine_git_object: e35d5cc333bb92007f60bd5259fa8e747a4b29d3
+    last_write_checksum: sha1:78954f419dd78d924f031ec8c456d61a4de73a0f
+    pristine_git_object: 7b48d04327f4c955d97bbe13e25644dd4f470377
   src/lib/dlv.ts:
     id: b1988214835a
     last_write_checksum: sha1:eaac763b22717206a6199104e0403ed17a4e2711
@@ -5449,8 +5454,8 @@ trackedFiles:
     pristine_git_object: 5b4e0986b0643959d63c608aabcc0de66c251c05
   src/models/model.ts:
     id: b99d4c14e794
-    last_write_checksum: sha1:3df3679cc7dae7fa159e108256ec2b07af49b4e0
-    pristine_git_object: bf177554859549064d110b5b224d4af55b5ec47d
+    last_write_checksum: sha1:49dbbabfe898b4db5b373e9cb09c00e728575117
+    pristine_git_object: 32ab6da37845109bb72b1d84e1fe182c523b30de
   src/models/modelarchitecture.ts:
     id: 57607576095f
     last_write_checksum: sha1:4c15d83f2f3c4f3af7c14185d039d1fec8cf9b06
@@ -6353,12 +6358,12 @@ trackedFiles:
     pristine_git_object: bafb61e817fcda1e537233ee568feaab3186046c
   src/sdk/stt.ts:
     id: fd9e88c22d1f
-    last_write_checksum: sha1:95a15e7627434005aa932477c82d915176268656
-    pristine_git_object: e6fbb1423d06f4dc30e71a1284d1bba01032fd42
+    last_write_checksum: sha1:81843dfe6675e4edca828465e7934f6505a69154
+    pristine_git_object: 78ae89caf89b10f6c1a4cd58d3521186894ee638
   src/sdk/tts.ts:
     id: b3236e8fa217
-    last_write_checksum: sha1:747f7c084b8bdef5ca4a7e738a4d861c3bf59cba
-    pristine_git_object: 562193d7fc2d4e1498370af5b36809e5119f199d
+    last_write_checksum: sha1:0f25963ae294d2beef73b189db10b09ca3ecf4c6
+    pristine_git_object: 99ba633f15d7e579cf8509df9c5effdb444014d7
   src/sdk/videogeneration.ts:
     id: db34eab5bd5b
     last_write_checksum: sha1:0e8a13f8ca379037c57417f0ebe9a9fe35dc3bea
@@ -6555,7 +6560,7 @@ examples:
     speakeasy-default-list-embeddings-models:
       responses:
         "200":
-          application/json: {"data": [{"architecture": {"input_modalities": ["text"], "modality": "text->text", "output_modalities": ["text"]}, "canonical_slug": "openai/gpt-4", "context_length": 8192, "created": 1692901234, "default_parameters": null, "id": "openai/gpt-4", "links": {"details": "/api/v1/models/openai/gpt-5.4/endpoints"}, "name": "GPT-4", "per_request_limits": null, "pricing": {"completion": "0.00006", "prompt": "0.00003"}, "supported_parameters": ["temperature", "top_p", "max_tokens", "frequency_penalty", "presence_penalty"], "top_provider": {"is_moderated": true}}]}
+          application/json: {"data": [{"architecture": {"input_modalities": ["text"], "modality": "text->text", "output_modalities": ["text"]}, "canonical_slug": "openai/gpt-4", "context_length": 8192, "created": 1692901234, "default_parameters": null, "id": "openai/gpt-4", "links": {"details": "/api/v1/models/openai/gpt-5.4/endpoints"}, "name": "GPT-4", "per_request_limits": null, "pricing": {"completion": "0.00006", "prompt": "0.00003"}, "supported_parameters": ["temperature", "top_p", "max_tokens", "frequency_penalty", "presence_penalty"], "supported_voices": null, "top_provider": {"is_moderated": true}}]}
         "400":
           application/json: {"error": {"code": 400, "message": "Invalid request parameters"}}
         "500":
@@ -6597,7 +6602,7 @@ examples:
     speakeasy-default-get-models:
       responses:
         "200":
-          application/json: {"data": [{"architecture": {"input_modalities": ["text"], "modality": "text->text", "output_modalities": ["text"]}, "canonical_slug": "openai/gpt-4", "context_length": 8192, "created": 1692901234, "default_parameters": null, "id": "openai/gpt-4", "links": {"details": "/api/v1/models/openai/gpt-5.4/endpoints"}, "name": "GPT-4", "per_request_limits": null, "pricing": {"completion": "0.00006", "prompt": "0.00003"}, "supported_parameters": ["temperature", "top_p", "max_tokens", "frequency_penalty", "presence_penalty"], "top_provider": {"is_moderated": true}}]}
+          application/json: {"data": [{"architecture": {"input_modalities": ["text"], "modality": "text->text", "output_modalities": ["text"]}, "canonical_slug": "openai/gpt-4", "context_length": 8192, "created": 1692901234, "default_parameters": null, "id": "openai/gpt-4", "links": {"details": "/api/v1/models/openai/gpt-5.4/endpoints"}, "name": "GPT-4", "per_request_limits": null, "pricing": {"completion": "0.00006", "prompt": "0.00003"}, "supported_parameters": ["temperature", "top_p", "max_tokens", "frequency_penalty", "presence_penalty"], "supported_voices": null, "top_provider": {"is_moderated": true}}]}
         "400":
           application/json: {"error": {"code": 400, "message": "Invalid request parameters"}}
         "500":
@@ -6606,7 +6611,7 @@ examples:
     speakeasy-default-list-models-user:
       responses:
         "200":
-          application/json: {"data": [{"architecture": {"input_modalities": ["text"], "modality": "text->text", "output_modalities": ["text"]}, "canonical_slug": "openai/gpt-4", "context_length": 8192, "created": 1692901234, "default_parameters": null, "id": "openai/gpt-4", "links": {"details": "/api/v1/models/openai/gpt-5.4/endpoints"}, "name": "GPT-4", "per_request_limits": null, "pricing": {"completion": "0.00006", "prompt": "0.00003"}, "supported_parameters": ["temperature", "top_p", "max_tokens", "frequency_penalty", "presence_penalty"], "top_provider": {"is_moderated": true}}]}
+          application/json: {"data": [{"architecture": {"input_modalities": ["text"], "modality": "text->text", "output_modalities": ["text"]}, "canonical_slug": "openai/gpt-4", "context_length": 8192, "created": 1692901234, "default_parameters": null, "id": "openai/gpt-4", "links": {"details": "/api/v1/models/openai/gpt-5.4/endpoints"}, "name": "GPT-4", "per_request_limits": null, "pricing": {"completion": "0.00006", "prompt": "0.00003"}, "supported_parameters": ["temperature", "top_p", "max_tokens", "frequency_penalty", "presence_penalty"], "supported_voices": null, "top_provider": {"is_moderated": true}}]}
         "401":
           application/json: {"error": {"code": 401, "message": "Missing Authentication header"}}
         "404":
@@ -7268,4 +7273,3 @@ examples:
         "529":
           application/json: {"error": {"code": 529, "message": "Provider returned error"}}
 examplesVersion: 1.0.2
-releaseNotes: "## Typescript SDK Changes:\n* `openrouter.beta.responses.send()`: \n  *  `request.responsesRequest.input.union(Array<>)[].union(OutputWebSearchServerToolItem).action` **Added**\n  *  `response` **Changed**\n"
