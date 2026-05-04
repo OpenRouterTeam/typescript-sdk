@@ -1,11 +1,13 @@
-# WebSearchConfig
+# WebSearchServerToolConfig
+
+Configuration for the openrouter:web_search server tool
 
 ## Example Usage
 
 ```typescript
-import { WebSearchConfig } from "@openrouter/sdk/models";
+import { WebSearchServerToolConfig } from "@openrouter/sdk/models";
 
-let value: WebSearchConfig = {};
+let value: WebSearchServerToolConfig = {};
 ```
 
 ## Fields
