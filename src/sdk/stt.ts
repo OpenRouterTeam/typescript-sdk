@@ -14,7 +14,7 @@ export class Stt extends ClientSDK {
    * Create transcription
    *
    * @remarks
-   * Transcribes audio into text
+   * Transcribes audio into text. Accepts base64-encoded audio input and returns the transcribed text.
    */
   async createTranscription(
     request: operations.CreateAudioTranscriptionsRequest,
