@@ -10,7 +10,7 @@ Text-to-speech endpoints
 
 ## createSpeech
 
-Synthesizes audio from the input text
+Synthesizes audio from the input text. Returns a raw audio bytestream in the requested format (e.g. mp3, pcm, wav).
 
 ### Example Usage
 
