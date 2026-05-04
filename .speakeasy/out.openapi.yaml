@@ -8768,6 +8768,7 @@ components:
           - temperature
           - top_p
           - max_tokens
+        supported_voices: null
         top_provider:
           context_length: 8192
           is_moderated: true
@@ -8828,6 +8829,13 @@ components:
           items:
             $ref: '#/components/schemas/Parameter'
           type: array
+        supported_voices:
+          description: List of supported voice identifiers for TTS models. Null for non-TTS models.
+          example: null
+          items:
+            type: string
+          nullable: true
+          type: array
         top_provider:
           $ref: '#/components/schemas/TopProviderInfo'
       required:
@@ -8842,6 +8850,7 @@ components:
         - per_request_limits
         - supported_parameters
         - default_parameters
+        - supported_voices
         - links
       type: object
     ModelArchitecture:
@@ -9005,6 +9014,7 @@ components:
               - max_tokens
               - frequency_penalty
               - presence_penalty
+            supported_voices: null
             top_provider:
               context_length: 8192
               is_moderated: true
@@ -9047,6 +9057,7 @@ components:
             - temperature
             - top_p
             - max_tokens
+          supported_voices: null
           top_provider:
             context_length: 8192
             is_moderated: true
@@ -14858,7 +14869,8 @@ paths:
       - $ref: "#/components/parameters/AppCategories"
   /audio/speech:
     post:
-      description: Synthesizes audio from the input text
+      description: >-
+        Synthesizes audio from the input text. Returns a raw audio bytestream in the requested format (e.g. mp3, pcm, wav).
       operationId: createAudioSpeech
       requestBody:
         content:
@@ -14986,6 +14998,7 @@ paths:
       summary: Create speech
       tags:
         - TTS
+      x-speakeasy-max-method-params: 1
       x-speakeasy-name-override: createSpeech
     parameters:
       - $ref: "#/components/parameters/AppIdentifier"
@@ -14993,7 +15006,7 @@ paths:
       - $ref: "#/components/parameters/AppCategories"
   /audio/transcriptions:
     post:
-      description: Transcribes audio into text
+      description: Transcribes audio into text. Accepts base64-encoded audio input and returns the transcribed text.
       operationId: createAudioTranscriptions
       requestBody:
         content:
@@ -15125,6 +15138,7 @@ paths:
       summary: Create transcription
       tags:
         - STT
+      x-speakeasy-max-method-params: 1
       x-speakeasy-name-override: createTranscription
     parameters:
       - $ref: "#/components/parameters/AppIdentifier"
@@ -16091,6 +16105,7 @@ paths:
                       prompt: '0.00000002'
                       request: '0'
                     supported_parameters: []
+                    supported_voices: null
                     top_provider:
                       context_length: 8192
                       is_moderated: false
@@ -19351,6 +19366,7 @@ paths:
                       - temperature
                       - top_p
                       - max_tokens
+                    supported_voices: null
                     top_provider:
                       context_length: 8192
                       is_moderated: true
@@ -19601,6 +19617,7 @@ paths:
                       - temperature
                       - top_p
                       - max_tokens
+                    supported_voices: null
                     top_provider:
                       context_length: 8192
                       is_moderated: true
@@ -21816,7 +21833,6 @@ tags:
     name: Workspaces
   - description: beta.responses endpoints
     name: beta.responses
-x-fern-base-path: /
 x-retry-strategy:
   initialDelay: 500
   maxAttempts: 3
