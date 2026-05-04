@@ -14,42 +14,172 @@ import {
   ToolCallStatus$outboundSchema,
 } from "./toolcallstatus.js";
 
-export const OutputWebSearchServerToolItemType = {
+export const OutputWebSearchServerToolItemTypeURL = {
+  Url: "url",
+} as const;
+export type OutputWebSearchServerToolItemTypeURL = ClosedEnum<
+  typeof OutputWebSearchServerToolItemTypeURL
+>;
+
+export type Source = {
+  type: OutputWebSearchServerToolItemTypeURL;
+  url: string;
+};
+
+export const OutputWebSearchServerToolItemTypeSearch = {
+  Search: "search",
+} as const;
+export type OutputWebSearchServerToolItemTypeSearch = ClosedEnum<
+  typeof OutputWebSearchServerToolItemTypeSearch
+>;
+
+/**
+ * The search action performed, matching OpenAI web_search_call.action shape. Includes the query the model issued and optional source URLs returned by the search provider.
+ */
+export type OutputWebSearchServerToolItemAction = {
+  query: string;
+  sources?: Array<Source> | undefined;
+  type: OutputWebSearchServerToolItemTypeSearch;
+};
+
+export const OutputWebSearchServerToolItemTypeOpenrouterWebSearch = {
   OpenrouterWebSearch: "openrouter:web_search",
 } as const;
-export type OutputWebSearchServerToolItemType = ClosedEnum<
-  typeof OutputWebSearchServerToolItemType
+export type OutputWebSearchServerToolItemTypeOpenrouterWebSearch = ClosedEnum<
+  typeof OutputWebSearchServerToolItemTypeOpenrouterWebSearch
 >;
 
 /**
  * An openrouter:web_search server tool output item
  */
 export type OutputWebSearchServerToolItem = {
+  /**
+   * The search action performed, matching OpenAI web_search_call.action shape. Includes the query the model issued and optional source URLs returned by the search provider.
+   */
+  action?: OutputWebSearchServerToolItemAction | undefined;
   id?: string | undefined;
   status: ToolCallStatus;
-  type: OutputWebSearchServerToolItemType;
+  type: OutputWebSearchServerToolItemTypeOpenrouterWebSearch;
 };
 
 /** @internal */
-export const OutputWebSearchServerToolItemType$inboundSchema: z.ZodEnum<
-  typeof OutputWebSearchServerToolItemType
-> = z.enum(OutputWebSearchServerToolItemType);
+export const OutputWebSearchServerToolItemTypeURL$inboundSchema: z.ZodEnum<
+  typeof OutputWebSearchServerToolItemTypeURL
+> = z.enum(OutputWebSearchServerToolItemTypeURL);
 /** @internal */
-export const OutputWebSearchServerToolItemType$outboundSchema: z.ZodEnum<
-  typeof OutputWebSearchServerToolItemType
-> = OutputWebSearchServerToolItemType$inboundSchema;
+export const OutputWebSearchServerToolItemTypeURL$outboundSchema: z.ZodEnum<
+  typeof OutputWebSearchServerToolItemTypeURL
+> = OutputWebSearchServerToolItemTypeURL$inboundSchema;
+
+/** @internal */
+export const Source$inboundSchema: z.ZodType<Source, unknown> = z.object({
+  type: OutputWebSearchServerToolItemTypeURL$inboundSchema,
+  url: z.string(),
+});
+/** @internal */
+export type Source$Outbound = {
+  type: string;
+  url: string;
+};
+
+/** @internal */
+export const Source$outboundSchema: z.ZodType<Source$Outbound, Source> = z
+  .object({
+    type: OutputWebSearchServerToolItemTypeURL$outboundSchema,
+    url: z.string(),
+  });
+
+export function sourceToJSON(source: Source): string {
+  return JSON.stringify(Source$outboundSchema.parse(source));
+}
+export function sourceFromJSON(
+  jsonString: string,
+): SafeParseResult<Source, SDKValidationError> {
+  return safeParse(
+    jsonString,
+    (x) => Source$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'Source' from JSON`,
+  );
+}
+
+/** @internal */
+export const OutputWebSearchServerToolItemTypeSearch$inboundSchema: z.ZodEnum<
+  typeof OutputWebSearchServerToolItemTypeSearch
+> = z.enum(OutputWebSearchServerToolItemTypeSearch);
+/** @internal */
+export const OutputWebSearchServerToolItemTypeSearch$outboundSchema: z.ZodEnum<
+  typeof OutputWebSearchServerToolItemTypeSearch
+> = OutputWebSearchServerToolItemTypeSearch$inboundSchema;
+
+/** @internal */
+export const OutputWebSearchServerToolItemAction$inboundSchema: z.ZodType<
+  OutputWebSearchServerToolItemAction,
+  unknown
+> = z.object({
+  query: z.string(),
+  sources: z.array(z.lazy(() => Source$inboundSchema)).optional(),
+  type: OutputWebSearchServerToolItemTypeSearch$inboundSchema,
+});
+/** @internal */
+export type OutputWebSearchServerToolItemAction$Outbound = {
+  query: string;
+  sources?: Array<Source$Outbound> | undefined;
+  type: string;
+};
+
+/** @internal */
+export const OutputWebSearchServerToolItemAction$outboundSchema: z.ZodType<
+  OutputWebSearchServerToolItemAction$Outbound,
+  OutputWebSearchServerToolItemAction
+> = z.object({
+  query: z.string(),
+  sources: z.array(z.lazy(() => Source$outboundSchema)).optional(),
+  type: OutputWebSearchServerToolItemTypeSearch$outboundSchema,
+});
+
+export function outputWebSearchServerToolItemActionToJSON(
+  outputWebSearchServerToolItemAction: OutputWebSearchServerToolItemAction,
+): string {
+  return JSON.stringify(
+    OutputWebSearchServerToolItemAction$outboundSchema.parse(
+      outputWebSearchServerToolItemAction,
+    ),
+  );
+}
+export function outputWebSearchServerToolItemActionFromJSON(
+  jsonString: string,
+): SafeParseResult<OutputWebSearchServerToolItemAction, SDKValidationError> {
+  return safeParse(
+    jsonString,
+    (x) =>
+      OutputWebSearchServerToolItemAction$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'OutputWebSearchServerToolItemAction' from JSON`,
+  );
+}
+
+/** @internal */
+export const OutputWebSearchServerToolItemTypeOpenrouterWebSearch$inboundSchema:
+  z.ZodEnum<typeof OutputWebSearchServerToolItemTypeOpenrouterWebSearch> = z
+    .enum(OutputWebSearchServerToolItemTypeOpenrouterWebSearch);
+/** @internal */
+export const OutputWebSearchServerToolItemTypeOpenrouterWebSearch$outboundSchema:
+  z.ZodEnum<typeof OutputWebSearchServerToolItemTypeOpenrouterWebSearch> =
+    OutputWebSearchServerToolItemTypeOpenrouterWebSearch$inboundSchema;
 
 /** @internal */
 export const OutputWebSearchServerToolItem$inboundSchema: z.ZodType<
   OutputWebSearchServerToolItem,
   unknown
 > = z.object({
+  action: z.lazy(() => OutputWebSearchServerToolItemAction$inboundSchema)
+    .optional(),
   id: z.string().optional(),
   status: ToolCallStatus$inboundSchema,
-  type: OutputWebSearchServerToolItemType$inboundSchema,
+  type: OutputWebSearchServerToolItemTypeOpenrouterWebSearch$inboundSchema,
 });
 /** @internal */
 export type OutputWebSearchServerToolItem$Outbound = {
+  action?: OutputWebSearchServerToolItemAction$Outbound | undefined;
   id?: string | undefined;
   status: string;
   type: string;
@@ -60,9 +190,11 @@ export const OutputWebSearchServerToolItem$outboundSchema: z.ZodType<
   OutputWebSearchServerToolItem$Outbound,
   OutputWebSearchServerToolItem
 > = z.object({
+  action: z.lazy(() => OutputWebSearchServerToolItemAction$outboundSchema)
+    .optional(),
   id: z.string().optional(),
   status: ToolCallStatus$outboundSchema,
-  type: OutputWebSearchServerToolItemType$outboundSchema,
+  type: OutputWebSearchServerToolItemTypeOpenrouterWebSearch$outboundSchema,
 });
 
 export function outputWebSearchServerToolItemToJSON(
