@@ -7,7 +7,7 @@ Type of API used for the generation
 ```typescript
 import { ApiType } from "@openrouter/sdk/models";
 
-let value: ApiType = "tts";
+let value: ApiType = "rerank";
 
 // Open enum: unrecognized values are captured as Unrecognized<string>
 ```
@@ -15,5 +15,5 @@ let value: ApiType = "tts";
 ## Values
 
 ```typescript
-"completions" | "embeddings" | "rerank" | "tts" | "stt" | "video" | Unrecognized<string>
+"completions" | "embeddings" | "rerank" | "tts" | "video" | Unrecognized<string>
 ```
