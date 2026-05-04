@@ -7,7 +7,6 @@ import * as z from "zod/v4";
 import { remap as remap$ } from "../lib/primitives.js";
 import { safeParse } from "../lib/schemas.js";
 import { Result as SafeParseResult } from "../types/fp.js";
-import { CostDetails, CostDetails$inboundSchema } from "./costdetails.js";
 import { SDKValidationError } from "./errors/sdkvalidationerror.js";
 
 /**
@@ -66,18 +65,6 @@ export type ChatUsage = {
    * Detailed completion token usage
    */
   completionTokensDetails?: CompletionTokensDetails | null | undefined;
-  /**
-   * Cost of the completion
-   */
-  cost?: number | null | undefined;
-  /**
-   * Breakdown of upstream inference costs
-   */
-  costDetails?: CostDetails | null | undefined;
-  /**
-   * Whether a request was made using a Bring Your Own Key configuration
-   */
-  isByok?: boolean | undefined;
   /**
    * Number of tokens in the prompt
    */
@@ -154,9 +141,6 @@ export const ChatUsage$inboundSchema: z.ZodType<ChatUsage, unknown> = z.object({
   completion_tokens_details: z.nullable(
     z.lazy(() => CompletionTokensDetails$inboundSchema),
   ).optional(),
-  cost: z.nullable(z.number()).optional(),
-  cost_details: z.nullable(CostDetails$inboundSchema).optional(),
-  is_byok: z.boolean().optional(),
   prompt_tokens: z.int(),
   prompt_tokens_details: z.nullable(
     z.lazy(() => PromptTokensDetails$inboundSchema),
@@ -166,8 +150,6 @@ export const ChatUsage$inboundSchema: z.ZodType<ChatUsage, unknown> = z.object({
   return remap$(v, {
     "completion_tokens": "completionTokens",
     "completion_tokens_details": "completionTokensDetails",
-    "cost_details": "costDetails",
-    "is_byok": "isByok",
     "prompt_tokens": "promptTokens",
     "prompt_tokens_details": "promptTokensDetails",
     "total_tokens": "totalTokens",

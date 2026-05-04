@@ -15,7 +15,6 @@ export const OutputModality = {
   Video: "video",
   Rerank: "rerank",
   Speech: "speech",
-  Transcription: "transcription",
 } as const;
 export type OutputModality = OpenEnum<typeof OutputModality>;
 
