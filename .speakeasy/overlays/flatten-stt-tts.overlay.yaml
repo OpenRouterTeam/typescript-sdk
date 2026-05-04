@@ -1,0 +1,14 @@
+overlay: 1.0.0
+x-speakeasy-jsonpath: rfc9535
+info:
+  title: Flatten STT and TTS request bodies
+  version: 0.0.0
+actions:
+  - target: $.paths["/audio/transcriptions"].post
+    description: Flatten createTranscription request body (max-method-params=1)
+    update:
+      x-speakeasy-max-method-params: 1
+  - target: $.paths["/audio/speech"].post
+    description: Flatten createSpeech request body (max-method-params=1)
+    update:
+      x-speakeasy-max-method-params: 1
