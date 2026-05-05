@@ -5,7 +5,7 @@
 
 import { ttsCreateSpeech } from "../funcs/ttsCreateSpeech.js";
 import { ClientSDK, RequestOptions } from "../lib/sdks.js";
-import * as operations from "../models/operations/index.js";
+import * as models from "../models/index.js";
 import { unwrapAsync } from "../types/fp.js";
 
 export class Tts extends ClientSDK {
@@ -16,7 +16,7 @@ export class Tts extends ClientSDK {
    * Synthesizes audio from the input text. Returns a raw audio bytestream in the requested format (e.g. mp3, pcm, wav).
    */
   async createSpeech(
-    request: operations.CreateAudioSpeechRequest,
+    request: models.SpeechRequest,
     options?: RequestOptions,
   ): Promise<ReadableStream<Uint8Array>> {
     return unwrapAsync(ttsCreateSpeech(
