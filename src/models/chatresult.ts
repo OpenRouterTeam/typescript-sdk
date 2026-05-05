@@ -18,7 +18,7 @@ export const ChatResultObject = {
 export type ChatResultObject = ClosedEnum<typeof ChatResultObject>;
 
 /**
- * Chat completion response
+ * Chat completion response. When the request opts in via the `X-OpenRouter-Experimental-Metadata: standard` header (or `?metadata=standard` query param), the response also carries an `openrouter_metadata` object describing routing decisions. The field is intentionally omitted from this schema while it is experimental — generated SDK consumers must access it via raw JSON until the shape is frozen.
  */
 export type ChatResult = {
   /**
