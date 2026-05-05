@@ -13,7 +13,7 @@ export class Tts extends ClientSDK {
    * Create speech
    *
    * @remarks
-   * Synthesizes audio from the input text. Returns a raw audio bytestream in the requested format (e.g. mp3, pcm, wav).
+   * Synthesizes audio from the input text
    */
   async createSpeech(
     request: operations.CreateAudioSpeechRequest,

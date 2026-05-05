@@ -103,7 +103,6 @@ export const ProviderResponseProviderName = {
   OpenInference: "OpenInference",
   Parasail: "Parasail",
   Poolside: "Poolside",
-  Perceptron: "Perceptron",
   Perplexity: "Perplexity",
   Phala: "Phala",
   Recraft: "Recraft",
