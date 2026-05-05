@@ -41,7 +41,7 @@ export type ChatWebSearchShorthandType = OpenEnum<
  */
 export type ChatWebSearchShorthand = {
   /**
-   * Limit search results to these domains. Supported by Exa, Firecrawl, Parallel, and most native providers (Anthropic, OpenAI, xAI). Not supported with Perplexity. Cannot be used with excluded_domains.
+   * Limit search results to these domains. Supported by Exa, Parallel, and most native providers (Anthropic, OpenAI, xAI). Not supported with Firecrawl or Perplexity.
    */
   allowedDomains?: Array<string> | undefined;
   /**
@@ -49,7 +49,7 @@ export type ChatWebSearchShorthand = {
    */
   engine?: WebSearchEngineEnum | undefined;
   /**
-   * Exclude search results from these domains. Supported by Exa, Firecrawl, Parallel, Anthropic, and xAI. Not supported with OpenAI (silently ignored) or Perplexity. Cannot be used with allowed_domains.
+   * Exclude search results from these domains. Supported by Exa, Parallel, Anthropic, and xAI. Not supported with Firecrawl, OpenAI (silently ignored), or Perplexity.
    */
   excludedDomains?: Array<string> | undefined;
   /**
