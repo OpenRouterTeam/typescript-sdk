@@ -45,6 +45,8 @@ export * from "./listmemberassignments.js";
 export * from "./listmodelscount.js";
 export * from "./listmodelsuser.js";
 export * from "./listorganizationmembers.js";
+export * from "./listprivatemodels.js";
+export * from "./listprivatemodelsendpoints.js";
 export * from "./listproviders.js";
 export * from "./listvideoscontent.js";
 export * from "./listvideosmodels.js";

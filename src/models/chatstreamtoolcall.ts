@@ -9,9 +9,6 @@ import { ClosedEnum } from "../types/enums.js";
 import { Result as SafeParseResult } from "../types/fp.js";
 import { SDKValidationError } from "./errors/sdkvalidationerror.js";
 
-/**
- * Function call details
- */
 export type ChatStreamToolCallFunction = {
   /**
    * Function arguments as JSON string
