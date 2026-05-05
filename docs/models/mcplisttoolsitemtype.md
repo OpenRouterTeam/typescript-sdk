@@ -1,0 +1,15 @@
+# McpListToolsItemType
+
+## Example Usage
+
+```typescript
+import { McpListToolsItemType } from "@openrouter/sdk/models";
+
+let value: McpListToolsItemType = "mcp_list_tools";
+```
+
+## Values
+
+```typescript
+"mcp_list_tools"
+```

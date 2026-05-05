@@ -1,0 +1,38 @@
+# McpListToolsItem
+
+List of available MCP tools from a server
+
+## Example Usage
+
+```typescript
+import { McpListToolsItem } from "@openrouter/sdk/models";
+
+let value: McpListToolsItem = {
+  id: "mcp-list-abc123",
+  serverLabel: "database-server",
+  tools: [
+    {
+      inputSchema: {
+        "properties": {
+          "query": {
+            "type": "string",
+          },
+        },
+        "type": "object",
+      },
+      name: "query_database",
+    },
+  ],
+  type: "mcp_list_tools",
+};
+```
+
+## Fields
+
+| Field                                                              | Type                                                               | Required                                                           | Description                                                        |
+| ------------------------------------------------------------------ | ------------------------------------------------------------------ | ------------------------------------------------------------------ | ------------------------------------------------------------------ |
+| `error`                                                            | *string*                                                           | :heavy_minus_sign:                                                 | N/A                                                                |
+| `id`                                                               | *string*                                                           | :heavy_check_mark:                                                 | N/A                                                                |
+| `serverLabel`                                                      | *string*                                                           | :heavy_check_mark:                                                 | N/A                                                                |
+| `tools`                                                            | [models.McpListToolsItemTool](../models/mcplisttoolsitemtool.md)[] | :heavy_check_mark:                                                 | N/A                                                                |
+| `type`                                                             | [models.McpListToolsItemType](../models/mcplisttoolsitemtype.md)   | :heavy_check_mark:                                                 | N/A                                                                |

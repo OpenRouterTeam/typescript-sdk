@@ -1,0 +1,31 @@
+# ShellCallItem
+
+A shell command execution call (newer variant)
+
+## Example Usage
+
+```typescript
+import { ShellCallItem } from "@openrouter/sdk/models";
+
+let value: ShellCallItem = {
+  action: {
+    commands: [
+      "ls",
+      "-la",
+    ],
+  },
+  callId: "call-abc123",
+  type: "shell_call",
+};
+```
+
+## Fields
+
+| Field                                                          | Type                                                           | Required                                                       | Description                                                    | Example                                                        |
+| -------------------------------------------------------------- | -------------------------------------------------------------- | -------------------------------------------------------------- | -------------------------------------------------------------- | -------------------------------------------------------------- |
+| `action`                                                       | [models.ShellCallItemAction](../models/shellcallitemaction.md) | :heavy_check_mark:                                             | N/A                                                            |                                                                |
+| `callId`                                                       | *string*                                                       | :heavy_check_mark:                                             | N/A                                                            |                                                                |
+| `environment`                                                  | *any*                                                          | :heavy_minus_sign:                                             | N/A                                                            |                                                                |
+| `id`                                                           | *string*                                                       | :heavy_minus_sign:                                             | N/A                                                            |                                                                |
+| `status`                                                       | [models.ShellCallItemStatus](../models/shellcallitemstatus.md) | :heavy_minus_sign:                                             | N/A                                                            | completed                                                      |
+| `type`                                                         | [models.ShellCallItemType](../models/shellcallitemtype.md)     | :heavy_check_mark:                                             | N/A                                                            |                                                                |
