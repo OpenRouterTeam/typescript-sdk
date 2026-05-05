@@ -4,26 +4,54 @@
  */
 
 import * as z from "zod/v4";
-import {
-  WebSearchServerToolConfig,
-  WebSearchServerToolConfig$Outbound,
-  WebSearchServerToolConfig$outboundSchema,
-} from "./websearchservertoolconfig.js";
+import { remap as remap$ } from "../lib/primitives.js";
+
+export type ParametersT = {
+  /**
+   * Maximum number of search results to return per search call. Defaults to 5.
+   */
+  maxResults?: number | undefined;
+  /**
+   * Maximum total number of search results across all search calls in a single request. Once this limit is reached, the tool will stop returning new results.
+   */
+  maxTotalResults?: number | undefined;
+};
 
 /**
  * OpenRouter built-in server tool: searches the web for current information
  */
 export type WebSearchServerToolOpenRouter = {
-  /**
-   * Configuration for the openrouter:web_search server tool
-   */
-  parameters?: WebSearchServerToolConfig | undefined;
+  parameters?: ParametersT | undefined;
   type: "openrouter:web_search";
 };
 
 /** @internal */
+export type ParametersT$Outbound = {
+  max_results?: number | undefined;
+  max_total_results?: number | undefined;
+};
+
+/** @internal */
+export const ParametersT$outboundSchema: z.ZodType<
+  ParametersT$Outbound,
+  ParametersT
+> = z.object({
+  maxResults: z.int().optional(),
+  maxTotalResults: z.int().optional(),
+}).transform((v) => {
+  return remap$(v, {
+    maxResults: "max_results",
+    maxTotalResults: "max_total_results",
+  });
+});
+
+export function parametersToJSON(parametersT: ParametersT): string {
+  return JSON.stringify(ParametersT$outboundSchema.parse(parametersT));
+}
+
+/** @internal */
 export type WebSearchServerToolOpenRouter$Outbound = {
-  parameters?: WebSearchServerToolConfig$Outbound | undefined;
+  parameters?: ParametersT$Outbound | undefined;
   type: "openrouter:web_search";
 };
 
@@ -32,7 +60,7 @@ export const WebSearchServerToolOpenRouter$outboundSchema: z.ZodType<
   WebSearchServerToolOpenRouter$Outbound,
   WebSearchServerToolOpenRouter
 > = z.object({
-  parameters: WebSearchServerToolConfig$outboundSchema.optional(),
+  parameters: z.lazy(() => ParametersT$outboundSchema).optional(),
   type: z.literal("openrouter:web_search"),
 });
 

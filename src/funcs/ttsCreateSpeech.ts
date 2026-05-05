@@ -31,7 +31,7 @@ import { Result } from "../types/fp.js";
  * Create speech
  *
  * @remarks
- * Synthesizes audio from the input text. Returns a raw audio bytestream in the requested format (e.g. mp3, pcm, wav).
+ * Synthesizes audio from the input text
  */
 export function ttsCreateSpeech(
   client: OpenRouterCore,
