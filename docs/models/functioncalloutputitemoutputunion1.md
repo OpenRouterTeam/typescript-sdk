@@ -12,10 +12,10 @@ const value: models.InputText = {
 };
 ```
 
-### `models.OutputInputImage`
+### `models.FunctionCallOutputItemOutputInputImage`
 
 ```typescript
-const value: models.OutputInputImage = {
+const value: models.FunctionCallOutputItemOutputInputImage = {
   detail: "auto",
   type: "input_image",
 };

@@ -1,0 +1,15 @@
+# McpCallItemType
+
+## Example Usage
+
+```typescript
+import { McpCallItemType } from "@openrouter/sdk/models";
+
+let value: McpCallItemType = "mcp_call";
+```
+
+## Values
+
+```typescript
+"mcp_call"
+```

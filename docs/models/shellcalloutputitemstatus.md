@@ -1,0 +1,17 @@
+# ShellCallOutputItemStatus
+
+## Example Usage
+
+```typescript
+import { ShellCallOutputItemStatus } from "@openrouter/sdk/models";
+
+let value: ShellCallOutputItemStatus = "completed";
+
+// Open enum: unrecognized values are captured as Unrecognized<string>
+```
+
+## Values
+
+```typescript
+"in_progress" | "completed" | "incomplete" | Unrecognized<string>
+```
