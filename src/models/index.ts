@@ -295,7 +295,6 @@ export * from "./websearchengine.js";
 export * from "./websearchengineenum.js";
 export * from "./websearchplugin.js";
 export * from "./websearchservertool.js";
-export * from "./websearchservertoolconfig.js";
 export * from "./websearchservertoolopenrouter.js";
 export * from "./websearchsource.js";
 export * from "./websearchstatus.js";
