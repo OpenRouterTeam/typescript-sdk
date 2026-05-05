@@ -4533,8 +4533,8 @@ components:
       properties:
         allowed_domains:
           description: >-
-            Limit search results to these domains. Supported by Exa, Parallel, and most native providers (Anthropic,
-            OpenAI, xAI). Not supported with Firecrawl or Perplexity.
+            Limit search results to these domains. Supported by Exa, Firecrawl, Parallel, and most native providers
+            (Anthropic, OpenAI, xAI). Not supported with Perplexity. Cannot be used with excluded_domains.
           items:
             type: string
           type: array
@@ -4542,8 +4542,8 @@ components:
           $ref: '#/components/schemas/WebSearchEngineEnum'
         excluded_domains:
           description: >-
-            Exclude search results from these domains. Supported by Exa, Parallel, Anthropic, and xAI. Not supported
-            with Firecrawl, OpenAI (silently ignored), or Perplexity.
+            Exclude search results from these domains. Supported by Exa, Firecrawl, Parallel, Anthropic, and xAI. Not
+            supported with OpenAI (silently ignored) or Perplexity. Cannot be used with allowed_domains.
           items:
             type: string
           type: array
@@ -14279,8 +14279,8 @@ components:
       properties:
         allowed_domains:
           description: >-
-            Limit search results to these domains. Supported by Exa, Parallel, and most native providers (Anthropic,
-            OpenAI, xAI). Not supported with Firecrawl or Perplexity.
+            Limit search results to these domains. Supported by Exa, Firecrawl, Parallel, and most native providers
+            (Anthropic, OpenAI, xAI). Not supported with Perplexity. Cannot be used with excluded_domains.
           items:
             type: string
           type: array
@@ -14288,8 +14288,8 @@ components:
           $ref: '#/components/schemas/WebSearchEngineEnum'
         excluded_domains:
           description: >-
-            Exclude search results from these domains. Supported by Exa, Parallel, Anthropic, and xAI. Not supported
-            with Firecrawl, OpenAI (silently ignored), or Perplexity.
+            Exclude search results from these domains. Supported by Exa, Firecrawl, Parallel, Anthropic, and xAI. Not
+            supported with OpenAI (silently ignored) or Perplexity. Cannot be used with allowed_domains.
           items:
             type: string
           type: array
@@ -14453,24 +14453,53 @@ components:
         type: openrouter:web_search
       properties:
         parameters:
-          properties:
-            max_results:
-              description: Maximum number of search results to return per search call. Defaults to 5.
-              example: 5
-              type: integer
-            max_total_results:
-              description: >-
-                Maximum total number of search results across all search calls in a single request. Once this limit is
-                reached, the tool will stop returning new results.
-              example: 20
-              type: integer
-          type: object
+          $ref: '#/components/schemas/WebSearchServerToolConfig'
         type:
           enum:
             - openrouter:web_search
           type: string
       required:
         - type
+      type: object
+    WebSearchServerToolConfig:
+      description: Configuration for the openrouter:web_search server tool
+      example:
+        max_results: 5
+        search_context_size: medium
+      properties:
+        allowed_domains:
+          description: >-
+            Limit search results to these domains. Supported by Exa, Firecrawl, Parallel, and most native providers
+            (Anthropic, OpenAI, xAI). Not supported with Perplexity. Cannot be used with excluded_domains.
+          items:
+            type: string
+          type: array
+        engine:
+          $ref: '#/components/schemas/WebSearchEngineEnum'
+        excluded_domains:
+          description: >-
+            Exclude search results from these domains. Supported by Exa, Firecrawl, Parallel, Anthropic, and xAI. Not
+            supported with OpenAI (silently ignored) or Perplexity. Cannot be used with allowed_domains.
+          items:
+            type: string
+          type: array
+        max_results:
+          description: >-
+            Maximum number of search results to return per search call. Defaults to 5. Applies to Exa, Firecrawl, and
+            Parallel engines; ignored with native provider search.
+          example: 5
+          type: integer
+        max_total_results:
+          description: >-
+            Maximum total number of search results across all search calls in a single request. Once this limit is
+            reached, the tool will stop returning new results. Useful for controlling cost and context size in agentic
+            loops.
+          example: 20
+          type: integer
+        search_context_size:
+          $ref: '#/components/schemas/SearchQualityLevel'
+        user_location:
+          $ref: '#/components/schemas/WebSearchUserLocationServerTool'
       type: object
     WebSearchSource:
       example:
