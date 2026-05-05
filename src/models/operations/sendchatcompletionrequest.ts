@@ -56,16 +56,6 @@ export type SendChatCompletionRequestRequest = {
   chatRequest: models.ChatRequest;
 };
 
-/**
- * Successful chat completion response
- */
-export type SendChatCompletionRequestResponseBody = {
-  /**
-   * Streaming chat completion chunk
-   */
-  data: models.ChatStreamChunk;
-};
-
 export type SendChatCompletionRequestResponse =
   | models.ChatResult
   | EventStream<models.ChatStreamChunk>;
@@ -105,36 +95,6 @@ export function sendChatCompletionRequestRequestToJSON(
 }
 
 /** @internal */
-export const SendChatCompletionRequestResponseBody$inboundSchema: z.ZodType<
-  SendChatCompletionRequestResponseBody,
-  unknown
-> = z.object({
-  data: z.string().transform((v, ctx) => {
-    try {
-      return JSON.parse(v);
-    } catch (err) {
-      ctx.addIssue({
-        input: v,
-        code: "custom",
-        message: `malformed json: ${err}`,
-      });
-      return z.NEVER;
-    }
-  }).pipe(models.ChatStreamChunk$inboundSchema),
-});
-
-export function sendChatCompletionRequestResponseBodyFromJSON(
-  jsonString: string,
-): SafeParseResult<SendChatCompletionRequestResponseBody, SDKValidationError> {
-  return safeParse(
-    jsonString,
-    (x) =>
-      SendChatCompletionRequestResponseBody$inboundSchema.parse(JSON.parse(x)),
-    `Failed to parse 'SendChatCompletionRequestResponseBody' from JSON`,
-  );
-}
-
-/** @internal */
 export const SendChatCompletionRequestResponse$inboundSchema: z.ZodType<
   SendChatCompletionRequestResponse,
   unknown
@@ -146,9 +106,8 @@ export const SendChatCompletionRequestResponse$inboundSchema: z.ZodType<
         if (rawEvent.data === "[DONE]") return { done: true, value: undefined };
         return {
           done: false,
-          value: z.lazy(() =>
-            SendChatCompletionRequestResponseBody$inboundSchema
-          ).parse(rawEvent)?.data,
+          value: models.ChatStreamingResponse$inboundSchema.parse(rawEvent)
+            ?.data,
         };
       });
     }),
