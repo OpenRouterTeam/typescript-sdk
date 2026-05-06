@@ -53,11 +53,17 @@ export type CreateResponsesRequest = {
    * @remarks
    */
   appCategories?: string | undefined;
-  /**
-   * Opt-in to surface routing metadata on the response under `openrouter_metadata`. Defaults to `disabled`.
-   */
-  xOpenRouterExperimentalMetadata?: models.MetadataLevel | undefined;
   responsesRequest: models.ResponsesRequest;
+};
+
+/**
+ * Successful response
+ */
+export type CreateResponsesResponseBody = {
+  /**
+   * Union of all possible event types emitted during response streaming
+   */
+  data: models.StreamEvents;
 };
 
 export type CreateResponsesResponse =
@@ -69,7 +75,6 @@ export type CreateResponsesRequest$Outbound = {
   "HTTP-Referer"?: string | undefined;
   appTitle?: string | undefined;
   appCategories?: string | undefined;
-  "X-OpenRouter-Experimental-Metadata"?: string | undefined;
   ResponsesRequest: models.ResponsesRequest$Outbound;
 };
 
@@ -81,13 +86,10 @@ export const CreateResponsesRequest$outboundSchema: z.ZodType<
   httpReferer: z.string().optional(),
   appTitle: z.string().optional(),
   appCategories: z.string().optional(),
-  xOpenRouterExperimentalMetadata: models.MetadataLevel$outboundSchema
-    .optional(),
   responsesRequest: models.ResponsesRequest$outboundSchema,
 }).transform((v) => {
   return remap$(v, {
     httpReferer: "HTTP-Referer",
-    xOpenRouterExperimentalMetadata: "X-OpenRouter-Experimental-Metadata",
     responsesRequest: "ResponsesRequest",
   });
 });
@@ -97,6 +99,35 @@ export function createResponsesRequestToJSON(
 ): string {
   return JSON.stringify(
     CreateResponsesRequest$outboundSchema.parse(createResponsesRequest),
+  );
+}
+
+/** @internal */
+export const CreateResponsesResponseBody$inboundSchema: z.ZodType<
+  CreateResponsesResponseBody,
+  unknown
+> = z.object({
+  data: z.string().transform((v, ctx) => {
+    try {
+      return JSON.parse(v);
+    } catch (err) {
+      ctx.addIssue({
+        input: v,
+        code: "custom",
+        message: `malformed json: ${err}`,
+      });
+      return z.NEVER;
+    }
+  }).pipe(models.StreamEvents$inboundSchema),
+});
+
+export function createResponsesResponseBodyFromJSON(
+  jsonString: string,
+): SafeParseResult<CreateResponsesResponseBody, SDKValidationError> {
+  return safeParse(
+    jsonString,
+    (x) => CreateResponsesResponseBody$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'CreateResponsesResponseBody' from JSON`,
   );
 }
 
@@ -112,8 +143,9 @@ export const CreateResponsesResponse$inboundSchema: z.ZodType<
         if (rawEvent.data === "[DONE]") return { done: true, value: undefined };
         return {
           done: false,
-          value: models.ResponsesStreamingResponse$inboundSchema.parse(rawEvent)
-            ?.data,
+          value: z.lazy(() => CreateResponsesResponseBody$inboundSchema).parse(
+            rawEvent,
+          )?.data,
         };
       });
     }),

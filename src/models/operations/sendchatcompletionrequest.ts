@@ -53,10 +53,6 @@ export type SendChatCompletionRequestRequest = {
    * @remarks
    */
   appCategories?: string | undefined;
-  /**
-   * Opt-in to surface routing metadata on the response under `openrouter_metadata`. Defaults to `disabled`.
-   */
-  xOpenRouterExperimentalMetadata?: models.MetadataLevel | undefined;
   chatRequest: models.ChatRequest;
 };
 
@@ -69,7 +65,6 @@ export type SendChatCompletionRequestRequest$Outbound = {
   "HTTP-Referer"?: string | undefined;
   appTitle?: string | undefined;
   appCategories?: string | undefined;
-  "X-OpenRouter-Experimental-Metadata"?: string | undefined;
   ChatRequest: models.ChatRequest$Outbound;
 };
 
@@ -81,13 +76,10 @@ export const SendChatCompletionRequestRequest$outboundSchema: z.ZodType<
   httpReferer: z.string().optional(),
   appTitle: z.string().optional(),
   appCategories: z.string().optional(),
-  xOpenRouterExperimentalMetadata: models.MetadataLevel$outboundSchema
-    .optional(),
   chatRequest: models.ChatRequest$outboundSchema,
 }).transform((v) => {
   return remap$(v, {
     httpReferer: "HTTP-Referer",
-    xOpenRouterExperimentalMetadata: "X-OpenRouter-Experimental-Metadata",
     chatRequest: "ChatRequest",
   });
 });

@@ -16,7 +16,6 @@ export type ConflictResponseErrorData = {
    * Error data for ConflictResponse
    */
   error: models.ConflictResponseErrorData;
-  openrouterMetadata?: { [k: string]: any | null } | null | undefined;
   userId?: string | null | undefined;
 };
 
@@ -28,7 +27,6 @@ export class ConflictResponseError extends OpenRouterError {
    * Error data for ConflictResponse
    */
   error: models.ConflictResponseErrorData;
-  openrouterMetadata?: { [k: string]: any | null } | null | undefined;
   userId?: string | null | undefined;
 
   /** The original data that was passed to this error instance. */
@@ -43,9 +41,6 @@ export class ConflictResponseError extends OpenRouterError {
     super(message, httpMeta);
     this.data$ = err;
     this.error = err.error;
-    if (err.openrouterMetadata != null) {
-      this.openrouterMetadata = err.openrouterMetadata;
-    }
     if (err.userId != null) this.userId = err.userId;
 
     this.name = "ConflictResponseError";
@@ -58,8 +53,6 @@ export const ConflictResponseError$inboundSchema: z.ZodType<
   unknown
 > = z.object({
   error: models.ConflictResponseErrorData$inboundSchema,
-  openrouter_metadata: z.nullable(z.record(z.string(), z.nullable(z.any())))
-    .optional(),
   user_id: z.nullable(z.string()).optional(),
   request$: z.custom<Request>(x => x instanceof Request),
   response$: z.custom<Response>(x => x instanceof Response),
@@ -67,7 +60,6 @@ export const ConflictResponseError$inboundSchema: z.ZodType<
 })
   .transform((v) => {
     const remapped = remap$(v, {
-      "openrouter_metadata": "openrouterMetadata",
       "user_id": "userId",
     });
 
