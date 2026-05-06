@@ -5,16 +5,22 @@
 
 import * as z from "zod/v4";
 import { remap as remap$ } from "../lib/primitives.js";
+import { safeParse } from "../lib/schemas.js";
+import { Result as SafeParseResult } from "../types/fp.js";
+import { SDKValidationError } from "./errors/sdkvalidationerror.js";
 import {
   SearchQualityLevel,
+  SearchQualityLevel$inboundSchema,
   SearchQualityLevel$outboundSchema,
 } from "./searchqualitylevel.js";
 import {
   WebSearchEngineEnum,
+  WebSearchEngineEnum$inboundSchema,
   WebSearchEngineEnum$outboundSchema,
 } from "./websearchengineenum.js";
 import {
   WebSearchUserLocationServerTool,
+  WebSearchUserLocationServerTool$inboundSchema,
   WebSearchUserLocationServerTool$Outbound,
   WebSearchUserLocationServerTool$outboundSchema,
 } from "./websearchuserlocationservertool.js";
@@ -54,6 +60,28 @@ export type WebSearchServerToolConfig = {
 };
 
 /** @internal */
+export const WebSearchServerToolConfig$inboundSchema: z.ZodType<
+  WebSearchServerToolConfig,
+  unknown
+> = z.object({
+  allowed_domains: z.array(z.string()).optional(),
+  engine: WebSearchEngineEnum$inboundSchema.optional(),
+  excluded_domains: z.array(z.string()).optional(),
+  max_results: z.int().optional(),
+  max_total_results: z.int().optional(),
+  search_context_size: SearchQualityLevel$inboundSchema.optional(),
+  user_location: WebSearchUserLocationServerTool$inboundSchema.optional(),
+}).transform((v) => {
+  return remap$(v, {
+    "allowed_domains": "allowedDomains",
+    "excluded_domains": "excludedDomains",
+    "max_results": "maxResults",
+    "max_total_results": "maxTotalResults",
+    "search_context_size": "searchContextSize",
+    "user_location": "userLocation",
+  });
+});
+/** @internal */
 export type WebSearchServerToolConfig$Outbound = {
   allowed_domains?: Array<string> | undefined;
   engine?: string | undefined;
@@ -92,5 +120,14 @@ export function webSearchServerToolConfigToJSON(
 ): string {
   return JSON.stringify(
     WebSearchServerToolConfig$outboundSchema.parse(webSearchServerToolConfig),
+  );
+}
+export function webSearchServerToolConfigFromJSON(
+  jsonString: string,
+): SafeParseResult<WebSearchServerToolConfig, SDKValidationError> {
+  return safeParse(
+    jsonString,
+    (x) => WebSearchServerToolConfig$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'WebSearchServerToolConfig' from JSON`,
   );
 }

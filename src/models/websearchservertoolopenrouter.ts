@@ -4,8 +4,12 @@
  */
 
 import * as z from "zod/v4";
+import { safeParse } from "../lib/schemas.js";
+import { Result as SafeParseResult } from "../types/fp.js";
+import { SDKValidationError } from "./errors/sdkvalidationerror.js";
 import {
   WebSearchServerToolConfig,
+  WebSearchServerToolConfig$inboundSchema,
   WebSearchServerToolConfig$Outbound,
   WebSearchServerToolConfig$outboundSchema,
 } from "./websearchservertoolconfig.js";
@@ -21,6 +25,14 @@ export type WebSearchServerToolOpenRouter = {
   type: "openrouter:web_search";
 };
 
+/** @internal */
+export const WebSearchServerToolOpenRouter$inboundSchema: z.ZodType<
+  WebSearchServerToolOpenRouter,
+  unknown
+> = z.object({
+  parameters: WebSearchServerToolConfig$inboundSchema.optional(),
+  type: z.literal("openrouter:web_search"),
+});
 /** @internal */
 export type WebSearchServerToolOpenRouter$Outbound = {
   parameters?: WebSearchServerToolConfig$Outbound | undefined;
@@ -43,5 +55,14 @@ export function webSearchServerToolOpenRouterToJSON(
     WebSearchServerToolOpenRouter$outboundSchema.parse(
       webSearchServerToolOpenRouter,
     ),
+  );
+}
+export function webSearchServerToolOpenRouterFromJSON(
+  jsonString: string,
+): SafeParseResult<WebSearchServerToolOpenRouter, SDKValidationError> {
+  return safeParse(
+    jsonString,
+    (x) => WebSearchServerToolOpenRouter$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'WebSearchServerToolOpenRouter' from JSON`,
   );
 }

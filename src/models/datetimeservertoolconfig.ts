@@ -4,6 +4,9 @@
  */
 
 import * as z from "zod/v4";
+import { safeParse } from "../lib/schemas.js";
+import { Result as SafeParseResult } from "../types/fp.js";
+import { SDKValidationError } from "./errors/sdkvalidationerror.js";
 
 /**
  * Configuration for the openrouter:datetime server tool
@@ -15,6 +18,13 @@ export type DatetimeServerToolConfig = {
   timezone?: string | undefined;
 };
 
+/** @internal */
+export const DatetimeServerToolConfig$inboundSchema: z.ZodType<
+  DatetimeServerToolConfig,
+  unknown
+> = z.object({
+  timezone: z.string().optional(),
+});
 /** @internal */
 export type DatetimeServerToolConfig$Outbound = {
   timezone?: string | undefined;
@@ -33,5 +43,14 @@ export function datetimeServerToolConfigToJSON(
 ): string {
   return JSON.stringify(
     DatetimeServerToolConfig$outboundSchema.parse(datetimeServerToolConfig),
+  );
+}
+export function datetimeServerToolConfigFromJSON(
+  jsonString: string,
+): SafeParseResult<DatetimeServerToolConfig, SDKValidationError> {
+  return safeParse(
+    jsonString,
+    (x) => DatetimeServerToolConfig$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'DatetimeServerToolConfig' from JSON`,
   );
 }

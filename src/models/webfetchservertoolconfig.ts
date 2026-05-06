@@ -5,8 +5,12 @@
 
 import * as z from "zod/v4";
 import { remap as remap$ } from "../lib/primitives.js";
+import { safeParse } from "../lib/schemas.js";
+import { Result as SafeParseResult } from "../types/fp.js";
+import { SDKValidationError } from "./errors/sdkvalidationerror.js";
 import {
   WebFetchEngineEnum,
+  WebFetchEngineEnum$inboundSchema,
   WebFetchEngineEnum$outboundSchema,
 } from "./webfetchengineenum.js";
 
@@ -36,6 +40,24 @@ export type WebFetchServerToolConfig = {
   maxUses?: number | undefined;
 };
 
+/** @internal */
+export const WebFetchServerToolConfig$inboundSchema: z.ZodType<
+  WebFetchServerToolConfig,
+  unknown
+> = z.object({
+  allowed_domains: z.array(z.string()).optional(),
+  blocked_domains: z.array(z.string()).optional(),
+  engine: WebFetchEngineEnum$inboundSchema.optional(),
+  max_content_tokens: z.int().optional(),
+  max_uses: z.int().optional(),
+}).transform((v) => {
+  return remap$(v, {
+    "allowed_domains": "allowedDomains",
+    "blocked_domains": "blockedDomains",
+    "max_content_tokens": "maxContentTokens",
+    "max_uses": "maxUses",
+  });
+});
 /** @internal */
 export type WebFetchServerToolConfig$Outbound = {
   allowed_domains?: Array<string> | undefined;
@@ -69,5 +91,14 @@ export function webFetchServerToolConfigToJSON(
 ): string {
   return JSON.stringify(
     WebFetchServerToolConfig$outboundSchema.parse(webFetchServerToolConfig),
+  );
+}
+export function webFetchServerToolConfigFromJSON(
+  jsonString: string,
+): SafeParseResult<WebFetchServerToolConfig, SDKValidationError> {
+  return safeParse(
+    jsonString,
+    (x) => WebFetchServerToolConfig$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'WebFetchServerToolConfig' from JSON`,
   );
 }

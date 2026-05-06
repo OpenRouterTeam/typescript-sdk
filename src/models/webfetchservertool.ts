@@ -4,9 +4,13 @@
  */
 
 import * as z from "zod/v4";
+import { safeParse } from "../lib/schemas.js";
 import { ClosedEnum } from "../types/enums.js";
+import { Result as SafeParseResult } from "../types/fp.js";
+import { SDKValidationError } from "./errors/sdkvalidationerror.js";
 import {
   WebFetchServerToolConfig,
+  WebFetchServerToolConfig$inboundSchema,
   WebFetchServerToolConfig$Outbound,
   WebFetchServerToolConfig$outboundSchema,
 } from "./webfetchservertoolconfig.js";
@@ -28,10 +32,22 @@ export type WebFetchServerTool = {
 };
 
 /** @internal */
-export const WebFetchServerToolType$outboundSchema: z.ZodEnum<
+export const WebFetchServerToolType$inboundSchema: z.ZodEnum<
   typeof WebFetchServerToolType
 > = z.enum(WebFetchServerToolType);
+/** @internal */
+export const WebFetchServerToolType$outboundSchema: z.ZodEnum<
+  typeof WebFetchServerToolType
+> = WebFetchServerToolType$inboundSchema;
 
+/** @internal */
+export const WebFetchServerTool$inboundSchema: z.ZodType<
+  WebFetchServerTool,
+  unknown
+> = z.object({
+  parameters: WebFetchServerToolConfig$inboundSchema.optional(),
+  type: WebFetchServerToolType$inboundSchema,
+});
 /** @internal */
 export type WebFetchServerTool$Outbound = {
   parameters?: WebFetchServerToolConfig$Outbound | undefined;
@@ -52,5 +68,14 @@ export function webFetchServerToolToJSON(
 ): string {
   return JSON.stringify(
     WebFetchServerTool$outboundSchema.parse(webFetchServerTool),
+  );
+}
+export function webFetchServerToolFromJSON(
+  jsonString: string,
+): SafeParseResult<WebFetchServerTool, SDKValidationError> {
+  return safeParse(
+    jsonString,
+    (x) => WebFetchServerTool$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'WebFetchServerTool' from JSON`,
   );
 }

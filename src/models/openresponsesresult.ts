@@ -23,6 +23,10 @@ import {
   BaseReasoningConfig$inboundSchema,
 } from "./basereasoningconfig.js";
 import {
+  ChatSearchModelsServerTool,
+  ChatSearchModelsServerTool$inboundSchema,
+} from "./chatsearchmodelsservertool.js";
+import {
   CodeInterpreterServerTool,
   CodeInterpreterServerTool$inboundSchema,
 } from "./codeinterpreterservertool.js";
@@ -35,6 +39,10 @@ import {
   ComputerUseServerTool$inboundSchema,
 } from "./computeruseservertool.js";
 import { CustomTool, CustomTool$inboundSchema } from "./customtool.js";
+import {
+  DatetimeServerTool,
+  DatetimeServerTool$inboundSchema,
+} from "./datetimeservertool.js";
 import { SDKValidationError } from "./errors/sdkvalidationerror.js";
 import {
   FileSearchServerTool,
@@ -45,6 +53,10 @@ import {
   ImageGenerationServerTool$inboundSchema,
 } from "./imagegenerationservertool.js";
 import {
+  ImageGenerationServerToolOpenRouter,
+  ImageGenerationServerToolOpenRouter$inboundSchema,
+} from "./imagegenerationservertoolopenrouter.js";
+import {
   IncompleteDetails,
   IncompleteDetails$inboundSchema,
 } from "./incompletedetails.js";
@@ -53,6 +65,7 @@ import {
   LegacyWebSearchServerTool$inboundSchema,
 } from "./legacywebsearchservertool.js";
 import { McpServerTool, McpServerTool$inboundSchema } from "./mcpservertool.js";
+import { NamespaceTool, NamespaceTool$inboundSchema } from "./namespacetool.js";
 import {
   OpenAIResponsesResponseStatus,
   OpenAIResponsesResponseStatus$inboundSchema,
@@ -90,12 +103,24 @@ import {
   TextExtendedConfig,
   TextExtendedConfig$inboundSchema,
 } from "./textextendedconfig.js";
+import {
+  ToolSearchTool,
+  ToolSearchTool$inboundSchema,
+} from "./toolsearchtool.js";
 import { Truncation, Truncation$inboundSchema } from "./truncation.js";
 import { Usage, Usage$inboundSchema } from "./usage.js";
+import {
+  WebFetchServerTool,
+  WebFetchServerTool$inboundSchema,
+} from "./webfetchservertool.js";
 import {
   WebSearchServerTool,
   WebSearchServerTool$inboundSchema,
 } from "./websearchservertool.js";
+import {
+  WebSearchServerToolOpenRouter,
+  WebSearchServerToolOpenRouter$inboundSchema,
+} from "./websearchservertoolopenrouter.js";
 
 export const OpenResponsesResultObject = {
   Response: "response",
@@ -130,6 +155,17 @@ export type OpenResponsesResultToolUnion =
   | ShellServerTool
   | ApplyPatchServerTool
   | CustomTool
+  | NamespaceTool
+  | ToolSearchTool
+  | (DatetimeServerTool & { type: "openrouter:datetime" })
+  | (ImageGenerationServerToolOpenRouter & {
+    type: "openrouter:image_generation";
+  })
+  | (ChatSearchModelsServerTool & {
+    type: "openrouter:experimental__search_models";
+  })
+  | (WebFetchServerTool & { type: "openrouter:web_fetch" })
+  | WebSearchServerToolOpenRouter
   | discriminatedUnionTypes.Unknown<"type">;
 
 /**
@@ -188,6 +224,17 @@ export type OpenResponsesResult = {
     | ShellServerTool
     | ApplyPatchServerTool
     | CustomTool
+    | NamespaceTool
+    | ToolSearchTool
+    | (DatetimeServerTool & { type: "openrouter:datetime" })
+    | (ImageGenerationServerToolOpenRouter & {
+      type: "openrouter:image_generation";
+    })
+    | (ChatSearchModelsServerTool & {
+      type: "openrouter:experimental__search_models";
+    })
+    | (WebFetchServerTool & { type: "openrouter:web_fetch" })
+    | WebSearchServerToolOpenRouter
     | discriminatedUnionTypes.Unknown<"type">
   >;
   topLogprobs?: number | null | undefined;
@@ -248,6 +295,23 @@ export const OpenResponsesResultToolUnion$inboundSchema: z.ZodType<
   shell: ShellServerTool$inboundSchema,
   apply_patch: ApplyPatchServerTool$inboundSchema,
   custom: CustomTool$inboundSchema,
+  namespace: NamespaceTool$inboundSchema,
+  tool_search: ToolSearchTool$inboundSchema,
+  ["openrouter:datetime"]: DatetimeServerTool$inboundSchema.and(
+    z.object({ type: z.literal("openrouter:datetime") }),
+  ),
+  ["openrouter:image_generation"]:
+    ImageGenerationServerToolOpenRouter$inboundSchema.and(
+      z.object({ type: z.literal("openrouter:image_generation") }),
+    ),
+  ["openrouter:experimental__search_models"]:
+    ChatSearchModelsServerTool$inboundSchema.and(
+      z.object({ type: z.literal("openrouter:experimental__search_models") }),
+    ),
+  ["openrouter:web_fetch"]: WebFetchServerTool$inboundSchema.and(
+    z.object({ type: z.literal("openrouter:web_fetch") }),
+  ),
+  ["openrouter:web_search"]: WebSearchServerToolOpenRouter$inboundSchema,
 });
 
 export function openResponsesResultToolUnionFromJSON(
@@ -309,6 +373,23 @@ export const OpenResponsesResult$inboundSchema: z.ZodType<
     shell: ShellServerTool$inboundSchema,
     apply_patch: ApplyPatchServerTool$inboundSchema,
     custom: CustomTool$inboundSchema,
+    namespace: NamespaceTool$inboundSchema,
+    tool_search: ToolSearchTool$inboundSchema,
+    ["openrouter:datetime"]: DatetimeServerTool$inboundSchema.and(
+      z.object({ type: z.literal("openrouter:datetime") }),
+    ),
+    ["openrouter:image_generation"]:
+      ImageGenerationServerToolOpenRouter$inboundSchema.and(
+        z.object({ type: z.literal("openrouter:image_generation") }),
+      ),
+    ["openrouter:experimental__search_models"]:
+      ChatSearchModelsServerTool$inboundSchema.and(
+        z.object({ type: z.literal("openrouter:experimental__search_models") }),
+      ),
+    ["openrouter:web_fetch"]: WebFetchServerTool$inboundSchema.and(
+      z.object({ type: z.literal("openrouter:web_fetch") }),
+    ),
+    ["openrouter:web_search"]: WebSearchServerToolOpenRouter$inboundSchema,
   })),
   top_logprobs: z.nullable(z.int()).optional(),
   top_p: z.nullable(z.number()),

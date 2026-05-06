@@ -6,7 +6,14 @@
 import * as z from "zod/v4";
 import { remap as remap$ } from "../lib/primitives.js";
 import {
+  collectExtraKeys as collectExtraKeys$,
+  safeParse,
+} from "../lib/schemas.js";
+import { Result as SafeParseResult } from "../types/fp.js";
+import { SDKValidationError } from "./errors/sdkvalidationerror.js";
+import {
   ImageGenerationServerToolConfigUnion,
+  ImageGenerationServerToolConfigUnion$inboundSchema,
   ImageGenerationServerToolConfigUnion$outboundSchema,
 } from "./imagegenerationservertoolconfigunion.js";
 
@@ -23,6 +30,17 @@ export type ImageGenerationServerToolConfig = {
     | undefined;
 };
 
+/** @internal */
+export const ImageGenerationServerToolConfig$inboundSchema: z.ZodType<
+  ImageGenerationServerToolConfig,
+  unknown
+> = collectExtraKeys$(
+  z.object({
+    model: z.string().optional(),
+  }).catchall(ImageGenerationServerToolConfigUnion$inboundSchema),
+  "additionalProperties",
+  true,
+);
 /** @internal */
 export type ImageGenerationServerToolConfig$Outbound = {
   model?: string | undefined;
@@ -55,5 +73,14 @@ export function imageGenerationServerToolConfigToJSON(
     ImageGenerationServerToolConfig$outboundSchema.parse(
       imageGenerationServerToolConfig,
     ),
+  );
+}
+export function imageGenerationServerToolConfigFromJSON(
+  jsonString: string,
+): SafeParseResult<ImageGenerationServerToolConfig, SDKValidationError> {
+  return safeParse(
+    jsonString,
+    (x) => ImageGenerationServerToolConfig$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'ImageGenerationServerToolConfig' from JSON`,
   );
 }

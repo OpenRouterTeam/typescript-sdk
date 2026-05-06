@@ -4,9 +4,13 @@
  */
 
 import * as z from "zod/v4";
+import { safeParse } from "../lib/schemas.js";
 import { ClosedEnum } from "../types/enums.js";
+import { Result as SafeParseResult } from "../types/fp.js";
+import { SDKValidationError } from "./errors/sdkvalidationerror.js";
 import {
   SearchModelsServerToolConfig,
+  SearchModelsServerToolConfig$inboundSchema,
   SearchModelsServerToolConfig$Outbound,
   SearchModelsServerToolConfig$outboundSchema,
 } from "./searchmodelsservertoolconfig.js";
@@ -30,10 +34,22 @@ export type ChatSearchModelsServerTool = {
 };
 
 /** @internal */
-export const ChatSearchModelsServerToolType$outboundSchema: z.ZodEnum<
+export const ChatSearchModelsServerToolType$inboundSchema: z.ZodEnum<
   typeof ChatSearchModelsServerToolType
 > = z.enum(ChatSearchModelsServerToolType);
+/** @internal */
+export const ChatSearchModelsServerToolType$outboundSchema: z.ZodEnum<
+  typeof ChatSearchModelsServerToolType
+> = ChatSearchModelsServerToolType$inboundSchema;
 
+/** @internal */
+export const ChatSearchModelsServerTool$inboundSchema: z.ZodType<
+  ChatSearchModelsServerTool,
+  unknown
+> = z.object({
+  parameters: SearchModelsServerToolConfig$inboundSchema.optional(),
+  type: ChatSearchModelsServerToolType$inboundSchema,
+});
 /** @internal */
 export type ChatSearchModelsServerTool$Outbound = {
   parameters?: SearchModelsServerToolConfig$Outbound | undefined;
@@ -54,5 +70,14 @@ export function chatSearchModelsServerToolToJSON(
 ): string {
   return JSON.stringify(
     ChatSearchModelsServerTool$outboundSchema.parse(chatSearchModelsServerTool),
+  );
+}
+export function chatSearchModelsServerToolFromJSON(
+  jsonString: string,
+): SafeParseResult<ChatSearchModelsServerTool, SDKValidationError> {
+  return safeParse(
+    jsonString,
+    (x) => ChatSearchModelsServerTool$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'ChatSearchModelsServerTool' from JSON`,
   );
 }

@@ -145,3 +145,60 @@ const value: models.CustomTool = {
 };
 ```
 
+### `models.NamespaceTool`
+
+```typescript
+const value: models.NamespaceTool = {
+  name: "my_mcp_server",
+  type: "namespace",
+};
+```
+
+### `models.ToolSearchTool`
+
+```typescript
+const value: models.ToolSearchTool = {
+  type: "tool_search",
+};
+```
+
+### `models.DatetimeServerTool`
+
+```typescript
+const value: models.DatetimeServerTool = {
+  type: "openrouter:datetime",
+};
+```
+
+### `models.ImageGenerationServerToolOpenRouter`
+
+```typescript
+const value: models.ImageGenerationServerToolOpenRouter = {
+  type: "openrouter:image_generation",
+};
+```
+
+### `models.ChatSearchModelsServerTool`
+
+```typescript
+const value: models.ChatSearchModelsServerTool = {
+  type: "openrouter:experimental__search_models",
+};
+```
+
+### `models.WebFetchServerTool`
+
+```typescript
+const value: models.WebFetchServerTool = {
+  type: "openrouter:web_fetch",
+};
+```
+
+### `models.WebSearchServerToolOpenRouter`
+
+```typescript
+const value: models.WebSearchServerToolOpenRouter = {
+  type: "openrouter:web_search",
+};
+```
+
