@@ -4184,6 +4184,25 @@ components:
             $ref: '#/components/schemas/ChatStreamToolCall'
           type: array
       type: object
+    ChatStreamingResponse:
+      example:
+        data:
+          choices:
+            - delta:
+                content: Hello
+                role: assistant
+              finish_reason: null
+              index: 0
+          created: 1677652288
+          id: chatcmpl-123
+          model: openai/gpt-4
+          object: chat.completion.chunk
+      properties:
+        data:
+          $ref: '#/components/schemas/ChatStreamChunk'
+      required:
+        - data
+      type: object
     ChatStreamOptions:
       description: Streaming configuration options
       example:
@@ -15448,12 +15467,7 @@ paths:
                   model: openai/gpt-4
                   object: chat.completion.chunk
               schema:
-                properties:
-                  data:
-                    $ref: '#/components/schemas/ChatStreamChunk'
-                required:
-                  - data
-                type: object
+                $ref: '#/components/schemas/ChatStreamingResponse'
               x-speakeasy-sse-sentinel: '[DONE]'
           description: Successful chat completion response
         '400':
