@@ -4856,6 +4856,80 @@ components:
         - code
         - message
       type: object
+    ContentFilterAction:
+      description: Action taken when the pattern matches
+      enum:
+        - redact
+        - block
+      example: block
+      type: string
+    ContentFilterBuiltinAction:
+      description: Action taken when the builtin filter triggers
+      enum:
+        - redact
+        - block
+        - flag
+      example: block
+      type: string
+    ContentFilterBuiltinEntry:
+      description: >-
+        A builtin content filter entry. Builtin filters include PII detectors and the regex-based prompt injection
+        detector.
+      example:
+        action: block
+        label: '[PROMPT_INJECTION]'
+        slug: regex-prompt-injection
+      properties:
+        action:
+          $ref: '#/components/schemas/ContentFilterBuiltinAction'
+        label:
+          description: Optional label used in redaction placeholders (e.g. "[PROMPT_INJECTION]")
+          example: '[PROMPT_INJECTION]'
+          maxLength: 100
+          type: string
+        slug:
+          $ref: '#/components/schemas/ContentFilterBuiltinSlug'
+      required:
+        - slug
+        - action
+      type: object
+    ContentFilterBuiltinSlug:
+      description: The builtin filter identifier
+      enum:
+        - email
+        - phone
+        - ssn
+        - credit-card
+        - ip-address
+        - person-name
+        - address
+        - regex-prompt-injection
+      example: regex-prompt-injection
+      type: string
+    ContentFilterEntry:
+      description: A custom regex content filter that scans request messages for matching patterns.
+      example:
+        action: redact
+        label: '[API_KEY]'
+        pattern: \b(sk-[a-zA-Z0-9]{48})\b
+      properties:
+        action:
+          $ref: '#/components/schemas/ContentFilterAction'
+        label:
+          description: Optional label used in redaction placeholders or error messages
+          example: '[API_KEY]'
+          maxLength: 100
+          nullable: true
+          type: string
+        pattern:
+          description: A regex pattern to match against request content
+          example: \b(sk-[a-zA-Z0-9]{48})\b
+          minLength: 1
+          type: string
+      required:
+        - pattern
+        - action
+      type: object
     ContentPartAddedEvent:
       allOf:
         - $ref: '#/components/schemas/BaseContentPartAddedEvent'
@@ -5008,6 +5082,10 @@ components:
           - openai
           - anthropic
           - deepseek
+        content_filter_builtins:
+          - action: block
+            slug: regex-prompt-injection
+        content_filters: null
         description: A guardrail for limiting API usage
         enforce_zdr: false
         ignored_models: null
@@ -5036,6 +5114,27 @@ components:
           items:
             type: string
           minItems: 1
+          nullable: true
+          type: array
+        content_filter_builtins:
+          description: >-
+            Builtin content filters to apply. Use slug "regex-prompt-injection" with action "block", "flag", or "redact"
+            to enable heuristic prompt injection detection.
+          example:
+            - action: block
+              slug: regex-prompt-injection
+          items:
+            $ref: '#/components/schemas/ContentFilterBuiltinEntry'
+          nullable: true
+          type: array
+        content_filters:
+          description: Custom regex content filters to apply to request messages
+          example:
+            - action: redact
+              label: '[API_KEY]'
+              pattern: \b(sk-[a-zA-Z0-9]{48})\b
+          items:
+            $ref: '#/components/schemas/ContentFilterEntry'
           nullable: true
           type: array
         description:
@@ -5097,6 +5196,11 @@ components:
             - openai
             - anthropic
             - google
+          content_filter_builtins:
+            - action: block
+              label: '[PROMPT_INJECTION]'
+              slug: regex-prompt-injection
+          content_filters: null
           created_at: '2025-08-24T10:30:00Z'
           description: A guardrail for limiting API usage
           enforce_zdr: false
@@ -6289,6 +6393,11 @@ components:
             - openai
             - anthropic
             - google
+          content_filter_builtins:
+            - action: block
+              label: '[PROMPT_INJECTION]'
+              slug: regex-prompt-injection
+          content_filters: null
           created_at: '2025-08-24T10:30:00Z'
           description: Guardrail for production environment
           enforce_zdr: false
@@ -6384,6 +6493,11 @@ components:
           - openai
           - anthropic
           - google
+        content_filter_builtins:
+          - action: block
+            label: '[PROMPT_INJECTION]'
+            slug: regex-prompt-injection
+        content_filters: null
         created_at: '2025-08-24T10:30:00Z'
         description: Guardrail for production environment
         enforce_zdr: false
@@ -6414,6 +6528,28 @@ components:
             - google
           items:
             type: string
+          nullable: true
+          type: array
+        content_filter_builtins:
+          description: >-
+            Builtin content filters applied to requests. Includes PII detectors and the regex-based prompt injection
+            detector.
+          example:
+            - action: block
+              label: '[PROMPT_INJECTION]'
+              slug: regex-prompt-injection
+          items:
+            $ref: '#/components/schemas/ContentFilterBuiltinEntry'
+          nullable: true
+          type: array
+        content_filters:
+          description: Custom regex content filters applied to request messages
+          example:
+            - action: redact
+              label: '[API_KEY]'
+              pattern: \b(sk-[a-zA-Z0-9]{48})\b
+          items:
+            $ref: '#/components/schemas/ContentFilterEntry'
           nullable: true
           type: array
         created_at:
@@ -7282,6 +7418,11 @@ components:
               - openai
               - anthropic
               - google
+            content_filter_builtins:
+              - action: block
+                label: '[PROMPT_INJECTION]'
+                slug: regex-prompt-injection
+            content_filters: null
             created_at: '2025-08-24T10:30:00Z'
             description: Guardrail for production environment
             enforce_zdr: false
@@ -13953,6 +14094,24 @@ components:
           minItems: 1
           nullable: true
           type: array
+        content_filter_builtins:
+          description: >-
+            Builtin content filters to apply. Set to null to remove. Use slug "regex-prompt-injection" with action
+            "block", "flag", or "redact" to enable heuristic prompt injection detection.
+          example:
+            - action: block
+              slug: regex-prompt-injection
+          items:
+            $ref: '#/components/schemas/ContentFilterBuiltinEntry'
+          nullable: true
+          type: array
+        content_filters:
+          description: Custom regex content filters to apply. Set to null to remove.
+          example: null
+          items:
+            $ref: '#/components/schemas/ContentFilterEntry'
+          nullable: true
+          type: array
         description:
           description: New description for the guardrail
           example: Updated description
@@ -14003,6 +14162,11 @@ components:
           allowed_models: null
           allowed_providers:
             - openai
+          content_filter_builtins:
+            - action: block
+              label: '[PROMPT_INJECTION]'
+              slug: regex-prompt-injection
+          content_filters: null
           created_at: '2025-08-24T10:30:00Z'
           description: Updated description
           enforce_zdr: true
@@ -15815,6 +15979,16 @@ paths:
               schema:
                 $ref: '#/components/schemas/PaymentRequiredResponse'
           description: Payment Required - Insufficient credits or quota to complete request
+        '403':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 403
+                  message: Only management keys can perform this operation
+              schema:
+                $ref: '#/components/schemas/ForbiddenResponse'
+          description: Forbidden - Authentication successful but insufficient permissions
         '404':
           content:
             application/json:
