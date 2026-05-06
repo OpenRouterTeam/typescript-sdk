@@ -9405,6 +9405,9 @@ components:
           type: string
         name:
           type: string
+        namespace:
+          description: Namespace qualifier for tools registered as part of a namespace tool group (e.g. an MCP server)
+          type: string
         status:
           $ref: '#/components/schemas/ToolCallStatus'
         type:
@@ -10481,6 +10484,9 @@ components:
         id:
           type: string
         name:
+          type: string
+        namespace:
+          description: Namespace qualifier for tools registered as part of a namespace tool group (e.g. an MCP server)
           type: string
         status:
           anyOf:
