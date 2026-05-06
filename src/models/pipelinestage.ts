@@ -16,9 +16,11 @@ import {
 export type PipelineStage = {
   costUsd?: number | null | undefined;
   data?: { [k: string]: any | null } | undefined;
+  durationMs?: number | undefined;
   guardrailId?: string | undefined;
   guardrailScope?: string | undefined;
   name: string;
+  summary?: string | undefined;
   /**
    * Categorical kind of a pipeline stage. Multiple plugins can share a type (e.g. all guardrail-level plugins emit `guardrail`); the `name` field disambiguates which plugin emitted it.
    */
@@ -30,13 +32,16 @@ export const PipelineStage$inboundSchema: z.ZodType<PipelineStage, unknown> = z
   .object({
     cost_usd: z.nullable(z.number()).optional(),
     data: z.record(z.string(), z.nullable(z.any())).optional(),
+    duration_ms: z.int().optional(),
     guardrail_id: z.string().optional(),
     guardrail_scope: z.string().optional(),
     name: z.string(),
+    summary: z.string().optional(),
     type: PipelineStageType$inboundSchema,
   }).transform((v) => {
     return remap$(v, {
       "cost_usd": "costUsd",
+      "duration_ms": "durationMs",
       "guardrail_id": "guardrailId",
       "guardrail_scope": "guardrailScope",
     });
