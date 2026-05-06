@@ -206,6 +206,7 @@ export * from "./preferredminthroughput.js";
 export * from "./preview20250311websearchservertool.js";
 export * from "./previewwebsearchservertool.js";
 export * from "./previewwebsearchuserlocation.js";
+export * from "./privatemodelendpointsresponse.js";
 export * from "./providername.js";
 export * from "./provideroptions.js";
 export * from "./provideroverloadedresponseerrordata.js";
