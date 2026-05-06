@@ -4,7 +4,6 @@
  */
 
 import * as z from "zod/v4";
-import { remap as remap$ } from "../lib/primitives.js";
 import { safeParse } from "../lib/schemas.js";
 import { Result as SafeParseResult } from "../types/fp.js";
 import { EndpointInfo, EndpointInfo$inboundSchema } from "./endpointinfo.js";
@@ -12,8 +11,6 @@ import { SDKValidationError } from "./errors/sdkvalidationerror.js";
 
 export type EndpointsMetadata = {
   available: Array<EndpointInfo>;
-  sort: string;
-  sortValue?: number | null | undefined;
   total: number;
 };
 
@@ -23,13 +20,7 @@ export const EndpointsMetadata$inboundSchema: z.ZodType<
   unknown
 > = z.object({
   available: z.array(EndpointInfo$inboundSchema),
-  sort: z.string(),
-  sort_value: z.nullable(z.number()).optional(),
   total: z.int(),
-}).transform((v) => {
-  return remap$(v, {
-    "sort_value": "sortValue",
-  });
 });
 
 export function endpointsMetadataFromJSON(
