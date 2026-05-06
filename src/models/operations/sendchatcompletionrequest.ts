@@ -53,6 +53,14 @@ export type SendChatCompletionRequestRequest = {
    * @remarks
    */
   appCategories?: string | undefined;
+  /**
+   * Opt-in fallback for `X-OpenRouter-Experimental-Metadata`. Same semantics as the header. The header takes precedence when both are present and the header value is valid.
+   */
+  experimentalMetadata?: models.MetadataLevel | undefined;
+  /**
+   * Opt-in to surface routing metadata on the response under `openrouter_metadata`. Defaults to `off`. The `experimental-metadata` query parameter is honored as a fallback when the header is absent or carries an unrecognized value.
+   */
+  xOpenRouterExperimentalMetadata?: models.MetadataLevel | undefined;
   chatRequest: models.ChatRequest;
 };
 
@@ -65,6 +73,8 @@ export type SendChatCompletionRequestRequest$Outbound = {
   "HTTP-Referer"?: string | undefined;
   appTitle?: string | undefined;
   appCategories?: string | undefined;
+  "experimental-metadata"?: string | undefined;
+  "X-OpenRouter-Experimental-Metadata"?: string | undefined;
   ChatRequest: models.ChatRequest$Outbound;
 };
 
@@ -76,10 +86,15 @@ export const SendChatCompletionRequestRequest$outboundSchema: z.ZodType<
   httpReferer: z.string().optional(),
   appTitle: z.string().optional(),
   appCategories: z.string().optional(),
+  experimentalMetadata: models.MetadataLevel$outboundSchema.optional(),
+  xOpenRouterExperimentalMetadata: models.MetadataLevel$outboundSchema
+    .optional(),
   chatRequest: models.ChatRequest$outboundSchema,
 }).transform((v) => {
   return remap$(v, {
     httpReferer: "HTTP-Referer",
+    experimentalMetadata: "experimental-metadata",
+    xOpenRouterExperimentalMetadata: "X-OpenRouter-Experimental-Metadata",
     chatRequest: "ChatRequest",
   });
 });
