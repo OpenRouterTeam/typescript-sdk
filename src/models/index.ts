@@ -161,6 +161,7 @@ export * from "./openairesponsesresponsestatus.js";
 export * from "./openairesponsestoolchoiceunion.js";
 export * from "./openairesponsestruncation.js";
 export * from "./openresponsescreatedevent.js";
+export * from "./openresponsesdebugevent.js";
 export * from "./openresponsesinprogressevent.js";
 export * from "./openresponsesresult.js";
 export * from "./openrouterwebsearchservertool.js";

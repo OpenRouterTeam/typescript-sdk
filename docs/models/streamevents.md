@@ -107,6 +107,16 @@ const value: models.OpenResponsesCreatedEvent = {
 };
 ```
 
+### `models.OpenResponsesDebugEvent`
+
+```typescript
+const value: models.OpenResponsesDebugEvent = {
+  debug: {},
+  sequenceNumber: 0,
+  type: "response.debug",
+};
+```
+
 ### `models.StreamEventsResponseFailed`
 
 ```typescript
