@@ -56,7 +56,6 @@ export * from "./chatsearchmodelsservertool.js";
 export * from "./chatstreamchoice.js";
 export * from "./chatstreamchunk.js";
 export * from "./chatstreamdelta.js";
-export * from "./chatstreamingresponse.js";
 export * from "./chatstreamoptions.js";
 export * from "./chatstreamtoolcall.js";
 export * from "./chatsystemmessage.js";
