@@ -6,6 +6,16 @@
 import * as z from "zod/v4";
 import { remap as remap$ } from "../lib/primitives.js";
 import {
+  ContentFilterBuiltinEntry,
+  ContentFilterBuiltinEntry$Outbound,
+  ContentFilterBuiltinEntry$outboundSchema,
+} from "./contentfilterbuiltinentry.js";
+import {
+  ContentFilterEntry,
+  ContentFilterEntry$Outbound,
+  ContentFilterEntry$outboundSchema,
+} from "./contentfilterentry.js";
+import {
   GuardrailInterval,
   GuardrailInterval$outboundSchema,
 } from "./guardrailinterval.js";
@@ -19,6 +29,14 @@ export type UpdateGuardrailRequest = {
    * New list of allowed provider IDs
    */
   allowedProviders?: Array<string> | null | undefined;
+  /**
+   * Builtin content filters to apply. Set to null to remove. Use slug "regex-prompt-injection" with action "block", "flag", or "redact" to enable heuristic prompt injection detection.
+   */
+  contentFilterBuiltins?: Array<ContentFilterBuiltinEntry> | null | undefined;
+  /**
+   * Custom regex content filters to apply. Set to null to remove.
+   */
+  contentFilters?: Array<ContentFilterEntry> | null | undefined;
   /**
    * New description for the guardrail
    */
@@ -53,6 +71,11 @@ export type UpdateGuardrailRequest = {
 export type UpdateGuardrailRequest$Outbound = {
   allowed_models?: Array<string> | null | undefined;
   allowed_providers?: Array<string> | null | undefined;
+  content_filter_builtins?:
+    | Array<ContentFilterBuiltinEntry$Outbound>
+    | null
+    | undefined;
+  content_filters?: Array<ContentFilterEntry$Outbound> | null | undefined;
   description?: string | null | undefined;
   enforce_zdr?: boolean | null | undefined;
   ignored_models?: Array<string> | null | undefined;
@@ -69,6 +92,11 @@ export const UpdateGuardrailRequest$outboundSchema: z.ZodType<
 > = z.object({
   allowedModels: z.nullable(z.array(z.string())).optional(),
   allowedProviders: z.nullable(z.array(z.string())).optional(),
+  contentFilterBuiltins: z.nullable(
+    z.array(ContentFilterBuiltinEntry$outboundSchema),
+  ).optional(),
+  contentFilters: z.nullable(z.array(ContentFilterEntry$outboundSchema))
+    .optional(),
   description: z.nullable(z.string()).optional(),
   enforceZdr: z.nullable(z.boolean()).optional(),
   ignoredModels: z.nullable(z.array(z.string())).optional(),
@@ -80,6 +108,8 @@ export const UpdateGuardrailRequest$outboundSchema: z.ZodType<
   return remap$(v, {
     allowedModels: "allowed_models",
     allowedProviders: "allowed_providers",
+    contentFilterBuiltins: "content_filter_builtins",
+    contentFilters: "content_filters",
     enforceZdr: "enforce_zdr",
     ignoredModels: "ignored_models",
     ignoredProviders: "ignored_providers",
