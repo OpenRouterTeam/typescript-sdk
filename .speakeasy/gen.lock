@@ -1,19 +1,19 @@
 lockVersion: ""
 id: ""
 management:
-  docChecksum: 3fd02fb2638bfeb8d4d5f5383f17d009
+  docChecksum: 31a4307ae9a3be0f352301a5b6977f9f
   docVersion: 1.0.0
   speakeasyVersion: 1.761.0
   generationVersion: 2.879.1
-  releaseVersion: 0.12.28
-  configChecksum: 8d6f080f57907ccaa41ff782a0bf615c
+  releaseVersion: 0.12.29
+  configChecksum: eb1f812d5ac6cb2650ac8f9defccd609
   repoURL: https://github.com/OpenRouterTeam/typescript-sdk.git
   installationURL: https://github.com/OpenRouterTeam/typescript-sdk
   published: true
 persistentEdits:
-  generation_id: 2a92f429-13ce-44f6-84de-ebf79ffa19fb
-  pristine_commit_hash: 122b5bf2033da68bc37a1802b5b8d3099ad5f48b
-  pristine_tree_hash: 166d936284ccbb3a646022e9801b5323e11b00a8
+  generation_id: b066570c-1052-4d42-a4b8-2aeb96e22b43
+  pristine_commit_hash: c0950ea5d072888d80d95fbd842dad3e31a00ae9
+  pristine_tree_hash: 30fb4fe5d8c93e201bc29ca5a8bf68a66e7ff6cb
 features:
   typescript:
     acceptHeaders: 2.81.2
@@ -4511,12 +4511,12 @@ trackedFiles:
     pristine_git_object: 410efafd6a7f50d91ccb87131fedbe0c3d47e15a
   jsr.json:
     id: 7f6ab7767282
-    last_write_checksum: sha1:7bdd23cf3eb00215830acd5ac18b5cac8900c6ba
-    pristine_git_object: ecae12e63b3af7dcee5b1c05f60970a3bf8f4c3d
+    last_write_checksum: sha1:32d2e2eadd506ef7db09d684450d2e6911685bac
+    pristine_git_object: 80a751fad9514ccf0a31b6d3216a27169d5970a5
   package.json:
     id: 7030d0b2f71b
-    last_write_checksum: sha1:d7f9beeac490eb13c82acd2ccd6622b00735e9e9
-    pristine_git_object: 66087957859493aba33acf046d0b892578c7fd6e
+    last_write_checksum: sha1:ee38268e5d779a087b9a2b5cfdc3ebeaa557aeaf
+    pristine_git_object: 87dfd9f7f6a87bc0e604221073dcf8b408d8f774
   src/core.ts:
     id: f431fdbcd144
     last_write_checksum: sha1:5aa66b0b6a5964f3eea7f3098c2eb3c0ee9c0131
@@ -4743,8 +4743,8 @@ trackedFiles:
     pristine_git_object: a187e58707bdb726ca2aff74941efe7493422d4e
   src/lib/config.ts:
     id: 320761608fb3
-    last_write_checksum: sha1:03c92799b03d5783d1cddbf1290973dbce92c15b
-    pristine_git_object: 8401f6fcbe923cc695185d8a19011f5d17ffccf6
+    last_write_checksum: sha1:debcc42a9df3f558f2ae0723e1c4afac671f61bc
+    pristine_git_object: de62262d08a8e599593cfc9299b9f6f4b6d945f3
   src/lib/dlv.ts:
     id: b1988214835a
     last_write_checksum: sha1:eaac763b22717206a6199104e0403ed17a4e2711
@@ -7282,4 +7282,3 @@ examples:
         "529":
           application/json: {"error": {"code": 529, "message": "Provider returned error"}}
 examplesVersion: 1.0.2
-releaseNotes: "## Typescript SDK Changes:\n* `openrouter.tts.createSpeech()`: \n  *  `request.speechRequest.provider.options.perceptron` **Added**\n* `openrouter.stt.createTranscription()`: \n  *  `request.sttRequest.provider.options.perceptron` **Added**\n* `openrouter.chat.send()`: \n  *  `request.chatRequest.provider.ignore[].union(ProviderName).enum(perceptron)` **Added**\n* `openrouter.embeddings.generate()`: \n  *  `request.requestBody.provider.ignore[].union(ProviderName).enum(perceptron)` **Added**\n* `openrouter.endpoints.listZdrEndpoints()`:  `response.data[].providerName.enum(perceptron)` **Added**\n* `openrouter.endpoints.list()`:  `response.data.endpoints[].providerName.enum(perceptron)` **Added**\n* `openrouter.generations.getGeneration()`:  `response.data.providerResponses[].providerName.enum(perceptron)` **Added**\n* `openrouter.rerank.rerank()`: \n  *  `request.requestBody.provider.ignore[].union(ProviderName).enum(perceptron)` **Added**\n* `openrouter.beta.responses.send()`: \n  *  `request.responsesRequest.provider.ignore[].union(ProviderName).enum(perceptron)` **Added**\n* `openrouter.videoGeneration.generate()`: \n  *  `request.videoGenerationRequest.provider.options.perceptron` **Added**\n"
