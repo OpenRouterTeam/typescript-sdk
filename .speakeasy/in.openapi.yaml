@@ -2020,6 +2020,11 @@ components:
       properties:
         error:
           $ref: '#/components/schemas/BadGatewayResponseErrorData'
+        openrouter_metadata:
+          additionalProperties:
+            nullable: true
+          nullable: true
+          type: object
         user_id:
           nullable: true
           type: string
@@ -2054,6 +2059,11 @@ components:
       properties:
         error:
           $ref: '#/components/schemas/BadRequestResponseErrorData'
+        openrouter_metadata:
+          additionalProperties:
+            nullable: true
+          nullable: true
+          type: object
         user_id:
           nullable: true
           type: string
@@ -4012,6 +4022,8 @@ components:
           enum:
             - chat.completion
           type: string
+        openrouter_metadata:
+          $ref: '#/components/schemas/OpenRouterMetadata'
         service_tier:
           description: The service tier used by the upstream provider for this request
           example: default
@@ -4126,6 +4138,8 @@ components:
           enum:
             - chat.completion.chunk
           type: string
+        openrouter_metadata:
+          $ref: '#/components/schemas/OpenRouterMetadata'
         service_tier:
           description: The service tier used by the upstream provider for this request
           example: default
@@ -4812,6 +4826,11 @@ components:
       properties:
         error:
           $ref: '#/components/schemas/ConflictResponseErrorData'
+        openrouter_metadata:
+          additionalProperties:
+            nullable: true
+          nullable: true
+          type: object
         user_id:
           nullable: true
           type: string
@@ -5409,6 +5428,11 @@ components:
       properties:
         error:
           $ref: '#/components/schemas/EdgeNetworkTimeoutResponseErrorData'
+        openrouter_metadata:
+          additionalProperties:
+            nullable: true
+          nullable: true
+          type: object
         user_id:
           nullable: true
           type: string
@@ -5433,6 +5457,61 @@ components:
       required:
         - code
         - message
+      type: object
+    EndpointInfo:
+      example:
+        model: openai/gpt-4o
+        provider: OpenAI
+        selected: true
+        sort_rank: 0
+        sort_value: 0.005
+      properties:
+        model:
+          type: string
+        provider:
+          type: string
+        selected:
+          type: boolean
+        sort_rank:
+          type: integer
+        sort_value:
+          format: double
+          nullable: true
+          type: number
+      required:
+        - provider
+        - model
+        - selected
+        - sort_rank
+        - sort_value
+      type: object
+    EndpointsMetadata:
+      example:
+        available:
+          - model: openai/gpt-4o
+            provider: OpenAI
+            selected: true
+            sort_rank: 0
+            sort_value: 0.005
+        sort: price
+        total: 3
+      properties:
+        available:
+          items:
+            $ref: '#/components/schemas/EndpointInfo'
+          type: array
+        sort:
+          type: string
+        sort_value:
+          format: double
+          nullable: true
+          type: number
+        total:
+          type: integer
+      required:
+        - total
+        - sort
+        - available
       type: object
     EndpointStatus:
       enum:
@@ -5627,6 +5706,11 @@ components:
       properties:
         error:
           $ref: '#/components/schemas/ForbiddenResponseErrorData'
+        openrouter_metadata:
+          additionalProperties:
+            nullable: true
+          nullable: true
+          type: object
         user_id:
           nullable: true
           type: string
@@ -6281,6 +6365,11 @@ components:
       properties:
         error:
           $ref: '#/components/schemas/GoneResponseErrorData'
+        openrouter_metadata:
+          additionalProperties:
+            nullable: true
+          nullable: true
+          type: object
         user_id:
           nullable: true
           type: string
@@ -6962,6 +7051,11 @@ components:
       properties:
         error:
           $ref: '#/components/schemas/InternalServerResponseErrorData'
+        openrouter_metadata:
+          additionalProperties:
+            nullable: true
+          nullable: true
+          type: object
         user_id:
           nullable: true
           type: string
@@ -8407,6 +8501,8 @@ components:
               required:
                 - applied_edits
               type: object
+            openrouter_metadata:
+              $ref: '#/components/schemas/OpenRouterMetadata'
             provider:
               $ref: '#/components/schemas/ProviderName'
             usage:
@@ -8665,6 +8761,8 @@ components:
       example:
         type: message_stop
       properties:
+        openrouter_metadata:
+          $ref: '#/components/schemas/OpenRouterMetadata'
         type:
           enum:
             - message_stop
@@ -8700,6 +8798,31 @@ components:
         - $ref: '#/components/schemas/MessagesContentBlockStopEvent'
         - $ref: '#/components/schemas/MessagesPingEvent'
         - $ref: '#/components/schemas/MessagesErrorEvent'
+    MessagesStreamingResponse:
+      example:
+        data:
+          delta:
+            text: Hello
+            type: text_delta
+          index: 0
+          type: content_block_delta
+        event: content_block_delta
+      properties:
+        data:
+          $ref: '#/components/schemas/MessagesStreamEvents'
+        event:
+          type: string
+      required:
+        - event
+        - data
+      type: object
+    MetadataLevel:
+      description: Opt-in level for surfacing routing metadata on the response under `openrouter_metadata`.
+      enum:
+        - disabled
+        - enabled
+      example: enabled
+      type: string
     Model:
       description: Information about an AI model available on OpenRouter
       example:
@@ -9047,6 +9170,11 @@ components:
       properties:
         error:
           $ref: '#/components/schemas/NotFoundResponseErrorData'
+        openrouter_metadata:
+          additionalProperties:
+            nullable: true
+          nullable: true
+          type: object
         user_id:
           nullable: true
           type: string
@@ -9557,6 +9685,8 @@ components:
       allOf:
         - $ref: '#/components/schemas/BaseResponsesResult'
         - properties:
+            openrouter_metadata:
+              $ref: '#/components/schemas/OpenRouterMetadata'
             output:
               items:
                 $ref: '#/components/schemas/OutputItems'
@@ -9618,6 +9748,58 @@ components:
           type: number
         token:
           type: string
+      type: object
+    OpenRouterMetadata:
+      example:
+        attempt: 1
+        endpoints:
+          available:
+            - model: openai/gpt-4o
+              provider: OpenAI
+              selected: true
+              sort_rank: 0
+              sort_value: 0.005
+          sort: price
+          total: 1
+        is_byok: false
+        region: iad
+        requested: openai/gpt-4o
+        strategy: direct
+        summary: sort=price, available=1, selected=OpenAI
+      properties:
+        attempt:
+          type: integer
+        attempts:
+          items:
+            $ref: '#/components/schemas/RouterAttempt'
+          type: array
+        endpoints:
+          $ref: '#/components/schemas/EndpointsMetadata'
+        is_byok:
+          type: boolean
+        params:
+          $ref: '#/components/schemas/RouterParams'
+        pipeline:
+          items:
+            $ref: '#/components/schemas/PipelineStage'
+          type: array
+        region:
+          nullable: true
+          type: string
+        requested:
+          type: string
+        strategy:
+          $ref: '#/components/schemas/RoutingStrategy'
+        summary:
+          type: string
+      required:
+        - requested
+        - strategy
+        - region
+        - summary
+        - attempt
+        - is_byok
+        - endpoints
       type: object
     OpenRouterWebSearchServerTool:
       description: 'OpenRouter built-in server tool: searches the web for current information'
@@ -10735,6 +10917,11 @@ components:
       properties:
         error:
           $ref: '#/components/schemas/PayloadTooLargeResponseErrorData'
+        openrouter_metadata:
+          additionalProperties:
+            nullable: true
+          nullable: true
+          type: object
         user_id:
           nullable: true
           type: string
@@ -10769,6 +10956,11 @@ components:
       properties:
         error:
           $ref: '#/components/schemas/PaymentRequiredResponseErrorData'
+        openrouter_metadata:
+          additionalProperties:
+            nullable: true
+          nullable: true
+          type: object
         user_id:
           nullable: true
           type: string
@@ -10926,6 +11118,53 @@ components:
         - prompt_tokens
         - completion_tokens
       type: object
+    PipelineStage:
+      example:
+        data:
+          action: redacted
+          engines:
+            - presidio
+          flagged: true
+          matched_entity_types:
+            - EMAIL
+            - PHONE
+        name: content-filter
+        type: guardrail
+      properties:
+        cost_usd:
+          format: double
+          nullable: true
+          type: number
+        data:
+          additionalProperties:
+            nullable: true
+          type: object
+        guardrail_id:
+          type: string
+        guardrail_scope:
+          type: string
+        name:
+          type: string
+        type:
+          $ref: '#/components/schemas/PipelineStageType'
+      required:
+        - type
+        - name
+      type: object
+    PipelineStageType:
+      description: >-
+        Categorical kind of a pipeline stage. Multiple plugins can share a type (e.g. all guardrail-level plugins emit
+        `guardrail`); the `name` field disambiguates which plugin emitted it.
+      enum:
+        - router
+        - guardrail
+        - web_search
+        - file_parser
+        - server_tools
+        - response_healing
+        - context_compression
+      example: guardrail
+      type: string
     PreferredMaxLatency:
       anyOf:
         - format: double
@@ -11574,6 +11813,11 @@ components:
       properties:
         error:
           $ref: '#/components/schemas/ProviderOverloadedResponseErrorData'
+        openrouter_metadata:
+          additionalProperties:
+            nullable: true
+          nullable: true
+          type: object
         user_id:
           nullable: true
           type: string
@@ -12500,6 +12744,11 @@ components:
       properties:
         error:
           $ref: '#/components/schemas/RequestTimeoutResponseErrorData'
+        openrouter_metadata:
+          additionalProperties:
+            nullable: true
+          nullable: true
+          type: object
         user_id:
           nullable: true
           type: string
@@ -12850,6 +13099,63 @@ components:
           maxLength: 256
           type: string
       type: object
+    ResponsesStreamingResponse:
+      example:
+        data:
+          delta: Hello
+          type: response.output_text.delta
+      properties:
+        data:
+          $ref: '#/components/schemas/StreamEvents'
+      required:
+        - data
+      type: object
+    RouterAttempt:
+      example:
+        model: openai/gpt-4o
+        provider: OpenAI
+        status: 200
+      properties:
+        model:
+          type: string
+        provider:
+          type: string
+        status:
+          type: integer
+      required:
+        - provider
+        - model
+        - status
+      type: object
+    RouterParams:
+      additionalProperties:
+        nullable: true
+      example:
+        sort: price
+      properties:
+        quality_floor:
+          format: double
+          type: number
+        sort:
+          type: string
+        throughput_floor:
+          format: double
+          type: number
+        version_group:
+          type: string
+      type: object
+    RoutingStrategy:
+      enum:
+        - direct
+        - auto
+        - free
+        - latest
+        - alias
+        - fallback
+        - pareto
+        - bodybuilder
+      example: direct
+      type: string
     SearchContextSizeEnum:
       description: Size of the search context for web search tools
       enum:
@@ -12898,6 +13204,11 @@ components:
       properties:
         error:
           $ref: '#/components/schemas/ServiceUnavailableResponseErrorData'
+        openrouter_metadata:
+          additionalProperties:
+            nullable: true
+          nullable: true
+          type: object
         user_id:
           nullable: true
           type: string
@@ -13472,6 +13783,11 @@ components:
       properties:
         error:
           $ref: '#/components/schemas/TooManyRequestsResponseErrorData'
+        openrouter_metadata:
+          additionalProperties:
+            nullable: true
+          nullable: true
+          type: object
         user_id:
           nullable: true
           type: string
@@ -13560,6 +13876,11 @@ components:
       properties:
         error:
           $ref: '#/components/schemas/UnauthorizedResponseErrorData'
+        openrouter_metadata:
+          additionalProperties:
+            nullable: true
+          nullable: true
+          type: object
         user_id:
           nullable: true
           type: string
@@ -13594,6 +13915,11 @@ components:
       properties:
         error:
           $ref: '#/components/schemas/UnprocessableEntityResponseErrorData'
+        openrouter_metadata:
+          additionalProperties:
+            nullable: true
+          nullable: true
+          type: object
         user_id:
           nullable: true
           type: string
@@ -15417,6 +15743,14 @@ paths:
         Sends a request for a model response for the given chat conversation. Supports both streaming and non-streaming
         modes.
       operationId: sendChatCompletionRequest
+      parameters:
+        - description: Opt-in to surface routing metadata on the response under `openrouter_metadata`. Defaults to `disabled`.
+          example: enabled
+          in: header
+          name: X-OpenRouter-Experimental-Metadata
+          required: false
+          schema:
+            $ref: '#/components/schemas/MetadataLevel'
       requestBody:
         content:
           application/json:
@@ -19077,6 +19411,14 @@ paths:
         Creates a message using the Anthropic Messages API format. Supports text, images, PDFs, tools, and extended
         thinking.
       operationId: createMessages
+      parameters:
+        - description: Opt-in to surface routing metadata on the response under `openrouter_metadata`. Defaults to `disabled`.
+          example: enabled
+          in: header
+          name: X-OpenRouter-Experimental-Metadata
+          required: false
+          schema:
+            $ref: '#/components/schemas/MetadataLevel'
       requestBody:
         content:
           application/json:
@@ -19117,15 +19459,7 @@ paths:
                   type: content_block_delta
                 event: content_block_delta
               schema:
-                properties:
-                  data:
-                    $ref: '#/components/schemas/MessagesStreamEvents'
-                  event:
-                    type: string
-                required:
-                  - event
-                  - data
-                type: object
+                $ref: '#/components/schemas/MessagesStreamingResponse'
               x-speakeasy-sse-sentinel: '[DONE]'
           description: Successful response
         '400':
@@ -20608,6 +20942,14 @@ paths:
     post:
       description: Creates a streaming or non-streaming response using OpenResponses API format
       operationId: createResponses
+      parameters:
+        - description: Opt-in to surface routing metadata on the response under `openrouter_metadata`. Defaults to `disabled`.
+          example: enabled
+          in: header
+          name: X-OpenRouter-Experimental-Metadata
+          required: false
+          schema:
+            $ref: '#/components/schemas/MetadataLevel'
       requestBody:
         content:
           application/json:
@@ -20645,12 +20987,7 @@ paths:
                   delta: Hello
                   type: response.output_text.delta
               schema:
-                properties:
-                  data:
-                    $ref: '#/components/schemas/StreamEvents'
-                required:
-                  - data
-                type: object
+                $ref: '#/components/schemas/ResponsesStreamingResponse'
               x-speakeasy-sse-sentinel: '[DONE]'
           description: Successful response
         '400':
