@@ -21715,8 +21715,10 @@ tags:
     name: Rerank
   - description: Speech-to-text endpoints
     name: STT
+    x-displayName: Transcriptions
   - description: Text-to-speech endpoints
     name: TTS
+    x-displayName: Speech
   - description: Video Generation endpoints
     name: Video Generation
   - description: Workspaces endpoints
