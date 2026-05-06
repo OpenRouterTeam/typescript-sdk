@@ -2363,7 +2363,7 @@ components:
       example:
         container: null
         content:
-          - citations: null
+          - citations: []
             text: Hello!
             type: text
         id: msg_01XFDUDYJgAACzvnptvVoYEL
@@ -8461,6 +8461,14 @@ components:
               - $ref: '#/components/schemas/ChatSearchModelsServerTool'
               - $ref: '#/components/schemas/WebFetchServerTool'
               - $ref: '#/components/schemas/OpenRouterWebSearchServerTool'
+              - additionalProperties:
+                  nullable: true
+                properties:
+                  type:
+                    type: string
+                required:
+                  - type
+                type: object
           type: array
         top_k:
           type: integer
@@ -8541,7 +8549,7 @@ components:
       example:
         container: null
         content:
-          - citations: null
+          - citations: []
             text: Hello! I'm doing well, thank you for asking.
             type: text
         id: msg_01XFDUDYJgAACzvnptvVoYEL
