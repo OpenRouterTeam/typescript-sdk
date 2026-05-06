@@ -18,6 +18,11 @@ import {
   AutoRouterPlugin$outboundSchema,
 } from "./autorouterplugin.js";
 import {
+  ChatDebugOptions,
+  ChatDebugOptions$Outbound,
+  ChatDebugOptions$outboundSchema,
+} from "./chatdebugoptions.js";
+import {
   ChatSearchModelsServerTool,
   ChatSearchModelsServerTool$Outbound,
   ChatSearchModelsServerTool$outboundSchema,
@@ -246,6 +251,10 @@ export type ResponsesRequestToolUnion =
  */
 export type ResponsesRequest = {
   background?: boolean | null | undefined;
+  /**
+   * Debug options for inspecting request transformations (streaming only)
+   */
+  debug?: ChatDebugOptions | undefined;
   frequencyPenalty?: number | null | undefined;
   /**
    * Provider-specific image configuration options. Keys and values vary by model/provider. See https://openrouter.ai/docs/guides/overview/multimodal/image-generation for more details.
@@ -491,6 +500,7 @@ export function responsesRequestToolUnionToJSON(
 /** @internal */
 export type ResponsesRequest$Outbound = {
   background?: boolean | null | undefined;
+  debug?: ChatDebugOptions$Outbound | undefined;
   frequency_penalty?: number | null | undefined;
   image_config?: { [k: string]: ImageConfig$Outbound } | undefined;
   include?: Array<string> | null | undefined;
@@ -569,6 +579,7 @@ export const ResponsesRequest$outboundSchema: z.ZodType<
   ResponsesRequest
 > = z.object({
   background: z.nullable(z.boolean()).optional(),
+  debug: ChatDebugOptions$outboundSchema.optional(),
   frequencyPenalty: z.nullable(z.number()).optional(),
   imageConfig: z.record(z.string(), ImageConfig$outboundSchema).optional(),
   include: z.nullable(z.array(ResponseIncludesEnum$outboundSchema)).optional(),
