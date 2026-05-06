@@ -1,36 +1,24 @@
-# CreateResponsesResponseBody
-
-Successful response
+# ResponsesStreamingResponse
 
 ## Example Usage
 
 ```typescript
-import { CreateResponsesResponseBody } from "@openrouter/sdk/models/operations";
+import { ResponsesStreamingResponse } from "@openrouter/sdk/models";
 
-let value: CreateResponsesResponseBody = {
+let value: ResponsesStreamingResponse = {
   data: {
-    response: {
-      completedAt: 810112,
-      createdAt: 1704067200,
-      error: null,
-      frequencyPenalty: 8087.26,
-      id: "resp-abc123",
-      incompleteDetails: null,
-      instructions: null,
-      metadata: null,
-      model: "gpt-4",
-      object: "response",
-      output: [],
-      parallelToolCalls: true,
-      presencePenalty: 4886.88,
-      status: "in_progress",
-      temperature: null,
-      toolChoice: "auto",
-      tools: [],
-      topP: null,
-    },
-    sequenceNumber: 0,
-    type: "response.created",
+    contentIndex: 844013,
+    delta: "Hello",
+    itemId: "<id>",
+    logprobs: [
+      {
+        logprob: -0.5,
+        token: "Hello",
+      },
+    ],
+    outputIndex: 868033,
+    sequenceNumber: 359136,
+    type: "response.output_text.delta",
   },
 };
 ```
