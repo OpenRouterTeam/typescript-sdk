@@ -7,6 +7,8 @@ import * as z from "zod/v4";
 import { EventStream } from "../../lib/event-streams.js";
 import { remap as remap$ } from "../../lib/primitives.js";
 import { safeParse } from "../../lib/schemas.js";
+import * as openEnums from "../../types/enums.js";
+import { OpenEnum } from "../../types/enums.js";
 import { Result as SafeParseResult } from "../../types/fp.js";
 import { SDKValidationError } from "../errors/sdkvalidationerror.js";
 import * as models from "../index.js";
@@ -33,6 +35,20 @@ export type CreateResponsesGlobals = {
   appCategories?: string | undefined;
 };
 
+/**
+ * Opt-in to surface routing metadata on the response under `openrouter_metadata`. Defaults to `off`. The `metadata` query parameter is honored as a fallback when the header is absent or carries an unrecognized value.
+ */
+export const CreateResponsesXOpenRouterExperimentalMetadata = {
+  Off: "off",
+  Standard: "standard",
+} as const;
+/**
+ * Opt-in to surface routing metadata on the response under `openrouter_metadata`. Defaults to `off`. The `metadata` query parameter is honored as a fallback when the header is absent or carries an unrecognized value.
+ */
+export type CreateResponsesXOpenRouterExperimentalMetadata = OpenEnum<
+  typeof CreateResponsesXOpenRouterExperimentalMetadata
+>;
+
 export type CreateResponsesRequest = {
   /**
    * The app identifier should be your app's URL and is used as the primary identifier for rankings.
@@ -53,17 +69,17 @@ export type CreateResponsesRequest = {
    * @remarks
    */
   appCategories?: string | undefined;
-  responsesRequest: models.ResponsesRequest;
-};
-
-/**
- * Successful response
- */
-export type CreateResponsesResponseBody = {
   /**
-   * Union of all possible event types emitted during response streaming
+   * Opt-in fallback for `X-OpenRouter-Experimental-Metadata`. Same semantics as the header. The header takes precedence when both are present and the header value is valid.
    */
-  data: models.StreamEvents;
+  metadata?: models.MetadataLevel | undefined;
+  /**
+   * Opt-in to surface routing metadata on the response under `openrouter_metadata`. Defaults to `off`. The `metadata` query parameter is honored as a fallback when the header is absent or carries an unrecognized value.
+   */
+  xOpenRouterExperimentalMetadata?:
+    | CreateResponsesXOpenRouterExperimentalMetadata
+    | undefined;
+  responsesRequest: models.ResponsesRequest;
 };
 
 export type CreateResponsesResponse =
@@ -71,10 +87,17 @@ export type CreateResponsesResponse =
   | EventStream<models.StreamEvents>;
 
 /** @internal */
+export const CreateResponsesXOpenRouterExperimentalMetadata$outboundSchema:
+  z.ZodType<string, CreateResponsesXOpenRouterExperimentalMetadata> = openEnums
+    .outboundSchema(CreateResponsesXOpenRouterExperimentalMetadata);
+
+/** @internal */
 export type CreateResponsesRequest$Outbound = {
   "HTTP-Referer"?: string | undefined;
   appTitle?: string | undefined;
   appCategories?: string | undefined;
+  metadata?: string | undefined;
+  "X-OpenRouter-Experimental-Metadata"?: string | undefined;
   ResponsesRequest: models.ResponsesRequest$Outbound;
 };
 
@@ -86,10 +109,14 @@ export const CreateResponsesRequest$outboundSchema: z.ZodType<
   httpReferer: z.string().optional(),
   appTitle: z.string().optional(),
   appCategories: z.string().optional(),
+  metadata: models.MetadataLevel$outboundSchema.optional(),
+  xOpenRouterExperimentalMetadata:
+    CreateResponsesXOpenRouterExperimentalMetadata$outboundSchema.optional(),
   responsesRequest: models.ResponsesRequest$outboundSchema,
 }).transform((v) => {
   return remap$(v, {
     httpReferer: "HTTP-Referer",
+    xOpenRouterExperimentalMetadata: "X-OpenRouter-Experimental-Metadata",
     responsesRequest: "ResponsesRequest",
   });
 });
@@ -99,35 +126,6 @@ export function createResponsesRequestToJSON(
 ): string {
   return JSON.stringify(
     CreateResponsesRequest$outboundSchema.parse(createResponsesRequest),
-  );
-}
-
-/** @internal */
-export const CreateResponsesResponseBody$inboundSchema: z.ZodType<
-  CreateResponsesResponseBody,
-  unknown
-> = z.object({
-  data: z.string().transform((v, ctx) => {
-    try {
-      return JSON.parse(v);
-    } catch (err) {
-      ctx.addIssue({
-        input: v,
-        code: "custom",
-        message: `malformed json: ${err}`,
-      });
-      return z.NEVER;
-    }
-  }).pipe(models.StreamEvents$inboundSchema),
-});
-
-export function createResponsesResponseBodyFromJSON(
-  jsonString: string,
-): SafeParseResult<CreateResponsesResponseBody, SDKValidationError> {
-  return safeParse(
-    jsonString,
-    (x) => CreateResponsesResponseBody$inboundSchema.parse(JSON.parse(x)),
-    `Failed to parse 'CreateResponsesResponseBody' from JSON`,
   );
 }
 
@@ -143,9 +141,8 @@ export const CreateResponsesResponse$inboundSchema: z.ZodType<
         if (rawEvent.data === "[DONE]") return { done: true, value: undefined };
         return {
           done: false,
-          value: z.lazy(() => CreateResponsesResponseBody$inboundSchema).parse(
-            rawEvent,
-          )?.data,
+          value: models.ResponsesStreamingResponse$inboundSchema.parse(rawEvent)
+            ?.data,
         };
       });
     }),
