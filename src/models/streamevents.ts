@@ -51,6 +51,10 @@ import {
   OpenResponsesCreatedEvent$inboundSchema,
 } from "./openresponsescreatedevent.js";
 import {
+  OpenResponsesDebugEvent,
+  OpenResponsesDebugEvent$inboundSchema,
+} from "./openresponsesdebugevent.js";
+import {
   OpenResponsesInProgressEvent,
   OpenResponsesInProgressEvent$inboundSchema,
 } from "./openresponsesinprogressevent.js";
@@ -133,6 +137,7 @@ export type StreamEvents =
   | ContentPartAddedEvent
   | ContentPartDoneEvent
   | OpenResponsesCreatedEvent
+  | OpenResponsesDebugEvent
   | StreamEventsResponseFailed
   | FunctionCallArgsDeltaEvent
   | FunctionCallArgsDoneEvent
@@ -168,6 +173,7 @@ export const StreamEvents$inboundSchema: z.ZodType<StreamEvents, unknown> =
     ["response.content_part.added"]: ContentPartAddedEvent$inboundSchema,
     ["response.content_part.done"]: ContentPartDoneEvent$inboundSchema,
     ["response.created"]: OpenResponsesCreatedEvent$inboundSchema,
+    ["response.debug"]: OpenResponsesDebugEvent$inboundSchema,
     ["response.failed"]: StreamEventsResponseFailed$inboundSchema,
     ["response.function_call_arguments.delta"]:
       FunctionCallArgsDeltaEvent$inboundSchema,
