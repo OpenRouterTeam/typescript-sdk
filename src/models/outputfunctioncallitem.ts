@@ -48,6 +48,10 @@ export type OutputFunctionCallItem = {
   callId: string;
   id?: string | undefined;
   name: string;
+  /**
+   * Namespace qualifier for tools registered as part of a namespace tool group (e.g. an MCP server)
+   */
+  namespace?: string | undefined;
   status?:
     | OutputFunctionCallItemStatusCompleted
     | OutputFunctionCallItemStatusIncomplete
@@ -145,6 +149,7 @@ export const OutputFunctionCallItem$inboundSchema: z.ZodType<
   call_id: z.string(),
   id: z.string().optional(),
   name: z.string(),
+  namespace: z.string().optional(),
   status: z.union([
     OutputFunctionCallItemStatusCompleted$inboundSchema,
     OutputFunctionCallItemStatusIncomplete$inboundSchema,
@@ -162,6 +167,7 @@ export type OutputFunctionCallItem$Outbound = {
   call_id: string;
   id?: string | undefined;
   name: string;
+  namespace?: string | undefined;
   status?: string | string | string | undefined;
   type: string;
 };
@@ -175,6 +181,7 @@ export const OutputFunctionCallItem$outboundSchema: z.ZodType<
   callId: z.string(),
   id: z.string().optional(),
   name: z.string(),
+  namespace: z.string().optional(),
   status: z.union([
     OutputFunctionCallItemStatusCompleted$outboundSchema,
     OutputFunctionCallItemStatusIncomplete$outboundSchema,
