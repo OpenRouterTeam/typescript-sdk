@@ -1,19 +1,19 @@
 lockVersion: ""
 id: ""
 management:
-  docChecksum: 59bd0c5fc3e3c87e9d24bbdaa53cb975
+  docChecksum: 861dda9598c4c1ce5e6d2a4df70b314c
   docVersion: 1.0.0
   speakeasyVersion: 1.761.0
   generationVersion: 2.879.1
-  releaseVersion: 0.12.31
-  configChecksum: 610f24a954bfe0cbc4467c553d8daff5
+  releaseVersion: 0.12.32
+  configChecksum: 4cc6b3cf3d88fc3df6b3368355184827
   repoURL: https://github.com/OpenRouterTeam/typescript-sdk.git
   installationURL: https://github.com/OpenRouterTeam/typescript-sdk
   published: true
 persistentEdits:
-  generation_id: 7cb365f8-5bb6-423e-8fe6-ecd6dd877156
-  pristine_commit_hash: 27d2bbc3d7b73ce454ce338ec42822afd9a2638a
-  pristine_tree_hash: 1ff1044d6cb98c659fe61bf2af4d9420bcd88f1e
+  generation_id: e343b317-c97f-43e4-80fc-aa0b2e847cf5
+  pristine_commit_hash: ed1657ecbb41e7e6ca080977e4b3f35b63626800
+  pristine_tree_hash: 2819d1480e1655a2cb799dd5fe7de78ff28d876c
 features:
   typescript:
     acceptHeaders: 2.81.2
@@ -1277,10 +1277,12 @@ trackedFiles:
     id: f7b3d465a4f5
     last_write_checksum: sha1:4052598701d92df00ec1278f6bdcedb5a9cdd358
     pristine_git_object: 4f2606cf49bc90606e04721db4eefb3a0c2b3d02
+    deleted: true
   docs/models/endpointsmetadata.md:
     id: 4cbc88a753ea
     last_write_checksum: sha1:4d525d58ec66d8aa0ff9ec37891ba2134be424d9
     pristine_git_object: 4a4e83130dd46bd16f570e90a74067f37d6a01cd
+    deleted: true
   docs/models/endpointstatus.md:
     id: fcbb5455c001
     last_write_checksum: sha1:4ffb53aadd3456dd8db042a9f21c9180ef83ee8b
@@ -1940,6 +1942,7 @@ trackedFiles:
     id: b0f932ae3619
     last_write_checksum: sha1:0f5c6702fdaa1825b1d3767c7315e96f66752547
     pristine_git_object: 1a417600ffa79f9e0d8ee0e6920e8355efd31bd4
+    deleted: true
   docs/models/modality.md:
     id: bf9d60290081
     last_write_checksum: sha1:8c6813e57875127c5fa7d7fcf5b86936eb9b6895
@@ -2178,6 +2181,7 @@ trackedFiles:
     id: df25861e1aa5
     last_write_checksum: sha1:99bc62f802249b9da025b3394ea0e977ee5cab26
     pristine_git_object: c5408721f6e82c308ba5412c0c7d1bb39225305e
+    deleted: true
   docs/models/openrouterwebsearchservertool.md:
     id: cc043aaf682e
     last_write_checksum: sha1:762e712514f77ae9576f8d6dbd67be88f80d2be5
@@ -3459,10 +3463,12 @@ trackedFiles:
     id: 4653fb0c987f
     last_write_checksum: sha1:cdeb3c37cea98dc767d5f24b7b89905b7aaa7ac6
     pristine_git_object: 2d1da74169f7b667a315ec6f8d5c7232af6cad91
+    deleted: true
   docs/models/pipelinestagetype.md:
     id: 445479e79ed2
     last_write_checksum: sha1:ad3a74154cf1d6f4d3834ae5c43829182e36b351
     pristine_git_object: 1d2c77790107cc980a38f878d1981e3fddc5325b
+    deleted: true
   docs/models/preferredmaxlatency.md:
     id: 6c99f91a353b
     last_write_checksum: sha1:e53440e449330e6feed91ca6a5646354c9f4b002
@@ -3904,18 +3910,22 @@ trackedFiles:
     id: 986b5bc62fa7
     last_write_checksum: sha1:0b4251e93035bcd2c5ad1abc4ae89d18659564dd
     pristine_git_object: 9c9b180a85923f10a513cd3a17d7eccc4d31fd5d
+    deleted: true
   docs/models/routerattempt.md:
     id: 6bcaf53856f9
     last_write_checksum: sha1:3d95c6d314ed76aad76acfc3b632cddefb9833b3
     pristine_git_object: f6c8cd686573e518a49b70f80f577c87e4489549
+    deleted: true
   docs/models/routerparams.md:
     id: 7d0c54d28e06
     last_write_checksum: sha1:42fcd0330efb57f3fe6b2904964410b19c36a896
     pristine_git_object: f73fc0a66345e7adce9978d0c06534d2ed48b7cd
+    deleted: true
   docs/models/routingstrategy.md:
     id: 43d9056cb4b6
     last_write_checksum: sha1:6cfc32c52bf62169260e445858a2136587797307
     pristine_git_object: 7c7e61e94209b1d4e9d1fcd9eef60866eb939e6d
+    deleted: true
   docs/models/searchcontextsizeenum.md:
     id: 4de34693233a
     last_write_checksum: sha1:efc7659126209876e2b83b5fd67b1dc379796ad0
@@ -4548,12 +4558,12 @@ trackedFiles:
     pristine_git_object: 410efafd6a7f50d91ccb87131fedbe0c3d47e15a
   jsr.json:
     id: 7f6ab7767282
-    last_write_checksum: sha1:ad66edf55fc4920fc765d4b08b673aeb98d90489
-    pristine_git_object: 292219496cf1aa1dbd963a14c275daf1d8d8d732
+    last_write_checksum: sha1:260b226ac86aa0ec21b30a7c132ef9fca809d76c
+    pristine_git_object: 930d145f06bf41601b42f66a941c7bb119435b91
   package.json:
     id: 7030d0b2f71b
-    last_write_checksum: sha1:1537d478c7c1774cd6eb3032b7c2c7064fc1dde5
-    pristine_git_object: 2244e3a6c173c67c2f41c0a92a5bb6a8b51b6573
+    last_write_checksum: sha1:a388ce2e40b0fe45d9381243cc751a07b5963275
+    pristine_git_object: b07ab6e636cc30481ba7e7362bed9ed300a997e1
   src/core.ts:
     id: f431fdbcd144
     last_write_checksum: sha1:5aa66b0b6a5964f3eea7f3098c2eb3c0ee9c0131
@@ -4780,8 +4790,8 @@ trackedFiles:
     pristine_git_object: a187e58707bdb726ca2aff74941efe7493422d4e
   src/lib/config.ts:
     id: 320761608fb3
-    last_write_checksum: sha1:7cd466c3cda40959e39d73caf9a695777da389e7
-    pristine_git_object: c5a0116ab113d3f29a55dfa5eaf5072d5135ae6e
+    last_write_checksum: sha1:9d72c12b8c3209096b972e38d6d5509acd79db36
+    pristine_git_object: b1199af50b1a5e0573643d6160bd7ecdcd6977f1
   src/lib/dlv.ts:
     id: b1988214835a
     last_write_checksum: sha1:eaac763b22717206a6199104e0403ed17a4e2711
@@ -7363,4 +7373,3 @@ examples:
         "529":
           application/json: {"error": {"code": 529, "message": "Provider returned error"}}
 examplesVersion: 1.0.2
-releaseNotes: "## Typescript SDK Changes:\n* `openrouter.analytics.getUserActivity()`:  `error.openrouterMetadata` **Added**\n* `openrouter.tts.createSpeech()`:  `error.openrouterMetadata` **Added**\n* `openrouter.stt.createTranscription()`:  `error.openrouterMetadata` **Added**\n* `openrouter.oAuth.exchangeAuthCodeForApiKey()`:  `error.openrouterMetadata` **Added**\n* `openrouter.oAuth.createAuthCode()`:  `error.openrouterMetadata` **Added**\n* `openrouter.chat.send()`: \n  *  `request.xOpenRouterExperimentalMetadata` **Added**\n  *  `response` **Changed**\n  *  `error.openrouterMetadata` **Added**\n* `openrouter.credits.getCredits()`:  `error.openrouterMetadata` **Added**\n* `openrouter.embeddings.generate()`:  `error.openrouterMetadata` **Added**\n* `openrouter.embeddings.listModels()`:  `error.openrouterMetadata` **Added**\n* `openrouter.endpoints.listZdrEndpoints()`:  `error.openrouterMetadata` **Added**\n* `openrouter.endpoints.list()`:  `error.openrouterMetadata` **Added**\n* `openrouter.generations.getGeneration()`:  `error.openrouterMetadata` **Added**\n* `openrouter.generations.listGenerationContent()`:  `error.openrouterMetadata` **Added**\n* `openrouter.guardrails.list()`:  `error.openrouterMetadata` **Added**\n* `openrouter.guardrails.create()`:  `error.openrouterMetadata` **Added**\n* `openrouter.guardrails.delete()`:  `error.openrouterMetadata` **Added**\n* `openrouter.guardrails.get()`:  `error.openrouterMetadata` **Added**\n* `openrouter.guardrails.update()`:  `error.openrouterMetadata` **Added**\n* `openrouter.guardrails.listGuardrailKeyAssignments()`:  `error.openrouterMetadata` **Added**\n* `openrouter.guardrails.bulkAssignKeys()`:  `error.openrouterMetadata` **Added**\n* `openrouter.guardrails.bulkUnassignKeys()`:  `error.openrouterMetadata` **Added**\n* `openrouter.guardrails.listGuardrailMemberAssignments()`:  `error.openrouterMetadata` **Added**\n* `openrouter.guardrails.bulkAssignMembers()`:  `error.openrouterMetadata` **Added**\n* `openrouter.guardrails.bulkUnassignMembers()`:  `error.openrouterMetadata` **Added**\n* `openrouter.guardrails.listKeyAssignments()`:  `error.openrouterMetadata` **Added**\n* `openrouter.guardrails.listMemberAssignments()`:  `error.openrouterMetadata` **Added**\n* `openrouter.apiKeys.getCurrentKeyMetadata()`:  `error.openrouterMetadata` **Added**\n* `openrouter.apiKeys.list()`:  `error.openrouterMetadata` **Added**\n* `openrouter.apiKeys.create()`:  `error.openrouterMetadata` **Added**\n* `openrouter.apiKeys.delete()`:  `error.openrouterMetadata` **Added**\n* `openrouter.apiKeys.get()`:  `error.openrouterMetadata` **Added**\n* `openrouter.apiKeys.update()`:  `error.openrouterMetadata` **Added**\n* `openrouter.models.list()`:  `error.openrouterMetadata` **Added**\n* `openrouter.models.count()`:  `error.openrouterMetadata` **Added**\n* `openrouter.models.listForUser()`:  `error.openrouterMetadata` **Added**\n* `openrouter.organization.listMembers()`:  `error.openrouterMetadata` **Added**\n* `openrouter.providers.list()`:  `error.openrouterMetadata` **Added**\n* `openrouter.rerank.rerank()`:  `error.openrouterMetadata` **Added**\n* `openrouter.beta.responses.send()`: \n  *  `request.xOpenRouterExperimentalMetadata` **Added**\n  *  `response` **Changed**\n  *  `error.openrouterMetadata` **Added**\n* `openrouter.videoGeneration.generate()`:  `error.openrouterMetadata` **Added**\n* `openrouter.videoGeneration.getGeneration()`:  `error.openrouterMetadata` **Added**\n* `openrouter.videoGeneration.getVideoContent()`:  `error.openrouterMetadata` **Added**\n* `openrouter.videoGeneration.listVideosModels()`:  `error.openrouterMetadata` **Added**\n* `openrouter.workspaces.list()`:  `error.openrouterMetadata` **Added**\n* `openrouter.workspaces.create()`:  `error.openrouterMetadata` **Added**\n* `openrouter.workspaces.delete()`:  `error.openrouterMetadata` **Added**\n* `openrouter.workspaces.get()`:  `error.openrouterMetadata` **Added**\n* `openrouter.workspaces.update()`:  `error.openrouterMetadata` **Added**\n* `openrouter.workspaces.bulkAddMembers()`:  `error.openrouterMetadata` **Added**\n* `openrouter.workspaces.bulkRemoveMembers()`:  `error.openrouterMetadata` **Added**\n"
