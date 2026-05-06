@@ -5463,8 +5463,6 @@ components:
         model: openai/gpt-4o
         provider: OpenAI
         selected: true
-        sort_rank: 0
-        sort_value: 0.005
       properties:
         model:
           type: string
@@ -5472,18 +5470,10 @@ components:
           type: string
         selected:
           type: boolean
-        sort_rank:
-          type: integer
-        sort_value:
-          format: double
-          nullable: true
-          type: number
       required:
         - provider
         - model
         - selected
-        - sort_rank
-        - sort_value
       type: object
     EndpointsMetadata:
       example:
@@ -5491,26 +5481,16 @@ components:
           - model: openai/gpt-4o
             provider: OpenAI
             selected: true
-            sort_rank: 0
-            sort_value: 0.005
-        sort: price
         total: 3
       properties:
         available:
           items:
             $ref: '#/components/schemas/EndpointInfo'
           type: array
-        sort:
-          type: string
-        sort_value:
-          format: double
-          nullable: true
-          type: number
         total:
           type: integer
       required:
         - total
-        - sort
         - available
       type: object
     EndpointStatus:
@@ -9765,15 +9745,12 @@ components:
             - model: openai/gpt-4o
               provider: OpenAI
               selected: true
-              sort_rank: 0
-              sort_value: 0.005
-          sort: price
           total: 1
         is_byok: false
         region: iad
         requested: openai/gpt-4o
         strategy: direct
-        summary: sort=price, available=1, selected=OpenAI
+        summary: available=1, selected=OpenAI
       properties:
         attempt:
           type: integer
@@ -11164,10 +11141,8 @@ components:
         Categorical kind of a pipeline stage. Multiple plugins can share a type (e.g. all guardrail-level plugins emit
         `guardrail`); the `name` field disambiguates which plugin emitted it.
       enum:
-        - router
         - guardrail
-        - web_search
-        - file_parser
+        - plugin
         - server_tools
         - response_healing
         - context_compression
@@ -13139,13 +13114,11 @@ components:
       additionalProperties:
         nullable: true
       example:
-        sort: price
+        version_group: anthropic/claude-sonnet-4
       properties:
         quality_floor:
           format: double
           type: number
-        sort:
-          type: string
         throughput_floor:
           format: double
           type: number
