@@ -1,19 +1,19 @@
 lockVersion: ""
 id: ""
 management:
-  docChecksum: 31a4307ae9a3be0f352301a5b6977f9f
+  docChecksum: 779dfd1a70ba0dbc401e6a8176bcd3f9
   docVersion: 1.0.0
   speakeasyVersion: 1.761.0
   generationVersion: 2.879.1
-  releaseVersion: 0.12.29
-  configChecksum: eb1f812d5ac6cb2650ac8f9defccd609
+  releaseVersion: 0.12.30
+  configChecksum: 23a3c13103c78ff0e4d42b4075dbce6b
   repoURL: https://github.com/OpenRouterTeam/typescript-sdk.git
   installationURL: https://github.com/OpenRouterTeam/typescript-sdk
   published: true
 persistentEdits:
-  generation_id: 380f815d-7d65-45fe-914a-5582d6a53d2c
-  pristine_commit_hash: f343651a883fb6d103d2720c7318b4b6ff5823ac
-  pristine_tree_hash: a3c31556dc2c7c3a044bf5d91979222b3f7cba59
+  generation_id: fe650004-c73b-47b0-a7f1-49d7e74c6d22
+  pristine_commit_hash: ef82f85c431cd763ea2c700433f5e364b36d562a
+  pristine_tree_hash: b3a5719b5c590dbe6f578314452edb1c642dffc8
 features:
   typescript:
     acceptHeaders: 2.81.2
@@ -821,6 +821,10 @@ trackedFiles:
     last_write_checksum: sha1:9515ffdb2008f9df5b8af70c18598303e9adf251
     pristine_git_object: 9641d0fbcd2b881c743fcd004c02b0077abb670c
     deleted: true
+  docs/models/chatstreamingresponse.md:
+    id: 71b72bd21cdb
+    last_write_checksum: sha1:d620e603e4dad6842fca7e19928a536b319c2ad4
+    pristine_git_object: 50af9d5841716bb84bafff0b3aa41353dafa5f03
   docs/models/chatstreamoptions.md:
     id: e423b323384a
     last_write_checksum: sha1:1da22c11da9de199208268493327242c36963aca
@@ -2872,12 +2876,8 @@ trackedFiles:
     pristine_git_object: 3a4bd0981c04f68c132ca27a4fd616b705e50dc4
   docs/models/operations/sendchatcompletionrequestresponse.md:
     id: 3ca0009c143d
-    last_write_checksum: sha1:781e7e2a5b75b7143b675140c5769504af62d5e3
-    pristine_git_object: c24f870a01d6289c521c1bbd1e8dac34b2517009
-  docs/models/operations/sendchatcompletionrequestresponsebody.md:
-    id: fb7605216c3b
-    last_write_checksum: sha1:03ab5ea7d992da3bf0d81cf19574904324d65600
-    pristine_git_object: c949a52d9f3ebf84195bbdaacab61d926bd4d6a0
+    last_write_checksum: sha1:287c258f297b7f19bb806019b0115b6f422af287
+    pristine_git_object: 3ef6d9227df250312a1113a4026b8984f485f4e3
   docs/models/operations/updateguardrailglobals.md:
     id: dc7cc05a81c1
     last_write_checksum: sha1:9a81f6463fdae1bddc1194cd2717b2a6855dae6d
@@ -4511,12 +4511,12 @@ trackedFiles:
     pristine_git_object: 410efafd6a7f50d91ccb87131fedbe0c3d47e15a
   jsr.json:
     id: 7f6ab7767282
-    last_write_checksum: sha1:32d2e2eadd506ef7db09d684450d2e6911685bac
-    pristine_git_object: 80a751fad9514ccf0a31b6d3216a27169d5970a5
+    last_write_checksum: sha1:de743b6955e1dda805318cc3528b88f918f9d24f
+    pristine_git_object: f19595e8748a231c565762bd21b4fdacb18efcbd
   package.json:
     id: 7030d0b2f71b
-    last_write_checksum: sha1:fc9158713b9dde9a111a03a0c1fc0a0beb493166
-    pristine_git_object: 2e244d517019a8b8c2111a4c99869e2c365c7fea
+    last_write_checksum: sha1:b18fe8a702da307a62c1949d072f5d99bc7bd6ad
+    pristine_git_object: 075fc782c4ac0e0cab751d99bce93a100a98dc14
   src/core.ts:
     id: f431fdbcd144
     last_write_checksum: sha1:5aa66b0b6a5964f3eea7f3098c2eb3c0ee9c0131
@@ -4743,8 +4743,8 @@ trackedFiles:
     pristine_git_object: a187e58707bdb726ca2aff74941efe7493422d4e
   src/lib/config.ts:
     id: 320761608fb3
-    last_write_checksum: sha1:debcc42a9df3f558f2ae0723e1c4afac671f61bc
-    pristine_git_object: de62262d08a8e599593cfc9299b9f6f4b6d945f3
+    last_write_checksum: sha1:0a5e56d109a096dbb64e592f2fcaf4cb1278ac14
+    pristine_git_object: a6d07e0be769ee61b9a39157cf0626fe9a51acbd
   src/lib/dlv.ts:
     id: b1988214835a
     last_write_checksum: sha1:eaac763b22717206a6199104e0403ed17a4e2711
@@ -5017,6 +5017,10 @@ trackedFiles:
     id: 74a4be948d5f
     last_write_checksum: sha1:ae892de5ee0fa7f4a7a8b699d25d5aa37fd97ff7
     pristine_git_object: 42494af7c7710d16b5f5136549b31a0991934a64
+  src/models/chatstreamingresponse.ts:
+    id: bf6c7ab2065f
+    last_write_checksum: sha1:b524f775c8e08762a7587cb9e92c0308f736d545
+    pristine_git_object: d4e565b906458fe440c52035611ba43b42b43a01
   src/models/chatstreamoptions.ts:
     id: 83ba1c3db4bb
     last_write_checksum: sha1:140bb05ede4b812704e15368a9ace4ccf3fc0a82
@@ -5375,8 +5379,8 @@ trackedFiles:
     pristine_git_object: 8e109bedfdcf2c4808e49323dda861e3c6069d51
   src/models/index.ts:
     id: f93644b0f37e
-    last_write_checksum: sha1:a015d5b2b6e1e9a6255dadc8fc471556ac5edc96
-    pristine_git_object: 6c915dd21f9263c6e9edee9c6e57ab98baf75204
+    last_write_checksum: sha1:e6b814dbeaaaa3767dcf0f68fb5379900351f9d7
+    pristine_git_object: cad60405f1f13aadfa8419df45eb74ab4f2e41bc
   src/models/inputaudio.ts:
     id: 9bdc14c7565f
     last_write_checksum: sha1:2f8dc4c1d6a9c2927d9eb186e0ecedf7b81838e6
@@ -5727,8 +5731,8 @@ trackedFiles:
     pristine_git_object: aac1d4b50de354941d9b207a3de1463ca045caa9
   src/models/operations/sendchatcompletionrequest.ts:
     id: 52a55a780d2d
-    last_write_checksum: sha1:04d1f99f1d53d12b39325dea7e35811565d3e82a
-    pristine_git_object: ad06e9df4beec78d6ca5bf732d1b9468615fdbef
+    last_write_checksum: sha1:15f1f5fc4d1b8db4ec2f05922e2d0fd54189c642
+    pristine_git_object: 43d882515a2b9b18bfbcad5b7aa56086286be263
   src/models/operations/updateguardrail.ts:
     id: f9780f5d66dd
     last_write_checksum: sha1:db1008af35055ff6679ab053c9b5c375bfb0b303
