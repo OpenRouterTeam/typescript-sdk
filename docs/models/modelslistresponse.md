@@ -24,6 +24,7 @@ let value: ModelsListResponse = {
       created: 1692901234,
       defaultParameters: null,
       id: "openai/gpt-4",
+      isPrivate: false,
       links: {
         details: "/api/v1/models/openai/gpt-5.4/endpoints",
       },
