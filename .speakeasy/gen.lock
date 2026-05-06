@@ -1,7 +1,7 @@
 lockVersion: ""
 id: ""
 management:
-  docChecksum: 64785b2c4e965993c09de9296d3d1c86
+  docChecksum: 31a4307ae9a3be0f352301a5b6977f9f
   docVersion: 1.0.0
   speakeasyVersion: 1.761.0
   generationVersion: 2.879.1
@@ -11,9 +11,9 @@ management:
   installationURL: https://github.com/OpenRouterTeam/typescript-sdk
   published: true
 persistentEdits:
-  generation_id: da20529a-b4e3-465b-b796-1d0cd2220d8f
-  pristine_commit_hash: 793aed6466316d5ebaa9b90d761ed72215c7cf54
-  pristine_tree_hash: 490af8b1c475a0d5397961c80444ae955072fc13
+  generation_id: 380f815d-7d65-45fe-914a-5582d6a53d2c
+  pristine_commit_hash: f343651a883fb6d103d2720c7318b4b6ff5823ac
+  pristine_tree_hash: a3c31556dc2c7c3a044bf5d91979222b3f7cba59
 features:
   typescript:
     acceptHeaders: 2.81.2
@@ -4515,8 +4515,8 @@ trackedFiles:
     pristine_git_object: 80a751fad9514ccf0a31b6d3216a27169d5970a5
   package.json:
     id: 7030d0b2f71b
-    last_write_checksum: sha1:83c44218310c002bc927dc7a439bda0d7711ca03
-    pristine_git_object: c4f1ac24b52e84ce5f6d3a663e9193a344fd3398
+    last_write_checksum: sha1:fc9158713b9dde9a111a03a0c1fc0a0beb493166
+    pristine_git_object: 2e244d517019a8b8c2111a4c99869e2c365c7fea
   src/core.ts:
     id: f431fdbcd144
     last_write_checksum: sha1:5aa66b0b6a5964f3eea7f3098c2eb3c0ee9c0131

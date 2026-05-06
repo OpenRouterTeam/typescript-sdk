@@ -79,9 +79,7 @@
     "typecheck": "tsc --noEmit",
     "typecheck:transit": "exit 0"
   },
-  "peerDependencies": {
-    
-  },
+  "peerDependencies": {},
   "devDependencies": {
     "@eslint/js": "^9.26.0",
     "@types/node": "^22.13.12",

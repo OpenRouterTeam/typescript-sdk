@@ -53,16 +53,8 @@ actions:
         - $ref: "#/components/parameters/AppDisplayName"
         - $ref: "#/components/parameters/AppCategories"
 
-  # For /audio/transcriptions and /audio/speech, remove the $ref-based path-level
-  # parameters added above (which count toward x-speakeasy-max-method-params) and
-  # replace them with inline declarations carrying x-speakeasy-globals-hidden: true.
-  # Speakeasy still injects these headers from the SDK constructor (httpReferer /
-  # appTitle / appCategories), but they no longer count against
-  # x-speakeasy-max-method-params, so the method signature stays flat
-  # (request body as the only parameter). Without this, the 4 params (body +
-  # 3 headers) trigger Speakeasy to collapse everything into a single wrapper
-  # object, forcing callers to write { sttRequest: { ... } } /
-  # { speechRequest: { ... } }.
+  # Hide app-identification globals on STT/TTS so the body remains the only
+  # method argument while constructor-level headers still apply.
   - target: $.paths["/audio/transcriptions"].parameters
     description: Drop $ref-based header params on STT so only the hidden inlines remain
     remove: true
