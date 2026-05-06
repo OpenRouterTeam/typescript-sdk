@@ -27,6 +27,8 @@ const openRouter = new OpenRouter({
 
 async function run() {
   const result = await openRouter.beta.responses.send({
+    experimentalMetadata: "standard",
+    xOpenRouterExperimentalMetadata: "standard",
     responsesRequest: {
       input: "Tell me a joke",
       model: "openai/gpt-4o",
@@ -58,6 +60,8 @@ const openRouter = new OpenRouterCore({
 
 async function run() {
   const res = await betaResponsesSend(openRouter, {
+    experimentalMetadata: "standard",
+    xOpenRouterExperimentalMetadata: "standard",
     responsesRequest: {
       input: "Tell me a joke",
       model: "openai/gpt-4o",
