@@ -40,5 +40,5 @@ const value: models.OpenResponsesResult = {
 };
 ```
 
-### `EventStream<operations.CreateResponsesResponseBody>`
+### `EventStream<models.ResponsesStreamingResponse>`
 
