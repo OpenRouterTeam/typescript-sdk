@@ -53,11 +53,17 @@ export type SendChatCompletionRequestRequest = {
    * @remarks
    */
   appCategories?: string | undefined;
-  /**
-   * Opt-in to surface routing metadata on the response under `openrouter_metadata`. Defaults to `disabled`.
-   */
-  xOpenRouterExperimentalMetadata?: models.MetadataLevel | undefined;
   chatRequest: models.ChatRequest;
+};
+
+/**
+ * Successful chat completion response
+ */
+export type SendChatCompletionRequestResponseBody = {
+  /**
+   * Streaming chat completion chunk
+   */
+  data: models.ChatStreamChunk;
 };
 
 export type SendChatCompletionRequestResponse =
@@ -69,7 +75,6 @@ export type SendChatCompletionRequestRequest$Outbound = {
   "HTTP-Referer"?: string | undefined;
   appTitle?: string | undefined;
   appCategories?: string | undefined;
-  "X-OpenRouter-Experimental-Metadata"?: string | undefined;
   ChatRequest: models.ChatRequest$Outbound;
 };
 
@@ -81,13 +86,10 @@ export const SendChatCompletionRequestRequest$outboundSchema: z.ZodType<
   httpReferer: z.string().optional(),
   appTitle: z.string().optional(),
   appCategories: z.string().optional(),
-  xOpenRouterExperimentalMetadata: models.MetadataLevel$outboundSchema
-    .optional(),
   chatRequest: models.ChatRequest$outboundSchema,
 }).transform((v) => {
   return remap$(v, {
     httpReferer: "HTTP-Referer",
-    xOpenRouterExperimentalMetadata: "X-OpenRouter-Experimental-Metadata",
     chatRequest: "ChatRequest",
   });
 });
@@ -103,6 +105,36 @@ export function sendChatCompletionRequestRequestToJSON(
 }
 
 /** @internal */
+export const SendChatCompletionRequestResponseBody$inboundSchema: z.ZodType<
+  SendChatCompletionRequestResponseBody,
+  unknown
+> = z.object({
+  data: z.string().transform((v, ctx) => {
+    try {
+      return JSON.parse(v);
+    } catch (err) {
+      ctx.addIssue({
+        input: v,
+        code: "custom",
+        message: `malformed json: ${err}`,
+      });
+      return z.NEVER;
+    }
+  }).pipe(models.ChatStreamChunk$inboundSchema),
+});
+
+export function sendChatCompletionRequestResponseBodyFromJSON(
+  jsonString: string,
+): SafeParseResult<SendChatCompletionRequestResponseBody, SDKValidationError> {
+  return safeParse(
+    jsonString,
+    (x) =>
+      SendChatCompletionRequestResponseBody$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'SendChatCompletionRequestResponseBody' from JSON`,
+  );
+}
+
+/** @internal */
 export const SendChatCompletionRequestResponse$inboundSchema: z.ZodType<
   SendChatCompletionRequestResponse,
   unknown
@@ -114,8 +146,9 @@ export const SendChatCompletionRequestResponse$inboundSchema: z.ZodType<
         if (rawEvent.data === "[DONE]") return { done: true, value: undefined };
         return {
           done: false,
-          value: models.ChatStreamingResponse$inboundSchema.parse(rawEvent)
-            ?.data,
+          value: z.lazy(() =>
+            SendChatCompletionRequestResponseBody$inboundSchema
+          ).parse(rawEvent)?.data,
         };
       });
     }),

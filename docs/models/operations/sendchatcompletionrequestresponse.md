@@ -24,5 +24,5 @@ const value: models.ChatResult = {
 };
 ```
 
-### `EventStream<models.ChatStreamingResponse>`
+### `EventStream<operations.SendChatCompletionRequestResponseBody>`
 
