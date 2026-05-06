@@ -1,0 +1,15 @@
+# ApplyPatchCallItemType
+
+## Example Usage
+
+```typescript
+import { ApplyPatchCallItemType } from "@openrouter/sdk/models";
+
+let value: ApplyPatchCallItemType = "apply_patch_call";
+```
+
+## Values
+
+```typescript
+"apply_patch_call"
+```

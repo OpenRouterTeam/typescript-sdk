@@ -1,0 +1,15 @@
+# OpenAIResponsesToolChoiceTypeApplyPatch
+
+## Example Usage
+
+```typescript
+import { OpenAIResponsesToolChoiceTypeApplyPatch } from "@openrouter/sdk/models";
+
+let value: OpenAIResponsesToolChoiceTypeApplyPatch = "apply_patch";
+```
+
+## Values
+
+```typescript
+"apply_patch"
+```
