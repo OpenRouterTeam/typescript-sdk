@@ -1,0 +1,22 @@
+# ContentFilterBuiltinEntry
+
+A builtin content filter entry. Builtin filters include PII detectors and the regex-based prompt injection detector.
+
+## Example Usage
+
+```typescript
+import { ContentFilterBuiltinEntry } from "@openrouter/sdk/models";
+
+let value: ContentFilterBuiltinEntry = {
+  action: "block",
+  slug: "regex-prompt-injection",
+};
+```
+
+## Fields
+
+| Field                                                                        | Type                                                                         | Required                                                                     | Description                                                                  | Example                                                                      |
+| ---------------------------------------------------------------------------- | ---------------------------------------------------------------------------- | ---------------------------------------------------------------------------- | ---------------------------------------------------------------------------- | ---------------------------------------------------------------------------- |
+| `action`                                                                     | [models.ContentFilterBuiltinAction](../models/contentfilterbuiltinaction.md) | :heavy_check_mark:                                                           | Action taken when the builtin filter triggers                                | block                                                                        |
+| `label`                                                                      | *string*                                                                     | :heavy_minus_sign:                                                           | Optional label used in redaction placeholders (e.g. "[PROMPT_INJECTION]")    | [PROMPT_INJECTION]                                                           |
+| `slug`                                                                       | [models.ContentFilterBuiltinSlug](../models/contentfilterbuiltinslug.md)     | :heavy_check_mark:                                                           | The builtin filter identifier                                                | regex-prompt-injection                                                       |
