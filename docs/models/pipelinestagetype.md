@@ -1,0 +1,19 @@
+# PipelineStageType
+
+Categorical kind of a pipeline stage. Multiple plugins can share a type (e.g. all guardrail-level plugins emit `guardrail`); the `name` field disambiguates which plugin emitted it.
+
+## Example Usage
+
+```typescript
+import { PipelineStageType } from "@openrouter/sdk/models";
+
+let value: PipelineStageType = "guardrail";
+
+// Open enum: unrecognized values are captured as Unrecognized<string>
+```
+
+## Values
+
+```typescript
+"router" | "guardrail" | "web_search" | "file_parser" | "server_tools" | "response_healing" | "context_compression" | Unrecognized<string>
+```
