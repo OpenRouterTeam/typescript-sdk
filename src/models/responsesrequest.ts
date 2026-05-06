@@ -185,6 +185,10 @@ import {
   WebSearchServerToolOpenRouter$outboundSchema,
 } from "./websearchservertoolopenrouter.js";
 
+export type Debug = {
+  echoUpstreamBody?: boolean | undefined;
+};
+
 export type ResponsesRequestPlugin =
   | AutoRouterPlugin
   | ContextCompressionPlugin
@@ -246,6 +250,7 @@ export type ResponsesRequestToolUnion =
  */
 export type ResponsesRequest = {
   background?: boolean | null | undefined;
+  debug?: Debug | undefined;
   frequencyPenalty?: number | null | undefined;
   /**
    * Provider-specific image configuration options. Keys and values vary by model/provider. See https://openrouter.ai/docs/guides/overview/multimodal/image-generation for more details.
@@ -350,6 +355,24 @@ export type ResponsesRequest = {
    */
   user?: string | undefined;
 };
+
+/** @internal */
+export type Debug$Outbound = {
+  echo_upstream_body?: boolean | undefined;
+};
+
+/** @internal */
+export const Debug$outboundSchema: z.ZodType<Debug$Outbound, Debug> = z.object({
+  echoUpstreamBody: z.boolean().optional(),
+}).transform((v) => {
+  return remap$(v, {
+    echoUpstreamBody: "echo_upstream_body",
+  });
+});
+
+export function debugToJSON(debug: Debug): string {
+  return JSON.stringify(Debug$outboundSchema.parse(debug));
+}
 
 /** @internal */
 export type ResponsesRequestPlugin$Outbound =
@@ -491,6 +514,7 @@ export function responsesRequestToolUnionToJSON(
 /** @internal */
 export type ResponsesRequest$Outbound = {
   background?: boolean | null | undefined;
+  debug?: Debug$Outbound | undefined;
   frequency_penalty?: number | null | undefined;
   image_config?: { [k: string]: ImageConfig$Outbound } | undefined;
   include?: Array<string> | null | undefined;
@@ -569,6 +593,7 @@ export const ResponsesRequest$outboundSchema: z.ZodType<
   ResponsesRequest
 > = z.object({
   background: z.nullable(z.boolean()).optional(),
+  debug: z.lazy(() => Debug$outboundSchema).optional(),
   frequencyPenalty: z.nullable(z.number()).optional(),
   imageConfig: z.record(z.string(), ImageConfig$outboundSchema).optional(),
   include: z.nullable(z.array(ResponseIncludesEnum$outboundSchema)).optional(),
