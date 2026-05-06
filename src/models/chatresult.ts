@@ -11,6 +11,10 @@ import { Result as SafeParseResult } from "../types/fp.js";
 import { ChatChoice, ChatChoice$inboundSchema } from "./chatchoice.js";
 import { ChatUsage, ChatUsage$inboundSchema } from "./chatusage.js";
 import { SDKValidationError } from "./errors/sdkvalidationerror.js";
+import {
+  OpenRouterMetadata,
+  OpenRouterMetadata$inboundSchema,
+} from "./openroutermetadata.js";
 
 export const ChatResultObject = {
   ChatCompletion: "chat.completion",
@@ -38,6 +42,7 @@ export type ChatResult = {
    */
   model: string;
   object: ChatResultObject;
+  openrouterMetadata?: OpenRouterMetadata | undefined;
   /**
    * The service tier used by the upstream provider for this request
    */
@@ -65,11 +70,13 @@ export const ChatResult$inboundSchema: z.ZodType<ChatResult, unknown> = z
     id: z.string(),
     model: z.string(),
     object: ChatResultObject$inboundSchema,
+    openrouter_metadata: OpenRouterMetadata$inboundSchema.optional(),
     service_tier: z.nullable(z.string()).optional(),
     system_fingerprint: z.nullable(z.string()),
     usage: ChatUsage$inboundSchema.optional(),
   }).transform((v) => {
     return remap$(v, {
+      "openrouter_metadata": "openrouterMetadata",
       "service_tier": "serviceTier",
       "system_fingerprint": "systemFingerprint",
     });

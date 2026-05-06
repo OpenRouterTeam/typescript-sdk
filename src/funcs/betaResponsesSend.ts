@@ -4,7 +4,7 @@
  */
 
 import { OpenRouterCore } from "../core.js";
-import { encodeJSON, encodeSimple } from "../lib/encodings.js";
+import { encodeFormQuery, encodeJSON, encodeSimple } from "../lib/encodings.js";
 import { EventStream } from "../lib/event-streams.js";
 import * as M from "../lib/matchers.js";
 import { compactMap } from "../lib/primitives.js";
@@ -211,6 +211,10 @@ async function $do(
 
   const path = pathToFunc("/responses")();
 
+  const query = encodeFormQuery({
+    "metadata": payload.metadata,
+  });
+
   const headers = new Headers(compactMap({
     "Content-Type": "application/json",
     Accept: request?.responsesRequest?.stream
@@ -219,6 +223,11 @@ async function $do(
     "HTTP-Referer": encodeSimple(
       "HTTP-Referer",
       payload["HTTP-Referer"] ?? client._options.httpReferer,
+      { explode: false, charEncoding: "none" },
+    ),
+    "X-OpenRouter-Experimental-Metadata": encodeSimple(
+      "X-OpenRouter-Experimental-Metadata",
+      payload["X-OpenRouter-Experimental-Metadata"],
       { explode: false, charEncoding: "none" },
     ),
     "X-OpenRouter-Categories": encodeSimple(
@@ -268,6 +277,7 @@ async function $do(
     baseURL: options?.serverURL,
     path: path,
     headers: headers,
+    query: query,
     body: body,
     userAgent: client._options.userAgent,
     timeoutMs: options?.timeoutMs || client._options.timeoutMs || -1,
