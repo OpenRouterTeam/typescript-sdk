@@ -11,8 +11,10 @@ import { OpenEnum } from "../types/enums.js";
  * Categorical kind of a pipeline stage. Multiple plugins can share a type (e.g. all guardrail-level plugins emit `guardrail`); the `name` field disambiguates which plugin emitted it.
  */
 export const PipelineStageType = {
+  Router: "router",
   Guardrail: "guardrail",
-  Plugin: "plugin",
+  WebSearch: "web_search",
+  FileParser: "file_parser",
   ServerTools: "server_tools",
   ResponseHealing: "response_healing",
   ContextCompression: "context_compression",

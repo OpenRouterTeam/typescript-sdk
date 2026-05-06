@@ -14,6 +14,7 @@ import { SDKValidationError } from "./errors/sdkvalidationerror.js";
 
 export type RouterParams = {
   qualityFloor?: number | undefined;
+  sort?: string | undefined;
   throughputFloor?: number | undefined;
   versionGroup?: string | undefined;
   additionalProperties?: { [k: string]: any | null } | undefined;
@@ -24,6 +25,7 @@ export const RouterParams$inboundSchema: z.ZodType<RouterParams, unknown> =
   collectExtraKeys$(
     z.object({
       quality_floor: z.number().optional(),
+      sort: z.string().optional(),
       throughput_floor: z.number().optional(),
       version_group: z.string().optional(),
     }).catchall(z.any()),

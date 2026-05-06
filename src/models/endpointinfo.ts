@@ -4,6 +4,7 @@
  */
 
 import * as z from "zod/v4";
+import { remap as remap$ } from "../lib/primitives.js";
 import { safeParse } from "../lib/schemas.js";
 import { Result as SafeParseResult } from "../types/fp.js";
 import { SDKValidationError } from "./errors/sdkvalidationerror.js";
@@ -12,6 +13,8 @@ export type EndpointInfo = {
   model: string;
   provider: string;
   selected: boolean;
+  sortRank: number;
+  sortValue: number | null;
 };
 
 /** @internal */
@@ -20,6 +23,13 @@ export const EndpointInfo$inboundSchema: z.ZodType<EndpointInfo, unknown> = z
     model: z.string(),
     provider: z.string(),
     selected: z.boolean(),
+    sort_rank: z.int(),
+    sort_value: z.nullable(z.number()),
+  }).transform((v) => {
+    return remap$(v, {
+      "sort_rank": "sortRank",
+      "sort_value": "sortValue",
+    });
   });
 
 export function endpointInfoFromJSON(
