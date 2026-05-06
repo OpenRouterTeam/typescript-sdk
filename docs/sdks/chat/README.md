@@ -25,6 +25,8 @@ const openRouter = new OpenRouter({
 
 async function run() {
   const result = await openRouter.chat.send({
+    metadata: "standard",
+    xOpenRouterExperimentalMetadata: "standard",
     chatRequest: {
       maxTokens: 150,
       messages: [
@@ -67,6 +69,8 @@ const openRouter = new OpenRouterCore({
 
 async function run() {
   const res = await chatSend(openRouter, {
+    metadata: "standard",
+    xOpenRouterExperimentalMetadata: "standard",
     chatRequest: {
       maxTokens: 150,
       messages: [

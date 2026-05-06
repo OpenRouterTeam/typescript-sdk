@@ -7,6 +7,8 @@ import * as z from "zod/v4";
 import { EventStream } from "../../lib/event-streams.js";
 import { remap as remap$ } from "../../lib/primitives.js";
 import { safeParse } from "../../lib/schemas.js";
+import * as openEnums from "../../types/enums.js";
+import { OpenEnum } from "../../types/enums.js";
 import { Result as SafeParseResult } from "../../types/fp.js";
 import { SDKValidationError } from "../errors/sdkvalidationerror.js";
 import * as models from "../index.js";
@@ -33,6 +35,20 @@ export type SendChatCompletionRequestGlobals = {
   appCategories?: string | undefined;
 };
 
+/**
+ * Opt-in to surface routing metadata on the response under `openrouter_metadata`. Defaults to `off`. The `metadata` query parameter is honored as a fallback when the header is absent or carries an unrecognized value.
+ */
+export const SendChatCompletionRequestXOpenRouterExperimentalMetadata = {
+  Off: "off",
+  Standard: "standard",
+} as const;
+/**
+ * Opt-in to surface routing metadata on the response under `openrouter_metadata`. Defaults to `off`. The `metadata` query parameter is honored as a fallback when the header is absent or carries an unrecognized value.
+ */
+export type SendChatCompletionRequestXOpenRouterExperimentalMetadata = OpenEnum<
+  typeof SendChatCompletionRequestXOpenRouterExperimentalMetadata
+>;
+
 export type SendChatCompletionRequestRequest = {
   /**
    * The app identifier should be your app's URL and is used as the primary identifier for rankings.
@@ -53,6 +69,16 @@ export type SendChatCompletionRequestRequest = {
    * @remarks
    */
   appCategories?: string | undefined;
+  /**
+   * Opt-in fallback for `X-OpenRouter-Experimental-Metadata`. Same semantics as the header. The header takes precedence when both are present and the header value is valid.
+   */
+  metadata?: models.MetadataLevel | undefined;
+  /**
+   * Opt-in to surface routing metadata on the response under `openrouter_metadata`. Defaults to `off`. The `metadata` query parameter is honored as a fallback when the header is absent or carries an unrecognized value.
+   */
+  xOpenRouterExperimentalMetadata?:
+    | SendChatCompletionRequestXOpenRouterExperimentalMetadata
+    | undefined;
   chatRequest: models.ChatRequest;
 };
 
@@ -61,10 +87,19 @@ export type SendChatCompletionRequestResponse =
   | EventStream<models.ChatStreamChunk>;
 
 /** @internal */
+export const SendChatCompletionRequestXOpenRouterExperimentalMetadata$outboundSchema:
+  z.ZodType<string, SendChatCompletionRequestXOpenRouterExperimentalMetadata> =
+    openEnums.outboundSchema(
+      SendChatCompletionRequestXOpenRouterExperimentalMetadata,
+    );
+
+/** @internal */
 export type SendChatCompletionRequestRequest$Outbound = {
   "HTTP-Referer"?: string | undefined;
   appTitle?: string | undefined;
   appCategories?: string | undefined;
+  metadata?: string | undefined;
+  "X-OpenRouter-Experimental-Metadata"?: string | undefined;
   ChatRequest: models.ChatRequest$Outbound;
 };
 
@@ -76,10 +111,15 @@ export const SendChatCompletionRequestRequest$outboundSchema: z.ZodType<
   httpReferer: z.string().optional(),
   appTitle: z.string().optional(),
   appCategories: z.string().optional(),
+  metadata: models.MetadataLevel$outboundSchema.optional(),
+  xOpenRouterExperimentalMetadata:
+    SendChatCompletionRequestXOpenRouterExperimentalMetadata$outboundSchema
+      .optional(),
   chatRequest: models.ChatRequest$outboundSchema,
 }).transform((v) => {
   return remap$(v, {
     httpReferer: "HTTP-Referer",
+    xOpenRouterExperimentalMetadata: "X-OpenRouter-Experimental-Metadata",
     chatRequest: "ChatRequest",
   });
 });
