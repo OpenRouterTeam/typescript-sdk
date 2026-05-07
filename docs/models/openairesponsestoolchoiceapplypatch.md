@@ -1,0 +1,17 @@
+# OpenAIResponsesToolChoiceApplyPatch
+
+## Example Usage
+
+```typescript
+import { OpenAIResponsesToolChoiceApplyPatch } from "@openrouter/sdk/models";
+
+let value: OpenAIResponsesToolChoiceApplyPatch = {
+  type: "apply_patch",
+};
+```
+
+## Fields
+
+| Field                                                                                                  | Type                                                                                                   | Required                                                                                               | Description                                                                                            |
+| ------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------ |
+| `type`                                                                                                 | [models.OpenAIResponsesToolChoiceTypeApplyPatch](../models/openairesponsestoolchoicetypeapplypatch.md) | :heavy_check_mark:                                                                                     | N/A                                                                                                    |
