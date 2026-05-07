@@ -44,7 +44,10 @@ export type CreateRerankRequestBody = {
    * The rerank model to use
    */
   model: string;
-  provider?: models.ProviderPreferences | null | undefined;
+  /**
+   * Provider routing preferences for the request.
+   */
+  provider?: models.ProviderPreferences | undefined;
   /**
    * The search query to rerank documents against
    */
@@ -156,7 +159,7 @@ export type CreateRerankResponse = CreateRerankResponseBody | string;
 export type CreateRerankRequestBody$Outbound = {
   documents: Array<string>;
   model: string;
-  provider?: models.ProviderPreferences$Outbound | null | undefined;
+  provider?: models.ProviderPreferences$Outbound | undefined;
   query: string;
   top_n?: number | undefined;
 };
@@ -168,7 +171,7 @@ export const CreateRerankRequestBody$outboundSchema: z.ZodType<
 > = z.object({
   documents: z.array(z.string()),
   model: z.string(),
-  provider: z.nullable(models.ProviderPreferences$outboundSchema).optional(),
+  provider: models.ProviderPreferences$outboundSchema.optional(),
   query: z.string(),
   topN: z.int().optional(),
 }).transform((v) => {
