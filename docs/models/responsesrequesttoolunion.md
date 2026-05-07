@@ -185,3 +185,11 @@ const value: models.WebSearchServerToolOpenRouter = {
 };
 ```
 
+### `models.ApplyPatchServerToolOpenRouter`
+
+```typescript
+const value: models.ApplyPatchServerToolOpenRouter = {
+  type: "openrouter:apply_patch",
+};
+```
+
