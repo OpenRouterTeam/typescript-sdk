@@ -11323,6 +11323,7 @@ components:
             - EMAIL
             - PHONE
         name: content-filter
+        summary: PII redacted via Presidio (EMAIL, PHONE)
         type: guardrail
       properties:
         cost_usd:
@@ -11338,6 +11339,8 @@ components:
         guardrail_scope:
           type: string
         name:
+          type: string
+        summary:
           type: string
         type:
           $ref: '#/components/schemas/PipelineStageType'
