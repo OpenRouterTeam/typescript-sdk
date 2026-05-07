@@ -19,6 +19,7 @@ export type PipelineStage = {
   guardrailId?: string | undefined;
   guardrailScope?: string | undefined;
   name: string;
+  summary?: string | undefined;
   /**
    * Categorical kind of a pipeline stage. Multiple plugins can share a type (e.g. all guardrail-level plugins emit `guardrail`); the `name` field disambiguates which plugin emitted it.
    */
@@ -33,6 +34,7 @@ export const PipelineStage$inboundSchema: z.ZodType<PipelineStage, unknown> = z
     guardrail_id: z.string().optional(),
     guardrail_scope: z.string().optional(),
     name: z.string(),
+    summary: z.string().optional(),
     type: PipelineStageType$inboundSchema,
   }).transform((v) => {
     return remap$(v, {
