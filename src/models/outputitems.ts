@@ -10,6 +10,10 @@ import { discriminatedUnion } from "../types/discriminatedUnion.js";
 import { Result as SafeParseResult } from "../types/fp.js";
 import { SDKValidationError } from "./errors/sdkvalidationerror.js";
 import {
+  OutputApplyPatchCallItem,
+  OutputApplyPatchCallItem$inboundSchema,
+} from "./outputapplypatchcallitem.js";
+import {
   OutputApplyPatchServerToolItem,
   OutputApplyPatchServerToolItem$inboundSchema,
 } from "./outputapplypatchservertoolitem.js";
@@ -102,6 +106,7 @@ import {
  * An output item from the response
  */
 export type OutputItems =
+  | OutputApplyPatchCallItem
   | (OutputCodeInterpreterCallItem & { type: "code_interpreter_call" })
   | (OutputComputerCallItem & { type: "computer_call" })
   | (OutputFileSearchCallItem & { type: "file_search_call" })
@@ -135,6 +140,7 @@ export type OutputItems =
 /** @internal */
 export const OutputItems$inboundSchema: z.ZodType<OutputItems, unknown> =
   discriminatedUnion("type", {
+    apply_patch_call: OutputApplyPatchCallItem$inboundSchema,
     code_interpreter_call: OutputCodeInterpreterCallItem$inboundSchema.and(
       z.object({ type: z.literal("code_interpreter_call") }),
     ),

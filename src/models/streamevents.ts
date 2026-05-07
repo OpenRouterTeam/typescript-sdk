@@ -13,6 +13,14 @@ import {
   AnnotationAddedEvent$inboundSchema,
 } from "./annotationaddedevent.js";
 import {
+  ApplyPatchCallOperationDiffDeltaEvent,
+  ApplyPatchCallOperationDiffDeltaEvent$inboundSchema,
+} from "./applypatchcalloperationdiffdeltaevent.js";
+import {
+  ApplyPatchCallOperationDiffDoneEvent,
+  ApplyPatchCallOperationDiffDoneEvent$inboundSchema,
+} from "./applypatchcalloperationdiffdoneevent.js";
+import {
   ContentPartAddedEvent,
   ContentPartAddedEvent$inboundSchema,
 } from "./contentpartaddedevent.js";
@@ -129,6 +137,8 @@ import {
  */
 export type StreamEvents =
   | ErrorEvent
+  | ApplyPatchCallOperationDiffDeltaEvent
+  | ApplyPatchCallOperationDiffDoneEvent
   | StreamEventsResponseCompleted
   | ContentPartAddedEvent
   | ContentPartDoneEvent
@@ -164,6 +174,10 @@ export type StreamEvents =
 export const StreamEvents$inboundSchema: z.ZodType<StreamEvents, unknown> =
   discriminatedUnion("type", {
     error: ErrorEvent$inboundSchema,
+    ["response.apply_patch_call_operation_diff.delta"]:
+      ApplyPatchCallOperationDiffDeltaEvent$inboundSchema,
+    ["response.apply_patch_call_operation_diff.done"]:
+      ApplyPatchCallOperationDiffDoneEvent$inboundSchema,
     ["response.completed"]: StreamEventsResponseCompleted$inboundSchema,
     ["response.content_part.added"]: ContentPartAddedEvent$inboundSchema,
     ["response.content_part.done"]: ContentPartDoneEvent$inboundSchema,
