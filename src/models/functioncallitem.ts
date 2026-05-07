@@ -24,10 +24,6 @@ export type FunctionCallItem = {
   callId: string;
   id: string;
   name: string;
-  /**
-   * Namespace qualifier for tools registered as part of a namespace tool group (e.g. an MCP server)
-   */
-  namespace?: string | undefined;
   status?: ToolCallStatus | undefined;
   type: FunctionCallItemType;
 };
@@ -43,7 +39,6 @@ export type FunctionCallItem$Outbound = {
   call_id: string;
   id: string;
   name: string;
-  namespace?: string | undefined;
   status?: string | undefined;
   type: string;
 };
@@ -57,7 +52,6 @@ export const FunctionCallItem$outboundSchema: z.ZodType<
   callId: z.string(),
   id: z.string(),
   name: z.string(),
-  namespace: z.string().optional(),
   status: ToolCallStatus$outboundSchema.optional(),
   type: FunctionCallItemType$outboundSchema,
 }).transform((v) => {
