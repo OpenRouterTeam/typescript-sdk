@@ -5,27 +5,15 @@
 
 import * as z from "zod/v4";
 import { remap as remap$ } from "../lib/primitives.js";
-import { ClosedEnum } from "../types/enums.js";
 import {
   WebSearchEngine,
   WebSearchEngine$outboundSchema,
 } from "./websearchengine.js";
-
-export const WebSearchPluginType = {
-  Approximate: "approximate",
-} as const;
-export type WebSearchPluginType = ClosedEnum<typeof WebSearchPluginType>;
-
-/**
- * Approximate user location for location-biased search results. Passed through to native providers that support it (e.g. Anthropic).
- */
-export type UserLocation = {
-  city?: string | null | undefined;
-  country?: string | null | undefined;
-  region?: string | null | undefined;
-  timezone?: string | null | undefined;
-  type: WebSearchPluginType;
-};
+import {
+  WebSearchUserLocation,
+  WebSearchUserLocation$Outbound,
+  WebSearchUserLocation$outboundSchema,
+} from "./websearchuserlocation.js";
 
 export type WebSearchPlugin = {
   /**
@@ -51,38 +39,11 @@ export type WebSearchPlugin = {
    */
   maxUses?: number | undefined;
   searchPrompt?: string | undefined;
-  userLocation?: UserLocation | null | undefined;
+  /**
+   * Approximate user location for location-biased search results. Passed through to native providers that support it (e.g. Anthropic).
+   */
+  userLocation?: WebSearchUserLocation | undefined;
 };
-
-/** @internal */
-export const WebSearchPluginType$outboundSchema: z.ZodEnum<
-  typeof WebSearchPluginType
-> = z.enum(WebSearchPluginType);
-
-/** @internal */
-export type UserLocation$Outbound = {
-  city?: string | null | undefined;
-  country?: string | null | undefined;
-  region?: string | null | undefined;
-  timezone?: string | null | undefined;
-  type: string;
-};
-
-/** @internal */
-export const UserLocation$outboundSchema: z.ZodType<
-  UserLocation$Outbound,
-  UserLocation
-> = z.object({
-  city: z.nullable(z.string()).optional(),
-  country: z.nullable(z.string()).optional(),
-  region: z.nullable(z.string()).optional(),
-  timezone: z.nullable(z.string()).optional(),
-  type: WebSearchPluginType$outboundSchema,
-});
-
-export function userLocationToJSON(userLocation: UserLocation): string {
-  return JSON.stringify(UserLocation$outboundSchema.parse(userLocation));
-}
 
 /** @internal */
 export type WebSearchPlugin$Outbound = {
@@ -94,7 +55,7 @@ export type WebSearchPlugin$Outbound = {
   max_results?: number | undefined;
   max_uses?: number | undefined;
   search_prompt?: string | undefined;
-  user_location?: UserLocation$Outbound | null | undefined;
+  user_location?: WebSearchUserLocation$Outbound | undefined;
 };
 
 /** @internal */
@@ -110,8 +71,7 @@ export const WebSearchPlugin$outboundSchema: z.ZodType<
   maxResults: z.int().optional(),
   maxUses: z.int().optional(),
   searchPrompt: z.string().optional(),
-  userLocation: z.nullable(z.lazy(() => UserLocation$outboundSchema))
-    .optional(),
+  userLocation: WebSearchUserLocation$outboundSchema.optional(),
 }).transform((v) => {
   return remap$(v, {
     excludeDomains: "exclude_domains",
