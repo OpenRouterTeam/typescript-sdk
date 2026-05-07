@@ -1,0 +1,17 @@
+# ApplyPatchCallOutputItemStatus
+
+## Example Usage
+
+```typescript
+import { ApplyPatchCallOutputItemStatus } from "@openrouter/sdk/models";
+
+let value: ApplyPatchCallOutputItemStatus = "failed";
+
+// Open enum: unrecognized values are captured as Unrecognized<string>
+```
+
+## Values
+
+```typescript
+"completed" | "failed" | Unrecognized<string>
+```

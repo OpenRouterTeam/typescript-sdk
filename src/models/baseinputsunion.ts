@@ -9,6 +9,14 @@ import * as discriminatedUnionTypes from "../types/discriminatedUnion.js";
 import { discriminatedUnion } from "../types/discriminatedUnion.js";
 import { ClosedEnum } from "../types/enums.js";
 import { Result as SafeParseResult } from "../types/fp.js";
+import {
+  ApplyPatchCallItem,
+  ApplyPatchCallItem$inboundSchema,
+} from "./applypatchcallitem.js";
+import {
+  ApplyPatchCallOutputItem,
+  ApplyPatchCallOutputItem$inboundSchema,
+} from "./applypatchcalloutputitem.js";
 import { SDKValidationError } from "./errors/sdkvalidationerror.js";
 import { InputAudio, InputAudio$inboundSchema } from "./inputaudio.js";
 import { InputFile, InputFile$inboundSchema } from "./inputfile.js";
@@ -128,21 +136,25 @@ export type BaseInputsMessage = {
 };
 
 export type BaseInputsUnion1 =
+  | ApplyPatchCallItem
   | OpenAIResponseFunctionToolCall
   | OutputMessage
   | OpenAIResponseInputMessageItem
   | OpenAIResponseFunctionToolCallOutput
   | OutputItemImageGenerationCall
+  | ApplyPatchCallOutputItem
   | BaseInputsMessage;
 
 export type BaseInputsUnion =
   | string
   | Array<
+    | ApplyPatchCallItem
     | OpenAIResponseFunctionToolCall
     | OutputMessage
     | OpenAIResponseInputMessageItem
     | OpenAIResponseFunctionToolCallOutput
     | OutputItemImageGenerationCall
+    | ApplyPatchCallOutputItem
     | BaseInputsMessage
   >
   | any;
@@ -318,11 +330,13 @@ export const BaseInputsUnion1$inboundSchema: z.ZodType<
   BaseInputsUnion1,
   unknown
 > = z.union([
+  ApplyPatchCallItem$inboundSchema,
   OpenAIResponseFunctionToolCall$inboundSchema,
   OutputMessage$inboundSchema,
   OpenAIResponseInputMessageItem$inboundSchema,
   OpenAIResponseFunctionToolCallOutput$inboundSchema,
   OutputItemImageGenerationCall$inboundSchema,
+  ApplyPatchCallOutputItem$inboundSchema,
   z.lazy(() => BaseInputsMessage$inboundSchema),
 ]);
 
@@ -344,11 +358,13 @@ export const BaseInputsUnion$inboundSchema: z.ZodType<
   z.string(),
   z.array(
     z.union([
+      ApplyPatchCallItem$inboundSchema,
       OpenAIResponseFunctionToolCall$inboundSchema,
       OutputMessage$inboundSchema,
       OpenAIResponseInputMessageItem$inboundSchema,
       OpenAIResponseFunctionToolCallOutput$inboundSchema,
       OutputItemImageGenerationCall$inboundSchema,
+      ApplyPatchCallOutputItem$inboundSchema,
       z.lazy(() => BaseInputsMessage$inboundSchema),
     ]),
   ),
