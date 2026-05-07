@@ -1,13 +1,15 @@
 # WebSearchUserLocation
 
-User location information for web search
+Approximate user location for location-biased search results. Passed through to native providers that support it (e.g. Anthropic).
 
 ## Example Usage
 
 ```typescript
 import { WebSearchUserLocation } from "@openrouter/sdk/models";
 
-let value: WebSearchUserLocation = {};
+let value: WebSearchUserLocation = {
+  type: "approximate",
+};
 ```
 
 ## Fields
@@ -18,4 +20,4 @@ let value: WebSearchUserLocation = {};
 | `country`                                                                  | *string*                                                                   | :heavy_minus_sign:                                                         | N/A                                                                        |
 | `region`                                                                   | *string*                                                                   | :heavy_minus_sign:                                                         | N/A                                                                        |
 | `timezone`                                                                 | *string*                                                                   | :heavy_minus_sign:                                                         | N/A                                                                        |
-| `type`                                                                     | [models.WebSearchUserLocationType](../models/websearchuserlocationtype.md) | :heavy_minus_sign:                                                         | N/A                                                                        |
+| `type`                                                                     | [models.WebSearchUserLocationType](../models/websearchuserlocationtype.md) | :heavy_check_mark:                                                         | N/A                                                                        |
