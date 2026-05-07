@@ -7,14 +7,6 @@ import * as z from "zod/v4";
 import { remap as remap$ } from "../lib/primitives.js";
 import { safeParse } from "../lib/schemas.js";
 import { Result as SafeParseResult } from "../types/fp.js";
-import {
-  ContentFilterBuiltinEntry,
-  ContentFilterBuiltinEntry$inboundSchema,
-} from "./contentfilterbuiltinentry.js";
-import {
-  ContentFilterEntry,
-  ContentFilterEntry$inboundSchema,
-} from "./contentfilterentry.js";
 import { SDKValidationError } from "./errors/sdkvalidationerror.js";
 import {
   GuardrailInterval,
@@ -30,14 +22,6 @@ export type Guardrail = {
    * List of allowed provider IDs
    */
   allowedProviders?: Array<string> | null | undefined;
-  /**
-   * Builtin content filters applied to requests. Includes PII detectors and the regex-based prompt injection detector.
-   */
-  contentFilterBuiltins?: Array<ContentFilterBuiltinEntry> | null | undefined;
-  /**
-   * Custom regex content filters applied to request messages
-   */
-  contentFilters?: Array<ContentFilterEntry> | null | undefined;
   /**
    * ISO 8601 timestamp of when the guardrail was created
    */
@@ -88,11 +72,6 @@ export type Guardrail = {
 export const Guardrail$inboundSchema: z.ZodType<Guardrail, unknown> = z.object({
   allowed_models: z.nullable(z.array(z.string())).optional(),
   allowed_providers: z.nullable(z.array(z.string())).optional(),
-  content_filter_builtins: z.nullable(
-    z.array(ContentFilterBuiltinEntry$inboundSchema),
-  ).optional(),
-  content_filters: z.nullable(z.array(ContentFilterEntry$inboundSchema))
-    .optional(),
   created_at: z.string(),
   description: z.nullable(z.string()).optional(),
   enforce_zdr: z.nullable(z.boolean()).optional(),
@@ -108,8 +87,6 @@ export const Guardrail$inboundSchema: z.ZodType<Guardrail, unknown> = z.object({
   return remap$(v, {
     "allowed_models": "allowedModels",
     "allowed_providers": "allowedProviders",
-    "content_filter_builtins": "contentFilterBuiltins",
-    "content_filters": "contentFilters",
     "created_at": "createdAt",
     "enforce_zdr": "enforceZdr",
     "ignored_models": "ignoredModels",
