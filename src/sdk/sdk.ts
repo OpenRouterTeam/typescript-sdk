@@ -4,24 +4,14 @@
  */
 
 import { ClientSDK } from "../lib/sdks.js";
-import { Analytics } from "./analytics.js";
-import { APIKeys } from "./apikeys.js";
 import { Beta } from "./beta.js";
 import { Chat } from "./chat.js";
-import { Credits } from "./credits.js";
 import { Embeddings } from "./embeddings.js";
 import { Endpoints } from "./endpoints.js";
-import { Generations } from "./generations.js";
-import { Guardrails } from "./guardrails.js";
-import { Models } from "./models.js";
-import { OAuth } from "./oauth.js";
-import { Organization } from "./organization.js";
-import { Providers } from "./providers.js";
 import { Rerank } from "./rerank.js";
 import { Stt } from "./stt.js";
 import { Tts } from "./tts.js";
 import { VideoGeneration } from "./videogeneration.js";
-import { Workspaces } from "./workspaces.js";
 // #region imports
 import type { $ZodObject, $ZodShape, infer as zodInfer } from "zod/v4/core";
 import {
@@ -36,11 +26,6 @@ export { ToolType };
 // #endregion imports
 
 export class OpenRouter extends ClientSDK {
-  private _analytics?: Analytics;
-  get analytics(): Analytics {
-    return (this._analytics ??= new Analytics(this._options));
-  }
-
   private _tts?: Tts;
   get tts(): Tts {
     return (this._tts ??= new Tts(this._options));
@@ -51,19 +36,9 @@ export class OpenRouter extends ClientSDK {
     return (this._stt ??= new Stt(this._options));
   }
 
-  private _oAuth?: OAuth;
-  get oAuth(): OAuth {
-    return (this._oAuth ??= new OAuth(this._options));
-  }
-
   private _chat?: Chat;
   get chat(): Chat {
     return (this._chat ??= new Chat(this._options));
-  }
-
-  private _credits?: Credits;
-  get credits(): Credits {
-    return (this._credits ??= new Credits(this._options));
   }
 
   private _embeddings?: Embeddings;
@@ -74,36 +49,6 @@ export class OpenRouter extends ClientSDK {
   private _endpoints?: Endpoints;
   get endpoints(): Endpoints {
     return (this._endpoints ??= new Endpoints(this._options));
-  }
-
-  private _generations?: Generations;
-  get generations(): Generations {
-    return (this._generations ??= new Generations(this._options));
-  }
-
-  private _guardrails?: Guardrails;
-  get guardrails(): Guardrails {
-    return (this._guardrails ??= new Guardrails(this._options));
-  }
-
-  private _apiKeys?: APIKeys;
-  get apiKeys(): APIKeys {
-    return (this._apiKeys ??= new APIKeys(this._options));
-  }
-
-  private _models?: Models;
-  get models(): Models {
-    return (this._models ??= new Models(this._options));
-  }
-
-  private _organization?: Organization;
-  get organization(): Organization {
-    return (this._organization ??= new Organization(this._options));
-  }
-
-  private _providers?: Providers;
-  get providers(): Providers {
-    return (this._providers ??= new Providers(this._options));
   }
 
   private _rerank?: Rerank;
@@ -119,11 +64,6 @@ export class OpenRouter extends ClientSDK {
   private _videoGeneration?: VideoGeneration;
   get videoGeneration(): VideoGeneration {
     return (this._videoGeneration ??= new VideoGeneration(this._options));
-  }
-
-  private _workspaces?: Workspaces;
-  get workspaces(): Workspaces {
-    return (this._workspaces ??= new Workspaces(this._options));
   }
 
   // #region sdk-class-body

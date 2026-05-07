@@ -4,10 +4,7 @@
  */
 
 import * as z from "zod/v4";
-import { safeParse } from "../lib/schemas.js";
 import { ClosedEnum } from "../types/enums.js";
-import { Result as SafeParseResult } from "../types/fp.js";
-import { SDKValidationError } from "./errors/sdkvalidationerror.js";
 
 export const WebSearchUserLocationType = {
   Approximate: "approximate",
@@ -17,43 +14,28 @@ export type WebSearchUserLocationType = ClosedEnum<
 >;
 
 /**
- * User location information for web search
+ * Approximate user location for location-biased search results. Passed through to native providers that support it (e.g. Anthropic).
  */
 export type WebSearchUserLocation = {
   city?: string | null | undefined;
   country?: string | null | undefined;
   region?: string | null | undefined;
   timezone?: string | null | undefined;
-  type?: WebSearchUserLocationType | undefined;
+  type: WebSearchUserLocationType;
 };
 
 /** @internal */
-export const WebSearchUserLocationType$inboundSchema: z.ZodEnum<
-  typeof WebSearchUserLocationType
-> = z.enum(WebSearchUserLocationType);
-/** @internal */
 export const WebSearchUserLocationType$outboundSchema: z.ZodEnum<
   typeof WebSearchUserLocationType
-> = WebSearchUserLocationType$inboundSchema;
+> = z.enum(WebSearchUserLocationType);
 
-/** @internal */
-export const WebSearchUserLocation$inboundSchema: z.ZodType<
-  WebSearchUserLocation,
-  unknown
-> = z.object({
-  city: z.nullable(z.string()).optional(),
-  country: z.nullable(z.string()).optional(),
-  region: z.nullable(z.string()).optional(),
-  timezone: z.nullable(z.string()).optional(),
-  type: WebSearchUserLocationType$inboundSchema.optional(),
-});
 /** @internal */
 export type WebSearchUserLocation$Outbound = {
   city?: string | null | undefined;
   country?: string | null | undefined;
   region?: string | null | undefined;
   timezone?: string | null | undefined;
-  type?: string | undefined;
+  type: string;
 };
 
 /** @internal */
@@ -65,7 +47,7 @@ export const WebSearchUserLocation$outboundSchema: z.ZodType<
   country: z.nullable(z.string()).optional(),
   region: z.nullable(z.string()).optional(),
   timezone: z.nullable(z.string()).optional(),
-  type: WebSearchUserLocationType$outboundSchema.optional(),
+  type: WebSearchUserLocationType$outboundSchema,
 });
 
 export function webSearchUserLocationToJSON(
@@ -73,14 +55,5 @@ export function webSearchUserLocationToJSON(
 ): string {
   return JSON.stringify(
     WebSearchUserLocation$outboundSchema.parse(webSearchUserLocation),
-  );
-}
-export function webSearchUserLocationFromJSON(
-  jsonString: string,
-): SafeParseResult<WebSearchUserLocation, SDKValidationError> {
-  return safeParse(
-    jsonString,
-    (x) => WebSearchUserLocation$inboundSchema.parse(JSON.parse(x)),
-    `Failed to parse 'WebSearchUserLocation' from JSON`,
   );
 }

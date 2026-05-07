@@ -10,7 +10,14 @@ const openRouter = new OpenRouter({
 });
 
 async function run() {
-  const result = await openRouter.analytics.getUserActivity();
+  const result = await openRouter.tts.createSpeech({
+    speechRequest: {
+      input: "Hello world",
+      model: "elevenlabs/eleven-turbo-v2",
+      speed: 1,
+      voice: "alloy",
+    },
+  });
 
   console.log(result);
 }

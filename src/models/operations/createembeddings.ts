@@ -148,7 +148,7 @@ export type ObjectEmbedding = ClosedEnum<typeof ObjectEmbedding>;
 /**
  * A single embedding object
  */
-export type CreateEmbeddingsData = {
+export type Data = {
   /**
    * Embedding vector as an array of floats or a base64 string
    */
@@ -216,7 +216,7 @@ export type CreateEmbeddingsResponseBody = {
   /**
    * List of embedding objects
    */
-  data: Array<CreateEmbeddingsData>;
+  data: Array<Data>;
   /**
    * Unique identifier for the embeddings response
    */
@@ -458,22 +458,19 @@ export const ObjectEmbedding$inboundSchema: z.ZodEnum<typeof ObjectEmbedding> =
   z.enum(ObjectEmbedding);
 
 /** @internal */
-export const CreateEmbeddingsData$inboundSchema: z.ZodType<
-  CreateEmbeddingsData,
-  unknown
-> = z.object({
+export const Data$inboundSchema: z.ZodType<Data, unknown> = z.object({
   embedding: z.union([z.array(z.number()), z.string()]),
   index: z.int().optional(),
   object: ObjectEmbedding$inboundSchema,
 });
 
-export function createEmbeddingsDataFromJSON(
+export function dataFromJSON(
   jsonString: string,
-): SafeParseResult<CreateEmbeddingsData, SDKValidationError> {
+): SafeParseResult<Data, SDKValidationError> {
   return safeParse(
     jsonString,
-    (x) => CreateEmbeddingsData$inboundSchema.parse(JSON.parse(x)),
-    `Failed to parse 'CreateEmbeddingsData' from JSON`,
+    (x) => Data$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'Data' from JSON`,
   );
 }
 
@@ -541,7 +538,7 @@ export const CreateEmbeddingsResponseBody$inboundSchema: z.ZodType<
   CreateEmbeddingsResponseBody,
   unknown
 > = z.object({
-  data: z.array(z.lazy(() => CreateEmbeddingsData$inboundSchema)),
+  data: z.array(z.lazy(() => Data$inboundSchema)),
   id: z.string().optional(),
   model: z.string(),
   object: ObjectT$inboundSchema,
