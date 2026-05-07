@@ -105,7 +105,10 @@ export type CreateEmbeddingsRequestBody = {
    * The model to use for embeddings
    */
   model: string;
-  provider?: models.ProviderPreferences | null | undefined;
+  /**
+   * Provider routing preferences for the request.
+   */
+  provider?: models.ProviderPreferences | undefined;
   /**
    * A unique identifier for the end-user
    */
@@ -366,7 +369,7 @@ export type CreateEmbeddingsRequestBody$Outbound = {
     | Array<Input$Outbound>;
   input_type?: string | undefined;
   model: string;
-  provider?: models.ProviderPreferences$Outbound | null | undefined;
+  provider?: models.ProviderPreferences$Outbound | undefined;
   user?: string | undefined;
 };
 
@@ -386,7 +389,7 @@ export const CreateEmbeddingsRequestBody$outboundSchema: z.ZodType<
   ]),
   inputType: z.string().optional(),
   model: z.string(),
-  provider: z.nullable(models.ProviderPreferences$outboundSchema).optional(),
+  provider: models.ProviderPreferences$outboundSchema.optional(),
   user: z.string().optional(),
 }).transform((v) => {
   return remap$(v, {
