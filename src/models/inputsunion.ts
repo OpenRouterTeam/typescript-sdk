@@ -7,6 +7,16 @@ import * as z from "zod/v4";
 import { remap as remap$ } from "../lib/primitives.js";
 import { ClosedEnum } from "../types/enums.js";
 import {
+  ApplyPatchCallItem,
+  ApplyPatchCallItem$Outbound,
+  ApplyPatchCallItem$outboundSchema,
+} from "./applypatchcallitem.js";
+import {
+  ApplyPatchCallOutputItem,
+  ApplyPatchCallOutputItem$Outbound,
+  ApplyPatchCallOutputItem$outboundSchema,
+} from "./applypatchcalloutputitem.js";
+import {
   EasyInputMessage,
   EasyInputMessage$Outbound,
   EasyInputMessage$outboundSchema,
@@ -296,6 +306,7 @@ export type InputsMessage = {
 export type InputsUnion1 =
   | OutputCodeInterpreterCallItem
   | FunctionCallItem
+  | ApplyPatchCallItem
   | InputsMessage
   | OutputFunctionCallItem
   | OutputWebSearchCallItem
@@ -304,6 +315,7 @@ export type InputsUnion1 =
   | OutputDatetimeItem
   | ReasoningItem
   | FunctionCallOutputItem
+  | ApplyPatchCallOutputItem
   | InputsReasoning
   | OutputImageGenerationCallItem
   | OutputWebSearchServerToolItem
@@ -330,6 +342,7 @@ export type InputsUnion =
   | Array<
     | OutputCodeInterpreterCallItem
     | FunctionCallItem
+    | ApplyPatchCallItem
     | InputsMessage
     | OutputFunctionCallItem
     | OutputWebSearchCallItem
@@ -338,6 +351,7 @@ export type InputsUnion =
     | OutputDatetimeItem
     | ReasoningItem
     | FunctionCallOutputItem
+    | ApplyPatchCallOutputItem
     | InputsReasoning
     | OutputImageGenerationCallItem
     | OutputWebSearchServerToolItem
@@ -617,6 +631,7 @@ export function inputsMessageToJSON(inputsMessage: InputsMessage): string {
 export type InputsUnion1$Outbound =
   | OutputCodeInterpreterCallItem$Outbound
   | FunctionCallItem$Outbound
+  | ApplyPatchCallItem$Outbound
   | InputsMessage$Outbound
   | OutputFunctionCallItem$Outbound
   | OutputWebSearchCallItem$Outbound
@@ -625,6 +640,7 @@ export type InputsUnion1$Outbound =
   | OutputDatetimeItem$Outbound
   | ReasoningItem$Outbound
   | FunctionCallOutputItem$Outbound
+  | ApplyPatchCallOutputItem$Outbound
   | InputsReasoning$Outbound
   | OutputImageGenerationCallItem$Outbound
   | OutputWebSearchServerToolItem$Outbound
@@ -650,6 +666,7 @@ export const InputsUnion1$outboundSchema: z.ZodType<
 > = z.union([
   OutputCodeInterpreterCallItem$outboundSchema,
   FunctionCallItem$outboundSchema,
+  ApplyPatchCallItem$outboundSchema,
   z.lazy(() => InputsMessage$outboundSchema),
   OutputFunctionCallItem$outboundSchema,
   OutputWebSearchCallItem$outboundSchema,
@@ -658,6 +675,7 @@ export const InputsUnion1$outboundSchema: z.ZodType<
   OutputDatetimeItem$outboundSchema,
   ReasoningItem$outboundSchema,
   FunctionCallOutputItem$outboundSchema,
+  ApplyPatchCallOutputItem$outboundSchema,
   z.lazy(() => InputsReasoning$outboundSchema),
   OutputImageGenerationCallItem$outboundSchema,
   OutputWebSearchServerToolItem$outboundSchema,
@@ -687,6 +705,7 @@ export type InputsUnion$Outbound =
   | Array<
     | OutputCodeInterpreterCallItem$Outbound
     | FunctionCallItem$Outbound
+    | ApplyPatchCallItem$Outbound
     | InputsMessage$Outbound
     | OutputFunctionCallItem$Outbound
     | OutputWebSearchCallItem$Outbound
@@ -695,6 +714,7 @@ export type InputsUnion$Outbound =
     | OutputDatetimeItem$Outbound
     | ReasoningItem$Outbound
     | FunctionCallOutputItem$Outbound
+    | ApplyPatchCallOutputItem$Outbound
     | InputsReasoning$Outbound
     | OutputImageGenerationCallItem$Outbound
     | OutputWebSearchServerToolItem$Outbound
@@ -724,6 +744,7 @@ export const InputsUnion$outboundSchema: z.ZodType<
     z.union([
       OutputCodeInterpreterCallItem$outboundSchema,
       FunctionCallItem$outboundSchema,
+      ApplyPatchCallItem$outboundSchema,
       z.lazy(() => InputsMessage$outboundSchema),
       OutputFunctionCallItem$outboundSchema,
       OutputWebSearchCallItem$outboundSchema,
@@ -732,6 +753,7 @@ export const InputsUnion$outboundSchema: z.ZodType<
       OutputDatetimeItem$outboundSchema,
       ReasoningItem$outboundSchema,
       FunctionCallOutputItem$outboundSchema,
+      ApplyPatchCallOutputItem$outboundSchema,
       z.lazy(() => InputsReasoning$outboundSchema),
       OutputImageGenerationCallItem$outboundSchema,
       OutputWebSearchServerToolItem$outboundSchema,
