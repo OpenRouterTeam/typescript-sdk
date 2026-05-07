@@ -15,5 +15,5 @@ let value: PipelineStageType = "guardrail";
 ## Values
 
 ```typescript
-"guardrail" | "plugin" | "server_tools" | "response_healing" | "context_compression" | Unrecognized<string>
+"guardrail" | "plugin" | "server_tools" | "response_healing" | "context_compression" | "router" | "file_parser" | "web_search" | Unrecognized<string>
 ```

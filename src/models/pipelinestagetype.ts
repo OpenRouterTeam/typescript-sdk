@@ -16,6 +16,9 @@ export const PipelineStageType = {
   ServerTools: "server_tools",
   ResponseHealing: "response_healing",
   ContextCompression: "context_compression",
+  Router: "router",
+  FileParser: "file_parser",
+  WebSearch: "web_search",
 } as const;
 /**
  * Categorical kind of a pipeline stage. Multiple plugins can share a type (e.g. all guardrail-level plugins emit `guardrail`); the `name` field disambiguates which plugin emitted it.
