@@ -14,8 +14,8 @@ let value: ResponsesRequestMaxPrice = {};
 
 | Field                           | Type                            | Required                        | Description                     | Example                         |
 | ------------------------------- | ------------------------------- | ------------------------------- | ------------------------------- | ------------------------------- |
-| `prompt`                        | *string*                        | :heavy_minus_sign:              | Price per million prompt tokens | 1000                            |
+| `audio`                         | *string*                        | :heavy_minus_sign:              | N/A                             | 1000                            |
 | `completion`                    | *string*                        | :heavy_minus_sign:              | N/A                             | 1000                            |
 | `image`                         | *string*                        | :heavy_minus_sign:              | N/A                             | 1000                            |
-| `audio`                         | *string*                        | :heavy_minus_sign:              | N/A                             | 1000                            |
+| `prompt`                        | *string*                        | :heavy_minus_sign:              | Price per million prompt tokens | 1000                            |
 | `request`                       | *string*                        | :heavy_minus_sign:              | N/A                             | 1000                            |

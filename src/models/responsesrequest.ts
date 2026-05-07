@@ -116,6 +116,16 @@ import {
   ParetoRouterPlugin$outboundSchema,
 } from "./paretorouterplugin.js";
 import {
+  PreferredMaxLatency,
+  PreferredMaxLatency$Outbound,
+  PreferredMaxLatency$outboundSchema,
+} from "./preferredmaxlatency.js";
+import {
+  PreferredMinThroughput,
+  PreferredMinThroughput$Outbound,
+  PreferredMinThroughput$outboundSchema,
+} from "./preferredminthroughput.js";
+import {
   Preview20250311WebSearchServerTool,
   Preview20250311WebSearchServerTool$Outbound,
   Preview20250311WebSearchServerTool$outboundSchema,
@@ -125,11 +135,14 @@ import {
   PreviewWebSearchServerTool$Outbound,
   PreviewWebSearchServerTool$outboundSchema,
 } from "./previewwebsearchservertool.js";
+import { ProviderName, ProviderName$outboundSchema } from "./providername.js";
+import { ProviderSort, ProviderSort$outboundSchema } from "./providersort.js";
 import {
-  ProviderPreferences,
-  ProviderPreferences$Outbound,
-  ProviderPreferences$outboundSchema,
-} from "./providerpreferences.js";
+  ProviderSortConfig,
+  ProviderSortConfig$Outbound,
+  ProviderSortConfig$outboundSchema,
+} from "./providersortconfig.js";
+import { Quantization, Quantization$outboundSchema } from "./quantization.js";
 import {
   ReasoningConfig,
   ReasoningConfig$Outbound,
@@ -193,6 +206,122 @@ export type ResponsesRequestPlugin =
   | ParetoRouterPlugin
   | ResponseHealingPlugin
   | WebSearchPlugin;
+
+/**
+ * Data collection setting. If no available model provider meets the requirement, your request will return an error.
+ *
+ * @remarks
+ * - allow: (default) allow providers which store user data non-transiently and may train on it
+ *
+ * - deny: use only providers which do not collect user data.
+ */
+export const ResponsesRequestDataCollection = {
+  Deny: "deny",
+  Allow: "allow",
+} as const;
+/**
+ * Data collection setting. If no available model provider meets the requirement, your request will return an error.
+ *
+ * @remarks
+ * - allow: (default) allow providers which store user data non-transiently and may train on it
+ *
+ * - deny: use only providers which do not collect user data.
+ */
+export type ResponsesRequestDataCollection = OpenEnum<
+  typeof ResponsesRequestDataCollection
+>;
+
+export type ResponsesRequestIgnore = ProviderName | string;
+
+/**
+ * The object specifying the maximum price you want to pay for this request. USD price per million tokens, for prompt and completion.
+ */
+export type ResponsesRequestMaxPrice = {
+  audio?: string | undefined;
+  completion?: string | undefined;
+  image?: string | undefined;
+  /**
+   * Price per million prompt tokens
+   */
+  prompt?: string | undefined;
+  request?: string | undefined;
+};
+
+export type ResponsesRequestOnly = ProviderName | string;
+
+export type ResponsesRequestOrder = ProviderName | string;
+
+/**
+ * The sorting strategy to use for this request, if "order" is not specified. When set, no load balancing is performed.
+ */
+export type ResponsesRequestSort = ProviderSort | ProviderSortConfig | any;
+
+/**
+ * When multiple model providers are available, optionally indicate your routing preference.
+ */
+export type ResponsesRequestProvider = {
+  /**
+   * Whether to allow backup providers to serve requests
+   *
+   * @remarks
+   * - true: (default) when the primary provider (or your custom providers in "order") is unavailable, use the next best provider.
+   * - false: use only the primary/custom provider, and return the upstream error if it's unavailable.
+   */
+  allowFallbacks?: boolean | null | undefined;
+  /**
+   * Data collection setting. If no available model provider meets the requirement, your request will return an error.
+   *
+   * @remarks
+   * - allow: (default) allow providers which store user data non-transiently and may train on it
+   *
+   * - deny: use only providers which do not collect user data.
+   */
+  dataCollection?: ResponsesRequestDataCollection | null | undefined;
+  /**
+   * Whether to restrict routing to only models that allow text distillation. When true, only models where the author has allowed distillation will be used.
+   */
+  enforceDistillableText?: boolean | null | undefined;
+  /**
+   * List of provider slugs to ignore. If provided, this list is merged with your account-wide ignored provider settings for this request.
+   */
+  ignore?: Array<ProviderName | string> | null | undefined;
+  /**
+   * The object specifying the maximum price you want to pay for this request. USD price per million tokens, for prompt and completion.
+   */
+  maxPrice?: ResponsesRequestMaxPrice | undefined;
+  /**
+   * List of provider slugs to allow. If provided, this list is merged with your account-wide allowed provider settings for this request.
+   */
+  only?: Array<ProviderName | string> | null | undefined;
+  /**
+   * An ordered list of provider slugs. The router will attempt to use the first provider in the subset of this list that supports your requested model, and fall back to the next if it is unavailable. If no providers are available, the request will fail with an error message.
+   */
+  order?: Array<ProviderName | string> | null | undefined;
+  /**
+   * Preferred maximum latency (in seconds). Can be a number (applies to p50) or an object with percentile-specific cutoffs. Endpoints above the threshold(s) may still be used, but are deprioritized in routing. When using fallback models, this may cause a fallback model to be used instead of the primary model if it meets the threshold.
+   */
+  preferredMaxLatency?: PreferredMaxLatency | null | undefined;
+  /**
+   * Preferred minimum throughput (in tokens per second). Can be a number (applies to p50) or an object with percentile-specific cutoffs. Endpoints below the threshold(s) may still be used, but are deprioritized in routing. When using fallback models, this may cause a fallback model to be used instead of the primary model if it meets the threshold.
+   */
+  preferredMinThroughput?: PreferredMinThroughput | null | undefined;
+  /**
+   * A list of quantization levels to filter the provider by.
+   */
+  quantizations?: Array<Quantization> | null | undefined;
+  /**
+   * Whether to filter providers to only those that support the parameters you've provided. If this setting is omitted or set to false, then providers will receive only the parameters they support, and ignore the rest.
+   */
+  requireParameters?: boolean | null | undefined;
+  /**
+   * The sorting strategy to use for this request, if "order" is not specified. When set, no load balancing is performed.
+   */
+  sort?: ProviderSort | ProviderSortConfig | any | null | undefined;
+  /**
+   * Whether to restrict routing to only ZDR (Zero Data Retention) endpoints. When true, only endpoints that do not retain prompts will be used.
+   */
+  zdr?: boolean | null | undefined;
+};
 
 export const ResponsesRequestServiceTier = {
   Auto: "auto",
@@ -288,10 +417,7 @@ export type ResponsesRequest = {
   previousResponseId?: string | null | undefined;
   prompt?: StoredPromptTemplate | null | undefined;
   promptCacheKey?: string | null | undefined;
-  /**
-   * When multiple model providers are available, optionally indicate your routing preference.
-   */
-  provider?: ProviderPreferences | null | undefined;
+  provider?: ResponsesRequestProvider | null | undefined;
   /**
    * Configuration for reasoning mode in the response
    */
@@ -380,6 +506,184 @@ export function responsesRequestPluginToJSON(
 ): string {
   return JSON.stringify(
     ResponsesRequestPlugin$outboundSchema.parse(responsesRequestPlugin),
+  );
+}
+
+/** @internal */
+export const ResponsesRequestDataCollection$outboundSchema: z.ZodType<
+  string,
+  ResponsesRequestDataCollection
+> = openEnums.outboundSchema(ResponsesRequestDataCollection);
+
+/** @internal */
+export type ResponsesRequestIgnore$Outbound = string | string;
+
+/** @internal */
+export const ResponsesRequestIgnore$outboundSchema: z.ZodType<
+  ResponsesRequestIgnore$Outbound,
+  ResponsesRequestIgnore
+> = z.union([ProviderName$outboundSchema, z.string()]);
+
+export function responsesRequestIgnoreToJSON(
+  responsesRequestIgnore: ResponsesRequestIgnore,
+): string {
+  return JSON.stringify(
+    ResponsesRequestIgnore$outboundSchema.parse(responsesRequestIgnore),
+  );
+}
+
+/** @internal */
+export type ResponsesRequestMaxPrice$Outbound = {
+  audio?: string | undefined;
+  completion?: string | undefined;
+  image?: string | undefined;
+  prompt?: string | undefined;
+  request?: string | undefined;
+};
+
+/** @internal */
+export const ResponsesRequestMaxPrice$outboundSchema: z.ZodType<
+  ResponsesRequestMaxPrice$Outbound,
+  ResponsesRequestMaxPrice
+> = z.object({
+  audio: z.string().optional(),
+  completion: z.string().optional(),
+  image: z.string().optional(),
+  prompt: z.string().optional(),
+  request: z.string().optional(),
+});
+
+export function responsesRequestMaxPriceToJSON(
+  responsesRequestMaxPrice: ResponsesRequestMaxPrice,
+): string {
+  return JSON.stringify(
+    ResponsesRequestMaxPrice$outboundSchema.parse(responsesRequestMaxPrice),
+  );
+}
+
+/** @internal */
+export type ResponsesRequestOnly$Outbound = string | string;
+
+/** @internal */
+export const ResponsesRequestOnly$outboundSchema: z.ZodType<
+  ResponsesRequestOnly$Outbound,
+  ResponsesRequestOnly
+> = z.union([ProviderName$outboundSchema, z.string()]);
+
+export function responsesRequestOnlyToJSON(
+  responsesRequestOnly: ResponsesRequestOnly,
+): string {
+  return JSON.stringify(
+    ResponsesRequestOnly$outboundSchema.parse(responsesRequestOnly),
+  );
+}
+
+/** @internal */
+export type ResponsesRequestOrder$Outbound = string | string;
+
+/** @internal */
+export const ResponsesRequestOrder$outboundSchema: z.ZodType<
+  ResponsesRequestOrder$Outbound,
+  ResponsesRequestOrder
+> = z.union([ProviderName$outboundSchema, z.string()]);
+
+export function responsesRequestOrderToJSON(
+  responsesRequestOrder: ResponsesRequestOrder,
+): string {
+  return JSON.stringify(
+    ResponsesRequestOrder$outboundSchema.parse(responsesRequestOrder),
+  );
+}
+
+/** @internal */
+export type ResponsesRequestSort$Outbound =
+  | string
+  | ProviderSortConfig$Outbound
+  | any;
+
+/** @internal */
+export const ResponsesRequestSort$outboundSchema: z.ZodType<
+  ResponsesRequestSort$Outbound,
+  ResponsesRequestSort
+> = z.union([
+  ProviderSort$outboundSchema,
+  ProviderSortConfig$outboundSchema,
+  z.any(),
+]);
+
+export function responsesRequestSortToJSON(
+  responsesRequestSort: ResponsesRequestSort,
+): string {
+  return JSON.stringify(
+    ResponsesRequestSort$outboundSchema.parse(responsesRequestSort),
+  );
+}
+
+/** @internal */
+export type ResponsesRequestProvider$Outbound = {
+  allow_fallbacks?: boolean | null | undefined;
+  data_collection?: string | null | undefined;
+  enforce_distillable_text?: boolean | null | undefined;
+  ignore?: Array<string | string> | null | undefined;
+  max_price?: ResponsesRequestMaxPrice$Outbound | undefined;
+  only?: Array<string | string> | null | undefined;
+  order?: Array<string | string> | null | undefined;
+  preferred_max_latency?: PreferredMaxLatency$Outbound | null | undefined;
+  preferred_min_throughput?: PreferredMinThroughput$Outbound | null | undefined;
+  quantizations?: Array<string> | null | undefined;
+  require_parameters?: boolean | null | undefined;
+  sort?: string | ProviderSortConfig$Outbound | any | null | undefined;
+  zdr?: boolean | null | undefined;
+};
+
+/** @internal */
+export const ResponsesRequestProvider$outboundSchema: z.ZodType<
+  ResponsesRequestProvider$Outbound,
+  ResponsesRequestProvider
+> = z.object({
+  allowFallbacks: z.nullable(z.boolean()).optional(),
+  dataCollection: z.nullable(ResponsesRequestDataCollection$outboundSchema)
+    .optional(),
+  enforceDistillableText: z.nullable(z.boolean()).optional(),
+  ignore: z.nullable(
+    z.array(z.union([ProviderName$outboundSchema, z.string()])),
+  ).optional(),
+  maxPrice: z.lazy(() => ResponsesRequestMaxPrice$outboundSchema).optional(),
+  only: z.nullable(z.array(z.union([ProviderName$outboundSchema, z.string()])))
+    .optional(),
+  order: z.nullable(z.array(z.union([ProviderName$outboundSchema, z.string()])))
+    .optional(),
+  preferredMaxLatency: z.nullable(PreferredMaxLatency$outboundSchema)
+    .optional(),
+  preferredMinThroughput: z.nullable(PreferredMinThroughput$outboundSchema)
+    .optional(),
+  quantizations: z.nullable(z.array(Quantization$outboundSchema)).optional(),
+  requireParameters: z.nullable(z.boolean()).optional(),
+  sort: z.nullable(
+    z.union([
+      ProviderSort$outboundSchema,
+      ProviderSortConfig$outboundSchema,
+      z.any(),
+    ]),
+  ).optional(),
+  zdr: z.nullable(z.boolean()).optional(),
+}).transform((v) => {
+  return remap$(v, {
+    allowFallbacks: "allow_fallbacks",
+    dataCollection: "data_collection",
+    enforceDistillableText: "enforce_distillable_text",
+    maxPrice: "max_price",
+    preferredMaxLatency: "preferred_max_latency",
+    preferredMinThroughput: "preferred_min_throughput",
+    requireParameters: "require_parameters",
+  });
+});
+
+export function responsesRequestProviderToJSON(
+  responsesRequestProvider: ResponsesRequestProvider,
+): string {
+  return JSON.stringify(
+    ResponsesRequestProvider$outboundSchema.parse(responsesRequestProvider),
   );
 }
 
@@ -518,7 +822,7 @@ export type ResponsesRequest$Outbound = {
   previous_response_id?: string | null | undefined;
   prompt?: StoredPromptTemplate$Outbound | null | undefined;
   prompt_cache_key?: string | null | undefined;
-  provider?: ProviderPreferences$Outbound | null | undefined;
+  provider?: ResponsesRequestProvider$Outbound | null | undefined;
   reasoning?: ReasoningConfig$Outbound | null | undefined;
   safety_identifier?: string | null | undefined;
   service_tier: string | null;
@@ -596,7 +900,8 @@ export const ResponsesRequest$outboundSchema: z.ZodType<
   previousResponseId: z.nullable(z.string()).optional(),
   prompt: z.nullable(StoredPromptTemplate$outboundSchema).optional(),
   promptCacheKey: z.nullable(z.string()).optional(),
-  provider: z.nullable(ProviderPreferences$outboundSchema).optional(),
+  provider: z.nullable(z.lazy(() => ResponsesRequestProvider$outboundSchema))
+    .optional(),
   reasoning: z.nullable(ReasoningConfig$outboundSchema).optional(),
   safetyIdentifier: z.nullable(z.string()).optional(),
   serviceTier: z.nullable(

@@ -34,7 +34,7 @@ import { Quantization, Quantization$outboundSchema } from "./quantization.js";
  *
  * - deny: use only providers which do not collect user data.
  */
-export const DataCollection = {
+export const ProviderPreferencesDataCollection = {
   Deny: "deny",
   Allow: "allow",
 } as const;
@@ -46,14 +46,16 @@ export const DataCollection = {
  *
  * - deny: use only providers which do not collect user data.
  */
-export type DataCollection = OpenEnum<typeof DataCollection>;
+export type ProviderPreferencesDataCollection = OpenEnum<
+  typeof ProviderPreferencesDataCollection
+>;
 
-export type Ignore = ProviderName | string;
+export type ProviderPreferencesIgnore = ProviderName | string;
 
 /**
  * The object specifying the maximum price you want to pay for this request. USD price per million tokens, for prompt and completion.
  */
-export type MaxPrice = {
+export type ProviderPreferencesMaxPrice = {
   audio?: string | undefined;
   completion?: string | undefined;
   image?: string | undefined;
@@ -64,17 +66,17 @@ export type MaxPrice = {
   request?: string | undefined;
 };
 
-export type Only = ProviderName | string;
+export type ProviderPreferencesOnly = ProviderName | string;
 
-export type Order = ProviderName | string;
+export type ProviderPreferencesOrder = ProviderName | string;
 
 /**
  * The sorting strategy to use for this request, if "order" is not specified. When set, no load balancing is performed.
  */
-export type Sort = ProviderSort | ProviderSortConfig | any;
+export type ProviderPreferencesSort = ProviderSort | ProviderSortConfig | any;
 
 /**
- * When multiple model providers are available, optionally indicate your routing preference.
+ * Provider routing preferences for the request.
  */
 export type ProviderPreferences = {
   /**
@@ -93,7 +95,7 @@ export type ProviderPreferences = {
    *
    * - deny: use only providers which do not collect user data.
    */
-  dataCollection?: DataCollection | null | undefined;
+  dataCollection?: ProviderPreferencesDataCollection | null | undefined;
   /**
    * Whether to restrict routing to only models that allow text distillation. When true, only models where the author has allowed distillation will be used.
    */
@@ -105,7 +107,7 @@ export type ProviderPreferences = {
   /**
    * The object specifying the maximum price you want to pay for this request. USD price per million tokens, for prompt and completion.
    */
-  maxPrice?: MaxPrice | undefined;
+  maxPrice?: ProviderPreferencesMaxPrice | undefined;
   /**
    * List of provider slugs to allow. If provided, this list is merged with your account-wide allowed provider settings for this request.
    */
@@ -141,22 +143,30 @@ export type ProviderPreferences = {
 };
 
 /** @internal */
-export const DataCollection$outboundSchema: z.ZodType<string, DataCollection> =
-  openEnums.outboundSchema(DataCollection);
+export const ProviderPreferencesDataCollection$outboundSchema: z.ZodType<
+  string,
+  ProviderPreferencesDataCollection
+> = openEnums.outboundSchema(ProviderPreferencesDataCollection);
 
 /** @internal */
-export type Ignore$Outbound = string | string;
+export type ProviderPreferencesIgnore$Outbound = string | string;
 
 /** @internal */
-export const Ignore$outboundSchema: z.ZodType<Ignore$Outbound, Ignore> = z
-  .union([ProviderName$outboundSchema, z.string()]);
+export const ProviderPreferencesIgnore$outboundSchema: z.ZodType<
+  ProviderPreferencesIgnore$Outbound,
+  ProviderPreferencesIgnore
+> = z.union([ProviderName$outboundSchema, z.string()]);
 
-export function ignoreToJSON(ignore: Ignore): string {
-  return JSON.stringify(Ignore$outboundSchema.parse(ignore));
+export function providerPreferencesIgnoreToJSON(
+  providerPreferencesIgnore: ProviderPreferencesIgnore,
+): string {
+  return JSON.stringify(
+    ProviderPreferencesIgnore$outboundSchema.parse(providerPreferencesIgnore),
+  );
 }
 
 /** @internal */
-export type MaxPrice$Outbound = {
+export type ProviderPreferencesMaxPrice$Outbound = {
   audio?: string | undefined;
   completion?: string | undefined;
   image?: string | undefined;
@@ -165,57 +175,83 @@ export type MaxPrice$Outbound = {
 };
 
 /** @internal */
-export const MaxPrice$outboundSchema: z.ZodType<MaxPrice$Outbound, MaxPrice> = z
-  .object({
-    audio: z.string().optional(),
-    completion: z.string().optional(),
-    image: z.string().optional(),
-    prompt: z.string().optional(),
-    request: z.string().optional(),
-  });
+export const ProviderPreferencesMaxPrice$outboundSchema: z.ZodType<
+  ProviderPreferencesMaxPrice$Outbound,
+  ProviderPreferencesMaxPrice
+> = z.object({
+  audio: z.string().optional(),
+  completion: z.string().optional(),
+  image: z.string().optional(),
+  prompt: z.string().optional(),
+  request: z.string().optional(),
+});
 
-export function maxPriceToJSON(maxPrice: MaxPrice): string {
-  return JSON.stringify(MaxPrice$outboundSchema.parse(maxPrice));
+export function providerPreferencesMaxPriceToJSON(
+  providerPreferencesMaxPrice: ProviderPreferencesMaxPrice,
+): string {
+  return JSON.stringify(
+    ProviderPreferencesMaxPrice$outboundSchema.parse(
+      providerPreferencesMaxPrice,
+    ),
+  );
 }
 
 /** @internal */
-export type Only$Outbound = string | string;
+export type ProviderPreferencesOnly$Outbound = string | string;
 
 /** @internal */
-export const Only$outboundSchema: z.ZodType<Only$Outbound, Only> = z.union([
-  ProviderName$outboundSchema,
-  z.string(),
-]);
+export const ProviderPreferencesOnly$outboundSchema: z.ZodType<
+  ProviderPreferencesOnly$Outbound,
+  ProviderPreferencesOnly
+> = z.union([ProviderName$outboundSchema, z.string()]);
 
-export function onlyToJSON(only: Only): string {
-  return JSON.stringify(Only$outboundSchema.parse(only));
+export function providerPreferencesOnlyToJSON(
+  providerPreferencesOnly: ProviderPreferencesOnly,
+): string {
+  return JSON.stringify(
+    ProviderPreferencesOnly$outboundSchema.parse(providerPreferencesOnly),
+  );
 }
 
 /** @internal */
-export type Order$Outbound = string | string;
+export type ProviderPreferencesOrder$Outbound = string | string;
 
 /** @internal */
-export const Order$outboundSchema: z.ZodType<Order$Outbound, Order> = z.union([
-  ProviderName$outboundSchema,
-  z.string(),
-]);
+export const ProviderPreferencesOrder$outboundSchema: z.ZodType<
+  ProviderPreferencesOrder$Outbound,
+  ProviderPreferencesOrder
+> = z.union([ProviderName$outboundSchema, z.string()]);
 
-export function orderToJSON(order: Order): string {
-  return JSON.stringify(Order$outboundSchema.parse(order));
+export function providerPreferencesOrderToJSON(
+  providerPreferencesOrder: ProviderPreferencesOrder,
+): string {
+  return JSON.stringify(
+    ProviderPreferencesOrder$outboundSchema.parse(providerPreferencesOrder),
+  );
 }
 
 /** @internal */
-export type Sort$Outbound = string | ProviderSortConfig$Outbound | any;
+export type ProviderPreferencesSort$Outbound =
+  | string
+  | ProviderSortConfig$Outbound
+  | any;
 
 /** @internal */
-export const Sort$outboundSchema: z.ZodType<Sort$Outbound, Sort> = z.union([
+export const ProviderPreferencesSort$outboundSchema: z.ZodType<
+  ProviderPreferencesSort$Outbound,
+  ProviderPreferencesSort
+> = z.union([
   ProviderSort$outboundSchema,
   ProviderSortConfig$outboundSchema,
   z.any(),
 ]);
 
-export function sortToJSON(sort: Sort): string {
-  return JSON.stringify(Sort$outboundSchema.parse(sort));
+export function providerPreferencesSortToJSON(
+  providerPreferencesSort: ProviderPreferencesSort,
+): string {
+  return JSON.stringify(
+    ProviderPreferencesSort$outboundSchema.parse(providerPreferencesSort),
+  );
 }
 
 /** @internal */
@@ -224,7 +260,7 @@ export type ProviderPreferences$Outbound = {
   data_collection?: string | null | undefined;
   enforce_distillable_text?: boolean | null | undefined;
   ignore?: Array<string | string> | null | undefined;
-  max_price?: MaxPrice$Outbound | undefined;
+  max_price?: ProviderPreferencesMaxPrice$Outbound | undefined;
   only?: Array<string | string> | null | undefined;
   order?: Array<string | string> | null | undefined;
   preferred_max_latency?: PreferredMaxLatency$Outbound | null | undefined;
@@ -241,12 +277,13 @@ export const ProviderPreferences$outboundSchema: z.ZodType<
   ProviderPreferences
 > = z.object({
   allowFallbacks: z.nullable(z.boolean()).optional(),
-  dataCollection: z.nullable(DataCollection$outboundSchema).optional(),
+  dataCollection: z.nullable(ProviderPreferencesDataCollection$outboundSchema)
+    .optional(),
   enforceDistillableText: z.nullable(z.boolean()).optional(),
   ignore: z.nullable(
     z.array(z.union([ProviderName$outboundSchema, z.string()])),
   ).optional(),
-  maxPrice: z.lazy(() => MaxPrice$outboundSchema).optional(),
+  maxPrice: z.lazy(() => ProviderPreferencesMaxPrice$outboundSchema).optional(),
   only: z.nullable(z.array(z.union([ProviderName$outboundSchema, z.string()])))
     .optional(),
   order: z.nullable(z.array(z.union([ProviderName$outboundSchema, z.string()])))
