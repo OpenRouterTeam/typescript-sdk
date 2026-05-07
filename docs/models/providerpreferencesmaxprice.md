@@ -1,13 +1,13 @@
-# ChatRequestMaxPrice
+# ProviderPreferencesMaxPrice
 
 The object specifying the maximum price you want to pay for this request. USD price per million tokens, for prompt and completion.
 
 ## Example Usage
 
 ```typescript
-import { ChatRequestMaxPrice } from "@openrouter/sdk/models";
+import { ProviderPreferencesMaxPrice } from "@openrouter/sdk/models";
 
-let value: ChatRequestMaxPrice = {};
+let value: ProviderPreferencesMaxPrice = {};
 ```
 
 ## Fields
