@@ -14,10 +14,12 @@ let value: ModelsListResponse = {
         inputModalities: [
           "text",
         ],
+        instructType: "chatml",
         modality: "text->text",
         outputModalities: [
           "text",
         ],
+        tokenizer: "GPT",
       },
       canonicalSlug: "openai/gpt-4",
       contextLength: 8192,

@@ -6,6 +6,7 @@
 import * as z from "zod/v4";
 import { remap as remap$ } from "../lib/primitives.js";
 import { safeParse } from "../lib/schemas.js";
+import { ClosedEnum } from "../types/enums.js";
 import { Result as SafeParseResult } from "../types/fp.js";
 import { SDKValidationError } from "./errors/sdkvalidationerror.js";
 import {
@@ -24,12 +25,24 @@ import {
   WebSearchEngineEnum$inboundSchema,
   WebSearchEngineEnum$outboundSchema,
 } from "./websearchengineenum.js";
-import {
-  WebSearchUserLocation,
-  WebSearchUserLocation$inboundSchema,
-  WebSearchUserLocation$Outbound,
-  WebSearchUserLocation$outboundSchema,
-} from "./websearchuserlocation.js";
+
+export const LegacyWebSearchServerToolTypeApproximate = {
+  Approximate: "approximate",
+} as const;
+export type LegacyWebSearchServerToolTypeApproximate = ClosedEnum<
+  typeof LegacyWebSearchServerToolTypeApproximate
+>;
+
+/**
+ * User location information for web search
+ */
+export type LegacyWebSearchServerToolUserLocation = {
+  city?: string | null | undefined;
+  country?: string | null | undefined;
+  region?: string | null | undefined;
+  timezone?: string | null | undefined;
+  type: LegacyWebSearchServerToolTypeApproximate;
+};
 
 /**
  * Web search tool configuration
@@ -49,11 +62,69 @@ export type LegacyWebSearchServerTool = {
    */
   searchContextSize?: SearchContextSizeEnum | undefined;
   type: "web_search";
-  /**
-   * User location information for web search
-   */
-  userLocation?: WebSearchUserLocation | null | undefined;
+  userLocation?: LegacyWebSearchServerToolUserLocation | null | undefined;
 };
+
+/** @internal */
+export const LegacyWebSearchServerToolTypeApproximate$inboundSchema: z.ZodEnum<
+  typeof LegacyWebSearchServerToolTypeApproximate
+> = z.enum(LegacyWebSearchServerToolTypeApproximate);
+/** @internal */
+export const LegacyWebSearchServerToolTypeApproximate$outboundSchema: z.ZodEnum<
+  typeof LegacyWebSearchServerToolTypeApproximate
+> = LegacyWebSearchServerToolTypeApproximate$inboundSchema;
+
+/** @internal */
+export const LegacyWebSearchServerToolUserLocation$inboundSchema: z.ZodType<
+  LegacyWebSearchServerToolUserLocation,
+  unknown
+> = z.object({
+  city: z.nullable(z.string()).optional(),
+  country: z.nullable(z.string()).optional(),
+  region: z.nullable(z.string()).optional(),
+  timezone: z.nullable(z.string()).optional(),
+  type: LegacyWebSearchServerToolTypeApproximate$inboundSchema,
+});
+/** @internal */
+export type LegacyWebSearchServerToolUserLocation$Outbound = {
+  city?: string | null | undefined;
+  country?: string | null | undefined;
+  region?: string | null | undefined;
+  timezone?: string | null | undefined;
+  type: string;
+};
+
+/** @internal */
+export const LegacyWebSearchServerToolUserLocation$outboundSchema: z.ZodType<
+  LegacyWebSearchServerToolUserLocation$Outbound,
+  LegacyWebSearchServerToolUserLocation
+> = z.object({
+  city: z.nullable(z.string()).optional(),
+  country: z.nullable(z.string()).optional(),
+  region: z.nullable(z.string()).optional(),
+  timezone: z.nullable(z.string()).optional(),
+  type: LegacyWebSearchServerToolTypeApproximate$outboundSchema,
+});
+
+export function legacyWebSearchServerToolUserLocationToJSON(
+  legacyWebSearchServerToolUserLocation: LegacyWebSearchServerToolUserLocation,
+): string {
+  return JSON.stringify(
+    LegacyWebSearchServerToolUserLocation$outboundSchema.parse(
+      legacyWebSearchServerToolUserLocation,
+    ),
+  );
+}
+export function legacyWebSearchServerToolUserLocationFromJSON(
+  jsonString: string,
+): SafeParseResult<LegacyWebSearchServerToolUserLocation, SDKValidationError> {
+  return safeParse(
+    jsonString,
+    (x) =>
+      LegacyWebSearchServerToolUserLocation$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'LegacyWebSearchServerToolUserLocation' from JSON`,
+  );
+}
 
 /** @internal */
 export const LegacyWebSearchServerTool$inboundSchema: z.ZodType<
@@ -65,7 +136,9 @@ export const LegacyWebSearchServerTool$inboundSchema: z.ZodType<
   max_results: z.int().optional(),
   search_context_size: SearchContextSizeEnum$inboundSchema.optional(),
   type: z.literal("web_search"),
-  user_location: z.nullable(WebSearchUserLocation$inboundSchema).optional(),
+  user_location: z.nullable(
+    z.lazy(() => LegacyWebSearchServerToolUserLocation$inboundSchema),
+  ).optional(),
 }).transform((v) => {
   return remap$(v, {
     "max_results": "maxResults",
@@ -80,7 +153,10 @@ export type LegacyWebSearchServerTool$Outbound = {
   max_results?: number | undefined;
   search_context_size?: string | undefined;
   type: "web_search";
-  user_location?: WebSearchUserLocation$Outbound | null | undefined;
+  user_location?:
+    | LegacyWebSearchServerToolUserLocation$Outbound
+    | null
+    | undefined;
 };
 
 /** @internal */
@@ -93,7 +169,9 @@ export const LegacyWebSearchServerTool$outboundSchema: z.ZodType<
   maxResults: z.int().optional(),
   searchContextSize: SearchContextSizeEnum$outboundSchema.optional(),
   type: z.literal("web_search"),
-  userLocation: z.nullable(WebSearchUserLocation$outboundSchema).optional(),
+  userLocation: z.nullable(
+    z.lazy(() => LegacyWebSearchServerToolUserLocation$outboundSchema),
+  ).optional(),
 }).transform((v) => {
   return remap$(v, {
     maxResults: "max_results",
