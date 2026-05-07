@@ -61,10 +61,6 @@ import {
   OpenAIResponsesToolChoiceUnion,
   OpenAIResponsesToolChoiceUnion$inboundSchema,
 } from "./openairesponsestoolchoiceunion.js";
-import {
-  OpenRouterMetadata,
-  OpenRouterMetadata$inboundSchema,
-} from "./openroutermetadata.js";
 import { OutputItems, OutputItems$inboundSchema } from "./outputitems.js";
 import {
   Preview20250311WebSearchServerTool,
@@ -198,7 +194,6 @@ export type OpenResponsesResult = {
    */
   usage?: Usage | null | undefined;
   user?: string | null | undefined;
-  openrouterMetadata?: OpenRouterMetadata | undefined;
 };
 
 /** @internal */
@@ -315,7 +310,6 @@ export const OpenResponsesResult$inboundSchema: z.ZodType<
   truncation: z.nullable(Truncation$inboundSchema).optional(),
   usage: z.nullable(Usage$inboundSchema).optional(),
   user: z.nullable(z.string()).optional(),
-  openrouter_metadata: OpenRouterMetadata$inboundSchema.optional(),
 }).transform((v) => {
   return remap$(v, {
     "completed_at": "completedAt",
@@ -334,7 +328,6 @@ export const OpenResponsesResult$inboundSchema: z.ZodType<
     "tool_choice": "toolChoice",
     "top_logprobs": "topLogprobs",
     "top_p": "topP",
-    "openrouter_metadata": "openrouterMetadata",
   });
 });
 
