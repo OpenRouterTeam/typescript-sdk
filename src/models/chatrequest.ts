@@ -97,10 +97,23 @@ import {
   ParetoRouterPlugin$outboundSchema,
 } from "./paretorouterplugin.js";
 import {
-  ProviderPreferences,
-  ProviderPreferences$Outbound,
-  ProviderPreferences$outboundSchema,
-} from "./providerpreferences.js";
+  PreferredMaxLatency,
+  PreferredMaxLatency$Outbound,
+  PreferredMaxLatency$outboundSchema,
+} from "./preferredmaxlatency.js";
+import {
+  PreferredMinThroughput,
+  PreferredMinThroughput$Outbound,
+  PreferredMinThroughput$outboundSchema,
+} from "./preferredminthroughput.js";
+import { ProviderName, ProviderName$outboundSchema } from "./providername.js";
+import { ProviderSort, ProviderSort$outboundSchema } from "./providersort.js";
+import {
+  ProviderSortConfig,
+  ProviderSortConfig$Outbound,
+  ProviderSortConfig$outboundSchema,
+} from "./providersortconfig.js";
+import { Quantization, Quantization$outboundSchema } from "./quantization.js";
 import {
   ResponseHealingPlugin,
   ResponseHealingPlugin$Outbound,
@@ -132,6 +145,122 @@ export type ChatRequestPlugin =
   | ParetoRouterPlugin
   | ResponseHealingPlugin
   | WebSearchPlugin;
+
+/**
+ * Data collection setting. If no available model provider meets the requirement, your request will return an error.
+ *
+ * @remarks
+ * - allow: (default) allow providers which store user data non-transiently and may train on it
+ *
+ * - deny: use only providers which do not collect user data.
+ */
+export const ChatRequestDataCollection = {
+  Deny: "deny",
+  Allow: "allow",
+} as const;
+/**
+ * Data collection setting. If no available model provider meets the requirement, your request will return an error.
+ *
+ * @remarks
+ * - allow: (default) allow providers which store user data non-transiently and may train on it
+ *
+ * - deny: use only providers which do not collect user data.
+ */
+export type ChatRequestDataCollection = OpenEnum<
+  typeof ChatRequestDataCollection
+>;
+
+export type ChatRequestIgnore = ProviderName | string;
+
+/**
+ * The object specifying the maximum price you want to pay for this request. USD price per million tokens, for prompt and completion.
+ */
+export type ChatRequestMaxPrice = {
+  audio?: string | undefined;
+  completion?: string | undefined;
+  image?: string | undefined;
+  /**
+   * Price per million prompt tokens
+   */
+  prompt?: string | undefined;
+  request?: string | undefined;
+};
+
+export type ChatRequestOnly = ProviderName | string;
+
+export type ChatRequestOrder = ProviderName | string;
+
+/**
+ * The sorting strategy to use for this request, if "order" is not specified. When set, no load balancing is performed.
+ */
+export type ChatRequestSort = ProviderSort | ProviderSortConfig | any;
+
+/**
+ * When multiple model providers are available, optionally indicate your routing preference.
+ */
+export type ChatRequestProvider = {
+  /**
+   * Whether to allow backup providers to serve requests
+   *
+   * @remarks
+   * - true: (default) when the primary provider (or your custom providers in "order") is unavailable, use the next best provider.
+   * - false: use only the primary/custom provider, and return the upstream error if it's unavailable.
+   */
+  allowFallbacks?: boolean | null | undefined;
+  /**
+   * Data collection setting. If no available model provider meets the requirement, your request will return an error.
+   *
+   * @remarks
+   * - allow: (default) allow providers which store user data non-transiently and may train on it
+   *
+   * - deny: use only providers which do not collect user data.
+   */
+  dataCollection?: ChatRequestDataCollection | null | undefined;
+  /**
+   * Whether to restrict routing to only models that allow text distillation. When true, only models where the author has allowed distillation will be used.
+   */
+  enforceDistillableText?: boolean | null | undefined;
+  /**
+   * List of provider slugs to ignore. If provided, this list is merged with your account-wide ignored provider settings for this request.
+   */
+  ignore?: Array<ProviderName | string> | null | undefined;
+  /**
+   * The object specifying the maximum price you want to pay for this request. USD price per million tokens, for prompt and completion.
+   */
+  maxPrice?: ChatRequestMaxPrice | undefined;
+  /**
+   * List of provider slugs to allow. If provided, this list is merged with your account-wide allowed provider settings for this request.
+   */
+  only?: Array<ProviderName | string> | null | undefined;
+  /**
+   * An ordered list of provider slugs. The router will attempt to use the first provider in the subset of this list that supports your requested model, and fall back to the next if it is unavailable. If no providers are available, the request will fail with an error message.
+   */
+  order?: Array<ProviderName | string> | null | undefined;
+  /**
+   * Preferred maximum latency (in seconds). Can be a number (applies to p50) or an object with percentile-specific cutoffs. Endpoints above the threshold(s) may still be used, but are deprioritized in routing. When using fallback models, this may cause a fallback model to be used instead of the primary model if it meets the threshold.
+   */
+  preferredMaxLatency?: PreferredMaxLatency | null | undefined;
+  /**
+   * Preferred minimum throughput (in tokens per second). Can be a number (applies to p50) or an object with percentile-specific cutoffs. Endpoints below the threshold(s) may still be used, but are deprioritized in routing. When using fallback models, this may cause a fallback model to be used instead of the primary model if it meets the threshold.
+   */
+  preferredMinThroughput?: PreferredMinThroughput | null | undefined;
+  /**
+   * A list of quantization levels to filter the provider by.
+   */
+  quantizations?: Array<Quantization> | null | undefined;
+  /**
+   * Whether to filter providers to only those that support the parameters you've provided. If this setting is omitted or set to false, then providers will receive only the parameters they support, and ignore the rest.
+   */
+  requireParameters?: boolean | null | undefined;
+  /**
+   * The sorting strategy to use for this request, if "order" is not specified. When set, no load balancing is performed.
+   */
+  sort?: ProviderSort | ProviderSortConfig | any | null | undefined;
+  /**
+   * Whether to restrict routing to only ZDR (Zero Data Retention) endpoints. When true, only endpoints that do not retain prompts will be used.
+   */
+  zdr?: boolean | null | undefined;
+};
 
 /**
  * Constrains effort on reasoning for reasoning models
@@ -265,10 +394,7 @@ export type ChatRequest = {
    * Presence penalty (-2.0 to 2.0)
    */
   presencePenalty?: number | null | undefined;
-  /**
-   * When multiple model providers are available, optionally indicate your routing preference.
-   */
-  provider?: ProviderPreferences | null | undefined;
+  provider?: ChatRequestProvider | null | undefined;
   /**
    * Configuration options for reasoning models
    */
@@ -374,6 +500,180 @@ export function chatRequestPluginToJSON(
 }
 
 /** @internal */
+export const ChatRequestDataCollection$outboundSchema: z.ZodType<
+  string,
+  ChatRequestDataCollection
+> = openEnums.outboundSchema(ChatRequestDataCollection);
+
+/** @internal */
+export type ChatRequestIgnore$Outbound = string | string;
+
+/** @internal */
+export const ChatRequestIgnore$outboundSchema: z.ZodType<
+  ChatRequestIgnore$Outbound,
+  ChatRequestIgnore
+> = z.union([ProviderName$outboundSchema, z.string()]);
+
+export function chatRequestIgnoreToJSON(
+  chatRequestIgnore: ChatRequestIgnore,
+): string {
+  return JSON.stringify(
+    ChatRequestIgnore$outboundSchema.parse(chatRequestIgnore),
+  );
+}
+
+/** @internal */
+export type ChatRequestMaxPrice$Outbound = {
+  audio?: string | undefined;
+  completion?: string | undefined;
+  image?: string | undefined;
+  prompt?: string | undefined;
+  request?: string | undefined;
+};
+
+/** @internal */
+export const ChatRequestMaxPrice$outboundSchema: z.ZodType<
+  ChatRequestMaxPrice$Outbound,
+  ChatRequestMaxPrice
+> = z.object({
+  audio: z.string().optional(),
+  completion: z.string().optional(),
+  image: z.string().optional(),
+  prompt: z.string().optional(),
+  request: z.string().optional(),
+});
+
+export function chatRequestMaxPriceToJSON(
+  chatRequestMaxPrice: ChatRequestMaxPrice,
+): string {
+  return JSON.stringify(
+    ChatRequestMaxPrice$outboundSchema.parse(chatRequestMaxPrice),
+  );
+}
+
+/** @internal */
+export type ChatRequestOnly$Outbound = string | string;
+
+/** @internal */
+export const ChatRequestOnly$outboundSchema: z.ZodType<
+  ChatRequestOnly$Outbound,
+  ChatRequestOnly
+> = z.union([ProviderName$outboundSchema, z.string()]);
+
+export function chatRequestOnlyToJSON(
+  chatRequestOnly: ChatRequestOnly,
+): string {
+  return JSON.stringify(ChatRequestOnly$outboundSchema.parse(chatRequestOnly));
+}
+
+/** @internal */
+export type ChatRequestOrder$Outbound = string | string;
+
+/** @internal */
+export const ChatRequestOrder$outboundSchema: z.ZodType<
+  ChatRequestOrder$Outbound,
+  ChatRequestOrder
+> = z.union([ProviderName$outboundSchema, z.string()]);
+
+export function chatRequestOrderToJSON(
+  chatRequestOrder: ChatRequestOrder,
+): string {
+  return JSON.stringify(
+    ChatRequestOrder$outboundSchema.parse(chatRequestOrder),
+  );
+}
+
+/** @internal */
+export type ChatRequestSort$Outbound =
+  | string
+  | ProviderSortConfig$Outbound
+  | any;
+
+/** @internal */
+export const ChatRequestSort$outboundSchema: z.ZodType<
+  ChatRequestSort$Outbound,
+  ChatRequestSort
+> = z.union([
+  ProviderSort$outboundSchema,
+  ProviderSortConfig$outboundSchema,
+  z.any(),
+]);
+
+export function chatRequestSortToJSON(
+  chatRequestSort: ChatRequestSort,
+): string {
+  return JSON.stringify(ChatRequestSort$outboundSchema.parse(chatRequestSort));
+}
+
+/** @internal */
+export type ChatRequestProvider$Outbound = {
+  allow_fallbacks?: boolean | null | undefined;
+  data_collection?: string | null | undefined;
+  enforce_distillable_text?: boolean | null | undefined;
+  ignore?: Array<string | string> | null | undefined;
+  max_price?: ChatRequestMaxPrice$Outbound | undefined;
+  only?: Array<string | string> | null | undefined;
+  order?: Array<string | string> | null | undefined;
+  preferred_max_latency?: PreferredMaxLatency$Outbound | null | undefined;
+  preferred_min_throughput?: PreferredMinThroughput$Outbound | null | undefined;
+  quantizations?: Array<string> | null | undefined;
+  require_parameters?: boolean | null | undefined;
+  sort?: string | ProviderSortConfig$Outbound | any | null | undefined;
+  zdr?: boolean | null | undefined;
+};
+
+/** @internal */
+export const ChatRequestProvider$outboundSchema: z.ZodType<
+  ChatRequestProvider$Outbound,
+  ChatRequestProvider
+> = z.object({
+  allowFallbacks: z.nullable(z.boolean()).optional(),
+  dataCollection: z.nullable(ChatRequestDataCollection$outboundSchema)
+    .optional(),
+  enforceDistillableText: z.nullable(z.boolean()).optional(),
+  ignore: z.nullable(
+    z.array(z.union([ProviderName$outboundSchema, z.string()])),
+  ).optional(),
+  maxPrice: z.lazy(() => ChatRequestMaxPrice$outboundSchema).optional(),
+  only: z.nullable(z.array(z.union([ProviderName$outboundSchema, z.string()])))
+    .optional(),
+  order: z.nullable(z.array(z.union([ProviderName$outboundSchema, z.string()])))
+    .optional(),
+  preferredMaxLatency: z.nullable(PreferredMaxLatency$outboundSchema)
+    .optional(),
+  preferredMinThroughput: z.nullable(PreferredMinThroughput$outboundSchema)
+    .optional(),
+  quantizations: z.nullable(z.array(Quantization$outboundSchema)).optional(),
+  requireParameters: z.nullable(z.boolean()).optional(),
+  sort: z.nullable(
+    z.union([
+      ProviderSort$outboundSchema,
+      ProviderSortConfig$outboundSchema,
+      z.any(),
+    ]),
+  ).optional(),
+  zdr: z.nullable(z.boolean()).optional(),
+}).transform((v) => {
+  return remap$(v, {
+    allowFallbacks: "allow_fallbacks",
+    dataCollection: "data_collection",
+    enforceDistillableText: "enforce_distillable_text",
+    maxPrice: "max_price",
+    preferredMaxLatency: "preferred_max_latency",
+    preferredMinThroughput: "preferred_min_throughput",
+    requireParameters: "require_parameters",
+  });
+});
+
+export function chatRequestProviderToJSON(
+  chatRequestProvider: ChatRequestProvider,
+): string {
+  return JSON.stringify(
+    ChatRequestProvider$outboundSchema.parse(chatRequestProvider),
+  );
+}
+
+/** @internal */
 export const Effort$outboundSchema: z.ZodType<string, Effort> = openEnums
   .outboundSchema(Effort);
 
@@ -469,7 +769,7 @@ export type ChatRequest$Outbound = {
     >
     | undefined;
   presence_penalty?: number | null | undefined;
-  provider?: ProviderPreferences$Outbound | null | undefined;
+  provider?: ChatRequestProvider$Outbound | null | undefined;
   reasoning?: Reasoning$Outbound | undefined;
   response_format?:
     | ChatFormatGrammarConfig$Outbound
@@ -524,7 +824,8 @@ export const ChatRequest$outboundSchema: z.ZodType<
     ]),
   ).optional(),
   presencePenalty: z.nullable(z.number()).optional(),
-  provider: z.nullable(ProviderPreferences$outboundSchema).optional(),
+  provider: z.nullable(z.lazy(() => ChatRequestProvider$outboundSchema))
+    .optional(),
   reasoning: z.lazy(() => Reasoning$outboundSchema).optional(),
   responseFormat: z.union([
     ChatFormatGrammarConfig$outboundSchema,
