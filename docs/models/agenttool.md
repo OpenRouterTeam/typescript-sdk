@@ -1,0 +1,20 @@
+# AgentTool
+
+## Example Usage
+
+```typescript
+import { AgentTool } from "@openrouter/sdk/models";
+
+let value: AgentTool = {
+  name: "jira",
+  type: "mcp",
+};
+```
+
+## Fields
+
+| Field                                                                 | Type                                                                  | Required                                                              | Description                                                           | Example                                                               |
+| --------------------------------------------------------------------- | --------------------------------------------------------------------- | --------------------------------------------------------------------- | --------------------------------------------------------------------- | --------------------------------------------------------------------- |
+| `config`                                                              | Record<string, *any*>                                                 | :heavy_minus_sign:                                                    | Tool-specific configuration. Shape varies by `type`.                  | {<br/>"url": "https://mcp.myorg.com/jira"<br/>}                       |
+| `name`                                                                | *string*                                                              | :heavy_check_mark:                                                    | Human-readable tool name. Surfaced in the UI and in the agent prompt. | jira                                                                  |
+| `type`                                                                | [models.AgentToolType](../models/agenttooltype.md)                    | :heavy_check_mark:                                                    | Tool transport.                                                       | mcp                                                                   |

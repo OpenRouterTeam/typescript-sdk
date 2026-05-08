@@ -1,0 +1,19 @@
+# AgentConversationMessageRole
+
+Sender role.
+
+## Example Usage
+
+```typescript
+import { AgentConversationMessageRole } from "@openrouter/sdk/models";
+
+let value: AgentConversationMessageRole = "user";
+
+// Open enum: unrecognized values are captured as Unrecognized<string>
+```
+
+## Values
+
+```typescript
+"user" | "agent" | "system" | Unrecognized<string>
+```

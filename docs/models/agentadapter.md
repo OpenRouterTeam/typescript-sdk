@@ -1,0 +1,19 @@
+# AgentAdapter
+
+Underlying adapter the agent runs on.
+
+## Example Usage
+
+```typescript
+import { AgentAdapter } from "@openrouter/sdk/models";
+
+let value: AgentAdapter = "cognition/devin";
+
+// Open enum: unrecognized values are captured as Unrecognized<string>
+```
+
+## Values
+
+```typescript
+"cognition/devin" | "cursor/cloud-agent" | "anthropic/claude-code-remote-tasks" | "openai/codex" | Unrecognized<string>
+```

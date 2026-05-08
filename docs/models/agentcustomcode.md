@@ -1,0 +1,22 @@
+# AgentCustomCode
+
+Inline custom code executed at every step of the agent loop. Optional.
+
+## Example Usage
+
+```typescript
+import { AgentCustomCode } from "@openrouter/sdk/models";
+
+let value: AgentCustomCode = {
+  language: "typescript",
+  source: "export default async (step) => step;",
+};
+```
+
+## Fields
+
+| Field                                                                                                                                      | Type                                                                                                                                       | Required                                                                                                                                   | Description                                                                                                                                | Example                                                                                                                                    |
+| ------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------ |
+| `entry`                                                                                                                                    | *string*                                                                                                                                   | :heavy_minus_sign:                                                                                                                         | Optional entry function name. Defaults to the language convention (e.g. `default` for TS).                                                 | default                                                                                                                                    |
+| `language`                                                                                                                                 | [models.Language](../models/language.md)                                                                                                   | :heavy_check_mark:                                                                                                                         | Language the snippet is written in. Determines which sandbox runtime executes it.                                                          | typescript                                                                                                                                 |
+| `source`                                                                                                                                   | *string*                                                                                                                                   | :heavy_check_mark:                                                                                                                         | Inline source for the custom hook. Executed in a sandboxed runtime at every step of the agent loop. Loaded once per session, not per step. | export default async (step) => ({ ...step, prompt: step.prompt + " (be terse)" });                                                         |
