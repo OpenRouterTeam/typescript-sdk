@@ -8,42 +8,14 @@ import { remap as remap$ } from "../lib/primitives.js";
 import * as openEnums from "../types/enums.js";
 import { ClosedEnum, OpenEnum } from "../types/enums.js";
 import {
-  InputFile,
-  InputFile$Outbound,
-  InputFile$outboundSchema,
-} from "./inputfile.js";
-import {
-  InputText,
-  InputText$Outbound,
-  InputText$outboundSchema,
-} from "./inputtext.js";
+  FunctionCallOutputContent,
+  FunctionCallOutputContent$Outbound,
+  FunctionCallOutputContent$outboundSchema,
+} from "./functioncalloutputcontent.js";
 
-export const FunctionCallOutputItemDetail = {
-  Auto: "auto",
-  High: "high",
-  Low: "low",
-} as const;
-export type FunctionCallOutputItemDetail = OpenEnum<
-  typeof FunctionCallOutputItemDetail
->;
-
-/**
- * Image input content item
- */
-export type OutputInputImage = {
-  detail: FunctionCallOutputItemDetail;
-  imageUrl?: string | null | undefined;
-  type: "input_image";
-};
-
-export type FunctionCallOutputItemOutputUnion1 =
-  | InputText
-  | OutputInputImage
-  | InputFile;
-
-export type FunctionCallOutputItemOutputUnion2 =
+export type FunctionCallOutputItemOutput =
   | string
-  | Array<InputText | OutputInputImage | InputFile>;
+  | Array<FunctionCallOutputContent>;
 
 export const FunctionCallOutputItemStatus = {
   InProgress: "in_progress",
@@ -54,11 +26,11 @@ export type FunctionCallOutputItemStatus = OpenEnum<
   typeof FunctionCallOutputItemStatus
 >;
 
-export const FunctionCallOutputItemTypeFunctionCallOutput = {
+export const FunctionCallOutputItemType = {
   FunctionCallOutput: "function_call_output",
 } as const;
-export type FunctionCallOutputItemTypeFunctionCallOutput = ClosedEnum<
-  typeof FunctionCallOutputItemTypeFunctionCallOutput
+export type FunctionCallOutputItemType = ClosedEnum<
+  typeof FunctionCallOutputItemType
 >;
 
 /**
@@ -67,96 +39,28 @@ export type FunctionCallOutputItemTypeFunctionCallOutput = ClosedEnum<
 export type FunctionCallOutputItem = {
   callId: string;
   id?: string | null | undefined;
-  output: string | Array<InputText | OutputInputImage | InputFile>;
+  output: string | Array<FunctionCallOutputContent>;
   status?: FunctionCallOutputItemStatus | null | undefined;
-  type: FunctionCallOutputItemTypeFunctionCallOutput;
+  type: FunctionCallOutputItemType;
 };
 
 /** @internal */
-export const FunctionCallOutputItemDetail$outboundSchema: z.ZodType<
-  string,
-  FunctionCallOutputItemDetail
-> = openEnums.outboundSchema(FunctionCallOutputItemDetail);
-
-/** @internal */
-export type OutputInputImage$Outbound = {
-  detail: string;
-  image_url?: string | null | undefined;
-  type: "input_image";
-};
-
-/** @internal */
-export const OutputInputImage$outboundSchema: z.ZodType<
-  OutputInputImage$Outbound,
-  OutputInputImage
-> = z.object({
-  detail: FunctionCallOutputItemDetail$outboundSchema,
-  imageUrl: z.nullable(z.string()).optional(),
-  type: z.literal("input_image"),
-}).transform((v) => {
-  return remap$(v, {
-    imageUrl: "image_url",
-  });
-});
-
-export function outputInputImageToJSON(
-  outputInputImage: OutputInputImage,
-): string {
-  return JSON.stringify(
-    OutputInputImage$outboundSchema.parse(outputInputImage),
-  );
-}
-
-/** @internal */
-export type FunctionCallOutputItemOutputUnion1$Outbound =
-  | InputText$Outbound
-  | OutputInputImage$Outbound
-  | InputFile$Outbound;
-
-/** @internal */
-export const FunctionCallOutputItemOutputUnion1$outboundSchema: z.ZodType<
-  FunctionCallOutputItemOutputUnion1$Outbound,
-  FunctionCallOutputItemOutputUnion1
-> = z.union([
-  InputText$outboundSchema,
-  z.lazy(() => OutputInputImage$outboundSchema),
-  InputFile$outboundSchema,
-]);
-
-export function functionCallOutputItemOutputUnion1ToJSON(
-  functionCallOutputItemOutputUnion1: FunctionCallOutputItemOutputUnion1,
-): string {
-  return JSON.stringify(
-    FunctionCallOutputItemOutputUnion1$outboundSchema.parse(
-      functionCallOutputItemOutputUnion1,
-    ),
-  );
-}
-
-/** @internal */
-export type FunctionCallOutputItemOutputUnion2$Outbound =
+export type FunctionCallOutputItemOutput$Outbound =
   | string
-  | Array<InputText$Outbound | OutputInputImage$Outbound | InputFile$Outbound>;
+  | Array<FunctionCallOutputContent$Outbound>;
 
 /** @internal */
-export const FunctionCallOutputItemOutputUnion2$outboundSchema: z.ZodType<
-  FunctionCallOutputItemOutputUnion2$Outbound,
-  FunctionCallOutputItemOutputUnion2
-> = z.union([
-  z.string(),
-  z.array(z.union([
-    InputText$outboundSchema,
-    z.lazy(() => OutputInputImage$outboundSchema),
-    InputFile$outboundSchema,
-  ])),
-]);
+export const FunctionCallOutputItemOutput$outboundSchema: z.ZodType<
+  FunctionCallOutputItemOutput$Outbound,
+  FunctionCallOutputItemOutput
+> = z.union([z.string(), z.array(FunctionCallOutputContent$outboundSchema)]);
 
-export function functionCallOutputItemOutputUnion2ToJSON(
-  functionCallOutputItemOutputUnion2: FunctionCallOutputItemOutputUnion2,
+export function functionCallOutputItemOutputToJSON(
+  functionCallOutputItemOutput: FunctionCallOutputItemOutput,
 ): string {
   return JSON.stringify(
-    FunctionCallOutputItemOutputUnion2$outboundSchema.parse(
-      functionCallOutputItemOutputUnion2,
+    FunctionCallOutputItemOutput$outboundSchema.parse(
+      functionCallOutputItemOutput,
     ),
   );
 }
@@ -168,20 +72,15 @@ export const FunctionCallOutputItemStatus$outboundSchema: z.ZodType<
 > = openEnums.outboundSchema(FunctionCallOutputItemStatus);
 
 /** @internal */
-export const FunctionCallOutputItemTypeFunctionCallOutput$outboundSchema:
-  z.ZodEnum<typeof FunctionCallOutputItemTypeFunctionCallOutput> = z.enum(
-    FunctionCallOutputItemTypeFunctionCallOutput,
-  );
+export const FunctionCallOutputItemType$outboundSchema: z.ZodEnum<
+  typeof FunctionCallOutputItemType
+> = z.enum(FunctionCallOutputItemType);
 
 /** @internal */
 export type FunctionCallOutputItem$Outbound = {
   call_id: string;
   id?: string | null | undefined;
-  output:
-    | string
-    | Array<
-      InputText$Outbound | OutputInputImage$Outbound | InputFile$Outbound
-    >;
+  output: string | Array<FunctionCallOutputContent$Outbound>;
   status?: string | null | undefined;
   type: string;
 };
@@ -195,14 +94,10 @@ export const FunctionCallOutputItem$outboundSchema: z.ZodType<
   id: z.nullable(z.string()).optional(),
   output: z.union([
     z.string(),
-    z.array(z.union([
-      InputText$outboundSchema,
-      z.lazy(() => OutputInputImage$outboundSchema),
-      InputFile$outboundSchema,
-    ])),
+    z.array(FunctionCallOutputContent$outboundSchema),
   ]),
   status: z.nullable(FunctionCallOutputItemStatus$outboundSchema).optional(),
-  type: FunctionCallOutputItemTypeFunctionCallOutput$outboundSchema,
+  type: FunctionCallOutputItemType$outboundSchema,
 }).transform((v) => {
   return remap$(v, {
     callId: "call_id",
