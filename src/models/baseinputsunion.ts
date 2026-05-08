@@ -15,6 +15,14 @@ import { InputFile, InputFile$inboundSchema } from "./inputfile.js";
 import { InputImage, InputImage$inboundSchema } from "./inputimage.js";
 import { InputText, InputText$inboundSchema } from "./inputtext.js";
 import {
+  OpenAIResponseCustomToolCall,
+  OpenAIResponseCustomToolCall$inboundSchema,
+} from "./openairesponsecustomtoolcall.js";
+import {
+  OpenAIResponseCustomToolCallOutput,
+  OpenAIResponseCustomToolCallOutput$inboundSchema,
+} from "./openairesponsecustomtoolcalloutput.js";
+import {
   OpenAIResponseFunctionToolCall,
   OpenAIResponseFunctionToolCall$inboundSchema,
 } from "./openairesponsefunctiontoolcall.js";
@@ -129,9 +137,11 @@ export type BaseInputsMessage = {
 
 export type BaseInputsUnion1 =
   | OpenAIResponseFunctionToolCall
+  | OpenAIResponseCustomToolCall
   | OutputMessage
   | OpenAIResponseInputMessageItem
   | OpenAIResponseFunctionToolCallOutput
+  | OpenAIResponseCustomToolCallOutput
   | OutputItemImageGenerationCall
   | BaseInputsMessage;
 
@@ -139,9 +149,11 @@ export type BaseInputsUnion =
   | string
   | Array<
     | OpenAIResponseFunctionToolCall
+    | OpenAIResponseCustomToolCall
     | OutputMessage
     | OpenAIResponseInputMessageItem
     | OpenAIResponseFunctionToolCallOutput
+    | OpenAIResponseCustomToolCallOutput
     | OutputItemImageGenerationCall
     | BaseInputsMessage
   >
@@ -319,9 +331,11 @@ export const BaseInputsUnion1$inboundSchema: z.ZodType<
   unknown
 > = z.union([
   OpenAIResponseFunctionToolCall$inboundSchema,
+  OpenAIResponseCustomToolCall$inboundSchema,
   OutputMessage$inboundSchema,
   OpenAIResponseInputMessageItem$inboundSchema,
   OpenAIResponseFunctionToolCallOutput$inboundSchema,
+  OpenAIResponseCustomToolCallOutput$inboundSchema,
   OutputItemImageGenerationCall$inboundSchema,
   z.lazy(() => BaseInputsMessage$inboundSchema),
 ]);
@@ -345,9 +359,11 @@ export const BaseInputsUnion$inboundSchema: z.ZodType<
   z.array(
     z.union([
       OpenAIResponseFunctionToolCall$inboundSchema,
+      OpenAIResponseCustomToolCall$inboundSchema,
       OutputMessage$inboundSchema,
       OpenAIResponseInputMessageItem$inboundSchema,
       OpenAIResponseFunctionToolCallOutput$inboundSchema,
+      OpenAIResponseCustomToolCallOutput$inboundSchema,
       OutputItemImageGenerationCall$inboundSchema,
       z.lazy(() => BaseInputsMessage$inboundSchema),
     ]),

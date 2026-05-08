@@ -1,0 +1,17 @@
+# CustomToolCallOutputItemOutputUnion2
+
+
+## Supported Types
+
+### `string`
+
+```typescript
+const value: string = "<value>";
+```
+
+### `models.CustomToolCallOutputItemOutputUnion1[]`
+
+```typescript
+const value: models.CustomToolCallOutputItemOutputUnion1[] = [];
+```
+

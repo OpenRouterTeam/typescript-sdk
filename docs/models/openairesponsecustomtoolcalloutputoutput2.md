@@ -1,0 +1,21 @@
+# OpenAIResponseCustomToolCallOutputOutput2
+
+
+## Supported Types
+
+### `string`
+
+```typescript
+const value: string = "<value>";
+```
+
+### `models.OpenAIResponseCustomToolCallOutputOutput1[]`
+
+```typescript
+const value: models.OpenAIResponseCustomToolCallOutputOutput1[] = [
+  {
+    type: "input_file",
+  },
+];
+```
+
