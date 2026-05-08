@@ -62,6 +62,11 @@ import {
   OutputComputerCallItem$outboundSchema,
 } from "./outputcomputercallitem.js";
 import {
+  OutputCustomToolCallItem,
+  OutputCustomToolCallItem$Outbound,
+  OutputCustomToolCallItem$outboundSchema,
+} from "./outputcustomtoolcallitem.js";
+import {
   OutputDatetimeItem,
   OutputDatetimeItem$Outbound,
   OutputDatetimeItem$outboundSchema,
@@ -298,6 +303,7 @@ export type InputsUnion1 =
   | FunctionCallItem
   | InputsMessage
   | OutputFunctionCallItem
+  | OutputCustomToolCallItem
   | OutputWebSearchCallItem
   | OutputFileSearchCallItem
   | OutputComputerCallItem
@@ -332,6 +338,7 @@ export type InputsUnion =
     | FunctionCallItem
     | InputsMessage
     | OutputFunctionCallItem
+    | OutputCustomToolCallItem
     | OutputWebSearchCallItem
     | OutputFileSearchCallItem
     | OutputComputerCallItem
@@ -619,6 +626,7 @@ export type InputsUnion1$Outbound =
   | FunctionCallItem$Outbound
   | InputsMessage$Outbound
   | OutputFunctionCallItem$Outbound
+  | OutputCustomToolCallItem$Outbound
   | OutputWebSearchCallItem$Outbound
   | OutputFileSearchCallItem$Outbound
   | OutputComputerCallItem$Outbound
@@ -652,6 +660,7 @@ export const InputsUnion1$outboundSchema: z.ZodType<
   FunctionCallItem$outboundSchema,
   z.lazy(() => InputsMessage$outboundSchema),
   OutputFunctionCallItem$outboundSchema,
+  OutputCustomToolCallItem$outboundSchema,
   OutputWebSearchCallItem$outboundSchema,
   OutputFileSearchCallItem$outboundSchema,
   OutputComputerCallItem$outboundSchema,
@@ -689,6 +698,7 @@ export type InputsUnion$Outbound =
     | FunctionCallItem$Outbound
     | InputsMessage$Outbound
     | OutputFunctionCallItem$Outbound
+    | OutputCustomToolCallItem$Outbound
     | OutputWebSearchCallItem$Outbound
     | OutputFileSearchCallItem$Outbound
     | OutputComputerCallItem$Outbound
@@ -726,6 +736,7 @@ export const InputsUnion$outboundSchema: z.ZodType<
       FunctionCallItem$outboundSchema,
       z.lazy(() => InputsMessage$outboundSchema),
       OutputFunctionCallItem$outboundSchema,
+      OutputCustomToolCallItem$outboundSchema,
       OutputWebSearchCallItem$outboundSchema,
       OutputFileSearchCallItem$outboundSchema,
       OutputComputerCallItem$outboundSchema,
