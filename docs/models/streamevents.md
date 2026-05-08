@@ -107,6 +107,30 @@ const value: models.OpenResponsesCreatedEvent = {
 };
 ```
 
+### `models.CustomToolCallInputDeltaEvent`
+
+```typescript
+const value: models.CustomToolCallInputDeltaEvent = {
+  delta: "<value>",
+  itemId: "<id>",
+  outputIndex: 98568,
+  sequenceNumber: 0,
+  type: "response.custom_tool_call_input.delta",
+};
+```
+
+### `models.CustomToolCallInputDoneEvent`
+
+```typescript
+const value: models.CustomToolCallInputDoneEvent = {
+  input: "<value>",
+  itemId: "<id>",
+  outputIndex: 963378,
+  sequenceNumber: 0,
+  type: "response.custom_tool_call_input.done",
+};
+```
+
 ### `models.StreamEventsResponseFailed`
 
 ```typescript
