@@ -15,6 +15,10 @@ import { InputFile, InputFile$inboundSchema } from "./inputfile.js";
 import { InputImage, InputImage$inboundSchema } from "./inputimage.js";
 import { InputText, InputText$inboundSchema } from "./inputtext.js";
 import {
+  OpenAIResponseCustomToolCallOutput,
+  OpenAIResponseCustomToolCallOutput$inboundSchema,
+} from "./openairesponsecustomtoolcalloutput.js";
+import {
   OpenAIResponseFunctionToolCall,
   OpenAIResponseFunctionToolCall$inboundSchema,
 } from "./openairesponsefunctiontoolcall.js";
@@ -132,6 +136,7 @@ export type BaseInputsUnion1 =
   | OutputMessage
   | OpenAIResponseInputMessageItem
   | OpenAIResponseFunctionToolCallOutput
+  | OpenAIResponseCustomToolCallOutput
   | OutputItemImageGenerationCall
   | BaseInputsMessage;
 
@@ -142,6 +147,7 @@ export type BaseInputsUnion =
     | OutputMessage
     | OpenAIResponseInputMessageItem
     | OpenAIResponseFunctionToolCallOutput
+    | OpenAIResponseCustomToolCallOutput
     | OutputItemImageGenerationCall
     | BaseInputsMessage
   >
@@ -322,6 +328,7 @@ export const BaseInputsUnion1$inboundSchema: z.ZodType<
   OutputMessage$inboundSchema,
   OpenAIResponseInputMessageItem$inboundSchema,
   OpenAIResponseFunctionToolCallOutput$inboundSchema,
+  OpenAIResponseCustomToolCallOutput$inboundSchema,
   OutputItemImageGenerationCall$inboundSchema,
   z.lazy(() => BaseInputsMessage$inboundSchema),
 ]);
@@ -348,6 +355,7 @@ export const BaseInputsUnion$inboundSchema: z.ZodType<
       OutputMessage$inboundSchema,
       OpenAIResponseInputMessageItem$inboundSchema,
       OpenAIResponseFunctionToolCallOutput$inboundSchema,
+      OpenAIResponseCustomToolCallOutput$inboundSchema,
       OutputItemImageGenerationCall$inboundSchema,
       z.lazy(() => BaseInputsMessage$inboundSchema),
     ]),
