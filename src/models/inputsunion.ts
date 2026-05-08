@@ -7,6 +7,11 @@ import * as z from "zod/v4";
 import { remap as remap$ } from "../lib/primitives.js";
 import { ClosedEnum } from "../types/enums.js";
 import {
+  CustomToolCallOutputItem,
+  CustomToolCallOutputItem$Outbound,
+  CustomToolCallOutputItem$outboundSchema,
+} from "./customtoolcalloutputitem.js";
+import {
   EasyInputMessage,
   EasyInputMessage$Outbound,
   EasyInputMessage$outboundSchema,
@@ -61,6 +66,11 @@ import {
   OutputComputerCallItem$Outbound,
   OutputComputerCallItem$outboundSchema,
 } from "./outputcomputercallitem.js";
+import {
+  OutputCustomToolCallItem,
+  OutputCustomToolCallItem$Outbound,
+  OutputCustomToolCallItem$outboundSchema,
+} from "./outputcustomtoolcallitem.js";
 import {
   OutputDatetimeItem,
   OutputDatetimeItem$Outbound,
@@ -298,12 +308,14 @@ export type InputsUnion1 =
   | FunctionCallItem
   | InputsMessage
   | OutputFunctionCallItem
+  | OutputCustomToolCallItem
   | OutputWebSearchCallItem
   | OutputFileSearchCallItem
   | OutputComputerCallItem
   | OutputDatetimeItem
   | ReasoningItem
   | FunctionCallOutputItem
+  | CustomToolCallOutputItem
   | InputsReasoning
   | OutputImageGenerationCallItem
   | OutputWebSearchServerToolItem
@@ -332,12 +344,14 @@ export type InputsUnion =
     | FunctionCallItem
     | InputsMessage
     | OutputFunctionCallItem
+    | OutputCustomToolCallItem
     | OutputWebSearchCallItem
     | OutputFileSearchCallItem
     | OutputComputerCallItem
     | OutputDatetimeItem
     | ReasoningItem
     | FunctionCallOutputItem
+    | CustomToolCallOutputItem
     | InputsReasoning
     | OutputImageGenerationCallItem
     | OutputWebSearchServerToolItem
@@ -619,12 +633,14 @@ export type InputsUnion1$Outbound =
   | FunctionCallItem$Outbound
   | InputsMessage$Outbound
   | OutputFunctionCallItem$Outbound
+  | OutputCustomToolCallItem$Outbound
   | OutputWebSearchCallItem$Outbound
   | OutputFileSearchCallItem$Outbound
   | OutputComputerCallItem$Outbound
   | OutputDatetimeItem$Outbound
   | ReasoningItem$Outbound
   | FunctionCallOutputItem$Outbound
+  | CustomToolCallOutputItem$Outbound
   | InputsReasoning$Outbound
   | OutputImageGenerationCallItem$Outbound
   | OutputWebSearchServerToolItem$Outbound
@@ -652,12 +668,14 @@ export const InputsUnion1$outboundSchema: z.ZodType<
   FunctionCallItem$outboundSchema,
   z.lazy(() => InputsMessage$outboundSchema),
   OutputFunctionCallItem$outboundSchema,
+  OutputCustomToolCallItem$outboundSchema,
   OutputWebSearchCallItem$outboundSchema,
   OutputFileSearchCallItem$outboundSchema,
   OutputComputerCallItem$outboundSchema,
   OutputDatetimeItem$outboundSchema,
   ReasoningItem$outboundSchema,
   FunctionCallOutputItem$outboundSchema,
+  CustomToolCallOutputItem$outboundSchema,
   z.lazy(() => InputsReasoning$outboundSchema),
   OutputImageGenerationCallItem$outboundSchema,
   OutputWebSearchServerToolItem$outboundSchema,
@@ -689,12 +707,14 @@ export type InputsUnion$Outbound =
     | FunctionCallItem$Outbound
     | InputsMessage$Outbound
     | OutputFunctionCallItem$Outbound
+    | OutputCustomToolCallItem$Outbound
     | OutputWebSearchCallItem$Outbound
     | OutputFileSearchCallItem$Outbound
     | OutputComputerCallItem$Outbound
     | OutputDatetimeItem$Outbound
     | ReasoningItem$Outbound
     | FunctionCallOutputItem$Outbound
+    | CustomToolCallOutputItem$Outbound
     | InputsReasoning$Outbound
     | OutputImageGenerationCallItem$Outbound
     | OutputWebSearchServerToolItem$Outbound
@@ -726,12 +746,14 @@ export const InputsUnion$outboundSchema: z.ZodType<
       FunctionCallItem$outboundSchema,
       z.lazy(() => InputsMessage$outboundSchema),
       OutputFunctionCallItem$outboundSchema,
+      OutputCustomToolCallItem$outboundSchema,
       OutputWebSearchCallItem$outboundSchema,
       OutputFileSearchCallItem$outboundSchema,
       OutputComputerCallItem$outboundSchema,
       OutputDatetimeItem$outboundSchema,
       ReasoningItem$outboundSchema,
       FunctionCallOutputItem$outboundSchema,
+      CustomToolCallOutputItem$outboundSchema,
       z.lazy(() => InputsReasoning$outboundSchema),
       OutputImageGenerationCallItem$outboundSchema,
       OutputWebSearchServerToolItem$outboundSchema,
