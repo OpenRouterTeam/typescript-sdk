@@ -34,6 +34,10 @@ import {
   OutputComputerCallItem$inboundSchema,
 } from "./outputcomputercallitem.js";
 import {
+  OutputCustomToolCallItem,
+  OutputCustomToolCallItem$inboundSchema,
+} from "./outputcustomtoolcallitem.js";
+import {
   OutputDatetimeItem,
   OutputDatetimeItem$inboundSchema,
 } from "./outputdatetimeitem.js";
@@ -104,6 +108,7 @@ import {
 export type OutputItems =
   | (OutputCodeInterpreterCallItem & { type: "code_interpreter_call" })
   | (OutputComputerCallItem & { type: "computer_call" })
+  | OutputCustomToolCallItem
   | (OutputFileSearchCallItem & { type: "file_search_call" })
   | (OutputFunctionCallItem & { type: "function_call" })
   | (OutputImageGenerationCallItem & { type: "image_generation_call" })
@@ -141,6 +146,7 @@ export const OutputItems$inboundSchema: z.ZodType<OutputItems, unknown> =
     computer_call: OutputComputerCallItem$inboundSchema.and(
       z.object({ type: z.literal("computer_call") }),
     ),
+    custom_tool_call: OutputCustomToolCallItem$inboundSchema,
     file_search_call: OutputFileSearchCallItem$inboundSchema.and(
       z.object({ type: z.literal("file_search_call") }),
     ),
