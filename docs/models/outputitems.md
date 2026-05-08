@@ -34,6 +34,17 @@ const value: models.OutputComputerCallItem = {
 };
 ```
 
+### `models.OutputCustomToolCallItem`
+
+```typescript
+const value: models.OutputCustomToolCallItem = {
+  callId: "<id>",
+  input: "<value>",
+  name: "<value>",
+  type: "custom_tool_call",
+};
+```
+
 ### `models.OutputFileSearchCallItem`
 
 ```typescript
