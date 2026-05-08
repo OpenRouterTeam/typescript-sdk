@@ -1,0 +1,19 @@
+# AgentEventType
+
+Event type, normalized across providers.
+
+## Example Usage
+
+```typescript
+import { AgentEventType } from "@openrouter/sdk/models";
+
+let value: AgentEventType = "session.status";
+
+// Open enum: unrecognized values are captured as Unrecognized<string>
+```
+
+## Values
+
+```typescript
+"session.created" | "session.status" | "session.message" | "session.completed" | "session.failed" | Unrecognized<string>
+```

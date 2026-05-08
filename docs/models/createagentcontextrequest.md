@@ -1,0 +1,21 @@
+# CreateAgentContextRequest
+
+## Example Usage
+
+```typescript
+import { CreateAgentContextRequest } from "@openrouter/sdk/models";
+
+let value: CreateAgentContextRequest = {
+  name: "myorg/myapp",
+  scope: "org",
+};
+```
+
+## Fields
+
+| Field                                                                      | Type                                                                       | Required                                                                   | Description                                                                | Example                                                                    |
+| -------------------------------------------------------------------------- | -------------------------------------------------------------------------- | -------------------------------------------------------------------------- | -------------------------------------------------------------------------- | -------------------------------------------------------------------------- |
+| `knowledge`                                                                | *string*[]                                                                 | :heavy_minus_sign:                                                         | Vendor-neutral knowledge entries.                                          | [<br/>"Always use TypeScript strict mode",<br/>"Run pnpm test before committing"<br/>] |
+| `mcpServers`                                                               | [models.AgentMcpServer](../models/agentmcpserver.md)[]                     | :heavy_minus_sign:                                                         | Remote MCP server URLs.                                                    | [<br/>{<br/>"name": "Jira (production)",<br/>"url": "https://mcp.myorg.com/jira"<br/>}<br/>] |
+| `name`                                                                     | *string*                                                                   | :heavy_check_mark:                                                         | Human-readable name. Conventionally `<owner>/<repo>`.                      | myorg/myapp                                                                |
+| `scope`                                                                    | [models.AgentContextScope](../models/agentcontextscope.md)                 | :heavy_check_mark:                                                         | Scope at which an AgentContext applies.                                    | org                                                                        |

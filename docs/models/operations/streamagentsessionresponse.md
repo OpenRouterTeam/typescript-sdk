@@ -1,0 +1,20 @@
+# StreamAgentSessionResponse
+
+
+## Supported Types
+
+### `models.AgentEvent`
+
+```typescript
+const value: models.AgentEvent = {
+  sessionId: "agtsess_01h9k2m3p4q5r6s7t8u9v0w1x2",
+  type: "session.status",
+};
+```
+
+### `string`
+
+```typescript
+const value: string = "<value>";
+```
+

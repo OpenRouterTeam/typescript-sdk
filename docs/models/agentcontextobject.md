@@ -1,0 +1,17 @@
+# AgentContextObject
+
+Object type discriminator.
+
+## Example Usage
+
+```typescript
+import { AgentContextObject } from "@openrouter/sdk/models";
+
+let value: AgentContextObject = "agent.context";
+```
+
+## Values
+
+```typescript
+"agent.context"
+```

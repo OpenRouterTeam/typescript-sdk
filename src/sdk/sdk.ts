@@ -4,6 +4,8 @@
  */
 
 import { ClientSDK } from "../lib/sdks.js";
+import { AgentContexts } from "./agentcontexts.js";
+import { AgentSessions } from "./agentsessions.js";
 import { Analytics } from "./analytics.js";
 import { APIKeys } from "./apikeys.js";
 import { Beta } from "./beta.js";
@@ -39,6 +41,16 @@ export class OpenRouter extends ClientSDK {
   private _analytics?: Analytics;
   get analytics(): Analytics {
     return (this._analytics ??= new Analytics(this._options));
+  }
+
+  private _agentContexts?: AgentContexts;
+  get agentContexts(): AgentContexts {
+    return (this._agentContexts ??= new AgentContexts(this._options));
+  }
+
+  private _agentSessions?: AgentSessions;
+  get agentSessions(): AgentSessions {
+    return (this._agentSessions ??= new AgentSessions(this._options));
   }
 
   private _tts?: Tts;

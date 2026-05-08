@@ -1,0 +1,17 @@
+# AgentSessionObject
+
+Object type discriminator.
+
+## Example Usage
+
+```typescript
+import { AgentSessionObject } from "@openrouter/sdk/models";
+
+let value: AgentSessionObject = "agent.session";
+```
+
+## Values
+
+```typescript
+"agent.session"
+```
