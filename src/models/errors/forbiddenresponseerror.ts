@@ -9,25 +9,31 @@ import * as models from "../index.js";
 import { OpenRouterError } from "./openroutererror.js";
 
 /**
- * Forbidden - Authentication successful but insufficient permissions
+ * Forbidden - Authentication successful but insufficient permissions. When a guardrail blocks a request, the response includes `openrouter_metadata.pipeline` with stage details (requires opt-in via `X-OpenRouter-Experimental-Metadata: enabled`).
  */
 export type ForbiddenResponseErrorData = {
   /**
    * Error data for ForbiddenResponse
    */
   error: models.ForbiddenResponseErrorData;
+  /**
+   * Opt-in routing snapshot. Present when the request includes `X-OpenRouter-Experimental-Metadata: enabled` and the failure occurs after the router has captured usable state. Same shape as `openrouter_metadata` on successful responses — includes routing strategy, endpoint info, and pipeline guardrail stages.
+   */
   openrouterMetadata?: { [k: string]: any | null } | null | undefined;
   userId?: string | null | undefined;
 };
 
 /**
- * Forbidden - Authentication successful but insufficient permissions
+ * Forbidden - Authentication successful but insufficient permissions. When a guardrail blocks a request, the response includes `openrouter_metadata.pipeline` with stage details (requires opt-in via `X-OpenRouter-Experimental-Metadata: enabled`).
  */
 export class ForbiddenResponseError extends OpenRouterError {
   /**
    * Error data for ForbiddenResponse
    */
   error: models.ForbiddenResponseErrorData;
+  /**
+   * Opt-in routing snapshot. Present when the request includes `X-OpenRouter-Experimental-Metadata: enabled` and the failure occurs after the router has captured usable state. Same shape as `openrouter_metadata` on successful responses — includes routing strategy, endpoint info, and pipeline guardrail stages.
+   */
   openrouterMetadata?: { [k: string]: any | null } | null | undefined;
   userId?: string | null | undefined;
 
