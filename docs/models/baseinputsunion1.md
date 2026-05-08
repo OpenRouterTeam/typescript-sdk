@@ -76,3 +76,13 @@ const value: models.OutputMessage = {
 };
 ```
 
+### `models.OpenAIResponseCustomToolCallOutput`
+
+```typescript
+const value: models.OpenAIResponseCustomToolCallOutput = {
+  callId: "call-abc123",
+  output: "patch applied successfully",
+  type: "custom_tool_call_output",
+};
+```
+
