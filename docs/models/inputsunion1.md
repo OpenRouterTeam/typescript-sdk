@@ -56,6 +56,16 @@ const value: models.FunctionCallOutputItem = {
 };
 ```
 
+### `models.CustomToolCallOutputItem`
+
+```typescript
+const value: models.CustomToolCallOutputItem = {
+  callId: "call-abc123",
+  output: "patch applied successfully",
+  type: "custom_tool_call_output",
+};
+```
+
 ### `models.InputsMessage`
 
 ```typescript
@@ -95,6 +105,17 @@ const value: models.OutputFunctionCallItem = {
   callId: "call-abc123",
   name: "get_weather",
   type: "function_call",
+};
+```
+
+### `models.OutputCustomToolCallItem`
+
+```typescript
+const value: models.OutputCustomToolCallItem = {
+  callId: "call-abc123",
+  input: "*** Begin Patch\n*** End Patch",
+  name: "apply_patch",
+  type: "custom_tool_call",
 };
 ```
 
