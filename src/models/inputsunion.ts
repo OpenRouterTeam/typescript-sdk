@@ -293,9 +293,40 @@ export type InputsMessage = {
   type: InputsTypeMessage;
 };
 
+export const TypeCustomToolCallOutput = {
+  CustomToolCallOutput: "custom_tool_call_output",
+} as const;
+export type TypeCustomToolCallOutput = ClosedEnum<
+  typeof TypeCustomToolCallOutput
+>;
+
+export type InputsCustomToolCallOutput = {
+  callId: string;
+  id?: string | undefined;
+  output: string;
+  type: TypeCustomToolCallOutput;
+};
+
+export const InputsTypeCustomToolCall = {
+  CustomToolCall: "custom_tool_call",
+} as const;
+export type InputsTypeCustomToolCall = ClosedEnum<
+  typeof InputsTypeCustomToolCall
+>;
+
+export type InputsCustomToolCall = {
+  callId: string;
+  id?: string | undefined;
+  input: string;
+  name: string;
+  status?: string | undefined;
+  type: InputsTypeCustomToolCall;
+};
+
 export type InputsUnion1 =
   | OutputCodeInterpreterCallItem
   | FunctionCallItem
+  | InputsCustomToolCall
   | InputsMessage
   | OutputFunctionCallItem
   | OutputWebSearchCallItem
@@ -304,6 +335,7 @@ export type InputsUnion1 =
   | OutputDatetimeItem
   | ReasoningItem
   | FunctionCallOutputItem
+  | InputsCustomToolCallOutput
   | InputsReasoning
   | OutputImageGenerationCallItem
   | OutputWebSearchServerToolItem
@@ -330,6 +362,7 @@ export type InputsUnion =
   | Array<
     | OutputCodeInterpreterCallItem
     | FunctionCallItem
+    | InputsCustomToolCall
     | InputsMessage
     | OutputFunctionCallItem
     | OutputWebSearchCallItem
@@ -338,6 +371,7 @@ export type InputsUnion =
     | OutputDatetimeItem
     | ReasoningItem
     | FunctionCallOutputItem
+    | InputsCustomToolCallOutput
     | InputsReasoning
     | OutputImageGenerationCallItem
     | OutputWebSearchServerToolItem
@@ -614,9 +648,86 @@ export function inputsMessageToJSON(inputsMessage: InputsMessage): string {
 }
 
 /** @internal */
+export const TypeCustomToolCallOutput$outboundSchema: z.ZodEnum<
+  typeof TypeCustomToolCallOutput
+> = z.enum(TypeCustomToolCallOutput);
+
+/** @internal */
+export type InputsCustomToolCallOutput$Outbound = {
+  call_id: string;
+  id?: string | undefined;
+  output: string;
+  type: string;
+};
+
+/** @internal */
+export const InputsCustomToolCallOutput$outboundSchema: z.ZodType<
+  InputsCustomToolCallOutput$Outbound,
+  InputsCustomToolCallOutput
+> = z.object({
+  callId: z.string(),
+  id: z.string().optional(),
+  output: z.string(),
+  type: TypeCustomToolCallOutput$outboundSchema,
+}).transform((v) => {
+  return remap$(v, {
+    callId: "call_id",
+  });
+});
+
+export function inputsCustomToolCallOutputToJSON(
+  inputsCustomToolCallOutput: InputsCustomToolCallOutput,
+): string {
+  return JSON.stringify(
+    InputsCustomToolCallOutput$outboundSchema.parse(inputsCustomToolCallOutput),
+  );
+}
+
+/** @internal */
+export const InputsTypeCustomToolCall$outboundSchema: z.ZodEnum<
+  typeof InputsTypeCustomToolCall
+> = z.enum(InputsTypeCustomToolCall);
+
+/** @internal */
+export type InputsCustomToolCall$Outbound = {
+  call_id: string;
+  id?: string | undefined;
+  input: string;
+  name: string;
+  status?: string | undefined;
+  type: string;
+};
+
+/** @internal */
+export const InputsCustomToolCall$outboundSchema: z.ZodType<
+  InputsCustomToolCall$Outbound,
+  InputsCustomToolCall
+> = z.object({
+  callId: z.string(),
+  id: z.string().optional(),
+  input: z.string(),
+  name: z.string(),
+  status: z.string().optional(),
+  type: InputsTypeCustomToolCall$outboundSchema,
+}).transform((v) => {
+  return remap$(v, {
+    callId: "call_id",
+  });
+});
+
+export function inputsCustomToolCallToJSON(
+  inputsCustomToolCall: InputsCustomToolCall,
+): string {
+  return JSON.stringify(
+    InputsCustomToolCall$outboundSchema.parse(inputsCustomToolCall),
+  );
+}
+
+/** @internal */
 export type InputsUnion1$Outbound =
   | OutputCodeInterpreterCallItem$Outbound
   | FunctionCallItem$Outbound
+  | InputsCustomToolCall$Outbound
   | InputsMessage$Outbound
   | OutputFunctionCallItem$Outbound
   | OutputWebSearchCallItem$Outbound
@@ -625,6 +736,7 @@ export type InputsUnion1$Outbound =
   | OutputDatetimeItem$Outbound
   | ReasoningItem$Outbound
   | FunctionCallOutputItem$Outbound
+  | InputsCustomToolCallOutput$Outbound
   | InputsReasoning$Outbound
   | OutputImageGenerationCallItem$Outbound
   | OutputWebSearchServerToolItem$Outbound
@@ -650,6 +762,7 @@ export const InputsUnion1$outboundSchema: z.ZodType<
 > = z.union([
   OutputCodeInterpreterCallItem$outboundSchema,
   FunctionCallItem$outboundSchema,
+  z.lazy(() => InputsCustomToolCall$outboundSchema),
   z.lazy(() => InputsMessage$outboundSchema),
   OutputFunctionCallItem$outboundSchema,
   OutputWebSearchCallItem$outboundSchema,
@@ -658,6 +771,7 @@ export const InputsUnion1$outboundSchema: z.ZodType<
   OutputDatetimeItem$outboundSchema,
   ReasoningItem$outboundSchema,
   FunctionCallOutputItem$outboundSchema,
+  z.lazy(() => InputsCustomToolCallOutput$outboundSchema),
   z.lazy(() => InputsReasoning$outboundSchema),
   OutputImageGenerationCallItem$outboundSchema,
   OutputWebSearchServerToolItem$outboundSchema,
@@ -687,6 +801,7 @@ export type InputsUnion$Outbound =
   | Array<
     | OutputCodeInterpreterCallItem$Outbound
     | FunctionCallItem$Outbound
+    | InputsCustomToolCall$Outbound
     | InputsMessage$Outbound
     | OutputFunctionCallItem$Outbound
     | OutputWebSearchCallItem$Outbound
@@ -695,6 +810,7 @@ export type InputsUnion$Outbound =
     | OutputDatetimeItem$Outbound
     | ReasoningItem$Outbound
     | FunctionCallOutputItem$Outbound
+    | InputsCustomToolCallOutput$Outbound
     | InputsReasoning$Outbound
     | OutputImageGenerationCallItem$Outbound
     | OutputWebSearchServerToolItem$Outbound
@@ -724,6 +840,7 @@ export const InputsUnion$outboundSchema: z.ZodType<
     z.union([
       OutputCodeInterpreterCallItem$outboundSchema,
       FunctionCallItem$outboundSchema,
+      z.lazy(() => InputsCustomToolCall$outboundSchema),
       z.lazy(() => InputsMessage$outboundSchema),
       OutputFunctionCallItem$outboundSchema,
       OutputWebSearchCallItem$outboundSchema,
@@ -732,6 +849,7 @@ export const InputsUnion$outboundSchema: z.ZodType<
       OutputDatetimeItem$outboundSchema,
       ReasoningItem$outboundSchema,
       FunctionCallOutputItem$outboundSchema,
+      z.lazy(() => InputsCustomToolCallOutput$outboundSchema),
       z.lazy(() => InputsReasoning$outboundSchema),
       OutputImageGenerationCallItem$outboundSchema,
       OutputWebSearchServerToolItem$outboundSchema,
