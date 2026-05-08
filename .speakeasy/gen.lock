@@ -1,19 +1,19 @@
 lockVersion: ""
 id: ""
 management:
-  docChecksum: aac3b3f2234f46729b307c29c267c6b5
+  docChecksum: c20b004c021029f9aebfab773cf2f099
   docVersion: 1.0.0
   speakeasyVersion: 1.761.0
   generationVersion: 2.879.1
-  releaseVersion: 0.12.36
-  configChecksum: 0ceb9fc835d8579ae16fd3677ac65d19
+  releaseVersion: 0.12.37
+  configChecksum: c97e923006bdb86ce9d7dbcd8c0f7e02
   repoURL: https://github.com/OpenRouterTeam/typescript-sdk.git
   installationURL: https://github.com/OpenRouterTeam/typescript-sdk
   published: true
 persistentEdits:
-  generation_id: 0476a1a4-291b-42b5-8114-8e944b944103
-  pristine_commit_hash: 45dcd21a2b748937ba2ce87d3faacd722d219993
-  pristine_tree_hash: 45a7d9e2a0f08334c900cfbf3b00d5276bceec5c
+  generation_id: 5f83e581-cb5b-4920-99b2-d11677949ccf
+  pristine_commit_hash: 315bd95d83bd20390ae9f573808beb014c5fc885
+  pristine_tree_hash: 6b1a3de4213adf642d3c73ad5aac7b177b9177b4
 features:
   typescript:
     acceptHeaders: 2.81.2
@@ -1561,13 +1561,13 @@ trackedFiles:
     deleted: true
   docs/models/generationresponse.md:
     id: 686f60f23427
-    last_write_checksum: sha1:a101f7385a8000bb53ce0b75517bcd294b9f3f89
-    pristine_git_object: dd6bcd9fa49f0799a8ef40b09eb2e3a499118950
+    last_write_checksum: sha1:fefaac88af32aa4cc455d589d50672082c7f2fc5
+    pristine_git_object: 9a4dd2c3091ddde9020079aaa68c440536dcba3b
     deleted: true
   docs/models/generationresponsedata.md:
     id: 6aa3e407630d
-    last_write_checksum: sha1:a18734de919fb19a50425da7454385ca7b02f583
-    pristine_git_object: fba0a55b8561fd15f3e7adaa82ef38e6b79f39db
+    last_write_checksum: sha1:e126322e34ce831af05afa2b0ee4b5a6b95fb257
+    pristine_git_object: 1701cf51746777902c535ff9f904de07a0df0091
     deleted: true
   docs/models/getguardrailresponse.md:
     id: 3590ce9e2938
@@ -4583,12 +4583,12 @@ trackedFiles:
     pristine_git_object: 410efafd6a7f50d91ccb87131fedbe0c3d47e15a
   jsr.json:
     id: 7f6ab7767282
-    last_write_checksum: sha1:62617ce695e548ba80f4266141679ef9bd0cf90a
-    pristine_git_object: def9b23e3a371cc642e5e05a7bb905911e18f47d
+    last_write_checksum: sha1:3f8a7230d35d4ea12957b41e5069339a06df4f37
+    pristine_git_object: 633501f3d52a6a1fc0d1ed9cdbe22412df816fb3
   package.json:
     id: 7030d0b2f71b
-    last_write_checksum: sha1:b5c336980d0280ac19c280e2e77616dcf22250a2
-    pristine_git_object: bf30e0a2551e9d50d106e3f786283b3b0de4f7cb
+    last_write_checksum: sha1:5cabd98af9b71daebd5f2a4ce07aab8876c12e17
+    pristine_git_object: 4a9e14951e11b3765b744bf80512d7f82fbe824e
   src/core.ts:
     id: f431fdbcd144
     last_write_checksum: sha1:5aa66b0b6a5964f3eea7f3098c2eb3c0ee9c0131
@@ -4815,8 +4815,8 @@ trackedFiles:
     pristine_git_object: a187e58707bdb726ca2aff74941efe7493422d4e
   src/lib/config.ts:
     id: 320761608fb3
-    last_write_checksum: sha1:42ed8fa79aff20e43235e334d98afb6f37b0e029
-    pristine_git_object: d4f791c4a657a5908226e58d5c3534d04e661a3d
+    last_write_checksum: sha1:d9cd6008d909b035f81fd015af7461b95bb7ec6b
+    pristine_git_object: 6b706edafaa086c5aeb8e918b08b81a5be3c6c38
   src/lib/dlv.ts:
     id: b1988214835a
     last_write_checksum: sha1:eaac763b22717206a6199104e0403ed17a4e2711
@@ -5415,8 +5415,8 @@ trackedFiles:
     pristine_git_object: fb1950525224243627836ce1a03eae69c4503027
   src/models/generationresponse.ts:
     id: f9109ae06502
-    last_write_checksum: sha1:ee813c1d7b8ee2e6fd7efd4b5828b84aa340aaa9
-    pristine_git_object: 3973786df49ca71ad2016a5a48e08be1c9e85239
+    last_write_checksum: sha1:c74595f415069c4b65605d487bae5841aa0ac574
+    pristine_git_object: dcda53872c1478b31ef0792ba350cce9e8be0881
   src/models/getguardrailresponse.ts:
     id: 3103b978871a
     last_write_checksum: sha1:5ddb4118f2be61504caa75a7c83e3af7f0725b91
@@ -6719,7 +6719,7 @@ examples:
           id: "<id>"
       responses:
         "200":
-          application/json: {"data": {"api_type": "completions", "app_id": 12345, "cache_discount": null, "cancelled": false, "created_at": "2024-07-15T23:33:19.433273+00:00", "external_user": "user-123", "finish_reason": "stop", "generation_time": 1200, "http_referer": "https://openrouter.ai/", "id": "gen-3bhGkxlo4XFrqiabUM7NDtwDzWwG", "is_byok": false, "latency": 1250, "model": "sao10k/l3-stheno-8b", "moderation_latency": 50, "native_finish_reason": "stop", "native_tokens_cached": 3, "native_tokens_completion": 25, "native_tokens_completion_images": 0, "native_tokens_prompt": 10, "native_tokens_reasoning": 5, "num_fetches": 0, "num_input_audio_prompt": 0, "num_media_completion": 0, "num_media_prompt": 1, "num_search_results": 5, "origin": "https://openrouter.ai/", "provider_name": "Infermatic", "provider_responses": null, "router": "openrouter/auto", "streamed": true, "tokens_completion": 25, "tokens_prompt": 10, "total_cost": 0.0015, "upstream_id": "chatcmpl-791bcf62-080e-4568-87d0-94c72e3b4946", "upstream_inference_cost": 0.0012, "usage": 0.0015, "user_agent": "Mozilla/5.0", "web_search_engine": "exa"}}
+          application/json: {"data": {"api_type": "completions", "app_id": 12345, "cache_discount": null, "cancelled": false, "created_at": "2024-07-15T23:33:19.433273+00:00", "external_user": "user-123", "finish_reason": "stop", "generation_time": 1200, "http_referer": "https://openrouter.ai/", "id": "gen-3bhGkxlo4XFrqiabUM7NDtwDzWwG", "is_byok": false, "latency": 1250, "model": "sao10k/l3-stheno-8b", "moderation_latency": 50, "native_finish_reason": "stop", "native_tokens_cached": 3, "native_tokens_completion": 25, "native_tokens_completion_images": 0, "native_tokens_prompt": 10, "native_tokens_reasoning": 5, "num_fetches": 0, "num_input_audio_prompt": 0, "num_media_completion": 0, "num_media_prompt": 1, "num_search_results": 5, "origin": "https://openrouter.ai/", "provider_name": "Infermatic", "provider_responses": null, "router": "openrouter/auto", "service_tier": "priority", "streamed": true, "tokens_completion": 25, "tokens_prompt": 10, "total_cost": 0.0015, "upstream_id": "chatcmpl-791bcf62-080e-4568-87d0-94c72e3b4946", "upstream_inference_cost": 0.0012, "usage": 0.0015, "user_agent": "Mozilla/5.0", "web_search_engine": "exa"}}
         "401":
           application/json: {"error": {"code": 401, "message": "Missing Authentication header"}}
         "402":
@@ -7422,5 +7422,4 @@ examples:
 examplesVersion: 1.0.2
 releaseNotes: |
   ## Typescript SDK Changes:
-  * `openrouter.chat.send()`:  `response` **Changed**
-  * `openrouter.beta.responses.send()`:  `response` **Changed**
+  * `openrouter.generations.getGeneration()`:  `response.data.serviceTier` **Added**
