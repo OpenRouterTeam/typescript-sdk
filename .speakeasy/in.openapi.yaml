@@ -5087,7 +5087,10 @@ components:
             slug: regex-prompt-injection
         content_filters: null
         description: A guardrail for limiting API usage
-        enforce_zdr: false
+        enforce_zdr_anthropic: true
+        enforce_zdr_google: false
+        enforce_zdr_openai: true
+        enforce_zdr_other: false
         ignored_models: null
         ignored_providers: null
         limit_usd: 50
@@ -5144,7 +5147,33 @@ components:
           nullable: true
           type: string
         enforce_zdr:
-          description: Whether to enforce zero data retention
+          deprecated: true
+          description: >-
+            Deprecated. Use enforce_zdr_anthropic, enforce_zdr_openai, enforce_zdr_google, and enforce_zdr_other
+            instead. When provided, its value is copied into any of those per-provider fields that are not explicitly
+            specified on the request.
+          example: false
+          nullable: true
+          type: boolean
+        enforce_zdr_anthropic:
+          description: Whether to enforce zero data retention for Anthropic models. Falls back to enforce_zdr when not provided.
+          example: false
+          nullable: true
+          type: boolean
+        enforce_zdr_google:
+          description: Whether to enforce zero data retention for Google models. Falls back to enforce_zdr when not provided.
+          example: false
+          nullable: true
+          type: boolean
+        enforce_zdr_openai:
+          description: Whether to enforce zero data retention for OpenAI models. Falls back to enforce_zdr when not provided.
+          example: false
+          nullable: true
+          type: boolean
+        enforce_zdr_other:
+          description: >-
+            Whether to enforce zero data retention for models that are not from Anthropic, OpenAI, or Google. Falls back
+            to enforce_zdr when not provided.
           example: false
           nullable: true
           type: boolean
@@ -5203,7 +5232,11 @@ components:
           content_filters: null
           created_at: '2025-08-24T10:30:00Z'
           description: A guardrail for limiting API usage
-          enforce_zdr: false
+          enforce_zdr: null
+          enforce_zdr_anthropic: true
+          enforce_zdr_google: false
+          enforce_zdr_openai: true
+          enforce_zdr_other: false
           id: 550e8400-e29b-41d4-a716-446655440000
           ignored_models: null
           ignored_providers: null
@@ -6407,7 +6440,11 @@ components:
           content_filters: null
           created_at: '2025-08-24T10:30:00Z'
           description: Guardrail for production environment
-          enforce_zdr: false
+          enforce_zdr: null
+          enforce_zdr_anthropic: true
+          enforce_zdr_google: false
+          enforce_zdr_openai: true
+          enforce_zdr_other: false
           id: 550e8400-e29b-41d4-a716-446655440000
           ignored_models: null
           ignored_providers: null
@@ -6507,7 +6544,11 @@ components:
         content_filters: null
         created_at: '2025-08-24T10:30:00Z'
         description: Guardrail for production environment
-        enforce_zdr: false
+        enforce_zdr: null
+        enforce_zdr_anthropic: true
+        enforce_zdr_google: false
+        enforce_zdr_openai: true
+        enforce_zdr_other: false
         id: 550e8400-e29b-41d4-a716-446655440000
         ignored_models: null
         ignored_providers: null
@@ -6569,7 +6610,33 @@ components:
           nullable: true
           type: string
         enforce_zdr:
-          description: Whether to enforce zero data retention
+          deprecated: true
+          description: >-
+            Deprecated. Use enforce_zdr_anthropic, enforce_zdr_openai, enforce_zdr_google, and enforce_zdr_other
+            instead. When provided, its value is copied into any of those per-provider fields that are not explicitly
+            specified on the request.
+          example: false
+          nullable: true
+          type: boolean
+        enforce_zdr_anthropic:
+          description: Whether to enforce zero data retention for Anthropic models. Falls back to enforce_zdr when not provided.
+          example: false
+          nullable: true
+          type: boolean
+        enforce_zdr_google:
+          description: Whether to enforce zero data retention for Google models. Falls back to enforce_zdr when not provided.
+          example: false
+          nullable: true
+          type: boolean
+        enforce_zdr_openai:
+          description: Whether to enforce zero data retention for OpenAI models. Falls back to enforce_zdr when not provided.
+          example: false
+          nullable: true
+          type: boolean
+        enforce_zdr_other:
+          description: >-
+            Whether to enforce zero data retention for models that are not from Anthropic, OpenAI, or Google. Falls back
+            to enforce_zdr when not provided.
           example: false
           nullable: true
           type: boolean
@@ -7432,7 +7499,11 @@ components:
             content_filters: null
             created_at: '2025-08-24T10:30:00Z'
             description: Guardrail for production environment
-            enforce_zdr: false
+            enforce_zdr: null
+            enforce_zdr_anthropic: true
+            enforce_zdr_google: false
+            enforce_zdr_openai: true
+            enforce_zdr_other: false
             id: 550e8400-e29b-41d4-a716-446655440000
             ignored_models: null
             ignored_providers: null
@@ -14135,7 +14206,33 @@ components:
           nullable: true
           type: string
         enforce_zdr:
-          description: Whether to enforce zero data retention
+          deprecated: true
+          description: >-
+            Deprecated. Use enforce_zdr_anthropic, enforce_zdr_openai, enforce_zdr_google, and enforce_zdr_other
+            instead. When provided, its value is copied into any of those per-provider fields that are not explicitly
+            specified on the request.
+          example: true
+          nullable: true
+          type: boolean
+        enforce_zdr_anthropic:
+          description: Whether to enforce zero data retention for Anthropic models. Falls back to enforce_zdr when not provided.
+          example: true
+          nullable: true
+          type: boolean
+        enforce_zdr_google:
+          description: Whether to enforce zero data retention for Google models. Falls back to enforce_zdr when not provided.
+          example: true
+          nullable: true
+          type: boolean
+        enforce_zdr_openai:
+          description: Whether to enforce zero data retention for OpenAI models. Falls back to enforce_zdr when not provided.
+          example: true
+          nullable: true
+          type: boolean
+        enforce_zdr_other:
+          description: >-
+            Whether to enforce zero data retention for models that are not from Anthropic, OpenAI, or Google. Falls back
+            to enforce_zdr when not provided.
           example: true
           nullable: true
           type: boolean
@@ -14185,7 +14282,11 @@ components:
           content_filters: null
           created_at: '2025-08-24T10:30:00Z'
           description: Updated description
-          enforce_zdr: true
+          enforce_zdr: null
+          enforce_zdr_anthropic: true
+          enforce_zdr_google: true
+          enforce_zdr_openai: true
+          enforce_zdr_other: true
           id: 550e8400-e29b-41d4-a716-446655440000
           ignored_models: null
           ignored_providers: null
@@ -17089,7 +17190,10 @@ paths:
                 - anthropic
                 - deepseek
               description: A guardrail for limiting API usage
-              enforce_zdr: false
+              enforce_zdr_anthropic: true
+              enforce_zdr_google: false
+              enforce_zdr_openai: true
+              enforce_zdr_other: false
               ignored_models: null
               ignored_providers: null
               limit_usd: 50
@@ -17111,7 +17215,11 @@ paths:
                     - google
                   created_at: '2025-08-24T10:30:00Z'
                   description: A guardrail for limiting API usage
-                  enforce_zdr: false
+                  enforce_zdr: null
+                  enforce_zdr_anthropic: true
+                  enforce_zdr_google: false
+                  enforce_zdr_openai: true
+                  enforce_zdr_other: false
                   id: 550e8400-e29b-41d4-a716-446655440000
                   ignored_models: null
                   ignored_providers: null
@@ -17331,7 +17439,11 @@ paths:
                     - openai
                   created_at: '2025-08-24T10:30:00Z'
                   description: Updated description
-                  enforce_zdr: true
+                  enforce_zdr: null
+                  enforce_zdr_anthropic: true
+                  enforce_zdr_google: true
+                  enforce_zdr_openai: true
+                  enforce_zdr_other: true
                   id: 550e8400-e29b-41d4-a716-446655440000
                   ignored_models: null
                   ignored_providers: null
