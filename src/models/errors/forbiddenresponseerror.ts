@@ -9,26 +9,26 @@ import * as models from "../index.js";
 import { OpenRouterError } from "./openroutererror.js";
 
 /**
- * Forbidden - Authentication successful but insufficient permissions
+ * Forbidden - Authentication successful but insufficient permissions. When a guardrail blocks a request, the response includes `openrouter_metadata.pipeline` with stage details (requires opt-in via `X-OpenRouter-Experimental-Metadata: enabled`).
  */
 export type ForbiddenResponseErrorData = {
   /**
    * Error data for ForbiddenResponse
    */
   error: models.ForbiddenResponseErrorData;
-  openrouterMetadata?: { [k: string]: any | null } | null | undefined;
+  openrouterMetadata?: models.OpenRouterMetadata | undefined;
   userId?: string | null | undefined;
 };
 
 /**
- * Forbidden - Authentication successful but insufficient permissions
+ * Forbidden - Authentication successful but insufficient permissions. When a guardrail blocks a request, the response includes `openrouter_metadata.pipeline` with stage details (requires opt-in via `X-OpenRouter-Experimental-Metadata: enabled`).
  */
 export class ForbiddenResponseError extends OpenRouterError {
   /**
    * Error data for ForbiddenResponse
    */
   error: models.ForbiddenResponseErrorData;
-  openrouterMetadata?: { [k: string]: any | null } | null | undefined;
+  openrouterMetadata?: models.OpenRouterMetadata | undefined;
   userId?: string | null | undefined;
 
   /** The original data that was passed to this error instance. */
@@ -58,8 +58,7 @@ export const ForbiddenResponseError$inboundSchema: z.ZodType<
   unknown
 > = z.object({
   error: models.ForbiddenResponseErrorData$inboundSchema,
-  openrouter_metadata: z.nullable(z.record(z.string(), z.nullable(z.any())))
-    .optional(),
+  openrouter_metadata: models.OpenRouterMetadata$inboundSchema.optional(),
   user_id: z.nullable(z.string()).optional(),
   request$: z.custom<Request>(x => x instanceof Request),
   response$: z.custom<Response>(x => x instanceof Response),
