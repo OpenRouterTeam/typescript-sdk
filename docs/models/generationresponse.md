@@ -38,6 +38,7 @@ let value: GenerationResponse = {
     providerName: "Infermatic",
     providerResponses: null,
     router: "openrouter/auto",
+    serviceTier: "priority",
     streamed: true,
     tokensCompletion: 25,
     tokensPrompt: 10,
