@@ -1,0 +1,16 @@
+# CustomToolCallOutputItemTypeCustomToolCallOutput
+
+## Example Usage
+
+```typescript
+import { CustomToolCallOutputItemTypeCustomToolCallOutput } from "@openrouter/sdk/models";
+
+let value: CustomToolCallOutputItemTypeCustomToolCallOutput =
+  "custom_tool_call_output";
+```
+
+## Values
+
+```typescript
+"custom_tool_call_output"
+```
