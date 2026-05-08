@@ -6120,6 +6120,7 @@ components:
           provider_responses: null
           request_id: req-1727282430-aBcDeFgHiJkLmNoPqRsT
           router: openrouter/auto
+          service_tier: priority
           session_id: null
           streamed: true
           tokens_completion: 25
@@ -6293,6 +6294,11 @@ components:
               example: openrouter/auto
               nullable: true
               type: string
+            service_tier:
+              description: Service tier the upstream provider reported running this request on, or null if it did not report one.
+              example: priority
+              nullable: true
+              type: string
             session_id:
               description: Session identifier grouping multiple generations in the same session
               nullable: true
@@ -6358,6 +6364,7 @@ components:
             - moderation_latency
             - generation_time
             - finish_reason
+            - service_tier
             - tokens_prompt
             - tokens_completion
             - native_tokens_prompt
