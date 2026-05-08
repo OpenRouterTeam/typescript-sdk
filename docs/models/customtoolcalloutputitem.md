@@ -1,0 +1,24 @@
+# CustomToolCallOutputItem
+
+The output from a custom (freeform-grammar) tool call execution. Mirrors `function_call_output` but is matched to a `custom_tool_call` rather than a `function_call`.
+
+## Example Usage
+
+```typescript
+import { CustomToolCallOutputItem } from "@openrouter/sdk/models";
+
+let value: CustomToolCallOutputItem = {
+  callId: "call-abc123",
+  output: "patch applied successfully",
+  type: "custom_tool_call_output",
+};
+```
+
+## Fields
+
+| Field                                                                            | Type                                                                             | Required                                                                         | Description                                                                      |
+| -------------------------------------------------------------------------------- | -------------------------------------------------------------------------------- | -------------------------------------------------------------------------------- | -------------------------------------------------------------------------------- |
+| `callId`                                                                         | *string*                                                                         | :heavy_check_mark:                                                               | N/A                                                                              |
+| `id`                                                                             | *string*                                                                         | :heavy_minus_sign:                                                               | N/A                                                                              |
+| `output`                                                                         | *models.CustomToolCallOutputItemOutput*                                          | :heavy_check_mark:                                                               | N/A                                                                              |
+| `type`                                                                           | [models.CustomToolCallOutputItemType](../models/customtoolcalloutputitemtype.md) | :heavy_check_mark:                                                               | N/A                                                                              |

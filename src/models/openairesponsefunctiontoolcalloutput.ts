@@ -6,30 +6,18 @@
 import * as z from "zod/v4";
 import { remap as remap$ } from "../lib/primitives.js";
 import { safeParse } from "../lib/schemas.js";
-import * as discriminatedUnionTypes from "../types/discriminatedUnion.js";
-import { discriminatedUnion } from "../types/discriminatedUnion.js";
 import * as openEnums from "../types/enums.js";
 import { ClosedEnum, OpenEnum } from "../types/enums.js";
 import { Result as SafeParseResult } from "../types/fp.js";
 import { SDKValidationError } from "./errors/sdkvalidationerror.js";
-import { InputFile, InputFile$inboundSchema } from "./inputfile.js";
-import { InputImage, InputImage$inboundSchema } from "./inputimage.js";
-import { InputText, InputText$inboundSchema } from "./inputtext.js";
+import {
+  OpenAIResponseFunctionCallOutputContent,
+  OpenAIResponseFunctionCallOutputContent$inboundSchema,
+} from "./openairesponsefunctioncalloutputcontent.js";
 
-export type OpenAIResponseFunctionToolCallOutputOutput1 =
-  | InputFile
-  | (InputImage & { type: "input_image" })
-  | InputText
-  | discriminatedUnionTypes.Unknown<"type">;
-
-export type OpenAIResponseFunctionToolCallOutputOutput2 =
+export type OpenAIResponseFunctionToolCallOutputOutput =
   | string
-  | Array<
-    | InputFile
-    | (InputImage & { type: "input_image" })
-    | InputText
-    | discriminatedUnionTypes.Unknown<"type">
-  >;
+  | Array<OpenAIResponseFunctionCallOutputContent>;
 
 export const OpenAIResponseFunctionToolCallOutputStatus = {
   InProgress: "in_progress",
@@ -50,73 +38,31 @@ export type OpenAIResponseFunctionToolCallOutputType = ClosedEnum<
 export type OpenAIResponseFunctionToolCallOutput = {
   callId: string;
   id?: string | null | undefined;
-  output:
-    | string
-    | Array<
-      | InputFile
-      | (InputImage & { type: "input_image" })
-      | InputText
-      | discriminatedUnionTypes.Unknown<"type">
-    >;
+  output: string | Array<OpenAIResponseFunctionCallOutputContent>;
   status?: OpenAIResponseFunctionToolCallOutputStatus | null | undefined;
   type: OpenAIResponseFunctionToolCallOutputType;
 };
 
 /** @internal */
-export const OpenAIResponseFunctionToolCallOutputOutput1$inboundSchema:
-  z.ZodType<OpenAIResponseFunctionToolCallOutputOutput1, unknown> =
-    discriminatedUnion("type", {
-      input_file: InputFile$inboundSchema,
-      input_image: InputImage$inboundSchema.and(
-        z.object({ type: z.literal("input_image") }),
-      ),
-      input_text: InputText$inboundSchema,
-    });
-
-export function openAIResponseFunctionToolCallOutputOutput1FromJSON(
-  jsonString: string,
-): SafeParseResult<
-  OpenAIResponseFunctionToolCallOutputOutput1,
-  SDKValidationError
-> {
-  return safeParse(
-    jsonString,
-    (x) =>
-      OpenAIResponseFunctionToolCallOutputOutput1$inboundSchema.parse(
-        JSON.parse(x),
-      ),
-    `Failed to parse 'OpenAIResponseFunctionToolCallOutputOutput1' from JSON`,
-  );
-}
-
-/** @internal */
-export const OpenAIResponseFunctionToolCallOutputOutput2$inboundSchema:
-  z.ZodType<OpenAIResponseFunctionToolCallOutputOutput2, unknown> = z.union([
+export const OpenAIResponseFunctionToolCallOutputOutput$inboundSchema:
+  z.ZodType<OpenAIResponseFunctionToolCallOutputOutput, unknown> = z.union([
     z.string(),
-    z.array(
-      discriminatedUnion("type", {
-        input_file: InputFile$inboundSchema,
-        input_image: InputImage$inboundSchema.and(
-          z.object({ type: z.literal("input_image") }),
-        ),
-        input_text: InputText$inboundSchema,
-      }),
-    ),
+    z.array(OpenAIResponseFunctionCallOutputContent$inboundSchema),
   ]);
 
-export function openAIResponseFunctionToolCallOutputOutput2FromJSON(
+export function openAIResponseFunctionToolCallOutputOutputFromJSON(
   jsonString: string,
 ): SafeParseResult<
-  OpenAIResponseFunctionToolCallOutputOutput2,
+  OpenAIResponseFunctionToolCallOutputOutput,
   SDKValidationError
 > {
   return safeParse(
     jsonString,
     (x) =>
-      OpenAIResponseFunctionToolCallOutputOutput2$inboundSchema.parse(
+      OpenAIResponseFunctionToolCallOutputOutput$inboundSchema.parse(
         JSON.parse(x),
       ),
-    `Failed to parse 'OpenAIResponseFunctionToolCallOutputOutput2' from JSON`,
+    `Failed to parse 'OpenAIResponseFunctionToolCallOutputOutput' from JSON`,
   );
 }
 
@@ -139,15 +85,7 @@ export const OpenAIResponseFunctionToolCallOutput$inboundSchema: z.ZodType<
   id: z.nullable(z.string()).optional(),
   output: z.union([
     z.string(),
-    z.array(
-      discriminatedUnion("type", {
-        input_file: InputFile$inboundSchema,
-        input_image: InputImage$inboundSchema.and(
-          z.object({ type: z.literal("input_image") }),
-        ),
-        input_text: InputText$inboundSchema,
-      }),
-    ),
+    z.array(OpenAIResponseFunctionCallOutputContent$inboundSchema),
   ]),
   status: z.nullable(OpenAIResponseFunctionToolCallOutputStatus$inboundSchema)
     .optional(),
