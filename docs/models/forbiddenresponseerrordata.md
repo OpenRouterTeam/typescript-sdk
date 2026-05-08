@@ -9,7 +9,7 @@ import { ForbiddenResponseErrorData } from "@openrouter/sdk/models";
 
 let value: ForbiddenResponseErrorData = {
   code: 403,
-  message: "Only management keys can perform this operation",
+  message: "Your prompt was blocked by a guardrail policy",
 };
 ```
 
