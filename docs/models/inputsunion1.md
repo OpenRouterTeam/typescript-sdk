@@ -56,6 +56,16 @@ const value: models.FunctionCallOutputItem = {
 };
 ```
 
+### `models.CustomToolCallOutputItem`
+
+```typescript
+const value: models.CustomToolCallOutputItem = {
+  callId: "call-abc123",
+  output: "patch applied successfully",
+  type: "custom_tool_call_output",
+};
+```
+
 ### `models.InputsMessage`
 
 ```typescript
