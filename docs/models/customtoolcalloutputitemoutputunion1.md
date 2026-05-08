@@ -1,4 +1,4 @@
-# FunctionCallOutputItemOutputUnion1
+# CustomToolCallOutputItemOutputUnion1
 
 
 ## Supported Types
@@ -12,10 +12,10 @@ const value: models.InputText = {
 };
 ```
 
-### `models.FunctionCallOutputItemOutputInputImage`
+### `models.CustomToolCallOutputItemOutputInputImage`
 
 ```typescript
-const value: models.FunctionCallOutputItemOutputInputImage = {
+const value: models.CustomToolCallOutputItemOutputInputImage = {
   detail: "auto",
   type: "input_image",
 };
