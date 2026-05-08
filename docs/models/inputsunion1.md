@@ -56,6 +56,27 @@ const value: models.FunctionCallOutputItem = {
 };
 ```
 
+### `models.InputsCustomToolCall`
+
+```typescript
+const value: models.InputsCustomToolCall = {
+  callId: "<id>",
+  input: "<value>",
+  name: "<value>",
+  type: "custom_tool_call",
+};
+```
+
+### `models.InputsCustomToolCallOutput`
+
+```typescript
+const value: models.InputsCustomToolCallOutput = {
+  callId: "<id>",
+  output: "<value>",
+  type: "custom_tool_call_output",
+};
+```
+
 ### `models.InputsMessage`
 
 ```typescript
