@@ -54,6 +54,6 @@ let value: GenerationResponse = {
 
 ## Fields
 
-| Field                                                                | Type                                                                 | Required                                                             | Description                                                          |
-| -------------------------------------------------------------------- | -------------------------------------------------------------------- | -------------------------------------------------------------------- | -------------------------------------------------------------------- |
-| `data`                                                               | [models.GenerationResponseData](../models/generationresponsedata.md) | :heavy_check_mark:                                                   | Generation data                                                      |
+| Field                            | Type                             | Required                         | Description                      |
+| -------------------------------- | -------------------------------- | -------------------------------- | -------------------------------- |
+| `data`                           | [models.Data](../models/data.md) | :heavy_check_mark:               | Generation data                  |

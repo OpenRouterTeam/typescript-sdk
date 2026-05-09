@@ -6,17 +6,21 @@
 import * as z from "zod/v4";
 import { remap as remap$ } from "../lib/primitives.js";
 import { safeParse } from "../lib/schemas.js";
+import * as openEnums from "../types/enums.js";
+import { OpenEnum } from "../types/enums.js";
 import { Result as SafeParseResult } from "../types/fp.js";
 import {
   DefaultParameters,
   DefaultParameters$inboundSchema,
 } from "./defaultparameters.js";
 import { SDKValidationError } from "./errors/sdkvalidationerror.js";
-import {
-  ModelArchitecture,
-  ModelArchitecture$inboundSchema,
-} from "./modelarchitecture.js";
+import { InputModality, InputModality$inboundSchema } from "./inputmodality.js";
+import { ModelGroup, ModelGroup$inboundSchema } from "./modelgroup.js";
 import { ModelLinks, ModelLinks$inboundSchema } from "./modellinks.js";
+import {
+  OutputModality,
+  OutputModality$inboundSchema,
+} from "./outputmodality.js";
 import { Parameter, Parameter$inboundSchema } from "./parameter.js";
 import {
   PerRequestLimits,
@@ -29,13 +33,68 @@ import {
 } from "./topproviderinfo.js";
 
 /**
+ * Instruction format type
+ */
+export const ModelInstructType = {
+  None: "none",
+  Airoboros: "airoboros",
+  Alpaca: "alpaca",
+  AlpacaModif: "alpaca-modif",
+  Chatml: "chatml",
+  Claude: "claude",
+  CodeLlama: "code-llama",
+  Gemma: "gemma",
+  Llama2: "llama2",
+  Llama3: "llama3",
+  Mistral: "mistral",
+  Nemotron: "nemotron",
+  Neural: "neural",
+  Openchat: "openchat",
+  Phi3: "phi3",
+  Rwkv: "rwkv",
+  Vicuna: "vicuna",
+  Zephyr: "zephyr",
+  DeepseekR1: "deepseek-r1",
+  DeepseekV31: "deepseek-v3.1",
+  Qwq: "qwq",
+  Qwen3: "qwen3",
+} as const;
+/**
+ * Instruction format type
+ */
+export type ModelInstructType = OpenEnum<typeof ModelInstructType>;
+
+/**
+ * Model architecture information
+ */
+export type Architecture = {
+  /**
+   * Supported input modalities
+   */
+  inputModalities: Array<InputModality>;
+  /**
+   * Instruction format type
+   */
+  instructType: ModelInstructType | null;
+  /**
+   * Primary modality of the model
+   */
+  modality: string | null;
+  /**
+   * Supported output modalities
+   */
+  outputModalities: Array<OutputModality>;
+  /**
+   * Tokenizer type used by the model
+   */
+  tokenizer: ModelGroup | null;
+};
+
+/**
  * Information about an AI model available on OpenRouter
  */
 export type Model = {
-  /**
-   * Model architecture information
-   */
-  architecture: ModelArchitecture;
+  architecture: Architecture;
   /**
    * Canonical slug for the model
    */
@@ -103,8 +162,40 @@ export type Model = {
 };
 
 /** @internal */
+export const ModelInstructType$inboundSchema: z.ZodType<
+  ModelInstructType,
+  unknown
+> = openEnums.inboundSchema(ModelInstructType);
+
+/** @internal */
+export const Architecture$inboundSchema: z.ZodType<Architecture, unknown> = z
+  .object({
+    input_modalities: z.array(InputModality$inboundSchema),
+    instruct_type: z.nullable(ModelInstructType$inboundSchema),
+    modality: z.nullable(z.string()),
+    output_modalities: z.array(OutputModality$inboundSchema),
+    tokenizer: z.nullable(ModelGroup$inboundSchema),
+  }).transform((v) => {
+    return remap$(v, {
+      "input_modalities": "inputModalities",
+      "instruct_type": "instructType",
+      "output_modalities": "outputModalities",
+    });
+  });
+
+export function architectureFromJSON(
+  jsonString: string,
+): SafeParseResult<Architecture, SDKValidationError> {
+  return safeParse(
+    jsonString,
+    (x) => Architecture$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'Architecture' from JSON`,
+  );
+}
+
+/** @internal */
 export const Model$inboundSchema: z.ZodType<Model, unknown> = z.object({
-  architecture: ModelArchitecture$inboundSchema,
+  architecture: z.lazy(() => Architecture$inboundSchema),
   canonical_slug: z.string(),
   context_length: z.nullable(z.int()),
   created: z.int(),

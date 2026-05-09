@@ -13,7 +13,6 @@ import { Embeddings } from "./embeddings.js";
 import { Endpoints } from "./endpoints.js";
 import { Generations } from "./generations.js";
 import { Guardrails } from "./guardrails.js";
-import { Models } from "./models.js";
 import { OAuth } from "./oauth.js";
 import { Organization } from "./organization.js";
 import { Providers } from "./providers.js";
@@ -89,11 +88,6 @@ export class OpenRouter extends ClientSDK {
   private _apiKeys?: APIKeys;
   get apiKeys(): APIKeys {
     return (this._apiKeys ??= new APIKeys(this._options));
-  }
-
-  private _models?: Models;
-  get models(): Models {
-    return (this._models ??= new Models(this._options));
   }
 
   private _organization?: Organization;
