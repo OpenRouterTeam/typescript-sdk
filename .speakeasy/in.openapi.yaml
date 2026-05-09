@@ -2204,6 +2204,69 @@ components:
         - part
         - sequence_number
       type: object
+    BaseCustomToolCallInputDeltaEvent:
+      description: >-
+        Event emitted when a custom tool call's freeform input is being streamed. Mirrors
+        `response.function_call_arguments.delta` but for `custom` tools whose input is opaque text rather than JSON
+        arguments.
+      example:
+        delta: '*** Begin Patch'
+        item_id: item-1
+        output_index: 0
+        sequence_number: 4
+        type: response.custom_tool_call_input.delta
+      properties:
+        delta:
+          type: string
+        item_id:
+          type: string
+        output_index:
+          type: integer
+        sequence_number:
+          type: integer
+        type:
+          enum:
+            - response.custom_tool_call_input.delta
+          type: string
+      required:
+        - type
+        - item_id
+        - output_index
+        - delta
+        - sequence_number
+      type: object
+    BaseCustomToolCallInputDoneEvent:
+      description: >-
+        Event emitted when a custom tool call's freeform input streaming is complete. Mirrors
+        `response.function_call_arguments.done` but for `custom` tools.
+      example:
+        input: |-
+          *** Begin Patch
+          *** End Patch
+        item_id: item-1
+        output_index: 0
+        sequence_number: 6
+        type: response.custom_tool_call_input.done
+      properties:
+        input:
+          type: string
+        item_id:
+          type: string
+        output_index:
+          type: integer
+        sequence_number:
+          type: integer
+        type:
+          enum:
+            - response.custom_tool_call_input.done
+          type: string
+      required:
+        - type
+        - item_id
+        - output_index
+        - input
+        - sequence_number
+      type: object
     BaseErrorEvent:
       description: Event emitted when an error occurs during streaming
       example:
@@ -2353,6 +2416,8 @@ components:
               - $ref: '#/components/schemas/OpenAIResponseFunctionToolCall'
               - $ref: '#/components/schemas/OutputItemImageGenerationCall'
               - $ref: '#/components/schemas/OutputMessage'
+              - $ref: '#/components/schemas/OpenAIResponseCustomToolCall'
+              - $ref: '#/components/schemas/OpenAIResponseCustomToolCallOutput'
           type: array
         - nullable: true
       example:
@@ -2765,6 +2830,7 @@ components:
           items:
             discriminator:
               mapping:
+                custom_tool_call: '#/components/schemas/OutputItemCustomToolCall'
                 file_search_call: '#/components/schemas/OutputItemFileSearchCall'
                 function_call: '#/components/schemas/OutputItemFunctionCall'
                 image_generation_call: '#/components/schemas/OutputItemImageGenerationCall'
@@ -2776,6 +2842,7 @@ components:
               - $ref: '#/components/schemas/OutputMessage'
               - $ref: '#/components/schemas/OutputItemReasoning'
               - $ref: '#/components/schemas/OutputItemFunctionCall'
+              - $ref: '#/components/schemas/OutputItemCustomToolCall'
               - $ref: '#/components/schemas/OutputItemWebSearchCall'
               - $ref: '#/components/schemas/OutputItemFileSearchCall'
               - $ref: '#/components/schemas/OutputItemImageGenerationCall'
@@ -5121,8 +5188,8 @@ components:
           type: array
         content_filter_builtins:
           description: >-
-            Builtin content filters to apply. Use slug "regex-prompt-injection" with action "block", "flag", or "redact"
-            to enable heuristic prompt injection detection.
+            Builtin content filters to apply. The "flag" action is only supported for "regex-prompt-injection"; PII
+            slugs (email, phone, ssn, credit-card, ip-address, person-name, address) accept "block" or "redact" only.
           example:
             - action: block
               slug: regex-prompt-injection
@@ -5395,6 +5462,101 @@ components:
         - type
         - name
       type: object
+    CustomToolCallInputDeltaEvent:
+      allOf:
+        - $ref: '#/components/schemas/BaseCustomToolCallInputDeltaEvent'
+        - properties: {}
+          type: object
+      description: >-
+        Event emitted when a custom tool call's freeform input is being streamed. Mirrors
+        `response.function_call_arguments.delta` but for `custom` tools whose input is opaque text rather than JSON
+        arguments.
+      example:
+        delta: '*** Begin Patch'
+        item_id: item-1
+        output_index: 0
+        sequence_number: 4
+        type: response.custom_tool_call_input.delta
+    CustomToolCallInputDoneEvent:
+      allOf:
+        - $ref: '#/components/schemas/BaseCustomToolCallInputDoneEvent'
+        - properties: {}
+          type: object
+      description: >-
+        Event emitted when a custom tool call's freeform input streaming is complete. Mirrors
+        `response.function_call_arguments.done` but for `custom` tools.
+      example:
+        input: |-
+          *** Begin Patch
+          *** End Patch
+        item_id: item-1
+        output_index: 0
+        sequence_number: 6
+        type: response.custom_tool_call_input.done
+    CustomToolCallItem:
+      description: >-
+        A call to a custom (freeform-grammar) tool created by the model — distinct from `function_call`. Used for tools
+        like Codex CLI's `apply_patch` whose payload is opaque text rather than JSON arguments.
+      example:
+        call_id: call-abc123
+        id: ctc-abc123
+        input: |-
+          *** Begin Patch
+          *** End Patch
+        name: apply_patch
+        type: custom_tool_call
+      properties:
+        call_id:
+          type: string
+        id:
+          type: string
+        input:
+          type: string
+        name:
+          type: string
+        namespace:
+          description: Namespace qualifier for tools registered as part of a namespace tool group (e.g. an MCP server)
+          type: string
+        type:
+          enum:
+            - custom_tool_call
+          type: string
+      required:
+        - type
+        - call_id
+        - name
+        - input
+      type: object
+    CustomToolCallOutputItem:
+      allOf:
+        - $ref: '#/components/schemas/OpenAIResponseCustomToolCallOutput'
+        - properties:
+            output:
+              anyOf:
+                - type: string
+                - items:
+                    oneOf:
+                      - $ref: '#/components/schemas/InputText'
+                      - allOf:
+                          - $ref: '#/components/schemas/InputImage'
+                          - properties: {}
+                            type: object
+                        description: Image input content item
+                        example:
+                          detail: auto
+                          image_url: https://example.com/image.jpg
+                          type: input_image
+                      - $ref: '#/components/schemas/InputFile'
+                  type: array
+          type: object
+      description: >-
+        The output from a custom (freeform-grammar) tool call execution. Mirrors `function_call_output` but is matched
+        to a `custom_tool_call` rather than a `function_call`.
+      example:
+        call_id: call-abc123
+        id: ctco-abc123
+        output: patch applied successfully
+        type: custom_tool_call_output
     DatetimeServerTool:
       description: 'OpenRouter built-in server tool: returns the current date and time'
       example:
@@ -7146,6 +7308,7 @@ components:
                       type: summary_text
                   type: reasoning
               - $ref: '#/components/schemas/OutputFunctionCallItem'
+              - $ref: '#/components/schemas/OutputCustomToolCallItem'
               - $ref: '#/components/schemas/OutputWebSearchCallItem'
               - $ref: '#/components/schemas/OutputFileSearchCallItem'
               - $ref: '#/components/schemas/OutputImageGenerationCallItem'
@@ -7165,6 +7328,8 @@ components:
               - $ref: '#/components/schemas/OutputMemoryServerToolItem'
               - $ref: '#/components/schemas/OutputMcpServerToolItem'
               - $ref: '#/components/schemas/OutputSearchModelsServerToolItem'
+              - $ref: '#/components/schemas/CustomToolCallItem'
+              - $ref: '#/components/schemas/CustomToolCallOutputItem'
           type: array
       description: Input for a response request - can be a string or array of items
       example:
@@ -8415,9 +8580,6 @@ components:
         route:
           $ref: '#/components/schemas/DeprecatedRoute'
         service_tier:
-          enum:
-            - auto
-            - standard_only
           type: string
         session_id:
           description: >-
@@ -9407,6 +9569,71 @@ components:
         - code
         - message
       type: object
+    OpenAIResponseCustomToolCall:
+      example:
+        call_id: call-abc123
+        id: ctc-abc123
+        input: |-
+          *** Begin Patch
+          *** End Patch
+        name: apply_patch
+        type: custom_tool_call
+      properties:
+        call_id:
+          type: string
+        id:
+          type: string
+        input:
+          type: string
+        name:
+          type: string
+        namespace:
+          description: Namespace qualifier for tools registered as part of a namespace tool group (e.g. an MCP server)
+          type: string
+        type:
+          enum:
+            - custom_tool_call
+          type: string
+      required:
+        - type
+        - call_id
+        - name
+        - input
+      type: object
+    OpenAIResponseCustomToolCallOutput:
+      example:
+        call_id: call-abc123
+        output: patch applied successfully
+        type: custom_tool_call_output
+      properties:
+        call_id:
+          type: string
+        id:
+          type: string
+        output:
+          anyOf:
+            - type: string
+            - items:
+                discriminator:
+                  mapping:
+                    input_file: '#/components/schemas/InputFile'
+                    input_image: '#/components/schemas/InputImage'
+                    input_text: '#/components/schemas/InputText'
+                  propertyName: type
+                oneOf:
+                  - $ref: '#/components/schemas/InputText'
+                  - $ref: '#/components/schemas/InputImage'
+                  - $ref: '#/components/schemas/InputFile'
+              type: array
+        type:
+          enum:
+            - custom_tool_call_output
+          type: string
+      required:
+        - type
+        - call_id
+        - output
+      type: object
     OpenAIResponseFunctionToolCall:
       example:
         arguments: '{"location":"San Francisco"}'
@@ -10247,6 +10474,40 @@ components:
         - status
         - pending_safety_checks
       type: object
+    OutputCustomToolCallItem:
+      description: >-
+        A call to a custom (freeform-grammar) tool created by the model — distinct from `function_call`. Used for tools
+        like Codex CLI's `apply_patch` whose payload is opaque text rather than JSON arguments.
+      example:
+        call_id: call-abc123
+        id: ctc-abc123
+        input: |-
+          *** Begin Patch
+          *** End Patch
+        name: apply_patch
+        type: custom_tool_call
+      properties:
+        call_id:
+          type: string
+        id:
+          type: string
+        input:
+          type: string
+        name:
+          type: string
+        namespace:
+          description: Namespace qualifier for tools registered as part of a namespace tool group (e.g. an MCP server)
+          type: string
+        type:
+          enum:
+            - custom_tool_call
+          type: string
+      required:
+        - type
+        - name
+        - input
+        - call_id
+      type: object
     OutputDatetimeItem:
       description: An openrouter:datetime server tool output item
       example:
@@ -10382,6 +10643,7 @@ components:
         item:
           discriminator:
             mapping:
+              custom_tool_call: '#/components/schemas/OutputItemCustomToolCall'
               file_search_call: '#/components/schemas/OutputItemFileSearchCall'
               function_call: '#/components/schemas/OutputItemFunctionCall'
               image_generation_call: '#/components/schemas/OutputItemImageGenerationCall'
@@ -10393,6 +10655,7 @@ components:
             - $ref: '#/components/schemas/OutputMessage'
             - $ref: '#/components/schemas/OutputItemReasoning'
             - $ref: '#/components/schemas/OutputItemFunctionCall'
+            - $ref: '#/components/schemas/OutputItemCustomToolCall'
             - $ref: '#/components/schemas/OutputItemWebSearchCall'
             - $ref: '#/components/schemas/OutputItemFileSearchCall'
             - $ref: '#/components/schemas/OutputItemImageGenerationCall'
@@ -10409,6 +10672,37 @@ components:
         - output_index
         - item
         - sequence_number
+      type: object
+    OutputItemCustomToolCall:
+      example:
+        call_id: call-abc123
+        id: ctc-abc123
+        input: |-
+          *** Begin Patch
+          *** End Patch
+        name: apply_patch
+        type: custom_tool_call
+      properties:
+        call_id:
+          type: string
+        id:
+          type: string
+        input:
+          type: string
+        name:
+          type: string
+        namespace:
+          description: Namespace qualifier for tools registered as part of a namespace tool group (e.g. an MCP server)
+          type: string
+        type:
+          enum:
+            - custom_tool_call
+          type: string
+      required:
+        - type
+        - name
+        - input
+        - call_id
       type: object
     OutputItemDoneEvent:
       description: Event emitted when an output item is complete
@@ -10429,6 +10723,7 @@ components:
         item:
           discriminator:
             mapping:
+              custom_tool_call: '#/components/schemas/OutputItemCustomToolCall'
               file_search_call: '#/components/schemas/OutputItemFileSearchCall'
               function_call: '#/components/schemas/OutputItemFunctionCall'
               image_generation_call: '#/components/schemas/OutputItemImageGenerationCall'
@@ -10440,6 +10735,7 @@ components:
             - $ref: '#/components/schemas/OutputMessage'
             - $ref: '#/components/schemas/OutputItemReasoning'
             - $ref: '#/components/schemas/OutputItemFunctionCall'
+            - $ref: '#/components/schemas/OutputItemCustomToolCall'
             - $ref: '#/components/schemas/OutputItemWebSearchCall'
             - $ref: '#/components/schemas/OutputItemFileSearchCall'
             - $ref: '#/components/schemas/OutputItemImageGenerationCall'
@@ -10595,6 +10891,7 @@ components:
         mapping:
           code_interpreter_call: '#/components/schemas/OutputCodeInterpreterCallItem'
           computer_call: '#/components/schemas/OutputComputerCallItem'
+          custom_tool_call: '#/components/schemas/OutputCustomToolCallItem'
           file_search_call: '#/components/schemas/OutputFileSearchCallItem'
           function_call: '#/components/schemas/OutputFunctionCallItem'
           image_generation_call: '#/components/schemas/OutputImageGenerationCallItem'
@@ -10647,6 +10944,7 @@ components:
         - $ref: '#/components/schemas/OutputMemoryServerToolItem'
         - $ref: '#/components/schemas/OutputMcpServerToolItem'
         - $ref: '#/components/schemas/OutputSearchModelsServerToolItem'
+        - $ref: '#/components/schemas/OutputCustomToolCallItem'
     OutputItemWebSearchCall:
       example:
         action:
@@ -13532,6 +13830,8 @@ components:
           response.content_part.added: '#/components/schemas/ContentPartAddedEvent'
           response.content_part.done: '#/components/schemas/ContentPartDoneEvent'
           response.created: '#/components/schemas/OpenResponsesCreatedEvent'
+          response.custom_tool_call_input.delta: '#/components/schemas/CustomToolCallInputDeltaEvent'
+          response.custom_tool_call_input.done: '#/components/schemas/CustomToolCallInputDoneEvent'
           response.failed: '#/components/schemas/StreamEventsResponseFailed'
           response.function_call_arguments.delta: '#/components/schemas/FunctionCallArgsDeltaEvent'
           response.function_call_arguments.done: '#/components/schemas/FunctionCallArgsDoneEvent'
@@ -13609,6 +13909,8 @@ components:
         - $ref: '#/components/schemas/WebSearchCallInProgressEvent'
         - $ref: '#/components/schemas/WebSearchCallSearchingEvent'
         - $ref: '#/components/schemas/WebSearchCallCompletedEvent'
+        - $ref: '#/components/schemas/CustomToolCallInputDeltaEvent'
+        - $ref: '#/components/schemas/CustomToolCallInputDoneEvent'
     StreamEventsResponseCompleted:
       allOf:
         - $ref: '#/components/schemas/CompletedEvent'
@@ -14183,8 +14485,9 @@ components:
           type: array
         content_filter_builtins:
           description: >-
-            Builtin content filters to apply. Set to null to remove. Use slug "regex-prompt-injection" with action
-            "block", "flag", or "redact" to enable heuristic prompt injection detection.
+            Builtin content filters to apply. Set to null to remove. The "flag" action is only supported for
+            "regex-prompt-injection"; PII slugs (email, phone, ssn, credit-card, ip-address, person-name, address)
+            accept "block" or "redact" only.
           example:
             - action: block
               slug: regex-prompt-injection
