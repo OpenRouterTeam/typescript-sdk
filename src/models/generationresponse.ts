@@ -34,7 +34,7 @@ export type ApiType = OpenEnum<typeof ApiType>;
 /**
  * Generation data
  */
-export type GenerationResponseData = {
+export type Data = {
   /**
    * Type of API used for the generation
    */
@@ -212,7 +212,7 @@ export type GenerationResponse = {
   /**
    * Generation data
    */
-  data: GenerationResponseData;
+  data: Data;
 };
 
 /** @internal */
@@ -220,10 +220,7 @@ export const ApiType$inboundSchema: z.ZodType<ApiType, unknown> = openEnums
   .inboundSchema(ApiType);
 
 /** @internal */
-export const GenerationResponseData$inboundSchema: z.ZodType<
-  GenerationResponseData,
-  unknown
-> = z.object({
+export const Data$inboundSchema: z.ZodType<Data, unknown> = z.object({
   api_type: z.nullable(ApiType$inboundSchema),
   app_id: z.nullable(z.int()),
   cache_discount: z.nullable(z.number()),
@@ -305,13 +302,13 @@ export const GenerationResponseData$inboundSchema: z.ZodType<
   });
 });
 
-export function generationResponseDataFromJSON(
+export function dataFromJSON(
   jsonString: string,
-): SafeParseResult<GenerationResponseData, SDKValidationError> {
+): SafeParseResult<Data, SDKValidationError> {
   return safeParse(
     jsonString,
-    (x) => GenerationResponseData$inboundSchema.parse(JSON.parse(x)),
-    `Failed to parse 'GenerationResponseData' from JSON`,
+    (x) => Data$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'Data' from JSON`,
   );
 }
 
@@ -320,7 +317,7 @@ export const GenerationResponse$inboundSchema: z.ZodType<
   GenerationResponse,
   unknown
 > = z.object({
-  data: z.lazy(() => GenerationResponseData$inboundSchema),
+  data: z.lazy(() => Data$inboundSchema),
 });
 
 export function generationResponseFromJSON(

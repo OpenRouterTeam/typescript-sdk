@@ -161,7 +161,6 @@ export * from "./model.js";
 export * from "./modelarchitecture.js";
 export * from "./modelgroup.js";
 export * from "./modellinks.js";
-export * from "./modelscountresponse.js";
 export * from "./modelslistresponse.js";
 export * from "./moderationplugin.js";
 export * from "./notfoundresponseerrordata.js";

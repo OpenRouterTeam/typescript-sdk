@@ -12,7 +12,7 @@ let value: Architecture = {
     "text",
   ],
   instructType: "chatml",
-  modality: "text",
+  modality: "text->text",
   outputModalities: [
     "text",
   ],
@@ -22,10 +22,10 @@ let value: Architecture = {
 
 ## Fields
 
-| Field                                                  | Type                                                   | Required                                               | Description                                            | Example                                                |
-| ------------------------------------------------------ | ------------------------------------------------------ | ------------------------------------------------------ | ------------------------------------------------------ | ------------------------------------------------------ |
-| `inputModalities`                                      | [models.InputModality](../models/inputmodality.md)[]   | :heavy_check_mark:                                     | Supported input modalities                             |                                                        |
-| `instructType`                                         | [models.InstructType](../models/instructtype.md)       | :heavy_check_mark:                                     | Instruction format type                                | chatml                                                 |
-| `modality`                                             | *string*                                               | :heavy_check_mark:                                     | Primary modality of the model                          | text                                                   |
-| `outputModalities`                                     | [models.OutputModality](../models/outputmodality.md)[] | :heavy_check_mark:                                     | Supported output modalities                            |                                                        |
-| `tokenizer`                                            | [models.Tokenizer](../models/tokenizer.md)             | :heavy_check_mark:                                     | N/A                                                    | GPT                                                    |
+| Field                                                      | Type                                                       | Required                                                   | Description                                                | Example                                                    |
+| ---------------------------------------------------------- | ---------------------------------------------------------- | ---------------------------------------------------------- | ---------------------------------------------------------- | ---------------------------------------------------------- |
+| `inputModalities`                                          | [models.InputModality](../models/inputmodality.md)[]       | :heavy_check_mark:                                         | Supported input modalities                                 |                                                            |
+| `instructType`                                             | [models.ModelInstructType](../models/modelinstructtype.md) | :heavy_check_mark:                                         | Instruction format type                                    | chatml                                                     |
+| `modality`                                                 | *string*                                                   | :heavy_check_mark:                                         | Primary modality of the model                              | text->text                                                 |
+| `outputModalities`                                         | [models.OutputModality](../models/outputmodality.md)[]     | :heavy_check_mark:                                         | Supported output modalities                                |                                                            |
+| `tokenizer`                                                | [models.ModelGroup](../models/modelgroup.md)               | :heavy_check_mark:                                         | Tokenizer type used by the model                           | GPT                                                        |
