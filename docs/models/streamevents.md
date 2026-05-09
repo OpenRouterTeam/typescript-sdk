@@ -17,6 +17,30 @@ const value: models.ErrorEvent = {
 };
 ```
 
+### `models.ApplyPatchCallOperationDiffDeltaEvent`
+
+```typescript
+const value: models.ApplyPatchCallOperationDiffDeltaEvent = {
+  delta: "<value>",
+  itemId: "<id>",
+  outputIndex: 162755,
+  sequenceNumber: 0,
+  type: "response.apply_patch_call_operation_diff.delta",
+};
+```
+
+### `models.ApplyPatchCallOperationDiffDoneEvent`
+
+```typescript
+const value: models.ApplyPatchCallOperationDiffDoneEvent = {
+  diff: "<value>",
+  itemId: "<id>",
+  outputIndex: 786722,
+  sequenceNumber: 0,
+  type: "response.apply_patch_call_operation_diff.done",
+};
+```
+
 ### `models.StreamEventsResponseCompleted`
 
 ```typescript
@@ -104,6 +128,30 @@ const value: models.OpenResponsesCreatedEvent = {
   },
   sequenceNumber: 0,
   type: "response.created",
+};
+```
+
+### `models.CustomToolCallInputDeltaEvent`
+
+```typescript
+const value: models.CustomToolCallInputDeltaEvent = {
+  delta: "<value>",
+  itemId: "<id>",
+  outputIndex: 98568,
+  sequenceNumber: 0,
+  type: "response.custom_tool_call_input.delta",
+};
+```
+
+### `models.CustomToolCallInputDoneEvent`
+
+```typescript
+const value: models.CustomToolCallInputDoneEvent = {
+  input: "<value>",
+  itemId: "<id>",
+  outputIndex: 963378,
+  sequenceNumber: 0,
+  type: "response.custom_tool_call_input.done",
 };
 ```
 

@@ -1,0 +1,31 @@
+# CustomToolCallOutputItemOutputUnion1
+
+
+## Supported Types
+
+### `models.InputText`
+
+```typescript
+const value: models.InputText = {
+  text: "Hello, how can I help you?",
+  type: "input_text",
+};
+```
+
+### `models.CustomToolCallOutputItemOutputInputImage`
+
+```typescript
+const value: models.CustomToolCallOutputItemOutputInputImage = {
+  detail: "auto",
+  type: "input_image",
+};
+```
+
+### `models.InputFile`
+
+```typescript
+const value: models.InputFile = {
+  type: "input_file",
+};
+```
+

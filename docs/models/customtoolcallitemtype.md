@@ -1,0 +1,15 @@
+# CustomToolCallItemType
+
+## Example Usage
+
+```typescript
+import { CustomToolCallItemType } from "@openrouter/sdk/models";
+
+let value: CustomToolCallItemType = "custom_tool_call";
+```
+
+## Values
+
+```typescript
+"custom_tool_call"
+```

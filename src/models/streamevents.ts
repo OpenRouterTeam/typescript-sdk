@@ -13,6 +13,14 @@ import {
   AnnotationAddedEvent$inboundSchema,
 } from "./annotationaddedevent.js";
 import {
+  ApplyPatchCallOperationDiffDeltaEvent,
+  ApplyPatchCallOperationDiffDeltaEvent$inboundSchema,
+} from "./applypatchcalloperationdiffdeltaevent.js";
+import {
+  ApplyPatchCallOperationDiffDoneEvent,
+  ApplyPatchCallOperationDiffDoneEvent$inboundSchema,
+} from "./applypatchcalloperationdiffdoneevent.js";
+import {
   ContentPartAddedEvent,
   ContentPartAddedEvent$inboundSchema,
 } from "./contentpartaddedevent.js";
@@ -20,6 +28,14 @@ import {
   ContentPartDoneEvent,
   ContentPartDoneEvent$inboundSchema,
 } from "./contentpartdoneevent.js";
+import {
+  CustomToolCallInputDeltaEvent,
+  CustomToolCallInputDeltaEvent$inboundSchema,
+} from "./customtoolcallinputdeltaevent.js";
+import {
+  CustomToolCallInputDoneEvent,
+  CustomToolCallInputDoneEvent$inboundSchema,
+} from "./customtoolcallinputdoneevent.js";
 import { ErrorEvent, ErrorEvent$inboundSchema } from "./errorevent.js";
 import { SDKValidationError } from "./errors/sdkvalidationerror.js";
 import {
@@ -129,10 +145,14 @@ import {
  */
 export type StreamEvents =
   | ErrorEvent
+  | ApplyPatchCallOperationDiffDeltaEvent
+  | ApplyPatchCallOperationDiffDoneEvent
   | StreamEventsResponseCompleted
   | ContentPartAddedEvent
   | ContentPartDoneEvent
   | OpenResponsesCreatedEvent
+  | CustomToolCallInputDeltaEvent
+  | CustomToolCallInputDoneEvent
   | StreamEventsResponseFailed
   | FunctionCallArgsDeltaEvent
   | FunctionCallArgsDoneEvent
@@ -164,10 +184,18 @@ export type StreamEvents =
 export const StreamEvents$inboundSchema: z.ZodType<StreamEvents, unknown> =
   discriminatedUnion("type", {
     error: ErrorEvent$inboundSchema,
+    ["response.apply_patch_call_operation_diff.delta"]:
+      ApplyPatchCallOperationDiffDeltaEvent$inboundSchema,
+    ["response.apply_patch_call_operation_diff.done"]:
+      ApplyPatchCallOperationDiffDoneEvent$inboundSchema,
     ["response.completed"]: StreamEventsResponseCompleted$inboundSchema,
     ["response.content_part.added"]: ContentPartAddedEvent$inboundSchema,
     ["response.content_part.done"]: ContentPartDoneEvent$inboundSchema,
     ["response.created"]: OpenResponsesCreatedEvent$inboundSchema,
+    ["response.custom_tool_call_input.delta"]:
+      CustomToolCallInputDeltaEvent$inboundSchema,
+    ["response.custom_tool_call_input.done"]:
+      CustomToolCallInputDoneEvent$inboundSchema,
     ["response.failed"]: StreamEventsResponseFailed$inboundSchema,
     ["response.function_call_arguments.delta"]:
       FunctionCallArgsDeltaEvent$inboundSchema,

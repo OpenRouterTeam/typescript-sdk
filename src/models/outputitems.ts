@@ -10,6 +10,10 @@ import { discriminatedUnion } from "../types/discriminatedUnion.js";
 import { Result as SafeParseResult } from "../types/fp.js";
 import { SDKValidationError } from "./errors/sdkvalidationerror.js";
 import {
+  OutputApplyPatchCallItem,
+  OutputApplyPatchCallItem$inboundSchema,
+} from "./outputapplypatchcallitem.js";
+import {
   OutputApplyPatchServerToolItem,
   OutputApplyPatchServerToolItem$inboundSchema,
 } from "./outputapplypatchservertoolitem.js";
@@ -33,6 +37,10 @@ import {
   OutputComputerCallItem,
   OutputComputerCallItem$inboundSchema,
 } from "./outputcomputercallitem.js";
+import {
+  OutputCustomToolCallItem,
+  OutputCustomToolCallItem$inboundSchema,
+} from "./outputcustomtoolcallitem.js";
 import {
   OutputDatetimeItem,
   OutputDatetimeItem$inboundSchema,
@@ -102,8 +110,10 @@ import {
  * An output item from the response
  */
 export type OutputItems =
+  | OutputApplyPatchCallItem
   | (OutputCodeInterpreterCallItem & { type: "code_interpreter_call" })
   | (OutputComputerCallItem & { type: "computer_call" })
+  | (OutputCustomToolCallItem & { type: "custom_tool_call" })
   | (OutputFileSearchCallItem & { type: "file_search_call" })
   | (OutputFunctionCallItem & { type: "function_call" })
   | (OutputImageGenerationCallItem & { type: "image_generation_call" })
@@ -135,11 +145,15 @@ export type OutputItems =
 /** @internal */
 export const OutputItems$inboundSchema: z.ZodType<OutputItems, unknown> =
   discriminatedUnion("type", {
+    apply_patch_call: OutputApplyPatchCallItem$inboundSchema,
     code_interpreter_call: OutputCodeInterpreterCallItem$inboundSchema.and(
       z.object({ type: z.literal("code_interpreter_call") }),
     ),
     computer_call: OutputComputerCallItem$inboundSchema.and(
       z.object({ type: z.literal("computer_call") }),
+    ),
+    custom_tool_call: OutputCustomToolCallItem$inboundSchema.and(
+      z.object({ type: z.literal("custom_tool_call") }),
     ),
     file_search_call: OutputFileSearchCallItem$inboundSchema.and(
       z.object({ type: z.literal("file_search_call") }),

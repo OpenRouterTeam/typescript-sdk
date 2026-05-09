@@ -56,6 +56,32 @@ const value: models.FunctionCallOutputItem = {
 };
 ```
 
+### `models.ApplyPatchCallItem`
+
+```typescript
+const value: models.ApplyPatchCallItem = {
+  callId: "call_abc123",
+  id: "apc_abc123",
+  operation: {
+    diff: "@@ function main() {\n+  console.log(\"hi\");\n }",
+    path: "/src/main.ts",
+    type: "update_file",
+  },
+  status: "completed",
+  type: "apply_patch_call",
+};
+```
+
+### `models.ApplyPatchCallOutputItem`
+
+```typescript
+const value: models.ApplyPatchCallOutputItem = {
+  callId: "call_abc123",
+  status: "completed",
+  type: "apply_patch_call_output",
+};
+```
+
 ### `models.InputsMessage`
 
 ```typescript
@@ -95,6 +121,17 @@ const value: models.OutputFunctionCallItem = {
   callId: "call-abc123",
   name: "get_weather",
   type: "function_call",
+};
+```
+
+### `models.OutputCustomToolCallItem`
+
+```typescript
+const value: models.OutputCustomToolCallItem = {
+  callId: "call-abc123",
+  input: "*** Begin Patch\n*** End Patch",
+  name: "apply_patch",
+  type: "custom_tool_call",
 };
 ```
 
@@ -290,6 +327,27 @@ const value: models.OutputMcpServerToolItem = {
 const value: models.OutputSearchModelsServerToolItem = {
   status: "completed",
   type: "openrouter:experimental__search_models",
+};
+```
+
+### `models.CustomToolCallItem`
+
+```typescript
+const value: models.CustomToolCallItem = {
+  callId: "call-abc123",
+  input: "*** Begin Patch\n*** End Patch",
+  name: "apply_patch",
+  type: "custom_tool_call",
+};
+```
+
+### `models.CustomToolCallOutputItem`
+
+```typescript
+const value: models.CustomToolCallOutputItem = {
+  callId: "call-abc123",
+  output: "patch applied successfully",
+  type: "custom_tool_call_output",
 };
 ```
 
