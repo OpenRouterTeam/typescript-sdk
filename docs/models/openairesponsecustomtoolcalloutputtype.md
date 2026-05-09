@@ -1,0 +1,15 @@
+# OpenAIResponseCustomToolCallOutputType
+
+## Example Usage
+
+```typescript
+import { OpenAIResponseCustomToolCallOutputType } from "@openrouter/sdk/models";
+
+let value: OpenAIResponseCustomToolCallOutputType = "custom_tool_call_output";
+```
+
+## Values
+
+```typescript
+"custom_tool_call_output"
+```
