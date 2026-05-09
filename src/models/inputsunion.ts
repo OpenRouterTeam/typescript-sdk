@@ -7,6 +7,26 @@ import * as z from "zod/v4";
 import { remap as remap$ } from "../lib/primitives.js";
 import { ClosedEnum } from "../types/enums.js";
 import {
+  ApplyPatchCallItem,
+  ApplyPatchCallItem$Outbound,
+  ApplyPatchCallItem$outboundSchema,
+} from "./applypatchcallitem.js";
+import {
+  ApplyPatchCallOutputItem,
+  ApplyPatchCallOutputItem$Outbound,
+  ApplyPatchCallOutputItem$outboundSchema,
+} from "./applypatchcalloutputitem.js";
+import {
+  CustomToolCallItem,
+  CustomToolCallItem$Outbound,
+  CustomToolCallItem$outboundSchema,
+} from "./customtoolcallitem.js";
+import {
+  CustomToolCallOutputItem,
+  CustomToolCallOutputItem$Outbound,
+  CustomToolCallOutputItem$outboundSchema,
+} from "./customtoolcalloutputitem.js";
+import {
   EasyInputMessage,
   EasyInputMessage$Outbound,
   EasyInputMessage$outboundSchema,
@@ -61,6 +81,11 @@ import {
   OutputComputerCallItem$Outbound,
   OutputComputerCallItem$outboundSchema,
 } from "./outputcomputercallitem.js";
+import {
+  OutputCustomToolCallItem,
+  OutputCustomToolCallItem$Outbound,
+  OutputCustomToolCallItem$outboundSchema,
+} from "./outputcustomtoolcallitem.js";
 import {
   OutputDatetimeItem,
   OutputDatetimeItem$Outbound,
@@ -296,16 +321,21 @@ export type InputsMessage = {
 export type InputsUnion1 =
   | OutputCodeInterpreterCallItem
   | FunctionCallItem
+  | ApplyPatchCallItem
   | InputsMessage
   | OutputFunctionCallItem
+  | OutputCustomToolCallItem
   | OutputWebSearchCallItem
   | OutputFileSearchCallItem
   | OutputComputerCallItem
   | OutputDatetimeItem
+  | CustomToolCallItem
   | ReasoningItem
   | FunctionCallOutputItem
+  | ApplyPatchCallOutputItem
   | InputsReasoning
   | OutputImageGenerationCallItem
+  | CustomToolCallOutputItem
   | OutputWebSearchServerToolItem
   | OutputCodeInterpreterServerToolItem
   | OutputFileSearchServerToolItem
@@ -330,16 +360,21 @@ export type InputsUnion =
   | Array<
     | OutputCodeInterpreterCallItem
     | FunctionCallItem
+    | ApplyPatchCallItem
     | InputsMessage
     | OutputFunctionCallItem
+    | OutputCustomToolCallItem
     | OutputWebSearchCallItem
     | OutputFileSearchCallItem
     | OutputComputerCallItem
     | OutputDatetimeItem
+    | CustomToolCallItem
     | ReasoningItem
     | FunctionCallOutputItem
+    | ApplyPatchCallOutputItem
     | InputsReasoning
     | OutputImageGenerationCallItem
+    | CustomToolCallOutputItem
     | OutputWebSearchServerToolItem
     | OutputCodeInterpreterServerToolItem
     | OutputFileSearchServerToolItem
@@ -617,16 +652,21 @@ export function inputsMessageToJSON(inputsMessage: InputsMessage): string {
 export type InputsUnion1$Outbound =
   | OutputCodeInterpreterCallItem$Outbound
   | FunctionCallItem$Outbound
+  | ApplyPatchCallItem$Outbound
   | InputsMessage$Outbound
   | OutputFunctionCallItem$Outbound
+  | OutputCustomToolCallItem$Outbound
   | OutputWebSearchCallItem$Outbound
   | OutputFileSearchCallItem$Outbound
   | OutputComputerCallItem$Outbound
   | OutputDatetimeItem$Outbound
+  | CustomToolCallItem$Outbound
   | ReasoningItem$Outbound
   | FunctionCallOutputItem$Outbound
+  | ApplyPatchCallOutputItem$Outbound
   | InputsReasoning$Outbound
   | OutputImageGenerationCallItem$Outbound
+  | CustomToolCallOutputItem$Outbound
   | OutputWebSearchServerToolItem$Outbound
   | OutputCodeInterpreterServerToolItem$Outbound
   | OutputFileSearchServerToolItem$Outbound
@@ -650,16 +690,21 @@ export const InputsUnion1$outboundSchema: z.ZodType<
 > = z.union([
   OutputCodeInterpreterCallItem$outboundSchema,
   FunctionCallItem$outboundSchema,
+  ApplyPatchCallItem$outboundSchema,
   z.lazy(() => InputsMessage$outboundSchema),
   OutputFunctionCallItem$outboundSchema,
+  OutputCustomToolCallItem$outboundSchema,
   OutputWebSearchCallItem$outboundSchema,
   OutputFileSearchCallItem$outboundSchema,
   OutputComputerCallItem$outboundSchema,
   OutputDatetimeItem$outboundSchema,
+  CustomToolCallItem$outboundSchema,
   ReasoningItem$outboundSchema,
   FunctionCallOutputItem$outboundSchema,
+  ApplyPatchCallOutputItem$outboundSchema,
   z.lazy(() => InputsReasoning$outboundSchema),
   OutputImageGenerationCallItem$outboundSchema,
+  CustomToolCallOutputItem$outboundSchema,
   OutputWebSearchServerToolItem$outboundSchema,
   OutputCodeInterpreterServerToolItem$outboundSchema,
   OutputFileSearchServerToolItem$outboundSchema,
@@ -687,16 +732,21 @@ export type InputsUnion$Outbound =
   | Array<
     | OutputCodeInterpreterCallItem$Outbound
     | FunctionCallItem$Outbound
+    | ApplyPatchCallItem$Outbound
     | InputsMessage$Outbound
     | OutputFunctionCallItem$Outbound
+    | OutputCustomToolCallItem$Outbound
     | OutputWebSearchCallItem$Outbound
     | OutputFileSearchCallItem$Outbound
     | OutputComputerCallItem$Outbound
     | OutputDatetimeItem$Outbound
+    | CustomToolCallItem$Outbound
     | ReasoningItem$Outbound
     | FunctionCallOutputItem$Outbound
+    | ApplyPatchCallOutputItem$Outbound
     | InputsReasoning$Outbound
     | OutputImageGenerationCallItem$Outbound
+    | CustomToolCallOutputItem$Outbound
     | OutputWebSearchServerToolItem$Outbound
     | OutputCodeInterpreterServerToolItem$Outbound
     | OutputFileSearchServerToolItem$Outbound
@@ -724,16 +774,21 @@ export const InputsUnion$outboundSchema: z.ZodType<
     z.union([
       OutputCodeInterpreterCallItem$outboundSchema,
       FunctionCallItem$outboundSchema,
+      ApplyPatchCallItem$outboundSchema,
       z.lazy(() => InputsMessage$outboundSchema),
       OutputFunctionCallItem$outboundSchema,
+      OutputCustomToolCallItem$outboundSchema,
       OutputWebSearchCallItem$outboundSchema,
       OutputFileSearchCallItem$outboundSchema,
       OutputComputerCallItem$outboundSchema,
       OutputDatetimeItem$outboundSchema,
+      CustomToolCallItem$outboundSchema,
       ReasoningItem$outboundSchema,
       FunctionCallOutputItem$outboundSchema,
+      ApplyPatchCallOutputItem$outboundSchema,
       z.lazy(() => InputsReasoning$outboundSchema),
       OutputImageGenerationCallItem$outboundSchema,
+      CustomToolCallOutputItem$outboundSchema,
       OutputWebSearchServerToolItem$outboundSchema,
       OutputCodeInterpreterServerToolItem$outboundSchema,
       OutputFileSearchServerToolItem$outboundSchema,
