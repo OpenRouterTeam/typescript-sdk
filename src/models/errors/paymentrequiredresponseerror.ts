@@ -16,6 +16,9 @@ export type PaymentRequiredResponseErrorData = {
    * Error data for PaymentRequiredResponse
    */
   error: models.PaymentRequiredResponseErrorData;
+  /**
+   * Opt-in routing snapshot. Present when the request includes `X-OpenRouter-Experimental-Metadata: enabled` and the failure occurs after the router has captured usable state. Same shape as `openrouter_metadata` on successful responses — includes routing strategy, endpoint info, and pipeline guardrail stages.
+   */
   openrouterMetadata?: { [k: string]: any | null } | null | undefined;
   userId?: string | null | undefined;
 };
@@ -28,6 +31,9 @@ export class PaymentRequiredResponseError extends OpenRouterError {
    * Error data for PaymentRequiredResponse
    */
   error: models.PaymentRequiredResponseErrorData;
+  /**
+   * Opt-in routing snapshot. Present when the request includes `X-OpenRouter-Experimental-Metadata: enabled` and the failure occurs after the router has captured usable state. Same shape as `openrouter_metadata` on successful responses — includes routing strategy, endpoint info, and pipeline guardrail stages.
+   */
   openrouterMetadata?: { [k: string]: any | null } | null | undefined;
   userId?: string | null | undefined;
 
