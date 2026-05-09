@@ -7,6 +7,16 @@ import * as z from "zod/v4";
 import { remap as remap$ } from "../lib/primitives.js";
 import { ClosedEnum } from "../types/enums.js";
 import {
+  CustomToolCallItem,
+  CustomToolCallItem$Outbound,
+  CustomToolCallItem$outboundSchema,
+} from "./customtoolcallitem.js";
+import {
+  CustomToolCallOutputItem,
+  CustomToolCallOutputItem$Outbound,
+  CustomToolCallOutputItem$outboundSchema,
+} from "./customtoolcalloutputitem.js";
+import {
   EasyInputMessage,
   EasyInputMessage$Outbound,
   EasyInputMessage$outboundSchema,
@@ -61,6 +71,11 @@ import {
   OutputComputerCallItem$Outbound,
   OutputComputerCallItem$outboundSchema,
 } from "./outputcomputercallitem.js";
+import {
+  OutputCustomToolCallItem,
+  OutputCustomToolCallItem$Outbound,
+  OutputCustomToolCallItem$outboundSchema,
+} from "./outputcustomtoolcallitem.js";
 import {
   OutputDatetimeItem,
   OutputDatetimeItem$Outbound,
@@ -298,14 +313,17 @@ export type InputsUnion1 =
   | FunctionCallItem
   | InputsMessage
   | OutputFunctionCallItem
+  | OutputCustomToolCallItem
   | OutputWebSearchCallItem
   | OutputFileSearchCallItem
   | OutputComputerCallItem
   | OutputDatetimeItem
+  | CustomToolCallItem
   | ReasoningItem
   | FunctionCallOutputItem
   | InputsReasoning
   | OutputImageGenerationCallItem
+  | CustomToolCallOutputItem
   | OutputWebSearchServerToolItem
   | OutputCodeInterpreterServerToolItem
   | OutputFileSearchServerToolItem
@@ -332,14 +350,17 @@ export type InputsUnion =
     | FunctionCallItem
     | InputsMessage
     | OutputFunctionCallItem
+    | OutputCustomToolCallItem
     | OutputWebSearchCallItem
     | OutputFileSearchCallItem
     | OutputComputerCallItem
     | OutputDatetimeItem
+    | CustomToolCallItem
     | ReasoningItem
     | FunctionCallOutputItem
     | InputsReasoning
     | OutputImageGenerationCallItem
+    | CustomToolCallOutputItem
     | OutputWebSearchServerToolItem
     | OutputCodeInterpreterServerToolItem
     | OutputFileSearchServerToolItem
@@ -619,14 +640,17 @@ export type InputsUnion1$Outbound =
   | FunctionCallItem$Outbound
   | InputsMessage$Outbound
   | OutputFunctionCallItem$Outbound
+  | OutputCustomToolCallItem$Outbound
   | OutputWebSearchCallItem$Outbound
   | OutputFileSearchCallItem$Outbound
   | OutputComputerCallItem$Outbound
   | OutputDatetimeItem$Outbound
+  | CustomToolCallItem$Outbound
   | ReasoningItem$Outbound
   | FunctionCallOutputItem$Outbound
   | InputsReasoning$Outbound
   | OutputImageGenerationCallItem$Outbound
+  | CustomToolCallOutputItem$Outbound
   | OutputWebSearchServerToolItem$Outbound
   | OutputCodeInterpreterServerToolItem$Outbound
   | OutputFileSearchServerToolItem$Outbound
@@ -652,14 +676,17 @@ export const InputsUnion1$outboundSchema: z.ZodType<
   FunctionCallItem$outboundSchema,
   z.lazy(() => InputsMessage$outboundSchema),
   OutputFunctionCallItem$outboundSchema,
+  OutputCustomToolCallItem$outboundSchema,
   OutputWebSearchCallItem$outboundSchema,
   OutputFileSearchCallItem$outboundSchema,
   OutputComputerCallItem$outboundSchema,
   OutputDatetimeItem$outboundSchema,
+  CustomToolCallItem$outboundSchema,
   ReasoningItem$outboundSchema,
   FunctionCallOutputItem$outboundSchema,
   z.lazy(() => InputsReasoning$outboundSchema),
   OutputImageGenerationCallItem$outboundSchema,
+  CustomToolCallOutputItem$outboundSchema,
   OutputWebSearchServerToolItem$outboundSchema,
   OutputCodeInterpreterServerToolItem$outboundSchema,
   OutputFileSearchServerToolItem$outboundSchema,
@@ -689,14 +716,17 @@ export type InputsUnion$Outbound =
     | FunctionCallItem$Outbound
     | InputsMessage$Outbound
     | OutputFunctionCallItem$Outbound
+    | OutputCustomToolCallItem$Outbound
     | OutputWebSearchCallItem$Outbound
     | OutputFileSearchCallItem$Outbound
     | OutputComputerCallItem$Outbound
     | OutputDatetimeItem$Outbound
+    | CustomToolCallItem$Outbound
     | ReasoningItem$Outbound
     | FunctionCallOutputItem$Outbound
     | InputsReasoning$Outbound
     | OutputImageGenerationCallItem$Outbound
+    | CustomToolCallOutputItem$Outbound
     | OutputWebSearchServerToolItem$Outbound
     | OutputCodeInterpreterServerToolItem$Outbound
     | OutputFileSearchServerToolItem$Outbound
@@ -726,14 +756,17 @@ export const InputsUnion$outboundSchema: z.ZodType<
       FunctionCallItem$outboundSchema,
       z.lazy(() => InputsMessage$outboundSchema),
       OutputFunctionCallItem$outboundSchema,
+      OutputCustomToolCallItem$outboundSchema,
       OutputWebSearchCallItem$outboundSchema,
       OutputFileSearchCallItem$outboundSchema,
       OutputComputerCallItem$outboundSchema,
       OutputDatetimeItem$outboundSchema,
+      CustomToolCallItem$outboundSchema,
       ReasoningItem$outboundSchema,
       FunctionCallOutputItem$outboundSchema,
       z.lazy(() => InputsReasoning$outboundSchema),
       OutputImageGenerationCallItem$outboundSchema,
+      CustomToolCallOutputItem$outboundSchema,
       OutputWebSearchServerToolItem$outboundSchema,
       OutputCodeInterpreterServerToolItem$outboundSchema,
       OutputFileSearchServerToolItem$outboundSchema,
