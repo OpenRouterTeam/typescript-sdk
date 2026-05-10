@@ -118,6 +118,7 @@ export * from "./functioncallargsdeltaevent.js";
 export * from "./functioncallargsdoneevent.js";
 export * from "./functioncallitem.js";
 export * from "./functioncalloutputitem.js";
+export * from "./fusionplugin.js";
 export * from "./generationcontentdata.js";
 export * from "./generationcontentresponse.js";
 export * from "./generationresponse.js";
