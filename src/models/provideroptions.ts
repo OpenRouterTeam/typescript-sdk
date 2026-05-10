@@ -37,6 +37,7 @@ export type ProviderOptions = {
   cloudflare?: { [k: string]: any | null } | undefined;
   cohere?: { [k: string]: any | null } | undefined;
   crofai?: { [k: string]: any | null } | undefined;
+  crucible?: { [k: string]: any | null } | undefined;
   crusoe?: { [k: string]: any | null } | undefined;
   deepinfra?: { [k: string]: any | null } | undefined;
   deepseek?: { [k: string]: any | null } | undefined;
@@ -151,6 +152,7 @@ export type ProviderOptions$Outbound = {
   cloudflare?: { [k: string]: any | null } | undefined;
   cohere?: { [k: string]: any | null } | undefined;
   crofai?: { [k: string]: any | null } | undefined;
+  crucible?: { [k: string]: any | null } | undefined;
   crusoe?: { [k: string]: any | null } | undefined;
   deepinfra?: { [k: string]: any | null } | undefined;
   deepseek?: { [k: string]: any | null } | undefined;
@@ -268,6 +270,7 @@ export const ProviderOptions$outboundSchema: z.ZodType<
   cloudflare: z.record(z.string(), z.nullable(z.any())).optional(),
   cohere: z.record(z.string(), z.nullable(z.any())).optional(),
   crofai: z.record(z.string(), z.nullable(z.any())).optional(),
+  crucible: z.record(z.string(), z.nullable(z.any())).optional(),
   crusoe: z.record(z.string(), z.nullable(z.any())).optional(),
   deepinfra: z.record(z.string(), z.nullable(z.any())).optional(),
   deepseek: z.record(z.string(), z.nullable(z.any())).optional(),
