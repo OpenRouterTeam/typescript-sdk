@@ -34,17 +34,6 @@ const value: models.OutputComputerCallItem = {
 };
 ```
 
-### `models.OutputCustomToolCallItem`
-
-```typescript
-const value: models.OutputCustomToolCallItem = {
-  callId: "call-abc123",
-  input: "*** Begin Patch\n*** End Patch",
-  name: "apply_patch",
-  type: "custom_tool_call",
-};
-```
-
 ### `models.OutputFileSearchCallItem`
 
 ```typescript

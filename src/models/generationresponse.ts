@@ -160,10 +160,6 @@ export type GenerationResponseData = {
    */
   router: string | null;
   /**
-   * Service tier the upstream provider reported running this request on, or null if it did not report one.
-   */
-  serviceTier: string | null;
-  /**
    * Session identifier grouping multiple generations in the same session
    */
   sessionId?: string | null | undefined;
@@ -255,7 +251,6 @@ export const GenerationResponseData$inboundSchema: z.ZodType<
   request_id: z.nullable(z.string()).optional(),
   response_cache_source_id: z.nullable(z.string()).optional(),
   router: z.nullable(z.string()),
-  service_tier: z.nullable(z.string()),
   session_id: z.nullable(z.string()).optional(),
   streamed: z.nullable(z.boolean()),
   tokens_completion: z.nullable(z.int()),
@@ -293,7 +288,6 @@ export const GenerationResponseData$inboundSchema: z.ZodType<
     "provider_responses": "providerResponses",
     "request_id": "requestId",
     "response_cache_source_id": "responseCacheSourceId",
-    "service_tier": "serviceTier",
     "session_id": "sessionId",
     "tokens_completion": "tokensCompletion",
     "tokens_prompt": "tokensPrompt",
