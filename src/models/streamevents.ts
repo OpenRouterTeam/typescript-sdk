@@ -20,14 +20,6 @@ import {
   ContentPartDoneEvent,
   ContentPartDoneEvent$inboundSchema,
 } from "./contentpartdoneevent.js";
-import {
-  CustomToolCallInputDeltaEvent,
-  CustomToolCallInputDeltaEvent$inboundSchema,
-} from "./customtoolcallinputdeltaevent.js";
-import {
-  CustomToolCallInputDoneEvent,
-  CustomToolCallInputDoneEvent$inboundSchema,
-} from "./customtoolcallinputdoneevent.js";
 import { ErrorEvent, ErrorEvent$inboundSchema } from "./errorevent.js";
 import { SDKValidationError } from "./errors/sdkvalidationerror.js";
 import {
@@ -141,8 +133,6 @@ export type StreamEvents =
   | ContentPartAddedEvent
   | ContentPartDoneEvent
   | OpenResponsesCreatedEvent
-  | CustomToolCallInputDeltaEvent
-  | CustomToolCallInputDoneEvent
   | StreamEventsResponseFailed
   | FunctionCallArgsDeltaEvent
   | FunctionCallArgsDoneEvent
@@ -178,10 +168,6 @@ export const StreamEvents$inboundSchema: z.ZodType<StreamEvents, unknown> =
     ["response.content_part.added"]: ContentPartAddedEvent$inboundSchema,
     ["response.content_part.done"]: ContentPartDoneEvent$inboundSchema,
     ["response.created"]: OpenResponsesCreatedEvent$inboundSchema,
-    ["response.custom_tool_call_input.delta"]:
-      CustomToolCallInputDeltaEvent$inboundSchema,
-    ["response.custom_tool_call_input.done"]:
-      CustomToolCallInputDoneEvent$inboundSchema,
     ["response.failed"]: StreamEventsResponseFailed$inboundSchema,
     ["response.function_call_arguments.delta"]:
       FunctionCallArgsDeltaEvent$inboundSchema,

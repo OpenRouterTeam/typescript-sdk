@@ -30,7 +30,7 @@ export type FunctionCallOutputItemDetail = OpenEnum<
 /**
  * Image input content item
  */
-export type FunctionCallOutputItemOutputInputImage = {
+export type OutputInputImage = {
   detail: FunctionCallOutputItemDetail;
   imageUrl?: string | null | undefined;
   type: "input_image";
@@ -38,12 +38,12 @@ export type FunctionCallOutputItemOutputInputImage = {
 
 export type FunctionCallOutputItemOutputUnion1 =
   | InputText
-  | FunctionCallOutputItemOutputInputImage
+  | OutputInputImage
   | InputFile;
 
 export type FunctionCallOutputItemOutputUnion2 =
   | string
-  | Array<InputText | FunctionCallOutputItemOutputInputImage | InputFile>;
+  | Array<InputText | OutputInputImage | InputFile>;
 
 export const FunctionCallOutputItemStatus = {
   InProgress: "in_progress",
@@ -67,9 +67,7 @@ export type FunctionCallOutputItemTypeFunctionCallOutput = ClosedEnum<
 export type FunctionCallOutputItem = {
   callId: string;
   id?: string | null | undefined;
-  output:
-    | string
-    | Array<InputText | FunctionCallOutputItemOutputInputImage | InputFile>;
+  output: string | Array<InputText | OutputInputImage | InputFile>;
   status?: FunctionCallOutputItemStatus | null | undefined;
   type: FunctionCallOutputItemTypeFunctionCallOutput;
 };
@@ -81,16 +79,16 @@ export const FunctionCallOutputItemDetail$outboundSchema: z.ZodType<
 > = openEnums.outboundSchema(FunctionCallOutputItemDetail);
 
 /** @internal */
-export type FunctionCallOutputItemOutputInputImage$Outbound = {
+export type OutputInputImage$Outbound = {
   detail: string;
   image_url?: string | null | undefined;
   type: "input_image";
 };
 
 /** @internal */
-export const FunctionCallOutputItemOutputInputImage$outboundSchema: z.ZodType<
-  FunctionCallOutputItemOutputInputImage$Outbound,
-  FunctionCallOutputItemOutputInputImage
+export const OutputInputImage$outboundSchema: z.ZodType<
+  OutputInputImage$Outbound,
+  OutputInputImage
 > = z.object({
   detail: FunctionCallOutputItemDetail$outboundSchema,
   imageUrl: z.nullable(z.string()).optional(),
@@ -101,21 +99,18 @@ export const FunctionCallOutputItemOutputInputImage$outboundSchema: z.ZodType<
   });
 });
 
-export function functionCallOutputItemOutputInputImageToJSON(
-  functionCallOutputItemOutputInputImage:
-    FunctionCallOutputItemOutputInputImage,
+export function outputInputImageToJSON(
+  outputInputImage: OutputInputImage,
 ): string {
   return JSON.stringify(
-    FunctionCallOutputItemOutputInputImage$outboundSchema.parse(
-      functionCallOutputItemOutputInputImage,
-    ),
+    OutputInputImage$outboundSchema.parse(outputInputImage),
   );
 }
 
 /** @internal */
 export type FunctionCallOutputItemOutputUnion1$Outbound =
   | InputText$Outbound
-  | FunctionCallOutputItemOutputInputImage$Outbound
+  | OutputInputImage$Outbound
   | InputFile$Outbound;
 
 /** @internal */
@@ -124,7 +119,7 @@ export const FunctionCallOutputItemOutputUnion1$outboundSchema: z.ZodType<
   FunctionCallOutputItemOutputUnion1
 > = z.union([
   InputText$outboundSchema,
-  z.lazy(() => FunctionCallOutputItemOutputInputImage$outboundSchema),
+  z.lazy(() => OutputInputImage$outboundSchema),
   InputFile$outboundSchema,
 ]);
 
@@ -141,11 +136,7 @@ export function functionCallOutputItemOutputUnion1ToJSON(
 /** @internal */
 export type FunctionCallOutputItemOutputUnion2$Outbound =
   | string
-  | Array<
-    | InputText$Outbound
-    | FunctionCallOutputItemOutputInputImage$Outbound
-    | InputFile$Outbound
-  >;
+  | Array<InputText$Outbound | OutputInputImage$Outbound | InputFile$Outbound>;
 
 /** @internal */
 export const FunctionCallOutputItemOutputUnion2$outboundSchema: z.ZodType<
@@ -155,7 +146,7 @@ export const FunctionCallOutputItemOutputUnion2$outboundSchema: z.ZodType<
   z.string(),
   z.array(z.union([
     InputText$outboundSchema,
-    z.lazy(() => FunctionCallOutputItemOutputInputImage$outboundSchema),
+    z.lazy(() => OutputInputImage$outboundSchema),
     InputFile$outboundSchema,
   ])),
 ]);
@@ -189,9 +180,7 @@ export type FunctionCallOutputItem$Outbound = {
   output:
     | string
     | Array<
-      | InputText$Outbound
-      | FunctionCallOutputItemOutputInputImage$Outbound
-      | InputFile$Outbound
+      InputText$Outbound | OutputInputImage$Outbound | InputFile$Outbound
     >;
   status?: string | null | undefined;
   type: string;
@@ -208,7 +197,7 @@ export const FunctionCallOutputItem$outboundSchema: z.ZodType<
     z.string(),
     z.array(z.union([
       InputText$outboundSchema,
-      z.lazy(() => FunctionCallOutputItemOutputInputImage$outboundSchema),
+      z.lazy(() => OutputInputImage$outboundSchema),
       InputFile$outboundSchema,
     ])),
   ]),
