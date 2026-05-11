@@ -266,6 +266,10 @@ export type ChatRequest = {
    */
   presencePenalty?: number | null | undefined;
   /**
+   * A cache key for prompt caching. When provided, routes requests to the same provider to maintain prompt cache warmth and is forwarded to providers that support it. Takes priority over session_id for provider stickiness. Maximum of 256 characters.
+   */
+  promptCacheKey?: string | null | undefined;
+  /**
    * When multiple model providers are available, optionally indicate your routing preference.
    */
   provider?: ProviderPreferences | null | undefined;
@@ -469,6 +473,7 @@ export type ChatRequest$Outbound = {
     >
     | undefined;
   presence_penalty?: number | null | undefined;
+  prompt_cache_key?: string | null | undefined;
   provider?: ProviderPreferences$Outbound | null | undefined;
   reasoning?: Reasoning$Outbound | undefined;
   response_format?:
@@ -524,6 +529,7 @@ export const ChatRequest$outboundSchema: z.ZodType<
     ]),
   ).optional(),
   presencePenalty: z.nullable(z.number()).optional(),
+  promptCacheKey: z.nullable(z.string()).optional(),
   provider: z.nullable(ProviderPreferences$outboundSchema).optional(),
   reasoning: z.lazy(() => Reasoning$outboundSchema).optional(),
   responseFormat: z.union([
@@ -557,6 +563,7 @@ export const ChatRequest$outboundSchema: z.ZodType<
     maxTokens: "max_tokens",
     parallelToolCalls: "parallel_tool_calls",
     presencePenalty: "presence_penalty",
+    promptCacheKey: "prompt_cache_key",
     responseFormat: "response_format",
     serviceTier: "service_tier",
     sessionId: "session_id",
