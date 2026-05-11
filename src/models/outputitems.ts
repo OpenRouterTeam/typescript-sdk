@@ -42,6 +42,10 @@ import {
   OutputDatetimeItem$inboundSchema,
 } from "./outputdatetimeitem.js";
 import {
+  OutputDeepResearchServerToolItem,
+  OutputDeepResearchServerToolItem$inboundSchema,
+} from "./outputdeepresearchservertoolitem.js";
+import {
   OutputFileSearchCallItem,
   OutputFileSearchCallItem$inboundSchema,
 } from "./outputfilesearchcallitem.js";
@@ -120,6 +124,7 @@ export type OutputItems =
     type: "openrouter:code_interpreter";
   })
   | (OutputDatetimeItem & { type: "openrouter:datetime" })
+  | OutputDeepResearchServerToolItem
   | (OutputSearchModelsServerToolItem & {
     type: "openrouter:experimental__search_models";
   })
@@ -173,6 +178,8 @@ export const OutputItems$inboundSchema: z.ZodType<OutputItems, unknown> =
     ["openrouter:datetime"]: OutputDatetimeItem$inboundSchema.and(
       z.object({ type: z.literal("openrouter:datetime") }),
     ),
+    ["openrouter:deep_research"]:
+      OutputDeepResearchServerToolItem$inboundSchema,
     ["openrouter:experimental__search_models"]:
       OutputSearchModelsServerToolItem$inboundSchema.and(
         z.object({ type: z.literal("openrouter:experimental__search_models") }),

@@ -27,6 +27,11 @@ import {
   DatetimeServerTool$outboundSchema,
 } from "./datetimeservertool.js";
 import {
+  DeepResearchServerTool,
+  DeepResearchServerTool$Outbound,
+  DeepResearchServerTool$outboundSchema,
+} from "./deepresearchservertool.js";
+import {
   ImageGenerationServerToolOpenRouter,
   ImageGenerationServerToolOpenRouter$Outbound,
   ImageGenerationServerToolOpenRouter$outboundSchema,
@@ -87,6 +92,7 @@ export type ChatFunctionToolFunction = {
 export type ChatFunctionTool =
   | ChatFunctionToolFunction
   | DatetimeServerTool
+  | DeepResearchServerTool
   | ImageGenerationServerToolOpenRouter
   | ChatSearchModelsServerTool
   | WebFetchServerTool
@@ -160,6 +166,7 @@ export function chatFunctionToolFunctionToJSON(
 export type ChatFunctionTool$Outbound =
   | ChatFunctionToolFunction$Outbound
   | DatetimeServerTool$Outbound
+  | DeepResearchServerTool$Outbound
   | ImageGenerationServerToolOpenRouter$Outbound
   | ChatSearchModelsServerTool$Outbound
   | WebFetchServerTool$Outbound
@@ -173,6 +180,7 @@ export const ChatFunctionTool$outboundSchema: z.ZodType<
 > = z.union([
   z.lazy(() => ChatFunctionToolFunction$outboundSchema),
   DatetimeServerTool$outboundSchema,
+  DeepResearchServerTool$outboundSchema,
   ImageGenerationServerToolOpenRouter$outboundSchema,
   ChatSearchModelsServerTool$outboundSchema,
   WebFetchServerTool$outboundSchema,
