@@ -53,6 +53,11 @@ import {
   DatetimeServerTool$outboundSchema,
 } from "./datetimeservertool.js";
 import {
+  DeepResearchServerTool,
+  DeepResearchServerTool$Outbound,
+  DeepResearchServerTool$outboundSchema,
+} from "./deepresearchservertool.js";
+import {
   FileParserPlugin,
   FileParserPlugin$Outbound,
   FileParserPlugin$outboundSchema,
@@ -232,6 +237,7 @@ export type ResponsesRequestToolUnion =
   | ApplyPatchServerTool
   | CustomTool
   | (DatetimeServerTool & { type: "openrouter:datetime" })
+  | (DeepResearchServerTool & { type: "openrouter:deep_research" })
   | (ImageGenerationServerToolOpenRouter & {
     type: "openrouter:image_generation";
   })
@@ -327,6 +333,7 @@ export type ResponsesRequest = {
       | ApplyPatchServerTool
       | CustomTool
       | (DatetimeServerTool & { type: "openrouter:datetime" })
+      | (DeepResearchServerTool & { type: "openrouter:deep_research" })
       | (ImageGenerationServerToolOpenRouter & {
         type: "openrouter:image_generation";
       })
@@ -437,6 +444,7 @@ export type ResponsesRequestToolUnion$Outbound =
   | ApplyPatchServerTool$Outbound
   | CustomTool$Outbound
   | (DatetimeServerTool$Outbound & { type: "openrouter:datetime" })
+  | (DeepResearchServerTool$Outbound & { type: "openrouter:deep_research" })
   | (ImageGenerationServerToolOpenRouter$Outbound & {
     type: "openrouter:image_generation";
   })
@@ -467,6 +475,9 @@ export const ResponsesRequestToolUnion$outboundSchema: z.ZodType<
   CustomTool$outboundSchema,
   DatetimeServerTool$outboundSchema.and(
     z.object({ type: z.literal("openrouter:datetime") }),
+  ),
+  DeepResearchServerTool$outboundSchema.and(
+    z.object({ type: z.literal("openrouter:deep_research") }),
   ),
   ImageGenerationServerToolOpenRouter$outboundSchema.and(
     z.object({ type: z.literal("openrouter:image_generation") }),
@@ -545,6 +556,7 @@ export type ResponsesRequest$Outbound = {
       | ApplyPatchServerTool$Outbound
       | CustomTool$Outbound
       | (DatetimeServerTool$Outbound & { type: "openrouter:datetime" })
+      | (DeepResearchServerTool$Outbound & { type: "openrouter:deep_research" })
       | (ImageGenerationServerToolOpenRouter$Outbound & {
         type: "openrouter:image_generation";
       })
@@ -626,6 +638,9 @@ export const ResponsesRequest$outboundSchema: z.ZodType<
       CustomTool$outboundSchema,
       DatetimeServerTool$outboundSchema.and(
         z.object({ type: z.literal("openrouter:datetime") }),
+      ),
+      DeepResearchServerTool$outboundSchema.and(
+        z.object({ type: z.literal("openrouter:deep_research") }),
       ),
       ImageGenerationServerToolOpenRouter$outboundSchema.and(
         z.object({ type: z.literal("openrouter:image_generation") }),

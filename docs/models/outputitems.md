@@ -142,6 +142,15 @@ const value: models.OutputDatetimeItem = {
 };
 ```
 
+### `models.OutputDeepResearchServerToolItem`
+
+```typescript
+const value: models.OutputDeepResearchServerToolItem = {
+  status: "completed",
+  type: "openrouter:deep_research",
+};
+```
+
 ### `models.OutputSearchModelsServerToolItem`
 
 ```typescript
