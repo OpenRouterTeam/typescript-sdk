@@ -1,13 +1,13 @@
-# Provider
+# ProviderEnum
 
-Optional provider name to filter by (e.g. `OpenAI`, `Anthropic`).
+The upstream provider this credential authenticates against. One of the supported BYOK providers.
 
 ## Example Usage
 
 ```typescript
-import { Provider } from "@openrouter/sdk/models/operations";
+import { ProviderEnum } from "@openrouter/sdk/models";
 
-let value: Provider = "OpenAI";
+let value: ProviderEnum = "OpenAI";
 
 // Open enum: unrecognized values are captured as Unrecognized<string>
 ```
