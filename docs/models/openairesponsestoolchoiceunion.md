@@ -53,3 +53,19 @@ const value: models.ToolChoiceAllowed = {
 };
 ```
 
+### `models.OpenAIResponsesToolChoiceApplyPatch`
+
+```typescript
+const value: models.OpenAIResponsesToolChoiceApplyPatch = {
+  type: "apply_patch",
+};
+```
+
+### `models.OpenAIResponsesToolChoiceShell`
+
+```typescript
+const value: models.OpenAIResponsesToolChoiceShell = {
+  type: "shell",
+};
+```
+
