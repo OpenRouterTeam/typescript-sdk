@@ -26,10 +26,6 @@ export type OpenAIResponseFunctionToolCall = {
   callId: string;
   id?: string | undefined;
   name: string;
-  /**
-   * Namespace qualifier for tools registered as part of a namespace tool group (e.g. an MCP server)
-   */
-  namespace?: string | undefined;
   status?: ToolCallStatus | undefined;
   type: OpenAIResponseFunctionToolCallType;
 };
@@ -48,7 +44,6 @@ export const OpenAIResponseFunctionToolCall$inboundSchema: z.ZodType<
   call_id: z.string(),
   id: z.string().optional(),
   name: z.string(),
-  namespace: z.string().optional(),
   status: ToolCallStatus$inboundSchema.optional(),
   type: OpenAIResponseFunctionToolCallType$inboundSchema,
 }).transform((v) => {

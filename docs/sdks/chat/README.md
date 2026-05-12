@@ -25,7 +25,6 @@ const openRouter = new OpenRouter({
 
 async function run() {
   const result = await openRouter.chat.send({
-    xOpenRouterExperimentalMetadata: "enabled",
     chatRequest: {
       maxTokens: 150,
       messages: [
@@ -68,7 +67,6 @@ const openRouter = new OpenRouterCore({
 
 async function run() {
   const res = await chatSend(openRouter, {
-    xOpenRouterExperimentalMetadata: "enabled",
     chatRequest: {
       maxTokens: 150,
       messages: [
@@ -116,7 +114,6 @@ run();
 | errors.BadRequestResponseError          | 400                                     | application/json                        |
 | errors.UnauthorizedResponseError        | 401                                     | application/json                        |
 | errors.PaymentRequiredResponseError     | 402                                     | application/json                        |
-| errors.ForbiddenResponseError           | 403                                     | application/json                        |
 | errors.NotFoundResponseError            | 404                                     | application/json                        |
 | errors.RequestTimeoutResponseError      | 408                                     | application/json                        |
 | errors.PayloadTooLargeResponseError     | 413                                     | application/json                        |

@@ -7,14 +7,6 @@ import * as z from "zod/v4";
 import { remap as remap$ } from "../lib/primitives.js";
 import { safeParse } from "../lib/schemas.js";
 import { Result as SafeParseResult } from "../types/fp.js";
-import {
-  ContentFilterBuiltinEntry,
-  ContentFilterBuiltinEntry$inboundSchema,
-} from "./contentfilterbuiltinentry.js";
-import {
-  ContentFilterEntry,
-  ContentFilterEntry$inboundSchema,
-} from "./contentfilterentry.js";
 import { SDKValidationError } from "./errors/sdkvalidationerror.js";
 import {
   GuardrailInterval,
@@ -31,14 +23,6 @@ export type Guardrail = {
    */
   allowedProviders?: Array<string> | null | undefined;
   /**
-   * Builtin content filters applied to requests. Includes PII detectors and the regex-based prompt injection detector.
-   */
-  contentFilterBuiltins?: Array<ContentFilterBuiltinEntry> | null | undefined;
-  /**
-   * Custom regex content filters applied to request messages
-   */
-  contentFilters?: Array<ContentFilterEntry> | null | undefined;
-  /**
    * ISO 8601 timestamp of when the guardrail was created
    */
   createdAt: string;
@@ -47,27 +31,9 @@ export type Guardrail = {
    */
   description?: string | null | undefined;
   /**
-   * Deprecated. Use enforce_zdr_anthropic, enforce_zdr_openai, enforce_zdr_google, and enforce_zdr_other instead. When provided, its value is copied into any of those per-provider fields that are not explicitly specified on the request.
-   *
-   * @deprecated field: This will be removed in a future release, please migrate away from it as soon as possible.
+   * Whether to enforce zero data retention
    */
   enforceZdr?: boolean | null | undefined;
-  /**
-   * Whether to enforce zero data retention for Anthropic models. Falls back to enforce_zdr when not provided.
-   */
-  enforceZdrAnthropic?: boolean | null | undefined;
-  /**
-   * Whether to enforce zero data retention for Google models. Falls back to enforce_zdr when not provided.
-   */
-  enforceZdrGoogle?: boolean | null | undefined;
-  /**
-   * Whether to enforce zero data retention for OpenAI models. Falls back to enforce_zdr when not provided.
-   */
-  enforceZdrOpenai?: boolean | null | undefined;
-  /**
-   * Whether to enforce zero data retention for models that are not from Anthropic, OpenAI, or Google. Falls back to enforce_zdr when not provided.
-   */
-  enforceZdrOther?: boolean | null | undefined;
   /**
    * Unique identifier for the guardrail
    */
@@ -106,18 +72,9 @@ export type Guardrail = {
 export const Guardrail$inboundSchema: z.ZodType<Guardrail, unknown> = z.object({
   allowed_models: z.nullable(z.array(z.string())).optional(),
   allowed_providers: z.nullable(z.array(z.string())).optional(),
-  content_filter_builtins: z.nullable(
-    z.array(ContentFilterBuiltinEntry$inboundSchema),
-  ).optional(),
-  content_filters: z.nullable(z.array(ContentFilterEntry$inboundSchema))
-    .optional(),
   created_at: z.string(),
   description: z.nullable(z.string()).optional(),
   enforce_zdr: z.nullable(z.boolean()).optional(),
-  enforce_zdr_anthropic: z.nullable(z.boolean()).optional(),
-  enforce_zdr_google: z.nullable(z.boolean()).optional(),
-  enforce_zdr_openai: z.nullable(z.boolean()).optional(),
-  enforce_zdr_other: z.nullable(z.boolean()).optional(),
   id: z.string(),
   ignored_models: z.nullable(z.array(z.string())).optional(),
   ignored_providers: z.nullable(z.array(z.string())).optional(),
@@ -130,14 +87,8 @@ export const Guardrail$inboundSchema: z.ZodType<Guardrail, unknown> = z.object({
   return remap$(v, {
     "allowed_models": "allowedModels",
     "allowed_providers": "allowedProviders",
-    "content_filter_builtins": "contentFilterBuiltins",
-    "content_filters": "contentFilters",
     "created_at": "createdAt",
     "enforce_zdr": "enforceZdr",
-    "enforce_zdr_anthropic": "enforceZdrAnthropic",
-    "enforce_zdr_google": "enforceZdrGoogle",
-    "enforce_zdr_openai": "enforceZdrOpenai",
-    "enforce_zdr_other": "enforceZdrOther",
     "ignored_models": "ignoredModels",
     "ignored_providers": "ignoredProviders",
     "limit_usd": "limitUsd",
