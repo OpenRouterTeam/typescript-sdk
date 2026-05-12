@@ -23,3 +23,36 @@ const value: operations.ContentImageURL = {
 };
 ```
 
+### `operations.ContentInputAudio`
+
+```typescript
+const value: operations.ContentInputAudio = {
+  inputAudio: {
+    data: "<value>",
+  },
+  type: "input_audio",
+};
+```
+
+### `operations.ContentVideoURL`
+
+```typescript
+const value: operations.ContentVideoURL = {
+  type: "video_url",
+  videoUrl: {
+    url: "https://pleasant-futon.com/",
+  },
+};
+```
+
+### `operations.ContentFile`
+
+```typescript
+const value: operations.ContentFile = {
+  file: {
+    fileData: "<value>",
+  },
+  type: "file",
+};
+```
+
