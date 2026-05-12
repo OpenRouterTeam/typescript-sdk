@@ -12,6 +12,6 @@ let value: OpenAIResponsesToolChoice = {
 
 ## Fields
 
-| Field              | Type               | Required           | Description        |
-| ------------------ | ------------------ | ------------------ | ------------------ |
-| `type`             | *models.Type*      | :heavy_check_mark: | N/A                |
+| Field                                       | Type                                        | Required                                    | Description                                 |
+| ------------------------------------------- | ------------------------------------------- | ------------------------------------------- | ------------------------------------------- |
+| `type`                                      | *models.OpenAIResponsesToolChoiceTypeUnion* | :heavy_check_mark:                          | N/A                                         |
