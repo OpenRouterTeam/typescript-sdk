@@ -1,0 +1,96 @@
+# Datasets
+
+## Overview
+
+Datasets endpoints
+
+### Available Operations
+
+* [getRankingsDaily](#getrankingsdaily) - Daily top-20 model rankings dataset
+
+## getRankingsDaily
+
+Returns the per-day top-20 models on OpenRouter, plus an `other` row carrying the
+sum of the residue (21st+ models). Token totals are `prompt_tokens + completion_tokens`,
+matching the public rankings chart on openrouter.ai/rankings.
+
+Authenticate with any valid OpenRouter API key (same key used for inference).
+Rate-limited to 30 requests/minute per key and 500 requests/day per account.
+
+When republishing or quoting this dataset, please cite:
+"Source: OpenRouter (openrouter.ai/rankings), as of {as_of}."
+
+### Example Usage
+
+<!-- UsageSnippet language="typescript" operationID="getRankingsDaily" method="get" path="/datasets/rankings-daily" -->
+```typescript
+import { OpenRouter } from "@openrouter/sdk";
+
+const openRouter = new OpenRouter({
+  httpReferer: "<value>",
+  appTitle: "<value>",
+  appCategories: "<value>",
+  apiKey: process.env["OPENROUTER_API_KEY"] ?? "",
+});
+
+async function run() {
+  const result = await openRouter.datasets.getRankingsDaily();
+
+  console.log(result);
+}
+
+run();
+```
+
+### Standalone function
+
+The standalone function version of this method:
+
+```typescript
+import { OpenRouterCore } from "@openrouter/sdk/core.js";
+import { datasetsGetRankingsDaily } from "@openrouter/sdk/funcs/datasetsGetRankingsDaily.js";
+
+// Use `OpenRouterCore` for best tree-shaking performance.
+// You can create one instance of it to use across an application.
+const openRouter = new OpenRouterCore({
+  httpReferer: "<value>",
+  appTitle: "<value>",
+  appCategories: "<value>",
+  apiKey: process.env["OPENROUTER_API_KEY"] ?? "",
+});
+
+async function run() {
+  const res = await datasetsGetRankingsDaily(openRouter);
+  if (res.ok) {
+    const { value: result } = res;
+    console.log(result);
+  } else {
+    console.log("datasetsGetRankingsDaily failed:", res.error);
+  }
+}
+
+run();
+```
+
+### Parameters
+
+| Parameter                                                                                                                                                                      | Type                                                                                                                                                                           | Required                                                                                                                                                                       | Description                                                                                                                                                                    |
+| ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `request`                                                                                                                                                                      | [operations.GetRankingsDailyRequest](../../models/operations/getrankingsdailyrequest.md)                                                                                       | :heavy_check_mark:                                                                                                                                                             | The request object to use for the request.                                                                                                                                     |
+| `options`                                                                                                                                                                      | RequestOptions                                                                                                                                                                 | :heavy_minus_sign:                                                                                                                                                             | Used to set various options for making HTTP requests.                                                                                                                          |
+| `options.fetchOptions`                                                                                                                                                         | [RequestInit](https://developer.mozilla.org/en-US/docs/Web/API/Request/Request#options)                                                                                        | :heavy_minus_sign:                                                                                                                                                             | Options that are passed to the underlying HTTP request. This can be used to inject extra headers for examples. All `Request` options, except `method` and `body`, are allowed. |
+| `options.retries`                                                                                                                                                              | [RetryConfig](../../lib/utils/retryconfig.md)                                                                                                                                  | :heavy_minus_sign:                                                                                                                                                             | Enables retrying HTTP requests under certain failure conditions.                                                                                                               |
+
+### Response
+
+**Promise\<[models.RankingsDailyResponse](../../models/rankingsdailyresponse.md)\>**
+
+### Errors
+
+| Error Type                          | Status Code                         | Content Type                        |
+| ----------------------------------- | ----------------------------------- | ----------------------------------- |
+| errors.BadRequestResponseError      | 400                                 | application/json                    |
+| errors.UnauthorizedResponseError    | 401                                 | application/json                    |
+| errors.TooManyRequestsResponseError | 429                                 | application/json                    |
+| errors.InternalServerResponseError  | 500                                 | application/json                    |
+| errors.OpenRouterDefaultError       | 4XX, 5XX                            | \*/\*                               |
