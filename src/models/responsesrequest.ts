@@ -98,14 +98,14 @@ import {
   ModerationPlugin$outboundSchema,
 } from "./moderationplugin.js";
 import {
-  OpenAIResponsesToolChoiceUnion,
-  OpenAIResponsesToolChoiceUnion$Outbound,
-  OpenAIResponsesToolChoiceUnion$outboundSchema,
-} from "./openairesponsestoolchoiceunion.js";
-import {
   OpenAIResponsesTruncation,
   OpenAIResponsesTruncation$outboundSchema,
 } from "./openairesponsestruncation.js";
+import {
+  OpenResponsesToolChoiceUnion,
+  OpenResponsesToolChoiceUnion$Outbound,
+  OpenResponsesToolChoiceUnion$outboundSchema,
+} from "./openresponsestoolchoiceunion.js";
 import {
   OutputModalityEnum,
   OutputModalityEnum$outboundSchema,
@@ -309,7 +309,10 @@ export type ResponsesRequest = {
    * Text output configuration including format and verbosity
    */
   text?: TextExtendedConfig | undefined;
-  toolChoice?: OpenAIResponsesToolChoiceUnion | undefined;
+  /**
+   * Tool choice for the Responses endpoint. Accepts OpenAI Responses values plus the OpenRouter shorthand `{ type: <openrouter:* | shorthand> }` for forcing a server tool. The shorthand is normalized to `{ type: "function", name }` for downstream handling.
+   */
+  toolChoice?: OpenResponsesToolChoiceUnion | undefined;
   tools?:
     | Array<
       | ResponsesRequestToolFunction
@@ -527,7 +530,7 @@ export type ResponsesRequest$Outbound = {
   stream: boolean;
   temperature?: number | null | undefined;
   text?: TextExtendedConfig$Outbound | undefined;
-  tool_choice?: OpenAIResponsesToolChoiceUnion$Outbound | undefined;
+  tool_choice?: OpenResponsesToolChoiceUnion$Outbound | undefined;
   tools?:
     | Array<
       | ResponsesRequestToolFunction$Outbound
@@ -607,7 +610,7 @@ export const ResponsesRequest$outboundSchema: z.ZodType<
   stream: z.boolean().default(false),
   temperature: z.nullable(z.number()).optional(),
   text: TextExtendedConfig$outboundSchema.optional(),
-  toolChoice: OpenAIResponsesToolChoiceUnion$outboundSchema.optional(),
+  toolChoice: OpenResponsesToolChoiceUnion$outboundSchema.optional(),
   tools: z.array(
     z.union([
       z.lazy(() => ResponsesRequestToolFunction$outboundSchema),

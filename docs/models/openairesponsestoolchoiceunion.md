@@ -21,11 +21,11 @@ const value: models.OpenAIResponsesToolChoiceNone = "none";
 const value: models.OpenAIResponsesToolChoiceRequired = "required";
 ```
 
-### `models.OpenAIResponsesToolChoiceFunction`
+### `models.OpenAIResponsesFunctionToolChoice`
 
 ```typescript
-const value: models.OpenAIResponsesToolChoiceFunction = {
-  name: "<value>",
+const value: models.OpenAIResponsesFunctionToolChoice = {
+  name: "get_weather",
   type: "function",
 };
 ```
