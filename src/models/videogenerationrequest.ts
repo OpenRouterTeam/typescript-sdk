@@ -27,6 +27,8 @@ export const AspectRatio = {
   Eleven: "1:1",
   FortyThree: "4:3",
   ThirtyFour: "3:4",
+  ThirtyTwo: "3:2",
+  TwentyThree: "2:3",
   TwoHundredAndNineteen: "21:9",
   NineHundredAndTwentyOne: "9:21",
 } as const;
