@@ -7,6 +7,16 @@ import * as z from "zod/v4";
 import { remap as remap$ } from "../lib/primitives.js";
 import { ClosedEnum } from "../types/enums.js";
 import {
+  ApplyPatchCallItem,
+  ApplyPatchCallItem$Outbound,
+  ApplyPatchCallItem$outboundSchema,
+} from "./applypatchcallitem.js";
+import {
+  ApplyPatchCallOutputItem,
+  ApplyPatchCallOutputItem$Outbound,
+  ApplyPatchCallOutputItem$outboundSchema,
+} from "./applypatchcalloutputitem.js";
+import {
   CustomToolCallItem,
   CustomToolCallItem$Outbound,
   CustomToolCallItem$outboundSchema,
@@ -311,6 +321,7 @@ export type InputsMessage = {
 export type InputsUnion1 =
   | OutputCodeInterpreterCallItem
   | FunctionCallItem
+  | ApplyPatchCallItem
   | InputsMessage
   | OutputFunctionCallItem
   | OutputCustomToolCallItem
@@ -321,6 +332,7 @@ export type InputsUnion1 =
   | CustomToolCallItem
   | ReasoningItem
   | FunctionCallOutputItem
+  | ApplyPatchCallOutputItem
   | InputsReasoning
   | OutputImageGenerationCallItem
   | CustomToolCallOutputItem
@@ -348,6 +360,7 @@ export type InputsUnion =
   | Array<
     | OutputCodeInterpreterCallItem
     | FunctionCallItem
+    | ApplyPatchCallItem
     | InputsMessage
     | OutputFunctionCallItem
     | OutputCustomToolCallItem
@@ -358,6 +371,7 @@ export type InputsUnion =
     | CustomToolCallItem
     | ReasoningItem
     | FunctionCallOutputItem
+    | ApplyPatchCallOutputItem
     | InputsReasoning
     | OutputImageGenerationCallItem
     | CustomToolCallOutputItem
@@ -638,6 +652,7 @@ export function inputsMessageToJSON(inputsMessage: InputsMessage): string {
 export type InputsUnion1$Outbound =
   | OutputCodeInterpreterCallItem$Outbound
   | FunctionCallItem$Outbound
+  | ApplyPatchCallItem$Outbound
   | InputsMessage$Outbound
   | OutputFunctionCallItem$Outbound
   | OutputCustomToolCallItem$Outbound
@@ -648,6 +663,7 @@ export type InputsUnion1$Outbound =
   | CustomToolCallItem$Outbound
   | ReasoningItem$Outbound
   | FunctionCallOutputItem$Outbound
+  | ApplyPatchCallOutputItem$Outbound
   | InputsReasoning$Outbound
   | OutputImageGenerationCallItem$Outbound
   | CustomToolCallOutputItem$Outbound
@@ -674,6 +690,7 @@ export const InputsUnion1$outboundSchema: z.ZodType<
 > = z.union([
   OutputCodeInterpreterCallItem$outboundSchema,
   FunctionCallItem$outboundSchema,
+  ApplyPatchCallItem$outboundSchema,
   z.lazy(() => InputsMessage$outboundSchema),
   OutputFunctionCallItem$outboundSchema,
   OutputCustomToolCallItem$outboundSchema,
@@ -684,6 +701,7 @@ export const InputsUnion1$outboundSchema: z.ZodType<
   CustomToolCallItem$outboundSchema,
   ReasoningItem$outboundSchema,
   FunctionCallOutputItem$outboundSchema,
+  ApplyPatchCallOutputItem$outboundSchema,
   z.lazy(() => InputsReasoning$outboundSchema),
   OutputImageGenerationCallItem$outboundSchema,
   CustomToolCallOutputItem$outboundSchema,
@@ -714,6 +732,7 @@ export type InputsUnion$Outbound =
   | Array<
     | OutputCodeInterpreterCallItem$Outbound
     | FunctionCallItem$Outbound
+    | ApplyPatchCallItem$Outbound
     | InputsMessage$Outbound
     | OutputFunctionCallItem$Outbound
     | OutputCustomToolCallItem$Outbound
@@ -724,6 +743,7 @@ export type InputsUnion$Outbound =
     | CustomToolCallItem$Outbound
     | ReasoningItem$Outbound
     | FunctionCallOutputItem$Outbound
+    | ApplyPatchCallOutputItem$Outbound
     | InputsReasoning$Outbound
     | OutputImageGenerationCallItem$Outbound
     | CustomToolCallOutputItem$Outbound
@@ -754,6 +774,7 @@ export const InputsUnion$outboundSchema: z.ZodType<
     z.union([
       OutputCodeInterpreterCallItem$outboundSchema,
       FunctionCallItem$outboundSchema,
+      ApplyPatchCallItem$outboundSchema,
       z.lazy(() => InputsMessage$outboundSchema),
       OutputFunctionCallItem$outboundSchema,
       OutputCustomToolCallItem$outboundSchema,
@@ -764,6 +785,7 @@ export const InputsUnion$outboundSchema: z.ZodType<
       CustomToolCallItem$outboundSchema,
       ReasoningItem$outboundSchema,
       FunctionCallOutputItem$outboundSchema,
+      ApplyPatchCallOutputItem$outboundSchema,
       z.lazy(() => InputsReasoning$outboundSchema),
       OutputImageGenerationCallItem$outboundSchema,
       CustomToolCallOutputItem$outboundSchema,
