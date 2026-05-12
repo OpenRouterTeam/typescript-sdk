@@ -48,7 +48,7 @@ export type UpdateWorkspaceRequest = {
    */
   name?: string | undefined;
   /**
-   * New URL-friendly slug (lowercase alphanumeric segments separated by single hyphens, no leading/trailing hyphens)
+   * New URL-friendly slug
    */
   slug?: string | undefined;
 };
