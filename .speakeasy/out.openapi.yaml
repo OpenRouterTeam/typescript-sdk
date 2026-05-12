@@ -5419,11 +5419,11 @@ components:
           minLength: 1
           type: string
         slug:
-          description: URL-friendly slug (lowercase alphanumeric and hyphens only)
+          description: URL-friendly slug (lowercase alphanumeric segments separated by single hyphens, no leading/trailing hyphens)
           example: production
           maxLength: 50
           minLength: 1
-          pattern: ^[a-z0-9-]+$
+          pattern: ^[a-z0-9]+(?:-[a-z0-9]+)*$
           type: string
       required:
         - name
@@ -14693,11 +14693,12 @@ components:
           minLength: 1
           type: string
         slug:
-          description: New URL-friendly slug
+          description: >-
+            New URL-friendly slug (lowercase alphanumeric segments separated by single hyphens, no leading/trailing hyphens)
           example: updated-workspace
           maxLength: 50
           minLength: 1
-          pattern: ^[a-z0-9-]+$
+          pattern: ^[a-z0-9]+(?:-[a-z0-9]+)*$
           type: string
       type: object
     UpdateWorkspaceResponse:
