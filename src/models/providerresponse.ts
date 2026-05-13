@@ -65,7 +65,6 @@ export const ProviderResponseProviderName = {
   Clarifai: "Clarifai",
   Cloudflare: "Cloudflare",
   Cohere: "Cohere",
-  Crucible: "Crucible",
   Crusoe: "Crusoe",
   DeepInfra: "DeepInfra",
   DeepSeek: "DeepSeek",
