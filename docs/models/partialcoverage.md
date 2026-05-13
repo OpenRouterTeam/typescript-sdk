@@ -1,0 +1,19 @@
+# PartialCoverage
+
+## Example Usage
+
+```typescript
+import { PartialCoverage } from "@openrouter/sdk/models";
+
+let value: PartialCoverage = {
+  models: [],
+  point: "<value>",
+};
+```
+
+## Fields
+
+| Field              | Type               | Required           | Description        |
+| ------------------ | ------------------ | ------------------ | ------------------ |
+| `models`           | *string*[]         | :heavy_check_mark: | N/A                |
+| `point`            | *string*           | :heavy_check_mark: | N/A                |
