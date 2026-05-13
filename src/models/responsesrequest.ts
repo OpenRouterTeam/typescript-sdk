@@ -63,6 +63,16 @@ import {
   FileSearchServerTool$outboundSchema,
 } from "./filesearchservertool.js";
 import {
+  FusionPlugin,
+  FusionPlugin$Outbound,
+  FusionPlugin$outboundSchema,
+} from "./fusionplugin.js";
+import {
+  FusionServerToolOpenRouter,
+  FusionServerToolOpenRouter$Outbound,
+  FusionServerToolOpenRouter$outboundSchema,
+} from "./fusionservertoolopenrouter.js";
+import {
   ImageConfig,
   ImageConfig$Outbound,
   ImageConfig$outboundSchema,
@@ -189,6 +199,7 @@ export type ResponsesRequestPlugin =
   | AutoRouterPlugin
   | ContextCompressionPlugin
   | FileParserPlugin
+  | FusionPlugin
   | ModerationPlugin
   | ParetoRouterPlugin
   | ResponseHealingPlugin
@@ -232,6 +243,7 @@ export type ResponsesRequestToolUnion =
   | ApplyPatchServerTool
   | CustomTool
   | (DatetimeServerTool & { type: "openrouter:datetime" })
+  | FusionServerToolOpenRouter
   | (ImageGenerationServerToolOpenRouter & {
     type: "openrouter:image_generation";
   })
@@ -278,6 +290,7 @@ export type ResponsesRequest = {
       | AutoRouterPlugin
       | ContextCompressionPlugin
       | FileParserPlugin
+      | FusionPlugin
       | ModerationPlugin
       | ParetoRouterPlugin
       | ResponseHealingPlugin
@@ -327,6 +340,7 @@ export type ResponsesRequest = {
       | ApplyPatchServerTool
       | CustomTool
       | (DatetimeServerTool & { type: "openrouter:datetime" })
+      | FusionServerToolOpenRouter
       | (ImageGenerationServerToolOpenRouter & {
         type: "openrouter:image_generation";
       })
@@ -356,6 +370,7 @@ export type ResponsesRequestPlugin$Outbound =
   | AutoRouterPlugin$Outbound
   | ContextCompressionPlugin$Outbound
   | FileParserPlugin$Outbound
+  | FusionPlugin$Outbound
   | ModerationPlugin$Outbound
   | ParetoRouterPlugin$Outbound
   | ResponseHealingPlugin$Outbound
@@ -369,6 +384,7 @@ export const ResponsesRequestPlugin$outboundSchema: z.ZodType<
   AutoRouterPlugin$outboundSchema,
   ContextCompressionPlugin$outboundSchema,
   FileParserPlugin$outboundSchema,
+  FusionPlugin$outboundSchema,
   ModerationPlugin$outboundSchema,
   ParetoRouterPlugin$outboundSchema,
   ResponseHealingPlugin$outboundSchema,
@@ -437,6 +453,7 @@ export type ResponsesRequestToolUnion$Outbound =
   | ApplyPatchServerTool$Outbound
   | CustomTool$Outbound
   | (DatetimeServerTool$Outbound & { type: "openrouter:datetime" })
+  | FusionServerToolOpenRouter$Outbound
   | (ImageGenerationServerToolOpenRouter$Outbound & {
     type: "openrouter:image_generation";
   })
@@ -468,6 +485,7 @@ export const ResponsesRequestToolUnion$outboundSchema: z.ZodType<
   DatetimeServerTool$outboundSchema.and(
     z.object({ type: z.literal("openrouter:datetime") }),
   ),
+  FusionServerToolOpenRouter$outboundSchema,
   ImageGenerationServerToolOpenRouter$outboundSchema.and(
     z.object({ type: z.literal("openrouter:image_generation") }),
   ),
@@ -508,6 +526,7 @@ export type ResponsesRequest$Outbound = {
       | AutoRouterPlugin$Outbound
       | ContextCompressionPlugin$Outbound
       | FileParserPlugin$Outbound
+      | FusionPlugin$Outbound
       | ModerationPlugin$Outbound
       | ParetoRouterPlugin$Outbound
       | ResponseHealingPlugin$Outbound
@@ -545,6 +564,7 @@ export type ResponsesRequest$Outbound = {
       | ApplyPatchServerTool$Outbound
       | CustomTool$Outbound
       | (DatetimeServerTool$Outbound & { type: "openrouter:datetime" })
+      | FusionServerToolOpenRouter$Outbound
       | (ImageGenerationServerToolOpenRouter$Outbound & {
         type: "openrouter:image_generation";
       })
@@ -586,6 +606,7 @@ export const ResponsesRequest$outboundSchema: z.ZodType<
       AutoRouterPlugin$outboundSchema,
       ContextCompressionPlugin$outboundSchema,
       FileParserPlugin$outboundSchema,
+      FusionPlugin$outboundSchema,
       ModerationPlugin$outboundSchema,
       ParetoRouterPlugin$outboundSchema,
       ResponseHealingPlugin$outboundSchema,
@@ -627,6 +648,7 @@ export const ResponsesRequest$outboundSchema: z.ZodType<
       DatetimeServerTool$outboundSchema.and(
         z.object({ type: z.literal("openrouter:datetime") }),
       ),
+      FusionServerToolOpenRouter$outboundSchema,
       ImageGenerationServerToolOpenRouter$outboundSchema.and(
         z.object({ type: z.literal("openrouter:image_generation") }),
       ),
