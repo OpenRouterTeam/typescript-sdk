@@ -122,6 +122,8 @@ export * from "./functioncallargsdoneevent.js";
 export * from "./functioncallitem.js";
 export * from "./functioncalloutputitem.js";
 export * from "./fusionplugin.js";
+export * from "./fusionservertoolconfig.js";
+export * from "./fusionservertoolopenrouter.js";
 export * from "./generationcontentdata.js";
 export * from "./generationcontentresponse.js";
 export * from "./generationresponse.js";
