@@ -10,9 +10,9 @@
 
 Sends a request for a model response for the given chat conversation. Supports both streaming and non-streaming modes.
 
-### Example Usage
+### Example Usage: guardrail-blocked
 
-<!-- UsageSnippet language="typescript" operationID="sendChatCompletionRequest" method="post" path="/chat/completions" -->
+<!-- UsageSnippet language="typescript" operationID="sendChatCompletionRequest" method="post" path="/chat/completions" example="guardrail-blocked" -->
 ```typescript
 import { OpenRouter } from "@openrouter/sdk";
 
@@ -25,9 +25,7 @@ const openRouter = new OpenRouter({
 
 async function run() {
   const result = await openRouter.chat.send({
-    xOpenRouterExperimentalMetadata: "enabled",
     chatRequest: {
-      maxTokens: 150,
       messages: [
         {
           content: "You are a helpful assistant.",
@@ -38,8 +36,6 @@ async function run() {
           role: "user",
         },
       ],
-      model: "openai/gpt-4",
-      temperature: 0.7,
     },
   });
 
@@ -68,9 +64,7 @@ const openRouter = new OpenRouterCore({
 
 async function run() {
   const res = await chatSend(openRouter, {
-    xOpenRouterExperimentalMetadata: "enabled",
     chatRequest: {
-      maxTokens: 150,
       messages: [
         {
           content: "You are a helpful assistant.",
@@ -81,8 +75,83 @@ async function run() {
           role: "user",
         },
       ],
-      model: "openai/gpt-4",
-      temperature: 0.7,
+    },
+  });
+  if (res.ok) {
+    const { value: result } = res;
+    console.log(result);
+  } else {
+    console.log("chatSend failed:", res.error);
+  }
+}
+
+run();
+```
+### Example Usage: insufficient-permissions
+
+<!-- UsageSnippet language="typescript" operationID="sendChatCompletionRequest" method="post" path="/chat/completions" example="insufficient-permissions" -->
+```typescript
+import { OpenRouter } from "@openrouter/sdk";
+
+const openRouter = new OpenRouter({
+  httpReferer: "<value>",
+  appTitle: "<value>",
+  appCategories: "<value>",
+  apiKey: process.env["OPENROUTER_API_KEY"] ?? "",
+});
+
+async function run() {
+  const result = await openRouter.chat.send({
+    chatRequest: {
+      messages: [
+        {
+          content: "You are a helpful assistant.",
+          role: "system",
+        },
+        {
+          content: "What is the capital of France?",
+          role: "user",
+        },
+      ],
+    },
+  });
+
+  console.log(result);
+}
+
+run();
+```
+
+### Standalone function
+
+The standalone function version of this method:
+
+```typescript
+import { OpenRouterCore } from "@openrouter/sdk/core.js";
+import { chatSend } from "@openrouter/sdk/funcs/chatSend.js";
+
+// Use `OpenRouterCore` for best tree-shaking performance.
+// You can create one instance of it to use across an application.
+const openRouter = new OpenRouterCore({
+  httpReferer: "<value>",
+  appTitle: "<value>",
+  appCategories: "<value>",
+  apiKey: process.env["OPENROUTER_API_KEY"] ?? "",
+});
+
+async function run() {
+  const res = await chatSend(openRouter, {
+    chatRequest: {
+      messages: [
+        {
+          content: "You are a helpful assistant.",
+          role: "system",
+        },
+        {
+          content: "What is the capital of France?",
+          role: "user",
+        },
+      ],
     },
   });
   if (res.ok) {
