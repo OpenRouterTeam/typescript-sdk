@@ -82,11 +82,6 @@ import {
   FormatJsonObjectConfig$outboundSchema,
 } from "./formatjsonobjectconfig.js";
 import {
-  FusionPlugin,
-  FusionPlugin$Outbound,
-  FusionPlugin$outboundSchema,
-} from "./fusionplugin.js";
-import {
   ImageConfig,
   ImageConfig$Outbound,
   ImageConfig$outboundSchema,
@@ -133,7 +128,6 @@ export type ChatRequestPlugin =
   | AutoRouterPlugin
   | ContextCompressionPlugin
   | FileParserPlugin
-  | FusionPlugin
   | ModerationPlugin
   | ParetoRouterPlugin
   | ResponseHealingPlugin
@@ -261,7 +255,6 @@ export type ChatRequest = {
       | AutoRouterPlugin
       | ContextCompressionPlugin
       | FileParserPlugin
-      | FusionPlugin
       | ModerationPlugin
       | ParetoRouterPlugin
       | ResponseHealingPlugin
@@ -353,7 +346,6 @@ export type ChatRequestPlugin$Outbound =
   | AutoRouterPlugin$Outbound
   | ContextCompressionPlugin$Outbound
   | FileParserPlugin$Outbound
-  | FusionPlugin$Outbound
   | ModerationPlugin$Outbound
   | ParetoRouterPlugin$Outbound
   | ResponseHealingPlugin$Outbound
@@ -367,7 +359,6 @@ export const ChatRequestPlugin$outboundSchema: z.ZodType<
   AutoRouterPlugin$outboundSchema,
   ContextCompressionPlugin$outboundSchema,
   FileParserPlugin$outboundSchema,
-  FusionPlugin$outboundSchema,
   ModerationPlugin$outboundSchema,
   ParetoRouterPlugin$outboundSchema,
   ResponseHealingPlugin$outboundSchema,
@@ -471,7 +462,6 @@ export type ChatRequest$Outbound = {
       | AutoRouterPlugin$Outbound
       | ContextCompressionPlugin$Outbound
       | FileParserPlugin$Outbound
-      | FusionPlugin$Outbound
       | ModerationPlugin$Outbound
       | ParetoRouterPlugin$Outbound
       | ResponseHealingPlugin$Outbound
@@ -527,7 +517,6 @@ export const ChatRequest$outboundSchema: z.ZodType<
       AutoRouterPlugin$outboundSchema,
       ContextCompressionPlugin$outboundSchema,
       FileParserPlugin$outboundSchema,
-      FusionPlugin$outboundSchema,
       ModerationPlugin$outboundSchema,
       ParetoRouterPlugin$outboundSchema,
       ResponseHealingPlugin$outboundSchema,

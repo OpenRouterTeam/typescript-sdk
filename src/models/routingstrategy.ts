@@ -16,7 +16,6 @@ export const RoutingStrategy = {
   Fallback: "fallback",
   Pareto: "pareto",
   Bodybuilder: "bodybuilder",
-  Fusion: "fusion",
 } as const;
 export type RoutingStrategy = OpenEnum<typeof RoutingStrategy>;
 
