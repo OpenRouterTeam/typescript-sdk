@@ -1,0 +1,15 @@
+# McpApprovalRequestItemType
+
+## Example Usage
+
+```typescript
+import { McpApprovalRequestItemType } from "@openrouter/sdk/models";
+
+let value: McpApprovalRequestItemType = "mcp_approval_request";
+```
+
+## Values
+
+```typescript
+"mcp_approval_request"
+```

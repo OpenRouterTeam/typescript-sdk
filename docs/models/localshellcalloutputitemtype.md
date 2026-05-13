@@ -1,0 +1,15 @@
+# LocalShellCallOutputItemType
+
+## Example Usage
+
+```typescript
+import { LocalShellCallOutputItemType } from "@openrouter/sdk/models";
+
+let value: LocalShellCallOutputItemType = "local_shell_call_output";
+```
+
+## Values
+
+```typescript
+"local_shell_call_output"
+```

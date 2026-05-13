@@ -1,0 +1,26 @@
+# LocalShellCallItemAction
+
+## Example Usage
+
+```typescript
+import { LocalShellCallItemAction } from "@openrouter/sdk/models";
+
+let value: LocalShellCallItemAction = {
+  command: [
+    "<value 1>",
+  ],
+  env: {},
+  type: "exec",
+};
+```
+
+## Fields
+
+| Field                                    | Type                                     | Required                                 | Description                              |
+| ---------------------------------------- | ---------------------------------------- | ---------------------------------------- | ---------------------------------------- |
+| `command`                                | *string*[]                               | :heavy_check_mark:                       | N/A                                      |
+| `env`                                    | Record<string, *string*>                 | :heavy_check_mark:                       | N/A                                      |
+| `timeoutMs`                              | *number*                                 | :heavy_minus_sign:                       | N/A                                      |
+| `type`                                   | [models.TypeExec](../models/typeexec.md) | :heavy_check_mark:                       | N/A                                      |
+| `user`                                   | *string*                                 | :heavy_minus_sign:                       | N/A                                      |
+| `workingDirectory`                       | *string*                                 | :heavy_minus_sign:                       | N/A                                      |

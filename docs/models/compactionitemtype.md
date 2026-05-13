@@ -1,0 +1,15 @@
+# CompactionItemType
+
+## Example Usage
+
+```typescript
+import { CompactionItemType } from "@openrouter/sdk/models";
+
+let value: CompactionItemType = "compaction";
+```
+
+## Values
+
+```typescript
+"compaction"
+```

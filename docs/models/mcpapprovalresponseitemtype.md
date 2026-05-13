@@ -1,0 +1,15 @@
+# McpApprovalResponseItemType
+
+## Example Usage
+
+```typescript
+import { McpApprovalResponseItemType } from "@openrouter/sdk/models";
+
+let value: McpApprovalResponseItemType = "mcp_approval_response";
+```
+
+## Values
+
+```typescript
+"mcp_approval_response"
+```
