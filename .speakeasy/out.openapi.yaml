@@ -9517,6 +9517,7 @@ components:
                 - Clarifai
                 - Cloudflare
                 - Cohere
+                - Crucible
                 - Crusoe
                 - DeepInfra
                 - DeepSeek
@@ -12407,6 +12408,7 @@ components:
         - Clarifai
         - Cloudflare
         - Cohere
+        - Crucible
         - Crusoe
         - DeepInfra
         - DeepSeek
@@ -12582,6 +12584,10 @@ components:
             nullable: true
           type: object
         crofai:
+          additionalProperties:
+            nullable: true
+          type: object
+        crucible:
           additionalProperties:
             nullable: true
           type: object
@@ -13169,6 +13175,7 @@ components:
             - Clarifai
             - Cloudflare
             - Cohere
+            - Crucible
             - Crusoe
             - DeepInfra
             - DeepSeek
