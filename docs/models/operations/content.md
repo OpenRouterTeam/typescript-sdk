@@ -23,3 +23,36 @@ const value: operations.ContentImageURL = {
 };
 ```
 
+### `operations.ContentInputAudio`
+
+```typescript
+const value: operations.ContentInputAudio = {
+  inputAudio: {
+    data: "data:audio/wav;base64,UklGRiQAAABXQVZFZm10IBAAAAA...",
+  },
+  type: "input_audio",
+};
+```
+
+### `operations.ContentInputVideo`
+
+```typescript
+const value: operations.ContentInputVideo = {
+  inputVideo: {
+    data: "data:video/mp4;base64,AAAAGGZ0eXBtcDQyAAAAAGlzb21tcDQy...",
+  },
+  type: "input_video",
+};
+```
+
+### `operations.ContentInputFile`
+
+```typescript
+const value: operations.ContentInputFile = {
+  inputFile: {
+    data: "data:application/pdf;base64,JVBERi0xLjQKJeLjz9MKMyAw...",
+  },
+  type: "input_file",
+};
+```
+
