@@ -1,0 +1,21 @@
+# RankingsDailyItem
+
+## Example Usage
+
+```typescript
+import { RankingsDailyItem } from "@openrouter/sdk/models";
+
+let value: RankingsDailyItem = {
+  date: "2026-05-11",
+  modelPermaslug: "openai/gpt-4o-2024-05-13",
+  totalTokens: "12345678",
+};
+```
+
+## Fields
+
+| Field                                                                                                                                                        | Type                                                                                                                                                         | Required                                                                                                                                                     | Description                                                                                                                                                  | Example                                                                                                                                                      |
+| ------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `date`                                                                                                                                                       | *string*                                                                                                                                                     | :heavy_check_mark:                                                                                                                                           | UTC calendar date the row is aggregated over (YYYY-MM-DD).                                                                                                   | 2026-05-11                                                                                                                                                   |
+| `modelPermaslug`                                                                                                                                             | *string*                                                                                                                                                     | :heavy_check_mark:                                                                                                                                           | Model permaslug (e.g. `openai/gpt-4o-2024-05-13`). The sentinel value `other` represents the per-day residue of all public models ranked outside the top 20. | openai/gpt-4o-2024-05-13                                                                                                                                     |
+| `totalTokens`                                                                                                                                                | *string*                                                                                                                                                     | :heavy_check_mark:                                                                                                                                           | Sum of `prompt_tokens + completion_tokens` for the day, returned as a decimal string so 64-bit values are not truncated.                                     | 12345678                                                                                                                                                     |
