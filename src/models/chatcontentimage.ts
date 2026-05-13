@@ -18,6 +18,7 @@ export const ChatContentImageDetail = {
   Auto: "auto",
   Low: "low",
   High: "high",
+  Original: "original",
 } as const;
 /**
  * Image detail level for vision models
