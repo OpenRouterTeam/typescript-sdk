@@ -8,6 +8,11 @@ import { remap as remap$ } from "../lib/primitives.js";
 import * as openEnums from "../types/enums.js";
 import { OpenEnum } from "../types/enums.js";
 import {
+  AnthropicCacheControlDirective,
+  AnthropicCacheControlDirective$Outbound,
+  AnthropicCacheControlDirective$outboundSchema,
+} from "./anthropiccachecontroldirective.js";
+import {
   ApplyPatchServerTool,
   ApplyPatchServerTool$Outbound,
   ApplyPatchServerTool$outboundSchema,
@@ -258,6 +263,10 @@ export type ResponsesRequestToolUnion =
  */
 export type ResponsesRequest = {
   background?: boolean | null | undefined;
+  /**
+   * Enable automatic prompt caching. When set, the system automatically applies cache breakpoints to the last cacheable block in the request. Currently supported for Anthropic Claude models.
+   */
+  cacheControl?: AnthropicCacheControlDirective | undefined;
   frequencyPenalty?: number | null | undefined;
   /**
    * Provider-specific image configuration options. Keys and values vary by model/provider. See https://openrouter.ai/docs/guides/overview/multimodal/image-generation for more details.
@@ -509,6 +518,7 @@ export function responsesRequestToolUnionToJSON(
 /** @internal */
 export type ResponsesRequest$Outbound = {
   background?: boolean | null | undefined;
+  cache_control?: AnthropicCacheControlDirective$Outbound | undefined;
   frequency_penalty?: number | null | undefined;
   image_config?: { [k: string]: ImageConfig$Outbound } | undefined;
   include?: Array<string> | null | undefined;
@@ -589,6 +599,7 @@ export const ResponsesRequest$outboundSchema: z.ZodType<
   ResponsesRequest
 > = z.object({
   background: z.nullable(z.boolean()).optional(),
+  cacheControl: AnthropicCacheControlDirective$outboundSchema.optional(),
   frequencyPenalty: z.nullable(z.number()).optional(),
   imageConfig: z.record(z.string(), ImageConfig$outboundSchema).optional(),
   include: z.nullable(z.array(ResponseIncludesEnum$outboundSchema)).optional(),
@@ -669,6 +680,7 @@ export const ResponsesRequest$outboundSchema: z.ZodType<
   user: z.string().optional(),
 }).transform((v) => {
   return remap$(v, {
+    cacheControl: "cache_control",
     frequencyPenalty: "frequency_penalty",
     imageConfig: "image_config",
     maxOutputTokens: "max_output_tokens",
