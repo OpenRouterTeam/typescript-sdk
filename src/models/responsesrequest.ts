@@ -8,6 +8,11 @@ import { remap as remap$ } from "../lib/primitives.js";
 import * as openEnums from "../types/enums.js";
 import { OpenEnum } from "../types/enums.js";
 import {
+  AnthropicCacheControlDirective,
+  AnthropicCacheControlDirective$Outbound,
+  AnthropicCacheControlDirective$outboundSchema,
+} from "./anthropiccachecontroldirective.js";
+import {
   ApplyPatchServerTool,
   ApplyPatchServerTool$Outbound,
   ApplyPatchServerTool$outboundSchema,
@@ -108,14 +113,14 @@ import {
   ModerationPlugin$outboundSchema,
 } from "./moderationplugin.js";
 import {
-  OpenAIResponsesToolChoiceUnion,
-  OpenAIResponsesToolChoiceUnion$Outbound,
-  OpenAIResponsesToolChoiceUnion$outboundSchema,
-} from "./openairesponsestoolchoiceunion.js";
-import {
   OpenAIResponsesTruncation,
   OpenAIResponsesTruncation$outboundSchema,
 } from "./openairesponsestruncation.js";
+import {
+  OpenResponsesToolChoiceUnion,
+  OpenResponsesToolChoiceUnion$Outbound,
+  OpenResponsesToolChoiceUnion$outboundSchema,
+} from "./openresponsestoolchoiceunion.js";
 import {
   OutputModalityEnum,
   OutputModalityEnum$outboundSchema,
@@ -258,6 +263,10 @@ export type ResponsesRequestToolUnion =
  */
 export type ResponsesRequest = {
   background?: boolean | null | undefined;
+  /**
+   * Enable automatic prompt caching. When set at the top level, the system automatically applies cache breakpoints to the last cacheable block in the request. Currently supported for Anthropic Claude models.
+   */
+  cacheControl?: AnthropicCacheControlDirective | undefined;
   frequencyPenalty?: number | null | undefined;
   /**
    * Provider-specific image configuration options. Keys and values vary by model/provider. See https://openrouter.ai/docs/guides/overview/multimodal/image-generation for more details.
@@ -322,7 +331,10 @@ export type ResponsesRequest = {
    * Text output configuration including format and verbosity
    */
   text?: TextExtendedConfig | undefined;
-  toolChoice?: OpenAIResponsesToolChoiceUnion | undefined;
+  /**
+   * Tool choice for the Responses endpoint. Accepts OpenAI Responses values plus the OpenRouter shorthand `{ type: <openrouter:* | shorthand> }` for forcing a server tool. The shorthand is normalized to `{ type: "function", name }` for downstream handling.
+   */
+  toolChoice?: OpenResponsesToolChoiceUnion | undefined;
   tools?:
     | Array<
       | ResponsesRequestToolFunction
@@ -509,6 +521,7 @@ export function responsesRequestToolUnionToJSON(
 /** @internal */
 export type ResponsesRequest$Outbound = {
   background?: boolean | null | undefined;
+  cache_control?: AnthropicCacheControlDirective$Outbound | undefined;
   frequency_penalty?: number | null | undefined;
   image_config?: { [k: string]: ImageConfig$Outbound } | undefined;
   include?: Array<string> | null | undefined;
@@ -546,7 +559,7 @@ export type ResponsesRequest$Outbound = {
   stream: boolean;
   temperature?: number | null | undefined;
   text?: TextExtendedConfig$Outbound | undefined;
-  tool_choice?: OpenAIResponsesToolChoiceUnion$Outbound | undefined;
+  tool_choice?: OpenResponsesToolChoiceUnion$Outbound | undefined;
   tools?:
     | Array<
       | ResponsesRequestToolFunction$Outbound
@@ -589,6 +602,7 @@ export const ResponsesRequest$outboundSchema: z.ZodType<
   ResponsesRequest
 > = z.object({
   background: z.nullable(z.boolean()).optional(),
+  cacheControl: AnthropicCacheControlDirective$outboundSchema.optional(),
   frequencyPenalty: z.nullable(z.number()).optional(),
   imageConfig: z.record(z.string(), ImageConfig$outboundSchema).optional(),
   include: z.nullable(z.array(ResponseIncludesEnum$outboundSchema)).optional(),
@@ -628,7 +642,7 @@ export const ResponsesRequest$outboundSchema: z.ZodType<
   stream: z.boolean().default(false),
   temperature: z.nullable(z.number()).optional(),
   text: TextExtendedConfig$outboundSchema.optional(),
-  toolChoice: OpenAIResponsesToolChoiceUnion$outboundSchema.optional(),
+  toolChoice: OpenResponsesToolChoiceUnion$outboundSchema.optional(),
   tools: z.array(
     z.union([
       z.lazy(() => ResponsesRequestToolFunction$outboundSchema),
@@ -669,6 +683,7 @@ export const ResponsesRequest$outboundSchema: z.ZodType<
   user: z.string().optional(),
 }).transform((v) => {
   return remap$(v, {
+    cacheControl: "cache_control",
     frequencyPenalty: "frequency_penalty",
     imageConfig: "image_config",
     maxOutputTokens: "max_output_tokens",
