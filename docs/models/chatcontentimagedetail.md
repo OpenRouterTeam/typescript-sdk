@@ -7,7 +7,7 @@ Image detail level for vision models
 ```typescript
 import { ChatContentImageDetail } from "@openrouter/sdk/models";
 
-let value: ChatContentImageDetail = "auto";
+let value: ChatContentImageDetail = "low";
 
 // Open enum: unrecognized values are captured as Unrecognized<string>
 ```
@@ -15,5 +15,5 @@ let value: ChatContentImageDetail = "auto";
 ## Values
 
 ```typescript
-"auto" | "low" | "high" | Unrecognized<string>
+"auto" | "low" | "high" | "original" | Unrecognized<string>
 ```
