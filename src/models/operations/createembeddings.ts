@@ -46,6 +46,35 @@ export const EncodingFormat = {
  */
 export type EncodingFormat = OpenEnum<typeof EncodingFormat>;
 
+export type FileT = {
+  fileData: string;
+  filename?: string | undefined;
+};
+
+export type ContentFile = {
+  file: FileT;
+  type: "file";
+};
+
+export type VideoUrl = {
+  url: string;
+};
+
+export type ContentVideoURL = {
+  type: "video_url";
+  videoUrl: VideoUrl;
+};
+
+export type InputAudio = {
+  data: string;
+  format?: string | undefined;
+};
+
+export type ContentInputAudio = {
+  inputAudio: InputAudio;
+  type: "input_audio";
+};
+
 export type ImageUrl = {
   url: string;
 };
@@ -60,10 +89,21 @@ export type ContentText = {
   type: "text";
 };
 
-export type Content = ContentText | ContentImageURL;
+export type Content =
+  | ContentText
+  | ContentImageURL
+  | ContentInputAudio
+  | ContentVideoURL
+  | ContentFile;
 
 export type Input = {
-  content: Array<ContentText | ContentImageURL>;
+  content: Array<
+    | ContentText
+    | ContentImageURL
+    | ContentInputAudio
+    | ContentVideoURL
+    | ContentFile
+  >;
 };
 
 /**
@@ -239,6 +279,131 @@ export const EncodingFormat$outboundSchema: z.ZodType<string, EncodingFormat> =
   openEnums.outboundSchema(EncodingFormat);
 
 /** @internal */
+export type FileT$Outbound = {
+  file_data: string;
+  filename?: string | undefined;
+};
+
+/** @internal */
+export const FileT$outboundSchema: z.ZodType<FileT$Outbound, FileT> = z.object({
+  fileData: z.string(),
+  filename: z.string().optional(),
+}).transform((v) => {
+  return remap$(v, {
+    fileData: "file_data",
+  });
+});
+
+export function fileToJSON(fileT: FileT): string {
+  return JSON.stringify(FileT$outboundSchema.parse(fileT));
+}
+
+/** @internal */
+export type ContentFile$Outbound = {
+  file: FileT$Outbound;
+  type: "file";
+};
+
+/** @internal */
+export const ContentFile$outboundSchema: z.ZodType<
+  ContentFile$Outbound,
+  ContentFile
+> = z.object({
+  file: z.lazy(() => FileT$outboundSchema),
+  type: z.literal("file"),
+});
+
+export function contentFileToJSON(contentFile: ContentFile): string {
+  return JSON.stringify(ContentFile$outboundSchema.parse(contentFile));
+}
+
+/** @internal */
+export type VideoUrl$Outbound = {
+  url: string;
+};
+
+/** @internal */
+export const VideoUrl$outboundSchema: z.ZodType<VideoUrl$Outbound, VideoUrl> = z
+  .object({
+    url: z.string(),
+  });
+
+export function videoUrlToJSON(videoUrl: VideoUrl): string {
+  return JSON.stringify(VideoUrl$outboundSchema.parse(videoUrl));
+}
+
+/** @internal */
+export type ContentVideoURL$Outbound = {
+  type: "video_url";
+  video_url: VideoUrl$Outbound;
+};
+
+/** @internal */
+export const ContentVideoURL$outboundSchema: z.ZodType<
+  ContentVideoURL$Outbound,
+  ContentVideoURL
+> = z.object({
+  type: z.literal("video_url"),
+  videoUrl: z.lazy(() => VideoUrl$outboundSchema),
+}).transform((v) => {
+  return remap$(v, {
+    videoUrl: "video_url",
+  });
+});
+
+export function contentVideoURLToJSON(
+  contentVideoURL: ContentVideoURL,
+): string {
+  return JSON.stringify(ContentVideoURL$outboundSchema.parse(contentVideoURL));
+}
+
+/** @internal */
+export type InputAudio$Outbound = {
+  data: string;
+  format?: string | undefined;
+};
+
+/** @internal */
+export const InputAudio$outboundSchema: z.ZodType<
+  InputAudio$Outbound,
+  InputAudio
+> = z.object({
+  data: z.string(),
+  format: z.string().optional(),
+});
+
+export function inputAudioToJSON(inputAudio: InputAudio): string {
+  return JSON.stringify(InputAudio$outboundSchema.parse(inputAudio));
+}
+
+/** @internal */
+export type ContentInputAudio$Outbound = {
+  input_audio: InputAudio$Outbound;
+  type: "input_audio";
+};
+
+/** @internal */
+export const ContentInputAudio$outboundSchema: z.ZodType<
+  ContentInputAudio$Outbound,
+  ContentInputAudio
+> = z.object({
+  inputAudio: z.lazy(() => InputAudio$outboundSchema),
+  type: z.literal("input_audio"),
+}).transform((v) => {
+  return remap$(v, {
+    inputAudio: "input_audio",
+  });
+});
+
+export function contentInputAudioToJSON(
+  contentInputAudio: ContentInputAudio,
+): string {
+  return JSON.stringify(
+    ContentInputAudio$outboundSchema.parse(contentInputAudio),
+  );
+}
+
+/** @internal */
 export type ImageUrl$Outbound = {
   url: string;
 };
@@ -298,13 +463,21 @@ export function contentTextToJSON(contentText: ContentText): string {
 }
 
 /** @internal */
-export type Content$Outbound = ContentText$Outbound | ContentImageURL$Outbound;
+export type Content$Outbound =
+  | ContentText$Outbound
+  | ContentImageURL$Outbound
+  | ContentInputAudio$Outbound
+  | ContentVideoURL$Outbound
+  | ContentFile$Outbound;
 
 /** @internal */
 export const Content$outboundSchema: z.ZodType<Content$Outbound, Content> = z
   .union([
     z.lazy(() => ContentText$outboundSchema),
     z.lazy(() => ContentImageURL$outboundSchema),
+    z.lazy(() => ContentInputAudio$outboundSchema),
+    z.lazy(() => ContentVideoURL$outboundSchema),
+    z.lazy(() => ContentFile$outboundSchema),
   ]);
 
 export function contentToJSON(content: Content): string {
@@ -313,7 +486,13 @@ export function contentToJSON(content: Content): string {
 
 /** @internal */
 export type Input$Outbound = {
-  content: Array<ContentText$Outbound | ContentImageURL$Outbound>;
+  content: Array<
+    | ContentText$Outbound
+    | ContentImageURL$Outbound
+    | ContentInputAudio$Outbound
+    | ContentVideoURL$Outbound
+    | ContentFile$Outbound
+  >;
 };
 
 /** @internal */
@@ -322,6 +501,9 @@ export const Input$outboundSchema: z.ZodType<Input$Outbound, Input> = z.object({
     z.union([
       z.lazy(() => ContentText$outboundSchema),
       z.lazy(() => ContentImageURL$outboundSchema),
+      z.lazy(() => ContentInputAudio$outboundSchema),
+      z.lazy(() => ContentVideoURL$outboundSchema),
+      z.lazy(() => ContentFile$outboundSchema),
     ]),
   ),
 });
