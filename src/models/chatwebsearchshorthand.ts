@@ -62,7 +62,7 @@ export type ChatWebSearchShorthand = {
   maxTotalResults?: number | undefined;
   parameters?: WebSearchConfig | undefined;
   /**
-   * How much context to retrieve per result. Defaults to medium (15000 chars). Applies to Exa and Parallel engines; ignored with native provider search and Firecrawl.
+   * How much context to retrieve per result. Applies to Exa and Parallel engines; ignored with native provider search and Firecrawl. For Exa, pins a fixed per-result character cap (low=5,000, medium=15,000, high=30,000); when omitted, Exa picks an adaptive size per query and document (typically ~2,000–4,000 characters per result). For Parallel, controls the total characters across all results; when omitted, Parallel uses its own default size.
    */
   searchContextSize?: SearchQualityLevel | undefined;
   type: ChatWebSearchShorthandType;
