@@ -1,0 +1,15 @@
+# TypeLocalShellCall
+
+## Example Usage
+
+```typescript
+import { TypeLocalShellCall } from "@openrouter/sdk/models";
+
+let value: TypeLocalShellCall = "local_shell_call";
+```
+
+## Values
+
+```typescript
+"local_shell_call"
+```
