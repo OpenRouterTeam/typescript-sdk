@@ -14785,6 +14785,8 @@ components:
             - '1:1'
             - '4:3'
             - '3:4'
+            - '3:2'
+            - '2:3'
             - '21:9'
             - '9:21'
           example: '16:9'
@@ -14988,6 +14990,8 @@ components:
               - '1:1'
               - '4:3'
               - '3:4'
+              - '3:2'
+              - '2:3'
               - '21:9'
               - '9:21'
             type: string
@@ -15027,30 +15031,38 @@ components:
             enum:
               - 480x480
               - 480x640
+              - 480x720
               - 480x854
               - 480x1120
               - 640x480
+              - 720x480
               - 720x720
               - 720x960
+              - 720x1080
               - 720x1280
               - 720x1680
               - 854x480
               - 960x720
+              - 1080x720
               - 1080x1080
               - 1080x1440
+              - 1080x1620
               - 1080x1920
               - 1080x2520
               - 1120x480
               - 1280x720
               - 1440x1080
+              - 1620x1080
               - 1680x720
               - 1920x1080
               - 2160x2160
               - 2160x2880
+              - 2160x3240
               - 2160x3840
               - 2160x5040
               - 2520x1080
               - 2880x2160
+              - 3240x2160
               - 3840x2160
               - 5040x2160
             type: string
@@ -21825,7 +21837,7 @@ paths:
                 generation_id: gen-xyz789
                 id: job-abc123
                 polling_url: /api/v1/videos/job-abc123
-                status: complete
+                status: completed
                 unsigned_urls:
                   - https://storage.example.com/video.mp4
                 usage:
