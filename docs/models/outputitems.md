@@ -160,6 +160,15 @@ const value: models.OutputFileSearchServerToolItem = {
 };
 ```
 
+### `models.OutputFusionServerToolItem`
+
+```typescript
+const value: models.OutputFusionServerToolItem = {
+  status: "completed",
+  type: "openrouter:fusion",
+};
+```
+
 ### `models.OutputImageGenerationServerToolItem`
 
 ```typescript
