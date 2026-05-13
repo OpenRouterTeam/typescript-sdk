@@ -1,19 +1,19 @@
 lockVersion: ""
 id: ""
 management:
-  docChecksum: 217fbf2baeca7ee03d97fb83dbf97736
+  docChecksum: cd997730769eb9a37887db93230edbbb
   docVersion: 1.0.0
   speakeasyVersion: 1.761.0
   generationVersion: 2.879.1
-  releaseVersion: 0.12.41
-  configChecksum: 0e9536a59b86ba0267aa468af31b7c56
+  releaseVersion: 0.12.42
+  configChecksum: 602c9507cdb8443e68531b667c829476
   repoURL: https://github.com/OpenRouterTeam/typescript-sdk.git
   installationURL: https://github.com/OpenRouterTeam/typescript-sdk
   published: true
 persistentEdits:
-  generation_id: 3555f12c-3cef-4348-b6f6-572e0ac065c2
-  pristine_commit_hash: 0b21cde7d5ff6a58a66373bcfa85371466792e38
-  pristine_tree_hash: 90ed41133de14e510fa5ec8022e2b3bbd4c57643
+  generation_id: d77acb99-d4ae-47f8-8b28-6069fbf085fd
+  pristine_commit_hash: 0064b0aae289b65c26b41e3b82b31842fc910a9a
+  pristine_tree_hash: 1d863846c0b53bf4fb847a2497e840d56464d74f
 features:
   typescript:
     acceptHeaders: 2.81.2
@@ -166,8 +166,8 @@ trackedFiles:
     pristine_git_object: 7b6e489fcc66054a8c1e7f4e8e13f1e11df6841e
   docs/models/aspectratio.md:
     id: c34f2cec8cd0
-    last_write_checksum: sha1:ae572e2d3e8541c1321c88b981634728e91dff4d
-    pristine_git_object: 9f23b600d2893df590028110d9e3c20fc1681785
+    last_write_checksum: sha1:afff7949b1d353ec2497664f3ea12b7a8a11da60
+    pristine_git_object: 71a6cb915f22c7ce2dd3c438998bc818dc05ffdf
     deleted: true
   docs/models/autorouterplugin.md:
     id: 96e009b23f15
@@ -4190,8 +4190,8 @@ trackedFiles:
     deleted: true
   docs/models/supportedaspectratio.md:
     id: c1b5ceb02e57
-    last_write_checksum: sha1:c5ed1d29d1f893896b88eb542138e00245686be2
-    pristine_git_object: 173648a8def335d9c999d51c330e5537530c652f
+    last_write_checksum: sha1:e4bbd87dec252e807d68908de281853c58529983
+    pristine_git_object: 8114332d5ad5d5bdae1fb866ecdf17d2da11f93f
     deleted: true
   docs/models/supportedframeimage.md:
     id: 9f2def3e8441
@@ -4205,8 +4205,8 @@ trackedFiles:
     deleted: true
   docs/models/supportedsize.md:
     id: 8e46a1057de1
-    last_write_checksum: sha1:84419b5fc7917caea0c0cc99e43153cf3cda59c2
-    pristine_git_object: 117b4c03e04cefe2f0d00ff51d4da24ebbb92ddd
+    last_write_checksum: sha1:ba470460d11152c5080466f93e43d8777a721fa8
+    pristine_git_object: fbe942a49c2b4d9cd1de22249d7ef8be39a58039
     deleted: true
   docs/models/syntax.md:
     id: b5f23261fcd5
@@ -4678,12 +4678,12 @@ trackedFiles:
     pristine_git_object: 410efafd6a7f50d91ccb87131fedbe0c3d47e15a
   jsr.json:
     id: 7f6ab7767282
-    last_write_checksum: sha1:a3cbad36d582536efca3ff8f92ae687be971b3d2
-    pristine_git_object: ebd4b27f928e2e1b59582a23e5687c76d60fb209
+    last_write_checksum: sha1:e8303dae396c0ae997e05275cd8b7097358337d5
+    pristine_git_object: 8ce66bb948aacee4bedeaafccd82c54073eb6b41
   package.json:
     id: 7030d0b2f71b
-    last_write_checksum: sha1:5d348bcc44d6ff5224a20f18392a5b6746134664
-    pristine_git_object: 28bcc82a96e631818f9a0fc36656ae63248afde9
+    last_write_checksum: sha1:26cd858784a25bd3a6444555c60cc6ee4c252b9f
+    pristine_git_object: 2839bcbb60237b515a98d739e8c74e840b7631c2
   src/core.ts:
     id: f431fdbcd144
     last_write_checksum: sha1:5aa66b0b6a5964f3eea7f3098c2eb3c0ee9c0131
@@ -4910,8 +4910,8 @@ trackedFiles:
     pristine_git_object: a187e58707bdb726ca2aff74941efe7493422d4e
   src/lib/config.ts:
     id: 320761608fb3
-    last_write_checksum: sha1:19570f68a22bf6de95310f9f0335910171f2baea
-    pristine_git_object: 342eac4c35375ce787bcfa5e69eebc3bd90c348c
+    last_write_checksum: sha1:918cce474a972bb039900d2dc11ff7dde5094f75
+    pristine_git_object: f944f05a89339fe9377c483500786405997fe2ea
   src/lib/dlv.ts:
     id: b1988214835a
     last_write_checksum: sha1:eaac763b22717206a6199104e0403ed17a4e2711
@@ -6458,8 +6458,8 @@ trackedFiles:
     pristine_git_object: e45d2a0bf920e3a81ae21cd758f165677489cebb
   src/models/videogenerationrequest.ts:
     id: e72ea2e4c5b3
-    last_write_checksum: sha1:501a1de7adeca3674c2a9ee703a4e71a5a66a932
-    pristine_git_object: 9e0aac16fb426bd73e84ee06ba3b9230af86a31c
+    last_write_checksum: sha1:98a0107b4fa0c9b0b4f0274b40f5fb999ab7d655
+    pristine_git_object: 91033600dec5fd135bc8fa8b69957f6a49c07d9b
   src/models/videogenerationresponse.ts:
     id: 0a96c6ee9eea
     last_write_checksum: sha1:73c631114adc4f4076585919439c06126aa6d55f
@@ -6470,8 +6470,8 @@ trackedFiles:
     pristine_git_object: edaa1b6b7d0735f2777f7f860d536f3b00eb5ec2
   src/models/videomodel.ts:
     id: 3761c095ec55
-    last_write_checksum: sha1:ddd6d1c4f28a1a678ac832b49b11002e326583aa
-    pristine_git_object: dc0e768f3e6ca8a3c4adfd927300cc664124d5f9
+    last_write_checksum: sha1:92c7aa7a34e37d73fd0f388bdfcc01d946d0391e
+    pristine_git_object: 2f220bbb775c1521b9387acc405f9a599492bd37
   src/models/videomodelslistresponse.ts:
     id: 3ddde944c8c8
     last_write_checksum: sha1:74c107d5bb0d3221dd465bfab762fecb88d815e3
@@ -7543,3 +7543,4 @@ examples:
         "529":
           application/json: {"error": {"code": 529, "message": "Provider returned error"}}
 examplesVersion: 1.0.2
+releaseNotes: "## Typescript SDK Changes:\n* `openrouter.videoGeneration.generate()`: \n  *  `request.videoGenerationRequest.aspectRatio` **Changed**\n* `openrouter.videoGeneration.listVideosModels()`:  `response.data[]` **Changed**\n"
