@@ -1,0 +1,15 @@
+# ShellCallOutputItemType
+
+## Example Usage
+
+```typescript
+import { ShellCallOutputItemType } from "@openrouter/sdk/models";
+
+let value: ShellCallOutputItemType = "shell_call_output";
+```
+
+## Values
+
+```typescript
+"shell_call_output"
+```
