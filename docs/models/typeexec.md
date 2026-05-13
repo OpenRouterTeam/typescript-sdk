@@ -1,0 +1,15 @@
+# TypeExec
+
+## Example Usage
+
+```typescript
+import { TypeExec } from "@openrouter/sdk/models";
+
+let value: TypeExec = "exec";
+```
+
+## Values
+
+```typescript
+"exec"
+```
