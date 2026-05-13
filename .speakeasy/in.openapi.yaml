@@ -280,6 +280,9 @@ components:
         - type
       type: object
     AnthropicCacheControlDirective:
+      description: >-
+        Enable automatic prompt caching. When set at the top level, the system automatically applies cache breakpoints
+        to the last cacheable block in the request. Currently supported for Anthropic Claude models.
       example:
         type: ephemeral
       properties:
@@ -3927,11 +3930,7 @@ components:
         temperature: 0.7
       properties:
         cache_control:
-          allOf:
-            - $ref: '#/components/schemas/AnthropicCacheControlDirective'
-            - description: >-
-                Enable automatic prompt caching. When set, the system automatically applies cache breakpoints to the
-                last cacheable block in the request. Currently supported for Anthropic Claude models.
+          $ref: '#/components/schemas/AnthropicCacheControlDirective'
         debug:
           $ref: '#/components/schemas/ChatDebugOptions'
         frequency_penalty:
@@ -14013,6 +14012,8 @@ components:
         background:
           nullable: true
           type: boolean
+        cache_control:
+          $ref: '#/components/schemas/AnthropicCacheControlDirective'
         frequency_penalty:
           format: double
           nullable: true
