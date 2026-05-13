@@ -46,6 +46,21 @@ export const EncodingFormat = {
  */
 export type EncodingFormat = OpenEnum<typeof EncodingFormat>;
 
+export type ContentInputFile = {
+  inputFile: models.MultimodalInputFile;
+  type: "input_file";
+};
+
+export type ContentVideoURL = {
+  type: "video_url";
+  videoUrl: models.MultimodalVideoUrl;
+};
+
+export type ContentInputAudio = {
+  inputAudio: models.MultimodalInputAudio;
+  type: "input_audio";
+};
+
 export type ImageUrl = {
   url: string;
 };
@@ -60,10 +75,21 @@ export type ContentText = {
   type: "text";
 };
 
-export type Content = ContentText | ContentImageURL;
+export type Content =
+  | ContentText
+  | ContentImageURL
+  | ContentInputAudio
+  | ContentVideoURL
+  | ContentInputFile;
 
 export type Input = {
-  content: Array<ContentText | ContentImageURL>;
+  content: Array<
+    | ContentText
+    | ContentImageURL
+    | ContentInputAudio
+    | ContentVideoURL
+    | ContentInputFile
+  >;
 };
 
 /**
@@ -239,6 +265,85 @@ export const EncodingFormat$outboundSchema: z.ZodType<string, EncodingFormat> =
   openEnums.outboundSchema(EncodingFormat);
 
 /** @internal */
+export type ContentInputFile$Outbound = {
+  input_file: models.MultimodalInputFile$Outbound;
+  type: "input_file";
+};
+
+/** @internal */
+export const ContentInputFile$outboundSchema: z.ZodType<
+  ContentInputFile$Outbound,
+  ContentInputFile
+> = z.object({
+  inputFile: models.MultimodalInputFile$outboundSchema,
+  type: z.literal("input_file"),
+}).transform((v) => {
+  return remap$(v, {
+    inputFile: "input_file",
+  });
+});
+
+export function contentInputFileToJSON(
+  contentInputFile: ContentInputFile,
+): string {
+  return JSON.stringify(
+    ContentInputFile$outboundSchema.parse(contentInputFile),
+  );
+}
+
+/** @internal */
+export type ContentVideoURL$Outbound = {
+  type: "video_url";
+  video_url: models.MultimodalVideoUrl$Outbound;
+};
+
+/** @internal */
+export const ContentVideoURL$outboundSchema: z.ZodType<
+  ContentVideoURL$Outbound,
+  ContentVideoURL
+> = z.object({
+  type: z.literal("video_url"),
+  videoUrl: models.MultimodalVideoUrl$outboundSchema,
+}).transform((v) => {
+  return remap$(v, {
+    videoUrl: "video_url",
+  });
+});
+
+export function contentVideoURLToJSON(
+  contentVideoURL: ContentVideoURL,
+): string {
+  return JSON.stringify(ContentVideoURL$outboundSchema.parse(contentVideoURL));
+}
+
+/** @internal */
+export type ContentInputAudio$Outbound = {
+  input_audio: models.MultimodalInputAudio$Outbound;
+  type: "input_audio";
+};
+
+/** @internal */
+export const ContentInputAudio$outboundSchema: z.ZodType<
+  ContentInputAudio$Outbound,
+  ContentInputAudio
+> = z.object({
+  inputAudio: models.MultimodalInputAudio$outboundSchema,
+  type: z.literal("input_audio"),
+}).transform((v) => {
+  return remap$(v, {
+    inputAudio: "input_audio",
+  });
+});
+
+export function contentInputAudioToJSON(
+  contentInputAudio: ContentInputAudio,
+): string {
+  return JSON.stringify(
+    ContentInputAudio$outboundSchema.parse(contentInputAudio),
+  );
+}
+
+/** @internal */
 export type ImageUrl$Outbound = {
   url: string;
 };
@@ -298,13 +403,21 @@ export function contentTextToJSON(contentText: ContentText): string {
 }
 
 /** @internal */
-export type Content$Outbound = ContentText$Outbound | ContentImageURL$Outbound;
+export type Content$Outbound =
+  | ContentText$Outbound
+  | ContentImageURL$Outbound
+  | ContentInputAudio$Outbound
+  | ContentVideoURL$Outbound
+  | ContentInputFile$Outbound;
 
 /** @internal */
 export const Content$outboundSchema: z.ZodType<Content$Outbound, Content> = z
   .union([
     z.lazy(() => ContentText$outboundSchema),
     z.lazy(() => ContentImageURL$outboundSchema),
+    z.lazy(() => ContentInputAudio$outboundSchema),
+    z.lazy(() => ContentVideoURL$outboundSchema),
+    z.lazy(() => ContentInputFile$outboundSchema),
   ]);
 
 export function contentToJSON(content: Content): string {
@@ -313,7 +426,13 @@ export function contentToJSON(content: Content): string {
 
 /** @internal */
 export type Input$Outbound = {
-  content: Array<ContentText$Outbound | ContentImageURL$Outbound>;
+  content: Array<
+    | ContentText$Outbound
+    | ContentImageURL$Outbound
+    | ContentInputAudio$Outbound
+    | ContentVideoURL$Outbound
+    | ContentInputFile$Outbound
+  >;
 };
 
 /** @internal */
@@ -322,6 +441,9 @@ export const Input$outboundSchema: z.ZodType<Input$Outbound, Input> = z.object({
     z.union([
       z.lazy(() => ContentText$outboundSchema),
       z.lazy(() => ContentImageURL$outboundSchema),
+      z.lazy(() => ContentInputAudio$outboundSchema),
+      z.lazy(() => ContentVideoURL$outboundSchema),
+      z.lazy(() => ContentInputFile$outboundSchema),
     ]),
   ),
 });
