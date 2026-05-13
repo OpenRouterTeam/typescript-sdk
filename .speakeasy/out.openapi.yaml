@@ -3947,6 +3947,7 @@ components:
                 auto-router: '#/components/schemas/AutoRouterPlugin'
                 context-compression: '#/components/schemas/ContextCompressionPlugin'
                 file-parser: '#/components/schemas/FileParserPlugin'
+                fusion: '#/components/schemas/FusionPlugin'
                 moderation: '#/components/schemas/ModerationPlugin'
                 pareto-router: '#/components/schemas/ParetoRouterPlugin'
                 response-healing: '#/components/schemas/ResponseHealingPlugin'
@@ -3960,6 +3961,7 @@ components:
               - $ref: '#/components/schemas/ResponseHealingPlugin'
               - $ref: '#/components/schemas/ContextCompressionPlugin'
               - $ref: '#/components/schemas/ParetoRouterPlugin'
+              - $ref: '#/components/schemas/FusionPlugin'
           type: array
         presence_penalty:
           description: Presence penalty (-2.0 to 2.0)
@@ -6248,6 +6250,41 @@ components:
         - type
         - name
         - parameters
+      type: object
+    FusionPlugin:
+      example:
+        analysis_models:
+          - ~anthropic/claude-opus-latest
+          - ~openai/gpt-latest
+        enabled: true
+        id: fusion
+        model: ~anthropic/claude-opus-latest
+      properties:
+        analysis_models:
+          description: >-
+            Slugs of models to run in parallel as the "expert panel" the judge analyzes. Each model receives the same user prompt with web_search + web_fetch enabled. Capped at 8 models to bound cost amplification. When omitted, defaults to the Quality preset from the /labs/fusion UI (~anthropic/claude-opus-latest, ~openai/gpt-latest).
+          example:
+            - ~anthropic/claude-opus-latest
+            - ~openai/gpt-latest
+          items:
+            type: string
+          maxItems: 8
+          minItems: 1
+          type: array
+        enabled:
+          description: Set to false to disable the fusion plugin for this request. Defaults to true.
+          type: boolean
+        id:
+          enum:
+            - fusion
+          type: string
+        model:
+          description: >-
+            Slug of the model that performs both the judge step (with web_search + web_fetch) and the final synthesis. When omitted, defaults to the first model in the Quality preset.
+          example: ~anthropic/claude-opus-latest
+          type: string
+      required:
+        - id
       type: object
     GenerationContentData:
       description: Stored prompt and completion content
@@ -8605,6 +8642,7 @@ components:
                 auto-router: '#/components/schemas/AutoRouterPlugin'
                 context-compression: '#/components/schemas/ContextCompressionPlugin'
                 file-parser: '#/components/schemas/FileParserPlugin'
+                fusion: '#/components/schemas/FusionPlugin'
                 moderation: '#/components/schemas/ModerationPlugin'
                 pareto-router: '#/components/schemas/ParetoRouterPlugin'
                 response-healing: '#/components/schemas/ResponseHealingPlugin'
@@ -8618,6 +8656,7 @@ components:
               - $ref: '#/components/schemas/ResponseHealingPlugin'
               - $ref: '#/components/schemas/ContextCompressionPlugin'
               - $ref: '#/components/schemas/ParetoRouterPlugin'
+              - $ref: '#/components/schemas/FusionPlugin'
           type: array
         provider:
           $ref: '#/components/schemas/ProviderPreferences'
@@ -10633,6 +10672,104 @@ components:
         name: get_weather
         status: completed
         type: function_call
+    OutputFusionServerToolItem:
+      description: An openrouter:fusion server tool output item
+      example:
+        id: st_tmp_abc123
+        status: completed
+        type: openrouter:fusion
+      properties:
+        analysis:
+          description: Structured analysis produced by the fusion judge model.
+          properties:
+            blind_spots:
+              items:
+                type: string
+              type: array
+            consensus:
+              items:
+                type: string
+              type: array
+            contradictions:
+              items:
+                properties:
+                  stances:
+                    items:
+                      properties:
+                        model:
+                          type: string
+                        stance:
+                          type: string
+                      required:
+                        - model
+                        - stance
+                      type: object
+                    type: array
+                  topic:
+                    type: string
+                required:
+                  - topic
+                  - stances
+                type: object
+              type: array
+            partial_coverage:
+              items:
+                properties:
+                  models:
+                    items:
+                      type: string
+                    type: array
+                  point:
+                    type: string
+                required:
+                  - models
+                  - point
+                type: object
+              type: array
+            unique_insights:
+              items:
+                properties:
+                  insight:
+                    type: string
+                  model:
+                    type: string
+                required:
+                  - model
+                  - insight
+                type: object
+              type: array
+          required:
+            - consensus
+            - contradictions
+            - partial_coverage
+            - unique_insights
+            - blind_spots
+          type: object
+        error:
+          description: Error message when the fusion run did not produce an analysis result.
+          type: string
+        id:
+          type: string
+        responses:
+          description: Slugs of the analysis models that produced a response in this fusion run.
+          items:
+            properties:
+              model:
+                type: string
+            required:
+              - model
+            type: object
+          type: array
+        status:
+          $ref: '#/components/schemas/ToolCallStatus'
+        type:
+          enum:
+            - openrouter:fusion
+          type: string
+      required:
+        - status
+        - type
+      type: object
     OutputImageGenerationCallItem:
       allOf:
         - $ref: '#/components/schemas/OutputItemImageGenerationCall'
@@ -10950,6 +11087,7 @@ components:
           openrouter:datetime: '#/components/schemas/OutputDatetimeItem'
           openrouter:experimental__search_models: '#/components/schemas/OutputSearchModelsServerToolItem'
           openrouter:file_search: '#/components/schemas/OutputFileSearchServerToolItem'
+          openrouter:fusion: '#/components/schemas/OutputFusionServerToolItem'
           openrouter:image_generation: '#/components/schemas/OutputImageGenerationServerToolItem'
           openrouter:mcp: '#/components/schemas/OutputMcpServerToolItem'
           openrouter:memory: '#/components/schemas/OutputMemoryServerToolItem'
@@ -10991,6 +11129,7 @@ components:
         - $ref: '#/components/schemas/OutputMemoryServerToolItem'
         - $ref: '#/components/schemas/OutputMcpServerToolItem'
         - $ref: '#/components/schemas/OutputSearchModelsServerToolItem'
+        - $ref: '#/components/schemas/OutputFusionServerToolItem'
         - $ref: '#/components/schemas/OutputCustomToolCallItem'
     OutputItemWebSearchCall:
       example:
@@ -13508,6 +13647,7 @@ components:
                 auto-router: '#/components/schemas/AutoRouterPlugin'
                 context-compression: '#/components/schemas/ContextCompressionPlugin'
                 file-parser: '#/components/schemas/FileParserPlugin'
+                fusion: '#/components/schemas/FusionPlugin'
                 moderation: '#/components/schemas/ModerationPlugin'
                 pareto-router: '#/components/schemas/ParetoRouterPlugin'
                 response-healing: '#/components/schemas/ResponseHealingPlugin'
@@ -13521,6 +13661,7 @@ components:
               - $ref: '#/components/schemas/ResponseHealingPlugin'
               - $ref: '#/components/schemas/ContextCompressionPlugin'
               - $ref: '#/components/schemas/ParetoRouterPlugin'
+              - $ref: '#/components/schemas/FusionPlugin'
           type: array
         presence_penalty:
           format: double
@@ -13692,6 +13833,7 @@ components:
         - fallback
         - pareto
         - bodybuilder
+        - fusion
       example: direct
       type: string
       x-speakeasy-unknown-values: allow
