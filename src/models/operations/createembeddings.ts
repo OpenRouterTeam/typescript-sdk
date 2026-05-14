@@ -60,10 +60,21 @@ export type ContentText = {
   type: "text";
 };
 
-export type Content = ContentText | ContentImageURL;
+export type Content =
+  | ContentText
+  | ContentImageURL
+  | models.ContentPartInputAudio
+  | models.ContentPartInputVideo
+  | models.ContentPartInputFile;
 
 export type Input = {
-  content: Array<ContentText | ContentImageURL>;
+  content: Array<
+    | ContentText
+    | ContentImageURL
+    | models.ContentPartInputAudio
+    | models.ContentPartInputVideo
+    | models.ContentPartInputFile
+  >;
 };
 
 /**
@@ -298,13 +309,21 @@ export function contentTextToJSON(contentText: ContentText): string {
 }
 
 /** @internal */
-export type Content$Outbound = ContentText$Outbound | ContentImageURL$Outbound;
+export type Content$Outbound =
+  | ContentText$Outbound
+  | ContentImageURL$Outbound
+  | models.ContentPartInputAudio$Outbound
+  | models.ContentPartInputVideo$Outbound
+  | models.ContentPartInputFile$Outbound;
 
 /** @internal */
 export const Content$outboundSchema: z.ZodType<Content$Outbound, Content> = z
   .union([
     z.lazy(() => ContentText$outboundSchema),
     z.lazy(() => ContentImageURL$outboundSchema),
+    models.ContentPartInputAudio$outboundSchema,
+    models.ContentPartInputVideo$outboundSchema,
+    models.ContentPartInputFile$outboundSchema,
   ]);
 
 export function contentToJSON(content: Content): string {
@@ -313,7 +332,13 @@ export function contentToJSON(content: Content): string {
 
 /** @internal */
 export type Input$Outbound = {
-  content: Array<ContentText$Outbound | ContentImageURL$Outbound>;
+  content: Array<
+    | ContentText$Outbound
+    | ContentImageURL$Outbound
+    | models.ContentPartInputAudio$Outbound
+    | models.ContentPartInputVideo$Outbound
+    | models.ContentPartInputFile$Outbound
+  >;
 };
 
 /** @internal */
@@ -322,6 +347,9 @@ export const Input$outboundSchema: z.ZodType<Input$Outbound, Input> = z.object({
     z.union([
       z.lazy(() => ContentText$outboundSchema),
       z.lazy(() => ContentImageURL$outboundSchema),
+      models.ContentPartInputAudio$outboundSchema,
+      models.ContentPartInputVideo$outboundSchema,
+      models.ContentPartInputFile$outboundSchema,
     ]),
   ),
 });
