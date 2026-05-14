@@ -17107,13 +17107,55 @@ paths:
         '403':
           content:
             application/json:
-              example:
-                error:
-                  code: 403
-                  message: Only management keys can perform this operation
+              examples:
+                guardrail-blocked:
+                  summary: Guardrail blocked the request
+                  value:
+                    error:
+                      code: 403
+                      message: 'Request blocked: prompt injection patterns detected'
+                      metadata:
+                        patterns:
+                          - ignore all previous instructions
+                    openrouter_metadata:
+                      attempt: 1
+                      endpoints:
+                        available:
+                          - model: openai/gpt-4o
+                            provider: OpenAI
+                            selected: false
+                        total: 1
+                      is_byok: false
+                      pipeline:
+                        - data:
+                            action: blocked
+                            detected: true
+                            engines:
+                              - regex
+                            patterns:
+                              - ignore all previous instructions
+                          guardrail_id: grd_abc123
+                          guardrail_scope: api-key
+                          name: regex_pi_detection
+                          summary: 'Blocked: prompt injection detected (1 pattern matched)'
+                          type: guardrail
+                      region: iad
+                      requested: openai/gpt-4o
+                      strategy: direct
+                      summary: available=1
+                insufficient-permissions:
+                  summary: Insufficient permissions
+                  value:
+                    error:
+                      code: 403
+                      message: Only management keys can perform this operation
               schema:
                 $ref: '#/components/schemas/ForbiddenResponse'
-          description: Forbidden - Authentication successful but insufficient permissions
+          description: >-
+            Forbidden - Authentication successful but insufficient permissions, or a guardrail blocked the request. When
+            guardrails block and the `X-OpenRouter-Experimental-Metadata: enabled` header is present, the response
+            includes `openrouter_metadata` with full routing context and a `pipeline` array containing guardrail stage
+            details.
         '404':
           content:
             application/json:
@@ -20778,14 +20820,55 @@ paths:
         '403':
           content:
             application/json:
-              example:
-                error:
-                  message: Permission denied
-                  type: permission_error
-                type: error
+              examples:
+                guardrail-blocked:
+                  summary: Guardrail blocked the request
+                  value:
+                    error:
+                      code: 403
+                      message: 'Request blocked: prompt injection patterns detected'
+                      metadata:
+                        patterns:
+                          - ignore all previous instructions
+                    openrouter_metadata:
+                      attempt: 1
+                      endpoints:
+                        available:
+                          - model: openai/gpt-4o
+                            provider: OpenAI
+                            selected: false
+                        total: 1
+                      is_byok: false
+                      pipeline:
+                        - data:
+                            action: blocked
+                            detected: true
+                            engines:
+                              - regex
+                            patterns:
+                              - ignore all previous instructions
+                          guardrail_id: grd_abc123
+                          guardrail_scope: api-key
+                          name: regex_pi_detection
+                          summary: 'Blocked: prompt injection detected (1 pattern matched)'
+                          type: guardrail
+                      region: iad
+                      requested: openai/gpt-4o
+                      strategy: direct
+                      summary: available=1
+                insufficient-permissions:
+                  summary: Insufficient permissions
+                  value:
+                    error:
+                      code: 403
+                      message: Only management keys can perform this operation
               schema:
-                $ref: '#/components/schemas/MessagesErrorResponse'
-          description: Permission denied error
+                $ref: '#/components/schemas/ForbiddenResponse'
+          description: >-
+            Forbidden - Authentication successful but insufficient permissions, or a guardrail blocked the request. When
+            guardrails block and the `X-OpenRouter-Experimental-Metadata: enabled` header is present, the response
+            includes `openrouter_metadata` with full routing context and a `pipeline` array containing guardrail stage
+            details.
         '404':
           content:
             application/json:
@@ -22311,6 +22394,58 @@ paths:
               schema:
                 $ref: '#/components/schemas/PaymentRequiredResponse'
           description: Payment Required - Insufficient credits or quota to complete request
+        '403':
+          content:
+            application/json:
+              examples:
+                guardrail-blocked:
+                  summary: Guardrail blocked the request
+                  value:
+                    error:
+                      code: 403
+                      message: 'Request blocked: prompt injection patterns detected'
+                      metadata:
+                        patterns:
+                          - ignore all previous instructions
+                    openrouter_metadata:
+                      attempt: 1
+                      endpoints:
+                        available:
+                          - model: openai/gpt-4o
+                            provider: OpenAI
+                            selected: false
+                        total: 1
+                      is_byok: false
+                      pipeline:
+                        - data:
+                            action: blocked
+                            detected: true
+                            engines:
+                              - regex
+                            patterns:
+                              - ignore all previous instructions
+                          guardrail_id: grd_abc123
+                          guardrail_scope: api-key
+                          name: regex_pi_detection
+                          summary: 'Blocked: prompt injection detected (1 pattern matched)'
+                          type: guardrail
+                      region: iad
+                      requested: openai/gpt-4o
+                      strategy: direct
+                      summary: available=1
+                insufficient-permissions:
+                  summary: Insufficient permissions
+                  value:
+                    error:
+                      code: 403
+                      message: Only management keys can perform this operation
+              schema:
+                $ref: '#/components/schemas/ForbiddenResponse'
+          description: >-
+            Forbidden - Authentication successful but insufficient permissions, or a guardrail blocked the request. When
+            guardrails block and the `X-OpenRouter-Experimental-Metadata: enabled` header is present, the response
+            includes `openrouter_metadata` with full routing context and a `pipeline` array containing guardrail stage
+            details.
         '404':
           content:
             application/json:
