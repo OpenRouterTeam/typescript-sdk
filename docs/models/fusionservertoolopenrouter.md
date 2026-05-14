@@ -1,6 +1,6 @@
 # FusionServerToolOpenRouter
 
-OpenRouter built-in server tool: fans out the user prompt to a panel of analysis models, then asks a judge model to summarize their collective output as structured JSON the outer model can synthesize from.
+OpenRouter built-in server tool: each panel model independently researches the user prompt with web search and web fetch, then a judge synthesizes their collective output as structured analysis JSON the outer model can use to write the final answer.
 
 ## Example Usage
 
