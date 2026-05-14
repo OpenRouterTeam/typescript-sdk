@@ -79,6 +79,7 @@ export * from "./conflictresponseerrordata.js";
 export * from "./contentfilteraction.js";
 export * from "./contentfilterbuiltinaction.js";
 export * from "./contentfilterbuiltinentry.js";
+export * from "./contentfilterbuiltinentryinput.js";
 export * from "./contentfilterbuiltinslug.js";
 export * from "./contentfilterentry.js";
 export * from "./contentpartaddedevent.js";
