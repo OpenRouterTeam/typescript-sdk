@@ -41,7 +41,6 @@ let value: ProviderOptions = {};
 | `cloudflare`          | Record<string, *any*> | :heavy_minus_sign:    | N/A                   |
 | `cohere`              | Record<string, *any*> | :heavy_minus_sign:    | N/A                   |
 | `crofai`              | Record<string, *any*> | :heavy_minus_sign:    | N/A                   |
-| `crucible`            | Record<string, *any*> | :heavy_minus_sign:    | N/A                   |
 | `crusoe`              | Record<string, *any*> | :heavy_minus_sign:    | N/A                   |
 | `deepinfra`           | Record<string, *any*> | :heavy_minus_sign:    | N/A                   |
 | `deepseek`            | Record<string, *any*> | :heavy_minus_sign:    | N/A                   |
