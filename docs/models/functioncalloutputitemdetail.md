@@ -5,7 +5,7 @@
 ```typescript
 import { FunctionCallOutputItemDetail } from "@openrouter/sdk/models";
 
-let value: FunctionCallOutputItemDetail = "auto";
+let value: FunctionCallOutputItemDetail = "high";
 
 // Open enum: unrecognized values are captured as Unrecognized<string>
 ```
@@ -13,5 +13,5 @@ let value: FunctionCallOutputItemDetail = "auto";
 ## Values
 
 ```typescript
-"auto" | "high" | "low" | Unrecognized<string>
+"auto" | "high" | "low" | "original" | Unrecognized<string>
 ```
