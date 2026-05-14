@@ -7453,6 +7453,7 @@ components:
             - auto
             - high
             - low
+            - original
           type: string
           x-speakeasy-unknown-values: allow
         image_url:
