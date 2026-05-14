@@ -140,6 +140,62 @@ components:
         output_index: 0
         sequence_number: 5
         type: response.output_text.annotation.added
+    AnthropicAdvisorMessageUsageIteration:
+      allOf:
+        - $ref: '#/components/schemas/AnthropicBaseUsageIteration'
+        - properties:
+            model:
+              type: string
+            type:
+              enum:
+                - advisor_message
+              type: string
+          required:
+            - type
+            - model
+          type: object
+      example:
+        cache_creation: null
+        cache_creation_input_tokens: 0
+        cache_read_input_tokens: 0
+        input_tokens: 823
+        model: claude-opus-4-6
+        output_tokens: 1612
+        type: advisor_message
+    AnthropicAdvisorToolResult:
+      example:
+        content:
+          text: Advisor response text
+          type: advisor_result
+        tool_use_id: srvtoolu_01abc
+        type: advisor_tool_result
+      properties:
+        content:
+          additionalProperties:
+            nullable: true
+          type: object
+        tool_use_id:
+          type: string
+        type:
+          enum:
+            - advisor_tool_result
+          type: string
+      required:
+        - type
+        - tool_use_id
+        - content
+      type: object
+    AnthropicAllowedCallers:
+      example:
+        - direct
+      items:
+        enum:
+          - direct
+          - code_execution_20250825
+          - code_execution_20260120
+        type: string
+        x-speakeasy-unknown-values: allow
+      type: array
     AnthropicBase64ImageSource:
       example:
         data: /9j/4AAQ...
@@ -1157,18 +1213,6 @@ components:
       example: unavailable
       type: string
       x-speakeasy-unknown-values: allow
-    AnthropicServerToolName:
-      enum:
-        - web_search
-        - web_fetch
-        - code_execution
-        - bash_code_execution
-        - text_editor_code_execution
-        - tool_search_tool_regex
-        - tool_search_tool_bm25
-      example: web_search
-      type: string
-      x-speakeasy-unknown-values: allow
     AnthropicServerToolUsage:
       example:
         web_fetch_requests: 0
@@ -1182,34 +1226,6 @@ components:
       required:
         - web_search_requests
         - web_fetch_requests
-      type: object
-    AnthropicServerToolUseBlock:
-      example:
-        caller:
-          type: direct
-        id: srvtoolu_01abc
-        input:
-          query: latest news
-        name: web_search
-        type: server_tool_use
-      properties:
-        caller:
-          $ref: '#/components/schemas/AnthropicCaller'
-        id:
-          type: string
-        input:
-          nullable: true
-        name:
-          $ref: '#/components/schemas/AnthropicServerToolName'
-        type:
-          enum:
-            - server_tool_use
-          type: string
-      required:
-        - type
-        - id
-        - caller
-        - name
       type: object
     AnthropicServiceTier:
       enum:
@@ -1756,6 +1772,7 @@ components:
       anyOf:
         - $ref: '#/components/schemas/AnthropicCompactionUsageIteration'
         - $ref: '#/components/schemas/AnthropicMessageUsageIteration'
+        - $ref: '#/components/schemas/AnthropicAdvisorMessageUsageIteration'
         - $ref: '#/components/schemas/AnthropicUnknownUsageIteration'
       example:
         cache_creation: null
@@ -8408,6 +8425,31 @@ components:
         - assigned_by
         - created_at
       type: object
+    MessagesAdvisorToolResultBlock:
+      description: >-
+        Advisor tool result from a prior assistant turn, replayed back to the model on the next turn. Mirrors the block Anthropic returns in assistant content when the `advisor_20260301` tool runs.
+      example:
+        content:
+          text: Advisor response text
+          type: advisor_result
+        tool_use_id: srvtoolu_01abc
+        type: advisor_tool_result
+      properties:
+        content:
+          additionalProperties:
+            nullable: true
+          type: object
+        tool_use_id:
+          type: string
+        type:
+          enum:
+            - advisor_tool_result
+          type: string
+      required:
+        - type
+        - tool_use_id
+        - content
+      type: object
     MessagesContentBlockDeltaEvent:
       description: Event sent when content is added to a content block
       example:
@@ -8525,7 +8567,7 @@ components:
             - $ref: '#/components/schemas/AnthropicToolUseBlock'
             - $ref: '#/components/schemas/AnthropicThinkingBlock'
             - $ref: '#/components/schemas/AnthropicRedactedThinkingBlock'
-            - $ref: '#/components/schemas/AnthropicServerToolUseBlock'
+            - $ref: '#/components/schemas/ORAnthropicServerToolUseBlock'
             - $ref: '#/components/schemas/AnthropicWebSearchToolResult'
             - $ref: '#/components/schemas/AnthropicWebFetchToolResult'
             - $ref: '#/components/schemas/AnthropicCodeExecutionToolResult'
@@ -8534,6 +8576,7 @@ components:
             - $ref: '#/components/schemas/AnthropicToolSearchToolResult'
             - $ref: '#/components/schemas/AnthropicContainerUpload'
             - $ref: '#/components/schemas/AnthropicCompactionBlock'
+            - $ref: '#/components/schemas/AnthropicAdvisorToolResult'
             - properties:
                 content:
                   nullable: true
@@ -8802,7 +8845,7 @@ components:
                       input:
                         nullable: true
                       name:
-                        $ref: '#/components/schemas/AnthropicServerToolName'
+                        type: string
                       type:
                         enum:
                           - server_tool_use
@@ -8864,6 +8907,7 @@ components:
                       - type
                       - content
                     type: object
+                  - $ref: '#/components/schemas/MessagesAdvisorToolResultBlock'
               type: array
         role:
           enum:
@@ -9292,14 +9336,7 @@ components:
                 type: object
               - properties:
                   allowed_callers:
-                    items:
-                      enum:
-                        - direct
-                        - code_execution_20250825
-                        - code_execution_20260120
-                      type: string
-                      x-speakeasy-unknown-values: allow
-                    type: array
+                    $ref: '#/components/schemas/AnthropicAllowedCallers'
                   allowed_domains:
                     items:
                       type: string
@@ -9328,6 +9365,34 @@ components:
                 required:
                   - type
                   - name
+                type: object
+              - properties:
+                  allowed_callers:
+                    $ref: '#/components/schemas/AnthropicAllowedCallers'
+                  cache_control:
+                    $ref: '#/components/schemas/AnthropicCacheControlDirective'
+                  caching:
+                    allOf:
+                      - $ref: '#/components/schemas/AnthropicCacheControlDirective'
+                      - nullable: true
+                  defer_loading:
+                    type: boolean
+                  max_uses:
+                    type: integer
+                  model:
+                    type: string
+                  name:
+                    enum:
+                      - advisor
+                    type: string
+                  type:
+                    enum:
+                      - advisor_20260301
+                    type: string
+                required:
+                  - type
+                  - name
+                  - model
                 type: object
               - $ref: '#/components/schemas/DatetimeServerTool'
               - $ref: '#/components/schemas/ImageGenerationServerTool_OpenRouter'
@@ -10771,12 +10836,13 @@ components:
     ORAnthropicContentBlock:
       discriminator:
         mapping:
+          advisor_tool_result: '#/components/schemas/AnthropicAdvisorToolResult'
           bash_code_execution_tool_result: '#/components/schemas/AnthropicBashCodeExecutionToolResult'
           code_execution_tool_result: '#/components/schemas/AnthropicCodeExecutionToolResult'
           compaction: '#/components/schemas/AnthropicCompactionBlock'
           container_upload: '#/components/schemas/AnthropicContainerUpload'
           redacted_thinking: '#/components/schemas/AnthropicRedactedThinkingBlock'
-          server_tool_use: '#/components/schemas/AnthropicServerToolUseBlock'
+          server_tool_use: '#/components/schemas/ORAnthropicServerToolUseBlock'
           text: '#/components/schemas/AnthropicTextBlock'
           text_editor_code_execution_tool_result: '#/components/schemas/AnthropicTextEditorCodeExecutionToolResult'
           thinking: '#/components/schemas/AnthropicThinkingBlock'
@@ -10794,7 +10860,7 @@ components:
         - $ref: '#/components/schemas/AnthropicToolUseBlock'
         - $ref: '#/components/schemas/AnthropicThinkingBlock'
         - $ref: '#/components/schemas/AnthropicRedactedThinkingBlock'
-        - $ref: '#/components/schemas/AnthropicServerToolUseBlock'
+        - $ref: '#/components/schemas/ORAnthropicServerToolUseBlock'
         - $ref: '#/components/schemas/AnthropicWebSearchToolResult'
         - $ref: '#/components/schemas/AnthropicWebFetchToolResult'
         - $ref: '#/components/schemas/AnthropicCodeExecutionToolResult'
@@ -10803,6 +10869,45 @@ components:
         - $ref: '#/components/schemas/AnthropicToolSearchToolResult'
         - $ref: '#/components/schemas/AnthropicContainerUpload'
         - $ref: '#/components/schemas/AnthropicCompactionBlock'
+        - $ref: '#/components/schemas/AnthropicAdvisorToolResult'
+    ORAnthropicNullableCaller:
+      discriminator:
+        mapping:
+          code_execution_20250825: '#/components/schemas/AnthropicCodeExecution20250825Caller'
+          code_execution_20260120: '#/components/schemas/AnthropicCodeExecution20260120Caller'
+          direct: '#/components/schemas/AnthropicDirectCaller'
+        propertyName: type
+      example: null
+      oneOf:
+        - $ref: '#/components/schemas/AnthropicDirectCaller'
+        - $ref: '#/components/schemas/AnthropicCodeExecution20250825Caller'
+        - $ref: '#/components/schemas/AnthropicCodeExecution20260120Caller'
+        - nullable: true
+    ORAnthropicServerToolUseBlock:
+      example:
+        caller: null
+        id: srvtoolu_01abc
+        input: {}
+        name: advisor
+        type: server_tool_use
+      properties:
+        caller:
+          $ref: '#/components/schemas/ORAnthropicNullableCaller'
+        id:
+          type: string
+        input:
+          nullable: true
+        name:
+          type: string
+        type:
+          enum:
+            - server_tool_use
+          type: string
+      required:
+        - type
+        - id
+        - name
+      type: object
     ORAnthropicStopReason:
       enum:
         - end_turn
