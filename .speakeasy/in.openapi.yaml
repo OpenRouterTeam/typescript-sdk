@@ -7421,6 +7421,7 @@ components:
             - auto
             - high
             - low
+            - original
           type: string
         image_url:
           nullable: true
