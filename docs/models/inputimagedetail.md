@@ -5,7 +5,7 @@
 ```typescript
 import { InputImageDetail } from "@openrouter/sdk/models";
 
-let value: InputImageDetail = "auto";
+let value: InputImageDetail = "high";
 
 // Open enum: unrecognized values are captured as Unrecognized<string>
 ```
@@ -13,5 +13,5 @@ let value: InputImageDetail = "auto";
 ## Values
 
 ```typescript
-"auto" | "high" | "low" | Unrecognized<string>
+"auto" | "high" | "low" | "original" | Unrecognized<string>
 ```
