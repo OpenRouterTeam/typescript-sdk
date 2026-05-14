@@ -1,0 +1,17 @@
+# Region
+
+## Example Usage
+
+```typescript
+import { Region } from "@openrouter/sdk/models";
+
+let value: Region = "us";
+
+// Open enum: unrecognized values are captured as Unrecognized<string>
+```
+
+## Values
+
+```typescript
+"us" | "eu" | Unrecognized<string>
+```
