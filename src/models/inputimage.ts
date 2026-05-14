@@ -15,6 +15,7 @@ export const InputImageDetail = {
   Auto: "auto",
   High: "high",
   Low: "low",
+  Original: "original",
 } as const;
 export type InputImageDetail = OpenEnum<typeof InputImageDetail>;
 
