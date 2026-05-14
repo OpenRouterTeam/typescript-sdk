@@ -44,6 +44,17 @@ export type Analysis = {
   uniqueInsights: Array<UniqueInsight>;
 };
 
+export type FailedModel = {
+  /**
+   * Error message describing why the model failed.
+   */
+  error: string;
+  /**
+   * Slug of the analysis model that failed.
+   */
+  model: string;
+};
+
 export type ResponseT = {
   model: string;
 };
@@ -60,6 +71,10 @@ export type OutputFusionServerToolItem = {
    * Error message when the fusion run did not produce an analysis result.
    */
   error?: string | undefined;
+  /**
+   * Models that were requested as part of the analysis panel but did not produce a response. Present when at least one requested analysis model failed to respond. The fusion result is still usable but was produced from a degraded panel.
+   */
+  failedModels?: Array<FailedModel> | undefined;
   id?: string | undefined;
   /**
    * Slugs of the analysis models that produced a response in this fusion run.
@@ -164,6 +179,23 @@ export function analysisFromJSON(
 }
 
 /** @internal */
+export const FailedModel$inboundSchema: z.ZodType<FailedModel, unknown> = z
+  .object({
+    error: z.string(),
+    model: z.string(),
+  });
+
+export function failedModelFromJSON(
+  jsonString: string,
+): SafeParseResult<FailedModel, SDKValidationError> {
+  return safeParse(
+    jsonString,
+    (x) => FailedModel$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'FailedModel' from JSON`,
+  );
+}
+
+/** @internal */
 export const ResponseT$inboundSchema: z.ZodType<ResponseT, unknown> = z.object({
   model: z.string(),
 });
@@ -185,10 +217,15 @@ export const OutputFusionServerToolItem$inboundSchema: z.ZodType<
 > = z.object({
   analysis: z.lazy(() => Analysis$inboundSchema).optional(),
   error: z.string().optional(),
+  failed_models: z.array(z.lazy(() => FailedModel$inboundSchema)).optional(),
   id: z.string().optional(),
   responses: z.array(z.lazy(() => ResponseT$inboundSchema)).optional(),
   status: ToolCallStatus$inboundSchema,
   type: z.literal("openrouter:fusion"),
+}).transform((v) => {
+  return remap$(v, {
+    "failed_models": "failedModels",
+  });
 });
 
 export function outputFusionServerToolItemFromJSON(
