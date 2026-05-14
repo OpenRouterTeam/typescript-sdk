@@ -153,14 +153,6 @@ const value: models.DatetimeServerTool = {
 };
 ```
 
-### `models.FusionServerToolOpenRouter`
-
-```typescript
-const value: models.FusionServerToolOpenRouter = {
-  type: "openrouter:fusion",
-};
-```
-
 ### `models.ImageGenerationServerToolOpenRouter`
 
 ```typescript
