@@ -5,7 +5,7 @@
 ```typescript
 import { CustomToolCallOutputItemDetail } from "@openrouter/sdk/models";
 
-let value: CustomToolCallOutputItemDetail = "high";
+let value: CustomToolCallOutputItemDetail = "low";
 
 // Open enum: unrecognized values are captured as Unrecognized<string>
 ```
@@ -13,5 +13,5 @@ let value: CustomToolCallOutputItemDetail = "high";
 ## Values
 
 ```typescript
-"auto" | "high" | "low" | Unrecognized<string>
+"auto" | "high" | "low" | "original" | Unrecognized<string>
 ```
