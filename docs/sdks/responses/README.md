@@ -12,9 +12,9 @@ beta.responses endpoints
 
 Creates a streaming or non-streaming response using OpenResponses API format
 
-### Example Usage
+### Example Usage: guardrail-blocked
 
-<!-- UsageSnippet language="typescript" operationID="createResponses" method="post" path="/responses" -->
+<!-- UsageSnippet language="typescript" operationID="createResponses" method="post" path="/responses" example="guardrail-blocked" -->
 ```typescript
 import { OpenRouter } from "@openrouter/sdk";
 
@@ -27,11 +27,7 @@ const openRouter = new OpenRouter({
 
 async function run() {
   const result = await openRouter.beta.responses.send({
-    xOpenRouterExperimentalMetadata: "enabled",
-    responsesRequest: {
-      input: "Tell me a joke",
-      model: "openai/gpt-4o",
-    },
+    responsesRequest: {},
   });
 
   console.log(result);
@@ -59,11 +55,62 @@ const openRouter = new OpenRouterCore({
 
 async function run() {
   const res = await betaResponsesSend(openRouter, {
-    xOpenRouterExperimentalMetadata: "enabled",
-    responsesRequest: {
-      input: "Tell me a joke",
-      model: "openai/gpt-4o",
-    },
+    responsesRequest: {},
+  });
+  if (res.ok) {
+    const { value: result } = res;
+    console.log(result);
+  } else {
+    console.log("betaResponsesSend failed:", res.error);
+  }
+}
+
+run();
+```
+### Example Usage: insufficient-permissions
+
+<!-- UsageSnippet language="typescript" operationID="createResponses" method="post" path="/responses" example="insufficient-permissions" -->
+```typescript
+import { OpenRouter } from "@openrouter/sdk";
+
+const openRouter = new OpenRouter({
+  httpReferer: "<value>",
+  appTitle: "<value>",
+  appCategories: "<value>",
+  apiKey: process.env["OPENROUTER_API_KEY"] ?? "",
+});
+
+async function run() {
+  const result = await openRouter.beta.responses.send({
+    responsesRequest: {},
+  });
+
+  console.log(result);
+}
+
+run();
+```
+
+### Standalone function
+
+The standalone function version of this method:
+
+```typescript
+import { OpenRouterCore } from "@openrouter/sdk/core.js";
+import { betaResponsesSend } from "@openrouter/sdk/funcs/betaResponsesSend.js";
+
+// Use `OpenRouterCore` for best tree-shaking performance.
+// You can create one instance of it to use across an application.
+const openRouter = new OpenRouterCore({
+  httpReferer: "<value>",
+  appTitle: "<value>",
+  appCategories: "<value>",
+  apiKey: process.env["OPENROUTER_API_KEY"] ?? "",
+});
+
+async function run() {
+  const res = await betaResponsesSend(openRouter, {
+    responsesRequest: {},
   });
   if (res.ok) {
     const { value: result } = res;
@@ -96,6 +143,7 @@ run();
 | errors.BadRequestResponseError          | 400                                     | application/json                        |
 | errors.UnauthorizedResponseError        | 401                                     | application/json                        |
 | errors.PaymentRequiredResponseError     | 402                                     | application/json                        |
+| errors.ForbiddenResponseError           | 403                                     | application/json                        |
 | errors.NotFoundResponseError            | 404                                     | application/json                        |
 | errors.RequestTimeoutResponseError      | 408                                     | application/json                        |
 | errors.PayloadTooLargeResponseError     | 413                                     | application/json                        |
