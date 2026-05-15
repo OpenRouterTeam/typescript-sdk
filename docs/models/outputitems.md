@@ -5,22 +5,6 @@ An output item from the response
 
 ## Supported Types
 
-### `models.OutputApplyPatchCallItem`
-
-```typescript
-const value: models.OutputApplyPatchCallItem = {
-  callId: "<id>",
-  id: "msg-abc123",
-  operation: {
-    diff: "@@ function main() {\n+  console.log(\"hi\");\n }",
-    path: "/src/main.ts",
-    type: "update_file",
-  },
-  status: "completed",
-  type: "apply_patch_call",
-};
-```
-
 ### `models.OutputCodeInterpreterCallItem`
 
 ```typescript
