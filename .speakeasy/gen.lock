@@ -1,19 +1,19 @@
 lockVersion: ""
 id: ""
 management:
-  docChecksum: 2deda9cfe89dfba957d1d202d1858fbd
+  docChecksum: 4374d518300d04e111f248e50ed13558
   docVersion: 1.0.0
   speakeasyVersion: 1.761.0
   generationVersion: 2.879.1
-  releaseVersion: 0.12.52
-  configChecksum: 9418d6363b11c30492f9990409515906
+  releaseVersion: 0.12.53
+  configChecksum: 05bcd48a818c71c0bc7af537f2200bc5
   repoURL: https://github.com/OpenRouterTeam/typescript-sdk.git
   installationURL: https://github.com/OpenRouterTeam/typescript-sdk
   published: true
 persistentEdits:
-  generation_id: bf0a9634-ffec-412d-bea8-a49655e4fbca
-  pristine_commit_hash: 99a26419f9a282820be39055f5a3ca09402639a6
-  pristine_tree_hash: 72d18939c86898915676ea3a8e23b67e145c13ae
+  generation_id: 2bd9e7b1-c957-4cdd-8e97-28dd184410fd
+  pristine_commit_hash: 90a7408acfb075e0c327ecc42d7f76eb4efa2e52
+  pristine_tree_hash: 5332ff77d639174bbfe1857a585cae3e3426f73a
 features:
   typescript:
     acceptHeaders: 2.81.2
@@ -1661,13 +1661,13 @@ trackedFiles:
     deleted: true
   docs/models/fusionplugin.md:
     id: aa0cadd09c6a
-    last_write_checksum: sha1:f4c691c3440bf29d3060b79d195a8fdc176de74f
-    pristine_git_object: 20acc6548585957b96a27b3e41020f95a490ec5c
+    last_write_checksum: sha1:e73bebce746378f5def46a02683eb53832a3a6c8
+    pristine_git_object: a68e4d7dfaa88894d7213851cc6c2b608319a4e2
     deleted: true
   docs/models/fusionservertoolconfig.md:
     id: 103d7a9a42f0
-    last_write_checksum: sha1:08a1806ce81c3e519f8ee45d30a8fe4d72fb72da
-    pristine_git_object: 707ba11cf6196233f99e08e88de36ff75d59e2f9
+    last_write_checksum: sha1:a3835dda96019f14b49d2c111d220db63106c83d
+    pristine_git_object: f90d90486ebc892a138d455bc6faf2f09bdf9099
     deleted: true
   docs/models/fusionservertoolopenrouter.md:
     id: 4b02312e2ef0
@@ -4938,12 +4938,12 @@ trackedFiles:
     pristine_git_object: 410efafd6a7f50d91ccb87131fedbe0c3d47e15a
   jsr.json:
     id: 7f6ab7767282
-    last_write_checksum: sha1:714f9aa4f7f4c606bcdb1ff67642943ddb14fc1f
-    pristine_git_object: 182e3658cfe64038466ee9b334ec094728fca9e3
+    last_write_checksum: sha1:4417223518aeb2bd829a843e8cf99aa6a07e9f6a
+    pristine_git_object: 2bca3971d8d975a0a224119d00735cd21692980c
   package.json:
     id: 7030d0b2f71b
-    last_write_checksum: sha1:6cd224e103f426cc8632f2fef12554d3396cef4b
-    pristine_git_object: ca0e93c2512f304eaf5e41914b892da4a04b9bc7
+    last_write_checksum: sha1:ec809b084482946c1c563e6aaf0189819c9a7ea4
+    pristine_git_object: 5e646b27b743a0d45efae4b9d7310ba72911ddc4
   src/core.ts:
     id: f431fdbcd144
     last_write_checksum: sha1:5aa66b0b6a5964f3eea7f3098c2eb3c0ee9c0131
@@ -5170,8 +5170,8 @@ trackedFiles:
     pristine_git_object: a187e58707bdb726ca2aff74941efe7493422d4e
   src/lib/config.ts:
     id: 320761608fb3
-    last_write_checksum: sha1:e2287f25291fc00699e8abfba6e75ee3e42eff9c
-    pristine_git_object: dee264d68f79ffe5d1361f273d00fded96e94767
+    last_write_checksum: sha1:065bd0077245979a54f433ace5dd85dbd73c1ed3
+    pristine_git_object: 33dcfa89c1070d74344144962ce141b07f0e7a3c
   src/lib/dlv.ts:
     id: b1988214835a
     last_write_checksum: sha1:eaac763b22717206a6199104e0403ed17a4e2711
@@ -5790,12 +5790,12 @@ trackedFiles:
     pristine_git_object: c7854bac92459990c1bf715725d4de2d5aebfe41
   src/models/fusionplugin.ts:
     id: f2f6926f21f9
-    last_write_checksum: sha1:ed128055e0edfb66605aa517fcfa33581e85bb69
-    pristine_git_object: c68db0bcea6fb12a9112c4b347a1e0e918fc12b4
+    last_write_checksum: sha1:de257533541e773c43e8c83ce1f76f61857396e5
+    pristine_git_object: dee34df6d75eed01ab5ae866d8bed9349de102ce
   src/models/fusionservertoolconfig.ts:
     id: 500c34bd192b
-    last_write_checksum: sha1:b4149af62e932c12d88aef43ce77a19cb4f3f658
-    pristine_git_object: ea76a8e5f5222e898e68ad2c4fb30b2eaae88568
+    last_write_checksum: sha1:a7da6a9b0a87fb353cf3fdf2c1746ebc399ebad1
+    pristine_git_object: 04f88fde623d052ac97d8cc5c8a70024f9ec37f5
   src/models/fusionservertoolopenrouter.ts:
     id: 01d346f44f6d
     last_write_checksum: sha1:4c457a429fb12cb9e6d41fc188ff590f19ccdb35
@@ -7893,4 +7893,4 @@ examples:
         "529":
           application/json: {"error": {"code": 529, "message": "Provider returned error"}}
 examplesVersion: 1.0.2
-releaseNotes: "## Typescript SDK Changes:\n* `openrouter.beta.responses.send()`: \n  *  `request.responsesRequest` **Changed**\n  *  `response` **Changed**\n"
+releaseNotes: "## Typescript SDK Changes:\n* `openrouter.chat.send()`: \n  *  `request.chatRequest.plugins[].union(fusion).maxToolCalls` **Added**\n* `openrouter.beta.responses.send()`: \n  *  `request.responsesRequest` **Changed**\n"
