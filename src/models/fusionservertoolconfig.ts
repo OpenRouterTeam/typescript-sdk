@@ -15,10 +15,6 @@ export type FusionServerToolConfig = {
    */
   analysisModels?: Array<string> | undefined;
   /**
-   * Maximum number of tool-calling steps each panelist (analysis model) and the judge model may take during their agentic web-research loop. Models with web_search/web_fetch enabled iterate until they produce a text response or hit this ceiling. Defaults to 8. Capped at 16.
-   */
-  maxToolCalls?: number | undefined;
-  /**
    * Slug of the judge model that produces the structured analysis JSON. Defaults to the model used in the outer API request.
    */
   model?: string | undefined;
@@ -27,7 +23,6 @@ export type FusionServerToolConfig = {
 /** @internal */
 export type FusionServerToolConfig$Outbound = {
   analysis_models?: Array<string> | undefined;
-  max_tool_calls?: number | undefined;
   model?: string | undefined;
 };
 
@@ -37,12 +32,10 @@ export const FusionServerToolConfig$outboundSchema: z.ZodType<
   FusionServerToolConfig
 > = z.object({
   analysisModels: z.array(z.string()).optional(),
-  maxToolCalls: z.int().optional(),
   model: z.string().optional(),
 }).transform((v) => {
   return remap$(v, {
     analysisModels: "analysis_models",
-    maxToolCalls: "max_tool_calls",
   });
 });
 
