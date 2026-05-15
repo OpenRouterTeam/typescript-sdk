@@ -374,6 +374,7 @@ export type InputsUnion1 =
   | LocalShellCallItem
   | McpApprovalRequestItem
   | McpCallItem
+  | ApplyPatchCallItem
   | InputsMessage
   | OutputFunctionCallItem
   | OutputCustomToolCallItem
@@ -381,17 +382,16 @@ export type InputsUnion1 =
   | OutputFileSearchCallItem
   | OutputComputerCallItem
   | OutputDatetimeItem
-  | ApplyPatchCallItem
   | McpListToolsItem
   | CustomToolCallItem
   | ReasoningItem
   | FunctionCallOutputItem
+  | ApplyPatchCallOutputItem
   | InputsReasoning
   | OutputImageGenerationCallItem
   | LocalShellCallOutputItem
   | ShellCallItem
   | ShellCallOutputItem
-  | ApplyPatchCallOutputItem
   | McpApprovalResponseItem
   | CustomToolCallOutputItem
   | OutputWebSearchServerToolItem
@@ -423,6 +423,7 @@ export type InputsUnion =
     | LocalShellCallItem
     | McpApprovalRequestItem
     | McpCallItem
+    | ApplyPatchCallItem
     | InputsMessage
     | OutputFunctionCallItem
     | OutputCustomToolCallItem
@@ -430,17 +431,16 @@ export type InputsUnion =
     | OutputFileSearchCallItem
     | OutputComputerCallItem
     | OutputDatetimeItem
-    | ApplyPatchCallItem
     | McpListToolsItem
     | CustomToolCallItem
     | ReasoningItem
     | FunctionCallOutputItem
+    | ApplyPatchCallOutputItem
     | InputsReasoning
     | OutputImageGenerationCallItem
     | LocalShellCallOutputItem
     | ShellCallItem
     | ShellCallOutputItem
-    | ApplyPatchCallOutputItem
     | McpApprovalResponseItem
     | CustomToolCallOutputItem
     | OutputWebSearchServerToolItem
@@ -725,6 +725,7 @@ export type InputsUnion1$Outbound =
   | LocalShellCallItem$Outbound
   | McpApprovalRequestItem$Outbound
   | McpCallItem$Outbound
+  | ApplyPatchCallItem$Outbound
   | InputsMessage$Outbound
   | OutputFunctionCallItem$Outbound
   | OutputCustomToolCallItem$Outbound
@@ -732,17 +733,16 @@ export type InputsUnion1$Outbound =
   | OutputFileSearchCallItem$Outbound
   | OutputComputerCallItem$Outbound
   | OutputDatetimeItem$Outbound
-  | ApplyPatchCallItem$Outbound
   | McpListToolsItem$Outbound
   | CustomToolCallItem$Outbound
   | ReasoningItem$Outbound
   | FunctionCallOutputItem$Outbound
+  | ApplyPatchCallOutputItem$Outbound
   | InputsReasoning$Outbound
   | OutputImageGenerationCallItem$Outbound
   | LocalShellCallOutputItem$Outbound
   | ShellCallItem$Outbound
   | ShellCallOutputItem$Outbound
-  | ApplyPatchCallOutputItem$Outbound
   | McpApprovalResponseItem$Outbound
   | CustomToolCallOutputItem$Outbound
   | OutputWebSearchServerToolItem$Outbound
@@ -773,6 +773,7 @@ export const InputsUnion1$outboundSchema: z.ZodType<
   LocalShellCallItem$outboundSchema,
   McpApprovalRequestItem$outboundSchema,
   McpCallItem$outboundSchema,
+  ApplyPatchCallItem$outboundSchema,
   z.lazy(() => InputsMessage$outboundSchema),
   OutputFunctionCallItem$outboundSchema,
   OutputCustomToolCallItem$outboundSchema,
@@ -780,17 +781,16 @@ export const InputsUnion1$outboundSchema: z.ZodType<
   OutputFileSearchCallItem$outboundSchema,
   OutputComputerCallItem$outboundSchema,
   OutputDatetimeItem$outboundSchema,
-  ApplyPatchCallItem$outboundSchema,
   McpListToolsItem$outboundSchema,
   CustomToolCallItem$outboundSchema,
   ReasoningItem$outboundSchema,
   FunctionCallOutputItem$outboundSchema,
+  ApplyPatchCallOutputItem$outboundSchema,
   z.lazy(() => InputsReasoning$outboundSchema),
   OutputImageGenerationCallItem$outboundSchema,
   LocalShellCallOutputItem$outboundSchema,
   ShellCallItem$outboundSchema,
   ShellCallOutputItem$outboundSchema,
-  ApplyPatchCallOutputItem$outboundSchema,
   McpApprovalResponseItem$outboundSchema,
   CustomToolCallOutputItem$outboundSchema,
   OutputWebSearchServerToolItem$outboundSchema,
@@ -825,6 +825,7 @@ export type InputsUnion$Outbound =
     | LocalShellCallItem$Outbound
     | McpApprovalRequestItem$Outbound
     | McpCallItem$Outbound
+    | ApplyPatchCallItem$Outbound
     | InputsMessage$Outbound
     | OutputFunctionCallItem$Outbound
     | OutputCustomToolCallItem$Outbound
@@ -832,17 +833,16 @@ export type InputsUnion$Outbound =
     | OutputFileSearchCallItem$Outbound
     | OutputComputerCallItem$Outbound
     | OutputDatetimeItem$Outbound
-    | ApplyPatchCallItem$Outbound
     | McpListToolsItem$Outbound
     | CustomToolCallItem$Outbound
     | ReasoningItem$Outbound
     | FunctionCallOutputItem$Outbound
+    | ApplyPatchCallOutputItem$Outbound
     | InputsReasoning$Outbound
     | OutputImageGenerationCallItem$Outbound
     | LocalShellCallOutputItem$Outbound
     | ShellCallItem$Outbound
     | ShellCallOutputItem$Outbound
-    | ApplyPatchCallOutputItem$Outbound
     | McpApprovalResponseItem$Outbound
     | CustomToolCallOutputItem$Outbound
     | OutputWebSearchServerToolItem$Outbound
@@ -877,6 +877,7 @@ export const InputsUnion$outboundSchema: z.ZodType<
       LocalShellCallItem$outboundSchema,
       McpApprovalRequestItem$outboundSchema,
       McpCallItem$outboundSchema,
+      ApplyPatchCallItem$outboundSchema,
       z.lazy(() => InputsMessage$outboundSchema),
       OutputFunctionCallItem$outboundSchema,
       OutputCustomToolCallItem$outboundSchema,
@@ -884,17 +885,16 @@ export const InputsUnion$outboundSchema: z.ZodType<
       OutputFileSearchCallItem$outboundSchema,
       OutputComputerCallItem$outboundSchema,
       OutputDatetimeItem$outboundSchema,
-      ApplyPatchCallItem$outboundSchema,
       McpListToolsItem$outboundSchema,
       CustomToolCallItem$outboundSchema,
       ReasoningItem$outboundSchema,
       FunctionCallOutputItem$outboundSchema,
+      ApplyPatchCallOutputItem$outboundSchema,
       z.lazy(() => InputsReasoning$outboundSchema),
       OutputImageGenerationCallItem$outboundSchema,
       LocalShellCallOutputItem$outboundSchema,
       ShellCallItem$outboundSchema,
       ShellCallOutputItem$outboundSchema,
-      ApplyPatchCallOutputItem$outboundSchema,
       McpApprovalResponseItem$outboundSchema,
       CustomToolCallOutputItem$outboundSchema,
       OutputWebSearchServerToolItem$outboundSchema,
