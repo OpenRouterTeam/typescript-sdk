@@ -8,9 +8,17 @@ import { remap as remap$ } from "../lib/primitives.js";
 
 export type ParetoRouterPlugin = {
   /**
+   * List of model patterns the router is allowed to pick from. Supports wildcards (e.g., "anthropic/*" matches all Anthropic models). When not specified, all tier models are eligible.
+   */
+  allowedModels?: Array<string> | undefined;
+  /**
    * Set to false to disable the pareto-router plugin for this request. Defaults to true.
    */
   enabled?: boolean | undefined;
+  /**
+   * List of model patterns the router must skip. Supports wildcards (e.g., "deepseek/*" excludes all DeepSeek models). Applied after allowed_models filtering.
+   */
+  excludedModels?: Array<string> | undefined;
   id: "pareto-router";
   /**
    * Minimum desired coding score between 0 and 1, where 1 is best. Higher values select from stronger coding models (sourced from Artificial Analysis coding percentiles). Maps internally to one of three tiers (low, medium, high). Omit to use the router default tier.
@@ -20,7 +28,9 @@ export type ParetoRouterPlugin = {
 
 /** @internal */
 export type ParetoRouterPlugin$Outbound = {
+  allowed_models?: Array<string> | undefined;
   enabled?: boolean | undefined;
+  excluded_models?: Array<string> | undefined;
   id: "pareto-router";
   min_coding_score?: number | undefined;
 };
@@ -30,11 +40,15 @@ export const ParetoRouterPlugin$outboundSchema: z.ZodType<
   ParetoRouterPlugin$Outbound,
   ParetoRouterPlugin
 > = z.object({
+  allowedModels: z.array(z.string()).optional(),
   enabled: z.boolean().optional(),
+  excludedModels: z.array(z.string()).optional(),
   id: z.literal("pareto-router"),
   minCodingScore: z.number().optional(),
 }).transform((v) => {
   return remap$(v, {
+    allowedModels: "allowed_models",
+    excludedModels: "excluded_models",
     minCodingScore: "min_coding_score",
   });
 });
