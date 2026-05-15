@@ -5345,6 +5345,57 @@ components:
         - type
         - image_url
       type: object
+    ContentPartInputAudio:
+      example:
+        input_audio:
+          data: data:audio/wav;base64,UklGRiQAAABXQVZFZm10IBAAAAA...
+          format: wav
+        type: input_audio
+      properties:
+        input_audio:
+          $ref: '#/components/schemas/MultimodalMedia'
+        type:
+          enum:
+            - input_audio
+          type: string
+      required:
+        - type
+        - input_audio
+      type: object
+    ContentPartInputFile:
+      example:
+        input_file:
+          data: data:application/pdf;base64,JVBERi0xLjQKJeLjz9MKMyAw...
+          format: pdf
+        type: input_file
+      properties:
+        input_file:
+          $ref: '#/components/schemas/MultimodalMedia'
+        type:
+          enum:
+            - input_file
+          type: string
+      required:
+        - type
+        - input_file
+      type: object
+    ContentPartInputVideo:
+      example:
+        input_video:
+          data: data:video/mp4;base64,AAAAGGZ0eXBtcDQyAAAAAGlzb21tcDQy...
+          format: mp4
+        type: input_video
+      properties:
+        input_video:
+          $ref: '#/components/schemas/MultimodalMedia'
+        type:
+          enum:
+            - input_video
+          type: string
+      required:
+        - type
+        - input_video
+      type: object
     ContextCompressionEngine:
       description: The compression engine to use. Defaults to "middle-out".
       enum:
@@ -10221,6 +10272,18 @@ components:
           type: string
       required:
         - id
+      type: object
+    MultimodalMedia:
+      example:
+        data: data:audio/wav;base64,UklGRiQAAABXQVZFZm10IBAAAAA...
+        format: wav
+      properties:
+        data:
+          type: string
+        format:
+          type: string
+      required:
+        - data
       type: object
     NotFoundResponse:
       description: Not Found - Resource does not exist
@@ -17754,6 +17817,9 @@ paths:
                                     - type
                                     - image_url
                                   type: object
+                                - $ref: '#/components/schemas/ContentPartInputAudio'
+                                - $ref: '#/components/schemas/ContentPartInputVideo'
+                                - $ref: '#/components/schemas/ContentPartInputFile'
                             type: array
                         required:
                           - content
@@ -17878,6 +17944,9 @@ paths:
                         properties:
                           audio_tokens:
                             description: Number of audio tokens in the input
+                            type: integer
+                          file_tokens:
+                            description: Number of file/document tokens in the input
                             type: integer
                           image_tokens:
                             description: Number of image tokens in the input
