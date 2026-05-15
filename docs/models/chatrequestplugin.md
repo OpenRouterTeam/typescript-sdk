@@ -27,14 +27,6 @@ const value: models.FileParserPlugin = {
 };
 ```
 
-### `models.FusionPlugin`
-
-```typescript
-const value: models.FusionPlugin = {
-  id: "fusion",
-};
-```
-
 ### `models.ModerationPlugin`
 
 ```typescript

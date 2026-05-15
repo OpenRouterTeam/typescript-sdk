@@ -10,10 +10,6 @@ import { discriminatedUnion } from "../types/discriminatedUnion.js";
 import { Result as SafeParseResult } from "../types/fp.js";
 import { SDKValidationError } from "./errors/sdkvalidationerror.js";
 import {
-  OutputApplyPatchCallItem,
-  OutputApplyPatchCallItem$inboundSchema,
-} from "./outputapplypatchcallitem.js";
-import {
   OutputApplyPatchServerToolItem,
   OutputApplyPatchServerToolItem$inboundSchema,
 } from "./outputapplypatchservertoolitem.js";
@@ -57,10 +53,6 @@ import {
   OutputFunctionCallItem,
   OutputFunctionCallItem$inboundSchema,
 } from "./outputfunctioncallitem.js";
-import {
-  OutputFusionServerToolItem,
-  OutputFusionServerToolItem$inboundSchema,
-} from "./outputfusionservertoolitem.js";
 import {
   OutputImageGenerationCallItem,
   OutputImageGenerationCallItem$inboundSchema,
@@ -114,7 +106,6 @@ import {
  * An output item from the response
  */
 export type OutputItems =
-  | OutputApplyPatchCallItem
   | (OutputCodeInterpreterCallItem & { type: "code_interpreter_call" })
   | (OutputComputerCallItem & { type: "computer_call" })
   | (OutputCustomToolCallItem & { type: "custom_tool_call" })
@@ -133,7 +124,6 @@ export type OutputItems =
     type: "openrouter:experimental__search_models";
   })
   | (OutputFileSearchServerToolItem & { type: "openrouter:file_search" })
-  | OutputFusionServerToolItem
   | (OutputImageGenerationServerToolItem & {
     type: "openrouter:image_generation";
   })
@@ -150,7 +140,6 @@ export type OutputItems =
 /** @internal */
 export const OutputItems$inboundSchema: z.ZodType<OutputItems, unknown> =
   discriminatedUnion("type", {
-    apply_patch_call: OutputApplyPatchCallItem$inboundSchema,
     code_interpreter_call: OutputCodeInterpreterCallItem$inboundSchema.and(
       z.object({ type: z.literal("code_interpreter_call") }),
     ),
@@ -190,7 +179,6 @@ export const OutputItems$inboundSchema: z.ZodType<OutputItems, unknown> =
       ),
     ["openrouter:file_search"]: OutputFileSearchServerToolItem$inboundSchema
       .and(z.object({ type: z.literal("openrouter:file_search") })),
-    ["openrouter:fusion"]: OutputFusionServerToolItem$inboundSchema,
     ["openrouter:image_generation"]:
       OutputImageGenerationServerToolItem$inboundSchema.and(
         z.object({ type: z.literal("openrouter:image_generation") }),

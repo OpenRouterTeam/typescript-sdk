@@ -5,7 +5,7 @@
 ```typescript
 import { EasyInputMessageDetail } from "@openrouter/sdk/models";
 
-let value: EasyInputMessageDetail = "low";
+let value: EasyInputMessageDetail = "high";
 
 // Open enum: unrecognized values are captured as Unrecognized<string>
 ```
@@ -13,5 +13,5 @@ let value: EasyInputMessageDetail = "low";
 ## Values
 
 ```typescript
-"auto" | "high" | "low" | "original" | Unrecognized<string>
+"auto" | "high" | "low" | Unrecognized<string>
 ```

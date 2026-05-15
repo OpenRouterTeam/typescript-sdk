@@ -22,7 +22,6 @@ export const CustomToolCallOutputItemDetail = {
   Auto: "auto",
   High: "high",
   Low: "low",
-  Original: "original",
 } as const;
 export type CustomToolCallOutputItemDetail = OpenEnum<
   typeof CustomToolCallOutputItemDetail

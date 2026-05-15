@@ -153,14 +153,6 @@ const value: models.DatetimeServerTool = {
 };
 ```
 
-### `models.FusionServerToolOpenRouter`
-
-```typescript
-const value: models.FusionServerToolOpenRouter = {
-  type: "openrouter:fusion",
-};
-```
-
 ### `models.ImageGenerationServerToolOpenRouter`
 
 ```typescript
@@ -190,14 +182,6 @@ const value: models.WebFetchServerTool = {
 ```typescript
 const value: models.WebSearchServerToolOpenRouter = {
   type: "openrouter:web_search",
-};
-```
-
-### `models.ApplyPatchServerToolOpenRouter`
-
-```typescript
-const value: models.ApplyPatchServerToolOpenRouter = {
-  type: "openrouter:apply_patch",
 };
 ```
 
