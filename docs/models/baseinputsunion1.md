@@ -97,3 +97,28 @@ const value: models.OpenAIResponseCustomToolCallOutput = {
 };
 ```
 
+### `models.ApplyPatchCallItem`
+
+```typescript
+const value: models.ApplyPatchCallItem = {
+  callId: "call_abc123",
+  operation: {
+    diff: "@@ function main() {\n+  console.log(\"hi\");\n }",
+    path: "/src/main.ts",
+    type: "update_file",
+  },
+  status: "completed",
+  type: "apply_patch_call",
+};
+```
+
+### `models.ApplyPatchCallOutputItem`
+
+```typescript
+const value: models.ApplyPatchCallOutputItem = {
+  callId: "call_abc123",
+  status: "completed",
+  type: "apply_patch_call_output",
+};
+```
+

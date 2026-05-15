@@ -18,6 +18,11 @@ import {
   ApplyPatchServerTool$outboundSchema,
 } from "./applypatchservertool.js";
 import {
+  ApplyPatchServerToolOpenRouter,
+  ApplyPatchServerToolOpenRouter$Outbound,
+  ApplyPatchServerToolOpenRouter$outboundSchema,
+} from "./applypatchservertoolopenrouter.js";
+import {
   AutoRouterPlugin,
   AutoRouterPlugin$Outbound,
   AutoRouterPlugin$outboundSchema,
@@ -256,7 +261,8 @@ export type ResponsesRequestToolUnion =
     type: "openrouter:experimental__search_models";
   })
   | (WebFetchServerTool & { type: "openrouter:web_fetch" })
-  | WebSearchServerToolOpenRouter;
+  | WebSearchServerToolOpenRouter
+  | ApplyPatchServerToolOpenRouter;
 
 /**
  * Request schema for Responses endpoint
@@ -358,6 +364,7 @@ export type ResponsesRequest = {
       })
       | (WebFetchServerTool & { type: "openrouter:web_fetch" })
       | WebSearchServerToolOpenRouter
+      | ApplyPatchServerToolOpenRouter
     >
     | undefined;
   topK?: number | undefined;
@@ -470,7 +477,8 @@ export type ResponsesRequestToolUnion$Outbound =
     type: "openrouter:experimental__search_models";
   })
   | (WebFetchServerTool$Outbound & { type: "openrouter:web_fetch" })
-  | WebSearchServerToolOpenRouter$Outbound;
+  | WebSearchServerToolOpenRouter$Outbound
+  | ApplyPatchServerToolOpenRouter$Outbound;
 
 /** @internal */
 export const ResponsesRequestToolUnion$outboundSchema: z.ZodType<
@@ -505,6 +513,7 @@ export const ResponsesRequestToolUnion$outboundSchema: z.ZodType<
     z.object({ type: z.literal("openrouter:web_fetch") }),
   ),
   WebSearchServerToolOpenRouter$outboundSchema,
+  ApplyPatchServerToolOpenRouter$outboundSchema,
 ]);
 
 export function responsesRequestToolUnionToJSON(
@@ -583,6 +592,7 @@ export type ResponsesRequest$Outbound = {
       })
       | (WebFetchServerTool$Outbound & { type: "openrouter:web_fetch" })
       | WebSearchServerToolOpenRouter$Outbound
+      | ApplyPatchServerToolOpenRouter$Outbound
     >
     | undefined;
   top_k?: number | undefined;
@@ -670,6 +680,7 @@ export const ResponsesRequest$outboundSchema: z.ZodType<
         z.object({ type: z.literal("openrouter:web_fetch") }),
       ),
       WebSearchServerToolOpenRouter$outboundSchema,
+      ApplyPatchServerToolOpenRouter$outboundSchema,
     ]),
   ).optional(),
   topK: z.int().optional(),
