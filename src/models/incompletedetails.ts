@@ -10,26 +10,28 @@ import { OpenEnum } from "../types/enums.js";
 import { Result as SafeParseResult } from "../types/fp.js";
 import { SDKValidationError } from "./errors/sdkvalidationerror.js";
 
-export const Reason = {
+export const IncompleteDetailsReason = {
   MaxOutputTokens: "max_output_tokens",
   ContentFilter: "content_filter",
 } as const;
-export type Reason = OpenEnum<typeof Reason>;
+export type IncompleteDetailsReason = OpenEnum<typeof IncompleteDetailsReason>;
 
 export type IncompleteDetails = {
-  reason?: Reason | undefined;
+  reason?: IncompleteDetailsReason | undefined;
 };
 
 /** @internal */
-export const Reason$inboundSchema: z.ZodType<Reason, unknown> = openEnums
-  .inboundSchema(Reason);
+export const IncompleteDetailsReason$inboundSchema: z.ZodType<
+  IncompleteDetailsReason,
+  unknown
+> = openEnums.inboundSchema(IncompleteDetailsReason);
 
 /** @internal */
 export const IncompleteDetails$inboundSchema: z.ZodType<
   IncompleteDetails,
   unknown
 > = z.object({
-  reason: Reason$inboundSchema.optional(),
+  reason: IncompleteDetailsReason$inboundSchema.optional(),
 });
 
 export function incompleteDetailsFromJSON(
