@@ -13,5 +13,5 @@ let value: InputMessageItemDetail = "high";
 ## Values
 
 ```typescript
-"auto" | "high" | "low" | "original" | Unrecognized<string>
+"auto" | "high" | "low" | Unrecognized<string>
 ```
