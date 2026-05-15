@@ -22,7 +22,6 @@ export const FunctionCallOutputItemDetail = {
   Auto: "auto",
   High: "high",
   Low: "low",
-  Original: "original",
 } as const;
 export type FunctionCallOutputItemDetail = OpenEnum<
   typeof FunctionCallOutputItemDetail
