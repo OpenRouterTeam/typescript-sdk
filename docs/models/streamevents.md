@@ -17,6 +17,30 @@ const value: models.ErrorEvent = {
 };
 ```
 
+### `models.ApplyPatchCallOperationDiffDeltaEvent`
+
+```typescript
+const value: models.ApplyPatchCallOperationDiffDeltaEvent = {
+  delta: "<value>",
+  itemId: "<id>",
+  outputIndex: 162755,
+  sequenceNumber: 0,
+  type: "response.apply_patch_call_operation_diff.delta",
+};
+```
+
+### `models.ApplyPatchCallOperationDiffDoneEvent`
+
+```typescript
+const value: models.ApplyPatchCallOperationDiffDoneEvent = {
+  diff: "<value>",
+  itemId: "<id>",
+  outputIndex: 786722,
+  sequenceNumber: 0,
+  type: "response.apply_patch_call_operation_diff.done",
+};
+```
+
 ### `models.StreamEventsResponseCompleted`
 
 ```typescript

@@ -5,205 +5,74 @@
 
 import * as z from "zod/v4";
 import { remap as remap$ } from "../lib/primitives.js";
+import { safeParse } from "../lib/schemas.js";
 import { ClosedEnum } from "../types/enums.js";
+import { Result as SafeParseResult } from "../types/fp.js";
+import {
+  ApplyPatchCallOperation,
+  ApplyPatchCallOperation$inboundSchema,
+  ApplyPatchCallOperation$Outbound,
+  ApplyPatchCallOperation$outboundSchema,
+} from "./applypatchcalloperation.js";
+import {
+  ApplyPatchCallStatus,
+  ApplyPatchCallStatus$inboundSchema,
+  ApplyPatchCallStatus$outboundSchema,
+} from "./applypatchcallstatus.js";
+import { SDKValidationError } from "./errors/sdkvalidationerror.js";
 
-export type OperationUpdateFile = {
-  diff: string;
-  path: string;
-  type: "update_file";
-};
-
-export type OperationDeleteFile = {
-  path: string;
-  type: "delete_file";
-};
-
-export type OperationCreateFile = {
-  diff: string;
-  path: string;
-  type: "create_file";
-};
-
-export type Operation =
-  | OperationCreateFile
-  | OperationDeleteFile
-  | OperationUpdateFile;
-
-export const ApplyPatchCallItemStatusCompleted = {
-  Completed: "completed",
-} as const;
-export type ApplyPatchCallItemStatusCompleted = ClosedEnum<
-  typeof ApplyPatchCallItemStatusCompleted
->;
-
-export const ApplyPatchCallItemStatusInProgress = {
-  InProgress: "in_progress",
-} as const;
-export type ApplyPatchCallItemStatusInProgress = ClosedEnum<
-  typeof ApplyPatchCallItemStatusInProgress
->;
-
-export type ApplyPatchCallItemStatusUnion =
-  | ApplyPatchCallItemStatusInProgress
-  | ApplyPatchCallItemStatusCompleted;
-
-export const TypeApplyPatchCall = {
+export const ApplyPatchCallItemType = {
   ApplyPatchCall: "apply_patch_call",
 } as const;
-export type TypeApplyPatchCall = ClosedEnum<typeof TypeApplyPatchCall>;
+export type ApplyPatchCallItemType = ClosedEnum<typeof ApplyPatchCallItemType>;
 
 /**
- * A file create/update/delete via diff patch
+ * A tool call emitted by the model requesting a V4A patch operation. The client applies the patch and echoes an `apply_patch_call_output` on the next turn.
  */
 export type ApplyPatchCallItem = {
   callId: string;
   id?: string | null | undefined;
-  operation: OperationCreateFile | OperationDeleteFile | OperationUpdateFile;
-  status:
-    | ApplyPatchCallItemStatusInProgress
-    | ApplyPatchCallItemStatusCompleted;
-  type: TypeApplyPatchCall;
+  /**
+   * The patch operation requested by an `apply_patch_call`. `create_file` and `update_file` carry a V4A diff; `delete_file` omits it.
+   */
+  operation: ApplyPatchCallOperation;
+  /**
+   * Lifecycle state of an `apply_patch_call` output item.
+   */
+  status: ApplyPatchCallStatus;
+  type: ApplyPatchCallItemType;
 };
 
 /** @internal */
-export type OperationUpdateFile$Outbound = {
-  diff: string;
-  path: string;
-  type: "update_file";
-};
+export const ApplyPatchCallItemType$inboundSchema: z.ZodEnum<
+  typeof ApplyPatchCallItemType
+> = z.enum(ApplyPatchCallItemType);
+/** @internal */
+export const ApplyPatchCallItemType$outboundSchema: z.ZodEnum<
+  typeof ApplyPatchCallItemType
+> = ApplyPatchCallItemType$inboundSchema;
 
 /** @internal */
-export const OperationUpdateFile$outboundSchema: z.ZodType<
-  OperationUpdateFile$Outbound,
-  OperationUpdateFile
+export const ApplyPatchCallItem$inboundSchema: z.ZodType<
+  ApplyPatchCallItem,
+  unknown
 > = z.object({
-  diff: z.string(),
-  path: z.string(),
-  type: z.literal("update_file"),
+  call_id: z.string(),
+  id: z.nullable(z.string()).optional(),
+  operation: ApplyPatchCallOperation$inboundSchema,
+  status: ApplyPatchCallStatus$inboundSchema,
+  type: ApplyPatchCallItemType$inboundSchema,
+}).transform((v) => {
+  return remap$(v, {
+    "call_id": "callId",
+  });
 });
-
-export function operationUpdateFileToJSON(
-  operationUpdateFile: OperationUpdateFile,
-): string {
-  return JSON.stringify(
-    OperationUpdateFile$outboundSchema.parse(operationUpdateFile),
-  );
-}
-
-/** @internal */
-export type OperationDeleteFile$Outbound = {
-  path: string;
-  type: "delete_file";
-};
-
-/** @internal */
-export const OperationDeleteFile$outboundSchema: z.ZodType<
-  OperationDeleteFile$Outbound,
-  OperationDeleteFile
-> = z.object({
-  path: z.string(),
-  type: z.literal("delete_file"),
-});
-
-export function operationDeleteFileToJSON(
-  operationDeleteFile: OperationDeleteFile,
-): string {
-  return JSON.stringify(
-    OperationDeleteFile$outboundSchema.parse(operationDeleteFile),
-  );
-}
-
-/** @internal */
-export type OperationCreateFile$Outbound = {
-  diff: string;
-  path: string;
-  type: "create_file";
-};
-
-/** @internal */
-export const OperationCreateFile$outboundSchema: z.ZodType<
-  OperationCreateFile$Outbound,
-  OperationCreateFile
-> = z.object({
-  diff: z.string(),
-  path: z.string(),
-  type: z.literal("create_file"),
-});
-
-export function operationCreateFileToJSON(
-  operationCreateFile: OperationCreateFile,
-): string {
-  return JSON.stringify(
-    OperationCreateFile$outboundSchema.parse(operationCreateFile),
-  );
-}
-
-/** @internal */
-export type Operation$Outbound =
-  | OperationCreateFile$Outbound
-  | OperationDeleteFile$Outbound
-  | OperationUpdateFile$Outbound;
-
-/** @internal */
-export const Operation$outboundSchema: z.ZodType<
-  Operation$Outbound,
-  Operation
-> = z.union([
-  z.lazy(() => OperationCreateFile$outboundSchema),
-  z.lazy(() => OperationDeleteFile$outboundSchema),
-  z.lazy(() => OperationUpdateFile$outboundSchema),
-]);
-
-export function operationToJSON(operation: Operation): string {
-  return JSON.stringify(Operation$outboundSchema.parse(operation));
-}
-
-/** @internal */
-export const ApplyPatchCallItemStatusCompleted$outboundSchema: z.ZodEnum<
-  typeof ApplyPatchCallItemStatusCompleted
-> = z.enum(ApplyPatchCallItemStatusCompleted);
-
-/** @internal */
-export const ApplyPatchCallItemStatusInProgress$outboundSchema: z.ZodEnum<
-  typeof ApplyPatchCallItemStatusInProgress
-> = z.enum(ApplyPatchCallItemStatusInProgress);
-
-/** @internal */
-export type ApplyPatchCallItemStatusUnion$Outbound = string | string;
-
-/** @internal */
-export const ApplyPatchCallItemStatusUnion$outboundSchema: z.ZodType<
-  ApplyPatchCallItemStatusUnion$Outbound,
-  ApplyPatchCallItemStatusUnion
-> = z.union([
-  ApplyPatchCallItemStatusInProgress$outboundSchema,
-  ApplyPatchCallItemStatusCompleted$outboundSchema,
-]);
-
-export function applyPatchCallItemStatusUnionToJSON(
-  applyPatchCallItemStatusUnion: ApplyPatchCallItemStatusUnion,
-): string {
-  return JSON.stringify(
-    ApplyPatchCallItemStatusUnion$outboundSchema.parse(
-      applyPatchCallItemStatusUnion,
-    ),
-  );
-}
-
-/** @internal */
-export const TypeApplyPatchCall$outboundSchema: z.ZodEnum<
-  typeof TypeApplyPatchCall
-> = z.enum(TypeApplyPatchCall);
-
 /** @internal */
 export type ApplyPatchCallItem$Outbound = {
   call_id: string;
   id?: string | null | undefined;
-  operation:
-    | OperationCreateFile$Outbound
-    | OperationDeleteFile$Outbound
-    | OperationUpdateFile$Outbound;
-  status: string | string;
+  operation: ApplyPatchCallOperation$Outbound;
+  status: string;
   type: string;
 };
 
@@ -214,16 +83,9 @@ export const ApplyPatchCallItem$outboundSchema: z.ZodType<
 > = z.object({
   callId: z.string(),
   id: z.nullable(z.string()).optional(),
-  operation: z.union([
-    z.lazy(() => OperationCreateFile$outboundSchema),
-    z.lazy(() => OperationDeleteFile$outboundSchema),
-    z.lazy(() => OperationUpdateFile$outboundSchema),
-  ]),
-  status: z.union([
-    ApplyPatchCallItemStatusInProgress$outboundSchema,
-    ApplyPatchCallItemStatusCompleted$outboundSchema,
-  ]),
-  type: TypeApplyPatchCall$outboundSchema,
+  operation: ApplyPatchCallOperation$outboundSchema,
+  status: ApplyPatchCallStatus$outboundSchema,
+  type: ApplyPatchCallItemType$outboundSchema,
 }).transform((v) => {
   return remap$(v, {
     callId: "call_id",
@@ -235,5 +97,14 @@ export function applyPatchCallItemToJSON(
 ): string {
   return JSON.stringify(
     ApplyPatchCallItem$outboundSchema.parse(applyPatchCallItem),
+  );
+}
+export function applyPatchCallItemFromJSON(
+  jsonString: string,
+): SafeParseResult<ApplyPatchCallItem, SDKValidationError> {
+  return safeParse(
+    jsonString,
+    (x) => ApplyPatchCallItem$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'ApplyPatchCallItem' from JSON`,
   );
 }
