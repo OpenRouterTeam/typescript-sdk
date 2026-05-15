@@ -17,10 +17,6 @@ export type FusionPlugin = {
   enabled?: boolean | undefined;
   id: "fusion";
   /**
-   * Maximum number of tool-calling steps each panelist (analysis model) and the judge model may take during their agentic web-research loop. Models with web_search/web_fetch enabled iterate until they produce a text response or hit this ceiling. Defaults to 8. Capped at 16.
-   */
-  maxToolCalls?: number | undefined;
-  /**
    * Slug of the model that performs both the judge step (with web_search + web_fetch) and the final synthesis. When omitted, defaults to the first model in the Quality preset.
    */
   model?: string | undefined;
@@ -31,7 +27,6 @@ export type FusionPlugin$Outbound = {
   analysis_models?: Array<string> | undefined;
   enabled?: boolean | undefined;
   id: "fusion";
-  max_tool_calls?: number | undefined;
   model?: string | undefined;
 };
 
@@ -43,12 +38,10 @@ export const FusionPlugin$outboundSchema: z.ZodType<
   analysisModels: z.array(z.string()).optional(),
   enabled: z.boolean().optional(),
   id: z.literal("fusion"),
-  maxToolCalls: z.int().optional(),
   model: z.string().optional(),
 }).transform((v) => {
   return remap$(v, {
     analysisModels: "analysis_models",
-    maxToolCalls: "max_tool_calls",
   });
 });
 
