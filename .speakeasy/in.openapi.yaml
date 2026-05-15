@@ -11491,6 +11491,24 @@ components:
         error:
           description: Error message when the fusion run did not produce an analysis result.
           type: string
+        failed_models:
+          description: >-
+            Models that were requested as part of the analysis panel but did not produce a response. Present when at
+            least one requested analysis model failed. The fusion result is still usable but was produced from a
+            degraded panel.
+          items:
+            properties:
+              error:
+                description: Error message describing why the model failed.
+                type: string
+              model:
+                description: Slug of the analysis model that failed.
+                type: string
+            required:
+              - model
+              - error
+            type: object
+          type: array
         id:
           type: string
         responses:
