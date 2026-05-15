@@ -1991,14 +1991,18 @@ components:
         - type
       type: object
     ApplyPatchCallItem:
-      description: A file create/update/delete via diff patch
+      description: >-
+        A tool call emitted by the model requesting a V4A patch operation. The client applies the patch and echoes an
+        `apply_patch_call_output` on the next turn.
       example:
-        call_id: call-abc123
+        call_id: call_abc123
+        id: apc_abc123
         operation:
-          diff: |
-            --- a
-            +++ b
-          path: src/main.ts
+          diff: |-
+            @@ function main() {
+            +  console.log("hi");
+             }
+          path: /src/main.ts
           type: update_file
         status: completed
         type: apply_patch_call
@@ -2009,54 +2013,9 @@ components:
           nullable: true
           type: string
         operation:
-          oneOf:
-            - properties:
-                diff:
-                  type: string
-                path:
-                  type: string
-                type:
-                  enum:
-                    - create_file
-                  type: string
-              required:
-                - type
-                - path
-                - diff
-              type: object
-            - properties:
-                path:
-                  type: string
-                type:
-                  enum:
-                    - delete_file
-                  type: string
-              required:
-                - type
-                - path
-              type: object
-            - properties:
-                diff:
-                  type: string
-                path:
-                  type: string
-                type:
-                  enum:
-                    - update_file
-                  type: string
-              required:
-                - type
-                - path
-                - diff
-              type: object
+          $ref: '#/components/schemas/ApplyPatchCallOperation'
         status:
-          anyOf:
-            - enum:
-                - in_progress
-              type: string
-            - enum:
-                - completed
-              type: string
+          $ref: '#/components/schemas/ApplyPatchCallStatus'
         type:
           enum:
             - apply_patch_call
@@ -2064,13 +2023,126 @@ components:
       required:
         - type
         - call_id
-        - operation
         - status
+        - operation
+      type: object
+    ApplyPatchCallOperation:
+      description: >-
+        The patch operation requested by an `apply_patch_call`. `create_file` and `update_file` carry a V4A diff;
+        `delete_file` omits it.
+      example:
+        diff: |-
+          @@ function main() {
+          +  console.log("hi");
+           }
+        path: /src/main.ts
+        type: update_file
+      oneOf:
+        - properties:
+            diff:
+              type: string
+            path:
+              type: string
+            type:
+              enum:
+                - create_file
+              type: string
+          required:
+            - type
+            - path
+            - diff
+          type: object
+        - properties:
+            diff:
+              type: string
+            path:
+              type: string
+            type:
+              enum:
+                - update_file
+              type: string
+          required:
+            - type
+            - path
+            - diff
+          type: object
+        - properties:
+            path:
+              type: string
+            type:
+              enum:
+                - delete_file
+              type: string
+          required:
+            - type
+            - path
+          type: object
+    ApplyPatchCallOperationDiffDeltaEvent:
+      description: Incremental chunk of `operation.diff` for an `apply_patch_call`. Matches OpenAI's streaming shape.
+      example:
+        delta: |
+          +console.log("hi");
+        item_id: apc_abc123
+        output_index: 0
+        sequence_number: 5
+        type: response.apply_patch_call_operation_diff.delta
+      properties:
+        delta:
+          type: string
+        item_id:
+          type: string
+        output_index:
+          type: integer
+        sequence_number:
+          type: integer
+        type:
+          enum:
+            - response.apply_patch_call_operation_diff.delta
+          type: string
+      required:
+        - type
+        - item_id
+        - output_index
+        - delta
+        - sequence_number
+      type: object
+    ApplyPatchCallOperationDiffDoneEvent:
+      description: Emitted when `operation.diff` streaming completes for an `apply_patch_call`.
+      example:
+        diff: |
+          @@
+          +console.log("hi");
+        item_id: apc_abc123
+        output_index: 0
+        sequence_number: 12
+        type: response.apply_patch_call_operation_diff.done
+      properties:
+        diff:
+          type: string
+        item_id:
+          type: string
+        output_index:
+          type: integer
+        sequence_number:
+          type: integer
+        type:
+          enum:
+            - response.apply_patch_call_operation_diff.done
+          type: string
+      required:
+        - type
+        - item_id
+        - output_index
+        - diff
+        - sequence_number
       type: object
     ApplyPatchCallOutputItem:
-      description: Output from an apply patch operation
+      description: >-
+        The client's echo of an `apply_patch_call` after applying the patch. `output` is an optional human-readable log;
+        `status` is `completed` when the patch was applied successfully, `failed` otherwise.
       example:
-        call_id: call-abc123
+        call_id: call_abc123
+        output: Applied patch to /src/main.ts
         status: completed
         type: apply_patch_call_output
       properties:
@@ -2083,13 +2155,10 @@ components:
           nullable: true
           type: string
         status:
-          anyOf:
-            - enum:
-                - completed
-              type: string
-            - enum:
-                - failed
-              type: string
+          enum:
+            - completed
+            - failed
+          type: string
         type:
           enum:
             - apply_patch_call_output
@@ -2099,6 +2168,13 @@ components:
         - call_id
         - status
       type: object
+    ApplyPatchCallStatus:
+      description: Lifecycle state of an `apply_patch_call` output item.
+      enum:
+        - in_progress
+        - completed
+      example: completed
+      type: string
     ApplyPatchServerTool:
       description: Apply patch tool configuration
       example:
@@ -2110,6 +2186,27 @@ components:
           type: string
       required:
         - type
+      type: object
+    ApplyPatchServerTool_OpenRouter:
+      description: >-
+        OpenRouter built-in server tool: validates V4A diff patches for file operations (create, update, delete).
+        Restricted to the Responses API.
+      example:
+        type: openrouter:apply_patch
+      properties:
+        parameters:
+          $ref: '#/components/schemas/ApplyPatchServerToolConfig'
+        type:
+          enum:
+            - openrouter:apply_patch
+          type: string
+      required:
+        - type
+      type: object
+    ApplyPatchServerToolConfig:
+      description: Configuration for the openrouter:apply_patch server tool
+      example: {}
+      properties: {}
       type: object
     AutoRouterPlugin:
       example:
@@ -2547,6 +2644,8 @@ components:
               - $ref: '#/components/schemas/OutputMessage'
               - $ref: '#/components/schemas/OpenAIResponseCustomToolCall'
               - $ref: '#/components/schemas/OpenAIResponseCustomToolCallOutput'
+              - $ref: '#/components/schemas/ApplyPatchCallItem'
+              - $ref: '#/components/schemas/ApplyPatchCallOutputItem'
           type: array
         - nullable: true
       example:
@@ -7518,6 +7617,8 @@ components:
               - $ref: '#/components/schemas/InputMessageItem'
               - $ref: '#/components/schemas/FunctionCallItem'
               - $ref: '#/components/schemas/FunctionCallOutputItem'
+              - $ref: '#/components/schemas/ApplyPatchCallItem'
+              - $ref: '#/components/schemas/ApplyPatchCallOutputItem'
               - allOf:
                   - $ref: '#/components/schemas/OutputMessageItem'
                   - properties:
@@ -7588,8 +7689,6 @@ components:
               - $ref: '#/components/schemas/LocalShellCallOutputItem'
               - $ref: '#/components/schemas/ShellCallItem'
               - $ref: '#/components/schemas/ShellCallOutputItem'
-              - $ref: '#/components/schemas/ApplyPatchCallItem'
-              - $ref: '#/components/schemas/ApplyPatchCallOutputItem'
               - $ref: '#/components/schemas/McpListToolsItem'
               - $ref: '#/components/schemas/McpApprovalRequestItem'
               - $ref: '#/components/schemas/McpApprovalResponseItem'
@@ -10510,6 +10609,22 @@ components:
             - type
           type: object
         - $ref: '#/components/schemas/ToolChoiceAllowed'
+        - properties:
+            type:
+              enum:
+                - apply_patch
+              type: string
+          required:
+            - type
+          type: object
+        - properties:
+            type:
+              enum:
+                - shell
+              type: string
+          required:
+            - type
+          type: object
       example: auto
     OpenAIResponsesTruncation:
       enum:
@@ -10905,20 +11020,65 @@ components:
       example: end_turn
       nullable: true
       type: string
-    OutputApplyPatchServerToolItem:
-      description: An openrouter:apply_patch server tool output item
+    OutputApplyPatchCallItem:
+      description: >-
+        A native `apply_patch_call` output item matching OpenAI's Responses API shape. Emitted when the client requested
+        the `apply_patch` shorthand.
       example:
-        filePath: /src/main.ts
-        id: ap_tmp_abc123
+        call_id: call_abc123
+        id: apc_abc123
+        operation:
+          diff: |-
+            @@ function main() {
+            +  console.log("hi");
+             }
+          path: /src/main.ts
+          type: update_file
         status: completed
-        type: openrouter:apply_patch
+        type: apply_patch_call
       properties:
-        filePath:
+        call_id:
           type: string
         id:
           type: string
-        patch:
+        operation:
+          $ref: '#/components/schemas/ApplyPatchCallOperation'
+        status:
+          $ref: '#/components/schemas/ApplyPatchCallStatus'
+        type:
+          enum:
+            - apply_patch_call
           type: string
+      required:
+        - type
+        - id
+        - call_id
+        - status
+        - operation
+      type: object
+    OutputApplyPatchServerToolItem:
+      description: >-
+        An openrouter:apply_patch server tool output item. The turn halts when validation succeeds so the client can
+        apply the patch and echo an `apply_patch_call_output` on the next turn.
+      example:
+        call_id: call_abc123
+        id: apc_abc123
+        operation:
+          diff: |-
+            @@ function main() {
+            +  console.log("hi");
+             }
+          path: /src/main.ts
+          type: update_file
+        status: completed
+        type: openrouter:apply_patch
+      properties:
+        call_id:
+          type: string
+        id:
+          type: string
+        operation:
+          $ref: '#/components/schemas/ApplyPatchCallOperation'
         status:
           $ref: '#/components/schemas/ToolCallStatus'
         type:
@@ -11593,6 +11753,7 @@ components:
       description: An output item from the response
       discriminator:
         mapping:
+          apply_patch_call: '#/components/schemas/OutputApplyPatchCallItem'
           code_interpreter_call: '#/components/schemas/OutputCodeInterpreterCallItem'
           computer_call: '#/components/schemas/OutputComputerCallItem'
           custom_tool_call: '#/components/schemas/OutputCustomToolCallItem'
@@ -11644,6 +11805,7 @@ components:
         - $ref: '#/components/schemas/OutputBashServerToolItem'
         - $ref: '#/components/schemas/OutputTextEditorServerToolItem'
         - $ref: '#/components/schemas/OutputApplyPatchServerToolItem'
+        - $ref: '#/components/schemas/OutputApplyPatchCallItem'
         - $ref: '#/components/schemas/OutputWebFetchServerToolItem'
         - $ref: '#/components/schemas/OutputToolSearchServerToolItem'
         - $ref: '#/components/schemas/OutputMemoryServerToolItem'
@@ -14303,6 +14465,7 @@ components:
               - $ref: '#/components/schemas/ChatSearchModelsServerTool'
               - $ref: '#/components/schemas/WebFetchServerTool'
               - $ref: '#/components/schemas/WebSearchServerTool_OpenRouter'
+              - $ref: '#/components/schemas/ApplyPatchServerTool_OpenRouter'
           type: array
         top_k:
           type: integer
@@ -14643,6 +14806,8 @@ components:
       discriminator:
         mapping:
           error: '#/components/schemas/ErrorEvent'
+          response.apply_patch_call_operation_diff.delta: '#/components/schemas/ApplyPatchCallOperationDiffDeltaEvent'
+          response.apply_patch_call_operation_diff.done: '#/components/schemas/ApplyPatchCallOperationDiffDoneEvent'
           response.completed: '#/components/schemas/StreamEventsResponseCompleted'
           response.content_part.added: '#/components/schemas/ContentPartAddedEvent'
           response.content_part.done: '#/components/schemas/ContentPartDoneEvent'
@@ -14728,6 +14893,8 @@ components:
         - $ref: '#/components/schemas/WebSearchCallCompletedEvent'
         - $ref: '#/components/schemas/CustomToolCallInputDeltaEvent'
         - $ref: '#/components/schemas/CustomToolCallInputDoneEvent'
+        - $ref: '#/components/schemas/ApplyPatchCallOperationDiffDeltaEvent'
+        - $ref: '#/components/schemas/ApplyPatchCallOperationDiffDoneEvent'
     StreamEventsResponseCompleted:
       allOf:
         - $ref: '#/components/schemas/CompletedEvent'
