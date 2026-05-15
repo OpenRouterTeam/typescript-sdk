@@ -1,0 +1,17 @@
+# OpenAIResponsesToolChoiceShell
+
+## Example Usage
+
+```typescript
+import { OpenAIResponsesToolChoiceShell } from "@openrouter/sdk/models";
+
+let value: OpenAIResponsesToolChoiceShell = {
+  type: "shell",
+};
+```
+
+## Fields
+
+| Field                                                                                        | Type                                                                                         | Required                                                                                     | Description                                                                                  |
+| -------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------- |
+| `type`                                                                                       | [models.OpenAIResponsesToolChoiceTypeShell](../models/openairesponsestoolchoicetypeshell.md) | :heavy_check_mark:                                                                           | N/A                                                                                          |
