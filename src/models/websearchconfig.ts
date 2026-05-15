@@ -37,7 +37,7 @@ export type WebSearchConfig = {
    */
   maxResults?: number | undefined;
   /**
-   * Maximum total number of search results across all search calls in a single request. Once this limit is reached, the tool will stop returning new results. Useful for controlling cost and context size in agentic loops. Defaults to 50 when not specified.
+   * Maximum total number of search results across all search calls in a single request. Once this limit is reached, the tool will stop returning new results. Useful for controlling cost and context size in agentic loops.
    */
   maxTotalResults?: number | undefined;
   /**
