@@ -6390,6 +6390,15 @@ components:
           enum:
             - fusion
           type: string
+        max_tool_calls:
+          description: >-
+            Maximum number of tool-calling steps each panelist (analysis model) and the judge model may take during
+            their agentic web-research loop. Models with web_search/web_fetch enabled iterate until they produce a text
+            response or hit this ceiling. Defaults to 8. Capped at 16.
+          example: 12
+          maximum: 16
+          minimum: 1
+          type: integer
         model:
           description: >-
             Slug of the model that performs both the judge step (with web_search + web_fetch) and the final synthesis.
@@ -6442,6 +6451,15 @@ components:
           maxItems: 8
           minItems: 1
           type: array
+        max_tool_calls:
+          description: >-
+            Maximum number of tool-calling steps each panelist (analysis model) and the judge model may take during
+            their agentic web-research loop. Models with web_search/web_fetch enabled iterate until they produce a text
+            response or hit this ceiling. Defaults to 8. Capped at 16.
+          example: 12
+          maximum: 16
+          minimum: 1
+          type: integer
         model:
           description: >-
             Slug of the judge model that produces the structured analysis JSON. Defaults to the model used in the outer
