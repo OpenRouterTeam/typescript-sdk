@@ -4883,8 +4883,8 @@ components:
           description: >-
             Maximum total number of search results across all search calls in a single request. Once this limit is
             reached, the tool will stop returning new results. Useful for controlling cost and context size in agentic
-            loops.
-          example: 20
+            loops. Defaults to 50 when not specified.
+          example: 50
           type: integer
         parameters:
           $ref: '#/components/schemas/WebSearchConfig'
@@ -16218,8 +16218,8 @@ components:
           description: >-
             Maximum total number of search results across all search calls in a single request. Once this limit is
             reached, the tool will stop returning new results. Useful for controlling cost and context size in agentic
-            loops.
-          example: 20
+            loops. Defaults to 50 when not specified.
+          example: 50
           type: integer
         search_context_size:
           $ref: '#/components/schemas/SearchQualityLevel'
@@ -16408,8 +16408,8 @@ components:
           description: >-
             Maximum total number of search results across all search calls in a single request. Once this limit is
             reached, the tool will stop returning new results. Useful for controlling cost and context size in agentic
-            loops.
-          example: 20
+            loops. Defaults to 50 when not specified.
+          example: 50
           type: integer
         search_context_size:
           $ref: '#/components/schemas/SearchQualityLevel'
