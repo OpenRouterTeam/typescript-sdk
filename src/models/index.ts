@@ -330,6 +330,7 @@ export * from "./videogenerationusage.js";
 export * from "./videomodel.js";
 export * from "./videomodelslistresponse.js";
 export * from "./webfetchengineenum.js";
+export * from "./webfetchplugin.js";
 export * from "./webfetchservertool.js";
 export * from "./webfetchservertoolconfig.js";
 export * from "./websearchcallcompletedevent.js";
