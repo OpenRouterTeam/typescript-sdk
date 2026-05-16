@@ -3,8 +3,10 @@
  * @generated-id: 9c0e070af33d
  */
 
-import { observabilityGet } from "../funcs/observabilityGet.js";
+import { observabilityCreate } from "../funcs/observabilityCreate.js";
+import { observabilityDelete } from "../funcs/observabilityDelete.js";
 import { observabilityList } from "../funcs/observabilityList.js";
+import { observabilityUpdate } from "../funcs/observabilityUpdate.js";
 import { ClientSDK, RequestOptions } from "../lib/sdks.js";
 import * as models from "../models/index.js";
 import * as operations from "../models/operations/index.js";
@@ -35,16 +37,50 @@ export class Observability extends ClientSDK {
   }
 
   /**
-   * Get an observability destination
+   * Create an observability destination
    *
    * @remarks
-   * Fetch a single observability destination by its UUID. [Management key](/docs/guides/overview/auth/management-api-keys) required.
+   * Create a new observability destination. A maximum of 5 destinations per type is allowed. [Management key](/docs/guides/overview/auth/management-api-keys) required.
    */
-  async get(
-    request: operations.GetObservabilityDestinationRequest,
+  async create(
+    request: operations.CreateObservabilityDestinationRequest,
     options?: RequestOptions,
-  ): Promise<models.GetObservabilityDestinationResponse> {
-    return unwrapAsync(observabilityGet(
+  ): Promise<models.CreateObservabilityDestinationResponse> {
+    return unwrapAsync(observabilityCreate(
+      this,
+      request,
+      options,
+    ));
+  }
+
+  /**
+   * Delete an observability destination
+   *
+   * @remarks
+   * Delete an existing observability destination. This performs a soft delete. [Management key](/docs/guides/overview/auth/management-api-keys) required.
+   */
+  async delete(
+    request: operations.DeleteObservabilityDestinationRequest,
+    options?: RequestOptions,
+  ): Promise<models.DeleteObservabilityDestinationResponse> {
+    return unwrapAsync(observabilityDelete(
+      this,
+      request,
+      options,
+    ));
+  }
+
+  /**
+   * Update an observability destination
+   *
+   * @remarks
+   * Update an existing observability destination. Only the fields provided in the request body are updated. [Management key](/docs/guides/overview/auth/management-api-keys) required.
+   */
+  async update(
+    request: operations.UpdateObservabilityDestinationRequest,
+    options?: RequestOptions,
+  ): Promise<models.UpdateObservabilityDestinationResponse> {
+    return unwrapAsync(observabilityUpdate(
       this,
       request,
       options,
