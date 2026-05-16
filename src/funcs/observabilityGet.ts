@@ -4,7 +4,7 @@
  */
 
 import { OpenRouterCore } from "../core.js";
-import { encodeSimple } from "../lib/encodings.js";
+import { encodeFormQuery, encodeSimple } from "../lib/encodings.js";
 import * as M from "../lib/matchers.js";
 import { compactMap } from "../lib/primitives.js";
 import { safeParse } from "../lib/schemas.js";
@@ -31,7 +31,7 @@ import { Result } from "../types/fp.js";
  * Get an observability destination
  *
  * @remarks
- * Fetch a single observability destination by its UUID. [Management key](/docs/guides/overview/auth/management-api-keys) required.
+ * Fetch a single observability destination by its UUID. Defaults to the authenticated entity's default workspace — use `workspace_id` to override. [Management key](/docs/guides/overview/auth/management-api-keys) required.
  */
 export function observabilityGet(
   client: OpenRouterCore,
@@ -103,6 +103,10 @@ async function $do(
   };
   const path = pathToFunc("/observability/destinations/{id}")(pathParams);
 
+  const query = encodeFormQuery({
+    "workspace_id": payload.workspace_id,
+  });
+
   const headers = new Headers(compactMap({
     Accept: "application/json",
     "HTTP-Referer": encodeSimple(
@@ -157,6 +161,7 @@ async function $do(
     baseURL: options?.serverURL,
     path: path,
     headers: headers,
+    query: query,
     body: body,
     userAgent: client._options.userAgent,
     timeoutMs: options?.timeoutMs || client._options.timeoutMs || -1,

@@ -6,12 +6,100 @@
 import * as z from "zod/v4";
 import { remap as remap$ } from "../lib/primitives.js";
 import { safeParse } from "../lib/schemas.js";
+import * as openEnums from "../types/enums.js";
+import { OpenEnum } from "../types/enums.js";
 import { Result as SafeParseResult } from "../types/fp.js";
-import {
-  BYOKProviderSlug,
-  BYOKProviderSlug$inboundSchema,
-} from "./byokproviderslug.js";
 import { SDKValidationError } from "./errors/sdkvalidationerror.js";
+
+/**
+ * The upstream provider this credential authenticates against, as a lowercase slug (e.g. `openai`, `anthropic`, `amazon-bedrock`).
+ */
+export const ProviderEnum = {
+  Ai21: "ai21",
+  AionLabs: "aion-labs",
+  Akashml: "akashml",
+  Alibaba: "alibaba",
+  AmazonBedrock: "amazon-bedrock",
+  AmazonNova: "amazon-nova",
+  Ambient: "ambient",
+  Anthropic: "anthropic",
+  ArceeAi: "arcee-ai",
+  AtlasCloud: "atlas-cloud",
+  Avian: "avian",
+  Azure: "azure",
+  Baidu: "baidu",
+  Baseten: "baseten",
+  BlackForestLabs: "black-forest-labs",
+  Byteplus: "byteplus",
+  Cerebras: "cerebras",
+  Chutes: "chutes",
+  Cirrascale: "cirrascale",
+  Clarifai: "clarifai",
+  Cloudflare: "cloudflare",
+  Cohere: "cohere",
+  Crusoe: "crusoe",
+  Deepinfra: "deepinfra",
+  Deepseek: "deepseek",
+  Dekallm: "dekallm",
+  Featherless: "featherless",
+  Fireworks: "fireworks",
+  Friendli: "friendli",
+  Gmicloud: "gmicloud",
+  GoogleAiStudio: "google-ai-studio",
+  GoogleVertex: "google-vertex",
+  Groq: "groq",
+  Hyperbolic: "hyperbolic",
+  Inception: "inception",
+  Inceptron: "inceptron",
+  InferenceNet: "inference-net",
+  Infermatic: "infermatic",
+  Inflection: "inflection",
+  IoNet: "io-net",
+  Ionstream: "ionstream",
+  Liquid: "liquid",
+  Mancer: "mancer",
+  Mara: "mara",
+  Minimax: "minimax",
+  Mistral: "mistral",
+  Modelrun: "modelrun",
+  Modular: "modular",
+  Moonshotai: "moonshotai",
+  Morph: "morph",
+  Ncompass: "ncompass",
+  Nebius: "nebius",
+  NexAgi: "nex-agi",
+  Nextbit: "nextbit",
+  Novita: "novita",
+  Nvidia: "nvidia",
+  OpenInference: "open-inference",
+  Openai: "openai",
+  Parasail: "parasail",
+  Perceptron: "perceptron",
+  Perplexity: "perplexity",
+  Phala: "phala",
+  Poolside: "poolside",
+  Recraft: "recraft",
+  Reka: "reka",
+  Relace: "relace",
+  Sambanova: "sambanova",
+  Seed: "seed",
+  Siliconflow: "siliconflow",
+  Sourceful: "sourceful",
+  Stepfun: "stepfun",
+  Streamlake: "streamlake",
+  Switchpoint: "switchpoint",
+  Together: "together",
+  Upstage: "upstage",
+  Venice: "venice",
+  Wandb: "wandb",
+  Xai: "xai",
+  Xiaomi: "xiaomi",
+  ZAi: "z-ai",
+} as const;
+/**
+ * The upstream provider this credential authenticates against, as a lowercase slug (e.g. `openai`, `anthropic`, `amazon-bedrock`).
+ */
+export type ProviderEnum = OpenEnum<typeof ProviderEnum>;
 
 export type BYOKKey = {
   /**
@@ -53,7 +141,7 @@ export type BYOKKey = {
   /**
    * The upstream provider this credential authenticates against, as a lowercase slug (e.g. `openai`, `anthropic`, `amazon-bedrock`).
    */
-  provider: BYOKProviderSlug;
+  provider: ProviderEnum;
   /**
    * Position within the provider — credentials are tried in ascending sort order.
    */
@@ -63,6 +151,10 @@ export type BYOKKey = {
    */
   workspaceId: string;
 };
+
+/** @internal */
+export const ProviderEnum$inboundSchema: z.ZodType<ProviderEnum, unknown> =
+  openEnums.inboundSchema(ProviderEnum);
 
 /** @internal */
 export const BYOKKey$inboundSchema: z.ZodType<BYOKKey, unknown> = z.object({
@@ -75,7 +167,7 @@ export const BYOKKey$inboundSchema: z.ZodType<BYOKKey, unknown> = z.object({
   is_fallback: z.boolean(),
   label: z.string(),
   name: z.nullable(z.string()).optional(),
-  provider: BYOKProviderSlug$inboundSchema,
+  provider: ProviderEnum$inboundSchema,
   sort_order: z.int(),
   workspace_id: z.string(),
 }).transform((v) => {

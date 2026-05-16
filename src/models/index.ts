@@ -35,7 +35,6 @@ export * from "./bulkunassignkeysresponse.js";
 export * from "./bulkunassignmembersrequest.js";
 export * from "./bulkunassignmembersresponse.js";
 export * from "./byokkey.js";
-export * from "./byokproviderslug.js";
 export * from "./chatassistantimages.js";
 export * from "./chatassistantmessage.js";
 export * from "./chataudiooutput.js";

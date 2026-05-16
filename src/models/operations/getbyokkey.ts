@@ -52,6 +52,10 @@ export type GetBYOKKeyRequest = {
    * The BYOK credential ID (UUID).
    */
   id: string;
+  /**
+   * Optional workspace ID. Defaults to the authenticated entity's default workspace.
+   */
+  workspaceId?: string | undefined;
 };
 
 /** @internal */
@@ -60,6 +64,7 @@ export type GetBYOKKeyRequest$Outbound = {
   appTitle?: string | undefined;
   appCategories?: string | undefined;
   id: string;
+  workspace_id?: string | undefined;
 };
 
 /** @internal */
@@ -71,9 +76,11 @@ export const GetBYOKKeyRequest$outboundSchema: z.ZodType<
   appTitle: z.string().optional(),
   appCategories: z.string().optional(),
   id: z.string(),
+  workspaceId: z.string().optional(),
 }).transform((v) => {
   return remap$(v, {
     httpReferer: "HTTP-Referer",
+    workspaceId: "workspace_id",
   });
 });
 
