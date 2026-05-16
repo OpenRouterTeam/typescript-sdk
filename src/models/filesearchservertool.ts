@@ -27,9 +27,13 @@ export const FiltersType = {
 } as const;
 export type FiltersType = OpenEnum<typeof FiltersType>;
 
-export type Value1 = string | number;
+export type FileSearchServerToolValue1 = string | number;
 
-export type Value2 = string | number | boolean | Array<string | number>;
+export type FileSearchServerToolValue2 =
+  | string
+  | number
+  | boolean
+  | Array<string | number>;
 
 export type Filters = {
   key: string;
@@ -69,63 +73,78 @@ export const FiltersType$outboundSchema: z.ZodType<string, FiltersType> =
   openEnums.outboundSchema(FiltersType);
 
 /** @internal */
-export const Value1$inboundSchema: z.ZodType<Value1, unknown> = z.union([
-  z.string(),
-  z.number(),
-]);
+export const FileSearchServerToolValue1$inboundSchema: z.ZodType<
+  FileSearchServerToolValue1,
+  unknown
+> = z.union([z.string(), z.number()]);
 /** @internal */
-export type Value1$Outbound = string | number;
+export type FileSearchServerToolValue1$Outbound = string | number;
 
 /** @internal */
-export const Value1$outboundSchema: z.ZodType<Value1$Outbound, Value1> = z
-  .union([z.string(), z.number()]);
+export const FileSearchServerToolValue1$outboundSchema: z.ZodType<
+  FileSearchServerToolValue1$Outbound,
+  FileSearchServerToolValue1
+> = z.union([z.string(), z.number()]);
 
-export function value1ToJSON(value1: Value1): string {
-  return JSON.stringify(Value1$outboundSchema.parse(value1));
+export function fileSearchServerToolValue1ToJSON(
+  fileSearchServerToolValue1: FileSearchServerToolValue1,
+): string {
+  return JSON.stringify(
+    FileSearchServerToolValue1$outboundSchema.parse(fileSearchServerToolValue1),
+  );
 }
-export function value1FromJSON(
+export function fileSearchServerToolValue1FromJSON(
   jsonString: string,
-): SafeParseResult<Value1, SDKValidationError> {
+): SafeParseResult<FileSearchServerToolValue1, SDKValidationError> {
   return safeParse(
     jsonString,
-    (x) => Value1$inboundSchema.parse(JSON.parse(x)),
-    `Failed to parse 'Value1' from JSON`,
+    (x) => FileSearchServerToolValue1$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'FileSearchServerToolValue1' from JSON`,
   );
 }
 
 /** @internal */
-export const Value2$inboundSchema: z.ZodType<Value2, unknown> = z.union([
+export const FileSearchServerToolValue2$inboundSchema: z.ZodType<
+  FileSearchServerToolValue2,
+  unknown
+> = z.union([
   z.string(),
   z.number(),
   z.boolean(),
   z.array(z.union([z.string(), z.number()])),
 ]);
 /** @internal */
-export type Value2$Outbound =
+export type FileSearchServerToolValue2$Outbound =
   | string
   | number
   | boolean
   | Array<string | number>;
 
 /** @internal */
-export const Value2$outboundSchema: z.ZodType<Value2$Outbound, Value2> = z
-  .union([
-    z.string(),
-    z.number(),
-    z.boolean(),
-    z.array(z.union([z.string(), z.number()])),
-  ]);
+export const FileSearchServerToolValue2$outboundSchema: z.ZodType<
+  FileSearchServerToolValue2$Outbound,
+  FileSearchServerToolValue2
+> = z.union([
+  z.string(),
+  z.number(),
+  z.boolean(),
+  z.array(z.union([z.string(), z.number()])),
+]);
 
-export function value2ToJSON(value2: Value2): string {
-  return JSON.stringify(Value2$outboundSchema.parse(value2));
+export function fileSearchServerToolValue2ToJSON(
+  fileSearchServerToolValue2: FileSearchServerToolValue2,
+): string {
+  return JSON.stringify(
+    FileSearchServerToolValue2$outboundSchema.parse(fileSearchServerToolValue2),
+  );
 }
-export function value2FromJSON(
+export function fileSearchServerToolValue2FromJSON(
   jsonString: string,
-): SafeParseResult<Value2, SDKValidationError> {
+): SafeParseResult<FileSearchServerToolValue2, SDKValidationError> {
   return safeParse(
     jsonString,
-    (x) => Value2$inboundSchema.parse(JSON.parse(x)),
-    `Failed to parse 'Value2' from JSON`,
+    (x) => FileSearchServerToolValue2$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'FileSearchServerToolValue2' from JSON`,
   );
 }
 
