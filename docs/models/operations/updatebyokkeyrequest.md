@@ -1,12 +1,13 @@
-# GetBYOKKeyRequest
+# UpdateBYOKKeyRequest
 
 ## Example Usage
 
 ```typescript
-import { GetBYOKKeyRequest } from "@openrouter/sdk/models/operations";
+import { UpdateBYOKKeyRequest } from "@openrouter/sdk/models/operations";
 
-let value: GetBYOKKeyRequest = {
+let value: UpdateBYOKKeyRequest = {
   id: "11111111-2222-3333-4444-555555555555",
+  updateBYOKKeyRequest: {},
 };
 ```
 
@@ -18,3 +19,4 @@ let value: GetBYOKKeyRequest = {
 | `appTitle`                                                                                                                                        | *string*                                                                                                                                          | :heavy_minus_sign:                                                                                                                                | The app display name allows you to customize how your app appears in OpenRouter's dashboard.<br/>                                                 |                                                                                                                                                   |
 | `appCategories`                                                                                                                                   | *string*                                                                                                                                          | :heavy_minus_sign:                                                                                                                                | Comma-separated list of app categories (e.g. "cli-agent,cloud-agent"). Used for marketplace rankings.<br/>                                        |                                                                                                                                                   |
 | `id`                                                                                                                                              | *string*                                                                                                                                          | :heavy_check_mark:                                                                                                                                | The BYOK credential ID (UUID).                                                                                                                    | 11111111-2222-3333-4444-555555555555                                                                                                              |
+| `updateBYOKKeyRequest`                                                                                                                            | [models.UpdateBYOKKeyRequest](../../models/updatebyokkeyrequest.md)                                                                               | :heavy_check_mark:                                                                                                                                | N/A                                                                                                                                               | {<br/>"disabled": false,<br/>"name": "Updated OpenAI Key"<br/>}                                                                                   |
