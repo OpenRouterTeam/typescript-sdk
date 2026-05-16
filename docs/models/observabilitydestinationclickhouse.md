@@ -1,0 +1,42 @@
+# ObservabilityDestinationClickhouse
+
+## Example Usage
+
+```typescript
+import { ObservabilityDestinationClickhouse } from "@openrouter/sdk/models";
+
+let value: ObservabilityDestinationClickhouse = {
+  apiKeyIds: null,
+  config: {
+    database: "<value>",
+    host: "parallel-chapel.name",
+    password: "p8YmB1wSOSblbxQ",
+    username: "Britney_Walker67",
+  },
+  createdAt: "2025-08-24T10:30:00Z",
+  enabled: true,
+  filterRules: null,
+  id: "99999999-aaaa-bbbb-cccc-dddddddddddd",
+  name: "Production Langfuse",
+  privacyMode: false,
+  samplingRate: 1,
+  type: "clickhouse",
+  updatedAt: "2025-08-24T15:45:00Z",
+};
+```
+
+## Fields
+
+| Field                                                                                                               | Type                                                                                                                | Required                                                                                                            | Description                                                                                                         | Example                                                                                                             |
+| ------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------- |
+| `apiKeyIds`                                                                                                         | *number*[]                                                                                                          | :heavy_check_mark:                                                                                                  | Optional allowlist of OpenRouter API key IDs whose traffic is forwarded to this destination. `null` means all keys. | <nil>                                                                                                               |
+| `config`                                                                                                            | [models.Config3](../models/config3.md)                                                                              | :heavy_check_mark:                                                                                                  | N/A                                                                                                                 |                                                                                                                     |
+| `createdAt`                                                                                                         | *string*                                                                                                            | :heavy_check_mark:                                                                                                  | ISO timestamp of when the destination was created.                                                                  | 2025-08-24T10:30:00Z                                                                                                |
+| `enabled`                                                                                                           | *boolean*                                                                                                           | :heavy_check_mark:                                                                                                  | Whether this destination is currently enabled.                                                                      | true                                                                                                                |
+| `filterRules`                                                                                                       | [models.ObservabilityFilterRulesConfig](../models/observabilityfilterrulesconfig.md)                                | :heavy_check_mark:                                                                                                  | Optional structured filter rules controlling which events are forwarded.                                            | <nil>                                                                                                               |
+| `id`                                                                                                                | *string*                                                                                                            | :heavy_check_mark:                                                                                                  | Stable public identifier for this destination.                                                                      | 99999999-aaaa-bbbb-cccc-dddddddddddd                                                                                |
+| `name`                                                                                                              | *string*                                                                                                            | :heavy_check_mark:                                                                                                  | Human-readable name for the destination.                                                                            | Production Langfuse                                                                                                 |
+| `privacyMode`                                                                                                       | *boolean*                                                                                                           | :heavy_check_mark:                                                                                                  | When true, request/response bodies are not forwarded to this destination — only metadata.                           | false                                                                                                               |
+| `samplingRate`                                                                                                      | *number*                                                                                                            | :heavy_check_mark:                                                                                                  | Sampling rate for events sent to this destination, between 0 and 1 (1 = 100%).                                      | 1                                                                                                                   |
+| `type`                                                                                                              | *"clickhouse"*                                                                                                      | :heavy_check_mark:                                                                                                  | N/A                                                                                                                 |                                                                                                                     |
+| `updatedAt`                                                                                                         | *string*                                                                                                            | :heavy_check_mark:                                                                                                  | ISO timestamp of when the destination was last updated.                                                             | 2025-08-24T15:45:00Z                                                                                                |
