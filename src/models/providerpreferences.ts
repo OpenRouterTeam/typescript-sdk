@@ -48,6 +48,16 @@ export const DataCollection = {
  */
 export type DataCollection = OpenEnum<typeof DataCollection>;
 
+/**
+ * Endpoint filters to apply before sorting.
+ */
+export type ProviderPreferencesFilters = {
+  /**
+   * Enable Exacto quality-first filtering for tool-calling. Partitions endpoints by tool-call reliability (good > insufficient data > deranked). Composes with any sort strategy (e.g. combine with sort: "throughput" for fast + reliable tool-calling).
+   */
+  exacto?: boolean | undefined;
+};
+
 export type Ignore = ProviderName | string;
 
 /**
@@ -99,6 +109,10 @@ export type ProviderPreferences = {
    */
   enforceDistillableText?: boolean | null | undefined;
   /**
+   * Endpoint filters to apply before sorting.
+   */
+  filters?: ProviderPreferencesFilters | undefined;
+  /**
    * List of provider slugs to ignore. If provided, this list is merged with your account-wide ignored provider settings for this request.
    */
   ignore?: Array<ProviderName | string> | null | undefined;
@@ -143,6 +157,27 @@ export type ProviderPreferences = {
 /** @internal */
 export const DataCollection$outboundSchema: z.ZodType<string, DataCollection> =
   openEnums.outboundSchema(DataCollection);
+
+/** @internal */
+export type ProviderPreferencesFilters$Outbound = {
+  exacto?: boolean | undefined;
+};
+
+/** @internal */
+export const ProviderPreferencesFilters$outboundSchema: z.ZodType<
+  ProviderPreferencesFilters$Outbound,
+  ProviderPreferencesFilters
+> = z.object({
+  exacto: z.boolean().optional(),
+});
+
+export function providerPreferencesFiltersToJSON(
+  providerPreferencesFilters: ProviderPreferencesFilters,
+): string {
+  return JSON.stringify(
+    ProviderPreferencesFilters$outboundSchema.parse(providerPreferencesFilters),
+  );
+}
 
 /** @internal */
 export type Ignore$Outbound = string | string;
@@ -223,6 +258,7 @@ export type ProviderPreferences$Outbound = {
   allow_fallbacks?: boolean | null | undefined;
   data_collection?: string | null | undefined;
   enforce_distillable_text?: boolean | null | undefined;
+  filters?: ProviderPreferencesFilters$Outbound | undefined;
   ignore?: Array<string | string> | null | undefined;
   max_price?: MaxPrice$Outbound | undefined;
   only?: Array<string | string> | null | undefined;
@@ -243,6 +279,7 @@ export const ProviderPreferences$outboundSchema: z.ZodType<
   allowFallbacks: z.nullable(z.boolean()).optional(),
   dataCollection: z.nullable(DataCollection$outboundSchema).optional(),
   enforceDistillableText: z.nullable(z.boolean()).optional(),
+  filters: z.lazy(() => ProviderPreferencesFilters$outboundSchema).optional(),
   ignore: z.nullable(
     z.array(z.union([ProviderName$outboundSchema, z.string()])),
   ).optional(),
