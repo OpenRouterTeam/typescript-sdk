@@ -1,21 +1,36 @@
 # Filters
 
-## Example Usage
+
+## Supported Types
+
+### `models.FileSearchServerToolFilters`
 
 ```typescript
-import { Filters } from "@openrouter/sdk/models";
-
-let value: Filters = {
+const value: models.FileSearchServerToolFilters = {
   key: "<key>",
-  type: "eq",
-  value: [],
+  type: "lt",
+  value: "<value>",
 };
 ```
 
-## Fields
+### `models.CompoundFilter`
 
-| Field                                          | Type                                           | Required                                       | Description                                    |
-| ---------------------------------------------- | ---------------------------------------------- | ---------------------------------------------- | ---------------------------------------------- |
-| `key`                                          | *string*                                       | :heavy_check_mark:                             | N/A                                            |
-| `type`                                         | [models.FiltersType](../models/filterstype.md) | :heavy_check_mark:                             | N/A                                            |
-| `value`                                        | *models.FileSearchServerToolValue2*            | :heavy_check_mark:                             | N/A                                            |
+```typescript
+const value: models.CompoundFilter = {
+  filters: [
+    {
+      "key": "author",
+      "type": "eq",
+      "value": "Alice",
+    },
+  ],
+  type: "and",
+};
+```
+
+### `any`
+
+```typescript
+const value: any = "<value>";
+```
+
