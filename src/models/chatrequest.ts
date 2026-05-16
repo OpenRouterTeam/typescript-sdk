@@ -72,6 +72,11 @@ import {
   ContextCompressionPlugin$outboundSchema,
 } from "./contextcompressionplugin.js";
 import {
+  DeepResearchPlugin,
+  DeepResearchPlugin$Outbound,
+  DeepResearchPlugin$outboundSchema,
+} from "./deepresearchplugin.js";
+import {
   FileParserPlugin,
   FileParserPlugin$Outbound,
   FileParserPlugin$outboundSchema,
@@ -132,6 +137,7 @@ export type Modality = OpenEnum<typeof Modality>;
 export type ChatRequestPlugin =
   | AutoRouterPlugin
   | ContextCompressionPlugin
+  | DeepResearchPlugin
   | FileParserPlugin
   | FusionPlugin
   | ModerationPlugin
@@ -263,6 +269,7 @@ export type ChatRequest = {
     | Array<
       | AutoRouterPlugin
       | ContextCompressionPlugin
+      | DeepResearchPlugin
       | FileParserPlugin
       | FusionPlugin
       | ModerationPlugin
@@ -355,6 +362,7 @@ export const Modality$outboundSchema: z.ZodType<string, Modality> = openEnums
 export type ChatRequestPlugin$Outbound =
   | AutoRouterPlugin$Outbound
   | ContextCompressionPlugin$Outbound
+  | DeepResearchPlugin$Outbound
   | FileParserPlugin$Outbound
   | FusionPlugin$Outbound
   | ModerationPlugin$Outbound
@@ -369,6 +377,7 @@ export const ChatRequestPlugin$outboundSchema: z.ZodType<
 > = z.union([
   AutoRouterPlugin$outboundSchema,
   ContextCompressionPlugin$outboundSchema,
+  DeepResearchPlugin$outboundSchema,
   FileParserPlugin$outboundSchema,
   FusionPlugin$outboundSchema,
   ModerationPlugin$outboundSchema,
@@ -473,6 +482,7 @@ export type ChatRequest$Outbound = {
     | Array<
       | AutoRouterPlugin$Outbound
       | ContextCompressionPlugin$Outbound
+      | DeepResearchPlugin$Outbound
       | FileParserPlugin$Outbound
       | FusionPlugin$Outbound
       | ModerationPlugin$Outbound
@@ -529,6 +539,7 @@ export const ChatRequest$outboundSchema: z.ZodType<
     z.union([
       AutoRouterPlugin$outboundSchema,
       ContextCompressionPlugin$outboundSchema,
+      DeepResearchPlugin$outboundSchema,
       FileParserPlugin$outboundSchema,
       FusionPlugin$outboundSchema,
       ModerationPlugin$outboundSchema,

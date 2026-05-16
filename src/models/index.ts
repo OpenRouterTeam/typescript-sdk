@@ -107,6 +107,7 @@ export * from "./customtoolcallitem.js";
 export * from "./customtoolcalloutputitem.js";
 export * from "./datetimeservertool.js";
 export * from "./datetimeservertoolconfig.js";
+export * from "./deepresearchplugin.js";
 export * from "./defaultparameters.js";
 export * from "./deleteguardrailresponse.js";
 export * from "./deleteworkspaceresponse.js";
