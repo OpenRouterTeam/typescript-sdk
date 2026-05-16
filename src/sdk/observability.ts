@@ -38,7 +38,7 @@ export class Observability extends ClientSDK {
    * Get an observability destination
    *
    * @remarks
-   * Fetch a single observability destination by its UUID. Defaults to the authenticated entity's default workspace — use `workspace_id` to override. [Management key](/docs/guides/overview/auth/management-api-keys) required.
+   * Fetch a single observability destination by its UUID. [Management key](/docs/guides/overview/auth/management-api-keys) required.
    */
   async get(
     request: operations.GetObservabilityDestinationRequest,
