@@ -1,0 +1,21 @@
+# Config4
+
+## Example Usage
+
+```typescript
+import { Config4 } from "@openrouter/sdk/models";
+
+let value: Config4 = {
+  apiKey: "<value>",
+  mlApp: "<value>",
+};
+```
+
+## Fields
+
+| Field                                                                                                                      | Type                                                                                                                       | Required                                                                                                                   | Description                                                                                                                |
+| -------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------- |
+| `apiKey`                                                                                                                   | *string*                                                                                                                   | :heavy_check_mark:                                                                                                         | Datadog API key must have LLM Observability permissions. Create at:                                                        |
+| `headers`                                                                                                                  | Record<string, *string*>                                                                                                   | :heavy_minus_sign:                                                                                                         | Custom HTTP headers to include in requests to this destination.                                                            |
+| `mlApp`                                                                                                                    | *string*                                                                                                                   | :heavy_check_mark:                                                                                                         | Name to identify your application in Datadog LLM Observability                                                             |
+| `url`                                                                                                                      | *string*                                                                                                                   | :heavy_minus_sign:                                                                                                         | Datadog API URL for your region (e.g., https://api.datadoghq.com, https://api.us3.datadoghq.com, https://api.datadoghq.eu) |
