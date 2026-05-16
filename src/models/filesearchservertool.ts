@@ -35,13 +35,13 @@ export type FileSearchServerToolValue2 =
   | boolean
   | Array<string | number>;
 
-export type Filters = {
+export type FileSearchServerToolFilters = {
   key: string;
   type: FiltersType;
   value: string | number | boolean | Array<string | number>;
 };
 
-export type FiltersUnion = Filters | CompoundFilter | any;
+export type Filters = FileSearchServerToolFilters | CompoundFilter | any;
 
 export const Ranker = {
   Auto: "auto",
@@ -58,7 +58,12 @@ export type RankingOptions = {
  * File search tool configuration
  */
 export type FileSearchServerTool = {
-  filters?: Filters | CompoundFilter | any | null | undefined;
+  filters?:
+    | FileSearchServerToolFilters
+    | CompoundFilter
+    | any
+    | null
+    | undefined;
   maxNumResults?: number | undefined;
   rankingOptions?: RankingOptions | undefined;
   type: "file_search";
@@ -149,7 +154,10 @@ export function fileSearchServerToolValue2FromJSON(
 }
 
 /** @internal */
-export const Filters$inboundSchema: z.ZodType<Filters, unknown> = z.object({
+export const FileSearchServerToolFilters$inboundSchema: z.ZodType<
+  FileSearchServerToolFilters,
+  unknown
+> = z.object({
   key: z.string(),
   type: FiltersType$inboundSchema,
   value: z.union([
@@ -160,24 +168,65 @@ export const Filters$inboundSchema: z.ZodType<Filters, unknown> = z.object({
   ]),
 });
 /** @internal */
-export type Filters$Outbound = {
+export type FileSearchServerToolFilters$Outbound = {
   key: string;
   type: string;
   value: string | number | boolean | Array<string | number>;
 };
 
 /** @internal */
+export const FileSearchServerToolFilters$outboundSchema: z.ZodType<
+  FileSearchServerToolFilters$Outbound,
+  FileSearchServerToolFilters
+> = z.object({
+  key: z.string(),
+  type: FiltersType$outboundSchema,
+  value: z.union([
+    z.string(),
+    z.number(),
+    z.boolean(),
+    z.array(z.union([z.string(), z.number()])),
+  ]),
+});
+
+export function fileSearchServerToolFiltersToJSON(
+  fileSearchServerToolFilters: FileSearchServerToolFilters,
+): string {
+  return JSON.stringify(
+    FileSearchServerToolFilters$outboundSchema.parse(
+      fileSearchServerToolFilters,
+    ),
+  );
+}
+export function fileSearchServerToolFiltersFromJSON(
+  jsonString: string,
+): SafeParseResult<FileSearchServerToolFilters, SDKValidationError> {
+  return safeParse(
+    jsonString,
+    (x) => FileSearchServerToolFilters$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'FileSearchServerToolFilters' from JSON`,
+  );
+}
+
+/** @internal */
+export const Filters$inboundSchema: z.ZodType<Filters, unknown> = z.union([
+  z.lazy(() => FileSearchServerToolFilters$inboundSchema),
+  CompoundFilter$inboundSchema,
+  z.any(),
+]);
+/** @internal */
+export type Filters$Outbound =
+  | FileSearchServerToolFilters$Outbound
+  | CompoundFilter$Outbound
+  | any;
+
+/** @internal */
 export const Filters$outboundSchema: z.ZodType<Filters$Outbound, Filters> = z
-  .object({
-    key: z.string(),
-    type: FiltersType$outboundSchema,
-    value: z.union([
-      z.string(),
-      z.number(),
-      z.boolean(),
-      z.array(z.union([z.string(), z.number()])),
-    ]),
-  });
+  .union([
+    z.lazy(() => FileSearchServerToolFilters$outboundSchema),
+    CompoundFilter$outboundSchema,
+    z.any(),
+  ]);
 
 export function filtersToJSON(filters: Filters): string {
   return JSON.stringify(Filters$outboundSchema.parse(filters));
@@ -189,42 +238,6 @@ export function filtersFromJSON(
     jsonString,
     (x) => Filters$inboundSchema.parse(JSON.parse(x)),
     `Failed to parse 'Filters' from JSON`,
-  );
-}
-
-/** @internal */
-export const FiltersUnion$inboundSchema: z.ZodType<FiltersUnion, unknown> = z
-  .union([
-    z.lazy(() => Filters$inboundSchema),
-    CompoundFilter$inboundSchema,
-    z.any(),
-  ]);
-/** @internal */
-export type FiltersUnion$Outbound =
-  | Filters$Outbound
-  | CompoundFilter$Outbound
-  | any;
-
-/** @internal */
-export const FiltersUnion$outboundSchema: z.ZodType<
-  FiltersUnion$Outbound,
-  FiltersUnion
-> = z.union([
-  z.lazy(() => Filters$outboundSchema),
-  CompoundFilter$outboundSchema,
-  z.any(),
-]);
-
-export function filtersUnionToJSON(filtersUnion: FiltersUnion): string {
-  return JSON.stringify(FiltersUnion$outboundSchema.parse(filtersUnion));
-}
-export function filtersUnionFromJSON(
-  jsonString: string,
-): SafeParseResult<FiltersUnion, SDKValidationError> {
-  return safeParse(
-    jsonString,
-    (x) => FiltersUnion$inboundSchema.parse(JSON.parse(x)),
-    `Failed to parse 'FiltersUnion' from JSON`,
   );
 }
 
@@ -284,7 +297,7 @@ export const FileSearchServerTool$inboundSchema: z.ZodType<
 > = z.object({
   filters: z.nullable(
     z.union([
-      z.lazy(() => Filters$inboundSchema),
+      z.lazy(() => FileSearchServerToolFilters$inboundSchema),
       CompoundFilter$inboundSchema,
       z.any(),
     ]),
@@ -302,7 +315,12 @@ export const FileSearchServerTool$inboundSchema: z.ZodType<
 });
 /** @internal */
 export type FileSearchServerTool$Outbound = {
-  filters?: Filters$Outbound | CompoundFilter$Outbound | any | null | undefined;
+  filters?:
+    | FileSearchServerToolFilters$Outbound
+    | CompoundFilter$Outbound
+    | any
+    | null
+    | undefined;
   max_num_results?: number | undefined;
   ranking_options?: RankingOptions$Outbound | undefined;
   type: "file_search";
@@ -316,7 +334,7 @@ export const FileSearchServerTool$outboundSchema: z.ZodType<
 > = z.object({
   filters: z.nullable(
     z.union([
-      z.lazy(() => Filters$outboundSchema),
+      z.lazy(() => FileSearchServerToolFilters$outboundSchema),
       CompoundFilter$outboundSchema,
       z.any(),
     ]),
