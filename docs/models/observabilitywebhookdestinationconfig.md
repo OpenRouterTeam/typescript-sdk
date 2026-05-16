@@ -1,0 +1,19 @@
+# ObservabilityWebhookDestinationConfig
+
+## Example Usage
+
+```typescript
+import { ObservabilityWebhookDestinationConfig } from "@openrouter/sdk/models";
+
+let value: ObservabilityWebhookDestinationConfig = {
+  url: "https://pink-nucleotidase.info/",
+};
+```
+
+## Fields
+
+| Field                                | Type                                 | Required                             | Description                          |
+| ------------------------------------ | ------------------------------------ | ------------------------------------ | ------------------------------------ |
+| `headers`                            | Record<string, *string*>             | :heavy_minus_sign:                   | N/A                                  |
+| `method`                             | [models.Method](../models/method.md) | :heavy_minus_sign:                   | N/A                                  |
+| `url`                                | *string*                             | :heavy_check_mark:                   | N/A                                  |
