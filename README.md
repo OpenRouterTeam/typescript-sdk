@@ -131,7 +131,7 @@ const openRouter = new OpenRouter({
 });
 
 async function run() {
-  const result = await openRouter.guardrails.list();
+  const result = await openRouter.byok.list();
 
   for await (const page of result) {
     console.log(page);
