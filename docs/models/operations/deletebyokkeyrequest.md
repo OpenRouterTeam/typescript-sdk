@@ -1,11 +1,11 @@
-# GetBYOKKeyRequest
+# DeleteBYOKKeyRequest
 
 ## Example Usage
 
 ```typescript
-import { GetBYOKKeyRequest } from "@openrouter/sdk/models/operations";
+import { DeleteBYOKKeyRequest } from "@openrouter/sdk/models/operations";
 
-let value: GetBYOKKeyRequest = {
+let value: DeleteBYOKKeyRequest = {
   id: "11111111-2222-3333-4444-555555555555",
 };
 ```
