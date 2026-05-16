@@ -3,8 +3,11 @@
  * @generated-id: 5c1e8a4724b5
  */
 
+import { byokCreate } from "../funcs/byokCreate.js";
+import { byokDelete } from "../funcs/byokDelete.js";
 import { byokGet } from "../funcs/byokGet.js";
 import { byokList } from "../funcs/byokList.js";
+import { byokUpdate } from "../funcs/byokUpdate.js";
 import { ClientSDK, RequestOptions } from "../lib/sdks.js";
 import * as models from "../models/index.js";
 import * as operations from "../models/operations/index.js";
@@ -32,6 +35,40 @@ export class Byok extends ClientSDK {
   }
 
   /**
+   * Create a BYOK provider credential
+   *
+   * @remarks
+   * Create a new bring-your-own-key (BYOK) provider credential. The raw key is encrypted at rest and never returned in API responses. Defaults to the authenticated entity's default workspace; use the `workspace_id` body field to scope to a different workspace. [Management key](/docs/guides/overview/auth/management-api-keys) required.
+   */
+  async create(
+    request: operations.CreateBYOKKeyRequest,
+    options?: RequestOptions,
+  ): Promise<models.CreateBYOKKeyResponse> {
+    return unwrapAsync(byokCreate(
+      this,
+      request,
+      options,
+    ));
+  }
+
+  /**
+   * Delete a BYOK provider credential
+   *
+   * @remarks
+   * Delete (soft-delete) a bring-your-own-key (BYOK) provider credential by its `id`. The encrypted key material is wiped and the record is marked as deleted. Defaults to the authenticated entity's default workspace; use the `workspace_id` query parameter to scope to a different workspace. [Management key](/docs/guides/overview/auth/management-api-keys) required.
+   */
+  async delete(
+    request: operations.DeleteBYOKKeyRequest,
+    options?: RequestOptions,
+  ): Promise<models.DeleteBYOKKeyResponse> {
+    return unwrapAsync(byokDelete(
+      this,
+      request,
+      options,
+    ));
+  }
+
+  /**
    * Get a BYOK provider credential
    *
    * @remarks
@@ -42,6 +79,23 @@ export class Byok extends ClientSDK {
     options?: RequestOptions,
   ): Promise<models.GetBYOKKeyResponse> {
     return unwrapAsync(byokGet(
+      this,
+      request,
+      options,
+    ));
+  }
+
+  /**
+   * Update a BYOK provider credential
+   *
+   * @remarks
+   * Update an existing bring-your-own-key (BYOK) provider credential by its `id`. Defaults to the authenticated entity's default workspace; use the `workspace_id` body field to scope to a different workspace. [Management key](/docs/guides/overview/auth/management-api-keys) required.
+   */
+  async update(
+    request: operations.UpdateBYOKKeyRequest,
+    options?: RequestOptions,
+  ): Promise<models.UpdateBYOKKeyResponse> {
+    return unwrapAsync(byokUpdate(
       this,
       request,
       options,
