@@ -60,21 +60,10 @@ export type ContentText = {
   type: "text";
 };
 
-export type Content =
-  | ContentText
-  | ContentImageURL
-  | models.ContentPartInputAudio
-  | models.ContentPartInputVideo
-  | models.ContentPartInputFile;
+export type Content = ContentText | ContentImageURL;
 
 export type Input = {
-  content: Array<
-    | ContentText
-    | ContentImageURL
-    | models.ContentPartInputAudio
-    | models.ContentPartInputVideo
-    | models.ContentPartInputFile
-  >;
+  content: Array<ContentText | ContentImageURL>;
 };
 
 /**
@@ -184,10 +173,6 @@ export type PromptTokensDetails = {
    * Number of audio tokens in the input
    */
   audioTokens?: number | undefined;
-  /**
-   * Number of file/document tokens in the input
-   */
-  fileTokens?: number | undefined;
   /**
    * Number of image tokens in the input
    */
@@ -313,21 +298,13 @@ export function contentTextToJSON(contentText: ContentText): string {
 }
 
 /** @internal */
-export type Content$Outbound =
-  | ContentText$Outbound
-  | ContentImageURL$Outbound
-  | models.ContentPartInputAudio$Outbound
-  | models.ContentPartInputVideo$Outbound
-  | models.ContentPartInputFile$Outbound;
+export type Content$Outbound = ContentText$Outbound | ContentImageURL$Outbound;
 
 /** @internal */
 export const Content$outboundSchema: z.ZodType<Content$Outbound, Content> = z
   .union([
     z.lazy(() => ContentText$outboundSchema),
     z.lazy(() => ContentImageURL$outboundSchema),
-    models.ContentPartInputAudio$outboundSchema,
-    models.ContentPartInputVideo$outboundSchema,
-    models.ContentPartInputFile$outboundSchema,
   ]);
 
 export function contentToJSON(content: Content): string {
@@ -336,13 +313,7 @@ export function contentToJSON(content: Content): string {
 
 /** @internal */
 export type Input$Outbound = {
-  content: Array<
-    | ContentText$Outbound
-    | ContentImageURL$Outbound
-    | models.ContentPartInputAudio$Outbound
-    | models.ContentPartInputVideo$Outbound
-    | models.ContentPartInputFile$Outbound
-  >;
+  content: Array<ContentText$Outbound | ContentImageURL$Outbound>;
 };
 
 /** @internal */
@@ -351,9 +322,6 @@ export const Input$outboundSchema: z.ZodType<Input$Outbound, Input> = z.object({
     z.union([
       z.lazy(() => ContentText$outboundSchema),
       z.lazy(() => ContentImageURL$outboundSchema),
-      models.ContentPartInputAudio$outboundSchema,
-      models.ContentPartInputVideo$outboundSchema,
-      models.ContentPartInputFile$outboundSchema,
     ]),
   ),
 });
@@ -518,14 +486,12 @@ export const PromptTokensDetails$inboundSchema: z.ZodType<
   unknown
 > = z.object({
   audio_tokens: z.int().optional(),
-  file_tokens: z.int().optional(),
   image_tokens: z.int().optional(),
   text_tokens: z.int().optional(),
   video_tokens: z.int().optional(),
 }).transform((v) => {
   return remap$(v, {
     "audio_tokens": "audioTokens",
-    "file_tokens": "fileTokens",
     "image_tokens": "imageTokens",
     "text_tokens": "textTokens",
     "video_tokens": "videoTokens",

@@ -1,6 +1,6 @@
 # ApplyPatchCallItem
 
-A tool call emitted by the model requesting a V4A patch operation. The client applies the patch and echoes an `apply_patch_call_output` on the next turn.
+A file create/update/delete via diff patch
 
 ## Example Usage
 
@@ -8,10 +8,10 @@ A tool call emitted by the model requesting a V4A patch operation. The client ap
 import { ApplyPatchCallItem } from "@openrouter/sdk/models";
 
 let value: ApplyPatchCallItem = {
-  callId: "call_abc123",
+  callId: "call-abc123",
   operation: {
-    diff: "@@ function main() {\n+  console.log(\"hi\");\n }",
-    path: "/src/main.ts",
+    diff: "--- a\n+++ b\n",
+    path: "src/main.ts",
     type: "update_file",
   },
   status: "completed",
@@ -21,10 +21,10 @@ let value: ApplyPatchCallItem = {
 
 ## Fields
 
-| Field                                                                                                                             | Type                                                                                                                              | Required                                                                                                                          | Description                                                                                                                       | Example                                                                                                                           |
-| --------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------- |
-| `callId`                                                                                                                          | *string*                                                                                                                          | :heavy_check_mark:                                                                                                                | N/A                                                                                                                               |                                                                                                                                   |
-| `id`                                                                                                                              | *string*                                                                                                                          | :heavy_minus_sign:                                                                                                                | N/A                                                                                                                               |                                                                                                                                   |
-| `operation`                                                                                                                       | *models.ApplyPatchCallOperation*                                                                                                  | :heavy_check_mark:                                                                                                                | The patch operation requested by an `apply_patch_call`. `create_file` and `update_file` carry a V4A diff; `delete_file` omits it. | {<br/>"diff": "@@ function main() {\n+  console.log(\"hi\");\n }",<br/>"path": "/src/main.ts",<br/>"type": "update_file"<br/>}    |
-| `status`                                                                                                                          | [models.ApplyPatchCallStatus](../models/applypatchcallstatus.md)                                                                  | :heavy_check_mark:                                                                                                                | Lifecycle state of an `apply_patch_call` output item.                                                                             | completed                                                                                                                         |
-| `type`                                                                                                                            | [models.ApplyPatchCallItemType](../models/applypatchcallitemtype.md)                                                              | :heavy_check_mark:                                                                                                                | N/A                                                                                                                               |                                                                                                                                   |
+| Field                                                        | Type                                                         | Required                                                     | Description                                                  |
+| ------------------------------------------------------------ | ------------------------------------------------------------ | ------------------------------------------------------------ | ------------------------------------------------------------ |
+| `callId`                                                     | *string*                                                     | :heavy_check_mark:                                           | N/A                                                          |
+| `id`                                                         | *string*                                                     | :heavy_minus_sign:                                           | N/A                                                          |
+| `operation`                                                  | *models.Operation*                                           | :heavy_check_mark:                                           | N/A                                                          |
+| `status`                                                     | *models.ApplyPatchCallItemStatusUnion*                       | :heavy_check_mark:                                           | N/A                                                          |
+| `type`                                                       | [models.TypeApplyPatchCall](../models/typeapplypatchcall.md) | :heavy_check_mark:                                           | N/A                                                          |
