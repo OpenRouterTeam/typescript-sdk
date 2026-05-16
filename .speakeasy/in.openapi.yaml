@@ -3473,6 +3473,7 @@ components:
             - f01d52606dc8f0a8303a7b5cc3fa07109c2e346cec7c0a16b40de462992ce943
           items:
             type: string
+          maxItems: 100
           nullable: true
           type: array
         allowed_models:
@@ -3480,6 +3481,7 @@ components:
           example: null
           items:
             type: string
+          maxItems: 100
           nullable: true
           type: array
         allowed_user_ids:
@@ -3487,6 +3489,7 @@ components:
           example: null
           items:
             type: string
+          maxItems: 100
           nullable: true
           type: array
         created_at:
@@ -3518,92 +3521,7 @@ components:
           nullable: true
           type: string
         provider:
-          description: >-
-            The upstream provider this credential authenticates against, as a lowercase slug (e.g. `openai`,
-            `anthropic`, `amazon-bedrock`).
-          enum:
-            - ai21
-            - aion-labs
-            - akashml
-            - alibaba
-            - amazon-bedrock
-            - amazon-nova
-            - ambient
-            - anthropic
-            - arcee-ai
-            - atlas-cloud
-            - avian
-            - azure
-            - baidu
-            - baseten
-            - black-forest-labs
-            - byteplus
-            - cerebras
-            - chutes
-            - cirrascale
-            - clarifai
-            - cloudflare
-            - cohere
-            - crusoe
-            - deepinfra
-            - deepseek
-            - dekallm
-            - featherless
-            - fireworks
-            - friendli
-            - gmicloud
-            - google-ai-studio
-            - google-vertex
-            - groq
-            - hyperbolic
-            - inception
-            - inceptron
-            - inference-net
-            - infermatic
-            - inflection
-            - io-net
-            - ionstream
-            - liquid
-            - mancer
-            - mara
-            - minimax
-            - mistral
-            - modelrun
-            - modular
-            - moonshotai
-            - morph
-            - ncompass
-            - nebius
-            - nex-agi
-            - nextbit
-            - novita
-            - nvidia
-            - open-inference
-            - openai
-            - parasail
-            - perceptron
-            - perplexity
-            - phala
-            - poolside
-            - recraft
-            - reka
-            - relace
-            - sambanova
-            - seed
-            - siliconflow
-            - sourceful
-            - stepfun
-            - streamlake
-            - switchpoint
-            - together
-            - upstage
-            - venice
-            - wandb
-            - xai
-            - xiaomi
-            - z-ai
-          example: openai
-          type: string
+          $ref: '#/components/schemas/BYOKProviderSlug'
         sort_order:
           description: Position within the provider — credentials are tried in ascending sort order.
           example: 0
@@ -3626,6 +3544,93 @@ components:
         - sort_order
         - created_at
       type: object
+    BYOKProviderSlug:
+      description: >-
+        The upstream provider this credential authenticates against, as a lowercase slug (e.g. `openai`, `anthropic`,
+        `amazon-bedrock`).
+      enum:
+        - ai21
+        - aion-labs
+        - akashml
+        - alibaba
+        - amazon-bedrock
+        - amazon-nova
+        - ambient
+        - anthropic
+        - arcee-ai
+        - atlas-cloud
+        - avian
+        - azure
+        - baidu
+        - baseten
+        - black-forest-labs
+        - byteplus
+        - cerebras
+        - chutes
+        - cirrascale
+        - clarifai
+        - cloudflare
+        - cohere
+        - crusoe
+        - deepinfra
+        - deepseek
+        - dekallm
+        - featherless
+        - fireworks
+        - friendli
+        - gmicloud
+        - google-ai-studio
+        - google-vertex
+        - groq
+        - hyperbolic
+        - inception
+        - inceptron
+        - inference-net
+        - infermatic
+        - inflection
+        - io-net
+        - ionstream
+        - liquid
+        - mancer
+        - mara
+        - minimax
+        - mistral
+        - modelrun
+        - modular
+        - moonshotai
+        - morph
+        - ncompass
+        - nebius
+        - nex-agi
+        - nextbit
+        - novita
+        - nvidia
+        - open-inference
+        - openai
+        - parasail
+        - perceptron
+        - perplexity
+        - phala
+        - poolside
+        - recraft
+        - reka
+        - relace
+        - sambanova
+        - seed
+        - siliconflow
+        - sourceful
+        - stepfun
+        - streamlake
+        - switchpoint
+        - together
+        - upstage
+        - venice
+        - wandb
+        - xai
+        - xiaomi
+        - z-ai
+      example: openai
+      type: string
     ChatAssistantImages:
       description: Generated images from image generation models
       example:
@@ -19759,8 +19764,7 @@ paths:
   /byok/{id}:
     get:
       description: >-
-        Get a single bring-your-own-key (BYOK) provider credential by its `id`. Defaults to the authenticated entity's
-        default workspace; use the `workspace_id` query parameter to scope to a different workspace. [Management
+        Get a single bring-your-own-key (BYOK) provider credential by its `id`. [Management
         key](/docs/guides/overview/auth/management-api-keys) required.
       operationId: getBYOKKey
       parameters:
@@ -19771,15 +19775,6 @@ paths:
           schema:
             description: The BYOK credential ID (UUID).
             example: 11111111-2222-3333-4444-555555555555
-            format: uuid
-            type: string
-        - description: Optional workspace ID. Defaults to the authenticated entity's default workspace.
-          in: query
-          name: workspace_id
-          required: false
-          schema:
-            description: Optional workspace ID. Defaults to the authenticated entity's default workspace.
-            example: 550e8400-e29b-41d4-a716-446655440000
             format: uuid
             type: string
       responses:
@@ -24258,8 +24253,8 @@ paths:
   /observability/destinations/{id}:
     get:
       description: >-
-        Fetch a single observability destination by its UUID. Defaults to the authenticated entity's default workspace —
-        use `workspace_id` to override. [Management key](/docs/guides/overview/auth/management-api-keys) required.
+        Fetch a single observability destination by its UUID. [Management
+        key](/docs/guides/overview/auth/management-api-keys) required.
       operationId: getObservabilityDestination
       parameters:
         - description: The destination ID (UUID).
@@ -24269,15 +24264,6 @@ paths:
           schema:
             description: The destination ID (UUID).
             example: 99999999-aaaa-bbbb-cccc-dddddddddddd
-            format: uuid
-            type: string
-        - description: Optional workspace ID. Defaults to the authenticated entity's default workspace.
-          in: query
-          name: workspace_id
-          required: false
-          schema:
-            description: Optional workspace ID. Defaults to the authenticated entity's default workspace.
-            example: 550e8400-e29b-41d4-a716-446655440000
             format: uuid
             type: string
       responses:
