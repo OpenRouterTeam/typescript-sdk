@@ -4,16 +4,9 @@
  */
 
 import * as z from "zod/v4";
-import { remap as remap$ } from "../lib/primitives.js";
 import { safeParse } from "../lib/schemas.js";
 import { ClosedEnum } from "../types/enums.js";
 import { Result as SafeParseResult } from "../types/fp.js";
-import {
-  ApplyPatchCallOperation,
-  ApplyPatchCallOperation$inboundSchema,
-  ApplyPatchCallOperation$Outbound,
-  ApplyPatchCallOperation$outboundSchema,
-} from "./applypatchcalloperation.js";
 import { SDKValidationError } from "./errors/sdkvalidationerror.js";
 import {
   ToolCallStatus,
@@ -29,15 +22,12 @@ export type OutputApplyPatchServerToolItemType = ClosedEnum<
 >;
 
 /**
- * An openrouter:apply_patch server tool output item. The turn halts when validation succeeds so the client can apply the patch and echo an `apply_patch_call_output` on the next turn.
+ * An openrouter:apply_patch server tool output item
  */
 export type OutputApplyPatchServerToolItem = {
-  callId?: string | undefined;
+  filePath?: string | undefined;
   id?: string | undefined;
-  /**
-   * The patch operation requested by an `apply_patch_call`. `create_file` and `update_file` carry a V4A diff; `delete_file` omits it.
-   */
-  operation?: ApplyPatchCallOperation | undefined;
+  patch?: string | undefined;
   status: ToolCallStatus;
   type: OutputApplyPatchServerToolItemType;
 };
@@ -56,21 +46,17 @@ export const OutputApplyPatchServerToolItem$inboundSchema: z.ZodType<
   OutputApplyPatchServerToolItem,
   unknown
 > = z.object({
-  call_id: z.string().optional(),
+  filePath: z.string().optional(),
   id: z.string().optional(),
-  operation: ApplyPatchCallOperation$inboundSchema.optional(),
+  patch: z.string().optional(),
   status: ToolCallStatus$inboundSchema,
   type: OutputApplyPatchServerToolItemType$inboundSchema,
-}).transform((v) => {
-  return remap$(v, {
-    "call_id": "callId",
-  });
 });
 /** @internal */
 export type OutputApplyPatchServerToolItem$Outbound = {
-  call_id?: string | undefined;
+  filePath?: string | undefined;
   id?: string | undefined;
-  operation?: ApplyPatchCallOperation$Outbound | undefined;
+  patch?: string | undefined;
   status: string;
   type: string;
 };
@@ -80,15 +66,11 @@ export const OutputApplyPatchServerToolItem$outboundSchema: z.ZodType<
   OutputApplyPatchServerToolItem$Outbound,
   OutputApplyPatchServerToolItem
 > = z.object({
-  callId: z.string().optional(),
+  filePath: z.string().optional(),
   id: z.string().optional(),
-  operation: ApplyPatchCallOperation$outboundSchema.optional(),
+  patch: z.string().optional(),
   status: ToolCallStatus$outboundSchema,
   type: OutputApplyPatchServerToolItemType$outboundSchema,
-}).transform((v) => {
-  return remap$(v, {
-    callId: "call_id",
-  });
 });
 
 export function outputApplyPatchServerToolItemToJSON(
