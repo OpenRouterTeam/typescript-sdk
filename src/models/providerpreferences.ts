@@ -99,6 +99,10 @@ export type ProviderPreferences = {
    */
   enforceDistillableText?: boolean | null | undefined;
   /**
+   * Enable Exacto quality-first filtering for tool-calling. Partitions endpoints by tool-call reliability (good > insufficient data > deranked). Composes with any sort strategy (e.g. combine with sort: "throughput" for fast + reliable tool-calling).
+   */
+  exacto?: boolean | null | undefined;
+  /**
    * List of provider slugs to ignore. If provided, this list is merged with your account-wide ignored provider settings for this request.
    */
   ignore?: Array<ProviderName | string> | null | undefined;
@@ -223,6 +227,7 @@ export type ProviderPreferences$Outbound = {
   allow_fallbacks?: boolean | null | undefined;
   data_collection?: string | null | undefined;
   enforce_distillable_text?: boolean | null | undefined;
+  exacto?: boolean | null | undefined;
   ignore?: Array<string | string> | null | undefined;
   max_price?: MaxPrice$Outbound | undefined;
   only?: Array<string | string> | null | undefined;
@@ -243,6 +248,7 @@ export const ProviderPreferences$outboundSchema: z.ZodType<
   allowFallbacks: z.nullable(z.boolean()).optional(),
   dataCollection: z.nullable(DataCollection$outboundSchema).optional(),
   enforceDistillableText: z.nullable(z.boolean()).optional(),
+  exacto: z.nullable(z.boolean()).optional(),
   ignore: z.nullable(
     z.array(z.union([ProviderName$outboundSchema, z.string()])),
   ).optional(),
