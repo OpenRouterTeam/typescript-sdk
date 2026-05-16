@@ -1,13 +1,13 @@
-# Provider
+# ProviderEnum
 
-Optional provider slug to filter by (e.g. `openai`, `anthropic`, `amazon-bedrock`).
+The upstream provider this credential authenticates against, as a lowercase slug (e.g. `openai`, `anthropic`, `amazon-bedrock`).
 
 ## Example Usage
 
 ```typescript
-import { Provider } from "@openrouter/sdk/models/operations";
+import { ProviderEnum } from "@openrouter/sdk/models";
 
-let value: Provider = "openai";
+let value: ProviderEnum = "openai";
 
 // Open enum: unrecognized values are captured as Unrecognized<string>
 ```
