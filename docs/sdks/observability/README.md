@@ -92,7 +92,7 @@ run();
 
 ## get
 
-Fetch a single observability destination by its UUID. Defaults to the authenticated entity's default workspace — use `workspace_id` to override. [Management key](/docs/guides/overview/auth/management-api-keys) required.
+Fetch a single observability destination by its UUID. [Management key](/docs/guides/overview/auth/management-api-keys) required.
 
 ### Example Usage
 
