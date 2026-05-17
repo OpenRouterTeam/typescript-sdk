@@ -5874,6 +5874,113 @@ components:
       required:
         - data
       type: object
+    CreateObservabilityDestinationRequest:
+      example:
+        config:
+          baseUrl: https://us.cloud.langfuse.com
+          publicKey: pk-l...EfGh
+          secretKey: sk-l...AbCd
+        name: Production Langfuse
+        type: langfuse
+      properties:
+        api_key_hashes:
+          description: >-
+            Optional allowlist of OpenRouter API key hashes whose traffic is forwarded. `null` or omitted means all
+            keys. Must contain at least one hash if provided.
+          example: null
+          items:
+            type: string
+          minItems: 1
+          nullable: true
+          type: array
+        config:
+          additionalProperties:
+            nullable: true
+          description: Provider-specific configuration. The shape depends on `type` and is validated server-side.
+          example:
+            baseUrl: https://us.cloud.langfuse.com
+            publicKey: pk-l...EfGh
+            secretKey: sk-l...AbCd
+          type: object
+        enabled:
+          default: true
+          description: Whether this destination should be enabled immediately.
+          example: true
+          type: boolean
+        filter_rules:
+          $ref: '#/components/schemas/ObservabilityFilterRulesConfig'
+        name:
+          description: Human-readable name for the destination.
+          example: Production Langfuse
+          type: string
+        privacy_mode:
+          default: false
+          description: When true, request/response bodies are not forwarded — only metadata.
+          example: false
+          type: boolean
+        sampling_rate:
+          description: Sampling rate between 0 and 1 (1 = 100%).
+          example: 1
+          format: double
+          type: number
+        type:
+          description: The destination type. Only stable destination types are accepted.
+          enum:
+            - arize
+            - braintrust
+            - clickhouse
+            - datadog
+            - grafana
+            - langfuse
+            - langsmith
+            - newrelic
+            - opik
+            - otel-collector
+            - posthog
+            - ramp
+            - s3
+            - sentry
+            - snowflake
+            - weave
+            - webhook
+          example: langfuse
+          type: string
+        workspace_id:
+          description: Optional workspace ID. Defaults to the authenticated entity's default workspace.
+          example: 550e8400-e29b-41d4-a716-446655440000
+          format: uuid
+          type: string
+      required:
+        - type
+        - name
+        - config
+      type: object
+    CreateObservabilityDestinationResponse:
+      example:
+        data:
+          api_key_hashes: null
+          config:
+            baseUrl: https://us.cloud.langfuse.com
+            publicKey: pk-l...EfGh
+            secretKey: sk-l...AbCd
+          created_at: '2025-08-24T10:30:00Z'
+          enabled: true
+          filter_rules: null
+          id: 99999999-aaaa-bbbb-cccc-dddddddddddd
+          name: Production Langfuse
+          privacy_mode: false
+          sampling_rate: 1
+          type: langfuse
+          updated_at: '2025-08-24T15:45:00Z'
+          workspace_id: 550e8400-e29b-41d4-a716-446655440000
+      properties:
+        data:
+          allOf:
+            - $ref: '#/components/schemas/ObservabilityDestination'
+            - description: The newly created observability destination.
+      required:
+        - data
+      type: object
     CreateWorkspaceRequest:
       example:
         default_image_model: openai/dall-e-3
@@ -6193,6 +6300,17 @@ components:
           const: true
           description: Confirmation that the guardrail was deleted
           example: true
+          type: boolean
+      required:
+        - deleted
+      type: object
+    DeleteObservabilityDestinationResponse:
+      example:
+        deleted: true
+      properties:
+        deleted:
+          const: true
+          description: Always `true` on success.
           type: boolean
       required:
         - deleted
@@ -18024,6 +18142,80 @@ components:
       required:
         - data
       type: object
+    UpdateObservabilityDestinationRequest:
+      example:
+        enabled: false
+        name: Updated Langfuse
+      properties:
+        api_key_hashes:
+          description: >-
+            Optional allowlist of OpenRouter API key hashes. `null` clears the filter (all keys). Omitting leaves the
+            current value. Must contain at least one hash if provided.
+          example: null
+          items:
+            type: string
+          minItems: 1
+          nullable: true
+          type: array
+        config:
+          additionalProperties:
+            nullable: true
+          description: >-
+            Provider-specific configuration fields to update. Masked values are ignored; unset fields keep their current
+            value.
+          example:
+            baseUrl: https://us.cloud.langfuse.com
+            publicKey: pk-l...EfGh
+            secretKey: sk-l...AbCd
+          type: object
+        enabled:
+          description: Whether the destination is enabled.
+          example: true
+          type: boolean
+        filter_rules:
+          allOf:
+            - $ref: '#/components/schemas/ObservabilityFilterRulesConfig'
+            - description: Optional structured filter rules. `null` clears the rules. Omitting keeps the current value.
+        name:
+          description: Human-readable name for the destination.
+          example: Production Langfuse
+          type: string
+        privacy_mode:
+          description: When true, request/response bodies are not forwarded — only metadata.
+          example: false
+          type: boolean
+        sampling_rate:
+          description: Sampling rate between 0 and 1 (1 = 100%).
+          example: 1
+          format: double
+          type: number
+      type: object
+    UpdateObservabilityDestinationResponse:
+      example:
+        data:
+          api_key_hashes: null
+          config:
+            baseUrl: https://us.cloud.langfuse.com
+            publicKey: pk-l...EfGh
+            secretKey: sk-l...AbCd
+          created_at: '2025-08-24T10:30:00Z'
+          enabled: true
+          filter_rules: null
+          id: 99999999-aaaa-bbbb-cccc-dddddddddddd
+          name: Production Langfuse
+          privacy_mode: false
+          sampling_rate: 1
+          type: langfuse
+          updated_at: '2025-08-24T15:45:00Z'
+          workspace_id: 550e8400-e29b-41d4-a716-446655440000
+      properties:
+        data:
+          allOf:
+            - $ref: '#/components/schemas/ObservabilityDestination'
+            - description: The updated observability destination.
+      required:
+        - data
+      type: object
     UpdateWorkspaceRequest:
       example:
         name: Updated Workspace
@@ -24637,7 +24829,162 @@ paths:
         outputs:
           results: $.data
         type: offsetLimit
+    post:
+      description: >-
+        Create a new observability destination. A maximum of 5 destinations per type is allowed. Defaults to the
+        authenticated entity's default workspace; use the `workspace_id` body field to scope to a different workspace.
+        [Management key](/docs/guides/overview/auth/management-api-keys) required.
+      operationId: createObservabilityDestination
+      requestBody:
+        content:
+          application/json:
+            example:
+              config:
+                baseUrl: https://us.cloud.langfuse.com
+                publicKey: pk-l...EfGh
+                secretKey: sk-l...AbCd
+              name: Production Langfuse
+              type: langfuse
+            schema:
+              $ref: '#/components/schemas/CreateObservabilityDestinationRequest'
+        required: true
+      responses:
+        '201':
+          content:
+            application/json:
+              example:
+                data:
+                  api_key_hashes: null
+                  config:
+                    baseUrl: https://us.cloud.langfuse.com
+                    publicKey: pk-l...EfGh
+                    secretKey: sk-l...AbCd
+                  created_at: '2025-08-24T10:30:00Z'
+                  enabled: true
+                  filter_rules: null
+                  id: 99999999-aaaa-bbbb-cccc-dddddddddddd
+                  name: Production Langfuse
+                  privacy_mode: false
+                  sampling_rate: 1
+                  type: langfuse
+                  updated_at: '2025-08-24T15:45:00Z'
+                  workspace_id: 550e8400-e29b-41d4-a716-446655440000
+              schema:
+                $ref: '#/components/schemas/CreateObservabilityDestinationResponse'
+          description: Destination created successfully
+        '400':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 400
+                  message: Invalid request parameters
+              schema:
+                $ref: '#/components/schemas/BadRequestResponse'
+          description: Bad Request - Invalid request parameters or malformed input
+        '401':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 401
+                  message: Missing Authentication header
+              schema:
+                $ref: '#/components/schemas/UnauthorizedResponse'
+          description: Unauthorized - Authentication required or invalid credentials
+        '403':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 403
+                  message: Only management keys can perform this operation
+              schema:
+                $ref: '#/components/schemas/ForbiddenResponse'
+          description: Forbidden - Authentication successful but insufficient permissions
+        '409':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 409
+                  message: Resource conflict. Please try again later.
+              schema:
+                $ref: '#/components/schemas/ConflictResponse'
+          description: Conflict - Resource conflict or concurrent modification
+        '500':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 500
+                  message: Internal Server Error
+              schema:
+                $ref: '#/components/schemas/InternalServerResponse'
+          description: Internal Server Error - Unexpected server error
+      summary: Create an observability destination
+      tags:
+        - Observability
+      x-speakeasy-name-override: create
   /observability/destinations/{id}:
+    delete:
+      description: >-
+        Delete an existing observability destination. This performs a soft delete. [Management
+        key](/docs/guides/overview/auth/management-api-keys) required.
+      operationId: deleteObservabilityDestination
+      parameters:
+        - description: The destination ID (UUID).
+          in: path
+          name: id
+          required: true
+          schema:
+            description: The destination ID (UUID).
+            example: 99999999-aaaa-bbbb-cccc-dddddddddddd
+            format: uuid
+            type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              example:
+                deleted: true
+              schema:
+                $ref: '#/components/schemas/DeleteObservabilityDestinationResponse'
+          description: Destination deleted successfully
+        '401':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 401
+                  message: Missing Authentication header
+              schema:
+                $ref: '#/components/schemas/UnauthorizedResponse'
+          description: Unauthorized - Authentication required or invalid credentials
+        '404':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 404
+                  message: Resource not found
+              schema:
+                $ref: '#/components/schemas/NotFoundResponse'
+          description: Not Found - Resource does not exist
+        '500':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 500
+                  message: Internal Server Error
+              schema:
+                $ref: '#/components/schemas/InternalServerResponse'
+          description: Internal Server Error - Unexpected server error
+      summary: Delete an observability destination
+      tags:
+        - Observability
+      x-speakeasy-name-override: delete
     get:
       description: >-
         Fetch a single observability destination by its UUID. [Management
@@ -24711,6 +25058,108 @@ paths:
       tags:
         - Observability
       x-speakeasy-name-override: get
+    patch:
+      description: >-
+        Update an existing observability destination. Only the fields provided in the request body are updated.
+        [Management key](/docs/guides/overview/auth/management-api-keys) required.
+      operationId: updateObservabilityDestination
+      parameters:
+        - description: The destination ID (UUID).
+          in: path
+          name: id
+          required: true
+          schema:
+            description: The destination ID (UUID).
+            example: 99999999-aaaa-bbbb-cccc-dddddddddddd
+            format: uuid
+            type: string
+      requestBody:
+        content:
+          application/json:
+            example:
+              enabled: false
+              name: Updated Langfuse
+            schema:
+              $ref: '#/components/schemas/UpdateObservabilityDestinationRequest'
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              example:
+                data:
+                  api_key_hashes: null
+                  config:
+                    baseUrl: https://us.cloud.langfuse.com
+                    publicKey: pk-l...EfGh
+                    secretKey: sk-l...AbCd
+                  created_at: '2025-08-24T10:30:00Z'
+                  enabled: true
+                  filter_rules: null
+                  id: 99999999-aaaa-bbbb-cccc-dddddddddddd
+                  name: Production Langfuse
+                  privacy_mode: false
+                  sampling_rate: 1
+                  type: langfuse
+                  updated_at: '2025-08-24T15:45:00Z'
+                  workspace_id: 550e8400-e29b-41d4-a716-446655440000
+              schema:
+                $ref: '#/components/schemas/UpdateObservabilityDestinationResponse'
+          description: Destination updated successfully
+        '400':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 400
+                  message: Invalid request parameters
+              schema:
+                $ref: '#/components/schemas/BadRequestResponse'
+          description: Bad Request - Invalid request parameters or malformed input
+        '401':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 401
+                  message: Missing Authentication header
+              schema:
+                $ref: '#/components/schemas/UnauthorizedResponse'
+          description: Unauthorized - Authentication required or invalid credentials
+        '404':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 404
+                  message: Resource not found
+              schema:
+                $ref: '#/components/schemas/NotFoundResponse'
+          description: Not Found - Resource does not exist
+        '409':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 409
+                  message: Resource conflict. Please try again later.
+              schema:
+                $ref: '#/components/schemas/ConflictResponse'
+          description: Conflict - Resource conflict or concurrent modification
+        '500':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 500
+                  message: Internal Server Error
+              schema:
+                $ref: '#/components/schemas/InternalServerResponse'
+          description: Internal Server Error - Unexpected server error
+      summary: Update an observability destination
+      tags:
+        - Observability
+      x-speakeasy-name-override: update
   /organization/members:
     get:
       description: >-
