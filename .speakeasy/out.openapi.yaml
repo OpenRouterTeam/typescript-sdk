@@ -5621,6 +5621,82 @@ components:
         - upstream_inference_prompt_cost
         - upstream_inference_completions_cost
       type: object
+    CreateBYOKKeyRequest:
+      example:
+        key: sk-proj-abc123...
+        name: Production OpenAI Key
+        provider: openai
+      properties:
+        allowed_models:
+          description: Optional allowlist of model slugs this credential may be used for. `null` means no restriction.
+          example: null
+          items:
+            type: string
+          maxItems: 100
+          nullable: true
+          type: array
+        allowed_user_ids:
+          description: Optional allowlist of user IDs that may use this credential. `null` means no restriction.
+          example: null
+          items:
+            type: string
+          maxItems: 100
+          nullable: true
+          type: array
+        disabled:
+          description: Whether this credential should be created in a disabled state.
+          example: false
+          type: boolean
+        is_fallback:
+          description: >-
+            Whether this credential is treated as a fallback — used only after non-fallback keys for the same provider have been tried.
+          example: false
+          type: boolean
+        key:
+          description: The raw provider API key or credential. This value is encrypted at rest and never returned in API responses.
+          example: sk-proj-abc123...
+          minLength: 1
+          type: string
+        name:
+          description: Optional human-readable name for the credential.
+          example: Production OpenAI Key
+          maxLength: 255
+          nullable: true
+          type: string
+        provider:
+          $ref: '#/components/schemas/BYOKProviderSlug'
+        workspace_id:
+          description: Optional workspace ID. Defaults to the authenticated entity's default workspace.
+          example: 550e8400-e29b-41d4-a716-446655440000
+          format: uuid
+          type: string
+      required:
+        - provider
+        - key
+      type: object
+    CreateBYOKKeyResponse:
+      example:
+        data:
+          allowed_api_key_hashes: null
+          allowed_models: null
+          allowed_user_ids: null
+          created_at: '2025-08-24T10:30:00Z'
+          disabled: false
+          id: 11111111-2222-3333-4444-555555555555
+          is_fallback: false
+          label: sk-...AbCd
+          name: Production OpenAI Key
+          provider: openai
+          sort_order: 0
+          workspace_id: 550e8400-e29b-41d4-a716-446655440000
+      properties:
+        data:
+          allOf:
+            - $ref: '#/components/schemas/BYOKKey'
+            - description: The created BYOK credential.
+      required:
+        - data
+      type: object
     CreatedEvent:
       description: Event emitted when a response is created
       example:
@@ -6125,6 +6201,18 @@ components:
           format: double
           nullable: true
           type: number
+      type: object
+    DeleteBYOKKeyResponse:
+      example:
+        deleted: true
+      properties:
+        deleted:
+          const: true
+          description: Confirmation that the BYOK credential was deleted.
+          example: true
+          type: boolean
+      required:
+        - deleted
       type: object
     DeleteGuardrailResponse:
       example:
@@ -17710,6 +17798,72 @@ components:
         - code
         - message
       type: object
+    UpdateBYOKKeyRequest:
+      example:
+        disabled: false
+        name: Updated OpenAI Key
+      properties:
+        allowed_models:
+          description: Optional allowlist of model slugs this credential may be used for. `null` means no restriction.
+          example: null
+          items:
+            type: string
+          maxItems: 100
+          nullable: true
+          type: array
+        allowed_user_ids:
+          description: Optional allowlist of user IDs that may use this credential. `null` means no restriction.
+          example: null
+          items:
+            type: string
+          maxItems: 100
+          nullable: true
+          type: array
+        disabled:
+          description: Whether this credential is disabled.
+          example: false
+          type: boolean
+        is_fallback:
+          description: >-
+            Whether this credential is treated as a fallback — used only after non-fallback keys for the same provider have been tried.
+          example: false
+          type: boolean
+        key:
+          description: >-
+            A new raw provider API key to rotate the credential in-place. The previous key material is overwritten and the masked label is regenerated. Encrypted at rest and never returned in API responses.
+          example: sk-proj-newkey456...
+          minLength: 1
+          type: string
+        name:
+          description: Optional human-readable name for the credential.
+          example: Updated OpenAI Key
+          maxLength: 255
+          nullable: true
+          type: string
+      type: object
+    UpdateBYOKKeyResponse:
+      example:
+        data:
+          allowed_api_key_hashes: null
+          allowed_models: null
+          allowed_user_ids: null
+          created_at: '2025-08-24T10:30:00Z'
+          disabled: false
+          id: 11111111-2222-3333-4444-555555555555
+          is_fallback: false
+          label: sk-...AbCd
+          name: Updated OpenAI Key
+          provider: openai
+          sort_order: 0
+          workspace_id: 550e8400-e29b-41d4-a716-446655440000
+      properties:
+        data:
+          allOf:
+            - $ref: '#/components/schemas/BYOKKey'
+            - description: The updated BYOK credential.
+      required:
+        - data
+      type: object
     UpdateGuardrailRequest:
       example:
         description: Updated description
@@ -19753,11 +19907,147 @@ paths:
         outputs:
           results: $.data
         type: offsetLimit
+    post:
+      description: >-
+        Create a new bring-your-own-key (BYOK) provider credential. The raw key is encrypted at rest and never returned in API responses. Defaults to the authenticated entity's default workspace; use the `workspace_id` body field to scope to a different workspace. [Management key](/docs/guides/overview/auth/management-api-keys) required.
+      operationId: createBYOKKey
+      requestBody:
+        content:
+          application/json:
+            example:
+              key: sk-proj-abc123...
+              name: Production OpenAI Key
+              provider: openai
+            schema:
+              $ref: '#/components/schemas/CreateBYOKKeyRequest'
+        required: true
+      responses:
+        '201':
+          content:
+            application/json:
+              example:
+                data:
+                  allowed_api_key_hashes: null
+                  allowed_models: null
+                  allowed_user_ids: null
+                  created_at: '2025-08-24T10:30:00Z'
+                  disabled: false
+                  id: 11111111-2222-3333-4444-555555555555
+                  is_fallback: false
+                  label: sk-...AbCd
+                  name: Production OpenAI Key
+                  provider: openai
+                  sort_order: 0
+                  workspace_id: 550e8400-e29b-41d4-a716-446655440000
+              schema:
+                $ref: '#/components/schemas/CreateBYOKKeyResponse'
+          description: BYOK credential created successfully
+        '400':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 400
+                  message: Invalid request parameters
+              schema:
+                $ref: '#/components/schemas/BadRequestResponse'
+          description: Bad Request - Invalid request parameters or malformed input
+        '401':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 401
+                  message: Missing Authentication header
+              schema:
+                $ref: '#/components/schemas/UnauthorizedResponse'
+          description: Unauthorized - Authentication required or invalid credentials
+        '403':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 403
+                  message: Only management keys can perform this operation
+              schema:
+                $ref: '#/components/schemas/ForbiddenResponse'
+          description: Forbidden - Authentication successful but insufficient permissions
+        '500':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 500
+                  message: Internal Server Error
+              schema:
+                $ref: '#/components/schemas/InternalServerResponse'
+          description: Internal Server Error - Unexpected server error
+      summary: Create a BYOK provider credential
+      tags:
+        - BYOK
+      x-speakeasy-name-override: create
     parameters:
       - $ref: "#/components/parameters/AppIdentifier"
       - $ref: "#/components/parameters/AppDisplayName"
       - $ref: "#/components/parameters/AppCategories"
   /byok/{id}:
+    delete:
+      description: >-
+        Delete (soft-delete) a bring-your-own-key (BYOK) provider credential by its `id`. The encrypted key material is wiped and the record is marked as deleted. [Management key](/docs/guides/overview/auth/management-api-keys) required.
+      operationId: deleteBYOKKey
+      parameters:
+        - description: The BYOK credential ID (UUID).
+          in: path
+          name: id
+          required: true
+          schema:
+            description: The BYOK credential ID (UUID).
+            example: 11111111-2222-3333-4444-555555555555
+            format: uuid
+            type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              example:
+                deleted: true
+              schema:
+                $ref: '#/components/schemas/DeleteBYOKKeyResponse'
+          description: BYOK credential deleted successfully
+        '401':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 401
+                  message: Missing Authentication header
+              schema:
+                $ref: '#/components/schemas/UnauthorizedResponse'
+          description: Unauthorized - Authentication required or invalid credentials
+        '404':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 404
+                  message: Resource not found
+              schema:
+                $ref: '#/components/schemas/NotFoundResponse'
+          description: Not Found - Resource does not exist
+        '500':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 500
+                  message: Internal Server Error
+              schema:
+                $ref: '#/components/schemas/InternalServerResponse'
+          description: Internal Server Error - Unexpected server error
+      summary: Delete a BYOK provider credential
+      tags:
+        - BYOK
+      x-speakeasy-name-override: delete
     get:
       description: >-
         Get a single bring-your-own-key (BYOK) provider credential by its `id`. [Management key](/docs/guides/overview/auth/management-api-keys) required.
@@ -19827,6 +20117,94 @@ paths:
       tags:
         - BYOK
       x-speakeasy-name-override: get
+    patch:
+      description: >-
+        Update an existing bring-your-own-key (BYOK) provider credential by its `id`. Include the `key` field to rotate the raw provider API key in-place (the previous key material is overwritten). [Management key](/docs/guides/overview/auth/management-api-keys) required.
+      operationId: updateBYOKKey
+      parameters:
+        - description: The BYOK credential ID (UUID).
+          in: path
+          name: id
+          required: true
+          schema:
+            description: The BYOK credential ID (UUID).
+            example: 11111111-2222-3333-4444-555555555555
+            format: uuid
+            type: string
+      requestBody:
+        content:
+          application/json:
+            example:
+              disabled: false
+              name: Updated OpenAI Key
+            schema:
+              $ref: '#/components/schemas/UpdateBYOKKeyRequest'
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              example:
+                data:
+                  allowed_api_key_hashes: null
+                  allowed_models: null
+                  allowed_user_ids: null
+                  created_at: '2025-08-24T10:30:00Z'
+                  disabled: false
+                  id: 11111111-2222-3333-4444-555555555555
+                  is_fallback: false
+                  label: sk-...AbCd
+                  name: Updated OpenAI Key
+                  provider: openai
+                  sort_order: 0
+                  workspace_id: 550e8400-e29b-41d4-a716-446655440000
+              schema:
+                $ref: '#/components/schemas/UpdateBYOKKeyResponse'
+          description: BYOK credential updated successfully
+        '400':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 400
+                  message: Invalid request parameters
+              schema:
+                $ref: '#/components/schemas/BadRequestResponse'
+          description: Bad Request - Invalid request parameters or malformed input
+        '401':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 401
+                  message: Missing Authentication header
+              schema:
+                $ref: '#/components/schemas/UnauthorizedResponse'
+          description: Unauthorized - Authentication required or invalid credentials
+        '404':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 404
+                  message: Resource not found
+              schema:
+                $ref: '#/components/schemas/NotFoundResponse'
+          description: Not Found - Resource does not exist
+        '500':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 500
+                  message: Internal Server Error
+              schema:
+                $ref: '#/components/schemas/InternalServerResponse'
+          description: Internal Server Error - Unexpected server error
+      summary: Update a BYOK provider credential
+      tags:
+        - BYOK
+      x-speakeasy-name-override: update
     parameters:
       - $ref: "#/components/parameters/AppIdentifier"
       - $ref: "#/components/parameters/AppDisplayName"
