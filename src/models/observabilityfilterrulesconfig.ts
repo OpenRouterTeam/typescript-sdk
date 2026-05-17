@@ -58,7 +58,7 @@ export type Rule = {
 };
 
 export type Group = {
-  logic: Logic;
+  logic?: Logic | undefined;
   rules: Array<Rule>;
 };
 
@@ -66,28 +66,54 @@ export type Group = {
  * Optional structured filter rules controlling which events are forwarded.
  */
 export type ObservabilityFilterRulesConfig = {
-  enabled: boolean;
+  enabled?: boolean | undefined;
   groups: Array<Group>;
 };
 
 /** @internal */
 export const Logic$inboundSchema: z.ZodType<Logic, unknown> = openEnums
   .inboundSchema(Logic);
+/** @internal */
+export const Logic$outboundSchema: z.ZodType<string, Logic> = openEnums
+  .outboundSchema(Logic);
 
 /** @internal */
 export const Field$inboundSchema: z.ZodType<Field, unknown> = openEnums
   .inboundSchema(Field);
+/** @internal */
+export const Field$outboundSchema: z.ZodType<string, Field> = openEnums
+  .outboundSchema(Field);
 
 /** @internal */
 export const Operator$inboundSchema: z.ZodType<Operator, unknown> = openEnums
   .inboundSchema(Operator);
+/** @internal */
+export const Operator$outboundSchema: z.ZodType<string, Operator> = openEnums
+  .outboundSchema(Operator);
 
 /** @internal */
 export const ObservabilityFilterRulesConfigValue$inboundSchema: z.ZodType<
   ObservabilityFilterRulesConfigValue,
   unknown
 > = z.union([z.string(), z.number()]);
+/** @internal */
+export type ObservabilityFilterRulesConfigValue$Outbound = string | number;
 
+/** @internal */
+export const ObservabilityFilterRulesConfigValue$outboundSchema: z.ZodType<
+  ObservabilityFilterRulesConfigValue$Outbound,
+  ObservabilityFilterRulesConfigValue
+> = z.union([z.string(), z.number()]);
+
+export function observabilityFilterRulesConfigValueToJSON(
+  observabilityFilterRulesConfigValue: ObservabilityFilterRulesConfigValue,
+): string {
+  return JSON.stringify(
+    ObservabilityFilterRulesConfigValue$outboundSchema.parse(
+      observabilityFilterRulesConfigValue,
+    ),
+  );
+}
 export function observabilityFilterRulesConfigValueFromJSON(
   jsonString: string,
 ): SafeParseResult<ObservabilityFilterRulesConfigValue, SDKValidationError> {
@@ -105,7 +131,23 @@ export const Rule$inboundSchema: z.ZodType<Rule, unknown> = z.object({
   operator: Operator$inboundSchema,
   value: z.union([z.string(), z.number()]).optional(),
 });
+/** @internal */
+export type Rule$Outbound = {
+  field: string;
+  operator: string;
+  value?: string | number | undefined;
+};
 
+/** @internal */
+export const Rule$outboundSchema: z.ZodType<Rule$Outbound, Rule> = z.object({
+  field: Field$outboundSchema,
+  operator: Operator$outboundSchema,
+  value: z.union([z.string(), z.number()]).optional(),
+});
+
+export function ruleToJSON(rule: Rule): string {
+  return JSON.stringify(Rule$outboundSchema.parse(rule));
+}
 export function ruleFromJSON(
   jsonString: string,
 ): SafeParseResult<Rule, SDKValidationError> {
@@ -121,7 +163,21 @@ export const Group$inboundSchema: z.ZodType<Group, unknown> = z.object({
   logic: Logic$inboundSchema.default("and"),
   rules: z.array(z.lazy(() => Rule$inboundSchema)),
 });
+/** @internal */
+export type Group$Outbound = {
+  logic: string;
+  rules: Array<Rule$Outbound>;
+};
 
+/** @internal */
+export const Group$outboundSchema: z.ZodType<Group$Outbound, Group> = z.object({
+  logic: Logic$outboundSchema.default("and"),
+  rules: z.array(z.lazy(() => Rule$outboundSchema)),
+});
+
+export function groupToJSON(group: Group): string {
+  return JSON.stringify(Group$outboundSchema.parse(group));
+}
 export function groupFromJSON(
   jsonString: string,
 ): SafeParseResult<Group, SDKValidationError> {
@@ -140,7 +196,30 @@ export const ObservabilityFilterRulesConfig$inboundSchema: z.ZodType<
   enabled: z.boolean().default(true),
   groups: z.array(z.lazy(() => Group$inboundSchema)),
 });
+/** @internal */
+export type ObservabilityFilterRulesConfig$Outbound = {
+  enabled: boolean;
+  groups: Array<Group$Outbound>;
+};
 
+/** @internal */
+export const ObservabilityFilterRulesConfig$outboundSchema: z.ZodType<
+  ObservabilityFilterRulesConfig$Outbound,
+  ObservabilityFilterRulesConfig
+> = z.object({
+  enabled: z.boolean().default(true),
+  groups: z.array(z.lazy(() => Group$outboundSchema)),
+});
+
+export function observabilityFilterRulesConfigToJSON(
+  observabilityFilterRulesConfig: ObservabilityFilterRulesConfig,
+): string {
+  return JSON.stringify(
+    ObservabilityFilterRulesConfig$outboundSchema.parse(
+      observabilityFilterRulesConfig,
+    ),
+  );
+}
 export function observabilityFilterRulesConfigFromJSON(
   jsonString: string,
 ): SafeParseResult<ObservabilityFilterRulesConfig, SDKValidationError> {
