@@ -1,0 +1,17 @@
+# DeleteObservabilityDestinationResponse
+
+## Example Usage
+
+```typescript
+import { DeleteObservabilityDestinationResponse } from "@openrouter/sdk/models";
+
+let value: DeleteObservabilityDestinationResponse = {
+  deleted: true,
+};
+```
+
+## Fields
+
+| Field                     | Type                      | Required                  | Description               |
+| ------------------------- | ------------------------- | ------------------------- | ------------------------- |
+| `deleted`                 | *true*                    | :heavy_check_mark:        | Always `true` on success. |

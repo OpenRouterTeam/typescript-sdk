@@ -102,3 +102,8 @@ export const BYOKProviderSlug$inboundSchema: z.ZodType<
   BYOKProviderSlug,
   unknown
 > = openEnums.inboundSchema(BYOKProviderSlug);
+/** @internal */
+export const BYOKProviderSlug$outboundSchema: z.ZodType<
+  string,
+  BYOKProviderSlug
+> = openEnums.outboundSchema(BYOKProviderSlug);
