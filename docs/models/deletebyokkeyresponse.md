@@ -1,0 +1,17 @@
+# DeleteBYOKKeyResponse
+
+## Example Usage
+
+```typescript
+import { DeleteBYOKKeyResponse } from "@openrouter/sdk/models";
+
+let value: DeleteBYOKKeyResponse = {
+  deleted: true,
+};
+```
+
+## Fields
+
+| Field                                              | Type                                               | Required                                           | Description                                        | Example                                            |
+| -------------------------------------------------- | -------------------------------------------------- | -------------------------------------------------- | -------------------------------------------------- | -------------------------------------------------- |
+| `deleted`                                          | *true*                                             | :heavy_check_mark:                                 | Confirmation that the BYOK credential was deleted. | true                                               |
