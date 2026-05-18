@@ -1,13 +1,13 @@
-# Effort
+# FusionServerToolConfigEffort
 
-Constrains effort on reasoning for reasoning models
+Reasoning effort level for panelist and judge inner calls.
 
 ## Example Usage
 
 ```typescript
-import { Effort } from "@openrouter/sdk/models";
+import { FusionServerToolConfigEffort } from "@openrouter/sdk/models";
 
-let value: Effort = "medium";
+let value: FusionServerToolConfigEffort = "high";
 
 // Open enum: unrecognized values are captured as Unrecognized<string>
 ```
