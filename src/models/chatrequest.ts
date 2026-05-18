@@ -117,6 +117,11 @@ import {
   TraceConfig$outboundSchema,
 } from "./traceconfig.js";
 import {
+  WebFetchPlugin,
+  WebFetchPlugin$Outbound,
+  WebFetchPlugin$outboundSchema,
+} from "./webfetchplugin.js";
+import {
   WebSearchPlugin,
   WebSearchPlugin$Outbound,
   WebSearchPlugin$outboundSchema,
@@ -137,7 +142,8 @@ export type ChatRequestPlugin =
   | ModerationPlugin
   | ParetoRouterPlugin
   | ResponseHealingPlugin
-  | WebSearchPlugin;
+  | WebSearchPlugin
+  | WebFetchPlugin;
 
 /**
  * Constrains effort on reasoning for reasoning models
@@ -269,6 +275,7 @@ export type ChatRequest = {
       | ParetoRouterPlugin
       | ResponseHealingPlugin
       | WebSearchPlugin
+      | WebFetchPlugin
     >
     | undefined;
   /**
@@ -360,7 +367,8 @@ export type ChatRequestPlugin$Outbound =
   | ModerationPlugin$Outbound
   | ParetoRouterPlugin$Outbound
   | ResponseHealingPlugin$Outbound
-  | WebSearchPlugin$Outbound;
+  | WebSearchPlugin$Outbound
+  | WebFetchPlugin$Outbound;
 
 /** @internal */
 export const ChatRequestPlugin$outboundSchema: z.ZodType<
@@ -375,6 +383,7 @@ export const ChatRequestPlugin$outboundSchema: z.ZodType<
   ParetoRouterPlugin$outboundSchema,
   ResponseHealingPlugin$outboundSchema,
   WebSearchPlugin$outboundSchema,
+  WebFetchPlugin$outboundSchema,
 ]);
 
 export function chatRequestPluginToJSON(
@@ -479,6 +488,7 @@ export type ChatRequest$Outbound = {
       | ParetoRouterPlugin$Outbound
       | ResponseHealingPlugin$Outbound
       | WebSearchPlugin$Outbound
+      | WebFetchPlugin$Outbound
     >
     | undefined;
   presence_penalty?: number | null | undefined;
@@ -535,6 +545,7 @@ export const ChatRequest$outboundSchema: z.ZodType<
       ParetoRouterPlugin$outboundSchema,
       ResponseHealingPlugin$outboundSchema,
       WebSearchPlugin$outboundSchema,
+      WebFetchPlugin$outboundSchema,
     ]),
   ).optional(),
   presencePenalty: z.nullable(z.number()).optional(),
