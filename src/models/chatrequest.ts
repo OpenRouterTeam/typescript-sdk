@@ -112,6 +112,11 @@ import {
   ResponseHealingPlugin$outboundSchema,
 } from "./responsehealingplugin.js";
 import {
+  StopServerToolsWhenCondition,
+  StopServerToolsWhenCondition$Outbound,
+  StopServerToolsWhenCondition$outboundSchema,
+} from "./stopservertoolswhencondition.js";
+import {
   TraceConfig,
   TraceConfig$Outbound,
   TraceConfig$outboundSchema,
@@ -317,6 +322,10 @@ export type ChatRequest = {
    */
   stop?: string | Array<string> | any | null | undefined;
   /**
+   * Stop conditions for the server-tool agent loop. Any condition firing halts the loop (OR logic). When set, this overrides `max_tool_calls`.
+   */
+  stopServerToolsWhen?: Array<StopServerToolsWhenCondition> | undefined;
+  /**
    * Enable streaming response
    */
   stream?: boolean | undefined;
@@ -511,6 +520,9 @@ export type ChatRequest$Outbound = {
   service_tier?: string | null | undefined;
   session_id?: string | undefined;
   stop?: string | Array<string> | any | null | undefined;
+  stop_server_tools_when?:
+    | Array<StopServerToolsWhenCondition$Outbound>
+    | undefined;
   stream: boolean;
   stream_options?: ChatStreamOptions$Outbound | null | undefined;
   temperature?: number | null | undefined;
@@ -569,6 +581,8 @@ export const ChatRequest$outboundSchema: z.ZodType<
   sessionId: z.string().optional(),
   stop: z.nullable(z.union([z.string(), z.array(z.string()), z.any()]))
     .optional(),
+  stopServerToolsWhen: z.array(StopServerToolsWhenCondition$outboundSchema)
+    .optional(),
   stream: z.boolean().default(false),
   streamOptions: z.nullable(ChatStreamOptions$outboundSchema).optional(),
   temperature: z.nullable(z.number()).optional(),
@@ -591,6 +605,7 @@ export const ChatRequest$outboundSchema: z.ZodType<
     responseFormat: "response_format",
     serviceTier: "service_tier",
     sessionId: "session_id",
+    stopServerToolsWhen: "stop_server_tools_when",
     streamOptions: "stream_options",
     toolChoice: "tool_choice",
     topLogprobs: "top_logprobs",
