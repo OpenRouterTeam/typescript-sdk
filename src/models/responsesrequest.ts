@@ -185,6 +185,11 @@ import {
   TraceConfig$outboundSchema,
 } from "./traceconfig.js";
 import {
+  WebFetchPlugin,
+  WebFetchPlugin$Outbound,
+  WebFetchPlugin$outboundSchema,
+} from "./webfetchplugin.js";
+import {
   WebFetchServerTool,
   WebFetchServerTool$Outbound,
   WebFetchServerTool$outboundSchema,
@@ -213,7 +218,8 @@ export type ResponsesRequestPlugin =
   | ModerationPlugin
   | ParetoRouterPlugin
   | ResponseHealingPlugin
-  | WebSearchPlugin;
+  | WebSearchPlugin
+  | WebFetchPlugin;
 
 export const ResponsesRequestServiceTier = {
   Auto: "auto",
@@ -310,6 +316,7 @@ export type ResponsesRequest = {
       | ParetoRouterPlugin
       | ResponseHealingPlugin
       | WebSearchPlugin
+      | WebFetchPlugin
     >
     | undefined;
   presencePenalty?: number | null | undefined;
@@ -390,7 +397,8 @@ export type ResponsesRequestPlugin$Outbound =
   | ModerationPlugin$Outbound
   | ParetoRouterPlugin$Outbound
   | ResponseHealingPlugin$Outbound
-  | WebSearchPlugin$Outbound;
+  | WebSearchPlugin$Outbound
+  | WebFetchPlugin$Outbound;
 
 /** @internal */
 export const ResponsesRequestPlugin$outboundSchema: z.ZodType<
@@ -405,6 +413,7 @@ export const ResponsesRequestPlugin$outboundSchema: z.ZodType<
   ParetoRouterPlugin$outboundSchema,
   ResponseHealingPlugin$outboundSchema,
   WebSearchPlugin$outboundSchema,
+  WebFetchPlugin$outboundSchema,
 ]);
 
 export function responsesRequestPluginToJSON(
@@ -550,6 +559,7 @@ export type ResponsesRequest$Outbound = {
       | ParetoRouterPlugin$Outbound
       | ResponseHealingPlugin$Outbound
       | WebSearchPlugin$Outbound
+      | WebFetchPlugin$Outbound
     >
     | undefined;
   presence_penalty?: number | null | undefined;
@@ -632,6 +642,7 @@ export const ResponsesRequest$outboundSchema: z.ZodType<
       ParetoRouterPlugin$outboundSchema,
       ResponseHealingPlugin$outboundSchema,
       WebSearchPlugin$outboundSchema,
+      WebFetchPlugin$outboundSchema,
     ]),
   ).optional(),
   presencePenalty: z.nullable(z.number()).optional(),
