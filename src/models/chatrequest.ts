@@ -112,10 +112,20 @@ import {
   ResponseHealingPlugin$outboundSchema,
 } from "./responsehealingplugin.js";
 import {
+  StopServerToolsWhenCondition,
+  StopServerToolsWhenCondition$Outbound,
+  StopServerToolsWhenCondition$outboundSchema,
+} from "./stopservertoolswhencondition.js";
+import {
   TraceConfig,
   TraceConfig$Outbound,
   TraceConfig$outboundSchema,
 } from "./traceconfig.js";
+import {
+  WebFetchPlugin,
+  WebFetchPlugin$Outbound,
+  WebFetchPlugin$outboundSchema,
+} from "./webfetchplugin.js";
 import {
   WebSearchPlugin,
   WebSearchPlugin$Outbound,
@@ -137,12 +147,13 @@ export type ChatRequestPlugin =
   | ModerationPlugin
   | ParetoRouterPlugin
   | ResponseHealingPlugin
-  | WebSearchPlugin;
+  | WebSearchPlugin
+  | WebFetchPlugin;
 
 /**
  * Constrains effort on reasoning for reasoning models
  */
-export const Effort = {
+export const ChatRequestEffort = {
   Xhigh: "xhigh",
   High: "high",
   Medium: "medium",
@@ -153,16 +164,16 @@ export const Effort = {
 /**
  * Constrains effort on reasoning for reasoning models
  */
-export type Effort = OpenEnum<typeof Effort>;
+export type ChatRequestEffort = OpenEnum<typeof ChatRequestEffort>;
 
 /**
  * Configuration options for reasoning models
  */
-export type Reasoning = {
+export type ChatRequestReasoning = {
   /**
    * Constrains effort on reasoning for reasoning models
    */
-  effort?: Effort | null | undefined;
+  effort?: ChatRequestEffort | null | undefined;
   summary?: ChatReasoningSummaryVerbosityEnum | null | undefined;
 };
 
@@ -269,6 +280,7 @@ export type ChatRequest = {
       | ParetoRouterPlugin
       | ResponseHealingPlugin
       | WebSearchPlugin
+      | WebFetchPlugin
     >
     | undefined;
   /**
@@ -282,7 +294,7 @@ export type ChatRequest = {
   /**
    * Configuration options for reasoning models
    */
-  reasoning?: Reasoning | undefined;
+  reasoning?: ChatRequestReasoning | undefined;
   /**
    * Response format configuration
    */
@@ -309,6 +321,10 @@ export type ChatRequest = {
    * Stop sequences (up to 4)
    */
   stop?: string | Array<string> | any | null | undefined;
+  /**
+   * Stop conditions for the server-tool agent loop. Any condition firing halts the loop (OR logic). When set, this overrides `max_tool_calls`.
+   */
+  stopServerToolsWhen?: Array<StopServerToolsWhenCondition> | undefined;
   /**
    * Enable streaming response
    */
@@ -360,7 +376,8 @@ export type ChatRequestPlugin$Outbound =
   | ModerationPlugin$Outbound
   | ParetoRouterPlugin$Outbound
   | ResponseHealingPlugin$Outbound
-  | WebSearchPlugin$Outbound;
+  | WebSearchPlugin$Outbound
+  | WebFetchPlugin$Outbound;
 
 /** @internal */
 export const ChatRequestPlugin$outboundSchema: z.ZodType<
@@ -375,6 +392,7 @@ export const ChatRequestPlugin$outboundSchema: z.ZodType<
   ParetoRouterPlugin$outboundSchema,
   ResponseHealingPlugin$outboundSchema,
   WebSearchPlugin$outboundSchema,
+  WebFetchPlugin$outboundSchema,
 ]);
 
 export function chatRequestPluginToJSON(
@@ -386,27 +404,33 @@ export function chatRequestPluginToJSON(
 }
 
 /** @internal */
-export const Effort$outboundSchema: z.ZodType<string, Effort> = openEnums
-  .outboundSchema(Effort);
+export const ChatRequestEffort$outboundSchema: z.ZodType<
+  string,
+  ChatRequestEffort
+> = openEnums.outboundSchema(ChatRequestEffort);
 
 /** @internal */
-export type Reasoning$Outbound = {
+export type ChatRequestReasoning$Outbound = {
   effort?: string | null | undefined;
   summary?: string | null | undefined;
 };
 
 /** @internal */
-export const Reasoning$outboundSchema: z.ZodType<
-  Reasoning$Outbound,
-  Reasoning
+export const ChatRequestReasoning$outboundSchema: z.ZodType<
+  ChatRequestReasoning$Outbound,
+  ChatRequestReasoning
 > = z.object({
-  effort: z.nullable(Effort$outboundSchema).optional(),
+  effort: z.nullable(ChatRequestEffort$outboundSchema).optional(),
   summary: z.nullable(ChatReasoningSummaryVerbosityEnum$outboundSchema)
     .optional(),
 });
 
-export function reasoningToJSON(reasoning: Reasoning): string {
-  return JSON.stringify(Reasoning$outboundSchema.parse(reasoning));
+export function chatRequestReasoningToJSON(
+  chatRequestReasoning: ChatRequestReasoning,
+): string {
+  return JSON.stringify(
+    ChatRequestReasoning$outboundSchema.parse(chatRequestReasoning),
+  );
 }
 
 /** @internal */
@@ -479,11 +503,12 @@ export type ChatRequest$Outbound = {
       | ParetoRouterPlugin$Outbound
       | ResponseHealingPlugin$Outbound
       | WebSearchPlugin$Outbound
+      | WebFetchPlugin$Outbound
     >
     | undefined;
   presence_penalty?: number | null | undefined;
   provider?: ProviderPreferences$Outbound | null | undefined;
-  reasoning?: Reasoning$Outbound | undefined;
+  reasoning?: ChatRequestReasoning$Outbound | undefined;
   response_format?:
     | ChatFormatGrammarConfig$Outbound
     | FormatJsonObjectConfig$Outbound
@@ -495,6 +520,9 @@ export type ChatRequest$Outbound = {
   service_tier?: string | null | undefined;
   session_id?: string | undefined;
   stop?: string | Array<string> | any | null | undefined;
+  stop_server_tools_when?:
+    | Array<StopServerToolsWhenCondition$Outbound>
+    | undefined;
   stream: boolean;
   stream_options?: ChatStreamOptions$Outbound | null | undefined;
   temperature?: number | null | undefined;
@@ -535,11 +563,12 @@ export const ChatRequest$outboundSchema: z.ZodType<
       ParetoRouterPlugin$outboundSchema,
       ResponseHealingPlugin$outboundSchema,
       WebSearchPlugin$outboundSchema,
+      WebFetchPlugin$outboundSchema,
     ]),
   ).optional(),
   presencePenalty: z.nullable(z.number()).optional(),
   provider: z.nullable(ProviderPreferences$outboundSchema).optional(),
-  reasoning: z.lazy(() => Reasoning$outboundSchema).optional(),
+  reasoning: z.lazy(() => ChatRequestReasoning$outboundSchema).optional(),
   responseFormat: z.union([
     ChatFormatGrammarConfig$outboundSchema,
     FormatJsonObjectConfig$outboundSchema,
@@ -551,6 +580,8 @@ export const ChatRequest$outboundSchema: z.ZodType<
   serviceTier: z.nullable(ChatRequestServiceTier$outboundSchema).optional(),
   sessionId: z.string().optional(),
   stop: z.nullable(z.union([z.string(), z.array(z.string()), z.any()]))
+    .optional(),
+  stopServerToolsWhen: z.array(StopServerToolsWhenCondition$outboundSchema)
     .optional(),
   stream: z.boolean().default(false),
   streamOptions: z.nullable(ChatStreamOptions$outboundSchema).optional(),
@@ -574,6 +605,7 @@ export const ChatRequest$outboundSchema: z.ZodType<
     responseFormat: "response_format",
     serviceTier: "service_tier",
     sessionId: "session_id",
+    stopServerToolsWhen: "stop_server_tools_when",
     streamOptions: "stream_options",
     toolChoice: "tool_choice",
     topLogprobs: "top_logprobs",

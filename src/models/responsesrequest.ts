@@ -170,6 +170,11 @@ import {
   ShellServerTool$outboundSchema,
 } from "./shellservertool.js";
 import {
+  StopServerToolsWhenCondition,
+  StopServerToolsWhenCondition$Outbound,
+  StopServerToolsWhenCondition$outboundSchema,
+} from "./stopservertoolswhencondition.js";
+import {
   StoredPromptTemplate,
   StoredPromptTemplate$Outbound,
   StoredPromptTemplate$outboundSchema,
@@ -184,6 +189,11 @@ import {
   TraceConfig$Outbound,
   TraceConfig$outboundSchema,
 } from "./traceconfig.js";
+import {
+  WebFetchPlugin,
+  WebFetchPlugin$Outbound,
+  WebFetchPlugin$outboundSchema,
+} from "./webfetchplugin.js";
 import {
   WebFetchServerTool,
   WebFetchServerTool$Outbound,
@@ -213,7 +223,8 @@ export type ResponsesRequestPlugin =
   | ModerationPlugin
   | ParetoRouterPlugin
   | ResponseHealingPlugin
-  | WebSearchPlugin;
+  | WebSearchPlugin
+  | WebFetchPlugin;
 
 export const ResponsesRequestServiceTier = {
   Auto: "auto",
@@ -310,6 +321,7 @@ export type ResponsesRequest = {
       | ParetoRouterPlugin
       | ResponseHealingPlugin
       | WebSearchPlugin
+      | WebFetchPlugin
     >
     | undefined;
   presencePenalty?: number | null | undefined;
@@ -330,6 +342,10 @@ export type ResponsesRequest = {
    * A unique identifier for grouping related requests (e.g., a conversation or agent workflow) for observability. If provided in both the request body and the x-session-id header, the body value takes precedence. Maximum of 256 characters.
    */
   sessionId?: string | undefined;
+  /**
+   * Stop conditions for the server-tool agent loop. Any condition firing halts the loop (OR logic). When set, this overrides `max_tool_calls`.
+   */
+  stopServerToolsWhen?: Array<StopServerToolsWhenCondition> | undefined;
   store?: false | undefined;
   stream?: boolean | undefined;
   temperature?: number | null | undefined;
@@ -390,7 +406,8 @@ export type ResponsesRequestPlugin$Outbound =
   | ModerationPlugin$Outbound
   | ParetoRouterPlugin$Outbound
   | ResponseHealingPlugin$Outbound
-  | WebSearchPlugin$Outbound;
+  | WebSearchPlugin$Outbound
+  | WebFetchPlugin$Outbound;
 
 /** @internal */
 export const ResponsesRequestPlugin$outboundSchema: z.ZodType<
@@ -405,6 +422,7 @@ export const ResponsesRequestPlugin$outboundSchema: z.ZodType<
   ParetoRouterPlugin$outboundSchema,
   ResponseHealingPlugin$outboundSchema,
   WebSearchPlugin$outboundSchema,
+  WebFetchPlugin$outboundSchema,
 ]);
 
 export function responsesRequestPluginToJSON(
@@ -550,6 +568,7 @@ export type ResponsesRequest$Outbound = {
       | ParetoRouterPlugin$Outbound
       | ResponseHealingPlugin$Outbound
       | WebSearchPlugin$Outbound
+      | WebFetchPlugin$Outbound
     >
     | undefined;
   presence_penalty?: number | null | undefined;
@@ -561,6 +580,9 @@ export type ResponsesRequest$Outbound = {
   safety_identifier?: string | null | undefined;
   service_tier: string | null;
   session_id?: string | undefined;
+  stop_server_tools_when?:
+    | Array<StopServerToolsWhenCondition$Outbound>
+    | undefined;
   store: false;
   stream: boolean;
   temperature?: number | null | undefined;
@@ -632,6 +654,7 @@ export const ResponsesRequest$outboundSchema: z.ZodType<
       ParetoRouterPlugin$outboundSchema,
       ResponseHealingPlugin$outboundSchema,
       WebSearchPlugin$outboundSchema,
+      WebFetchPlugin$outboundSchema,
     ]),
   ).optional(),
   presencePenalty: z.nullable(z.number()).optional(),
@@ -645,6 +668,8 @@ export const ResponsesRequest$outboundSchema: z.ZodType<
     ResponsesRequestServiceTier$outboundSchema.default("auto"),
   ),
   sessionId: z.string().optional(),
+  stopServerToolsWhen: z.array(StopServerToolsWhenCondition$outboundSchema)
+    .optional(),
   store: z.literal(false).default(false as const),
   stream: z.boolean().default(false),
   temperature: z.nullable(z.number()).optional(),
@@ -703,6 +728,7 @@ export const ResponsesRequest$outboundSchema: z.ZodType<
     safetyIdentifier: "safety_identifier",
     serviceTier: "service_tier",
     sessionId: "session_id",
+    stopServerToolsWhen: "stop_server_tools_when",
     toolChoice: "tool_choice",
     topK: "top_k",
     topLogprobs: "top_logprobs",
