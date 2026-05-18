@@ -7,16 +7,15 @@ import { ClientSDK } from "../lib/sdks.js";
 import { Analytics } from "./analytics.js";
 import { APIKeys } from "./apikeys.js";
 import { Beta } from "./beta.js";
-import { Byok } from "./byok.js";
 import { Chat } from "./chat.js";
 import { Credits } from "./credits.js";
+import { Datasets } from "./datasets.js";
 import { Embeddings } from "./embeddings.js";
 import { Endpoints } from "./endpoints.js";
 import { Generations } from "./generations.js";
 import { Guardrails } from "./guardrails.js";
 import { Models } from "./models.js";
 import { OAuth } from "./oauth.js";
-import { Observability } from "./observability.js";
 import { Organization } from "./organization.js";
 import { Providers } from "./providers.js";
 import { Rerank } from "./rerank.js";
@@ -58,11 +57,6 @@ export class OpenRouter extends ClientSDK {
     return (this._oAuth ??= new OAuth(this._options));
   }
 
-  private _byok?: Byok;
-  get byok(): Byok {
-    return (this._byok ??= new Byok(this._options));
-  }
-
   private _chat?: Chat;
   get chat(): Chat {
     return (this._chat ??= new Chat(this._options));
@@ -71,6 +65,11 @@ export class OpenRouter extends ClientSDK {
   private _credits?: Credits;
   get credits(): Credits {
     return (this._credits ??= new Credits(this._options));
+  }
+
+  private _datasets?: Datasets;
+  get datasets(): Datasets {
+    return (this._datasets ??= new Datasets(this._options));
   }
 
   private _embeddings?: Embeddings;
@@ -101,11 +100,6 @@ export class OpenRouter extends ClientSDK {
   private _models?: Models;
   get models(): Models {
     return (this._models ??= new Models(this._options));
-  }
-
-  private _observability?: Observability;
-  get observability(): Observability {
-    return (this._observability ??= new Observability(this._options));
   }
 
   private _organization?: Organization;
