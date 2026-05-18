@@ -8,6 +8,11 @@ import { remap as remap$ } from "../lib/primitives.js";
 import * as openEnums from "../types/enums.js";
 import { OpenEnum } from "../types/enums.js";
 import {
+  AudioInput,
+  AudioInput$Outbound,
+  AudioInput$outboundSchema,
+} from "./audioinput.js";
+import {
   ContentPartImage,
   ContentPartImage$Outbound,
   ContentPartImage$outboundSchema,
@@ -198,6 +203,10 @@ export type VideoGenerationRequest = {
    * Whether to generate audio alongside the video. Defaults to the endpoint's generate_audio capability flag, false if not set.
    */
   generateAudio?: boolean | undefined;
+  /**
+   * Audio input to accompany the generated video. Only supported by select models (e.g. Seedance 2.0). Audio cannot be the sole input — at least one reference image or video must also be included.
+   */
+  inputAudio?: AudioInput | undefined;
   /**
    * Reference images to guide video generation
    */
@@ -519,6 +528,7 @@ export type VideoGenerationRequest$Outbound = {
   duration?: number | undefined;
   frame_images?: Array<FrameImage$Outbound> | undefined;
   generate_audio?: boolean | undefined;
+  input_audio?: AudioInput$Outbound | undefined;
   input_references?: Array<ContentPartImage$Outbound> | undefined;
   model: string;
   prompt: string;
@@ -538,6 +548,7 @@ export const VideoGenerationRequest$outboundSchema: z.ZodType<
   duration: z.int().optional(),
   frameImages: z.array(FrameImage$outboundSchema).optional(),
   generateAudio: z.boolean().optional(),
+  inputAudio: AudioInput$outboundSchema.optional(),
   inputReferences: z.array(ContentPartImage$outboundSchema).optional(),
   model: z.string(),
   prompt: z.string(),
@@ -552,6 +563,7 @@ export const VideoGenerationRequest$outboundSchema: z.ZodType<
     callbackUrl: "callback_url",
     frameImages: "frame_images",
     generateAudio: "generate_audio",
+    inputAudio: "input_audio",
     inputReferences: "input_references",
   });
 });
