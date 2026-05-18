@@ -1,0 +1,18 @@
+# FusionServerToolConfigReasoning
+
+Reasoning configuration forwarded to panelist and judge inner calls. Use this to control reasoning effort and token budget for models that support extended thinking.
+
+## Example Usage
+
+```typescript
+import { FusionServerToolConfigReasoning } from "@openrouter/sdk/models";
+
+let value: FusionServerToolConfigReasoning = {};
+```
+
+## Fields
+
+| Field                                                                                                                                                | Type                                                                                                                                                 | Required                                                                                                                                             | Description                                                                                                                                          |
+| ---------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `effort`                                                                                                                                             | [models.FusionServerToolConfigEffort](../models/fusionservertoolconfigeffort.md)                                                                     | :heavy_minus_sign:                                                                                                                                   | Reasoning effort level for panelist and judge inner calls.                                                                                           |
+| `maxTokens`                                                                                                                                          | *number*                                                                                                                                             | :heavy_minus_sign:                                                                                                                                   | Maximum number of reasoning tokens each panelist and judge model may use. Helps bound cost when models allocate too much budget to chain-of-thought. |
