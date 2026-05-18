@@ -19,6 +19,14 @@ const value: models.ContextCompressionPlugin = {
 };
 ```
 
+### `models.DeepResearchPlugin`
+
+```typescript
+const value: models.DeepResearchPlugin = {
+  id: "deep-research",
+};
+```
+
 ### `models.FileParserPlugin`
 
 ```typescript
