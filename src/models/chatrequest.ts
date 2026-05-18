@@ -72,6 +72,11 @@ import {
   ContextCompressionPlugin$outboundSchema,
 } from "./contextcompressionplugin.js";
 import {
+  DeepResearchPlugin,
+  DeepResearchPlugin$Outbound,
+  DeepResearchPlugin$outboundSchema,
+} from "./deepresearchplugin.js";
+import {
   FileParserPlugin,
   FileParserPlugin$Outbound,
   FileParserPlugin$outboundSchema,
@@ -112,6 +117,11 @@ import {
   ResponseHealingPlugin$outboundSchema,
 } from "./responsehealingplugin.js";
 import {
+  StopServerToolsWhenCondition,
+  StopServerToolsWhenCondition$Outbound,
+  StopServerToolsWhenCondition$outboundSchema,
+} from "./stopservertoolswhencondition.js";
+import {
   TraceConfig,
   TraceConfig$Outbound,
   TraceConfig$outboundSchema,
@@ -137,6 +147,7 @@ export type Modality = OpenEnum<typeof Modality>;
 export type ChatRequestPlugin =
   | AutoRouterPlugin
   | ContextCompressionPlugin
+  | DeepResearchPlugin
   | FileParserPlugin
   | FusionPlugin
   | ModerationPlugin
@@ -269,6 +280,7 @@ export type ChatRequest = {
     | Array<
       | AutoRouterPlugin
       | ContextCompressionPlugin
+      | DeepResearchPlugin
       | FileParserPlugin
       | FusionPlugin
       | ModerationPlugin
@@ -317,6 +329,10 @@ export type ChatRequest = {
    */
   stop?: string | Array<string> | any | null | undefined;
   /**
+   * Stop conditions for the server-tool agent loop. Any condition firing halts the loop (OR logic). When set, this overrides `max_tool_calls`.
+   */
+  stopServerToolsWhen?: Array<StopServerToolsWhenCondition> | undefined;
+  /**
    * Enable streaming response
    */
   stream?: boolean | undefined;
@@ -362,6 +378,7 @@ export const Modality$outboundSchema: z.ZodType<string, Modality> = openEnums
 export type ChatRequestPlugin$Outbound =
   | AutoRouterPlugin$Outbound
   | ContextCompressionPlugin$Outbound
+  | DeepResearchPlugin$Outbound
   | FileParserPlugin$Outbound
   | FusionPlugin$Outbound
   | ModerationPlugin$Outbound
@@ -377,6 +394,7 @@ export const ChatRequestPlugin$outboundSchema: z.ZodType<
 > = z.union([
   AutoRouterPlugin$outboundSchema,
   ContextCompressionPlugin$outboundSchema,
+  DeepResearchPlugin$outboundSchema,
   FileParserPlugin$outboundSchema,
   FusionPlugin$outboundSchema,
   ModerationPlugin$outboundSchema,
@@ -488,6 +506,7 @@ export type ChatRequest$Outbound = {
     | Array<
       | AutoRouterPlugin$Outbound
       | ContextCompressionPlugin$Outbound
+      | DeepResearchPlugin$Outbound
       | FileParserPlugin$Outbound
       | FusionPlugin$Outbound
       | ModerationPlugin$Outbound
@@ -511,6 +530,9 @@ export type ChatRequest$Outbound = {
   service_tier?: string | null | undefined;
   session_id?: string | undefined;
   stop?: string | Array<string> | any | null | undefined;
+  stop_server_tools_when?:
+    | Array<StopServerToolsWhenCondition$Outbound>
+    | undefined;
   stream: boolean;
   stream_options?: ChatStreamOptions$Outbound | null | undefined;
   temperature?: number | null | undefined;
@@ -545,6 +567,7 @@ export const ChatRequest$outboundSchema: z.ZodType<
     z.union([
       AutoRouterPlugin$outboundSchema,
       ContextCompressionPlugin$outboundSchema,
+      DeepResearchPlugin$outboundSchema,
       FileParserPlugin$outboundSchema,
       FusionPlugin$outboundSchema,
       ModerationPlugin$outboundSchema,
@@ -569,6 +592,8 @@ export const ChatRequest$outboundSchema: z.ZodType<
   sessionId: z.string().optional(),
   stop: z.nullable(z.union([z.string(), z.array(z.string()), z.any()]))
     .optional(),
+  stopServerToolsWhen: z.array(StopServerToolsWhenCondition$outboundSchema)
+    .optional(),
   stream: z.boolean().default(false),
   streamOptions: z.nullable(ChatStreamOptions$outboundSchema).optional(),
   temperature: z.nullable(z.number()).optional(),
@@ -591,6 +616,7 @@ export const ChatRequest$outboundSchema: z.ZodType<
     responseFormat: "response_format",
     serviceTier: "service_tier",
     sessionId: "session_id",
+    stopServerToolsWhen: "stop_server_tools_when",
     streamOptions: "stream_options",
     toolChoice: "tool_choice",
     topLogprobs: "top_logprobs",
