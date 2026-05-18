@@ -18,4 +18,4 @@ let value: Filters = {
 | ---------------------------------------------- | ---------------------------------------------- | ---------------------------------------------- | ---------------------------------------------- |
 | `key`                                          | *string*                                       | :heavy_check_mark:                             | N/A                                            |
 | `type`                                         | [models.FiltersType](../models/filterstype.md) | :heavy_check_mark:                             | N/A                                            |
-| `value`                                        | *models.FileSearchServerToolValue2*            | :heavy_check_mark:                             | N/A                                            |
+| `value`                                        | *models.Value2*                                | :heavy_check_mark:                             | N/A                                            |
