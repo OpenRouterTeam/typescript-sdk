@@ -19145,13 +19145,14 @@ components:
       description: >-
         Which fetch engine to use. "auto" (default) uses native if the provider supports it, otherwise Exa. "native"
         forces the provider's built-in fetch. "exa" uses Exa Contents API. "openrouter" uses direct HTTP fetch.
-        "firecrawl" uses Firecrawl scrape (requires BYOK).
+        "firecrawl" uses Firecrawl scrape (requires BYOK). "parallel" uses the Parallel extract API.
       enum:
         - auto
         - native
         - openrouter
         - firecrawl
         - exa
+        - parallel
       example: auto
       type: string
     WebFetchPlugin:
