@@ -2030,6 +2030,12 @@ components:
       description: >-
         The patch operation requested by an `apply_patch_call`. `create_file` and `update_file` carry a V4A diff;
         `delete_file` omits it.
+      discriminator:
+        mapping:
+          create_file: '#/components/schemas/ApplyPatchCreateFileOperation'
+          delete_file: '#/components/schemas/ApplyPatchDeleteFileOperation'
+          update_file: '#/components/schemas/ApplyPatchUpdateFileOperation'
+        propertyName: type
       example:
         diff: |-
           @@ function main() {
@@ -2038,45 +2044,9 @@ components:
         path: /src/main.ts
         type: update_file
       oneOf:
-        - properties:
-            diff:
-              type: string
-            path:
-              type: string
-            type:
-              enum:
-                - create_file
-              type: string
-          required:
-            - type
-            - path
-            - diff
-          type: object
-        - properties:
-            diff:
-              type: string
-            path:
-              type: string
-            type:
-              enum:
-                - update_file
-              type: string
-          required:
-            - type
-            - path
-            - diff
-          type: object
-        - properties:
-            path:
-              type: string
-            type:
-              enum:
-                - delete_file
-              type: string
-          required:
-            - type
-            - path
-          type: object
+        - $ref: '#/components/schemas/ApplyPatchCreateFileOperation'
+        - $ref: '#/components/schemas/ApplyPatchUpdateFileOperation'
+        - $ref: '#/components/schemas/ApplyPatchDeleteFileOperation'
     ApplyPatchCallOperationDiffDeltaEvent:
       description: Incremental chunk of `operation.diff` for an `apply_patch_call`. Matches OpenAI's streaming shape.
       example:
@@ -2175,6 +2145,61 @@ components:
         - completed
       example: completed
       type: string
+    ApplyPatchCreateFileOperation:
+      description: >-
+        The `create_file` variant of an `apply_patch_call.operation`. Carries a V4A diff describing the new file
+        contents.
+      example:
+        diff: |
+          @@
+          +console.log("hi");
+        path: /src/main.ts
+        type: create_file
+      properties:
+        diff:
+          type: string
+        path:
+          type: string
+        type:
+          enum:
+            - create_file
+          type: string
+      required:
+        - type
+        - path
+        - diff
+      type: object
+    ApplyPatchDeleteFileOperation:
+      description: >-
+        The `delete_file` variant of an `apply_patch_call.operation`. Identifies the file to remove; no diff is
+        required.
+      example:
+        path: /src/main.ts
+        type: delete_file
+      properties:
+        path:
+          type: string
+        type:
+          enum:
+            - delete_file
+          type: string
+      required:
+        - type
+        - path
+      type: object
+    ApplyPatchEngineEnum:
+      description: >-
+        Which apply_patch engine to use. "auto" (default) uses native passthrough when the endpoint advertises native
+        apply_patch support, otherwise falls back to OpenRouter's HITL validator. "native" forces native passthrough —
+        when the endpoint does not support native, the request falls back to HITL. "openrouter" always runs the HITL
+        validator. Native passthrough streams the diff incrementally via `apply_patch_call_operation_diff.delta` events;
+        HITL buffers the diff for atomic delivery as a single delta.
+      enum:
+        - auto
+        - native
+        - openrouter
+      example: auto
+      type: string
     ApplyPatchServerTool:
       description: Apply patch tool configuration
       example:
@@ -2205,8 +2230,36 @@ components:
       type: object
     ApplyPatchServerToolConfig:
       description: Configuration for the openrouter:apply_patch server tool
-      example: {}
-      properties: {}
+      example:
+        engine: auto
+      properties:
+        engine:
+          $ref: '#/components/schemas/ApplyPatchEngineEnum'
+      type: object
+    ApplyPatchUpdateFileOperation:
+      description: >-
+        The `update_file` variant of an `apply_patch_call.operation`. Carries a V4A diff describing edits to an existing
+        file.
+      example:
+        diff: |-
+          @@ function main() {
+          +  console.log("hi");
+           }
+        path: /src/main.ts
+        type: update_file
+      properties:
+        diff:
+          type: string
+        path:
+          type: string
+        type:
+          enum:
+            - update_file
+          type: string
+      required:
+        - type
+        - path
+        - diff
       type: object
     AutoRouterPlugin:
       example:
@@ -3058,6 +3111,7 @@ components:
           items:
             discriminator:
               mapping:
+                apply_patch_call: '#/components/schemas/OutputItemApplyPatchCall'
                 custom_tool_call: '#/components/schemas/OutputItemCustomToolCall'
                 file_search_call: '#/components/schemas/OutputItemFileSearchCall'
                 function_call: '#/components/schemas/OutputItemFunctionCall'
@@ -3074,6 +3128,7 @@ components:
               - $ref: '#/components/schemas/OutputItemWebSearchCall'
               - $ref: '#/components/schemas/OutputItemFileSearchCall'
               - $ref: '#/components/schemas/OutputItemImageGenerationCall'
+              - $ref: '#/components/schemas/OutputItemApplyPatchCall'
           type: array
         output_text:
           type: string
@@ -14066,6 +14121,7 @@ components:
         item:
           discriminator:
             mapping:
+              apply_patch_call: '#/components/schemas/OutputItemApplyPatchCall'
               custom_tool_call: '#/components/schemas/OutputItemCustomToolCall'
               file_search_call: '#/components/schemas/OutputItemFileSearchCall'
               function_call: '#/components/schemas/OutputItemFunctionCall'
@@ -14082,6 +14138,7 @@ components:
             - $ref: '#/components/schemas/OutputItemWebSearchCall'
             - $ref: '#/components/schemas/OutputItemFileSearchCall'
             - $ref: '#/components/schemas/OutputItemImageGenerationCall'
+            - $ref: '#/components/schemas/OutputItemApplyPatchCall'
         output_index:
           type: integer
         sequence_number:
@@ -14095,6 +14152,53 @@ components:
         - output_index
         - item
         - sequence_number
+      type: object
+    OutputItemApplyPatchCall:
+      example:
+        call_id: call_abc123
+        id: apc_abc123
+        operation:
+          diff: |-
+            @@ function main() {
+            +  console.log("hi");
+             }
+          path: /src/main.ts
+          type: update_file
+        status: completed
+        type: apply_patch_call
+      properties:
+        call_id:
+          type: string
+        created_by:
+          type: string
+        id:
+          type: string
+        operation:
+          discriminator:
+            mapping:
+              create_file: '#/components/schemas/ApplyPatchCreateFileOperation'
+              delete_file: '#/components/schemas/ApplyPatchDeleteFileOperation'
+              update_file: '#/components/schemas/ApplyPatchUpdateFileOperation'
+            propertyName: type
+          oneOf:
+            - $ref: '#/components/schemas/ApplyPatchCreateFileOperation'
+            - $ref: '#/components/schemas/ApplyPatchUpdateFileOperation'
+            - $ref: '#/components/schemas/ApplyPatchDeleteFileOperation'
+        status:
+          enum:
+            - in_progress
+            - completed
+          type: string
+        type:
+          enum:
+            - apply_patch_call
+          type: string
+      required:
+        - type
+        - id
+        - call_id
+        - operation
+        - status
       type: object
     OutputItemCustomToolCall:
       example:
@@ -14146,6 +14250,7 @@ components:
         item:
           discriminator:
             mapping:
+              apply_patch_call: '#/components/schemas/OutputItemApplyPatchCall'
               custom_tool_call: '#/components/schemas/OutputItemCustomToolCall'
               file_search_call: '#/components/schemas/OutputItemFileSearchCall'
               function_call: '#/components/schemas/OutputItemFunctionCall'
@@ -14162,6 +14267,7 @@ components:
             - $ref: '#/components/schemas/OutputItemWebSearchCall'
             - $ref: '#/components/schemas/OutputItemFileSearchCall'
             - $ref: '#/components/schemas/OutputItemImageGenerationCall'
+            - $ref: '#/components/schemas/OutputItemApplyPatchCall'
         output_index:
           type: integer
         sequence_number:
