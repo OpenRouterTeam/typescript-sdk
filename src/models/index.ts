@@ -17,6 +17,7 @@ export * from "./applypatchcallstatus.js";
 export * from "./applypatchservertool.js";
 export * from "./applypatchservertoolconfig.js";
 export * from "./applypatchservertoolopenrouter.js";
+export * from "./audioinput.js";
 export * from "./autorouterplugin.js";
 export * from "./badgatewayresponseerrordata.js";
 export * from "./badrequestresponseerrordata.js";
