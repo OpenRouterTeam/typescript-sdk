@@ -6018,6 +6018,38 @@ components:
       required:
         - data
       type: object
+    CreatePresetFromInferenceResponse:
+      description: Response containing the created preset with its designated version.
+      example:
+        data:
+          created_at: '2026-04-20T10:00:00Z'
+          creator_user_id: user_2dHFtVWx2n56w6HkM0000000000
+          description: null
+          designated_version:
+            config:
+              model: openai/gpt-4o
+              temperature: 0.7
+            created_at: '2026-04-20T10:00:00Z'
+            creator_id: user_2dHFtVWx2n56w6HkM0000000000
+            id: 550e8400-e29b-41d4-a716-446655440000
+            preset_id: 650e8400-e29b-41d4-a716-446655440001
+            system_prompt: You are a helpful assistant.
+            updated_at: '2026-04-20T10:00:00Z'
+            version: 1
+          designated_version_id: 550e8400-e29b-41d4-a716-446655440000
+          id: 650e8400-e29b-41d4-a716-446655440001
+          name: my-preset
+          slug: my-preset
+          status: active
+          status_updated_at: null
+          updated_at: '2026-04-20T10:00:00Z'
+          workspace_id: 750e8400-e29b-41d4-a716-446655440002
+      properties:
+        data:
+          $ref: '#/components/schemas/PresetWithDesignatedVersion'
+      required:
+        - data
+      type: object
     CreateWorkspaceRequest:
       example:
         default_image_model: openai/dall-e-3
@@ -15089,6 +15121,124 @@ components:
       description: >-
         Preferred minimum throughput (in tokens per second). Can be a number (applies to p50) or an object with percentile-specific cutoffs. Endpoints below the threshold(s) may still be used, but are deprioritized in routing. When using fallback models, this may cause a fallback model to be used instead of the primary model if it meets the threshold.
       example: 100
+    PresetDesignatedVersion:
+      description: A specific version of a preset, containing config and optional system prompt.
+      example:
+        config:
+          model: openai/gpt-4o
+          temperature: 0.7
+        created_at: '2026-04-20T10:00:00Z'
+        creator_id: user_2dHFtVWx2n56w6HkM0000000000
+        id: 550e8400-e29b-41d4-a716-446655440000
+        preset_id: 650e8400-e29b-41d4-a716-446655440001
+        system_prompt: You are a helpful assistant.
+        updated_at: '2026-04-20T10:00:00Z'
+        version: 1
+      nullable: true
+      properties:
+        config:
+          additionalProperties:
+            nullable: true
+          type: object
+        created_at:
+          type: string
+        creator_id:
+          type: string
+        id:
+          type: string
+        preset_id:
+          type: string
+        system_prompt:
+          nullable: true
+          type: string
+        updated_at:
+          type: string
+        version:
+          type: integer
+      required:
+        - id
+        - preset_id
+        - creator_id
+        - version
+        - system_prompt
+        - config
+        - created_at
+        - updated_at
+      type: object
+    PresetWithDesignatedVersion:
+      description: A preset with its currently designated version.
+      example:
+        created_at: '2026-04-20T10:00:00Z'
+        creator_user_id: user_2dHFtVWx2n56w6HkM0000000000
+        description: null
+        designated_version:
+          config:
+            model: openai/gpt-4o
+            temperature: 0.7
+          created_at: '2026-04-20T10:00:00Z'
+          creator_id: user_2dHFtVWx2n56w6HkM0000000000
+          id: 550e8400-e29b-41d4-a716-446655440000
+          preset_id: 650e8400-e29b-41d4-a716-446655440001
+          system_prompt: You are a helpful assistant.
+          updated_at: '2026-04-20T10:00:00Z'
+          version: 1
+        designated_version_id: 550e8400-e29b-41d4-a716-446655440000
+        id: 650e8400-e29b-41d4-a716-446655440001
+        name: my-preset
+        slug: my-preset
+        status: active
+        status_updated_at: null
+        updated_at: '2026-04-20T10:00:00Z'
+        workspace_id: 750e8400-e29b-41d4-a716-446655440002
+      properties:
+        created_at:
+          type: string
+        creator_user_id:
+          nullable: true
+          type: string
+        description:
+          nullable: true
+          type: string
+        designated_version:
+          $ref: '#/components/schemas/PresetDesignatedVersion'
+        designated_version_id:
+          nullable: true
+          type: string
+        id:
+          type: string
+        name:
+          type: string
+        slug:
+          type: string
+        status:
+          enum:
+            - active
+            - disabled
+            - archived
+          type: string
+          x-speakeasy-unknown-values: allow
+        status_updated_at:
+          nullable: true
+          type: string
+        updated_at:
+          type: string
+        workspace_id:
+          nullable: true
+          type: string
+      required:
+        - id
+        - creator_user_id
+        - workspace_id
+        - name
+        - slug
+        - description
+        - status
+        - designated_version_id
+        - created_at
+        - updated_at
+        - status_updated_at
+        - designated_version
+      type: object
     Preview_20250311_WebSearchServerTool:
       description: Web search preview tool configuration (2025-03-11 version)
       example:
@@ -25505,6 +25655,135 @@ paths:
       - $ref: "#/components/parameters/AppIdentifier"
       - $ref: "#/components/parameters/AppDisplayName"
       - $ref: "#/components/parameters/AppCategories"
+  /presets/{slug}/chat/completions:
+    post:
+      description: >-
+        Creates a preset (or a new version of an existing one) from an inference request body. Only fields that overlap with the preset config are persisted; other fields (e.g. `messages`, `stream`, `prompt`) are silently ignored.
+      operationId: createPresetsChatCompletions
+      parameters:
+        - description: URL-safe slug identifying the preset. Created if it does not exist.
+          in: path
+          name: slug
+          required: true
+          schema:
+            description: URL-safe slug identifying the preset. Created if it does not exist.
+            example: my-preset
+            minLength: 1
+            type: string
+      requestBody:
+        content:
+          application/json:
+            example:
+              messages:
+                - content: You are a helpful assistant.
+                  role: system
+                - content: Hello!
+                  role: user
+              model: openai/gpt-4o
+              temperature: 0.7
+            schema:
+              $ref: '#/components/schemas/ChatRequest'
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              example:
+                data:
+                  created_at: '2026-04-20T10:00:00Z'
+                  creator_user_id: user_2dHFtVWx2n56w6HkM0000000000
+                  description: null
+                  designated_version:
+                    config:
+                      model: openai/gpt-4o
+                      temperature: 0.7
+                    created_at: '2026-04-20T10:00:00Z'
+                    creator_id: user_2dHFtVWx2n56w6HkM0000000000
+                    id: 550e8400-e29b-41d4-a716-446655440000
+                    preset_id: 650e8400-e29b-41d4-a716-446655440001
+                    system_prompt: You are a helpful assistant.
+                    updated_at: '2026-04-20T10:00:00Z'
+                    version: 1
+                  designated_version_id: 550e8400-e29b-41d4-a716-446655440000
+                  id: 650e8400-e29b-41d4-a716-446655440001
+                  name: my-preset
+                  slug: my-preset
+                  status: active
+                  status_updated_at: null
+                  updated_at: '2026-04-20T10:00:00Z'
+                  workspace_id: 750e8400-e29b-41d4-a716-446655440002
+              schema:
+                $ref: '#/components/schemas/CreatePresetFromInferenceResponse'
+          description: Preset created or updated successfully.
+        '400':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 400
+                  message: Invalid request parameters
+              schema:
+                $ref: '#/components/schemas/BadRequestResponse'
+          description: Bad Request - Invalid request parameters or malformed input
+        '401':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 401
+                  message: Missing Authentication header
+              schema:
+                $ref: '#/components/schemas/UnauthorizedResponse'
+          description: Unauthorized - Authentication required or invalid credentials
+        '403':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 403
+                  message: Only management keys can perform this operation
+              schema:
+                $ref: '#/components/schemas/ForbiddenResponse'
+          description: Forbidden - Authentication successful but insufficient permissions
+        '404':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 404
+                  message: Resource not found
+              schema:
+                $ref: '#/components/schemas/NotFoundResponse'
+          description: Not Found - Resource does not exist
+        '409':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 409
+                  message: Resource conflict. Please try again later.
+              schema:
+                $ref: '#/components/schemas/ConflictResponse'
+          description: Conflict - Resource conflict or concurrent modification
+        '500':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 500
+                  message: Internal Server Error
+              schema:
+                $ref: '#/components/schemas/InternalServerResponse'
+          description: Internal Server Error - Unexpected server error
+      security:
+        - apiKey: []
+      summary: Create a preset from a chat-completions request body
+      tags:
+        - Presets
+    parameters:
+      - $ref: "#/components/parameters/AppIdentifier"
+      - $ref: "#/components/parameters/AppDisplayName"
+      - $ref: "#/components/parameters/AppCategories"
   /providers:
     get:
       operationId: listProviders
@@ -27579,6 +27858,8 @@ tags:
     name: Observability
   - description: Organization endpoints
     name: Organization
+  - description: Presets endpoints
+    name: Presets
   - description: Provider information endpoints
     name: Providers
   - description: Rerank endpoints
