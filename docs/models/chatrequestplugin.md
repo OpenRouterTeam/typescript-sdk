@@ -19,6 +19,14 @@ const value: models.ContextCompressionPlugin = {
 };
 ```
 
+### `models.DelegatedRouterPlugin`
+
+```typescript
+const value: models.DelegatedRouterPlugin = {
+  id: "delegated-router",
+};
+```
+
 ### `models.FileParserPlugin`
 
 ```typescript

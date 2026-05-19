@@ -115,6 +115,7 @@ export * from "./customtoolcalloutputitem.js";
 export * from "./datetimeservertool.js";
 export * from "./datetimeservertoolconfig.js";
 export * from "./defaultparameters.js";
+export * from "./delegatedrouterplugin.js";
 export * from "./deletebyokkeyresponse.js";
 export * from "./deleteguardrailresponse.js";
 export * from "./deleteobservabilitydestinationresponse.js";
