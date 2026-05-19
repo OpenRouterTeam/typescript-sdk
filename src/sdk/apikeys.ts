@@ -32,10 +32,7 @@ export class APIKeys extends ClientSDK {
   }
 
   /**
-   * List API keys
-   *
-   * @remarks
-   * List all API keys for the authenticated user. [Management key](/docs/guides/overview/auth/management-api-keys) required.
+   * List all models and their properties
    */
   async list(
     request?: operations.ListRequest | undefined,
