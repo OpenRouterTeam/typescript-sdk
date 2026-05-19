@@ -117,11 +117,6 @@ import {
   TraceConfig$outboundSchema,
 } from "./traceconfig.js";
 import {
-  WebFetchPlugin,
-  WebFetchPlugin$Outbound,
-  WebFetchPlugin$outboundSchema,
-} from "./webfetchplugin.js";
-import {
   WebSearchPlugin,
   WebSearchPlugin$Outbound,
   WebSearchPlugin$outboundSchema,
@@ -142,13 +137,12 @@ export type ChatRequestPlugin =
   | ModerationPlugin
   | ParetoRouterPlugin
   | ResponseHealingPlugin
-  | WebSearchPlugin
-  | WebFetchPlugin;
+  | WebSearchPlugin;
 
 /**
  * Constrains effort on reasoning for reasoning models
  */
-export const ChatRequestEffort = {
+export const Effort = {
   Xhigh: "xhigh",
   High: "high",
   Medium: "medium",
@@ -159,16 +153,16 @@ export const ChatRequestEffort = {
 /**
  * Constrains effort on reasoning for reasoning models
  */
-export type ChatRequestEffort = OpenEnum<typeof ChatRequestEffort>;
+export type Effort = OpenEnum<typeof Effort>;
 
 /**
  * Configuration options for reasoning models
  */
-export type ChatRequestReasoning = {
+export type Reasoning = {
   /**
    * Constrains effort on reasoning for reasoning models
    */
-  effort?: ChatRequestEffort | null | undefined;
+  effort?: Effort | null | undefined;
   summary?: ChatReasoningSummaryVerbosityEnum | null | undefined;
 };
 
@@ -275,7 +269,6 @@ export type ChatRequest = {
       | ParetoRouterPlugin
       | ResponseHealingPlugin
       | WebSearchPlugin
-      | WebFetchPlugin
     >
     | undefined;
   /**
@@ -289,7 +282,7 @@ export type ChatRequest = {
   /**
    * Configuration options for reasoning models
    */
-  reasoning?: ChatRequestReasoning | undefined;
+  reasoning?: Reasoning | undefined;
   /**
    * Response format configuration
    */
@@ -367,8 +360,7 @@ export type ChatRequestPlugin$Outbound =
   | ModerationPlugin$Outbound
   | ParetoRouterPlugin$Outbound
   | ResponseHealingPlugin$Outbound
-  | WebSearchPlugin$Outbound
-  | WebFetchPlugin$Outbound;
+  | WebSearchPlugin$Outbound;
 
 /** @internal */
 export const ChatRequestPlugin$outboundSchema: z.ZodType<
@@ -383,7 +375,6 @@ export const ChatRequestPlugin$outboundSchema: z.ZodType<
   ParetoRouterPlugin$outboundSchema,
   ResponseHealingPlugin$outboundSchema,
   WebSearchPlugin$outboundSchema,
-  WebFetchPlugin$outboundSchema,
 ]);
 
 export function chatRequestPluginToJSON(
@@ -395,33 +386,27 @@ export function chatRequestPluginToJSON(
 }
 
 /** @internal */
-export const ChatRequestEffort$outboundSchema: z.ZodType<
-  string,
-  ChatRequestEffort
-> = openEnums.outboundSchema(ChatRequestEffort);
+export const Effort$outboundSchema: z.ZodType<string, Effort> = openEnums
+  .outboundSchema(Effort);
 
 /** @internal */
-export type ChatRequestReasoning$Outbound = {
+export type Reasoning$Outbound = {
   effort?: string | null | undefined;
   summary?: string | null | undefined;
 };
 
 /** @internal */
-export const ChatRequestReasoning$outboundSchema: z.ZodType<
-  ChatRequestReasoning$Outbound,
-  ChatRequestReasoning
+export const Reasoning$outboundSchema: z.ZodType<
+  Reasoning$Outbound,
+  Reasoning
 > = z.object({
-  effort: z.nullable(ChatRequestEffort$outboundSchema).optional(),
+  effort: z.nullable(Effort$outboundSchema).optional(),
   summary: z.nullable(ChatReasoningSummaryVerbosityEnum$outboundSchema)
     .optional(),
 });
 
-export function chatRequestReasoningToJSON(
-  chatRequestReasoning: ChatRequestReasoning,
-): string {
-  return JSON.stringify(
-    ChatRequestReasoning$outboundSchema.parse(chatRequestReasoning),
-  );
+export function reasoningToJSON(reasoning: Reasoning): string {
+  return JSON.stringify(Reasoning$outboundSchema.parse(reasoning));
 }
 
 /** @internal */
@@ -494,12 +479,11 @@ export type ChatRequest$Outbound = {
       | ParetoRouterPlugin$Outbound
       | ResponseHealingPlugin$Outbound
       | WebSearchPlugin$Outbound
-      | WebFetchPlugin$Outbound
     >
     | undefined;
   presence_penalty?: number | null | undefined;
   provider?: ProviderPreferences$Outbound | null | undefined;
-  reasoning?: ChatRequestReasoning$Outbound | undefined;
+  reasoning?: Reasoning$Outbound | undefined;
   response_format?:
     | ChatFormatGrammarConfig$Outbound
     | FormatJsonObjectConfig$Outbound
@@ -551,12 +535,11 @@ export const ChatRequest$outboundSchema: z.ZodType<
       ParetoRouterPlugin$outboundSchema,
       ResponseHealingPlugin$outboundSchema,
       WebSearchPlugin$outboundSchema,
-      WebFetchPlugin$outboundSchema,
     ]),
   ).optional(),
   presencePenalty: z.nullable(z.number()).optional(),
   provider: z.nullable(ProviderPreferences$outboundSchema).optional(),
-  reasoning: z.lazy(() => ChatRequestReasoning$outboundSchema).optional(),
+  reasoning: z.lazy(() => Reasoning$outboundSchema).optional(),
   responseFormat: z.union([
     ChatFormatGrammarConfig$outboundSchema,
     FormatJsonObjectConfig$outboundSchema,

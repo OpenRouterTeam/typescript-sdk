@@ -18,11 +18,6 @@ import {
   ApplyPatchServerTool$outboundSchema,
 } from "./applypatchservertool.js";
 import {
-  ApplyPatchServerToolOpenRouter,
-  ApplyPatchServerToolOpenRouter$Outbound,
-  ApplyPatchServerToolOpenRouter$outboundSchema,
-} from "./applypatchservertoolopenrouter.js";
-import {
   AutoRouterPlugin,
   AutoRouterPlugin$Outbound,
   AutoRouterPlugin$outboundSchema,
@@ -185,11 +180,6 @@ import {
   TraceConfig$outboundSchema,
 } from "./traceconfig.js";
 import {
-  WebFetchPlugin,
-  WebFetchPlugin$Outbound,
-  WebFetchPlugin$outboundSchema,
-} from "./webfetchplugin.js";
-import {
   WebFetchServerTool,
   WebFetchServerTool$Outbound,
   WebFetchServerTool$outboundSchema,
@@ -218,8 +208,7 @@ export type ResponsesRequestPlugin =
   | ModerationPlugin
   | ParetoRouterPlugin
   | ResponseHealingPlugin
-  | WebSearchPlugin
-  | WebFetchPlugin;
+  | WebSearchPlugin;
 
 export const ResponsesRequestServiceTier = {
   Auto: "auto",
@@ -267,8 +256,7 @@ export type ResponsesRequestToolUnion =
     type: "openrouter:experimental__search_models";
   })
   | (WebFetchServerTool & { type: "openrouter:web_fetch" })
-  | WebSearchServerToolOpenRouter
-  | ApplyPatchServerToolOpenRouter;
+  | WebSearchServerToolOpenRouter;
 
 /**
  * Request schema for Responses endpoint
@@ -316,7 +304,6 @@ export type ResponsesRequest = {
       | ParetoRouterPlugin
       | ResponseHealingPlugin
       | WebSearchPlugin
-      | WebFetchPlugin
     >
     | undefined;
   presencePenalty?: number | null | undefined;
@@ -371,7 +358,6 @@ export type ResponsesRequest = {
       })
       | (WebFetchServerTool & { type: "openrouter:web_fetch" })
       | WebSearchServerToolOpenRouter
-      | ApplyPatchServerToolOpenRouter
     >
     | undefined;
   topK?: number | undefined;
@@ -397,8 +383,7 @@ export type ResponsesRequestPlugin$Outbound =
   | ModerationPlugin$Outbound
   | ParetoRouterPlugin$Outbound
   | ResponseHealingPlugin$Outbound
-  | WebSearchPlugin$Outbound
-  | WebFetchPlugin$Outbound;
+  | WebSearchPlugin$Outbound;
 
 /** @internal */
 export const ResponsesRequestPlugin$outboundSchema: z.ZodType<
@@ -413,7 +398,6 @@ export const ResponsesRequestPlugin$outboundSchema: z.ZodType<
   ParetoRouterPlugin$outboundSchema,
   ResponseHealingPlugin$outboundSchema,
   WebSearchPlugin$outboundSchema,
-  WebFetchPlugin$outboundSchema,
 ]);
 
 export function responsesRequestPluginToJSON(
@@ -486,8 +470,7 @@ export type ResponsesRequestToolUnion$Outbound =
     type: "openrouter:experimental__search_models";
   })
   | (WebFetchServerTool$Outbound & { type: "openrouter:web_fetch" })
-  | WebSearchServerToolOpenRouter$Outbound
-  | ApplyPatchServerToolOpenRouter$Outbound;
+  | WebSearchServerToolOpenRouter$Outbound;
 
 /** @internal */
 export const ResponsesRequestToolUnion$outboundSchema: z.ZodType<
@@ -522,7 +505,6 @@ export const ResponsesRequestToolUnion$outboundSchema: z.ZodType<
     z.object({ type: z.literal("openrouter:web_fetch") }),
   ),
   WebSearchServerToolOpenRouter$outboundSchema,
-  ApplyPatchServerToolOpenRouter$outboundSchema,
 ]);
 
 export function responsesRequestToolUnionToJSON(
@@ -559,7 +541,6 @@ export type ResponsesRequest$Outbound = {
       | ParetoRouterPlugin$Outbound
       | ResponseHealingPlugin$Outbound
       | WebSearchPlugin$Outbound
-      | WebFetchPlugin$Outbound
     >
     | undefined;
   presence_penalty?: number | null | undefined;
@@ -602,7 +583,6 @@ export type ResponsesRequest$Outbound = {
       })
       | (WebFetchServerTool$Outbound & { type: "openrouter:web_fetch" })
       | WebSearchServerToolOpenRouter$Outbound
-      | ApplyPatchServerToolOpenRouter$Outbound
     >
     | undefined;
   top_k?: number | undefined;
@@ -642,7 +622,6 @@ export const ResponsesRequest$outboundSchema: z.ZodType<
       ParetoRouterPlugin$outboundSchema,
       ResponseHealingPlugin$outboundSchema,
       WebSearchPlugin$outboundSchema,
-      WebFetchPlugin$outboundSchema,
     ]),
   ).optional(),
   presencePenalty: z.nullable(z.number()).optional(),
@@ -691,7 +670,6 @@ export const ResponsesRequest$outboundSchema: z.ZodType<
         z.object({ type: z.literal("openrouter:web_fetch") }),
       ),
       WebSearchServerToolOpenRouter$outboundSchema,
-      ApplyPatchServerToolOpenRouter$outboundSchema,
     ]),
   ).optional(),
   topK: z.int().optional(),
