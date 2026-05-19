@@ -3,7 +3,7 @@ id: ""
 management:
   docChecksum: f3e4c3d168511342a08ecaff2e9d1db6
   docVersion: 1.0.0
-  speakeasyVersion: 1.761.0
+  speakeasyVersion: 1.763.2
   generationVersion: 2.879.1
   releaseVersion: 0.12.64
   configChecksum: d36fef3f19146de3fb5bf465c5d3b4e5
