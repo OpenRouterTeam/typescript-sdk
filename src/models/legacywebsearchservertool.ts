@@ -25,6 +25,17 @@ import {
   WebSearchEngineEnum$outboundSchema,
 } from "./websearchengineenum.js";
 import {
+  WebSearchImageSettings,
+  WebSearchImageSettings$inboundSchema,
+  WebSearchImageSettings$Outbound,
+  WebSearchImageSettings$outboundSchema,
+} from "./websearchimagesettings.js";
+import {
+  WebSearchSearchContentType,
+  WebSearchSearchContentType$inboundSchema,
+  WebSearchSearchContentType$outboundSchema,
+} from "./websearchsearchcontenttype.js";
+import {
   WebSearchUserLocation,
   WebSearchUserLocation$inboundSchema,
   WebSearchUserLocation$Outbound,
@@ -41,9 +52,14 @@ export type LegacyWebSearchServerTool = {
   engine?: WebSearchEngineEnum | undefined;
   filters?: WebSearchDomainFilter | null | undefined;
   /**
+   * Image-specific search settings. Only meaningful when `search_content_types` includes `"image"`.
+   */
+  imageSettings?: WebSearchImageSettings | null | undefined;
+  /**
    * Maximum number of search results to return per search call. Defaults to 5. Applies to Exa, Firecrawl, and Parallel engines; ignored with native provider search.
    */
   maxResults?: number | undefined;
+  searchContentTypes?: Array<WebSearchSearchContentType> | undefined;
   /**
    * Size of the search context for web search tools
    */
@@ -62,13 +78,18 @@ export const LegacyWebSearchServerTool$inboundSchema: z.ZodType<
 > = z.object({
   engine: WebSearchEngineEnum$inboundSchema.optional(),
   filters: z.nullable(WebSearchDomainFilter$inboundSchema).optional(),
+  image_settings: z.nullable(WebSearchImageSettings$inboundSchema).optional(),
   max_results: z.int().optional(),
+  search_content_types: z.array(WebSearchSearchContentType$inboundSchema)
+    .optional(),
   search_context_size: SearchContextSizeEnum$inboundSchema.optional(),
   type: z.literal("web_search"),
   user_location: z.nullable(WebSearchUserLocation$inboundSchema).optional(),
 }).transform((v) => {
   return remap$(v, {
+    "image_settings": "imageSettings",
     "max_results": "maxResults",
+    "search_content_types": "searchContentTypes",
     "search_context_size": "searchContextSize",
     "user_location": "userLocation",
   });
@@ -77,7 +98,9 @@ export const LegacyWebSearchServerTool$inboundSchema: z.ZodType<
 export type LegacyWebSearchServerTool$Outbound = {
   engine?: string | undefined;
   filters?: WebSearchDomainFilter$Outbound | null | undefined;
+  image_settings?: WebSearchImageSettings$Outbound | null | undefined;
   max_results?: number | undefined;
+  search_content_types?: Array<string> | undefined;
   search_context_size?: string | undefined;
   type: "web_search";
   user_location?: WebSearchUserLocation$Outbound | null | undefined;
@@ -90,13 +113,18 @@ export const LegacyWebSearchServerTool$outboundSchema: z.ZodType<
 > = z.object({
   engine: WebSearchEngineEnum$outboundSchema.optional(),
   filters: z.nullable(WebSearchDomainFilter$outboundSchema).optional(),
+  imageSettings: z.nullable(WebSearchImageSettings$outboundSchema).optional(),
   maxResults: z.int().optional(),
+  searchContentTypes: z.array(WebSearchSearchContentType$outboundSchema)
+    .optional(),
   searchContextSize: SearchContextSizeEnum$outboundSchema.optional(),
   type: z.literal("web_search"),
   userLocation: z.nullable(WebSearchUserLocation$outboundSchema).optional(),
 }).transform((v) => {
   return remap$(v, {
+    imageSettings: "image_settings",
     maxResults: "max_results",
+    searchContentTypes: "search_content_types",
     searchContextSize: "search_context_size",
     userLocation: "user_location",
   });
