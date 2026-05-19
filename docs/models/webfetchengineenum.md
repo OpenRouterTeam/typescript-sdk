@@ -1,6 +1,6 @@
 # WebFetchEngineEnum
 
-Which fetch engine to use. "auto" (default) uses native if the provider supports it, otherwise Exa. "native" forces the provider's built-in fetch. "exa" uses Exa Contents API. "openrouter" uses direct HTTP fetch. "firecrawl" uses Firecrawl scrape (requires BYOK).
+Which fetch engine to use. "auto" (default) uses native if the provider supports it, otherwise Exa. "native" forces the provider's built-in fetch. "exa" uses Exa Contents API. "openrouter" uses direct HTTP fetch. "firecrawl" uses Firecrawl scrape (requires BYOK). "parallel" uses the Parallel extract API.
 
 ## Example Usage
 
@@ -15,5 +15,5 @@ let value: WebFetchEngineEnum = "auto";
 ## Values
 
 ```typescript
-"auto" | "native" | "openrouter" | "firecrawl" | "exa" | Unrecognized<string>
+"auto" | "native" | "openrouter" | "firecrawl" | "exa" | "parallel" | Unrecognized<string>
 ```
