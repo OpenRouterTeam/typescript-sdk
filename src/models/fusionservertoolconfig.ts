@@ -5,40 +5,6 @@
 
 import * as z from "zod/v4";
 import { remap as remap$ } from "../lib/primitives.js";
-import * as openEnums from "../types/enums.js";
-import { OpenEnum } from "../types/enums.js";
-
-/**
- * Reasoning effort level for panelist and judge inner calls.
- */
-export const FusionServerToolConfigEffort = {
-  Xhigh: "xhigh",
-  High: "high",
-  Medium: "medium",
-  Low: "low",
-  Minimal: "minimal",
-  None: "none",
-} as const;
-/**
- * Reasoning effort level for panelist and judge inner calls.
- */
-export type FusionServerToolConfigEffort = OpenEnum<
-  typeof FusionServerToolConfigEffort
->;
-
-/**
- * Reasoning configuration forwarded to panelist and judge inner calls. Use this to control reasoning effort and token budget for models that support extended thinking.
- */
-export type FusionServerToolConfigReasoning = {
-  /**
-   * Reasoning effort level for panelist and judge inner calls.
-   */
-  effort?: FusionServerToolConfigEffort | undefined;
-  /**
-   * Maximum number of reasoning tokens each panelist and judge model may use. Helps bound cost when models allocate too much budget to chain-of-thought.
-   */
-  maxTokens?: number | undefined;
-};
 
 /**
  * Configuration for the openrouter:fusion server tool.
@@ -49,10 +15,6 @@ export type FusionServerToolConfig = {
    */
   analysisModels?: Array<string> | undefined;
   /**
-   * Maximum number of output tokens (including reasoning tokens) each panelist and the judge model may produce per inner call. Controls the total output budget so reasoning-heavy models like GPT-5.5 do not exhaust their token allowance before producing visible text. When omitted, the provider's default applies.
-   */
-  maxCompletionTokens?: number | undefined;
-  /**
    * Maximum number of tool-calling steps each panelist (analysis model) and the judge model may take during their agentic web-research loop. Models with web_search/web_fetch enabled iterate until they produce a text response or hit this ceiling. Defaults to 8. Capped at 16.
    */
   maxToolCalls?: number | undefined;
@@ -60,59 +22,13 @@ export type FusionServerToolConfig = {
    * Slug of the judge model that produces the structured analysis JSON. Defaults to the model used in the outer API request.
    */
   model?: string | undefined;
-  /**
-   * Reasoning configuration forwarded to panelist and judge inner calls. Use this to control reasoning effort and token budget for models that support extended thinking.
-   */
-  reasoning?: FusionServerToolConfigReasoning | undefined;
-  /**
-   * Sampling temperature forwarded to panelist and judge inner calls. When omitted, the provider's default applies.
-   */
-  temperature?: number | undefined;
 };
-
-/** @internal */
-export const FusionServerToolConfigEffort$outboundSchema: z.ZodType<
-  string,
-  FusionServerToolConfigEffort
-> = openEnums.outboundSchema(FusionServerToolConfigEffort);
-
-/** @internal */
-export type FusionServerToolConfigReasoning$Outbound = {
-  effort?: string | undefined;
-  max_tokens?: number | undefined;
-};
-
-/** @internal */
-export const FusionServerToolConfigReasoning$outboundSchema: z.ZodType<
-  FusionServerToolConfigReasoning$Outbound,
-  FusionServerToolConfigReasoning
-> = z.object({
-  effort: FusionServerToolConfigEffort$outboundSchema.optional(),
-  maxTokens: z.int().optional(),
-}).transform((v) => {
-  return remap$(v, {
-    maxTokens: "max_tokens",
-  });
-});
-
-export function fusionServerToolConfigReasoningToJSON(
-  fusionServerToolConfigReasoning: FusionServerToolConfigReasoning,
-): string {
-  return JSON.stringify(
-    FusionServerToolConfigReasoning$outboundSchema.parse(
-      fusionServerToolConfigReasoning,
-    ),
-  );
-}
 
 /** @internal */
 export type FusionServerToolConfig$Outbound = {
   analysis_models?: Array<string> | undefined;
-  max_completion_tokens?: number | undefined;
   max_tool_calls?: number | undefined;
   model?: string | undefined;
-  reasoning?: FusionServerToolConfigReasoning$Outbound | undefined;
-  temperature?: number | undefined;
 };
 
 /** @internal */
@@ -121,16 +37,11 @@ export const FusionServerToolConfig$outboundSchema: z.ZodType<
   FusionServerToolConfig
 > = z.object({
   analysisModels: z.array(z.string()).optional(),
-  maxCompletionTokens: z.int().optional(),
   maxToolCalls: z.int().optional(),
   model: z.string().optional(),
-  reasoning: z.lazy(() => FusionServerToolConfigReasoning$outboundSchema)
-    .optional(),
-  temperature: z.number().optional(),
 }).transform((v) => {
   return remap$(v, {
     analysisModels: "analysis_models",
-    maxCompletionTokens: "max_completion_tokens",
     maxToolCalls: "max_tool_calls",
   });
 });
