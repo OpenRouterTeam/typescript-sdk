@@ -234,7 +234,7 @@ run();
 
 ### Response
 
-**Promise\<[models.ModelsListResponse](../../models/modelslistresponse.md)\>**
+**Promise\<[models.UserModelsListResponse](../../models/usermodelslistresponse.md)\>**
 
 ### Errors
 

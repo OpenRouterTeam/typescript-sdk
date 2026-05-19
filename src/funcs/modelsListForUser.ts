@@ -40,7 +40,7 @@ export function modelsListForUser(
   options?: RequestOptions,
 ): APIPromise<
   Result<
-    models.ModelsListResponse,
+    models.UserModelsListResponse,
     | errors.UnauthorizedResponseError
     | errors.NotFoundResponseError
     | errors.InternalServerResponseError
@@ -70,7 +70,7 @@ async function $do(
 ): Promise<
   [
     Result<
-      models.ModelsListResponse,
+      models.UserModelsListResponse,
       | errors.UnauthorizedResponseError
       | errors.NotFoundResponseError
       | errors.InternalServerResponseError
@@ -185,7 +185,7 @@ async function $do(
   };
 
   const [result] = await M.match<
-    models.ModelsListResponse,
+    models.UserModelsListResponse,
     | errors.UnauthorizedResponseError
     | errors.NotFoundResponseError
     | errors.InternalServerResponseError
@@ -198,7 +198,7 @@ async function $do(
     | UnexpectedClientError
     | SDKValidationError
   >(
-    M.json(200, models.ModelsListResponse$inboundSchema),
+    M.json(200, models.UserModelsListResponse$inboundSchema),
     M.jsonErr(401, errors.UnauthorizedResponseError$inboundSchema),
     M.jsonErr(404, errors.NotFoundResponseError$inboundSchema),
     M.jsonErr(500, errors.InternalServerResponseError$inboundSchema),

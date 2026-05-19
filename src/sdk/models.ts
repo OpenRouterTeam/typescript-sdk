@@ -50,7 +50,7 @@ export class Models extends ClientSDK {
     security: operations.ListModelsUserSecurity,
     request?: operations.ListModelsUserRequest | undefined,
     options?: RequestOptions,
-  ): Promise<models.ModelsListResponse> {
+  ): Promise<models.UserModelsListResponse> {
     return unwrapAsync(modelsListForUser(
       this,
       security,
