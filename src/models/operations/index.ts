@@ -35,6 +35,7 @@ export * from "./getguardrail.js";
 export * from "./getkey.js";
 export * from "./getmodels.js";
 export * from "./getobservabilitydestination.js";
+export * from "./getrankingsdaily.js";
 export * from "./getuseractivity.js";
 export * from "./getvideos.js";
 export * from "./getworkspace.js";
