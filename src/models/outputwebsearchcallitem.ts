@@ -11,6 +11,12 @@ import { ClosedEnum } from "../types/enums.js";
 import { Result as SafeParseResult } from "../types/fp.js";
 import { SDKValidationError } from "./errors/sdkvalidationerror.js";
 import {
+  WebSearchImageResult,
+  WebSearchImageResult$inboundSchema,
+  WebSearchImageResult$Outbound,
+  WebSearchImageResult$outboundSchema,
+} from "./websearchimageresult.js";
+import {
   WebSearchSource,
   WebSearchSource$inboundSchema,
   WebSearchSource$Outbound,
@@ -58,6 +64,7 @@ export type OutputWebSearchCallItem = {
     | ActionFindInPage
     | discriminatedUnionTypes.Unknown<"type">;
   id: string;
+  results?: Array<WebSearchImageResult> | null | undefined;
   status: WebSearchStatus;
   type: TypeWebSearchCall;
 };
@@ -242,6 +249,7 @@ export const OutputWebSearchCallItem$inboundSchema: z.ZodType<
     find_in_page: z.lazy(() => ActionFindInPage$inboundSchema),
   }),
   id: z.string(),
+  results: z.nullable(z.array(WebSearchImageResult$inboundSchema)).optional(),
   status: WebSearchStatus$inboundSchema,
   type: TypeWebSearchCall$inboundSchema,
 });
@@ -252,6 +260,7 @@ export type OutputWebSearchCallItem$Outbound = {
     | ActionOpenPage$Outbound
     | ActionFindInPage$Outbound;
   id: string;
+  results?: Array<WebSearchImageResult$Outbound> | null | undefined;
   status: string;
   type: string;
 };
@@ -267,6 +276,7 @@ export const OutputWebSearchCallItem$outboundSchema: z.ZodType<
     z.lazy(() => ActionFindInPage$outboundSchema),
   ]),
   id: z.string(),
+  results: z.nullable(z.array(WebSearchImageResult$outboundSchema)).optional(),
   status: WebSearchStatus$outboundSchema,
   type: TypeWebSearchCall$outboundSchema,
 });
