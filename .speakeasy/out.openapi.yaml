@@ -4451,6 +4451,8 @@ components:
           description: Stop sequences (up to 4)
           example:
             - ""
+        stop_server_tools_when:
+          $ref: '#/components/schemas/StopServerToolsWhen'
         stream:
           default: false
           description: Enable streaming response
@@ -9849,6 +9851,8 @@ components:
           items:
             type: string
           type: array
+        stop_server_tools_when:
+          $ref: '#/components/schemas/StopServerToolsWhen'
         stream:
           type: boolean
         system:
@@ -16919,6 +16923,8 @@ components:
             A unique identifier for grouping related requests (e.g., a conversation or agent workflow) for observability. If provided in both the request body and the x-session-id header, the body value takes precedence. Maximum of 256 characters.
           maxLength: 256
           type: string
+        stop_server_tools_when:
+          $ref: '#/components/schemas/StopServerToolsWhen'
         store:
           const: false
           default: false
@@ -17291,6 +17297,120 @@ components:
         - model
         - input
         - voice
+      type: object
+    StopServerToolsWhen:
+      description: >-
+        Stop conditions for the server-tool agent loop. Any condition firing halts the loop (OR logic). When set, this overrides `max_tool_calls`.
+      example:
+        - step_count: 5
+          type: step_count_is
+        - max_cost_in_dollars: 0.5
+          type: max_cost
+      items:
+        $ref: '#/components/schemas/StopServerToolsWhenCondition'
+      minItems: 1
+      type: array
+    StopServerToolsWhenCondition:
+      description: A single condition that, when met, halts the server-tool agent loop.
+      discriminator:
+        mapping:
+          finish_reason_is: '#/components/schemas/StopServerToolsWhenFinishReasonIs'
+          has_tool_call: '#/components/schemas/StopServerToolsWhenHasToolCall'
+          max_cost: '#/components/schemas/StopServerToolsWhenMaxCost'
+          max_tokens_used: '#/components/schemas/StopServerToolsWhenMaxTokensUsed'
+          step_count_is: '#/components/schemas/StopServerToolsWhenStepCountIs'
+        propertyName: type
+      example:
+        step_count: 5
+        type: step_count_is
+      oneOf:
+        - $ref: '#/components/schemas/StopServerToolsWhenStepCountIs'
+        - $ref: '#/components/schemas/StopServerToolsWhenHasToolCall'
+        - $ref: '#/components/schemas/StopServerToolsWhenMaxTokensUsed'
+        - $ref: '#/components/schemas/StopServerToolsWhenMaxCost'
+        - $ref: '#/components/schemas/StopServerToolsWhenFinishReasonIs'
+    StopServerToolsWhenFinishReasonIs:
+      description: Stop when the upstream model emits this finish reason (e.g. `length`).
+      example:
+        reason: length
+        type: finish_reason_is
+      properties:
+        reason:
+          minLength: 1
+          type: string
+        type:
+          enum:
+            - finish_reason_is
+          type: string
+      required:
+        - type
+        - reason
+      type: object
+    StopServerToolsWhenHasToolCall:
+      description: Stop after a tool with this name has been called.
+      example:
+        tool_name: finalize
+        type: has_tool_call
+      properties:
+        tool_name:
+          minLength: 1
+          type: string
+        type:
+          enum:
+            - has_tool_call
+          type: string
+      required:
+        - type
+        - tool_name
+      type: object
+    StopServerToolsWhenMaxCost:
+      description: Stop once cumulative cost across the loop exceeds this dollar threshold.
+      example:
+        max_cost_in_dollars: 0.5
+        type: max_cost
+      properties:
+        max_cost_in_dollars:
+          format: double
+          type: number
+        type:
+          enum:
+            - max_cost
+          type: string
+      required:
+        - type
+        - max_cost_in_dollars
+      type: object
+    StopServerToolsWhenMaxTokensUsed:
+      description: Stop once cumulative token usage across the loop exceeds this threshold.
+      example:
+        max_tokens: 10000
+        type: max_tokens_used
+      properties:
+        max_tokens:
+          type: integer
+        type:
+          enum:
+            - max_tokens_used
+          type: string
+      required:
+        - type
+        - max_tokens
+      type: object
+    StopServerToolsWhenStepCountIs:
+      description: Stop after the agent loop has executed this many steps.
+      example:
+        step_count: 5
+        type: step_count_is
+      properties:
+        step_count:
+          type: integer
+        type:
+          enum:
+            - step_count_is
+          type: string
+      required:
+        - type
+        - step_count
       type: object
     StoredPromptTemplate:
       example:
