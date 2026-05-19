@@ -9,10 +9,12 @@ import { ClosedEnum } from "../types/enums.js";
 import { Result as SafeParseResult } from "../types/fp.js";
 import { SDKValidationError } from "./errors/sdkvalidationerror.js";
 import {
+  OpenAIResponsesFunctionToolChoice,
+  OpenAIResponsesFunctionToolChoice$inboundSchema,
+} from "./openairesponsesfunctiontoolchoice.js";
+import {
   ToolChoiceAllowed,
   ToolChoiceAllowed$inboundSchema,
-  ToolChoiceAllowed$Outbound,
-  ToolChoiceAllowed$outboundSchema,
 } from "./toolchoiceallowed.js";
 
 export const OpenAIResponsesToolChoiceTypeShell = {
@@ -51,7 +53,7 @@ export type OpenAIResponsesToolChoiceTypeWebSearchPreview20250311 = ClosedEnum<
   typeof OpenAIResponsesToolChoiceTypeWebSearchPreview20250311
 >;
 
-export type Type =
+export type OpenAIResponsesToolChoiceTypeUnion =
   | OpenAIResponsesToolChoiceTypeWebSearchPreview20250311
   | OpenAIResponsesToolChoiceTypeWebSearchPreview;
 
@@ -59,18 +61,6 @@ export type OpenAIResponsesToolChoice = {
   type:
     | OpenAIResponsesToolChoiceTypeWebSearchPreview20250311
     | OpenAIResponsesToolChoiceTypeWebSearchPreview;
-};
-
-export const OpenAIResponsesToolChoiceTypeFunction = {
-  Function: "function",
-} as const;
-export type OpenAIResponsesToolChoiceTypeFunction = ClosedEnum<
-  typeof OpenAIResponsesToolChoiceTypeFunction
->;
-
-export type OpenAIResponsesToolChoiceFunction = {
-  name: string;
-  type: OpenAIResponsesToolChoiceTypeFunction;
 };
 
 export const OpenAIResponsesToolChoiceRequired = {
@@ -96,7 +86,7 @@ export type OpenAIResponsesToolChoiceAuto = ClosedEnum<
 
 export type OpenAIResponsesToolChoiceUnion =
   | ToolChoiceAllowed
-  | OpenAIResponsesToolChoiceFunction
+  | OpenAIResponsesFunctionToolChoice
   | OpenAIResponsesToolChoice
   | OpenAIResponsesToolChoiceApplyPatch
   | OpenAIResponsesToolChoiceShell
@@ -108,10 +98,6 @@ export type OpenAIResponsesToolChoiceUnion =
 export const OpenAIResponsesToolChoiceTypeShell$inboundSchema: z.ZodEnum<
   typeof OpenAIResponsesToolChoiceTypeShell
 > = z.enum(OpenAIResponsesToolChoiceTypeShell);
-/** @internal */
-export const OpenAIResponsesToolChoiceTypeShell$outboundSchema: z.ZodEnum<
-  typeof OpenAIResponsesToolChoiceTypeShell
-> = OpenAIResponsesToolChoiceTypeShell$inboundSchema;
 
 /** @internal */
 export const OpenAIResponsesToolChoiceShell$inboundSchema: z.ZodType<
@@ -120,28 +106,7 @@ export const OpenAIResponsesToolChoiceShell$inboundSchema: z.ZodType<
 > = z.object({
   type: OpenAIResponsesToolChoiceTypeShell$inboundSchema,
 });
-/** @internal */
-export type OpenAIResponsesToolChoiceShell$Outbound = {
-  type: string;
-};
 
-/** @internal */
-export const OpenAIResponsesToolChoiceShell$outboundSchema: z.ZodType<
-  OpenAIResponsesToolChoiceShell$Outbound,
-  OpenAIResponsesToolChoiceShell
-> = z.object({
-  type: OpenAIResponsesToolChoiceTypeShell$outboundSchema,
-});
-
-export function openAIResponsesToolChoiceShellToJSON(
-  openAIResponsesToolChoiceShell: OpenAIResponsesToolChoiceShell,
-): string {
-  return JSON.stringify(
-    OpenAIResponsesToolChoiceShell$outboundSchema.parse(
-      openAIResponsesToolChoiceShell,
-    ),
-  );
-}
 export function openAIResponsesToolChoiceShellFromJSON(
   jsonString: string,
 ): SafeParseResult<OpenAIResponsesToolChoiceShell, SDKValidationError> {
@@ -156,10 +121,6 @@ export function openAIResponsesToolChoiceShellFromJSON(
 export const OpenAIResponsesToolChoiceTypeApplyPatch$inboundSchema: z.ZodEnum<
   typeof OpenAIResponsesToolChoiceTypeApplyPatch
 > = z.enum(OpenAIResponsesToolChoiceTypeApplyPatch);
-/** @internal */
-export const OpenAIResponsesToolChoiceTypeApplyPatch$outboundSchema: z.ZodEnum<
-  typeof OpenAIResponsesToolChoiceTypeApplyPatch
-> = OpenAIResponsesToolChoiceTypeApplyPatch$inboundSchema;
 
 /** @internal */
 export const OpenAIResponsesToolChoiceApplyPatch$inboundSchema: z.ZodType<
@@ -168,28 +129,7 @@ export const OpenAIResponsesToolChoiceApplyPatch$inboundSchema: z.ZodType<
 > = z.object({
   type: OpenAIResponsesToolChoiceTypeApplyPatch$inboundSchema,
 });
-/** @internal */
-export type OpenAIResponsesToolChoiceApplyPatch$Outbound = {
-  type: string;
-};
 
-/** @internal */
-export const OpenAIResponsesToolChoiceApplyPatch$outboundSchema: z.ZodType<
-  OpenAIResponsesToolChoiceApplyPatch$Outbound,
-  OpenAIResponsesToolChoiceApplyPatch
-> = z.object({
-  type: OpenAIResponsesToolChoiceTypeApplyPatch$outboundSchema,
-});
-
-export function openAIResponsesToolChoiceApplyPatchToJSON(
-  openAIResponsesToolChoiceApplyPatch: OpenAIResponsesToolChoiceApplyPatch,
-): string {
-  return JSON.stringify(
-    OpenAIResponsesToolChoiceApplyPatch$outboundSchema.parse(
-      openAIResponsesToolChoiceApplyPatch,
-    ),
-  );
-}
 export function openAIResponsesToolChoiceApplyPatchFromJSON(
   jsonString: string,
 ): SafeParseResult<OpenAIResponsesToolChoiceApplyPatch, SDKValidationError> {
@@ -206,44 +146,29 @@ export const OpenAIResponsesToolChoiceTypeWebSearchPreview$inboundSchema:
   z.ZodEnum<typeof OpenAIResponsesToolChoiceTypeWebSearchPreview> = z.enum(
     OpenAIResponsesToolChoiceTypeWebSearchPreview,
   );
-/** @internal */
-export const OpenAIResponsesToolChoiceTypeWebSearchPreview$outboundSchema:
-  z.ZodEnum<typeof OpenAIResponsesToolChoiceTypeWebSearchPreview> =
-    OpenAIResponsesToolChoiceTypeWebSearchPreview$inboundSchema;
 
 /** @internal */
 export const OpenAIResponsesToolChoiceTypeWebSearchPreview20250311$inboundSchema:
   z.ZodEnum<typeof OpenAIResponsesToolChoiceTypeWebSearchPreview20250311> = z
     .enum(OpenAIResponsesToolChoiceTypeWebSearchPreview20250311);
-/** @internal */
-export const OpenAIResponsesToolChoiceTypeWebSearchPreview20250311$outboundSchema:
-  z.ZodEnum<typeof OpenAIResponsesToolChoiceTypeWebSearchPreview20250311> =
-    OpenAIResponsesToolChoiceTypeWebSearchPreview20250311$inboundSchema;
 
 /** @internal */
-export const Type$inboundSchema: z.ZodType<Type, unknown> = z.union([
+export const OpenAIResponsesToolChoiceTypeUnion$inboundSchema: z.ZodType<
+  OpenAIResponsesToolChoiceTypeUnion,
+  unknown
+> = z.union([
   OpenAIResponsesToolChoiceTypeWebSearchPreview20250311$inboundSchema,
   OpenAIResponsesToolChoiceTypeWebSearchPreview$inboundSchema,
 ]);
-/** @internal */
-export type Type$Outbound = string | string;
 
-/** @internal */
-export const Type$outboundSchema: z.ZodType<Type$Outbound, Type> = z.union([
-  OpenAIResponsesToolChoiceTypeWebSearchPreview20250311$outboundSchema,
-  OpenAIResponsesToolChoiceTypeWebSearchPreview$outboundSchema,
-]);
-
-export function typeToJSON(type: Type): string {
-  return JSON.stringify(Type$outboundSchema.parse(type));
-}
-export function typeFromJSON(
+export function openAIResponsesToolChoiceTypeUnionFromJSON(
   jsonString: string,
-): SafeParseResult<Type, SDKValidationError> {
+): SafeParseResult<OpenAIResponsesToolChoiceTypeUnion, SDKValidationError> {
   return safeParse(
     jsonString,
-    (x) => Type$inboundSchema.parse(JSON.parse(x)),
-    `Failed to parse 'Type' from JSON`,
+    (x) =>
+      OpenAIResponsesToolChoiceTypeUnion$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'OpenAIResponsesToolChoiceTypeUnion' from JSON`,
   );
 }
 
@@ -257,29 +182,7 @@ export const OpenAIResponsesToolChoice$inboundSchema: z.ZodType<
     OpenAIResponsesToolChoiceTypeWebSearchPreview$inboundSchema,
   ]),
 });
-/** @internal */
-export type OpenAIResponsesToolChoice$Outbound = {
-  type: string | string;
-};
 
-/** @internal */
-export const OpenAIResponsesToolChoice$outboundSchema: z.ZodType<
-  OpenAIResponsesToolChoice$Outbound,
-  OpenAIResponsesToolChoice
-> = z.object({
-  type: z.union([
-    OpenAIResponsesToolChoiceTypeWebSearchPreview20250311$outboundSchema,
-    OpenAIResponsesToolChoiceTypeWebSearchPreview$outboundSchema,
-  ]),
-});
-
-export function openAIResponsesToolChoiceToJSON(
-  openAIResponsesToolChoice: OpenAIResponsesToolChoice,
-): string {
-  return JSON.stringify(
-    OpenAIResponsesToolChoice$outboundSchema.parse(openAIResponsesToolChoice),
-  );
-}
 export function openAIResponsesToolChoiceFromJSON(
   jsonString: string,
 ): SafeParseResult<OpenAIResponsesToolChoice, SDKValidationError> {
@@ -291,82 +194,19 @@ export function openAIResponsesToolChoiceFromJSON(
 }
 
 /** @internal */
-export const OpenAIResponsesToolChoiceTypeFunction$inboundSchema: z.ZodEnum<
-  typeof OpenAIResponsesToolChoiceTypeFunction
-> = z.enum(OpenAIResponsesToolChoiceTypeFunction);
-/** @internal */
-export const OpenAIResponsesToolChoiceTypeFunction$outboundSchema: z.ZodEnum<
-  typeof OpenAIResponsesToolChoiceTypeFunction
-> = OpenAIResponsesToolChoiceTypeFunction$inboundSchema;
-
-/** @internal */
-export const OpenAIResponsesToolChoiceFunction$inboundSchema: z.ZodType<
-  OpenAIResponsesToolChoiceFunction,
-  unknown
-> = z.object({
-  name: z.string(),
-  type: OpenAIResponsesToolChoiceTypeFunction$inboundSchema,
-});
-/** @internal */
-export type OpenAIResponsesToolChoiceFunction$Outbound = {
-  name: string;
-  type: string;
-};
-
-/** @internal */
-export const OpenAIResponsesToolChoiceFunction$outboundSchema: z.ZodType<
-  OpenAIResponsesToolChoiceFunction$Outbound,
-  OpenAIResponsesToolChoiceFunction
-> = z.object({
-  name: z.string(),
-  type: OpenAIResponsesToolChoiceTypeFunction$outboundSchema,
-});
-
-export function openAIResponsesToolChoiceFunctionToJSON(
-  openAIResponsesToolChoiceFunction: OpenAIResponsesToolChoiceFunction,
-): string {
-  return JSON.stringify(
-    OpenAIResponsesToolChoiceFunction$outboundSchema.parse(
-      openAIResponsesToolChoiceFunction,
-    ),
-  );
-}
-export function openAIResponsesToolChoiceFunctionFromJSON(
-  jsonString: string,
-): SafeParseResult<OpenAIResponsesToolChoiceFunction, SDKValidationError> {
-  return safeParse(
-    jsonString,
-    (x) => OpenAIResponsesToolChoiceFunction$inboundSchema.parse(JSON.parse(x)),
-    `Failed to parse 'OpenAIResponsesToolChoiceFunction' from JSON`,
-  );
-}
-
-/** @internal */
 export const OpenAIResponsesToolChoiceRequired$inboundSchema: z.ZodEnum<
   typeof OpenAIResponsesToolChoiceRequired
 > = z.enum(OpenAIResponsesToolChoiceRequired);
-/** @internal */
-export const OpenAIResponsesToolChoiceRequired$outboundSchema: z.ZodEnum<
-  typeof OpenAIResponsesToolChoiceRequired
-> = OpenAIResponsesToolChoiceRequired$inboundSchema;
 
 /** @internal */
 export const OpenAIResponsesToolChoiceNone$inboundSchema: z.ZodEnum<
   typeof OpenAIResponsesToolChoiceNone
 > = z.enum(OpenAIResponsesToolChoiceNone);
-/** @internal */
-export const OpenAIResponsesToolChoiceNone$outboundSchema: z.ZodEnum<
-  typeof OpenAIResponsesToolChoiceNone
-> = OpenAIResponsesToolChoiceNone$inboundSchema;
 
 /** @internal */
 export const OpenAIResponsesToolChoiceAuto$inboundSchema: z.ZodEnum<
   typeof OpenAIResponsesToolChoiceAuto
 > = z.enum(OpenAIResponsesToolChoiceAuto);
-/** @internal */
-export const OpenAIResponsesToolChoiceAuto$outboundSchema: z.ZodEnum<
-  typeof OpenAIResponsesToolChoiceAuto
-> = OpenAIResponsesToolChoiceAuto$inboundSchema;
 
 /** @internal */
 export const OpenAIResponsesToolChoiceUnion$inboundSchema: z.ZodType<
@@ -374,7 +214,7 @@ export const OpenAIResponsesToolChoiceUnion$inboundSchema: z.ZodType<
   unknown
 > = z.union([
   ToolChoiceAllowed$inboundSchema,
-  z.lazy(() => OpenAIResponsesToolChoiceFunction$inboundSchema),
+  OpenAIResponsesFunctionToolChoice$inboundSchema,
   z.lazy(() => OpenAIResponsesToolChoice$inboundSchema),
   z.lazy(() => OpenAIResponsesToolChoiceApplyPatch$inboundSchema),
   z.lazy(() => OpenAIResponsesToolChoiceShell$inboundSchema),
@@ -382,41 +222,7 @@ export const OpenAIResponsesToolChoiceUnion$inboundSchema: z.ZodType<
   OpenAIResponsesToolChoiceNone$inboundSchema,
   OpenAIResponsesToolChoiceRequired$inboundSchema,
 ]);
-/** @internal */
-export type OpenAIResponsesToolChoiceUnion$Outbound =
-  | ToolChoiceAllowed$Outbound
-  | OpenAIResponsesToolChoiceFunction$Outbound
-  | OpenAIResponsesToolChoice$Outbound
-  | OpenAIResponsesToolChoiceApplyPatch$Outbound
-  | OpenAIResponsesToolChoiceShell$Outbound
-  | string
-  | string
-  | string;
 
-/** @internal */
-export const OpenAIResponsesToolChoiceUnion$outboundSchema: z.ZodType<
-  OpenAIResponsesToolChoiceUnion$Outbound,
-  OpenAIResponsesToolChoiceUnion
-> = z.union([
-  ToolChoiceAllowed$outboundSchema,
-  z.lazy(() => OpenAIResponsesToolChoiceFunction$outboundSchema),
-  z.lazy(() => OpenAIResponsesToolChoice$outboundSchema),
-  z.lazy(() => OpenAIResponsesToolChoiceApplyPatch$outboundSchema),
-  z.lazy(() => OpenAIResponsesToolChoiceShell$outboundSchema),
-  OpenAIResponsesToolChoiceAuto$outboundSchema,
-  OpenAIResponsesToolChoiceNone$outboundSchema,
-  OpenAIResponsesToolChoiceRequired$outboundSchema,
-]);
-
-export function openAIResponsesToolChoiceUnionToJSON(
-  openAIResponsesToolChoiceUnion: OpenAIResponsesToolChoiceUnion,
-): string {
-  return JSON.stringify(
-    OpenAIResponsesToolChoiceUnion$outboundSchema.parse(
-      openAIResponsesToolChoiceUnion,
-    ),
-  );
-}
 export function openAIResponsesToolChoiceUnionFromJSON(
   jsonString: string,
 ): SafeParseResult<OpenAIResponsesToolChoiceUnion, SDKValidationError> {
