@@ -174,6 +174,14 @@ export type ChatRequestReasoning = {
    * Constrains effort on reasoning for reasoning models
    */
   effort?: ChatRequestEffort | null | undefined;
+  /**
+   * Whether to enable reasoning. When effort is provided without enabled, reasoning is automatically enabled.
+   */
+  enabled?: boolean | null | undefined;
+  /**
+   * Maximum number of tokens to use for reasoning
+   */
+  maxTokens?: number | null | undefined;
   summary?: ChatReasoningSummaryVerbosityEnum | null | undefined;
 };
 
@@ -412,6 +420,8 @@ export const ChatRequestEffort$outboundSchema: z.ZodType<
 /** @internal */
 export type ChatRequestReasoning$Outbound = {
   effort?: string | null | undefined;
+  enabled?: boolean | null | undefined;
+  max_tokens?: number | null | undefined;
   summary?: string | null | undefined;
 };
 
@@ -421,8 +431,14 @@ export const ChatRequestReasoning$outboundSchema: z.ZodType<
   ChatRequestReasoning
 > = z.object({
   effort: z.nullable(ChatRequestEffort$outboundSchema).optional(),
+  enabled: z.nullable(z.boolean()).optional(),
+  maxTokens: z.nullable(z.int()).optional(),
   summary: z.nullable(ChatReasoningSummaryVerbosityEnum$outboundSchema)
     .optional(),
+}).transform((v) => {
+  return remap$(v, {
+    maxTokens: "max_tokens",
+  });
 });
 
 export function chatRequestReasoningToJSON(
