@@ -13,5 +13,5 @@ let value: ResponseIncludesEnum = "file_search_call.results";
 ## Values
 
 ```typescript
-"file_search_call.results" | "message.input_image.image_url" | "computer_call_output.output.image_url" | "reasoning.encrypted_content" | "code_interpreter_call.outputs" | Unrecognized<string>
+"file_search_call.results" | "message.input_image.image_url" | "computer_call_output.output.image_url" | "reasoning.encrypted_content" | "code_interpreter_call.outputs" | "web_search_call.results" | "web_search_call.action.sources" | Unrecognized<string>
 ```
