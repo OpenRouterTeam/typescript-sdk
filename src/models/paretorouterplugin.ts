@@ -8,6 +8,10 @@ import { remap as remap$ } from "../lib/primitives.js";
 
 export type ParetoRouterPlugin = {
   /**
+   * When true and min_coding_score is omitted, uses an LLM judge to automatically classify the coding difficulty of the request and select an appropriate tier. The judge call is billed as a separate generation to the user. Defaults to false.
+   */
+  autoClassify?: boolean | undefined;
+  /**
    * Set to false to disable the pareto-router plugin for this request. Defaults to true.
    */
   enabled?: boolean | undefined;
@@ -20,6 +24,7 @@ export type ParetoRouterPlugin = {
 
 /** @internal */
 export type ParetoRouterPlugin$Outbound = {
+  auto_classify?: boolean | undefined;
   enabled?: boolean | undefined;
   id: "pareto-router";
   min_coding_score?: number | undefined;
@@ -30,11 +35,13 @@ export const ParetoRouterPlugin$outboundSchema: z.ZodType<
   ParetoRouterPlugin$Outbound,
   ParetoRouterPlugin
 > = z.object({
+  autoClassify: z.boolean().optional(),
   enabled: z.boolean().optional(),
   id: z.literal("pareto-router"),
   minCodingScore: z.number().optional(),
 }).transform((v) => {
   return remap$(v, {
+    autoClassify: "auto_classify",
     minCodingScore: "min_coding_score",
   });
 });
