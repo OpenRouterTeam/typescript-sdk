@@ -13,6 +13,8 @@ export const ResponseIncludesEnum = {
   ComputerCallOutputOutputImageUrl: "computer_call_output.output.image_url",
   ReasoningEncryptedContent: "reasoning.encrypted_content",
   CodeInterpreterCallOutputs: "code_interpreter_call.outputs",
+  WebSearchCallResults: "web_search_call.results",
+  WebSearchCallActionSources: "web_search_call.action.sources",
 } as const;
 export type ResponseIncludesEnum = OpenEnum<typeof ResponseIncludesEnum>;
 
