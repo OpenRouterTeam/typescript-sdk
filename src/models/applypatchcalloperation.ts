@@ -8,189 +8,58 @@ import { safeParse } from "../lib/schemas.js";
 import * as discriminatedUnionTypes from "../types/discriminatedUnion.js";
 import { discriminatedUnion } from "../types/discriminatedUnion.js";
 import { Result as SafeParseResult } from "../types/fp.js";
+import {
+  ApplyPatchCreateFileOperation,
+  ApplyPatchCreateFileOperation$inboundSchema,
+  ApplyPatchCreateFileOperation$Outbound,
+  ApplyPatchCreateFileOperation$outboundSchema,
+} from "./applypatchcreatefileoperation.js";
+import {
+  ApplyPatchDeleteFileOperation,
+  ApplyPatchDeleteFileOperation$inboundSchema,
+  ApplyPatchDeleteFileOperation$Outbound,
+  ApplyPatchDeleteFileOperation$outboundSchema,
+} from "./applypatchdeletefileoperation.js";
+import {
+  ApplyPatchUpdateFileOperation,
+  ApplyPatchUpdateFileOperation$inboundSchema,
+  ApplyPatchUpdateFileOperation$Outbound,
+  ApplyPatchUpdateFileOperation$outboundSchema,
+} from "./applypatchupdatefileoperation.js";
 import { SDKValidationError } from "./errors/sdkvalidationerror.js";
-
-export type ApplyPatchCallOperationDeleteFile = {
-  path: string;
-  type: "delete_file";
-};
-
-export type ApplyPatchCallOperationUpdateFile = {
-  diff: string;
-  path: string;
-  type: "update_file";
-};
-
-export type ApplyPatchCallOperationCreateFile = {
-  diff: string;
-  path: string;
-  type: "create_file";
-};
 
 /**
  * The patch operation requested by an `apply_patch_call`. `create_file` and `update_file` carry a V4A diff; `delete_file` omits it.
  */
 export type ApplyPatchCallOperation =
-  | ApplyPatchCallOperationCreateFile
-  | ApplyPatchCallOperationUpdateFile
-  | ApplyPatchCallOperationDeleteFile
+  | ApplyPatchCreateFileOperation
+  | ApplyPatchDeleteFileOperation
+  | ApplyPatchUpdateFileOperation
   | discriminatedUnionTypes.Unknown<"type">;
-
-/** @internal */
-export const ApplyPatchCallOperationDeleteFile$inboundSchema: z.ZodType<
-  ApplyPatchCallOperationDeleteFile,
-  unknown
-> = z.object({
-  path: z.string(),
-  type: z.literal("delete_file"),
-});
-/** @internal */
-export type ApplyPatchCallOperationDeleteFile$Outbound = {
-  path: string;
-  type: "delete_file";
-};
-
-/** @internal */
-export const ApplyPatchCallOperationDeleteFile$outboundSchema: z.ZodType<
-  ApplyPatchCallOperationDeleteFile$Outbound,
-  ApplyPatchCallOperationDeleteFile
-> = z.object({
-  path: z.string(),
-  type: z.literal("delete_file"),
-});
-
-export function applyPatchCallOperationDeleteFileToJSON(
-  applyPatchCallOperationDeleteFile: ApplyPatchCallOperationDeleteFile,
-): string {
-  return JSON.stringify(
-    ApplyPatchCallOperationDeleteFile$outboundSchema.parse(
-      applyPatchCallOperationDeleteFile,
-    ),
-  );
-}
-export function applyPatchCallOperationDeleteFileFromJSON(
-  jsonString: string,
-): SafeParseResult<ApplyPatchCallOperationDeleteFile, SDKValidationError> {
-  return safeParse(
-    jsonString,
-    (x) => ApplyPatchCallOperationDeleteFile$inboundSchema.parse(JSON.parse(x)),
-    `Failed to parse 'ApplyPatchCallOperationDeleteFile' from JSON`,
-  );
-}
-
-/** @internal */
-export const ApplyPatchCallOperationUpdateFile$inboundSchema: z.ZodType<
-  ApplyPatchCallOperationUpdateFile,
-  unknown
-> = z.object({
-  diff: z.string(),
-  path: z.string(),
-  type: z.literal("update_file"),
-});
-/** @internal */
-export type ApplyPatchCallOperationUpdateFile$Outbound = {
-  diff: string;
-  path: string;
-  type: "update_file";
-};
-
-/** @internal */
-export const ApplyPatchCallOperationUpdateFile$outboundSchema: z.ZodType<
-  ApplyPatchCallOperationUpdateFile$Outbound,
-  ApplyPatchCallOperationUpdateFile
-> = z.object({
-  diff: z.string(),
-  path: z.string(),
-  type: z.literal("update_file"),
-});
-
-export function applyPatchCallOperationUpdateFileToJSON(
-  applyPatchCallOperationUpdateFile: ApplyPatchCallOperationUpdateFile,
-): string {
-  return JSON.stringify(
-    ApplyPatchCallOperationUpdateFile$outboundSchema.parse(
-      applyPatchCallOperationUpdateFile,
-    ),
-  );
-}
-export function applyPatchCallOperationUpdateFileFromJSON(
-  jsonString: string,
-): SafeParseResult<ApplyPatchCallOperationUpdateFile, SDKValidationError> {
-  return safeParse(
-    jsonString,
-    (x) => ApplyPatchCallOperationUpdateFile$inboundSchema.parse(JSON.parse(x)),
-    `Failed to parse 'ApplyPatchCallOperationUpdateFile' from JSON`,
-  );
-}
-
-/** @internal */
-export const ApplyPatchCallOperationCreateFile$inboundSchema: z.ZodType<
-  ApplyPatchCallOperationCreateFile,
-  unknown
-> = z.object({
-  diff: z.string(),
-  path: z.string(),
-  type: z.literal("create_file"),
-});
-/** @internal */
-export type ApplyPatchCallOperationCreateFile$Outbound = {
-  diff: string;
-  path: string;
-  type: "create_file";
-};
-
-/** @internal */
-export const ApplyPatchCallOperationCreateFile$outboundSchema: z.ZodType<
-  ApplyPatchCallOperationCreateFile$Outbound,
-  ApplyPatchCallOperationCreateFile
-> = z.object({
-  diff: z.string(),
-  path: z.string(),
-  type: z.literal("create_file"),
-});
-
-export function applyPatchCallOperationCreateFileToJSON(
-  applyPatchCallOperationCreateFile: ApplyPatchCallOperationCreateFile,
-): string {
-  return JSON.stringify(
-    ApplyPatchCallOperationCreateFile$outboundSchema.parse(
-      applyPatchCallOperationCreateFile,
-    ),
-  );
-}
-export function applyPatchCallOperationCreateFileFromJSON(
-  jsonString: string,
-): SafeParseResult<ApplyPatchCallOperationCreateFile, SDKValidationError> {
-  return safeParse(
-    jsonString,
-    (x) => ApplyPatchCallOperationCreateFile$inboundSchema.parse(JSON.parse(x)),
-    `Failed to parse 'ApplyPatchCallOperationCreateFile' from JSON`,
-  );
-}
 
 /** @internal */
 export const ApplyPatchCallOperation$inboundSchema: z.ZodType<
   ApplyPatchCallOperation,
   unknown
 > = discriminatedUnion("type", {
-  create_file: z.lazy(() => ApplyPatchCallOperationCreateFile$inboundSchema),
-  update_file: z.lazy(() => ApplyPatchCallOperationUpdateFile$inboundSchema),
-  delete_file: z.lazy(() => ApplyPatchCallOperationDeleteFile$inboundSchema),
+  create_file: ApplyPatchCreateFileOperation$inboundSchema,
+  delete_file: ApplyPatchDeleteFileOperation$inboundSchema,
+  update_file: ApplyPatchUpdateFileOperation$inboundSchema,
 });
 /** @internal */
 export type ApplyPatchCallOperation$Outbound =
-  | ApplyPatchCallOperationCreateFile$Outbound
-  | ApplyPatchCallOperationUpdateFile$Outbound
-  | ApplyPatchCallOperationDeleteFile$Outbound;
+  | ApplyPatchCreateFileOperation$Outbound
+  | ApplyPatchDeleteFileOperation$Outbound
+  | ApplyPatchUpdateFileOperation$Outbound;
 
 /** @internal */
 export const ApplyPatchCallOperation$outboundSchema: z.ZodType<
   ApplyPatchCallOperation$Outbound,
   ApplyPatchCallOperation
 > = z.union([
-  z.lazy(() => ApplyPatchCallOperationCreateFile$outboundSchema),
-  z.lazy(() => ApplyPatchCallOperationUpdateFile$outboundSchema),
-  z.lazy(() => ApplyPatchCallOperationDeleteFile$outboundSchema),
+  ApplyPatchCreateFileOperation$outboundSchema,
+  ApplyPatchDeleteFileOperation$outboundSchema,
+  ApplyPatchUpdateFileOperation$outboundSchema,
 ]);
 
 export function applyPatchCallOperationToJSON(
