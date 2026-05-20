@@ -7,6 +7,11 @@ import * as z from "zod/v4";
 import { remap as remap$ } from "../lib/primitives.js";
 import { ClosedEnum } from "../types/enums.js";
 import {
+  ChatCatalogTool,
+  ChatCatalogTool$Outbound,
+  ChatCatalogTool$outboundSchema,
+} from "./chatcatalogtool.js";
+import {
   ChatContentCacheControl,
   ChatContentCacheControl$Outbound,
   ChatContentCacheControl$outboundSchema,
@@ -91,7 +96,8 @@ export type ChatFunctionTool =
   | ChatSearchModelsServerTool
   | WebFetchServerTool
   | OpenRouterWebSearchServerTool
-  | ChatWebSearchShorthand;
+  | ChatWebSearchShorthand
+  | ChatCatalogTool;
 
 /** @internal */
 export type ChatFunctionToolFunctionFunction$Outbound = {
@@ -164,7 +170,8 @@ export type ChatFunctionTool$Outbound =
   | ChatSearchModelsServerTool$Outbound
   | WebFetchServerTool$Outbound
   | OpenRouterWebSearchServerTool$Outbound
-  | ChatWebSearchShorthand$Outbound;
+  | ChatWebSearchShorthand$Outbound
+  | ChatCatalogTool$Outbound;
 
 /** @internal */
 export const ChatFunctionTool$outboundSchema: z.ZodType<
@@ -178,6 +185,7 @@ export const ChatFunctionTool$outboundSchema: z.ZodType<
   WebFetchServerTool$outboundSchema,
   OpenRouterWebSearchServerTool$outboundSchema,
   ChatWebSearchShorthand$outboundSchema,
+  ChatCatalogTool$outboundSchema,
 ]);
 
 export function chatFunctionToolToJSON(
