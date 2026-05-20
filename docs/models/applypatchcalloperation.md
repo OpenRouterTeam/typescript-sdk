@@ -5,32 +5,32 @@ The patch operation requested by an `apply_patch_call`. `create_file` and `updat
 
 ## Supported Types
 
-### `models.ApplyPatchCreateFileOperation`
+### `models.ApplyPatchCallOperationCreateFile`
 
 ```typescript
-const value: models.ApplyPatchCreateFileOperation = {
+const value: models.ApplyPatchCallOperationCreateFile = {
   diff: "@@ function main() {\n+  console.log(\"hi\");\n }",
   path: "/src/main.ts",
   type: "create_file",
 };
 ```
 
-### `models.ApplyPatchDeleteFileOperation`
+### `models.ApplyPatchCallOperationUpdateFile`
 
 ```typescript
-const value: models.ApplyPatchDeleteFileOperation = {
-  path: "/src/main.ts",
-  type: "delete_file",
-};
-```
-
-### `models.ApplyPatchUpdateFileOperation`
-
-```typescript
-const value: models.ApplyPatchUpdateFileOperation = {
+const value: models.ApplyPatchCallOperationUpdateFile = {
   diff: "@@ function main() {\n+  console.log(\"hi\");\n }",
   path: "/src/main.ts",
   type: "update_file",
+};
+```
+
+### `models.ApplyPatchCallOperationDeleteFile`
+
+```typescript
+const value: models.ApplyPatchCallOperationDeleteFile = {
+  path: "/src/main.ts",
+  type: "delete_file",
 };
 ```
 
