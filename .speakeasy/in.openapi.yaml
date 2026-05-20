@@ -19165,9 +19165,9 @@ components:
         - auto
         - native
         - openrouter
-        - firecrawl
         - exa
         - parallel
+        - firecrawl
       example: auto
       type: string
     WebFetchPlugin:
@@ -19350,8 +19350,8 @@ components:
         - auto
         - native
         - exa
-        - firecrawl
         - parallel
+        - firecrawl
       example: auto
       type: string
     WebSearchPlugin:
