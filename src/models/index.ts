@@ -67,6 +67,7 @@ export * from "./chatreasoningsummaryverbosityenum.js";
 export * from "./chatrequest.js";
 export * from "./chatresult.js";
 export * from "./chatsearchmodelsservertool.js";
+export * from "./chatservertoolchoice.js";
 export * from "./chatstreamchoice.js";
 export * from "./chatstreamchunk.js";
 export * from "./chatstreamdelta.js";
