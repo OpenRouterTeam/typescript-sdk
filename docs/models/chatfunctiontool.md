@@ -64,3 +64,11 @@ const value: models.ChatWebSearchShorthand = {
 };
 ```
 
+### `models.ChatCatalogTool`
+
+```typescript
+const value: models.ChatCatalogTool = {
+  type: "function",
+};
+```
+
