@@ -64,6 +64,7 @@ export const Provider = {
   Deepinfra: "deepinfra",
   Deepseek: "deepseek",
   Dekallm: "dekallm",
+  Digitalocean: "digitalocean",
   Featherless: "featherless",
   Fireworks: "fireworks",
   Friendli: "friendli",
