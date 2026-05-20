@@ -22,6 +22,7 @@ import { Presets } from "./presets.js";
 import { Providers } from "./providers.js";
 import { Rerank } from "./rerank.js";
 import { Stt } from "./stt.js";
+import { Tools } from "./tools.js";
 import { Tts } from "./tts.js";
 import { VideoGeneration } from "./videogeneration.js";
 import { Workspaces } from "./workspaces.js";
@@ -97,6 +98,11 @@ export class OpenRouter extends ClientSDK {
   private _apiKeys?: APIKeys;
   get apiKeys(): APIKeys {
     return (this._apiKeys ??= new APIKeys(this._options));
+  }
+
+  private _tools?: Tools;
+  get tools(): Tools {
+    return (this._tools ??= new Tools(this._options));
   }
 
   private _models?: Models;
