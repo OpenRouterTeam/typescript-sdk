@@ -34,11 +34,3 @@ const value: models.ChatNamedToolChoice = {
 };
 ```
 
-### `models.ChatServerToolChoice`
-
-```typescript
-const value: models.ChatServerToolChoice = {
-  type: "openrouter:web_search",
-};
-```
-
