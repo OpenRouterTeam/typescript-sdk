@@ -10,6 +10,11 @@ import {
   ChatNamedToolChoice$Outbound,
   ChatNamedToolChoice$outboundSchema,
 } from "./chatnamedtoolchoice.js";
+import {
+  ChatServerToolChoice,
+  ChatServerToolChoice$Outbound,
+  ChatServerToolChoice$outboundSchema,
+} from "./chatservertoolchoice.js";
 
 export const ChatToolChoiceRequired = {
   Required: "required",
@@ -31,6 +36,7 @@ export type ChatToolChoiceNone = ClosedEnum<typeof ChatToolChoiceNone>;
  */
 export type ChatToolChoice =
   | ChatNamedToolChoice
+  | ChatServerToolChoice
   | ChatToolChoiceNone
   | ChatToolChoiceAuto
   | ChatToolChoiceRequired;
@@ -53,6 +59,7 @@ export const ChatToolChoiceNone$outboundSchema: z.ZodEnum<
 /** @internal */
 export type ChatToolChoice$Outbound =
   | ChatNamedToolChoice$Outbound
+  | ChatServerToolChoice$Outbound
   | string
   | string
   | string;
@@ -63,6 +70,7 @@ export const ChatToolChoice$outboundSchema: z.ZodType<
   ChatToolChoice
 > = z.union([
   ChatNamedToolChoice$outboundSchema,
+  ChatServerToolChoice$outboundSchema,
   ChatToolChoiceNone$outboundSchema,
   ChatToolChoiceAuto$outboundSchema,
   ChatToolChoiceRequired$outboundSchema,
