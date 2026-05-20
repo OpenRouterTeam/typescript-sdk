@@ -1,0 +1,19 @@
+# GranularityName
+
+Granularity identifier
+
+## Example Usage
+
+```typescript
+import { GranularityName } from "@openrouter/sdk/models/operations";
+
+let value: GranularityName = "day";
+
+// Open enum: unrecognized values are captured as Unrecognized<string>
+```
+
+## Values
+
+```typescript
+"minute" | "hour" | "day" | "week" | "month" | Unrecognized<string>
+```
