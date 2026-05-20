@@ -67,11 +67,3 @@ const value: models.WebSearchPlugin = {
 };
 ```
 
-### `models.WebFetchPlugin`
-
-```typescript
-const value: models.WebFetchPlugin = {
-  id: "web-fetch",
-};
-```
-
