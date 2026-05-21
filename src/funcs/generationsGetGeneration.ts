@@ -23,7 +23,6 @@ import * as errors from "../models/errors/index.js";
 import { OpenRouterError } from "../models/errors/openroutererror.js";
 import { ResponseValidationError } from "../models/errors/responsevalidationerror.js";
 import { SDKValidationError } from "../models/errors/sdkvalidationerror.js";
-import * as models from "../models/index.js";
 import * as operations from "../models/operations/index.js";
 import { APICall, APIPromise } from "../types/async.js";
 import { Result } from "../types/fp.js";
@@ -33,17 +32,17 @@ import { Result } from "../types/fp.js";
  */
 export function generationsGetGeneration(
   client: OpenRouterCore,
-  request: operations.GetGenerationRequest,
+  request?: operations.GetGenerationRequest | undefined,
   options?: RequestOptions,
 ): APIPromise<
   Result<
-    models.GenerationResponse,
+    operations.GetGenerationResponse,
     | errors.UnauthorizedResponseError
     | errors.PaymentRequiredResponseError
     | errors.NotFoundResponseError
     | errors.TooManyRequestsResponseError
     | errors.InternalServerResponseError
-    | errors.BadGatewayResponseError
+    | errors.AsyncJobStatusResponseError
     | errors.EdgeNetworkTimeoutResponseError
     | errors.ProviderOverloadedResponseError
     | OpenRouterError
@@ -65,18 +64,18 @@ export function generationsGetGeneration(
 
 async function $do(
   client: OpenRouterCore,
-  request: operations.GetGenerationRequest,
+  request?: operations.GetGenerationRequest | undefined,
   options?: RequestOptions,
 ): Promise<
   [
     Result<
-      models.GenerationResponse,
+      operations.GetGenerationResponse,
       | errors.UnauthorizedResponseError
       | errors.PaymentRequiredResponseError
       | errors.NotFoundResponseError
       | errors.TooManyRequestsResponseError
       | errors.InternalServerResponseError
-      | errors.BadGatewayResponseError
+      | errors.AsyncJobStatusResponseError
       | errors.EdgeNetworkTimeoutResponseError
       | errors.ProviderOverloadedResponseError
       | OpenRouterError
@@ -93,7 +92,8 @@ async function $do(
 > {
   const parsed = safeParse(
     request,
-    (value) => operations.GetGenerationRequest$outboundSchema.parse(value),
+    (value) =>
+      operations.GetGenerationRequest$outboundSchema.optional().parse(value),
     "Input validation failed",
   );
   if (!parsed.ok) {
@@ -105,24 +105,25 @@ async function $do(
   const path = pathToFunc("/generation")();
 
   const query = encodeFormQuery({
-    "id": payload.id,
+    "id": payload?.id,
+    "job_id": payload?.job_id,
   });
 
   const headers = new Headers(compactMap({
     Accept: "application/json",
     "HTTP-Referer": encodeSimple(
       "HTTP-Referer",
-      payload["HTTP-Referer"] ?? client._options.httpReferer,
+      payload?.["HTTP-Referer"] ?? client._options.httpReferer,
       { explode: false, charEncoding: "none" },
     ),
     "X-OpenRouter-Categories": encodeSimple(
       "X-OpenRouter-Categories",
-      payload.appCategories ?? client._options.appCategories,
+      payload?.appCategories ?? client._options.appCategories,
       { explode: false, charEncoding: "none" },
     ),
     "X-OpenRouter-Title": encodeSimple(
       "X-OpenRouter-Title",
-      payload.appTitle ?? client._options.appTitle,
+      payload?.appTitle ?? client._options.appTitle,
       { explode: false, charEncoding: "none" },
     ),
   }));
@@ -189,13 +190,13 @@ async function $do(
   };
 
   const [result] = await M.match<
-    models.GenerationResponse,
+    operations.GetGenerationResponse,
     | errors.UnauthorizedResponseError
     | errors.PaymentRequiredResponseError
     | errors.NotFoundResponseError
     | errors.TooManyRequestsResponseError
     | errors.InternalServerResponseError
-    | errors.BadGatewayResponseError
+    | errors.AsyncJobStatusResponseError
     | errors.EdgeNetworkTimeoutResponseError
     | errors.ProviderOverloadedResponseError
     | OpenRouterError
@@ -207,13 +208,14 @@ async function $do(
     | UnexpectedClientError
     | SDKValidationError
   >(
-    M.json(200, models.GenerationResponse$inboundSchema),
+    M.json(200, operations.GetGenerationResponse$inboundSchema),
+    M.json(202, operations.GetGenerationResponse$inboundSchema),
     M.jsonErr(401, errors.UnauthorizedResponseError$inboundSchema),
     M.jsonErr(402, errors.PaymentRequiredResponseError$inboundSchema),
     M.jsonErr(404, errors.NotFoundResponseError$inboundSchema),
     M.jsonErr(429, errors.TooManyRequestsResponseError$inboundSchema),
     M.jsonErr(500, errors.InternalServerResponseError$inboundSchema),
-    M.jsonErr(502, errors.BadGatewayResponseError$inboundSchema),
+    M.jsonErr(502, errors.AsyncJobStatusResponseError$inboundSchema),
     M.jsonErr(524, errors.EdgeNetworkTimeoutResponseError$inboundSchema),
     M.jsonErr(529, errors.ProviderOverloadedResponseError$inboundSchema),
     M.fail("4XX"),
