@@ -27,9 +27,7 @@ const openRouter = new OpenRouter({
 });
 
 async function run() {
-  const result = await openRouter.generations.getGeneration({
-    id: "<id>",
-  });
+  const result = await openRouter.generations.getGeneration();
 
   console.log(result);
 }
@@ -55,9 +53,7 @@ const openRouter = new OpenRouterCore({
 });
 
 async function run() {
-  const res = await generationsGetGeneration(openRouter, {
-    id: "<id>",
-  });
+  const res = await generationsGetGeneration(openRouter);
   if (res.ok) {
     const { value: result } = res;
     console.log(result);
@@ -80,7 +76,7 @@ run();
 
 ### Response
 
-**Promise\<[models.GenerationResponse](../../models/generationresponse.md)\>**
+**Promise\<[operations.GetGenerationResponse](../../models/operations/getgenerationresponse.md)\>**
 
 ### Errors
 
@@ -91,7 +87,7 @@ run();
 | errors.NotFoundResponseError           | 404                                    | application/json                       |
 | errors.TooManyRequestsResponseError    | 429                                    | application/json                       |
 | errors.InternalServerResponseError     | 500                                    | application/json                       |
-| errors.BadGatewayResponseError         | 502                                    | application/json                       |
+| errors.AsyncJobStatusResponseError     | 502                                    | application/json                       |
 | errors.EdgeNetworkTimeoutResponseError | 524                                    | application/json                       |
 | errors.ProviderOverloadedResponseError | 529                                    | application/json                       |
 | errors.OpenRouterDefaultError          | 4XX, 5XX                               | \*/\*                                  |
