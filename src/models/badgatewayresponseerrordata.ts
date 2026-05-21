@@ -15,6 +15,10 @@ export type BadGatewayResponseErrorData = {
   code: number;
   message: string;
   metadata?: { [k: string]: any | null } | null | undefined;
+  /**
+   * Machine-readable error type for programmatic classification.
+   */
+  type?: string | null | undefined;
 };
 
 /** @internal */
@@ -25,6 +29,7 @@ export const BadGatewayResponseErrorData$inboundSchema: z.ZodType<
   code: z.int(),
   message: z.string(),
   metadata: z.nullable(z.record(z.string(), z.nullable(z.any()))).optional(),
+  type: z.nullable(z.string()).optional(),
 });
 
 export function badGatewayResponseErrorDataFromJSON(
