@@ -15,6 +15,7 @@ export const RoutingStrategy = {
   Alias: "alias",
   Fallback: "fallback",
   Pareto: "pareto",
+  ParetoAuto: "pareto-auto",
   Bodybuilder: "bodybuilder",
   Fusion: "fusion",
 } as const;
