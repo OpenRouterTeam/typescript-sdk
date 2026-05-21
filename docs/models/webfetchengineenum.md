@@ -15,5 +15,5 @@ let value: WebFetchEngineEnum = "auto";
 ## Values
 
 ```typescript
-"auto" | "native" | "openrouter" | "firecrawl" | "exa" | "parallel" | Unrecognized<string>
+"auto" | "native" | "openrouter" | "exa" | "parallel" | "firecrawl" | Unrecognized<string>
 ```
