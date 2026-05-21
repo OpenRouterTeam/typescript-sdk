@@ -14,9 +14,9 @@ export const WebFetchEngineEnum = {
   Auto: "auto",
   Native: "native",
   Openrouter: "openrouter",
-  Firecrawl: "firecrawl",
   Exa: "exa",
   Parallel: "parallel",
+  Firecrawl: "firecrawl",
 } as const;
 /**
  * Which fetch engine to use. "auto" (default) uses native if the provider supports it, otherwise Exa. "native" forces the provider's built-in fetch. "exa" uses Exa Contents API. "openrouter" uses direct HTTP fetch. "firecrawl" uses Firecrawl scrape (requires BYOK). "parallel" uses the Parallel extract API.
