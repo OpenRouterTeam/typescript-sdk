@@ -72,6 +72,11 @@ import {
   ContextCompressionPlugin$outboundSchema,
 } from "./contextcompressionplugin.js";
 import {
+  DeepResearchPlugin,
+  DeepResearchPlugin$Outbound,
+  DeepResearchPlugin$outboundSchema,
+} from "./deepresearchplugin.js";
+import {
   FileParserPlugin,
   FileParserPlugin$Outbound,
   FileParserPlugin$outboundSchema,
@@ -96,6 +101,11 @@ import {
   ModerationPlugin$Outbound,
   ModerationPlugin$outboundSchema,
 } from "./moderationplugin.js";
+import {
+  ParetoAutoPlugin,
+  ParetoAutoPlugin$Outbound,
+  ParetoAutoPlugin$outboundSchema,
+} from "./paretoautoplugin.js";
 import {
   ParetoRouterPlugin,
   ParetoRouterPlugin$Outbound,
@@ -142,9 +152,11 @@ export type Modality = OpenEnum<typeof Modality>;
 export type ChatRequestPlugin =
   | AutoRouterPlugin
   | ContextCompressionPlugin
+  | DeepResearchPlugin
   | FileParserPlugin
   | FusionPlugin
   | ModerationPlugin
+  | ParetoAutoPlugin
   | ParetoRouterPlugin
   | ResponseHealingPlugin
   | WebSearchPlugin
@@ -274,9 +286,11 @@ export type ChatRequest = {
     | Array<
       | AutoRouterPlugin
       | ContextCompressionPlugin
+      | DeepResearchPlugin
       | FileParserPlugin
       | FusionPlugin
       | ModerationPlugin
+      | ParetoAutoPlugin
       | ParetoRouterPlugin
       | ResponseHealingPlugin
       | WebSearchPlugin
@@ -371,9 +385,11 @@ export const Modality$outboundSchema: z.ZodType<string, Modality> = openEnums
 export type ChatRequestPlugin$Outbound =
   | AutoRouterPlugin$Outbound
   | ContextCompressionPlugin$Outbound
+  | DeepResearchPlugin$Outbound
   | FileParserPlugin$Outbound
   | FusionPlugin$Outbound
   | ModerationPlugin$Outbound
+  | ParetoAutoPlugin$Outbound
   | ParetoRouterPlugin$Outbound
   | ResponseHealingPlugin$Outbound
   | WebSearchPlugin$Outbound
@@ -386,9 +402,11 @@ export const ChatRequestPlugin$outboundSchema: z.ZodType<
 > = z.union([
   AutoRouterPlugin$outboundSchema,
   ContextCompressionPlugin$outboundSchema,
+  DeepResearchPlugin$outboundSchema,
   FileParserPlugin$outboundSchema,
   FusionPlugin$outboundSchema,
   ModerationPlugin$outboundSchema,
+  ParetoAutoPlugin$outboundSchema,
   ParetoRouterPlugin$outboundSchema,
   ResponseHealingPlugin$outboundSchema,
   WebSearchPlugin$outboundSchema,
@@ -497,9 +515,11 @@ export type ChatRequest$Outbound = {
     | Array<
       | AutoRouterPlugin$Outbound
       | ContextCompressionPlugin$Outbound
+      | DeepResearchPlugin$Outbound
       | FileParserPlugin$Outbound
       | FusionPlugin$Outbound
       | ModerationPlugin$Outbound
+      | ParetoAutoPlugin$Outbound
       | ParetoRouterPlugin$Outbound
       | ResponseHealingPlugin$Outbound
       | WebSearchPlugin$Outbound
@@ -557,9 +577,11 @@ export const ChatRequest$outboundSchema: z.ZodType<
     z.union([
       AutoRouterPlugin$outboundSchema,
       ContextCompressionPlugin$outboundSchema,
+      DeepResearchPlugin$outboundSchema,
       FileParserPlugin$outboundSchema,
       FusionPlugin$outboundSchema,
       ModerationPlugin$outboundSchema,
+      ParetoAutoPlugin$outboundSchema,
       ParetoRouterPlugin$outboundSchema,
       ResponseHealingPlugin$outboundSchema,
       WebSearchPlugin$outboundSchema,

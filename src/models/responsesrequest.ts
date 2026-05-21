@@ -63,6 +63,11 @@ import {
   DatetimeServerTool$outboundSchema,
 } from "./datetimeservertool.js";
 import {
+  DeepResearchPlugin,
+  DeepResearchPlugin$Outbound,
+  DeepResearchPlugin$outboundSchema,
+} from "./deepresearchplugin.js";
+import {
   FileParserPlugin,
   FileParserPlugin$Outbound,
   FileParserPlugin$outboundSchema,
@@ -130,6 +135,11 @@ import {
   OutputModalityEnum,
   OutputModalityEnum$outboundSchema,
 } from "./outputmodalityenum.js";
+import {
+  ParetoAutoPlugin,
+  ParetoAutoPlugin$Outbound,
+  ParetoAutoPlugin$outboundSchema,
+} from "./paretoautoplugin.js";
 import {
   ParetoRouterPlugin,
   ParetoRouterPlugin$Outbound,
@@ -218,9 +228,11 @@ import {
 export type ResponsesRequestPlugin =
   | AutoRouterPlugin
   | ContextCompressionPlugin
+  | DeepResearchPlugin
   | FileParserPlugin
   | FusionPlugin
   | ModerationPlugin
+  | ParetoAutoPlugin
   | ParetoRouterPlugin
   | ResponseHealingPlugin
   | WebSearchPlugin
@@ -315,9 +327,11 @@ export type ResponsesRequest = {
     | Array<
       | AutoRouterPlugin
       | ContextCompressionPlugin
+      | DeepResearchPlugin
       | FileParserPlugin
       | FusionPlugin
       | ModerationPlugin
+      | ParetoAutoPlugin
       | ParetoRouterPlugin
       | ResponseHealingPlugin
       | WebSearchPlugin
@@ -401,9 +415,11 @@ export type ResponsesRequest = {
 export type ResponsesRequestPlugin$Outbound =
   | AutoRouterPlugin$Outbound
   | ContextCompressionPlugin$Outbound
+  | DeepResearchPlugin$Outbound
   | FileParserPlugin$Outbound
   | FusionPlugin$Outbound
   | ModerationPlugin$Outbound
+  | ParetoAutoPlugin$Outbound
   | ParetoRouterPlugin$Outbound
   | ResponseHealingPlugin$Outbound
   | WebSearchPlugin$Outbound
@@ -416,9 +432,11 @@ export const ResponsesRequestPlugin$outboundSchema: z.ZodType<
 > = z.union([
   AutoRouterPlugin$outboundSchema,
   ContextCompressionPlugin$outboundSchema,
+  DeepResearchPlugin$outboundSchema,
   FileParserPlugin$outboundSchema,
   FusionPlugin$outboundSchema,
   ModerationPlugin$outboundSchema,
+  ParetoAutoPlugin$outboundSchema,
   ParetoRouterPlugin$outboundSchema,
   ResponseHealingPlugin$outboundSchema,
   WebSearchPlugin$outboundSchema,
@@ -562,9 +580,11 @@ export type ResponsesRequest$Outbound = {
     | Array<
       | AutoRouterPlugin$Outbound
       | ContextCompressionPlugin$Outbound
+      | DeepResearchPlugin$Outbound
       | FileParserPlugin$Outbound
       | FusionPlugin$Outbound
       | ModerationPlugin$Outbound
+      | ParetoAutoPlugin$Outbound
       | ParetoRouterPlugin$Outbound
       | ResponseHealingPlugin$Outbound
       | WebSearchPlugin$Outbound
@@ -648,9 +668,11 @@ export const ResponsesRequest$outboundSchema: z.ZodType<
     z.union([
       AutoRouterPlugin$outboundSchema,
       ContextCompressionPlugin$outboundSchema,
+      DeepResearchPlugin$outboundSchema,
       FileParserPlugin$outboundSchema,
       FusionPlugin$outboundSchema,
       ModerationPlugin$outboundSchema,
+      ParetoAutoPlugin$outboundSchema,
       ParetoRouterPlugin$outboundSchema,
       ResponseHealingPlugin$outboundSchema,
       WebSearchPlugin$outboundSchema,
