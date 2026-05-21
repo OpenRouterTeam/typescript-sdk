@@ -61,6 +61,15 @@ const value: models.OutputCustomToolCallItem = {
 };
 ```
 
+### `models.OutputDeepResearchCallItem`
+
+```typescript
+const value: models.OutputDeepResearchCallItem = {
+  status: "completed",
+  type: "deep_research_call",
+};
+```
+
 ### `models.OutputFileSearchCallItem`
 
 ```typescript
