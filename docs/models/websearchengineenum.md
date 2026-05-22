@@ -15,5 +15,5 @@ let value: WebSearchEngineEnum = "auto";
 ## Values
 
 ```typescript
-"auto" | "native" | "exa" | "firecrawl" | "parallel" | Unrecognized<string>
+"auto" | "native" | "exa" | "parallel" | "firecrawl" | Unrecognized<string>
 ```
