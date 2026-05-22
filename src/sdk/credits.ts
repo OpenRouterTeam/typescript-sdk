@@ -4,6 +4,7 @@
  */
 
 import { creditsGetCredits } from "../funcs/creditsGetCredits.js";
+import { creditsPurchaseMppCredits } from "../funcs/creditsPurchaseMppCredits.js";
 import { ClientSDK, RequestOptions } from "../lib/sdks.js";
 import * as operations from "../models/operations/index.js";
 import { unwrapAsync } from "../types/fp.js";
@@ -20,6 +21,23 @@ export class Credits extends ClientSDK {
     options?: RequestOptions,
   ): Promise<operations.GetCreditsResponse> {
     return unwrapAsync(creditsGetCredits(
+      this,
+      request,
+      options,
+    ));
+  }
+
+  /**
+   * Purchase credits via Tempo stablecoin payment (MPP)
+   *
+   * @remarks
+   * Purchase OpenRouter credits using Tempo stablecoin via the Machine Payments Protocol. Returns a 402 Payment Required challenge on first request. After the client pays and resubmits with a Payment credential, credits are issued.
+   */
+  async purchaseMppCredits(
+    request: operations.PurchaseMppCreditsRequest,
+    options?: RequestOptions,
+  ): Promise<operations.PurchaseMppCreditsResponse> {
+    return unwrapAsync(creditsPurchaseMppCredits(
       this,
       request,
       options,

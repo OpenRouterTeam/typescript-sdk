@@ -58,6 +58,7 @@ export * from "./listproviders.js";
 export * from "./listvideoscontent.js";
 export * from "./listvideosmodels.js";
 export * from "./listworkspaces.js";
+export * from "./purchasemppcredits.js";
 export * from "./sendchatcompletionrequest.js";
 export * from "./updatebyokkey.js";
 export * from "./updateguardrail.js";
