@@ -46,6 +46,7 @@ export const Category = {
   Health: "health",
   Trivia: "trivia",
   Academia: "academia",
+  TaskType: "task_type",
 } as const;
 /**
  * Filter models by use case category
