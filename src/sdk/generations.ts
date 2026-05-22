@@ -15,9 +15,9 @@ export class Generations extends ClientSDK {
    * Get request & usage metadata for a generation
    */
   async getGeneration(
-    request: operations.GetGenerationRequest,
+    request?: operations.GetGenerationRequest | undefined,
     options?: RequestOptions,
-  ): Promise<models.GenerationResponse> {
+  ): Promise<operations.GetGenerationResponse> {
     return unwrapAsync(generationsGetGeneration(
       this,
       request,

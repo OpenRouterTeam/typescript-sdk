@@ -1,0 +1,24 @@
+# OutputDeepResearchCallItem
+
+A deep_research_call output item containing the full research report.
+
+## Example Usage
+
+```typescript
+import { OutputDeepResearchCallItem } from "@openrouter/sdk/models";
+
+let value: OutputDeepResearchCallItem = {
+  status: "completed",
+  type: "deep_research_call",
+};
+```
+
+## Fields
+
+| Field                                                                                                                        | Type                                                                                                                         | Required                                                                                                                     | Description                                                                                                                  | Example                                                                                                                      |
+| ---------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------- |
+| `action`                                                                                                                     | [models.OutputDeepResearchCallItemAction](../models/outputdeepresearchcallitemaction.md)                                     | :heavy_minus_sign:                                                                                                           | The research action describing the query and current status.                                                                 |                                                                                                                              |
+| `id`                                                                                                                         | *string*                                                                                                                     | :heavy_minus_sign:                                                                                                           | N/A                                                                                                                          |                                                                                                                              |
+| `result`                                                                                                                     | [models.Result](../models/result.md)                                                                                         | :heavy_minus_sign:                                                                                                           | The full deep research report. Present when status is completed. Contains the structured report with sections and citations. |                                                                                                                              |
+| `status`                                                                                                                     | [models.ToolCallStatus](../models/toolcallstatus.md)                                                                         | :heavy_check_mark:                                                                                                           | N/A                                                                                                                          | completed                                                                                                                    |
+| `type`                                                                                                                       | *"deep_research_call"*                                                                                                       | :heavy_check_mark:                                                                                                           | N/A                                                                                                                          |                                                                                                                              |
