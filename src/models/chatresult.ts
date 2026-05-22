@@ -44,7 +44,7 @@ export type ChatResult = {
   object: ChatResultObject;
   openrouterMetadata?: OpenRouterMetadata | undefined;
   /**
-   * The service tier used by the upstream provider for this request
+   * The canonical OpenRouter service tier used for this request
    */
   serviceTier?: string | null | undefined;
   /**

@@ -65,7 +65,7 @@ export type ChatStreamChunk = {
   object: ChatStreamChunkObject;
   openrouterMetadata?: OpenRouterMetadata | undefined;
   /**
-   * The service tier used by the upstream provider for this request
+   * The canonical OpenRouter service tier used for this request
    */
   serviceTier?: string | null | undefined;
   /**
