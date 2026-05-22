@@ -15,5 +15,5 @@ let value: Category = "programming";
 ## Values
 
 ```typescript
-"programming" | "roleplay" | "marketing" | "marketing/seo" | "technology" | "science" | "translation" | "legal" | "finance" | "health" | "trivia" | "academia" | Unrecognized<string>
+"programming" | "roleplay" | "marketing" | "marketing/seo" | "technology" | "science" | "translation" | "legal" | "finance" | "health" | "trivia" | "academia" | "task_type" | Unrecognized<string>
 ```
