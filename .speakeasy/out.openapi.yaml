@@ -10273,7 +10273,7 @@ components:
                 input_tokens: 100
                 output_tokens: 50
                 server_tool_use: null
-                service_tier: standard
+                service_tier: default
           type: object
       description: Non-streaming response from the Anthropic Messages API with OpenRouter extensions
       example:
@@ -10297,7 +10297,7 @@ components:
           input_tokens: 12
           output_tokens: 15
           server_tool_use: null
-          service_tier: standard
+          service_tier: default
     MessagesStartEvent:
       description: Event sent at the start of a streaming message
       example:
@@ -10475,7 +10475,7 @@ components:
                 input_tokens: 100
                 output_tokens: 50
                 server_tool_use: null
-                service_tier: standard
+                service_tier: default
           required:
             - id
             - type
