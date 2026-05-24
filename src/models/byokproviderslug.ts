@@ -37,6 +37,7 @@ export const BYOKProviderSlug = {
   Deepinfra: "deepinfra",
   Deepseek: "deepseek",
   Dekallm: "dekallm",
+  Digitalocean: "digitalocean",
   Featherless: "featherless",
   Fireworks: "fireworks",
   Friendli: "friendli",
