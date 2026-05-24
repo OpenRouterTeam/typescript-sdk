@@ -3630,6 +3630,7 @@ components:
         - deepinfra
         - deepseek
         - dekallm
+        - digitalocean
         - featherless
         - fireworks
         - friendli
@@ -10375,6 +10376,7 @@ components:
                 - DeepInfra
                 - DeepSeek
                 - DekaLLM
+                - DigitalOcean
                 - Featherless
                 - Fireworks
                 - Friendli
@@ -15472,6 +15474,7 @@ components:
         - DeepInfra
         - DeepSeek
         - DekaLLM
+        - DigitalOcean
         - Featherless
         - Fireworks
         - Friendli
@@ -15663,6 +15666,10 @@ components:
             nullable: true
           type: object
         dekallm:
+          additionalProperties:
+            nullable: true
+          type: object
+        digitalocean:
           additionalProperties:
             nullable: true
           type: object
@@ -16248,6 +16255,7 @@ components:
             - DeepInfra
             - DeepSeek
             - DekaLLM
+            - DigitalOcean
             - Featherless
             - Fireworks
             - Friendli
@@ -20458,6 +20466,7 @@ paths:
               - deepinfra
               - deepseek
               - dekallm
+              - digitalocean
               - featherless
               - fireworks
               - friendli
