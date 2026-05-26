@@ -73,7 +73,6 @@ export type Options = {
   deepinfra?: { [k: string]: any | null } | undefined;
   deepseek?: { [k: string]: any | null } | undefined;
   dekallm?: { [k: string]: any | null } | undefined;
-  digitalocean?: { [k: string]: any | null } | undefined;
   enfer?: { [k: string]: any | null } | undefined;
   fakeProvider?: { [k: string]: any | null } | undefined;
   featherless?: { [k: string]: any | null } | undefined;
@@ -261,7 +260,6 @@ export type Options$Outbound = {
   deepinfra?: { [k: string]: any | null } | undefined;
   deepseek?: { [k: string]: any | null } | undefined;
   dekallm?: { [k: string]: any | null } | undefined;
-  digitalocean?: { [k: string]: any | null } | undefined;
   enfer?: { [k: string]: any | null } | undefined;
   "fake-provider"?: { [k: string]: any | null } | undefined;
   featherless?: { [k: string]: any | null } | undefined;
@@ -378,7 +376,6 @@ export const Options$outboundSchema: z.ZodType<Options$Outbound, Options> = z
     deepinfra: z.record(z.string(), z.nullable(z.any())).optional(),
     deepseek: z.record(z.string(), z.nullable(z.any())).optional(),
     dekallm: z.record(z.string(), z.nullable(z.any())).optional(),
-    digitalocean: z.record(z.string(), z.nullable(z.any())).optional(),
     enfer: z.record(z.string(), z.nullable(z.any())).optional(),
     fakeProvider: z.record(z.string(), z.nullable(z.any())).optional(),
     featherless: z.record(z.string(), z.nullable(z.any())).optional(),
