@@ -1,19 +1,19 @@
 lockVersion: ""
 id: ""
 management:
-  docChecksum: 201273465199b222931851d544523e4e
+  docChecksum: 752981eef58c9758217978a1d66423d8
   docVersion: 1.0.0
   speakeasyVersion: 1.763.2
   generationVersion: 2.884.4
-  releaseVersion: 0.12.70
-  configChecksum: 686041162c101a04b0a0de9b0780f818
+  releaseVersion: 0.12.71
+  configChecksum: eaacd079928008cd5879047a033fe9b0
   repoURL: https://github.com/OpenRouterTeam/typescript-sdk.git
   installationURL: https://github.com/OpenRouterTeam/typescript-sdk
   published: true
 persistentEdits:
-  generation_id: fedaf320-b72a-43ef-bfc6-3af29265ac15
-  pristine_commit_hash: f4a015679be07086c48f5f8300290701ccbec2d1
-  pristine_tree_hash: 8a070684b3208a005105da3c5bc6ee393507454a
+  generation_id: 111a250a-7a68-47e4-8ab1-e48be5b9d1f9
+  pristine_commit_hash: f7d28c9ef4c588c2eccffb072051b56cd42f5166
+  pristine_tree_hash: c2d32425ef61cd00de077d74f7c300a70cf8b04a
 features:
   typescript:
     acceptHeaders: 2.81.2
@@ -291,8 +291,8 @@ trackedFiles:
     deleted: true
   docs/models/autorouterplugin.md:
     id: 96e009b23f15
-    last_write_checksum: sha1:72e709a5fd2069d97c926dec735eaad895570386
-    pristine_git_object: fcc14890a512015d65696dc3b20da856a50bf49d
+    last_write_checksum: sha1:15a686d94f3f434759a437e4da83facd46947f83
+    pristine_git_object: 0b3457d394cb41900033416013490f24e4106527
     deleted: true
   docs/models/background.md:
     id: 3b0fc0aed098
@@ -5590,12 +5590,12 @@ trackedFiles:
     pristine_git_object: 410efafd6a7f50d91ccb87131fedbe0c3d47e15a
   jsr.json:
     id: 7f6ab7767282
-    last_write_checksum: sha1:8b8c492dc6f9b35ca52708a11920bb71b98923b7
-    pristine_git_object: b27c35c3346585742281b17dd821e8d12fb790d0
+    last_write_checksum: sha1:5d55df039d20d73869faabf5b55b6934afedb139
+    pristine_git_object: 67e636f34566c65568c155a95cfff2b67917240f
   package.json:
     id: 7030d0b2f71b
-    last_write_checksum: sha1:9497e4c324dcd45fba65c4fbe46267c55e293ded
-    pristine_git_object: d2a77f87a268791d865a8eeb57fac6724b8e7939
+    last_write_checksum: sha1:804d6be22322f0a0f9be211433ae6c4d4cfcc078
+    pristine_git_object: 68f02ef8d57e4ab0eb8f9d9300f6ea50685442b5
   src/core.ts:
     id: f431fdbcd144
     last_write_checksum: sha1:5aa66b0b6a5964f3eea7f3098c2eb3c0ee9c0131
@@ -5866,8 +5866,8 @@ trackedFiles:
     pristine_git_object: a187e58707bdb726ca2aff74941efe7493422d4e
   src/lib/config.ts:
     id: 320761608fb3
-    last_write_checksum: sha1:a27d7b838756628e4c3957e6b17d3ddb6cc848fc
-    pristine_git_object: 48141fc10c0f4e11c6b1faa8b55e52a99f3d59e3
+    last_write_checksum: sha1:6167e5fd3f671058219ee1610f28dca28d06f94c
+    pristine_git_object: 7b28c6deb8a1a54118f4d4a43a1f0c77b1eb7eb0
   src/lib/dlv.ts:
     id: b1988214835a
     last_write_checksum: sha1:eaac763b22717206a6199104e0403ed17a4e2711
@@ -6002,8 +6002,8 @@ trackedFiles:
     pristine_git_object: ca786e44f5a6f618a51c73884b0822e3327971cb
   src/models/autorouterplugin.ts:
     id: e3853c83720d
-    last_write_checksum: sha1:c9d3db7d1083af1e454cfc46aef6f6eeae5e8bfb
-    pristine_git_object: 113a0e8284cb81441a01af7d9b9698d18afa287b
+    last_write_checksum: sha1:6c433a073dde939042dbcb2809679a1b00277e1a
+    pristine_git_object: 261f5e61c0b5a49a453372b6d8968ff2e2a1602d
   src/models/badgatewayresponseerrordata.ts:
     id: de317517c298
     last_write_checksum: sha1:0c142f4aa9e808430a0caffe3c454146875e7c56
@@ -9055,4 +9055,4 @@ examples:
         "500":
           application/json: {"error": {"code": 500, "message": "Internal Server Error"}}
 examplesVersion: 1.0.2
-releaseNotes: "## Typescript SDK Changes:\n* `openrouter.tts.createSpeech()`: \n  *  `request.speechRequest.provider.options.digitalocean` **Added**\n* `openrouter.stt.createTranscription()`: \n  *  `request.sttRequest.provider.options.digitalocean` **Added**\n* `openrouter.byok.list()`: \n  *  `request.provider` **Changed**\n  *  `response.data[].provider.enum(digitalocean)` **Added**\n* `openrouter.byok.create()`: \n  *  `request.createByokKeyRequest.provider.enum(digitalocean)` **Added**\n  *  `response.data.provider.enum(digitalocean)` **Added**\n* `openrouter.byok.get()`:  `response.data.provider.enum(digitalocean)` **Added**\n* `openrouter.byok.update()`:  `response.data.provider.enum(digitalocean)` **Added**\n* `openrouter.chat.send()`: \n  *  `request.chatRequest.provider.ignore[].union(ProviderName).enum(digitalOcean)` **Added**\n* `openrouter.embeddings.generate()`: \n  *  `request.requestBody.provider.ignore[].union(ProviderName).enum(digitalOcean)` **Added**\n* `openrouter.endpoints.listZdrEndpoints()`:  `response.data[].providerName.enum(digitalOcean)` **Added**\n* `openrouter.endpoints.list()`:  `response.data.endpoints[].providerName.enum(digitalOcean)` **Added**\n* `openrouter.generations.getGeneration()`:  `response.data.providerResponses[].providerName.enum(digitalOcean)` **Added**\n* `openrouter.presets.createPresetsChatCompletions()`: \n  *  `request.chatRequest.provider.ignore[].union(ProviderName).enum(digitalOcean)` **Added**\n* `openrouter.rerank.rerank()`: \n  *  `request.requestBody.provider.ignore[].union(ProviderName).enum(digitalOcean)` **Added**\n* `openrouter.beta.responses.send()`: \n  *  `request.responsesRequest.provider.ignore[].union(ProviderName).enum(digitalOcean)` **Added**\n* `openrouter.videoGeneration.generate()`: \n  *  `request.videoGenerationRequest.provider.options.digitalocean` **Added**\n"
+releaseNotes: "## Typescript SDK Changes:\n* `openrouter.chat.send()`: \n  *  `request.chatRequest.plugins[].union(auto-router).costQualityTradeoff` **Added**\n* `openrouter.presets.createPresetsChatCompletions()`: \n  *  `request.chatRequest.plugins[].union(auto-router).costQualityTradeoff` **Added**\n* `openrouter.beta.responses.send()`: \n  *  `request.responsesRequest.plugins[].union(auto-router).costQualityTradeoff` **Added**\n"
