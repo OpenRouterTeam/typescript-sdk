@@ -10,6 +10,7 @@ import { Beta } from "./beta.js";
 import { Byok } from "./byok.js";
 import { Chat } from "./chat.js";
 import { Credits } from "./credits.js";
+import { Datasets } from "./datasets.js";
 import { Embeddings } from "./embeddings.js";
 import { Endpoints } from "./endpoints.js";
 import { Generations } from "./generations.js";
@@ -18,7 +19,6 @@ import { Models } from "./models.js";
 import { OAuth } from "./oauth.js";
 import { Observability } from "./observability.js";
 import { Organization } from "./organization.js";
-import { Presets } from "./presets.js";
 import { Providers } from "./providers.js";
 import { Rerank } from "./rerank.js";
 import { Stt } from "./stt.js";
@@ -74,6 +74,11 @@ export class OpenRouter extends ClientSDK {
     return (this._credits ??= new Credits(this._options));
   }
 
+  private _datasets?: Datasets;
+  get datasets(): Datasets {
+    return (this._datasets ??= new Datasets(this._options));
+  }
+
   private _embeddings?: Embeddings;
   get embeddings(): Embeddings {
     return (this._embeddings ??= new Embeddings(this._options));
@@ -112,11 +117,6 @@ export class OpenRouter extends ClientSDK {
   private _organization?: Organization;
   get organization(): Organization {
     return (this._organization ??= new Organization(this._options));
-  }
-
-  private _presets?: Presets;
-  get presets(): Presets {
-    return (this._presets ??= new Presets(this._options));
   }
 
   private _providers?: Providers;
