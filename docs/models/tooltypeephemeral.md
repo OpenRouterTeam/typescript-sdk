@@ -1,0 +1,15 @@
+# ToolTypeEphemeral
+
+## Example Usage
+
+```typescript
+import { ToolTypeEphemeral } from "@openrouter/sdk/models";
+
+let value: ToolTypeEphemeral = "ephemeral";
+```
+
+## Values
+
+```typescript
+"ephemeral"
+```
