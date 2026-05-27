@@ -5,6 +5,10 @@
 
 import * as z from "zod/v4";
 import { remap as remap$ } from "../../lib/primitives.js";
+import { safeParse } from "../../lib/schemas.js";
+import { Result as SafeParseResult } from "../../types/fp.js";
+import { SDKValidationError } from "../errors/sdkvalidationerror.js";
+import * as models from "../index.js";
 
 export type GetGenerationGlobals = {
   /**
@@ -54,6 +58,10 @@ export type GetGenerationRequest = {
   id: string;
 };
 
+export type GetGenerationResponse =
+  | models.AsyncJobStatusResponse
+  | models.GenerationResponse;
+
 /** @internal */
 export type GetGenerationRequest$Outbound = {
   "HTTP-Referer"?: string | undefined;
@@ -82,5 +90,24 @@ export function getGenerationRequestToJSON(
 ): string {
   return JSON.stringify(
     GetGenerationRequest$outboundSchema.parse(getGenerationRequest),
+  );
+}
+
+/** @internal */
+export const GetGenerationResponse$inboundSchema: z.ZodType<
+  GetGenerationResponse,
+  unknown
+> = z.union([
+  models.AsyncJobStatusResponse$inboundSchema,
+  models.GenerationResponse$inboundSchema,
+]);
+
+export function getGenerationResponseFromJSON(
+  jsonString: string,
+): SafeParseResult<GetGenerationResponse, SDKValidationError> {
+  return safeParse(
+    jsonString,
+    (x) => GetGenerationResponse$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'GetGenerationResponse' from JSON`,
   );
 }

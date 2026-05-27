@@ -17,7 +17,7 @@ export class Generations extends ClientSDK {
   async getGeneration(
     request: operations.GetGenerationRequest,
     options?: RequestOptions,
-  ): Promise<models.GenerationResponse> {
+  ): Promise<operations.GetGenerationResponse> {
     return unwrapAsync(generationsGetGeneration(
       this,
       request,
