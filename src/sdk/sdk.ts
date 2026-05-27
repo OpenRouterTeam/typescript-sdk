@@ -10,7 +10,6 @@ import { Beta } from "./beta.js";
 import { Byok } from "./byok.js";
 import { Chat } from "./chat.js";
 import { Credits } from "./credits.js";
-import { Datasets } from "./datasets.js";
 import { Embeddings } from "./embeddings.js";
 import { Endpoints } from "./endpoints.js";
 import { Generations } from "./generations.js";
@@ -73,11 +72,6 @@ export class OpenRouter extends ClientSDK {
   private _credits?: Credits;
   get credits(): Credits {
     return (this._credits ??= new Credits(this._options));
-  }
-
-  private _datasets?: Datasets;
-  get datasets(): Datasets {
-    return (this._datasets ??= new Datasets(this._options));
   }
 
   private _embeddings?: Embeddings;
