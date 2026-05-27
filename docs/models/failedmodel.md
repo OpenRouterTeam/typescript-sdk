@@ -13,7 +13,8 @@ let value: FailedModel = {
 
 ## Fields
 
-| Field                                          | Type                                           | Required                                       | Description                                    |
-| ---------------------------------------------- | ---------------------------------------------- | ---------------------------------------------- | ---------------------------------------------- |
-| `error`                                        | *string*                                       | :heavy_check_mark:                             | Error message describing why the model failed. |
-| `model`                                        | *string*                                       | :heavy_check_mark:                             | Slug of the analysis model that failed.        |
+| Field                                                                        | Type                                                                         | Required                                                                     | Description                                                                  |
+| ---------------------------------------------------------------------------- | ---------------------------------------------------------------------------- | ---------------------------------------------------------------------------- | ---------------------------------------------------------------------------- |
+| `error`                                                                      | *string*                                                                     | :heavy_check_mark:                                                           | Error message describing why the model failed.                               |
+| `model`                                                                      | *string*                                                                     | :heavy_check_mark:                                                           | Slug of the analysis model that failed.                                      |
+| `statusCode`                                                                 | *number*                                                                     | :heavy_minus_sign:                                                           | HTTP status code from the upstream response, when available (e.g. 402, 429). |
