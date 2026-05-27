@@ -5482,15 +5482,37 @@ components:
       description: >-
         A builtin content filter entry. Builtin filters include PII detectors and the regex-based prompt injection detector.
       example:
-        action: block
-        label: '[PROMPT_INJECTION]'
-        slug: regex-prompt-injection
+        action: redact
+        label: '[EMAIL]'
+        slug: email
       properties:
         action:
           $ref: '#/components/schemas/ContentFilterBuiltinAction'
         label:
-          description: Optional label used in redaction placeholders (e.g. "[PROMPT_INJECTION]")
-          example: '[PROMPT_INJECTION]'
+          description: >-
+            Read-only, system-assigned redaction placeholder derived from the slug (e.g. "[EMAIL]", "[PHONE]"). Not settable by the caller.
+          example: '[EMAIL]'
+          maxLength: 100
+          type: string
+        slug:
+          $ref: '#/components/schemas/ContentFilterBuiltinSlug'
+      required:
+        - slug
+        - action
+      type: object
+    ContentFilterBuiltinEntryInput:
+      description: >-
+        A builtin content filter entry for create/update requests. Labels are system-assigned and cannot be set by the caller.
+      example:
+        action: redact
+        slug: email
+      properties:
+        action:
+          $ref: '#/components/schemas/ContentFilterBuiltinAction'
+        label:
+          deprecated: true
+          description: >-
+            Deprecated: labels are system-assigned and cannot be set by the caller. Accepted for backward compatibility but silently ignored.
           maxLength: 100
           type: string
         slug:
@@ -5860,7 +5882,7 @@ components:
             - action: block
               slug: regex-prompt-injection
           items:
-            $ref: '#/components/schemas/ContentFilterBuiltinEntry'
+            $ref: '#/components/schemas/ContentFilterBuiltinEntryInput'
           nullable: true
           type: array
         content_filters:
@@ -5956,9 +5978,9 @@ components:
             - anthropic
             - google
           content_filter_builtins:
-            - action: block
-              label: '[PROMPT_INJECTION]'
-              slug: regex-prompt-injection
+            - action: redact
+              label: '[EMAIL]'
+              slug: email
           content_filters: null
           created_at: '2025-08-24T10:30:00Z'
           description: A guardrail for limiting API usage
@@ -7571,9 +7593,9 @@ components:
             - anthropic
             - google
           content_filter_builtins:
-            - action: block
-              label: '[PROMPT_INJECTION]'
-              slug: regex-prompt-injection
+            - action: redact
+              label: '[EMAIL]'
+              slug: email
           content_filters: null
           created_at: '2025-08-24T10:30:00Z'
           description: Guardrail for production environment
@@ -7699,9 +7721,9 @@ components:
           - anthropic
           - google
         content_filter_builtins:
-          - action: block
-            label: '[PROMPT_INJECTION]'
-            slug: regex-prompt-injection
+          - action: redact
+            label: '[EMAIL]'
+            slug: email
         content_filters: null
         created_at: '2025-08-24T10:30:00Z'
         description: Guardrail for production environment
@@ -7743,9 +7765,9 @@ components:
           description: >-
             Builtin content filters applied to requests. Includes PII detectors and the regex-based prompt injection detector.
           example:
-            - action: block
-              label: '[PROMPT_INJECTION]'
-              slug: regex-prompt-injection
+            - action: redact
+              label: '[EMAIL]'
+              slug: email
           items:
             $ref: '#/components/schemas/ContentFilterBuiltinEntry'
           nullable: true
@@ -8723,9 +8745,9 @@ components:
               - anthropic
               - google
             content_filter_builtins:
-              - action: block
-                label: '[PROMPT_INJECTION]'
-                slug: regex-prompt-injection
+              - action: redact
+                label: '[EMAIL]'
+                slug: email
             content_filters: null
             created_at: '2025-08-24T10:30:00Z'
             description: Guardrail for production environment
@@ -18537,7 +18559,7 @@ components:
             - action: block
               slug: regex-prompt-injection
           items:
-            $ref: '#/components/schemas/ContentFilterBuiltinEntry'
+            $ref: '#/components/schemas/ContentFilterBuiltinEntryInput'
           nullable: true
           type: array
         content_filters:
@@ -18621,9 +18643,9 @@ components:
           allowed_providers:
             - openai
           content_filter_builtins:
-            - action: block
-              label: '[PROMPT_INJECTION]'
-              slug: regex-prompt-injection
+            - action: redact
+              label: '[EMAIL]'
+              slug: email
           content_filters: null
           created_at: '2025-08-24T10:30:00Z'
           description: Updated description
