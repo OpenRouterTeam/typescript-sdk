@@ -67,6 +67,7 @@ export const ProviderResponseProviderName = {
   Cohere: "Cohere",
   Crucible: "Crucible",
   Crusoe: "Crusoe",
+  Darkbloom: "Darkbloom",
   DeepInfra: "DeepInfra",
   DeepSeek: "DeepSeek",
   DekaLLM: "DekaLLM",
