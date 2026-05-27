@@ -53,6 +53,10 @@ export type FailedModel = {
    * Slug of the analysis model that failed.
    */
   model: string;
+  /**
+   * HTTP status code from the upstream response, when available (e.g. 402, 429).
+   */
+  statusCode?: number | undefined;
 };
 
 export type ResponseT = {
@@ -75,6 +79,10 @@ export type OutputFusionServerToolItem = {
    * Models that were requested as part of the analysis panel but did not produce a response. Present when at least one requested analysis model failed. The fusion result is still usable but was produced from a degraded panel.
    */
   failedModels?: Array<FailedModel> | undefined;
+  /**
+   * Typed failure reason when the fusion run failed. Possible values include: all_panels_failed, insufficient_credits, rate_limited, judge_not_valid_json, judge_schema_mismatch, judge_upstream_error, judge_empty_completion.
+   */
+  failureReason?: string | undefined;
   id?: string | undefined;
   /**
    * Slugs of the analysis models that produced a response in this fusion run.
@@ -183,6 +191,11 @@ export const FailedModel$inboundSchema: z.ZodType<FailedModel, unknown> = z
   .object({
     error: z.string(),
     model: z.string(),
+    status_code: z.int().optional(),
+  }).transform((v) => {
+    return remap$(v, {
+      "status_code": "statusCode",
+    });
   });
 
 export function failedModelFromJSON(
@@ -218,6 +231,7 @@ export const OutputFusionServerToolItem$inboundSchema: z.ZodType<
   analysis: z.lazy(() => Analysis$inboundSchema).optional(),
   error: z.string().optional(),
   failed_models: z.array(z.lazy(() => FailedModel$inboundSchema)).optional(),
+  failure_reason: z.string().optional(),
   id: z.string().optional(),
   responses: z.array(z.lazy(() => ResponseT$inboundSchema)).optional(),
   status: ToolCallStatus$inboundSchema,
@@ -225,6 +239,7 @@ export const OutputFusionServerToolItem$inboundSchema: z.ZodType<
 }).transform((v) => {
   return remap$(v, {
     "failed_models": "failedModels",
+    "failure_reason": "failureReason",
   });
 });
 
