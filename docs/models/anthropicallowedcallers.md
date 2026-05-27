@@ -1,0 +1,17 @@
+# AnthropicAllowedCallers
+
+## Example Usage
+
+```typescript
+import { AnthropicAllowedCallers } from "@openrouter/sdk/models";
+
+let value: AnthropicAllowedCallers = "code_execution_20260120";
+
+// Open enum: unrecognized values are captured as Unrecognized<string>
+```
+
+## Values
+
+```typescript
+"direct" | "code_execution_20250825" | "code_execution_20260120" | Unrecognized<string>
+```

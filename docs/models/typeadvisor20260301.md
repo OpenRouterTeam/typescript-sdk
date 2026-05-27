@@ -1,0 +1,15 @@
+# TypeAdvisor20260301
+
+## Example Usage
+
+```typescript
+import { TypeAdvisor20260301 } from "@openrouter/sdk/models";
+
+let value: TypeAdvisor20260301 = "advisor_20260301";
+```
+
+## Values
+
+```typescript
+"advisor_20260301"
+```

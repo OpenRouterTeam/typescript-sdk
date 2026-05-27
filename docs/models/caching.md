@@ -1,0 +1,20 @@
+# Caching
+
+Enable automatic prompt caching. When set at the top level, the system automatically applies cache breakpoints to the last cacheable block in the request. Currently supported for Anthropic Claude models.
+
+## Example Usage
+
+```typescript
+import { Caching } from "@openrouter/sdk/models";
+
+let value: Caching = {
+  type: "ephemeral",
+};
+```
+
+## Fields
+
+| Field                                                                    | Type                                                                     | Required                                                                 | Description                                                              | Example                                                                  |
+| ------------------------------------------------------------------------ | ------------------------------------------------------------------------ | ------------------------------------------------------------------------ | ------------------------------------------------------------------------ | ------------------------------------------------------------------------ |
+| `ttl`                                                                    | [models.AnthropicCacheControlTtl](../models/anthropiccachecontrolttl.md) | :heavy_minus_sign:                                                       | N/A                                                                      | 5m                                                                       |
+| `type`                                                                   | [models.ToolTypeEphemeral](../models/tooltypeephemeral.md)               | :heavy_check_mark:                                                       | N/A                                                                      |                                                                          |
