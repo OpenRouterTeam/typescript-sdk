@@ -6,10 +6,10 @@
 import * as z from "zod/v4";
 import { remap as remap$ } from "../lib/primitives.js";
 import {
-  ContentFilterBuiltinEntry,
-  ContentFilterBuiltinEntry$Outbound,
-  ContentFilterBuiltinEntry$outboundSchema,
-} from "./contentfilterbuiltinentry.js";
+  ContentFilterBuiltinEntryInput,
+  ContentFilterBuiltinEntryInput$Outbound,
+  ContentFilterBuiltinEntryInput$outboundSchema,
+} from "./contentfilterbuiltinentryinput.js";
 import {
   ContentFilterEntry,
   ContentFilterEntry$Outbound,
@@ -32,7 +32,10 @@ export type CreateGuardrailRequest = {
   /**
    * Builtin content filters to apply. The "flag" action is only supported for "regex-prompt-injection"; PII slugs (email, phone, ssn, credit-card, ip-address, person-name, address) accept "block" or "redact" only.
    */
-  contentFilterBuiltins?: Array<ContentFilterBuiltinEntry> | null | undefined;
+  contentFilterBuiltins?:
+    | Array<ContentFilterBuiltinEntryInput>
+    | null
+    | undefined;
   /**
    * Custom regex content filters to apply to request messages
    */
@@ -94,7 +97,7 @@ export type CreateGuardrailRequest$Outbound = {
   allowed_models?: Array<string> | null | undefined;
   allowed_providers?: Array<string> | null | undefined;
   content_filter_builtins?:
-    | Array<ContentFilterBuiltinEntry$Outbound>
+    | Array<ContentFilterBuiltinEntryInput$Outbound>
     | null
     | undefined;
   content_filters?: Array<ContentFilterEntry$Outbound> | null | undefined;
@@ -120,7 +123,7 @@ export const CreateGuardrailRequest$outboundSchema: z.ZodType<
   allowedModels: z.nullable(z.array(z.string())).optional(),
   allowedProviders: z.nullable(z.array(z.string())).optional(),
   contentFilterBuiltins: z.nullable(
-    z.array(ContentFilterBuiltinEntry$outboundSchema),
+    z.array(ContentFilterBuiltinEntryInput$outboundSchema),
   ).optional(),
   contentFilters: z.nullable(z.array(ContentFilterEntry$outboundSchema))
     .optional(),
