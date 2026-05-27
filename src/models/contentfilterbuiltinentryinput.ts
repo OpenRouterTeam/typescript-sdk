@@ -4,6 +4,7 @@
  */
 
 import * as z from "zod/v4";
+import { remap as remap$ } from "../lib/primitives.js";
 import {
   ContentFilterBuiltinAction,
   ContentFilterBuiltinAction$outboundSchema,
@@ -12,6 +13,10 @@ import {
   ContentFilterBuiltinSlug,
   ContentFilterBuiltinSlug$outboundSchema,
 } from "./contentfilterbuiltinslug.js";
+import {
+  PromptInjectionScanScope,
+  PromptInjectionScanScope$outboundSchema,
+} from "./promptinjectionscanscope.js";
 
 /**
  * A builtin content filter entry for create/update requests. Labels are system-assigned and cannot be set by the caller.
@@ -28,6 +33,10 @@ export type ContentFilterBuiltinEntryInput = {
    */
   label?: string | undefined;
   /**
+   * Which message roles to scan for prompt injection. Only applies to the regex-prompt-injection builtin. Defaults to all_messages.
+   */
+  scanScope?: PromptInjectionScanScope | undefined;
+  /**
    * The builtin filter identifier
    */
   slug: ContentFilterBuiltinSlug;
@@ -37,6 +46,7 @@ export type ContentFilterBuiltinEntryInput = {
 export type ContentFilterBuiltinEntryInput$Outbound = {
   action: string;
   label?: string | undefined;
+  scan_scope?: string | undefined;
   slug: string;
 };
 
@@ -47,7 +57,12 @@ export const ContentFilterBuiltinEntryInput$outboundSchema: z.ZodType<
 > = z.object({
   action: ContentFilterBuiltinAction$outboundSchema,
   label: z.string().optional(),
+  scanScope: PromptInjectionScanScope$outboundSchema.optional(),
   slug: ContentFilterBuiltinSlug$outboundSchema,
+}).transform((v) => {
+  return remap$(v, {
+    scanScope: "scan_scope",
+  });
 });
 
 export function contentFilterBuiltinEntryInputToJSON(
