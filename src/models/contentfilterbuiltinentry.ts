@@ -9,12 +9,10 @@ import { Result as SafeParseResult } from "../types/fp.js";
 import {
   ContentFilterBuiltinAction,
   ContentFilterBuiltinAction$inboundSchema,
-  ContentFilterBuiltinAction$outboundSchema,
 } from "./contentfilterbuiltinaction.js";
 import {
   ContentFilterBuiltinSlug,
   ContentFilterBuiltinSlug$inboundSchema,
-  ContentFilterBuiltinSlug$outboundSchema,
 } from "./contentfilterbuiltinslug.js";
 import { SDKValidationError } from "./errors/sdkvalidationerror.js";
 
@@ -27,7 +25,7 @@ export type ContentFilterBuiltinEntry = {
    */
   action: ContentFilterBuiltinAction;
   /**
-   * Optional label used in redaction placeholders (e.g. "[PROMPT_INJECTION]")
+   * Read-only, system-assigned redaction placeholder derived from the slug (e.g. "[EMAIL]", "[PHONE]"). Not settable by the caller.
    */
   label?: string | undefined;
   /**
@@ -45,30 +43,7 @@ export const ContentFilterBuiltinEntry$inboundSchema: z.ZodType<
   label: z.string().optional(),
   slug: ContentFilterBuiltinSlug$inboundSchema,
 });
-/** @internal */
-export type ContentFilterBuiltinEntry$Outbound = {
-  action: string;
-  label?: string | undefined;
-  slug: string;
-};
 
-/** @internal */
-export const ContentFilterBuiltinEntry$outboundSchema: z.ZodType<
-  ContentFilterBuiltinEntry$Outbound,
-  ContentFilterBuiltinEntry
-> = z.object({
-  action: ContentFilterBuiltinAction$outboundSchema,
-  label: z.string().optional(),
-  slug: ContentFilterBuiltinSlug$outboundSchema,
-});
-
-export function contentFilterBuiltinEntryToJSON(
-  contentFilterBuiltinEntry: ContentFilterBuiltinEntry,
-): string {
-  return JSON.stringify(
-    ContentFilterBuiltinEntry$outboundSchema.parse(contentFilterBuiltinEntry),
-  );
-}
 export function contentFilterBuiltinEntryFromJSON(
   jsonString: string,
 ): SafeParseResult<ContentFilterBuiltinEntry, SDKValidationError> {
