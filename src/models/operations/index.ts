@@ -19,6 +19,7 @@ export * from "./createkeys.js";
 export * from "./createobservabilitydestination.js";
 export * from "./createpresetschatcompletions.js";
 export * from "./createpresetsmessages.js";
+export * from "./createpresetsresponses.js";
 export * from "./creatererank.js";
 export * from "./createresponses.js";
 export * from "./createvideos.js";
