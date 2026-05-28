@@ -32,7 +32,7 @@ import { Result } from "../types/fp.js";
  * Create a preset from a chat-completions request body
  *
  * @remarks
- * Creates a preset (or a new version of an existing one) from an inference request body. Only fields that overlap with the preset config are persisted; other fields (e.g. `messages`, `stream`, `prompt`) are silently ignored.
+ * Creates a preset (or a new version of an existing one) from an inference request body. Only fields that overlap with the preset config are persisted; other fields (e.g. `messages`, `stream`, `prompt`) are silently ignored. [Management key](/docs/guides/overview/auth/management-api-keys) required.
  *
  * If set, this operation will use {@link Security.apiKey} from the global security.
  */
@@ -45,8 +45,6 @@ export function presetsCreatePresetsChatCompletions(
     models.CreatePresetFromInferenceResponse,
     | errors.BadRequestResponseError
     | errors.UnauthorizedResponseError
-    | errors.ForbiddenResponseError
-    | errors.NotFoundResponseError
     | errors.ConflictResponseError
     | errors.InternalServerResponseError
     | OpenRouterError
@@ -76,8 +74,6 @@ async function $do(
       models.CreatePresetFromInferenceResponse,
       | errors.BadRequestResponseError
       | errors.UnauthorizedResponseError
-      | errors.ForbiddenResponseError
-      | errors.NotFoundResponseError
       | errors.ConflictResponseError
       | errors.InternalServerResponseError
       | OpenRouterError
@@ -198,8 +194,6 @@ async function $do(
     models.CreatePresetFromInferenceResponse,
     | errors.BadRequestResponseError
     | errors.UnauthorizedResponseError
-    | errors.ForbiddenResponseError
-    | errors.NotFoundResponseError
     | errors.ConflictResponseError
     | errors.InternalServerResponseError
     | OpenRouterError
@@ -214,8 +208,6 @@ async function $do(
     M.json(200, models.CreatePresetFromInferenceResponse$inboundSchema),
     M.jsonErr(400, errors.BadRequestResponseError$inboundSchema),
     M.jsonErr(401, errors.UnauthorizedResponseError$inboundSchema),
-    M.jsonErr(403, errors.ForbiddenResponseError$inboundSchema),
-    M.jsonErr(404, errors.NotFoundResponseError$inboundSchema),
     M.jsonErr(409, errors.ConflictResponseError$inboundSchema),
     M.jsonErr(500, errors.InternalServerResponseError$inboundSchema),
     M.fail("4XX"),
