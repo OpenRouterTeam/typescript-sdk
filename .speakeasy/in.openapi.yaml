@@ -9725,6 +9725,7 @@ components:
           enum:
             - user
             - assistant
+            - system
           type: string
       required:
         - role
