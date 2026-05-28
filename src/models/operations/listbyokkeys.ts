@@ -61,7 +61,6 @@ export const Provider = {
   Cloudflare: "cloudflare",
   Cohere: "cohere",
   Crusoe: "crusoe",
-  Darkbloom: "darkbloom",
   Deepinfra: "deepinfra",
   Deepseek: "deepseek",
   Dekallm: "dekallm",

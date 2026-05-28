@@ -32,7 +32,6 @@ export const ProviderName = {
   Cohere: "Cohere",
   Crucible: "Crucible",
   Crusoe: "Crusoe",
-  Darkbloom: "Darkbloom",
   DeepInfra: "DeepInfra",
   DeepSeek: "DeepSeek",
   DekaLLM: "DekaLLM",
