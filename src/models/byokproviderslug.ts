@@ -34,6 +34,7 @@ export const BYOKProviderSlug = {
   Cloudflare: "cloudflare",
   Cohere: "cohere",
   Crusoe: "crusoe",
+  Darkbloom: "darkbloom",
   Deepinfra: "deepinfra",
   Deepseek: "deepseek",
   Dekallm: "dekallm",

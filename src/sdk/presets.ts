@@ -4,6 +4,7 @@
  */
 
 import { presetsCreatePresetsChatCompletions } from "../funcs/presetsCreatePresetsChatCompletions.js";
+import { presetsCreatePresetsMessages } from "../funcs/presetsCreatePresetsMessages.js";
 import { ClientSDK, RequestOptions } from "../lib/sdks.js";
 import * as models from "../models/index.js";
 import * as operations from "../models/operations/index.js";
@@ -21,6 +22,23 @@ export class Presets extends ClientSDK {
     options?: RequestOptions,
   ): Promise<models.CreatePresetFromInferenceResponse> {
     return unwrapAsync(presetsCreatePresetsChatCompletions(
+      this,
+      request,
+      options,
+    ));
+  }
+
+  /**
+   * Create a preset from a messages request body
+   *
+   * @remarks
+   * Creates a preset (or a new version of an existing one) from an inference request body. Only fields that overlap with the preset config are persisted; other fields (e.g. `messages`, `stream`, `prompt`) are silently ignored.
+   */
+  async createPresetsMessages(
+    request: operations.CreatePresetsMessagesRequest,
+    options?: RequestOptions,
+  ): Promise<models.CreatePresetFromInferenceResponse> {
+    return unwrapAsync(presetsCreatePresetsMessages(
       this,
       request,
       options,
