@@ -198,6 +198,7 @@ export type MessagesMessageParamContentUnion5 =
 export const MessagesMessageParamRole = {
   User: "user",
   Assistant: "assistant",
+  System: "system",
 } as const;
 export type MessagesMessageParamRole = OpenEnum<
   typeof MessagesMessageParamRole
