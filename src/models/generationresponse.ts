@@ -25,6 +25,7 @@ export const ApiType = {
   Tts: "tts",
   Stt: "stt",
   Video: "video",
+  Image: "image",
 } as const;
 /**
  * Type of API used for the generation
