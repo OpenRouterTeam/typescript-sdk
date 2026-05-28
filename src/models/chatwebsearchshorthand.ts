@@ -21,6 +21,10 @@ import {
   WebSearchEngineEnum$outboundSchema,
 } from "./websearchengineenum.js";
 import {
+  WebSearchSearchType,
+  WebSearchSearchType$outboundSchema,
+} from "./websearchsearchtype.js";
+import {
   WebSearchUserLocationServerTool,
   WebSearchUserLocationServerTool$Outbound,
   WebSearchUserLocationServerTool$outboundSchema,
@@ -45,6 +49,10 @@ export type ChatWebSearchShorthand = {
    */
   allowedDomains?: Array<string> | undefined;
   /**
+   * Filter results by content category (e.g. "company", "research paper", "news", "personal site", "financial report", "people"). Currently supported by Exa; ignored by other engines.
+   */
+  category?: string | undefined;
+  /**
    * Which search engine to use. "auto" (default) uses native if the provider supports it, otherwise Exa. "native" forces the provider's built-in search. "exa" forces the Exa search API. "firecrawl" uses Firecrawl (requires BYOK). "parallel" uses the Parallel search API.
    */
   engine?: WebSearchEngineEnum | undefined;
@@ -52,6 +60,10 @@ export type ChatWebSearchShorthand = {
    * Exclude search results from these domains. Supported by Exa, Firecrawl, Parallel, Anthropic, and xAI. Not supported with OpenAI (silently ignored) or Perplexity. Cannot be used with allowed_domains.
    */
   excludedDomains?: Array<string> | undefined;
+  /**
+   * Maximum age of cached content in hours. Controls content recency — results with content older than this value are re-fetched. Set to 0 to always fetch fresh content, or -1 to only use cached content. Currently supported by Exa; ignored by other engines.
+   */
+  maxAgeHours?: number | undefined;
   /**
    * Maximum number of search results to return per search call. Defaults to 5. Applies to Exa, Firecrawl, and Parallel engines; ignored with native provider search.
    */
@@ -65,6 +77,10 @@ export type ChatWebSearchShorthand = {
    * How much context to retrieve per result. Applies to Exa and Parallel engines; ignored with native provider search and Firecrawl. For Exa, pins a fixed per-result character cap (low=5,000, medium=15,000, high=30,000); when omitted, Exa picks an adaptive size per query and document (typically ~2,000–4,000 characters per result). For Parallel, controls the total characters across all results; when omitted, Parallel uses its own default size.
    */
   searchContextSize?: SearchQualityLevel | undefined;
+  /**
+   * Search strategy to use. "auto" (default) lets the engine decide. "instant" provides the lowest latency. "fast" uses lower-latency search models. "deep-lite" is lightweight synthesis. "deep" performs in-depth research with synthesis. "deep-reasoning" adds more reasoning. Legacy values "neural" and "keyword" are also accepted. Currently supported by Exa; ignored by other engines.
+   */
+  searchType?: WebSearchSearchType | undefined;
   type: ChatWebSearchShorthandType;
   /**
    * Approximate user location for location-biased results.
@@ -81,12 +97,15 @@ export const ChatWebSearchShorthandType$outboundSchema: z.ZodType<
 /** @internal */
 export type ChatWebSearchShorthand$Outbound = {
   allowed_domains?: Array<string> | undefined;
+  category?: string | undefined;
   engine?: string | undefined;
   excluded_domains?: Array<string> | undefined;
+  max_age_hours?: number | undefined;
   max_results?: number | undefined;
   max_total_results?: number | undefined;
   parameters?: WebSearchConfig$Outbound | undefined;
   search_context_size?: string | undefined;
+  search_type?: string | undefined;
   type: string;
   user_location?: WebSearchUserLocationServerTool$Outbound | undefined;
 };
@@ -97,21 +116,26 @@ export const ChatWebSearchShorthand$outboundSchema: z.ZodType<
   ChatWebSearchShorthand
 > = z.object({
   allowedDomains: z.array(z.string()).optional(),
+  category: z.string().optional(),
   engine: WebSearchEngineEnum$outboundSchema.optional(),
   excludedDomains: z.array(z.string()).optional(),
+  maxAgeHours: z.int().optional(),
   maxResults: z.int().optional(),
   maxTotalResults: z.int().optional(),
   parameters: WebSearchConfig$outboundSchema.optional(),
   searchContextSize: SearchQualityLevel$outboundSchema.optional(),
+  searchType: WebSearchSearchType$outboundSchema.optional(),
   type: ChatWebSearchShorthandType$outboundSchema,
   userLocation: WebSearchUserLocationServerTool$outboundSchema.optional(),
 }).transform((v) => {
   return remap$(v, {
     allowedDomains: "allowed_domains",
     excludedDomains: "excluded_domains",
+    maxAgeHours: "max_age_hours",
     maxResults: "max_results",
     maxTotalResults: "max_total_results",
     searchContextSize: "search_context_size",
+    searchType: "search_type",
     userLocation: "user_location",
   });
 });
