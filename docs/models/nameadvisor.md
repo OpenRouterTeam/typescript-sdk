@@ -1,0 +1,15 @@
+# NameAdvisor
+
+## Example Usage
+
+```typescript
+import { NameAdvisor } from "@openrouter/sdk/models";
+
+let value: NameAdvisor = "advisor";
+```
+
+## Values
+
+```typescript
+"advisor"
+```
