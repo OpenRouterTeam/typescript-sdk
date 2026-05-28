@@ -9735,6 +9735,7 @@ components:
           enum:
             - user
             - assistant
+            - system
           type: string
           x-speakeasy-unknown-values: allow
       required:
