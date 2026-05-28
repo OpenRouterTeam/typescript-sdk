@@ -39,6 +39,7 @@ export type ProviderOptions = {
   crofai?: { [k: string]: any | null } | undefined;
   crucible?: { [k: string]: any | null } | undefined;
   crusoe?: { [k: string]: any | null } | undefined;
+  darkbloom?: { [k: string]: any | null } | undefined;
   deepinfra?: { [k: string]: any | null } | undefined;
   deepseek?: { [k: string]: any | null } | undefined;
   dekallm?: { [k: string]: any | null } | undefined;
@@ -155,6 +156,7 @@ export type ProviderOptions$Outbound = {
   crofai?: { [k: string]: any | null } | undefined;
   crucible?: { [k: string]: any | null } | undefined;
   crusoe?: { [k: string]: any | null } | undefined;
+  darkbloom?: { [k: string]: any | null } | undefined;
   deepinfra?: { [k: string]: any | null } | undefined;
   deepseek?: { [k: string]: any | null } | undefined;
   dekallm?: { [k: string]: any | null } | undefined;
@@ -274,6 +276,7 @@ export const ProviderOptions$outboundSchema: z.ZodType<
   crofai: z.record(z.string(), z.nullable(z.any())).optional(),
   crucible: z.record(z.string(), z.nullable(z.any())).optional(),
   crusoe: z.record(z.string(), z.nullable(z.any())).optional(),
+  darkbloom: z.record(z.string(), z.nullable(z.any())).optional(),
   deepinfra: z.record(z.string(), z.nullable(z.any())).optional(),
   deepseek: z.record(z.string(), z.nullable(z.any())).optional(),
   dekallm: z.record(z.string(), z.nullable(z.any())).optional(),
