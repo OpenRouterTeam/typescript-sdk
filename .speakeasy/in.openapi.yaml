@@ -1079,6 +1079,16 @@ components:
         input_tokens: 100
         output_tokens: 50
         type: message
+    AnthropicOutputTokensDetails:
+      example:
+        thinking_tokens: 0
+      nullable: true
+      properties:
+        thinking_tokens:
+          type: integer
+      required:
+        - thinking_tokens
+      type: object
     AnthropicPlainTextSource:
       example:
         data: Hello, world!
@@ -1702,6 +1712,7 @@ components:
         inference_geo: null
         input_tokens: 100
         output_tokens: 50
+        output_tokens_details: null
         server_tool_use: null
         service_tier: standard
       properties:
@@ -1720,6 +1731,8 @@ components:
           type: integer
         output_tokens:
           type: integer
+        output_tokens_details:
+          $ref: '#/components/schemas/AnthropicOutputTokensDetails'
         server_tool_use:
           $ref: '#/components/schemas/AnthropicServerToolUsage'
         service_tier:
@@ -1727,6 +1740,7 @@ components:
       required:
         - input_tokens
         - output_tokens
+        - output_tokens_details
         - cache_creation_input_tokens
         - cache_read_input_tokens
         - cache_creation
@@ -2778,6 +2792,7 @@ components:
             inference_geo: null
             input_tokens: 100
             output_tokens: 50
+            output_tokens_details: null
             server_tool_use: null
             service_tier: standard
       required:
@@ -9479,6 +9494,8 @@ components:
               type: array
             output_tokens:
               type: integer
+            output_tokens_details:
+              $ref: '#/components/schemas/AnthropicOutputTokensDetails'
             server_tool_use:
               nullable: true
               properties:
@@ -9493,6 +9510,7 @@ components:
           required:
             - input_tokens
             - output_tokens
+            - output_tokens_details
             - cache_creation_input_tokens
             - cache_read_input_tokens
             - server_tool_use
