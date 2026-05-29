@@ -203,6 +203,7 @@ export * from "./inputvideo.js";
 export * from "./instructtype.js";
 export * from "./internalserverresponseerrordata.js";
 export * from "./itemreferenceitem.js";
+export * from "./keepaliveevent.js";
 export * from "./keyassignment.js";
 export * from "./legacychatcontentvideo.js";
 export * from "./legacywebsearchservertool.js";
