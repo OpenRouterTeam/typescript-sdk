@@ -15,7 +15,7 @@ import {
  */
 export type WebSearchServerToolOpenRouter = {
   /**
-   * Configuration for the openrouter:web_search server tool
+   * Configuration for the openrouter:web_search server tool. Available parameters depend on the selected engine.
    */
   parameters?: WebSearchServerToolConfig | undefined;
   type: "openrouter:web_search";
