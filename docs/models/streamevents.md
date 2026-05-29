@@ -313,6 +313,14 @@ const value: models.StreamEventsResponseIncomplete = {
 };
 ```
 
+### `models.KeepAliveEvent`
+
+```typescript
+const value: models.KeepAliveEvent = {
+  type: "response.keep_alive",
+};
+```
+
 ### `models.StreamEventsResponseOutputItemAdded`
 
 ```typescript
