@@ -5,7 +5,7 @@
 ```typescript
 import { MessagesMessageParamRole } from "@openrouter/sdk/models";
 
-let value: MessagesMessageParamRole = "assistant";
+let value: MessagesMessageParamRole = "user";
 
 // Open enum: unrecognized values are captured as Unrecognized<string>
 ```
@@ -13,5 +13,5 @@ let value: MessagesMessageParamRole = "assistant";
 ## Values
 
 ```typescript
-"user" | "assistant" | "system" | Unrecognized<string>
+"user" | "assistant" | Unrecognized<string>
 ```
