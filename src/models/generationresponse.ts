@@ -140,6 +140,10 @@ export type GenerationResponseData = {
    */
   origin: string;
   /**
+   * ID of the preset used for this generation, null if no preset was used
+   */
+  presetId: string | null;
+  /**
    * Name of the provider that served the request
    */
   providerName: string | null;
@@ -250,6 +254,7 @@ export const GenerationResponseData$inboundSchema: z.ZodType<
   num_media_prompt: z.nullable(z.int()),
   num_search_results: z.nullable(z.int()),
   origin: z.string(),
+  preset_id: z.nullable(z.string()),
   provider_name: z.nullable(z.string()),
   provider_responses: z.nullable(z.array(ProviderResponse$inboundSchema)),
   request_id: z.nullable(z.string()).optional(),
@@ -289,6 +294,7 @@ export const GenerationResponseData$inboundSchema: z.ZodType<
     "num_media_completion": "numMediaCompletion",
     "num_media_prompt": "numMediaPrompt",
     "num_search_results": "numSearchResults",
+    "preset_id": "presetId",
     "provider_name": "providerName",
     "provider_responses": "providerResponses",
     "request_id": "requestId",
