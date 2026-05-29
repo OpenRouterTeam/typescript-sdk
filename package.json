@@ -20,6 +20,10 @@
   ],
   "license": "Apache-2.0",
   "packageManager": "pnpm@10.22.0",
+  "publishConfig": {
+    "access": "public",
+    "provenance": true
+  },
   "type": "module",
   "main": "./esm/index.js",
   "exports": {
