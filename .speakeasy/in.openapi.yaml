@@ -6046,7 +6046,7 @@ components:
           example: false
           type: boolean
         sampling_rate:
-          description: Sampling rate between 0 and 1 (1 = 100%).
+          description: Sampling rate between 0.0001 and 1 (1 = 100%).
           example: 1
           format: double
           type: number
@@ -7451,6 +7451,11 @@ components:
               description: Origin URL of the request
               example: https://openrouter.ai/
               type: string
+            preset_id:
+              description: ID of the preset used for this generation, null if no preset was used
+              example: a9e8d400-592a-494f-908c-375efa66cafd
+              nullable: true
+              type: string
             provider_name:
               description: Name of the provider that served the request
               example: Infermatic
@@ -7566,6 +7571,7 @@ components:
             - native_finish_reason
             - external_user
             - api_type
+            - preset_id
             - router
             - provider_responses
             - user_agent
@@ -11079,7 +11085,7 @@ components:
           example: false
           type: boolean
         sampling_rate:
-          description: Sampling rate for events sent to this destination, between 0 and 1 (1 = 100%).
+          description: Sampling rate for events sent to this destination, between 0.0001 and 1 (1 = 100%).
           example: 1
           format: double
           type: number
@@ -11182,7 +11188,7 @@ components:
           example: false
           type: boolean
         sampling_rate:
-          description: Sampling rate for events sent to this destination, between 0 and 1 (1 = 100%).
+          description: Sampling rate for events sent to this destination, between 0.0001 and 1 (1 = 100%).
           example: 1
           format: double
           type: number
@@ -11296,7 +11302,7 @@ components:
           example: false
           type: boolean
         sampling_rate:
-          description: Sampling rate for events sent to this destination, between 0 and 1 (1 = 100%).
+          description: Sampling rate for events sent to this destination, between 0.0001 and 1 (1 = 100%).
           example: 1
           format: double
           type: number
@@ -11404,7 +11410,7 @@ components:
           example: false
           type: boolean
         sampling_rate:
-          description: Sampling rate for events sent to this destination, between 0 and 1 (1 = 100%).
+          description: Sampling rate for events sent to this destination, between 0.0001 and 1 (1 = 100%).
           example: 1
           format: double
           type: number
@@ -11629,7 +11635,7 @@ components:
           example: false
           type: boolean
         sampling_rate:
-          description: Sampling rate for events sent to this destination, between 0 and 1 (1 = 100%).
+          description: Sampling rate for events sent to this destination, between 0.0001 and 1 (1 = 100%).
           example: 1
           format: double
           type: number
@@ -11732,7 +11738,7 @@ components:
           example: false
           type: boolean
         sampling_rate:
-          description: Sampling rate for events sent to this destination, between 0 and 1 (1 = 100%).
+          description: Sampling rate for events sent to this destination, between 0.0001 and 1 (1 = 100%).
           example: 1
           format: double
           type: number
@@ -11839,7 +11845,7 @@ components:
           example: false
           type: boolean
         sampling_rate:
-          description: Sampling rate for events sent to this destination, between 0 and 1 (1 = 100%).
+          description: Sampling rate for events sent to this destination, between 0.0001 and 1 (1 = 100%).
           example: 1
           format: double
           type: number
@@ -11940,7 +11946,7 @@ components:
           example: false
           type: boolean
         sampling_rate:
-          description: Sampling rate for events sent to this destination, between 0 and 1 (1 = 100%).
+          description: Sampling rate for events sent to this destination, between 0.0001 and 1 (1 = 100%).
           example: 1
           format: double
           type: number
@@ -12044,7 +12050,7 @@ components:
           example: false
           type: boolean
         sampling_rate:
-          description: Sampling rate for events sent to this destination, between 0 and 1 (1 = 100%).
+          description: Sampling rate for events sent to this destination, between 0.0001 and 1 (1 = 100%).
           example: 1
           format: double
           type: number
@@ -12139,7 +12145,7 @@ components:
           example: false
           type: boolean
         sampling_rate:
-          description: Sampling rate for events sent to this destination, between 0 and 1 (1 = 100%).
+          description: Sampling rate for events sent to this destination, between 0.0001 and 1 (1 = 100%).
           example: 1
           format: double
           type: number
@@ -12237,7 +12243,7 @@ components:
           example: false
           type: boolean
         sampling_rate:
-          description: Sampling rate for events sent to this destination, between 0 and 1 (1 = 100%).
+          description: Sampling rate for events sent to this destination, between 0.0001 and 1 (1 = 100%).
           example: 1
           format: double
           type: number
@@ -12336,7 +12342,7 @@ components:
           example: false
           type: boolean
         sampling_rate:
-          description: Sampling rate for events sent to this destination, between 0 and 1 (1 = 100%).
+          description: Sampling rate for events sent to this destination, between 0.0001 and 1 (1 = 100%).
           example: 1
           format: double
           type: number
@@ -12459,7 +12465,7 @@ components:
           example: false
           type: boolean
         sampling_rate:
-          description: Sampling rate for events sent to this destination, between 0 and 1 (1 = 100%).
+          description: Sampling rate for events sent to this destination, between 0.0001 and 1 (1 = 100%).
           example: 1
           format: double
           type: number
@@ -12557,7 +12563,7 @@ components:
           example: false
           type: boolean
         sampling_rate:
-          description: Sampling rate for events sent to this destination, between 0 and 1 (1 = 100%).
+          description: Sampling rate for events sent to this destination, between 0.0001 and 1 (1 = 100%).
           example: 1
           format: double
           type: number
@@ -12668,7 +12674,7 @@ components:
           example: false
           type: boolean
         sampling_rate:
-          description: Sampling rate for events sent to this destination, between 0 and 1 (1 = 100%).
+          description: Sampling rate for events sent to this destination, between 0.0001 and 1 (1 = 100%).
           example: 1
           format: double
           type: number
@@ -12776,7 +12782,7 @@ components:
           example: false
           type: boolean
         sampling_rate:
-          description: Sampling rate for events sent to this destination, between 0 and 1 (1 = 100%).
+          description: Sampling rate for events sent to this destination, between 0.0001 and 1 (1 = 100%).
           example: 1
           format: double
           type: number
@@ -12874,7 +12880,7 @@ components:
           example: false
           type: boolean
         sampling_rate:
-          description: Sampling rate for events sent to this destination, between 0 and 1 (1 = 100%).
+          description: Sampling rate for events sent to this destination, between 0.0001 and 1 (1 = 100%).
           example: 1
           format: double
           type: number
@@ -18791,7 +18797,7 @@ components:
           example: false
           type: boolean
         sampling_rate:
-          description: Sampling rate between 0 and 1 (1 = 100%).
+          description: Sampling rate between 0.0001 and 1 (1 = 100%).
           example: 1
           format: double
           type: number
