@@ -63,6 +63,10 @@ import {
   ImageGenCallPartialImageEvent$inboundSchema,
 } from "./imagegencallpartialimageevent.js";
 import {
+  KeepAliveEvent,
+  KeepAliveEvent$inboundSchema,
+} from "./keepaliveevent.js";
+import {
   OpenResponsesCreatedEvent,
   OpenResponsesCreatedEvent$inboundSchema,
 } from "./openresponsescreatedevent.js";
@@ -162,6 +166,7 @@ export type StreamEvents =
   | ImageGenCallPartialImageEvent
   | OpenResponsesInProgressEvent
   | StreamEventsResponseIncomplete
+  | KeepAliveEvent
   | StreamEventsResponseOutputItemAdded
   | StreamEventsResponseOutputItemDone
   | AnnotationAddedEvent
@@ -211,6 +216,7 @@ export const StreamEvents$inboundSchema: z.ZodType<StreamEvents, unknown> =
       ImageGenCallPartialImageEvent$inboundSchema,
     ["response.in_progress"]: OpenResponsesInProgressEvent$inboundSchema,
     ["response.incomplete"]: StreamEventsResponseIncomplete$inboundSchema,
+    ["response.keep_alive"]: KeepAliveEvent$inboundSchema,
     ["response.output_item.added"]:
       StreamEventsResponseOutputItemAdded$inboundSchema,
     ["response.output_item.done"]:
