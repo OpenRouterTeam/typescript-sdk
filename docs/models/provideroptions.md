@@ -43,7 +43,6 @@ let value: ProviderOptions = {};
 | `crofai`              | Record<string, *any*> | :heavy_minus_sign:    | N/A                   |
 | `crucible`            | Record<string, *any*> | :heavy_minus_sign:    | N/A                   |
 | `crusoe`              | Record<string, *any*> | :heavy_minus_sign:    | N/A                   |
-| `darkbloom`           | Record<string, *any*> | :heavy_minus_sign:    | N/A                   |
 | `deepinfra`           | Record<string, *any*> | :heavy_minus_sign:    | N/A                   |
 | `deepseek`            | Record<string, *any*> | :heavy_minus_sign:    | N/A                   |
 | `dekallm`             | Record<string, *any*> | :heavy_minus_sign:    | N/A                   |
