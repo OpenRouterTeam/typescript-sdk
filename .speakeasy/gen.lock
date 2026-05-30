@@ -1,19 +1,19 @@
 lockVersion: ""
 id: ""
 management:
-  docChecksum: ab0fb7ca7f69e2c2b9dfbfec6ca64a2b
+  docChecksum: 4415f74f35881374045778f2221c764a
   docVersion: 1.0.0
   speakeasyVersion: 1.763.2
   generationVersion: 2.884.4
-  releaseVersion: 0.12.80
-  configChecksum: 96b621d986397228b8d53c4621e54185
+  releaseVersion: 0.12.81
+  configChecksum: b075fd57ce0064c8a79c34abc52a732d
   repoURL: https://github.com/OpenRouterTeam/typescript-sdk.git
   installationURL: https://github.com/OpenRouterTeam/typescript-sdk
   published: true
 persistentEdits:
-  generation_id: b7044489-d497-4cf2-a474-d5f38569f498
-  pristine_commit_hash: 3b5fe518c202e52cf0020b498d7755ecd7819293
-  pristine_tree_hash: d1e20b957b83a1ca916135993329f77fdeae1f19
+  generation_id: 110e35b4-d9a1-4182-8301-9e193ce48466
+  pristine_commit_hash: d79c82dc5e3c3a85db336754f76f0fa069e01747
+  pristine_tree_hash: 0848ff402cab7ae39ed189694879cb8c0cb7fd71
 features:
   typescript:
     acceptHeaders: 2.81.2
@@ -342,8 +342,8 @@ trackedFiles:
     deleted: true
   docs/models/apitype.md:
     id: 787314acdd20
-    last_write_checksum: sha1:428f61ef258fe12aa797a973f65252f7a0fb3bbd
-    pristine_git_object: 4d5d44080f313fd72b3a18c7ed331bd0e06648be
+    last_write_checksum: sha1:b258d563307f75fb2ba3c99b8e314b0ccdd5d753
+    pristine_git_object: 745ec8330c68e90a20adc5daa8093fd5024fa2e3
     deleted: true
   docs/models/applypatchcallitem.md:
     id: 2a6981624708
@@ -2162,8 +2162,8 @@ trackedFiles:
     deleted: true
   docs/models/generationresponsedata.md:
     id: 6aa3e407630d
-    last_write_checksum: sha1:816fac16ac7ed700f2e8d6f3e0516a1b6e5a5fb9
-    pristine_git_object: 4ba28d00e646634131c0b99405485bcabe9351a8
+    last_write_checksum: sha1:4b1f20783ace7ff6b67f9d1f3372bd1795c0a21c
+    pristine_git_object: 826b5954a1273bc057991b662df704ee686d2988
     deleted: true
   docs/models/getbyokkeyresponse.md:
     id: 84d627a7ab6a
@@ -6220,12 +6220,12 @@ trackedFiles:
     pristine_git_object: 410efafd6a7f50d91ccb87131fedbe0c3d47e15a
   jsr.json:
     id: 7f6ab7767282
-    last_write_checksum: sha1:f410fa1881a263bbc1c49bf5f9f6f95ea7c24087
-    pristine_git_object: c3e4016587ce00202c47c9f9d214e58b662e0e7f
+    last_write_checksum: sha1:8962f927a84f5b4d52f13c483a699cd6019df947
+    pristine_git_object: da2c7cd49a2324b882988526ba4aa17c80cb3a8e
   package.json:
     id: 7030d0b2f71b
-    last_write_checksum: sha1:c9a5713b5954f7a66eacbacb610dcbfe320bc101
-    pristine_git_object: da6b38d24050fb874b0a803520fae09e857a636b
+    last_write_checksum: sha1:52a803e83de1da32d7777ead839c46a90a3f1995
+    pristine_git_object: 11161146370d86e5e0b6a96e69c2902757fb853f
   src/core.ts:
     id: f431fdbcd144
     last_write_checksum: sha1:5aa66b0b6a5964f3eea7f3098c2eb3c0ee9c0131
@@ -6508,8 +6508,8 @@ trackedFiles:
     pristine_git_object: a187e58707bdb726ca2aff74941efe7493422d4e
   src/lib/config.ts:
     id: 320761608fb3
-    last_write_checksum: sha1:f558f3371b635d7e34a8f6730908972ab62bb50c
-    pristine_git_object: f8356ff5d1c2cb941618266a890b9b5714545aa4
+    last_write_checksum: sha1:6df9664b455615d2ee41ff669f23fc099e69cc86
+    pristine_git_object: c1455c67803f84d7e4f6a3ddf0bcc53cab635c93
   src/lib/dlv.ts:
     id: b1988214835a
     last_write_checksum: sha1:eaac763b22717206a6199104e0403ed17a4e2711
@@ -7340,8 +7340,8 @@ trackedFiles:
     pristine_git_object: fb1950525224243627836ce1a03eae69c4503027
   src/models/generationresponse.ts:
     id: f9109ae06502
-    last_write_checksum: sha1:fde36c984754a265cbeae3f458232d6c1b6af022
-    pristine_git_object: 93e96f55b881d56950953efd93b452f741ee8524
+    last_write_checksum: sha1:d2ac32014f933547744f3b07eb0428661f2b14db
+    pristine_git_object: 96af16cbd727698246f69365cddab8753ccc46d4
   src/models/getbyokkeyresponse.ts:
     id: c83ed9fbd575
     last_write_checksum: sha1:8c270135769e92feab86d649563a5c6f63bdad7b
@@ -9900,4 +9900,4 @@ examples:
 examplesVersion: 1.0.2
 releaseNotes: |
   ## Typescript SDK Changes:
-  * `openrouter.generations.getGeneration()`:  `response.data.presetId` **Added**
+  * `openrouter.generations.getGeneration()`:  `response.data.apiType.enum(image)` **Added**

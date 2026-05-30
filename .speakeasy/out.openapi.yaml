@@ -7327,6 +7327,7 @@ components:
                 - tts
                 - stt
                 - video
+                - image
                 - null
               nullable: true
               type: string
