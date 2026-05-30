@@ -8,7 +8,7 @@ Generation data
 import { GenerationResponseData } from "@openrouter/sdk/models";
 
 let value: GenerationResponseData = {
-  apiType: "rerank",
+  apiType: "tts",
   appId: 12345,
   cacheDiscount: 0.0002,
   cancelled: false,
