@@ -50,6 +50,7 @@ export const Provider = {
   AtlasCloud: "atlas-cloud",
   Avian: "avian",
   Azure: "azure",
+  AzureMaiImage: "azure-mai-image",
   Baidu: "baidu",
   Baseten: "baseten",
   BlackForestLabs: "black-forest-labs",
