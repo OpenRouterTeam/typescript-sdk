@@ -7,10 +7,11 @@ Speech-to-text endpoints
 ### Available Operations
 
 * [createTranscription](#createtranscription) - Create transcription
+* [createTranscriptionMultipart](#createtranscriptionmultipart) - Create transcription
 
 ## createTranscription
 
-Transcribes audio into text. Accepts base64-encoded audio input and returns the transcribed text.
+Transcribes audio into text. Accepts either a JSON body with base64-encoded audio or a multipart/form-data upload with a raw audio file.
 
 ### Example Usage
 
@@ -87,6 +88,105 @@ run();
 | Parameter                                                                                                                                                                      | Type                                                                                                                                                                           | Required                                                                                                                                                                       | Description                                                                                                                                                                    |
 | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
 | `request`                                                                                                                                                                      | [operations.CreateAudioTranscriptionsRequest](../../models/operations/createaudiotranscriptionsrequest.md)                                                                     | :heavy_check_mark:                                                                                                                                                             | The request object to use for the request.                                                                                                                                     |
+| `options`                                                                                                                                                                      | RequestOptions                                                                                                                                                                 | :heavy_minus_sign:                                                                                                                                                             | Used to set various options for making HTTP requests.                                                                                                                          |
+| `options.fetchOptions`                                                                                                                                                         | [RequestInit](https://developer.mozilla.org/en-US/docs/Web/API/Request/Request#options)                                                                                        | :heavy_minus_sign:                                                                                                                                                             | Options that are passed to the underlying HTTP request. This can be used to inject extra headers for examples. All `Request` options, except `method` and `body`, are allowed. |
+| `options.retries`                                                                                                                                                              | [RetryConfig](../../lib/utils/retryconfig.md)                                                                                                                                  | :heavy_minus_sign:                                                                                                                                                             | Enables retrying HTTP requests under certain failure conditions.                                                                                                               |
+
+### Response
+
+**Promise\<[models.STTResponse](../../models/sttresponse.md)\>**
+
+### Errors
+
+| Error Type                             | Status Code                            | Content Type                           |
+| -------------------------------------- | -------------------------------------- | -------------------------------------- |
+| errors.BadRequestResponseError         | 400                                    | application/json                       |
+| errors.UnauthorizedResponseError       | 401                                    | application/json                       |
+| errors.PaymentRequiredResponseError    | 402                                    | application/json                       |
+| errors.NotFoundResponseError           | 404                                    | application/json                       |
+| errors.TooManyRequestsResponseError    | 429                                    | application/json                       |
+| errors.InternalServerResponseError     | 500                                    | application/json                       |
+| errors.BadGatewayResponseError         | 502                                    | application/json                       |
+| errors.ServiceUnavailableResponseError | 503                                    | application/json                       |
+| errors.EdgeNetworkTimeoutResponseError | 524                                    | application/json                       |
+| errors.ProviderOverloadedResponseError | 529                                    | application/json                       |
+| errors.OpenRouterDefaultError          | 4XX, 5XX                               | \*/\*                                  |
+
+## createTranscriptionMultipart
+
+Transcribes audio into text. Accepts either a JSON body with base64-encoded audio or a multipart/form-data upload with a raw audio file.
+
+### Example Usage
+
+<!-- UsageSnippet language="typescript" operationID="createAudioTranscriptions_multipart" method="post" path="/audio/transcriptions" -->
+```typescript
+import { OpenRouter } from "@openrouter/sdk";
+import { openAsBlob } from "node:fs";
+
+const openRouter = new OpenRouter({
+  httpReferer: "<value>",
+  appTitle: "<value>",
+  appCategories: "<value>",
+  apiKey: process.env["OPENROUTER_API_KEY"] ?? "",
+});
+
+async function run() {
+  const result = await openRouter.stt.createTranscriptionMultipart({
+    sttMultipartRequest: {
+      file: await openAsBlob("example.file"),
+      language: "en",
+      model: "openai/whisper-large-v3",
+    },
+  });
+
+  console.log(result);
+}
+
+run();
+```
+
+### Standalone function
+
+The standalone function version of this method:
+
+```typescript
+import { OpenRouterCore } from "@openrouter/sdk/core.js";
+import { sttCreateTranscriptionMultipart } from "@openrouter/sdk/funcs/sttCreateTranscriptionMultipart.js";
+import { openAsBlob } from "node:fs";
+
+// Use `OpenRouterCore` for best tree-shaking performance.
+// You can create one instance of it to use across an application.
+const openRouter = new OpenRouterCore({
+  httpReferer: "<value>",
+  appTitle: "<value>",
+  appCategories: "<value>",
+  apiKey: process.env["OPENROUTER_API_KEY"] ?? "",
+});
+
+async function run() {
+  const res = await sttCreateTranscriptionMultipart(openRouter, {
+    sttMultipartRequest: {
+      file: await openAsBlob("example.file"),
+      language: "en",
+      model: "openai/whisper-large-v3",
+    },
+  });
+  if (res.ok) {
+    const { value: result } = res;
+    console.log(result);
+  } else {
+    console.log("sttCreateTranscriptionMultipart failed:", res.error);
+  }
+}
+
+run();
+```
+
+### Parameters
+
+| Parameter                                                                                                                                                                      | Type                                                                                                                                                                           | Required                                                                                                                                                                       | Description                                                                                                                                                                    |
+| ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `request`                                                                                                                                                                      | [operations.CreateAudioTranscriptionsMultipartRequest](../../models/operations/createaudiotranscriptionsmultipartrequest.md)                                                   | :heavy_check_mark:                                                                                                                                                             | The request object to use for the request.                                                                                                                                     |
 | `options`                                                                                                                                                                      | RequestOptions                                                                                                                                                                 | :heavy_minus_sign:                                                                                                                                                             | Used to set various options for making HTTP requests.                                                                                                                          |
 | `options.fetchOptions`                                                                                                                                                         | [RequestInit](https://developer.mozilla.org/en-US/docs/Web/API/Request/Request#options)                                                                                        | :heavy_minus_sign:                                                                                                                                                             | Options that are passed to the underlying HTTP request. This can be used to inject extra headers for examples. All `Request` options, except `method` and `body`, are allowed. |
 | `options.retries`                                                                                                                                                              | [RetryConfig](../../lib/utils/retryconfig.md)                                                                                                                                  | :heavy_minus_sign:                                                                                                                                                             | Enables retrying HTTP requests under certain failure conditions.                                                                                                               |
