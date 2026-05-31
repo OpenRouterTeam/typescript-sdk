@@ -56,6 +56,7 @@ export const ProviderResponseProviderName = {
   AtlasCloud: "AtlasCloud",
   Avian: "Avian",
   Azure: "Azure",
+  AzureMAIImage: "AzureMAIImage",
   BaseTen: "BaseTen",
   BytePlus: "BytePlus",
   BlackForestLabs: "Black Forest Labs",
