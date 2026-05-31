@@ -385,6 +385,7 @@ export * from "./streameventsresponseoutputitemdone.js";
 export * from "./streamlogprob.js";
 export * from "./streamlogprobtoplogprob.js";
 export * from "./sttinputaudio.js";
+export * from "./sttmultipartrequest.js";
 export * from "./sttrequest.js";
 export * from "./sttresponse.js";
 export * from "./sttusage.js";

@@ -9,7 +9,7 @@ import { safeParse } from "../lib/schemas.js";
 import { Result as SafeParseResult } from "../types/fp.js";
 import { SDKValidationError } from "./errors/sdkvalidationerror.js";
 
-export type FileT = {
+export type ChatContentFileFile = {
   /**
    * File content as base64 data URL or URL
    */
@@ -28,12 +28,15 @@ export type FileT = {
  * File content part for document processing
  */
 export type ChatContentFile = {
-  file: FileT;
+  file: ChatContentFileFile;
   type: "file";
 };
 
 /** @internal */
-export const FileT$inboundSchema: z.ZodType<FileT, unknown> = z.object({
+export const ChatContentFileFile$inboundSchema: z.ZodType<
+  ChatContentFileFile,
+  unknown
+> = z.object({
   file_data: z.string().optional(),
   file_id: z.string().optional(),
   filename: z.string().optional(),
@@ -44,14 +47,17 @@ export const FileT$inboundSchema: z.ZodType<FileT, unknown> = z.object({
   });
 });
 /** @internal */
-export type FileT$Outbound = {
+export type ChatContentFileFile$Outbound = {
   file_data?: string | undefined;
   file_id?: string | undefined;
   filename?: string | undefined;
 };
 
 /** @internal */
-export const FileT$outboundSchema: z.ZodType<FileT$Outbound, FileT> = z.object({
+export const ChatContentFileFile$outboundSchema: z.ZodType<
+  ChatContentFileFile$Outbound,
+  ChatContentFileFile
+> = z.object({
   fileData: z.string().optional(),
   fileId: z.string().optional(),
   filename: z.string().optional(),
@@ -62,16 +68,20 @@ export const FileT$outboundSchema: z.ZodType<FileT$Outbound, FileT> = z.object({
   });
 });
 
-export function fileToJSON(fileT: FileT): string {
-  return JSON.stringify(FileT$outboundSchema.parse(fileT));
+export function chatContentFileFileToJSON(
+  chatContentFileFile: ChatContentFileFile,
+): string {
+  return JSON.stringify(
+    ChatContentFileFile$outboundSchema.parse(chatContentFileFile),
+  );
 }
-export function fileFromJSON(
+export function chatContentFileFileFromJSON(
   jsonString: string,
-): SafeParseResult<FileT, SDKValidationError> {
+): SafeParseResult<ChatContentFileFile, SDKValidationError> {
   return safeParse(
     jsonString,
-    (x) => FileT$inboundSchema.parse(JSON.parse(x)),
-    `Failed to parse 'FileT' from JSON`,
+    (x) => ChatContentFileFile$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'ChatContentFileFile' from JSON`,
   );
 }
 
@@ -80,12 +90,12 @@ export const ChatContentFile$inboundSchema: z.ZodType<
   ChatContentFile,
   unknown
 > = z.object({
-  file: z.lazy(() => FileT$inboundSchema),
+  file: z.lazy(() => ChatContentFileFile$inboundSchema),
   type: z.literal("file"),
 });
 /** @internal */
 export type ChatContentFile$Outbound = {
-  file: FileT$Outbound;
+  file: ChatContentFileFile$Outbound;
   type: "file";
 };
 
@@ -94,7 +104,7 @@ export const ChatContentFile$outboundSchema: z.ZodType<
   ChatContentFile$Outbound,
   ChatContentFile
 > = z.object({
-  file: z.lazy(() => FileT$outboundSchema),
+  file: z.lazy(() => ChatContentFileFile$outboundSchema),
   type: z.literal("file"),
 });
 
