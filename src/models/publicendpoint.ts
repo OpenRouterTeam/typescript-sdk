@@ -71,6 +71,10 @@ export type PublicEndpoint = {
   modelName: string;
   name: string;
   pricing: Pricing;
+  /**
+   * Pricing SKUs with provider prefix stripped, values as decimal strings in USD. For text models this contains token-based SKUs; for video/image models it contains per-unit SKUs (e.g. per second, per image).
+   */
+  pricingSkus?: { [k: string]: string } | null | undefined;
   providerName: ProviderName;
   quantization: PublicEndpointQuantization | null;
   status?: EndpointStatus | undefined;
@@ -145,6 +149,7 @@ export const PublicEndpoint$inboundSchema: z.ZodType<PublicEndpoint, unknown> =
     model_name: z.string(),
     name: z.string(),
     pricing: z.lazy(() => Pricing$inboundSchema),
+    pricing_skus: z.nullable(z.record(z.string(), z.string())).optional(),
     provider_name: ProviderName$inboundSchema,
     quantization: z.nullable(PublicEndpointQuantization$inboundSchema),
     status: EndpointStatus$inboundSchema.optional(),
@@ -163,6 +168,7 @@ export const PublicEndpoint$inboundSchema: z.ZodType<PublicEndpoint, unknown> =
       "max_prompt_tokens": "maxPromptTokens",
       "model_id": "modelId",
       "model_name": "modelName",
+      "pricing_skus": "pricingSkus",
       "provider_name": "providerName",
       "supported_parameters": "supportedParameters",
       "supports_implicit_caching": "supportsImplicitCaching",
