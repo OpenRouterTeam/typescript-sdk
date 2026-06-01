@@ -28,6 +28,11 @@ import {
   AutoRouterPlugin$outboundSchema,
 } from "./autorouterplugin.js";
 import {
+  BashServerTool,
+  BashServerTool$Outbound,
+  BashServerTool$outboundSchema,
+} from "./bashservertool.js";
+import {
   ChatSearchModelsServerTool,
   ChatSearchModelsServerTool$Outbound,
   ChatSearchModelsServerTool$outboundSchema,
@@ -273,7 +278,8 @@ export type ResponsesRequestToolUnion =
   })
   | (WebFetchServerTool & { type: "openrouter:web_fetch" })
   | WebSearchServerToolOpenRouter
-  | ApplyPatchServerToolOpenRouter;
+  | ApplyPatchServerToolOpenRouter
+  | (BashServerTool & { type: "openrouter:bash" });
 
 /**
  * Request schema for Responses endpoint
@@ -381,6 +387,7 @@ export type ResponsesRequest = {
       | (WebFetchServerTool & { type: "openrouter:web_fetch" })
       | WebSearchServerToolOpenRouter
       | ApplyPatchServerToolOpenRouter
+      | (BashServerTool & { type: "openrouter:bash" })
     >
     | undefined;
   topK?: number | undefined;
@@ -496,7 +503,8 @@ export type ResponsesRequestToolUnion$Outbound =
   })
   | (WebFetchServerTool$Outbound & { type: "openrouter:web_fetch" })
   | WebSearchServerToolOpenRouter$Outbound
-  | ApplyPatchServerToolOpenRouter$Outbound;
+  | ApplyPatchServerToolOpenRouter$Outbound
+  | (BashServerTool$Outbound & { type: "openrouter:bash" });
 
 /** @internal */
 export const ResponsesRequestToolUnion$outboundSchema: z.ZodType<
@@ -532,6 +540,9 @@ export const ResponsesRequestToolUnion$outboundSchema: z.ZodType<
   ),
   WebSearchServerToolOpenRouter$outboundSchema,
   ApplyPatchServerToolOpenRouter$outboundSchema,
+  BashServerTool$outboundSchema.and(
+    z.object({ type: z.literal("openrouter:bash") }),
+  ),
 ]);
 
 export function responsesRequestToolUnionToJSON(
@@ -615,6 +626,7 @@ export type ResponsesRequest$Outbound = {
       | (WebFetchServerTool$Outbound & { type: "openrouter:web_fetch" })
       | WebSearchServerToolOpenRouter$Outbound
       | ApplyPatchServerToolOpenRouter$Outbound
+      | (BashServerTool$Outbound & { type: "openrouter:bash" })
     >
     | undefined;
   top_k?: number | undefined;
@@ -706,6 +718,9 @@ export const ResponsesRequest$outboundSchema: z.ZodType<
       ),
       WebSearchServerToolOpenRouter$outboundSchema,
       ApplyPatchServerToolOpenRouter$outboundSchema,
+      BashServerTool$outboundSchema.and(
+        z.object({ type: z.literal("openrouter:bash") }),
+      ),
     ]),
   ).optional(),
   topK: z.int().optional(),
