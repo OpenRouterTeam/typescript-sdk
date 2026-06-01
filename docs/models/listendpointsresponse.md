@@ -25,6 +25,22 @@ let value: ListEndpointsResponse = {
   endpoints: [
     {
       contextLength: 8192,
+      displayPricing: [
+        {
+          displayMultiplier: 1000000,
+          kind: "token",
+          price: "0.00003",
+          skuLabel: "Input Price",
+          unitLabel: "/M tokens",
+        },
+        {
+          displayMultiplier: 1000000,
+          kind: "token",
+          price: "0.00006",
+          skuLabel: "Output Price",
+          unitLabel: "/M tokens",
+        },
+      ],
       latencyLast30m: {
         p50: 0.25,
         p75: 0.35,

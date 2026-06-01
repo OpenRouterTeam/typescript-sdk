@@ -149,6 +149,8 @@ export * from "./deletebyokkeyresponse.js";
 export * from "./deleteguardrailresponse.js";
 export * from "./deleteobservabilitydestinationresponse.js";
 export * from "./deleteworkspaceresponse.js";
+export * from "./displaypricingitem.js";
+export * from "./displaypricingtier.js";
 export * from "./easyinputmessage.js";
 export * from "./edgenetworktimeoutresponseerrordata.js";
 export * from "./endpointinfo.js";

@@ -10,6 +10,10 @@ import * as openEnums from "../types/enums.js";
 import { OpenEnum } from "../types/enums.js";
 import { Result as SafeParseResult } from "../types/fp.js";
 import {
+  DisplayPricingItem,
+  DisplayPricingItem$inboundSchema,
+} from "./displaypricingitem.js";
+import {
   EndpointStatus,
   EndpointStatus$inboundSchema,
 } from "./endpointstatus.js";
@@ -58,6 +62,10 @@ export type PublicEndpointQuantization = OpenEnum<
  */
 export type PublicEndpoint = {
   contextLength: number;
+  /**
+   * Structured pricing breakdown with SKU labels. For standard text models this contains Input/Output token prices; for video/image models it contains per-unit prices (e.g. per second, per image) with optional resolution tiers.
+   */
+  displayPricing: Array<DisplayPricingItem>;
   /**
    * Latency percentiles in milliseconds over the last 30 minutes. Latency measures time to first token. Only visible when authenticated with an API key or cookie; returns null for unauthenticated requests.
    */
@@ -138,6 +146,7 @@ export const PublicEndpointQuantization$inboundSchema: z.ZodType<
 export const PublicEndpoint$inboundSchema: z.ZodType<PublicEndpoint, unknown> =
   z.object({
     context_length: z.int(),
+    display_pricing: z.array(DisplayPricingItem$inboundSchema),
     latency_last_30m: z.nullable(PercentileStats$inboundSchema),
     max_completion_tokens: z.nullable(z.int()),
     max_prompt_tokens: z.nullable(z.int()),
@@ -158,6 +167,7 @@ export const PublicEndpoint$inboundSchema: z.ZodType<PublicEndpoint, unknown> =
   }).transform((v) => {
     return remap$(v, {
       "context_length": "contextLength",
+      "display_pricing": "displayPricing",
       "latency_last_30m": "latencyLast30m",
       "max_completion_tokens": "maxCompletionTokens",
       "max_prompt_tokens": "maxPromptTokens",
