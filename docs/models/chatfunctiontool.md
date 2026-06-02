@@ -16,6 +16,14 @@ const value: models.ChatFunctionToolFunction = {
 };
 ```
 
+### `models.BashServerTool`
+
+```typescript
+const value: models.BashServerTool = {
+  type: "openrouter:bash",
+};
+```
+
 ### `models.DatetimeServerTool`
 
 ```typescript
