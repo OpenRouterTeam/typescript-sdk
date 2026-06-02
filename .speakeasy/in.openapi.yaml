@@ -3664,7 +3664,6 @@ components:
         - google-ai-studio
         - google-vertex
         - groq
-        - hyperbolic
         - inception
         - inceptron
         - inference-net
@@ -10392,6 +10391,7 @@ components:
                 - Enfer
                 - GoPomelo
                 - HuggingFace
+                - Hyperbolic
                 - Hyperbolic 2
                 - InoCloud
                 - Kluster
@@ -10449,7 +10449,6 @@ components:
                 - Google
                 - Google AI Studio
                 - Groq
-                - Hyperbolic
                 - Inception
                 - Inceptron
                 - InferenceNet
@@ -15557,7 +15556,6 @@ components:
         - Google
         - Google AI Studio
         - Groq
-        - Hyperbolic
         - Inception
         - Inceptron
         - InferenceNet
@@ -16286,6 +16284,7 @@ components:
             - Enfer
             - GoPomelo
             - HuggingFace
+            - Hyperbolic
             - Hyperbolic 2
             - InoCloud
             - Kluster
@@ -16343,7 +16342,6 @@ components:
             - Google
             - Google AI Studio
             - Groq
-            - Hyperbolic
             - Inception
             - Inceptron
             - InferenceNet
@@ -20648,7 +20646,6 @@ paths:
               - google-ai-studio
               - google-vertex
               - groq
-              - hyperbolic
               - inception
               - inceptron
               - inference-net
