@@ -44,6 +44,7 @@ export const ProviderName = {
   Google: "Google",
   GoogleAIStudio: "Google AI Studio",
   Groq: "Groq",
+  Hyperbolic: "Hyperbolic",
   Inception: "Inception",
   Inceptron: "Inceptron",
   InferenceNet: "InferenceNet",

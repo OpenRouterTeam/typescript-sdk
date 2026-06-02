@@ -73,6 +73,7 @@ export const Provider = {
   GoogleAiStudio: "google-ai-studio",
   GoogleVertex: "google-vertex",
   Groq: "groq",
+  Hyperbolic: "hyperbolic",
   Inception: "inception",
   Inceptron: "inceptron",
   InferenceNet: "inference-net",
