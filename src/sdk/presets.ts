@@ -6,12 +6,84 @@
 import { presetsCreatePresetsChatCompletions } from "../funcs/presetsCreatePresetsChatCompletions.js";
 import { presetsCreatePresetsMessages } from "../funcs/presetsCreatePresetsMessages.js";
 import { presetsCreatePresetsResponses } from "../funcs/presetsCreatePresetsResponses.js";
+import { presetsDelete } from "../funcs/presetsDelete.js";
+import { presetsGet } from "../funcs/presetsGet.js";
+import { presetsList } from "../funcs/presetsList.js";
+import { presetsUpdate } from "../funcs/presetsUpdate.js";
 import { ClientSDK, RequestOptions } from "../lib/sdks.js";
 import * as models from "../models/index.js";
 import * as operations from "../models/operations/index.js";
 import { unwrapAsync } from "../types/fp.js";
 
 export class Presets extends ClientSDK {
+  /**
+   * List presets
+   *
+   * @remarks
+   * List all presets for the authenticated user or organization.
+   */
+  async list(
+    request?: operations.ListPresetsRequest | undefined,
+    options?: RequestOptions,
+  ): Promise<models.ListPresetsResponse> {
+    return unwrapAsync(presetsList(
+      this,
+      request,
+      options,
+    ));
+  }
+
+  /**
+   * Delete a preset
+   *
+   * @remarks
+   * Archive a preset. Archived presets are no longer usable in inference requests.
+   */
+  async delete(
+    request: operations.DeletePresetRequest,
+    options?: RequestOptions,
+  ): Promise<models.DeletePresetResponse> {
+    return unwrapAsync(presetsDelete(
+      this,
+      request,
+      options,
+    ));
+  }
+
+  /**
+   * Get a preset
+   *
+   * @remarks
+   * Get a single preset by its slug.
+   */
+  async get(
+    request: operations.GetPresetRequest,
+    options?: RequestOptions,
+  ): Promise<models.GetPresetResponse> {
+    return unwrapAsync(presetsGet(
+      this,
+      request,
+      options,
+    ));
+  }
+
+  /**
+   * Update a preset
+   *
+   * @remarks
+   * Update the metadata of an existing preset (name and/or description).
+   */
+  async update(
+    request: operations.UpdatePresetRequest,
+    options?: RequestOptions,
+  ): Promise<models.UpdatePresetResponse> {
+    return unwrapAsync(presetsUpdate(
+      this,
+      request,
+      options,
+    ));
+  }
+
   /**
    * Create a preset from a chat-completions request body
    *
