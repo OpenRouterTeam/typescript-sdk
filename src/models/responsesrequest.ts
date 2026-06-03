@@ -131,6 +131,11 @@ import {
   OutputModalityEnum$outboundSchema,
 } from "./outputmodalityenum.js";
 import {
+  ParetoAutoPlugin,
+  ParetoAutoPlugin$Outbound,
+  ParetoAutoPlugin$outboundSchema,
+} from "./paretoautoplugin.js";
+import {
   ParetoRouterPlugin,
   ParetoRouterPlugin$Outbound,
   ParetoRouterPlugin$outboundSchema,
@@ -221,6 +226,7 @@ export type ResponsesRequestPlugin =
   | FileParserPlugin
   | FusionPlugin
   | ModerationPlugin
+  | ParetoAutoPlugin
   | ParetoRouterPlugin
   | ResponseHealingPlugin
   | WebSearchPlugin
@@ -318,6 +324,7 @@ export type ResponsesRequest = {
       | FileParserPlugin
       | FusionPlugin
       | ModerationPlugin
+      | ParetoAutoPlugin
       | ParetoRouterPlugin
       | ResponseHealingPlugin
       | WebSearchPlugin
@@ -404,6 +411,7 @@ export type ResponsesRequestPlugin$Outbound =
   | FileParserPlugin$Outbound
   | FusionPlugin$Outbound
   | ModerationPlugin$Outbound
+  | ParetoAutoPlugin$Outbound
   | ParetoRouterPlugin$Outbound
   | ResponseHealingPlugin$Outbound
   | WebSearchPlugin$Outbound
@@ -419,6 +427,7 @@ export const ResponsesRequestPlugin$outboundSchema: z.ZodType<
   FileParserPlugin$outboundSchema,
   FusionPlugin$outboundSchema,
   ModerationPlugin$outboundSchema,
+  ParetoAutoPlugin$outboundSchema,
   ParetoRouterPlugin$outboundSchema,
   ResponseHealingPlugin$outboundSchema,
   WebSearchPlugin$outboundSchema,
@@ -565,6 +574,7 @@ export type ResponsesRequest$Outbound = {
       | FileParserPlugin$Outbound
       | FusionPlugin$Outbound
       | ModerationPlugin$Outbound
+      | ParetoAutoPlugin$Outbound
       | ParetoRouterPlugin$Outbound
       | ResponseHealingPlugin$Outbound
       | WebSearchPlugin$Outbound
@@ -651,6 +661,7 @@ export const ResponsesRequest$outboundSchema: z.ZodType<
       FileParserPlugin$outboundSchema,
       FusionPlugin$outboundSchema,
       ModerationPlugin$outboundSchema,
+      ParetoAutoPlugin$outboundSchema,
       ParetoRouterPlugin$outboundSchema,
       ResponseHealingPlugin$outboundSchema,
       WebSearchPlugin$outboundSchema,

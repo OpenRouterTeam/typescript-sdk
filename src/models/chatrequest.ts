@@ -97,6 +97,11 @@ import {
   ModerationPlugin$outboundSchema,
 } from "./moderationplugin.js";
 import {
+  ParetoAutoPlugin,
+  ParetoAutoPlugin$Outbound,
+  ParetoAutoPlugin$outboundSchema,
+} from "./paretoautoplugin.js";
+import {
   ParetoRouterPlugin,
   ParetoRouterPlugin$Outbound,
   ParetoRouterPlugin$outboundSchema,
@@ -145,6 +150,7 @@ export type ChatRequestPlugin =
   | FileParserPlugin
   | FusionPlugin
   | ModerationPlugin
+  | ParetoAutoPlugin
   | ParetoRouterPlugin
   | ResponseHealingPlugin
   | WebSearchPlugin
@@ -277,6 +283,7 @@ export type ChatRequest = {
       | FileParserPlugin
       | FusionPlugin
       | ModerationPlugin
+      | ParetoAutoPlugin
       | ParetoRouterPlugin
       | ResponseHealingPlugin
       | WebSearchPlugin
@@ -374,6 +381,7 @@ export type ChatRequestPlugin$Outbound =
   | FileParserPlugin$Outbound
   | FusionPlugin$Outbound
   | ModerationPlugin$Outbound
+  | ParetoAutoPlugin$Outbound
   | ParetoRouterPlugin$Outbound
   | ResponseHealingPlugin$Outbound
   | WebSearchPlugin$Outbound
@@ -389,6 +397,7 @@ export const ChatRequestPlugin$outboundSchema: z.ZodType<
   FileParserPlugin$outboundSchema,
   FusionPlugin$outboundSchema,
   ModerationPlugin$outboundSchema,
+  ParetoAutoPlugin$outboundSchema,
   ParetoRouterPlugin$outboundSchema,
   ResponseHealingPlugin$outboundSchema,
   WebSearchPlugin$outboundSchema,
@@ -500,6 +509,7 @@ export type ChatRequest$Outbound = {
       | FileParserPlugin$Outbound
       | FusionPlugin$Outbound
       | ModerationPlugin$Outbound
+      | ParetoAutoPlugin$Outbound
       | ParetoRouterPlugin$Outbound
       | ResponseHealingPlugin$Outbound
       | WebSearchPlugin$Outbound
@@ -560,6 +570,7 @@ export const ChatRequest$outboundSchema: z.ZodType<
       FileParserPlugin$outboundSchema,
       FusionPlugin$outboundSchema,
       ModerationPlugin$outboundSchema,
+      ParetoAutoPlugin$outboundSchema,
       ParetoRouterPlugin$outboundSchema,
       ResponseHealingPlugin$outboundSchema,
       WebSearchPlugin$outboundSchema,

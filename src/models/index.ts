@@ -300,6 +300,7 @@ export * from "./outputwebfetchservertoolitem.js";
 export * from "./outputwebsearchcallitem.js";
 export * from "./outputwebsearchservertoolitem.js";
 export * from "./parameter.js";
+export * from "./paretoautoplugin.js";
 export * from "./paretorouterplugin.js";
 export * from "./payloadtoolargeresponseerrordata.js";
 export * from "./paymentrequiredresponseerrordata.js";
