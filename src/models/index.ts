@@ -318,6 +318,7 @@ export * from "./presetwithdesignatedversion.js";
 export * from "./preview20250311websearchservertool.js";
 export * from "./previewwebsearchservertool.js";
 export * from "./previewwebsearchuserlocation.js";
+export * from "./promptinjectionscanscope.js";
 export * from "./providername.js";
 export * from "./provideroptions.js";
 export * from "./provideroverloadedresponseerrordata.js";
