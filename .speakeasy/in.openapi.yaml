@@ -5483,6 +5483,8 @@ components:
           example: '[EMAIL]'
           maxLength: 100
           type: string
+        scan_scope:
+          $ref: '#/components/schemas/PromptInjectionScanScope'
         slug:
           $ref: '#/components/schemas/ContentFilterBuiltinSlug'
       required:
@@ -5506,6 +5508,8 @@ components:
             but silently ignored.
           maxLength: 100
           type: string
+        scan_scope:
+          $ref: '#/components/schemas/PromptInjectionScanScope'
         slug:
           $ref: '#/components/schemas/ContentFilterBuiltinSlug'
       required:
@@ -15518,6 +15522,15 @@ components:
       required:
         - type
       type: object
+    PromptInjectionScanScope:
+      description: >-
+        Which message roles to scan for prompt injection. Only applies to the regex-prompt-injection builtin. Defaults
+        to all_messages.
+      enum:
+        - user_only
+        - all_messages
+      example: user_only
+      type: string
     ProviderName:
       enum:
         - AkashML
