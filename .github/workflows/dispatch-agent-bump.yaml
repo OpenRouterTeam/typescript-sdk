@@ -63,10 +63,9 @@ jobs:
       - name: Dispatch to typescript-agent
         if: steps.dedupe.outputs.cache-hit != 'true'
         env:
-          # Reuse the org's established cross-repo PAT (the same token the
-          # monorepo uses to push into the SDK repos). Needs contents:write on
-          # OpenRouterTeam/typescript-agent to be accepted.
-          GH_TOKEN: ${{ secrets.SUBTREE_PUSH_PAT }}
+          # Cross-repo PAT. Needs contents:write on
+          # OpenRouterTeam/typescript-agent so the repository_dispatch is accepted.
+          GH_TOKEN: ${{ secrets.GH_TOKEN }}
         run: |
           set -euo pipefail
           gh api repos/OpenRouterTeam/typescript-agent/dispatches \
