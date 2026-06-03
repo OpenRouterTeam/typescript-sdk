@@ -3,6 +3,7 @@
  * @generated-id: f93644b0f37e
  */
 
+export * from "./aascores.js";
 export * from "./activityitem.js";
 export * from "./activityresponse.js";
 export * from "./annotationaddedevent.js";
@@ -142,6 +143,7 @@ export * from "./customtoolcallinputdeltaevent.js";
 export * from "./customtoolcallinputdoneevent.js";
 export * from "./customtoolcallitem.js";
 export * from "./customtoolcalloutputitem.js";
+export * from "./dabenchmarkentry.js";
 export * from "./datetimeservertool.js";
 export * from "./datetimeservertoolconfig.js";
 export * from "./defaultparameters.js";
@@ -228,6 +230,7 @@ export * from "./messagesrequest.js";
 export * from "./metadatalevel.js";
 export * from "./model.js";
 export * from "./modelarchitecture.js";
+export * from "./modelbenchmarks.js";
 export * from "./modelgroup.js";
 export * from "./modellinks.js";
 export * from "./modelscountresponse.js";
@@ -318,6 +321,7 @@ export * from "./presetwithdesignatedversion.js";
 export * from "./preview20250311websearchservertool.js";
 export * from "./previewwebsearchservertool.js";
 export * from "./previewwebsearchuserlocation.js";
+export * from "./promptinjectionscanscope.js";
 export * from "./providername.js";
 export * from "./provideroptions.js";
 export * from "./provideroverloadedresponseerrordata.js";
