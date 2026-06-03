@@ -1,0 +1,80 @@
+name: Dispatch Agent Bump
+
+# Fires the next hop in the SDK release chain. When @openrouter/sdk publishes a
+# new version to npm (the "Publish" workflow completes successfully), this sends
+# a repository_dispatch to OpenRouterTeam/typescript-agent so it can open a PR
+# bumping its @openrouter/sdk dependency.
+#
+# workflow_run only fires for workflow files that live on the default branch, so
+# this file must be merged to main before the automatic trigger is active. Use
+# the workflow_dispatch input to test or backfill a specific version by hand.
+
+on:
+  workflow_run:
+    workflows: ["Publish"] # must match the `name:` of sdk_publish.yaml exactly
+    types: [completed]
+  workflow_dispatch:
+    inputs:
+      version:
+        description: "@openrouter/sdk version to dispatch (blank = npm latest)"
+        required: false
+        type: string
+
+permissions:
+  contents: read
+
+concurrency:
+  group: dispatch-agent-bump
+  cancel-in-progress: false
+
+jobs:
+  dispatch:
+    # On workflow_run, only proceed when the upstream Publish actually succeeded.
+    if: >
+      github.event_name == 'workflow_dispatch' ||
+      github.event.workflow_run.conclusion == 'success'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Resolve @openrouter/sdk version
+        id: ver
+        run: |
+          set -euo pipefail
+          V="${{ github.event.inputs.version }}"
+          if [ -z "$V" ]; then
+            V="$(npm view @openrouter/sdk version)"
+          fi
+          if [ -z "$V" ]; then
+            echo "::error::Could not resolve @openrouter/sdk version"
+            exit 1
+          fi
+          echo "version=$V" >> "$GITHUB_OUTPUT"
+          echo "Resolved @openrouter/sdk version: $V"
+
+      # Dedupe: a single published version should only ever dispatch once, even
+      # if the Publish workflow re-runs. The cache key encodes the version; a
+      # cache hit means we already dispatched this version.
+      - name: Check dispatch dedupe cache
+        id: dedupe
+        uses: actions/cache@v4
+        with:
+          path: .last-dispatched-sdk
+          key: dispatched-sdk-${{ steps.ver.outputs.version }}
+
+      - name: Dispatch to typescript-agent
+        if: steps.dedupe.outputs.cache-hit != 'true'
+        env:
+          # Cross-repo PAT. Needs contents:write on
+          # OpenRouterTeam/typescript-agent so the repository_dispatch is accepted.
+          GH_TOKEN: ${{ secrets.GH_TOKEN }}
+        run: |
+          set -euo pipefail
+          gh api repos/OpenRouterTeam/typescript-agent/dispatches \
+            -f event_type=openrouter-sdk-published \
+            -F "client_payload[version]=${{ steps.ver.outputs.version }}" \
+            -F "client_payload[source_run_url]=${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
+          echo "Dispatched openrouter-sdk-published (version ${{ steps.ver.outputs.version }}) to typescript-agent"
+          echo "${{ steps.ver.outputs.version }}" > .last-dispatched-sdk
+
+      - name: Skipped (already dispatched)
+        if: steps.dedupe.outputs.cache-hit == 'true'
+        run: echo "Version ${{ steps.ver.outputs.version }} was already dispatched — skipping"
