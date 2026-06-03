@@ -43,6 +43,14 @@ const value: models.ModerationPlugin = {
 };
 ```
 
+### `models.ParetoAutoPlugin`
+
+```typescript
+const value: models.ParetoAutoPlugin = {
+  id: "pareto-auto",
+};
+```
+
 ### `models.ParetoRouterPlugin`
 
 ```typescript

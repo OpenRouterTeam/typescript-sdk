@@ -115,6 +115,11 @@ import {
   OpenRouterWebSearchServerTool$outboundSchema,
 } from "./openrouterwebsearchservertool.js";
 import {
+  ParetoAutoPlugin,
+  ParetoAutoPlugin$Outbound,
+  ParetoAutoPlugin$outboundSchema,
+} from "./paretoautoplugin.js";
+import {
   ParetoRouterPlugin,
   ParetoRouterPlugin$Outbound,
   ParetoRouterPlugin$outboundSchema,
@@ -231,6 +236,7 @@ export type MessagesRequestPlugin =
   | FileParserPlugin
   | FusionPlugin
   | ModerationPlugin
+  | ParetoAutoPlugin
   | ParetoRouterPlugin
   | ResponseHealingPlugin
   | WebSearchPlugin
@@ -485,6 +491,7 @@ export type MessagesRequest = {
       | FileParserPlugin
       | FusionPlugin
       | ModerationPlugin
+      | ParetoAutoPlugin
       | ParetoRouterPlugin
       | ResponseHealingPlugin
       | WebSearchPlugin
@@ -830,6 +837,7 @@ export type MessagesRequestPlugin$Outbound =
   | FileParserPlugin$Outbound
   | FusionPlugin$Outbound
   | ModerationPlugin$Outbound
+  | ParetoAutoPlugin$Outbound
   | ParetoRouterPlugin$Outbound
   | ResponseHealingPlugin$Outbound
   | WebSearchPlugin$Outbound
@@ -845,6 +853,7 @@ export const MessagesRequestPlugin$outboundSchema: z.ZodType<
   FileParserPlugin$outboundSchema,
   FusionPlugin$outboundSchema,
   ModerationPlugin$outboundSchema,
+  ParetoAutoPlugin$outboundSchema,
   ParetoRouterPlugin$outboundSchema,
   ResponseHealingPlugin$outboundSchema,
   WebSearchPlugin$outboundSchema,
@@ -1489,6 +1498,7 @@ export type MessagesRequest$Outbound = {
       | FileParserPlugin$Outbound
       | FusionPlugin$Outbound
       | ModerationPlugin$Outbound
+      | ParetoAutoPlugin$Outbound
       | ParetoRouterPlugin$Outbound
       | ResponseHealingPlugin$Outbound
       | WebSearchPlugin$Outbound
@@ -1560,6 +1570,7 @@ export const MessagesRequest$outboundSchema: z.ZodType<
       FileParserPlugin$outboundSchema,
       FusionPlugin$outboundSchema,
       ModerationPlugin$outboundSchema,
+      ParetoAutoPlugin$outboundSchema,
       ParetoRouterPlugin$outboundSchema,
       ResponseHealingPlugin$outboundSchema,
       WebSearchPlugin$outboundSchema,
