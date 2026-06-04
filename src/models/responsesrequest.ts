@@ -8,6 +8,11 @@ import { remap as remap$ } from "../lib/primitives.js";
 import * as openEnums from "../types/enums.js";
 import { OpenEnum } from "../types/enums.js";
 import {
+  AdvisorServerToolOpenRouter,
+  AdvisorServerToolOpenRouter$Outbound,
+  AdvisorServerToolOpenRouter$outboundSchema,
+} from "./advisorservertoolopenrouter.js";
+import {
   AnthropicCacheControlDirective,
   AnthropicCacheControlDirective$Outbound,
   AnthropicCacheControlDirective$outboundSchema,
@@ -263,6 +268,7 @@ export type ResponsesRequestToolUnion =
   | ShellServerTool
   | ApplyPatchServerTool
   | CustomTool
+  | (AdvisorServerToolOpenRouter & { type: "openrouter:advisor" })
   | (DatetimeServerTool & { type: "openrouter:datetime" })
   | FusionServerToolOpenRouter
   | (ImageGenerationServerToolOpenRouter & {
@@ -370,6 +376,7 @@ export type ResponsesRequest = {
       | ShellServerTool
       | ApplyPatchServerTool
       | CustomTool
+      | (AdvisorServerToolOpenRouter & { type: "openrouter:advisor" })
       | (DatetimeServerTool & { type: "openrouter:datetime" })
       | FusionServerToolOpenRouter
       | (ImageGenerationServerToolOpenRouter & {
@@ -486,6 +493,7 @@ export type ResponsesRequestToolUnion$Outbound =
   | ShellServerTool$Outbound
   | ApplyPatchServerTool$Outbound
   | CustomTool$Outbound
+  | (AdvisorServerToolOpenRouter$Outbound & { type: "openrouter:advisor" })
   | (DatetimeServerTool$Outbound & { type: "openrouter:datetime" })
   | FusionServerToolOpenRouter$Outbound
   | (ImageGenerationServerToolOpenRouter$Outbound & {
@@ -517,6 +525,9 @@ export const ResponsesRequestToolUnion$outboundSchema: z.ZodType<
   ShellServerTool$outboundSchema,
   ApplyPatchServerTool$outboundSchema,
   CustomTool$outboundSchema,
+  AdvisorServerToolOpenRouter$outboundSchema.and(
+    z.object({ type: z.literal("openrouter:advisor") }),
+  ),
   DatetimeServerTool$outboundSchema.and(
     z.object({ type: z.literal("openrouter:datetime") }),
   ),
@@ -604,6 +615,7 @@ export type ResponsesRequest$Outbound = {
       | ShellServerTool$Outbound
       | ApplyPatchServerTool$Outbound
       | CustomTool$Outbound
+      | (AdvisorServerToolOpenRouter$Outbound & { type: "openrouter:advisor" })
       | (DatetimeServerTool$Outbound & { type: "openrouter:datetime" })
       | FusionServerToolOpenRouter$Outbound
       | (ImageGenerationServerToolOpenRouter$Outbound & {
@@ -691,6 +703,9 @@ export const ResponsesRequest$outboundSchema: z.ZodType<
       ShellServerTool$outboundSchema,
       ApplyPatchServerTool$outboundSchema,
       CustomTool$outboundSchema,
+      AdvisorServerToolOpenRouter$outboundSchema.and(
+        z.object({ type: z.literal("openrouter:advisor") }),
+      ),
       DatetimeServerTool$outboundSchema.and(
         z.object({ type: z.literal("openrouter:datetime") }),
       ),
