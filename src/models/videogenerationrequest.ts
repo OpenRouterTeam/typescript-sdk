@@ -8,15 +8,15 @@ import { remap as remap$ } from "../lib/primitives.js";
 import * as openEnums from "../types/enums.js";
 import { OpenEnum } from "../types/enums.js";
 import {
-  ContentPartImage,
-  ContentPartImage$Outbound,
-  ContentPartImage$outboundSchema,
-} from "./contentpartimage.js";
-import {
   FrameImage,
   FrameImage$Outbound,
   FrameImage$outboundSchema,
 } from "./frameimage.js";
+import {
+  InputReference,
+  InputReference$Outbound,
+  InputReference$outboundSchema,
+} from "./inputreference.js";
 
 /**
  * Aspect ratio of the generated video
@@ -201,9 +201,9 @@ export type VideoGenerationRequest = {
    */
   generateAudio?: boolean | undefined;
   /**
-   * Reference images to guide video generation
+   * Reference assets to guide video generation. Accepts image, audio, and video references. Audio and video references are only honored by providers that support them (currently BytePlus Seedance 2.0); other providers use image references and ignore the rest.
    */
-  inputReferences?: Array<ContentPartImage> | undefined;
+  inputReferences?: Array<InputReference> | undefined;
   model: string;
   prompt: string;
   /**
@@ -525,7 +525,7 @@ export type VideoGenerationRequest$Outbound = {
   duration?: number | undefined;
   frame_images?: Array<FrameImage$Outbound> | undefined;
   generate_audio?: boolean | undefined;
-  input_references?: Array<ContentPartImage$Outbound> | undefined;
+  input_references?: Array<InputReference$Outbound> | undefined;
   model: string;
   prompt: string;
   provider?: VideoGenerationRequestProvider$Outbound | undefined;
@@ -544,7 +544,7 @@ export const VideoGenerationRequest$outboundSchema: z.ZodType<
   duration: z.int().optional(),
   frameImages: z.array(FrameImage$outboundSchema).optional(),
   generateAudio: z.boolean().optional(),
-  inputReferences: z.array(ContentPartImage$outboundSchema).optional(),
+  inputReferences: z.array(InputReference$outboundSchema).optional(),
   model: z.string(),
   prompt: z.string(),
   provider: z.lazy(() => VideoGenerationRequestProvider$outboundSchema)
