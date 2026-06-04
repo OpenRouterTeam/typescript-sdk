@@ -153,6 +153,14 @@ const value: models.DatetimeServerTool = {
 };
 ```
 
+### `models.DeepResearchServerTool`
+
+```typescript
+const value: models.DeepResearchServerTool = {
+  type: "openrouter:deep_research",
+};
+```
+
 ### `models.FusionServerToolOpenRouter`
 
 ```typescript

@@ -63,6 +63,16 @@ import {
   DatetimeServerTool$outboundSchema,
 } from "./datetimeservertool.js";
 import {
+  DeepResearchPlugin,
+  DeepResearchPlugin$Outbound,
+  DeepResearchPlugin$outboundSchema,
+} from "./deepresearchplugin.js";
+import {
+  DeepResearchServerTool,
+  DeepResearchServerTool$Outbound,
+  DeepResearchServerTool$outboundSchema,
+} from "./deepresearchservertool.js";
+import {
   FileParserPlugin,
   FileParserPlugin$Outbound,
   FileParserPlugin$outboundSchema,
@@ -218,6 +228,7 @@ import {
 export type ResponsesRequestPlugin =
   | AutoRouterPlugin
   | ContextCompressionPlugin
+  | DeepResearchPlugin
   | FileParserPlugin
   | FusionPlugin
   | ModerationPlugin
@@ -264,6 +275,7 @@ export type ResponsesRequestToolUnion =
   | ApplyPatchServerTool
   | CustomTool
   | (DatetimeServerTool & { type: "openrouter:datetime" })
+  | DeepResearchServerTool
   | FusionServerToolOpenRouter
   | (ImageGenerationServerToolOpenRouter & {
     type: "openrouter:image_generation";
@@ -315,6 +327,7 @@ export type ResponsesRequest = {
     | Array<
       | AutoRouterPlugin
       | ContextCompressionPlugin
+      | DeepResearchPlugin
       | FileParserPlugin
       | FusionPlugin
       | ModerationPlugin
@@ -371,6 +384,7 @@ export type ResponsesRequest = {
       | ApplyPatchServerTool
       | CustomTool
       | (DatetimeServerTool & { type: "openrouter:datetime" })
+      | DeepResearchServerTool
       | FusionServerToolOpenRouter
       | (ImageGenerationServerToolOpenRouter & {
         type: "openrouter:image_generation";
@@ -401,6 +415,7 @@ export type ResponsesRequest = {
 export type ResponsesRequestPlugin$Outbound =
   | AutoRouterPlugin$Outbound
   | ContextCompressionPlugin$Outbound
+  | DeepResearchPlugin$Outbound
   | FileParserPlugin$Outbound
   | FusionPlugin$Outbound
   | ModerationPlugin$Outbound
@@ -416,6 +431,7 @@ export const ResponsesRequestPlugin$outboundSchema: z.ZodType<
 > = z.union([
   AutoRouterPlugin$outboundSchema,
   ContextCompressionPlugin$outboundSchema,
+  DeepResearchPlugin$outboundSchema,
   FileParserPlugin$outboundSchema,
   FusionPlugin$outboundSchema,
   ModerationPlugin$outboundSchema,
@@ -487,6 +503,7 @@ export type ResponsesRequestToolUnion$Outbound =
   | ApplyPatchServerTool$Outbound
   | CustomTool$Outbound
   | (DatetimeServerTool$Outbound & { type: "openrouter:datetime" })
+  | DeepResearchServerTool$Outbound
   | FusionServerToolOpenRouter$Outbound
   | (ImageGenerationServerToolOpenRouter$Outbound & {
     type: "openrouter:image_generation";
@@ -520,6 +537,7 @@ export const ResponsesRequestToolUnion$outboundSchema: z.ZodType<
   DatetimeServerTool$outboundSchema.and(
     z.object({ type: z.literal("openrouter:datetime") }),
   ),
+  DeepResearchServerTool$outboundSchema,
   FusionServerToolOpenRouter$outboundSchema,
   ImageGenerationServerToolOpenRouter$outboundSchema.and(
     z.object({ type: z.literal("openrouter:image_generation") }),
@@ -562,6 +580,7 @@ export type ResponsesRequest$Outbound = {
     | Array<
       | AutoRouterPlugin$Outbound
       | ContextCompressionPlugin$Outbound
+      | DeepResearchPlugin$Outbound
       | FileParserPlugin$Outbound
       | FusionPlugin$Outbound
       | ModerationPlugin$Outbound
@@ -605,6 +624,7 @@ export type ResponsesRequest$Outbound = {
       | ApplyPatchServerTool$Outbound
       | CustomTool$Outbound
       | (DatetimeServerTool$Outbound & { type: "openrouter:datetime" })
+      | DeepResearchServerTool$Outbound
       | FusionServerToolOpenRouter$Outbound
       | (ImageGenerationServerToolOpenRouter$Outbound & {
         type: "openrouter:image_generation";
@@ -648,6 +668,7 @@ export const ResponsesRequest$outboundSchema: z.ZodType<
     z.union([
       AutoRouterPlugin$outboundSchema,
       ContextCompressionPlugin$outboundSchema,
+      DeepResearchPlugin$outboundSchema,
       FileParserPlugin$outboundSchema,
       FusionPlugin$outboundSchema,
       ModerationPlugin$outboundSchema,
@@ -694,6 +715,7 @@ export const ResponsesRequest$outboundSchema: z.ZodType<
       DatetimeServerTool$outboundSchema.and(
         z.object({ type: z.literal("openrouter:datetime") }),
       ),
+      DeepResearchServerTool$outboundSchema,
       FusionServerToolOpenRouter$outboundSchema,
       ImageGenerationServerToolOpenRouter$outboundSchema.and(
         z.object({ type: z.literal("openrouter:image_generation") }),
