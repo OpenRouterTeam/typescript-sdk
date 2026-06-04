@@ -5,20 +5,14 @@
 
 import * as z from "zod/v4";
 import { remap as remap$ } from "../lib/primitives.js";
-import { ClosedEnum } from "../types/enums.js";
 
 export type ContentPartImageImageUrl = {
   url: string;
 };
 
-export const ContentPartImageType = {
-  ImageUrl: "image_url",
-} as const;
-export type ContentPartImageType = ClosedEnum<typeof ContentPartImageType>;
-
 export type ContentPartImage = {
   imageUrl: ContentPartImageImageUrl;
-  type: ContentPartImageType;
+  type: "image_url";
 };
 
 /** @internal */
@@ -43,14 +37,9 @@ export function contentPartImageImageUrlToJSON(
 }
 
 /** @internal */
-export const ContentPartImageType$outboundSchema: z.ZodEnum<
-  typeof ContentPartImageType
-> = z.enum(ContentPartImageType);
-
-/** @internal */
 export type ContentPartImage$Outbound = {
   image_url: ContentPartImageImageUrl$Outbound;
-  type: string;
+  type: "image_url";
 };
 
 /** @internal */
@@ -59,7 +48,7 @@ export const ContentPartImage$outboundSchema: z.ZodType<
   ContentPartImage
 > = z.object({
   imageUrl: z.lazy(() => ContentPartImageImageUrl$outboundSchema),
-  type: ContentPartImageType$outboundSchema,
+  type: z.literal("image_url"),
 }).transform((v) => {
   return remap$(v, {
     imageUrl: "image_url",
