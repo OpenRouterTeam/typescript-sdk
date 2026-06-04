@@ -1,0 +1,21 @@
+# ContentPartAudio
+
+## Example Usage
+
+```typescript
+import { ContentPartAudio } from "@openrouter/sdk/models";
+
+let value: ContentPartAudio = {
+  audioUrl: {
+    url: "https://weary-poppy.biz",
+  },
+  type: "audio_url",
+};
+```
+
+## Fields
+
+| Field                                    | Type                                     | Required                                 | Description                              |
+| ---------------------------------------- | ---------------------------------------- | ---------------------------------------- | ---------------------------------------- |
+| `audioUrl`                               | [models.AudioUrl](../models/audiourl.md) | :heavy_check_mark:                       | N/A                                      |
+| `type`                                   | *"audio_url"*                            | :heavy_check_mark:                       | N/A                                      |
