@@ -1,0 +1,18 @@
+# AdvisorReasoning
+
+Reasoning configuration forwarded to the advisor call. Use this to control reasoning effort and token budget for models that support extended thinking.
+
+## Example Usage
+
+```typescript
+import { AdvisorReasoning } from "@openrouter/sdk/models";
+
+let value: AdvisorReasoning = {};
+```
+
+## Fields
+
+| Field                                                                | Type                                                                 | Required                                                             | Description                                                          |
+| -------------------------------------------------------------------- | -------------------------------------------------------------------- | -------------------------------------------------------------------- | -------------------------------------------------------------------- |
+| `effort`                                                             | [models.AdvisorReasoningEffort](../models/advisorreasoningeffort.md) | :heavy_minus_sign:                                                   | Reasoning effort level for the advisor call.                         |
+| `maxTokens`                                                          | *number*                                                             | :heavy_minus_sign:                                                   | Maximum number of reasoning tokens the advisor may use.              |
