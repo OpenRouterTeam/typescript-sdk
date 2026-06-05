@@ -145,14 +145,6 @@ const value: models.CustomTool = {
 };
 ```
 
-### `models.AdvisorServerToolOpenRouter`
-
-```typescript
-const value: models.AdvisorServerToolOpenRouter = {
-  type: "openrouter:advisor",
-};
-```
-
 ### `models.DatetimeServerTool`
 
 ```typescript
