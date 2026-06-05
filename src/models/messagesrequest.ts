@@ -492,6 +492,10 @@ export type MessagesRequest = {
     >
     | undefined;
   /**
+   * A cache key for prompt caching. When provided, routes requests to the same provider to maintain prompt cache warmth and is forwarded to providers that support it. Takes priority over session_id for provider stickiness. Maximum of 256 characters.
+   */
+  promptCacheKey?: string | null | undefined;
+  /**
    * When multiple model providers are available, optionally indicate your routing preference.
    */
   provider?: ProviderPreferences | null | undefined;
@@ -1495,6 +1499,7 @@ export type MessagesRequest$Outbound = {
       | WebFetchPlugin$Outbound
     >
     | undefined;
+  prompt_cache_key?: string | null | undefined;
   provider?: ProviderPreferences$Outbound | null | undefined;
   service_tier?: string | undefined;
   session_id?: string | undefined;
@@ -1566,6 +1571,7 @@ export const MessagesRequest$outboundSchema: z.ZodType<
       WebFetchPlugin$outboundSchema,
     ]),
   ).optional(),
+  promptCacheKey: z.nullable(z.string()).optional(),
   provider: z.nullable(ProviderPreferences$outboundSchema).optional(),
   serviceTier: z.string().optional(),
   sessionId: z.string().optional(),
@@ -1614,6 +1620,7 @@ export const MessagesRequest$outboundSchema: z.ZodType<
     contextManagement: "context_management",
     maxTokens: "max_tokens",
     outputConfig: "output_config",
+    promptCacheKey: "prompt_cache_key",
     serviceTier: "service_tier",
     sessionId: "session_id",
     stopSequences: "stop_sequences",
