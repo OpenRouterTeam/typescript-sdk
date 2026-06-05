@@ -277,6 +277,7 @@ export * from "./openresponsesinprogressevent.js";
 export * from "./openresponsesresult.js";
 export * from "./openroutermetadata.js";
 export * from "./openrouterwebsearchservertool.js";
+export * from "./outputadvisorservertoolitem.js";
 export * from "./outputapplypatchcallitem.js";
 export * from "./outputapplypatchservertoolitem.js";
 export * from "./outputbashservertoolitem.js";
