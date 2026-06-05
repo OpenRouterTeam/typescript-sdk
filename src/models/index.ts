@@ -5,11 +5,6 @@
 
 export * from "./activityitem.js";
 export * from "./activityresponse.js";
-export * from "./advisornestedtool.js";
-export * from "./advisorprofile.js";
-export * from "./advisorreasoning.js";
-export * from "./advisorservertoolconfig.js";
-export * from "./advisorservertoolopenrouter.js";
 export * from "./annotationaddedevent.js";
 export * from "./anthropicallowedcallers.js";
 export * from "./anthropicbase64imagesource.js";
@@ -151,6 +146,7 @@ export * from "./customtoolcallitem.js";
 export * from "./customtoolcalloutputitem.js";
 export * from "./datetimeservertool.js";
 export * from "./datetimeservertoolconfig.js";
+export * from "./deepresearchplugin.js";
 export * from "./defaultparameters.js";
 export * from "./deletebyokkeyresponse.js";
 export * from "./deleteguardrailresponse.js";
