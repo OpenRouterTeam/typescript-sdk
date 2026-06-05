@@ -145,19 +145,19 @@ const value: models.CustomTool = {
 };
 ```
 
-### `models.AdvisorServerToolOpenRouter`
-
-```typescript
-const value: models.AdvisorServerToolOpenRouter = {
-  type: "openrouter:advisor",
-};
-```
-
 ### `models.DatetimeServerTool`
 
 ```typescript
 const value: models.DatetimeServerTool = {
   type: "openrouter:datetime",
+};
+```
+
+### `models.DeepResearchServerTool`
+
+```typescript
+const value: models.DeepResearchServerTool = {
+  type: "openrouter:deep_research",
 };
 ```
 
