@@ -5,11 +5,6 @@
 
 export * from "./activityitem.js";
 export * from "./activityresponse.js";
-export * from "./advisornestedtool.js";
-export * from "./advisorprofile.js";
-export * from "./advisorreasoning.js";
-export * from "./advisorservertoolconfig.js";
-export * from "./advisorservertoolopenrouter.js";
 export * from "./annotationaddedevent.js";
 export * from "./anthropicallowedcallers.js";
 export * from "./anthropicbase64imagesource.js";
@@ -277,7 +272,6 @@ export * from "./openresponsesinprogressevent.js";
 export * from "./openresponsesresult.js";
 export * from "./openroutermetadata.js";
 export * from "./openrouterwebsearchservertool.js";
-export * from "./outputadvisorservertoolitem.js";
 export * from "./outputapplypatchcallitem.js";
 export * from "./outputapplypatchservertoolitem.js";
 export * from "./outputbashservertoolitem.js";
