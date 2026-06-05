@@ -111,6 +111,15 @@ const value: models.OutputMessageItem = {
 };
 ```
 
+### `models.OutputAdvisorServerToolItem`
+
+```typescript
+const value: models.OutputAdvisorServerToolItem = {
+  status: "completed",
+  type: "openrouter:advisor",
+};
+```
+
 ### `models.OutputApplyPatchServerToolItem`
 
 ```typescript
