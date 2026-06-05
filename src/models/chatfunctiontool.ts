@@ -7,11 +7,6 @@ import * as z from "zod/v4";
 import { remap as remap$ } from "../lib/primitives.js";
 import { ClosedEnum } from "../types/enums.js";
 import {
-  AdvisorServerToolOpenRouter,
-  AdvisorServerToolOpenRouter$Outbound,
-  AdvisorServerToolOpenRouter$outboundSchema,
-} from "./advisorservertoolopenrouter.js";
-import {
   ChatContentCacheControl,
   ChatContentCacheControl$Outbound,
   ChatContentCacheControl$outboundSchema,
@@ -91,7 +86,6 @@ export type ChatFunctionToolFunction = {
  */
 export type ChatFunctionTool =
   | ChatFunctionToolFunction
-  | AdvisorServerToolOpenRouter
   | DatetimeServerTool
   | ImageGenerationServerToolOpenRouter
   | ChatSearchModelsServerTool
@@ -165,7 +159,6 @@ export function chatFunctionToolFunctionToJSON(
 /** @internal */
 export type ChatFunctionTool$Outbound =
   | ChatFunctionToolFunction$Outbound
-  | AdvisorServerToolOpenRouter$Outbound
   | DatetimeServerTool$Outbound
   | ImageGenerationServerToolOpenRouter$Outbound
   | ChatSearchModelsServerTool$Outbound
@@ -179,7 +172,6 @@ export const ChatFunctionTool$outboundSchema: z.ZodType<
   ChatFunctionTool
 > = z.union([
   z.lazy(() => ChatFunctionToolFunction$outboundSchema),
-  AdvisorServerToolOpenRouter$outboundSchema,
   DatetimeServerTool$outboundSchema,
   ImageGenerationServerToolOpenRouter$outboundSchema,
   ChatSearchModelsServerTool$outboundSchema,
