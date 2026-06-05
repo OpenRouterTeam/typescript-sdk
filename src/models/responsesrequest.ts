@@ -8,11 +8,6 @@ import { remap as remap$ } from "../lib/primitives.js";
 import * as openEnums from "../types/enums.js";
 import { OpenEnum } from "../types/enums.js";
 import {
-  AdvisorServerToolOpenRouter,
-  AdvisorServerToolOpenRouter$Outbound,
-  AdvisorServerToolOpenRouter$outboundSchema,
-} from "./advisorservertoolopenrouter.js";
-import {
   AnthropicCacheControlDirective,
   AnthropicCacheControlDirective$Outbound,
   AnthropicCacheControlDirective$outboundSchema,
@@ -67,6 +62,11 @@ import {
   DatetimeServerTool$Outbound,
   DatetimeServerTool$outboundSchema,
 } from "./datetimeservertool.js";
+import {
+  DeepResearchPlugin,
+  DeepResearchPlugin$Outbound,
+  DeepResearchPlugin$outboundSchema,
+} from "./deepresearchplugin.js";
 import {
   FileParserPlugin,
   FileParserPlugin$Outbound,
@@ -223,6 +223,7 @@ import {
 export type ResponsesRequestPlugin =
   | AutoRouterPlugin
   | ContextCompressionPlugin
+  | DeepResearchPlugin
   | FileParserPlugin
   | FusionPlugin
   | ModerationPlugin
@@ -268,7 +269,6 @@ export type ResponsesRequestToolUnion =
   | ShellServerTool
   | ApplyPatchServerTool
   | CustomTool
-  | (AdvisorServerToolOpenRouter & { type: "openrouter:advisor" })
   | (DatetimeServerTool & { type: "openrouter:datetime" })
   | FusionServerToolOpenRouter
   | (ImageGenerationServerToolOpenRouter & {
@@ -321,6 +321,7 @@ export type ResponsesRequest = {
     | Array<
       | AutoRouterPlugin
       | ContextCompressionPlugin
+      | DeepResearchPlugin
       | FileParserPlugin
       | FusionPlugin
       | ModerationPlugin
@@ -376,7 +377,6 @@ export type ResponsesRequest = {
       | ShellServerTool
       | ApplyPatchServerTool
       | CustomTool
-      | (AdvisorServerToolOpenRouter & { type: "openrouter:advisor" })
       | (DatetimeServerTool & { type: "openrouter:datetime" })
       | FusionServerToolOpenRouter
       | (ImageGenerationServerToolOpenRouter & {
@@ -408,6 +408,7 @@ export type ResponsesRequest = {
 export type ResponsesRequestPlugin$Outbound =
   | AutoRouterPlugin$Outbound
   | ContextCompressionPlugin$Outbound
+  | DeepResearchPlugin$Outbound
   | FileParserPlugin$Outbound
   | FusionPlugin$Outbound
   | ModerationPlugin$Outbound
@@ -423,6 +424,7 @@ export const ResponsesRequestPlugin$outboundSchema: z.ZodType<
 > = z.union([
   AutoRouterPlugin$outboundSchema,
   ContextCompressionPlugin$outboundSchema,
+  DeepResearchPlugin$outboundSchema,
   FileParserPlugin$outboundSchema,
   FusionPlugin$outboundSchema,
   ModerationPlugin$outboundSchema,
@@ -493,7 +495,6 @@ export type ResponsesRequestToolUnion$Outbound =
   | ShellServerTool$Outbound
   | ApplyPatchServerTool$Outbound
   | CustomTool$Outbound
-  | (AdvisorServerToolOpenRouter$Outbound & { type: "openrouter:advisor" })
   | (DatetimeServerTool$Outbound & { type: "openrouter:datetime" })
   | FusionServerToolOpenRouter$Outbound
   | (ImageGenerationServerToolOpenRouter$Outbound & {
@@ -525,9 +526,6 @@ export const ResponsesRequestToolUnion$outboundSchema: z.ZodType<
   ShellServerTool$outboundSchema,
   ApplyPatchServerTool$outboundSchema,
   CustomTool$outboundSchema,
-  AdvisorServerToolOpenRouter$outboundSchema.and(
-    z.object({ type: z.literal("openrouter:advisor") }),
-  ),
   DatetimeServerTool$outboundSchema.and(
     z.object({ type: z.literal("openrouter:datetime") }),
   ),
@@ -573,6 +571,7 @@ export type ResponsesRequest$Outbound = {
     | Array<
       | AutoRouterPlugin$Outbound
       | ContextCompressionPlugin$Outbound
+      | DeepResearchPlugin$Outbound
       | FileParserPlugin$Outbound
       | FusionPlugin$Outbound
       | ModerationPlugin$Outbound
@@ -615,7 +614,6 @@ export type ResponsesRequest$Outbound = {
       | ShellServerTool$Outbound
       | ApplyPatchServerTool$Outbound
       | CustomTool$Outbound
-      | (AdvisorServerToolOpenRouter$Outbound & { type: "openrouter:advisor" })
       | (DatetimeServerTool$Outbound & { type: "openrouter:datetime" })
       | FusionServerToolOpenRouter$Outbound
       | (ImageGenerationServerToolOpenRouter$Outbound & {
@@ -660,6 +658,7 @@ export const ResponsesRequest$outboundSchema: z.ZodType<
     z.union([
       AutoRouterPlugin$outboundSchema,
       ContextCompressionPlugin$outboundSchema,
+      DeepResearchPlugin$outboundSchema,
       FileParserPlugin$outboundSchema,
       FusionPlugin$outboundSchema,
       ModerationPlugin$outboundSchema,
@@ -703,9 +702,6 @@ export const ResponsesRequest$outboundSchema: z.ZodType<
       ShellServerTool$outboundSchema,
       ApplyPatchServerTool$outboundSchema,
       CustomTool$outboundSchema,
-      AdvisorServerToolOpenRouter$outboundSchema.and(
-        z.object({ type: z.literal("openrouter:advisor") }),
-      ),
       DatetimeServerTool$outboundSchema.and(
         z.object({ type: z.literal("openrouter:datetime") }),
       ),
