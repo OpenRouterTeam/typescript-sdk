@@ -6,12 +6,50 @@
 import { presetsCreatePresetsChatCompletions } from "../funcs/presetsCreatePresetsChatCompletions.js";
 import { presetsCreatePresetsMessages } from "../funcs/presetsCreatePresetsMessages.js";
 import { presetsCreatePresetsResponses } from "../funcs/presetsCreatePresetsResponses.js";
+import { presetsGetPresets } from "../funcs/presetsGetPresets.js";
+import { presetsList } from "../funcs/presetsList.js";
+import { presetsListPresetsVersions } from "../funcs/presetsListPresetsVersions.js";
 import { ClientSDK, RequestOptions } from "../lib/sdks.js";
 import * as models from "../models/index.js";
 import * as operations from "../models/operations/index.js";
 import { unwrapAsync } from "../types/fp.js";
+import { PageIterator, unwrapResultIterator } from "../types/operations.js";
 
 export class Presets extends ClientSDK {
+  /**
+   * List presets
+   *
+   * @remarks
+   * Lists all presets for the authenticated user, ordered by most recently updated first.
+   */
+  async list(
+    request?: operations.ListPresetsRequest | undefined,
+    options?: RequestOptions,
+  ): Promise<PageIterator<operations.ListPresetsResponse, { offset: number }>> {
+    return unwrapResultIterator(presetsList(
+      this,
+      request,
+      options,
+    ));
+  }
+
+  /**
+   * Get a preset with paginated versions
+   *
+   * @remarks
+   * Retrieves a preset by its slug and returns a paginated list of its versions, ordered by version number ascending (oldest first).
+   */
+  async getPresets(
+    request: operations.GetPresetsRequest,
+    options?: RequestOptions,
+  ): Promise<PageIterator<operations.GetPresetsResponse, { offset: number }>> {
+    return unwrapResultIterator(presetsGetPresets(
+      this,
+      request,
+      options,
+    ));
+  }
+
   /**
    * Create a preset from a chat-completions request body
    *
@@ -57,6 +95,23 @@ export class Presets extends ClientSDK {
     options?: RequestOptions,
   ): Promise<models.CreatePresetFromInferenceResponse> {
     return unwrapAsync(presetsCreatePresetsResponses(
+      this,
+      request,
+      options,
+    ));
+  }
+
+  /**
+   * Get a specific version of a preset
+   *
+   * @remarks
+   * Retrieves a specific version of a preset by its slug and version number.
+   */
+  async listPresetsVersions(
+    request: operations.ListPresetsVersionsRequest,
+    options?: RequestOptions,
+  ): Promise<models.GetPresetVersionResponse> {
+    return unwrapAsync(presetsListPresetsVersions(
       this,
       request,
       options,
