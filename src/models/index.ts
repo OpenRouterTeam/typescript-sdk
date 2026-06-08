@@ -436,6 +436,7 @@ export * from "./websearchdomainfilter.js";
 export * from "./websearchengine.js";
 export * from "./websearchengineenum.js";
 export * from "./websearchplugin.js";
+export * from "./websearchsearchtype.js";
 export * from "./websearchservertool.js";
 export * from "./websearchservertoolconfig.js";
 export * from "./websearchservertoolopenrouter.js";

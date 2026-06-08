@@ -14,19 +14,27 @@ import {
   WebSearchEngineEnum$outboundSchema,
 } from "./websearchengineenum.js";
 import {
+  WebSearchSearchType,
+  WebSearchSearchType$outboundSchema,
+} from "./websearchsearchtype.js";
+import {
   WebSearchUserLocationServerTool,
   WebSearchUserLocationServerTool$Outbound,
   WebSearchUserLocationServerTool$outboundSchema,
 } from "./websearchuserlocationservertool.js";
 
 /**
- * Configuration for the openrouter:web_search server tool
+ * Configuration for the openrouter:web_search server tool. Available parameters depend on the selected engine.
  */
 export type WebSearchServerToolConfig = {
   /**
    * Limit search results to these domains. Supported by Exa, Firecrawl, Parallel, and most native providers (Anthropic, OpenAI, xAI). Not supported with Perplexity. Cannot be used with excluded_domains.
    */
   allowedDomains?: Array<string> | undefined;
+  /**
+   * Filter results by content category (e.g. "company", "research paper", "news", "personal site", "financial report", "people"). Currently supported by Exa; ignored by other engines.
+   */
+  category?: string | undefined;
   /**
    * Which search engine to use. "auto" (default) uses native if the provider supports it, otherwise Exa. "native" forces the provider's built-in search. "exa" forces the Exa search API. "firecrawl" uses Firecrawl (requires BYOK). "parallel" uses the Parallel search API.
    */
@@ -35,6 +43,10 @@ export type WebSearchServerToolConfig = {
    * Exclude search results from these domains. Supported by Exa, Firecrawl, Parallel, Anthropic, and xAI. Not supported with OpenAI (silently ignored) or Perplexity. Cannot be used with allowed_domains.
    */
   excludedDomains?: Array<string> | undefined;
+  /**
+   * Maximum age of cached content in hours. Controls content recency — results with content older than this value are re-fetched. Set to 0 to always fetch fresh content, or -1 to only use cached content. Currently supported by Exa; ignored by other engines.
+   */
+  maxAgeHours?: number | undefined;
   /**
    * Maximum number of search results to return per search call. Defaults to 5. Applies to Exa, Firecrawl, and Parallel engines; ignored with native provider search.
    */
@@ -48,6 +60,10 @@ export type WebSearchServerToolConfig = {
    */
   searchContextSize?: SearchQualityLevel | undefined;
   /**
+   * Search strategy to use. "auto" (default) lets the engine decide. "instant" provides the lowest latency. "fast" uses lower-latency search models. "deep-lite" is lightweight synthesis. "deep" performs in-depth research with synthesis. "deep-reasoning" adds more reasoning. Legacy values "neural" and "keyword" are also accepted. Currently supported by Exa; ignored by other engines.
+   */
+  searchType?: WebSearchSearchType | undefined;
+  /**
    * Approximate user location for location-biased results.
    */
   userLocation?: WebSearchUserLocationServerTool | undefined;
@@ -56,11 +72,14 @@ export type WebSearchServerToolConfig = {
 /** @internal */
 export type WebSearchServerToolConfig$Outbound = {
   allowed_domains?: Array<string> | undefined;
+  category?: string | undefined;
   engine?: string | undefined;
   excluded_domains?: Array<string> | undefined;
+  max_age_hours?: number | undefined;
   max_results?: number | undefined;
   max_total_results?: number | undefined;
   search_context_size?: string | undefined;
+  search_type?: string | undefined;
   user_location?: WebSearchUserLocationServerTool$Outbound | undefined;
 };
 
@@ -70,19 +89,24 @@ export const WebSearchServerToolConfig$outboundSchema: z.ZodType<
   WebSearchServerToolConfig
 > = z.object({
   allowedDomains: z.array(z.string()).optional(),
+  category: z.string().optional(),
   engine: WebSearchEngineEnum$outboundSchema.optional(),
   excludedDomains: z.array(z.string()).optional(),
+  maxAgeHours: z.int().optional(),
   maxResults: z.int().optional(),
   maxTotalResults: z.int().optional(),
   searchContextSize: SearchQualityLevel$outboundSchema.optional(),
+  searchType: WebSearchSearchType$outboundSchema.optional(),
   userLocation: WebSearchUserLocationServerTool$outboundSchema.optional(),
 }).transform((v) => {
   return remap$(v, {
     allowedDomains: "allowed_domains",
     excludedDomains: "excluded_domains",
+    maxAgeHours: "max_age_hours",
     maxResults: "max_results",
     maxTotalResults: "max_total_results",
     searchContextSize: "search_context_size",
+    searchType: "search_type",
     userLocation: "user_location",
   });
 });
