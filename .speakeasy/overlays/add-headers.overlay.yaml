@@ -52,3 +52,57 @@ actions:
         - $ref: "#/components/parameters/AppIdentifier"
         - $ref: "#/components/parameters/AppDisplayName"
         - $ref: "#/components/parameters/AppCategories"
+
+  # Hide app-identification globals on STT/TTS so the body remains the only
+  # method argument while constructor-level headers still apply.
+  - target: $.paths["/audio/transcriptions"].parameters
+    description: Drop $ref-based header params on STT so only the hidden inlines remain
+    remove: true
+
+  - target: $.paths["/audio/speech"].parameters
+    description: Drop $ref-based header params on TTS so only the hidden inlines remain
+    remove: true
+
+  - target: $.paths["/audio/transcriptions"]
+    description: Add hidden app-identification headers on STT so globals still apply but the method signature stays flat
+    update:
+      parameters:
+        - name: HTTP-Referer
+          in: header
+          x-speakeasy-globals-hidden: true
+          schema:
+            type: string
+        - name: X-OpenRouter-Title
+          in: header
+          x-speakeasy-name-override: appTitle
+          x-speakeasy-globals-hidden: true
+          schema:
+            type: string
+        - name: X-OpenRouter-Categories
+          in: header
+          x-speakeasy-name-override: appCategories
+          x-speakeasy-globals-hidden: true
+          schema:
+            type: string
+
+  - target: $.paths["/audio/speech"]
+    description: Add hidden app-identification headers on TTS so globals still apply but the method signature stays flat
+    update:
+      parameters:
+        - name: HTTP-Referer
+          in: header
+          x-speakeasy-globals-hidden: true
+          schema:
+            type: string
+        - name: X-OpenRouter-Title
+          in: header
+          x-speakeasy-name-override: appTitle
+          x-speakeasy-globals-hidden: true
+          schema:
+            type: string
+        - name: X-OpenRouter-Categories
+          in: header
+          x-speakeasy-name-override: appCategories
+          x-speakeasy-globals-hidden: true
+          schema:
+            type: string

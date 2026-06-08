@@ -6,7 +6,6 @@
 import { sttCreateTranscription } from "../funcs/sttCreateTranscription.js";
 import { ClientSDK, RequestOptions } from "../lib/sdks.js";
 import * as models from "../models/index.js";
-import * as operations from "../models/operations/index.js";
 import { unwrapAsync } from "../types/fp.js";
 
 export class Stt extends ClientSDK {
@@ -17,7 +16,7 @@ export class Stt extends ClientSDK {
    * Transcribes audio into text. Accepts base64-encoded audio input and returns the transcribed text.
    */
   async createTranscription(
-    request: operations.CreateAudioTranscriptionsRequest,
+    request: models.STTRequest,
     options?: RequestOptions,
   ): Promise<models.STTResponse> {
     return unwrapAsync(sttCreateTranscription(

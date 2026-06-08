@@ -20394,9 +20394,23 @@ paths:
       x-speakeasy-max-method-params: 1
       x-speakeasy-name-override: createSpeech
     parameters:
-      - $ref: "#/components/parameters/AppIdentifier"
-      - $ref: "#/components/parameters/AppDisplayName"
-      - $ref: "#/components/parameters/AppCategories"
+      - name: HTTP-Referer
+        in: header
+        x-speakeasy-globals-hidden: true
+        schema:
+          type: string
+      - name: X-OpenRouter-Title
+        in: header
+        x-speakeasy-name-override: appTitle
+        x-speakeasy-globals-hidden: true
+        schema:
+          type: string
+      - name: X-OpenRouter-Categories
+        in: header
+        x-speakeasy-name-override: appCategories
+        x-speakeasy-globals-hidden: true
+        schema:
+          type: string
   /audio/transcriptions:
     post:
       description: Transcribes audio into text. Accepts base64-encoded audio input and returns the transcribed text.
@@ -20534,9 +20548,23 @@ paths:
       x-speakeasy-max-method-params: 1
       x-speakeasy-name-override: createTranscription
     parameters:
-      - $ref: "#/components/parameters/AppIdentifier"
-      - $ref: "#/components/parameters/AppDisplayName"
-      - $ref: "#/components/parameters/AppCategories"
+      - name: HTTP-Referer
+        in: header
+        x-speakeasy-globals-hidden: true
+        schema:
+          type: string
+      - name: X-OpenRouter-Title
+        in: header
+        x-speakeasy-name-override: appTitle
+        x-speakeasy-globals-hidden: true
+        schema:
+          type: string
+      - name: X-OpenRouter-Categories
+        in: header
+        x-speakeasy-name-override: appCategories
+        x-speakeasy-globals-hidden: true
+        schema:
+          type: string
   /auth/keys:
     post:
       description: Exchange an authorization code from the PKCE flow for a user-controlled API key
