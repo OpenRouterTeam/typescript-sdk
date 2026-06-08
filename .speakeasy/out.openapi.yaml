@@ -21303,10 +21303,11 @@ paths:
         Sends a request for a model response for the given chat conversation. Supports both streaming and non-streaming modes.
       operationId: sendChatCompletionRequest
       parameters:
-        - description: Opt-in to surface routing metadata on the response under `openrouter_metadata`. Defaults to `disabled`.
+        - description: >-
+            Opt-in to surface routing metadata on the response under `openrouter_metadata`. Defaults to `disabled`. The legacy header `X-OpenRouter-Experimental-Metadata` is also accepted for backward compatibility.
           example: enabled
           in: header
-          name: X-OpenRouter-Experimental-Metadata
+          name: X-OpenRouter-Metadata
           required: false
           schema:
             $ref: '#/components/schemas/MetadataLevel'
@@ -21441,7 +21442,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/ForbiddenResponse'
           description: >-
-            Forbidden - Authentication successful but insufficient permissions, or a guardrail blocked the request. When guardrails block and the `X-OpenRouter-Experimental-Metadata: enabled` header is present, the response includes `openrouter_metadata` with full routing context and a `pipeline` array containing guardrail stage details.
+            Forbidden - Authentication successful but insufficient permissions, or a guardrail blocked the request. When guardrails block and the `X-OpenRouter-Metadata: enabled` header is present, the response includes `openrouter_metadata` with full routing context and a `pipeline` array containing guardrail stage details.
         '404':
           content:
             application/json:
@@ -25206,10 +25207,11 @@ paths:
         Creates a message using the Anthropic Messages API format. Supports text, images, PDFs, tools, and extended thinking.
       operationId: createMessages
       parameters:
-        - description: Opt-in to surface routing metadata on the response under `openrouter_metadata`. Defaults to `disabled`.
+        - description: >-
+            Opt-in to surface routing metadata on the response under `openrouter_metadata`. Defaults to `disabled`. The legacy header `X-OpenRouter-Experimental-Metadata` is also accepted for backward compatibility.
           example: enabled
           in: header
-          name: X-OpenRouter-Experimental-Metadata
+          name: X-OpenRouter-Metadata
           required: false
           schema:
             $ref: '#/components/schemas/MetadataLevel'
@@ -25326,7 +25328,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/ForbiddenResponse'
           description: >-
-            Forbidden - Authentication successful but insufficient permissions, or a guardrail blocked the request. When guardrails block and the `X-OpenRouter-Experimental-Metadata: enabled` header is present, the response includes `openrouter_metadata` with full routing context and a `pipeline` array containing guardrail stage details.
+            Forbidden - Authentication successful but insufficient permissions, or a guardrail blocked the request. When guardrails block and the `X-OpenRouter-Metadata: enabled` header is present, the response includes `openrouter_metadata` with full routing context and a `pipeline` array containing guardrail stage details.
         '404':
           content:
             application/json:
@@ -27590,10 +27592,11 @@ paths:
       description: Creates a streaming or non-streaming response using OpenResponses API format
       operationId: createResponses
       parameters:
-        - description: Opt-in to surface routing metadata on the response under `openrouter_metadata`. Defaults to `disabled`.
+        - description: >-
+            Opt-in to surface routing metadata on the response under `openrouter_metadata`. Defaults to `disabled`. The legacy header `X-OpenRouter-Experimental-Metadata` is also accepted for backward compatibility.
           example: enabled
           in: header
-          name: X-OpenRouter-Experimental-Metadata
+          name: X-OpenRouter-Metadata
           required: false
           schema:
             $ref: '#/components/schemas/MetadataLevel'
@@ -27715,7 +27718,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/ForbiddenResponse'
           description: >-
-            Forbidden - Authentication successful but insufficient permissions, or a guardrail blocked the request. When guardrails block and the `X-OpenRouter-Experimental-Metadata: enabled` header is present, the response includes `openrouter_metadata` with full routing context and a `pipeline` array containing guardrail stage details.
+            Forbidden - Authentication successful but insufficient permissions, or a guardrail blocked the request. When guardrails block and the `X-OpenRouter-Metadata: enabled` header is present, the response includes `openrouter_metadata` with full routing context and a `pipeline` array containing guardrail stage details.
         '404':
           content:
             application/json:

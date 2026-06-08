@@ -1,19 +1,19 @@
 lockVersion: ""
 id: ""
 management:
-  docChecksum: b2c8ed8dc79d44b1789f7b1b1580b0c4
+  docChecksum: 7df38a0a2250b4930f85ad3fb357b94f
   docVersion: 1.0.0
   speakeasyVersion: 1.763.2
   generationVersion: 2.884.4
-  releaseVersion: 0.12.86
-  configChecksum: e1213986cf368f1a1479fb156996e07a
+  releaseVersion: 0.12.87
+  configChecksum: d9688b116d7792de38bb06550dfb8de6
   repoURL: https://github.com/OpenRouterTeam/typescript-sdk.git
   installationURL: https://github.com/OpenRouterTeam/typescript-sdk
   published: true
 persistentEdits:
-  generation_id: f56ec886-91a8-48fd-a5ab-c51994a6f3c8
-  pristine_commit_hash: edd04f03834770d3de63326ed7af169f440171b1
-  pristine_tree_hash: 8ee027bbe41a2d01fd90be3f057609e8f4e96e1f
+  generation_id: 9258a388-9229-47b3-ba3d-b16cfbac00d7
+  pristine_commit_hash: 4e6f44c0028484bf2d30c5332a968999d9a98329
+  pristine_tree_hash: 306d93b0681ebb5e38683280d2bc1c2c97f6476f
 features:
   typescript:
     acceptHeaders: 2.81.2
@@ -3632,8 +3632,8 @@ trackedFiles:
     pristine_git_object: 5f55a504c8ac9025886c6ca77837f43be624a5db
   docs/models/operations/createresponsesrequest.md:
     id: 5370180b8635
-    last_write_checksum: sha1:99e1be76f3006f519ca4fb1e0b8818a0acf65279
-    pristine_git_object: b71535c75beddc939cd45d73018490c44abef249
+    last_write_checksum: sha1:dd48450b51451b60b54eb155cf499c5466b391d2
+    pristine_git_object: ff6f34c4b034a86900a47e18936e066e68cc793f
   docs/models/operations/createresponsesresponse.md:
     id: c55a819f0ab5
     last_write_checksum: sha1:3b5f11c8dd936108b6232b6e5ea1a1348363a1f0
@@ -4200,8 +4200,8 @@ trackedFiles:
     pristine_git_object: 9f12b326c289cab94bfb4cad2cfaa4ed1c830dc2
   docs/models/operations/sendchatcompletionrequestrequest.md:
     id: 20682772581d
-    last_write_checksum: sha1:36aeccb2d00e535c1ed4743028c064ab85716af1
-    pristine_git_object: b7f5ed4de8ac6f0181fd8793a834ab5e97078de7
+    last_write_checksum: sha1:1c71ffde57687a2c768e43e5bd04fd3b45b5bcde
+    pristine_git_object: daefca7a00adf8388cf789992de9ced9d5f237c3
   docs/models/operations/sendchatcompletionrequestresponse.md:
     id: 3ca0009c143d
     last_write_checksum: sha1:287c258f297b7f19bb806019b0115b6f422af287
@@ -6290,12 +6290,12 @@ trackedFiles:
     pristine_git_object: 410efafd6a7f50d91ccb87131fedbe0c3d47e15a
   jsr.json:
     id: 7f6ab7767282
-    last_write_checksum: sha1:0082bac393e508700cef99d847e6d223884e77f7
-    pristine_git_object: 2ba3b937f82577b9088c33ec2a24d297e081985a
+    last_write_checksum: sha1:dc5141dc69a42797ed0a0f4fbf347a7562bd7735
+    pristine_git_object: 06fc9566d8b8405ecd79142a8305d3bb0b4b8dda
   package.json:
     id: 7030d0b2f71b
-    last_write_checksum: sha1:10aa587ad5f0e52424fb85313cb21fefcd0d436c
-    pristine_git_object: 335b871e49c498935c58ed384fb13a7d81534db3
+    last_write_checksum: sha1:7eb4bef61dd3c41fb98d0268287e28ea888401a6
+    pristine_git_object: 6f8912e5f111984e5fd0f7ec12bf92115429c570
   src/core.ts:
     id: f431fdbcd144
     last_write_checksum: sha1:5aa66b0b6a5964f3eea7f3098c2eb3c0ee9c0131
@@ -6330,8 +6330,8 @@ trackedFiles:
     pristine_git_object: 8ba5a8539ecb868231e65516aefc024d60ee994c
   src/funcs/betaResponsesSend.ts:
     id: c5c4ab0c3f76
-    last_write_checksum: sha1:6c36e29558d29fb556a1c5e806d069950167b008
-    pristine_git_object: 6e8d6bac5cae0a4e4df514d67ce2941ad733cdfd
+    last_write_checksum: sha1:1699b173b5095a68527a4eb004c9d93a28fcf8a1
+    pristine_git_object: 34f8bc4de5e1b326f5fdd25a91a5114b3c89f9a6
   src/funcs/byokCreate.ts:
     id: 100cd2d38078
     last_write_checksum: sha1:30db15eae49045f751b6a59530195bdbec900209
@@ -6354,8 +6354,8 @@ trackedFiles:
     pristine_git_object: cedf6dd610c5918752922f4325c7d42216e83679
   src/funcs/chatSend.ts:
     id: 8c3aa3c963bf
-    last_write_checksum: sha1:5a165ff48ba04867aa6e886450663a13ba6e6f04
-    pristine_git_object: 7d9ab683af3132276d76ce1ffe93d2317423ca8a
+    last_write_checksum: sha1:9e4a0bc020ca01935a74ce5a542fa68c0d410127
+    pristine_git_object: f47c1ecd0c50693547936c0caa4fc6261d9e7cb8
   src/funcs/creditsGetCredits.ts:
     id: 88fdc1315137
     last_write_checksum: sha1:d831746d067cb6a2b152f29c1b868029ccfc55a3
@@ -6578,8 +6578,8 @@ trackedFiles:
     pristine_git_object: a187e58707bdb726ca2aff74941efe7493422d4e
   src/lib/config.ts:
     id: 320761608fb3
-    last_write_checksum: sha1:38d1f781c07bd5789907a2a81296e78f79c8dc3a
-    pristine_git_object: a5b9df955a4849f9fc4efbcf1f9fc3599b03cc64
+    last_write_checksum: sha1:e802bb37a3f825ffabc36d2a6d2fe9ea43306c16
+    pristine_git_object: 66703c27059da2ff75cb46f849e8561d692af0f7
   src/lib/dlv.ts:
     id: b1988214835a
     last_write_checksum: sha1:eaac763b22717206a6199104e0403ed17a4e2711
@@ -7898,8 +7898,8 @@ trackedFiles:
     pristine_git_object: cd4425ecdcb6d6fc3f1ceaadc3962c561b055c78
   src/models/operations/createresponses.ts:
     id: 7ad611b27e9d
-    last_write_checksum: sha1:eaf92b2925449fccf3df20086a766a0d1c2bb3b8
-    pristine_git_object: ba32a94d308875429e1e5d317dd91531efdae04a
+    last_write_checksum: sha1:125b46a7a9f280d03bdc01c3a2e771342ef3ab47
+    pristine_git_object: 7ea8d6e578199e58c3229bcb2d0ebcc5419a06cb
   src/models/operations/createvideos.ts:
     id: 06dc92996e18
     last_write_checksum: sha1:debbfb49bdfed99a57248da4ed95dc06be8c1e43
@@ -8062,8 +8062,8 @@ trackedFiles:
     pristine_git_object: aac1d4b50de354941d9b207a3de1463ca045caa9
   src/models/operations/sendchatcompletionrequest.ts:
     id: 52a55a780d2d
-    last_write_checksum: sha1:ef23bebdbe7b4566a65c721025783bf846347f36
-    pristine_git_object: 9478cf71dccc6037ede019f594582fc019c391fd
+    last_write_checksum: sha1:e4b5e0b9cf265e98a00d8fa2f5e528d81b296285
+    pristine_git_object: 8756ca7b0acb40f5f8f9bfc59375920b74ddcad9
   src/models/operations/updatebyokkey.ts:
     id: e302ae3fa539
     last_write_checksum: sha1:4c2c2862ec42a9e05af7b0c3e5fe2f6234969b05
@@ -10010,4 +10010,5 @@ examples:
 examplesVersion: 1.0.2
 releaseNotes: |
   ## Typescript SDK Changes:
-  * `openrouter.generations.getGeneration()`:  `response.data.providerResponses[].status` **Changed** (Breaking ⚠️)
+  * `openrouter.chat.send()`:  `request` **Changed** (Breaking ⚠️)
+  * `openrouter.beta.responses.send()`:  `request` **Changed** (Breaking ⚠️)
