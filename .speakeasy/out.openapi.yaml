@@ -3908,6 +3908,7 @@ components:
         - together
         - upstage
         - venice
+        - wafer
         - wandb
         - xai
         - xiaomi
@@ -10733,6 +10734,7 @@ components:
                 - Together
                 - Upstage
                 - Venice
+                - Wafer
                 - WandB
                 - Xiaomi
                 - xAI
@@ -15860,6 +15862,7 @@ components:
         - Together
         - Upstage
         - Venice
+        - Wafer
         - WandB
         - Xiaomi
         - xAI
@@ -16311,6 +16314,10 @@ components:
           additionalProperties:
             nullable: true
           type: object
+        wafer:
+          additionalProperties:
+            nullable: true
+          type: object
         wandb:
           additionalProperties:
             nullable: true
@@ -16638,6 +16645,7 @@ components:
             - Together
             - Upstage
             - Venice
+            - Wafer
             - WandB
             - Xiaomi
             - xAI
@@ -20931,6 +20939,7 @@ paths:
               - together
               - upstage
               - venice
+              - wafer
               - wandb
               - xai
               - xiaomi
