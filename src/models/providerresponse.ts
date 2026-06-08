@@ -187,7 +187,7 @@ export const ProviderResponse$inboundSchema: z.ZodType<
   latency: z.number().optional(),
   model_permaslug: z.string().optional(),
   provider_name: ProviderResponseProviderName$inboundSchema.optional(),
-  status: z.nullable(z.number()),
+  status: z.nullable(z.int()),
 }).transform((v) => {
   return remap$(v, {
     "endpoint_id": "endpointId",
