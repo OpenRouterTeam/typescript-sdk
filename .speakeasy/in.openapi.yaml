@@ -16573,6 +16573,7 @@ components:
         latency:
           description: Response latency in milliseconds
           example: 1200
+          format: double
           type: number
         model_permaslug:
           description: Canonical model slug
@@ -16700,7 +16701,7 @@ components:
           description: HTTP status code from the provider
           example: 200
           nullable: true
-          type: number
+          type: integer
       required:
         - status
       type: object
@@ -16812,6 +16813,7 @@ components:
                 - $ref: '#/components/schemas/BigNumberUnion'
                 - description: A number or string value representing a large number
             discount:
+              format: double
               type: number
             image:
               allOf:
@@ -16938,6 +16940,7 @@ components:
             - $ref: '#/components/schemas/BigNumberUnion'
             - description: A number or string value representing a large number
         discount:
+          format: double
           type: number
         image:
           allOf:
