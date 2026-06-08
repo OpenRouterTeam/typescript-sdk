@@ -88,7 +88,6 @@ export const BYOKProviderSlug = {
   Together: "together",
   Upstage: "upstage",
   Venice: "venice",
-  Wafer: "wafer",
   Wandb: "wandb",
   Xai: "xai",
   Xiaomi: "xiaomi",

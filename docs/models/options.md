@@ -123,7 +123,6 @@ let value: Options = {};
 | `ubicloud`            | Record<string, *any*> | :heavy_minus_sign:    | N/A                   |
 | `upstage`             | Record<string, *any*> | :heavy_minus_sign:    | N/A                   |
 | `venice`              | Record<string, *any*> | :heavy_minus_sign:    | N/A                   |
-| `wafer`               | Record<string, *any*> | :heavy_minus_sign:    | N/A                   |
 | `wandb`               | Record<string, *any*> | :heavy_minus_sign:    | N/A                   |
 | `xai`                 | Record<string, *any*> | :heavy_minus_sign:    | N/A                   |
 | `xiaomi`              | Record<string, *any*> | :heavy_minus_sign:    | N/A                   |
