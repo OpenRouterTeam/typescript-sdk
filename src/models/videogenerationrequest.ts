@@ -150,6 +150,7 @@ export type Options = {
   ubicloud?: { [k: string]: any | null } | undefined;
   upstage?: { [k: string]: any | null } | undefined;
   venice?: { [k: string]: any | null } | undefined;
+  wafer?: { [k: string]: any | null } | undefined;
   wandb?: { [k: string]: any | null } | undefined;
   xai?: { [k: string]: any | null } | undefined;
   xiaomi?: { [k: string]: any | null } | undefined;
@@ -339,6 +340,7 @@ export type Options$Outbound = {
   ubicloud?: { [k: string]: any | null } | undefined;
   upstage?: { [k: string]: any | null } | undefined;
   venice?: { [k: string]: any | null } | undefined;
+  wafer?: { [k: string]: any | null } | undefined;
   wandb?: { [k: string]: any | null } | undefined;
   xai?: { [k: string]: any | null } | undefined;
   xiaomi?: { [k: string]: any | null } | undefined;
@@ -457,6 +459,7 @@ export const Options$outboundSchema: z.ZodType<Options$Outbound, Options> = z
     ubicloud: z.record(z.string(), z.nullable(z.any())).optional(),
     upstage: z.record(z.string(), z.nullable(z.any())).optional(),
     venice: z.record(z.string(), z.nullable(z.any())).optional(),
+    wafer: z.record(z.string(), z.nullable(z.any())).optional(),
     wandb: z.record(z.string(), z.nullable(z.any())).optional(),
     xai: z.record(z.string(), z.nullable(z.any())).optional(),
     xiaomi: z.record(z.string(), z.nullable(z.any())).optional(),
