@@ -14,6 +14,7 @@ let value: GenerationResponse = {
     cacheDiscount: null,
     cancelled: false,
     createdAt: "2024-07-15T23:33:19.433273+00:00",
+    dataRegion: "global",
     externalUser: "user-123",
     finishReason: "stop",
     generationTime: 1200,
