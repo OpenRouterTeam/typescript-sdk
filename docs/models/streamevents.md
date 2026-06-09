@@ -209,6 +209,153 @@ const value: models.FunctionCallArgsDoneEvent = {
 };
 ```
 
+### `models.FusionCallAnalysisCompletedEvent`
+
+```typescript
+const value: models.FusionCallAnalysisCompletedEvent = {
+  analysis: {
+    blindSpots: [
+      "No model considered the impact on existing API consumers.",
+    ],
+    consensus: [
+      "All panel models agree the request is asking for a concise summary.",
+    ],
+    contradictions: [
+      {
+        stances: [
+          {
+            model: "openai/gpt-5",
+            stance: "Favors an incremental rollout.",
+          },
+          {
+            model: "anthropic/claude-sonnet-4.5",
+            stance: "Favors a single coordinated migration.",
+          },
+        ],
+        topic: "Recommended approach",
+      },
+    ],
+    partialCoverage: [
+      {
+        models: [
+          "openai/gpt-5",
+        ],
+        point: "Only one model addressed the rollback strategy.",
+      },
+    ],
+    uniqueInsights: [
+      {
+        insight:
+          "Highlighted a backwards-compatibility risk the other models missed.",
+        model: "anthropic/claude-sonnet-4.5",
+      },
+    ],
+  },
+  itemId: "<id>",
+  outputIndex: 74526,
+  sequenceNumber: 0,
+  type: "response.fusion_call.analysis.completed",
+};
+```
+
+### `models.FusionCallAnalysisInProgressEvent`
+
+```typescript
+const value: models.FusionCallAnalysisInProgressEvent = {
+  itemId: "<id>",
+  judgeModel: "<value>",
+  outputIndex: 306599,
+  sequenceNumber: 0,
+  type: "response.fusion_call.analysis.in_progress",
+};
+```
+
+### `models.FusionCallCompletedEvent`
+
+```typescript
+const value: models.FusionCallCompletedEvent = {
+  itemId: "<id>",
+  outputIndex: 114921,
+  sequenceNumber: 0,
+  type: "response.fusion_call.completed",
+};
+```
+
+### `models.FusionCallInProgressEvent`
+
+```typescript
+const value: models.FusionCallInProgressEvent = {
+  itemId: "<id>",
+  outputIndex: 285302,
+  sequenceNumber: 0,
+  type: "response.fusion_call.in_progress",
+};
+```
+
+### `models.FusionCallPanelAddedEvent`
+
+```typescript
+const value: models.FusionCallPanelAddedEvent = {
+  itemId: "<id>",
+  model: "Cruze",
+  outputIndex: 246848,
+  sequenceNumber: 0,
+  type: "response.fusion_call.panel.added",
+};
+```
+
+### `models.FusionCallPanelCompletedEvent`
+
+```typescript
+const value: models.FusionCallPanelCompletedEvent = {
+  content: "<value>",
+  itemId: "<id>",
+  model: "Mercielago",
+  outputIndex: 546615,
+  sequenceNumber: 0,
+  type: "response.fusion_call.panel.completed",
+};
+```
+
+### `models.FusionCallPanelDeltaEvent`
+
+```typescript
+const value: models.FusionCallPanelDeltaEvent = {
+  delta: "<value>",
+  itemId: "<id>",
+  model: "Mustang",
+  outputIndex: 213881,
+  sequenceNumber: 0,
+  type: "response.fusion_call.panel.delta",
+};
+```
+
+### `models.FusionCallPanelFailedEvent`
+
+```typescript
+const value: models.FusionCallPanelFailedEvent = {
+  error: "<value>",
+  itemId: "<id>",
+  model: "Colorado",
+  outputIndex: 389396,
+  sequenceNumber: 0,
+  type: "response.fusion_call.panel.failed",
+};
+```
+
+### `models.FusionCallPanelReasoningDeltaEvent`
+
+```typescript
+const value: models.FusionCallPanelReasoningDeltaEvent = {
+  delta: "<value>",
+  itemId: "<id>",
+  model: "Volt",
+  outputIndex: 705984,
+  sequenceNumber: 0,
+  type: "response.fusion_call.panel.reasoning.delta",
+};
+```
+
 ### `models.ImageGenCallCompletedEvent`
 
 ```typescript
