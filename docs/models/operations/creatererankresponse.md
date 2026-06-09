@@ -10,9 +10,7 @@ const value: operations.CreateRerankResponseBody = {
   model: "cohere/rerank-v3.5",
   results: [
     {
-      document: {
-        text: "Paris is the capital of France.",
-      },
+      document: {},
       index: 0,
       relevanceScore: 0.98,
     },
