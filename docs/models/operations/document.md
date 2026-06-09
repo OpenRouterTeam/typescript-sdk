@@ -1,19 +1,19 @@
 # Document
 
-The document object containing the original text
+A document to rerank. Either a plain string, or a structured object with optional `text` and/or `image`.
 
-## Example Usage
+
+## Supported Types
+
+### `string`
 
 ```typescript
-import { Document } from "@openrouter/sdk/models/operations";
-
-let value: Document = {
-  text: "Paris is the capital of France.",
-};
+const value: string = "<value>";
 ```
 
-## Fields
+### `operations.DocumentRequest`
 
-| Field                           | Type                            | Required                        | Description                     | Example                         |
-| ------------------------------- | ------------------------------- | ------------------------------- | ------------------------------- | ------------------------------- |
-| `text`                          | *string*                        | :heavy_check_mark:              | The document text               | Paris is the capital of France. |
+```typescript
+const value: operations.DocumentRequest = {};
+```
+
