@@ -27429,12 +27429,30 @@ paths:
                 top_n: 3
               properties:
                 documents:
-                  description: The list of documents to rerank
+                  description: >-
+                    The list of documents to rerank. Documents may be plain strings, or structured objects with `text` and/or `image` for multimodal models.
                   example:
                     - Paris is the capital of France.
                     - Berlin is the capital of Germany.
                   items:
-                    type: string
+                    anyOf:
+                      - type: string
+                      - description: >-
+                          A structured document with optional text and/or image content. At least one of `text` or `image` must be provided.
+                        properties:
+                          image:
+                            description: >-
+                              An image associated with the document, as a remote URL (http/https) or a base64-encoded data URI (data:image/...).
+                            example: https://upload.wikimedia.org/wikipedia/commons/thumb/8/8b/Phytogenic.png
+                            type: string
+                          text:
+                            description: The document text
+                            example: AI enables robots to perceive, plan, and act autonomously.
+                            type: string
+                        type: object
+                    description: >-
+                      A document to rerank. Either a plain string, or a structured object with optional `text` and/or `image`.
+                  minItems: 1
                   type: array
                 model:
                   description: The rerank model to use
@@ -27505,14 +27523,16 @@ paths:
                         relevance_score: 0.98
                       properties:
                         document:
-                          description: The document object containing the original text
+                          description: The document object echoing the original input (text and/or image)
                           properties:
+                            image:
+                              description: The image (URL or data URI) from the original document
+                              example: https://example.com/image.png
+                              type: string
                             text:
                               description: The document text
                               example: Paris is the capital of France.
                               type: string
-                          required:
-                            - text
                           type: object
                         index:
                           description: Index of the document in the original input list
