@@ -3855,6 +3855,7 @@ components:
         - cohere
         - crusoe
         - darkbloom
+        - decart
         - deepinfra
         - deepseek
         - dekallm
@@ -10752,6 +10753,7 @@ components:
                 - Crucible
                 - Crusoe
                 - Darkbloom
+                - Decart
                 - DeepInfra
                 - DeepSeek
                 - DekaLLM
@@ -15880,6 +15882,7 @@ components:
         - Crucible
         - Crusoe
         - Darkbloom
+        - Decart
         - DeepInfra
         - DeepSeek
         - DekaLLM
@@ -16067,6 +16070,10 @@ components:
             nullable: true
           type: object
         darkbloom:
+          additionalProperties:
+            nullable: true
+          type: object
+        decart:
           additionalProperties:
             nullable: true
           type: object
@@ -16663,6 +16670,7 @@ components:
             - Crucible
             - Crusoe
             - Darkbloom
+            - Decart
             - DeepInfra
             - DeepSeek
             - DekaLLM
@@ -20958,6 +20966,7 @@ paths:
               - cohere
               - crusoe
               - darkbloom
+              - decart
               - deepinfra
               - deepseek
               - dekallm

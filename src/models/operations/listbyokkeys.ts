@@ -62,6 +62,7 @@ export const Provider = {
   Cohere: "cohere",
   Crusoe: "crusoe",
   Darkbloom: "darkbloom",
+  Decart: "decart",
   Deepinfra: "deepinfra",
   Deepseek: "deepseek",
   Dekallm: "dekallm",
