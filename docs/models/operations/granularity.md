@@ -1,0 +1,19 @@
+# Granularity
+
+## Example Usage
+
+```typescript
+import { Granularity } from "@openrouter/sdk/models/operations";
+
+let value: Granularity = {
+  displayLabel: "Day",
+  name: "day",
+};
+```
+
+## Fields
+
+| Field                                                                    | Type                                                                     | Required                                                                 | Description                                                              | Example                                                                  |
+| ------------------------------------------------------------------------ | ------------------------------------------------------------------------ | ------------------------------------------------------------------------ | ------------------------------------------------------------------------ | ------------------------------------------------------------------------ |
+| `displayLabel`                                                           | *string*                                                                 | :heavy_check_mark:                                                       | Human-readable label                                                     | Day                                                                      |
+| `name`                                                                   | [operations.GranularityName](../../models/operations/granularityname.md) | :heavy_check_mark:                                                       | Granularity identifier                                                   | day                                                                      |
