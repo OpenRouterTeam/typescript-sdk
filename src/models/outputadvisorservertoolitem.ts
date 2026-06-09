@@ -5,12 +5,21 @@
 
 import * as z from "zod/v4";
 import { safeParse } from "../lib/schemas.js";
+import { ClosedEnum } from "../types/enums.js";
 import { Result as SafeParseResult } from "../types/fp.js";
 import { SDKValidationError } from "./errors/sdkvalidationerror.js";
 import {
   ToolCallStatus,
   ToolCallStatus$inboundSchema,
+  ToolCallStatus$outboundSchema,
 } from "./toolcallstatus.js";
+
+export const OutputAdvisorServerToolItemType = {
+  OpenrouterAdvisor: "openrouter:advisor",
+} as const;
+export type OutputAdvisorServerToolItemType = ClosedEnum<
+  typeof OutputAdvisorServerToolItemType
+>;
 
 /**
  * An openrouter:advisor server tool output item
@@ -34,8 +43,17 @@ export type OutputAdvisorServerToolItem = {
    */
   prompt?: string | undefined;
   status: ToolCallStatus;
-  type: "openrouter:advisor";
+  type: OutputAdvisorServerToolItemType;
 };
+
+/** @internal */
+export const OutputAdvisorServerToolItemType$inboundSchema: z.ZodEnum<
+  typeof OutputAdvisorServerToolItemType
+> = z.enum(OutputAdvisorServerToolItemType);
+/** @internal */
+export const OutputAdvisorServerToolItemType$outboundSchema: z.ZodEnum<
+  typeof OutputAdvisorServerToolItemType
+> = OutputAdvisorServerToolItemType$inboundSchema;
 
 /** @internal */
 export const OutputAdvisorServerToolItem$inboundSchema: z.ZodType<
@@ -48,9 +66,42 @@ export const OutputAdvisorServerToolItem$inboundSchema: z.ZodType<
   model: z.string().optional(),
   prompt: z.string().optional(),
   status: ToolCallStatus$inboundSchema,
-  type: z.literal("openrouter:advisor"),
+  type: OutputAdvisorServerToolItemType$inboundSchema,
+});
+/** @internal */
+export type OutputAdvisorServerToolItem$Outbound = {
+  advice?: string | undefined;
+  error?: string | undefined;
+  id?: string | undefined;
+  model?: string | undefined;
+  prompt?: string | undefined;
+  status: string;
+  type: string;
+};
+
+/** @internal */
+export const OutputAdvisorServerToolItem$outboundSchema: z.ZodType<
+  OutputAdvisorServerToolItem$Outbound,
+  OutputAdvisorServerToolItem
+> = z.object({
+  advice: z.string().optional(),
+  error: z.string().optional(),
+  id: z.string().optional(),
+  model: z.string().optional(),
+  prompt: z.string().optional(),
+  status: ToolCallStatus$outboundSchema,
+  type: OutputAdvisorServerToolItemType$outboundSchema,
 });
 
+export function outputAdvisorServerToolItemToJSON(
+  outputAdvisorServerToolItem: OutputAdvisorServerToolItem,
+): string {
+  return JSON.stringify(
+    OutputAdvisorServerToolItem$outboundSchema.parse(
+      outputAdvisorServerToolItem,
+    ),
+  );
+}
 export function outputAdvisorServerToolItemFromJSON(
   jsonString: string,
 ): SafeParseResult<OutputAdvisorServerToolItem, SDKValidationError> {
