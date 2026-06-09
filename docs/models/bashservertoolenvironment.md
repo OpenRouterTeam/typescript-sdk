@@ -1,0 +1,24 @@
+# BashServerToolEnvironment
+
+Execution environment for the bash server tool.
+
+
+## Supported Types
+
+### `models.ContainerAutoEnvironment`
+
+```typescript
+const value: models.ContainerAutoEnvironment = {
+  type: "container_auto",
+};
+```
+
+### `models.ContainerReferenceEnvironment`
+
+```typescript
+const value: models.ContainerReferenceEnvironment = {
+  containerId: "cntr_abc123",
+  type: "container_reference",
+};
+```
+
