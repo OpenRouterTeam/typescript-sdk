@@ -7346,6 +7346,57 @@ components:
             When omitted, defaults to the first model in the Quality preset.
           example: ~anthropic/claude-opus-latest
           type: string
+        tools:
+          description: >-
+            Server tools available to panelist and judge inner calls. Each entry uses the same `{ type, parameters? }`
+            shorthand as the outer Chat Completions request. When omitted, defaults to `[{ type: "openrouter:web_search"
+            }, { type: "openrouter:web_fetch" }]`. Pass an empty array to disable tools entirely (panelists answer from
+            parametric knowledge only).
+          example:
+            - parameters:
+                excluded_domains:
+                  - example.com
+              type: openrouter:web_search
+            - type: openrouter:web_fetch
+          items:
+            properties:
+              parameters:
+                additionalProperties:
+                  anyOf:
+                    - type: string
+                    - format: double
+                      type: number
+                    - type: boolean
+                    - nullable: true
+                    - items:
+                        anyOf:
+                          - type: string
+                          - format: double
+                            type: number
+                          - type: boolean
+                          - nullable: true
+                          - nullable: true
+                      type: array
+                    - additionalProperties:
+                        anyOf:
+                          - type: string
+                          - format: double
+                            type: number
+                          - type: boolean
+                          - nullable: true
+                          - nullable: true
+                      type: object
+                    - nullable: true
+                description: Optional configuration forwarded as the tool's `parameters` object.
+                type: object
+              type:
+                description: Server tool type identifier (e.g. "openrouter:web_search", "openrouter:web_fetch").
+                type: string
+            required:
+              - type
+            type: object
+          maxItems: 8
+          type: array
       required:
         - id
       type: object
@@ -7442,6 +7493,33 @@ components:
           example: 0.7
           format: double
           type: number
+        tools:
+          description: >-
+            Server tools available to panelist and judge inner calls. Each entry uses the same `{ type, parameters? }`
+            shorthand as the outer Chat Completions request. When omitted, defaults to `[{ type: "openrouter:web_search"
+            }, { type: "openrouter:web_fetch" }]`. Pass an empty array to disable tools entirely (panelists answer from
+            parametric knowledge only).
+          example:
+            - parameters:
+                excluded_domains:
+                  - example.com
+              type: openrouter:web_search
+            - type: openrouter:web_fetch
+          items:
+            properties:
+              parameters:
+                additionalProperties:
+                  nullable: true
+                description: Optional configuration forwarded as the tool's `parameters` object.
+                type: object
+              type:
+                description: Server tool type identifier (e.g. "openrouter:web_search", "openrouter:web_fetch").
+                type: string
+            required:
+              - type
+            type: object
+          maxItems: 8
+          type: array
       type: object
     GenerationContentData:
       description: Stored prompt and completion content
