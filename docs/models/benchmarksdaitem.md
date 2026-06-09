@@ -1,0 +1,42 @@
+# BenchmarksDAItem
+
+## Example Usage
+
+```typescript
+import { BenchmarksDAItem } from "@openrouter/sdk/models";
+
+let value: BenchmarksDAItem = {
+  arena: "models",
+  avgGenerationTimeMs: 3200,
+  category: "codecategories",
+  displayName: "Claude Sonnet 4",
+  elo: 1423,
+  modelPermaslug: "anthropic/claude-sonnet-4",
+  pricing: {
+    completion: "0.000015",
+    prompt: "0.000003",
+  },
+  tournamentStats: {
+    firstPlace: 12,
+    fourthPlace: 2,
+    secondPlace: 8,
+    thirdPlace: 5,
+    total: 27,
+  },
+  winRate: 0.72,
+};
+```
+
+## Fields
+
+| Field                                                                        | Type                                                                         | Required                                                                     | Description                                                                  | Example                                                                      |
+| ---------------------------------------------------------------------------- | ---------------------------------------------------------------------------- | ---------------------------------------------------------------------------- | ---------------------------------------------------------------------------- | ---------------------------------------------------------------------------- |
+| `arena`                                                                      | *string*                                                                     | :heavy_check_mark:                                                           | Arena this ranking belongs to.                                               | models                                                                       |
+| `avgGenerationTimeMs`                                                        | *number*                                                                     | :heavy_check_mark:                                                           | Average generation time in milliseconds.                                     | 3200                                                                         |
+| `category`                                                                   | *string*                                                                     | :heavy_check_mark:                                                           | Category within the arena.                                                   | codecategories                                                               |
+| `displayName`                                                                | *string*                                                                     | :heavy_check_mark:                                                           | Human-readable model name from Design Arena.                                 | Claude Sonnet 4                                                              |
+| `elo`                                                                        | *number*                                                                     | :heavy_check_mark:                                                           | ELO rating from head-to-head arena battles.                                  | 1423                                                                         |
+| `modelPermaslug`                                                             | *string*                                                                     | :heavy_check_mark:                                                           | Stable OpenRouter model identifier.                                          | anthropic/claude-sonnet-4                                                    |
+| `pricing`                                                                    | [models.BenchmarkPricing](../models/benchmarkpricing.md)                     | :heavy_check_mark:                                                           | OpenRouter pricing per token for this model. Null if pricing is unavailable. | {<br/>"completion": "0.000015",<br/>"prompt": "0.000003"<br/>}               |
+| `tournamentStats`                                                            | [models.TournamentStats](../models/tournamentstats.md)                       | :heavy_check_mark:                                                           | Placement distribution from tournament matches.                              |                                                                              |
+| `winRate`                                                                    | *number*                                                                     | :heavy_check_mark:                                                           | Win rate as a decimal (0–1).                                                 | 0.72                                                                         |

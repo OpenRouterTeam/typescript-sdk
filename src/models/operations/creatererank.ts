@@ -33,32 +33,13 @@ export type CreateRerankGlobals = {
 };
 
 /**
- * A structured document with optional text and/or image content. At least one of `text` or `image` must be provided.
- */
-export type DocumentRequest = {
-  /**
-   * An image associated with the document, as a remote URL (http/https) or a base64-encoded data URI (data:image/...).
-   */
-  image?: string | undefined;
-  /**
-   * The document text
-   */
-  text?: string | undefined;
-};
-
-/**
- * A document to rerank. Either a plain string, or a structured object with optional `text` and/or `image`.
- */
-export type Document = string | DocumentRequest;
-
-/**
  * Rerank request input
  */
 export type CreateRerankRequestBody = {
   /**
-   * The list of documents to rerank. Documents may be plain strings, or structured objects with `text` and/or `image` for multimodal models.
+   * The list of documents to rerank
    */
-  documents: Array<string | DocumentRequest>;
+  documents: Array<string>;
   /**
    * The rerank model to use
    */
@@ -98,17 +79,13 @@ export type CreateRerankRequest = {
 };
 
 /**
- * The document object echoing the original input (text and/or image)
+ * The document object containing the original text
  */
-export type DocumentResponse = {
-  /**
-   * The image (URL or data URI) from the original document
-   */
-  image?: string | undefined;
+export type Document = {
   /**
    * The document text
    */
-  text?: string | undefined;
+  text: string;
 };
 
 /**
@@ -116,9 +93,9 @@ export type DocumentResponse = {
  */
 export type Result = {
   /**
-   * The document object echoing the original input (text and/or image)
+   * The document object containing the original text
    */
-  document: DocumentResponse;
+  document: Document;
   /**
    * Index of the document in the original input list
    */
@@ -176,40 +153,8 @@ export type CreateRerankResponseBody = {
 export type CreateRerankResponse = CreateRerankResponseBody | string;
 
 /** @internal */
-export type DocumentRequest$Outbound = {
-  image?: string | undefined;
-  text?: string | undefined;
-};
-
-/** @internal */
-export const DocumentRequest$outboundSchema: z.ZodType<
-  DocumentRequest$Outbound,
-  DocumentRequest
-> = z.object({
-  image: z.string().optional(),
-  text: z.string().optional(),
-});
-
-export function documentRequestToJSON(
-  documentRequest: DocumentRequest,
-): string {
-  return JSON.stringify(DocumentRequest$outboundSchema.parse(documentRequest));
-}
-
-/** @internal */
-export type Document$Outbound = string | DocumentRequest$Outbound;
-
-/** @internal */
-export const Document$outboundSchema: z.ZodType<Document$Outbound, Document> = z
-  .union([z.string(), z.lazy(() => DocumentRequest$outboundSchema)]);
-
-export function documentToJSON(document: Document): string {
-  return JSON.stringify(Document$outboundSchema.parse(document));
-}
-
-/** @internal */
 export type CreateRerankRequestBody$Outbound = {
-  documents: Array<string | DocumentRequest$Outbound>;
+  documents: Array<string>;
   model: string;
   provider?: models.ProviderPreferences$Outbound | null | undefined;
   query: string;
@@ -221,9 +166,7 @@ export const CreateRerankRequestBody$outboundSchema: z.ZodType<
   CreateRerankRequestBody$Outbound,
   CreateRerankRequestBody
 > = z.object({
-  documents: z.array(
-    z.union([z.string(), z.lazy(() => DocumentRequest$outboundSchema)]),
-  ),
+  documents: z.array(z.string()),
   model: z.string(),
   provider: z.nullable(models.ProviderPreferences$outboundSchema).optional(),
   query: z.string(),
@@ -275,27 +218,23 @@ export function createRerankRequestToJSON(
 }
 
 /** @internal */
-export const DocumentResponse$inboundSchema: z.ZodType<
-  DocumentResponse,
-  unknown
-> = z.object({
-  image: z.string().optional(),
-  text: z.string().optional(),
+export const Document$inboundSchema: z.ZodType<Document, unknown> = z.object({
+  text: z.string(),
 });
 
-export function documentResponseFromJSON(
+export function documentFromJSON(
   jsonString: string,
-): SafeParseResult<DocumentResponse, SDKValidationError> {
+): SafeParseResult<Document, SDKValidationError> {
   return safeParse(
     jsonString,
-    (x) => DocumentResponse$inboundSchema.parse(JSON.parse(x)),
-    `Failed to parse 'DocumentResponse' from JSON`,
+    (x) => Document$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'Document' from JSON`,
   );
 }
 
 /** @internal */
 export const Result$inboundSchema: z.ZodType<Result, unknown> = z.object({
-  document: z.lazy(() => DocumentResponse$inboundSchema),
+  document: z.lazy(() => Document$inboundSchema),
   index: z.int(),
   relevance_score: z.number(),
 }).transform((v) => {
