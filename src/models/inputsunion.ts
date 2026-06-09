@@ -92,6 +92,11 @@ import {
   OpenAIResponsesRefusalContent$outboundSchema,
 } from "./openairesponsesrefusalcontent.js";
 import {
+  OutputAdvisorServerToolItem,
+  OutputAdvisorServerToolItem$Outbound,
+  OutputAdvisorServerToolItem$outboundSchema,
+} from "./outputadvisorservertoolitem.js";
+import {
   OutputApplyPatchServerToolItem,
   OutputApplyPatchServerToolItem$Outbound,
   OutputApplyPatchServerToolItem$outboundSchema,
@@ -407,6 +412,7 @@ export type InputsUnion1 =
   | OutputMemoryServerToolItem
   | OutputMcpServerToolItem
   | OutputSearchModelsServerToolItem
+  | OutputAdvisorServerToolItem
   | CompactionItem
   | ItemReferenceItem
   | EasyInputMessage
@@ -456,6 +462,7 @@ export type InputsUnion =
     | OutputMemoryServerToolItem
     | OutputMcpServerToolItem
     | OutputSearchModelsServerToolItem
+    | OutputAdvisorServerToolItem
     | CompactionItem
     | ItemReferenceItem
     | EasyInputMessage
@@ -758,6 +765,7 @@ export type InputsUnion1$Outbound =
   | OutputMemoryServerToolItem$Outbound
   | OutputMcpServerToolItem$Outbound
   | OutputSearchModelsServerToolItem$Outbound
+  | OutputAdvisorServerToolItem$Outbound
   | CompactionItem$Outbound
   | ItemReferenceItem$Outbound
   | EasyInputMessage$Outbound
@@ -806,6 +814,7 @@ export const InputsUnion1$outboundSchema: z.ZodType<
   OutputMemoryServerToolItem$outboundSchema,
   OutputMcpServerToolItem$outboundSchema,
   OutputSearchModelsServerToolItem$outboundSchema,
+  OutputAdvisorServerToolItem$outboundSchema,
   CompactionItem$outboundSchema,
   ItemReferenceItem$outboundSchema,
   EasyInputMessage$outboundSchema,
@@ -858,6 +867,7 @@ export type InputsUnion$Outbound =
     | OutputMemoryServerToolItem$Outbound
     | OutputMcpServerToolItem$Outbound
     | OutputSearchModelsServerToolItem$Outbound
+    | OutputAdvisorServerToolItem$Outbound
     | CompactionItem$Outbound
     | ItemReferenceItem$Outbound
     | EasyInputMessage$Outbound
@@ -910,6 +920,7 @@ export const InputsUnion$outboundSchema: z.ZodType<
       OutputMemoryServerToolItem$outboundSchema,
       OutputMcpServerToolItem$outboundSchema,
       OutputSearchModelsServerToolItem$outboundSchema,
+      OutputAdvisorServerToolItem$outboundSchema,
       CompactionItem$outboundSchema,
       ItemReferenceItem$outboundSchema,
       EasyInputMessage$outboundSchema,
