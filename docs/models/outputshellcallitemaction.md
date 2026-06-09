@@ -1,0 +1,23 @@
+# OutputShellCallItemAction
+
+## Example Usage
+
+```typescript
+import { OutputShellCallItemAction } from "@openrouter/sdk/models";
+
+let value: OutputShellCallItemAction = {
+  commands: [
+    "<value 1>",
+  ],
+  maxOutputLength: 586639,
+  timeoutMs: 786403,
+};
+```
+
+## Fields
+
+| Field              | Type               | Required           | Description        |
+| ------------------ | ------------------ | ------------------ | ------------------ |
+| `commands`         | *string*[]         | :heavy_check_mark: | N/A                |
+| `maxOutputLength`  | *number*           | :heavy_check_mark: | N/A                |
+| `timeoutMs`        | *number*           | :heavy_check_mark: | N/A                |
