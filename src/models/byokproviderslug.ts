@@ -35,6 +35,7 @@ export const BYOKProviderSlug = {
   Cohere: "cohere",
   Crusoe: "crusoe",
   Darkbloom: "darkbloom",
+  Decart: "decart",
   Deepinfra: "deepinfra",
   Deepseek: "deepseek",
   Dekallm: "dekallm",
