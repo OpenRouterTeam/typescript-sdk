@@ -63,7 +63,7 @@ export type ObservabilityDatadogDestination = {
    */
   privacyMode: boolean;
   /**
-   * Sampling rate for events sent to this destination, between 0.0001 and 1 (1 = 100%).
+   * Sampling rate for events sent to this destination, between 0 and 1 (1 = 100%).
    */
   samplingRate: number;
   type: "datadog";

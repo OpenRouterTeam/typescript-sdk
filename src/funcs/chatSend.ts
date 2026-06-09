@@ -228,9 +228,9 @@ async function $do(
       payload["HTTP-Referer"] ?? client._options.httpReferer,
       { explode: false, charEncoding: "none" },
     ),
-    "X-OpenRouter-Metadata": encodeSimple(
-      "X-OpenRouter-Metadata",
-      payload["X-OpenRouter-Metadata"],
+    "X-OpenRouter-Experimental-Metadata": encodeSimple(
+      "X-OpenRouter-Experimental-Metadata",
+      payload["X-OpenRouter-Experimental-Metadata"],
       { explode: false, charEncoding: "none" },
     ),
     "X-OpenRouter-Categories": encodeSimple(

@@ -15,5 +15,5 @@ let value: ApiType = "tts";
 ## Values
 
 ```typescript
-"completions" | "embeddings" | "rerank" | "tts" | "stt" | "video" | "image" | Unrecognized<string>
+"completions" | "embeddings" | "rerank" | "tts" | "stt" | "video" | Unrecognized<string>
 ```

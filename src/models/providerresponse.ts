@@ -22,7 +22,6 @@ export const ProviderResponseProviderName = {
   Enfer: "Enfer",
   GoPomelo: "GoPomelo",
   HuggingFace: "HuggingFace",
-  Hyperbolic: "Hyperbolic",
   Hyperbolic2: "Hyperbolic 2",
   InoCloud: "InoCloud",
   Kluster: "Kluster",
@@ -80,6 +79,7 @@ export const ProviderResponseProviderName = {
   Google: "Google",
   GoogleAIStudio: "Google AI Studio",
   Groq: "Groq",
+  Hyperbolic: "Hyperbolic",
   Inception: "Inception",
   Inceptron: "Inceptron",
   InferenceNet: "InferenceNet",
@@ -123,7 +123,6 @@ export const ProviderResponseProviderName = {
   Together: "Together",
   Upstage: "Upstage",
   Venice: "Venice",
-  Wafer: "Wafer",
   WandB: "WandB",
   Xiaomi: "Xiaomi",
   XAI: "xAI",
@@ -188,7 +187,7 @@ export const ProviderResponse$inboundSchema: z.ZodType<
   latency: z.number().optional(),
   model_permaslug: z.string().optional(),
   provider_name: ProviderResponseProviderName$inboundSchema.optional(),
-  status: z.nullable(z.int()),
+  status: z.nullable(z.number()),
 }).transform((v) => {
   return remap$(v, {
     "endpoint_id": "endpointId",

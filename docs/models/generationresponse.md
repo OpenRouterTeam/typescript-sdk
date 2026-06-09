@@ -35,7 +35,6 @@ let value: GenerationResponse = {
     numMediaPrompt: 1,
     numSearchResults: 5,
     origin: "https://openrouter.ai/",
-    presetId: "a9e8d400-592a-494f-908c-375efa66cafd",
     providerName: "Infermatic",
     providerResponses: null,
     router: "openrouter/auto",
