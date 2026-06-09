@@ -9,40 +9,13 @@ import { safeParse } from "../lib/schemas.js";
 import { Result as SafeParseResult } from "../types/fp.js";
 import { SDKValidationError } from "./errors/sdkvalidationerror.js";
 import {
+  FusionAnalysisResult,
+  FusionAnalysisResult$inboundSchema,
+} from "./fusionanalysisresult.js";
+import {
   ToolCallStatus,
   ToolCallStatus$inboundSchema,
 } from "./toolcallstatus.js";
-
-export type Stance = {
-  model: string;
-  stance: string;
-};
-
-export type Contradiction = {
-  stances: Array<Stance>;
-  topic: string;
-};
-
-export type PartialCoverage = {
-  models: Array<string>;
-  point: string;
-};
-
-export type UniqueInsight = {
-  insight: string;
-  model: string;
-};
-
-/**
- * Structured analysis produced by the fusion judge model.
- */
-export type Analysis = {
-  blindSpots: Array<string>;
-  consensus: Array<string>;
-  contradictions: Array<Contradiction>;
-  partialCoverage: Array<PartialCoverage>;
-  uniqueInsights: Array<UniqueInsight>;
-};
 
 export type FailedModel = {
   /**
@@ -60,6 +33,7 @@ export type FailedModel = {
 };
 
 export type ResponseT = {
+  content?: string | undefined;
   model: string;
 };
 
@@ -70,7 +44,7 @@ export type OutputFusionServerToolItem = {
   /**
    * Structured analysis produced by the fusion judge model.
    */
-  analysis?: Analysis | undefined;
+  analysis?: FusionAnalysisResult | undefined;
   /**
    * Error message when the fusion run did not produce an analysis result.
    */
@@ -85,106 +59,12 @@ export type OutputFusionServerToolItem = {
   failureReason?: string | undefined;
   id?: string | undefined;
   /**
-   * Slugs of the analysis models that produced a response in this fusion run.
+   * Analysis models that produced a response in this fusion run, with each model's full panel content.
    */
   responses?: Array<ResponseT> | undefined;
   status: ToolCallStatus;
   type: "openrouter:fusion";
 };
-
-/** @internal */
-export const Stance$inboundSchema: z.ZodType<Stance, unknown> = z.object({
-  model: z.string(),
-  stance: z.string(),
-});
-
-export function stanceFromJSON(
-  jsonString: string,
-): SafeParseResult<Stance, SDKValidationError> {
-  return safeParse(
-    jsonString,
-    (x) => Stance$inboundSchema.parse(JSON.parse(x)),
-    `Failed to parse 'Stance' from JSON`,
-  );
-}
-
-/** @internal */
-export const Contradiction$inboundSchema: z.ZodType<Contradiction, unknown> = z
-  .object({
-    stances: z.array(z.lazy(() => Stance$inboundSchema)),
-    topic: z.string(),
-  });
-
-export function contradictionFromJSON(
-  jsonString: string,
-): SafeParseResult<Contradiction, SDKValidationError> {
-  return safeParse(
-    jsonString,
-    (x) => Contradiction$inboundSchema.parse(JSON.parse(x)),
-    `Failed to parse 'Contradiction' from JSON`,
-  );
-}
-
-/** @internal */
-export const PartialCoverage$inboundSchema: z.ZodType<
-  PartialCoverage,
-  unknown
-> = z.object({
-  models: z.array(z.string()),
-  point: z.string(),
-});
-
-export function partialCoverageFromJSON(
-  jsonString: string,
-): SafeParseResult<PartialCoverage, SDKValidationError> {
-  return safeParse(
-    jsonString,
-    (x) => PartialCoverage$inboundSchema.parse(JSON.parse(x)),
-    `Failed to parse 'PartialCoverage' from JSON`,
-  );
-}
-
-/** @internal */
-export const UniqueInsight$inboundSchema: z.ZodType<UniqueInsight, unknown> = z
-  .object({
-    insight: z.string(),
-    model: z.string(),
-  });
-
-export function uniqueInsightFromJSON(
-  jsonString: string,
-): SafeParseResult<UniqueInsight, SDKValidationError> {
-  return safeParse(
-    jsonString,
-    (x) => UniqueInsight$inboundSchema.parse(JSON.parse(x)),
-    `Failed to parse 'UniqueInsight' from JSON`,
-  );
-}
-
-/** @internal */
-export const Analysis$inboundSchema: z.ZodType<Analysis, unknown> = z.object({
-  blind_spots: z.array(z.string()),
-  consensus: z.array(z.string()),
-  contradictions: z.array(z.lazy(() => Contradiction$inboundSchema)),
-  partial_coverage: z.array(z.lazy(() => PartialCoverage$inboundSchema)),
-  unique_insights: z.array(z.lazy(() => UniqueInsight$inboundSchema)),
-}).transform((v) => {
-  return remap$(v, {
-    "blind_spots": "blindSpots",
-    "partial_coverage": "partialCoverage",
-    "unique_insights": "uniqueInsights",
-  });
-});
-
-export function analysisFromJSON(
-  jsonString: string,
-): SafeParseResult<Analysis, SDKValidationError> {
-  return safeParse(
-    jsonString,
-    (x) => Analysis$inboundSchema.parse(JSON.parse(x)),
-    `Failed to parse 'Analysis' from JSON`,
-  );
-}
 
 /** @internal */
 export const FailedModel$inboundSchema: z.ZodType<FailedModel, unknown> = z
@@ -210,6 +90,7 @@ export function failedModelFromJSON(
 
 /** @internal */
 export const ResponseT$inboundSchema: z.ZodType<ResponseT, unknown> = z.object({
+  content: z.string().optional(),
   model: z.string(),
 });
 
@@ -228,7 +109,7 @@ export const OutputFusionServerToolItem$inboundSchema: z.ZodType<
   OutputFusionServerToolItem,
   unknown
 > = z.object({
-  analysis: z.lazy(() => Analysis$inboundSchema).optional(),
+  analysis: FusionAnalysisResult$inboundSchema.optional(),
   error: z.string().optional(),
   failed_models: z.array(z.lazy(() => FailedModel$inboundSchema)).optional(),
   failure_reason: z.string().optional(),
