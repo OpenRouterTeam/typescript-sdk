@@ -45,6 +45,11 @@ export class OpenRouter extends ClientSDK {
     return (this._analytics ??= new Analytics(this._options));
   }
 
+  private _beta?: Beta;
+  get beta(): Beta {
+    return (this._beta ??= new Beta(this._options));
+  }
+
   private _tts?: Tts;
   get tts(): Tts {
     return (this._tts ??= new Tts(this._options));
@@ -133,11 +138,6 @@ export class OpenRouter extends ClientSDK {
   private _rerank?: Rerank;
   get rerank(): Rerank {
     return (this._rerank ??= new Rerank(this._options));
-  }
-
-  private _beta?: Beta;
-  get beta(): Beta {
-    return (this._beta ??= new Beta(this._options));
   }
 
   private _videoGeneration?: VideoGeneration;
