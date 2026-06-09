@@ -6,6 +6,17 @@
 import * as z from "zod/v4";
 import { remap as remap$ } from "../lib/primitives.js";
 
+export type FusionPluginTool = {
+  /**
+   * Optional configuration forwarded as the tool's `parameters` object.
+   */
+  parameters?: { [k: string]: any | null } | undefined;
+  /**
+   * Server tool type identifier (e.g. "openrouter:web_search", "openrouter:web_fetch").
+   */
+  type: string;
+};
+
 export type FusionPlugin = {
   /**
    * Slugs of models to run in parallel as the "expert panel" the judge analyzes. Each model receives the same user prompt with web_search + web_fetch enabled. Capped at 8 models to bound cost amplification. When omitted, defaults to the Quality preset from the /labs/fusion UI (~anthropic/claude-opus-latest, ~openai/gpt-latest, ~google/gemini-pro-latest).
@@ -24,7 +35,34 @@ export type FusionPlugin = {
    * Slug of the model that performs both the judge step (with web_search + web_fetch) and the final synthesis. When omitted, defaults to the first model in the Quality preset.
    */
   model?: string | undefined;
+  /**
+   * Server tools available to panelist and judge inner calls. Each entry uses the same `{ type, parameters? }` shorthand as the outer Chat Completions request. When omitted, defaults to `[{ type: "openrouter:web_search" }, { type: "openrouter:web_fetch" }]`. Pass an empty array to disable tools entirely (panelists answer from parametric knowledge only).
+   */
+  tools?: Array<FusionPluginTool> | undefined;
 };
+
+/** @internal */
+export type FusionPluginTool$Outbound = {
+  parameters?: { [k: string]: any | null } | undefined;
+  type: string;
+};
+
+/** @internal */
+export const FusionPluginTool$outboundSchema: z.ZodType<
+  FusionPluginTool$Outbound,
+  FusionPluginTool
+> = z.object({
+  parameters: z.record(z.string(), z.nullable(z.any())).optional(),
+  type: z.string(),
+});
+
+export function fusionPluginToolToJSON(
+  fusionPluginTool: FusionPluginTool,
+): string {
+  return JSON.stringify(
+    FusionPluginTool$outboundSchema.parse(fusionPluginTool),
+  );
+}
 
 /** @internal */
 export type FusionPlugin$Outbound = {
@@ -33,6 +71,7 @@ export type FusionPlugin$Outbound = {
   id: "fusion";
   max_tool_calls?: number | undefined;
   model?: string | undefined;
+  tools?: Array<FusionPluginTool$Outbound> | undefined;
 };
 
 /** @internal */
@@ -45,6 +84,7 @@ export const FusionPlugin$outboundSchema: z.ZodType<
   id: z.literal("fusion"),
   maxToolCalls: z.int().optional(),
   model: z.string().optional(),
+  tools: z.array(z.lazy(() => FusionPluginTool$outboundSchema)).optional(),
 }).transform((v) => {
   return remap$(v, {
     analysisModels: "analysis_models",
