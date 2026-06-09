@@ -1,0 +1,27 @@
+# QueryAnalyticsData2
+
+## Example Usage
+
+```typescript
+import { QueryAnalyticsData2 } from "@openrouter/sdk/models/operations";
+
+let value: QueryAnalyticsData2 = {
+  data: [
+    {},
+  ],
+  metadata: {
+    queryTimeMs: 928.75,
+    rowCount: 203673,
+    truncated: false,
+  },
+};
+```
+
+## Fields
+
+| Field                                                                                                                                                              | Type                                                                                                                                                               | Required                                                                                                                                                           | Description                                                                                                                                                        | Example                                                                                                                                                            |
+| ------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `cachedAt`                                                                                                                                                         | *number*                                                                                                                                                           | :heavy_minus_sign:                                                                                                                                                 | N/A                                                                                                                                                                |                                                                                                                                                                    |
+| `data`                                                                                                                                                             | [operations.QueryAnalyticsData1](../../models/operations/queryanalyticsdata1.md)[]                                                                                 | :heavy_check_mark:                                                                                                                                                 | N/A                                                                                                                                                                |                                                                                                                                                                    |
+| `labelMap`                                                                                                                                                         | Record<string, Record<string, *string*>>                                                                                                                           | :heavy_minus_sign:                                                                                                                                                 | Maps raw dimension values to human-readable labels. Present when the query includes resolvable dimensions (api_key_id, app, user, workspace).                      | {<br/>"api_key_id": {<br/>"123": "Production Key"<br/>},<br/>"app": {<br/>"42": "My App"<br/>},<br/>"user": {<br/>"user_abc": "alice@example.com"<br/>},<br/>"workspace": {<br/>"ws-uuid-1": "Engineering"<br/>}<br/>} |
+| `metadata`                                                                                                                                                         | [operations.Metadata](../../models/operations/metadata.md)                                                                                                         | :heavy_check_mark:                                                                                                                                                 | N/A                                                                                                                                                                |                                                                                                                                                                    |

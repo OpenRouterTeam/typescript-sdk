@@ -8,7 +8,7 @@ Generation data
 import { GenerationResponseData } from "@openrouter/sdk/models";
 
 let value: GenerationResponseData = {
-  apiType: "tts",
+  apiType: "rerank",
   appId: 12345,
   cacheDiscount: 0.0002,
   cancelled: false,
@@ -34,7 +34,6 @@ let value: GenerationResponseData = {
   numMediaPrompt: 1,
   numSearchResults: 5,
   origin: "https://openrouter.ai/",
-  presetId: "a9e8d400-592a-494f-908c-375efa66cafd",
   providerName: "Infermatic",
   providerResponses: [
     {
@@ -85,7 +84,6 @@ let value: GenerationResponseData = {
 | `numMediaPrompt`                                                                                        | *number*                                                                                                | :heavy_check_mark:                                                                                      | Number of media items in the prompt                                                                     | 1                                                                                                       |
 | `numSearchResults`                                                                                      | *number*                                                                                                | :heavy_check_mark:                                                                                      | Number of search results included                                                                       | 5                                                                                                       |
 | `origin`                                                                                                | *string*                                                                                                | :heavy_check_mark:                                                                                      | Origin URL of the request                                                                               | https://openrouter.ai/                                                                                  |
-| `presetId`                                                                                              | *string*                                                                                                | :heavy_check_mark:                                                                                      | ID of the preset used for this generation, null if no preset was used                                   | a9e8d400-592a-494f-908c-375efa66cafd                                                                    |
 | `providerName`                                                                                          | *string*                                                                                                | :heavy_check_mark:                                                                                      | Name of the provider that served the request                                                            | Infermatic                                                                                              |
 | `providerResponses`                                                                                     | [models.ProviderResponse](../models/providerresponse.md)[]                                              | :heavy_check_mark:                                                                                      | List of provider responses for this generation, including fallback attempts                             |                                                                                                         |
 | `requestId`                                                                                             | *string*                                                                                                | :heavy_minus_sign:                                                                                      | Unique identifier grouping all generations from a single API request                                    | req-1727282430-aBcDeFgHiJkLmNoPqRsT                                                                     |

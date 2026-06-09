@@ -3,7 +3,9 @@
  * @generated-id: 411d91261be3
  */
 
+import { analyticsGetAnalyticsMeta } from "../funcs/analyticsGetAnalyticsMeta.js";
 import { analyticsGetUserActivity } from "../funcs/analyticsGetUserActivity.js";
+import { analyticsQueryAnalytics } from "../funcs/analyticsQueryAnalytics.js";
 import { ClientSDK, RequestOptions } from "../lib/sdks.js";
 import * as models from "../models/index.js";
 import * as operations from "../models/operations/index.js";
@@ -21,6 +23,40 @@ export class Analytics extends ClientSDK {
     options?: RequestOptions,
   ): Promise<models.ActivityResponse> {
     return unwrapAsync(analyticsGetUserActivity(
+      this,
+      request,
+      options,
+    ));
+  }
+
+  /**
+   * Get available analytics metrics and dimensions
+   *
+   * @remarks
+   * Returns the available metrics, dimensions, filter operators, and granularities for the analytics query endpoint. [Management key](/docs/guides/overview/auth/management-api-keys) required.
+   */
+  async getAnalyticsMeta(
+    request?: operations.GetAnalyticsMetaRequest | undefined,
+    options?: RequestOptions,
+  ): Promise<operations.GetAnalyticsMetaResponse> {
+    return unwrapAsync(analyticsGetAnalyticsMeta(
+      this,
+      request,
+      options,
+    ));
+  }
+
+  /**
+   * Query analytics data
+   *
+   * @remarks
+   * Execute an analytics query with specified metrics, dimensions, filters, and time range. [Management key](/docs/guides/overview/auth/management-api-keys) required.
+   */
+  async queryAnalytics(
+    request: operations.QueryAnalyticsRequest,
+    options?: RequestOptions,
+  ): Promise<operations.QueryAnalyticsResponse> {
+    return unwrapAsync(analyticsQueryAnalytics(
       this,
       request,
       options,

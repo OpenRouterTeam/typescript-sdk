@@ -8,15 +8,15 @@ import { remap as remap$ } from "../lib/primitives.js";
 import * as openEnums from "../types/enums.js";
 import { OpenEnum } from "../types/enums.js";
 import {
+  ContentPartImage,
+  ContentPartImage$Outbound,
+  ContentPartImage$outboundSchema,
+} from "./contentpartimage.js";
+import {
   FrameImage,
   FrameImage$Outbound,
   FrameImage$outboundSchema,
 } from "./frameimage.js";
-import {
-  InputReference,
-  InputReference$Outbound,
-  InputReference$outboundSchema,
-} from "./inputreference.js";
 
 /**
  * Aspect ratio of the generated video
@@ -150,7 +150,6 @@ export type Options = {
   ubicloud?: { [k: string]: any | null } | undefined;
   upstage?: { [k: string]: any | null } | undefined;
   venice?: { [k: string]: any | null } | undefined;
-  wafer?: { [k: string]: any | null } | undefined;
   wandb?: { [k: string]: any | null } | undefined;
   xai?: { [k: string]: any | null } | undefined;
   xiaomi?: { [k: string]: any | null } | undefined;
@@ -202,9 +201,9 @@ export type VideoGenerationRequest = {
    */
   generateAudio?: boolean | undefined;
   /**
-   * Reference assets to guide video generation. Accepts image, audio, and video references. Audio and video references are only honored by providers that support them (currently BytePlus Seedance 2.0); other providers use image references and ignore the rest.
+   * Reference images to guide video generation
    */
-  inputReferences?: Array<InputReference> | undefined;
+  inputReferences?: Array<ContentPartImage> | undefined;
   model: string;
   prompt: string;
   /**
@@ -340,7 +339,6 @@ export type Options$Outbound = {
   ubicloud?: { [k: string]: any | null } | undefined;
   upstage?: { [k: string]: any | null } | undefined;
   venice?: { [k: string]: any | null } | undefined;
-  wafer?: { [k: string]: any | null } | undefined;
   wandb?: { [k: string]: any | null } | undefined;
   xai?: { [k: string]: any | null } | undefined;
   xiaomi?: { [k: string]: any | null } | undefined;
@@ -459,7 +457,6 @@ export const Options$outboundSchema: z.ZodType<Options$Outbound, Options> = z
     ubicloud: z.record(z.string(), z.nullable(z.any())).optional(),
     upstage: z.record(z.string(), z.nullable(z.any())).optional(),
     venice: z.record(z.string(), z.nullable(z.any())).optional(),
-    wafer: z.record(z.string(), z.nullable(z.any())).optional(),
     wandb: z.record(z.string(), z.nullable(z.any())).optional(),
     xai: z.record(z.string(), z.nullable(z.any())).optional(),
     xiaomi: z.record(z.string(), z.nullable(z.any())).optional(),
@@ -528,7 +525,7 @@ export type VideoGenerationRequest$Outbound = {
   duration?: number | undefined;
   frame_images?: Array<FrameImage$Outbound> | undefined;
   generate_audio?: boolean | undefined;
-  input_references?: Array<InputReference$Outbound> | undefined;
+  input_references?: Array<ContentPartImage$Outbound> | undefined;
   model: string;
   prompt: string;
   provider?: VideoGenerationRequestProvider$Outbound | undefined;
@@ -547,7 +544,7 @@ export const VideoGenerationRequest$outboundSchema: z.ZodType<
   duration: z.int().optional(),
   frameImages: z.array(FrameImage$outboundSchema).optional(),
   generateAudio: z.boolean().optional(),
-  inputReferences: z.array(InputReference$outboundSchema).optional(),
+  inputReferences: z.array(ContentPartImage$outboundSchema).optional(),
   model: z.string(),
   prompt: z.string(),
   provider: z.lazy(() => VideoGenerationRequestProvider$outboundSchema)

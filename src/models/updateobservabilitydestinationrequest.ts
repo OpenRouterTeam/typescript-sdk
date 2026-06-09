@@ -34,7 +34,7 @@ export type UpdateObservabilityDestinationRequest = {
    */
   privacyMode?: boolean | undefined;
   /**
-   * Sampling rate between 0.0001 and 1 (1 = 100%).
+   * Sampling rate between 0 and 1 (1 = 100%).
    */
   samplingRate?: number | undefined;
 };
