@@ -36,6 +36,10 @@ export type WebSearchServerToolConfig = {
    */
   excludedDomains?: Array<string> | undefined;
   /**
+   * Exact maximum number of characters of content per search result. Applies to the Exa and Parallel engines; ignored with native provider search and Firecrawl. For Exa, caps highlight content per result and overrides `search_context_size` when both are set (they control the same dimension). For Parallel, caps excerpt content per result (default 1,500 when omitted) and is independent of `search_context_size` (which controls total budget across all results). When omitted, falls back to `search_context_size` mapping (Exa) or engine defaults (Parallel).
+   */
+  maxCharacters?: number | undefined;
+  /**
    * Maximum number of search results to return per search call. Defaults to 5. Applies to Exa, Firecrawl, and Parallel engines; ignored with native provider search.
    */
   maxResults?: number | undefined;
@@ -44,7 +48,7 @@ export type WebSearchServerToolConfig = {
    */
   maxTotalResults?: number | undefined;
   /**
-   * How much context to retrieve per result. Applies to Exa and Parallel engines; ignored with native provider search and Firecrawl. For Exa, pins a fixed per-result character cap (low=5,000, medium=15,000, high=30,000); when omitted, Exa picks an adaptive size per query and document (typically ~2,000–4,000 characters per result). For Parallel, controls the total characters across all results; when omitted, Parallel uses its own default size.
+   * How much context to retrieve per result. Applies to Exa and Parallel engines; ignored with native provider search and Firecrawl. For Exa, pins a fixed per-result character cap (low=5,000, medium=15,000, high=30,000); when omitted, Exa picks an adaptive size per query and document (typically ~2,000–4,000 characters per result). For Parallel, controls the total characters across all results; when omitted, Parallel uses its own default size. For Exa, overridden by `max_characters` when both are set (same dimension). For Parallel, both params are independent: `search_context_size` sets the total budget while `max_characters` sets the per-result budget.
    */
   searchContextSize?: SearchQualityLevel | undefined;
   /**
@@ -58,6 +62,7 @@ export type WebSearchServerToolConfig$Outbound = {
   allowed_domains?: Array<string> | undefined;
   engine?: string | undefined;
   excluded_domains?: Array<string> | undefined;
+  max_characters?: number | undefined;
   max_results?: number | undefined;
   max_total_results?: number | undefined;
   search_context_size?: string | undefined;
@@ -72,6 +77,7 @@ export const WebSearchServerToolConfig$outboundSchema: z.ZodType<
   allowedDomains: z.array(z.string()).optional(),
   engine: WebSearchEngineEnum$outboundSchema.optional(),
   excludedDomains: z.array(z.string()).optional(),
+  maxCharacters: z.int().optional(),
   maxResults: z.int().optional(),
   maxTotalResults: z.int().optional(),
   searchContextSize: SearchQualityLevel$outboundSchema.optional(),
@@ -80,6 +86,7 @@ export const WebSearchServerToolConfig$outboundSchema: z.ZodType<
   return remap$(v, {
     allowedDomains: "allowed_domains",
     excludedDomains: "excluded_domains",
+    maxCharacters: "max_characters",
     maxResults: "max_results",
     maxTotalResults: "max_total_results",
     searchContextSize: "search_context_size",
