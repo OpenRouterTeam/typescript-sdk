@@ -1,0 +1,20 @@
+# ShellServerToolOpenRouter
+
+OpenRouter built-in server tool: runs shell commands server-side in a sandboxed container (a sandbox-backed clone of OpenAI's hosted shell tool)
+
+## Example Usage
+
+```typescript
+import { ShellServerToolOpenRouter } from "@openrouter/sdk/models";
+
+let value: ShellServerToolOpenRouter = {
+  type: "openrouter:shell",
+};
+```
+
+## Fields
+
+| Field                                                                   | Type                                                                    | Required                                                                | Description                                                             | Example                                                                 |
+| ----------------------------------------------------------------------- | ----------------------------------------------------------------------- | ----------------------------------------------------------------------- | ----------------------------------------------------------------------- | ----------------------------------------------------------------------- |
+| `parameters`                                                            | [models.ShellServerToolConfig](../models/shellservertoolconfig.md)      | :heavy_minus_sign:                                                      | Configuration for the openrouter:shell server tool                      | {<br/>"engine": "openrouter",<br/>"environment": {<br/>"type": "container_auto"<br/>}<br/>} |
+| `type`                                                                  | *"openrouter:shell"*                                                    | :heavy_check_mark:                                                      | N/A                                                                     |                                                                         |
