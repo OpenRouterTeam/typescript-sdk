@@ -1,0 +1,58 @@
+# FusionAnalysisResult
+
+Structured analysis produced by the fusion judge model.
+
+## Example Usage
+
+```typescript
+import { FusionAnalysisResult } from "@openrouter/sdk/models";
+
+let value: FusionAnalysisResult = {
+  blindSpots: [
+    "No model considered the impact on existing API consumers.",
+  ],
+  consensus: [
+    "All panel models agree the request is asking for a concise summary.",
+  ],
+  contradictions: [
+    {
+      stances: [
+        {
+          model: "openai/gpt-5",
+          stance: "Favors an incremental rollout.",
+        },
+        {
+          model: "anthropic/claude-sonnet-4.5",
+          stance: "Favors a single coordinated migration.",
+        },
+      ],
+      topic: "Recommended approach",
+    },
+  ],
+  partialCoverage: [
+    {
+      models: [
+        "openai/gpt-5",
+      ],
+      point: "Only one model addressed the rollback strategy.",
+    },
+  ],
+  uniqueInsights: [
+    {
+      insight:
+        "Highlighted a backwards-compatibility risk the other models missed.",
+      model: "anthropic/claude-sonnet-4.5",
+    },
+  ],
+};
+```
+
+## Fields
+
+| Field                                                    | Type                                                     | Required                                                 | Description                                              |
+| -------------------------------------------------------- | -------------------------------------------------------- | -------------------------------------------------------- | -------------------------------------------------------- |
+| `blindSpots`                                             | *string*[]                                               | :heavy_check_mark:                                       | N/A                                                      |
+| `consensus`                                              | *string*[]                                               | :heavy_check_mark:                                       | N/A                                                      |
+| `contradictions`                                         | [models.Contradiction](../models/contradiction.md)[]     | :heavy_check_mark:                                       | N/A                                                      |
+| `partialCoverage`                                        | [models.PartialCoverage](../models/partialcoverage.md)[] | :heavy_check_mark:                                       | N/A                                                      |
+| `uniqueInsights`                                         | [models.UniqueInsight](../models/uniqueinsight.md)[]     | :heavy_check_mark:                                       | N/A                                                      |
