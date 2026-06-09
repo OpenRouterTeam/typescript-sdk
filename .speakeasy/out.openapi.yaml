@@ -7297,6 +7297,359 @@ components:
         - name
         - parameters
       type: object
+    FusionAnalysisResult:
+      description: Structured analysis produced by the fusion judge model.
+      example:
+        blind_spots:
+          - No model considered the impact on existing API consumers.
+        consensus:
+          - All panel models agree the request is asking for a concise summary.
+        contradictions:
+          - stances:
+              - model: openai/gpt-5
+                stance: Favors an incremental rollout.
+              - model: anthropic/claude-sonnet-4.5
+                stance: Favors a single coordinated migration.
+            topic: Recommended approach
+        partial_coverage:
+          - models:
+              - openai/gpt-5
+            point: Only one model addressed the rollback strategy.
+        unique_insights:
+          - insight: Highlighted a backwards-compatibility risk the other models missed.
+            model: anthropic/claude-sonnet-4.5
+      properties:
+        blind_spots:
+          items:
+            type: string
+          type: array
+        consensus:
+          items:
+            type: string
+          type: array
+        contradictions:
+          items:
+            properties:
+              stances:
+                items:
+                  properties:
+                    model:
+                      type: string
+                    stance:
+                      type: string
+                  required:
+                    - model
+                    - stance
+                  type: object
+                type: array
+              topic:
+                type: string
+            required:
+              - topic
+              - stances
+            type: object
+          type: array
+        partial_coverage:
+          items:
+            properties:
+              models:
+                items:
+                  type: string
+                type: array
+              point:
+                type: string
+            required:
+              - models
+              - point
+            type: object
+          type: array
+        unique_insights:
+          items:
+            properties:
+              insight:
+                type: string
+              model:
+                type: string
+            required:
+              - model
+              - insight
+            type: object
+          type: array
+      required:
+        - consensus
+        - contradictions
+        - partial_coverage
+        - unique_insights
+        - blind_spots
+      type: object
+    FusionCallAnalysisCompletedEvent:
+      description: Emitted when the fusion judge completes with the structured analysis.
+      example:
+        analysis:
+          blind_spots: []
+          consensus: []
+          contradictions: []
+          partial_coverage: []
+          unique_insights: []
+        item_id: st_fusion_abc
+        output_index: 0
+        sequence_number: 40
+        type: response.fusion_call.analysis.completed
+      properties:
+        analysis:
+          $ref: '#/components/schemas/FusionAnalysisResult'
+        item_id:
+          type: string
+        output_index:
+          type: integer
+        sequence_number:
+          type: integer
+        type:
+          enum:
+            - response.fusion_call.analysis.completed
+          type: string
+      required:
+        - type
+        - analysis
+        - output_index
+        - item_id
+        - sequence_number
+      type: object
+    FusionCallAnalysisInProgressEvent:
+      description: Emitted when the fusion judge starts producing the structured analysis.
+      example:
+        item_id: st_fusion_abc
+        judge_model: openai/gpt-5
+        output_index: 0
+        sequence_number: 25
+        type: response.fusion_call.analysis.in_progress
+      properties:
+        item_id:
+          type: string
+        judge_model:
+          type: string
+        output_index:
+          type: integer
+        sequence_number:
+          type: integer
+        type:
+          enum:
+            - response.fusion_call.analysis.in_progress
+          type: string
+      required:
+        - type
+        - judge_model
+        - output_index
+        - item_id
+        - sequence_number
+      type: object
+    FusionCallCompletedEvent:
+      description: Emitted when the openrouter:fusion tool call finishes.
+      example:
+        item_id: st_fusion_abc
+        output_index: 0
+        sequence_number: 41
+        type: response.fusion_call.completed
+      properties:
+        item_id:
+          type: string
+        output_index:
+          type: integer
+        sequence_number:
+          type: integer
+        type:
+          enum:
+            - response.fusion_call.completed
+          type: string
+      required:
+        - type
+        - output_index
+        - item_id
+        - sequence_number
+      type: object
+    FusionCallInProgressEvent:
+      description: Emitted when an openrouter:fusion tool call begins executing.
+      example:
+        item_id: st_fusion_abc
+        output_index: 0
+        sequence_number: 3
+        type: response.fusion_call.in_progress
+      properties:
+        item_id:
+          type: string
+        output_index:
+          type: integer
+        sequence_number:
+          type: integer
+        type:
+          enum:
+            - response.fusion_call.in_progress
+          type: string
+      required:
+        - type
+        - output_index
+        - item_id
+        - sequence_number
+      type: object
+    FusionCallPanelAddedEvent:
+      description: Emitted when a fusion analysis-panel model starts.
+      example:
+        item_id: st_fusion_abc
+        model: openai/gpt-5
+        output_index: 0
+        sequence_number: 4
+        type: response.fusion_call.panel.added
+      properties:
+        item_id:
+          type: string
+        model:
+          type: string
+        output_index:
+          type: integer
+        sequence_number:
+          type: integer
+        type:
+          enum:
+            - response.fusion_call.panel.added
+          type: string
+      required:
+        - type
+        - model
+        - output_index
+        - item_id
+        - sequence_number
+      type: object
+    FusionCallPanelCompletedEvent:
+      description: Emitted when a fusion panel model finishes with its full content.
+      example:
+        content: Full panel response text...
+        item_id: st_fusion_abc
+        model: openai/gpt-5
+        output_index: 0
+        sequence_number: 20
+        type: response.fusion_call.panel.completed
+      properties:
+        content:
+          type: string
+        item_id:
+          type: string
+        model:
+          type: string
+        output_index:
+          type: integer
+        sequence_number:
+          type: integer
+        type:
+          enum:
+            - response.fusion_call.panel.completed
+          type: string
+      required:
+        - type
+        - model
+        - content
+        - output_index
+        - item_id
+        - sequence_number
+      type: object
+    FusionCallPanelDeltaEvent:
+      description: Incremental content token from a fusion panel model.
+      example:
+        delta: Carbon taxes
+        item_id: st_fusion_abc
+        model: openai/gpt-5
+        output_index: 0
+        sequence_number: 5
+        type: response.fusion_call.panel.delta
+      properties:
+        delta:
+          type: string
+        item_id:
+          type: string
+        model:
+          type: string
+        output_index:
+          type: integer
+        sequence_number:
+          type: integer
+        type:
+          enum:
+            - response.fusion_call.panel.delta
+          type: string
+      required:
+        - type
+        - model
+        - delta
+        - output_index
+        - item_id
+        - sequence_number
+      type: object
+    FusionCallPanelFailedEvent:
+      description: Emitted when a fusion panel model fails.
+      example:
+        error: Upstream provider error
+        item_id: st_fusion_abc
+        model: openai/gpt-5
+        output_index: 0
+        sequence_number: 18
+        status_code: 502
+        type: response.fusion_call.panel.failed
+      properties:
+        error:
+          type: string
+        item_id:
+          type: string
+        model:
+          type: string
+        output_index:
+          type: integer
+        sequence_number:
+          type: integer
+        status_code:
+          type: integer
+        type:
+          enum:
+            - response.fusion_call.panel.failed
+          type: string
+      required:
+        - type
+        - model
+        - error
+        - output_index
+        - item_id
+        - sequence_number
+      type: object
+    FusionCallPanelReasoningDeltaEvent:
+      description: Incremental reasoning token from a fusion panel model.
+      example:
+        delta: Considering both sides
+        item_id: st_fusion_abc
+        model: openai/gpt-5
+        output_index: 0
+        sequence_number: 6
+        type: response.fusion_call.panel.reasoning.delta
+      properties:
+        delta:
+          type: string
+        item_id:
+          type: string
+        model:
+          type: string
+        output_index:
+          type: integer
+        sequence_number:
+          type: integer
+        type:
+          enum:
+            - response.fusion_call.panel.reasoning.delta
+          type: string
+      required:
+        - type
+        - model
+        - delta
+        - output_index
+        - item_id
+        - sequence_number
+      type: object
     FusionPlugin:
       example:
         analysis_models:
@@ -14374,71 +14727,7 @@ components:
         type: openrouter:fusion
       properties:
         analysis:
-          description: Structured analysis produced by the fusion judge model.
-          properties:
-            blind_spots:
-              items:
-                type: string
-              type: array
-            consensus:
-              items:
-                type: string
-              type: array
-            contradictions:
-              items:
-                properties:
-                  stances:
-                    items:
-                      properties:
-                        model:
-                          type: string
-                        stance:
-                          type: string
-                      required:
-                        - model
-                        - stance
-                      type: object
-                    type: array
-                  topic:
-                    type: string
-                required:
-                  - topic
-                  - stances
-                type: object
-              type: array
-            partial_coverage:
-              items:
-                properties:
-                  models:
-                    items:
-                      type: string
-                    type: array
-                  point:
-                    type: string
-                required:
-                  - models
-                  - point
-                type: object
-              type: array
-            unique_insights:
-              items:
-                properties:
-                  insight:
-                    type: string
-                  model:
-                    type: string
-                required:
-                  - model
-                  - insight
-                type: object
-              type: array
-          required:
-            - consensus
-            - contradictions
-            - partial_coverage
-            - unique_insights
-            - blind_spots
-          type: object
+          $ref: '#/components/schemas/FusionAnalysisResult'
         error:
           description: Error message when the fusion run did not produce an analysis result.
           type: string
@@ -14468,9 +14757,11 @@ components:
         id:
           type: string
         responses:
-          description: Slugs of the analysis models that produced a response in this fusion run.
+          description: Analysis models that produced a response in this fusion run, with each model's full panel content.
           items:
             properties:
+              content:
+                type: string
               model:
                 type: string
             required:
@@ -18247,6 +18538,15 @@ components:
           response.failed: '#/components/schemas/StreamEventsResponseFailed'
           response.function_call_arguments.delta: '#/components/schemas/FunctionCallArgsDeltaEvent'
           response.function_call_arguments.done: '#/components/schemas/FunctionCallArgsDoneEvent'
+          response.fusion_call.analysis.completed: '#/components/schemas/FusionCallAnalysisCompletedEvent'
+          response.fusion_call.analysis.in_progress: '#/components/schemas/FusionCallAnalysisInProgressEvent'
+          response.fusion_call.completed: '#/components/schemas/FusionCallCompletedEvent'
+          response.fusion_call.in_progress: '#/components/schemas/FusionCallInProgressEvent'
+          response.fusion_call.panel.added: '#/components/schemas/FusionCallPanelAddedEvent'
+          response.fusion_call.panel.completed: '#/components/schemas/FusionCallPanelCompletedEvent'
+          response.fusion_call.panel.delta: '#/components/schemas/FusionCallPanelDeltaEvent'
+          response.fusion_call.panel.failed: '#/components/schemas/FusionCallPanelFailedEvent'
+          response.fusion_call.panel.reasoning.delta: '#/components/schemas/FusionCallPanelReasoningDeltaEvent'
           response.image_generation_call.completed: '#/components/schemas/ImageGenCallCompletedEvent'
           response.image_generation_call.generating: '#/components/schemas/ImageGenCallGeneratingEvent'
           response.image_generation_call.in_progress: '#/components/schemas/ImageGenCallInProgressEvent'
@@ -18325,6 +18625,15 @@ components:
         - $ref: '#/components/schemas/CustomToolCallInputDoneEvent'
         - $ref: '#/components/schemas/ApplyPatchCallOperationDiffDeltaEvent'
         - $ref: '#/components/schemas/ApplyPatchCallOperationDiffDoneEvent'
+        - $ref: '#/components/schemas/FusionCallInProgressEvent'
+        - $ref: '#/components/schemas/FusionCallPanelAddedEvent'
+        - $ref: '#/components/schemas/FusionCallPanelDeltaEvent'
+        - $ref: '#/components/schemas/FusionCallPanelReasoningDeltaEvent'
+        - $ref: '#/components/schemas/FusionCallPanelCompletedEvent'
+        - $ref: '#/components/schemas/FusionCallPanelFailedEvent'
+        - $ref: '#/components/schemas/FusionCallAnalysisInProgressEvent'
+        - $ref: '#/components/schemas/FusionCallAnalysisCompletedEvent'
+        - $ref: '#/components/schemas/FusionCallCompletedEvent'
     StreamEventsResponseCompleted:
       allOf:
         - $ref: '#/components/schemas/CompletedEvent'

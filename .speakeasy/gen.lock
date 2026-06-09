@@ -1,19 +1,19 @@
 lockVersion: ""
 id: ""
 management:
-  docChecksum: 0327b952511cc300a81ab380d215b0a1
+  docChecksum: 355f5b0d492d2ae708c1ef0342a03798
   docVersion: 1.0.0
   speakeasyVersion: 1.763.2
   generationVersion: 2.884.4
-  releaseVersion: 0.12.91
-  configChecksum: 26ca2297b2ca9ac5d6f85e19bd54ba22
+  releaseVersion: 0.12.92
+  configChecksum: 25ce35f045c7c92bef0dce1edf563bcc
   repoURL: https://github.com/OpenRouterTeam/typescript-sdk.git
   installationURL: https://github.com/OpenRouterTeam/typescript-sdk
   published: true
 persistentEdits:
-  generation_id: 5a5198ac-bbae-4969-8d56-4fbb46bc2756
-  pristine_commit_hash: e6ddbfacc8cd9a66ceafe0c1789d14f3cf4d5fe3
-  pristine_tree_hash: 489bf7a4a7ee73f0467b231eaa8f8dc21c4a4154
+  generation_id: 2947c5a1-4706-43e8-b251-e4a0129ad2b0
+  pristine_commit_hash: 702ebfcade5ed9c7eedfa220fcbf728018533b79
+  pristine_tree_hash: e422f1cf279ac4b7fe2683b7c805d2dae96d3444
 features:
   typescript:
     acceptHeaders: 2.81.2
@@ -2165,6 +2165,46 @@ trackedFiles:
     last_write_checksum: sha1:542cd34a5b9cafb0ac5dca2e01861b4b6f4c098e
     pristine_git_object: 8f53de6914880a8a034a0b60aff8b120d034eefc
     deleted: true
+  docs/models/fusionanalysisresult.md:
+    id: f24e61b0eb49
+    last_write_checksum: sha1:cb6efacfe30ec4693a6585c8c9ea0d9c8fd003b3
+    pristine_git_object: ed0fd371a9c7683fd09b7a469c1e142321687bd2
+  docs/models/fusioncallanalysiscompletedevent.md:
+    id: 8f503b0fd57a
+    last_write_checksum: sha1:a880c44d769eace77cbb2cee01a34747e4796fca
+    pristine_git_object: a46f24a74d57776f8520e91eaf6012cbff9e5fea
+  docs/models/fusioncallanalysisinprogressevent.md:
+    id: cc4ca9ae6b8f
+    last_write_checksum: sha1:85c1a3b7a82c486b35f949da56b76ee319eb58d1
+    pristine_git_object: 67e3508c15955c26217109b479f06fd1555784dd
+  docs/models/fusioncallcompletedevent.md:
+    id: dc7911e8290d
+    last_write_checksum: sha1:328358a8fc32f8379d5f302454a7b5107fd42471
+    pristine_git_object: ad105e29da2c7765971c51ff94f702839d586d66
+  docs/models/fusioncallinprogressevent.md:
+    id: ddfc6cd6134d
+    last_write_checksum: sha1:95e4dee38acab294d73716115c2b35c846c4a376
+    pristine_git_object: 750838d341738bfa5db2f3989df8165e10b3fb23
+  docs/models/fusioncallpaneladdedevent.md:
+    id: 125c710d6075
+    last_write_checksum: sha1:ab5ec7a98fa35ae3283669dc72307532d22bc8b7
+    pristine_git_object: 3c2e039ca73fe612dcd81b967ff6f243611cb97e
+  docs/models/fusioncallpanelcompletedevent.md:
+    id: ec9944d07194
+    last_write_checksum: sha1:02ac7b6ffeb08aa79219223083fa9d2df0f6c47b
+    pristine_git_object: 09172aa58d11def3a215fb6a540e6164ee0c1652
+  docs/models/fusioncallpaneldeltaevent.md:
+    id: 937bcebb645a
+    last_write_checksum: sha1:4b1a1bb38fddf188370fdc32a9296241a94a1179
+    pristine_git_object: aa2b66e136bcc8830cfab2db0c5735b934856ae0
+  docs/models/fusioncallpanelfailedevent.md:
+    id: 421bf5001564
+    last_write_checksum: sha1:fa9d733070125a8964eca70293df2a0be953c99c
+    pristine_git_object: c052678bae5732f5b51b0f3ee595754bea0f3cd5
+  docs/models/fusioncallpanelreasoningdeltaevent.md:
+    id: 7036f6d24a52
+    last_write_checksum: sha1:932116c3ca26cd3edeb625c63e413d853051c432
+    pristine_git_object: 3cdd27a09f0f90e8d0e1c797d850c1675159f10a
   docs/models/fusionplugin.md:
     id: aa0cadd09c6a
     last_write_checksum: sha1:13e04a76f3268d17caaa8ff70796fff7b3a50b39
@@ -4469,8 +4509,8 @@ trackedFiles:
     deleted: true
   docs/models/outputfusionservertoolitem.md:
     id: 50cc43eb763b
-    last_write_checksum: sha1:84d758664cc9df9ac4dc4441635c919a4f20ac55
-    pristine_git_object: 17fd67b1225243043f1000022de2ffc50ed912e2
+    last_write_checksum: sha1:243b3151b2146164641fdfe8a95258409360f3ef
+    pristine_git_object: 955d7d2e21f279d3c1984b9289fba1ffcbea8696
     deleted: true
   docs/models/outputimage.md:
     id: 7b70cb7f30a0
@@ -5350,8 +5390,8 @@ trackedFiles:
     deleted: true
   docs/models/responset.md:
     id: 01928cfd2edc
-    last_write_checksum: sha1:869fba12cdd615e783e946af706a336917633ea6
-    pristine_git_object: ffad529fc3c1061d5f79833624b5361bc14bd13c
+    last_write_checksum: sha1:d255dff78371645a7803af8e1235ba77b59206d7
+    pristine_git_object: cc3dc9b3fc9b6bf0282f244431113c93b89058c5
     deleted: true
   docs/models/routerattempt.md:
     id: 6bcaf53856f9
@@ -5532,8 +5572,8 @@ trackedFiles:
     deleted: true
   docs/models/streamevents.md:
     id: 7b9e7f83a124
-    last_write_checksum: sha1:840075bff4a51db9c199489435db367a598c7bfa
-    pristine_git_object: 207717384ec166d57949e0a3140305e4b7b9d624
+    last_write_checksum: sha1:537aaa797aaf43c2f3651cc78506daa0411d156f
+    pristine_git_object: cebb3937b3cef570ecfc28b35d1a066c82833639
     deleted: true
   docs/models/streameventsresponsecompleted.md:
     id: 162356c5e731
@@ -6310,12 +6350,12 @@ trackedFiles:
     pristine_git_object: 410efafd6a7f50d91ccb87131fedbe0c3d47e15a
   jsr.json:
     id: 7f6ab7767282
-    last_write_checksum: sha1:2368cc4c749452de23685b81424df6308f1311e8
-    pristine_git_object: 17634890b36879c8b4168de168c2f3f6c7ff013b
+    last_write_checksum: sha1:596233e2c8533e9c74db90b0fe5b661f24a84faa
+    pristine_git_object: 2f6ba5ca90568ddef1cd8946b8e4e635fc198adf
   package.json:
     id: 7030d0b2f71b
-    last_write_checksum: sha1:3567cf14b872bb20a3f8bec448f9f491394bda94
-    pristine_git_object: 0ccffd68212b69e21af397f8825ec79ab4b82692
+    last_write_checksum: sha1:185cd92140ba47b0ee9ae6d7c186fdc107bf8caf
+    pristine_git_object: e8b006c13cf9bc567219ebaf92d105da1e7eb999
   src/core.ts:
     id: f431fdbcd144
     last_write_checksum: sha1:5aa66b0b6a5964f3eea7f3098c2eb3c0ee9c0131
@@ -6598,8 +6638,8 @@ trackedFiles:
     pristine_git_object: a187e58707bdb726ca2aff74941efe7493422d4e
   src/lib/config.ts:
     id: 320761608fb3
-    last_write_checksum: sha1:3e66f86daf5dd9bbe4ace4368b4018cc388e6181
-    pristine_git_object: 3ba89ece39e7b582d95187bd97072b12fefaf641
+    last_write_checksum: sha1:90a5ff91f7936eeec49ecf1015c49e1a38196eab
+    pristine_git_object: 0d4447702a9456634a87ce381a002d41c2b410ef
   src/lib/dlv.ts:
     id: b1988214835a
     last_write_checksum: sha1:eaac763b22717206a6199104e0403ed17a4e2711
@@ -7436,6 +7476,46 @@ trackedFiles:
     id: 279b91cadffe
     last_write_checksum: sha1:0a3606710f212a7d99bac8465c879795a3d82a04
     pristine_git_object: c7854bac92459990c1bf715725d4de2d5aebfe41
+  src/models/fusionanalysisresult.ts:
+    id: ffc6f5c74b6c
+    last_write_checksum: sha1:fc4514dcb6b8d4bf62722104288d936e90d9e533
+    pristine_git_object: 24840a2aa3187cfe1a92cc636213091ef59a566d
+  src/models/fusioncallanalysiscompletedevent.ts:
+    id: 0df2084e1a56
+    last_write_checksum: sha1:1c045a2322cd9ffced4fbdc0b141bd7b1aaab2cf
+    pristine_git_object: e460dd5d7bd407bd17cdd2a8f83024c96a8684c3
+  src/models/fusioncallanalysisinprogressevent.ts:
+    id: 13da94fa473e
+    last_write_checksum: sha1:6dd03846cfee6660b87ba47f681859e4ccf7bb78
+    pristine_git_object: b036f0f012b64b738202e41de43d3b691628048f
+  src/models/fusioncallcompletedevent.ts:
+    id: 54f2c88f75f7
+    last_write_checksum: sha1:08351b1df40bfcfdbf1042ba8f294d46ec72c04b
+    pristine_git_object: c6e1440dc7f3ef049473e00b4bddbf1b53b14497
+  src/models/fusioncallinprogressevent.ts:
+    id: 623b79a90448
+    last_write_checksum: sha1:9982093a8476f6df372ef4a08652f732d39c9a73
+    pristine_git_object: 8a312ec289f472fa10a25a4f98703a54ce0764da
+  src/models/fusioncallpaneladdedevent.ts:
+    id: 58f0673347e7
+    last_write_checksum: sha1:df0c5f610963f3eb479477e4ceeda75abc58ada1
+    pristine_git_object: f26d066ba4b2caa29494a4aa57128a114347545a
+  src/models/fusioncallpanelcompletedevent.ts:
+    id: 3578a5986185
+    last_write_checksum: sha1:48a0f7fc1beedbf07e36725510991a72759691ae
+    pristine_git_object: e661f93462fde3281c41a005c47e7bed73e1fb0a
+  src/models/fusioncallpaneldeltaevent.ts:
+    id: 055e9ca60301
+    last_write_checksum: sha1:92296087b0eeed17ec83e7596d9ec22588b70f0b
+    pristine_git_object: 16164426352ee67788dffe0773f9b3c2cdd75d21
+  src/models/fusioncallpanelfailedevent.ts:
+    id: 44d86c32e741
+    last_write_checksum: sha1:d7144a8f914126ee66548a0fe96936a8b3175087
+    pristine_git_object: 3c1624bf2b3a6eeab62713138aed137c2f8b6e83
+  src/models/fusioncallpanelreasoningdeltaevent.ts:
+    id: 9c7b9ba8a22c
+    last_write_checksum: sha1:a6ccdf0b14f0d34ad12a84189de3782de0b2a0f8
+    pristine_git_object: ea15abc3d64f380762a1b1f373c7a68cfa266d23
   src/models/fusionplugin.ts:
     id: f2f6926f21f9
     last_write_checksum: sha1:539d646fe7bba872c9fe6ae7adeedb17fbbacee8
@@ -7530,8 +7610,8 @@ trackedFiles:
     pristine_git_object: 8e109bedfdcf2c4808e49323dda861e3c6069d51
   src/models/index.ts:
     id: f93644b0f37e
-    last_write_checksum: sha1:7346d99ac8d9a55bd37a1ef9df8892ab87cf8842
-    pristine_git_object: efeb9f0c643cc54507cb7ad3cc3f73c7bb65ce9a
+    last_write_checksum: sha1:a573cccbaa6f9ab48f6d37e326a53c53fc9ef941
+    pristine_git_object: 16f7b078846b94eee112d29c8b11de76bf40aad8
   src/models/inputaudio.ts:
     id: 9bdc14c7565f
     last_write_checksum: sha1:2f8dc4c1d6a9c2927d9eb186e0ecedf7b81838e6
@@ -8158,8 +8238,8 @@ trackedFiles:
     pristine_git_object: 4c8a471669db452e42832b9f21a906de2606c396
   src/models/outputfusionservertoolitem.ts:
     id: 30bcfe965217
-    last_write_checksum: sha1:53e07074176715c7cd53d551049ac1cb47a8b41b
-    pristine_git_object: 77ca7b3623dcb22740db44e298bf3e79b130822f
+    last_write_checksum: sha1:c4eff3f3bf9c0cae1ec205bb87d71335ddc5c692
+    pristine_git_object: 566ebbcdaa59bbe8c22ef661e6846e9357730234
   src/models/outputimagegenerationcallitem.ts:
     id: 618bac10713d
     last_write_checksum: sha1:f695d6cc4909d90e0c0c0a4b88916f1f4b70eb40
@@ -8542,8 +8622,8 @@ trackedFiles:
     pristine_git_object: 9b47a83e44ed6bdfaf6ba88030021fe7a1f6a5ad
   src/models/streamevents.ts:
     id: 4aa1487f961f
-    last_write_checksum: sha1:9f0774b7a03208f76a6ab55394ff127038f31582
-    pristine_git_object: ff81fb97322b85d2e67fd7abf18e1071f6d77b34
+    last_write_checksum: sha1:fa8bd6321a8f1013a30fcd8842e3615d42558be7
+    pristine_git_object: 3fef329fe5f1ac3ccdc86310a5fc92e341f10b37
   src/models/streameventsresponsecompleted.ts:
     id: f7fe07ad1c47
     last_write_checksum: sha1:b6f66af07ebde97a9138e4c072f236a67abb0d21
@@ -10028,4 +10108,6 @@ examples:
         "500":
           application/json: {"error": {"code": 500, "message": "Internal Server Error"}}
 examplesVersion: 1.0.2
-releaseNotes: "## Typescript SDK Changes:\n* `openrouter.tts.createSpeech()`: \n  *  `request.speechRequest.provider.options.decart` **Added**\n* `openrouter.stt.createTranscription()`: \n  *  `request.sttRequest.provider.options.decart` **Added**\n* `openrouter.byok.list()`: \n  *  `request.provider` **Changed**\n  *  `response.data[].provider.enum(decart)` **Added**\n* `openrouter.byok.create()`: \n  *  `request.createByokKeyRequest.provider.enum(decart)` **Added**\n  *  `response.data.provider.enum(decart)` **Added**\n* `openrouter.byok.get()`:  `response.data.provider.enum(decart)` **Added**\n* `openrouter.byok.update()`:  `response.data.provider.enum(decart)` **Added**\n* `openrouter.chat.send()`: \n  *  `request.chatRequest.provider.ignore[].union(ProviderName).enum(decart)` **Added**\n* `openrouter.embeddings.generate()`: \n  *  `request.requestBody.provider.ignore[].union(ProviderName).enum(decart)` **Added**\n* `openrouter.endpoints.listZdrEndpoints()`:  `response.data[].providerName.enum(decart)` **Added**\n* `openrouter.endpoints.list()`:  `response.data.endpoints[].providerName.enum(decart)` **Added**\n* `openrouter.generations.getGeneration()`:  `response.data.providerResponses[].providerName.enum(decart)` **Added**\n* `openrouter.presets.createPresetsChatCompletions()`: \n  *  `request.chatRequest.provider.ignore[].union(ProviderName).enum(decart)` **Added**\n* `openrouter.presets.createPresetsMessages()`: \n  *  `request.messagesRequest.provider.ignore[].union(ProviderName).enum(decart)` **Added**\n* `openrouter.presets.createPresetsResponses()`: \n  *  `request.responsesRequest.provider.ignore[].union(ProviderName).enum(decart)` **Added**\n* `openrouter.rerank.rerank()`: \n  *  `request.requestBody.provider.ignore[].union(ProviderName).enum(decart)` **Added**\n* `openrouter.beta.responses.send()`: \n  *  `request.responsesRequest.provider.ignore[].union(ProviderName).enum(decart)` **Added**\n* `openrouter.videoGeneration.generate()`: \n  *  `request.videoGenerationRequest.provider.options.decart` **Added**\n"
+releaseNotes: |
+  ## Typescript SDK Changes:
+  * `openrouter.beta.responses.send()`:  `response` **Changed**

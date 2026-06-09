@@ -36,7 +36,7 @@ generation:
     skipResponseBodyAssertions: false
   preApplyUnionDiscriminators: true
 typescript:
-  version: 0.12.91
+  version: 0.12.92
   acceptHeaderEnum: false
   additionalDependencies:
     dependencies:
