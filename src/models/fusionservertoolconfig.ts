@@ -40,6 +40,17 @@ export type FusionServerToolConfigReasoning = {
   maxTokens?: number | undefined;
 };
 
+export type FusionServerToolConfigTool = {
+  /**
+   * Optional configuration forwarded as the tool's `parameters` object.
+   */
+  parameters?: { [k: string]: any | null } | undefined;
+  /**
+   * Server tool type identifier (e.g. "openrouter:web_search", "openrouter:web_fetch").
+   */
+  type: string;
+};
+
 /**
  * Configuration for the openrouter:fusion server tool.
  */
@@ -68,6 +79,10 @@ export type FusionServerToolConfig = {
    * Sampling temperature forwarded to panelist and judge inner calls. When omitted, the provider's default applies.
    */
   temperature?: number | undefined;
+  /**
+   * Server tools available to panelist and judge inner calls. Each entry uses the same `{ type, parameters? }` shorthand as the outer Chat Completions request. When omitted, defaults to `[{ type: "openrouter:web_search" }, { type: "openrouter:web_fetch" }]`. Pass an empty array to disable tools entirely (panelists answer from parametric knowledge only).
+   */
+  tools?: Array<FusionServerToolConfigTool> | undefined;
 };
 
 /** @internal */
@@ -106,6 +121,29 @@ export function fusionServerToolConfigReasoningToJSON(
 }
 
 /** @internal */
+export type FusionServerToolConfigTool$Outbound = {
+  parameters?: { [k: string]: any | null } | undefined;
+  type: string;
+};
+
+/** @internal */
+export const FusionServerToolConfigTool$outboundSchema: z.ZodType<
+  FusionServerToolConfigTool$Outbound,
+  FusionServerToolConfigTool
+> = z.object({
+  parameters: z.record(z.string(), z.nullable(z.any())).optional(),
+  type: z.string(),
+});
+
+export function fusionServerToolConfigToolToJSON(
+  fusionServerToolConfigTool: FusionServerToolConfigTool,
+): string {
+  return JSON.stringify(
+    FusionServerToolConfigTool$outboundSchema.parse(fusionServerToolConfigTool),
+  );
+}
+
+/** @internal */
 export type FusionServerToolConfig$Outbound = {
   analysis_models?: Array<string> | undefined;
   max_completion_tokens?: number | undefined;
@@ -113,6 +151,7 @@ export type FusionServerToolConfig$Outbound = {
   model?: string | undefined;
   reasoning?: FusionServerToolConfigReasoning$Outbound | undefined;
   temperature?: number | undefined;
+  tools?: Array<FusionServerToolConfigTool$Outbound> | undefined;
 };
 
 /** @internal */
@@ -127,6 +166,8 @@ export const FusionServerToolConfig$outboundSchema: z.ZodType<
   reasoning: z.lazy(() => FusionServerToolConfigReasoning$outboundSchema)
     .optional(),
   temperature: z.number().optional(),
+  tools: z.array(z.lazy(() => FusionServerToolConfigTool$outboundSchema))
+    .optional(),
 }).transform((v) => {
   return remap$(v, {
     analysisModels: "analysis_models",
