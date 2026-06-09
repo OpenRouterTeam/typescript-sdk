@@ -57,6 +57,10 @@ export type GenerationResponseData = {
    */
   createdAt: string;
   /**
+   * The data region this generation was routed through. 'europe' for EU-routed requests, 'global' otherwise.
+   */
+  dataRegion: string;
+  /**
    * External user identifier
    */
   externalUser: string | null;
@@ -234,6 +238,7 @@ export const GenerationResponseData$inboundSchema: z.ZodType<
   cache_discount: z.nullable(z.number()),
   cancelled: z.nullable(z.boolean()),
   created_at: z.string(),
+  data_region: z.string(),
   external_user: z.nullable(z.string()),
   finish_reason: z.nullable(z.string()),
   generation_time: z.nullable(z.number()),
@@ -278,6 +283,7 @@ export const GenerationResponseData$inboundSchema: z.ZodType<
     "app_id": "appId",
     "cache_discount": "cacheDiscount",
     "created_at": "createdAt",
+    "data_region": "dataRegion",
     "external_user": "externalUser",
     "finish_reason": "finishReason",
     "generation_time": "generationTime",
