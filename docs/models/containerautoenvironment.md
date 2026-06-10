@@ -1,0 +1,19 @@
+# ContainerAutoEnvironment
+
+An OpenRouter-managed, auto-provisioned ephemeral container.
+
+## Example Usage
+
+```typescript
+import { ContainerAutoEnvironment } from "@openrouter/sdk/models";
+
+let value: ContainerAutoEnvironment = {
+  type: "container_auto",
+};
+```
+
+## Fields
+
+| Field              | Type               | Required           | Description        |
+| ------------------ | ------------------ | ------------------ | ------------------ |
+| `type`             | *"container_auto"* | :heavy_check_mark: | N/A                |
