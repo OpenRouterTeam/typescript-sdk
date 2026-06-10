@@ -6,10 +6,12 @@
 import { presetsCreatePresetsChatCompletions } from "../funcs/presetsCreatePresetsChatCompletions.js";
 import { presetsCreatePresetsMessages } from "../funcs/presetsCreatePresetsMessages.js";
 import { presetsCreatePresetsResponses } from "../funcs/presetsCreatePresetsResponses.js";
+import { presetsDelete } from "../funcs/presetsDelete.js";
 import { presetsGet } from "../funcs/presetsGet.js";
 import { presetsGetVersion } from "../funcs/presetsGetVersion.js";
 import { presetsList } from "../funcs/presetsList.js";
 import { presetsListVersions } from "../funcs/presetsListVersions.js";
+import { presetsUpdate } from "../funcs/presetsUpdate.js";
 import { ClientSDK, RequestOptions } from "../lib/sdks.js";
 import * as models from "../models/index.js";
 import * as operations from "../models/operations/index.js";
@@ -35,6 +37,23 @@ export class Presets extends ClientSDK {
   }
 
   /**
+   * Delete a preset
+   *
+   * @remarks
+   * Archive a preset. Archived presets are no longer usable in inference requests.
+   */
+  async delete(
+    request: operations.DeletePresetRequest,
+    options?: RequestOptions,
+  ): Promise<models.DeletePresetResponse> {
+    return unwrapAsync(presetsDelete(
+      this,
+      request,
+      options,
+    ));
+  }
+
+  /**
    * Get a preset
    *
    * @remarks
@@ -45,6 +64,23 @@ export class Presets extends ClientSDK {
     options?: RequestOptions,
   ): Promise<models.GetPresetResponse> {
     return unwrapAsync(presetsGet(
+      this,
+      request,
+      options,
+    ));
+  }
+
+  /**
+   * Update a preset
+   *
+   * @remarks
+   * Update the metadata of an existing preset (name and/or description).
+   */
+  async update(
+    request: operations.UpdatePresetRequest,
+    options?: RequestOptions,
+  ): Promise<models.UpdatePresetResponse> {
+    return unwrapAsync(presetsUpdate(
       this,
       request,
       options,
