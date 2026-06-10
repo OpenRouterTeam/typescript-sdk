@@ -11,24 +11,15 @@ import {
   AdvisorNestedTool$outboundSchema,
 } from "./advisornestedtool.js";
 import {
-  AdvisorProfile,
-  AdvisorProfile$Outbound,
-  AdvisorProfile$outboundSchema,
-} from "./advisorprofile.js";
-import {
   AdvisorReasoning,
   AdvisorReasoning$Outbound,
   AdvisorReasoning$outboundSchema,
 } from "./advisorreasoning.js";
 
 /**
- * Configuration for the openrouter:advisor server tool.
+ * Configuration for one openrouter:advisor server tool entry.
  */
 export type AdvisorServerToolConfig = {
-  /**
-   * Roster of named advisor profiles. When set, the executor model selects one by passing its `name` to the advisor tool; the chosen profile's config overrides the request-wide advisor parameters. Profile names must be unique.
-   */
-  advisors?: Array<AdvisorProfile> | undefined;
   /**
    * When true, the full parent conversation is forwarded to the advisor so it sees the same context the executor does (and the tool-call `prompt`, if given, is appended as a final user turn). When false or omitted, the advisor receives only the `prompt` the executor passes in the tool call.
    */
@@ -50,9 +41,17 @@ export type AdvisorServerToolConfig = {
    */
   model?: string | undefined;
   /**
+   * Optional name for this advisor. The model sees one tool per named advisor (and one default for an unnamed entry). Names must be unique across advisor entries. Letters, digits, spaces, underscores, and dashes; trimmed; 1–64 chars.
+   */
+  name?: string | undefined;
+  /**
    * Reasoning configuration forwarded to the advisor call. Use this to control reasoning effort and token budget for models that support extended thinking.
    */
   reasoning?: AdvisorReasoning | undefined;
+  /**
+   * When true, the advisor's advice streams incrementally as it is produced. In the Responses API this emits `response.output_text.delta` events targeting the advisor output item; the final `advice` field is still set on the completed item. Has no effect on the Chat Completions API (where the advice arrives only as the final tool result). When false or omitted, the advice arrives only as the final result.
+   */
+  stream?: boolean | undefined;
   /**
    * Sampling temperature forwarded to the advisor call. When omitted, the provider's default applies.
    */
@@ -65,13 +64,14 @@ export type AdvisorServerToolConfig = {
 
 /** @internal */
 export type AdvisorServerToolConfig$Outbound = {
-  advisors?: Array<AdvisorProfile$Outbound> | undefined;
   forward_transcript?: boolean | undefined;
   instructions?: string | undefined;
   max_completion_tokens?: number | undefined;
   max_tool_calls?: number | undefined;
   model?: string | undefined;
+  name?: string | undefined;
   reasoning?: AdvisorReasoning$Outbound | undefined;
+  stream?: boolean | undefined;
   temperature?: number | undefined;
   tools?: Array<AdvisorNestedTool$Outbound> | undefined;
 };
@@ -81,13 +81,14 @@ export const AdvisorServerToolConfig$outboundSchema: z.ZodType<
   AdvisorServerToolConfig$Outbound,
   AdvisorServerToolConfig
 > = z.object({
-  advisors: z.array(AdvisorProfile$outboundSchema).optional(),
   forwardTranscript: z.boolean().optional(),
   instructions: z.string().optional(),
   maxCompletionTokens: z.int().optional(),
   maxToolCalls: z.int().optional(),
   model: z.string().optional(),
+  name: z.string().optional(),
   reasoning: AdvisorReasoning$outboundSchema.optional(),
+  stream: z.boolean().optional(),
   temperature: z.number().optional(),
   tools: z.array(AdvisorNestedTool$outboundSchema).optional(),
 }).transform((v) => {
