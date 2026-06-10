@@ -1,0 +1,19 @@
+# GetAppRankingsCategory
+
+Marketplace category group to filter by (e.g. `coding`). Only apps tagged with a subcategory inside this group are returned. Mutually combinable with `subcategory` — when both are supplied the `subcategory` must belong to the `category` group.
+
+## Example Usage
+
+```typescript
+import { GetAppRankingsCategory } from "@openrouter/sdk/models/operations";
+
+let value: GetAppRankingsCategory = "coding";
+
+// Open enum: unrecognized values are captured as Unrecognized<string>
+```
+
+## Values
+
+```typescript
+"coding" | "creative" | "productivity" | "entertainment" | Unrecognized<string>
+```
