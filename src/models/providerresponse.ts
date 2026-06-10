@@ -139,6 +139,18 @@ export type ProviderResponseProviderName = OpenEnum<
 >;
 
 /**
+ * Non-default service tier of the virtual endpoint the request was routed to. Billing follows the tier reported in the upstream response, which may differ.
+ */
+export const RoutedServiceTier = {
+  Flex: "flex",
+  Priority: "priority",
+} as const;
+/**
+ * Non-default service tier of the virtual endpoint the request was routed to. Billing follows the tier reported in the upstream response, which may differ.
+ */
+export type RoutedServiceTier = OpenEnum<typeof RoutedServiceTier>;
+
+/**
  * Details of a provider response for a generation attempt
  */
 export type ProviderResponse = {
@@ -167,6 +179,10 @@ export type ProviderResponse = {
    */
   providerName?: ProviderResponseProviderName | undefined;
   /**
+   * Non-default service tier of the virtual endpoint the request was routed to. Billing follows the tier reported in the upstream response, which may differ.
+   */
+  routedServiceTier?: RoutedServiceTier | undefined;
+  /**
    * HTTP status code from the provider
    */
   status: number | null;
@@ -179,6 +195,12 @@ export const ProviderResponseProviderName$inboundSchema: z.ZodType<
 > = openEnums.inboundSchema(ProviderResponseProviderName);
 
 /** @internal */
+export const RoutedServiceTier$inboundSchema: z.ZodType<
+  RoutedServiceTier,
+  unknown
+> = openEnums.inboundSchema(RoutedServiceTier);
+
+/** @internal */
 export const ProviderResponse$inboundSchema: z.ZodType<
   ProviderResponse,
   unknown
@@ -189,6 +211,7 @@ export const ProviderResponse$inboundSchema: z.ZodType<
   latency: z.number().optional(),
   model_permaslug: z.string().optional(),
   provider_name: ProviderResponseProviderName$inboundSchema.optional(),
+  routed_service_tier: RoutedServiceTier$inboundSchema.optional(),
   status: z.nullable(z.int()),
 }).transform((v) => {
   return remap$(v, {
@@ -196,6 +219,7 @@ export const ProviderResponse$inboundSchema: z.ZodType<
     "is_byok": "isByok",
     "model_permaslug": "modelPermaslug",
     "provider_name": "providerName",
+    "routed_service_tier": "routedServiceTier",
   });
 });
 
