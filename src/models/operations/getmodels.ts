@@ -33,7 +33,7 @@ export type GetModelsGlobals = {
 /**
  * Filter models by use case category
  */
-export const Category = {
+export const GetModelsCategory = {
   Programming: "programming",
   Roleplay: "roleplay",
   Marketing: "marketing",
@@ -50,12 +50,12 @@ export const Category = {
 /**
  * Filter models by use case category
  */
-export type Category = OpenEnum<typeof Category>;
+export type GetModelsCategory = OpenEnum<typeof GetModelsCategory>;
 
 /**
  * Sort the returned models server-side. Prefer this over fetching the full list and sorting client-side. Options: pricing-low-to-high, pricing-high-to-low (average prompt/completion price), context-high-to-low (context length), throughput-high-to-low, latency-low-to-high (recent median performance), most-popular, top-weekly (tokens processed in the last week), newest (creation date). When omitted, the existing default ordering is preserved.
  */
-export const Sort = {
+export const GetModelsSort = {
   MostPopular: "most-popular",
   Newest: "newest",
   TopWeekly: "top-weekly",
@@ -68,7 +68,7 @@ export const Sort = {
 /**
  * Sort the returned models server-side. Prefer this over fetching the full list and sorting client-side. Options: pricing-low-to-high, pricing-high-to-low (average prompt/completion price), context-high-to-low (context length), throughput-high-to-low, latency-low-to-high (recent median performance), most-popular, top-weekly (tokens processed in the last week), newest (creation date). When omitted, the existing default ordering is preserved.
  */
-export type Sort = OpenEnum<typeof Sort>;
+export type GetModelsSort = OpenEnum<typeof GetModelsSort>;
 
 export type GetModelsRequest = {
   /**
@@ -93,7 +93,7 @@ export type GetModelsRequest = {
   /**
    * Filter models by use case category
    */
-  category?: Category | undefined;
+  category?: GetModelsCategory | undefined;
   /**
    * Filter models by supported parameter (comma-separated)
    */
@@ -105,16 +105,18 @@ export type GetModelsRequest = {
   /**
    * Sort the returned models server-side. Prefer this over fetching the full list and sorting client-side. Options: pricing-low-to-high, pricing-high-to-low (average prompt/completion price), context-high-to-low (context length), throughput-high-to-low, latency-low-to-high (recent median performance), most-popular, top-weekly (tokens processed in the last week), newest (creation date). When omitted, the existing default ordering is preserved.
    */
-  sort?: Sort | undefined;
+  sort?: GetModelsSort | undefined;
 };
 
 /** @internal */
-export const Category$outboundSchema: z.ZodType<string, Category> = openEnums
-  .outboundSchema(Category);
+export const GetModelsCategory$outboundSchema: z.ZodType<
+  string,
+  GetModelsCategory
+> = openEnums.outboundSchema(GetModelsCategory);
 
 /** @internal */
-export const Sort$outboundSchema: z.ZodType<string, Sort> = openEnums
-  .outboundSchema(Sort);
+export const GetModelsSort$outboundSchema: z.ZodType<string, GetModelsSort> =
+  openEnums.outboundSchema(GetModelsSort);
 
 /** @internal */
 export type GetModelsRequest$Outbound = {
@@ -135,10 +137,10 @@ export const GetModelsRequest$outboundSchema: z.ZodType<
   httpReferer: z.string().optional(),
   appTitle: z.string().optional(),
   appCategories: z.string().optional(),
-  category: Category$outboundSchema.optional(),
+  category: GetModelsCategory$outboundSchema.optional(),
   supportedParameters: z.string().optional(),
   outputModalities: z.string().optional(),
-  sort: Sort$outboundSchema.optional(),
+  sort: GetModelsSort$outboundSchema.optional(),
 }).transform((v) => {
   return remap$(v, {
     httpReferer: "HTTP-Referer",
