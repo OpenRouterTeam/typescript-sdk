@@ -84,6 +84,10 @@ export type GetModelsRequest = {
    * Filter models by output modality. Accepts a comma-separated list of modalities (text, image, audio, embeddings) or "all" to include all models. Defaults to "text".
    */
   outputModalities?: string | undefined;
+  /**
+   * Filter to a specific model by its ID (e.g. openai/gpt-4 or anthropic/claude-sonnet-4). When provided, other query filters (category, output_modalities) are ignored and the matching model is returned regardless of modality.
+   */
+  id?: string | undefined;
 };
 
 /** @internal */
@@ -98,6 +102,7 @@ export type GetModelsRequest$Outbound = {
   category?: string | undefined;
   supported_parameters?: string | undefined;
   output_modalities?: string | undefined;
+  id?: string | undefined;
 };
 
 /** @internal */
@@ -111,6 +116,7 @@ export const GetModelsRequest$outboundSchema: z.ZodType<
   category: Category$outboundSchema.optional(),
   supportedParameters: z.string().optional(),
   outputModalities: z.string().optional(),
+  id: z.string().optional(),
 }).transform((v) => {
   return remap$(v, {
     httpReferer: "HTTP-Referer",
