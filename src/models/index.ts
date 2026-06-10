@@ -245,6 +245,7 @@ export * from "./mcplisttoolsitem.js";
 export * from "./mcpservertool.js";
 export * from "./memberassignment.js";
 export * from "./messagesadvisortoolresultblock.js";
+export * from "./messagesfallbackparam.js";
 export * from "./messagesmessageparam.js";
 export * from "./messagesoutputconfig.js";
 export * from "./messagesrequest.js";
