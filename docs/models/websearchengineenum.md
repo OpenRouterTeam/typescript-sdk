@@ -1,6 +1,6 @@
 # WebSearchEngineEnum
 
-Which search engine to use. "auto" (default) uses native if the provider supports it, otherwise Exa. "native" forces the provider's built-in search. "exa" forces the Exa search API. "firecrawl" uses Firecrawl (requires BYOK). "parallel" uses the Parallel search API.
+Which search engine to use. "auto" (default) uses native if the provider supports it, otherwise Exa. "native" forces the provider's built-in search. "exa" forces the Exa search API. "firecrawl" uses Firecrawl (requires BYOK). "parallel" uses the Parallel search API. "perplexity" uses the Perplexity Search API (raw ranked results).
 
 ## Example Usage
 
@@ -15,5 +15,5 @@ let value: WebSearchEngineEnum = "auto";
 ## Values
 
 ```typescript
-"auto" | "native" | "exa" | "parallel" | "firecrawl" | Unrecognized<string>
+"auto" | "native" | "exa" | "parallel" | "firecrawl" | "perplexity" | Unrecognized<string>
 ```
