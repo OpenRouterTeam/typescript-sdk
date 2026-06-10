@@ -19,11 +19,11 @@ export type AdvisorServerToolOpenRouterType = ClosedEnum<
 >;
 
 /**
- * OpenRouter built-in server tool: consults a higher-intelligence advisor model (any OpenRouter model) for guidance mid-generation and returns its response. The advisor may run as a sub-agent with its own tools. Include multiple entries to offer several named advisors; at most one entry may omit `name` to act as the default advisor.
+ * OpenRouter built-in server tool: consults a higher-intelligence advisor model (any OpenRouter model) for guidance mid-generation and returns its response. The advisor may run as a sub-agent with its own tools.
  */
 export type AdvisorServerToolOpenRouter = {
   /**
-   * Configuration for one openrouter:advisor server tool entry.
+   * Configuration for the openrouter:advisor server tool.
    */
   parameters?: AdvisorServerToolConfig | undefined;
   type: AdvisorServerToolOpenRouterType;
