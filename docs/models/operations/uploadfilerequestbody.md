@@ -1,0 +1,16 @@
+# UploadFileRequestBody
+
+## Example Usage
+
+```typescript
+import { UploadFileRequestBody } from "@openrouter/sdk/models/operations";
+
+// No examples available for this model
+```
+
+## Fields
+
+| Field                                                                                                                                                                                | Type                                                                                                                                                                                 | Required                                                                                                                                                                             | Description                                                                                                                                                                          |
+| ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `file`                                                                                                                                                                               | [File](https://developer.mozilla.org/en-US/docs/Web/API/File) \| [Blob](https://developer.mozilla.org/en-US/docs/Web/API/Blob) \| [operations.FileT](../../models/operations/filet.md) | :heavy_check_mark:                                                                                                                                                                   | N/A                                                                                                                                                                                  |
+| `workspaceId`                                                                                                                                                                        | *string*                                                                                                                                                                             | :heavy_minus_sign:                                                                                                                                                                   | Workspace to upload into. Defaults to the caller’s default workspace.                                                                                                                |
