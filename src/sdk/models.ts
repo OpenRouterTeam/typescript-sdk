@@ -13,7 +13,10 @@ import { unwrapAsync } from "../types/fp.js";
 
 export class Models extends ClientSDK {
   /**
-   * List all models and their properties
+   * List all models and their properties, or look up by slug
+   *
+   * @remarks
+   * Lists all available models, or returns a single model when the `id` query parameter is provided.
    */
   async list(
     request?: operations.GetModelsRequest | undefined,
