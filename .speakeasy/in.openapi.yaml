@@ -5349,6 +5349,15 @@ components:
           items:
             type: string
           type: array
+        max_characters:
+          description: >-
+            Exact maximum number of characters of content per search result. Applies to the Exa and Parallel engines;
+            ignored with native provider search and Firecrawl. For Exa, caps highlight content per result. For Parallel,
+            caps excerpt content per result (default 1,500 when omitted). When both `max_characters` and
+            `search_context_size` are set, `max_characters` takes precedence for both engines. When omitted, falls back
+            to `search_context_size` mapping (Exa) or engine defaults (Parallel).
+          example: 2000
+          type: integer
         max_results:
           description: >-
             Maximum number of search results to return per search call. Defaults to 5. Applies to Exa, Firecrawl, and
@@ -18419,7 +18428,7 @@ components:
         search and Firecrawl. For Exa, pins a fixed per-result character cap (low=5,000, medium=15,000, high=30,000);
         when omitted, Exa picks an adaptive size per query and document (typically ~2,000–4,000 characters per result).
         For Parallel, controls the total characters across all results; when omitted, Parallel uses its own default
-        size.
+        size. Overridden by `max_characters` when both are set.
       enum:
         - low
         - medium
@@ -20432,6 +20441,15 @@ components:
           items:
             type: string
           type: array
+        max_characters:
+          description: >-
+            Exact maximum number of characters of content per search result. Applies to the Exa and Parallel engines;
+            ignored with native provider search and Firecrawl. For Exa, caps highlight content per result. For Parallel,
+            caps excerpt content per result (default 1,500 when omitted). When both `max_characters` and
+            `search_context_size` are set, `max_characters` takes precedence for both engines. When omitted, falls back
+            to `search_context_size` mapping (Exa) or engine defaults (Parallel).
+          example: 2000
+          type: integer
         max_results:
           description: >-
             Maximum number of search results to return per search call. Defaults to 5. Applies to Exa, Firecrawl, and
@@ -20622,6 +20640,15 @@ components:
           items:
             type: string
           type: array
+        max_characters:
+          description: >-
+            Exact maximum number of characters of content per search result. Applies to the Exa and Parallel engines;
+            ignored with native provider search and Firecrawl. For Exa, caps highlight content per result. For Parallel,
+            caps excerpt content per result (default 1,500 when omitted). When both `max_characters` and
+            `search_context_size` are set, `max_characters` takes precedence for both engines. When omitted, falls back
+            to `search_context_size` mapping (Exa) or engine defaults (Parallel).
+          example: 2000
+          type: integer
         max_results:
           description: >-
             Maximum number of search results to return per search call. Defaults to 5. Applies to Exa, Firecrawl, and
@@ -20991,6 +21018,391 @@ paths:
       summary: Get user activity grouped by endpoint
       tags:
         - Analytics
+  /analytics/meta:
+    get:
+      description: >-
+        Returns the available metrics, dimensions, filter operators, and granularities for the analytics query endpoint.
+        [Management key](/docs/guides/overview/auth/management-api-keys) required.
+      operationId: getAnalyticsMeta
+      responses:
+        '200':
+          content:
+            application/json:
+              example:
+                data:
+                  dimensions:
+                    - display_label: Model
+                      name: model
+                  granularities:
+                    - display_label: Day
+                      name: day
+                  metrics:
+                    - display_format: number
+                      display_label: Request Count
+                      is_rate: false
+                      name: request_count
+                  operators:
+                    - name: eq
+                      value_type: scalar
+              schema:
+                properties:
+                  data:
+                    properties:
+                      dimensions:
+                        items:
+                          properties:
+                            display_label:
+                              description: Human-readable label
+                              example: Model
+                              type: string
+                            name:
+                              description: Dimension identifier used in query requests
+                              example: model
+                              type: string
+                          required:
+                            - name
+                            - display_label
+                          type: object
+                        type: array
+                      granularities:
+                        items:
+                          properties:
+                            display_label:
+                              description: Human-readable label
+                              example: Day
+                              type: string
+                            name:
+                              description: Granularity identifier
+                              enum:
+                                - minute
+                                - hour
+                                - day
+                                - week
+                                - month
+                              example: day
+                              type: string
+                          required:
+                            - name
+                            - display_label
+                          type: object
+                        type: array
+                      metrics:
+                        items:
+                          properties:
+                            display_format:
+                              description: >-
+                                How this metric value should be formatted for display (e.g. percent → multiply by 100
+                                and append %, currency → prefix with $)
+                              enum:
+                                - number
+                                - currency
+                                - percent
+                                - latency
+                                - throughput
+                              example: number
+                              type: string
+                            display_label:
+                              description: Human-readable label
+                              example: Request Count
+                              type: string
+                            is_rate:
+                              description: Whether this metric is a rate/ratio (averaged, not summed)
+                              type: boolean
+                            name:
+                              description: Metric identifier used in query requests
+                              example: request_count
+                              type: string
+                          required:
+                            - name
+                            - display_label
+                            - is_rate
+                            - display_format
+                          type: object
+                        type: array
+                      operators:
+                        items:
+                          properties:
+                            name:
+                              description: Operator identifier used in filter definitions
+                              enum:
+                                - eq
+                                - neq
+                                - in
+                                - not_in
+                                - gt
+                                - gte
+                                - lt
+                                - lte
+                              example: eq
+                              type: string
+                            value_type:
+                              description: Whether the operator expects a single value or an array
+                              enum:
+                                - scalar
+                                - array
+                              type: string
+                          required:
+                            - name
+                            - value_type
+                          type: object
+                        type: array
+                    required:
+                      - metrics
+                      - dimensions
+                      - operators
+                      - granularities
+                    type: object
+                required:
+                  - data
+                type: object
+          description: Returns analytics query metadata
+        '401':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 401
+                  message: Missing Authentication header
+              schema:
+                $ref: '#/components/schemas/UnauthorizedResponse'
+          description: Unauthorized - Authentication required or invalid credentials
+        '403':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 403
+                  message: Only management keys can perform this operation
+              schema:
+                $ref: '#/components/schemas/ForbiddenResponse'
+          description: Forbidden - Authentication successful but insufficient permissions
+        '500':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 500
+                  message: Internal Server Error
+              schema:
+                $ref: '#/components/schemas/InternalServerResponse'
+          description: Internal Server Error - Unexpected server error
+      summary: Get available analytics metrics and dimensions
+      tags:
+        - beta.Analytics
+  /analytics/query:
+    post:
+      description: >-
+        Execute an analytics query with specified metrics, dimensions, filters, and time range. [Management
+        key](/docs/guides/overview/auth/management-api-keys) required.
+      operationId: queryAnalytics
+      requestBody:
+        content:
+          application/json:
+            example:
+              dimensions:
+                - model
+              granularity: day
+              limit: 100
+              metrics:
+                - request_count
+              time_range:
+                end: '2025-01-08T00:00:00Z'
+                start: '2025-01-01T00:00:00Z'
+            schema:
+              properties:
+                dimensions:
+                  items:
+                    description: Dimension name
+                    example: model
+                    type: string
+                  maxItems: 2
+                  type: array
+                filters:
+                  items:
+                    properties:
+                      field:
+                        description: Dimension to filter on
+                        example: model
+                        type: string
+                      operator:
+                        description: Filter operator
+                        example: eq
+                        type: string
+                      value:
+                        anyOf:
+                          - type: string
+                          - format: double
+                            type: number
+                          - items:
+                              anyOf:
+                                - type: string
+                                - format: double
+                                  type: number
+                            type: array
+                        description: Filter value (scalar or array depending on operator)
+                    required:
+                      - field
+                      - operator
+                      - value
+                    type: object
+                  maxItems: 20
+                  type: array
+                granularity:
+                  description: Time granularity
+                  example: day
+                  type: string
+                group_limit:
+                  description: >-
+                    Maximum rows per distinct combination of dimensions (ClickHouse LIMIT n BY). When omitted on
+                    time-series queries (granularity + dimensions), auto-computed to avoid truncating time windows.
+                    Explicit values override the default and may truncate time buckets if set lower than the number of
+                    buckets in the range. Ignored when no dimensions are specified.
+                  example: 100
+                  type: integer
+                limit:
+                  description: >-
+                    Maximum total rows returned. Defaults to 1000. On time-series queries with dimensions and no
+                    explicit group_limit, the server may raise this to accommodate the expected number of unique
+                    time-bucket/dimension combinations.
+                  type: integer
+                metrics:
+                  items:
+                    description: Metric name
+                    example: request_count
+                    type: string
+                  minItems: 1
+                  type: array
+                order_by:
+                  properties:
+                    direction:
+                      enum:
+                        - asc
+                        - desc
+                      type: string
+                    field:
+                      description: Field to order by
+                      example: request_count
+                      type: string
+                  required:
+                    - field
+                    - direction
+                  type: object
+                time_range:
+                  properties:
+                    end:
+                      format: date-time
+                      type: string
+                    start:
+                      format: date-time
+                      type: string
+                  required:
+                    - start
+                    - end
+                  type: object
+              required:
+                - metrics
+              type: object
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              example:
+                data:
+                  data:
+                    - date__day: '2025-01-01T00:00:00.000Z'
+                      request_count: 1500
+                  metadata:
+                    query_time_ms: 42
+                    row_count: 1
+                    truncated: false
+              schema:
+                properties:
+                  data:
+                    properties:
+                      cachedAt:
+                        format: double
+                        type: number
+                      data:
+                        items:
+                          description: A row of analytics data with metric/dimension values
+                          type: object
+                        type: array
+                      metadata:
+                        properties:
+                          query_time_ms:
+                            format: double
+                            type: number
+                          row_count:
+                            type: integer
+                          truncated:
+                            type: boolean
+                        required:
+                          - query_time_ms
+                          - row_count
+                          - truncated
+                        type: object
+                    required:
+                      - data
+                      - metadata
+                    type: object
+                required:
+                  - data
+                type: object
+          description: Analytics query results
+        '400':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 400
+                  message: Invalid request parameters
+              schema:
+                $ref: '#/components/schemas/BadRequestResponse'
+          description: Bad Request - Invalid request parameters or malformed input
+        '401':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 401
+                  message: Missing Authentication header
+              schema:
+                $ref: '#/components/schemas/UnauthorizedResponse'
+          description: Unauthorized - Authentication required or invalid credentials
+        '403':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 403
+                  message: Only management keys can perform this operation
+              schema:
+                $ref: '#/components/schemas/ForbiddenResponse'
+          description: Forbidden - Authentication successful but insufficient permissions
+        '408':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 408
+                  message: Operation timed out. Please try again later.
+              schema:
+                $ref: '#/components/schemas/RequestTimeoutResponse'
+          description: Request Timeout - Operation exceeded time limit
+        '500':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 500
+                  message: Internal Server Error
+              schema:
+                $ref: '#/components/schemas/InternalServerResponse'
+          description: Internal Server Error - Unexpected server error
+      summary: Query analytics data
+      tags:
+        - beta.Analytics
   /audio/speech:
     post:
       description: >-
@@ -29468,6 +29880,8 @@ tags:
     name: Video Generation
   - description: Workspaces endpoints
     name: Workspaces
+  - description: beta.Analytics endpoints
+    name: beta.Analytics
   - description: beta.responses endpoints
     name: beta.responses
 x-retry-strategy:
