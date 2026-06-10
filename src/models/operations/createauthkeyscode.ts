@@ -62,7 +62,7 @@ export type UsageLimitType = OpenEnum<typeof UsageLimitType>;
 
 export type CreateAuthKeysCodeRequestBody = {
   /**
-   * The callback URL to redirect to after authorization. Note, only https URLs on ports 443 and 3000 are allowed.
+   * The callback URL to redirect to after authorization. Supports https URLs and localhost/127.0.0.1 URLs on any port for local CLI tools.
    */
   callbackUrl: string;
   /**
