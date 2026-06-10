@@ -1,0 +1,23 @@
+# OutputShellCallOutputItemOutput
+
+## Example Usage
+
+```typescript
+import { OutputShellCallOutputItemOutput } from "@openrouter/sdk/models";
+
+let value: OutputShellCallOutputItemOutput = {
+  outcome: {
+    type: "timeout",
+  },
+  stderr: "<value>",
+  stdout: "<value>",
+};
+```
+
+## Fields
+
+| Field              | Type               | Required           | Description        |
+| ------------------ | ------------------ | ------------------ | ------------------ |
+| `outcome`          | *models.Outcome*   | :heavy_check_mark: | N/A                |
+| `stderr`           | *string*           | :heavy_check_mark: | N/A                |
+| `stdout`           | *string*           | :heavy_check_mark: | N/A                |
