@@ -6,6 +6,7 @@
 export * from "./activityitem.js";
 export * from "./activityresponse.js";
 export * from "./advisornestedtool.js";
+export * from "./advisorprofile.js";
 export * from "./advisorreasoning.js";
 export * from "./advisorservertoolconfig.js";
 export * from "./advisorservertoolopenrouter.js";
@@ -168,6 +169,9 @@ export * from "./endpointsmetadata.js";
 export * from "./endpointstatus.js";
 export * from "./errorevent.js";
 export * from "./filecitation.js";
+export * from "./filedeleteresponse.js";
+export * from "./filelistresponse.js";
+export * from "./filemetadata.js";
 export * from "./fileparserplugin.js";
 export * from "./filepath.js";
 export * from "./filesearchservertool.js";
