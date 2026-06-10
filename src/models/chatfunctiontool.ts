@@ -12,6 +12,11 @@ import {
   AdvisorServerToolOpenRouter$outboundSchema,
 } from "./advisorservertoolopenrouter.js";
 import {
+  BashServerTool,
+  BashServerTool$Outbound,
+  BashServerTool$outboundSchema,
+} from "./bashservertool.js";
+import {
   ChatContentCacheControl,
   ChatContentCacheControl$Outbound,
   ChatContentCacheControl$outboundSchema,
@@ -92,6 +97,7 @@ export type ChatFunctionToolFunction = {
 export type ChatFunctionTool =
   | ChatFunctionToolFunction
   | AdvisorServerToolOpenRouter
+  | BashServerTool
   | DatetimeServerTool
   | ImageGenerationServerToolOpenRouter
   | ChatSearchModelsServerTool
@@ -166,6 +172,7 @@ export function chatFunctionToolFunctionToJSON(
 export type ChatFunctionTool$Outbound =
   | ChatFunctionToolFunction$Outbound
   | AdvisorServerToolOpenRouter$Outbound
+  | BashServerTool$Outbound
   | DatetimeServerTool$Outbound
   | ImageGenerationServerToolOpenRouter$Outbound
   | ChatSearchModelsServerTool$Outbound
@@ -180,6 +187,7 @@ export const ChatFunctionTool$outboundSchema: z.ZodType<
 > = z.union([
   z.lazy(() => ChatFunctionToolFunction$outboundSchema),
   AdvisorServerToolOpenRouter$outboundSchema,
+  BashServerTool$outboundSchema,
   DatetimeServerTool$outboundSchema,
   ImageGenerationServerToolOpenRouter$outboundSchema,
   ChatSearchModelsServerTool$outboundSchema,

@@ -1,0 +1,26 @@
+# OutputShellCallItem
+
+A native `shell_call` output item matching OpenAI's Responses API shape. Emitted for the sandbox-backed `shell` tool.
+
+## Example Usage
+
+```typescript
+import { OutputShellCallItem } from "@openrouter/sdk/models";
+
+let value: OutputShellCallItem = {
+  callId: "<id>",
+  id: "msg-abc123",
+  status: "completed",
+  type: "shell_call",
+};
+```
+
+## Fields
+
+| Field                                                                      | Type                                                                       | Required                                                                   | Description                                                                | Example                                                                    |
+| -------------------------------------------------------------------------- | -------------------------------------------------------------------------- | -------------------------------------------------------------------------- | -------------------------------------------------------------------------- | -------------------------------------------------------------------------- |
+| `action`                                                                   | [models.OutputShellCallItemAction](../models/outputshellcallitemaction.md) | :heavy_minus_sign:                                                         | N/A                                                                        |                                                                            |
+| `callId`                                                                   | *string*                                                                   | :heavy_check_mark:                                                         | N/A                                                                        |                                                                            |
+| `id`                                                                       | *string*                                                                   | :heavy_check_mark:                                                         | N/A                                                                        |                                                                            |
+| `status`                                                                   | [models.ShellCallStatus](../models/shellcallstatus.md)                     | :heavy_check_mark:                                                         | Status of a shell call or its output.                                      | completed                                                                  |
+| `type`                                                                     | *"shell_call"*                                                             | :heavy_check_mark:                                                         | N/A                                                                        |                                                                            |
