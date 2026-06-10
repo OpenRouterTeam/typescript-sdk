@@ -96,6 +96,7 @@ async function $do(
   const query = encodeFormQuery({
     "category": payload?.category,
     "output_modalities": payload?.output_modalities,
+    "sort": payload?.sort,
     "supported_parameters": payload?.supported_parameters,
   });
 
