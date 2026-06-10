@@ -94,6 +94,14 @@ import {
   OutputSearchModelsServerToolItem$inboundSchema,
 } from "./outputsearchmodelsservertoolitem.js";
 import {
+  OutputShellCallItem,
+  OutputShellCallItem$inboundSchema,
+} from "./outputshellcallitem.js";
+import {
+  OutputShellCallOutputItem,
+  OutputShellCallOutputItem$inboundSchema,
+} from "./outputshellcalloutputitem.js";
+import {
   OutputTextEditorServerToolItem,
   OutputTextEditorServerToolItem$inboundSchema,
 } from "./outputtexteditorservertoolitem.js";
@@ -126,7 +134,7 @@ export type OutputItems =
   | (OutputFunctionCallItem & { type: "function_call" })
   | (OutputImageGenerationCallItem & { type: "image_generation_call" })
   | OutputMessageItem
-  | OutputAdvisorServerToolItem
+  | (OutputAdvisorServerToolItem & { type: "openrouter:advisor" })
   | (OutputApplyPatchServerToolItem & { type: "openrouter:apply_patch" })
   | (OutputBashServerToolItem & { type: "openrouter:bash" })
   | (OutputBrowserUseServerToolItem & { type: "openrouter:browser_use" })
@@ -149,6 +157,8 @@ export type OutputItems =
   | (OutputWebFetchServerToolItem & { type: "openrouter:web_fetch" })
   | (OutputWebSearchServerToolItem & { type: "openrouter:web_search" })
   | OutputReasoningItem
+  | OutputShellCallItem
+  | OutputShellCallOutputItem
   | (OutputWebSearchCallItem & { type: "web_search_call" })
   | discriminatedUnionTypes.Unknown<"type">;
 
@@ -175,7 +185,9 @@ export const OutputItems$inboundSchema: z.ZodType<OutputItems, unknown> =
       z.object({ type: z.literal("image_generation_call") }),
     ),
     message: OutputMessageItem$inboundSchema,
-    ["openrouter:advisor"]: OutputAdvisorServerToolItem$inboundSchema,
+    ["openrouter:advisor"]: OutputAdvisorServerToolItem$inboundSchema.and(
+      z.object({ type: z.literal("openrouter:advisor") }),
+    ),
     ["openrouter:apply_patch"]: OutputApplyPatchServerToolItem$inboundSchema
       .and(z.object({ type: z.literal("openrouter:apply_patch") })),
     ["openrouter:bash"]: OutputBashServerToolItem$inboundSchema.and(
@@ -218,6 +230,8 @@ export const OutputItems$inboundSchema: z.ZodType<OutputItems, unknown> =
       z.object({ type: z.literal("openrouter:web_search") }),
     ),
     reasoning: OutputReasoningItem$inboundSchema,
+    shell_call: OutputShellCallItem$inboundSchema,
+    shell_call_output: OutputShellCallOutputItem$inboundSchema,
     web_search_call: OutputWebSearchCallItem$inboundSchema.and(
       z.object({ type: z.literal("web_search_call") }),
     ),
