@@ -1,0 +1,19 @@
+# GetModelsCategory
+
+Filter models by use case category
+
+## Example Usage
+
+```typescript
+import { GetModelsCategory } from "@openrouter/sdk/models/operations";
+
+let value: GetModelsCategory = "programming";
+
+// Open enum: unrecognized values are captured as Unrecognized<string>
+```
+
+## Values
+
+```typescript
+"programming" | "roleplay" | "marketing" | "marketing/seo" | "technology" | "science" | "translation" | "legal" | "finance" | "health" | "trivia" | "academia" | Unrecognized<string>
+```
