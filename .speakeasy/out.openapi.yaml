@@ -142,11 +142,48 @@ components:
       required:
         - type
       type: object
-    AdvisorProfile:
+    AdvisorReasoning:
       description: >-
-        A named advisor profile. The executor model selects it by `name` and the profile's config (model, instructions, etc.) takes precedence over the request-wide advisor parameters for that call.
+        Reasoning configuration forwarded to the advisor call. Use this to control reasoning effort and token budget for models that support extended thinking.
       example:
-        instructions: You are a critical code reviewer.
+        effort: high
+      properties:
+        effort:
+          description: Reasoning effort level for the advisor call.
+          enum:
+            - xhigh
+            - high
+            - medium
+            - low
+            - minimal
+            - none
+          type: string
+          x-speakeasy-unknown-values: allow
+        max_tokens:
+          description: Maximum number of reasoning tokens the advisor may use.
+          type: integer
+      type: object
+    AdvisorServerTool_OpenRouter:
+      description: >-
+        OpenRouter built-in server tool: consults a higher-intelligence advisor model (any OpenRouter model) for guidance mid-generation and returns its response. The advisor may run as a sub-agent with its own tools. Include multiple entries to offer several named advisors; at most one entry may omit `name` to act as the default advisor.
+      example:
+        parameters:
+          model: ~anthropic/claude-opus-latest
+          name: reviewer
+        type: openrouter:advisor
+      properties:
+        parameters:
+          $ref: '#/components/schemas/AdvisorServerToolConfig'
+        type:
+          enum:
+            - openrouter:advisor
+          type: string
+      required:
+        - type
+      type: object
+    AdvisorServerToolConfig:
+      description: Configuration for one openrouter:advisor server tool entry.
+      example:
         model: ~anthropic/claude-opus-latest
         name: reviewer
       properties:
@@ -179,111 +216,19 @@ components:
           type: string
         name:
           description: >-
-            Name of this advisor profile. The executor model passes this `name` to the advisor tool to select the profile. Must be unique within the `advisors` roster. Letters, digits, underscores, and dashes; 1–64 chars.
+            Optional name for this advisor. The model sees one tool per named advisor (and one default for an unnamed entry). Names must be unique across advisor entries. Letters, digits, spaces, underscores, and dashes; trimmed; 1–64 chars.
           example: reviewer
-          pattern: ^[a-zA-Z0-9_-]{1,64}$
+          maxLength: 64
+          minLength: 1
+          pattern: ^[a-zA-Z0-9 _-]+$
           type: string
         reasoning:
           $ref: '#/components/schemas/AdvisorReasoning'
-        temperature:
-          description: Sampling temperature forwarded to the advisor call. When omitted, the provider's default applies.
-          example: 0.7
-          format: double
-          type: number
-        tools:
+        stream:
           description: >-
-            Tools the advisor sub-agent may use while forming its advice. The advisor runs as an agentic sub-agent over these tools, then returns its text. Must not include the advisor tool itself.
-          items:
-            $ref: '#/components/schemas/AdvisorNestedTool'
-          type: array
-      required:
-        - name
-      type: object
-    AdvisorReasoning:
-      description: >-
-        Reasoning configuration forwarded to the advisor call. Use this to control reasoning effort and token budget for models that support extended thinking.
-      example:
-        effort: high
-      properties:
-        effort:
-          description: Reasoning effort level for the advisor call.
-          enum:
-            - xhigh
-            - high
-            - medium
-            - low
-            - minimal
-            - none
-          type: string
-          x-speakeasy-unknown-values: allow
-        max_tokens:
-          description: Maximum number of reasoning tokens the advisor may use.
-          type: integer
-      type: object
-    AdvisorServerTool_OpenRouter:
-      description: >-
-        OpenRouter built-in server tool: consults a higher-intelligence advisor model (any OpenRouter model) for guidance mid-generation and returns its response. The advisor may run as a sub-agent with its own tools.
-      example:
-        parameters:
-          model: ~anthropic/claude-opus-latest
-        type: openrouter:advisor
-      properties:
-        parameters:
-          $ref: '#/components/schemas/AdvisorServerToolConfig'
-        type:
-          enum:
-            - openrouter:advisor
-          type: string
-      required:
-        - type
-      type: object
-    AdvisorServerToolConfig:
-      description: Configuration for the openrouter:advisor server tool.
-      example:
-        model: ~anthropic/claude-opus-latest
-      properties:
-        advisors:
-          description: >-
-            Roster of named advisor profiles. When set, the executor model selects one by passing its `name` to the advisor tool; the chosen profile's config overrides the request-wide advisor parameters. Profile names must be unique.
-          example:
-            - instructions: You are a critical code reviewer.
-              model: ~anthropic/claude-opus-latest
-              name: reviewer
-            - instructions: You are a systems architect.
-              model: ~openai/gpt-latest
-              name: architect
-          items:
-            $ref: '#/components/schemas/AdvisorProfile'
-          type: array
-        forward_transcript:
-          description: >-
-            When true, the full parent conversation is forwarded to the advisor so it sees the same context the executor does (and the tool-call `prompt`, if given, is appended as a final user turn). When false or omitted, the advisor receives only the `prompt` the executor passes in the tool call.
+            When true, the advisor's advice streams incrementally as it is produced. In the Responses API this emits `response.output_text.delta` events targeting the advisor output item; the final `advice` field is still set on the completed item. Has no effect on the Chat Completions API (where the advice arrives only as the final tool result). When false or omitted, the advice arrives only as the final result.
           example: false
           type: boolean
-        instructions:
-          description: >-
-            System instructions for the advisor sub-agent. When omitted, the advisor responds with no system prompt of its own.
-          example: You are a senior staff engineer. Give a focused, decisive plan.
-          type: string
-        max_completion_tokens:
-          description: >-
-            Maximum number of output tokens (including reasoning) the advisor may produce. When omitted, the provider's default applies.
-          example: 2048
-          type: integer
-        max_tool_calls:
-          description: >-
-            Maximum number of tool-calling steps the advisor sub-agent may take during its agentic loop. Capped at 25. Only relevant when the advisor is given tools.
-          example: 5
-          maximum: 25
-          minimum: 1
-          type: integer
-        model:
-          description: >-
-            Slug of the advisor model to consult (any OpenRouter model). When omitted, the executor can choose it via the tool call's `model` argument; if neither is set, the model from the outer API request is used. The advisor tool itself cannot be the advisor model.
-          example: ~anthropic/claude-opus-latest
-          type: string
-        reasoning:
-          $ref: '#/components/schemas/AdvisorReasoning'
         temperature:
           description: Sampling temperature forwarded to the advisor call. When omitted, the provider's default applies.
           example: 0.7
@@ -9142,6 +9087,7 @@ components:
               - $ref: '#/components/schemas/OutputMemoryServerToolItem'
               - $ref: '#/components/schemas/OutputMcpServerToolItem'
               - $ref: '#/components/schemas/OutputSearchModelsServerToolItem'
+              - $ref: '#/components/schemas/OutputAdvisorServerToolItem'
               - $ref: '#/components/schemas/LocalShellCallItem'
               - $ref: '#/components/schemas/LocalShellCallOutputItem'
               - $ref: '#/components/schemas/ShellCallItem'
@@ -14468,6 +14414,11 @@ components:
           description: Error message when the advisor call did not produce advice.
           type: string
         id:
+          type: string
+        instance_name:
+          description: >-
+            Provider-safe function name of the specific advisor instance that produced this item (e.g. `openrouter_advisor__1`). Present only when more than one advisor tool is configured; omitted for the default single advisor. Echo this field back unchanged so the advisor's cross-request memory stays namespaced to the correct instance. This identity is positional: it is derived from the index of the advisor entry in the request `tools` array, so clients must keep the order of advisor tool entries stable across requests in a conversation. Reordering or inserting advisor entries shifts these names and causes each advisor's cross-request memory to be attributed to the wrong instance.
+          example: openrouter_advisor__1
           type: string
         model:
           description: Slug of the advisor model that was consulted.
