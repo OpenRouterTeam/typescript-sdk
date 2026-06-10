@@ -3543,6 +3543,58 @@ components:
         - sequence_number
         - logprobs
       type: object
+    BashServerTool:
+      description: 'OpenRouter built-in server tool: runs shell commands server-side in a sandboxed container'
+      example:
+        parameters:
+          environment:
+            type: container_auto
+        type: openrouter:bash
+      properties:
+        parameters:
+          $ref: '#/components/schemas/BashServerToolConfig'
+        type:
+          enum:
+            - openrouter:bash
+          type: string
+      required:
+        - type
+      type: object
+    BashServerToolConfig:
+      description: Configuration for the openrouter:bash server tool
+      example:
+        environment:
+          type: container_auto
+      properties:
+        engine:
+          $ref: '#/components/schemas/BashServerToolEngine'
+        environment:
+          $ref: '#/components/schemas/BashServerToolEnvironment'
+        sleep_after_seconds:
+          $ref: '#/components/schemas/SandboxSleepAfterSeconds'
+      type: object
+    BashServerToolEngine:
+      description: >-
+        Which bash engine to use. "openrouter" runs commands server-side in the OpenRouter sandbox. "auto" (default) and "native" use native passthrough, returning the tool call to your application to run client-side; OpenRouter does not execute the commands.
+      enum:
+        - auto
+        - native
+        - openrouter
+      example: auto
+      type: string
+      x-speakeasy-unknown-values: allow
+    BashServerToolEnvironment:
+      description: Execution environment for the bash server tool.
+      discriminator:
+        mapping:
+          container_auto: '#/components/schemas/ContainerAutoEnvironment'
+          container_reference: '#/components/schemas/ContainerReferenceEnvironment'
+        propertyName: type
+      example:
+        type: container_auto
+      oneOf:
+        - $ref: '#/components/schemas/ContainerAutoEnvironment'
+        - $ref: '#/components/schemas/ContainerReferenceEnvironment'
     BigNumberUnion:
       description: Price per million prompt tokens
       example: 1000
@@ -4363,6 +4415,7 @@ components:
             - function
           type: object
         - $ref: '#/components/schemas/AdvisorServerTool_OpenRouter'
+        - $ref: '#/components/schemas/BashServerTool'
         - $ref: '#/components/schemas/DatetimeServerTool'
         - $ref: '#/components/schemas/ImageGenerationServerTool_OpenRouter'
         - $ref: '#/components/schemas/ChatSearchModelsServerTool'
@@ -5653,6 +5706,39 @@ components:
       required:
         - code
         - message
+      type: object
+    ContainerAutoEnvironment:
+      description: An OpenRouter-managed, auto-provisioned ephemeral container.
+      example:
+        type: container_auto
+      properties:
+        type:
+          enum:
+            - container_auto
+          type: string
+      required:
+        - type
+      type: object
+    ContainerReferenceEnvironment:
+      description: Reference to a previously created container to reuse.
+      example:
+        container_id: cntr_abc123
+        type: container_reference
+      properties:
+        container_id:
+          description: Identifier of an existing container to reuse (max 20 characters).
+          example: cntr_abc123
+          maxLength: 20
+          minLength: 1
+          pattern: ^[\w-]+$
+          type: string
+        type:
+          enum:
+            - container_reference
+          type: string
+      required:
+        - type
+        - container_id
       type: object
     ContentFilterAction:
       description: Action taken when the pattern matches
@@ -10920,6 +11006,7 @@ components:
                   - name
                   - model
                 type: object
+              - $ref: '#/components/schemas/BashServerTool'
               - $ref: '#/components/schemas/DatetimeServerTool'
               - $ref: '#/components/schemas/ImageGenerationServerTool_OpenRouter'
               - $ref: '#/components/schemas/ChatSearchModelsServerTool'
@@ -15167,6 +15254,8 @@ components:
           openrouter:web_fetch: '#/components/schemas/OutputWebFetchServerToolItem'
           openrouter:web_search: '#/components/schemas/OutputWebSearchServerToolItem'
           reasoning: '#/components/schemas/OutputReasoningItem'
+          shell_call: '#/components/schemas/OutputShellCallItem'
+          shell_call_output: '#/components/schemas/OutputShellCallOutputItem'
           web_search_call: '#/components/schemas/OutputWebSearchCallItem'
         propertyName: type
       example:
@@ -15196,6 +15285,8 @@ components:
         - $ref: '#/components/schemas/OutputTextEditorServerToolItem'
         - $ref: '#/components/schemas/OutputApplyPatchServerToolItem'
         - $ref: '#/components/schemas/OutputApplyPatchCallItem'
+        - $ref: '#/components/schemas/OutputShellCallItem'
+        - $ref: '#/components/schemas/OutputShellCallOutputItem'
         - $ref: '#/components/schemas/OutputWebFetchServerToolItem'
         - $ref: '#/components/schemas/OutputToolSearchServerToolItem'
         - $ref: '#/components/schemas/OutputMemoryServerToolItem'
@@ -15474,6 +15565,123 @@ components:
       required:
         - status
         - type
+      type: object
+    OutputShellCallItem:
+      description: >-
+        A native `shell_call` output item matching OpenAI's Responses API shape. Emitted for the sandbox-backed `shell` tool.
+      example:
+        action:
+          commands:
+            - echo hello
+          max_output_length: null
+          timeout_ms: null
+        call_id: call_abc123
+        id: shc_abc123
+        status: completed
+        type: shell_call
+      properties:
+        action:
+          properties:
+            commands:
+              items:
+                type: string
+              type: array
+            max_output_length:
+              nullable: true
+              type: integer
+            timeout_ms:
+              nullable: true
+              type: integer
+          required:
+            - commands
+            - max_output_length
+            - timeout_ms
+          type: object
+        call_id:
+          type: string
+        id:
+          type: string
+        status:
+          $ref: '#/components/schemas/ShellCallStatus'
+        type:
+          enum:
+            - shell_call
+          type: string
+      required:
+        - type
+        - id
+        - call_id
+        - status
+      type: object
+    OutputShellCallOutputItem:
+      description: >-
+        A native `shell_call_output` item matching OpenAI's Responses API shape. Carries per-command stdout, stderr, and the exit/timeout outcome.
+      example:
+        call_id: call_abc123
+        id: sho_abc123
+        output:
+          - outcome:
+              exit_code: 0
+              type: exit
+            stderr: ''
+            stdout: |
+              hello
+        status: completed
+        type: shell_call_output
+      properties:
+        call_id:
+          type: string
+        id:
+          type: string
+        max_output_length:
+          nullable: true
+          type: integer
+        output:
+          items:
+            properties:
+              outcome:
+                oneOf:
+                  - properties:
+                      exit_code:
+                        type: integer
+                      type:
+                        enum:
+                          - exit
+                        type: string
+                    required:
+                      - type
+                      - exit_code
+                    type: object
+                  - properties:
+                      type:
+                        enum:
+                          - timeout
+                        type: string
+                    required:
+                      - type
+                    type: object
+              stderr:
+                type: string
+              stdout:
+                type: string
+            required:
+              - stdout
+              - stderr
+              - outcome
+            type: object
+          type: array
+        status:
+          $ref: '#/components/schemas/ShellCallStatus'
+        type:
+          enum:
+            - shell_call_output
+          type: string
+      required:
+        - type
+        - id
+        - call_id
+        - status
+        - output
       type: object
     OutputTextEditorServerToolItem:
       description: An openrouter:text_editor server tool output item
@@ -18084,6 +18292,8 @@ components:
               - $ref: '#/components/schemas/WebFetchServerTool'
               - $ref: '#/components/schemas/WebSearchServerTool_OpenRouter'
               - $ref: '#/components/schemas/ApplyPatchServerTool_OpenRouter'
+              - $ref: '#/components/schemas/BashServerTool'
+              - $ref: '#/components/schemas/ShellServerTool_OpenRouter'
           type: array
         top_k:
           type: integer
@@ -18161,6 +18371,11 @@ components:
       example: direct
       type: string
       x-speakeasy-unknown-values: allow
+    SandboxSleepAfterSeconds:
+      description: >-
+        How long (in seconds) the container stays warm after its last command before sleeping, freeing its capacity slot. Idle-based: each command renews the timer. Defaults to 900 (15 minutes); capped at 2592000 (30 days).
+      example: 900
+      type: integer
     SearchContextSizeEnum:
       description: Size of the search context for web search tools
       enum:
@@ -18337,6 +18552,15 @@ components:
         - call_id
         - output
       type: object
+    ShellCallStatus:
+      description: Status of a shell call or its output.
+      enum:
+        - in_progress
+        - completed
+        - incomplete
+      example: completed
+      type: string
+      x-speakeasy-unknown-values: allow
     ShellServerTool:
       description: Shell tool configuration
       example:
@@ -18349,6 +18573,61 @@ components:
       required:
         - type
       type: object
+    ShellServerTool_OpenRouter:
+      description: >-
+        OpenRouter built-in server tool: runs shell commands server-side in a sandboxed container (a sandbox-backed clone of OpenAI's hosted shell tool)
+      example:
+        parameters:
+          engine: openrouter
+          environment:
+            type: container_auto
+        type: openrouter:shell
+      properties:
+        parameters:
+          $ref: '#/components/schemas/ShellServerToolConfig'
+        type:
+          enum:
+            - openrouter:shell
+          type: string
+      required:
+        - type
+      type: object
+    ShellServerToolConfig:
+      description: Configuration for the openrouter:shell server tool
+      example:
+        engine: openrouter
+        environment:
+          type: container_auto
+      properties:
+        engine:
+          $ref: '#/components/schemas/ShellServerToolEngine'
+        environment:
+          $ref: '#/components/schemas/ShellServerToolEnvironment'
+        sleep_after_seconds:
+          $ref: '#/components/schemas/SandboxSleepAfterSeconds'
+      type: object
+    ShellServerToolEngine:
+      description: >-
+        Which shell engine to use. "openrouter" runs commands server-side in the OpenRouter sandbox. "auto" (default) keeps the provider's native hosted shell when available (OpenAI); on other providers the call is routed to the OpenRouter sandbox.
+      enum:
+        - auto
+        - openrouter
+      example: openrouter
+      type: string
+      x-speakeasy-unknown-values: allow
+    ShellServerToolEnvironment:
+      description: >-
+        Server-side execution environment for the shell tool. Only container-backed environments are supported; "local" shells are not.
+      discriminator:
+        mapping:
+          container_auto: '#/components/schemas/ContainerAutoEnvironment'
+          container_reference: '#/components/schemas/ContainerReferenceEnvironment'
+        propertyName: type
+      example:
+        type: container_auto
+      oneOf:
+        - $ref: '#/components/schemas/ContainerAutoEnvironment'
+        - $ref: '#/components/schemas/ContainerReferenceEnvironment'
     SpeechRequest:
       description: Text-to-speech request input
       example:
