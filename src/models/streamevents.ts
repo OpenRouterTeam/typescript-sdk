@@ -47,42 +47,6 @@ import {
   FunctionCallArgsDoneEvent$inboundSchema,
 } from "./functioncallargsdoneevent.js";
 import {
-  FusionCallAnalysisCompletedEvent,
-  FusionCallAnalysisCompletedEvent$inboundSchema,
-} from "./fusioncallanalysiscompletedevent.js";
-import {
-  FusionCallAnalysisInProgressEvent,
-  FusionCallAnalysisInProgressEvent$inboundSchema,
-} from "./fusioncallanalysisinprogressevent.js";
-import {
-  FusionCallCompletedEvent,
-  FusionCallCompletedEvent$inboundSchema,
-} from "./fusioncallcompletedevent.js";
-import {
-  FusionCallInProgressEvent,
-  FusionCallInProgressEvent$inboundSchema,
-} from "./fusioncallinprogressevent.js";
-import {
-  FusionCallPanelAddedEvent,
-  FusionCallPanelAddedEvent$inboundSchema,
-} from "./fusioncallpaneladdedevent.js";
-import {
-  FusionCallPanelCompletedEvent,
-  FusionCallPanelCompletedEvent$inboundSchema,
-} from "./fusioncallpanelcompletedevent.js";
-import {
-  FusionCallPanelDeltaEvent,
-  FusionCallPanelDeltaEvent$inboundSchema,
-} from "./fusioncallpaneldeltaevent.js";
-import {
-  FusionCallPanelFailedEvent,
-  FusionCallPanelFailedEvent$inboundSchema,
-} from "./fusioncallpanelfailedevent.js";
-import {
-  FusionCallPanelReasoningDeltaEvent,
-  FusionCallPanelReasoningDeltaEvent$inboundSchema,
-} from "./fusioncallpanelreasoningdeltaevent.js";
-import {
   ImageGenCallCompletedEvent,
   ImageGenCallCompletedEvent$inboundSchema,
 } from "./imagegencallcompletedevent.js";
@@ -192,15 +156,6 @@ export type StreamEvents =
   | StreamEventsResponseFailed
   | FunctionCallArgsDeltaEvent
   | FunctionCallArgsDoneEvent
-  | FusionCallAnalysisCompletedEvent
-  | FusionCallAnalysisInProgressEvent
-  | FusionCallCompletedEvent
-  | FusionCallInProgressEvent
-  | FusionCallPanelAddedEvent
-  | FusionCallPanelCompletedEvent
-  | FusionCallPanelDeltaEvent
-  | FusionCallPanelFailedEvent
-  | FusionCallPanelReasoningDeltaEvent
   | ImageGenCallCompletedEvent
   | ImageGenCallGeneratingEvent
   | ImageGenCallInProgressEvent
@@ -246,23 +201,6 @@ export const StreamEvents$inboundSchema: z.ZodType<StreamEvents, unknown> =
       FunctionCallArgsDeltaEvent$inboundSchema,
     ["response.function_call_arguments.done"]:
       FunctionCallArgsDoneEvent$inboundSchema,
-    ["response.fusion_call.analysis.completed"]:
-      FusionCallAnalysisCompletedEvent$inboundSchema,
-    ["response.fusion_call.analysis.in_progress"]:
-      FusionCallAnalysisInProgressEvent$inboundSchema,
-    ["response.fusion_call.completed"]: FusionCallCompletedEvent$inboundSchema,
-    ["response.fusion_call.in_progress"]:
-      FusionCallInProgressEvent$inboundSchema,
-    ["response.fusion_call.panel.added"]:
-      FusionCallPanelAddedEvent$inboundSchema,
-    ["response.fusion_call.panel.completed"]:
-      FusionCallPanelCompletedEvent$inboundSchema,
-    ["response.fusion_call.panel.delta"]:
-      FusionCallPanelDeltaEvent$inboundSchema,
-    ["response.fusion_call.panel.failed"]:
-      FusionCallPanelFailedEvent$inboundSchema,
-    ["response.fusion_call.panel.reasoning.delta"]:
-      FusionCallPanelReasoningDeltaEvent$inboundSchema,
     ["response.image_generation_call.completed"]:
       ImageGenCallCompletedEvent$inboundSchema,
     ["response.image_generation_call.generating"]:
