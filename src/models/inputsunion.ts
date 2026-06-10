@@ -383,7 +383,6 @@ export type InputsUnion1 =
   | InputsMessage
   | OutputFunctionCallItem
   | OutputCustomToolCallItem
-  | OutputWebSearchCallItem
   | OutputFileSearchCallItem
   | OutputComputerCallItem
   | OutputDatetimeItem
@@ -393,6 +392,7 @@ export type InputsUnion1 =
   | FunctionCallOutputItem
   | ApplyPatchCallOutputItem
   | InputsReasoning
+  | OutputWebSearchCallItem
   | OutputImageGenerationCallItem
   | LocalShellCallOutputItem
   | ShellCallItem
@@ -433,7 +433,6 @@ export type InputsUnion =
     | InputsMessage
     | OutputFunctionCallItem
     | OutputCustomToolCallItem
-    | OutputWebSearchCallItem
     | OutputFileSearchCallItem
     | OutputComputerCallItem
     | OutputDatetimeItem
@@ -443,6 +442,7 @@ export type InputsUnion =
     | FunctionCallOutputItem
     | ApplyPatchCallOutputItem
     | InputsReasoning
+    | OutputWebSearchCallItem
     | OutputImageGenerationCallItem
     | LocalShellCallOutputItem
     | ShellCallItem
@@ -736,7 +736,6 @@ export type InputsUnion1$Outbound =
   | InputsMessage$Outbound
   | OutputFunctionCallItem$Outbound
   | OutputCustomToolCallItem$Outbound
-  | OutputWebSearchCallItem$Outbound
   | OutputFileSearchCallItem$Outbound
   | OutputComputerCallItem$Outbound
   | OutputDatetimeItem$Outbound
@@ -746,6 +745,7 @@ export type InputsUnion1$Outbound =
   | FunctionCallOutputItem$Outbound
   | ApplyPatchCallOutputItem$Outbound
   | InputsReasoning$Outbound
+  | OutputWebSearchCallItem$Outbound
   | OutputImageGenerationCallItem$Outbound
   | LocalShellCallOutputItem$Outbound
   | ShellCallItem$Outbound
@@ -785,7 +785,6 @@ export const InputsUnion1$outboundSchema: z.ZodType<
   z.lazy(() => InputsMessage$outboundSchema),
   OutputFunctionCallItem$outboundSchema,
   OutputCustomToolCallItem$outboundSchema,
-  OutputWebSearchCallItem$outboundSchema,
   OutputFileSearchCallItem$outboundSchema,
   OutputComputerCallItem$outboundSchema,
   OutputDatetimeItem$outboundSchema,
@@ -795,6 +794,7 @@ export const InputsUnion1$outboundSchema: z.ZodType<
   FunctionCallOutputItem$outboundSchema,
   ApplyPatchCallOutputItem$outboundSchema,
   z.lazy(() => InputsReasoning$outboundSchema),
+  OutputWebSearchCallItem$outboundSchema,
   OutputImageGenerationCallItem$outboundSchema,
   LocalShellCallOutputItem$outboundSchema,
   ShellCallItem$outboundSchema,
@@ -838,7 +838,6 @@ export type InputsUnion$Outbound =
     | InputsMessage$Outbound
     | OutputFunctionCallItem$Outbound
     | OutputCustomToolCallItem$Outbound
-    | OutputWebSearchCallItem$Outbound
     | OutputFileSearchCallItem$Outbound
     | OutputComputerCallItem$Outbound
     | OutputDatetimeItem$Outbound
@@ -848,6 +847,7 @@ export type InputsUnion$Outbound =
     | FunctionCallOutputItem$Outbound
     | ApplyPatchCallOutputItem$Outbound
     | InputsReasoning$Outbound
+    | OutputWebSearchCallItem$Outbound
     | OutputImageGenerationCallItem$Outbound
     | LocalShellCallOutputItem$Outbound
     | ShellCallItem$Outbound
@@ -891,7 +891,6 @@ export const InputsUnion$outboundSchema: z.ZodType<
       z.lazy(() => InputsMessage$outboundSchema),
       OutputFunctionCallItem$outboundSchema,
       OutputCustomToolCallItem$outboundSchema,
-      OutputWebSearchCallItem$outboundSchema,
       OutputFileSearchCallItem$outboundSchema,
       OutputComputerCallItem$outboundSchema,
       OutputDatetimeItem$outboundSchema,
@@ -901,6 +900,7 @@ export const InputsUnion$outboundSchema: z.ZodType<
       FunctionCallOutputItem$outboundSchema,
       ApplyPatchCallOutputItem$outboundSchema,
       z.lazy(() => InputsReasoning$outboundSchema),
+      OutputWebSearchCallItem$outboundSchema,
       OutputImageGenerationCallItem$outboundSchema,
       LocalShellCallOutputItem$outboundSchema,
       ShellCallItem$outboundSchema,
