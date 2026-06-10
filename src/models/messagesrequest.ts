@@ -65,11 +65,6 @@ import {
   AutoRouterPlugin$outboundSchema,
 } from "./autorouterplugin.js";
 import {
-  BashServerTool,
-  BashServerTool$Outbound,
-  BashServerTool$outboundSchema,
-} from "./bashservertool.js";
-import {
   ChatSearchModelsServerTool,
   ChatSearchModelsServerTool$Outbound,
   ChatSearchModelsServerTool$outboundSchema,
@@ -455,7 +450,6 @@ export type MessagesRequestToolUnion =
   | ToolTextEditor20250124
   | ToolWebSearch20250305
   | ToolWebSearch20260209
-  | BashServerTool
   | DatetimeServerTool
   | ImageGenerationServerToolOpenRouter
   | ChatSearchModelsServerTool
@@ -530,7 +524,6 @@ export type MessagesRequest = {
       | ToolTextEditor20250124
       | ToolWebSearch20250305
       | ToolWebSearch20260209
-      | BashServerTool
       | DatetimeServerTool
       | ImageGenerationServerToolOpenRouter
       | ChatSearchModelsServerTool
@@ -1445,7 +1438,6 @@ export type MessagesRequestToolUnion$Outbound =
   | ToolTextEditor20250124$Outbound
   | ToolWebSearch20250305$Outbound
   | ToolWebSearch20260209$Outbound
-  | BashServerTool$Outbound
   | DatetimeServerTool$Outbound
   | ImageGenerationServerToolOpenRouter$Outbound
   | ChatSearchModelsServerTool$Outbound
@@ -1464,7 +1456,6 @@ export const MessagesRequestToolUnion$outboundSchema: z.ZodType<
   z.lazy(() => ToolTextEditor20250124$outboundSchema),
   z.lazy(() => ToolWebSearch20250305$outboundSchema),
   z.lazy(() => ToolWebSearch20260209$outboundSchema),
-  BashServerTool$outboundSchema,
   DatetimeServerTool$outboundSchema,
   ImageGenerationServerToolOpenRouter$outboundSchema,
   ChatSearchModelsServerTool$outboundSchema,
@@ -1534,7 +1525,6 @@ export type MessagesRequest$Outbound = {
       | ToolTextEditor20250124$Outbound
       | ToolWebSearch20250305$Outbound
       | ToolWebSearch20260209$Outbound
-      | BashServerTool$Outbound
       | DatetimeServerTool$Outbound
       | ImageGenerationServerToolOpenRouter$Outbound
       | ChatSearchModelsServerTool$Outbound
@@ -1606,7 +1596,6 @@ export const MessagesRequest$outboundSchema: z.ZodType<
       z.lazy(() => ToolTextEditor20250124$outboundSchema),
       z.lazy(() => ToolWebSearch20250305$outboundSchema),
       z.lazy(() => ToolWebSearch20260209$outboundSchema),
-      BashServerTool$outboundSchema,
       DatetimeServerTool$outboundSchema,
       ImageGenerationServerToolOpenRouter$outboundSchema,
       ChatSearchModelsServerTool$outboundSchema,

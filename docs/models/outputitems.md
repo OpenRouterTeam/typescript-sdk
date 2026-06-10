@@ -272,38 +272,10 @@ const value: models.OutputReasoningItem = {
 };
 ```
 
-### `models.OutputShellCallItem`
-
-```typescript
-const value: models.OutputShellCallItem = {
-  callId: "<id>",
-  id: "msg-abc123",
-  status: "completed",
-  type: "shell_call",
-};
-```
-
-### `models.OutputShellCallOutputItem`
-
-```typescript
-const value: models.OutputShellCallOutputItem = {
-  callId: "<id>",
-  id: "msg-abc123",
-  output: [],
-  status: "completed",
-  type: "shell_call_output",
-};
-```
-
 ### `models.OutputWebSearchCallItem`
 
 ```typescript
 const value: models.OutputWebSearchCallItem = {
-  action: {
-    pattern: "<value>",
-    type: "find_in_page",
-    url: "https://tragic-requirement.com/",
-  },
   id: "ws-abc123",
   status: "completed",
   type: "web_search_call",
