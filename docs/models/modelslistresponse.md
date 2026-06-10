@@ -19,6 +19,17 @@ let value: ModelsListResponse = {
           "text",
         ],
       },
+      benchmarks: {
+        designArena: [
+          {
+            arena: "models",
+            category: "website",
+            elo: 1385.2,
+            rank: 5,
+            winRate: 62.5,
+          },
+        ],
+      },
       canonicalSlug: "openai/gpt-4",
       contextLength: 8192,
       created: 1692901234,
