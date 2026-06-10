@@ -8,11 +8,6 @@ import { remap as remap$ } from "../lib/primitives.js";
 import * as openEnums from "../types/enums.js";
 import { OpenEnum } from "../types/enums.js";
 import {
-  AdvisorServerToolOpenRouter,
-  AdvisorServerToolOpenRouter$Outbound,
-  AdvisorServerToolOpenRouter$outboundSchema,
-} from "./advisorservertoolopenrouter.js";
-import {
   AnthropicCacheControlDirective,
   AnthropicCacheControlDirective$Outbound,
   AnthropicCacheControlDirective$outboundSchema,
@@ -32,11 +27,6 @@ import {
   AutoRouterPlugin$Outbound,
   AutoRouterPlugin$outboundSchema,
 } from "./autorouterplugin.js";
-import {
-  BashServerTool,
-  BashServerTool$Outbound,
-  BashServerTool$outboundSchema,
-} from "./bashservertool.js";
 import {
   ChatSearchModelsServerTool,
   ChatSearchModelsServerTool$Outbound,
@@ -180,11 +170,6 @@ import {
   ShellServerTool$outboundSchema,
 } from "./shellservertool.js";
 import {
-  ShellServerToolOpenRouter,
-  ShellServerToolOpenRouter$Outbound,
-  ShellServerToolOpenRouter$outboundSchema,
-} from "./shellservertoolopenrouter.js";
-import {
   StopServerToolsWhenCondition,
   StopServerToolsWhenCondition$Outbound,
   StopServerToolsWhenCondition$outboundSchema,
@@ -278,7 +263,6 @@ export type ResponsesRequestToolUnion =
   | ShellServerTool
   | ApplyPatchServerTool
   | CustomTool
-  | (AdvisorServerToolOpenRouter & { type: "openrouter:advisor" })
   | (DatetimeServerTool & { type: "openrouter:datetime" })
   | FusionServerToolOpenRouter
   | (ImageGenerationServerToolOpenRouter & {
@@ -289,9 +273,7 @@ export type ResponsesRequestToolUnion =
   })
   | (WebFetchServerTool & { type: "openrouter:web_fetch" })
   | WebSearchServerToolOpenRouter
-  | ApplyPatchServerToolOpenRouter
-  | (BashServerTool & { type: "openrouter:bash" })
-  | ShellServerToolOpenRouter;
+  | ApplyPatchServerToolOpenRouter;
 
 /**
  * Request schema for Responses endpoint
@@ -388,7 +370,6 @@ export type ResponsesRequest = {
       | ShellServerTool
       | ApplyPatchServerTool
       | CustomTool
-      | (AdvisorServerToolOpenRouter & { type: "openrouter:advisor" })
       | (DatetimeServerTool & { type: "openrouter:datetime" })
       | FusionServerToolOpenRouter
       | (ImageGenerationServerToolOpenRouter & {
@@ -400,8 +381,6 @@ export type ResponsesRequest = {
       | (WebFetchServerTool & { type: "openrouter:web_fetch" })
       | WebSearchServerToolOpenRouter
       | ApplyPatchServerToolOpenRouter
-      | (BashServerTool & { type: "openrouter:bash" })
-      | ShellServerToolOpenRouter
     >
     | undefined;
   topK?: number | undefined;
@@ -507,7 +486,6 @@ export type ResponsesRequestToolUnion$Outbound =
   | ShellServerTool$Outbound
   | ApplyPatchServerTool$Outbound
   | CustomTool$Outbound
-  | (AdvisorServerToolOpenRouter$Outbound & { type: "openrouter:advisor" })
   | (DatetimeServerTool$Outbound & { type: "openrouter:datetime" })
   | FusionServerToolOpenRouter$Outbound
   | (ImageGenerationServerToolOpenRouter$Outbound & {
@@ -518,9 +496,7 @@ export type ResponsesRequestToolUnion$Outbound =
   })
   | (WebFetchServerTool$Outbound & { type: "openrouter:web_fetch" })
   | WebSearchServerToolOpenRouter$Outbound
-  | ApplyPatchServerToolOpenRouter$Outbound
-  | (BashServerTool$Outbound & { type: "openrouter:bash" })
-  | ShellServerToolOpenRouter$Outbound;
+  | ApplyPatchServerToolOpenRouter$Outbound;
 
 /** @internal */
 export const ResponsesRequestToolUnion$outboundSchema: z.ZodType<
@@ -541,9 +517,6 @@ export const ResponsesRequestToolUnion$outboundSchema: z.ZodType<
   ShellServerTool$outboundSchema,
   ApplyPatchServerTool$outboundSchema,
   CustomTool$outboundSchema,
-  AdvisorServerToolOpenRouter$outboundSchema.and(
-    z.object({ type: z.literal("openrouter:advisor") }),
-  ),
   DatetimeServerTool$outboundSchema.and(
     z.object({ type: z.literal("openrouter:datetime") }),
   ),
@@ -559,10 +532,6 @@ export const ResponsesRequestToolUnion$outboundSchema: z.ZodType<
   ),
   WebSearchServerToolOpenRouter$outboundSchema,
   ApplyPatchServerToolOpenRouter$outboundSchema,
-  BashServerTool$outboundSchema.and(
-    z.object({ type: z.literal("openrouter:bash") }),
-  ),
-  ShellServerToolOpenRouter$outboundSchema,
 ]);
 
 export function responsesRequestToolUnionToJSON(
@@ -635,7 +604,6 @@ export type ResponsesRequest$Outbound = {
       | ShellServerTool$Outbound
       | ApplyPatchServerTool$Outbound
       | CustomTool$Outbound
-      | (AdvisorServerToolOpenRouter$Outbound & { type: "openrouter:advisor" })
       | (DatetimeServerTool$Outbound & { type: "openrouter:datetime" })
       | FusionServerToolOpenRouter$Outbound
       | (ImageGenerationServerToolOpenRouter$Outbound & {
@@ -647,8 +615,6 @@ export type ResponsesRequest$Outbound = {
       | (WebFetchServerTool$Outbound & { type: "openrouter:web_fetch" })
       | WebSearchServerToolOpenRouter$Outbound
       | ApplyPatchServerToolOpenRouter$Outbound
-      | (BashServerTool$Outbound & { type: "openrouter:bash" })
-      | ShellServerToolOpenRouter$Outbound
     >
     | undefined;
   top_k?: number | undefined;
@@ -725,9 +691,6 @@ export const ResponsesRequest$outboundSchema: z.ZodType<
       ShellServerTool$outboundSchema,
       ApplyPatchServerTool$outboundSchema,
       CustomTool$outboundSchema,
-      AdvisorServerToolOpenRouter$outboundSchema.and(
-        z.object({ type: z.literal("openrouter:advisor") }),
-      ),
       DatetimeServerTool$outboundSchema.and(
         z.object({ type: z.literal("openrouter:datetime") }),
       ),
@@ -743,10 +706,6 @@ export const ResponsesRequest$outboundSchema: z.ZodType<
       ),
       WebSearchServerToolOpenRouter$outboundSchema,
       ApplyPatchServerToolOpenRouter$outboundSchema,
-      BashServerTool$outboundSchema.and(
-        z.object({ type: z.literal("openrouter:bash") }),
-      ),
-      ShellServerToolOpenRouter$outboundSchema,
     ]),
   ).optional(),
   topK: z.int().optional(),

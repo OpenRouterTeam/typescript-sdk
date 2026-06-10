@@ -145,14 +145,6 @@ const value: models.CustomTool = {
 };
 ```
 
-### `models.AdvisorServerToolOpenRouter`
-
-```typescript
-const value: models.AdvisorServerToolOpenRouter = {
-  type: "openrouter:advisor",
-};
-```
-
 ### `models.DatetimeServerTool`
 
 ```typescript
@@ -206,22 +198,6 @@ const value: models.WebSearchServerToolOpenRouter = {
 ```typescript
 const value: models.ApplyPatchServerToolOpenRouter = {
   type: "openrouter:apply_patch",
-};
-```
-
-### `models.BashServerTool`
-
-```typescript
-const value: models.BashServerTool = {
-  type: "openrouter:bash",
-};
-```
-
-### `models.ShellServerToolOpenRouter`
-
-```typescript
-const value: models.ShellServerToolOpenRouter = {
-  type: "openrouter:shell",
 };
 ```
 

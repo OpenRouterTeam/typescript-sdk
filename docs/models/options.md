@@ -44,7 +44,6 @@ let value: Options = {};
 | `crucible`            | Record<string, *any*> | :heavy_minus_sign:    | N/A                   |
 | `crusoe`              | Record<string, *any*> | :heavy_minus_sign:    | N/A                   |
 | `darkbloom`           | Record<string, *any*> | :heavy_minus_sign:    | N/A                   |
-| `decart`              | Record<string, *any*> | :heavy_minus_sign:    | N/A                   |
 | `deepinfra`           | Record<string, *any*> | :heavy_minus_sign:    | N/A                   |
 | `deepseek`            | Record<string, *any*> | :heavy_minus_sign:    | N/A                   |
 | `dekallm`             | Record<string, *any*> | :heavy_minus_sign:    | N/A                   |
@@ -124,7 +123,6 @@ let value: Options = {};
 | `ubicloud`            | Record<string, *any*> | :heavy_minus_sign:    | N/A                   |
 | `upstage`             | Record<string, *any*> | :heavy_minus_sign:    | N/A                   |
 | `venice`              | Record<string, *any*> | :heavy_minus_sign:    | N/A                   |
-| `wafer`               | Record<string, *any*> | :heavy_minus_sign:    | N/A                   |
 | `wandb`               | Record<string, *any*> | :heavy_minus_sign:    | N/A                   |
 | `xai`                 | Record<string, *any*> | :heavy_minus_sign:    | N/A                   |
 | `xiaomi`              | Record<string, *any*> | :heavy_minus_sign:    | N/A                   |

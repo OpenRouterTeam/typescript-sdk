@@ -40,7 +40,6 @@ export type ProviderOptions = {
   crucible?: { [k: string]: any | null } | undefined;
   crusoe?: { [k: string]: any | null } | undefined;
   darkbloom?: { [k: string]: any | null } | undefined;
-  decart?: { [k: string]: any | null } | undefined;
   deepinfra?: { [k: string]: any | null } | undefined;
   deepseek?: { [k: string]: any | null } | undefined;
   dekallm?: { [k: string]: any | null } | undefined;
@@ -120,7 +119,6 @@ export type ProviderOptions = {
   ubicloud?: { [k: string]: any | null } | undefined;
   upstage?: { [k: string]: any | null } | undefined;
   venice?: { [k: string]: any | null } | undefined;
-  wafer?: { [k: string]: any | null } | undefined;
   wandb?: { [k: string]: any | null } | undefined;
   xai?: { [k: string]: any | null } | undefined;
   xiaomi?: { [k: string]: any | null } | undefined;
@@ -159,7 +157,6 @@ export type ProviderOptions$Outbound = {
   crucible?: { [k: string]: any | null } | undefined;
   crusoe?: { [k: string]: any | null } | undefined;
   darkbloom?: { [k: string]: any | null } | undefined;
-  decart?: { [k: string]: any | null } | undefined;
   deepinfra?: { [k: string]: any | null } | undefined;
   deepseek?: { [k: string]: any | null } | undefined;
   dekallm?: { [k: string]: any | null } | undefined;
@@ -239,7 +236,6 @@ export type ProviderOptions$Outbound = {
   ubicloud?: { [k: string]: any | null } | undefined;
   upstage?: { [k: string]: any | null } | undefined;
   venice?: { [k: string]: any | null } | undefined;
-  wafer?: { [k: string]: any | null } | undefined;
   wandb?: { [k: string]: any | null } | undefined;
   xai?: { [k: string]: any | null } | undefined;
   xiaomi?: { [k: string]: any | null } | undefined;
@@ -281,7 +277,6 @@ export const ProviderOptions$outboundSchema: z.ZodType<
   crucible: z.record(z.string(), z.nullable(z.any())).optional(),
   crusoe: z.record(z.string(), z.nullable(z.any())).optional(),
   darkbloom: z.record(z.string(), z.nullable(z.any())).optional(),
-  decart: z.record(z.string(), z.nullable(z.any())).optional(),
   deepinfra: z.record(z.string(), z.nullable(z.any())).optional(),
   deepseek: z.record(z.string(), z.nullable(z.any())).optional(),
   dekallm: z.record(z.string(), z.nullable(z.any())).optional(),
@@ -361,7 +356,6 @@ export const ProviderOptions$outboundSchema: z.ZodType<
   ubicloud: z.record(z.string(), z.nullable(z.any())).optional(),
   upstage: z.record(z.string(), z.nullable(z.any())).optional(),
   venice: z.record(z.string(), z.nullable(z.any())).optional(),
-  wafer: z.record(z.string(), z.nullable(z.any())).optional(),
   wandb: z.record(z.string(), z.nullable(z.any())).optional(),
   xai: z.record(z.string(), z.nullable(z.any())).optional(),
   xiaomi: z.record(z.string(), z.nullable(z.any())).optional(),

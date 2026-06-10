@@ -111,15 +111,6 @@ const value: models.OutputMessageItem = {
 };
 ```
 
-### `models.OutputAdvisorServerToolItem`
-
-```typescript
-const value: models.OutputAdvisorServerToolItem = {
-  status: "completed",
-  type: "openrouter:advisor",
-};
-```
-
 ### `models.OutputApplyPatchServerToolItem`
 
 ```typescript
@@ -269,29 +260,6 @@ const value: models.OutputReasoningItem = {
     },
   ],
   type: "reasoning",
-};
-```
-
-### `models.OutputShellCallItem`
-
-```typescript
-const value: models.OutputShellCallItem = {
-  callId: "<id>",
-  id: "msg-abc123",
-  status: "completed",
-  type: "shell_call",
-};
-```
-
-### `models.OutputShellCallOutputItem`
-
-```typescript
-const value: models.OutputShellCallOutputItem = {
-  callId: "<id>",
-  id: "msg-abc123",
-  output: [],
-  status: "completed",
-  type: "shell_call_output",
 };
 ```
 

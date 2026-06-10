@@ -69,7 +69,6 @@ export const ProviderResponseProviderName = {
   Crucible: "Crucible",
   Crusoe: "Crusoe",
   Darkbloom: "Darkbloom",
-  Decart: "Decart",
   DeepInfra: "DeepInfra",
   DeepSeek: "DeepSeek",
   DekaLLM: "DekaLLM",
@@ -124,7 +123,6 @@ export const ProviderResponseProviderName = {
   Together: "Together",
   Upstage: "Upstage",
   Venice: "Venice",
-  Wafer: "Wafer",
   WandB: "WandB",
   Xiaomi: "Xiaomi",
   XAI: "xAI",
@@ -189,7 +187,7 @@ export const ProviderResponse$inboundSchema: z.ZodType<
   latency: z.number().optional(),
   model_permaslug: z.string().optional(),
   provider_name: ProviderResponseProviderName$inboundSchema.optional(),
-  status: z.nullable(z.int()),
+  status: z.nullable(z.number()),
 }).transform((v) => {
   return remap$(v, {
     "endpoint_id": "endpointId",

@@ -4,7 +4,6 @@
  */
 
 import * as z from "zod/v4";
-import { remap as remap$ } from "../lib/primitives.js";
 import { safeParse } from "../lib/schemas.js";
 import { Result as SafeParseResult } from "../types/fp.js";
 import {
@@ -16,10 +15,6 @@ import {
   ContentFilterBuiltinSlug$inboundSchema,
 } from "./contentfilterbuiltinslug.js";
 import { SDKValidationError } from "./errors/sdkvalidationerror.js";
-import {
-  PromptInjectionScanScope,
-  PromptInjectionScanScope$inboundSchema,
-} from "./promptinjectionscanscope.js";
 
 /**
  * A builtin content filter entry. Builtin filters include PII detectors and the regex-based prompt injection detector.
@@ -34,10 +29,6 @@ export type ContentFilterBuiltinEntry = {
    */
   label?: string | undefined;
   /**
-   * Which message roles to scan for prompt injection. Only applies to the regex-prompt-injection builtin. Defaults to all_messages.
-   */
-  scanScope?: PromptInjectionScanScope | undefined;
-  /**
    * The builtin filter identifier
    */
   slug: ContentFilterBuiltinSlug;
@@ -50,12 +41,7 @@ export const ContentFilterBuiltinEntry$inboundSchema: z.ZodType<
 > = z.object({
   action: ContentFilterBuiltinAction$inboundSchema,
   label: z.string().optional(),
-  scan_scope: PromptInjectionScanScope$inboundSchema.optional(),
   slug: ContentFilterBuiltinSlug$inboundSchema,
-}).transform((v) => {
-  return remap$(v, {
-    "scan_scope": "scanScope",
-  });
 });
 
 export function contentFilterBuiltinEntryFromJSON(
