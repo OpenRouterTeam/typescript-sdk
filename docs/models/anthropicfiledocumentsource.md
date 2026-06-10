@@ -1,0 +1,19 @@
+# AnthropicFileDocumentSource
+
+## Example Usage
+
+```typescript
+import { AnthropicFileDocumentSource } from "@openrouter/sdk/models";
+
+let value: AnthropicFileDocumentSource = {
+  fileId: "file_011CNha8iCJcU1wXNR6q4V8w",
+  type: "file",
+};
+```
+
+## Fields
+
+| Field              | Type               | Required           | Description        |
+| ------------------ | ------------------ | ------------------ | ------------------ |
+| `fileId`           | *string*           | :heavy_check_mark: | N/A                |
+| `type`             | *"file"*           | :heavy_check_mark: | N/A                |
