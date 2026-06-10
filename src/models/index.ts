@@ -6,6 +6,7 @@
 export * from "./activityitem.js";
 export * from "./activityresponse.js";
 export * from "./advisornestedtool.js";
+export * from "./advisorprofile.js";
 export * from "./advisorreasoning.js";
 export * from "./advisorservertoolconfig.js";
 export * from "./advisorservertoolopenrouter.js";
