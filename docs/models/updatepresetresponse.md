@@ -1,13 +1,13 @@
-# CreatePresetFromInferenceResponse
+# UpdatePresetResponse
 
-Response containing the created preset with its designated version.
+Response containing the updated preset with its designated version.
 
 ## Example Usage
 
 ```typescript
-import { CreatePresetFromInferenceResponse } from "@openrouter/sdk/models";
+import { UpdatePresetResponse } from "@openrouter/sdk/models";
 
-let value: CreatePresetFromInferenceResponse = {
+let value: UpdatePresetResponse = {
   data: {
     createdAt: "2026-04-20T10:00:00Z",
     creatorUserId: "user_2dHFtVWx2n56w6HkM0000000000",
