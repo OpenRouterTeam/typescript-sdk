@@ -15312,7 +15312,6 @@ components:
       required:
         - type
         - id
-        - action
         - status
       type: object
     OutputMcpServerToolItem:
