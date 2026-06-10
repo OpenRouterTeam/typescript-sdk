@@ -1,13 +1,13 @@
-# Category
+# GetModelsCategory
 
 Filter models by use case category
 
 ## Example Usage
 
 ```typescript
-import { Category } from "@openrouter/sdk/models/operations";
+import { GetModelsCategory } from "@openrouter/sdk/models/operations";
 
-let value: Category = "programming";
+let value: GetModelsCategory = "programming";
 
 // Open enum: unrecognized values are captured as Unrecognized<string>
 ```
