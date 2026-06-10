@@ -8386,6 +8386,58 @@ components:
       required:
         - data
       type: object
+    GetPresetResponse:
+      description: A preset with its currently designated version.
+      example:
+        data:
+          created_at: '2026-04-20T10:00:00Z'
+          creator_user_id: user_2dHFtVWx2n56w6HkM0000000000
+          description: null
+          designated_version:
+            config:
+              model: openai/gpt-4o
+              temperature: 0.7
+            created_at: '2026-04-20T10:00:00Z'
+            creator_id: user_2dHFtVWx2n56w6HkM0000000000
+            id: 550e8400-e29b-41d4-a716-446655440000
+            preset_id: 650e8400-e29b-41d4-a716-446655440001
+            system_prompt: You are a helpful assistant.
+            updated_at: '2026-04-20T10:00:00Z'
+            version: 1
+          designated_version_id: 550e8400-e29b-41d4-a716-446655440000
+          id: 650e8400-e29b-41d4-a716-446655440001
+          name: my-preset
+          slug: my-preset
+          status: active
+          status_updated_at: null
+          updated_at: '2026-04-20T10:00:00Z'
+          workspace_id: 750e8400-e29b-41d4-a716-446655440002
+      properties:
+        data:
+          $ref: '#/components/schemas/PresetWithDesignatedVersion'
+      required:
+        - data
+      type: object
+    GetPresetVersionResponse:
+      description: A single version of a preset.
+      example:
+        data:
+          config:
+            model: openai/gpt-4o
+            temperature: 0.7
+          created_at: '2026-04-20T10:00:00Z'
+          creator_id: user_2dHFtVWx2n56w6HkM0000000000
+          id: 550e8400-e29b-41d4-a716-446655440000
+          preset_id: 650e8400-e29b-41d4-a716-446655440001
+          system_prompt: You are a helpful assistant.
+          updated_at: '2026-04-20T10:00:00Z'
+          version: 1
+      properties:
+        data:
+          $ref: '#/components/schemas/PresetDesignatedVersion'
+      required:
+        - data
+      type: object
     GetWorkspaceResponse:
       example:
         data:
@@ -9610,6 +9662,59 @@ components:
         total_count:
           description: Total number of destinations matching the filters.
           example: 1
+          type: integer
+      required:
+        - data
+        - total_count
+      type: object
+    ListPresetsResponse:
+      description: A paginated list of presets.
+      example:
+        data:
+          - created_at: '2026-04-20T10:00:00Z'
+            creator_user_id: user_2dHFtVWx2n56w6HkM0000000000
+            description: null
+            designated_version_id: 550e8400-e29b-41d4-a716-446655440000
+            id: 650e8400-e29b-41d4-a716-446655440001
+            name: my-preset
+            slug: my-preset
+            status: active
+            status_updated_at: null
+            updated_at: '2026-04-20T10:00:00Z'
+            workspace_id: 750e8400-e29b-41d4-a716-446655440002
+        total_count: 1
+      properties:
+        data:
+          items:
+            $ref: '#/components/schemas/Preset'
+          type: array
+        total_count:
+          type: integer
+      required:
+        - data
+        - total_count
+      type: object
+    ListPresetVersionsResponse:
+      description: A paginated list of preset versions.
+      example:
+        data:
+          - config:
+              model: openai/gpt-4o
+              temperature: 0.7
+            created_at: '2026-04-20T10:00:00Z'
+            creator_id: user_2dHFtVWx2n56w6HkM0000000000
+            id: 550e8400-e29b-41d4-a716-446655440000
+            preset_id: 650e8400-e29b-41d4-a716-446655440001
+            system_prompt: You are a helpful assistant.
+            updated_at: '2026-04-20T10:00:00Z'
+            version: 1
+        total_count: 1
+      properties:
+        data:
+          items:
+            $ref: '#/components/schemas/PresetDesignatedVersion'
+          type: array
+        total_count:
           type: integer
       required:
         - data
@@ -16168,6 +16273,61 @@ components:
         routing. When using fallback models, this may cause a fallback model to be used instead of the primary model if
         it meets the threshold.
       example: 100
+    Preset:
+      description: A preset without version details.
+      example:
+        created_at: '2026-04-20T10:00:00Z'
+        creator_user_id: user_2dHFtVWx2n56w6HkM0000000000
+        description: null
+        designated_version_id: 550e8400-e29b-41d4-a716-446655440000
+        id: 650e8400-e29b-41d4-a716-446655440001
+        name: my-preset
+        slug: my-preset
+        status: active
+        status_updated_at: null
+        updated_at: '2026-04-20T10:00:00Z'
+        workspace_id: 750e8400-e29b-41d4-a716-446655440002
+      properties:
+        created_at:
+          type: string
+        creator_user_id:
+          nullable: true
+          type: string
+        description:
+          nullable: true
+          type: string
+        designated_version_id:
+          nullable: true
+          type: string
+        id:
+          type: string
+        name:
+          type: string
+        slug:
+          type: string
+        status:
+          $ref: '#/components/schemas/PresetStatus'
+        status_updated_at:
+          nullable: true
+          type: string
+        updated_at:
+          type: string
+        workspace_id:
+          nullable: true
+          type: string
+      required:
+        - id
+        - creator_user_id
+        - workspace_id
+        - name
+        - slug
+        - description
+        - status
+        - designated_version_id
+        - created_at
+        - updated_at
+        - status_updated_at
+      type: object
     PresetDesignatedVersion:
       description: A specific version of a preset, containing config and optional system prompt.
       example:
@@ -16212,7 +16372,23 @@ components:
         - created_at
         - updated_at
       type: object
+    PresetStatus:
+      description: The status of a preset.
+      enum:
+        - active
+        - disabled
+        - archived
+      example: active
+      type: string
     PresetWithDesignatedVersion:
+      allOf:
+        - $ref: '#/components/schemas/Preset'
+        - properties:
+            designated_version:
+              $ref: '#/components/schemas/PresetDesignatedVersion'
+          required:
+            - designated_version
+          type: object
       description: A preset with its currently designated version.
       example:
         created_at: '2026-04-20T10:00:00Z'
@@ -16237,54 +16413,6 @@ components:
         status_updated_at: null
         updated_at: '2026-04-20T10:00:00Z'
         workspace_id: 750e8400-e29b-41d4-a716-446655440002
-      properties:
-        created_at:
-          type: string
-        creator_user_id:
-          nullable: true
-          type: string
-        description:
-          nullable: true
-          type: string
-        designated_version:
-          $ref: '#/components/schemas/PresetDesignatedVersion'
-        designated_version_id:
-          nullable: true
-          type: string
-        id:
-          type: string
-        name:
-          type: string
-        slug:
-          type: string
-        status:
-          enum:
-            - active
-            - disabled
-            - archived
-          type: string
-        status_updated_at:
-          nullable: true
-          type: string
-        updated_at:
-          type: string
-        workspace_id:
-          nullable: true
-          type: string
-      required:
-        - id
-        - creator_user_id
-        - workspace_id
-        - name
-        - slug
-        - description
-        - status
-        - designated_version_id
-        - created_at
-        - updated_at
-        - status_updated_at
-        - designated_version
-      type: object
     Preview_20250311_WebSearchServerTool:
       description: Web search preview tool configuration (2025-03-11 version)
       example:
@@ -26521,6 +26649,33 @@ paths:
               embeddings) or "all" to include all models. Defaults to "text".
             example: text
             type: string
+        - description: >-
+            Sort the returned models server-side. Prefer this over fetching the full list and sorting client-side.
+            Options: pricing-low-to-high, pricing-high-to-low (average prompt/completion price), context-high-to-low
+            (context length), throughput-high-to-low, latency-low-to-high (recent median performance), most-popular,
+            top-weekly (tokens processed in the last week), newest (creation date). When omitted, the existing default
+            ordering is preserved.
+          in: query
+          name: sort
+          required: false
+          schema:
+            description: >-
+              Sort the returned models server-side. Prefer this over fetching the full list and sorting client-side.
+              Options: pricing-low-to-high, pricing-high-to-low (average prompt/completion price), context-high-to-low
+              (context length), throughput-high-to-low, latency-low-to-high (recent median performance), most-popular,
+              top-weekly (tokens processed in the last week), newest (creation date). When omitted, the existing default
+              ordering is preserved.
+            enum:
+              - most-popular
+              - newest
+              - top-weekly
+              - pricing-low-to-high
+              - pricing-high-to-low
+              - context-high-to-low
+              - throughput-high-to-low
+              - latency-low-to-high
+            example: newest
+            type: string
         - description: Return results as RSS feed
           in: query
           name: use_rss
@@ -27428,6 +27583,190 @@ paths:
         outputs:
           results: $.data
         type: offsetLimit
+  /presets:
+    get:
+      description: Lists all presets for the authenticated user, ordered by most recently updated first.
+      operationId: listPresets
+      parameters:
+        - description: Number of records to skip for pagination
+          in: query
+          name: offset
+          required: false
+          schema:
+            description: Number of records to skip for pagination
+            example: 0
+            minimum: 0
+            nullable: true
+            type: integer
+        - description: Maximum number of records to return (max 100)
+          in: query
+          name: limit
+          required: false
+          schema:
+            description: Maximum number of records to return (max 100)
+            example: 50
+            maximum: 100
+            minimum: 1
+            type: integer
+      responses:
+        '200':
+          content:
+            application/json:
+              example:
+                data:
+                  - created_at: '2026-04-20T10:00:00Z'
+                    creator_user_id: user_2dHFtVWx2n56w6HkM0000000000
+                    description: null
+                    designated_version_id: 550e8400-e29b-41d4-a716-446655440000
+                    id: 650e8400-e29b-41d4-a716-446655440001
+                    name: my-preset
+                    slug: my-preset
+                    status: active
+                    status_updated_at: null
+                    updated_at: '2026-04-20T10:00:00Z'
+                    workspace_id: 750e8400-e29b-41d4-a716-446655440002
+                total_count: 1
+              schema:
+                $ref: '#/components/schemas/ListPresetsResponse'
+          description: Paginated list of presets.
+        '400':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 400
+                  message: Invalid request parameters
+              schema:
+                $ref: '#/components/schemas/BadRequestResponse'
+          description: Bad Request - Invalid request parameters or malformed input
+        '401':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 401
+                  message: Missing Authentication header
+              schema:
+                $ref: '#/components/schemas/UnauthorizedResponse'
+          description: Unauthorized - Authentication required or invalid credentials
+        '500':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 500
+                  message: Internal Server Error
+              schema:
+                $ref: '#/components/schemas/InternalServerResponse'
+          description: Internal Server Error - Unexpected server error
+      security:
+        - apiKey: []
+      summary: List presets
+      tags:
+        - Presets
+      x-speakeasy-name-override: list
+      x-speakeasy-pagination:
+        inputs:
+          - in: parameters
+            name: offset
+            type: offset
+          - in: parameters
+            name: limit
+            type: limit
+        outputs:
+          results: $.data
+        type: offsetLimit
+  /presets/{slug}:
+    get:
+      description: Retrieves a preset by its slug with its currently designated version inline.
+      operationId: getPreset
+      parameters:
+        - description: URL-safe slug identifying the preset.
+          in: path
+          name: slug
+          required: true
+          schema:
+            description: URL-safe slug identifying the preset.
+            example: my-preset
+            minLength: 1
+            type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              example:
+                data:
+                  created_at: '2026-04-20T10:00:00Z'
+                  creator_user_id: user_2dHFtVWx2n56w6HkM0000000000
+                  description: null
+                  designated_version:
+                    config:
+                      model: openai/gpt-4o
+                      temperature: 0.7
+                    created_at: '2026-04-20T10:00:00Z'
+                    creator_id: user_2dHFtVWx2n56w6HkM0000000000
+                    id: 550e8400-e29b-41d4-a716-446655440000
+                    preset_id: 650e8400-e29b-41d4-a716-446655440001
+                    system_prompt: You are a helpful assistant.
+                    updated_at: '2026-04-20T10:00:00Z'
+                    version: 1
+                  designated_version_id: 550e8400-e29b-41d4-a716-446655440000
+                  id: 650e8400-e29b-41d4-a716-446655440001
+                  name: my-preset
+                  slug: my-preset
+                  status: active
+                  status_updated_at: null
+                  updated_at: '2026-04-20T10:00:00Z'
+                  workspace_id: 750e8400-e29b-41d4-a716-446655440002
+              schema:
+                $ref: '#/components/schemas/GetPresetResponse'
+          description: Preset with its designated version.
+        '400':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 400
+                  message: Invalid request parameters
+              schema:
+                $ref: '#/components/schemas/BadRequestResponse'
+          description: Bad Request - Invalid request parameters or malformed input
+        '401':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 401
+                  message: Missing Authentication header
+              schema:
+                $ref: '#/components/schemas/UnauthorizedResponse'
+          description: Unauthorized - Authentication required or invalid credentials
+        '404':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 404
+                  message: Resource not found
+              schema:
+                $ref: '#/components/schemas/NotFoundResponse'
+          description: Not Found - Resource does not exist
+        '500':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 500
+                  message: Internal Server Error
+              schema:
+                $ref: '#/components/schemas/InternalServerResponse'
+          description: Internal Server Error - Unexpected server error
+      security:
+        - apiKey: []
+      summary: Get a preset
+      tags:
+        - Presets
+      x-speakeasy-name-override: get
   /presets/{slug}/chat/completions:
     post:
       description: >-
@@ -27800,6 +28139,205 @@ paths:
       summary: Create a preset from a responses request body
       tags:
         - Presets
+  /presets/{slug}/versions:
+    get:
+      description: Lists all versions of a preset, ordered by version number ascending (oldest first).
+      operationId: listPresetVersions
+      parameters:
+        - description: URL-safe slug identifying the preset.
+          in: path
+          name: slug
+          required: true
+          schema:
+            description: URL-safe slug identifying the preset.
+            example: my-preset
+            minLength: 1
+            type: string
+        - description: Number of records to skip for pagination
+          in: query
+          name: offset
+          required: false
+          schema:
+            description: Number of records to skip for pagination
+            example: 0
+            minimum: 0
+            nullable: true
+            type: integer
+        - description: Maximum number of records to return (max 100)
+          in: query
+          name: limit
+          required: false
+          schema:
+            description: Maximum number of records to return (max 100)
+            example: 50
+            maximum: 100
+            minimum: 1
+            type: integer
+      responses:
+        '200':
+          content:
+            application/json:
+              example:
+                data:
+                  - config:
+                      model: openai/gpt-4o
+                      temperature: 0.7
+                    created_at: '2026-04-20T10:00:00Z'
+                    creator_id: user_2dHFtVWx2n56w6HkM0000000000
+                    id: 550e8400-e29b-41d4-a716-446655440000
+                    preset_id: 650e8400-e29b-41d4-a716-446655440001
+                    system_prompt: You are a helpful assistant.
+                    updated_at: '2026-04-20T10:00:00Z'
+                    version: 1
+                total_count: 1
+              schema:
+                $ref: '#/components/schemas/ListPresetVersionsResponse'
+          description: Paginated list of preset versions.
+        '400':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 400
+                  message: Invalid request parameters
+              schema:
+                $ref: '#/components/schemas/BadRequestResponse'
+          description: Bad Request - Invalid request parameters or malformed input
+        '401':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 401
+                  message: Missing Authentication header
+              schema:
+                $ref: '#/components/schemas/UnauthorizedResponse'
+          description: Unauthorized - Authentication required or invalid credentials
+        '404':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 404
+                  message: Resource not found
+              schema:
+                $ref: '#/components/schemas/NotFoundResponse'
+          description: Not Found - Resource does not exist
+        '500':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 500
+                  message: Internal Server Error
+              schema:
+                $ref: '#/components/schemas/InternalServerResponse'
+          description: Internal Server Error - Unexpected server error
+      security:
+        - apiKey: []
+      summary: List versions of a preset
+      tags:
+        - Presets
+      x-speakeasy-name-override: listVersions
+      x-speakeasy-pagination:
+        inputs:
+          - in: parameters
+            name: offset
+            type: offset
+          - in: parameters
+            name: limit
+            type: limit
+        outputs:
+          results: $.data
+        type: offsetLimit
+  /presets/{slug}/versions/{version}:
+    get:
+      description: Retrieves a specific version of a preset by its slug and version number.
+      operationId: getPresetVersion
+      parameters:
+        - description: URL-safe slug identifying the preset.
+          in: path
+          name: slug
+          required: true
+          schema:
+            description: URL-safe slug identifying the preset.
+            example: my-preset
+            minLength: 1
+            type: string
+        - description: Version number of the preset.
+          in: path
+          name: version
+          required: true
+          schema:
+            description: Version number of the preset.
+            example: '1'
+            minLength: 1
+            type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              example:
+                data:
+                  config:
+                    model: openai/gpt-4o
+                    temperature: 0.7
+                  created_at: '2026-04-20T10:00:00Z'
+                  creator_id: user_2dHFtVWx2n56w6HkM0000000000
+                  id: 550e8400-e29b-41d4-a716-446655440000
+                  preset_id: 650e8400-e29b-41d4-a716-446655440001
+                  system_prompt: You are a helpful assistant.
+                  updated_at: '2026-04-20T10:00:00Z'
+                  version: 1
+              schema:
+                $ref: '#/components/schemas/GetPresetVersionResponse'
+          description: The requested preset version.
+        '400':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 400
+                  message: Invalid request parameters
+              schema:
+                $ref: '#/components/schemas/BadRequestResponse'
+          description: Bad Request - Invalid request parameters or malformed input
+        '401':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 401
+                  message: Missing Authentication header
+              schema:
+                $ref: '#/components/schemas/UnauthorizedResponse'
+          description: Unauthorized - Authentication required or invalid credentials
+        '404':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 404
+                  message: Resource not found
+              schema:
+                $ref: '#/components/schemas/NotFoundResponse'
+          description: Not Found - Resource does not exist
+        '500':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 500
+                  message: Internal Server Error
+              schema:
+                $ref: '#/components/schemas/InternalServerResponse'
+          description: Internal Server Error - Unexpected server error
+      security:
+        - apiKey: []
+      summary: Get a specific version of a preset
+      tags:
+        - Presets
+      x-speakeasy-name-override: getVersion
   /providers:
     get:
       operationId: listProviders
