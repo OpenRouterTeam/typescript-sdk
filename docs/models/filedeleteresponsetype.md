@@ -1,0 +1,15 @@
+# FileDeleteResponseType
+
+## Example Usage
+
+```typescript
+import { FileDeleteResponseType } from "@openrouter/sdk/models";
+
+let value: FileDeleteResponseType = "file_deleted";
+```
+
+## Values
+
+```typescript
+"file_deleted"
+```

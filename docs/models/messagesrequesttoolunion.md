@@ -58,14 +58,6 @@ const value: models.ToolAdvisor20260301 = {
 };
 ```
 
-### `models.BashServerTool`
-
-```typescript
-const value: models.BashServerTool = {
-  type: "openrouter:bash",
-};
-```
-
 ### `models.DatetimeServerTool`
 
 ```typescript
