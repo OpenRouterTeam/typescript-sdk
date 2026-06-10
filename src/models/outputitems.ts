@@ -134,7 +134,7 @@ export type OutputItems =
   | (OutputFunctionCallItem & { type: "function_call" })
   | (OutputImageGenerationCallItem & { type: "image_generation_call" })
   | OutputMessageItem
-  | (OutputAdvisorServerToolItem & { type: "openrouter:advisor" })
+  | OutputAdvisorServerToolItem
   | (OutputApplyPatchServerToolItem & { type: "openrouter:apply_patch" })
   | (OutputBashServerToolItem & { type: "openrouter:bash" })
   | (OutputBrowserUseServerToolItem & { type: "openrouter:browser_use" })
@@ -185,9 +185,7 @@ export const OutputItems$inboundSchema: z.ZodType<OutputItems, unknown> =
       z.object({ type: z.literal("image_generation_call") }),
     ),
     message: OutputMessageItem$inboundSchema,
-    ["openrouter:advisor"]: OutputAdvisorServerToolItem$inboundSchema.and(
-      z.object({ type: z.literal("openrouter:advisor") }),
-    ),
+    ["openrouter:advisor"]: OutputAdvisorServerToolItem$inboundSchema,
     ["openrouter:apply_patch"]: OutputApplyPatchServerToolItem$inboundSchema
       .and(z.object({ type: z.literal("openrouter:apply_patch") })),
     ["openrouter:bash"]: OutputBashServerToolItem$inboundSchema.and(

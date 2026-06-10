@@ -138,6 +138,11 @@ const value: models.OutputCustomToolCallItem = {
 
 ```typescript
 const value: models.OutputWebSearchCallItem = {
+  action: {
+    pattern: "<value>",
+    type: "find_in_page",
+    url: "https://tragic-requirement.com/",
+  },
   id: "ws-abc123",
   status: "completed",
   type: "web_search_call",
@@ -321,15 +326,6 @@ const value: models.OutputMcpServerToolItem = {
 const value: models.OutputSearchModelsServerToolItem = {
   status: "completed",
   type: "openrouter:experimental__search_models",
-};
-```
-
-### `models.OutputAdvisorServerToolItem`
-
-```typescript
-const value: models.OutputAdvisorServerToolItem = {
-  status: "completed",
-  type: "openrouter:advisor",
 };
 ```
 
