@@ -29,7 +29,10 @@ import { APICall, APIPromise } from "../types/async.js";
 import { Result } from "../types/fp.js";
 
 /**
- * List all models and their properties
+ * List or look up models by ID
+ *
+ * @remarks
+ * Lists all available models, or returns a single model when the `id` query parameter is provided.
  */
 export function modelsList(
   client: OpenRouterCore,
@@ -95,6 +98,7 @@ async function $do(
 
   const query = encodeFormQuery({
     "category": payload?.category,
+    "id": payload?.id,
     "output_modalities": payload?.output_modalities,
     "supported_parameters": payload?.supported_parameters,
   });

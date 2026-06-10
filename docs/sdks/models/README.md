@@ -6,13 +6,13 @@ Model information endpoints
 
 ### Available Operations
 
-* [list](#list) - List all models and their properties
+* [list](#list) - List or look up models by ID
 * [count](#count) - Get total count of available models
 * [listForUser](#listforuser) - List models filtered by user provider preferences, privacy settings, and guardrails
 
 ## list
 
-List all models and their properties
+Lists all available models, or returns a single model when the `id` query parameter is provided.
 
 ### Example Usage
 
