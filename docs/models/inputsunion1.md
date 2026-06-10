@@ -329,6 +329,15 @@ const value: models.OutputSearchModelsServerToolItem = {
 };
 ```
 
+### `models.OutputAdvisorServerToolItem`
+
+```typescript
+const value: models.OutputAdvisorServerToolItem = {
+  status: "completed",
+  type: "openrouter:advisor",
+};
+```
+
 ### `models.LocalShellCallItem`
 
 ```typescript
