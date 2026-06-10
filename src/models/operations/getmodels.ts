@@ -33,7 +33,7 @@ export type GetModelsGlobals = {
 /**
  * Filter models by use case category
  */
-export const Category = {
+export const GetModelsCategory = {
   Programming: "programming",
   Roleplay: "roleplay",
   Marketing: "marketing",
@@ -50,7 +50,7 @@ export const Category = {
 /**
  * Filter models by use case category
  */
-export type Category = OpenEnum<typeof Category>;
+export type GetModelsCategory = OpenEnum<typeof GetModelsCategory>;
 
 export type GetModelsRequest = {
   /**
@@ -75,7 +75,7 @@ export type GetModelsRequest = {
   /**
    * Filter models by use case category
    */
-  category?: Category | undefined;
+  category?: GetModelsCategory | undefined;
   /**
    * Filter models by supported parameter (comma-separated)
    */
@@ -87,8 +87,10 @@ export type GetModelsRequest = {
 };
 
 /** @internal */
-export const Category$outboundSchema: z.ZodType<string, Category> = openEnums
-  .outboundSchema(Category);
+export const GetModelsCategory$outboundSchema: z.ZodType<
+  string,
+  GetModelsCategory
+> = openEnums.outboundSchema(GetModelsCategory);
 
 /** @internal */
 export type GetModelsRequest$Outbound = {
@@ -108,7 +110,7 @@ export const GetModelsRequest$outboundSchema: z.ZodType<
   httpReferer: z.string().optional(),
   appTitle: z.string().optional(),
   appCategories: z.string().optional(),
-  category: Category$outboundSchema.optional(),
+  category: GetModelsCategory$outboundSchema.optional(),
   supportedParameters: z.string().optional(),
   outputModalities: z.string().optional(),
 }).transform((v) => {
