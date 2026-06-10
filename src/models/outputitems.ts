@@ -94,14 +94,6 @@ import {
   OutputSearchModelsServerToolItem$inboundSchema,
 } from "./outputsearchmodelsservertoolitem.js";
 import {
-  OutputShellCallItem,
-  OutputShellCallItem$inboundSchema,
-} from "./outputshellcallitem.js";
-import {
-  OutputShellCallOutputItem,
-  OutputShellCallOutputItem$inboundSchema,
-} from "./outputshellcalloutputitem.js";
-import {
   OutputTextEditorServerToolItem,
   OutputTextEditorServerToolItem$inboundSchema,
 } from "./outputtexteditorservertoolitem.js";
@@ -157,8 +149,6 @@ export type OutputItems =
   | (OutputWebFetchServerToolItem & { type: "openrouter:web_fetch" })
   | (OutputWebSearchServerToolItem & { type: "openrouter:web_search" })
   | OutputReasoningItem
-  | OutputShellCallItem
-  | OutputShellCallOutputItem
   | (OutputWebSearchCallItem & { type: "web_search_call" })
   | discriminatedUnionTypes.Unknown<"type">;
 
@@ -228,8 +218,6 @@ export const OutputItems$inboundSchema: z.ZodType<OutputItems, unknown> =
       z.object({ type: z.literal("openrouter:web_search") }),
     ),
     reasoning: OutputReasoningItem$inboundSchema,
-    shell_call: OutputShellCallItem$inboundSchema,
-    shell_call_output: OutputShellCallOutputItem$inboundSchema,
     web_search_call: OutputWebSearchCallItem$inboundSchema.and(
       z.object({ type: z.literal("web_search_call") }),
     ),

@@ -14,5 +14,4 @@ let value: ResponseT = {
 
 | Field              | Type               | Required           | Description        |
 | ------------------ | ------------------ | ------------------ | ------------------ |
-| `content`          | *string*           | :heavy_minus_sign: | N/A                |
 | `model`            | *string*           | :heavy_check_mark: | N/A                |

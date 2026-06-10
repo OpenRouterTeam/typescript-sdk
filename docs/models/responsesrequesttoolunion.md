@@ -209,19 +209,3 @@ const value: models.ApplyPatchServerToolOpenRouter = {
 };
 ```
 
-### `models.BashServerTool`
-
-```typescript
-const value: models.BashServerTool = {
-  type: "openrouter:bash",
-};
-```
-
-### `models.ShellServerToolOpenRouter`
-
-```typescript
-const value: models.ShellServerToolOpenRouter = {
-  type: "openrouter:shell",
-};
-```
-
