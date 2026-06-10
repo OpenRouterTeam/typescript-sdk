@@ -299,11 +299,6 @@ const value: models.OutputShellCallOutputItem = {
 
 ```typescript
 const value: models.OutputWebSearchCallItem = {
-  action: {
-    pattern: "<value>",
-    type: "find_in_page",
-    url: "https://tragic-requirement.com/",
-  },
   id: "ws-abc123",
   status: "completed",
   type: "web_search_call",
