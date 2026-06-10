@@ -6,51 +6,12 @@
 import { presetsCreatePresetsChatCompletions } from "../funcs/presetsCreatePresetsChatCompletions.js";
 import { presetsCreatePresetsMessages } from "../funcs/presetsCreatePresetsMessages.js";
 import { presetsCreatePresetsResponses } from "../funcs/presetsCreatePresetsResponses.js";
-import { presetsGet } from "../funcs/presetsGet.js";
-import { presetsGetVersion } from "../funcs/presetsGetVersion.js";
-import { presetsList } from "../funcs/presetsList.js";
-import { presetsListVersions } from "../funcs/presetsListVersions.js";
 import { ClientSDK, RequestOptions } from "../lib/sdks.js";
 import * as models from "../models/index.js";
 import * as operations from "../models/operations/index.js";
 import { unwrapAsync } from "../types/fp.js";
-import { PageIterator, unwrapResultIterator } from "../types/operations.js";
 
 export class Presets extends ClientSDK {
-  /**
-   * List presets
-   *
-   * @remarks
-   * Lists all presets for the authenticated user, ordered by most recently updated first.
-   */
-  async list(
-    request?: operations.ListPresetsRequest | undefined,
-    options?: RequestOptions,
-  ): Promise<PageIterator<operations.ListPresetsResponse, { offset: number }>> {
-    return unwrapResultIterator(presetsList(
-      this,
-      request,
-      options,
-    ));
-  }
-
-  /**
-   * Get a preset
-   *
-   * @remarks
-   * Retrieves a preset by its slug with its currently designated version inline.
-   */
-  async get(
-    request: operations.GetPresetRequest,
-    options?: RequestOptions,
-  ): Promise<models.GetPresetResponse> {
-    return unwrapAsync(presetsGet(
-      this,
-      request,
-      options,
-    ));
-  }
-
   /**
    * Create a preset from a chat-completions request body
    *
@@ -96,42 +57,6 @@ export class Presets extends ClientSDK {
     options?: RequestOptions,
   ): Promise<models.CreatePresetFromInferenceResponse> {
     return unwrapAsync(presetsCreatePresetsResponses(
-      this,
-      request,
-      options,
-    ));
-  }
-
-  /**
-   * List versions of a preset
-   *
-   * @remarks
-   * Lists all versions of a preset, ordered by version number ascending (oldest first).
-   */
-  async listVersions(
-    request: operations.ListPresetVersionsRequest,
-    options?: RequestOptions,
-  ): Promise<
-    PageIterator<operations.ListPresetVersionsResponse, { offset: number }>
-  > {
-    return unwrapResultIterator(presetsListVersions(
-      this,
-      request,
-      options,
-    ));
-  }
-
-  /**
-   * Get a specific version of a preset
-   *
-   * @remarks
-   * Retrieves a specific version of a preset by its slug and version number.
-   */
-  async getVersion(
-    request: operations.GetPresetVersionRequest,
-    options?: RequestOptions,
-  ): Promise<models.GetPresetVersionResponse> {
-    return unwrapAsync(presetsGetVersion(
       this,
       request,
       options,

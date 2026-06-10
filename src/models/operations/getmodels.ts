@@ -52,24 +52,6 @@ export const Category = {
  */
 export type Category = OpenEnum<typeof Category>;
 
-/**
- * Sort the returned models server-side. Prefer this over fetching the full list and sorting client-side. Options: pricing-low-to-high, pricing-high-to-low (average prompt/completion price), context-high-to-low (context length), throughput-high-to-low, latency-low-to-high (recent median performance), most-popular, top-weekly (tokens processed in the last week), newest (creation date). When omitted, the existing default ordering is preserved.
- */
-export const Sort = {
-  MostPopular: "most-popular",
-  Newest: "newest",
-  TopWeekly: "top-weekly",
-  PricingLowToHigh: "pricing-low-to-high",
-  PricingHighToLow: "pricing-high-to-low",
-  ContextHighToLow: "context-high-to-low",
-  ThroughputHighToLow: "throughput-high-to-low",
-  LatencyLowToHigh: "latency-low-to-high",
-} as const;
-/**
- * Sort the returned models server-side. Prefer this over fetching the full list and sorting client-side. Options: pricing-low-to-high, pricing-high-to-low (average prompt/completion price), context-high-to-low (context length), throughput-high-to-low, latency-low-to-high (recent median performance), most-popular, top-weekly (tokens processed in the last week), newest (creation date). When omitted, the existing default ordering is preserved.
- */
-export type Sort = OpenEnum<typeof Sort>;
-
 export type GetModelsRequest = {
   /**
    * The app identifier should be your app's URL and is used as the primary identifier for rankings.
@@ -102,19 +84,11 @@ export type GetModelsRequest = {
    * Filter models by output modality. Accepts a comma-separated list of modalities (text, image, audio, embeddings) or "all" to include all models. Defaults to "text".
    */
   outputModalities?: string | undefined;
-  /**
-   * Sort the returned models server-side. Prefer this over fetching the full list and sorting client-side. Options: pricing-low-to-high, pricing-high-to-low (average prompt/completion price), context-high-to-low (context length), throughput-high-to-low, latency-low-to-high (recent median performance), most-popular, top-weekly (tokens processed in the last week), newest (creation date). When omitted, the existing default ordering is preserved.
-   */
-  sort?: Sort | undefined;
 };
 
 /** @internal */
 export const Category$outboundSchema: z.ZodType<string, Category> = openEnums
   .outboundSchema(Category);
-
-/** @internal */
-export const Sort$outboundSchema: z.ZodType<string, Sort> = openEnums
-  .outboundSchema(Sort);
 
 /** @internal */
 export type GetModelsRequest$Outbound = {
@@ -124,7 +98,6 @@ export type GetModelsRequest$Outbound = {
   category?: string | undefined;
   supported_parameters?: string | undefined;
   output_modalities?: string | undefined;
-  sort?: string | undefined;
 };
 
 /** @internal */
@@ -138,7 +111,6 @@ export const GetModelsRequest$outboundSchema: z.ZodType<
   category: Category$outboundSchema.optional(),
   supportedParameters: z.string().optional(),
   outputModalities: z.string().optional(),
-  sort: Sort$outboundSchema.optional(),
 }).transform((v) => {
   return remap$(v, {
     httpReferer: "HTTP-Referer",
