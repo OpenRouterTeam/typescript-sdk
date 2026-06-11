@@ -1,19 +1,19 @@
 lockVersion: ""
 id: ""
 management:
-  docChecksum: df227b180f5b1dd05dd7149154522e3b
+  docChecksum: 8aa6d50b98dd565d997dfa01a4c9571e
   docVersion: 1.0.0
   speakeasyVersion: 1.763.2
   generationVersion: 2.884.4
-  releaseVersion: 0.12.103
-  configChecksum: e03643504e3b1bfe856093169bd9a3b0
+  releaseVersion: 0.12.104
+  configChecksum: acb3d885fa9fa246d6bdbc952482802e
   repoURL: https://github.com/OpenRouterTeam/typescript-sdk.git
   installationURL: https://github.com/OpenRouterTeam/typescript-sdk
   published: true
 persistentEdits:
-  generation_id: f67b31b3-fa6d-4acb-b7c2-47d49a050db7
-  pristine_commit_hash: d5a3fbdf1ca4c69662dfe6bf2538b58952cf5065
-  pristine_tree_hash: c5512fa5f1f95e9701252c240c56a53032f4942d
+  generation_id: 9dea87a3-33d2-4a00-ac1c-1164ae89cbea
+  pristine_commit_hash: d0115af2b9dec3df7663391f637d98f5ba8c87a6
+  pristine_tree_hash: d78d114f9b3529ebe96e8d075b71b80ce16b817b
 features:
   typescript:
     acceptHeaders: 2.81.2
@@ -81,6 +81,10 @@ trackedFiles:
     id: 0ce9707cb848
     last_write_checksum: sha1:bc4454e196fcd219f5a78da690375a884f5ed07b
     pristine_git_object: 08f95f4552349360b2c0b01802aa71ec3a55d2c2
+  docs/models/aabenchmarkentry.md:
+    id: 2376e3e73268
+    last_write_checksum: sha1:c59569f6bc74489607c5983387210d5447696ce7
+    pristine_git_object: 87ff9b4abae0a563bd1b591a3ddda7068c98aa05
   docs/models/action.md:
     id: 3b583d6a609e
     last_write_checksum: sha1:8dc36489801452f14ed738798e511ba6be809f52
@@ -2923,6 +2927,7 @@ trackedFiles:
     id: 87a1dec9d852
     last_write_checksum: sha1:22c12f1b6660ad8dae11343ff12f3c3252db2a61
     pristine_git_object: 0ad4176093f2f8bd5f8793ca41c73da18f0aaaf6
+    deleted: true
   docs/models/messagesmessageparam.md:
     id: 21340f0c144a
     last_write_checksum: sha1:6d8d049dc1daa4fd15fc1e84deed88ee7a072ae6
@@ -3029,8 +3034,8 @@ trackedFiles:
     deleted: true
   docs/models/model.md:
     id: 66e0236ac289
-    last_write_checksum: sha1:61cf28ca13efaaf632cabc743697044624682084
-    pristine_git_object: 78cc8ff2a18ace93485eddaf2dc1ae5c9d1f97e0
+    last_write_checksum: sha1:b9bc1c6639a2059db0fa551154c436ba3213d351
+    pristine_git_object: 1b38986df12f36f02aa1bb37678b08939ef9434e
   docs/models/modelarchitecture.md:
     id: 7eab960e8441
     last_write_checksum: sha1:722c920e474bc5ce757280c8a80406dfd484eee1
@@ -3041,8 +3046,8 @@ trackedFiles:
     pristine_git_object: 0111d01b1ce108237f9544221b5ae69886ca80f2
   docs/models/modelbenchmarks.md:
     id: 150b3f8a7235
-    last_write_checksum: sha1:ea2ea5d5cb99e50421b05df88df0140d4068a1de
-    pristine_git_object: 8d2701244c93b24e0747ecd517813dafdfe117ec
+    last_write_checksum: sha1:f39e91d047bc5fdd00435b08586913ab0b4cc6f4
+    pristine_git_object: 6ecf9c5e840b5fd4d32525536664bef48a289c1a
     deleted: true
   docs/models/modelenum.md:
     id: 2d6430130374
@@ -6820,12 +6825,12 @@ trackedFiles:
     pristine_git_object: 410efafd6a7f50d91ccb87131fedbe0c3d47e15a
   jsr.json:
     id: 7f6ab7767282
-    last_write_checksum: sha1:c91646d1ee38c9450cd6ae6a5ded5c2ecb74b7fd
-    pristine_git_object: 28d6b25e31f0cd6b5d78ccdbd6e9bad7ecca0acc
+    last_write_checksum: sha1:938e72d34958af79706700d36009b2a988c39626
+    pristine_git_object: 9fe365587b36fa02f1785ad2a0059ff5c3b0614f
   package.json:
     id: 7030d0b2f71b
-    last_write_checksum: sha1:63d9733a8da32b3fb34bb5ba4ffd59ea8ad5668b
-    pristine_git_object: a44388ae8936a3f4ae3635e78ec6a854ee490bc8
+    last_write_checksum: sha1:178fb76856166387be8b953b1d3502a0c43b7eda
+    pristine_git_object: e44776c00d4158c6b43a65677c0318d583717da2
   src/core.ts:
     id: f431fdbcd144
     last_write_checksum: sha1:5aa66b0b6a5964f3eea7f3098c2eb3c0ee9c0131
@@ -7144,8 +7149,8 @@ trackedFiles:
     pristine_git_object: a187e58707bdb726ca2aff74941efe7493422d4e
   src/lib/config.ts:
     id: 320761608fb3
-    last_write_checksum: sha1:1faa9ae702e923d8ab2e6075f7d1c6496d0d7e43
-    pristine_git_object: f69c79982365bef19bbb1b10a6dc1ac67370a4d9
+    last_write_checksum: sha1:2e2043ec0fd1c83e10ea302b0d5d09ac828a7fd0
+    pristine_git_object: 29e3019d3dc5c38a8e67a2e6b3a287f795f54f5f
   src/lib/dlv.ts:
     id: b1988214835a
     last_write_checksum: sha1:eaac763b22717206a6199104e0403ed17a4e2711
@@ -7206,6 +7211,10 @@ trackedFiles:
     id: b0057e24ed76
     last_write_checksum: sha1:70b18fda795b71861339376c441d5605ad6f6594
     pristine_git_object: e4f870ddddfb3745e52ab6b53c168025243e28c3
+  src/models/aabenchmarkentry.ts:
+    id: fff97d475d2d
+    last_write_checksum: sha1:788cb35386c72b54bfe58755b76c0d0904fb5ddb
+    pristine_git_object: a8ab5eb9ff0fdef1aa97c34dfd656e6b22729572
   src/models/activityitem.ts:
     id: ee2d86453873
     last_write_checksum: sha1:66b69e2be0e6253fe38df6c38ccf7a126ee6b27c
@@ -8172,8 +8181,8 @@ trackedFiles:
     pristine_git_object: 8e109bedfdcf2c4808e49323dda861e3c6069d51
   src/models/index.ts:
     id: f93644b0f37e
-    last_write_checksum: sha1:5c8fdb8bb126e7e5231fb3f19e7baf09b8c9f50a
-    pristine_git_object: 062fff3a2c68b7b96854f870d6145e63e553056e
+    last_write_checksum: sha1:319cdd56fb8b4e191ebc66f5bffaa60b23f6cedb
+    pristine_git_object: 133a261c9906dd61bf8627a0dbcdb8eb231af4d7
   src/models/inputaudio.ts:
     id: 9bdc14c7565f
     last_write_checksum: sha1:2f8dc4c1d6a9c2927d9eb186e0ecedf7b81838e6
@@ -8336,8 +8345,8 @@ trackedFiles:
     pristine_git_object: 9afd6042cf43f984f80c5a9f78e03f7979072b2c
   src/models/modelbenchmarks.ts:
     id: dc71ead66ff6
-    last_write_checksum: sha1:45ed4aee41e43230b1cf1154f313bd5918f57190
-    pristine_git_object: 7d5d20cbaba2505c4d1fad4517580f1e3b0f56df
+    last_write_checksum: sha1:c25e0f45ab3f86dad9d28517c64780d67cedbd3a
+    pristine_git_object: f73bcf16fcbbb6a49eff9cec48f4b0d42fef9a02
   src/models/modelgroup.ts:
     id: b65482ec4223
     last_write_checksum: sha1:0ee8662687f1c146ee4eada78da058949c970c97
@@ -10902,4 +10911,9 @@ examples:
         "500":
           application/json: {"error": {"code": 500, "message": "Internal Server Error"}}
 examplesVersion: 1.0.2
-releaseNotes: "## Typescript SDK Changes:\n* `openrouter.presets.createPresetsMessages()`: \n  *  `request.messagesRequest.fallbacks` **Added**\n"
+releaseNotes: |
+  ## Typescript SDK Changes:
+  * `openrouter.embeddings.listModels()`:  `response.data[].benchmarks` **Changed**
+  * `openrouter.models.get()`:  `response.data.benchmarks` **Changed**
+  * `openrouter.models.list()`:  `response.data[].benchmarks` **Changed**
+  * `openrouter.models.listForUser()`:  `response.data[].benchmarks` **Changed**

@@ -25,6 +25,36 @@ components:
       description: |
         Comma-separated list of app categories (e.g. "cli-agent,cloud-agent"). Used for marketplace rankings.
   schemas:
+    AABenchmarkEntry:
+      description: Artificial Analysis benchmark index scores.
+      example:
+        agentic_index: 55.8
+        coding_index: 63.2
+        intelligence_index: 71.4
+      properties:
+        agentic_index:
+          description: Artificial Analysis Agentic Index score
+          example: 55.8
+          format: double
+          nullable: true
+          type: number
+        coding_index:
+          description: Artificial Analysis Coding Index score
+          example: 63.2
+          format: double
+          nullable: true
+          type: number
+        intelligence_index:
+          description: Artificial Analysis Intelligence Index score
+          example: 71.4
+          format: double
+          nullable: true
+          type: number
+      required:
+        - intelligence_index
+        - coding_index
+        - agentic_index
+      type: object
     ActivityItem:
       example:
         byok_usage_inference: 0.012
@@ -11981,6 +12011,10 @@ components:
     ModelBenchmarks:
       description: Third-party benchmark rankings for this model. Omitted when no benchmark data is available.
       example:
+        artificial_analysis:
+          agentic_index: 55.8
+          coding_index: 63.2
+          intelligence_index: 71.4
         design_arena:
           - arena: models
             category: website
@@ -11988,9 +12022,10 @@ components:
             rank: 5
             win_rate: 62.5
       properties:
+        artificial_analysis:
+          $ref: '#/components/schemas/AABenchmarkEntry'
         design_arena:
-          description: >-
-            Design Arena ELO rankings across arena+category pairs. The parent benchmarks object is omitted when the model has not been evaluated.
+          description: Design Arena ELO rankings across arena+category pairs.
           example:
             - arena: models
               category: website
@@ -12000,8 +12035,6 @@ components:
           items:
             $ref: '#/components/schemas/DABenchmarkEntry'
           type: array
-      required:
-        - design_arena
       type: object
     ModelGroup:
       description: Tokenizer type used by the model
