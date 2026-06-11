@@ -1212,6 +1212,8 @@ components:
       allOf:
         - $ref: '#/components/schemas/AnthropicBaseUsageIteration'
         - properties:
+            model:
+              type: string
             type:
               enum:
                 - message
@@ -10736,6 +10738,19 @@ components:
         - type
         - error
       type: object
+    MessagesFallbackParam:
+      additionalProperties:
+        nullable: true
+      description: >-
+        Fallback model to try when the primary model fails or refuses. Only the `model` field is supported; per-attempt overrides are rejected.
+      example:
+        model: claude-opus-4-8
+      properties:
+        model:
+          type: string
+      required:
+        - model
+      type: object
     MessagesMessageParam:
       description: Anthropic message with OpenRouter extensions
       example:
@@ -11081,6 +11096,15 @@ components:
                     type: object
               type: array
           type: object
+        fallbacks:
+          description: >-
+            Fallback models to try if the primary model fails or refuses, in order. Handled by OpenRouter multi-model routing rather than Anthropic server-side fallbacks; cannot be combined with `models`. Each entry accepts only `model`. Maximum of 3 entries.
+          example:
+            - model: claude-opus-4-8
+          items:
+            $ref: '#/components/schemas/MessagesFallbackParam'
+          nullable: true
+          type: array
         max_tokens:
           type: integer
         messages:
