@@ -82,7 +82,7 @@ export type QueryAnalyticsRequestBody = {
    */
   granularity?: string | undefined;
   /**
-   * Maximum rows per distinct combination of dimensions (ClickHouse LIMIT n BY). When omitted on time-series queries (granularity + dimensions), auto-computed to avoid truncating time windows. Explicit values override the default and may truncate time buckets if set lower than the number of buckets in the range. Ignored when no dimensions are specified.
+   * Maximum rows per distinct combination of dimensions. When omitted on time-series queries (granularity + dimensions), auto-computed to avoid truncating time windows. Explicit values override the default and may truncate time buckets if set lower than the number of buckets in the range. Ignored when no dimensions are specified.
    */
   groupLimit?: number | undefined;
   /**
