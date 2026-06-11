@@ -62,7 +62,7 @@ export type UsageLimitType = OpenEnum<typeof UsageLimitType>;
 
 export type CreateAuthKeysCodeRequestBody = {
   /**
-   * The callback URL to redirect to after authorization. Note, only https URLs on ports 443 and 3000 are allowed.
+   * The callback URL to redirect to after authorization. Supports https URLs and localhost/127.0.0.1 URLs on any port for local CLI tools.
    */
   callbackUrl: string;
   /**
@@ -89,6 +89,10 @@ export type CreateAuthKeysCodeRequestBody = {
    * Optional credit limit reset interval. When set, the credit limit resets on this interval.
    */
   usageLimitType?: UsageLimitType | undefined;
+  /**
+   * Optional workspace ID to associate the API key with
+   */
+  workspaceId?: string | undefined;
 };
 
 export type CreateAuthKeysCodeRequest = {
@@ -161,6 +165,7 @@ export type CreateAuthKeysCodeRequestBody$Outbound = {
   key_label?: string | undefined;
   limit?: number | undefined;
   usage_limit_type?: string | undefined;
+  workspace_id?: string | undefined;
 };
 
 /** @internal */
@@ -176,6 +181,7 @@ export const CreateAuthKeysCodeRequestBody$outboundSchema: z.ZodType<
   keyLabel: z.string().optional(),
   limit: z.number().optional(),
   usageLimitType: UsageLimitType$outboundSchema.optional(),
+  workspaceId: z.string().optional(),
 }).transform((v) => {
   return remap$(v, {
     callbackUrl: "callback_url",
@@ -184,6 +190,7 @@ export const CreateAuthKeysCodeRequestBody$outboundSchema: z.ZodType<
     expiresAt: "expires_at",
     keyLabel: "key_label",
     usageLimitType: "usage_limit_type",
+    workspaceId: "workspace_id",
   });
 });
 
