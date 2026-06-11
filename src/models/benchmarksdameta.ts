@@ -27,24 +27,26 @@ export type EloBounds = {
 /**
  * Data source identifier.
  */
-export const SourceEnum = {
+export const BenchmarksDAMetaSource = {
   DesignArena: "design-arena",
 } as const;
 /**
  * Data source identifier.
  */
-export type SourceEnum = ClosedEnum<typeof SourceEnum>;
+export type BenchmarksDAMetaSource = ClosedEnum<typeof BenchmarksDAMetaSource>;
 
 /**
  * URL of the upstream data source.
  */
-export const SourceUrl = {
+export const BenchmarksDAMetaSourceUrl = {
   HttpsWwwDesignarenaAi: "https://www.designarena.ai",
 } as const;
 /**
  * URL of the upstream data source.
  */
-export type SourceUrl = ClosedEnum<typeof SourceUrl>;
+export type BenchmarksDAMetaSourceUrl = ClosedEnum<
+  typeof BenchmarksDAMetaSourceUrl
+>;
 
 /**
  * Dataset version.
@@ -87,11 +89,11 @@ export type BenchmarksDAMeta = {
   /**
    * Data source identifier.
    */
-  source: SourceEnum;
+  source: BenchmarksDAMetaSource;
   /**
    * URL of the upstream data source.
    */
-  sourceUrl: SourceUrl;
+  sourceUrl: BenchmarksDAMetaSourceUrl;
   /**
    * Dataset version.
    */
@@ -115,14 +117,14 @@ export function eloBoundsFromJSON(
 }
 
 /** @internal */
-export const SourceEnum$inboundSchema: z.ZodEnum<typeof SourceEnum> = z.enum(
-  SourceEnum,
-);
+export const BenchmarksDAMetaSource$inboundSchema: z.ZodEnum<
+  typeof BenchmarksDAMetaSource
+> = z.enum(BenchmarksDAMetaSource);
 
 /** @internal */
-export const SourceUrl$inboundSchema: z.ZodEnum<typeof SourceUrl> = z.enum(
-  SourceUrl,
-);
+export const BenchmarksDAMetaSourceUrl$inboundSchema: z.ZodEnum<
+  typeof BenchmarksDAMetaSourceUrl
+> = z.enum(BenchmarksDAMetaSourceUrl);
 
 /** @internal */
 export const BenchmarksDAMetaVersion$inboundSchema: z.ZodEnum<
@@ -140,8 +142,8 @@ export const BenchmarksDAMeta$inboundSchema: z.ZodType<
   citation: z.string(),
   elo_bounds: z.lazy(() => EloBounds$inboundSchema),
   model_count: z.int(),
-  source: SourceEnum$inboundSchema,
-  source_url: SourceUrl$inboundSchema,
+  source: BenchmarksDAMetaSource$inboundSchema,
+  source_url: BenchmarksDAMetaSourceUrl$inboundSchema,
   version: BenchmarksDAMetaVersion$inboundSchema,
 }).transform((v) => {
   return remap$(v, {
