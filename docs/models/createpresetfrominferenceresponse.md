@@ -12,14 +12,6 @@ let value: CreatePresetFromInferenceResponse = {
     createdAt: "2026-04-20T10:00:00Z",
     creatorUserId: "user_2dHFtVWx2n56w6HkM0000000000",
     description: null,
-    designatedVersionId: "550e8400-e29b-41d4-a716-446655440000",
-    id: "650e8400-e29b-41d4-a716-446655440001",
-    name: "my-preset",
-    slug: "my-preset",
-    status: "active",
-    statusUpdatedAt: null,
-    updatedAt: "2026-04-20T10:00:00Z",
-    workspaceId: "750e8400-e29b-41d4-a716-446655440002",
     designatedVersion: {
       config: {
         "model": "openai/gpt-4o",
@@ -33,6 +25,14 @@ let value: CreatePresetFromInferenceResponse = {
       updatedAt: "2026-04-20T10:00:00Z",
       version: 1,
     },
+    designatedVersionId: "550e8400-e29b-41d4-a716-446655440000",
+    id: "650e8400-e29b-41d4-a716-446655440001",
+    name: "my-preset",
+    slug: "my-preset",
+    status: "active",
+    statusUpdatedAt: null,
+    updatedAt: "2026-04-20T10:00:00Z",
+    workspaceId: "750e8400-e29b-41d4-a716-446655440002",
   },
 };
 ```

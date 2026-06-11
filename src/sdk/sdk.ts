@@ -13,6 +13,7 @@ import { Credits } from "./credits.js";
 import { Datasets } from "./datasets.js";
 import { Embeddings } from "./embeddings.js";
 import { Endpoints } from "./endpoints.js";
+import { Files } from "./files.js";
 import { Generations } from "./generations.js";
 import { Guardrails } from "./guardrails.js";
 import { Models } from "./models.js";
@@ -43,11 +44,6 @@ export class OpenRouter extends ClientSDK {
   private _analytics?: Analytics;
   get analytics(): Analytics {
     return (this._analytics ??= new Analytics(this._options));
-  }
-
-  private _beta?: Beta;
-  get beta(): Beta {
-    return (this._beta ??= new Beta(this._options));
   }
 
   private _tts?: Tts;
@@ -95,6 +91,11 @@ export class OpenRouter extends ClientSDK {
     return (this._endpoints ??= new Endpoints(this._options));
   }
 
+  private _files?: Files;
+  get files(): Files {
+    return (this._files ??= new Files(this._options));
+  }
+
   private _generations?: Generations;
   get generations(): Generations {
     return (this._generations ??= new Generations(this._options));
@@ -138,6 +139,11 @@ export class OpenRouter extends ClientSDK {
   private _rerank?: Rerank;
   get rerank(): Rerank {
     return (this._rerank ??= new Rerank(this._options));
+  }
+
+  private _beta?: Beta;
+  get beta(): Beta {
+    return (this._beta ??= new Beta(this._options));
   }
 
   private _videoGeneration?: VideoGeneration;
