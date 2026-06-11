@@ -4,7 +4,6 @@
  */
 
 import { datasetsGetAppRankings } from "../funcs/datasetsGetAppRankings.js";
-import { datasetsGetBenchmarksDesignArena } from "../funcs/datasetsGetBenchmarksDesignArena.js";
 import { datasetsGetRankingsDaily } from "../funcs/datasetsGetRankingsDaily.js";
 import { ClientSDK, RequestOptions } from "../lib/sdks.js";
 import * as models from "../models/index.js";
@@ -48,23 +47,6 @@ export class Datasets extends ClientSDK {
     PageIterator<operations.GetAppRankingsResponse, { offset: number }>
   > {
     return unwrapResultIterator(datasetsGetAppRankings(
-      this,
-      request,
-      options,
-    ));
-  }
-
-  /**
-   * Design Arena Benchmark Rankings
-   *
-   * @remarks
-   * Returns ELO ratings from head-to-head arena battles on Design Arena. Filterable by arena (models/builders/agents) and category. Includes OpenRouter pricing per model. Authenticate with any valid OpenRouter API key. Rate-limited to 30 requests/minute per key and 500 requests/day per account.
-   */
-  async getBenchmarksDesignArena(
-    request?: operations.GetBenchmarksDesignArenaRequest | undefined,
-    options?: RequestOptions,
-  ): Promise<models.BenchmarksDAResponse> {
-    return unwrapAsync(datasetsGetBenchmarksDesignArena(
       this,
       request,
       options,
