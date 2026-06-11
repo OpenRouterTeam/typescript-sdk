@@ -6719,6 +6719,44 @@ components:
         id: ctco-abc123
         output: patch applied successfully
         type: custom_tool_call_output
+    DABenchmarkEntry:
+      description: A single Design Arena benchmark entry for a specific arena+category
+      example:
+        arena: models
+        category: website
+        elo: 1385.2
+        rank: 5
+        win_rate: 62.5
+      properties:
+        arena:
+          description: Arena type (e.g. models, builders, agents)
+          example: models
+          type: string
+        category:
+          description: Category within the arena (e.g. website, gamedev, uicomponent)
+          example: website
+          type: string
+        elo:
+          description: ELO rating from head-to-head arena battles
+          example: 1385.2
+          format: double
+          type: number
+        rank:
+          description: Rank position within this arena+category among models available on OpenRouter (1 = highest ELO)
+          example: 5
+          type: integer
+        win_rate:
+          description: Win rate percentage in arena battles
+          example: 62.5
+          format: double
+          type: number
+      required:
+        - arena
+        - category
+        - elo
+        - win_rate
+        - rank
+      type: object
     DatetimeServerTool:
       description: 'OpenRouter built-in server tool: returns the current date and time'
       example:
@@ -11550,6 +11588,8 @@ components:
       properties:
         architecture:
           $ref: '#/components/schemas/ModelArchitecture'
+        benchmarks:
+          $ref: '#/components/schemas/ModelBenchmarks'
         canonical_slug:
           description: Canonical slug for the model
           example: openai/gpt-4
@@ -11690,6 +11730,31 @@ components:
         - input_modalities
         - output_modalities
       type: object
+    ModelBenchmarks:
+      description: Third-party benchmark rankings for this model. Omitted when no benchmark data is available.
+      example:
+        design_arena:
+          - arena: models
+            category: website
+            elo: 1385.2
+            rank: 5
+            win_rate: 62.5
+      properties:
+        design_arena:
+          description: >-
+            Design Arena ELO rankings across arena+category pairs. The parent benchmarks object is omitted when the model has not been evaluated.
+          example:
+            - arena: models
+              category: website
+              elo: 1385.2
+              rank: 5
+              win_rate: 62.5
+          items:
+            $ref: '#/components/schemas/DABenchmarkEntry'
+          type: array
+      required:
+        - design_arena
+      type: object
     ModelGroup:
       description: Tokenizer type used by the model
       enum:
@@ -11732,6 +11797,43 @@ components:
       description: Model to use for completion
       example: openai/gpt-4
       type: string
+    ModelResponse:
+      description: Single model response
+      example:
+        data:
+          architecture:
+            input_modalities:
+              - text
+            instruct_type: chatml
+            modality: text->text
+            output_modalities:
+              - text
+            tokenizer: GPT
+          context_length: 8192
+          created: 1692901234
+          description: GPT-4 is a large multimodal model that can solve difficult problems with greater accuracy.
+          id: openai/gpt-4
+          name: GPT-4
+          per_request_limits: null
+          pricing:
+            completion: '0.00006'
+            image: '0'
+            prompt: '0.00003'
+            request: '0'
+          supported_parameters:
+            - temperature
+            - top_p
+            - max_tokens
+          top_provider:
+            context_length: 8192
+            is_moderated: true
+            max_completion_tokens: 4096
+      properties:
+        data:
+          $ref: '#/components/schemas/Model'
+      required:
+        - data
+      type: object
     ModelsCountResponse:
       description: Model count data
       example:
@@ -21348,7 +21450,7 @@ paths:
                   type: string
                 group_limit:
                   description: >-
-                    Maximum rows per distinct combination of dimensions (ClickHouse LIMIT n BY). When omitted on time-series queries (granularity + dimensions), auto-computed to avoid truncating time windows. Explicit values override the default and may truncate time buckets if set lower than the number of buckets in the range. Ignored when no dimensions are specified.
+                    Maximum rows per distinct combination of dimensions. When omitted on time-series queries (granularity + dimensions), auto-computed to avoid truncating time windows. Explicit values override the default and may truncate time buckets if set lower than the number of buckets in the range. Ignored when no dimensions are specified.
                   example: 100
                   type: integer
                 limit:
@@ -26843,6 +26945,92 @@ paths:
       x-speakeasy-ignore: true
       x-speakeasy-name-override: create
       x-speakeasy-stream-request-field: stream
+    parameters:
+      - $ref: "#/components/parameters/AppIdentifier"
+      - $ref: "#/components/parameters/AppDisplayName"
+      - $ref: "#/components/parameters/AppCategories"
+  /model/{author}/{slug}:
+    get:
+      description: >-
+        Returns full details for a single model identified by its author and slug (e.g. openai/gpt-4). Supports variant suffixes (e.g. openai/gpt-4:free) and resolves known slug aliases.
+      operationId: getModel
+      parameters:
+        - description: The author/organization of the model
+          in: path
+          name: author
+          required: true
+          schema:
+            description: The author/organization of the model
+            example: openai
+            type: string
+        - description: The model slug, optionally including a variant suffix (e.g. gpt-4 or gpt-4:free)
+          in: path
+          name: slug
+          required: true
+          schema:
+            description: The model slug, optionally including a variant suffix (e.g. gpt-4 or gpt-4:free)
+            example: gpt-4
+            type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              example:
+                data:
+                  architecture:
+                    input_modalities:
+                      - text
+                    instruct_type: chatml
+                    modality: text->text
+                    output_modalities:
+                      - text
+                    tokenizer: GPT
+                  context_length: 8192
+                  created: 1692901234
+                  description: GPT-4 is a large multimodal model that can solve difficult problems with greater accuracy.
+                  id: openai/gpt-4
+                  name: GPT-4
+                  per_request_limits: null
+                  pricing:
+                    completion: '0.00006'
+                    image: '0'
+                    prompt: '0.00003'
+                    request: '0'
+                  supported_parameters:
+                    - temperature
+                    - top_p
+                    - max_tokens
+                  top_provider:
+                    context_length: 8192
+                    is_moderated: true
+                    max_completion_tokens: 4096
+              schema:
+                $ref: '#/components/schemas/ModelResponse'
+          description: Returns the model details
+        '404':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 404
+                  message: Resource not found
+              schema:
+                $ref: '#/components/schemas/NotFoundResponse'
+          description: Not Found - Resource does not exist
+        '500':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 500
+                  message: Internal Server Error
+              schema:
+                $ref: '#/components/schemas/InternalServerResponse'
+          description: Internal Server Error - Unexpected server error
+      summary: Get a model by its slug
+      tags:
+        - Models
+      x-speakeasy-name-override: get
     parameters:
       - $ref: "#/components/parameters/AppIdentifier"
       - $ref: "#/components/parameters/AppDisplayName"
