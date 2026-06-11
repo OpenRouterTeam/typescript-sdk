@@ -22,6 +22,11 @@ import {
   ChatContentCacheControl$outboundSchema,
 } from "./chatcontentcachecontrol.js";
 import {
+  ChatDynamicServerTool,
+  ChatDynamicServerTool$Outbound,
+  ChatDynamicServerTool$outboundSchema,
+} from "./chatdynamicservertool.js";
+import {
   ChatSearchModelsServerTool,
   ChatSearchModelsServerTool$Outbound,
   ChatSearchModelsServerTool$outboundSchema,
@@ -103,7 +108,8 @@ export type ChatFunctionTool =
   | ChatSearchModelsServerTool
   | WebFetchServerTool
   | OpenRouterWebSearchServerTool
-  | ChatWebSearchShorthand;
+  | ChatWebSearchShorthand
+  | ChatDynamicServerTool;
 
 /** @internal */
 export type ChatFunctionToolFunctionFunction$Outbound = {
@@ -178,7 +184,8 @@ export type ChatFunctionTool$Outbound =
   | ChatSearchModelsServerTool$Outbound
   | WebFetchServerTool$Outbound
   | OpenRouterWebSearchServerTool$Outbound
-  | ChatWebSearchShorthand$Outbound;
+  | ChatWebSearchShorthand$Outbound
+  | ChatDynamicServerTool$Outbound;
 
 /** @internal */
 export const ChatFunctionTool$outboundSchema: z.ZodType<
@@ -194,6 +201,7 @@ export const ChatFunctionTool$outboundSchema: z.ZodType<
   WebFetchServerTool$outboundSchema,
   OpenRouterWebSearchServerTool$outboundSchema,
   ChatWebSearchShorthand$outboundSchema,
+  ChatDynamicServerTool$outboundSchema,
 ]);
 
 export function chatFunctionToolToJSON(
