@@ -16,10 +16,6 @@ import {
   ModelArchitecture,
   ModelArchitecture$inboundSchema,
 } from "./modelarchitecture.js";
-import {
-  ModelBenchmarks,
-  ModelBenchmarks$inboundSchema,
-} from "./modelbenchmarks.js";
 import { ModelLinks, ModelLinks$inboundSchema } from "./modellinks.js";
 import { Parameter, Parameter$inboundSchema } from "./parameter.js";
 import {
@@ -40,10 +36,6 @@ export type Model = {
    * Model architecture information
    */
   architecture: ModelArchitecture;
-  /**
-   * Third-party benchmark rankings for this model. Omitted when no benchmark data is available.
-   */
-  benchmarks?: ModelBenchmarks | undefined;
   /**
    * Canonical slug for the model
    */
@@ -113,7 +105,6 @@ export type Model = {
 /** @internal */
 export const Model$inboundSchema: z.ZodType<Model, unknown> = z.object({
   architecture: ModelArchitecture$inboundSchema,
-  benchmarks: ModelBenchmarks$inboundSchema.optional(),
   canonical_slug: z.string(),
   context_length: z.nullable(z.int()),
   created: z.int(),

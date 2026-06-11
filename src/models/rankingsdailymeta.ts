@@ -13,15 +13,13 @@ import { SDKValidationError } from "./errors/sdkvalidationerror.js";
 /**
  * Dataset version. Field names and grain are stable for the life of `v1`.
  */
-export const RankingsDailyMetaVersion = {
+export const Version = {
   V1: "v1",
 } as const;
 /**
  * Dataset version. Field names and grain are stable for the life of `v1`.
  */
-export type RankingsDailyMetaVersion = ClosedEnum<
-  typeof RankingsDailyMetaVersion
->;
+export type Version = ClosedEnum<typeof Version>;
 
 export type RankingsDailyMeta = {
   /**
@@ -39,13 +37,11 @@ export type RankingsDailyMeta = {
   /**
    * Dataset version. Field names and grain are stable for the life of `v1`.
    */
-  version: RankingsDailyMetaVersion;
+  version: Version;
 };
 
 /** @internal */
-export const RankingsDailyMetaVersion$inboundSchema: z.ZodEnum<
-  typeof RankingsDailyMetaVersion
-> = z.enum(RankingsDailyMetaVersion);
+export const Version$inboundSchema: z.ZodEnum<typeof Version> = z.enum(Version);
 
 /** @internal */
 export const RankingsDailyMeta$inboundSchema: z.ZodType<
@@ -55,7 +51,7 @@ export const RankingsDailyMeta$inboundSchema: z.ZodType<
   as_of: z.string(),
   end_date: z.string(),
   start_date: z.string(),
-  version: RankingsDailyMetaVersion$inboundSchema,
+  version: Version$inboundSchema,
 }).transform((v) => {
   return remap$(v, {
     "as_of": "asOf",
