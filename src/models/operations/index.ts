@@ -38,7 +38,6 @@ export * from "./getcurrentkey.js";
 export * from "./getgeneration.js";
 export * from "./getguardrail.js";
 export * from "./getkey.js";
-export * from "./getmodel.js";
 export * from "./getmodels.js";
 export * from "./getobservabilitydestination.js";
 export * from "./getpreset.js";
