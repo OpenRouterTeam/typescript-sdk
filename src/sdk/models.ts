@@ -4,7 +4,6 @@
  */
 
 import { modelsCount } from "../funcs/modelsCount.js";
-import { modelsGet } from "../funcs/modelsGet.js";
 import { modelsList } from "../funcs/modelsList.js";
 import { modelsListForUser } from "../funcs/modelsListForUser.js";
 import { ClientSDK, RequestOptions } from "../lib/sdks.js";
@@ -13,23 +12,6 @@ import * as operations from "../models/operations/index.js";
 import { unwrapAsync } from "../types/fp.js";
 
 export class Models extends ClientSDK {
-  /**
-   * Get a model by its slug
-   *
-   * @remarks
-   * Returns full details for a single model identified by its author and slug (e.g. openai/gpt-4). Supports variant suffixes (e.g. openai/gpt-4:free) and resolves known slug aliases.
-   */
-  async get(
-    request: operations.GetModelRequest,
-    options?: RequestOptions,
-  ): Promise<models.ModelResponse> {
-    return unwrapAsync(modelsGet(
-      this,
-      request,
-      options,
-    ));
-  }
-
   /**
    * List all models and their properties
    */
