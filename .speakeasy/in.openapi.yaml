@@ -3598,6 +3598,231 @@ components:
       oneOf:
         - $ref: '#/components/schemas/ContainerAutoEnvironment'
         - $ref: '#/components/schemas/ContainerReferenceEnvironment'
+    BenchmarkPricing:
+      description: OpenRouter pricing per token for this model. Null if pricing is unavailable.
+      example:
+        completion: '0.000015'
+        prompt: '0.000003'
+      nullable: true
+      properties:
+        completion:
+          description: Cost per output token (USD, decimal string).
+          example: '0.000015'
+          type: string
+        prompt:
+          description: Cost per input token (USD, decimal string).
+          example: '0.000003'
+          type: string
+      required:
+        - prompt
+        - completion
+      type: object
+    BenchmarksDAItem:
+      example:
+        arena: models
+        avg_generation_time_ms: 3200
+        category: codecategories
+        display_name: Claude Sonnet 4
+        elo: 1423
+        model_permaslug: anthropic/claude-sonnet-4
+        pricing:
+          completion: '0.000015'
+          prompt: '0.000003'
+        tournament_stats:
+          first_place: 12
+          fourth_place: 2
+          second_place: 8
+          third_place: 5
+          total: 27
+        win_rate: 72
+      properties:
+        arena:
+          description: Arena this ranking belongs to.
+          example: models
+          type: string
+        avg_generation_time_ms:
+          description: Average generation time in milliseconds.
+          example: 3200
+          format: double
+          nullable: true
+          type: number
+        category:
+          description: Category within the arena.
+          example: codecategories
+          type: string
+        display_name:
+          description: Human-readable model name from Design Arena.
+          example: Claude Sonnet 4
+          type: string
+        elo:
+          description: ELO rating from head-to-head arena battles.
+          example: 1423
+          format: double
+          type: number
+        model_permaslug:
+          description: >-
+            Stable OpenRouter model identifier when the model is on OpenRouter; otherwise the upstream Design Arena
+            model id. Use pricing != null to detect OpenRouter-mapped models.
+          example: anthropic/claude-sonnet-4
+          type: string
+        pricing:
+          $ref: '#/components/schemas/BenchmarkPricing'
+        tournament_stats:
+          description: Placement distribution from tournament matches.
+          properties:
+            first_place:
+              nullable: true
+              type: integer
+            fourth_place:
+              nullable: true
+              type: integer
+            second_place:
+              nullable: true
+              type: integer
+            third_place:
+              nullable: true
+              type: integer
+            total:
+              nullable: true
+              type: integer
+          required:
+            - first_place
+            - second_place
+            - third_place
+            - fourth_place
+            - total
+          type: object
+        win_rate:
+          description: Win rate as a percentage (0–100).
+          example: 72
+          format: double
+          type: number
+      required:
+        - model_permaslug
+        - display_name
+        - arena
+        - category
+        - elo
+        - win_rate
+        - avg_generation_time_ms
+        - tournament_stats
+        - pricing
+      type: object
+    BenchmarksDAMeta:
+      example:
+        arena: models
+        as_of: '2026-06-03T12:00:00Z'
+        category: null
+        citation: 'Source: Design Arena (www.designarena.ai) via OpenRouter (openrouter.ai/rankings).'
+        elo_bounds:
+          max: 1600
+          min: 900
+        model_count: 50
+        source: design-arena
+        source_url: https://www.designarena.ai
+        version: v1
+      properties:
+        arena:
+          description: The arena filter applied.
+          type: string
+        as_of:
+          description: ISO-8601 timestamp of when this data was generated.
+          example: '2026-06-03T12:00:00Z'
+          type: string
+        category:
+          description: The category filter applied, or null if showing all.
+          nullable: true
+          type: string
+        citation:
+          description: Required attribution when republishing this data.
+          example: 'Source: Design Arena (www.designarena.ai) via OpenRouter (openrouter.ai/rankings).'
+          type: string
+        elo_bounds:
+          description: ELO range across all returned models for normalization.
+          properties:
+            max:
+              description: Maximum ELO in the result set.
+              format: double
+              type: number
+            min:
+              description: Minimum ELO in the result set.
+              format: double
+              type: number
+          required:
+            - min
+            - max
+          type: object
+        model_count:
+          description: Number of unique models in the response.
+          type: integer
+        source:
+          description: Data source identifier.
+          enum:
+            - design-arena
+          type: string
+        source_url:
+          description: URL of the upstream data source.
+          enum:
+            - https://www.designarena.ai
+          type: string
+        version:
+          description: Dataset version.
+          enum:
+            - v1
+          type: string
+      required:
+        - as_of
+        - version
+        - source
+        - source_url
+        - citation
+        - model_count
+        - arena
+        - category
+        - elo_bounds
+      type: object
+    BenchmarksDAResponse:
+      example:
+        data:
+          - arena: models
+            avg_generation_time_ms: 3200
+            category: codecategories
+            display_name: Claude Sonnet 4
+            elo: 1423
+            model_permaslug: anthropic/claude-sonnet-4
+            pricing:
+              completion: '0.000015'
+              prompt: '0.000003'
+            tournament_stats:
+              first_place: 12
+              fourth_place: 2
+              second_place: 8
+              third_place: 5
+              total: 27
+            win_rate: 72
+        meta:
+          arena: models
+          as_of: '2026-06-03T12:00:00Z'
+          category: null
+          citation: 'Source: Design Arena (www.designarena.ai) via OpenRouter (openrouter.ai/rankings).'
+          elo_bounds:
+            max: 1600
+            min: 900
+          model_count: 1
+          source: design-arena
+          source_url: https://www.designarena.ai
+          version: v1
+      properties:
+        data:
+          items:
+            $ref: '#/components/schemas/BenchmarksDAItem'
+          type: array
+        meta:
+          $ref: '#/components/schemas/BenchmarksDAMeta'
+      required:
+        - data
+        - meta
+      type: object
     BigNumberUnion:
       description: Price per million prompt tokens
       example: 1000
@@ -23316,6 +23541,130 @@ paths:
         outputs:
           results: $.data
         type: offsetLimit
+  /datasets/benchmarks/design-arena:
+    get:
+      description: >-
+        Returns ELO ratings from head-to-head arena battles on Design Arena. Filterable by arena
+        (models/builders/agents) and category. Includes OpenRouter pricing per model. Authenticate with any valid
+        OpenRouter API key. Rate-limited to 30 requests/minute per key and 500 requests/day per account.
+      operationId: getBenchmarksDesignArena
+      parameters:
+        - description: Arena to query. Defaults to `models`.
+          in: query
+          name: arena
+          required: false
+          schema:
+            default: models
+            description: Arena to query. Defaults to `models`.
+            enum:
+              - models
+              - builders
+              - agents
+            example: models
+            type: string
+        - description: >-
+            Category within the arena (e.g. `codecategories`, `uicomponent`, `gamedev`, `3d`, `dataviz`, `image`,
+            `video`, `svg`). When omitted, returns all categories.
+          in: query
+          name: category
+          required: false
+          schema:
+            description: >-
+              Category within the arena (e.g. `codecategories`, `uicomponent`, `gamedev`, `3d`, `dataviz`, `image`,
+              `video`, `svg`). When omitted, returns all categories.
+            example: codecategories
+            type: string
+        - description: 'Max results to return: per category when no category filter is applied (1–100, default 50).'
+          in: query
+          name: max_results
+          required: false
+          schema:
+            default: 50
+            description: 'Max results to return: per category when no category filter is applied (1–100, default 50).'
+            example: 20
+            maximum: 100
+            minimum: 1
+            type: integer
+      responses:
+        '200':
+          content:
+            application/json:
+              example:
+                data:
+                  - arena: models
+                    avg_generation_time_ms: 3200
+                    category: codecategories
+                    display_name: Claude Sonnet 4
+                    elo: 1423
+                    model_permaslug: anthropic/claude-sonnet-4
+                    pricing:
+                      completion: '0.000015'
+                      prompt: '0.000003'
+                    tournament_stats:
+                      first_place: 12
+                      fourth_place: 2
+                      second_place: 8
+                      third_place: 5
+                      total: 27
+                    win_rate: 72
+                meta:
+                  arena: models
+                  as_of: '2026-06-03T12:00:00Z'
+                  category: null
+                  citation: 'Source: Design Arena (www.designarena.ai) via OpenRouter (openrouter.ai/rankings).'
+                  elo_bounds:
+                    max: 1600
+                    min: 900
+                  model_count: 1
+                  source: design-arena
+                  source_url: https://www.designarena.ai
+                  version: v1
+              schema:
+                $ref: '#/components/schemas/BenchmarksDAResponse'
+          description: Design Arena ELO rankings with pricing and attribution metadata.
+        '400':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 400
+                  message: Invalid request parameters
+              schema:
+                $ref: '#/components/schemas/BadRequestResponse'
+          description: Bad Request - Invalid request parameters or malformed input
+        '401':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 401
+                  message: Missing Authentication header
+              schema:
+                $ref: '#/components/schemas/UnauthorizedResponse'
+          description: Unauthorized - Authentication required or invalid credentials
+        '429':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 429
+                  message: Rate limit exceeded
+              schema:
+                $ref: '#/components/schemas/TooManyRequestsResponse'
+          description: Too Many Requests - Rate limit exceeded
+        '500':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 500
+                  message: Internal Server Error
+              schema:
+                $ref: '#/components/schemas/InternalServerResponse'
+          description: Internal Server Error - Unexpected server error
+      summary: Design Arena Benchmark Rankings
+      tags:
+        - Datasets
   /datasets/rankings-daily:
     get:
       description: |-
