@@ -3,7 +3,6 @@
  * @generated-id: f93644b0f37e
  */
 
-export * from "./aabenchmarkentry.js";
 export * from "./activityitem.js";
 export * from "./activityresponse.js";
 export * from "./advisornestedtool.js";
@@ -176,6 +175,9 @@ export * from "./endpointsmetadata.js";
 export * from "./endpointstatus.js";
 export * from "./errorevent.js";
 export * from "./filecitation.js";
+export * from "./filedeleteresponse.js";
+export * from "./filelistresponse.js";
+export * from "./filemetadata.js";
 export * from "./fileparserplugin.js";
 export * from "./filepath.js";
 export * from "./filesearchservertool.js";
@@ -257,7 +259,6 @@ export * from "./mcplisttoolsitem.js";
 export * from "./mcpservertool.js";
 export * from "./memberassignment.js";
 export * from "./messagesadvisortoolresultblock.js";
-export * from "./messagesfallbackparam.js";
 export * from "./messagesmessageparam.js";
 export * from "./messagesoutputconfig.js";
 export * from "./messagesrequest.js";
