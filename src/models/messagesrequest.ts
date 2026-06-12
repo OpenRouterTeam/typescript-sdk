@@ -100,11 +100,6 @@ import {
   ImageGenerationServerToolOpenRouter$outboundSchema,
 } from "./imagegenerationservertoolopenrouter.js";
 import {
-  MessagesFallbackParam,
-  MessagesFallbackParam$Outbound,
-  MessagesFallbackParam$outboundSchema,
-} from "./messagesfallbackparam.js";
-import {
   MessagesMessageParam,
   MessagesMessageParam$Outbound,
   MessagesMessageParam$outboundSchema,
@@ -477,10 +472,6 @@ export type MessagesRequest = {
    */
   cacheControl?: AnthropicCacheControlDirective | undefined;
   contextManagement?: ContextManagement | null | undefined;
-  /**
-   * Fallback models to try if the primary model fails or refuses, in order. Handled by OpenRouter multi-model routing rather than Anthropic server-side fallbacks; cannot be combined with `models`. Each entry accepts only `model`. Maximum of 3 entries.
-   */
-  fallbacks?: Array<MessagesFallbackParam> | null | undefined;
   maxTokens?: number | undefined;
   messages: Array<MessagesMessageParam> | null;
   metadata?: Metadata | undefined;
@@ -1494,7 +1485,6 @@ export function messagesRequestToolUnionToJSON(
 export type MessagesRequest$Outbound = {
   cache_control?: AnthropicCacheControlDirective$Outbound | undefined;
   context_management?: ContextManagement$Outbound | null | undefined;
-  fallbacks?: Array<MessagesFallbackParam$Outbound> | null | undefined;
   max_tokens?: number | undefined;
   messages: Array<MessagesMessageParam$Outbound> | null;
   metadata?: Metadata$Outbound | undefined;
@@ -1566,8 +1556,6 @@ export const MessagesRequest$outboundSchema: z.ZodType<
 > = z.object({
   cacheControl: AnthropicCacheControlDirective$outboundSchema.optional(),
   contextManagement: z.nullable(z.lazy(() => ContextManagement$outboundSchema))
-    .optional(),
-  fallbacks: z.nullable(z.array(MessagesFallbackParam$outboundSchema))
     .optional(),
   maxTokens: z.int().optional(),
   messages: z.nullable(z.array(MessagesMessageParam$outboundSchema)),
