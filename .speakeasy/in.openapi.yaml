@@ -7529,6 +7529,97 @@ components:
         - filename
         - index
       type: object
+    FileDeleteResponse:
+      description: Confirmation that a file was deleted.
+      example:
+        id: file_011CNha8iCJcU1wXNR6q4V8w
+        type: file_deleted
+      properties:
+        id:
+          type: string
+        type:
+          enum:
+            - file_deleted
+          type: string
+      required:
+        - id
+        - type
+      type: object
+    FileListResponse:
+      description: A page of files belonging to the requesting workspace.
+      example:
+        cursor: null
+        data:
+          - created_at: '2025-01-01T00:00:00Z'
+            downloadable: false
+            filename: document.pdf
+            id: file_011CNha8iCJcU1wXNR6q4V8w
+            mime_type: application/pdf
+            size_bytes: 1024000
+            type: file
+        first_id: file_011CNha8iCJcU1wXNR6q4V8w
+        has_more: false
+        last_id: file_011CNha8iCJcU1wXNR6q4V8w
+      properties:
+        cursor:
+          description: Opaque cursor for the next page; null when there are no more results.
+          nullable: true
+          type: string
+        data:
+          items:
+            $ref: '#/components/schemas/FileMetadata'
+          type: array
+        first_id:
+          nullable: true
+          type: string
+        has_more:
+          type: boolean
+        last_id:
+          nullable: true
+          type: string
+      required:
+        - data
+        - has_more
+        - first_id
+        - last_id
+        - cursor
+      type: object
+    FileMetadata:
+      description: Metadata describing a stored file.
+      example:
+        created_at: '2025-01-01T00:00:00Z'
+        downloadable: false
+        filename: document.pdf
+        id: file_011CNha8iCJcU1wXNR6q4V8w
+        mime_type: application/pdf
+        size_bytes: 1024000
+        type: file
+      properties:
+        created_at:
+          type: string
+        downloadable:
+          type: boolean
+        filename:
+          type: string
+        id:
+          type: string
+        mime_type:
+          type: string
+        size_bytes:
+          type: integer
+        type:
+          enum:
+            - file
+          type: string
+      required:
+        - id
+        - type
+        - filename
+        - mime_type
+        - size_bytes
+        - created_at
+        - downloadable
+      type: object
     FileParserPlugin:
       example:
         enabled: true
@@ -12232,6 +12323,8 @@ components:
           items:
             $ref: '#/components/schemas/DABenchmarkEntry'
           type: array
+      required:
+        - design_arena
       type: object
     ModelGroup:
       description: Tokenizer type used by the model
@@ -24616,6 +24709,454 @@ paths:
       tags:
         - Endpoints
       x-speakeasy-name-override: listZdrEndpoints
+  /files:
+    get:
+      description: Lists files belonging to the workspace of the authenticating API key.
+      operationId: listFiles
+      parameters:
+        - description: Maximum number of files to return (1–1000).
+          in: query
+          name: limit
+          required: false
+          schema:
+            description: Maximum number of files to return (1–1000).
+            example: 100
+            maximum: 1000
+            minimum: 1
+            type: integer
+        - description: Opaque pagination cursor from a previous response.
+          in: query
+          name: cursor
+          required: false
+          schema:
+            description: Opaque pagination cursor from a previous response.
+            example: eyJjdXJzb3IiOiJmaWxlXzAxMUNOaGE4aUNKY1Uxd1hOUjZxNFY4dyJ9
+            type: string
+        - description: Workspace to scope the request to. Defaults to the caller’s default workspace.
+          in: query
+          name: workspace_id
+          required: false
+          schema:
+            description: Workspace to scope the request to. Defaults to the caller’s default workspace.
+            example: a103d8b6-42f0-4e50-9a3c-bf41e2c3c1a7
+            format: uuid
+            type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              example:
+                cursor: null
+                data:
+                  - created_at: '2025-01-01T00:00:00Z'
+                    downloadable: false
+                    filename: document.pdf
+                    id: file_011CNha8iCJcU1wXNR6q4V8w
+                    mime_type: application/pdf
+                    size_bytes: 1024000
+                    type: file
+                first_id: file_011CNha8iCJcU1wXNR6q4V8w
+                has_more: false
+                last_id: file_011CNha8iCJcU1wXNR6q4V8w
+              schema:
+                $ref: '#/components/schemas/FileListResponse'
+          description: A page of files.
+        '400':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 400
+                  message: Invalid request parameters
+              schema:
+                $ref: '#/components/schemas/BadRequestResponse'
+          description: Bad Request - Invalid request parameters or malformed input
+        '401':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 401
+                  message: Missing Authentication header
+              schema:
+                $ref: '#/components/schemas/UnauthorizedResponse'
+          description: Unauthorized - Authentication required or invalid credentials
+        '429':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 429
+                  message: Rate limit exceeded
+              schema:
+                $ref: '#/components/schemas/TooManyRequestsResponse'
+          description: Too Many Requests - Rate limit exceeded
+        '500':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 500
+                  message: Internal Server Error
+              schema:
+                $ref: '#/components/schemas/InternalServerResponse'
+          description: Internal Server Error - Unexpected server error
+      summary: List files
+      tags:
+        - Files
+      x-speakeasy-name-override: list
+      x-speakeasy-pagination:
+        inputs:
+          - in: parameters
+            name: cursor
+            type: cursor
+        outputs:
+          nextCursor: $.cursor
+          results: $.data
+        type: cursor
+    post:
+      description: >-
+        Uploads a file to be referenced in future API calls. The file is stored under the workspace of the
+        authenticating API key. Maximum file size: 100 MB.
+      operationId: uploadFile
+      parameters:
+        - description: Workspace to scope the request to. Defaults to the caller’s default workspace.
+          in: query
+          name: workspace_id
+          required: false
+          schema:
+            description: Workspace to scope the request to. Defaults to the caller’s default workspace.
+            example: a103d8b6-42f0-4e50-9a3c-bf41e2c3c1a7
+            format: uuid
+            type: string
+      requestBody:
+        content:
+          multipart/form-data:
+            example:
+              file: document.pdf
+            schema:
+              properties:
+                file:
+                  format: binary
+                  type: string
+              required:
+                - file
+              type: object
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              example:
+                created_at: '2025-01-01T00:00:00Z'
+                downloadable: false
+                filename: document.pdf
+                id: file_011CNha8iCJcU1wXNR6q4V8w
+                mime_type: application/pdf
+                size_bytes: 1024000
+                type: file
+              schema:
+                $ref: '#/components/schemas/FileMetadata'
+          description: The uploaded file metadata.
+        '400':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 400
+                  message: Invalid request parameters
+              schema:
+                $ref: '#/components/schemas/BadRequestResponse'
+          description: Bad Request - Invalid request parameters or malformed input
+        '401':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 401
+                  message: Missing Authentication header
+              schema:
+                $ref: '#/components/schemas/UnauthorizedResponse'
+          description: Unauthorized - Authentication required or invalid credentials
+        '403':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 403
+                  message: Only management keys can perform this operation
+              schema:
+                $ref: '#/components/schemas/ForbiddenResponse'
+          description: Forbidden - Authentication successful but insufficient permissions
+        '413':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 413
+                  message: Request payload too large
+              schema:
+                $ref: '#/components/schemas/PayloadTooLargeResponse'
+          description: Payload Too Large - Request payload exceeds size limits
+        '429':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 429
+                  message: Rate limit exceeded
+              schema:
+                $ref: '#/components/schemas/TooManyRequestsResponse'
+          description: Too Many Requests - Rate limit exceeded
+        '500':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 500
+                  message: Internal Server Error
+              schema:
+                $ref: '#/components/schemas/InternalServerResponse'
+          description: Internal Server Error - Unexpected server error
+      summary: Upload a file
+      tags:
+        - Files
+      x-speakeasy-name-override: upload
+  /files/{file_id}:
+    delete:
+      description: Deletes a file owned by the requesting workspace. Deletion is irreversible.
+      operationId: deleteFile
+      parameters:
+        - in: path
+          name: file_id
+          required: true
+          schema:
+            example: file_011CNha8iCJcU1wXNR6q4V8w
+            type: string
+        - description: Workspace to scope the request to. Defaults to the caller’s default workspace.
+          in: query
+          name: workspace_id
+          required: false
+          schema:
+            description: Workspace to scope the request to. Defaults to the caller’s default workspace.
+            example: a103d8b6-42f0-4e50-9a3c-bf41e2c3c1a7
+            format: uuid
+            type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              example:
+                id: file_011CNha8iCJcU1wXNR6q4V8w
+                type: file_deleted
+              schema:
+                $ref: '#/components/schemas/FileDeleteResponse'
+          description: The file was deleted.
+        '401':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 401
+                  message: Missing Authentication header
+              schema:
+                $ref: '#/components/schemas/UnauthorizedResponse'
+          description: Unauthorized - Authentication required or invalid credentials
+        '404':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 404
+                  message: Resource not found
+              schema:
+                $ref: '#/components/schemas/NotFoundResponse'
+          description: Not Found - Resource does not exist
+        '429':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 429
+                  message: Rate limit exceeded
+              schema:
+                $ref: '#/components/schemas/TooManyRequestsResponse'
+          description: Too Many Requests - Rate limit exceeded
+        '500':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 500
+                  message: Internal Server Error
+              schema:
+                $ref: '#/components/schemas/InternalServerResponse'
+          description: Internal Server Error - Unexpected server error
+      summary: Delete a file
+      tags:
+        - Files
+      x-speakeasy-name-override: delete
+    get:
+      description: Retrieves metadata for a single file owned by the requesting workspace.
+      operationId: getFileMetadata
+      parameters:
+        - in: path
+          name: file_id
+          required: true
+          schema:
+            example: file_011CNha8iCJcU1wXNR6q4V8w
+            type: string
+        - description: Workspace to scope the request to. Defaults to the caller’s default workspace.
+          in: query
+          name: workspace_id
+          required: false
+          schema:
+            description: Workspace to scope the request to. Defaults to the caller’s default workspace.
+            example: a103d8b6-42f0-4e50-9a3c-bf41e2c3c1a7
+            format: uuid
+            type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              example:
+                created_at: '2025-01-01T00:00:00Z'
+                downloadable: false
+                filename: document.pdf
+                id: file_011CNha8iCJcU1wXNR6q4V8w
+                mime_type: application/pdf
+                size_bytes: 1024000
+                type: file
+              schema:
+                $ref: '#/components/schemas/FileMetadata'
+          description: The file metadata.
+        '401':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 401
+                  message: Missing Authentication header
+              schema:
+                $ref: '#/components/schemas/UnauthorizedResponse'
+          description: Unauthorized - Authentication required or invalid credentials
+        '404':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 404
+                  message: Resource not found
+              schema:
+                $ref: '#/components/schemas/NotFoundResponse'
+          description: Not Found - Resource does not exist
+        '429':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 429
+                  message: Rate limit exceeded
+              schema:
+                $ref: '#/components/schemas/TooManyRequestsResponse'
+          description: Too Many Requests - Rate limit exceeded
+        '500':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 500
+                  message: Internal Server Error
+              schema:
+                $ref: '#/components/schemas/InternalServerResponse'
+          description: Internal Server Error - Unexpected server error
+      summary: Get file metadata
+      tags:
+        - Files
+      x-speakeasy-name-override: retrieve
+  /files/{file_id}/content:
+    get:
+      description: Downloads the raw bytes of a file. Only files created server-side are downloadable; uploaded files return 400.
+      operationId: downloadFileContent
+      parameters:
+        - in: path
+          name: file_id
+          required: true
+          schema:
+            example: file_011CNha8iCJcU1wXNR6q4V8w
+            type: string
+        - description: Workspace to scope the request to. Defaults to the caller’s default workspace.
+          in: query
+          name: workspace_id
+          required: false
+          schema:
+            description: Workspace to scope the request to. Defaults to the caller’s default workspace.
+            example: a103d8b6-42f0-4e50-9a3c-bf41e2c3c1a7
+            format: uuid
+            type: string
+      responses:
+        '200':
+          content:
+            application/octet-stream:
+              example: binary file contents
+              schema:
+                format: binary
+                type: string
+          description: The raw file content.
+        '400':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 400
+                  message: Invalid request parameters
+              schema:
+                $ref: '#/components/schemas/BadRequestResponse'
+          description: Bad Request - Invalid request parameters or malformed input
+        '401':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 401
+                  message: Missing Authentication header
+              schema:
+                $ref: '#/components/schemas/UnauthorizedResponse'
+          description: Unauthorized - Authentication required or invalid credentials
+        '404':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 404
+                  message: Resource not found
+              schema:
+                $ref: '#/components/schemas/NotFoundResponse'
+          description: Not Found - Resource does not exist
+        '429':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 429
+                  message: Rate limit exceeded
+              schema:
+                $ref: '#/components/schemas/TooManyRequestsResponse'
+          description: Too Many Requests - Rate limit exceeded
+        '500':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 500
+                  message: Internal Server Error
+              schema:
+                $ref: '#/components/schemas/InternalServerResponse'
+          description: Internal Server Error - Unexpected server error
+      summary: Download file content
+      tags:
+        - Files
+      x-speakeasy-name-override: download
   /generation:
     get:
       operationId: getGeneration
@@ -31543,6 +32084,8 @@ tags:
     name: Embeddings
   - description: Endpoint information
     name: Endpoints
+  - description: Files endpoints
+    name: Files
   - description: Generation history endpoints
     name: Generations
   - description: Guardrails endpoints
