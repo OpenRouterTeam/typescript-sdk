@@ -1,0 +1,17 @@
+# Zdr
+
+When set to "true", return only models with zero data retention endpoints.
+
+## Example Usage
+
+```typescript
+import { Zdr } from "@openrouter/sdk/models/operations";
+
+let value: Zdr = "true";
+```
+
+## Values
+
+```typescript
+"true"
+```
