@@ -32,7 +32,6 @@ export * from "./deleteworkspace.js";
 export * from "./exchangeauthcodeforapikey.js";
 export * from "./getanalyticsmeta.js";
 export * from "./getapprankings.js";
-export * from "./getbenchmarksartificialanalysis.js";
 export * from "./getbenchmarksdesignarena.js";
 export * from "./getbyokkey.js";
 export * from "./getcredits.js";
