@@ -80,3 +80,11 @@ const value: models.ChatWebSearchShorthand = {
 };
 ```
 
+### `models.ChatDynamicServerTool`
+
+```typescript
+const value: models.ChatDynamicServerTool = {
+  type: "function",
+};
+```
+
