@@ -1,19 +1,19 @@
 lockVersion: ""
 id: ""
 management:
-  docChecksum: d6f7e8d7b71c6b6ad43695297999ae7e
+  docChecksum: f98b567909171953044d2f3d53df724a
   docVersion: 1.0.0
   speakeasyVersion: 1.763.2
   generationVersion: 2.884.4
-  releaseVersion: 0.12.105
-  configChecksum: 53a0496c0bdd52f83ddd403add3c9c79
+  releaseVersion: 0.12.106
+  configChecksum: b2e08f9a58f724b141557b0bf1f37a69
   repoURL: https://github.com/OpenRouterTeam/typescript-sdk.git
   installationURL: https://github.com/OpenRouterTeam/typescript-sdk
   published: true
 persistentEdits:
-  generation_id: 21820f9a-bf50-4492-bdbc-1d74b0b05682
-  pristine_commit_hash: 275ffc15ef4738993615fbcf4a6f1f231d278490
-  pristine_tree_hash: c2bff10d325007beed22a010b17fc778d9756053
+  generation_id: efef5055-db88-46f6-87cc-16405bc57dc1
+  pristine_commit_hash: e93f5424d4ee0beb1ed25eb95db3ab2dea3975ee
+  pristine_tree_hash: 4840a19feb7d0c10e2705563ce9035da23fd2ca7
 features:
   typescript:
     acceptHeaders: 2.81.2
@@ -747,6 +747,30 @@ trackedFiles:
     last_write_checksum: sha1:cd6f4b8ffad69e4b1c67ea5a8de025a13c21018b
     pristine_git_object: 8c82943daa7bb471231cb7e36ae2eafbeadf8b20
     deleted: true
+  docs/models/benchmarksaaitem.md:
+    id: 459c7beb3467
+    last_write_checksum: sha1:81342109f2e5767d7f553f23846f6df1758bd7c0
+    pristine_git_object: d214579b2c963003775ace529f0f5513f1cf434f
+  docs/models/benchmarksaameta.md:
+    id: b6ae6aadd5e0
+    last_write_checksum: sha1:826599bf3e8669f8a75465dbb60abaf2046cedb3
+    pristine_git_object: 7e25b34e9637de1a72cbb3f5f36b20474a903854
+  docs/models/benchmarksaametasource.md:
+    id: 7d17360d0f90
+    last_write_checksum: sha1:d90ae67541e2cde3915005398461fb97f9cc4afa
+    pristine_git_object: 42671ae2041d9c7e806f376376d33a3cc3eb56b3
+  docs/models/benchmarksaametasourceurl.md:
+    id: fd4672269668
+    last_write_checksum: sha1:6d3b85e1be1a4cddbc379249f7fffbca276bd243
+    pristine_git_object: 27655c3e5abcd8910147f87e0a6f28144ea91e5f
+  docs/models/benchmarksaametaversion.md:
+    id: 094c280d03a2
+    last_write_checksum: sha1:1dd19a82182cabc65ab8341e71b6d9d6eac6f2fc
+    pristine_git_object: 9d2389e96dfc96ba7c5287b42868e6e89ad21f01
+  docs/models/benchmarksaaresponse.md:
+    id: 7947644aabee
+    last_write_checksum: sha1:2b934bd073cf1ddff673014ecc949d711883c26d
+    pristine_git_object: a02941105dec05ca011d7928d5321554e4d702a3
   docs/models/benchmarksdaitem.md:
     id: 038d05177ed3
     last_write_checksum: sha1:b5b9234bdc50cc8294d08fe371ecac69c951c0ea
@@ -754,9 +778,17 @@ trackedFiles:
     deleted: true
   docs/models/benchmarksdameta.md:
     id: 3ed1884d53d4
-    last_write_checksum: sha1:7abe1f311674be8155d509ca3111392c36f3c8d6
-    pristine_git_object: 18b51cbcc9080f57d45c35a32dbc96d38283cd0e
+    last_write_checksum: sha1:1df37cf85bfcd6e1c8e4dd326cc5dd076322ec92
+    pristine_git_object: dc0b59f44112c0bd78df294f9608164fefc45c1e
     deleted: true
+  docs/models/benchmarksdametasource.md:
+    id: a0f9afac9030
+    last_write_checksum: sha1:4185f808a0b4e339f9a80bd13f6f8d6f31162341
+    pristine_git_object: 294fde2617b84f5f26c6ee8f90ad90dd43107621
+  docs/models/benchmarksdametasourceurl.md:
+    id: 42a156241930
+    last_write_checksum: sha1:45c3dc4db52abf08eba3735519f410c852b3f6f7
+    pristine_git_object: d047030f406e039383237990028270999710ea0c
   docs/models/benchmarksdametaversion.md:
     id: 4a06fcdd800e
     last_write_checksum: sha1:4ef94cc556a42ab0e127ef1de9c8e8586eaceba9
@@ -1185,6 +1217,7 @@ trackedFiles:
     id: 7778ae5ce4a9
     last_write_checksum: sha1:fb3e3cad9f7b8168c6fc0bd309ff524dc2f06f2f
     pristine_git_object: 47e460afd03c53e973699059e2c1b6245119fb67
+    deleted: true
   docs/models/chatrequestservicetier.md:
     id: 34b32ac1991b
     last_write_checksum: sha1:8e3a3d84e3163d84c9f2144362ab2469d68e016b
@@ -4026,6 +4059,14 @@ trackedFiles:
     last_write_checksum: sha1:dc1ded85dfed0c8f6ae43c4da194460b16bccb5f
     pristine_git_object: 92561c21b34d9984f39f0fbd5858813218dc07a5
     deleted: true
+  docs/models/operations/getbenchmarksartificialanalysisglobals.md:
+    id: 242f09d6c648
+    last_write_checksum: sha1:7d385f94f18fd51ec4e47322ea4e9f1c30b602e2
+    pristine_git_object: 66eec047f0863e9075cc44b354412842d389c666
+  docs/models/operations/getbenchmarksartificialanalysisrequest.md:
+    id: b8fef1161cb2
+    last_write_checksum: sha1:ccf98d4dfe9aa8117c72a916e7d0882a3bce2417
+    pristine_git_object: c423345421ecd14385e901701f3a2d0d52a1e871
   docs/models/operations/getbenchmarksdesignarenaglobals.md:
     id: 811ec4139816
     last_write_checksum: sha1:9a141075ed97d27dcd6c6e6f5ba7bf34e1719dfb
@@ -6733,8 +6774,8 @@ trackedFiles:
     pristine_git_object: a902be6fa740c256c7a78fc05b891ed610710feb
   docs/sdks/datasets/README.md:
     id: deb5d90f4faf
-    last_write_checksum: sha1:b37361c20cf5a93dea7d268639c2c9d83ff096e9
-    pristine_git_object: f12d2680450ee13ccab08f754de23bc770cb5c6d
+    last_write_checksum: sha1:bed3bc40b4fb5f86c8940d8d5b489e6b8780121d
+    pristine_git_object: 85359f31b77102cc86390cd80b3c6a85a321b35d
     deleted: true
   docs/sdks/embeddings/README.md:
     id: 15b5b04486c1
@@ -6830,12 +6871,12 @@ trackedFiles:
     pristine_git_object: 410efafd6a7f50d91ccb87131fedbe0c3d47e15a
   jsr.json:
     id: 7f6ab7767282
-    last_write_checksum: sha1:38cb5396fec59330d082f2817ed81612a4852a87
-    pristine_git_object: 826a17e5c5ce96477808f2d6f9ce2a1a9ab6e31f
+    last_write_checksum: sha1:e12110329936dc3507b552eea4c78fff2e7e9826
+    pristine_git_object: 3aff029f20c84ea17222d9bc18aebe815774964f
   package.json:
     id: 7030d0b2f71b
-    last_write_checksum: sha1:33fc3cfa7c9abfa7ebe2ba3a60cc49bc9c559f02
-    pristine_git_object: 404822239f2dc444dd5effc4f67a28e368a1c8b3
+    last_write_checksum: sha1:0d7721c23b2ccf116ab534df20439bbbab0ed5dd
+    pristine_git_object: b9d0cbc2249cfa3d42c6deb0e0b070f23b980ee7
   src/core.ts:
     id: f431fdbcd144
     last_write_checksum: sha1:5aa66b0b6a5964f3eea7f3098c2eb3c0ee9c0131
@@ -6912,6 +6953,10 @@ trackedFiles:
     id: 2ae09697d446
     last_write_checksum: sha1:2e66aac41ab399a7005a1462361247229526b10c
     pristine_git_object: d5cedc6219034e33b9a17b67e43b9fcb7b0b033c
+  src/funcs/datasetsGetBenchmarksArtificialAnalysis.ts:
+    id: 8997506a6260
+    last_write_checksum: sha1:7f5474ba4240a25843d6b9a908f5b6f86653bef2
+    pristine_git_object: 317d232fa02ecd495e56ff9d5b4783640ec7ebbd
   src/funcs/datasetsGetBenchmarksDesignArena.ts:
     id: 1e5ef73682ba
     last_write_checksum: sha1:cb144aeb0e495fb7209e080cd19424945833f4f6
@@ -7154,8 +7199,8 @@ trackedFiles:
     pristine_git_object: a187e58707bdb726ca2aff74941efe7493422d4e
   src/lib/config.ts:
     id: 320761608fb3
-    last_write_checksum: sha1:b7306421983ac399bb62fff6daa00b6c45294a88
-    pristine_git_object: 34c4e875b9c00d8d70346f8fc522d622acc988bd
+    last_write_checksum: sha1:205732f78bf1b270525921bf0ac0db390ca7e221
+    pristine_git_object: 8e538be87cb86d72ff2d72487cde867e0599a910
   src/lib/dlv.ts:
     id: b1988214835a
     last_write_checksum: sha1:eaac763b22717206a6199104e0403ed17a4e2711
@@ -7452,14 +7497,26 @@ trackedFiles:
     id: 74aab084b178
     last_write_checksum: sha1:f767529db933eec850e70c1a6efcc3e41447e36c
     pristine_git_object: 274450e53b905ef0a5daa4b74e9db52d523c60a2
+  src/models/benchmarksaaitem.ts:
+    id: 82b5c9f01e00
+    last_write_checksum: sha1:5895ceb46fc3f0f7148a4e2a3dff3cfd1e6246a7
+    pristine_git_object: 54fbada85e21e548d78712863a83cce94eb1bb99
+  src/models/benchmarksaameta.ts:
+    id: ea7ac20c3f7c
+    last_write_checksum: sha1:468aefb21a577e5274c153a40a686ffa9aa530e0
+    pristine_git_object: c64ee9ca0f28f05cbfa97e272fed084127b5cd1b
+  src/models/benchmarksaaresponse.ts:
+    id: 57a074171835
+    last_write_checksum: sha1:413b40b3e3c0571e8c544ad652cd29b8b3f2674f
+    pristine_git_object: 39ae16b8eb695be512781947f258851e378c469d
   src/models/benchmarksdaitem.ts:
     id: a8a7a42ac948
     last_write_checksum: sha1:009ee8dd42435a322d95f2cf571680e7d5f0efff
     pristine_git_object: 60e0bed98f8e363c572dcaadd60b674f8ecc8a21
   src/models/benchmarksdameta.ts:
     id: caee78d8918e
-    last_write_checksum: sha1:49eee825c656cb8808ec380b1d3497959955021d
-    pristine_git_object: 93cf5a46e3138577670e8b9d389d053e1d23ba1a
+    last_write_checksum: sha1:e13b15ab0bceaa82a1f02c3fd853265a99ffa4ba
+    pristine_git_object: 3ae479d96bf0ec466cfa8b1f32cb93d18a7754a7
   src/models/benchmarksdaresponse.ts:
     id: ea90fb0e8882
     last_write_checksum: sha1:c7495300898b4e3de0ca223f62815a5b558dd1e9
@@ -8186,8 +8243,8 @@ trackedFiles:
     pristine_git_object: 8e109bedfdcf2c4808e49323dda861e3c6069d51
   src/models/index.ts:
     id: f93644b0f37e
-    last_write_checksum: sha1:319cdd56fb8b4e191ebc66f5bffaa60b23f6cedb
-    pristine_git_object: 133a261c9906dd61bf8627a0dbcdb8eb231af4d7
+    last_write_checksum: sha1:987d9a6787644c08bb1d79cc6d6bc3940e83318b
+    pristine_git_object: c96eade1b4d77c665b7cb2f238b01cef87818aec
   src/models/inputaudio.ts:
     id: 9bdc14c7565f
     last_write_checksum: sha1:2f8dc4c1d6a9c2927d9eb186e0ecedf7b81838e6
@@ -8636,6 +8693,10 @@ trackedFiles:
     id: edd3364e84c1
     last_write_checksum: sha1:3368aad033c01d34f611ba291e8cd555a107310a
     pristine_git_object: 18f090439648b6fbd98936558a3669df06d9bbc1
+  src/models/operations/getbenchmarksartificialanalysis.ts:
+    id: 1b7863e0088a
+    last_write_checksum: sha1:8e40e014506cf3e6597793efb34de7f88feda60a
+    pristine_git_object: a510b93023a863b52cca9806ff6555b0cf7b9e36
   src/models/operations/getbenchmarksdesignarena.ts:
     id: 86e27de57b33
     last_write_checksum: sha1:1a8971a84794d3c0c51542bf7411ab6c7512fcd2
@@ -8702,8 +8763,8 @@ trackedFiles:
     pristine_git_object: 6b14994d428c8fb6d58adc4f880ab796d6a2a2e5
   src/models/operations/index.ts:
     id: 0d9ffaf774d2
-    last_write_checksum: sha1:e36f90960bf704540c612f9ad6de801259e3f205
-    pristine_git_object: 0723f8b808bc8d47b3fa5808fa0bb3ca48978a53
+    last_write_checksum: sha1:41f5d585fe6dc46f6583ec1add4a9c2b98a6317d
+    pristine_git_object: dd68765ca55f0582fd66fc45a1edf380ec1be77e
   src/models/operations/list.ts:
     id: ce11386ad30f
     last_write_checksum: sha1:c6f6be4f00954f38c1c900beff6956be260873e0
@@ -9554,8 +9615,8 @@ trackedFiles:
     pristine_git_object: 02d1a2d408eca05a63439bdb65dfda8821f141fd
   src/sdk/datasets.ts:
     id: 2f1e89a21914
-    last_write_checksum: sha1:4b7bf31c1179e1beab644a73e841df880b4f1f04
-    pristine_git_object: 1ef6bd397e6a9e89d1d37d32ec90916c82f50aef
+    last_write_checksum: sha1:1c647b6c450adc5a3cfcbc88a7e3945067b2924e
+    pristine_git_object: a3f51a67e18aa307957d5c8bb7367b67cd3d3723
   src/sdk/embeddings.ts:
     id: 70cbb18bedaf
     last_write_checksum: sha1:e62ce45c27f12941ae5ec7e458b87952db3cedba
@@ -10915,5 +10976,23 @@ examples:
           application/json: {"error": {"code": 429, "message": "Rate limit exceeded"}}
         "500":
           application/json: {"error": {"code": 500, "message": "Internal Server Error"}}
+  getBenchmarksArtificialAnalysis:
+    speakeasy-default-get-benchmarks-artificial-analysis:
+      parameters:
+        query:
+          max_results: 20
+      responses:
+        "200":
+          application/json: {"data": [{"aa_name": "GPT-4o", "agentic_index": 58.3, "coding_index": 65.8, "intelligence_index": 71.2, "model_permaslug": "openai/gpt-4o", "pricing": {"completion": "0.00001", "prompt": "0.0000025"}}], "meta": {"as_of": "2026-06-03T12:00:00Z", "citation": "Source: Artificial Analysis (artificialanalysis.ai) via OpenRouter (openrouter.ai/rankings).", "model_count": 1, "source": "artificial-analysis", "source_url": "https://artificialanalysis.ai", "version": "v1"}}
+        "400":
+          application/json: {"error": {"code": 400, "message": "Invalid request parameters"}}
+        "401":
+          application/json: {"error": {"code": 401, "message": "Missing Authentication header"}}
+        "429":
+          application/json: {"error": {"code": 429, "message": "Rate limit exceeded"}}
+        "500":
+          application/json: {"error": {"code": 500, "message": "Internal Server Error"}}
 examplesVersion: 1.0.2
-releaseNotes: "## Typescript SDK Changes:\n* `openrouter.chat.send()`: \n  *  `request.chatRequest` **Changed**\n* `openrouter.presets.createPresetsChatCompletions()`: \n  *  `request.chatRequest` **Changed**\n"
+releaseNotes: |
+  ## Typescript SDK Changes:
+  * `openrouter.datasets.getBenchmarksArtificialAnalysis()`: **Added**
