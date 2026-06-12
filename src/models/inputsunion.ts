@@ -177,11 +177,6 @@ import {
   OutputSearchModelsServerToolItem$outboundSchema,
 } from "./outputsearchmodelsservertoolitem.js";
 import {
-  OutputSubagentServerToolItem,
-  OutputSubagentServerToolItem$Outbound,
-  OutputSubagentServerToolItem$outboundSchema,
-} from "./outputsubagentservertoolitem.js";
-import {
   OutputTextEditorServerToolItem,
   OutputTextEditorServerToolItem$Outbound,
   OutputTextEditorServerToolItem$outboundSchema,
@@ -418,7 +413,6 @@ export type InputsUnion1 =
   | OutputMcpServerToolItem
   | OutputSearchModelsServerToolItem
   | OutputAdvisorServerToolItem
-  | OutputSubagentServerToolItem
   | CompactionItem
   | ItemReferenceItem
   | EasyInputMessage
@@ -469,7 +463,6 @@ export type InputsUnion =
     | OutputMcpServerToolItem
     | OutputSearchModelsServerToolItem
     | OutputAdvisorServerToolItem
-    | OutputSubagentServerToolItem
     | CompactionItem
     | ItemReferenceItem
     | EasyInputMessage
@@ -773,7 +766,6 @@ export type InputsUnion1$Outbound =
   | OutputMcpServerToolItem$Outbound
   | OutputSearchModelsServerToolItem$Outbound
   | OutputAdvisorServerToolItem$Outbound
-  | OutputSubagentServerToolItem$Outbound
   | CompactionItem$Outbound
   | ItemReferenceItem$Outbound
   | EasyInputMessage$Outbound
@@ -823,7 +815,6 @@ export const InputsUnion1$outboundSchema: z.ZodType<
   OutputMcpServerToolItem$outboundSchema,
   OutputSearchModelsServerToolItem$outboundSchema,
   OutputAdvisorServerToolItem$outboundSchema,
-  OutputSubagentServerToolItem$outboundSchema,
   CompactionItem$outboundSchema,
   ItemReferenceItem$outboundSchema,
   EasyInputMessage$outboundSchema,
@@ -877,7 +868,6 @@ export type InputsUnion$Outbound =
     | OutputMcpServerToolItem$Outbound
     | OutputSearchModelsServerToolItem$Outbound
     | OutputAdvisorServerToolItem$Outbound
-    | OutputSubagentServerToolItem$Outbound
     | CompactionItem$Outbound
     | ItemReferenceItem$Outbound
     | EasyInputMessage$Outbound
@@ -931,7 +921,6 @@ export const InputsUnion$outboundSchema: z.ZodType<
       OutputMcpServerToolItem$outboundSchema,
       OutputSearchModelsServerToolItem$outboundSchema,
       OutputAdvisorServerToolItem$outboundSchema,
-      OutputSubagentServerToolItem$outboundSchema,
       CompactionItem$outboundSchema,
       ItemReferenceItem$outboundSchema,
       EasyInputMessage$outboundSchema,
