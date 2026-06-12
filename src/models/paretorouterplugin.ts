@@ -13,9 +13,17 @@ export type ParetoRouterPlugin = {
   enabled?: boolean | undefined;
   id: "pareto-router";
   /**
-   * Minimum desired coding score between 0 and 1, where 1 is best. Higher values select from stronger coding models (sourced from Artificial Analysis coding percentiles). Maps internally to one of three tiers (low, medium, high). Omit to use the router default tier.
+   * Minimum desired coding score between 0 and 1, where 1 is best. Higher values select from stronger coding models (sourced from Artificial Analysis coding percentiles). Maps internally to quality tiers based on `num_tiers`. Omit to use the router default (highest tier).
    */
   minCodingScore?: number | undefined;
+  /**
+   * Number of quality tiers to divide models into (3–5). More tiers give finer-grained quality control. Defaults to 3.
+   */
+  numTiers?: number | undefined;
+  /**
+   * Number of top coding models to consider for tier assignment (5–20). A larger pool gives more diversity; a smaller pool focuses on the very best. Defaults to 10.
+   */
+  topN?: number | undefined;
 };
 
 /** @internal */
@@ -23,6 +31,8 @@ export type ParetoRouterPlugin$Outbound = {
   enabled?: boolean | undefined;
   id: "pareto-router";
   min_coding_score?: number | undefined;
+  num_tiers?: number | undefined;
+  top_n?: number | undefined;
 };
 
 /** @internal */
@@ -33,9 +43,13 @@ export const ParetoRouterPlugin$outboundSchema: z.ZodType<
   enabled: z.boolean().optional(),
   id: z.literal("pareto-router"),
   minCodingScore: z.number().optional(),
+  numTiers: z.int().optional(),
+  topN: z.int().optional(),
 }).transform((v) => {
   return remap$(v, {
     minCodingScore: "min_coding_score",
+    numTiers: "num_tiers",
+    topN: "top_n",
   });
 });
 
