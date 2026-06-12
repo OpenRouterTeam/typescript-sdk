@@ -47,7 +47,7 @@ typescript:
       vitest: ^3.2.4
     peerDependencies: {}
   additionalPackageJSON:
-    description: The OpenRouter TypeScript SDK is a type-safe toolkit for building AI applications with access to 300+ language models through a unified API.
+    description: The OpenRouter TypeScript SDK is a type-safe toolkit for building AI applications with access to 400+ language models through a unified API.
     keywords:
       - openrouter
       - sdk
