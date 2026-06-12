@@ -1,13 +1,13 @@
-# AdvisorNestedTool
+# SubagentNestedTool
 
-A tool made available to the advisor sub-agent. Only OpenRouter server tools (e.g. openrouter:web_search) are supported; function tools are rejected because the advisor has no way to execute them. The advisor tool may not list itself.
+A tool made available to the subagent. Only OpenRouter server tools (e.g. openrouter:web_search) are supported; function tools are rejected because the worker has no way to execute them. The subagent tool may not list itself.
 
 ## Example Usage
 
 ```typescript
-import { AdvisorNestedTool } from "@openrouter/sdk/models";
+import { SubagentNestedTool } from "@openrouter/sdk/models";
 
-let value: AdvisorNestedTool = {
+let value: SubagentNestedTool = {
   type: "openrouter:web_search",
 };
 ```

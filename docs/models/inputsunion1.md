@@ -333,6 +333,15 @@ const value: models.OutputAdvisorServerToolItem = {
 };
 ```
 
+### `models.OutputSubagentServerToolItem`
+
+```typescript
+const value: models.OutputSubagentServerToolItem = {
+  status: "completed",
+  type: "openrouter:subagent",
+};
+```
+
 ### `models.LocalShellCallItem`
 
 ```typescript

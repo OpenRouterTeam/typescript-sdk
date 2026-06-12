@@ -1,0 +1,18 @@
+# SubagentReasoning
+
+Reasoning configuration forwarded to the subagent call. Use this to control reasoning effort and token budget for models that support extended thinking.
+
+## Example Usage
+
+```typescript
+import { SubagentReasoning } from "@openrouter/sdk/models";
+
+let value: SubagentReasoning = {};
+```
+
+## Fields
+
+| Field                                                                                                                       | Type                                                                                                                        | Required                                                                                                                    | Description                                                                                                                 |
+| --------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------- |
+| `effort`                                                                                                                    | [models.SubagentReasoningEffort](../models/subagentreasoningeffort.md)                                                      | :heavy_minus_sign:                                                                                                          | Reasoning effort level for the subagent call.                                                                               |
+| `maxTokens`                                                                                                                 | *number*                                                                                                                    | :heavy_minus_sign:                                                                                                          | Maximum number of reasoning tokens the subagent may use. Accepted and validated but not yet forwarded to the subagent call. |
