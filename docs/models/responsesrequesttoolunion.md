@@ -153,6 +153,14 @@ const value: models.AdvisorServerToolOpenRouter = {
 };
 ```
 
+### `models.SubagentServerToolOpenRouter`
+
+```typescript
+const value: models.SubagentServerToolOpenRouter = {
+  type: "openrouter:subagent",
+};
+```
+
 ### `models.DatetimeServerTool`
 
 ```typescript
