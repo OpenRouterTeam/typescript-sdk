@@ -195,11 +195,6 @@ import {
   StoredPromptTemplate$outboundSchema,
 } from "./storedprompttemplate.js";
 import {
-  SubagentServerToolOpenRouter,
-  SubagentServerToolOpenRouter$Outbound,
-  SubagentServerToolOpenRouter$outboundSchema,
-} from "./subagentservertoolopenrouter.js";
-import {
   TextExtendedConfig,
   TextExtendedConfig$Outbound,
   TextExtendedConfig$outboundSchema,
@@ -284,7 +279,6 @@ export type ResponsesRequestToolUnion =
   | ApplyPatchServerTool
   | CustomTool
   | (AdvisorServerToolOpenRouter & { type: "openrouter:advisor" })
-  | (SubagentServerToolOpenRouter & { type: "openrouter:subagent" })
   | (DatetimeServerTool & { type: "openrouter:datetime" })
   | FusionServerToolOpenRouter
   | (ImageGenerationServerToolOpenRouter & {
@@ -395,7 +389,6 @@ export type ResponsesRequest = {
       | ApplyPatchServerTool
       | CustomTool
       | (AdvisorServerToolOpenRouter & { type: "openrouter:advisor" })
-      | (SubagentServerToolOpenRouter & { type: "openrouter:subagent" })
       | (DatetimeServerTool & { type: "openrouter:datetime" })
       | FusionServerToolOpenRouter
       | (ImageGenerationServerToolOpenRouter & {
@@ -515,7 +508,6 @@ export type ResponsesRequestToolUnion$Outbound =
   | ApplyPatchServerTool$Outbound
   | CustomTool$Outbound
   | (AdvisorServerToolOpenRouter$Outbound & { type: "openrouter:advisor" })
-  | (SubagentServerToolOpenRouter$Outbound & { type: "openrouter:subagent" })
   | (DatetimeServerTool$Outbound & { type: "openrouter:datetime" })
   | FusionServerToolOpenRouter$Outbound
   | (ImageGenerationServerToolOpenRouter$Outbound & {
@@ -551,9 +543,6 @@ export const ResponsesRequestToolUnion$outboundSchema: z.ZodType<
   CustomTool$outboundSchema,
   AdvisorServerToolOpenRouter$outboundSchema.and(
     z.object({ type: z.literal("openrouter:advisor") }),
-  ),
-  SubagentServerToolOpenRouter$outboundSchema.and(
-    z.object({ type: z.literal("openrouter:subagent") }),
   ),
   DatetimeServerTool$outboundSchema.and(
     z.object({ type: z.literal("openrouter:datetime") }),
@@ -647,9 +636,6 @@ export type ResponsesRequest$Outbound = {
       | ApplyPatchServerTool$Outbound
       | CustomTool$Outbound
       | (AdvisorServerToolOpenRouter$Outbound & { type: "openrouter:advisor" })
-      | (SubagentServerToolOpenRouter$Outbound & {
-        type: "openrouter:subagent";
-      })
       | (DatetimeServerTool$Outbound & { type: "openrouter:datetime" })
       | FusionServerToolOpenRouter$Outbound
       | (ImageGenerationServerToolOpenRouter$Outbound & {
@@ -741,9 +727,6 @@ export const ResponsesRequest$outboundSchema: z.ZodType<
       CustomTool$outboundSchema,
       AdvisorServerToolOpenRouter$outboundSchema.and(
         z.object({ type: z.literal("openrouter:advisor") }),
-      ),
-      SubagentServerToolOpenRouter$outboundSchema.and(
-        z.object({ type: z.literal("openrouter:subagent") }),
       ),
       DatetimeServerTool$outboundSchema.and(
         z.object({ type: z.literal("openrouter:datetime") }),
