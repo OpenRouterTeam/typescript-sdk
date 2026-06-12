@@ -221,15 +221,6 @@ const value: models.OutputMemoryServerToolItem = {
 };
 ```
 
-### `models.OutputSubagentServerToolItem`
-
-```typescript
-const value: models.OutputSubagentServerToolItem = {
-  status: "completed",
-  type: "openrouter:subagent",
-};
-```
-
 ### `models.OutputTextEditorServerToolItem`
 
 ```typescript
