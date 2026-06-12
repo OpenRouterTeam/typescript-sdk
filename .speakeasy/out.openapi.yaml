@@ -21369,12 +21369,12 @@ components:
       description: >-
         Which search engine to use. "auto" (default) uses native if the provider supports it, otherwise Exa. "native" forces the provider's built-in search. "exa" forces the Exa search API. "firecrawl" uses Firecrawl (requires BYOK). "parallel" uses the Parallel search API. "perplexity" uses the Perplexity Search API (raw ranked results).
       enum:
-        - auto
         - native
         - exa
         - parallel
         - firecrawl
         - perplexity
+        - auto
       example: auto
       type: string
       x-speakeasy-unknown-values: allow
@@ -28439,6 +28439,108 @@ paths:
             example: newest
             type: string
             x-speakeasy-unknown-values: allow
+        - description: Free-text search by model name or slug.
+          in: query
+          name: q
+          required: false
+          schema:
+            description: Free-text search by model name or slug.
+            example: gpt-4
+            type: string
+        - description: 'Filter models by input modality. Comma-separated list of: text, image, audio, file.'
+          in: query
+          name: input_modalities
+          required: false
+          schema:
+            description: 'Filter models by input modality. Comma-separated list of: text, image, audio, file.'
+            example: text,image
+            type: string
+        - description: Minimum context length (tokens). Models with smaller context are excluded.
+          in: query
+          name: context
+          required: false
+          schema:
+            description: Minimum context length (tokens). Models with smaller context are excluded.
+            example: 128000
+            exclusiveMinimum: true
+            minimum: 0
+            type: integer
+        - description: Minimum prompt price in $/M tokens.
+          in: query
+          name: min_price
+          required: false
+          schema:
+            description: Minimum prompt price in $/M tokens.
+            example: 0
+            minimum: 0
+            nullable: true
+            type: number
+        - description: Maximum prompt price in $/M tokens.
+          in: query
+          name: max_price
+          required: false
+          schema:
+            description: Maximum prompt price in $/M tokens.
+            example: 10
+            minimum: 0
+            nullable: true
+            type: number
+        - description: Filter models by architecture/model family (e.g. GPT, Claude, Gemini, Llama).
+          in: query
+          name: arch
+          required: false
+          schema:
+            description: Filter models by architecture/model family (e.g. GPT, Claude, Gemini, Llama).
+            example: GPT
+            type: string
+        - description: Filter models by the organization that created the model. Comma-separated list of author slugs.
+          in: query
+          name: model_authors
+          required: false
+          schema:
+            description: Filter models by the organization that created the model. Comma-separated list of author slugs.
+            example: openai,anthropic
+            type: string
+        - description: Filter models by hosting provider. Comma-separated list of provider names.
+          in: query
+          name: providers
+          required: false
+          schema:
+            description: Filter models by hosting provider. Comma-separated list of provider names.
+            example: OpenAI,Anthropic
+            type: string
+        - description: Filter by distillation capability. "true" returns only distillable models, "false" excludes them.
+          in: query
+          name: distillable
+          required: false
+          schema:
+            description: Filter by distillation capability. "true" returns only distillable models, "false" excludes them.
+            enum:
+              - 'true'
+              - 'false'
+            example: 'true'
+            type: string
+            x-speakeasy-unknown-values: allow
+        - description: When set to "true", return only models with zero data retention endpoints.
+          in: query
+          name: zdr
+          required: false
+          schema:
+            description: When set to "true", return only models with zero data retention endpoints.
+            enum:
+              - 'true'
+            example: 'true'
+            type: string
+        - description: Filter to models with endpoints in the given data region. Currently only "eu" is supported.
+          in: query
+          name: region
+          required: false
+          schema:
+            description: Filter to models with endpoints in the given data region. Currently only "eu" is supported.
+            enum:
+              - eu
+            example: eu
+            type: string
       responses:
         '200':
           content:
