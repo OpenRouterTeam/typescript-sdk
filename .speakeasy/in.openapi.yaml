@@ -21495,12 +21495,12 @@ components:
         BYOK). "parallel" uses the Parallel search API. "perplexity" uses the Perplexity Search API (raw ranked
         results).
       enum:
-        - auto
         - native
         - exa
         - parallel
         - firecrawl
         - perplexity
+        - auto
       example: auto
       type: string
     WebSearchPlugin:
