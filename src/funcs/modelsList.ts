@@ -94,10 +94,21 @@ async function $do(
   const path = pathToFunc("/models")();
 
   const query = encodeFormQuery({
+    "arch": payload?.arch,
     "category": payload?.category,
+    "context": payload?.context,
+    "distillable": payload?.distillable,
+    "input_modalities": payload?.input_modalities,
+    "max_price": payload?.max_price,
+    "min_price": payload?.min_price,
+    "model_authors": payload?.model_authors,
     "output_modalities": payload?.output_modalities,
+    "providers": payload?.providers,
+    "q": payload?.q,
+    "region": payload?.region,
     "sort": payload?.sort,
     "supported_parameters": payload?.supported_parameters,
+    "zdr": payload?.zdr,
   });
 
   const headers = new Headers(compactMap({
