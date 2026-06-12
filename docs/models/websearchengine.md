@@ -15,5 +15,5 @@ let value: WebSearchEngine = "exa";
 ## Values
 
 ```typescript
-"native" | "exa" | "firecrawl" | "parallel" | Unrecognized<string>
+"native" | "exa" | "firecrawl" | "parallel" | "perplexity" | Unrecognized<string>
 ```
