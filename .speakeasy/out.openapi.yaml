@@ -155,14 +155,10 @@ components:
       additionalProperties:
         nullable: true
       description: >-
-        A tool made available to the advisor sub-agent. Accepts function tools and OpenRouter server tools (e.g. openrouter:web_search). The advisor tool may not list itself.
+        A tool made available to the advisor sub-agent. Only OpenRouter server tools (e.g. openrouter:web_search) are supported; function tools are rejected because the advisor has no way to execute them. The advisor tool may not list itself.
       example:
         type: openrouter:web_search
       properties:
-        function:
-          additionalProperties:
-            nullable: true
-          type: object
         parameters:
           additionalProperties:
             nullable: true
@@ -266,7 +262,7 @@ components:
           type: number
         tools:
           description: >-
-            Tools the advisor sub-agent may use while forming its advice. The advisor runs as an agentic sub-agent over these tools, then returns its text. Must not include the advisor tool itself.
+            Tools the advisor sub-agent may use while forming its advice. The advisor runs as an agentic sub-agent over these tools, then returns its text. Only OpenRouter server tools are supported — function tools are rejected — and the list must not include the advisor tool itself.
           items:
             $ref: '#/components/schemas/AdvisorNestedTool'
           type: array
@@ -4806,6 +4802,7 @@ components:
         - $ref: '#/components/schemas/DatetimeServerTool'
         - $ref: '#/components/schemas/ImageGenerationServerTool_OpenRouter'
         - $ref: '#/components/schemas/ChatSearchModelsServerTool'
+        - $ref: '#/components/schemas/SubagentServerTool_OpenRouter'
         - $ref: '#/components/schemas/WebFetchServerTool'
         - $ref: '#/components/schemas/OpenRouterWebSearchServerTool'
         - $ref: '#/components/schemas/ChatWebSearchShorthand'
@@ -9758,6 +9755,7 @@ components:
               - $ref: '#/components/schemas/OutputMcpServerToolItem'
               - $ref: '#/components/schemas/OutputSearchModelsServerToolItem'
               - $ref: '#/components/schemas/OutputAdvisorServerToolItem'
+              - $ref: '#/components/schemas/OutputSubagentServerToolItem'
               - $ref: '#/components/schemas/LocalShellCallItem'
               - $ref: '#/components/schemas/LocalShellCallOutputItem'
               - $ref: '#/components/schemas/ShellCallItem'
@@ -16014,6 +16012,7 @@ components:
           openrouter:image_generation: '#/components/schemas/OutputImageGenerationServerToolItem'
           openrouter:mcp: '#/components/schemas/OutputMcpServerToolItem'
           openrouter:memory: '#/components/schemas/OutputMemoryServerToolItem'
+          openrouter:subagent: '#/components/schemas/OutputSubagentServerToolItem'
           openrouter:text_editor: '#/components/schemas/OutputTextEditorServerToolItem'
           openrouter:tool_search: '#/components/schemas/OutputToolSearchServerToolItem'
           openrouter:web_fetch: '#/components/schemas/OutputWebFetchServerToolItem'
@@ -16059,6 +16058,7 @@ components:
         - $ref: '#/components/schemas/OutputSearchModelsServerToolItem'
         - $ref: '#/components/schemas/OutputFusionServerToolItem'
         - $ref: '#/components/schemas/OutputAdvisorServerToolItem'
+        - $ref: '#/components/schemas/OutputSubagentServerToolItem'
         - $ref: '#/components/schemas/OutputCustomToolCallItem'
     OutputItemWebSearchCall:
       example:
@@ -16446,6 +16446,40 @@ components:
         - call_id
         - status
         - output
+      type: object
+    OutputSubagentServerToolItem:
+      description: An openrouter:subagent server tool output item
+      example:
+        id: st_tmp_abc123
+        status: completed
+        type: openrouter:subagent
+      properties:
+        error:
+          description: Error message when the subagent task did not produce an outcome.
+          type: string
+        id:
+          type: string
+        model:
+          description: Slug of the worker model that executed the task.
+          type: string
+        outcome:
+          description: The worker model's result (the outcome text returned to the delegating model).
+          type: string
+        status:
+          $ref: '#/components/schemas/ToolCallStatus'
+        task_description:
+          description: The task description the delegating model sent to the worker.
+          type: string
+        task_name:
+          description: The short task identifier the delegating model supplied.
+          type: string
+        type:
+          enum:
+            - openrouter:subagent
+          type: string
+      required:
+        - status
+        - type
       type: object
     OutputTextEditorServerToolItem:
       description: An openrouter:text_editor server tool output item
@@ -19072,6 +19106,7 @@ components:
               - $ref: '#/components/schemas/ApplyPatchServerTool'
               - $ref: '#/components/schemas/CustomTool'
               - $ref: '#/components/schemas/AdvisorServerTool_OpenRouter'
+              - $ref: '#/components/schemas/SubagentServerTool_OpenRouter'
               - $ref: '#/components/schemas/DatetimeServerTool'
               - $ref: '#/components/schemas/FusionServerTool_OpenRouter'
               - $ref: '#/components/schemas/ImageGenerationServerTool_OpenRouter'
@@ -19969,6 +20004,102 @@ components:
           description: Total number of tokens used (input + output)
           example: 113
           type: integer
+      type: object
+    SubagentNestedTool:
+      additionalProperties:
+        nullable: true
+      description: >-
+        A tool made available to the subagent. Only OpenRouter server tools (e.g. openrouter:web_search) are supported; function tools are rejected because the worker has no way to execute them. The subagent tool may not list itself.
+      example:
+        type: openrouter:web_search
+      properties:
+        parameters:
+          additionalProperties:
+            nullable: true
+          type: object
+        type:
+          type: string
+      required:
+        - type
+      type: object
+    SubagentReasoning:
+      description: >-
+        Reasoning configuration forwarded to the subagent call. Use this to control reasoning effort and token budget for models that support extended thinking.
+      example:
+        effort: low
+      properties:
+        effort:
+          description: Reasoning effort level for the subagent call.
+          enum:
+            - xhigh
+            - high
+            - medium
+            - low
+            - minimal
+            - none
+          type: string
+          x-speakeasy-unknown-values: allow
+        max_tokens:
+          description: >-
+            Maximum number of reasoning tokens the subagent may use. Accepted and validated but not yet forwarded to the subagent call.
+          type: integer
+      type: object
+    SubagentServerTool_OpenRouter:
+      description: >-
+        OpenRouter built-in server tool: delegates self-contained tasks to a smaller, cheaper, faster worker model (any OpenRouter model) mid-generation and returns its outcome. The worker may run as a sub-agent with its own tools.
+      example:
+        parameters:
+          model: ~anthropic/claude-haiku-latest
+        type: openrouter:subagent
+      properties:
+        parameters:
+          $ref: '#/components/schemas/SubagentServerToolConfig'
+        type:
+          enum:
+            - openrouter:subagent
+          type: string
+      required:
+        - type
+      type: object
+    SubagentServerToolConfig:
+      description: Configuration for the openrouter:subagent server tool.
+      example:
+        model: ~anthropic/claude-haiku-latest
+      properties:
+        instructions:
+          description: System instructions for the subagent. When omitted, the subagent responds with no system prompt of its own.
+          example: You are a fast, focused worker. Complete the task exactly as described.
+          type: string
+        max_completion_tokens:
+          description: >-
+            Maximum number of output tokens (including reasoning) the subagent may produce. When omitted, the provider's default applies.
+          example: 2048
+          type: integer
+        max_tool_calls:
+          description: >-
+            Maximum number of tool-calling steps the subagent may take during its agentic loop. Capped at 25. Only relevant when the subagent is given tools. Accepted and validated but not yet enforced on the subagent call.
+          example: 5
+          maximum: 25
+          minimum: 1
+          type: integer
+        model:
+          description: >-
+            Slug of the model that executes delegated tasks (any OpenRouter model). Typically a smaller, cheaper, faster model than the one delegating. When omitted, the model from the outer API request is used. The subagent tool itself cannot be the subagent model.
+          example: ~anthropic/claude-haiku-latest
+          type: string
+        reasoning:
+          $ref: '#/components/schemas/SubagentReasoning'
+        temperature:
+          description: Sampling temperature forwarded to the subagent call. When omitted, the provider's default applies.
+          example: 0.7
+          format: double
+          type: number
+        tools:
+          description: >-
+            Tools the subagent may use while executing a delegated task. The subagent runs as an agentic sub-agent over these tools, then returns its outcome. Only OpenRouter server tools are supported — function tools are rejected — and the list must not include the subagent tool itself.
+          items:
+            $ref: '#/components/schemas/SubagentNestedTool'
+          type: array
       type: object
     TextConfig:
       description: Text output configuration including format and verbosity
