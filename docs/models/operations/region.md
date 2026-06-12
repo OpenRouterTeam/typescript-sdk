@@ -1,0 +1,17 @@
+# Region
+
+Filter to models with endpoints in the given data region. Currently only "eu" is supported.
+
+## Example Usage
+
+```typescript
+import { Region } from "@openrouter/sdk/models/operations";
+
+let value: Region = "eu";
+```
+
+## Values
+
+```typescript
+"eu"
+```
