@@ -56,6 +56,14 @@ const value: models.ChatSearchModelsServerTool = {
 };
 ```
 
+### `models.SubagentServerToolOpenRouter`
+
+```typescript
+const value: models.SubagentServerToolOpenRouter = {
+  type: "openrouter:subagent",
+};
+```
+
 ### `models.WebFetchServerTool`
 
 ```typescript

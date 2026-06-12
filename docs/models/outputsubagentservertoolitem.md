@@ -1,0 +1,27 @@
+# OutputSubagentServerToolItem
+
+An openrouter:subagent server tool output item
+
+## Example Usage
+
+```typescript
+import { OutputSubagentServerToolItem } from "@openrouter/sdk/models";
+
+let value: OutputSubagentServerToolItem = {
+  status: "completed",
+  type: "openrouter:subagent",
+};
+```
+
+## Fields
+
+| Field                                                                                    | Type                                                                                     | Required                                                                                 | Description                                                                              | Example                                                                                  |
+| ---------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------- |
+| `error`                                                                                  | *string*                                                                                 | :heavy_minus_sign:                                                                       | Error message when the subagent task did not produce an outcome.                         |                                                                                          |
+| `id`                                                                                     | *string*                                                                                 | :heavy_minus_sign:                                                                       | N/A                                                                                      |                                                                                          |
+| `model`                                                                                  | *string*                                                                                 | :heavy_minus_sign:                                                                       | Slug of the worker model that executed the task.                                         |                                                                                          |
+| `outcome`                                                                                | *string*                                                                                 | :heavy_minus_sign:                                                                       | The worker model's result (the outcome text returned to the delegating model).           |                                                                                          |
+| `status`                                                                                 | [models.ToolCallStatus](../models/toolcallstatus.md)                                     | :heavy_check_mark:                                                                       | N/A                                                                                      | completed                                                                                |
+| `taskDescription`                                                                        | *string*                                                                                 | :heavy_minus_sign:                                                                       | The task description the delegating model sent to the worker.                            |                                                                                          |
+| `taskName`                                                                               | *string*                                                                                 | :heavy_minus_sign:                                                                       | The short task identifier the delegating model supplied.                                 |                                                                                          |
+| `type`                                                                                   | [models.OutputSubagentServerToolItemType](../models/outputsubagentservertoolitemtype.md) | :heavy_check_mark:                                                                       | N/A                                                                                      |                                                                                          |

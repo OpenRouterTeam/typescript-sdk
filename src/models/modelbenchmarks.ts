@@ -28,7 +28,7 @@ export type ModelBenchmarks = {
   /**
    * Design Arena ELO rankings across arena+category pairs.
    */
-  designArena: Array<DABenchmarkEntry>;
+  designArena?: Array<DABenchmarkEntry> | undefined;
 };
 
 /** @internal */
@@ -37,7 +37,7 @@ export const ModelBenchmarks$inboundSchema: z.ZodType<
   unknown
 > = z.object({
   artificial_analysis: AABenchmarkEntry$inboundSchema.optional(),
-  design_arena: z.array(DABenchmarkEntry$inboundSchema),
+  design_arena: z.array(DABenchmarkEntry$inboundSchema).optional(),
 }).transform((v) => {
   return remap$(v, {
     "artificial_analysis": "artificialAnalysis",
