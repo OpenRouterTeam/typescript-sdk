@@ -16,6 +16,11 @@ import {
   AnthropicCacheControlDirective$outboundSchema,
 } from "./anthropiccachecontroldirective.js";
 import {
+  AnthropicFileDocumentSource,
+  AnthropicFileDocumentSource$Outbound,
+  AnthropicFileDocumentSource$outboundSchema,
+} from "./anthropicfiledocumentsource.js";
+import {
   AnthropicImageBlockParam,
   AnthropicImageBlockParam$Outbound,
   AnthropicImageBlockParam$outboundSchema,
@@ -57,7 +62,8 @@ export type AnthropicDocumentBlockParamSourceUnion =
   | AnthropicBase64PdfSource
   | AnthropicPlainTextSource
   | SourceContent
-  | AnthropicUrlPdfSource;
+  | AnthropicUrlPdfSource
+  | AnthropicFileDocumentSource;
 
 export type AnthropicDocumentBlockParam = {
   /**
@@ -70,7 +76,8 @@ export type AnthropicDocumentBlockParam = {
     | AnthropicBase64PdfSource
     | AnthropicPlainTextSource
     | SourceContent
-    | AnthropicUrlPdfSource;
+    | AnthropicUrlPdfSource
+    | AnthropicFileDocumentSource;
   title?: string | null | undefined;
   type: "document";
 };
@@ -187,7 +194,8 @@ export type AnthropicDocumentBlockParamSourceUnion$Outbound =
   | AnthropicBase64PdfSource$Outbound
   | AnthropicPlainTextSource$Outbound
   | SourceContent$Outbound
-  | AnthropicUrlPdfSource$Outbound;
+  | AnthropicUrlPdfSource$Outbound
+  | AnthropicFileDocumentSource$Outbound;
 
 /** @internal */
 export const AnthropicDocumentBlockParamSourceUnion$outboundSchema: z.ZodType<
@@ -198,6 +206,7 @@ export const AnthropicDocumentBlockParamSourceUnion$outboundSchema: z.ZodType<
   AnthropicPlainTextSource$outboundSchema,
   z.lazy(() => SourceContent$outboundSchema),
   AnthropicUrlPdfSource$outboundSchema,
+  AnthropicFileDocumentSource$outboundSchema,
 ]);
 
 export function anthropicDocumentBlockParamSourceUnionToJSON(
@@ -220,7 +229,8 @@ export type AnthropicDocumentBlockParam$Outbound = {
     | AnthropicBase64PdfSource$Outbound
     | AnthropicPlainTextSource$Outbound
     | SourceContent$Outbound
-    | AnthropicUrlPdfSource$Outbound;
+    | AnthropicUrlPdfSource$Outbound
+    | AnthropicFileDocumentSource$Outbound;
   title?: string | null | undefined;
   type: "document";
 };
@@ -240,6 +250,7 @@ export const AnthropicDocumentBlockParam$outboundSchema: z.ZodType<
     AnthropicPlainTextSource$outboundSchema,
     z.lazy(() => SourceContent$outboundSchema),
     AnthropicUrlPdfSource$outboundSchema,
+    AnthropicFileDocumentSource$outboundSchema,
   ]),
   title: z.nullable(z.string()).optional(),
   type: z.literal("document"),
