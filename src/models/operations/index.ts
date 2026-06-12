@@ -9,6 +9,7 @@ export * from "./bulkassignmemberstoguardrail.js";
 export * from "./bulkremoveworkspacemembers.js";
 export * from "./bulkunassignkeysfromguardrail.js";
 export * from "./bulkunassignmembersfromguardrail.js";
+export * from "./createapibetaimages.js";
 export * from "./createaudiospeech.js";
 export * from "./createaudiotranscriptions.js";
 export * from "./createauthkeyscode.js";
