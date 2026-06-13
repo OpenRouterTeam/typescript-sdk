@@ -32,6 +32,7 @@ export * from "./deleteobservabilitydestination.js";
 export * from "./deleteworkspace.js";
 export * from "./downloadfilecontent.js";
 export * from "./exchangeauthcodeforapikey.js";
+export * from "./generateimage.js";
 export * from "./getanalyticsmeta.js";
 export * from "./getapprankings.js";
 export * from "./getbenchmarksartificialanalysis.js";

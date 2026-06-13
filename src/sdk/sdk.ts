@@ -16,6 +16,7 @@ import { Endpoints } from "./endpoints.js";
 import { Files } from "./files.js";
 import { Generations } from "./generations.js";
 import { Guardrails } from "./guardrails.js";
+import { Images } from "./images.js";
 import { Models } from "./models.js";
 import { OAuth } from "./oauth.js";
 import { Observability } from "./observability.js";
@@ -49,6 +50,11 @@ export class OpenRouter extends ClientSDK {
   private _beta?: Beta;
   get beta(): Beta {
     return (this._beta ??= new Beta(this._options));
+  }
+
+  private _images?: Images;
+  get images(): Images {
+    return (this._images ??= new Images(this._options));
   }
 
   private _tts?: Tts;
