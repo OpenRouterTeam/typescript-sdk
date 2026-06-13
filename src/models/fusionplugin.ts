@@ -36,6 +36,10 @@ export type FusionPlugin = {
    */
   model?: string | undefined;
   /**
+   * Branded OpenRouter fusion preset id (e.g. "or-coding-high"). Expands server-side into the preset's analysis_models panel and judge model, so callers never name individual models. Explicitly provided `analysis_models` / `model` take precedence over the preset; unknown or disabled preset ids fall back to the default panel.
+   */
+  preset?: string | undefined;
+  /**
    * Server tools available to panelist and judge inner calls. Each entry uses the same `{ type, parameters? }` shorthand as the outer Chat Completions request. When omitted, defaults to `[{ type: "openrouter:web_search" }, { type: "openrouter:web_fetch" }]`. Pass an empty array to disable tools entirely (panelists answer from parametric knowledge only).
    */
   tools?: Array<FusionPluginTool> | undefined;
@@ -71,6 +75,7 @@ export type FusionPlugin$Outbound = {
   id: "fusion";
   max_tool_calls?: number | undefined;
   model?: string | undefined;
+  preset?: string | undefined;
   tools?: Array<FusionPluginTool$Outbound> | undefined;
 };
 
@@ -84,6 +89,7 @@ export const FusionPlugin$outboundSchema: z.ZodType<
   id: z.literal("fusion"),
   maxToolCalls: z.int().optional(),
   model: z.string().optional(),
+  preset: z.string().optional(),
   tools: z.array(z.lazy(() => FusionPluginTool$outboundSchema)).optional(),
 }).transform((v) => {
   return remap$(v, {
