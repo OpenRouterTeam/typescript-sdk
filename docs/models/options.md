@@ -50,7 +50,6 @@ let value: Options = {};
 | `dekallm`             | Record<string, *any*> | :heavy_minus_sign:    | N/A                   |
 | `digitalocean`        | Record<string, *any*> | :heavy_minus_sign:    | N/A                   |
 | `enfer`               | Record<string, *any*> | :heavy_minus_sign:    | N/A                   |
-| `fakeProvider`        | Record<string, *any*> | :heavy_minus_sign:    | N/A                   |
 | `featherless`         | Record<string, *any*> | :heavy_minus_sign:    | N/A                   |
 | `fireworks`           | Record<string, *any*> | :heavy_minus_sign:    | N/A                   |
 | `friendli`            | Record<string, *any*> | :heavy_minus_sign:    | N/A                   |

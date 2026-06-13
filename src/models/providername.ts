@@ -93,7 +93,6 @@ export const ProviderName = {
   Xiaomi: "Xiaomi",
   XAI: "xAI",
   ZAi: "Z.AI",
-  FakeProvider: "FakeProvider",
 } as const;
 export type ProviderName = OpenEnum<typeof ProviderName>;
 

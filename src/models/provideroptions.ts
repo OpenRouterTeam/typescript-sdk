@@ -46,7 +46,6 @@ export type ProviderOptions = {
   dekallm?: { [k: string]: any | null } | undefined;
   digitalocean?: { [k: string]: any | null } | undefined;
   enfer?: { [k: string]: any | null } | undefined;
-  fakeProvider?: { [k: string]: any | null } | undefined;
   featherless?: { [k: string]: any | null } | undefined;
   fireworks?: { [k: string]: any | null } | undefined;
   friendli?: { [k: string]: any | null } | undefined;
@@ -165,7 +164,6 @@ export type ProviderOptions$Outbound = {
   dekallm?: { [k: string]: any | null } | undefined;
   digitalocean?: { [k: string]: any | null } | undefined;
   enfer?: { [k: string]: any | null } | undefined;
-  "fake-provider"?: { [k: string]: any | null } | undefined;
   featherless?: { [k: string]: any | null } | undefined;
   fireworks?: { [k: string]: any | null } | undefined;
   friendli?: { [k: string]: any | null } | undefined;
@@ -287,7 +285,6 @@ export const ProviderOptions$outboundSchema: z.ZodType<
   dekallm: z.record(z.string(), z.nullable(z.any())).optional(),
   digitalocean: z.record(z.string(), z.nullable(z.any())).optional(),
   enfer: z.record(z.string(), z.nullable(z.any())).optional(),
-  fakeProvider: z.record(z.string(), z.nullable(z.any())).optional(),
   featherless: z.record(z.string(), z.nullable(z.any())).optional(),
   fireworks: z.record(z.string(), z.nullable(z.any())).optional(),
   friendli: z.record(z.string(), z.nullable(z.any())).optional(),
@@ -375,7 +372,6 @@ export const ProviderOptions$outboundSchema: z.ZodType<
     arceeAi: "arcee-ai",
     atlasCloud: "atlas-cloud",
     blackForestLabs: "black-forest-labs",
-    fakeProvider: "fake-provider",
     googleAiStudio: "google-ai-studio",
     googleVertex: "google-vertex",
     hyperbolicQuantized: "hyperbolic-quantized",

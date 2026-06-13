@@ -129,7 +129,6 @@ export const ProviderResponseProviderName = {
   Xiaomi: "Xiaomi",
   XAI: "xAI",
   ZAi: "Z.AI",
-  FakeProvider: "FakeProvider",
 } as const;
 /**
  * Name of the provider
