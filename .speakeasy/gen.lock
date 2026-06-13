@@ -1,19 +1,19 @@
 lockVersion: ""
 id: ""
 management:
-  docChecksum: be636e635d66cb699669958d8ba06014
+  docChecksum: 0f4659be8bbbb4f9db18c6cfa70a8c52
   docVersion: 1.0.0
   speakeasyVersion: 1.763.2
   generationVersion: 2.884.4
-  releaseVersion: 0.13.2
-  configChecksum: 7c6ecaa522810f2ca9543ee6f1be66c2
+  releaseVersion: 0.13.3
+  configChecksum: 0538be0667c1f274079a7b1556437efc
   repoURL: https://github.com/OpenRouterTeam/typescript-sdk.git
   installationURL: https://github.com/OpenRouterTeam/typescript-sdk
   published: true
 persistentEdits:
-  generation_id: eb81dade-8fde-4b4f-bec3-bd942b3e894f
-  pristine_commit_hash: d69b6aa91f5f9b71238ba81fcacacad868968cdf
-  pristine_tree_hash: 56a2558697356c49304459b168dce64969b99bf5
+  generation_id: 5ad1041a-a7aa-4466-888c-ce5b4ec320d3
+  pristine_commit_hash: d455ace4ab4572553505c688ef283bc77b475379
+  pristine_tree_hash: 3ccea718800f53c40dcac2d423a66e0aff8c53f1
 features:
   typescript:
     acceptHeaders: 2.81.2
@@ -3736,8 +3736,8 @@ trackedFiles:
     pristine_git_object: 2068be70948914ac3c26a9bc0469cbe2a3e7e34e
   docs/models/operations/createauthkeyscoderequestbody.md:
     id: 41569d05ee8b
-    last_write_checksum: sha1:c4b2a29fbec2d0b9963cc0b5f76df9b25a20d125
-    pristine_git_object: a9eea7d99b9bb61c10ce31134df05089564a2b08
+    last_write_checksum: sha1:ecf4652872e1a654b90da264eeacc7561e8d59bf
+    pristine_git_object: 2de8a1f4efe2557dabda4670c22107dafc97b7d1
   docs/models/operations/createauthkeyscoderesponse.md:
     id: 94a1e2c0f03a
     last_write_checksum: sha1:a0cdf648d753eb498e5881e30c848cfac0d7199e
@@ -4014,6 +4014,7 @@ trackedFiles:
     id: 27b2e2e603ee
     last_write_checksum: sha1:9902e53e3ff18ef96650c6806d211486fe6ad480
     pristine_git_object: 3cda11fa906eda512ce901ae4f7d73b171abb17c
+    deleted: true
   docs/models/operations/document.md:
     id: 20633c7fa04e
     last_write_checksum: sha1:30926b430e36ab10d733606130048908194d05ba
@@ -4724,6 +4725,7 @@ trackedFiles:
     id: 733ab7b0c94c
     last_write_checksum: sha1:2c33c929d253ad328afdf529b29007fb797d9711
     pristine_git_object: 664046f58ef10652f2428c9f3d2e7636921ad0c1
+    deleted: true
   docs/models/operations/responseformat.md:
     id: 36515a708267
     last_write_checksum: sha1:26ced091f1f8aa1e7a05e58fa11d447dd3d0dc87
@@ -4866,6 +4868,7 @@ trackedFiles:
     id: 6b3f77435a1c
     last_write_checksum: sha1:6017aaa138ed51bea923c1c5f158a3109eaa8a82
     pristine_git_object: c4211f490ef26b3b76037249bf8ae0718e14026d
+    deleted: true
   docs/models/operationupdatefile.md:
     id: 4d6bf9f30e5f
     last_write_checksum: sha1:450b8363d02dbc9fa0a3531efcc96f9467380616
@@ -6957,8 +6960,8 @@ trackedFiles:
     pristine_git_object: 2a2c13b33b9cce55894ee1346327aa83b2d4b80b
   docs/sdks/oauth/README.md:
     id: 80ad2c1a7b62
-    last_write_checksum: sha1:9f295a2562c2a3dc980a0e301aac93c4344ba4d7
-    pristine_git_object: 7d2b462e40254998a168195906a339198bb809a1
+    last_write_checksum: sha1:aacf6624afe579dfa764a393834b1ddfba75955a
+    pristine_git_object: c0559b0acd0465956b45f8d6f87d337d5440ac97
   docs/sdks/observability/README.md:
     id: bab967736831
     last_write_checksum: sha1:87ed829b99af8cfbca810691d8cab7aac25e0897
@@ -7029,12 +7032,12 @@ trackedFiles:
     pristine_git_object: 410efafd6a7f50d91ccb87131fedbe0c3d47e15a
   jsr.json:
     id: 7f6ab7767282
-    last_write_checksum: sha1:1208495fde8bbc1a3e9e5e51813af5e357ce68d9
-    pristine_git_object: a417ed3bc55e35a3b4a4892bd2508f4250d9ac91
+    last_write_checksum: sha1:0aadd631dd12a9c6604832f8432626cf933fbf1b
+    pristine_git_object: ae889258a1201fb73d19e48ebdc8325ca17851d6
   package.json:
     id: 7030d0b2f71b
-    last_write_checksum: sha1:f150c23e182a8695b9e39af8f1856900a363a505
-    pristine_git_object: fdcc7fe5e09115c549b0fff1e0db1e460c4fe7d4
+    last_write_checksum: sha1:2a4fdba013b08ee6c83ddfdb72c06586c2f7bae8
+    pristine_git_object: 725b0f9a4c341edd90b6e72e131f3c39f0391f2a
   src/core.ts:
     id: f431fdbcd144
     last_write_checksum: sha1:5aa66b0b6a5964f3eea7f3098c2eb3c0ee9c0131
@@ -7237,8 +7240,8 @@ trackedFiles:
     pristine_git_object: c2530229b2304fe6b9ddf665781d2a1ab00ce5da
   src/funcs/oAuthCreateAuthCode.ts:
     id: 8a79f27722c0
-    last_write_checksum: sha1:66d614c93ec5e2715efb6a92fb42b6df91cbe161
-    pristine_git_object: 053eb745142aa91691844d6feea017ece9df83fe
+    last_write_checksum: sha1:6c0a0fb185e40ee20a6178c74281bdeef3291350
+    pristine_git_object: 32e7c43f4856d603fd906ccdf0f40eab748b3a76
   src/funcs/oAuthExchangeAuthCodeForAPIKey.ts:
     id: 3386ec12d934
     last_write_checksum: sha1:aa0187207f82819f61ace0b50faadeb2e37bac8f
@@ -7377,8 +7380,8 @@ trackedFiles:
     pristine_git_object: a187e58707bdb726ca2aff74941efe7493422d4e
   src/lib/config.ts:
     id: 320761608fb3
-    last_write_checksum: sha1:46075c7feac558021ab290c78e823cee7794ce73
-    pristine_git_object: 0d1899c05a2e73fc3ba58b34b66938d8a4949130
+    last_write_checksum: sha1:256bb1ca8b0297fac5c1457afa662c608decdf67
+    pristine_git_object: 4ce7c69a68a41a2677e25485113394a8242aa096
   src/lib/dlv.ts:
     id: b1988214835a
     last_write_checksum: sha1:eaac763b22717206a6199104e0403ed17a4e2711
@@ -8801,8 +8804,8 @@ trackedFiles:
     pristine_git_object: 680fccc1542fed95993d96651f175c345bb4c687
   src/models/operations/createauthkeyscode.ts:
     id: 1443f6afbf40
-    last_write_checksum: sha1:532bda3f210381b16175e7fef67302769229f2f8
-    pristine_git_object: 93885b35d4ac73d62c30400661eb0cbe5106568b
+    last_write_checksum: sha1:752516c2ce734a4a22ec17355adb8c1607859959
+    pristine_git_object: e305864025f414fcba52aa356aec2ef6b1d39a5e
   src/models/operations/createbyokkey.ts:
     id: 1725e1bba8d8
     last_write_checksum: sha1:218c27ee6adbf07092c7511fc3f9a09d71b2e8ba
@@ -10529,6 +10532,8 @@ examples:
           application/json: {"error": {"code": 409, "message": "Resource conflict. Please try again later."}}
         "500":
           application/json: {"error": {"code": 500, "message": "Internal Server Error"}}
+        "403":
+          application/json: {"error": {"code": 403, "message": "Only management keys can perform this operation"}}
   listOrganizationMembers:
     speakeasy-default-list-organization-members:
       responses:
@@ -11309,6 +11314,4 @@ examples:
         "500":
           application/json: {"error": {"code": 500, "message": "Internal Server Error"}}
 examplesVersion: 1.0.2
-releaseNotes: |
-  ## Typescript SDK Changes:
-  * `openrouter.models.list()`:  `request` **Changed**
+releaseNotes: "## Typescript SDK Changes:\n* `openrouter.oAuth.createAuthCode()`: \n  *  `request.requestBody.workspaceId` **Added**\n  *  `error.status[403]` **Added**\n"

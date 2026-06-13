@@ -22721,6 +22721,10 @@ paths:
                   example: monthly
                   type: string
                   x-speakeasy-unknown-values: allow
+                workspace_id:
+                  description: Optional workspace ID to associate the API key with
+                  format: uuid
+                  type: string
               required:
                 - callback_url
               type: object
@@ -22789,6 +22793,16 @@ paths:
               schema:
                 $ref: '#/components/schemas/UnauthorizedResponse'
           description: Unauthorized - Authentication required or invalid credentials
+        '403':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 403
+                  message: Only management keys can perform this operation
+              schema:
+                $ref: '#/components/schemas/ForbiddenResponse'
+          description: Forbidden - Authentication successful but insufficient permissions
         '409':
           content:
             application/json:
