@@ -36,7 +36,7 @@ export type QueryAnalyticsGlobals = {
 export type Value2 = string | number;
 
 /**
- * Filter value (scalar or array depending on operator)
+ * Filter value (scalar or array depending on operator). For api_key_id filters, you may pass the key hash (64-char hex string from the keys API) instead of the numeric ID.
  */
 export type Value1 = string | number | Array<string | number>;
 
@@ -50,7 +50,7 @@ export type Filter = {
    */
   operator: string;
   /**
-   * Filter value (scalar or array depending on operator)
+   * Filter value (scalar or array depending on operator). For api_key_id filters, you may pass the key hash (64-char hex string from the keys API) instead of the numeric ID.
    */
   value: string | number | Array<string | number>;
 };
