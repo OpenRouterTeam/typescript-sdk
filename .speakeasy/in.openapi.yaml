@@ -9796,6 +9796,7 @@ components:
               - $ref: '#/components/schemas/OutputMemoryServerToolItem'
               - $ref: '#/components/schemas/OutputMcpServerToolItem'
               - $ref: '#/components/schemas/OutputSearchModelsServerToolItem'
+              - $ref: '#/components/schemas/OutputFusionServerToolItem'
               - $ref: '#/components/schemas/OutputAdvisorServerToolItem'
               - $ref: '#/components/schemas/OutputSubagentServerToolItem'
               - $ref: '#/components/schemas/LocalShellCallItem'
