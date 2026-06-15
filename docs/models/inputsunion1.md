@@ -324,6 +324,15 @@ const value: models.OutputSearchModelsServerToolItem = {
 };
 ```
 
+### `models.OutputFusionServerToolItem`
+
+```typescript
+const value: models.OutputFusionServerToolItem = {
+  status: "completed",
+  type: "openrouter:fusion",
+};
+```
+
 ### `models.OutputAdvisorServerToolItem`
 
 ```typescript

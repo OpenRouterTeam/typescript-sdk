@@ -45,7 +45,22 @@ export const Stance$inboundSchema: z.ZodType<Stance, unknown> = z.object({
   model: z.string(),
   stance: z.string(),
 });
+/** @internal */
+export type Stance$Outbound = {
+  model: string;
+  stance: string;
+};
 
+/** @internal */
+export const Stance$outboundSchema: z.ZodType<Stance$Outbound, Stance> = z
+  .object({
+    model: z.string(),
+    stance: z.string(),
+  });
+
+export function stanceToJSON(stance: Stance): string {
+  return JSON.stringify(Stance$outboundSchema.parse(stance));
+}
 export function stanceFromJSON(
   jsonString: string,
 ): SafeParseResult<Stance, SDKValidationError> {
@@ -62,7 +77,24 @@ export const Contradiction$inboundSchema: z.ZodType<Contradiction, unknown> = z
     stances: z.array(z.lazy(() => Stance$inboundSchema)),
     topic: z.string(),
   });
+/** @internal */
+export type Contradiction$Outbound = {
+  stances: Array<Stance$Outbound>;
+  topic: string;
+};
 
+/** @internal */
+export const Contradiction$outboundSchema: z.ZodType<
+  Contradiction$Outbound,
+  Contradiction
+> = z.object({
+  stances: z.array(z.lazy(() => Stance$outboundSchema)),
+  topic: z.string(),
+});
+
+export function contradictionToJSON(contradiction: Contradiction): string {
+  return JSON.stringify(Contradiction$outboundSchema.parse(contradiction));
+}
 export function contradictionFromJSON(
   jsonString: string,
 ): SafeParseResult<Contradiction, SDKValidationError> {
@@ -81,7 +113,26 @@ export const PartialCoverage$inboundSchema: z.ZodType<
   models: z.array(z.string()),
   point: z.string(),
 });
+/** @internal */
+export type PartialCoverage$Outbound = {
+  models: Array<string>;
+  point: string;
+};
 
+/** @internal */
+export const PartialCoverage$outboundSchema: z.ZodType<
+  PartialCoverage$Outbound,
+  PartialCoverage
+> = z.object({
+  models: z.array(z.string()),
+  point: z.string(),
+});
+
+export function partialCoverageToJSON(
+  partialCoverage: PartialCoverage,
+): string {
+  return JSON.stringify(PartialCoverage$outboundSchema.parse(partialCoverage));
+}
 export function partialCoverageFromJSON(
   jsonString: string,
 ): SafeParseResult<PartialCoverage, SDKValidationError> {
@@ -98,7 +149,24 @@ export const UniqueInsight$inboundSchema: z.ZodType<UniqueInsight, unknown> = z
     insight: z.string(),
     model: z.string(),
   });
+/** @internal */
+export type UniqueInsight$Outbound = {
+  insight: string;
+  model: string;
+};
 
+/** @internal */
+export const UniqueInsight$outboundSchema: z.ZodType<
+  UniqueInsight$Outbound,
+  UniqueInsight
+> = z.object({
+  insight: z.string(),
+  model: z.string(),
+});
+
+export function uniqueInsightToJSON(uniqueInsight: UniqueInsight): string {
+  return JSON.stringify(UniqueInsight$outboundSchema.parse(uniqueInsight));
+}
 export function uniqueInsightFromJSON(
   jsonString: string,
 ): SafeParseResult<UniqueInsight, SDKValidationError> {
@@ -126,7 +194,40 @@ export const FusionAnalysisResult$inboundSchema: z.ZodType<
     "unique_insights": "uniqueInsights",
   });
 });
+/** @internal */
+export type FusionAnalysisResult$Outbound = {
+  blind_spots: Array<string>;
+  consensus: Array<string>;
+  contradictions: Array<Contradiction$Outbound>;
+  partial_coverage: Array<PartialCoverage$Outbound>;
+  unique_insights: Array<UniqueInsight$Outbound>;
+};
 
+/** @internal */
+export const FusionAnalysisResult$outboundSchema: z.ZodType<
+  FusionAnalysisResult$Outbound,
+  FusionAnalysisResult
+> = z.object({
+  blindSpots: z.array(z.string()),
+  consensus: z.array(z.string()),
+  contradictions: z.array(z.lazy(() => Contradiction$outboundSchema)),
+  partialCoverage: z.array(z.lazy(() => PartialCoverage$outboundSchema)),
+  uniqueInsights: z.array(z.lazy(() => UniqueInsight$outboundSchema)),
+}).transform((v) => {
+  return remap$(v, {
+    blindSpots: "blind_spots",
+    partialCoverage: "partial_coverage",
+    uniqueInsights: "unique_insights",
+  });
+});
+
+export function fusionAnalysisResultToJSON(
+  fusionAnalysisResult: FusionAnalysisResult,
+): string {
+  return JSON.stringify(
+    FusionAnalysisResult$outboundSchema.parse(fusionAnalysisResult),
+  );
+}
 export function fusionAnalysisResultFromJSON(
   jsonString: string,
 ): SafeParseResult<FusionAnalysisResult, SDKValidationError> {
