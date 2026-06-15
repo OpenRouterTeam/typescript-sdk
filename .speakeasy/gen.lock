@@ -1,19 +1,19 @@
 lockVersion: ""
 id: ""
 management:
-  docChecksum: 3c81d26f977c949b5e4e611f6776095a
+  docChecksum: 44fa2b4a2b7c2a1a78309e3b3ad77c37
   docVersion: 1.0.0
   speakeasyVersion: 1.763.2
   generationVersion: 2.884.4
-  releaseVersion: 0.13.5
-  configChecksum: a2fc034bbd10ac19f86486647aae5d25
+  releaseVersion: 0.13.6
+  configChecksum: 12a852b37631b0e374c8479418d67eee
   repoURL: https://github.com/OpenRouterTeam/typescript-sdk.git
   installationURL: https://github.com/OpenRouterTeam/typescript-sdk
   published: true
 persistentEdits:
-  generation_id: ad6fd28f-0003-488b-912e-95dc330f4262
-  pristine_commit_hash: cd272a3e8f31285ce6beb55b9604ae7bf0d2a132
-  pristine_tree_hash: 74d3a69af68fa777968673f16b982a09156a8158
+  generation_id: e6315ea5-d989-4705-9b94-ba2b8aef1336
+  pristine_commit_hash: e0e317a85645e0445329118bb13b40611b4febd0
+  pristine_tree_hash: e5bbfab8a99f00662e25403f0b4d22c8db44c661
 features:
   typescript:
     acceptHeaders: 2.81.2
@@ -2378,8 +2378,8 @@ trackedFiles:
     deleted: true
   docs/models/fusionplugin.md:
     id: aa0cadd09c6a
-    last_write_checksum: sha1:13e04a76f3268d17caaa8ff70796fff7b3a50b39
-    pristine_git_object: 681e353db088c7c6fd89d8326aaa59bcfa996f12
+    last_write_checksum: sha1:540fd07f72951c78cc99af961613e1f87d1aeb52
+    pristine_git_object: 95ac35bbbfe09afb9ff8b2cb7ac0e829a3daef1e
     deleted: true
   docs/models/fusionplugintool.md:
     id: 7d3861059f79
@@ -5510,6 +5510,10 @@ trackedFiles:
     last_write_checksum: sha1:1b06331c861f93e1c18f417eb8ab853aff9cd7cb
     pristine_git_object: 608f2921db039f4576894ac9e20b6ad07030d64c
     deleted: true
+  docs/models/presetenum.md:
+    id: ec3d574e76d0
+    last_write_checksum: sha1:bb2c87accb3f8a3a95e4cbd45ffcbc9d8a103e25
+    pristine_git_object: a69d15773ca498bca0c624edbda459ad046af8eb
   docs/models/presetstatus.md:
     id: efc645724b80
     last_write_checksum: sha1:10fcdd74d93805fa7f4c42fccb7934f031754a03
@@ -7032,12 +7036,12 @@ trackedFiles:
     pristine_git_object: 410efafd6a7f50d91ccb87131fedbe0c3d47e15a
   jsr.json:
     id: 7f6ab7767282
-    last_write_checksum: sha1:3e88819a4529904b9a3ddb8c106df7996be3b17d
-    pristine_git_object: 288202152464eb0c5450f65a842078e7287488b8
+    last_write_checksum: sha1:532f26094284a14c293bdf8d93b303834c19a842
+    pristine_git_object: a45214155aa833e1fe063bd392430dda240677c0
   package.json:
     id: 7030d0b2f71b
-    last_write_checksum: sha1:d9d36c9e9a0cf599c6b12ad0365b6924c81c5af6
-    pristine_git_object: 5fe401f9ab0a4f450cfe5ce41b3d752c64241c63
+    last_write_checksum: sha1:1b75b99ffa0ec4ba91de0646fc8add3fba5bbdc1
+    pristine_git_object: dcb871a1f2b26ee5d9de6f35c1b36c9780e00512
   src/core.ts:
     id: f431fdbcd144
     last_write_checksum: sha1:5aa66b0b6a5964f3eea7f3098c2eb3c0ee9c0131
@@ -7380,8 +7384,8 @@ trackedFiles:
     pristine_git_object: a187e58707bdb726ca2aff74941efe7493422d4e
   src/lib/config.ts:
     id: 320761608fb3
-    last_write_checksum: sha1:e99817b683e4f54be406c3f3fb39f6b8a0fc0efb
-    pristine_git_object: 8eb422f67e6def81da267e44b4d7324a205a0aa5
+    last_write_checksum: sha1:0c6eda50632bea8165a113ad85d02d7eefbb4e1b
+    pristine_git_object: 4ed7de4c82e699b0448fa1005ab571f9474a8c69
   src/lib/dlv.ts:
     id: b1988214835a
     last_write_checksum: sha1:eaac763b22717206a6199104e0403ed17a4e2711
@@ -8336,8 +8340,8 @@ trackedFiles:
     pristine_git_object: ea15abc3d64f380762a1b1f373c7a68cfa266d23
   src/models/fusionplugin.ts:
     id: f2f6926f21f9
-    last_write_checksum: sha1:539d646fe7bba872c9fe6ae7adeedb17fbbacee8
-    pristine_git_object: f52ff2053e2993fc9bba997ab4f14fa4997b847f
+    last_write_checksum: sha1:4e0e9ed6f0906c6218b1b9f40f5e9690526a0c91
+    pristine_git_object: e6cf22a41a624d7f692026d89505a73b048e7f65
   src/models/fusionservertoolconfig.ts:
     id: 500c34bd192b
     last_write_checksum: sha1:56675e7ed0a29d1926756822128f9a69452e5c25
@@ -11314,4 +11318,4 @@ examples:
         "500":
           application/json: {"error": {"code": 500, "message": "Internal Server Error"}}
 examplesVersion: 1.0.2
-releaseNotes: "## Typescript SDK Changes:\n* `openrouter.beta.responses.send()`: \n  *  `request.responsesRequest.input.union(Array<>)[].union(class (7)).content.union(Array<>)[].union(output_text).annotations[].union(url_citation).content` **Added**\n  *  `response` **Changed**\n* `openrouter.presets.createPresetsResponses()`: \n  *  `request.responsesRequest.input.union(Array<>)[].union(class (7)).content.union(Array<>)[].union(output_text).annotations[].union(url_citation).content` **Added**\n"
+releaseNotes: "## Typescript SDK Changes:\n* `openrouter.beta.responses.send()`: \n  *  `request.responsesRequest.plugins[].union(fusion).preset` **Added**\n* `openrouter.chat.send()`: \n  *  `request.chatRequest.plugins[].union(fusion).preset` **Added**\n* `openrouter.presets.createPresetsChatCompletions()`: \n  *  `request.chatRequest.plugins[].union(fusion).preset` **Added**\n* `openrouter.presets.createPresetsMessages()`: \n  *  `request.messagesRequest.plugins[].union(fusion).preset` **Added**\n* `openrouter.presets.createPresetsResponses()`: \n  *  `request.responsesRequest.plugins[].union(fusion).preset` **Added**\n"
