@@ -5,6 +5,20 @@
 
 import * as z from "zod/v4";
 import { remap as remap$ } from "../lib/primitives.js";
+import * as openEnums from "../types/enums.js";
+import { OpenEnum } from "../types/enums.js";
+
+/**
+ * A curated OpenRouter fusion preset (slugs follow `<task>-<tier>`, e.g. `general-high`). Expands server-side into the preset's analysis_models panel and judge model, so callers never name individual models. Explicitly provided `analysis_models` / `model` take precedence.
+ */
+export const PresetEnum = {
+  GeneralHigh: "general-high",
+  GeneralBudget: "general-budget",
+} as const;
+/**
+ * A curated OpenRouter fusion preset (slugs follow `<task>-<tier>`, e.g. `general-high`). Expands server-side into the preset's analysis_models panel and judge model, so callers never name individual models. Explicitly provided `analysis_models` / `model` take precedence.
+ */
+export type PresetEnum = OpenEnum<typeof PresetEnum>;
 
 export type FusionPluginTool = {
   /**
@@ -36,10 +50,18 @@ export type FusionPlugin = {
    */
   model?: string | undefined;
   /**
+   * A curated OpenRouter fusion preset (slugs follow `<task>-<tier>`, e.g. `general-high`). Expands server-side into the preset's analysis_models panel and judge model, so callers never name individual models. Explicitly provided `analysis_models` / `model` take precedence.
+   */
+  preset?: PresetEnum | undefined;
+  /**
    * Server tools available to panelist and judge inner calls. Each entry uses the same `{ type, parameters? }` shorthand as the outer Chat Completions request. When omitted, defaults to `[{ type: "openrouter:web_search" }, { type: "openrouter:web_fetch" }]`. Pass an empty array to disable tools entirely (panelists answer from parametric knowledge only).
    */
   tools?: Array<FusionPluginTool> | undefined;
 };
+
+/** @internal */
+export const PresetEnum$outboundSchema: z.ZodType<string, PresetEnum> =
+  openEnums.outboundSchema(PresetEnum);
 
 /** @internal */
 export type FusionPluginTool$Outbound = {
@@ -71,6 +93,7 @@ export type FusionPlugin$Outbound = {
   id: "fusion";
   max_tool_calls?: number | undefined;
   model?: string | undefined;
+  preset?: string | undefined;
   tools?: Array<FusionPluginTool$Outbound> | undefined;
 };
 
@@ -84,6 +107,7 @@ export const FusionPlugin$outboundSchema: z.ZodType<
   id: z.literal("fusion"),
   maxToolCalls: z.int().optional(),
   model: z.string().optional(),
+  preset: PresetEnum$outboundSchema.optional(),
   tools: z.array(z.lazy(() => FusionPluginTool$outboundSchema)).optional(),
 }).transform((v) => {
   return remap$(v, {
