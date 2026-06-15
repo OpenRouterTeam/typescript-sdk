@@ -18,7 +18,6 @@ let value: URLCitation = {
 
 | Field              | Type               | Required           | Description        |
 | ------------------ | ------------------ | ------------------ | ------------------ |
-| `content`          | *string*           | :heavy_minus_sign: | N/A                |
 | `endIndex`         | *number*           | :heavy_check_mark: | N/A                |
 | `startIndex`       | *number*           | :heavy_check_mark: | N/A                |
 | `title`            | *string*           | :heavy_check_mark: | N/A                |
