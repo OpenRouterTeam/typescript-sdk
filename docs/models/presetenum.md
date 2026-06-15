@@ -1,0 +1,19 @@
+# PresetEnum
+
+A curated OpenRouter fusion preset (slugs follow `<task>-<tier>`, e.g. `general-high`). Expands server-side into the preset's analysis_models panel and judge model, so callers never name individual models. Explicitly provided `analysis_models` / `model` take precedence.
+
+## Example Usage
+
+```typescript
+import { PresetEnum } from "@openrouter/sdk/models";
+
+let value: PresetEnum = "general-high";
+
+// Open enum: unrecognized values are captured as Unrecognized<string>
+```
+
+## Values
+
+```typescript
+"general-high" | "general-budget" | Unrecognized<string>
+```
