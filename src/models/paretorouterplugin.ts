@@ -5,6 +5,23 @@
 
 import * as z from "zod/v4";
 import { remap as remap$ } from "../lib/primitives.js";
+import * as openEnums from "../types/enums.js";
+import { OpenEnum } from "../types/enums.js";
+
+/**
+ * Quality tier for model selection. Higher tiers select from stronger coding models (sourced from Artificial Analysis coding benchmarks). Valid values depend on `num_tiers`: 3 tiers → low/medium/high, 4 tiers → low/medium/high/xhigh, 5 tiers → low/medium/high/xhigh/xxhigh. Omit to use the highest active tier.
+ */
+export const QualityTier = {
+  Low: "low",
+  Medium: "medium",
+  High: "high",
+  Xhigh: "xhigh",
+  Xxhigh: "xxhigh",
+} as const;
+/**
+ * Quality tier for model selection. Higher tiers select from stronger coding models (sourced from Artificial Analysis coding benchmarks). Valid values depend on `num_tiers`: 3 tiers → low/medium/high, 4 tiers → low/medium/high/xhigh, 5 tiers → low/medium/high/xhigh/xxhigh. Omit to use the highest active tier.
+ */
+export type QualityTier = OpenEnum<typeof QualityTier>;
 
 export type ParetoRouterPlugin = {
   /**
@@ -13,16 +30,30 @@ export type ParetoRouterPlugin = {
   enabled?: boolean | undefined;
   id: "pareto-router";
   /**
-   * Minimum desired coding score between 0 and 1, where 1 is best. Higher values select from stronger coding models (sourced from Artificial Analysis coding percentiles). Maps internally to one of three tiers (low, medium, high). Omit to use the router default tier.
+   * Number of quality tiers to divide models into (3–5). More tiers give finer-grained quality control. Defaults to 3.
    */
-  minCodingScore?: number | undefined;
+  numTiers?: number | undefined;
+  /**
+   * Quality tier for model selection. Higher tiers select from stronger coding models (sourced from Artificial Analysis coding benchmarks). Valid values depend on `num_tiers`: 3 tiers → low/medium/high, 4 tiers → low/medium/high/xhigh, 5 tiers → low/medium/high/xhigh/xxhigh. Omit to use the highest active tier.
+   */
+  qualityTier?: QualityTier | undefined;
+  /**
+   * Number of top coding models to consider for tier assignment (5–20). A larger pool gives more diversity; a smaller pool focuses on the very best. Defaults to 10.
+   */
+  topN?: number | undefined;
 };
+
+/** @internal */
+export const QualityTier$outboundSchema: z.ZodType<string, QualityTier> =
+  openEnums.outboundSchema(QualityTier);
 
 /** @internal */
 export type ParetoRouterPlugin$Outbound = {
   enabled?: boolean | undefined;
   id: "pareto-router";
-  min_coding_score?: number | undefined;
+  num_tiers?: number | undefined;
+  quality_tier?: string | undefined;
+  top_n?: number | undefined;
 };
 
 /** @internal */
@@ -32,10 +63,14 @@ export const ParetoRouterPlugin$outboundSchema: z.ZodType<
 > = z.object({
   enabled: z.boolean().optional(),
   id: z.literal("pareto-router"),
-  minCodingScore: z.number().optional(),
+  numTiers: z.int().optional(),
+  qualityTier: QualityTier$outboundSchema.optional(),
+  topN: z.int().optional(),
 }).transform((v) => {
   return remap$(v, {
-    minCodingScore: "min_coding_score",
+    numTiers: "num_tiers",
+    qualityTier: "quality_tier",
+    topN: "top_n",
   });
 });
 
