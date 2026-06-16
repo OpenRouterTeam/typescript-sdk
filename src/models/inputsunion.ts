@@ -152,11 +152,6 @@ import {
   OutputFunctionCallItem$outboundSchema,
 } from "./outputfunctioncallitem.js";
 import {
-  OutputFusionServerToolItem,
-  OutputFusionServerToolItem$Outbound,
-  OutputFusionServerToolItem$outboundSchema,
-} from "./outputfusionservertoolitem.js";
-import {
   OutputImageGenerationCallItem,
   OutputImageGenerationCallItem$Outbound,
   OutputImageGenerationCallItem$outboundSchema,
@@ -422,7 +417,6 @@ export type InputsUnion1 =
   | OutputMemoryServerToolItem
   | OutputMcpServerToolItem
   | OutputSearchModelsServerToolItem
-  | OutputFusionServerToolItem
   | OutputAdvisorServerToolItem
   | OutputSubagentServerToolItem
   | CompactionItem
@@ -474,7 +468,6 @@ export type InputsUnion =
     | OutputMemoryServerToolItem
     | OutputMcpServerToolItem
     | OutputSearchModelsServerToolItem
-    | OutputFusionServerToolItem
     | OutputAdvisorServerToolItem
     | OutputSubagentServerToolItem
     | CompactionItem
@@ -779,7 +772,6 @@ export type InputsUnion1$Outbound =
   | OutputMemoryServerToolItem$Outbound
   | OutputMcpServerToolItem$Outbound
   | OutputSearchModelsServerToolItem$Outbound
-  | OutputFusionServerToolItem$Outbound
   | OutputAdvisorServerToolItem$Outbound
   | OutputSubagentServerToolItem$Outbound
   | CompactionItem$Outbound
@@ -830,7 +822,6 @@ export const InputsUnion1$outboundSchema: z.ZodType<
   OutputMemoryServerToolItem$outboundSchema,
   OutputMcpServerToolItem$outboundSchema,
   OutputSearchModelsServerToolItem$outboundSchema,
-  OutputFusionServerToolItem$outboundSchema,
   OutputAdvisorServerToolItem$outboundSchema,
   OutputSubagentServerToolItem$outboundSchema,
   CompactionItem$outboundSchema,
@@ -885,7 +876,6 @@ export type InputsUnion$Outbound =
     | OutputMemoryServerToolItem$Outbound
     | OutputMcpServerToolItem$Outbound
     | OutputSearchModelsServerToolItem$Outbound
-    | OutputFusionServerToolItem$Outbound
     | OutputAdvisorServerToolItem$Outbound
     | OutputSubagentServerToolItem$Outbound
     | CompactionItem$Outbound
@@ -940,7 +930,6 @@ export const InputsUnion$outboundSchema: z.ZodType<
       OutputMemoryServerToolItem$outboundSchema,
       OutputMcpServerToolItem$outboundSchema,
       OutputSearchModelsServerToolItem$outboundSchema,
-      OutputFusionServerToolItem$outboundSchema,
       OutputAdvisorServerToolItem$outboundSchema,
       OutputSubagentServerToolItem$outboundSchema,
       CompactionItem$outboundSchema,

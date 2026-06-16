@@ -150,7 +150,7 @@ export type OutputItems =
     type: "openrouter:experimental__search_models";
   })
   | (OutputFileSearchServerToolItem & { type: "openrouter:file_search" })
-  | (OutputFusionServerToolItem & { type: "openrouter:fusion" })
+  | OutputFusionServerToolItem
   | (OutputImageGenerationServerToolItem & {
     type: "openrouter:image_generation";
   })
@@ -213,9 +213,7 @@ export const OutputItems$inboundSchema: z.ZodType<OutputItems, unknown> =
       ),
     ["openrouter:file_search"]: OutputFileSearchServerToolItem$inboundSchema
       .and(z.object({ type: z.literal("openrouter:file_search") })),
-    ["openrouter:fusion"]: OutputFusionServerToolItem$inboundSchema.and(
-      z.object({ type: z.literal("openrouter:fusion") }),
-    ),
+    ["openrouter:fusion"]: OutputFusionServerToolItem$inboundSchema,
     ["openrouter:image_generation"]:
       OutputImageGenerationServerToolItem$inboundSchema.and(
         z.object({ type: z.literal("openrouter:image_generation") }),
