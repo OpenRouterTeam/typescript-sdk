@@ -1,13 +1,13 @@
-# VideoGenerationRequestOptions
+# ImageGenerationRequestOptions
 
-Provider-specific options keyed by provider slug. Only options for the matched provider are forwarded; the rest are ignored. Unrecognized keys are silently dropped.
+Provider-specific options keyed by provider slug. Only endpoint-allowlisted options for the matched provider are forwarded; protected fields are dropped.
 
 ## Example Usage
 
 ```typescript
-import { VideoGenerationRequestOptions } from "@openrouter/sdk/models";
+import { ImageGenerationRequestOptions } from "@openrouter/sdk/models";
 
-let value: VideoGenerationRequestOptions = {};
+let value: ImageGenerationRequestOptions = {};
 ```
 
 ## Fields
