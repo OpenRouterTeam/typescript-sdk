@@ -38,7 +38,7 @@ export const AspectRatio = {
 export type AspectRatio = OpenEnum<typeof AspectRatio>;
 
 /**
- * Provider-specific options keyed by provider slug. The options for the matched provider are spread into the upstream request body.
+ * Provider-specific options keyed by provider slug. Only options for the matched provider are forwarded; the rest are ignored. Unrecognized keys are silently dropped.
  */
 export type Options = {
   oneai?: { [k: string]: any | null } | undefined;
