@@ -22,6 +22,7 @@ export * from "./anthropiccitationpagelocationparam.js";
 export * from "./anthropiccitationsearchresultlocation.js";
 export * from "./anthropiccitationwebsearchresultlocation.js";
 export * from "./anthropicdocumentblockparam.js";
+export * from "./anthropicfiledocumentsource.js";
 export * from "./anthropicimageblockparam.js";
 export * from "./anthropicimagemimetype.js";
 export * from "./anthropicinputtokensclearatleast.js";
