@@ -1115,6 +1115,7 @@ components:
                 - content
               type: object
             - $ref: '#/components/schemas/AnthropicUrlPdfSource'
+            - $ref: '#/components/schemas/AnthropicFileDocumentSource'
         title:
           nullable: true
           type: string
@@ -1154,6 +1155,21 @@ components:
         - return_code
         - stderr
         - type
+      type: object
+    AnthropicFileDocumentSource:
+      example:
+        file_id: file_011CNha8iCJcU1wXNR6q4V8w
+        type: file
+      properties:
+        file_id:
+          type: string
+        type:
+          enum:
+            - file
+          type: string
+      required:
+        - type
+        - file_id
       type: object
     AnthropicImageBlockParam:
       example:

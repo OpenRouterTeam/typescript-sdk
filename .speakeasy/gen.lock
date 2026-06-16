@@ -1,19 +1,19 @@
 lockVersion: ""
 id: ""
 management:
-  docChecksum: e8d2a0b589ce3549e7c829384bdcc254
+  docChecksum: c28fd8ed2ec21d26ed6f1edd45ec92b1
   docVersion: 1.0.0
   speakeasyVersion: 1.763.2
   generationVersion: 2.884.4
-  releaseVersion: 0.13.8
-  configChecksum: 146baae515208bbc0d07782ffa352eb8
+  releaseVersion: 0.13.9
+  configChecksum: 7e2b6e01beaed01e108e76024b9db582
   repoURL: https://github.com/OpenRouterTeam/typescript-sdk.git
   installationURL: https://github.com/OpenRouterTeam/typescript-sdk
   published: true
 persistentEdits:
-  generation_id: b4e62a53-b1ab-4950-8b26-c1151f58931e
-  pristine_commit_hash: df9c8555dcdd7941445af1a7b1024dea58bf74ba
-  pristine_tree_hash: abe2e3d6874ec416710808eb0d3c94d348712811
+  generation_id: 83290aa7-81a7-4488-adf4-1853c1ca415e
+  pristine_commit_hash: 50d752100277b0352afb87051332b22c9ccc768f
+  pristine_tree_hash: 4ef914791ddc88ba5cdae43c19c6172b5f14bea4
 features:
   typescript:
     acceptHeaders: 2.81.2
@@ -263,9 +263,13 @@ trackedFiles:
     deleted: true
   docs/models/anthropicdocumentblockparamsourceunion.md:
     id: "141653272520"
-    last_write_checksum: sha1:b3af2673742b4cbf9c99bb06fd9318095fed5db3
-    pristine_git_object: 46e3f973749ab76de28c86b9bf73f7fe6d40fb60
+    last_write_checksum: sha1:e947bb5b0afca22f2ff00141dedab18e9fcaa7a9
+    pristine_git_object: 5ffd4096e4ab43efacd484826abc748af169bf35
     deleted: true
+  docs/models/anthropicfiledocumentsource.md:
+    id: e98f8a404230
+    last_write_checksum: sha1:81d79754243717ddb19df20bbbf5fd67948705d8
+    pristine_git_object: 9397545eafe2c0658dedddc9b9acb84a73d644ec
   docs/models/anthropicimageblockparam.md:
     id: b31a4bb200d0
     last_write_checksum: sha1:2d8198cf39a36b196ddfb20c2e25a27166934bc7
@@ -7042,12 +7046,12 @@ trackedFiles:
     pristine_git_object: 410efafd6a7f50d91ccb87131fedbe0c3d47e15a
   jsr.json:
     id: 7f6ab7767282
-    last_write_checksum: sha1:e3d75022ecef96a70cb16230ea82f61affda0104
-    pristine_git_object: be4587b21afe1e9c5929454dc6c4d0c63581ab59
+    last_write_checksum: sha1:0b5602d04acfff19d130da4db68949d6f571c0bd
+    pristine_git_object: 2d2cdd37157de0bde74c1192597411df6ba89a77
   package.json:
     id: 7030d0b2f71b
-    last_write_checksum: sha1:6945f94d0bfff13c20a39e3905178b910679eecf
-    pristine_git_object: 7ace714223acb969cce9e1fe4a9f7e2afc67981b
+    last_write_checksum: sha1:fa60ba28b8fa336cd4ec88547832be482086fcda
+    pristine_git_object: cbe3fa37abba591b6f61fa927f394fb5f4907159
   src/core.ts:
     id: f431fdbcd144
     last_write_checksum: sha1:5aa66b0b6a5964f3eea7f3098c2eb3c0ee9c0131
@@ -7390,8 +7394,8 @@ trackedFiles:
     pristine_git_object: a187e58707bdb726ca2aff74941efe7493422d4e
   src/lib/config.ts:
     id: 320761608fb3
-    last_write_checksum: sha1:a83539f13b42d500026671385724b129f95b3506
-    pristine_git_object: 6c47bc38e5659f2a09cff5168307633b60cce5be
+    last_write_checksum: sha1:17cf548f2a94662f63e79f4bb1ef16984a402a77
+    pristine_git_object: 36b1012aad6b3fdc00a3f05a7b25fc67102ccb7e
   src/lib/dlv.ts:
     id: b1988214835a
     last_write_checksum: sha1:eaac763b22717206a6199104e0403ed17a4e2711
@@ -7526,8 +7530,12 @@ trackedFiles:
     pristine_git_object: a178b5ca13499fa173b5c92729692ef070a79b1e
   src/models/anthropicdocumentblockparam.ts:
     id: da62cae77bdf
-    last_write_checksum: sha1:2a79cd73477002d5b76bca458a536d8ddf799115
-    pristine_git_object: f79c9477cae0f82d11666fec85706674e9fe3ab8
+    last_write_checksum: sha1:c28f39fb3c5bcfc446ddcc033fa1075c096a1278
+    pristine_git_object: a0af7d71f58c60501bd467d99e129fb977ca00f1
+  src/models/anthropicfiledocumentsource.ts:
+    id: 8ad816e4eb64
+    last_write_checksum: sha1:ca2fc0f4b0ecc0ffbde5e3ebe700116820f79c83
+    pristine_git_object: 3ca02d4a007abb654dce2a0245773bc814f3f9fa
   src/models/anthropicimageblockparam.ts:
     id: 463612aae623
     last_write_checksum: sha1:c54483f925bbaa3b1c0fd1af7949bbb2f816ce07
@@ -8446,8 +8454,8 @@ trackedFiles:
     pristine_git_object: 8e109bedfdcf2c4808e49323dda861e3c6069d51
   src/models/index.ts:
     id: f93644b0f37e
-    last_write_checksum: sha1:a77ced6eb340e50ec16fd31d03a5882f0ea7f275
-    pristine_git_object: 6bd382cfaa98346792da1a363d7fb3db18909e92
+    last_write_checksum: sha1:4854921b18503bc84ddbe818c4afa57b197496da
+    pristine_git_object: 41114e0d240adc777a29d549ba49ef6888c41b84
   src/models/inputaudio.ts:
     id: 9bdc14c7565f
     last_write_checksum: sha1:2f8dc4c1d6a9c2927d9eb186e0ecedf7b81838e6
@@ -11324,3 +11332,4 @@ examples:
         "500":
           application/json: {"error": {"code": 500, "message": "Internal Server Error"}}
 examplesVersion: 1.0.2
+releaseNotes: "## Typescript SDK Changes:\n* `openrouter.presets.createPresetsMessages()`: \n  *  `request.messagesRequest.messages[].content.union(Array<>)[].union(document).source.union(file)` **Added**\n"
