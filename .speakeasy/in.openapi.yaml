@@ -5870,7 +5870,8 @@ components:
         max_results:
           description: >-
             Maximum number of search results to return per search call. Defaults to 5. Applies to Exa, Firecrawl,
-            Parallel, and Perplexity engines; ignored with native provider search.
+            Parallel, and Perplexity engines; ignored with native provider search. Perplexity supports a maximum of 20;
+            values above 20 are clamped.
           example: 5
           type: integer
         max_total_results:
@@ -10033,7 +10034,8 @@ components:
         max_results:
           description: >-
             Maximum number of search results to return per search call. Defaults to 5. Applies to Exa, Firecrawl,
-            Parallel, and Perplexity engines; ignored with native provider search.
+            Parallel, and Perplexity engines; ignored with native provider search. Perplexity supports a maximum of 20;
+            values above 20 are clamped.
           example: 5
           type: integer
         search_context_size:
@@ -17205,7 +17207,8 @@ components:
         max_results:
           description: >-
             Maximum number of search results to return per search call. Defaults to 5. Applies to Exa, Firecrawl,
-            Parallel, and Perplexity engines; ignored with native provider search.
+            Parallel, and Perplexity engines; ignored with native provider search. Perplexity supports a maximum of 20;
+            values above 20 are clamped.
           example: 5
           type: integer
         search_context_size:
@@ -17231,7 +17234,8 @@ components:
         max_results:
           description: >-
             Maximum number of search results to return per search call. Defaults to 5. Applies to Exa, Firecrawl,
-            Parallel, and Perplexity engines; ignored with native provider search.
+            Parallel, and Perplexity engines; ignored with native provider search. Perplexity supports a maximum of 20;
+            values above 20 are clamped.
           example: 5
           type: integer
         search_context_size:
@@ -21474,7 +21478,8 @@ components:
         max_results:
           description: >-
             Maximum number of search results to return per search call. Defaults to 5. Applies to Exa, Firecrawl,
-            Parallel, and Perplexity engines; ignored with native provider search.
+            Parallel, and Perplexity engines; ignored with native provider search. Perplexity supports a maximum of 20;
+            values above 20 are clamped.
           example: 5
           type: integer
         max_total_results:
@@ -21612,7 +21617,8 @@ components:
         max_results:
           description: >-
             Maximum number of search results to return per search call. Defaults to 5. Applies to Exa, Firecrawl,
-            Parallel, and Perplexity engines; ignored with native provider search.
+            Parallel, and Perplexity engines; ignored with native provider search. Perplexity supports a maximum of 20;
+            values above 20 are clamped.
           example: 5
           type: integer
         search_context_size:
@@ -21678,7 +21684,8 @@ components:
         max_results:
           description: >-
             Maximum number of search results to return per search call. Defaults to 5. Applies to Exa, Firecrawl,
-            Parallel, and Perplexity engines; ignored with native provider search.
+            Parallel, and Perplexity engines; ignored with native provider search. Perplexity supports a maximum of 20;
+            values above 20 are clamped.
           example: 5
           type: integer
         max_total_results:
