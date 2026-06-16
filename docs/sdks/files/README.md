@@ -115,6 +115,7 @@ const openRouter = new OpenRouter({
 
 async function run() {
   const result = await openRouter.files.upload({
+    workspaceId: "a103d8b6-42f0-4e50-9a3c-bf41e2c3c1a7",
     requestBody: {
       file: await openAsBlob("example.file"),
     },
@@ -146,6 +147,7 @@ const openRouter = new OpenRouterCore({
 
 async function run() {
   const res = await filesUpload(openRouter, {
+    workspaceId: "a103d8b6-42f0-4e50-9a3c-bf41e2c3c1a7",
     requestBody: {
       file: await openAsBlob("example.file"),
     },
@@ -206,6 +208,7 @@ const openRouter = new OpenRouter({
 async function run() {
   const result = await openRouter.files.delete({
     fileId: "file_011CNha8iCJcU1wXNR6q4V8w",
+    workspaceId: "a103d8b6-42f0-4e50-9a3c-bf41e2c3c1a7",
   });
 
   console.log(result);
@@ -234,6 +237,7 @@ const openRouter = new OpenRouterCore({
 async function run() {
   const res = await filesDelete(openRouter, {
     fileId: "file_011CNha8iCJcU1wXNR6q4V8w",
+    workspaceId: "a103d8b6-42f0-4e50-9a3c-bf41e2c3c1a7",
   });
   if (res.ok) {
     const { value: result } = res;
@@ -289,6 +293,7 @@ const openRouter = new OpenRouter({
 async function run() {
   const result = await openRouter.files.retrieve({
     fileId: "file_011CNha8iCJcU1wXNR6q4V8w",
+    workspaceId: "a103d8b6-42f0-4e50-9a3c-bf41e2c3c1a7",
   });
 
   console.log(result);
@@ -317,6 +322,7 @@ const openRouter = new OpenRouterCore({
 async function run() {
   const res = await filesRetrieve(openRouter, {
     fileId: "file_011CNha8iCJcU1wXNR6q4V8w",
+    workspaceId: "a103d8b6-42f0-4e50-9a3c-bf41e2c3c1a7",
   });
   if (res.ok) {
     const { value: result } = res;
@@ -372,6 +378,7 @@ const openRouter = new OpenRouter({
 async function run() {
   const result = await openRouter.files.download({
     fileId: "file_011CNha8iCJcU1wXNR6q4V8w",
+    workspaceId: "a103d8b6-42f0-4e50-9a3c-bf41e2c3c1a7",
   });
 
   console.log(result);
@@ -400,6 +407,7 @@ const openRouter = new OpenRouterCore({
 async function run() {
   const res = await filesDownload(openRouter, {
     fileId: "file_011CNha8iCJcU1wXNR6q4V8w",
+    workspaceId: "a103d8b6-42f0-4e50-9a3c-bf41e2c3c1a7",
   });
   if (res.ok) {
     const { value: result } = res;

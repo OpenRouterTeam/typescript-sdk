@@ -1,0 +1,19 @@
+# ResetInterval
+
+Interval at which spend resets. Null means a lifetime (one-time) budget.
+
+## Example Usage
+
+```typescript
+import { ResetInterval } from "@openrouter/sdk/models";
+
+let value: ResetInterval = "monthly";
+
+// Open enum: unrecognized values are captured as Unrecognized<string>
+```
+
+## Values
+
+```typescript
+"daily" | "weekly" | "monthly" | Unrecognized<string>
+```

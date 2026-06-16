@@ -497,6 +497,8 @@ const openRouter = new OpenRouter({
 async function run() {
   const result = await openRouter.guardrails.listGuardrailKeyAssignments({
     id: "550e8400-e29b-41d4-a716-446655440000",
+    offset: 0,
+    limit: 50,
   });
 
   for await (const page of result) {
@@ -527,6 +529,8 @@ const openRouter = new OpenRouterCore({
 async function run() {
   const res = await guardrailsListGuardrailKeyAssignments(openRouter, {
     id: "550e8400-e29b-41d4-a716-446655440000",
+    offset: 0,
+    limit: 50,
   });
   if (res.ok) {
     const { value: result } = res;
@@ -769,6 +773,8 @@ const openRouter = new OpenRouter({
 async function run() {
   const result = await openRouter.guardrails.listGuardrailMemberAssignments({
     id: "550e8400-e29b-41d4-a716-446655440000",
+    offset: 0,
+    limit: 50,
   });
 
   for await (const page of result) {
@@ -799,6 +805,8 @@ const openRouter = new OpenRouterCore({
 async function run() {
   const res = await guardrailsListGuardrailMemberAssignments(openRouter, {
     id: "550e8400-e29b-41d4-a716-446655440000",
+    offset: 0,
+    limit: 50,
   });
   if (res.ok) {
     const { value: result } = res;
