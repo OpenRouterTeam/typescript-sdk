@@ -1,6 +1,6 @@
 ![hero illustration](./assets/banner.png)
 
-# OpenRouter SDK (Beta)
+# OpenRouter SDK
 
 The [OpenRouter SDK](https://openrouter.ai/docs/sdks/typescript) is a TypeScript toolkit designed to help you build AI-powered features and solutions in any JS or TS based runtime. Giving you easy access to 400+ models across providers in an easy and type-safe way.
 
@@ -229,9 +229,3 @@ To run the test suite, you'll need to set up your environment with an OpenRouter
    ```bash
    npx vitest
    ```
-
-## Maturity
-
-This SDK is in beta, and there may be breaking changes between versions without a major version update. Therefore, we recommend pinning usage
-to a specific package version. This way, you can install the same version each time without breaking changes unless you are intentionally
-looking for the latest version.
