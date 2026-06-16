@@ -57,7 +57,7 @@ export type ChatWebSearchShorthand = {
    */
   maxCharacters?: number | undefined;
   /**
-   * Maximum number of search results to return per search call. Defaults to 5. Applies to Exa, Firecrawl, Parallel, and Perplexity engines; ignored with native provider search. Perplexity supports a maximum of 20; values above 20 are clamped.
+   * Maximum number of search results to return per search call. Defaults to 5. Applies to Exa, Firecrawl, Parallel, and Perplexity engines; ignored with native provider search.
    */
   maxResults?: number | undefined;
   /**
