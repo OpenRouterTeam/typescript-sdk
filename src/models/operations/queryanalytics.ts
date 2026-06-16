@@ -36,13 +36,13 @@ export type QueryAnalyticsGlobals = {
 export type Value2 = string | number;
 
 /**
- * Filter value (scalar or array depending on operator)
+ * Filter value (scalar or array depending on operator). Dimension-specific formats: `model` — permaslug (e.g. "openai/gpt-4o"); `provider` — provider slug (e.g. "openai"); `api_key_id` — numeric ID or key hash (64-char hex from GET /api/v1/keys); `user` — Clerk user ID (e.g. "user_abc123"); `workspace` — workspace UUID; `app` — numeric app ID (from generation responses); `external_user` — the end-user identifier you set via x-openrouter-external-user-id header; `country` — ISO 3166-1 alpha-2 code (e.g. "US"); `origin` — request origin URL.
  */
 export type Value1 = string | number | Array<string | number>;
 
 export type Filter = {
   /**
-   * Dimension to filter on
+   * Dimension to filter on. Supported dimensions: `model` (permaslug, e.g. "openai/gpt-4o"), `provider` (provider slug), `api_key_id` (numeric ID or 64-char key hash from the keys API), `user` (Clerk user ID, e.g. "user_..."), `workspace` (workspace UUID), `app` (numeric app ID), `variant` (model variant), `origin` (request origin URL), `country` (ISO country code), `finish_reason`, `context_length_bucket`, `external_user` (your end-user identifier), `generation_id`.
    */
   field: string;
   /**
@@ -50,7 +50,7 @@ export type Filter = {
    */
   operator: string;
   /**
-   * Filter value (scalar or array depending on operator)
+   * Filter value (scalar or array depending on operator). Dimension-specific formats: `model` — permaslug (e.g. "openai/gpt-4o"); `provider` — provider slug (e.g. "openai"); `api_key_id` — numeric ID or key hash (64-char hex from GET /api/v1/keys); `user` — Clerk user ID (e.g. "user_abc123"); `workspace` — workspace UUID; `app` — numeric app ID (from generation responses); `external_user` — the end-user identifier you set via x-openrouter-external-user-id header; `country` — ISO 3166-1 alpha-2 code (e.g. "US"); `origin` — request origin URL.
    */
   value: string | number | Array<string | number>;
 };
