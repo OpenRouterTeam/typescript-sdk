@@ -28,7 +28,7 @@ const openRouter = new OpenRouter({
 
 async function run() {
   const result = await openRouter.generations.getGeneration({
-    id: "<id>",
+    id: "gen-1234567890",
   });
 
   console.log(result);
@@ -56,7 +56,7 @@ const openRouter = new OpenRouterCore({
 
 async function run() {
   const res = await generationsGetGeneration(openRouter, {
-    id: "<id>",
+    id: "gen-1234567890",
   });
   if (res.ok) {
     const { value: result } = res;

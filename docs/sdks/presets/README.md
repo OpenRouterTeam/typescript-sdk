@@ -514,6 +514,8 @@ const openRouter = new OpenRouter({
 async function run() {
   const result = await openRouter.presets.listVersions({
     slug: "my-preset",
+    offset: 0,
+    limit: 50,
   });
 
   for await (const page of result) {
@@ -544,6 +546,8 @@ const openRouter = new OpenRouterCore({
 async function run() {
   const res = await presetsListVersions(openRouter, {
     slug: "my-preset",
+    offset: 0,
+    limit: 50,
   });
   if (res.ok) {
     const { value: result } = res;

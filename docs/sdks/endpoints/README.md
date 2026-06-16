@@ -104,8 +104,8 @@ const openRouter = new OpenRouter({
 
 async function run() {
   const result = await openRouter.endpoints.list({
-    author: "<value>",
-    slug: "<value>",
+    author: "openai",
+    slug: "gpt-4",
   });
 
   console.log(result);
@@ -133,8 +133,8 @@ const openRouter = new OpenRouterCore({
 
 async function run() {
   const res = await endpointsList(openRouter, {
-    author: "<value>",
-    slug: "<value>",
+    author: "openai",
+    slug: "gpt-4",
   });
   if (res.ok) {
     const { value: result } = res;
