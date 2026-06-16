@@ -7303,6 +7303,18 @@ components:
       required:
         - deleted
       type: object
+    DeleteWorkspaceBudgetResponse:
+      example:
+        deleted: true
+      properties:
+        deleted:
+          const: true
+          description: Confirmation that the budget was deleted (or did not exist)
+          example: true
+          type: boolean
+      required:
+        - deleted
+      type: object
     DeleteWorkspaceResponse:
       example:
         deleted: true
@@ -10371,6 +10383,24 @@ components:
       required:
         - data
         - total_count
+      type: object
+    ListWorkspaceBudgetsResponse:
+      example:
+        data:
+          - created_at: '2025-08-24T10:30:00Z'
+            id: 770e8400-e29b-41d4-a716-446655440000
+            limit_usd: 100
+            reset_interval: monthly
+            updated_at: '2025-08-24T15:45:00Z'
+            workspace_id: 550e8400-e29b-41d4-a716-446655440000
+      properties:
+        data:
+          description: List of budgets configured for the workspace
+          items:
+            $ref: '#/components/schemas/WorkspaceBudget'
+          type: array
+      required:
+        - data
       type: object
     ListWorkspacesResponse:
       example:
@@ -20903,6 +20933,35 @@ components:
       required:
         - data
       type: object
+    UpsertWorkspaceBudgetRequest:
+      example:
+        limit_usd: 100
+      properties:
+        limit_usd:
+          description: Spending limit in USD. Must be greater than 0.
+          example: 100
+          format: double
+          type: number
+      required:
+        - limit_usd
+      type: object
+    UpsertWorkspaceBudgetResponse:
+      example:
+        data:
+          created_at: '2025-08-24T10:30:00Z'
+          id: 770e8400-e29b-41d4-a716-446655440000
+          limit_usd: 100
+          reset_interval: monthly
+          updated_at: '2025-08-24T15:45:00Z'
+          workspace_id: 550e8400-e29b-41d4-a716-446655440000
+      properties:
+        data:
+          allOf:
+            - $ref: '#/components/schemas/WorkspaceBudget'
+            - description: The created or updated budget
+      required:
+        - data
+      type: object
     URLCitation:
       example:
         content: OpenRouter provides a unified API for accessing LLMs from multiple providers.
@@ -21882,6 +21941,65 @@ components:
         - updated_at
         - created_by
       type: object
+    WorkspaceBudget:
+      example:
+        created_at: '2025-08-24T10:30:00Z'
+        id: 770e8400-e29b-41d4-a716-446655440000
+        limit_usd: 100
+        reset_interval: monthly
+        updated_at: '2025-08-24T15:45:00Z'
+        workspace_id: 550e8400-e29b-41d4-a716-446655440000
+      properties:
+        created_at:
+          description: ISO 8601 timestamp of when the budget was created
+          example: '2025-08-24T10:30:00Z'
+          type: string
+        id:
+          description: Unique identifier for the budget
+          example: 770e8400-e29b-41d4-a716-446655440000
+          format: uuid
+          type: string
+        limit_usd:
+          description: Spending limit in USD for this interval
+          example: 100
+          format: double
+          type: number
+        reset_interval:
+          description: Interval at which spend resets. Null means a lifetime (one-time) budget.
+          enum:
+            - daily
+            - weekly
+            - monthly
+            - null
+          example: monthly
+          nullable: true
+          type: string
+        updated_at:
+          description: ISO 8601 timestamp of when the budget was last updated
+          example: '2025-08-24T15:45:00Z'
+          type: string
+        workspace_id:
+          description: ID of the workspace the budget belongs to
+          example: 550e8400-e29b-41d4-a716-446655440000
+          format: uuid
+          type: string
+      required:
+        - id
+        - workspace_id
+        - limit_usd
+        - reset_interval
+        - created_at
+        - updated_at
+      type: object
+    WorkspaceBudgetInterval:
+      description: Budget reset interval. Use "lifetime" for a one-time budget that never resets.
+      enum:
+        - daily
+        - weekly
+        - monthly
+        - lifetime
+      example: monthly
+      type: string
     WorkspaceMember:
       example:
         created_at: '2025-08-24T10:30:00Z'
@@ -32185,6 +32303,227 @@ paths:
       tags:
         - Workspaces
       x-speakeasy-name-override: update
+  /workspaces/{id}/budgets:
+    get:
+      description: >-
+        List all budgets configured for a workspace. [Management key](/docs/guides/overview/auth/management-api-keys)
+        required.
+      operationId: listWorkspaceBudgets
+      parameters:
+        - description: The workspace ID (UUID) or slug
+          in: path
+          name: id
+          required: true
+          schema:
+            description: The workspace ID (UUID) or slug
+            example: production
+            minLength: 1
+            type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              example:
+                data:
+                  - created_at: '2025-08-24T10:30:00Z'
+                    id: 770e8400-e29b-41d4-a716-446655440000
+                    limit_usd: 100
+                    reset_interval: monthly
+                    updated_at: '2025-08-24T15:45:00Z'
+                    workspace_id: 550e8400-e29b-41d4-a716-446655440000
+              schema:
+                $ref: '#/components/schemas/ListWorkspaceBudgetsResponse'
+          description: Budgets retrieved successfully
+        '401':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 401
+                  message: Missing Authentication header
+              schema:
+                $ref: '#/components/schemas/UnauthorizedResponse'
+          description: Unauthorized - Authentication required or invalid credentials
+        '404':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 404
+                  message: Resource not found
+              schema:
+                $ref: '#/components/schemas/NotFoundResponse'
+          description: Not Found - Resource does not exist
+        '500':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 500
+                  message: Internal Server Error
+              schema:
+                $ref: '#/components/schemas/InternalServerResponse'
+          description: Internal Server Error - Unexpected server error
+      summary: List workspace budgets
+      tags:
+        - Workspaces
+      x-speakeasy-name-override: listBudgets
+  /workspaces/{id}/budgets/{interval}:
+    delete:
+      description: >-
+        Remove the budget for a given interval. [Management key](/docs/guides/overview/auth/management-api-keys)
+        required.
+      operationId: deleteWorkspaceBudget
+      parameters:
+        - description: The workspace ID (UUID) or slug
+          in: path
+          name: id
+          required: true
+          schema:
+            description: The workspace ID (UUID) or slug
+            example: production
+            minLength: 1
+            type: string
+        - description: Budget reset interval. Use "lifetime" for a one-time budget that never resets.
+          example: monthly
+          in: path
+          name: interval
+          required: true
+          schema:
+            $ref: '#/components/schemas/WorkspaceBudgetInterval'
+      responses:
+        '200':
+          content:
+            application/json:
+              example:
+                deleted: true
+              schema:
+                $ref: '#/components/schemas/DeleteWorkspaceBudgetResponse'
+          description: Budget deleted successfully
+        '401':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 401
+                  message: Missing Authentication header
+              schema:
+                $ref: '#/components/schemas/UnauthorizedResponse'
+          description: Unauthorized - Authentication required or invalid credentials
+        '404':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 404
+                  message: Resource not found
+              schema:
+                $ref: '#/components/schemas/NotFoundResponse'
+          description: Not Found - Resource does not exist
+        '500':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 500
+                  message: Internal Server Error
+              schema:
+                $ref: '#/components/schemas/InternalServerResponse'
+          description: Internal Server Error - Unexpected server error
+      summary: Delete a workspace budget
+      tags:
+        - Workspaces
+      x-speakeasy-name-override: deleteBudget
+    put:
+      description: >-
+        Create or update the budget for a given interval. Budget limits must strictly decrease as the interval narrows
+        (lifetime > monthly > weekly > daily). [Management key](/docs/guides/overview/auth/management-api-keys)
+        required.
+      operationId: upsertWorkspaceBudget
+      parameters:
+        - description: The workspace ID (UUID) or slug
+          in: path
+          name: id
+          required: true
+          schema:
+            description: The workspace ID (UUID) or slug
+            example: production
+            minLength: 1
+            type: string
+        - description: Budget reset interval. Use "lifetime" for a one-time budget that never resets.
+          example: monthly
+          in: path
+          name: interval
+          required: true
+          schema:
+            $ref: '#/components/schemas/WorkspaceBudgetInterval'
+      requestBody:
+        content:
+          application/json:
+            example:
+              limit_usd: 100
+            schema:
+              $ref: '#/components/schemas/UpsertWorkspaceBudgetRequest'
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              example:
+                data:
+                  created_at: '2025-08-24T10:30:00Z'
+                  id: 770e8400-e29b-41d4-a716-446655440000
+                  limit_usd: 100
+                  reset_interval: monthly
+                  updated_at: '2025-08-24T15:45:00Z'
+                  workspace_id: 550e8400-e29b-41d4-a716-446655440000
+              schema:
+                $ref: '#/components/schemas/UpsertWorkspaceBudgetResponse'
+          description: Budget created or updated successfully
+        '400':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 400
+                  message: Invalid request parameters
+              schema:
+                $ref: '#/components/schemas/BadRequestResponse'
+          description: Bad Request - Invalid request parameters or malformed input
+        '401':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 401
+                  message: Missing Authentication header
+              schema:
+                $ref: '#/components/schemas/UnauthorizedResponse'
+          description: Unauthorized - Authentication required or invalid credentials
+        '404':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 404
+                  message: Resource not found
+              schema:
+                $ref: '#/components/schemas/NotFoundResponse'
+          description: Not Found - Resource does not exist
+        '500':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 500
+                  message: Internal Server Error
+              schema:
+                $ref: '#/components/schemas/InternalServerResponse'
+          description: Internal Server Error - Unexpected server error
+      summary: Create or update a workspace budget
+      tags:
+        - Workspaces
+      x-speakeasy-name-override: setBudget
   /workspaces/{id}/members/add:
     post:
       description: >-
