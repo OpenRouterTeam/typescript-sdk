@@ -1,0 +1,81 @@
+name: Auto-merge Speakeasy PR
+
+# Speakeasy mode:pr opens PRs (speakeasy-sdk-regen-*) and labels them
+# patch/minor/major. Merge automatically so sdk_publish.yaml can run.
+
+on:
+  pull_request:
+    types: [labeled]
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  auto-merge:
+    if: |
+      github.event.sender.login == 'github-actions[bot]' &&
+      github.event.pull_request.user.login == 'github-actions[bot]' &&
+      startsWith(github.event.pull_request.head.ref, 'speakeasy-sdk-regen-') &&
+      contains(github.event.pull_request.title, '🐝 Update SDK') &&
+      contains(fromJSON('["patch", "minor", "major"]'), github.event.label.name)
+    runs-on: ubuntu-latest
+    steps:
+      - name: Close superseded Speakeasy PRs
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          set -euo pipefail
+          CURRENT_PR="${{ github.event.pull_request.number }}"
+
+          PRIOR_JSON=$(gh pr list \
+            --repo "${{ github.repository }}" \
+            --state open \
+            --search "head:speakeasy-sdk-regen-" \
+            --limit 500 \
+            --json number \
+            --jq --arg current "$CURRENT_PR" '[.[].number | select(tostring != $current)] | .[]')
+
+          if [ -z "$PRIOR_JSON" ]; then
+            echo "No superseded Speakeasy PRs to close"
+            exit 0
+          fi
+
+          mapfile -t PRIOR <<< "$PRIOR_JSON"
+
+          echo "Closing ${#PRIOR[@]} superseded Speakeasy PR(s)"
+          for N in "${PRIOR[@]}"; do
+            gh pr close "$N" --repo "${{ github.repository }}" --delete-branch \
+              --comment "Superseded by newer Speakeasy SDK generation PR #${CURRENT_PR}" \
+              || echo "::warning::Failed to close PR #$N (continuing)"
+            sleep 1
+          done
+
+      - name: Auto-merge Speakeasy PR
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          set -euo pipefail
+          PR_NUM="${{ github.event.pull_request.number }}"
+          REPO="${{ github.repository }}"
+
+          STATE=$(gh pr view "$PR_NUM" --repo "$REPO" --json state --jq .state)
+          if [ "$STATE" != "OPEN" ]; then
+            echo "PR #$PR_NUM is $STATE — skipping merge"
+            exit 0
+          fi
+
+          # Prefer GitHub auto-merge when required checks exist; otherwise
+          # squash-merge directly (same pattern as sdk-release-prs.yaml).
+          AUTO_MERGE_NOOP_PATTERN='is in clean status|protected branch rules|Branch does not have required protected branch rules'
+          if gh pr merge "$PR_NUM" --repo "$REPO" --squash --auto --delete-branch 2> /tmp/gh-merge.err; then
+            echo "Auto-merge enabled for Speakeasy PR #$PR_NUM"
+          elif grep -qiE "$AUTO_MERGE_NOOP_PATTERN" /tmp/gh-merge.err; then
+            echo "Auto-merge not applicable — merging PR #$PR_NUM directly"
+            cat /tmp/gh-merge.err >&2
+            gh pr merge "$PR_NUM" --repo "$REPO" --squash --delete-branch
+          else
+            echo "::error::Failed to enable auto-merge on Speakeasy PR #$PR_NUM"
+            cat /tmp/gh-merge.err >&2
+            exit 1
+          fi
