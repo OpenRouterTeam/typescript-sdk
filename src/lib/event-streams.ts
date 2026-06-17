@@ -25,22 +25,45 @@ export class EventStream<T> extends ReadableStream<T> {
     opts?: { dataRequired?: boolean },
   ) {
     const upstream = responseBody.getReader();
-    let buffer: Uint8Array = new Uint8Array();
+    let buffer: Uint8Array = new Uint8Array(4096);
+    let bufferLen = 0;
+    let searchStart = 0;
     const state = { eventId: undefined as string | undefined };
     const dataRequired = opts?.dataRequired ?? true;
     super({
       async pull(downstream) {
         try {
           while (true) {
-            const match = findBoundary(buffer);
+            const match = findBoundary(buffer, bufferLen, searchStart);
             if (!match) {
+              // Bytes before the trailing MAX_BOUNDARY_LEN-1 were already
+              // scanned with full lookahead and cannot start a boundary even
+              // once more data arrives, so the next scan can skip them.
+              searchStart = Math.max(0, bufferLen - MAX_BOUNDARY_LEN + 1);
               const chunk = await upstream.read();
               if (chunk.done) return downstream.close();
-              buffer = concatBuffer(buffer, chunk.value);
+              if (bufferLen + chunk.value.length > buffer.length) {
+                const grown = new Uint8Array(
+                  Math.max(buffer.length * 2, bufferLen + chunk.value.length),
+                );
+                grown.set(buffer.subarray(0, bufferLen));
+                buffer = grown;
+              }
+              buffer.set(chunk.value, bufferLen);
+              bufferLen += chunk.value.length;
               continue;
             }
             const message = buffer.slice(0, match.index);
-            buffer = buffer.slice(match.index + match.length);
+            buffer.copyWithin(0, match.index + match.length, bufferLen);
+            bufferLen -= match.index + match.length;
+            if (buffer.length > 4096 && bufferLen <= buffer.length >> 2) {
+              // Release oversized capacity retained after an unusually large
+              // event so long-lived streams do not hold peak memory.
+              const shrunk = new Uint8Array(Math.max(4096, bufferLen * 2));
+              shrunk.set(buffer.subarray(0, bufferLen));
+              buffer = shrunk;
+            }
+            searchStart = 0;
             const item = parseMessage(message, parse, state, dataRequired);
             if (item && !item.done) return downstream.enqueue(item.value);
             if (item?.done) {
@@ -88,13 +111,6 @@ export class EventStream<T> extends ReadableStream<T> {
   }
 }
 
-function concatBuffer(a: Uint8Array, b: Uint8Array): Uint8Array {
-  const c = new Uint8Array(a.length + b.length);
-  c.set(a, 0);
-  c.set(b, a.length);
-  return c;
-}
-
 const CR = 13;
 const LF = 10;
 const BOUNDARIES = [
@@ -107,12 +123,14 @@ const BOUNDARIES = [
   [LF, CR], // \n\r
   [LF, LF], // \n\n
 ];
+const MAX_BOUNDARY_LEN = BOUNDARIES.reduce((m, b) => Math.max(m, b.length), 0);
 
 function findBoundary(
   buf: Uint8Array,
+  len: number,
+  from: number,
 ): { index: number; length: number } | null {
-  const len = buf.length;
-  for (let i = 0; i < len; i++) {
+  for (let i = from; i < len; i++) {
     if (buf[i] !== CR && buf[i] !== LF) continue;
     for (const boundary of BOUNDARIES) {
       if (i + boundary.length > len) continue;
