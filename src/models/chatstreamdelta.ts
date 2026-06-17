@@ -16,6 +16,10 @@ import {
   ChatStreamToolCall,
   ChatStreamToolCall$inboundSchema,
 } from "./chatstreamtoolcall.js";
+import {
+  ContentPartImage,
+  ContentPartImage$inboundSchema,
+} from "./contentpartimage.js";
 import { SDKValidationError } from "./errors/sdkvalidationerror.js";
 import {
   ReasoningDetailUnion,
@@ -42,6 +46,10 @@ export type ChatStreamDelta = {
    * Message content delta
    */
   content?: string | null | undefined;
+  /**
+   * Generated images from image generation models
+   */
+  images?: Array<ContentPartImage> | undefined;
   /**
    * Reasoning content delta
    */
@@ -76,6 +84,7 @@ export const ChatStreamDelta$inboundSchema: z.ZodType<
 > = z.object({
   audio: ChatAudioOutput$inboundSchema.optional(),
   content: z.nullable(z.string()).optional(),
+  images: z.array(ContentPartImage$inboundSchema).optional(),
   reasoning: z.nullable(z.string()).optional(),
   reasoning_details: z.array(ReasoningDetailUnion$inboundSchema).optional(),
   refusal: z.nullable(z.string()).optional(),

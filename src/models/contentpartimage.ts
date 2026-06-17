@@ -5,16 +5,32 @@
 
 import * as z from "zod/v4";
 import { remap as remap$ } from "../lib/primitives.js";
+import { safeParse } from "../lib/schemas.js";
+import { ClosedEnum } from "../types/enums.js";
+import { Result as SafeParseResult } from "../types/fp.js";
+import { SDKValidationError } from "./errors/sdkvalidationerror.js";
 
 export type ContentPartImageImageUrl = {
   url: string;
 };
 
+export const ContentPartImageType = {
+  ImageUrl: "image_url",
+} as const;
+export type ContentPartImageType = ClosedEnum<typeof ContentPartImageType>;
+
 export type ContentPartImage = {
   imageUrl: ContentPartImageImageUrl;
-  type: "image_url";
+  type: ContentPartImageType;
 };
 
+/** @internal */
+export const ContentPartImageImageUrl$inboundSchema: z.ZodType<
+  ContentPartImageImageUrl,
+  unknown
+> = z.object({
+  url: z.string(),
+});
 /** @internal */
 export type ContentPartImageImageUrl$Outbound = {
   url: string;
@@ -35,11 +51,41 @@ export function contentPartImageImageUrlToJSON(
     ContentPartImageImageUrl$outboundSchema.parse(contentPartImageImageUrl),
   );
 }
+export function contentPartImageImageUrlFromJSON(
+  jsonString: string,
+): SafeParseResult<ContentPartImageImageUrl, SDKValidationError> {
+  return safeParse(
+    jsonString,
+    (x) => ContentPartImageImageUrl$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'ContentPartImageImageUrl' from JSON`,
+  );
+}
 
+/** @internal */
+export const ContentPartImageType$inboundSchema: z.ZodEnum<
+  typeof ContentPartImageType
+> = z.enum(ContentPartImageType);
+/** @internal */
+export const ContentPartImageType$outboundSchema: z.ZodEnum<
+  typeof ContentPartImageType
+> = ContentPartImageType$inboundSchema;
+
+/** @internal */
+export const ContentPartImage$inboundSchema: z.ZodType<
+  ContentPartImage,
+  unknown
+> = z.object({
+  image_url: z.lazy(() => ContentPartImageImageUrl$inboundSchema),
+  type: ContentPartImageType$inboundSchema,
+}).transform((v) => {
+  return remap$(v, {
+    "image_url": "imageUrl",
+  });
+});
 /** @internal */
 export type ContentPartImage$Outbound = {
   image_url: ContentPartImageImageUrl$Outbound;
-  type: "image_url";
+  type: string;
 };
 
 /** @internal */
@@ -48,7 +94,7 @@ export const ContentPartImage$outboundSchema: z.ZodType<
   ContentPartImage
 > = z.object({
   imageUrl: z.lazy(() => ContentPartImageImageUrl$outboundSchema),
-  type: z.literal("image_url"),
+  type: ContentPartImageType$outboundSchema,
 }).transform((v) => {
   return remap$(v, {
     imageUrl: "image_url",
@@ -60,5 +106,14 @@ export function contentPartImageToJSON(
 ): string {
   return JSON.stringify(
     ContentPartImage$outboundSchema.parse(contentPartImage),
+  );
+}
+export function contentPartImageFromJSON(
+  jsonString: string,
+): SafeParseResult<ContentPartImage, SDKValidationError> {
+  return safeParse(
+    jsonString,
+    (x) => ContentPartImage$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'ContentPartImage' from JSON`,
   );
 }
