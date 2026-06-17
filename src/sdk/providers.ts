@@ -3,6 +3,7 @@
  * @generated-id: fb8faa7013d0
  */
 
+import { providersGetProviderStatusCodes } from "../funcs/providersGetProviderStatusCodes.js";
 import { providersList } from "../funcs/providersList.js";
 import { ClientSDK, RequestOptions } from "../lib/sdks.js";
 import * as operations from "../models/operations/index.js";
@@ -17,6 +18,23 @@ export class Providers extends ClientSDK {
     options?: RequestOptions,
   ): Promise<operations.ListProvidersResponse> {
     return unwrapAsync(providersList(
+      this,
+      request,
+      options,
+    ));
+  }
+
+  /**
+   * Get hourly response status code breakdown per endpoint for a provider
+   *
+   * @remarks
+   * Returns response status codes per endpoint for a provider, bucketed by hour (or day for longer windows). Includes model permaslug for each endpoint.
+   */
+  async getProviderStatusCodes(
+    request: operations.GetProviderStatusCodesRequest,
+    options?: RequestOptions,
+  ): Promise<operations.GetProviderStatusCodesResponse> {
+    return unwrapAsync(providersGetProviderStatusCodes(
       this,
       request,
       options,
