@@ -11,6 +11,10 @@ permissions:
   contents: write
   pull-requests: write
 
+concurrency:
+  group: auto-merge-speakeasy
+  cancel-in-progress: false
+
 jobs:
   auto-merge:
     if: |
@@ -34,7 +38,8 @@ jobs:
             --search "head:speakeasy-sdk-regen-" \
             --limit 500 \
             --json number \
-            --jq --arg current "$CURRENT_PR" '[.[].number | select(tostring != $current)] | .[]')
+            | jq -r --arg cur "$CURRENT_PR" \
+              '[.[].number | select(tostring != $cur)] | .[]')
 
           if [ -z "$PRIOR_JSON" ]; then
             echo "No superseded Speakeasy PRs to close"
