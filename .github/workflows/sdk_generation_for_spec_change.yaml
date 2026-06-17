@@ -28,7 +28,7 @@ jobs:
     uses: speakeasy-api/sdk-generation-action/.github/workflows/workflow-executor.yaml@v15
     with:
       force: ${{ github.event.inputs.force }}
-      mode: direct
+      mode: pr
       pnpm_version: "10.22.0"
       set_version: ${{ github.event.inputs.set_version }}
     secrets:
