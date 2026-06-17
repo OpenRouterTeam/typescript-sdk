@@ -7,11 +7,8 @@ import { workspacesBulkAddMembers } from "../funcs/workspacesBulkAddMembers.js";
 import { workspacesBulkRemoveMembers } from "../funcs/workspacesBulkRemoveMembers.js";
 import { workspacesCreate } from "../funcs/workspacesCreate.js";
 import { workspacesDelete } from "../funcs/workspacesDelete.js";
-import { workspacesDeleteBudget } from "../funcs/workspacesDeleteBudget.js";
 import { workspacesGet } from "../funcs/workspacesGet.js";
 import { workspacesList } from "../funcs/workspacesList.js";
-import { workspacesListBudgets } from "../funcs/workspacesListBudgets.js";
-import { workspacesSetBudget } from "../funcs/workspacesSetBudget.js";
 import { workspacesUpdate } from "../funcs/workspacesUpdate.js";
 import { ClientSDK, RequestOptions } from "../lib/sdks.js";
 import * as models from "../models/index.js";
@@ -101,57 +98,6 @@ export class Workspaces extends ClientSDK {
     options?: RequestOptions,
   ): Promise<models.UpdateWorkspaceResponse> {
     return unwrapAsync(workspacesUpdate(
-      this,
-      request,
-      options,
-    ));
-  }
-
-  /**
-   * List workspace budgets
-   *
-   * @remarks
-   * List all budgets configured for a workspace. [Management key](/docs/guides/overview/auth/management-api-keys) required.
-   */
-  async listBudgets(
-    request: operations.ListWorkspaceBudgetsRequest,
-    options?: RequestOptions,
-  ): Promise<models.ListWorkspaceBudgetsResponse> {
-    return unwrapAsync(workspacesListBudgets(
-      this,
-      request,
-      options,
-    ));
-  }
-
-  /**
-   * Delete a workspace budget
-   *
-   * @remarks
-   * Remove the budget for a given interval. [Management key](/docs/guides/overview/auth/management-api-keys) required.
-   */
-  async deleteBudget(
-    request: operations.DeleteWorkspaceBudgetRequest,
-    options?: RequestOptions,
-  ): Promise<models.DeleteWorkspaceBudgetResponse> {
-    return unwrapAsync(workspacesDeleteBudget(
-      this,
-      request,
-      options,
-    ));
-  }
-
-  /**
-   * Create or update a workspace budget
-   *
-   * @remarks
-   * Create or update the budget for a given interval. Budget limits must strictly decrease as the interval narrows (lifetime > monthly > weekly > daily). [Management key](/docs/guides/overview/auth/management-api-keys) required.
-   */
-  async setBudget(
-    request: operations.UpsertWorkspaceBudgetRequest,
-    options?: RequestOptions,
-  ): Promise<models.UpsertWorkspaceBudgetResponse> {
-    return unwrapAsync(workspacesSetBudget(
       this,
       request,
       options,
