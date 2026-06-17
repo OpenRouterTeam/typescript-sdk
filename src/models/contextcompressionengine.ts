@@ -4,22 +4,25 @@
  */
 
 import * as z from "zod/v4";
-import { ClosedEnum } from "../types/enums.js";
+import * as openEnums from "../types/enums.js";
+import { OpenEnum } from "../types/enums.js";
 
 /**
  * The compression engine to use. Defaults to "middle-out".
  */
 export const ContextCompressionEngine = {
   MiddleOut: "middle-out",
+  Headroom: "headroom",
 } as const;
 /**
  * The compression engine to use. Defaults to "middle-out".
  */
-export type ContextCompressionEngine = ClosedEnum<
+export type ContextCompressionEngine = OpenEnum<
   typeof ContextCompressionEngine
 >;
 
 /** @internal */
-export const ContextCompressionEngine$outboundSchema: z.ZodEnum<
-  typeof ContextCompressionEngine
-> = z.enum(ContextCompressionEngine);
+export const ContextCompressionEngine$outboundSchema: z.ZodType<
+  string,
+  ContextCompressionEngine
+> = openEnums.outboundSchema(ContextCompressionEngine);
