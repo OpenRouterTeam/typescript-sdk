@@ -4,6 +4,7 @@
  */
 
 import * as z from "zod/v4";
+import { remap as remap$ } from "../lib/primitives.js";
 import {
   ContextCompressionEngine,
   ContextCompressionEngine$outboundSchema,
@@ -18,6 +19,10 @@ export type ContextCompressionPlugin = {
    * The compression engine to use. Defaults to "middle-out".
    */
   engine?: ContextCompressionEngine | undefined;
+  /**
+   * Base URL of a running Headroom proxy (e.g. "http://localhost:8787"). Required when engine is "headroom".
+   */
+  headroomBaseUrl?: string | undefined;
   id: "context-compression";
 };
 
@@ -25,6 +30,7 @@ export type ContextCompressionPlugin = {
 export type ContextCompressionPlugin$Outbound = {
   enabled?: boolean | undefined;
   engine?: string | undefined;
+  headroom_base_url?: string | undefined;
   id: "context-compression";
 };
 
@@ -35,7 +41,12 @@ export const ContextCompressionPlugin$outboundSchema: z.ZodType<
 > = z.object({
   enabled: z.boolean().optional(),
   engine: ContextCompressionEngine$outboundSchema.optional(),
+  headroomBaseUrl: z.string().optional(),
   id: z.literal("context-compression"),
+}).transform((v) => {
+  return remap$(v, {
+    headroomBaseUrl: "headroom_base_url",
+  });
 });
 
 export function contextCompressionPluginToJSON(
