@@ -351,6 +351,15 @@ const value: models.OutputSubagentServerToolItem = {
 };
 ```
 
+### `models.OutputSkillServerToolItem`
+
+```typescript
+const value: models.OutputSkillServerToolItem = {
+  status: "completed",
+  type: "openrouter:skill",
+};
+```
+
 ### `models.LocalShellCallItem`
 
 ```typescript
