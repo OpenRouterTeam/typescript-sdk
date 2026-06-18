@@ -55,6 +55,24 @@ export type PromptTokensDetails = {
 };
 
 /**
+ * Usage for server-side tool execution (e.g., web search)
+ */
+export type ServerToolUseDetails = {
+  /**
+   * Number of OpenRouter server tool calls that executed and produced a result
+   */
+  toolCallsExecuted?: number | null | undefined;
+  /**
+   * Total number of OpenRouter server tool calls the model requested, across all tool types (including web search).
+   */
+  toolCallsRequested?: number | null | undefined;
+  /**
+   * Number of web searches performed by server-side tools. These are a subset of tool_calls_requested (a web search increments both), so do not sum the two.
+   */
+  webSearchRequests?: number | null | undefined;
+};
+
+/**
  * Token usage statistics
  */
 export type ChatUsage = {
@@ -86,6 +104,10 @@ export type ChatUsage = {
    * Detailed prompt token usage
    */
   promptTokensDetails?: PromptTokensDetails | null | undefined;
+  /**
+   * Usage for server-side tool execution (e.g., web search)
+   */
+  serverToolUseDetails?: ServerToolUseDetails | null | undefined;
   /**
    * Total number of tokens
    */
@@ -149,6 +171,32 @@ export function promptTokensDetailsFromJSON(
 }
 
 /** @internal */
+export const ServerToolUseDetails$inboundSchema: z.ZodType<
+  ServerToolUseDetails,
+  unknown
+> = z.object({
+  tool_calls_executed: z.nullable(z.int()).optional(),
+  tool_calls_requested: z.nullable(z.int()).optional(),
+  web_search_requests: z.nullable(z.int()).optional(),
+}).transform((v) => {
+  return remap$(v, {
+    "tool_calls_executed": "toolCallsExecuted",
+    "tool_calls_requested": "toolCallsRequested",
+    "web_search_requests": "webSearchRequests",
+  });
+});
+
+export function serverToolUseDetailsFromJSON(
+  jsonString: string,
+): SafeParseResult<ServerToolUseDetails, SDKValidationError> {
+  return safeParse(
+    jsonString,
+    (x) => ServerToolUseDetails$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'ServerToolUseDetails' from JSON`,
+  );
+}
+
+/** @internal */
 export const ChatUsage$inboundSchema: z.ZodType<ChatUsage, unknown> = z.object({
   completion_tokens: z.int(),
   completion_tokens_details: z.nullable(
@@ -161,6 +209,9 @@ export const ChatUsage$inboundSchema: z.ZodType<ChatUsage, unknown> = z.object({
   prompt_tokens_details: z.nullable(
     z.lazy(() => PromptTokensDetails$inboundSchema),
   ).optional(),
+  server_tool_use_details: z.nullable(
+    z.lazy(() => ServerToolUseDetails$inboundSchema),
+  ).optional(),
   total_tokens: z.int(),
 }).transform((v) => {
   return remap$(v, {
@@ -170,6 +221,7 @@ export const ChatUsage$inboundSchema: z.ZodType<ChatUsage, unknown> = z.object({
     "is_byok": "isByok",
     "prompt_tokens": "promptTokens",
     "prompt_tokens_details": "promptTokensDetails",
+    "server_tool_use_details": "serverToolUseDetails",
     "total_tokens": "totalTokens",
   });
 });
