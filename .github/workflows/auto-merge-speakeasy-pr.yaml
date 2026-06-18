@@ -38,8 +38,8 @@ jobs:
             --search "head:speakeasy-sdk-regen-" \
             --limit 500 \
             --json number \
-            | jq -r --arg cur "$CURRENT_PR" \
-              '[.[].number | select(tostring != $cur)] | .[]')
+            | jq -r --arg current_pr "$CURRENT_PR" \
+              '[.[].number | select(tostring != $current_pr)] | .[]')
 
           if [ -z "$PRIOR_JSON" ]; then
             echo "No superseded Speakeasy PRs to close"
