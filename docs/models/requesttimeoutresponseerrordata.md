@@ -15,8 +15,8 @@ let value: RequestTimeoutResponseErrorData = {
 
 ## Fields
 
-| Field                 | Type                  | Required              | Description           |
-| --------------------- | --------------------- | --------------------- | --------------------- |
-| `code`                | *number*              | :heavy_check_mark:    | N/A                   |
-| `message`             | *string*              | :heavy_check_mark:    | N/A                   |
-| `metadata`            | Record<string, *any*> | :heavy_minus_sign:    | N/A                   |
+| Field                                                                                                  | Type                                                                                                   | Required                                                                                               | Description                                                                                            |
+| ------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------ |
+| `code`                                                                                                 | *number*                                                                                               | :heavy_check_mark:                                                                                     | N/A                                                                                                    |
+| `message`                                                                                              | *string*                                                                                               | :heavy_check_mark:                                                                                     | N/A                                                                                                    |
+| `metadata`                                                                                             | [models.RequestTimeoutResponseErrorDataMetadata](../models/requesttimeoutresponseerrordatametadata.md) | :heavy_minus_sign:                                                                                     | N/A                                                                                                    |

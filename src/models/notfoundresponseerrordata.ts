@@ -4,9 +4,22 @@
  */
 
 import * as z from "zod/v4";
-import { safeParse } from "../lib/schemas.js";
+import { remap as remap$ } from "../lib/primitives.js";
+import {
+  collectExtraKeys as collectExtraKeys$,
+  safeParse,
+} from "../lib/schemas.js";
 import { Result as SafeParseResult } from "../types/fp.js";
+import { ApiErrorType, ApiErrorType$inboundSchema } from "./apierrortype.js";
 import { SDKValidationError } from "./errors/sdkvalidationerror.js";
+
+export type NotFoundResponseErrorDataMetadata = {
+  /**
+   * Canonical OpenRouter error type, stable across all API formats
+   */
+  errorType?: ApiErrorType | undefined;
+  additionalProperties?: { [k: string]: any | null } | undefined;
+};
 
 /**
  * Error data for NotFoundResponse
@@ -14,8 +27,34 @@ import { SDKValidationError } from "./errors/sdkvalidationerror.js";
 export type NotFoundResponseErrorData = {
   code: number;
   message: string;
-  metadata?: { [k: string]: any | null } | null | undefined;
+  metadata?: NotFoundResponseErrorDataMetadata | null | undefined;
 };
+
+/** @internal */
+export const NotFoundResponseErrorDataMetadata$inboundSchema: z.ZodType<
+  NotFoundResponseErrorDataMetadata,
+  unknown
+> = collectExtraKeys$(
+  z.object({
+    error_type: ApiErrorType$inboundSchema.optional(),
+  }).catchall(z.any()),
+  "additionalProperties",
+  true,
+).transform((v) => {
+  return remap$(v, {
+    "error_type": "errorType",
+  });
+});
+
+export function notFoundResponseErrorDataMetadataFromJSON(
+  jsonString: string,
+): SafeParseResult<NotFoundResponseErrorDataMetadata, SDKValidationError> {
+  return safeParse(
+    jsonString,
+    (x) => NotFoundResponseErrorDataMetadata$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'NotFoundResponseErrorDataMetadata' from JSON`,
+  );
+}
 
 /** @internal */
 export const NotFoundResponseErrorData$inboundSchema: z.ZodType<
@@ -24,7 +63,9 @@ export const NotFoundResponseErrorData$inboundSchema: z.ZodType<
 > = z.object({
   code: z.int(),
   message: z.string(),
-  metadata: z.nullable(z.record(z.string(), z.nullable(z.any()))).optional(),
+  metadata: z.nullable(
+    z.lazy(() => NotFoundResponseErrorDataMetadata$inboundSchema),
+  ).optional(),
 });
 
 export function notFoundResponseErrorDataFromJSON(

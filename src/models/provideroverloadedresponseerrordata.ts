@@ -4,9 +4,22 @@
  */
 
 import * as z from "zod/v4";
-import { safeParse } from "../lib/schemas.js";
+import { remap as remap$ } from "../lib/primitives.js";
+import {
+  collectExtraKeys as collectExtraKeys$,
+  safeParse,
+} from "../lib/schemas.js";
 import { Result as SafeParseResult } from "../types/fp.js";
+import { ApiErrorType, ApiErrorType$inboundSchema } from "./apierrortype.js";
 import { SDKValidationError } from "./errors/sdkvalidationerror.js";
+
+export type ProviderOverloadedResponseErrorDataMetadata = {
+  /**
+   * Canonical OpenRouter error type, stable across all API formats
+   */
+  errorType?: ApiErrorType | undefined;
+  additionalProperties?: { [k: string]: any | null } | undefined;
+};
 
 /**
  * Error data for ProviderOverloadedResponse
@@ -14,8 +27,39 @@ import { SDKValidationError } from "./errors/sdkvalidationerror.js";
 export type ProviderOverloadedResponseErrorData = {
   code: number;
   message: string;
-  metadata?: { [k: string]: any | null } | null | undefined;
+  metadata?: ProviderOverloadedResponseErrorDataMetadata | null | undefined;
 };
+
+/** @internal */
+export const ProviderOverloadedResponseErrorDataMetadata$inboundSchema:
+  z.ZodType<ProviderOverloadedResponseErrorDataMetadata, unknown> =
+    collectExtraKeys$(
+      z.object({
+        error_type: ApiErrorType$inboundSchema.optional(),
+      }).catchall(z.any()),
+      "additionalProperties",
+      true,
+    ).transform((v) => {
+      return remap$(v, {
+        "error_type": "errorType",
+      });
+    });
+
+export function providerOverloadedResponseErrorDataMetadataFromJSON(
+  jsonString: string,
+): SafeParseResult<
+  ProviderOverloadedResponseErrorDataMetadata,
+  SDKValidationError
+> {
+  return safeParse(
+    jsonString,
+    (x) =>
+      ProviderOverloadedResponseErrorDataMetadata$inboundSchema.parse(
+        JSON.parse(x),
+      ),
+    `Failed to parse 'ProviderOverloadedResponseErrorDataMetadata' from JSON`,
+  );
+}
 
 /** @internal */
 export const ProviderOverloadedResponseErrorData$inboundSchema: z.ZodType<
@@ -24,7 +68,9 @@ export const ProviderOverloadedResponseErrorData$inboundSchema: z.ZodType<
 > = z.object({
   code: z.int(),
   message: z.string(),
-  metadata: z.nullable(z.record(z.string(), z.nullable(z.any()))).optional(),
+  metadata: z.nullable(
+    z.lazy(() => ProviderOverloadedResponseErrorDataMetadata$inboundSchema),
+  ).optional(),
 });
 
 export function providerOverloadedResponseErrorDataFromJSON(

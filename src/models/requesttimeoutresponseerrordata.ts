@@ -4,9 +4,22 @@
  */
 
 import * as z from "zod/v4";
-import { safeParse } from "../lib/schemas.js";
+import { remap as remap$ } from "../lib/primitives.js";
+import {
+  collectExtraKeys as collectExtraKeys$,
+  safeParse,
+} from "../lib/schemas.js";
 import { Result as SafeParseResult } from "../types/fp.js";
+import { ApiErrorType, ApiErrorType$inboundSchema } from "./apierrortype.js";
 import { SDKValidationError } from "./errors/sdkvalidationerror.js";
+
+export type RequestTimeoutResponseErrorDataMetadata = {
+  /**
+   * Canonical OpenRouter error type, stable across all API formats
+   */
+  errorType?: ApiErrorType | undefined;
+  additionalProperties?: { [k: string]: any | null } | undefined;
+};
 
 /**
  * Error data for RequestTimeoutResponse
@@ -14,8 +27,40 @@ import { SDKValidationError } from "./errors/sdkvalidationerror.js";
 export type RequestTimeoutResponseErrorData = {
   code: number;
   message: string;
-  metadata?: { [k: string]: any | null } | null | undefined;
+  metadata?: RequestTimeoutResponseErrorDataMetadata | null | undefined;
 };
+
+/** @internal */
+export const RequestTimeoutResponseErrorDataMetadata$inboundSchema: z.ZodType<
+  RequestTimeoutResponseErrorDataMetadata,
+  unknown
+> = collectExtraKeys$(
+  z.object({
+    error_type: ApiErrorType$inboundSchema.optional(),
+  }).catchall(z.any()),
+  "additionalProperties",
+  true,
+).transform((v) => {
+  return remap$(v, {
+    "error_type": "errorType",
+  });
+});
+
+export function requestTimeoutResponseErrorDataMetadataFromJSON(
+  jsonString: string,
+): SafeParseResult<
+  RequestTimeoutResponseErrorDataMetadata,
+  SDKValidationError
+> {
+  return safeParse(
+    jsonString,
+    (x) =>
+      RequestTimeoutResponseErrorDataMetadata$inboundSchema.parse(
+        JSON.parse(x),
+      ),
+    `Failed to parse 'RequestTimeoutResponseErrorDataMetadata' from JSON`,
+  );
+}
 
 /** @internal */
 export const RequestTimeoutResponseErrorData$inboundSchema: z.ZodType<
@@ -24,7 +69,9 @@ export const RequestTimeoutResponseErrorData$inboundSchema: z.ZodType<
 > = z.object({
   code: z.int(),
   message: z.string(),
-  metadata: z.nullable(z.record(z.string(), z.nullable(z.any()))).optional(),
+  metadata: z.nullable(
+    z.lazy(() => RequestTimeoutResponseErrorDataMetadata$inboundSchema),
+  ).optional(),
 });
 
 export function requestTimeoutResponseErrorDataFromJSON(

@@ -4,9 +4,22 @@
  */
 
 import * as z from "zod/v4";
-import { safeParse } from "../lib/schemas.js";
+import { remap as remap$ } from "../lib/primitives.js";
+import {
+  collectExtraKeys as collectExtraKeys$,
+  safeParse,
+} from "../lib/schemas.js";
 import { Result as SafeParseResult } from "../types/fp.js";
+import { ApiErrorType, ApiErrorType$inboundSchema } from "./apierrortype.js";
 import { SDKValidationError } from "./errors/sdkvalidationerror.js";
+
+export type TooManyRequestsResponseErrorDataMetadata = {
+  /**
+   * Canonical OpenRouter error type, stable across all API formats
+   */
+  errorType?: ApiErrorType | undefined;
+  additionalProperties?: { [k: string]: any | null } | undefined;
+};
 
 /**
  * Error data for TooManyRequestsResponse
@@ -14,8 +27,40 @@ import { SDKValidationError } from "./errors/sdkvalidationerror.js";
 export type TooManyRequestsResponseErrorData = {
   code: number;
   message: string;
-  metadata?: { [k: string]: any | null } | null | undefined;
+  metadata?: TooManyRequestsResponseErrorDataMetadata | null | undefined;
 };
+
+/** @internal */
+export const TooManyRequestsResponseErrorDataMetadata$inboundSchema: z.ZodType<
+  TooManyRequestsResponseErrorDataMetadata,
+  unknown
+> = collectExtraKeys$(
+  z.object({
+    error_type: ApiErrorType$inboundSchema.optional(),
+  }).catchall(z.any()),
+  "additionalProperties",
+  true,
+).transform((v) => {
+  return remap$(v, {
+    "error_type": "errorType",
+  });
+});
+
+export function tooManyRequestsResponseErrorDataMetadataFromJSON(
+  jsonString: string,
+): SafeParseResult<
+  TooManyRequestsResponseErrorDataMetadata,
+  SDKValidationError
+> {
+  return safeParse(
+    jsonString,
+    (x) =>
+      TooManyRequestsResponseErrorDataMetadata$inboundSchema.parse(
+        JSON.parse(x),
+      ),
+    `Failed to parse 'TooManyRequestsResponseErrorDataMetadata' from JSON`,
+  );
+}
 
 /** @internal */
 export const TooManyRequestsResponseErrorData$inboundSchema: z.ZodType<
@@ -24,7 +69,9 @@ export const TooManyRequestsResponseErrorData$inboundSchema: z.ZodType<
 > = z.object({
   code: z.int(),
   message: z.string(),
-  metadata: z.nullable(z.record(z.string(), z.nullable(z.any()))).optional(),
+  metadata: z.nullable(
+    z.lazy(() => TooManyRequestsResponseErrorDataMetadata$inboundSchema),
+  ).optional(),
 });
 
 export function tooManyRequestsResponseErrorDataFromJSON(
