@@ -1,13 +1,13 @@
-# SourceEnum
+# Source
 
-The source filter applied.
+Benchmark source to query. Determines the shape of the returned items.
 
 ## Example Usage
 
 ```typescript
-import { SourceEnum } from "@openrouter/sdk/models";
+import { Source } from "@openrouter/sdk/models/operations";
 
-let value: SourceEnum = "artificial-analysis";
+let value: Source = "artificial-analysis";
 
 // Open enum: unrecognized values are captured as Unrecognized<string>
 ```
