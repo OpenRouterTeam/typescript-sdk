@@ -8,6 +8,7 @@ import { remap as remap$ } from "../lib/primitives.js";
 import { safeParse } from "../lib/schemas.js";
 import { ClosedEnum } from "../types/enums.js";
 import { Result as SafeParseResult } from "../types/fp.js";
+import { ApiErrorType, ApiErrorType$inboundSchema } from "./apierrortype.js";
 import {
   ChatStreamChoice,
   ChatStreamChoice$inboundSchema,
@@ -18,6 +19,20 @@ import {
   OpenRouterMetadata,
   OpenRouterMetadata$inboundSchema,
 } from "./openroutermetadata.js";
+
+/**
+ * Structured error metadata
+ */
+export type ChatStreamChunkMetadata = {
+  /**
+   * Canonical OpenRouter error type, stable across all API formats
+   */
+  errorType: ApiErrorType;
+  /**
+   * Upstream provider-specific error code, when available
+   */
+  providerCode?: string | undefined;
+};
 
 /**
  * Error information
@@ -31,6 +46,10 @@ export type ErrorT = {
    * Error message
    */
   message: string;
+  /**
+   * Structured error metadata
+   */
+  metadata?: ChatStreamChunkMetadata | undefined;
 };
 
 export const ChatStreamChunkObject = {
@@ -79,9 +98,34 @@ export type ChatStreamChunk = {
 };
 
 /** @internal */
+export const ChatStreamChunkMetadata$inboundSchema: z.ZodType<
+  ChatStreamChunkMetadata,
+  unknown
+> = z.object({
+  error_type: ApiErrorType$inboundSchema,
+  provider_code: z.string().optional(),
+}).transform((v) => {
+  return remap$(v, {
+    "error_type": "errorType",
+    "provider_code": "providerCode",
+  });
+});
+
+export function chatStreamChunkMetadataFromJSON(
+  jsonString: string,
+): SafeParseResult<ChatStreamChunkMetadata, SDKValidationError> {
+  return safeParse(
+    jsonString,
+    (x) => ChatStreamChunkMetadata$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'ChatStreamChunkMetadata' from JSON`,
+  );
+}
+
+/** @internal */
 export const ErrorT$inboundSchema: z.ZodType<ErrorT, unknown> = z.object({
   code: z.int(),
   message: z.string(),
+  metadata: z.lazy(() => ChatStreamChunkMetadata$inboundSchema).optional(),
 });
 
 export function errorFromJSON(
