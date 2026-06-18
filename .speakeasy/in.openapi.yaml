@@ -5401,6 +5401,9 @@ components:
         prompt_tokens: 10
         prompt_tokens_details:
           cached_tokens: 2
+        server_tool_use_details:
+          tool_calls_executed: 2
+          tool_calls_requested: 2
         total_tokens: 25
       properties:
         completion_tokens:
@@ -5455,6 +5458,28 @@ components:
               type: integer
             video_tokens:
               description: Video input tokens
+              type: integer
+          type: object
+        server_tool_use_details:
+          description: Usage for server-side tool execution (e.g., web search)
+          nullable: true
+          properties:
+            tool_calls_executed:
+              description: Number of OpenRouter server tool calls that executed and produced a result
+              nullable: true
+              type: integer
+            tool_calls_requested:
+              description: >-
+                Total number of OpenRouter server-orchestrated tool calls the model requested, across all tool types.
+                Provider-native tools (e.g. native web search) are not counted here.
+              nullable: true
+              type: integer
+            web_search_requests:
+              description: >-
+                Number of web searches performed by server-side tools. For server-orchestrated tool calls a web search
+                is also counted in tool_calls_requested; provider-native web search may report web_search_requests only.
+                Do not sum the two.
+              nullable: true
               type: integer
           type: object
         total_tokens:
