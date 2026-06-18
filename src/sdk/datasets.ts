@@ -4,8 +4,6 @@
  */
 
 import { datasetsGetAppRankings } from "../funcs/datasetsGetAppRankings.js";
-import { datasetsGetBenchmarksArtificialAnalysis } from "../funcs/datasetsGetBenchmarksArtificialAnalysis.js";
-import { datasetsGetBenchmarksDesignArena } from "../funcs/datasetsGetBenchmarksDesignArena.js";
 import { datasetsGetRankingsDaily } from "../funcs/datasetsGetRankingsDaily.js";
 import { ClientSDK, RequestOptions } from "../lib/sdks.js";
 import * as models from "../models/index.js";
@@ -56,40 +54,6 @@ export class Datasets extends ClientSDK {
   }
 
   /**
-   * Artificial Analysis Benchmark Indices
-   *
-   * @remarks
-   * Returns composite index scores (Intelligence, Coding, Agentic) from Artificial Analysis for LLM models. Includes OpenRouter pricing per model. Authenticate with any valid OpenRouter API key. Rate-limited to 30 requests/minute per key and 500 requests/day per account.
-   */
-  async getBenchmarksArtificialAnalysis(
-    request?: operations.GetBenchmarksArtificialAnalysisRequest | undefined,
-    options?: RequestOptions,
-  ): Promise<models.BenchmarksAAResponse> {
-    return unwrapAsync(datasetsGetBenchmarksArtificialAnalysis(
-      this,
-      request,
-      options,
-    ));
-  }
-
-  /**
-   * Design Arena Benchmark Rankings
-   *
-   * @remarks
-   * Returns ELO ratings from head-to-head arena battles on Design Arena. Filterable by arena (models/builders/agents) and category. Includes OpenRouter pricing per model. Authenticate with any valid OpenRouter API key. Rate-limited to 30 requests/minute per key and 500 requests/day per account.
-   */
-  async getBenchmarksDesignArena(
-    request?: operations.GetBenchmarksDesignArenaRequest | undefined,
-    options?: RequestOptions,
-  ): Promise<models.BenchmarksDAResponse> {
-    return unwrapAsync(datasetsGetBenchmarksDesignArena(
-      this,
-      request,
-      options,
-    ));
-  }
-
-  /**
    * Daily token totals for top 50 models
    *
    * @remarks
@@ -101,6 +65,13 @@ export class Datasets extends ClientSDK {
    * Each row is a distinct `(date, model_permaslug)` pair. The `other` row uses the
    * reserved permaslug `other` and is always returned last within its date, so callers
    * can compute `top-50 traffic / total daily traffic` without a second request.
+   *
+   * Optional filters slice the dataset. `period` (`day`/`week`/`month`) sets the time
+   * grain. `modality` and `context_bucket` narrow the exact dataset by output/input
+   * modality (or tool-calling activity) and request context length. `category` and
+   * `language_type` instead read a sampled, upsampled dataset whose `total_tokens` are
+   * weekly-grain estimates — they cannot be combined with each other or with the exact
+   * filters, and reject `period=day` with a 400.
    *
    * Authenticate with any valid OpenRouter API key (same key used for inference).
    * Rate-limited to 30 requests/minute per key and 500 requests/day per account.

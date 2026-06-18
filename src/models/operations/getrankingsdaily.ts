@@ -5,6 +5,8 @@
 
 import * as z from "zod/v4";
 import { remap as remap$ } from "../../lib/primitives.js";
+import * as openEnums from "../../types/enums.js";
+import { OpenEnum } from "../../types/enums.js";
 
 export type GetRankingsDailyGlobals = {
   /**
@@ -27,6 +29,85 @@ export type GetRankingsDailyGlobals = {
    */
   appCategories?: string | undefined;
 };
+
+/**
+ * Time grain of each row. `day` (default) returns the per-UTC-day series; `week` buckets by ISO week start; `month` buckets by month start. With `category` or `language_type` only `week` (default) and `month` are available — `day` is rejected with a 400 because those datasets are aggregated weekly.
+ */
+export const Period = {
+  Day: "day",
+  Week: "week",
+  Month: "month",
+} as const;
+/**
+ * Time grain of each row. `day` (default) returns the per-UTC-day series; `week` buckets by ISO week start; `month` buckets by month start. With `category` or `language_type` only `week` (default) and `month` are available — `day` is rejected with a 400 because those datasets are aggregated weekly.
+ */
+export type Period = OpenEnum<typeof Period>;
+
+/**
+ * Restrict to models for a modality surface: `text` / `image_output` match output modality, `image` / `audio` match input modality, and `tool_calling` keeps only rows that recorded at least one tool call. Exact dataset — cannot be combined with `category` or `language_type`.
+ */
+export const Modality = {
+  Text: "text",
+  Image: "image",
+  ImageOutput: "image_output",
+  Audio: "audio",
+  ToolCalling: "tool_calling",
+} as const;
+/**
+ * Restrict to models for a modality surface: `text` / `image_output` match output modality, `image` / `audio` match input modality, and `tool_calling` keeps only rows that recorded at least one tool call. Exact dataset — cannot be combined with `category` or `language_type`.
+ */
+export type Modality = OpenEnum<typeof Modality>;
+
+/**
+ * Restrict to requests whose context length falls in this bucket (`1K`, `10K`, `100K`, `1M`, or `10M`). Exact dataset — cannot be combined with `category` or `language_type`.
+ */
+export const ContextBucket = {
+  OneK: "1K",
+  TenK: "10K",
+  OneHundredK: "100K",
+  OneM: "1M",
+  TenM: "10M",
+} as const;
+/**
+ * Restrict to requests whose context length falls in this bucket (`1K`, `10K`, `100K`, `1M`, or `10M`). Exact dataset — cannot be combined with `category` or `language_type`.
+ */
+export type ContextBucket = OpenEnum<typeof ContextBucket>;
+
+/**
+ * Restrict to a use-case category (e.g. `programming`, `roleplay`). Sourced from a sampled, upsampled dataset, so `total_tokens` is an estimate and is aggregated weekly. Cannot be combined with `modality`, `context_bucket`, or `language_type`.
+ */
+export const GetRankingsDailyCategory = {
+  Programming: "programming",
+  Roleplay: "roleplay",
+  Marketing: "marketing",
+  MarketingSeo: "marketing/seo",
+  Technology: "technology",
+  Science: "science",
+  Translation: "translation",
+  Legal: "legal",
+  Finance: "finance",
+  Health: "health",
+  Trivia: "trivia",
+  Academia: "academia",
+} as const;
+/**
+ * Restrict to a use-case category (e.g. `programming`, `roleplay`). Sourced from a sampled, upsampled dataset, so `total_tokens` is an estimate and is aggregated weekly. Cannot be combined with `modality`, `context_bucket`, or `language_type`.
+ */
+export type GetRankingsDailyCategory = OpenEnum<
+  typeof GetRankingsDailyCategory
+>;
+
+/**
+ * Restrict to natural-language or programming-language tagged activity. Sourced from a sampled, upsampled dataset, so `total_tokens` is an estimate and is aggregated weekly. Cannot be combined with `modality`, `context_bucket`, or `category`.
+ */
+export const LanguageType = {
+  Natural: "natural",
+  Programming: "programming",
+} as const;
+/**
+ * Restrict to natural-language or programming-language tagged activity. Sourced from a sampled, upsampled dataset, so `total_tokens` is an estimate and is aggregated weekly. Cannot be combined with `modality`, `context_bucket`, or `category`.
+ */
+export type LanguageType = OpenEnum<typeof LanguageType>;
 
 export type GetRankingsDailyRequest = {
   /**
@@ -56,7 +137,49 @@ export type GetRankingsDailyRequest = {
    * End of the date window in YYYY-MM-DD (UTC), inclusive. Defaults to the most recent completed UTC day. Must be on or after 2025-01-01; earlier values are rejected with a 400.
    */
   endDate?: string | undefined;
+  /**
+   * Time grain of each row. `day` (default) returns the per-UTC-day series; `week` buckets by ISO week start; `month` buckets by month start. With `category` or `language_type` only `week` (default) and `month` are available — `day` is rejected with a 400 because those datasets are aggregated weekly.
+   */
+  period?: Period | undefined;
+  /**
+   * Restrict to models for a modality surface: `text` / `image_output` match output modality, `image` / `audio` match input modality, and `tool_calling` keeps only rows that recorded at least one tool call. Exact dataset — cannot be combined with `category` or `language_type`.
+   */
+  modality?: Modality | undefined;
+  /**
+   * Restrict to requests whose context length falls in this bucket (`1K`, `10K`, `100K`, `1M`, or `10M`). Exact dataset — cannot be combined with `category` or `language_type`.
+   */
+  contextBucket?: ContextBucket | undefined;
+  /**
+   * Restrict to a use-case category (e.g. `programming`, `roleplay`). Sourced from a sampled, upsampled dataset, so `total_tokens` is an estimate and is aggregated weekly. Cannot be combined with `modality`, `context_bucket`, or `language_type`.
+   */
+  category?: GetRankingsDailyCategory | undefined;
+  /**
+   * Restrict to natural-language or programming-language tagged activity. Sourced from a sampled, upsampled dataset, so `total_tokens` is an estimate and is aggregated weekly. Cannot be combined with `modality`, `context_bucket`, or `category`.
+   */
+  languageType?: LanguageType | undefined;
 };
+
+/** @internal */
+export const Period$outboundSchema: z.ZodType<string, Period> = openEnums
+  .outboundSchema(Period);
+
+/** @internal */
+export const Modality$outboundSchema: z.ZodType<string, Modality> = openEnums
+  .outboundSchema(Modality);
+
+/** @internal */
+export const ContextBucket$outboundSchema: z.ZodType<string, ContextBucket> =
+  openEnums.outboundSchema(ContextBucket);
+
+/** @internal */
+export const GetRankingsDailyCategory$outboundSchema: z.ZodType<
+  string,
+  GetRankingsDailyCategory
+> = openEnums.outboundSchema(GetRankingsDailyCategory);
+
+/** @internal */
+export const LanguageType$outboundSchema: z.ZodType<string, LanguageType> =
+  openEnums.outboundSchema(LanguageType);
 
 /** @internal */
 export type GetRankingsDailyRequest$Outbound = {
@@ -65,6 +188,11 @@ export type GetRankingsDailyRequest$Outbound = {
   appCategories?: string | undefined;
   start_date?: string | undefined;
   end_date?: string | undefined;
+  period?: string | undefined;
+  modality?: string | undefined;
+  context_bucket?: string | undefined;
+  category?: string | undefined;
+  language_type?: string | undefined;
 };
 
 /** @internal */
@@ -77,11 +205,18 @@ export const GetRankingsDailyRequest$outboundSchema: z.ZodType<
   appCategories: z.string().optional(),
   startDate: z.string().optional(),
   endDate: z.string().optional(),
+  period: Period$outboundSchema.optional(),
+  modality: Modality$outboundSchema.optional(),
+  contextBucket: ContextBucket$outboundSchema.optional(),
+  category: GetRankingsDailyCategory$outboundSchema.optional(),
+  languageType: LanguageType$outboundSchema.optional(),
 }).transform((v) => {
   return remap$(v, {
     httpReferer: "HTTP-Referer",
     startDate: "start_date",
     endDate: "end_date",
+    contextBucket: "context_bucket",
+    languageType: "language_type",
   });
 });
 
