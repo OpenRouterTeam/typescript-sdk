@@ -4,8 +4,8 @@
  */
 
 import { ClientSDK } from "../lib/sdks.js";
-import { Analytics } from "./analytics.js";
 import { APIKeys } from "./apikeys.js";
+import { Benchmarks } from "./benchmarks.js";
 import { Beta } from "./beta.js";
 import { Byok } from "./byok.js";
 import { Chat } from "./chat.js";
@@ -41,16 +41,6 @@ export { ToolType };
 // #endregion imports
 
 export class OpenRouter extends ClientSDK {
-  private _analytics?: Analytics;
-  get analytics(): Analytics {
-    return (this._analytics ??= new Analytics(this._options));
-  }
-
-  private _beta?: Beta;
-  get beta(): Beta {
-    return (this._beta ??= new Beta(this._options));
-  }
-
   private _tts?: Tts;
   get tts(): Tts {
     return (this._tts ??= new Tts(this._options));
@@ -64,6 +54,11 @@ export class OpenRouter extends ClientSDK {
   private _oAuth?: OAuth;
   get oAuth(): OAuth {
     return (this._oAuth ??= new OAuth(this._options));
+  }
+
+  private _benchmarks?: Benchmarks;
+  get benchmarks(): Benchmarks {
+    return (this._benchmarks ??= new Benchmarks(this._options));
   }
 
   private _byok?: Byok;
@@ -144,6 +139,11 @@ export class OpenRouter extends ClientSDK {
   private _rerank?: Rerank;
   get rerank(): Rerank {
     return (this._rerank ??= new Rerank(this._options));
+  }
+
+  private _beta?: Beta;
+  get beta(): Beta {
+    return (this._beta ??= new Beta(this._options));
   }
 
   private _videoGeneration?: VideoGeneration;
