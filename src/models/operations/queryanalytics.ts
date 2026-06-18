@@ -36,13 +36,13 @@ export type QueryAnalyticsGlobals = {
 export type Value2 = string | number;
 
 /**
- * Filter value (scalar or array depending on operator). Several dimensions are enriched in responses (returned as human-readable labels), but filters must use the underlying ID: `api_key_id` — numeric ID (from generation metadata) or key hash (64-char hex from GET /api/v1/keys, resolved server-side); `user` — Clerk user ID (e.g. "user_abc123"), not the display name; `workspace` — workspace UUID, not the workspace name; `app` — numeric app ID, not the app title; `model` — permaslug (e.g. "openai/gpt-4o"), not the display name. Other dimensions (provider, origin, country, etc.) are not enriched and accept the value as returned.
+ * Filter value (scalar or array depending on operator)
  */
 export type Value1 = string | number | Array<string | number>;
 
 export type Filter = {
   /**
-   * Dimension to filter on. Use the /meta endpoint for available dimensions.
+   * Dimension to filter on
    */
   field: string;
   /**
@@ -50,7 +50,7 @@ export type Filter = {
    */
   operator: string;
   /**
-   * Filter value (scalar or array depending on operator). Several dimensions are enriched in responses (returned as human-readable labels), but filters must use the underlying ID: `api_key_id` — numeric ID (from generation metadata) or key hash (64-char hex from GET /api/v1/keys, resolved server-side); `user` — Clerk user ID (e.g. "user_abc123"), not the display name; `workspace` — workspace UUID, not the workspace name; `app` — numeric app ID, not the app title; `model` — permaslug (e.g. "openai/gpt-4o"), not the display name. Other dimensions (provider, origin, country, etc.) are not enriched and accept the value as returned.
+   * Filter value (scalar or array depending on operator)
    */
   value: string | number | Array<string | number>;
 };
@@ -132,10 +132,6 @@ export type QueryAnalyticsData2 = {
   cachedAt?: number | undefined;
   data: Array<QueryAnalyticsData1>;
   metadata: Metadata;
-  /**
-   * Warnings about filter resolution issues (e.g. unresolvable api_key_id hashes). The query still runs normally; these inform the caller that some filter values could not be resolved.
-   */
-  warnings?: Array<string> | undefined;
 };
 
 /**
@@ -349,7 +345,6 @@ export const QueryAnalyticsData2$inboundSchema: z.ZodType<
   cachedAt: z.number().optional(),
   data: z.array(z.lazy(() => QueryAnalyticsData1$inboundSchema)),
   metadata: z.lazy(() => Metadata$inboundSchema),
-  warnings: z.array(z.string()).optional(),
 });
 
 export function queryAnalyticsData2FromJSON(
