@@ -3,6 +3,7 @@
  * @generated-id: db34eab5bd5b
  */
 
+import { videoGenerationCancelGeneration } from "../funcs/videoGenerationCancelGeneration.js";
 import { videoGenerationGenerate } from "../funcs/videoGenerationGenerate.js";
 import { videoGenerationGetGeneration } from "../funcs/videoGenerationGetGeneration.js";
 import { videoGenerationGetVideoContent } from "../funcs/videoGenerationGetVideoContent.js";
@@ -41,6 +42,23 @@ export class VideoGeneration extends ClientSDK {
     options?: RequestOptions,
   ): Promise<models.VideoGenerationResponse> {
     return unwrapAsync(videoGenerationGetGeneration(
+      this,
+      request,
+      options,
+    ));
+  }
+
+  /**
+   * Cancel a video generation job
+   *
+   * @remarks
+   * Attempts to cancel an in-progress video generation job on a best-effort basis
+   */
+  async cancelGeneration(
+    request: operations.CreateVideosCancelRequest,
+    options?: RequestOptions,
+  ): Promise<models.VideoGenerationResponse> {
+    return unwrapAsync(videoGenerationCancelGeneration(
       this,
       request,
       options,
