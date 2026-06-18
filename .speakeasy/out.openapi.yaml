@@ -12160,6 +12160,15 @@ components:
           image: '0'
           prompt: '0.00003'
           request: '0'
+        reasoning:
+          default_effort: medium
+          default_enabled: true
+          mandatory: false
+          supported_efforts:
+            - high
+            - medium
+            - low
+            - minimal
         supported_parameters:
           - temperature
           - top_p
@@ -12222,6 +12231,8 @@ components:
           $ref: '#/components/schemas/PerRequestLimits'
         pricing:
           $ref: '#/components/schemas/PublicPricing'
+        reasoning:
+          $ref: '#/components/schemas/ModelReasoning'
         supported_parameters:
           description: List of supported parameters for this model
           items:
@@ -12386,6 +12397,43 @@ components:
       description: Model to use for completion
       example: openai/gpt-4
       type: string
+    ModelReasoning:
+      description: Reasoning effort configuration. Omitted for non-reasoning models and dynamic router models.
+      example:
+        default_effort: medium
+        default_enabled: true
+        mandatory: false
+        supported_efforts:
+          - high
+          - medium
+          - low
+          - minimal
+      properties:
+        default_effort:
+          allOf:
+            - $ref: '#/components/schemas/ReasoningEffort'
+            - description: >-
+                Default reasoning effort when the client enables reasoning without specifying effort. Maps to `reasoning.effort` in chat requests. When `"none"`, prefer omitting effort unless the user explicitly disables reasoning.
+        default_enabled:
+          description: Default reasoning enabled state when the client does not set `reasoning.enabled`.
+          type: boolean
+        mandatory:
+          description: When true, reasoning cannot be disabled and effort "none" is rejected.
+          type: boolean
+        supported_efforts:
+          description: >-
+            Allowed reasoning effort values for this model, in descending effort order (highest first). Null means no allowlist — all gateway effort values are accepted.
+          items:
+            $ref: '#/components/schemas/ReasoningEffort'
+          nullable: true
+          type: array
+        supports_max_tokens:
+          description: >-
+            Present and `true` when the model accepts `reasoning.max_tokens` in requests (Anthropic-style) instead of or in addition to `reasoning.effort`. Omitted otherwise.
+          type: boolean
+      required:
+        - mandatory
+      type: object
     ModelResponse:
       description: Single model response
       example:
@@ -28734,7 +28782,7 @@ paths:
                     id: openai/gpt-4
                     knowledge_cutoff: null
                     links:
-                      details: /api/v1/models/openai/gpt-5.4/endpoints
+                      details: /api/v1/models/openai/gpt-4/endpoints
                     name: GPT-4
                     per_request_limits: null
                     pricing:
