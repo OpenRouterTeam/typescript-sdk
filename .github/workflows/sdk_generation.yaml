@@ -22,6 +22,10 @@ permissions:
       - labeled
       - unlabeled
 
+concurrency:
+  group: speakeasy-generate
+  cancel-in-progress: false
+
 jobs:
   generate:
     uses: speakeasy-api/sdk-generation-action/.github/workflows/workflow-executor.yaml@v15
@@ -34,3 +38,49 @@ jobs:
       github_access_token: ${{ secrets.GITHUB_TOKEN }}
       npm_token: ${{ secrets.NPM_TOKEN }}
       speakeasy_api_key: ${{ secrets.SPEAKEASY_API_KEY }}
+
+  resolve-branch:
+    needs: generate
+    if: ${{ !cancelled() && needs.generate.result == 'success' }}
+    runs-on: ubuntu-latest
+    outputs:
+      branch_name: ${{ steps.branch.outputs.branch_name }}
+    steps:
+      - name: Extract branch from Generate logs
+        id: branch
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          REPO="${{ github.repository }}"
+          RUN_ID="${{ github.run_id }}"
+
+          # Full-run logs are unavailable while the workflow is in progress;
+          # fetch logs from the completed generate job instead.
+          JOB_ID=$(gh run view "$RUN_ID" --repo "$REPO" --json jobs --jq \
+            '[.jobs[] | select(.name == "generate / Generate Target")] | .[0].databaseId // empty')
+
+          BRANCH=""
+          if [ -z "$JOB_ID" ]; then
+            echo "::warning::Could not find generate job id — auto-merge will use run_started_at fallback"
+          else
+            BRANCH=$(gh run view "$RUN_ID" --repo "$REPO" --job "$JOB_ID" --log 2>/dev/null \
+              | grep -oE 'branch_name=speakeasy-sdk-regen-[0-9]+' | tail -1 | cut -d= -f2 || true)
+          fi
+
+          if [ -z "$BRANCH" ]; then
+            echo "::warning::Could not extract branch_name from Generate logs — auto-merge will use run_started_at fallback"
+          else
+            echo "Extracted branch_name=$BRANCH"
+          fi
+          echo "branch_name=$BRANCH" >> "$GITHUB_OUTPUT"
+
+  auto-merge:
+    needs: [generate, resolve-branch]
+    if: ${{ !cancelled() && needs.generate.result == 'success' }}
+    uses: ./.github/workflows/auto-merge-speakeasy-pr.yaml
+    with:
+      run_started_at: ${{ github.run_started_at }}
+      branch_name: ${{ needs.resolve-branch.outputs.branch_name }}
+    secrets:
+      gh_token: ${{ secrets.GH_TOKEN }}

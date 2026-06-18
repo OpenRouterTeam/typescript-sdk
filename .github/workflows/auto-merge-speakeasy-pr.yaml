@@ -1,11 +1,25 @@
 name: Auto-merge Speakeasy PR
 
-# Speakeasy mode:pr opens PRs (speakeasy-sdk-regen-*) and labels them
-# patch/minor/major. Merge automatically so sdk_publish.yaml can run.
+# Called as a follow-up job after Speakeasy Generate (mode: pr). Merges the
+# regen PR opened/updated in the same workflow run so sdk_publish.yaml can run.
+# Prefer branch_name from Generate logs; fall back to run_started_at heuristics.
 
 on:
-  pull_request:
-    types: [labeled]
+  workflow_call:
+    inputs:
+      run_started_at:
+        description: ISO timestamp when the parent Generate workflow run started
+        required: true
+        type: string
+      branch_name:
+        description: Speakeasy regen branch from the parent Generate run (optional)
+        required: false
+        type: string
+        default: ""
+    secrets:
+      gh_token:
+        description: PAT for merge/close (triggers downstream push workflows); falls back to GITHUB_TOKEN
+        required: false
 
 permissions:
   contents: write
@@ -17,29 +31,95 @@ concurrency:
 
 jobs:
   auto-merge:
-    if: |
-      github.event.sender.login == 'github-actions[bot]' &&
-      github.event.pull_request.user.login == 'github-actions[bot]' &&
-      startsWith(github.event.pull_request.head.ref, 'speakeasy-sdk-regen-') &&
-      contains(github.event.pull_request.title, '🐝 Update SDK') &&
-      contains(fromJSON('["patch", "minor", "major"]'), github.event.label.name)
     runs-on: ubuntu-latest
     steps:
-      - name: Close superseded Speakeasy PRs
+      - name: Resolve Speakeasy regen PR
+        id: pr
         env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          PAT: ${{ secrets.gh_token }}
+          FALLBACK_TOKEN: ${{ github.token }}
         run: |
           set -euo pipefail
-          CURRENT_PR="${{ github.event.pull_request.number }}"
+          if [ -n "$PAT" ]; then
+            export GH_TOKEN="$PAT"
+          else
+            echo "::warning::gh_token secret not set — using GITHUB_TOKEN (Publish push trigger may be suppressed)"
+            export GH_TOKEN="$FALLBACK_TOKEN"
+          fi
 
-          PRIOR_JSON=$(gh pr list \
-            --repo "${{ github.repository }}" \
+          REPO="${{ github.repository }}"
+          RUN_STARTED="${{ inputs.run_started_at }}"
+          BRANCH="${{ inputs.branch_name }}"
+
+          PR_JSON=$(gh pr list \
+            --repo "$REPO" \
             --state open \
             --search "head:speakeasy-sdk-regen-" \
             --limit 500 \
-            --json number \
-            | jq -r --arg current_pr "$CURRENT_PR" \
-              '[.[].number | select(tostring != $current_pr)] | .[]')
+            --json number,updatedAt,title,labels,author,headRefName)
+
+          PR_NUM=""
+          if [ -n "$BRANCH" ]; then
+            CANDIDATE=$(echo "$PR_JSON" | jq -r --arg branch "$BRANCH" \
+              '[.[] | select(.headRefName == $branch)] | .[0] // empty')
+            if [ -n "$CANDIDATE" ] && echo "$CANDIDATE" | jq -e '
+              (.headRefName | startswith("speakeasy-sdk-regen-"))
+              and (.title | contains("🐝 Update SDK"))
+              and ([.labels[].name] | any(. == "patch" or . == "minor" or . == "major"))
+              and (.author.login == "github-actions[bot]")
+            ' > /dev/null; then
+              PR_NUM=$(echo "$CANDIDATE" | jq -r '.number')
+              echo "Resolved Speakeasy regen PR #$PR_NUM from branch $BRANCH"
+            else
+              echo "::warning::branch_name=$BRANCH did not match a valid open regen PR — falling back to run_started_at"
+            fi
+          fi
+
+          if [ -z "$PR_NUM" ]; then
+            PR_NUM=$(echo "$PR_JSON" | jq -r --arg started "$RUN_STARTED" '
+              [.[]
+                | select(.headRefName | startswith("speakeasy-sdk-regen-"))
+                | select(.title | contains("🐝 Update SDK"))
+                | select([.labels[].name] | any(. == "patch" or . == "minor" or . == "major"))
+                | select(.author.login == "github-actions[bot]")
+                | select(.updatedAt >= $started)
+              ] | sort_by(.updatedAt) | last | .number // empty')
+          fi
+
+          if [ -z "$PR_NUM" ]; then
+            echo "No Speakeasy regen PR for this Generate run — skipping auto-merge"
+            echo "::notice title=auto-merge-skipped::No qualifying Speakeasy regen PR to merge"
+            {
+              echo "## Auto-merge skipped"
+              echo "No qualifying \`speakeasy-sdk-regen-*\` PR was found."
+              echo "- branch_name input: \`${BRANCH:-<empty>}\`"
+              echo "- run_started_at: \`$RUN_STARTED\`"
+            } >> "$GITHUB_STEP_SUMMARY"
+            echo "pr_num=" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+
+          echo "pr_num=$PR_NUM" >> "$GITHUB_OUTPUT"
+          echo "$PR_JSON" > /tmp/speakeasy_pr_json.json
+
+      - name: Close superseded Speakeasy PRs
+        if: steps.pr.outputs.pr_num != ''
+        env:
+          PAT: ${{ secrets.gh_token }}
+          FALLBACK_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          if [ -n "$PAT" ]; then
+            export GH_TOKEN="$PAT"
+          else
+            export GH_TOKEN="$FALLBACK_TOKEN"
+          fi
+
+          CURRENT_PR="${{ steps.pr.outputs.pr_num }}"
+          PR_JSON=$(cat /tmp/speakeasy_pr_json.json)
+
+          PRIOR_JSON=$(echo "$PR_JSON" | jq -r --arg current_pr "$CURRENT_PR" \
+            '[.[].number | select(tostring != $current_pr)] | .[]')
 
           if [ -z "$PRIOR_JSON" ]; then
             echo "No superseded Speakeasy PRs to close"
@@ -57,12 +137,61 @@ jobs:
           done
 
       - name: Auto-merge Speakeasy PR
+        if: steps.pr.outputs.pr_num != ''
         env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          PAT: ${{ secrets.gh_token }}
+          FALLBACK_TOKEN: ${{ github.token }}
         run: |
           set -euo pipefail
-          PR_NUM="${{ github.event.pull_request.number }}"
+          if [ -n "$PAT" ]; then
+            export GH_TOKEN="$PAT"
+          else
+            export GH_TOKEN="$FALLBACK_TOKEN"
+          fi
+
+          PR_NUM="${{ steps.pr.outputs.pr_num }}"
           REPO="${{ github.repository }}"
+
+          wait_for_checks() {
+            local pr=$1
+            local timeout=600
+            local interval=15
+            local elapsed=0
+
+            echo "Waiting for PR #$pr checks (timeout ${timeout}s)..."
+            while [ "$elapsed" -lt "$timeout" ]; do
+              TOTAL=$(gh pr view "$pr" --repo "$REPO" --json statusCheckRollup --jq \
+                '.statusCheckRollup | length')
+              PENDING=$(gh pr view "$pr" --repo "$REPO" --json statusCheckRollup --jq \
+                '[.statusCheckRollup[]? | select(.status != "COMPLETED")] | length')
+              FAILED=$(gh pr view "$pr" --repo "$REPO" --json statusCheckRollup --jq \
+                '[.statusCheckRollup[]? | select(.status == "COMPLETED") | select(.conclusion != "SUCCESS" and .conclusion != "SKIPPED" and .conclusion != "NEUTRAL")] | length')
+
+              if [ "$TOTAL" -eq 0 ]; then
+                echo "Checks not yet registered — waiting ${interval}s..."
+                sleep "$interval"
+                elapsed=$((elapsed + interval))
+                continue
+              fi
+
+              if [ "$PENDING" -eq 0 ]; then
+                if [ "$FAILED" -gt 0 ]; then
+                  echo "::error::PR #$pr has failing checks — refusing direct merge"
+                  gh pr checks "$pr" --repo "$REPO" || true
+                  exit 1
+                fi
+                echo "All checks completed"
+                return 0
+              fi
+
+              echo "Checks pending ($PENDING) — waiting ${interval}s..."
+              sleep "$interval"
+              elapsed=$((elapsed + interval))
+            done
+
+            echo "::error::Timed out waiting for PR #$pr checks"
+            exit 1
+          }
 
           STATE=$(gh pr view "$PR_NUM" --repo "$REPO" --json state --jq .state)
           if [ "$STATE" != "OPEN" ]; then
@@ -70,17 +199,29 @@ jobs:
             exit 0
           fi
 
+          MERGE_METHOD=""
           # Prefer GitHub auto-merge when required checks exist; otherwise
-          # squash-merge directly (same pattern as sdk-release-prs.yaml).
+          # squash-merge directly after checks pass (sdk-release-prs.yaml pattern).
           AUTO_MERGE_NOOP_PATTERN='is in clean status|protected branch rules|Branch does not have required protected branch rules'
           if gh pr merge "$PR_NUM" --repo "$REPO" --squash --auto --delete-branch 2> /tmp/gh-merge.err; then
+            MERGE_METHOD="auto-merge queued"
             echo "Auto-merge enabled for Speakeasy PR #$PR_NUM"
           elif grep -qiE "$AUTO_MERGE_NOOP_PATTERN" /tmp/gh-merge.err; then
-            echo "Auto-merge not applicable — merging PR #$PR_NUM directly"
+            echo "Auto-merge not applicable — waiting for checks, then merging PR #$PR_NUM directly"
             cat /tmp/gh-merge.err >&2
+            wait_for_checks "$PR_NUM"
             gh pr merge "$PR_NUM" --repo "$REPO" --squash --delete-branch
+            MERGE_METHOD="direct squash (checks passed)"
           else
             echo "::error::Failed to enable auto-merge on Speakeasy PR #$PR_NUM"
             cat /tmp/gh-merge.err >&2
             exit 1
           fi
+
+          echo "::notice title=auto-merge-pr::Merged Speakeasy PR #$PR_NUM ($MERGE_METHOD)"
+          {
+            echo "## Auto-merge complete"
+            echo "- PR: #$PR_NUM"
+            echo "- Method: $MERGE_METHOD"
+            echo "- Token: $([ -n "$PAT" ] && echo 'PAT (gh_token)' || echo 'GITHUB_TOKEN (fallback)')"
+          } >> "$GITHUB_STEP_SUMMARY"
