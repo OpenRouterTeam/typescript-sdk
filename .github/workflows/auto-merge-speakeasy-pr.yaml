@@ -160,10 +160,19 @@ jobs:
 
             echo "Waiting for PR #$pr checks (timeout ${timeout}s)..."
             while [ "$elapsed" -lt "$timeout" ]; do
+              TOTAL=$(gh pr view "$pr" --repo "$REPO" --json statusCheckRollup --jq \
+                '.statusCheckRollup | length')
               PENDING=$(gh pr view "$pr" --repo "$REPO" --json statusCheckRollup --jq \
                 '[.statusCheckRollup[]? | select(.status != "COMPLETED")] | length')
               FAILED=$(gh pr view "$pr" --repo "$REPO" --json statusCheckRollup --jq \
                 '[.statusCheckRollup[]? | select(.status == "COMPLETED") | select(.conclusion != "SUCCESS" and .conclusion != "SKIPPED" and .conclusion != "NEUTRAL")] | length')
+
+              if [ "$TOTAL" -eq 0 ]; then
+                echo "Checks not yet registered — waiting ${interval}s..."
+                sleep "$interval"
+                elapsed=$((elapsed + interval))
+                continue
+              fi
 
               if [ "$PENDING" -eq 0 ]; then
                 if [ "$FAILED" -gt 0 ]; then

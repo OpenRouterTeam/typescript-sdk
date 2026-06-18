@@ -53,8 +53,22 @@ jobs:
           GH_TOKEN: ${{ github.token }}
         run: |
           set -euo pipefail
-          BRANCH=$(gh run view "${{ github.run_id }}" --repo "${{ github.repository }}" --log 2>/dev/null \
-            | grep -oE 'branch_name=speakeasy-sdk-regen-[0-9]+' | tail -1 | cut -d= -f2 || true)
+          REPO="${{ github.repository }}"
+          RUN_ID="${{ github.run_id }}"
+
+          # Full-run logs are unavailable while the workflow is in progress;
+          # fetch logs from the completed generate job instead.
+          JOB_ID=$(gh run view "$RUN_ID" --repo "$REPO" --json jobs --jq \
+            '[.jobs[] | select(.name == "generate / Generate Target")] | .[0].databaseId // empty')
+
+          BRANCH=""
+          if [ -z "$JOB_ID" ]; then
+            echo "::warning::Could not find generate job id — auto-merge will use run_started_at fallback"
+          else
+            BRANCH=$(gh run view "$RUN_ID" --repo "$REPO" --job "$JOB_ID" --log 2>/dev/null \
+              | grep -oE 'branch_name=speakeasy-sdk-regen-[0-9]+' | tail -1 | cut -d= -f2 || true)
+          fi
+
           if [ -z "$BRANCH" ]; then
             echo "::warning::Could not extract branch_name from Generate logs — auto-merge will use run_started_at fallback"
           else
