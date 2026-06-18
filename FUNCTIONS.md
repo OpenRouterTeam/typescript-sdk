@@ -20,7 +20,7 @@ specific category of applications.
 
 ```typescript
 import { OpenRouterCore } from "@openrouter/sdk/core.js";
-import { analyticsGetUserActivity } from "@openrouter/sdk/funcs/analyticsGetUserActivity.js";
+import { ttsCreateSpeech } from "@openrouter/sdk/funcs/ttsCreateSpeech.js";
 
 // Use `OpenRouterCore` for best tree-shaking performance.
 // You can create one instance of it to use across an application.
@@ -32,12 +32,19 @@ const openRouter = new OpenRouterCore({
 });
 
 async function run() {
-  const res = await analyticsGetUserActivity(openRouter);
+  const res = await ttsCreateSpeech(openRouter, {
+    speechRequest: {
+      input: "Hello world",
+      model: "elevenlabs/eleven-turbo-v2",
+      speed: 1,
+      voice: "alloy",
+    },
+  });
   if (res.ok) {
     const { value: result } = res;
     console.log(result);
   } else {
-    console.log("analyticsGetUserActivity failed:", res.error);
+    console.log("ttsCreateSpeech failed:", res.error);
   }
 }
 
