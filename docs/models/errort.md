@@ -15,7 +15,8 @@ let value: ErrorT = {
 
 ## Fields
 
-| Field               | Type                | Required            | Description         | Example             |
-| ------------------- | ------------------- | ------------------- | ------------------- | ------------------- |
-| `code`              | *number*            | :heavy_check_mark:  | Error code          | 429                 |
-| `message`           | *string*            | :heavy_check_mark:  | Error message       | Rate limit exceeded |
+| Field                                                                  | Type                                                                   | Required                                                               | Description                                                            | Example                                                                |
+| ---------------------------------------------------------------------- | ---------------------------------------------------------------------- | ---------------------------------------------------------------------- | ---------------------------------------------------------------------- | ---------------------------------------------------------------------- |
+| `code`                                                                 | *number*                                                               | :heavy_check_mark:                                                     | Error code                                                             | 429                                                                    |
+| `message`                                                              | *string*                                                               | :heavy_check_mark:                                                     | Error message                                                          | Rate limit exceeded                                                    |
+| `metadata`                                                             | [models.ChatStreamChunkMetadata](../models/chatstreamchunkmetadata.md) | :heavy_minus_sign:                                                     | Structured error metadata                                              |                                                                        |
