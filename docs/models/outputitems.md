@@ -221,6 +221,15 @@ const value: models.OutputMemoryServerToolItem = {
 };
 ```
 
+### `models.OutputSkillServerToolItem`
+
+```typescript
+const value: models.OutputSkillServerToolItem = {
+  status: "completed",
+  type: "openrouter:skill",
+};
+```
+
 ### `models.OutputSubagentServerToolItem`
 
 ```typescript
