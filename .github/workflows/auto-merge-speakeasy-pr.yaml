@@ -66,7 +66,7 @@ jobs:
               (.headRefName | startswith("speakeasy-sdk-regen-"))
               and (.title | contains("🐝 Update SDK"))
               and ([.labels[].name] | any(. == "patch" or . == "minor" or . == "major"))
-              and (.author.login == "github-actions[bot]")
+              and (.author.is_bot == true)
             ' > /dev/null; then
               PR_NUM=$(echo "$CANDIDATE" | jq -r '.number')
               echo "Resolved Speakeasy regen PR #$PR_NUM from branch $BRANCH"
@@ -81,7 +81,7 @@ jobs:
                 | select(.headRefName | startswith("speakeasy-sdk-regen-"))
                 | select(.title | contains("🐝 Update SDK"))
                 | select([.labels[].name] | any(. == "patch" or . == "minor" or . == "major"))
-                | select(.author.login == "github-actions[bot]")
+                | select(.author.is_bot == true)
                 | select(.updatedAt >= $started)
               ] | sort_by(.updatedAt) | last | .number // empty')
           fi
