@@ -26,9 +26,6 @@ export type AnthropicImageBlockParamSource =
   | AnthropicUrlImageSource;
 
 export type AnthropicImageBlockParam = {
-  /**
-   * Enable automatic prompt caching. When set at the top level, the system automatically applies cache breakpoints to the last cacheable block in the request. Currently supported for Anthropic Claude models.
-   */
   cacheControl?: AnthropicCacheControlDirective | undefined;
   source: AnthropicBase64ImageSource | AnthropicUrlImageSource;
   type: "image";
