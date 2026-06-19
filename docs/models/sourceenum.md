@@ -1,17 +1,19 @@
 # SourceEnum
 
-Data source identifier.
+The source filter applied.
 
 ## Example Usage
 
 ```typescript
 import { SourceEnum } from "@openrouter/sdk/models";
 
-let value: SourceEnum = "design-arena";
+let value: SourceEnum = "artificial-analysis";
+
+// Open enum: unrecognized values are captured as Unrecognized<string>
 ```
 
 ## Values
 
 ```typescript
-"design-arena"
+"artificial-analysis" | "design-arena" | Unrecognized<string>
 ```
