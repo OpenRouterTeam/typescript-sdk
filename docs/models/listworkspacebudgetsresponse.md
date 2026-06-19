@@ -10,6 +10,7 @@ let value: ListWorkspaceBudgetsResponse = {
     {
       createdAt: "2025-08-24T10:30:00Z",
       id: "770e8400-e29b-41d4-a716-446655440000",
+      includeByokInLimit: false,
       limitUsd: 100,
       resetInterval: "monthly",
       updatedAt: "2025-08-24T15:45:00Z",

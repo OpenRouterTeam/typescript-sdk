@@ -8,6 +8,10 @@ import { remap as remap$ } from "../lib/primitives.js";
 
 export type UpsertWorkspaceBudgetRequest = {
   /**
+   * Whether BYOK (Bring Your Own Key) usage counts toward this budget limit. Defaults to false.
+   */
+  includeByokInLimit?: boolean | undefined;
+  /**
    * Spending limit in USD. Must be greater than 0.
    */
   limitUsd: number;
@@ -15,6 +19,7 @@ export type UpsertWorkspaceBudgetRequest = {
 
 /** @internal */
 export type UpsertWorkspaceBudgetRequest$Outbound = {
+  include_byok_in_limit?: boolean | undefined;
   limit_usd: number;
 };
 
@@ -23,9 +28,11 @@ export const UpsertWorkspaceBudgetRequest$outboundSchema: z.ZodType<
   UpsertWorkspaceBudgetRequest$Outbound,
   UpsertWorkspaceBudgetRequest
 > = z.object({
+  includeByokInLimit: z.boolean().optional(),
   limitUsd: z.number(),
 }).transform((v) => {
   return remap$(v, {
+    includeByokInLimit: "include_byok_in_limit",
     limitUsd: "limit_usd",
   });
 });

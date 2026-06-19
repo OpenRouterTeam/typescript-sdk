@@ -34,6 +34,10 @@ export type WorkspaceBudget = {
    */
   id: string;
   /**
+   * Whether BYOK (Bring Your Own Key) usage counts toward this budget limit.
+   */
+  includeByokInLimit: boolean;
+  /**
    * Spending limit in USD for this interval
    */
   limitUsd: number;
@@ -62,6 +66,7 @@ export const WorkspaceBudget$inboundSchema: z.ZodType<
 > = z.object({
   created_at: z.string(),
   id: z.string(),
+  include_byok_in_limit: z.boolean(),
   limit_usd: z.number(),
   reset_interval: z.nullable(ResetInterval$inboundSchema),
   updated_at: z.string(),
@@ -69,6 +74,7 @@ export const WorkspaceBudget$inboundSchema: z.ZodType<
 }).transform((v) => {
   return remap$(v, {
     "created_at": "createdAt",
+    "include_byok_in_limit": "includeByokInLimit",
     "limit_usd": "limitUsd",
     "reset_interval": "resetInterval",
     "updated_at": "updatedAt",
