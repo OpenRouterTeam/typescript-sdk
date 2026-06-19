@@ -276,6 +276,7 @@ export * from "./modelarchitecture.js";
 export * from "./modelbenchmarks.js";
 export * from "./modelgroup.js";
 export * from "./modellinks.js";
+export * from "./modelreasoning.js";
 export * from "./modelresponse.js";
 export * from "./modelscountresponse.js";
 export * from "./modelslistresponse.js";
