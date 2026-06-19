@@ -66,9 +66,6 @@ export type AnthropicDocumentBlockParamSourceUnion =
   | AnthropicFileDocumentSource;
 
 export type AnthropicDocumentBlockParam = {
-  /**
-   * Enable automatic prompt caching. When set at the top level, the system automatically applies cache breakpoints to the last cacheable block in the request. Currently supported for Anthropic Claude models.
-   */
   cacheControl?: AnthropicCacheControlDirective | undefined;
   citations?: AnthropicDocumentBlockParamCitations | null | undefined;
   context?: string | null | undefined;
