@@ -229,9 +229,6 @@ export type Stop = string | Array<string> | any;
  * Chat completion request parameters
  */
 export type ChatRequest = {
-  /**
-   * Enable automatic prompt caching. When set at the top level, the system automatically applies cache breakpoints to the last cacheable block in the request. Currently supported for Anthropic Claude models.
-   */
   cacheControl?: AnthropicCacheControlDirective | undefined;
   /**
    * Debug options for inspecting request transformations (streaming only)

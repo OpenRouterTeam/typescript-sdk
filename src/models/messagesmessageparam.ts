@@ -44,9 +44,6 @@ import {
 } from "./messagesadvisortoolresultblock.js";
 
 export type ContentCompaction = {
-  /**
-   * Enable automatic prompt caching. When set at the top level, the system automatically applies cache breakpoints to the last cacheable block in the request. Currently supported for Anthropic Claude models.
-   */
   cacheControl?: AnthropicCacheControlDirective | undefined;
   content: string | null;
   type: "compaction";
@@ -78,9 +75,6 @@ export type MessagesMessageParamContentUnion3 =
   | Array<AnthropicWebSearchResultBlockParam>;
 
 export type ContentWebSearchToolResult = {
-  /**
-   * Enable automatic prompt caching. When set at the top level, the system automatically applies cache breakpoints to the last cacheable block in the request. Currently supported for Anthropic Claude models.
-   */
   cacheControl?: AnthropicCacheControlDirective | undefined;
   content:
     | ContentWebSearchToolResultError
@@ -90,9 +84,6 @@ export type ContentWebSearchToolResult = {
 };
 
 export type ContentServerToolUse = {
-  /**
-   * Enable automatic prompt caching. When set at the top level, the system automatically applies cache breakpoints to the last cacheable block in the request. Currently supported for Anthropic Claude models.
-   */
   cacheControl?: AnthropicCacheControlDirective | undefined;
   id: string;
   input?: any | null | undefined;
@@ -134,9 +125,6 @@ export type MessagesMessageParamContentUnion2 =
   >;
 
 export type ContentToolResult = {
-  /**
-   * Enable automatic prompt caching. When set at the top level, the system automatically applies cache breakpoints to the last cacheable block in the request. Currently supported for Anthropic Claude models.
-   */
   cacheControl?: AnthropicCacheControlDirective | undefined;
   content?:
     | string
@@ -154,9 +142,6 @@ export type ContentToolResult = {
 };
 
 export type ContentToolUse = {
-  /**
-   * Enable automatic prompt caching. When set at the top level, the system automatically applies cache breakpoints to the last cacheable block in the request. Currently supported for Anthropic Claude models.
-   */
   cacheControl?: AnthropicCacheControlDirective | undefined;
   id: string;
   input?: any | null | undefined;
