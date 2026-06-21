@@ -7,6 +7,11 @@ import * as z from "zod/v4";
 import { remap as remap$ } from "../lib/primitives.js";
 import * as openEnums from "../types/enums.js";
 import { OpenEnum } from "../types/enums.js";
+import {
+  AnthropicCacheControlDirective,
+  AnthropicCacheControlDirective$Outbound,
+  AnthropicCacheControlDirective$outboundSchema,
+} from "./anthropiccachecontroldirective.js";
 
 /**
  * Reasoning effort level for panelist and judge inner calls.
@@ -59,6 +64,10 @@ export type FusionServerToolConfig = {
    * Slugs of models to run in parallel as the analysis panel. Each model receives the user prompt with openrouter:web_search and openrouter:web_fetch enabled, then a judge model summarizes the collective output into structured analysis JSON. Capped at 8 models to bound cost amplification. Defaults to the Quality preset from /labs/fusion.
    */
   analysisModels?: Array<string> | undefined;
+  /**
+   * Enable automatic prompt caching. When set at the top level, the system automatically applies cache breakpoints to the last cacheable block in the request. Currently supported for Anthropic Claude models.
+   */
+  cacheControl?: AnthropicCacheControlDirective | undefined;
   /**
    * Maximum number of output tokens (including reasoning tokens) each panelist and the judge model may produce per inner call. Controls the total output budget so reasoning-heavy models like GPT-5.5 do not exhaust their token allowance before producing visible text. When omitted, the provider's default applies.
    */
@@ -146,6 +155,7 @@ export function fusionServerToolConfigToolToJSON(
 /** @internal */
 export type FusionServerToolConfig$Outbound = {
   analysis_models?: Array<string> | undefined;
+  cache_control?: AnthropicCacheControlDirective$Outbound | undefined;
   max_completion_tokens?: number | undefined;
   max_tool_calls?: number | undefined;
   model?: string | undefined;
@@ -160,6 +170,7 @@ export const FusionServerToolConfig$outboundSchema: z.ZodType<
   FusionServerToolConfig
 > = z.object({
   analysisModels: z.array(z.string()).optional(),
+  cacheControl: AnthropicCacheControlDirective$outboundSchema.optional(),
   maxCompletionTokens: z.int().optional(),
   maxToolCalls: z.int().optional(),
   model: z.string().optional(),
@@ -171,6 +182,7 @@ export const FusionServerToolConfig$outboundSchema: z.ZodType<
 }).transform((v) => {
   return remap$(v, {
     analysisModels: "analysis_models",
+    cacheControl: "cache_control",
     maxCompletionTokens: "max_completion_tokens",
     maxToolCalls: "max_tool_calls",
   });
