@@ -1,0 +1,17 @@
+# AnthropicSpeed
+
+## Example Usage
+
+```typescript
+import { AnthropicSpeed } from "@openrouter/sdk/models";
+
+let value: AnthropicSpeed = "standard";
+
+// Open enum: unrecognized values are captured as Unrecognized<string>
+```
+
+## Values
+
+```typescript
+"fast" | "standard" | Unrecognized<string>
+```
