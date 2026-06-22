@@ -129,6 +129,7 @@ export type Options = {
   perplexity?: { [k: string]: any | null } | undefined;
   phala?: { [k: string]: any | null } | undefined;
   poolside?: { [k: string]: any | null } | undefined;
+  quiver?: { [k: string]: any | null } | undefined;
   recraft?: { [k: string]: any | null } | undefined;
   recursal?: { [k: string]: any | null } | undefined;
   reflection?: { [k: string]: any | null } | undefined;
@@ -320,6 +321,7 @@ export type Options$Outbound = {
   perplexity?: { [k: string]: any | null } | undefined;
   phala?: { [k: string]: any | null } | undefined;
   poolside?: { [k: string]: any | null } | undefined;
+  quiver?: { [k: string]: any | null } | undefined;
   recraft?: { [k: string]: any | null } | undefined;
   recursal?: { [k: string]: any | null } | undefined;
   reflection?: { [k: string]: any | null } | undefined;
@@ -440,6 +442,7 @@ export const Options$outboundSchema: z.ZodType<Options$Outbound, Options> = z
     perplexity: z.record(z.string(), z.nullable(z.any())).optional(),
     phala: z.record(z.string(), z.nullable(z.any())).optional(),
     poolside: z.record(z.string(), z.nullable(z.any())).optional(),
+    quiver: z.record(z.string(), z.nullable(z.any())).optional(),
     recraft: z.record(z.string(), z.nullable(z.any())).optional(),
     recursal: z.record(z.string(), z.nullable(z.any())).optional(),
     reflection: z.record(z.string(), z.nullable(z.any())).optional(),
