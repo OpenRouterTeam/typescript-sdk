@@ -11,13 +11,29 @@ import { SDKValidationError } from "./errors/sdkvalidationerror.js";
 
 export type RankingsDailyItem = {
   /**
+   * Total cache-read tokens for the day (tokens served from provider-side prompt caches), returned as a decimal string so 64-bit values are not truncated.
+   */
+  cacheReadTokens: string;
+  /**
    * UTC calendar date the row is aggregated over (YYYY-MM-DD).
    */
   date: string;
   /**
+   * Total prompt (input) tokens for the day, returned as a decimal string so 64-bit values are not truncated.
+   */
+  inputTokens: string;
+  /**
    * Model variant permaslug (e.g. `openai/gpt-4o-2024-05-13`, `openai/gpt-4o-2024-05-13:free`). Non-default variants include a `:variant` suffix and are ranked as their own entry. The reserved value `other` denotes the aggregated row covering every model outside the daily top 50 for that date — always sorted last within its date.
    */
   modelPermaslug: string;
+  /**
+   * Total completion (output) tokens for the day, returned as a decimal string so 64-bit values are not truncated.
+   */
+  outputTokens: string;
+  /**
+   * Total reasoning tokens for the day (internal thinking tokens reported by the provider), returned as a decimal string so 64-bit values are not truncated.
+   */
+  reasoningTokens: string;
   /**
    * Sum of `prompt_tokens + completion_tokens` for the day, returned as a decimal string so 64-bit values are not truncated.
    */
@@ -29,12 +45,20 @@ export const RankingsDailyItem$inboundSchema: z.ZodType<
   RankingsDailyItem,
   unknown
 > = z.object({
+  cache_read_tokens: z.string(),
   date: z.string(),
+  input_tokens: z.string(),
   model_permaslug: z.string(),
+  output_tokens: z.string(),
+  reasoning_tokens: z.string(),
   total_tokens: z.string(),
 }).transform((v) => {
   return remap$(v, {
+    "cache_read_tokens": "cacheReadTokens",
+    "input_tokens": "inputTokens",
     "model_permaslug": "modelPermaslug",
+    "output_tokens": "outputTokens",
+    "reasoning_tokens": "reasoningTokens",
     "total_tokens": "totalTokens",
   });
 });
