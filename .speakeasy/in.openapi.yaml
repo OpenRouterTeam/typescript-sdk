@@ -156,6 +156,7 @@ components:
         effort:
           description: Reasoning effort level for the advisor call.
           enum:
+            - max
             - xhigh
             - high
             - medium
@@ -4745,6 +4746,7 @@ components:
             effort:
               description: Constrains effort on reasoning for reasoning models
               enum:
+                - max
                 - xhigh
                 - high
                 - medium
@@ -4763,6 +4765,7 @@ components:
             Shorthand for setting reasoning effort. Equivalent to setting reasoning.effort. Cannot be used
             simultaneously with reasoning.effort if they differ.
           enum:
+            - max
             - xhigh
             - high
             - medium
@@ -8205,6 +8208,7 @@ components:
             effort:
               description: Reasoning effort level for panelist and judge inner calls.
               enum:
+                - max
                 - xhigh
                 - high
                 - medium
@@ -18462,6 +18466,7 @@ components:
         type: response.reasoning_text.done
     ReasoningEffort:
       enum:
+        - max
         - xhigh
         - high
         - medium
@@ -19922,6 +19927,7 @@ components:
         effort:
           description: Reasoning effort level for the subagent call.
           enum:
+            - max
             - xhigh
             - high
             - medium
