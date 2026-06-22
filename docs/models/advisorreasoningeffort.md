@@ -15,5 +15,5 @@ let value: AdvisorReasoningEffort = "low";
 ## Values
 
 ```typescript
-"xhigh" | "high" | "medium" | "low" | "minimal" | "none" | Unrecognized<string>
+"max" | "xhigh" | "high" | "medium" | "low" | "minimal" | "none" | Unrecognized<string>
 ```
