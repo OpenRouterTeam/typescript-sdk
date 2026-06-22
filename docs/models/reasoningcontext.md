@@ -1,0 +1,19 @@
+# ReasoningContext
+
+Controls which reasoning is available to the model. `all_turns` includes reasoning from earlier turns passed in input; `current_turn` limits to the current turn only.
+
+## Example Usage
+
+```typescript
+import { ReasoningContext } from "@openrouter/sdk/models";
+
+let value: ReasoningContext = "all_turns";
+
+// Open enum: unrecognized values are captured as Unrecognized<string>
+```
+
+## Values
+
+```typescript
+"all_turns" | "current_turn" | Unrecognized<string>
+```
