@@ -13,7 +13,7 @@ export type ParetoRouterPlugin = {
   enabled?: boolean | undefined;
   id: "pareto-router";
   /**
-   * Minimum desired coding score between 0 and 1, where 1 is best. Higher values select from stronger coding models (sourced from Artificial Analysis coding percentiles). Maps internally to one of three tiers (low, medium, high). Omit to use the router default tier.
+   * Minimum coding quality score between 0 and 1. Maps to internal quality tiers: >= 0.66 → high (top coding models), >= 0.33 → medium (strong modern flagships), < 0.33 → low (capable coders above the median). Omit to default to the highest tier (equivalent to >= 0.66).
    */
   minCodingScore?: number | undefined;
 };
