@@ -6,9 +6,11 @@
 import { ClientSDK } from "../lib/sdks.js";
 import { Analytics } from "./analytics.js";
 import { APIKeys } from "./apikeys.js";
+import { Benchmarks } from "./benchmarks.js";
 import { Beta } from "./beta.js";
 import { Byok } from "./byok.js";
 import { Chat } from "./chat.js";
+import { Classifications } from "./classifications.js";
 import { Credits } from "./credits.js";
 import { Datasets } from "./datasets.js";
 import { Embeddings } from "./embeddings.js";
@@ -66,6 +68,11 @@ export class OpenRouter extends ClientSDK {
     return (this._oAuth ??= new OAuth(this._options));
   }
 
+  private _benchmarks?: Benchmarks;
+  get benchmarks(): Benchmarks {
+    return (this._benchmarks ??= new Benchmarks(this._options));
+  }
+
   private _byok?: Byok;
   get byok(): Byok {
     return (this._byok ??= new Byok(this._options));
@@ -74,6 +81,11 @@ export class OpenRouter extends ClientSDK {
   private _chat?: Chat;
   get chat(): Chat {
     return (this._chat ??= new Chat(this._options));
+  }
+
+  private _classifications?: Classifications;
+  get classifications(): Classifications {
+    return (this._classifications ??= new Classifications(this._options));
   }
 
   private _credits?: Credits;
