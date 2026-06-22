@@ -4,8 +4,6 @@
  */
 
 import { datasetsGetAppRankings } from "../funcs/datasetsGetAppRankings.js";
-import { datasetsGetBenchmarksArtificialAnalysis } from "../funcs/datasetsGetBenchmarksArtificialAnalysis.js";
-import { datasetsGetBenchmarksDesignArena } from "../funcs/datasetsGetBenchmarksDesignArena.js";
 import { datasetsGetRankingsDaily } from "../funcs/datasetsGetRankingsDaily.js";
 import { ClientSDK, RequestOptions } from "../lib/sdks.js";
 import * as models from "../models/index.js";
@@ -56,40 +54,6 @@ export class Datasets extends ClientSDK {
   }
 
   /**
-   * Artificial Analysis Benchmark Indices
-   *
-   * @remarks
-   * Returns composite index scores (Intelligence, Coding, Agentic) from Artificial Analysis for LLM models. Includes OpenRouter pricing per model. Authenticate with any valid OpenRouter API key. Rate-limited to 30 requests/minute per key and 500 requests/day per account.
-   */
-  async getBenchmarksArtificialAnalysis(
-    request?: operations.GetBenchmarksArtificialAnalysisRequest | undefined,
-    options?: RequestOptions,
-  ): Promise<models.BenchmarksAAResponse> {
-    return unwrapAsync(datasetsGetBenchmarksArtificialAnalysis(
-      this,
-      request,
-      options,
-    ));
-  }
-
-  /**
-   * Design Arena Benchmark Rankings
-   *
-   * @remarks
-   * Returns ELO ratings from head-to-head arena battles on Design Arena. Filterable by arena (models/builders/agents) and category. Includes OpenRouter pricing per model. Authenticate with any valid OpenRouter API key. Rate-limited to 30 requests/minute per key and 500 requests/day per account.
-   */
-  async getBenchmarksDesignArena(
-    request?: operations.GetBenchmarksDesignArenaRequest | undefined,
-    options?: RequestOptions,
-  ): Promise<models.BenchmarksDAResponse> {
-    return unwrapAsync(datasetsGetBenchmarksDesignArena(
-      this,
-      request,
-      options,
-    ));
-  }
-
-  /**
    * Daily token totals for top 50 models
    *
    * @remarks
@@ -97,6 +61,11 @@ export class Datasets extends ClientSDK {
    * single aggregated `other` row per day that sums every model outside that top 50.
    * Token totals are `prompt_tokens + completion_tokens`, matching the public rankings
    * chart on openrouter.ai/rankings.
+   *
+   * Each row includes token breakouts: `input_tokens` (prompt), `output_tokens`
+   * (completion), `cache_read_tokens` (provider-side prompt-cache hits), and
+   * `reasoning_tokens` (internal thinking tokens). These allow downstream consumers
+   * to analyse traffic composition without a second query.
    *
    * Each row is a distinct `(date, model_permaslug)` pair. The `other` row uses the
    * reserved permaslug `other` and is always returned last within its date, so callers
