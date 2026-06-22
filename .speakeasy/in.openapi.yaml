@@ -3649,6 +3649,18 @@ components:
       description: Price per million prompt tokens
       example: 1000
       type: string
+    BooleanCapability:
+      description: A supported-or-not flag. Present means the parameter is accepted.
+      example:
+        type: boolean
+      properties:
+        type:
+          enum:
+            - boolean
+          type: string
+      required:
+        - type
+      type: object
     BulkAddWorkspaceMembersRequest:
       example:
         user_ids:
@@ -4021,6 +4033,24 @@ components:
         - z-ai
       example: openai
       type: string
+    CapabilityDescriptor:
+      description: A typed descriptor for one supported request parameter.
+      discriminator:
+        mapping:
+          boolean: '#/components/schemas/BooleanCapability'
+          enum: '#/components/schemas/EnumCapability'
+          range: '#/components/schemas/RangeCapability'
+        propertyName: type
+      example:
+        type: enum
+        values:
+          - 1K
+          - 2K
+          - 4K
+      oneOf:
+        - $ref: '#/components/schemas/EnumCapability'
+        - $ref: '#/components/schemas/RangeCapability'
+        - $ref: '#/components/schemas/BooleanCapability'
     ChatAssistantImages:
       description: Generated images from image generation models
       example:
@@ -6916,6 +6946,54 @@ components:
           example: America/New_York
           type: string
       type: object
+    DebugEvent:
+      description: >-
+        Debug event emitted when debug.echo_upstream_body is true. Contains the transformed upstream request body or
+        timing milestones.
+      example:
+        debug:
+          echo_upstream_body:
+            messages: []
+            model: anthropic/claude-sonnet-4
+        sequence_number: 1
+        type: response.debug
+      properties:
+        debug:
+          properties:
+            echo_upstream_body:
+              additionalProperties:
+                nullable: true
+              type: object
+            timings:
+              properties:
+                epoch_ms:
+                  type: integer
+                event:
+                  enum:
+                    - adapter_request
+                    - upstream_headers_received
+                    - first_token_received
+                    - upstream_body_ended
+                  type: string
+                start_ms:
+                  type: integer
+              required:
+                - start_ms
+                - event
+                - epoch_ms
+              type: object
+          type: object
+        sequence_number:
+          type: integer
+        type:
+          enum:
+            - response.debug
+          type: string
+      required:
+        - type
+        - debug
+        - sequence_number
+      type: object
     DefaultParameters:
       additionalProperties: false
       description: Default parameters for this model
@@ -7170,6 +7248,27 @@ components:
         - -10
       example: 0
       type: integer
+    EnumCapability:
+      description: A parameter that accepts one of a discrete set of string values.
+      example:
+        type: enum
+        values:
+          - 1K
+          - 2K
+          - 4K
+      properties:
+        type:
+          enum:
+            - enum
+          type: string
+        values:
+          items:
+            type: string
+          type: array
+      required:
+        - type
+        - values
+      type: object
     ErrorEvent:
       allOf:
         - $ref: '#/components/schemas/BaseErrorEvent'
@@ -8178,6 +8277,8 @@ components:
           maxItems: 8
           minItems: 1
           type: array
+        cache_control:
+          $ref: '#/components/schemas/AnthropicCacheControlDirective'
         max_completion_tokens:
           description: >-
             Maximum number of output tokens (including reasoning tokens) each panelist and the judge model may produce
@@ -9037,6 +9138,73 @@ components:
         aspect_ratio: '16:9'
         quality: high
       type: object
+    ImageEndpoint:
+      description: An endpoint that serves a given image model.
+      example:
+        allowed_passthrough_parameters: []
+        pricing:
+          - billable: output_image
+            cost_usd: 0.05
+            unit: image
+        provider_name: Bytedance
+        provider_slug: bytedance
+        provider_tag: bytedance
+        supported_parameters:
+          resolution:
+            type: enum
+            values:
+              - 1K
+              - 2K
+              - 4K
+          seed:
+            type: boolean
+        supports_streaming: false
+      properties:
+        allowed_passthrough_parameters:
+          description: Provider-specific options accepted under provider.options[provider_slug].
+          example: []
+          items:
+            type: string
+          type: array
+        pricing:
+          description: Billable pricing lines for this endpoint.
+          example:
+            - billable: output_image
+              cost_usd: 0.05
+              unit: image
+          items:
+            $ref: '#/components/schemas/ImagePricingEntry'
+          type: array
+        provider_name:
+          description: Provider display name
+          example: Bytedance
+          type: string
+        provider_slug:
+          description: Provider slug
+          example: bytedance
+          type: string
+        provider_tag:
+          description: Provider tag for request-side selection
+          example: bytedance
+          nullable: true
+          type: string
+        supported_parameters:
+          allOf:
+            - $ref: '#/components/schemas/SupportedParameters'
+            - description: The definitive set of parameters this endpoint accepts for this model.
+        supports_streaming:
+          description: 'Whether this endpoint supports native SSE streaming (`stream: true` in the request).'
+          example: false
+          type: boolean
+      required:
+        - provider_name
+        - provider_slug
+        - provider_tag
+        - supported_parameters
+        - allowed_passthrough_parameters
+        - supports_streaming
+        - pricing
+      type: object
     ImageGenCallCompletedEvent:
       allOf:
         - $ref: '#/components/schemas/OpenAIResponsesImageGenCallCompleted'
@@ -9083,6 +9251,193 @@ components:
         partial_image_index: 0
         sequence_number: 3
         type: response.image_generation_call.partial_image
+    ImageGenCompletedEvent:
+      description: Emitted when generation completes and the final image is available
+      example:
+        b64_json: <base64-encoded-final-image>
+        created: 1748372400
+        type: image_generation.completed
+        usage:
+          completion_tokens: 4175
+          cost: 0.04
+          prompt_tokens: 0
+          total_tokens: 4175
+      properties:
+        b64_json:
+          description: Base64-encoded final image data
+          type: string
+        created:
+          description: Unix timestamp (seconds) when the image was generated
+          type: integer
+        type:
+          description: The event type
+          enum:
+            - image_generation.completed
+          type: string
+        usage:
+          $ref: '#/components/schemas/ImageGenerationUsage'
+      required:
+        - type
+        - b64_json
+        - created
+      type: object
+    ImageGenerationRequest:
+      description: Image generation request input
+      example:
+        model: bytedance-seed/seedream-4.5
+        prompt: a red panda astronaut floating in space, studio lighting
+      properties:
+        aspect_ratio:
+          description: Normalized aspect ratio of the generated image. Providers clamp to their supported subset.
+          enum:
+            - '1:1'
+            - '1:2'
+            - '1:4'
+            - '1:8'
+            - '2:1'
+            - '2:3'
+            - '3:2'
+            - '3:4'
+            - '4:1'
+            - '4:3'
+            - '4:5'
+            - '5:4'
+            - '8:1'
+            - '9:16'
+            - '16:9'
+            - '9:19.5'
+            - 19.5:9
+            - '9:20'
+            - '20:9'
+            - '9:21'
+            - '21:9'
+            - auto
+          example: '16:9'
+          type: string
+        background:
+          description: Background treatment. `transparent` requires an output_format that supports alpha (png or webp).
+          enum:
+            - auto
+            - transparent
+            - opaque
+          example: auto
+          type: string
+        input_references:
+          description: Reference images to guide image-to-image generation, as base64 data URLs or HTTP(S) URLs.
+          items:
+            $ref: '#/components/schemas/ContentPartImage'
+          maxItems: 16
+          type: array
+        model:
+          description: The image generation model to use
+          example: bytedance-seed/seedream-4.5
+          type: string
+        'n':
+          description: Number of images to generate (1-10). Providers that only support single-image generation reject n > 1.
+          example: 1
+          type: integer
+        output_compression:
+          description: Compression level (0-100) for webp/jpeg output. Ignored for png and by providers without a compression knob.
+          example: 100
+          type: integer
+        output_format:
+          description: Encoding of the returned image bytes.
+          enum:
+            - png
+            - jpeg
+            - webp
+          example: png
+          type: string
+        prompt:
+          description: Text description of the desired image
+          example: a red panda astronaut floating in space, studio lighting
+          minLength: 1
+          type: string
+        provider:
+          description: Provider-specific passthrough configuration
+          properties:
+            options:
+              allOf:
+                - $ref: '#/components/schemas/ProviderOptions'
+                - example:
+                    black-forest-labs:
+                      guidance: 3
+                      steps: 40
+          type: object
+        quality:
+          description: Rendering quality. Providers without a quality knob ignore this.
+          enum:
+            - auto
+            - low
+            - medium
+            - high
+          example: high
+          type: string
+        resolution:
+          description: Normalized resolution tier of the generated image. Concrete pixel dimensions are derived per-provider.
+          enum:
+            - '512'
+            - 1K
+            - 2K
+            - 4K
+          example: 2K
+          type: string
+        seed:
+          description: >-
+            If specified, the generation will sample deterministically, such that repeated requests with the same seed
+            and parameters should return the same result. Determinism is not guaranteed for all providers.
+          type: integer
+        size:
+          description: >-
+            Optional. A convenience shorthand for output dimensions — pass a tier ("2K", "4K") or explicit pixels
+            ("2048x2048") and we normalize it to the right dimensions for the chosen provider. Interchangeable with
+            resolution + aspect_ratio; use those directly for enumerated, per-model discoverable values. Conflicting
+            size + resolution/aspect_ratio is rejected.
+          example: 2K
+          type: string
+        stream:
+          description: >-
+            If true, partial images are streamed as SSE events as they become available. Only supported by providers
+            with native streaming (currently OpenAI). Non-streaming providers ignore this flag and return a buffered
+            response.
+          type: boolean
+      required:
+        - model
+        - prompt
+      type: object
+    ImageGenerationResponse:
+      description: Image generation response
+      example:
+        created: 1748372400
+        data:
+          - b64_json: <base64-encoded-image>
+        usage:
+          completion_tokens: 4175
+          cost: 0.04
+          prompt_tokens: 0
+          total_tokens: 4175
+      properties:
+        created:
+          description: Unix timestamp (seconds) when the image was generated
+          example: 1748372400
+          type: integer
+        data:
+          description: Generated images
+          items:
+            properties:
+              b64_json:
+                description: Base64-encoded image bytes
+                type: string
+            required:
+              - b64_json
+            type: object
+          type: array
+        usage:
+          $ref: '#/components/schemas/ImageGenerationUsage'
+      required:
+        - created
+        - data
+      type: object
     ImageGenerationServerTool:
       description: Image generation tool configuration
       example:
@@ -9198,6 +9553,383 @@ components:
         - failed
       example: completed
       type: string
+    ImageGenerationUsage:
+      description: Token and cost usage for the image generation request, when available
+      example:
+        completion_tokens: 4175
+        cost: 0.04
+        prompt_tokens: 0
+        total_tokens: 4175
+      properties:
+        completion_tokens:
+          description: The tokens generated
+          type: integer
+        completion_tokens_details:
+          nullable: true
+          properties:
+            audio_tokens:
+              description: Tokens generated by the model for audio output.
+              nullable: true
+              type: integer
+            image_tokens:
+              description: Tokens generated by the model for image output.
+              nullable: true
+              type: integer
+            reasoning_tokens:
+              description: Tokens generated by the model for reasoning.
+              nullable: true
+              type: integer
+          type: object
+        cost:
+          description: Cost of the completion
+          format: double
+          nullable: true
+          type: number
+        cost_details:
+          $ref: '#/components/schemas/CostDetails'
+        is_byok:
+          description: Whether a request was made using a Bring Your Own Key configuration
+          type: boolean
+        iterations:
+          items:
+            $ref: '#/components/schemas/AnthropicUsageIteration'
+          nullable: true
+          type: array
+        prompt_tokens:
+          description: Including images, input audio, and tools if any
+          type: integer
+        prompt_tokens_details:
+          description: Breakdown of tokens used in the prompt.
+          nullable: true
+          properties:
+            audio_tokens:
+              description: Tokens used for input audio.
+              nullable: true
+              type: integer
+            cache_write_tokens:
+              description: Tokens written to cache. Only returned for models with explicit caching and cache write pricing.
+              nullable: true
+              type: integer
+            cached_tokens:
+              description: Tokens cached by the endpoint.
+              nullable: true
+              type: integer
+            file_tokens:
+              description: Tokens used for input files/documents.
+              nullable: true
+              type: integer
+            video_tokens:
+              description: Tokens used for input video.
+              nullable: true
+              type: integer
+          type: object
+        server_tool_use:
+          description: Usage for server-side tool execution (e.g., web search)
+          nullable: true
+          properties:
+            tool_calls_executed:
+              description: Number of OpenRouter server tool calls that executed and produced a result.
+              nullable: true
+              type: integer
+            tool_calls_requested:
+              description: >-
+                Total number of OpenRouter server-orchestrated tool calls the model requested, across all tool types.
+                Provider-native tools (e.g. native web search) are not counted here.
+              nullable: true
+              type: integer
+            web_search_requests:
+              description: >-
+                Number of web searches performed by server-side tools. For server-orchestrated tool calls a web search
+                is also counted in tool_calls_requested; provider-native web search may report web_search_requests only.
+                Do not sum the two.
+              nullable: true
+              type: integer
+          type: object
+        service_tier:
+          description: The service tier used by the upstream provider for this request
+          nullable: true
+          type: string
+        speed:
+          $ref: '#/components/schemas/AnthropicSpeed'
+        total_tokens:
+          description: Sum of the above two fields
+          type: integer
+      required:
+        - prompt_tokens
+        - completion_tokens
+        - total_tokens
+      type: object
+    ImageGenPartialImageEvent:
+      description: Emitted when a partial image becomes available during streaming generation
+      example:
+        b64_json: <base64-encoded-partial-image>
+        partial_image_index: 0
+        type: image_generation.partial_image
+      properties:
+        b64_json:
+          description: Base64-encoded partial image data
+          type: string
+        partial_image_index:
+          description: 0-based index indicating which partial image this is in the sequence
+          type: integer
+        type:
+          description: The event type
+          enum:
+            - image_generation.partial_image
+          type: string
+      required:
+        - type
+        - partial_image_index
+        - b64_json
+      type: object
+    ImageGenStreamErrorEvent:
+      description: Emitted when streaming generation fails after the SSE response starts
+      example:
+        error:
+          code: upstream_error
+          message: The upstream provider returned an error
+          param: null
+          type: provider_error
+        type: error
+      properties:
+        error:
+          description: Provider error details
+          properties:
+            code:
+              description: Provider error code, when supplied
+              nullable: true
+              type: string
+            message:
+              description: Provider error message
+              type: string
+            param:
+              description: Request parameter associated with the error, when supplied
+              nullable: true
+              type: string
+            type:
+              description: Provider error type, when supplied
+              nullable: true
+              type: string
+          required:
+            - message
+          type: object
+        type:
+          description: The event type
+          enum:
+            - error
+          type: string
+      required:
+        - type
+        - error
+      type: object
+    ImageModelArchitecture:
+      example:
+        input_modalities:
+          - text
+          - image
+        output_modalities:
+          - image
+      properties:
+        input_modalities:
+          description: Supported input modalities
+          items:
+            $ref: '#/components/schemas/InputModality'
+          type: array
+        output_modalities:
+          description: Supported output modalities
+          items:
+            $ref: '#/components/schemas/ImageOutputModality'
+          type: array
+      required:
+        - input_modalities
+        - output_modalities
+      type: object
+    ImageModelEndpointsResponse:
+      description: The full per-endpoint records for an image model.
+      example:
+        endpoints:
+          - allowed_passthrough_parameters: []
+            pricing:
+              - billable: output_image
+                cost_usd: 0.05
+                unit: image
+            provider_name: Bytedance
+            provider_slug: bytedance
+            provider_tag: bytedance
+            supported_parameters:
+              resolution:
+                type: enum
+                values:
+                  - 1K
+                  - 2K
+                  - 4K
+            supports_streaming: false
+        id: bytedance-seed/seedream-4.5
+      properties:
+        endpoints:
+          items:
+            $ref: '#/components/schemas/ImageEndpoint'
+          type: array
+        id:
+          description: Model slug
+          example: bytedance-seed/seedream-4.5
+          type: string
+      required:
+        - id
+        - endpoints
+      type: object
+    ImageModelListItem:
+      description: A single image model in the discovery listing.
+      example:
+        architecture:
+          input_modalities:
+            - text
+            - image
+          output_modalities:
+            - image
+        created: 1692901234
+        description: A text-to-image model.
+        endpoints: /api/v1/images/models/bytedance-seed/seedream-4.5/endpoints
+        id: bytedance-seed/seedream-4.5
+        name: Seedream 4.5
+        supported_parameters:
+          resolution:
+            type: enum
+            values:
+              - 1K
+              - 2K
+              - 4K
+          seed:
+            type: boolean
+        supports_streaming: false
+      properties:
+        architecture:
+          $ref: '#/components/schemas/ImageModelArchitecture'
+        created:
+          description: Unix timestamp (seconds) of when the model was created
+          example: 1692901234
+          type: integer
+        description:
+          example: A text-to-image model.
+          type: string
+        endpoints:
+          description: Relative URL to the full per-endpoint records for this model
+          example: /api/v1/images/models/bytedance-seed/seedream-4.5/endpoints
+          type: string
+        id:
+          description: Model slug
+          example: bytedance-seed/seedream-4.5
+          type: string
+        name:
+          description: Display name
+          example: Seedream 4.5
+          type: string
+        supported_parameters:
+          $ref: '#/components/schemas/SupportedParameters'
+        supports_streaming:
+          description: >-
+            Whether any endpoint of this model supports native SSE streaming on the dedicated Image API (i.e. `stream:
+            true` in the request). OR across endpoints.
+          example: false
+          type: boolean
+      required:
+        - id
+        - name
+        - description
+        - created
+        - architecture
+        - supported_parameters
+        - supports_streaming
+        - endpoints
+      type: object
+    ImageModelsListResponse:
+      description: List of image generation models.
+      example:
+        data:
+          - architecture:
+              input_modalities:
+                - text
+              output_modalities:
+                - image
+            created: 1692901234
+            description: A text-to-image model.
+            endpoints: /api/v1/images/models/bytedance-seed/seedream-4.5/endpoints
+            id: bytedance-seed/seedream-4.5
+            name: Seedream 4.5
+            supported_parameters:
+              resolution:
+                type: enum
+                values:
+                  - 1K
+                  - 2K
+                  - 4K
+            supports_streaming: false
+      properties:
+        data:
+          items:
+            $ref: '#/components/schemas/ImageModelListItem'
+          type: array
+      required:
+        - data
+      type: object
+    ImageOutputModality:
+      enum:
+        - text
+        - image
+        - embeddings
+        - audio
+        - video
+        - rerank
+        - speech
+        - transcription
+      example: image
+      type: string
+    ImagePricingEntry:
+      description: One billable pricing line for an image provider.
+      example:
+        billable: output_image
+        cost_usd: 0.05
+        unit: image
+      properties:
+        billable:
+          enum:
+            - output_image
+            - input_image
+            - input_font
+            - input_reference
+            - input_text
+          type: string
+        cost_usd:
+          format: double
+          type: number
+        unit:
+          enum:
+            - image
+            - megapixel
+            - token
+          type: string
+        variant:
+          type: string
+      required:
+        - billable
+        - unit
+        - cost_usd
+      type: object
+    ImageStreamingResponse:
+      example:
+        data:
+          b64_json: <base64-encoded-partial-image>
+          partial_image_index: 0
+          type: image_generation.partial_image
+      properties:
+        data:
+          anyOf:
+            - $ref: '#/components/schemas/ImageGenPartialImageEvent'
+            - $ref: '#/components/schemas/ImageGenCompletedEvent'
+            - $ref: '#/components/schemas/ImageGenStreamErrorEvent'
+      required:
+        - data
+      type: object
     IncompleteDetails:
       example:
         reason: max_output_tokens
@@ -18243,6 +18975,26 @@ components:
         - unknown
       example: fp16
       type: string
+    RangeCapability:
+      description: A parameter that accepts any value within an inclusive numeric range.
+      example:
+        max: 100
+        min: 0
+        type: range
+      properties:
+        max:
+          type: number
+        min:
+          type: number
+        type:
+          enum:
+            - range
+          type: string
+      required:
+        - type
+        - min
+        - max
+      type: object
     RankingsDailyItem:
       example:
         date: '2026-05-11'
@@ -18829,6 +19581,8 @@ components:
           type: boolean
         cache_control:
           $ref: '#/components/schemas/AnthropicCacheControlDirective'
+        debug:
+          $ref: '#/components/schemas/ChatDebugOptions'
         frequency_penalty:
           format: double
           nullable: true
@@ -19538,6 +20292,7 @@ components:
           response.created: '#/components/schemas/OpenResponsesCreatedEvent'
           response.custom_tool_call_input.delta: '#/components/schemas/CustomToolCallInputDeltaEvent'
           response.custom_tool_call_input.done: '#/components/schemas/CustomToolCallInputDoneEvent'
+          response.debug: '#/components/schemas/DebugEvent'
           response.failed: '#/components/schemas/StreamEventsResponseFailed'
           response.function_call_arguments.delta: '#/components/schemas/FunctionCallArgsDeltaEvent'
           response.function_call_arguments.done: '#/components/schemas/FunctionCallArgsDoneEvent'
@@ -19637,6 +20392,7 @@ components:
         - $ref: '#/components/schemas/FusionCallAnalysisInProgressEvent'
         - $ref: '#/components/schemas/FusionCallAnalysisCompletedEvent'
         - $ref: '#/components/schemas/FusionCallCompletedEvent'
+        - $ref: '#/components/schemas/DebugEvent'
     StreamEventsResponseCompleted:
       allOf:
         - $ref: '#/components/schemas/CompletedEvent'
@@ -20005,6 +20761,26 @@ components:
           items:
             $ref: '#/components/schemas/SubagentNestedTool'
           type: array
+      type: object
+    SupportedParameters:
+      additionalProperties:
+        $ref: '#/components/schemas/CapabilityDescriptor'
+      description: >-
+        Union of supported parameters across every endpoint of this model. Coarse discovery aid; the definitive
+        per-endpoint set is behind the endpoints URL.
+      example:
+        output_compression:
+          max: 100
+          min: 0
+          type: range
+        resolution:
+          type: enum
+          values:
+            - 1K
+            - 2K
+            - 4K
+        seed:
+          type: boolean
       type: object
     TextConfig:
       description: Text output configuration including format and verbosity
@@ -26784,6 +27560,268 @@ paths:
         outputs:
           results: $.data
         type: offsetLimit
+  /images:
+    post:
+      description: Generates an image from a text prompt via the image generation router
+      operationId: createImages
+      requestBody:
+        content:
+          application/json:
+            example:
+              model: bytedance-seed/seedream-4.5
+              prompt: a red panda astronaut floating in space, studio lighting
+            schema:
+              $ref: '#/components/schemas/ImageGenerationRequest'
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              example:
+                created: 1748372400
+                data:
+                  - b64_json: <base64-encoded-image>
+                usage:
+                  completion_tokens: 4175
+                  cost: 0.04
+                  prompt_tokens: 0
+                  total_tokens: 4175
+              schema:
+                $ref: '#/components/schemas/ImageGenerationResponse'
+            text/event-stream:
+              example:
+                data:
+                  b64_json: <base64-encoded-partial-image>
+                  partial_image_index: 0
+                  type: image_generation.partial_image
+              schema:
+                $ref: '#/components/schemas/ImageStreamingResponse'
+              x-speakeasy-sse-sentinel: '[DONE]'
+          description: Image generation response
+        '400':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 400
+                  message: Invalid request parameters
+              schema:
+                $ref: '#/components/schemas/BadRequestResponse'
+          description: Bad Request - Invalid request parameters or malformed input
+        '401':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 401
+                  message: Missing Authentication header
+              schema:
+                $ref: '#/components/schemas/UnauthorizedResponse'
+          description: Unauthorized - Authentication required or invalid credentials
+        '402':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 402
+                  message: Insufficient credits. Add more using https://openrouter.ai/credits
+              schema:
+                $ref: '#/components/schemas/PaymentRequiredResponse'
+          description: Payment Required - Insufficient credits or quota to complete request
+        '403':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 403
+                  message: Only management keys can perform this operation
+              schema:
+                $ref: '#/components/schemas/ForbiddenResponse'
+          description: Forbidden - Authentication successful but insufficient permissions
+        '404':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 404
+                  message: Resource not found
+              schema:
+                $ref: '#/components/schemas/NotFoundResponse'
+          description: Not Found - Resource does not exist
+        '429':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 429
+                  message: Rate limit exceeded
+              schema:
+                $ref: '#/components/schemas/TooManyRequestsResponse'
+          description: Too Many Requests - Rate limit exceeded
+        '500':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 500
+                  message: Internal Server Error
+              schema:
+                $ref: '#/components/schemas/InternalServerResponse'
+          description: Internal Server Error - Unexpected server error
+        '502':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 502
+                  message: Provider returned error
+              schema:
+                $ref: '#/components/schemas/BadGatewayResponse'
+          description: Bad Gateway - Provider/upstream API failure
+        '524':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 524
+                  message: Request timed out. Please try again later.
+              schema:
+                $ref: '#/components/schemas/EdgeNetworkTimeoutResponse'
+          description: Infrastructure Timeout - Provider request timed out at edge network
+        '529':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 529
+                  message: Provider returned error
+              schema:
+                $ref: '#/components/schemas/ProviderOverloadedResponse'
+          description: Provider Overloaded - Provider is temporarily overloaded
+      summary: Generate an image
+      tags:
+        - Images
+      x-speakeasy-name-override: generate
+  /images/models:
+    get:
+      description: >-
+        Lists every image generation model with its top-level supported-parameter superset and a URL to its full
+        per-endpoint records.
+      operationId: listImageModels
+      responses:
+        '200':
+          content:
+            application/json:
+              example:
+                data:
+                  - architecture:
+                      input_modalities:
+                        - text
+                      output_modalities:
+                        - image
+                    created: 1692901234
+                    description: A text-to-image model.
+                    endpoints: /api/v1/images/models/bytedance-seed/seedream-4.5/endpoints
+                    id: bytedance-seed/seedream-4.5
+                    name: Seedream 4.5
+                    supported_parameters:
+                      resolution:
+                        type: enum
+                        values:
+                          - 1K
+                          - 2K
+                          - 4K
+                    supports_streaming: false
+              schema:
+                $ref: '#/components/schemas/ImageModelsListResponse'
+          description: List of image generation models
+        '500':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 500
+                  message: Internal Server Error
+              schema:
+                $ref: '#/components/schemas/InternalServerResponse'
+          description: Internal Server Error - Unexpected server error
+      summary: List image generation models
+      tags:
+        - Images
+      x-speakeasy-name-override: listModels
+  /images/models/{author}/{slug}/endpoints:
+    get:
+      description: >-
+        Returns the full per-endpoint records for an image model: each endpoint's definitive supported parameters,
+        pricing, and passthrough allowlist.
+      operationId: listImageModelEndpoints
+      parameters:
+        - description: Model author/organization
+          in: path
+          name: author
+          required: true
+          schema:
+            description: Model author/organization
+            example: bytedance-seed
+            type: string
+        - description: Model slug
+          in: path
+          name: slug
+          required: true
+          schema:
+            description: Model slug
+            example: seedream-4.5
+            type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              example:
+                endpoints:
+                  - allowed_passthrough_parameters: []
+                    pricing:
+                      - billable: output_image
+                        cost_usd: 0.05
+                        unit: image
+                    provider_name: Bytedance
+                    provider_slug: bytedance
+                    provider_tag: bytedance
+                    supported_parameters:
+                      resolution:
+                        type: enum
+                        values:
+                          - 1K
+                          - 2K
+                          - 4K
+                    supports_streaming: false
+                id: bytedance-seed/seedream-4.5
+              schema:
+                $ref: '#/components/schemas/ImageModelEndpointsResponse'
+          description: The full per-endpoint records for an image model
+        '404':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 404
+                  message: Resource not found
+              schema:
+                $ref: '#/components/schemas/NotFoundResponse'
+          description: Not Found - Resource does not exist
+        '500':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 500
+                  message: Internal Server Error
+              schema:
+                $ref: '#/components/schemas/InternalServerResponse'
+          description: Internal Server Error - Unexpected server error
+      summary: List endpoints for an image model
+      tags:
+        - Images
+      x-speakeasy-name-override: listModelEndpoints
   /key:
     get:
       description: Get information on the API key associated with the current authentication session
@@ -32701,6 +33739,8 @@ tags:
     name: Generations
   - description: Guardrails endpoints
     name: Guardrails
+  - description: Images endpoints
+    name: Images
   - description: Model information endpoints
     name: Models
   - description: OAuth authentication endpoints
