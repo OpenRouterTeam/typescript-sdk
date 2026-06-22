@@ -12411,6 +12411,7 @@ components:
               description: Custom HTTP headers to include in requests to this destination.
               type: object
             modelId:
+              description: The name of the tracing project in Arize AX
               minLength: 1
               type: string
             spaceKey:
@@ -20433,22 +20434,28 @@ components:
           example: '2026-06-03T12:00:00Z'
           type: string
         citation:
-          description: Required attribution when republishing this data.
+          description: >-
+            Required attribution when republishing this data, or null when results span multiple sources (attribute each
+            item individually by its `source` discriminator).
           example: 'Source: Artificial Analysis (artificialanalysis.ai) via OpenRouter (openrouter.ai/rankings).'
+          nullable: true
           type: string
         model_count:
           description: Number of unique models in the response.
           type: integer
         source:
-          description: The source filter applied.
+          description: The source filter applied, or null when all sources are returned.
           enum:
             - artificial-analysis
             - design-arena
+            - null
           example: artificial-analysis
+          nullable: true
           type: string
         source_url:
-          description: URL of the upstream data source.
+          description: URL of the upstream data source, or null when results span multiple sources.
           example: https://artificialanalysis.ai
+          nullable: true
           type: string
         task_type:
           description: The task_type filter applied, or null if showing all.
@@ -20482,10 +20489,10 @@ components:
             source: artificial-analysis
         meta:
           as_of: '2026-06-03T12:00:00Z'
-          citation: 'Source: Artificial Analysis (artificialanalysis.ai) via OpenRouter (openrouter.ai/rankings).'
+          citation: null
           model_count: 1
-          source: artificial-analysis
-          source_url: https://artificialanalysis.ai
+          source: null
+          source_url: null
           task_type: null
           version: v1
       properties:
@@ -23121,12 +23128,16 @@ paths:
         requests/minute per key and 500 requests/day per account.
       operationId: getBenchmarks
       parameters:
-        - description: Benchmark source to query. Determines the shape of the returned items.
+        - description: >-
+            Benchmark source to query. Determines the shape of the returned items. When omitted, returns results from
+            all sources.
           in: query
           name: source
-          required: true
+          required: false
           schema:
-            description: Benchmark source to query. Determines the shape of the returned items.
+            description: >-
+              Benchmark source to query. Determines the shape of the returned items. When omitted, returns results from
+              all sources.
             enum:
               - artificial-analysis
               - design-arena
@@ -23172,15 +23183,13 @@ paths:
               `dataviz`, `image`, `video`, `svg`). When omitted, returns all categories.
             example: codecategories
             type: string
-        - description: Max results to return (1–100, default 50).
+        - description: Maximum number of items to return. When omitted, all matching results are returned.
           in: query
           name: max_results
           required: false
           schema:
-            default: 50
-            description: Max results to return (1–100, default 50).
-            example: 20
-            maximum: 100
+            description: Maximum number of items to return. When omitted, all matching results are returned.
+            example: 50
             minimum: 1
             type: integer
       responses:
@@ -23200,10 +23209,10 @@ paths:
                     source: artificial-analysis
                 meta:
                   as_of: '2026-06-03T12:00:00Z'
-                  citation: 'Source: Artificial Analysis (artificialanalysis.ai) via OpenRouter (openrouter.ai/rankings).'
+                  citation: null
                   model_count: 1
-                  source: artificial-analysis
-                  source_url: https://artificialanalysis.ai
+                  source: null
+                  source_url: null
                   task_type: null
                   version: v1
               schema:
