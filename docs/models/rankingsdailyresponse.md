@@ -8,13 +8,21 @@ import { RankingsDailyResponse } from "@openrouter/sdk/models";
 let value: RankingsDailyResponse = {
   data: [
     {
+      cacheReadTokens: "2000000",
       date: "2026-05-11",
+      inputTokens: "8000000",
       modelPermaslug: "openai/gpt-4o-2024-05-13",
+      outputTokens: "4345678",
+      reasoningTokens: "1000000",
       totalTokens: "12345678",
     },
     {
+      cacheReadTokens: "1500000",
       date: "2026-05-11",
+      inputTokens: "6000000",
       modelPermaslug: "anthropic/claude-3.5-sonnet-20241022",
+      outputTokens: "3876543",
+      reasoningTokens: "500000",
       totalTokens: "9876543",
     },
   ],
