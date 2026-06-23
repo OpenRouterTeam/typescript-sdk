@@ -54,6 +54,14 @@ export type FusionPlugin = {
    */
   preset?: PresetEnum | undefined;
   /**
+   * Milliseconds to wait after `quorum_min_panels` have completed before aborting remaining in-flight panels. Gives trailing panels a short window to finish after the quorum threshold is met. Only meaningful when `quorum_min_panels` is set. Defaults to 15000 (15 seconds).
+   */
+  quorumGraceMs?: number | undefined;
+  /**
+   * Minimum number of panel models that must complete before the grace window starts. When set, fusion proceeds to the judge once this many panels have finished (succeeded or failed) plus a grace period (`quorum_grace_ms`). Remaining in-flight panels are aborted when the grace window expires. When omitted, fusion waits for all panels to complete (current default behavior).
+   */
+  quorumMinPanels?: number | undefined;
+  /**
    * Server tools available to panelist and judge inner calls. Each entry uses the same `{ type, parameters? }` shorthand as the outer Chat Completions request. When omitted, defaults to `[{ type: "openrouter:web_search" }, { type: "openrouter:web_fetch" }]`. Pass an empty array to disable tools entirely (panelists answer from parametric knowledge only).
    */
   tools?: Array<FusionPluginTool> | undefined;
@@ -94,6 +102,8 @@ export type FusionPlugin$Outbound = {
   max_tool_calls?: number | undefined;
   model?: string | undefined;
   preset?: string | undefined;
+  quorum_grace_ms?: number | undefined;
+  quorum_min_panels?: number | undefined;
   tools?: Array<FusionPluginTool$Outbound> | undefined;
 };
 
@@ -108,11 +118,15 @@ export const FusionPlugin$outboundSchema: z.ZodType<
   maxToolCalls: z.int().optional(),
   model: z.string().optional(),
   preset: PresetEnum$outboundSchema.optional(),
+  quorumGraceMs: z.int().optional(),
+  quorumMinPanels: z.int().optional(),
   tools: z.array(z.lazy(() => FusionPluginTool$outboundSchema)).optional(),
 }).transform((v) => {
   return remap$(v, {
     analysisModels: "analysis_models",
     maxToolCalls: "max_tool_calls",
+    quorumGraceMs: "quorum_grace_ms",
+    quorumMinPanels: "quorum_min_panels",
   });
 });
 
