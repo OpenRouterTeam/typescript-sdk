@@ -45,6 +45,7 @@ jobs:
     runs-on: ubuntu-latest
     outputs:
       branch_name: ${{ steps.branch.outputs.branch_name }}
+      run_started_at: ${{ steps.branch.outputs.run_started_at }}
     steps:
       - name: Extract branch from Generate logs
         id: branch
@@ -55,6 +56,13 @@ jobs:
           REPO="${{ github.repository }}"
           RUN_ID="${{ github.run_id }}"
 
+          RUN_STARTED="${{ github.run_started_at }}"
+          if [ -z "$RUN_STARTED" ]; then
+            RUN_STARTED=$(gh run view "$RUN_ID" --repo "$REPO" --json startedAt --jq -r .startedAt)
+            echo "Resolved run_started_at from API: $RUN_STARTED"
+          fi
+          echo "run_started_at=$RUN_STARTED" >> "$GITHUB_OUTPUT"
+
           # Full-run logs are unavailable while the workflow is in progress;
           # fetch logs from the completed generate job instead.
           JOB_ID=$(gh run view "$RUN_ID" --repo "$REPO" --json jobs --jq \
@@ -64,14 +72,23 @@ jobs:
           if [ -z "$JOB_ID" ]; then
             echo "::warning::Could not find generate job id — auto-merge will use run_started_at fallback"
           else
-            BRANCH=$(gh run view "$RUN_ID" --repo "$REPO" --job "$JOB_ID" --log 2>/dev/null \
-              | grep -oE 'branch_name=speakeasy-sdk-regen-[0-9]+' | tail -1 | cut -d= -f2 || true)
-          fi
-
-          if [ -z "$BRANCH" ]; then
-            echo "::warning::Could not extract branch_name from Generate logs — auto-merge will use run_started_at fallback"
-          else
-            echo "Extracted branch_name=$BRANCH"
+            MAX_ATTEMPTS=12
+            INTERVAL=10
+            for attempt in $(seq 1 "$MAX_ATTEMPTS"); do
+              BRANCH=$(gh run view "$RUN_ID" --repo "$REPO" --job "$JOB_ID" --log 2>/dev/null \
+                | grep -oE 'branch_name=speakeasy-sdk-regen-[0-9]+' | tail -1 | cut -d= -f2 || true)
+              if [ -n "$BRANCH" ]; then
+                echo "Extracted branch_name=$BRANCH (attempt $attempt)"
+                break
+              fi
+              if [ "$attempt" -lt "$MAX_ATTEMPTS" ]; then
+                echo "Job logs not ready — waiting ${INTERVAL}s (attempt $attempt/$MAX_ATTEMPTS)..."
+                sleep "$INTERVAL"
+              fi
+            done
+            if [ -z "$BRANCH" ]; then
+              echo "::warning::Could not extract branch_name from Generate logs after ${MAX_ATTEMPTS} attempts — auto-merge will use run_started_at fallback"
+            fi
           fi
           echo "branch_name=$BRANCH" >> "$GITHUB_OUTPUT"
 
@@ -80,7 +97,8 @@ jobs:
     if: ${{ !cancelled() && needs.generate.result == 'success' }}
     uses: ./.github/workflows/auto-merge-speakeasy-pr.yaml
     with:
-      run_started_at: ${{ github.run_started_at }}
+      run_started_at: ${{ needs.resolve-branch.outputs.run_started_at }}
       branch_name: ${{ needs.resolve-branch.outputs.branch_name }}
     secrets:
-      gh_token: ${{ secrets.GH_TOKEN }}
+      GH_DOCS_SYNC_APP_ID: ${{ secrets.GH_DOCS_SYNC_APP_ID }}
+      GH_DOCS_SYNC_APP_PRIVATE_KEY: ${{ secrets.GH_DOCS_SYNC_APP_PRIVATE_KEY }}

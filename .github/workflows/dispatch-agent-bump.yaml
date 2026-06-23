@@ -60,12 +60,19 @@ jobs:
           path: .last-dispatched-sdk
           key: dispatched-sdk-${{ steps.ver.outputs.version }}
 
+      - name: Generate GitHub App token
+        id: app-token
+        uses: actions/create-github-app-token@v3
+        with:
+          app-id: ${{ secrets.GH_DOCS_SYNC_APP_ID }}
+          private-key: ${{ secrets.GH_DOCS_SYNC_APP_PRIVATE_KEY }}
+          owner: OpenRouterTeam
+          repositories: typescript-agent
+
       - name: Dispatch to typescript-agent
         if: steps.dedupe.outputs.cache-hit != 'true'
         env:
-          # Cross-repo PAT. Needs contents:write on
-          # OpenRouterTeam/typescript-agent so the repository_dispatch is accepted.
-          GH_TOKEN: ${{ secrets.GH_TOKEN }}
+          GH_TOKEN: ${{ steps.app-token.outputs.token }}
         run: |
           set -euo pipefail
           gh api repos/OpenRouterTeam/typescript-agent/dispatches \
