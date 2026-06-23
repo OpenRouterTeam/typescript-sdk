@@ -231,7 +231,7 @@ export type ContextManagement = {
     | undefined;
 };
 
-export type Metadata = {
+export type MessagesRequestMetadata = {
   userId?: string | null | undefined;
 };
 
@@ -483,7 +483,7 @@ export type MessagesRequest = {
   fallbacks?: Array<MessagesFallbackParam> | null | undefined;
   maxTokens?: number | undefined;
   messages: Array<MessagesMessageParam> | null;
-  metadata?: Metadata | undefined;
+  metadata?: MessagesRequestMetadata | undefined;
   model: string;
   models?: Array<string> | undefined;
   /**
@@ -821,22 +821,28 @@ export function contextManagementToJSON(
 }
 
 /** @internal */
-export type Metadata$Outbound = {
+export type MessagesRequestMetadata$Outbound = {
   user_id?: string | null | undefined;
 };
 
 /** @internal */
-export const Metadata$outboundSchema: z.ZodType<Metadata$Outbound, Metadata> = z
-  .object({
-    userId: z.nullable(z.string()).optional(),
-  }).transform((v) => {
-    return remap$(v, {
-      userId: "user_id",
-    });
+export const MessagesRequestMetadata$outboundSchema: z.ZodType<
+  MessagesRequestMetadata$Outbound,
+  MessagesRequestMetadata
+> = z.object({
+  userId: z.nullable(z.string()).optional(),
+}).transform((v) => {
+  return remap$(v, {
+    userId: "user_id",
   });
+});
 
-export function metadataToJSON(metadata: Metadata): string {
-  return JSON.stringify(Metadata$outboundSchema.parse(metadata));
+export function messagesRequestMetadataToJSON(
+  messagesRequestMetadata: MessagesRequestMetadata,
+): string {
+  return JSON.stringify(
+    MessagesRequestMetadata$outboundSchema.parse(messagesRequestMetadata),
+  );
 }
 
 /** @internal */
@@ -1497,7 +1503,7 @@ export type MessagesRequest$Outbound = {
   fallbacks?: Array<MessagesFallbackParam$Outbound> | null | undefined;
   max_tokens?: number | undefined;
   messages: Array<MessagesMessageParam$Outbound> | null;
-  metadata?: Metadata$Outbound | undefined;
+  metadata?: MessagesRequestMetadata$Outbound | undefined;
   model: string;
   models?: Array<string> | undefined;
   output_config?: MessagesOutputConfig$Outbound | undefined;
@@ -1571,7 +1577,7 @@ export const MessagesRequest$outboundSchema: z.ZodType<
     .optional(),
   maxTokens: z.int().optional(),
   messages: z.nullable(z.array(MessagesMessageParam$outboundSchema)),
-  metadata: z.lazy(() => Metadata$outboundSchema).optional(),
+  metadata: z.lazy(() => MessagesRequestMetadata$outboundSchema).optional(),
   model: z.string(),
   models: z.array(z.string()).optional(),
   outputConfig: MessagesOutputConfig$outboundSchema.optional(),
