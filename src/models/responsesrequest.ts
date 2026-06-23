@@ -38,6 +38,11 @@ import {
   BashServerTool$outboundSchema,
 } from "./bashservertool.js";
 import {
+  ChatDebugOptions,
+  ChatDebugOptions$Outbound,
+  ChatDebugOptions$outboundSchema,
+} from "./chatdebugoptions.js";
+import {
   ChatSearchModelsServerTool,
   ChatSearchModelsServerTool$Outbound,
   ChatSearchModelsServerTool$outboundSchema,
@@ -308,6 +313,10 @@ export type ResponsesRequest = {
    * Enable automatic prompt caching. When set at the top level, the system automatically applies cache breakpoints to the last cacheable block in the request. Currently supported for Anthropic Claude models.
    */
   cacheControl?: AnthropicCacheControlDirective | undefined;
+  /**
+   * Debug options for inspecting request transformations (streaming only)
+   */
+  debug?: ChatDebugOptions | undefined;
   frequencyPenalty?: number | null | undefined;
   /**
    * Provider-specific image configuration options. Keys and values vary by model/provider. See https://openrouter.ai/docs/guides/overview/multimodal/image-generation for more details.
@@ -320,6 +329,9 @@ export type ResponsesRequest = {
   input?: InputsUnion | undefined;
   instructions?: string | null | undefined;
   maxOutputTokens?: number | null | undefined;
+  /**
+   * Maximum number of tool-calling rounds the server-tool agent loop may execute before stopping. Only applies when the request includes server tools (openrouter:* tools). Defaults to 3. Capped at 25. Overridden when stop_server_tools_when is provided.
+   */
   maxToolCalls?: number | null | undefined;
   /**
    * Metadata key-value pairs for the request. Keys must be ≤64 characters and cannot contain brackets. Values must be ≤512 characters. Maximum 16 pairs allowed.
@@ -588,6 +600,7 @@ export function responsesRequestToolUnionToJSON(
 export type ResponsesRequest$Outbound = {
   background?: boolean | null | undefined;
   cache_control?: AnthropicCacheControlDirective$Outbound | undefined;
+  debug?: ChatDebugOptions$Outbound | undefined;
   frequency_penalty?: number | null | undefined;
   image_config?: { [k: string]: ImageConfig$Outbound } | undefined;
   include?: Array<string> | null | undefined;
@@ -680,6 +693,7 @@ export const ResponsesRequest$outboundSchema: z.ZodType<
 > = z.object({
   background: z.nullable(z.boolean()).optional(),
   cacheControl: AnthropicCacheControlDirective$outboundSchema.optional(),
+  debug: ChatDebugOptions$outboundSchema.optional(),
   frequencyPenalty: z.nullable(z.number()).optional(),
   imageConfig: z.record(z.string(), ImageConfig$outboundSchema).optional(),
   include: z.nullable(z.array(ResponseIncludesEnum$outboundSchema)).optional(),
