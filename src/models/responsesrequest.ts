@@ -38,6 +38,11 @@ import {
   BashServerTool$outboundSchema,
 } from "./bashservertool.js";
 import {
+  ChatDebugOptions,
+  ChatDebugOptions$Outbound,
+  ChatDebugOptions$outboundSchema,
+} from "./chatdebugoptions.js";
+import {
   ChatSearchModelsServerTool,
   ChatSearchModelsServerTool$Outbound,
   ChatSearchModelsServerTool$outboundSchema,
@@ -286,7 +291,7 @@ export type ResponsesRequestToolUnion =
   | (AdvisorServerToolOpenRouter & { type: "openrouter:advisor" })
   | (SubagentServerToolOpenRouter & { type: "openrouter:subagent" })
   | (DatetimeServerTool & { type: "openrouter:datetime" })
-  | FusionServerToolOpenRouter
+  | (FusionServerToolOpenRouter & { type: "openrouter:fusion" })
   | (ImageGenerationServerToolOpenRouter & {
     type: "openrouter:image_generation";
   })
@@ -308,6 +313,10 @@ export type ResponsesRequest = {
    * Enable automatic prompt caching. When set at the top level, the system automatically applies cache breakpoints to the last cacheable block in the request. Currently supported for Anthropic Claude models.
    */
   cacheControl?: AnthropicCacheControlDirective | undefined;
+  /**
+   * Debug options for inspecting request transformations (streaming only)
+   */
+  debug?: ChatDebugOptions | undefined;
   frequencyPenalty?: number | null | undefined;
   /**
    * Provider-specific image configuration options. Keys and values vary by model/provider. See https://openrouter.ai/docs/guides/overview/multimodal/image-generation for more details.
@@ -397,7 +406,7 @@ export type ResponsesRequest = {
       | (AdvisorServerToolOpenRouter & { type: "openrouter:advisor" })
       | (SubagentServerToolOpenRouter & { type: "openrouter:subagent" })
       | (DatetimeServerTool & { type: "openrouter:datetime" })
-      | FusionServerToolOpenRouter
+      | (FusionServerToolOpenRouter & { type: "openrouter:fusion" })
       | (ImageGenerationServerToolOpenRouter & {
         type: "openrouter:image_generation";
       })
@@ -517,7 +526,7 @@ export type ResponsesRequestToolUnion$Outbound =
   | (AdvisorServerToolOpenRouter$Outbound & { type: "openrouter:advisor" })
   | (SubagentServerToolOpenRouter$Outbound & { type: "openrouter:subagent" })
   | (DatetimeServerTool$Outbound & { type: "openrouter:datetime" })
-  | FusionServerToolOpenRouter$Outbound
+  | (FusionServerToolOpenRouter$Outbound & { type: "openrouter:fusion" })
   | (ImageGenerationServerToolOpenRouter$Outbound & {
     type: "openrouter:image_generation";
   })
@@ -558,7 +567,9 @@ export const ResponsesRequestToolUnion$outboundSchema: z.ZodType<
   DatetimeServerTool$outboundSchema.and(
     z.object({ type: z.literal("openrouter:datetime") }),
   ),
-  FusionServerToolOpenRouter$outboundSchema,
+  FusionServerToolOpenRouter$outboundSchema.and(
+    z.object({ type: z.literal("openrouter:fusion") }),
+  ),
   ImageGenerationServerToolOpenRouter$outboundSchema.and(
     z.object({ type: z.literal("openrouter:image_generation") }),
   ),
@@ -588,6 +599,7 @@ export function responsesRequestToolUnionToJSON(
 export type ResponsesRequest$Outbound = {
   background?: boolean | null | undefined;
   cache_control?: AnthropicCacheControlDirective$Outbound | undefined;
+  debug?: ChatDebugOptions$Outbound | undefined;
   frequency_penalty?: number | null | undefined;
   image_config?: { [k: string]: ImageConfig$Outbound } | undefined;
   include?: Array<string> | null | undefined;
@@ -651,7 +663,7 @@ export type ResponsesRequest$Outbound = {
         type: "openrouter:subagent";
       })
       | (DatetimeServerTool$Outbound & { type: "openrouter:datetime" })
-      | FusionServerToolOpenRouter$Outbound
+      | (FusionServerToolOpenRouter$Outbound & { type: "openrouter:fusion" })
       | (ImageGenerationServerToolOpenRouter$Outbound & {
         type: "openrouter:image_generation";
       })
@@ -680,6 +692,7 @@ export const ResponsesRequest$outboundSchema: z.ZodType<
 > = z.object({
   background: z.nullable(z.boolean()).optional(),
   cacheControl: AnthropicCacheControlDirective$outboundSchema.optional(),
+  debug: ChatDebugOptions$outboundSchema.optional(),
   frequencyPenalty: z.nullable(z.number()).optional(),
   imageConfig: z.record(z.string(), ImageConfig$outboundSchema).optional(),
   include: z.nullable(z.array(ResponseIncludesEnum$outboundSchema)).optional(),
@@ -748,7 +761,9 @@ export const ResponsesRequest$outboundSchema: z.ZodType<
       DatetimeServerTool$outboundSchema.and(
         z.object({ type: z.literal("openrouter:datetime") }),
       ),
-      FusionServerToolOpenRouter$outboundSchema,
+      FusionServerToolOpenRouter$outboundSchema.and(
+        z.object({ type: z.literal("openrouter:fusion") }),
+      ),
       ImageGenerationServerToolOpenRouter$outboundSchema.and(
         z.object({ type: z.literal("openrouter:image_generation") }),
       ),
