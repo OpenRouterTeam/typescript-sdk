@@ -7,11 +7,6 @@ import * as z from "zod/v4";
 import { remap as remap$ } from "../lib/primitives.js";
 import * as openEnums from "../types/enums.js";
 import { OpenEnum } from "../types/enums.js";
-import {
-  ProviderOptions,
-  ProviderOptions$Outbound,
-  ProviderOptions$outboundSchema,
-} from "./provideroptions.js";
 
 /**
  * Provider-specific passthrough configuration
@@ -20,7 +15,7 @@ export type SpeechRequestProvider = {
   /**
    * Provider-specific options keyed by provider slug. Only options for the matched provider are forwarded; the rest are ignored. Unrecognized keys are silently dropped.
    */
-  options?: ProviderOptions | undefined;
+  options?: { [k: string]: { [k: string]: any | null } } | undefined;
 };
 
 /**
@@ -67,7 +62,7 @@ export type SpeechRequest = {
 
 /** @internal */
 export type SpeechRequestProvider$Outbound = {
-  options?: ProviderOptions$Outbound | undefined;
+  options?: { [k: string]: { [k: string]: any | null } } | undefined;
 };
 
 /** @internal */
@@ -75,7 +70,8 @@ export const SpeechRequestProvider$outboundSchema: z.ZodType<
   SpeechRequestProvider$Outbound,
   SpeechRequestProvider
 > = z.object({
-  options: ProviderOptions$outboundSchema.optional(),
+  options: z.record(z.string(), z.record(z.string(), z.nullable(z.any())))
+    .optional(),
 });
 
 export function speechRequestProviderToJSON(
