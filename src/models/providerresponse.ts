@@ -113,6 +113,7 @@ export const ProviderResponseProviderName = {
   Recraft: "Recraft",
   Reka: "Reka",
   Relace: "Relace",
+  SakanaAI: "Sakana AI",
   SambaNova: "SambaNova",
   Seed: "Seed",
   SiliconFlow: "SiliconFlow",
