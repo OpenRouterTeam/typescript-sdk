@@ -2188,6 +2188,38 @@ components:
       required:
         - type
       type: object
+    ApiErrorType:
+      description: Canonical OpenRouter error type, stable across all API formats
+      enum:
+        - context_length_exceeded
+        - max_tokens_exceeded
+        - token_limit_exceeded
+        - string_too_long
+        - authentication
+        - permission_denied
+        - payment_required
+        - rate_limit_exceeded
+        - provider_overloaded
+        - provider_unavailable
+        - invalid_request
+        - invalid_prompt
+        - not_found
+        - precondition_failed
+        - payload_too_large
+        - unprocessable
+        - content_policy_violation
+        - refusal
+        - invalid_image
+        - image_too_large
+        - image_too_small
+        - unsupported_image_format
+        - image_not_found
+        - image_download_failed
+        - server
+        - timeout
+        - unmapped
+      example: rate_limit_exceeded
+      type: string
     ApplyPatchCallItem:
       description: >-
         A tool call emitted by the model requesting a V4A patch operation. The client applies the patch and echoes an
@@ -5076,6 +5108,8 @@ components:
           example:
             code: 429
             message: Rate limit exceeded
+            metadata:
+              error_type: rate_limit_exceeded
           properties:
             code:
               description: Error code
@@ -5086,6 +5120,17 @@ components:
               description: Error message
               example: Rate limit exceeded
               type: string
+            metadata:
+              description: Structured error metadata
+              properties:
+                error_type:
+                  $ref: '#/components/schemas/ApiErrorType'
+                provider_code:
+                  description: Upstream provider-specific error code, when available
+                  type: string
+              required:
+                - error_type
+              type: object
           required:
             - message
             - code
@@ -11472,9 +11517,12 @@ components:
       type: object
     MessagesErrorDetail:
       example:
+        error_type: invalid_request
         message: Invalid request parameters
         type: invalid_request_error
       properties:
+        error_type:
+          $ref: '#/components/schemas/ApiErrorType'
         message:
           type: string
         type:
@@ -11487,12 +11535,15 @@ components:
       description: Error event in the stream
       example:
         error:
+          error_type: provider_overloaded
           message: Overloaded
           type: overloaded_error
         type: error
       properties:
         error:
           properties:
+            error_type:
+              $ref: '#/components/schemas/ApiErrorType'
             message:
               type: string
             type:
@@ -11501,6 +11552,8 @@ components:
             - type
             - message
           type: object
+        openrouter_metadata:
+          $ref: '#/components/schemas/OpenRouterMetadata'
         type:
           enum:
             - error
@@ -15574,6 +15627,8 @@ components:
       allOf:
         - $ref: '#/components/schemas/BaseResponsesResult'
         - properties:
+            error_type:
+              $ref: '#/components/schemas/ApiErrorType'
             openrouter_metadata:
               $ref: '#/components/schemas/OpenRouterMetadata'
             output:
