@@ -1,0 +1,17 @@
+# ImageOutputModality
+
+## Example Usage
+
+```typescript
+import { ImageOutputModality } from "@openrouter/sdk/models";
+
+let value: ImageOutputModality = "image";
+
+// Open enum: unrecognized values are captured as Unrecognized<string>
+```
+
+## Values
+
+```typescript
+"text" | "image" | "embeddings" | "audio" | "video" | "rerank" | "speech" | "transcription" | Unrecognized<string>
+```
