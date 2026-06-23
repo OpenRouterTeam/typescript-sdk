@@ -6,11 +6,6 @@
 import * as z from "zod/v4";
 import { remap as remap$ } from "../lib/primitives.js";
 import {
-  ProviderOptions,
-  ProviderOptions$Outbound,
-  ProviderOptions$outboundSchema,
-} from "./provideroptions.js";
-import {
   STTInputAudio,
   STTInputAudio$Outbound,
   STTInputAudio$outboundSchema,
@@ -23,7 +18,7 @@ export type STTRequestProvider = {
   /**
    * Provider-specific options keyed by provider slug. Only options for the matched provider are forwarded; the rest are ignored. Unrecognized keys are silently dropped.
    */
-  options?: ProviderOptions | undefined;
+  options?: { [k: string]: { [k: string]: any | null } } | undefined;
 };
 
 /**
@@ -54,7 +49,7 @@ export type STTRequest = {
 
 /** @internal */
 export type STTRequestProvider$Outbound = {
-  options?: ProviderOptions$Outbound | undefined;
+  options?: { [k: string]: { [k: string]: any | null } } | undefined;
 };
 
 /** @internal */
@@ -62,7 +57,8 @@ export const STTRequestProvider$outboundSchema: z.ZodType<
   STTRequestProvider$Outbound,
   STTRequestProvider
 > = z.object({
-  options: ProviderOptions$outboundSchema.optional(),
+  options: z.record(z.string(), z.record(z.string(), z.nullable(z.any())))
+    .optional(),
 });
 
 export function sttRequestProviderToJSON(
