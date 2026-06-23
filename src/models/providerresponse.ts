@@ -121,6 +121,7 @@ export const ProviderResponseProviderName = {
   Stealth: "Stealth",
   StreamLake: "StreamLake",
   Switchpoint: "Switchpoint",
+  Tenstorrent: "Tenstorrent",
   Together: "Together",
   Upstage: "Upstage",
   Venice: "Venice",
