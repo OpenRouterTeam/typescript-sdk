@@ -33,6 +33,9 @@ export type Pricing = {
   inputCacheRead?: string | undefined;
   inputCacheWrite?: string | undefined;
   internalReasoning?: string | undefined;
+  /**
+   * Price in USD per token for prompt (input) processing
+   */
   prompt: string;
   request?: string | undefined;
   webSearch?: string | undefined;
