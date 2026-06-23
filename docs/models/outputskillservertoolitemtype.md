@@ -1,0 +1,15 @@
+# OutputSkillServerToolItemType
+
+## Example Usage
+
+```typescript
+import { OutputSkillServerToolItemType } from "@openrouter/sdk/models";
+
+let value: OutputSkillServerToolItemType = "openrouter:skill";
+```
+
+## Values
+
+```typescript
+"openrouter:skill"
+```
