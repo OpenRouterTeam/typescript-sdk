@@ -108,6 +108,7 @@ let value: ProviderOptions = {};
 | `reka`                | Record<string, *any*> | :heavy_minus_sign:    | N/A                   |
 | `relace`              | Record<string, *any*> | :heavy_minus_sign:    | N/A                   |
 | `replicate`           | Record<string, *any*> | :heavy_minus_sign:    | N/A                   |
+| `sakanaAi`            | Record<string, *any*> | :heavy_minus_sign:    | N/A                   |
 | `sambanova`           | Record<string, *any*> | :heavy_minus_sign:    | N/A                   |
 | `sambanovaCloaked`    | Record<string, *any*> | :heavy_minus_sign:    | N/A                   |
 | `seed`                | Record<string, *any*> | :heavy_minus_sign:    | N/A                   |

@@ -79,6 +79,7 @@ export const BYOKProviderSlug = {
   Recraft: "recraft",
   Reka: "reka",
   Relace: "relace",
+  SakanaAi: "sakana-ai",
   Sambanova: "sambanova",
   Seed: "seed",
   Siliconflow: "siliconflow",
