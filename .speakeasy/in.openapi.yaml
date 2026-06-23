@@ -4055,6 +4055,7 @@ components:
         - stepfun
         - streamlake
         - switchpoint
+        - tenstorrent
         - together
         - upstage
         - venice
@@ -12513,6 +12514,7 @@ components:
                 - Stealth
                 - StreamLake
                 - Switchpoint
+                - Tenstorrent
                 - Together
                 - Upstage
                 - Venice
@@ -17920,6 +17922,7 @@ components:
         - Stealth
         - StreamLake
         - Switchpoint
+        - Tenstorrent
         - Together
         - Upstage
         - Venice
@@ -18359,6 +18362,10 @@ components:
           additionalProperties:
             nullable: true
           type: object
+        tenstorrent:
+          additionalProperties:
+            nullable: true
+          type: object
         together:
           additionalProperties:
             nullable: true
@@ -18717,6 +18724,7 @@ components:
             - Stealth
             - StreamLake
             - Switchpoint
+            - Tenstorrent
             - Together
             - Upstage
             - Venice
@@ -24401,6 +24409,7 @@ paths:
               - stepfun
               - streamlake
               - switchpoint
+              - tenstorrent
               - together
               - upstage
               - venice
