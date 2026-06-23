@@ -1,0 +1,25 @@
+# PublicEndpointPrompt
+
+Price in USD per token for prompt (input) processing
+
+
+## Supported Types
+
+### `number`
+
+```typescript
+const value: number = 1284.03;
+```
+
+### `string`
+
+```typescript
+const value: string = "<value>";
+```
+
+### `any`
+
+```typescript
+const value: any = "<value>";
+```
+
