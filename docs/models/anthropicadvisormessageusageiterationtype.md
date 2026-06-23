@@ -1,0 +1,15 @@
+# AnthropicAdvisorMessageUsageIterationType
+
+## Example Usage
+
+```typescript
+import { AnthropicAdvisorMessageUsageIterationType } from "@openrouter/sdk/models";
+
+let value: AnthropicAdvisorMessageUsageIterationType = "advisor_message";
+```
+
+## Values
+
+```typescript
+"advisor_message"
+```
