@@ -1,0 +1,52 @@
+# TaskClassificationResponseData
+
+## Example Usage
+
+```typescript
+import { TaskClassificationResponseData } from "@openrouter/sdk/models";
+
+let value: TaskClassificationResponseData = {
+  asOf: "2026-06-17",
+  classifications: [
+    {
+      categoryTokenShare: 0.48,
+      categoryUsageShare: 0.51,
+      displayName: "Code Generation",
+      macroCategory: "code",
+      models: [
+        {
+          id: "openai/gpt-4.1-mini",
+          tagTokenShare: 0.75,
+          tagUsageShare: 0.55,
+        },
+        {
+          id: "anthropic/claude-sonnet-4",
+          tagTokenShare: 0.12,
+          tagUsageShare: 0.2,
+        },
+      ],
+      tag: "code:general_impl",
+      tokenShare: 0.31,
+      usageShare: 0.23,
+    },
+  ],
+  macroCategories: [
+    {
+      key: "code",
+      label: "Code",
+      tokenShare: 0.52,
+      usageShare: 0.45,
+    },
+  ],
+  windowDays: 7,
+};
+```
+
+## Fields
+
+| Field                                                                                                                                                                                                                | Type                                                                                                                                                                                                                 | Required                                                                                                                                                                                                             | Description                                                                                                                                                                                                          | Example                                                                                                                                                                                                              |
+| -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `asOf`                                                                                                                                                                                                               | *string*                                                                                                                                                                                                             | :heavy_check_mark:                                                                                                                                                                                                   | UTC date (YYYY-MM-DD) of the window upper bound (yesterday). Data is exclusive of the current incomplete UTC day. This is the expected latest date in the snapshot; it does not confirm data presence for that date. | 2026-06-17                                                                                                                                                                                                           |
+| `classifications`                                                                                                                                                                                                    | [models.TaskClassificationItem](../models/taskclassificationitem.md)[]                                                                                                                                               | :heavy_check_mark:                                                                                                                                                                                                   | Per-task classification market-share data, sorted by usage_share descending.                                                                                                                                         |                                                                                                                                                                                                                      |
+| `macroCategories`                                                                                                                                                                                                    | [models.TaskClassificationMacroCategory](../models/taskclassificationmacrocategory.md)[]                                                                                                                             | :heavy_check_mark:                                                                                                                                                                                                   | Aggregate market-share data per macro-category (code, data, agent, general).                                                                                                                                         |                                                                                                                                                                                                                      |
+| `windowDays`                                                                                                                                                                                                         | *number*                                                                                                                                                                                                             | :heavy_check_mark:                                                                                                                                                                                                   | Number of trailing days covered by this snapshot.                                                                                                                                                                    | 7                                                                                                                                                                                                                    |
