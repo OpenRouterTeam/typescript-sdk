@@ -1,0 +1,20 @@
+# ChatStreamChunkMetadata
+
+Structured error metadata
+
+## Example Usage
+
+```typescript
+import { ChatStreamChunkMetadata } from "@openrouter/sdk/models";
+
+let value: ChatStreamChunkMetadata = {
+  errorType: "rate_limit_exceeded",
+};
+```
+
+## Fields
+
+| Field                                                          | Type                                                           | Required                                                       | Description                                                    | Example                                                        |
+| -------------------------------------------------------------- | -------------------------------------------------------------- | -------------------------------------------------------------- | -------------------------------------------------------------- | -------------------------------------------------------------- |
+| `errorType`                                                    | [models.ApiErrorType](../models/apierrortype.md)               | :heavy_check_mark:                                             | Canonical OpenRouter error type, stable across all API formats | rate_limit_exceeded                                            |
+| `providerCode`                                                 | *string*                                                       | :heavy_minus_sign:                                             | Upstream provider-specific error code, when available          |                                                                |
