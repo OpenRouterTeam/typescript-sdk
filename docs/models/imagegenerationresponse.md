@@ -1,0 +1,26 @@
+# ImageGenerationResponse
+
+Image generation response
+
+## Example Usage
+
+```typescript
+import { ImageGenerationResponse } from "@openrouter/sdk/models";
+
+let value: ImageGenerationResponse = {
+  created: 1748372400,
+  data: [
+    {
+      b64Json: "<base64-encoded-image>",
+    },
+  ],
+};
+```
+
+## Fields
+
+| Field                                                                                 | Type                                                                                  | Required                                                                              | Description                                                                           | Example                                                                               |
+| ------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------- |
+| `created`                                                                             | *number*                                                                              | :heavy_check_mark:                                                                    | Unix timestamp (seconds) when the image was generated                                 | 1748372400                                                                            |
+| `data`                                                                                | [models.ImageGenerationResponseData](../models/imagegenerationresponsedata.md)[]      | :heavy_check_mark:                                                                    | Generated images                                                                      |                                                                                       |
+| `usage`                                                                               | [models.ImageGenerationUsage](../models/imagegenerationusage.md)                      | :heavy_minus_sign:                                                                    | Token and cost usage for the image generation request, when available                 | {<br/>"completion_tokens": 4175,<br/>"cost": 0.04,<br/>"prompt_tokens": 0,<br/>"total_tokens": 4175<br/>} |
