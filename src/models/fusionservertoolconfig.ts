@@ -7,11 +7,17 @@ import * as z from "zod/v4";
 import { remap as remap$ } from "../lib/primitives.js";
 import * as openEnums from "../types/enums.js";
 import { OpenEnum } from "../types/enums.js";
+import {
+  AnthropicCacheControlDirective,
+  AnthropicCacheControlDirective$Outbound,
+  AnthropicCacheControlDirective$outboundSchema,
+} from "./anthropiccachecontroldirective.js";
 
 /**
  * Reasoning effort level for panelist and judge inner calls.
  */
 export const FusionServerToolConfigEffort = {
+  Max: "max",
   Xhigh: "xhigh",
   High: "high",
   Medium: "medium",
@@ -60,6 +66,10 @@ export type FusionServerToolConfig = {
    */
   analysisModels?: Array<string> | undefined;
   /**
+   * Enable automatic prompt caching. When set at the top level, the system automatically applies cache breakpoints to the last cacheable block in the request. Currently supported for Anthropic Claude models.
+   */
+  cacheControl?: AnthropicCacheControlDirective | undefined;
+  /**
    * Maximum number of output tokens (including reasoning tokens) each panelist and the judge model may produce per inner call. Controls the total output budget so reasoning-heavy models like GPT-5.5 do not exhaust their token allowance before producing visible text. When omitted, the provider's default applies.
    */
   maxCompletionTokens?: number | undefined;
@@ -71,6 +81,14 @@ export type FusionServerToolConfig = {
    * Slug of the judge model that produces the structured analysis JSON. Defaults to the model used in the outer API request.
    */
   model?: string | undefined;
+  /**
+   * Milliseconds to wait after `quorum_min_panels` have completed before aborting remaining in-flight panels. Gives trailing panels a short window to finish after the quorum threshold is met. Only meaningful when `quorum_min_panels` is set. Defaults to 15000 (15 seconds).
+   */
+  quorumGraceMs?: number | undefined;
+  /**
+   * Minimum number of panel models that must complete before the grace window starts. When set, fusion proceeds to the judge once this many panels have finished (succeeded or failed) plus a grace period (`quorum_grace_ms`). Remaining in-flight panels are aborted when the grace window expires. When omitted, fusion waits for all panels to complete (current default behavior).
+   */
+  quorumMinPanels?: number | undefined;
   /**
    * Reasoning configuration forwarded to panelist and judge inner calls. Use this to control reasoning effort and token budget for models that support extended thinking.
    */
@@ -146,9 +164,12 @@ export function fusionServerToolConfigToolToJSON(
 /** @internal */
 export type FusionServerToolConfig$Outbound = {
   analysis_models?: Array<string> | undefined;
+  cache_control?: AnthropicCacheControlDirective$Outbound | undefined;
   max_completion_tokens?: number | undefined;
   max_tool_calls?: number | undefined;
   model?: string | undefined;
+  quorum_grace_ms?: number | undefined;
+  quorum_min_panels?: number | undefined;
   reasoning?: FusionServerToolConfigReasoning$Outbound | undefined;
   temperature?: number | undefined;
   tools?: Array<FusionServerToolConfigTool$Outbound> | undefined;
@@ -160,9 +181,12 @@ export const FusionServerToolConfig$outboundSchema: z.ZodType<
   FusionServerToolConfig
 > = z.object({
   analysisModels: z.array(z.string()).optional(),
+  cacheControl: AnthropicCacheControlDirective$outboundSchema.optional(),
   maxCompletionTokens: z.int().optional(),
   maxToolCalls: z.int().optional(),
   model: z.string().optional(),
+  quorumGraceMs: z.int().optional(),
+  quorumMinPanels: z.int().optional(),
   reasoning: z.lazy(() => FusionServerToolConfigReasoning$outboundSchema)
     .optional(),
   temperature: z.number().optional(),
@@ -171,8 +195,11 @@ export const FusionServerToolConfig$outboundSchema: z.ZodType<
 }).transform((v) => {
   return remap$(v, {
     analysisModels: "analysis_models",
+    cacheControl: "cache_control",
     maxCompletionTokens: "max_completion_tokens",
     maxToolCalls: "max_tool_calls",
+    quorumGraceMs: "quorum_grace_ms",
+    quorumMinPanels: "quorum_min_panels",
   });
 });
 
