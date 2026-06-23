@@ -1,0 +1,19 @@
+# BooleanCapability
+
+A supported-or-not flag. Present means the parameter is accepted.
+
+## Example Usage
+
+```typescript
+import { BooleanCapability } from "@openrouter/sdk/models";
+
+let value: BooleanCapability = {
+  type: "boolean",
+};
+```
+
+## Fields
+
+| Field              | Type               | Required           | Description        |
+| ------------------ | ------------------ | ------------------ | ------------------ |
+| `type`             | *"boolean"*        | :heavy_check_mark: | N/A                |
