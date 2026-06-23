@@ -21,21 +21,125 @@ import {
 } from "./percentilestats.js";
 import { ProviderName, ProviderName$inboundSchema } from "./providername.js";
 
+/**
+ * Price in USD per audio input token
+ */
+export type PublicEndpointAudio = number | string | any;
+
+/**
+ * Price in USD per audio output token
+ */
+export type PublicEndpointAudioOutput = number | string | any;
+
+/**
+ * Price in USD per token for completion (output) generation
+ */
+export type PublicEndpointCompletion = number | string | any;
+
+/**
+ * Price in USD per input image
+ */
+export type PublicEndpointImage = number | string | any;
+
+/**
+ * Price in USD per output image
+ */
+export type PublicEndpointImageOutput = number | string | any;
+
+/**
+ * Price in USD per image token
+ */
+export type PublicEndpointImageToken = number | string | any;
+
+/**
+ * Price in USD per cached audio input token
+ */
+export type PublicEndpointInputAudioCache = number | string | any;
+
+/**
+ * Price in USD per cached input token (read)
+ */
+export type PublicEndpointInputCacheRead = number | string | any;
+
+/**
+ * Price in USD per cached input token (write)
+ */
+export type PublicEndpointInputCacheWrite = number | string | any;
+
+/**
+ * Price in USD per internal reasoning token
+ */
+export type PublicEndpointInternalReasoning = number | string | any;
+
+/**
+ * Price in USD per token for prompt (input) processing
+ */
+export type PublicEndpointPrompt = number | string | any;
+
+/**
+ * Price in USD per request
+ */
+export type PublicEndpointRequest = number | string | any;
+
+/**
+ * Price in USD per web search
+ */
+export type PublicEndpointWebSearch = number | string | any;
+
 export type Pricing = {
-  audio?: string | undefined;
-  audioOutput?: string | undefined;
-  completion: string;
+  /**
+   * Price in USD per audio input token
+   */
+  audio?: number | string | any | undefined;
+  /**
+   * Price in USD per audio output token
+   */
+  audioOutput?: number | string | any | undefined;
+  /**
+   * Price in USD per token for completion (output) generation
+   */
+  completion: number | string | any;
   discount?: number | undefined;
-  image?: string | undefined;
-  imageOutput?: string | undefined;
-  imageToken?: string | undefined;
-  inputAudioCache?: string | undefined;
-  inputCacheRead?: string | undefined;
-  inputCacheWrite?: string | undefined;
-  internalReasoning?: string | undefined;
-  prompt: string;
-  request?: string | undefined;
-  webSearch?: string | undefined;
+  /**
+   * Price in USD per input image
+   */
+  image?: number | string | any | undefined;
+  /**
+   * Price in USD per output image
+   */
+  imageOutput?: number | string | any | undefined;
+  /**
+   * Price in USD per image token
+   */
+  imageToken?: number | string | any | undefined;
+  /**
+   * Price in USD per cached audio input token
+   */
+  inputAudioCache?: number | string | any | undefined;
+  /**
+   * Price in USD per cached input token (read)
+   */
+  inputCacheRead?: number | string | any | undefined;
+  /**
+   * Price in USD per cached input token (write)
+   */
+  inputCacheWrite?: number | string | any | undefined;
+  /**
+   * Price in USD per internal reasoning token
+   */
+  internalReasoning?: number | string | any | undefined;
+  /**
+   * Price in USD per token for prompt (input) processing
+   */
+  prompt: number | string | any;
+  /**
+   * Price in USD per request
+   */
+  request?: number | string | any | undefined;
+  /**
+   * Price in USD per web search
+   */
+  webSearch?: number | string | any | undefined;
 };
 
 export const PublicEndpointQuantization = {
@@ -90,21 +194,229 @@ export type PublicEndpoint = {
 };
 
 /** @internal */
+export const PublicEndpointAudio$inboundSchema: z.ZodType<
+  PublicEndpointAudio,
+  unknown
+> = z.union([z.number(), z.string(), z.any()]);
+
+export function publicEndpointAudioFromJSON(
+  jsonString: string,
+): SafeParseResult<PublicEndpointAudio, SDKValidationError> {
+  return safeParse(
+    jsonString,
+    (x) => PublicEndpointAudio$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'PublicEndpointAudio' from JSON`,
+  );
+}
+
+/** @internal */
+export const PublicEndpointAudioOutput$inboundSchema: z.ZodType<
+  PublicEndpointAudioOutput,
+  unknown
+> = z.union([z.number(), z.string(), z.any()]);
+
+export function publicEndpointAudioOutputFromJSON(
+  jsonString: string,
+): SafeParseResult<PublicEndpointAudioOutput, SDKValidationError> {
+  return safeParse(
+    jsonString,
+    (x) => PublicEndpointAudioOutput$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'PublicEndpointAudioOutput' from JSON`,
+  );
+}
+
+/** @internal */
+export const PublicEndpointCompletion$inboundSchema: z.ZodType<
+  PublicEndpointCompletion,
+  unknown
+> = z.union([z.number(), z.string(), z.any()]);
+
+export function publicEndpointCompletionFromJSON(
+  jsonString: string,
+): SafeParseResult<PublicEndpointCompletion, SDKValidationError> {
+  return safeParse(
+    jsonString,
+    (x) => PublicEndpointCompletion$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'PublicEndpointCompletion' from JSON`,
+  );
+}
+
+/** @internal */
+export const PublicEndpointImage$inboundSchema: z.ZodType<
+  PublicEndpointImage,
+  unknown
+> = z.union([z.number(), z.string(), z.any()]);
+
+export function publicEndpointImageFromJSON(
+  jsonString: string,
+): SafeParseResult<PublicEndpointImage, SDKValidationError> {
+  return safeParse(
+    jsonString,
+    (x) => PublicEndpointImage$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'PublicEndpointImage' from JSON`,
+  );
+}
+
+/** @internal */
+export const PublicEndpointImageOutput$inboundSchema: z.ZodType<
+  PublicEndpointImageOutput,
+  unknown
+> = z.union([z.number(), z.string(), z.any()]);
+
+export function publicEndpointImageOutputFromJSON(
+  jsonString: string,
+): SafeParseResult<PublicEndpointImageOutput, SDKValidationError> {
+  return safeParse(
+    jsonString,
+    (x) => PublicEndpointImageOutput$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'PublicEndpointImageOutput' from JSON`,
+  );
+}
+
+/** @internal */
+export const PublicEndpointImageToken$inboundSchema: z.ZodType<
+  PublicEndpointImageToken,
+  unknown
+> = z.union([z.number(), z.string(), z.any()]);
+
+export function publicEndpointImageTokenFromJSON(
+  jsonString: string,
+): SafeParseResult<PublicEndpointImageToken, SDKValidationError> {
+  return safeParse(
+    jsonString,
+    (x) => PublicEndpointImageToken$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'PublicEndpointImageToken' from JSON`,
+  );
+}
+
+/** @internal */
+export const PublicEndpointInputAudioCache$inboundSchema: z.ZodType<
+  PublicEndpointInputAudioCache,
+  unknown
+> = z.union([z.number(), z.string(), z.any()]);
+
+export function publicEndpointInputAudioCacheFromJSON(
+  jsonString: string,
+): SafeParseResult<PublicEndpointInputAudioCache, SDKValidationError> {
+  return safeParse(
+    jsonString,
+    (x) => PublicEndpointInputAudioCache$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'PublicEndpointInputAudioCache' from JSON`,
+  );
+}
+
+/** @internal */
+export const PublicEndpointInputCacheRead$inboundSchema: z.ZodType<
+  PublicEndpointInputCacheRead,
+  unknown
+> = z.union([z.number(), z.string(), z.any()]);
+
+export function publicEndpointInputCacheReadFromJSON(
+  jsonString: string,
+): SafeParseResult<PublicEndpointInputCacheRead, SDKValidationError> {
+  return safeParse(
+    jsonString,
+    (x) => PublicEndpointInputCacheRead$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'PublicEndpointInputCacheRead' from JSON`,
+  );
+}
+
+/** @internal */
+export const PublicEndpointInputCacheWrite$inboundSchema: z.ZodType<
+  PublicEndpointInputCacheWrite,
+  unknown
+> = z.union([z.number(), z.string(), z.any()]);
+
+export function publicEndpointInputCacheWriteFromJSON(
+  jsonString: string,
+): SafeParseResult<PublicEndpointInputCacheWrite, SDKValidationError> {
+  return safeParse(
+    jsonString,
+    (x) => PublicEndpointInputCacheWrite$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'PublicEndpointInputCacheWrite' from JSON`,
+  );
+}
+
+/** @internal */
+export const PublicEndpointInternalReasoning$inboundSchema: z.ZodType<
+  PublicEndpointInternalReasoning,
+  unknown
+> = z.union([z.number(), z.string(), z.any()]);
+
+export function publicEndpointInternalReasoningFromJSON(
+  jsonString: string,
+): SafeParseResult<PublicEndpointInternalReasoning, SDKValidationError> {
+  return safeParse(
+    jsonString,
+    (x) => PublicEndpointInternalReasoning$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'PublicEndpointInternalReasoning' from JSON`,
+  );
+}
+
+/** @internal */
+export const PublicEndpointPrompt$inboundSchema: z.ZodType<
+  PublicEndpointPrompt,
+  unknown
+> = z.union([z.number(), z.string(), z.any()]);
+
+export function publicEndpointPromptFromJSON(
+  jsonString: string,
+): SafeParseResult<PublicEndpointPrompt, SDKValidationError> {
+  return safeParse(
+    jsonString,
+    (x) => PublicEndpointPrompt$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'PublicEndpointPrompt' from JSON`,
+  );
+}
+
+/** @internal */
+export const PublicEndpointRequest$inboundSchema: z.ZodType<
+  PublicEndpointRequest,
+  unknown
+> = z.union([z.number(), z.string(), z.any()]);
+
+export function publicEndpointRequestFromJSON(
+  jsonString: string,
+): SafeParseResult<PublicEndpointRequest, SDKValidationError> {
+  return safeParse(
+    jsonString,
+    (x) => PublicEndpointRequest$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'PublicEndpointRequest' from JSON`,
+  );
+}
+
+/** @internal */
+export const PublicEndpointWebSearch$inboundSchema: z.ZodType<
+  PublicEndpointWebSearch,
+  unknown
+> = z.union([z.number(), z.string(), z.any()]);
+
+export function publicEndpointWebSearchFromJSON(
+  jsonString: string,
+): SafeParseResult<PublicEndpointWebSearch, SDKValidationError> {
+  return safeParse(
+    jsonString,
+    (x) => PublicEndpointWebSearch$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'PublicEndpointWebSearch' from JSON`,
+  );
+}
+
+/** @internal */
 export const Pricing$inboundSchema: z.ZodType<Pricing, unknown> = z.object({
-  audio: z.string().optional(),
-  audio_output: z.string().optional(),
-  completion: z.string(),
+  audio: z.union([z.number(), z.string(), z.any()]).optional(),
+  audio_output: z.union([z.number(), z.string(), z.any()]).optional(),
+  completion: z.union([z.number(), z.string(), z.any()]),
   discount: z.number().optional(),
-  image: z.string().optional(),
-  image_output: z.string().optional(),
-  image_token: z.string().optional(),
-  input_audio_cache: z.string().optional(),
-  input_cache_read: z.string().optional(),
-  input_cache_write: z.string().optional(),
-  internal_reasoning: z.string().optional(),
-  prompt: z.string(),
-  request: z.string().optional(),
-  web_search: z.string().optional(),
+  image: z.union([z.number(), z.string(), z.any()]).optional(),
+  image_output: z.union([z.number(), z.string(), z.any()]).optional(),
+  image_token: z.union([z.number(), z.string(), z.any()]).optional(),
+  input_audio_cache: z.union([z.number(), z.string(), z.any()]).optional(),
+  input_cache_read: z.union([z.number(), z.string(), z.any()]).optional(),
+  input_cache_write: z.union([z.number(), z.string(), z.any()]).optional(),
+  internal_reasoning: z.union([z.number(), z.string(), z.any()]).optional(),
+  prompt: z.union([z.number(), z.string(), z.any()]),
+  request: z.union([z.number(), z.string(), z.any()]).optional(),
+  web_search: z.union([z.number(), z.string(), z.any()]).optional(),
 }).transform((v) => {
   return remap$(v, {
     "audio_output": "audioOutput",
