@@ -22,7 +22,7 @@ import {
 /**
  * Error information
  */
-export type ErrorT = {
+export type ChatStreamChunkError = {
   /**
    * Error code
    */
@@ -53,7 +53,7 @@ export type ChatStreamChunk = {
   /**
    * Error information
    */
-  error?: ErrorT | undefined;
+  error?: ChatStreamChunkError | undefined;
   /**
    * Unique chunk identifier
    */
@@ -79,18 +79,21 @@ export type ChatStreamChunk = {
 };
 
 /** @internal */
-export const ErrorT$inboundSchema: z.ZodType<ErrorT, unknown> = z.object({
+export const ChatStreamChunkError$inboundSchema: z.ZodType<
+  ChatStreamChunkError,
+  unknown
+> = z.object({
   code: z.int(),
   message: z.string(),
 });
 
-export function errorFromJSON(
+export function chatStreamChunkErrorFromJSON(
   jsonString: string,
-): SafeParseResult<ErrorT, SDKValidationError> {
+): SafeParseResult<ChatStreamChunkError, SDKValidationError> {
   return safeParse(
     jsonString,
-    (x) => ErrorT$inboundSchema.parse(JSON.parse(x)),
-    `Failed to parse 'ErrorT' from JSON`,
+    (x) => ChatStreamChunkError$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'ChatStreamChunkError' from JSON`,
   );
 }
 
@@ -106,7 +109,7 @@ export const ChatStreamChunk$inboundSchema: z.ZodType<
 > = z.object({
   choices: z.array(ChatStreamChoice$inboundSchema),
   created: z.int(),
-  error: z.lazy(() => ErrorT$inboundSchema).optional(),
+  error: z.lazy(() => ChatStreamChunkError$inboundSchema).optional(),
   id: z.string(),
   model: z.string(),
   object: ChatStreamChunkObject$inboundSchema,
