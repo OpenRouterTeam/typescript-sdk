@@ -13,7 +13,7 @@ import { SDKValidationError } from "./errors/sdkvalidationerror.js";
 /**
  * Detailed completion token usage
  */
-export type CompletionTokensDetails = {
+export type ChatUsageCompletionTokensDetails = {
   /**
    * Accepted prediction tokens
    */
@@ -35,7 +35,7 @@ export type CompletionTokensDetails = {
 /**
  * Detailed prompt token usage
  */
-export type PromptTokensDetails = {
+export type ChatUsagePromptTokensDetails = {
   /**
    * Audio input tokens
    */
@@ -55,6 +55,24 @@ export type PromptTokensDetails = {
 };
 
 /**
+ * Usage for server-side tool execution (e.g., web search)
+ */
+export type ServerToolUseDetails = {
+  /**
+   * Number of OpenRouter server tool calls that executed and produced a result
+   */
+  toolCallsExecuted?: number | null | undefined;
+  /**
+   * Total number of OpenRouter server-orchestrated tool calls the model requested, across all tool types. Provider-native tools (e.g. native web search) are not counted here.
+   */
+  toolCallsRequested?: number | null | undefined;
+  /**
+   * Number of web searches performed by server-side tools. For server-orchestrated tool calls a web search is also counted in tool_calls_requested; provider-native web search may report web_search_requests only. Do not sum the two.
+   */
+  webSearchRequests?: number | null | undefined;
+};
+
+/**
  * Token usage statistics
  */
 export type ChatUsage = {
@@ -65,7 +83,7 @@ export type ChatUsage = {
   /**
    * Detailed completion token usage
    */
-  completionTokensDetails?: CompletionTokensDetails | null | undefined;
+  completionTokensDetails?: ChatUsageCompletionTokensDetails | null | undefined;
   /**
    * Cost of the completion
    */
@@ -85,7 +103,11 @@ export type ChatUsage = {
   /**
    * Detailed prompt token usage
    */
-  promptTokensDetails?: PromptTokensDetails | null | undefined;
+  promptTokensDetails?: ChatUsagePromptTokensDetails | null | undefined;
+  /**
+   * Usage for server-side tool execution (e.g., web search)
+   */
+  serverToolUseDetails?: ServerToolUseDetails | null | undefined;
   /**
    * Total number of tokens
    */
@@ -93,8 +115,8 @@ export type ChatUsage = {
 };
 
 /** @internal */
-export const CompletionTokensDetails$inboundSchema: z.ZodType<
-  CompletionTokensDetails,
+export const ChatUsageCompletionTokensDetails$inboundSchema: z.ZodType<
+  ChatUsageCompletionTokensDetails,
   unknown
 > = z.object({
   accepted_prediction_tokens: z.nullable(z.int()).optional(),
@@ -110,19 +132,19 @@ export const CompletionTokensDetails$inboundSchema: z.ZodType<
   });
 });
 
-export function completionTokensDetailsFromJSON(
+export function chatUsageCompletionTokensDetailsFromJSON(
   jsonString: string,
-): SafeParseResult<CompletionTokensDetails, SDKValidationError> {
+): SafeParseResult<ChatUsageCompletionTokensDetails, SDKValidationError> {
   return safeParse(
     jsonString,
-    (x) => CompletionTokensDetails$inboundSchema.parse(JSON.parse(x)),
-    `Failed to parse 'CompletionTokensDetails' from JSON`,
+    (x) => ChatUsageCompletionTokensDetails$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'ChatUsageCompletionTokensDetails' from JSON`,
   );
 }
 
 /** @internal */
-export const PromptTokensDetails$inboundSchema: z.ZodType<
-  PromptTokensDetails,
+export const ChatUsagePromptTokensDetails$inboundSchema: z.ZodType<
+  ChatUsagePromptTokensDetails,
   unknown
 > = z.object({
   audio_tokens: z.int().optional(),
@@ -138,13 +160,39 @@ export const PromptTokensDetails$inboundSchema: z.ZodType<
   });
 });
 
-export function promptTokensDetailsFromJSON(
+export function chatUsagePromptTokensDetailsFromJSON(
   jsonString: string,
-): SafeParseResult<PromptTokensDetails, SDKValidationError> {
+): SafeParseResult<ChatUsagePromptTokensDetails, SDKValidationError> {
   return safeParse(
     jsonString,
-    (x) => PromptTokensDetails$inboundSchema.parse(JSON.parse(x)),
-    `Failed to parse 'PromptTokensDetails' from JSON`,
+    (x) => ChatUsagePromptTokensDetails$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'ChatUsagePromptTokensDetails' from JSON`,
+  );
+}
+
+/** @internal */
+export const ServerToolUseDetails$inboundSchema: z.ZodType<
+  ServerToolUseDetails,
+  unknown
+> = z.object({
+  tool_calls_executed: z.nullable(z.int()).optional(),
+  tool_calls_requested: z.nullable(z.int()).optional(),
+  web_search_requests: z.nullable(z.int()).optional(),
+}).transform((v) => {
+  return remap$(v, {
+    "tool_calls_executed": "toolCallsExecuted",
+    "tool_calls_requested": "toolCallsRequested",
+    "web_search_requests": "webSearchRequests",
+  });
+});
+
+export function serverToolUseDetailsFromJSON(
+  jsonString: string,
+): SafeParseResult<ServerToolUseDetails, SDKValidationError> {
+  return safeParse(
+    jsonString,
+    (x) => ServerToolUseDetails$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'ServerToolUseDetails' from JSON`,
   );
 }
 
@@ -152,14 +200,17 @@ export function promptTokensDetailsFromJSON(
 export const ChatUsage$inboundSchema: z.ZodType<ChatUsage, unknown> = z.object({
   completion_tokens: z.int(),
   completion_tokens_details: z.nullable(
-    z.lazy(() => CompletionTokensDetails$inboundSchema),
+    z.lazy(() => ChatUsageCompletionTokensDetails$inboundSchema),
   ).optional(),
   cost: z.nullable(z.number()).optional(),
   cost_details: z.nullable(CostDetails$inboundSchema).optional(),
   is_byok: z.boolean().optional(),
   prompt_tokens: z.int(),
   prompt_tokens_details: z.nullable(
-    z.lazy(() => PromptTokensDetails$inboundSchema),
+    z.lazy(() => ChatUsagePromptTokensDetails$inboundSchema),
+  ).optional(),
+  server_tool_use_details: z.nullable(
+    z.lazy(() => ServerToolUseDetails$inboundSchema),
   ).optional(),
   total_tokens: z.int(),
 }).transform((v) => {
@@ -170,6 +221,7 @@ export const ChatUsage$inboundSchema: z.ZodType<ChatUsage, unknown> = z.object({
     "is_byok": "isByok",
     "prompt_tokens": "promptTokens",
     "prompt_tokens_details": "promptTokensDetails",
+    "server_tool_use_details": "serverToolUseDetails",
     "total_tokens": "totalTokens",
   });
 });
