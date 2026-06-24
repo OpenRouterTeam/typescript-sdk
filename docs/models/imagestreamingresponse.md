@@ -1,0 +1,21 @@
+# ImageStreamingResponse
+
+## Example Usage
+
+```typescript
+import { ImageStreamingResponse } from "@openrouter/sdk/models";
+
+let value: ImageStreamingResponse = {
+  data: {
+    b64Json: "<base64-encoded-partial-image>",
+    partialImageIndex: 0,
+    type: "image_generation.partial_image",
+  },
+};
+```
+
+## Fields
+
+| Field                               | Type                                | Required                            | Description                         |
+| ----------------------------------- | ----------------------------------- | ----------------------------------- | ----------------------------------- |
+| `data`                              | *models.ImageStreamingResponseData* | :heavy_check_mark:                  | N/A                                 |
