@@ -177,6 +177,7 @@ components:
         effort:
           description: Reasoning effort level for the advisor call.
           enum:
+            - max
             - xhigh
             - high
             - medium
@@ -2204,6 +2205,39 @@ components:
       required:
         - type
       type: object
+    ApiErrorType:
+      description: Canonical OpenRouter error type, stable across all API formats
+      enum:
+        - context_length_exceeded
+        - max_tokens_exceeded
+        - token_limit_exceeded
+        - string_too_long
+        - authentication
+        - permission_denied
+        - payment_required
+        - rate_limit_exceeded
+        - provider_overloaded
+        - provider_unavailable
+        - invalid_request
+        - invalid_prompt
+        - not_found
+        - precondition_failed
+        - payload_too_large
+        - unprocessable
+        - content_policy_violation
+        - refusal
+        - invalid_image
+        - image_too_large
+        - image_too_small
+        - unsupported_image_format
+        - image_not_found
+        - image_download_failed
+        - server
+        - timeout
+        - unmapped
+      example: rate_limit_exceeded
+      type: string
+      x-speakeasy-unknown-values: allow
     ApplyPatchCallItem:
       description: >-
         A tool call emitted by the model requesting a V4A patch operation. The client applies the patch and echoes an `apply_patch_call_output` on the next turn.
@@ -3651,353 +3685,22 @@ components:
       oneOf:
         - $ref: '#/components/schemas/ContainerAutoEnvironment'
         - $ref: '#/components/schemas/ContainerReferenceEnvironment'
-    BenchmarkPricing:
-      description: OpenRouter pricing per token for this model. Null if pricing is unavailable.
-      example:
-        completion: '0.000015'
-        prompt: '0.000003'
-      nullable: true
-      properties:
-        completion:
-          description: Cost per output token (USD, decimal string).
-          example: '0.000015'
-          type: string
-        prompt:
-          description: Cost per input token (USD, decimal string).
-          example: '0.000003'
-          type: string
-      required:
-        - prompt
-        - completion
-      type: object
-    BenchmarksAAItem:
-      example:
-        aa_name: GPT-4o
-        agentic_index: 58.3
-        coding_index: 65.8
-        intelligence_index: 71.2
-        model_permaslug: openai/gpt-4o
-        pricing:
-          completion: '0.00001'
-          prompt: '0.0000025'
-      properties:
-        aa_name:
-          description: Model name as listed on Artificial Analysis.
-          example: GPT-4o
-          type: string
-        agentic_index:
-          description: Artificial Analysis Agentic Index composite score. Higher is better.
-          example: 58.3
-          format: double
-          nullable: true
-          type: number
-        coding_index:
-          description: Artificial Analysis Coding Index composite score. Higher is better.
-          example: 65.8
-          format: double
-          nullable: true
-          type: number
-        intelligence_index:
-          description: Artificial Analysis Intelligence Index composite score. Higher is better.
-          example: 71.2
-          format: double
-          nullable: true
-          type: number
-        model_permaslug:
-          description: Stable OpenRouter model identifier.
-          example: openai/gpt-4o
-          type: string
-        pricing:
-          $ref: '#/components/schemas/BenchmarkPricing'
-      required:
-        - model_permaslug
-        - aa_name
-        - intelligence_index
-        - coding_index
-        - agentic_index
-        - pricing
-      type: object
-    BenchmarksAAMeta:
-      example:
-        as_of: '2026-06-03T12:00:00Z'
-        citation: 'Source: Artificial Analysis (artificialanalysis.ai) via OpenRouter (openrouter.ai/rankings).'
-        model_count: 50
-        source: artificial-analysis
-        source_url: https://artificialanalysis.ai
-        version: v1
-      properties:
-        as_of:
-          description: ISO-8601 timestamp of when this data was last updated.
-          example: '2026-06-03T12:00:00Z'
-          type: string
-        citation:
-          description: Required attribution when republishing this data.
-          example: 'Source: Artificial Analysis (artificialanalysis.ai) via OpenRouter (openrouter.ai/rankings).'
-          type: string
-        model_count:
-          description: Number of unique models in the response.
-          type: integer
-        source:
-          description: Data source identifier.
-          enum:
-            - artificial-analysis
-          type: string
-        source_url:
-          description: URL of the upstream data source.
-          enum:
-            - https://artificialanalysis.ai
-          type: string
-        version:
-          description: Dataset version.
-          enum:
-            - v1
-          type: string
-      required:
-        - as_of
-        - version
-        - source
-        - source_url
-        - citation
-        - model_count
-      type: object
-    BenchmarksAAResponse:
-      example:
-        data:
-          - aa_name: GPT-4o
-            agentic_index: 58.3
-            coding_index: 65.8
-            intelligence_index: 71.2
-            model_permaslug: openai/gpt-4o
-            pricing:
-              completion: '0.00001'
-              prompt: '0.0000025'
-        meta:
-          as_of: '2026-06-03T12:00:00Z'
-          citation: 'Source: Artificial Analysis (artificialanalysis.ai) via OpenRouter (openrouter.ai/rankings).'
-          model_count: 1
-          source: artificial-analysis
-          source_url: https://artificialanalysis.ai
-          version: v1
-      properties:
-        data:
-          items:
-            $ref: '#/components/schemas/BenchmarksAAItem'
-          type: array
-        meta:
-          $ref: '#/components/schemas/BenchmarksAAMeta'
-      required:
-        - data
-        - meta
-      type: object
-    BenchmarksDAItem:
-      example:
-        arena: models
-        avg_generation_time_ms: 3200
-        category: codecategories
-        display_name: Claude Sonnet 4
-        elo: 1423
-        model_permaslug: anthropic/claude-sonnet-4
-        pricing:
-          completion: '0.000015'
-          prompt: '0.000003'
-        tournament_stats:
-          first_place: 12
-          fourth_place: 2
-          second_place: 8
-          third_place: 5
-          total: 27
-        win_rate: 72
-      properties:
-        arena:
-          description: Arena this ranking belongs to.
-          example: models
-          type: string
-        avg_generation_time_ms:
-          description: Average generation time in milliseconds.
-          example: 3200
-          format: double
-          nullable: true
-          type: number
-        category:
-          description: Category within the arena.
-          example: codecategories
-          type: string
-        display_name:
-          description: Human-readable model name from Design Arena.
-          example: Claude Sonnet 4
-          type: string
-        elo:
-          description: ELO rating from head-to-head arena battles.
-          example: 1423
-          format: double
-          type: number
-        model_permaslug:
-          description: >-
-            Stable OpenRouter model identifier when the model is on OpenRouter; otherwise the upstream Design Arena model id. Use pricing != null to detect OpenRouter-mapped models.
-          example: anthropic/claude-sonnet-4
-          type: string
-        pricing:
-          $ref: '#/components/schemas/BenchmarkPricing'
-        tournament_stats:
-          description: Placement distribution from tournament matches.
-          properties:
-            first_place:
-              nullable: true
-              type: integer
-            fourth_place:
-              nullable: true
-              type: integer
-            second_place:
-              nullable: true
-              type: integer
-            third_place:
-              nullable: true
-              type: integer
-            total:
-              nullable: true
-              type: integer
-          required:
-            - first_place
-            - second_place
-            - third_place
-            - fourth_place
-            - total
-          type: object
-        win_rate:
-          description: Win rate as a percentage (0–100).
-          example: 72
-          format: double
-          type: number
-      required:
-        - model_permaslug
-        - display_name
-        - arena
-        - category
-        - elo
-        - win_rate
-        - avg_generation_time_ms
-        - tournament_stats
-        - pricing
-      type: object
-    BenchmarksDAMeta:
-      example:
-        arena: models
-        as_of: '2026-06-03T12:00:00Z'
-        category: null
-        citation: 'Source: Design Arena (www.designarena.ai) via OpenRouter (openrouter.ai/rankings).'
-        elo_bounds:
-          max: 1600
-          min: 900
-        model_count: 50
-        source: design-arena
-        source_url: https://www.designarena.ai
-        version: v1
-      properties:
-        arena:
-          description: The arena filter applied.
-          type: string
-        as_of:
-          description: ISO-8601 timestamp of when this data was generated.
-          example: '2026-06-03T12:00:00Z'
-          type: string
-        category:
-          description: The category filter applied, or null if showing all.
-          nullable: true
-          type: string
-        citation:
-          description: Required attribution when republishing this data.
-          example: 'Source: Design Arena (www.designarena.ai) via OpenRouter (openrouter.ai/rankings).'
-          type: string
-        elo_bounds:
-          description: ELO range across all returned models for normalization.
-          properties:
-            max:
-              description: Maximum ELO in the result set.
-              format: double
-              type: number
-            min:
-              description: Minimum ELO in the result set.
-              format: double
-              type: number
-          required:
-            - min
-            - max
-          type: object
-        model_count:
-          description: Number of unique models in the response.
-          type: integer
-        source:
-          description: Data source identifier.
-          enum:
-            - design-arena
-          type: string
-        source_url:
-          description: URL of the upstream data source.
-          enum:
-            - https://www.designarena.ai
-          type: string
-        version:
-          description: Dataset version.
-          enum:
-            - v1
-          type: string
-      required:
-        - as_of
-        - version
-        - source
-        - source_url
-        - citation
-        - model_count
-        - arena
-        - category
-        - elo_bounds
-      type: object
-    BenchmarksDAResponse:
-      example:
-        data:
-          - arena: models
-            avg_generation_time_ms: 3200
-            category: codecategories
-            display_name: Claude Sonnet 4
-            elo: 1423
-            model_permaslug: anthropic/claude-sonnet-4
-            pricing:
-              completion: '0.000015'
-              prompt: '0.000003'
-            tournament_stats:
-              first_place: 12
-              fourth_place: 2
-              second_place: 8
-              third_place: 5
-              total: 27
-            win_rate: 72
-        meta:
-          arena: models
-          as_of: '2026-06-03T12:00:00Z'
-          category: null
-          citation: 'Source: Design Arena (www.designarena.ai) via OpenRouter (openrouter.ai/rankings).'
-          elo_bounds:
-            max: 1600
-            min: 900
-          model_count: 1
-          source: design-arena
-          source_url: https://www.designarena.ai
-          version: v1
-      properties:
-        data:
-          items:
-            $ref: '#/components/schemas/BenchmarksDAItem'
-          type: array
-        meta:
-          $ref: '#/components/schemas/BenchmarksDAMeta'
-      required:
-        - data
-        - meta
-      type: object
     BigNumberUnion:
       description: Price per million prompt tokens
       example: 1000
       type: string
+    BooleanCapability:
+      description: A supported-or-not flag. Present means the parameter is accepted.
+      example:
+        type: boolean
+      properties:
+        type:
+          enum:
+            - boolean
+          type: string
+      required:
+        - type
+      type: object
     BulkAddWorkspaceMembersRequest:
       example:
         user_ids:
@@ -4320,6 +4023,7 @@ components:
         - groq
         - inception
         - inceptron
+        - inferact-vllm
         - inference-net
         - infermatic
         - inflection
@@ -4350,6 +4054,7 @@ components:
         - recraft
         - reka
         - relace
+        - sakana-ai
         - sambanova
         - seed
         - siliconflow
@@ -4357,6 +4062,7 @@ components:
         - stepfun
         - streamlake
         - switchpoint
+        - tenstorrent
         - together
         - upstage
         - venice
@@ -4368,6 +4074,25 @@ components:
       example: openai
       type: string
       x-speakeasy-unknown-values: allow
+    CapabilityDescriptor:
+      description: A typed descriptor for one supported request parameter.
+      discriminator:
+        mapping:
+          boolean: '#/components/schemas/BooleanCapability'
+          enum: '#/components/schemas/EnumCapability'
+          range: '#/components/schemas/RangeCapability'
+          x-speakeasy-unknown-values: allow
+        propertyName: type
+      example:
+        type: enum
+        values:
+          - 1K
+          - 2K
+          - 4K
+      oneOf:
+        - $ref: '#/components/schemas/EnumCapability'
+        - $ref: '#/components/schemas/RangeCapability'
+        - $ref: '#/components/schemas/BooleanCapability'
     ChatAssistantImages:
       description: Generated images from image generation models
       example:
@@ -5094,6 +4819,7 @@ components:
             effort:
               description: Constrains effort on reasoning for reasoning models
               enum:
+                - max
                 - xhigh
                 - high
                 - medium
@@ -5112,6 +4838,7 @@ components:
           description: >-
             Shorthand for setting reasoning effort. Equivalent to setting reasoning.effort. Cannot be used simultaneously with reasoning.effort if they differ.
           enum:
+            - max
             - xhigh
             - high
             - medium
@@ -5386,6 +5113,8 @@ components:
           example:
             code: 429
             message: Rate limit exceeded
+            metadata:
+              error_type: rate_limit_exceeded
           properties:
             code:
               description: Error code
@@ -5396,6 +5125,17 @@ components:
               description: Error message
               example: Rate limit exceeded
               type: string
+            metadata:
+              description: Structured error metadata
+              properties:
+                error_type:
+                  $ref: '#/components/schemas/ApiErrorType'
+                provider_code:
+                  description: Upstream provider-specific error code, when available
+                  type: string
+              required:
+                - error_type
+              type: object
           required:
             - message
             - code
@@ -5744,6 +5484,9 @@ components:
         prompt_tokens: 10
         prompt_tokens_details:
           cached_tokens: 2
+        server_tool_use_details:
+          tool_calls_executed: 2
+          tool_calls_requested: 2
         total_tokens: 25
       properties:
         completion_tokens:
@@ -5798,6 +5541,25 @@ components:
               type: integer
             video_tokens:
               description: Video input tokens
+              type: integer
+          type: object
+        server_tool_use_details:
+          description: Usage for server-side tool execution (e.g., web search)
+          nullable: true
+          properties:
+            tool_calls_executed:
+              description: Number of OpenRouter server tool calls that executed and produced a result
+              nullable: true
+              type: integer
+            tool_calls_requested:
+              description: >-
+                Total number of OpenRouter server-orchestrated tool calls the model requested, across all tool types. Provider-native tools (e.g. native web search) are not counted here.
+              nullable: true
+              type: integer
+            web_search_requests:
+              description: >-
+                Number of web searches performed by server-side tools. For server-orchestrated tool calls a web search is also counted in tool_calls_requested; provider-native web search may report web_search_requests only. Do not sum the two.
+              nullable: true
               type: integer
           type: object
         total_tokens:
@@ -7213,6 +6975,54 @@ components:
           example: America/New_York
           type: string
       type: object
+    DebugEvent:
+      description: >-
+        Debug event emitted when debug.echo_upstream_body is true. Contains the transformed upstream request body or timing milestones.
+      example:
+        debug:
+          echo_upstream_body:
+            messages: []
+            model: anthropic/claude-sonnet-4
+        sequence_number: 1
+        type: response.debug
+      properties:
+        debug:
+          properties:
+            echo_upstream_body:
+              additionalProperties:
+                nullable: true
+              type: object
+            timings:
+              properties:
+                epoch_ms:
+                  type: integer
+                event:
+                  enum:
+                    - adapter_request
+                    - upstream_headers_received
+                    - first_token_received
+                    - upstream_body_ended
+                  type: string
+                  x-speakeasy-unknown-values: allow
+                start_ms:
+                  type: integer
+              required:
+                - start_ms
+                - event
+                - epoch_ms
+              type: object
+          type: object
+        sequence_number:
+          type: integer
+        type:
+          enum:
+            - response.debug
+          type: string
+      required:
+        - type
+        - debug
+        - sequence_number
+      type: object
     DefaultParameters:
       additionalProperties: false
       description: Default parameters for this model
@@ -7466,6 +7276,27 @@ components:
       example: 0
       type: integer
       x-speakeasy-unknown-values: allow
+    EnumCapability:
+      description: A parameter that accepts one of a discrete set of string values.
+      example:
+        type: enum
+        values:
+          - 1K
+          - 2K
+          - 4K
+      properties:
+        type:
+          enum:
+            - enum
+          type: string
+        values:
+          items:
+            type: string
+          type: array
+      required:
+        - type
+        - values
+      type: object
     ErrorEvent:
       allOf:
         - $ref: '#/components/schemas/BaseErrorEvent'
@@ -8371,6 +8202,7 @@ components:
           enum:
             - general-high
             - general-budget
+            - general-fast
           example: general-high
           type: string
           x-speakeasy-unknown-values: allow
@@ -8464,6 +8296,8 @@ components:
           maxItems: 8
           minItems: 1
           type: array
+        cache_control:
+          $ref: '#/components/schemas/AnthropicCacheControlDirective'
         max_completion_tokens:
           description: >-
             Maximum number of output tokens (including reasoning tokens) each panelist and the judge model may produce per inner call. Controls the total output budget so reasoning-heavy models like GPT-5.5 do not exhaust their token allowance before producing visible text. When omitted, the provider's default applies.
@@ -8488,6 +8322,7 @@ components:
             effort:
               description: Reasoning effort level for panelist and judge inner calls.
               enum:
+                - max
                 - xhigh
                 - high
                 - medium
@@ -8503,7 +8338,7 @@ components:
           type: object
         temperature:
           description: >-
-            Sampling temperature forwarded to panelist and judge inner calls. When omitted, the provider's default applies.
+            Temperature forwarded to panelist inner calls. The judge always runs at temperature 0 regardless of this value. When omitted, the provider's default applies.
           example: 0.7
           format: double
           type: number
@@ -9308,6 +9143,73 @@ components:
         aspect_ratio: '16:9'
         quality: high
       type: object
+    ImageEndpoint:
+      description: An endpoint that serves a given image model.
+      example:
+        allowed_passthrough_parameters: []
+        pricing:
+          - billable: output_image
+            cost_usd: 0.05
+            unit: image
+        provider_name: Bytedance
+        provider_slug: bytedance
+        provider_tag: bytedance
+        supported_parameters:
+          resolution:
+            type: enum
+            values:
+              - 1K
+              - 2K
+              - 4K
+          seed:
+            type: boolean
+        supports_streaming: false
+      properties:
+        allowed_passthrough_parameters:
+          description: Provider-specific options accepted under provider.options[provider_slug].
+          example: []
+          items:
+            type: string
+          type: array
+        pricing:
+          description: Billable pricing lines for this endpoint.
+          example:
+            - billable: output_image
+              cost_usd: 0.05
+              unit: image
+          items:
+            $ref: '#/components/schemas/ImagePricingEntry'
+          type: array
+        provider_name:
+          description: Provider display name
+          example: Bytedance
+          type: string
+        provider_slug:
+          description: Provider slug
+          example: bytedance
+          type: string
+        provider_tag:
+          description: Provider tag for request-side selection
+          example: bytedance
+          nullable: true
+          type: string
+        supported_parameters:
+          allOf:
+            - $ref: '#/components/schemas/SupportedParameters'
+            - description: The definitive set of parameters this endpoint accepts for this model.
+        supports_streaming:
+          description: 'Whether this endpoint supports native SSE streaming (`stream: true` in the request).'
+          example: false
+          type: boolean
+      required:
+        - provider_name
+        - provider_slug
+        - provider_tag
+        - supported_parameters
+        - allowed_passthrough_parameters
+        - supports_streaming
+        - pricing
+      type: object
     ImageGenCallCompletedEvent:
       allOf:
         - $ref: '#/components/schemas/OpenAIResponsesImageGenCallCompleted'
@@ -9354,6 +9256,192 @@ components:
         partial_image_index: 0
         sequence_number: 3
         type: response.image_generation_call.partial_image
+    ImageGenCompletedEvent:
+      description: Emitted when generation completes and the final image is available
+      example:
+        b64_json: <base64-encoded-final-image>
+        created: 1748372400
+        type: image_generation.completed
+        usage:
+          completion_tokens: 4175
+          cost: 0.04
+          prompt_tokens: 0
+          total_tokens: 4175
+      properties:
+        b64_json:
+          description: Base64-encoded final image data
+          type: string
+        created:
+          description: Unix timestamp (seconds) when the image was generated
+          type: integer
+        type:
+          description: The event type
+          enum:
+            - image_generation.completed
+          type: string
+        usage:
+          $ref: '#/components/schemas/ImageGenerationUsage'
+      required:
+        - type
+        - b64_json
+        - created
+      type: object
+    ImageGenerationRequest:
+      description: Image generation request input
+      example:
+        model: bytedance-seed/seedream-4.5
+        prompt: a red panda astronaut floating in space, studio lighting
+      properties:
+        aspect_ratio:
+          description: Normalized aspect ratio of the generated image. Providers clamp to their supported subset.
+          enum:
+            - '1:1'
+            - '1:2'
+            - '1:4'
+            - '1:8'
+            - '2:1'
+            - '2:3'
+            - '3:2'
+            - '3:4'
+            - '4:1'
+            - '4:3'
+            - '4:5'
+            - '5:4'
+            - '8:1'
+            - '9:16'
+            - '16:9'
+            - '9:19.5'
+            - 19.5:9
+            - '9:20'
+            - '20:9'
+            - '9:21'
+            - '21:9'
+            - auto
+          example: '16:9'
+          type: string
+          x-speakeasy-unknown-values: allow
+        background:
+          description: Background treatment. `transparent` requires an output_format that supports alpha (png or webp).
+          enum:
+            - auto
+            - transparent
+            - opaque
+          example: auto
+          type: string
+          x-speakeasy-unknown-values: allow
+        input_references:
+          description: Reference images to guide image-to-image generation, as base64 data URLs or HTTP(S) URLs.
+          items:
+            $ref: '#/components/schemas/ContentPartImage'
+          maxItems: 16
+          type: array
+        model:
+          description: The image generation model to use
+          example: bytedance-seed/seedream-4.5
+          type: string
+        'n':
+          description: Number of images to generate (1-10). Providers that only support single-image generation reject n > 1.
+          example: 1
+          type: integer
+        output_compression:
+          description: Compression level (0-100) for webp/jpeg output. Ignored for png and by providers without a compression knob.
+          example: 100
+          type: integer
+        output_format:
+          description: Encoding of the returned image bytes.
+          enum:
+            - png
+            - jpeg
+            - webp
+          example: png
+          type: string
+          x-speakeasy-unknown-values: allow
+        prompt:
+          description: Text description of the desired image
+          example: a red panda astronaut floating in space, studio lighting
+          minLength: 1
+          type: string
+        provider:
+          description: Provider-specific passthrough configuration
+          properties:
+            options:
+              allOf:
+                - $ref: '#/components/schemas/ProviderOptions'
+                - example:
+                    black-forest-labs:
+                      guidance: 3
+                      steps: 40
+          type: object
+        quality:
+          description: Rendering quality. Providers without a quality knob ignore this.
+          enum:
+            - auto
+            - low
+            - medium
+            - high
+          example: high
+          type: string
+          x-speakeasy-unknown-values: allow
+        resolution:
+          description: Normalized resolution tier of the generated image. Concrete pixel dimensions are derived per-provider.
+          enum:
+            - '512'
+            - 1K
+            - 2K
+            - 4K
+          example: 2K
+          type: string
+          x-speakeasy-unknown-values: allow
+        seed:
+          description: >-
+            If specified, the generation will sample deterministically, such that repeated requests with the same seed and parameters should return the same result. Determinism is not guaranteed for all providers.
+          type: integer
+        size:
+          description: >-
+            Optional. A convenience shorthand for output dimensions — pass a tier ("2K", "4K") or explicit pixels ("2048x2048") and we normalize it to the right dimensions for the chosen provider. Interchangeable with resolution + aspect_ratio; use those directly for enumerated, per-model discoverable values. Conflicting size + resolution/aspect_ratio is rejected.
+          example: 2K
+          type: string
+        stream:
+          description: >-
+            If true, partial images are streamed as SSE events as they become available. Only supported by providers with native streaming (currently OpenAI). Non-streaming providers ignore this flag and return a buffered response.
+          type: boolean
+      required:
+        - model
+        - prompt
+      type: object
+    ImageGenerationResponse:
+      description: Image generation response
+      example:
+        created: 1748372400
+        data:
+          - b64_json: <base64-encoded-image>
+        usage:
+          completion_tokens: 4175
+          cost: 0.04
+          prompt_tokens: 0
+          total_tokens: 4175
+      properties:
+        created:
+          description: Unix timestamp (seconds) when the image was generated
+          example: 1748372400
+          type: integer
+        data:
+          description: Generated images
+          items:
+            properties:
+              b64_json:
+                description: Base64-encoded image bytes
+                type: string
+            required:
+              - b64_json
+            type: object
+          type: array
+        usage:
+          $ref: '#/components/schemas/ImageGenerationUsage'
+      required:
+        - created
+        - data
+      type: object
     ImageGenerationServerTool:
       description: Image generation tool configuration
       example:
@@ -9476,6 +9564,382 @@ components:
       example: completed
       type: string
       x-speakeasy-unknown-values: allow
+    ImageGenerationUsage:
+      description: Token and cost usage for the image generation request, when available
+      example:
+        completion_tokens: 4175
+        cost: 0.04
+        prompt_tokens: 0
+        total_tokens: 4175
+      properties:
+        completion_tokens:
+          description: The tokens generated
+          type: integer
+        completion_tokens_details:
+          nullable: true
+          properties:
+            audio_tokens:
+              description: Tokens generated by the model for audio output.
+              nullable: true
+              type: integer
+            image_tokens:
+              description: Tokens generated by the model for image output.
+              nullable: true
+              type: integer
+            reasoning_tokens:
+              description: Tokens generated by the model for reasoning.
+              nullable: true
+              type: integer
+          type: object
+        cost:
+          description: Cost of the completion
+          format: double
+          nullable: true
+          type: number
+        cost_details:
+          $ref: '#/components/schemas/CostDetails'
+        is_byok:
+          description: Whether a request was made using a Bring Your Own Key configuration
+          type: boolean
+        iterations:
+          items:
+            $ref: '#/components/schemas/AnthropicUsageIteration'
+          nullable: true
+          type: array
+        prompt_tokens:
+          description: Including images, input audio, and tools if any
+          type: integer
+        prompt_tokens_details:
+          description: Breakdown of tokens used in the prompt.
+          nullable: true
+          properties:
+            audio_tokens:
+              description: Tokens used for input audio.
+              nullable: true
+              type: integer
+            cache_write_tokens:
+              description: Tokens written to cache. Only returned for models with explicit caching and cache write pricing.
+              nullable: true
+              type: integer
+            cached_tokens:
+              description: Tokens cached by the endpoint.
+              nullable: true
+              type: integer
+            file_tokens:
+              description: Tokens used for input files/documents.
+              nullable: true
+              type: integer
+            video_tokens:
+              description: Tokens used for input video.
+              nullable: true
+              type: integer
+          type: object
+        server_tool_use:
+          description: Usage for server-side tool execution (e.g., web search)
+          nullable: true
+          properties:
+            tool_calls_executed:
+              description: Number of OpenRouter server tool calls that executed and produced a result.
+              nullable: true
+              type: integer
+            tool_calls_requested:
+              description: >-
+                Total number of OpenRouter server-orchestrated tool calls the model requested, across all tool types. Provider-native tools (e.g. native web search) are not counted here.
+              nullable: true
+              type: integer
+            web_search_requests:
+              description: >-
+                Number of web searches performed by server-side tools. For server-orchestrated tool calls a web search is also counted in tool_calls_requested; provider-native web search may report web_search_requests only. Do not sum the two.
+              nullable: true
+              type: integer
+          type: object
+        service_tier:
+          description: The service tier used by the upstream provider for this request
+          nullable: true
+          type: string
+        speed:
+          $ref: '#/components/schemas/AnthropicSpeed'
+        total_tokens:
+          description: Sum of the above two fields
+          type: integer
+      required:
+        - prompt_tokens
+        - completion_tokens
+        - total_tokens
+      type: object
+    ImageGenPartialImageEvent:
+      description: Emitted when a partial image becomes available during streaming generation
+      example:
+        b64_json: <base64-encoded-partial-image>
+        partial_image_index: 0
+        type: image_generation.partial_image
+      properties:
+        b64_json:
+          description: Base64-encoded partial image data
+          type: string
+        partial_image_index:
+          description: 0-based index indicating which partial image this is in the sequence
+          type: integer
+        type:
+          description: The event type
+          enum:
+            - image_generation.partial_image
+          type: string
+      required:
+        - type
+        - partial_image_index
+        - b64_json
+      type: object
+    ImageGenStreamErrorEvent:
+      description: Emitted when streaming generation fails after the SSE response starts
+      example:
+        error:
+          code: upstream_error
+          message: The upstream provider returned an error
+          param: null
+          type: provider_error
+        type: error
+      properties:
+        error:
+          description: Provider error details
+          properties:
+            code:
+              description: Provider error code, when supplied
+              nullable: true
+              type: string
+            message:
+              description: Provider error message
+              type: string
+            param:
+              description: Request parameter associated with the error, when supplied
+              nullable: true
+              type: string
+            type:
+              description: Provider error type, when supplied
+              nullable: true
+              type: string
+          required:
+            - message
+          type: object
+        type:
+          description: The event type
+          enum:
+            - error
+          type: string
+      required:
+        - type
+        - error
+      type: object
+    ImageModelArchitecture:
+      example:
+        input_modalities:
+          - text
+          - image
+        output_modalities:
+          - image
+      properties:
+        input_modalities:
+          description: Supported input modalities
+          items:
+            $ref: '#/components/schemas/InputModality'
+          type: array
+        output_modalities:
+          description: Supported output modalities
+          items:
+            $ref: '#/components/schemas/ImageOutputModality'
+          type: array
+      required:
+        - input_modalities
+        - output_modalities
+      type: object
+    ImageModelEndpointsResponse:
+      description: The full per-endpoint records for an image model.
+      example:
+        endpoints:
+          - allowed_passthrough_parameters: []
+            pricing:
+              - billable: output_image
+                cost_usd: 0.05
+                unit: image
+            provider_name: Bytedance
+            provider_slug: bytedance
+            provider_tag: bytedance
+            supported_parameters:
+              resolution:
+                type: enum
+                values:
+                  - 1K
+                  - 2K
+                  - 4K
+            supports_streaming: false
+        id: bytedance-seed/seedream-4.5
+      properties:
+        endpoints:
+          items:
+            $ref: '#/components/schemas/ImageEndpoint'
+          type: array
+        id:
+          description: Model slug
+          example: bytedance-seed/seedream-4.5
+          type: string
+      required:
+        - id
+        - endpoints
+      type: object
+    ImageModelListItem:
+      description: A single image model in the discovery listing.
+      example:
+        architecture:
+          input_modalities:
+            - text
+            - image
+          output_modalities:
+            - image
+        created: 1692901234
+        description: A text-to-image model.
+        endpoints: /api/v1/images/models/bytedance-seed/seedream-4.5/endpoints
+        id: bytedance-seed/seedream-4.5
+        name: Seedream 4.5
+        supported_parameters:
+          resolution:
+            type: enum
+            values:
+              - 1K
+              - 2K
+              - 4K
+          seed:
+            type: boolean
+        supports_streaming: false
+      properties:
+        architecture:
+          $ref: '#/components/schemas/ImageModelArchitecture'
+        created:
+          description: Unix timestamp (seconds) of when the model was created
+          example: 1692901234
+          type: integer
+        description:
+          example: A text-to-image model.
+          type: string
+        endpoints:
+          description: Relative URL to the full per-endpoint records for this model
+          example: /api/v1/images/models/bytedance-seed/seedream-4.5/endpoints
+          type: string
+        id:
+          description: Model slug
+          example: bytedance-seed/seedream-4.5
+          type: string
+        name:
+          description: Display name
+          example: Seedream 4.5
+          type: string
+        supported_parameters:
+          $ref: '#/components/schemas/SupportedParameters'
+        supports_streaming:
+          description: >-
+            Whether any endpoint of this model supports native SSE streaming on the dedicated Image API (i.e. `stream: true` in the request). OR across endpoints.
+          example: false
+          type: boolean
+      required:
+        - id
+        - name
+        - description
+        - created
+        - architecture
+        - supported_parameters
+        - supports_streaming
+        - endpoints
+      type: object
+    ImageModelsListResponse:
+      description: List of image generation models.
+      example:
+        data:
+          - architecture:
+              input_modalities:
+                - text
+              output_modalities:
+                - image
+            created: 1692901234
+            description: A text-to-image model.
+            endpoints: /api/v1/images/models/bytedance-seed/seedream-4.5/endpoints
+            id: bytedance-seed/seedream-4.5
+            name: Seedream 4.5
+            supported_parameters:
+              resolution:
+                type: enum
+                values:
+                  - 1K
+                  - 2K
+                  - 4K
+            supports_streaming: false
+      properties:
+        data:
+          items:
+            $ref: '#/components/schemas/ImageModelListItem'
+          type: array
+      required:
+        - data
+      type: object
+    ImageOutputModality:
+      enum:
+        - text
+        - image
+        - embeddings
+        - audio
+        - video
+        - rerank
+        - speech
+        - transcription
+      example: image
+      type: string
+      x-speakeasy-unknown-values: allow
+    ImagePricingEntry:
+      description: One billable pricing line for an image provider.
+      example:
+        billable: output_image
+        cost_usd: 0.05
+        unit: image
+      properties:
+        billable:
+          enum:
+            - output_image
+            - input_image
+            - input_font
+            - input_reference
+            - input_text
+          type: string
+          x-speakeasy-unknown-values: allow
+        cost_usd:
+          format: double
+          type: number
+        unit:
+          enum:
+            - image
+            - megapixel
+            - token
+          type: string
+          x-speakeasy-unknown-values: allow
+        variant:
+          type: string
+      required:
+        - billable
+        - unit
+        - cost_usd
+      type: object
+    ImageStreamingResponse:
+      example:
+        data:
+          b64_json: <base64-encoded-partial-image>
+          partial_image_index: 0
+          type: image_generation.partial_image
+      properties:
+        data:
+          anyOf:
+            - $ref: '#/components/schemas/ImageGenPartialImageEvent'
+            - $ref: '#/components/schemas/ImageGenCompletedEvent'
+            - $ref: '#/components/schemas/ImageGenStreamErrorEvent'
+      required:
+        - data
+      type: object
     IncompleteDetails:
       example:
         reason: max_output_tokens
@@ -11020,9 +11484,12 @@ components:
       type: object
     MessagesErrorDetail:
       example:
+        error_type: invalid_request
         message: Invalid request parameters
         type: invalid_request_error
       properties:
+        error_type:
+          $ref: '#/components/schemas/ApiErrorType'
         message:
           type: string
         type:
@@ -11035,12 +11502,15 @@ components:
       description: Error event in the stream
       example:
         error:
+          error_type: provider_overloaded
           message: Overloaded
           type: overloaded_error
         type: error
       properties:
         error:
           properties:
+            error_type:
+              $ref: '#/components/schemas/ApiErrorType'
             message:
               type: string
             type:
@@ -11049,6 +11519,8 @@ components:
             - type
             - message
           type: object
+        openrouter_metadata:
+          $ref: '#/components/schemas/OpenRouterMetadata'
         type:
           enum:
             - error
@@ -11965,6 +12437,7 @@ components:
                 - Ionstream
                 - Infermatic
                 - Io Net
+                - Inferact vLLM
                 - Inflection
                 - Liquid
                 - Mara
@@ -11991,6 +12464,7 @@ components:
                 - Recraft
                 - Reka
                 - Relace
+                - Sakana AI
                 - SambaNova
                 - Seed
                 - SiliconFlow
@@ -11999,6 +12473,7 @@ components:
                 - Stealth
                 - StreamLake
                 - Switchpoint
+                - Tenstorrent
                 - Together
                 - Upstage
                 - Venice
@@ -12160,6 +12635,15 @@ components:
           image: '0'
           prompt: '0.00003'
           request: '0'
+        reasoning:
+          default_effort: medium
+          default_enabled: true
+          mandatory: false
+          supported_efforts:
+            - high
+            - medium
+            - low
+            - minimal
         supported_parameters:
           - temperature
           - top_p
@@ -12222,6 +12706,8 @@ components:
           $ref: '#/components/schemas/PerRequestLimits'
         pricing:
           $ref: '#/components/schemas/PublicPricing'
+        reasoning:
+          $ref: '#/components/schemas/ModelReasoning'
         supported_parameters:
           description: List of supported parameters for this model
           items:
@@ -12386,6 +12872,43 @@ components:
       description: Model to use for completion
       example: openai/gpt-4
       type: string
+    ModelReasoning:
+      description: Reasoning effort configuration. Omitted for non-reasoning models and dynamic router models.
+      example:
+        default_effort: medium
+        default_enabled: true
+        mandatory: false
+        supported_efforts:
+          - high
+          - medium
+          - low
+          - minimal
+      properties:
+        default_effort:
+          allOf:
+            - $ref: '#/components/schemas/ReasoningEffort'
+            - description: >-
+                Default reasoning effort when the client enables reasoning without specifying effort. Maps to `reasoning.effort` in chat requests. When `"none"`, prefer omitting effort unless the user explicitly disables reasoning.
+        default_enabled:
+          description: Default reasoning enabled state when the client does not set `reasoning.enabled`.
+          type: boolean
+        mandatory:
+          description: When true, reasoning cannot be disabled and effort "none" is rejected.
+          type: boolean
+        supported_efforts:
+          description: >-
+            Allowed reasoning effort values for this model, in descending effort order (highest first). Null means no allowlist — all gateway effort values are accepted.
+          items:
+            $ref: '#/components/schemas/ReasoningEffort'
+          nullable: true
+          type: array
+        supports_max_tokens:
+          description: >-
+            Present and `true` when the model accepts `reasoning.max_tokens` in requests (Anthropic-style) instead of or in addition to `reasoning.effort`. Omitted otherwise.
+          type: boolean
+      required:
+        - mandatory
+      type: object
     ModelResponse:
       description: Single model response
       example:
@@ -12633,6 +13156,7 @@ components:
               description: Custom HTTP headers to include in requests to this destination.
               type: object
             modelId:
+              description: The name of the tracing project in Arize AX
               minLength: 1
               type: string
             spaceKey:
@@ -15050,6 +15574,8 @@ components:
       allOf:
         - $ref: '#/components/schemas/BaseResponsesResult'
         - properties:
+            error_type:
+              $ref: '#/components/schemas/ApiErrorType'
             openrouter_metadata:
               $ref: '#/components/schemas/OpenRouterMetadata'
             output:
@@ -17285,6 +17811,7 @@ components:
         - Ionstream
         - Infermatic
         - Io Net
+        - Inferact vLLM
         - Inflection
         - Liquid
         - Mara
@@ -17311,6 +17838,7 @@ components:
         - Recraft
         - Reka
         - Relace
+        - Sakana AI
         - SambaNova
         - Seed
         - SiliconFlow
@@ -17319,6 +17847,7 @@ components:
         - Stealth
         - StreamLake
         - Switchpoint
+        - Tenstorrent
         - Together
         - Upstage
         - Venice
@@ -17538,6 +18067,10 @@ components:
           additionalProperties:
             nullable: true
           type: object
+        inferact-vllm:
+          additionalProperties:
+            nullable: true
+          type: object
         inference-net:
           additionalProperties:
             nullable: true
@@ -17714,6 +18247,10 @@ components:
           additionalProperties:
             nullable: true
           type: object
+        sakana-ai:
+          additionalProperties:
+            nullable: true
+          type: object
         sambanova:
           additionalProperties:
             nullable: true
@@ -17755,6 +18292,10 @@ components:
             nullable: true
           type: object
         targon:
+          additionalProperties:
+            nullable: true
+          type: object
+        tenstorrent:
           additionalProperties:
             nullable: true
           type: object
@@ -18073,6 +18614,7 @@ components:
             - Ionstream
             - Infermatic
             - Io Net
+            - Inferact vLLM
             - Inflection
             - Liquid
             - Mara
@@ -18099,6 +18641,7 @@ components:
             - Recraft
             - Reka
             - Relace
+            - Sakana AI
             - SambaNova
             - Seed
             - SiliconFlow
@@ -18107,6 +18650,7 @@ components:
             - Stealth
             - StreamLake
             - Switchpoint
+            - Tenstorrent
             - Together
             - Upstage
             - Venice
@@ -18420,6 +18964,26 @@ components:
       example: fp16
       type: string
       x-speakeasy-unknown-values: allow
+    RangeCapability:
+      description: A parameter that accepts any value within an inclusive numeric range.
+      example:
+        max: 100
+        min: 0
+        type: range
+      properties:
+        max:
+          type: number
+        min:
+          type: number
+        type:
+          enum:
+            - range
+          type: string
+      required:
+        - type
+        - min
+        - max
+      type: object
     RankingsDailyItem:
       example:
         date: '2026-05-11'
@@ -18635,6 +19199,7 @@ components:
         type: response.reasoning_text.done
     ReasoningEffort:
       enum:
+        - max
         - xhigh
         - high
         - medium
@@ -19000,6 +19565,8 @@ components:
           type: boolean
         cache_control:
           $ref: '#/components/schemas/AnthropicCacheControlDirective'
+        debug:
+          $ref: '#/components/schemas/ChatDebugOptions'
         frequency_penalty:
           format: double
           nullable: true
@@ -19701,6 +20268,7 @@ components:
           response.created: '#/components/schemas/OpenResponsesCreatedEvent'
           response.custom_tool_call_input.delta: '#/components/schemas/CustomToolCallInputDeltaEvent'
           response.custom_tool_call_input.done: '#/components/schemas/CustomToolCallInputDoneEvent'
+          response.debug: '#/components/schemas/DebugEvent'
           response.failed: '#/components/schemas/StreamEventsResponseFailed'
           response.function_call_arguments.delta: '#/components/schemas/FunctionCallArgsDeltaEvent'
           response.function_call_arguments.done: '#/components/schemas/FunctionCallArgsDoneEvent'
@@ -19800,6 +20368,7 @@ components:
         - $ref: '#/components/schemas/FusionCallAnalysisInProgressEvent'
         - $ref: '#/components/schemas/FusionCallAnalysisCompletedEvent'
         - $ref: '#/components/schemas/FusionCallCompletedEvent'
+        - $ref: '#/components/schemas/DebugEvent'
     StreamEventsResponseCompleted:
       allOf:
         - $ref: '#/components/schemas/CompletedEvent'
@@ -20087,6 +20656,7 @@ components:
         effort:
           description: Reasoning effort level for the subagent call.
           enum:
+            - max
             - xhigh
             - high
             - medium
@@ -20156,6 +20726,205 @@ components:
           items:
             $ref: '#/components/schemas/SubagentNestedTool'
           type: array
+      type: object
+    SupportedParameters:
+      additionalProperties:
+        $ref: '#/components/schemas/CapabilityDescriptor'
+      description: >-
+        Union of supported parameters across every endpoint of this model. Coarse discovery aid; the definitive per-endpoint set is behind the endpoints URL.
+      example:
+        output_compression:
+          max: 100
+          min: 0
+          type: range
+        resolution:
+          type: enum
+          values:
+            - 1K
+            - 2K
+            - 4K
+        seed:
+          type: boolean
+      type: object
+    TaskClassificationItem:
+      example:
+        category_token_share: 0.48
+        category_usage_share: 0.51
+        display_name: Code Generation
+        macro_category: code
+        models:
+          - id: openai/gpt-4.1-mini
+            tag_token_share: 0.75
+            tag_usage_share: 0.55
+          - id: anthropic/claude-sonnet-4
+            tag_token_share: 0.12
+            tag_usage_share: 0.2
+        tag: code:general_impl
+        token_share: 0.31
+        usage_share: 0.23
+      properties:
+        category_token_share:
+          description: >-
+            Fraction of this classification's token volume within its macro-category (0–1). Sums to 1 across all classifications sharing the same `macro_category`.
+          example: 0.48
+          format: double
+          type: number
+        category_usage_share:
+          description: >-
+            Fraction of this classification's usage within its macro-category (0–1). Sums to 1 across all classifications sharing the same `macro_category`.
+          example: 0.51
+          format: double
+          type: number
+        display_name:
+          description: Human-readable label for the classification.
+          example: Code Generation
+          type: string
+        macro_category:
+          description: 'Coarse grouping derived from the tag prefix: `code`, `data`, `agent`, or `general`.'
+          example: code
+          type: string
+        models:
+          description: >-
+            Top models for this classification by request volume, sorted descending. Each entry reports the model's share of this classification's requests and tokens.
+          items:
+            $ref: '#/components/schemas/TaskClassificationModel'
+          type: array
+        tag:
+          description: Classification tag identifier (e.g. `code:general_impl`, `agent:web_search`).
+          example: code:general_impl
+          type: string
+        token_share:
+          description: >-
+            Fraction of classified sampled token volume (prompt + completion) attributed to this classification (0–1). The unclassified `other` bucket is excluded from the denominator.
+          example: 0.31
+          format: double
+          type: number
+        usage_share:
+          description: >-
+            Fraction of classified sampled requests attributed to this classification (0–1). The unclassified `other` bucket is excluded from the denominator.
+          example: 0.23
+          format: double
+          type: number
+      required:
+        - tag
+        - display_name
+        - macro_category
+        - usage_share
+        - token_share
+        - category_usage_share
+        - category_token_share
+        - models
+      type: object
+    TaskClassificationMacroCategory:
+      example:
+        key: code
+        label: Code
+        token_share: 0.52
+        usage_share: 0.45
+      properties:
+        key:
+          description: Macro-category identifier.
+          example: code
+          type: string
+        label:
+          description: Human-readable label for the macro-category.
+          example: Code
+          type: string
+        token_share:
+          description: Combined token share of all classifications in this macro-category (0–1).
+          example: 0.52
+          format: double
+          type: number
+        usage_share:
+          description: Combined usage share of all classifications in this macro-category (0–1).
+          example: 0.45
+          format: double
+          type: number
+      required:
+        - key
+        - label
+        - usage_share
+        - token_share
+      type: object
+    TaskClassificationModel:
+      example:
+        id: openai/gpt-4.1-mini
+        tag_token_share: 0.75
+        tag_usage_share: 0.55
+      properties:
+        id:
+          description: Model identifier (permaslug).
+          example: openai/gpt-4.1-mini
+          type: string
+        tag_token_share:
+          description: >-
+            Fraction of this classification's sampled token volume attributed to this model (0–1). Sums to ≤1 across the returned models (only top-N are included and unattributed requests are excluded).
+          example: 0.75
+          format: double
+          type: number
+        tag_usage_share:
+          description: >-
+            Fraction of this classification's sampled requests attributed to this model (0–1). Sums to ≤1 across the returned models (only top-N are included and unattributed requests are excluded).
+          example: 0.55
+          format: double
+          type: number
+      required:
+        - id
+        - tag_usage_share
+        - tag_token_share
+      type: object
+    TaskClassificationResponse:
+      example:
+        data:
+          as_of: '2026-06-17'
+          classifications:
+            - category_token_share: 0.48
+              category_usage_share: 0.51
+              display_name: Code Generation
+              macro_category: code
+              models:
+                - id: openai/gpt-4.1-mini
+                  tag_token_share: 0.75
+                  tag_usage_share: 0.55
+              tag: code:general_impl
+              token_share: 0.31
+              usage_share: 0.23
+          macro_categories:
+            - key: code
+              label: Code
+              token_share: 0.52
+              usage_share: 0.45
+          window_days: 7
+      properties:
+        data:
+          properties:
+            as_of:
+              description: >-
+                UTC date (YYYY-MM-DD) of the window upper bound (yesterday). Data is exclusive of the current incomplete UTC day. This is the expected latest date in the snapshot; it does not confirm data presence for that date.
+              example: '2026-06-17'
+              type: string
+            classifications:
+              description: Per-task classification market-share data, sorted by usage_share descending.
+              items:
+                $ref: '#/components/schemas/TaskClassificationItem'
+              type: array
+            macro_categories:
+              description: Aggregate market-share data per macro-category (code, data, agent, general).
+              items:
+                $ref: '#/components/schemas/TaskClassificationMacroCategory'
+              type: array
+            window_days:
+              description: Number of trailing days covered by this snapshot.
+              example: 7
+              type: integer
+          required:
+            - window_days
+            - as_of
+            - classifications
+            - macro_categories
+          type: object
+      required:
+        - data
       type: object
     TextConfig:
       description: Text output configuration including format and verbosity
@@ -20402,6 +21171,269 @@ components:
       required:
         - code
         - message
+      type: object
+    UnifiedBenchmarkPricing:
+      description: OpenRouter pricing per token for this model. Null if pricing is unavailable.
+      example:
+        completion: '0.000015'
+        prompt: '0.000003'
+      nullable: true
+      properties:
+        completion:
+          description: Cost per output token (USD, decimal string).
+          example: '0.000015'
+          type: string
+        prompt:
+          description: Cost per input token (USD, decimal string).
+          example: '0.000003'
+          type: string
+      required:
+        - prompt
+        - completion
+      type: object
+    UnifiedBenchmarksAAItem:
+      example:
+        agentic_index: 58.3
+        coding_index: 65.8
+        display_name: GPT-4o
+        intelligence_index: 71.2
+        model_permaslug: openai/gpt-4o
+        pricing:
+          completion: '0.00001'
+          prompt: '0.0000025'
+        source: artificial-analysis
+      properties:
+        agentic_index:
+          description: Artificial Analysis Agentic Index composite score. Higher is better.
+          example: 58.3
+          format: double
+          nullable: true
+          type: number
+        coding_index:
+          description: Artificial Analysis Coding Index composite score. Higher is better.
+          example: 65.8
+          format: double
+          nullable: true
+          type: number
+        display_name:
+          description: Model name as listed on Artificial Analysis.
+          example: GPT-4o
+          type: string
+        intelligence_index:
+          description: Artificial Analysis Intelligence Index composite score. Higher is better.
+          example: 71.2
+          format: double
+          nullable: true
+          type: number
+        model_permaslug:
+          description: Stable OpenRouter model identifier.
+          example: openai/gpt-4o
+          type: string
+        pricing:
+          $ref: '#/components/schemas/UnifiedBenchmarkPricing'
+        source:
+          description: Benchmark source discriminator.
+          enum:
+            - artificial-analysis
+          type: string
+      required:
+        - source
+        - model_permaslug
+        - display_name
+        - intelligence_index
+        - coding_index
+        - agentic_index
+        - pricing
+      type: object
+    UnifiedBenchmarksDAItem:
+      example:
+        arena: models
+        avg_generation_time_ms: 3200
+        category: codecategories
+        display_name: Claude Sonnet 4
+        elo: 1423
+        model_permaslug: anthropic/claude-sonnet-4
+        pricing:
+          completion: '0.000015'
+          prompt: '0.000003'
+        source: design-arena
+        tournament_stats:
+          first_place: 12
+          fourth_place: 2
+          second_place: 8
+          third_place: 5
+          total: 27
+        win_rate: 72
+      properties:
+        arena:
+          description: Arena this ranking belongs to.
+          example: models
+          type: string
+        avg_generation_time_ms:
+          description: Average generation time in milliseconds.
+          example: 3200
+          format: double
+          nullable: true
+          type: number
+        category:
+          description: Category within the arena.
+          example: codecategories
+          type: string
+        display_name:
+          description: Human-readable model name from Design Arena.
+          example: Claude Sonnet 4
+          type: string
+        elo:
+          description: ELO rating from head-to-head arena battles.
+          example: 1423
+          format: double
+          type: number
+        model_permaslug:
+          description: Stable OpenRouter model identifier when mapped; otherwise the upstream Design Arena model id.
+          example: anthropic/claude-sonnet-4
+          type: string
+        pricing:
+          $ref: '#/components/schemas/UnifiedBenchmarkPricing'
+        source:
+          description: Benchmark source discriminator.
+          enum:
+            - design-arena
+          type: string
+        tournament_stats:
+          description: Placement distribution from tournament matches.
+          properties:
+            first_place:
+              nullable: true
+              type: integer
+            fourth_place:
+              nullable: true
+              type: integer
+            second_place:
+              nullable: true
+              type: integer
+            third_place:
+              nullable: true
+              type: integer
+            total:
+              nullable: true
+              type: integer
+          required:
+            - first_place
+            - second_place
+            - third_place
+            - fourth_place
+            - total
+          type: object
+        win_rate:
+          description: Win rate as a percentage (0–100).
+          example: 72
+          format: double
+          type: number
+      required:
+        - source
+        - model_permaslug
+        - display_name
+        - arena
+        - category
+        - elo
+        - win_rate
+        - avg_generation_time_ms
+        - tournament_stats
+        - pricing
+      type: object
+    UnifiedBenchmarksMeta:
+      example:
+        as_of: '2026-06-03T12:00:00Z'
+        citation: 'Source: Artificial Analysis (artificialanalysis.ai) via OpenRouter (openrouter.ai/rankings).'
+        model_count: 50
+        source: artificial-analysis
+        source_url: https://artificialanalysis.ai
+        task_type: null
+        version: v1
+      properties:
+        as_of:
+          description: ISO-8601 timestamp of when this data was last updated.
+          example: '2026-06-03T12:00:00Z'
+          type: string
+        citation:
+          description: >-
+            Required attribution when republishing this data, or null when results span multiple sources (attribute each item individually by its `source` discriminator).
+          example: 'Source: Artificial Analysis (artificialanalysis.ai) via OpenRouter (openrouter.ai/rankings).'
+          nullable: true
+          type: string
+        model_count:
+          description: Number of unique models in the response.
+          type: integer
+        source:
+          description: The source filter applied, or null when all sources are returned.
+          enum:
+            - artificial-analysis
+            - design-arena
+            - null
+          example: artificial-analysis
+          nullable: true
+          type: string
+          x-speakeasy-unknown-values: allow
+        source_url:
+          description: URL of the upstream data source, or null when results span multiple sources.
+          example: https://artificialanalysis.ai
+          nullable: true
+          type: string
+        task_type:
+          description: The task_type filter applied, or null if showing all.
+          nullable: true
+          type: string
+        version:
+          description: Dataset version.
+          enum:
+            - v1
+          type: string
+      required:
+        - as_of
+        - version
+        - source
+        - source_url
+        - citation
+        - model_count
+        - task_type
+      type: object
+    UnifiedBenchmarksResponse:
+      example:
+        data:
+          - agentic_index: 58.3
+            coding_index: 65.8
+            display_name: GPT-4o
+            intelligence_index: 71.2
+            model_permaslug: openai/gpt-4o
+            pricing:
+              completion: '0.00001'
+              prompt: '0.0000025'
+            source: artificial-analysis
+        meta:
+          as_of: '2026-06-03T12:00:00Z'
+          citation: null
+          model_count: 1
+          source: null
+          source_url: null
+          task_type: null
+          version: v1
+      properties:
+        data:
+          items:
+            discriminator:
+              mapping:
+                artificial-analysis: '#/components/schemas/UnifiedBenchmarksAAItem'
+                design-arena: '#/components/schemas/UnifiedBenchmarksDAItem'
+              propertyName: source
+            oneOf:
+              - $ref: '#/components/schemas/UnifiedBenchmarksAAItem'
+              - $ref: '#/components/schemas/UnifiedBenchmarksDAItem'
+          type: array
+        meta:
+          $ref: '#/components/schemas/UnifiedBenchmarksMeta'
+      required:
+        - data
+        - meta
       type: object
     UnprocessableEntityResponse:
       description: Unprocessable Entity - Semantic validation failure
@@ -22987,6 +24019,146 @@ paths:
       - $ref: "#/components/parameters/AppIdentifier"
       - $ref: "#/components/parameters/AppDisplayName"
       - $ref: "#/components/parameters/AppCategories"
+  /benchmarks:
+    get:
+      description: >-
+        Unified benchmark endpoint that aggregates scores from multiple benchmark sources (Artificial Analysis, Design Arena). Filter by source to reproduce the exact shapes from the legacy per-source endpoints, or use task_type to find models suited for specific workloads. Authenticate with any valid OpenRouter API key. Rate-limited to 30 requests/minute per key and 500 requests/day per account.
+      operationId: getBenchmarks
+      parameters:
+        - description: >-
+            Benchmark source to query. Determines the shape of the returned items. When omitted, returns results from all sources.
+          in: query
+          name: source
+          required: false
+          schema:
+            description: >-
+              Benchmark source to query. Determines the shape of the returned items. When omitted, returns results from all sources.
+            enum:
+              - artificial-analysis
+              - design-arena
+            example: artificial-analysis
+            type: string
+            x-speakeasy-unknown-values: allow
+        - description: >-
+            Filter results by task type. For Artificial Analysis, maps to the corresponding index. For Design Arena, maps to the matching category.
+          in: query
+          name: task_type
+          required: false
+          schema:
+            description: >-
+              Filter results by task type. For Artificial Analysis, maps to the corresponding index. For Design Arena, maps to the matching category.
+            enum:
+              - coding
+              - intelligence
+              - agentic
+            example: coding
+            type: string
+            x-speakeasy-unknown-values: allow
+        - description: 'Design Arena only: arena to query. Defaults to `models` when source is `design-arena`.'
+          in: query
+          name: arena
+          required: false
+          schema:
+            description: 'Design Arena only: arena to query. Defaults to `models` when source is `design-arena`.'
+            enum:
+              - models
+              - builders
+              - agents
+            example: models
+            type: string
+            x-speakeasy-unknown-values: allow
+        - description: >-
+            Design Arena only: category within the arena (e.g. `codecategories`, `uicomponent`, `gamedev`, `3d`, `dataviz`, `image`, `video`, `svg`). When omitted, returns all categories.
+          in: query
+          name: category
+          required: false
+          schema:
+            description: >-
+              Design Arena only: category within the arena (e.g. `codecategories`, `uicomponent`, `gamedev`, `3d`, `dataviz`, `image`, `video`, `svg`). When omitted, returns all categories.
+            example: codecategories
+            type: string
+        - description: Maximum number of items to return. When omitted, all matching results are returned.
+          in: query
+          name: max_results
+          required: false
+          schema:
+            description: Maximum number of items to return. When omitted, all matching results are returned.
+            example: 50
+            minimum: 1
+            type: integer
+      responses:
+        '200':
+          content:
+            application/json:
+              example:
+                data:
+                  - agentic_index: 58.3
+                    coding_index: 65.8
+                    display_name: GPT-4o
+                    intelligence_index: 71.2
+                    model_permaslug: openai/gpt-4o
+                    pricing:
+                      completion: '0.00001'
+                      prompt: '0.0000025'
+                    source: artificial-analysis
+                meta:
+                  as_of: '2026-06-03T12:00:00Z'
+                  citation: null
+                  model_count: 1
+                  source: null
+                  source_url: null
+                  task_type: null
+                  version: v1
+              schema:
+                $ref: '#/components/schemas/UnifiedBenchmarksResponse'
+          description: Benchmark results filtered by the specified source and optional task type.
+        '400':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 400
+                  message: Invalid request parameters
+              schema:
+                $ref: '#/components/schemas/BadRequestResponse'
+          description: Bad Request - Invalid request parameters or malformed input
+        '401':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 401
+                  message: Missing Authentication header
+              schema:
+                $ref: '#/components/schemas/UnauthorizedResponse'
+          description: Unauthorized - Authentication required or invalid credentials
+        '429':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 429
+                  message: Rate limit exceeded
+              schema:
+                $ref: '#/components/schemas/TooManyRequestsResponse'
+          description: Too Many Requests - Rate limit exceeded
+        '500':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 500
+                  message: Internal Server Error
+              schema:
+                $ref: '#/components/schemas/InternalServerResponse'
+          description: Internal Server Error - Unexpected server error
+      summary: List Benchmarks
+      tags:
+        - Benchmarks
+    parameters:
+      - $ref: "#/components/parameters/AppIdentifier"
+      - $ref: "#/components/parameters/AppDisplayName"
+      - $ref: "#/components/parameters/AppCategories"
   /byok:
     get:
       description: >-
@@ -23067,6 +24239,7 @@ paths:
               - groq
               - inception
               - inceptron
+              - inferact-vllm
               - inference-net
               - infermatic
               - inflection
@@ -23097,6 +24270,7 @@ paths:
               - recraft
               - reka
               - relace
+              - sakana-ai
               - sambanova
               - seed
               - siliconflow
@@ -23104,6 +24278,7 @@ paths:
               - stepfun
               - streamlake
               - switchpoint
+              - tenstorrent
               - together
               - upstage
               - venice
@@ -23730,6 +24905,116 @@ paths:
       - $ref: "#/components/parameters/AppIdentifier"
       - $ref: "#/components/parameters/AppDisplayName"
       - $ref: "#/components/parameters/AppCategories"
+  /classifications/task:
+    get:
+      description: |-
+        Returns the market-share breakdown of OpenRouter traffic by task classification
+        (e.g. code generation, web search, summarization) over a trailing time window.
+
+        Each classification reports its share of classified sampled requests (`usage_share`)
+        and classified sampled token volume (`token_share`) as fractions between 0 and 1.
+        The unclassified `other` bucket is excluded. Absolute volumes are not exposed
+        because the underlying data is sampled.
+
+        Each classification also includes a `models` array listing the top models by
+        request volume within that classification, with their within-tag usage and token shares.
+
+        Classifications are grouped into macro-categories (Code, Data, Agent, General)
+        with aggregate shares provided for each.
+
+        Authenticate with any valid OpenRouter API key (same key used for inference).
+        Rate-limited to 30 requests/minute per key and 500 requests/day per account.
+
+        When republishing or quoting this data, cite as:
+        "Source: OpenRouter (openrouter.ai/rankings), as of {as_of}."
+      operationId: getTaskClassifications
+      parameters:
+        - description: Trailing time window for the classification data. Currently only `7d` (trailing 7 days) is supported.
+          in: query
+          name: window
+          required: false
+          schema:
+            default: 7d
+            description: Trailing time window for the classification data. Currently only `7d` (trailing 7 days) is supported.
+            enum:
+              - 7d
+            example: 7d
+            type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              example:
+                data:
+                  as_of: '2026-06-17'
+                  classifications:
+                    - category_token_share: 0.48
+                      category_usage_share: 0.51
+                      display_name: Code Generation
+                      macro_category: code
+                      models:
+                        - id: openai/gpt-4.1-mini
+                          tag_token_share: 0.75
+                          tag_usage_share: 0.55
+                      tag: code:general_impl
+                      token_share: 0.31
+                      usage_share: 0.23
+                  macro_categories:
+                    - key: code
+                      label: Code
+                      token_share: 0.52
+                      usage_share: 0.45
+                  window_days: 7
+              schema:
+                $ref: '#/components/schemas/TaskClassificationResponse'
+          description: Task classification market-share data for the requested trailing window.
+        '400':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 400
+                  message: Invalid request parameters
+              schema:
+                $ref: '#/components/schemas/BadRequestResponse'
+          description: Bad Request - Invalid request parameters or malformed input
+        '401':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 401
+                  message: Missing Authentication header
+              schema:
+                $ref: '#/components/schemas/UnauthorizedResponse'
+          description: Unauthorized - Authentication required or invalid credentials
+        '429':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 429
+                  message: Rate limit exceeded
+              schema:
+                $ref: '#/components/schemas/TooManyRequestsResponse'
+          description: Too Many Requests - Rate limit exceeded
+        '500':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 500
+                  message: Internal Server Error
+              schema:
+                $ref: '#/components/schemas/InternalServerResponse'
+          description: Internal Server Error - Unexpected server error
+      summary: Task classification market share
+      tags:
+        - Classifications
+    parameters:
+      - $ref: "#/components/parameters/AppIdentifier"
+      - $ref: "#/components/parameters/AppDisplayName"
+      - $ref: "#/components/parameters/AppCategories"
   /credits:
     get:
       description: >-
@@ -24058,219 +25343,6 @@ paths:
       - $ref: "#/components/parameters/AppIdentifier"
       - $ref: "#/components/parameters/AppDisplayName"
       - $ref: "#/components/parameters/AppCategories"
-  /datasets/benchmarks/artificial-analysis:
-    get:
-      description: >-
-        Returns composite index scores (Intelligence, Coding, Agentic) from Artificial Analysis for LLM models. Includes OpenRouter pricing per model. Authenticate with any valid OpenRouter API key. Rate-limited to 30 requests/minute per key and 500 requests/day per account.
-      operationId: getBenchmarksArtificialAnalysis
-      parameters:
-        - description: Max results to return (1–100, default 50).
-          in: query
-          name: max_results
-          required: false
-          schema:
-            default: 50
-            description: Max results to return (1–100, default 50).
-            example: 20
-            maximum: 100
-            minimum: 1
-            type: integer
-      responses:
-        '200':
-          content:
-            application/json:
-              example:
-                data:
-                  - aa_name: GPT-4o
-                    agentic_index: 58.3
-                    coding_index: 65.8
-                    intelligence_index: 71.2
-                    model_permaslug: openai/gpt-4o
-                    pricing:
-                      completion: '0.00001'
-                      prompt: '0.0000025'
-                meta:
-                  as_of: '2026-06-03T12:00:00Z'
-                  citation: 'Source: Artificial Analysis (artificialanalysis.ai) via OpenRouter (openrouter.ai/rankings).'
-                  model_count: 1
-                  source: artificial-analysis
-                  source_url: https://artificialanalysis.ai
-                  version: v1
-              schema:
-                $ref: '#/components/schemas/BenchmarksAAResponse'
-          description: Artificial Analysis composite index scores with pricing and attribution metadata.
-        '400':
-          content:
-            application/json:
-              example:
-                error:
-                  code: 400
-                  message: Invalid request parameters
-              schema:
-                $ref: '#/components/schemas/BadRequestResponse'
-          description: Bad Request - Invalid request parameters or malformed input
-        '401':
-          content:
-            application/json:
-              example:
-                error:
-                  code: 401
-                  message: Missing Authentication header
-              schema:
-                $ref: '#/components/schemas/UnauthorizedResponse'
-          description: Unauthorized - Authentication required or invalid credentials
-        '429':
-          content:
-            application/json:
-              example:
-                error:
-                  code: 429
-                  message: Rate limit exceeded
-              schema:
-                $ref: '#/components/schemas/TooManyRequestsResponse'
-          description: Too Many Requests - Rate limit exceeded
-        '500':
-          content:
-            application/json:
-              example:
-                error:
-                  code: 500
-                  message: Internal Server Error
-              schema:
-                $ref: '#/components/schemas/InternalServerResponse'
-          description: Internal Server Error - Unexpected server error
-      summary: Artificial Analysis Benchmark Indices
-      tags:
-        - Datasets
-    parameters:
-      - $ref: "#/components/parameters/AppIdentifier"
-      - $ref: "#/components/parameters/AppDisplayName"
-      - $ref: "#/components/parameters/AppCategories"
-  /datasets/benchmarks/design-arena:
-    get:
-      description: >-
-        Returns ELO ratings from head-to-head arena battles on Design Arena. Filterable by arena (models/builders/agents) and category. Includes OpenRouter pricing per model. Authenticate with any valid OpenRouter API key. Rate-limited to 30 requests/minute per key and 500 requests/day per account.
-      operationId: getBenchmarksDesignArena
-      parameters:
-        - description: Arena to query. Defaults to `models`.
-          in: query
-          name: arena
-          required: false
-          schema:
-            default: models
-            description: Arena to query. Defaults to `models`.
-            enum:
-              - models
-              - builders
-              - agents
-            example: models
-            type: string
-            x-speakeasy-unknown-values: allow
-        - description: >-
-            Category within the arena (e.g. `codecategories`, `uicomponent`, `gamedev`, `3d`, `dataviz`, `image`, `video`, `svg`). When omitted, returns all categories.
-          in: query
-          name: category
-          required: false
-          schema:
-            description: >-
-              Category within the arena (e.g. `codecategories`, `uicomponent`, `gamedev`, `3d`, `dataviz`, `image`, `video`, `svg`). When omitted, returns all categories.
-            example: codecategories
-            type: string
-        - description: 'Max results to return: per category when no category filter is applied (1–100, default 50).'
-          in: query
-          name: max_results
-          required: false
-          schema:
-            default: 50
-            description: 'Max results to return: per category when no category filter is applied (1–100, default 50).'
-            example: 20
-            maximum: 100
-            minimum: 1
-            type: integer
-      responses:
-        '200':
-          content:
-            application/json:
-              example:
-                data:
-                  - arena: models
-                    avg_generation_time_ms: 3200
-                    category: codecategories
-                    display_name: Claude Sonnet 4
-                    elo: 1423
-                    model_permaslug: anthropic/claude-sonnet-4
-                    pricing:
-                      completion: '0.000015'
-                      prompt: '0.000003'
-                    tournament_stats:
-                      first_place: 12
-                      fourth_place: 2
-                      second_place: 8
-                      third_place: 5
-                      total: 27
-                    win_rate: 72
-                meta:
-                  arena: models
-                  as_of: '2026-06-03T12:00:00Z'
-                  category: null
-                  citation: 'Source: Design Arena (www.designarena.ai) via OpenRouter (openrouter.ai/rankings).'
-                  elo_bounds:
-                    max: 1600
-                    min: 900
-                  model_count: 1
-                  source: design-arena
-                  source_url: https://www.designarena.ai
-                  version: v1
-              schema:
-                $ref: '#/components/schemas/BenchmarksDAResponse'
-          description: Design Arena ELO rankings with pricing and attribution metadata.
-        '400':
-          content:
-            application/json:
-              example:
-                error:
-                  code: 400
-                  message: Invalid request parameters
-              schema:
-                $ref: '#/components/schemas/BadRequestResponse'
-          description: Bad Request - Invalid request parameters or malformed input
-        '401':
-          content:
-            application/json:
-              example:
-                error:
-                  code: 401
-                  message: Missing Authentication header
-              schema:
-                $ref: '#/components/schemas/UnauthorizedResponse'
-          description: Unauthorized - Authentication required or invalid credentials
-        '429':
-          content:
-            application/json:
-              example:
-                error:
-                  code: 429
-                  message: Rate limit exceeded
-              schema:
-                $ref: '#/components/schemas/TooManyRequestsResponse'
-          description: Too Many Requests - Rate limit exceeded
-        '500':
-          content:
-            application/json:
-              example:
-                error:
-                  code: 500
-                  message: Internal Server Error
-              schema:
-                $ref: '#/components/schemas/InternalServerResponse'
-          description: Internal Server Error - Unexpected server error
-      summary: Design Arena Benchmark Rankings
-      tags:
-        - Datasets
-    parameters:
-      - $ref: "#/components/parameters/AppIdentifier"
-      - $ref: "#/components/parameters/AppDisplayName"
-      - $ref: "#/components/parameters/AppCategories"
   /datasets/rankings-daily:
     get:
       description: |-
@@ -24578,6 +25650,31 @@ paths:
                         example: 0.0001
                         format: double
                         type: number
+                      cost_details:
+                        description: Breakdown of upstream inference costs
+                        example:
+                          upstream_inference_completions_cost: 0.0004
+                          upstream_inference_cost: null
+                          upstream_inference_prompt_cost: 0.0008
+                        nullable: true
+                        properties:
+                          upstream_inference_completions_cost:
+                            format: double
+                            type: number
+                          upstream_inference_cost:
+                            format: double
+                            nullable: true
+                            type: number
+                          upstream_inference_prompt_cost:
+                            format: double
+                            type: number
+                        required:
+                          - upstream_inference_prompt_cost
+                          - upstream_inference_completions_cost
+                        type: object
+                      is_byok:
+                        description: Whether a request was made using a Bring Your Own Key configuration
+                        type: boolean
                       prompt_tokens:
                         description: Number of tokens in the input
                         example: 8
@@ -26738,6 +27835,278 @@ paths:
       - $ref: "#/components/parameters/AppIdentifier"
       - $ref: "#/components/parameters/AppDisplayName"
       - $ref: "#/components/parameters/AppCategories"
+  /images:
+    post:
+      description: Generates an image from a text prompt via the image generation router
+      operationId: createImages
+      requestBody:
+        content:
+          application/json:
+            example:
+              model: bytedance-seed/seedream-4.5
+              prompt: a red panda astronaut floating in space, studio lighting
+            schema:
+              $ref: '#/components/schemas/ImageGenerationRequest'
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              example:
+                created: 1748372400
+                data:
+                  - b64_json: <base64-encoded-image>
+                usage:
+                  completion_tokens: 4175
+                  cost: 0.04
+                  prompt_tokens: 0
+                  total_tokens: 4175
+              schema:
+                $ref: '#/components/schemas/ImageGenerationResponse'
+            text/event-stream:
+              example:
+                data:
+                  b64_json: <base64-encoded-partial-image>
+                  partial_image_index: 0
+                  type: image_generation.partial_image
+              schema:
+                $ref: '#/components/schemas/ImageStreamingResponse'
+              x-speakeasy-sse-sentinel: '[DONE]'
+          description: Image generation response
+        '400':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 400
+                  message: Invalid request parameters
+              schema:
+                $ref: '#/components/schemas/BadRequestResponse'
+          description: Bad Request - Invalid request parameters or malformed input
+        '401':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 401
+                  message: Missing Authentication header
+              schema:
+                $ref: '#/components/schemas/UnauthorizedResponse'
+          description: Unauthorized - Authentication required or invalid credentials
+        '402':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 402
+                  message: Insufficient credits. Add more using https://openrouter.ai/credits
+              schema:
+                $ref: '#/components/schemas/PaymentRequiredResponse'
+          description: Payment Required - Insufficient credits or quota to complete request
+        '403':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 403
+                  message: Only management keys can perform this operation
+              schema:
+                $ref: '#/components/schemas/ForbiddenResponse'
+          description: Forbidden - Authentication successful but insufficient permissions
+        '404':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 404
+                  message: Resource not found
+              schema:
+                $ref: '#/components/schemas/NotFoundResponse'
+          description: Not Found - Resource does not exist
+        '429':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 429
+                  message: Rate limit exceeded
+              schema:
+                $ref: '#/components/schemas/TooManyRequestsResponse'
+          description: Too Many Requests - Rate limit exceeded
+        '500':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 500
+                  message: Internal Server Error
+              schema:
+                $ref: '#/components/schemas/InternalServerResponse'
+          description: Internal Server Error - Unexpected server error
+        '502':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 502
+                  message: Provider returned error
+              schema:
+                $ref: '#/components/schemas/BadGatewayResponse'
+          description: Bad Gateway - Provider/upstream API failure
+        '524':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 524
+                  message: Request timed out. Please try again later.
+              schema:
+                $ref: '#/components/schemas/EdgeNetworkTimeoutResponse'
+          description: Infrastructure Timeout - Provider request timed out at edge network
+        '529':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 529
+                  message: Provider returned error
+              schema:
+                $ref: '#/components/schemas/ProviderOverloadedResponse'
+          description: Provider Overloaded - Provider is temporarily overloaded
+      summary: Generate an image
+      tags:
+        - Images
+      x-speakeasy-name-override: generate
+    parameters:
+      - $ref: "#/components/parameters/AppIdentifier"
+      - $ref: "#/components/parameters/AppDisplayName"
+      - $ref: "#/components/parameters/AppCategories"
+  /images/models:
+    get:
+      description: >-
+        Lists every image generation model with its top-level supported-parameter superset and a URL to its full per-endpoint records.
+      operationId: listImageModels
+      responses:
+        '200':
+          content:
+            application/json:
+              example:
+                data:
+                  - architecture:
+                      input_modalities:
+                        - text
+                      output_modalities:
+                        - image
+                    created: 1692901234
+                    description: A text-to-image model.
+                    endpoints: /api/v1/images/models/bytedance-seed/seedream-4.5/endpoints
+                    id: bytedance-seed/seedream-4.5
+                    name: Seedream 4.5
+                    supported_parameters:
+                      resolution:
+                        type: enum
+                        values:
+                          - 1K
+                          - 2K
+                          - 4K
+                    supports_streaming: false
+              schema:
+                $ref: '#/components/schemas/ImageModelsListResponse'
+          description: List of image generation models
+        '500':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 500
+                  message: Internal Server Error
+              schema:
+                $ref: '#/components/schemas/InternalServerResponse'
+          description: Internal Server Error - Unexpected server error
+      summary: List image generation models
+      tags:
+        - Images
+      x-speakeasy-name-override: listModels
+    parameters:
+      - $ref: "#/components/parameters/AppIdentifier"
+      - $ref: "#/components/parameters/AppDisplayName"
+      - $ref: "#/components/parameters/AppCategories"
+  /images/models/{author}/{slug}/endpoints:
+    get:
+      description: >-
+        Returns the full per-endpoint records for an image model: each endpoint's definitive supported parameters, pricing, and passthrough allowlist.
+      operationId: listImageModelEndpoints
+      parameters:
+        - description: Model author/organization
+          in: path
+          name: author
+          required: true
+          schema:
+            description: Model author/organization
+            example: bytedance-seed
+            type: string
+        - description: Model slug
+          in: path
+          name: slug
+          required: true
+          schema:
+            description: Model slug
+            example: seedream-4.5
+            type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              example:
+                endpoints:
+                  - allowed_passthrough_parameters: []
+                    pricing:
+                      - billable: output_image
+                        cost_usd: 0.05
+                        unit: image
+                    provider_name: Bytedance
+                    provider_slug: bytedance
+                    provider_tag: bytedance
+                    supported_parameters:
+                      resolution:
+                        type: enum
+                        values:
+                          - 1K
+                          - 2K
+                          - 4K
+                    supports_streaming: false
+                id: bytedance-seed/seedream-4.5
+              schema:
+                $ref: '#/components/schemas/ImageModelEndpointsResponse'
+          description: The full per-endpoint records for an image model
+        '404':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 404
+                  message: Resource not found
+              schema:
+                $ref: '#/components/schemas/NotFoundResponse'
+          description: Not Found - Resource does not exist
+        '500':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 500
+                  message: Internal Server Error
+              schema:
+                $ref: '#/components/schemas/InternalServerResponse'
+          description: Internal Server Error - Unexpected server error
+      summary: List endpoints for an image model
+      tags:
+        - Images
+      x-speakeasy-name-override: listModelEndpoints
+    parameters:
+      - $ref: "#/components/parameters/AppIdentifier"
+      - $ref: "#/components/parameters/AppDisplayName"
+      - $ref: "#/components/parameters/AppCategories"
   /key:
     get:
       description: Get information on the API key associated with the current authentication session
@@ -28590,13 +29959,13 @@ paths:
             example: text
             type: string
         - description: >-
-            Sort the returned models server-side. Prefer this over fetching the full list and sorting client-side. Options: pricing-low-to-high, pricing-high-to-low (average prompt/completion price), context-high-to-low (context length), throughput-high-to-low, latency-low-to-high (recent median performance), most-popular, top-weekly (tokens processed in the last week), newest (creation date). When omitted, the existing default ordering is preserved.
+            Sort the returned models server-side. Prefer this over fetching the full list and sorting client-side. Options: pricing-low-to-high, pricing-high-to-low (average prompt/completion price), context-high-to-low (context length), throughput-high-to-low, latency-low-to-high (recent median performance), most-popular, top-weekly (tokens processed in the last week), newest (creation date), intelligence-high-to-low (Artificial Analysis intelligence index), design-arena-elo-high-to-low (best Design Arena ELO across arenas). Models without a score for the chosen benchmark are placed last. When omitted, the existing default ordering is preserved.
           in: query
           name: sort
           required: false
           schema:
             description: >-
-              Sort the returned models server-side. Prefer this over fetching the full list and sorting client-side. Options: pricing-low-to-high, pricing-high-to-low (average prompt/completion price), context-high-to-low (context length), throughput-high-to-low, latency-low-to-high (recent median performance), most-popular, top-weekly (tokens processed in the last week), newest (creation date). When omitted, the existing default ordering is preserved.
+              Sort the returned models server-side. Prefer this over fetching the full list and sorting client-side. Options: pricing-low-to-high, pricing-high-to-low (average prompt/completion price), context-high-to-low (context length), throughput-high-to-low, latency-low-to-high (recent median performance), most-popular, top-weekly (tokens processed in the last week), newest (creation date), intelligence-high-to-low (Artificial Analysis intelligence index), design-arena-elo-high-to-low (best Design Arena ELO across arenas). Models without a score for the chosen benchmark are placed last. When omitted, the existing default ordering is preserved.
             enum:
               - most-popular
               - newest
@@ -28606,6 +29975,8 @@ paths:
               - context-high-to-low
               - throughput-high-to-low
               - latency-low-to-high
+              - intelligence-high-to-low
+              - design-arena-elo-high-to-low
             example: newest
             type: string
             x-speakeasy-unknown-values: allow
@@ -28734,7 +30105,7 @@ paths:
                     id: openai/gpt-4
                     knowledge_cutoff: null
                     links:
-                      details: /api/v1/models/openai/gpt-5.4/endpoints
+                      details: /api/v1/models/openai/gpt-4/endpoints
                     name: GPT-4
                     per_request_limits: null
                     pricing:
@@ -32690,8 +34061,12 @@ tags:
     name: Anthropic Messages
   - description: BYOK endpoints
     name: BYOK
+  - description: Benchmarks endpoints
+    name: Benchmarks
   - description: Chat completion endpoints
     name: Chat
+  - description: Task classification market-share endpoints
+    name: Classifications
   - description: Credit management endpoints
     name: Credits
   - description: Datasets endpoints
@@ -32706,6 +34081,8 @@ tags:
     name: Generations
   - description: Guardrails endpoints
     name: Guardrails
+  - description: Images endpoints
+    name: Images
   - description: Model information endpoints
     name: Models
   - description: OAuth authentication endpoints
