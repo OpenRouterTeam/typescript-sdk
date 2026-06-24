@@ -180,6 +180,10 @@ export type ObjectT = ClosedEnum<typeof ObjectT>;
  * Breakdown of upstream inference costs
  */
 export type CostDetails = {
+  /**
+   * Itemized billing breakdown. Each entry shows what was charged and why. Currently returned for image generation only.
+   */
+  lineItems?: Array<models.CostLineItem> | null | undefined;
   upstreamInferenceCompletionsCost: number;
   upstreamInferenceCost?: number | null | undefined;
   upstreamInferencePromptCost: number;
@@ -532,11 +536,14 @@ export const ObjectT$inboundSchema: z.ZodEnum<typeof ObjectT> = z.enum(ObjectT);
 /** @internal */
 export const CostDetails$inboundSchema: z.ZodType<CostDetails, unknown> = z
   .object({
+    line_items: z.nullable(z.array(models.CostLineItem$inboundSchema))
+      .optional(),
     upstream_inference_completions_cost: z.number(),
     upstream_inference_cost: z.nullable(z.number()).optional(),
     upstream_inference_prompt_cost: z.number(),
   }).transform((v) => {
     return remap$(v, {
+      "line_items": "lineItems",
       "upstream_inference_completions_cost": "upstreamInferenceCompletionsCost",
       "upstream_inference_cost": "upstreamInferenceCost",
       "upstream_inference_prompt_cost": "upstreamInferencePromptCost",
