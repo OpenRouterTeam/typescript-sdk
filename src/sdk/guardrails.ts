@@ -30,6 +30,7 @@ export class Guardrails extends ClientSDK {
    * List all guardrails for the authenticated user. [Management key](/docs/guides/overview/auth/management-api-keys) required.
    */
   async list(
+    security: operations.ListGuardrailsSecurity,
     request?: operations.ListGuardrailsRequest | undefined,
     options?: RequestOptions,
   ): Promise<
@@ -37,6 +38,7 @@ export class Guardrails extends ClientSDK {
   > {
     return unwrapResultIterator(guardrailsList(
       this,
+      security,
       request,
       options,
     ));
@@ -49,11 +51,13 @@ export class Guardrails extends ClientSDK {
    * Create a new guardrail for the authenticated user. [Management key](/docs/guides/overview/auth/management-api-keys) required.
    */
   async create(
+    security: operations.CreateGuardrailSecurity,
     request: operations.CreateGuardrailRequest,
     options?: RequestOptions,
   ): Promise<models.CreateGuardrailResponse> {
     return unwrapAsync(guardrailsCreate(
       this,
+      security,
       request,
       options,
     ));
@@ -66,11 +70,13 @@ export class Guardrails extends ClientSDK {
    * Delete an existing guardrail. [Management key](/docs/guides/overview/auth/management-api-keys) required.
    */
   async delete(
+    security: operations.DeleteGuardrailSecurity,
     request: operations.DeleteGuardrailRequest,
     options?: RequestOptions,
   ): Promise<models.DeleteGuardrailResponse> {
     return unwrapAsync(guardrailsDelete(
       this,
+      security,
       request,
       options,
     ));
@@ -83,11 +89,13 @@ export class Guardrails extends ClientSDK {
    * Get a single guardrail by ID. [Management key](/docs/guides/overview/auth/management-api-keys) required.
    */
   async get(
+    security: operations.GetGuardrailSecurity,
     request: operations.GetGuardrailRequest,
     options?: RequestOptions,
   ): Promise<models.GetGuardrailResponse> {
     return unwrapAsync(guardrailsGet(
       this,
+      security,
       request,
       options,
     ));
@@ -100,11 +108,13 @@ export class Guardrails extends ClientSDK {
    * Update an existing guardrail. [Management key](/docs/guides/overview/auth/management-api-keys) required.
    */
   async update(
+    security: operations.UpdateGuardrailSecurity,
     request: operations.UpdateGuardrailRequest,
     options?: RequestOptions,
   ): Promise<models.UpdateGuardrailResponse> {
     return unwrapAsync(guardrailsUpdate(
       this,
+      security,
       request,
       options,
     ));
@@ -117,6 +127,7 @@ export class Guardrails extends ClientSDK {
    * List all API key assignments for a specific guardrail. [Management key](/docs/guides/overview/auth/management-api-keys) required.
    */
   async listGuardrailKeyAssignments(
+    security: operations.ListGuardrailKeyAssignmentsSecurity,
     request: operations.ListGuardrailKeyAssignmentsRequest,
     options?: RequestOptions,
   ): Promise<
@@ -127,6 +138,7 @@ export class Guardrails extends ClientSDK {
   > {
     return unwrapResultIterator(guardrailsListGuardrailKeyAssignments(
       this,
+      security,
       request,
       options,
     ));
@@ -139,11 +151,13 @@ export class Guardrails extends ClientSDK {
    * Assign multiple API keys to a specific guardrail. [Management key](/docs/guides/overview/auth/management-api-keys) required.
    */
   async bulkAssignKeys(
+    security: operations.BulkAssignKeysToGuardrailSecurity,
     request: operations.BulkAssignKeysToGuardrailRequest,
     options?: RequestOptions,
   ): Promise<models.BulkAssignKeysResponse> {
     return unwrapAsync(guardrailsBulkAssignKeys(
       this,
+      security,
       request,
       options,
     ));
@@ -156,11 +170,13 @@ export class Guardrails extends ClientSDK {
    * Unassign multiple API keys from a specific guardrail. [Management key](/docs/guides/overview/auth/management-api-keys) required.
    */
   async bulkUnassignKeys(
+    security: operations.BulkUnassignKeysFromGuardrailSecurity,
     request: operations.BulkUnassignKeysFromGuardrailRequest,
     options?: RequestOptions,
   ): Promise<models.BulkUnassignKeysResponse> {
     return unwrapAsync(guardrailsBulkUnassignKeys(
       this,
+      security,
       request,
       options,
     ));
@@ -173,6 +189,7 @@ export class Guardrails extends ClientSDK {
    * List all organization member assignments for a specific guardrail. [Management key](/docs/guides/overview/auth/management-api-keys) required.
    */
   async listGuardrailMemberAssignments(
+    security: operations.ListGuardrailMemberAssignmentsSecurity,
     request: operations.ListGuardrailMemberAssignmentsRequest,
     options?: RequestOptions,
   ): Promise<
@@ -183,6 +200,7 @@ export class Guardrails extends ClientSDK {
   > {
     return unwrapResultIterator(guardrailsListGuardrailMemberAssignments(
       this,
+      security,
       request,
       options,
     ));
@@ -195,11 +213,13 @@ export class Guardrails extends ClientSDK {
    * Assign multiple organization members to a specific guardrail. [Management key](/docs/guides/overview/auth/management-api-keys) required.
    */
   async bulkAssignMembers(
+    security: operations.BulkAssignMembersToGuardrailSecurity,
     request: operations.BulkAssignMembersToGuardrailRequest,
     options?: RequestOptions,
   ): Promise<models.BulkAssignMembersResponse> {
     return unwrapAsync(guardrailsBulkAssignMembers(
       this,
+      security,
       request,
       options,
     ));
@@ -212,11 +232,13 @@ export class Guardrails extends ClientSDK {
    * Unassign multiple organization members from a specific guardrail. [Management key](/docs/guides/overview/auth/management-api-keys) required.
    */
   async bulkUnassignMembers(
+    security: operations.BulkUnassignMembersFromGuardrailSecurity,
     request: operations.BulkUnassignMembersFromGuardrailRequest,
     options?: RequestOptions,
   ): Promise<models.BulkUnassignMembersResponse> {
     return unwrapAsync(guardrailsBulkUnassignMembers(
       this,
+      security,
       request,
       options,
     ));
@@ -229,6 +251,7 @@ export class Guardrails extends ClientSDK {
    * List all API key guardrail assignments for the authenticated user. [Management key](/docs/guides/overview/auth/management-api-keys) required.
    */
   async listKeyAssignments(
+    security: operations.ListKeyAssignmentsSecurity,
     request?: operations.ListKeyAssignmentsRequest | undefined,
     options?: RequestOptions,
   ): Promise<
@@ -236,6 +259,7 @@ export class Guardrails extends ClientSDK {
   > {
     return unwrapResultIterator(guardrailsListKeyAssignments(
       this,
+      security,
       request,
       options,
     ));
@@ -248,6 +272,7 @@ export class Guardrails extends ClientSDK {
    * List all organization member guardrail assignments for the authenticated user. [Management key](/docs/guides/overview/auth/management-api-keys) required.
    */
   async listMemberAssignments(
+    security: operations.ListMemberAssignmentsSecurity,
     request?: operations.ListMemberAssignmentsRequest | undefined,
     options?: RequestOptions,
   ): Promise<
@@ -255,6 +280,7 @@ export class Guardrails extends ClientSDK {
   > {
     return unwrapResultIterator(guardrailsListMemberAssignments(
       this,
+      security,
       request,
       options,
     ));

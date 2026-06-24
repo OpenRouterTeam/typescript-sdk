@@ -29,6 +29,10 @@ export type DeleteWorkspaceBudgetGlobals = {
   appCategories?: string | undefined;
 };
 
+export type DeleteWorkspaceBudgetSecurity = {
+  managementKey: string;
+};
+
 export type DeleteWorkspaceBudgetRequest = {
   /**
    * The app identifier should be your app's URL and is used as the primary identifier for rankings.
@@ -58,6 +62,29 @@ export type DeleteWorkspaceBudgetRequest = {
    */
   interval: models.WorkspaceBudgetInterval;
 };
+
+/** @internal */
+export type DeleteWorkspaceBudgetSecurity$Outbound = {
+  managementKey: string;
+};
+
+/** @internal */
+export const DeleteWorkspaceBudgetSecurity$outboundSchema: z.ZodType<
+  DeleteWorkspaceBudgetSecurity$Outbound,
+  DeleteWorkspaceBudgetSecurity
+> = z.object({
+  managementKey: z.string(),
+});
+
+export function deleteWorkspaceBudgetSecurityToJSON(
+  deleteWorkspaceBudgetSecurity: DeleteWorkspaceBudgetSecurity,
+): string {
+  return JSON.stringify(
+    DeleteWorkspaceBudgetSecurity$outboundSchema.parse(
+      deleteWorkspaceBudgetSecurity,
+    ),
+  );
+}
 
 /** @internal */
 export type DeleteWorkspaceBudgetRequest$Outbound = {

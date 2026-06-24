@@ -34,11 +34,12 @@ const openRouter = new OpenRouter({
   httpReferer: "<value>",
   appTitle: "<value>",
   appCategories: "<value>",
-  apiKey: process.env["OPENROUTER_API_KEY"] ?? "",
 });
 
 async function run() {
-  const result = await openRouter.guardrails.list();
+  const result = await openRouter.guardrails.list({
+    managementKey: process.env["OPENROUTER_MANAGEMENT_KEY"] ?? "",
+  });
 
   for await (const page of result) {
     console.log(page);
@@ -62,11 +63,12 @@ const openRouter = new OpenRouterCore({
   httpReferer: "<value>",
   appTitle: "<value>",
   appCategories: "<value>",
-  apiKey: process.env["OPENROUTER_API_KEY"] ?? "",
 });
 
 async function run() {
-  const res = await guardrailsList(openRouter);
+  const res = await guardrailsList(openRouter, {
+    managementKey: process.env["OPENROUTER_MANAGEMENT_KEY"] ?? "",
+  });
   if (res.ok) {
     const { value: result } = res;
     for await (const page of result) {
@@ -85,6 +87,7 @@ run();
 | Parameter                                                                                                                                                                      | Type                                                                                                                                                                           | Required                                                                                                                                                                       | Description                                                                                                                                                                    |
 | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
 | `request`                                                                                                                                                                      | [operations.ListGuardrailsRequest](../../models/operations/listguardrailsrequest.md)                                                                                           | :heavy_check_mark:                                                                                                                                                             | The request object to use for the request.                                                                                                                                     |
+| `security`                                                                                                                                                                     | [operations.ListGuardrailsSecurity](../../models/operations/listguardrailssecurity.md)                                                                                         | :heavy_check_mark:                                                                                                                                                             | The security requirements to use for the request.                                                                                                                              |
 | `options`                                                                                                                                                                      | RequestOptions                                                                                                                                                                 | :heavy_minus_sign:                                                                                                                                                             | Used to set various options for making HTTP requests.                                                                                                                          |
 | `options.fetchOptions`                                                                                                                                                         | [RequestInit](https://developer.mozilla.org/en-US/docs/Web/API/Request/Request#options)                                                                                        | :heavy_minus_sign:                                                                                                                                                             | Options that are passed to the underlying HTTP request. This can be used to inject extra headers for examples. All `Request` options, except `method` and `body`, are allowed. |
 | `options.retries`                                                                                                                                                              | [RetryConfig](../../lib/utils/retryconfig.md)                                                                                                                                  | :heavy_minus_sign:                                                                                                                                                             | Enables retrying HTTP requests under certain failure conditions.                                                                                                               |
@@ -115,11 +118,12 @@ const openRouter = new OpenRouter({
   httpReferer: "<value>",
   appTitle: "<value>",
   appCategories: "<value>",
-  apiKey: process.env["OPENROUTER_API_KEY"] ?? "",
 });
 
 async function run() {
   const result = await openRouter.guardrails.create({
+    managementKey: process.env["OPENROUTER_MANAGEMENT_KEY"] ?? "",
+  }, {
     createGuardrailRequest: {
       allowedModels: null,
       allowedProviders: [
@@ -160,11 +164,12 @@ const openRouter = new OpenRouterCore({
   httpReferer: "<value>",
   appTitle: "<value>",
   appCategories: "<value>",
-  apiKey: process.env["OPENROUTER_API_KEY"] ?? "",
 });
 
 async function run() {
   const res = await guardrailsCreate(openRouter, {
+    managementKey: process.env["OPENROUTER_MANAGEMENT_KEY"] ?? "",
+  }, {
     createGuardrailRequest: {
       allowedModels: null,
       allowedProviders: [
@@ -200,6 +205,7 @@ run();
 | Parameter                                                                                                                                                                      | Type                                                                                                                                                                           | Required                                                                                                                                                                       | Description                                                                                                                                                                    |
 | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
 | `request`                                                                                                                                                                      | [operations.CreateGuardrailRequest](../../models/operations/createguardrailrequest.md)                                                                                         | :heavy_check_mark:                                                                                                                                                             | The request object to use for the request.                                                                                                                                     |
+| `security`                                                                                                                                                                     | [operations.CreateGuardrailSecurity](../../models/operations/createguardrailsecurity.md)                                                                                       | :heavy_check_mark:                                                                                                                                                             | The security requirements to use for the request.                                                                                                                              |
 | `options`                                                                                                                                                                      | RequestOptions                                                                                                                                                                 | :heavy_minus_sign:                                                                                                                                                             | Used to set various options for making HTTP requests.                                                                                                                          |
 | `options.fetchOptions`                                                                                                                                                         | [RequestInit](https://developer.mozilla.org/en-US/docs/Web/API/Request/Request#options)                                                                                        | :heavy_minus_sign:                                                                                                                                                             | Options that are passed to the underlying HTTP request. This can be used to inject extra headers for examples. All `Request` options, except `method` and `body`, are allowed. |
 | `options.retries`                                                                                                                                                              | [RetryConfig](../../lib/utils/retryconfig.md)                                                                                                                                  | :heavy_minus_sign:                                                                                                                                                             | Enables retrying HTTP requests under certain failure conditions.                                                                                                               |
@@ -232,11 +238,12 @@ const openRouter = new OpenRouter({
   httpReferer: "<value>",
   appTitle: "<value>",
   appCategories: "<value>",
-  apiKey: process.env["OPENROUTER_API_KEY"] ?? "",
 });
 
 async function run() {
   const result = await openRouter.guardrails.delete({
+    managementKey: process.env["OPENROUTER_MANAGEMENT_KEY"] ?? "",
+  }, {
     id: "550e8400-e29b-41d4-a716-446655440000",
   });
 
@@ -260,11 +267,12 @@ const openRouter = new OpenRouterCore({
   httpReferer: "<value>",
   appTitle: "<value>",
   appCategories: "<value>",
-  apiKey: process.env["OPENROUTER_API_KEY"] ?? "",
 });
 
 async function run() {
   const res = await guardrailsDelete(openRouter, {
+    managementKey: process.env["OPENROUTER_MANAGEMENT_KEY"] ?? "",
+  }, {
     id: "550e8400-e29b-41d4-a716-446655440000",
   });
   if (res.ok) {
@@ -283,6 +291,7 @@ run();
 | Parameter                                                                                                                                                                      | Type                                                                                                                                                                           | Required                                                                                                                                                                       | Description                                                                                                                                                                    |
 | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
 | `request`                                                                                                                                                                      | [operations.DeleteGuardrailRequest](../../models/operations/deleteguardrailrequest.md)                                                                                         | :heavy_check_mark:                                                                                                                                                             | The request object to use for the request.                                                                                                                                     |
+| `security`                                                                                                                                                                     | [operations.DeleteGuardrailSecurity](../../models/operations/deleteguardrailsecurity.md)                                                                                       | :heavy_check_mark:                                                                                                                                                             | The security requirements to use for the request.                                                                                                                              |
 | `options`                                                                                                                                                                      | RequestOptions                                                                                                                                                                 | :heavy_minus_sign:                                                                                                                                                             | Used to set various options for making HTTP requests.                                                                                                                          |
 | `options.fetchOptions`                                                                                                                                                         | [RequestInit](https://developer.mozilla.org/en-US/docs/Web/API/Request/Request#options)                                                                                        | :heavy_minus_sign:                                                                                                                                                             | Options that are passed to the underlying HTTP request. This can be used to inject extra headers for examples. All `Request` options, except `method` and `body`, are allowed. |
 | `options.retries`                                                                                                                                                              | [RetryConfig](../../lib/utils/retryconfig.md)                                                                                                                                  | :heavy_minus_sign:                                                                                                                                                             | Enables retrying HTTP requests under certain failure conditions.                                                                                                               |
@@ -314,11 +323,12 @@ const openRouter = new OpenRouter({
   httpReferer: "<value>",
   appTitle: "<value>",
   appCategories: "<value>",
-  apiKey: process.env["OPENROUTER_API_KEY"] ?? "",
 });
 
 async function run() {
   const result = await openRouter.guardrails.get({
+    managementKey: process.env["OPENROUTER_MANAGEMENT_KEY"] ?? "",
+  }, {
     id: "550e8400-e29b-41d4-a716-446655440000",
   });
 
@@ -342,11 +352,12 @@ const openRouter = new OpenRouterCore({
   httpReferer: "<value>",
   appTitle: "<value>",
   appCategories: "<value>",
-  apiKey: process.env["OPENROUTER_API_KEY"] ?? "",
 });
 
 async function run() {
   const res = await guardrailsGet(openRouter, {
+    managementKey: process.env["OPENROUTER_MANAGEMENT_KEY"] ?? "",
+  }, {
     id: "550e8400-e29b-41d4-a716-446655440000",
   });
   if (res.ok) {
@@ -365,6 +376,7 @@ run();
 | Parameter                                                                                                                                                                      | Type                                                                                                                                                                           | Required                                                                                                                                                                       | Description                                                                                                                                                                    |
 | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
 | `request`                                                                                                                                                                      | [operations.GetGuardrailRequest](../../models/operations/getguardrailrequest.md)                                                                                               | :heavy_check_mark:                                                                                                                                                             | The request object to use for the request.                                                                                                                                     |
+| `security`                                                                                                                                                                     | [operations.GetGuardrailSecurity](../../models/operations/getguardrailsecurity.md)                                                                                             | :heavy_check_mark:                                                                                                                                                             | The security requirements to use for the request.                                                                                                                              |
 | `options`                                                                                                                                                                      | RequestOptions                                                                                                                                                                 | :heavy_minus_sign:                                                                                                                                                             | Used to set various options for making HTTP requests.                                                                                                                          |
 | `options.fetchOptions`                                                                                                                                                         | [RequestInit](https://developer.mozilla.org/en-US/docs/Web/API/Request/Request#options)                                                                                        | :heavy_minus_sign:                                                                                                                                                             | Options that are passed to the underlying HTTP request. This can be used to inject extra headers for examples. All `Request` options, except `method` and `body`, are allowed. |
 | `options.retries`                                                                                                                                                              | [RetryConfig](../../lib/utils/retryconfig.md)                                                                                                                                  | :heavy_minus_sign:                                                                                                                                                             | Enables retrying HTTP requests under certain failure conditions.                                                                                                               |
@@ -396,11 +408,12 @@ const openRouter = new OpenRouter({
   httpReferer: "<value>",
   appTitle: "<value>",
   appCategories: "<value>",
-  apiKey: process.env["OPENROUTER_API_KEY"] ?? "",
 });
 
 async function run() {
   const result = await openRouter.guardrails.update({
+    managementKey: process.env["OPENROUTER_MANAGEMENT_KEY"] ?? "",
+  }, {
     id: "550e8400-e29b-41d4-a716-446655440000",
     updateGuardrailRequest: {
       description: "Updated description",
@@ -430,11 +443,12 @@ const openRouter = new OpenRouterCore({
   httpReferer: "<value>",
   appTitle: "<value>",
   appCategories: "<value>",
-  apiKey: process.env["OPENROUTER_API_KEY"] ?? "",
 });
 
 async function run() {
   const res = await guardrailsUpdate(openRouter, {
+    managementKey: process.env["OPENROUTER_MANAGEMENT_KEY"] ?? "",
+  }, {
     id: "550e8400-e29b-41d4-a716-446655440000",
     updateGuardrailRequest: {
       description: "Updated description",
@@ -459,6 +473,7 @@ run();
 | Parameter                                                                                                                                                                      | Type                                                                                                                                                                           | Required                                                                                                                                                                       | Description                                                                                                                                                                    |
 | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
 | `request`                                                                                                                                                                      | [operations.UpdateGuardrailRequest](../../models/operations/updateguardrailrequest.md)                                                                                         | :heavy_check_mark:                                                                                                                                                             | The request object to use for the request.                                                                                                                                     |
+| `security`                                                                                                                                                                     | [operations.UpdateGuardrailSecurity](../../models/operations/updateguardrailsecurity.md)                                                                                       | :heavy_check_mark:                                                                                                                                                             | The security requirements to use for the request.                                                                                                                              |
 | `options`                                                                                                                                                                      | RequestOptions                                                                                                                                                                 | :heavy_minus_sign:                                                                                                                                                             | Used to set various options for making HTTP requests.                                                                                                                          |
 | `options.fetchOptions`                                                                                                                                                         | [RequestInit](https://developer.mozilla.org/en-US/docs/Web/API/Request/Request#options)                                                                                        | :heavy_minus_sign:                                                                                                                                                             | Options that are passed to the underlying HTTP request. This can be used to inject extra headers for examples. All `Request` options, except `method` and `body`, are allowed. |
 | `options.retries`                                                                                                                                                              | [RetryConfig](../../lib/utils/retryconfig.md)                                                                                                                                  | :heavy_minus_sign:                                                                                                                                                             | Enables retrying HTTP requests under certain failure conditions.                                                                                                               |
@@ -491,11 +506,12 @@ const openRouter = new OpenRouter({
   httpReferer: "<value>",
   appTitle: "<value>",
   appCategories: "<value>",
-  apiKey: process.env["OPENROUTER_API_KEY"] ?? "",
 });
 
 async function run() {
   const result = await openRouter.guardrails.listGuardrailKeyAssignments({
+    managementKey: process.env["OPENROUTER_MANAGEMENT_KEY"] ?? "",
+  }, {
     id: "550e8400-e29b-41d4-a716-446655440000",
   });
 
@@ -521,11 +537,12 @@ const openRouter = new OpenRouterCore({
   httpReferer: "<value>",
   appTitle: "<value>",
   appCategories: "<value>",
-  apiKey: process.env["OPENROUTER_API_KEY"] ?? "",
 });
 
 async function run() {
   const res = await guardrailsListGuardrailKeyAssignments(openRouter, {
+    managementKey: process.env["OPENROUTER_MANAGEMENT_KEY"] ?? "",
+  }, {
     id: "550e8400-e29b-41d4-a716-446655440000",
   });
   if (res.ok) {
@@ -546,6 +563,7 @@ run();
 | Parameter                                                                                                                                                                      | Type                                                                                                                                                                           | Required                                                                                                                                                                       | Description                                                                                                                                                                    |
 | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
 | `request`                                                                                                                                                                      | [operations.ListGuardrailKeyAssignmentsRequest](../../models/operations/listguardrailkeyassignmentsrequest.md)                                                                 | :heavy_check_mark:                                                                                                                                                             | The request object to use for the request.                                                                                                                                     |
+| `security`                                                                                                                                                                     | [operations.ListGuardrailKeyAssignmentsSecurity](../../models/operations/listguardrailkeyassignmentssecurity.md)                                                               | :heavy_check_mark:                                                                                                                                                             | The security requirements to use for the request.                                                                                                                              |
 | `options`                                                                                                                                                                      | RequestOptions                                                                                                                                                                 | :heavy_minus_sign:                                                                                                                                                             | Used to set various options for making HTTP requests.                                                                                                                          |
 | `options.fetchOptions`                                                                                                                                                         | [RequestInit](https://developer.mozilla.org/en-US/docs/Web/API/Request/Request#options)                                                                                        | :heavy_minus_sign:                                                                                                                                                             | Options that are passed to the underlying HTTP request. This can be used to inject extra headers for examples. All `Request` options, except `method` and `body`, are allowed. |
 | `options.retries`                                                                                                                                                              | [RetryConfig](../../lib/utils/retryconfig.md)                                                                                                                                  | :heavy_minus_sign:                                                                                                                                                             | Enables retrying HTTP requests under certain failure conditions.                                                                                                               |
@@ -577,11 +595,12 @@ const openRouter = new OpenRouter({
   httpReferer: "<value>",
   appTitle: "<value>",
   appCategories: "<value>",
-  apiKey: process.env["OPENROUTER_API_KEY"] ?? "",
 });
 
 async function run() {
   const result = await openRouter.guardrails.bulkAssignKeys({
+    managementKey: process.env["OPENROUTER_MANAGEMENT_KEY"] ?? "",
+  }, {
     id: "550e8400-e29b-41d4-a716-446655440000",
     bulkAssignKeysRequest: {
       keyHashes: [
@@ -610,11 +629,12 @@ const openRouter = new OpenRouterCore({
   httpReferer: "<value>",
   appTitle: "<value>",
   appCategories: "<value>",
-  apiKey: process.env["OPENROUTER_API_KEY"] ?? "",
 });
 
 async function run() {
   const res = await guardrailsBulkAssignKeys(openRouter, {
+    managementKey: process.env["OPENROUTER_MANAGEMENT_KEY"] ?? "",
+  }, {
     id: "550e8400-e29b-41d4-a716-446655440000",
     bulkAssignKeysRequest: {
       keyHashes: [
@@ -638,6 +658,7 @@ run();
 | Parameter                                                                                                                                                                      | Type                                                                                                                                                                           | Required                                                                                                                                                                       | Description                                                                                                                                                                    |
 | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
 | `request`                                                                                                                                                                      | [operations.BulkAssignKeysToGuardrailRequest](../../models/operations/bulkassignkeystoguardrailrequest.md)                                                                     | :heavy_check_mark:                                                                                                                                                             | The request object to use for the request.                                                                                                                                     |
+| `security`                                                                                                                                                                     | [operations.BulkAssignKeysToGuardrailSecurity](../../models/operations/bulkassignkeystoguardrailsecurity.md)                                                                   | :heavy_check_mark:                                                                                                                                                             | The security requirements to use for the request.                                                                                                                              |
 | `options`                                                                                                                                                                      | RequestOptions                                                                                                                                                                 | :heavy_minus_sign:                                                                                                                                                             | Used to set various options for making HTTP requests.                                                                                                                          |
 | `options.fetchOptions`                                                                                                                                                         | [RequestInit](https://developer.mozilla.org/en-US/docs/Web/API/Request/Request#options)                                                                                        | :heavy_minus_sign:                                                                                                                                                             | Options that are passed to the underlying HTTP request. This can be used to inject extra headers for examples. All `Request` options, except `method` and `body`, are allowed. |
 | `options.retries`                                                                                                                                                              | [RetryConfig](../../lib/utils/retryconfig.md)                                                                                                                                  | :heavy_minus_sign:                                                                                                                                                             | Enables retrying HTTP requests under certain failure conditions.                                                                                                               |
@@ -670,11 +691,12 @@ const openRouter = new OpenRouter({
   httpReferer: "<value>",
   appTitle: "<value>",
   appCategories: "<value>",
-  apiKey: process.env["OPENROUTER_API_KEY"] ?? "",
 });
 
 async function run() {
   const result = await openRouter.guardrails.bulkUnassignKeys({
+    managementKey: process.env["OPENROUTER_MANAGEMENT_KEY"] ?? "",
+  }, {
     id: "550e8400-e29b-41d4-a716-446655440000",
     bulkUnassignKeysRequest: {
       keyHashes: [
@@ -703,11 +725,12 @@ const openRouter = new OpenRouterCore({
   httpReferer: "<value>",
   appTitle: "<value>",
   appCategories: "<value>",
-  apiKey: process.env["OPENROUTER_API_KEY"] ?? "",
 });
 
 async function run() {
   const res = await guardrailsBulkUnassignKeys(openRouter, {
+    managementKey: process.env["OPENROUTER_MANAGEMENT_KEY"] ?? "",
+  }, {
     id: "550e8400-e29b-41d4-a716-446655440000",
     bulkUnassignKeysRequest: {
       keyHashes: [
@@ -731,6 +754,7 @@ run();
 | Parameter                                                                                                                                                                      | Type                                                                                                                                                                           | Required                                                                                                                                                                       | Description                                                                                                                                                                    |
 | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
 | `request`                                                                                                                                                                      | [operations.BulkUnassignKeysFromGuardrailRequest](../../models/operations/bulkunassignkeysfromguardrailrequest.md)                                                             | :heavy_check_mark:                                                                                                                                                             | The request object to use for the request.                                                                                                                                     |
+| `security`                                                                                                                                                                     | [operations.BulkUnassignKeysFromGuardrailSecurity](../../models/operations/bulkunassignkeysfromguardrailsecurity.md)                                                           | :heavy_check_mark:                                                                                                                                                             | The security requirements to use for the request.                                                                                                                              |
 | `options`                                                                                                                                                                      | RequestOptions                                                                                                                                                                 | :heavy_minus_sign:                                                                                                                                                             | Used to set various options for making HTTP requests.                                                                                                                          |
 | `options.fetchOptions`                                                                                                                                                         | [RequestInit](https://developer.mozilla.org/en-US/docs/Web/API/Request/Request#options)                                                                                        | :heavy_minus_sign:                                                                                                                                                             | Options that are passed to the underlying HTTP request. This can be used to inject extra headers for examples. All `Request` options, except `method` and `body`, are allowed. |
 | `options.retries`                                                                                                                                                              | [RetryConfig](../../lib/utils/retryconfig.md)                                                                                                                                  | :heavy_minus_sign:                                                                                                                                                             | Enables retrying HTTP requests under certain failure conditions.                                                                                                               |
@@ -763,11 +787,12 @@ const openRouter = new OpenRouter({
   httpReferer: "<value>",
   appTitle: "<value>",
   appCategories: "<value>",
-  apiKey: process.env["OPENROUTER_API_KEY"] ?? "",
 });
 
 async function run() {
   const result = await openRouter.guardrails.listGuardrailMemberAssignments({
+    managementKey: process.env["OPENROUTER_MANAGEMENT_KEY"] ?? "",
+  }, {
     id: "550e8400-e29b-41d4-a716-446655440000",
   });
 
@@ -793,11 +818,12 @@ const openRouter = new OpenRouterCore({
   httpReferer: "<value>",
   appTitle: "<value>",
   appCategories: "<value>",
-  apiKey: process.env["OPENROUTER_API_KEY"] ?? "",
 });
 
 async function run() {
   const res = await guardrailsListGuardrailMemberAssignments(openRouter, {
+    managementKey: process.env["OPENROUTER_MANAGEMENT_KEY"] ?? "",
+  }, {
     id: "550e8400-e29b-41d4-a716-446655440000",
   });
   if (res.ok) {
@@ -818,6 +844,7 @@ run();
 | Parameter                                                                                                                                                                      | Type                                                                                                                                                                           | Required                                                                                                                                                                       | Description                                                                                                                                                                    |
 | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
 | `request`                                                                                                                                                                      | [operations.ListGuardrailMemberAssignmentsRequest](../../models/operations/listguardrailmemberassignmentsrequest.md)                                                           | :heavy_check_mark:                                                                                                                                                             | The request object to use for the request.                                                                                                                                     |
+| `security`                                                                                                                                                                     | [operations.ListGuardrailMemberAssignmentsSecurity](../../models/operations/listguardrailmemberassignmentssecurity.md)                                                         | :heavy_check_mark:                                                                                                                                                             | The security requirements to use for the request.                                                                                                                              |
 | `options`                                                                                                                                                                      | RequestOptions                                                                                                                                                                 | :heavy_minus_sign:                                                                                                                                                             | Used to set various options for making HTTP requests.                                                                                                                          |
 | `options.fetchOptions`                                                                                                                                                         | [RequestInit](https://developer.mozilla.org/en-US/docs/Web/API/Request/Request#options)                                                                                        | :heavy_minus_sign:                                                                                                                                                             | Options that are passed to the underlying HTTP request. This can be used to inject extra headers for examples. All `Request` options, except `method` and `body`, are allowed. |
 | `options.retries`                                                                                                                                                              | [RetryConfig](../../lib/utils/retryconfig.md)                                                                                                                                  | :heavy_minus_sign:                                                                                                                                                             | Enables retrying HTTP requests under certain failure conditions.                                                                                                               |
@@ -849,11 +876,12 @@ const openRouter = new OpenRouter({
   httpReferer: "<value>",
   appTitle: "<value>",
   appCategories: "<value>",
-  apiKey: process.env["OPENROUTER_API_KEY"] ?? "",
 });
 
 async function run() {
   const result = await openRouter.guardrails.bulkAssignMembers({
+    managementKey: process.env["OPENROUTER_MANAGEMENT_KEY"] ?? "",
+  }, {
     id: "550e8400-e29b-41d4-a716-446655440000",
     bulkAssignMembersRequest: {
       memberUserIds: [
@@ -883,11 +911,12 @@ const openRouter = new OpenRouterCore({
   httpReferer: "<value>",
   appTitle: "<value>",
   appCategories: "<value>",
-  apiKey: process.env["OPENROUTER_API_KEY"] ?? "",
 });
 
 async function run() {
   const res = await guardrailsBulkAssignMembers(openRouter, {
+    managementKey: process.env["OPENROUTER_MANAGEMENT_KEY"] ?? "",
+  }, {
     id: "550e8400-e29b-41d4-a716-446655440000",
     bulkAssignMembersRequest: {
       memberUserIds: [
@@ -912,6 +941,7 @@ run();
 | Parameter                                                                                                                                                                      | Type                                                                                                                                                                           | Required                                                                                                                                                                       | Description                                                                                                                                                                    |
 | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
 | `request`                                                                                                                                                                      | [operations.BulkAssignMembersToGuardrailRequest](../../models/operations/bulkassignmemberstoguardrailrequest.md)                                                               | :heavy_check_mark:                                                                                                                                                             | The request object to use for the request.                                                                                                                                     |
+| `security`                                                                                                                                                                     | [operations.BulkAssignMembersToGuardrailSecurity](../../models/operations/bulkassignmemberstoguardrailsecurity.md)                                                             | :heavy_check_mark:                                                                                                                                                             | The security requirements to use for the request.                                                                                                                              |
 | `options`                                                                                                                                                                      | RequestOptions                                                                                                                                                                 | :heavy_minus_sign:                                                                                                                                                             | Used to set various options for making HTTP requests.                                                                                                                          |
 | `options.fetchOptions`                                                                                                                                                         | [RequestInit](https://developer.mozilla.org/en-US/docs/Web/API/Request/Request#options)                                                                                        | :heavy_minus_sign:                                                                                                                                                             | Options that are passed to the underlying HTTP request. This can be used to inject extra headers for examples. All `Request` options, except `method` and `body`, are allowed. |
 | `options.retries`                                                                                                                                                              | [RetryConfig](../../lib/utils/retryconfig.md)                                                                                                                                  | :heavy_minus_sign:                                                                                                                                                             | Enables retrying HTTP requests under certain failure conditions.                                                                                                               |
@@ -944,11 +974,12 @@ const openRouter = new OpenRouter({
   httpReferer: "<value>",
   appTitle: "<value>",
   appCategories: "<value>",
-  apiKey: process.env["OPENROUTER_API_KEY"] ?? "",
 });
 
 async function run() {
   const result = await openRouter.guardrails.bulkUnassignMembers({
+    managementKey: process.env["OPENROUTER_MANAGEMENT_KEY"] ?? "",
+  }, {
     id: "550e8400-e29b-41d4-a716-446655440000",
     bulkUnassignMembersRequest: {
       memberUserIds: [
@@ -978,11 +1009,12 @@ const openRouter = new OpenRouterCore({
   httpReferer: "<value>",
   appTitle: "<value>",
   appCategories: "<value>",
-  apiKey: process.env["OPENROUTER_API_KEY"] ?? "",
 });
 
 async function run() {
   const res = await guardrailsBulkUnassignMembers(openRouter, {
+    managementKey: process.env["OPENROUTER_MANAGEMENT_KEY"] ?? "",
+  }, {
     id: "550e8400-e29b-41d4-a716-446655440000",
     bulkUnassignMembersRequest: {
       memberUserIds: [
@@ -1007,6 +1039,7 @@ run();
 | Parameter                                                                                                                                                                      | Type                                                                                                                                                                           | Required                                                                                                                                                                       | Description                                                                                                                                                                    |
 | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
 | `request`                                                                                                                                                                      | [operations.BulkUnassignMembersFromGuardrailRequest](../../models/operations/bulkunassignmembersfromguardrailrequest.md)                                                       | :heavy_check_mark:                                                                                                                                                             | The request object to use for the request.                                                                                                                                     |
+| `security`                                                                                                                                                                     | [operations.BulkUnassignMembersFromGuardrailSecurity](../../models/operations/bulkunassignmembersfromguardrailsecurity.md)                                                     | :heavy_check_mark:                                                                                                                                                             | The security requirements to use for the request.                                                                                                                              |
 | `options`                                                                                                                                                                      | RequestOptions                                                                                                                                                                 | :heavy_minus_sign:                                                                                                                                                             | Used to set various options for making HTTP requests.                                                                                                                          |
 | `options.fetchOptions`                                                                                                                                                         | [RequestInit](https://developer.mozilla.org/en-US/docs/Web/API/Request/Request#options)                                                                                        | :heavy_minus_sign:                                                                                                                                                             | Options that are passed to the underlying HTTP request. This can be used to inject extra headers for examples. All `Request` options, except `method` and `body`, are allowed. |
 | `options.retries`                                                                                                                                                              | [RetryConfig](../../lib/utils/retryconfig.md)                                                                                                                                  | :heavy_minus_sign:                                                                                                                                                             | Enables retrying HTTP requests under certain failure conditions.                                                                                                               |
@@ -1039,11 +1072,12 @@ const openRouter = new OpenRouter({
   httpReferer: "<value>",
   appTitle: "<value>",
   appCategories: "<value>",
-  apiKey: process.env["OPENROUTER_API_KEY"] ?? "",
 });
 
 async function run() {
-  const result = await openRouter.guardrails.listKeyAssignments();
+  const result = await openRouter.guardrails.listKeyAssignments({
+    managementKey: process.env["OPENROUTER_MANAGEMENT_KEY"] ?? "",
+  });
 
   for await (const page of result) {
     console.log(page);
@@ -1067,11 +1101,12 @@ const openRouter = new OpenRouterCore({
   httpReferer: "<value>",
   appTitle: "<value>",
   appCategories: "<value>",
-  apiKey: process.env["OPENROUTER_API_KEY"] ?? "",
 });
 
 async function run() {
-  const res = await guardrailsListKeyAssignments(openRouter);
+  const res = await guardrailsListKeyAssignments(openRouter, {
+    managementKey: process.env["OPENROUTER_MANAGEMENT_KEY"] ?? "",
+  });
   if (res.ok) {
     const { value: result } = res;
     for await (const page of result) {
@@ -1090,6 +1125,7 @@ run();
 | Parameter                                                                                                                                                                      | Type                                                                                                                                                                           | Required                                                                                                                                                                       | Description                                                                                                                                                                    |
 | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
 | `request`                                                                                                                                                                      | [operations.ListKeyAssignmentsRequest](../../models/operations/listkeyassignmentsrequest.md)                                                                                   | :heavy_check_mark:                                                                                                                                                             | The request object to use for the request.                                                                                                                                     |
+| `security`                                                                                                                                                                     | [operations.ListKeyAssignmentsSecurity](../../models/operations/listkeyassignmentssecurity.md)                                                                                 | :heavy_check_mark:                                                                                                                                                             | The security requirements to use for the request.                                                                                                                              |
 | `options`                                                                                                                                                                      | RequestOptions                                                                                                                                                                 | :heavy_minus_sign:                                                                                                                                                             | Used to set various options for making HTTP requests.                                                                                                                          |
 | `options.fetchOptions`                                                                                                                                                         | [RequestInit](https://developer.mozilla.org/en-US/docs/Web/API/Request/Request#options)                                                                                        | :heavy_minus_sign:                                                                                                                                                             | Options that are passed to the underlying HTTP request. This can be used to inject extra headers for examples. All `Request` options, except `method` and `body`, are allowed. |
 | `options.retries`                                                                                                                                                              | [RetryConfig](../../lib/utils/retryconfig.md)                                                                                                                                  | :heavy_minus_sign:                                                                                                                                                             | Enables retrying HTTP requests under certain failure conditions.                                                                                                               |
@@ -1120,11 +1156,12 @@ const openRouter = new OpenRouter({
   httpReferer: "<value>",
   appTitle: "<value>",
   appCategories: "<value>",
-  apiKey: process.env["OPENROUTER_API_KEY"] ?? "",
 });
 
 async function run() {
-  const result = await openRouter.guardrails.listMemberAssignments();
+  const result = await openRouter.guardrails.listMemberAssignments({
+    managementKey: process.env["OPENROUTER_MANAGEMENT_KEY"] ?? "",
+  });
 
   for await (const page of result) {
     console.log(page);
@@ -1148,11 +1185,12 @@ const openRouter = new OpenRouterCore({
   httpReferer: "<value>",
   appTitle: "<value>",
   appCategories: "<value>",
-  apiKey: process.env["OPENROUTER_API_KEY"] ?? "",
 });
 
 async function run() {
-  const res = await guardrailsListMemberAssignments(openRouter);
+  const res = await guardrailsListMemberAssignments(openRouter, {
+    managementKey: process.env["OPENROUTER_MANAGEMENT_KEY"] ?? "",
+  });
   if (res.ok) {
     const { value: result } = res;
     for await (const page of result) {
@@ -1171,6 +1209,7 @@ run();
 | Parameter                                                                                                                                                                      | Type                                                                                                                                                                           | Required                                                                                                                                                                       | Description                                                                                                                                                                    |
 | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
 | `request`                                                                                                                                                                      | [operations.ListMemberAssignmentsRequest](../../models/operations/listmemberassignmentsrequest.md)                                                                             | :heavy_check_mark:                                                                                                                                                             | The request object to use for the request.                                                                                                                                     |
+| `security`                                                                                                                                                                     | [operations.ListMemberAssignmentsSecurity](../../models/operations/listmemberassignmentssecurity.md)                                                                           | :heavy_check_mark:                                                                                                                                                             | The security requirements to use for the request.                                                                                                                              |
 | `options`                                                                                                                                                                      | RequestOptions                                                                                                                                                                 | :heavy_minus_sign:                                                                                                                                                             | Used to set various options for making HTTP requests.                                                                                                                          |
 | `options.fetchOptions`                                                                                                                                                         | [RequestInit](https://developer.mozilla.org/en-US/docs/Web/API/Request/Request#options)                                                                                        | :heavy_minus_sign:                                                                                                                                                             | Options that are passed to the underlying HTTP request. This can be used to inject extra headers for examples. All `Request` options, except `method` and `body`, are allowed. |
 | `options.retries`                                                                                                                                                              | [RetryConfig](../../lib/utils/retryconfig.md)                                                                                                                                  | :heavy_minus_sign:                                                                                                                                                             | Enables retrying HTTP requests under certain failure conditions.                                                                                                               |

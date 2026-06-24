@@ -38,11 +38,13 @@ export class APIKeys extends ClientSDK {
    * List all API keys for the authenticated user. [Management key](/docs/guides/overview/auth/management-api-keys) required.
    */
   async list(
+    security: operations.ListSecurity,
     request?: operations.ListRequest | undefined,
     options?: RequestOptions,
   ): Promise<operations.ListResponse> {
     return unwrapAsync(apiKeysList(
       this,
+      security,
       request,
       options,
     ));
@@ -55,11 +57,13 @@ export class APIKeys extends ClientSDK {
    * Create a new API key for the authenticated user. [Management key](/docs/guides/overview/auth/management-api-keys) required.
    */
   async create(
+    security: operations.CreateKeysSecurity,
     request: operations.CreateKeysRequest,
     options?: RequestOptions,
   ): Promise<operations.CreateKeysResponse> {
     return unwrapAsync(apiKeysCreate(
       this,
+      security,
       request,
       options,
     ));
@@ -72,11 +76,13 @@ export class APIKeys extends ClientSDK {
    * Delete an existing API key. [Management key](/docs/guides/overview/auth/management-api-keys) required.
    */
   async delete(
+    security: operations.DeleteKeysSecurity,
     request: operations.DeleteKeysRequest,
     options?: RequestOptions,
   ): Promise<operations.DeleteKeysResponse> {
     return unwrapAsync(apiKeysDelete(
       this,
+      security,
       request,
       options,
     ));
@@ -89,11 +95,13 @@ export class APIKeys extends ClientSDK {
    * Get a single API key by hash. [Management key](/docs/guides/overview/auth/management-api-keys) required.
    */
   async get(
+    security: operations.GetKeySecurity,
     request: operations.GetKeyRequest,
     options?: RequestOptions,
   ): Promise<operations.GetKeyResponse> {
     return unwrapAsync(apiKeysGet(
       this,
+      security,
       request,
       options,
     ));
@@ -106,11 +114,13 @@ export class APIKeys extends ClientSDK {
    * Update an existing API key. [Management key](/docs/guides/overview/auth/management-api-keys) required.
    */
   async update(
+    security: operations.UpdateKeysSecurity,
     request: operations.UpdateKeysRequest,
     options?: RequestOptions,
   ): Promise<operations.UpdateKeysResponse> {
     return unwrapAsync(apiKeysUpdate(
       this,
+      security,
       request,
       options,
     ));

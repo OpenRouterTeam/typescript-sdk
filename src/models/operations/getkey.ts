@@ -31,6 +31,10 @@ export type GetKeyGlobals = {
   appCategories?: string | undefined;
 };
 
+export type GetKeySecurity = {
+  managementKey: string;
+};
+
 export type GetKeyRequest = {
   /**
    * The app identifier should be your app's URL and is used as the primary identifier for rankings.
@@ -156,6 +160,23 @@ export type GetKeyResponse = {
    */
   data: GetKeyData;
 };
+
+/** @internal */
+export type GetKeySecurity$Outbound = {
+  managementKey: string;
+};
+
+/** @internal */
+export const GetKeySecurity$outboundSchema: z.ZodType<
+  GetKeySecurity$Outbound,
+  GetKeySecurity
+> = z.object({
+  managementKey: z.string(),
+});
+
+export function getKeySecurityToJSON(getKeySecurity: GetKeySecurity): string {
+  return JSON.stringify(GetKeySecurity$outboundSchema.parse(getKeySecurity));
+}
 
 /** @internal */
 export type GetKeyRequest$Outbound = {

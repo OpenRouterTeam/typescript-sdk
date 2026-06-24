@@ -34,6 +34,10 @@ export type ListBYOKKeysGlobals = {
   appCategories?: string | undefined;
 };
 
+export type ListBYOKKeysSecurity = {
+  managementKey: string;
+};
+
 /**
  * Optional provider slug to filter by (e.g. `openai`, `anthropic`, `amazon-bedrock`).
  */
@@ -106,6 +110,7 @@ export const Provider = {
   Recraft: "recraft",
   Reka: "reka",
   Relace: "relace",
+  SakanaAi: "sakana-ai",
   Sambanova: "sambanova",
   Seed: "seed",
   Siliconflow: "siliconflow",
@@ -113,6 +118,7 @@ export const Provider = {
   Stepfun: "stepfun",
   Streamlake: "streamlake",
   Switchpoint: "switchpoint",
+  Tenstorrent: "tenstorrent",
   Together: "together",
   Upstage: "upstage",
   Venice: "venice",
@@ -168,6 +174,27 @@ export type ListBYOKKeysRequest = {
 export type ListBYOKKeysResponse = {
   result: models.ListBYOKKeysResponse;
 };
+
+/** @internal */
+export type ListBYOKKeysSecurity$Outbound = {
+  managementKey: string;
+};
+
+/** @internal */
+export const ListBYOKKeysSecurity$outboundSchema: z.ZodType<
+  ListBYOKKeysSecurity$Outbound,
+  ListBYOKKeysSecurity
+> = z.object({
+  managementKey: z.string(),
+});
+
+export function listBYOKKeysSecurityToJSON(
+  listBYOKKeysSecurity: ListBYOKKeysSecurity,
+): string {
+  return JSON.stringify(
+    ListBYOKKeysSecurity$outboundSchema.parse(listBYOKKeysSecurity),
+  );
+}
 
 /** @internal */
 export const Provider$outboundSchema: z.ZodType<string, Provider> = openEnums

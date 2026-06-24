@@ -29,6 +29,10 @@ export type BulkUnassignMembersFromGuardrailGlobals = {
   appCategories?: string | undefined;
 };
 
+export type BulkUnassignMembersFromGuardrailSecurity = {
+  managementKey: string;
+};
+
 export type BulkUnassignMembersFromGuardrailRequest = {
   /**
    * The app identifier should be your app's URL and is used as the primary identifier for rankings.
@@ -55,6 +59,30 @@ export type BulkUnassignMembersFromGuardrailRequest = {
   id: string;
   bulkUnassignMembersRequest: models.BulkUnassignMembersRequest;
 };
+
+/** @internal */
+export type BulkUnassignMembersFromGuardrailSecurity$Outbound = {
+  managementKey: string;
+};
+
+/** @internal */
+export const BulkUnassignMembersFromGuardrailSecurity$outboundSchema: z.ZodType<
+  BulkUnassignMembersFromGuardrailSecurity$Outbound,
+  BulkUnassignMembersFromGuardrailSecurity
+> = z.object({
+  managementKey: z.string(),
+});
+
+export function bulkUnassignMembersFromGuardrailSecurityToJSON(
+  bulkUnassignMembersFromGuardrailSecurity:
+    BulkUnassignMembersFromGuardrailSecurity,
+): string {
+  return JSON.stringify(
+    BulkUnassignMembersFromGuardrailSecurity$outboundSchema.parse(
+      bulkUnassignMembersFromGuardrailSecurity,
+    ),
+  );
+}
 
 /** @internal */
 export type BulkUnassignMembersFromGuardrailRequest$Outbound = {

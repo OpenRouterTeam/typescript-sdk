@@ -28,6 +28,10 @@ export type GetUserActivityGlobals = {
   appCategories?: string | undefined;
 };
 
+export type GetUserActivitySecurity = {
+  managementKey: string;
+};
+
 export type GetUserActivityRequest = {
   /**
    * The app identifier should be your app's URL and is used as the primary identifier for rankings.
@@ -61,6 +65,27 @@ export type GetUserActivityRequest = {
    */
   userId?: string | undefined;
 };
+
+/** @internal */
+export type GetUserActivitySecurity$Outbound = {
+  managementKey: string;
+};
+
+/** @internal */
+export const GetUserActivitySecurity$outboundSchema: z.ZodType<
+  GetUserActivitySecurity$Outbound,
+  GetUserActivitySecurity
+> = z.object({
+  managementKey: z.string(),
+});
+
+export function getUserActivitySecurityToJSON(
+  getUserActivitySecurity: GetUserActivitySecurity,
+): string {
+  return JSON.stringify(
+    GetUserActivitySecurity$outboundSchema.parse(getUserActivitySecurity),
+  );
+}
 
 /** @internal */
 export type GetUserActivityRequest$Outbound = {

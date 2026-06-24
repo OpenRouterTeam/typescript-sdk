@@ -10,7 +10,7 @@ import * as M from "../lib/matchers.js";
 import { compactMap } from "../lib/primitives.js";
 import { safeParse } from "../lib/schemas.js";
 import { RequestOptions } from "../lib/sdks.js";
-import { extractSecurity, resolveGlobalSecurity } from "../lib/security.js";
+import { resolveSecurity } from "../lib/security.js";
 import { pathToFunc } from "../lib/url.js";
 import {
   ConnectionError,
@@ -36,6 +36,7 @@ import { Result } from "../types/fp.js";
  */
 export function observabilityCreate(
   client: OpenRouterCore,
+  security: operations.CreateObservabilityDestinationSecurity,
   request: operations.CreateObservabilityDestinationRequest,
   options?: RequestOptions,
 ): APIPromise<
@@ -58,6 +59,7 @@ export function observabilityCreate(
 > {
   return new APIPromise($do(
     client,
+    security,
     request,
     options,
   ));
@@ -65,6 +67,7 @@ export function observabilityCreate(
 
 async function $do(
   client: OpenRouterCore,
+  security: operations.CreateObservabilityDestinationSecurity,
   request: operations.CreateObservabilityDestinationRequest,
   options?: RequestOptions,
 ): Promise<
@@ -128,9 +131,15 @@ async function $do(
     ),
   }));
 
-  const secConfig = await extractSecurity(client._options.apiKey);
-  const securityInput = secConfig == null ? {} : { apiKey: secConfig };
-  const requestSecurity = resolveGlobalSecurity(securityInput);
+  const requestSecurity = resolveSecurity(
+    [
+      {
+        fieldName: "Authorization",
+        type: "http:bearer",
+        value: security?.managementKey,
+      },
+    ],
+  );
 
   const context = {
     options: client._options,
@@ -140,7 +149,7 @@ async function $do(
 
     resolvedSecurity: requestSecurity,
 
-    securitySource: client._options.apiKey,
+    securitySource: security,
     retryConfig: options?.retries
       || client._options.retryConfig
       || {
