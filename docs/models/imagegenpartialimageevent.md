@@ -1,0 +1,23 @@
+# ImageGenPartialImageEvent
+
+Emitted when a partial image becomes available during streaming generation
+
+## Example Usage
+
+```typescript
+import { ImageGenPartialImageEvent } from "@openrouter/sdk/models";
+
+let value: ImageGenPartialImageEvent = {
+  b64Json: "<base64-encoded-partial-image>",
+  partialImageIndex: 0,
+  type: "image_generation.partial_image",
+};
+```
+
+## Fields
+
+| Field                                                                | Type                                                                 | Required                                                             | Description                                                          |
+| -------------------------------------------------------------------- | -------------------------------------------------------------------- | -------------------------------------------------------------------- | -------------------------------------------------------------------- |
+| `b64Json`                                                            | *string*                                                             | :heavy_check_mark:                                                   | Base64-encoded partial image data                                    |
+| `partialImageIndex`                                                  | *number*                                                             | :heavy_check_mark:                                                   | 0-based index indicating which partial image this is in the sequence |
+| `type`                                                               | *"image_generation.partial_image"*                                   | :heavy_check_mark:                                                   | The event type                                                       |
