@@ -33,6 +33,10 @@ export type ListOrganizationMembersGlobals = {
   appCategories?: string | undefined;
 };
 
+export type ListOrganizationMembersSecurity = {
+  managementKey: string;
+};
+
 export type ListOrganizationMembersRequest = {
   /**
    * The app identifier should be your app's URL and is used as the primary identifier for rankings.
@@ -115,6 +119,29 @@ export type ListOrganizationMembersResponseBody = {
 export type ListOrganizationMembersResponse = {
   result: ListOrganizationMembersResponseBody;
 };
+
+/** @internal */
+export type ListOrganizationMembersSecurity$Outbound = {
+  managementKey: string;
+};
+
+/** @internal */
+export const ListOrganizationMembersSecurity$outboundSchema: z.ZodType<
+  ListOrganizationMembersSecurity$Outbound,
+  ListOrganizationMembersSecurity
+> = z.object({
+  managementKey: z.string(),
+});
+
+export function listOrganizationMembersSecurityToJSON(
+  listOrganizationMembersSecurity: ListOrganizationMembersSecurity,
+): string {
+  return JSON.stringify(
+    ListOrganizationMembersSecurity$outboundSchema.parse(
+      listOrganizationMembersSecurity,
+    ),
+  );
+}
 
 /** @internal */
 export type ListOrganizationMembersRequest$Outbound = {

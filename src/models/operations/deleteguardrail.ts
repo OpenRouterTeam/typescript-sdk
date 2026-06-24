@@ -28,6 +28,10 @@ export type DeleteGuardrailGlobals = {
   appCategories?: string | undefined;
 };
 
+export type DeleteGuardrailSecurity = {
+  managementKey: string;
+};
+
 export type DeleteGuardrailRequest = {
   /**
    * The app identifier should be your app's URL and is used as the primary identifier for rankings.
@@ -53,6 +57,27 @@ export type DeleteGuardrailRequest = {
    */
   id: string;
 };
+
+/** @internal */
+export type DeleteGuardrailSecurity$Outbound = {
+  managementKey: string;
+};
+
+/** @internal */
+export const DeleteGuardrailSecurity$outboundSchema: z.ZodType<
+  DeleteGuardrailSecurity$Outbound,
+  DeleteGuardrailSecurity
+> = z.object({
+  managementKey: z.string(),
+});
+
+export function deleteGuardrailSecurityToJSON(
+  deleteGuardrailSecurity: DeleteGuardrailSecurity,
+): string {
+  return JSON.stringify(
+    DeleteGuardrailSecurity$outboundSchema.parse(deleteGuardrailSecurity),
+  );
+}
 
 /** @internal */
 export type DeleteGuardrailRequest$Outbound = {

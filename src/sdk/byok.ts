@@ -22,6 +22,7 @@ export class Byok extends ClientSDK {
    * List the bring-your-own-key (BYOK) provider credentials for the authenticated entity's default workspace. Use the `workspace_id` query parameter to scope the result to a different workspace, or the `provider` query parameter to filter by upstream provider. [Management key](/docs/guides/overview/auth/management-api-keys) required.
    */
   async list(
+    security: operations.ListBYOKKeysSecurity,
     request?: operations.ListBYOKKeysRequest | undefined,
     options?: RequestOptions,
   ): Promise<
@@ -29,6 +30,7 @@ export class Byok extends ClientSDK {
   > {
     return unwrapResultIterator(byokList(
       this,
+      security,
       request,
       options,
     ));
@@ -41,11 +43,13 @@ export class Byok extends ClientSDK {
    * Create a new bring-your-own-key (BYOK) provider credential. The raw key is encrypted at rest and never returned in API responses. Defaults to the authenticated entity's default workspace; use the `workspace_id` body field to scope to a different workspace. [Management key](/docs/guides/overview/auth/management-api-keys) required.
    */
   async create(
+    security: operations.CreateBYOKKeySecurity,
     request: operations.CreateBYOKKeyRequest,
     options?: RequestOptions,
   ): Promise<models.CreateBYOKKeyResponse> {
     return unwrapAsync(byokCreate(
       this,
+      security,
       request,
       options,
     ));
@@ -58,11 +62,13 @@ export class Byok extends ClientSDK {
    * Delete (soft-delete) a bring-your-own-key (BYOK) provider credential by its `id`. The encrypted key material is wiped and the record is marked as deleted. [Management key](/docs/guides/overview/auth/management-api-keys) required.
    */
   async delete(
+    security: operations.DeleteBYOKKeySecurity,
     request: operations.DeleteBYOKKeyRequest,
     options?: RequestOptions,
   ): Promise<models.DeleteBYOKKeyResponse> {
     return unwrapAsync(byokDelete(
       this,
+      security,
       request,
       options,
     ));
@@ -75,11 +81,13 @@ export class Byok extends ClientSDK {
    * Get a single bring-your-own-key (BYOK) provider credential by its `id`. [Management key](/docs/guides/overview/auth/management-api-keys) required.
    */
   async get(
+    security: operations.GetBYOKKeySecurity,
     request: operations.GetBYOKKeyRequest,
     options?: RequestOptions,
   ): Promise<models.GetBYOKKeyResponse> {
     return unwrapAsync(byokGet(
       this,
+      security,
       request,
       options,
     ));
@@ -92,11 +100,13 @@ export class Byok extends ClientSDK {
    * Update an existing bring-your-own-key (BYOK) provider credential by its `id`. Include the `key` field to rotate the raw provider API key in-place (the previous key material is overwritten). [Management key](/docs/guides/overview/auth/management-api-keys) required.
    */
   async update(
+    security: operations.UpdateBYOKKeySecurity,
     request: operations.UpdateBYOKKeyRequest,
     options?: RequestOptions,
   ): Promise<models.UpdateBYOKKeyResponse> {
     return unwrapAsync(byokUpdate(
       this,
+      security,
       request,
       options,
     ));

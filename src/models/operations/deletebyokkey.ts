@@ -28,6 +28,10 @@ export type DeleteBYOKKeyGlobals = {
   appCategories?: string | undefined;
 };
 
+export type DeleteBYOKKeySecurity = {
+  managementKey: string;
+};
+
 export type DeleteBYOKKeyRequest = {
   /**
    * The app identifier should be your app's URL and is used as the primary identifier for rankings.
@@ -53,6 +57,27 @@ export type DeleteBYOKKeyRequest = {
    */
   id: string;
 };
+
+/** @internal */
+export type DeleteBYOKKeySecurity$Outbound = {
+  managementKey: string;
+};
+
+/** @internal */
+export const DeleteBYOKKeySecurity$outboundSchema: z.ZodType<
+  DeleteBYOKKeySecurity$Outbound,
+  DeleteBYOKKeySecurity
+> = z.object({
+  managementKey: z.string(),
+});
+
+export function deleteBYOKKeySecurityToJSON(
+  deleteBYOKKeySecurity: DeleteBYOKKeySecurity,
+): string {
+  return JSON.stringify(
+    DeleteBYOKKeySecurity$outboundSchema.parse(deleteBYOKKeySecurity),
+  );
+}
 
 /** @internal */
 export type DeleteBYOKKeyRequest$Outbound = {

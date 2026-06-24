@@ -32,6 +32,10 @@ export type ListKeyAssignmentsGlobals = {
   appCategories?: string | undefined;
 };
 
+export type ListKeyAssignmentsSecurity = {
+  managementKey: string;
+};
+
 export type ListKeyAssignmentsRequest = {
   /**
    * The app identifier should be your app's URL and is used as the primary identifier for rankings.
@@ -65,6 +69,27 @@ export type ListKeyAssignmentsRequest = {
 export type ListKeyAssignmentsResponse = {
   result: models.ListKeyAssignmentsResponse;
 };
+
+/** @internal */
+export type ListKeyAssignmentsSecurity$Outbound = {
+  managementKey: string;
+};
+
+/** @internal */
+export const ListKeyAssignmentsSecurity$outboundSchema: z.ZodType<
+  ListKeyAssignmentsSecurity$Outbound,
+  ListKeyAssignmentsSecurity
+> = z.object({
+  managementKey: z.string(),
+});
+
+export function listKeyAssignmentsSecurityToJSON(
+  listKeyAssignmentsSecurity: ListKeyAssignmentsSecurity,
+): string {
+  return JSON.stringify(
+    ListKeyAssignmentsSecurity$outboundSchema.parse(listKeyAssignmentsSecurity),
+  );
+}
 
 /** @internal */
 export type ListKeyAssignmentsRequest$Outbound = {

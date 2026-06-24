@@ -32,6 +32,10 @@ export type ListWorkspacesGlobals = {
   appCategories?: string | undefined;
 };
 
+export type ListWorkspacesSecurity = {
+  managementKey: string;
+};
+
 export type ListWorkspacesRequest = {
   /**
    * The app identifier should be your app's URL and is used as the primary identifier for rankings.
@@ -65,6 +69,27 @@ export type ListWorkspacesRequest = {
 export type ListWorkspacesResponse = {
   result: models.ListWorkspacesResponse;
 };
+
+/** @internal */
+export type ListWorkspacesSecurity$Outbound = {
+  managementKey: string;
+};
+
+/** @internal */
+export const ListWorkspacesSecurity$outboundSchema: z.ZodType<
+  ListWorkspacesSecurity$Outbound,
+  ListWorkspacesSecurity
+> = z.object({
+  managementKey: z.string(),
+});
+
+export function listWorkspacesSecurityToJSON(
+  listWorkspacesSecurity: ListWorkspacesSecurity,
+): string {
+  return JSON.stringify(
+    ListWorkspacesSecurity$outboundSchema.parse(listWorkspacesSecurity),
+  );
+}
 
 /** @internal */
 export type ListWorkspacesRequest$Outbound = {

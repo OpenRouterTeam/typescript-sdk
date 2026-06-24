@@ -31,6 +31,10 @@ export type DeleteKeysGlobals = {
   appCategories?: string | undefined;
 };
 
+export type DeleteKeysSecurity = {
+  managementKey: string;
+};
+
 export type DeleteKeysRequest = {
   /**
    * The app identifier should be your app's URL and is used as the primary identifier for rankings.
@@ -66,6 +70,27 @@ export type DeleteKeysResponse = {
    */
   deleted: true;
 };
+
+/** @internal */
+export type DeleteKeysSecurity$Outbound = {
+  managementKey: string;
+};
+
+/** @internal */
+export const DeleteKeysSecurity$outboundSchema: z.ZodType<
+  DeleteKeysSecurity$Outbound,
+  DeleteKeysSecurity
+> = z.object({
+  managementKey: z.string(),
+});
+
+export function deleteKeysSecurityToJSON(
+  deleteKeysSecurity: DeleteKeysSecurity,
+): string {
+  return JSON.stringify(
+    DeleteKeysSecurity$outboundSchema.parse(deleteKeysSecurity),
+  );
+}
 
 /** @internal */
 export type DeleteKeysRequest$Outbound = {

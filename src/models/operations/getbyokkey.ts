@@ -28,6 +28,10 @@ export type GetBYOKKeyGlobals = {
   appCategories?: string | undefined;
 };
 
+export type GetBYOKKeySecurity = {
+  managementKey: string;
+};
+
 export type GetBYOKKeyRequest = {
   /**
    * The app identifier should be your app's URL and is used as the primary identifier for rankings.
@@ -53,6 +57,27 @@ export type GetBYOKKeyRequest = {
    */
   id: string;
 };
+
+/** @internal */
+export type GetBYOKKeySecurity$Outbound = {
+  managementKey: string;
+};
+
+/** @internal */
+export const GetBYOKKeySecurity$outboundSchema: z.ZodType<
+  GetBYOKKeySecurity$Outbound,
+  GetBYOKKeySecurity
+> = z.object({
+  managementKey: z.string(),
+});
+
+export function getBYOKKeySecurityToJSON(
+  getBYOKKeySecurity: GetBYOKKeySecurity,
+): string {
+  return JSON.stringify(
+    GetBYOKKeySecurity$outboundSchema.parse(getBYOKKeySecurity),
+  );
+}
 
 /** @internal */
 export type GetBYOKKeyRequest$Outbound = {

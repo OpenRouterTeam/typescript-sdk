@@ -22,11 +22,12 @@ const openRouter = new OpenRouter({
   httpReferer: "<value>",
   appTitle: "<value>",
   appCategories: "<value>",
-  apiKey: process.env["OPENROUTER_API_KEY"] ?? "",
 });
 
 async function run() {
-  const result = await openRouter.credits.getCredits();
+  const result = await openRouter.credits.getCredits({
+    managementKey: process.env["OPENROUTER_MANAGEMENT_KEY"] ?? "",
+  });
 
   console.log(result);
 }
@@ -48,11 +49,12 @@ const openRouter = new OpenRouterCore({
   httpReferer: "<value>",
   appTitle: "<value>",
   appCategories: "<value>",
-  apiKey: process.env["OPENROUTER_API_KEY"] ?? "",
 });
 
 async function run() {
-  const res = await creditsGetCredits(openRouter);
+  const res = await creditsGetCredits(openRouter, {
+    managementKey: process.env["OPENROUTER_MANAGEMENT_KEY"] ?? "",
+  });
   if (res.ok) {
     const { value: result } = res;
     console.log(result);
@@ -69,6 +71,7 @@ run();
 | Parameter                                                                                                                                                                      | Type                                                                                                                                                                           | Required                                                                                                                                                                       | Description                                                                                                                                                                    |
 | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
 | `request`                                                                                                                                                                      | [operations.GetCreditsRequest](../../models/operations/getcreditsrequest.md)                                                                                                   | :heavy_check_mark:                                                                                                                                                             | The request object to use for the request.                                                                                                                                     |
+| `security`                                                                                                                                                                     | [operations.GetCreditsSecurity](../../models/operations/getcreditssecurity.md)                                                                                                 | :heavy_check_mark:                                                                                                                                                             | The security requirements to use for the request.                                                                                                                              |
 | `options`                                                                                                                                                                      | RequestOptions                                                                                                                                                                 | :heavy_minus_sign:                                                                                                                                                             | Used to set various options for making HTTP requests.                                                                                                                          |
 | `options.fetchOptions`                                                                                                                                                         | [RequestInit](https://developer.mozilla.org/en-US/docs/Web/API/Request/Request#options)                                                                                        | :heavy_minus_sign:                                                                                                                                                             | Options that are passed to the underlying HTTP request. This can be used to inject extra headers for examples. All `Request` options, except `method` and `body`, are allowed. |
 | `options.retries`                                                                                                                                                              | [RetryConfig](../../lib/utils/retryconfig.md)                                                                                                                                  | :heavy_minus_sign:                                                                                                                                                             | Enables retrying HTTP requests under certain failure conditions.                                                                                                               |

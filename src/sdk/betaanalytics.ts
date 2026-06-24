@@ -17,11 +17,13 @@ export class BetaAnalytics extends ClientSDK {
    * Returns the available metrics, dimensions, filter operators, and granularities for the analytics query endpoint. [Management key](/docs/guides/overview/auth/management-api-keys) required.
    */
   async getAnalyticsMeta(
+    security: operations.GetAnalyticsMetaSecurity,
     request?: operations.GetAnalyticsMetaRequest | undefined,
     options?: RequestOptions,
   ): Promise<operations.GetAnalyticsMetaResponse> {
     return unwrapAsync(betaAnalyticsGetAnalyticsMeta(
       this,
+      security,
       request,
       options,
     ));
@@ -34,11 +36,13 @@ export class BetaAnalytics extends ClientSDK {
    * Execute an analytics query with specified metrics, dimensions, filters, and time range. [Management key](/docs/guides/overview/auth/management-api-keys) required.
    */
   async queryAnalytics(
+    security: operations.QueryAnalyticsSecurity,
     request: operations.QueryAnalyticsRequest,
     options?: RequestOptions,
   ): Promise<operations.QueryAnalyticsResponse> {
     return unwrapAsync(betaAnalyticsQueryAnalytics(
       this,
+      security,
       request,
       options,
     ));

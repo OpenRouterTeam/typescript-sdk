@@ -16,11 +16,13 @@ export class Credits extends ClientSDK {
    * Get total credits purchased and used for the authenticated user. [Management key](/docs/guides/overview/auth/management-api-keys) required.
    */
   async getCredits(
+    security: operations.GetCreditsSecurity,
     request?: operations.GetCreditsRequest | undefined,
     options?: RequestOptions,
   ): Promise<operations.GetCreditsResponse> {
     return unwrapAsync(creditsGetCredits(
       this,
+      security,
       request,
       options,
     ));

@@ -6,11 +6,12 @@ const openRouter = new OpenRouter({
   httpReferer: "<value>",
   appTitle: "<value>",
   appCategories: "<value>",
-  apiKey: process.env["OPENROUTER_API_KEY"] ?? "",
 });
 
 async function run() {
-  const result = await openRouter.analytics.getUserActivity();
+  const result = await openRouter.analytics.getUserActivity({
+    managementKey: process.env["OPENROUTER_MANAGEMENT_KEY"] ?? "",
+  });
 
   console.log(result);
 }

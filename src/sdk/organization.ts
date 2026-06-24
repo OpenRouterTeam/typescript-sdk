@@ -16,6 +16,7 @@ export class Organization extends ClientSDK {
    * List all members of the organization associated with the authenticated management key. [Management key](/docs/guides/overview/auth/management-api-keys) required.
    */
   async listMembers(
+    security: operations.ListOrganizationMembersSecurity,
     request?: operations.ListOrganizationMembersRequest | undefined,
     options?: RequestOptions,
   ): Promise<
@@ -23,6 +24,7 @@ export class Organization extends ClientSDK {
   > {
     return unwrapResultIterator(organizationListMembers(
       this,
+      security,
       request,
       options,
     ));

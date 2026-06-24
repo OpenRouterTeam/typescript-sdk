@@ -31,6 +31,10 @@ export type ListGlobals = {
   appCategories?: string | undefined;
 };
 
+export type ListSecurity = {
+  managementKey: string;
+};
+
 export type ListRequest = {
   /**
    * The app identifier should be your app's URL and is used as the primary identifier for rankings.
@@ -161,6 +165,23 @@ export type ListResponse = {
    */
   data: Array<ListData>;
 };
+
+/** @internal */
+export type ListSecurity$Outbound = {
+  managementKey: string;
+};
+
+/** @internal */
+export const ListSecurity$outboundSchema: z.ZodType<
+  ListSecurity$Outbound,
+  ListSecurity
+> = z.object({
+  managementKey: z.string(),
+});
+
+export function listSecurityToJSON(listSecurity: ListSecurity): string {
+  return JSON.stringify(ListSecurity$outboundSchema.parse(listSecurity));
+}
 
 /** @internal */
 export type ListRequest$Outbound = {

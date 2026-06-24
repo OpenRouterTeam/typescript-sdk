@@ -32,6 +32,10 @@ export type ListObservabilityDestinationsGlobals = {
   appCategories?: string | undefined;
 };
 
+export type ListObservabilityDestinationsSecurity = {
+  managementKey: string;
+};
+
 export type ListObservabilityDestinationsRequest = {
   /**
    * The app identifier should be your app's URL and is used as the primary identifier for rankings.
@@ -69,6 +73,29 @@ export type ListObservabilityDestinationsRequest = {
 export type ListObservabilityDestinationsResponse = {
   result: models.ListObservabilityDestinationsResponse;
 };
+
+/** @internal */
+export type ListObservabilityDestinationsSecurity$Outbound = {
+  managementKey: string;
+};
+
+/** @internal */
+export const ListObservabilityDestinationsSecurity$outboundSchema: z.ZodType<
+  ListObservabilityDestinationsSecurity$Outbound,
+  ListObservabilityDestinationsSecurity
+> = z.object({
+  managementKey: z.string(),
+});
+
+export function listObservabilityDestinationsSecurityToJSON(
+  listObservabilityDestinationsSecurity: ListObservabilityDestinationsSecurity,
+): string {
+  return JSON.stringify(
+    ListObservabilityDestinationsSecurity$outboundSchema.parse(
+      listObservabilityDestinationsSecurity,
+    ),
+  );
+}
 
 /** @internal */
 export type ListObservabilityDestinationsRequest$Outbound = {

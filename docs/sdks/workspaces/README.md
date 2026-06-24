@@ -31,11 +31,12 @@ const openRouter = new OpenRouter({
   httpReferer: "<value>",
   appTitle: "<value>",
   appCategories: "<value>",
-  apiKey: process.env["OPENROUTER_API_KEY"] ?? "",
 });
 
 async function run() {
-  const result = await openRouter.workspaces.list();
+  const result = await openRouter.workspaces.list({
+    managementKey: process.env["OPENROUTER_MANAGEMENT_KEY"] ?? "",
+  });
 
   for await (const page of result) {
     console.log(page);
@@ -59,11 +60,12 @@ const openRouter = new OpenRouterCore({
   httpReferer: "<value>",
   appTitle: "<value>",
   appCategories: "<value>",
-  apiKey: process.env["OPENROUTER_API_KEY"] ?? "",
 });
 
 async function run() {
-  const res = await workspacesList(openRouter);
+  const res = await workspacesList(openRouter, {
+    managementKey: process.env["OPENROUTER_MANAGEMENT_KEY"] ?? "",
+  });
   if (res.ok) {
     const { value: result } = res;
     for await (const page of result) {
@@ -82,6 +84,7 @@ run();
 | Parameter                                                                                                                                                                      | Type                                                                                                                                                                           | Required                                                                                                                                                                       | Description                                                                                                                                                                    |
 | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
 | `request`                                                                                                                                                                      | [operations.ListWorkspacesRequest](../../models/operations/listworkspacesrequest.md)                                                                                           | :heavy_check_mark:                                                                                                                                                             | The request object to use for the request.                                                                                                                                     |
+| `security`                                                                                                                                                                     | [operations.ListWorkspacesSecurity](../../models/operations/listworkspacessecurity.md)                                                                                         | :heavy_check_mark:                                                                                                                                                             | The security requirements to use for the request.                                                                                                                              |
 | `options`                                                                                                                                                                      | RequestOptions                                                                                                                                                                 | :heavy_minus_sign:                                                                                                                                                             | Used to set various options for making HTTP requests.                                                                                                                          |
 | `options.fetchOptions`                                                                                                                                                         | [RequestInit](https://developer.mozilla.org/en-US/docs/Web/API/Request/Request#options)                                                                                        | :heavy_minus_sign:                                                                                                                                                             | Options that are passed to the underlying HTTP request. This can be used to inject extra headers for examples. All `Request` options, except `method` and `body`, are allowed. |
 | `options.retries`                                                                                                                                                              | [RetryConfig](../../lib/utils/retryconfig.md)                                                                                                                                  | :heavy_minus_sign:                                                                                                                                                             | Enables retrying HTTP requests under certain failure conditions.                                                                                                               |
@@ -112,11 +115,12 @@ const openRouter = new OpenRouter({
   httpReferer: "<value>",
   appTitle: "<value>",
   appCategories: "<value>",
-  apiKey: process.env["OPENROUTER_API_KEY"] ?? "",
 });
 
 async function run() {
   const result = await openRouter.workspaces.create({
+    managementKey: process.env["OPENROUTER_MANAGEMENT_KEY"] ?? "",
+  }, {
     createWorkspaceRequest: {
       defaultImageModel: "openai/dall-e-3",
       defaultProviderSort: "price",
@@ -147,11 +151,12 @@ const openRouter = new OpenRouterCore({
   httpReferer: "<value>",
   appTitle: "<value>",
   appCategories: "<value>",
-  apiKey: process.env["OPENROUTER_API_KEY"] ?? "",
 });
 
 async function run() {
   const res = await workspacesCreate(openRouter, {
+    managementKey: process.env["OPENROUTER_MANAGEMENT_KEY"] ?? "",
+  }, {
     createWorkspaceRequest: {
       defaultImageModel: "openai/dall-e-3",
       defaultProviderSort: "price",
@@ -177,6 +182,7 @@ run();
 | Parameter                                                                                                                                                                      | Type                                                                                                                                                                           | Required                                                                                                                                                                       | Description                                                                                                                                                                    |
 | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
 | `request`                                                                                                                                                                      | [operations.CreateWorkspaceRequest](../../models/operations/createworkspacerequest.md)                                                                                         | :heavy_check_mark:                                                                                                                                                             | The request object to use for the request.                                                                                                                                     |
+| `security`                                                                                                                                                                     | [operations.CreateWorkspaceSecurity](../../models/operations/createworkspacesecurity.md)                                                                                       | :heavy_check_mark:                                                                                                                                                             | The security requirements to use for the request.                                                                                                                              |
 | `options`                                                                                                                                                                      | RequestOptions                                                                                                                                                                 | :heavy_minus_sign:                                                                                                                                                             | Used to set various options for making HTTP requests.                                                                                                                          |
 | `options.fetchOptions`                                                                                                                                                         | [RequestInit](https://developer.mozilla.org/en-US/docs/Web/API/Request/Request#options)                                                                                        | :heavy_minus_sign:                                                                                                                                                             | Options that are passed to the underlying HTTP request. This can be used to inject extra headers for examples. All `Request` options, except `method` and `body`, are allowed. |
 | `options.retries`                                                                                                                                                              | [RetryConfig](../../lib/utils/retryconfig.md)                                                                                                                                  | :heavy_minus_sign:                                                                                                                                                             | Enables retrying HTTP requests under certain failure conditions.                                                                                                               |
@@ -209,11 +215,12 @@ const openRouter = new OpenRouter({
   httpReferer: "<value>",
   appTitle: "<value>",
   appCategories: "<value>",
-  apiKey: process.env["OPENROUTER_API_KEY"] ?? "",
 });
 
 async function run() {
   const result = await openRouter.workspaces.delete({
+    managementKey: process.env["OPENROUTER_MANAGEMENT_KEY"] ?? "",
+  }, {
     id: "production",
   });
 
@@ -237,11 +244,12 @@ const openRouter = new OpenRouterCore({
   httpReferer: "<value>",
   appTitle: "<value>",
   appCategories: "<value>",
-  apiKey: process.env["OPENROUTER_API_KEY"] ?? "",
 });
 
 async function run() {
   const res = await workspacesDelete(openRouter, {
+    managementKey: process.env["OPENROUTER_MANAGEMENT_KEY"] ?? "",
+  }, {
     id: "production",
   });
   if (res.ok) {
@@ -260,6 +268,7 @@ run();
 | Parameter                                                                                                                                                                      | Type                                                                                                                                                                           | Required                                                                                                                                                                       | Description                                                                                                                                                                    |
 | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
 | `request`                                                                                                                                                                      | [operations.DeleteWorkspaceRequest](../../models/operations/deleteworkspacerequest.md)                                                                                         | :heavy_check_mark:                                                                                                                                                             | The request object to use for the request.                                                                                                                                     |
+| `security`                                                                                                                                                                     | [operations.DeleteWorkspaceSecurity](../../models/operations/deleteworkspacesecurity.md)                                                                                       | :heavy_check_mark:                                                                                                                                                             | The security requirements to use for the request.                                                                                                                              |
 | `options`                                                                                                                                                                      | RequestOptions                                                                                                                                                                 | :heavy_minus_sign:                                                                                                                                                             | Used to set various options for making HTTP requests.                                                                                                                          |
 | `options.fetchOptions`                                                                                                                                                         | [RequestInit](https://developer.mozilla.org/en-US/docs/Web/API/Request/Request#options)                                                                                        | :heavy_minus_sign:                                                                                                                                                             | Options that are passed to the underlying HTTP request. This can be used to inject extra headers for examples. All `Request` options, except `method` and `body`, are allowed. |
 | `options.retries`                                                                                                                                                              | [RetryConfig](../../lib/utils/retryconfig.md)                                                                                                                                  | :heavy_minus_sign:                                                                                                                                                             | Enables retrying HTTP requests under certain failure conditions.                                                                                                               |
@@ -293,11 +302,12 @@ const openRouter = new OpenRouter({
   httpReferer: "<value>",
   appTitle: "<value>",
   appCategories: "<value>",
-  apiKey: process.env["OPENROUTER_API_KEY"] ?? "",
 });
 
 async function run() {
   const result = await openRouter.workspaces.get({
+    managementKey: process.env["OPENROUTER_MANAGEMENT_KEY"] ?? "",
+  }, {
     id: "production",
   });
 
@@ -321,11 +331,12 @@ const openRouter = new OpenRouterCore({
   httpReferer: "<value>",
   appTitle: "<value>",
   appCategories: "<value>",
-  apiKey: process.env["OPENROUTER_API_KEY"] ?? "",
 });
 
 async function run() {
   const res = await workspacesGet(openRouter, {
+    managementKey: process.env["OPENROUTER_MANAGEMENT_KEY"] ?? "",
+  }, {
     id: "production",
   });
   if (res.ok) {
@@ -344,6 +355,7 @@ run();
 | Parameter                                                                                                                                                                      | Type                                                                                                                                                                           | Required                                                                                                                                                                       | Description                                                                                                                                                                    |
 | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
 | `request`                                                                                                                                                                      | [operations.GetWorkspaceRequest](../../models/operations/getworkspacerequest.md)                                                                                               | :heavy_check_mark:                                                                                                                                                             | The request object to use for the request.                                                                                                                                     |
+| `security`                                                                                                                                                                     | [operations.GetWorkspaceSecurity](../../models/operations/getworkspacesecurity.md)                                                                                             | :heavy_check_mark:                                                                                                                                                             | The security requirements to use for the request.                                                                                                                              |
 | `options`                                                                                                                                                                      | RequestOptions                                                                                                                                                                 | :heavy_minus_sign:                                                                                                                                                             | Used to set various options for making HTTP requests.                                                                                                                          |
 | `options.fetchOptions`                                                                                                                                                         | [RequestInit](https://developer.mozilla.org/en-US/docs/Web/API/Request/Request#options)                                                                                        | :heavy_minus_sign:                                                                                                                                                             | Options that are passed to the underlying HTTP request. This can be used to inject extra headers for examples. All `Request` options, except `method` and `body`, are allowed. |
 | `options.retries`                                                                                                                                                              | [RetryConfig](../../lib/utils/retryconfig.md)                                                                                                                                  | :heavy_minus_sign:                                                                                                                                                             | Enables retrying HTTP requests under certain failure conditions.                                                                                                               |
@@ -375,11 +387,12 @@ const openRouter = new OpenRouter({
   httpReferer: "<value>",
   appTitle: "<value>",
   appCategories: "<value>",
-  apiKey: process.env["OPENROUTER_API_KEY"] ?? "",
 });
 
 async function run() {
   const result = await openRouter.workspaces.update({
+    managementKey: process.env["OPENROUTER_MANAGEMENT_KEY"] ?? "",
+  }, {
     id: "production",
     updateWorkspaceRequest: {
       name: "Updated Workspace",
@@ -407,11 +420,12 @@ const openRouter = new OpenRouterCore({
   httpReferer: "<value>",
   appTitle: "<value>",
   appCategories: "<value>",
-  apiKey: process.env["OPENROUTER_API_KEY"] ?? "",
 });
 
 async function run() {
   const res = await workspacesUpdate(openRouter, {
+    managementKey: process.env["OPENROUTER_MANAGEMENT_KEY"] ?? "",
+  }, {
     id: "production",
     updateWorkspaceRequest: {
       name: "Updated Workspace",
@@ -434,6 +448,7 @@ run();
 | Parameter                                                                                                                                                                      | Type                                                                                                                                                                           | Required                                                                                                                                                                       | Description                                                                                                                                                                    |
 | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
 | `request`                                                                                                                                                                      | [operations.UpdateWorkspaceRequest](../../models/operations/updateworkspacerequest.md)                                                                                         | :heavy_check_mark:                                                                                                                                                             | The request object to use for the request.                                                                                                                                     |
+| `security`                                                                                                                                                                     | [operations.UpdateWorkspaceSecurity](../../models/operations/updateworkspacesecurity.md)                                                                                       | :heavy_check_mark:                                                                                                                                                             | The security requirements to use for the request.                                                                                                                              |
 | `options`                                                                                                                                                                      | RequestOptions                                                                                                                                                                 | :heavy_minus_sign:                                                                                                                                                             | Used to set various options for making HTTP requests.                                                                                                                          |
 | `options.fetchOptions`                                                                                                                                                         | [RequestInit](https://developer.mozilla.org/en-US/docs/Web/API/Request/Request#options)                                                                                        | :heavy_minus_sign:                                                                                                                                                             | Options that are passed to the underlying HTTP request. This can be used to inject extra headers for examples. All `Request` options, except `method` and `body`, are allowed. |
 | `options.retries`                                                                                                                                                              | [RetryConfig](../../lib/utils/retryconfig.md)                                                                                                                                  | :heavy_minus_sign:                                                                                                                                                             | Enables retrying HTTP requests under certain failure conditions.                                                                                                               |
@@ -467,11 +482,12 @@ const openRouter = new OpenRouter({
   httpReferer: "<value>",
   appTitle: "<value>",
   appCategories: "<value>",
-  apiKey: process.env["OPENROUTER_API_KEY"] ?? "",
 });
 
 async function run() {
   const result = await openRouter.workspaces.listBudgets({
+    managementKey: process.env["OPENROUTER_MANAGEMENT_KEY"] ?? "",
+  }, {
     id: "production",
   });
 
@@ -495,11 +511,12 @@ const openRouter = new OpenRouterCore({
   httpReferer: "<value>",
   appTitle: "<value>",
   appCategories: "<value>",
-  apiKey: process.env["OPENROUTER_API_KEY"] ?? "",
 });
 
 async function run() {
   const res = await workspacesListBudgets(openRouter, {
+    managementKey: process.env["OPENROUTER_MANAGEMENT_KEY"] ?? "",
+  }, {
     id: "production",
   });
   if (res.ok) {
@@ -518,6 +535,7 @@ run();
 | Parameter                                                                                                                                                                      | Type                                                                                                                                                                           | Required                                                                                                                                                                       | Description                                                                                                                                                                    |
 | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
 | `request`                                                                                                                                                                      | [operations.ListWorkspaceBudgetsRequest](../../models/operations/listworkspacebudgetsrequest.md)                                                                               | :heavy_check_mark:                                                                                                                                                             | The request object to use for the request.                                                                                                                                     |
+| `security`                                                                                                                                                                     | [operations.ListWorkspaceBudgetsSecurity](../../models/operations/listworkspacebudgetssecurity.md)                                                                             | :heavy_check_mark:                                                                                                                                                             | The security requirements to use for the request.                                                                                                                              |
 | `options`                                                                                                                                                                      | RequestOptions                                                                                                                                                                 | :heavy_minus_sign:                                                                                                                                                             | Used to set various options for making HTTP requests.                                                                                                                          |
 | `options.fetchOptions`                                                                                                                                                         | [RequestInit](https://developer.mozilla.org/en-US/docs/Web/API/Request/Request#options)                                                                                        | :heavy_minus_sign:                                                                                                                                                             | Options that are passed to the underlying HTTP request. This can be used to inject extra headers for examples. All `Request` options, except `method` and `body`, are allowed. |
 | `options.retries`                                                                                                                                                              | [RetryConfig](../../lib/utils/retryconfig.md)                                                                                                                                  | :heavy_minus_sign:                                                                                                                                                             | Enables retrying HTTP requests under certain failure conditions.                                                                                                               |
@@ -549,11 +567,12 @@ const openRouter = new OpenRouter({
   httpReferer: "<value>",
   appTitle: "<value>",
   appCategories: "<value>",
-  apiKey: process.env["OPENROUTER_API_KEY"] ?? "",
 });
 
 async function run() {
   const result = await openRouter.workspaces.deleteBudget({
+    managementKey: process.env["OPENROUTER_MANAGEMENT_KEY"] ?? "",
+  }, {
     id: "production",
     interval: "monthly",
   });
@@ -578,11 +597,12 @@ const openRouter = new OpenRouterCore({
   httpReferer: "<value>",
   appTitle: "<value>",
   appCategories: "<value>",
-  apiKey: process.env["OPENROUTER_API_KEY"] ?? "",
 });
 
 async function run() {
   const res = await workspacesDeleteBudget(openRouter, {
+    managementKey: process.env["OPENROUTER_MANAGEMENT_KEY"] ?? "",
+  }, {
     id: "production",
     interval: "monthly",
   });
@@ -602,6 +622,7 @@ run();
 | Parameter                                                                                                                                                                      | Type                                                                                                                                                                           | Required                                                                                                                                                                       | Description                                                                                                                                                                    |
 | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
 | `request`                                                                                                                                                                      | [operations.DeleteWorkspaceBudgetRequest](../../models/operations/deleteworkspacebudgetrequest.md)                                                                             | :heavy_check_mark:                                                                                                                                                             | The request object to use for the request.                                                                                                                                     |
+| `security`                                                                                                                                                                     | [operations.DeleteWorkspaceBudgetSecurity](../../models/operations/deleteworkspacebudgetsecurity.md)                                                                           | :heavy_check_mark:                                                                                                                                                             | The security requirements to use for the request.                                                                                                                              |
 | `options`                                                                                                                                                                      | RequestOptions                                                                                                                                                                 | :heavy_minus_sign:                                                                                                                                                             | Used to set various options for making HTTP requests.                                                                                                                          |
 | `options.fetchOptions`                                                                                                                                                         | [RequestInit](https://developer.mozilla.org/en-US/docs/Web/API/Request/Request#options)                                                                                        | :heavy_minus_sign:                                                                                                                                                             | Options that are passed to the underlying HTTP request. This can be used to inject extra headers for examples. All `Request` options, except `method` and `body`, are allowed. |
 | `options.retries`                                                                                                                                                              | [RetryConfig](../../lib/utils/retryconfig.md)                                                                                                                                  | :heavy_minus_sign:                                                                                                                                                             | Enables retrying HTTP requests under certain failure conditions.                                                                                                               |
@@ -633,11 +654,12 @@ const openRouter = new OpenRouter({
   httpReferer: "<value>",
   appTitle: "<value>",
   appCategories: "<value>",
-  apiKey: process.env["OPENROUTER_API_KEY"] ?? "",
 });
 
 async function run() {
   const result = await openRouter.workspaces.setBudget({
+    managementKey: process.env["OPENROUTER_MANAGEMENT_KEY"] ?? "",
+  }, {
     id: "production",
     interval: "monthly",
     upsertWorkspaceBudgetRequest: {
@@ -665,11 +687,12 @@ const openRouter = new OpenRouterCore({
   httpReferer: "<value>",
   appTitle: "<value>",
   appCategories: "<value>",
-  apiKey: process.env["OPENROUTER_API_KEY"] ?? "",
 });
 
 async function run() {
   const res = await workspacesSetBudget(openRouter, {
+    managementKey: process.env["OPENROUTER_MANAGEMENT_KEY"] ?? "",
+  }, {
     id: "production",
     interval: "monthly",
     upsertWorkspaceBudgetRequest: {
@@ -692,6 +715,7 @@ run();
 | Parameter                                                                                                                                                                      | Type                                                                                                                                                                           | Required                                                                                                                                                                       | Description                                                                                                                                                                    |
 | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
 | `request`                                                                                                                                                                      | [operations.UpsertWorkspaceBudgetRequest](../../models/operations/upsertworkspacebudgetrequest.md)                                                                             | :heavy_check_mark:                                                                                                                                                             | The request object to use for the request.                                                                                                                                     |
+| `security`                                                                                                                                                                     | [operations.UpsertWorkspaceBudgetSecurity](../../models/operations/upsertworkspacebudgetsecurity.md)                                                                           | :heavy_check_mark:                                                                                                                                                             | The security requirements to use for the request.                                                                                                                              |
 | `options`                                                                                                                                                                      | RequestOptions                                                                                                                                                                 | :heavy_minus_sign:                                                                                                                                                             | Used to set various options for making HTTP requests.                                                                                                                          |
 | `options.fetchOptions`                                                                                                                                                         | [RequestInit](https://developer.mozilla.org/en-US/docs/Web/API/Request/Request#options)                                                                                        | :heavy_minus_sign:                                                                                                                                                             | Options that are passed to the underlying HTTP request. This can be used to inject extra headers for examples. All `Request` options, except `method` and `body`, are allowed. |
 | `options.retries`                                                                                                                                                              | [RetryConfig](../../lib/utils/retryconfig.md)                                                                                                                                  | :heavy_minus_sign:                                                                                                                                                             | Enables retrying HTTP requests under certain failure conditions.                                                                                                               |
@@ -724,11 +748,12 @@ const openRouter = new OpenRouter({
   httpReferer: "<value>",
   appTitle: "<value>",
   appCategories: "<value>",
-  apiKey: process.env["OPENROUTER_API_KEY"] ?? "",
 });
 
 async function run() {
   const result = await openRouter.workspaces.bulkAddMembers({
+    managementKey: process.env["OPENROUTER_MANAGEMENT_KEY"] ?? "",
+  }, {
     id: "production",
     bulkAddWorkspaceMembersRequest: {
       userIds: [
@@ -758,11 +783,12 @@ const openRouter = new OpenRouterCore({
   httpReferer: "<value>",
   appTitle: "<value>",
   appCategories: "<value>",
-  apiKey: process.env["OPENROUTER_API_KEY"] ?? "",
 });
 
 async function run() {
   const res = await workspacesBulkAddMembers(openRouter, {
+    managementKey: process.env["OPENROUTER_MANAGEMENT_KEY"] ?? "",
+  }, {
     id: "production",
     bulkAddWorkspaceMembersRequest: {
       userIds: [
@@ -787,6 +813,7 @@ run();
 | Parameter                                                                                                                                                                      | Type                                                                                                                                                                           | Required                                                                                                                                                                       | Description                                                                                                                                                                    |
 | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
 | `request`                                                                                                                                                                      | [operations.BulkAddWorkspaceMembersRequest](../../models/operations/bulkaddworkspacemembersrequest.md)                                                                         | :heavy_check_mark:                                                                                                                                                             | The request object to use for the request.                                                                                                                                     |
+| `security`                                                                                                                                                                     | [operations.BulkAddWorkspaceMembersSecurity](../../models/operations/bulkaddworkspacememberssecurity.md)                                                                       | :heavy_check_mark:                                                                                                                                                             | The security requirements to use for the request.                                                                                                                              |
 | `options`                                                                                                                                                                      | RequestOptions                                                                                                                                                                 | :heavy_minus_sign:                                                                                                                                                             | Used to set various options for making HTTP requests.                                                                                                                          |
 | `options.fetchOptions`                                                                                                                                                         | [RequestInit](https://developer.mozilla.org/en-US/docs/Web/API/Request/Request#options)                                                                                        | :heavy_minus_sign:                                                                                                                                                             | Options that are passed to the underlying HTTP request. This can be used to inject extra headers for examples. All `Request` options, except `method` and `body`, are allowed. |
 | `options.retries`                                                                                                                                                              | [RetryConfig](../../lib/utils/retryconfig.md)                                                                                                                                  | :heavy_minus_sign:                                                                                                                                                             | Enables retrying HTTP requests under certain failure conditions.                                                                                                               |
@@ -820,11 +847,12 @@ const openRouter = new OpenRouter({
   httpReferer: "<value>",
   appTitle: "<value>",
   appCategories: "<value>",
-  apiKey: process.env["OPENROUTER_API_KEY"] ?? "",
 });
 
 async function run() {
   const result = await openRouter.workspaces.bulkRemoveMembers({
+    managementKey: process.env["OPENROUTER_MANAGEMENT_KEY"] ?? "",
+  }, {
     id: "production",
     bulkRemoveWorkspaceMembersRequest: {
       userIds: [
@@ -854,11 +882,12 @@ const openRouter = new OpenRouterCore({
   httpReferer: "<value>",
   appTitle: "<value>",
   appCategories: "<value>",
-  apiKey: process.env["OPENROUTER_API_KEY"] ?? "",
 });
 
 async function run() {
   const res = await workspacesBulkRemoveMembers(openRouter, {
+    managementKey: process.env["OPENROUTER_MANAGEMENT_KEY"] ?? "",
+  }, {
     id: "production",
     bulkRemoveWorkspaceMembersRequest: {
       userIds: [
@@ -883,6 +912,7 @@ run();
 | Parameter                                                                                                                                                                      | Type                                                                                                                                                                           | Required                                                                                                                                                                       | Description                                                                                                                                                                    |
 | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
 | `request`                                                                                                                                                                      | [operations.BulkRemoveWorkspaceMembersRequest](../../models/operations/bulkremoveworkspacemembersrequest.md)                                                                   | :heavy_check_mark:                                                                                                                                                             | The request object to use for the request.                                                                                                                                     |
+| `security`                                                                                                                                                                     | [operations.BulkRemoveWorkspaceMembersSecurity](../../models/operations/bulkremoveworkspacememberssecurity.md)                                                                 | :heavy_check_mark:                                                                                                                                                             | The security requirements to use for the request.                                                                                                                              |
 | `options`                                                                                                                                                                      | RequestOptions                                                                                                                                                                 | :heavy_minus_sign:                                                                                                                                                             | Used to set various options for making HTTP requests.                                                                                                                          |
 | `options.fetchOptions`                                                                                                                                                         | [RequestInit](https://developer.mozilla.org/en-US/docs/Web/API/Request/Request#options)                                                                                        | :heavy_minus_sign:                                                                                                                                                             | Options that are passed to the underlying HTTP request. This can be used to inject extra headers for examples. All `Request` options, except `method` and `body`, are allowed. |
 | `options.retries`                                                                                                                                                              | [RetryConfig](../../lib/utils/retryconfig.md)                                                                                                                                  | :heavy_minus_sign:                                                                                                                                                             | Enables retrying HTTP requests under certain failure conditions.                                                                                                               |

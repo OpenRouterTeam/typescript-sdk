@@ -29,6 +29,10 @@ export type BulkRemoveWorkspaceMembersGlobals = {
   appCategories?: string | undefined;
 };
 
+export type BulkRemoveWorkspaceMembersSecurity = {
+  managementKey: string;
+};
+
 export type BulkRemoveWorkspaceMembersRequest = {
   /**
    * The app identifier should be your app's URL and is used as the primary identifier for rankings.
@@ -55,6 +59,29 @@ export type BulkRemoveWorkspaceMembersRequest = {
   id: string;
   bulkRemoveWorkspaceMembersRequest: models.BulkRemoveWorkspaceMembersRequest;
 };
+
+/** @internal */
+export type BulkRemoveWorkspaceMembersSecurity$Outbound = {
+  managementKey: string;
+};
+
+/** @internal */
+export const BulkRemoveWorkspaceMembersSecurity$outboundSchema: z.ZodType<
+  BulkRemoveWorkspaceMembersSecurity$Outbound,
+  BulkRemoveWorkspaceMembersSecurity
+> = z.object({
+  managementKey: z.string(),
+});
+
+export function bulkRemoveWorkspaceMembersSecurityToJSON(
+  bulkRemoveWorkspaceMembersSecurity: BulkRemoveWorkspaceMembersSecurity,
+): string {
+  return JSON.stringify(
+    BulkRemoveWorkspaceMembersSecurity$outboundSchema.parse(
+      bulkRemoveWorkspaceMembersSecurity,
+    ),
+  );
+}
 
 /** @internal */
 export type BulkRemoveWorkspaceMembersRequest$Outbound = {

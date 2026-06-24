@@ -17,11 +17,13 @@ export class Analytics extends ClientSDK {
    * Returns user activity data grouped by endpoint for the last 30 (completed) UTC days. [Management key](/docs/guides/overview/auth/management-api-keys) required.
    */
   async getUserActivity(
+    security: operations.GetUserActivitySecurity,
     request?: operations.GetUserActivityRequest | undefined,
     options?: RequestOptions,
   ): Promise<models.ActivityResponse> {
     return unwrapAsync(analyticsGetUserActivity(
       this,
+      security,
       request,
       options,
     ));

@@ -28,6 +28,10 @@ export type DeleteObservabilityDestinationGlobals = {
   appCategories?: string | undefined;
 };
 
+export type DeleteObservabilityDestinationSecurity = {
+  managementKey: string;
+};
+
 export type DeleteObservabilityDestinationRequest = {
   /**
    * The app identifier should be your app's URL and is used as the primary identifier for rankings.
@@ -53,6 +57,30 @@ export type DeleteObservabilityDestinationRequest = {
    */
   id: string;
 };
+
+/** @internal */
+export type DeleteObservabilityDestinationSecurity$Outbound = {
+  managementKey: string;
+};
+
+/** @internal */
+export const DeleteObservabilityDestinationSecurity$outboundSchema: z.ZodType<
+  DeleteObservabilityDestinationSecurity$Outbound,
+  DeleteObservabilityDestinationSecurity
+> = z.object({
+  managementKey: z.string(),
+});
+
+export function deleteObservabilityDestinationSecurityToJSON(
+  deleteObservabilityDestinationSecurity:
+    DeleteObservabilityDestinationSecurity,
+): string {
+  return JSON.stringify(
+    DeleteObservabilityDestinationSecurity$outboundSchema.parse(
+      deleteObservabilityDestinationSecurity,
+    ),
+  );
+}
 
 /** @internal */
 export type DeleteObservabilityDestinationRequest$Outbound = {

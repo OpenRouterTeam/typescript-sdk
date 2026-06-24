@@ -32,6 +32,10 @@ export type ListGuardrailsGlobals = {
   appCategories?: string | undefined;
 };
 
+export type ListGuardrailsSecurity = {
+  managementKey: string;
+};
+
 export type ListGuardrailsRequest = {
   /**
    * The app identifier should be your app's URL and is used as the primary identifier for rankings.
@@ -69,6 +73,27 @@ export type ListGuardrailsRequest = {
 export type ListGuardrailsResponse = {
   result: models.ListGuardrailsResponse;
 };
+
+/** @internal */
+export type ListGuardrailsSecurity$Outbound = {
+  managementKey: string;
+};
+
+/** @internal */
+export const ListGuardrailsSecurity$outboundSchema: z.ZodType<
+  ListGuardrailsSecurity$Outbound,
+  ListGuardrailsSecurity
+> = z.object({
+  managementKey: z.string(),
+});
+
+export function listGuardrailsSecurityToJSON(
+  listGuardrailsSecurity: ListGuardrailsSecurity,
+): string {
+  return JSON.stringify(
+    ListGuardrailsSecurity$outboundSchema.parse(listGuardrailsSecurity),
+  );
+}
 
 /** @internal */
 export type ListGuardrailsRequest$Outbound = {

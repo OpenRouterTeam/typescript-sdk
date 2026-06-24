@@ -31,6 +31,10 @@ export type GetCreditsGlobals = {
   appCategories?: string | undefined;
 };
 
+export type GetCreditsSecurity = {
+  managementKey: string;
+};
+
 export type GetCreditsRequest = {
   /**
    * The app identifier should be your app's URL and is used as the primary identifier for rankings.
@@ -70,6 +74,27 @@ export type GetCreditsData = {
 export type GetCreditsResponse = {
   data: GetCreditsData;
 };
+
+/** @internal */
+export type GetCreditsSecurity$Outbound = {
+  managementKey: string;
+};
+
+/** @internal */
+export const GetCreditsSecurity$outboundSchema: z.ZodType<
+  GetCreditsSecurity$Outbound,
+  GetCreditsSecurity
+> = z.object({
+  managementKey: z.string(),
+});
+
+export function getCreditsSecurityToJSON(
+  getCreditsSecurity: GetCreditsSecurity,
+): string {
+  return JSON.stringify(
+    GetCreditsSecurity$outboundSchema.parse(getCreditsSecurity),
+  );
+}
 
 /** @internal */
 export type GetCreditsRequest$Outbound = {

@@ -33,6 +33,10 @@ export type UpdateKeysGlobals = {
   appCategories?: string | undefined;
 };
 
+export type UpdateKeysSecurity = {
+  managementKey: string;
+};
+
 /**
  * New limit reset type for the API key (daily, weekly, monthly, or null for no reset). Resets happen automatically at midnight UTC, and weeks are Monday through Sunday.
  */
@@ -195,6 +199,27 @@ export type UpdateKeysResponse = {
    */
   data: UpdateKeysData;
 };
+
+/** @internal */
+export type UpdateKeysSecurity$Outbound = {
+  managementKey: string;
+};
+
+/** @internal */
+export const UpdateKeysSecurity$outboundSchema: z.ZodType<
+  UpdateKeysSecurity$Outbound,
+  UpdateKeysSecurity
+> = z.object({
+  managementKey: z.string(),
+});
+
+export function updateKeysSecurityToJSON(
+  updateKeysSecurity: UpdateKeysSecurity,
+): string {
+  return JSON.stringify(
+    UpdateKeysSecurity$outboundSchema.parse(updateKeysSecurity),
+  );
+}
 
 /** @internal */
 export const UpdateKeysLimitReset$outboundSchema: z.ZodType<
