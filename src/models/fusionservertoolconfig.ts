@@ -12,6 +12,7 @@ import { OpenEnum } from "../types/enums.js";
  * Reasoning effort level for panelist and judge inner calls.
  */
 export const FusionServerToolConfigEffort = {
+  Max: "max",
   Xhigh: "xhigh",
   High: "high",
   Medium: "medium",
