@@ -98,6 +98,7 @@ export type ProviderOptions = {
   perplexity?: { [k: string]: any | null } | undefined;
   phala?: { [k: string]: any | null } | undefined;
   poolside?: { [k: string]: any | null } | undefined;
+  quiver?: { [k: string]: any | null } | undefined;
   recraft?: { [k: string]: any | null } | undefined;
   recursal?: { [k: string]: any | null } | undefined;
   reflection?: { [k: string]: any | null } | undefined;
@@ -115,6 +116,7 @@ export type ProviderOptions = {
   streamlake?: { [k: string]: any | null } | undefined;
   switchpoint?: { [k: string]: any | null } | undefined;
   targon?: { [k: string]: any | null } | undefined;
+  tenstorrent?: { [k: string]: any | null } | undefined;
   together?: { [k: string]: any | null } | undefined;
   togetherLite?: { [k: string]: any | null } | undefined;
   ubicloud?: { [k: string]: any | null } | undefined;
@@ -217,6 +219,7 @@ export type ProviderOptions$Outbound = {
   perplexity?: { [k: string]: any | null } | undefined;
   phala?: { [k: string]: any | null } | undefined;
   poolside?: { [k: string]: any | null } | undefined;
+  quiver?: { [k: string]: any | null } | undefined;
   recraft?: { [k: string]: any | null } | undefined;
   recursal?: { [k: string]: any | null } | undefined;
   reflection?: { [k: string]: any | null } | undefined;
@@ -234,6 +237,7 @@ export type ProviderOptions$Outbound = {
   streamlake?: { [k: string]: any | null } | undefined;
   switchpoint?: { [k: string]: any | null } | undefined;
   targon?: { [k: string]: any | null } | undefined;
+  tenstorrent?: { [k: string]: any | null } | undefined;
   together?: { [k: string]: any | null } | undefined;
   "together-lite"?: { [k: string]: any | null } | undefined;
   ubicloud?: { [k: string]: any | null } | undefined;
@@ -339,6 +343,7 @@ export const ProviderOptions$outboundSchema: z.ZodType<
   perplexity: z.record(z.string(), z.nullable(z.any())).optional(),
   phala: z.record(z.string(), z.nullable(z.any())).optional(),
   poolside: z.record(z.string(), z.nullable(z.any())).optional(),
+  quiver: z.record(z.string(), z.nullable(z.any())).optional(),
   recraft: z.record(z.string(), z.nullable(z.any())).optional(),
   recursal: z.record(z.string(), z.nullable(z.any())).optional(),
   reflection: z.record(z.string(), z.nullable(z.any())).optional(),
@@ -356,6 +361,7 @@ export const ProviderOptions$outboundSchema: z.ZodType<
   streamlake: z.record(z.string(), z.nullable(z.any())).optional(),
   switchpoint: z.record(z.string(), z.nullable(z.any())).optional(),
   targon: z.record(z.string(), z.nullable(z.any())).optional(),
+  tenstorrent: z.record(z.string(), z.nullable(z.any())).optional(),
   together: z.record(z.string(), z.nullable(z.any())).optional(),
   togetherLite: z.record(z.string(), z.nullable(z.any())).optional(),
   ubicloud: z.record(z.string(), z.nullable(z.any())).optional(),
