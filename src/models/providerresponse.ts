@@ -87,6 +87,7 @@ export const ProviderResponseProviderName = {
   Ionstream: "Ionstream",
   Infermatic: "Infermatic",
   IoNet: "Io Net",
+  InferactVLLM: "Inferact vLLM",
   Inflection: "Inflection",
   Liquid: "Liquid",
   Mara: "Mara",
@@ -113,6 +114,7 @@ export const ProviderResponseProviderName = {
   Recraft: "Recraft",
   Reka: "Reka",
   Relace: "Relace",
+  SakanaAI: "Sakana AI",
   SambaNova: "SambaNova",
   Seed: "Seed",
   SiliconFlow: "SiliconFlow",
@@ -121,6 +123,7 @@ export const ProviderResponseProviderName = {
   Stealth: "Stealth",
   StreamLake: "StreamLake",
   Switchpoint: "Switchpoint",
+  Tenstorrent: "Tenstorrent",
   Together: "Together",
   Upstage: "Upstage",
   Venice: "Venice",
@@ -137,6 +140,18 @@ export const ProviderResponseProviderName = {
 export type ProviderResponseProviderName = OpenEnum<
   typeof ProviderResponseProviderName
 >;
+
+/**
+ * The service tier this request was routed to (e.g. flex, priority). The tier actually applied and billed is determined by the provider response and may differ.
+ */
+export const RoutedServiceTier = {
+  Flex: "flex",
+  Priority: "priority",
+} as const;
+/**
+ * The service tier this request was routed to (e.g. flex, priority). The tier actually applied and billed is determined by the provider response and may differ.
+ */
+export type RoutedServiceTier = OpenEnum<typeof RoutedServiceTier>;
 
 /**
  * Details of a provider response for a generation attempt
@@ -167,6 +182,10 @@ export type ProviderResponse = {
    */
   providerName?: ProviderResponseProviderName | undefined;
   /**
+   * The service tier this request was routed to (e.g. flex, priority). The tier actually applied and billed is determined by the provider response and may differ.
+   */
+  routedServiceTier?: RoutedServiceTier | undefined;
+  /**
    * HTTP status code from the provider
    */
   status: number | null;
@@ -179,6 +198,12 @@ export const ProviderResponseProviderName$inboundSchema: z.ZodType<
 > = openEnums.inboundSchema(ProviderResponseProviderName);
 
 /** @internal */
+export const RoutedServiceTier$inboundSchema: z.ZodType<
+  RoutedServiceTier,
+  unknown
+> = openEnums.inboundSchema(RoutedServiceTier);
+
+/** @internal */
 export const ProviderResponse$inboundSchema: z.ZodType<
   ProviderResponse,
   unknown
@@ -189,6 +214,7 @@ export const ProviderResponse$inboundSchema: z.ZodType<
   latency: z.number().optional(),
   model_permaslug: z.string().optional(),
   provider_name: ProviderResponseProviderName$inboundSchema.optional(),
+  routed_service_tier: RoutedServiceTier$inboundSchema.optional(),
   status: z.nullable(z.int()),
 }).transform((v) => {
   return remap$(v, {
@@ -196,6 +222,7 @@ export const ProviderResponse$inboundSchema: z.ZodType<
     "is_byok": "isByok",
     "model_permaslug": "modelPermaslug",
     "provider_name": "providerName",
+    "routed_service_tier": "routedServiceTier",
   });
 });
 
