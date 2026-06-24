@@ -59,11 +59,13 @@ let value: ProviderOptions = {};
 | `googleVertex`        | Record<string, *any*> | :heavy_minus_sign:    | N/A                   |
 | `gopomelo`            | Record<string, *any*> | :heavy_minus_sign:    | N/A                   |
 | `groq`                | Record<string, *any*> | :heavy_minus_sign:    | N/A                   |
+| `heygen`              | Record<string, *any*> | :heavy_minus_sign:    | N/A                   |
 | `huggingface`         | Record<string, *any*> | :heavy_minus_sign:    | N/A                   |
 | `hyperbolic`          | Record<string, *any*> | :heavy_minus_sign:    | N/A                   |
 | `hyperbolicQuantized` | Record<string, *any*> | :heavy_minus_sign:    | N/A                   |
 | `inception`           | Record<string, *any*> | :heavy_minus_sign:    | N/A                   |
 | `inceptron`           | Record<string, *any*> | :heavy_minus_sign:    | N/A                   |
+| `inferactVllm`        | Record<string, *any*> | :heavy_minus_sign:    | N/A                   |
 | `inferenceNet`        | Record<string, *any*> | :heavy_minus_sign:    | N/A                   |
 | `infermatic`          | Record<string, *any*> | :heavy_minus_sign:    | N/A                   |
 | `inflection`          | Record<string, *any*> | :heavy_minus_sign:    | N/A                   |
@@ -108,6 +110,7 @@ let value: ProviderOptions = {};
 | `reka`                | Record<string, *any*> | :heavy_minus_sign:    | N/A                   |
 | `relace`              | Record<string, *any*> | :heavy_minus_sign:    | N/A                   |
 | `replicate`           | Record<string, *any*> | :heavy_minus_sign:    | N/A                   |
+| `sakanaAi`            | Record<string, *any*> | :heavy_minus_sign:    | N/A                   |
 | `sambanova`           | Record<string, *any*> | :heavy_minus_sign:    | N/A                   |
 | `sambanovaCloaked`    | Record<string, *any*> | :heavy_minus_sign:    | N/A                   |
 | `seed`                | Record<string, *any*> | :heavy_minus_sign:    | N/A                   |
@@ -119,6 +122,7 @@ let value: ProviderOptions = {};
 | `streamlake`          | Record<string, *any*> | :heavy_minus_sign:    | N/A                   |
 | `switchpoint`         | Record<string, *any*> | :heavy_minus_sign:    | N/A                   |
 | `targon`              | Record<string, *any*> | :heavy_minus_sign:    | N/A                   |
+| `tenstorrent`         | Record<string, *any*> | :heavy_minus_sign:    | N/A                   |
 | `together`            | Record<string, *any*> | :heavy_minus_sign:    | N/A                   |
 | `togetherLite`        | Record<string, *any*> | :heavy_minus_sign:    | N/A                   |
 | `ubicloud`            | Record<string, *any*> | :heavy_minus_sign:    | N/A                   |

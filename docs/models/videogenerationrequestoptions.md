@@ -1,6 +1,6 @@
 # VideoGenerationRequestOptions
 
-Provider-specific options keyed by provider slug. The options for the matched provider are spread into the upstream request body.
+Provider-specific options keyed by provider slug. Only options for the matched provider are forwarded; the rest are ignored. Unrecognized keys are silently dropped.
 
 ## Example Usage
 
@@ -41,10 +41,14 @@ let value: VideoGenerationRequestOptions = {};
 | `cloudflare`          | Record<string, *any*> | :heavy_minus_sign:    | N/A                   |
 | `cohere`              | Record<string, *any*> | :heavy_minus_sign:    | N/A                   |
 | `crofai`              | Record<string, *any*> | :heavy_minus_sign:    | N/A                   |
+| `crucible`            | Record<string, *any*> | :heavy_minus_sign:    | N/A                   |
 | `crusoe`              | Record<string, *any*> | :heavy_minus_sign:    | N/A                   |
+| `darkbloom`           | Record<string, *any*> | :heavy_minus_sign:    | N/A                   |
+| `decart`              | Record<string, *any*> | :heavy_minus_sign:    | N/A                   |
 | `deepinfra`           | Record<string, *any*> | :heavy_minus_sign:    | N/A                   |
 | `deepseek`            | Record<string, *any*> | :heavy_minus_sign:    | N/A                   |
 | `dekallm`             | Record<string, *any*> | :heavy_minus_sign:    | N/A                   |
+| `digitalocean`        | Record<string, *any*> | :heavy_minus_sign:    | N/A                   |
 | `enfer`               | Record<string, *any*> | :heavy_minus_sign:    | N/A                   |
 | `fakeProvider`        | Record<string, *any*> | :heavy_minus_sign:    | N/A                   |
 | `featherless`         | Record<string, *any*> | :heavy_minus_sign:    | N/A                   |
@@ -55,11 +59,13 @@ let value: VideoGenerationRequestOptions = {};
 | `googleVertex`        | Record<string, *any*> | :heavy_minus_sign:    | N/A                   |
 | `gopomelo`            | Record<string, *any*> | :heavy_minus_sign:    | N/A                   |
 | `groq`                | Record<string, *any*> | :heavy_minus_sign:    | N/A                   |
+| `heygen`              | Record<string, *any*> | :heavy_minus_sign:    | N/A                   |
 | `huggingface`         | Record<string, *any*> | :heavy_minus_sign:    | N/A                   |
 | `hyperbolic`          | Record<string, *any*> | :heavy_minus_sign:    | N/A                   |
 | `hyperbolicQuantized` | Record<string, *any*> | :heavy_minus_sign:    | N/A                   |
 | `inception`           | Record<string, *any*> | :heavy_minus_sign:    | N/A                   |
 | `inceptron`           | Record<string, *any*> | :heavy_minus_sign:    | N/A                   |
+| `inferactVllm`        | Record<string, *any*> | :heavy_minus_sign:    | N/A                   |
 | `inferenceNet`        | Record<string, *any*> | :heavy_minus_sign:    | N/A                   |
 | `infermatic`          | Record<string, *any*> | :heavy_minus_sign:    | N/A                   |
 | `inflection`          | Record<string, *any*> | :heavy_minus_sign:    | N/A                   |
@@ -94,6 +100,7 @@ let value: VideoGenerationRequestOptions = {};
 | `openInference`       | Record<string, *any*> | :heavy_minus_sign:    | N/A                   |
 | `openai`              | Record<string, *any*> | :heavy_minus_sign:    | N/A                   |
 | `parasail`            | Record<string, *any*> | :heavy_minus_sign:    | N/A                   |
+| `perceptron`          | Record<string, *any*> | :heavy_minus_sign:    | N/A                   |
 | `perplexity`          | Record<string, *any*> | :heavy_minus_sign:    | N/A                   |
 | `phala`               | Record<string, *any*> | :heavy_minus_sign:    | N/A                   |
 | `poolside`            | Record<string, *any*> | :heavy_minus_sign:    | N/A                   |
@@ -103,6 +110,7 @@ let value: VideoGenerationRequestOptions = {};
 | `reka`                | Record<string, *any*> | :heavy_minus_sign:    | N/A                   |
 | `relace`              | Record<string, *any*> | :heavy_minus_sign:    | N/A                   |
 | `replicate`           | Record<string, *any*> | :heavy_minus_sign:    | N/A                   |
+| `sakanaAi`            | Record<string, *any*> | :heavy_minus_sign:    | N/A                   |
 | `sambanova`           | Record<string, *any*> | :heavy_minus_sign:    | N/A                   |
 | `sambanovaCloaked`    | Record<string, *any*> | :heavy_minus_sign:    | N/A                   |
 | `seed`                | Record<string, *any*> | :heavy_minus_sign:    | N/A                   |
@@ -114,11 +122,13 @@ let value: VideoGenerationRequestOptions = {};
 | `streamlake`          | Record<string, *any*> | :heavy_minus_sign:    | N/A                   |
 | `switchpoint`         | Record<string, *any*> | :heavy_minus_sign:    | N/A                   |
 | `targon`              | Record<string, *any*> | :heavy_minus_sign:    | N/A                   |
+| `tenstorrent`         | Record<string, *any*> | :heavy_minus_sign:    | N/A                   |
 | `together`            | Record<string, *any*> | :heavy_minus_sign:    | N/A                   |
 | `togetherLite`        | Record<string, *any*> | :heavy_minus_sign:    | N/A                   |
 | `ubicloud`            | Record<string, *any*> | :heavy_minus_sign:    | N/A                   |
 | `upstage`             | Record<string, *any*> | :heavy_minus_sign:    | N/A                   |
 | `venice`              | Record<string, *any*> | :heavy_minus_sign:    | N/A                   |
+| `wafer`               | Record<string, *any*> | :heavy_minus_sign:    | N/A                   |
 | `wandb`               | Record<string, *any*> | :heavy_minus_sign:    | N/A                   |
 | `xai`                 | Record<string, *any*> | :heavy_minus_sign:    | N/A                   |
 | `xiaomi`              | Record<string, *any*> | :heavy_minus_sign:    | N/A                   |
