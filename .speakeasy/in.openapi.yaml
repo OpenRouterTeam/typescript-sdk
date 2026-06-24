@@ -4048,6 +4048,7 @@ components:
         - recraft
         - reka
         - relace
+        - sakana-ai
         - sambanova
         - seed
         - siliconflow
@@ -12506,6 +12507,7 @@ components:
                 - Recraft
                 - Reka
                 - Relace
+                - Sakana AI
                 - SambaNova
                 - Seed
                 - SiliconFlow
@@ -17914,6 +17916,7 @@ components:
         - Recraft
         - Reka
         - Relace
+        - Sakana AI
         - SambaNova
         - Seed
         - SiliconFlow
@@ -18318,6 +18321,10 @@ components:
           additionalProperties:
             nullable: true
           type: object
+        sakana-ai:
+          additionalProperties:
+            nullable: true
+          type: object
         sambanova:
           additionalProperties:
             nullable: true
@@ -18716,6 +18723,7 @@ components:
             - Recraft
             - Reka
             - Relace
+            - Sakana AI
             - SambaNova
             - Seed
             - SiliconFlow
@@ -24402,6 +24410,7 @@ paths:
               - recraft
               - reka
               - relace
+              - sakana-ai
               - sambanova
               - seed
               - siliconflow
