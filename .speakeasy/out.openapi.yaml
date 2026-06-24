@@ -4021,6 +4021,7 @@ components:
         - google-ai-studio
         - google-vertex
         - groq
+        - heygen
         - inception
         - inceptron
         - inferact-vllm
@@ -12431,6 +12432,7 @@ components:
                 - Google
                 - Google AI Studio
                 - Groq
+                - HeyGen
                 - Inception
                 - Inceptron
                 - InferenceNet
@@ -17805,6 +17807,7 @@ components:
         - Google
         - Google AI Studio
         - Groq
+        - HeyGen
         - Inception
         - Inceptron
         - InferenceNet
@@ -18044,6 +18047,10 @@ components:
             nullable: true
           type: object
         groq:
+          additionalProperties:
+            nullable: true
+          type: object
+        heygen:
           additionalProperties:
             nullable: true
           type: object
@@ -18608,6 +18615,7 @@ components:
             - Google
             - Google AI Studio
             - Groq
+            - HeyGen
             - Inception
             - Inceptron
             - InferenceNet
@@ -24237,6 +24245,7 @@ paths:
               - google-ai-studio
               - google-vertex
               - groq
+              - heygen
               - inception
               - inceptron
               - inferact-vllm
