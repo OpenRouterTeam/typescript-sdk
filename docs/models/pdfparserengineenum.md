@@ -13,5 +13,5 @@ let value: PDFParserEngineEnum = "cloudflare-ai";
 ## Values
 
 ```typescript
-"mistral-ocr" | "native" | "cloudflare-ai" | Unrecognized<string>
+"mistral-ocr" | "mistral-ocr-v3" | "native" | "cloudflare-ai" | Unrecognized<string>
 ```
