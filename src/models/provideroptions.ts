@@ -60,6 +60,7 @@ export type ProviderOptions = {
   hyperbolicQuantized?: { [k: string]: any | null } | undefined;
   inception?: { [k: string]: any | null } | undefined;
   inceptron?: { [k: string]: any | null } | undefined;
+  inferactVllm?: { [k: string]: any | null } | undefined;
   inferenceNet?: { [k: string]: any | null } | undefined;
   infermatic?: { [k: string]: any | null } | undefined;
   inflection?: { [k: string]: any | null } | undefined;
@@ -104,6 +105,7 @@ export type ProviderOptions = {
   reka?: { [k: string]: any | null } | undefined;
   relace?: { [k: string]: any | null } | undefined;
   replicate?: { [k: string]: any | null } | undefined;
+  sakanaAi?: { [k: string]: any | null } | undefined;
   sambanova?: { [k: string]: any | null } | undefined;
   sambanovaCloaked?: { [k: string]: any | null } | undefined;
   seed?: { [k: string]: any | null } | undefined;
@@ -115,6 +117,7 @@ export type ProviderOptions = {
   streamlake?: { [k: string]: any | null } | undefined;
   switchpoint?: { [k: string]: any | null } | undefined;
   targon?: { [k: string]: any | null } | undefined;
+  tenstorrent?: { [k: string]: any | null } | undefined;
   together?: { [k: string]: any | null } | undefined;
   togetherLite?: { [k: string]: any | null } | undefined;
   ubicloud?: { [k: string]: any | null } | undefined;
@@ -179,6 +182,7 @@ export type ProviderOptions$Outbound = {
   "hyperbolic-quantized"?: { [k: string]: any | null } | undefined;
   inception?: { [k: string]: any | null } | undefined;
   inceptron?: { [k: string]: any | null } | undefined;
+  "inferact-vllm"?: { [k: string]: any | null } | undefined;
   "inference-net"?: { [k: string]: any | null } | undefined;
   infermatic?: { [k: string]: any | null } | undefined;
   inflection?: { [k: string]: any | null } | undefined;
@@ -223,6 +227,7 @@ export type ProviderOptions$Outbound = {
   reka?: { [k: string]: any | null } | undefined;
   relace?: { [k: string]: any | null } | undefined;
   replicate?: { [k: string]: any | null } | undefined;
+  "sakana-ai"?: { [k: string]: any | null } | undefined;
   sambanova?: { [k: string]: any | null } | undefined;
   "sambanova-cloaked"?: { [k: string]: any | null } | undefined;
   seed?: { [k: string]: any | null } | undefined;
@@ -234,6 +239,7 @@ export type ProviderOptions$Outbound = {
   streamlake?: { [k: string]: any | null } | undefined;
   switchpoint?: { [k: string]: any | null } | undefined;
   targon?: { [k: string]: any | null } | undefined;
+  tenstorrent?: { [k: string]: any | null } | undefined;
   together?: { [k: string]: any | null } | undefined;
   "together-lite"?: { [k: string]: any | null } | undefined;
   ubicloud?: { [k: string]: any | null } | undefined;
@@ -301,6 +307,7 @@ export const ProviderOptions$outboundSchema: z.ZodType<
   hyperbolicQuantized: z.record(z.string(), z.nullable(z.any())).optional(),
   inception: z.record(z.string(), z.nullable(z.any())).optional(),
   inceptron: z.record(z.string(), z.nullable(z.any())).optional(),
+  inferactVllm: z.record(z.string(), z.nullable(z.any())).optional(),
   inferenceNet: z.record(z.string(), z.nullable(z.any())).optional(),
   infermatic: z.record(z.string(), z.nullable(z.any())).optional(),
   inflection: z.record(z.string(), z.nullable(z.any())).optional(),
@@ -345,6 +352,7 @@ export const ProviderOptions$outboundSchema: z.ZodType<
   reka: z.record(z.string(), z.nullable(z.any())).optional(),
   relace: z.record(z.string(), z.nullable(z.any())).optional(),
   replicate: z.record(z.string(), z.nullable(z.any())).optional(),
+  sakanaAi: z.record(z.string(), z.nullable(z.any())).optional(),
   sambanova: z.record(z.string(), z.nullable(z.any())).optional(),
   sambanovaCloaked: z.record(z.string(), z.nullable(z.any())).optional(),
   seed: z.record(z.string(), z.nullable(z.any())).optional(),
@@ -356,6 +364,7 @@ export const ProviderOptions$outboundSchema: z.ZodType<
   streamlake: z.record(z.string(), z.nullable(z.any())).optional(),
   switchpoint: z.record(z.string(), z.nullable(z.any())).optional(),
   targon: z.record(z.string(), z.nullable(z.any())).optional(),
+  tenstorrent: z.record(z.string(), z.nullable(z.any())).optional(),
   together: z.record(z.string(), z.nullable(z.any())).optional(),
   togetherLite: z.record(z.string(), z.nullable(z.any())).optional(),
   ubicloud: z.record(z.string(), z.nullable(z.any())).optional(),
@@ -379,12 +388,14 @@ export const ProviderOptions$outboundSchema: z.ZodType<
     googleAiStudio: "google-ai-studio",
     googleVertex: "google-vertex",
     hyperbolicQuantized: "hyperbolic-quantized",
+    inferactVllm: "inferact-vllm",
     inferenceNet: "inference-net",
     ioNet: "io-net",
     lynnPrivate: "lynn-private",
     mancerOld: "mancer-old",
     nexAgi: "nex-agi",
     openInference: "open-inference",
+    sakanaAi: "sakana-ai",
     sambanovaCloaked: "sambanova-cloaked",
     sfCompute: "sf-compute",
     togetherLite: "together-lite",
