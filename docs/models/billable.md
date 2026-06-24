@@ -1,0 +1,17 @@
+# Billable
+
+## Example Usage
+
+```typescript
+import { Billable } from "@openrouter/sdk/models";
+
+let value: Billable = "input_font";
+
+// Open enum: unrecognized values are captured as Unrecognized<string>
+```
+
+## Values
+
+```typescript
+"output_image" | "input_image" | "input_font" | "input_reference" | "input_text" | Unrecognized<string>
+```
