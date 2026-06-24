@@ -45,6 +45,7 @@ let value: ProviderOptions = {};
 | `crusoe`              | Record<string, *any*> | :heavy_minus_sign:    | N/A                   |
 | `darkbloom`           | Record<string, *any*> | :heavy_minus_sign:    | N/A                   |
 | `decart`              | Record<string, *any*> | :heavy_minus_sign:    | N/A                   |
+| `deepgram`            | Record<string, *any*> | :heavy_minus_sign:    | N/A                   |
 | `deepinfra`           | Record<string, *any*> | :heavy_minus_sign:    | N/A                   |
 | `deepseek`            | Record<string, *any*> | :heavy_minus_sign:    | N/A                   |
 | `dekallm`             | Record<string, *any*> | :heavy_minus_sign:    | N/A                   |
@@ -108,6 +109,7 @@ let value: ProviderOptions = {};
 | `reka`                | Record<string, *any*> | :heavy_minus_sign:    | N/A                   |
 | `relace`              | Record<string, *any*> | :heavy_minus_sign:    | N/A                   |
 | `replicate`           | Record<string, *any*> | :heavy_minus_sign:    | N/A                   |
+| `sakanaAi`            | Record<string, *any*> | :heavy_minus_sign:    | N/A                   |
 | `sambanova`           | Record<string, *any*> | :heavy_minus_sign:    | N/A                   |
 | `sambanovaCloaked`    | Record<string, *any*> | :heavy_minus_sign:    | N/A                   |
 | `seed`                | Record<string, *any*> | :heavy_minus_sign:    | N/A                   |
@@ -119,6 +121,7 @@ let value: ProviderOptions = {};
 | `streamlake`          | Record<string, *any*> | :heavy_minus_sign:    | N/A                   |
 | `switchpoint`         | Record<string, *any*> | :heavy_minus_sign:    | N/A                   |
 | `targon`              | Record<string, *any*> | :heavy_minus_sign:    | N/A                   |
+| `tenstorrent`         | Record<string, *any*> | :heavy_minus_sign:    | N/A                   |
 | `together`            | Record<string, *any*> | :heavy_minus_sign:    | N/A                   |
 | `togetherLite`        | Record<string, *any*> | :heavy_minus_sign:    | N/A                   |
 | `ubicloud`            | Record<string, *any*> | :heavy_minus_sign:    | N/A                   |
