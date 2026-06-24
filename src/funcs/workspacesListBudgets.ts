@@ -32,7 +32,7 @@ import { Result } from "../types/fp.js";
  * List workspace budgets
  *
  * @remarks
- * List all budgets configured for a workspace. [Management key](/docs/guides/overview/auth/management-api-keys) required.
+ * List all budgets configured for a workspace. Requires a [management key](/docs/guides/overview/auth/management-api-keys) — standard API keys used for inference will not work.
  */
 export function workspacesListBudgets(
   client: OpenRouterCore,

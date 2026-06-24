@@ -31,7 +31,7 @@ import { Result } from "../types/fp.js";
  * Query analytics data
  *
  * @remarks
- * Execute an analytics query with specified metrics, dimensions, filters, and time range. [Management key](/docs/guides/overview/auth/management-api-keys) required.
+ * Execute an analytics query with specified metrics, dimensions, filters, and time range. Requires a [management key](/docs/guides/overview/auth/management-api-keys) — standard API keys used for inference will not work.
  */
 export function betaAnalyticsQueryAnalytics(
   client: OpenRouterCore,

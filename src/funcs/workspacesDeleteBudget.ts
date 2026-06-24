@@ -32,7 +32,7 @@ import { Result } from "../types/fp.js";
  * Delete a workspace budget
  *
  * @remarks
- * Remove the budget for a given interval. [Management key](/docs/guides/overview/auth/management-api-keys) required.
+ * Remove the budget for a given interval. Requires a [management key](/docs/guides/overview/auth/management-api-keys) — standard API keys used for inference will not work.
  */
 export function workspacesDeleteBudget(
   client: OpenRouterCore,

@@ -32,7 +32,7 @@ import { Result } from "../types/fp.js";
  * Update a guardrail
  *
  * @remarks
- * Update an existing guardrail. [Management key](/docs/guides/overview/auth/management-api-keys) required.
+ * Update an existing guardrail. Requires a [management key](/docs/guides/overview/auth/management-api-keys) — standard API keys used for inference will not work.
  */
 export function guardrailsUpdate(
   client: OpenRouterCore,

@@ -32,7 +32,7 @@ import { Result } from "../types/fp.js";
  * Get a guardrail
  *
  * @remarks
- * Get a single guardrail by ID. [Management key](/docs/guides/overview/auth/management-api-keys) required.
+ * Get a single guardrail by ID. Requires a [management key](/docs/guides/overview/auth/management-api-keys) — standard API keys used for inference will not work.
  */
 export function guardrailsGet(
   client: OpenRouterCore,
