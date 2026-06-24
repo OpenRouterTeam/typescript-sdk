@@ -31,7 +31,7 @@ import { Result } from "../types/fp.js";
  * Update an API key
  *
  * @remarks
- * Update an existing API key. [Management key](/docs/guides/overview/auth/management-api-keys) required.
+ * Update an existing API key. Requires a [management key](/docs/guides/overview/auth/management-api-keys) — standard API keys used for inference will not work.
  */
 export function apiKeysUpdate(
   client: OpenRouterCore,

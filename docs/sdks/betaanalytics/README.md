@@ -11,7 +11,7 @@ beta.Analytics endpoints
 
 ## getAnalyticsMeta
 
-Returns the available metrics, dimensions, filter operators, and granularities for the analytics query endpoint. [Management key](/docs/guides/overview/auth/management-api-keys) required.
+Returns the available metrics, dimensions, filter operators, and granularities for the analytics query endpoint. Requires a [management key](/docs/guides/overview/auth/management-api-keys) — standard API keys used for inference will not work.
 
 ### Example Usage
 
@@ -89,7 +89,7 @@ run();
 
 ## queryAnalytics
 
-Execute an analytics query with specified metrics, dimensions, filters, and time range. [Management key](/docs/guides/overview/auth/management-api-keys) required.
+Execute an analytics query with specified metrics, dimensions, filters, and time range. Requires a [management key](/docs/guides/overview/auth/management-api-keys) — standard API keys used for inference will not work.
 
 ### Example Usage
 

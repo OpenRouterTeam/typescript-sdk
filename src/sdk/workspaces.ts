@@ -24,7 +24,7 @@ export class Workspaces extends ClientSDK {
    * List workspaces
    *
    * @remarks
-   * List all workspaces for the authenticated user. [Management key](/docs/guides/overview/auth/management-api-keys) required.
+   * List all workspaces for the authenticated user. Requires a [management key](/docs/guides/overview/auth/management-api-keys) — standard API keys used for inference will not work.
    */
   async list(
     request?: operations.ListWorkspacesRequest | undefined,
@@ -43,7 +43,7 @@ export class Workspaces extends ClientSDK {
    * Create a workspace
    *
    * @remarks
-   * Create a new workspace for the authenticated user. [Management key](/docs/guides/overview/auth/management-api-keys) required.
+   * Create a new workspace for the authenticated user. Requires a [management key](/docs/guides/overview/auth/management-api-keys) — standard API keys used for inference will not work.
    */
   async create(
     request: operations.CreateWorkspaceRequest,
@@ -60,7 +60,7 @@ export class Workspaces extends ClientSDK {
    * Delete a workspace
    *
    * @remarks
-   * Delete an existing workspace. The default workspace cannot be deleted. Workspaces with active API keys cannot be deleted. [Management key](/docs/guides/overview/auth/management-api-keys) required.
+   * Delete an existing workspace. The default workspace cannot be deleted. Workspaces with active API keys cannot be deleted. Requires a [management key](/docs/guides/overview/auth/management-api-keys) — standard API keys used for inference will not work.
    */
   async delete(
     request: operations.DeleteWorkspaceRequest,
@@ -77,7 +77,7 @@ export class Workspaces extends ClientSDK {
    * Get a workspace
    *
    * @remarks
-   * Get a single workspace by ID or slug. [Management key](/docs/guides/overview/auth/management-api-keys) required.
+   * Get a single workspace by ID or slug. Requires a [management key](/docs/guides/overview/auth/management-api-keys) — standard API keys used for inference will not work.
    */
   async get(
     request: operations.GetWorkspaceRequest,
@@ -94,7 +94,7 @@ export class Workspaces extends ClientSDK {
    * Update a workspace
    *
    * @remarks
-   * Update an existing workspace by ID or slug. [Management key](/docs/guides/overview/auth/management-api-keys) required.
+   * Update an existing workspace by ID or slug. Requires a [management key](/docs/guides/overview/auth/management-api-keys) — standard API keys used for inference will not work.
    */
   async update(
     request: operations.UpdateWorkspaceRequest,
@@ -111,7 +111,7 @@ export class Workspaces extends ClientSDK {
    * List workspace budgets
    *
    * @remarks
-   * List all budgets configured for a workspace. [Management key](/docs/guides/overview/auth/management-api-keys) required.
+   * List all budgets configured for a workspace. Requires a [management key](/docs/guides/overview/auth/management-api-keys) — standard API keys used for inference will not work.
    */
   async listBudgets(
     request: operations.ListWorkspaceBudgetsRequest,
@@ -128,7 +128,7 @@ export class Workspaces extends ClientSDK {
    * Delete a workspace budget
    *
    * @remarks
-   * Remove the budget for a given interval. [Management key](/docs/guides/overview/auth/management-api-keys) required.
+   * Remove the budget for a given interval. Requires a [management key](/docs/guides/overview/auth/management-api-keys) — standard API keys used for inference will not work.
    */
   async deleteBudget(
     request: operations.DeleteWorkspaceBudgetRequest,
@@ -145,7 +145,7 @@ export class Workspaces extends ClientSDK {
    * Create or update a workspace budget
    *
    * @remarks
-   * Create or update the budget for a given interval. Budget limits must strictly decrease as the interval narrows (lifetime > monthly > weekly > daily). [Management key](/docs/guides/overview/auth/management-api-keys) required.
+   * Create or update the budget for a given interval. Budget limits must strictly decrease as the interval narrows (lifetime > monthly > weekly > daily). Requires a [management key](/docs/guides/overview/auth/management-api-keys) — standard API keys used for inference will not work.
    */
   async setBudget(
     request: operations.UpsertWorkspaceBudgetRequest,
@@ -162,7 +162,7 @@ export class Workspaces extends ClientSDK {
    * Bulk add members to a workspace
    *
    * @remarks
-   * Add multiple organization members to a workspace. Members are assigned the same role they hold in the organization. [Management key](/docs/guides/overview/auth/management-api-keys) required.
+   * Add multiple organization members to a workspace. Members are assigned the same role they hold in the organization. Requires a [management key](/docs/guides/overview/auth/management-api-keys) — standard API keys used for inference will not work.
    */
   async bulkAddMembers(
     request: operations.BulkAddWorkspaceMembersRequest,
@@ -179,7 +179,7 @@ export class Workspaces extends ClientSDK {
    * Bulk remove members from a workspace
    *
    * @remarks
-   * Remove multiple members from a workspace. Members with active API keys in the workspace cannot be removed. [Management key](/docs/guides/overview/auth/management-api-keys) required.
+   * Remove multiple members from a workspace. Members with active API keys in the workspace cannot be removed. Requires a [management key](/docs/guides/overview/auth/management-api-keys) — standard API keys used for inference will not work.
    */
   async bulkRemoveMembers(
     request: operations.BulkRemoveWorkspaceMembersRequest,

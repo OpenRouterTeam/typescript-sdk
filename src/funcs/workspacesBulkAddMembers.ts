@@ -32,7 +32,7 @@ import { Result } from "../types/fp.js";
  * Bulk add members to a workspace
  *
  * @remarks
- * Add multiple organization members to a workspace. Members are assigned the same role they hold in the organization. [Management key](/docs/guides/overview/auth/management-api-keys) required.
+ * Add multiple organization members to a workspace. Members are assigned the same role they hold in the organization. Requires a [management key](/docs/guides/overview/auth/management-api-keys) — standard API keys used for inference will not work.
  */
 export function workspacesBulkAddMembers(
   client: OpenRouterCore,

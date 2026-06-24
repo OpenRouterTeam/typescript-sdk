@@ -92,7 +92,7 @@ run();
 
 ## list
 
-List all API keys for the authenticated user. [Management key](/docs/guides/overview/auth/management-api-keys) required.
+List all API keys for the authenticated user. Requires a [management key](/docs/guides/overview/auth/management-api-keys) — standard API keys used for inference will not work.
 
 ### Example Usage
 
@@ -170,7 +170,7 @@ run();
 
 ## create
 
-Create a new API key for the authenticated user. [Management key](/docs/guides/overview/auth/management-api-keys) required.
+Create a new API key for the authenticated user. Requires a [management key](/docs/guides/overview/auth/management-api-keys) — standard API keys used for inference will not work.
 
 ### Example Usage
 
@@ -266,7 +266,7 @@ run();
 
 ## delete
 
-Delete an existing API key. [Management key](/docs/guides/overview/auth/management-api-keys) required.
+Delete an existing API key. Requires a [management key](/docs/guides/overview/auth/management-api-keys) — standard API keys used for inference will not work.
 
 ### Example Usage
 
@@ -349,7 +349,7 @@ run();
 
 ## get
 
-Get a single API key by hash. [Management key](/docs/guides/overview/auth/management-api-keys) required.
+Get a single API key by hash. Requires a [management key](/docs/guides/overview/auth/management-api-keys) — standard API keys used for inference will not work.
 
 ### Example Usage
 
@@ -432,7 +432,7 @@ run();
 
 ## update
 
-Update an existing API key. [Management key](/docs/guides/overview/auth/management-api-keys) required.
+Update an existing API key. Requires a [management key](/docs/guides/overview/auth/management-api-keys) — standard API keys used for inference will not work.
 
 ### Example Usage
 

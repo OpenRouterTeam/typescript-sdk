@@ -38,7 +38,7 @@ import {
  * List key assignments for a guardrail
  *
  * @remarks
- * List all API key assignments for a specific guardrail. [Management key](/docs/guides/overview/auth/management-api-keys) required.
+ * List all API key assignments for a specific guardrail. Requires a [management key](/docs/guides/overview/auth/management-api-keys) — standard API keys used for inference will not work.
  */
 export function guardrailsListGuardrailKeyAssignments(
   client: OpenRouterCore,

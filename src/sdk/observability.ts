@@ -19,7 +19,7 @@ export class Observability extends ClientSDK {
    * List observability destinations
    *
    * @remarks
-   * List the observability destinations configured for the authenticated entity's default workspace. Use the `workspace_id` query parameter to scope the result to a different workspace. Only destinations with stable release status are surfaced — destinations of other types are excluded. [Management key](/docs/guides/overview/auth/management-api-keys) required.
+   * List the observability destinations configured for the authenticated entity's default workspace. Use the `workspace_id` query parameter to scope the result to a different workspace. Only destinations with stable release status are surfaced — destinations of other types are excluded. Requires a [management key](/docs/guides/overview/auth/management-api-keys) — standard API keys used for inference will not work.
    */
   async list(
     request?: operations.ListObservabilityDestinationsRequest | undefined,
@@ -41,7 +41,7 @@ export class Observability extends ClientSDK {
    * Create an observability destination
    *
    * @remarks
-   * Create a new observability destination. A maximum of 5 destinations per type is allowed. Defaults to the authenticated entity's default workspace; use the `workspace_id` body field to scope to a different workspace. [Management key](/docs/guides/overview/auth/management-api-keys) required.
+   * Create a new observability destination. A maximum of 5 destinations per type is allowed. Defaults to the authenticated entity's default workspace; use the `workspace_id` body field to scope to a different workspace. Requires a [management key](/docs/guides/overview/auth/management-api-keys) — standard API keys used for inference will not work.
    */
   async create(
     request: operations.CreateObservabilityDestinationRequest,
@@ -58,7 +58,7 @@ export class Observability extends ClientSDK {
    * Delete an observability destination
    *
    * @remarks
-   * Delete an existing observability destination. This performs a soft delete. [Management key](/docs/guides/overview/auth/management-api-keys) required.
+   * Delete an existing observability destination. This performs a soft delete. Requires a [management key](/docs/guides/overview/auth/management-api-keys) — standard API keys used for inference will not work.
    */
   async delete(
     request: operations.DeleteObservabilityDestinationRequest,
@@ -75,7 +75,7 @@ export class Observability extends ClientSDK {
    * Get an observability destination
    *
    * @remarks
-   * Fetch a single observability destination by its UUID. [Management key](/docs/guides/overview/auth/management-api-keys) required.
+   * Fetch a single observability destination by its UUID. Requires a [management key](/docs/guides/overview/auth/management-api-keys) — standard API keys used for inference will not work.
    */
   async get(
     request: operations.GetObservabilityDestinationRequest,
@@ -92,7 +92,7 @@ export class Observability extends ClientSDK {
    * Update an observability destination
    *
    * @remarks
-   * Update an existing observability destination. Only the fields provided in the request body are updated. [Management key](/docs/guides/overview/auth/management-api-keys) required.
+   * Update an existing observability destination. Only the fields provided in the request body are updated. Requires a [management key](/docs/guides/overview/auth/management-api-keys) — standard API keys used for inference will not work.
    */
   async update(
     request: operations.UpdateObservabilityDestinationRequest,

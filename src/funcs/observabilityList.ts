@@ -38,7 +38,7 @@ import {
  * List observability destinations
  *
  * @remarks
- * List the observability destinations configured for the authenticated entity's default workspace. Use the `workspace_id` query parameter to scope the result to a different workspace. Only destinations with stable release status are surfaced — destinations of other types are excluded. [Management key](/docs/guides/overview/auth/management-api-keys) required.
+ * List the observability destinations configured for the authenticated entity's default workspace. Use the `workspace_id` query parameter to scope the result to a different workspace. Only destinations with stable release status are surfaced — destinations of other types are excluded. Requires a [management key](/docs/guides/overview/auth/management-api-keys) — standard API keys used for inference will not work.
  */
 export function observabilityList(
   client: OpenRouterCore,

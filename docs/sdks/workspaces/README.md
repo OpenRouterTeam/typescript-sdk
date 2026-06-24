@@ -19,7 +19,7 @@ Workspaces endpoints
 
 ## list
 
-List all workspaces for the authenticated user. [Management key](/docs/guides/overview/auth/management-api-keys) required.
+List all workspaces for the authenticated user. Requires a [management key](/docs/guides/overview/auth/management-api-keys) — standard API keys used for inference will not work.
 
 ### Example Usage
 
@@ -100,7 +100,7 @@ run();
 
 ## create
 
-Create a new workspace for the authenticated user. [Management key](/docs/guides/overview/auth/management-api-keys) required.
+Create a new workspace for the authenticated user. Requires a [management key](/docs/guides/overview/auth/management-api-keys) — standard API keys used for inference will not work.
 
 ### Example Usage
 
@@ -197,7 +197,7 @@ run();
 
 ## delete
 
-Delete an existing workspace. The default workspace cannot be deleted. Workspaces with active API keys cannot be deleted. [Management key](/docs/guides/overview/auth/management-api-keys) required.
+Delete an existing workspace. The default workspace cannot be deleted. Workspaces with active API keys cannot be deleted. Requires a [management key](/docs/guides/overview/auth/management-api-keys) — standard API keys used for inference will not work.
 
 ### Example Usage
 
@@ -281,7 +281,7 @@ run();
 
 ## get
 
-Get a single workspace by ID or slug. [Management key](/docs/guides/overview/auth/management-api-keys) required.
+Get a single workspace by ID or slug. Requires a [management key](/docs/guides/overview/auth/management-api-keys) — standard API keys used for inference will not work.
 
 ### Example Usage
 
@@ -363,7 +363,7 @@ run();
 
 ## update
 
-Update an existing workspace by ID or slug. [Management key](/docs/guides/overview/auth/management-api-keys) required.
+Update an existing workspace by ID or slug. Requires a [management key](/docs/guides/overview/auth/management-api-keys) — standard API keys used for inference will not work.
 
 ### Example Usage
 
@@ -455,7 +455,7 @@ run();
 
 ## listBudgets
 
-List all budgets configured for a workspace. [Management key](/docs/guides/overview/auth/management-api-keys) required.
+List all budgets configured for a workspace. Requires a [management key](/docs/guides/overview/auth/management-api-keys) — standard API keys used for inference will not work.
 
 ### Example Usage
 
@@ -537,7 +537,7 @@ run();
 
 ## deleteBudget
 
-Remove the budget for a given interval. [Management key](/docs/guides/overview/auth/management-api-keys) required.
+Remove the budget for a given interval. Requires a [management key](/docs/guides/overview/auth/management-api-keys) — standard API keys used for inference will not work.
 
 ### Example Usage
 
@@ -621,7 +621,7 @@ run();
 
 ## setBudget
 
-Create or update the budget for a given interval. Budget limits must strictly decrease as the interval narrows (lifetime > monthly > weekly > daily). [Management key](/docs/guides/overview/auth/management-api-keys) required.
+Create or update the budget for a given interval. Budget limits must strictly decrease as the interval narrows (lifetime > monthly > weekly > daily). Requires a [management key](/docs/guides/overview/auth/management-api-keys) — standard API keys used for inference will not work.
 
 ### Example Usage
 
@@ -712,7 +712,7 @@ run();
 
 ## bulkAddMembers
 
-Add multiple organization members to a workspace. Members are assigned the same role they hold in the organization. [Management key](/docs/guides/overview/auth/management-api-keys) required.
+Add multiple organization members to a workspace. Members are assigned the same role they hold in the organization. Requires a [management key](/docs/guides/overview/auth/management-api-keys) — standard API keys used for inference will not work.
 
 ### Example Usage
 
@@ -808,7 +808,7 @@ run();
 
 ## bulkRemoveMembers
 
-Remove multiple members from a workspace. Members with active API keys in the workspace cannot be removed. [Management key](/docs/guides/overview/auth/management-api-keys) required.
+Remove multiple members from a workspace. Members with active API keys in the workspace cannot be removed. Requires a [management key](/docs/guides/overview/auth/management-api-keys) — standard API keys used for inference will not work.
 
 ### Example Usage
 

@@ -14,7 +14,7 @@ export class Analytics extends ClientSDK {
    * Get user activity grouped by endpoint
    *
    * @remarks
-   * Returns user activity data grouped by endpoint for the last 30 (completed) UTC days. [Management key](/docs/guides/overview/auth/management-api-keys) required.
+   * Returns user activity data grouped by endpoint for the last 30 (completed) UTC days. Requires a [management key](/docs/guides/overview/auth/management-api-keys) — standard API keys used for inference will not work.
    */
   async getUserActivity(
     request?: operations.GetUserActivityRequest | undefined,

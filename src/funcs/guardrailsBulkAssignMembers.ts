@@ -32,7 +32,7 @@ import { Result } from "../types/fp.js";
  * Bulk assign members to a guardrail
  *
  * @remarks
- * Assign multiple organization members to a specific guardrail. [Management key](/docs/guides/overview/auth/management-api-keys) required.
+ * Assign multiple organization members to a specific guardrail. Requires a [management key](/docs/guides/overview/auth/management-api-keys) — standard API keys used for inference will not work.
  */
 export function guardrailsBulkAssignMembers(
   client: OpenRouterCore,

@@ -31,7 +31,7 @@ import { Result } from "../types/fp.js";
  * Get available analytics metrics and dimensions
  *
  * @remarks
- * Returns the available metrics, dimensions, filter operators, and granularities for the analytics query endpoint. [Management key](/docs/guides/overview/auth/management-api-keys) required.
+ * Returns the available metrics, dimensions, filter operators, and granularities for the analytics query endpoint. Requires a [management key](/docs/guides/overview/auth/management-api-keys) — standard API keys used for inference will not work.
  */
 export function betaAnalyticsGetAnalyticsMeta(
   client: OpenRouterCore,

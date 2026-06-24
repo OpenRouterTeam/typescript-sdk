@@ -31,7 +31,7 @@ import { Result } from "../types/fp.js";
  * List API keys
  *
  * @remarks
- * List all API keys for the authenticated user. [Management key](/docs/guides/overview/auth/management-api-keys) required.
+ * List all API keys for the authenticated user. Requires a [management key](/docs/guides/overview/auth/management-api-keys) — standard API keys used for inference will not work.
  */
 export function apiKeysList(
   client: OpenRouterCore,

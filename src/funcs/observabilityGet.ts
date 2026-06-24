@@ -32,7 +32,7 @@ import { Result } from "../types/fp.js";
  * Get an observability destination
  *
  * @remarks
- * Fetch a single observability destination by its UUID. [Management key](/docs/guides/overview/auth/management-api-keys) required.
+ * Fetch a single observability destination by its UUID. Requires a [management key](/docs/guides/overview/auth/management-api-keys) — standard API keys used for inference will not work.
  */
 export function observabilityGet(
   client: OpenRouterCore,
