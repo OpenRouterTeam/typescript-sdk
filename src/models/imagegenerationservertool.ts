@@ -11,12 +11,14 @@ import { OpenEnum } from "../types/enums.js";
 import { Result as SafeParseResult } from "../types/fp.js";
 import { SDKValidationError } from "./errors/sdkvalidationerror.js";
 
-export const Background = {
+export const ImageGenerationServerToolBackground = {
   Transparent: "transparent",
   Opaque: "opaque",
   Auto: "auto",
 } as const;
-export type Background = OpenEnum<typeof Background>;
+export type ImageGenerationServerToolBackground = OpenEnum<
+  typeof ImageGenerationServerToolBackground
+>;
 
 export const InputFidelity = {
   High: "high",
@@ -41,20 +43,24 @@ export const Moderation = {
 } as const;
 export type Moderation = OpenEnum<typeof Moderation>;
 
-export const OutputFormat = {
+export const ImageGenerationServerToolOutputFormat = {
   Png: "png",
   Webp: "webp",
   Jpeg: "jpeg",
 } as const;
-export type OutputFormat = OpenEnum<typeof OutputFormat>;
+export type ImageGenerationServerToolOutputFormat = OpenEnum<
+  typeof ImageGenerationServerToolOutputFormat
+>;
 
-export const Quality = {
+export const ImageGenerationServerToolQuality = {
   Low: "low",
   Medium: "medium",
   High: "high",
   Auto: "auto",
 } as const;
-export type Quality = OpenEnum<typeof Quality>;
+export type ImageGenerationServerToolQuality = OpenEnum<
+  typeof ImageGenerationServerToolQuality
+>;
 
 export const Size = {
   OneThousandAndTwentyFourx1024: "1024x1024",
@@ -68,25 +74,29 @@ export type Size = OpenEnum<typeof Size>;
  * Image generation tool configuration
  */
 export type ImageGenerationServerTool = {
-  background?: Background | undefined;
+  background?: ImageGenerationServerToolBackground | undefined;
   inputFidelity?: InputFidelity | null | undefined;
   inputImageMask?: InputImageMask | undefined;
   model?: ModelEnum | undefined;
   moderation?: Moderation | undefined;
   outputCompression?: number | undefined;
-  outputFormat?: OutputFormat | undefined;
+  outputFormat?: ImageGenerationServerToolOutputFormat | undefined;
   partialImages?: number | undefined;
-  quality?: Quality | undefined;
+  quality?: ImageGenerationServerToolQuality | undefined;
   size?: Size | undefined;
   type: "image_generation";
 };
 
 /** @internal */
-export const Background$inboundSchema: z.ZodType<Background, unknown> =
-  openEnums.inboundSchema(Background);
+export const ImageGenerationServerToolBackground$inboundSchema: z.ZodType<
+  ImageGenerationServerToolBackground,
+  unknown
+> = openEnums.inboundSchema(ImageGenerationServerToolBackground);
 /** @internal */
-export const Background$outboundSchema: z.ZodType<string, Background> =
-  openEnums.outboundSchema(Background);
+export const ImageGenerationServerToolBackground$outboundSchema: z.ZodType<
+  string,
+  ImageGenerationServerToolBackground
+> = openEnums.outboundSchema(ImageGenerationServerToolBackground);
 
 /** @internal */
 export const InputFidelity$inboundSchema: z.ZodType<InputFidelity, unknown> =
@@ -154,18 +164,26 @@ export const Moderation$outboundSchema: z.ZodType<string, Moderation> =
   openEnums.outboundSchema(Moderation);
 
 /** @internal */
-export const OutputFormat$inboundSchema: z.ZodType<OutputFormat, unknown> =
-  openEnums.inboundSchema(OutputFormat);
+export const ImageGenerationServerToolOutputFormat$inboundSchema: z.ZodType<
+  ImageGenerationServerToolOutputFormat,
+  unknown
+> = openEnums.inboundSchema(ImageGenerationServerToolOutputFormat);
 /** @internal */
-export const OutputFormat$outboundSchema: z.ZodType<string, OutputFormat> =
-  openEnums.outboundSchema(OutputFormat);
+export const ImageGenerationServerToolOutputFormat$outboundSchema: z.ZodType<
+  string,
+  ImageGenerationServerToolOutputFormat
+> = openEnums.outboundSchema(ImageGenerationServerToolOutputFormat);
 
 /** @internal */
-export const Quality$inboundSchema: z.ZodType<Quality, unknown> = openEnums
-  .inboundSchema(Quality);
+export const ImageGenerationServerToolQuality$inboundSchema: z.ZodType<
+  ImageGenerationServerToolQuality,
+  unknown
+> = openEnums.inboundSchema(ImageGenerationServerToolQuality);
 /** @internal */
-export const Quality$outboundSchema: z.ZodType<string, Quality> = openEnums
-  .outboundSchema(Quality);
+export const ImageGenerationServerToolQuality$outboundSchema: z.ZodType<
+  string,
+  ImageGenerationServerToolQuality
+> = openEnums.outboundSchema(ImageGenerationServerToolQuality);
 
 /** @internal */
 export const Size$inboundSchema: z.ZodType<Size, unknown> = openEnums
@@ -179,15 +197,15 @@ export const ImageGenerationServerTool$inboundSchema: z.ZodType<
   ImageGenerationServerTool,
   unknown
 > = z.object({
-  background: Background$inboundSchema.optional(),
+  background: ImageGenerationServerToolBackground$inboundSchema.optional(),
   input_fidelity: z.nullable(InputFidelity$inboundSchema).optional(),
   input_image_mask: z.lazy(() => InputImageMask$inboundSchema).optional(),
   model: ModelEnum$inboundSchema.optional(),
   moderation: Moderation$inboundSchema.optional(),
   output_compression: z.int().optional(),
-  output_format: OutputFormat$inboundSchema.optional(),
+  output_format: ImageGenerationServerToolOutputFormat$inboundSchema.optional(),
   partial_images: z.int().optional(),
-  quality: Quality$inboundSchema.optional(),
+  quality: ImageGenerationServerToolQuality$inboundSchema.optional(),
   size: Size$inboundSchema.optional(),
   type: z.literal("image_generation"),
 }).transform((v) => {
@@ -219,15 +237,15 @@ export const ImageGenerationServerTool$outboundSchema: z.ZodType<
   ImageGenerationServerTool$Outbound,
   ImageGenerationServerTool
 > = z.object({
-  background: Background$outboundSchema.optional(),
+  background: ImageGenerationServerToolBackground$outboundSchema.optional(),
   inputFidelity: z.nullable(InputFidelity$outboundSchema).optional(),
   inputImageMask: z.lazy(() => InputImageMask$outboundSchema).optional(),
   model: ModelEnum$outboundSchema.optional(),
   moderation: Moderation$outboundSchema.optional(),
   outputCompression: z.int().optional(),
-  outputFormat: OutputFormat$outboundSchema.optional(),
+  outputFormat: ImageGenerationServerToolOutputFormat$outboundSchema.optional(),
   partialImages: z.int().optional(),
-  quality: Quality$outboundSchema.optional(),
+  quality: ImageGenerationServerToolQuality$outboundSchema.optional(),
   size: Size$outboundSchema.optional(),
   type: z.literal("image_generation"),
 }).transform((v) => {
