@@ -1,0 +1,19 @@
+# ImageGenerationRequestBackground
+
+Background treatment. `transparent` requires an output_format that supports alpha (png or webp).
+
+## Example Usage
+
+```typescript
+import { ImageGenerationRequestBackground } from "@openrouter/sdk/models";
+
+let value: ImageGenerationRequestBackground = "auto";
+
+// Open enum: unrecognized values are captured as Unrecognized<string>
+```
+
+## Values
+
+```typescript
+"auto" | "transparent" | "opaque" | Unrecognized<string>
+```
