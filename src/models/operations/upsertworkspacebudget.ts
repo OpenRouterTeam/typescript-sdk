@@ -29,6 +29,10 @@ export type UpsertWorkspaceBudgetGlobals = {
   appCategories?: string | undefined;
 };
 
+export type UpsertWorkspaceBudgetSecurity = {
+  managementKey: string;
+};
+
 export type UpsertWorkspaceBudgetRequest = {
   /**
    * The app identifier should be your app's URL and is used as the primary identifier for rankings.
@@ -59,6 +63,29 @@ export type UpsertWorkspaceBudgetRequest = {
   interval: models.WorkspaceBudgetInterval;
   upsertWorkspaceBudgetRequest: models.UpsertWorkspaceBudgetRequest;
 };
+
+/** @internal */
+export type UpsertWorkspaceBudgetSecurity$Outbound = {
+  managementKey: string;
+};
+
+/** @internal */
+export const UpsertWorkspaceBudgetSecurity$outboundSchema: z.ZodType<
+  UpsertWorkspaceBudgetSecurity$Outbound,
+  UpsertWorkspaceBudgetSecurity
+> = z.object({
+  managementKey: z.string(),
+});
+
+export function upsertWorkspaceBudgetSecurityToJSON(
+  upsertWorkspaceBudgetSecurity: UpsertWorkspaceBudgetSecurity,
+): string {
+  return JSON.stringify(
+    UpsertWorkspaceBudgetSecurity$outboundSchema.parse(
+      upsertWorkspaceBudgetSecurity,
+    ),
+  );
+}
 
 /** @internal */
 export type UpsertWorkspaceBudgetRequest$Outbound = {

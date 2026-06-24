@@ -33,6 +33,10 @@ export type QueryAnalyticsGlobals = {
   appCategories?: string | undefined;
 };
 
+export type QueryAnalyticsSecurity = {
+  managementKey: string;
+};
+
 export type Value2 = string | number;
 
 /**
@@ -144,6 +148,27 @@ export type QueryAnalyticsData2 = {
 export type QueryAnalyticsResponse = {
   data: QueryAnalyticsData2;
 };
+
+/** @internal */
+export type QueryAnalyticsSecurity$Outbound = {
+  managementKey: string;
+};
+
+/** @internal */
+export const QueryAnalyticsSecurity$outboundSchema: z.ZodType<
+  QueryAnalyticsSecurity$Outbound,
+  QueryAnalyticsSecurity
+> = z.object({
+  managementKey: z.string(),
+});
+
+export function queryAnalyticsSecurityToJSON(
+  queryAnalyticsSecurity: QueryAnalyticsSecurity,
+): string {
+  return JSON.stringify(
+    QueryAnalyticsSecurity$outboundSchema.parse(queryAnalyticsSecurity),
+  );
+}
 
 /** @internal */
 export type Value2$Outbound = string | number;

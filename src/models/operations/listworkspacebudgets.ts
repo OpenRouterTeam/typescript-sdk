@@ -28,6 +28,10 @@ export type ListWorkspaceBudgetsGlobals = {
   appCategories?: string | undefined;
 };
 
+export type ListWorkspaceBudgetsSecurity = {
+  managementKey: string;
+};
+
 export type ListWorkspaceBudgetsRequest = {
   /**
    * The app identifier should be your app's URL and is used as the primary identifier for rankings.
@@ -53,6 +57,29 @@ export type ListWorkspaceBudgetsRequest = {
    */
   id: string;
 };
+
+/** @internal */
+export type ListWorkspaceBudgetsSecurity$Outbound = {
+  managementKey: string;
+};
+
+/** @internal */
+export const ListWorkspaceBudgetsSecurity$outboundSchema: z.ZodType<
+  ListWorkspaceBudgetsSecurity$Outbound,
+  ListWorkspaceBudgetsSecurity
+> = z.object({
+  managementKey: z.string(),
+});
+
+export function listWorkspaceBudgetsSecurityToJSON(
+  listWorkspaceBudgetsSecurity: ListWorkspaceBudgetsSecurity,
+): string {
+  return JSON.stringify(
+    ListWorkspaceBudgetsSecurity$outboundSchema.parse(
+      listWorkspaceBudgetsSecurity,
+    ),
+  );
+}
 
 /** @internal */
 export type ListWorkspaceBudgetsRequest$Outbound = {

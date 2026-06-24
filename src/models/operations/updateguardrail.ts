@@ -29,6 +29,10 @@ export type UpdateGuardrailGlobals = {
   appCategories?: string | undefined;
 };
 
+export type UpdateGuardrailSecurity = {
+  managementKey: string;
+};
+
 export type UpdateGuardrailRequest = {
   /**
    * The app identifier should be your app's URL and is used as the primary identifier for rankings.
@@ -55,6 +59,27 @@ export type UpdateGuardrailRequest = {
   id: string;
   updateGuardrailRequest: models.UpdateGuardrailRequest;
 };
+
+/** @internal */
+export type UpdateGuardrailSecurity$Outbound = {
+  managementKey: string;
+};
+
+/** @internal */
+export const UpdateGuardrailSecurity$outboundSchema: z.ZodType<
+  UpdateGuardrailSecurity$Outbound,
+  UpdateGuardrailSecurity
+> = z.object({
+  managementKey: z.string(),
+});
+
+export function updateGuardrailSecurityToJSON(
+  updateGuardrailSecurity: UpdateGuardrailSecurity,
+): string {
+  return JSON.stringify(
+    UpdateGuardrailSecurity$outboundSchema.parse(updateGuardrailSecurity),
+  );
+}
 
 /** @internal */
 export type UpdateGuardrailRequest$Outbound = {

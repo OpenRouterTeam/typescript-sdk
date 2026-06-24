@@ -33,6 +33,10 @@ export type GetAnalyticsMetaGlobals = {
   appCategories?: string | undefined;
 };
 
+export type GetAnalyticsMetaSecurity = {
+  managementKey: string;
+};
+
 export type GetAnalyticsMetaRequest = {
   /**
    * The app identifier should be your app's URL and is used as the primary identifier for rankings.
@@ -180,6 +184,27 @@ export type GetAnalyticsMetaData = {
 export type GetAnalyticsMetaResponse = {
   data: GetAnalyticsMetaData;
 };
+
+/** @internal */
+export type GetAnalyticsMetaSecurity$Outbound = {
+  managementKey: string;
+};
+
+/** @internal */
+export const GetAnalyticsMetaSecurity$outboundSchema: z.ZodType<
+  GetAnalyticsMetaSecurity$Outbound,
+  GetAnalyticsMetaSecurity
+> = z.object({
+  managementKey: z.string(),
+});
+
+export function getAnalyticsMetaSecurityToJSON(
+  getAnalyticsMetaSecurity: GetAnalyticsMetaSecurity,
+): string {
+  return JSON.stringify(
+    GetAnalyticsMetaSecurity$outboundSchema.parse(getAnalyticsMetaSecurity),
+  );
+}
 
 /** @internal */
 export type GetAnalyticsMetaRequest$Outbound = {

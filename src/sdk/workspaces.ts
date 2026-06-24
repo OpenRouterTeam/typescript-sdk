@@ -27,6 +27,7 @@ export class Workspaces extends ClientSDK {
    * List all workspaces for the authenticated user. [Management key](/docs/guides/overview/auth/management-api-keys) required.
    */
   async list(
+    security: operations.ListWorkspacesSecurity,
     request?: operations.ListWorkspacesRequest | undefined,
     options?: RequestOptions,
   ): Promise<
@@ -34,6 +35,7 @@ export class Workspaces extends ClientSDK {
   > {
     return unwrapResultIterator(workspacesList(
       this,
+      security,
       request,
       options,
     ));
@@ -46,11 +48,13 @@ export class Workspaces extends ClientSDK {
    * Create a new workspace for the authenticated user. [Management key](/docs/guides/overview/auth/management-api-keys) required.
    */
   async create(
+    security: operations.CreateWorkspaceSecurity,
     request: operations.CreateWorkspaceRequest,
     options?: RequestOptions,
   ): Promise<models.CreateWorkspaceResponse> {
     return unwrapAsync(workspacesCreate(
       this,
+      security,
       request,
       options,
     ));
@@ -63,11 +67,13 @@ export class Workspaces extends ClientSDK {
    * Delete an existing workspace. The default workspace cannot be deleted. Workspaces with active API keys cannot be deleted. [Management key](/docs/guides/overview/auth/management-api-keys) required.
    */
   async delete(
+    security: operations.DeleteWorkspaceSecurity,
     request: operations.DeleteWorkspaceRequest,
     options?: RequestOptions,
   ): Promise<models.DeleteWorkspaceResponse> {
     return unwrapAsync(workspacesDelete(
       this,
+      security,
       request,
       options,
     ));
@@ -80,11 +86,13 @@ export class Workspaces extends ClientSDK {
    * Get a single workspace by ID or slug. [Management key](/docs/guides/overview/auth/management-api-keys) required.
    */
   async get(
+    security: operations.GetWorkspaceSecurity,
     request: operations.GetWorkspaceRequest,
     options?: RequestOptions,
   ): Promise<models.GetWorkspaceResponse> {
     return unwrapAsync(workspacesGet(
       this,
+      security,
       request,
       options,
     ));
@@ -97,11 +105,13 @@ export class Workspaces extends ClientSDK {
    * Update an existing workspace by ID or slug. [Management key](/docs/guides/overview/auth/management-api-keys) required.
    */
   async update(
+    security: operations.UpdateWorkspaceSecurity,
     request: operations.UpdateWorkspaceRequest,
     options?: RequestOptions,
   ): Promise<models.UpdateWorkspaceResponse> {
     return unwrapAsync(workspacesUpdate(
       this,
+      security,
       request,
       options,
     ));
@@ -114,11 +124,13 @@ export class Workspaces extends ClientSDK {
    * List all budgets configured for a workspace. [Management key](/docs/guides/overview/auth/management-api-keys) required.
    */
   async listBudgets(
+    security: operations.ListWorkspaceBudgetsSecurity,
     request: operations.ListWorkspaceBudgetsRequest,
     options?: RequestOptions,
   ): Promise<models.ListWorkspaceBudgetsResponse> {
     return unwrapAsync(workspacesListBudgets(
       this,
+      security,
       request,
       options,
     ));
@@ -131,11 +143,13 @@ export class Workspaces extends ClientSDK {
    * Remove the budget for a given interval. [Management key](/docs/guides/overview/auth/management-api-keys) required.
    */
   async deleteBudget(
+    security: operations.DeleteWorkspaceBudgetSecurity,
     request: operations.DeleteWorkspaceBudgetRequest,
     options?: RequestOptions,
   ): Promise<models.DeleteWorkspaceBudgetResponse> {
     return unwrapAsync(workspacesDeleteBudget(
       this,
+      security,
       request,
       options,
     ));
@@ -148,11 +162,13 @@ export class Workspaces extends ClientSDK {
    * Create or update the budget for a given interval. Budget limits must strictly decrease as the interval narrows (lifetime > monthly > weekly > daily). [Management key](/docs/guides/overview/auth/management-api-keys) required.
    */
   async setBudget(
+    security: operations.UpsertWorkspaceBudgetSecurity,
     request: operations.UpsertWorkspaceBudgetRequest,
     options?: RequestOptions,
   ): Promise<models.UpsertWorkspaceBudgetResponse> {
     return unwrapAsync(workspacesSetBudget(
       this,
+      security,
       request,
       options,
     ));
@@ -165,11 +181,13 @@ export class Workspaces extends ClientSDK {
    * Add multiple organization members to a workspace. Members are assigned the same role they hold in the organization. [Management key](/docs/guides/overview/auth/management-api-keys) required.
    */
   async bulkAddMembers(
+    security: operations.BulkAddWorkspaceMembersSecurity,
     request: operations.BulkAddWorkspaceMembersRequest,
     options?: RequestOptions,
   ): Promise<models.BulkAddWorkspaceMembersResponse> {
     return unwrapAsync(workspacesBulkAddMembers(
       this,
+      security,
       request,
       options,
     ));
@@ -182,11 +200,13 @@ export class Workspaces extends ClientSDK {
    * Remove multiple members from a workspace. Members with active API keys in the workspace cannot be removed. [Management key](/docs/guides/overview/auth/management-api-keys) required.
    */
   async bulkRemoveMembers(
+    security: operations.BulkRemoveWorkspaceMembersSecurity,
     request: operations.BulkRemoveWorkspaceMembersRequest,
     options?: RequestOptions,
   ): Promise<models.BulkRemoveWorkspaceMembersResponse> {
     return unwrapAsync(workspacesBulkRemoveMembers(
       this,
+      security,
       request,
       options,
     ));

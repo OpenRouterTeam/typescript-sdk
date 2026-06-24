@@ -29,6 +29,10 @@ export type CreateBYOKKeyGlobals = {
   appCategories?: string | undefined;
 };
 
+export type CreateBYOKKeySecurity = {
+  managementKey: string;
+};
+
 export type CreateBYOKKeyRequest = {
   /**
    * The app identifier should be your app's URL and is used as the primary identifier for rankings.
@@ -51,6 +55,27 @@ export type CreateBYOKKeyRequest = {
   appCategories?: string | undefined;
   createBYOKKeyRequest: models.CreateBYOKKeyRequest;
 };
+
+/** @internal */
+export type CreateBYOKKeySecurity$Outbound = {
+  managementKey: string;
+};
+
+/** @internal */
+export const CreateBYOKKeySecurity$outboundSchema: z.ZodType<
+  CreateBYOKKeySecurity$Outbound,
+  CreateBYOKKeySecurity
+> = z.object({
+  managementKey: z.string(),
+});
+
+export function createBYOKKeySecurityToJSON(
+  createBYOKKeySecurity: CreateBYOKKeySecurity,
+): string {
+  return JSON.stringify(
+    CreateBYOKKeySecurity$outboundSchema.parse(createBYOKKeySecurity),
+  );
+}
 
 /** @internal */
 export type CreateBYOKKeyRequest$Outbound = {

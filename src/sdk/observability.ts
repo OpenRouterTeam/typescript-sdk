@@ -22,6 +22,7 @@ export class Observability extends ClientSDK {
    * List the observability destinations configured for the authenticated entity's default workspace. Use the `workspace_id` query parameter to scope the result to a different workspace. Only destinations with stable release status are surfaced — destinations of other types are excluded. [Management key](/docs/guides/overview/auth/management-api-keys) required.
    */
   async list(
+    security: operations.ListObservabilityDestinationsSecurity,
     request?: operations.ListObservabilityDestinationsRequest | undefined,
     options?: RequestOptions,
   ): Promise<
@@ -32,6 +33,7 @@ export class Observability extends ClientSDK {
   > {
     return unwrapResultIterator(observabilityList(
       this,
+      security,
       request,
       options,
     ));
@@ -44,11 +46,13 @@ export class Observability extends ClientSDK {
    * Create a new observability destination. A maximum of 5 destinations per type is allowed. Defaults to the authenticated entity's default workspace; use the `workspace_id` body field to scope to a different workspace. [Management key](/docs/guides/overview/auth/management-api-keys) required.
    */
   async create(
+    security: operations.CreateObservabilityDestinationSecurity,
     request: operations.CreateObservabilityDestinationRequest,
     options?: RequestOptions,
   ): Promise<models.CreateObservabilityDestinationResponse> {
     return unwrapAsync(observabilityCreate(
       this,
+      security,
       request,
       options,
     ));
@@ -61,11 +65,13 @@ export class Observability extends ClientSDK {
    * Delete an existing observability destination. This performs a soft delete. [Management key](/docs/guides/overview/auth/management-api-keys) required.
    */
   async delete(
+    security: operations.DeleteObservabilityDestinationSecurity,
     request: operations.DeleteObservabilityDestinationRequest,
     options?: RequestOptions,
   ): Promise<models.DeleteObservabilityDestinationResponse> {
     return unwrapAsync(observabilityDelete(
       this,
+      security,
       request,
       options,
     ));
@@ -78,11 +84,13 @@ export class Observability extends ClientSDK {
    * Fetch a single observability destination by its UUID. [Management key](/docs/guides/overview/auth/management-api-keys) required.
    */
   async get(
+    security: operations.GetObservabilityDestinationSecurity,
     request: operations.GetObservabilityDestinationRequest,
     options?: RequestOptions,
   ): Promise<models.GetObservabilityDestinationResponse> {
     return unwrapAsync(observabilityGet(
       this,
+      security,
       request,
       options,
     ));
@@ -95,11 +103,13 @@ export class Observability extends ClientSDK {
    * Update an existing observability destination. Only the fields provided in the request body are updated. [Management key](/docs/guides/overview/auth/management-api-keys) required.
    */
   async update(
+    security: operations.UpdateObservabilityDestinationSecurity,
     request: operations.UpdateObservabilityDestinationRequest,
     options?: RequestOptions,
   ): Promise<models.UpdateObservabilityDestinationResponse> {
     return unwrapAsync(observabilityUpdate(
       this,
+      security,
       request,
       options,
     ));

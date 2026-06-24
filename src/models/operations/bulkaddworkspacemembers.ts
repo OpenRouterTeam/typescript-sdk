@@ -29,6 +29,10 @@ export type BulkAddWorkspaceMembersGlobals = {
   appCategories?: string | undefined;
 };
 
+export type BulkAddWorkspaceMembersSecurity = {
+  managementKey: string;
+};
+
 export type BulkAddWorkspaceMembersRequest = {
   /**
    * The app identifier should be your app's URL and is used as the primary identifier for rankings.
@@ -55,6 +59,29 @@ export type BulkAddWorkspaceMembersRequest = {
   id: string;
   bulkAddWorkspaceMembersRequest: models.BulkAddWorkspaceMembersRequest;
 };
+
+/** @internal */
+export type BulkAddWorkspaceMembersSecurity$Outbound = {
+  managementKey: string;
+};
+
+/** @internal */
+export const BulkAddWorkspaceMembersSecurity$outboundSchema: z.ZodType<
+  BulkAddWorkspaceMembersSecurity$Outbound,
+  BulkAddWorkspaceMembersSecurity
+> = z.object({
+  managementKey: z.string(),
+});
+
+export function bulkAddWorkspaceMembersSecurityToJSON(
+  bulkAddWorkspaceMembersSecurity: BulkAddWorkspaceMembersSecurity,
+): string {
+  return JSON.stringify(
+    BulkAddWorkspaceMembersSecurity$outboundSchema.parse(
+      bulkAddWorkspaceMembersSecurity,
+    ),
+  );
+}
 
 /** @internal */
 export type BulkAddWorkspaceMembersRequest$Outbound = {
