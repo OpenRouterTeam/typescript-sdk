@@ -1,0 +1,16 @@
+# AnthropicIterationCacheCreation
+
+## Example Usage
+
+```typescript
+import { AnthropicIterationCacheCreation } from "@openrouter/sdk/models";
+
+let value: AnthropicIterationCacheCreation = {};
+```
+
+## Fields
+
+| Field                    | Type                     | Required                 | Description              |
+| ------------------------ | ------------------------ | ------------------------ | ------------------------ |
+| `ephemeral1hInputTokens` | *number*                 | :heavy_minus_sign:       | N/A                      |
+| `ephemeral5mInputTokens` | *number*                 | :heavy_minus_sign:       | N/A                      |
