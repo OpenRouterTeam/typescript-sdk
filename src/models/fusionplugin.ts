@@ -7,6 +7,7 @@ import * as z from "zod/v4";
 import { remap as remap$ } from "../lib/primitives.js";
 import * as openEnums from "../types/enums.js";
 import { OpenEnum } from "../types/enums.js";
+import { FusionMode, FusionMode$outboundSchema } from "./fusionmode.js";
 
 /**
  * A curated OpenRouter fusion preset (slugs follow `<task>-<tier>`, e.g. `general-high`). Expands server-side into the preset's analysis_models panel and judge model, so callers never name individual models. Explicitly provided `analysis_models` / `model` take precedence.
@@ -45,6 +46,10 @@ export type FusionPlugin = {
    * Maximum number of tool-calling steps each panelist (analysis model) and the judge model may take during their agentic web-research loop. Models with web_search/web_fetch enabled iterate until they produce a text response or hit this ceiling. Defaults to 8. Capped at 16.
    */
   maxToolCalls?: number | undefined;
+  /**
+   * Pipeline mode. "full" (default) runs the N-panel + judge pipeline. "fast" routes to a single panel model (the first in analysis_models) without fan-out or judge synthesis — ~3x faster for mechanical turns.
+   */
+  mode?: FusionMode | undefined;
   /**
    * Slug of the model that performs both the judge step (with web_search + web_fetch) and the final synthesis. When omitted, defaults to the first model in the Quality preset.
    */
@@ -92,6 +97,7 @@ export type FusionPlugin$Outbound = {
   enabled?: boolean | undefined;
   id: "fusion";
   max_tool_calls?: number | undefined;
+  mode?: string | undefined;
   model?: string | undefined;
   preset?: string | undefined;
   tools?: Array<FusionPluginTool$Outbound> | undefined;
@@ -106,6 +112,7 @@ export const FusionPlugin$outboundSchema: z.ZodType<
   enabled: z.boolean().optional(),
   id: z.literal("fusion"),
   maxToolCalls: z.int().optional(),
+  mode: FusionMode$outboundSchema.optional(),
   model: z.string().optional(),
   preset: PresetEnum$outboundSchema.optional(),
   tools: z.array(z.lazy(() => FusionPluginTool$outboundSchema)).optional(),
