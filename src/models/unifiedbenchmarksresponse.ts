@@ -22,7 +22,7 @@ import {
   UnifiedBenchmarksMeta$inboundSchema,
 } from "./unifiedbenchmarksmeta.js";
 
-export type UnifiedBenchmarksResponseData =
+export type Data =
   | UnifiedBenchmarksAAItem
   | UnifiedBenchmarksDAItem
   | discriminatedUnionTypes.Unknown<"source">;
@@ -37,21 +37,21 @@ export type UnifiedBenchmarksResponse = {
 };
 
 /** @internal */
-export const UnifiedBenchmarksResponseData$inboundSchema: z.ZodType<
-  UnifiedBenchmarksResponseData,
-  unknown
-> = discriminatedUnion("source", {
-  ["artificial-analysis"]: UnifiedBenchmarksAAItem$inboundSchema,
-  ["design-arena"]: UnifiedBenchmarksDAItem$inboundSchema,
-});
+export const Data$inboundSchema: z.ZodType<Data, unknown> = discriminatedUnion(
+  "source",
+  {
+    ["artificial-analysis"]: UnifiedBenchmarksAAItem$inboundSchema,
+    ["design-arena"]: UnifiedBenchmarksDAItem$inboundSchema,
+  },
+);
 
-export function unifiedBenchmarksResponseDataFromJSON(
+export function dataFromJSON(
   jsonString: string,
-): SafeParseResult<UnifiedBenchmarksResponseData, SDKValidationError> {
+): SafeParseResult<Data, SDKValidationError> {
   return safeParse(
     jsonString,
-    (x) => UnifiedBenchmarksResponseData$inboundSchema.parse(JSON.parse(x)),
-    `Failed to parse 'UnifiedBenchmarksResponseData' from JSON`,
+    (x) => Data$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'Data' from JSON`,
   );
 }
 

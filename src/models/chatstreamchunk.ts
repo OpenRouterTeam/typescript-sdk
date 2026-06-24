@@ -8,7 +8,6 @@ import { remap as remap$ } from "../lib/primitives.js";
 import { safeParse } from "../lib/schemas.js";
 import { ClosedEnum } from "../types/enums.js";
 import { Result as SafeParseResult } from "../types/fp.js";
-import { ApiErrorType, ApiErrorType$inboundSchema } from "./apierrortype.js";
 import {
   ChatStreamChoice,
   ChatStreamChoice$inboundSchema,
@@ -21,23 +20,9 @@ import {
 } from "./openroutermetadata.js";
 
 /**
- * Structured error metadata
- */
-export type ChatStreamChunkMetadata = {
-  /**
-   * Canonical OpenRouter error type, stable across all API formats
-   */
-  errorType: ApiErrorType;
-  /**
-   * Upstream provider-specific error code, when available
-   */
-  providerCode?: string | undefined;
-};
-
-/**
  * Error information
  */
-export type ChatStreamChunkError = {
+export type ErrorT = {
   /**
    * Error code
    */
@@ -46,10 +31,6 @@ export type ChatStreamChunkError = {
    * Error message
    */
   message: string;
-  /**
-   * Structured error metadata
-   */
-  metadata?: ChatStreamChunkMetadata | undefined;
 };
 
 export const ChatStreamChunkObject = {
@@ -72,7 +53,7 @@ export type ChatStreamChunk = {
   /**
    * Error information
    */
-  error?: ChatStreamChunkError | undefined;
+  error?: ErrorT | undefined;
   /**
    * Unique chunk identifier
    */
@@ -98,46 +79,18 @@ export type ChatStreamChunk = {
 };
 
 /** @internal */
-export const ChatStreamChunkMetadata$inboundSchema: z.ZodType<
-  ChatStreamChunkMetadata,
-  unknown
-> = z.object({
-  error_type: ApiErrorType$inboundSchema,
-  provider_code: z.string().optional(),
-}).transform((v) => {
-  return remap$(v, {
-    "error_type": "errorType",
-    "provider_code": "providerCode",
-  });
-});
-
-export function chatStreamChunkMetadataFromJSON(
-  jsonString: string,
-): SafeParseResult<ChatStreamChunkMetadata, SDKValidationError> {
-  return safeParse(
-    jsonString,
-    (x) => ChatStreamChunkMetadata$inboundSchema.parse(JSON.parse(x)),
-    `Failed to parse 'ChatStreamChunkMetadata' from JSON`,
-  );
-}
-
-/** @internal */
-export const ChatStreamChunkError$inboundSchema: z.ZodType<
-  ChatStreamChunkError,
-  unknown
-> = z.object({
+export const ErrorT$inboundSchema: z.ZodType<ErrorT, unknown> = z.object({
   code: z.int(),
   message: z.string(),
-  metadata: z.lazy(() => ChatStreamChunkMetadata$inboundSchema).optional(),
 });
 
-export function chatStreamChunkErrorFromJSON(
+export function errorFromJSON(
   jsonString: string,
-): SafeParseResult<ChatStreamChunkError, SDKValidationError> {
+): SafeParseResult<ErrorT, SDKValidationError> {
   return safeParse(
     jsonString,
-    (x) => ChatStreamChunkError$inboundSchema.parse(JSON.parse(x)),
-    `Failed to parse 'ChatStreamChunkError' from JSON`,
+    (x) => ErrorT$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'ErrorT' from JSON`,
   );
 }
 
@@ -153,7 +106,7 @@ export const ChatStreamChunk$inboundSchema: z.ZodType<
 > = z.object({
   choices: z.array(ChatStreamChoice$inboundSchema),
   created: z.int(),
-  error: z.lazy(() => ChatStreamChunkError$inboundSchema).optional(),
+  error: z.lazy(() => ErrorT$inboundSchema).optional(),
   id: z.string(),
   model: z.string(),
   object: ChatStreamChunkObject$inboundSchema,
