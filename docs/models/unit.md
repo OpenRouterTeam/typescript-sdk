@@ -1,0 +1,17 @@
+# Unit
+
+## Example Usage
+
+```typescript
+import { Unit } from "@openrouter/sdk/models";
+
+let value: Unit = "token";
+
+// Open enum: unrecognized values are captured as Unrecognized<string>
+```
+
+## Values
+
+```typescript
+"image" | "megapixel" | "token" | Unrecognized<string>
+```
