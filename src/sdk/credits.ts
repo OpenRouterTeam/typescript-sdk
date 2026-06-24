@@ -13,7 +13,7 @@ export class Credits extends ClientSDK {
    * Get remaining credits
    *
    * @remarks
-   * Get total credits purchased and used for the authenticated user. [Management key](/docs/guides/overview/auth/management-api-keys) required.
+   * Get total credits purchased and used for the authenticated user. Requires a [management key](/docs/guides/overview/auth/management-api-keys) — standard API keys used for inference will not work.
    */
   async getCredits(
     request?: operations.GetCreditsRequest | undefined,

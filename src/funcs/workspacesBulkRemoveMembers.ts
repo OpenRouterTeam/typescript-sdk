@@ -32,7 +32,7 @@ import { Result } from "../types/fp.js";
  * Bulk remove members from a workspace
  *
  * @remarks
- * Remove multiple members from a workspace. Members with active API keys in the workspace cannot be removed. [Management key](/docs/guides/overview/auth/management-api-keys) required.
+ * Remove multiple members from a workspace. Members with active API keys in the workspace cannot be removed. Requires a [management key](/docs/guides/overview/auth/management-api-keys) — standard API keys used for inference will not work.
  */
 export function workspacesBulkRemoveMembers(
   client: OpenRouterCore,

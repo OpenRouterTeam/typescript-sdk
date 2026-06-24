@@ -32,7 +32,7 @@ import { Result } from "../types/fp.js";
  * Get a workspace
  *
  * @remarks
- * Get a single workspace by ID or slug. [Management key](/docs/guides/overview/auth/management-api-keys) required.
+ * Get a single workspace by ID or slug. Requires a [management key](/docs/guides/overview/auth/management-api-keys) — standard API keys used for inference will not work.
  */
 export function workspacesGet(
   client: OpenRouterCore,

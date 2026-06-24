@@ -38,7 +38,7 @@ import {
  * List guardrails
  *
  * @remarks
- * List all guardrails for the authenticated user. [Management key](/docs/guides/overview/auth/management-api-keys) required.
+ * List all guardrails for the authenticated user. Requires a [management key](/docs/guides/overview/auth/management-api-keys) — standard API keys used for inference will not work.
  */
 export function guardrailsList(
   client: OpenRouterCore,

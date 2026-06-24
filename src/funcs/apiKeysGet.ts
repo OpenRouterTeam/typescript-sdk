@@ -31,7 +31,7 @@ import { Result } from "../types/fp.js";
  * Get a single API key
  *
  * @remarks
- * Get a single API key by hash. [Management key](/docs/guides/overview/auth/management-api-keys) required.
+ * Get a single API key by hash. Requires a [management key](/docs/guides/overview/auth/management-api-keys) — standard API keys used for inference will not work.
  */
 export function apiKeysGet(
   client: OpenRouterCore,

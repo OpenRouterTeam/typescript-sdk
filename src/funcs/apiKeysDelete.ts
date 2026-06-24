@@ -31,7 +31,7 @@ import { Result } from "../types/fp.js";
  * Delete an API key
  *
  * @remarks
- * Delete an existing API key. [Management key](/docs/guides/overview/auth/management-api-keys) required.
+ * Delete an existing API key. Requires a [management key](/docs/guides/overview/auth/management-api-keys) — standard API keys used for inference will not work.
  */
 export function apiKeysDelete(
   client: OpenRouterCore,

@@ -32,7 +32,7 @@ import { Result } from "../types/fp.js";
  * Create or update a workspace budget
  *
  * @remarks
- * Create or update the budget for a given interval. Budget limits must strictly decrease as the interval narrows (lifetime > monthly > weekly > daily). [Management key](/docs/guides/overview/auth/management-api-keys) required.
+ * Create or update the budget for a given interval. Budget limits must strictly decrease as the interval narrows (lifetime > monthly > weekly > daily). Requires a [management key](/docs/guides/overview/auth/management-api-keys) — standard API keys used for inference will not work.
  */
 export function workspacesSetBudget(
   client: OpenRouterCore,

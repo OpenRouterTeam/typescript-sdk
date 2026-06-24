@@ -22,7 +22,7 @@ Guardrails endpoints
 
 ## list
 
-List all guardrails for the authenticated user. [Management key](/docs/guides/overview/auth/management-api-keys) required.
+List all guardrails for the authenticated user. Requires a [management key](/docs/guides/overview/auth/management-api-keys) — standard API keys used for inference will not work.
 
 ### Example Usage
 
@@ -103,7 +103,7 @@ run();
 
 ## create
 
-Create a new guardrail for the authenticated user. [Management key](/docs/guides/overview/auth/management-api-keys) required.
+Create a new guardrail for the authenticated user. Requires a [management key](/docs/guides/overview/auth/management-api-keys) — standard API keys used for inference will not work.
 
 ### Example Usage
 
@@ -220,7 +220,7 @@ run();
 
 ## delete
 
-Delete an existing guardrail. [Management key](/docs/guides/overview/auth/management-api-keys) required.
+Delete an existing guardrail. Requires a [management key](/docs/guides/overview/auth/management-api-keys) — standard API keys used for inference will not work.
 
 ### Example Usage
 
@@ -302,7 +302,7 @@ run();
 
 ## get
 
-Get a single guardrail by ID. [Management key](/docs/guides/overview/auth/management-api-keys) required.
+Get a single guardrail by ID. Requires a [management key](/docs/guides/overview/auth/management-api-keys) — standard API keys used for inference will not work.
 
 ### Example Usage
 
@@ -384,7 +384,7 @@ run();
 
 ## update
 
-Update an existing guardrail. [Management key](/docs/guides/overview/auth/management-api-keys) required.
+Update an existing guardrail. Requires a [management key](/docs/guides/overview/auth/management-api-keys) — standard API keys used for inference will not work.
 
 ### Example Usage
 
@@ -479,7 +479,7 @@ run();
 
 ## listGuardrailKeyAssignments
 
-List all API key assignments for a specific guardrail. [Management key](/docs/guides/overview/auth/management-api-keys) required.
+List all API key assignments for a specific guardrail. Requires a [management key](/docs/guides/overview/auth/management-api-keys) — standard API keys used for inference will not work.
 
 ### Example Usage
 
@@ -565,7 +565,7 @@ run();
 
 ## bulkAssignKeys
 
-Assign multiple API keys to a specific guardrail. [Management key](/docs/guides/overview/auth/management-api-keys) required.
+Assign multiple API keys to a specific guardrail. Requires a [management key](/docs/guides/overview/auth/management-api-keys) — standard API keys used for inference will not work.
 
 ### Example Usage
 
@@ -658,7 +658,7 @@ run();
 
 ## bulkUnassignKeys
 
-Unassign multiple API keys from a specific guardrail. [Management key](/docs/guides/overview/auth/management-api-keys) required.
+Unassign multiple API keys from a specific guardrail. Requires a [management key](/docs/guides/overview/auth/management-api-keys) — standard API keys used for inference will not work.
 
 ### Example Usage
 
@@ -751,7 +751,7 @@ run();
 
 ## listGuardrailMemberAssignments
 
-List all organization member assignments for a specific guardrail. [Management key](/docs/guides/overview/auth/management-api-keys) required.
+List all organization member assignments for a specific guardrail. Requires a [management key](/docs/guides/overview/auth/management-api-keys) — standard API keys used for inference will not work.
 
 ### Example Usage
 
@@ -837,7 +837,7 @@ run();
 
 ## bulkAssignMembers
 
-Assign multiple organization members to a specific guardrail. [Management key](/docs/guides/overview/auth/management-api-keys) required.
+Assign multiple organization members to a specific guardrail. Requires a [management key](/docs/guides/overview/auth/management-api-keys) — standard API keys used for inference will not work.
 
 ### Example Usage
 
@@ -932,7 +932,7 @@ run();
 
 ## bulkUnassignMembers
 
-Unassign multiple organization members from a specific guardrail. [Management key](/docs/guides/overview/auth/management-api-keys) required.
+Unassign multiple organization members from a specific guardrail. Requires a [management key](/docs/guides/overview/auth/management-api-keys) — standard API keys used for inference will not work.
 
 ### Example Usage
 
@@ -1027,7 +1027,7 @@ run();
 
 ## listKeyAssignments
 
-List all API key guardrail assignments for the authenticated user. [Management key](/docs/guides/overview/auth/management-api-keys) required.
+List all API key guardrail assignments for the authenticated user. Requires a [management key](/docs/guides/overview/auth/management-api-keys) — standard API keys used for inference will not work.
 
 ### Example Usage
 
@@ -1108,7 +1108,7 @@ run();
 
 ## listMemberAssignments
 
-List all organization member guardrail assignments for the authenticated user. [Management key](/docs/guides/overview/auth/management-api-keys) required.
+List all organization member guardrail assignments for the authenticated user. Requires a [management key](/docs/guides/overview/auth/management-api-keys) — standard API keys used for inference will not work.
 
 ### Example Usage
 
