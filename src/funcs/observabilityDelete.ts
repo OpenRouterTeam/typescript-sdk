@@ -32,7 +32,7 @@ import { Result } from "../types/fp.js";
  * Delete an observability destination
  *
  * @remarks
- * Delete an existing observability destination. This performs a soft delete. [Management key](/docs/guides/overview/auth/management-api-keys) required.
+ * Delete an existing observability destination. This performs a soft delete. Requires a [management key](/docs/guides/overview/auth/management-api-keys) — standard API keys used for inference will not work.
  */
 export function observabilityDelete(
   client: OpenRouterCore,

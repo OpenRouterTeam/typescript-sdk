@@ -32,7 +32,7 @@ import { Result } from "../types/fp.js";
  * Create a workspace
  *
  * @remarks
- * Create a new workspace for the authenticated user. [Management key](/docs/guides/overview/auth/management-api-keys) required.
+ * Create a new workspace for the authenticated user. Requires a [management key](/docs/guides/overview/auth/management-api-keys) — standard API keys used for inference will not work.
  */
 export function workspacesCreate(
   client: OpenRouterCore,

@@ -32,7 +32,7 @@ import { Result } from "../types/fp.js";
  * Delete a guardrail
  *
  * @remarks
- * Delete an existing guardrail. [Management key](/docs/guides/overview/auth/management-api-keys) required.
+ * Delete an existing guardrail. Requires a [management key](/docs/guides/overview/auth/management-api-keys) — standard API keys used for inference will not work.
  */
 export function guardrailsDelete(
   client: OpenRouterCore,
