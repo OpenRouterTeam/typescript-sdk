@@ -34,8 +34,8 @@ import { Result } from "../types/fp.js";
  * @remarks
  * Returns the top 50 public models per day by total token usage on OpenRouter, plus a
  * single aggregated `other` row per day that sums every model outside that top 50.
- * Token totals are `prompt_tokens + completion_tokens`, matching the public rankings
- * chart on openrouter.ai/rankings.
+ * Token totals are completions API `prompt_tokens + completion_tokens`, matching the
+ * public text rankings chart on openrouter.ai/rankings.
  *
  * Each row is a distinct `(date, model_permaslug)` pair. The `other` row uses the
  * reserved permaslug `other` and is always returned last within its date, so callers

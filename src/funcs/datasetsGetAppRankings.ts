@@ -40,8 +40,8 @@ import {
  * @remarks
  * Returns the top public apps on OpenRouter ranked by token usage inside the requested
  * date window, matching the public apps marketplace on openrouter.ai/apps. Token totals
- * are `prompt_tokens + completion_tokens`; hidden and private apps are excluded and
- * traffic from related app aliases is merged into the canonical visible app.
+ * are completions API `prompt_tokens + completion_tokens`; hidden and private apps are
+ * excluded and traffic from related app aliases is merged into the canonical visible app.
  *
  * `sort=popular` (default) ranks by total token volume inside the window.
  * `sort=trending` ranks by absolute excess token growth: window volume minus the average

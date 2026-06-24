@@ -4,8 +4,6 @@
  */
 
 import { datasetsGetAppRankings } from "../funcs/datasetsGetAppRankings.js";
-import { datasetsGetBenchmarksArtificialAnalysis } from "../funcs/datasetsGetBenchmarksArtificialAnalysis.js";
-import { datasetsGetBenchmarksDesignArena } from "../funcs/datasetsGetBenchmarksDesignArena.js";
 import { datasetsGetRankingsDaily } from "../funcs/datasetsGetRankingsDaily.js";
 import { ClientSDK, RequestOptions } from "../lib/sdks.js";
 import * as models from "../models/index.js";
@@ -20,8 +18,8 @@ export class Datasets extends ClientSDK {
    * @remarks
    * Returns the top public apps on OpenRouter ranked by token usage inside the requested
    * date window, matching the public apps marketplace on openrouter.ai/apps. Token totals
-   * are `prompt_tokens + completion_tokens`; hidden and private apps are excluded and
-   * traffic from related app aliases is merged into the canonical visible app.
+   * are completions API `prompt_tokens + completion_tokens`; hidden and private apps are
+   * excluded and traffic from related app aliases is merged into the canonical visible app.
    *
    * `sort=popular` (default) ranks by total token volume inside the window.
    * `sort=trending` ranks by absolute excess token growth: window volume minus the average
@@ -56,47 +54,13 @@ export class Datasets extends ClientSDK {
   }
 
   /**
-   * Artificial Analysis Benchmark Indices
-   *
-   * @remarks
-   * Returns composite index scores (Intelligence, Coding, Agentic) from Artificial Analysis for LLM models. Includes OpenRouter pricing per model. Authenticate with any valid OpenRouter API key. Rate-limited to 30 requests/minute per key and 500 requests/day per account.
-   */
-  async getBenchmarksArtificialAnalysis(
-    request?: operations.GetBenchmarksArtificialAnalysisRequest | undefined,
-    options?: RequestOptions,
-  ): Promise<models.BenchmarksAAResponse> {
-    return unwrapAsync(datasetsGetBenchmarksArtificialAnalysis(
-      this,
-      request,
-      options,
-    ));
-  }
-
-  /**
-   * Design Arena Benchmark Rankings
-   *
-   * @remarks
-   * Returns ELO ratings from head-to-head arena battles on Design Arena. Filterable by arena (models/builders/agents) and category. Includes OpenRouter pricing per model. Authenticate with any valid OpenRouter API key. Rate-limited to 30 requests/minute per key and 500 requests/day per account.
-   */
-  async getBenchmarksDesignArena(
-    request?: operations.GetBenchmarksDesignArenaRequest | undefined,
-    options?: RequestOptions,
-  ): Promise<models.BenchmarksDAResponse> {
-    return unwrapAsync(datasetsGetBenchmarksDesignArena(
-      this,
-      request,
-      options,
-    ));
-  }
-
-  /**
    * Daily token totals for top 50 models
    *
    * @remarks
    * Returns the top 50 public models per day by total token usage on OpenRouter, plus a
    * single aggregated `other` row per day that sums every model outside that top 50.
-   * Token totals are `prompt_tokens + completion_tokens`, matching the public rankings
-   * chart on openrouter.ai/rankings.
+   * Token totals are completions API `prompt_tokens + completion_tokens`, matching the
+   * public text rankings chart on openrouter.ai/rankings.
    *
    * Each row is a distinct `(date, model_permaslug)` pair. The `other` row uses the
    * reserved permaslug `other` and is always returned last within its date, so callers
