@@ -5,6 +5,20 @@
 
 import * as z from "zod/v4";
 import { remap as remap$ } from "../lib/primitives.js";
+import * as openEnums from "../types/enums.js";
+import { OpenEnum } from "../types/enums.js";
+
+/**
+ * Price source for the Pareto frontier cost axis. "prompt" uses catalog list price (endpoint.pricing.prompt). "weighted_avg" uses traffic-weighted effective input price from ClickHouse, falling back to prompt price for models without traffic data. Defaults to "prompt".
+ */
+export const PriceSource = {
+  Prompt: "prompt",
+  WeightedAvg: "weighted_avg",
+} as const;
+/**
+ * Price source for the Pareto frontier cost axis. "prompt" uses catalog list price (endpoint.pricing.prompt). "weighted_avg" uses traffic-weighted effective input price from ClickHouse, falling back to prompt price for models without traffic data. Defaults to "prompt".
+ */
+export type PriceSource = OpenEnum<typeof PriceSource>;
 
 export type ParetoRouterPlugin = {
   /**
@@ -13,16 +27,25 @@ export type ParetoRouterPlugin = {
   enabled?: boolean | undefined;
   id: "pareto-router";
   /**
-   * Minimum desired coding score between 0 and 1, where 1 is best. Higher values select from stronger coding models (sourced from Artificial Analysis coding percentiles). Maps internally to one of three tiers (low, medium, high). Omit to use the router default tier.
+   * Minimum coding quality score between 0 and 1. Maps to internal quality tiers: >= 0.66 → high (top coding models), >= 0.33 → medium (strong modern flagships), < 0.33 → low (capable coders above the median). Omit to default to the highest tier (equivalent to >= 0.66).
    */
   minCodingScore?: number | undefined;
+  /**
+   * Price source for the Pareto frontier cost axis. "prompt" uses catalog list price (endpoint.pricing.prompt). "weighted_avg" uses traffic-weighted effective input price from ClickHouse, falling back to prompt price for models without traffic data. Defaults to "prompt".
+   */
+  priceSource?: PriceSource | undefined;
 };
+
+/** @internal */
+export const PriceSource$outboundSchema: z.ZodType<string, PriceSource> =
+  openEnums.outboundSchema(PriceSource);
 
 /** @internal */
 export type ParetoRouterPlugin$Outbound = {
   enabled?: boolean | undefined;
   id: "pareto-router";
   min_coding_score?: number | undefined;
+  price_source?: string | undefined;
 };
 
 /** @internal */
@@ -33,9 +56,11 @@ export const ParetoRouterPlugin$outboundSchema: z.ZodType<
   enabled: z.boolean().optional(),
   id: z.literal("pareto-router"),
   minCodingScore: z.number().optional(),
+  priceSource: PriceSource$outboundSchema.optional(),
 }).transform((v) => {
   return remap$(v, {
     minCodingScore: "min_coding_score",
+    priceSource: "price_source",
   });
 });
 
