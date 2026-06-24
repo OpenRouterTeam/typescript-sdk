@@ -10,6 +10,7 @@ import * as discriminatedUnionTypes from "../types/discriminatedUnion.js";
 import { discriminatedUnion } from "../types/discriminatedUnion.js";
 import { ClosedEnum } from "../types/enums.js";
 import { Result as SafeParseResult } from "../types/fp.js";
+import { ApiErrorType, ApiErrorType$inboundSchema } from "./apierrortype.js";
 import {
   ApplyPatchServerTool,
   ApplyPatchServerTool$inboundSchema,
@@ -198,6 +199,10 @@ export type OpenResponsesResult = {
    */
   usage?: Usage | null | undefined;
   user?: string | null | undefined;
+  /**
+   * Canonical OpenRouter error type, stable across all API formats
+   */
+  errorType?: ApiErrorType | undefined;
   openrouterMetadata?: OpenRouterMetadata | undefined;
 };
 
@@ -315,6 +320,7 @@ export const OpenResponsesResult$inboundSchema: z.ZodType<
   truncation: z.nullable(Truncation$inboundSchema).optional(),
   usage: z.nullable(Usage$inboundSchema).optional(),
   user: z.nullable(z.string()).optional(),
+  error_type: ApiErrorType$inboundSchema.optional(),
   openrouter_metadata: OpenRouterMetadata$inboundSchema.optional(),
 }).transform((v) => {
   return remap$(v, {
@@ -334,6 +340,7 @@ export const OpenResponsesResult$inboundSchema: z.ZodType<
     "tool_choice": "toolChoice",
     "top_logprobs": "topLogprobs",
     "top_p": "topP",
+    "error_type": "errorType",
     "openrouter_metadata": "openrouterMetadata",
   });
 });

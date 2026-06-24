@@ -7,11 +7,18 @@ import * as z from "zod/v4";
 import { remap as remap$ } from "../lib/primitives.js";
 import * as openEnums from "../types/enums.js";
 import { OpenEnum } from "../types/enums.js";
+import {
+  AnthropicCacheControlDirective,
+  AnthropicCacheControlDirective$Outbound,
+  AnthropicCacheControlDirective$outboundSchema,
+} from "./anthropiccachecontroldirective.js";
+import { FusionMode, FusionMode$outboundSchema } from "./fusionmode.js";
 
 /**
  * Reasoning effort level for panelist and judge inner calls.
  */
 export const FusionServerToolConfigEffort = {
+  Max: "max",
   Xhigh: "xhigh",
   High: "high",
   Medium: "medium",
@@ -60,6 +67,10 @@ export type FusionServerToolConfig = {
    */
   analysisModels?: Array<string> | undefined;
   /**
+   * Enable automatic prompt caching. When set at the top level, the system automatically applies cache breakpoints to the last cacheable block in the request. Currently supported for Anthropic Claude models.
+   */
+  cacheControl?: AnthropicCacheControlDirective | undefined;
+  /**
    * Maximum number of output tokens (including reasoning tokens) each panelist and the judge model may produce per inner call. Controls the total output budget so reasoning-heavy models like GPT-5.5 do not exhaust their token allowance before producing visible text. When omitted, the provider's default applies.
    */
   maxCompletionTokens?: number | undefined;
@@ -67,6 +78,10 @@ export type FusionServerToolConfig = {
    * Maximum number of tool-calling steps each panelist (analysis model) and the judge model may take during their agentic web-research loop. Models with web_search/web_fetch enabled iterate until they produce a text response or hit this ceiling. Defaults to 8. Capped at 16.
    */
   maxToolCalls?: number | undefined;
+  /**
+   * Pipeline mode. "full" (default) runs the N-panel + judge pipeline. "fast" routes to a single panel model (the first in analysis_models) without fan-out or judge synthesis — ~3x faster for mechanical turns.
+   */
+  mode?: FusionMode | undefined;
   /**
    * Slug of the judge model that produces the structured analysis JSON. Defaults to the model used in the outer API request.
    */
@@ -76,7 +91,7 @@ export type FusionServerToolConfig = {
    */
   reasoning?: FusionServerToolConfigReasoning | undefined;
   /**
-   * Sampling temperature forwarded to panelist and judge inner calls. When omitted, the provider's default applies.
+   * Temperature forwarded to panelist inner calls. The judge always runs at temperature 0 regardless of this value. When omitted, the provider's default applies.
    */
   temperature?: number | undefined;
   /**
@@ -146,8 +161,10 @@ export function fusionServerToolConfigToolToJSON(
 /** @internal */
 export type FusionServerToolConfig$Outbound = {
   analysis_models?: Array<string> | undefined;
+  cache_control?: AnthropicCacheControlDirective$Outbound | undefined;
   max_completion_tokens?: number | undefined;
   max_tool_calls?: number | undefined;
+  mode?: string | undefined;
   model?: string | undefined;
   reasoning?: FusionServerToolConfigReasoning$Outbound | undefined;
   temperature?: number | undefined;
@@ -160,8 +177,10 @@ export const FusionServerToolConfig$outboundSchema: z.ZodType<
   FusionServerToolConfig
 > = z.object({
   analysisModels: z.array(z.string()).optional(),
+  cacheControl: AnthropicCacheControlDirective$outboundSchema.optional(),
   maxCompletionTokens: z.int().optional(),
   maxToolCalls: z.int().optional(),
+  mode: FusionMode$outboundSchema.optional(),
   model: z.string().optional(),
   reasoning: z.lazy(() => FusionServerToolConfigReasoning$outboundSchema)
     .optional(),
@@ -171,6 +190,7 @@ export const FusionServerToolConfig$outboundSchema: z.ZodType<
 }).transform((v) => {
   return remap$(v, {
     analysisModels: "analysis_models",
+    cacheControl: "cache_control",
     maxCompletionTokens: "max_completion_tokens",
     maxToolCalls: "max_tool_calls",
   });
