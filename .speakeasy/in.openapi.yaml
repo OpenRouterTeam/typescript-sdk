@@ -4018,6 +4018,7 @@ components:
         - groq
         - inception
         - inceptron
+        - inferact-vllm
         - inference-net
         - infermatic
         - inflection
@@ -8225,6 +8226,7 @@ components:
           enum:
             - general-high
             - general-budget
+            - general-fast
           example: general-high
           type: string
         tools:
@@ -12481,6 +12483,7 @@ components:
                 - Ionstream
                 - Infermatic
                 - Io Net
+                - Inferact vLLM
                 - Inflection
                 - Liquid
                 - Mara
@@ -17890,6 +17893,7 @@ components:
         - Ionstream
         - Infermatic
         - Io Net
+        - Inferact vLLM
         - Inflection
         - Liquid
         - Mara
@@ -18142,6 +18146,10 @@ components:
             nullable: true
           type: object
         inceptron:
+          additionalProperties:
+            nullable: true
+          type: object
+        inferact-vllm:
           additionalProperties:
             nullable: true
           type: object
@@ -18697,6 +18705,7 @@ components:
             - Ionstream
             - Infermatic
             - Io Net
+            - Inferact vLLM
             - Inflection
             - Liquid
             - Mara
@@ -24380,6 +24389,7 @@ paths:
               - groq
               - inception
               - inceptron
+              - inferact-vllm
               - inference-net
               - infermatic
               - inflection
