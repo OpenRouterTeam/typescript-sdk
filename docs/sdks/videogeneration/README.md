@@ -261,7 +261,7 @@ run();
 
 ### Response
 
-**Promise\<[ReadableStream<Uint8Array>](../../models/.md)\>**
+**Promise\<[operations.ListVideosContentResponse](../../models/operations/listvideoscontentresponse.md)\>**
 
 ### Errors
 

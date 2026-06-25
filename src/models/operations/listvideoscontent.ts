@@ -5,6 +5,9 @@
 
 import * as z from "zod/v4";
 import { remap as remap$ } from "../../lib/primitives.js";
+import { safeParse } from "../../lib/schemas.js";
+import { Result as SafeParseResult } from "../../types/fp.js";
+import { SDKValidationError } from "../errors/sdkvalidationerror.js";
 
 export type ListVideosContentGlobals = {
   /**
@@ -52,6 +55,10 @@ export type ListVideosContentRequest = {
   index?: number | null | undefined;
 };
 
+export type ListVideosContentResponse =
+  | ReadableStream<Uint8Array>
+  | ReadableStream<Uint8Array>;
+
 /** @internal */
 export type ListVideosContentRequest$Outbound = {
   "HTTP-Referer"?: string | undefined;
@@ -82,5 +89,24 @@ export function listVideosContentRequestToJSON(
 ): string {
   return JSON.stringify(
     ListVideosContentRequest$outboundSchema.parse(listVideosContentRequest),
+  );
+}
+
+/** @internal */
+export const ListVideosContentResponse$inboundSchema: z.ZodType<
+  ListVideosContentResponse,
+  unknown
+> = z.union([
+  z.custom<ReadableStream<Uint8Array>>(x => x instanceof ReadableStream),
+  z.custom<ReadableStream<Uint8Array>>(x => x instanceof ReadableStream),
+]);
+
+export function listVideosContentResponseFromJSON(
+  jsonString: string,
+): SafeParseResult<ListVideosContentResponse, SDKValidationError> {
+  return safeParse(
+    jsonString,
+    (x) => ListVideosContentResponse$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'ListVideosContentResponse' from JSON`,
   );
 }
