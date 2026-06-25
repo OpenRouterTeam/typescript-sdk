@@ -59,9 +59,13 @@ export type Pricing = {
    */
   inputCacheRead?: string | undefined;
   /**
-   * Price in USD per cached input token (write)
+   * Price per cache-write token, in USD per token. For providers with multiple cache TTLs (e.g. Anthropic), this is the default (5-minute) cache-write rate.
    */
   inputCacheWrite?: string | undefined;
+  /**
+   * Price per 1-hour cache-write token, in USD per token. Only present for providers that price an extended (1-hour) cache TTL separately, such as Anthropic.
+   */
+  inputCacheWrite1h?: string | undefined;
   /**
    * Price in USD per internal reasoning token
    */
@@ -143,6 +147,7 @@ export const Pricing$inboundSchema: z.ZodType<Pricing, unknown> = z.object({
   input_audio_cache: z.string().optional(),
   input_cache_read: z.string().optional(),
   input_cache_write: z.string().optional(),
+  input_cache_write_1h: z.string().optional(),
   internal_reasoning: z.string().optional(),
   prompt: z.string(),
   request: z.string().optional(),
@@ -155,6 +160,7 @@ export const Pricing$inboundSchema: z.ZodType<Pricing, unknown> = z.object({
     "input_audio_cache": "inputAudioCache",
     "input_cache_read": "inputCacheRead",
     "input_cache_write": "inputCacheWrite",
+    "input_cache_write_1h": "inputCacheWrite1h",
     "internal_reasoning": "internalReasoning",
     "web_search": "webSearch",
   });
