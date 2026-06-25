@@ -3685,10 +3685,6 @@ components:
       oneOf:
         - $ref: '#/components/schemas/ContainerAutoEnvironment'
         - $ref: '#/components/schemas/ContainerReferenceEnvironment'
-    BigNumberUnion:
-      description: Price per million prompt tokens
-      example: 1000
-      type: string
     BooleanCapability:
       description: A supported-or-not flag. Present means the parameter is accepted.
       example:
@@ -18442,23 +18438,20 @@ components:
             The object specifying the maximum price you want to pay for this request. USD price per million tokens, for prompt and completion.
           properties:
             audio:
-              allOf:
-                - $ref: '#/components/schemas/BigNumberUnion'
-                - description: Price per audio unit
+              description: Maximum price in USD per audio unit
+              type: string
             completion:
-              allOf:
-                - $ref: '#/components/schemas/BigNumberUnion'
-                - description: Price per million completion tokens
+              description: Maximum price in USD per million completion tokens
+              type: string
             image:
-              allOf:
-                - $ref: '#/components/schemas/BigNumberUnion'
-                - description: Price per image
+              description: Maximum price in USD per image
+              type: string
             prompt:
-              $ref: '#/components/schemas/BigNumberUnion'
+              description: Maximum price in USD per million prompt tokens
+              type: string
             request:
-              allOf:
-                - $ref: '#/components/schemas/BigNumberUnion'
-                - description: Price per request
+              description: Maximum price in USD per request
+              type: string
           type: object
         only:
           description: >-
@@ -18777,60 +18770,49 @@ components:
         pricing:
           properties:
             audio:
-              allOf:
-                - $ref: '#/components/schemas/BigNumberUnion'
-                - description: A number or string value representing a large number
+              description: Price in USD per audio input token
+              type: string
             audio_output:
-              allOf:
-                - $ref: '#/components/schemas/BigNumberUnion'
-                - description: A number or string value representing a large number
+              description: Price in USD per audio output token
+              type: string
             completion:
-              allOf:
-                - $ref: '#/components/schemas/BigNumberUnion'
-                - description: A number or string value representing a large number
+              description: Price in USD per token for completion (output) generation
+              type: string
             discount:
+              description: >-
+                Fractional discount applied to this endpoint's pricing; the price is multiplied by (1 - discount) (0 = no discount, 1 = free)
               format: double
               type: number
             image:
-              allOf:
-                - $ref: '#/components/schemas/BigNumberUnion'
-                - description: A number or string value representing a large number
+              description: Price in USD per input image
+              type: string
             image_output:
-              allOf:
-                - $ref: '#/components/schemas/BigNumberUnion'
-                - description: A number or string value representing a large number
+              description: Price in USD per output image
+              type: string
             image_token:
-              allOf:
-                - $ref: '#/components/schemas/BigNumberUnion'
-                - description: A number or string value representing a large number
+              description: Price in USD per image token
+              type: string
             input_audio_cache:
-              allOf:
-                - $ref: '#/components/schemas/BigNumberUnion'
-                - description: A number or string value representing a large number
+              description: Price in USD per cached audio input token
+              type: string
             input_cache_read:
-              allOf:
-                - $ref: '#/components/schemas/BigNumberUnion'
-                - description: A number or string value representing a large number
+              description: Price in USD per cached input token (read)
+              type: string
             input_cache_write:
-              allOf:
-                - $ref: '#/components/schemas/BigNumberUnion'
-                - description: A number or string value representing a large number
+              description: Price in USD per cached input token (write)
+              type: string
             internal_reasoning:
-              allOf:
-                - $ref: '#/components/schemas/BigNumberUnion'
-                - description: A number or string value representing a large number
+              description: Price in USD per internal reasoning token
+              type: string
             prompt:
-              allOf:
-                - $ref: '#/components/schemas/BigNumberUnion'
-                - description: A number or string value representing a large number
+              description: Price in USD per token for prompt (input) processing
+              type: string
             request:
-              allOf:
-                - $ref: '#/components/schemas/BigNumberUnion'
-                - description: A number or string value representing a large number
+              description: Price in USD per request
+              type: string
             web_search:
-              allOf:
-                - $ref: '#/components/schemas/BigNumberUnion'
-                - description: A number or string value representing a large number
+              description: Price in USD per web search
+              type: string
           required:
             - prompt
             - completion
@@ -18900,60 +18882,49 @@ components:
         request: '0'
       properties:
         audio:
-          allOf:
-            - $ref: '#/components/schemas/BigNumberUnion'
-            - description: A number or string value representing a large number
+          description: Price in USD per audio input token
+          type: string
         audio_output:
-          allOf:
-            - $ref: '#/components/schemas/BigNumberUnion'
-            - description: A number or string value representing a large number
+          description: Price in USD per audio output token
+          type: string
         completion:
-          allOf:
-            - $ref: '#/components/schemas/BigNumberUnion'
-            - description: A number or string value representing a large number
+          description: Price in USD per token for completion (output) generation
+          type: string
         discount:
+          description: >-
+            Fractional discount applied to this endpoint's pricing; the price is multiplied by (1 - discount) (0 = no discount, 1 = free)
           format: double
           type: number
         image:
-          allOf:
-            - $ref: '#/components/schemas/BigNumberUnion'
-            - description: A number or string value representing a large number
+          description: Price in USD per input image
+          type: string
         image_output:
-          allOf:
-            - $ref: '#/components/schemas/BigNumberUnion'
-            - description: A number or string value representing a large number
+          description: Price in USD per output image
+          type: string
         image_token:
-          allOf:
-            - $ref: '#/components/schemas/BigNumberUnion'
-            - description: A number or string value representing a large number
+          description: Price in USD per image token
+          type: string
         input_audio_cache:
-          allOf:
-            - $ref: '#/components/schemas/BigNumberUnion'
-            - description: A number or string value representing a large number
+          description: Price in USD per cached audio input token
+          type: string
         input_cache_read:
-          allOf:
-            - $ref: '#/components/schemas/BigNumberUnion'
-            - description: A number or string value representing a large number
+          description: Price in USD per cached input token (read)
+          type: string
         input_cache_write:
-          allOf:
-            - $ref: '#/components/schemas/BigNumberUnion'
-            - description: A number or string value representing a large number
+          description: Price in USD per cached input token (write)
+          type: string
         internal_reasoning:
-          allOf:
-            - $ref: '#/components/schemas/BigNumberUnion'
-            - description: A number or string value representing a large number
+          description: Price in USD per internal reasoning token
+          type: string
         prompt:
-          allOf:
-            - $ref: '#/components/schemas/BigNumberUnion'
-            - description: A number or string value representing a large number
+          description: Price in USD per token for prompt (input) processing
+          type: string
         request:
-          allOf:
-            - $ref: '#/components/schemas/BigNumberUnion'
-            - description: A number or string value representing a large number
+          description: Price in USD per request
+          type: string
         web_search:
-          allOf:
-            - $ref: '#/components/schemas/BigNumberUnion'
-            - description: A number or string value representing a large number
+          description: Price in USD per web search
+          type: string
       required:
         - prompt
         - completion
