@@ -1,6 +1,6 @@
 # AdvisorNestedTool
 
-A tool made available to the advisor sub-agent. Only OpenRouter server tools (e.g. openrouter:web_search) are supported; function tools are rejected because the advisor has no way to execute them. The advisor tool may not list itself.
+A tool made available to the advisor sub-agent. Accepts function tools and OpenRouter server tools (e.g. openrouter:web_search). The advisor tool may not list itself.
 
 ## Example Usage
 
@@ -16,6 +16,7 @@ let value: AdvisorNestedTool = {
 
 | Field                               | Type                                | Required                            | Description                         | Example                             |
 | ----------------------------------- | ----------------------------------- | ----------------------------------- | ----------------------------------- | ----------------------------------- |
+| `function`                          | Record<string, *any*>               | :heavy_minus_sign:                  | N/A                                 |                                     |
 | `parameters`                        | Record<string, *any*>               | :heavy_minus_sign:                  | N/A                                 |                                     |
 | `type`                              | *string*                            | :heavy_check_mark:                  | N/A                                 |                                     |
 | `additionalProperties`              | Record<string, *any*>               | :heavy_minus_sign:                  | N/A                                 | {<br/>"type": "openrouter:web_search"<br/>} |

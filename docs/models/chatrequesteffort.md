@@ -15,5 +15,5 @@ let value: ChatRequestEffort = "medium";
 ## Values
 
 ```typescript
-"max" | "xhigh" | "high" | "medium" | "low" | "minimal" | "none" | Unrecognized<string>
+"xhigh" | "high" | "medium" | "low" | "minimal" | "none" | Unrecognized<string>
 ```

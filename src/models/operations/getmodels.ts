@@ -6,7 +6,7 @@
 import * as z from "zod/v4";
 import { remap as remap$ } from "../../lib/primitives.js";
 import * as openEnums from "../../types/enums.js";
-import { ClosedEnum, OpenEnum } from "../../types/enums.js";
+import { OpenEnum } from "../../types/enums.js";
 
 export type GetModelsGlobals = {
   /**
@@ -53,7 +53,7 @@ export const GetModelsCategory = {
 export type GetModelsCategory = OpenEnum<typeof GetModelsCategory>;
 
 /**
- * Sort the returned models server-side. Prefer this over fetching the full list and sorting client-side. Options: pricing-low-to-high, pricing-high-to-low (average prompt/completion price), context-high-to-low (context length), throughput-high-to-low, latency-low-to-high (recent median performance), most-popular, top-weekly (tokens processed in the last week), newest (creation date), intelligence-high-to-low (Artificial Analysis intelligence index), design-arena-elo-high-to-low (best Design Arena ELO across arenas). Models without a score for the chosen benchmark are placed last. When omitted, the existing default ordering is preserved.
+ * Sort the returned models server-side. Prefer this over fetching the full list and sorting client-side. Options: pricing-low-to-high, pricing-high-to-low (average prompt/completion price), context-high-to-low (context length), throughput-high-to-low, latency-low-to-high (recent median performance), most-popular, top-weekly (tokens processed in the last week), newest (creation date). When omitted, the existing default ordering is preserved.
  */
 export const GetModelsSort = {
   MostPopular: "most-popular",
@@ -64,47 +64,11 @@ export const GetModelsSort = {
   ContextHighToLow: "context-high-to-low",
   ThroughputHighToLow: "throughput-high-to-low",
   LatencyLowToHigh: "latency-low-to-high",
-  IntelligenceHighToLow: "intelligence-high-to-low",
-  DesignArenaEloHighToLow: "design-arena-elo-high-to-low",
 } as const;
 /**
- * Sort the returned models server-side. Prefer this over fetching the full list and sorting client-side. Options: pricing-low-to-high, pricing-high-to-low (average prompt/completion price), context-high-to-low (context length), throughput-high-to-low, latency-low-to-high (recent median performance), most-popular, top-weekly (tokens processed in the last week), newest (creation date), intelligence-high-to-low (Artificial Analysis intelligence index), design-arena-elo-high-to-low (best Design Arena ELO across arenas). Models without a score for the chosen benchmark are placed last. When omitted, the existing default ordering is preserved.
+ * Sort the returned models server-side. Prefer this over fetching the full list and sorting client-side. Options: pricing-low-to-high, pricing-high-to-low (average prompt/completion price), context-high-to-low (context length), throughput-high-to-low, latency-low-to-high (recent median performance), most-popular, top-weekly (tokens processed in the last week), newest (creation date). When omitted, the existing default ordering is preserved.
  */
 export type GetModelsSort = OpenEnum<typeof GetModelsSort>;
-
-/**
- * Filter by distillation capability. "true" returns only distillable models, "false" excludes them.
- */
-export const Distillable = {
-  True: "true",
-  False: "false",
-} as const;
-/**
- * Filter by distillation capability. "true" returns only distillable models, "false" excludes them.
- */
-export type Distillable = OpenEnum<typeof Distillable>;
-
-/**
- * When set to "true", return only models with zero data retention endpoints.
- */
-export const Zdr = {
-  True: "true",
-} as const;
-/**
- * When set to "true", return only models with zero data retention endpoints.
- */
-export type Zdr = ClosedEnum<typeof Zdr>;
-
-/**
- * Filter to models with endpoints in the given data region. Currently only "eu" is supported.
- */
-export const Region = {
-  Eu: "eu",
-} as const;
-/**
- * Filter to models with endpoints in the given data region. Currently only "eu" is supported.
- */
-export type Region = ClosedEnum<typeof Region>;
 
 export type GetModelsRequest = {
   /**
@@ -139,53 +103,9 @@ export type GetModelsRequest = {
    */
   outputModalities?: string | undefined;
   /**
-   * Sort the returned models server-side. Prefer this over fetching the full list and sorting client-side. Options: pricing-low-to-high, pricing-high-to-low (average prompt/completion price), context-high-to-low (context length), throughput-high-to-low, latency-low-to-high (recent median performance), most-popular, top-weekly (tokens processed in the last week), newest (creation date), intelligence-high-to-low (Artificial Analysis intelligence index), design-arena-elo-high-to-low (best Design Arena ELO across arenas). Models without a score for the chosen benchmark are placed last. When omitted, the existing default ordering is preserved.
+   * Sort the returned models server-side. Prefer this over fetching the full list and sorting client-side. Options: pricing-low-to-high, pricing-high-to-low (average prompt/completion price), context-high-to-low (context length), throughput-high-to-low, latency-low-to-high (recent median performance), most-popular, top-weekly (tokens processed in the last week), newest (creation date). When omitted, the existing default ordering is preserved.
    */
   sort?: GetModelsSort | undefined;
-  /**
-   * Free-text search by model name or slug.
-   */
-  q?: string | undefined;
-  /**
-   * Filter models by input modality. Comma-separated list of: text, image, audio, file.
-   */
-  inputModalities?: string | undefined;
-  /**
-   * Minimum context length (tokens). Models with smaller context are excluded.
-   */
-  context?: number | undefined;
-  /**
-   * Minimum prompt price in $/M tokens.
-   */
-  minPrice?: number | null | undefined;
-  /**
-   * Maximum prompt price in $/M tokens.
-   */
-  maxPrice?: number | null | undefined;
-  /**
-   * Filter models by architecture/model family (e.g. GPT, Claude, Gemini, Llama).
-   */
-  arch?: string | undefined;
-  /**
-   * Filter models by the organization that created the model. Comma-separated list of author slugs.
-   */
-  modelAuthors?: string | undefined;
-  /**
-   * Filter models by hosting provider. Comma-separated list of provider names.
-   */
-  providers?: string | undefined;
-  /**
-   * Filter by distillation capability. "true" returns only distillable models, "false" excludes them.
-   */
-  distillable?: Distillable | undefined;
-  /**
-   * When set to "true", return only models with zero data retention endpoints.
-   */
-  zdr?: Zdr | undefined;
-  /**
-   * Filter to models with endpoints in the given data region. Currently only "eu" is supported.
-   */
-  region?: Region | undefined;
 };
 
 /** @internal */
@@ -199,16 +119,6 @@ export const GetModelsSort$outboundSchema: z.ZodType<string, GetModelsSort> =
   openEnums.outboundSchema(GetModelsSort);
 
 /** @internal */
-export const Distillable$outboundSchema: z.ZodType<string, Distillable> =
-  openEnums.outboundSchema(Distillable);
-
-/** @internal */
-export const Zdr$outboundSchema: z.ZodEnum<typeof Zdr> = z.enum(Zdr);
-
-/** @internal */
-export const Region$outboundSchema: z.ZodEnum<typeof Region> = z.enum(Region);
-
-/** @internal */
 export type GetModelsRequest$Outbound = {
   "HTTP-Referer"?: string | undefined;
   appTitle?: string | undefined;
@@ -217,17 +127,6 @@ export type GetModelsRequest$Outbound = {
   supported_parameters?: string | undefined;
   output_modalities?: string | undefined;
   sort?: string | undefined;
-  q?: string | undefined;
-  input_modalities?: string | undefined;
-  context?: number | undefined;
-  min_price?: number | null | undefined;
-  max_price?: number | null | undefined;
-  arch?: string | undefined;
-  model_authors?: string | undefined;
-  providers?: string | undefined;
-  distillable?: string | undefined;
-  zdr?: string | undefined;
-  region?: string | undefined;
 };
 
 /** @internal */
@@ -242,26 +141,11 @@ export const GetModelsRequest$outboundSchema: z.ZodType<
   supportedParameters: z.string().optional(),
   outputModalities: z.string().optional(),
   sort: GetModelsSort$outboundSchema.optional(),
-  q: z.string().optional(),
-  inputModalities: z.string().optional(),
-  context: z.int().optional(),
-  minPrice: z.nullable(z.number()).optional(),
-  maxPrice: z.nullable(z.number()).optional(),
-  arch: z.string().optional(),
-  modelAuthors: z.string().optional(),
-  providers: z.string().optional(),
-  distillable: Distillable$outboundSchema.optional(),
-  zdr: Zdr$outboundSchema.optional(),
-  region: Region$outboundSchema.optional(),
 }).transform((v) => {
   return remap$(v, {
     httpReferer: "HTTP-Referer",
     supportedParameters: "supported_parameters",
     outputModalities: "output_modalities",
-    inputModalities: "input_modalities",
-    minPrice: "min_price",
-    maxPrice: "max_price",
-    modelAuthors: "model_authors",
   });
 });
 

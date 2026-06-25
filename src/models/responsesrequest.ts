@@ -38,11 +38,6 @@ import {
   BashServerTool$outboundSchema,
 } from "./bashservertool.js";
 import {
-  ChatDebugOptions,
-  ChatDebugOptions$Outbound,
-  ChatDebugOptions$outboundSchema,
-} from "./chatdebugoptions.js";
-import {
   ChatSearchModelsServerTool,
   ChatSearchModelsServerTool$Outbound,
   ChatSearchModelsServerTool$outboundSchema,
@@ -200,11 +195,6 @@ import {
   StoredPromptTemplate$outboundSchema,
 } from "./storedprompttemplate.js";
 import {
-  SubagentServerToolOpenRouter,
-  SubagentServerToolOpenRouter$Outbound,
-  SubagentServerToolOpenRouter$outboundSchema,
-} from "./subagentservertoolopenrouter.js";
-import {
   TextExtendedConfig,
   TextExtendedConfig$Outbound,
   TextExtendedConfig$outboundSchema,
@@ -289,7 +279,6 @@ export type ResponsesRequestToolUnion =
   | ApplyPatchServerTool
   | CustomTool
   | (AdvisorServerToolOpenRouter & { type: "openrouter:advisor" })
-  | (SubagentServerToolOpenRouter & { type: "openrouter:subagent" })
   | (DatetimeServerTool & { type: "openrouter:datetime" })
   | FusionServerToolOpenRouter
   | (ImageGenerationServerToolOpenRouter & {
@@ -313,10 +302,6 @@ export type ResponsesRequest = {
    * Enable automatic prompt caching. When set at the top level, the system automatically applies cache breakpoints to the last cacheable block in the request. Currently supported for Anthropic Claude models.
    */
   cacheControl?: AnthropicCacheControlDirective | undefined;
-  /**
-   * Debug options for inspecting request transformations (streaming only)
-   */
-  debug?: ChatDebugOptions | undefined;
   frequencyPenalty?: number | null | undefined;
   /**
    * Provider-specific image configuration options. Keys and values vary by model/provider. See https://openrouter.ai/docs/guides/overview/multimodal/image-generation for more details.
@@ -404,7 +389,6 @@ export type ResponsesRequest = {
       | ApplyPatchServerTool
       | CustomTool
       | (AdvisorServerToolOpenRouter & { type: "openrouter:advisor" })
-      | (SubagentServerToolOpenRouter & { type: "openrouter:subagent" })
       | (DatetimeServerTool & { type: "openrouter:datetime" })
       | FusionServerToolOpenRouter
       | (ImageGenerationServerToolOpenRouter & {
@@ -524,7 +508,6 @@ export type ResponsesRequestToolUnion$Outbound =
   | ApplyPatchServerTool$Outbound
   | CustomTool$Outbound
   | (AdvisorServerToolOpenRouter$Outbound & { type: "openrouter:advisor" })
-  | (SubagentServerToolOpenRouter$Outbound & { type: "openrouter:subagent" })
   | (DatetimeServerTool$Outbound & { type: "openrouter:datetime" })
   | FusionServerToolOpenRouter$Outbound
   | (ImageGenerationServerToolOpenRouter$Outbound & {
@@ -561,9 +544,6 @@ export const ResponsesRequestToolUnion$outboundSchema: z.ZodType<
   AdvisorServerToolOpenRouter$outboundSchema.and(
     z.object({ type: z.literal("openrouter:advisor") }),
   ),
-  SubagentServerToolOpenRouter$outboundSchema.and(
-    z.object({ type: z.literal("openrouter:subagent") }),
-  ),
   DatetimeServerTool$outboundSchema.and(
     z.object({ type: z.literal("openrouter:datetime") }),
   ),
@@ -597,7 +577,6 @@ export function responsesRequestToolUnionToJSON(
 export type ResponsesRequest$Outbound = {
   background?: boolean | null | undefined;
   cache_control?: AnthropicCacheControlDirective$Outbound | undefined;
-  debug?: ChatDebugOptions$Outbound | undefined;
   frequency_penalty?: number | null | undefined;
   image_config?: { [k: string]: ImageConfig$Outbound } | undefined;
   include?: Array<string> | null | undefined;
@@ -657,9 +636,6 @@ export type ResponsesRequest$Outbound = {
       | ApplyPatchServerTool$Outbound
       | CustomTool$Outbound
       | (AdvisorServerToolOpenRouter$Outbound & { type: "openrouter:advisor" })
-      | (SubagentServerToolOpenRouter$Outbound & {
-        type: "openrouter:subagent";
-      })
       | (DatetimeServerTool$Outbound & { type: "openrouter:datetime" })
       | FusionServerToolOpenRouter$Outbound
       | (ImageGenerationServerToolOpenRouter$Outbound & {
@@ -690,7 +666,6 @@ export const ResponsesRequest$outboundSchema: z.ZodType<
 > = z.object({
   background: z.nullable(z.boolean()).optional(),
   cacheControl: AnthropicCacheControlDirective$outboundSchema.optional(),
-  debug: ChatDebugOptions$outboundSchema.optional(),
   frequencyPenalty: z.nullable(z.number()).optional(),
   imageConfig: z.record(z.string(), ImageConfig$outboundSchema).optional(),
   include: z.nullable(z.array(ResponseIncludesEnum$outboundSchema)).optional(),
@@ -752,9 +727,6 @@ export const ResponsesRequest$outboundSchema: z.ZodType<
       CustomTool$outboundSchema,
       AdvisorServerToolOpenRouter$outboundSchema.and(
         z.object({ type: z.literal("openrouter:advisor") }),
-      ),
-      SubagentServerToolOpenRouter$outboundSchema.and(
-        z.object({ type: z.literal("openrouter:subagent") }),
       ),
       DatetimeServerTool$outboundSchema.and(
         z.object({ type: z.literal("openrouter:datetime") }),

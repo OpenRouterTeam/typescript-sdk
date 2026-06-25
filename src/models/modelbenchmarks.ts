@@ -8,10 +8,6 @@ import { remap as remap$ } from "../lib/primitives.js";
 import { safeParse } from "../lib/schemas.js";
 import { Result as SafeParseResult } from "../types/fp.js";
 import {
-  AABenchmarkEntry,
-  AABenchmarkEntry$inboundSchema,
-} from "./aabenchmarkentry.js";
-import {
   DABenchmarkEntry,
   DABenchmarkEntry$inboundSchema,
 } from "./dabenchmarkentry.js";
@@ -22,11 +18,7 @@ import { SDKValidationError } from "./errors/sdkvalidationerror.js";
  */
 export type ModelBenchmarks = {
   /**
-   * Artificial Analysis benchmark index scores.
-   */
-  artificialAnalysis?: AABenchmarkEntry | undefined;
-  /**
-   * Design Arena ELO rankings across arena+category pairs.
+   * Design Arena ELO rankings across arena+category pairs. The parent benchmarks object is omitted when the model has not been evaluated.
    */
   designArena: Array<DABenchmarkEntry>;
 };
@@ -36,11 +28,9 @@ export const ModelBenchmarks$inboundSchema: z.ZodType<
   ModelBenchmarks,
   unknown
 > = z.object({
-  artificial_analysis: AABenchmarkEntry$inboundSchema.optional(),
   design_arena: z.array(DABenchmarkEntry$inboundSchema),
 }).transform((v) => {
   return remap$(v, {
-    "artificial_analysis": "artificialAnalysis",
     "design_arena": "designArena",
   });
 });

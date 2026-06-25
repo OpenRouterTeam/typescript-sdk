@@ -22,6 +22,11 @@ import {
   ChatContentCacheControl$outboundSchema,
 } from "./chatcontentcachecontrol.js";
 import {
+  ChatDynamicServerTool,
+  ChatDynamicServerTool$Outbound,
+  ChatDynamicServerTool$outboundSchema,
+} from "./chatdynamicservertool.js";
+import {
   ChatSearchModelsServerTool,
   ChatSearchModelsServerTool$Outbound,
   ChatSearchModelsServerTool$outboundSchema,
@@ -46,11 +51,6 @@ import {
   OpenRouterWebSearchServerTool$Outbound,
   OpenRouterWebSearchServerTool$outboundSchema,
 } from "./openrouterwebsearchservertool.js";
-import {
-  SubagentServerToolOpenRouter,
-  SubagentServerToolOpenRouter$Outbound,
-  SubagentServerToolOpenRouter$outboundSchema,
-} from "./subagentservertoolopenrouter.js";
 import {
   WebFetchServerTool,
   WebFetchServerTool$Outbound,
@@ -106,10 +106,10 @@ export type ChatFunctionTool =
   | DatetimeServerTool
   | ImageGenerationServerToolOpenRouter
   | ChatSearchModelsServerTool
-  | SubagentServerToolOpenRouter
   | WebFetchServerTool
   | OpenRouterWebSearchServerTool
-  | ChatWebSearchShorthand;
+  | ChatWebSearchShorthand
+  | ChatDynamicServerTool;
 
 /** @internal */
 export type ChatFunctionToolFunctionFunction$Outbound = {
@@ -182,10 +182,10 @@ export type ChatFunctionTool$Outbound =
   | DatetimeServerTool$Outbound
   | ImageGenerationServerToolOpenRouter$Outbound
   | ChatSearchModelsServerTool$Outbound
-  | SubagentServerToolOpenRouter$Outbound
   | WebFetchServerTool$Outbound
   | OpenRouterWebSearchServerTool$Outbound
-  | ChatWebSearchShorthand$Outbound;
+  | ChatWebSearchShorthand$Outbound
+  | ChatDynamicServerTool$Outbound;
 
 /** @internal */
 export const ChatFunctionTool$outboundSchema: z.ZodType<
@@ -198,10 +198,10 @@ export const ChatFunctionTool$outboundSchema: z.ZodType<
   DatetimeServerTool$outboundSchema,
   ImageGenerationServerToolOpenRouter$outboundSchema,
   ChatSearchModelsServerTool$outboundSchema,
-  SubagentServerToolOpenRouter$outboundSchema,
   WebFetchServerTool$outboundSchema,
   OpenRouterWebSearchServerTool$outboundSchema,
   ChatWebSearchShorthand$outboundSchema,
+  ChatDynamicServerTool$outboundSchema,
 ]);
 
 export function chatFunctionToolToJSON(

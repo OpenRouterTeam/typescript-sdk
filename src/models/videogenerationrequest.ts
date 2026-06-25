@@ -21,7 +21,7 @@ import {
 /**
  * Aspect ratio of the generated video
  */
-export const VideoGenerationRequestAspectRatio = {
+export const AspectRatio = {
   OneHundredAndSixtyNine: "16:9",
   NineHundredAndSixteen: "9:16",
   Eleven: "1:1",
@@ -35,14 +35,12 @@ export const VideoGenerationRequestAspectRatio = {
 /**
  * Aspect ratio of the generated video
  */
-export type VideoGenerationRequestAspectRatio = OpenEnum<
-  typeof VideoGenerationRequestAspectRatio
->;
+export type AspectRatio = OpenEnum<typeof AspectRatio>;
 
 /**
- * Provider-specific options keyed by provider slug. Only options for the matched provider are forwarded; the rest are ignored. Unrecognized keys are silently dropped.
+ * Provider-specific options keyed by provider slug. The options for the matched provider are spread into the upstream request body.
  */
-export type VideoGenerationRequestOptions = {
+export type Options = {
   oneai?: { [k: string]: any | null } | undefined;
   ai21?: { [k: string]: any | null } | undefined;
   aionLabs?: { [k: string]: any | null } | undefined;
@@ -88,13 +86,11 @@ export type VideoGenerationRequestOptions = {
   googleVertex?: { [k: string]: any | null } | undefined;
   gopomelo?: { [k: string]: any | null } | undefined;
   groq?: { [k: string]: any | null } | undefined;
-  heygen?: { [k: string]: any | null } | undefined;
   huggingface?: { [k: string]: any | null } | undefined;
   hyperbolic?: { [k: string]: any | null } | undefined;
   hyperbolicQuantized?: { [k: string]: any | null } | undefined;
   inception?: { [k: string]: any | null } | undefined;
   inceptron?: { [k: string]: any | null } | undefined;
-  inferactVllm?: { [k: string]: any | null } | undefined;
   inferenceNet?: { [k: string]: any | null } | undefined;
   infermatic?: { [k: string]: any | null } | undefined;
   inflection?: { [k: string]: any | null } | undefined;
@@ -139,7 +135,6 @@ export type VideoGenerationRequestOptions = {
   reka?: { [k: string]: any | null } | undefined;
   relace?: { [k: string]: any | null } | undefined;
   replicate?: { [k: string]: any | null } | undefined;
-  sakanaAi?: { [k: string]: any | null } | undefined;
   sambanova?: { [k: string]: any | null } | undefined;
   sambanovaCloaked?: { [k: string]: any | null } | undefined;
   seed?: { [k: string]: any | null } | undefined;
@@ -151,7 +146,6 @@ export type VideoGenerationRequestOptions = {
   streamlake?: { [k: string]: any | null } | undefined;
   switchpoint?: { [k: string]: any | null } | undefined;
   targon?: { [k: string]: any | null } | undefined;
-  tenstorrent?: { [k: string]: any | null } | undefined;
   together?: { [k: string]: any | null } | undefined;
   togetherLite?: { [k: string]: any | null } | undefined;
   ubicloud?: { [k: string]: any | null } | undefined;
@@ -168,13 +162,13 @@ export type VideoGenerationRequestOptions = {
  * Provider-specific passthrough configuration
  */
 export type VideoGenerationRequestProvider = {
-  options?: VideoGenerationRequestOptions | undefined;
+  options?: Options | undefined;
 };
 
 /**
  * Resolution of the generated video
  */
-export const VideoGenerationRequestResolution = {
+export const Resolution = {
   FourHundredAndEightyp: "480p",
   SevenHundredAndTwentyp: "720p",
   OneThousandAndEightyp: "1080p",
@@ -185,15 +179,13 @@ export const VideoGenerationRequestResolution = {
 /**
  * Resolution of the generated video
  */
-export type VideoGenerationRequestResolution = OpenEnum<
-  typeof VideoGenerationRequestResolution
->;
+export type Resolution = OpenEnum<typeof Resolution>;
 
 export type VideoGenerationRequest = {
   /**
    * Aspect ratio of the generated video
    */
-  aspectRatio?: VideoGenerationRequestAspectRatio | undefined;
+  aspectRatio?: AspectRatio | undefined;
   /**
    * URL to receive a webhook notification when the video generation job completes. Overrides the workspace-level default callback URL if set. Must be HTTPS.
    */
@@ -223,7 +215,7 @@ export type VideoGenerationRequest = {
   /**
    * Resolution of the generated video
    */
-  resolution?: VideoGenerationRequestResolution | undefined;
+  resolution?: Resolution | undefined;
   /**
    * If specified, the generation will sample deterministically, such that repeated requests with the same seed and parameters should return the same result. Determinism is not guaranteed for all providers.
    */
@@ -235,13 +227,11 @@ export type VideoGenerationRequest = {
 };
 
 /** @internal */
-export const VideoGenerationRequestAspectRatio$outboundSchema: z.ZodType<
-  string,
-  VideoGenerationRequestAspectRatio
-> = openEnums.outboundSchema(VideoGenerationRequestAspectRatio);
+export const AspectRatio$outboundSchema: z.ZodType<string, AspectRatio> =
+  openEnums.outboundSchema(AspectRatio);
 
 /** @internal */
-export type VideoGenerationRequestOptions$Outbound = {
+export type Options$Outbound = {
   "01ai"?: { [k: string]: any | null } | undefined;
   ai21?: { [k: string]: any | null } | undefined;
   "aion-labs"?: { [k: string]: any | null } | undefined;
@@ -287,13 +277,11 @@ export type VideoGenerationRequestOptions$Outbound = {
   "google-vertex"?: { [k: string]: any | null } | undefined;
   gopomelo?: { [k: string]: any | null } | undefined;
   groq?: { [k: string]: any | null } | undefined;
-  heygen?: { [k: string]: any | null } | undefined;
   huggingface?: { [k: string]: any | null } | undefined;
   hyperbolic?: { [k: string]: any | null } | undefined;
   "hyperbolic-quantized"?: { [k: string]: any | null } | undefined;
   inception?: { [k: string]: any | null } | undefined;
   inceptron?: { [k: string]: any | null } | undefined;
-  "inferact-vllm"?: { [k: string]: any | null } | undefined;
   "inference-net"?: { [k: string]: any | null } | undefined;
   infermatic?: { [k: string]: any | null } | undefined;
   inflection?: { [k: string]: any | null } | undefined;
@@ -338,7 +326,6 @@ export type VideoGenerationRequestOptions$Outbound = {
   reka?: { [k: string]: any | null } | undefined;
   relace?: { [k: string]: any | null } | undefined;
   replicate?: { [k: string]: any | null } | undefined;
-  "sakana-ai"?: { [k: string]: any | null } | undefined;
   sambanova?: { [k: string]: any | null } | undefined;
   "sambanova-cloaked"?: { [k: string]: any | null } | undefined;
   seed?: { [k: string]: any | null } | undefined;
@@ -350,7 +337,6 @@ export type VideoGenerationRequestOptions$Outbound = {
   streamlake?: { [k: string]: any | null } | undefined;
   switchpoint?: { [k: string]: any | null } | undefined;
   targon?: { [k: string]: any | null } | undefined;
-  tenstorrent?: { [k: string]: any | null } | undefined;
   together?: { [k: string]: any | null } | undefined;
   "together-lite"?: { [k: string]: any | null } | undefined;
   ubicloud?: { [k: string]: any | null } | undefined;
@@ -364,170 +350,156 @@ export type VideoGenerationRequestOptions$Outbound = {
 };
 
 /** @internal */
-export const VideoGenerationRequestOptions$outboundSchema: z.ZodType<
-  VideoGenerationRequestOptions$Outbound,
-  VideoGenerationRequestOptions
-> = z.object({
-  oneai: z.record(z.string(), z.nullable(z.any())).optional(),
-  ai21: z.record(z.string(), z.nullable(z.any())).optional(),
-  aionLabs: z.record(z.string(), z.nullable(z.any())).optional(),
-  akashml: z.record(z.string(), z.nullable(z.any())).optional(),
-  alibaba: z.record(z.string(), z.nullable(z.any())).optional(),
-  amazonBedrock: z.record(z.string(), z.nullable(z.any())).optional(),
-  amazonNova: z.record(z.string(), z.nullable(z.any())).optional(),
-  ambient: z.record(z.string(), z.nullable(z.any())).optional(),
-  anthropic: z.record(z.string(), z.nullable(z.any())).optional(),
-  anyscale: z.record(z.string(), z.nullable(z.any())).optional(),
-  arceeAi: z.record(z.string(), z.nullable(z.any())).optional(),
-  atlasCloud: z.record(z.string(), z.nullable(z.any())).optional(),
-  atoma: z.record(z.string(), z.nullable(z.any())).optional(),
-  avian: z.record(z.string(), z.nullable(z.any())).optional(),
-  azure: z.record(z.string(), z.nullable(z.any())).optional(),
-  baidu: z.record(z.string(), z.nullable(z.any())).optional(),
-  baseten: z.record(z.string(), z.nullable(z.any())).optional(),
-  blackForestLabs: z.record(z.string(), z.nullable(z.any())).optional(),
-  byteplus: z.record(z.string(), z.nullable(z.any())).optional(),
-  centml: z.record(z.string(), z.nullable(z.any())).optional(),
-  cerebras: z.record(z.string(), z.nullable(z.any())).optional(),
-  chutes: z.record(z.string(), z.nullable(z.any())).optional(),
-  cirrascale: z.record(z.string(), z.nullable(z.any())).optional(),
-  clarifai: z.record(z.string(), z.nullable(z.any())).optional(),
-  cloudflare: z.record(z.string(), z.nullable(z.any())).optional(),
-  cohere: z.record(z.string(), z.nullable(z.any())).optional(),
-  crofai: z.record(z.string(), z.nullable(z.any())).optional(),
-  crucible: z.record(z.string(), z.nullable(z.any())).optional(),
-  crusoe: z.record(z.string(), z.nullable(z.any())).optional(),
-  darkbloom: z.record(z.string(), z.nullable(z.any())).optional(),
-  decart: z.record(z.string(), z.nullable(z.any())).optional(),
-  deepinfra: z.record(z.string(), z.nullable(z.any())).optional(),
-  deepseek: z.record(z.string(), z.nullable(z.any())).optional(),
-  dekallm: z.record(z.string(), z.nullable(z.any())).optional(),
-  digitalocean: z.record(z.string(), z.nullable(z.any())).optional(),
-  enfer: z.record(z.string(), z.nullable(z.any())).optional(),
-  fakeProvider: z.record(z.string(), z.nullable(z.any())).optional(),
-  featherless: z.record(z.string(), z.nullable(z.any())).optional(),
-  fireworks: z.record(z.string(), z.nullable(z.any())).optional(),
-  friendli: z.record(z.string(), z.nullable(z.any())).optional(),
-  gmicloud: z.record(z.string(), z.nullable(z.any())).optional(),
-  googleAiStudio: z.record(z.string(), z.nullable(z.any())).optional(),
-  googleVertex: z.record(z.string(), z.nullable(z.any())).optional(),
-  gopomelo: z.record(z.string(), z.nullable(z.any())).optional(),
-  groq: z.record(z.string(), z.nullable(z.any())).optional(),
-  heygen: z.record(z.string(), z.nullable(z.any())).optional(),
-  huggingface: z.record(z.string(), z.nullable(z.any())).optional(),
-  hyperbolic: z.record(z.string(), z.nullable(z.any())).optional(),
-  hyperbolicQuantized: z.record(z.string(), z.nullable(z.any())).optional(),
-  inception: z.record(z.string(), z.nullable(z.any())).optional(),
-  inceptron: z.record(z.string(), z.nullable(z.any())).optional(),
-  inferactVllm: z.record(z.string(), z.nullable(z.any())).optional(),
-  inferenceNet: z.record(z.string(), z.nullable(z.any())).optional(),
-  infermatic: z.record(z.string(), z.nullable(z.any())).optional(),
-  inflection: z.record(z.string(), z.nullable(z.any())).optional(),
-  inocloud: z.record(z.string(), z.nullable(z.any())).optional(),
-  ioNet: z.record(z.string(), z.nullable(z.any())).optional(),
-  ionstream: z.record(z.string(), z.nullable(z.any())).optional(),
-  klusterai: z.record(z.string(), z.nullable(z.any())).optional(),
-  lambda: z.record(z.string(), z.nullable(z.any())).optional(),
-  lepton: z.record(z.string(), z.nullable(z.any())).optional(),
-  liquid: z.record(z.string(), z.nullable(z.any())).optional(),
-  lynn: z.record(z.string(), z.nullable(z.any())).optional(),
-  lynnPrivate: z.record(z.string(), z.nullable(z.any())).optional(),
-  mancer: z.record(z.string(), z.nullable(z.any())).optional(),
-  mancerOld: z.record(z.string(), z.nullable(z.any())).optional(),
-  mara: z.record(z.string(), z.nullable(z.any())).optional(),
-  meta: z.record(z.string(), z.nullable(z.any())).optional(),
-  minimax: z.record(z.string(), z.nullable(z.any())).optional(),
-  mistral: z.record(z.string(), z.nullable(z.any())).optional(),
-  modal: z.record(z.string(), z.nullable(z.any())).optional(),
-  modelrun: z.record(z.string(), z.nullable(z.any())).optional(),
-  modular: z.record(z.string(), z.nullable(z.any())).optional(),
-  moonshotai: z.record(z.string(), z.nullable(z.any())).optional(),
-  morph: z.record(z.string(), z.nullable(z.any())).optional(),
-  ncompass: z.record(z.string(), z.nullable(z.any())).optional(),
-  nebius: z.record(z.string(), z.nullable(z.any())).optional(),
-  nexAgi: z.record(z.string(), z.nullable(z.any())).optional(),
-  nextbit: z.record(z.string(), z.nullable(z.any())).optional(),
-  nineteen: z.record(z.string(), z.nullable(z.any())).optional(),
-  novita: z.record(z.string(), z.nullable(z.any())).optional(),
-  nvidia: z.record(z.string(), z.nullable(z.any())).optional(),
-  octoai: z.record(z.string(), z.nullable(z.any())).optional(),
-  openInference: z.record(z.string(), z.nullable(z.any())).optional(),
-  openai: z.record(z.string(), z.nullable(z.any())).optional(),
-  parasail: z.record(z.string(), z.nullable(z.any())).optional(),
-  perceptron: z.record(z.string(), z.nullable(z.any())).optional(),
-  perplexity: z.record(z.string(), z.nullable(z.any())).optional(),
-  phala: z.record(z.string(), z.nullable(z.any())).optional(),
-  poolside: z.record(z.string(), z.nullable(z.any())).optional(),
-  recraft: z.record(z.string(), z.nullable(z.any())).optional(),
-  recursal: z.record(z.string(), z.nullable(z.any())).optional(),
-  reflection: z.record(z.string(), z.nullable(z.any())).optional(),
-  reka: z.record(z.string(), z.nullable(z.any())).optional(),
-  relace: z.record(z.string(), z.nullable(z.any())).optional(),
-  replicate: z.record(z.string(), z.nullable(z.any())).optional(),
-  sakanaAi: z.record(z.string(), z.nullable(z.any())).optional(),
-  sambanova: z.record(z.string(), z.nullable(z.any())).optional(),
-  sambanovaCloaked: z.record(z.string(), z.nullable(z.any())).optional(),
-  seed: z.record(z.string(), z.nullable(z.any())).optional(),
-  sfCompute: z.record(z.string(), z.nullable(z.any())).optional(),
-  siliconflow: z.record(z.string(), z.nullable(z.any())).optional(),
-  sourceful: z.record(z.string(), z.nullable(z.any())).optional(),
-  stealth: z.record(z.string(), z.nullable(z.any())).optional(),
-  stepfun: z.record(z.string(), z.nullable(z.any())).optional(),
-  streamlake: z.record(z.string(), z.nullable(z.any())).optional(),
-  switchpoint: z.record(z.string(), z.nullable(z.any())).optional(),
-  targon: z.record(z.string(), z.nullable(z.any())).optional(),
-  tenstorrent: z.record(z.string(), z.nullable(z.any())).optional(),
-  together: z.record(z.string(), z.nullable(z.any())).optional(),
-  togetherLite: z.record(z.string(), z.nullable(z.any())).optional(),
-  ubicloud: z.record(z.string(), z.nullable(z.any())).optional(),
-  upstage: z.record(z.string(), z.nullable(z.any())).optional(),
-  venice: z.record(z.string(), z.nullable(z.any())).optional(),
-  wafer: z.record(z.string(), z.nullable(z.any())).optional(),
-  wandb: z.record(z.string(), z.nullable(z.any())).optional(),
-  xai: z.record(z.string(), z.nullable(z.any())).optional(),
-  xiaomi: z.record(z.string(), z.nullable(z.any())).optional(),
-  zAi: z.record(z.string(), z.nullable(z.any())).optional(),
-}).transform((v) => {
-  return remap$(v, {
-    oneai: "01ai",
-    aionLabs: "aion-labs",
-    amazonBedrock: "amazon-bedrock",
-    amazonNova: "amazon-nova",
-    arceeAi: "arcee-ai",
-    atlasCloud: "atlas-cloud",
-    blackForestLabs: "black-forest-labs",
-    fakeProvider: "fake-provider",
-    googleAiStudio: "google-ai-studio",
-    googleVertex: "google-vertex",
-    hyperbolicQuantized: "hyperbolic-quantized",
-    inferactVllm: "inferact-vllm",
-    inferenceNet: "inference-net",
-    ioNet: "io-net",
-    lynnPrivate: "lynn-private",
-    mancerOld: "mancer-old",
-    nexAgi: "nex-agi",
-    openInference: "open-inference",
-    sakanaAi: "sakana-ai",
-    sambanovaCloaked: "sambanova-cloaked",
-    sfCompute: "sf-compute",
-    togetherLite: "together-lite",
-    zAi: "z-ai",
+export const Options$outboundSchema: z.ZodType<Options$Outbound, Options> = z
+  .object({
+    oneai: z.record(z.string(), z.nullable(z.any())).optional(),
+    ai21: z.record(z.string(), z.nullable(z.any())).optional(),
+    aionLabs: z.record(z.string(), z.nullable(z.any())).optional(),
+    akashml: z.record(z.string(), z.nullable(z.any())).optional(),
+    alibaba: z.record(z.string(), z.nullable(z.any())).optional(),
+    amazonBedrock: z.record(z.string(), z.nullable(z.any())).optional(),
+    amazonNova: z.record(z.string(), z.nullable(z.any())).optional(),
+    ambient: z.record(z.string(), z.nullable(z.any())).optional(),
+    anthropic: z.record(z.string(), z.nullable(z.any())).optional(),
+    anyscale: z.record(z.string(), z.nullable(z.any())).optional(),
+    arceeAi: z.record(z.string(), z.nullable(z.any())).optional(),
+    atlasCloud: z.record(z.string(), z.nullable(z.any())).optional(),
+    atoma: z.record(z.string(), z.nullable(z.any())).optional(),
+    avian: z.record(z.string(), z.nullable(z.any())).optional(),
+    azure: z.record(z.string(), z.nullable(z.any())).optional(),
+    baidu: z.record(z.string(), z.nullable(z.any())).optional(),
+    baseten: z.record(z.string(), z.nullable(z.any())).optional(),
+    blackForestLabs: z.record(z.string(), z.nullable(z.any())).optional(),
+    byteplus: z.record(z.string(), z.nullable(z.any())).optional(),
+    centml: z.record(z.string(), z.nullable(z.any())).optional(),
+    cerebras: z.record(z.string(), z.nullable(z.any())).optional(),
+    chutes: z.record(z.string(), z.nullable(z.any())).optional(),
+    cirrascale: z.record(z.string(), z.nullable(z.any())).optional(),
+    clarifai: z.record(z.string(), z.nullable(z.any())).optional(),
+    cloudflare: z.record(z.string(), z.nullable(z.any())).optional(),
+    cohere: z.record(z.string(), z.nullable(z.any())).optional(),
+    crofai: z.record(z.string(), z.nullable(z.any())).optional(),
+    crucible: z.record(z.string(), z.nullable(z.any())).optional(),
+    crusoe: z.record(z.string(), z.nullable(z.any())).optional(),
+    darkbloom: z.record(z.string(), z.nullable(z.any())).optional(),
+    decart: z.record(z.string(), z.nullable(z.any())).optional(),
+    deepinfra: z.record(z.string(), z.nullable(z.any())).optional(),
+    deepseek: z.record(z.string(), z.nullable(z.any())).optional(),
+    dekallm: z.record(z.string(), z.nullable(z.any())).optional(),
+    digitalocean: z.record(z.string(), z.nullable(z.any())).optional(),
+    enfer: z.record(z.string(), z.nullable(z.any())).optional(),
+    fakeProvider: z.record(z.string(), z.nullable(z.any())).optional(),
+    featherless: z.record(z.string(), z.nullable(z.any())).optional(),
+    fireworks: z.record(z.string(), z.nullable(z.any())).optional(),
+    friendli: z.record(z.string(), z.nullable(z.any())).optional(),
+    gmicloud: z.record(z.string(), z.nullable(z.any())).optional(),
+    googleAiStudio: z.record(z.string(), z.nullable(z.any())).optional(),
+    googleVertex: z.record(z.string(), z.nullable(z.any())).optional(),
+    gopomelo: z.record(z.string(), z.nullable(z.any())).optional(),
+    groq: z.record(z.string(), z.nullable(z.any())).optional(),
+    huggingface: z.record(z.string(), z.nullable(z.any())).optional(),
+    hyperbolic: z.record(z.string(), z.nullable(z.any())).optional(),
+    hyperbolicQuantized: z.record(z.string(), z.nullable(z.any())).optional(),
+    inception: z.record(z.string(), z.nullable(z.any())).optional(),
+    inceptron: z.record(z.string(), z.nullable(z.any())).optional(),
+    inferenceNet: z.record(z.string(), z.nullable(z.any())).optional(),
+    infermatic: z.record(z.string(), z.nullable(z.any())).optional(),
+    inflection: z.record(z.string(), z.nullable(z.any())).optional(),
+    inocloud: z.record(z.string(), z.nullable(z.any())).optional(),
+    ioNet: z.record(z.string(), z.nullable(z.any())).optional(),
+    ionstream: z.record(z.string(), z.nullable(z.any())).optional(),
+    klusterai: z.record(z.string(), z.nullable(z.any())).optional(),
+    lambda: z.record(z.string(), z.nullable(z.any())).optional(),
+    lepton: z.record(z.string(), z.nullable(z.any())).optional(),
+    liquid: z.record(z.string(), z.nullable(z.any())).optional(),
+    lynn: z.record(z.string(), z.nullable(z.any())).optional(),
+    lynnPrivate: z.record(z.string(), z.nullable(z.any())).optional(),
+    mancer: z.record(z.string(), z.nullable(z.any())).optional(),
+    mancerOld: z.record(z.string(), z.nullable(z.any())).optional(),
+    mara: z.record(z.string(), z.nullable(z.any())).optional(),
+    meta: z.record(z.string(), z.nullable(z.any())).optional(),
+    minimax: z.record(z.string(), z.nullable(z.any())).optional(),
+    mistral: z.record(z.string(), z.nullable(z.any())).optional(),
+    modal: z.record(z.string(), z.nullable(z.any())).optional(),
+    modelrun: z.record(z.string(), z.nullable(z.any())).optional(),
+    modular: z.record(z.string(), z.nullable(z.any())).optional(),
+    moonshotai: z.record(z.string(), z.nullable(z.any())).optional(),
+    morph: z.record(z.string(), z.nullable(z.any())).optional(),
+    ncompass: z.record(z.string(), z.nullable(z.any())).optional(),
+    nebius: z.record(z.string(), z.nullable(z.any())).optional(),
+    nexAgi: z.record(z.string(), z.nullable(z.any())).optional(),
+    nextbit: z.record(z.string(), z.nullable(z.any())).optional(),
+    nineteen: z.record(z.string(), z.nullable(z.any())).optional(),
+    novita: z.record(z.string(), z.nullable(z.any())).optional(),
+    nvidia: z.record(z.string(), z.nullable(z.any())).optional(),
+    octoai: z.record(z.string(), z.nullable(z.any())).optional(),
+    openInference: z.record(z.string(), z.nullable(z.any())).optional(),
+    openai: z.record(z.string(), z.nullable(z.any())).optional(),
+    parasail: z.record(z.string(), z.nullable(z.any())).optional(),
+    perceptron: z.record(z.string(), z.nullable(z.any())).optional(),
+    perplexity: z.record(z.string(), z.nullable(z.any())).optional(),
+    phala: z.record(z.string(), z.nullable(z.any())).optional(),
+    poolside: z.record(z.string(), z.nullable(z.any())).optional(),
+    recraft: z.record(z.string(), z.nullable(z.any())).optional(),
+    recursal: z.record(z.string(), z.nullable(z.any())).optional(),
+    reflection: z.record(z.string(), z.nullable(z.any())).optional(),
+    reka: z.record(z.string(), z.nullable(z.any())).optional(),
+    relace: z.record(z.string(), z.nullable(z.any())).optional(),
+    replicate: z.record(z.string(), z.nullable(z.any())).optional(),
+    sambanova: z.record(z.string(), z.nullable(z.any())).optional(),
+    sambanovaCloaked: z.record(z.string(), z.nullable(z.any())).optional(),
+    seed: z.record(z.string(), z.nullable(z.any())).optional(),
+    sfCompute: z.record(z.string(), z.nullable(z.any())).optional(),
+    siliconflow: z.record(z.string(), z.nullable(z.any())).optional(),
+    sourceful: z.record(z.string(), z.nullable(z.any())).optional(),
+    stealth: z.record(z.string(), z.nullable(z.any())).optional(),
+    stepfun: z.record(z.string(), z.nullable(z.any())).optional(),
+    streamlake: z.record(z.string(), z.nullable(z.any())).optional(),
+    switchpoint: z.record(z.string(), z.nullable(z.any())).optional(),
+    targon: z.record(z.string(), z.nullable(z.any())).optional(),
+    together: z.record(z.string(), z.nullable(z.any())).optional(),
+    togetherLite: z.record(z.string(), z.nullable(z.any())).optional(),
+    ubicloud: z.record(z.string(), z.nullable(z.any())).optional(),
+    upstage: z.record(z.string(), z.nullable(z.any())).optional(),
+    venice: z.record(z.string(), z.nullable(z.any())).optional(),
+    wafer: z.record(z.string(), z.nullable(z.any())).optional(),
+    wandb: z.record(z.string(), z.nullable(z.any())).optional(),
+    xai: z.record(z.string(), z.nullable(z.any())).optional(),
+    xiaomi: z.record(z.string(), z.nullable(z.any())).optional(),
+    zAi: z.record(z.string(), z.nullable(z.any())).optional(),
+  }).transform((v) => {
+    return remap$(v, {
+      oneai: "01ai",
+      aionLabs: "aion-labs",
+      amazonBedrock: "amazon-bedrock",
+      amazonNova: "amazon-nova",
+      arceeAi: "arcee-ai",
+      atlasCloud: "atlas-cloud",
+      blackForestLabs: "black-forest-labs",
+      fakeProvider: "fake-provider",
+      googleAiStudio: "google-ai-studio",
+      googleVertex: "google-vertex",
+      hyperbolicQuantized: "hyperbolic-quantized",
+      inferenceNet: "inference-net",
+      ioNet: "io-net",
+      lynnPrivate: "lynn-private",
+      mancerOld: "mancer-old",
+      nexAgi: "nex-agi",
+      openInference: "open-inference",
+      sambanovaCloaked: "sambanova-cloaked",
+      sfCompute: "sf-compute",
+      togetherLite: "together-lite",
+      zAi: "z-ai",
+    });
   });
-});
 
-export function videoGenerationRequestOptionsToJSON(
-  videoGenerationRequestOptions: VideoGenerationRequestOptions,
-): string {
-  return JSON.stringify(
-    VideoGenerationRequestOptions$outboundSchema.parse(
-      videoGenerationRequestOptions,
-    ),
-  );
+export function optionsToJSON(options: Options): string {
+  return JSON.stringify(Options$outboundSchema.parse(options));
 }
 
 /** @internal */
 export type VideoGenerationRequestProvider$Outbound = {
-  options?: VideoGenerationRequestOptions$Outbound | undefined;
+  options?: Options$Outbound | undefined;
 };
 
 /** @internal */
@@ -535,8 +507,7 @@ export const VideoGenerationRequestProvider$outboundSchema: z.ZodType<
   VideoGenerationRequestProvider$Outbound,
   VideoGenerationRequestProvider
 > = z.object({
-  options: z.lazy(() => VideoGenerationRequestOptions$outboundSchema)
-    .optional(),
+  options: z.lazy(() => Options$outboundSchema).optional(),
 });
 
 export function videoGenerationRequestProviderToJSON(
@@ -550,10 +521,8 @@ export function videoGenerationRequestProviderToJSON(
 }
 
 /** @internal */
-export const VideoGenerationRequestResolution$outboundSchema: z.ZodType<
-  string,
-  VideoGenerationRequestResolution
-> = openEnums.outboundSchema(VideoGenerationRequestResolution);
+export const Resolution$outboundSchema: z.ZodType<string, Resolution> =
+  openEnums.outboundSchema(Resolution);
 
 /** @internal */
 export type VideoGenerationRequest$Outbound = {
@@ -576,7 +545,7 @@ export const VideoGenerationRequest$outboundSchema: z.ZodType<
   VideoGenerationRequest$Outbound,
   VideoGenerationRequest
 > = z.object({
-  aspectRatio: VideoGenerationRequestAspectRatio$outboundSchema.optional(),
+  aspectRatio: AspectRatio$outboundSchema.optional(),
   callbackUrl: z.string().optional(),
   duration: z.int().optional(),
   frameImages: z.array(FrameImage$outboundSchema).optional(),
@@ -586,7 +555,7 @@ export const VideoGenerationRequest$outboundSchema: z.ZodType<
   prompt: z.string(),
   provider: z.lazy(() => VideoGenerationRequestProvider$outboundSchema)
     .optional(),
-  resolution: VideoGenerationRequestResolution$outboundSchema.optional(),
+  resolution: Resolution$outboundSchema.optional(),
   seed: z.int().optional(),
   size: z.string().optional(),
 }).transform((v) => {
