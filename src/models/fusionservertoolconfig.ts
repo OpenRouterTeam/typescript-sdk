@@ -12,6 +12,7 @@ import {
   AnthropicCacheControlDirective$Outbound,
   AnthropicCacheControlDirective$outboundSchema,
 } from "./anthropiccachecontroldirective.js";
+import { FusionMode, FusionMode$outboundSchema } from "./fusionmode.js";
 
 /**
  * Reasoning effort level for panelist and judge inner calls.
@@ -77,6 +78,10 @@ export type FusionServerToolConfig = {
    * Maximum number of tool-calling steps each panelist (analysis model) and the judge model may take during their agentic web-research loop. Models with web_search/web_fetch enabled iterate until they produce a text response or hit this ceiling. Defaults to 8. Capped at 16.
    */
   maxToolCalls?: number | undefined;
+  /**
+   * Pipeline mode. "full" (default) runs the N-panel + judge pipeline. "fast" routes to a single panel model (the first in analysis_models) without fan-out or judge synthesis — ~3x faster for mechanical turns.
+   */
+  mode?: FusionMode | undefined;
   /**
    * Slug of the judge model that produces the structured analysis JSON. Defaults to the model used in the outer API request.
    */
@@ -159,6 +164,7 @@ export type FusionServerToolConfig$Outbound = {
   cache_control?: AnthropicCacheControlDirective$Outbound | undefined;
   max_completion_tokens?: number | undefined;
   max_tool_calls?: number | undefined;
+  mode?: string | undefined;
   model?: string | undefined;
   reasoning?: FusionServerToolConfigReasoning$Outbound | undefined;
   temperature?: number | undefined;
@@ -174,6 +180,7 @@ export const FusionServerToolConfig$outboundSchema: z.ZodType<
   cacheControl: AnthropicCacheControlDirective$outboundSchema.optional(),
   maxCompletionTokens: z.int().optional(),
   maxToolCalls: z.int().optional(),
+  mode: FusionMode$outboundSchema.optional(),
   model: z.string().optional(),
   reasoning: z.lazy(() => FusionServerToolConfigReasoning$outboundSchema)
     .optional(),
