@@ -177,15 +177,6 @@ export const ObjectT = {
 export type ObjectT = ClosedEnum<typeof ObjectT>;
 
 /**
- * Breakdown of upstream inference costs
- */
-export type CostDetails = {
-  upstreamInferenceCompletionsCost: number;
-  upstreamInferenceCost?: number | null | undefined;
-  upstreamInferencePromptCost: number;
-};
-
-/**
  * Per-modality token breakdown. Only present when the input contains 2+ modalities (e.g. text + image) and the upstream provider returns modality-level usage data. Only non-zero modality counts are included.
  */
 export type PromptTokensDetails = {
@@ -219,14 +210,6 @@ export type CreateEmbeddingsUsage = {
    * Cost of the request in credits
    */
   cost?: number | undefined;
-  /**
-   * Breakdown of upstream inference costs
-   */
-  costDetails?: CostDetails | null | undefined;
-  /**
-   * Whether a request was made using a Bring Your Own Key configuration
-   */
-  isByok?: boolean | undefined;
   /**
    * Number of tokens in the input
    */
@@ -530,30 +513,6 @@ export function createEmbeddingsDataFromJSON(
 export const ObjectT$inboundSchema: z.ZodEnum<typeof ObjectT> = z.enum(ObjectT);
 
 /** @internal */
-export const CostDetails$inboundSchema: z.ZodType<CostDetails, unknown> = z
-  .object({
-    upstream_inference_completions_cost: z.number(),
-    upstream_inference_cost: z.nullable(z.number()).optional(),
-    upstream_inference_prompt_cost: z.number(),
-  }).transform((v) => {
-    return remap$(v, {
-      "upstream_inference_completions_cost": "upstreamInferenceCompletionsCost",
-      "upstream_inference_cost": "upstreamInferenceCost",
-      "upstream_inference_prompt_cost": "upstreamInferencePromptCost",
-    });
-  });
-
-export function costDetailsFromJSON(
-  jsonString: string,
-): SafeParseResult<CostDetails, SDKValidationError> {
-  return safeParse(
-    jsonString,
-    (x) => CostDetails$inboundSchema.parse(JSON.parse(x)),
-    `Failed to parse 'CostDetails' from JSON`,
-  );
-}
-
-/** @internal */
 export const PromptTokensDetails$inboundSchema: z.ZodType<
   PromptTokensDetails,
   unknown
@@ -589,16 +548,12 @@ export const CreateEmbeddingsUsage$inboundSchema: z.ZodType<
   unknown
 > = z.object({
   cost: z.number().optional(),
-  cost_details: z.nullable(z.lazy(() => CostDetails$inboundSchema)).optional(),
-  is_byok: z.boolean().optional(),
   prompt_tokens: z.int(),
   prompt_tokens_details: z.lazy(() => PromptTokensDetails$inboundSchema)
     .optional(),
   total_tokens: z.int(),
 }).transform((v) => {
   return remap$(v, {
-    "cost_details": "costDetails",
-    "is_byok": "isByok",
     "prompt_tokens": "promptTokens",
     "prompt_tokens_details": "promptTokensDetails",
     "total_tokens": "totalTokens",

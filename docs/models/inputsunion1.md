@@ -324,30 +324,12 @@ const value: models.OutputSearchModelsServerToolItem = {
 };
 ```
 
-### `models.OutputFusionServerToolItem`
-
-```typescript
-const value: models.OutputFusionServerToolItem = {
-  status: "completed",
-  type: "openrouter:fusion",
-};
-```
-
 ### `models.OutputAdvisorServerToolItem`
 
 ```typescript
 const value: models.OutputAdvisorServerToolItem = {
   status: "completed",
   type: "openrouter:advisor",
-};
-```
-
-### `models.OutputSubagentServerToolItem`
-
-```typescript
-const value: models.OutputSubagentServerToolItem = {
-  status: "completed",
-  type: "openrouter:subagent",
 };
 ```
 

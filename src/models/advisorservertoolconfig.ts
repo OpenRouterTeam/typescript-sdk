@@ -57,7 +57,7 @@ export type AdvisorServerToolConfig = {
    */
   temperature?: number | undefined;
   /**
-   * Tools the advisor sub-agent may use while forming its advice. The advisor runs as an agentic sub-agent over these tools, then returns its text. Only OpenRouter server tools are supported — function tools are rejected — and the list must not include the advisor tool itself.
+   * Tools the advisor sub-agent may use while forming its advice. The advisor runs as an agentic sub-agent over these tools, then returns its text. Must not include the advisor tool itself.
    */
   tools?: Array<AdvisorNestedTool> | undefined;
 };

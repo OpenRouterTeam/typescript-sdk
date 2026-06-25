@@ -1,6 +1,6 @@
 # Arena
 
-Design Arena only: arena to query. Defaults to `models` when source is `design-arena`.
+Arena to query. Defaults to `models`.
 
 ## Example Usage
 

@@ -154,7 +154,6 @@ export type ChatRequestPlugin =
  * Constrains effort on reasoning for reasoning models
  */
 export const ChatRequestEffort = {
-  Max: "max",
   Xhigh: "xhigh",
   High: "high",
   Medium: "medium",
@@ -177,25 +176,6 @@ export type ChatRequestReasoning = {
   effort?: ChatRequestEffort | null | undefined;
   summary?: ChatReasoningSummaryVerbosityEnum | null | undefined;
 };
-
-/**
- * Shorthand for setting reasoning effort. Equivalent to setting reasoning.effort. Cannot be used simultaneously with reasoning.effort if they differ.
- */
-export const ChatRequestReasoningEffort = {
-  Max: "max",
-  Xhigh: "xhigh",
-  High: "high",
-  Medium: "medium",
-  Low: "low",
-  Minimal: "minimal",
-  None: "none",
-} as const;
-/**
- * Shorthand for setting reasoning effort. Equivalent to setting reasoning.effort. Cannot be used simultaneously with reasoning.effort if they differ.
- */
-export type ChatRequestReasoningEffort = OpenEnum<
-  typeof ChatRequestReasoningEffort
->;
 
 /**
  * Response format configuration
@@ -272,10 +252,6 @@ export type ChatRequest = {
    */
   metadata?: { [k: string]: string } | undefined;
   /**
-   * Minimum probability threshold relative to the most likely token. Tokens with probability below min_p * (probability of top token) are filtered out. Not all providers support this parameter.
-   */
-  minP?: number | null | undefined;
-  /**
    * Output modalities for the response. Supported values are "text", "image", and "audio".
    */
   modalities?: Array<Modality> | undefined;
@@ -319,14 +295,6 @@ export type ChatRequest = {
    * Configuration options for reasoning models
    */
   reasoning?: ChatRequestReasoning | undefined;
-  /**
-   * Shorthand for setting reasoning effort. Equivalent to setting reasoning.effort. Cannot be used simultaneously with reasoning.effort if they differ.
-   */
-  reasoningEffort?: ChatRequestReasoningEffort | null | undefined;
-  /**
-   * Penalizes tokens based on how much they have already appeared in the text. A value of 1.0 means no penalty. Values above 1.0 penalize repeated tokens more strongly. Not all providers support this parameter.
-   */
-  repetitionPenalty?: number | null | undefined;
   /**
    * Response format configuration
    */
@@ -377,14 +345,6 @@ export type ChatRequest = {
    * Available tools for function calling
    */
   tools?: Array<ChatFunctionTool> | undefined;
-  /**
-   * Consider only tokens with "sufficiently high" probabilities based on the probability of the most likely token. Not all providers support this parameter.
-   */
-  topA?: number | null | undefined;
-  /**
-   * Limits the model to choose from the top K most likely tokens at each step. A value of 1 means the model will always pick the most likely next token. Not all providers support this parameter.
-   */
-  topK?: number | null | undefined;
   /**
    * Number of top log probabilities to return (0-20)
    */
@@ -474,12 +434,6 @@ export function chatRequestReasoningToJSON(
 }
 
 /** @internal */
-export const ChatRequestReasoningEffort$outboundSchema: z.ZodType<
-  string,
-  ChatRequestReasoningEffort
-> = openEnums.outboundSchema(ChatRequestReasoningEffort);
-
-/** @internal */
 export type ResponseFormat$Outbound =
   | ChatFormatGrammarConfig$Outbound
   | FormatJsonObjectConfig$Outbound
@@ -535,7 +489,6 @@ export type ChatRequest$Outbound = {
   max_tokens?: number | null | undefined;
   messages: Array<ChatMessages$Outbound>;
   metadata?: { [k: string]: string } | undefined;
-  min_p?: number | null | undefined;
   modalities?: Array<string> | undefined;
   model?: string | undefined;
   models?: Array<string> | undefined;
@@ -556,8 +509,6 @@ export type ChatRequest$Outbound = {
   presence_penalty?: number | null | undefined;
   provider?: ProviderPreferences$Outbound | null | undefined;
   reasoning?: ChatRequestReasoning$Outbound | undefined;
-  reasoning_effort?: string | null | undefined;
-  repetition_penalty?: number | null | undefined;
   response_format?:
     | ChatFormatGrammarConfig$Outbound
     | FormatJsonObjectConfig$Outbound
@@ -577,8 +528,6 @@ export type ChatRequest$Outbound = {
   temperature?: number | null | undefined;
   tool_choice?: ChatToolChoice$Outbound | undefined;
   tools?: Array<ChatFunctionTool$Outbound> | undefined;
-  top_a?: number | null | undefined;
-  top_k?: number | null | undefined;
   top_logprobs?: number | null | undefined;
   top_p?: number | null | undefined;
   trace?: TraceConfig$Outbound | undefined;
@@ -600,7 +549,6 @@ export const ChatRequest$outboundSchema: z.ZodType<
   maxTokens: z.nullable(z.int()).optional(),
   messages: z.array(ChatMessages$outboundSchema),
   metadata: z.record(z.string(), z.string()).optional(),
-  minP: z.nullable(z.number()).optional(),
   modalities: z.array(Modality$outboundSchema).optional(),
   model: z.string().optional(),
   models: z.array(z.string()).optional(),
@@ -621,9 +569,6 @@ export const ChatRequest$outboundSchema: z.ZodType<
   presencePenalty: z.nullable(z.number()).optional(),
   provider: z.nullable(ProviderPreferences$outboundSchema).optional(),
   reasoning: z.lazy(() => ChatRequestReasoning$outboundSchema).optional(),
-  reasoningEffort: z.nullable(ChatRequestReasoningEffort$outboundSchema)
-    .optional(),
-  repetitionPenalty: z.nullable(z.number()).optional(),
   responseFormat: z.union([
     ChatFormatGrammarConfig$outboundSchema,
     FormatJsonObjectConfig$outboundSchema,
@@ -643,8 +588,6 @@ export const ChatRequest$outboundSchema: z.ZodType<
   temperature: z.nullable(z.number()).optional(),
   toolChoice: ChatToolChoice$outboundSchema.optional(),
   tools: z.array(ChatFunctionTool$outboundSchema).optional(),
-  topA: z.nullable(z.number()).optional(),
-  topK: z.nullable(z.int()).optional(),
   topLogprobs: z.nullable(z.int()).optional(),
   topP: z.nullable(z.number()).optional(),
   trace: TraceConfig$outboundSchema.optional(),
@@ -657,19 +600,14 @@ export const ChatRequest$outboundSchema: z.ZodType<
     logitBias: "logit_bias",
     maxCompletionTokens: "max_completion_tokens",
     maxTokens: "max_tokens",
-    minP: "min_p",
     parallelToolCalls: "parallel_tool_calls",
     presencePenalty: "presence_penalty",
-    reasoningEffort: "reasoning_effort",
-    repetitionPenalty: "repetition_penalty",
     responseFormat: "response_format",
     serviceTier: "service_tier",
     sessionId: "session_id",
     stopServerToolsWhen: "stop_server_tools_when",
     streamOptions: "stream_options",
     toolChoice: "tool_choice",
-    topA: "top_a",
-    topK: "top_k",
     topLogprobs: "top_logprobs",
     topP: "top_p",
   });

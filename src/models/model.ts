@@ -21,10 +21,6 @@ import {
   ModelBenchmarks$inboundSchema,
 } from "./modelbenchmarks.js";
 import { ModelLinks, ModelLinks$inboundSchema } from "./modellinks.js";
-import {
-  ModelReasoning,
-  ModelReasoning$inboundSchema,
-} from "./modelreasoning.js";
 import { Parameter, Parameter$inboundSchema } from "./parameter.js";
 import {
   PerRequestLimits,
@@ -101,10 +97,6 @@ export type Model = {
    */
   pricing: PublicPricing;
   /**
-   * Reasoning effort configuration. Omitted for non-reasoning models and dynamic router models.
-   */
-  reasoning?: ModelReasoning | undefined;
-  /**
    * List of supported parameters for this model
    */
   supportedParameters: Array<Parameter>;
@@ -135,7 +127,6 @@ export const Model$inboundSchema: z.ZodType<Model, unknown> = z.object({
   name: z.string(),
   per_request_limits: z.nullable(PerRequestLimits$inboundSchema),
   pricing: PublicPricing$inboundSchema,
-  reasoning: ModelReasoning$inboundSchema.optional(),
   supported_parameters: z.array(Parameter$inboundSchema),
   supported_voices: z.nullable(z.array(z.string())),
   top_provider: TopProviderInfo$inboundSchema,
