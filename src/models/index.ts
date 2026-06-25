@@ -154,6 +154,7 @@ export * from "./contentpartvideo.js";
 export * from "./contextcompressionengine.js";
 export * from "./contextcompressionplugin.js";
 export * from "./costdetails.js";
+export * from "./costlineitem.js";
 export * from "./createbyokkeyrequest.js";
 export * from "./createbyokkeyresponse.js";
 export * from "./createguardrailrequest.js";
