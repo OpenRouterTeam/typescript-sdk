@@ -13,7 +13,7 @@ import { SDKValidationError } from "./errors/sdkvalidationerror.js";
 /**
  * Detailed completion token usage
  */
-export type ChatUsageCompletionTokensDetails = {
+export type CompletionTokensDetails = {
   /**
    * Accepted prediction tokens
    */
@@ -35,7 +35,7 @@ export type ChatUsageCompletionTokensDetails = {
 /**
  * Detailed prompt token usage
  */
-export type ChatUsagePromptTokensDetails = {
+export type PromptTokensDetails = {
   /**
    * Audio input tokens
    */
@@ -83,7 +83,7 @@ export type ChatUsage = {
   /**
    * Detailed completion token usage
    */
-  completionTokensDetails?: ChatUsageCompletionTokensDetails | null | undefined;
+  completionTokensDetails?: CompletionTokensDetails | null | undefined;
   /**
    * Cost of the completion
    */
@@ -103,7 +103,7 @@ export type ChatUsage = {
   /**
    * Detailed prompt token usage
    */
-  promptTokensDetails?: ChatUsagePromptTokensDetails | null | undefined;
+  promptTokensDetails?: PromptTokensDetails | null | undefined;
   /**
    * Usage for server-side tool execution (e.g., web search)
    */
@@ -115,8 +115,8 @@ export type ChatUsage = {
 };
 
 /** @internal */
-export const ChatUsageCompletionTokensDetails$inboundSchema: z.ZodType<
-  ChatUsageCompletionTokensDetails,
+export const CompletionTokensDetails$inboundSchema: z.ZodType<
+  CompletionTokensDetails,
   unknown
 > = z.object({
   accepted_prediction_tokens: z.nullable(z.int()).optional(),
@@ -132,19 +132,19 @@ export const ChatUsageCompletionTokensDetails$inboundSchema: z.ZodType<
   });
 });
 
-export function chatUsageCompletionTokensDetailsFromJSON(
+export function completionTokensDetailsFromJSON(
   jsonString: string,
-): SafeParseResult<ChatUsageCompletionTokensDetails, SDKValidationError> {
+): SafeParseResult<CompletionTokensDetails, SDKValidationError> {
   return safeParse(
     jsonString,
-    (x) => ChatUsageCompletionTokensDetails$inboundSchema.parse(JSON.parse(x)),
-    `Failed to parse 'ChatUsageCompletionTokensDetails' from JSON`,
+    (x) => CompletionTokensDetails$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'CompletionTokensDetails' from JSON`,
   );
 }
 
 /** @internal */
-export const ChatUsagePromptTokensDetails$inboundSchema: z.ZodType<
-  ChatUsagePromptTokensDetails,
+export const PromptTokensDetails$inboundSchema: z.ZodType<
+  PromptTokensDetails,
   unknown
 > = z.object({
   audio_tokens: z.int().optional(),
@@ -160,13 +160,13 @@ export const ChatUsagePromptTokensDetails$inboundSchema: z.ZodType<
   });
 });
 
-export function chatUsagePromptTokensDetailsFromJSON(
+export function promptTokensDetailsFromJSON(
   jsonString: string,
-): SafeParseResult<ChatUsagePromptTokensDetails, SDKValidationError> {
+): SafeParseResult<PromptTokensDetails, SDKValidationError> {
   return safeParse(
     jsonString,
-    (x) => ChatUsagePromptTokensDetails$inboundSchema.parse(JSON.parse(x)),
-    `Failed to parse 'ChatUsagePromptTokensDetails' from JSON`,
+    (x) => PromptTokensDetails$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'PromptTokensDetails' from JSON`,
   );
 }
 
@@ -200,14 +200,14 @@ export function serverToolUseDetailsFromJSON(
 export const ChatUsage$inboundSchema: z.ZodType<ChatUsage, unknown> = z.object({
   completion_tokens: z.int(),
   completion_tokens_details: z.nullable(
-    z.lazy(() => ChatUsageCompletionTokensDetails$inboundSchema),
+    z.lazy(() => CompletionTokensDetails$inboundSchema),
   ).optional(),
   cost: z.nullable(z.number()).optional(),
   cost_details: z.nullable(CostDetails$inboundSchema).optional(),
   is_byok: z.boolean().optional(),
   prompt_tokens: z.int(),
   prompt_tokens_details: z.nullable(
-    z.lazy(() => ChatUsagePromptTokensDetails$inboundSchema),
+    z.lazy(() => PromptTokensDetails$inboundSchema),
   ).optional(),
   server_tool_use_details: z.nullable(
     z.lazy(() => ServerToolUseDetails$inboundSchema),

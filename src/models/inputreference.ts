@@ -25,13 +25,13 @@ import {
  */
 export type InputReference =
   | ContentPartAudio
-  | (ContentPartImage & { type: "image_url" })
+  | ContentPartImage
   | ContentPartVideo;
 
 /** @internal */
 export type InputReference$Outbound =
   | ContentPartAudio$Outbound
-  | (ContentPartImage$Outbound & { type: "image_url" })
+  | ContentPartImage$Outbound
   | ContentPartVideo$Outbound;
 
 /** @internal */
@@ -40,9 +40,7 @@ export const InputReference$outboundSchema: z.ZodType<
   InputReference
 > = z.union([
   ContentPartAudio$outboundSchema,
-  ContentPartImage$outboundSchema.and(
-    z.object({ type: z.literal("image_url") }),
-  ),
+  ContentPartImage$outboundSchema,
   ContentPartVideo$outboundSchema,
 ]);
 
