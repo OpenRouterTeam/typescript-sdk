@@ -14,7 +14,6 @@ import { OpenEnum } from "../types/enums.js";
 export const PresetEnum = {
   GeneralHigh: "general-high",
   GeneralBudget: "general-budget",
-  GeneralFast: "general-fast",
 } as const;
 /**
  * A curated OpenRouter fusion preset (slugs follow `<task>-<tier>`, e.g. `general-high`). Expands server-side into the preset's analysis_models panel and judge model, so callers never name individual models. Explicitly provided `analysis_models` / `model` take precedence.
