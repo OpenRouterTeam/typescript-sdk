@@ -22,61 +22,19 @@ import {
 import { ProviderName, ProviderName$inboundSchema } from "./providername.js";
 
 export type Pricing = {
-  /**
-   * Price in USD per audio input token
-   */
   audio?: string | undefined;
-  /**
-   * Price in USD per audio output token
-   */
   audioOutput?: string | undefined;
-  /**
-   * Price in USD per token for completion (output) generation
-   */
   completion: string;
-  /**
-   * Fractional discount applied to this endpoint's pricing; the price is multiplied by (1 - discount) (0 = no discount, 1 = free)
-   */
   discount?: number | undefined;
-  /**
-   * Price in USD per input image
-   */
   image?: string | undefined;
-  /**
-   * Price in USD per output image
-   */
   imageOutput?: string | undefined;
-  /**
-   * Price in USD per image token
-   */
   imageToken?: string | undefined;
-  /**
-   * Price in USD per cached audio input token
-   */
   inputAudioCache?: string | undefined;
-  /**
-   * Price in USD per cached input token (read)
-   */
   inputCacheRead?: string | undefined;
-  /**
-   * Price in USD per cached input token (write)
-   */
   inputCacheWrite?: string | undefined;
-  /**
-   * Price in USD per internal reasoning token
-   */
   internalReasoning?: string | undefined;
-  /**
-   * Price in USD per token for prompt (input) processing
-   */
   prompt: string;
-  /**
-   * Price in USD per request
-   */
   request?: string | undefined;
-  /**
-   * Price in USD per web search
-   */
   webSearch?: string | undefined;
 };
 
