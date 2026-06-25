@@ -7,12 +7,17 @@ import * as z from "zod/v4";
 import { remap as remap$ } from "../lib/primitives.js";
 import { safeParse } from "../lib/schemas.js";
 import { Result as SafeParseResult } from "../types/fp.js";
+import { CostLineItem, CostLineItem$inboundSchema } from "./costlineitem.js";
 import { SDKValidationError } from "./errors/sdkvalidationerror.js";
 
 /**
  * Breakdown of upstream inference costs
  */
 export type CostDetails = {
+  /**
+   * Itemized billing breakdown showing what was charged and why. Supported in image generation responses only, more modalities coming soon.
+   */
+  lineItems?: Array<CostLineItem> | null | undefined;
   upstreamInferenceCompletionsCost: number;
   upstreamInferenceCost?: number | null | undefined;
   upstreamInferencePromptCost: number;
@@ -21,11 +26,13 @@ export type CostDetails = {
 /** @internal */
 export const CostDetails$inboundSchema: z.ZodType<CostDetails, unknown> = z
   .object({
+    line_items: z.nullable(z.array(CostLineItem$inboundSchema)).optional(),
     upstream_inference_completions_cost: z.number(),
     upstream_inference_cost: z.nullable(z.number()).optional(),
     upstream_inference_prompt_cost: z.number(),
   }).transform((v) => {
     return remap$(v, {
+      "line_items": "lineItems",
       "upstream_inference_completions_cost": "upstreamInferenceCompletionsCost",
       "upstream_inference_cost": "upstreamInferenceCost",
       "upstream_inference_prompt_cost": "upstreamInferencePromptCost",
