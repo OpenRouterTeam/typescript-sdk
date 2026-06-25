@@ -12,10 +12,10 @@ let value: MaxPrice = {};
 
 ## Fields
 
-| Field                           | Type                            | Required                        | Description                     | Example                         |
-| ------------------------------- | ------------------------------- | ------------------------------- | ------------------------------- | ------------------------------- |
-| `audio`                         | *string*                        | :heavy_minus_sign:              | N/A                             | 1000                            |
-| `completion`                    | *string*                        | :heavy_minus_sign:              | N/A                             | 1000                            |
-| `image`                         | *string*                        | :heavy_minus_sign:              | N/A                             | 1000                            |
-| `prompt`                        | *string*                        | :heavy_minus_sign:              | Price per million prompt tokens | 1000                            |
-| `request`                       | *string*                        | :heavy_minus_sign:              | N/A                             | 1000                            |
+| Field                                              | Type                                               | Required                                           | Description                                        |
+| -------------------------------------------------- | -------------------------------------------------- | -------------------------------------------------- | -------------------------------------------------- |
+| `audio`                                            | *string*                                           | :heavy_minus_sign:                                 | Maximum price in USD per audio unit                |
+| `completion`                                       | *string*                                           | :heavy_minus_sign:                                 | Maximum price in USD per million completion tokens |
+| `image`                                            | *string*                                           | :heavy_minus_sign:                                 | Maximum price in USD per image                     |
+| `prompt`                                           | *string*                                           | :heavy_minus_sign:                                 | Maximum price in USD per million prompt tokens     |
+| `request`                                          | *string*                                           | :heavy_minus_sign:                                 | Maximum price in USD per request                   |
