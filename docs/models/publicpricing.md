@@ -27,6 +27,7 @@ let value: PublicPricing = {
 | `inputAudioCache`   | *string*            | :heavy_minus_sign:  | N/A                 | 1000                |
 | `inputCacheRead`    | *string*            | :heavy_minus_sign:  | N/A                 | 1000                |
 | `inputCacheWrite`   | *string*            | :heavy_minus_sign:  | N/A                 | 1000                |
+| `inputCacheWrite1h` | *string*            | :heavy_minus_sign:  | N/A                 | 1000                |
 | `internalReasoning` | *string*            | :heavy_minus_sign:  | N/A                 | 1000                |
 | `prompt`            | *string*            | :heavy_check_mark:  | N/A                 | 1000                |
 | `request`           | *string*            | :heavy_minus_sign:  | N/A                 | 1000                |

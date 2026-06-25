@@ -32,6 +32,7 @@ export type Pricing = {
   inputAudioCache?: string | undefined;
   inputCacheRead?: string | undefined;
   inputCacheWrite?: string | undefined;
+  inputCacheWrite1h?: string | undefined;
   internalReasoning?: string | undefined;
   prompt: string;
   request?: string | undefined;
@@ -101,6 +102,7 @@ export const Pricing$inboundSchema: z.ZodType<Pricing, unknown> = z.object({
   input_audio_cache: z.string().optional(),
   input_cache_read: z.string().optional(),
   input_cache_write: z.string().optional(),
+  input_cache_write_1h: z.string().optional(),
   internal_reasoning: z.string().optional(),
   prompt: z.string(),
   request: z.string().optional(),
@@ -113,6 +115,7 @@ export const Pricing$inboundSchema: z.ZodType<Pricing, unknown> = z.object({
     "input_audio_cache": "inputAudioCache",
     "input_cache_read": "inputCacheRead",
     "input_cache_write": "inputCacheWrite",
+    "input_cache_write_1h": "inputCacheWrite1h",
     "internal_reasoning": "internalReasoning",
     "web_search": "webSearch",
   });
