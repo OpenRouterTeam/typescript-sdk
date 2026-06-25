@@ -13,19 +13,65 @@ import { SDKValidationError } from "./errors/sdkvalidationerror.js";
  * Pricing information for the model
  */
 export type PublicPricing = {
+  /**
+   * Price in USD per audio input token
+   */
   audio?: string | undefined;
+  /**
+   * Price in USD per audio output token
+   */
   audioOutput?: string | undefined;
+  /**
+   * Price in USD per token for completion (output) generation
+   */
   completion: string;
+  /**
+   * Fractional discount applied to this endpoint's pricing; the price is multiplied by (1 - discount) (0 = no discount, 1 = free)
+   */
   discount?: number | undefined;
+  /**
+   * Price in USD per input image
+   */
   image?: string | undefined;
+  /**
+   * Price in USD per output image
+   */
   imageOutput?: string | undefined;
+  /**
+   * Price in USD per image token
+   */
   imageToken?: string | undefined;
+  /**
+   * Price in USD per cached audio input token
+   */
   inputAudioCache?: string | undefined;
+  /**
+   * Price in USD per cached input token (read)
+   */
   inputCacheRead?: string | undefined;
+  /**
+   * Price per cache-write token, in USD per token. For providers with multiple cache TTLs (e.g. Anthropic), this is the default (5-minute) cache-write rate.
+   */
   inputCacheWrite?: string | undefined;
+  /**
+   * Price per 1-hour cache-write token, in USD per token. Only present for providers that price an extended (1-hour) cache TTL separately, such as Anthropic.
+   */
+  inputCacheWrite1h?: string | undefined;
+  /**
+   * Price in USD per internal reasoning token
+   */
   internalReasoning?: string | undefined;
+  /**
+   * Price in USD per token for prompt (input) processing
+   */
   prompt: string;
+  /**
+   * Price in USD per request
+   */
   request?: string | undefined;
+  /**
+   * Price in USD per web search
+   */
   webSearch?: string | undefined;
 };
 
@@ -42,6 +88,7 @@ export const PublicPricing$inboundSchema: z.ZodType<PublicPricing, unknown> = z
     input_audio_cache: z.string().optional(),
     input_cache_read: z.string().optional(),
     input_cache_write: z.string().optional(),
+    input_cache_write_1h: z.string().optional(),
     internal_reasoning: z.string().optional(),
     prompt: z.string(),
     request: z.string().optional(),
@@ -54,6 +101,7 @@ export const PublicPricing$inboundSchema: z.ZodType<PublicPricing, unknown> = z
       "input_audio_cache": "inputAudioCache",
       "input_cache_read": "inputCacheRead",
       "input_cache_write": "inputCacheWrite",
+      "input_cache_write_1h": "inputCacheWrite1h",
       "internal_reasoning": "internalReasoning",
       "web_search": "webSearch",
     });
