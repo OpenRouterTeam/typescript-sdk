@@ -52,7 +52,7 @@ export class APIKeys extends ClientSDK {
    * Create a new API key
    *
    * @remarks
-   * Create a new API key for the authenticated user. [Management key](/docs/guides/overview/auth/management-api-keys) required.
+   * Create a new API key for the authenticated user. The plaintext `key` is returned only in this response. Treat it as a write-only, sensitive value; it cannot be retrieved later. [Management key](/docs/guides/overview/auth/management-api-keys) required.
    */
   async create(
     request: operations.CreateKeysRequest,
