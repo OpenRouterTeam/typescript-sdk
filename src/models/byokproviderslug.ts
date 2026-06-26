@@ -78,7 +78,6 @@ export const BYOKProviderSlug = {
   Perplexity: "perplexity",
   Phala: "phala",
   Poolside: "poolside",
-  Quiver: "quiver",
   Recraft: "recraft",
   Reka: "reka",
   Relace: "relace",
