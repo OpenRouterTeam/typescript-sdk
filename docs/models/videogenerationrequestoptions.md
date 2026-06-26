@@ -59,7 +59,6 @@ let value: VideoGenerationRequestOptions = {};
 | `googleVertex`        | Record<string, *any*> | :heavy_minus_sign:    | N/A                   |
 | `gopomelo`            | Record<string, *any*> | :heavy_minus_sign:    | N/A                   |
 | `groq`                | Record<string, *any*> | :heavy_minus_sign:    | N/A                   |
-| `heygen`              | Record<string, *any*> | :heavy_minus_sign:    | N/A                   |
 | `huggingface`         | Record<string, *any*> | :heavy_minus_sign:    | N/A                   |
 | `hyperbolic`          | Record<string, *any*> | :heavy_minus_sign:    | N/A                   |
 | `hyperbolicQuantized` | Record<string, *any*> | :heavy_minus_sign:    | N/A                   |
@@ -104,7 +103,6 @@ let value: VideoGenerationRequestOptions = {};
 | `perplexity`          | Record<string, *any*> | :heavy_minus_sign:    | N/A                   |
 | `phala`               | Record<string, *any*> | :heavy_minus_sign:    | N/A                   |
 | `poolside`            | Record<string, *any*> | :heavy_minus_sign:    | N/A                   |
-| `quiver`              | Record<string, *any*> | :heavy_minus_sign:    | N/A                   |
 | `recraft`             | Record<string, *any*> | :heavy_minus_sign:    | N/A                   |
 | `recursal`            | Record<string, *any*> | :heavy_minus_sign:    | N/A                   |
 | `reflection`          | Record<string, *any*> | :heavy_minus_sign:    | N/A                   |
