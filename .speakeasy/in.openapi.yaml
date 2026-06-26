@@ -4043,6 +4043,7 @@ components:
         - perplexity
         - phala
         - poolside
+        - quiver
         - recraft
         - reka
         - relace
@@ -9393,11 +9394,14 @@ components:
           example: 100
           type: integer
         output_format:
-          description: Encoding of the returned image bytes.
+          description: >-
+            Encoding of the returned image bytes. Most models produce raster formats (png, jpeg, webp). SVG is supported
+            by vectorization models (e.g. Quiver) — the SVG markup is UTF-8 base64-encoded in `b64_json`.
           enum:
             - png
             - jpeg
             - webp
+            - svg
           example: png
           type: string
         prompt:
@@ -12535,6 +12539,7 @@ components:
                 - Venice
                 - Wafer
                 - WandB
+                - Quiver
                 - Xiaomi
                 - xAI
                 - Z.AI
@@ -17946,6 +17951,7 @@ components:
         - Venice
         - Wafer
         - WandB
+        - Quiver
         - Xiaomi
         - xAI
         - Z.AI
@@ -18317,6 +18323,10 @@ components:
             nullable: true
           type: object
         poolside:
+          additionalProperties:
+            nullable: true
+          type: object
+        quiver:
           additionalProperties:
             nullable: true
           type: object
@@ -18760,6 +18770,7 @@ components:
             - Venice
             - Wafer
             - WandB
+            - Quiver
             - Xiaomi
             - xAI
             - Z.AI
@@ -24425,6 +24436,7 @@ paths:
               - perplexity
               - phala
               - poolside
+              - quiver
               - recraft
               - reka
               - relace
