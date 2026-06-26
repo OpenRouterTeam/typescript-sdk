@@ -116,6 +116,10 @@ export type Model = {
    * Information about the top provider for this model
    */
   topProvider: TopProviderInfo;
+  /**
+   * Virtual variant model IDs available for this model. Each is a ready-to-use value for the `model` request field that changes routing behaviour: `:online` (web search), `:nitro` (sort by throughput), `:floor` (sort by lowest price), `:exacto` (sort tool-eligible endpoints by accuracy). Only includes variants applicable to this model.
+   */
+  variants: Array<string>;
 };
 
 /** @internal */
@@ -139,6 +143,7 @@ export const Model$inboundSchema: z.ZodType<Model, unknown> = z.object({
   supported_parameters: z.array(Parameter$inboundSchema),
   supported_voices: z.nullable(z.array(z.string())),
   top_provider: TopProviderInfo$inboundSchema,
+  variants: z.array(z.string()),
 }).transform((v) => {
   return remap$(v, {
     "canonical_slug": "canonicalSlug",
