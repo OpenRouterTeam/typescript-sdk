@@ -1,6 +1,6 @@
 # ImageGenerationRequestOutputFormat
 
-Encoding of the returned image bytes.
+Encoding of the returned image bytes. Most models produce raster formats (png, jpeg, webp). SVG is supported by vectorization models (e.g. Quiver) — the SVG markup is UTF-8 base64-encoded in `b64_json`.
 
 ## Example Usage
 
@@ -15,5 +15,5 @@ let value: ImageGenerationRequestOutputFormat = "png";
 ## Values
 
 ```typescript
-"png" | "jpeg" | "webp" | Unrecognized<string>
+"png" | "jpeg" | "webp" | "svg" | Unrecognized<string>
 ```
