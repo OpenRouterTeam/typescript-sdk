@@ -1,6 +1,6 @@
 # PresetEnum
 
-A curated OpenRouter fusion preset (slugs follow `<task>-<tier>`, e.g. `general-high`). Expands server-side into the preset's analysis_models panel and judge model, so callers never name individual models. Explicitly provided `analysis_models` / `model` take precedence.
+A curated OpenRouter fusion preset (slugs follow `<task>-<tier>`, e.g. `general-high`). Expands server-side into the preset's analysis_models panel and judge model, so callers never name individual models. `coding-*` presets also imply `analysis_mode: council`. Explicitly provided `analysis_models` / `model` / `analysis_mode` take precedence.
 
 ## Example Usage
 
@@ -15,5 +15,5 @@ let value: PresetEnum = "general-high";
 ## Values
 
 ```typescript
-"general-high" | "general-budget" | "general-fast" | Unrecognized<string>
+"general-high" | "general-budget" | "general-fast" | "coding-high" | "coding-budget" | "coding-fast" | Unrecognized<string>
 ```
