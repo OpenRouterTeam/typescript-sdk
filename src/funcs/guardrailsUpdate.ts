@@ -32,7 +32,7 @@ import { Result } from "../types/fp.js";
  * Update a guardrail
  *
  * @remarks
- * Update an existing guardrail. Collection fields use replace semantics: send the full desired set on every update. [Management key](/docs/guides/overview/auth/management-api-keys) required.
+ * Update an existing guardrail. [Management key](/docs/guides/overview/auth/management-api-keys) required.
  */
 export function guardrailsUpdate(
   client: OpenRouterCore,
