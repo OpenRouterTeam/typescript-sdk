@@ -63,16 +63,15 @@ export type ImageGenerationRequestBackground = OpenEnum<
 >;
 
 /**
- * Encoding of the returned image bytes. Most models produce raster formats (png, jpeg, webp). SVG is supported by vectorization models (e.g. Quiver) — the SVG markup is UTF-8 base64-encoded in `b64_json`.
+ * Encoding of the returned image bytes.
  */
 export const ImageGenerationRequestOutputFormat = {
   Png: "png",
   Jpeg: "jpeg",
   Webp: "webp",
-  Svg: "svg",
 } as const;
 /**
- * Encoding of the returned image bytes. Most models produce raster formats (png, jpeg, webp). SVG is supported by vectorization models (e.g. Quiver) — the SVG markup is UTF-8 base64-encoded in `b64_json`.
+ * Encoding of the returned image bytes.
  */
 export type ImageGenerationRequestOutputFormat = OpenEnum<
   typeof ImageGenerationRequestOutputFormat
@@ -127,7 +126,6 @@ export type ImageGenerationRequestOptions = {
   googleVertex?: { [k: string]: any | null } | undefined;
   gopomelo?: { [k: string]: any | null } | undefined;
   groq?: { [k: string]: any | null } | undefined;
-  heygen?: { [k: string]: any | null } | undefined;
   huggingface?: { [k: string]: any | null } | undefined;
   hyperbolic?: { [k: string]: any | null } | undefined;
   hyperbolicQuantized?: { [k: string]: any | null } | undefined;
@@ -172,7 +170,6 @@ export type ImageGenerationRequestOptions = {
   perplexity?: { [k: string]: any | null } | undefined;
   phala?: { [k: string]: any | null } | undefined;
   poolside?: { [k: string]: any | null } | undefined;
-  quiver?: { [k: string]: any | null } | undefined;
   recraft?: { [k: string]: any | null } | undefined;
   recursal?: { [k: string]: any | null } | undefined;
   reflection?: { [k: string]: any | null } | undefined;
@@ -272,7 +269,7 @@ export type ImageGenerationRequest = {
    */
   outputCompression?: number | undefined;
   /**
-   * Encoding of the returned image bytes. Most models produce raster formats (png, jpeg, webp). SVG is supported by vectorization models (e.g. Quiver) — the SVG markup is UTF-8 base64-encoded in `b64_json`.
+   * Encoding of the returned image bytes.
    */
   outputFormat?: ImageGenerationRequestOutputFormat | undefined;
   /**
@@ -370,7 +367,6 @@ export type ImageGenerationRequestOptions$Outbound = {
   "google-vertex"?: { [k: string]: any | null } | undefined;
   gopomelo?: { [k: string]: any | null } | undefined;
   groq?: { [k: string]: any | null } | undefined;
-  heygen?: { [k: string]: any | null } | undefined;
   huggingface?: { [k: string]: any | null } | undefined;
   hyperbolic?: { [k: string]: any | null } | undefined;
   "hyperbolic-quantized"?: { [k: string]: any | null } | undefined;
@@ -415,7 +411,6 @@ export type ImageGenerationRequestOptions$Outbound = {
   perplexity?: { [k: string]: any | null } | undefined;
   phala?: { [k: string]: any | null } | undefined;
   poolside?: { [k: string]: any | null } | undefined;
-  quiver?: { [k: string]: any | null } | undefined;
   recraft?: { [k: string]: any | null } | undefined;
   recursal?: { [k: string]: any | null } | undefined;
   reflection?: { [k: string]: any | null } | undefined;
@@ -497,7 +492,6 @@ export const ImageGenerationRequestOptions$outboundSchema: z.ZodType<
   googleVertex: z.record(z.string(), z.nullable(z.any())).optional(),
   gopomelo: z.record(z.string(), z.nullable(z.any())).optional(),
   groq: z.record(z.string(), z.nullable(z.any())).optional(),
-  heygen: z.record(z.string(), z.nullable(z.any())).optional(),
   huggingface: z.record(z.string(), z.nullable(z.any())).optional(),
   hyperbolic: z.record(z.string(), z.nullable(z.any())).optional(),
   hyperbolicQuantized: z.record(z.string(), z.nullable(z.any())).optional(),
@@ -542,7 +536,6 @@ export const ImageGenerationRequestOptions$outboundSchema: z.ZodType<
   perplexity: z.record(z.string(), z.nullable(z.any())).optional(),
   phala: z.record(z.string(), z.nullable(z.any())).optional(),
   poolside: z.record(z.string(), z.nullable(z.any())).optional(),
-  quiver: z.record(z.string(), z.nullable(z.any())).optional(),
   recraft: z.record(z.string(), z.nullable(z.any())).optional(),
   recursal: z.record(z.string(), z.nullable(z.any())).optional(),
   reflection: z.record(z.string(), z.nullable(z.any())).optional(),
