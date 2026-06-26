@@ -63,15 +63,16 @@ export type ImageGenerationRequestBackground = OpenEnum<
 >;
 
 /**
- * Encoding of the returned image bytes.
+ * Encoding of the returned image bytes. Most models produce raster formats (png, jpeg, webp). SVG is supported by vectorization models (e.g. Quiver) — the SVG markup is UTF-8 base64-encoded in `b64_json`.
  */
 export const ImageGenerationRequestOutputFormat = {
   Png: "png",
   Jpeg: "jpeg",
   Webp: "webp",
+  Svg: "svg",
 } as const;
 /**
- * Encoding of the returned image bytes.
+ * Encoding of the returned image bytes. Most models produce raster formats (png, jpeg, webp). SVG is supported by vectorization models (e.g. Quiver) — the SVG markup is UTF-8 base64-encoded in `b64_json`.
  */
 export type ImageGenerationRequestOutputFormat = OpenEnum<
   typeof ImageGenerationRequestOutputFormat
@@ -270,7 +271,7 @@ export type ImageGenerationRequest = {
    */
   outputCompression?: number | undefined;
   /**
-   * Encoding of the returned image bytes.
+   * Encoding of the returned image bytes. Most models produce raster formats (png, jpeg, webp). SVG is supported by vectorization models (e.g. Quiver) — the SVG markup is UTF-8 base64-encoded in `b64_json`.
    */
   outputFormat?: ImageGenerationRequestOutputFormat | undefined;
   /**
