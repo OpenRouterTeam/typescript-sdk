@@ -215,6 +215,7 @@ export * from "./fusioncallpanelreasoningdeltaevent.js";
 export * from "./fusionplugin.js";
 export * from "./fusionservertoolconfig.js";
 export * from "./fusionservertoolopenrouter.js";
+export * from "./fusionsource.js";
 export * from "./generationcontentdata.js";
 export * from "./generationcontentresponse.js";
 export * from "./generationresponse.js";
