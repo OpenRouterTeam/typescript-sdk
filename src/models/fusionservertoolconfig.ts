@@ -82,6 +82,14 @@ export type FusionServerToolConfig = {
    */
   model?: string | undefined;
   /**
+   * Milliseconds to wait after `quorum_min_panels` have completed before aborting remaining in-flight panels. Gives trailing panels a short window to finish after the quorum threshold is met. Only meaningful when `quorum_min_panels` is set. Defaults to 15000 (15 seconds). Maximum 300000 (5 minutes).
+   */
+  quorumGraceMs?: number | undefined;
+  /**
+   * Minimum number of panel models that must complete before the grace window starts. When set, fusion proceeds to the judge once this many panels have finished (succeeded or failed) plus a grace period (`quorum_grace_ms`). Remaining in-flight panels are aborted when the grace window expires. When omitted, fusion waits for all panels to complete (current default behavior).
+   */
+  quorumMinPanels?: number | undefined;
+  /**
    * Reasoning configuration forwarded to panelist and judge inner calls. Use this to control reasoning effort and token budget for models that support extended thinking.
    */
   reasoning?: FusionServerToolConfigReasoning | undefined;
@@ -160,6 +168,8 @@ export type FusionServerToolConfig$Outbound = {
   max_completion_tokens?: number | undefined;
   max_tool_calls?: number | undefined;
   model?: string | undefined;
+  quorum_grace_ms?: number | undefined;
+  quorum_min_panels?: number | undefined;
   reasoning?: FusionServerToolConfigReasoning$Outbound | undefined;
   temperature?: number | undefined;
   tools?: Array<FusionServerToolConfigTool$Outbound> | undefined;
@@ -175,6 +185,8 @@ export const FusionServerToolConfig$outboundSchema: z.ZodType<
   maxCompletionTokens: z.int().optional(),
   maxToolCalls: z.int().optional(),
   model: z.string().optional(),
+  quorumGraceMs: z.int().optional(),
+  quorumMinPanels: z.int().optional(),
   reasoning: z.lazy(() => FusionServerToolConfigReasoning$outboundSchema)
     .optional(),
   temperature: z.number().optional(),
@@ -186,6 +198,8 @@ export const FusionServerToolConfig$outboundSchema: z.ZodType<
     cacheControl: "cache_control",
     maxCompletionTokens: "max_completion_tokens",
     maxToolCalls: "max_tool_calls",
+    quorumGraceMs: "quorum_grace_ms",
+    quorumMinPanels: "quorum_min_panels",
   });
 });
 
