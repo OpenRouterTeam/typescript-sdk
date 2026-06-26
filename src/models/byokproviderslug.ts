@@ -47,7 +47,6 @@ export const BYOKProviderSlug = {
   GoogleAiStudio: "google-ai-studio",
   GoogleVertex: "google-vertex",
   Groq: "groq",
-  Heygen: "heygen",
   Inception: "inception",
   Inceptron: "inceptron",
   InferactVllm: "inferact-vllm",
