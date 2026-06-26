@@ -1,0 +1,15 @@
+# FilesServerToolType
+
+## Example Usage
+
+```typescript
+import { FilesServerToolType } from "@openrouter/sdk/models";
+
+let value: FilesServerToolType = "openrouter:files";
+```
+
+## Values
+
+```typescript
+"openrouter:files"
+```
