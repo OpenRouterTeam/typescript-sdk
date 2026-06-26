@@ -24349,7 +24349,7 @@ paths:
         type: offsetLimit
     post:
       description: >-
-        Create a new bring-your-own-key (BYOK) provider credential. The raw key is encrypted at rest and never returned in API responses. Defaults to the authenticated entity's default workspace; use the `workspace_id` body field to scope to a different workspace. [Management key](/docs/guides/overview/auth/management-api-keys) required.
+        Create a new bring-your-own-key (BYOK) provider credential. The raw key is encrypted at rest and never returned in API responses. Defaults to the authenticated entity's default workspace; use the `workspace_id` body field to scope to a different workspace. Treat the raw key as write-only; it is never returned after creation. [Management key](/docs/guides/overview/auth/management-api-keys) required.
       operationId: createBYOKKey
       requestBody:
         content:
@@ -27057,7 +27057,8 @@ paths:
         - Guardrails
       x-speakeasy-name-override: get
     patch:
-      description: Update an existing guardrail. [Management key](/docs/guides/overview/auth/management-api-keys) required.
+      description: >-
+        Update an existing guardrail. Collection fields use replace semantics: send the full desired set on every update. [Management key](/docs/guides/overview/auth/management-api-keys) required.
       operationId: updateGuardrail
       parameters:
         - description: The unique identifier of the guardrail to update
@@ -27254,7 +27255,7 @@ paths:
         type: offsetLimit
     post:
       description: >-
-        Assign multiple API keys to a specific guardrail. [Management key](/docs/guides/overview/auth/management-api-keys) required.
+        Assign multiple API keys to a specific guardrail. A key may hold at most one guardrail; assigning replaces any existing assignment. [Management key](/docs/guides/overview/auth/management-api-keys) required.
       operationId: bulkAssignKeysToGuardrail
       parameters:
         - description: The unique identifier of the guardrail
@@ -28635,7 +28636,7 @@ paths:
       x-speakeasy-name-override: list
     post:
       description: >-
-        Create a new API key for the authenticated user. [Management key](/docs/guides/overview/auth/management-api-keys) required.
+        Create a new API key for the authenticated user. The plaintext `key` is returned only in this response. Treat it as a write-only, sensitive value; it cannot be retrieved later. [Management key](/docs/guides/overview/auth/management-api-keys) required.
       operationId: createKeys
       requestBody:
         content:
@@ -33077,12 +33078,13 @@ paths:
       responses:
         '200':
           content:
-            application/octet-stream:
+            video/mp4:
               example: <binary video data>
               schema:
                 format: binary
                 type: string
-          description: Video content stream
+          description: >-
+            Video content stream. The body is the raw video bytes proxied from the upstream provider, and the Content-Type reflects the provider media type (video/mp4).
         '400':
           content:
             application/json:
@@ -33380,7 +33382,7 @@ paths:
   /workspaces/{id}:
     delete:
       description: >-
-        Delete an existing workspace. The default workspace cannot be deleted. Workspaces with active API keys cannot be deleted. [Management key](/docs/guides/overview/auth/management-api-keys) required.
+        Delete an existing workspace. The default workspace cannot be deleted. Workspaces with active API keys cannot be deleted; remove the keys first. [Management key](/docs/guides/overview/auth/management-api-keys) required.
       operationId: deleteWorkspace
       parameters:
         - description: The workspace ID (UUID) or slug
