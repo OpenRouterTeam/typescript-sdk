@@ -126,7 +126,6 @@ export type ImageGenerationRequestOptions = {
   googleVertex?: { [k: string]: any | null } | undefined;
   gopomelo?: { [k: string]: any | null } | undefined;
   groq?: { [k: string]: any | null } | undefined;
-  heygen?: { [k: string]: any | null } | undefined;
   huggingface?: { [k: string]: any | null } | undefined;
   hyperbolic?: { [k: string]: any | null } | undefined;
   hyperbolicQuantized?: { [k: string]: any | null } | undefined;
@@ -368,7 +367,6 @@ export type ImageGenerationRequestOptions$Outbound = {
   "google-vertex"?: { [k: string]: any | null } | undefined;
   gopomelo?: { [k: string]: any | null } | undefined;
   groq?: { [k: string]: any | null } | undefined;
-  heygen?: { [k: string]: any | null } | undefined;
   huggingface?: { [k: string]: any | null } | undefined;
   hyperbolic?: { [k: string]: any | null } | undefined;
   "hyperbolic-quantized"?: { [k: string]: any | null } | undefined;
@@ -494,7 +492,6 @@ export const ImageGenerationRequestOptions$outboundSchema: z.ZodType<
   googleVertex: z.record(z.string(), z.nullable(z.any())).optional(),
   gopomelo: z.record(z.string(), z.nullable(z.any())).optional(),
   groq: z.record(z.string(), z.nullable(z.any())).optional(),
-  heygen: z.record(z.string(), z.nullable(z.any())).optional(),
   huggingface: z.record(z.string(), z.nullable(z.any())).optional(),
   hyperbolic: z.record(z.string(), z.nullable(z.any())).optional(),
   hyperbolicQuantized: z.record(z.string(), z.nullable(z.any())).optional(),
