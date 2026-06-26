@@ -32,7 +32,7 @@ import { Result } from "../types/fp.js";
  * Bulk assign keys to a guardrail
  *
  * @remarks
- * Assign multiple API keys to a specific guardrail. [Management key](/docs/guides/overview/auth/management-api-keys) required.
+ * Assign multiple API keys to a specific guardrail. A key may hold at most one guardrail; assigning replaces any existing assignment. [Management key](/docs/guides/overview/auth/management-api-keys) required.
  */
 export function guardrailsBulkAssignKeys(
   client: OpenRouterCore,
