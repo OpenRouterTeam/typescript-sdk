@@ -1,0 +1,20 @@
+# FilesServerTool
+
+OpenRouter built-in server tool: read, write, edit, and list workspace files via the Files API. Requires the `x-openrouter-file-ids: openrouter` request header.
+
+## Example Usage
+
+```typescript
+import { FilesServerTool } from "@openrouter/sdk/models";
+
+let value: FilesServerTool = {
+  type: "openrouter:files",
+};
+```
+
+## Fields
+
+| Field                                                              | Type                                                               | Required                                                           | Description                                                        | Example                                                            |
+| ------------------------------------------------------------------ | ------------------------------------------------------------------ | ------------------------------------------------------------------ | ------------------------------------------------------------------ | ------------------------------------------------------------------ |
+| `parameters`                                                       | [models.FilesServerToolConfig](../models/filesservertoolconfig.md) | :heavy_minus_sign:                                                 | Configuration for the openrouter:files server tool                 | {}                                                                 |
+| `type`                                                             | [models.FilesServerToolType](../models/filesservertooltype.md)     | :heavy_check_mark:                                                 | N/A                                                                |                                                                    |

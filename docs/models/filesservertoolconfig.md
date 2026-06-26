@@ -1,0 +1,16 @@
+# FilesServerToolConfig
+
+Configuration for the openrouter:files server tool
+
+## Example Usage
+
+```typescript
+import { FilesServerToolConfig } from "@openrouter/sdk/models";
+
+let value: FilesServerToolConfig = {};
+```
+
+## Fields
+
+| Field       | Type        | Required    | Description |
+| ----------- | ----------- | ----------- | ----------- |
