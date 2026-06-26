@@ -54,25 +54,13 @@ export type Ignore = ProviderName | string;
  * The object specifying the maximum price you want to pay for this request. USD price per million tokens, for prompt and completion.
  */
 export type MaxPrice = {
-  /**
-   * Maximum price in USD per audio unit
-   */
   audio?: string | undefined;
-  /**
-   * Maximum price in USD per million completion tokens
-   */
   completion?: string | undefined;
-  /**
-   * Maximum price in USD per image
-   */
   image?: string | undefined;
   /**
-   * Maximum price in USD per million prompt tokens
+   * Price per million prompt tokens
    */
   prompt?: string | undefined;
-  /**
-   * Maximum price in USD per request
-   */
   request?: string | undefined;
 };
 
