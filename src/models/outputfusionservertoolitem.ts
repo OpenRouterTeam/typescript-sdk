@@ -16,6 +16,12 @@ import {
   FusionAnalysisResult$outboundSchema,
 } from "./fusionanalysisresult.js";
 import {
+  FusionSource,
+  FusionSource$inboundSchema,
+  FusionSource$Outbound,
+  FusionSource$outboundSchema,
+} from "./fusionsource.js";
+import {
   ToolCallStatus,
   ToolCallStatus$inboundSchema,
   ToolCallStatus$outboundSchema,
@@ -73,6 +79,10 @@ export type OutputFusionServerToolItem = {
    * Analysis models that produced a response in this fusion run, with each model's full panel content.
    */
   responses?: Array<ResponseT> | undefined;
+  /**
+   * Web pages the analysis panels and judge retrieved via web search during this fusion run, deduplicated by URL across the whole run. Present when at least one model cited a source.
+   */
+  sources?: Array<FusionSource> | undefined;
   status: ToolCallStatus;
   type: OutputFusionServerToolItemType;
 };
@@ -175,6 +185,7 @@ export const OutputFusionServerToolItem$inboundSchema: z.ZodType<
   failure_reason: z.string().optional(),
   id: z.string().optional(),
   responses: z.array(z.lazy(() => ResponseT$inboundSchema)).optional(),
+  sources: z.array(FusionSource$inboundSchema).optional(),
   status: ToolCallStatus$inboundSchema,
   type: OutputFusionServerToolItemType$inboundSchema,
 }).transform((v) => {
@@ -191,6 +202,7 @@ export type OutputFusionServerToolItem$Outbound = {
   failure_reason?: string | undefined;
   id?: string | undefined;
   responses?: Array<ResponseT$Outbound> | undefined;
+  sources?: Array<FusionSource$Outbound> | undefined;
   status: string;
   type: string;
 };
@@ -206,6 +218,7 @@ export const OutputFusionServerToolItem$outboundSchema: z.ZodType<
   failureReason: z.string().optional(),
   id: z.string().optional(),
   responses: z.array(z.lazy(() => ResponseT$outboundSchema)).optional(),
+  sources: z.array(FusionSource$outboundSchema).optional(),
   status: ToolCallStatus$outboundSchema,
   type: OutputFusionServerToolItemType$outboundSchema,
 }).transform((v) => {
