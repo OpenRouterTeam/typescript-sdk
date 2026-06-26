@@ -130,6 +130,7 @@ export const ProviderResponseProviderName = {
   Venice: "Venice",
   Wafer: "Wafer",
   WandB: "WandB",
+  Quiver: "Quiver",
   Xiaomi: "Xiaomi",
   XAI: "xAI",
   ZAi: "Z.AI",
