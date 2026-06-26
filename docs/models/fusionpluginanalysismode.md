@@ -1,0 +1,19 @@
+# FusionPluginAnalysisMode
+
+How the judge stage runs. `generic` (default) produces the 5 research dimensions; `coding` swaps in action-oriented coding dimensions; `council` skips the judge call entirely and synthesizes from the raw panel responses. When omitted, a `coding-*` preset implies `council`, the server-tool (agent) path defaults to `coding`, and the model-slug path defaults to `generic`.
+
+## Example Usage
+
+```typescript
+import { FusionPluginAnalysisMode } from "@openrouter/sdk/models";
+
+let value: FusionPluginAnalysisMode = "coding";
+
+// Open enum: unrecognized values are captured as Unrecognized<string>
+```
+
+## Values
+
+```typescript
+"generic" | "coding" | "council" | Unrecognized<string>
+```
