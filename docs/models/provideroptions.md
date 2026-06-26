@@ -45,6 +45,7 @@ let value: ProviderOptions = {};
 | `crusoe`              | Record<string, *any*> | :heavy_minus_sign:    | N/A                   |
 | `darkbloom`           | Record<string, *any*> | :heavy_minus_sign:    | N/A                   |
 | `decart`              | Record<string, *any*> | :heavy_minus_sign:    | N/A                   |
+| `deepgram`            | Record<string, *any*> | :heavy_minus_sign:    | N/A                   |
 | `deepinfra`           | Record<string, *any*> | :heavy_minus_sign:    | N/A                   |
 | `deepseek`            | Record<string, *any*> | :heavy_minus_sign:    | N/A                   |
 | `dekallm`             | Record<string, *any*> | :heavy_minus_sign:    | N/A                   |
@@ -104,6 +105,7 @@ let value: ProviderOptions = {};
 | `perplexity`          | Record<string, *any*> | :heavy_minus_sign:    | N/A                   |
 | `phala`               | Record<string, *any*> | :heavy_minus_sign:    | N/A                   |
 | `poolside`            | Record<string, *any*> | :heavy_minus_sign:    | N/A                   |
+| `quiver`              | Record<string, *any*> | :heavy_minus_sign:    | N/A                   |
 | `recraft`             | Record<string, *any*> | :heavy_minus_sign:    | N/A                   |
 | `recursal`            | Record<string, *any*> | :heavy_minus_sign:    | N/A                   |
 | `reflection`          | Record<string, *any*> | :heavy_minus_sign:    | N/A                   |
