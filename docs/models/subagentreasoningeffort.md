@@ -7,7 +7,7 @@ Reasoning effort level for the subagent call.
 ```typescript
 import { SubagentReasoningEffort } from "@openrouter/sdk/models";
 
-let value: SubagentReasoningEffort = "medium";
+let value: SubagentReasoningEffort = "low";
 
 // Open enum: unrecognized values are captured as Unrecognized<string>
 ```
@@ -15,5 +15,5 @@ let value: SubagentReasoningEffort = "medium";
 ## Values
 
 ```typescript
-"max" | "xhigh" | "high" | "medium" | "low" | "minimal" | "none" | Unrecognized<string>
+"xhigh" | "high" | "medium" | "low" | "minimal" | "none" | Unrecognized<string>
 ```

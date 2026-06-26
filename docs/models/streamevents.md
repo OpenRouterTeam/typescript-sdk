@@ -155,16 +155,6 @@ const value: models.CustomToolCallInputDoneEvent = {
 };
 ```
 
-### `models.DebugEvent`
-
-```typescript
-const value: models.DebugEvent = {
-  debug: {},
-  sequenceNumber: 0,
-  type: "response.debug",
-};
-```
-
 ### `models.StreamEventsResponseFailed`
 
 ```typescript

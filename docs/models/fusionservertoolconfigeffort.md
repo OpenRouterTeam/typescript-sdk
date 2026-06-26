@@ -7,7 +7,7 @@ Reasoning effort level for panelist and judge inner calls.
 ```typescript
 import { FusionServerToolConfigEffort } from "@openrouter/sdk/models";
 
-let value: FusionServerToolConfigEffort = "xhigh";
+let value: FusionServerToolConfigEffort = "high";
 
 // Open enum: unrecognized values are captured as Unrecognized<string>
 ```
@@ -15,5 +15,5 @@ let value: FusionServerToolConfigEffort = "xhigh";
 ## Values
 
 ```typescript
-"max" | "xhigh" | "high" | "medium" | "low" | "minimal" | "none" | Unrecognized<string>
+"xhigh" | "high" | "medium" | "low" | "minimal" | "none" | Unrecognized<string>
 ```

@@ -12,7 +12,6 @@ import { OpenEnum } from "../types/enums.js";
  * Reasoning effort level for the subagent call.
  */
 export const SubagentReasoningEffort = {
-  Max: "max",
   Xhigh: "xhigh",
   High: "high",
   Medium: "medium",

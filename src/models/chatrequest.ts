@@ -154,7 +154,6 @@ export type ChatRequestPlugin =
  * Constrains effort on reasoning for reasoning models
  */
 export const ChatRequestEffort = {
-  Max: "max",
   Xhigh: "xhigh",
   High: "high",
   Medium: "medium",
@@ -182,7 +181,6 @@ export type ChatRequestReasoning = {
  * Shorthand for setting reasoning effort. Equivalent to setting reasoning.effort. Cannot be used simultaneously with reasoning.effort if they differ.
  */
 export const ChatRequestReasoningEffort = {
-  Max: "max",
   Xhigh: "xhigh",
   High: "high",
   Medium: "medium",

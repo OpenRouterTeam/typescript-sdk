@@ -15,5 +15,5 @@ let value: PresetEnum = "general-high";
 ## Values
 
 ```typescript
-"general-high" | "general-budget" | "general-fast" | Unrecognized<string>
+"general-high" | "general-budget" | Unrecognized<string>
 ```

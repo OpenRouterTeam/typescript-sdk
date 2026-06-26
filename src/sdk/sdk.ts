@@ -6,11 +6,9 @@
 import { ClientSDK } from "../lib/sdks.js";
 import { Analytics } from "./analytics.js";
 import { APIKeys } from "./apikeys.js";
-import { Benchmarks } from "./benchmarks.js";
 import { Beta } from "./beta.js";
 import { Byok } from "./byok.js";
 import { Chat } from "./chat.js";
-import { Classifications } from "./classifications.js";
 import { Credits } from "./credits.js";
 import { Datasets } from "./datasets.js";
 import { Embeddings } from "./embeddings.js";
@@ -18,7 +16,6 @@ import { Endpoints } from "./endpoints.js";
 import { Files } from "./files.js";
 import { Generations } from "./generations.js";
 import { Guardrails } from "./guardrails.js";
-import { Images } from "./images.js";
 import { Models } from "./models.js";
 import { OAuth } from "./oauth.js";
 import { Observability } from "./observability.js";
@@ -69,11 +66,6 @@ export class OpenRouter extends ClientSDK {
     return (this._oAuth ??= new OAuth(this._options));
   }
 
-  private _benchmarks?: Benchmarks;
-  get benchmarks(): Benchmarks {
-    return (this._benchmarks ??= new Benchmarks(this._options));
-  }
-
   private _byok?: Byok;
   get byok(): Byok {
     return (this._byok ??= new Byok(this._options));
@@ -82,11 +74,6 @@ export class OpenRouter extends ClientSDK {
   private _chat?: Chat;
   get chat(): Chat {
     return (this._chat ??= new Chat(this._options));
-  }
-
-  private _classifications?: Classifications;
-  get classifications(): Classifications {
-    return (this._classifications ??= new Classifications(this._options));
   }
 
   private _credits?: Credits;
@@ -122,11 +109,6 @@ export class OpenRouter extends ClientSDK {
   private _guardrails?: Guardrails;
   get guardrails(): Guardrails {
     return (this._guardrails ??= new Guardrails(this._options));
-  }
-
-  private _images?: Images;
-  get images(): Images {
-    return (this._images ??= new Images(this._options));
   }
 
   private _apiKeys?: APIKeys;
