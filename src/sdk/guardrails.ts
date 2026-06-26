@@ -97,7 +97,7 @@ export class Guardrails extends ClientSDK {
    * Update a guardrail
    *
    * @remarks
-   * Update an existing guardrail. Collection fields use replace semantics: send the full desired set on every update. [Management key](/docs/guides/overview/auth/management-api-keys) required.
+   * Update an existing guardrail. [Management key](/docs/guides/overview/auth/management-api-keys) required.
    */
   async update(
     request: operations.UpdateGuardrailRequest,
@@ -136,7 +136,7 @@ export class Guardrails extends ClientSDK {
    * Bulk assign keys to a guardrail
    *
    * @remarks
-   * Assign multiple API keys to a specific guardrail. A key may hold at most one guardrail; assigning replaces any existing assignment. [Management key](/docs/guides/overview/auth/management-api-keys) required.
+   * Assign multiple API keys to a specific guardrail. [Management key](/docs/guides/overview/auth/management-api-keys) required.
    */
   async bulkAssignKeys(
     request: operations.BulkAssignKeysToGuardrailRequest,
