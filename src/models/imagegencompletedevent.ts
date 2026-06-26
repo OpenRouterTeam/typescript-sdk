@@ -26,6 +26,10 @@ export type ImageGenCompletedEvent = {
    */
   created: number;
   /**
+   * Media type (MIME type) of the image. Omitted when the output is a standard raster format (PNG). Present for non-raster outputs such as SVG (`image/svg+xml`).
+   */
+  mediaType?: string | undefined;
+  /**
    * The event type
    */
   type: "image_generation.completed";
@@ -42,11 +46,13 @@ export const ImageGenCompletedEvent$inboundSchema: z.ZodType<
 > = z.object({
   b64_json: z.string(),
   created: z.int(),
+  media_type: z.string().optional(),
   type: z.literal("image_generation.completed"),
   usage: ImageGenerationUsage$inboundSchema.optional(),
 }).transform((v) => {
   return remap$(v, {
     "b64_json": "b64Json",
+    "media_type": "mediaType",
   });
 });
 
