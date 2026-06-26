@@ -8405,6 +8405,22 @@ components:
           maxItems: 8
           type: array
       type: object
+    FusionSource:
+      description: A web page retrieved via web search during a fusion run.
+      example:
+        title: Example article title
+        url: https://example.com/article
+      properties:
+        title:
+          description: Title of the retrieved web page.
+          type: string
+        url:
+          description: URL of the web page a panel or the judge retrieved during the run.
+          type: string
+      required:
+        - url
+        - title
+      type: object
     GenerationContentData:
       description: Stored prompt and completion content
       example:
@@ -16294,6 +16310,13 @@ components:
             required:
               - model
             type: object
+          type: array
+        sources:
+          description: >-
+            Web pages the analysis panels and judge retrieved via web search during this fusion run, deduplicated by URL
+            across the whole run. Present when at least one model cited a source.
+          items:
+            $ref: '#/components/schemas/FusionSource'
           type: array
         status:
           $ref: '#/components/schemas/ToolCallStatus'
