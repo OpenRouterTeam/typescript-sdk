@@ -9271,6 +9271,11 @@ components:
         created:
           description: Unix timestamp (seconds) when the image was generated
           type: integer
+        media_type:
+          description: >-
+            Media type (MIME type) of the image. Omitted when the output is a standard raster format (PNG). Present for non-raster outputs such as SVG (`image/svg+xml`).
+          example: image/svg+xml
+          type: string
         type:
           description: The event type
           enum:
@@ -9428,6 +9433,11 @@ components:
             properties:
               b64_json:
                 description: Base64-encoded image bytes
+                type: string
+              media_type:
+                description: >-
+                  Media type (MIME type) of the image. Omitted when the output is a standard raster format (PNG). Present for non-raster outputs such as SVG (`image/svg+xml`).
+                example: image/svg+xml
                 type: string
             required:
               - b64_json
