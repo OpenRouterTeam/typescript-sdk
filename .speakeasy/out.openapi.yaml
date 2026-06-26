@@ -18799,7 +18799,12 @@ components:
               description: Price in USD per cached input token (read)
               type: string
             input_cache_write:
-              description: Price in USD per cached input token (write)
+              description: >-
+                Price per cache-write token, in USD per token. For providers with multiple cache TTLs (e.g. Anthropic), this is the default (5-minute) cache-write rate.
+              type: string
+            input_cache_write_1h:
+              description: >-
+                Price per 1-hour cache-write token, in USD per token. Only present for providers that price an extended (1-hour) cache TTL separately, such as Anthropic.
               type: string
             internal_reasoning:
               description: Price in USD per internal reasoning token
@@ -18911,7 +18916,12 @@ components:
           description: Price in USD per cached input token (read)
           type: string
         input_cache_write:
-          description: Price in USD per cached input token (write)
+          description: >-
+            Price per cache-write token, in USD per token. For providers with multiple cache TTLs (e.g. Anthropic), this is the default (5-minute) cache-write rate.
+          type: string
+        input_cache_write_1h:
+          description: >-
+            Price per 1-hour cache-write token, in USD per token. Only present for providers that price an extended (1-hour) cache TTL separately, such as Anthropic.
           type: string
         internal_reasoning:
           description: Price in USD per internal reasoning token
