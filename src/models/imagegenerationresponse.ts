@@ -18,6 +18,10 @@ export type ImageGenerationResponseData = {
    * Base64-encoded image bytes
    */
   b64Json: string;
+  /**
+   * Media type (MIME type) of the image. Omitted when the output is a standard raster format (PNG). Present for non-raster outputs such as SVG (`image/svg+xml`).
+   */
+  mediaType?: string | undefined;
 };
 
 /**
@@ -44,9 +48,11 @@ export const ImageGenerationResponseData$inboundSchema: z.ZodType<
   unknown
 > = z.object({
   b64_json: z.string(),
+  media_type: z.string().optional(),
 }).transform((v) => {
   return remap$(v, {
     "b64_json": "b64Json",
+    "media_type": "mediaType",
   });
 });
 
