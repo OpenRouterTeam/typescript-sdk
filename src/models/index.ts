@@ -244,6 +244,7 @@ export * from "./imagegenerationstatus.js";
 export * from "./imagegenerationusage.js";
 export * from "./imagegenpartialimageevent.js";
 export * from "./imagegenstreamerrorevent.js";
+export * from "./imagegentextchunkevent.js";
 export * from "./imagemodelarchitecture.js";
 export * from "./imagemodelendpointsresponse.js";
 export * from "./imagemodellistitem.js";
