@@ -13,6 +13,16 @@ const value: models.ImageGenPartialImageEvent = {
 };
 ```
 
+### `models.ImageGenTextChunkEvent`
+
+```typescript
+const value: models.ImageGenTextChunkEvent = {
+  phase: "content",
+  text: "<svg xmlns=\"http://www.w3.org/2000/svg\">",
+  type: "image_generation.text_chunk",
+};
+```
+
 ### `models.ImageGenCompletedEvent`
 
 ```typescript
