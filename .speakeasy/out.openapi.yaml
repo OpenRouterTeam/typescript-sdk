@@ -4276,11 +4276,13 @@ components:
         image_url:
           properties:
             detail:
-              description: Image detail level for vision models
+              description: >-
+                Image detail level for vision models. `original` is an OpenRouter extension (not in the OpenAI Chat Completions spec) requesting true original-resolution media; it is downgraded to `high` for providers that lack an original-resolution tier.
               enum:
                 - auto
                 - low
                 - high
+                - original
               type: string
               x-speakeasy-unknown-values: allow
             url:

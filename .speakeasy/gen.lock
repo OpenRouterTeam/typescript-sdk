@@ -1,19 +1,19 @@
 lockVersion: ""
 id: ""
 management:
-  docChecksum: 15a24d7d96a50bcdd1f7d145f74339bf
+  docChecksum: 3f4ff6126c89667121ef4a386033a162
   docVersion: 1.0.0
   speakeasyVersion: 1.763.2
   generationVersion: 2.884.4
-  releaseVersion: 0.13.20
-  configChecksum: c570d3e8e37c18cbbe8c2eb87ce2a73d
+  releaseVersion: 0.13.21
+  configChecksum: e034722ad9e54b34c26b490f86aba8d5
   repoURL: https://github.com/OpenRouterTeam/typescript-sdk.git
   installationURL: https://github.com/OpenRouterTeam/typescript-sdk
   published: true
 persistentEdits:
-  generation_id: 70ee5e7d-f4a0-4927-9820-9364da850807
-  pristine_commit_hash: 9affdaab303467c416b8b724c4a7d9649c130f80
-  pristine_tree_hash: 8f2799de916e2859679907e806cc6f7ed5225e30
+  generation_id: 4e1735b8-f3d1-4bc1-b442-c7cfe3c1324c
+  pristine_commit_hash: bf39b82ce6e302ed1f8e1750656f5d1b982cec31
+  pristine_tree_hash: b63db3cad8e5218807b7f9eb3e9ba3df6e7c5522
 features:
   typescript:
     acceptHeaders: 2.81.2
@@ -1049,13 +1049,13 @@ trackedFiles:
     deleted: true
   docs/models/chatcontentimagedetail.md:
     id: e50ca4f20119
-    last_write_checksum: sha1:259941e6d6483ddca55edbe64ba580c4c5886ce8
-    pristine_git_object: a4a06559458beb10ead773fd5bdc549e97394356
+    last_write_checksum: sha1:d7cbfb9d32b40c6fc01ae89056978198eac3c11f
+    pristine_git_object: b928f92676c38c06a71f49899fe666fc69d129b0
     deleted: true
   docs/models/chatcontentimageimageurl.md:
     id: 5f969d5c40da
-    last_write_checksum: sha1:f6d02ef756ca0225af0413a2af26e22e800eb486
-    pristine_git_object: f064d06114e5e13a5add5561ee2d1eb7126dcb9a
+    last_write_checksum: sha1:1a5721be37ce760d56aa3299bdc85c3429ce7900
+    pristine_git_object: d1078f6196aa6d0dc65c63b7bcef3ef2e471a592
     deleted: true
   docs/models/chatcontentimagetype.md:
     id: 15e33559be57
@@ -2532,6 +2532,7 @@ trackedFiles:
     id: bb7d98b85302
     last_write_checksum: sha1:288a75eed2f247aa31279077a9b2c423151f03f7
     pristine_git_object: a0d45ba6cb9f4466eb0dba810eb1b0507433cf16
+    deleted: true
   docs/models/generationcontentdata.md:
     id: a52d9d5d7d69
     last_write_checksum: sha1:d5111291260b5d6d7bf128ca1e62f442f350183c
@@ -7559,12 +7560,12 @@ trackedFiles:
     pristine_git_object: 410efafd6a7f50d91ccb87131fedbe0c3d47e15a
   jsr.json:
     id: 7f6ab7767282
-    last_write_checksum: sha1:f8dcbe6652aa97994033a251476663cb9b17547d
-    pristine_git_object: 958a420db23bcc1bc826cff5d9acb31c81a65366
+    last_write_checksum: sha1:225b6cf484a7ae127aaf7fe5bf8eea39d0945d7e
+    pristine_git_object: 97fda83c3a0764e6fe05e861900706c4113dfdcf
   package.json:
     id: 7030d0b2f71b
-    last_write_checksum: sha1:dd901e9b6322a83b130dd72c6dae17ad9d848732
-    pristine_git_object: f98196ffa8243ae35aed79ad2139e7bf9e0ca0a0
+    last_write_checksum: sha1:57d9df0a5ccd6a9ea85c17b3fc529424f04cb225
+    pristine_git_object: 20969377a06168c85b00b74d0638eccd08ae6c62
   src/core.ts:
     id: f431fdbcd144
     last_write_checksum: sha1:5aa66b0b6a5964f3eea7f3098c2eb3c0ee9c0131
@@ -7931,8 +7932,8 @@ trackedFiles:
     pristine_git_object: a187e58707bdb726ca2aff74941efe7493422d4e
   src/lib/config.ts:
     id: 320761608fb3
-    last_write_checksum: sha1:d1fd78e843ebc40e4a672a58169de1367bd3d99e
-    pristine_git_object: 82bc030aba52e815002d17a98d3b9b445fdf963c
+    last_write_checksum: sha1:2e7e84d7df177a7ccd5b5351c7ce1248b3979da0
+    pristine_git_object: 762d7b1c398ff824a44077df4f96d348ab79b231
   src/lib/dlv.ts:
     id: b1988214835a
     last_write_checksum: sha1:eaac763b22717206a6199104e0403ed17a4e2711
@@ -8355,8 +8356,8 @@ trackedFiles:
     pristine_git_object: a1d44bc93cfa1334b3a4f5bb59a8ab67a90bbff7
   src/models/chatcontentimage.ts:
     id: 0903ebf8f7a0
-    last_write_checksum: sha1:9a08636d7b3db4937445aa03f138b2b6881a5fa7
-    pristine_git_object: c48271431257bc39f2ac6748ef99e42d4a17059f
+    last_write_checksum: sha1:3fbd87674934beceace10847635da78f91c077d3
+    pristine_git_object: 950f42f6062b38a1ccecf0159edccc93e629330e
   src/models/chatcontentitems.ts:
     id: 3d8c886d8084
     last_write_checksum: sha1:c1f5e2f5aa321d5e0cf6805e38cbd3a2fe68e9d4
@@ -12178,4 +12179,4 @@ examples:
         "500":
           application/json: {"error": {"code": 500, "message": "Internal Server Error"}}
 examplesVersion: 1.0.2
-releaseNotes: "## Typescript SDK Changes:\n* `openrouter.beta.responses.send()`: \n  *  `request.responsesRequest.input.union(Array<>)[].union(OutputFusionServerToolItem).sources` **Added**\n  *  `response` **Changed**\n* `openrouter.presets.createPresetsResponses()`: \n  *  `request.responsesRequest.input.union(Array<>)[].union(OutputFusionServerToolItem).sources` **Added**\n"
+releaseNotes: "## Typescript SDK Changes:\n* `openrouter.chat.send()`: \n  *  `request.chatRequest.messages[].union(user).content.union(Array<ChatContentItems>)[].union(image_url).imageUrl.detail.enum(original)` **Added**\n  *  `response.choices[].message.content.union(Array<ChatContentItems>)[].union(image_url).imageUrl.detail.enum(original)` **Added**\n* `openrouter.presets.createPresetsChatCompletions()`: \n  *  `request.chatRequest.messages[].union(assistant).content.union(Array<ChatContentItems>)[].union(image_url).imageUrl.detail.enum(original)` **Added**\n"
