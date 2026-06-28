@@ -1,0 +1,15 @@
+# FusionServerToolOpenRouterType
+
+## Example Usage
+
+```typescript
+import { FusionServerToolOpenRouterType } from "@openrouter/sdk/models";
+
+let value: FusionServerToolOpenRouterType = "openrouter:fusion";
+```
+
+## Values
+
+```typescript
+"openrouter:fusion"
+```
