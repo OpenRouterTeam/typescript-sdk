@@ -1,4 +1,4 @@
-import { describe, it, expect } from 'vitest';
+import { describe, it, expect, beforeEach } from 'vitest';
 import { envSchema, resetEnv } from '../../src/lib/env.js';
 
 describe('OPENROUTER_DEBUG env var parsing', () => {
