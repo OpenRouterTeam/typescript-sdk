@@ -12,6 +12,7 @@ let value: ContentPartImageImageUrl = {
 
 ## Fields
 
-| Field              | Type               | Required           | Description        |
-| ------------------ | ------------------ | ------------------ | ------------------ |
-| `url`              | *string*           | :heavy_check_mark: | N/A                |
+| Field                                                                | Type                                                                 | Required                                                             | Description                                                          |
+| -------------------------------------------------------------------- | -------------------------------------------------------------------- | -------------------------------------------------------------------- | -------------------------------------------------------------------- |
+| `detail`                                                             | [models.ContentPartImageDetail](../models/contentpartimagedetail.md) | :heavy_minus_sign:                                                   | N/A                                                                  |
+| `url`                                                                | *string*                                                             | :heavy_check_mark:                                                   | N/A                                                                  |

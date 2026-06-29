@@ -12,6 +12,7 @@ let value: FrameImageImageUrl = {
 
 ## Fields
 
-| Field              | Type               | Required           | Description        |
-| ------------------ | ------------------ | ------------------ | ------------------ |
-| `url`              | *string*           | :heavy_check_mark: | N/A                |
+| Field                                                    | Type                                                     | Required                                                 | Description                                              |
+| -------------------------------------------------------- | -------------------------------------------------------- | -------------------------------------------------------- | -------------------------------------------------------- |
+| `detail`                                                 | [models.FrameImageDetail](../models/frameimagedetail.md) | :heavy_minus_sign:                                       | N/A                                                      |
+| `url`                                                    | *string*                                                 | :heavy_check_mark:                                       | N/A                                                      |

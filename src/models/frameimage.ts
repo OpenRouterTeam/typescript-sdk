@@ -8,7 +8,15 @@ import { remap as remap$ } from "../lib/primitives.js";
 import * as openEnums from "../types/enums.js";
 import { ClosedEnum, OpenEnum } from "../types/enums.js";
 
+export const FrameImageDetail = {
+  Auto: "auto",
+  Low: "low",
+  High: "high",
+} as const;
+export type FrameImageDetail = OpenEnum<typeof FrameImageDetail>;
+
 export type FrameImageImageUrl = {
+  detail?: FrameImageDetail | undefined;
   url: string;
 };
 
@@ -39,7 +47,14 @@ export type FrameImage = {
 };
 
 /** @internal */
+export const FrameImageDetail$outboundSchema: z.ZodType<
+  string,
+  FrameImageDetail
+> = openEnums.outboundSchema(FrameImageDetail);
+
+/** @internal */
 export type FrameImageImageUrl$Outbound = {
+  detail?: string | undefined;
   url: string;
 };
 
@@ -48,6 +63,7 @@ export const FrameImageImageUrl$outboundSchema: z.ZodType<
   FrameImageImageUrl$Outbound,
   FrameImageImageUrl
 > = z.object({
+  detail: FrameImageDetail$outboundSchema.optional(),
   url: z.string(),
 });
 

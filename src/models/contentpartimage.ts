@@ -5,9 +5,18 @@
 
 import * as z from "zod/v4";
 import { remap as remap$ } from "../lib/primitives.js";
-import { ClosedEnum } from "../types/enums.js";
+import * as openEnums from "../types/enums.js";
+import { ClosedEnum, OpenEnum } from "../types/enums.js";
+
+export const ContentPartImageDetail = {
+  Auto: "auto",
+  Low: "low",
+  High: "high",
+} as const;
+export type ContentPartImageDetail = OpenEnum<typeof ContentPartImageDetail>;
 
 export type ContentPartImageImageUrl = {
+  detail?: ContentPartImageDetail | undefined;
   url: string;
 };
 
@@ -22,7 +31,14 @@ export type ContentPartImage = {
 };
 
 /** @internal */
+export const ContentPartImageDetail$outboundSchema: z.ZodType<
+  string,
+  ContentPartImageDetail
+> = openEnums.outboundSchema(ContentPartImageDetail);
+
+/** @internal */
 export type ContentPartImageImageUrl$Outbound = {
+  detail?: string | undefined;
   url: string;
 };
 
@@ -31,6 +47,7 @@ export const ContentPartImageImageUrl$outboundSchema: z.ZodType<
   ContentPartImageImageUrl$Outbound,
   ContentPartImageImageUrl
 > = z.object({
+  detail: ContentPartImageDetail$outboundSchema.optional(),
   url: z.string(),
 });
 
