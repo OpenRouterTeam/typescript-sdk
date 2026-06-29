@@ -9,15 +9,33 @@ import * as openEnums from "../types/enums.js";
 import { OpenEnum } from "../types/enums.js";
 
 /**
- * A curated OpenRouter fusion preset (slugs follow `<task>-<tier>`, e.g. `general-high`). Expands server-side into the preset's analysis_models panel and judge model, so callers never name individual models. Explicitly provided `analysis_models` / `model` take precedence.
+ * How the judge stage runs. `generic` (default) produces the 5 research dimensions; `coding` swaps in action-oriented coding dimensions; `council` skips the judge call entirely and synthesizes from the raw panel responses. When omitted, a `coding-*` preset implies `council`, the server-tool (agent) path defaults to `coding`, and the model-slug path defaults to `generic`.
+ */
+export const FusionPluginAnalysisMode = {
+  Generic: "generic",
+  Coding: "coding",
+  Council: "council",
+} as const;
+/**
+ * How the judge stage runs. `generic` (default) produces the 5 research dimensions; `coding` swaps in action-oriented coding dimensions; `council` skips the judge call entirely and synthesizes from the raw panel responses. When omitted, a `coding-*` preset implies `council`, the server-tool (agent) path defaults to `coding`, and the model-slug path defaults to `generic`.
+ */
+export type FusionPluginAnalysisMode = OpenEnum<
+  typeof FusionPluginAnalysisMode
+>;
+
+/**
+ * A curated OpenRouter fusion preset (slugs follow `<task>-<tier>`, e.g. `general-high`). Expands server-side into the preset's analysis_models panel and judge model, so callers never name individual models. `coding-*` presets also imply `analysis_mode: council`. Explicitly provided `analysis_models` / `model` / `analysis_mode` take precedence.
  */
 export const PresetEnum = {
   GeneralHigh: "general-high",
   GeneralBudget: "general-budget",
   GeneralFast: "general-fast",
+  CodingHigh: "coding-high",
+  CodingBudget: "coding-budget",
+  CodingFast: "coding-fast",
 } as const;
 /**
- * A curated OpenRouter fusion preset (slugs follow `<task>-<tier>`, e.g. `general-high`). Expands server-side into the preset's analysis_models panel and judge model, so callers never name individual models. Explicitly provided `analysis_models` / `model` take precedence.
+ * A curated OpenRouter fusion preset (slugs follow `<task>-<tier>`, e.g. `general-high`). Expands server-side into the preset's analysis_models panel and judge model, so callers never name individual models. `coding-*` presets also imply `analysis_mode: council`. Explicitly provided `analysis_models` / `model` / `analysis_mode` take precedence.
  */
 export type PresetEnum = OpenEnum<typeof PresetEnum>;
 
@@ -33,6 +51,10 @@ export type FusionPluginTool = {
 };
 
 export type FusionPlugin = {
+  /**
+   * How the judge stage runs. `generic` (default) produces the 5 research dimensions; `coding` swaps in action-oriented coding dimensions; `council` skips the judge call entirely and synthesizes from the raw panel responses. When omitted, a `coding-*` preset implies `council`, the server-tool (agent) path defaults to `coding`, and the model-slug path defaults to `generic`.
+   */
+  analysisMode?: FusionPluginAnalysisMode | undefined;
   /**
    * Slugs of models to run in parallel as the "expert panel" the judge analyzes. Each model receives the same user prompt with web_search + web_fetch enabled. Capped at 8 models to bound cost amplification. When omitted, defaults to the Quality preset from the /labs/fusion UI (~anthropic/claude-opus-latest, ~openai/gpt-latest, ~google/gemini-pro-latest).
    */
@@ -51,7 +73,7 @@ export type FusionPlugin = {
    */
   model?: string | undefined;
   /**
-   * A curated OpenRouter fusion preset (slugs follow `<task>-<tier>`, e.g. `general-high`). Expands server-side into the preset's analysis_models panel and judge model, so callers never name individual models. Explicitly provided `analysis_models` / `model` take precedence.
+   * A curated OpenRouter fusion preset (slugs follow `<task>-<tier>`, e.g. `general-high`). Expands server-side into the preset's analysis_models panel and judge model, so callers never name individual models. `coding-*` presets also imply `analysis_mode: council`. Explicitly provided `analysis_models` / `model` / `analysis_mode` take precedence.
    */
   preset?: PresetEnum | undefined;
   /**
@@ -59,6 +81,12 @@ export type FusionPlugin = {
    */
   tools?: Array<FusionPluginTool> | undefined;
 };
+
+/** @internal */
+export const FusionPluginAnalysisMode$outboundSchema: z.ZodType<
+  string,
+  FusionPluginAnalysisMode
+> = openEnums.outboundSchema(FusionPluginAnalysisMode);
 
 /** @internal */
 export const PresetEnum$outboundSchema: z.ZodType<string, PresetEnum> =
@@ -89,6 +117,7 @@ export function fusionPluginToolToJSON(
 
 /** @internal */
 export type FusionPlugin$Outbound = {
+  analysis_mode?: string | undefined;
   analysis_models?: Array<string> | undefined;
   enabled?: boolean | undefined;
   id: "fusion";
@@ -103,6 +132,7 @@ export const FusionPlugin$outboundSchema: z.ZodType<
   FusionPlugin$Outbound,
   FusionPlugin
 > = z.object({
+  analysisMode: FusionPluginAnalysisMode$outboundSchema.optional(),
   analysisModels: z.array(z.string()).optional(),
   enabled: z.boolean().optional(),
   id: z.literal("fusion"),
@@ -112,6 +142,7 @@ export const FusionPlugin$outboundSchema: z.ZodType<
   tools: z.array(z.lazy(() => FusionPluginTool$outboundSchema)).optional(),
 }).transform((v) => {
   return remap$(v, {
+    analysisMode: "analysis_mode",
     analysisModels: "analysis_models",
     maxToolCalls: "max_tool_calls",
   });
