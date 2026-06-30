@@ -1,0 +1,24 @@
+---
+title: "CompactionItem"
+---
+
+A context compaction marker with encrypted summary
+
+## Example Usage
+
+```typescript
+import { CompactionItem } from "@openrouter/sdk/models";
+
+let value: CompactionItem = {
+  encryptedContent: "enc_abc123...",
+  type: "compaction",
+};
+```
+
+## Fields
+
+| Field                                                        | Type                                                         | Required                                                     | Description                                                  |
+| ------------------------------------------------------------ | ------------------------------------------------------------ | ------------------------------------------------------------ | ------------------------------------------------------------ |
+| `encryptedContent`                                           | *string*                                                     | :heavy_check_mark:                                           | N/A                                                          |
+| `id`                                                         | *string*                                                     | :heavy_minus_sign:                                           | N/A                                                          |
+| `type`                                                       | [models.CompactionItemType](../models/compactionitemtype.mdx) | :heavy_check_mark:                                           | N/A                                                          |

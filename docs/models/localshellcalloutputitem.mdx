@@ -1,0 +1,26 @@
+---
+title: "LocalShellCallOutputItem"
+---
+
+Output from a local shell command execution
+
+## Example Usage
+
+```typescript
+import { LocalShellCallOutputItem } from "@openrouter/sdk/models";
+
+let value: LocalShellCallOutputItem = {
+  id: "output-abc123",
+  output: "total 24\ndrwxr-xr-x  5 user  staff  160 Jan  1 12:00 .",
+  type: "local_shell_call_output",
+};
+```
+
+## Fields
+
+| Field                                                                                | Type                                                                                 | Required                                                                             | Description                                                                          | Example                                                                              |
+| ------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------ |
+| `id`                                                                                 | *string*                                                                             | :heavy_check_mark:                                                                   | N/A                                                                                  |                                                                                      |
+| `output`                                                                             | *string*                                                                             | :heavy_check_mark:                                                                   | N/A                                                                                  |                                                                                      |
+| `status`                                                                             | [models.LocalShellCallOutputItemStatus](../models/localshellcalloutputitemstatus.mdx) | :heavy_minus_sign:                                                                   | N/A                                                                                  | completed                                                                            |
+| `type`                                                                               | [models.LocalShellCallOutputItemType](../models/localshellcalloutputitemtype.mdx)     | :heavy_check_mark:                                                                   | N/A                                                                                  |                                                                                      |
