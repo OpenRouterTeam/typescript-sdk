@@ -1,0 +1,25 @@
+---
+title: "RangeCapability"
+---
+
+A parameter that accepts any value within an inclusive numeric range.
+
+## Example Usage
+
+```typescript
+import { RangeCapability } from "@openrouter/sdk/models";
+
+let value: RangeCapability = {
+  max: 1546.58,
+  min: 9138.34,
+  type: "range",
+};
+```
+
+## Fields
+
+| Field              | Type               | Required           | Description        |
+| ------------------ | ------------------ | ------------------ | ------------------ |
+| `max`              | *number*           | :heavy_check_mark: | N/A                |
+| `min`              | *number*           | :heavy_check_mark: | N/A                |
+| `type`             | *"range"*          | :heavy_check_mark: | N/A                |
