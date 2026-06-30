@@ -13,5 +13,5 @@ let value: RoutingStrategy = "direct";
 ## Values
 
 ```typescript
-"direct" | "auto" | "free" | "latest" | "alias" | "fallback" | "pareto" | "bodybuilder" | "fusion" | Unrecognized<string>
+"direct" | "auto" | "free" | "latest" | "alias" | "fallback" | "pareto" | "bodybuilder" | "fusion" | "phaser" | Unrecognized<string>
 ```
