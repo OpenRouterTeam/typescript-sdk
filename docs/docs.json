@@ -2,6 +2,11 @@
   "$schema": "https://mintlify.com/docs.json",
   "theme": "mint",
   "name": "TypeScript SDK",
+  "colors": {
+    "primary": "#6467f2",
+    "light": "#6467f2",
+    "dark": "#6467f2"
+  },
   "navigation": {
     "groups": [
       {
