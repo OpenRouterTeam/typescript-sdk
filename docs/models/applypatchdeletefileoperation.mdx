@@ -1,0 +1,23 @@
+---
+title: "ApplyPatchDeleteFileOperation"
+---
+
+The `delete_file` variant of an `apply_patch_call.operation`. Identifies the file to remove; no diff is required.
+
+## Example Usage
+
+```typescript
+import { ApplyPatchDeleteFileOperation } from "@openrouter/sdk/models";
+
+let value: ApplyPatchDeleteFileOperation = {
+  path: "/src/main.ts",
+  type: "delete_file",
+};
+```
+
+## Fields
+
+| Field              | Type               | Required           | Description        |
+| ------------------ | ------------------ | ------------------ | ------------------ |
+| `path`             | *string*           | :heavy_check_mark: | N/A                |
+| `type`             | *"delete_file"*    | :heavy_check_mark: | N/A                |

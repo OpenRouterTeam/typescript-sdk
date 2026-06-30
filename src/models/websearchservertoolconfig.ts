@@ -48,6 +48,10 @@ export type WebSearchServerToolConfig = {
    */
   maxTotalResults?: number | undefined;
   /**
+   * Maximum number of times the model may invoke web search in a single turn. Only honoured on the native provider passthrough path (currently Anthropic), where it is forwarded to the provider; ignored by the Exa, Firecrawl, Parallel, and Perplexity engines, which do not expose a per-request invocation cap. Defaults to 5 on the native path when not specified.
+   */
+  maxUses?: number | undefined;
+  /**
    * How much context to retrieve per result. Applies to Exa, Parallel, and Perplexity engines; ignored with native provider search and Firecrawl. For Exa, pins a fixed per-result character cap (low=5,000, medium=15,000, high=30,000); when omitted, Exa picks an adaptive size per query and document (typically ~2,000–4,000 characters per result). For Parallel, controls the total characters across all results; when omitted, Parallel uses its own default size. For Perplexity, maps directly to the Search API's native search_context_size parameter. Overridden by `max_characters` when both are set.
    */
   searchContextSize?: SearchQualityLevel | undefined;
@@ -65,6 +69,7 @@ export type WebSearchServerToolConfig$Outbound = {
   max_characters?: number | undefined;
   max_results?: number | undefined;
   max_total_results?: number | undefined;
+  max_uses?: number | undefined;
   search_context_size?: string | undefined;
   user_location?: WebSearchUserLocationServerTool$Outbound | undefined;
 };
@@ -80,6 +85,7 @@ export const WebSearchServerToolConfig$outboundSchema: z.ZodType<
   maxCharacters: z.int().optional(),
   maxResults: z.int().optional(),
   maxTotalResults: z.int().optional(),
+  maxUses: z.int().optional(),
   searchContextSize: SearchQualityLevel$outboundSchema.optional(),
   userLocation: WebSearchUserLocationServerTool$outboundSchema.optional(),
 }).transform((v) => {
@@ -89,6 +95,7 @@ export const WebSearchServerToolConfig$outboundSchema: z.ZodType<
     maxCharacters: "max_characters",
     maxResults: "max_results",
     maxTotalResults: "max_total_results",
+    maxUses: "max_uses",
     searchContextSize: "search_context_size",
     userLocation: "user_location",
   });
