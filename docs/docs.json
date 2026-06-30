@@ -1,0 +1,44 @@
+{
+  "$schema": "https://mintlify.com/docs.json",
+  "name": "TypeScript SDK",
+  "navigation": {
+    "groups": [
+      {
+        "group": "Getting Started",
+        "pages": ["overview"]
+      },
+      {
+        "group": "API Reference",
+        "pages": [
+          "sdks/chat/README",
+          "sdks/responses/README",
+          "sdks/models/README",
+          "sdks/embeddings/README",
+          "sdks/rerank/README",
+          "sdks/images/README",
+          "sdks/tts/README",
+          "sdks/stt/README",
+          "sdks/videogeneration/README",
+          "sdks/classifications/README",
+          "sdks/generations/README",
+          "sdks/endpoints/README",
+          "sdks/providers/README",
+          "sdks/credits/README",
+          "sdks/apikeys/README",
+          "sdks/oauth/README",
+          "sdks/byok/README",
+          "sdks/presets/README",
+          "sdks/guardrails/README",
+          "sdks/datasets/README",
+          "sdks/files/README",
+          "sdks/analytics/README",
+          "sdks/betaanalytics/README",
+          "sdks/benchmarks/README",
+          "sdks/observability/README",
+          "sdks/organization/README",
+          "sdks/workspaces/README"
+        ]
+      }
+    ]
+  }
+}

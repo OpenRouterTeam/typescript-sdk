@@ -34,6 +34,7 @@ generation:
     generateTests: false
     generateNewTests: true
     skipResponseBodyAssertions: false
+  documentation: mintlify
   preApplyUnionDiscriminators: true
 typescript:
   version: 0.13.21
