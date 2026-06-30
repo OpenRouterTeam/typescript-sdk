@@ -64,6 +64,10 @@ export type ChatWebSearchShorthand = {
    * Maximum total number of search results across all search calls in a single request. Once this limit is reached, the tool will stop returning new results. Useful for controlling cost and context size in agentic loops. Defaults to 50 when not specified.
    */
   maxTotalResults?: number | undefined;
+  /**
+   * Maximum number of times the model may invoke web search in a single turn. Only honoured on the native provider passthrough path (currently Anthropic), where it is forwarded to the provider; ignored by the Exa, Firecrawl, Parallel, and Perplexity engines, which do not expose a per-request invocation cap. Defaults to 5 on the native path when not specified.
+   */
+  maxUses?: number | undefined;
   parameters?: WebSearchConfig | undefined;
   /**
    * How much context to retrieve per result. Applies to Exa, Parallel, and Perplexity engines; ignored with native provider search and Firecrawl. For Exa, pins a fixed per-result character cap (low=5,000, medium=15,000, high=30,000); when omitted, Exa picks an adaptive size per query and document (typically ~2,000–4,000 characters per result). For Parallel, controls the total characters across all results; when omitted, Parallel uses its own default size. For Perplexity, maps directly to the Search API's native search_context_size parameter. Overridden by `max_characters` when both are set.
@@ -90,6 +94,7 @@ export type ChatWebSearchShorthand$Outbound = {
   max_characters?: number | undefined;
   max_results?: number | undefined;
   max_total_results?: number | undefined;
+  max_uses?: number | undefined;
   parameters?: WebSearchConfig$Outbound | undefined;
   search_context_size?: string | undefined;
   type: string;
@@ -107,6 +112,7 @@ export const ChatWebSearchShorthand$outboundSchema: z.ZodType<
   maxCharacters: z.int().optional(),
   maxResults: z.int().optional(),
   maxTotalResults: z.int().optional(),
+  maxUses: z.int().optional(),
   parameters: WebSearchConfig$outboundSchema.optional(),
   searchContextSize: SearchQualityLevel$outboundSchema.optional(),
   type: ChatWebSearchShorthandType$outboundSchema,
@@ -118,6 +124,7 @@ export const ChatWebSearchShorthand$outboundSchema: z.ZodType<
     maxCharacters: "max_characters",
     maxResults: "max_results",
     maxTotalResults: "max_total_results",
+    maxUses: "max_uses",
     searchContextSize: "search_context_size",
     userLocation: "user_location",
   });

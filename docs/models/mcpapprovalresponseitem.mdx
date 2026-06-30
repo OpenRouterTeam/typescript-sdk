@@ -1,0 +1,27 @@
+---
+title: "McpApprovalResponseItem"
+---
+
+User response to an MCP tool approval request
+
+## Example Usage
+
+```typescript
+import { McpApprovalResponseItem } from "@openrouter/sdk/models";
+
+let value: McpApprovalResponseItem = {
+  approvalRequestId: "approval-abc123",
+  approve: true,
+  type: "mcp_approval_response",
+};
+```
+
+## Fields
+
+| Field                                                                          | Type                                                                           | Required                                                                       | Description                                                                    |
+| ------------------------------------------------------------------------------ | ------------------------------------------------------------------------------ | ------------------------------------------------------------------------------ | ------------------------------------------------------------------------------ |
+| `approvalRequestId`                                                            | *string*                                                                       | :heavy_check_mark:                                                             | N/A                                                                            |
+| `approve`                                                                      | *boolean*                                                                      | :heavy_check_mark:                                                             | N/A                                                                            |
+| `id`                                                                           | *string*                                                                       | :heavy_minus_sign:                                                             | N/A                                                                            |
+| `reason`                                                                       | *string*                                                                       | :heavy_minus_sign:                                                             | N/A                                                                            |
+| `type`                                                                         | [models.McpApprovalResponseItemType](../models/mcpapprovalresponseitemtype.mdx) | :heavy_check_mark:                                                             | N/A                                                                            |
