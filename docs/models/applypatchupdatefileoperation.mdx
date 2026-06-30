@@ -1,0 +1,25 @@
+---
+title: "ApplyPatchUpdateFileOperation"
+---
+
+The `update_file` variant of an `apply_patch_call.operation`. Carries a V4A diff describing edits to an existing file.
+
+## Example Usage
+
+```typescript
+import { ApplyPatchUpdateFileOperation } from "@openrouter/sdk/models";
+
+let value: ApplyPatchUpdateFileOperation = {
+  diff: "@@ function main() {\n+  console.log(\"hi\");\n }",
+  path: "/src/main.ts",
+  type: "update_file",
+};
+```
+
+## Fields
+
+| Field              | Type               | Required           | Description        |
+| ------------------ | ------------------ | ------------------ | ------------------ |
+| `diff`             | *string*           | :heavy_check_mark: | N/A                |
+| `path`             | *string*           | :heavy_check_mark: | N/A                |
+| `type`             | *"update_file"*    | :heavy_check_mark: | N/A                |
