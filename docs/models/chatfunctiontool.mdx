@@ -1,0 +1,100 @@
+---
+title: "ChatFunctionTool"
+---
+
+Tool definition for function calling (regular function or OpenRouter built-in server tool)
+
+
+## Supported Types
+
+### `models.ChatFunctionToolFunction`
+
+```typescript
+const value: models.ChatFunctionToolFunction = {
+  function: {
+    name: "get_weather",
+  },
+  type: "function",
+};
+```
+
+### `models.AdvisorServerToolOpenRouter`
+
+```typescript
+const value: models.AdvisorServerToolOpenRouter = {
+  type: "openrouter:advisor",
+};
+```
+
+### `models.BashServerTool`
+
+```typescript
+const value: models.BashServerTool = {
+  type: "openrouter:bash",
+};
+```
+
+### `models.DatetimeServerTool`
+
+```typescript
+const value: models.DatetimeServerTool = {
+  type: "openrouter:datetime",
+};
+```
+
+### `models.FusionServerToolOpenRouter`
+
+```typescript
+const value: models.FusionServerToolOpenRouter = {
+  type: "openrouter:fusion",
+};
+```
+
+### `models.ImageGenerationServerToolOpenRouter`
+
+```typescript
+const value: models.ImageGenerationServerToolOpenRouter = {
+  type: "openrouter:image_generation",
+};
+```
+
+### `models.ChatSearchModelsServerTool`
+
+```typescript
+const value: models.ChatSearchModelsServerTool = {
+  type: "openrouter:experimental__search_models",
+};
+```
+
+### `models.SubagentServerToolOpenRouter`
+
+```typescript
+const value: models.SubagentServerToolOpenRouter = {
+  type: "openrouter:subagent",
+};
+```
+
+### `models.WebFetchServerTool`
+
+```typescript
+const value: models.WebFetchServerTool = {
+  type: "openrouter:web_fetch",
+};
+```
+
+### `models.OpenRouterWebSearchServerTool`
+
+```typescript
+const value: models.OpenRouterWebSearchServerTool = {
+  type: "openrouter:web_search",
+};
+```
+
+### `models.ChatWebSearchShorthand`
+
+```typescript
+const value: models.ChatWebSearchShorthand = {
+  type: "web_search",
+};
+```
+
