@@ -1,2 +1,4 @@
 docs/sdks/alpha
 .npmignore
+docs/docs.json
+docs/overview.mdx
