@@ -1,0 +1,33 @@
+---
+title: "ContentPartDoneEventPart"
+---
+
+## Supported Types
+
+### `models.ResponseOutputText`
+
+```typescript
+const value: models.ResponseOutputText = {
+  text: "The capital of France is Paris.",
+  type: "output_text",
+};
+```
+
+### `models.ReasoningTextContent`
+
+```typescript
+const value: models.ReasoningTextContent = {
+  text: "Let me think step by step about this problem...",
+  type: "reasoning_text",
+};
+```
+
+### `models.OpenAIResponsesRefusalContent`
+
+```typescript
+const value: models.OpenAIResponsesRefusalContent = {
+  refusal: "I'm sorry, I cannot assist with that request",
+  type: "refusal",
+};
+```
+
