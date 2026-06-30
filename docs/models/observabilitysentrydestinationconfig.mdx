@@ -1,0 +1,22 @@
+---
+title: "ObservabilitySentryDestinationConfig"
+---
+
+## Example Usage
+
+```typescript
+import { ObservabilitySentryDestinationConfig } from "@openrouter/sdk/models";
+
+let value: ObservabilitySentryDestinationConfig = {
+  dsn: "<value>",
+  otlpEndpoint: "<value>",
+};
+```
+
+## Fields
+
+| Field                                                           | Type                                                            | Required                                                        | Description                                                     |
+| --------------------------------------------------------------- | --------------------------------------------------------------- | --------------------------------------------------------------- | --------------------------------------------------------------- |
+| `dsn`                                                           | *string*                                                        | :heavy_check_mark:                                              | N/A                                                             |
+| `headers`                                                       | Record<string, *string*>                                        | :heavy_minus_sign:                                              | Custom HTTP headers to include in requests to this destination. |
+| `otlpEndpoint`                                                  | *string*                                                        | :heavy_check_mark:                                              | N/A                                                             |
