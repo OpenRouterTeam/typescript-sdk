@@ -17,6 +17,7 @@ export const RoutingStrategy = {
   Pareto: "pareto",
   Bodybuilder: "bodybuilder",
   Fusion: "fusion",
+  Phaser: "phaser",
 } as const;
 export type RoutingStrategy = OpenEnum<typeof RoutingStrategy>;
 
