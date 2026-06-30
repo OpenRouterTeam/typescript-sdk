@@ -1,0 +1,23 @@
+---
+title: "StopServerToolsWhenFinishReasonIs"
+---
+
+Stop when the upstream model emits this finish reason (e.g. `length`).
+
+## Example Usage
+
+```typescript
+import { StopServerToolsWhenFinishReasonIs } from "@openrouter/sdk/models";
+
+let value: StopServerToolsWhenFinishReasonIs = {
+  reason: "<value>",
+  type: "finish_reason_is",
+};
+```
+
+## Fields
+
+| Field                | Type                 | Required             | Description          |
+| -------------------- | -------------------- | -------------------- | -------------------- |
+| `reason`             | *string*             | :heavy_check_mark:   | N/A                  |
+| `type`               | *"finish_reason_is"* | :heavy_check_mark:   | N/A                  |
