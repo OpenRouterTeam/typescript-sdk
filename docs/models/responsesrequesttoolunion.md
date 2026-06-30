@@ -169,6 +169,14 @@ const value: models.DatetimeServerTool = {
 };
 ```
 
+### `models.FilesServerTool`
+
+```typescript
+const value: models.FilesServerTool = {
+  type: "openrouter:files",
+};
+```
+
 ### `models.FusionServerToolOpenRouter`
 
 ```typescript
