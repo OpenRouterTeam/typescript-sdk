@@ -1,0 +1,23 @@
+---
+title: "WebFetchPlugin"
+---
+
+## Example Usage
+
+```typescript
+import { WebFetchPlugin } from "@openrouter/sdk/models";
+
+let value: WebFetchPlugin = {
+  id: "web-fetch",
+};
+```
+
+## Fields
+
+| Field                                                                                    | Type                                                                                     | Required                                                                                 | Description                                                                              |
+| ---------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------- |
+| `allowedDomains`                                                                         | *string*[]                                                                               | :heavy_minus_sign:                                                                       | Only fetch from these domains.                                                           |
+| `blockedDomains`                                                                         | *string*[]                                                                               | :heavy_minus_sign:                                                                       | Never fetch from these domains.                                                          |
+| `id`                                                                                     | *"web-fetch"*                                                                            | :heavy_check_mark:                                                                       | N/A                                                                                      |
+| `maxContentTokens`                                                                       | *number*                                                                                 | :heavy_minus_sign:                                                                       | Maximum content length in approximate tokens. Content exceeding this limit is truncated. |
+| `maxUses`                                                                                | *number*                                                                                 | :heavy_minus_sign:                                                                       | Maximum number of web fetches per request. Once exceeded, the tool returns an error.     |
