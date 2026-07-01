@@ -1,0 +1,32 @@
+---
+title: "ShellCallOutputItem"
+---
+
+Output from a shell command execution (newer variant)
+
+## Example Usage
+
+```typescript
+import { ShellCallOutputItem } from "@openrouter/sdk/models";
+
+let value: ShellCallOutputItem = {
+  callId: "call-abc123",
+  output: [
+    {
+      type: "stdout",
+    },
+  ],
+  type: "shell_call_output",
+};
+```
+
+## Fields
+
+| Field                                                                        | Type                                                                         | Required                                                                     | Description                                                                  | Example                                                                      |
+| ---------------------------------------------------------------------------- | ---------------------------------------------------------------------------- | ---------------------------------------------------------------------------- | ---------------------------------------------------------------------------- | ---------------------------------------------------------------------------- |
+| `callId`                                                                     | *string*                                                                     | :heavy_check_mark:                                                           | N/A                                                                          |                                                                              |
+| `id`                                                                         | *string*                                                                     | :heavy_minus_sign:                                                           | N/A                                                                          |                                                                              |
+| `maxOutputLength`                                                            | *number*                                                                     | :heavy_minus_sign:                                                           | N/A                                                                          |                                                                              |
+| `output`                                                                     | [models.ShellCallOutputItemOutput](../models/shellcalloutputitemoutput.mdx)[] | :heavy_check_mark:                                                           | N/A                                                                          |                                                                              |
+| `status`                                                                     | [models.ShellCallOutputItemStatus](../models/shellcalloutputitemstatus.mdx)   | :heavy_minus_sign:                                                           | N/A                                                                          | completed                                                                    |
+| `type`                                                                       | [models.ShellCallOutputItemType](../models/shellcalloutputitemtype.mdx)       | :heavy_check_mark:                                                           | N/A                                                                          |                                                                              |
