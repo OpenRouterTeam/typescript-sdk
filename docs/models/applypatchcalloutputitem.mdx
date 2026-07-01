@@ -1,0 +1,27 @@
+---
+title: "ApplyPatchCallOutputItem"
+---
+
+The client's echo of an `apply_patch_call` after applying the patch. `output` is an optional human-readable log; `status` is `completed` when the patch was applied successfully, `failed` otherwise.
+
+## Example Usage
+
+```typescript
+import { ApplyPatchCallOutputItem } from "@openrouter/sdk/models";
+
+let value: ApplyPatchCallOutputItem = {
+  callId: "call_abc123",
+  status: "completed",
+  type: "apply_patch_call_output",
+};
+```
+
+## Fields
+
+| Field                                                                                | Type                                                                                 | Required                                                                             | Description                                                                          |
+| ------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------ |
+| `callId`                                                                             | *string*                                                                             | :heavy_check_mark:                                                                   | N/A                                                                                  |
+| `id`                                                                                 | *string*                                                                             | :heavy_minus_sign:                                                                   | N/A                                                                                  |
+| `output`                                                                             | *string*                                                                             | :heavy_minus_sign:                                                                   | N/A                                                                                  |
+| `status`                                                                             | [models.ApplyPatchCallOutputItemStatus](../models/applypatchcalloutputitemstatus.mdx) | :heavy_check_mark:                                                                   | N/A                                                                                  |
+| `type`                                                                               | [models.ApplyPatchCallOutputItemType](../models/applypatchcalloutputitemtype.mdx)     | :heavy_check_mark:                                                                   | N/A                                                                                  |
