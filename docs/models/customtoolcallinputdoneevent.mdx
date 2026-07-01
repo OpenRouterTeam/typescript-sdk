@@ -1,0 +1,29 @@
+---
+title: "CustomToolCallInputDoneEvent"
+---
+
+Event emitted when a custom tool call's freeform input streaming is complete. Mirrors `response.function_call_arguments.done` but for `custom` tools.
+
+## Example Usage
+
+```typescript
+import { CustomToolCallInputDoneEvent } from "@openrouter/sdk/models";
+
+let value: CustomToolCallInputDoneEvent = {
+  input: "<value>",
+  itemId: "<id>",
+  outputIndex: 276069,
+  sequenceNumber: 0,
+  type: "response.custom_tool_call_input.done",
+};
+```
+
+## Fields
+
+| Field                                    | Type                                     | Required                                 | Description                              |
+| ---------------------------------------- | ---------------------------------------- | ---------------------------------------- | ---------------------------------------- |
+| `input`                                  | *string*                                 | :heavy_check_mark:                       | N/A                                      |
+| `itemId`                                 | *string*                                 | :heavy_check_mark:                       | N/A                                      |
+| `outputIndex`                            | *number*                                 | :heavy_check_mark:                       | N/A                                      |
+| `sequenceNumber`                         | *number*                                 | :heavy_check_mark:                       | N/A                                      |
+| `type`                                   | *"response.custom_tool_call_input.done"* | :heavy_check_mark:                       | N/A                                      |

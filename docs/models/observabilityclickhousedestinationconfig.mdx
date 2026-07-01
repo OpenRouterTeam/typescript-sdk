@@ -1,0 +1,27 @@
+---
+title: "ObservabilityClickhouseDestinationConfig"
+---
+
+## Example Usage
+
+```typescript
+import { ObservabilityClickhouseDestinationConfig } from "@openrouter/sdk/models";
+
+let value: ObservabilityClickhouseDestinationConfig = {
+  database: "<value>",
+  host: "evil-airbus.net",
+  password: "cQ0oWoWiZp9fa9C",
+  username: "Hyman.Stroman",
+};
+```
+
+## Fields
+
+| Field                                                                                  | Type                                                                                   | Required                                                                               | Description                                                                            |
+| -------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------- |
+| `database`                                                                             | *string*                                                                               | :heavy_check_mark:                                                                     | N/A                                                                                    |
+| `headers`                                                                              | Record<string, *string*>                                                               | :heavy_minus_sign:                                                                     | Custom HTTP headers to include in requests to this destination.                        |
+| `host`                                                                                 | *string*                                                                               | :heavy_check_mark:                                                                     | N/A                                                                                    |
+| `password`                                                                             | *string*                                                                               | :heavy_check_mark:                                                                     | N/A                                                                                    |
+| `table`                                                                                | *string*                                                                               | :heavy_minus_sign:                                                                     | N/A                                                                                    |
+| `username`                                                                             | *string*                                                                               | :heavy_check_mark:                                                                     | If you have not set a specific username in ClickHouse, simply type in 'default' below. |
