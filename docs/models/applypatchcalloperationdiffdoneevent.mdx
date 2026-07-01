@@ -1,0 +1,29 @@
+---
+title: "ApplyPatchCallOperationDiffDoneEvent"
+---
+
+Emitted when `operation.diff` streaming completes for an `apply_patch_call`.
+
+## Example Usage
+
+```typescript
+import { ApplyPatchCallOperationDiffDoneEvent } from "@openrouter/sdk/models";
+
+let value: ApplyPatchCallOperationDiffDoneEvent = {
+  diff: "<value>",
+  itemId: "<id>",
+  outputIndex: 170720,
+  sequenceNumber: 0,
+  type: "response.apply_patch_call_operation_diff.done",
+};
+```
+
+## Fields
+
+| Field                                             | Type                                              | Required                                          | Description                                       |
+| ------------------------------------------------- | ------------------------------------------------- | ------------------------------------------------- | ------------------------------------------------- |
+| `diff`                                            | *string*                                          | :heavy_check_mark:                                | N/A                                               |
+| `itemId`                                          | *string*                                          | :heavy_check_mark:                                | N/A                                               |
+| `outputIndex`                                     | *number*                                          | :heavy_check_mark:                                | N/A                                               |
+| `sequenceNumber`                                  | *number*                                          | :heavy_check_mark:                                | N/A                                               |
+| `type`                                            | *"response.apply_patch_call_operation_diff.done"* | :heavy_check_mark:                                | N/A                                               |
