@@ -1,0 +1,31 @@
+---
+title: "FusionCallPanelCompletedEvent"
+---
+
+Emitted when a fusion panel model finishes with its full content.
+
+## Example Usage
+
+```typescript
+import { FusionCallPanelCompletedEvent } from "@openrouter/sdk/models";
+
+let value: FusionCallPanelCompletedEvent = {
+  content: "<value>",
+  itemId: "<id>",
+  model: "XTS",
+  outputIndex: 678592,
+  sequenceNumber: 0,
+  type: "response.fusion_call.panel.completed",
+};
+```
+
+## Fields
+
+| Field                                    | Type                                     | Required                                 | Description                              |
+| ---------------------------------------- | ---------------------------------------- | ---------------------------------------- | ---------------------------------------- |
+| `content`                                | *string*                                 | :heavy_check_mark:                       | N/A                                      |
+| `itemId`                                 | *string*                                 | :heavy_check_mark:                       | N/A                                      |
+| `model`                                  | *string*                                 | :heavy_check_mark:                       | N/A                                      |
+| `outputIndex`                            | *number*                                 | :heavy_check_mark:                       | N/A                                      |
+| `sequenceNumber`                         | *number*                                 | :heavy_check_mark:                       | N/A                                      |
+| `type`                                   | *"response.fusion_call.panel.completed"* | :heavy_check_mark:                       | N/A                                      |
