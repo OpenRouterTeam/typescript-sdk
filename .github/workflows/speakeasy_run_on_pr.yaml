@@ -44,6 +44,9 @@ jobs:
         env:
           SPEAKEASY_API_KEY: ${{ secrets.SPEAKEASY_API_KEY }}
 
+      - name: Regenerate docs navigation
+        run: scripts/gen-docs-nav.sh
+
       - name: Validate SDK
         uses: ./.github/actions/validate-sdk
         with:
