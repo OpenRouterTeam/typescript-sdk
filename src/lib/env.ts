@@ -35,7 +35,14 @@ export const envSchema: z.ZodType<Env, unknown> = z.object({
   OPENROUTER_APP_TITLE: z.string().optional(),
   OPENROUTER_APP_CATEGORIES: z.string().optional(),
 
-  OPENROUTER_DEBUG: z.coerce.boolean().optional(),
+  OPENROUTER_DEBUG: z.preprocess( 
+    (v) => {
+      if(typeof v === "string") {
+        return !["false", "0", "off", "no", ""].includes(v.toLowerCase().trim())
+      }
+      return v;
+    },
+    z.coerce.boolean().optional()),
 });
 
 /**
