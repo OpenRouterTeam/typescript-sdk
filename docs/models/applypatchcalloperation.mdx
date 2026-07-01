@@ -1,0 +1,38 @@
+---
+title: "ApplyPatchCallOperation"
+---
+
+The patch operation requested by an `apply_patch_call`. `create_file` and `update_file` carry a V4A diff; `delete_file` omits it.
+
+
+## Supported Types
+
+### `models.ApplyPatchCreateFileOperation`
+
+```typescript
+const value: models.ApplyPatchCreateFileOperation = {
+  diff: "@@ function main() {\n+  console.log(\"hi\");\n }",
+  path: "/src/main.ts",
+  type: "create_file",
+};
+```
+
+### `models.ApplyPatchDeleteFileOperation`
+
+```typescript
+const value: models.ApplyPatchDeleteFileOperation = {
+  path: "/src/main.ts",
+  type: "delete_file",
+};
+```
+
+### `models.ApplyPatchUpdateFileOperation`
+
+```typescript
+const value: models.ApplyPatchUpdateFileOperation = {
+  diff: "@@ function main() {\n+  console.log(\"hi\");\n }",
+  path: "/src/main.ts",
+  type: "update_file",
+};
+```
+
