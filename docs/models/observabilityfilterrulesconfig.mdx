@@ -1,0 +1,22 @@
+---
+title: "ObservabilityFilterRulesConfig"
+---
+
+Optional structured filter rules controlling which events are forwarded.
+
+## Example Usage
+
+```typescript
+import { ObservabilityFilterRulesConfig } from "@openrouter/sdk/models";
+
+let value: ObservabilityFilterRulesConfig = {
+  groups: [],
+};
+```
+
+## Fields
+
+| Field                                | Type                                 | Required                             | Description                          |
+| ------------------------------------ | ------------------------------------ | ------------------------------------ | ------------------------------------ |
+| `enabled`                            | *boolean*                            | :heavy_minus_sign:                   | N/A                                  |
+| `groups`                             | [models.Group](../models/group.mdx)[] | :heavy_check_mark:                   | N/A                                  |

@@ -1,0 +1,24 @@
+---
+title: "OutputWebSearchCallItem"
+---
+
+## Example Usage
+
+```typescript
+import { OutputWebSearchCallItem } from "@openrouter/sdk/models";
+
+let value: OutputWebSearchCallItem = {
+  id: "ws-abc123",
+  status: "completed",
+  type: "web_search_call",
+};
+```
+
+## Fields
+
+| Field                                                      | Type                                                       | Required                                                   | Description                                                | Example                                                    |
+| ---------------------------------------------------------- | ---------------------------------------------------------- | ---------------------------------------------------------- | ---------------------------------------------------------- | ---------------------------------------------------------- |
+| `action`                                                   | *models.Action*                                            | :heavy_minus_sign:                                         | N/A                                                        |                                                            |
+| `id`                                                       | *string*                                                   | :heavy_check_mark:                                         | N/A                                                        |                                                            |
+| `status`                                                   | [models.WebSearchStatus](../models/websearchstatus.mdx)     | :heavy_check_mark:                                         | N/A                                                        | completed                                                  |
+| `type`                                                     | [models.TypeWebSearchCall](../models/typewebsearchcall.mdx) | :heavy_check_mark:                                         | N/A                                                        |                                                            |
