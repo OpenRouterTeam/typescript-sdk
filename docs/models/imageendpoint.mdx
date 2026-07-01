@@ -1,0 +1,51 @@
+---
+title: "ImageEndpoint"
+---
+
+An endpoint that serves a given image model.
+
+## Example Usage
+
+```typescript
+import { ImageEndpoint } from "@openrouter/sdk/models";
+
+let value: ImageEndpoint = {
+  allowedPassthroughParameters: [],
+  pricing: [
+    {
+      billable: "output_image",
+      costUsd: 0.05,
+      unit: "image",
+    },
+  ],
+  providerName: "Bytedance",
+  providerSlug: "bytedance",
+  providerTag: "bytedance",
+  supportedParameters: {
+    "resolution": {
+      type: "enum",
+      values: [
+        "1K",
+        "2K",
+        "4K",
+      ],
+    },
+    "seed": {
+      type: "boolean",
+    },
+  },
+  supportsStreaming: false,
+};
+```
+
+## Fields
+
+| Field                                                                                                                                                                | Type                                                                                                                                                                 | Required                                                                                                                                                             | Description                                                                                                                                                          | Example                                                                                                                                                              |
+| -------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `allowedPassthroughParameters`                                                                                                                                       | *string*[]                                                                                                                                                           | :heavy_check_mark:                                                                                                                                                   | Provider-specific options accepted under provider.options[provider_slug].                                                                                            | []                                                                                                                                                                   |
+| `pricing`                                                                                                                                                            | [models.ImagePricingEntry](../models/imagepricingentry.mdx)[]                                                                                                         | :heavy_check_mark:                                                                                                                                                   | Billable pricing lines for this endpoint.                                                                                                                            | [<br/>\{<br/>"billable": "output_image",<br/>"cost_usd": 0.05,<br/>"unit": "image"<br/>}<br/>]                                                                        |
+| `providerName`                                                                                                                                                       | *string*                                                                                                                                                             | :heavy_check_mark:                                                                                                                                                   | Provider display name                                                                                                                                                | Bytedance                                                                                                                                                            |
+| `providerSlug`                                                                                                                                                       | *string*                                                                                                                                                             | :heavy_check_mark:                                                                                                                                                   | Provider slug                                                                                                                                                        | bytedance                                                                                                                                                            |
+| `providerTag`                                                                                                                                                        | *string*                                                                                                                                                             | :heavy_check_mark:                                                                                                                                                   | Provider tag for request-side selection                                                                                                                              | bytedance                                                                                                                                                            |
+| `supportedParameters`                                                                                                                                                | Record<string, *models.CapabilityDescriptor*>                                                                                                                        | :heavy_check_mark:                                                                                                                                                   | N/A                                                                                                                                                                  | \{<br/>"output_compression": \{<br/>"max": 100,<br/>"min": 0,<br/>"type": "range"<br/>},<br/>"resolution": \{<br/>"type": "enum",<br/>"values": [<br/>"1K",<br/>"2K",<br/>"4K"<br/>]<br/>},<br/>"seed": \{<br/>"type": "boolean"<br/>}<br/>} |
+| `supportsStreaming`                                                                                                                                                  | *boolean*                                                                                                                                                            | :heavy_check_mark:                                                                                                                                                   | Whether this endpoint supports native SSE streaming (`stream: true` in the request).                                                                                 | false                                                                                                                                                                |

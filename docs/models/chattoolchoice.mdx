@@ -1,0 +1,46 @@
+---
+title: "ChatToolChoice"
+---
+
+Tool choice configuration
+
+
+## Supported Types
+
+### `models.ChatToolChoiceNone`
+
+```typescript
+const value: models.ChatToolChoiceNone = "none";
+```
+
+### `models.ChatToolChoiceAuto`
+
+```typescript
+const value: models.ChatToolChoiceAuto = "auto";
+```
+
+### `models.ChatToolChoiceRequired`
+
+```typescript
+const value: models.ChatToolChoiceRequired = "required";
+```
+
+### `models.ChatNamedToolChoice`
+
+```typescript
+const value: models.ChatNamedToolChoice = {
+  function: {
+    name: "get_weather",
+  },
+  type: "function",
+};
+```
+
+### `models.ChatServerToolChoice`
+
+```typescript
+const value: models.ChatServerToolChoice = {
+  type: "openrouter:web_search",
+};
+```
+

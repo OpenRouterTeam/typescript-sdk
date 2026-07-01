@@ -1,0 +1,23 @@
+---
+title: "FusionSource"
+---
+
+A web page retrieved via web search during a fusion run.
+
+## Example Usage
+
+```typescript
+import { FusionSource } from "@openrouter/sdk/models";
+
+let value: FusionSource = {
+  title: "Example article title",
+  url: "https://example.com/article",
+};
+```
+
+## Fields
+
+| Field                                                              | Type                                                               | Required                                                           | Description                                                        |
+| ------------------------------------------------------------------ | ------------------------------------------------------------------ | ------------------------------------------------------------------ | ------------------------------------------------------------------ |
+| `title`                                                            | *string*                                                           | :heavy_check_mark:                                                 | Title of the retrieved web page.                                   |
+| `url`                                                              | *string*                                                           | :heavy_check_mark:                                                 | URL of the web page a panel or the judge retrieved during the run. |
