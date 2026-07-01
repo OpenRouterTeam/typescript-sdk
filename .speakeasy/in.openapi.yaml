@@ -4536,6 +4536,7 @@ components:
         - $ref: '#/components/schemas/AdvisorServerTool_OpenRouter'
         - $ref: '#/components/schemas/BashServerTool'
         - $ref: '#/components/schemas/DatetimeServerTool'
+        - $ref: '#/components/schemas/FilesServerTool'
         - $ref: '#/components/schemas/ImageGenerationServerTool_OpenRouter'
         - $ref: '#/components/schemas/ChatSearchModelsServerTool'
         - $ref: '#/components/schemas/SubagentServerTool_OpenRouter'
@@ -7583,6 +7584,28 @@ components:
       required:
         - type
         - vector_store_ids
+      type: object
+    FilesServerTool:
+      description: >-
+        OpenRouter built-in server tool: read, write, edit, and list workspace files via the Files API. Requires the
+        `x-openrouter-file-ids: openrouter` request header.
+      example:
+        parameters: {}
+        type: openrouter:files
+      properties:
+        parameters:
+          $ref: '#/components/schemas/FilesServerToolConfig'
+        type:
+          enum:
+            - openrouter:files
+          type: string
+      required:
+        - type
+      type: object
+    FilesServerToolConfig:
+      description: Configuration for the openrouter:files server tool
+      example: {}
+      properties: {}
       type: object
     ForbiddenResponse:
       description: Forbidden - Authentication successful but insufficient permissions
@@ -19873,6 +19896,7 @@ components:
               - $ref: '#/components/schemas/AdvisorServerTool_OpenRouter'
               - $ref: '#/components/schemas/SubagentServerTool_OpenRouter'
               - $ref: '#/components/schemas/DatetimeServerTool'
+              - $ref: '#/components/schemas/FilesServerTool'
               - $ref: '#/components/schemas/FusionServerTool_OpenRouter'
               - $ref: '#/components/schemas/ImageGenerationServerTool_OpenRouter'
               - $ref: '#/components/schemas/ChatSearchModelsServerTool'
