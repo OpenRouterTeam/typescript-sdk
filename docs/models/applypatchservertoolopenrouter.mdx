@@ -1,0 +1,22 @@
+---
+title: "ApplyPatchServerToolOpenRouter"
+---
+
+OpenRouter built-in server tool: validates V4A diff patches for file operations (create, update, delete). Restricted to the Responses API.
+
+## Example Usage
+
+```typescript
+import { ApplyPatchServerToolOpenRouter } from "@openrouter/sdk/models";
+
+let value: ApplyPatchServerToolOpenRouter = {
+  type: "openrouter:apply_patch",
+};
+```
+
+## Fields
+
+| Field                                                                        | Type                                                                         | Required                                                                     | Description                                                                  | Example                                                                      |
+| ---------------------------------------------------------------------------- | ---------------------------------------------------------------------------- | ---------------------------------------------------------------------------- | ---------------------------------------------------------------------------- | ---------------------------------------------------------------------------- |
+| `parameters`                                                                 | [models.ApplyPatchServerToolConfig](../models/applypatchservertoolconfig.mdx) | :heavy_minus_sign:                                                           | Configuration for the openrouter:apply_patch server tool                     | \{<br/>"engine": "auto"<br/>}                                                 |
+| `type`                                                                       | *"openrouter:apply_patch"*                                                   | :heavy_check_mark:                                                           | N/A                                                                          |                                                                              |

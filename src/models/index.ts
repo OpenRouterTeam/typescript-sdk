@@ -276,6 +276,7 @@ export * from "./listobservabilitydestinationsresponse.js";
 export * from "./listpresetsresponse.js";
 export * from "./listpresetversionsresponse.js";
 export * from "./listworkspacebudgetsresponse.js";
+export * from "./listworkspacemembersresponse.js";
 export * from "./listworkspacesresponse.js";
 export * from "./localshellcallitem.js";
 export * from "./localshellcalloutputitem.js";
