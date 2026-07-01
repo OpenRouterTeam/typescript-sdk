@@ -88,6 +88,11 @@ import {
   FileSearchServerTool$outboundSchema,
 } from "./filesearchservertool.js";
 import {
+  FilesServerTool,
+  FilesServerTool$Outbound,
+  FilesServerTool$outboundSchema,
+} from "./filesservertool.js";
+import {
   FusionPlugin,
   FusionPlugin$Outbound,
   FusionPlugin$outboundSchema,
@@ -291,6 +296,7 @@ export type ResponsesRequestToolUnion =
   | (AdvisorServerToolOpenRouter & { type: "openrouter:advisor" })
   | (SubagentServerToolOpenRouter & { type: "openrouter:subagent" })
   | (DatetimeServerTool & { type: "openrouter:datetime" })
+  | (FilesServerTool & { type: "openrouter:files" })
   | FusionServerToolOpenRouter
   | (ImageGenerationServerToolOpenRouter & {
     type: "openrouter:image_generation";
@@ -406,6 +412,7 @@ export type ResponsesRequest = {
       | (AdvisorServerToolOpenRouter & { type: "openrouter:advisor" })
       | (SubagentServerToolOpenRouter & { type: "openrouter:subagent" })
       | (DatetimeServerTool & { type: "openrouter:datetime" })
+      | (FilesServerTool & { type: "openrouter:files" })
       | FusionServerToolOpenRouter
       | (ImageGenerationServerToolOpenRouter & {
         type: "openrouter:image_generation";
@@ -526,6 +533,7 @@ export type ResponsesRequestToolUnion$Outbound =
   | (AdvisorServerToolOpenRouter$Outbound & { type: "openrouter:advisor" })
   | (SubagentServerToolOpenRouter$Outbound & { type: "openrouter:subagent" })
   | (DatetimeServerTool$Outbound & { type: "openrouter:datetime" })
+  | (FilesServerTool$Outbound & { type: "openrouter:files" })
   | FusionServerToolOpenRouter$Outbound
   | (ImageGenerationServerToolOpenRouter$Outbound & {
     type: "openrouter:image_generation";
@@ -566,6 +574,9 @@ export const ResponsesRequestToolUnion$outboundSchema: z.ZodType<
   ),
   DatetimeServerTool$outboundSchema.and(
     z.object({ type: z.literal("openrouter:datetime") }),
+  ),
+  FilesServerTool$outboundSchema.and(
+    z.object({ type: z.literal("openrouter:files") }),
   ),
   FusionServerToolOpenRouter$outboundSchema,
   ImageGenerationServerToolOpenRouter$outboundSchema.and(
@@ -661,6 +672,7 @@ export type ResponsesRequest$Outbound = {
         type: "openrouter:subagent";
       })
       | (DatetimeServerTool$Outbound & { type: "openrouter:datetime" })
+      | (FilesServerTool$Outbound & { type: "openrouter:files" })
       | FusionServerToolOpenRouter$Outbound
       | (ImageGenerationServerToolOpenRouter$Outbound & {
         type: "openrouter:image_generation";
@@ -758,6 +770,9 @@ export const ResponsesRequest$outboundSchema: z.ZodType<
       ),
       DatetimeServerTool$outboundSchema.and(
         z.object({ type: z.literal("openrouter:datetime") }),
+      ),
+      FilesServerTool$outboundSchema.and(
+        z.object({ type: z.literal("openrouter:files") }),
       ),
       FusionServerToolOpenRouter$outboundSchema,
       ImageGenerationServerToolOpenRouter$outboundSchema.and(
