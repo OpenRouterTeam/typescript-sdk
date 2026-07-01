@@ -11,37 +11,39 @@
     "groups": [
       {
         "group": "Getting Started",
-        "pages": ["overview"]
+        "pages": [
+          "overview"
+        ]
       },
       {
         "group": "API Reference",
         "pages": [
-          "sdks/chat/README",
-          "sdks/responses/README",
-          "sdks/models/README",
-          "sdks/embeddings/README",
-          "sdks/rerank/README",
-          "sdks/images/README",
-          "sdks/tts/README",
-          "sdks/stt/README",
-          "sdks/videogeneration/README",
-          "sdks/classifications/README",
-          "sdks/generations/README",
-          "sdks/endpoints/README",
-          "sdks/providers/README",
-          "sdks/credits/README",
-          "sdks/apikeys/README",
-          "sdks/oauth/README",
-          "sdks/byok/README",
-          "sdks/presets/README",
-          "sdks/guardrails/README",
-          "sdks/datasets/README",
-          "sdks/files/README",
           "sdks/analytics/README",
-          "sdks/betaanalytics/README",
+          "sdks/apikeys/README",
           "sdks/benchmarks/README",
+          "sdks/betaanalytics/README",
+          "sdks/byok/README",
+          "sdks/chat/README",
+          "sdks/classifications/README",
+          "sdks/credits/README",
+          "sdks/datasets/README",
+          "sdks/embeddings/README",
+          "sdks/endpoints/README",
+          "sdks/files/README",
+          "sdks/generations/README",
+          "sdks/guardrails/README",
+          "sdks/images/README",
+          "sdks/models/README",
+          "sdks/oauth/README",
           "sdks/observability/README",
           "sdks/organization/README",
+          "sdks/presets/README",
+          "sdks/providers/README",
+          "sdks/rerank/README",
+          "sdks/responses/README",
+          "sdks/stt/README",
+          "sdks/tts/README",
+          "sdks/videogeneration/README",
           "sdks/workspaces/README"
         ]
       }
