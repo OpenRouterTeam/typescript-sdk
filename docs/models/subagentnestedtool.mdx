@@ -1,0 +1,23 @@
+---
+title: "SubagentNestedTool"
+---
+
+A tool made available to the subagent. Only OpenRouter server tools (e.g. openrouter:web_search) are supported; function tools are rejected because the worker has no way to execute them. The subagent tool may not list itself.
+
+## Example Usage
+
+```typescript
+import { SubagentNestedTool } from "@openrouter/sdk/models";
+
+let value: SubagentNestedTool = {
+  type: "openrouter:web_search",
+};
+```
+
+## Fields
+
+| Field                               | Type                                | Required                            | Description                         | Example                             |
+| ----------------------------------- | ----------------------------------- | ----------------------------------- | ----------------------------------- | ----------------------------------- |
+| `parameters`                        | Record<string, *any*>               | :heavy_minus_sign:                  | N/A                                 |                                     |
+| `type`                              | *string*                            | :heavy_check_mark:                  | N/A                                 |                                     |
+| `additionalProperties`              | Record<string, *any*>               | :heavy_minus_sign:                  | N/A                                 | \{<br/>"type": "openrouter:web_search"<br/>} |
