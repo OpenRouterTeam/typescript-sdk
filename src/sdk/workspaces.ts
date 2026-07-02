@@ -11,6 +11,7 @@ import { workspacesDeleteBudget } from "../funcs/workspacesDeleteBudget.js";
 import { workspacesGet } from "../funcs/workspacesGet.js";
 import { workspacesList } from "../funcs/workspacesList.js";
 import { workspacesListBudgets } from "../funcs/workspacesListBudgets.js";
+import { workspacesListMembers } from "../funcs/workspacesListMembers.js";
 import { workspacesSetBudget } from "../funcs/workspacesSetBudget.js";
 import { workspacesUpdate } from "../funcs/workspacesUpdate.js";
 import { ClientSDK, RequestOptions } from "../lib/sdks.js";
@@ -152,6 +153,25 @@ export class Workspaces extends ClientSDK {
     options?: RequestOptions,
   ): Promise<models.UpsertWorkspaceBudgetResponse> {
     return unwrapAsync(workspacesSetBudget(
+      this,
+      request,
+      options,
+    ));
+  }
+
+  /**
+   * List workspace members
+   *
+   * @remarks
+   * List all members of a workspace. Returns paginated results. For the default workspace, returns all organization members (implicit membership). [Management key](/docs/guides/overview/auth/management-api-keys) required.
+   */
+  async listMembers(
+    request: operations.ListWorkspaceMembersRequest,
+    options?: RequestOptions,
+  ): Promise<
+    PageIterator<operations.ListWorkspaceMembersResponse, { offset: number }>
+  > {
+    return unwrapResultIterator(workspacesListMembers(
       this,
       request,
       options,
