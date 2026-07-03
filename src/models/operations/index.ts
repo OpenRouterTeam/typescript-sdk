@@ -78,7 +78,6 @@ export * from "./listproviders.js";
 export * from "./listvideoscontent.js";
 export * from "./listvideosmodels.js";
 export * from "./listworkspacebudgets.js";
-export * from "./listworkspacemembers.js";
 export * from "./listworkspaces.js";
 export * from "./queryanalytics.js";
 export * from "./sendchatcompletionrequest.js";
