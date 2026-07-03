@@ -10350,6 +10350,7 @@ components:
               - $ref: '#/components/schemas/OutputFusionServerToolItem'
               - $ref: '#/components/schemas/OutputAdvisorServerToolItem'
               - $ref: '#/components/schemas/OutputSubagentServerToolItem'
+              - $ref: '#/components/schemas/OutputFilesServerToolItem'
               - $ref: '#/components/schemas/LocalShellCallItem'
               - $ref: '#/components/schemas/LocalShellCallOutputItem'
               - $ref: '#/components/schemas/ShellCallItem'
@@ -16296,6 +16297,43 @@ components:
         - status
         - type
       type: object
+    OutputFilesServerToolItem:
+      description: An openrouter:files server tool output item
+      example:
+        filename: notes.txt
+        id: fl_tmp_abc123
+        operation: read
+        result: '{"id":"file_abc","filename":"notes.txt","content":"hello"}'
+        status: completed
+        type: openrouter:files
+      properties:
+        error:
+          description: Error message when the file operation failed.
+          type: string
+        file_id:
+          description: The target file id supplied in the tool-call arguments.
+          type: string
+        filename:
+          description: The target filename supplied in the tool-call arguments.
+          type: string
+        id:
+          type: string
+        operation:
+          description: The file operation performed (list, read, write, or edit).
+          type: string
+        result:
+          description: JSON-serialized result of the file operation.
+          type: string
+        status:
+          $ref: '#/components/schemas/ToolCallStatus'
+        type:
+          enum:
+            - openrouter:files
+          type: string
+      required:
+        - status
+        - type
+      type: object
     OutputFunctionCallItem:
       allOf:
         - $ref: '#/components/schemas/OutputItemFunctionCall'
@@ -16748,6 +16786,7 @@ components:
           openrouter:datetime: '#/components/schemas/OutputDatetimeItem'
           openrouter:experimental__search_models: '#/components/schemas/OutputSearchModelsServerToolItem'
           openrouter:file_search: '#/components/schemas/OutputFileSearchServerToolItem'
+          openrouter:files: '#/components/schemas/OutputFilesServerToolItem'
           openrouter:fusion: '#/components/schemas/OutputFusionServerToolItem'
           openrouter:image_generation: '#/components/schemas/OutputImageGenerationServerToolItem'
           openrouter:mcp: '#/components/schemas/OutputMcpServerToolItem'
@@ -16799,6 +16838,7 @@ components:
         - $ref: '#/components/schemas/OutputFusionServerToolItem'
         - $ref: '#/components/schemas/OutputAdvisorServerToolItem'
         - $ref: '#/components/schemas/OutputSubagentServerToolItem'
+        - $ref: '#/components/schemas/OutputFilesServerToolItem'
         - $ref: '#/components/schemas/OutputCustomToolCallItem'
     OutputItemWebSearchCall:
       example:
