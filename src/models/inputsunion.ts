@@ -147,11 +147,6 @@ import {
   OutputFileSearchServerToolItem$outboundSchema,
 } from "./outputfilesearchservertoolitem.js";
 import {
-  OutputFilesServerToolItem,
-  OutputFilesServerToolItem$Outbound,
-  OutputFilesServerToolItem$outboundSchema,
-} from "./outputfilesservertoolitem.js";
-import {
   OutputFunctionCallItem,
   OutputFunctionCallItem$Outbound,
   OutputFunctionCallItem$outboundSchema,
@@ -430,7 +425,6 @@ export type InputsUnion1 =
   | OutputFusionServerToolItem
   | OutputAdvisorServerToolItem
   | OutputSubagentServerToolItem
-  | OutputFilesServerToolItem
   | CompactionItem
   | ItemReferenceItem
   | EasyInputMessage
@@ -483,7 +477,6 @@ export type InputsUnion =
     | OutputFusionServerToolItem
     | OutputAdvisorServerToolItem
     | OutputSubagentServerToolItem
-    | OutputFilesServerToolItem
     | CompactionItem
     | ItemReferenceItem
     | EasyInputMessage
@@ -789,7 +782,6 @@ export type InputsUnion1$Outbound =
   | OutputFusionServerToolItem$Outbound
   | OutputAdvisorServerToolItem$Outbound
   | OutputSubagentServerToolItem$Outbound
-  | OutputFilesServerToolItem$Outbound
   | CompactionItem$Outbound
   | ItemReferenceItem$Outbound
   | EasyInputMessage$Outbound
@@ -841,7 +833,6 @@ export const InputsUnion1$outboundSchema: z.ZodType<
   OutputFusionServerToolItem$outboundSchema,
   OutputAdvisorServerToolItem$outboundSchema,
   OutputSubagentServerToolItem$outboundSchema,
-  OutputFilesServerToolItem$outboundSchema,
   CompactionItem$outboundSchema,
   ItemReferenceItem$outboundSchema,
   EasyInputMessage$outboundSchema,
@@ -897,7 +888,6 @@ export type InputsUnion$Outbound =
     | OutputFusionServerToolItem$Outbound
     | OutputAdvisorServerToolItem$Outbound
     | OutputSubagentServerToolItem$Outbound
-    | OutputFilesServerToolItem$Outbound
     | CompactionItem$Outbound
     | ItemReferenceItem$Outbound
     | EasyInputMessage$Outbound
@@ -953,7 +943,6 @@ export const InputsUnion$outboundSchema: z.ZodType<
       OutputFusionServerToolItem$outboundSchema,
       OutputAdvisorServerToolItem$outboundSchema,
       OutputSubagentServerToolItem$outboundSchema,
-      OutputFilesServerToolItem$outboundSchema,
       CompactionItem$outboundSchema,
       ItemReferenceItem$outboundSchema,
       EasyInputMessage$outboundSchema,
