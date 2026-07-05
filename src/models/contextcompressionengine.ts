@@ -4,22 +4,25 @@
  */
 
 import * as z from "zod/v4";
-import { ClosedEnum } from "../types/enums.js";
+import * as openEnums from "../types/enums.js";
+import { OpenEnum } from "../types/enums.js";
 
 /**
- * The compression engine to use. Defaults to "middle-out".
+ * The compression engine to use. Defaults to "middle-out". The "image" engine renders older conversation history into PNG images (billed by pixel rather than by text token) for models that support image input, and falls back to "middle-out" otherwise.
  */
 export const ContextCompressionEngine = {
   MiddleOut: "middle-out",
+  Image: "image",
 } as const;
 /**
- * The compression engine to use. Defaults to "middle-out".
+ * The compression engine to use. Defaults to "middle-out". The "image" engine renders older conversation history into PNG images (billed by pixel rather than by text token) for models that support image input, and falls back to "middle-out" otherwise.
  */
-export type ContextCompressionEngine = ClosedEnum<
+export type ContextCompressionEngine = OpenEnum<
   typeof ContextCompressionEngine
 >;
 
 /** @internal */
-export const ContextCompressionEngine$outboundSchema: z.ZodEnum<
-  typeof ContextCompressionEngine
-> = z.enum(ContextCompressionEngine);
+export const ContextCompressionEngine$outboundSchema: z.ZodType<
+  string,
+  ContextCompressionEngine
+> = openEnums.outboundSchema(ContextCompressionEngine);
