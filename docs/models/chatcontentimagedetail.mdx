@@ -2,14 +2,14 @@
 title: "ChatContentImageDetail"
 ---
 
-Image detail level for vision models. `original` is an OpenRouter extension (not in the OpenAI Chat Completions spec) requesting true original-resolution media; it is downgraded to `high` for providers that lack an original-resolution tier.
+Image detail level for vision models
 
 ## Example Usage
 
 ```typescript
 import { ChatContentImageDetail } from "@openrouter/sdk/models";
 
-let value: ChatContentImageDetail = "low";
+let value: ChatContentImageDetail = "auto";
 
 // Open enum: unrecognized values are captured as Unrecognized<string>
 ```
@@ -17,5 +17,5 @@ let value: ChatContentImageDetail = "low";
 ## Values
 
 ```typescript
-"auto" | "low" | "high" | "original" | Unrecognized<string>
+"auto" | "low" | "high" | Unrecognized<string>
 ```
