@@ -5,6 +5,10 @@
 
 import * as z from "zod/v4";
 import { remap as remap$ } from "../../lib/primitives.js";
+import { safeParse } from "../../lib/schemas.js";
+import { Result as SafeParseResult } from "../../types/fp.js";
+import { SDKValidationError } from "../errors/sdkvalidationerror.js";
+import * as models from "../index.js";
 
 export type ListEmbeddingsModelsGlobals = {
   /**
@@ -48,6 +52,46 @@ export type ListEmbeddingsModelsRequest = {
    * @remarks
    */
   appCategories?: string | undefined;
+  /**
+   * Number of records to skip for pagination
+   */
+  offset?: number | null | undefined;
+  /**
+   * Maximum number of records to return (max 1000)
+   */
+  limit?: number | undefined;
+};
+
+/**
+ * Pagination links
+ */
+export type Links = {
+  /**
+   * URL for the next page of results, or null if this is the last page
+   */
+  next: string | null;
+};
+
+/**
+ * List of available models
+ */
+export type ListEmbeddingsModelsResponseBody = {
+  /**
+   * List of available models
+   */
+  data: Array<models.Model>;
+  /**
+   * Pagination links
+   */
+  links: Links;
+  /**
+   * Total number of models matching the query
+   */
+  totalCount: number;
+};
+
+export type ListEmbeddingsModelsResponse = {
+  result: ListEmbeddingsModelsResponseBody;
 };
 
 /** @internal */
@@ -55,6 +99,8 @@ export type ListEmbeddingsModelsRequest$Outbound = {
   "HTTP-Referer"?: string | undefined;
   appTitle?: string | undefined;
   appCategories?: string | undefined;
+  offset?: number | null | undefined;
+  limit?: number | undefined;
 };
 
 /** @internal */
@@ -65,6 +111,8 @@ export const ListEmbeddingsModelsRequest$outboundSchema: z.ZodType<
   httpReferer: z.string().optional(),
   appTitle: z.string().optional(),
   appCategories: z.string().optional(),
+  offset: z.nullable(z.int()).optional(),
+  limit: z.int().optional(),
 }).transform((v) => {
   return remap$(v, {
     httpReferer: "HTTP-Referer",
@@ -78,5 +126,66 @@ export function listEmbeddingsModelsRequestToJSON(
     ListEmbeddingsModelsRequest$outboundSchema.parse(
       listEmbeddingsModelsRequest,
     ),
+  );
+}
+
+/** @internal */
+export const Links$inboundSchema: z.ZodType<Links, unknown> = z.object({
+  next: z.nullable(z.string()),
+});
+
+export function linksFromJSON(
+  jsonString: string,
+): SafeParseResult<Links, SDKValidationError> {
+  return safeParse(
+    jsonString,
+    (x) => Links$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'Links' from JSON`,
+  );
+}
+
+/** @internal */
+export const ListEmbeddingsModelsResponseBody$inboundSchema: z.ZodType<
+  ListEmbeddingsModelsResponseBody,
+  unknown
+> = z.object({
+  data: z.array(models.Model$inboundSchema),
+  links: z.lazy(() => Links$inboundSchema),
+  total_count: z.int(),
+}).transform((v) => {
+  return remap$(v, {
+    "total_count": "totalCount",
+  });
+});
+
+export function listEmbeddingsModelsResponseBodyFromJSON(
+  jsonString: string,
+): SafeParseResult<ListEmbeddingsModelsResponseBody, SDKValidationError> {
+  return safeParse(
+    jsonString,
+    (x) => ListEmbeddingsModelsResponseBody$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'ListEmbeddingsModelsResponseBody' from JSON`,
+  );
+}
+
+/** @internal */
+export const ListEmbeddingsModelsResponse$inboundSchema: z.ZodType<
+  ListEmbeddingsModelsResponse,
+  unknown
+> = z.object({
+  Result: z.lazy(() => ListEmbeddingsModelsResponseBody$inboundSchema),
+}).transform((v) => {
+  return remap$(v, {
+    "Result": "result",
+  });
+});
+
+export function listEmbeddingsModelsResponseFromJSON(
+  jsonString: string,
+): SafeParseResult<ListEmbeddingsModelsResponse, SDKValidationError> {
+  return safeParse(
+    jsonString,
+    (x) => ListEmbeddingsModelsResponse$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'ListEmbeddingsModelsResponse' from JSON`,
   );
 }
