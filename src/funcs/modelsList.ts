@@ -98,6 +98,7 @@ async function $do(
     "category": payload?.category,
     "context": payload?.context,
     "distillable": payload?.distillable,
+    "fields": payload?.fields,
     "input_modalities": payload?.input_modalities,
     "max_price": payload?.max_price,
     "min_price": payload?.min_price,

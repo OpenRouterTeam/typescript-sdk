@@ -186,6 +186,10 @@ export type GetModelsRequest = {
    * Filter to models with endpoints in the given data region. Currently only "eu" is supported.
    */
   region?: Region | undefined;
+  /**
+   * Return only the given top-level fields for each model, as a comma-separated list (e.g. "id,name,context_length"). Greatly reduces response size when only a few fields are needed. Unrecognized fields are ignored; if no valid fields are given, the full objects are returned. Valid fields: id, canonical_slug, hugging_face_id, name, created, description, pricing, context_length, architecture, top_provider, per_request_limits, supported_parameters, default_parameters, supported_voices, knowledge_cutoff, expiration_date, links, benchmarks, reasoning.
+   */
+  fields?: string | undefined;
 };
 
 /** @internal */
@@ -228,6 +232,7 @@ export type GetModelsRequest$Outbound = {
   distillable?: string | undefined;
   zdr?: string | undefined;
   region?: string | undefined;
+  fields?: string | undefined;
 };
 
 /** @internal */
@@ -253,6 +258,7 @@ export const GetModelsRequest$outboundSchema: z.ZodType<
   distillable: Distillable$outboundSchema.optional(),
   zdr: Zdr$outboundSchema.optional(),
   region: Region$outboundSchema.optional(),
+  fields: z.string().optional(),
 }).transform((v) => {
   return remap$(v, {
     httpReferer: "HTTP-Referer",
