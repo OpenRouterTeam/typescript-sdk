@@ -2,7 +2,7 @@
 title: "Region"
 ---
 
-Filter to models with endpoints in the given data region. Currently only "eu" is supported.
+Filter to models with endpoints in the given data region ("eu" or "us").
 
 ## Example Usage
 
@@ -10,10 +10,12 @@ Filter to models with endpoints in the given data region. Currently only "eu" is
 import { Region } from "@openrouter/sdk/models/operations";
 
 let value: Region = "eu";
+
+// Open enum: unrecognized values are captured as Unrecognized<string>
 ```
 
 ## Values
 
 ```typescript
-"eu"
+"eu" | "us" | Unrecognized<string>
 ```

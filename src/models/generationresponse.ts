@@ -38,6 +38,7 @@ export type ApiType = OpenEnum<typeof ApiType>;
 export const DataRegion = {
   Global: "global",
   Europe: "europe",
+  Us: "us",
 } as const;
 /**
  * The data region this generation was routed through. 'europe' for EU-routed requests, 'global' otherwise.
