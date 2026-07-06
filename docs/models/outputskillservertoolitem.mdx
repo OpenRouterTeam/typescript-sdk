@@ -1,0 +1,26 @@
+---
+title: "OutputSkillServerToolItem"
+---
+
+An openrouter:skill server tool output item
+
+## Example Usage
+
+```typescript
+import { OutputSkillServerToolItem } from "@openrouter/sdk/models";
+
+let value: OutputSkillServerToolItem = {
+  status: "completed",
+  type: "openrouter:skill",
+};
+```
+
+## Fields
+
+| Field                                                                              | Type                                                                               | Required                                                                           | Description                                                                        | Example                                                                            |
+| ---------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------- |
+| `args`                                                                             | *string*                                                                           | :heavy_minus_sign:                                                                 | The free-text arguments the model supplied for the skill, if any.                  |                                                                                    |
+| `id`                                                                               | *string*                                                                           | :heavy_minus_sign:                                                                 | N/A                                                                                |                                                                                    |
+| `skill`                                                                            | *string*                                                                           | :heavy_minus_sign:                                                                 | The slug of the skill that was loaded.                                             |                                                                                    |
+| `status`                                                                           | [models.ToolCallStatus](../models/toolcallstatus.mdx)                               | :heavy_check_mark:                                                                 | N/A                                                                                | completed                                                                          |
+| `type`                                                                             | [models.OutputSkillServerToolItemType](../models/outputskillservertoolitemtype.mdx) | :heavy_check_mark:                                                                 | N/A                                                                                |                                                                                    |

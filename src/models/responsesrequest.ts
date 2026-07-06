@@ -195,6 +195,11 @@ import {
   ShellServerToolOpenRouter$outboundSchema,
 } from "./shellservertoolopenrouter.js";
 import {
+  SkillServerToolOpenRouter,
+  SkillServerToolOpenRouter$Outbound,
+  SkillServerToolOpenRouter$outboundSchema,
+} from "./skillservertoolopenrouter.js";
+import {
   StopServerToolsWhenCondition,
   StopServerToolsWhenCondition$Outbound,
   StopServerToolsWhenCondition$outboundSchema,
@@ -304,6 +309,7 @@ export type ResponsesRequestToolUnion =
   | (ChatSearchModelsServerTool & {
     type: "openrouter:experimental__search_models";
   })
+  | SkillServerToolOpenRouter
   | (WebFetchServerTool & { type: "openrouter:web_fetch" })
   | WebSearchServerToolOpenRouter
   | ApplyPatchServerToolOpenRouter
@@ -420,6 +426,7 @@ export type ResponsesRequest = {
       | (ChatSearchModelsServerTool & {
         type: "openrouter:experimental__search_models";
       })
+      | SkillServerToolOpenRouter
       | (WebFetchServerTool & { type: "openrouter:web_fetch" })
       | WebSearchServerToolOpenRouter
       | ApplyPatchServerToolOpenRouter
@@ -541,6 +548,7 @@ export type ResponsesRequestToolUnion$Outbound =
   | (ChatSearchModelsServerTool$Outbound & {
     type: "openrouter:experimental__search_models";
   })
+  | SkillServerToolOpenRouter$Outbound
   | (WebFetchServerTool$Outbound & { type: "openrouter:web_fetch" })
   | WebSearchServerToolOpenRouter$Outbound
   | ApplyPatchServerToolOpenRouter$Outbound
@@ -585,6 +593,7 @@ export const ResponsesRequestToolUnion$outboundSchema: z.ZodType<
   ChatSearchModelsServerTool$outboundSchema.and(
     z.object({ type: z.literal("openrouter:experimental__search_models") }),
   ),
+  SkillServerToolOpenRouter$outboundSchema,
   WebFetchServerTool$outboundSchema.and(
     z.object({ type: z.literal("openrouter:web_fetch") }),
   ),
@@ -680,6 +689,7 @@ export type ResponsesRequest$Outbound = {
       | (ChatSearchModelsServerTool$Outbound & {
         type: "openrouter:experimental__search_models";
       })
+      | SkillServerToolOpenRouter$Outbound
       | (WebFetchServerTool$Outbound & { type: "openrouter:web_fetch" })
       | WebSearchServerToolOpenRouter$Outbound
       | ApplyPatchServerToolOpenRouter$Outbound
@@ -781,6 +791,7 @@ export const ResponsesRequest$outboundSchema: z.ZodType<
       ChatSearchModelsServerTool$outboundSchema.and(
         z.object({ type: z.literal("openrouter:experimental__search_models") }),
       ),
+      SkillServerToolOpenRouter$outboundSchema,
       WebFetchServerTool$outboundSchema.and(
         z.object({ type: z.literal("openrouter:web_fetch") }),
       ),
