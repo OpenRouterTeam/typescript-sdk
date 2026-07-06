@@ -113,6 +113,7 @@ export type ImageGenerationRequestOptions = {
   crusoe?: { [k: string]: any | null } | undefined;
   darkbloom?: { [k: string]: any | null } | undefined;
   decart?: { [k: string]: any | null } | undefined;
+  deepgram?: { [k: string]: any | null } | undefined;
   deepinfra?: { [k: string]: any | null } | undefined;
   deepseek?: { [k: string]: any | null } | undefined;
   dekallm?: { [k: string]: any | null } | undefined;
@@ -296,7 +297,7 @@ export type ImageGenerationRequest = {
    */
   seed?: number | undefined;
   /**
-   * Optional. A convenience shorthand for output dimensions — pass a tier ("2K", "4K") or explicit pixels ("2048x2048") and we normalize it to the right dimensions for the chosen provider. Interchangeable with resolution + aspect_ratio; use those directly for enumerated, per-model discoverable values. Conflicting size + resolution/aspect_ratio is rejected.
+   * Optional. A convenience shorthand for output dimensions — pass a tier ("2K", "4K") or explicit pixels ("2048x2048") and we normalize it to the right dimensions for the chosen provider. A tier size is equivalent to setting `resolution` and combines with `aspect_ratio`. An explicit pixel size is authoritative: a mismatched `resolution` or `aspect_ratio` alongside it is rejected with a 400.
    */
   size?: string | undefined;
   /**
@@ -356,6 +357,7 @@ export type ImageGenerationRequestOptions$Outbound = {
   crusoe?: { [k: string]: any | null } | undefined;
   darkbloom?: { [k: string]: any | null } | undefined;
   decart?: { [k: string]: any | null } | undefined;
+  deepgram?: { [k: string]: any | null } | undefined;
   deepinfra?: { [k: string]: any | null } | undefined;
   deepseek?: { [k: string]: any | null } | undefined;
   dekallm?: { [k: string]: any | null } | undefined;
@@ -483,6 +485,7 @@ export const ImageGenerationRequestOptions$outboundSchema: z.ZodType<
   crusoe: z.record(z.string(), z.nullable(z.any())).optional(),
   darkbloom: z.record(z.string(), z.nullable(z.any())).optional(),
   decart: z.record(z.string(), z.nullable(z.any())).optional(),
+  deepgram: z.record(z.string(), z.nullable(z.any())).optional(),
   deepinfra: z.record(z.string(), z.nullable(z.any())).optional(),
   deepseek: z.record(z.string(), z.nullable(z.any())).optional(),
   dekallm: z.record(z.string(), z.nullable(z.any())).optional(),
