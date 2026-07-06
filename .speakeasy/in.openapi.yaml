@@ -17442,6 +17442,7 @@ components:
         enabled: true
         id: pareto-router
         min_coding_score: 0.8
+        price_source: prompt
       properties:
         enabled:
           description: Set to false to disable the pareto-router plugin for this request. Defaults to true.
@@ -17452,14 +17453,23 @@ components:
           type: string
         min_coding_score:
           description: >-
-            Minimum desired coding score between 0 and 1, where 1 is best. Higher values select from stronger coding
-            models (sourced from Artificial Analysis coding percentiles). Maps internally to one of three tiers (low,
-            medium, high). Omit to use the router default tier.
+            Minimum coding quality score between 0 and 1. Maps to internal quality tiers: >= 0.66 → high (top coding
+            models), >= 0.33 → medium (strong modern flagships), < 0.33 → low (capable coders above the median). Omit to
+            default to the highest tier (equivalent to >= 0.66).
           example: 0.8
           format: double
           maximum: 1
           minimum: 0
           type: number
+        price_source:
+          description: >-
+            Price source for the Pareto frontier cost axis. "prompt" uses catalog list price (endpoint.pricing.prompt).
+            "weighted_avg" uses traffic-weighted effective input price from ClickHouse, falling back to prompt price for
+            models without traffic data. Defaults to "prompt".
+          enum:
+            - prompt
+            - weighted_avg
+          type: string
       required:
         - id
       type: object
