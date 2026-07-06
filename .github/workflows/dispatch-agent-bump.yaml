@@ -88,4 +88,6 @@ jobs:
 
       - name: Skipped (already dispatched)
         if: steps.dedupe.outputs.cache-hit == 'true'
-        run: echo "Version ${{ steps.ver.outputs.version }} was already dispatched — skipping"
+        env:
+          DISPATCHED_VERSION: ${{ steps.ver.outputs.version }}
+        run: echo "Version ${DISPATCHED_VERSION} was already dispatched — skipping"
