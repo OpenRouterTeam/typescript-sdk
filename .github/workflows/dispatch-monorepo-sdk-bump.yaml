@@ -1,9 +1,10 @@
-name: Dispatch Agent Bump
+name: Dispatch Monorepo SDK Bump
 
-# Fires the next hop in the SDK release chain. When @openrouter/sdk publishes a
-# new version to npm (the "Publish" workflow completes successfully), this sends
-# a repository_dispatch to OpenRouterTeam/typescript-agent so it can open a PR
-# bumping its @openrouter/sdk dependency.
+# HOP A→monorepo: when @openrouter/sdk publishes a new version to npm (the
+# "Publish" workflow completes successfully), this sends a repository_dispatch
+# to OpenRouterTeam/openrouter-web so it can open a PR bumping its pinned
+# @openrouter/sdk dependency. Complements dispatch-agent-bump.yaml (which
+# notifies typescript-agent).
 #
 # workflow_run only fires for workflow files that live on the default branch, so
 # this file must be merged to main before the automatic trigger is active. Use
@@ -24,7 +25,7 @@ permissions:
   contents: read
 
 concurrency:
-  group: dispatch-agent-bump
+  group: dispatch-monorepo-sdk-bump
   cancel-in-progress: false
 
 jobs:
@@ -59,8 +60,8 @@ jobs:
         id: dedupe
         uses: actions/cache@v4
         with:
-          path: .last-dispatched-sdk
-          key: dispatched-sdk-${{ steps.ver.outputs.version }}
+          path: .last-dispatched-monorepo-sdk
+          key: dispatched-monorepo-sdk-${{ steps.ver.outputs.version }}
 
       - name: Generate GitHub App token
         id: app-token
@@ -69,9 +70,9 @@ jobs:
           app-id: ${{ secrets.GH_DOCS_SYNC_APP_ID }}
           private-key: ${{ secrets.GH_DOCS_SYNC_APP_PRIVATE_KEY }}
           owner: OpenRouterTeam
-          repositories: typescript-agent
+          repositories: openrouter-web
 
-      - name: Dispatch to typescript-agent
+      - name: Dispatch to openrouter-web
         if: steps.dedupe.outputs.cache-hit != 'true'
         env:
           GH_TOKEN: ${{ steps.app-token.outputs.token }}
@@ -79,15 +80,15 @@ jobs:
           SOURCE_RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
         run: |
           set -euo pipefail
-          gh api repos/OpenRouterTeam/typescript-agent/dispatches \
+          gh api repos/OpenRouterTeam/openrouter-web/dispatches \
             -f event_type=openrouter-sdk-published \
             -F "client_payload[version]=${DISPATCH_VERSION}" \
             -F "client_payload[source_run_url]=${SOURCE_RUN_URL}"
-          echo "Dispatched openrouter-sdk-published (version ${DISPATCH_VERSION}) to typescript-agent"
-          echo "${DISPATCH_VERSION}" > .last-dispatched-sdk
+          echo "Dispatched openrouter-sdk-published (version ${DISPATCH_VERSION}) to openrouter-web"
+          echo "${DISPATCH_VERSION}" > .last-dispatched-monorepo-sdk
 
       - name: Skipped (already dispatched)
         if: steps.dedupe.outputs.cache-hit == 'true'
         env:
           DISPATCHED_VERSION: ${{ steps.ver.outputs.version }}
-        run: echo "Version ${DISPATCHED_VERSION} was already dispatched — skipping"
+        run: echo "Version ${DISPATCHED_VERSION} was already dispatched to openrouter-web — skipping"
