@@ -187,6 +187,11 @@ import {
   OutputSearchModelsServerToolItem$outboundSchema,
 } from "./outputsearchmodelsservertoolitem.js";
 import {
+  OutputSkillServerToolItem,
+  OutputSkillServerToolItem$Outbound,
+  OutputSkillServerToolItem$outboundSchema,
+} from "./outputskillservertoolitem.js";
+import {
   OutputSubagentServerToolItem,
   OutputSubagentServerToolItem$Outbound,
   OutputSubagentServerToolItem$outboundSchema,
@@ -430,6 +435,7 @@ export type InputsUnion1 =
   | OutputFusionServerToolItem
   | OutputAdvisorServerToolItem
   | OutputSubagentServerToolItem
+  | OutputSkillServerToolItem
   | OutputFilesServerToolItem
   | CompactionItem
   | ItemReferenceItem
@@ -483,6 +489,7 @@ export type InputsUnion =
     | OutputFusionServerToolItem
     | OutputAdvisorServerToolItem
     | OutputSubagentServerToolItem
+    | OutputSkillServerToolItem
     | OutputFilesServerToolItem
     | CompactionItem
     | ItemReferenceItem
@@ -789,6 +796,7 @@ export type InputsUnion1$Outbound =
   | OutputFusionServerToolItem$Outbound
   | OutputAdvisorServerToolItem$Outbound
   | OutputSubagentServerToolItem$Outbound
+  | OutputSkillServerToolItem$Outbound
   | OutputFilesServerToolItem$Outbound
   | CompactionItem$Outbound
   | ItemReferenceItem$Outbound
@@ -841,6 +849,7 @@ export const InputsUnion1$outboundSchema: z.ZodType<
   OutputFusionServerToolItem$outboundSchema,
   OutputAdvisorServerToolItem$outboundSchema,
   OutputSubagentServerToolItem$outboundSchema,
+  OutputSkillServerToolItem$outboundSchema,
   OutputFilesServerToolItem$outboundSchema,
   CompactionItem$outboundSchema,
   ItemReferenceItem$outboundSchema,
@@ -897,6 +906,7 @@ export type InputsUnion$Outbound =
     | OutputFusionServerToolItem$Outbound
     | OutputAdvisorServerToolItem$Outbound
     | OutputSubagentServerToolItem$Outbound
+    | OutputSkillServerToolItem$Outbound
     | OutputFilesServerToolItem$Outbound
     | CompactionItem$Outbound
     | ItemReferenceItem$Outbound
@@ -953,6 +963,7 @@ export const InputsUnion$outboundSchema: z.ZodType<
       OutputFusionServerToolItem$outboundSchema,
       OutputAdvisorServerToolItem$outboundSchema,
       OutputSubagentServerToolItem$outboundSchema,
+      OutputSkillServerToolItem$outboundSchema,
       OutputFilesServerToolItem$outboundSchema,
       CompactionItem$outboundSchema,
       ItemReferenceItem$outboundSchema,
