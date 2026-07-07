@@ -4,9 +4,7 @@
  */
 
 import { chatSend } from "../funcs/chatSend.js";
-import { EventStream } from "../lib/event-streams.js";
 import { ClientSDK, RequestOptions } from "../lib/sdks.js";
-import * as models from "../models/index.js";
 import * as operations from "../models/operations/index.js";
 import { unwrapAsync } from "../types/fp.js";
 
@@ -22,13 +20,13 @@ export class Chat extends ClientSDK {
       chatRequest: { stream?: false | undefined };
     },
     options?: RequestOptions,
-  ): Promise<models.ChatResult>;
+  ): Promise<operations.SendChatCompletionRequestResponse>;
   async send(
     request: operations.SendChatCompletionRequestRequest & {
       chatRequest: { stream: true };
     },
     options?: RequestOptions,
-  ): Promise<EventStream<models.ChatStreamChunk>>;
+  ): Promise<operations.SendChatCompletionRequestResponse>;
   async send(
     request: operations.SendChatCompletionRequestRequest,
     options?: RequestOptions,
