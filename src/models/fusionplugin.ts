@@ -25,7 +25,7 @@ export type FusionPluginTool = {
   /**
    * Optional configuration forwarded as the tool's `parameters` object.
    */
-  parameters?: { [k: string]: any | null } | undefined;
+  parameters?: { [k: string]: any } | undefined;
   /**
    * Server tool type identifier (e.g. "openrouter:web_search", "openrouter:web_fetch").
    */
@@ -66,7 +66,7 @@ export const PresetEnum$outboundSchema: z.ZodType<string, PresetEnum> =
 
 /** @internal */
 export type FusionPluginTool$Outbound = {
-  parameters?: { [k: string]: any | null } | undefined;
+  parameters?: { [k: string]: any } | undefined;
   type: string;
 };
 
@@ -75,7 +75,7 @@ export const FusionPluginTool$outboundSchema: z.ZodType<
   FusionPluginTool$Outbound,
   FusionPluginTool
 > = z.object({
-  parameters: z.record(z.string(), z.nullable(z.any())).optional(),
+  parameters: z.record(z.string(), z.any()).optional(),
   type: z.string(),
 });
 

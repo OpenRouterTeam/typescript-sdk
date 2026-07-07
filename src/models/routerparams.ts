@@ -16,7 +16,7 @@ export type RouterParams = {
   qualityFloor?: number | undefined;
   throughputFloor?: number | undefined;
   versionGroup?: string | undefined;
-  additionalProperties?: { [k: string]: any | null } | undefined;
+  additionalProperties?: { [k: string]: any } | undefined;
 };
 
 /** @internal */
