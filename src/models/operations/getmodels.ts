@@ -53,7 +53,7 @@ export const GetModelsCategory = {
 export type GetModelsCategory = OpenEnum<typeof GetModelsCategory>;
 
 /**
- * Sort the returned models server-side. Prefer this over fetching the full list and sorting client-side. Options: pricing-low-to-high, pricing-high-to-low (average prompt/completion price), context-high-to-low (context length), throughput-high-to-low, latency-low-to-high (recent median performance), most-popular, top-weekly (tokens processed in the last week), newest (creation date), intelligence-high-to-low (Artificial Analysis intelligence index), design-arena-elo-high-to-low (best Design Arena ELO across arenas). Models without a score for the chosen benchmark are placed last. When omitted, the existing default ordering is preserved.
+ * Sort the returned models server-side. Prefer this over fetching the full list and sorting client-side. Options: pricing-low-to-high, pricing-high-to-low (average prompt/completion price), context-high-to-low (context length), throughput-high-to-low, latency-low-to-high (recent median performance), most-popular, top-weekly (tokens processed in the last week), newest (creation date), intelligence-high-to-low, coding-high-to-low, agentic-high-to-low (Artificial Analysis indices), design-arena-elo-high-to-low (best Design Arena ELO across arenas). Models without a score for the chosen benchmark are placed last. When omitted, the existing default ordering is preserved.
  */
 export const GetModelsSort = {
   MostPopular: "most-popular",
@@ -65,10 +65,12 @@ export const GetModelsSort = {
   ThroughputHighToLow: "throughput-high-to-low",
   LatencyLowToHigh: "latency-low-to-high",
   IntelligenceHighToLow: "intelligence-high-to-low",
+  CodingHighToLow: "coding-high-to-low",
+  AgenticHighToLow: "agentic-high-to-low",
   DesignArenaEloHighToLow: "design-arena-elo-high-to-low",
 } as const;
 /**
- * Sort the returned models server-side. Prefer this over fetching the full list and sorting client-side. Options: pricing-low-to-high, pricing-high-to-low (average prompt/completion price), context-high-to-low (context length), throughput-high-to-low, latency-low-to-high (recent median performance), most-popular, top-weekly (tokens processed in the last week), newest (creation date), intelligence-high-to-low (Artificial Analysis intelligence index), design-arena-elo-high-to-low (best Design Arena ELO across arenas). Models without a score for the chosen benchmark are placed last. When omitted, the existing default ordering is preserved.
+ * Sort the returned models server-side. Prefer this over fetching the full list and sorting client-side. Options: pricing-low-to-high, pricing-high-to-low (average prompt/completion price), context-high-to-low (context length), throughput-high-to-low, latency-low-to-high (recent median performance), most-popular, top-weekly (tokens processed in the last week), newest (creation date), intelligence-high-to-low, coding-high-to-low, agentic-high-to-low (Artificial Analysis indices), design-arena-elo-high-to-low (best Design Arena ELO across arenas). Models without a score for the chosen benchmark are placed last. When omitted, the existing default ordering is preserved.
  */
 export type GetModelsSort = OpenEnum<typeof GetModelsSort>;
 
@@ -139,7 +141,7 @@ export type GetModelsRequest = {
    */
   outputModalities?: string | undefined;
   /**
-   * Sort the returned models server-side. Prefer this over fetching the full list and sorting client-side. Options: pricing-low-to-high, pricing-high-to-low (average prompt/completion price), context-high-to-low (context length), throughput-high-to-low, latency-low-to-high (recent median performance), most-popular, top-weekly (tokens processed in the last week), newest (creation date), intelligence-high-to-low (Artificial Analysis intelligence index), design-arena-elo-high-to-low (best Design Arena ELO across arenas). Models without a score for the chosen benchmark are placed last. When omitted, the existing default ordering is preserved.
+   * Sort the returned models server-side. Prefer this over fetching the full list and sorting client-side. Options: pricing-low-to-high, pricing-high-to-low (average prompt/completion price), context-high-to-low (context length), throughput-high-to-low, latency-low-to-high (recent median performance), most-popular, top-weekly (tokens processed in the last week), newest (creation date), intelligence-high-to-low, coding-high-to-low, agentic-high-to-low (Artificial Analysis indices), design-arena-elo-high-to-low (best Design Arena ELO across arenas). Models without a score for the chosen benchmark are placed last. When omitted, the existing default ordering is preserved.
    */
   sort?: GetModelsSort | undefined;
   /**
@@ -186,6 +188,54 @@ export type GetModelsRequest = {
    * Filter to models with endpoints in the given data region. Currently only "eu" is supported.
    */
   region?: Region | undefined;
+  /**
+   * Minimum completion (output) price in $/M tokens.
+   */
+  minOutputPrice?: number | null | undefined;
+  /**
+   * Maximum completion (output) price in $/M tokens.
+   */
+  maxOutputPrice?: number | null | undefined;
+  /**
+   * Minimum model age in days since its creation date.
+   */
+  minAgeDays?: number | null | undefined;
+  /**
+   * Maximum model age in days since its creation date.
+   */
+  maxAgeDays?: number | null | undefined;
+  /**
+   * Minimum Artificial Analysis intelligence index.
+   */
+  minIntelligenceIndex?: number | null | undefined;
+  /**
+   * Maximum Artificial Analysis intelligence index.
+   */
+  maxIntelligenceIndex?: number | null | undefined;
+  /**
+   * Minimum Artificial Analysis coding index.
+   */
+  minCodingIndex?: number | null | undefined;
+  /**
+   * Maximum Artificial Analysis coding index.
+   */
+  maxCodingIndex?: number | null | undefined;
+  /**
+   * Minimum Artificial Analysis agentic index.
+   */
+  minAgenticIndex?: number | null | undefined;
+  /**
+   * Maximum Artificial Analysis agentic index.
+   */
+  maxAgenticIndex?: number | null | undefined;
+  /**
+   * Minimum tool-calling success rate, as a fraction in [0, 1] (e.g. 0.9 = 90% of requests finishing with a tool_calls finish reason).
+   */
+  minToolSuccessRate?: number | null | undefined;
+  /**
+   * Maximum tool-calling success rate, as a fraction in [0, 1].
+   */
+  maxToolSuccessRate?: number | null | undefined;
 };
 
 /** @internal */
@@ -228,6 +278,18 @@ export type GetModelsRequest$Outbound = {
   distillable?: string | undefined;
   zdr?: string | undefined;
   region?: string | undefined;
+  min_output_price?: number | null | undefined;
+  max_output_price?: number | null | undefined;
+  min_age_days?: number | null | undefined;
+  max_age_days?: number | null | undefined;
+  min_intelligence_index?: number | null | undefined;
+  max_intelligence_index?: number | null | undefined;
+  min_coding_index?: number | null | undefined;
+  max_coding_index?: number | null | undefined;
+  min_agentic_index?: number | null | undefined;
+  max_agentic_index?: number | null | undefined;
+  min_tool_success_rate?: number | null | undefined;
+  max_tool_success_rate?: number | null | undefined;
 };
 
 /** @internal */
@@ -253,6 +315,18 @@ export const GetModelsRequest$outboundSchema: z.ZodType<
   distillable: Distillable$outboundSchema.optional(),
   zdr: Zdr$outboundSchema.optional(),
   region: Region$outboundSchema.optional(),
+  minOutputPrice: z.nullable(z.number()).optional(),
+  maxOutputPrice: z.nullable(z.number()).optional(),
+  minAgeDays: z.nullable(z.int()).optional(),
+  maxAgeDays: z.nullable(z.int()).optional(),
+  minIntelligenceIndex: z.nullable(z.number()).optional(),
+  maxIntelligenceIndex: z.nullable(z.number()).optional(),
+  minCodingIndex: z.nullable(z.number()).optional(),
+  maxCodingIndex: z.nullable(z.number()).optional(),
+  minAgenticIndex: z.nullable(z.number()).optional(),
+  maxAgenticIndex: z.nullable(z.number()).optional(),
+  minToolSuccessRate: z.nullable(z.number()).optional(),
+  maxToolSuccessRate: z.nullable(z.number()).optional(),
 }).transform((v) => {
   return remap$(v, {
     httpReferer: "HTTP-Referer",
@@ -262,6 +336,18 @@ export const GetModelsRequest$outboundSchema: z.ZodType<
     minPrice: "min_price",
     maxPrice: "max_price",
     modelAuthors: "model_authors",
+    minOutputPrice: "min_output_price",
+    maxOutputPrice: "max_output_price",
+    minAgeDays: "min_age_days",
+    maxAgeDays: "max_age_days",
+    minIntelligenceIndex: "min_intelligence_index",
+    maxIntelligenceIndex: "max_intelligence_index",
+    minCodingIndex: "min_coding_index",
+    maxCodingIndex: "max_coding_index",
+    minAgenticIndex: "min_agentic_index",
+    maxAgenticIndex: "max_agentic_index",
+    minToolSuccessRate: "min_tool_success_rate",
+    maxToolSuccessRate: "max_tool_success_rate",
   });
 });
 
