@@ -6,7 +6,8 @@
 import * as z from "zod/v4";
 import { remap as remap$ } from "../../lib/primitives.js";
 import { blobLikeSchema } from "../../types/blobs.js";
-import { ClosedEnum } from "../../types/enums.js";
+import * as openEnums from "../../types/enums.js";
+import { OpenEnum } from "../../types/enums.js";
 
 export type CreateAudioTranscriptionsMultipartGlobals = {
   /**
@@ -36,15 +37,22 @@ export type CreateAudioTranscriptionsMultipartFile = {
 };
 
 /**
- * The response format. Only "json" is supported.
+ * The response format. "json" (default) returns { text, usage }; "verbose_json" additionally returns task, language, duration, and segment-level timestamps (OpenAI-compatible providers only).
  */
 export const ResponseFormat = {
   Json: "json",
+  VerboseJson: "verbose_json",
 } as const;
 /**
- * The response format. Only "json" is supported.
+ * The response format. "json" (default) returns { text, usage }; "verbose_json" additionally returns task, language, duration, and segment-level timestamps (OpenAI-compatible providers only).
  */
-export type ResponseFormat = ClosedEnum<typeof ResponseFormat>;
+export type ResponseFormat = OpenEnum<typeof ResponseFormat>;
+
+export const TimestampGranularities = {
+  Word: "word",
+  Segment: "segment",
+} as const;
+export type TimestampGranularities = OpenEnum<typeof TimestampGranularities>;
 
 export type CreateAudioTranscriptionsMultipartRequestBody = {
   /**
@@ -60,13 +68,17 @@ export type CreateAudioTranscriptionsMultipartRequestBody = {
    */
   model: string;
   /**
-   * The response format. Only "json" is supported.
+   * The response format. "json" (default) returns { text, usage }; "verbose_json" additionally returns task, language, duration, and segment-level timestamps (OpenAI-compatible providers only).
    */
   responseFormat?: ResponseFormat | undefined;
   /**
    * The sampling temperature.
    */
   temperature?: number | undefined;
+  /**
+   * Timestamp detail levels to include when response_format is "verbose_json". "word" additionally returns word-level timestamps in the words array.
+   */
+  timestampGranularities?: Array<TimestampGranularities> | undefined;
 };
 
 export type CreateAudioTranscriptionsMultipartRequest = {
@@ -124,8 +136,14 @@ export function createAudioTranscriptionsMultipartFileToJSON(
 }
 
 /** @internal */
-export const ResponseFormat$outboundSchema: z.ZodEnum<typeof ResponseFormat> = z
-  .enum(ResponseFormat);
+export const ResponseFormat$outboundSchema: z.ZodType<string, ResponseFormat> =
+  openEnums.outboundSchema(ResponseFormat);
+
+/** @internal */
+export const TimestampGranularities$outboundSchema: z.ZodType<
+  string,
+  TimestampGranularities
+> = openEnums.outboundSchema(TimestampGranularities);
 
 /** @internal */
 export type CreateAudioTranscriptionsMultipartRequestBody$Outbound = {
@@ -134,6 +152,7 @@ export type CreateAudioTranscriptionsMultipartRequestBody$Outbound = {
   model: string;
   response_format?: string | undefined;
   temperature?: number | undefined;
+  "timestamp_granularities[]"?: Array<string> | undefined;
 };
 
 /** @internal */
@@ -148,9 +167,12 @@ export const CreateAudioTranscriptionsMultipartRequestBody$outboundSchema:
     model: z.string(),
     responseFormat: ResponseFormat$outboundSchema.optional(),
     temperature: z.number().optional(),
+    timestampGranularities: z.array(TimestampGranularities$outboundSchema)
+      .optional(),
   }).transform((v) => {
     return remap$(v, {
       responseFormat: "response_format",
+      timestampGranularities: "timestamp_granularities[]",
     });
   });
 
