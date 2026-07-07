@@ -7,12 +7,30 @@ import * as z from "zod/v4";
 import { safeParse } from "../lib/schemas.js";
 import { Result as SafeParseResult } from "../types/fp.js";
 import { SDKValidationError } from "./errors/sdkvalidationerror.js";
+import { STTSegment, STTSegment$inboundSchema } from "./sttsegment.js";
 import { STTUsage, STTUsage$inboundSchema } from "./sttusage.js";
+import { STTWord, STTWord$inboundSchema } from "./sttword.js";
 
 /**
  * STT response containing transcribed text and optional usage statistics
  */
 export type STTResponse = {
+  /**
+   * Duration of the input audio in seconds, present when response_format is verbose_json
+   */
+  duration?: number | undefined;
+  /**
+   * Detected or forced language, present when response_format is verbose_json
+   */
+  language?: string | undefined;
+  /**
+   * Timestamped transcript segments, present when response_format is verbose_json
+   */
+  segments?: Array<STTSegment> | undefined;
+  /**
+   * The task performed, present when response_format is verbose_json
+   */
+  task?: string | undefined;
   /**
    * The transcribed text
    */
@@ -21,13 +39,22 @@ export type STTResponse = {
    * Aggregated usage statistics for the request
    */
   usage?: STTUsage | undefined;
+  /**
+   * Timestamped words, present when the provider returns word-level timestamps
+   */
+  words?: Array<STTWord> | undefined;
 };
 
 /** @internal */
 export const STTResponse$inboundSchema: z.ZodType<STTResponse, unknown> = z
   .object({
+    duration: z.number().optional(),
+    language: z.string().optional(),
+    segments: z.array(STTSegment$inboundSchema).optional(),
+    task: z.string().optional(),
     text: z.string(),
     usage: STTUsage$inboundSchema.optional(),
+    words: z.array(STTWord$inboundSchema).optional(),
   });
 
 export function sttResponseFromJSON(
