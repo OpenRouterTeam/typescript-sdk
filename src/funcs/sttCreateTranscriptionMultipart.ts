@@ -158,6 +158,13 @@ async function $do(
   if (payload.RequestBody.temperature !== undefined) {
     appendForm(body, "temperature", payload.RequestBody.temperature);
   }
+  if (payload.RequestBody["timestamp_granularities[]"] !== undefined) {
+    appendForm(
+      body,
+      "timestamp_granularities[]",
+      payload.RequestBody["timestamp_granularities[]"],
+    );
+  }
 
   const path = pathToFunc("/audio/transcriptions")();
 
