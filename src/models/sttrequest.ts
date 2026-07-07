@@ -5,6 +5,8 @@
 
 import * as z from "zod/v4";
 import { remap as remap$ } from "../lib/primitives.js";
+import * as openEnums from "../types/enums.js";
+import { OpenEnum } from "../types/enums.js";
 import {
   ProviderOptions,
   ProviderOptions$Outbound,
@@ -15,6 +17,10 @@ import {
   STTInputAudio$Outbound,
   STTInputAudio$outboundSchema,
 } from "./sttinputaudio.js";
+import {
+  STTTimestampGranularity,
+  STTTimestampGranularity$outboundSchema,
+} from "./stttimestampgranularity.js";
 
 /**
  * Provider-specific passthrough configuration
@@ -25,6 +31,20 @@ export type STTRequestProvider = {
    */
   options?: ProviderOptions | undefined;
 };
+
+/**
+ * Output format. "json" (default) returns { text, usage }. "verbose_json" additionally returns task, language, duration, and segment-level timestamps; only supported by OpenAI-compatible providers.
+ */
+export const STTRequestResponseFormat = {
+  Json: "json",
+  VerboseJson: "verbose_json",
+} as const;
+/**
+ * Output format. "json" (default) returns { text, usage }. "verbose_json" additionally returns task, language, duration, and segment-level timestamps; only supported by OpenAI-compatible providers.
+ */
+export type STTRequestResponseFormat = OpenEnum<
+  typeof STTRequestResponseFormat
+>;
 
 /**
  * Speech-to-text request input. Accepts a JSON body with input_audio containing base64-encoded audio.
@@ -47,9 +67,17 @@ export type STTRequest = {
    */
   provider?: STTRequestProvider | undefined;
   /**
+   * Output format. "json" (default) returns { text, usage }. "verbose_json" additionally returns task, language, duration, and segment-level timestamps; only supported by OpenAI-compatible providers.
+   */
+  responseFormat?: STTRequestResponseFormat | undefined;
+  /**
    * Sampling temperature for transcription
    */
   temperature?: number | undefined;
+  /**
+   * Timestamp detail levels to include when response_format is "verbose_json". "segment" returns segment-level timestamps; "word" additionally returns word-level timestamps in the words array. Ignored unless response_format is "verbose_json".
+   */
+  timestampGranularities?: Array<STTTimestampGranularity> | undefined;
 };
 
 /** @internal */
@@ -74,12 +102,20 @@ export function sttRequestProviderToJSON(
 }
 
 /** @internal */
+export const STTRequestResponseFormat$outboundSchema: z.ZodType<
+  string,
+  STTRequestResponseFormat
+> = openEnums.outboundSchema(STTRequestResponseFormat);
+
+/** @internal */
 export type STTRequest$Outbound = {
   input_audio: STTInputAudio$Outbound;
   language?: string | undefined;
   model: string;
   provider?: STTRequestProvider$Outbound | undefined;
+  response_format?: string | undefined;
   temperature?: number | undefined;
+  timestamp_granularities?: Array<string> | undefined;
 };
 
 /** @internal */
@@ -91,10 +127,15 @@ export const STTRequest$outboundSchema: z.ZodType<
   language: z.string().optional(),
   model: z.string(),
   provider: z.lazy(() => STTRequestProvider$outboundSchema).optional(),
+  responseFormat: STTRequestResponseFormat$outboundSchema.optional(),
   temperature: z.number().optional(),
+  timestampGranularities: z.array(STTTimestampGranularity$outboundSchema)
+    .optional(),
 }).transform((v) => {
   return remap$(v, {
     inputAudio: "input_audio",
+    responseFormat: "response_format",
+    timestampGranularities: "timestamp_granularities",
   });
 });
 
