@@ -4,6 +4,7 @@
  */
 
 import { sttCreateTranscription } from "../funcs/sttCreateTranscription.js";
+import { sttCreateTranscriptionMultipart } from "../funcs/sttCreateTranscriptionMultipart.js";
 import { ClientSDK, RequestOptions } from "../lib/sdks.js";
 import * as models from "../models/index.js";
 import * as operations from "../models/operations/index.js";
@@ -14,13 +15,30 @@ export class Stt extends ClientSDK {
    * Create transcription
    *
    * @remarks
-   * Transcribes audio into text. Accepts base64-encoded audio input and returns the transcribed text.
+   * Transcribes audio into text. Accepts base64-encoded audio input as JSON or an OpenAI-style multipart/form-data file upload, and returns the transcribed text.
    */
   async createTranscription(
     request: operations.CreateAudioTranscriptionsRequest,
     options?: RequestOptions,
   ): Promise<models.STTResponse> {
     return unwrapAsync(sttCreateTranscription(
+      this,
+      request,
+      options,
+    ));
+  }
+
+  /**
+   * Create transcription
+   *
+   * @remarks
+   * Transcribes audio into text. Accepts base64-encoded audio input as JSON or an OpenAI-style multipart/form-data file upload, and returns the transcribed text.
+   */
+  async createTranscriptionMultipart(
+    request: operations.CreateAudioTranscriptionsMultipartRequest,
+    options?: RequestOptions,
+  ): Promise<models.STTResponse> {
+    return unwrapAsync(sttCreateTranscriptionMultipart(
       this,
       request,
       options,

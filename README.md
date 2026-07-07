@@ -169,9 +169,11 @@ const openRouter = new OpenRouter({
 });
 
 async function run() {
-  const result = await openRouter.files.upload({
+  const result = await openRouter.stt.createTranscriptionMultipart({
     requestBody: {
       file: await openAsBlob("example.file"),
+      language: "en",
+      model: "openai/whisper-large-v3",
     },
   });
 
