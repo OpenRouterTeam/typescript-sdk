@@ -32,9 +32,9 @@ export type ShellCallItemType = ClosedEnum<typeof ShellCallItemType>;
 export type ShellCallItem = {
   action: ShellCallItemAction;
   callId: string;
-  environment?: any | null | undefined;
+  environment?: any | undefined;
   id?: string | null | undefined;
-  status?: ShellCallItemStatus | null | undefined;
+  status?: ShellCallItemStatus | undefined;
   type: ShellCallItemType;
 };
 
@@ -83,9 +83,9 @@ export const ShellCallItemType$outboundSchema: z.ZodEnum<
 export type ShellCallItem$Outbound = {
   action: ShellCallItemAction$Outbound;
   call_id: string;
-  environment?: any | null | undefined;
+  environment?: any | undefined;
   id?: string | null | undefined;
-  status?: string | null | undefined;
+  status?: string | undefined;
   type: string;
 };
 
@@ -96,9 +96,9 @@ export const ShellCallItem$outboundSchema: z.ZodType<
 > = z.object({
   action: z.lazy(() => ShellCallItemAction$outboundSchema),
   callId: z.string(),
-  environment: z.nullable(z.any()).optional(),
+  environment: z.any().optional(),
   id: z.nullable(z.string()).optional(),
-  status: z.nullable(ShellCallItemStatus$outboundSchema).optional(),
+  status: ShellCallItemStatus$outboundSchema.optional(),
   type: ShellCallItemType$outboundSchema,
 }).transform((v) => {
   return remap$(v, {

@@ -118,7 +118,7 @@ export type PublicEndpoint = {
   name: string;
   pricing: Pricing;
   providerName: ProviderName;
-  quantization: PublicEndpointQuantization | null;
+  quantization: PublicEndpointQuantization;
   status?: EndpointStatus | undefined;
   supportedParameters: Array<Parameter>;
   supportsImplicitCaching: boolean;
@@ -194,7 +194,7 @@ export const PublicEndpoint$inboundSchema: z.ZodType<PublicEndpoint, unknown> =
     name: z.string(),
     pricing: z.lazy(() => Pricing$inboundSchema),
     provider_name: ProviderName$inboundSchema,
-    quantization: z.nullable(PublicEndpointQuantization$inboundSchema),
+    quantization: PublicEndpointQuantization$inboundSchema,
     status: EndpointStatus$inboundSchema.optional(),
     supported_parameters: z.array(Parameter$inboundSchema),
     supports_implicit_caching: z.boolean(),

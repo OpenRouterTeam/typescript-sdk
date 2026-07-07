@@ -12,7 +12,7 @@ export type ShellCallOutputItemOutput = {
   content?: string | null | undefined;
   exitCode?: number | null | undefined;
   type: string;
-  additionalProperties?: { [k: string]: any | null } | undefined;
+  additionalProperties?: { [k: string]: any } | undefined;
 };
 
 export const ShellCallOutputItemStatus = {
@@ -39,7 +39,7 @@ export type ShellCallOutputItem = {
   id?: string | null | undefined;
   maxOutputLength?: number | null | undefined;
   output: Array<ShellCallOutputItemOutput>;
-  status?: ShellCallOutputItemStatus | null | undefined;
+  status?: ShellCallOutputItemStatus | undefined;
   type: ShellCallOutputItemType;
 };
 
@@ -59,7 +59,7 @@ export const ShellCallOutputItemOutput$outboundSchema: z.ZodType<
   content: z.nullable(z.string()).optional(),
   exitCode: z.nullable(z.int()).optional(),
   type: z.string(),
-  additionalProperties: z.record(z.string(), z.nullable(z.any())).optional(),
+  additionalProperties: z.record(z.string(), z.any()).optional(),
 }).transform((v) => {
   return {
     ...v.additionalProperties,
@@ -95,7 +95,7 @@ export type ShellCallOutputItem$Outbound = {
   id?: string | null | undefined;
   max_output_length?: number | null | undefined;
   output: Array<ShellCallOutputItemOutput$Outbound>;
-  status?: string | null | undefined;
+  status?: string | undefined;
   type: string;
 };
 
@@ -108,7 +108,7 @@ export const ShellCallOutputItem$outboundSchema: z.ZodType<
   id: z.nullable(z.string()).optional(),
   maxOutputLength: z.nullable(z.int()).optional(),
   output: z.array(z.lazy(() => ShellCallOutputItemOutput$outboundSchema)),
-  status: z.nullable(ShellCallOutputItemStatus$outboundSchema).optional(),
+  status: ShellCallOutputItemStatus$outboundSchema.optional(),
   type: ShellCallOutputItemType$outboundSchema,
 }).transform((v) => {
   return remap$(v, {

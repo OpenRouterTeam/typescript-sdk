@@ -58,7 +58,7 @@ export type OpenAIResponseFunctionToolCallOutput = {
       | InputText
       | discriminatedUnionTypes.Unknown<"type">
     >;
-  status?: OpenAIResponseFunctionToolCallOutputStatus | null | undefined;
+  status?: OpenAIResponseFunctionToolCallOutputStatus | undefined;
   type: OpenAIResponseFunctionToolCallOutputType;
 };
 
@@ -149,8 +149,7 @@ export const OpenAIResponseFunctionToolCallOutput$inboundSchema: z.ZodType<
       }),
     ),
   ]),
-  status: z.nullable(OpenAIResponseFunctionToolCallOutputStatus$inboundSchema)
-    .optional(),
+  status: OpenAIResponseFunctionToolCallOutputStatus$inboundSchema.optional(),
   type: OpenAIResponseFunctionToolCallOutputType$inboundSchema,
 }).transform((v) => {
   return remap$(v, {

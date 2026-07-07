@@ -19,7 +19,7 @@ export type UpdateObservabilityDestinationRequest = {
   /**
    * Provider-specific configuration fields to update. Masked values are ignored; unset fields keep their current value.
    */
-  config?: { [k: string]: any | null } | undefined;
+  config?: { [k: string]: any } | undefined;
   /**
    * Whether the destination is enabled.
    */
@@ -42,7 +42,7 @@ export type UpdateObservabilityDestinationRequest = {
 /** @internal */
 export type UpdateObservabilityDestinationRequest$Outbound = {
   api_key_hashes?: Array<string> | null | undefined;
-  config?: { [k: string]: any | null } | undefined;
+  config?: { [k: string]: any } | undefined;
   enabled?: boolean | undefined;
   filter_rules?: ObservabilityFilterRulesConfig$Outbound | null | undefined;
   name?: string | undefined;
@@ -56,7 +56,7 @@ export const UpdateObservabilityDestinationRequest$outboundSchema: z.ZodType<
   UpdateObservabilityDestinationRequest
 > = z.object({
   apiKeyHashes: z.nullable(z.array(z.string())).optional(),
-  config: z.record(z.string(), z.nullable(z.any())).optional(),
+  config: z.record(z.string(), z.any()).optional(),
   enabled: z.boolean().optional(),
   filterRules: z.nullable(ObservabilityFilterRulesConfig$outboundSchema)
     .optional(),

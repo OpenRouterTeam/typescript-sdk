@@ -71,7 +71,7 @@ export type Architecture = {
    * Supported output modalities
    */
   outputModalities: Array<OutputModality>;
-  tokenizer: Tokenizer | null;
+  tokenizer: Tokenizer;
 };
 
 /**
@@ -112,7 +112,7 @@ export const Architecture$inboundSchema: z.ZodType<Architecture, unknown> = z
     instruct_type: z.nullable(InstructType$inboundSchema),
     modality: z.nullable(z.string()),
     output_modalities: z.array(OutputModality$inboundSchema),
-    tokenizer: z.nullable(Tokenizer$inboundSchema),
+    tokenizer: Tokenizer$inboundSchema,
   }).transform((v) => {
     return remap$(v, {
       "input_modalities": "inputModalities",

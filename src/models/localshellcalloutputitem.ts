@@ -29,7 +29,7 @@ export type LocalShellCallOutputItemType = ClosedEnum<
 export type LocalShellCallOutputItem = {
   id: string;
   output: string;
-  status?: LocalShellCallOutputItemStatus | null | undefined;
+  status?: LocalShellCallOutputItemStatus | undefined;
   type: LocalShellCallOutputItemType;
 };
 
@@ -48,7 +48,7 @@ export const LocalShellCallOutputItemType$outboundSchema: z.ZodEnum<
 export type LocalShellCallOutputItem$Outbound = {
   id: string;
   output: string;
-  status?: string | null | undefined;
+  status?: string | undefined;
   type: string;
 };
 
@@ -59,7 +59,7 @@ export const LocalShellCallOutputItem$outboundSchema: z.ZodType<
 > = z.object({
   id: z.string(),
   output: z.string(),
-  status: z.nullable(LocalShellCallOutputItemStatus$outboundSchema).optional(),
+  status: LocalShellCallOutputItemStatus$outboundSchema.optional(),
   type: LocalShellCallOutputItemType$outboundSchema,
 });
 

@@ -11,7 +11,7 @@ import { remap as remap$ } from "../lib/primitives.js";
  */
 export type MessagesFallbackParam = {
   model: string;
-  additionalProperties?: { [k: string]: any | null } | undefined;
+  additionalProperties?: { [k: string]: any } | undefined;
 };
 
 /** @internal */
@@ -26,7 +26,7 @@ export const MessagesFallbackParam$outboundSchema: z.ZodType<
   MessagesFallbackParam
 > = z.object({
   model: z.string(),
-  additionalProperties: z.record(z.string(), z.nullable(z.any())).optional(),
+  additionalProperties: z.record(z.string(), z.any()).optional(),
 }).transform((v) => {
   return {
     ...v.additionalProperties,

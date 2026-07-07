@@ -143,10 +143,6 @@ import {
   OpenAIResponsesToolChoiceUnion$outboundSchema,
 } from "./openairesponsestoolchoiceunion.js";
 import {
-  OpenAIResponsesTruncation,
-  OpenAIResponsesTruncation$outboundSchema,
-} from "./openairesponsestruncation.js";
-import {
   OutputModalityEnum,
   OutputModalityEnum$outboundSchema,
 } from "./outputmodalityenum.js";
@@ -219,6 +215,7 @@ import {
   TraceConfig$Outbound,
   TraceConfig$outboundSchema,
 } from "./traceconfig.js";
+import { Truncation, Truncation$outboundSchema } from "./truncation.js";
 import {
   WebFetchPlugin,
   WebFetchPlugin$Outbound,
@@ -273,7 +270,7 @@ export type ResponsesRequestServiceTier = OpenEnum<
 export type ResponsesRequestToolFunction = {
   description?: string | null | undefined;
   name: string;
-  parameters: { [k: string]: any | null } | null;
+  parameters: { [k: string]: any } | null;
   strict?: boolean | null | undefined;
   type: "function";
 };
@@ -434,7 +431,7 @@ export type ResponsesRequest = {
    * Metadata for observability and tracing. Known keys (trace_id, trace_name, span_name, generation_name, parent_span_id) have special handling. Additional keys are passed through as custom metadata to configured broadcast destinations.
    */
   trace?: TraceConfig | undefined;
-  truncation?: OpenAIResponsesTruncation | null | undefined;
+  truncation?: Truncation | null | undefined;
   /**
    * A unique identifier representing your end-user, which helps distinguish between different users of your app. This allows your app to identify specific users in case of abuse reports, preventing your entire app from being affected by the actions of individual users. Maximum of 256 characters.
    */
@@ -487,7 +484,7 @@ export const ResponsesRequestServiceTier$outboundSchema: z.ZodType<
 export type ResponsesRequestToolFunction$Outbound = {
   description?: string | null | undefined;
   name: string;
-  parameters: { [k: string]: any | null } | null;
+  parameters: { [k: string]: any } | null;
   strict?: boolean | null | undefined;
   type: "function";
 };
@@ -499,7 +496,7 @@ export const ResponsesRequestToolFunction$outboundSchema: z.ZodType<
 > = z.object({
   description: z.nullable(z.string()).optional(),
   name: z.string(),
-  parameters: z.nullable(z.record(z.string(), z.nullable(z.any()))),
+  parameters: z.nullable(z.record(z.string(), z.any())),
   strict: z.nullable(z.boolean()).optional(),
   type: z.literal("function"),
 });
@@ -796,7 +793,7 @@ export const ResponsesRequest$outboundSchema: z.ZodType<
   topLogprobs: z.nullable(z.int()).optional(),
   topP: z.nullable(z.number()).optional(),
   trace: TraceConfig$outboundSchema.optional(),
-  truncation: z.nullable(OpenAIResponsesTruncation$outboundSchema).optional(),
+  truncation: z.nullable(Truncation$outboundSchema).optional(),
   user: z.string().optional(),
 }).transform((v) => {
   return remap$(v, {

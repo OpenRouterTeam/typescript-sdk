@@ -71,7 +71,7 @@ export type FunctionCallOutputItem = {
   output:
     | string
     | Array<InputText | FunctionCallOutputItemOutputInputImage | InputFile>;
-  status?: FunctionCallOutputItemStatus | null | undefined;
+  status?: FunctionCallOutputItemStatus | undefined;
   type: FunctionCallOutputItemTypeFunctionCallOutput;
 };
 
@@ -194,7 +194,7 @@ export type FunctionCallOutputItem$Outbound = {
       | FunctionCallOutputItemOutputInputImage$Outbound
       | InputFile$Outbound
     >;
-  status?: string | null | undefined;
+  status?: string | undefined;
   type: string;
 };
 
@@ -213,7 +213,7 @@ export const FunctionCallOutputItem$outboundSchema: z.ZodType<
       InputFile$outboundSchema,
     ])),
   ]),
-  status: z.nullable(FunctionCallOutputItemStatus$outboundSchema).optional(),
+  status: FunctionCallOutputItemStatus$outboundSchema.optional(),
   type: FunctionCallOutputItemTypeFunctionCallOutput$outboundSchema,
 }).transform((v) => {
   return remap$(v, {

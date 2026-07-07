@@ -111,7 +111,7 @@ export type OpenResponsesResultObject = ClosedEnum<
 export type OpenResponsesResultToolFunction = {
   description?: string | null | undefined;
   name: string;
-  parameters: { [k: string]: any | null } | null;
+  parameters: { [k: string]: any } | null;
   strict?: boolean | null | undefined;
   type: "function";
 };
@@ -147,7 +147,7 @@ export type OpenResponsesResult = {
   frequencyPenalty: number | null;
   id: string;
   incompleteDetails: IncompleteDetails | null;
-  instructions: BaseInputsUnion | null;
+  instructions: BaseInputsUnion;
   maxOutputTokens?: number | null | undefined;
   maxToolCalls?: number | null | undefined;
   /**
@@ -218,7 +218,7 @@ export const OpenResponsesResultToolFunction$inboundSchema: z.ZodType<
 > = z.object({
   description: z.nullable(z.string()).optional(),
   name: z.string(),
-  parameters: z.nullable(z.record(z.string(), z.nullable(z.any()))),
+  parameters: z.nullable(z.record(z.string(), z.any())),
   strict: z.nullable(z.boolean()).optional(),
   type: z.literal("function"),
 });
@@ -277,7 +277,7 @@ export const OpenResponsesResult$inboundSchema: z.ZodType<
   frequency_penalty: z.nullable(z.number()),
   id: z.string(),
   incomplete_details: z.nullable(IncompleteDetails$inboundSchema),
-  instructions: z.nullable(BaseInputsUnion$inboundSchema),
+  instructions: BaseInputsUnion$inboundSchema,
   max_output_tokens: z.nullable(z.int()).optional(),
   max_tool_calls: z.nullable(z.int()).optional(),
   metadata: z.nullable(z.record(z.string(), z.string())),

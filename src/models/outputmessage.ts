@@ -96,7 +96,6 @@ export type OutputMessage = {
     | OutputMessagePhaseCommentary
     | OutputMessagePhaseFinalAnswer
     | any
-    | null
     | undefined;
   role: OutputMessageRole;
   status?:
@@ -211,13 +210,11 @@ export const OutputMessage$inboundSchema: z.ZodType<OutputMessage, unknown> = z
       }),
     ),
     id: z.string(),
-    phase: z.nullable(
-      z.union([
-        OutputMessagePhaseCommentary$inboundSchema,
-        OutputMessagePhaseFinalAnswer$inboundSchema,
-        z.any(),
-      ]),
-    ).optional(),
+    phase: z.union([
+      OutputMessagePhaseCommentary$inboundSchema,
+      OutputMessagePhaseFinalAnswer$inboundSchema,
+      z.any(),
+    ]).optional(),
     role: OutputMessageRole$inboundSchema,
     status: z.union([
       OutputMessageStatusCompleted$inboundSchema,
