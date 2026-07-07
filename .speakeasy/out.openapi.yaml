@@ -20696,11 +20696,28 @@ components:
             options:
               $ref: '#/components/schemas/ProviderOptions'
           type: object
+        response_format:
+          description: >-
+            Output format. "json" (default) returns { text, usage }. "verbose_json" additionally returns task, language, duration, and segment-level timestamps; only supported by OpenAI-compatible providers.
+          enum:
+            - json
+            - verbose_json
+          example: json
+          type: string
+          x-speakeasy-unknown-values: allow
         temperature:
           description: Sampling temperature for transcription
           example: 0
           format: double
           type: number
+        timestamp_granularities:
+          description: >-
+            Timestamp detail levels to include when response_format is "verbose_json". "segment" returns segment-level timestamps; "word" additionally returns word-level timestamps in the words array. Ignored unless response_format is "verbose_json".
+          example:
+            - segment
+          items:
+            $ref: '#/components/schemas/STTTimestampGranularity'
+          type: array
       required:
         - model
         - input_audio
@@ -20716,6 +20733,24 @@ components:
           seconds: 9.2
           total_tokens: 113
       properties:
+        duration:
+          description: Duration of the input audio in seconds, present when response_format is verbose_json
+          example: 9.2
+          format: double
+          type: number
+        language:
+          description: Detected or forced language, present when response_format is verbose_json
+          example: english
+          type: string
+        segments:
+          description: Timestamped transcript segments, present when response_format is verbose_json
+          items:
+            $ref: '#/components/schemas/STTSegment'
+          type: array
+        task:
+          description: The task performed, present when response_format is verbose_json
+          example: transcribe
+          type: string
         text:
           description: The transcribed text
           example: >-
@@ -20723,9 +20758,88 @@ components:
           type: string
         usage:
           $ref: '#/components/schemas/STTUsage'
+        words:
+          description: Timestamped words, present when the provider returns word-level timestamps
+          items:
+            $ref: '#/components/schemas/STTWord'
+          type: array
       required:
         - text
       type: object
+    STTSegment:
+      description: A timestamped transcript segment, returned when response_format is verbose_json
+      example:
+        avg_logprob: -0.28
+        compression_ratio: 1.13
+        end: 3.2
+        id: 0
+        no_speech_prob: 0.01
+        seek: 0
+        start: 0
+        temperature: 0
+        text: Hello there.
+        tokens:
+          - 50364
+          - 2425
+          - 456
+      properties:
+        avg_logprob:
+          description: Average log probability of the segment
+          format: double
+          type: number
+        compression_ratio:
+          description: Compression ratio of the segment
+          format: double
+          type: number
+        end:
+          description: Segment end time in seconds
+          example: 3.2
+          format: double
+          type: number
+        id:
+          description: Segment index within the transcript
+          example: 0
+          type: integer
+        no_speech_prob:
+          description: Probability the segment contains no speech
+          format: double
+          type: number
+        seek:
+          description: Seek offset of the segment
+          example: 0
+          type: integer
+        start:
+          description: Segment start time in seconds
+          example: 0
+          format: double
+          type: number
+        temperature:
+          description: Temperature used for the segment
+          format: double
+          type: number
+        text:
+          description: Transcribed text of the segment
+          example: Hello there.
+          type: string
+        tokens:
+          description: Token IDs of the segment
+          items:
+            type: integer
+          type: array
+      required:
+        - id
+        - start
+        - end
+        - text
+      type: object
+    STTTimestampGranularity:
+      description: A timestamp detail level for verbose_json transcription responses.
+      enum:
+        - word
+        - segment
+      example: word
+      type: string
+      x-speakeasy-unknown-values: allow
     STTUsage:
       description: Aggregated usage statistics for the request
       example:
@@ -20757,6 +20871,32 @@ components:
           description: Total number of tokens used (input + output)
           example: 113
           type: integer
+      type: object
+    STTWord:
+      description: A timestamped word, returned when the provider includes word-level timestamps
+      example:
+        end: 0.4
+        start: 0
+        word: Hello
+      properties:
+        end:
+          description: Word end time in seconds
+          example: 0.4
+          format: double
+          type: number
+        start:
+          description: Word start time in seconds
+          example: 0
+          format: double
+          type: number
+        word:
+          description: The transcribed word
+          example: Hello
+          type: string
+      required:
+        - word
+        - start
+        - end
       type: object
     SubagentNestedTool:
       additionalProperties:
@@ -23756,13 +23896,26 @@ paths:
                   description: The model to use for transcription.
                   type: string
                 response_format:
-                  description: The response format. Only "json" is supported.
+                  description: >-
+                    The response format. "json" (default) returns { text, usage }; "verbose_json" additionally returns task, language, duration, and segment-level timestamps (OpenAI-compatible providers only).
                   enum:
                     - json
+                    - verbose_json
                   type: string
+                  x-speakeasy-unknown-values: allow
                 temperature:
                   description: The sampling temperature.
                   type: number
+                timestamp_granularities[]:
+                  description: >-
+                    Timestamp detail levels to include when response_format is "verbose_json". "word" additionally returns word-level timestamps in the words array.
+                  items:
+                    enum:
+                      - word
+                      - segment
+                    type: string
+                    x-speakeasy-unknown-values: allow
+                  type: array
               required:
                 - file
                 - model
@@ -25516,6 +25669,13 @@ paths:
         reserved permaslug `other` and is always returned last within its date, so callers
         can compute `top-50 traffic / total daily traffic` without a second request.
 
+        Optional filters slice the dataset. `period` (`day`/`week`/`month`) sets the time
+        grain. `modality` and `context_bucket` narrow the exact dataset by output/input
+        modality (or tool-calling activity) and request context length. `category` and
+        `language_type` instead read a sampled, upsampled dataset whose `total_tokens` are
+        weekly-grain estimates — they cannot be combined with each other or with the exact
+        filters, and reject `period=day` with a 400.
+
         Authenticate with any valid OpenRouter API key (same key used for inference).
         Rate-limited to 30 requests/minute per key and 500 requests/day per account.
 
@@ -25550,6 +25710,93 @@ paths:
             example: '2026-05-11'
             pattern: ^\d{4}-\d{2}-\d{2}$
             type: string
+        - description: >-
+            Time grain of each row. `day` (default) returns the per-UTC-day series; `week` buckets by ISO week start; `month` buckets by month start. With `category` or `language_type` only `week` (default) and `month` are available — `day` is rejected with a 400 because those datasets are aggregated weekly. For those sampled datasets `period=month` buckets each week by its week-start month, so totals are approximate at month boundaries.
+          in: query
+          name: period
+          required: false
+          schema:
+            description: >-
+              Time grain of each row. `day` (default) returns the per-UTC-day series; `week` buckets by ISO week start; `month` buckets by month start. With `category` or `language_type` only `week` (default) and `month` are available — `day` is rejected with a 400 because those datasets are aggregated weekly. For those sampled datasets `period=month` buckets each week by its week-start month, so totals are approximate at month boundaries.
+            enum:
+              - day
+              - week
+              - month
+            example: day
+            type: string
+            x-speakeasy-unknown-values: allow
+        - description: >-
+            Restrict to models for a modality surface: `text` / `image_output` match output modality, `image` / `audio` match input modality, and `tool_calling` keeps only rows that recorded at least one tool call. Exact dataset — cannot be combined with `category` or `language_type`.
+          in: query
+          name: modality
+          required: false
+          schema:
+            description: >-
+              Restrict to models for a modality surface: `text` / `image_output` match output modality, `image` / `audio` match input modality, and `tool_calling` keeps only rows that recorded at least one tool call. Exact dataset — cannot be combined with `category` or `language_type`.
+            enum:
+              - text
+              - image
+              - image_output
+              - audio
+              - tool_calling
+            example: text
+            type: string
+            x-speakeasy-unknown-values: allow
+        - description: >-
+            Restrict to requests whose context length falls in this bucket (`1K`, `10K`, `100K`, `1M`, or `10M`). Exact dataset — cannot be combined with `category` or `language_type`.
+          in: query
+          name: context_bucket
+          required: false
+          schema:
+            description: >-
+              Restrict to requests whose context length falls in this bucket (`1K`, `10K`, `100K`, `1M`, or `10M`). Exact dataset — cannot be combined with `category` or `language_type`.
+            enum:
+              - 1K
+              - 10K
+              - 100K
+              - 1M
+              - 10M
+            example: 100K
+            type: string
+            x-speakeasy-unknown-values: allow
+        - description: >-
+            Restrict to a use-case category (e.g. `programming`, `roleplay`). Sourced from a sampled, upsampled dataset, so `total_tokens` is an estimate and is aggregated weekly (the trailing weekly bucket may include traffic past `end_date`). Cannot be combined with `modality`, `context_bucket`, or `language_type`.
+          in: query
+          name: category
+          required: false
+          schema:
+            description: >-
+              Restrict to a use-case category (e.g. `programming`, `roleplay`). Sourced from a sampled, upsampled dataset, so `total_tokens` is an estimate and is aggregated weekly (the trailing weekly bucket may include traffic past `end_date`). Cannot be combined with `modality`, `context_bucket`, or `language_type`.
+            enum:
+              - programming
+              - roleplay
+              - marketing
+              - marketing/seo
+              - technology
+              - science
+              - translation
+              - legal
+              - finance
+              - health
+              - trivia
+              - academia
+            example: programming
+            type: string
+            x-speakeasy-unknown-values: allow
+        - description: >-
+            Restrict to natural-language or programming-language tagged activity. Sourced from a sampled, upsampled dataset, so `total_tokens` is an estimate and is aggregated weekly (the trailing weekly bucket may include traffic past `end_date`). Cannot be combined with `modality`, `context_bucket`, or `category`.
+          in: query
+          name: language_type
+          required: false
+          schema:
+            description: >-
+              Restrict to natural-language or programming-language tagged activity. Sourced from a sampled, upsampled dataset, so `total_tokens` is an estimate and is aggregated weekly (the trailing weekly bucket may include traffic past `end_date`). Cannot be combined with `modality`, `context_bucket`, or `category`.
+            enum:
+              - natural
+              - programming
+            example: natural
+            type: string
+            x-speakeasy-unknown-values: allow
       responses:
         '200':
           content:
