@@ -414,6 +414,7 @@ export * from "./rankingsdailyresponse.js";
 export * from "./reasoningconfig.js";
 export * from "./reasoningdeltaevent.js";
 export * from "./reasoningdetailencrypted.js";
+export * from "./reasoningdetailservertoolcall.js";
 export * from "./reasoningdetailsummary.js";
 export * from "./reasoningdetailtext.js";
 export * from "./reasoningdetailunion.js";
