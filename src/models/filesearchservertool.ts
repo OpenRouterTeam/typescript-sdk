@@ -58,7 +58,7 @@ export type RankingOptions = {
  * File search tool configuration
  */
 export type FileSearchServerTool = {
-  filters?: Filters | CompoundFilter | any | null | undefined;
+  filters?: Filters | CompoundFilter | any | undefined;
   maxNumResults?: number | undefined;
   rankingOptions?: RankingOptions | undefined;
   type: "file_search";
@@ -282,13 +282,11 @@ export const FileSearchServerTool$inboundSchema: z.ZodType<
   FileSearchServerTool,
   unknown
 > = z.object({
-  filters: z.nullable(
-    z.union([
-      z.lazy(() => Filters$inboundSchema),
-      CompoundFilter$inboundSchema,
-      z.any(),
-    ]),
-  ).optional(),
+  filters: z.union([
+    z.lazy(() => Filters$inboundSchema),
+    CompoundFilter$inboundSchema,
+    z.any(),
+  ]).optional(),
   max_num_results: z.int().optional(),
   ranking_options: z.lazy(() => RankingOptions$inboundSchema).optional(),
   type: z.literal("file_search"),
@@ -302,7 +300,7 @@ export const FileSearchServerTool$inboundSchema: z.ZodType<
 });
 /** @internal */
 export type FileSearchServerTool$Outbound = {
-  filters?: Filters$Outbound | CompoundFilter$Outbound | any | null | undefined;
+  filters?: Filters$Outbound | CompoundFilter$Outbound | any | undefined;
   max_num_results?: number | undefined;
   ranking_options?: RankingOptions$Outbound | undefined;
   type: "file_search";
@@ -314,13 +312,11 @@ export const FileSearchServerTool$outboundSchema: z.ZodType<
   FileSearchServerTool$Outbound,
   FileSearchServerTool
 > = z.object({
-  filters: z.nullable(
-    z.union([
-      z.lazy(() => Filters$outboundSchema),
-      CompoundFilter$outboundSchema,
-      z.any(),
-    ]),
-  ).optional(),
+  filters: z.union([
+    z.lazy(() => Filters$outboundSchema),
+    CompoundFilter$outboundSchema,
+    z.any(),
+  ]).optional(),
   maxNumResults: z.int().optional(),
   rankingOptions: z.lazy(() => RankingOptions$outboundSchema).optional(),
   type: z.literal("file_search"),
