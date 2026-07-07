@@ -129,11 +129,11 @@ export type ProviderPreferences = {
   /**
    * Preferred maximum latency (in seconds). Can be a number (applies to p50) or an object with percentile-specific cutoffs. Endpoints above the threshold(s) may still be used, but are deprioritized in routing. When using fallback models, this may cause a fallback model to be used instead of the primary model if it meets the threshold.
    */
-  preferredMaxLatency?: PreferredMaxLatency | null | undefined;
+  preferredMaxLatency?: PreferredMaxLatency | undefined;
   /**
    * Preferred minimum throughput (in tokens per second). Can be a number (applies to p50) or an object with percentile-specific cutoffs. Endpoints below the threshold(s) may still be used, but are deprioritized in routing. When using fallback models, this may cause a fallback model to be used instead of the primary model if it meets the threshold.
    */
-  preferredMinThroughput?: PreferredMinThroughput | null | undefined;
+  preferredMinThroughput?: PreferredMinThroughput | undefined;
   /**
    * A list of quantization levels to filter the provider by.
    */
@@ -145,7 +145,7 @@ export type ProviderPreferences = {
   /**
    * The sorting strategy to use for this request, if "order" is not specified. When set, no load balancing is performed.
    */
-  sort?: ProviderSort | ProviderSortConfig | any | null | undefined;
+  sort?: ProviderSort | ProviderSortConfig | any | undefined;
   /**
    * Whether to restrict routing to only ZDR (Zero Data Retention) endpoints. When true, only endpoints that do not retain prompts will be used.
    */
@@ -239,11 +239,11 @@ export type ProviderPreferences$Outbound = {
   max_price?: MaxPrice$Outbound | undefined;
   only?: Array<string | string> | null | undefined;
   order?: Array<string | string> | null | undefined;
-  preferred_max_latency?: PreferredMaxLatency$Outbound | null | undefined;
-  preferred_min_throughput?: PreferredMinThroughput$Outbound | null | undefined;
+  preferred_max_latency?: PreferredMaxLatency$Outbound | undefined;
+  preferred_min_throughput?: PreferredMinThroughput$Outbound | undefined;
   quantizations?: Array<string> | null | undefined;
   require_parameters?: boolean | null | undefined;
-  sort?: string | ProviderSortConfig$Outbound | any | null | undefined;
+  sort?: string | ProviderSortConfig$Outbound | any | undefined;
   zdr?: boolean | null | undefined;
 };
 
@@ -263,19 +263,15 @@ export const ProviderPreferences$outboundSchema: z.ZodType<
     .optional(),
   order: z.nullable(z.array(z.union([ProviderName$outboundSchema, z.string()])))
     .optional(),
-  preferredMaxLatency: z.nullable(PreferredMaxLatency$outboundSchema)
-    .optional(),
-  preferredMinThroughput: z.nullable(PreferredMinThroughput$outboundSchema)
-    .optional(),
+  preferredMaxLatency: PreferredMaxLatency$outboundSchema.optional(),
+  preferredMinThroughput: PreferredMinThroughput$outboundSchema.optional(),
   quantizations: z.nullable(z.array(Quantization$outboundSchema)).optional(),
   requireParameters: z.nullable(z.boolean()).optional(),
-  sort: z.nullable(
-    z.union([
-      ProviderSort$outboundSchema,
-      ProviderSortConfig$outboundSchema,
-      z.any(),
-    ]),
-  ).optional(),
+  sort: z.union([
+    ProviderSort$outboundSchema,
+    ProviderSortConfig$outboundSchema,
+    z.any(),
+  ]).optional(),
   zdr: z.nullable(z.boolean()).optional(),
 }).transform((v) => {
   return remap$(v, {

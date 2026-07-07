@@ -137,7 +137,6 @@ export type EasyInputMessage = {
     >
     | string
     | any
-    | null
     | undefined;
   /**
    * The phase of an assistant message. Use `commentary` for an intermediate assistant message and `final_answer` for the final assistant message. For follow-up requests with models like `gpt-5.3-codex` and later, preserve and resend phase on all assistant messages. Omitting it can degrade performance. Not used for user messages.
@@ -146,7 +145,6 @@ export type EasyInputMessage = {
     | EasyInputMessagePhaseCommentary
     | EasyInputMessagePhaseFinalAnswer
     | any
-    | null
     | undefined;
   role:
     | EasyInputMessageRoleUser
@@ -355,9 +353,8 @@ export type EasyInputMessage$Outbound = {
     >
     | string
     | any
-    | null
     | undefined;
-  phase?: string | string | any | null | undefined;
+  phase?: string | string | any | undefined;
   role: string | string | string | string;
   type?: string | undefined;
 };
@@ -367,26 +364,22 @@ export const EasyInputMessage$outboundSchema: z.ZodType<
   EasyInputMessage$Outbound,
   EasyInputMessage
 > = z.object({
-  content: z.nullable(
-    z.union([
-      z.array(z.union([
-        InputText$outboundSchema,
-        z.lazy(() => EasyInputMessageContentInputImage$outboundSchema),
-        InputFile$outboundSchema,
-        InputAudio$outboundSchema,
-        InputVideo$outboundSchema,
-      ])),
-      z.string(),
-      z.any(),
-    ]),
-  ).optional(),
-  phase: z.nullable(
-    z.union([
-      EasyInputMessagePhaseCommentary$outboundSchema,
-      EasyInputMessagePhaseFinalAnswer$outboundSchema,
-      z.any(),
-    ]),
-  ).optional(),
+  content: z.union([
+    z.array(z.union([
+      InputText$outboundSchema,
+      z.lazy(() => EasyInputMessageContentInputImage$outboundSchema),
+      InputFile$outboundSchema,
+      InputAudio$outboundSchema,
+      InputVideo$outboundSchema,
+    ])),
+    z.string(),
+    z.any(),
+  ]).optional(),
+  phase: z.union([
+    EasyInputMessagePhaseCommentary$outboundSchema,
+    EasyInputMessagePhaseFinalAnswer$outboundSchema,
+    z.any(),
+  ]).optional(),
   role: z.union([
     EasyInputMessageRoleUser$outboundSchema,
     EasyInputMessageRoleSystem$outboundSchema,

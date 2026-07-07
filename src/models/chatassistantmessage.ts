@@ -66,7 +66,7 @@ export type ChatAssistantMessage = {
   /**
    * Assistant message content
    */
-  content?: string | Array<ChatContentItems> | any | null | undefined;
+  content?: string | Array<ChatContentItems> | any | undefined;
   /**
    * Generated images from image generation models
    */
@@ -145,9 +145,11 @@ export const ChatAssistantMessage$inboundSchema: z.ZodType<
   unknown
 > = z.object({
   audio: ChatAudioOutput$inboundSchema.optional(),
-  content: z.nullable(
-    z.union([z.string(), z.array(ChatContentItems$inboundSchema), z.any()]),
-  ).optional(),
+  content: z.union([
+    z.string(),
+    z.array(ChatContentItems$inboundSchema),
+    z.any(),
+  ]).optional(),
   images: z.array(ChatAssistantImages$inboundSchema).optional(),
   name: z.string().optional(),
   reasoning: z.nullable(z.string()).optional(),
@@ -164,7 +166,7 @@ export const ChatAssistantMessage$inboundSchema: z.ZodType<
 /** @internal */
 export type ChatAssistantMessage$Outbound = {
   audio?: ChatAudioOutput$Outbound | undefined;
-  content?: string | Array<ChatContentItems$Outbound> | any | null | undefined;
+  content?: string | Array<ChatContentItems$Outbound> | any | undefined;
   images?: Array<ChatAssistantImages$Outbound> | undefined;
   name?: string | undefined;
   reasoning?: string | null | undefined;
@@ -180,9 +182,11 @@ export const ChatAssistantMessage$outboundSchema: z.ZodType<
   ChatAssistantMessage
 > = z.object({
   audio: ChatAudioOutput$outboundSchema.optional(),
-  content: z.nullable(
-    z.union([z.string(), z.array(ChatContentItems$outboundSchema), z.any()]),
-  ).optional(),
+  content: z.union([
+    z.string(),
+    z.array(ChatContentItems$outboundSchema),
+    z.any(),
+  ]).optional(),
   images: z.array(ChatAssistantImages$outboundSchema).optional(),
   name: z.string().optional(),
   reasoning: z.nullable(z.string()).optional(),
