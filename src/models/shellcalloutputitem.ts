@@ -5,8 +5,11 @@
 
 import * as z from "zod/v4";
 import { remap as remap$ } from "../lib/primitives.js";
-import * as openEnums from "../types/enums.js";
-import { ClosedEnum, OpenEnum } from "../types/enums.js";
+import { ClosedEnum } from "../types/enums.js";
+import {
+  ToolCallStatus,
+  ToolCallStatus$outboundSchema,
+} from "./toolcallstatus.js";
 
 export type ShellCallOutputItemOutput = {
   content?: string | null | undefined;
@@ -14,15 +17,6 @@ export type ShellCallOutputItemOutput = {
   type: string;
   additionalProperties?: { [k: string]: any | null } | undefined;
 };
-
-export const ShellCallOutputItemStatus = {
-  InProgress: "in_progress",
-  Completed: "completed",
-  Incomplete: "incomplete",
-} as const;
-export type ShellCallOutputItemStatus = OpenEnum<
-  typeof ShellCallOutputItemStatus
->;
 
 export const ShellCallOutputItemType = {
   ShellCallOutput: "shell_call_output",
@@ -39,7 +33,7 @@ export type ShellCallOutputItem = {
   id?: string | null | undefined;
   maxOutputLength?: number | null | undefined;
   output: Array<ShellCallOutputItemOutput>;
-  status?: ShellCallOutputItemStatus | null | undefined;
+  status?: ToolCallStatus | null | undefined;
   type: ShellCallOutputItemType;
 };
 
@@ -79,12 +73,6 @@ export function shellCallOutputItemOutputToJSON(
 }
 
 /** @internal */
-export const ShellCallOutputItemStatus$outboundSchema: z.ZodType<
-  string,
-  ShellCallOutputItemStatus
-> = openEnums.outboundSchema(ShellCallOutputItemStatus);
-
-/** @internal */
 export const ShellCallOutputItemType$outboundSchema: z.ZodEnum<
   typeof ShellCallOutputItemType
 > = z.enum(ShellCallOutputItemType);
@@ -108,7 +96,7 @@ export const ShellCallOutputItem$outboundSchema: z.ZodType<
   id: z.nullable(z.string()).optional(),
   maxOutputLength: z.nullable(z.int()).optional(),
   output: z.array(z.lazy(() => ShellCallOutputItemOutput$outboundSchema)),
-  status: z.nullable(ShellCallOutputItemStatus$outboundSchema).optional(),
+  status: z.nullable(ToolCallStatus$outboundSchema).optional(),
   type: ShellCallOutputItemType$outboundSchema,
 }).transform((v) => {
   return remap$(v, {

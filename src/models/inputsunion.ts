@@ -305,8 +305,7 @@ export type InputsContent1 = ResponseOutputText | OpenAIResponsesRefusalContent;
 
 export type InputsContent2 =
   | Array<ResponseOutputText | OpenAIResponsesRefusalContent>
-  | string
-  | any;
+  | string;
 
 export const InputsPhaseFinalAnswer = {
   FinalAnswer: "final_answer",
@@ -321,10 +320,7 @@ export type InputsPhaseCommentary = ClosedEnum<typeof InputsPhaseCommentary>;
 /**
  * The phase of an assistant message. Use `commentary` for an intermediate assistant message and `final_answer` for the final assistant message. For follow-up requests with models like `gpt-5.3-codex` and later, preserve and resend phase on all assistant messages. Omitting it can degrade performance. Not used for user messages.
  */
-export type InputsPhaseUnion =
-  | InputsPhaseCommentary
-  | InputsPhaseFinalAnswer
-  | any;
+export type InputsPhaseUnion = InputsPhaseCommentary | InputsPhaseFinalAnswer;
 
 export const InputsRole = {
   Assistant: "assistant",
@@ -367,18 +363,12 @@ export type InputsMessage = {
   content:
     | Array<ResponseOutputText | OpenAIResponsesRefusalContent>
     | string
-    | any
     | null;
   id: string;
   /**
    * The phase of an assistant message. Use `commentary` for an intermediate assistant message and `final_answer` for the final assistant message. For follow-up requests with models like `gpt-5.3-codex` and later, preserve and resend phase on all assistant messages. Omitting it can degrade performance. Not used for user messages.
    */
-  phase?:
-    | InputsPhaseCommentary
-    | InputsPhaseFinalAnswer
-    | any
-    | null
-    | undefined;
+  phase?: InputsPhaseCommentary | InputsPhaseFinalAnswer | null | undefined;
   role: InputsRole;
   status?:
     | InputsStatusCompleted1
@@ -593,8 +583,7 @@ export function inputsContent1ToJSON(inputsContent1: InputsContent1): string {
 /** @internal */
 export type InputsContent2$Outbound =
   | Array<ResponseOutputText$Outbound | OpenAIResponsesRefusalContent$Outbound>
-  | string
-  | any;
+  | string;
 
 /** @internal */
 export const InputsContent2$outboundSchema: z.ZodType<
@@ -608,7 +597,6 @@ export const InputsContent2$outboundSchema: z.ZodType<
     ]),
   ),
   z.string(),
-  z.any(),
 ]);
 
 export function inputsContent2ToJSON(inputsContent2: InputsContent2): string {
@@ -626,7 +614,7 @@ export const InputsPhaseCommentary$outboundSchema: z.ZodEnum<
 > = z.enum(InputsPhaseCommentary);
 
 /** @internal */
-export type InputsPhaseUnion$Outbound = string | string | any;
+export type InputsPhaseUnion$Outbound = string | string;
 
 /** @internal */
 export const InputsPhaseUnion$outboundSchema: z.ZodType<
@@ -635,7 +623,6 @@ export const InputsPhaseUnion$outboundSchema: z.ZodType<
 > = z.union([
   InputsPhaseCommentary$outboundSchema,
   InputsPhaseFinalAnswer$outboundSchema,
-  z.any(),
 ]);
 
 export function inputsPhaseUnionToJSON(
@@ -699,10 +686,9 @@ export type InputsMessage$Outbound = {
       ResponseOutputText$Outbound | OpenAIResponsesRefusalContent$Outbound
     >
     | string
-    | any
     | null;
   id: string;
-  phase?: string | string | any | null | undefined;
+  phase?: string | string | null | undefined;
   role: string;
   status?: string | string | string | undefined;
   type: string;
@@ -722,7 +708,6 @@ export const InputsMessage$outboundSchema: z.ZodType<
         ]),
       ),
       z.string(),
-      z.any(),
     ]),
   ),
   id: z.string(),
@@ -730,7 +715,6 @@ export const InputsMessage$outboundSchema: z.ZodType<
     z.union([
       InputsPhaseCommentary$outboundSchema,
       InputsPhaseFinalAnswer$outboundSchema,
-      z.any(),
     ]),
   ).optional(),
   role: InputsRole$outboundSchema,

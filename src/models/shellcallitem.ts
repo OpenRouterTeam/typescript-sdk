@@ -5,21 +5,17 @@
 
 import * as z from "zod/v4";
 import { remap as remap$ } from "../lib/primitives.js";
-import * as openEnums from "../types/enums.js";
-import { ClosedEnum, OpenEnum } from "../types/enums.js";
+import { ClosedEnum } from "../types/enums.js";
+import {
+  ToolCallStatus,
+  ToolCallStatus$outboundSchema,
+} from "./toolcallstatus.js";
 
 export type ShellCallItemAction = {
   commands: Array<string>;
   maxOutputLength?: number | null | undefined;
   timeoutMs?: number | null | undefined;
 };
-
-export const ShellCallItemStatus = {
-  InProgress: "in_progress",
-  Completed: "completed",
-  Incomplete: "incomplete",
-} as const;
-export type ShellCallItemStatus = OpenEnum<typeof ShellCallItemStatus>;
 
 export const ShellCallItemType = {
   ShellCall: "shell_call",
@@ -34,7 +30,7 @@ export type ShellCallItem = {
   callId: string;
   environment?: any | null | undefined;
   id?: string | null | undefined;
-  status?: ShellCallItemStatus | null | undefined;
+  status?: ToolCallStatus | null | undefined;
   type: ShellCallItemType;
 };
 
@@ -69,12 +65,6 @@ export function shellCallItemActionToJSON(
 }
 
 /** @internal */
-export const ShellCallItemStatus$outboundSchema: z.ZodType<
-  string,
-  ShellCallItemStatus
-> = openEnums.outboundSchema(ShellCallItemStatus);
-
-/** @internal */
 export const ShellCallItemType$outboundSchema: z.ZodEnum<
   typeof ShellCallItemType
 > = z.enum(ShellCallItemType);
@@ -98,7 +88,7 @@ export const ShellCallItem$outboundSchema: z.ZodType<
   callId: z.string(),
   environment: z.nullable(z.any()).optional(),
   id: z.nullable(z.string()).optional(),
-  status: z.nullable(ShellCallItemStatus$outboundSchema).optional(),
+  status: z.nullable(ToolCallStatus$outboundSchema).optional(),
   type: ShellCallItemType$outboundSchema,
 }).transform((v) => {
   return remap$(v, {
