@@ -123,6 +123,11 @@ single aggregated `other` row per day that sums every model outside that top 50.
 Token totals are `prompt_tokens + completion_tokens`, matching the public rankings
 chart on openrouter.ai/rankings.
 
+Each row includes token breakouts: `input_tokens` (prompt), `output_tokens`
+(completion), `cache_read_tokens` (provider-side prompt-cache hits), and
+`reasoning_tokens` (internal thinking tokens). These allow downstream consumers
+to analyse traffic composition without a second query.
+
 Each row is a distinct `(date, model_permaslug)` pair. The `other` row uses the
 reserved permaslug `other` and is always returned last within its date, so callers
 can compute `top-50 traffic / total daily traffic` without a second request.
