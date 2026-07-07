@@ -9443,7 +9443,7 @@ components:
           type: integer
         size:
           description: >-
-            Optional. A convenience shorthand for output dimensions — pass a tier ("2K", "4K") or explicit pixels ("2048x2048") and we normalize it to the right dimensions for the chosen provider. Interchangeable with resolution + aspect_ratio; use those directly for enumerated, per-model discoverable values. Conflicting size + resolution/aspect_ratio is rejected.
+            Optional. A convenience shorthand for output dimensions — pass a tier ("2K", "4K") or explicit pixels ("2048x2048") and we normalize it to the right dimensions for the chosen provider. A tier size is equivalent to setting `resolution` and combines with `aspect_ratio`. An explicit pixel size is authoritative: a mismatched `resolution` or `aspect_ratio` alongside it is rejected with a 400.
           example: 2K
           type: string
         stream:
@@ -17365,6 +17365,7 @@ components:
         enabled: true
         id: pareto-router
         min_coding_score: 0.8
+        price_source: prompt
       properties:
         enabled:
           description: Set to false to disable the pareto-router plugin for this request. Defaults to true.
@@ -17375,12 +17376,20 @@ components:
           type: string
         min_coding_score:
           description: >-
-            Minimum desired coding score between 0 and 1, where 1 is best. Higher values select from stronger coding models (sourced from Artificial Analysis coding percentiles). Maps internally to one of three tiers (low, medium, high). Omit to use the router default tier.
+            Minimum coding quality score between 0 and 1. Maps to internal quality tiers: >= 0.66 → high (top coding models), >= 0.33 → medium (strong modern flagships), < 0.33 → low (capable coders above the median). Omit to default to the highest tier (equivalent to >= 0.66).
           example: 0.8
           format: double
           maximum: 1
           minimum: 0
           type: number
+        price_source:
+          description: >-
+            Price source for the Pareto frontier cost axis. "prompt" uses catalog list price (endpoint.pricing.prompt). "weighted_avg" uses traffic-weighted effective input price from ClickHouse, falling back to prompt price for models without traffic data. Defaults to "prompt".
+          enum:
+            - prompt
+            - weighted_avg
+          type: string
+          x-speakeasy-unknown-values: allow
       required:
         - id
       type: object
@@ -23714,7 +23723,8 @@ paths:
       - $ref: "#/components/parameters/AppCategories"
   /audio/transcriptions:
     post:
-      description: Transcribes audio into text. Accepts base64-encoded audio input and returns the transcribed text.
+      description: >-
+        Transcribes audio into text. Accepts base64-encoded audio input as JSON or an OpenAI-style multipart/form-data file upload, and returns the transcribed text.
       operationId: createAudioTranscriptions
       requestBody:
         content:
@@ -23727,6 +23737,36 @@ paths:
               model: openai/whisper-large-v3
             schema:
               $ref: '#/components/schemas/STTRequest'
+          multipart/form-data:
+            example:
+              file: audio.wav
+              language: en
+              model: openai/whisper-large-v3
+            schema:
+              properties:
+                file:
+                  description: >-
+                    The audio file to transcribe. The format is derived from the filename extension or the file part content type. Max 25 MB; send larger files as base64 JSON via input_audio.
+                  format: binary
+                  type: string
+                language:
+                  description: The language of the input audio (ISO-639-1).
+                  type: string
+                model:
+                  description: The model to use for transcription.
+                  type: string
+                response_format:
+                  description: The response format. Only "json" is supported.
+                  enum:
+                    - json
+                  type: string
+                temperature:
+                  description: The sampling temperature.
+                  type: number
+              required:
+                - file
+                - model
+              type: object
         required: true
       responses:
         '200':
