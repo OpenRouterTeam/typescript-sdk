@@ -8,9 +8,6 @@ import { remap as remap$ } from "../lib/primitives.js";
 import * as openEnums from "../types/enums.js";
 import { OpenEnum } from "../types/enums.js";
 
-/**
- * Reasoning effort level for the subagent call.
- */
 export const SubagentReasoningEffort = {
   Max: "max",
   Xhigh: "xhigh",
