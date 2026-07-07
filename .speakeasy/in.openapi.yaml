@@ -30231,10 +30231,10 @@ paths:
             Sort the returned models server-side. Prefer this over fetching the full list and sorting client-side.
             Options: pricing-low-to-high, pricing-high-to-low (average prompt/completion price), context-high-to-low
             (context length), throughput-high-to-low, latency-low-to-high (recent median performance), most-popular,
-            top-weekly (tokens processed in the last week), newest (creation date), intelligence-high-to-low (Artificial
-            Analysis intelligence index), design-arena-elo-high-to-low (best Design Arena ELO across arenas). Models
-            without a score for the chosen benchmark are placed last. When omitted, the existing default ordering is
-            preserved.
+            top-weekly (tokens processed in the last week), newest (creation date), intelligence-high-to-low,
+            coding-high-to-low, agentic-high-to-low (Artificial Analysis indices), design-arena-elo-high-to-low (best
+            Design Arena ELO across arenas). Models without a score for the chosen benchmark are placed last. When
+            omitted, the existing default ordering is preserved.
           in: query
           name: sort
           required: false
@@ -30243,10 +30243,10 @@ paths:
               Sort the returned models server-side. Prefer this over fetching the full list and sorting client-side.
               Options: pricing-low-to-high, pricing-high-to-low (average prompt/completion price), context-high-to-low
               (context length), throughput-high-to-low, latency-low-to-high (recent median performance), most-popular,
-              top-weekly (tokens processed in the last week), newest (creation date), intelligence-high-to-low
-              (Artificial Analysis intelligence index), design-arena-elo-high-to-low (best Design Arena ELO across
-              arenas). Models without a score for the chosen benchmark are placed last. When omitted, the existing
-              default ordering is preserved.
+              top-weekly (tokens processed in the last week), newest (creation date), intelligence-high-to-low,
+              coding-high-to-low, agentic-high-to-low (Artificial Analysis indices), design-arena-elo-high-to-low (best
+              Design Arena ELO across arenas). Models without a score for the chosen benchmark are placed last. When
+              omitted, the existing default ordering is preserved.
             enum:
               - most-popular
               - newest
@@ -30257,6 +30257,8 @@ paths:
               - throughput-high-to-low
               - latency-low-to-high
               - intelligence-high-to-low
+              - coding-high-to-low
+              - agentic-high-to-low
               - design-arena-elo-high-to-low
             example: newest
             type: string
@@ -30377,6 +30379,132 @@ paths:
               - eu
             example: eu
             type: string
+        - description: Minimum completion (output) price in $/M tokens.
+          in: query
+          name: min_output_price
+          required: false
+          schema:
+            description: Minimum completion (output) price in $/M tokens.
+            example: 0
+            minimum: 0
+            nullable: true
+            type: number
+        - description: Maximum completion (output) price in $/M tokens.
+          in: query
+          name: max_output_price
+          required: false
+          schema:
+            description: Maximum completion (output) price in $/M tokens.
+            example: 10
+            minimum: 0
+            nullable: true
+            type: number
+        - description: Minimum model age in days since its creation date.
+          in: query
+          name: min_age_days
+          required: false
+          schema:
+            description: Minimum model age in days since its creation date.
+            example: 0
+            minimum: 0
+            nullable: true
+            type: integer
+        - description: Maximum model age in days since its creation date.
+          in: query
+          name: max_age_days
+          required: false
+          schema:
+            description: Maximum model age in days since its creation date.
+            example: 90
+            minimum: 0
+            nullable: true
+            type: integer
+        - description: Minimum Artificial Analysis intelligence index.
+          in: query
+          name: min_intelligence_index
+          required: false
+          schema:
+            description: Minimum Artificial Analysis intelligence index.
+            example: 50
+            minimum: 0
+            nullable: true
+            type: number
+        - description: Maximum Artificial Analysis intelligence index.
+          in: query
+          name: max_intelligence_index
+          required: false
+          schema:
+            description: Maximum Artificial Analysis intelligence index.
+            example: 100
+            minimum: 0
+            nullable: true
+            type: number
+        - description: Minimum Artificial Analysis coding index.
+          in: query
+          name: min_coding_index
+          required: false
+          schema:
+            description: Minimum Artificial Analysis coding index.
+            example: 50
+            minimum: 0
+            nullable: true
+            type: number
+        - description: Maximum Artificial Analysis coding index.
+          in: query
+          name: max_coding_index
+          required: false
+          schema:
+            description: Maximum Artificial Analysis coding index.
+            example: 100
+            minimum: 0
+            nullable: true
+            type: number
+        - description: Minimum Artificial Analysis agentic index.
+          in: query
+          name: min_agentic_index
+          required: false
+          schema:
+            description: Minimum Artificial Analysis agentic index.
+            example: 50
+            minimum: 0
+            nullable: true
+            type: number
+        - description: Maximum Artificial Analysis agentic index.
+          in: query
+          name: max_agentic_index
+          required: false
+          schema:
+            description: Maximum Artificial Analysis agentic index.
+            example: 100
+            minimum: 0
+            nullable: true
+            type: number
+        - description: >-
+            Minimum tool-calling success rate, as a fraction in [0, 1] (e.g. 0.9 = 90% of requests finishing with a
+            tool_calls finish reason).
+          in: query
+          name: min_tool_success_rate
+          required: false
+          schema:
+            description: >-
+              Minimum tool-calling success rate, as a fraction in [0, 1] (e.g. 0.9 = 90% of requests finishing with a
+              tool_calls finish reason).
+            example: 0.9
+            maximum: 1
+            minimum: 0
+            nullable: true
+            type: number
+        - description: Maximum tool-calling success rate, as a fraction in [0, 1].
+          in: query
+          name: max_tool_success_rate
+          required: false
+          schema:
+            description: Maximum tool-calling success rate, as a fraction in [0, 1].
+            example: 1
+            maximum: 1
+            minimum: 0
+            nullable: true
+            type: number
       responses:
         '200':
           content:
