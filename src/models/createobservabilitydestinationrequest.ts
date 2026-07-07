@@ -50,7 +50,7 @@ export type CreateObservabilityDestinationRequest = {
   /**
    * Provider-specific configuration. The shape depends on `type` and is validated server-side.
    */
-  config: { [k: string]: any | null };
+  config: { [k: string]: any };
   /**
    * Whether this destination should be enabled immediately.
    */
@@ -89,7 +89,7 @@ export const CreateObservabilityDestinationRequestType$outboundSchema:
 /** @internal */
 export type CreateObservabilityDestinationRequest$Outbound = {
   api_key_hashes?: Array<string> | null | undefined;
-  config: { [k: string]: any | null };
+  config: { [k: string]: any };
   enabled: boolean;
   filter_rules?: ObservabilityFilterRulesConfig$Outbound | null | undefined;
   name: string;
@@ -105,7 +105,7 @@ export const CreateObservabilityDestinationRequest$outboundSchema: z.ZodType<
   CreateObservabilityDestinationRequest
 > = z.object({
   apiKeyHashes: z.nullable(z.array(z.string())).optional(),
-  config: z.record(z.string(), z.nullable(z.any())),
+  config: z.record(z.string(), z.any()),
   enabled: z.boolean().default(true),
   filterRules: z.nullable(ObservabilityFilterRulesConfig$outboundSchema)
     .optional(),

@@ -133,7 +133,6 @@ export type BaseInputsMessage = {
     | BaseInputsPhaseCommentary
     | BaseInputsPhaseFinalAnswer
     | any
-    | null
     | undefined;
   role:
     | BaseInputsRoleUser
@@ -311,13 +310,11 @@ export const BaseInputsMessage$inboundSchema: z.ZodType<
     })),
     z.string(),
   ]),
-  phase: z.nullable(
-    z.union([
-      BaseInputsPhaseCommentary$inboundSchema,
-      BaseInputsPhaseFinalAnswer$inboundSchema,
-      z.any(),
-    ]),
-  ).optional(),
+  phase: z.union([
+    BaseInputsPhaseCommentary$inboundSchema,
+    BaseInputsPhaseFinalAnswer$inboundSchema,
+    z.any(),
+  ]).optional(),
   role: z.union([
     BaseInputsRoleUser$inboundSchema,
     BaseInputsRoleSystem$inboundSchema,

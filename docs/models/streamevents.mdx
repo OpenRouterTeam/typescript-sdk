@@ -54,7 +54,12 @@ const value: models.StreamEventsResponseCompleted = {
     frequencyPenalty: null,
     id: "resp-abc123",
     incompleteDetails: null,
-    instructions: null,
+    instructions: [
+      {
+        content: "What is the weather today?",
+        role: "user",
+      },
+    ],
     metadata: null,
     model: "gpt-4",
     object: "response",
@@ -115,7 +120,12 @@ const value: models.OpenResponsesCreatedEvent = {
     frequencyPenalty: 864.34,
     id: "resp-abc123",
     incompleteDetails: null,
-    instructions: null,
+    instructions: [
+      {
+        content: "What is the weather today?",
+        role: "user",
+      },
+    ],
     metadata: null,
     model: "gpt-4",
     object: "response",
@@ -178,7 +188,12 @@ const value: models.StreamEventsResponseFailed = {
     frequencyPenalty: 4081.29,
     id: "resp-abc123",
     incompleteDetails: null,
-    instructions: null,
+    instructions: [
+      {
+        content: "What is the weather today?",
+        role: "user",
+      },
+    ],
     metadata: null,
     model: "gpt-4",
     object: "response",
@@ -425,7 +440,12 @@ const value: models.OpenResponsesInProgressEvent = {
     frequencyPenalty: 945.33,
     id: "resp-abc123",
     incompleteDetails: null,
-    instructions: null,
+    instructions: [
+      {
+        content: "What is the weather today?",
+        role: "user",
+      },
+    ],
     metadata: null,
     model: "gpt-4",
     object: "response",
@@ -454,7 +474,12 @@ const value: models.StreamEventsResponseIncomplete = {
     frequencyPenalty: 8861.33,
     id: "resp-abc123",
     incompleteDetails: null,
-    instructions: null,
+    instructions: [
+      {
+        content: "What is the weather today?",
+        role: "user",
+      },
+    ],
     metadata: null,
     model: "gpt-4",
     object: "response",

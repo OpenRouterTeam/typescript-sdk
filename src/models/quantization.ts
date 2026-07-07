@@ -21,5 +21,8 @@ export const Quantization = {
 export type Quantization = OpenEnum<typeof Quantization>;
 
 /** @internal */
+export const Quantization$inboundSchema: z.ZodType<Quantization, unknown> =
+  openEnums.inboundSchema(Quantization);
+/** @internal */
 export const Quantization$outboundSchema: z.ZodType<string, Quantization> =
   openEnums.outboundSchema(Quantization);

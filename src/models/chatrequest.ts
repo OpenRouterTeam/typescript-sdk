@@ -352,7 +352,7 @@ export type ChatRequest = {
   /**
    * Stop sequences (up to 4)
    */
-  stop?: string | Array<string> | any | null | undefined;
+  stop?: string | Array<string> | any | undefined;
   /**
    * Stop conditions for the server-tool agent loop. Any condition firing halts the loop (OR logic). When set, this overrides `max_tool_calls`.
    */
@@ -568,7 +568,7 @@ export type ChatRequest$Outbound = {
   seed?: number | null | undefined;
   service_tier?: string | null | undefined;
   session_id?: string | undefined;
-  stop?: string | Array<string> | any | null | undefined;
+  stop?: string | Array<string> | any | undefined;
   stop_server_tools_when?:
     | Array<StopServerToolsWhenCondition$Outbound>
     | undefined;
@@ -634,8 +634,7 @@ export const ChatRequest$outboundSchema: z.ZodType<
   seed: z.nullable(z.int()).optional(),
   serviceTier: z.nullable(ChatRequestServiceTier$outboundSchema).optional(),
   sessionId: z.string().optional(),
-  stop: z.nullable(z.union([z.string(), z.array(z.string()), z.any()]))
-    .optional(),
+  stop: z.union([z.string(), z.array(z.string()), z.any()]).optional(),
   stopServerToolsWhen: z.array(StopServerToolsWhenCondition$outboundSchema)
     .optional(),
   stream: z.boolean().default(false),

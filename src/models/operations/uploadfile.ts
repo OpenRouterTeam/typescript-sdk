@@ -29,13 +29,13 @@ export type UploadFileGlobals = {
   appCategories?: string | undefined;
 };
 
-export type FileT = {
+export type UploadFileFile = {
   fileName: string;
   content: ReadableStream<Uint8Array> | Blob | ArrayBuffer | Uint8Array;
 };
 
 export type UploadFileRequestBody = {
-  file: FileT | Blob;
+  file: UploadFileFile | Blob;
 };
 
 export type UploadFileRequest = {
@@ -66,13 +66,16 @@ export type UploadFileRequest = {
 };
 
 /** @internal */
-export type FileT$Outbound = {
+export type UploadFileFile$Outbound = {
   fileName: string;
   content: ReadableStream<Uint8Array> | Blob | ArrayBuffer | Uint8Array;
 };
 
 /** @internal */
-export const FileT$outboundSchema: z.ZodType<FileT$Outbound, FileT> = z.object({
+export const UploadFileFile$outboundSchema: z.ZodType<
+  UploadFileFile$Outbound,
+  UploadFileFile
+> = z.object({
   fileName: z.string(),
   content: z.union([
     z.custom<ReadableStream<Uint8Array>>(x => x instanceof ReadableStream),
@@ -82,13 +85,13 @@ export const FileT$outboundSchema: z.ZodType<FileT$Outbound, FileT> = z.object({
   ]),
 });
 
-export function fileToJSON(fileT: FileT): string {
-  return JSON.stringify(FileT$outboundSchema.parse(fileT));
+export function uploadFileFileToJSON(uploadFileFile: UploadFileFile): string {
+  return JSON.stringify(UploadFileFile$outboundSchema.parse(uploadFileFile));
 }
 
 /** @internal */
 export type UploadFileRequestBody$Outbound = {
-  file: FileT$Outbound | Blob;
+  file: UploadFileFile$Outbound | Blob;
 };
 
 /** @internal */
@@ -96,7 +99,7 @@ export const UploadFileRequestBody$outboundSchema: z.ZodType<
   UploadFileRequestBody$Outbound,
   UploadFileRequestBody
 > = z.object({
-  file: z.lazy(() => FileT$outboundSchema).or(blobLikeSchema),
+  file: z.lazy(() => UploadFileFile$outboundSchema).or(blobLikeSchema),
 });
 
 export function uploadFileRequestBodyToJSON(

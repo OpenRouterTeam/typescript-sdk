@@ -367,18 +367,12 @@ export type InputsMessage = {
   content:
     | Array<ResponseOutputText | OpenAIResponsesRefusalContent>
     | string
-    | any
-    | null;
+    | any;
   id: string;
   /**
    * The phase of an assistant message. Use `commentary` for an intermediate assistant message and `final_answer` for the final assistant message. For follow-up requests with models like `gpt-5.3-codex` and later, preserve and resend phase on all assistant messages. Omitting it can degrade performance. Not used for user messages.
    */
-  phase?:
-    | InputsPhaseCommentary
-    | InputsPhaseFinalAnswer
-    | any
-    | null
-    | undefined;
+  phase?: InputsPhaseCommentary | InputsPhaseFinalAnswer | any | undefined;
   role: InputsRole;
   status?:
     | InputsStatusCompleted1
@@ -699,10 +693,9 @@ export type InputsMessage$Outbound = {
       ResponseOutputText$Outbound | OpenAIResponsesRefusalContent$Outbound
     >
     | string
-    | any
-    | null;
+    | any;
   id: string;
-  phase?: string | string | any | null | undefined;
+  phase?: string | string | any | undefined;
   role: string;
   status?: string | string | string | undefined;
   type: string;
@@ -713,26 +706,22 @@ export const InputsMessage$outboundSchema: z.ZodType<
   InputsMessage$Outbound,
   InputsMessage
 > = z.object({
-  content: z.nullable(
-    z.union([
-      z.array(
-        z.union([
-          ResponseOutputText$outboundSchema,
-          OpenAIResponsesRefusalContent$outboundSchema,
-        ]),
-      ),
-      z.string(),
-      z.any(),
-    ]),
-  ),
+  content: z.union([
+    z.array(
+      z.union([
+        ResponseOutputText$outboundSchema,
+        OpenAIResponsesRefusalContent$outboundSchema,
+      ]),
+    ),
+    z.string(),
+    z.any(),
+  ]),
   id: z.string(),
-  phase: z.nullable(
-    z.union([
-      InputsPhaseCommentary$outboundSchema,
-      InputsPhaseFinalAnswer$outboundSchema,
-      z.any(),
-    ]),
-  ).optional(),
+  phase: z.union([
+    InputsPhaseCommentary$outboundSchema,
+    InputsPhaseFinalAnswer$outboundSchema,
+    z.any(),
+  ]).optional(),
   role: InputsRole$outboundSchema,
   status: z.union([
     InputsStatusCompleted1$outboundSchema,

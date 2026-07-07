@@ -17,7 +17,12 @@ let value: StreamEventsResponseFailed = {
     frequencyPenalty: 7790.29,
     id: "resp-abc123",
     incompleteDetails: null,
-    instructions: null,
+    instructions: [
+      {
+        content: "What is the weather today?",
+        role: "user",
+      },
+    ],
     metadata: null,
     model: "gpt-4",
     object: "response",

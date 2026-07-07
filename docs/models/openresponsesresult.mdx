@@ -16,7 +16,12 @@ let value: OpenResponsesResult = {
   frequencyPenalty: 9553.57,
   id: "resp-abc123",
   incompleteDetails: null,
-  instructions: null,
+  instructions: [
+    {
+      content: "What is the weather today?",
+      role: "user",
+    },
+  ],
   metadata: null,
   model: "gpt-4",
   object: "response",
