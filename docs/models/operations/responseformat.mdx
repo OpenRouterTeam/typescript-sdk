@@ -2,18 +2,20 @@
 title: "ResponseFormat"
 ---
 
-The response format. Only "json" is supported.
+The response format. "json" (default) returns \{ text, usage }; "verbose_json" additionally returns task, language, duration, and segment-level timestamps (OpenAI-compatible providers only).
 
 ## Example Usage
 
 ```typescript
 import { ResponseFormat } from "@openrouter/sdk/models/operations";
 
-let value: ResponseFormat = "json";
+let value: ResponseFormat = "verbose_json";
+
+// Open enum: unrecognized values are captured as Unrecognized<string>
 ```
 
 ## Values
 
 ```typescript
-"json"
+"json" | "verbose_json" | Unrecognized<string>
 ```
