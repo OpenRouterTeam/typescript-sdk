@@ -1,0 +1,25 @@
+---
+title: "STTWord"
+---
+
+A timestamped word, returned when the provider includes word-level timestamps
+
+## Example Usage
+
+```typescript
+import { STTWord } from "@openrouter/sdk/models";
+
+let value: STTWord = {
+  end: 0.4,
+  start: 0,
+  word: "Hello",
+};
+```
+
+## Fields
+
+| Field                      | Type                       | Required                   | Description                | Example                    |
+| -------------------------- | -------------------------- | -------------------------- | -------------------------- | -------------------------- |
+| `end`                      | *number*                   | :heavy_check_mark:         | Word end time in seconds   | 0.4                        |
+| `start`                    | *number*                   | :heavy_check_mark:         | Word start time in seconds | 0                          |
+| `word`                     | *string*                   | :heavy_check_mark:         | The transcribed word       | Hello                      |
