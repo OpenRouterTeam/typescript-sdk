@@ -1,0 +1,19 @@
+---
+title: "SkillServerToolConfig"
+---
+
+Configuration for the openrouter:skill server tool
+
+## Example Usage
+
+```typescript
+import { SkillServerToolConfig } from "@openrouter/sdk/models";
+
+let value: SkillServerToolConfig = {};
+```
+
+## Fields
+
+| Field                                                                                                                             | Type                                                                                                                              | Required                                                                                                                          | Description                                                                                                                       | Example                                                                                                                           |
+| --------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------- |
+| `skills`                                                                                                                          | *string*[]                                                                                                                        | :heavy_minus_sign:                                                                                                                | Optional allowlist of skill slugs to expose to the model. When omitted, every skill published by the calling entity is available. | [<br/>"pdf-processing",<br/>"code-review"<br/>]                                                                                   |

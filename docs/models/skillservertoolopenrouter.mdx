@@ -1,0 +1,22 @@
+---
+title: "SkillServerToolOpenRouter"
+---
+
+OpenRouter built-in server tool: loads a published skill and injects its instructions into the conversation.
+
+## Example Usage
+
+```typescript
+import { SkillServerToolOpenRouter } from "@openrouter/sdk/models";
+
+let value: SkillServerToolOpenRouter = {
+  type: "openrouter:skill",
+};
+```
+
+## Fields
+
+| Field                                                              | Type                                                               | Required                                                           | Description                                                        | Example                                                            |
+| ------------------------------------------------------------------ | ------------------------------------------------------------------ | ------------------------------------------------------------------ | ------------------------------------------------------------------ | ------------------------------------------------------------------ |
+| `parameters`                                                       | [models.SkillServerToolConfig](../models/skillservertoolconfig.mdx) | :heavy_minus_sign:                                                 | Configuration for the openrouter:skill server tool                 | \{<br/>"skills": [<br/>"pdf-processing"<br/>]<br/>}                 |
+| `type`                                                             | *"openrouter:skill"*                                               | :heavy_check_mark:                                                 | N/A                                                                |                                                                    |
