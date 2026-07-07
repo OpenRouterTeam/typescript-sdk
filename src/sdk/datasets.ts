@@ -62,9 +62,21 @@ export class Datasets extends ClientSDK {
    * Token totals are `prompt_tokens + completion_tokens`, matching the public rankings
    * chart on openrouter.ai/rankings.
    *
+   * Each row includes token breakouts: `input_tokens` (prompt), `output_tokens`
+   * (completion), `cache_read_tokens` (provider-side prompt-cache hits), and
+   * `reasoning_tokens` (internal thinking tokens). These allow downstream consumers
+   * to analyse traffic composition without a second query.
+   *
    * Each row is a distinct `(date, model_permaslug)` pair. The `other` row uses the
    * reserved permaslug `other` and is always returned last within its date, so callers
    * can compute `top-50 traffic / total daily traffic` without a second request.
+   *
+   * Optional filters slice the dataset. `period` (`day`/`week`/`month`) sets the time
+   * grain. `modality` and `context_bucket` narrow the exact dataset by output/input
+   * modality (or tool-calling activity) and request context length. `category` and
+   * `language_type` instead read a sampled, upsampled dataset whose `total_tokens` are
+   * weekly-grain estimates — they cannot be combined with each other or with the exact
+   * filters, and reject `period=day` with a 400.
    *
    * Authenticate with any valid OpenRouter API key (same key used for inference).
    * Rate-limited to 30 requests/minute per key and 500 requests/day per account.
