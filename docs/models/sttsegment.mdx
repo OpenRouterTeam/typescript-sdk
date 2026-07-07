@@ -1,0 +1,33 @@
+---
+title: "STTSegment"
+---
+
+A timestamped transcript segment, returned when response_format is verbose_json
+
+## Example Usage
+
+```typescript
+import { STTSegment } from "@openrouter/sdk/models";
+
+let value: STTSegment = {
+  end: 3.2,
+  id: 0,
+  start: 0,
+  text: "Hello there.",
+};
+```
+
+## Fields
+
+| Field                                      | Type                                       | Required                                   | Description                                | Example                                    |
+| ------------------------------------------ | ------------------------------------------ | ------------------------------------------ | ------------------------------------------ | ------------------------------------------ |
+| `avgLogprob`                               | *number*                                   | :heavy_minus_sign:                         | Average log probability of the segment     |                                            |
+| `compressionRatio`                         | *number*                                   | :heavy_minus_sign:                         | Compression ratio of the segment           |                                            |
+| `end`                                      | *number*                                   | :heavy_check_mark:                         | Segment end time in seconds                | 3.2                                        |
+| `id`                                       | *number*                                   | :heavy_check_mark:                         | Segment index within the transcript        | 0                                          |
+| `noSpeechProb`                             | *number*                                   | :heavy_minus_sign:                         | Probability the segment contains no speech |                                            |
+| `seek`                                     | *number*                                   | :heavy_minus_sign:                         | Seek offset of the segment                 | 0                                          |
+| `start`                                    | *number*                                   | :heavy_check_mark:                         | Segment start time in seconds              | 0                                          |
+| `temperature`                              | *number*                                   | :heavy_minus_sign:                         | Temperature used for the segment           |                                            |
+| `text`                                     | *string*                                   | :heavy_check_mark:                         | Transcribed text of the segment            | Hello there.                               |
+| `tokens`                                   | *number*[]                                 | :heavy_minus_sign:                         | Token IDs of the segment                   |                                            |
