@@ -5,6 +5,8 @@
 
 import * as z from "zod/v4";
 import { remap as remap$ } from "../lib/primitives.js";
+import * as openEnums from "../types/enums.js";
+import { OpenEnum } from "../types/enums.js";
 import {
   ProviderOptions,
   ProviderOptions$Outbound,
@@ -27,6 +29,20 @@ export type STTRequestProvider = {
 };
 
 /**
+ * Output format. "json" (default) returns { text, usage }. "verbose_json" additionally returns task, language, duration, and segment-level timestamps; only supported by OpenAI-compatible providers.
+ */
+export const STTRequestResponseFormat = {
+  Json: "json",
+  VerboseJson: "verbose_json",
+} as const;
+/**
+ * Output format. "json" (default) returns { text, usage }. "verbose_json" additionally returns task, language, duration, and segment-level timestamps; only supported by OpenAI-compatible providers.
+ */
+export type STTRequestResponseFormat = OpenEnum<
+  typeof STTRequestResponseFormat
+>;
+
+/**
  * Speech-to-text request input. Accepts a JSON body with input_audio containing base64-encoded audio.
  */
 export type STTRequest = {
@@ -46,6 +62,10 @@ export type STTRequest = {
    * Provider-specific passthrough configuration
    */
   provider?: STTRequestProvider | undefined;
+  /**
+   * Output format. "json" (default) returns { text, usage }. "verbose_json" additionally returns task, language, duration, and segment-level timestamps; only supported by OpenAI-compatible providers.
+   */
+  responseFormat?: STTRequestResponseFormat | undefined;
   /**
    * Sampling temperature for transcription
    */
@@ -74,11 +94,18 @@ export function sttRequestProviderToJSON(
 }
 
 /** @internal */
+export const STTRequestResponseFormat$outboundSchema: z.ZodType<
+  string,
+  STTRequestResponseFormat
+> = openEnums.outboundSchema(STTRequestResponseFormat);
+
+/** @internal */
 export type STTRequest$Outbound = {
   input_audio: STTInputAudio$Outbound;
   language?: string | undefined;
   model: string;
   provider?: STTRequestProvider$Outbound | undefined;
+  response_format?: string | undefined;
   temperature?: number | undefined;
 };
 
@@ -91,10 +118,12 @@ export const STTRequest$outboundSchema: z.ZodType<
   language: z.string().optional(),
   model: z.string(),
   provider: z.lazy(() => STTRequestProvider$outboundSchema).optional(),
+  responseFormat: STTRequestResponseFormat$outboundSchema.optional(),
   temperature: z.number().optional(),
 }).transform((v) => {
   return remap$(v, {
     inputAudio: "input_audio",
+    responseFormat: "response_format",
   });
 });
 

@@ -6,7 +6,8 @@
 import * as z from "zod/v4";
 import { remap as remap$ } from "../../lib/primitives.js";
 import { blobLikeSchema } from "../../types/blobs.js";
-import { ClosedEnum } from "../../types/enums.js";
+import * as openEnums from "../../types/enums.js";
+import { OpenEnum } from "../../types/enums.js";
 
 export type CreateAudioTranscriptionsMultipartGlobals = {
   /**
@@ -36,15 +37,16 @@ export type CreateAudioTranscriptionsMultipartFile = {
 };
 
 /**
- * The response format. Only "json" is supported.
+ * The response format. "json" (default) returns { text, usage }; "verbose_json" additionally returns task, language, duration, and segment-level timestamps (OpenAI-compatible providers only).
  */
 export const ResponseFormat = {
   Json: "json",
+  VerboseJson: "verbose_json",
 } as const;
 /**
- * The response format. Only "json" is supported.
+ * The response format. "json" (default) returns { text, usage }; "verbose_json" additionally returns task, language, duration, and segment-level timestamps (OpenAI-compatible providers only).
  */
-export type ResponseFormat = ClosedEnum<typeof ResponseFormat>;
+export type ResponseFormat = OpenEnum<typeof ResponseFormat>;
 
 export type CreateAudioTranscriptionsMultipartRequestBody = {
   /**
@@ -60,7 +62,7 @@ export type CreateAudioTranscriptionsMultipartRequestBody = {
    */
   model: string;
   /**
-   * The response format. Only "json" is supported.
+   * The response format. "json" (default) returns { text, usage }; "verbose_json" additionally returns task, language, duration, and segment-level timestamps (OpenAI-compatible providers only).
    */
   responseFormat?: ResponseFormat | undefined;
   /**
@@ -124,8 +126,8 @@ export function createAudioTranscriptionsMultipartFileToJSON(
 }
 
 /** @internal */
-export const ResponseFormat$outboundSchema: z.ZodEnum<typeof ResponseFormat> = z
-  .enum(ResponseFormat);
+export const ResponseFormat$outboundSchema: z.ZodType<string, ResponseFormat> =
+  openEnums.outboundSchema(ResponseFormat);
 
 /** @internal */
 export type CreateAudioTranscriptionsMultipartRequestBody$Outbound = {
