@@ -413,6 +413,7 @@ export * from "./rankingsdailyitem.js";
 export * from "./rankingsdailymeta.js";
 export * from "./rankingsdailyresponse.js";
 export * from "./reasoningconfig.js";
+export * from "./reasoningcontext.js";
 export * from "./reasoningdeltaevent.js";
 export * from "./reasoningdetailencrypted.js";
 export * from "./reasoningdetailsummary.js";
