@@ -79,6 +79,7 @@ typescript:
     typecheck: tsc --noEmit
     typecheck:transit: exit 0
   alwaysIncludeInboundAndOutbound: false
+  apiPromiseHelpers: false
   author: OpenRouter
   baseErrorName: OpenRouterError
   clientServerStatusCodesAsErrors: true
@@ -92,6 +93,7 @@ typescript:
   enableReactQuery: false
   enumFormat: union
   envVarPrefix: OPENROUTER
+  eventStreamClassName: EventStream
   exportZodModelNamespace: false
   fixEnumNameSanitization: false
   flatAdditionalProperties: false
@@ -124,6 +126,8 @@ typescript:
   packageName: '@openrouter/sdk'
   preApplyUnionDiscriminators: true
   preserveModelFieldNames: false
+  privateIdentifierPrefix: '#'
+  requestExtras: false
   responseFormat: flat
   sseFlatResponse: true
   templateVersion: v2
