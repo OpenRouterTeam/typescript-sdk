@@ -143,10 +143,6 @@ import {
   OpenAIResponsesToolChoiceUnion$outboundSchema,
 } from "./openairesponsestoolchoiceunion.js";
 import {
-  OpenAIResponsesTruncation,
-  OpenAIResponsesTruncation$outboundSchema,
-} from "./openairesponsestruncation.js";
-import {
   OutputModalityEnum,
   OutputModalityEnum$outboundSchema,
 } from "./outputmodalityenum.js";
@@ -219,6 +215,7 @@ import {
   TraceConfig$Outbound,
   TraceConfig$outboundSchema,
 } from "./traceconfig.js";
+import { Truncation, Truncation$outboundSchema } from "./truncation.js";
 import {
   WebFetchPlugin,
   WebFetchPlugin$Outbound,
@@ -297,7 +294,7 @@ export type ResponsesRequestToolUnion =
   | (SubagentServerToolOpenRouter & { type: "openrouter:subagent" })
   | (DatetimeServerTool & { type: "openrouter:datetime" })
   | (FilesServerTool & { type: "openrouter:files" })
-  | FusionServerToolOpenRouter
+  | (FusionServerToolOpenRouter & { type: "openrouter:fusion" })
   | (ImageGenerationServerToolOpenRouter & {
     type: "openrouter:image_generation";
   })
@@ -413,7 +410,7 @@ export type ResponsesRequest = {
       | (SubagentServerToolOpenRouter & { type: "openrouter:subagent" })
       | (DatetimeServerTool & { type: "openrouter:datetime" })
       | (FilesServerTool & { type: "openrouter:files" })
-      | FusionServerToolOpenRouter
+      | (FusionServerToolOpenRouter & { type: "openrouter:fusion" })
       | (ImageGenerationServerToolOpenRouter & {
         type: "openrouter:image_generation";
       })
@@ -434,7 +431,7 @@ export type ResponsesRequest = {
    * Metadata for observability and tracing. Known keys (trace_id, trace_name, span_name, generation_name, parent_span_id) have special handling. Additional keys are passed through as custom metadata to configured broadcast destinations.
    */
   trace?: TraceConfig | undefined;
-  truncation?: OpenAIResponsesTruncation | null | undefined;
+  truncation?: Truncation | null | undefined;
   /**
    * A unique identifier representing your end-user, which helps distinguish between different users of your app. This allows your app to identify specific users in case of abuse reports, preventing your entire app from being affected by the actions of individual users. Maximum of 256 characters.
    */
@@ -534,7 +531,7 @@ export type ResponsesRequestToolUnion$Outbound =
   | (SubagentServerToolOpenRouter$Outbound & { type: "openrouter:subagent" })
   | (DatetimeServerTool$Outbound & { type: "openrouter:datetime" })
   | (FilesServerTool$Outbound & { type: "openrouter:files" })
-  | FusionServerToolOpenRouter$Outbound
+  | (FusionServerToolOpenRouter$Outbound & { type: "openrouter:fusion" })
   | (ImageGenerationServerToolOpenRouter$Outbound & {
     type: "openrouter:image_generation";
   })
@@ -578,7 +575,9 @@ export const ResponsesRequestToolUnion$outboundSchema: z.ZodType<
   FilesServerTool$outboundSchema.and(
     z.object({ type: z.literal("openrouter:files") }),
   ),
-  FusionServerToolOpenRouter$outboundSchema,
+  FusionServerToolOpenRouter$outboundSchema.and(
+    z.object({ type: z.literal("openrouter:fusion") }),
+  ),
   ImageGenerationServerToolOpenRouter$outboundSchema.and(
     z.object({ type: z.literal("openrouter:image_generation") }),
   ),
@@ -673,7 +672,7 @@ export type ResponsesRequest$Outbound = {
       })
       | (DatetimeServerTool$Outbound & { type: "openrouter:datetime" })
       | (FilesServerTool$Outbound & { type: "openrouter:files" })
-      | FusionServerToolOpenRouter$Outbound
+      | (FusionServerToolOpenRouter$Outbound & { type: "openrouter:fusion" })
       | (ImageGenerationServerToolOpenRouter$Outbound & {
         type: "openrouter:image_generation";
       })
@@ -774,7 +773,9 @@ export const ResponsesRequest$outboundSchema: z.ZodType<
       FilesServerTool$outboundSchema.and(
         z.object({ type: z.literal("openrouter:files") }),
       ),
-      FusionServerToolOpenRouter$outboundSchema,
+      FusionServerToolOpenRouter$outboundSchema.and(
+        z.object({ type: z.literal("openrouter:fusion") }),
+      ),
       ImageGenerationServerToolOpenRouter$outboundSchema.and(
         z.object({ type: z.literal("openrouter:image_generation") }),
       ),
@@ -796,7 +797,7 @@ export const ResponsesRequest$outboundSchema: z.ZodType<
   topLogprobs: z.nullable(z.int()).optional(),
   topP: z.nullable(z.number()).optional(),
   trace: TraceConfig$outboundSchema.optional(),
-  truncation: z.nullable(OpenAIResponsesTruncation$outboundSchema).optional(),
+  truncation: z.nullable(Truncation$outboundSchema).optional(),
   user: z.string().optional(),
 }).transform((v) => {
   return remap$(v, {
