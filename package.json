@@ -76,12 +76,12 @@
     "compile": "tsc",
     "test": "vitest --run --project unit",
     "test:e2e": "vitest --run --project e2e",
+    "typecheck": "tsc --noEmit",
+    "typecheck:transit": "exit 0",
     "postinstall": "node scripts/check-types.js || true",
     "prepare": "npm run build",
     "test:transit": "exit 0",
-    "test:watch": "vitest --watch --project unit",
-    "typecheck": "tsc --noEmit",
-    "typecheck:transit": "exit 0"
+    "test:watch": "vitest --watch --project unit"
   },
   "peerDependencies": {
     
