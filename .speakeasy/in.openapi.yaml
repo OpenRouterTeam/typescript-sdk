@@ -9829,6 +9829,35 @@ components:
         - type
         - error
       type: object
+    ImageGenTextChunkEvent:
+      description: Emitted when a text chunk becomes available during streaming generation of text-based formats (e.g. SVG)
+      example:
+        phase: content
+        text: <svg xmlns="http://www.w3.org/2000/svg">
+        type: image_generation.text_chunk
+      properties:
+        phase:
+          description: >-
+            The generation phase this chunk belongs to. `content` is the renderable output; `reasoning` and `draft` are
+            intermediate provider phases.
+          enum:
+            - content
+            - reasoning
+            - draft
+          type: string
+        text:
+          description: A text fragment of the image being generated (e.g. partial SVG markup)
+          type: string
+        type:
+          description: The event type
+          enum:
+            - image_generation.text_chunk
+          type: string
+      required:
+        - type
+        - text
+        - phase
+      type: object
     ImageModelArchitecture:
       example:
         input_modalities:
@@ -10032,6 +10061,7 @@ components:
         data:
           anyOf:
             - $ref: '#/components/schemas/ImageGenPartialImageEvent'
+            - $ref: '#/components/schemas/ImageGenTextChunkEvent'
             - $ref: '#/components/schemas/ImageGenCompletedEvent'
             - $ref: '#/components/schemas/ImageGenStreamErrorEvent'
       required:
