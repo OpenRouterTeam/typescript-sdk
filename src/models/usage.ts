@@ -10,6 +10,7 @@ import { Result as SafeParseResult } from "../types/fp.js";
 import { SDKValidationError } from "./errors/sdkvalidationerror.js";
 
 export type InputTokensDetails = {
+  cacheWriteTokens?: number | null | undefined;
   cachedTokens: number;
 };
 
@@ -48,9 +49,11 @@ export const InputTokensDetails$inboundSchema: z.ZodType<
   InputTokensDetails,
   unknown
 > = z.object({
+  cache_write_tokens: z.nullable(z.int()).optional(),
   cached_tokens: z.int(),
 }).transform((v) => {
   return remap$(v, {
+    "cache_write_tokens": "cacheWriteTokens",
     "cached_tokens": "cachedTokens",
   });
 });
