@@ -21,14 +21,9 @@ import {
   ImageGenStreamErrorEvent,
   ImageGenStreamErrorEvent$inboundSchema,
 } from "./imagegenstreamerrorevent.js";
-import {
-  ImageGenTextChunkEvent,
-  ImageGenTextChunkEvent$inboundSchema,
-} from "./imagegentextchunkevent.js";
 
 export type ImageStreamingResponseData =
   | ImageGenPartialImageEvent
-  | ImageGenTextChunkEvent
   | ImageGenCompletedEvent
   | ImageGenStreamErrorEvent
   | discriminatedUnionTypes.Unknown<"type">;
@@ -36,7 +31,6 @@ export type ImageStreamingResponseData =
 export type ImageStreamingResponse = {
   data:
     | ImageGenPartialImageEvent
-    | ImageGenTextChunkEvent
     | ImageGenCompletedEvent
     | ImageGenStreamErrorEvent
     | discriminatedUnionTypes.Unknown<"type">;
@@ -48,7 +42,6 @@ export const ImageStreamingResponseData$inboundSchema: z.ZodType<
   unknown
 > = discriminatedUnion("type", {
   ["image_generation.partial_image"]: ImageGenPartialImageEvent$inboundSchema,
-  ["image_generation.text_chunk"]: ImageGenTextChunkEvent$inboundSchema,
   ["image_generation.completed"]: ImageGenCompletedEvent$inboundSchema,
   error: ImageGenStreamErrorEvent$inboundSchema,
 });
@@ -81,7 +74,6 @@ export const ImageStreamingResponse$inboundSchema: z.ZodType<
     }
   }).pipe(discriminatedUnion("type", {
     ["image_generation.partial_image"]: ImageGenPartialImageEvent$inboundSchema,
-    ["image_generation.text_chunk"]: ImageGenTextChunkEvent$inboundSchema,
     ["image_generation.completed"]: ImageGenCompletedEvent$inboundSchema,
     error: ImageGenStreamErrorEvent$inboundSchema,
   })),
