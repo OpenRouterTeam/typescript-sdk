@@ -26,16 +26,14 @@ export type SpeechRequestProvider = {
 /**
  * Audio output format
  */
-export const SpeechRequestResponseFormat = {
+export const ResponseFormatEnum = {
   Mp3: "mp3",
   Pcm: "pcm",
 } as const;
 /**
  * Audio output format
  */
-export type SpeechRequestResponseFormat = OpenEnum<
-  typeof SpeechRequestResponseFormat
->;
+export type ResponseFormatEnum = OpenEnum<typeof ResponseFormatEnum>;
 
 /**
  * Text-to-speech request input
@@ -56,7 +54,7 @@ export type SpeechRequest = {
   /**
    * Audio output format
    */
-  responseFormat?: SpeechRequestResponseFormat | undefined;
+  responseFormat?: ResponseFormatEnum | undefined;
   /**
    * Playback speed multiplier. Only used by models that support it (e.g. OpenAI TTS). Ignored by other providers.
    */
@@ -89,10 +87,10 @@ export function speechRequestProviderToJSON(
 }
 
 /** @internal */
-export const SpeechRequestResponseFormat$outboundSchema: z.ZodType<
+export const ResponseFormatEnum$outboundSchema: z.ZodType<
   string,
-  SpeechRequestResponseFormat
-> = openEnums.outboundSchema(SpeechRequestResponseFormat);
+  ResponseFormatEnum
+> = openEnums.outboundSchema(ResponseFormatEnum);
 
 /** @internal */
 export type SpeechRequest$Outbound = {
@@ -112,7 +110,7 @@ export const SpeechRequest$outboundSchema: z.ZodType<
   input: z.string(),
   model: z.string(),
   provider: z.lazy(() => SpeechRequestProvider$outboundSchema).optional(),
-  responseFormat: SpeechRequestResponseFormat$outboundSchema.default("pcm"),
+  responseFormat: ResponseFormatEnum$outboundSchema.default("pcm"),
   speed: z.number().optional(),
   voice: z.string(),
 }).transform((v) => {
