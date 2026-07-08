@@ -6,6 +6,10 @@
 import * as z from "zod/v4";
 import { remap as remap$ } from "../lib/primitives.js";
 import {
+  ReasoningContext,
+  ReasoningContext$outboundSchema,
+} from "./reasoningcontext.js";
+import {
   ReasoningEffort,
   ReasoningEffort$outboundSchema,
 } from "./reasoningeffort.js";
@@ -18,6 +22,10 @@ import {
  * Configuration for reasoning mode in the response
  */
 export type ReasoningConfig = {
+  /**
+   * Controls which reasoning is available to the model. `all_turns` includes reasoning from earlier turns passed in input; `current_turn` limits to the current turn only.
+   */
+  context?: ReasoningContext | null | undefined;
   effort?: ReasoningEffort | null | undefined;
   summary?: ReasoningSummaryVerbosity | null | undefined;
   enabled?: boolean | null | undefined;
@@ -26,6 +34,7 @@ export type ReasoningConfig = {
 
 /** @internal */
 export type ReasoningConfig$Outbound = {
+  context?: string | null | undefined;
   effort?: string | null | undefined;
   summary?: string | null | undefined;
   enabled?: boolean | null | undefined;
@@ -37,6 +46,7 @@ export const ReasoningConfig$outboundSchema: z.ZodType<
   ReasoningConfig$Outbound,
   ReasoningConfig
 > = z.object({
+  context: z.nullable(ReasoningContext$outboundSchema).optional(),
   effort: z.nullable(ReasoningEffort$outboundSchema).optional(),
   summary: z.nullable(ReasoningSummaryVerbosity$outboundSchema).optional(),
   enabled: z.nullable(z.boolean()).optional(),
