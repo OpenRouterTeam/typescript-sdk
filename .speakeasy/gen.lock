@@ -1,19 +1,19 @@
 lockVersion: ""
 id: ""
 management:
-  docChecksum: 1a57ba8663bff56b84e58cd70c6afd7c
+  docChecksum: 20cefb4f74de3dbc4da43b8ea1154bfb
   docVersion: 1.0.0
   speakeasyVersion: 1.763.2
   generationVersion: 2.884.4
-  releaseVersion: 0.13.28
-  configChecksum: d7b58d2e40c5b5709162e6cf6e5dd65e
+  releaseVersion: 0.13.29
+  configChecksum: dd459f600a9ebcb6910a849e590b09f0
   repoURL: https://github.com/OpenRouterTeam/typescript-sdk.git
   installationURL: https://github.com/OpenRouterTeam/typescript-sdk
   published: true
 persistentEdits:
-  generation_id: 65f6ab08-cc04-4c8e-9092-2b1c060f99c1
-  pristine_commit_hash: 565f74d31f4b796d1d13973952ccadd9aa156f8e
-  pristine_tree_hash: 95dc95a551697c2a0d583e2734010a48650d7e5d
+  generation_id: d06a8169-5e97-44ce-a8ec-7568d3f332ea
+  pristine_commit_hash: a31b7c4e33000aee4a76cbf61eafe7e03c6fc264
+  pristine_tree_hash: 13522672f0615caea1f0575178f67c37629c952a
 features:
   typescript:
     acceptHeaders: 2.81.2
@@ -1759,8 +1759,8 @@ trackedFiles:
     deleted: true
   docs/models/chatfunctiontool.mdx:
     id: e28b59b74948
-    last_write_checksum: sha1:2a3c8dc2c81c7e32fbb80d941f38fc87aa1cd1ff
-    pristine_git_object: fb6f97d158d66186edfe45ce84e00fce764959ff
+    last_write_checksum: sha1:6cb20085bc78661d82a94fb4bf0a4e4e5d4050b8
+    pristine_git_object: 493488ea9e5dfddbd8e2a5f641d3906d0b6dce3c
   docs/models/chatfunctiontoolfunction.md:
     id: 65b6def5d64c
     last_write_checksum: sha1:81df3aaa4027a07024ea00917b0efd6e03bfe23a
@@ -4026,8 +4026,12 @@ trackedFiles:
     deleted: true
   docs/models/fusionservertoolopenrouter.mdx:
     id: c11761c11056
-    last_write_checksum: sha1:2962902d3cd265dbe512429aeae198c75464b102
-    pristine_git_object: d03fbf496751ea42ceeb6bcd32fc858ba9b70a3d
+    last_write_checksum: sha1:ebf450ede7b88d6206562311304389d32a94f220
+    pristine_git_object: 91d1545ad992008a4a0469e20ee4796149d2fd1d
+  docs/models/fusionservertoolopenroutertype.mdx:
+    id: a708fee8d1ae
+    last_write_checksum: sha1:c83f5724e221956284152d25dff8d9d42816abf7
+    pristine_git_object: a980b2ac432fd6c85bf3b2d7bd15a0a825bc8c46
   docs/models/fusionsource.md:
     id: bb7d98b85302
     last_write_checksum: sha1:288a75eed2f247aa31279077a9b2c423151f03f7
@@ -12128,12 +12132,12 @@ trackedFiles:
     pristine_git_object: 410efafd6a7f50d91ccb87131fedbe0c3d47e15a
   jsr.json:
     id: 7f6ab7767282
-    last_write_checksum: sha1:097d6ae93ed4a6195ff5133f160e0be922af99fe
-    pristine_git_object: 8f7254e1fd295e730e9dc654e64d1bd739c36668
+    last_write_checksum: sha1:df14da06c80788f9808b32031508c0296b46414d
+    pristine_git_object: 29ce32a2ae24c97c6d3cb2cab6ad5e75fd763331
   package.json:
     id: 7030d0b2f71b
-    last_write_checksum: sha1:89c242673393c12fe7eaccd2228d21ffc3e577c9
-    pristine_git_object: c7058b79798893f7e856038c6c814d6cae243496
+    last_write_checksum: sha1:9bcdede4e82e0d29e5baaf1cbf6b7e0dc9f41d86
+    pristine_git_object: 34864d948b6f002c8f94af490f57a4a222a212f6
   src/core.ts:
     id: f431fdbcd144
     last_write_checksum: sha1:5aa66b0b6a5964f3eea7f3098c2eb3c0ee9c0131
@@ -12508,8 +12512,8 @@ trackedFiles:
     pristine_git_object: a187e58707bdb726ca2aff74941efe7493422d4e
   src/lib/config.ts:
     id: 320761608fb3
-    last_write_checksum: sha1:3b6a61c4011ea5dfe871e7d5ccb745a18471f3ce
-    pristine_git_object: c550996e218ff881e9fef33367ae17815283b46b
+    last_write_checksum: sha1:09a0570c082c0fba4fdf285de9ef934f50eaee5c
+    pristine_git_object: 1c480b16af24e15af269daf76c598df4cd8ded06
   src/lib/dlv.ts:
     id: b1988214835a
     last_write_checksum: sha1:eaac763b22717206a6199104e0403ed17a4e2711
@@ -12980,8 +12984,8 @@ trackedFiles:
     pristine_git_object: d082d241abf206468fe635e7c47dca140e3bfd90
   src/models/chatfunctiontool.ts:
     id: 400104319b29
-    last_write_checksum: sha1:957c436c4f563e763e5d001d12e0352cea479856
-    pristine_git_object: 7d36ed69505cef9467c072e06aff9cec9c3c68cb
+    last_write_checksum: sha1:b11ec65ff58826a92f6c3189c77f7e0456c2eaab
+    pristine_git_object: 340f8b5fd7c72ff2da4700b0cd068a5d1900924d
   src/models/chatjsonschemaconfig.ts:
     id: 1ad0e5d930fb
     last_write_checksum: sha1:9af3223f14c0c9d62046de826a737544b86d222e
@@ -13508,8 +13512,8 @@ trackedFiles:
     pristine_git_object: f57120b07a4a34ef4e29347c5b9ceef74c344f3f
   src/models/fusionservertoolopenrouter.ts:
     id: 01d346f44f6d
-    last_write_checksum: sha1:4c457a429fb12cb9e6d41fc188ff590f19ccdb35
-    pristine_git_object: 38c9b62ddc7d74ad74b243a8d55391e4ee7da7cb
+    last_write_checksum: sha1:d2b7f3537702d2045b9c482be8d20445fccec521
+    pristine_git_object: e5f0bd84e515abddb61d716ceb208e9e5bf11f8c
   src/models/fusionsource.ts:
     id: 36747573906e
     last_write_checksum: sha1:c42536e207e17dcf5e6aa2fece823ccb6d0ac672
@@ -14740,8 +14744,8 @@ trackedFiles:
     pristine_git_object: 584f66cd23f2e112b14f8d0b23aea1cd4532c412
   src/models/responsesrequest.ts:
     id: 39799702f982
-    last_write_checksum: sha1:585c43bff7aad1022e82b8a85fbf9150b152265d
-    pristine_git_object: 642ff9bae5061ed9f1af68a0c21d830a4f39b502
+    last_write_checksum: sha1:7ca19ab773af4d724d6005d458bca6b1feb18ce5
+    pristine_git_object: 63e71f2ec198e47d97fdf9350373f8d440781f3f
   src/models/responsesstreamingresponse.ts:
     id: 69284d63df45
     last_write_checksum: sha1:14c843dba32fef31c8684c4f363bf32b17d9dc97
@@ -16833,4 +16837,4 @@ examples:
         "500":
           application/json: {"error": {"code": 500, "message": "Internal Server Error"}}
 examplesVersion: 1.0.2
-releaseNotes: "## Typescript SDK Changes:\n* `openrouter.stt.createTranscription()`: \n  *  `request.sttRequest` **Changed**\n  *  `response` **Changed**\n* `openrouter.stt.createTranscriptionMultipart()`: \n  *  `request.requestBody` **Changed**\n  *  `response` **Changed**\n* `openrouter.datasets.getRankingsDaily()`:  `request` **Changed**\n"
+releaseNotes: "## Typescript SDK Changes:\n* `openrouter.beta.responses.send()`: \n  *  `request.responsesRequest.tools[].union(openrouter:fusion).type` **Changed** (Breaking ⚠️)\n* `openrouter.presets.createPresetsResponses()`: \n  *  `request.responsesRequest.tools[].union(openrouter:fusion).type` **Changed** (Breaking ⚠️)\n* `openrouter.chat.send()`: \n  *  `request.chatRequest.tools[].union(FusionServerTool_OpenRouter)` **Added**\n* `openrouter.presets.createPresetsChatCompletions()`: \n  *  `request.chatRequest.tools[].union(FusionServerTool_OpenRouter)` **Added**\n"
