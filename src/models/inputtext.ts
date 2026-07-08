@@ -4,25 +4,43 @@
  */
 
 import * as z from "zod/v4";
+import { remap as remap$ } from "../lib/primitives.js";
 import { safeParse } from "../lib/schemas.js";
 import { Result as SafeParseResult } from "../types/fp.js";
 import { SDKValidationError } from "./errors/sdkvalidationerror.js";
+import {
+  PromptCacheBreakpoint,
+  PromptCacheBreakpoint$inboundSchema,
+  PromptCacheBreakpoint$Outbound,
+  PromptCacheBreakpoint$outboundSchema,
+} from "./promptcachebreakpoint.js";
 
 /**
  * Text input content item
  */
 export type InputText = {
+  /**
+   * Marks an explicit prompt-cache boundary on this content block. Everything through the block carrying this marker is part of the candidate cached prefix.
+   */
+  promptCacheBreakpoint?: PromptCacheBreakpoint | null | undefined;
   text: string;
   type: "input_text";
 };
 
 /** @internal */
 export const InputText$inboundSchema: z.ZodType<InputText, unknown> = z.object({
+  prompt_cache_breakpoint: z.nullable(PromptCacheBreakpoint$inboundSchema)
+    .optional(),
   text: z.string(),
   type: z.literal("input_text"),
+}).transform((v) => {
+  return remap$(v, {
+    "prompt_cache_breakpoint": "promptCacheBreakpoint",
+  });
 });
 /** @internal */
 export type InputText$Outbound = {
+  prompt_cache_breakpoint?: PromptCacheBreakpoint$Outbound | null | undefined;
   text: string;
   type: "input_text";
 };
@@ -32,8 +50,14 @@ export const InputText$outboundSchema: z.ZodType<
   InputText$Outbound,
   InputText
 > = z.object({
+  promptCacheBreakpoint: z.nullable(PromptCacheBreakpoint$outboundSchema)
+    .optional(),
   text: z.string(),
   type: z.literal("input_text"),
+}).transform((v) => {
+  return remap$(v, {
+    promptCacheBreakpoint: "prompt_cache_breakpoint",
+  });
 });
 
 export function inputTextToJSON(inputText: InputText): string {
