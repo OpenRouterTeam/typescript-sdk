@@ -4537,6 +4537,7 @@ components:
         - $ref: '#/components/schemas/BashServerTool'
         - $ref: '#/components/schemas/DatetimeServerTool'
         - $ref: '#/components/schemas/FilesServerTool'
+        - $ref: '#/components/schemas/FusionServerTool_OpenRouter'
         - $ref: '#/components/schemas/ImageGenerationServerTool_OpenRouter'
         - $ref: '#/components/schemas/ChatSearchModelsServerTool'
         - $ref: '#/components/schemas/SubagentServerTool_OpenRouter'
