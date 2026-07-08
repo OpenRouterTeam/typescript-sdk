@@ -5,6 +5,10 @@
 
 import * as z from "zod/v4";
 import { remap as remap$ } from "../../lib/primitives.js";
+import { safeParse } from "../../lib/schemas.js";
+import { Result as SafeParseResult } from "../../types/fp.js";
+import { SDKValidationError } from "../errors/sdkvalidationerror.js";
+import * as models from "../index.js";
 
 export type ListModelsUserGlobals = {
   /**
@@ -52,6 +56,18 @@ export type ListModelsUserRequest = {
    * @remarks
    */
   appCategories?: string | undefined;
+  /**
+   * Number of records to skip for pagination
+   */
+  offset?: number | null | undefined;
+  /**
+   * Maximum number of records to return (max 1000)
+   */
+  limit?: number | undefined;
+};
+
+export type ListModelsUserResponse = {
+  result: models.ModelsListResponse;
 };
 
 /** @internal */
@@ -80,6 +96,8 @@ export type ListModelsUserRequest$Outbound = {
   "HTTP-Referer"?: string | undefined;
   appTitle?: string | undefined;
   appCategories?: string | undefined;
+  offset?: number | null | undefined;
+  limit?: number | undefined;
 };
 
 /** @internal */
@@ -90,6 +108,8 @@ export const ListModelsUserRequest$outboundSchema: z.ZodType<
   httpReferer: z.string().optional(),
   appTitle: z.string().optional(),
   appCategories: z.string().optional(),
+  offset: z.nullable(z.int()).optional(),
+  limit: z.int().optional(),
 }).transform((v) => {
   return remap$(v, {
     httpReferer: "HTTP-Referer",
@@ -101,5 +121,27 @@ export function listModelsUserRequestToJSON(
 ): string {
   return JSON.stringify(
     ListModelsUserRequest$outboundSchema.parse(listModelsUserRequest),
+  );
+}
+
+/** @internal */
+export const ListModelsUserResponse$inboundSchema: z.ZodType<
+  ListModelsUserResponse,
+  unknown
+> = z.object({
+  Result: models.ModelsListResponse$inboundSchema,
+}).transform((v) => {
+  return remap$(v, {
+    "Result": "result",
+  });
+});
+
+export function listModelsUserResponseFromJSON(
+  jsonString: string,
+): SafeParseResult<ListModelsUserResponse, SDKValidationError> {
+  return safeParse(
+    jsonString,
+    (x) => ListModelsUserResponse$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'ListModelsUserResponse' from JSON`,
   );
 }
