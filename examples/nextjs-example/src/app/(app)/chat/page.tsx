@@ -109,6 +109,12 @@ export default function Page() {
       },
     });
 
+    // The SDK returns `ChatResult | EventStream<ChatStreamChunk>`; with
+    // `stream: true` the response is always the async-iterable event stream.
+    if (!(Symbol.asyncIterator in result)) {
+      throw new Error('Expected a streaming response.');
+    }
+
     // Stream chunks into the latest message
     const chunks: string[] = [];
     for await (const chunk of result) {
