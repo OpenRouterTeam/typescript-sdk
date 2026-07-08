@@ -166,6 +166,11 @@ import {
   PreviewWebSearchServerTool$outboundSchema,
 } from "./previewwebsearchservertool.js";
 import {
+  PromptCacheOptions,
+  PromptCacheOptions$Outbound,
+  PromptCacheOptions$outboundSchema,
+} from "./promptcacheoptions.js";
+import {
   ProviderPreferences,
   ProviderPreferences$Outbound,
   ProviderPreferences$outboundSchema,
@@ -367,6 +372,10 @@ export type ResponsesRequest = {
   previousResponseId?: string | null | undefined;
   prompt?: StoredPromptTemplate | null | undefined;
   promptCacheKey?: string | null | undefined;
+  /**
+   * Request-level prompt-cache controls. `mode: "explicit"` disables OpenAI-managed breakpoints so only blocks marked with `prompt_cache_breakpoint` are cached.
+   */
+  promptCacheOptions?: PromptCacheOptions | null | undefined;
   /**
    * When multiple model providers are available, optionally indicate your routing preference.
    */
@@ -638,6 +647,7 @@ export type ResponsesRequest$Outbound = {
   previous_response_id?: string | null | undefined;
   prompt?: StoredPromptTemplate$Outbound | null | undefined;
   prompt_cache_key?: string | null | undefined;
+  prompt_cache_options?: PromptCacheOptions$Outbound | null | undefined;
   provider?: ProviderPreferences$Outbound | null | undefined;
   reasoning?: ReasoningConfig$Outbound | null | undefined;
   safety_identifier?: string | null | undefined;
@@ -732,6 +742,7 @@ export const ResponsesRequest$outboundSchema: z.ZodType<
   previousResponseId: z.nullable(z.string()).optional(),
   prompt: z.nullable(StoredPromptTemplate$outboundSchema).optional(),
   promptCacheKey: z.nullable(z.string()).optional(),
+  promptCacheOptions: z.nullable(PromptCacheOptions$outboundSchema).optional(),
   provider: z.nullable(ProviderPreferences$outboundSchema).optional(),
   reasoning: z.nullable(ReasoningConfig$outboundSchema).optional(),
   safetyIdentifier: z.nullable(z.string()).optional(),
@@ -809,6 +820,7 @@ export const ResponsesRequest$outboundSchema: z.ZodType<
     presencePenalty: "presence_penalty",
     previousResponseId: "previous_response_id",
     promptCacheKey: "prompt_cache_key",
+    promptCacheOptions: "prompt_cache_options",
     safetyIdentifier: "safety_identifier",
     serviceTier: "service_tier",
     sessionId: "session_id",
