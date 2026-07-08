@@ -8,6 +8,10 @@ import { safeParse } from "../lib/schemas.js";
 import { Result as SafeParseResult } from "../types/fp.js";
 import { SDKValidationError } from "./errors/sdkvalidationerror.js";
 import {
+  ReasoningContext,
+  ReasoningContext$inboundSchema,
+} from "./reasoningcontext.js";
+import {
   ReasoningEffort,
   ReasoningEffort$inboundSchema,
 } from "./reasoningeffort.js";
@@ -17,6 +21,10 @@ import {
 } from "./reasoningsummaryverbosity.js";
 
 export type BaseReasoningConfig = {
+  /**
+   * Controls which reasoning is available to the model. `auto` uses the model default (same as omitting); `all_turns` includes reasoning from earlier turns passed in input; `current_turn` limits to the current turn only.
+   */
+  context?: ReasoningContext | null | undefined;
   effort?: ReasoningEffort | null | undefined;
   summary?: ReasoningSummaryVerbosity | null | undefined;
 };
@@ -26,6 +34,7 @@ export const BaseReasoningConfig$inboundSchema: z.ZodType<
   BaseReasoningConfig,
   unknown
 > = z.object({
+  context: z.nullable(ReasoningContext$inboundSchema).optional(),
   effort: z.nullable(ReasoningEffort$inboundSchema).optional(),
   summary: z.nullable(ReasoningSummaryVerbosity$inboundSchema).optional(),
 });
