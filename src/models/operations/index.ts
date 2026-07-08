@@ -11,7 +11,6 @@ export * from "./bulkunassignkeysfromguardrail.js";
 export * from "./bulkunassignmembersfromguardrail.js";
 export * from "./createaudiospeech.js";
 export * from "./createaudiotranscriptions.js";
-export * from "./createaudiotranscriptionsmultipart.js";
 export * from "./createauthkeyscode.js";
 export * from "./createbyokkey.js";
 export * from "./createembeddings.js";
