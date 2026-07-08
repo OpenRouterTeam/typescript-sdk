@@ -10,6 +10,10 @@ import {
   ReasoningEffort$outboundSchema,
 } from "./reasoningeffort.js";
 import {
+  ReasoningMode,
+  ReasoningMode$outboundSchema,
+} from "./reasoningmode.js";
+import {
   ReasoningSummaryVerbosity,
   ReasoningSummaryVerbosity$outboundSchema,
 } from "./reasoningsummaryverbosity.js";
@@ -19,6 +23,10 @@ import {
  */
 export type ReasoningConfig = {
   effort?: ReasoningEffort | null | undefined;
+  /**
+   * Selects the reasoning mode. `standard` is the default; `pro` engages deeper reasoning on models that support it, billed at standard token rates.
+   */
+  mode?: ReasoningMode | null | undefined;
   summary?: ReasoningSummaryVerbosity | null | undefined;
   enabled?: boolean | null | undefined;
   maxTokens?: number | null | undefined;
@@ -27,6 +35,7 @@ export type ReasoningConfig = {
 /** @internal */
 export type ReasoningConfig$Outbound = {
   effort?: string | null | undefined;
+  mode?: string | null | undefined;
   summary?: string | null | undefined;
   enabled?: boolean | null | undefined;
   max_tokens?: number | null | undefined;
@@ -38,6 +47,7 @@ export const ReasoningConfig$outboundSchema: z.ZodType<
   ReasoningConfig
 > = z.object({
   effort: z.nullable(ReasoningEffort$outboundSchema).optional(),
+  mode: z.nullable(ReasoningMode$outboundSchema).optional(),
   summary: z.nullable(ReasoningSummaryVerbosity$outboundSchema).optional(),
   enabled: z.nullable(z.boolean()).optional(),
   maxTokens: z.nullable(z.int()).optional(),
