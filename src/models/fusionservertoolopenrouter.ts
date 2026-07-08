@@ -4,19 +4,11 @@
  */
 
 import * as z from "zod/v4";
-import { ClosedEnum } from "../types/enums.js";
 import {
   FusionServerToolConfig,
   FusionServerToolConfig$Outbound,
   FusionServerToolConfig$outboundSchema,
 } from "./fusionservertoolconfig.js";
-
-export const FusionServerToolOpenRouterType = {
-  OpenrouterFusion: "openrouter:fusion",
-} as const;
-export type FusionServerToolOpenRouterType = ClosedEnum<
-  typeof FusionServerToolOpenRouterType
->;
 
 /**
  * OpenRouter built-in server tool: fans out the user prompt to a panel of analysis models, then asks a judge model to summarize their collective output as structured JSON the outer model can synthesize from.
@@ -26,18 +18,13 @@ export type FusionServerToolOpenRouter = {
    * Configuration for the openrouter:fusion server tool.
    */
   parameters?: FusionServerToolConfig | undefined;
-  type: FusionServerToolOpenRouterType;
+  type: "openrouter:fusion";
 };
-
-/** @internal */
-export const FusionServerToolOpenRouterType$outboundSchema: z.ZodEnum<
-  typeof FusionServerToolOpenRouterType
-> = z.enum(FusionServerToolOpenRouterType);
 
 /** @internal */
 export type FusionServerToolOpenRouter$Outbound = {
   parameters?: FusionServerToolConfig$Outbound | undefined;
-  type: string;
+  type: "openrouter:fusion";
 };
 
 /** @internal */
@@ -46,7 +33,7 @@ export const FusionServerToolOpenRouter$outboundSchema: z.ZodType<
   FusionServerToolOpenRouter
 > = z.object({
   parameters: FusionServerToolConfig$outboundSchema.optional(),
-  type: FusionServerToolOpenRouterType$outboundSchema,
+  type: z.literal("openrouter:fusion"),
 });
 
 export function fusionServerToolOpenRouterToJSON(
