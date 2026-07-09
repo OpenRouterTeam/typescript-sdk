@@ -6,6 +6,7 @@
 export * from "./aabenchmarkentry.js";
 export * from "./activityitem.js";
 export * from "./activityresponse.js";
+export * from "./additionaltoolsitem.js";
 export * from "./advisornestedtool.js";
 export * from "./advisorreasoning.js";
 export * from "./advisorservertoolconfig.js";
@@ -486,6 +487,8 @@ export * from "./subagentnestedtool.js";
 export * from "./subagentreasoning.js";
 export * from "./subagentservertoolconfig.js";
 export * from "./subagentservertoolopenrouter.js";
+export * from "./submitgenerationfeedbackrequest.js";
+export * from "./submitgenerationfeedbackresponse.js";
 export * from "./taskclassificationitem.js";
 export * from "./taskclassificationmacrocategory.js";
 export * from "./taskclassificationmodel.js";
