@@ -92,7 +92,6 @@ import {
   TextExtendedConfig$inboundSchema,
 } from "./textextendedconfig.js";
 import { Truncation, Truncation$inboundSchema } from "./truncation.js";
-import { Usage, Usage$inboundSchema } from "./usage.js";
 import {
   WebSearchServerTool,
   WebSearchServerTool$inboundSchema,
@@ -111,7 +110,7 @@ export type OpenResponsesResultObject = ClosedEnum<
 export type OpenResponsesResultToolFunction = {
   description?: string | null | undefined;
   name: string;
-  parameters: { [k: string]: any | null } | null;
+  parameters: { [k: string]: any } | null;
   strict?: boolean | null | undefined;
   type: "function";
 };
@@ -132,6 +131,38 @@ export type OpenResponsesResultToolUnion =
   | ApplyPatchServerTool
   | CustomTool
   | discriminatedUnionTypes.Unknown<"type">;
+
+export type InputTokensDetails = {
+  cacheWriteTokens?: number | null | undefined;
+  cachedTokens: number;
+};
+
+export type OutputTokensDetails = {
+  reasoningTokens: number;
+};
+
+export type UsageCostDetails = {
+  upstreamInferenceCost?: number | null | undefined;
+  upstreamInferenceInputCost: number;
+  upstreamInferenceOutputCost: number;
+};
+
+export type Usage = {
+  inputTokens: number;
+  inputTokensDetails: InputTokensDetails;
+  outputTokens: number;
+  outputTokensDetails: OutputTokensDetails;
+  totalTokens: number;
+  /**
+   * Cost of the completion
+   */
+  cost?: number | null | undefined;
+  costDetails?: UsageCostDetails | undefined;
+  /**
+   * Whether a request was made using a Bring Your Own Key configuration
+   */
+  isByok?: boolean | undefined;
+};
 
 /**
  * Complete non-streaming response from the Responses API
@@ -218,7 +249,7 @@ export const OpenResponsesResultToolFunction$inboundSchema: z.ZodType<
 > = z.object({
   description: z.nullable(z.string()).optional(),
   name: z.string(),
-  parameters: z.nullable(z.record(z.string(), z.nullable(z.any()))),
+  parameters: z.nullable(z.record(z.string(), z.any())),
   strict: z.nullable(z.boolean()).optional(),
   type: z.literal("function"),
 });
@@ -262,6 +293,110 @@ export function openResponsesResultToolUnionFromJSON(
     jsonString,
     (x) => OpenResponsesResultToolUnion$inboundSchema.parse(JSON.parse(x)),
     `Failed to parse 'OpenResponsesResultToolUnion' from JSON`,
+  );
+}
+
+/** @internal */
+export const InputTokensDetails$inboundSchema: z.ZodType<
+  InputTokensDetails,
+  unknown
+> = z.object({
+  cache_write_tokens: z.nullable(z.int()).optional(),
+  cached_tokens: z.int(),
+}).transform((v) => {
+  return remap$(v, {
+    "cache_write_tokens": "cacheWriteTokens",
+    "cached_tokens": "cachedTokens",
+  });
+});
+
+export function inputTokensDetailsFromJSON(
+  jsonString: string,
+): SafeParseResult<InputTokensDetails, SDKValidationError> {
+  return safeParse(
+    jsonString,
+    (x) => InputTokensDetails$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'InputTokensDetails' from JSON`,
+  );
+}
+
+/** @internal */
+export const OutputTokensDetails$inboundSchema: z.ZodType<
+  OutputTokensDetails,
+  unknown
+> = z.object({
+  reasoning_tokens: z.int(),
+}).transform((v) => {
+  return remap$(v, {
+    "reasoning_tokens": "reasoningTokens",
+  });
+});
+
+export function outputTokensDetailsFromJSON(
+  jsonString: string,
+): SafeParseResult<OutputTokensDetails, SDKValidationError> {
+  return safeParse(
+    jsonString,
+    (x) => OutputTokensDetails$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'OutputTokensDetails' from JSON`,
+  );
+}
+
+/** @internal */
+export const UsageCostDetails$inboundSchema: z.ZodType<
+  UsageCostDetails,
+  unknown
+> = z.object({
+  upstream_inference_cost: z.nullable(z.number()).optional(),
+  upstream_inference_input_cost: z.number(),
+  upstream_inference_output_cost: z.number(),
+}).transform((v) => {
+  return remap$(v, {
+    "upstream_inference_cost": "upstreamInferenceCost",
+    "upstream_inference_input_cost": "upstreamInferenceInputCost",
+    "upstream_inference_output_cost": "upstreamInferenceOutputCost",
+  });
+});
+
+export function usageCostDetailsFromJSON(
+  jsonString: string,
+): SafeParseResult<UsageCostDetails, SDKValidationError> {
+  return safeParse(
+    jsonString,
+    (x) => UsageCostDetails$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'UsageCostDetails' from JSON`,
+  );
+}
+
+/** @internal */
+export const Usage$inboundSchema: z.ZodType<Usage, unknown> = z.object({
+  input_tokens: z.int(),
+  input_tokens_details: z.lazy(() => InputTokensDetails$inboundSchema),
+  output_tokens: z.int(),
+  output_tokens_details: z.lazy(() => OutputTokensDetails$inboundSchema),
+  total_tokens: z.int(),
+  cost: z.nullable(z.number()).optional(),
+  cost_details: z.lazy(() => UsageCostDetails$inboundSchema).optional(),
+  is_byok: z.boolean().optional(),
+}).transform((v) => {
+  return remap$(v, {
+    "input_tokens": "inputTokens",
+    "input_tokens_details": "inputTokensDetails",
+    "output_tokens": "outputTokens",
+    "output_tokens_details": "outputTokensDetails",
+    "total_tokens": "totalTokens",
+    "cost_details": "costDetails",
+    "is_byok": "isByok",
+  });
+});
+
+export function usageFromJSON(
+  jsonString: string,
+): SafeParseResult<Usage, SDKValidationError> {
+  return safeParse(
+    jsonString,
+    (x) => Usage$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'Usage' from JSON`,
   );
 }
 
@@ -318,7 +453,7 @@ export const OpenResponsesResult$inboundSchema: z.ZodType<
   top_logprobs: z.nullable(z.int()).optional(),
   top_p: z.nullable(z.number()),
   truncation: z.nullable(Truncation$inboundSchema).optional(),
-  usage: z.nullable(Usage$inboundSchema).optional(),
+  usage: z.nullable(z.lazy(() => Usage$inboundSchema)).optional(),
   user: z.nullable(z.string()).optional(),
   error_type: ApiErrorType$inboundSchema.optional(),
   openrouter_metadata: OpenRouterMetadata$inboundSchema.optional(),

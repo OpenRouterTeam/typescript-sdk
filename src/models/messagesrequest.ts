@@ -17,10 +17,6 @@ import {
   AnthropicCacheControlDirective$outboundSchema,
 } from "./anthropiccachecontroldirective.js";
 import {
-  AnthropicCacheControlTtl,
-  AnthropicCacheControlTtl$outboundSchema,
-} from "./anthropiccachecontrolttl.js";
-import {
   AnthropicInputTokensClearAtLeast,
   AnthropicInputTokensClearAtLeast$Outbound,
   AnthropicInputTokensClearAtLeast$outboundSchema,
@@ -203,13 +199,13 @@ export type EditClearThinking20251015 = {
   type: "clear_thinking_20251015";
 };
 
-export type ClearToolInputs = boolean | Array<string> | any;
+export type ClearToolInputs = boolean | Array<string>;
 
 export type Trigger = AnthropicInputTokensTrigger | AnthropicToolUsesTrigger;
 
 export type EditClearToolUses20250919 = {
   clearAtLeast?: AnthropicInputTokensClearAtLeast | null | undefined;
-  clearToolInputs?: boolean | Array<string> | any | null | undefined;
+  clearToolInputs?: boolean | Array<string> | null | undefined;
   excludeTools?: Array<string> | null | undefined;
   keep?: AnthropicToolUsesKeep | undefined;
   trigger?: AnthropicInputTokensTrigger | AnthropicToolUsesTrigger | undefined;
@@ -305,20 +301,7 @@ export type ToolChoice =
 
 export type MessagesRequestTool = {
   type: string;
-  additionalProperties?: { [k: string]: any | null } | undefined;
-};
-
-export const ToolTypeEphemeral = {
-  Ephemeral: "ephemeral",
-} as const;
-export type ToolTypeEphemeral = ClosedEnum<typeof ToolTypeEphemeral>;
-
-/**
- * Enable automatic prompt caching. When set at the top level, the system automatically applies cache breakpoints to the last cacheable block in the request. Currently supported for Anthropic Claude models.
- */
-export type Caching = {
-  ttl?: AnthropicCacheControlTtl | undefined;
-  type: ToolTypeEphemeral;
+  additionalProperties?: { [k: string]: any } | undefined;
 };
 
 export const NameAdvisor = {
@@ -337,7 +320,7 @@ export type ToolAdvisor20260301 = {
    * Enable automatic prompt caching. When set at the top level, the system automatically applies cache breakpoints to the last cacheable block in the request. Currently supported for Anthropic Claude models.
    */
   cacheControl?: AnthropicCacheControlDirective | undefined;
-  caching?: Caching | null | undefined;
+  caching?: AnthropicCacheControlDirective | null | undefined;
   deferLoading?: boolean | undefined;
   maxUses?: number | undefined;
   model: string;
@@ -431,10 +414,10 @@ export type ToolBash20250124 = {
 };
 
 export type InputSchema = {
-  properties?: any | null | undefined;
+  properties?: any | undefined;
   required?: Array<string> | null | undefined;
   type?: string | undefined;
-  additionalProperties?: { [k: string]: any | null } | undefined;
+  additionalProperties?: { [k: string]: any } | undefined;
 };
 
 export const ToolTypeCustom = {
@@ -694,13 +677,13 @@ export function editClearThinking20251015ToJSON(
 }
 
 /** @internal */
-export type ClearToolInputs$Outbound = boolean | Array<string> | any;
+export type ClearToolInputs$Outbound = boolean | Array<string>;
 
 /** @internal */
 export const ClearToolInputs$outboundSchema: z.ZodType<
   ClearToolInputs$Outbound,
   ClearToolInputs
-> = z.union([z.boolean(), z.array(z.string()), z.any()]);
+> = z.union([z.boolean(), z.array(z.string())]);
 
 export function clearToolInputsToJSON(
   clearToolInputs: ClearToolInputs,
@@ -727,7 +710,7 @@ export function triggerToJSON(trigger: Trigger): string {
 /** @internal */
 export type EditClearToolUses20250919$Outbound = {
   clear_at_least?: AnthropicInputTokensClearAtLeast$Outbound | null | undefined;
-  clear_tool_inputs?: boolean | Array<string> | any | null | undefined;
+  clear_tool_inputs?: boolean | Array<string> | null | undefined;
   exclude_tools?: Array<string> | null | undefined;
   keep?: AnthropicToolUsesKeep$Outbound | undefined;
   trigger?:
@@ -744,9 +727,8 @@ export const EditClearToolUses20250919$outboundSchema: z.ZodType<
 > = z.object({
   clearAtLeast: z.nullable(AnthropicInputTokensClearAtLeast$outboundSchema)
     .optional(),
-  clearToolInputs: z.nullable(
-    z.union([z.boolean(), z.array(z.string()), z.any()]),
-  ).optional(),
+  clearToolInputs: z.nullable(z.union([z.boolean(), z.array(z.string())]))
+    .optional(),
   excludeTools: z.nullable(z.array(z.string())).optional(),
   keep: AnthropicToolUsesKeep$outboundSchema.optional(),
   trigger: z.union([
@@ -1107,7 +1089,7 @@ export const MessagesRequestTool$outboundSchema: z.ZodType<
   MessagesRequestTool
 > = z.object({
   type: z.string(),
-  additionalProperties: z.record(z.string(), z.nullable(z.any())).optional(),
+  additionalProperties: z.record(z.string(), z.any()).optional(),
 }).transform((v) => {
   return {
     ...v.additionalProperties,
@@ -1126,28 +1108,6 @@ export function messagesRequestToolToJSON(
 }
 
 /** @internal */
-export const ToolTypeEphemeral$outboundSchema: z.ZodEnum<
-  typeof ToolTypeEphemeral
-> = z.enum(ToolTypeEphemeral);
-
-/** @internal */
-export type Caching$Outbound = {
-  ttl?: string | undefined;
-  type: string;
-};
-
-/** @internal */
-export const Caching$outboundSchema: z.ZodType<Caching$Outbound, Caching> = z
-  .object({
-    ttl: AnthropicCacheControlTtl$outboundSchema.optional(),
-    type: ToolTypeEphemeral$outboundSchema,
-  });
-
-export function cachingToJSON(caching: Caching): string {
-  return JSON.stringify(Caching$outboundSchema.parse(caching));
-}
-
-/** @internal */
 export const NameAdvisor$outboundSchema: z.ZodEnum<typeof NameAdvisor> = z.enum(
   NameAdvisor,
 );
@@ -1161,7 +1121,7 @@ export const TypeAdvisor20260301$outboundSchema: z.ZodEnum<
 export type ToolAdvisor20260301$Outbound = {
   allowed_callers?: Array<string> | undefined;
   cache_control?: AnthropicCacheControlDirective$Outbound | undefined;
-  caching?: Caching$Outbound | null | undefined;
+  caching?: AnthropicCacheControlDirective$Outbound | null | undefined;
   defer_loading?: boolean | undefined;
   max_uses?: number | undefined;
   model: string;
@@ -1176,7 +1136,7 @@ export const ToolAdvisor20260301$outboundSchema: z.ZodType<
 > = z.object({
   allowedCallers: z.array(AnthropicAllowedCallers$outboundSchema).optional(),
   cacheControl: AnthropicCacheControlDirective$outboundSchema.optional(),
-  caching: z.nullable(z.lazy(() => Caching$outboundSchema)).optional(),
+  caching: z.nullable(AnthropicCacheControlDirective$outboundSchema).optional(),
   deferLoading: z.boolean().optional(),
   maxUses: z.int().optional(),
   model: z.string(),
@@ -1390,7 +1350,7 @@ export function toolBash20250124ToJSON(
 
 /** @internal */
 export type InputSchema$Outbound = {
-  properties?: any | null | undefined;
+  properties?: any | undefined;
   required?: Array<string> | null | undefined;
   type: string;
   [additionalProperties: string]: unknown;
@@ -1401,10 +1361,10 @@ export const InputSchema$outboundSchema: z.ZodType<
   InputSchema$Outbound,
   InputSchema
 > = z.object({
-  properties: z.nullable(z.any()).optional(),
+  properties: z.any().optional(),
   required: z.nullable(z.array(z.string())).optional(),
   type: z.string().default("object"),
-  additionalProperties: z.record(z.string(), z.nullable(z.any())).optional(),
+  additionalProperties: z.record(z.string(), z.any()).optional(),
 }).transform((v) => {
   return {
     ...v.additionalProperties,
