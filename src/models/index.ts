@@ -335,7 +335,6 @@ export * from "./openairesponsesannotation.js";
 export * from "./openairesponsesrefusalcontent.js";
 export * from "./openairesponsesresponsestatus.js";
 export * from "./openairesponsestoolchoiceunion.js";
-export * from "./openairesponsestruncation.js";
 export * from "./openresponsescreatedevent.js";
 export * from "./openresponsesinprogressevent.js";
 export * from "./openresponsesresult.js";
