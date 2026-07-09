@@ -423,6 +423,7 @@ export * from "./reasoningdoneevent.js";
 export * from "./reasoningeffort.js";
 export * from "./reasoningformat.js";
 export * from "./reasoningitem.js";
+export * from "./reasoningmode.js";
 export * from "./reasoningsummarypartaddedevent.js";
 export * from "./reasoningsummarypartdoneevent.js";
 export * from "./reasoningsummarytext.js";

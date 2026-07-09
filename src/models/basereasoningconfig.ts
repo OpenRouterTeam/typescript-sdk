@@ -11,6 +11,7 @@ import {
   ReasoningEffort,
   ReasoningEffort$inboundSchema,
 } from "./reasoningeffort.js";
+import { ReasoningMode, ReasoningMode$inboundSchema } from "./reasoningmode.js";
 import {
   ReasoningSummaryVerbosity,
   ReasoningSummaryVerbosity$inboundSchema,
@@ -18,6 +19,10 @@ import {
 
 export type BaseReasoningConfig = {
   effort?: ReasoningEffort | null | undefined;
+  /**
+   * Selects the reasoning mode. `standard` is the default; `pro` engages deeper reasoning on models that support it, billed at standard token rates. Only supported by OpenAI GPT-5.6 and newer.
+   */
+  mode?: ReasoningMode | null | undefined;
   summary?: ReasoningSummaryVerbosity | null | undefined;
 };
 
@@ -27,6 +32,7 @@ export const BaseReasoningConfig$inboundSchema: z.ZodType<
   unknown
 > = z.object({
   effort: z.nullable(ReasoningEffort$inboundSchema).optional(),
+  mode: z.nullable(ReasoningMode$inboundSchema).optional(),
   summary: z.nullable(ReasoningSummaryVerbosity$inboundSchema).optional(),
 });
 
