@@ -16,6 +16,12 @@ import {
   ReasoningDetailEncrypted$outboundSchema,
 } from "./reasoningdetailencrypted.js";
 import {
+  ReasoningDetailServerToolCall,
+  ReasoningDetailServerToolCall$inboundSchema,
+  ReasoningDetailServerToolCall$Outbound,
+  ReasoningDetailServerToolCall$outboundSchema,
+} from "./reasoningdetailservertoolcall.js";
+import {
   ReasoningDetailSummary,
   ReasoningDetailSummary$inboundSchema,
   ReasoningDetailSummary$Outbound,
@@ -33,6 +39,7 @@ import {
  */
 export type ReasoningDetailUnion =
   | ReasoningDetailEncrypted
+  | ReasoningDetailServerToolCall
   | ReasoningDetailSummary
   | ReasoningDetailText
   | discriminatedUnionTypes.Unknown<"type">;
@@ -43,12 +50,14 @@ export const ReasoningDetailUnion$inboundSchema: z.ZodType<
   unknown
 > = discriminatedUnion("type", {
   ["reasoning.encrypted"]: ReasoningDetailEncrypted$inboundSchema,
+  ["reasoning.server_tool_call"]: ReasoningDetailServerToolCall$inboundSchema,
   ["reasoning.summary"]: ReasoningDetailSummary$inboundSchema,
   ["reasoning.text"]: ReasoningDetailText$inboundSchema,
 });
 /** @internal */
 export type ReasoningDetailUnion$Outbound =
   | ReasoningDetailEncrypted$Outbound
+  | ReasoningDetailServerToolCall$Outbound
   | ReasoningDetailSummary$Outbound
   | ReasoningDetailText$Outbound;
 
@@ -58,6 +67,7 @@ export const ReasoningDetailUnion$outboundSchema: z.ZodType<
   ReasoningDetailUnion
 > = z.union([
   ReasoningDetailEncrypted$outboundSchema,
+  ReasoningDetailServerToolCall$outboundSchema,
   ReasoningDetailSummary$outboundSchema,
   ReasoningDetailText$outboundSchema,
 ]);
