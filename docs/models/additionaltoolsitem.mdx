@@ -1,0 +1,39 @@
+---
+title: "AdditionalToolsItem"
+---
+
+Additional tools made available to the model at this point in the input
+
+## Example Usage
+
+```typescript
+import { AdditionalToolsItem } from "@openrouter/sdk/models";
+
+let value: AdditionalToolsItem = {
+  role: "developer",
+  tools: [
+    {
+      name: "get_weather",
+      parameters: {
+        "properties": {
+          "location": {
+            "type": "string",
+          },
+        },
+        "type": "object",
+      },
+      type: "function",
+    },
+  ],
+  type: "additional_tools",
+};
+```
+
+## Fields
+
+| Field                                                                  | Type                                                                   | Required                                                               | Description                                                            |
+| ---------------------------------------------------------------------- | ---------------------------------------------------------------------- | ---------------------------------------------------------------------- | ---------------------------------------------------------------------- |
+| `id`                                                                   | *string*                                                               | :heavy_minus_sign:                                                     | N/A                                                                    |
+| `role`                                                                 | [models.AdditionalToolsItemRole](../models/additionaltoolsitemrole.mdx) | :heavy_check_mark:                                                     | N/A                                                                    |
+| `tools`                                                                | *models.AdditionalToolsItemToolUnion*[]                                | :heavy_check_mark:                                                     | N/A                                                                    |
+| `type`                                                                 | [models.TypeAdditionalTools](../models/typeadditionaltools.mdx)         | :heavy_check_mark:                                                     | N/A                                                                    |

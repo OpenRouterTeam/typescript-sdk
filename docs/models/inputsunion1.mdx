@@ -82,6 +82,29 @@ const value: models.ApplyPatchCallOutputItem = {
 };
 ```
 
+### `models.AdditionalToolsItem`
+
+```typescript
+const value: models.AdditionalToolsItem = {
+  role: "developer",
+  tools: [
+    {
+      name: "get_weather",
+      parameters: {
+        "properties": {
+          "location": {
+            "type": "string",
+          },
+        },
+        "type": "object",
+      },
+      type: "function",
+    },
+  ],
+  type: "additional_tools",
+};
+```
+
 ### `models.InputsMessage`
 
 ```typescript
