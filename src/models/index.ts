@@ -486,6 +486,8 @@ export * from "./subagentnestedtool.js";
 export * from "./subagentreasoning.js";
 export * from "./subagentservertoolconfig.js";
 export * from "./subagentservertoolopenrouter.js";
+export * from "./submitgenerationfeedbackrequest.js";
+export * from "./submitgenerationfeedbackresponse.js";
 export * from "./taskclassificationitem.js";
 export * from "./taskclassificationmacrocategory.js";
 export * from "./taskclassificationmodel.js";

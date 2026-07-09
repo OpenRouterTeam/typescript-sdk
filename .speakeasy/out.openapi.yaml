@@ -4056,7 +4056,7 @@ components:
         - recraft
         - reka
         - relace
-        - sakana-ai
+        - sakana
         - sambanova
         - seed
         - siliconflow
@@ -18449,7 +18449,7 @@ components:
           additionalProperties:
             nullable: true
           type: object
-        sakana-ai:
+        sakana:
           additionalProperties:
             nullable: true
           type: object
@@ -21129,6 +21129,59 @@ components:
           items:
             $ref: '#/components/schemas/SubagentNestedTool'
           type: array
+      type: object
+    SubmitGenerationFeedbackRequest:
+      description: Structured feedback about a specific generation
+      example:
+        category: incorrect_response
+        comment: The model repeated the same paragraph three times.
+        generation_id: gen-3bhGkxlo4XFrqiabUM7NDtwDzWwG
+      properties:
+        category:
+          description: The category of feedback being reported
+          enum:
+            - latency
+            - incoherence
+            - incorrect_response
+            - formatting
+            - billing
+            - api_error
+            - other
+          example: incorrect_response
+          type: string
+          x-speakeasy-unknown-values: allow
+        comment:
+          description: An optional free-text comment describing the feedback
+          example: The model repeated the same paragraph three times.
+          maxLength: 1000
+          type: string
+        generation_id:
+          description: The generation to submit feedback on
+          example: gen-3bhGkxlo4XFrqiabUM7NDtwDzWwG
+          minLength: 1
+          type: string
+      required:
+        - generation_id
+        - category
+      type: object
+    SubmitGenerationFeedbackResponse:
+      description: Confirmation that the feedback was recorded
+      example:
+        data:
+          success: true
+      properties:
+        data:
+          properties:
+            success:
+              const: true
+              description: Whether the feedback was recorded
+              example: true
+              type: boolean
+          required:
+            - success
+          type: object
+      required:
+        - data
       type: object
     SupportedParameters:
       additionalProperties:
@@ -24719,7 +24772,7 @@ paths:
               - recraft
               - reka
               - relace
-              - sakana-ai
+              - sakana
               - sambanova
               - seed
               - siliconflow
@@ -27267,6 +27320,89 @@ paths:
       summary: Get stored prompt and completion content for a generation
       tags:
         - Generations
+    parameters:
+      - $ref: "#/components/parameters/AppIdentifier"
+      - $ref: "#/components/parameters/AppDisplayName"
+      - $ref: "#/components/parameters/AppCategories"
+  /generation/feedback:
+    post:
+      description: >-
+        Submit structured feedback on a generation the authenticated user made. [Management key](/docs/guides/overview/auth/management-api-keys) required.
+      operationId: submitGenerationFeedback
+      requestBody:
+        content:
+          application/json:
+            example:
+              category: incorrect_response
+              comment: The model repeated the same paragraph three times.
+              generation_id: gen-3bhGkxlo4XFrqiabUM7NDtwDzWwG
+            schema:
+              $ref: '#/components/schemas/SubmitGenerationFeedbackRequest'
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              example:
+                data:
+                  success: true
+              schema:
+                $ref: '#/components/schemas/SubmitGenerationFeedbackResponse'
+          description: Feedback recorded successfully
+        '400':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 400
+                  message: Invalid request parameters
+              schema:
+                $ref: '#/components/schemas/BadRequestResponse'
+          description: Bad Request - Invalid request parameters or malformed input
+        '401':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 401
+                  message: Missing Authentication header
+              schema:
+                $ref: '#/components/schemas/UnauthorizedResponse'
+          description: Unauthorized - Authentication required or invalid credentials
+        '404':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 404
+                  message: Resource not found
+              schema:
+                $ref: '#/components/schemas/NotFoundResponse'
+          description: Not Found - Resource does not exist
+        '429':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 429
+                  message: Rate limit exceeded
+              schema:
+                $ref: '#/components/schemas/TooManyRequestsResponse'
+          description: Too Many Requests - Rate limit exceeded
+        '500':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 500
+                  message: Internal Server Error
+              schema:
+                $ref: '#/components/schemas/InternalServerResponse'
+          description: Internal Server Error - Unexpected server error
+      summary: Submit feedback for a generation
+      tags:
+        - Generations
+      x-speakeasy-name-override: submitFeedback
     parameters:
       - $ref: "#/components/parameters/AppIdentifier"
       - $ref: "#/components/parameters/AppDisplayName"
