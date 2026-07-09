@@ -81,8 +81,7 @@ export type BaseInputsPhaseCommentary = ClosedEnum<
 
 export type BaseInputsPhaseUnion =
   | BaseInputsPhaseCommentary
-  | BaseInputsPhaseFinalAnswer
-  | any;
+  | BaseInputsPhaseFinalAnswer;
 
 export const BaseInputsRoleDeveloper = {
   Developer: "developer",
@@ -132,7 +131,6 @@ export type BaseInputsMessage = {
   phase?:
     | BaseInputsPhaseCommentary
     | BaseInputsPhaseFinalAnswer
-    | any
     | null
     | undefined;
   role:
@@ -168,8 +166,7 @@ export type BaseInputsUnion =
     | OpenAIResponseCustomToolCallOutput
     | ApplyPatchCallOutputItem
     | BaseInputsMessage
-  >
-  | any;
+  >;
 
 /** @internal */
 export const BaseInputsContent1$inboundSchema: z.ZodType<
@@ -237,7 +234,6 @@ export const BaseInputsPhaseUnion$inboundSchema: z.ZodType<
 > = z.union([
   BaseInputsPhaseCommentary$inboundSchema,
   BaseInputsPhaseFinalAnswer$inboundSchema,
-  z.any(),
 ]);
 
 export function baseInputsPhaseUnionFromJSON(
@@ -315,7 +311,6 @@ export const BaseInputsMessage$inboundSchema: z.ZodType<
     z.union([
       BaseInputsPhaseCommentary$inboundSchema,
       BaseInputsPhaseFinalAnswer$inboundSchema,
-      z.any(),
     ]),
   ).optional(),
   role: z.union([
@@ -384,7 +379,6 @@ export const BaseInputsUnion$inboundSchema: z.ZodType<
       z.lazy(() => BaseInputsMessage$inboundSchema),
     ]),
   ),
-  z.any(),
 ]);
 
 export function baseInputsUnionFromJSON(

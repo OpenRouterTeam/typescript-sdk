@@ -143,10 +143,6 @@ import {
   OpenAIResponsesToolChoiceUnion$outboundSchema,
 } from "./openairesponsestoolchoiceunion.js";
 import {
-  OpenAIResponsesTruncation,
-  OpenAIResponsesTruncation$outboundSchema,
-} from "./openairesponsestruncation.js";
-import {
   OutputModalityEnum,
   OutputModalityEnum$outboundSchema,
 } from "./outputmodalityenum.js";
@@ -176,10 +172,21 @@ import {
   ProviderPreferences$outboundSchema,
 } from "./providerpreferences.js";
 import {
-  ReasoningConfig,
-  ReasoningConfig$Outbound,
-  ReasoningConfig$outboundSchema,
-} from "./reasoningconfig.js";
+  ReasoningContext,
+  ReasoningContext$outboundSchema,
+} from "./reasoningcontext.js";
+import {
+  ReasoningEffort,
+  ReasoningEffort$outboundSchema,
+} from "./reasoningeffort.js";
+import {
+  ReasoningMode,
+  ReasoningMode$outboundSchema,
+} from "./reasoningmode.js";
+import {
+  ReasoningSummaryVerbosity,
+  ReasoningSummaryVerbosity$outboundSchema,
+} from "./reasoningsummaryverbosity.js";
 import {
   ResponseHealingPlugin,
   ResponseHealingPlugin$Outbound,
@@ -224,6 +231,7 @@ import {
   TraceConfig$Outbound,
   TraceConfig$outboundSchema,
 } from "./traceconfig.js";
+import { Truncation, Truncation$outboundSchema } from "./truncation.js";
 import {
   WebFetchPlugin,
   WebFetchPlugin$Outbound,
@@ -261,6 +269,21 @@ export type ResponsesRequestPlugin =
   | WebSearchPlugin
   | WebFetchPlugin;
 
+export type ReasoningConfig = {
+  /**
+   * Controls which reasoning is available to the model. `auto` uses the model default (same as omitting); `all_turns` includes reasoning from earlier turns passed in input; `current_turn` limits to the current turn only. Only supported by OpenAI GPT-5.6 and newer.
+   */
+  context?: ReasoningContext | null | undefined;
+  effort?: ReasoningEffort | null | undefined;
+  /**
+   * Selects the reasoning mode. `standard` is the default; `pro` engages deeper reasoning on models that support it, billed at standard token rates. Only supported by OpenAI GPT-5.6 and newer.
+   */
+  mode?: ReasoningMode | null | undefined;
+  summary?: ReasoningSummaryVerbosity | null | undefined;
+  enabled?: boolean | null | undefined;
+  maxTokens?: number | null | undefined;
+};
+
 export const ResponsesRequestServiceTier = {
   Auto: "auto",
   Default: "default",
@@ -278,7 +301,7 @@ export type ResponsesRequestServiceTier = OpenEnum<
 export type ResponsesRequestToolFunction = {
   description?: string | null | undefined;
   name: string;
-  parameters: { [k: string]: any | null } | null;
+  parameters: { [k: string]: any } | null;
   strict?: boolean | null | undefined;
   type: "function";
 };
@@ -443,7 +466,7 @@ export type ResponsesRequest = {
    * Metadata for observability and tracing. Known keys (trace_id, trace_name, span_name, generation_name, parent_span_id) have special handling. Additional keys are passed through as custom metadata to configured broadcast destinations.
    */
   trace?: TraceConfig | undefined;
-  truncation?: OpenAIResponsesTruncation | null | undefined;
+  truncation?: Truncation | null | undefined;
   /**
    * A unique identifier representing your end-user, which helps distinguish between different users of your app. This allows your app to identify specific users in case of abuse reports, preventing your entire app from being affected by the actions of individual users. Maximum of 256 characters.
    */
@@ -487,6 +510,39 @@ export function responsesRequestPluginToJSON(
 }
 
 /** @internal */
+export type ReasoningConfig$Outbound = {
+  context?: string | null | undefined;
+  effort?: string | null | undefined;
+  mode?: string | null | undefined;
+  summary?: string | null | undefined;
+  enabled?: boolean | null | undefined;
+  max_tokens?: number | null | undefined;
+};
+
+/** @internal */
+export const ReasoningConfig$outboundSchema: z.ZodType<
+  ReasoningConfig$Outbound,
+  ReasoningConfig
+> = z.object({
+  context: z.nullable(ReasoningContext$outboundSchema).optional(),
+  effort: z.nullable(ReasoningEffort$outboundSchema).optional(),
+  mode: z.nullable(ReasoningMode$outboundSchema).optional(),
+  summary: z.nullable(ReasoningSummaryVerbosity$outboundSchema).optional(),
+  enabled: z.nullable(z.boolean()).optional(),
+  maxTokens: z.nullable(z.int()).optional(),
+}).transform((v) => {
+  return remap$(v, {
+    maxTokens: "max_tokens",
+  });
+});
+
+export function reasoningConfigToJSON(
+  reasoningConfig: ReasoningConfig,
+): string {
+  return JSON.stringify(ReasoningConfig$outboundSchema.parse(reasoningConfig));
+}
+
+/** @internal */
 export const ResponsesRequestServiceTier$outboundSchema: z.ZodType<
   string,
   ResponsesRequestServiceTier
@@ -496,7 +552,7 @@ export const ResponsesRequestServiceTier$outboundSchema: z.ZodType<
 export type ResponsesRequestToolFunction$Outbound = {
   description?: string | null | undefined;
   name: string;
-  parameters: { [k: string]: any | null } | null;
+  parameters: { [k: string]: any } | null;
   strict?: boolean | null | undefined;
   type: "function";
 };
@@ -508,7 +564,7 @@ export const ResponsesRequestToolFunction$outboundSchema: z.ZodType<
 > = z.object({
   description: z.nullable(z.string()).optional(),
   name: z.string(),
-  parameters: z.nullable(z.record(z.string(), z.nullable(z.any()))),
+  parameters: z.nullable(z.record(z.string(), z.any())),
   strict: z.nullable(z.boolean()).optional(),
   type: z.literal("function"),
 });
@@ -746,7 +802,8 @@ export const ResponsesRequest$outboundSchema: z.ZodType<
   promptCacheKey: z.nullable(z.string()).optional(),
   promptCacheOptions: z.nullable(PromptCacheOptions$outboundSchema).optional(),
   provider: z.nullable(ProviderPreferences$outboundSchema).optional(),
-  reasoning: z.nullable(ReasoningConfig$outboundSchema).optional(),
+  reasoning: z.nullable(z.lazy(() => ReasoningConfig$outboundSchema))
+    .optional(),
   safetyIdentifier: z.nullable(z.string()).optional(),
   serviceTier: z.nullable(
     ResponsesRequestServiceTier$outboundSchema.default("auto"),
@@ -811,7 +868,7 @@ export const ResponsesRequest$outboundSchema: z.ZodType<
   topLogprobs: z.nullable(z.int()).optional(),
   topP: z.nullable(z.number()).optional(),
   trace: TraceConfig$outboundSchema.optional(),
-  truncation: z.nullable(OpenAIResponsesTruncation$outboundSchema).optional(),
+  truncation: z.nullable(Truncation$outboundSchema).optional(),
   user: z.string().optional(),
 }).transform((v) => {
   return remap$(v, {
