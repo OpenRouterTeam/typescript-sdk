@@ -7,7 +7,7 @@ import * as z from "zod/v4";
 import { remap as remap$ } from "../lib/primitives.js";
 import { safeParse } from "../lib/schemas.js";
 import * as openEnums from "../types/enums.js";
-import { OpenEnum } from "../types/enums.js";
+import { ClosedEnum, OpenEnum } from "../types/enums.js";
 import { Result as SafeParseResult } from "../types/fp.js";
 import { SDKValidationError } from "./errors/sdkvalidationerror.js";
 
@@ -20,6 +20,13 @@ export const Environment = {
 } as const;
 export type Environment = OpenEnum<typeof Environment>;
 
+export const ComputerUseServerToolType = {
+  ComputerUsePreview: "computer_use_preview",
+} as const;
+export type ComputerUseServerToolType = ClosedEnum<
+  typeof ComputerUseServerToolType
+>;
+
 /**
  * Computer use preview tool configuration
  */
@@ -27,7 +34,7 @@ export type ComputerUseServerTool = {
   displayHeight: number;
   displayWidth: number;
   environment: Environment;
-  type: "computer_use_preview";
+  type: ComputerUseServerToolType;
 };
 
 /** @internal */
@@ -38,6 +45,15 @@ export const Environment$outboundSchema: z.ZodType<string, Environment> =
   openEnums.outboundSchema(Environment);
 
 /** @internal */
+export const ComputerUseServerToolType$inboundSchema: z.ZodEnum<
+  typeof ComputerUseServerToolType
+> = z.enum(ComputerUseServerToolType);
+/** @internal */
+export const ComputerUseServerToolType$outboundSchema: z.ZodEnum<
+  typeof ComputerUseServerToolType
+> = ComputerUseServerToolType$inboundSchema;
+
+/** @internal */
 export const ComputerUseServerTool$inboundSchema: z.ZodType<
   ComputerUseServerTool,
   unknown
@@ -45,7 +61,7 @@ export const ComputerUseServerTool$inboundSchema: z.ZodType<
   display_height: z.int(),
   display_width: z.int(),
   environment: Environment$inboundSchema,
-  type: z.literal("computer_use_preview"),
+  type: ComputerUseServerToolType$inboundSchema,
 }).transform((v) => {
   return remap$(v, {
     "display_height": "displayHeight",
@@ -57,7 +73,7 @@ export type ComputerUseServerTool$Outbound = {
   display_height: number;
   display_width: number;
   environment: string;
-  type: "computer_use_preview";
+  type: string;
 };
 
 /** @internal */
@@ -68,7 +84,7 @@ export const ComputerUseServerTool$outboundSchema: z.ZodType<
   displayHeight: z.int(),
   displayWidth: z.int(),
   environment: Environment$outboundSchema,
-  type: z.literal("computer_use_preview"),
+  type: ComputerUseServerToolType$outboundSchema,
 }).transform((v) => {
   return remap$(v, {
     displayHeight: "display_height",

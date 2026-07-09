@@ -7,6 +7,11 @@ import * as z from "zod/v4";
 import { remap as remap$ } from "../lib/primitives.js";
 import { ClosedEnum } from "../types/enums.js";
 import {
+  AdditionalToolsItem,
+  AdditionalToolsItem$Outbound,
+  AdditionalToolsItem$outboundSchema,
+} from "./additionaltoolsitem.js";
+import {
   ApplyPatchCallItem,
   ApplyPatchCallItem$Outbound,
   ApplyPatchCallItem$outboundSchema,
@@ -406,6 +411,7 @@ export type InputsUnion1 =
   | ReasoningItem
   | FunctionCallOutputItem
   | ApplyPatchCallOutputItem
+  | AdditionalToolsItem
   | InputsReasoning
   | OutputWebSearchCallItem
   | OutputImageGenerationCallItem
@@ -459,6 +465,7 @@ export type InputsUnion =
     | ReasoningItem
     | FunctionCallOutputItem
     | ApplyPatchCallOutputItem
+    | AdditionalToolsItem
     | InputsReasoning
     | OutputWebSearchCallItem
     | OutputImageGenerationCallItem
@@ -765,6 +772,7 @@ export type InputsUnion1$Outbound =
   | ReasoningItem$Outbound
   | FunctionCallOutputItem$Outbound
   | ApplyPatchCallOutputItem$Outbound
+  | AdditionalToolsItem$Outbound
   | InputsReasoning$Outbound
   | OutputWebSearchCallItem$Outbound
   | OutputImageGenerationCallItem$Outbound
@@ -817,6 +825,7 @@ export const InputsUnion1$outboundSchema: z.ZodType<
   ReasoningItem$outboundSchema,
   FunctionCallOutputItem$outboundSchema,
   ApplyPatchCallOutputItem$outboundSchema,
+  AdditionalToolsItem$outboundSchema,
   z.lazy(() => InputsReasoning$outboundSchema),
   OutputWebSearchCallItem$outboundSchema,
   OutputImageGenerationCallItem$outboundSchema,
@@ -873,6 +882,7 @@ export type InputsUnion$Outbound =
     | ReasoningItem$Outbound
     | FunctionCallOutputItem$Outbound
     | ApplyPatchCallOutputItem$Outbound
+    | AdditionalToolsItem$Outbound
     | InputsReasoning$Outbound
     | OutputWebSearchCallItem$Outbound
     | OutputImageGenerationCallItem$Outbound
@@ -929,6 +939,7 @@ export const InputsUnion$outboundSchema: z.ZodType<
       ReasoningItem$outboundSchema,
       FunctionCallOutputItem$outboundSchema,
       ApplyPatchCallOutputItem$outboundSchema,
+      AdditionalToolsItem$outboundSchema,
       z.lazy(() => InputsReasoning$outboundSchema),
       OutputWebSearchCallItem$outboundSchema,
       OutputImageGenerationCallItem$outboundSchema,
