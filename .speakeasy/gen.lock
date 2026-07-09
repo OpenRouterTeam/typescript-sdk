@@ -1,19 +1,19 @@
 lockVersion: ""
 id: ""
 management:
-  docChecksum: 5e9bd15580dd9520be1a8a4c64729d57
+  docChecksum: 0ac84000428e2e1025978281a9a6986a
   docVersion: 1.0.0
   speakeasyVersion: 1.763.2
   generationVersion: 2.884.4
-  releaseVersion: 0.13.32
-  configChecksum: ada36f2ebbb5216e5bb8d1709a90c888
+  releaseVersion: 0.13.33
+  configChecksum: ee70c8871a945510866085641f0a4537
   repoURL: https://github.com/OpenRouterTeam/typescript-sdk.git
   installationURL: https://github.com/OpenRouterTeam/typescript-sdk
   published: true
 persistentEdits:
-  generation_id: 60d18447-7dd5-4a67-8219-994492b0cd38
-  pristine_commit_hash: 145c8c71331d9c7c0e171821e8ff32efb631dc97
-  pristine_tree_hash: cd59a5eb52284f72380e5e9b33b1445f10db0a6d
+  generation_id: 6aec2e82-6f31-4217-a9ef-4334eda6ffdc
+  pristine_commit_hash: ce1bccf2483f528d4ccf2c3918f2be781d84429c
+  pristine_tree_hash: 0d1f3f5cac2f64a06d2108abcca81b04f8938f42
 features:
   typescript:
     acceptHeaders: 2.81.2
@@ -9657,8 +9657,8 @@ trackedFiles:
     deleted: true
   docs/models/providerresponse.mdx:
     id: 74945eddfec5
-    last_write_checksum: sha1:f9a8eecff62a2a75a1b1c58b816490c4bb77b44d
-    pristine_git_object: 1b0be76260a310c8c77097a18f0f3f04caf2fef8
+    last_write_checksum: sha1:5c473e912fce13178ae6d65de5f90ae9b484e333
+    pristine_git_object: 777e899e38e28bd97f3531c600d881b516aa4992
   docs/models/providerresponseprovidername.md:
     id: d59f0f17ca15
     last_write_checksum: sha1:19e87bf7f9d7eccced330039cc02580dc184edb8
@@ -10218,6 +10218,10 @@ trackedFiles:
     id: 32669d1583a7
     last_write_checksum: sha1:40fb6f06d111ead6f74e447e161e6a4b45d4337c
     pristine_git_object: e5f9caf13771f6b37c6292e4f7ac98586429035c
+  docs/models/routedservicetier.mdx:
+    id: fd7b0f1d910c
+    last_write_checksum: sha1:80867edc9f5bd48b535009bbbd5d38630298d444
+    pristine_git_object: 1de800f46e5a2386a9b244155fd3d5f3321e875c
   docs/models/routerattempt.md:
     id: 6bcaf53856f9
     last_write_checksum: sha1:3d95c6d314ed76aad76acfc3b632cddefb9833b3
@@ -12140,12 +12144,12 @@ trackedFiles:
     pristine_git_object: 410efafd6a7f50d91ccb87131fedbe0c3d47e15a
   jsr.json:
     id: 7f6ab7767282
-    last_write_checksum: sha1:aa80c165d7606c7de706e4f7a44f4f0c0c61c104
-    pristine_git_object: 4ed61075e4af8d460392b9a4e9c37d92f1e8196c
+    last_write_checksum: sha1:46914cfd0bb55e731de8febd93fa984f0ec2cdf3
+    pristine_git_object: 7837d66694486b3f00dd7b7fbe5af73b573ec23a
   package.json:
     id: 7030d0b2f71b
-    last_write_checksum: sha1:affc1307b69b8dcb32ee4405fca367aff32aaf04
-    pristine_git_object: 5f376794b3b3c385bb737ff6e8059e7541cb5530
+    last_write_checksum: sha1:959026d33861701529313a28f84abda98ee17f15
+    pristine_git_object: 5f74d2baacdd7edad0663de36aa7d303cd27c630
   src/core.ts:
     id: f431fdbcd144
     last_write_checksum: sha1:5aa66b0b6a5964f3eea7f3098c2eb3c0ee9c0131
@@ -12520,8 +12524,8 @@ trackedFiles:
     pristine_git_object: a187e58707bdb726ca2aff74941efe7493422d4e
   src/lib/config.ts:
     id: 320761608fb3
-    last_write_checksum: sha1:da41867fa23f24d1411456397c0d58a29f54582b
-    pristine_git_object: 5dc1d442ca4bd9bc955e397875d8c0297aba0a80
+    last_write_checksum: sha1:698670f9f12db5b098d5c80a0b73e78dbb918144
+    pristine_git_object: d24b25f1fe068af05ef3bdd215acffe2924f8904
   src/lib/dlv.ts:
     id: b1988214835a
     last_write_checksum: sha1:eaac763b22717206a6199104e0403ed17a4e2711
@@ -14620,8 +14624,8 @@ trackedFiles:
     pristine_git_object: 8d6e7fcf7067e5838de05a7a6569ac8da94a5c1f
   src/models/providerresponse.ts:
     id: 7427d17a27bc
-    last_write_checksum: sha1:d998801111e30a7f510accbea3dc4b89a6bb6d76
-    pristine_git_object: 2ff624927ad84e1753a1e02474ae1dd8b6e3e747
+    last_write_checksum: sha1:ef384047b03e109b7666159753155a112b590e7b
+    pristine_git_object: a2d45c82642603c3a9a318aa80e138aab13c805e
   src/models/providersort.ts:
     id: 7d1e919d1ec3
     last_write_checksum: sha1:4c871e5fc8af6042ca41d12c54ba8640706c0863
@@ -16853,4 +16857,4 @@ examples:
 examplesVersion: 1.0.2
 releaseNotes: |
   ## Typescript SDK Changes:
-  * `openrouter.images.generate()`:  `response.[].data.union(image_generation.text_chunk)` **Added**
+  * `openrouter.generations.getGeneration()`:  `response.data.providerResponses[].routedServiceTier` **Added**
