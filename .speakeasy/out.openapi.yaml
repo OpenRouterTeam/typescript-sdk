@@ -9526,11 +9526,7 @@ components:
               type: string
           type: object
         model:
-          enum:
-            - gpt-image-1
-            - gpt-image-1-mini
           type: string
-          x-speakeasy-unknown-values: allow
         moderation:
           enum:
             - auto
@@ -9557,13 +9553,7 @@ components:
           type: string
           x-speakeasy-unknown-values: allow
         size:
-          enum:
-            - 1024x1024
-            - 1024x1536
-            - 1536x1024
-            - auto
           type: string
-          x-speakeasy-unknown-values: allow
         type:
           enum:
             - image_generation
@@ -19801,6 +19791,7 @@ components:
             - empty_image_file
             - failed_to_download_image
             - image_file_not_found
+            - bio_policy
           type: string
           x-speakeasy-unknown-values: allow
         message:
