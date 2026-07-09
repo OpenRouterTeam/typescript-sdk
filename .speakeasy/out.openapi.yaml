@@ -18833,6 +18833,15 @@ components:
           example: OpenAI
           type: string
           x-speakeasy-unknown-values: allow
+        routed_service_tier:
+          description: >-
+            The service tier this request was routed to (e.g. flex, priority). The tier actually applied and billed is determined by the provider response and may differ.
+          enum:
+            - flex
+            - priority
+          example: priority
+          type: string
+          x-speakeasy-unknown-values: allow
         status:
           description: HTTP status code from the provider
           example: 200
