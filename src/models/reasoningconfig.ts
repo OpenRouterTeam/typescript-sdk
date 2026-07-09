@@ -6,9 +6,17 @@
 import * as z from "zod/v4";
 import { remap as remap$ } from "../lib/primitives.js";
 import {
+  ReasoningContext,
+  ReasoningContext$outboundSchema,
+} from "./reasoningcontext.js";
+import {
   ReasoningEffort,
   ReasoningEffort$outboundSchema,
 } from "./reasoningeffort.js";
+import {
+  ReasoningMode,
+  ReasoningMode$outboundSchema,
+} from "./reasoningmode.js";
 import {
   ReasoningSummaryVerbosity,
   ReasoningSummaryVerbosity$outboundSchema,
@@ -18,7 +26,15 @@ import {
  * Configuration for reasoning mode in the response
  */
 export type ReasoningConfig = {
+  /**
+   * Controls which reasoning is available to the model. `auto` uses the model default (same as omitting); `all_turns` includes reasoning from earlier turns passed in input; `current_turn` limits to the current turn only. Only supported by OpenAI GPT-5.6 and newer.
+   */
+  context?: ReasoningContext | null | undefined;
   effort?: ReasoningEffort | null | undefined;
+  /**
+   * Selects the reasoning mode. `standard` is the default; `pro` engages deeper reasoning on models that support it, billed at standard token rates. Only supported by OpenAI GPT-5.6 and newer.
+   */
+  mode?: ReasoningMode | null | undefined;
   summary?: ReasoningSummaryVerbosity | null | undefined;
   enabled?: boolean | null | undefined;
   maxTokens?: number | null | undefined;
@@ -26,7 +42,9 @@ export type ReasoningConfig = {
 
 /** @internal */
 export type ReasoningConfig$Outbound = {
+  context?: string | null | undefined;
   effort?: string | null | undefined;
+  mode?: string | null | undefined;
   summary?: string | null | undefined;
   enabled?: boolean | null | undefined;
   max_tokens?: number | null | undefined;
@@ -37,7 +55,9 @@ export const ReasoningConfig$outboundSchema: z.ZodType<
   ReasoningConfig$Outbound,
   ReasoningConfig
 > = z.object({
+  context: z.nullable(ReasoningContext$outboundSchema).optional(),
   effort: z.nullable(ReasoningEffort$outboundSchema).optional(),
+  mode: z.nullable(ReasoningMode$outboundSchema).optional(),
   summary: z.nullable(ReasoningSummaryVerbosity$outboundSchema).optional(),
   enabled: z.nullable(z.boolean()).optional(),
   maxTokens: z.nullable(z.int()).optional(),
