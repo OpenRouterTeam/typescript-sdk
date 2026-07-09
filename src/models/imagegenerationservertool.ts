@@ -7,7 +7,7 @@ import * as z from "zod/v4";
 import { remap as remap$ } from "../lib/primitives.js";
 import { safeParse } from "../lib/schemas.js";
 import * as openEnums from "../types/enums.js";
-import { OpenEnum } from "../types/enums.js";
+import { ClosedEnum, OpenEnum } from "../types/enums.js";
 import { Result as SafeParseResult } from "../types/fp.js";
 import { SDKValidationError } from "./errors/sdkvalidationerror.js";
 
@@ -56,6 +56,13 @@ export type ImageGenerationServerToolQuality = OpenEnum<
   typeof ImageGenerationServerToolQuality
 >;
 
+export const ImageGenerationServerToolType = {
+  ImageGeneration: "image_generation",
+} as const;
+export type ImageGenerationServerToolType = ClosedEnum<
+  typeof ImageGenerationServerToolType
+>;
+
 /**
  * Image generation tool configuration
  */
@@ -70,7 +77,7 @@ export type ImageGenerationServerTool = {
   partialImages?: number | undefined;
   quality?: ImageGenerationServerToolQuality | undefined;
   size?: string | undefined;
-  type: "image_generation";
+  type: ImageGenerationServerToolType;
 };
 
 /** @internal */
@@ -165,6 +172,15 @@ export const ImageGenerationServerToolQuality$outboundSchema: z.ZodType<
 > = openEnums.outboundSchema(ImageGenerationServerToolQuality);
 
 /** @internal */
+export const ImageGenerationServerToolType$inboundSchema: z.ZodEnum<
+  typeof ImageGenerationServerToolType
+> = z.enum(ImageGenerationServerToolType);
+/** @internal */
+export const ImageGenerationServerToolType$outboundSchema: z.ZodEnum<
+  typeof ImageGenerationServerToolType
+> = ImageGenerationServerToolType$inboundSchema;
+
+/** @internal */
 export const ImageGenerationServerTool$inboundSchema: z.ZodType<
   ImageGenerationServerTool,
   unknown
@@ -179,7 +195,7 @@ export const ImageGenerationServerTool$inboundSchema: z.ZodType<
   partial_images: z.int().optional(),
   quality: ImageGenerationServerToolQuality$inboundSchema.optional(),
   size: z.string().optional(),
-  type: z.literal("image_generation"),
+  type: ImageGenerationServerToolType$inboundSchema,
 }).transform((v) => {
   return remap$(v, {
     "input_fidelity": "inputFidelity",
@@ -201,7 +217,7 @@ export type ImageGenerationServerTool$Outbound = {
   partial_images?: number | undefined;
   quality?: string | undefined;
   size?: string | undefined;
-  type: "image_generation";
+  type: string;
 };
 
 /** @internal */
@@ -219,7 +235,7 @@ export const ImageGenerationServerTool$outboundSchema: z.ZodType<
   partialImages: z.int().optional(),
   quality: ImageGenerationServerToolQuality$outboundSchema.optional(),
   size: z.string().optional(),
-  type: z.literal("image_generation"),
+  type: ImageGenerationServerToolType$outboundSchema,
 }).transform((v) => {
   return remap$(v, {
     inputFidelity: "input_fidelity",
