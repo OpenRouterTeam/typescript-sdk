@@ -1,0 +1,24 @@
+---
+title: "SubmitGenerationFeedbackRequest"
+---
+
+Structured feedback about a specific generation
+
+## Example Usage
+
+```typescript
+import { SubmitGenerationFeedbackRequest } from "@openrouter/sdk/models";
+
+let value: SubmitGenerationFeedbackRequest = {
+  category: "incorrect_response",
+  generationId: "gen-3bhGkxlo4XFrqiabUM7NDtwDzWwG",
+};
+```
+
+## Fields
+
+| Field                                                 | Type                                                  | Required                                              | Description                                           | Example                                               |
+| ----------------------------------------------------- | ----------------------------------------------------- | ----------------------------------------------------- | ----------------------------------------------------- | ----------------------------------------------------- |
+| `category`                                            | [models.Category](../models/category.mdx)              | :heavy_check_mark:                                    | The category of feedback being reported               | incorrect_response                                    |
+| `comment`                                             | *string*                                              | :heavy_minus_sign:                                    | An optional free-text comment describing the feedback | The model repeated the same paragraph three times.    |
+| `generationId`                                        | *string*                                              | :heavy_check_mark:                                    | The generation to submit feedback on                  | gen-3bhGkxlo4XFrqiabUM7NDtwDzWwG                      |
