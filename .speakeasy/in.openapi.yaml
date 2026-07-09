@@ -3101,6 +3101,8 @@ components:
       properties:
         effort:
           $ref: '#/components/schemas/ReasoningEffort'
+        mode:
+          $ref: '#/components/schemas/ReasoningMode'
         summary:
           $ref: '#/components/schemas/ReasoningSummaryVerbosity'
       type: object
@@ -19565,6 +19567,17 @@ components:
           - text: Step by step analysis
             type: summary_text
         type: reasoning
+    ReasoningMode:
+      description: >-
+        Selects the reasoning mode. `standard` is the default; `pro` engages deeper reasoning on models that support it,
+        billed at standard token rates. Only supported by OpenAI GPT-5.6 and newer.
+      enum:
+        - standard
+        - pro
+        - null
+      example: standard
+      nullable: true
+      type: string
     ReasoningSummaryPartAddedEvent:
       allOf:
         - $ref: '#/components/schemas/BaseReasoningSummaryPartAddedEvent'
