@@ -140,7 +140,7 @@ export type VideoGenerationRequestOptions = {
   reka?: { [k: string]: any | null } | undefined;
   relace?: { [k: string]: any | null } | undefined;
   replicate?: { [k: string]: any | null } | undefined;
-  sakanaAi?: { [k: string]: any | null } | undefined;
+  sakana?: { [k: string]: any | null } | undefined;
   sambanova?: { [k: string]: any | null } | undefined;
   sambanovaCloaked?: { [k: string]: any | null } | undefined;
   seed?: { [k: string]: any | null } | undefined;
@@ -340,7 +340,7 @@ export type VideoGenerationRequestOptions$Outbound = {
   reka?: { [k: string]: any | null } | undefined;
   relace?: { [k: string]: any | null } | undefined;
   replicate?: { [k: string]: any | null } | undefined;
-  "sakana-ai"?: { [k: string]: any | null } | undefined;
+  sakana?: { [k: string]: any | null } | undefined;
   sambanova?: { [k: string]: any | null } | undefined;
   "sambanova-cloaked"?: { [k: string]: any | null } | undefined;
   seed?: { [k: string]: any | null } | undefined;
@@ -467,7 +467,7 @@ export const VideoGenerationRequestOptions$outboundSchema: z.ZodType<
   reka: z.record(z.string(), z.nullable(z.any())).optional(),
   relace: z.record(z.string(), z.nullable(z.any())).optional(),
   replicate: z.record(z.string(), z.nullable(z.any())).optional(),
-  sakanaAi: z.record(z.string(), z.nullable(z.any())).optional(),
+  sakana: z.record(z.string(), z.nullable(z.any())).optional(),
   sambanova: z.record(z.string(), z.nullable(z.any())).optional(),
   sambanovaCloaked: z.record(z.string(), z.nullable(z.any())).optional(),
   seed: z.record(z.string(), z.nullable(z.any())).optional(),
@@ -510,7 +510,6 @@ export const VideoGenerationRequestOptions$outboundSchema: z.ZodType<
     mancerOld: "mancer-old",
     nexAgi: "nex-agi",
     openInference: "open-inference",
-    sakanaAi: "sakana-ai",
     sambanovaCloaked: "sambanova-cloaked",
     sfCompute: "sf-compute",
     togetherLite: "together-lite",
