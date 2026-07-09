@@ -64,6 +64,7 @@ jobs:
           key: dispatched-monorepo-sdk-${{ steps.ver.outputs.version }}
 
       - name: Generate GitHub App token
+        if: steps.dedupe.outputs.cache-hit != 'true'
         id: app-token
         uses: actions/create-github-app-token@v3
         with:
