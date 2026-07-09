@@ -18932,6 +18932,15 @@ components:
             - FakeProvider
           example: OpenAI
           type: string
+        routed_service_tier:
+          description: >-
+            The service tier this request was routed to (e.g. flex, priority). The tier actually applied and billed is
+            determined by the provider response and may differ.
+          enum:
+            - flex
+            - priority
+          example: priority
+          type: string
         status:
           description: HTTP status code from the provider
           example: 200
