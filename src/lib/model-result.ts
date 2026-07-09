@@ -444,7 +444,7 @@ export class ModelResult<
     await this.saveStateSafely({
       messages: appendToMessages(
         this.currentState.messages,
-        outputItems as models.BaseInputsUnion[]
+        outputItems as models.InputsUnion1[]
       ),
       previousResponseId: response.id,
     });
@@ -845,7 +845,7 @@ export class ModelResult<
     turnNumber: number
   ): Promise<models.OpenResponsesResult> {
     const originalInput = this.resolvedRequest?.input;
-    const normalizedOriginalInput: models.BaseInputsUnion[] =
+    const normalizedOriginalInput: models.InputsUnion1[] =
       Array.isArray(originalInput)
         ? originalInput
         : originalInput
@@ -854,9 +854,9 @@ export class ModelResult<
 
     const newInput: models.InputsUnion = [
       ...normalizedOriginalInput,
-      ...(Array.isArray(currentResponse.output)
+      ...((Array.isArray(currentResponse.output)
         ? currentResponse.output
-        : [currentResponse.output]),
+        : [currentResponse.output]) as models.InputsUnion1[]),
       ...toolResults,
     ];
 
@@ -1047,7 +1047,7 @@ export class ModelResult<
           const inputArray = Array.isArray(newInput) ? newInput : [newInput];
           baseRequest = {
             ...baseRequest,
-            input: appendToMessages(this.currentState.messages, inputArray as models.BaseInputsUnion[]),
+            input: appendToMessages(this.currentState.messages, inputArray as models.InputsUnion1[]),
           };
         } else {
           baseRequest = {
