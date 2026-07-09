@@ -9576,9 +9576,6 @@ components:
               type: string
           type: object
         model:
-          enum:
-            - gpt-image-1
-            - gpt-image-1-mini
           type: string
         moderation:
           enum:
@@ -9603,11 +9600,6 @@ components:
             - auto
           type: string
         size:
-          enum:
-            - 1024x1024
-            - 1024x1536
-            - 1536x1024
-            - auto
           type: string
         type:
           enum:
@@ -19917,6 +19909,7 @@ components:
             - empty_image_file
             - failed_to_download_image
             - image_file_not_found
+            - bio_policy
           type: string
         message:
           type: string
