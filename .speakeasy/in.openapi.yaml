@@ -19401,6 +19401,43 @@ components:
         - type
         - data
       type: object
+    ReasoningDetailServerToolCall:
+      description: >-
+        Record of an OpenRouter server-tool invocation (e.g. openrouter:fusion), carried in reasoning_details so a prior
+        tool call can be rehydrated into a later turn of the same conversation.
+      example:
+        arguments: '{"prompt":"Compare carbon tax proposals"}'
+        result: '{"status":"ok","models":["openai/gpt-4o"]}'
+        tool_call_id: call_abc123
+        tool_name: openrouter:fusion
+        type: reasoning.server_tool_call
+      properties:
+        arguments:
+          type: string
+        format:
+          $ref: '#/components/schemas/ReasoningFormat'
+        id:
+          nullable: true
+          type: string
+        index:
+          type: integer
+        result:
+          type: string
+        tool_call_id:
+          nullable: true
+          type: string
+        tool_name:
+          type: string
+        type:
+          enum:
+            - reasoning.server_tool_call
+          type: string
+      required:
+        - type
+        - tool_name
+        - arguments
+        - result
+      type: object
     ReasoningDetailSummary:
       description: Reasoning detail summary schema
       example:
@@ -19456,6 +19493,7 @@ components:
       discriminator:
         mapping:
           reasoning.encrypted: '#/components/schemas/ReasoningDetailEncrypted'
+          reasoning.server_tool_call: '#/components/schemas/ReasoningDetailServerToolCall'
           reasoning.summary: '#/components/schemas/ReasoningDetailSummary'
           reasoning.text: '#/components/schemas/ReasoningDetailText'
         propertyName: type
@@ -19466,6 +19504,7 @@ components:
         - $ref: '#/components/schemas/ReasoningDetailSummary'
         - $ref: '#/components/schemas/ReasoningDetailEncrypted'
         - $ref: '#/components/schemas/ReasoningDetailText'
+        - $ref: '#/components/schemas/ReasoningDetailServerToolCall'
     ReasoningDoneEvent:
       allOf:
         - $ref: '#/components/schemas/BaseReasoningDoneEvent'
