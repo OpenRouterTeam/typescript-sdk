@@ -3100,6 +3100,8 @@ components:
         summary: auto
       nullable: true
       properties:
+        context:
+          $ref: '#/components/schemas/ReasoningContext'
         effort:
           $ref: '#/components/schemas/ReasoningEffort'
         mode:
@@ -10365,6 +10367,8 @@ components:
         text: Hello, how can I help you?
         type: input_text
       properties:
+        prompt_cache_breakpoint:
+          $ref: '#/components/schemas/PromptCacheBreakpoint'
         text:
           type: string
         type:
@@ -15528,6 +15532,9 @@ components:
           type: integer
         input_tokens_details:
           properties:
+            cache_write_tokens:
+              nullable: true
+              type: integer
             cached_tokens:
               type: integer
           required:
@@ -17920,6 +17927,38 @@ components:
       required:
         - type
       type: object
+    PromptCacheBreakpoint:
+      description: >-
+        Marks an explicit prompt-cache boundary on this content block. Everything through the block carrying this marker is part of the candidate cached prefix. Only supported by OpenAI GPT-5.6 and newer.
+      example:
+        mode: explicit
+      nullable: true
+      properties:
+        mode:
+          enum:
+            - explicit
+          type: string
+      required:
+        - mode
+      type: object
+    PromptCacheOptions:
+      description: >-
+        Request-level prompt-cache controls. `mode: "explicit"` disables OpenAI-managed breakpoints so only blocks marked with `prompt_cache_breakpoint` are cached. Only supported by OpenAI GPT-5.6 and newer.
+      example:
+        mode: explicit
+        ttl: 30m
+      nullable: true
+      properties:
+        mode:
+          enum:
+            - explicit
+          type: string
+        ttl:
+          nullable: true
+          type: string
+      required:
+        - mode
+      type: object
     PromptInjectionScanScope:
       description: >-
         Which message roles to scan for prompt injection. Only applies to the regex-prompt-injection builtin. Defaults to all_messages.
@@ -19252,6 +19291,18 @@ components:
       example:
         enabled: true
         summary: auto
+    ReasoningContext:
+      description: >-
+        Controls which reasoning is available to the model. `auto` uses the model default (same as omitting); `all_turns` includes reasoning from earlier turns passed in input; `current_turn` limits to the current turn only. Only supported by OpenAI GPT-5.6 and newer.
+      enum:
+        - auto
+        - all_turns
+        - current_turn
+        - null
+      example: all_turns
+      nullable: true
+      type: string
+      x-speakeasy-unknown-values: allow
     ReasoningDeltaEvent:
       allOf:
         - $ref: '#/components/schemas/BaseReasoningDeltaEvent'
@@ -19864,6 +19915,8 @@ components:
         prompt_cache_key:
           nullable: true
           type: string
+        prompt_cache_options:
+          $ref: '#/components/schemas/PromptCacheOptions'
         provider:
           $ref: '#/components/schemas/ProviderPreferences'
         reasoning:
