@@ -11,6 +11,7 @@ import { ClientSDK, RequestOptions } from "../lib/sdks.js";
 import * as models from "../models/index.js";
 import * as operations from "../models/operations/index.js";
 import { unwrapAsync } from "../types/fp.js";
+import { PageIterator, unwrapResultIterator } from "../types/operations.js";
 
 export class Models extends ClientSDK {
   /**
@@ -36,8 +37,8 @@ export class Models extends ClientSDK {
   async list(
     request?: operations.GetModelsRequest | undefined,
     options?: RequestOptions,
-  ): Promise<models.ModelsListResponse> {
-    return unwrapAsync(modelsList(
+  ): Promise<PageIterator<operations.GetModelsResponse, { offset: number }>> {
+    return unwrapResultIterator(modelsList(
       this,
       request,
       options,
@@ -68,8 +69,10 @@ export class Models extends ClientSDK {
     security: operations.ListModelsUserSecurity,
     request?: operations.ListModelsUserRequest | undefined,
     options?: RequestOptions,
-  ): Promise<models.ModelsListResponse> {
-    return unwrapAsync(modelsListForUser(
+  ): Promise<
+    PageIterator<operations.ListModelsUserResponse, { offset: number }>
+  > {
+    return unwrapResultIterator(modelsListForUser(
       this,
       security,
       request,
