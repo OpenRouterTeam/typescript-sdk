@@ -12,6 +12,11 @@ import {
   AdditionalToolsItem$outboundSchema,
 } from "./additionaltoolsitem.js";
 import {
+  AgentMessageItem,
+  AgentMessageItem$Outbound,
+  AgentMessageItem$outboundSchema,
+} from "./agentmessageitem.js";
+import {
   ApplyPatchCallItem,
   ApplyPatchCallItem$Outbound,
   ApplyPatchCallItem$outboundSchema,
@@ -408,6 +413,7 @@ export type InputsUnion1 =
   | OutputDatetimeItem
   | McpListToolsItem
   | CustomToolCallItem
+  | AgentMessageItem
   | ReasoningItem
   | FunctionCallOutputItem
   | ApplyPatchCallOutputItem
@@ -462,6 +468,7 @@ export type InputsUnion =
     | OutputDatetimeItem
     | McpListToolsItem
     | CustomToolCallItem
+    | AgentMessageItem
     | ReasoningItem
     | FunctionCallOutputItem
     | ApplyPatchCallOutputItem
@@ -769,6 +776,7 @@ export type InputsUnion1$Outbound =
   | OutputDatetimeItem$Outbound
   | McpListToolsItem$Outbound
   | CustomToolCallItem$Outbound
+  | AgentMessageItem$Outbound
   | ReasoningItem$Outbound
   | FunctionCallOutputItem$Outbound
   | ApplyPatchCallOutputItem$Outbound
@@ -822,6 +830,7 @@ export const InputsUnion1$outboundSchema: z.ZodType<
   OutputDatetimeItem$outboundSchema,
   McpListToolsItem$outboundSchema,
   CustomToolCallItem$outboundSchema,
+  AgentMessageItem$outboundSchema,
   ReasoningItem$outboundSchema,
   FunctionCallOutputItem$outboundSchema,
   ApplyPatchCallOutputItem$outboundSchema,
@@ -879,6 +888,7 @@ export type InputsUnion$Outbound =
     | OutputDatetimeItem$Outbound
     | McpListToolsItem$Outbound
     | CustomToolCallItem$Outbound
+    | AgentMessageItem$Outbound
     | ReasoningItem$Outbound
     | FunctionCallOutputItem$Outbound
     | ApplyPatchCallOutputItem$Outbound
@@ -936,6 +946,7 @@ export const InputsUnion$outboundSchema: z.ZodType<
       OutputDatetimeItem$outboundSchema,
       McpListToolsItem$outboundSchema,
       CustomToolCallItem$outboundSchema,
+      AgentMessageItem$outboundSchema,
       ReasoningItem$outboundSchema,
       FunctionCallOutputItem$outboundSchema,
       ApplyPatchCallOutputItem$outboundSchema,
