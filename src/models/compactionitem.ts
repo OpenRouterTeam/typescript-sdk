@@ -19,6 +19,7 @@ export type CompactionItem = {
   encryptedContent: string;
   id?: string | null | undefined;
   type: CompactionItemType;
+  additionalProperties?: { [k: string]: any | null } | undefined;
 };
 
 /** @internal */
@@ -31,6 +32,7 @@ export type CompactionItem$Outbound = {
   encrypted_content: string;
   id?: string | null | undefined;
   type: string;
+  [additionalProperties: string]: unknown;
 };
 
 /** @internal */
@@ -41,10 +43,15 @@ export const CompactionItem$outboundSchema: z.ZodType<
   encryptedContent: z.string(),
   id: z.nullable(z.string()).optional(),
   type: CompactionItemType$outboundSchema,
+  additionalProperties: z.record(z.string(), z.nullable(z.any())).optional(),
 }).transform((v) => {
-  return remap$(v, {
-    encryptedContent: "encrypted_content",
-  });
+  return {
+    ...v.additionalProperties,
+    ...remap$(v, {
+      encryptedContent: "encrypted_content",
+      additionalProperties: null,
+    }),
+  };
 });
 
 export function compactionItemToJSON(compactionItem: CompactionItem): string {
