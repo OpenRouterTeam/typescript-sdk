@@ -1,0 +1,24 @@
+---
+title: "PricingOverride"
+---
+
+## Example Usage
+
+```typescript
+import { PricingOverride } from "@openrouter/sdk/models";
+
+let value: PricingOverride = {};
+```
+
+## Fields
+
+| Field                                                                                        | Type                                                                                         | Required                                                                                     | Description                                                                                  |
+| -------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------- |
+| `audio`                                                                                      | *string*                                                                                     | :heavy_minus_sign:                                                                           | Overridden price in USD per audio input token                                                |
+| `completion`                                                                                 | *string*                                                                                     | :heavy_minus_sign:                                                                           | Overridden price in USD per token for completion (output) generation                         |
+| `inputAudioCache`                                                                            | *string*                                                                                     | :heavy_minus_sign:                                                                           | Overridden price in USD per cached audio input token                                         |
+| `inputCacheRead`                                                                             | *string*                                                                                     | :heavy_minus_sign:                                                                           | Overridden price in USD per cached input token (read)                                        |
+| `inputCacheWrite`                                                                            | *string*                                                                                     | :heavy_minus_sign:                                                                           | Overridden price in USD per cache-write token                                                |
+| `inputCacheWrite1h`                                                                          | *string*                                                                                     | :heavy_minus_sign:                                                                           | Overridden price in USD per 1-hour cache-write token                                         |
+| `minPromptTokens`                                                                            | *number*                                                                                     | :heavy_minus_sign:                                                                           | Condition: the entry applies when the total prompt tokens of a request exceed this threshold |
+| `prompt`                                                                                     | *string*                                                                                     | :heavy_minus_sign:                                                                           | Overridden price in USD per token for prompt (input) processing                              |
