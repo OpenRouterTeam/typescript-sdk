@@ -43,11 +43,6 @@ import {
   ChatDebugOptions$outboundSchema,
 } from "./chatdebugoptions.js";
 import {
-  ChatSearchModelsServerTool,
-  ChatSearchModelsServerTool$Outbound,
-  ChatSearchModelsServerTool$outboundSchema,
-} from "./chatsearchmodelsservertool.js";
-import {
   CodeInterpreterServerTool,
   CodeInterpreterServerTool$Outbound,
   CodeInterpreterServerTool$outboundSchema,
@@ -190,6 +185,11 @@ import {
   ResponseIncludesEnum$outboundSchema,
 } from "./responseincludesenum.js";
 import {
+  SearchModelsServerToolOpenRouter,
+  SearchModelsServerToolOpenRouter$Outbound,
+  SearchModelsServerToolOpenRouter$outboundSchema,
+} from "./searchmodelsservertoolopenrouter.js";
+import {
   ShellServerTool,
   ShellServerTool$Outbound,
   ShellServerTool$outboundSchema,
@@ -308,7 +308,7 @@ export type ResponsesRequestToolUnion =
   | (ImageGenerationServerToolOpenRouter & {
     type: "openrouter:image_generation";
   })
-  | (ChatSearchModelsServerTool & {
+  | (SearchModelsServerToolOpenRouter & {
     type: "openrouter:experimental__search_models";
   })
   | (WebFetchServerTool & { type: "openrouter:web_fetch" })
@@ -430,7 +430,7 @@ export type ResponsesRequest = {
       | (ImageGenerationServerToolOpenRouter & {
         type: "openrouter:image_generation";
       })
-      | (ChatSearchModelsServerTool & {
+      | (SearchModelsServerToolOpenRouter & {
         type: "openrouter:experimental__search_models";
       })
       | (WebFetchServerTool & { type: "openrouter:web_fetch" })
@@ -553,7 +553,7 @@ export type ResponsesRequestToolUnion$Outbound =
   | (ImageGenerationServerToolOpenRouter$Outbound & {
     type: "openrouter:image_generation";
   })
-  | (ChatSearchModelsServerTool$Outbound & {
+  | (SearchModelsServerToolOpenRouter$Outbound & {
     type: "openrouter:experimental__search_models";
   })
   | (WebFetchServerTool$Outbound & { type: "openrouter:web_fetch" })
@@ -621,7 +621,7 @@ export const ResponsesRequestToolUnion$outboundSchema: z.ZodType<
   ImageGenerationServerToolOpenRouter$outboundSchema.and(
     z.object({ type: z.literal("openrouter:image_generation") }),
   ),
-  ChatSearchModelsServerTool$outboundSchema.and(
+  SearchModelsServerToolOpenRouter$outboundSchema.and(
     z.object({ type: z.literal("openrouter:experimental__search_models") }),
   ),
   WebFetchServerTool$outboundSchema.and(
@@ -725,7 +725,7 @@ export type ResponsesRequest$Outbound = {
       | (ImageGenerationServerToolOpenRouter$Outbound & {
         type: "openrouter:image_generation";
       })
-      | (ChatSearchModelsServerTool$Outbound & {
+      | (SearchModelsServerToolOpenRouter$Outbound & {
         type: "openrouter:experimental__search_models";
       })
       | (WebFetchServerTool$Outbound & { type: "openrouter:web_fetch" })
@@ -855,7 +855,7 @@ export const ResponsesRequest$outboundSchema: z.ZodType<
       ImageGenerationServerToolOpenRouter$outboundSchema.and(
         z.object({ type: z.literal("openrouter:image_generation") }),
       ),
-      ChatSearchModelsServerTool$outboundSchema.and(
+      SearchModelsServerToolOpenRouter$outboundSchema.and(
         z.object({ type: z.literal("openrouter:experimental__search_models") }),
       ),
       WebFetchServerTool$outboundSchema.and(
