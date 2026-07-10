@@ -4174,6 +4174,7 @@ components:
         - crusoe
         - darkbloom
         - decart
+        - deepgram
         - deepinfra
         - deepseek
         - dekallm
@@ -12711,6 +12712,7 @@ components:
                 - Crusoe
                 - Darkbloom
                 - Decart
+                - Deepgram
                 - DeepInfra
                 - DeepSeek
                 - DekaLLM
@@ -18176,6 +18178,7 @@ components:
         - Crusoe
         - Darkbloom
         - Decart
+        - Deepgram
         - DeepInfra
         - DeepSeek
         - DekaLLM
@@ -18372,6 +18375,10 @@ components:
             nullable: true
           type: object
         decart:
+          additionalProperties:
+            nullable: true
+          type: object
+        deepgram:
           additionalProperties:
             nullable: true
           type: object
@@ -18986,6 +18993,7 @@ components:
             - Crusoe
             - Darkbloom
             - Decart
+            - Deepgram
             - DeepInfra
             - DeepSeek
             - DekaLLM
@@ -24988,6 +24996,7 @@ paths:
               - crusoe
               - darkbloom
               - decart
+              - deepgram
               - deepinfra
               - deepseek
               - dekallm
