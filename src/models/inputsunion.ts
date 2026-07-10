@@ -12,6 +12,11 @@ import {
   AdditionalToolsItem$outboundSchema,
 } from "./additionaltoolsitem.js";
 import {
+  AgentMessageItem,
+  AgentMessageItem$Outbound,
+  AgentMessageItem$outboundSchema,
+} from "./agentmessageitem.js";
+import {
   ApplyPatchCallItem,
   ApplyPatchCallItem$Outbound,
   ApplyPatchCallItem$outboundSchema,
@@ -26,6 +31,11 @@ import {
   CompactionItem$Outbound,
   CompactionItem$outboundSchema,
 } from "./compactionitem.js";
+import {
+  ContextCompactionItem,
+  ContextCompactionItem$Outbound,
+  ContextCompactionItem$outboundSchema,
+} from "./contextcompactionitem.js";
 import {
   CustomToolCallItem,
   CustomToolCallItem$Outbound,
@@ -408,6 +418,7 @@ export type InputsUnion1 =
   | OutputDatetimeItem
   | McpListToolsItem
   | CustomToolCallItem
+  | AgentMessageItem
   | ReasoningItem
   | FunctionCallOutputItem
   | ApplyPatchCallOutputItem
@@ -440,7 +451,8 @@ export type InputsUnion1 =
   | CompactionItem
   | ItemReferenceItem
   | EasyInputMessage
-  | InputMessageItem;
+  | InputMessageItem
+  | ContextCompactionItem;
 
 /**
  * Input for a response request - can be a string or array of items
@@ -462,6 +474,7 @@ export type InputsUnion =
     | OutputDatetimeItem
     | McpListToolsItem
     | CustomToolCallItem
+    | AgentMessageItem
     | ReasoningItem
     | FunctionCallOutputItem
     | ApplyPatchCallOutputItem
@@ -495,6 +508,7 @@ export type InputsUnion =
     | ItemReferenceItem
     | EasyInputMessage
     | InputMessageItem
+    | ContextCompactionItem
   >;
 
 /** @internal */
@@ -769,6 +783,7 @@ export type InputsUnion1$Outbound =
   | OutputDatetimeItem$Outbound
   | McpListToolsItem$Outbound
   | CustomToolCallItem$Outbound
+  | AgentMessageItem$Outbound
   | ReasoningItem$Outbound
   | FunctionCallOutputItem$Outbound
   | ApplyPatchCallOutputItem$Outbound
@@ -801,7 +816,8 @@ export type InputsUnion1$Outbound =
   | CompactionItem$Outbound
   | ItemReferenceItem$Outbound
   | EasyInputMessage$Outbound
-  | InputMessageItem$Outbound;
+  | InputMessageItem$Outbound
+  | ContextCompactionItem$Outbound;
 
 /** @internal */
 export const InputsUnion1$outboundSchema: z.ZodType<
@@ -822,6 +838,7 @@ export const InputsUnion1$outboundSchema: z.ZodType<
   OutputDatetimeItem$outboundSchema,
   McpListToolsItem$outboundSchema,
   CustomToolCallItem$outboundSchema,
+  AgentMessageItem$outboundSchema,
   ReasoningItem$outboundSchema,
   FunctionCallOutputItem$outboundSchema,
   ApplyPatchCallOutputItem$outboundSchema,
@@ -855,6 +872,7 @@ export const InputsUnion1$outboundSchema: z.ZodType<
   ItemReferenceItem$outboundSchema,
   EasyInputMessage$outboundSchema,
   InputMessageItem$outboundSchema,
+  ContextCompactionItem$outboundSchema,
 ]);
 
 export function inputsUnion1ToJSON(inputsUnion1: InputsUnion1): string {
@@ -879,6 +897,7 @@ export type InputsUnion$Outbound =
     | OutputDatetimeItem$Outbound
     | McpListToolsItem$Outbound
     | CustomToolCallItem$Outbound
+    | AgentMessageItem$Outbound
     | ReasoningItem$Outbound
     | FunctionCallOutputItem$Outbound
     | ApplyPatchCallOutputItem$Outbound
@@ -912,6 +931,7 @@ export type InputsUnion$Outbound =
     | ItemReferenceItem$Outbound
     | EasyInputMessage$Outbound
     | InputMessageItem$Outbound
+    | ContextCompactionItem$Outbound
   >;
 
 /** @internal */
@@ -936,6 +956,7 @@ export const InputsUnion$outboundSchema: z.ZodType<
       OutputDatetimeItem$outboundSchema,
       McpListToolsItem$outboundSchema,
       CustomToolCallItem$outboundSchema,
+      AgentMessageItem$outboundSchema,
       ReasoningItem$outboundSchema,
       FunctionCallOutputItem$outboundSchema,
       ApplyPatchCallOutputItem$outboundSchema,
@@ -969,6 +990,7 @@ export const InputsUnion$outboundSchema: z.ZodType<
       ItemReferenceItem$outboundSchema,
       EasyInputMessage$outboundSchema,
       InputMessageItem$outboundSchema,
+      ContextCompactionItem$outboundSchema,
     ]),
   ),
 ]);
