@@ -6,6 +6,7 @@
 import * as z from "zod/v4";
 import { remap as remap$ } from "../lib/primitives.js";
 import { safeParse } from "../lib/schemas.js";
+import { ClosedEnum } from "../types/enums.js";
 import { Result as SafeParseResult } from "../types/fp.js";
 import { SDKValidationError } from "./errors/sdkvalidationerror.js";
 import {
@@ -31,6 +32,13 @@ import {
   WebSearchUserLocation$outboundSchema,
 } from "./websearchuserlocation.js";
 
+export const WebSearchServerToolType = {
+  WebSearch20250826: "web_search_2025_08_26",
+} as const;
+export type WebSearchServerToolType = ClosedEnum<
+  typeof WebSearchServerToolType
+>;
+
 /**
  * Web search tool configuration (2025-08-26 version)
  */
@@ -48,12 +56,21 @@ export type WebSearchServerTool = {
    * Size of the search context for web search tools
    */
   searchContextSize?: SearchContextSizeEnum | undefined;
-  type: "web_search_2025_08_26";
+  type: WebSearchServerToolType;
   /**
    * User location information for web search
    */
   userLocation?: WebSearchUserLocation | null | undefined;
 };
+
+/** @internal */
+export const WebSearchServerToolType$inboundSchema: z.ZodEnum<
+  typeof WebSearchServerToolType
+> = z.enum(WebSearchServerToolType);
+/** @internal */
+export const WebSearchServerToolType$outboundSchema: z.ZodEnum<
+  typeof WebSearchServerToolType
+> = WebSearchServerToolType$inboundSchema;
 
 /** @internal */
 export const WebSearchServerTool$inboundSchema: z.ZodType<
@@ -64,7 +81,7 @@ export const WebSearchServerTool$inboundSchema: z.ZodType<
   filters: z.nullable(WebSearchDomainFilter$inboundSchema).optional(),
   max_results: z.int().optional(),
   search_context_size: SearchContextSizeEnum$inboundSchema.optional(),
-  type: z.literal("web_search_2025_08_26"),
+  type: WebSearchServerToolType$inboundSchema,
   user_location: z.nullable(WebSearchUserLocation$inboundSchema).optional(),
 }).transform((v) => {
   return remap$(v, {
@@ -79,7 +96,7 @@ export type WebSearchServerTool$Outbound = {
   filters?: WebSearchDomainFilter$Outbound | null | undefined;
   max_results?: number | undefined;
   search_context_size?: string | undefined;
-  type: "web_search_2025_08_26";
+  type: string;
   user_location?: WebSearchUserLocation$Outbound | null | undefined;
 };
 
@@ -92,7 +109,7 @@ export const WebSearchServerTool$outboundSchema: z.ZodType<
   filters: z.nullable(WebSearchDomainFilter$outboundSchema).optional(),
   maxResults: z.int().optional(),
   searchContextSize: SearchContextSizeEnum$outboundSchema.optional(),
-  type: z.literal("web_search_2025_08_26"),
+  type: WebSearchServerToolType$outboundSchema,
   userLocation: z.nullable(WebSearchUserLocation$outboundSchema).optional(),
 }).transform((v) => {
   return remap$(v, {

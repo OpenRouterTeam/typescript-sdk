@@ -8,7 +8,7 @@ import { safeParse } from "../lib/schemas.js";
 import * as discriminatedUnionTypes from "../types/discriminatedUnion.js";
 import { discriminatedUnion } from "../types/discriminatedUnion.js";
 import * as openEnums from "../types/enums.js";
-import { OpenEnum } from "../types/enums.js";
+import { ClosedEnum, OpenEnum } from "../types/enums.js";
 import { Result as SafeParseResult } from "../types/fp.js";
 import { SDKValidationError } from "./errors/sdkvalidationerror.js";
 
@@ -33,6 +33,11 @@ export type Format =
   | FormatGrammar
   | discriminatedUnionTypes.Unknown<"type">;
 
+export const CustomToolTypeCustom = {
+  Custom: "custom",
+} as const;
+export type CustomToolTypeCustom = ClosedEnum<typeof CustomToolTypeCustom>;
+
 /**
  * Custom tool configuration
  */
@@ -44,7 +49,7 @@ export type CustomTool = {
     | discriminatedUnionTypes.Unknown<"type">
     | undefined;
   name: string;
-  type: "custom";
+  type: CustomToolTypeCustom;
 };
 
 /** @internal */
@@ -152,6 +157,15 @@ export function formatFromJSON(
 }
 
 /** @internal */
+export const CustomToolTypeCustom$inboundSchema: z.ZodEnum<
+  typeof CustomToolTypeCustom
+> = z.enum(CustomToolTypeCustom);
+/** @internal */
+export const CustomToolTypeCustom$outboundSchema: z.ZodEnum<
+  typeof CustomToolTypeCustom
+> = CustomToolTypeCustom$inboundSchema;
+
+/** @internal */
 export const CustomTool$inboundSchema: z.ZodType<CustomTool, unknown> = z
   .object({
     description: z.string().optional(),
@@ -160,14 +174,14 @@ export const CustomTool$inboundSchema: z.ZodType<CustomTool, unknown> = z
       grammar: z.lazy(() => FormatGrammar$inboundSchema),
     }).optional(),
     name: z.string(),
-    type: z.literal("custom"),
+    type: CustomToolTypeCustom$inboundSchema,
   });
 /** @internal */
 export type CustomTool$Outbound = {
   description?: string | undefined;
   format?: FormatText$Outbound | FormatGrammar$Outbound | undefined;
   name: string;
-  type: "custom";
+  type: string;
 };
 
 /** @internal */
@@ -181,7 +195,7 @@ export const CustomTool$outboundSchema: z.ZodType<
     z.lazy(() => FormatGrammar$outboundSchema),
   ]).optional(),
   name: z.string(),
-  type: z.literal("custom"),
+  type: CustomToolTypeCustom$outboundSchema,
 });
 
 export function customToolToJSON(customTool: CustomTool): string {
