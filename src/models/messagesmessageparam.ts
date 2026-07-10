@@ -95,7 +95,7 @@ export type ContentServerToolUse = {
    */
   cacheControl?: AnthropicCacheControlDirective | undefined;
   id: string;
-  input?: any | null | undefined;
+  input?: any | undefined;
   name: string;
   type: "server_tool_use";
 };
@@ -159,7 +159,7 @@ export type ContentToolUse = {
    */
   cacheControl?: AnthropicCacheControlDirective | undefined;
   id: string;
-  input?: any | null | undefined;
+  input?: any | undefined;
   name: string;
   type: "tool_use";
 };
@@ -359,7 +359,7 @@ export function contentWebSearchToolResultToJSON(
 export type ContentServerToolUse$Outbound = {
   cache_control?: AnthropicCacheControlDirective$Outbound | undefined;
   id: string;
-  input?: any | null | undefined;
+  input?: any | undefined;
   name: string;
   type: "server_tool_use";
 };
@@ -371,7 +371,7 @@ export const ContentServerToolUse$outboundSchema: z.ZodType<
 > = z.object({
   cacheControl: AnthropicCacheControlDirective$outboundSchema.optional(),
   id: z.string(),
-  input: z.nullable(z.any()).optional(),
+  input: z.any().optional(),
   name: z.string(),
   type: z.literal("server_tool_use"),
 }).transform((v) => {
@@ -588,7 +588,7 @@ export function contentToolResultToJSON(
 export type ContentToolUse$Outbound = {
   cache_control?: AnthropicCacheControlDirective$Outbound | undefined;
   id: string;
-  input?: any | null | undefined;
+  input?: any | undefined;
   name: string;
   type: "tool_use";
 };
@@ -600,7 +600,7 @@ export const ContentToolUse$outboundSchema: z.ZodType<
 > = z.object({
   cacheControl: AnthropicCacheControlDirective$outboundSchema.optional(),
   id: z.string(),
-  input: z.nullable(z.any()).optional(),
+  input: z.any().optional(),
   name: z.string(),
   type: z.literal("tool_use"),
 }).transform((v) => {
