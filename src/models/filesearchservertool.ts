@@ -7,7 +7,7 @@ import * as z from "zod/v4";
 import { remap as remap$ } from "../lib/primitives.js";
 import { safeParse } from "../lib/schemas.js";
 import * as openEnums from "../types/enums.js";
-import { ClosedEnum, OpenEnum } from "../types/enums.js";
+import { OpenEnum } from "../types/enums.js";
 import { Result as SafeParseResult } from "../types/fp.js";
 import {
   CompoundFilter,
@@ -54,11 +54,6 @@ export type RankingOptions = {
   scoreThreshold?: number | undefined;
 };
 
-export const TypeFileSearch = {
-  FileSearch: "file_search",
-} as const;
-export type TypeFileSearch = ClosedEnum<typeof TypeFileSearch>;
-
 /**
  * File search tool configuration
  */
@@ -66,7 +61,7 @@ export type FileSearchServerTool = {
   filters?: Filters | CompoundFilter | any | null | undefined;
   maxNumResults?: number | undefined;
   rankingOptions?: RankingOptions | undefined;
-  type: TypeFileSearch;
+  type: "file_search";
   vectorStoreIds: Array<string>;
 };
 
@@ -283,13 +278,6 @@ export function rankingOptionsFromJSON(
 }
 
 /** @internal */
-export const TypeFileSearch$inboundSchema: z.ZodEnum<typeof TypeFileSearch> = z
-  .enum(TypeFileSearch);
-/** @internal */
-export const TypeFileSearch$outboundSchema: z.ZodEnum<typeof TypeFileSearch> =
-  TypeFileSearch$inboundSchema;
-
-/** @internal */
 export const FileSearchServerTool$inboundSchema: z.ZodType<
   FileSearchServerTool,
   unknown
@@ -303,7 +291,7 @@ export const FileSearchServerTool$inboundSchema: z.ZodType<
   ).optional(),
   max_num_results: z.int().optional(),
   ranking_options: z.lazy(() => RankingOptions$inboundSchema).optional(),
-  type: TypeFileSearch$inboundSchema,
+  type: z.literal("file_search"),
   vector_store_ids: z.array(z.string()),
 }).transform((v) => {
   return remap$(v, {
@@ -317,7 +305,7 @@ export type FileSearchServerTool$Outbound = {
   filters?: Filters$Outbound | CompoundFilter$Outbound | any | null | undefined;
   max_num_results?: number | undefined;
   ranking_options?: RankingOptions$Outbound | undefined;
-  type: string;
+  type: "file_search";
   vector_store_ids: Array<string>;
 };
 
@@ -335,7 +323,7 @@ export const FileSearchServerTool$outboundSchema: z.ZodType<
   ).optional(),
   maxNumResults: z.int().optional(),
   rankingOptions: z.lazy(() => RankingOptions$outboundSchema).optional(),
-  type: TypeFileSearch$outboundSchema,
+  type: z.literal("file_search"),
   vectorStoreIds: z.array(z.string()),
 }).transform((v) => {
   return remap$(v, {
