@@ -4,19 +4,11 @@
  */
 
 import * as z from "zod/v4";
-import { ClosedEnum } from "../types/enums.js";
 import {
   ShellServerToolConfig,
   ShellServerToolConfig$Outbound,
   ShellServerToolConfig$outboundSchema,
 } from "./shellservertoolconfig.js";
-
-export const ShellServerToolOpenRouterType = {
-  OpenrouterShell: "openrouter:shell",
-} as const;
-export type ShellServerToolOpenRouterType = ClosedEnum<
-  typeof ShellServerToolOpenRouterType
->;
 
 /**
  * OpenRouter built-in server tool: runs shell commands server-side in a sandboxed container (a sandbox-backed clone of OpenAI's hosted shell tool)
@@ -26,18 +18,13 @@ export type ShellServerToolOpenRouter = {
    * Configuration for the openrouter:shell server tool
    */
   parameters?: ShellServerToolConfig | undefined;
-  type: ShellServerToolOpenRouterType;
+  type: "openrouter:shell";
 };
-
-/** @internal */
-export const ShellServerToolOpenRouterType$outboundSchema: z.ZodEnum<
-  typeof ShellServerToolOpenRouterType
-> = z.enum(ShellServerToolOpenRouterType);
 
 /** @internal */
 export type ShellServerToolOpenRouter$Outbound = {
   parameters?: ShellServerToolConfig$Outbound | undefined;
-  type: string;
+  type: "openrouter:shell";
 };
 
 /** @internal */
@@ -46,7 +33,7 @@ export const ShellServerToolOpenRouter$outboundSchema: z.ZodType<
   ShellServerToolOpenRouter
 > = z.object({
   parameters: ShellServerToolConfig$outboundSchema.optional(),
-  type: ShellServerToolOpenRouterType$outboundSchema,
+  type: z.literal("openrouter:shell"),
 });
 
 export function shellServerToolOpenRouterToJSON(
