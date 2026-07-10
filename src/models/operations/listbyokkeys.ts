@@ -109,7 +109,7 @@ export const Provider = {
   Recraft: "recraft",
   Reka: "reka",
   Relace: "relace",
-  Sakana: "sakana",
+  SakanaAi: "sakana-ai",
   Sambanova: "sambanova",
   Seed: "seed",
   Siliconflow: "siliconflow",
