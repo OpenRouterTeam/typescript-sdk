@@ -6,8 +6,6 @@
 import * as z from "zod/v4";
 import { remap as remap$ } from "../lib/primitives.js";
 import { safeParse } from "../lib/schemas.js";
-import * as openEnums from "../types/enums.js";
-import { OpenEnum } from "../types/enums.js";
 import { Result as SafeParseResult } from "../types/fp.js";
 import {
   EndpointStatus,
@@ -20,6 +18,7 @@ import {
   PercentileStats$inboundSchema,
 } from "./percentilestats.js";
 import { ProviderName, ProviderName$inboundSchema } from "./providername.js";
+import { Quantization, Quantization$inboundSchema } from "./quantization.js";
 
 export type Pricing = {
   /**
@@ -84,21 +83,6 @@ export type Pricing = {
   webSearch?: string | undefined;
 };
 
-export const PublicEndpointQuantization = {
-  Int4: "int4",
-  Int8: "int8",
-  Fp4: "fp4",
-  Fp6: "fp6",
-  Fp8: "fp8",
-  Fp16: "fp16",
-  Bf16: "bf16",
-  Fp32: "fp32",
-  Unknown: "unknown",
-} as const;
-export type PublicEndpointQuantization = OpenEnum<
-  typeof PublicEndpointQuantization
->;
-
 /**
  * Information about a specific model endpoint
  */
@@ -118,7 +102,7 @@ export type PublicEndpoint = {
   name: string;
   pricing: Pricing;
   providerName: ProviderName;
-  quantization: PublicEndpointQuantization | null;
+  quantization: Quantization | null;
   status?: EndpointStatus | undefined;
   supportedParameters: Array<Parameter>;
   supportsImplicitCaching: boolean;
@@ -177,12 +161,6 @@ export function pricingFromJSON(
 }
 
 /** @internal */
-export const PublicEndpointQuantization$inboundSchema: z.ZodType<
-  PublicEndpointQuantization,
-  unknown
-> = openEnums.inboundSchema(PublicEndpointQuantization);
-
-/** @internal */
 export const PublicEndpoint$inboundSchema: z.ZodType<PublicEndpoint, unknown> =
   z.object({
     context_length: z.int(),
@@ -194,7 +172,7 @@ export const PublicEndpoint$inboundSchema: z.ZodType<PublicEndpoint, unknown> =
     name: z.string(),
     pricing: z.lazy(() => Pricing$inboundSchema),
     provider_name: ProviderName$inboundSchema,
-    quantization: z.nullable(PublicEndpointQuantization$inboundSchema),
+    quantization: z.nullable(Quantization$inboundSchema),
     status: EndpointStatus$inboundSchema.optional(),
     supported_parameters: z.array(Parameter$inboundSchema),
     supports_implicit_caching: z.boolean(),

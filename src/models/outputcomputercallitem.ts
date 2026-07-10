@@ -34,7 +34,7 @@ export type OutputComputerCallItemType = ClosedEnum<
 >;
 
 export type OutputComputerCallItem = {
-  action?: any | null | undefined;
+  action?: any | undefined;
   callId: string;
   id?: string | undefined;
   pendingSafetyChecks: Array<PendingSafetyCheck>;
@@ -110,7 +110,7 @@ export const OutputComputerCallItem$inboundSchema: z.ZodType<
   OutputComputerCallItem,
   unknown
 > = z.object({
-  action: z.nullable(z.any()).optional(),
+  action: z.any().optional(),
   call_id: z.string(),
   id: z.string().optional(),
   pending_safety_checks: z.array(
@@ -126,7 +126,7 @@ export const OutputComputerCallItem$inboundSchema: z.ZodType<
 });
 /** @internal */
 export type OutputComputerCallItem$Outbound = {
-  action?: any | null | undefined;
+  action?: any | undefined;
   call_id: string;
   id?: string | undefined;
   pending_safety_checks: Array<PendingSafetyCheck$Outbound>;
@@ -139,7 +139,7 @@ export const OutputComputerCallItem$outboundSchema: z.ZodType<
   OutputComputerCallItem$Outbound,
   OutputComputerCallItem
 > = z.object({
-  action: z.nullable(z.any()).optional(),
+  action: z.any().optional(),
   callId: z.string(),
   id: z.string().optional(),
   pendingSafetyChecks: z.array(z.lazy(() => PendingSafetyCheck$outboundSchema)),
