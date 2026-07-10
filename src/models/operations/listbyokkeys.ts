@@ -63,6 +63,7 @@ export const Provider = {
   Crusoe: "crusoe",
   Darkbloom: "darkbloom",
   Decart: "decart",
+  Deepgram: "deepgram",
   Deepinfra: "deepinfra",
   Deepseek: "deepseek",
   Dekallm: "dekallm",
