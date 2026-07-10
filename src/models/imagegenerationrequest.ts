@@ -179,7 +179,7 @@ export type ImageGenerationRequestOptions = {
   reka?: { [k: string]: any | null } | undefined;
   relace?: { [k: string]: any | null } | undefined;
   replicate?: { [k: string]: any | null } | undefined;
-  sakana?: { [k: string]: any | null } | undefined;
+  sakanaAi?: { [k: string]: any | null } | undefined;
   sambanova?: { [k: string]: any | null } | undefined;
   sambanovaCloaked?: { [k: string]: any | null } | undefined;
   seed?: { [k: string]: any | null } | undefined;
@@ -296,7 +296,7 @@ export type ImageGenerationRequest = {
    */
   seed?: number | undefined;
   /**
-   * Optional. A convenience shorthand for output dimensions — pass a tier ("2K", "4K") or explicit pixels ("2048x2048") and we normalize it to the right dimensions for the chosen provider. A tier size is equivalent to setting `resolution` and combines with `aspect_ratio`. An explicit pixel size is authoritative: a mismatched `resolution` or `aspect_ratio` alongside it is rejected with a 400.
+   * Optional. A convenience shorthand for output dimensions — pass a tier ("2K", "4K") or explicit pixels ("2048x2048") and we normalize it to the right dimensions for the chosen provider. Interchangeable with resolution + aspect_ratio; use those directly for enumerated, per-model discoverable values. Conflicting size + resolution/aspect_ratio is rejected.
    */
   size?: string | undefined;
   /**
@@ -422,7 +422,7 @@ export type ImageGenerationRequestOptions$Outbound = {
   reka?: { [k: string]: any | null } | undefined;
   relace?: { [k: string]: any | null } | undefined;
   replicate?: { [k: string]: any | null } | undefined;
-  sakana?: { [k: string]: any | null } | undefined;
+  "sakana-ai"?: { [k: string]: any | null } | undefined;
   sambanova?: { [k: string]: any | null } | undefined;
   "sambanova-cloaked"?: { [k: string]: any | null } | undefined;
   seed?: { [k: string]: any | null } | undefined;
@@ -549,7 +549,7 @@ export const ImageGenerationRequestOptions$outboundSchema: z.ZodType<
   reka: z.record(z.string(), z.nullable(z.any())).optional(),
   relace: z.record(z.string(), z.nullable(z.any())).optional(),
   replicate: z.record(z.string(), z.nullable(z.any())).optional(),
-  sakana: z.record(z.string(), z.nullable(z.any())).optional(),
+  sakanaAi: z.record(z.string(), z.nullable(z.any())).optional(),
   sambanova: z.record(z.string(), z.nullable(z.any())).optional(),
   sambanovaCloaked: z.record(z.string(), z.nullable(z.any())).optional(),
   seed: z.record(z.string(), z.nullable(z.any())).optional(),
@@ -592,6 +592,7 @@ export const ImageGenerationRequestOptions$outboundSchema: z.ZodType<
     mancerOld: "mancer-old",
     nexAgi: "nex-agi",
     openInference: "open-inference",
+    sakanaAi: "sakana-ai",
     sambanovaCloaked: "sambanova-cloaked",
     sfCompute: "sf-compute",
     togetherLite: "together-lite",
