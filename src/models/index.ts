@@ -11,6 +11,7 @@ export * from "./advisornestedtool.js";
 export * from "./advisorreasoning.js";
 export * from "./advisorservertoolconfig.js";
 export * from "./advisorservertoolopenrouter.js";
+export * from "./agentmessageitem.js";
 export * from "./annotationaddedevent.js";
 export * from "./anthropicadvisormessageusageiteration.js";
 export * from "./anthropicallowedcallers.js";
