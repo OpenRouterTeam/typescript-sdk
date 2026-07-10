@@ -6,7 +6,6 @@
 export * from "./aabenchmarkentry.js";
 export * from "./activityitem.js";
 export * from "./activityresponse.js";
-export * from "./additionaltoolsitem.js";
 export * from "./advisornestedtool.js";
 export * from "./advisorreasoning.js";
 export * from "./advisorservertoolconfig.js";
