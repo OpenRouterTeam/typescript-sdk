@@ -239,6 +239,7 @@ export * from "./imagegencallgeneratingevent.js";
 export * from "./imagegencallinprogressevent.js";
 export * from "./imagegencallpartialimageevent.js";
 export * from "./imagegencompletedevent.js";
+export * from "./imagegenerationproviderpreferences.js";
 export * from "./imagegenerationrequest.js";
 export * from "./imagegenerationresponse.js";
 export * from "./imagegenerationservertool.js";
