@@ -82,7 +82,7 @@ export type ChatFunctionToolFunctionFunction = {
   /**
    * Function parameters as JSON Schema object
    */
-  parameters?: { [k: string]: any | null } | undefined;
+  parameters?: { [k: string]: any } | undefined;
   /**
    * Enable strict schema adherence
    */
@@ -127,7 +127,7 @@ export type ChatFunctionTool =
 export type ChatFunctionToolFunctionFunction$Outbound = {
   description?: string | undefined;
   name: string;
-  parameters?: { [k: string]: any | null } | undefined;
+  parameters?: { [k: string]: any } | undefined;
   strict?: boolean | null | undefined;
 };
 
@@ -138,7 +138,7 @@ export const ChatFunctionToolFunctionFunction$outboundSchema: z.ZodType<
 > = z.object({
   description: z.string().optional(),
   name: z.string(),
-  parameters: z.record(z.string(), z.nullable(z.any())).optional(),
+  parameters: z.record(z.string(), z.any()).optional(),
   strict: z.nullable(z.boolean()).optional(),
 });
 

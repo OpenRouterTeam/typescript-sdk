@@ -9,7 +9,7 @@ import { Result as SafeParseResult } from "../types/fp.js";
 import { SDKValidationError } from "./errors/sdkvalidationerror.js";
 
 export type Input2 = {
-  messages: Array<any | null>;
+  messages: Array<any>;
 };
 
 export type Input1 = {
@@ -51,7 +51,7 @@ export type GenerationContentData = {
 
 /** @internal */
 export const Input2$inboundSchema: z.ZodType<Input2, unknown> = z.object({
-  messages: z.array(z.nullable(z.any())),
+  messages: z.array(z.any()),
 });
 
 export function input2FromJSON(
