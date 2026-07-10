@@ -23902,6 +23902,78 @@ paths:
                 start: '2025-01-01T00:00:00Z'
             schema:
               properties:
+                classifier_dimensions:
+                  description: >-
+                    Group results by custom classifier tags, breaking down metrics by the specified dimension values. Requires an active classifier on the workspace.
+                  properties:
+                    classifier_id:
+                      description: UUID of the classifier whose tags to group by.
+                      example: 550e8400-e29b-41d4-a716-446655440000
+                      format: uuid
+                      type: string
+                    dimension_names:
+                      items:
+                        description: >-
+                          Classifier dimension name (snake_case identifier). When exactly one name is provided, the response uses it as the column key; with multiple names or none, the response uses `clf_dimension_name`/`clf_dimension_value` columns.
+                        example: department
+                        type: string
+                      maxItems: 10
+                      type: array
+                    include_nulls:
+                      description: >-
+                        When true, also include generations that have no tag from this classifier. Defaults to false, which returns only classified generations.
+                      type: boolean
+                  required:
+                    - classifier_id
+                  type: object
+                classifier_filters:
+                  description: >-
+                    Filter results to generations with specific classifier tag values. Can be combined with classifier_dimensions (must use the same classifier_id) or used independently with standard dimensions.
+                  properties:
+                    classifier_id:
+                      description: >-
+                        UUID of the classifier whose tags to filter by. Must match classifier_dimensions.classifier_id when both are specified.
+                      example: 550e8400-e29b-41d4-a716-446655440000
+                      format: uuid
+                      type: string
+                    filters:
+                      items:
+                        properties:
+                          field:
+                            description: >-
+                              Classifier dimension name to filter on (snake_case identifier, e.g. "department", "work_type").
+                            example: department
+                            type: string
+                          operator:
+                            description: >-
+                              Filter operator. Only equality/set operators are supported (eq, neq, in, not_in) — ordered comparisons are not available because classification values are strings.
+                            example: eq
+                            type: string
+                          value:
+                            anyOf:
+                              - type: string
+                              - format: double
+                                type: number
+                              - items:
+                                  anyOf:
+                                    - type: string
+                                    - format: double
+                                      type: number
+                                type: array
+                            description: Filter value. Use a scalar (string or number) for eq/neq, or an array for in/not_in.
+                            example: Engineering
+                        required:
+                          - field
+                          - operator
+                          - value
+                        type: object
+                      maxItems: 10
+                      minItems: 1
+                      type: array
+                  required:
+                    - classifier_id
+                    - filters
+                  type: object
                 dimensions:
                   items:
                     description: Dimension to group by (up to 2). Use the /meta endpoint for available dimensions.
