@@ -28,6 +28,11 @@ import {
   ChatFormatGrammarConfig$outboundSchema,
 } from "./chatformatgrammarconfig.js";
 import {
+  ChatFormatJsonObjectConfig,
+  ChatFormatJsonObjectConfig$Outbound,
+  ChatFormatJsonObjectConfig$outboundSchema,
+} from "./chatformatjsonobjectconfig.js";
+import {
   ChatFormatJsonSchemaConfig,
   ChatFormatJsonSchemaConfig$Outbound,
   ChatFormatJsonSchemaConfig$outboundSchema,
@@ -76,11 +81,6 @@ import {
   FileParserPlugin$Outbound,
   FileParserPlugin$outboundSchema,
 } from "./fileparserplugin.js";
-import {
-  FormatJsonObjectConfig,
-  FormatJsonObjectConfig$Outbound,
-  FormatJsonObjectConfig$outboundSchema,
-} from "./formatjsonobjectconfig.js";
 import {
   FusionPlugin,
   FusionPlugin$Outbound,
@@ -202,7 +202,7 @@ export type ChatRequestReasoningEffort = OpenEnum<
  */
 export type ResponseFormat =
   | ChatFormatGrammarConfig
-  | FormatJsonObjectConfig
+  | ChatFormatJsonObjectConfig
   | ChatFormatJsonSchemaConfig
   | ChatFormatPythonConfig
   | ChatFormatTextConfig;
@@ -332,7 +332,7 @@ export type ChatRequest = {
    */
   responseFormat?:
     | ChatFormatGrammarConfig
-    | FormatJsonObjectConfig
+    | ChatFormatJsonObjectConfig
     | ChatFormatJsonSchemaConfig
     | ChatFormatPythonConfig
     | ChatFormatTextConfig
@@ -482,7 +482,7 @@ export const ChatRequestReasoningEffort$outboundSchema: z.ZodType<
 /** @internal */
 export type ResponseFormat$Outbound =
   | ChatFormatGrammarConfig$Outbound
-  | FormatJsonObjectConfig$Outbound
+  | ChatFormatJsonObjectConfig$Outbound
   | ChatFormatJsonSchemaConfig$Outbound
   | ChatFormatPythonConfig$Outbound
   | ChatFormatTextConfig$Outbound;
@@ -493,7 +493,7 @@ export const ResponseFormat$outboundSchema: z.ZodType<
   ResponseFormat
 > = z.union([
   ChatFormatGrammarConfig$outboundSchema,
-  FormatJsonObjectConfig$outboundSchema,
+  ChatFormatJsonObjectConfig$outboundSchema,
   ChatFormatJsonSchemaConfig$outboundSchema,
   ChatFormatPythonConfig$outboundSchema,
   ChatFormatTextConfig$outboundSchema,
@@ -560,7 +560,7 @@ export type ChatRequest$Outbound = {
   repetition_penalty?: number | null | undefined;
   response_format?:
     | ChatFormatGrammarConfig$Outbound
-    | FormatJsonObjectConfig$Outbound
+    | ChatFormatJsonObjectConfig$Outbound
     | ChatFormatJsonSchemaConfig$Outbound
     | ChatFormatPythonConfig$Outbound
     | ChatFormatTextConfig$Outbound
@@ -626,7 +626,7 @@ export const ChatRequest$outboundSchema: z.ZodType<
   repetitionPenalty: z.nullable(z.number()).optional(),
   responseFormat: z.union([
     ChatFormatGrammarConfig$outboundSchema,
-    FormatJsonObjectConfig$outboundSchema,
+    ChatFormatJsonObjectConfig$outboundSchema,
     ChatFormatJsonSchemaConfig$outboundSchema,
     ChatFormatPythonConfig$outboundSchema,
     ChatFormatTextConfig$outboundSchema,
