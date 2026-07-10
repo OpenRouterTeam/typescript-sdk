@@ -7,11 +7,6 @@ import * as z from "zod/v4";
 import { remap as remap$ } from "../lib/primitives.js";
 import { ClosedEnum } from "../types/enums.js";
 import {
-  AdditionalToolsItem,
-  AdditionalToolsItem$Outbound,
-  AdditionalToolsItem$outboundSchema,
-} from "./additionaltoolsitem.js";
-import {
   ApplyPatchCallItem,
   ApplyPatchCallItem$Outbound,
   ApplyPatchCallItem$outboundSchema,
@@ -419,7 +414,6 @@ export type InputsUnion1 =
   | ShellCallOutputItem
   | McpApprovalResponseItem
   | CustomToolCallOutputItem
-  | AdditionalToolsItem
   | OutputWebSearchServerToolItem
   | OutputCodeInterpreterServerToolItem
   | OutputFileSearchServerToolItem
@@ -473,7 +467,6 @@ export type InputsUnion =
     | ShellCallOutputItem
     | McpApprovalResponseItem
     | CustomToolCallOutputItem
-    | AdditionalToolsItem
     | OutputWebSearchServerToolItem
     | OutputCodeInterpreterServerToolItem
     | OutputFileSearchServerToolItem
@@ -780,7 +773,6 @@ export type InputsUnion1$Outbound =
   | ShellCallOutputItem$Outbound
   | McpApprovalResponseItem$Outbound
   | CustomToolCallOutputItem$Outbound
-  | AdditionalToolsItem$Outbound
   | OutputWebSearchServerToolItem$Outbound
   | OutputCodeInterpreterServerToolItem$Outbound
   | OutputFileSearchServerToolItem$Outbound
@@ -833,7 +825,6 @@ export const InputsUnion1$outboundSchema: z.ZodType<
   ShellCallOutputItem$outboundSchema,
   McpApprovalResponseItem$outboundSchema,
   CustomToolCallOutputItem$outboundSchema,
-  AdditionalToolsItem$outboundSchema,
   OutputWebSearchServerToolItem$outboundSchema,
   OutputCodeInterpreterServerToolItem$outboundSchema,
   OutputFileSearchServerToolItem$outboundSchema,
@@ -890,7 +881,6 @@ export type InputsUnion$Outbound =
     | ShellCallOutputItem$Outbound
     | McpApprovalResponseItem$Outbound
     | CustomToolCallOutputItem$Outbound
-    | AdditionalToolsItem$Outbound
     | OutputWebSearchServerToolItem$Outbound
     | OutputCodeInterpreterServerToolItem$Outbound
     | OutputFileSearchServerToolItem$Outbound
@@ -947,7 +937,6 @@ export const InputsUnion$outboundSchema: z.ZodType<
       ShellCallOutputItem$outboundSchema,
       McpApprovalResponseItem$outboundSchema,
       CustomToolCallOutputItem$outboundSchema,
-      AdditionalToolsItem$outboundSchema,
       OutputWebSearchServerToolItem$outboundSchema,
       OutputCodeInterpreterServerToolItem$outboundSchema,
       OutputFileSearchServerToolItem$outboundSchema,
