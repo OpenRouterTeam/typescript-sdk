@@ -1,0 +1,34 @@
+---
+title: "AgentMessageItem"
+---
+
+A message routed between agents in a multi-agent session
+
+## Example Usage
+
+```typescript
+import { AgentMessageItem } from "@openrouter/sdk/models";
+
+let value: AgentMessageItem = {
+  author: "/root/worker",
+  content: [
+    {
+      text: "Task complete.",
+      type: "input_text",
+    },
+  ],
+  recipient: "/root",
+  type: "agent_message",
+};
+```
+
+## Fields
+
+| Field                                                    | Type                                                     | Required                                                 | Description                                              |
+| -------------------------------------------------------- | -------------------------------------------------------- | -------------------------------------------------------- | -------------------------------------------------------- |
+| `agent`                                                  | [models.Agent](../models/agent.mdx)                       | :heavy_minus_sign:                                       | N/A                                                      |
+| `author`                                                 | *string*                                                 | :heavy_check_mark:                                       | N/A                                                      |
+| `content`                                                | *models.AgentMessageItemContentUnion*[]                  | :heavy_check_mark:                                       | N/A                                                      |
+| `id`                                                     | *string*                                                 | :heavy_minus_sign:                                       | N/A                                                      |
+| `recipient`                                              | *string*                                                 | :heavy_check_mark:                                       | N/A                                                      |
+| `type`                                                   | [models.TypeAgentMessage](../models/typeagentmessage.mdx) | :heavy_check_mark:                                       | N/A                                                      |
