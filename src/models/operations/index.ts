@@ -83,7 +83,6 @@ export * from "./listworkspacemembers.js";
 export * from "./listworkspaces.js";
 export * from "./queryanalytics.js";
 export * from "./sendchatcompletionrequest.js";
-export * from "./submitgenerationfeedback.js";
 export * from "./updatebyokkey.js";
 export * from "./updateguardrail.js";
 export * from "./updatekeys.js";
