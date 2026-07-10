@@ -1,0 +1,23 @@
+---
+title: "ClassifierDimensions"
+---
+
+Group results by custom classifier tags, breaking down metrics by the specified dimension values. Requires an active classifier on the workspace.
+
+## Example Usage
+
+```typescript
+import { ClassifierDimensions } from "@openrouter/sdk/models/operations";
+
+let value: ClassifierDimensions = {
+  classifierId: "550e8400-e29b-41d4-a716-446655440000",
+};
+```
+
+## Fields
+
+| Field                                                                                                                                    | Type                                                                                                                                     | Required                                                                                                                                 | Description                                                                                                                              | Example                                                                                                                                  |
+| ---------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------- |
+| `classifierId`                                                                                                                           | *string*                                                                                                                                 | :heavy_check_mark:                                                                                                                       | UUID of the classifier whose tags to group by.                                                                                           | 550e8400-e29b-41d4-a716-446655440000                                                                                                     |
+| `dimensionNames`                                                                                                                         | *string*[]                                                                                                                               | :heavy_minus_sign:                                                                                                                       | N/A                                                                                                                                      |                                                                                                                                          |
+| `includeNulls`                                                                                                                           | *boolean*                                                                                                                                | :heavy_minus_sign:                                                                                                                       | When true, also include generations that have no tag from this classifier. Defaults to false, which returns only classified generations. |                                                                                                                                          |
