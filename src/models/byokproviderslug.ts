@@ -60,6 +60,7 @@ export const BYOKProviderSlug = {
   Liquid: "liquid",
   Mancer: "mancer",
   Mara: "mara",
+  Meta: "meta",
   Minimax: "minimax",
   Mistral: "mistral",
   Modelrun: "modelrun",
