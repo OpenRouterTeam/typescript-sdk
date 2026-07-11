@@ -19,6 +19,10 @@ import {
   PercentileStats,
   PercentileStats$inboundSchema,
 } from "./percentilestats.js";
+import {
+  PricingOverride,
+  PricingOverride$inboundSchema,
+} from "./pricingoverride.js";
 import { ProviderName, ProviderName$inboundSchema } from "./providername.js";
 
 export type Pricing = {
@@ -70,6 +74,10 @@ export type Pricing = {
    * Price in USD per internal reasoning token
    */
   internalReasoning?: string | undefined;
+  /**
+   * Conditional overrides of the base pricing (e.g. long-context pricing). An entry applies when all of its condition fields (e.g. min_prompt_tokens) match the request; among applicable entries, later entries win per key; price keys absent from an entry inherit the base price.
+   */
+  overrides?: Array<PricingOverride> | undefined;
   /**
    * Price in USD per token for prompt (input) processing
    */
@@ -149,6 +157,7 @@ export const Pricing$inboundSchema: z.ZodType<Pricing, unknown> = z.object({
   input_cache_write: z.string().optional(),
   input_cache_write_1h: z.string().optional(),
   internal_reasoning: z.string().optional(),
+  overrides: z.array(PricingOverride$inboundSchema).optional(),
   prompt: z.string(),
   request: z.string().optional(),
   web_search: z.string().optional(),
