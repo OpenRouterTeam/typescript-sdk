@@ -16,7 +16,7 @@ export type AllowedTools = {
   toolNames?: Array<string> | undefined;
 };
 
-export type AllowedToolsUnion = Array<string> | AllowedTools | any;
+export type AllowedToolsUnion = Array<string> | AllowedTools;
 
 export const ConnectorId = {
   ConnectorDropbox: "connector_dropbox",
@@ -56,8 +56,7 @@ export type RequireApproval = {
 export type RequireApprovalUnion =
   | RequireApproval
   | RequireApprovalAlways
-  | RequireApprovalNever
-  | any;
+  | RequireApprovalNever;
 
 export const McpServerToolType = {
   Mcp: "mcp",
@@ -68,7 +67,7 @@ export type McpServerToolType = ClosedEnum<typeof McpServerToolType>;
  * MCP (Model Context Protocol) tool configuration
  */
 export type McpServerTool = {
-  allowedTools?: Array<string> | AllowedTools | any | null | undefined;
+  allowedTools?: Array<string> | AllowedTools | null | undefined;
   authorization?: string | undefined;
   connectorId?: ConnectorId | undefined;
   headers?: { [k: string]: string } | null | undefined;
@@ -76,7 +75,6 @@ export type McpServerTool = {
     | RequireApproval
     | RequireApprovalAlways
     | RequireApprovalNever
-    | any
     | null
     | undefined;
   serverDescription?: string | undefined;
@@ -133,26 +131,15 @@ export function allowedToolsFromJSON(
 export const AllowedToolsUnion$inboundSchema: z.ZodType<
   AllowedToolsUnion,
   unknown
-> = z.union([
-  z.array(z.string()),
-  z.lazy(() => AllowedTools$inboundSchema),
-  z.any(),
-]);
+> = z.union([z.array(z.string()), z.lazy(() => AllowedTools$inboundSchema)]);
 /** @internal */
-export type AllowedToolsUnion$Outbound =
-  | Array<string>
-  | AllowedTools$Outbound
-  | any;
+export type AllowedToolsUnion$Outbound = Array<string> | AllowedTools$Outbound;
 
 /** @internal */
 export const AllowedToolsUnion$outboundSchema: z.ZodType<
   AllowedToolsUnion$Outbound,
   AllowedToolsUnion
-> = z.union([
-  z.array(z.string()),
-  z.lazy(() => AllowedTools$outboundSchema),
-  z.any(),
-]);
+> = z.union([z.array(z.string()), z.lazy(() => AllowedTools$outboundSchema)]);
 
 export function allowedToolsUnionToJSON(
   allowedToolsUnion: AllowedToolsUnion,
@@ -313,14 +300,12 @@ export const RequireApprovalUnion$inboundSchema: z.ZodType<
   z.lazy(() => RequireApproval$inboundSchema),
   RequireApprovalAlways$inboundSchema,
   RequireApprovalNever$inboundSchema,
-  z.any(),
 ]);
 /** @internal */
 export type RequireApprovalUnion$Outbound =
   | RequireApproval$Outbound
   | string
-  | string
-  | any;
+  | string;
 
 /** @internal */
 export const RequireApprovalUnion$outboundSchema: z.ZodType<
@@ -330,7 +315,6 @@ export const RequireApprovalUnion$outboundSchema: z.ZodType<
   z.lazy(() => RequireApproval$outboundSchema),
   RequireApprovalAlways$outboundSchema,
   RequireApprovalNever$outboundSchema,
-  z.any(),
 ]);
 
 export function requireApprovalUnionToJSON(
@@ -363,11 +347,7 @@ export const McpServerToolType$outboundSchema: z.ZodEnum<
 export const McpServerTool$inboundSchema: z.ZodType<McpServerTool, unknown> = z
   .object({
     allowed_tools: z.nullable(
-      z.union([
-        z.array(z.string()),
-        z.lazy(() => AllowedTools$inboundSchema),
-        z.any(),
-      ]),
+      z.union([z.array(z.string()), z.lazy(() => AllowedTools$inboundSchema)]),
     ).optional(),
     authorization: z.string().optional(),
     connector_id: ConnectorId$inboundSchema.optional(),
@@ -377,7 +357,6 @@ export const McpServerTool$inboundSchema: z.ZodType<McpServerTool, unknown> = z
         z.lazy(() => RequireApproval$inboundSchema),
         RequireApprovalAlways$inboundSchema,
         RequireApprovalNever$inboundSchema,
-        z.any(),
       ]),
     ).optional(),
     server_description: z.string().optional(),
@@ -396,12 +375,7 @@ export const McpServerTool$inboundSchema: z.ZodType<McpServerTool, unknown> = z
   });
 /** @internal */
 export type McpServerTool$Outbound = {
-  allowed_tools?:
-    | Array<string>
-    | AllowedTools$Outbound
-    | any
-    | null
-    | undefined;
+  allowed_tools?: Array<string> | AllowedTools$Outbound | null | undefined;
   authorization?: string | undefined;
   connector_id?: string | undefined;
   headers?: { [k: string]: string } | null | undefined;
@@ -409,7 +383,6 @@ export type McpServerTool$Outbound = {
     | RequireApproval$Outbound
     | string
     | string
-    | any
     | null
     | undefined;
   server_description?: string | undefined;
@@ -424,11 +397,7 @@ export const McpServerTool$outboundSchema: z.ZodType<
   McpServerTool
 > = z.object({
   allowedTools: z.nullable(
-    z.union([
-      z.array(z.string()),
-      z.lazy(() => AllowedTools$outboundSchema),
-      z.any(),
-    ]),
+    z.union([z.array(z.string()), z.lazy(() => AllowedTools$outboundSchema)]),
   ).optional(),
   authorization: z.string().optional(),
   connectorId: ConnectorId$outboundSchema.optional(),
@@ -438,7 +407,6 @@ export const McpServerTool$outboundSchema: z.ZodType<
       z.lazy(() => RequireApproval$outboundSchema),
       RequireApprovalAlways$outboundSchema,
       RequireApprovalNever$outboundSchema,
-      z.any(),
     ]),
   ).optional(),
   serverDescription: z.string().optional(),
