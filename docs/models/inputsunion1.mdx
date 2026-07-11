@@ -508,14 +508,6 @@ const value: models.CompactionItem = {
 };
 ```
 
-### `models.ContextCompactionItem`
-
-```typescript
-const value: models.ContextCompactionItem = {
-  type: "context_compaction",
-};
-```
-
 ### `models.ItemReferenceItem`
 
 ```typescript
@@ -536,22 +528,6 @@ const value: models.AdditionalToolsItem = {
     },
   ],
   type: "additional_tools",
-};
-```
-
-### `models.AgentMessageItem`
-
-```typescript
-const value: models.AgentMessageItem = {
-  author: "/root/worker",
-  content: [
-    {
-      text: "Task complete.",
-      type: "input_text",
-    },
-  ],
-  recipient: "/root",
-  type: "agent_message",
 };
 ```
 
