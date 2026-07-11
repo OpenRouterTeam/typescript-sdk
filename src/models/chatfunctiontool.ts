@@ -37,16 +37,6 @@ import {
   DatetimeServerTool$outboundSchema,
 } from "./datetimeservertool.js";
 import {
-  FilesServerTool,
-  FilesServerTool$Outbound,
-  FilesServerTool$outboundSchema,
-} from "./filesservertool.js";
-import {
-  FusionServerToolOpenRouter,
-  FusionServerToolOpenRouter$Outbound,
-  FusionServerToolOpenRouter$outboundSchema,
-} from "./fusionservertoolopenrouter.js";
-import {
   ImageGenerationServerToolOpenRouter,
   ImageGenerationServerToolOpenRouter$Outbound,
   ImageGenerationServerToolOpenRouter$outboundSchema,
@@ -114,8 +104,6 @@ export type ChatFunctionTool =
   | AdvisorServerToolOpenRouter
   | BashServerTool
   | DatetimeServerTool
-  | FilesServerTool
-  | FusionServerToolOpenRouter
   | ImageGenerationServerToolOpenRouter
   | ChatSearchModelsServerTool
   | SubagentServerToolOpenRouter
@@ -192,8 +180,6 @@ export type ChatFunctionTool$Outbound =
   | AdvisorServerToolOpenRouter$Outbound
   | BashServerTool$Outbound
   | DatetimeServerTool$Outbound
-  | FilesServerTool$Outbound
-  | FusionServerToolOpenRouter$Outbound
   | ImageGenerationServerToolOpenRouter$Outbound
   | ChatSearchModelsServerTool$Outbound
   | SubagentServerToolOpenRouter$Outbound
@@ -210,8 +196,6 @@ export const ChatFunctionTool$outboundSchema: z.ZodType<
   AdvisorServerToolOpenRouter$outboundSchema,
   BashServerTool$outboundSchema,
   DatetimeServerTool$outboundSchema,
-  FilesServerTool$outboundSchema,
-  FusionServerToolOpenRouter$outboundSchema,
   ImageGenerationServerToolOpenRouter$outboundSchema,
   ChatSearchModelsServerTool$outboundSchema,
   SubagentServerToolOpenRouter$outboundSchema,

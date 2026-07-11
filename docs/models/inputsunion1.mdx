@@ -352,15 +352,6 @@ const value: models.OutputSubagentServerToolItem = {
 };
 ```
 
-### `models.OutputFilesServerToolItem`
-
-```typescript
-const value: models.OutputFilesServerToolItem = {
-  status: "completed",
-  type: "openrouter:files",
-};
-```
-
 ### `models.LocalShellCallItem`
 
 ```typescript
@@ -508,50 +499,12 @@ const value: models.CompactionItem = {
 };
 ```
 
-### `models.ContextCompactionItem`
-
-```typescript
-const value: models.ContextCompactionItem = {
-  type: "context_compaction",
-};
-```
-
 ### `models.ItemReferenceItem`
 
 ```typescript
 const value: models.ItemReferenceItem = {
   id: "msg-abc123",
   type: "item_reference",
-};
-```
-
-### `models.AdditionalToolsItem`
-
-```typescript
-const value: models.AdditionalToolsItem = {
-  role: "developer",
-  tools: [
-    {
-      type: "function",
-    },
-  ],
-  type: "additional_tools",
-};
-```
-
-### `models.AgentMessageItem`
-
-```typescript
-const value: models.AgentMessageItem = {
-  author: "/root/worker",
-  content: [
-    {
-      text: "Task complete.",
-      type: "input_text",
-    },
-  ],
-  recipient: "/root",
-  type: "agent_message",
 };
 ```
 

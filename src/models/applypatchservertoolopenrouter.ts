@@ -4,19 +4,11 @@
  */
 
 import * as z from "zod/v4";
-import { ClosedEnum } from "../types/enums.js";
 import {
   ApplyPatchServerToolConfig,
   ApplyPatchServerToolConfig$Outbound,
   ApplyPatchServerToolConfig$outboundSchema,
 } from "./applypatchservertoolconfig.js";
-
-export const ApplyPatchServerToolOpenRouterType = {
-  OpenrouterApplyPatch: "openrouter:apply_patch",
-} as const;
-export type ApplyPatchServerToolOpenRouterType = ClosedEnum<
-  typeof ApplyPatchServerToolOpenRouterType
->;
 
 /**
  * OpenRouter built-in server tool: validates V4A diff patches for file operations (create, update, delete). Restricted to the Responses API.
@@ -26,18 +18,13 @@ export type ApplyPatchServerToolOpenRouter = {
    * Configuration for the openrouter:apply_patch server tool
    */
   parameters?: ApplyPatchServerToolConfig | undefined;
-  type: ApplyPatchServerToolOpenRouterType;
+  type: "openrouter:apply_patch";
 };
-
-/** @internal */
-export const ApplyPatchServerToolOpenRouterType$outboundSchema: z.ZodEnum<
-  typeof ApplyPatchServerToolOpenRouterType
-> = z.enum(ApplyPatchServerToolOpenRouterType);
 
 /** @internal */
 export type ApplyPatchServerToolOpenRouter$Outbound = {
   parameters?: ApplyPatchServerToolConfig$Outbound | undefined;
-  type: string;
+  type: "openrouter:apply_patch";
 };
 
 /** @internal */
@@ -46,7 +33,7 @@ export const ApplyPatchServerToolOpenRouter$outboundSchema: z.ZodType<
   ApplyPatchServerToolOpenRouter
 > = z.object({
   parameters: ApplyPatchServerToolConfig$outboundSchema.optional(),
-  type: ApplyPatchServerToolOpenRouterType$outboundSchema,
+  type: z.literal("openrouter:apply_patch"),
 });
 
 export function applyPatchServerToolOpenRouterToJSON(

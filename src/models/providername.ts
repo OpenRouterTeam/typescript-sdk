@@ -34,7 +34,6 @@ export const ProviderName = {
   Crusoe: "Crusoe",
   Darkbloom: "Darkbloom",
   Decart: "Decart",
-  Deepgram: "Deepgram",
   DeepInfra: "DeepInfra",
   DeepSeek: "DeepSeek",
   DekaLLM: "DekaLLM",
