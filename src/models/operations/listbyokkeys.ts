@@ -87,6 +87,7 @@ export const Provider = {
   Liquid: "liquid",
   Mancer: "mancer",
   Mara: "mara",
+  Meta: "meta",
   Minimax: "minimax",
   Mistral: "mistral",
   Modelrun: "modelrun",
