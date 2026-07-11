@@ -9,16 +9,19 @@ import { safeParse } from "../lib/schemas.js";
 import { Result as SafeParseResult } from "../types/fp.js";
 import { SDKValidationError } from "./errors/sdkvalidationerror.js";
 import {
+  ImageInputModality,
+  ImageInputModality$inboundSchema,
+} from "./imageinputmodality.js";
+import {
   ImageOutputModality,
   ImageOutputModality$inboundSchema,
 } from "./imageoutputmodality.js";
-import { InputModality, InputModality$inboundSchema } from "./inputmodality.js";
 
 export type ImageModelArchitecture = {
   /**
    * Supported input modalities
    */
-  inputModalities: Array<InputModality>;
+  inputModalities: Array<ImageInputModality>;
   /**
    * Supported output modalities
    */
@@ -30,7 +33,7 @@ export const ImageModelArchitecture$inboundSchema: z.ZodType<
   ImageModelArchitecture,
   unknown
 > = z.object({
-  input_modalities: z.array(InputModality$inboundSchema),
+  input_modalities: z.array(ImageInputModality$inboundSchema),
   output_modalities: z.array(ImageOutputModality$inboundSchema),
 }).transform((v) => {
   return remap$(v, {
