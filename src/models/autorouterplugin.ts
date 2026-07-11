@@ -19,6 +19,10 @@ export type AutoRouterPlugin = {
    * Set to false to disable the auto-router plugin for this request. Defaults to true.
    */
   enabled?: boolean | undefined;
+  /**
+   * List of model patterns to exclude from auto-router selection. Supports wildcards (e.g., "meta-llama/*" excludes all Meta Llama models). Applied after allowed_models filtering. When not specified, no models are excluded.
+   */
+  excludedModels?: Array<string> | undefined;
   id: "auto-router";
 };
 
@@ -27,6 +31,7 @@ export type AutoRouterPlugin$Outbound = {
   allowed_models?: Array<string> | undefined;
   cost_quality_tradeoff?: number | undefined;
   enabled?: boolean | undefined;
+  excluded_models?: Array<string> | undefined;
   id: "auto-router";
 };
 
@@ -38,11 +43,13 @@ export const AutoRouterPlugin$outboundSchema: z.ZodType<
   allowedModels: z.array(z.string()).optional(),
   costQualityTradeoff: z.int().optional(),
   enabled: z.boolean().optional(),
+  excludedModels: z.array(z.string()).optional(),
   id: z.literal("auto-router"),
 }).transform((v) => {
   return remap$(v, {
     allowedModels: "allowed_models",
     costQualityTradeoff: "cost_quality_tradeoff",
+    excludedModels: "excluded_models",
   });
 });
 
