@@ -70,11 +70,6 @@ import {
   BashServerTool$outboundSchema,
 } from "./bashservertool.js";
 import {
-  ChatSearchModelsServerTool,
-  ChatSearchModelsServerTool$Outbound,
-  ChatSearchModelsServerTool$outboundSchema,
-} from "./chatsearchmodelsservertool.js";
-import {
   ContextCompressionPlugin,
   ContextCompressionPlugin$Outbound,
   ContextCompressionPlugin$outboundSchema,
@@ -114,6 +109,11 @@ import {
   MessagesOutputConfig$Outbound,
   MessagesOutputConfig$outboundSchema,
 } from "./messagesoutputconfig.js";
+import {
+  MessagesSearchModelsServerTool,
+  MessagesSearchModelsServerTool$Outbound,
+  MessagesSearchModelsServerTool$outboundSchema,
+} from "./messagessearchmodelsservertool.js";
 import {
   ModerationPlugin,
   ModerationPlugin$Outbound,
@@ -463,7 +463,7 @@ export type MessagesRequestToolUnion =
   | BashServerTool
   | DatetimeServerTool
   | ImageGenerationServerToolOpenRouter
-  | ChatSearchModelsServerTool
+  | MessagesSearchModelsServerTool
   | WebFetchServerTool
   | OpenRouterWebSearchServerTool
   | MessagesRequestTool;
@@ -542,7 +542,7 @@ export type MessagesRequest = {
       | BashServerTool
       | DatetimeServerTool
       | ImageGenerationServerToolOpenRouter
-      | ChatSearchModelsServerTool
+      | MessagesSearchModelsServerTool
       | WebFetchServerTool
       | OpenRouterWebSearchServerTool
       | MessagesRequestTool
@@ -1463,7 +1463,7 @@ export type MessagesRequestToolUnion$Outbound =
   | BashServerTool$Outbound
   | DatetimeServerTool$Outbound
   | ImageGenerationServerToolOpenRouter$Outbound
-  | ChatSearchModelsServerTool$Outbound
+  | MessagesSearchModelsServerTool$Outbound
   | WebFetchServerTool$Outbound
   | OpenRouterWebSearchServerTool$Outbound
   | MessagesRequestTool$Outbound;
@@ -1482,7 +1482,7 @@ export const MessagesRequestToolUnion$outboundSchema: z.ZodType<
   BashServerTool$outboundSchema,
   DatetimeServerTool$outboundSchema,
   ImageGenerationServerToolOpenRouter$outboundSchema,
-  ChatSearchModelsServerTool$outboundSchema,
+  MessagesSearchModelsServerTool$outboundSchema,
   WebFetchServerTool$outboundSchema,
   OpenRouterWebSearchServerTool$outboundSchema,
   z.lazy(() => MessagesRequestTool$outboundSchema),
@@ -1553,7 +1553,7 @@ export type MessagesRequest$Outbound = {
       | BashServerTool$Outbound
       | DatetimeServerTool$Outbound
       | ImageGenerationServerToolOpenRouter$Outbound
-      | ChatSearchModelsServerTool$Outbound
+      | MessagesSearchModelsServerTool$Outbound
       | WebFetchServerTool$Outbound
       | OpenRouterWebSearchServerTool$Outbound
       | MessagesRequestTool$Outbound
@@ -1627,7 +1627,7 @@ export const MessagesRequest$outboundSchema: z.ZodType<
       BashServerTool$outboundSchema,
       DatetimeServerTool$outboundSchema,
       ImageGenerationServerToolOpenRouter$outboundSchema,
-      ChatSearchModelsServerTool$outboundSchema,
+      MessagesSearchModelsServerTool$outboundSchema,
       WebFetchServerTool$outboundSchema,
       OpenRouterWebSearchServerTool$outboundSchema,
       z.lazy(() => MessagesRequestTool$outboundSchema),
