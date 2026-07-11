@@ -15,6 +15,12 @@ import {
   ChatContentCacheControl$outboundSchema,
 } from "./chatcontentcachecontrol.js";
 import { SDKValidationError } from "./errors/sdkvalidationerror.js";
+import {
+  PromptCacheBreakpoint,
+  PromptCacheBreakpoint$inboundSchema,
+  PromptCacheBreakpoint$Outbound,
+  PromptCacheBreakpoint$outboundSchema,
+} from "./promptcachebreakpoint.js";
 
 export const ChatContentTextType = {
   Text: "text",
@@ -29,6 +35,10 @@ export type ChatContentText = {
    * Cache control for the content part
    */
   cacheControl?: ChatContentCacheControl | undefined;
+  /**
+   * Marks an explicit prompt-cache boundary on this content block. Everything through the block carrying this marker is part of the candidate cached prefix. Only supported by OpenAI GPT-5.6 and newer.
+   */
+  promptCacheBreakpoint?: PromptCacheBreakpoint | null | undefined;
   text: string;
   type: ChatContentTextType;
 };
@@ -48,16 +58,20 @@ export const ChatContentText$inboundSchema: z.ZodType<
   unknown
 > = z.object({
   cache_control: ChatContentCacheControl$inboundSchema.optional(),
+  prompt_cache_breakpoint: z.nullable(PromptCacheBreakpoint$inboundSchema)
+    .optional(),
   text: z.string(),
   type: ChatContentTextType$inboundSchema,
 }).transform((v) => {
   return remap$(v, {
     "cache_control": "cacheControl",
+    "prompt_cache_breakpoint": "promptCacheBreakpoint",
   });
 });
 /** @internal */
 export type ChatContentText$Outbound = {
   cache_control?: ChatContentCacheControl$Outbound | undefined;
+  prompt_cache_breakpoint?: PromptCacheBreakpoint$Outbound | null | undefined;
   text: string;
   type: string;
 };
@@ -68,11 +82,14 @@ export const ChatContentText$outboundSchema: z.ZodType<
   ChatContentText
 > = z.object({
   cacheControl: ChatContentCacheControl$outboundSchema.optional(),
+  promptCacheBreakpoint: z.nullable(PromptCacheBreakpoint$outboundSchema)
+    .optional(),
   text: z.string(),
   type: ChatContentTextType$outboundSchema,
 }).transform((v) => {
   return remap$(v, {
     cacheControl: "cache_control",
+    promptCacheBreakpoint: "prompt_cache_breakpoint",
   });
 });
 
