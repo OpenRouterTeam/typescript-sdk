@@ -1,19 +1,19 @@
 lockVersion: ""
 id: ""
 management:
-  docChecksum: f656ef2d9700b1d35b4529a820bd644d
+  docChecksum: 2bc1dc91c1215b8f5002a3a9224a8906
   docVersion: 1.0.0
   speakeasyVersion: 1.763.2
   generationVersion: 2.884.4
-  releaseVersion: 0.13.43
-  configChecksum: e1058511bba9baad27932ce7b806e69d
+  releaseVersion: 0.13.44
+  configChecksum: a7d5ac161fa465c8e2cb6329f8c298f2
   repoURL: https://github.com/OpenRouterTeam/typescript-sdk.git
   installationURL: https://github.com/OpenRouterTeam/typescript-sdk
   published: true
 persistentEdits:
-  generation_id: 24c96015-cd2a-4995-a7ac-86ef86775be4
-  pristine_commit_hash: c3573edd44064b4d411b0ff9341cc67f1fd021b4
-  pristine_tree_hash: 60e1d9f0a1d8e50cd11734fa20fa47e48dba630f
+  generation_id: 4465dcd8-1c4e-463d-97ab-840836e72938
+  pristine_commit_hash: aac14f8c77f3d75d2f691a9b79d53cc282b1b741
+  pristine_tree_hash: 77afc1587bc260f1cf8a5cb728ce3ff6f3fd88c7
 features:
   typescript:
     acceptHeaders: 2.81.2
@@ -6637,8 +6637,8 @@ trackedFiles:
     deleted: true
   docs/models/operations/createaudiospeechrequest.mdx:
     id: 546c784ed841
-    last_write_checksum: sha1:e798d81e1fa9d5254a15f3e2664a3bbb2823480b
-    pristine_git_object: 5d398b0ef1a6889fc63226c7f0bdb6221ddc14b0
+    last_write_checksum: sha1:cfab5eb368556c33c73330dc151a55535eb3cc3a
+    pristine_git_object: f765a84efc20e6149d28a9226a56b6a58c6a5b9e
   docs/models/operations/createaudiotranscriptionsglobals.md:
     id: f0cc088440ea
     last_write_checksum: sha1:d46db6c0b8b0c1c2b5cc58d6e12253c76a8fc434
@@ -10646,8 +10646,8 @@ trackedFiles:
     deleted: true
   docs/models/speechrequest.mdx:
     id: c9e3c03ff84e
-    last_write_checksum: sha1:5ac5106618d40464284599b39ae14237404f313c
-    pristine_git_object: a6a20f9adb1f144f7eb5a9d949c6ccdfe07fd13b
+    last_write_checksum: sha1:b94eb64e883ee8d5aed5d09f703166804fdc33fb
+    pristine_git_object: f4547cde01476afa6a22c35e00c24be12aebcee1
   docs/models/speechrequestoptions.md:
     id: 2d3d36e99ad0
     last_write_checksum: sha1:a5810a37b774c3e34bb1d943b64620bc31de2278
@@ -12294,8 +12294,8 @@ trackedFiles:
     deleted: true
   docs/sdks/tts/README.mdx:
     id: cd1132543884
-    last_write_checksum: sha1:917e2e359da50dc5ce6f045cc50de5ff7dee1905
-    pristine_git_object: 2750aef9c40e64edd957a3a9867bee9a1fe0802c
+    last_write_checksum: sha1:b72ac6d2d8126b98d911c9ffa74e3940ba2056d8
+    pristine_git_object: e769301dccdefc0e9c2fb2fd75a535c8744fdc9e
   docs/sdks/videogeneration/README.md:
     id: b6dbf7b0729c
     last_write_checksum: sha1:71205a37afffed445af770082c3f50f6bcbfadfa
@@ -12336,12 +12336,12 @@ trackedFiles:
     pristine_git_object: 410efafd6a7f50d91ccb87131fedbe0c3d47e15a
   jsr.json:
     id: 7f6ab7767282
-    last_write_checksum: sha1:0054978c55c6f69d5322b66dbe8f6872a67e9e58
-    pristine_git_object: b5ee1cfb76fe8a347c03739ebf379546a3c03d66
+    last_write_checksum: sha1:fac9680c90353c056c0e8ad9bd4d401af8e6acce
+    pristine_git_object: 16695db4c00b32ede81b24854848d317ef27d255
   package.json:
     id: 7030d0b2f71b
-    last_write_checksum: sha1:ca7dc0ddbb38224ea755e5d3bb6e6da6de691330
-    pristine_git_object: d090c7f6a9cf5daf7cbafff579edf2fabd587847
+    last_write_checksum: sha1:2a5e6894b378efd654d7ea937596fd7c16ef133f
+    pristine_git_object: 72e416f77d06c6d50c79f2968dba193f1815f924
   src/core.ts:
     id: f431fdbcd144
     last_write_checksum: sha1:5aa66b0b6a5964f3eea7f3098c2eb3c0ee9c0131
@@ -12720,8 +12720,8 @@ trackedFiles:
     pristine_git_object: a187e58707bdb726ca2aff74941efe7493422d4e
   src/lib/config.ts:
     id: 320761608fb3
-    last_write_checksum: sha1:62372ba6c51ac248383ab7faaf9de2114bd6d022
-    pristine_git_object: 404b791d9fcb696919f02ee3dd5d1483d7127c42
+    last_write_checksum: sha1:c296adca619375221b3fe20568555d6974d65be6
+    pristine_git_object: f1b65201c8818e44f82803e823a0aaffddfe0ab5
   src/lib/dlv.ts:
     id: b1988214835a
     last_write_checksum: sha1:eaac763b22717206a6199104e0403ed17a4e2711
@@ -16418,7 +16418,7 @@ examples:
   createAudioSpeech:
     speakeasy-default-create-audio-speech:
       requestBody:
-        application/json: {"input": "Hello world", "model": "elevenlabs/eleven-turbo-v2", "response_format": "pcm", "voice": "alloy"}
+        application/json: {"input": "Hello world", "model": "mistralai/voxtral-mini-tts-2603", "response_format": "pcm", "voice": "en_paul_neutral"}
       responses:
         "200":
           audio/*: "<binary audio data>"
@@ -17112,4 +17112,3 @@ examples:
         "500":
           application/json: {"error": {"code": 500, "message": "Internal Server Error"}}
 examplesVersion: 1.0.2
-releaseNotes: "## Typescript SDK Changes:\n* `openrouter.beta.responses.send()`: \n  *  `request.responsesRequest.provider.ignore[].union(ProviderName).enum(meta)` **Added**\n* `openrouter.byok.list()`: \n  *  `request.provider` **Changed**\n  *  `response.data[].provider.enum(meta)` **Added**\n* `openrouter.byok.create()`: \n  *  `request.createByokKeyRequest.provider.enum(meta)` **Added**\n  *  `response.data.provider.enum(meta)` **Added**\n* `openrouter.byok.get()`:  `response.data.provider.enum(meta)` **Added**\n* `openrouter.byok.update()`:  `response.data.provider.enum(meta)` **Added**\n* `openrouter.chat.send()`: \n  *  `request.chatRequest.provider.ignore[].union(ProviderName).enum(meta)` **Added**\n* `openrouter.embeddings.generate()`: \n  *  `request.requestBody.provider.ignore[].union(ProviderName).enum(meta)` **Added**\n* `openrouter.endpoints.listZdrEndpoints()`:  `response.data[].providerName.enum(meta)` **Added**\n* `openrouter.endpoints.list()`:  `response.data.endpoints[].providerName.enum(meta)` **Added**\n* `openrouter.presets.createPresetsChatCompletions()`: \n  *  `request.chatRequest.provider.ignore[].union(ProviderName).enum(meta)` **Added**\n* `openrouter.presets.createPresetsMessages()`: \n  *  `request.messagesRequest.provider.ignore[].union(ProviderName).enum(meta)` **Added**\n* `openrouter.presets.createPresetsResponses()`: \n  *  `request.responsesRequest.provider.ignore[].union(ProviderName).enum(meta)` **Added**\n* `openrouter.rerank.rerank()`: \n  *  `request.requestBody.provider.ignore[].union(ProviderName).enum(meta)` **Added**\n"
