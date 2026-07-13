@@ -8,10 +8,10 @@ import { remap as remap$ } from "../lib/primitives.js";
 import * as openEnums from "../types/enums.js";
 import { OpenEnum } from "../types/enums.js";
 import {
-  ObservabilityFilterRulesConfig,
-  ObservabilityFilterRulesConfig$Outbound,
-  ObservabilityFilterRulesConfig$outboundSchema,
-} from "./observabilityfilterrulesconfig.js";
+  ObservabilityFilterRulesConfigNullable,
+  ObservabilityFilterRulesConfigNullable$Outbound,
+  ObservabilityFilterRulesConfigNullable$outboundSchema,
+} from "./observabilityfilterrulesconfignullable.js";
 
 /**
  * The destination type. Only stable destination types are accepted.
@@ -58,7 +58,7 @@ export type CreateObservabilityDestinationRequest = {
   /**
    * Optional structured filter rules controlling which events are forwarded.
    */
-  filterRules?: ObservabilityFilterRulesConfig | null | undefined;
+  filterRules?: ObservabilityFilterRulesConfigNullable | null | undefined;
   /**
    * Human-readable name for the destination.
    */
@@ -91,7 +91,10 @@ export type CreateObservabilityDestinationRequest$Outbound = {
   api_key_hashes?: Array<string> | null | undefined;
   config: { [k: string]: any | null };
   enabled: boolean;
-  filter_rules?: ObservabilityFilterRulesConfig$Outbound | null | undefined;
+  filter_rules?:
+    | ObservabilityFilterRulesConfigNullable$Outbound
+    | null
+    | undefined;
   name: string;
   privacy_mode: boolean;
   sampling_rate?: number | undefined;
@@ -107,7 +110,7 @@ export const CreateObservabilityDestinationRequest$outboundSchema: z.ZodType<
   apiKeyHashes: z.nullable(z.array(z.string())).optional(),
   config: z.record(z.string(), z.nullable(z.any())),
   enabled: z.boolean().default(true),
-  filterRules: z.nullable(ObservabilityFilterRulesConfig$outboundSchema)
+  filterRules: z.nullable(ObservabilityFilterRulesConfigNullable$outboundSchema)
     .optional(),
   name: z.string(),
   privacyMode: z.boolean().default(false),
