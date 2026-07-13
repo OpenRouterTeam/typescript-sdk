@@ -8,6 +8,10 @@ import { remap as remap$ } from "../lib/primitives.js";
 import { safeParse } from "../lib/schemas.js";
 import { Result as SafeParseResult } from "../types/fp.js";
 import { SDKValidationError } from "./errors/sdkvalidationerror.js";
+import {
+  PricingOverride,
+  PricingOverride$inboundSchema,
+} from "./pricingoverride.js";
 
 /**
  * Pricing information for the model
@@ -62,6 +66,10 @@ export type PublicPricing = {
    */
   internalReasoning?: string | undefined;
   /**
+   * Conditional overrides of the base pricing (e.g. long-context pricing). An entry applies when all of its condition fields (e.g. min_prompt_tokens) match the request; among applicable entries, later entries win per key; price keys absent from an entry inherit the base price. The top-level pricing keys always reflect the price that applies under default conditions.
+   */
+  overrides?: Array<PricingOverride> | undefined;
+  /**
    * Price in USD per token for prompt (input) processing
    */
   prompt: string;
@@ -90,6 +98,7 @@ export const PublicPricing$inboundSchema: z.ZodType<PublicPricing, unknown> = z
     input_cache_write: z.string().optional(),
     input_cache_write_1h: z.string().optional(),
     internal_reasoning: z.string().optional(),
+    overrides: z.array(PricingOverride$inboundSchema).optional(),
     prompt: z.string(),
     request: z.string().optional(),
     web_search: z.string().optional(),
