@@ -8,13 +8,16 @@ import { remap as remap$ } from "../lib/primitives.js";
 import { safeParse } from "../lib/schemas.js";
 import * as discriminatedUnionTypes from "../types/discriminatedUnion.js";
 import { discriminatedUnion } from "../types/discriminatedUnion.js";
-import * as openEnums from "../types/enums.js";
-import { ClosedEnum, OpenEnum } from "../types/enums.js";
+import { ClosedEnum } from "../types/enums.js";
 import { Result as SafeParseResult } from "../types/fp.js";
 import { SDKValidationError } from "./errors/sdkvalidationerror.js";
 import { InputFile, InputFile$inboundSchema } from "./inputfile.js";
 import { InputImage, InputImage$inboundSchema } from "./inputimage.js";
 import { InputText, InputText$inboundSchema } from "./inputtext.js";
+import {
+  ToolCallStatus,
+  ToolCallStatus$inboundSchema,
+} from "./toolcallstatus.js";
 
 export type OpenAIResponseFunctionToolCallOutputOutput1 =
   | InputFile
@@ -30,15 +33,6 @@ export type OpenAIResponseFunctionToolCallOutputOutput2 =
     | InputText
     | discriminatedUnionTypes.Unknown<"type">
   >;
-
-export const OpenAIResponseFunctionToolCallOutputStatus = {
-  InProgress: "in_progress",
-  Completed: "completed",
-  Incomplete: "incomplete",
-} as const;
-export type OpenAIResponseFunctionToolCallOutputStatus = OpenEnum<
-  typeof OpenAIResponseFunctionToolCallOutputStatus
->;
 
 export const OpenAIResponseFunctionToolCallOutputType = {
   FunctionCallOutput: "function_call_output",
@@ -58,7 +52,7 @@ export type OpenAIResponseFunctionToolCallOutput = {
       | InputText
       | discriminatedUnionTypes.Unknown<"type">
     >;
-  status?: OpenAIResponseFunctionToolCallOutputStatus | null | undefined;
+  status?: ToolCallStatus | null | undefined;
   type: OpenAIResponseFunctionToolCallOutputType;
 };
 
@@ -121,11 +115,6 @@ export function openAIResponseFunctionToolCallOutputOutput2FromJSON(
 }
 
 /** @internal */
-export const OpenAIResponseFunctionToolCallOutputStatus$inboundSchema:
-  z.ZodType<OpenAIResponseFunctionToolCallOutputStatus, unknown> = openEnums
-    .inboundSchema(OpenAIResponseFunctionToolCallOutputStatus);
-
-/** @internal */
 export const OpenAIResponseFunctionToolCallOutputType$inboundSchema: z.ZodEnum<
   typeof OpenAIResponseFunctionToolCallOutputType
 > = z.enum(OpenAIResponseFunctionToolCallOutputType);
@@ -149,8 +138,7 @@ export const OpenAIResponseFunctionToolCallOutput$inboundSchema: z.ZodType<
       }),
     ),
   ]),
-  status: z.nullable(OpenAIResponseFunctionToolCallOutputStatus$inboundSchema)
-    .optional(),
+  status: z.nullable(ToolCallStatus$inboundSchema).optional(),
   type: OpenAIResponseFunctionToolCallOutputType$inboundSchema,
 }).transform((v) => {
   return remap$(v, {
