@@ -26,7 +26,7 @@ export type Timings = {
 };
 
 export type Debug = {
-  echoUpstreamBody?: { [k: string]: any | null } | undefined;
+  echoUpstreamBody?: { [k: string]: any } | undefined;
   timings?: Timings | undefined;
 };
 
@@ -67,7 +67,7 @@ export function timingsFromJSON(
 
 /** @internal */
 export const Debug$inboundSchema: z.ZodType<Debug, unknown> = z.object({
-  echo_upstream_body: z.record(z.string(), z.nullable(z.any())).optional(),
+  echo_upstream_body: z.record(z.string(), z.any()).optional(),
   timings: z.lazy(() => Timings$inboundSchema).optional(),
 }).transform((v) => {
   return remap$(v, {

@@ -6,9 +6,9 @@
 import { embeddingsGenerate } from "../funcs/embeddingsGenerate.js";
 import { embeddingsListModels } from "../funcs/embeddingsListModels.js";
 import { ClientSDK, RequestOptions } from "../lib/sdks.js";
-import * as models from "../models/index.js";
 import * as operations from "../models/operations/index.js";
 import { unwrapAsync } from "../types/fp.js";
+import { PageIterator, unwrapResultIterator } from "../types/operations.js";
 
 export class Embeddings extends ClientSDK {
   /**
@@ -37,8 +37,10 @@ export class Embeddings extends ClientSDK {
   async listModels(
     request?: operations.ListEmbeddingsModelsRequest | undefined,
     options?: RequestOptions,
-  ): Promise<models.ModelsListResponse> {
-    return unwrapAsync(embeddingsListModels(
+  ): Promise<
+    PageIterator<operations.ListEmbeddingsModelsResponse, { offset: number }>
+  > {
+    return unwrapResultIterator(embeddingsListModels(
       this,
       request,
       options,
