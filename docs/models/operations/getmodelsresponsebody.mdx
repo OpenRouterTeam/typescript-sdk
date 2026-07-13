@@ -1,0 +1,113 @@
+---
+title: "GetModelsResponseBody"
+---
+
+Standard OpenRouter model list, or the Codex-native model catalog for Codex CLI/IDE catalog fetches (identified by a `client_version` query parameter plus a Codex `User-Agent` or `Originator` header).
+
+
+## Supported Types
+
+### `models.ModelsListResponse`
+
+```typescript
+const value: models.ModelsListResponse = {
+  data: [
+    {
+      architecture: {
+        inputModalities: [
+          "text",
+        ],
+        modality: "text->text",
+        outputModalities: [
+          "text",
+        ],
+      },
+      canonicalSlug: "openai/gpt-4",
+      contextLength: 8192,
+      created: 1692901234,
+      defaultParameters: null,
+      id: "openai/gpt-4",
+      links: {
+        details: "/api/v1/models/openai/gpt-4/endpoints",
+      },
+      name: "GPT-4",
+      perRequestLimits: null,
+      pricing: {
+        completion: "0.00006",
+        prompt: "0.00003",
+      },
+      supportedParameters: [
+        "temperature",
+        "top_p",
+        "max_tokens",
+        "frequency_penalty",
+        "presence_penalty",
+      ],
+      supportedVoices: null,
+      topProvider: {
+        isModerated: true,
+      },
+    },
+  ],
+  links: {
+    next: "/api/v1/models?offset=500&limit=500",
+  },
+  totalCount: 150,
+};
+```
+
+### `models.CodexModelsResponse`
+
+```typescript
+const value: models.CodexModelsResponse = {
+  models: [
+    {
+      applyPatchToolType: null,
+      availabilityNux: null,
+      baseInstructions:
+        "You are Codex, based on GPT-5. You are running as a coding agent...",
+      contextWindow: 272000,
+      defaultReasoningLevel: "medium",
+      defaultVerbosity: null,
+      description: "Agentic coding model tuned for Codex.",
+      displayName: "GPT-5.2 Codex",
+      effectiveContextWindowPercent: 95,
+      experimentalSupportedTools: [],
+      inputModalities: [
+        "text",
+        "image",
+      ],
+      maxContextWindow: null,
+      priority: 0,
+      shellType: "default",
+      slug: "openai/gpt-5.2-codex",
+      supportVerbosity: false,
+      supportedInApi: true,
+      supportedReasoningLevels: [
+        {
+          description: "Fastest responses",
+          effort: "low",
+        },
+        {
+          description: "Balanced speed and reasoning depth",
+          effort: "medium",
+        },
+        {
+          description: "Deepest reasoning",
+          effort: "high",
+        },
+      ],
+      supportsImageDetailOriginal: false,
+      supportsParallelToolCalls: true,
+      supportsReasoningSummaries: true,
+      truncationPolicy: {
+        limit: 10000,
+        mode: "tokens",
+      },
+      upgrade: null,
+      visibility: "list",
+    },
+  ],
+};
+```
+

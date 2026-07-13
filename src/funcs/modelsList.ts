@@ -108,6 +108,7 @@ async function $do(
   const query = encodeFormQuery({
     "arch": payload?.arch,
     "category": payload?.category,
+    "client_version": payload?.client_version,
     "context": payload?.context,
     "distillable": payload?.distillable,
     "input_modalities": payload?.input_modalities,

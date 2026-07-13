@@ -134,6 +134,8 @@ export * from "./chatusermessage.js";
 export * from "./chatwebsearchshorthand.js";
 export * from "./codeinterpreterservertool.js";
 export * from "./codexlocalshelltool.js";
+export * from "./codexmodelinfo.js";
+export * from "./codexmodelsresponse.js";
 export * from "./compactionitem.js";
 export * from "./compoundfilter.js";
 export * from "./computeruseservertool.js";
