@@ -31274,8 +31274,7 @@ paths:
           schema:
             description: Minimum context length (tokens). Models with smaller context are excluded.
             example: 128000
-            exclusiveMinimum: true
-            minimum: 0
+            minimum: 1
             type: integer
         - description: Minimum prompt price in $/M tokens.
           in: query
