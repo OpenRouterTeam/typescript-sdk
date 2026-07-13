@@ -406,6 +406,7 @@ export * from "./presetwithdesignatedversion.js";
 export * from "./preview20250311websearchservertool.js";
 export * from "./previewwebsearchservertool.js";
 export * from "./previewwebsearchuserlocation.js";
+export * from "./pricingoverride.js";
 export * from "./promptcachebreakpoint.js";
 export * from "./promptcacheoptions.js";
 export * from "./promptinjectionscanscope.js";
