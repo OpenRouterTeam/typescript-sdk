@@ -1,19 +1,19 @@
 lockVersion: ""
 id: ""
 management:
-  docChecksum: 6d1b911b357d06517114e9080c4f2d6f
+  docChecksum: 1b0bed430d04c3431cdbff1ef80de135
   docVersion: 1.0.0
   speakeasyVersion: 1.763.2
   generationVersion: 2.884.4
-  releaseVersion: 0.13.46
-  configChecksum: 146f45edd16fc65b545b0b94359466ac
+  releaseVersion: 0.13.47
+  configChecksum: fdfc1168aa487fc44879aff27c0f08b0
   repoURL: https://github.com/OpenRouterTeam/typescript-sdk.git
   installationURL: https://github.com/OpenRouterTeam/typescript-sdk
   published: true
 persistentEdits:
-  generation_id: 7aaa7e9b-17b8-4b0a-9aa4-6c5317b9a605
-  pristine_commit_hash: 09dbb89402819f59d5ff483bb1ea3c082301fb8c
-  pristine_tree_hash: 0f5f90c31c33378aa84360be8948d92b7ae3f68b
+  generation_id: 3e5c3fae-996a-4d3a-bc0e-8e3f7c910009
+  pristine_commit_hash: f3bdba3b955c5dbe917792775bcff848c7dfdd84
+  pristine_tree_hash: 901ab2fe8ec5b04b8498da82ceebd15f6d34ec6f
 features:
   typescript:
     acceptHeaders: 2.81.2
@@ -9768,8 +9768,12 @@ trackedFiles:
     pristine_git_object: 843be442f194dc0a9bdb41260916e71366d87a30
   docs/models/pricing.mdx:
     id: 47d612460319
-    last_write_checksum: sha1:704529c117e27fc9bdb0de29350d14414c30fedc
-    pristine_git_object: 3cec93878ce6e18b7473f2d9b89f3eeff0dbdf81
+    last_write_checksum: sha1:a80e0550bd4743d7ded4029fbfa01c178f24b76b
+    pristine_git_object: 123b80fbd026bc2b1f3fbb9283c6c0493eb1b1ac
+  docs/models/pricingoverride.mdx:
+    id: f090bf7c3b28
+    last_write_checksum: sha1:0f89ae0b4f968486e743cd2d0802e4ddd4ef691a
+    pristine_git_object: 2f232f558b9426c1b4e414ebd9d746a22ea140a4
   docs/models/promptcachebreakpoint.mdx:
     id: 11efe47f2493
     last_write_checksum: sha1:6b2cfdacc4dad8d240b9d075e311194140db7554
@@ -9878,8 +9882,8 @@ trackedFiles:
     pristine_git_object: 98d960d98b01abe8b910c97f636ad92be9341284
   docs/models/publicpricing.mdx:
     id: da7987d6141a
-    last_write_checksum: sha1:d83e5ee9c34f02edc1d6accd9924e9797eb4f0b5
-    pristine_git_object: cab8ca9b29110133148169eeb8bbc6ceef120f34
+    last_write_checksum: sha1:e62b3c048aa08e0b2570435cd9ab6a34424b9bdf
+    pristine_git_object: a7f97e1caf09304b353a4d3803880f6863ab946e
   docs/models/quality.md:
     id: a266576ad922
     last_write_checksum: sha1:4565b3924a40e89a5c6c67b6c34e8c4fb8e77d9d
@@ -12392,12 +12396,12 @@ trackedFiles:
     pristine_git_object: 410efafd6a7f50d91ccb87131fedbe0c3d47e15a
   jsr.json:
     id: 7f6ab7767282
-    last_write_checksum: sha1:13223e8bcf7398afaa13cbf3bfb78e9c907df9b7
-    pristine_git_object: 7186ec45c3c64e6321444bd62eddad8a4e173baa
+    last_write_checksum: sha1:bd2c2eb7c1acc2bb0a135fb98f7539c09812fad8
+    pristine_git_object: d6cdbc099667133e0557d7dba91f28f50a71aa2e
   package.json:
     id: 7030d0b2f71b
-    last_write_checksum: sha1:1902fbb5340fb0859077edeca153a66d81334cb9
-    pristine_git_object: 4c6c87cc0855cf4d1f1759aa55a4bf56d2e4277a
+    last_write_checksum: sha1:27a0a898f9cf2fedb9cae7e65159c42557de70cd
+    pristine_git_object: b8a0fa286ef79700e10bbc29c5c40b77a50e9099
   src/core.ts:
     id: f431fdbcd144
     last_write_checksum: sha1:5aa66b0b6a5964f3eea7f3098c2eb3c0ee9c0131
@@ -12776,8 +12780,8 @@ trackedFiles:
     pristine_git_object: a187e58707bdb726ca2aff74941efe7493422d4e
   src/lib/config.ts:
     id: 320761608fb3
-    last_write_checksum: sha1:64acc0c499dddc44b7ef34bb9fe38553090f9ac5
-    pristine_git_object: 7e32ca4d78a30fb4dcca14ca6dd4d299546e2c36
+    last_write_checksum: sha1:040a779674d1c91c0682f9253b5cb0b2f6b47757
+    pristine_git_object: e4c231e937077ad3df667274276d4616a2d981d0
   src/lib/dlv.ts:
     id: b1988214835a
     last_write_checksum: sha1:eaac763b22717206a6199104e0403ed17a4e2711
@@ -13956,8 +13960,8 @@ trackedFiles:
     pristine_git_object: 8e109bedfdcf2c4808e49323dda861e3c6069d51
   src/models/index.ts:
     id: f93644b0f37e
-    last_write_checksum: sha1:7a8340252dc472f7dfe9731db3ff589aa15ad36a
-    pristine_git_object: 7e30e44668922f09fa22e98e33d063f7c4ce893a
+    last_write_checksum: sha1:7ab40055105ee7d1225c10adf3346c1440b75072
+    pristine_git_object: fb4f280b5fa0016f45b345380f24301bc6702d72
   src/models/inputaudio.ts:
     id: 9bdc14c7565f
     last_write_checksum: sha1:2f8dc4c1d6a9c2927d9eb186e0ecedf7b81838e6
@@ -14898,6 +14902,10 @@ trackedFiles:
     id: 64db0edfc37d
     last_write_checksum: sha1:1b9c4865d5245c791658f3e56df5ee257274d55a
     pristine_git_object: 789ab79f12eb208766f43c93c285d7ee49e08cac
+  src/models/pricingoverride.ts:
+    id: b1116f9327ef
+    last_write_checksum: sha1:83c70fd9dd856bbfe7381bb5fa8a7cf219b5b08e
+    pristine_git_object: 30b13c49325888e883edc60cc993cb9bba83a893
   src/models/promptcachebreakpoint.ts:
     id: f8222f76987b
     last_write_checksum: sha1:a490734d057bec204700a66e2da8f43c63e36ac0
@@ -14940,12 +14948,12 @@ trackedFiles:
     pristine_git_object: fc796682165e0c6c8f0787ee2cb37c79671557f9
   src/models/publicendpoint.ts:
     id: 396ce3186017
-    last_write_checksum: sha1:c780235ef544c3abd2e0f0828ce09c8da9d5489d
-    pristine_git_object: b86bc8ade6c2feef088d5021c612a9d7629efe80
+    last_write_checksum: sha1:e269ccc0f57303603050f228270a58892b330cdf
+    pristine_git_object: bd786fc3be59c51b0d47b89b42245e64596300d6
   src/models/publicpricing.ts:
     id: 0a44a1c3bab5
-    last_write_checksum: sha1:9793a0ae50ba7594613cb47642631b9cc5f4626c
-    pristine_git_object: 5c1c996e7592db665e98f36edafa895a10951cc3
+    last_write_checksum: sha1:7216b29c12cf7a01f8cd325669907669eb87c2d6
+    pristine_git_object: ae8558d96af6d5c8e1f8563d3b7bf83913c24ca2
   src/models/quantization.ts:
     id: b28328f1822c
     last_write_checksum: sha1:4d10d34237fddb881f2c49c3e27342487e5fca47
@@ -17256,4 +17264,11 @@ examples:
         "500":
           application/json: {"error": {"code": 500, "message": "Internal Server Error"}}
 examplesVersion: 1.0.2
-releaseNotes: "## Typescript SDK Changes:\n* `openrouter.images.generate()`: \n  *  `request.imageGenerationRequest.provider` **Changed**\n"
+releaseNotes: |
+  ## Typescript SDK Changes:
+  * `openrouter.embeddings.listModels()`:  `response.data[].pricing.overrides` **Added**
+  * `openrouter.endpoints.listZdrEndpoints()`:  `response.data[].pricing.overrides` **Added**
+  * `openrouter.endpoints.list()`:  `response.data.endpoints[].pricing.overrides` **Added**
+  * `openrouter.models.get()`:  `response.data.pricing.overrides` **Added**
+  * `openrouter.models.list()`:  `response.data[].pricing.overrides` **Added**
+  * `openrouter.models.listForUser()`:  `response.data[].pricing.overrides` **Added**
