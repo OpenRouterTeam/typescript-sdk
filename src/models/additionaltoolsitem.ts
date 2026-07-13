@@ -28,11 +28,6 @@ import {
   BashServerTool$outboundSchema,
 } from "./bashservertool.js";
 import {
-  ChatSearchModelsServerTool,
-  ChatSearchModelsServerTool$Outbound,
-  ChatSearchModelsServerTool$outboundSchema,
-} from "./chatsearchmodelsservertool.js";
-import {
   CodeInterpreterServerTool,
   CodeInterpreterServerTool$Outbound,
   CodeInterpreterServerTool$outboundSchema,
@@ -102,6 +97,11 @@ import {
   PreviewWebSearchServerTool$Outbound,
   PreviewWebSearchServerTool$outboundSchema,
 } from "./previewwebsearchservertool.js";
+import {
+  SearchModelsServerToolOpenRouter,
+  SearchModelsServerToolOpenRouter$Outbound,
+  SearchModelsServerToolOpenRouter$outboundSchema,
+} from "./searchmodelsservertoolopenrouter.js";
 import {
   ShellServerTool,
   ShellServerTool$Outbound,
@@ -189,7 +189,7 @@ export type AdditionalToolsItemToolUnion =
   | FilesServerTool
   | FusionServerToolOpenRouter
   | ImageGenerationServerToolOpenRouter
-  | ChatSearchModelsServerTool
+  | SearchModelsServerToolOpenRouter
   | WebFetchServerTool
   | WebSearchServerToolOpenRouter
   | ApplyPatchServerToolOpenRouter
@@ -229,7 +229,7 @@ export type AdditionalToolsItem = {
     | FilesServerTool
     | FusionServerToolOpenRouter
     | ImageGenerationServerToolOpenRouter
-    | ChatSearchModelsServerTool
+    | SearchModelsServerToolOpenRouter
     | WebFetchServerTool
     | WebSearchServerToolOpenRouter
     | ApplyPatchServerToolOpenRouter
@@ -334,7 +334,7 @@ export type AdditionalToolsItemToolUnion$Outbound =
   | FilesServerTool$Outbound
   | FusionServerToolOpenRouter$Outbound
   | ImageGenerationServerToolOpenRouter$Outbound
-  | ChatSearchModelsServerTool$Outbound
+  | SearchModelsServerToolOpenRouter$Outbound
   | WebFetchServerTool$Outbound
   | WebSearchServerToolOpenRouter$Outbound
   | ApplyPatchServerToolOpenRouter$Outbound
@@ -367,7 +367,7 @@ export const AdditionalToolsItemToolUnion$outboundSchema: z.ZodType<
   FilesServerTool$outboundSchema,
   FusionServerToolOpenRouter$outboundSchema,
   ImageGenerationServerToolOpenRouter$outboundSchema,
-  ChatSearchModelsServerTool$outboundSchema,
+  SearchModelsServerToolOpenRouter$outboundSchema,
   WebFetchServerTool$outboundSchema,
   WebSearchServerToolOpenRouter$outboundSchema,
   ApplyPatchServerToolOpenRouter$outboundSchema,
@@ -416,7 +416,7 @@ export type AdditionalToolsItem$Outbound = {
     | FilesServerTool$Outbound
     | FusionServerToolOpenRouter$Outbound
     | ImageGenerationServerToolOpenRouter$Outbound
-    | ChatSearchModelsServerTool$Outbound
+    | SearchModelsServerToolOpenRouter$Outbound
     | WebFetchServerTool$Outbound
     | WebSearchServerToolOpenRouter$Outbound
     | ApplyPatchServerToolOpenRouter$Outbound
@@ -456,7 +456,7 @@ export const AdditionalToolsItem$outboundSchema: z.ZodType<
       FilesServerTool$outboundSchema,
       FusionServerToolOpenRouter$outboundSchema,
       ImageGenerationServerToolOpenRouter$outboundSchema,
-      ChatSearchModelsServerTool$outboundSchema,
+      SearchModelsServerToolOpenRouter$outboundSchema,
       WebFetchServerTool$outboundSchema,
       WebSearchServerToolOpenRouter$outboundSchema,
       ApplyPatchServerToolOpenRouter$outboundSchema,
