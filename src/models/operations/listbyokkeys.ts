@@ -185,8 +185,8 @@ export type ListBYOKKeysRequest$Outbound = {
   "HTTP-Referer"?: string | undefined;
   appTitle?: string | undefined;
   appCategories?: string | undefined;
-  offset?: number | null | undefined;
-  limit?: number | undefined;
+  offset: number | null;
+  limit: number;
   workspace_id?: string | undefined;
   provider?: string | undefined;
 };
@@ -199,8 +199,8 @@ export const ListBYOKKeysRequest$outboundSchema: z.ZodType<
   httpReferer: z.string().optional(),
   appTitle: z.string().optional(),
   appCategories: z.string().optional(),
-  offset: z.nullable(z.int()).optional(),
-  limit: z.int().optional(),
+  offset: z.nullable(z.int().default(0)),
+  limit: z.int().default(50),
   workspaceId: z.string().optional(),
   provider: Provider$outboundSchema.optional(),
 }).transform((v) => {
