@@ -248,10 +248,21 @@ export type GetModelsRequest = {
    * Maximum tool-calling success rate, as a fraction in [0, 1].
    */
   maxToolSuccessRate?: number | null | undefined;
+  /**
+   * Client version sent by Codex CLI/IDE catalog fetches. When present together with a Codex `User-Agent` or `Originator` header, the endpoint returns the Codex-native catalog schema (`CodexModelsResponse`) instead of the standard model list. Ignored for all other clients.
+   */
+  clientVersion?: string | undefined;
 };
 
+/**
+ * Standard OpenRouter model list, or the Codex-native model catalog for Codex CLI/IDE catalog fetches (identified by a `client_version` query parameter plus a Codex `User-Agent` or `Originator` header).
+ */
+export type GetModelsResponseBody =
+  | models.ModelsListResponse
+  | models.CodexModelsResponse;
+
 export type GetModelsResponse = {
-  result: models.ModelsListResponse;
+  result: models.ModelsListResponse | models.CodexModelsResponse;
 };
 
 /** @internal */
@@ -308,6 +319,7 @@ export type GetModelsRequest$Outbound = {
   max_agentic_index?: number | null | undefined;
   min_tool_success_rate?: number | null | undefined;
   max_tool_success_rate?: number | null | undefined;
+  client_version?: string | undefined;
 };
 
 /** @internal */
@@ -347,6 +359,7 @@ export const GetModelsRequest$outboundSchema: z.ZodType<
   maxAgenticIndex: z.nullable(z.number()).optional(),
   minToolSuccessRate: z.nullable(z.number()).optional(),
   maxToolSuccessRate: z.nullable(z.number()).optional(),
+  clientVersion: z.string().optional(),
 }).transform((v) => {
   return remap$(v, {
     httpReferer: "HTTP-Referer",
@@ -368,6 +381,7 @@ export const GetModelsRequest$outboundSchema: z.ZodType<
     maxAgenticIndex: "max_agentic_index",
     minToolSuccessRate: "min_tool_success_rate",
     maxToolSuccessRate: "max_tool_success_rate",
+    clientVersion: "client_version",
   });
 });
 
@@ -380,11 +394,33 @@ export function getModelsRequestToJSON(
 }
 
 /** @internal */
+export const GetModelsResponseBody$inboundSchema: z.ZodType<
+  GetModelsResponseBody,
+  unknown
+> = z.union([
+  models.ModelsListResponse$inboundSchema,
+  models.CodexModelsResponse$inboundSchema,
+]);
+
+export function getModelsResponseBodyFromJSON(
+  jsonString: string,
+): SafeParseResult<GetModelsResponseBody, SDKValidationError> {
+  return safeParse(
+    jsonString,
+    (x) => GetModelsResponseBody$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'GetModelsResponseBody' from JSON`,
+  );
+}
+
+/** @internal */
 export const GetModelsResponse$inboundSchema: z.ZodType<
   GetModelsResponse,
   unknown
 > = z.object({
-  Result: models.ModelsListResponse$inboundSchema,
+  Result: z.union([
+    models.ModelsListResponse$inboundSchema,
+    models.CodexModelsResponse$inboundSchema,
+  ]),
 }).transform((v) => {
   return remap$(v, {
     "Result": "result",

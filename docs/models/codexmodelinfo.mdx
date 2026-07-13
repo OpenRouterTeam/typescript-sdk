@@ -1,0 +1,88 @@
+---
+title: "CodexModelInfo"
+---
+
+A model entry in the Codex-native catalog, mirroring the Codex CLI's `ModelInfo` struct.
+
+## Example Usage
+
+```typescript
+import { CodexModelInfo } from "@openrouter/sdk/models";
+
+let value: CodexModelInfo = {
+  applyPatchToolType: null,
+  availabilityNux: null,
+  baseInstructions:
+    "You are Codex, based on GPT-5. You are running as a coding agent...",
+  contextWindow: 272000,
+  defaultReasoningLevel: "medium",
+  defaultVerbosity: null,
+  description: "Agentic coding model tuned for Codex.",
+  displayName: "GPT-5.2 Codex",
+  effectiveContextWindowPercent: 95,
+  experimentalSupportedTools: [],
+  inputModalities: [
+    "text",
+    "image",
+  ],
+  maxContextWindow: null,
+  priority: 0,
+  shellType: "default",
+  slug: "openai/gpt-5.2-codex",
+  supportVerbosity: false,
+  supportedInApi: true,
+  supportedReasoningLevels: [
+    {
+      description: "Fastest responses",
+      effort: "low",
+    },
+    {
+      description: "Balanced speed and reasoning depth",
+      effort: "medium",
+    },
+    {
+      description: "Deepest reasoning",
+      effort: "high",
+    },
+  ],
+  supportsImageDetailOriginal: false,
+  supportsParallelToolCalls: true,
+  supportsReasoningSummaries: true,
+  truncationPolicy: {
+    limit: 10000,
+    mode: "tokens",
+  },
+  upgrade: null,
+  visibility: "list",
+};
+```
+
+## Fields
+
+| Field                                                                            | Type                                                                             | Required                                                                         | Description                                                                      |
+| -------------------------------------------------------------------------------- | -------------------------------------------------------------------------------- | -------------------------------------------------------------------------------- | -------------------------------------------------------------------------------- |
+| `applyPatchToolType`                                                             | *any*                                                                            | :heavy_check_mark:                                                               | N/A                                                                              |
+| `availabilityNux`                                                                | *any*                                                                            | :heavy_check_mark:                                                               | N/A                                                                              |
+| `baseInstructions`                                                               | *string*                                                                         | :heavy_check_mark:                                                               | N/A                                                                              |
+| `contextWindow`                                                                  | *number*                                                                         | :heavy_check_mark:                                                               | N/A                                                                              |
+| `defaultReasoningLevel`                                                          | [models.DefaultReasoningLevel](../models/defaultreasoninglevel.mdx)               | :heavy_check_mark:                                                               | N/A                                                                              |
+| `defaultVerbosity`                                                               | *any*                                                                            | :heavy_check_mark:                                                               | N/A                                                                              |
+| `description`                                                                    | *string*                                                                         | :heavy_check_mark:                                                               | N/A                                                                              |
+| `displayName`                                                                    | *string*                                                                         | :heavy_check_mark:                                                               | N/A                                                                              |
+| `effectiveContextWindowPercent`                                                  | *number*                                                                         | :heavy_check_mark:                                                               | N/A                                                                              |
+| `experimentalSupportedTools`                                                     | *string*[]                                                                       | :heavy_check_mark:                                                               | N/A                                                                              |
+| `inputModalities`                                                                | [models.CodexModelInfoInputModality](../models/codexmodelinfoinputmodality.mdx)[] | :heavy_check_mark:                                                               | N/A                                                                              |
+| `maxContextWindow`                                                               | *number*                                                                         | :heavy_check_mark:                                                               | N/A                                                                              |
+| `multiAgentVersion`                                                              | [models.MultiAgentVersion](../models/multiagentversion.mdx)                       | :heavy_minus_sign:                                                               | N/A                                                                              |
+| `priority`                                                                       | *number*                                                                         | :heavy_check_mark:                                                               | N/A                                                                              |
+| `shellType`                                                                      | [models.ShellType](../models/shelltype.mdx)                                       | :heavy_check_mark:                                                               | N/A                                                                              |
+| `slug`                                                                           | *string*                                                                         | :heavy_check_mark:                                                               | N/A                                                                              |
+| `supportVerbosity`                                                               | *boolean*                                                                        | :heavy_check_mark:                                                               | N/A                                                                              |
+| `supportedInApi`                                                                 | *boolean*                                                                        | :heavy_check_mark:                                                               | N/A                                                                              |
+| `supportedReasoningLevels`                                                       | [models.SupportedReasoningLevel](../models/supportedreasoninglevel.mdx)[]         | :heavy_check_mark:                                                               | N/A                                                                              |
+| `supportsImageDetailOriginal`                                                    | *boolean*                                                                        | :heavy_check_mark:                                                               | N/A                                                                              |
+| `supportsParallelToolCalls`                                                      | *boolean*                                                                        | :heavy_check_mark:                                                               | N/A                                                                              |
+| `supportsReasoningSummaries`                                                     | *boolean*                                                                        | :heavy_check_mark:                                                               | N/A                                                                              |
+| `truncationPolicy`                                                               | [models.TruncationPolicy](../models/truncationpolicy.mdx)                         | :heavy_check_mark:                                                               | N/A                                                                              |
+| `upgrade`                                                                        | *any*                                                                            | :heavy_check_mark:                                                               | N/A                                                                              |
+| `visibility`                                                                     | [models.Visibility](../models/visibility.mdx)                                     | :heavy_check_mark:                                                               | N/A                                                                              |
