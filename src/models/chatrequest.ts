@@ -28,6 +28,11 @@ import {
   ChatFormatGrammarConfig$outboundSchema,
 } from "./chatformatgrammarconfig.js";
 import {
+  ChatFormatJsonObjectConfig,
+  ChatFormatJsonObjectConfig$Outbound,
+  ChatFormatJsonObjectConfig$outboundSchema,
+} from "./chatformatjsonobjectconfig.js";
+import {
   ChatFormatJsonSchemaConfig,
   ChatFormatJsonSchemaConfig$Outbound,
   ChatFormatJsonSchemaConfig$outboundSchema,
@@ -77,11 +82,6 @@ import {
   FileParserPlugin$outboundSchema,
 } from "./fileparserplugin.js";
 import {
-  FormatJsonObjectConfig,
-  FormatJsonObjectConfig$Outbound,
-  FormatJsonObjectConfig$outboundSchema,
-} from "./formatjsonobjectconfig.js";
-import {
   FusionPlugin,
   FusionPlugin$Outbound,
   FusionPlugin$outboundSchema,
@@ -101,6 +101,11 @@ import {
   ParetoRouterPlugin$Outbound,
   ParetoRouterPlugin$outboundSchema,
 } from "./paretorouterplugin.js";
+import {
+  PromptCacheOptions,
+  PromptCacheOptions$Outbound,
+  PromptCacheOptions$outboundSchema,
+} from "./promptcacheoptions.js";
 import {
   ProviderPreferences,
   ProviderPreferences$Outbound,
@@ -202,7 +207,7 @@ export type ChatRequestReasoningEffort = OpenEnum<
  */
 export type ResponseFormat =
   | ChatFormatGrammarConfig
-  | FormatJsonObjectConfig
+  | ChatFormatJsonObjectConfig
   | ChatFormatJsonSchemaConfig
   | ChatFormatPythonConfig
   | ChatFormatTextConfig;
@@ -311,6 +316,11 @@ export type ChatRequest = {
    * Presence penalty (-2.0 to 2.0)
    */
   presencePenalty?: number | null | undefined;
+  promptCacheKey?: string | null | undefined;
+  /**
+   * Request-level prompt-cache controls. `mode: "explicit"` disables OpenAI-managed breakpoints so only blocks marked with `prompt_cache_breakpoint` are cached. Only supported by OpenAI GPT-5.6 and newer.
+   */
+  promptCacheOptions?: PromptCacheOptions | null | undefined;
   /**
    * When multiple model providers are available, optionally indicate your routing preference.
    */
@@ -332,7 +342,7 @@ export type ChatRequest = {
    */
   responseFormat?:
     | ChatFormatGrammarConfig
-    | FormatJsonObjectConfig
+    | ChatFormatJsonObjectConfig
     | ChatFormatJsonSchemaConfig
     | ChatFormatPythonConfig
     | ChatFormatTextConfig
@@ -482,7 +492,7 @@ export const ChatRequestReasoningEffort$outboundSchema: z.ZodType<
 /** @internal */
 export type ResponseFormat$Outbound =
   | ChatFormatGrammarConfig$Outbound
-  | FormatJsonObjectConfig$Outbound
+  | ChatFormatJsonObjectConfig$Outbound
   | ChatFormatJsonSchemaConfig$Outbound
   | ChatFormatPythonConfig$Outbound
   | ChatFormatTextConfig$Outbound;
@@ -493,7 +503,7 @@ export const ResponseFormat$outboundSchema: z.ZodType<
   ResponseFormat
 > = z.union([
   ChatFormatGrammarConfig$outboundSchema,
-  FormatJsonObjectConfig$outboundSchema,
+  ChatFormatJsonObjectConfig$outboundSchema,
   ChatFormatJsonSchemaConfig$outboundSchema,
   ChatFormatPythonConfig$outboundSchema,
   ChatFormatTextConfig$outboundSchema,
@@ -554,13 +564,15 @@ export type ChatRequest$Outbound = {
     >
     | undefined;
   presence_penalty?: number | null | undefined;
+  prompt_cache_key?: string | null | undefined;
+  prompt_cache_options?: PromptCacheOptions$Outbound | null | undefined;
   provider?: ProviderPreferences$Outbound | null | undefined;
   reasoning?: ChatRequestReasoning$Outbound | undefined;
   reasoning_effort?: string | null | undefined;
   repetition_penalty?: number | null | undefined;
   response_format?:
     | ChatFormatGrammarConfig$Outbound
-    | FormatJsonObjectConfig$Outbound
+    | ChatFormatJsonObjectConfig$Outbound
     | ChatFormatJsonSchemaConfig$Outbound
     | ChatFormatPythonConfig$Outbound
     | ChatFormatTextConfig$Outbound
@@ -619,6 +631,8 @@ export const ChatRequest$outboundSchema: z.ZodType<
     ]),
   ).optional(),
   presencePenalty: z.nullable(z.number()).optional(),
+  promptCacheKey: z.nullable(z.string()).optional(),
+  promptCacheOptions: z.nullable(PromptCacheOptions$outboundSchema).optional(),
   provider: z.nullable(ProviderPreferences$outboundSchema).optional(),
   reasoning: z.lazy(() => ChatRequestReasoning$outboundSchema).optional(),
   reasoningEffort: z.nullable(ChatRequestReasoningEffort$outboundSchema)
@@ -626,7 +640,7 @@ export const ChatRequest$outboundSchema: z.ZodType<
   repetitionPenalty: z.nullable(z.number()).optional(),
   responseFormat: z.union([
     ChatFormatGrammarConfig$outboundSchema,
-    FormatJsonObjectConfig$outboundSchema,
+    ChatFormatJsonObjectConfig$outboundSchema,
     ChatFormatJsonSchemaConfig$outboundSchema,
     ChatFormatPythonConfig$outboundSchema,
     ChatFormatTextConfig$outboundSchema,
@@ -660,6 +674,8 @@ export const ChatRequest$outboundSchema: z.ZodType<
     minP: "min_p",
     parallelToolCalls: "parallel_tool_calls",
     presencePenalty: "presence_penalty",
+    promptCacheKey: "prompt_cache_key",
+    promptCacheOptions: "prompt_cache_options",
     reasoningEffort: "reasoning_effort",
     repetitionPenalty: "repetition_penalty",
     responseFormat: "response_format",

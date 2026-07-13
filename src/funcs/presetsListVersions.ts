@@ -268,7 +268,7 @@ async function $do(
     if (!Array.isArray(results) || !results.length) {
       return { next: () => null };
     }
-    const limit = request?.limit ?? 0;
+    const limit = request?.limit ?? 50;
     if (results.length < limit) {
       return { next: () => null };
     }
