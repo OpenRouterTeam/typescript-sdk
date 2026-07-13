@@ -8,6 +8,11 @@ import { remap as remap$ } from "../lib/primitives.js";
 import * as openEnums from "../types/enums.js";
 import { ClosedEnum, OpenEnum } from "../types/enums.js";
 import {
+  AdvisorServerToolOpenRouter,
+  AdvisorServerToolOpenRouter$Outbound,
+  AdvisorServerToolOpenRouter$outboundSchema,
+} from "./advisorservertoolopenrouter.js";
+import {
   AnthropicAllowedCallers,
   AnthropicAllowedCallers$outboundSchema,
 } from "./anthropicallowedcallers.js";
@@ -85,10 +90,20 @@ import {
   FileParserPlugin$outboundSchema,
 } from "./fileparserplugin.js";
 import {
+  FilesServerTool,
+  FilesServerTool$Outbound,
+  FilesServerTool$outboundSchema,
+} from "./filesservertool.js";
+import {
   FusionPlugin,
   FusionPlugin$Outbound,
   FusionPlugin$outboundSchema,
 } from "./fusionplugin.js";
+import {
+  FusionServerToolOpenRouter,
+  FusionServerToolOpenRouter$Outbound,
+  FusionServerToolOpenRouter$outboundSchema,
+} from "./fusionservertoolopenrouter.js";
 import {
   ImageGenerationServerToolOpenRouter,
   ImageGenerationServerToolOpenRouter$Outbound,
@@ -144,6 +159,11 @@ import {
   StopServerToolsWhenCondition$Outbound,
   StopServerToolsWhenCondition$outboundSchema,
 } from "./stopservertoolswhencondition.js";
+import {
+  SubagentServerToolOpenRouter,
+  SubagentServerToolOpenRouter$Outbound,
+  SubagentServerToolOpenRouter$outboundSchema,
+} from "./subagentservertoolopenrouter.js";
 import {
   TraceConfig,
   TraceConfig$Outbound,
@@ -460,10 +480,14 @@ export type MessagesRequestToolUnion =
   | ToolTextEditor20250124
   | ToolWebSearch20250305
   | ToolWebSearch20260209
+  | AdvisorServerToolOpenRouter
   | BashServerTool
   | DatetimeServerTool
+  | FilesServerTool
+  | FusionServerToolOpenRouter
   | ImageGenerationServerToolOpenRouter
   | MessagesSearchModelsServerTool
+  | SubagentServerToolOpenRouter
   | WebFetchServerTool
   | OpenRouterWebSearchServerTool
   | MessagesRequestTool;
@@ -539,10 +563,14 @@ export type MessagesRequest = {
       | ToolTextEditor20250124
       | ToolWebSearch20250305
       | ToolWebSearch20260209
+      | AdvisorServerToolOpenRouter
       | BashServerTool
       | DatetimeServerTool
+      | FilesServerTool
+      | FusionServerToolOpenRouter
       | ImageGenerationServerToolOpenRouter
       | MessagesSearchModelsServerTool
+      | SubagentServerToolOpenRouter
       | WebFetchServerTool
       | OpenRouterWebSearchServerTool
       | MessagesRequestTool
@@ -1460,10 +1488,14 @@ export type MessagesRequestToolUnion$Outbound =
   | ToolTextEditor20250124$Outbound
   | ToolWebSearch20250305$Outbound
   | ToolWebSearch20260209$Outbound
+  | AdvisorServerToolOpenRouter$Outbound
   | BashServerTool$Outbound
   | DatetimeServerTool$Outbound
+  | FilesServerTool$Outbound
+  | FusionServerToolOpenRouter$Outbound
   | ImageGenerationServerToolOpenRouter$Outbound
   | MessagesSearchModelsServerTool$Outbound
+  | SubagentServerToolOpenRouter$Outbound
   | WebFetchServerTool$Outbound
   | OpenRouterWebSearchServerTool$Outbound
   | MessagesRequestTool$Outbound;
@@ -1479,10 +1511,14 @@ export const MessagesRequestToolUnion$outboundSchema: z.ZodType<
   z.lazy(() => ToolTextEditor20250124$outboundSchema),
   z.lazy(() => ToolWebSearch20250305$outboundSchema),
   z.lazy(() => ToolWebSearch20260209$outboundSchema),
+  AdvisorServerToolOpenRouter$outboundSchema,
   BashServerTool$outboundSchema,
   DatetimeServerTool$outboundSchema,
+  FilesServerTool$outboundSchema,
+  FusionServerToolOpenRouter$outboundSchema,
   ImageGenerationServerToolOpenRouter$outboundSchema,
   MessagesSearchModelsServerTool$outboundSchema,
+  SubagentServerToolOpenRouter$outboundSchema,
   WebFetchServerTool$outboundSchema,
   OpenRouterWebSearchServerTool$outboundSchema,
   z.lazy(() => MessagesRequestTool$outboundSchema),
@@ -1550,10 +1586,14 @@ export type MessagesRequest$Outbound = {
       | ToolTextEditor20250124$Outbound
       | ToolWebSearch20250305$Outbound
       | ToolWebSearch20260209$Outbound
+      | AdvisorServerToolOpenRouter$Outbound
       | BashServerTool$Outbound
       | DatetimeServerTool$Outbound
+      | FilesServerTool$Outbound
+      | FusionServerToolOpenRouter$Outbound
       | ImageGenerationServerToolOpenRouter$Outbound
       | MessagesSearchModelsServerTool$Outbound
+      | SubagentServerToolOpenRouter$Outbound
       | WebFetchServerTool$Outbound
       | OpenRouterWebSearchServerTool$Outbound
       | MessagesRequestTool$Outbound
@@ -1624,10 +1664,14 @@ export const MessagesRequest$outboundSchema: z.ZodType<
       z.lazy(() => ToolTextEditor20250124$outboundSchema),
       z.lazy(() => ToolWebSearch20250305$outboundSchema),
       z.lazy(() => ToolWebSearch20260209$outboundSchema),
+      AdvisorServerToolOpenRouter$outboundSchema,
       BashServerTool$outboundSchema,
       DatetimeServerTool$outboundSchema,
+      FilesServerTool$outboundSchema,
+      FusionServerToolOpenRouter$outboundSchema,
       ImageGenerationServerToolOpenRouter$outboundSchema,
       MessagesSearchModelsServerTool$outboundSchema,
+      SubagentServerToolOpenRouter$outboundSchema,
       WebFetchServerTool$outboundSchema,
       OpenRouterWebSearchServerTool$outboundSchema,
       z.lazy(() => MessagesRequestTool$outboundSchema),
