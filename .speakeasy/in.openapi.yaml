@@ -5790,27 +5790,7 @@ components:
               type: integer
           type: object
         server_tool_use_details:
-          description: Usage for server-side tool execution (e.g., web search)
-          nullable: true
-          properties:
-            tool_calls_executed:
-              description: Number of OpenRouter server tool calls that executed and produced a result
-              nullable: true
-              type: integer
-            tool_calls_requested:
-              description: >-
-                Total number of OpenRouter server-orchestrated tool calls the model requested, across all tool types.
-                Provider-native tools (e.g. native web search) are not counted here.
-              nullable: true
-              type: integer
-            web_search_requests:
-              description: >-
-                Number of web searches performed by server-side tools. For server-orchestrated tool calls a web search
-                is also counted in tool_calls_requested; provider-native web search may report web_search_requests only.
-                Do not sum the two.
-              nullable: true
-              type: integer
-          type: object
+          $ref: '#/components/schemas/ServerToolUseDetails'
         total_tokens:
           description: Total number of tokens
           type: integer
@@ -20715,6 +20695,32 @@ components:
         - high
       example: medium
       type: string
+    ServerToolUseDetails:
+      description: Usage for server-side tool execution (e.g., web search)
+      example:
+        tool_calls_executed: 2
+        tool_calls_requested: 2
+        web_search_requests: 2
+      nullable: true
+      properties:
+        tool_calls_executed:
+          description: Number of OpenRouter server tool calls that executed and produced a result.
+          nullable: true
+          type: integer
+        tool_calls_requested:
+          description: >-
+            Total number of OpenRouter server-orchestrated tool calls the model requested, across all tool types.
+            Provider-native tools (e.g. native web search) are not counted here.
+          nullable: true
+          type: integer
+        web_search_requests:
+          description: >-
+            Number of web searches performed by server-side tools. For server-orchestrated tool calls a web search is
+            also counted in tool_calls_requested; provider-native web search may report web_search_requests only. Do not
+            sum the two.
+          nullable: true
+          type: integer
+      type: object
     ServiceTier:
       enum:
         - auto
@@ -23025,6 +23031,8 @@ components:
             is_byok:
               description: Whether a request was made using a Bring Your Own Key configuration
               type: boolean
+            server_tool_use_details:
+              $ref: '#/components/schemas/ServerToolUseDetails'
           type: object
       description: Token usage information for the response
       example:
