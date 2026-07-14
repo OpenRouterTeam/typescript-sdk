@@ -665,7 +665,9 @@ components:
     AnthropicCacheControlDirective:
       description: >-
         Enable automatic prompt caching. When set at the top level, the system automatically applies cache breakpoints
-        to the last cacheable block in the request. Currently supported for Anthropic Claude models.
+        to the last cacheable block in the request. When set on an individual content block, it marks an explicit cache
+        breakpoint; block-level markers also work on OpenAI models that support explicit prompt caching — OpenRouter
+        converts them to the provider's native format.
       example:
         type: ephemeral
       properties:
@@ -4459,7 +4461,9 @@ components:
         - $ref: '#/components/schemas/AnthropicCacheControlDirective'
         - properties: {}
           type: object
-      description: Cache control for the content part
+      description: >-
+        Anthropic-style cache breakpoint for the content part. Interchangeable with the OpenAI-style
+        `prompt_cache_breakpoint` marker: OpenRouter converts between the two based on the provider serving the request.
       example:
         ttl: 5m
         type: ephemeral
@@ -4555,6 +4559,8 @@ components:
       properties:
         cache_control:
           $ref: '#/components/schemas/ChatContentCacheControl'
+        prompt_cache_breakpoint:
+          $ref: '#/components/schemas/PromptCacheBreakpoint'
         text:
           type: string
         type:
@@ -5048,6 +5054,11 @@ components:
           format: double
           nullable: true
           type: number
+        prompt_cache_key:
+          nullable: true
+          type: string
+        prompt_cache_options:
+          $ref: '#/components/schemas/PromptCacheOptions'
         provider:
           $ref: '#/components/schemas/ProviderPreferences'
         reasoning:
@@ -18444,8 +18455,9 @@ components:
       type: object
     PromptCacheBreakpoint:
       description: >-
-        Marks an explicit prompt-cache boundary on this content block. Everything through the block carrying this marker
-        is part of the candidate cached prefix. Only supported by OpenAI GPT-5.6 and newer.
+        Marks an explicit prompt-cache boundary on this content block (OpenAI-style). Everything through the block
+        carrying this marker is part of the candidate cached prefix. Supported natively by OpenAI GPT-5.6 and newer; on
+        providers that use Anthropic-style `cache_control`, OpenRouter converts the marker to that format automatically.
       example:
         mode: explicit
       nullable: true
