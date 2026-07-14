@@ -40,6 +40,8 @@ export * from "./anthropicspeed.js";
 export * from "./anthropictextblockparam.js";
 export * from "./anthropicthinkingdisplay.js";
 export * from "./anthropicthinkingturns.js";
+export * from "./anthropictoolsearchtoolbm25.js";
+export * from "./anthropictoolsearchtoolregex.js";
 export * from "./anthropictooluseskeep.js";
 export * from "./anthropictoolusestrigger.js";
 export * from "./anthropicunknownusageiteration.js";

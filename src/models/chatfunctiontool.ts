@@ -12,6 +12,16 @@ import {
   AdvisorServerToolOpenRouter$outboundSchema,
 } from "./advisorservertoolopenrouter.js";
 import {
+  AnthropicToolSearchToolBm25,
+  AnthropicToolSearchToolBm25$Outbound,
+  AnthropicToolSearchToolBm25$outboundSchema,
+} from "./anthropictoolsearchtoolbm25.js";
+import {
+  AnthropicToolSearchToolRegex,
+  AnthropicToolSearchToolRegex$Outbound,
+  AnthropicToolSearchToolRegex$outboundSchema,
+} from "./anthropictoolsearchtoolregex.js";
+import {
   BashServerTool,
   BashServerTool$Outbound,
   BashServerTool$outboundSchema,
@@ -99,6 +109,7 @@ export type ChatFunctionToolFunction = {
    * Cache control for the content part
    */
   cacheControl?: ChatContentCacheControl | undefined;
+  deferLoading?: boolean | undefined;
   /**
    * Function definition for tool calling
    */
@@ -111,6 +122,8 @@ export type ChatFunctionToolFunction = {
  */
 export type ChatFunctionTool =
   | ChatFunctionToolFunction
+  | AnthropicToolSearchToolBm25
+  | AnthropicToolSearchToolRegex
   | AdvisorServerToolOpenRouter
   | BashServerTool
   | DatetimeServerTool
@@ -160,6 +173,7 @@ export const ChatFunctionToolType$outboundSchema: z.ZodEnum<
 /** @internal */
 export type ChatFunctionToolFunction$Outbound = {
   cache_control?: ChatContentCacheControl$Outbound | undefined;
+  defer_loading?: boolean | undefined;
   function: ChatFunctionToolFunctionFunction$Outbound;
   type: string;
 };
@@ -170,11 +184,13 @@ export const ChatFunctionToolFunction$outboundSchema: z.ZodType<
   ChatFunctionToolFunction
 > = z.object({
   cacheControl: ChatContentCacheControl$outboundSchema.optional(),
+  deferLoading: z.boolean().optional(),
   function: z.lazy(() => ChatFunctionToolFunctionFunction$outboundSchema),
   type: ChatFunctionToolType$outboundSchema,
 }).transform((v) => {
   return remap$(v, {
     cacheControl: "cache_control",
+    deferLoading: "defer_loading",
   });
 });
 
@@ -189,6 +205,8 @@ export function chatFunctionToolFunctionToJSON(
 /** @internal */
 export type ChatFunctionTool$Outbound =
   | ChatFunctionToolFunction$Outbound
+  | AnthropicToolSearchToolBm25$Outbound
+  | AnthropicToolSearchToolRegex$Outbound
   | AdvisorServerToolOpenRouter$Outbound
   | BashServerTool$Outbound
   | DatetimeServerTool$Outbound
@@ -207,6 +225,8 @@ export const ChatFunctionTool$outboundSchema: z.ZodType<
   ChatFunctionTool
 > = z.union([
   z.lazy(() => ChatFunctionToolFunction$outboundSchema),
+  AnthropicToolSearchToolBm25$outboundSchema,
+  AnthropicToolSearchToolRegex$outboundSchema,
   AdvisorServerToolOpenRouter$outboundSchema,
   BashServerTool$outboundSchema,
   DatetimeServerTool$outboundSchema,
