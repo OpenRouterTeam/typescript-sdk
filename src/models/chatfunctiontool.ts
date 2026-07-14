@@ -96,7 +96,7 @@ export type ChatFunctionToolType = ClosedEnum<typeof ChatFunctionToolType>;
 
 export type ChatFunctionToolFunction = {
   /**
-   * Cache control for the content part
+   * Anthropic-style cache breakpoint for the content part. Interchangeable with the OpenAI-style `prompt_cache_breakpoint` marker: OpenRouter converts between the two based on the provider serving the request.
    */
   cacheControl?: ChatContentCacheControl | undefined;
   /**
