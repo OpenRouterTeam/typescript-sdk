@@ -8,6 +8,19 @@ import { remap as remap$ } from "../lib/primitives.js";
 import * as openEnums from "../types/enums.js";
 import { OpenEnum } from "../types/enums.js";
 import {
+  AnthropicAllowedCallers20260318,
+  AnthropicAllowedCallers20260318$outboundSchema,
+} from "./anthropicallowedcallers20260318.js";
+import {
+  AnthropicCacheControlDirective,
+  AnthropicCacheControlDirective$Outbound,
+  AnthropicCacheControlDirective$outboundSchema,
+} from "./anthropiccachecontroldirective.js";
+import {
+  AnthropicResponseInclusion,
+  AnthropicResponseInclusion$outboundSchema,
+} from "./anthropicresponseinclusion.js";
+import {
   SearchQualityLevel,
   SearchQualityLevel$outboundSchema,
 } from "./searchqualitylevel.js";
@@ -40,10 +53,17 @@ export type ChatWebSearchShorthandType = OpenEnum<
  * Web search tool using OpenAI Responses API syntax. Automatically converted to openrouter:web_search.
  */
 export type ChatWebSearchShorthand = {
+  allowedCallers?: Array<AnthropicAllowedCallers20260318> | undefined;
   /**
    * Limit search results to these domains. Supported by Exa, Firecrawl, Parallel, Perplexity, and most native providers (Anthropic, OpenAI, xAI). Cannot be used with excluded_domains.
    */
   allowedDomains?: Array<string> | undefined;
+  blockedDomains?: Array<string> | undefined;
+  /**
+   * Enable automatic prompt caching. When set at the top level, the system automatically applies cache breakpoints to the last cacheable block in the request. When set on an individual content block, it marks an explicit cache breakpoint; block-level markers also work on OpenAI models that support explicit prompt caching — OpenRouter converts them to the provider's native format.
+   */
+  cacheControl?: AnthropicCacheControlDirective | undefined;
+  deferLoading?: boolean | undefined;
   /**
    * Which search engine to use. "auto" (default) uses native if the provider supports it, otherwise Exa. "native" forces the provider's built-in search. "exa" forces the Exa search API. "firecrawl" uses Firecrawl (requires BYOK). "parallel" uses the Parallel search API. "perplexity" uses the Perplexity Search API (raw ranked results).
    */
@@ -64,11 +84,14 @@ export type ChatWebSearchShorthand = {
    * Maximum total number of search results across all search calls in a single request. Once this limit is reached, the tool will stop returning new results. Useful for controlling cost and context size in agentic loops. Defaults to 50 when not specified.
    */
   maxTotalResults?: number | undefined;
+  maxUses?: number | undefined;
   parameters?: WebSearchConfig | undefined;
+  responseInclusion?: AnthropicResponseInclusion | undefined;
   /**
    * How much context to retrieve per result. Applies to Exa, Parallel, and Perplexity engines; ignored with native provider search and Firecrawl. For Exa, pins a fixed per-result character cap (low=5,000, medium=15,000, high=30,000); when omitted, Exa picks an adaptive size per query and document (typically ~2,000–4,000 characters per result). For Parallel, controls the total characters across all results; when omitted, Parallel uses its own default size. For Perplexity, maps directly to the Search API's native search_context_size parameter. Overridden by `max_characters` when both are set.
    */
   searchContextSize?: SearchQualityLevel | undefined;
+  strict?: boolean | undefined;
   type: ChatWebSearchShorthandType;
   /**
    * Approximate user location for location-biased results.
@@ -84,14 +107,21 @@ export const ChatWebSearchShorthandType$outboundSchema: z.ZodType<
 
 /** @internal */
 export type ChatWebSearchShorthand$Outbound = {
+  allowed_callers?: Array<string> | undefined;
   allowed_domains?: Array<string> | undefined;
+  blocked_domains?: Array<string> | undefined;
+  cache_control?: AnthropicCacheControlDirective$Outbound | undefined;
+  defer_loading?: boolean | undefined;
   engine?: string | undefined;
   excluded_domains?: Array<string> | undefined;
   max_characters?: number | undefined;
   max_results?: number | undefined;
   max_total_results?: number | undefined;
+  max_uses?: number | undefined;
   parameters?: WebSearchConfig$Outbound | undefined;
+  response_inclusion?: string | undefined;
   search_context_size?: string | undefined;
+  strict?: boolean | undefined;
   type: string;
   user_location?: WebSearchUserLocationServerTool$Outbound | undefined;
 };
@@ -101,23 +131,37 @@ export const ChatWebSearchShorthand$outboundSchema: z.ZodType<
   ChatWebSearchShorthand$Outbound,
   ChatWebSearchShorthand
 > = z.object({
+  allowedCallers: z.array(AnthropicAllowedCallers20260318$outboundSchema)
+    .optional(),
   allowedDomains: z.array(z.string()).optional(),
+  blockedDomains: z.array(z.string()).optional(),
+  cacheControl: AnthropicCacheControlDirective$outboundSchema.optional(),
+  deferLoading: z.boolean().optional(),
   engine: WebSearchEngineEnum$outboundSchema.optional(),
   excludedDomains: z.array(z.string()).optional(),
   maxCharacters: z.int().optional(),
   maxResults: z.int().optional(),
   maxTotalResults: z.int().optional(),
+  maxUses: z.int().optional(),
   parameters: WebSearchConfig$outboundSchema.optional(),
+  responseInclusion: AnthropicResponseInclusion$outboundSchema.optional(),
   searchContextSize: SearchQualityLevel$outboundSchema.optional(),
+  strict: z.boolean().optional(),
   type: ChatWebSearchShorthandType$outboundSchema,
   userLocation: WebSearchUserLocationServerTool$outboundSchema.optional(),
 }).transform((v) => {
   return remap$(v, {
+    allowedCallers: "allowed_callers",
     allowedDomains: "allowed_domains",
+    blockedDomains: "blocked_domains",
+    cacheControl: "cache_control",
+    deferLoading: "defer_loading",
     excludedDomains: "excluded_domains",
     maxCharacters: "max_characters",
     maxResults: "max_results",
     maxTotalResults: "max_total_results",
+    maxUses: "max_uses",
+    responseInclusion: "response_inclusion",
     searchContextSize: "search_context_size",
     userLocation: "user_location",
   });
