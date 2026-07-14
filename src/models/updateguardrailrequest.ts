@@ -45,7 +45,7 @@ export type UpdateGuardrailRequest = {
    */
   description?: string | null | undefined;
   /**
-   * Deprecated. Use enforce_zdr_anthropic, enforce_zdr_openai, enforce_zdr_google, and enforce_zdr_other instead. When provided, its value is copied into any of those per-provider fields that are not explicitly specified on the request.
+   * Deprecated. Use enforce_zdr_anthropic, enforce_zdr_openai, enforce_zdr_google, enforce_zdr_xai, and enforce_zdr_other instead. When provided, its value is copied into any of those per-provider fields that are not explicitly specified on the request.
    *
    * @deprecated field: This will be removed in a future release, please migrate away from it as soon as possible.
    */
@@ -63,9 +63,13 @@ export type UpdateGuardrailRequest = {
    */
   enforceZdrOpenai?: boolean | null | undefined;
   /**
-   * Whether to enforce zero data retention for models that are not from Anthropic, OpenAI, or Google. Falls back to enforce_zdr when not provided.
+   * Whether to enforce zero data retention for models that are not from Anthropic, OpenAI, Google, or xAI. Falls back to enforce_zdr when not provided.
    */
   enforceZdrOther?: boolean | null | undefined;
+  /**
+   * Whether to enforce zero data retention for xAI models. Falls back to enforce_zdr when not provided.
+   */
+  enforceZdrXai?: boolean | null | undefined;
   /**
    * Array of model identifiers to exclude from routing (slug or canonical_slug accepted)
    */
@@ -103,6 +107,7 @@ export type UpdateGuardrailRequest$Outbound = {
   enforce_zdr_google?: boolean | null | undefined;
   enforce_zdr_openai?: boolean | null | undefined;
   enforce_zdr_other?: boolean | null | undefined;
+  enforce_zdr_xai?: boolean | null | undefined;
   ignored_models?: Array<string> | null | undefined;
   ignored_providers?: Array<string> | null | undefined;
   limit_usd?: number | null | undefined;
@@ -128,6 +133,7 @@ export const UpdateGuardrailRequest$outboundSchema: z.ZodType<
   enforceZdrGoogle: z.nullable(z.boolean()).optional(),
   enforceZdrOpenai: z.nullable(z.boolean()).optional(),
   enforceZdrOther: z.nullable(z.boolean()).optional(),
+  enforceZdrXai: z.nullable(z.boolean()).optional(),
   ignoredModels: z.nullable(z.array(z.string())).optional(),
   ignoredProviders: z.nullable(z.array(z.string())).optional(),
   limitUsd: z.nullable(z.number()).optional(),
@@ -144,6 +150,7 @@ export const UpdateGuardrailRequest$outboundSchema: z.ZodType<
     enforceZdrGoogle: "enforce_zdr_google",
     enforceZdrOpenai: "enforce_zdr_openai",
     enforceZdrOther: "enforce_zdr_other",
+    enforceZdrXai: "enforce_zdr_xai",
     ignoredModels: "ignored_models",
     ignoredProviders: "ignored_providers",
     limitUsd: "limit_usd",
