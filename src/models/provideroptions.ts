@@ -70,6 +70,7 @@ export type ProviderOptions = {
   ioNet?: { [k: string]: any | null } | undefined;
   ionstream?: { [k: string]: any | null } | undefined;
   klusterai?: { [k: string]: any | null } | undefined;
+  krea?: { [k: string]: any | null } | undefined;
   lambda?: { [k: string]: any | null } | undefined;
   lepton?: { [k: string]: any | null } | undefined;
   liquid?: { [k: string]: any | null } | undefined;
@@ -195,6 +196,7 @@ export type ProviderOptions$Outbound = {
   "io-net"?: { [k: string]: any | null } | undefined;
   ionstream?: { [k: string]: any | null } | undefined;
   klusterai?: { [k: string]: any | null } | undefined;
+  krea?: { [k: string]: any | null } | undefined;
   lambda?: { [k: string]: any | null } | undefined;
   lepton?: { [k: string]: any | null } | undefined;
   liquid?: { [k: string]: any | null } | undefined;
@@ -323,6 +325,7 @@ export const ProviderOptions$outboundSchema: z.ZodType<
   ioNet: z.record(z.string(), z.nullable(z.any())).optional(),
   ionstream: z.record(z.string(), z.nullable(z.any())).optional(),
   klusterai: z.record(z.string(), z.nullable(z.any())).optional(),
+  krea: z.record(z.string(), z.nullable(z.any())).optional(),
   lambda: z.record(z.string(), z.nullable(z.any())).optional(),
   lepton: z.record(z.string(), z.nullable(z.any())).optional(),
   liquid: z.record(z.string(), z.nullable(z.any())).optional(),
