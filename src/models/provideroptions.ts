@@ -70,6 +70,7 @@ export type ProviderOptions = {
   ioNet?: { [k: string]: any | null } | undefined;
   ionstream?: { [k: string]: any | null } | undefined;
   klusterai?: { [k: string]: any | null } | undefined;
+  krea?: { [k: string]: any | null } | undefined;
   lambda?: { [k: string]: any | null } | undefined;
   lepton?: { [k: string]: any | null } | undefined;
   liquid?: { [k: string]: any | null } | undefined;
@@ -108,6 +109,7 @@ export type ProviderOptions = {
   reka?: { [k: string]: any | null } | undefined;
   relace?: { [k: string]: any | null } | undefined;
   replicate?: { [k: string]: any | null } | undefined;
+  sailResearch?: { [k: string]: any | null } | undefined;
   sakana?: { [k: string]: any | null } | undefined;
   sambanova?: { [k: string]: any | null } | undefined;
   sambanovaCloaked?: { [k: string]: any | null } | undefined;
@@ -195,6 +197,7 @@ export type ProviderOptions$Outbound = {
   "io-net"?: { [k: string]: any | null } | undefined;
   ionstream?: { [k: string]: any | null } | undefined;
   klusterai?: { [k: string]: any | null } | undefined;
+  krea?: { [k: string]: any | null } | undefined;
   lambda?: { [k: string]: any | null } | undefined;
   lepton?: { [k: string]: any | null } | undefined;
   liquid?: { [k: string]: any | null } | undefined;
@@ -233,6 +236,7 @@ export type ProviderOptions$Outbound = {
   reka?: { [k: string]: any | null } | undefined;
   relace?: { [k: string]: any | null } | undefined;
   replicate?: { [k: string]: any | null } | undefined;
+  "sail-research"?: { [k: string]: any | null } | undefined;
   sakana?: { [k: string]: any | null } | undefined;
   sambanova?: { [k: string]: any | null } | undefined;
   "sambanova-cloaked"?: { [k: string]: any | null } | undefined;
@@ -323,6 +327,7 @@ export const ProviderOptions$outboundSchema: z.ZodType<
   ioNet: z.record(z.string(), z.nullable(z.any())).optional(),
   ionstream: z.record(z.string(), z.nullable(z.any())).optional(),
   klusterai: z.record(z.string(), z.nullable(z.any())).optional(),
+  krea: z.record(z.string(), z.nullable(z.any())).optional(),
   lambda: z.record(z.string(), z.nullable(z.any())).optional(),
   lepton: z.record(z.string(), z.nullable(z.any())).optional(),
   liquid: z.record(z.string(), z.nullable(z.any())).optional(),
@@ -361,6 +366,7 @@ export const ProviderOptions$outboundSchema: z.ZodType<
   reka: z.record(z.string(), z.nullable(z.any())).optional(),
   relace: z.record(z.string(), z.nullable(z.any())).optional(),
   replicate: z.record(z.string(), z.nullable(z.any())).optional(),
+  sailResearch: z.record(z.string(), z.nullable(z.any())).optional(),
   sakana: z.record(z.string(), z.nullable(z.any())).optional(),
   sambanova: z.record(z.string(), z.nullable(z.any())).optional(),
   sambanovaCloaked: z.record(z.string(), z.nullable(z.any())).optional(),
@@ -404,6 +410,7 @@ export const ProviderOptions$outboundSchema: z.ZodType<
     mancerOld: "mancer-old",
     nexAgi: "nex-agi",
     openInference: "open-inference",
+    sailResearch: "sail-research",
     sambanovaCloaked: "sambanova-cloaked",
     sfCompute: "sf-compute",
     togetherLite: "together-lite",
