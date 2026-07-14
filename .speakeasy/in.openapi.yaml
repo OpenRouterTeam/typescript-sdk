@@ -193,6 +193,7 @@ components:
               - $ref: '#/components/schemas/ShellServerTool'
               - $ref: '#/components/schemas/ApplyPatchServerTool'
               - $ref: '#/components/schemas/CustomTool'
+              - $ref: '#/components/schemas/NamespaceTool'
               - $ref: '#/components/schemas/AdvisorServerTool_OpenRouter'
               - $ref: '#/components/schemas/SubagentServerTool_OpenRouter'
               - $ref: '#/components/schemas/DatetimeServerTool'
@@ -3746,6 +3747,7 @@ components:
               - $ref: '#/components/schemas/ShellServerTool'
               - $ref: '#/components/schemas/ApplyPatchServerTool'
               - $ref: '#/components/schemas/CustomTool'
+              - $ref: '#/components/schemas/NamespaceTool'
           type: array
         top_logprobs:
           type: integer
@@ -13607,6 +13609,78 @@ components:
       required:
         - data
       type: object
+    NamespaceFunctionTool:
+      description: A function tool grouped inside a namespace tool
+      example:
+        name: spawn_agent
+        type: function
+      properties:
+        allowed_callers:
+          items:
+            enum:
+              - direct
+              - programmatic
+            type: string
+          nullable: true
+          type: array
+        defer_loading:
+          type: boolean
+        description:
+          nullable: true
+          type: string
+        name:
+          type: string
+        output_schema:
+          additionalProperties:
+            nullable: true
+          nullable: true
+          type: object
+        parameters:
+          additionalProperties:
+            nullable: true
+          nullable: true
+          type: object
+        strict:
+          nullable: true
+          type: boolean
+        type:
+          enum:
+            - function
+          type: string
+      required:
+        - type
+        - name
+      type: object
+    NamespaceTool:
+      description: Groups function/custom tools under a shared namespace
+      example:
+        description: Tools for spawning and managing sub-agents.
+        name: multi_agent_v1
+        tools:
+          - name: spawn_agent
+            type: function
+        type: namespace
+      properties:
+        description:
+          type: string
+        name:
+          type: string
+        tools:
+          items:
+            anyOf:
+              - $ref: '#/components/schemas/NamespaceFunctionTool'
+              - $ref: '#/components/schemas/CustomTool'
+          type: array
+        type:
+          enum:
+            - namespace
+          type: string
+      required:
+        - type
+        - name
+        - description
+        - tools
+      type: object
     NotFoundResponse:
       description: Not Found - Resource does not exist
       example:
@@ -20586,6 +20660,7 @@ components:
               - $ref: '#/components/schemas/ShellServerTool'
               - $ref: '#/components/schemas/ApplyPatchServerTool'
               - $ref: '#/components/schemas/CustomTool'
+              - $ref: '#/components/schemas/NamespaceTool'
               - $ref: '#/components/schemas/AdvisorServerTool_OpenRouter'
               - $ref: '#/components/schemas/SubagentServerTool_OpenRouter'
               - $ref: '#/components/schemas/DatetimeServerTool'
