@@ -18401,8 +18401,8 @@ components:
     PricingOverride:
       description: >-
         A conditional override of the base pricing. An entry applies only when all of its condition fields (e.g.
-        min_prompt_tokens) match the request; among applicable entries, later entries win per price key; price keys
-        absent from an entry inherit the base price.
+        min_prompt_tokens, or the utc_start/utc_end time window) match the request; among applicable entries, later
+        entries win per price key; price keys absent from an entry inherit the base price.
       example:
         completion: '0.00002'
         min_prompt_tokens: 200000
@@ -18435,6 +18435,17 @@ components:
         prompt:
           description: Overridden price in USD per token for prompt (input) processing
           type: string
+        utc_end:
+          description: 'Condition: exclusive end of a daily UTC time window as an HHMM clock number (e.g. 400 = 04:00)'
+          format: double
+          type: number
+        utc_start:
+          description: >-
+            Condition: inclusive start of a daily UTC time window as an HHMM clock number (e.g. 100 = 01:00, 1030 =
+            10:30). The entry applies while the current UTC time is inside the half-open window [utc_start, utc_end),
+            which may wrap past midnight (utc_start > utc_end).
+          format: double
+          type: number
       type: object
     PromptCacheBreakpoint:
       description: >-
@@ -19557,10 +19568,11 @@ components:
               type: string
             overrides:
               description: >-
-                Conditional overrides of the base pricing (e.g. long-context pricing). An entry applies when all of its
-                condition fields (e.g. min_prompt_tokens) match the request; among applicable entries, later entries win
-                per key; price keys absent from an entry inherit the base price. The top-level pricing keys always
-                reflect the price that applies under default conditions.
+                Conditional overrides of the base pricing (e.g. long-context or time-based pricing). An entry applies
+                when all of its condition fields (e.g. min_prompt_tokens, or the utc_start/utc_end time window) match
+                the request; among applicable entries, later entries win per key; price keys absent from an entry
+                inherit the base price. The top-level pricing keys always reflect the price that applies under default
+                conditions.
               items:
                 $ref: '#/components/schemas/PricingOverride'
               type: array
@@ -19690,10 +19702,10 @@ components:
           type: string
         overrides:
           description: >-
-            Conditional overrides of the base pricing (e.g. long-context pricing). An entry applies when all of its
-            condition fields (e.g. min_prompt_tokens) match the request; among applicable entries, later entries win per
-            key; price keys absent from an entry inherit the base price. The top-level pricing keys always reflect the
-            price that applies under default conditions.
+            Conditional overrides of the base pricing (e.g. long-context or time-based pricing). An entry applies when
+            all of its condition fields (e.g. min_prompt_tokens, or the utc_start/utc_end time window) match the
+            request; among applicable entries, later entries win per key; price keys absent from an entry inherit the
+            base price. The top-level pricing keys always reflect the price that applies under default conditions.
           items:
             $ref: '#/components/schemas/PricingOverride'
           type: array
