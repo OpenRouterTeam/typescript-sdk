@@ -8,10 +8,6 @@ import { remap as remap$ } from "../lib/primitives.js";
 import { safeParse } from "../lib/schemas.js";
 import { Result as SafeParseResult } from "../types/fp.js";
 import { SDKValidationError } from "./errors/sdkvalidationerror.js";
-import {
-  ServerToolUseDetails,
-  ServerToolUseDetails$inboundSchema,
-} from "./servertoolusedetails.js";
 
 export type InputTokensDetails = {
   cacheWriteTokens?: number | null | undefined;
@@ -46,10 +42,6 @@ export type Usage = {
    * Whether a request was made using a Bring Your Own Key configuration
    */
   isByok?: boolean | undefined;
-  /**
-   * Usage for server-side tool execution (e.g., web search)
-   */
-  serverToolUseDetails?: ServerToolUseDetails | null | undefined;
 };
 
 /** @internal */
@@ -134,8 +126,6 @@ export const Usage$inboundSchema: z.ZodType<Usage, unknown> = z.object({
   cost: z.nullable(z.number()).optional(),
   cost_details: z.lazy(() => UsageCostDetails$inboundSchema).optional(),
   is_byok: z.boolean().optional(),
-  server_tool_use_details: z.nullable(ServerToolUseDetails$inboundSchema)
-    .optional(),
 }).transform((v) => {
   return remap$(v, {
     "input_tokens": "inputTokens",
@@ -145,7 +135,6 @@ export const Usage$inboundSchema: z.ZodType<Usage, unknown> = z.object({
     "total_tokens": "totalTokens",
     "cost_details": "costDetails",
     "is_byok": "isByok",
-    "server_tool_use_details": "serverToolUseDetails",
   });
 });
 
