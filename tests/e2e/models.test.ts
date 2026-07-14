@@ -21,14 +21,14 @@ describe('Models E2E Tests', () => {
 
       expect(response).toBeDefined();
 
-      expect(Array.isArray(response.data)).toBe(true);
-      expect(response.data.length).toBeGreaterThan(0);
+      expect(Array.isArray(response.result.data)).toBe(true);
+      expect(response.result.data.length).toBeGreaterThan(0);
     });
 
     it('should return models with expected properties', async () => {
       const response = await client.models.list();
 
-      const firstModel = response.data[0];
+      const firstModel = response.result.data[0];
       expect(firstModel).toBeDefined();
       expect(firstModel?.id).toBeDefined();
       expect(typeof firstModel?.id).toBe('string');
