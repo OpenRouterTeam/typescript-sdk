@@ -45,6 +45,16 @@ import {
   AnthropicThinkingTurns$outboundSchema,
 } from "./anthropicthinkingturns.js";
 import {
+  AnthropicToolSearchToolBm25,
+  AnthropicToolSearchToolBm25$Outbound,
+  AnthropicToolSearchToolBm25$outboundSchema,
+} from "./anthropictoolsearchtoolbm25.js";
+import {
+  AnthropicToolSearchToolRegex,
+  AnthropicToolSearchToolRegex$Outbound,
+  AnthropicToolSearchToolRegex$outboundSchema,
+} from "./anthropictoolsearchtoolregex.js";
+import {
   AnthropicToolUsesKeep,
   AnthropicToolUsesKeep$Outbound,
   AnthropicToolUsesKeep$outboundSchema,
@@ -447,6 +457,7 @@ export type ToolCustom = {
    * Enable automatic prompt caching. When set at the top level, the system automatically applies cache breakpoints to the last cacheable block in the request. Currently supported for Anthropic Claude models.
    */
   cacheControl?: AnthropicCacheControlDirective | undefined;
+  deferLoading?: boolean | undefined;
   description?: string | undefined;
   inputSchema: InputSchema;
   name: string;
@@ -457,6 +468,8 @@ export type MessagesRequestToolUnion =
   | ToolAdvisor20260301
   | ToolCustom
   | ToolBash20250124
+  | AnthropicToolSearchToolBm25
+  | AnthropicToolSearchToolRegex
   | ToolTextEditor20250124
   | ToolWebSearch20250305
   | ToolWebSearch20260209
@@ -536,6 +549,8 @@ export type MessagesRequest = {
       | ToolAdvisor20260301
       | ToolCustom
       | ToolBash20250124
+      | AnthropicToolSearchToolBm25
+      | AnthropicToolSearchToolRegex
       | ToolTextEditor20250124
       | ToolWebSearch20250305
       | ToolWebSearch20260209
@@ -1425,6 +1440,7 @@ export const ToolTypeCustom$outboundSchema: z.ZodEnum<typeof ToolTypeCustom> = z
 /** @internal */
 export type ToolCustom$Outbound = {
   cache_control?: AnthropicCacheControlDirective$Outbound | undefined;
+  defer_loading?: boolean | undefined;
   description?: string | undefined;
   input_schema: InputSchema$Outbound;
   name: string;
@@ -1437,6 +1453,7 @@ export const ToolCustom$outboundSchema: z.ZodType<
   ToolCustom
 > = z.object({
   cacheControl: AnthropicCacheControlDirective$outboundSchema.optional(),
+  deferLoading: z.boolean().optional(),
   description: z.string().optional(),
   inputSchema: z.lazy(() => InputSchema$outboundSchema),
   name: z.string(),
@@ -1444,6 +1461,7 @@ export const ToolCustom$outboundSchema: z.ZodType<
 }).transform((v) => {
   return remap$(v, {
     cacheControl: "cache_control",
+    deferLoading: "defer_loading",
     inputSchema: "input_schema",
   });
 });
@@ -1457,6 +1475,8 @@ export type MessagesRequestToolUnion$Outbound =
   | ToolAdvisor20260301$Outbound
   | ToolCustom$Outbound
   | ToolBash20250124$Outbound
+  | AnthropicToolSearchToolBm25$Outbound
+  | AnthropicToolSearchToolRegex$Outbound
   | ToolTextEditor20250124$Outbound
   | ToolWebSearch20250305$Outbound
   | ToolWebSearch20260209$Outbound
@@ -1476,6 +1496,8 @@ export const MessagesRequestToolUnion$outboundSchema: z.ZodType<
   z.lazy(() => ToolAdvisor20260301$outboundSchema),
   z.lazy(() => ToolCustom$outboundSchema),
   z.lazy(() => ToolBash20250124$outboundSchema),
+  AnthropicToolSearchToolBm25$outboundSchema,
+  AnthropicToolSearchToolRegex$outboundSchema,
   z.lazy(() => ToolTextEditor20250124$outboundSchema),
   z.lazy(() => ToolWebSearch20250305$outboundSchema),
   z.lazy(() => ToolWebSearch20260209$outboundSchema),
@@ -1547,6 +1569,8 @@ export type MessagesRequest$Outbound = {
       | ToolAdvisor20260301$Outbound
       | ToolCustom$Outbound
       | ToolBash20250124$Outbound
+      | AnthropicToolSearchToolBm25$Outbound
+      | AnthropicToolSearchToolRegex$Outbound
       | ToolTextEditor20250124$Outbound
       | ToolWebSearch20250305$Outbound
       | ToolWebSearch20260209$Outbound
@@ -1621,6 +1645,8 @@ export const MessagesRequest$outboundSchema: z.ZodType<
       z.lazy(() => ToolAdvisor20260301$outboundSchema),
       z.lazy(() => ToolCustom$outboundSchema),
       z.lazy(() => ToolBash20250124$outboundSchema),
+      AnthropicToolSearchToolBm25$outboundSchema,
+      AnthropicToolSearchToolRegex$outboundSchema,
       z.lazy(() => ToolTextEditor20250124$outboundSchema),
       z.lazy(() => ToolWebSearch20250305$outboundSchema),
       z.lazy(() => ToolWebSearch20260209$outboundSchema),
