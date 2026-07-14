@@ -4286,6 +4286,7 @@ components:
         - recraft
         - reka
         - relace
+        - sail-research
         - sakana
         - sambanova
         - seed
@@ -12942,6 +12943,7 @@ components:
                 - Recraft
                 - Reka
                 - Relace
+                - Sail Research
                 - Sakana AI
                 - SambaNova
                 - Seed
@@ -18468,6 +18470,7 @@ components:
         - Recraft
         - Reka
         - Relace
+        - Sail Research
         - Sakana AI
         - SambaNova
         - Seed
@@ -18890,6 +18893,10 @@ components:
           additionalProperties:
             nullable: true
           type: object
+        sail-research:
+          additionalProperties:
+            nullable: true
+          type: object
         sakana:
           additionalProperties:
             nullable: true
@@ -19283,6 +19290,7 @@ components:
             - Recraft
             - Reka
             - Relace
+            - Sail Research
             - Sakana AI
             - SambaNova
             - Seed
@@ -25349,6 +25357,7 @@ paths:
               - recraft
               - reka
               - relace
+              - sail-research
               - sakana
               - sambanova
               - seed
