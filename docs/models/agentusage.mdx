@@ -1,0 +1,18 @@
+---
+title: "AgentUsage"
+---
+
+## Example Usage
+
+```typescript
+import { AgentUsage } from "@openrouter/sdk/models";
+
+let value: AgentUsage = {};
+```
+
+## Fields
+
+| Field                                                                     | Type                                                                      | Required                                                                  | Description                                                               | Example                                                                   |
+| ------------------------------------------------------------------------- | ------------------------------------------------------------------------- | ------------------------------------------------------------------------- | ------------------------------------------------------------------------- | ------------------------------------------------------------------------- |
+| `costUsd`                                                                 | *number*                                                                  | :heavy_minus_sign:                                                        | Total cost of the session in USD, including provider compute and OR fees. | 3.4                                                                       |
+| `durationMs`                                                              | *number*                                                                  | :heavy_minus_sign:                                                        | Wall-clock duration of the session in milliseconds.                       | 723000                                                                    |

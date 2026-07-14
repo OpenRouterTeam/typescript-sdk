@@ -4,22 +4,19 @@
  */
 
 import * as z from "zod/v4";
-import { remap as remap$ } from "../lib/primitives.js";
 import { safeParse } from "../lib/schemas.js";
 import { Result as SafeParseResult } from "../types/fp.js";
 import {
   ContentFilterBuiltinAction,
   ContentFilterBuiltinAction$inboundSchema,
+  ContentFilterBuiltinAction$outboundSchema,
 } from "./contentfilterbuiltinaction.js";
 import {
   ContentFilterBuiltinSlug,
   ContentFilterBuiltinSlug$inboundSchema,
+  ContentFilterBuiltinSlug$outboundSchema,
 } from "./contentfilterbuiltinslug.js";
 import { SDKValidationError } from "./errors/sdkvalidationerror.js";
-import {
-  PromptInjectionScanScope,
-  PromptInjectionScanScope$inboundSchema,
-} from "./promptinjectionscanscope.js";
 
 /**
  * A builtin content filter entry. Builtin filters include PII detectors and the regex-based prompt injection detector.
@@ -30,13 +27,9 @@ export type ContentFilterBuiltinEntry = {
    */
   action: ContentFilterBuiltinAction;
   /**
-   * Read-only, system-assigned redaction placeholder derived from the slug (e.g. "[EMAIL]", "[PHONE]"). Not settable by the caller.
+   * Optional label used in redaction placeholders (e.g. "[PROMPT_INJECTION]")
    */
   label?: string | undefined;
-  /**
-   * Which message roles to scan for prompt injection. Only applies to the regex-prompt-injection builtin. Defaults to all_messages.
-   */
-  scanScope?: PromptInjectionScanScope | undefined;
   /**
    * The builtin filter identifier
    */
@@ -50,14 +43,32 @@ export const ContentFilterBuiltinEntry$inboundSchema: z.ZodType<
 > = z.object({
   action: ContentFilterBuiltinAction$inboundSchema,
   label: z.string().optional(),
-  scan_scope: PromptInjectionScanScope$inboundSchema.optional(),
   slug: ContentFilterBuiltinSlug$inboundSchema,
-}).transform((v) => {
-  return remap$(v, {
-    "scan_scope": "scanScope",
-  });
+});
+/** @internal */
+export type ContentFilterBuiltinEntry$Outbound = {
+  action: string;
+  label?: string | undefined;
+  slug: string;
+};
+
+/** @internal */
+export const ContentFilterBuiltinEntry$outboundSchema: z.ZodType<
+  ContentFilterBuiltinEntry$Outbound,
+  ContentFilterBuiltinEntry
+> = z.object({
+  action: ContentFilterBuiltinAction$outboundSchema,
+  label: z.string().optional(),
+  slug: ContentFilterBuiltinSlug$outboundSchema,
 });
 
+export function contentFilterBuiltinEntryToJSON(
+  contentFilterBuiltinEntry: ContentFilterBuiltinEntry,
+): string {
+  return JSON.stringify(
+    ContentFilterBuiltinEntry$outboundSchema.parse(contentFilterBuiltinEntry),
+  );
+}
 export function contentFilterBuiltinEntryFromJSON(
   jsonString: string,
 ): SafeParseResult<ContentFilterBuiltinEntry, SDKValidationError> {

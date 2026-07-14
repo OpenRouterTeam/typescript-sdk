@@ -7,7 +7,7 @@ import * as z from "zod/v4";
 import { remap as remap$ } from "../lib/primitives.js";
 import { safeParse } from "../lib/schemas.js";
 import * as openEnums from "../types/enums.js";
-import { ClosedEnum, OpenEnum } from "../types/enums.js";
+import { OpenEnum } from "../types/enums.js";
 import { Result as SafeParseResult } from "../types/fp.js";
 import {
   CompoundFilter,
@@ -27,13 +27,9 @@ export const FiltersType = {
 } as const;
 export type FiltersType = OpenEnum<typeof FiltersType>;
 
-export type FileSearchServerToolValue1 = string | number;
+export type Value1 = string | number;
 
-export type FileSearchServerToolValue2 =
-  | string
-  | number
-  | boolean
-  | Array<string | number>;
+export type Value2 = string | number | boolean | Array<string | number>;
 
 export type Filters = {
   key: string;
@@ -54,11 +50,6 @@ export type RankingOptions = {
   scoreThreshold?: number | undefined;
 };
 
-export const TypeFileSearch = {
-  FileSearch: "file_search",
-} as const;
-export type TypeFileSearch = ClosedEnum<typeof TypeFileSearch>;
-
 /**
  * File search tool configuration
  */
@@ -66,7 +57,7 @@ export type FileSearchServerTool = {
   filters?: Filters | CompoundFilter | any | null | undefined;
   maxNumResults?: number | undefined;
   rankingOptions?: RankingOptions | undefined;
-  type: TypeFileSearch;
+  type: "file_search";
   vectorStoreIds: Array<string>;
 };
 
@@ -78,78 +69,63 @@ export const FiltersType$outboundSchema: z.ZodType<string, FiltersType> =
   openEnums.outboundSchema(FiltersType);
 
 /** @internal */
-export const FileSearchServerToolValue1$inboundSchema: z.ZodType<
-  FileSearchServerToolValue1,
-  unknown
-> = z.union([z.string(), z.number()]);
+export const Value1$inboundSchema: z.ZodType<Value1, unknown> = z.union([
+  z.string(),
+  z.number(),
+]);
 /** @internal */
-export type FileSearchServerToolValue1$Outbound = string | number;
+export type Value1$Outbound = string | number;
 
 /** @internal */
-export const FileSearchServerToolValue1$outboundSchema: z.ZodType<
-  FileSearchServerToolValue1$Outbound,
-  FileSearchServerToolValue1
-> = z.union([z.string(), z.number()]);
+export const Value1$outboundSchema: z.ZodType<Value1$Outbound, Value1> = z
+  .union([z.string(), z.number()]);
 
-export function fileSearchServerToolValue1ToJSON(
-  fileSearchServerToolValue1: FileSearchServerToolValue1,
-): string {
-  return JSON.stringify(
-    FileSearchServerToolValue1$outboundSchema.parse(fileSearchServerToolValue1),
-  );
+export function value1ToJSON(value1: Value1): string {
+  return JSON.stringify(Value1$outboundSchema.parse(value1));
 }
-export function fileSearchServerToolValue1FromJSON(
+export function value1FromJSON(
   jsonString: string,
-): SafeParseResult<FileSearchServerToolValue1, SDKValidationError> {
+): SafeParseResult<Value1, SDKValidationError> {
   return safeParse(
     jsonString,
-    (x) => FileSearchServerToolValue1$inboundSchema.parse(JSON.parse(x)),
-    `Failed to parse 'FileSearchServerToolValue1' from JSON`,
+    (x) => Value1$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'Value1' from JSON`,
   );
 }
 
 /** @internal */
-export const FileSearchServerToolValue2$inboundSchema: z.ZodType<
-  FileSearchServerToolValue2,
-  unknown
-> = z.union([
+export const Value2$inboundSchema: z.ZodType<Value2, unknown> = z.union([
   z.string(),
   z.number(),
   z.boolean(),
   z.array(z.union([z.string(), z.number()])),
 ]);
 /** @internal */
-export type FileSearchServerToolValue2$Outbound =
+export type Value2$Outbound =
   | string
   | number
   | boolean
   | Array<string | number>;
 
 /** @internal */
-export const FileSearchServerToolValue2$outboundSchema: z.ZodType<
-  FileSearchServerToolValue2$Outbound,
-  FileSearchServerToolValue2
-> = z.union([
-  z.string(),
-  z.number(),
-  z.boolean(),
-  z.array(z.union([z.string(), z.number()])),
-]);
+export const Value2$outboundSchema: z.ZodType<Value2$Outbound, Value2> = z
+  .union([
+    z.string(),
+    z.number(),
+    z.boolean(),
+    z.array(z.union([z.string(), z.number()])),
+  ]);
 
-export function fileSearchServerToolValue2ToJSON(
-  fileSearchServerToolValue2: FileSearchServerToolValue2,
-): string {
-  return JSON.stringify(
-    FileSearchServerToolValue2$outboundSchema.parse(fileSearchServerToolValue2),
-  );
+export function value2ToJSON(value2: Value2): string {
+  return JSON.stringify(Value2$outboundSchema.parse(value2));
 }
-export function fileSearchServerToolValue2FromJSON(
+export function value2FromJSON(
   jsonString: string,
-): SafeParseResult<FileSearchServerToolValue2, SDKValidationError> {
+): SafeParseResult<Value2, SDKValidationError> {
   return safeParse(
     jsonString,
-    (x) => FileSearchServerToolValue2$inboundSchema.parse(JSON.parse(x)),
-    `Failed to parse 'FileSearchServerToolValue2' from JSON`,
+    (x) => Value2$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'Value2' from JSON`,
   );
 }
 
@@ -283,13 +259,6 @@ export function rankingOptionsFromJSON(
 }
 
 /** @internal */
-export const TypeFileSearch$inboundSchema: z.ZodEnum<typeof TypeFileSearch> = z
-  .enum(TypeFileSearch);
-/** @internal */
-export const TypeFileSearch$outboundSchema: z.ZodEnum<typeof TypeFileSearch> =
-  TypeFileSearch$inboundSchema;
-
-/** @internal */
 export const FileSearchServerTool$inboundSchema: z.ZodType<
   FileSearchServerTool,
   unknown
@@ -303,7 +272,7 @@ export const FileSearchServerTool$inboundSchema: z.ZodType<
   ).optional(),
   max_num_results: z.int().optional(),
   ranking_options: z.lazy(() => RankingOptions$inboundSchema).optional(),
-  type: TypeFileSearch$inboundSchema,
+  type: z.literal("file_search"),
   vector_store_ids: z.array(z.string()),
 }).transform((v) => {
   return remap$(v, {
@@ -317,7 +286,7 @@ export type FileSearchServerTool$Outbound = {
   filters?: Filters$Outbound | CompoundFilter$Outbound | any | null | undefined;
   max_num_results?: number | undefined;
   ranking_options?: RankingOptions$Outbound | undefined;
-  type: string;
+  type: "file_search";
   vector_store_ids: Array<string>;
 };
 
@@ -335,7 +304,7 @@ export const FileSearchServerTool$outboundSchema: z.ZodType<
   ).optional(),
   maxNumResults: z.int().optional(),
   rankingOptions: z.lazy(() => RankingOptions$outboundSchema).optional(),
-  type: TypeFileSearch$outboundSchema,
+  type: z.literal("file_search"),
   vectorStoreIds: z.array(z.string()),
 }).transform((v) => {
   return remap$(v, {

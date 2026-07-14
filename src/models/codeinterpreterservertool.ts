@@ -32,17 +32,12 @@ export type ContainerAuto = {
 
 export type Container = ContainerAuto | string;
 
-export const TypeCodeInterpreter = {
-  CodeInterpreter: "code_interpreter",
-} as const;
-export type TypeCodeInterpreter = ClosedEnum<typeof TypeCodeInterpreter>;
-
 /**
  * Code interpreter tool configuration
  */
 export type CodeInterpreterServerTool = {
   container: ContainerAuto | string;
-  type: TypeCodeInterpreter;
+  type: "code_interpreter";
 };
 
 /** @internal */
@@ -134,26 +129,17 @@ export function containerFromJSON(
 }
 
 /** @internal */
-export const TypeCodeInterpreter$inboundSchema: z.ZodEnum<
-  typeof TypeCodeInterpreter
-> = z.enum(TypeCodeInterpreter);
-/** @internal */
-export const TypeCodeInterpreter$outboundSchema: z.ZodEnum<
-  typeof TypeCodeInterpreter
-> = TypeCodeInterpreter$inboundSchema;
-
-/** @internal */
 export const CodeInterpreterServerTool$inboundSchema: z.ZodType<
   CodeInterpreterServerTool,
   unknown
 > = z.object({
   container: z.union([z.lazy(() => ContainerAuto$inboundSchema), z.string()]),
-  type: TypeCodeInterpreter$inboundSchema,
+  type: z.literal("code_interpreter"),
 });
 /** @internal */
 export type CodeInterpreterServerTool$Outbound = {
   container: ContainerAuto$Outbound | string;
-  type: string;
+  type: "code_interpreter";
 };
 
 /** @internal */
@@ -162,7 +148,7 @@ export const CodeInterpreterServerTool$outboundSchema: z.ZodType<
   CodeInterpreterServerTool
 > = z.object({
   container: z.union([z.lazy(() => ContainerAuto$outboundSchema), z.string()]),
-  type: TypeCodeInterpreter$outboundSchema,
+  type: z.literal("code_interpreter"),
 });
 
 export function codeInterpreterServerToolToJSON(

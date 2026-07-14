@@ -21,7 +21,7 @@ export type OutputWebSearchServerToolItemTypeURL = ClosedEnum<
   typeof OutputWebSearchServerToolItemTypeURL
 >;
 
-export type OutputWebSearchServerToolItemSource = {
+export type Source = {
   type: OutputWebSearchServerToolItemTypeURL;
   url: string;
 };
@@ -38,7 +38,7 @@ export type OutputWebSearchServerToolItemTypeSearch = ClosedEnum<
  */
 export type OutputWebSearchServerToolItemAction = {
   query: string;
-  sources?: Array<OutputWebSearchServerToolItemSource> | undefined;
+  sources?: Array<Source> | undefined;
   type: OutputWebSearchServerToolItemTypeSearch;
 };
 
@@ -72,45 +72,33 @@ export const OutputWebSearchServerToolItemTypeURL$outboundSchema: z.ZodEnum<
 > = OutputWebSearchServerToolItemTypeURL$inboundSchema;
 
 /** @internal */
-export const OutputWebSearchServerToolItemSource$inboundSchema: z.ZodType<
-  OutputWebSearchServerToolItemSource,
-  unknown
-> = z.object({
+export const Source$inboundSchema: z.ZodType<Source, unknown> = z.object({
   type: OutputWebSearchServerToolItemTypeURL$inboundSchema,
   url: z.string(),
 });
 /** @internal */
-export type OutputWebSearchServerToolItemSource$Outbound = {
+export type Source$Outbound = {
   type: string;
   url: string;
 };
 
 /** @internal */
-export const OutputWebSearchServerToolItemSource$outboundSchema: z.ZodType<
-  OutputWebSearchServerToolItemSource$Outbound,
-  OutputWebSearchServerToolItemSource
-> = z.object({
-  type: OutputWebSearchServerToolItemTypeURL$outboundSchema,
-  url: z.string(),
-});
+export const Source$outboundSchema: z.ZodType<Source$Outbound, Source> = z
+  .object({
+    type: OutputWebSearchServerToolItemTypeURL$outboundSchema,
+    url: z.string(),
+  });
 
-export function outputWebSearchServerToolItemSourceToJSON(
-  outputWebSearchServerToolItemSource: OutputWebSearchServerToolItemSource,
-): string {
-  return JSON.stringify(
-    OutputWebSearchServerToolItemSource$outboundSchema.parse(
-      outputWebSearchServerToolItemSource,
-    ),
-  );
+export function sourceToJSON(source: Source): string {
+  return JSON.stringify(Source$outboundSchema.parse(source));
 }
-export function outputWebSearchServerToolItemSourceFromJSON(
+export function sourceFromJSON(
   jsonString: string,
-): SafeParseResult<OutputWebSearchServerToolItemSource, SDKValidationError> {
+): SafeParseResult<Source, SDKValidationError> {
   return safeParse(
     jsonString,
-    (x) =>
-      OutputWebSearchServerToolItemSource$inboundSchema.parse(JSON.parse(x)),
-    `Failed to parse 'OutputWebSearchServerToolItemSource' from JSON`,
+    (x) => Source$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'Source' from JSON`,
   );
 }
 
@@ -129,15 +117,13 @@ export const OutputWebSearchServerToolItemAction$inboundSchema: z.ZodType<
   unknown
 > = z.object({
   query: z.string(),
-  sources: z.array(
-    z.lazy(() => OutputWebSearchServerToolItemSource$inboundSchema),
-  ).optional(),
+  sources: z.array(z.lazy(() => Source$inboundSchema)).optional(),
   type: OutputWebSearchServerToolItemTypeSearch$inboundSchema,
 });
 /** @internal */
 export type OutputWebSearchServerToolItemAction$Outbound = {
   query: string;
-  sources?: Array<OutputWebSearchServerToolItemSource$Outbound> | undefined;
+  sources?: Array<Source$Outbound> | undefined;
   type: string;
 };
 
@@ -147,9 +133,7 @@ export const OutputWebSearchServerToolItemAction$outboundSchema: z.ZodType<
   OutputWebSearchServerToolItemAction
 > = z.object({
   query: z.string(),
-  sources: z.array(
-    z.lazy(() => OutputWebSearchServerToolItemSource$outboundSchema),
-  ).optional(),
+  sources: z.array(z.lazy(() => Source$outboundSchema)).optional(),
   type: OutputWebSearchServerToolItemTypeSearch$outboundSchema,
 });
 

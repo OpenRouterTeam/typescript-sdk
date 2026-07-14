@@ -8,40 +8,20 @@ import { remap as remap$ } from "../lib/primitives.js";
 import * as openEnums from "../types/enums.js";
 import { OpenEnum } from "../types/enums.js";
 import {
-  AdvisorServerToolOpenRouter,
-  AdvisorServerToolOpenRouter$Outbound,
-  AdvisorServerToolOpenRouter$outboundSchema,
-} from "./advisorservertoolopenrouter.js";
-import {
-  AnthropicCacheControlDirective,
-  AnthropicCacheControlDirective$Outbound,
-  AnthropicCacheControlDirective$outboundSchema,
-} from "./anthropiccachecontroldirective.js";
-import {
   ApplyPatchServerTool,
   ApplyPatchServerTool$Outbound,
   ApplyPatchServerTool$outboundSchema,
 } from "./applypatchservertool.js";
-import {
-  ApplyPatchServerToolOpenRouter,
-  ApplyPatchServerToolOpenRouter$Outbound,
-  ApplyPatchServerToolOpenRouter$outboundSchema,
-} from "./applypatchservertoolopenrouter.js";
 import {
   AutoRouterPlugin,
   AutoRouterPlugin$Outbound,
   AutoRouterPlugin$outboundSchema,
 } from "./autorouterplugin.js";
 import {
-  BashServerTool,
-  BashServerTool$Outbound,
-  BashServerTool$outboundSchema,
-} from "./bashservertool.js";
-import {
-  ChatDebugOptions,
-  ChatDebugOptions$Outbound,
-  ChatDebugOptions$outboundSchema,
-} from "./chatdebugoptions.js";
+  ChatSearchModelsServerTool,
+  ChatSearchModelsServerTool$Outbound,
+  ChatSearchModelsServerTool$outboundSchema,
+} from "./chatsearchmodelsservertool.js";
 import {
   CodeInterpreterServerTool,
   CodeInterpreterServerTool$Outbound,
@@ -82,21 +62,6 @@ import {
   FileSearchServerTool$Outbound,
   FileSearchServerTool$outboundSchema,
 } from "./filesearchservertool.js";
-import {
-  FilesServerTool,
-  FilesServerTool$Outbound,
-  FilesServerTool$outboundSchema,
-} from "./filesservertool.js";
-import {
-  FusionPlugin,
-  FusionPlugin$Outbound,
-  FusionPlugin$outboundSchema,
-} from "./fusionplugin.js";
-import {
-  FusionServerToolOpenRouter,
-  FusionServerToolOpenRouter$Outbound,
-  FusionServerToolOpenRouter$outboundSchema,
-} from "./fusionservertoolopenrouter.js";
 import {
   ImageConfig,
   ImageConfig$Outbound,
@@ -161,11 +126,6 @@ import {
   PreviewWebSearchServerTool$outboundSchema,
 } from "./previewwebsearchservertool.js";
 import {
-  PromptCacheOptions,
-  PromptCacheOptions$Outbound,
-  PromptCacheOptions$outboundSchema,
-} from "./promptcacheoptions.js";
-import {
   ProviderPreferences,
   ProviderPreferences$Outbound,
   ProviderPreferences$outboundSchema,
@@ -185,35 +145,15 @@ import {
   ResponseIncludesEnum$outboundSchema,
 } from "./responseincludesenum.js";
 import {
-  SearchModelsServerToolOpenRouter,
-  SearchModelsServerToolOpenRouter$Outbound,
-  SearchModelsServerToolOpenRouter$outboundSchema,
-} from "./searchmodelsservertoolopenrouter.js";
-import {
   ShellServerTool,
   ShellServerTool$Outbound,
   ShellServerTool$outboundSchema,
 } from "./shellservertool.js";
 import {
-  ShellServerToolOpenRouter,
-  ShellServerToolOpenRouter$Outbound,
-  ShellServerToolOpenRouter$outboundSchema,
-} from "./shellservertoolopenrouter.js";
-import {
-  StopServerToolsWhenCondition,
-  StopServerToolsWhenCondition$Outbound,
-  StopServerToolsWhenCondition$outboundSchema,
-} from "./stopservertoolswhencondition.js";
-import {
   StoredPromptTemplate,
   StoredPromptTemplate$Outbound,
   StoredPromptTemplate$outboundSchema,
 } from "./storedprompttemplate.js";
-import {
-  SubagentServerToolOpenRouter,
-  SubagentServerToolOpenRouter$Outbound,
-  SubagentServerToolOpenRouter$outboundSchema,
-} from "./subagentservertoolopenrouter.js";
 import {
   TextExtendedConfig,
   TextExtendedConfig$Outbound,
@@ -224,11 +164,6 @@ import {
   TraceConfig$Outbound,
   TraceConfig$outboundSchema,
 } from "./traceconfig.js";
-import {
-  WebFetchPlugin,
-  WebFetchPlugin$Outbound,
-  WebFetchPlugin$outboundSchema,
-} from "./webfetchplugin.js";
 import {
   WebFetchServerTool,
   WebFetchServerTool$Outbound,
@@ -254,12 +189,10 @@ export type ResponsesRequestPlugin =
   | AutoRouterPlugin
   | ContextCompressionPlugin
   | FileParserPlugin
-  | FusionPlugin
   | ModerationPlugin
   | ParetoRouterPlugin
   | ResponseHealingPlugin
-  | WebSearchPlugin
-  | WebFetchPlugin;
+  | WebSearchPlugin;
 
 export const ResponsesRequestServiceTier = {
   Auto: "auto",
@@ -285,51 +218,34 @@ export type ResponsesRequestToolFunction = {
 
 export type ResponsesRequestToolUnion =
   | ResponsesRequestToolFunction
-  | (PreviewWebSearchServerTool & { type: "web_search_preview" })
-  | (Preview20250311WebSearchServerTool & {
-    type: "web_search_preview_2025_03_11";
-  })
-  | (LegacyWebSearchServerTool & { type: "web_search" })
-  | (WebSearchServerTool & { type: "web_search_2025_08_26" })
-  | (FileSearchServerTool & { type: "file_search" })
-  | (ComputerUseServerTool & { type: "computer_use_preview" })
-  | (CodeInterpreterServerTool & { type: "code_interpreter" })
-  | (McpServerTool & { type: "mcp" })
-  | (ImageGenerationServerTool & { type: "image_generation" })
-  | (CodexLocalShellTool & { type: "local_shell" })
-  | (ShellServerTool & { type: "shell" })
-  | (ApplyPatchServerTool & { type: "apply_patch" })
-  | (CustomTool & { type: "custom" })
-  | (AdvisorServerToolOpenRouter & { type: "openrouter:advisor" })
-  | (SubagentServerToolOpenRouter & { type: "openrouter:subagent" })
+  | PreviewWebSearchServerTool
+  | Preview20250311WebSearchServerTool
+  | LegacyWebSearchServerTool
+  | WebSearchServerTool
+  | FileSearchServerTool
+  | ComputerUseServerTool
+  | CodeInterpreterServerTool
+  | McpServerTool
+  | ImageGenerationServerTool
+  | CodexLocalShellTool
+  | ShellServerTool
+  | ApplyPatchServerTool
+  | CustomTool
   | (DatetimeServerTool & { type: "openrouter:datetime" })
-  | (FilesServerTool & { type: "openrouter:files" })
-  | (FusionServerToolOpenRouter & { type: "openrouter:fusion" })
   | (ImageGenerationServerToolOpenRouter & {
     type: "openrouter:image_generation";
   })
-  | (SearchModelsServerToolOpenRouter & {
+  | (ChatSearchModelsServerTool & {
     type: "openrouter:experimental__search_models";
   })
   | (WebFetchServerTool & { type: "openrouter:web_fetch" })
-  | (WebSearchServerToolOpenRouter & { type: "openrouter:web_search" })
-  | (ApplyPatchServerToolOpenRouter & { type: "openrouter:apply_patch" })
-  | (BashServerTool & { type: "openrouter:bash" })
-  | (ShellServerToolOpenRouter & { type: "openrouter:shell" });
+  | WebSearchServerToolOpenRouter;
 
 /**
  * Request schema for Responses endpoint
  */
 export type ResponsesRequest = {
   background?: boolean | null | undefined;
-  /**
-   * Enable automatic prompt caching. When set at the top level, the system automatically applies cache breakpoints to the last cacheable block in the request. Currently supported for Anthropic Claude models.
-   */
-  cacheControl?: AnthropicCacheControlDirective | undefined;
-  /**
-   * Debug options for inspecting request transformations (streaming only)
-   */
-  debug?: ChatDebugOptions | undefined;
   frequencyPenalty?: number | null | undefined;
   /**
    * Provider-specific image configuration options. Keys and values vary by model/provider. See https://openrouter.ai/docs/guides/overview/multimodal/image-generation for more details.
@@ -362,22 +278,16 @@ export type ResponsesRequest = {
       | AutoRouterPlugin
       | ContextCompressionPlugin
       | FileParserPlugin
-      | FusionPlugin
       | ModerationPlugin
       | ParetoRouterPlugin
       | ResponseHealingPlugin
       | WebSearchPlugin
-      | WebFetchPlugin
     >
     | undefined;
   presencePenalty?: number | null | undefined;
   previousResponseId?: string | null | undefined;
   prompt?: StoredPromptTemplate | null | undefined;
   promptCacheKey?: string | null | undefined;
-  /**
-   * Request-level prompt-cache controls. `mode: "explicit"` disables OpenAI-managed breakpoints so only blocks marked with `prompt_cache_breakpoint` are cached. Only supported by OpenAI GPT-5.6 and newer.
-   */
-  promptCacheOptions?: PromptCacheOptions | null | undefined;
   /**
    * When multiple model providers are available, optionally indicate your routing preference.
    */
@@ -389,13 +299,9 @@ export type ResponsesRequest = {
   safetyIdentifier?: string | null | undefined;
   serviceTier?: ResponsesRequestServiceTier | null | undefined;
   /**
-   * A unique identifier for grouping related requests (e.g., a conversation or agent workflow). When provided, OpenRouter uses it as the sticky routing key, routing all requests in the session to the same provider to maximize prompt cache hits. Also used for observability grouping. If provided in both the request body and the x-session-id header, the body value takes precedence. Maximum of 256 characters.
+   * A unique identifier for grouping related requests (e.g., a conversation or agent workflow) for observability. If provided in both the request body and the x-session-id header, the body value takes precedence. Maximum of 256 characters.
    */
   sessionId?: string | undefined;
-  /**
-   * Stop conditions for the server-tool agent loop. Any condition firing halts the loop (OR logic). When set, this overrides `max_tool_calls`.
-   */
-  stopServerToolsWhen?: Array<StopServerToolsWhenCondition> | undefined;
   store?: false | undefined;
   stream?: boolean | undefined;
   temperature?: number | null | undefined;
@@ -407,37 +313,28 @@ export type ResponsesRequest = {
   tools?:
     | Array<
       | ResponsesRequestToolFunction
-      | (PreviewWebSearchServerTool & { type: "web_search_preview" })
-      | (Preview20250311WebSearchServerTool & {
-        type: "web_search_preview_2025_03_11";
-      })
-      | (LegacyWebSearchServerTool & { type: "web_search" })
-      | (WebSearchServerTool & { type: "web_search_2025_08_26" })
-      | (FileSearchServerTool & { type: "file_search" })
-      | (ComputerUseServerTool & { type: "computer_use_preview" })
-      | (CodeInterpreterServerTool & { type: "code_interpreter" })
-      | (McpServerTool & { type: "mcp" })
-      | (ImageGenerationServerTool & { type: "image_generation" })
-      | (CodexLocalShellTool & { type: "local_shell" })
-      | (ShellServerTool & { type: "shell" })
-      | (ApplyPatchServerTool & { type: "apply_patch" })
-      | (CustomTool & { type: "custom" })
-      | (AdvisorServerToolOpenRouter & { type: "openrouter:advisor" })
-      | (SubagentServerToolOpenRouter & { type: "openrouter:subagent" })
+      | PreviewWebSearchServerTool
+      | Preview20250311WebSearchServerTool
+      | LegacyWebSearchServerTool
+      | WebSearchServerTool
+      | FileSearchServerTool
+      | ComputerUseServerTool
+      | CodeInterpreterServerTool
+      | McpServerTool
+      | ImageGenerationServerTool
+      | CodexLocalShellTool
+      | ShellServerTool
+      | ApplyPatchServerTool
+      | CustomTool
       | (DatetimeServerTool & { type: "openrouter:datetime" })
-      | (FilesServerTool & { type: "openrouter:files" })
-      | (FusionServerToolOpenRouter & { type: "openrouter:fusion" })
       | (ImageGenerationServerToolOpenRouter & {
         type: "openrouter:image_generation";
       })
-      | (SearchModelsServerToolOpenRouter & {
+      | (ChatSearchModelsServerTool & {
         type: "openrouter:experimental__search_models";
       })
       | (WebFetchServerTool & { type: "openrouter:web_fetch" })
-      | (WebSearchServerToolOpenRouter & { type: "openrouter:web_search" })
-      | (ApplyPatchServerToolOpenRouter & { type: "openrouter:apply_patch" })
-      | (BashServerTool & { type: "openrouter:bash" })
-      | (ShellServerToolOpenRouter & { type: "openrouter:shell" })
+      | WebSearchServerToolOpenRouter
     >
     | undefined;
   topK?: number | undefined;
@@ -459,12 +356,10 @@ export type ResponsesRequestPlugin$Outbound =
   | AutoRouterPlugin$Outbound
   | ContextCompressionPlugin$Outbound
   | FileParserPlugin$Outbound
-  | FusionPlugin$Outbound
   | ModerationPlugin$Outbound
   | ParetoRouterPlugin$Outbound
   | ResponseHealingPlugin$Outbound
-  | WebSearchPlugin$Outbound
-  | WebFetchPlugin$Outbound;
+  | WebSearchPlugin$Outbound;
 
 /** @internal */
 export const ResponsesRequestPlugin$outboundSchema: z.ZodType<
@@ -474,12 +369,10 @@ export const ResponsesRequestPlugin$outboundSchema: z.ZodType<
   AutoRouterPlugin$outboundSchema,
   ContextCompressionPlugin$outboundSchema,
   FileParserPlugin$outboundSchema,
-  FusionPlugin$outboundSchema,
   ModerationPlugin$outboundSchema,
   ParetoRouterPlugin$outboundSchema,
   ResponseHealingPlugin$outboundSchema,
   WebSearchPlugin$outboundSchema,
-  WebFetchPlugin$outboundSchema,
 ]);
 
 export function responsesRequestPluginToJSON(
@@ -530,39 +423,28 @@ export function responsesRequestToolFunctionToJSON(
 /** @internal */
 export type ResponsesRequestToolUnion$Outbound =
   | ResponsesRequestToolFunction$Outbound
-  | (PreviewWebSearchServerTool$Outbound & { type: "web_search_preview" })
-  | (Preview20250311WebSearchServerTool$Outbound & {
-    type: "web_search_preview_2025_03_11";
-  })
-  | (LegacyWebSearchServerTool$Outbound & { type: "web_search" })
-  | (WebSearchServerTool$Outbound & { type: "web_search_2025_08_26" })
-  | (FileSearchServerTool$Outbound & { type: "file_search" })
-  | (ComputerUseServerTool$Outbound & { type: "computer_use_preview" })
-  | (CodeInterpreterServerTool$Outbound & { type: "code_interpreter" })
-  | (McpServerTool$Outbound & { type: "mcp" })
-  | (ImageGenerationServerTool$Outbound & { type: "image_generation" })
-  | (CodexLocalShellTool$Outbound & { type: "local_shell" })
-  | (ShellServerTool$Outbound & { type: "shell" })
-  | (ApplyPatchServerTool$Outbound & { type: "apply_patch" })
-  | (CustomTool$Outbound & { type: "custom" })
-  | (AdvisorServerToolOpenRouter$Outbound & { type: "openrouter:advisor" })
-  | (SubagentServerToolOpenRouter$Outbound & { type: "openrouter:subagent" })
+  | PreviewWebSearchServerTool$Outbound
+  | Preview20250311WebSearchServerTool$Outbound
+  | LegacyWebSearchServerTool$Outbound
+  | WebSearchServerTool$Outbound
+  | FileSearchServerTool$Outbound
+  | ComputerUseServerTool$Outbound
+  | CodeInterpreterServerTool$Outbound
+  | McpServerTool$Outbound
+  | ImageGenerationServerTool$Outbound
+  | CodexLocalShellTool$Outbound
+  | ShellServerTool$Outbound
+  | ApplyPatchServerTool$Outbound
+  | CustomTool$Outbound
   | (DatetimeServerTool$Outbound & { type: "openrouter:datetime" })
-  | (FilesServerTool$Outbound & { type: "openrouter:files" })
-  | (FusionServerToolOpenRouter$Outbound & { type: "openrouter:fusion" })
   | (ImageGenerationServerToolOpenRouter$Outbound & {
     type: "openrouter:image_generation";
   })
-  | (SearchModelsServerToolOpenRouter$Outbound & {
+  | (ChatSearchModelsServerTool$Outbound & {
     type: "openrouter:experimental__search_models";
   })
   | (WebFetchServerTool$Outbound & { type: "openrouter:web_fetch" })
-  | (WebSearchServerToolOpenRouter$Outbound & { type: "openrouter:web_search" })
-  | (ApplyPatchServerToolOpenRouter$Outbound & {
-    type: "openrouter:apply_patch";
-  })
-  | (BashServerTool$Outbound & { type: "openrouter:bash" })
-  | (ShellServerToolOpenRouter$Outbound & { type: "openrouter:shell" });
+  | WebSearchServerToolOpenRouter$Outbound;
 
 /** @internal */
 export const ResponsesRequestToolUnion$outboundSchema: z.ZodType<
@@ -570,75 +452,32 @@ export const ResponsesRequestToolUnion$outboundSchema: z.ZodType<
   ResponsesRequestToolUnion
 > = z.union([
   z.lazy(() => ResponsesRequestToolFunction$outboundSchema),
-  PreviewWebSearchServerTool$outboundSchema.and(
-    z.object({ type: z.literal("web_search_preview") }),
-  ),
-  Preview20250311WebSearchServerTool$outboundSchema.and(
-    z.object({ type: z.literal("web_search_preview_2025_03_11") }),
-  ),
-  LegacyWebSearchServerTool$outboundSchema.and(
-    z.object({ type: z.literal("web_search") }),
-  ),
-  WebSearchServerTool$outboundSchema.and(
-    z.object({ type: z.literal("web_search_2025_08_26") }),
-  ),
-  FileSearchServerTool$outboundSchema.and(
-    z.object({ type: z.literal("file_search") }),
-  ),
-  ComputerUseServerTool$outboundSchema.and(
-    z.object({ type: z.literal("computer_use_preview") }),
-  ),
-  CodeInterpreterServerTool$outboundSchema.and(
-    z.object({ type: z.literal("code_interpreter") }),
-  ),
-  McpServerTool$outboundSchema.and(z.object({ type: z.literal("mcp") })),
-  ImageGenerationServerTool$outboundSchema.and(
-    z.object({ type: z.literal("image_generation") }),
-  ),
-  CodexLocalShellTool$outboundSchema.and(
-    z.object({ type: z.literal("local_shell") }),
-  ),
-  ShellServerTool$outboundSchema.and(z.object({ type: z.literal("shell") })),
-  ApplyPatchServerTool$outboundSchema.and(
-    z.object({ type: z.literal("apply_patch") }),
-  ),
-  CustomTool$outboundSchema.and(z.object({ type: z.literal("custom") })),
-  AdvisorServerToolOpenRouter$outboundSchema.and(
-    z.object({ type: z.literal("openrouter:advisor") }),
-  ),
-  SubagentServerToolOpenRouter$outboundSchema.and(
-    z.object({ type: z.literal("openrouter:subagent") }),
-  ),
+  PreviewWebSearchServerTool$outboundSchema,
+  Preview20250311WebSearchServerTool$outboundSchema,
+  LegacyWebSearchServerTool$outboundSchema,
+  WebSearchServerTool$outboundSchema,
+  FileSearchServerTool$outboundSchema,
+  ComputerUseServerTool$outboundSchema,
+  CodeInterpreterServerTool$outboundSchema,
+  McpServerTool$outboundSchema,
+  ImageGenerationServerTool$outboundSchema,
+  CodexLocalShellTool$outboundSchema,
+  ShellServerTool$outboundSchema,
+  ApplyPatchServerTool$outboundSchema,
+  CustomTool$outboundSchema,
   DatetimeServerTool$outboundSchema.and(
     z.object({ type: z.literal("openrouter:datetime") }),
-  ),
-  FilesServerTool$outboundSchema.and(
-    z.object({ type: z.literal("openrouter:files") }),
-  ),
-  FusionServerToolOpenRouter$outboundSchema.and(
-    z.object({ type: z.literal("openrouter:fusion") }),
   ),
   ImageGenerationServerToolOpenRouter$outboundSchema.and(
     z.object({ type: z.literal("openrouter:image_generation") }),
   ),
-  SearchModelsServerToolOpenRouter$outboundSchema.and(
+  ChatSearchModelsServerTool$outboundSchema.and(
     z.object({ type: z.literal("openrouter:experimental__search_models") }),
   ),
   WebFetchServerTool$outboundSchema.and(
     z.object({ type: z.literal("openrouter:web_fetch") }),
   ),
-  WebSearchServerToolOpenRouter$outboundSchema.and(
-    z.object({ type: z.literal("openrouter:web_search") }),
-  ),
-  ApplyPatchServerToolOpenRouter$outboundSchema.and(
-    z.object({ type: z.literal("openrouter:apply_patch") }),
-  ),
-  BashServerTool$outboundSchema.and(
-    z.object({ type: z.literal("openrouter:bash") }),
-  ),
-  ShellServerToolOpenRouter$outboundSchema.and(
-    z.object({ type: z.literal("openrouter:shell") }),
-  ),
+  WebSearchServerToolOpenRouter$outboundSchema,
 ]);
 
 export function responsesRequestToolUnionToJSON(
@@ -652,8 +491,6 @@ export function responsesRequestToolUnionToJSON(
 /** @internal */
 export type ResponsesRequest$Outbound = {
   background?: boolean | null | undefined;
-  cache_control?: AnthropicCacheControlDirective$Outbound | undefined;
-  debug?: ChatDebugOptions$Outbound | undefined;
   frequency_penalty?: number | null | undefined;
   image_config?: { [k: string]: ImageConfig$Outbound } | undefined;
   include?: Array<string> | null | undefined;
@@ -671,27 +508,21 @@ export type ResponsesRequest$Outbound = {
       | AutoRouterPlugin$Outbound
       | ContextCompressionPlugin$Outbound
       | FileParserPlugin$Outbound
-      | FusionPlugin$Outbound
       | ModerationPlugin$Outbound
       | ParetoRouterPlugin$Outbound
       | ResponseHealingPlugin$Outbound
       | WebSearchPlugin$Outbound
-      | WebFetchPlugin$Outbound
     >
     | undefined;
   presence_penalty?: number | null | undefined;
   previous_response_id?: string | null | undefined;
   prompt?: StoredPromptTemplate$Outbound | null | undefined;
   prompt_cache_key?: string | null | undefined;
-  prompt_cache_options?: PromptCacheOptions$Outbound | null | undefined;
   provider?: ProviderPreferences$Outbound | null | undefined;
   reasoning?: ReasoningConfig$Outbound | null | undefined;
   safety_identifier?: string | null | undefined;
   service_tier: string | null;
   session_id?: string | undefined;
-  stop_server_tools_when?:
-    | Array<StopServerToolsWhenCondition$Outbound>
-    | undefined;
   store: false;
   stream: boolean;
   temperature?: number | null | undefined;
@@ -700,43 +531,28 @@ export type ResponsesRequest$Outbound = {
   tools?:
     | Array<
       | ResponsesRequestToolFunction$Outbound
-      | (PreviewWebSearchServerTool$Outbound & { type: "web_search_preview" })
-      | (Preview20250311WebSearchServerTool$Outbound & {
-        type: "web_search_preview_2025_03_11";
-      })
-      | (LegacyWebSearchServerTool$Outbound & { type: "web_search" })
-      | (WebSearchServerTool$Outbound & { type: "web_search_2025_08_26" })
-      | (FileSearchServerTool$Outbound & { type: "file_search" })
-      | (ComputerUseServerTool$Outbound & { type: "computer_use_preview" })
-      | (CodeInterpreterServerTool$Outbound & { type: "code_interpreter" })
-      | (McpServerTool$Outbound & { type: "mcp" })
-      | (ImageGenerationServerTool$Outbound & { type: "image_generation" })
-      | (CodexLocalShellTool$Outbound & { type: "local_shell" })
-      | (ShellServerTool$Outbound & { type: "shell" })
-      | (ApplyPatchServerTool$Outbound & { type: "apply_patch" })
-      | (CustomTool$Outbound & { type: "custom" })
-      | (AdvisorServerToolOpenRouter$Outbound & { type: "openrouter:advisor" })
-      | (SubagentServerToolOpenRouter$Outbound & {
-        type: "openrouter:subagent";
-      })
+      | PreviewWebSearchServerTool$Outbound
+      | Preview20250311WebSearchServerTool$Outbound
+      | LegacyWebSearchServerTool$Outbound
+      | WebSearchServerTool$Outbound
+      | FileSearchServerTool$Outbound
+      | ComputerUseServerTool$Outbound
+      | CodeInterpreterServerTool$Outbound
+      | McpServerTool$Outbound
+      | ImageGenerationServerTool$Outbound
+      | CodexLocalShellTool$Outbound
+      | ShellServerTool$Outbound
+      | ApplyPatchServerTool$Outbound
+      | CustomTool$Outbound
       | (DatetimeServerTool$Outbound & { type: "openrouter:datetime" })
-      | (FilesServerTool$Outbound & { type: "openrouter:files" })
-      | (FusionServerToolOpenRouter$Outbound & { type: "openrouter:fusion" })
       | (ImageGenerationServerToolOpenRouter$Outbound & {
         type: "openrouter:image_generation";
       })
-      | (SearchModelsServerToolOpenRouter$Outbound & {
+      | (ChatSearchModelsServerTool$Outbound & {
         type: "openrouter:experimental__search_models";
       })
       | (WebFetchServerTool$Outbound & { type: "openrouter:web_fetch" })
-      | (WebSearchServerToolOpenRouter$Outbound & {
-        type: "openrouter:web_search";
-      })
-      | (ApplyPatchServerToolOpenRouter$Outbound & {
-        type: "openrouter:apply_patch";
-      })
-      | (BashServerTool$Outbound & { type: "openrouter:bash" })
-      | (ShellServerToolOpenRouter$Outbound & { type: "openrouter:shell" })
+      | WebSearchServerToolOpenRouter$Outbound
     >
     | undefined;
   top_k?: number | undefined;
@@ -753,8 +569,6 @@ export const ResponsesRequest$outboundSchema: z.ZodType<
   ResponsesRequest
 > = z.object({
   background: z.nullable(z.boolean()).optional(),
-  cacheControl: AnthropicCacheControlDirective$outboundSchema.optional(),
-  debug: ChatDebugOptions$outboundSchema.optional(),
   frequencyPenalty: z.nullable(z.number()).optional(),
   imageConfig: z.record(z.string(), ImageConfig$outboundSchema).optional(),
   include: z.nullable(z.array(ResponseIncludesEnum$outboundSchema)).optional(),
@@ -772,19 +586,16 @@ export const ResponsesRequest$outboundSchema: z.ZodType<
       AutoRouterPlugin$outboundSchema,
       ContextCompressionPlugin$outboundSchema,
       FileParserPlugin$outboundSchema,
-      FusionPlugin$outboundSchema,
       ModerationPlugin$outboundSchema,
       ParetoRouterPlugin$outboundSchema,
       ResponseHealingPlugin$outboundSchema,
       WebSearchPlugin$outboundSchema,
-      WebFetchPlugin$outboundSchema,
     ]),
   ).optional(),
   presencePenalty: z.nullable(z.number()).optional(),
   previousResponseId: z.nullable(z.string()).optional(),
   prompt: z.nullable(StoredPromptTemplate$outboundSchema).optional(),
   promptCacheKey: z.nullable(z.string()).optional(),
-  promptCacheOptions: z.nullable(PromptCacheOptions$outboundSchema).optional(),
   provider: z.nullable(ProviderPreferences$outboundSchema).optional(),
   reasoning: z.nullable(ReasoningConfig$outboundSchema).optional(),
   safetyIdentifier: z.nullable(z.string()).optional(),
@@ -792,8 +603,6 @@ export const ResponsesRequest$outboundSchema: z.ZodType<
     ResponsesRequestServiceTier$outboundSchema.default("auto"),
   ),
   sessionId: z.string().optional(),
-  stopServerToolsWhen: z.array(StopServerToolsWhenCondition$outboundSchema)
-    .optional(),
   store: z.literal(false).default(false as const),
   stream: z.boolean().default(false),
   temperature: z.nullable(z.number()).optional(),
@@ -802,77 +611,32 @@ export const ResponsesRequest$outboundSchema: z.ZodType<
   tools: z.array(
     z.union([
       z.lazy(() => ResponsesRequestToolFunction$outboundSchema),
-      PreviewWebSearchServerTool$outboundSchema.and(
-        z.object({ type: z.literal("web_search_preview") }),
-      ),
-      Preview20250311WebSearchServerTool$outboundSchema.and(
-        z.object({ type: z.literal("web_search_preview_2025_03_11") }),
-      ),
-      LegacyWebSearchServerTool$outboundSchema.and(
-        z.object({ type: z.literal("web_search") }),
-      ),
-      WebSearchServerTool$outboundSchema.and(
-        z.object({ type: z.literal("web_search_2025_08_26") }),
-      ),
-      FileSearchServerTool$outboundSchema.and(
-        z.object({ type: z.literal("file_search") }),
-      ),
-      ComputerUseServerTool$outboundSchema.and(
-        z.object({ type: z.literal("computer_use_preview") }),
-      ),
-      CodeInterpreterServerTool$outboundSchema.and(
-        z.object({ type: z.literal("code_interpreter") }),
-      ),
-      McpServerTool$outboundSchema.and(z.object({ type: z.literal("mcp") })),
-      ImageGenerationServerTool$outboundSchema.and(
-        z.object({ type: z.literal("image_generation") }),
-      ),
-      CodexLocalShellTool$outboundSchema.and(
-        z.object({ type: z.literal("local_shell") }),
-      ),
-      ShellServerTool$outboundSchema.and(
-        z.object({ type: z.literal("shell") }),
-      ),
-      ApplyPatchServerTool$outboundSchema.and(
-        z.object({ type: z.literal("apply_patch") }),
-      ),
-      CustomTool$outboundSchema.and(z.object({ type: z.literal("custom") })),
-      AdvisorServerToolOpenRouter$outboundSchema.and(
-        z.object({ type: z.literal("openrouter:advisor") }),
-      ),
-      SubagentServerToolOpenRouter$outboundSchema.and(
-        z.object({ type: z.literal("openrouter:subagent") }),
-      ),
+      PreviewWebSearchServerTool$outboundSchema,
+      Preview20250311WebSearchServerTool$outboundSchema,
+      LegacyWebSearchServerTool$outboundSchema,
+      WebSearchServerTool$outboundSchema,
+      FileSearchServerTool$outboundSchema,
+      ComputerUseServerTool$outboundSchema,
+      CodeInterpreterServerTool$outboundSchema,
+      McpServerTool$outboundSchema,
+      ImageGenerationServerTool$outboundSchema,
+      CodexLocalShellTool$outboundSchema,
+      ShellServerTool$outboundSchema,
+      ApplyPatchServerTool$outboundSchema,
+      CustomTool$outboundSchema,
       DatetimeServerTool$outboundSchema.and(
         z.object({ type: z.literal("openrouter:datetime") }),
-      ),
-      FilesServerTool$outboundSchema.and(
-        z.object({ type: z.literal("openrouter:files") }),
-      ),
-      FusionServerToolOpenRouter$outboundSchema.and(
-        z.object({ type: z.literal("openrouter:fusion") }),
       ),
       ImageGenerationServerToolOpenRouter$outboundSchema.and(
         z.object({ type: z.literal("openrouter:image_generation") }),
       ),
-      SearchModelsServerToolOpenRouter$outboundSchema.and(
+      ChatSearchModelsServerTool$outboundSchema.and(
         z.object({ type: z.literal("openrouter:experimental__search_models") }),
       ),
       WebFetchServerTool$outboundSchema.and(
         z.object({ type: z.literal("openrouter:web_fetch") }),
       ),
-      WebSearchServerToolOpenRouter$outboundSchema.and(
-        z.object({ type: z.literal("openrouter:web_search") }),
-      ),
-      ApplyPatchServerToolOpenRouter$outboundSchema.and(
-        z.object({ type: z.literal("openrouter:apply_patch") }),
-      ),
-      BashServerTool$outboundSchema.and(
-        z.object({ type: z.literal("openrouter:bash") }),
-      ),
-      ShellServerToolOpenRouter$outboundSchema.and(
-        z.object({ type: z.literal("openrouter:shell") }),
-      ),
+      WebSearchServerToolOpenRouter$outboundSchema,
     ]),
   ).optional(),
   topK: z.int().optional(),
@@ -883,7 +647,6 @@ export const ResponsesRequest$outboundSchema: z.ZodType<
   user: z.string().optional(),
 }).transform((v) => {
   return remap$(v, {
-    cacheControl: "cache_control",
     frequencyPenalty: "frequency_penalty",
     imageConfig: "image_config",
     maxOutputTokens: "max_output_tokens",
@@ -892,11 +655,9 @@ export const ResponsesRequest$outboundSchema: z.ZodType<
     presencePenalty: "presence_penalty",
     previousResponseId: "previous_response_id",
     promptCacheKey: "prompt_cache_key",
-    promptCacheOptions: "prompt_cache_options",
     safetyIdentifier: "safety_identifier",
     serviceTier: "service_tier",
     sessionId: "session_id",
-    stopServerToolsWhen: "stop_server_tools_when",
     toolChoice: "tool_choice",
     topK: "top_k",
     topLogprobs: "top_logprobs",

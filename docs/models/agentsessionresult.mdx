@@ -1,0 +1,19 @@
+---
+title: "AgentSessionResult"
+---
+
+## Example Usage
+
+```typescript
+import { AgentSessionResult } from "@openrouter/sdk/models";
+
+let value: AgentSessionResult = {};
+```
+
+## Fields
+
+| Field                                                                                                | Type                                                                                                 | Required                                                                                             | Description                                                                                          | Example                                                                                              |
+| ---------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------- |
+| `filesChanged`                                                                                       | *string*[]                                                                                           | :heavy_minus_sign:                                                                                   | List of file paths the agent modified.                                                               | [<br/>"packages/auth/jwt.ts",<br/>"packages/auth/auth.test.ts"<br/>]                                 |
+| `prUrl`                                                                                              | *string*                                                                                             | :heavy_minus_sign:                                                                                   | URL of the pull request the agent opened, if any. Adapters that do not produce PRs leave this unset. | https://github.com/myorg/myapp/pull/4271                                                             |
+| `summary`                                                                                            | *string*                                                                                             | :heavy_minus_sign:                                                                                   | Free-text summary of what the agent did. May be empty for short tasks.                               | Refactored the auth module to use JWT tokens.                                                        |

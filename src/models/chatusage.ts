@@ -13,7 +13,7 @@ import { SDKValidationError } from "./errors/sdkvalidationerror.js";
 /**
  * Detailed completion token usage
  */
-export type ChatUsageCompletionTokensDetails = {
+export type CompletionTokensDetails = {
   /**
    * Accepted prediction tokens
    */
@@ -35,7 +35,7 @@ export type ChatUsageCompletionTokensDetails = {
 /**
  * Detailed prompt token usage
  */
-export type ChatUsagePromptTokensDetails = {
+export type PromptTokensDetails = {
   /**
    * Audio input tokens
    */
@@ -55,24 +55,6 @@ export type ChatUsagePromptTokensDetails = {
 };
 
 /**
- * Usage for server-side tool execution (e.g., web search)
- */
-export type ServerToolUseDetails = {
-  /**
-   * Number of OpenRouter server tool calls that executed and produced a result
-   */
-  toolCallsExecuted?: number | null | undefined;
-  /**
-   * Total number of OpenRouter server-orchestrated tool calls the model requested, across all tool types. Provider-native tools (e.g. native web search) are not counted here.
-   */
-  toolCallsRequested?: number | null | undefined;
-  /**
-   * Number of web searches performed by server-side tools. For server-orchestrated tool calls a web search is also counted in tool_calls_requested; provider-native web search may report web_search_requests only. Do not sum the two.
-   */
-  webSearchRequests?: number | null | undefined;
-};
-
-/**
  * Token usage statistics
  */
 export type ChatUsage = {
@@ -83,7 +65,7 @@ export type ChatUsage = {
   /**
    * Detailed completion token usage
    */
-  completionTokensDetails?: ChatUsageCompletionTokensDetails | null | undefined;
+  completionTokensDetails?: CompletionTokensDetails | null | undefined;
   /**
    * Cost of the completion
    */
@@ -103,11 +85,7 @@ export type ChatUsage = {
   /**
    * Detailed prompt token usage
    */
-  promptTokensDetails?: ChatUsagePromptTokensDetails | null | undefined;
-  /**
-   * Usage for server-side tool execution (e.g., web search)
-   */
-  serverToolUseDetails?: ServerToolUseDetails | null | undefined;
+  promptTokensDetails?: PromptTokensDetails | null | undefined;
   /**
    * Total number of tokens
    */
@@ -115,8 +93,8 @@ export type ChatUsage = {
 };
 
 /** @internal */
-export const ChatUsageCompletionTokensDetails$inboundSchema: z.ZodType<
-  ChatUsageCompletionTokensDetails,
+export const CompletionTokensDetails$inboundSchema: z.ZodType<
+  CompletionTokensDetails,
   unknown
 > = z.object({
   accepted_prediction_tokens: z.nullable(z.int()).optional(),
@@ -132,19 +110,19 @@ export const ChatUsageCompletionTokensDetails$inboundSchema: z.ZodType<
   });
 });
 
-export function chatUsageCompletionTokensDetailsFromJSON(
+export function completionTokensDetailsFromJSON(
   jsonString: string,
-): SafeParseResult<ChatUsageCompletionTokensDetails, SDKValidationError> {
+): SafeParseResult<CompletionTokensDetails, SDKValidationError> {
   return safeParse(
     jsonString,
-    (x) => ChatUsageCompletionTokensDetails$inboundSchema.parse(JSON.parse(x)),
-    `Failed to parse 'ChatUsageCompletionTokensDetails' from JSON`,
+    (x) => CompletionTokensDetails$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'CompletionTokensDetails' from JSON`,
   );
 }
 
 /** @internal */
-export const ChatUsagePromptTokensDetails$inboundSchema: z.ZodType<
-  ChatUsagePromptTokensDetails,
+export const PromptTokensDetails$inboundSchema: z.ZodType<
+  PromptTokensDetails,
   unknown
 > = z.object({
   audio_tokens: z.int().optional(),
@@ -160,39 +138,13 @@ export const ChatUsagePromptTokensDetails$inboundSchema: z.ZodType<
   });
 });
 
-export function chatUsagePromptTokensDetailsFromJSON(
+export function promptTokensDetailsFromJSON(
   jsonString: string,
-): SafeParseResult<ChatUsagePromptTokensDetails, SDKValidationError> {
+): SafeParseResult<PromptTokensDetails, SDKValidationError> {
   return safeParse(
     jsonString,
-    (x) => ChatUsagePromptTokensDetails$inboundSchema.parse(JSON.parse(x)),
-    `Failed to parse 'ChatUsagePromptTokensDetails' from JSON`,
-  );
-}
-
-/** @internal */
-export const ServerToolUseDetails$inboundSchema: z.ZodType<
-  ServerToolUseDetails,
-  unknown
-> = z.object({
-  tool_calls_executed: z.nullable(z.int()).optional(),
-  tool_calls_requested: z.nullable(z.int()).optional(),
-  web_search_requests: z.nullable(z.int()).optional(),
-}).transform((v) => {
-  return remap$(v, {
-    "tool_calls_executed": "toolCallsExecuted",
-    "tool_calls_requested": "toolCallsRequested",
-    "web_search_requests": "webSearchRequests",
-  });
-});
-
-export function serverToolUseDetailsFromJSON(
-  jsonString: string,
-): SafeParseResult<ServerToolUseDetails, SDKValidationError> {
-  return safeParse(
-    jsonString,
-    (x) => ServerToolUseDetails$inboundSchema.parse(JSON.parse(x)),
-    `Failed to parse 'ServerToolUseDetails' from JSON`,
+    (x) => PromptTokensDetails$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'PromptTokensDetails' from JSON`,
   );
 }
 
@@ -200,17 +152,14 @@ export function serverToolUseDetailsFromJSON(
 export const ChatUsage$inboundSchema: z.ZodType<ChatUsage, unknown> = z.object({
   completion_tokens: z.int(),
   completion_tokens_details: z.nullable(
-    z.lazy(() => ChatUsageCompletionTokensDetails$inboundSchema),
+    z.lazy(() => CompletionTokensDetails$inboundSchema),
   ).optional(),
   cost: z.nullable(z.number()).optional(),
   cost_details: z.nullable(CostDetails$inboundSchema).optional(),
   is_byok: z.boolean().optional(),
   prompt_tokens: z.int(),
   prompt_tokens_details: z.nullable(
-    z.lazy(() => ChatUsagePromptTokensDetails$inboundSchema),
-  ).optional(),
-  server_tool_use_details: z.nullable(
-    z.lazy(() => ServerToolUseDetails$inboundSchema),
+    z.lazy(() => PromptTokensDetails$inboundSchema),
   ).optional(),
   total_tokens: z.int(),
 }).transform((v) => {
@@ -221,7 +170,6 @@ export const ChatUsage$inboundSchema: z.ZodType<ChatUsage, unknown> = z.object({
     "is_byok": "isByok",
     "prompt_tokens": "promptTokens",
     "prompt_tokens_details": "promptTokensDetails",
-    "server_tool_use_details": "serverToolUseDetails",
     "total_tokens": "totalTokens",
   });
 });

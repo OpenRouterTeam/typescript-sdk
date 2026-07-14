@@ -1,0 +1,22 @@
+---
+title: "AgentEvent"
+---
+
+## Example Usage
+
+```typescript
+import { AgentEvent } from "@openrouter/sdk/models";
+
+let value: AgentEvent = {
+  sessionId: "agtsess_01h9k2m3p4q5r6s7t8u9v0w1x2",
+  type: "session.status",
+};
+```
+
+## Fields
+
+| Field                                                                         | Type                                                                          | Required                                                                      | Description                                                                   | Example                                                                       |
+| ----------------------------------------------------------------------------- | ----------------------------------------------------------------------------- | ----------------------------------------------------------------------------- | ----------------------------------------------------------------------------- | ----------------------------------------------------------------------------- |
+| `data`                                                                        | *any*                                                                         | :heavy_minus_sign:                                                            | Event payload. Shape depends on `type`; consumers should validate before use. | \{<br/>"status": "running"<br/>}                                               |
+| `sessionId`                                                                   | *string*                                                                      | :heavy_check_mark:                                                            | Session this event belongs to.                                                | agtsess_01h9k2m3p4q5r6s7t8u9v0w1x2                                            |
+| `type`                                                                        | [models.AgentEventType](../models/agenteventtype.mdx)                          | :heavy_check_mark:                                                            | Event type, normalized across providers.                                      | session.status                                                                |

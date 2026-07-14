@@ -1,0 +1,21 @@
+---
+title: "AgentSlug"
+---
+
+Identifier for the cloud agent to invoke. Format: `<provider>/<agent-name>`. New adapters are added by OpenRouter; the set is intentionally closed.
+
+## Example Usage
+
+```typescript
+import { AgentSlug } from "@openrouter/sdk/models";
+
+let value: AgentSlug = "cognition/devin";
+
+// Open enum: unrecognized values are captured as Unrecognized<string>
+```
+
+## Values
+
+```typescript
+"cognition/devin" | "cursor/cloud-agent" | "anthropic/claude-code-remote-tasks" | "openai/codex" | Unrecognized<string>
+```

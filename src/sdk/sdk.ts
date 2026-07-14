@@ -4,26 +4,20 @@
  */
 
 import { ClientSDK } from "../lib/sdks.js";
+import { AgentContexts } from "./agentcontexts.js";
+import { AgentSessions } from "./agentsessions.js";
 import { Analytics } from "./analytics.js";
 import { APIKeys } from "./apikeys.js";
-import { Benchmarks } from "./benchmarks.js";
 import { Beta } from "./beta.js";
-import { Byok } from "./byok.js";
 import { Chat } from "./chat.js";
-import { Classifications } from "./classifications.js";
 import { Credits } from "./credits.js";
-import { Datasets } from "./datasets.js";
 import { Embeddings } from "./embeddings.js";
 import { Endpoints } from "./endpoints.js";
-import { Files } from "./files.js";
 import { Generations } from "./generations.js";
 import { Guardrails } from "./guardrails.js";
-import { Images } from "./images.js";
 import { Models } from "./models.js";
 import { OAuth } from "./oauth.js";
-import { Observability } from "./observability.js";
 import { Organization } from "./organization.js";
-import { Presets } from "./presets.js";
 import { Providers } from "./providers.js";
 import { Rerank } from "./rerank.js";
 import { Stt } from "./stt.js";
@@ -49,9 +43,14 @@ export class OpenRouter extends ClientSDK {
     return (this._analytics ??= new Analytics(this._options));
   }
 
-  private _beta?: Beta;
-  get beta(): Beta {
-    return (this._beta ??= new Beta(this._options));
+  private _agentContexts?: AgentContexts;
+  get agentContexts(): AgentContexts {
+    return (this._agentContexts ??= new AgentContexts(this._options));
+  }
+
+  private _agentSessions?: AgentSessions;
+  get agentSessions(): AgentSessions {
+    return (this._agentSessions ??= new AgentSessions(this._options));
   }
 
   private _tts?: Tts;
@@ -69,34 +68,14 @@ export class OpenRouter extends ClientSDK {
     return (this._oAuth ??= new OAuth(this._options));
   }
 
-  private _benchmarks?: Benchmarks;
-  get benchmarks(): Benchmarks {
-    return (this._benchmarks ??= new Benchmarks(this._options));
-  }
-
-  private _byok?: Byok;
-  get byok(): Byok {
-    return (this._byok ??= new Byok(this._options));
-  }
-
   private _chat?: Chat;
   get chat(): Chat {
     return (this._chat ??= new Chat(this._options));
   }
 
-  private _classifications?: Classifications;
-  get classifications(): Classifications {
-    return (this._classifications ??= new Classifications(this._options));
-  }
-
   private _credits?: Credits;
   get credits(): Credits {
     return (this._credits ??= new Credits(this._options));
-  }
-
-  private _datasets?: Datasets;
-  get datasets(): Datasets {
-    return (this._datasets ??= new Datasets(this._options));
   }
 
   private _embeddings?: Embeddings;
@@ -109,11 +88,6 @@ export class OpenRouter extends ClientSDK {
     return (this._endpoints ??= new Endpoints(this._options));
   }
 
-  private _files?: Files;
-  get files(): Files {
-    return (this._files ??= new Files(this._options));
-  }
-
   private _generations?: Generations;
   get generations(): Generations {
     return (this._generations ??= new Generations(this._options));
@@ -122,11 +96,6 @@ export class OpenRouter extends ClientSDK {
   private _guardrails?: Guardrails;
   get guardrails(): Guardrails {
     return (this._guardrails ??= new Guardrails(this._options));
-  }
-
-  private _images?: Images;
-  get images(): Images {
-    return (this._images ??= new Images(this._options));
   }
 
   private _apiKeys?: APIKeys;
@@ -139,19 +108,9 @@ export class OpenRouter extends ClientSDK {
     return (this._models ??= new Models(this._options));
   }
 
-  private _observability?: Observability;
-  get observability(): Observability {
-    return (this._observability ??= new Observability(this._options));
-  }
-
   private _organization?: Organization;
   get organization(): Organization {
     return (this._organization ??= new Organization(this._options));
-  }
-
-  private _presets?: Presets;
-  get presets(): Presets {
-    return (this._presets ??= new Presets(this._options));
   }
 
   private _providers?: Providers;
@@ -162,6 +121,11 @@ export class OpenRouter extends ClientSDK {
   private _rerank?: Rerank;
   get rerank(): Rerank {
     return (this._rerank ??= new Rerank(this._options));
+  }
+
+  private _beta?: Beta;
+  get beta(): Beta {
+    return (this._beta ??= new Beta(this._options));
   }
 
   private _videoGeneration?: VideoGeneration;

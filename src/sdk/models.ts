@@ -4,41 +4,22 @@
  */
 
 import { modelsCount } from "../funcs/modelsCount.js";
-import { modelsGet } from "../funcs/modelsGet.js";
 import { modelsList } from "../funcs/modelsList.js";
 import { modelsListForUser } from "../funcs/modelsListForUser.js";
 import { ClientSDK, RequestOptions } from "../lib/sdks.js";
 import * as models from "../models/index.js";
 import * as operations from "../models/operations/index.js";
 import { unwrapAsync } from "../types/fp.js";
-import { PageIterator, unwrapResultIterator } from "../types/operations.js";
 
 export class Models extends ClientSDK {
-  /**
-   * Get a model by its slug
-   *
-   * @remarks
-   * Returns full details for a single model identified by its author and slug (e.g. openai/gpt-4). Supports variant suffixes (e.g. openai/gpt-4:free) and resolves known slug aliases.
-   */
-  async get(
-    request: operations.GetModelRequest,
-    options?: RequestOptions,
-  ): Promise<models.ModelResponse> {
-    return unwrapAsync(modelsGet(
-      this,
-      request,
-      options,
-    ));
-  }
-
   /**
    * List all models and their properties
    */
   async list(
     request?: operations.GetModelsRequest | undefined,
     options?: RequestOptions,
-  ): Promise<PageIterator<operations.GetModelsResponse, { offset: number }>> {
-    return unwrapResultIterator(modelsList(
+  ): Promise<models.ModelsListResponse> {
+    return unwrapAsync(modelsList(
       this,
       request,
       options,
@@ -69,10 +50,8 @@ export class Models extends ClientSDK {
     security: operations.ListModelsUserSecurity,
     request?: operations.ListModelsUserRequest | undefined,
     options?: RequestOptions,
-  ): Promise<
-    PageIterator<operations.ListModelsUserResponse, { offset: number }>
-  > {
-    return unwrapResultIterator(modelsListForUser(
+  ): Promise<models.ModelsListResponse> {
+    return unwrapAsync(modelsListForUser(
       this,
       security,
       request,

@@ -28,11 +28,6 @@ import {
   ChatFormatGrammarConfig$outboundSchema,
 } from "./chatformatgrammarconfig.js";
 import {
-  ChatFormatJsonObjectConfig,
-  ChatFormatJsonObjectConfig$Outbound,
-  ChatFormatJsonObjectConfig$outboundSchema,
-} from "./chatformatjsonobjectconfig.js";
-import {
   ChatFormatJsonSchemaConfig,
   ChatFormatJsonSchemaConfig$Outbound,
   ChatFormatJsonSchemaConfig$outboundSchema,
@@ -82,10 +77,10 @@ import {
   FileParserPlugin$outboundSchema,
 } from "./fileparserplugin.js";
 import {
-  FusionPlugin,
-  FusionPlugin$Outbound,
-  FusionPlugin$outboundSchema,
-} from "./fusionplugin.js";
+  FormatJsonObjectConfig,
+  FormatJsonObjectConfig$Outbound,
+  FormatJsonObjectConfig$outboundSchema,
+} from "./formatjsonobjectconfig.js";
 import {
   ImageConfig,
   ImageConfig$Outbound,
@@ -112,20 +107,10 @@ import {
   ResponseHealingPlugin$outboundSchema,
 } from "./responsehealingplugin.js";
 import {
-  StopServerToolsWhenCondition,
-  StopServerToolsWhenCondition$Outbound,
-  StopServerToolsWhenCondition$outboundSchema,
-} from "./stopservertoolswhencondition.js";
-import {
   TraceConfig,
   TraceConfig$Outbound,
   TraceConfig$outboundSchema,
 } from "./traceconfig.js";
-import {
-  WebFetchPlugin,
-  WebFetchPlugin$Outbound,
-  WebFetchPlugin$outboundSchema,
-} from "./webfetchplugin.js";
 import {
   WebSearchPlugin,
   WebSearchPlugin$Outbound,
@@ -143,18 +128,15 @@ export type ChatRequestPlugin =
   | AutoRouterPlugin
   | ContextCompressionPlugin
   | FileParserPlugin
-  | FusionPlugin
   | ModerationPlugin
   | ParetoRouterPlugin
   | ResponseHealingPlugin
-  | WebSearchPlugin
-  | WebFetchPlugin;
+  | WebSearchPlugin;
 
 /**
  * Constrains effort on reasoning for reasoning models
  */
-export const ChatRequestEffort = {
-  Max: "max",
+export const Effort = {
   Xhigh: "xhigh",
   High: "high",
   Medium: "medium",
@@ -165,44 +147,25 @@ export const ChatRequestEffort = {
 /**
  * Constrains effort on reasoning for reasoning models
  */
-export type ChatRequestEffort = OpenEnum<typeof ChatRequestEffort>;
+export type Effort = OpenEnum<typeof Effort>;
 
 /**
  * Configuration options for reasoning models
  */
-export type ChatRequestReasoning = {
+export type Reasoning = {
   /**
    * Constrains effort on reasoning for reasoning models
    */
-  effort?: ChatRequestEffort | null | undefined;
+  effort?: Effort | null | undefined;
   summary?: ChatReasoningSummaryVerbosityEnum | null | undefined;
 };
-
-/**
- * Shorthand for setting reasoning effort. Equivalent to setting reasoning.effort. Cannot be used simultaneously with reasoning.effort if they differ.
- */
-export const ChatRequestReasoningEffort = {
-  Max: "max",
-  Xhigh: "xhigh",
-  High: "high",
-  Medium: "medium",
-  Low: "low",
-  Minimal: "minimal",
-  None: "none",
-} as const;
-/**
- * Shorthand for setting reasoning effort. Equivalent to setting reasoning.effort. Cannot be used simultaneously with reasoning.effort if they differ.
- */
-export type ChatRequestReasoningEffort = OpenEnum<
-  typeof ChatRequestReasoningEffort
->;
 
 /**
  * Response format configuration
  */
 export type ResponseFormat =
   | ChatFormatGrammarConfig
-  | ChatFormatJsonObjectConfig
+  | FormatJsonObjectConfig
   | ChatFormatJsonSchemaConfig
   | ChatFormatPythonConfig
   | ChatFormatTextConfig;
@@ -231,9 +194,6 @@ export type Stop = string | Array<string> | any;
  * Chat completion request parameters
  */
 export type ChatRequest = {
-  /**
-   * Enable automatic prompt caching. When set at the top level, the system automatically applies cache breakpoints to the last cacheable block in the request. Currently supported for Anthropic Claude models.
-   */
   cacheControl?: AnthropicCacheControlDirective | undefined;
   /**
    * Debug options for inspecting request transformations (streaming only)
@@ -272,10 +232,6 @@ export type ChatRequest = {
    */
   metadata?: { [k: string]: string } | undefined;
   /**
-   * Minimum probability threshold relative to the most likely token. Tokens with probability below min_p * (probability of top token) are filtered out. Not all providers support this parameter.
-   */
-  minP?: number | null | undefined;
-  /**
    * Output modalities for the response. Supported values are "text", "image", and "audio".
    */
   modalities?: Array<Modality> | undefined;
@@ -299,12 +255,10 @@ export type ChatRequest = {
       | AutoRouterPlugin
       | ContextCompressionPlugin
       | FileParserPlugin
-      | FusionPlugin
       | ModerationPlugin
       | ParetoRouterPlugin
       | ResponseHealingPlugin
       | WebSearchPlugin
-      | WebFetchPlugin
     >
     | undefined;
   /**
@@ -318,21 +272,13 @@ export type ChatRequest = {
   /**
    * Configuration options for reasoning models
    */
-  reasoning?: ChatRequestReasoning | undefined;
-  /**
-   * Shorthand for setting reasoning effort. Equivalent to setting reasoning.effort. Cannot be used simultaneously with reasoning.effort if they differ.
-   */
-  reasoningEffort?: ChatRequestReasoningEffort | null | undefined;
-  /**
-   * Penalizes tokens based on how much they have already appeared in the text. A value of 1.0 means no penalty. Values above 1.0 penalize repeated tokens more strongly. Not all providers support this parameter.
-   */
-  repetitionPenalty?: number | null | undefined;
+  reasoning?: Reasoning | undefined;
   /**
    * Response format configuration
    */
   responseFormat?:
     | ChatFormatGrammarConfig
-    | ChatFormatJsonObjectConfig
+    | FormatJsonObjectConfig
     | ChatFormatJsonSchemaConfig
     | ChatFormatPythonConfig
     | ChatFormatTextConfig
@@ -346,17 +292,13 @@ export type ChatRequest = {
    */
   serviceTier?: ChatRequestServiceTier | null | undefined;
   /**
-   * A unique identifier for grouping related requests (e.g., a conversation or agent workflow). When provided, OpenRouter uses it as the sticky routing key, routing all requests in the session to the same provider to maximize prompt cache hits. Also used for observability grouping. If provided in both the request body and the x-session-id header, the body value takes precedence. Maximum of 256 characters.
+   * A unique identifier for grouping related requests (e.g., a conversation or agent workflow) for observability. If provided in both the request body and the x-session-id header, the body value takes precedence. Maximum of 256 characters.
    */
   sessionId?: string | undefined;
   /**
    * Stop sequences (up to 4)
    */
   stop?: string | Array<string> | any | null | undefined;
-  /**
-   * Stop conditions for the server-tool agent loop. Any condition firing halts the loop (OR logic). When set, this overrides `max_tool_calls`.
-   */
-  stopServerToolsWhen?: Array<StopServerToolsWhenCondition> | undefined;
   /**
    * Enable streaming response
    */
@@ -377,14 +319,6 @@ export type ChatRequest = {
    * Available tools for function calling
    */
   tools?: Array<ChatFunctionTool> | undefined;
-  /**
-   * Consider only tokens with "sufficiently high" probabilities based on the probability of the most likely token. Not all providers support this parameter.
-   */
-  topA?: number | null | undefined;
-  /**
-   * Limits the model to choose from the top K most likely tokens at each step. A value of 1 means the model will always pick the most likely next token. Not all providers support this parameter.
-   */
-  topK?: number | null | undefined;
   /**
    * Number of top log probabilities to return (0-20)
    */
@@ -412,12 +346,10 @@ export type ChatRequestPlugin$Outbound =
   | AutoRouterPlugin$Outbound
   | ContextCompressionPlugin$Outbound
   | FileParserPlugin$Outbound
-  | FusionPlugin$Outbound
   | ModerationPlugin$Outbound
   | ParetoRouterPlugin$Outbound
   | ResponseHealingPlugin$Outbound
-  | WebSearchPlugin$Outbound
-  | WebFetchPlugin$Outbound;
+  | WebSearchPlugin$Outbound;
 
 /** @internal */
 export const ChatRequestPlugin$outboundSchema: z.ZodType<
@@ -427,12 +359,10 @@ export const ChatRequestPlugin$outboundSchema: z.ZodType<
   AutoRouterPlugin$outboundSchema,
   ContextCompressionPlugin$outboundSchema,
   FileParserPlugin$outboundSchema,
-  FusionPlugin$outboundSchema,
   ModerationPlugin$outboundSchema,
   ParetoRouterPlugin$outboundSchema,
   ResponseHealingPlugin$outboundSchema,
   WebSearchPlugin$outboundSchema,
-  WebFetchPlugin$outboundSchema,
 ]);
 
 export function chatRequestPluginToJSON(
@@ -444,45 +374,33 @@ export function chatRequestPluginToJSON(
 }
 
 /** @internal */
-export const ChatRequestEffort$outboundSchema: z.ZodType<
-  string,
-  ChatRequestEffort
-> = openEnums.outboundSchema(ChatRequestEffort);
+export const Effort$outboundSchema: z.ZodType<string, Effort> = openEnums
+  .outboundSchema(Effort);
 
 /** @internal */
-export type ChatRequestReasoning$Outbound = {
+export type Reasoning$Outbound = {
   effort?: string | null | undefined;
   summary?: string | null | undefined;
 };
 
 /** @internal */
-export const ChatRequestReasoning$outboundSchema: z.ZodType<
-  ChatRequestReasoning$Outbound,
-  ChatRequestReasoning
+export const Reasoning$outboundSchema: z.ZodType<
+  Reasoning$Outbound,
+  Reasoning
 > = z.object({
-  effort: z.nullable(ChatRequestEffort$outboundSchema).optional(),
+  effort: z.nullable(Effort$outboundSchema).optional(),
   summary: z.nullable(ChatReasoningSummaryVerbosityEnum$outboundSchema)
     .optional(),
 });
 
-export function chatRequestReasoningToJSON(
-  chatRequestReasoning: ChatRequestReasoning,
-): string {
-  return JSON.stringify(
-    ChatRequestReasoning$outboundSchema.parse(chatRequestReasoning),
-  );
+export function reasoningToJSON(reasoning: Reasoning): string {
+  return JSON.stringify(Reasoning$outboundSchema.parse(reasoning));
 }
-
-/** @internal */
-export const ChatRequestReasoningEffort$outboundSchema: z.ZodType<
-  string,
-  ChatRequestReasoningEffort
-> = openEnums.outboundSchema(ChatRequestReasoningEffort);
 
 /** @internal */
 export type ResponseFormat$Outbound =
   | ChatFormatGrammarConfig$Outbound
-  | ChatFormatJsonObjectConfig$Outbound
+  | FormatJsonObjectConfig$Outbound
   | ChatFormatJsonSchemaConfig$Outbound
   | ChatFormatPythonConfig$Outbound
   | ChatFormatTextConfig$Outbound;
@@ -493,7 +411,7 @@ export const ResponseFormat$outboundSchema: z.ZodType<
   ResponseFormat
 > = z.union([
   ChatFormatGrammarConfig$outboundSchema,
-  ChatFormatJsonObjectConfig$outboundSchema,
+  FormatJsonObjectConfig$outboundSchema,
   ChatFormatJsonSchemaConfig$outboundSchema,
   ChatFormatPythonConfig$outboundSchema,
   ChatFormatTextConfig$outboundSchema,
@@ -535,7 +453,6 @@ export type ChatRequest$Outbound = {
   max_tokens?: number | null | undefined;
   messages: Array<ChatMessages$Outbound>;
   metadata?: { [k: string]: string } | undefined;
-  min_p?: number | null | undefined;
   modalities?: Array<string> | undefined;
   model?: string | undefined;
   models?: Array<string> | undefined;
@@ -545,22 +462,18 @@ export type ChatRequest$Outbound = {
       | AutoRouterPlugin$Outbound
       | ContextCompressionPlugin$Outbound
       | FileParserPlugin$Outbound
-      | FusionPlugin$Outbound
       | ModerationPlugin$Outbound
       | ParetoRouterPlugin$Outbound
       | ResponseHealingPlugin$Outbound
       | WebSearchPlugin$Outbound
-      | WebFetchPlugin$Outbound
     >
     | undefined;
   presence_penalty?: number | null | undefined;
   provider?: ProviderPreferences$Outbound | null | undefined;
-  reasoning?: ChatRequestReasoning$Outbound | undefined;
-  reasoning_effort?: string | null | undefined;
-  repetition_penalty?: number | null | undefined;
+  reasoning?: Reasoning$Outbound | undefined;
   response_format?:
     | ChatFormatGrammarConfig$Outbound
-    | ChatFormatJsonObjectConfig$Outbound
+    | FormatJsonObjectConfig$Outbound
     | ChatFormatJsonSchemaConfig$Outbound
     | ChatFormatPythonConfig$Outbound
     | ChatFormatTextConfig$Outbound
@@ -569,16 +482,11 @@ export type ChatRequest$Outbound = {
   service_tier?: string | null | undefined;
   session_id?: string | undefined;
   stop?: string | Array<string> | any | null | undefined;
-  stop_server_tools_when?:
-    | Array<StopServerToolsWhenCondition$Outbound>
-    | undefined;
   stream: boolean;
   stream_options?: ChatStreamOptions$Outbound | null | undefined;
   temperature?: number | null | undefined;
   tool_choice?: ChatToolChoice$Outbound | undefined;
   tools?: Array<ChatFunctionTool$Outbound> | undefined;
-  top_a?: number | null | undefined;
-  top_k?: number | null | undefined;
   top_logprobs?: number | null | undefined;
   top_p?: number | null | undefined;
   trace?: TraceConfig$Outbound | undefined;
@@ -600,7 +508,6 @@ export const ChatRequest$outboundSchema: z.ZodType<
   maxTokens: z.nullable(z.int()).optional(),
   messages: z.array(ChatMessages$outboundSchema),
   metadata: z.record(z.string(), z.string()).optional(),
-  minP: z.nullable(z.number()).optional(),
   modalities: z.array(Modality$outboundSchema).optional(),
   model: z.string().optional(),
   models: z.array(z.string()).optional(),
@@ -610,23 +517,18 @@ export const ChatRequest$outboundSchema: z.ZodType<
       AutoRouterPlugin$outboundSchema,
       ContextCompressionPlugin$outboundSchema,
       FileParserPlugin$outboundSchema,
-      FusionPlugin$outboundSchema,
       ModerationPlugin$outboundSchema,
       ParetoRouterPlugin$outboundSchema,
       ResponseHealingPlugin$outboundSchema,
       WebSearchPlugin$outboundSchema,
-      WebFetchPlugin$outboundSchema,
     ]),
   ).optional(),
   presencePenalty: z.nullable(z.number()).optional(),
   provider: z.nullable(ProviderPreferences$outboundSchema).optional(),
-  reasoning: z.lazy(() => ChatRequestReasoning$outboundSchema).optional(),
-  reasoningEffort: z.nullable(ChatRequestReasoningEffort$outboundSchema)
-    .optional(),
-  repetitionPenalty: z.nullable(z.number()).optional(),
+  reasoning: z.lazy(() => Reasoning$outboundSchema).optional(),
   responseFormat: z.union([
     ChatFormatGrammarConfig$outboundSchema,
-    ChatFormatJsonObjectConfig$outboundSchema,
+    FormatJsonObjectConfig$outboundSchema,
     ChatFormatJsonSchemaConfig$outboundSchema,
     ChatFormatPythonConfig$outboundSchema,
     ChatFormatTextConfig$outboundSchema,
@@ -636,15 +538,11 @@ export const ChatRequest$outboundSchema: z.ZodType<
   sessionId: z.string().optional(),
   stop: z.nullable(z.union([z.string(), z.array(z.string()), z.any()]))
     .optional(),
-  stopServerToolsWhen: z.array(StopServerToolsWhenCondition$outboundSchema)
-    .optional(),
   stream: z.boolean().default(false),
   streamOptions: z.nullable(ChatStreamOptions$outboundSchema).optional(),
   temperature: z.nullable(z.number()).optional(),
   toolChoice: ChatToolChoice$outboundSchema.optional(),
   tools: z.array(ChatFunctionTool$outboundSchema).optional(),
-  topA: z.nullable(z.number()).optional(),
-  topK: z.nullable(z.int()).optional(),
   topLogprobs: z.nullable(z.int()).optional(),
   topP: z.nullable(z.number()).optional(),
   trace: TraceConfig$outboundSchema.optional(),
@@ -657,19 +555,13 @@ export const ChatRequest$outboundSchema: z.ZodType<
     logitBias: "logit_bias",
     maxCompletionTokens: "max_completion_tokens",
     maxTokens: "max_tokens",
-    minP: "min_p",
     parallelToolCalls: "parallel_tool_calls",
     presencePenalty: "presence_penalty",
-    reasoningEffort: "reasoning_effort",
-    repetitionPenalty: "repetition_penalty",
     responseFormat: "response_format",
     serviceTier: "service_tier",
     sessionId: "session_id",
-    stopServerToolsWhen: "stop_server_tools_when",
     streamOptions: "stream_options",
     toolChoice: "tool_choice",
-    topA: "top_a",
-    topK: "top_k",
     topLogprobs: "top_logprobs",
     topP: "top_p",
   });

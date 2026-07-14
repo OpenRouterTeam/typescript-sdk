@@ -1,0 +1,21 @@
+---
+title: "AgentSessionStatus"
+---
+
+Normalized session status across all agent providers.
+
+## Example Usage
+
+```typescript
+import { AgentSessionStatus } from "@openrouter/sdk/models";
+
+let value: AgentSessionStatus = "running";
+
+// Open enum: unrecognized values are captured as Unrecognized<string>
+```
+
+## Values
+
+```typescript
+"pending" | "running" | "completed" | "failed" | "cancelled" | Unrecognized<string>
+```

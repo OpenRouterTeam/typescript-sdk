@@ -10,7 +10,6 @@ import * as discriminatedUnionTypes from "../types/discriminatedUnion.js";
 import { discriminatedUnion } from "../types/discriminatedUnion.js";
 import { ClosedEnum } from "../types/enums.js";
 import { Result as SafeParseResult } from "../types/fp.js";
-import { ApiErrorType, ApiErrorType$inboundSchema } from "./apierrortype.js";
 import {
   ApplyPatchServerTool,
   ApplyPatchServerTool$inboundSchema,
@@ -118,21 +117,19 @@ export type OpenResponsesResultToolFunction = {
 
 export type OpenResponsesResultToolUnion =
   | OpenResponsesResultToolFunction
-  | (PreviewWebSearchServerTool & { type: "web_search_preview" })
-  | (Preview20250311WebSearchServerTool & {
-    type: "web_search_preview_2025_03_11";
-  })
-  | (LegacyWebSearchServerTool & { type: "web_search" })
-  | (WebSearchServerTool & { type: "web_search_2025_08_26" })
-  | (FileSearchServerTool & { type: "file_search" })
-  | (ComputerUseServerTool & { type: "computer_use_preview" })
-  | (CodeInterpreterServerTool & { type: "code_interpreter" })
-  | (McpServerTool & { type: "mcp" })
-  | (ImageGenerationServerTool & { type: "image_generation" })
-  | (CodexLocalShellTool & { type: "local_shell" })
-  | (ShellServerTool & { type: "shell" })
-  | (ApplyPatchServerTool & { type: "apply_patch" })
-  | (CustomTool & { type: "custom" })
+  | PreviewWebSearchServerTool
+  | Preview20250311WebSearchServerTool
+  | LegacyWebSearchServerTool
+  | WebSearchServerTool
+  | FileSearchServerTool
+  | ComputerUseServerTool
+  | CodeInterpreterServerTool
+  | McpServerTool
+  | ImageGenerationServerTool
+  | CodexLocalShellTool
+  | ShellServerTool
+  | ApplyPatchServerTool
+  | CustomTool
   | discriminatedUnionTypes.Unknown<"type">;
 
 /**
@@ -178,21 +175,19 @@ export type OpenResponsesResult = {
   toolChoice: OpenAIResponsesToolChoiceUnion;
   tools: Array<
     | OpenResponsesResultToolFunction
-    | (PreviewWebSearchServerTool & { type: "web_search_preview" })
-    | (Preview20250311WebSearchServerTool & {
-      type: "web_search_preview_2025_03_11";
-    })
-    | (LegacyWebSearchServerTool & { type: "web_search" })
-    | (WebSearchServerTool & { type: "web_search_2025_08_26" })
-    | (FileSearchServerTool & { type: "file_search" })
-    | (ComputerUseServerTool & { type: "computer_use_preview" })
-    | (CodeInterpreterServerTool & { type: "code_interpreter" })
-    | (McpServerTool & { type: "mcp" })
-    | (ImageGenerationServerTool & { type: "image_generation" })
-    | (CodexLocalShellTool & { type: "local_shell" })
-    | (ShellServerTool & { type: "shell" })
-    | (ApplyPatchServerTool & { type: "apply_patch" })
-    | (CustomTool & { type: "custom" })
+    | PreviewWebSearchServerTool
+    | Preview20250311WebSearchServerTool
+    | LegacyWebSearchServerTool
+    | WebSearchServerTool
+    | FileSearchServerTool
+    | ComputerUseServerTool
+    | CodeInterpreterServerTool
+    | McpServerTool
+    | ImageGenerationServerTool
+    | CodexLocalShellTool
+    | ShellServerTool
+    | ApplyPatchServerTool
+    | CustomTool
     | discriminatedUnionTypes.Unknown<"type">
   >;
   topLogprobs?: number | null | undefined;
@@ -203,10 +198,6 @@ export type OpenResponsesResult = {
    */
   usage?: Usage | null | undefined;
   user?: string | null | undefined;
-  /**
-   * Canonical OpenRouter error type, stable across all API formats
-   */
-  errorType?: ApiErrorType | undefined;
   openrouterMetadata?: OpenRouterMetadata | undefined;
 };
 
@@ -243,42 +234,20 @@ export const OpenResponsesResultToolUnion$inboundSchema: z.ZodType<
   unknown
 > = discriminatedUnion("type", {
   function: z.lazy(() => OpenResponsesResultToolFunction$inboundSchema),
-  web_search_preview: PreviewWebSearchServerTool$inboundSchema.and(
-    z.object({ type: z.literal("web_search_preview") }),
-  ),
+  web_search_preview: PreviewWebSearchServerTool$inboundSchema,
   web_search_preview_2025_03_11:
-    Preview20250311WebSearchServerTool$inboundSchema.and(
-      z.object({ type: z.literal("web_search_preview_2025_03_11") }),
-    ),
-  web_search: LegacyWebSearchServerTool$inboundSchema.and(
-    z.object({ type: z.literal("web_search") }),
-  ),
-  web_search_2025_08_26: WebSearchServerTool$inboundSchema.and(
-    z.object({ type: z.literal("web_search_2025_08_26") }),
-  ),
-  file_search: FileSearchServerTool$inboundSchema.and(
-    z.object({ type: z.literal("file_search") }),
-  ),
-  computer_use_preview: ComputerUseServerTool$inboundSchema.and(
-    z.object({ type: z.literal("computer_use_preview") }),
-  ),
-  code_interpreter: CodeInterpreterServerTool$inboundSchema.and(
-    z.object({ type: z.literal("code_interpreter") }),
-  ),
-  mcp: McpServerTool$inboundSchema.and(z.object({ type: z.literal("mcp") })),
-  image_generation: ImageGenerationServerTool$inboundSchema.and(
-    z.object({ type: z.literal("image_generation") }),
-  ),
-  local_shell: CodexLocalShellTool$inboundSchema.and(
-    z.object({ type: z.literal("local_shell") }),
-  ),
-  shell: ShellServerTool$inboundSchema.and(
-    z.object({ type: z.literal("shell") }),
-  ),
-  apply_patch: ApplyPatchServerTool$inboundSchema.and(
-    z.object({ type: z.literal("apply_patch") }),
-  ),
-  custom: CustomTool$inboundSchema.and(z.object({ type: z.literal("custom") })),
+    Preview20250311WebSearchServerTool$inboundSchema,
+  web_search: LegacyWebSearchServerTool$inboundSchema,
+  web_search_2025_08_26: WebSearchServerTool$inboundSchema,
+  file_search: FileSearchServerTool$inboundSchema,
+  computer_use_preview: ComputerUseServerTool$inboundSchema,
+  code_interpreter: CodeInterpreterServerTool$inboundSchema,
+  mcp: McpServerTool$inboundSchema,
+  image_generation: ImageGenerationServerTool$inboundSchema,
+  local_shell: CodexLocalShellTool$inboundSchema,
+  shell: ShellServerTool$inboundSchema,
+  apply_patch: ApplyPatchServerTool$inboundSchema,
+  custom: CustomTool$inboundSchema,
 });
 
 export function openResponsesResultToolUnionFromJSON(
@@ -326,51 +295,26 @@ export const OpenResponsesResult$inboundSchema: z.ZodType<
   tool_choice: OpenAIResponsesToolChoiceUnion$inboundSchema,
   tools: z.array(discriminatedUnion("type", {
     function: z.lazy(() => OpenResponsesResultToolFunction$inboundSchema),
-    web_search_preview: PreviewWebSearchServerTool$inboundSchema.and(
-      z.object({ type: z.literal("web_search_preview") }),
-    ),
+    web_search_preview: PreviewWebSearchServerTool$inboundSchema,
     web_search_preview_2025_03_11:
-      Preview20250311WebSearchServerTool$inboundSchema.and(
-        z.object({ type: z.literal("web_search_preview_2025_03_11") }),
-      ),
-    web_search: LegacyWebSearchServerTool$inboundSchema.and(
-      z.object({ type: z.literal("web_search") }),
-    ),
-    web_search_2025_08_26: WebSearchServerTool$inboundSchema.and(
-      z.object({ type: z.literal("web_search_2025_08_26") }),
-    ),
-    file_search: FileSearchServerTool$inboundSchema.and(
-      z.object({ type: z.literal("file_search") }),
-    ),
-    computer_use_preview: ComputerUseServerTool$inboundSchema.and(
-      z.object({ type: z.literal("computer_use_preview") }),
-    ),
-    code_interpreter: CodeInterpreterServerTool$inboundSchema.and(
-      z.object({ type: z.literal("code_interpreter") }),
-    ),
-    mcp: McpServerTool$inboundSchema.and(z.object({ type: z.literal("mcp") })),
-    image_generation: ImageGenerationServerTool$inboundSchema.and(
-      z.object({ type: z.literal("image_generation") }),
-    ),
-    local_shell: CodexLocalShellTool$inboundSchema.and(
-      z.object({ type: z.literal("local_shell") }),
-    ),
-    shell: ShellServerTool$inboundSchema.and(
-      z.object({ type: z.literal("shell") }),
-    ),
-    apply_patch: ApplyPatchServerTool$inboundSchema.and(
-      z.object({ type: z.literal("apply_patch") }),
-    ),
-    custom: CustomTool$inboundSchema.and(
-      z.object({ type: z.literal("custom") }),
-    ),
+      Preview20250311WebSearchServerTool$inboundSchema,
+    web_search: LegacyWebSearchServerTool$inboundSchema,
+    web_search_2025_08_26: WebSearchServerTool$inboundSchema,
+    file_search: FileSearchServerTool$inboundSchema,
+    computer_use_preview: ComputerUseServerTool$inboundSchema,
+    code_interpreter: CodeInterpreterServerTool$inboundSchema,
+    mcp: McpServerTool$inboundSchema,
+    image_generation: ImageGenerationServerTool$inboundSchema,
+    local_shell: CodexLocalShellTool$inboundSchema,
+    shell: ShellServerTool$inboundSchema,
+    apply_patch: ApplyPatchServerTool$inboundSchema,
+    custom: CustomTool$inboundSchema,
   })),
   top_logprobs: z.nullable(z.int()).optional(),
   top_p: z.nullable(z.number()),
   truncation: z.nullable(Truncation$inboundSchema).optional(),
   usage: z.nullable(Usage$inboundSchema).optional(),
   user: z.nullable(z.string()).optional(),
-  error_type: ApiErrorType$inboundSchema.optional(),
   openrouter_metadata: OpenRouterMetadata$inboundSchema.optional(),
 }).transform((v) => {
   return remap$(v, {
@@ -390,7 +334,6 @@ export const OpenResponsesResult$inboundSchema: z.ZodType<
     "tool_choice": "toolChoice",
     "top_logprobs": "topLogprobs",
     "top_p": "topP",
-    "error_type": "errorType",
     "openrouter_metadata": "openrouterMetadata",
   });
 });

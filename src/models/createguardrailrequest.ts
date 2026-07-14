@@ -6,10 +6,10 @@
 import * as z from "zod/v4";
 import { remap as remap$ } from "../lib/primitives.js";
 import {
-  ContentFilterBuiltinEntryInput,
-  ContentFilterBuiltinEntryInput$Outbound,
-  ContentFilterBuiltinEntryInput$outboundSchema,
-} from "./contentfilterbuiltinentryinput.js";
+  ContentFilterBuiltinEntry,
+  ContentFilterBuiltinEntry$Outbound,
+  ContentFilterBuiltinEntry$outboundSchema,
+} from "./contentfilterbuiltinentry.js";
 import {
   ContentFilterEntry,
   ContentFilterEntry$Outbound,
@@ -30,12 +30,9 @@ export type CreateGuardrailRequest = {
    */
   allowedProviders?: Array<string> | null | undefined;
   /**
-   * Builtin content filters to apply. The "flag" action is only supported for "regex-prompt-injection"; PII slugs (email, phone, ssn, credit-card, ip-address, person-name, address) accept "block" or "redact" only.
+   * Builtin content filters to apply. Use slug "regex-prompt-injection" with action "block", "flag", or "redact" to enable heuristic prompt injection detection.
    */
-  contentFilterBuiltins?:
-    | Array<ContentFilterBuiltinEntryInput>
-    | null
-    | undefined;
+  contentFilterBuiltins?: Array<ContentFilterBuiltinEntry> | null | undefined;
   /**
    * Custom regex content filters to apply to request messages
    */
@@ -45,27 +42,9 @@ export type CreateGuardrailRequest = {
    */
   description?: string | null | undefined;
   /**
-   * Deprecated. Use enforce_zdr_anthropic, enforce_zdr_openai, enforce_zdr_google, and enforce_zdr_other instead. When provided, its value is copied into any of those per-provider fields that are not explicitly specified on the request.
-   *
-   * @deprecated field: This will be removed in a future release, please migrate away from it as soon as possible.
+   * Whether to enforce zero data retention
    */
   enforceZdr?: boolean | null | undefined;
-  /**
-   * Whether to enforce zero data retention for Anthropic models. Falls back to enforce_zdr when not provided.
-   */
-  enforceZdrAnthropic?: boolean | null | undefined;
-  /**
-   * Whether to enforce zero data retention for Google models. Falls back to enforce_zdr when not provided.
-   */
-  enforceZdrGoogle?: boolean | null | undefined;
-  /**
-   * Whether to enforce zero data retention for OpenAI models. Falls back to enforce_zdr when not provided.
-   */
-  enforceZdrOpenai?: boolean | null | undefined;
-  /**
-   * Whether to enforce zero data retention for models that are not from Anthropic, OpenAI, or Google. Falls back to enforce_zdr when not provided.
-   */
-  enforceZdrOther?: boolean | null | undefined;
   /**
    * Array of model identifiers to exclude from routing (slug or canonical_slug accepted)
    */
@@ -97,16 +76,12 @@ export type CreateGuardrailRequest$Outbound = {
   allowed_models?: Array<string> | null | undefined;
   allowed_providers?: Array<string> | null | undefined;
   content_filter_builtins?:
-    | Array<ContentFilterBuiltinEntryInput$Outbound>
+    | Array<ContentFilterBuiltinEntry$Outbound>
     | null
     | undefined;
   content_filters?: Array<ContentFilterEntry$Outbound> | null | undefined;
   description?: string | null | undefined;
   enforce_zdr?: boolean | null | undefined;
-  enforce_zdr_anthropic?: boolean | null | undefined;
-  enforce_zdr_google?: boolean | null | undefined;
-  enforce_zdr_openai?: boolean | null | undefined;
-  enforce_zdr_other?: boolean | null | undefined;
   ignored_models?: Array<string> | null | undefined;
   ignored_providers?: Array<string> | null | undefined;
   limit_usd?: number | null | undefined;
@@ -123,16 +98,12 @@ export const CreateGuardrailRequest$outboundSchema: z.ZodType<
   allowedModels: z.nullable(z.array(z.string())).optional(),
   allowedProviders: z.nullable(z.array(z.string())).optional(),
   contentFilterBuiltins: z.nullable(
-    z.array(ContentFilterBuiltinEntryInput$outboundSchema),
+    z.array(ContentFilterBuiltinEntry$outboundSchema),
   ).optional(),
   contentFilters: z.nullable(z.array(ContentFilterEntry$outboundSchema))
     .optional(),
   description: z.nullable(z.string()).optional(),
   enforceZdr: z.nullable(z.boolean()).optional(),
-  enforceZdrAnthropic: z.nullable(z.boolean()).optional(),
-  enforceZdrGoogle: z.nullable(z.boolean()).optional(),
-  enforceZdrOpenai: z.nullable(z.boolean()).optional(),
-  enforceZdrOther: z.nullable(z.boolean()).optional(),
   ignoredModels: z.nullable(z.array(z.string())).optional(),
   ignoredProviders: z.nullable(z.array(z.string())).optional(),
   limitUsd: z.nullable(z.number()).optional(),
@@ -146,10 +117,6 @@ export const CreateGuardrailRequest$outboundSchema: z.ZodType<
     contentFilterBuiltins: "content_filter_builtins",
     contentFilters: "content_filters",
     enforceZdr: "enforce_zdr",
-    enforceZdrAnthropic: "enforce_zdr_anthropic",
-    enforceZdrGoogle: "enforce_zdr_google",
-    enforceZdrOpenai: "enforce_zdr_openai",
-    enforceZdrOther: "enforce_zdr_other",
     ignoredModels: "ignored_models",
     ignoredProviders: "ignored_providers",
     limitUsd: "limit_usd",

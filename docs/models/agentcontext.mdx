@@ -1,0 +1,40 @@
+---
+title: "AgentContext"
+---
+
+## Example Usage
+
+```typescript
+import { AgentContext } from "@openrouter/sdk/models";
+
+let value: AgentContext = {
+  createdAt: new Date("2026-05-08T17:30:00Z"),
+  id: "agtctx_01h9k2m3p4q5r6s7t8u9v0w1x2",
+  knowledge: [
+    "Always use TypeScript strict mode",
+    "Run pnpm test before committing",
+  ],
+  mcpServers: [
+    {
+      url: "https://mcp.myorg.com/jira",
+    },
+  ],
+  name: "myorg/myapp",
+  object: "agent.context",
+  scope: "org",
+  updatedAt: new Date("2026-05-08T17:30:00Z"),
+};
+```
+
+## Fields
+
+| Field                                                                                                                       | Type                                                                                                                        | Required                                                                                                                    | Description                                                                                                                 | Example                                                                                                                     |
+| --------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------- |
+| `createdAt`                                                                                                                 | [Date](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date)                               | :heavy_check_mark:                                                                                                          | ISO 8601 UTC timestamp.                                                                                                     | 2026-05-08T17:30:00Z                                                                                                        |
+| `id`                                                                                                                        | *string*                                                                                                                    | :heavy_check_mark:                                                                                                          | OpenRouter-issued context ID.                                                                                               | agtctx_01h9k2m3p4q5r6s7t8u9v0w1x2                                                                                           |
+| `knowledge`                                                                                                                 | *string*[]                                                                                                                  | :heavy_check_mark:                                                                                                          | Vendor-neutral knowledge entries. Translated per-adapter into Claude Skills, Codex `AGENTS.md`, Devin Knowledge notes, etc. | [<br/>"Always use TypeScript strict mode",<br/>"Run pnpm test before committing"<br/>]                                      |
+| `mcpServers`                                                                                                                | [models.AgentMcpServer](../models/agentmcpserver.mdx)[]                                                                      | :heavy_check_mark:                                                                                                          | Remote MCP server URLs to attach. The agent connects directly; OpenRouter does not proxy runtime MCP traffic.               | [<br/>\{<br/>"name": "Jira (production)",<br/>"url": "https://mcp.myorg.com/jira"<br/>}<br/>]                                |
+| `name`                                                                                                                      | *string*                                                                                                                    | :heavy_check_mark:                                                                                                          | Human-readable name. Conventionally `<owner>/<repo>` or a project shorthand.                                                | myorg/myapp                                                                                                                 |
+| `object`                                                                                                                    | [models.AgentContextObject](../models/agentcontextobject.mdx)                                                                | :heavy_check_mark:                                                                                                          | Object type discriminator.                                                                                                  |                                                                                                                             |
+| `scope`                                                                                                                     | [models.AgentContextScope](../models/agentcontextscope.mdx)                                                                  | :heavy_check_mark:                                                                                                          | Scope at which an AgentContext applies.                                                                                     | org                                                                                                                         |
+| `updatedAt`                                                                                                                 | [Date](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date)                               | :heavy_check_mark:                                                                                                          | ISO 8601 UTC timestamp.                                                                                                     | 2026-05-08T17:30:00Z                                                                                                        |

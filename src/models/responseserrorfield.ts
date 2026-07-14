@@ -29,7 +29,6 @@ export const Code = {
   EmptyImageFile: "empty_image_file",
   FailedToDownloadImage: "failed_to_download_image",
   ImageFileNotFound: "image_file_not_found",
-  BioPolicy: "bio_policy",
 } as const;
 export type Code = OpenEnum<typeof Code>;
 

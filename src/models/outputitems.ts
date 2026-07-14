@@ -10,14 +10,6 @@ import { discriminatedUnion } from "../types/discriminatedUnion.js";
 import { Result as SafeParseResult } from "../types/fp.js";
 import { SDKValidationError } from "./errors/sdkvalidationerror.js";
 import {
-  OutputAdvisorServerToolItem,
-  OutputAdvisorServerToolItem$inboundSchema,
-} from "./outputadvisorservertoolitem.js";
-import {
-  OutputApplyPatchCallItem,
-  OutputApplyPatchCallItem$inboundSchema,
-} from "./outputapplypatchcallitem.js";
-import {
   OutputApplyPatchServerToolItem,
   OutputApplyPatchServerToolItem$inboundSchema,
 } from "./outputapplypatchservertoolitem.js";
@@ -42,10 +34,6 @@ import {
   OutputComputerCallItem$inboundSchema,
 } from "./outputcomputercallitem.js";
 import {
-  OutputCustomToolCallItem,
-  OutputCustomToolCallItem$inboundSchema,
-} from "./outputcustomtoolcallitem.js";
-import {
   OutputDatetimeItem,
   OutputDatetimeItem$inboundSchema,
 } from "./outputdatetimeitem.js";
@@ -58,17 +46,9 @@ import {
   OutputFileSearchServerToolItem$inboundSchema,
 } from "./outputfilesearchservertoolitem.js";
 import {
-  OutputFilesServerToolItem,
-  OutputFilesServerToolItem$inboundSchema,
-} from "./outputfilesservertoolitem.js";
-import {
   OutputFunctionCallItem,
   OutputFunctionCallItem$inboundSchema,
 } from "./outputfunctioncallitem.js";
-import {
-  OutputFusionServerToolItem,
-  OutputFusionServerToolItem$inboundSchema,
-} from "./outputfusionservertoolitem.js";
 import {
   OutputImageGenerationCallItem,
   OutputImageGenerationCallItem$inboundSchema,
@@ -98,18 +78,6 @@ import {
   OutputSearchModelsServerToolItem$inboundSchema,
 } from "./outputsearchmodelsservertoolitem.js";
 import {
-  OutputShellCallItem,
-  OutputShellCallItem$inboundSchema,
-} from "./outputshellcallitem.js";
-import {
-  OutputShellCallOutputItem,
-  OutputShellCallOutputItem$inboundSchema,
-} from "./outputshellcalloutputitem.js";
-import {
-  OutputSubagentServerToolItem,
-  OutputSubagentServerToolItem$inboundSchema,
-} from "./outputsubagentservertoolitem.js";
-import {
   OutputTextEditorServerToolItem,
   OutputTextEditorServerToolItem$inboundSchema,
 } from "./outputtexteditorservertoolitem.js";
@@ -134,15 +102,12 @@ import {
  * An output item from the response
  */
 export type OutputItems =
-  | OutputApplyPatchCallItem
   | (OutputCodeInterpreterCallItem & { type: "code_interpreter_call" })
   | (OutputComputerCallItem & { type: "computer_call" })
-  | (OutputCustomToolCallItem & { type: "custom_tool_call" })
   | (OutputFileSearchCallItem & { type: "file_search_call" })
   | (OutputFunctionCallItem & { type: "function_call" })
   | (OutputImageGenerationCallItem & { type: "image_generation_call" })
   | OutputMessageItem
-  | (OutputAdvisorServerToolItem & { type: "openrouter:advisor" })
   | (OutputApplyPatchServerToolItem & { type: "openrouter:apply_patch" })
   | (OutputBashServerToolItem & { type: "openrouter:bash" })
   | (OutputBrowserUseServerToolItem & { type: "openrouter:browser_use" })
@@ -154,36 +119,27 @@ export type OutputItems =
     type: "openrouter:experimental__search_models";
   })
   | (OutputFileSearchServerToolItem & { type: "openrouter:file_search" })
-  | (OutputFilesServerToolItem & { type: "openrouter:files" })
-  | (OutputFusionServerToolItem & { type: "openrouter:fusion" })
   | (OutputImageGenerationServerToolItem & {
     type: "openrouter:image_generation";
   })
   | (OutputMcpServerToolItem & { type: "openrouter:mcp" })
   | (OutputMemoryServerToolItem & { type: "openrouter:memory" })
-  | (OutputSubagentServerToolItem & { type: "openrouter:subagent" })
   | (OutputTextEditorServerToolItem & { type: "openrouter:text_editor" })
   | (OutputToolSearchServerToolItem & { type: "openrouter:tool_search" })
   | (OutputWebFetchServerToolItem & { type: "openrouter:web_fetch" })
   | (OutputWebSearchServerToolItem & { type: "openrouter:web_search" })
   | OutputReasoningItem
-  | OutputShellCallItem
-  | OutputShellCallOutputItem
   | (OutputWebSearchCallItem & { type: "web_search_call" })
   | discriminatedUnionTypes.Unknown<"type">;
 
 /** @internal */
 export const OutputItems$inboundSchema: z.ZodType<OutputItems, unknown> =
   discriminatedUnion("type", {
-    apply_patch_call: OutputApplyPatchCallItem$inboundSchema,
     code_interpreter_call: OutputCodeInterpreterCallItem$inboundSchema.and(
       z.object({ type: z.literal("code_interpreter_call") }),
     ),
     computer_call: OutputComputerCallItem$inboundSchema.and(
       z.object({ type: z.literal("computer_call") }),
-    ),
-    custom_tool_call: OutputCustomToolCallItem$inboundSchema.and(
-      z.object({ type: z.literal("custom_tool_call") }),
     ),
     file_search_call: OutputFileSearchCallItem$inboundSchema.and(
       z.object({ type: z.literal("file_search_call") }),
@@ -195,9 +151,6 @@ export const OutputItems$inboundSchema: z.ZodType<OutputItems, unknown> =
       z.object({ type: z.literal("image_generation_call") }),
     ),
     message: OutputMessageItem$inboundSchema,
-    ["openrouter:advisor"]: OutputAdvisorServerToolItem$inboundSchema.and(
-      z.object({ type: z.literal("openrouter:advisor") }),
-    ),
     ["openrouter:apply_patch"]: OutputApplyPatchServerToolItem$inboundSchema
       .and(z.object({ type: z.literal("openrouter:apply_patch") })),
     ["openrouter:bash"]: OutputBashServerToolItem$inboundSchema.and(
@@ -218,12 +171,6 @@ export const OutputItems$inboundSchema: z.ZodType<OutputItems, unknown> =
       ),
     ["openrouter:file_search"]: OutputFileSearchServerToolItem$inboundSchema
       .and(z.object({ type: z.literal("openrouter:file_search") })),
-    ["openrouter:files"]: OutputFilesServerToolItem$inboundSchema.and(
-      z.object({ type: z.literal("openrouter:files") }),
-    ),
-    ["openrouter:fusion"]: OutputFusionServerToolItem$inboundSchema.and(
-      z.object({ type: z.literal("openrouter:fusion") }),
-    ),
     ["openrouter:image_generation"]:
       OutputImageGenerationServerToolItem$inboundSchema.and(
         z.object({ type: z.literal("openrouter:image_generation") }),
@@ -233,9 +180,6 @@ export const OutputItems$inboundSchema: z.ZodType<OutputItems, unknown> =
     ),
     ["openrouter:memory"]: OutputMemoryServerToolItem$inboundSchema.and(
       z.object({ type: z.literal("openrouter:memory") }),
-    ),
-    ["openrouter:subagent"]: OutputSubagentServerToolItem$inboundSchema.and(
-      z.object({ type: z.literal("openrouter:subagent") }),
     ),
     ["openrouter:text_editor"]: OutputTextEditorServerToolItem$inboundSchema
       .and(z.object({ type: z.literal("openrouter:text_editor") })),
@@ -248,8 +192,6 @@ export const OutputItems$inboundSchema: z.ZodType<OutputItems, unknown> =
       z.object({ type: z.literal("openrouter:web_search") }),
     ),
     reasoning: OutputReasoningItem$inboundSchema,
-    shell_call: OutputShellCallItem$inboundSchema,
-    shell_call_output: OutputShellCallOutputItem$inboundSchema,
     web_search_call: OutputWebSearchCallItem$inboundSchema.and(
       z.object({ type: z.literal("web_search_call") }),
     ),

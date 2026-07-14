@@ -16,15 +16,7 @@ import {
   ModelArchitecture,
   ModelArchitecture$inboundSchema,
 } from "./modelarchitecture.js";
-import {
-  ModelBenchmarks,
-  ModelBenchmarks$inboundSchema,
-} from "./modelbenchmarks.js";
 import { ModelLinks, ModelLinks$inboundSchema } from "./modellinks.js";
-import {
-  ModelReasoning,
-  ModelReasoning$inboundSchema,
-} from "./modelreasoning.js";
 import { Parameter, Parameter$inboundSchema } from "./parameter.js";
 import {
   PerRequestLimits,
@@ -44,10 +36,6 @@ export type Model = {
    * Model architecture information
    */
   architecture: ModelArchitecture;
-  /**
-   * Third-party benchmark rankings for this model. Omitted when no benchmark data is available.
-   */
-  benchmarks?: ModelBenchmarks | undefined;
   /**
    * Canonical slug for the model
    */
@@ -101,10 +89,6 @@ export type Model = {
    */
   pricing: PublicPricing;
   /**
-   * Reasoning effort configuration. Omitted for non-reasoning models and dynamic router models.
-   */
-  reasoning?: ModelReasoning | undefined;
-  /**
    * List of supported parameters for this model
    */
   supportedParameters: Array<Parameter>;
@@ -121,7 +105,6 @@ export type Model = {
 /** @internal */
 export const Model$inboundSchema: z.ZodType<Model, unknown> = z.object({
   architecture: ModelArchitecture$inboundSchema,
-  benchmarks: ModelBenchmarks$inboundSchema.optional(),
   canonical_slug: z.string(),
   context_length: z.nullable(z.int()),
   created: z.int(),
@@ -135,7 +118,6 @@ export const Model$inboundSchema: z.ZodType<Model, unknown> = z.object({
   name: z.string(),
   per_request_limits: z.nullable(PerRequestLimits$inboundSchema),
   pricing: PublicPricing$inboundSchema,
-  reasoning: ModelReasoning$inboundSchema.optional(),
   supported_parameters: z.array(Parameter$inboundSchema),
   supported_voices: z.nullable(z.array(z.string())),
   top_provider: TopProviderInfo$inboundSchema,

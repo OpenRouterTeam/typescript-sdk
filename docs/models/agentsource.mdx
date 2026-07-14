@@ -1,0 +1,25 @@
+---
+title: "AgentSource"
+---
+
+Where the agent should run. v1 ships GitHub-only; future versions will add other source types behind the `type` discriminator.
+
+## Example Usage
+
+```typescript
+import { AgentSource } from "@openrouter/sdk/models";
+
+let value: AgentSource = {
+  repo: "myorg/myapp",
+  type: "github",
+};
+```
+
+## Fields
+
+| Field                                                                                                                          | Type                                                                                                                           | Required                                                                                                                       | Description                                                                                                                    | Example                                                                                                                        |
+| ------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------ |
+| `branch`                                                                                                                       | *string*                                                                                                                       | :heavy_minus_sign:                                                                                                             | Branch to base the agent session on. Defaults to the repo default branch when omitted.                                         | main                                                                                                                           |
+| `commitSha`                                                                                                                    | *string*                                                                                                                       | :heavy_minus_sign:                                                                                                             | Optional commit SHA to pin the session to. Mutually exclusive with `branch` at runtime — when both are set, `commit_sha` wins. | a1b2c3d4                                                                                                                       |
+| `repo`                                                                                                                         | *string*                                                                                                                       | :heavy_check_mark:                                                                                                             | GitHub repo in `owner/repo` format.                                                                                            | myorg/myapp                                                                                                                    |
+| `type`                                                                                                                         | [models.AgentSourceType](../models/agentsourcetype.mdx)                                                                         | :heavy_check_mark:                                                                                                             | Source provider type. Only `github` is supported in v1.                                                                        |                                                                                                                                |

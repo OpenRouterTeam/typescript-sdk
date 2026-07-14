@@ -5,10 +5,6 @@
 
 import * as z from "zod/v4";
 import { remap as remap$ } from "../../lib/primitives.js";
-import { safeParse } from "../../lib/schemas.js";
-import { Result as SafeParseResult } from "../../types/fp.js";
-import { SDKValidationError } from "../errors/sdkvalidationerror.js";
-import * as models from "../index.js";
 
 export type ListEmbeddingsModelsGlobals = {
   /**
@@ -52,18 +48,6 @@ export type ListEmbeddingsModelsRequest = {
    * @remarks
    */
   appCategories?: string | undefined;
-  /**
-   * Number of records to skip for pagination. When both offset and limit are omitted, the full list is returned
-   */
-  offset?: number | null | undefined;
-  /**
-   * Maximum number of records to return (max 1000). When both offset and limit are omitted, the full list is returned
-   */
-  limit?: number | undefined;
-};
-
-export type ListEmbeddingsModelsResponse = {
-  result: models.ModelsListResponse;
 };
 
 /** @internal */
@@ -71,8 +55,6 @@ export type ListEmbeddingsModelsRequest$Outbound = {
   "HTTP-Referer"?: string | undefined;
   appTitle?: string | undefined;
   appCategories?: string | undefined;
-  offset: number | null;
-  limit: number;
 };
 
 /** @internal */
@@ -83,8 +65,6 @@ export const ListEmbeddingsModelsRequest$outboundSchema: z.ZodType<
   httpReferer: z.string().optional(),
   appTitle: z.string().optional(),
   appCategories: z.string().optional(),
-  offset: z.nullable(z.int().default(0)),
-  limit: z.int().default(500),
 }).transform((v) => {
   return remap$(v, {
     httpReferer: "HTTP-Referer",
@@ -98,27 +78,5 @@ export function listEmbeddingsModelsRequestToJSON(
     ListEmbeddingsModelsRequest$outboundSchema.parse(
       listEmbeddingsModelsRequest,
     ),
-  );
-}
-
-/** @internal */
-export const ListEmbeddingsModelsResponse$inboundSchema: z.ZodType<
-  ListEmbeddingsModelsResponse,
-  unknown
-> = z.object({
-  Result: models.ModelsListResponse$inboundSchema,
-}).transform((v) => {
-  return remap$(v, {
-    "Result": "result",
-  });
-});
-
-export function listEmbeddingsModelsResponseFromJSON(
-  jsonString: string,
-): SafeParseResult<ListEmbeddingsModelsResponse, SDKValidationError> {
-  return safeParse(
-    jsonString,
-    (x) => ListEmbeddingsModelsResponse$inboundSchema.parse(JSON.parse(x)),
-    `Failed to parse 'ListEmbeddingsModelsResponse' from JSON`,
   );
 }

@@ -48,7 +48,7 @@ export type CreateWorkspaceRequest = {
    */
   name: string;
   /**
-   * URL-friendly slug (lowercase alphanumeric segments separated by single hyphens, no leading/trailing hyphens)
+   * URL-friendly slug (lowercase alphanumeric and hyphens only)
    */
   slug: string;
 };

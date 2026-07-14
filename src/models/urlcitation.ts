@@ -10,7 +10,6 @@ import { Result as SafeParseResult } from "../types/fp.js";
 import { SDKValidationError } from "./errors/sdkvalidationerror.js";
 
 export type URLCitation = {
-  content?: string | undefined;
   endIndex: number;
   startIndex: number;
   title: string;
@@ -21,7 +20,6 @@ export type URLCitation = {
 /** @internal */
 export const URLCitation$inboundSchema: z.ZodType<URLCitation, unknown> = z
   .object({
-    content: z.string().optional(),
     end_index: z.int(),
     start_index: z.int(),
     title: z.string(),
@@ -35,7 +33,6 @@ export const URLCitation$inboundSchema: z.ZodType<URLCitation, unknown> = z
   });
 /** @internal */
 export type URLCitation$Outbound = {
-  content?: string | undefined;
   end_index: number;
   start_index: number;
   title: string;
@@ -48,7 +45,6 @@ export const URLCitation$outboundSchema: z.ZodType<
   URLCitation$Outbound,
   URLCitation
 > = z.object({
-  content: z.string().optional(),
   endIndex: z.int(),
   startIndex: z.int(),
   title: z.string(),
