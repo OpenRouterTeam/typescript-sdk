@@ -55,6 +55,16 @@ import {
   AnthropicToolUsesTrigger$outboundSchema,
 } from "./anthropictoolusestrigger.js";
 import {
+  AnthropicWebFetchTool20260318,
+  AnthropicWebFetchTool20260318$Outbound,
+  AnthropicWebFetchTool20260318$outboundSchema,
+} from "./anthropicwebfetchtool20260318.js";
+import {
+  AnthropicWebSearchTool20260318,
+  AnthropicWebSearchTool20260318$Outbound,
+  AnthropicWebSearchTool20260318$outboundSchema,
+} from "./anthropicwebsearchtool20260318.js";
+import {
   AnthropicWebSearchToolUserLocation,
   AnthropicWebSearchToolUserLocation$Outbound,
   AnthropicWebSearchToolUserLocation$outboundSchema,
@@ -345,10 +355,12 @@ export type ToolAdvisor20260301 = {
   type: TypeAdvisor20260301;
 };
 
-export const NameWebSearch2 = {
+export const MessagesRequestNameWebSearch2 = {
   WebSearch: "web_search",
 } as const;
-export type NameWebSearch2 = ClosedEnum<typeof NameWebSearch2>;
+export type MessagesRequestNameWebSearch2 = ClosedEnum<
+  typeof MessagesRequestNameWebSearch2
+>;
 
 export const TypeWebSearch20260209 = {
   WebSearch20260209: "web_search_20260209",
@@ -364,15 +376,17 @@ export type ToolWebSearch20260209 = {
    */
   cacheControl?: AnthropicCacheControlDirective | undefined;
   maxUses?: number | null | undefined;
-  name: NameWebSearch2;
+  name: MessagesRequestNameWebSearch2;
   type: TypeWebSearch20260209;
   userLocation?: AnthropicWebSearchToolUserLocation | null | undefined;
 };
 
-export const NameWebSearch1 = {
+export const MessagesRequestNameWebSearch1 = {
   WebSearch: "web_search",
 } as const;
-export type NameWebSearch1 = ClosedEnum<typeof NameWebSearch1>;
+export type MessagesRequestNameWebSearch1 = ClosedEnum<
+  typeof MessagesRequestNameWebSearch1
+>;
 
 export const TypeWebSearch20250305 = {
   WebSearch20250305: "web_search_20250305",
@@ -387,7 +401,7 @@ export type ToolWebSearch20250305 = {
    */
   cacheControl?: AnthropicCacheControlDirective | undefined;
   maxUses?: number | null | undefined;
-  name: NameWebSearch1;
+  name: MessagesRequestNameWebSearch1;
   type: TypeWebSearch20250305;
   userLocation?: AnthropicWebSearchToolUserLocation | null | undefined;
 };
@@ -458,8 +472,10 @@ export type MessagesRequestToolUnion =
   | ToolCustom
   | ToolBash20250124
   | ToolTextEditor20250124
+  | AnthropicWebFetchTool20260318
   | ToolWebSearch20250305
   | ToolWebSearch20260209
+  | AnthropicWebSearchTool20260318
   | BashServerTool
   | DatetimeServerTool
   | ImageGenerationServerToolOpenRouter
@@ -537,8 +553,10 @@ export type MessagesRequest = {
       | ToolCustom
       | ToolBash20250124
       | ToolTextEditor20250124
+      | AnthropicWebFetchTool20260318
       | ToolWebSearch20250305
       | ToolWebSearch20260209
+      | AnthropicWebSearchTool20260318
       | BashServerTool
       | DatetimeServerTool
       | ImageGenerationServerToolOpenRouter
@@ -1200,8 +1218,9 @@ export function toolAdvisor20260301ToJSON(
 }
 
 /** @internal */
-export const NameWebSearch2$outboundSchema: z.ZodEnum<typeof NameWebSearch2> = z
-  .enum(NameWebSearch2);
+export const MessagesRequestNameWebSearch2$outboundSchema: z.ZodEnum<
+  typeof MessagesRequestNameWebSearch2
+> = z.enum(MessagesRequestNameWebSearch2);
 
 /** @internal */
 export const TypeWebSearch20260209$outboundSchema: z.ZodEnum<
@@ -1233,7 +1252,7 @@ export const ToolWebSearch20260209$outboundSchema: z.ZodType<
   blockedDomains: z.nullable(z.array(z.string())).optional(),
   cacheControl: AnthropicCacheControlDirective$outboundSchema.optional(),
   maxUses: z.nullable(z.int()).optional(),
-  name: NameWebSearch2$outboundSchema,
+  name: MessagesRequestNameWebSearch2$outboundSchema,
   type: TypeWebSearch20260209$outboundSchema,
   userLocation: z.nullable(AnthropicWebSearchToolUserLocation$outboundSchema)
     .optional(),
@@ -1257,8 +1276,9 @@ export function toolWebSearch20260209ToJSON(
 }
 
 /** @internal */
-export const NameWebSearch1$outboundSchema: z.ZodEnum<typeof NameWebSearch1> = z
-  .enum(NameWebSearch1);
+export const MessagesRequestNameWebSearch1$outboundSchema: z.ZodEnum<
+  typeof MessagesRequestNameWebSearch1
+> = z.enum(MessagesRequestNameWebSearch1);
 
 /** @internal */
 export const TypeWebSearch20250305$outboundSchema: z.ZodEnum<
@@ -1288,7 +1308,7 @@ export const ToolWebSearch20250305$outboundSchema: z.ZodType<
   blockedDomains: z.nullable(z.array(z.string())).optional(),
   cacheControl: AnthropicCacheControlDirective$outboundSchema.optional(),
   maxUses: z.nullable(z.int()).optional(),
-  name: NameWebSearch1$outboundSchema,
+  name: MessagesRequestNameWebSearch1$outboundSchema,
   type: TypeWebSearch20250305$outboundSchema,
   userLocation: z.nullable(AnthropicWebSearchToolUserLocation$outboundSchema)
     .optional(),
@@ -1458,8 +1478,10 @@ export type MessagesRequestToolUnion$Outbound =
   | ToolCustom$Outbound
   | ToolBash20250124$Outbound
   | ToolTextEditor20250124$Outbound
+  | AnthropicWebFetchTool20260318$Outbound
   | ToolWebSearch20250305$Outbound
   | ToolWebSearch20260209$Outbound
+  | AnthropicWebSearchTool20260318$Outbound
   | BashServerTool$Outbound
   | DatetimeServerTool$Outbound
   | ImageGenerationServerToolOpenRouter$Outbound
@@ -1477,8 +1499,10 @@ export const MessagesRequestToolUnion$outboundSchema: z.ZodType<
   z.lazy(() => ToolCustom$outboundSchema),
   z.lazy(() => ToolBash20250124$outboundSchema),
   z.lazy(() => ToolTextEditor20250124$outboundSchema),
+  AnthropicWebFetchTool20260318$outboundSchema,
   z.lazy(() => ToolWebSearch20250305$outboundSchema),
   z.lazy(() => ToolWebSearch20260209$outboundSchema),
+  AnthropicWebSearchTool20260318$outboundSchema,
   BashServerTool$outboundSchema,
   DatetimeServerTool$outboundSchema,
   ImageGenerationServerToolOpenRouter$outboundSchema,
@@ -1548,8 +1572,10 @@ export type MessagesRequest$Outbound = {
       | ToolCustom$Outbound
       | ToolBash20250124$Outbound
       | ToolTextEditor20250124$Outbound
+      | AnthropicWebFetchTool20260318$Outbound
       | ToolWebSearch20250305$Outbound
       | ToolWebSearch20260209$Outbound
+      | AnthropicWebSearchTool20260318$Outbound
       | BashServerTool$Outbound
       | DatetimeServerTool$Outbound
       | ImageGenerationServerToolOpenRouter$Outbound
@@ -1622,8 +1648,10 @@ export const MessagesRequest$outboundSchema: z.ZodType<
       z.lazy(() => ToolCustom$outboundSchema),
       z.lazy(() => ToolBash20250124$outboundSchema),
       z.lazy(() => ToolTextEditor20250124$outboundSchema),
+      AnthropicWebFetchTool20260318$outboundSchema,
       z.lazy(() => ToolWebSearch20250305$outboundSchema),
       z.lazy(() => ToolWebSearch20260209$outboundSchema),
+      AnthropicWebSearchTool20260318$outboundSchema,
       BashServerTool$outboundSchema,
       DatetimeServerTool$outboundSchema,
       ImageGenerationServerToolOpenRouter$outboundSchema,
