@@ -57,6 +57,7 @@ export const BYOKProviderSlug = {
   Inflection: "inflection",
   IoNet: "io-net",
   Ionstream: "ionstream",
+  Krea: "krea",
   Liquid: "liquid",
   Mancer: "mancer",
   Mara: "mara",
