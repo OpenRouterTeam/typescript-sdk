@@ -60,21 +60,10 @@ export type ContentText = {
   type: "text";
 };
 
-export type Content =
-  | ContentText
-  | ContentImageURL
-  | models.ContentPartInputAudio
-  | models.ContentPartInputVideo
-  | models.ContentPartInputFile;
+export type Content = ContentText | ContentImageURL;
 
 export type Input = {
-  content: Array<
-    | ContentText
-    | ContentImageURL
-    | models.ContentPartInputAudio
-    | models.ContentPartInputVideo
-    | models.ContentPartInputFile
-  >;
+  content: Array<ContentText | ContentImageURL>;
 };
 
 /**
@@ -185,10 +174,6 @@ export type PromptTokensDetails = {
    */
   audioTokens?: number | undefined;
   /**
-   * Number of file/document tokens in the input
-   */
-  fileTokens?: number | undefined;
-  /**
    * Number of image tokens in the input
    */
   imageTokens?: number | undefined;
@@ -210,14 +195,6 @@ export type CreateEmbeddingsUsage = {
    * Cost of the request in credits
    */
   cost?: number | undefined;
-  /**
-   * Breakdown of upstream inference costs
-   */
-  costDetails?: models.CostDetails | null | undefined;
-  /**
-   * Whether a request was made using a Bring Your Own Key configuration
-   */
-  isByok?: boolean | undefined;
   /**
    * Number of tokens in the input
    */
@@ -321,21 +298,13 @@ export function contentTextToJSON(contentText: ContentText): string {
 }
 
 /** @internal */
-export type Content$Outbound =
-  | ContentText$Outbound
-  | ContentImageURL$Outbound
-  | models.ContentPartInputAudio$Outbound
-  | models.ContentPartInputVideo$Outbound
-  | models.ContentPartInputFile$Outbound;
+export type Content$Outbound = ContentText$Outbound | ContentImageURL$Outbound;
 
 /** @internal */
 export const Content$outboundSchema: z.ZodType<Content$Outbound, Content> = z
   .union([
     z.lazy(() => ContentText$outboundSchema),
     z.lazy(() => ContentImageURL$outboundSchema),
-    models.ContentPartInputAudio$outboundSchema,
-    models.ContentPartInputVideo$outboundSchema,
-    models.ContentPartInputFile$outboundSchema,
   ]);
 
 export function contentToJSON(content: Content): string {
@@ -344,13 +313,7 @@ export function contentToJSON(content: Content): string {
 
 /** @internal */
 export type Input$Outbound = {
-  content: Array<
-    | ContentText$Outbound
-    | ContentImageURL$Outbound
-    | models.ContentPartInputAudio$Outbound
-    | models.ContentPartInputVideo$Outbound
-    | models.ContentPartInputFile$Outbound
-  >;
+  content: Array<ContentText$Outbound | ContentImageURL$Outbound>;
 };
 
 /** @internal */
@@ -359,9 +322,6 @@ export const Input$outboundSchema: z.ZodType<Input$Outbound, Input> = z.object({
     z.union([
       z.lazy(() => ContentText$outboundSchema),
       z.lazy(() => ContentImageURL$outboundSchema),
-      models.ContentPartInputAudio$outboundSchema,
-      models.ContentPartInputVideo$outboundSchema,
-      models.ContentPartInputFile$outboundSchema,
     ]),
   ),
 });
@@ -526,14 +486,12 @@ export const PromptTokensDetails$inboundSchema: z.ZodType<
   unknown
 > = z.object({
   audio_tokens: z.int().optional(),
-  file_tokens: z.int().optional(),
   image_tokens: z.int().optional(),
   text_tokens: z.int().optional(),
   video_tokens: z.int().optional(),
 }).transform((v) => {
   return remap$(v, {
     "audio_tokens": "audioTokens",
-    "file_tokens": "fileTokens",
     "image_tokens": "imageTokens",
     "text_tokens": "textTokens",
     "video_tokens": "videoTokens",
@@ -556,16 +514,12 @@ export const CreateEmbeddingsUsage$inboundSchema: z.ZodType<
   unknown
 > = z.object({
   cost: z.number().optional(),
-  cost_details: z.nullable(models.CostDetails$inboundSchema).optional(),
-  is_byok: z.boolean().optional(),
   prompt_tokens: z.int(),
   prompt_tokens_details: z.lazy(() => PromptTokensDetails$inboundSchema)
     .optional(),
   total_tokens: z.int(),
 }).transform((v) => {
   return remap$(v, {
-    "cost_details": "costDetails",
-    "is_byok": "isByok",
     "prompt_tokens": "promptTokens",
     "prompt_tokens_details": "promptTokensDetails",
     "total_tokens": "totalTokens",

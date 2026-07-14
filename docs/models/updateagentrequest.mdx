@@ -1,0 +1,20 @@
+---
+title: "UpdateAgentRequest"
+---
+
+## Example Usage
+
+```typescript
+import { UpdateAgentRequest } from "@openrouter/sdk/models";
+
+let value: UpdateAgentRequest = {};
+```
+
+## Fields
+
+| Field                                                                    | Type                                                                     | Required                                                                 | Description                                                              | Example                                                                  |
+| ------------------------------------------------------------------------ | ------------------------------------------------------------------------ | ------------------------------------------------------------------------ | ------------------------------------------------------------------------ | ------------------------------------------------------------------------ |
+| `config`                                                                 | [models.UpdateAgentRequestConfig](../models/updateagentrequestconfig.mdx) | :heavy_minus_sign:                                                       | Partial config update. Only fields present in the request are modified.  |                                                                          |
+| `description`                                                            | *string*                                                                 | :heavy_minus_sign:                                                       | Updated description. Pass an empty string to clear.                      | Posts a standup summary to #eng.                                         |
+| `displayName`                                                            | *string*                                                                 | :heavy_minus_sign:                                                       | Updated display name.                                                    | Daily Standup Bot                                                        |
+| `isPublic`                                                               | *boolean*                                                                | :heavy_minus_sign:                                                       | Updated visibility flag.                                                 | false                                                                    |

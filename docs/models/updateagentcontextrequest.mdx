@@ -1,0 +1,19 @@
+---
+title: "UpdateAgentContextRequest"
+---
+
+## Example Usage
+
+```typescript
+import { UpdateAgentContextRequest } from "@openrouter/sdk/models";
+
+let value: UpdateAgentContextRequest = {};
+```
+
+## Fields
+
+| Field                                                                      | Type                                                                       | Required                                                                   | Description                                                                | Example                                                                    |
+| -------------------------------------------------------------------------- | -------------------------------------------------------------------------- | -------------------------------------------------------------------------- | -------------------------------------------------------------------------- | -------------------------------------------------------------------------- |
+| `knowledge`                                                                | *string*[]                                                                 | :heavy_minus_sign:                                                         | Replacement set of knowledge entries.                                      | [<br/>"Always use TypeScript strict mode",<br/>"Run pnpm test before committing"<br/>] |
+| `mcpServers`                                                               | [models.AgentMcpServer](../models/agentmcpserver.mdx)[]                     | :heavy_minus_sign:                                                         | Replacement set of MCP server URLs.                                        | [<br/>\{<br/>"name": "Jira (production)",<br/>"url": "https://mcp.myorg.com/jira"<br/>}<br/>] |
+| `name`                                                                     | *string*                                                                   | :heavy_minus_sign:                                                         | Updated human-readable name.                                               | myorg/myapp                                                                |

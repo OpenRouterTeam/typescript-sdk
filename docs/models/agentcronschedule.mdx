@@ -1,0 +1,24 @@
+---
+title: "AgentCronSchedule"
+---
+
+Cron schedule. When unset, the agent runs only on explicit invocation.
+
+## Example Usage
+
+```typescript
+import { AgentCronSchedule } from "@openrouter/sdk/models";
+
+let value: AgentCronSchedule = {
+  expression: "0 9 * * 1-5",
+  timezone: "America/Los_Angeles",
+};
+```
+
+## Fields
+
+| Field                                                                                         | Type                                                                                          | Required                                                                                      | Description                                                                                   | Example                                                                                       |
+| --------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------- |
+| `enabled`                                                                                     | *boolean*                                                                                     | :heavy_minus_sign:                                                                            | Whether the schedule is currently active. Toggle to pause without losing the cron expression. | true                                                                                          |
+| `expression`                                                                                  | *string*                                                                                      | :heavy_check_mark:                                                                            | Standard cron expression (5 or 6 fields). Interpreted in `timezone` — UTC if not specified.   | 0 9 * * 1-5                                                                                   |
+| `timezone`                                                                                    | *string*                                                                                      | :heavy_minus_sign:                                                                            | IANA timezone name.                                                                           | America/Los_Angeles                                                                           |

@@ -121,8 +121,8 @@ export type ListOrganizationMembersRequest$Outbound = {
   "HTTP-Referer"?: string | undefined;
   appTitle?: string | undefined;
   appCategories?: string | undefined;
-  offset: number | null;
-  limit: number;
+  offset?: number | null | undefined;
+  limit?: number | undefined;
 };
 
 /** @internal */
@@ -133,8 +133,8 @@ export const ListOrganizationMembersRequest$outboundSchema: z.ZodType<
   httpReferer: z.string().optional(),
   appTitle: z.string().optional(),
   appCategories: z.string().optional(),
-  offset: z.nullable(z.int().default(0)),
-  limit: z.int().default(50),
+  offset: z.nullable(z.int()).optional(),
+  limit: z.int().optional(),
 }).transform((v) => {
   return remap$(v, {
     httpReferer: "HTTP-Referer",

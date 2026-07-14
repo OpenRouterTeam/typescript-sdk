@@ -1,0 +1,21 @@
+---
+title: "Owner"
+---
+
+Filter by ownership. `me` returns only agents you own, `org` returns agents shared inside your org, `public` returns first-party + public agents.
+
+## Example Usage
+
+```typescript
+import { Owner } from "@openrouter/sdk/models/operations";
+
+let value: Owner = "me";
+
+// Open enum: unrecognized values are captured as Unrecognized<string>
+```
+
+## Values
+
+```typescript
+"me" | "org" | "public" | Unrecognized<string>
+```

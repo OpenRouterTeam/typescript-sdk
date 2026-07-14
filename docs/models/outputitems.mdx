@@ -7,22 +7,6 @@ An output item from the response
 
 ## Supported Types
 
-### `models.OutputApplyPatchCallItem`
-
-```typescript
-const value: models.OutputApplyPatchCallItem = {
-  callId: "<id>",
-  id: "msg-abc123",
-  operation: {
-    diff: "@@ function main() {\n+  console.log(\"hi\");\n }",
-    path: "/src/main.ts",
-    type: "update_file",
-  },
-  status: "completed",
-  type: "apply_patch_call",
-};
-```
-
 ### `models.OutputCodeInterpreterCallItem`
 
 ```typescript
@@ -49,17 +33,6 @@ const value: models.OutputComputerCallItem = {
   pendingSafetyChecks: [],
   status: "completed",
   type: "computer_call",
-};
-```
-
-### `models.OutputCustomToolCallItem`
-
-```typescript
-const value: models.OutputCustomToolCallItem = {
-  callId: "call-abc123",
-  input: "*** Begin Patch\n*** End Patch",
-  name: "apply_patch",
-  type: "custom_tool_call",
 };
 ```
 
@@ -110,15 +83,6 @@ const value: models.OutputMessageItem = {
   id: "msg-abc123",
   role: "assistant",
   type: "message",
-};
-```
-
-### `models.OutputAdvisorServerToolItem`
-
-```typescript
-const value: models.OutputAdvisorServerToolItem = {
-  status: "completed",
-  type: "openrouter:advisor",
 };
 ```
 
@@ -187,24 +151,6 @@ const value: models.OutputFileSearchServerToolItem = {
 };
 ```
 
-### `models.OutputFilesServerToolItem`
-
-```typescript
-const value: models.OutputFilesServerToolItem = {
-  status: "completed",
-  type: "openrouter:files",
-};
-```
-
-### `models.OutputFusionServerToolItem`
-
-```typescript
-const value: models.OutputFusionServerToolItem = {
-  status: "completed",
-  type: "openrouter:fusion",
-};
-```
-
 ### `models.OutputImageGenerationServerToolItem`
 
 ```typescript
@@ -229,15 +175,6 @@ const value: models.OutputMcpServerToolItem = {
 const value: models.OutputMemoryServerToolItem = {
   status: "completed",
   type: "openrouter:memory",
-};
-```
-
-### `models.OutputSubagentServerToolItem`
-
-```typescript
-const value: models.OutputSubagentServerToolItem = {
-  status: "completed",
-  type: "openrouter:subagent",
 };
 ```
 
@@ -292,33 +229,15 @@ const value: models.OutputReasoningItem = {
 };
 ```
 
-### `models.OutputShellCallItem`
-
-```typescript
-const value: models.OutputShellCallItem = {
-  callId: "<id>",
-  id: "msg-abc123",
-  status: "completed",
-  type: "shell_call",
-};
-```
-
-### `models.OutputShellCallOutputItem`
-
-```typescript
-const value: models.OutputShellCallOutputItem = {
-  callId: "<id>",
-  id: "msg-abc123",
-  output: [],
-  status: "completed",
-  type: "shell_call_output",
-};
-```
-
 ### `models.OutputWebSearchCallItem`
 
 ```typescript
 const value: models.OutputWebSearchCallItem = {
+  action: {
+    pattern: "<value>",
+    type: "find_in_page",
+    url: "https://tragic-requirement.com/",
+  },
   id: "ws-abc123",
   status: "completed",
   type: "web_search_call",

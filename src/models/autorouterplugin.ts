@@ -12,10 +12,6 @@ export type AutoRouterPlugin = {
    */
   allowedModels?: Array<string> | undefined;
   /**
-   * Controls cost vs. quality routing tradeoff (0–10). 0 = pure quality (best model regardless of cost), 10 = maximize for cost (cheapest model wins). Intermediate values blend quality and cost signals continuously. Defaults to 7.
-   */
-  costQualityTradeoff?: number | undefined;
-  /**
    * Set to false to disable the auto-router plugin for this request. Defaults to true.
    */
   enabled?: boolean | undefined;
@@ -25,7 +21,6 @@ export type AutoRouterPlugin = {
 /** @internal */
 export type AutoRouterPlugin$Outbound = {
   allowed_models?: Array<string> | undefined;
-  cost_quality_tradeoff?: number | undefined;
   enabled?: boolean | undefined;
   id: "auto-router";
 };
@@ -36,13 +31,11 @@ export const AutoRouterPlugin$outboundSchema: z.ZodType<
   AutoRouterPlugin
 > = z.object({
   allowedModels: z.array(z.string()).optional(),
-  costQualityTradeoff: z.int().optional(),
   enabled: z.boolean().optional(),
   id: z.literal("auto-router"),
 }).transform((v) => {
   return remap$(v, {
     allowedModels: "allowed_models",
-    costQualityTradeoff: "cost_quality_tradeoff",
   });
 });
 

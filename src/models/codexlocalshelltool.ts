@@ -5,43 +5,26 @@
 
 import * as z from "zod/v4";
 import { safeParse } from "../lib/schemas.js";
-import { ClosedEnum } from "../types/enums.js";
 import { Result as SafeParseResult } from "../types/fp.js";
 import { SDKValidationError } from "./errors/sdkvalidationerror.js";
-
-export const CodexLocalShellToolType = {
-  LocalShell: "local_shell",
-} as const;
-export type CodexLocalShellToolType = ClosedEnum<
-  typeof CodexLocalShellToolType
->;
 
 /**
  * Local shell tool configuration
  */
 export type CodexLocalShellTool = {
-  type: CodexLocalShellToolType;
+  type: "local_shell";
 };
-
-/** @internal */
-export const CodexLocalShellToolType$inboundSchema: z.ZodEnum<
-  typeof CodexLocalShellToolType
-> = z.enum(CodexLocalShellToolType);
-/** @internal */
-export const CodexLocalShellToolType$outboundSchema: z.ZodEnum<
-  typeof CodexLocalShellToolType
-> = CodexLocalShellToolType$inboundSchema;
 
 /** @internal */
 export const CodexLocalShellTool$inboundSchema: z.ZodType<
   CodexLocalShellTool,
   unknown
 > = z.object({
-  type: CodexLocalShellToolType$inboundSchema,
+  type: z.literal("local_shell"),
 });
 /** @internal */
 export type CodexLocalShellTool$Outbound = {
-  type: string;
+  type: "local_shell";
 };
 
 /** @internal */
@@ -49,7 +32,7 @@ export const CodexLocalShellTool$outboundSchema: z.ZodType<
   CodexLocalShellTool$Outbound,
   CodexLocalShellTool
 > = z.object({
-  type: CodexLocalShellToolType$outboundSchema,
+  type: z.literal("local_shell"),
 });
 
 export function codexLocalShellToolToJSON(

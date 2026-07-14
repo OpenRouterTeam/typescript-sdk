@@ -4,19 +4,11 @@
  */
 
 import * as z from "zod/v4";
-import { ClosedEnum } from "../types/enums.js";
 import {
   WebSearchServerToolConfig,
   WebSearchServerToolConfig$Outbound,
   WebSearchServerToolConfig$outboundSchema,
 } from "./websearchservertoolconfig.js";
-
-export const WebSearchServerToolOpenRouterType = {
-  OpenrouterWebSearch: "openrouter:web_search",
-} as const;
-export type WebSearchServerToolOpenRouterType = ClosedEnum<
-  typeof WebSearchServerToolOpenRouterType
->;
 
 /**
  * OpenRouter built-in server tool: searches the web for current information
@@ -26,18 +18,13 @@ export type WebSearchServerToolOpenRouter = {
    * Configuration for the openrouter:web_search server tool
    */
   parameters?: WebSearchServerToolConfig | undefined;
-  type: WebSearchServerToolOpenRouterType;
+  type: "openrouter:web_search";
 };
-
-/** @internal */
-export const WebSearchServerToolOpenRouterType$outboundSchema: z.ZodEnum<
-  typeof WebSearchServerToolOpenRouterType
-> = z.enum(WebSearchServerToolOpenRouterType);
 
 /** @internal */
 export type WebSearchServerToolOpenRouter$Outbound = {
   parameters?: WebSearchServerToolConfig$Outbound | undefined;
-  type: string;
+  type: "openrouter:web_search";
 };
 
 /** @internal */
@@ -46,7 +33,7 @@ export const WebSearchServerToolOpenRouter$outboundSchema: z.ZodType<
   WebSearchServerToolOpenRouter
 > = z.object({
   parameters: WebSearchServerToolConfig$outboundSchema.optional(),
-  type: WebSearchServerToolOpenRouterType$outboundSchema,
+  type: z.literal("openrouter:web_search"),
 });
 
 export function webSearchServerToolOpenRouterToJSON(

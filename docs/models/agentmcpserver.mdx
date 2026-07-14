@@ -1,0 +1,20 @@
+---
+title: "AgentMcpServer"
+---
+
+## Example Usage
+
+```typescript
+import { AgentMcpServer } from "@openrouter/sdk/models";
+
+let value: AgentMcpServer = {
+  url: "https://mcp.myorg.com/jira",
+};
+```
+
+## Fields
+
+| Field                                                                                              | Type                                                                                               | Required                                                                                           | Description                                                                                        | Example                                                                                            |
+| -------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------- |
+| `name`                                                                                             | *string*                                                                                           | :heavy_minus_sign:                                                                                 | Optional human-readable name for the MCP server. Surfaced in dashboards but not sent to providers. | Jira (production)                                                                                  |
+| `url`                                                                                              | *string*                                                                                           | :heavy_check_mark:                                                                                 | Remote MCP server URL.                                                                             | https://mcp.myorg.com/jira                                                                         |

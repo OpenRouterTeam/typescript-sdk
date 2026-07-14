@@ -129,10 +129,7 @@ async function run() {
         "deepseek",
       ],
       description: "A guardrail for limiting API usage",
-      enforceZdrAnthropic: true,
-      enforceZdrGoogle: false,
-      enforceZdrOpenai: true,
-      enforceZdrOther: false,
+      enforceZdr: false,
       ignoredModels: null,
       ignoredProviders: null,
       limitUsd: 50,
@@ -174,10 +171,7 @@ async function run() {
         "deepseek",
       ],
       description: "A guardrail for limiting API usage",
-      enforceZdrAnthropic: true,
-      enforceZdrGoogle: false,
-      enforceZdrOpenai: true,
-      enforceZdrOther: false,
+      enforceZdr: false,
       ignoredModels: null,
       ignoredProviders: null,
       limitUsd: 50,
@@ -383,7 +377,7 @@ run();
 
 ## update
 
-Update an existing guardrail. Collection fields use replace semantics: send the full desired set on every update. [Management key](/docs/guides/overview/auth/management-api-keys) required.
+Update an existing guardrail. [Management key](/docs/guides/overview/auth/management-api-keys) required.
 
 ### Example Usage
 
@@ -494,6 +488,8 @@ const openRouter = new OpenRouter({
 async function run() {
   const result = await openRouter.guardrails.listGuardrailKeyAssignments({
     id: "550e8400-e29b-41d4-a716-446655440000",
+    offset: 0,
+    limit: 50,
   });
 
   for await (const page of result) {
@@ -524,6 +520,8 @@ const openRouter = new OpenRouterCore({
 async function run() {
   const res = await guardrailsListGuardrailKeyAssignments(openRouter, {
     id: "550e8400-e29b-41d4-a716-446655440000",
+    offset: 0,
+    limit: 50,
   });
   if (res.ok) {
     const { value: result } = res;
@@ -562,7 +560,7 @@ run();
 
 ## bulkAssignKeys
 
-Assign multiple API keys to a specific guardrail. A key may hold at most one guardrail; assigning replaces any existing assignment. [Management key](/docs/guides/overview/auth/management-api-keys) required.
+Assign multiple API keys to a specific guardrail. [Management key](/docs/guides/overview/auth/management-api-keys) required.
 
 ### Example Usage
 
@@ -763,6 +761,8 @@ const openRouter = new OpenRouter({
 async function run() {
   const result = await openRouter.guardrails.listGuardrailMemberAssignments({
     id: "550e8400-e29b-41d4-a716-446655440000",
+    offset: 0,
+    limit: 50,
   });
 
   for await (const page of result) {
@@ -793,6 +793,8 @@ const openRouter = new OpenRouterCore({
 async function run() {
   const res = await guardrailsListGuardrailMemberAssignments(openRouter, {
     id: "550e8400-e29b-41d4-a716-446655440000",
+    offset: 0,
+    limit: 50,
   });
   if (res.ok) {
     const { value: result } = res;

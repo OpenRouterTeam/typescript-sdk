@@ -112,7 +112,7 @@ async function $do(
   });
 
   const headers = new Headers(compactMap({
-    Accept: "video/mp4",
+    Accept: "application/octet-stream",
     "HTTP-Referer": encodeSimple(
       "HTTP-Referer",
       payload["HTTP-Referer"] ?? client._options.httpReferer,
@@ -210,7 +210,6 @@ async function $do(
     M.stream(
       200,
       z.custom<ReadableStream<Uint8Array>>(x => x instanceof ReadableStream),
-      { ctype: "video/mp4" },
     ),
     M.jsonErr(400, errors.BadRequestResponseError$inboundSchema),
     M.jsonErr(401, errors.UnauthorizedResponseError$inboundSchema),

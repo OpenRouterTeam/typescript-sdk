@@ -57,31 +57,6 @@ const value: models.FunctionCallOutputItem = {
 };
 ```
 
-### `models.ApplyPatchCallItem`
-
-```typescript
-const value: models.ApplyPatchCallItem = {
-  callId: "call_abc123",
-  operation: {
-    diff: "@@ function main() {\n+  console.log(\"hi\");\n }",
-    path: "/src/main.ts",
-    type: "update_file",
-  },
-  status: "completed",
-  type: "apply_patch_call",
-};
-```
-
-### `models.ApplyPatchCallOutputItem`
-
-```typescript
-const value: models.ApplyPatchCallOutputItem = {
-  callId: "call_abc123",
-  status: "completed",
-  type: "apply_patch_call_output",
-};
-```
-
 ### `models.InputsMessage`
 
 ```typescript
@@ -124,21 +99,15 @@ const value: models.OutputFunctionCallItem = {
 };
 ```
 
-### `models.OutputCustomToolCallItem`
-
-```typescript
-const value: models.OutputCustomToolCallItem = {
-  callId: "call-abc123",
-  input: "*** Begin Patch\n*** End Patch",
-  name: "apply_patch",
-  type: "custom_tool_call",
-};
-```
-
 ### `models.OutputWebSearchCallItem`
 
 ```typescript
 const value: models.OutputWebSearchCallItem = {
+  action: {
+    pattern: "<value>",
+    type: "find_in_page",
+    url: "https://tragic-requirement.com/",
+  },
   id: "ws-abc123",
   status: "completed",
   type: "web_search_call",
@@ -322,236 +291,6 @@ const value: models.OutputMcpServerToolItem = {
 const value: models.OutputSearchModelsServerToolItem = {
   status: "completed",
   type: "openrouter:experimental__search_models",
-};
-```
-
-### `models.OutputFusionServerToolItem`
-
-```typescript
-const value: models.OutputFusionServerToolItem = {
-  status: "completed",
-  type: "openrouter:fusion",
-};
-```
-
-### `models.OutputAdvisorServerToolItem`
-
-```typescript
-const value: models.OutputAdvisorServerToolItem = {
-  status: "completed",
-  type: "openrouter:advisor",
-};
-```
-
-### `models.OutputSubagentServerToolItem`
-
-```typescript
-const value: models.OutputSubagentServerToolItem = {
-  status: "completed",
-  type: "openrouter:subagent",
-};
-```
-
-### `models.OutputFilesServerToolItem`
-
-```typescript
-const value: models.OutputFilesServerToolItem = {
-  status: "completed",
-  type: "openrouter:files",
-};
-```
-
-### `models.LocalShellCallItem`
-
-```typescript
-const value: models.LocalShellCallItem = {
-  action: {
-    command: [
-      "ls",
-      "-la",
-    ],
-    env: {
-      "PATH": "/usr/bin",
-    },
-    type: "exec",
-  },
-  callId: "call-abc123",
-  id: "shell-abc123",
-  status: "completed",
-  type: "local_shell_call",
-};
-```
-
-### `models.LocalShellCallOutputItem`
-
-```typescript
-const value: models.LocalShellCallOutputItem = {
-  id: "output-abc123",
-  output: "total 24\ndrwxr-xr-x  5 user  staff  160 Jan  1 12:00 .",
-  type: "local_shell_call_output",
-};
-```
-
-### `models.ShellCallItem`
-
-```typescript
-const value: models.ShellCallItem = {
-  action: {
-    commands: [
-      "ls",
-      "-la",
-    ],
-  },
-  callId: "call-abc123",
-  type: "shell_call",
-};
-```
-
-### `models.ShellCallOutputItem`
-
-```typescript
-const value: models.ShellCallOutputItem = {
-  callId: "call-abc123",
-  output: [
-    {
-      type: "stdout",
-    },
-  ],
-  type: "shell_call_output",
-};
-```
-
-### `models.McpListToolsItem`
-
-```typescript
-const value: models.McpListToolsItem = {
-  id: "mcp-list-abc123",
-  serverLabel: "database-server",
-  tools: [
-    {
-      inputSchema: {
-        "properties": {
-          "query": {
-            "type": "string",
-          },
-        },
-        "type": "object",
-      },
-      name: "query_database",
-    },
-  ],
-  type: "mcp_list_tools",
-};
-```
-
-### `models.McpApprovalRequestItem`
-
-```typescript
-const value: models.McpApprovalRequestItem = {
-  arguments: "{\"id\":\"123\"}",
-  id: "approval-abc123",
-  name: "delete_record",
-  serverLabel: "database-server",
-  type: "mcp_approval_request",
-};
-```
-
-### `models.McpApprovalResponseItem`
-
-```typescript
-const value: models.McpApprovalResponseItem = {
-  approvalRequestId: "approval-abc123",
-  approve: true,
-  type: "mcp_approval_response",
-};
-```
-
-### `models.McpCallItem`
-
-```typescript
-const value: models.McpCallItem = {
-  arguments: "{\"query\":\"SELECT * FROM users\"}",
-  id: "mcp-call-abc123",
-  name: "query_database",
-  serverLabel: "database-server",
-  type: "mcp_call",
-};
-```
-
-### `models.CustomToolCallItem`
-
-```typescript
-const value: models.CustomToolCallItem = {
-  callId: "call-abc123",
-  input: "*** Begin Patch\n*** End Patch",
-  name: "apply_patch",
-  type: "custom_tool_call",
-};
-```
-
-### `models.CustomToolCallOutputItem`
-
-```typescript
-const value: models.CustomToolCallOutputItem = {
-  callId: "call-abc123",
-  output: "patch applied successfully",
-  type: "custom_tool_call_output",
-};
-```
-
-### `models.CompactionItem`
-
-```typescript
-const value: models.CompactionItem = {
-  encryptedContent: "enc_abc123...",
-  type: "compaction",
-};
-```
-
-### `models.ContextCompactionItem`
-
-```typescript
-const value: models.ContextCompactionItem = {
-  type: "context_compaction",
-};
-```
-
-### `models.ItemReferenceItem`
-
-```typescript
-const value: models.ItemReferenceItem = {
-  id: "msg-abc123",
-  type: "item_reference",
-};
-```
-
-### `models.AdditionalToolsItem`
-
-```typescript
-const value: models.AdditionalToolsItem = {
-  role: "developer",
-  tools: [
-    {
-      type: "function",
-    },
-  ],
-  type: "additional_tools",
-};
-```
-
-### `models.AgentMessageItem`
-
-```typescript
-const value: models.AgentMessageItem = {
-  author: "/root/worker",
-  content: [
-    {
-      text: "Task complete.",
-      type: "input_text",
-    },
-  ],
-  recipient: "/root",
-  type: "agent_message",
 };
 ```
 

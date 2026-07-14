@@ -32,7 +32,6 @@ export const EasyInputMessageDetail = {
   Auto: "auto",
   High: "high",
   Low: "low",
-  Original: "original",
 } as const;
 export type EasyInputMessageDetail = OpenEnum<typeof EasyInputMessageDetail>;
 

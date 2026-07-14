@@ -1,0 +1,21 @@
+---
+title: "DeleteAgentResponse"
+---
+
+## Example Usage
+
+```typescript
+import { DeleteAgentResponse } from "@openrouter/sdk/models";
+
+let value: DeleteAgentResponse = {
+  deleted: true,
+  id: "01h9k2m3-p4q5-r6s7-t8u9-v0w1x2y3z4ab",
+};
+```
+
+## Fields
+
+| Field                                                           | Type                                                            | Required                                                        | Description                                                     | Example                                                         |
+| --------------------------------------------------------------- | --------------------------------------------------------------- | --------------------------------------------------------------- | --------------------------------------------------------------- | --------------------------------------------------------------- |
+| `deleted`                                                       | *true*                                                          | :heavy_check_mark:                                              | Always `true`. Present so SDK clients can confirm the deletion. | true                                                            |
+| `id`                                                            | *string*                                                        | :heavy_check_mark:                                              | ID of the agent that was deleted.                               | 01h9k2m3-p4q5-r6s7-t8u9-v0w1x2y3z4ab                            |

@@ -1,0 +1,21 @@
+---
+title: "Language"
+---
+
+Language the snippet is written in. Determines which sandbox runtime executes it.
+
+## Example Usage
+
+```typescript
+import { Language } from "@openrouter/sdk/models";
+
+let value: Language = "typescript";
+
+// Open enum: unrecognized values are captured as Unrecognized<string>
+```
+
+## Values
+
+```typescript
+"typescript" | "python" | "bash" | Unrecognized<string>
+```

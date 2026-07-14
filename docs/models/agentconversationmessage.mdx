@@ -1,0 +1,25 @@
+---
+title: "AgentConversationMessage"
+---
+
+## Example Usage
+
+```typescript
+import { AgentConversationMessage } from "@openrouter/sdk/models";
+
+let value: AgentConversationMessage = {
+  content: "From now on, only run on weekdays.",
+  createdAt: new Date("2026-05-08T17:30:00Z"),
+  id: "agtmsg_01h9k2m3p4q5r6s7t8u9v0w1x2",
+  role: "user",
+};
+```
+
+## Fields
+
+| Field                                                                                         | Type                                                                                          | Required                                                                                      | Description                                                                                   | Example                                                                                       |
+| --------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------- |
+| `content`                                                                                     | *string*                                                                                      | :heavy_check_mark:                                                                            | Free-text message body.                                                                       | From now on, only run on weekdays.                                                            |
+| `createdAt`                                                                                   | [Date](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date) | :heavy_check_mark:                                                                            | ISO 8601 UTC timestamp.                                                                       | 2026-05-08T17:30:00Z                                                                          |
+| `id`                                                                                          | *string*                                                                                      | :heavy_check_mark:                                                                            | OpenRouter-issued message id, stable for the lifetime of the conversation.                    | agtmsg_01h9k2m3p4q5r6s7t8u9v0w1x2                                                             |
+| `role`                                                                                        | [models.AgentConversationMessageRole](../models/agentconversationmessagerole.mdx)              | :heavy_check_mark:                                                                            | Sender role.                                                                                  | user                                                                                          |

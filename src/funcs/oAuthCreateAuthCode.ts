@@ -42,7 +42,6 @@ export function oAuthCreateAuthCode(
     operations.CreateAuthKeysCodeResponse,
     | errors.BadRequestResponseError
     | errors.UnauthorizedResponseError
-    | errors.ForbiddenResponseError
     | errors.ConflictResponseError
     | errors.InternalServerResponseError
     | OpenRouterError
@@ -72,7 +71,6 @@ async function $do(
       operations.CreateAuthKeysCodeResponse,
       | errors.BadRequestResponseError
       | errors.UnauthorizedResponseError
-      | errors.ForbiddenResponseError
       | errors.ConflictResponseError
       | errors.InternalServerResponseError
       | OpenRouterError
@@ -184,7 +182,6 @@ async function $do(
     operations.CreateAuthKeysCodeResponse,
     | errors.BadRequestResponseError
     | errors.UnauthorizedResponseError
-    | errors.ForbiddenResponseError
     | errors.ConflictResponseError
     | errors.InternalServerResponseError
     | OpenRouterError
@@ -199,7 +196,6 @@ async function $do(
     M.json(200, operations.CreateAuthKeysCodeResponse$inboundSchema),
     M.jsonErr(400, errors.BadRequestResponseError$inboundSchema),
     M.jsonErr(401, errors.UnauthorizedResponseError$inboundSchema),
-    M.jsonErr(403, errors.ForbiddenResponseError$inboundSchema),
     M.jsonErr(409, errors.ConflictResponseError$inboundSchema),
     M.jsonErr(500, errors.InternalServerResponseError$inboundSchema),
     M.fail("4XX"),

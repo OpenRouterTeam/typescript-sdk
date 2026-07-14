@@ -1,0 +1,26 @@
+---
+title: "CreateAgentRequest"
+---
+
+## Example Usage
+
+```typescript
+import { CreateAgentRequest } from "@openrouter/sdk/models";
+
+let value: CreateAgentRequest = {
+  adapter: "cognition/devin",
+  displayName: "Daily Standup Bot",
+  slug: "myorg/daily-standup",
+};
+```
+
+## Fields
+
+| Field                                                                                         | Type                                                                                          | Required                                                                                      | Description                                                                                   | Example                                                                                       |
+| --------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------- |
+| `adapter`                                                                                     | [models.CreateAgentRequestAdapter](../models/createagentrequestadapter.mdx)                    | :heavy_check_mark:                                                                            | N/A                                                                                           | cognition/devin                                                                               |
+| `config`                                                                                      | [models.CreateAgentRequestConfig](../models/createagentrequestconfig.mdx)                      | :heavy_minus_sign:                                                                            | Initial config. All fields optional — defaults are applied per-field.                         |                                                                                               |
+| `description`                                                                                 | *string*                                                                                      | :heavy_minus_sign:                                                                            | Optional free-form description.                                                               | Posts a standup summary to #eng each weekday at 9am Pacific.                                  |
+| `displayName`                                                                                 | *string*                                                                                      | :heavy_check_mark:                                                                            | Human-readable name shown in the UI.                                                          | Daily Standup Bot                                                                             |
+| `isPublic`                                                                                    | *boolean*                                                                                     | :heavy_minus_sign:                                                                            | When true, anyone in the org can invoke the agent. Defaults to false.                         | false                                                                                         |
+| `slug`                                                                                        | *string*                                                                                      | :heavy_check_mark:                                                                            | Stable slug of the form `<owner>/<name>`. Unique per owner. Cannot be changed after creation. | myorg/daily-standup                                                                           |

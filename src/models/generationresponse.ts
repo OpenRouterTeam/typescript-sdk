@@ -25,24 +25,11 @@ export const ApiType = {
   Tts: "tts",
   Stt: "stt",
   Video: "video",
-  Image: "image",
 } as const;
 /**
  * Type of API used for the generation
  */
 export type ApiType = OpenEnum<typeof ApiType>;
-
-/**
- * The data region this generation was routed through. 'europe' for EU-routed requests, 'global' otherwise.
- */
-export const DataRegion = {
-  Global: "global",
-  Europe: "europe",
-} as const;
-/**
- * The data region this generation was routed through. 'europe' for EU-routed requests, 'global' otherwise.
- */
-export type DataRegion = OpenEnum<typeof DataRegion>;
 
 /**
  * Generation data
@@ -68,10 +55,6 @@ export type GenerationResponseData = {
    * ISO 8601 timestamp of when the generation was created
    */
   createdAt: string;
-  /**
-   * The data region this generation was routed through. 'europe' for EU-routed requests, 'global' otherwise.
-   */
-  dataRegion: DataRegion;
   /**
    * External user identifier
    */
@@ -157,10 +140,6 @@ export type GenerationResponseData = {
    */
   origin: string;
   /**
-   * ID of the preset used for this generation, null if no preset was used
-   */
-  presetId: string | null;
-  /**
    * Name of the provider that served the request
    */
   providerName: string | null;
@@ -241,10 +220,6 @@ export const ApiType$inboundSchema: z.ZodType<ApiType, unknown> = openEnums
   .inboundSchema(ApiType);
 
 /** @internal */
-export const DataRegion$inboundSchema: z.ZodType<DataRegion, unknown> =
-  openEnums.inboundSchema(DataRegion);
-
-/** @internal */
 export const GenerationResponseData$inboundSchema: z.ZodType<
   GenerationResponseData,
   unknown
@@ -254,7 +229,6 @@ export const GenerationResponseData$inboundSchema: z.ZodType<
   cache_discount: z.nullable(z.number()),
   cancelled: z.nullable(z.boolean()),
   created_at: z.string(),
-  data_region: DataRegion$inboundSchema,
   external_user: z.nullable(z.string()),
   finish_reason: z.nullable(z.string()),
   generation_time: z.nullable(z.number()),
@@ -276,7 +250,6 @@ export const GenerationResponseData$inboundSchema: z.ZodType<
   num_media_prompt: z.nullable(z.int()),
   num_search_results: z.nullable(z.int()),
   origin: z.string(),
-  preset_id: z.nullable(z.string()),
   provider_name: z.nullable(z.string()),
   provider_responses: z.nullable(z.array(ProviderResponse$inboundSchema)),
   request_id: z.nullable(z.string()).optional(),
@@ -299,7 +272,6 @@ export const GenerationResponseData$inboundSchema: z.ZodType<
     "app_id": "appId",
     "cache_discount": "cacheDiscount",
     "created_at": "createdAt",
-    "data_region": "dataRegion",
     "external_user": "externalUser",
     "finish_reason": "finishReason",
     "generation_time": "generationTime",
@@ -317,7 +289,6 @@ export const GenerationResponseData$inboundSchema: z.ZodType<
     "num_media_completion": "numMediaCompletion",
     "num_media_prompt": "numMediaPrompt",
     "num_search_results": "numSearchResults",
-    "preset_id": "presetId",
     "provider_name": "providerName",
     "provider_responses": "providerResponses",
     "request_id": "requestId",

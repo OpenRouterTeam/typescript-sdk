@@ -1,0 +1,36 @@
+---
+title: "ListAgentsResponse"
+---
+
+## Example Usage
+
+```typescript
+import { ListAgentsResponse } from "@openrouter/sdk/models";
+
+let value: ListAgentsResponse = {
+  data: [
+    {
+      adapter: "cognition/devin",
+      config: {},
+      createdAt: new Date("2026-05-08T17:30:00Z"),
+      description:
+        "Posts a standup summary to #eng each weekday at 9am Pacific.",
+      displayName: "Daily Standup Bot",
+      id: "01h9k2m3-p4q5-r6s7-t8u9-v0w1x2y3z4ab",
+      isPublic: false,
+      object: "agent",
+      providerSlug: "myorg",
+      slug: "myorg/daily-standup",
+      updatedAt: new Date("2026-05-08T17:30:00Z"),
+    },
+  ],
+  nextCursor: null,
+};
+```
+
+## Fields
+
+| Field                                                                                                | Type                                                                                                 | Required                                                                                             | Description                                                                                          | Example                                                                                              |
+| ---------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------- |
+| `data`                                                                                               | [models.Agent](../models/agent.mdx)[]                                                                 | :heavy_check_mark:                                                                                   | N/A                                                                                                  |                                                                                                      |
+| `nextCursor`                                                                                         | *string*                                                                                             | :heavy_check_mark:                                                                                   | Cursor to pass into the next list call to continue paginating, or null if there are no more results. | eyJvZmZzZXQiOjIwfQ                                                                                   |

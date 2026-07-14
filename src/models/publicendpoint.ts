@@ -19,76 +19,22 @@ import {
   PercentileStats,
   PercentileStats$inboundSchema,
 } from "./percentilestats.js";
-import {
-  PricingOverride,
-  PricingOverride$inboundSchema,
-} from "./pricingoverride.js";
 import { ProviderName, ProviderName$inboundSchema } from "./providername.js";
 
 export type Pricing = {
-  /**
-   * Price in USD per audio input token
-   */
   audio?: string | undefined;
-  /**
-   * Price in USD per audio output token
-   */
   audioOutput?: string | undefined;
-  /**
-   * Price in USD per token for completion (output) generation
-   */
   completion: string;
-  /**
-   * Fractional discount applied to this endpoint's pricing; the price is multiplied by (1 - discount) (0 = no discount, 1 = free)
-   */
   discount?: number | undefined;
-  /**
-   * Price in USD per input image
-   */
   image?: string | undefined;
-  /**
-   * Price in USD per output image
-   */
   imageOutput?: string | undefined;
-  /**
-   * Price in USD per image token
-   */
   imageToken?: string | undefined;
-  /**
-   * Price in USD per cached audio input token
-   */
   inputAudioCache?: string | undefined;
-  /**
-   * Price in USD per cached input token (read)
-   */
   inputCacheRead?: string | undefined;
-  /**
-   * Price per cache-write token, in USD per token. For providers with multiple cache TTLs (e.g. Anthropic), this is the default (5-minute) cache-write rate.
-   */
   inputCacheWrite?: string | undefined;
-  /**
-   * Price per 1-hour cache-write token, in USD per token. Only present for providers that price an extended (1-hour) cache TTL separately, such as Anthropic.
-   */
-  inputCacheWrite1h?: string | undefined;
-  /**
-   * Price in USD per internal reasoning token
-   */
   internalReasoning?: string | undefined;
-  /**
-   * Conditional overrides of the base pricing (e.g. long-context or time-based pricing). An entry applies when all of its condition fields (e.g. min_prompt_tokens, or the utc_start/utc_end time window) match the request; among applicable entries, later entries win per key; price keys absent from an entry inherit the base price. The top-level pricing keys always reflect the price that applies under default conditions.
-   */
-  overrides?: Array<PricingOverride> | undefined;
-  /**
-   * Price in USD per token for prompt (input) processing
-   */
   prompt: string;
-  /**
-   * Price in USD per request
-   */
   request?: string | undefined;
-  /**
-   * Price in USD per web search
-   */
   webSearch?: string | undefined;
 };
 
@@ -155,9 +101,7 @@ export const Pricing$inboundSchema: z.ZodType<Pricing, unknown> = z.object({
   input_audio_cache: z.string().optional(),
   input_cache_read: z.string().optional(),
   input_cache_write: z.string().optional(),
-  input_cache_write_1h: z.string().optional(),
   internal_reasoning: z.string().optional(),
-  overrides: z.array(PricingOverride$inboundSchema).optional(),
   prompt: z.string(),
   request: z.string().optional(),
   web_search: z.string().optional(),
@@ -169,7 +113,6 @@ export const Pricing$inboundSchema: z.ZodType<Pricing, unknown> = z.object({
     "input_audio_cache": "inputAudioCache",
     "input_cache_read": "inputCacheRead",
     "input_cache_write": "inputCacheWrite",
-    "input_cache_write_1h": "inputCacheWrite1h",
     "internal_reasoning": "internalReasoning",
     "web_search": "webSearch",
   });

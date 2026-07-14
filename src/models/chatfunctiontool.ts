@@ -7,16 +7,6 @@ import * as z from "zod/v4";
 import { remap as remap$ } from "../lib/primitives.js";
 import { ClosedEnum } from "../types/enums.js";
 import {
-  AdvisorServerToolOpenRouter,
-  AdvisorServerToolOpenRouter$Outbound,
-  AdvisorServerToolOpenRouter$outboundSchema,
-} from "./advisorservertoolopenrouter.js";
-import {
-  BashServerTool,
-  BashServerTool$Outbound,
-  BashServerTool$outboundSchema,
-} from "./bashservertool.js";
-import {
   ChatContentCacheControl,
   ChatContentCacheControl$Outbound,
   ChatContentCacheControl$outboundSchema,
@@ -37,16 +27,6 @@ import {
   DatetimeServerTool$outboundSchema,
 } from "./datetimeservertool.js";
 import {
-  FilesServerTool,
-  FilesServerTool$Outbound,
-  FilesServerTool$outboundSchema,
-} from "./filesservertool.js";
-import {
-  FusionServerToolOpenRouter,
-  FusionServerToolOpenRouter$Outbound,
-  FusionServerToolOpenRouter$outboundSchema,
-} from "./fusionservertoolopenrouter.js";
-import {
   ImageGenerationServerToolOpenRouter,
   ImageGenerationServerToolOpenRouter$Outbound,
   ImageGenerationServerToolOpenRouter$outboundSchema,
@@ -56,11 +36,6 @@ import {
   OpenRouterWebSearchServerTool$Outbound,
   OpenRouterWebSearchServerTool$outboundSchema,
 } from "./openrouterwebsearchservertool.js";
-import {
-  SubagentServerToolOpenRouter,
-  SubagentServerToolOpenRouter$Outbound,
-  SubagentServerToolOpenRouter$outboundSchema,
-} from "./subagentservertoolopenrouter.js";
 import {
   WebFetchServerTool,
   WebFetchServerTool$Outbound,
@@ -111,14 +86,9 @@ export type ChatFunctionToolFunction = {
  */
 export type ChatFunctionTool =
   | ChatFunctionToolFunction
-  | AdvisorServerToolOpenRouter
-  | BashServerTool
   | DatetimeServerTool
-  | FilesServerTool
-  | FusionServerToolOpenRouter
   | ImageGenerationServerToolOpenRouter
   | ChatSearchModelsServerTool
-  | SubagentServerToolOpenRouter
   | WebFetchServerTool
   | OpenRouterWebSearchServerTool
   | ChatWebSearchShorthand;
@@ -189,14 +159,9 @@ export function chatFunctionToolFunctionToJSON(
 /** @internal */
 export type ChatFunctionTool$Outbound =
   | ChatFunctionToolFunction$Outbound
-  | AdvisorServerToolOpenRouter$Outbound
-  | BashServerTool$Outbound
   | DatetimeServerTool$Outbound
-  | FilesServerTool$Outbound
-  | FusionServerToolOpenRouter$Outbound
   | ImageGenerationServerToolOpenRouter$Outbound
   | ChatSearchModelsServerTool$Outbound
-  | SubagentServerToolOpenRouter$Outbound
   | WebFetchServerTool$Outbound
   | OpenRouterWebSearchServerTool$Outbound
   | ChatWebSearchShorthand$Outbound;
@@ -207,14 +172,9 @@ export const ChatFunctionTool$outboundSchema: z.ZodType<
   ChatFunctionTool
 > = z.union([
   z.lazy(() => ChatFunctionToolFunction$outboundSchema),
-  AdvisorServerToolOpenRouter$outboundSchema,
-  BashServerTool$outboundSchema,
   DatetimeServerTool$outboundSchema,
-  FilesServerTool$outboundSchema,
-  FusionServerToolOpenRouter$outboundSchema,
   ImageGenerationServerToolOpenRouter$outboundSchema,
   ChatSearchModelsServerTool$outboundSchema,
-  SubagentServerToolOpenRouter$outboundSchema,
   WebFetchServerTool$outboundSchema,
   OpenRouterWebSearchServerTool$outboundSchema,
   ChatWebSearchShorthand$outboundSchema,

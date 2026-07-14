@@ -9,27 +9,11 @@ import * as discriminatedUnionTypes from "../types/discriminatedUnion.js";
 import { discriminatedUnion } from "../types/discriminatedUnion.js";
 import { ClosedEnum } from "../types/enums.js";
 import { Result as SafeParseResult } from "../types/fp.js";
-import {
-  ApplyPatchCallItem,
-  ApplyPatchCallItem$inboundSchema,
-} from "./applypatchcallitem.js";
-import {
-  ApplyPatchCallOutputItem,
-  ApplyPatchCallOutputItem$inboundSchema,
-} from "./applypatchcalloutputitem.js";
 import { SDKValidationError } from "./errors/sdkvalidationerror.js";
 import { InputAudio, InputAudio$inboundSchema } from "./inputaudio.js";
 import { InputFile, InputFile$inboundSchema } from "./inputfile.js";
 import { InputImage, InputImage$inboundSchema } from "./inputimage.js";
 import { InputText, InputText$inboundSchema } from "./inputtext.js";
-import {
-  OpenAIResponseCustomToolCall,
-  OpenAIResponseCustomToolCall$inboundSchema,
-} from "./openairesponsecustomtoolcall.js";
-import {
-  OpenAIResponseCustomToolCallOutput,
-  OpenAIResponseCustomToolCallOutput$inboundSchema,
-} from "./openairesponsecustomtoolcalloutput.js";
 import {
   OpenAIResponseFunctionToolCall,
   OpenAIResponseFunctionToolCall$inboundSchema,
@@ -146,13 +130,9 @@ export type BaseInputsMessage = {
 export type BaseInputsUnion1 =
   | OpenAIResponseFunctionToolCall
   | OutputMessage
-  | OpenAIResponseCustomToolCall
-  | ApplyPatchCallItem
   | OpenAIResponseInputMessageItem
   | OpenAIResponseFunctionToolCallOutput
   | OutputItemImageGenerationCall
-  | OpenAIResponseCustomToolCallOutput
-  | ApplyPatchCallOutputItem
   | BaseInputsMessage;
 
 export type BaseInputsUnion =
@@ -160,13 +140,9 @@ export type BaseInputsUnion =
   | Array<
     | OpenAIResponseFunctionToolCall
     | OutputMessage
-    | OpenAIResponseCustomToolCall
-    | ApplyPatchCallItem
     | OpenAIResponseInputMessageItem
     | OpenAIResponseFunctionToolCallOutput
     | OutputItemImageGenerationCall
-    | OpenAIResponseCustomToolCallOutput
-    | ApplyPatchCallOutputItem
     | BaseInputsMessage
   >
   | any;
@@ -344,13 +320,9 @@ export const BaseInputsUnion1$inboundSchema: z.ZodType<
 > = z.union([
   OpenAIResponseFunctionToolCall$inboundSchema,
   OutputMessage$inboundSchema,
-  OpenAIResponseCustomToolCall$inboundSchema,
-  ApplyPatchCallItem$inboundSchema,
   OpenAIResponseInputMessageItem$inboundSchema,
   OpenAIResponseFunctionToolCallOutput$inboundSchema,
   OutputItemImageGenerationCall$inboundSchema,
-  OpenAIResponseCustomToolCallOutput$inboundSchema,
-  ApplyPatchCallOutputItem$inboundSchema,
   z.lazy(() => BaseInputsMessage$inboundSchema),
 ]);
 
@@ -374,13 +346,9 @@ export const BaseInputsUnion$inboundSchema: z.ZodType<
     z.union([
       OpenAIResponseFunctionToolCall$inboundSchema,
       OutputMessage$inboundSchema,
-      OpenAIResponseCustomToolCall$inboundSchema,
-      ApplyPatchCallItem$inboundSchema,
       OpenAIResponseInputMessageItem$inboundSchema,
       OpenAIResponseFunctionToolCallOutput$inboundSchema,
       OutputItemImageGenerationCall$inboundSchema,
-      OpenAIResponseCustomToolCallOutput$inboundSchema,
-      ApplyPatchCallOutputItem$inboundSchema,
       z.lazy(() => BaseInputsMessage$inboundSchema),
     ]),
   ),
