@@ -10,7 +10,7 @@ import { Result as SafeParseResult } from "../types/fp.js";
 import { SDKValidationError } from "./errors/sdkvalidationerror.js";
 
 /**
- * A conditional override of the base pricing. An entry applies only when all of its condition fields (e.g. min_prompt_tokens) match the request; among applicable entries, later entries win per price key; price keys absent from an entry inherit the base price.
+ * A conditional override of the base pricing. An entry applies only when all of its condition fields (e.g. min_prompt_tokens, or the utc_start/utc_end time window) match the request; among applicable entries, later entries win per price key; price keys absent from an entry inherit the base price.
  */
 export type PricingOverride = {
   /**
@@ -45,6 +45,14 @@ export type PricingOverride = {
    * Overridden price in USD per token for prompt (input) processing
    */
   prompt?: string | undefined;
+  /**
+   * Condition: exclusive end of a daily UTC time window as an HHMM clock number (e.g. 400 = 04:00)
+   */
+  utcEnd?: number | undefined;
+  /**
+   * Condition: inclusive start of a daily UTC time window as an HHMM clock number (e.g. 100 = 01:00, 1030 = 10:30). The entry applies while the current UTC time is inside the half-open window [utc_start, utc_end), which may wrap past midnight (utc_start > utc_end).
+   */
+  utcStart?: number | undefined;
 };
 
 /** @internal */
@@ -60,6 +68,8 @@ export const PricingOverride$inboundSchema: z.ZodType<
   input_cache_write_1h: z.string().optional(),
   min_prompt_tokens: z.number().optional(),
   prompt: z.string().optional(),
+  utc_end: z.number().optional(),
+  utc_start: z.number().optional(),
 }).transform((v) => {
   return remap$(v, {
     "input_audio_cache": "inputAudioCache",
@@ -67,6 +77,8 @@ export const PricingOverride$inboundSchema: z.ZodType<
     "input_cache_write": "inputCacheWrite",
     "input_cache_write_1h": "inputCacheWrite1h",
     "min_prompt_tokens": "minPromptTokens",
+    "utc_end": "utcEnd",
+    "utc_start": "utcStart",
   });
 });
 
