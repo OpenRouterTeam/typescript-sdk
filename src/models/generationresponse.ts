@@ -157,6 +157,10 @@ export type GenerationResponseData = {
    */
   origin: string;
   /**
+   * ID of the generation that spawned this one via a server tool. Null for user-facing root generations.
+   */
+  parentGenerationId?: string | null | undefined;
+  /**
    * ID of the preset used for this generation, null if no preset was used
    */
   presetId: string | null;
@@ -188,6 +192,10 @@ export type GenerationResponseData = {
    * Session identifier grouping multiple generations in the same session
    */
   sessionId?: string | null | undefined;
+  /**
+   * Mechanism that spawned this generation (e.g. openrouter:fusion, server-tools). Null for user-facing root generations.
+   */
+  spawnedBy?: string | null | undefined;
   /**
    * Whether the response was streamed
    */
@@ -276,6 +284,7 @@ export const GenerationResponseData$inboundSchema: z.ZodType<
   num_media_prompt: z.nullable(z.int()),
   num_search_results: z.nullable(z.int()),
   origin: z.string(),
+  parent_generation_id: z.nullable(z.string()).optional(),
   preset_id: z.nullable(z.string()),
   provider_name: z.nullable(z.string()),
   provider_responses: z.nullable(z.array(ProviderResponse$inboundSchema)),
@@ -284,6 +293,7 @@ export const GenerationResponseData$inboundSchema: z.ZodType<
   router: z.nullable(z.string()),
   service_tier: z.nullable(z.string()),
   session_id: z.nullable(z.string()).optional(),
+  spawned_by: z.nullable(z.string()).optional(),
   streamed: z.nullable(z.boolean()),
   tokens_completion: z.nullable(z.int()),
   tokens_prompt: z.nullable(z.int()),
@@ -317,6 +327,7 @@ export const GenerationResponseData$inboundSchema: z.ZodType<
     "num_media_completion": "numMediaCompletion",
     "num_media_prompt": "numMediaPrompt",
     "num_search_results": "numSearchResults",
+    "parent_generation_id": "parentGenerationId",
     "preset_id": "presetId",
     "provider_name": "providerName",
     "provider_responses": "providerResponses",
@@ -324,6 +335,7 @@ export const GenerationResponseData$inboundSchema: z.ZodType<
     "response_cache_source_id": "responseCacheSourceId",
     "service_tier": "serviceTier",
     "session_id": "sessionId",
+    "spawned_by": "spawnedBy",
     "tokens_completion": "tokensCompletion",
     "tokens_prompt": "tokensPrompt",
     "total_cost": "totalCost",
