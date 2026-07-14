@@ -81,6 +81,7 @@ export const ProviderName = {
   Recraft: "Recraft",
   Reka: "Reka",
   Relace: "Relace",
+  Sail: "Sail",
   SakanaAI: "Sakana AI",
   SambaNova: "SambaNova",
   Seed: "Seed",
