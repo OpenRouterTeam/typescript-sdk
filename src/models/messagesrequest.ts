@@ -130,6 +130,11 @@ import {
   ParetoRouterPlugin$outboundSchema,
 } from "./paretorouterplugin.js";
 import {
+  PhaserPlugin,
+  PhaserPlugin$Outbound,
+  PhaserPlugin$outboundSchema,
+} from "./phaserplugin.js";
+import {
   ProviderPreferences,
   ProviderPreferences$Outbound,
   ProviderPreferences$outboundSchema,
@@ -242,6 +247,7 @@ export type MessagesRequestPlugin =
   | FusionPlugin
   | ModerationPlugin
   | ParetoRouterPlugin
+  | PhaserPlugin
   | ResponseHealingPlugin
   | WebSearchPlugin
   | WebFetchPlugin;
@@ -314,7 +320,7 @@ export const ToolTypeEphemeral = {
 export type ToolTypeEphemeral = ClosedEnum<typeof ToolTypeEphemeral>;
 
 /**
- * Enable automatic prompt caching. When set at the top level, the system automatically applies cache breakpoints to the last cacheable block in the request. When set on an individual content block, it marks an explicit cache breakpoint; block-level markers also work on OpenAI models that support explicit prompt caching — OpenRouter converts them to the provider's native format.
+ * Enable automatic prompt caching. When set at the top level, the system automatically applies cache breakpoints to the last cacheable block in the request. Currently supported for Anthropic Claude models.
  */
 export type Caching = {
   ttl?: AnthropicCacheControlTtl | undefined;
@@ -334,7 +340,7 @@ export type TypeAdvisor20260301 = ClosedEnum<typeof TypeAdvisor20260301>;
 export type ToolAdvisor20260301 = {
   allowedCallers?: Array<AnthropicAllowedCallers> | undefined;
   /**
-   * Enable automatic prompt caching. When set at the top level, the system automatically applies cache breakpoints to the last cacheable block in the request. When set on an individual content block, it marks an explicit cache breakpoint; block-level markers also work on OpenAI models that support explicit prompt caching — OpenRouter converts them to the provider's native format.
+   * Enable automatic prompt caching. When set at the top level, the system automatically applies cache breakpoints to the last cacheable block in the request. Currently supported for Anthropic Claude models.
    */
   cacheControl?: AnthropicCacheControlDirective | undefined;
   caching?: Caching | null | undefined;
@@ -360,7 +366,7 @@ export type ToolWebSearch20260209 = {
   allowedDomains?: Array<string> | null | undefined;
   blockedDomains?: Array<string> | null | undefined;
   /**
-   * Enable automatic prompt caching. When set at the top level, the system automatically applies cache breakpoints to the last cacheable block in the request. When set on an individual content block, it marks an explicit cache breakpoint; block-level markers also work on OpenAI models that support explicit prompt caching — OpenRouter converts them to the provider's native format.
+   * Enable automatic prompt caching. When set at the top level, the system automatically applies cache breakpoints to the last cacheable block in the request. Currently supported for Anthropic Claude models.
    */
   cacheControl?: AnthropicCacheControlDirective | undefined;
   maxUses?: number | null | undefined;
@@ -383,7 +389,7 @@ export type ToolWebSearch20250305 = {
   allowedDomains?: Array<string> | null | undefined;
   blockedDomains?: Array<string> | null | undefined;
   /**
-   * Enable automatic prompt caching. When set at the top level, the system automatically applies cache breakpoints to the last cacheable block in the request. When set on an individual content block, it marks an explicit cache breakpoint; block-level markers also work on OpenAI models that support explicit prompt caching — OpenRouter converts them to the provider's native format.
+   * Enable automatic prompt caching. When set at the top level, the system automatically applies cache breakpoints to the last cacheable block in the request. Currently supported for Anthropic Claude models.
    */
   cacheControl?: AnthropicCacheControlDirective | undefined;
   maxUses?: number | null | undefined;
@@ -404,7 +410,7 @@ export type TypeTextEditor20250124 = ClosedEnum<typeof TypeTextEditor20250124>;
 
 export type ToolTextEditor20250124 = {
   /**
-   * Enable automatic prompt caching. When set at the top level, the system automatically applies cache breakpoints to the last cacheable block in the request. When set on an individual content block, it marks an explicit cache breakpoint; block-level markers also work on OpenAI models that support explicit prompt caching — OpenRouter converts them to the provider's native format.
+   * Enable automatic prompt caching. When set at the top level, the system automatically applies cache breakpoints to the last cacheable block in the request. Currently supported for Anthropic Claude models.
    */
   cacheControl?: AnthropicCacheControlDirective | undefined;
   name: NameStrReplaceEditor;
@@ -423,7 +429,7 @@ export type TypeBash20250124 = ClosedEnum<typeof TypeBash20250124>;
 
 export type ToolBash20250124 = {
   /**
-   * Enable automatic prompt caching. When set at the top level, the system automatically applies cache breakpoints to the last cacheable block in the request. When set on an individual content block, it marks an explicit cache breakpoint; block-level markers also work on OpenAI models that support explicit prompt caching — OpenRouter converts them to the provider's native format.
+   * Enable automatic prompt caching. When set at the top level, the system automatically applies cache breakpoints to the last cacheable block in the request. Currently supported for Anthropic Claude models.
    */
   cacheControl?: AnthropicCacheControlDirective | undefined;
   name: NameBash;
@@ -444,7 +450,7 @@ export type ToolTypeCustom = ClosedEnum<typeof ToolTypeCustom>;
 
 export type ToolCustom = {
   /**
-   * Enable automatic prompt caching. When set at the top level, the system automatically applies cache breakpoints to the last cacheable block in the request. When set on an individual content block, it marks an explicit cache breakpoint; block-level markers also work on OpenAI models that support explicit prompt caching — OpenRouter converts them to the provider's native format.
+   * Enable automatic prompt caching. When set at the top level, the system automatically applies cache breakpoints to the last cacheable block in the request. Currently supported for Anthropic Claude models.
    */
   cacheControl?: AnthropicCacheControlDirective | undefined;
   description?: string | undefined;
@@ -473,7 +479,7 @@ export type MessagesRequestToolUnion =
  */
 export type MessagesRequest = {
   /**
-   * Enable automatic prompt caching. When set at the top level, the system automatically applies cache breakpoints to the last cacheable block in the request. When set on an individual content block, it marks an explicit cache breakpoint; block-level markers also work on OpenAI models that support explicit prompt caching — OpenRouter converts them to the provider's native format.
+   * Enable automatic prompt caching. When set at the top level, the system automatically applies cache breakpoints to the last cacheable block in the request. Currently supported for Anthropic Claude models.
    */
   cacheControl?: AnthropicCacheControlDirective | undefined;
   contextManagement?: ContextManagement | null | undefined;
@@ -501,6 +507,7 @@ export type MessagesRequest = {
       | FusionPlugin
       | ModerationPlugin
       | ParetoRouterPlugin
+      | PhaserPlugin
       | ResponseHealingPlugin
       | WebSearchPlugin
       | WebFetchPlugin
@@ -853,6 +860,7 @@ export type MessagesRequestPlugin$Outbound =
   | FusionPlugin$Outbound
   | ModerationPlugin$Outbound
   | ParetoRouterPlugin$Outbound
+  | PhaserPlugin$Outbound
   | ResponseHealingPlugin$Outbound
   | WebSearchPlugin$Outbound
   | WebFetchPlugin$Outbound;
@@ -868,6 +876,7 @@ export const MessagesRequestPlugin$outboundSchema: z.ZodType<
   FusionPlugin$outboundSchema,
   ModerationPlugin$outboundSchema,
   ParetoRouterPlugin$outboundSchema,
+  PhaserPlugin$outboundSchema,
   ResponseHealingPlugin$outboundSchema,
   WebSearchPlugin$outboundSchema,
   WebFetchPlugin$outboundSchema,
@@ -1515,6 +1524,7 @@ export type MessagesRequest$Outbound = {
       | FusionPlugin$Outbound
       | ModerationPlugin$Outbound
       | ParetoRouterPlugin$Outbound
+      | PhaserPlugin$Outbound
       | ResponseHealingPlugin$Outbound
       | WebSearchPlugin$Outbound
       | WebFetchPlugin$Outbound
@@ -1589,6 +1599,7 @@ export const MessagesRequest$outboundSchema: z.ZodType<
       FusionPlugin$outboundSchema,
       ModerationPlugin$outboundSchema,
       ParetoRouterPlugin$outboundSchema,
+      PhaserPlugin$outboundSchema,
       ResponseHealingPlugin$outboundSchema,
       WebSearchPlugin$outboundSchema,
       WebFetchPlugin$outboundSchema,
