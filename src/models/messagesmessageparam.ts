@@ -45,7 +45,7 @@ import {
 
 export type ContentCompaction = {
   /**
-   * Enable automatic prompt caching. When set at the top level, the system automatically applies cache breakpoints to the last cacheable block in the request. Currently supported for Anthropic Claude models.
+   * Enable automatic prompt caching. When set at the top level, the system automatically applies cache breakpoints to the last cacheable block in the request. When set on an individual content block, it marks an explicit cache breakpoint and is interchangeable with the OpenAI-style `prompt_cache_breakpoint` marker: OpenRouter converts between the two based on the provider serving the request.
    */
   cacheControl?: AnthropicCacheControlDirective | undefined;
   content: string | null;
@@ -79,7 +79,7 @@ export type MessagesMessageParamContentUnion3 =
 
 export type ContentWebSearchToolResult = {
   /**
-   * Enable automatic prompt caching. When set at the top level, the system automatically applies cache breakpoints to the last cacheable block in the request. Currently supported for Anthropic Claude models.
+   * Enable automatic prompt caching. When set at the top level, the system automatically applies cache breakpoints to the last cacheable block in the request. When set on an individual content block, it marks an explicit cache breakpoint and is interchangeable with the OpenAI-style `prompt_cache_breakpoint` marker: OpenRouter converts between the two based on the provider serving the request.
    */
   cacheControl?: AnthropicCacheControlDirective | undefined;
   content:
@@ -91,7 +91,7 @@ export type ContentWebSearchToolResult = {
 
 export type ContentServerToolUse = {
   /**
-   * Enable automatic prompt caching. When set at the top level, the system automatically applies cache breakpoints to the last cacheable block in the request. Currently supported for Anthropic Claude models.
+   * Enable automatic prompt caching. When set at the top level, the system automatically applies cache breakpoints to the last cacheable block in the request. When set on an individual content block, it marks an explicit cache breakpoint and is interchangeable with the OpenAI-style `prompt_cache_breakpoint` marker: OpenRouter converts between the two based on the provider serving the request.
    */
   cacheControl?: AnthropicCacheControlDirective | undefined;
   id: string;
@@ -135,7 +135,7 @@ export type MessagesMessageParamContentUnion2 =
 
 export type ContentToolResult = {
   /**
-   * Enable automatic prompt caching. When set at the top level, the system automatically applies cache breakpoints to the last cacheable block in the request. Currently supported for Anthropic Claude models.
+   * Enable automatic prompt caching. When set at the top level, the system automatically applies cache breakpoints to the last cacheable block in the request. When set on an individual content block, it marks an explicit cache breakpoint and is interchangeable with the OpenAI-style `prompt_cache_breakpoint` marker: OpenRouter converts between the two based on the provider serving the request.
    */
   cacheControl?: AnthropicCacheControlDirective | undefined;
   content?:
@@ -155,7 +155,7 @@ export type ContentToolResult = {
 
 export type ContentToolUse = {
   /**
-   * Enable automatic prompt caching. When set at the top level, the system automatically applies cache breakpoints to the last cacheable block in the request. Currently supported for Anthropic Claude models.
+   * Enable automatic prompt caching. When set at the top level, the system automatically applies cache breakpoints to the last cacheable block in the request. When set on an individual content block, it marks an explicit cache breakpoint and is interchangeable with the OpenAI-style `prompt_cache_breakpoint` marker: OpenRouter converts between the two based on the provider serving the request.
    */
   cacheControl?: AnthropicCacheControlDirective | undefined;
   id: string;

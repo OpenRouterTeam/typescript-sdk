@@ -17,7 +17,7 @@ export type PromptCacheBreakpointMode = ClosedEnum<
 >;
 
 /**
- * Marks an explicit prompt-cache boundary on this content block. Everything through the block carrying this marker is part of the candidate cached prefix. Only supported by OpenAI GPT-5.6 and newer.
+ * Marks an explicit prompt-cache boundary on this content block (OpenAI-style). Everything through the block carrying this marker is part of the candidate cached prefix. Supported natively by OpenAI GPT-5.6 and newer. Interchangeable with the Anthropic-style `cache_control` marker: OpenRouter converts between the two based on the provider serving the request.
  */
 export type PromptCacheBreakpoint = {
   mode: PromptCacheBreakpointMode;
