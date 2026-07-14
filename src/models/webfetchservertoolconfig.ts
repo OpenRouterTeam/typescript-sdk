@@ -6,14 +6,32 @@
 import * as z from "zod/v4";
 import { remap as remap$ } from "../lib/primitives.js";
 import {
+  AnthropicAllowedCallers20260318,
+  AnthropicAllowedCallers20260318$outboundSchema,
+} from "./anthropicallowedcallers20260318.js";
+import {
+  AnthropicCacheControlDirective,
+  AnthropicCacheControlDirective$Outbound,
+  AnthropicCacheControlDirective$outboundSchema,
+} from "./anthropiccachecontroldirective.js";
+import {
+  AnthropicResponseInclusion,
+  AnthropicResponseInclusion$outboundSchema,
+} from "./anthropicresponseinclusion.js";
+import {
   WebFetchEngineEnum,
   WebFetchEngineEnum$outboundSchema,
 } from "./webfetchengineenum.js";
+
+export type WebFetchServerToolConfigCitations = {
+  enabled: boolean;
+};
 
 /**
  * Configuration for the openrouter:web_fetch server tool
  */
 export type WebFetchServerToolConfig = {
+  allowedCallers?: Array<AnthropicAllowedCallers20260318> | undefined;
   /**
    * Only fetch from these domains.
    */
@@ -22,6 +40,12 @@ export type WebFetchServerToolConfig = {
    * Never fetch from these domains.
    */
   blockedDomains?: Array<string> | undefined;
+  /**
+   * Enable automatic prompt caching. When set at the top level, the system automatically applies cache breakpoints to the last cacheable block in the request. When set on an individual content block, it marks an explicit cache breakpoint; block-level markers also work on OpenAI models that support explicit prompt caching — OpenRouter converts them to the provider's native format.
+   */
+  cacheControl?: AnthropicCacheControlDirective | undefined;
+  citations?: WebFetchServerToolConfigCitations | undefined;
+  deferLoading?: boolean | undefined;
   /**
    * Which fetch engine to use. "auto" (default) uses native if the provider supports it, otherwise Exa. "native" forces the provider's built-in fetch. "exa" uses Exa Contents API. "openrouter" uses direct HTTP fetch. "firecrawl" uses Firecrawl scrape (requires BYOK). "parallel" uses the Parallel extract API.
    */
@@ -34,15 +58,48 @@ export type WebFetchServerToolConfig = {
    * Maximum number of web fetches per request. Once exceeded, the tool returns an error.
    */
   maxUses?: number | undefined;
+  responseInclusion?: AnthropicResponseInclusion | undefined;
+  strict?: boolean | undefined;
+  useCache?: boolean | undefined;
 };
 
 /** @internal */
+export type WebFetchServerToolConfigCitations$Outbound = {
+  enabled: boolean;
+};
+
+/** @internal */
+export const WebFetchServerToolConfigCitations$outboundSchema: z.ZodType<
+  WebFetchServerToolConfigCitations$Outbound,
+  WebFetchServerToolConfigCitations
+> = z.object({
+  enabled: z.boolean(),
+});
+
+export function webFetchServerToolConfigCitationsToJSON(
+  webFetchServerToolConfigCitations: WebFetchServerToolConfigCitations,
+): string {
+  return JSON.stringify(
+    WebFetchServerToolConfigCitations$outboundSchema.parse(
+      webFetchServerToolConfigCitations,
+    ),
+  );
+}
+
+/** @internal */
 export type WebFetchServerToolConfig$Outbound = {
+  allowed_callers?: Array<string> | undefined;
   allowed_domains?: Array<string> | undefined;
   blocked_domains?: Array<string> | undefined;
+  cache_control?: AnthropicCacheControlDirective$Outbound | undefined;
+  citations?: WebFetchServerToolConfigCitations$Outbound | undefined;
+  defer_loading?: boolean | undefined;
   engine?: string | undefined;
   max_content_tokens?: number | undefined;
   max_uses?: number | undefined;
+  response_inclusion?: string | undefined;
+  strict?: boolean | undefined;
+  use_cache?: boolean | undefined;
 };
 
 /** @internal */
@@ -50,17 +107,31 @@ export const WebFetchServerToolConfig$outboundSchema: z.ZodType<
   WebFetchServerToolConfig$Outbound,
   WebFetchServerToolConfig
 > = z.object({
+  allowedCallers: z.array(AnthropicAllowedCallers20260318$outboundSchema)
+    .optional(),
   allowedDomains: z.array(z.string()).optional(),
   blockedDomains: z.array(z.string()).optional(),
+  cacheControl: AnthropicCacheControlDirective$outboundSchema.optional(),
+  citations: z.lazy(() => WebFetchServerToolConfigCitations$outboundSchema)
+    .optional(),
+  deferLoading: z.boolean().optional(),
   engine: WebFetchEngineEnum$outboundSchema.optional(),
   maxContentTokens: z.int().optional(),
   maxUses: z.int().optional(),
+  responseInclusion: AnthropicResponseInclusion$outboundSchema.optional(),
+  strict: z.boolean().optional(),
+  useCache: z.boolean().optional(),
 }).transform((v) => {
   return remap$(v, {
+    allowedCallers: "allowed_callers",
     allowedDomains: "allowed_domains",
     blockedDomains: "blocked_domains",
+    cacheControl: "cache_control",
+    deferLoading: "defer_loading",
     maxContentTokens: "max_content_tokens",
     maxUses: "max_uses",
+    responseInclusion: "response_inclusion",
+    useCache: "use_cache",
   });
 });
 
