@@ -47,7 +47,7 @@ export type Guardrail = {
    */
   description?: string | null | undefined;
   /**
-   * Deprecated. Use enforce_zdr_anthropic, enforce_zdr_openai, enforce_zdr_google, and enforce_zdr_other instead. When provided, its value is copied into any of those per-provider fields that are not explicitly specified on the request.
+   * Deprecated. Use enforce_zdr_anthropic, enforce_zdr_openai, enforce_zdr_google, enforce_zdr_xai, and enforce_zdr_other instead. When provided, its value is copied into any of those per-provider fields that are not explicitly specified on the request.
    *
    * @deprecated field: This will be removed in a future release, please migrate away from it as soon as possible.
    */
@@ -65,9 +65,13 @@ export type Guardrail = {
    */
   enforceZdrOpenai?: boolean | null | undefined;
   /**
-   * Whether to enforce zero data retention for models that are not from Anthropic, OpenAI, or Google. Falls back to enforce_zdr when not provided.
+   * Whether to enforce zero data retention for models that are not from Anthropic, OpenAI, Google, or xAI. Falls back to enforce_zdr when not provided.
    */
   enforceZdrOther?: boolean | null | undefined;
+  /**
+   * Whether to enforce zero data retention for xAI models. Falls back to enforce_zdr when not provided.
+   */
+  enforceZdrXai?: boolean | null | undefined;
   /**
    * Unique identifier for the guardrail
    */
@@ -118,6 +122,7 @@ export const Guardrail$inboundSchema: z.ZodType<Guardrail, unknown> = z.object({
   enforce_zdr_google: z.nullable(z.boolean()).optional(),
   enforce_zdr_openai: z.nullable(z.boolean()).optional(),
   enforce_zdr_other: z.nullable(z.boolean()).optional(),
+  enforce_zdr_xai: z.nullable(z.boolean()).optional(),
   id: z.string(),
   ignored_models: z.nullable(z.array(z.string())).optional(),
   ignored_providers: z.nullable(z.array(z.string())).optional(),
@@ -138,6 +143,7 @@ export const Guardrail$inboundSchema: z.ZodType<Guardrail, unknown> = z.object({
     "enforce_zdr_google": "enforceZdrGoogle",
     "enforce_zdr_openai": "enforceZdrOpenai",
     "enforce_zdr_other": "enforceZdrOther",
+    "enforce_zdr_xai": "enforceZdrXai",
     "ignored_models": "ignoredModels",
     "ignored_providers": "ignoredProviders",
     "limit_usd": "limitUsd",
