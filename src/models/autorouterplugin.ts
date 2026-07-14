@@ -12,7 +12,9 @@ export type AutoRouterPlugin = {
    */
   allowedModels?: Array<string> | undefined;
   /**
-   * Controls cost vs. quality routing tradeoff (0–10). 0 = pure quality (best model regardless of cost), 10 = maximize for cost (cheapest model wins). Intermediate values blend quality and cost signals continuously. Defaults to 7.
+   * Deprecated and ignored. The auto-router now routes by community task-type rankings (share of tokens per classified task), which has no cost/quality knob. This field is still accepted for backward compatibility but has no effect, and will be removed in a future release.
+   *
+   * @deprecated field: This will be removed in a future release, please migrate away from it as soon as possible.
    */
   costQualityTradeoff?: number | undefined;
   /**
