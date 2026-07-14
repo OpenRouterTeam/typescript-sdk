@@ -9,6 +9,10 @@ import { safeParse } from "../lib/schemas.js";
 import { Result as SafeParseResult } from "../types/fp.js";
 import { CostDetails, CostDetails$inboundSchema } from "./costdetails.js";
 import { SDKValidationError } from "./errors/sdkvalidationerror.js";
+import {
+  ServerToolUseDetails,
+  ServerToolUseDetails$inboundSchema,
+} from "./servertoolusedetails.js";
 
 /**
  * Detailed completion token usage
@@ -52,24 +56,6 @@ export type ChatUsagePromptTokensDetails = {
    * Video input tokens
    */
   videoTokens?: number | undefined;
-};
-
-/**
- * Usage for server-side tool execution (e.g., web search)
- */
-export type ServerToolUseDetails = {
-  /**
-   * Number of OpenRouter server tool calls that executed and produced a result
-   */
-  toolCallsExecuted?: number | null | undefined;
-  /**
-   * Total number of OpenRouter server-orchestrated tool calls the model requested, across all tool types. Provider-native tools (e.g. native web search) are not counted here.
-   */
-  toolCallsRequested?: number | null | undefined;
-  /**
-   * Number of web searches performed by server-side tools. For server-orchestrated tool calls a web search is also counted in tool_calls_requested; provider-native web search may report web_search_requests only. Do not sum the two.
-   */
-  webSearchRequests?: number | null | undefined;
 };
 
 /**
@@ -171,32 +157,6 @@ export function chatUsagePromptTokensDetailsFromJSON(
 }
 
 /** @internal */
-export const ServerToolUseDetails$inboundSchema: z.ZodType<
-  ServerToolUseDetails,
-  unknown
-> = z.object({
-  tool_calls_executed: z.nullable(z.int()).optional(),
-  tool_calls_requested: z.nullable(z.int()).optional(),
-  web_search_requests: z.nullable(z.int()).optional(),
-}).transform((v) => {
-  return remap$(v, {
-    "tool_calls_executed": "toolCallsExecuted",
-    "tool_calls_requested": "toolCallsRequested",
-    "web_search_requests": "webSearchRequests",
-  });
-});
-
-export function serverToolUseDetailsFromJSON(
-  jsonString: string,
-): SafeParseResult<ServerToolUseDetails, SDKValidationError> {
-  return safeParse(
-    jsonString,
-    (x) => ServerToolUseDetails$inboundSchema.parse(JSON.parse(x)),
-    `Failed to parse 'ServerToolUseDetails' from JSON`,
-  );
-}
-
-/** @internal */
 export const ChatUsage$inboundSchema: z.ZodType<ChatUsage, unknown> = z.object({
   completion_tokens: z.int(),
   completion_tokens_details: z.nullable(
@@ -209,9 +169,8 @@ export const ChatUsage$inboundSchema: z.ZodType<ChatUsage, unknown> = z.object({
   prompt_tokens_details: z.nullable(
     z.lazy(() => ChatUsagePromptTokensDetails$inboundSchema),
   ).optional(),
-  server_tool_use_details: z.nullable(
-    z.lazy(() => ServerToolUseDetails$inboundSchema),
-  ).optional(),
+  server_tool_use_details: z.nullable(ServerToolUseDetails$inboundSchema)
+    .optional(),
   total_tokens: z.int(),
 }).transform((v) => {
   return remap$(v, {
