@@ -397,6 +397,7 @@ export * from "./percentilelatencycutoffs.js";
 export * from "./percentilestats.js";
 export * from "./percentilethroughputcutoffs.js";
 export * from "./perrequestlimits.js";
+export * from "./phaserplugin.js";
 export * from "./pipelinestage.js";
 export * from "./pipelinestagetype.js";
 export * from "./preferredmaxlatency.js";

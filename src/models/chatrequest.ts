@@ -102,6 +102,11 @@ import {
   ParetoRouterPlugin$outboundSchema,
 } from "./paretorouterplugin.js";
 import {
+  PhaserPlugin,
+  PhaserPlugin$Outbound,
+  PhaserPlugin$outboundSchema,
+} from "./phaserplugin.js";
+import {
   PromptCacheOptions,
   PromptCacheOptions$Outbound,
   PromptCacheOptions$outboundSchema,
@@ -151,6 +156,7 @@ export type ChatRequestPlugin =
   | FusionPlugin
   | ModerationPlugin
   | ParetoRouterPlugin
+  | PhaserPlugin
   | ResponseHealingPlugin
   | WebSearchPlugin
   | WebFetchPlugin;
@@ -307,6 +313,7 @@ export type ChatRequest = {
       | FusionPlugin
       | ModerationPlugin
       | ParetoRouterPlugin
+      | PhaserPlugin
       | ResponseHealingPlugin
       | WebSearchPlugin
       | WebFetchPlugin
@@ -425,6 +432,7 @@ export type ChatRequestPlugin$Outbound =
   | FusionPlugin$Outbound
   | ModerationPlugin$Outbound
   | ParetoRouterPlugin$Outbound
+  | PhaserPlugin$Outbound
   | ResponseHealingPlugin$Outbound
   | WebSearchPlugin$Outbound
   | WebFetchPlugin$Outbound;
@@ -440,6 +448,7 @@ export const ChatRequestPlugin$outboundSchema: z.ZodType<
   FusionPlugin$outboundSchema,
   ModerationPlugin$outboundSchema,
   ParetoRouterPlugin$outboundSchema,
+  PhaserPlugin$outboundSchema,
   ResponseHealingPlugin$outboundSchema,
   WebSearchPlugin$outboundSchema,
   WebFetchPlugin$outboundSchema,
@@ -558,6 +567,7 @@ export type ChatRequest$Outbound = {
       | FusionPlugin$Outbound
       | ModerationPlugin$Outbound
       | ParetoRouterPlugin$Outbound
+      | PhaserPlugin$Outbound
       | ResponseHealingPlugin$Outbound
       | WebSearchPlugin$Outbound
       | WebFetchPlugin$Outbound
@@ -625,6 +635,7 @@ export const ChatRequest$outboundSchema: z.ZodType<
       FusionPlugin$outboundSchema,
       ModerationPlugin$outboundSchema,
       ParetoRouterPlugin$outboundSchema,
+      PhaserPlugin$outboundSchema,
       ResponseHealingPlugin$outboundSchema,
       WebSearchPlugin$outboundSchema,
       WebFetchPlugin$outboundSchema,

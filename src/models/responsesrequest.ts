@@ -151,6 +151,11 @@ import {
   ParetoRouterPlugin$outboundSchema,
 } from "./paretorouterplugin.js";
 import {
+  PhaserPlugin,
+  PhaserPlugin$Outbound,
+  PhaserPlugin$outboundSchema,
+} from "./phaserplugin.js";
+import {
   Preview20250311WebSearchServerTool,
   Preview20250311WebSearchServerTool$Outbound,
   Preview20250311WebSearchServerTool$outboundSchema,
@@ -257,6 +262,7 @@ export type ResponsesRequestPlugin =
   | FusionPlugin
   | ModerationPlugin
   | ParetoRouterPlugin
+  | PhaserPlugin
   | ResponseHealingPlugin
   | WebSearchPlugin
   | WebFetchPlugin;
@@ -365,6 +371,7 @@ export type ResponsesRequest = {
       | FusionPlugin
       | ModerationPlugin
       | ParetoRouterPlugin
+      | PhaserPlugin
       | ResponseHealingPlugin
       | WebSearchPlugin
       | WebFetchPlugin
@@ -462,6 +469,7 @@ export type ResponsesRequestPlugin$Outbound =
   | FusionPlugin$Outbound
   | ModerationPlugin$Outbound
   | ParetoRouterPlugin$Outbound
+  | PhaserPlugin$Outbound
   | ResponseHealingPlugin$Outbound
   | WebSearchPlugin$Outbound
   | WebFetchPlugin$Outbound;
@@ -477,6 +485,7 @@ export const ResponsesRequestPlugin$outboundSchema: z.ZodType<
   FusionPlugin$outboundSchema,
   ModerationPlugin$outboundSchema,
   ParetoRouterPlugin$outboundSchema,
+  PhaserPlugin$outboundSchema,
   ResponseHealingPlugin$outboundSchema,
   WebSearchPlugin$outboundSchema,
   WebFetchPlugin$outboundSchema,
@@ -674,6 +683,7 @@ export type ResponsesRequest$Outbound = {
       | FusionPlugin$Outbound
       | ModerationPlugin$Outbound
       | ParetoRouterPlugin$Outbound
+      | PhaserPlugin$Outbound
       | ResponseHealingPlugin$Outbound
       | WebSearchPlugin$Outbound
       | WebFetchPlugin$Outbound
@@ -775,6 +785,7 @@ export const ResponsesRequest$outboundSchema: z.ZodType<
       FusionPlugin$outboundSchema,
       ModerationPlugin$outboundSchema,
       ParetoRouterPlugin$outboundSchema,
+      PhaserPlugin$outboundSchema,
       ResponseHealingPlugin$outboundSchema,
       WebSearchPlugin$outboundSchema,
       WebFetchPlugin$outboundSchema,

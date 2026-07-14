@@ -130,6 +130,11 @@ import {
   ParetoRouterPlugin$outboundSchema,
 } from "./paretorouterplugin.js";
 import {
+  PhaserPlugin,
+  PhaserPlugin$Outbound,
+  PhaserPlugin$outboundSchema,
+} from "./phaserplugin.js";
+import {
   ProviderPreferences,
   ProviderPreferences$Outbound,
   ProviderPreferences$outboundSchema,
@@ -242,6 +247,7 @@ export type MessagesRequestPlugin =
   | FusionPlugin
   | ModerationPlugin
   | ParetoRouterPlugin
+  | PhaserPlugin
   | ResponseHealingPlugin
   | WebSearchPlugin
   | WebFetchPlugin;
@@ -501,6 +507,7 @@ export type MessagesRequest = {
       | FusionPlugin
       | ModerationPlugin
       | ParetoRouterPlugin
+      | PhaserPlugin
       | ResponseHealingPlugin
       | WebSearchPlugin
       | WebFetchPlugin
@@ -853,6 +860,7 @@ export type MessagesRequestPlugin$Outbound =
   | FusionPlugin$Outbound
   | ModerationPlugin$Outbound
   | ParetoRouterPlugin$Outbound
+  | PhaserPlugin$Outbound
   | ResponseHealingPlugin$Outbound
   | WebSearchPlugin$Outbound
   | WebFetchPlugin$Outbound;
@@ -868,6 +876,7 @@ export const MessagesRequestPlugin$outboundSchema: z.ZodType<
   FusionPlugin$outboundSchema,
   ModerationPlugin$outboundSchema,
   ParetoRouterPlugin$outboundSchema,
+  PhaserPlugin$outboundSchema,
   ResponseHealingPlugin$outboundSchema,
   WebSearchPlugin$outboundSchema,
   WebFetchPlugin$outboundSchema,
@@ -1515,6 +1524,7 @@ export type MessagesRequest$Outbound = {
       | FusionPlugin$Outbound
       | ModerationPlugin$Outbound
       | ParetoRouterPlugin$Outbound
+      | PhaserPlugin$Outbound
       | ResponseHealingPlugin$Outbound
       | WebSearchPlugin$Outbound
       | WebFetchPlugin$Outbound
@@ -1589,6 +1599,7 @@ export const MessagesRequest$outboundSchema: z.ZodType<
       FusionPlugin$outboundSchema,
       ModerationPlugin$outboundSchema,
       ParetoRouterPlugin$outboundSchema,
+      PhaserPlugin$outboundSchema,
       ResponseHealingPlugin$outboundSchema,
       WebSearchPlugin$outboundSchema,
       WebFetchPlugin$outboundSchema,
