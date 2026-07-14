@@ -1,0 +1,29 @@
+---
+title: "NamespaceFunctionTool"
+---
+
+A function tool grouped inside a namespace tool
+
+## Example Usage
+
+```typescript
+import { NamespaceFunctionTool } from "@openrouter/sdk/models";
+
+let value: NamespaceFunctionTool = {
+  name: "spawn_agent",
+  type: "function",
+};
+```
+
+## Fields
+
+| Field                                                | Type                                                 | Required                                             | Description                                          |
+| ---------------------------------------------------- | ---------------------------------------------------- | ---------------------------------------------------- | ---------------------------------------------------- |
+| `allowedCallers`                                     | [models.AllowedCaller](../models/allowedcaller.mdx)[] | :heavy_minus_sign:                                   | N/A                                                  |
+| `deferLoading`                                       | *boolean*                                            | :heavy_minus_sign:                                   | N/A                                                  |
+| `description`                                        | *string*                                             | :heavy_minus_sign:                                   | N/A                                                  |
+| `name`                                               | *string*                                             | :heavy_check_mark:                                   | N/A                                                  |
+| `outputSchema`                                       | Record<string, *any*>                                | :heavy_minus_sign:                                   | N/A                                                  |
+| `parameters`                                         | Record<string, *any*>                                | :heavy_minus_sign:                                   | N/A                                                  |
+| `strict`                                             | *boolean*                                            | :heavy_minus_sign:                                   | N/A                                                  |
+| `type`                                               | *"function"*                                         | :heavy_check_mark:                                   | N/A                                                  |
