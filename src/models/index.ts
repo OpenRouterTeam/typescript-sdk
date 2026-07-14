@@ -19,6 +19,7 @@ export * from "./anthropicbase64imagesource.js";
 export * from "./anthropicbase64pdfsource.js";
 export * from "./anthropiccachecontroldirective.js";
 export * from "./anthropiccachecontrolttl.js";
+export * from "./anthropiccachecreation.js";
 export * from "./anthropiccitationcharlocationparam.js";
 export * from "./anthropiccitationcontentblocklocationparam.js";
 export * from "./anthropiccitationpagelocationparam.js";
