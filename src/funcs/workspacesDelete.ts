@@ -32,7 +32,7 @@ import { Result } from "../types/fp.js";
  * Delete a workspace
  *
  * @remarks
- * Delete an existing workspace. The default workspace cannot be deleted. Workspaces with active API keys cannot be deleted; remove the keys first. [Management key](/docs/guides/overview/auth/management-api-keys) required.
+ * Delete an existing workspace. The default workspace can be deleted as long as at least one other workspace remains; an account must always keep at least one workspace, so the last remaining workspace cannot be deleted. Workspaces with active API keys cannot be deleted; remove the keys first. [Management key](/docs/guides/overview/auth/management-api-keys) required.
  */
 export function workspacesDelete(
   client: OpenRouterCore,
@@ -43,7 +43,6 @@ export function workspacesDelete(
     models.DeleteWorkspaceResponse,
     | errors.BadRequestResponseError
     | errors.UnauthorizedResponseError
-    | errors.ForbiddenResponseError
     | errors.NotFoundResponseError
     | errors.InternalServerResponseError
     | OpenRouterError
@@ -73,7 +72,6 @@ async function $do(
       models.DeleteWorkspaceResponse,
       | errors.BadRequestResponseError
       | errors.UnauthorizedResponseError
-      | errors.ForbiddenResponseError
       | errors.NotFoundResponseError
       | errors.InternalServerResponseError
       | OpenRouterError
@@ -190,7 +188,6 @@ async function $do(
     models.DeleteWorkspaceResponse,
     | errors.BadRequestResponseError
     | errors.UnauthorizedResponseError
-    | errors.ForbiddenResponseError
     | errors.NotFoundResponseError
     | errors.InternalServerResponseError
     | OpenRouterError
@@ -205,7 +202,6 @@ async function $do(
     M.json(200, models.DeleteWorkspaceResponse$inboundSchema),
     M.jsonErr(400, errors.BadRequestResponseError$inboundSchema),
     M.jsonErr(401, errors.UnauthorizedResponseError$inboundSchema),
-    M.jsonErr(403, errors.ForbiddenResponseError$inboundSchema),
     M.jsonErr(404, errors.NotFoundResponseError$inboundSchema),
     M.jsonErr(500, errors.InternalServerResponseError$inboundSchema),
     M.fail("4XX"),
