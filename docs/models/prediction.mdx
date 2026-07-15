@@ -1,0 +1,23 @@
+---
+title: "Prediction"
+---
+
+Static predicted output content. Supported models can use this to reduce latency when much of the response is known in advance.
+
+## Example Usage
+
+```typescript
+import { Prediction } from "@openrouter/sdk/models";
+
+let value: Prediction = {
+  content: "Expected response",
+  type: "content",
+};
+```
+
+## Fields
+
+| Field                                                | Type                                                 | Required                                             | Description                                          |
+| ---------------------------------------------------- | ---------------------------------------------------- | ---------------------------------------------------- | ---------------------------------------------------- |
+| `content`                                            | *models.PredictionContent*                           | :heavy_check_mark:                                   | N/A                                                  |
+| `type`                                               | [models.PredictionType](../models/predictiontype.mdx) | :heavy_check_mark:                                   | N/A                                                  |
