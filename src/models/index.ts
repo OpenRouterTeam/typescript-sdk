@@ -315,8 +315,6 @@ export * from "./modelscountresponse.js";
 export * from "./modelslistresponse.js";
 export * from "./moderationplugin.js";
 export * from "./multimodalmedia.js";
-export * from "./namespacefunctiontool.js";
-export * from "./namespacetool.js";
 export * from "./notfoundresponseerrordata.js";
 export * from "./observabilityarizedestination.js";
 export * from "./observabilitybraintrustdestination.js";

@@ -54,7 +54,6 @@ import {
   LegacyWebSearchServerTool$inboundSchema,
 } from "./legacywebsearchservertool.js";
 import { McpServerTool, McpServerTool$inboundSchema } from "./mcpservertool.js";
-import { NamespaceTool, NamespaceTool$inboundSchema } from "./namespacetool.js";
 import {
   OpenAIResponsesResponseStatus,
   OpenAIResponsesResponseStatus$inboundSchema,
@@ -134,7 +133,6 @@ export type OpenResponsesResultToolUnion =
   | (ShellServerTool & { type: "shell" })
   | (ApplyPatchServerTool & { type: "apply_patch" })
   | (CustomTool & { type: "custom" })
-  | (NamespaceTool & { type: "namespace" })
   | discriminatedUnionTypes.Unknown<"type">;
 
 /**
@@ -195,7 +193,6 @@ export type OpenResponsesResult = {
     | (ShellServerTool & { type: "shell" })
     | (ApplyPatchServerTool & { type: "apply_patch" })
     | (CustomTool & { type: "custom" })
-    | (NamespaceTool & { type: "namespace" })
     | discriminatedUnionTypes.Unknown<"type">
   >;
   topLogprobs?: number | null | undefined;
@@ -282,9 +279,6 @@ export const OpenResponsesResultToolUnion$inboundSchema: z.ZodType<
     z.object({ type: z.literal("apply_patch") }),
   ),
   custom: CustomTool$inboundSchema.and(z.object({ type: z.literal("custom") })),
-  namespace: NamespaceTool$inboundSchema.and(
-    z.object({ type: z.literal("namespace") }),
-  ),
 });
 
 export function openResponsesResultToolUnionFromJSON(
@@ -369,9 +363,6 @@ export const OpenResponsesResult$inboundSchema: z.ZodType<
     ),
     custom: CustomTool$inboundSchema.and(
       z.object({ type: z.literal("custom") }),
-    ),
-    namespace: NamespaceTool$inboundSchema.and(
-      z.object({ type: z.literal("namespace") }),
     ),
   })),
   top_logprobs: z.nullable(z.int()).optional(),
