@@ -21,7 +21,6 @@ export const Parameter = {
   LogitBias: "logit_bias",
   Logprobs: "logprobs",
   TopLogprobs: "top_logprobs",
-  Prediction: "prediction",
   Seed: "seed",
   ResponseFormat: "response_format",
   StructuredOutputs: "structured_outputs",

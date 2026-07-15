@@ -88,11 +88,6 @@ import {
   McpServerTool$outboundSchema,
 } from "./mcpservertool.js";
 import {
-  NamespaceTool,
-  NamespaceTool$Outbound,
-  NamespaceTool$outboundSchema,
-} from "./namespacetool.js";
-import {
   Preview20250311WebSearchServerTool,
   Preview20250311WebSearchServerTool$Outbound,
   Preview20250311WebSearchServerTool$outboundSchema,
@@ -175,7 +170,6 @@ export type AdditionalToolsItemToolFunction = {
 
 export type AdditionalToolsItemToolUnion =
   | ComputerUseServerTool
-  | NamespaceTool
   | AdditionalToolsItemToolFunction
   | FileSearchServerTool
   | CodeInterpreterServerTool
@@ -216,7 +210,6 @@ export type AdditionalToolsItem = {
   role: AdditionalToolsItemRole;
   tools: Array<
     | ComputerUseServerTool
-    | NamespaceTool
     | AdditionalToolsItemToolFunction
     | FileSearchServerTool
     | CodeInterpreterServerTool
@@ -322,7 +315,6 @@ export function additionalToolsItemToolFunctionToJSON(
 /** @internal */
 export type AdditionalToolsItemToolUnion$Outbound =
   | ComputerUseServerTool$Outbound
-  | NamespaceTool$Outbound
   | AdditionalToolsItemToolFunction$Outbound
   | FileSearchServerTool$Outbound
   | CodeInterpreterServerTool$Outbound
@@ -356,7 +348,6 @@ export const AdditionalToolsItemToolUnion$outboundSchema: z.ZodType<
   AdditionalToolsItemToolUnion
 > = z.union([
   ComputerUseServerTool$outboundSchema,
-  NamespaceTool$outboundSchema,
   z.lazy(() => AdditionalToolsItemToolFunction$outboundSchema),
   FileSearchServerTool$outboundSchema,
   CodeInterpreterServerTool$outboundSchema,
@@ -406,7 +397,6 @@ export type AdditionalToolsItem$Outbound = {
   role: string;
   tools: Array<
     | ComputerUseServerTool$Outbound
-    | NamespaceTool$Outbound
     | AdditionalToolsItemToolFunction$Outbound
     | FileSearchServerTool$Outbound
     | CodeInterpreterServerTool$Outbound
@@ -447,7 +437,6 @@ export const AdditionalToolsItem$outboundSchema: z.ZodType<
   tools: z.array(
     z.union([
       ComputerUseServerTool$outboundSchema,
-      NamespaceTool$outboundSchema,
       z.lazy(() => AdditionalToolsItemToolFunction$outboundSchema),
       FileSearchServerTool$outboundSchema,
       CodeInterpreterServerTool$outboundSchema,

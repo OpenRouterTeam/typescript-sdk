@@ -199,7 +199,7 @@ export class Workspaces extends ClientSDK {
    * Bulk remove members from a workspace
    *
    * @remarks
-   * Remove multiple members from a workspace. Members with active API keys in the workspace cannot be removed. SCIM-managed members cannot be removed; changes must be made in your identity provider. [Management key](/docs/guides/overview/auth/management-api-keys) required.
+   * Remove multiple members from a workspace. Members with active API keys in the workspace cannot be removed. [Management key](/docs/guides/overview/auth/management-api-keys) required.
    */
   async bulkRemoveMembers(
     request: operations.BulkRemoveWorkspaceMembersRequest,
