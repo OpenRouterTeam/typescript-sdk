@@ -102,16 +102,6 @@ import {
   ParetoRouterPlugin$outboundSchema,
 } from "./paretorouterplugin.js";
 import {
-  Prediction,
-  Prediction$Outbound,
-  Prediction$outboundSchema,
-} from "./prediction.js";
-import {
-  PromptCacheOptions,
-  PromptCacheOptions$Outbound,
-  PromptCacheOptions$outboundSchema,
-} from "./promptcacheoptions.js";
-import {
   ProviderPreferences,
   ProviderPreferences$Outbound,
   ProviderPreferences$outboundSchema,
@@ -242,7 +232,7 @@ export type Stop = string | Array<string> | any;
  */
 export type ChatRequest = {
   /**
-   * Enable automatic prompt caching. When set at the top level, the system automatically applies cache breakpoints to the last cacheable block in the request. When set on an individual content block, it marks an explicit cache breakpoint; block-level markers also work on OpenAI models that support explicit prompt caching — OpenRouter converts them to the provider's native format.
+   * Enable automatic prompt caching. When set at the top level, the system automatically applies cache breakpoints to the last cacheable block in the request. Currently supported for Anthropic Claude models.
    */
   cacheControl?: AnthropicCacheControlDirective | undefined;
   /**
@@ -318,18 +308,9 @@ export type ChatRequest = {
     >
     | undefined;
   /**
-   * Static predicted output content. Supported models can use this to reduce latency when much of the response is known in advance.
-   */
-  prediction?: Prediction | null | undefined;
-  /**
    * Presence penalty (-2.0 to 2.0)
    */
   presencePenalty?: number | null | undefined;
-  promptCacheKey?: string | null | undefined;
-  /**
-   * Request-level prompt-cache controls. `mode: "explicit"` disables OpenAI-managed breakpoints so only blocks marked with `prompt_cache_breakpoint` are cached. Only supported by OpenAI GPT-5.6 and newer.
-   */
-  promptCacheOptions?: PromptCacheOptions | null | undefined;
   /**
    * When multiple model providers are available, optionally indicate your routing preference.
    */
@@ -572,10 +553,7 @@ export type ChatRequest$Outbound = {
       | WebFetchPlugin$Outbound
     >
     | undefined;
-  prediction?: Prediction$Outbound | null | undefined;
   presence_penalty?: number | null | undefined;
-  prompt_cache_key?: string | null | undefined;
-  prompt_cache_options?: PromptCacheOptions$Outbound | null | undefined;
   provider?: ProviderPreferences$Outbound | null | undefined;
   reasoning?: ChatRequestReasoning$Outbound | undefined;
   reasoning_effort?: string | null | undefined;
@@ -640,10 +618,7 @@ export const ChatRequest$outboundSchema: z.ZodType<
       WebFetchPlugin$outboundSchema,
     ]),
   ).optional(),
-  prediction: z.nullable(Prediction$outboundSchema).optional(),
   presencePenalty: z.nullable(z.number()).optional(),
-  promptCacheKey: z.nullable(z.string()).optional(),
-  promptCacheOptions: z.nullable(PromptCacheOptions$outboundSchema).optional(),
   provider: z.nullable(ProviderPreferences$outboundSchema).optional(),
   reasoning: z.lazy(() => ChatRequestReasoning$outboundSchema).optional(),
   reasoningEffort: z.nullable(ChatRequestReasoningEffort$outboundSchema)
@@ -685,8 +660,6 @@ export const ChatRequest$outboundSchema: z.ZodType<
     minP: "min_p",
     parallelToolCalls: "parallel_tool_calls",
     presencePenalty: "presence_penalty",
-    promptCacheKey: "prompt_cache_key",
-    promptCacheOptions: "prompt_cache_options",
     reasoningEffort: "reasoning_effort",
     repetitionPenalty: "repetition_penalty",
     responseFormat: "response_format",
