@@ -4261,6 +4261,7 @@ components:
         - inflection
         - io-net
         - ionstream
+        - krea
         - liquid
         - mancer
         - mara
@@ -12964,6 +12965,7 @@ components:
                 - Wafer
                 - WandB
                 - Quiver
+                - Krea
                 - Xiaomi
                 - xAI
                 - Z.AI
@@ -18603,6 +18605,7 @@ components:
         - Wafer
         - WandB
         - Quiver
+        - Krea
         - Xiaomi
         - xAI
         - Z.AI
@@ -18854,6 +18857,10 @@ components:
             nullable: true
           type: object
         klusterai:
+          additionalProperties:
+            nullable: true
+          type: object
+        krea:
           additionalProperties:
             nullable: true
           type: object
@@ -19423,6 +19430,7 @@ components:
             - Wafer
             - WandB
             - Quiver
+            - Krea
             - Xiaomi
             - xAI
             - Z.AI
@@ -25447,6 +25455,7 @@ paths:
               - inflection
               - io-net
               - ionstream
+              - krea
               - liquid
               - mancer
               - mara
