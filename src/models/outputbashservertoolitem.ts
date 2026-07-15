@@ -28,6 +28,7 @@ export type OutputBashServerToolItem = {
   command?: string | undefined;
   exitCode?: number | undefined;
   id?: string | undefined;
+  note?: string | undefined;
   status: ToolCallStatus;
   stderr?: string | undefined;
   stdout?: string | undefined;
@@ -51,6 +52,7 @@ export const OutputBashServerToolItem$inboundSchema: z.ZodType<
   command: z.string().optional(),
   exitCode: z.int().optional(),
   id: z.string().optional(),
+  note: z.string().optional(),
   status: ToolCallStatus$inboundSchema,
   stderr: z.string().optional(),
   stdout: z.string().optional(),
@@ -61,6 +63,7 @@ export type OutputBashServerToolItem$Outbound = {
   command?: string | undefined;
   exitCode?: number | undefined;
   id?: string | undefined;
+  note?: string | undefined;
   status: string;
   stderr?: string | undefined;
   stdout?: string | undefined;
@@ -75,6 +78,7 @@ export const OutputBashServerToolItem$outboundSchema: z.ZodType<
   command: z.string().optional(),
   exitCode: z.int().optional(),
   id: z.string().optional(),
+  note: z.string().optional(),
   status: ToolCallStatus$outboundSchema,
   stderr: z.string().optional(),
   stdout: z.string().optional(),
