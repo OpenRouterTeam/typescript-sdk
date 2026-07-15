@@ -31,6 +31,14 @@ import {
   AnthropicInputTokensTrigger$outboundSchema,
 } from "./anthropicinputtokenstrigger.js";
 import {
+  AnthropicLatestAllowedCallers,
+  AnthropicLatestAllowedCallers$outboundSchema,
+} from "./anthropiclatestallowedcallers.js";
+import {
+  AnthropicLatestResponseInclusion,
+  AnthropicLatestResponseInclusion$outboundSchema,
+} from "./anthropiclatestresponseinclusion.js";
+import {
   AnthropicTextBlockParam,
   AnthropicTextBlockParam$Outbound,
   AnthropicTextBlockParam$outboundSchema,
@@ -345,6 +353,90 @@ export type ToolAdvisor20260301 = {
   type: TypeAdvisor20260301;
 };
 
+export const NameToolSearchToolBm25 = {
+  ToolSearchToolBm25: "tool_search_tool_bm25",
+} as const;
+export type NameToolSearchToolBm25 = ClosedEnum<typeof NameToolSearchToolBm25>;
+
+export const TypeToolSearchToolBm2520251119 = {
+  ToolSearchToolBm2520251119: "tool_search_tool_bm25_20251119",
+} as const;
+export type TypeToolSearchToolBm2520251119 = ClosedEnum<
+  typeof TypeToolSearchToolBm2520251119
+>;
+
+export type ToolToolSearchToolBm2520251119 = {
+  allowedCallers?: Array<AnthropicLatestAllowedCallers> | undefined;
+  /**
+   * Enable automatic prompt caching. When set at the top level, the system automatically applies cache breakpoints to the last cacheable block in the request. When set on an individual content block, it marks an explicit cache breakpoint; block-level markers also work on OpenAI models that support explicit prompt caching — OpenRouter converts them to the provider's native format.
+   */
+  cacheControl?: AnthropicCacheControlDirective | undefined;
+  deferLoading?: boolean | undefined;
+  name: NameToolSearchToolBm25;
+  strict?: boolean | undefined;
+  type: TypeToolSearchToolBm2520251119;
+};
+
+export type MessagesRequestCitations = {
+  enabled: boolean;
+};
+
+export const NameWebFetch = {
+  WebFetch: "web_fetch",
+} as const;
+export type NameWebFetch = ClosedEnum<typeof NameWebFetch>;
+
+export const TypeWebFetch20260318 = {
+  WebFetch20260318: "web_fetch_20260318",
+} as const;
+export type TypeWebFetch20260318 = ClosedEnum<typeof TypeWebFetch20260318>;
+
+export type ToolWebFetch20260318 = {
+  allowedCallers?: Array<AnthropicLatestAllowedCallers> | undefined;
+  allowedDomains?: Array<string> | null | undefined;
+  blockedDomains?: Array<string> | null | undefined;
+  /**
+   * Enable automatic prompt caching. When set at the top level, the system automatically applies cache breakpoints to the last cacheable block in the request. When set on an individual content block, it marks an explicit cache breakpoint; block-level markers also work on OpenAI models that support explicit prompt caching — OpenRouter converts them to the provider's native format.
+   */
+  cacheControl?: AnthropicCacheControlDirective | undefined;
+  citations?: MessagesRequestCitations | null | undefined;
+  deferLoading?: boolean | undefined;
+  maxContentTokens?: number | null | undefined;
+  maxUses?: number | null | undefined;
+  name: NameWebFetch;
+  responseInclusion?: AnthropicLatestResponseInclusion | undefined;
+  strict?: boolean | undefined;
+  type: TypeWebFetch20260318;
+  useCache?: boolean | undefined;
+};
+
+export const NameWebSearch3 = {
+  WebSearch: "web_search",
+} as const;
+export type NameWebSearch3 = ClosedEnum<typeof NameWebSearch3>;
+
+export const TypeWebSearch20260318 = {
+  WebSearch20260318: "web_search_20260318",
+} as const;
+export type TypeWebSearch20260318 = ClosedEnum<typeof TypeWebSearch20260318>;
+
+export type ToolWebSearch20260318 = {
+  allowedCallers?: Array<AnthropicLatestAllowedCallers> | undefined;
+  allowedDomains?: Array<string> | null | undefined;
+  blockedDomains?: Array<string> | null | undefined;
+  /**
+   * Enable automatic prompt caching. When set at the top level, the system automatically applies cache breakpoints to the last cacheable block in the request. When set on an individual content block, it marks an explicit cache breakpoint; block-level markers also work on OpenAI models that support explicit prompt caching — OpenRouter converts them to the provider's native format.
+   */
+  cacheControl?: AnthropicCacheControlDirective | undefined;
+  deferLoading?: boolean | undefined;
+  maxUses?: number | null | undefined;
+  name: NameWebSearch3;
+  responseInclusion?: AnthropicLatestResponseInclusion | undefined;
+  strict?: boolean | undefined;
+  type: TypeWebSearch20260318;
+  userLocation?: AnthropicWebSearchToolUserLocation | null | undefined;
+};
+
 export const NameWebSearch2 = {
   WebSearch: "web_search",
 } as const;
@@ -443,13 +535,16 @@ export const ToolTypeCustom = {
 export type ToolTypeCustom = ClosedEnum<typeof ToolTypeCustom>;
 
 export type ToolCustom = {
+  allowedCallers?: Array<AnthropicLatestAllowedCallers> | undefined;
   /**
    * Enable automatic prompt caching. When set at the top level, the system automatically applies cache breakpoints to the last cacheable block in the request. When set on an individual content block, it marks an explicit cache breakpoint; block-level markers also work on OpenAI models that support explicit prompt caching — OpenRouter converts them to the provider's native format.
    */
   cacheControl?: AnthropicCacheControlDirective | undefined;
+  deferLoading?: boolean | undefined;
   description?: string | undefined;
   inputSchema: InputSchema;
   name: string;
+  strict?: boolean | undefined;
   type?: ToolTypeCustom | undefined;
 };
 
@@ -460,6 +555,9 @@ export type MessagesRequestToolUnion =
   | ToolTextEditor20250124
   | ToolWebSearch20250305
   | ToolWebSearch20260209
+  | ToolWebSearch20260318
+  | ToolWebFetch20260318
+  | ToolToolSearchToolBm2520251119
   | BashServerTool
   | DatetimeServerTool
   | ImageGenerationServerToolOpenRouter
@@ -539,6 +637,9 @@ export type MessagesRequest = {
       | ToolTextEditor20250124
       | ToolWebSearch20250305
       | ToolWebSearch20260209
+      | ToolWebSearch20260318
+      | ToolWebFetch20260318
+      | ToolToolSearchToolBm2520251119
       | BashServerTool
       | DatetimeServerTool
       | ImageGenerationServerToolOpenRouter
@@ -1200,6 +1301,211 @@ export function toolAdvisor20260301ToJSON(
 }
 
 /** @internal */
+export const NameToolSearchToolBm25$outboundSchema: z.ZodEnum<
+  typeof NameToolSearchToolBm25
+> = z.enum(NameToolSearchToolBm25);
+
+/** @internal */
+export const TypeToolSearchToolBm2520251119$outboundSchema: z.ZodEnum<
+  typeof TypeToolSearchToolBm2520251119
+> = z.enum(TypeToolSearchToolBm2520251119);
+
+/** @internal */
+export type ToolToolSearchToolBm2520251119$Outbound = {
+  allowed_callers?: Array<string> | undefined;
+  cache_control?: AnthropicCacheControlDirective$Outbound | undefined;
+  defer_loading?: boolean | undefined;
+  name: string;
+  strict?: boolean | undefined;
+  type: string;
+};
+
+/** @internal */
+export const ToolToolSearchToolBm2520251119$outboundSchema: z.ZodType<
+  ToolToolSearchToolBm2520251119$Outbound,
+  ToolToolSearchToolBm2520251119
+> = z.object({
+  allowedCallers: z.array(AnthropicLatestAllowedCallers$outboundSchema)
+    .optional(),
+  cacheControl: AnthropicCacheControlDirective$outboundSchema.optional(),
+  deferLoading: z.boolean().optional(),
+  name: NameToolSearchToolBm25$outboundSchema,
+  strict: z.boolean().optional(),
+  type: TypeToolSearchToolBm2520251119$outboundSchema,
+}).transform((v) => {
+  return remap$(v, {
+    allowedCallers: "allowed_callers",
+    cacheControl: "cache_control",
+    deferLoading: "defer_loading",
+  });
+});
+
+export function toolToolSearchToolBm2520251119ToJSON(
+  toolToolSearchToolBm2520251119: ToolToolSearchToolBm2520251119,
+): string {
+  return JSON.stringify(
+    ToolToolSearchToolBm2520251119$outboundSchema.parse(
+      toolToolSearchToolBm2520251119,
+    ),
+  );
+}
+
+/** @internal */
+export type MessagesRequestCitations$Outbound = {
+  enabled: boolean;
+};
+
+/** @internal */
+export const MessagesRequestCitations$outboundSchema: z.ZodType<
+  MessagesRequestCitations$Outbound,
+  MessagesRequestCitations
+> = z.object({
+  enabled: z.boolean(),
+});
+
+export function messagesRequestCitationsToJSON(
+  messagesRequestCitations: MessagesRequestCitations,
+): string {
+  return JSON.stringify(
+    MessagesRequestCitations$outboundSchema.parse(messagesRequestCitations),
+  );
+}
+
+/** @internal */
+export const NameWebFetch$outboundSchema: z.ZodEnum<typeof NameWebFetch> = z
+  .enum(NameWebFetch);
+
+/** @internal */
+export const TypeWebFetch20260318$outboundSchema: z.ZodEnum<
+  typeof TypeWebFetch20260318
+> = z.enum(TypeWebFetch20260318);
+
+/** @internal */
+export type ToolWebFetch20260318$Outbound = {
+  allowed_callers?: Array<string> | undefined;
+  allowed_domains?: Array<string> | null | undefined;
+  blocked_domains?: Array<string> | null | undefined;
+  cache_control?: AnthropicCacheControlDirective$Outbound | undefined;
+  citations?: MessagesRequestCitations$Outbound | null | undefined;
+  defer_loading?: boolean | undefined;
+  max_content_tokens?: number | null | undefined;
+  max_uses?: number | null | undefined;
+  name: string;
+  response_inclusion?: string | undefined;
+  strict?: boolean | undefined;
+  type: string;
+  use_cache?: boolean | undefined;
+};
+
+/** @internal */
+export const ToolWebFetch20260318$outboundSchema: z.ZodType<
+  ToolWebFetch20260318$Outbound,
+  ToolWebFetch20260318
+> = z.object({
+  allowedCallers: z.array(AnthropicLatestAllowedCallers$outboundSchema)
+    .optional(),
+  allowedDomains: z.nullable(z.array(z.string())).optional(),
+  blockedDomains: z.nullable(z.array(z.string())).optional(),
+  cacheControl: AnthropicCacheControlDirective$outboundSchema.optional(),
+  citations: z.nullable(z.lazy(() => MessagesRequestCitations$outboundSchema))
+    .optional(),
+  deferLoading: z.boolean().optional(),
+  maxContentTokens: z.nullable(z.int()).optional(),
+  maxUses: z.nullable(z.int()).optional(),
+  name: NameWebFetch$outboundSchema,
+  responseInclusion: AnthropicLatestResponseInclusion$outboundSchema.optional(),
+  strict: z.boolean().optional(),
+  type: TypeWebFetch20260318$outboundSchema,
+  useCache: z.boolean().optional(),
+}).transform((v) => {
+  return remap$(v, {
+    allowedCallers: "allowed_callers",
+    allowedDomains: "allowed_domains",
+    blockedDomains: "blocked_domains",
+    cacheControl: "cache_control",
+    deferLoading: "defer_loading",
+    maxContentTokens: "max_content_tokens",
+    maxUses: "max_uses",
+    responseInclusion: "response_inclusion",
+    useCache: "use_cache",
+  });
+});
+
+export function toolWebFetch20260318ToJSON(
+  toolWebFetch20260318: ToolWebFetch20260318,
+): string {
+  return JSON.stringify(
+    ToolWebFetch20260318$outboundSchema.parse(toolWebFetch20260318),
+  );
+}
+
+/** @internal */
+export const NameWebSearch3$outboundSchema: z.ZodEnum<typeof NameWebSearch3> = z
+  .enum(NameWebSearch3);
+
+/** @internal */
+export const TypeWebSearch20260318$outboundSchema: z.ZodEnum<
+  typeof TypeWebSearch20260318
+> = z.enum(TypeWebSearch20260318);
+
+/** @internal */
+export type ToolWebSearch20260318$Outbound = {
+  allowed_callers?: Array<string> | undefined;
+  allowed_domains?: Array<string> | null | undefined;
+  blocked_domains?: Array<string> | null | undefined;
+  cache_control?: AnthropicCacheControlDirective$Outbound | undefined;
+  defer_loading?: boolean | undefined;
+  max_uses?: number | null | undefined;
+  name: string;
+  response_inclusion?: string | undefined;
+  strict?: boolean | undefined;
+  type: string;
+  user_location?:
+    | AnthropicWebSearchToolUserLocation$Outbound
+    | null
+    | undefined;
+};
+
+/** @internal */
+export const ToolWebSearch20260318$outboundSchema: z.ZodType<
+  ToolWebSearch20260318$Outbound,
+  ToolWebSearch20260318
+> = z.object({
+  allowedCallers: z.array(AnthropicLatestAllowedCallers$outboundSchema)
+    .optional(),
+  allowedDomains: z.nullable(z.array(z.string())).optional(),
+  blockedDomains: z.nullable(z.array(z.string())).optional(),
+  cacheControl: AnthropicCacheControlDirective$outboundSchema.optional(),
+  deferLoading: z.boolean().optional(),
+  maxUses: z.nullable(z.int()).optional(),
+  name: NameWebSearch3$outboundSchema,
+  responseInclusion: AnthropicLatestResponseInclusion$outboundSchema.optional(),
+  strict: z.boolean().optional(),
+  type: TypeWebSearch20260318$outboundSchema,
+  userLocation: z.nullable(AnthropicWebSearchToolUserLocation$outboundSchema)
+    .optional(),
+}).transform((v) => {
+  return remap$(v, {
+    allowedCallers: "allowed_callers",
+    allowedDomains: "allowed_domains",
+    blockedDomains: "blocked_domains",
+    cacheControl: "cache_control",
+    deferLoading: "defer_loading",
+    maxUses: "max_uses",
+    responseInclusion: "response_inclusion",
+    userLocation: "user_location",
+  });
+});
+
+export function toolWebSearch20260318ToJSON(
+  toolWebSearch20260318: ToolWebSearch20260318,
+): string {
+  return JSON.stringify(
+    ToolWebSearch20260318$outboundSchema.parse(toolWebSearch20260318),
+  );
+}
+
+/** @internal */
 export const NameWebSearch2$outboundSchema: z.ZodEnum<typeof NameWebSearch2> = z
   .enum(NameWebSearch2);
 
@@ -1424,10 +1730,13 @@ export const ToolTypeCustom$outboundSchema: z.ZodEnum<typeof ToolTypeCustom> = z
 
 /** @internal */
 export type ToolCustom$Outbound = {
+  allowed_callers?: Array<string> | undefined;
   cache_control?: AnthropicCacheControlDirective$Outbound | undefined;
+  defer_loading?: boolean | undefined;
   description?: string | undefined;
   input_schema: InputSchema$Outbound;
   name: string;
+  strict?: boolean | undefined;
   type?: string | undefined;
 };
 
@@ -1436,14 +1745,20 @@ export const ToolCustom$outboundSchema: z.ZodType<
   ToolCustom$Outbound,
   ToolCustom
 > = z.object({
+  allowedCallers: z.array(AnthropicLatestAllowedCallers$outboundSchema)
+    .optional(),
   cacheControl: AnthropicCacheControlDirective$outboundSchema.optional(),
+  deferLoading: z.boolean().optional(),
   description: z.string().optional(),
   inputSchema: z.lazy(() => InputSchema$outboundSchema),
   name: z.string(),
+  strict: z.boolean().optional(),
   type: ToolTypeCustom$outboundSchema.optional(),
 }).transform((v) => {
   return remap$(v, {
+    allowedCallers: "allowed_callers",
     cacheControl: "cache_control",
+    deferLoading: "defer_loading",
     inputSchema: "input_schema",
   });
 });
@@ -1460,6 +1775,9 @@ export type MessagesRequestToolUnion$Outbound =
   | ToolTextEditor20250124$Outbound
   | ToolWebSearch20250305$Outbound
   | ToolWebSearch20260209$Outbound
+  | ToolWebSearch20260318$Outbound
+  | ToolWebFetch20260318$Outbound
+  | ToolToolSearchToolBm2520251119$Outbound
   | BashServerTool$Outbound
   | DatetimeServerTool$Outbound
   | ImageGenerationServerToolOpenRouter$Outbound
@@ -1479,6 +1797,9 @@ export const MessagesRequestToolUnion$outboundSchema: z.ZodType<
   z.lazy(() => ToolTextEditor20250124$outboundSchema),
   z.lazy(() => ToolWebSearch20250305$outboundSchema),
   z.lazy(() => ToolWebSearch20260209$outboundSchema),
+  z.lazy(() => ToolWebSearch20260318$outboundSchema),
+  z.lazy(() => ToolWebFetch20260318$outboundSchema),
+  z.lazy(() => ToolToolSearchToolBm2520251119$outboundSchema),
   BashServerTool$outboundSchema,
   DatetimeServerTool$outboundSchema,
   ImageGenerationServerToolOpenRouter$outboundSchema,
@@ -1550,6 +1871,9 @@ export type MessagesRequest$Outbound = {
       | ToolTextEditor20250124$Outbound
       | ToolWebSearch20250305$Outbound
       | ToolWebSearch20260209$Outbound
+      | ToolWebSearch20260318$Outbound
+      | ToolWebFetch20260318$Outbound
+      | ToolToolSearchToolBm2520251119$Outbound
       | BashServerTool$Outbound
       | DatetimeServerTool$Outbound
       | ImageGenerationServerToolOpenRouter$Outbound
@@ -1624,6 +1948,9 @@ export const MessagesRequest$outboundSchema: z.ZodType<
       z.lazy(() => ToolTextEditor20250124$outboundSchema),
       z.lazy(() => ToolWebSearch20250305$outboundSchema),
       z.lazy(() => ToolWebSearch20260209$outboundSchema),
+      z.lazy(() => ToolWebSearch20260318$outboundSchema),
+      z.lazy(() => ToolWebFetch20260318$outboundSchema),
+      z.lazy(() => ToolToolSearchToolBm2520251119$outboundSchema),
       BashServerTool$outboundSchema,
       DatetimeServerTool$outboundSchema,
       ImageGenerationServerToolOpenRouter$outboundSchema,
