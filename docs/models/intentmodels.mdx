@@ -1,0 +1,23 @@
+---
+title: "IntentModels"
+---
+
+Per-task-type model overrides layered over the pinned/promoted config for this request only. Overrides apply to text routing; multimodal requests keep the config's vision-capable model tables.
+
+## Example Usage
+
+```typescript
+import { IntentModels } from "@openrouter/sdk/models";
+
+let value: IntentModels = {};
+```
+
+## Fields
+
+| Field                                                                          | Type                                                                           | Required                                                                       | Description                                                                    | Example                                                                        |
+| ------------------------------------------------------------------------------ | ------------------------------------------------------------------------------ | ------------------------------------------------------------------------------ | ------------------------------------------------------------------------------ | ------------------------------------------------------------------------------ |
+| `debug`                                                                        | *string*                                                                       | :heavy_minus_sign:                                                             | Model slug routed when the session classifies as debugging/ops work.           | z-ai/glm-5.2                                                                   |
+| `explain`                                                                      | *string*                                                                       | :heavy_minus_sign:                                                             | Model slug routed when the session classifies as explanation/Q&A work.         | z-ai/glm-5.2                                                                   |
+| `greenfield`                                                                   | *string*                                                                       | :heavy_minus_sign:                                                             | Model slug routed when the session classifies as new-feature/scaffolding work. | anthropic/claude-opus-4.8                                                      |
+| `refactor`                                                                     | *string*                                                                       | :heavy_minus_sign:                                                             | Model slug routed when the session classifies as refactoring/migration work.   | deepseek/deepseek-v4-pro                                                       |
+| `review`                                                                       | *string*                                                                       | :heavy_minus_sign:                                                             | Model slug routed when the session classifies as code-review work.             | anthropic/claude-fable-5                                                       |
