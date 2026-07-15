@@ -112,7 +112,7 @@ export type Direction = OpenEnum<typeof Direction>;
 export type OrderBy = {
   direction: Direction;
   /**
-   * Field to order by
+   * Field to order by: any metric (whether or not it is included in `metrics`), a requested dimension, or "date".
    */
   field: string;
 };
