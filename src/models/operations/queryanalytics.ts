@@ -103,14 +103,14 @@ export type Filter = {
   value: string | number | Array<string | number>;
 };
 
-export const Direction = {
+export const OrderByDirection = {
   Asc: "asc",
   Desc: "desc",
 } as const;
-export type Direction = OpenEnum<typeof Direction>;
+export type OrderByDirection = OpenEnum<typeof OrderByDirection>;
 
 export type OrderBy = {
-  direction: Direction;
+  direction: OrderByDirection;
   /**
    * Field to order by
    */
@@ -120,6 +120,36 @@ export type OrderBy = {
 export type TimeRange = {
   end: Date;
   start: Date;
+};
+
+/**
+ * Ranking direction. Defaults to desc (largest groups first).
+ */
+export const TopGroupsDirection = {
+  Asc: "asc",
+  Desc: "desc",
+} as const;
+/**
+ * Ranking direction. Defaults to desc (largest groups first).
+ */
+export type TopGroupsDirection = OpenEnum<typeof TopGroupsDirection>;
+
+/**
+ * Time-series top-N group selection. Requires `granularity` and at least one entry in `dimensions`. Ranks dimension groups by the aggregate value of `rank_by` over the whole time range, then returns the complete time series for only the top `limit` groups. Without this, time-series ordering and limits apply to individual rows (time-bucket x group combinations), not whole groups.
+ */
+export type TopGroups = {
+  /**
+   * Ranking direction. Defaults to desc (largest groups first).
+   */
+  direction?: TopGroupsDirection | undefined;
+  /**
+   * Number of top dimension groups to return.
+   */
+  limit: number;
+  /**
+   * Metric to rank groups by (aggregated over the whole time range). Does not need to be listed in `metrics`.
+   */
+  rankBy: string;
 };
 
 export type QueryAnalyticsRequestBody = {
@@ -148,6 +178,10 @@ export type QueryAnalyticsRequestBody = {
   metrics: Array<string>;
   orderBy?: OrderBy | undefined;
   timeRange?: TimeRange | undefined;
+  /**
+   * Time-series top-N group selection. Requires `granularity` and at least one entry in `dimensions`. Ranks dimension groups by the aggregate value of `rank_by` over the whole time range, then returns the complete time series for only the top `limit` groups. Without this, time-series ordering and limits apply to individual rows (time-bucket x group combinations), not whole groups.
+   */
+  topGroups?: TopGroups | undefined;
 };
 
 export type QueryAnalyticsRequest = {
@@ -375,8 +409,10 @@ export function filterToJSON(filter: Filter): string {
 }
 
 /** @internal */
-export const Direction$outboundSchema: z.ZodType<string, Direction> = openEnums
-  .outboundSchema(Direction);
+export const OrderByDirection$outboundSchema: z.ZodType<
+  string,
+  OrderByDirection
+> = openEnums.outboundSchema(OrderByDirection);
 
 /** @internal */
 export type OrderBy$Outbound = {
@@ -387,7 +423,7 @@ export type OrderBy$Outbound = {
 /** @internal */
 export const OrderBy$outboundSchema: z.ZodType<OrderBy$Outbound, OrderBy> = z
   .object({
-    direction: Direction$outboundSchema,
+    direction: OrderByDirection$outboundSchema,
     field: z.string(),
   });
 
@@ -415,6 +451,37 @@ export function timeRangeToJSON(timeRange: TimeRange): string {
 }
 
 /** @internal */
+export const TopGroupsDirection$outboundSchema: z.ZodType<
+  string,
+  TopGroupsDirection
+> = openEnums.outboundSchema(TopGroupsDirection);
+
+/** @internal */
+export type TopGroups$Outbound = {
+  direction?: string | undefined;
+  limit: number;
+  rank_by: string;
+};
+
+/** @internal */
+export const TopGroups$outboundSchema: z.ZodType<
+  TopGroups$Outbound,
+  TopGroups
+> = z.object({
+  direction: TopGroupsDirection$outboundSchema.optional(),
+  limit: z.int(),
+  rankBy: z.string(),
+}).transform((v) => {
+  return remap$(v, {
+    rankBy: "rank_by",
+  });
+});
+
+export function topGroupsToJSON(topGroups: TopGroups): string {
+  return JSON.stringify(TopGroups$outboundSchema.parse(topGroups));
+}
+
+/** @internal */
 export type QueryAnalyticsRequestBody$Outbound = {
   classifier_dimensions?: ClassifierDimensions$Outbound | undefined;
   classifier_filters?: ClassifierFilters$Outbound | undefined;
@@ -426,6 +493,7 @@ export type QueryAnalyticsRequestBody$Outbound = {
   metrics: Array<string>;
   order_by?: OrderBy$Outbound | undefined;
   time_range?: TimeRange$Outbound | undefined;
+  top_groups?: TopGroups$Outbound | undefined;
 };
 
 /** @internal */
@@ -444,6 +512,7 @@ export const QueryAnalyticsRequestBody$outboundSchema: z.ZodType<
   metrics: z.array(z.string()),
   orderBy: z.lazy(() => OrderBy$outboundSchema).optional(),
   timeRange: z.lazy(() => TimeRange$outboundSchema).optional(),
+  topGroups: z.lazy(() => TopGroups$outboundSchema).optional(),
 }).transform((v) => {
   return remap$(v, {
     classifierDimensions: "classifier_dimensions",
@@ -451,6 +520,7 @@ export const QueryAnalyticsRequestBody$outboundSchema: z.ZodType<
     groupLimit: "group_limit",
     orderBy: "order_by",
     timeRange: "time_range",
+    topGroups: "top_groups",
   });
 });
 
