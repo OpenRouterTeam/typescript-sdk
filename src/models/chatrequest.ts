@@ -102,6 +102,11 @@ import {
   ParetoRouterPlugin$outboundSchema,
 } from "./paretorouterplugin.js";
 import {
+  Prediction,
+  Prediction$Outbound,
+  Prediction$outboundSchema,
+} from "./prediction.js";
+import {
   PromptCacheOptions,
   PromptCacheOptions$Outbound,
   PromptCacheOptions$outboundSchema,
@@ -312,6 +317,10 @@ export type ChatRequest = {
       | WebFetchPlugin
     >
     | undefined;
+  /**
+   * Static predicted output content. Supported models can use this to reduce latency when much of the response is known in advance.
+   */
+  prediction?: Prediction | null | undefined;
   /**
    * Presence penalty (-2.0 to 2.0)
    */
@@ -563,6 +572,7 @@ export type ChatRequest$Outbound = {
       | WebFetchPlugin$Outbound
     >
     | undefined;
+  prediction?: Prediction$Outbound | null | undefined;
   presence_penalty?: number | null | undefined;
   prompt_cache_key?: string | null | undefined;
   prompt_cache_options?: PromptCacheOptions$Outbound | null | undefined;
@@ -630,6 +640,7 @@ export const ChatRequest$outboundSchema: z.ZodType<
       WebFetchPlugin$outboundSchema,
     ]),
   ).optional(),
+  prediction: z.nullable(Prediction$outboundSchema).optional(),
   presencePenalty: z.nullable(z.number()).optional(),
   promptCacheKey: z.nullable(z.string()).optional(),
   promptCacheOptions: z.nullable(PromptCacheOptions$outboundSchema).optional(),
