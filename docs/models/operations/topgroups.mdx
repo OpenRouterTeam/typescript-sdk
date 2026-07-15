@@ -1,0 +1,24 @@
+---
+title: "TopGroups"
+---
+
+Time-series top-N group selection. Requires `granularity` and at least one entry in `dimensions`. Ranks dimension groups by the aggregate value of `rank_by` over the whole time range, then returns the complete time series for only the top `limit` groups. Without this, time-series ordering and limits apply to individual rows (time-bucket x group combinations), not whole groups.
+
+## Example Usage
+
+```typescript
+import { TopGroups } from "@openrouter/sdk/models/operations";
+
+let value: TopGroups = {
+  limit: 10,
+  rankBy: "request_count",
+};
+```
+
+## Fields
+
+| Field                                                                                                     | Type                                                                                                      | Required                                                                                                  | Description                                                                                               | Example                                                                                                   |
+| --------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------- |
+| `direction`                                                                                               | [operations.TopGroupsDirection](../../models/operations/topgroupsdirection.mdx)                            | :heavy_minus_sign:                                                                                        | Ranking direction. Defaults to desc (largest groups first).                                               |                                                                                                           |
+| `limit`                                                                                                   | *number*                                                                                                  | :heavy_check_mark:                                                                                        | Number of top dimension groups to return.                                                                 | 10                                                                                                        |
+| `rankBy`                                                                                                  | *string*                                                                                                  | :heavy_check_mark:                                                                                        | Metric to rank groups by (aggregated over the whole time range). Does not need to be listed in `metrics`. | request_count                                                                                             |
