@@ -401,6 +401,8 @@ export * from "./percentilethroughputcutoffs.js";
 export * from "./perrequestlimits.js";
 export * from "./pipelinestage.js";
 export * from "./pipelinestagetype.js";
+export * from "./prediction.js";
+export * from "./predictioncontenttext.js";
 export * from "./preferredmaxlatency.js";
 export * from "./preferredminthroughput.js";
 export * from "./preset.js";
