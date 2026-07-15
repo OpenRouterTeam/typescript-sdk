@@ -33,6 +33,8 @@ export * from "./anthropicimagemimetype.js";
 export * from "./anthropicinputtokensclearatleast.js";
 export * from "./anthropicinputtokenstrigger.js";
 export * from "./anthropiciterationcachecreation.js";
+export * from "./anthropiclatestallowedcallers.js";
+export * from "./anthropiclatestresponseinclusion.js";
 export * from "./anthropicmessageusageiteration.js";
 export * from "./anthropicplaintextsource.js";
 export * from "./anthropicsearchresultblockparam.js";
