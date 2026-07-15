@@ -41,6 +41,7 @@ export type ProviderOptions = {
   crusoe?: { [k: string]: any | null } | undefined;
   darkbloom?: { [k: string]: any | null } | undefined;
   decart?: { [k: string]: any | null } | undefined;
+  deepgram?: { [k: string]: any | null } | undefined;
   deepinfra?: { [k: string]: any | null } | undefined;
   deepseek?: { [k: string]: any | null } | undefined;
   dekallm?: { [k: string]: any | null } | undefined;
@@ -69,6 +70,7 @@ export type ProviderOptions = {
   ioNet?: { [k: string]: any | null } | undefined;
   ionstream?: { [k: string]: any | null } | undefined;
   klusterai?: { [k: string]: any | null } | undefined;
+  krea?: { [k: string]: any | null } | undefined;
   lambda?: { [k: string]: any | null } | undefined;
   lepton?: { [k: string]: any | null } | undefined;
   liquid?: { [k: string]: any | null } | undefined;
@@ -107,7 +109,8 @@ export type ProviderOptions = {
   reka?: { [k: string]: any | null } | undefined;
   relace?: { [k: string]: any | null } | undefined;
   replicate?: { [k: string]: any | null } | undefined;
-  sakanaAi?: { [k: string]: any | null } | undefined;
+  sailResearch?: { [k: string]: any | null } | undefined;
+  sakana?: { [k: string]: any | null } | undefined;
   sambanova?: { [k: string]: any | null } | undefined;
   sambanovaCloaked?: { [k: string]: any | null } | undefined;
   seed?: { [k: string]: any | null } | undefined;
@@ -165,6 +168,7 @@ export type ProviderOptions$Outbound = {
   crusoe?: { [k: string]: any | null } | undefined;
   darkbloom?: { [k: string]: any | null } | undefined;
   decart?: { [k: string]: any | null } | undefined;
+  deepgram?: { [k: string]: any | null } | undefined;
   deepinfra?: { [k: string]: any | null } | undefined;
   deepseek?: { [k: string]: any | null } | undefined;
   dekallm?: { [k: string]: any | null } | undefined;
@@ -193,6 +197,7 @@ export type ProviderOptions$Outbound = {
   "io-net"?: { [k: string]: any | null } | undefined;
   ionstream?: { [k: string]: any | null } | undefined;
   klusterai?: { [k: string]: any | null } | undefined;
+  krea?: { [k: string]: any | null } | undefined;
   lambda?: { [k: string]: any | null } | undefined;
   lepton?: { [k: string]: any | null } | undefined;
   liquid?: { [k: string]: any | null } | undefined;
@@ -231,7 +236,8 @@ export type ProviderOptions$Outbound = {
   reka?: { [k: string]: any | null } | undefined;
   relace?: { [k: string]: any | null } | undefined;
   replicate?: { [k: string]: any | null } | undefined;
-  "sakana-ai"?: { [k: string]: any | null } | undefined;
+  "sail-research"?: { [k: string]: any | null } | undefined;
+  sakana?: { [k: string]: any | null } | undefined;
   sambanova?: { [k: string]: any | null } | undefined;
   "sambanova-cloaked"?: { [k: string]: any | null } | undefined;
   seed?: { [k: string]: any | null } | undefined;
@@ -292,6 +298,7 @@ export const ProviderOptions$outboundSchema: z.ZodType<
   crusoe: z.record(z.string(), z.nullable(z.any())).optional(),
   darkbloom: z.record(z.string(), z.nullable(z.any())).optional(),
   decart: z.record(z.string(), z.nullable(z.any())).optional(),
+  deepgram: z.record(z.string(), z.nullable(z.any())).optional(),
   deepinfra: z.record(z.string(), z.nullable(z.any())).optional(),
   deepseek: z.record(z.string(), z.nullable(z.any())).optional(),
   dekallm: z.record(z.string(), z.nullable(z.any())).optional(),
@@ -320,6 +327,7 @@ export const ProviderOptions$outboundSchema: z.ZodType<
   ioNet: z.record(z.string(), z.nullable(z.any())).optional(),
   ionstream: z.record(z.string(), z.nullable(z.any())).optional(),
   klusterai: z.record(z.string(), z.nullable(z.any())).optional(),
+  krea: z.record(z.string(), z.nullable(z.any())).optional(),
   lambda: z.record(z.string(), z.nullable(z.any())).optional(),
   lepton: z.record(z.string(), z.nullable(z.any())).optional(),
   liquid: z.record(z.string(), z.nullable(z.any())).optional(),
@@ -358,7 +366,8 @@ export const ProviderOptions$outboundSchema: z.ZodType<
   reka: z.record(z.string(), z.nullable(z.any())).optional(),
   relace: z.record(z.string(), z.nullable(z.any())).optional(),
   replicate: z.record(z.string(), z.nullable(z.any())).optional(),
-  sakanaAi: z.record(z.string(), z.nullable(z.any())).optional(),
+  sailResearch: z.record(z.string(), z.nullable(z.any())).optional(),
+  sakana: z.record(z.string(), z.nullable(z.any())).optional(),
   sambanova: z.record(z.string(), z.nullable(z.any())).optional(),
   sambanovaCloaked: z.record(z.string(), z.nullable(z.any())).optional(),
   seed: z.record(z.string(), z.nullable(z.any())).optional(),
@@ -401,7 +410,7 @@ export const ProviderOptions$outboundSchema: z.ZodType<
     mancerOld: "mancer-old",
     nexAgi: "nex-agi",
     openInference: "open-inference",
-    sakanaAi: "sakana-ai",
+    sailResearch: "sail-research",
     sambanovaCloaked: "sambanova-cloaked",
     sfCompute: "sf-compute",
     togetherLite: "together-lite",

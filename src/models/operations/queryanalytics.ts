@@ -33,6 +33,54 @@ export type QueryAnalyticsGlobals = {
   appCategories?: string | undefined;
 };
 
+/**
+ * Group results by custom classifier tags, breaking down metrics by the specified dimension values. Requires an active classifier on the workspace.
+ */
+export type ClassifierDimensions = {
+  /**
+   * UUID of the classifier whose tags to group by.
+   */
+  classifierId: string;
+  dimensionNames?: Array<string> | undefined;
+  /**
+   * When true, also include generations that have no tag from this classifier. Defaults to false, which returns only classified generations.
+   */
+  includeNulls?: boolean | undefined;
+};
+
+export type ValueClassifierFilters = string | number;
+
+/**
+ * Filter value. Use a scalar (string or number) for eq/neq, or an array for in/not_in.
+ */
+export type ClassifierFiltersValue = string | number | Array<string | number>;
+
+export type ClassifierFiltersFilter = {
+  /**
+   * Classifier dimension name to filter on (snake_case identifier, e.g. "department", "work_type").
+   */
+  field: string;
+  /**
+   * Filter operator. Only equality/set operators are supported (eq, neq, in, not_in) — ordered comparisons are not available because classification values are strings.
+   */
+  operator: string;
+  /**
+   * Filter value. Use a scalar (string or number) for eq/neq, or an array for in/not_in.
+   */
+  value: string | number | Array<string | number>;
+};
+
+/**
+ * Filter results to generations with specific classifier tag values. Can be combined with classifier_dimensions (must use the same classifier_id) or used independently with standard dimensions.
+ */
+export type ClassifierFilters = {
+  /**
+   * UUID of the classifier whose tags to filter by. Must match classifier_dimensions.classifier_id when both are specified.
+   */
+  classifierId: string;
+  filters: Array<ClassifierFiltersFilter>;
+};
+
 export type Value2 = string | number;
 
 /**
@@ -75,6 +123,14 @@ export type TimeRange = {
 };
 
 export type QueryAnalyticsRequestBody = {
+  /**
+   * Group results by custom classifier tags, breaking down metrics by the specified dimension values. Requires an active classifier on the workspace.
+   */
+  classifierDimensions?: ClassifierDimensions | undefined;
+  /**
+   * Filter results to generations with specific classifier tag values. Can be combined with classifier_dimensions (must use the same classifier_id) or used independently with standard dimensions.
+   */
+  classifierFilters?: ClassifierFilters | undefined;
   dimensions?: Array<string> | undefined;
   filters?: Array<Filter> | undefined;
   /**
@@ -144,6 +200,134 @@ export type QueryAnalyticsData2 = {
 export type QueryAnalyticsResponse = {
   data: QueryAnalyticsData2;
 };
+
+/** @internal */
+export type ClassifierDimensions$Outbound = {
+  classifier_id: string;
+  dimension_names?: Array<string> | undefined;
+  include_nulls?: boolean | undefined;
+};
+
+/** @internal */
+export const ClassifierDimensions$outboundSchema: z.ZodType<
+  ClassifierDimensions$Outbound,
+  ClassifierDimensions
+> = z.object({
+  classifierId: z.string(),
+  dimensionNames: z.array(z.string()).optional(),
+  includeNulls: z.boolean().optional(),
+}).transform((v) => {
+  return remap$(v, {
+    classifierId: "classifier_id",
+    dimensionNames: "dimension_names",
+    includeNulls: "include_nulls",
+  });
+});
+
+export function classifierDimensionsToJSON(
+  classifierDimensions: ClassifierDimensions,
+): string {
+  return JSON.stringify(
+    ClassifierDimensions$outboundSchema.parse(classifierDimensions),
+  );
+}
+
+/** @internal */
+export type ValueClassifierFilters$Outbound = string | number;
+
+/** @internal */
+export const ValueClassifierFilters$outboundSchema: z.ZodType<
+  ValueClassifierFilters$Outbound,
+  ValueClassifierFilters
+> = z.union([z.string(), z.number()]);
+
+export function valueClassifierFiltersToJSON(
+  valueClassifierFilters: ValueClassifierFilters,
+): string {
+  return JSON.stringify(
+    ValueClassifierFilters$outboundSchema.parse(valueClassifierFilters),
+  );
+}
+
+/** @internal */
+export type ClassifierFiltersValue$Outbound =
+  | string
+  | number
+  | Array<string | number>;
+
+/** @internal */
+export const ClassifierFiltersValue$outboundSchema: z.ZodType<
+  ClassifierFiltersValue$Outbound,
+  ClassifierFiltersValue
+> = z.union([
+  z.string(),
+  z.number(),
+  z.array(z.union([z.string(), z.number()])),
+]);
+
+export function classifierFiltersValueToJSON(
+  classifierFiltersValue: ClassifierFiltersValue,
+): string {
+  return JSON.stringify(
+    ClassifierFiltersValue$outboundSchema.parse(classifierFiltersValue),
+  );
+}
+
+/** @internal */
+export type ClassifierFiltersFilter$Outbound = {
+  field: string;
+  operator: string;
+  value: string | number | Array<string | number>;
+};
+
+/** @internal */
+export const ClassifierFiltersFilter$outboundSchema: z.ZodType<
+  ClassifierFiltersFilter$Outbound,
+  ClassifierFiltersFilter
+> = z.object({
+  field: z.string(),
+  operator: z.string(),
+  value: z.union([
+    z.string(),
+    z.number(),
+    z.array(z.union([z.string(), z.number()])),
+  ]),
+});
+
+export function classifierFiltersFilterToJSON(
+  classifierFiltersFilter: ClassifierFiltersFilter,
+): string {
+  return JSON.stringify(
+    ClassifierFiltersFilter$outboundSchema.parse(classifierFiltersFilter),
+  );
+}
+
+/** @internal */
+export type ClassifierFilters$Outbound = {
+  classifier_id: string;
+  filters: Array<ClassifierFiltersFilter$Outbound>;
+};
+
+/** @internal */
+export const ClassifierFilters$outboundSchema: z.ZodType<
+  ClassifierFilters$Outbound,
+  ClassifierFilters
+> = z.object({
+  classifierId: z.string(),
+  filters: z.array(z.lazy(() => ClassifierFiltersFilter$outboundSchema)),
+}).transform((v) => {
+  return remap$(v, {
+    classifierId: "classifier_id",
+  });
+});
+
+export function classifierFiltersToJSON(
+  classifierFilters: ClassifierFilters,
+): string {
+  return JSON.stringify(
+    ClassifierFilters$outboundSchema.parse(classifierFilters),
+  );
+}
 
 /** @internal */
 export type Value2$Outbound = string | number;
@@ -232,6 +416,8 @@ export function timeRangeToJSON(timeRange: TimeRange): string {
 
 /** @internal */
 export type QueryAnalyticsRequestBody$Outbound = {
+  classifier_dimensions?: ClassifierDimensions$Outbound | undefined;
+  classifier_filters?: ClassifierFilters$Outbound | undefined;
   dimensions?: Array<string> | undefined;
   filters?: Array<Filter$Outbound> | undefined;
   granularity?: string | undefined;
@@ -247,6 +433,9 @@ export const QueryAnalyticsRequestBody$outboundSchema: z.ZodType<
   QueryAnalyticsRequestBody$Outbound,
   QueryAnalyticsRequestBody
 > = z.object({
+  classifierDimensions: z.lazy(() => ClassifierDimensions$outboundSchema)
+    .optional(),
+  classifierFilters: z.lazy(() => ClassifierFilters$outboundSchema).optional(),
   dimensions: z.array(z.string()).optional(),
   filters: z.array(z.lazy(() => Filter$outboundSchema)).optional(),
   granularity: z.string().optional(),
@@ -257,6 +446,8 @@ export const QueryAnalyticsRequestBody$outboundSchema: z.ZodType<
   timeRange: z.lazy(() => TimeRange$outboundSchema).optional(),
 }).transform((v) => {
   return remap$(v, {
+    classifierDimensions: "classifier_dimensions",
+    classifierFilters: "classifier_filters",
     groupLimit: "group_limit",
     orderBy: "order_by",
     timeRange: "time_range",

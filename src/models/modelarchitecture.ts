@@ -6,50 +6,15 @@
 import * as z from "zod/v4";
 import { remap as remap$ } from "../lib/primitives.js";
 import { safeParse } from "../lib/schemas.js";
-import * as openEnums from "../types/enums.js";
-import { OpenEnum } from "../types/enums.js";
 import { Result as SafeParseResult } from "../types/fp.js";
 import { SDKValidationError } from "./errors/sdkvalidationerror.js";
 import { InputModality, InputModality$inboundSchema } from "./inputmodality.js";
+import { InstructType, InstructType$inboundSchema } from "./instructtype.js";
 import { ModelGroup, ModelGroup$inboundSchema } from "./modelgroup.js";
 import {
   OutputModality,
   OutputModality$inboundSchema,
 } from "./outputmodality.js";
-
-/**
- * Instruction format type
- */
-export const ModelArchitectureInstructType = {
-  None: "none",
-  Airoboros: "airoboros",
-  Alpaca: "alpaca",
-  AlpacaModif: "alpaca-modif",
-  Chatml: "chatml",
-  Claude: "claude",
-  CodeLlama: "code-llama",
-  Gemma: "gemma",
-  Llama2: "llama2",
-  Llama3: "llama3",
-  Mistral: "mistral",
-  Nemotron: "nemotron",
-  Neural: "neural",
-  Openchat: "openchat",
-  Phi3: "phi3",
-  Rwkv: "rwkv",
-  Vicuna: "vicuna",
-  Zephyr: "zephyr",
-  DeepseekR1: "deepseek-r1",
-  DeepseekV31: "deepseek-v3.1",
-  Qwq: "qwq",
-  Qwen3: "qwen3",
-} as const;
-/**
- * Instruction format type
- */
-export type ModelArchitectureInstructType = OpenEnum<
-  typeof ModelArchitectureInstructType
->;
 
 /**
  * Model architecture information
@@ -62,7 +27,7 @@ export type ModelArchitecture = {
   /**
    * Instruction format type
    */
-  instructType?: ModelArchitectureInstructType | null | undefined;
+  instructType?: InstructType | null | undefined;
   /**
    * Primary modality of the model
    */
@@ -78,19 +43,12 @@ export type ModelArchitecture = {
 };
 
 /** @internal */
-export const ModelArchitectureInstructType$inboundSchema: z.ZodType<
-  ModelArchitectureInstructType,
-  unknown
-> = openEnums.inboundSchema(ModelArchitectureInstructType);
-
-/** @internal */
 export const ModelArchitecture$inboundSchema: z.ZodType<
   ModelArchitecture,
   unknown
 > = z.object({
   input_modalities: z.array(InputModality$inboundSchema),
-  instruct_type: z.nullable(ModelArchitectureInstructType$inboundSchema)
-    .optional(),
+  instruct_type: z.nullable(InstructType$inboundSchema).optional(),
   modality: z.nullable(z.string()),
   output_modalities: z.array(OutputModality$inboundSchema),
   tokenizer: ModelGroup$inboundSchema.optional(),

@@ -76,8 +76,8 @@ export type ListPresetVersionsRequest$Outbound = {
   appTitle?: string | undefined;
   appCategories?: string | undefined;
   slug: string;
-  offset?: number | null | undefined;
-  limit?: number | undefined;
+  offset: number | null;
+  limit: number;
 };
 
 /** @internal */
@@ -89,8 +89,8 @@ export const ListPresetVersionsRequest$outboundSchema: z.ZodType<
   appTitle: z.string().optional(),
   appCategories: z.string().optional(),
   slug: z.string(),
-  offset: z.nullable(z.int()).optional(),
-  limit: z.int().optional(),
+  offset: z.nullable(z.int().default(0)),
+  limit: z.int().default(50),
 }).transform((v) => {
   return remap$(v, {
     httpReferer: "HTTP-Referer",

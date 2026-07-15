@@ -5,26 +5,43 @@
 
 import * as z from "zod/v4";
 import { safeParse } from "../lib/schemas.js";
+import { ClosedEnum } from "../types/enums.js";
 import { Result as SafeParseResult } from "../types/fp.js";
 import { SDKValidationError } from "./errors/sdkvalidationerror.js";
+
+export const ApplyPatchServerToolType = {
+  ApplyPatch: "apply_patch",
+} as const;
+export type ApplyPatchServerToolType = ClosedEnum<
+  typeof ApplyPatchServerToolType
+>;
 
 /**
  * Apply patch tool configuration
  */
 export type ApplyPatchServerTool = {
-  type: "apply_patch";
+  type: ApplyPatchServerToolType;
 };
+
+/** @internal */
+export const ApplyPatchServerToolType$inboundSchema: z.ZodEnum<
+  typeof ApplyPatchServerToolType
+> = z.enum(ApplyPatchServerToolType);
+/** @internal */
+export const ApplyPatchServerToolType$outboundSchema: z.ZodEnum<
+  typeof ApplyPatchServerToolType
+> = ApplyPatchServerToolType$inboundSchema;
 
 /** @internal */
 export const ApplyPatchServerTool$inboundSchema: z.ZodType<
   ApplyPatchServerTool,
   unknown
 > = z.object({
-  type: z.literal("apply_patch"),
+  type: ApplyPatchServerToolType$inboundSchema,
 });
 /** @internal */
 export type ApplyPatchServerTool$Outbound = {
-  type: "apply_patch";
+  type: string;
 };
 
 /** @internal */
@@ -32,7 +49,7 @@ export const ApplyPatchServerTool$outboundSchema: z.ZodType<
   ApplyPatchServerTool$Outbound,
   ApplyPatchServerTool
 > = z.object({
-  type: z.literal("apply_patch"),
+  type: ApplyPatchServerToolType$outboundSchema,
 });
 
 export function applyPatchServerToolToJSON(

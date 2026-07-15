@@ -151,6 +151,105 @@ components:
       required:
         - data
       type: object
+    AdditionalToolsItem:
+      description: Additional tools made available to the model at this point in the input
+      example:
+        role: developer
+        tools:
+          - name: get_weather
+            parameters:
+              properties:
+                location:
+                  type: string
+              type: object
+            type: function
+        type: additional_tools
+      properties:
+        id:
+          nullable: true
+          type: string
+        role:
+          enum:
+            - unknown
+            - user
+            - assistant
+            - system
+            - critic
+            - discriminator
+            - developer
+            - tool
+          type: string
+          x-speakeasy-unknown-values: allow
+        tools:
+          items:
+            anyOf:
+              - allOf:
+                  - $ref: '#/components/schemas/FunctionTool'
+                  - properties: {}
+                    type: object
+                description: Function tool definition
+                example:
+                  description: Get the current weather in a location
+                  name: get_weather
+                  parameters:
+                    properties:
+                      location:
+                        description: The city and state
+                        type: string
+                      unit:
+                        enum:
+                          - celsius
+                          - fahrenheit
+                        type: string
+                        x-speakeasy-unknown-values: allow
+                    required:
+                      - location
+                    type: object
+                  type: function
+              - $ref: '#/components/schemas/Preview_WebSearchServerTool'
+              - $ref: '#/components/schemas/Preview_20250311_WebSearchServerTool'
+              - $ref: '#/components/schemas/Legacy_WebSearchServerTool'
+              - $ref: '#/components/schemas/WebSearchServerTool'
+              - $ref: '#/components/schemas/FileSearchServerTool'
+              - $ref: '#/components/schemas/ComputerUseServerTool'
+              - $ref: '#/components/schemas/CodeInterpreterServerTool'
+              - $ref: '#/components/schemas/McpServerTool'
+              - $ref: '#/components/schemas/ImageGenerationServerTool'
+              - $ref: '#/components/schemas/CodexLocalShellTool'
+              - $ref: '#/components/schemas/ShellServerTool'
+              - $ref: '#/components/schemas/ApplyPatchServerTool'
+              - $ref: '#/components/schemas/CustomTool'
+              - $ref: '#/components/schemas/NamespaceTool'
+              - $ref: '#/components/schemas/AdvisorServerTool_OpenRouter'
+              - $ref: '#/components/schemas/SubagentServerTool_OpenRouter'
+              - $ref: '#/components/schemas/DatetimeServerTool'
+              - $ref: '#/components/schemas/FilesServerTool'
+              - $ref: '#/components/schemas/FusionServerTool_OpenRouter'
+              - $ref: '#/components/schemas/ImageGenerationServerTool_OpenRouter'
+              - $ref: '#/components/schemas/SearchModelsServerTool_OpenRouter'
+              - $ref: '#/components/schemas/WebFetchServerTool'
+              - $ref: '#/components/schemas/WebSearchServerTool_OpenRouter'
+              - $ref: '#/components/schemas/ApplyPatchServerTool_OpenRouter'
+              - $ref: '#/components/schemas/BashServerTool'
+              - $ref: '#/components/schemas/ShellServerTool_OpenRouter'
+              - additionalProperties:
+                  nullable: true
+                properties:
+                  type:
+                    type: string
+                required:
+                  - type
+                type: object
+          type: array
+        type:
+          enum:
+            - additional_tools
+          type: string
+      required:
+        - type
+        - role
+        - tools
+      type: object
     AdvisorNestedTool:
       additionalProperties:
         nullable: true
@@ -267,6 +366,72 @@ components:
           items:
             $ref: '#/components/schemas/AdvisorNestedTool'
           type: array
+      type: object
+    AgentMessageItem:
+      additionalProperties:
+        nullable: true
+      description: A message routed between agents in a multi-agent session
+      example:
+        author: /root/worker
+        content:
+          - text: Task complete.
+            type: input_text
+        recipient: /root
+        type: agent_message
+      properties:
+        agent:
+          additionalProperties:
+            nullable: true
+          nullable: true
+          properties:
+            agent_name:
+              type: string
+          required:
+            - agent_name
+          type: object
+        author:
+          type: string
+        content:
+          items:
+            oneOf:
+              - $ref: '#/components/schemas/InputText'
+              - allOf:
+                  - $ref: '#/components/schemas/InputImage'
+                  - properties: {}
+                    type: object
+                description: Image input content item
+                example:
+                  detail: auto
+                  image_url: https://example.com/image.jpg
+                  type: input_image
+              - additionalProperties:
+                  nullable: true
+                properties:
+                  encrypted_content:
+                    type: string
+                  type:
+                    enum:
+                      - encrypted_content
+                    type: string
+                required:
+                  - type
+                  - encrypted_content
+                type: object
+          type: array
+        id:
+          nullable: true
+          type: string
+        recipient:
+          type: string
+        type:
+          enum:
+            - agent_message
+          type: string
+      required:
+        - type
+        - author
+        - recipient
+        - content
       type: object
     AnnotationAddedEvent:
       allOf:
@@ -509,7 +674,7 @@ components:
       type: object
     AnthropicCacheControlDirective:
       description: >-
-        Enable automatic prompt caching. When set at the top level, the system automatically applies cache breakpoints to the last cacheable block in the request. Currently supported for Anthropic Claude models.
+        Enable automatic prompt caching. When set at the top level, the system automatically applies cache breakpoints to the last cacheable block in the request. When set on an individual content block, it marks an explicit cache breakpoint; block-level markers also work on OpenAI models that support explicit prompt caching — OpenRouter converts them to the provider's native format.
       example:
         type: ephemeral
       properties:
@@ -810,7 +975,71 @@ components:
         - start_block_index
         - end_block_index
       type: object
+    AnthropicCitationSearchResultLocationParam:
+      example:
+        cited_text: Example cited text
+        end_block_index: 1
+        search_result_index: 0
+        source: example_source
+        start_block_index: 0
+        title: Example Result
+        type: search_result_location
+      properties:
+        cited_text:
+          type: string
+        end_block_index:
+          type: integer
+        search_result_index:
+          type: integer
+        source:
+          type: string
+        start_block_index:
+          type: integer
+        title:
+          nullable: true
+          type: string
+        type:
+          enum:
+            - search_result_location
+          type: string
+      required:
+        - type
+        - cited_text
+        - search_result_index
+        - source
+        - title
+        - start_block_index
+        - end_block_index
+      type: object
     AnthropicCitationWebSearchResultLocation:
+      example:
+        cited_text: Example cited text
+        encrypted_index: enc_idx_0
+        title: Example Page
+        type: web_search_result_location
+        url: https://example.com
+      properties:
+        cited_text:
+          type: string
+        encrypted_index:
+          type: string
+        title:
+          nullable: true
+          type: string
+        type:
+          enum:
+            - web_search_result_location
+          type: string
+        url:
+          type: string
+      required:
+        - type
+        - cited_text
+        - encrypted_index
+        - title
+        - url
+      type: object
+    AnthropicCitationWebSearchResultLocationParam:
       example:
         cited_text: Example cited text
         encrypted_index: enc_idx_0
@@ -1457,15 +1686,15 @@ components:
                 char_location: '#/components/schemas/AnthropicCitationCharLocationParam'
                 content_block_location: '#/components/schemas/AnthropicCitationContentBlockLocationParam'
                 page_location: '#/components/schemas/AnthropicCitationPageLocationParam'
-                search_result_location: '#/components/schemas/AnthropicCitationSearchResultLocation'
-                web_search_result_location: '#/components/schemas/AnthropicCitationWebSearchResultLocation'
+                search_result_location: '#/components/schemas/AnthropicCitationSearchResultLocationParam'
+                web_search_result_location: '#/components/schemas/AnthropicCitationWebSearchResultLocationParam'
               propertyName: type
             oneOf:
               - $ref: '#/components/schemas/AnthropicCitationCharLocationParam'
               - $ref: '#/components/schemas/AnthropicCitationPageLocationParam'
               - $ref: '#/components/schemas/AnthropicCitationContentBlockLocationParam'
-              - $ref: '#/components/schemas/AnthropicCitationWebSearchResultLocation'
-              - $ref: '#/components/schemas/AnthropicCitationSearchResultLocation'
+              - $ref: '#/components/schemas/AnthropicCitationWebSearchResultLocationParam'
+              - $ref: '#/components/schemas/AnthropicCitationSearchResultLocationParam'
           nullable: true
           type: array
         text:
@@ -3100,8 +3329,12 @@ components:
         summary: auto
       nullable: true
       properties:
+        context:
+          $ref: '#/components/schemas/ReasoningContext'
         effort:
           $ref: '#/components/schemas/ReasoningEffort'
+        mode:
+          $ref: '#/components/schemas/ReasoningMode'
         summary:
           $ref: '#/components/schemas/ReasoningSummaryVerbosity'
       type: object
@@ -3521,6 +3754,7 @@ components:
               - $ref: '#/components/schemas/ShellServerTool'
               - $ref: '#/components/schemas/ApplyPatchServerTool'
               - $ref: '#/components/schemas/CustomTool'
+              - $ref: '#/components/schemas/NamespaceTool'
           type: array
         top_logprobs:
           type: integer
@@ -4006,6 +4240,7 @@ components:
         - crusoe
         - darkbloom
         - decart
+        - deepgram
         - deepinfra
         - deepseek
         - dekallm
@@ -4026,9 +4261,11 @@ components:
         - inflection
         - io-net
         - ionstream
+        - krea
         - liquid
         - mancer
         - mara
+        - meta
         - minimax
         - mistral
         - modelrun
@@ -4052,7 +4289,8 @@ components:
         - recraft
         - reka
         - relace
-        - sakana-ai
+        - sail-research
+        - sakana
         - sambanova
         - seed
         - siliconflow
@@ -4233,7 +4471,8 @@ components:
         - $ref: '#/components/schemas/AnthropicCacheControlDirective'
         - properties: {}
           type: object
-      description: Cache control for the content part
+      description: >-
+        Anthropic-style cache breakpoint for the content part. Interchangeable with the OpenAI-style `prompt_cache_breakpoint` marker: OpenRouter converts between the two based on the provider serving the request.
       example:
         ttl: 5m
         type: ephemeral
@@ -4328,6 +4567,8 @@ components:
       properties:
         cache_control:
           $ref: '#/components/schemas/ChatContentCacheControl'
+        prompt_cache_breakpoint:
+          $ref: '#/components/schemas/PromptCacheBreakpoint'
         text:
           type: string
         type:
@@ -4432,6 +4673,18 @@ components:
       required:
         - type
         - grammar
+      type: object
+    ChatFormatJsonObjectConfig:
+      description: JSON object response format
+      example:
+        type: json_object
+      properties:
+        type:
+          enum:
+            - json_object
+          type: string
+      required:
+        - type
       type: object
     ChatFormatJsonSchemaConfig:
       description: JSON Schema response format for structured outputs
@@ -4804,12 +5057,19 @@ components:
               - $ref: '#/components/schemas/ParetoRouterPlugin'
               - $ref: '#/components/schemas/FusionPlugin'
           type: array
+        prediction:
+          $ref: '#/components/schemas/Prediction'
         presence_penalty:
           description: Presence penalty (-2.0 to 2.0)
           example: 0
           format: double
           nullable: true
           type: number
+        prompt_cache_key:
+          nullable: true
+          type: string
+        prompt_cache_options:
+          $ref: '#/components/schemas/PromptCacheOptions'
         provider:
           $ref: '#/components/schemas/ProviderPreferences'
         reasoning:
@@ -4864,7 +5124,7 @@ components:
           discriminator:
             mapping:
               grammar: '#/components/schemas/ChatFormatGrammarConfig'
-              json_object: '#/components/schemas/FormatJsonObjectConfig'
+              json_object: '#/components/schemas/ChatFormatJsonObjectConfig'
               json_schema: '#/components/schemas/ChatFormatJsonSchemaConfig'
               python: '#/components/schemas/ChatFormatPythonConfig'
               text: '#/components/schemas/ChatFormatTextConfig'
@@ -4873,7 +5133,7 @@ components:
             type: json_object
           oneOf:
             - $ref: '#/components/schemas/ChatFormatTextConfig'
-            - $ref: '#/components/schemas/FormatJsonObjectConfig'
+            - $ref: '#/components/schemas/ChatFormatJsonObjectConfig'
             - $ref: '#/components/schemas/ChatFormatJsonSchemaConfig'
             - $ref: '#/components/schemas/ChatFormatGrammarConfig'
             - $ref: '#/components/schemas/ChatFormatPythonConfig'
@@ -5546,24 +5806,7 @@ components:
               type: integer
           type: object
         server_tool_use_details:
-          description: Usage for server-side tool execution (e.g., web search)
-          nullable: true
-          properties:
-            tool_calls_executed:
-              description: Number of OpenRouter server tool calls that executed and produced a result
-              nullable: true
-              type: integer
-            tool_calls_requested:
-              description: >-
-                Total number of OpenRouter server-orchestrated tool calls the model requested, across all tool types. Provider-native tools (e.g. native web search) are not counted here.
-              nullable: true
-              type: integer
-            web_search_requests:
-              description: >-
-                Number of web searches performed by server-side tools. For server-orchestrated tool calls a web search is also counted in tool_calls_requested; provider-native web search may report web_search_requests only. Do not sum the two.
-              nullable: true
-              type: integer
-          type: object
+          $ref: '#/components/schemas/ServerToolUseDetails'
         total_tokens:
           description: Total number of tokens
           type: integer
@@ -5761,6 +6004,8 @@ components:
         - type
       type: object
     CompactionItem:
+      additionalProperties:
+        nullable: true
       description: A context compaction marker with encrypted summary
       example:
         encrypted_content: enc_abc123...
@@ -6209,6 +6454,27 @@ components:
         - type
         - video_url
       type: object
+    ContextCompactionItem:
+      additionalProperties:
+        nullable: true
+      description: A context compaction marker with an optional encrypted summary
+      example:
+        encrypted_content: enc_abc123...
+        type: context_compaction
+      properties:
+        encrypted_content:
+          nullable: true
+          type: string
+        id:
+          nullable: true
+          type: string
+        type:
+          enum:
+            - context_compaction
+          type: string
+      required:
+        - type
+      type: object
     ContextCompressionEngine:
       description: The compression engine to use. Defaults to "middle-out".
       enum:
@@ -6383,6 +6649,7 @@ components:
         enforce_zdr_google: false
         enforce_zdr_openai: true
         enforce_zdr_other: false
+        enforce_zdr_xai: false
         ignored_models: null
         ignored_providers: null
         limit_usd: 50
@@ -6440,7 +6707,7 @@ components:
         enforce_zdr:
           deprecated: true
           description: >-
-            Deprecated. Use enforce_zdr_anthropic, enforce_zdr_openai, enforce_zdr_google, and enforce_zdr_other instead. When provided, its value is copied into any of those per-provider fields that are not explicitly specified on the request.
+            Deprecated. Use enforce_zdr_anthropic, enforce_zdr_openai, enforce_zdr_google, enforce_zdr_xai, and enforce_zdr_other instead. When provided, its value is copied into any of those per-provider fields that are not explicitly specified on the request.
           example: false
           nullable: true
           type: boolean
@@ -6461,7 +6728,12 @@ components:
           type: boolean
         enforce_zdr_other:
           description: >-
-            Whether to enforce zero data retention for models that are not from Anthropic, OpenAI, or Google. Falls back to enforce_zdr when not provided.
+            Whether to enforce zero data retention for models that are not from Anthropic, OpenAI, Google, or xAI. Falls back to enforce_zdr when not provided.
+          example: false
+          nullable: true
+          type: boolean
+        enforce_zdr_xai:
+          description: Whether to enforce zero data retention for xAI models. Falls back to enforce_zdr when not provided.
           example: false
           nullable: true
           type: boolean
@@ -6525,6 +6797,7 @@ components:
           enforce_zdr_google: false
           enforce_zdr_openai: true
           enforce_zdr_other: false
+          enforce_zdr_xai: false
           id: 550e8400-e29b-41d4-a716-446655440000
           ignored_models: null
           ignored_providers: null
@@ -6574,7 +6847,7 @@ components:
           example: true
           type: boolean
         filter_rules:
-          $ref: '#/components/schemas/ObservabilityFilterRulesConfig'
+          $ref: '#/components/schemas/ObservabilityFilterRulesConfigNullable'
         name:
           description: Human-readable name for the destination.
           example: Production Langfuse
@@ -8841,6 +9114,7 @@ components:
           enforce_zdr_google: false
           enforce_zdr_openai: true
           enforce_zdr_other: false
+          enforce_zdr_xai: false
           id: 550e8400-e29b-41d4-a716-446655440000
           ignored_models: null
           ignored_providers: null
@@ -9021,6 +9295,7 @@ components:
         enforce_zdr_google: false
         enforce_zdr_openai: true
         enforce_zdr_other: false
+        enforce_zdr_xai: false
         id: 550e8400-e29b-41d4-a716-446655440000
         ignored_models: null
         ignored_providers: null
@@ -9083,7 +9358,7 @@ components:
         enforce_zdr:
           deprecated: true
           description: >-
-            Deprecated. Use enforce_zdr_anthropic, enforce_zdr_openai, enforce_zdr_google, and enforce_zdr_other instead. When provided, its value is copied into any of those per-provider fields that are not explicitly specified on the request.
+            Deprecated. Use enforce_zdr_anthropic, enforce_zdr_openai, enforce_zdr_google, enforce_zdr_xai, and enforce_zdr_other instead. When provided, its value is copied into any of those per-provider fields that are not explicitly specified on the request.
           example: false
           nullable: true
           type: boolean
@@ -9104,7 +9379,12 @@ components:
           type: boolean
         enforce_zdr_other:
           description: >-
-            Whether to enforce zero data retention for models that are not from Anthropic, OpenAI, or Google. Falls back to enforce_zdr when not provided.
+            Whether to enforce zero data retention for models that are not from Anthropic, OpenAI, Google, or xAI. Falls back to enforce_zdr when not provided.
+          example: false
+          nullable: true
+          type: boolean
+        enforce_zdr_xai:
+          description: Whether to enforce zero data retention for xAI models. Falls back to enforce_zdr when not provided.
           example: false
           nullable: true
           type: boolean
@@ -9330,6 +9610,75 @@ components:
         - b64_json
         - created
       type: object
+    ImageGenerationProviderPreferences:
+      description: Provider routing preferences and provider-specific passthrough configuration.
+      example:
+        allow_fallbacks: false
+        only:
+          - google-ai-studio
+      properties:
+        allow_fallbacks:
+          description: >
+            Whether to allow backup providers to serve requests
+
+            - true: (default) when the primary provider (or your custom providers in "order") is unavailable, use the next best provider.
+
+            - false: use only the primary/custom provider, and return the upstream error if it's unavailable.
+
+          nullable: true
+          type: boolean
+        ignore:
+          description: >-
+            List of provider slugs to ignore. If provided, this list is merged with your account-wide ignored provider settings for this request.
+          example:
+            - openai
+            - anthropic
+          items:
+            anyOf:
+              - $ref: '#/components/schemas/ProviderName'
+              - type: string
+          nullable: true
+          type: array
+        only:
+          description: >-
+            List of provider slugs to allow. If provided, this list is merged with your account-wide allowed provider settings for this request.
+          example:
+            - openai
+            - anthropic
+          items:
+            anyOf:
+              - $ref: '#/components/schemas/ProviderName'
+              - type: string
+          nullable: true
+          type: array
+        options:
+          allOf:
+            - $ref: '#/components/schemas/ProviderOptions'
+            - example:
+                black-forest-labs:
+                  guidance: 3
+                  steps: 40
+        order:
+          description: >-
+            An ordered list of provider slugs. The router will attempt to use the first provider in the subset of this list that supports your requested model, and fall back to the next if it is unavailable. If no providers are available, the request will fail with an error message.
+          example:
+            - openai
+            - anthropic
+          items:
+            anyOf:
+              - $ref: '#/components/schemas/ProviderName'
+              - type: string
+          nullable: true
+          type: array
+        sort:
+          anyOf:
+            - $ref: '#/components/schemas/ProviderSort'
+            - $ref: '#/components/schemas/ProviderSortConfig'
+            - nullable: true
+          description: >-
+            The sorting strategy to use for this request, if "order" is not specified. When set, no load balancing is performed.
+          example: price
+      type: object
     ImageGenerationRequest:
       description: Image generation request input
       example:
@@ -9408,16 +9757,7 @@ components:
           minLength: 1
           type: string
         provider:
-          description: Provider-specific passthrough configuration
-          properties:
-            options:
-              allOf:
-                - $ref: '#/components/schemas/ProviderOptions'
-                - example:
-                    black-forest-labs:
-                      guidance: 3
-                      steps: 40
-          type: object
+          $ref: '#/components/schemas/ImageGenerationProviderPreferences'
         quality:
           description: Rendering quality. Providers without a quality knob ignore this.
           enum:
@@ -9522,11 +9862,7 @@ components:
               type: string
           type: object
         model:
-          enum:
-            - gpt-image-1
-            - gpt-image-1-mini
           type: string
-          x-speakeasy-unknown-values: allow
         moderation:
           enum:
             - auto
@@ -9553,13 +9889,7 @@ components:
           type: string
           x-speakeasy-unknown-values: allow
         size:
-          enum:
-            - 1024x1024
-            - 1024x1536
-            - 1536x1024
-            - auto
           type: string
-          x-speakeasy-unknown-values: allow
         type:
           enum:
             - image_generation
@@ -9623,6 +9953,8 @@ components:
         prompt_tokens: 0
         total_tokens: 4175
       properties:
+        cache_creation:
+          $ref: '#/components/schemas/AnthropicCacheCreation'
         completion_tokens:
           description: The tokens generated
           type: integer
@@ -9781,6 +10113,45 @@ components:
         - type
         - error
       type: object
+    ImageGenTextChunkEvent:
+      description: Emitted when a text chunk becomes available during streaming generation of text-based formats (e.g. SVG)
+      example:
+        phase: content
+        text: <svg xmlns="http://www.w3.org/2000/svg">
+        type: image_generation.text_chunk
+      properties:
+        phase:
+          description: >-
+            The generation phase this chunk belongs to. `content` is the renderable output; `reasoning` and `draft` are intermediate provider phases.
+          enum:
+            - content
+            - reasoning
+            - draft
+          type: string
+          x-speakeasy-unknown-values: allow
+        text:
+          description: A text fragment of the image being generated (e.g. partial SVG markup)
+          type: string
+        type:
+          description: The event type
+          enum:
+            - image_generation.text_chunk
+          type: string
+      required:
+        - type
+        - text
+        - phase
+      type: object
+    ImageInputModality:
+      enum:
+        - text
+        - image
+        - file
+        - audio
+        - video
+      example: text
+      type: string
+      x-speakeasy-unknown-values: allow
     ImageModelArchitecture:
       example:
         input_modalities:
@@ -9792,7 +10163,7 @@ components:
         input_modalities:
           description: Supported input modalities
           items:
-            $ref: '#/components/schemas/InputModality'
+            $ref: '#/components/schemas/ImageInputModality'
           type: array
         output_modalities:
           description: Supported output modalities
@@ -9986,6 +10357,7 @@ components:
         data:
           anyOf:
             - $ref: '#/components/schemas/ImageGenPartialImageEvent'
+            - $ref: '#/components/schemas/ImageGenTextChunkEvent'
             - $ref: '#/components/schemas/ImageGenCompletedEvent'
             - $ref: '#/components/schemas/ImageGenStreamErrorEvent'
       required:
@@ -10321,7 +10693,10 @@ components:
               - $ref: '#/components/schemas/CustomToolCallItem'
               - $ref: '#/components/schemas/CustomToolCallOutputItem'
               - $ref: '#/components/schemas/CompactionItem'
+              - $ref: '#/components/schemas/ContextCompactionItem'
               - $ref: '#/components/schemas/ItemReferenceItem'
+              - $ref: '#/components/schemas/AdditionalToolsItem'
+              - $ref: '#/components/schemas/AgentMessageItem'
           type: array
       description: Input for a response request - can be a string or array of items
       example:
@@ -10333,6 +10708,8 @@ components:
         text: Hello, how can I help you?
         type: input_text
       properties:
+        prompt_cache_breakpoint:
+          $ref: '#/components/schemas/PromptCacheBreakpoint'
         text:
           type: string
         type:
@@ -10508,10 +10885,21 @@ components:
             - input_video
           type: string
         video_url:
-          $ref: '#/components/schemas/ChatContentVideoInput'
+          $ref: '#/components/schemas/Legacy_ChatContentVideoInput'
       required:
         - type
         - video_url
+      type: object
+    Legacy_ChatContentVideoInput:
+      description: Video input object
+      example:
+        url: https://example.com/video.mp4
+      properties:
+        url:
+          description: 'URL of the video (data: URLs supported)'
+          type: string
+      required:
+        - url
       type: object
     Legacy_WebSearchServerTool:
       description: Web search tool configuration
@@ -10707,6 +11095,7 @@ components:
             enforce_zdr_google: false
             enforce_zdr_openai: true
             enforce_zdr_other: false
+            enforce_zdr_xai: false
             id: 550e8400-e29b-41d4-a716-446655440000
             ignored_models: null
             ignored_providers: null
@@ -11516,6 +11905,8 @@ components:
           type: string
         usage:
           properties:
+            cache_creation:
+              $ref: '#/components/schemas/AnthropicCacheCreation'
             cache_creation_input_tokens:
               nullable: true
               type: integer
@@ -12301,7 +12692,7 @@ components:
               - $ref: '#/components/schemas/BashServerTool'
               - $ref: '#/components/schemas/DatetimeServerTool'
               - $ref: '#/components/schemas/ImageGenerationServerTool_OpenRouter'
-              - $ref: '#/components/schemas/ChatSearchModelsServerTool'
+              - $ref: '#/components/schemas/MessagesSearchModelsServerTool'
               - $ref: '#/components/schemas/WebFetchServerTool'
               - $ref: '#/components/schemas/OpenRouterWebSearchServerTool'
               - additionalProperties:
@@ -12409,6 +12800,22 @@ components:
           output_tokens: 15
           server_tool_use: null
           service_tier: standard
+    MessagesSearchModelsServerTool:
+      description: 'OpenRouter built-in server tool: searches and filters AI models available on OpenRouter'
+      example:
+        parameters:
+          max_results: 5
+        type: openrouter:experimental__search_models
+      properties:
+        parameters:
+          $ref: '#/components/schemas/SearchModelsServerToolConfig'
+        type:
+          enum:
+            - openrouter:experimental__search_models
+          type: string
+      required:
+        - type
+      type: object
     MessagesStartEvent:
       description: Event sent at the start of a streaming message
       example:
@@ -12495,6 +12902,7 @@ components:
                 - Crusoe
                 - Darkbloom
                 - Decart
+                - Deepgram
                 - DeepInfra
                 - DeepSeek
                 - DekaLLM
@@ -12540,6 +12948,7 @@ components:
                 - Recraft
                 - Reka
                 - Relace
+                - Sail Research
                 - Sakana AI
                 - SambaNova
                 - Seed
@@ -12556,6 +12965,7 @@ components:
                 - Wafer
                 - WandB
                 - Quiver
+                - Krea
                 - Xiaomi
                 - xAI
                 - Z.AI
@@ -12831,35 +13241,7 @@ components:
             $ref: '#/components/schemas/InputModality'
           type: array
         instruct_type:
-          description: Instruction format type
-          enum:
-            - none
-            - airoboros
-            - alpaca
-            - alpaca-modif
-            - chatml
-            - claude
-            - code-llama
-            - gemma
-            - llama2
-            - llama3
-            - mistral
-            - nemotron
-            - neural
-            - openchat
-            - phi3
-            - rwkv
-            - vicuna
-            - zephyr
-            - deepseek-r1
-            - deepseek-v3.1
-            - qwq
-            - qwen3
-            - null
-          example: chatml
-          nullable: true
-          type: string
-          x-speakeasy-unknown-values: allow
+          $ref: '#/components/schemas/InstructType'
         modality:
           description: Primary modality of the model
           example: text->text
@@ -13065,7 +13447,7 @@ components:
             id: openai/gpt-4
             knowledge_cutoff: null
             links:
-              details: /api/v1/models/openai/gpt-5.4/endpoints
+              details: /api/v1/models/openai/gpt-4/endpoints
             name: GPT-4
             per_request_limits: null
             pricing:
@@ -13084,11 +13466,31 @@ components:
               context_length: 8192
               is_moderated: true
               max_completion_tokens: 4096
+        links:
+          next: /api/v1/models?offset=500&limit=500
+        total_count: 150
       properties:
         data:
           $ref: '#/components/schemas/ModelsListResponseData'
+        links:
+          description: Pagination links
+          properties:
+            next:
+              description: URL for the next page of results, or null if this is the last page
+              example: /api/v1/models?offset=500&limit=500
+              nullable: true
+              type: string
+          required:
+            - next
+          type: object
+        total_count:
+          description: Total number of models matching the query
+          example: 150
+          type: integer
       required:
         - data
+        - total_count
+        - links
       type: object
     ModelsListResponseData:
       description: List of available models
@@ -13110,7 +13512,7 @@ components:
           id: openai/gpt-4
           knowledge_cutoff: null
           links:
-            details: /api/v1/models/openai/gpt-5.4/endpoints
+            details: /api/v1/models/openai/gpt-4/endpoints
           name: GPT-4
           per_request_limits: null
           pricing:
@@ -13152,6 +13554,79 @@ components:
           type: string
       required:
         - data
+      type: object
+    NamespaceFunctionTool:
+      description: A function tool grouped inside a namespace tool
+      example:
+        name: spawn_agent
+        type: function
+      properties:
+        allowed_callers:
+          items:
+            enum:
+              - direct
+              - programmatic
+            type: string
+            x-speakeasy-unknown-values: allow
+          nullable: true
+          type: array
+        defer_loading:
+          type: boolean
+        description:
+          nullable: true
+          type: string
+        name:
+          type: string
+        output_schema:
+          additionalProperties:
+            nullable: true
+          nullable: true
+          type: object
+        parameters:
+          additionalProperties:
+            nullable: true
+          nullable: true
+          type: object
+        strict:
+          nullable: true
+          type: boolean
+        type:
+          enum:
+            - function
+          type: string
+      required:
+        - type
+        - name
+      type: object
+    NamespaceTool:
+      description: Groups function/custom tools under a shared namespace
+      example:
+        description: Tools for spawning and managing sub-agents.
+        name: multi_agent_v1
+        tools:
+          - name: spawn_agent
+            type: function
+        type: namespace
+      properties:
+        description:
+          type: string
+        name:
+          type: string
+        tools:
+          items:
+            anyOf:
+              - $ref: '#/components/schemas/NamespaceFunctionTool'
+              - $ref: '#/components/schemas/CustomTool'
+          type: array
+        type:
+          enum:
+            - namespace
+          type: string
+      required:
+        - type
+        - name
+        - description
+        - tools
       type: object
     NotFoundResponse:
       description: Not Found - Resource does not exist
@@ -13676,6 +14151,69 @@ components:
         - $ref: '#/components/schemas/ObservabilitySnowflakeDestination'
         - $ref: '#/components/schemas/ObservabilityWeaveDestination'
         - $ref: '#/components/schemas/ObservabilityWebhookDestination'
+    ObservabilityFilterRuleGroup:
+      example:
+        logic: and
+        rules:
+          - field: model
+            operator: equals
+            value: openai/gpt-4o
+      properties:
+        logic:
+          default: and
+          enum:
+            - and
+            - or
+          type: string
+          x-speakeasy-unknown-values: allow
+        rules:
+          items:
+            properties:
+              field:
+                enum:
+                  - model
+                  - provider
+                  - session_id
+                  - user_id
+                  - api_key_name
+                  - finish_reason
+                  - input
+                  - output
+                  - total_cost
+                  - total_tokens
+                  - prompt_tokens
+                  - completion_tokens
+                type: string
+                x-speakeasy-unknown-values: allow
+              operator:
+                enum:
+                  - equals
+                  - not_equals
+                  - contains
+                  - not_contains
+                  - regex
+                  - starts_with
+                  - ends_with
+                  - gt
+                  - lt
+                  - gte
+                  - lte
+                  - exists
+                  - not_exists
+                type: string
+                x-speakeasy-unknown-values: allow
+              value:
+                anyOf:
+                  - type: string
+                  - type: number
+            required:
+              - field
+              - operator
+            type: object
+          type: array
+      required:
+        - rules
+      type: object
     ObservabilityFilterRulesConfig:
       description: Optional structured filter rules controlling which events are forwarded.
       example: null
@@ -13686,62 +14224,22 @@ components:
           type: boolean
         groups:
           items:
-            properties:
-              logic:
-                default: and
-                enum:
-                  - and
-                  - or
-                type: string
-                x-speakeasy-unknown-values: allow
-              rules:
-                items:
-                  properties:
-                    field:
-                      enum:
-                        - model
-                        - provider
-                        - session_id
-                        - user_id
-                        - api_key_name
-                        - finish_reason
-                        - input
-                        - output
-                        - total_cost
-                        - total_tokens
-                        - prompt_tokens
-                        - completion_tokens
-                      type: string
-                      x-speakeasy-unknown-values: allow
-                    operator:
-                      enum:
-                        - equals
-                        - not_equals
-                        - contains
-                        - not_contains
-                        - regex
-                        - starts_with
-                        - ends_with
-                        - gt
-                        - lt
-                        - gte
-                        - lte
-                        - exists
-                        - not_exists
-                      type: string
-                      x-speakeasy-unknown-values: allow
-                    value:
-                      anyOf:
-                        - type: string
-                        - type: number
-                  required:
-                    - field
-                    - operator
-                  type: object
-                type: array
-            required:
-              - rules
-            type: object
+            $ref: '#/components/schemas/ObservabilityFilterRuleGroup'
+          type: array
+      required:
+        - groups
+      type: object
+    ObservabilityFilterRulesConfigNullable:
+      description: Optional structured filter rules controlling which events are forwarded.
+      example: null
+      nullable: true
+      properties:
+        enabled:
+          default: true
+          type: boolean
+        groups:
+          items:
+            $ref: '#/components/schemas/ObservabilityFilterRuleGroup'
           type: array
       required:
         - groups
@@ -15496,6 +15994,9 @@ components:
           type: integer
         input_tokens_details:
           properties:
+            cache_write_tokens:
+              nullable: true
+              type: integer
             cached_tokens:
               type: integer
           required:
@@ -17346,6 +17847,7 @@ components:
         - logit_bias
         - logprobs
         - top_logprobs
+        - prediction
         - seed
         - response_format
         - structured_outputs
@@ -17651,6 +18153,44 @@ components:
       example: guardrail
       type: string
       x-speakeasy-unknown-values: allow
+    Prediction:
+      description: >-
+        Static predicted output content. Supported models can use this to reduce latency when much of the response is known in advance.
+      example:
+        content: Expected response
+        type: content
+      nullable: true
+      properties:
+        content:
+          anyOf:
+            - type: string
+            - items:
+                $ref: '#/components/schemas/PredictionContentText'
+              type: array
+        type:
+          enum:
+            - content
+          type: string
+      required:
+        - type
+        - content
+      type: object
+    PredictionContentText:
+      description: Text content part for a predicted output.
+      example:
+        text: Expected response
+        type: text
+      properties:
+        text:
+          type: string
+        type:
+          enum:
+            - text
+          type: string
+      required:
+        - type
+        - text
+      type: object
     PreferredMaxLatency:
       anyOf:
         - format: double
@@ -17888,6 +18428,82 @@ components:
       required:
         - type
       type: object
+    PricingOverride:
+      description: >-
+        A conditional override of the base pricing. An entry applies only when all of its condition fields (e.g. min_prompt_tokens, or the utc_start/utc_end time window) match the request; among applicable entries, later entries win per price key; price keys absent from an entry inherit the base price.
+      example:
+        completion: '0.00002'
+        min_prompt_tokens: 200000
+        prompt: '0.000005'
+      properties:
+        audio:
+          description: Overridden price in USD per audio input token
+          type: string
+        completion:
+          description: Overridden price in USD per token for completion (output) generation
+          type: string
+        input_audio_cache:
+          description: Overridden price in USD per cached audio input token
+          type: string
+        input_cache_read:
+          description: Overridden price in USD per cached input token (read)
+          type: string
+        input_cache_write:
+          description: Overridden price in USD per cache-write token
+          type: string
+        input_cache_write_1h:
+          description: Overridden price in USD per 1-hour cache-write token
+          type: string
+        min_prompt_tokens:
+          description: >-
+            Condition: the entry applies when the total prompt tokens of a request are strictly greater than this threshold
+          format: double
+          type: number
+        prompt:
+          description: Overridden price in USD per token for prompt (input) processing
+          type: string
+        utc_end:
+          description: 'Condition: exclusive end of a daily UTC time window as an HHMM clock number (e.g. 400 = 04:00)'
+          format: double
+          type: number
+        utc_start:
+          description: >-
+            Condition: inclusive start of a daily UTC time window as an HHMM clock number (e.g. 100 = 01:00, 1030 = 10:30). The entry applies while the current UTC time is inside the half-open window [utc_start, utc_end), which may wrap past midnight (utc_start > utc_end).
+          format: double
+          type: number
+      type: object
+    PromptCacheBreakpoint:
+      description: >-
+        Marks an explicit prompt-cache boundary on this content block (OpenAI-style). Everything through the block carrying this marker is part of the candidate cached prefix. Supported natively by OpenAI GPT-5.6 and newer; on providers that use Anthropic-style `cache_control`, OpenRouter converts the marker to that format automatically.
+      example:
+        mode: explicit
+      nullable: true
+      properties:
+        mode:
+          enum:
+            - explicit
+          type: string
+      required:
+        - mode
+      type: object
+    PromptCacheOptions:
+      description: >-
+        Request-level prompt-cache controls. `mode: "explicit"` disables OpenAI-managed breakpoints so only blocks marked with `prompt_cache_breakpoint` are cached. Only supported by OpenAI GPT-5.6 and newer.
+      example:
+        mode: explicit
+        ttl: 30m
+      nullable: true
+      properties:
+        mode:
+          enum:
+            - explicit
+          type: string
+        ttl:
+          nullable: true
+          type: string
+      required:
+        - mode
+      type: object
     PromptInjectionScanScope:
       description: >-
         Which message roles to scan for prompt injection. Only applies to the regex-prompt-injection builtin. Defaults to all_messages.
@@ -17899,6 +18515,7 @@ components:
       x-speakeasy-unknown-values: allow
     ProviderName:
       enum:
+        - Meta
         - AkashML
         - AI21
         - AionLabs
@@ -17925,6 +18542,7 @@ components:
         - Crusoe
         - Darkbloom
         - Decart
+        - Deepgram
         - DeepInfra
         - DeepSeek
         - DekaLLM
@@ -17970,6 +18588,7 @@ components:
         - Recraft
         - Reka
         - Relace
+        - Sail Research
         - Sakana AI
         - SambaNova
         - Seed
@@ -17986,6 +18605,7 @@ components:
         - Wafer
         - WandB
         - Quiver
+        - Krea
         - Xiaomi
         - xAI
         - Z.AI
@@ -18124,6 +18744,10 @@ components:
           additionalProperties:
             nullable: true
           type: object
+        deepgram:
+          additionalProperties:
+            nullable: true
+          type: object
         deepinfra:
           additionalProperties:
             nullable: true
@@ -18233,6 +18857,10 @@ components:
             nullable: true
           type: object
         klusterai:
+          additionalProperties:
+            nullable: true
+          type: object
+        krea:
           additionalProperties:
             nullable: true
           type: object
@@ -18388,7 +19016,11 @@ components:
           additionalProperties:
             nullable: true
           type: object
-        sakana-ai:
+        sail-research:
+          additionalProperties:
+            nullable: true
+          type: object
+        sakana:
           additionalProperties:
             nullable: true
           type: object
@@ -18735,6 +19367,7 @@ components:
             - Crusoe
             - Darkbloom
             - Decart
+            - Deepgram
             - DeepInfra
             - DeepSeek
             - DekaLLM
@@ -18780,6 +19413,7 @@ components:
             - Recraft
             - Reka
             - Relace
+            - Sail Research
             - Sakana AI
             - SambaNova
             - Seed
@@ -18796,11 +19430,21 @@ components:
             - Wafer
             - WandB
             - Quiver
+            - Krea
             - Xiaomi
             - xAI
             - Z.AI
             - FakeProvider
           example: OpenAI
+          type: string
+          x-speakeasy-unknown-values: allow
+        routed_service_tier:
+          description: >-
+            The service tier this request was routed to (e.g. flex, priority). The tier actually applied and billed is determined by the provider response and may differ.
+          enum:
+            - flex
+            - priority
+          example: priority
           type: string
           x-speakeasy-unknown-values: allow
         status:
@@ -18948,6 +19592,12 @@ components:
             internal_reasoning:
               description: Price in USD per internal reasoning token
               type: string
+            overrides:
+              description: >-
+                Conditional overrides of the base pricing (e.g. long-context or time-based pricing). An entry applies when all of its condition fields (e.g. min_prompt_tokens, or the utc_start/utc_end time window) match the request; among applicable entries, later entries win per key; price keys absent from an entry inherit the base price. The top-level pricing keys always reflect the price that applies under default conditions.
+              items:
+                $ref: '#/components/schemas/PricingOverride'
+              type: array
             prompt:
               description: Price in USD per token for prompt (input) processing
               type: string
@@ -19065,6 +19715,12 @@ components:
         internal_reasoning:
           description: Price in USD per internal reasoning token
           type: string
+        overrides:
+          description: >-
+            Conditional overrides of the base pricing (e.g. long-context or time-based pricing). An entry applies when all of its condition fields (e.g. min_prompt_tokens, or the utc_start/utc_end time window) match the request; among applicable entries, later entries win per key; price keys absent from an entry inherit the base price. The top-level pricing keys always reflect the price that applies under default conditions.
+          items:
+            $ref: '#/components/schemas/PricingOverride'
+          type: array
         prompt:
           description: Price in USD per token for prompt (input) processing
           type: string
@@ -19211,6 +19867,18 @@ components:
       example:
         enabled: true
         summary: auto
+    ReasoningContext:
+      description: >-
+        Controls which reasoning is available to the model. `auto` uses the model default (same as omitting); `all_turns` includes reasoning from earlier turns passed in input; `current_turn` limits to the current turn only. Only supported by OpenAI GPT-5.6 and newer.
+      enum:
+        - auto
+        - all_turns
+        - current_turn
+        - null
+      example: all_turns
+      nullable: true
+      type: string
+      x-speakeasy-unknown-values: allow
     ReasoningDeltaEvent:
       allOf:
         - $ref: '#/components/schemas/BaseReasoningDeltaEvent'
@@ -19246,6 +19914,42 @@ components:
       required:
         - type
         - data
+      type: object
+    ReasoningDetailServerToolCall:
+      description: >-
+        Record of an OpenRouter server-tool invocation (e.g. openrouter:fusion), carried in reasoning_details so a prior tool call can be rehydrated into a later turn of the same conversation.
+      example:
+        arguments: '{"prompt":"Compare carbon tax proposals"}'
+        result: '{"status":"ok","models":["openai/gpt-4o"]}'
+        tool_call_id: call_abc123
+        tool_name: openrouter:fusion
+        type: reasoning.server_tool_call
+      properties:
+        arguments:
+          type: string
+        format:
+          $ref: '#/components/schemas/ReasoningFormat'
+        id:
+          nullable: true
+          type: string
+        index:
+          type: integer
+        result:
+          type: string
+        tool_call_id:
+          nullable: true
+          type: string
+        tool_name:
+          type: string
+        type:
+          enum:
+            - reasoning.server_tool_call
+          type: string
+      required:
+        - type
+        - tool_name
+        - arguments
+        - result
       type: object
     ReasoningDetailSummary:
       description: Reasoning detail summary schema
@@ -19302,6 +20006,7 @@ components:
       discriminator:
         mapping:
           reasoning.encrypted: '#/components/schemas/ReasoningDetailEncrypted'
+          reasoning.server_tool_call: '#/components/schemas/ReasoningDetailServerToolCall'
           reasoning.summary: '#/components/schemas/ReasoningDetailSummary'
           reasoning.text: '#/components/schemas/ReasoningDetailText'
         propertyName: type
@@ -19312,6 +20017,7 @@ components:
         - $ref: '#/components/schemas/ReasoningDetailSummary'
         - $ref: '#/components/schemas/ReasoningDetailEncrypted'
         - $ref: '#/components/schemas/ReasoningDetailText'
+        - $ref: '#/components/schemas/ReasoningDetailServerToolCall'
     ReasoningDoneEvent:
       allOf:
         - $ref: '#/components/schemas/BaseReasoningDoneEvent'
@@ -19374,6 +20080,17 @@ components:
           - text: Step by step analysis
             type: summary_text
         type: reasoning
+    ReasoningMode:
+      description: >-
+        Selects the reasoning mode. `standard` is the default; `pro` engages deeper reasoning on models that support it, billed at standard token rates. Only supported by OpenAI GPT-5.6 and newer.
+      enum:
+        - standard
+        - pro
+        - null
+      example: standard
+      nullable: true
+      type: string
+      x-speakeasy-unknown-values: allow
     ReasoningSummaryPartAddedEvent:
       allOf:
         - $ref: '#/components/schemas/BaseReasoningSummaryPartAddedEvent'
@@ -19660,6 +20377,7 @@ components:
             - empty_image_file
             - failed_to_download_image
             - image_file_not_found
+            - bio_policy
           type: string
           x-speakeasy-unknown-values: allow
         message:
@@ -19774,6 +20492,8 @@ components:
         prompt_cache_key:
           nullable: true
           type: string
+        prompt_cache_options:
+          $ref: '#/components/schemas/PromptCacheOptions'
         provider:
           $ref: '#/components/schemas/ProviderPreferences'
         reasoning:
@@ -19856,13 +20576,14 @@ components:
               - $ref: '#/components/schemas/ShellServerTool'
               - $ref: '#/components/schemas/ApplyPatchServerTool'
               - $ref: '#/components/schemas/CustomTool'
+              - $ref: '#/components/schemas/NamespaceTool'
               - $ref: '#/components/schemas/AdvisorServerTool_OpenRouter'
               - $ref: '#/components/schemas/SubagentServerTool_OpenRouter'
               - $ref: '#/components/schemas/DatetimeServerTool'
               - $ref: '#/components/schemas/FilesServerTool'
               - $ref: '#/components/schemas/FusionServerTool_OpenRouter'
               - $ref: '#/components/schemas/ImageGenerationServerTool_OpenRouter'
-              - $ref: '#/components/schemas/ChatSearchModelsServerTool'
+              - $ref: '#/components/schemas/SearchModelsServerTool_OpenRouter'
               - $ref: '#/components/schemas/WebFetchServerTool'
               - $ref: '#/components/schemas/WebSearchServerTool_OpenRouter'
               - $ref: '#/components/schemas/ApplyPatchServerTool_OpenRouter'
@@ -19959,6 +20680,22 @@ components:
       example: medium
       type: string
       x-speakeasy-unknown-values: allow
+    SearchModelsServerTool_OpenRouter:
+      description: 'OpenRouter built-in server tool: searches and filters AI models available on OpenRouter'
+      example:
+        parameters:
+          max_results: 5
+        type: openrouter:experimental__search_models
+      properties:
+        parameters:
+          $ref: '#/components/schemas/SearchModelsServerToolConfig'
+        type:
+          enum:
+            - openrouter:experimental__search_models
+          type: string
+      required:
+        - type
+      type: object
     SearchModelsServerToolConfig:
       description: Configuration for the openrouter:experimental__search_models server tool
       example:
@@ -19979,6 +20716,29 @@ components:
       example: medium
       type: string
       x-speakeasy-unknown-values: allow
+    ServerToolUseDetails:
+      description: Usage for server-side tool execution (e.g., web search)
+      example:
+        tool_calls_executed: 2
+        tool_calls_requested: 2
+        web_search_requests: 2
+      nullable: true
+      properties:
+        tool_calls_executed:
+          description: Number of OpenRouter server tool calls that executed and produced a result.
+          nullable: true
+          type: integer
+        tool_calls_requested:
+          description: >-
+            Total number of OpenRouter server-orchestrated tool calls the model requested, across all tool types. Provider-native tools (e.g. native web search) are not counted here.
+          nullable: true
+          type: integer
+        web_search_requests:
+          description: >-
+            Number of web searches performed by server-side tools. For server-orchestrated tool calls a web search is also counted in tool_calls_requested; provider-native web search may report web_search_requests only. Do not sum the two.
+          nullable: true
+          type: integer
+      type: object
     ServiceTier:
       enum:
         - auto
@@ -20206,10 +20966,10 @@ components:
       description: Text-to-speech request input
       example:
         input: Hello world
-        model: elevenlabs/eleven-turbo-v2
+        model: mistralai/voxtral-mini-tts-2603
         response_format: pcm
         speed: 1
-        voice: alloy
+        voice: en_paul_neutral
       properties:
         input:
           description: Text to synthesize
@@ -20217,7 +20977,7 @@ components:
           type: string
         model:
           description: TTS model identifier
-          example: elevenlabs/eleven-turbo-v2
+          example: mistralai/voxtral-mini-tts-2603
           type: string
         provider:
           description: Provider-specific passthrough configuration
@@ -20242,7 +21002,7 @@ components:
           type: number
         voice:
           description: Voice identifier (provider-specific).
-          example: alloy
+          example: en_paul_neutral
           type: string
       required:
         - model
@@ -20995,6 +21755,59 @@ components:
           items:
             $ref: '#/components/schemas/SubagentNestedTool'
           type: array
+      type: object
+    SubmitGenerationFeedbackRequest:
+      description: Structured feedback about a specific generation
+      example:
+        category: incorrect_response
+        comment: The model repeated the same paragraph three times.
+        generation_id: gen-3bhGkxlo4XFrqiabUM7NDtwDzWwG
+      properties:
+        category:
+          description: The category of feedback being reported
+          enum:
+            - latency
+            - incoherence
+            - incorrect_response
+            - formatting
+            - billing
+            - api_error
+            - other
+          example: incorrect_response
+          type: string
+          x-speakeasy-unknown-values: allow
+        comment:
+          description: An optional free-text comment describing the feedback
+          example: The model repeated the same paragraph three times.
+          maxLength: 1000
+          type: string
+        generation_id:
+          description: The generation to submit feedback on
+          example: gen-3bhGkxlo4XFrqiabUM7NDtwDzWwG
+          minLength: 1
+          type: string
+      required:
+        - generation_id
+        - category
+      type: object
+    SubmitGenerationFeedbackResponse:
+      description: Confirmation that the feedback was recorded
+      example:
+        data:
+          success: true
+      properties:
+        data:
+          properties:
+            success:
+              const: true
+              description: Whether the feedback was recorded
+              example: true
+              type: boolean
+          required:
+            - success
+          type: object
+      required:
+        - data
       type: object
     SupportedParameters:
       additionalProperties:
@@ -21862,7 +22675,7 @@ components:
         enforce_zdr:
           deprecated: true
           description: >-
-            Deprecated. Use enforce_zdr_anthropic, enforce_zdr_openai, enforce_zdr_google, and enforce_zdr_other instead. When provided, its value is copied into any of those per-provider fields that are not explicitly specified on the request.
+            Deprecated. Use enforce_zdr_anthropic, enforce_zdr_openai, enforce_zdr_google, enforce_zdr_xai, and enforce_zdr_other instead. When provided, its value is copied into any of those per-provider fields that are not explicitly specified on the request.
           example: true
           nullable: true
           type: boolean
@@ -21883,7 +22696,12 @@ components:
           type: boolean
         enforce_zdr_other:
           description: >-
-            Whether to enforce zero data retention for models that are not from Anthropic, OpenAI, or Google. Falls back to enforce_zdr when not provided.
+            Whether to enforce zero data retention for models that are not from Anthropic, OpenAI, Google, or xAI. Falls back to enforce_zdr when not provided.
+          example: true
+          nullable: true
+          type: boolean
+        enforce_zdr_xai:
+          description: Whether to enforce zero data retention for xAI models. Falls back to enforce_zdr when not provided.
           example: true
           nullable: true
           type: boolean
@@ -21938,6 +22756,7 @@ components:
           enforce_zdr_google: true
           enforce_zdr_openai: true
           enforce_zdr_other: true
+          enforce_zdr_xai: true
           id: 550e8400-e29b-41d4-a716-446655440000
           ignored_models: null
           ignored_providers: null
@@ -21984,7 +22803,7 @@ components:
           type: boolean
         filter_rules:
           allOf:
-            - $ref: '#/components/schemas/ObservabilityFilterRulesConfig'
+            - $ref: '#/components/schemas/ObservabilityFilterRulesConfigNullable'
             - description: Optional structured filter rules. `null` clears the rules. Omitting keeps the current value.
         name:
           description: Human-readable name for the destination.
@@ -22205,6 +23024,8 @@ components:
             is_byok:
               description: Whether a request was made using a Bring Your Own Key configuration
               type: boolean
+            server_tool_use_details:
+              $ref: '#/components/schemas/ServerToolUseDetails'
           type: object
       description: Token usage information for the response
       example:
@@ -23525,6 +24346,78 @@ paths:
                 start: '2025-01-01T00:00:00Z'
             schema:
               properties:
+                classifier_dimensions:
+                  description: >-
+                    Group results by custom classifier tags, breaking down metrics by the specified dimension values. Requires an active classifier on the workspace.
+                  properties:
+                    classifier_id:
+                      description: UUID of the classifier whose tags to group by.
+                      example: 550e8400-e29b-41d4-a716-446655440000
+                      format: uuid
+                      type: string
+                    dimension_names:
+                      items:
+                        description: >-
+                          Classifier dimension name (snake_case identifier). When exactly one name is provided, the response uses it as the column key; with multiple names or none, the response uses `clf_dimension_name`/`clf_dimension_value` columns.
+                        example: department
+                        type: string
+                      maxItems: 10
+                      type: array
+                    include_nulls:
+                      description: >-
+                        When true, also include generations that have no tag from this classifier. Defaults to false, which returns only classified generations.
+                      type: boolean
+                  required:
+                    - classifier_id
+                  type: object
+                classifier_filters:
+                  description: >-
+                    Filter results to generations with specific classifier tag values. Can be combined with classifier_dimensions (must use the same classifier_id) or used independently with standard dimensions.
+                  properties:
+                    classifier_id:
+                      description: >-
+                        UUID of the classifier whose tags to filter by. Must match classifier_dimensions.classifier_id when both are specified.
+                      example: 550e8400-e29b-41d4-a716-446655440000
+                      format: uuid
+                      type: string
+                    filters:
+                      items:
+                        properties:
+                          field:
+                            description: >-
+                              Classifier dimension name to filter on (snake_case identifier, e.g. "department", "work_type").
+                            example: department
+                            type: string
+                          operator:
+                            description: >-
+                              Filter operator. Only equality/set operators are supported (eq, neq, in, not_in) — ordered comparisons are not available because classification values are strings.
+                            example: eq
+                            type: string
+                          value:
+                            anyOf:
+                              - type: string
+                              - format: double
+                                type: number
+                              - items:
+                                  anyOf:
+                                    - type: string
+                                    - format: double
+                                      type: number
+                                type: array
+                            description: Filter value. Use a scalar (string or number) for eq/neq, or an array for in/not_in.
+                            example: Engineering
+                        required:
+                          - field
+                          - operator
+                          - value
+                        type: object
+                      maxItems: 10
+                      minItems: 1
+                      type: array
+                  required:
+                    - classifier_id
+                    - filters
+                  type: object
                 dimensions:
                   items:
                     description: Dimension to group by (up to 2). Use the /meta endpoint for available dimensions.
@@ -23735,10 +24628,10 @@ paths:
           application/json:
             example:
               input: Hello world
-              model: elevenlabs/eleven-turbo-v2
+              model: mistralai/voxtral-mini-tts-2603
               response_format: pcm
               speed: 1
-              voice: alloy
+              voice: en_paul_neutral
             schema:
               $ref: '#/components/schemas/SpeechRequest'
         required: true
@@ -24483,6 +25376,7 @@ paths:
           name: offset
           required: false
           schema:
+            default: 0
             description: Number of records to skip for pagination
             example: 0
             minimum: 0
@@ -24493,6 +25387,7 @@ paths:
           name: limit
           required: false
           schema:
+            default: 50
             description: Maximum number of records to return (max 100)
             example: 50
             maximum: 100
@@ -24539,6 +25434,7 @@ paths:
               - crusoe
               - darkbloom
               - decart
+              - deepgram
               - deepinfra
               - deepseek
               - dekallm
@@ -24559,9 +25455,11 @@ paths:
               - inflection
               - io-net
               - ionstream
+              - krea
               - liquid
               - mancer
               - mara
+              - meta
               - minimax
               - mistral
               - modelrun
@@ -24585,7 +25483,8 @@ paths:
               - recraft
               - reka
               - relace
-              - sakana-ai
+              - sail-research
+              - sakana
               - sambanova
               - seed
               - siliconflow
@@ -26060,27 +26959,7 @@ paths:
                         format: double
                         type: number
                       cost_details:
-                        description: Breakdown of upstream inference costs
-                        example:
-                          upstream_inference_completions_cost: 0.0004
-                          upstream_inference_cost: null
-                          upstream_inference_prompt_cost: 0.0008
-                        nullable: true
-                        properties:
-                          upstream_inference_completions_cost:
-                            format: double
-                            type: number
-                          upstream_inference_cost:
-                            format: double
-                            nullable: true
-                            type: number
-                          upstream_inference_prompt_cost:
-                            format: double
-                            type: number
-                        required:
-                          - upstream_inference_prompt_cost
-                          - upstream_inference_completions_cost
-                        type: object
+                        $ref: '#/components/schemas/CostDetails'
                       is_byok:
                         description: Whether a request was made using a Bring Your Own Key configuration
                         type: boolean
@@ -26242,6 +27121,32 @@ paths:
     get:
       description: Returns a list of all available embeddings models and their properties
       operationId: listEmbeddingsModels
+      parameters:
+        - description: Number of records to skip for pagination. When both offset and limit are omitted, the full list is returned
+          in: query
+          name: offset
+          required: false
+          schema:
+            default: 0
+            description: >-
+              Number of records to skip for pagination. When both offset and limit are omitted, the full list is returned
+            example: 0
+            minimum: 0
+            nullable: true
+            type: integer
+        - description: >-
+            Maximum number of records to return (max 1000). When both offset and limit are omitted, the full list is returned
+          in: query
+          name: limit
+          required: false
+          schema:
+            default: 500
+            description: >-
+              Maximum number of records to return (max 1000). When both offset and limit are omitted, the full list is returned
+            example: 500
+            maximum: 1000
+            minimum: 1
+            type: integer
       responses:
         '200':
           content:
@@ -26306,6 +27211,17 @@ paths:
       tags:
         - Embeddings
       x-speakeasy-name-override: listModels
+      x-speakeasy-pagination:
+        inputs:
+          - in: parameters
+            name: offset
+            type: offset
+          - in: parameters
+            name: limit
+            type: limit
+        outputs:
+          results: $.data
+        type: offsetLimit
     parameters:
       - $ref: "#/components/parameters/AppIdentifier"
       - $ref: "#/components/parameters/AppDisplayName"
@@ -27137,6 +28053,89 @@ paths:
       - $ref: "#/components/parameters/AppIdentifier"
       - $ref: "#/components/parameters/AppDisplayName"
       - $ref: "#/components/parameters/AppCategories"
+  /generation/feedback:
+    post:
+      description: >-
+        Submit structured feedback on a generation the authenticated user made. [Management key](/docs/guides/overview/auth/management-api-keys) required.
+      operationId: submitGenerationFeedback
+      requestBody:
+        content:
+          application/json:
+            example:
+              category: incorrect_response
+              comment: The model repeated the same paragraph three times.
+              generation_id: gen-3bhGkxlo4XFrqiabUM7NDtwDzWwG
+            schema:
+              $ref: '#/components/schemas/SubmitGenerationFeedbackRequest'
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              example:
+                data:
+                  success: true
+              schema:
+                $ref: '#/components/schemas/SubmitGenerationFeedbackResponse'
+          description: Feedback recorded successfully
+        '400':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 400
+                  message: Invalid request parameters
+              schema:
+                $ref: '#/components/schemas/BadRequestResponse'
+          description: Bad Request - Invalid request parameters or malformed input
+        '401':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 401
+                  message: Missing Authentication header
+              schema:
+                $ref: '#/components/schemas/UnauthorizedResponse'
+          description: Unauthorized - Authentication required or invalid credentials
+        '404':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 404
+                  message: Resource not found
+              schema:
+                $ref: '#/components/schemas/NotFoundResponse'
+          description: Not Found - Resource does not exist
+        '429':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 429
+                  message: Rate limit exceeded
+              schema:
+                $ref: '#/components/schemas/TooManyRequestsResponse'
+          description: Too Many Requests - Rate limit exceeded
+        '500':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 500
+                  message: Internal Server Error
+              schema:
+                $ref: '#/components/schemas/InternalServerResponse'
+          description: Internal Server Error - Unexpected server error
+      summary: Submit feedback for a generation
+      tags:
+        - Generations
+      x-speakeasy-name-override: submitFeedback
+    parameters:
+      - $ref: "#/components/parameters/AppIdentifier"
+      - $ref: "#/components/parameters/AppDisplayName"
+      - $ref: "#/components/parameters/AppCategories"
   /guardrails:
     get:
       description: >-
@@ -27148,6 +28147,7 @@ paths:
           name: offset
           required: false
           schema:
+            default: 0
             description: Number of records to skip for pagination
             example: 0
             minimum: 0
@@ -27158,6 +28158,7 @@ paths:
           name: limit
           required: false
           schema:
+            default: 50
             description: Maximum number of records to return (max 100)
             example: 50
             maximum: 100
@@ -27251,6 +28252,7 @@ paths:
               enforce_zdr_google: false
               enforce_zdr_openai: true
               enforce_zdr_other: false
+              enforce_zdr_xai: false
               ignored_models: null
               ignored_providers: null
               limit_usd: 50
@@ -27277,6 +28279,7 @@ paths:
                   enforce_zdr_google: false
                   enforce_zdr_openai: true
                   enforce_zdr_other: false
+                  enforce_zdr_xai: false
                   id: 550e8400-e29b-41d4-a716-446655440000
                   ignored_models: null
                   ignored_providers: null
@@ -27506,6 +28509,7 @@ paths:
                   enforce_zdr_google: true
                   enforce_zdr_openai: true
                   enforce_zdr_other: true
+                  enforce_zdr_xai: true
                   id: 550e8400-e29b-41d4-a716-446655440000
                   ignored_models: null
                   ignored_providers: null
@@ -27585,6 +28589,7 @@ paths:
           name: offset
           required: false
           schema:
+            default: 0
             description: Number of records to skip for pagination
             example: 0
             minimum: 0
@@ -27595,6 +28600,7 @@ paths:
           name: limit
           required: false
           schema:
+            default: 50
             description: Maximum number of records to return (max 100)
             example: 50
             maximum: 100
@@ -27843,6 +28849,7 @@ paths:
           name: offset
           required: false
           schema:
+            default: 0
             description: Number of records to skip for pagination
             example: 0
             minimum: 0
@@ -27853,6 +28860,7 @@ paths:
           name: limit
           required: false
           schema:
+            default: 50
             description: Maximum number of records to return (max 100)
             example: 50
             maximum: 100
@@ -28093,6 +29101,7 @@ paths:
           name: offset
           required: false
           schema:
+            default: 0
             description: Number of records to skip for pagination
             example: 0
             minimum: 0
@@ -28103,6 +29112,7 @@ paths:
           name: limit
           required: false
           schema:
+            default: 50
             description: Maximum number of records to return (max 100)
             example: 50
             maximum: 100
@@ -28175,6 +29185,7 @@ paths:
           name: offset
           required: false
           schema:
+            default: 0
             description: Number of records to skip for pagination
             example: 0
             minimum: 0
@@ -28185,6 +29196,7 @@ paths:
           name: limit
           required: false
           schema:
+            default: 50
             description: Maximum number of records to return (max 100)
             example: 50
             maximum: 100
@@ -30338,6 +31350,31 @@ paths:
     get:
       operationId: getModels
       parameters:
+        - description: Number of records to skip for pagination. When both offset and limit are omitted, the full list is returned
+          in: query
+          name: offset
+          required: false
+          schema:
+            default: 0
+            description: >-
+              Number of records to skip for pagination. When both offset and limit are omitted, the full list is returned
+            example: 0
+            minimum: 0
+            nullable: true
+            type: integer
+        - description: >-
+            Maximum number of records to return (max 1000). When both offset and limit are omitted, the full list is returned
+          in: query
+          name: limit
+          required: false
+          schema:
+            default: 500
+            description: >-
+              Maximum number of records to return (max 1000). When both offset and limit are omitted, the full list is returned
+            example: 500
+            maximum: 1000
+            minimum: 1
+            type: integer
         - description: Filter models by use case category
           in: query
           name: category
@@ -30425,8 +31462,7 @@ paths:
           schema:
             description: Minimum context length (tokens). Models with smaller context are excluded.
             example: 128000
-            exclusiveMinimum: true
-            minimum: 0
+            minimum: 1
             type: integer
         - description: Minimum prompt price in $/M tokens.
           in: query
@@ -30695,6 +31731,17 @@ paths:
       tags:
         - Models
       x-speakeasy-name-override: list
+      x-speakeasy-pagination:
+        inputs:
+          - in: parameters
+            name: offset
+            type: offset
+          - in: parameters
+            name: limit
+            type: limit
+        outputs:
+          results: $.data
+        type: offsetLimit
     parameters:
       - $ref: "#/components/parameters/AppIdentifier"
       - $ref: "#/components/parameters/AppDisplayName"
@@ -30879,6 +31926,32 @@ paths:
       description: >-
         List models filtered by user provider preferences, [privacy settings](https://openrouter.ai/docs/guides/privacy/provider-logging), and [guardrails](https://openrouter.ai/docs/guides/features/guardrails). If requesting through `eu.openrouter.ai/api/v1/...` the results will be filtered to models that satisfy [EU in-region routing](https://openrouter.ai/docs/guides/privacy/provider-logging#enterprise-eu-in-region-routing).
       operationId: listModelsUser
+      parameters:
+        - description: Number of records to skip for pagination. When both offset and limit are omitted, the full list is returned
+          in: query
+          name: offset
+          required: false
+          schema:
+            default: 0
+            description: >-
+              Number of records to skip for pagination. When both offset and limit are omitted, the full list is returned
+            example: 0
+            minimum: 0
+            nullable: true
+            type: integer
+        - description: >-
+            Maximum number of records to return (max 1000). When both offset and limit are omitted, the full list is returned
+          in: query
+          name: limit
+          required: false
+          schema:
+            default: 500
+            description: >-
+              Maximum number of records to return (max 1000). When both offset and limit are omitted, the full list is returned
+            example: 500
+            maximum: 1000
+            minimum: 1
+            type: integer
       responses:
         '200':
           content:
@@ -30902,7 +31975,7 @@ paths:
                     id: openai/gpt-4
                     knowledge_cutoff: null
                     links:
-                      details: /api/v1/models/openai/gpt-5.4/endpoints
+                      details: /api/v1/models/openai/gpt-4/endpoints
                     name: GPT-4
                     per_request_limits: null
                     pricing:
@@ -30958,6 +32031,17 @@ paths:
       tags:
         - Models
       x-speakeasy-name-override: listForUser
+      x-speakeasy-pagination:
+        inputs:
+          - in: parameters
+            name: offset
+            type: offset
+          - in: parameters
+            name: limit
+            type: limit
+        outputs:
+          results: $.data
+        type: offsetLimit
     parameters:
       - $ref: "#/components/parameters/AppIdentifier"
       - $ref: "#/components/parameters/AppDisplayName"
@@ -30973,6 +32057,7 @@ paths:
           name: offset
           required: false
           schema:
+            default: 0
             description: Number of records to skip for pagination
             example: 0
             minimum: 0
@@ -30983,6 +32068,7 @@ paths:
           name: limit
           required: false
           schema:
+            default: 50
             description: Maximum number of records to return (max 100)
             example: 50
             maximum: 100
@@ -31402,6 +32488,7 @@ paths:
           name: offset
           required: false
           schema:
+            default: 0
             description: Number of records to skip for pagination
             example: 0
             minimum: 0
@@ -31412,6 +32499,7 @@ paths:
           name: limit
           required: false
           schema:
+            default: 50
             description: Maximum number of records to return (max 100)
             example: 50
             maximum: 100
@@ -31537,6 +32625,7 @@ paths:
           name: offset
           required: false
           schema:
+            default: 0
             description: Number of records to skip for pagination
             example: 0
             minimum: 0
@@ -31547,6 +32636,7 @@ paths:
           name: limit
           required: false
           schema:
+            default: 50
             description: Maximum number of records to return (max 100)
             example: 50
             maximum: 100
@@ -32119,6 +33209,7 @@ paths:
           name: offset
           required: false
           schema:
+            default: 0
             description: Number of records to skip for pagination
             example: 0
             minimum: 0
@@ -32129,6 +33220,7 @@ paths:
           name: limit
           required: false
           schema:
+            default: 50
             description: Maximum number of records to return (max 100)
             example: 50
             maximum: 100
@@ -33760,6 +34852,7 @@ paths:
           name: offset
           required: false
           schema:
+            default: 0
             description: Number of records to skip for pagination
             example: 0
             minimum: 0
@@ -33770,6 +34863,7 @@ paths:
           name: limit
           required: false
           schema:
+            default: 50
             description: Maximum number of records to return (max 100)
             example: 50
             maximum: 100
@@ -34423,6 +35517,7 @@ paths:
           name: offset
           required: false
           schema:
+            default: 0
             description: Number of records to skip for pagination
             example: 0
             minimum: 0
@@ -34433,6 +35528,7 @@ paths:
           name: limit
           required: false
           schema:
+            default: 50
             description: Maximum number of records to return (max 100)
             example: 50
             maximum: 100
@@ -34613,7 +35709,7 @@ paths:
   /workspaces/{id}/members/remove:
     post:
       description: >-
-        Remove multiple members from a workspace. Members with active API keys in the workspace cannot be removed. [Management key](/docs/guides/overview/auth/management-api-keys) required.
+        Remove multiple members from a workspace. Members with active API keys in the workspace cannot be removed. SCIM-managed members cannot be removed; changes must be made in your identity provider. [Management key](/docs/guides/overview/auth/management-api-keys) required.
       operationId: bulkRemoveWorkspaceMembers
       parameters:
         - description: The workspace ID (UUID) or slug

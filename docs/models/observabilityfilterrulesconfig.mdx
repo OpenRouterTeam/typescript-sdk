@@ -10,13 +10,22 @@ Optional structured filter rules controlling which events are forwarded.
 import { ObservabilityFilterRulesConfig } from "@openrouter/sdk/models";
 
 let value: ObservabilityFilterRulesConfig = {
-  groups: [],
+  groups: [
+    {
+      rules: [
+        {
+          field: "model",
+          operator: "equals",
+        },
+      ],
+    },
+  ],
 };
 ```
 
 ## Fields
 
-| Field                                | Type                                 | Required                             | Description                          |
-| ------------------------------------ | ------------------------------------ | ------------------------------------ | ------------------------------------ |
-| `enabled`                            | *boolean*                            | :heavy_minus_sign:                   | N/A                                  |
-| `groups`                             | [models.Group](../models/group.mdx)[] | :heavy_check_mark:                   | N/A                                  |
+| Field                                                                              | Type                                                                               | Required                                                                           | Description                                                                        |
+| ---------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------- |
+| `enabled`                                                                          | *boolean*                                                                          | :heavy_minus_sign:                                                                 | N/A                                                                                |
+| `groups`                                                                           | [models.ObservabilityFilterRuleGroup](../models/observabilityfilterrulegroup.mdx)[] | :heavy_check_mark:                                                                 | N/A                                                                                |

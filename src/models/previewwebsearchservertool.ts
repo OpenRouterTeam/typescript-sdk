@@ -6,6 +6,7 @@
 import * as z from "zod/v4";
 import { remap as remap$ } from "../lib/primitives.js";
 import { safeParse } from "../lib/schemas.js";
+import { ClosedEnum } from "../types/enums.js";
 import { Result as SafeParseResult } from "../types/fp.js";
 import { SDKValidationError } from "./errors/sdkvalidationerror.js";
 import {
@@ -31,6 +32,13 @@ import {
   WebSearchEngineEnum$outboundSchema,
 } from "./websearchengineenum.js";
 
+export const PreviewWebSearchServerToolType = {
+  WebSearchPreview: "web_search_preview",
+} as const;
+export type PreviewWebSearchServerToolType = ClosedEnum<
+  typeof PreviewWebSearchServerToolType
+>;
+
 /**
  * Web search preview tool configuration
  */
@@ -48,9 +56,18 @@ export type PreviewWebSearchServerTool = {
    * Size of the search context for web search tools
    */
   searchContextSize?: SearchContextSizeEnum | undefined;
-  type: "web_search_preview";
+  type: PreviewWebSearchServerToolType;
   userLocation?: PreviewWebSearchUserLocation | null | undefined;
 };
+
+/** @internal */
+export const PreviewWebSearchServerToolType$inboundSchema: z.ZodEnum<
+  typeof PreviewWebSearchServerToolType
+> = z.enum(PreviewWebSearchServerToolType);
+/** @internal */
+export const PreviewWebSearchServerToolType$outboundSchema: z.ZodEnum<
+  typeof PreviewWebSearchServerToolType
+> = PreviewWebSearchServerToolType$inboundSchema;
 
 /** @internal */
 export const PreviewWebSearchServerTool$inboundSchema: z.ZodType<
@@ -61,7 +78,7 @@ export const PreviewWebSearchServerTool$inboundSchema: z.ZodType<
   filters: z.nullable(WebSearchDomainFilter$inboundSchema).optional(),
   max_results: z.int().optional(),
   search_context_size: SearchContextSizeEnum$inboundSchema.optional(),
-  type: z.literal("web_search_preview"),
+  type: PreviewWebSearchServerToolType$inboundSchema,
   user_location: z.nullable(PreviewWebSearchUserLocation$inboundSchema)
     .optional(),
 }).transform((v) => {
@@ -77,7 +94,7 @@ export type PreviewWebSearchServerTool$Outbound = {
   filters?: WebSearchDomainFilter$Outbound | null | undefined;
   max_results?: number | undefined;
   search_context_size?: string | undefined;
-  type: "web_search_preview";
+  type: string;
   user_location?: PreviewWebSearchUserLocation$Outbound | null | undefined;
 };
 
@@ -90,7 +107,7 @@ export const PreviewWebSearchServerTool$outboundSchema: z.ZodType<
   filters: z.nullable(WebSearchDomainFilter$outboundSchema).optional(),
   maxResults: z.int().optional(),
   searchContextSize: SearchContextSizeEnum$outboundSchema.optional(),
-  type: z.literal("web_search_preview"),
+  type: PreviewWebSearchServerToolType$outboundSchema,
   userLocation: z.nullable(PreviewWebSearchUserLocation$outboundSchema)
     .optional(),
 }).transform((v) => {

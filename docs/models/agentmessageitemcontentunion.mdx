@@ -1,0 +1,33 @@
+---
+title: "AgentMessageItemContentUnion"
+---
+
+## Supported Types
+
+### `models.InputText`
+
+```typescript
+const value: models.InputText = {
+  text: "Hello, how can I help you?",
+  type: "input_text",
+};
+```
+
+### `models.AgentMessageItemContentInputImage`
+
+```typescript
+const value: models.AgentMessageItemContentInputImage = {
+  detail: "auto",
+  type: "input_image",
+};
+```
+
+### `models.ContentEncryptedContent`
+
+```typescript
+const value: models.ContentEncryptedContent = {
+  encryptedContent: "<value>",
+  type: "encrypted_content",
+};
+```
+

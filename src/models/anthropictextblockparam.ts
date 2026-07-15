@@ -26,26 +26,26 @@ import {
   AnthropicCitationPageLocationParam$outboundSchema,
 } from "./anthropiccitationpagelocationparam.js";
 import {
-  AnthropicCitationSearchResultLocation,
-  AnthropicCitationSearchResultLocation$Outbound,
-  AnthropicCitationSearchResultLocation$outboundSchema,
-} from "./anthropiccitationsearchresultlocation.js";
+  AnthropicCitationSearchResultLocationParam,
+  AnthropicCitationSearchResultLocationParam$Outbound,
+  AnthropicCitationSearchResultLocationParam$outboundSchema,
+} from "./anthropiccitationsearchresultlocationparam.js";
 import {
-  AnthropicCitationWebSearchResultLocation,
-  AnthropicCitationWebSearchResultLocation$Outbound,
-  AnthropicCitationWebSearchResultLocation$outboundSchema,
-} from "./anthropiccitationwebsearchresultlocation.js";
+  AnthropicCitationWebSearchResultLocationParam,
+  AnthropicCitationWebSearchResultLocationParam$Outbound,
+  AnthropicCitationWebSearchResultLocationParam$outboundSchema,
+} from "./anthropiccitationwebsearchresultlocationparam.js";
 
 export type Citation =
   | AnthropicCitationCharLocationParam
   | AnthropicCitationContentBlockLocationParam
   | AnthropicCitationPageLocationParam
-  | AnthropicCitationSearchResultLocation
-  | AnthropicCitationWebSearchResultLocation;
+  | AnthropicCitationSearchResultLocationParam
+  | AnthropicCitationWebSearchResultLocationParam;
 
 export type AnthropicTextBlockParam = {
   /**
-   * Enable automatic prompt caching. When set at the top level, the system automatically applies cache breakpoints to the last cacheable block in the request. Currently supported for Anthropic Claude models.
+   * Enable automatic prompt caching. When set at the top level, the system automatically applies cache breakpoints to the last cacheable block in the request. When set on an individual content block, it marks an explicit cache breakpoint; block-level markers also work on OpenAI models that support explicit prompt caching — OpenRouter converts them to the provider's native format.
    */
   cacheControl?: AnthropicCacheControlDirective | undefined;
   citations?:
@@ -53,8 +53,8 @@ export type AnthropicTextBlockParam = {
       | AnthropicCitationCharLocationParam
       | AnthropicCitationContentBlockLocationParam
       | AnthropicCitationPageLocationParam
-      | AnthropicCitationSearchResultLocation
-      | AnthropicCitationWebSearchResultLocation
+      | AnthropicCitationSearchResultLocationParam
+      | AnthropicCitationWebSearchResultLocationParam
     >
     | null
     | undefined;
@@ -67,8 +67,8 @@ export type Citation$Outbound =
   | AnthropicCitationCharLocationParam$Outbound
   | AnthropicCitationContentBlockLocationParam$Outbound
   | AnthropicCitationPageLocationParam$Outbound
-  | AnthropicCitationSearchResultLocation$Outbound
-  | AnthropicCitationWebSearchResultLocation$Outbound;
+  | AnthropicCitationSearchResultLocationParam$Outbound
+  | AnthropicCitationWebSearchResultLocationParam$Outbound;
 
 /** @internal */
 export const Citation$outboundSchema: z.ZodType<Citation$Outbound, Citation> = z
@@ -76,8 +76,8 @@ export const Citation$outboundSchema: z.ZodType<Citation$Outbound, Citation> = z
     AnthropicCitationCharLocationParam$outboundSchema,
     AnthropicCitationContentBlockLocationParam$outboundSchema,
     AnthropicCitationPageLocationParam$outboundSchema,
-    AnthropicCitationSearchResultLocation$outboundSchema,
-    AnthropicCitationWebSearchResultLocation$outboundSchema,
+    AnthropicCitationSearchResultLocationParam$outboundSchema,
+    AnthropicCitationWebSearchResultLocationParam$outboundSchema,
   ]);
 
 export function citationToJSON(citation: Citation): string {
@@ -92,8 +92,8 @@ export type AnthropicTextBlockParam$Outbound = {
       | AnthropicCitationCharLocationParam$Outbound
       | AnthropicCitationContentBlockLocationParam$Outbound
       | AnthropicCitationPageLocationParam$Outbound
-      | AnthropicCitationSearchResultLocation$Outbound
-      | AnthropicCitationWebSearchResultLocation$Outbound
+      | AnthropicCitationSearchResultLocationParam$Outbound
+      | AnthropicCitationWebSearchResultLocationParam$Outbound
     >
     | null
     | undefined;
@@ -113,8 +113,8 @@ export const AnthropicTextBlockParam$outboundSchema: z.ZodType<
         AnthropicCitationCharLocationParam$outboundSchema,
         AnthropicCitationContentBlockLocationParam$outboundSchema,
         AnthropicCitationPageLocationParam$outboundSchema,
-        AnthropicCitationSearchResultLocation$outboundSchema,
-        AnthropicCitationWebSearchResultLocation$outboundSchema,
+        AnthropicCitationSearchResultLocationParam$outboundSchema,
+        AnthropicCitationWebSearchResultLocationParam$outboundSchema,
       ]),
     ),
   ).optional(),

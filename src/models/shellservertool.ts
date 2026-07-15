@@ -5,26 +5,41 @@
 
 import * as z from "zod/v4";
 import { safeParse } from "../lib/schemas.js";
+import { ClosedEnum } from "../types/enums.js";
 import { Result as SafeParseResult } from "../types/fp.js";
 import { SDKValidationError } from "./errors/sdkvalidationerror.js";
+
+export const ShellServerToolType = {
+  Shell: "shell",
+} as const;
+export type ShellServerToolType = ClosedEnum<typeof ShellServerToolType>;
 
 /**
  * Shell tool configuration
  */
 export type ShellServerTool = {
-  type: "shell";
+  type: ShellServerToolType;
 };
+
+/** @internal */
+export const ShellServerToolType$inboundSchema: z.ZodEnum<
+  typeof ShellServerToolType
+> = z.enum(ShellServerToolType);
+/** @internal */
+export const ShellServerToolType$outboundSchema: z.ZodEnum<
+  typeof ShellServerToolType
+> = ShellServerToolType$inboundSchema;
 
 /** @internal */
 export const ShellServerTool$inboundSchema: z.ZodType<
   ShellServerTool,
   unknown
 > = z.object({
-  type: z.literal("shell"),
+  type: ShellServerToolType$inboundSchema,
 });
 /** @internal */
 export type ShellServerTool$Outbound = {
-  type: "shell";
+  type: string;
 };
 
 /** @internal */
@@ -32,7 +47,7 @@ export const ShellServerTool$outboundSchema: z.ZodType<
   ShellServerTool$Outbound,
   ShellServerTool
 > = z.object({
-  type: z.literal("shell"),
+  type: ShellServerToolType$outboundSchema,
 });
 
 export function shellServerToolToJSON(

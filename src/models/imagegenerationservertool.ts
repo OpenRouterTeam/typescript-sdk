@@ -7,7 +7,7 @@ import * as z from "zod/v4";
 import { remap as remap$ } from "../lib/primitives.js";
 import { safeParse } from "../lib/schemas.js";
 import * as openEnums from "../types/enums.js";
-import { OpenEnum } from "../types/enums.js";
+import { ClosedEnum, OpenEnum } from "../types/enums.js";
 import { Result as SafeParseResult } from "../types/fp.js";
 import { SDKValidationError } from "./errors/sdkvalidationerror.js";
 
@@ -30,12 +30,6 @@ export type InputImageMask = {
   fileId?: string | undefined;
   imageUrl?: string | undefined;
 };
-
-export const ModelEnum = {
-  GptImage1: "gpt-image-1",
-  GptImage1Mini: "gpt-image-1-mini",
-} as const;
-export type ModelEnum = OpenEnum<typeof ModelEnum>;
 
 export const Moderation = {
   Auto: "auto",
@@ -62,13 +56,12 @@ export type ImageGenerationServerToolQuality = OpenEnum<
   typeof ImageGenerationServerToolQuality
 >;
 
-export const Size = {
-  OneThousandAndTwentyFourx1024: "1024x1024",
-  OneThousandAndTwentyFourx1536: "1024x1536",
-  OneThousandFiveHundredAndThirtySixx1024: "1536x1024",
-  Auto: "auto",
+export const ImageGenerationServerToolType = {
+  ImageGeneration: "image_generation",
 } as const;
-export type Size = OpenEnum<typeof Size>;
+export type ImageGenerationServerToolType = ClosedEnum<
+  typeof ImageGenerationServerToolType
+>;
 
 /**
  * Image generation tool configuration
@@ -77,14 +70,14 @@ export type ImageGenerationServerTool = {
   background?: ImageGenerationServerToolBackground | undefined;
   inputFidelity?: InputFidelity | null | undefined;
   inputImageMask?: InputImageMask | undefined;
-  model?: ModelEnum | undefined;
+  model?: string | undefined;
   moderation?: Moderation | undefined;
   outputCompression?: number | undefined;
   outputFormat?: ImageGenerationServerToolOutputFormat | undefined;
   partialImages?: number | undefined;
   quality?: ImageGenerationServerToolQuality | undefined;
-  size?: Size | undefined;
-  type: "image_generation";
+  size?: string | undefined;
+  type: ImageGenerationServerToolType;
 };
 
 /** @internal */
@@ -150,13 +143,6 @@ export function inputImageMaskFromJSON(
 }
 
 /** @internal */
-export const ModelEnum$inboundSchema: z.ZodType<ModelEnum, unknown> = openEnums
-  .inboundSchema(ModelEnum);
-/** @internal */
-export const ModelEnum$outboundSchema: z.ZodType<string, ModelEnum> = openEnums
-  .outboundSchema(ModelEnum);
-
-/** @internal */
 export const Moderation$inboundSchema: z.ZodType<Moderation, unknown> =
   openEnums.inboundSchema(Moderation);
 /** @internal */
@@ -186,11 +172,13 @@ export const ImageGenerationServerToolQuality$outboundSchema: z.ZodType<
 > = openEnums.outboundSchema(ImageGenerationServerToolQuality);
 
 /** @internal */
-export const Size$inboundSchema: z.ZodType<Size, unknown> = openEnums
-  .inboundSchema(Size);
+export const ImageGenerationServerToolType$inboundSchema: z.ZodEnum<
+  typeof ImageGenerationServerToolType
+> = z.enum(ImageGenerationServerToolType);
 /** @internal */
-export const Size$outboundSchema: z.ZodType<string, Size> = openEnums
-  .outboundSchema(Size);
+export const ImageGenerationServerToolType$outboundSchema: z.ZodEnum<
+  typeof ImageGenerationServerToolType
+> = ImageGenerationServerToolType$inboundSchema;
 
 /** @internal */
 export const ImageGenerationServerTool$inboundSchema: z.ZodType<
@@ -200,14 +188,14 @@ export const ImageGenerationServerTool$inboundSchema: z.ZodType<
   background: ImageGenerationServerToolBackground$inboundSchema.optional(),
   input_fidelity: z.nullable(InputFidelity$inboundSchema).optional(),
   input_image_mask: z.lazy(() => InputImageMask$inboundSchema).optional(),
-  model: ModelEnum$inboundSchema.optional(),
+  model: z.string().optional(),
   moderation: Moderation$inboundSchema.optional(),
   output_compression: z.int().optional(),
   output_format: ImageGenerationServerToolOutputFormat$inboundSchema.optional(),
   partial_images: z.int().optional(),
   quality: ImageGenerationServerToolQuality$inboundSchema.optional(),
-  size: Size$inboundSchema.optional(),
-  type: z.literal("image_generation"),
+  size: z.string().optional(),
+  type: ImageGenerationServerToolType$inboundSchema,
 }).transform((v) => {
   return remap$(v, {
     "input_fidelity": "inputFidelity",
@@ -229,7 +217,7 @@ export type ImageGenerationServerTool$Outbound = {
   partial_images?: number | undefined;
   quality?: string | undefined;
   size?: string | undefined;
-  type: "image_generation";
+  type: string;
 };
 
 /** @internal */
@@ -240,14 +228,14 @@ export const ImageGenerationServerTool$outboundSchema: z.ZodType<
   background: ImageGenerationServerToolBackground$outboundSchema.optional(),
   inputFidelity: z.nullable(InputFidelity$outboundSchema).optional(),
   inputImageMask: z.lazy(() => InputImageMask$outboundSchema).optional(),
-  model: ModelEnum$outboundSchema.optional(),
+  model: z.string().optional(),
   moderation: Moderation$outboundSchema.optional(),
   outputCompression: z.int().optional(),
   outputFormat: ImageGenerationServerToolOutputFormat$outboundSchema.optional(),
   partialImages: z.int().optional(),
   quality: ImageGenerationServerToolQuality$outboundSchema.optional(),
-  size: Size$outboundSchema.optional(),
-  type: z.literal("image_generation"),
+  size: z.string().optional(),
+  type: ImageGenerationServerToolType$outboundSchema,
 }).transform((v) => {
   return remap$(v, {
     inputFidelity: "input_fidelity",

@@ -146,6 +146,22 @@ const value: models.CustomTool = {
 };
 ```
 
+### `models.NamespaceTool`
+
+```typescript
+const value: models.NamespaceTool = {
+  description: "Tools for spawning and managing sub-agents.",
+  name: "multi_agent_v1",
+  tools: [
+    {
+      name: "spawn_agent",
+      type: "function",
+    },
+  ],
+  type: "namespace",
+};
+```
+
 ### `models.AdvisorServerToolOpenRouter`
 
 ```typescript
@@ -194,10 +210,10 @@ const value: models.ImageGenerationServerToolOpenRouter = {
 };
 ```
 
-### `models.ChatSearchModelsServerTool`
+### `models.SearchModelsServerToolOpenRouter`
 
 ```typescript
-const value: models.ChatSearchModelsServerTool = {
+const value: models.SearchModelsServerToolOpenRouter = {
   type: "openrouter:experimental__search_models",
 };
 ```

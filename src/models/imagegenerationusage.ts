@@ -8,6 +8,10 @@ import { remap as remap$ } from "../lib/primitives.js";
 import { safeParse } from "../lib/schemas.js";
 import { Result as SafeParseResult } from "../types/fp.js";
 import {
+  AnthropicCacheCreation,
+  AnthropicCacheCreation$inboundSchema,
+} from "./anthropiccachecreation.js";
+import {
   AnthropicSpeed,
   AnthropicSpeed$inboundSchema,
 } from "./anthropicspeed.js";
@@ -81,6 +85,7 @@ export type ServerToolUse = {
  * Token and cost usage for the image generation request, when available
  */
 export type ImageGenerationUsage = {
+  cacheCreation?: AnthropicCacheCreation | null | undefined;
   /**
    * The tokens generated
    */
@@ -223,6 +228,7 @@ export const ImageGenerationUsage$inboundSchema: z.ZodType<
   ImageGenerationUsage,
   unknown
 > = z.object({
+  cache_creation: z.nullable(AnthropicCacheCreation$inboundSchema).optional(),
   completion_tokens: z.int(),
   completion_tokens_details: z.nullable(
     z.lazy(() => ImageGenerationUsageCompletionTokensDetails$inboundSchema),
@@ -243,6 +249,7 @@ export const ImageGenerationUsage$inboundSchema: z.ZodType<
   total_tokens: z.int(),
 }).transform((v) => {
   return remap$(v, {
+    "cache_creation": "cacheCreation",
     "completion_tokens": "completionTokens",
     "completion_tokens_details": "completionTokensDetails",
     "cost_details": "costDetails",

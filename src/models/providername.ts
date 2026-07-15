@@ -8,6 +8,7 @@ import * as openEnums from "../types/enums.js";
 import { OpenEnum } from "../types/enums.js";
 
 export const ProviderName = {
+  Meta: "Meta",
   AkashML: "AkashML",
   Ai21: "AI21",
   AionLabs: "AionLabs",
@@ -34,6 +35,7 @@ export const ProviderName = {
   Crusoe: "Crusoe",
   Darkbloom: "Darkbloom",
   Decart: "Decart",
+  Deepgram: "Deepgram",
   DeepInfra: "DeepInfra",
   DeepSeek: "DeepSeek",
   DekaLLM: "DekaLLM",
@@ -79,6 +81,7 @@ export const ProviderName = {
   Recraft: "Recraft",
   Reka: "Reka",
   Relace: "Relace",
+  SailResearch: "Sail Research",
   SakanaAI: "Sakana AI",
   SambaNova: "SambaNova",
   Seed: "Seed",
@@ -95,6 +98,7 @@ export const ProviderName = {
   Wafer: "Wafer",
   WandB: "WandB",
   Quiver: "Quiver",
+  Krea: "Krea",
   Xiaomi: "Xiaomi",
   XAI: "xAI",
   ZAi: "Z.AI",
