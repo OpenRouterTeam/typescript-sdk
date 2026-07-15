@@ -28,7 +28,7 @@ export type ShellServerToolConfig = {
    */
   environment?: ShellServerToolEnvironment | undefined;
   /**
-   * How long (in seconds) the container stays warm after its last command before sleeping, freeing its capacity slot. Idle-based: each command renews the timer. Defaults to 900 (15 minutes); capped at 2592000 (30 days).
+   * How long (in seconds) the container stays warm after its last command before sleeping, freeing its capacity slot. Idle-based: each command renews the timer. Defaults to 900 (15 minutes); capped at 7200 (2 hours).
    */
   sleepAfterSeconds?: number | undefined;
 };
