@@ -43,6 +43,7 @@ export const BYOKProviderSlug = {
   Digitalocean: "digitalocean",
   Featherless: "featherless",
   Fireworks: "fireworks",
+  FishAudio: "fish-audio",
   Friendli: "friendli",
   Gmicloud: "gmicloud",
   GoogleAiStudio: "google-ai-studio",

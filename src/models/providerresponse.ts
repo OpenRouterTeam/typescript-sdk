@@ -77,6 +77,7 @@ export const ProviderResponseProviderName = {
   DigitalOcean: "DigitalOcean",
   Featherless: "Featherless",
   Fireworks: "Fireworks",
+  FishAudio: "FishAudio",
   Friendli: "Friendli",
   GMICloud: "GMICloud",
   Google: "Google",
