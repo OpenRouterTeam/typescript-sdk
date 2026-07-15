@@ -98,6 +98,7 @@ export const ProviderName = {
   Wafer: "Wafer",
   WandB: "WandB",
   Quiver: "Quiver",
+  Krea: "Krea",
   Xiaomi: "Xiaomi",
   XAI: "xAI",
   ZAi: "Z.AI",
