@@ -60,8 +60,7 @@ export type EasyInputMessageContentUnion2 =
     | InputAudio
     | InputVideo
   >
-  | string
-  | any;
+  | string;
 
 export const EasyInputMessagePhaseFinalAnswer = {
   FinalAnswer: "final_answer",
@@ -82,8 +81,7 @@ export type EasyInputMessagePhaseCommentary = ClosedEnum<
  */
 export type EasyInputMessagePhaseUnion =
   | EasyInputMessagePhaseCommentary
-  | EasyInputMessagePhaseFinalAnswer
-  | any;
+  | EasyInputMessagePhaseFinalAnswer;
 
 export const EasyInputMessageRoleDeveloper = {
   Developer: "developer",
@@ -136,7 +134,6 @@ export type EasyInputMessage = {
       | InputVideo
     >
     | string
-    | any
     | null
     | undefined;
   /**
@@ -145,7 +142,6 @@ export type EasyInputMessage = {
   phase?:
     | EasyInputMessagePhaseCommentary
     | EasyInputMessagePhaseFinalAnswer
-    | any
     | null
     | undefined;
   role:
@@ -232,8 +228,7 @@ export type EasyInputMessageContentUnion2$Outbound =
     | InputAudio$Outbound
     | InputVideo$Outbound
   >
-  | string
-  | any;
+  | string;
 
 /** @internal */
 export const EasyInputMessageContentUnion2$outboundSchema: z.ZodType<
@@ -248,7 +243,6 @@ export const EasyInputMessageContentUnion2$outboundSchema: z.ZodType<
     InputVideo$outboundSchema,
   ])),
   z.string(),
-  z.any(),
 ]);
 
 export function easyInputMessageContentUnion2ToJSON(
@@ -272,7 +266,7 @@ export const EasyInputMessagePhaseCommentary$outboundSchema: z.ZodEnum<
 > = z.enum(EasyInputMessagePhaseCommentary);
 
 /** @internal */
-export type EasyInputMessagePhaseUnion$Outbound = string | string | any;
+export type EasyInputMessagePhaseUnion$Outbound = string | string;
 
 /** @internal */
 export const EasyInputMessagePhaseUnion$outboundSchema: z.ZodType<
@@ -281,7 +275,6 @@ export const EasyInputMessagePhaseUnion$outboundSchema: z.ZodType<
 > = z.union([
   EasyInputMessagePhaseCommentary$outboundSchema,
   EasyInputMessagePhaseFinalAnswer$outboundSchema,
-  z.any(),
 ]);
 
 export function easyInputMessagePhaseUnionToJSON(
@@ -354,10 +347,9 @@ export type EasyInputMessage$Outbound = {
       | InputVideo$Outbound
     >
     | string
-    | any
     | null
     | undefined;
-  phase?: string | string | any | null | undefined;
+  phase?: string | string | null | undefined;
   role: string | string | string | string;
   type?: string | undefined;
 };
@@ -377,14 +369,12 @@ export const EasyInputMessage$outboundSchema: z.ZodType<
         InputVideo$outboundSchema,
       ])),
       z.string(),
-      z.any(),
     ]),
   ).optional(),
   phase: z.nullable(
     z.union([
       EasyInputMessagePhaseCommentary$outboundSchema,
       EasyInputMessagePhaseFinalAnswer$outboundSchema,
-      z.any(),
     ]),
   ).optional(),
   role: z.union([
