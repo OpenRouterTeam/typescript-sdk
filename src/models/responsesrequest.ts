@@ -176,10 +176,21 @@ import {
   ProviderPreferences$outboundSchema,
 } from "./providerpreferences.js";
 import {
-  ReasoningConfig,
-  ReasoningConfig$Outbound,
-  ReasoningConfig$outboundSchema,
-} from "./reasoningconfig.js";
+  ReasoningContext,
+  ReasoningContext$outboundSchema,
+} from "./reasoningcontext.js";
+import {
+  ReasoningEffort,
+  ReasoningEffort$outboundSchema,
+} from "./reasoningeffort.js";
+import {
+  ReasoningMode,
+  ReasoningMode$outboundSchema,
+} from "./reasoningmode.js";
+import {
+  ReasoningSummaryVerbosity,
+  ReasoningSummaryVerbosity$outboundSchema,
+} from "./reasoningsummaryverbosity.js";
 import {
   ResponseHealingPlugin,
   ResponseHealingPlugin$Outbound,
@@ -266,6 +277,21 @@ export type ResponsesRequestPlugin =
   | WebSearchPlugin
   | WebFetchPlugin;
 
+export type ReasoningConfig = {
+  /**
+   * Controls which reasoning is available to the model. `auto` uses the model default (same as omitting); `all_turns` includes reasoning from earlier turns passed in input; `current_turn` limits to the current turn only. Only supported by OpenAI GPT-5.6 and newer.
+   */
+  context?: ReasoningContext | null | undefined;
+  effort?: ReasoningEffort | null | undefined;
+  /**
+   * Selects the reasoning mode. `standard` is the default; `pro` engages deeper reasoning on models that support it, billed at standard token rates. Only supported by OpenAI GPT-5.6 and newer.
+   */
+  mode?: ReasoningMode | null | undefined;
+  summary?: ReasoningSummaryVerbosity | null | undefined;
+  enabled?: boolean | null | undefined;
+  maxTokens?: number | null | undefined;
+};
+
 export const ResponsesRequestServiceTier = {
   Auto: "auto",
   Default: "default",
@@ -283,7 +309,7 @@ export type ResponsesRequestServiceTier = OpenEnum<
 export type ResponsesRequestToolFunction = {
   description?: string | null | undefined;
   name: string;
-  parameters: { [k: string]: any | null } | null;
+  parameters: { [k: string]: any } | null;
   strict?: boolean | null | undefined;
   type: "function";
 };
@@ -380,7 +406,7 @@ export type ResponsesRequest = {
   /**
    * Not supported. The Responses API is stateless: no responses are stored, so a previous response cannot be referenced. Requests with a non-null value are rejected with a 400 error. Send the full conversation history in `input` instead.
    */
-  previousResponseId?: any | null | undefined;
+  previousResponseId?: any | undefined;
   prompt?: StoredPromptTemplate | null | undefined;
   promptCacheKey?: string | null | undefined;
   /**
@@ -501,6 +527,39 @@ export function responsesRequestPluginToJSON(
 }
 
 /** @internal */
+export type ReasoningConfig$Outbound = {
+  context?: string | null | undefined;
+  effort?: string | null | undefined;
+  mode?: string | null | undefined;
+  summary?: string | null | undefined;
+  enabled?: boolean | null | undefined;
+  max_tokens?: number | null | undefined;
+};
+
+/** @internal */
+export const ReasoningConfig$outboundSchema: z.ZodType<
+  ReasoningConfig$Outbound,
+  ReasoningConfig
+> = z.object({
+  context: z.nullable(ReasoningContext$outboundSchema).optional(),
+  effort: z.nullable(ReasoningEffort$outboundSchema).optional(),
+  mode: z.nullable(ReasoningMode$outboundSchema).optional(),
+  summary: z.nullable(ReasoningSummaryVerbosity$outboundSchema).optional(),
+  enabled: z.nullable(z.boolean()).optional(),
+  maxTokens: z.nullable(z.int()).optional(),
+}).transform((v) => {
+  return remap$(v, {
+    maxTokens: "max_tokens",
+  });
+});
+
+export function reasoningConfigToJSON(
+  reasoningConfig: ReasoningConfig,
+): string {
+  return JSON.stringify(ReasoningConfig$outboundSchema.parse(reasoningConfig));
+}
+
+/** @internal */
 export const ResponsesRequestServiceTier$outboundSchema: z.ZodType<
   string,
   ResponsesRequestServiceTier
@@ -510,7 +569,7 @@ export const ResponsesRequestServiceTier$outboundSchema: z.ZodType<
 export type ResponsesRequestToolFunction$Outbound = {
   description?: string | null | undefined;
   name: string;
-  parameters: { [k: string]: any | null } | null;
+  parameters: { [k: string]: any } | null;
   strict?: boolean | null | undefined;
   type: "function";
 };
@@ -522,7 +581,7 @@ export const ResponsesRequestToolFunction$outboundSchema: z.ZodType<
 > = z.object({
   description: z.nullable(z.string()).optional(),
   name: z.string(),
-  parameters: z.nullable(z.record(z.string(), z.nullable(z.any()))),
+  parameters: z.nullable(z.record(z.string(), z.any())),
   strict: z.nullable(z.boolean()).optional(),
   type: z.literal("function"),
 });
@@ -692,7 +751,7 @@ export type ResponsesRequest$Outbound = {
     >
     | undefined;
   presence_penalty?: number | null | undefined;
-  previous_response_id?: any | null | undefined;
+  previous_response_id?: any | undefined;
   prompt?: StoredPromptTemplate$Outbound | null | undefined;
   prompt_cache_key?: string | null | undefined;
   prompt_cache_options?: PromptCacheOptions$Outbound | null | undefined;
@@ -794,12 +853,13 @@ export const ResponsesRequest$outboundSchema: z.ZodType<
     ]),
   ).optional(),
   presencePenalty: z.nullable(z.number()).optional(),
-  previousResponseId: z.nullable(z.any()).optional(),
+  previousResponseId: z.any().optional(),
   prompt: z.nullable(StoredPromptTemplate$outboundSchema).optional(),
   promptCacheKey: z.nullable(z.string()).optional(),
   promptCacheOptions: z.nullable(PromptCacheOptions$outboundSchema).optional(),
   provider: z.nullable(ProviderPreferences$outboundSchema).optional(),
-  reasoning: z.nullable(ReasoningConfig$outboundSchema).optional(),
+  reasoning: z.nullable(z.lazy(() => ReasoningConfig$outboundSchema))
+    .optional(),
   safetyIdentifier: z.nullable(z.string()).optional(),
   serviceTier: z.nullable(
     ResponsesRequestServiceTier$outboundSchema.default("auto"),

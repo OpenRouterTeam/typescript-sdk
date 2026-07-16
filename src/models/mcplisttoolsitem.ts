@@ -8,9 +8,9 @@ import { remap as remap$ } from "../lib/primitives.js";
 import { ClosedEnum } from "../types/enums.js";
 
 export type McpListToolsItemTool = {
-  annotations?: any | null | undefined;
+  annotations?: any | undefined;
   description?: string | null | undefined;
-  inputSchema: { [k: string]: any | null };
+  inputSchema: { [k: string]: any };
   name: string;
 };
 
@@ -32,9 +32,9 @@ export type McpListToolsItem = {
 
 /** @internal */
 export type McpListToolsItemTool$Outbound = {
-  annotations?: any | null | undefined;
+  annotations?: any | undefined;
   description?: string | null | undefined;
-  input_schema: { [k: string]: any | null };
+  input_schema: { [k: string]: any };
   name: string;
 };
 
@@ -43,9 +43,9 @@ export const McpListToolsItemTool$outboundSchema: z.ZodType<
   McpListToolsItemTool$Outbound,
   McpListToolsItemTool
 > = z.object({
-  annotations: z.nullable(z.any()).optional(),
+  annotations: z.any().optional(),
   description: z.nullable(z.string()).optional(),
-  inputSchema: z.record(z.string(), z.nullable(z.any())),
+  inputSchema: z.record(z.string(), z.any()),
   name: z.string(),
 }).transform((v) => {
   return remap$(v, {
