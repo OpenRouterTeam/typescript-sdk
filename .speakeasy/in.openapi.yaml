@@ -20619,8 +20619,11 @@ components:
           nullable: true
           type: number
         previous_response_id:
+          description: >-
+            Not supported. The Responses API is stateless: no responses are stored, so a previous response cannot be
+            referenced. Requests with a non-null value are rejected with a 400 error. Send the full conversation history
+            in `input` instead.
           nullable: true
-          type: string
         prompt:
           $ref: '#/components/schemas/StoredPromptTemplate'
         prompt_cache_key:
