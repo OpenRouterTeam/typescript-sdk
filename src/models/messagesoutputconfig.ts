@@ -36,7 +36,7 @@ export type MessagesOutputConfigTypeJSONSchema = ClosedEnum<
  * A schema to specify Claude's output format in responses. See [structured outputs](https://platform.claude.com/docs/en/build-with-claude/structured-outputs).
  */
 export type MessagesOutputConfigFormat = {
-  schema: { [k: string]: any | null };
+  schema: { [k: string]: any };
   type: MessagesOutputConfigTypeJSONSchema;
 };
 
@@ -85,7 +85,7 @@ export const MessagesOutputConfigTypeJSONSchema$outboundSchema: z.ZodEnum<
 
 /** @internal */
 export type MessagesOutputConfigFormat$Outbound = {
-  schema: { [k: string]: any | null };
+  schema: { [k: string]: any };
   type: string;
 };
 
@@ -94,7 +94,7 @@ export const MessagesOutputConfigFormat$outboundSchema: z.ZodType<
   MessagesOutputConfigFormat$Outbound,
   MessagesOutputConfigFormat
 > = z.object({
-  schema: z.record(z.string(), z.nullable(z.any())),
+  schema: z.record(z.string(), z.any()),
   type: MessagesOutputConfigTypeJSONSchema$outboundSchema,
 });
 
