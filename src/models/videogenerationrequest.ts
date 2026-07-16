@@ -155,6 +155,7 @@ export type VideoGenerationRequestOptions = {
   streamlake?: { [k: string]: any | null } | undefined;
   switchpoint?: { [k: string]: any | null } | undefined;
   targon?: { [k: string]: any | null } | undefined;
+  tencent?: { [k: string]: any | null } | undefined;
   tenstorrent?: { [k: string]: any | null } | undefined;
   together?: { [k: string]: any | null } | undefined;
   togetherLite?: { [k: string]: any | null } | undefined;
@@ -358,6 +359,7 @@ export type VideoGenerationRequestOptions$Outbound = {
   streamlake?: { [k: string]: any | null } | undefined;
   switchpoint?: { [k: string]: any | null } | undefined;
   targon?: { [k: string]: any | null } | undefined;
+  tencent?: { [k: string]: any | null } | undefined;
   tenstorrent?: { [k: string]: any | null } | undefined;
   together?: { [k: string]: any | null } | undefined;
   "together-lite"?: { [k: string]: any | null } | undefined;
@@ -488,6 +490,7 @@ export const VideoGenerationRequestOptions$outboundSchema: z.ZodType<
   streamlake: z.record(z.string(), z.nullable(z.any())).optional(),
   switchpoint: z.record(z.string(), z.nullable(z.any())).optional(),
   targon: z.record(z.string(), z.nullable(z.any())).optional(),
+  tencent: z.record(z.string(), z.nullable(z.any())).optional(),
   tenstorrent: z.record(z.string(), z.nullable(z.any())).optional(),
   together: z.record(z.string(), z.nullable(z.any())).optional(),
   togetherLite: z.record(z.string(), z.nullable(z.any())).optional(),
