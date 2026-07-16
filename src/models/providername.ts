@@ -8,7 +8,6 @@ import * as openEnums from "../types/enums.js";
 import { OpenEnum } from "../types/enums.js";
 
 export const ProviderName = {
-  Meta: "Meta",
   AkashML: "AkashML",
   Ai21: "AI21",
   AionLabs: "AionLabs",
@@ -59,6 +58,7 @@ export const ProviderName = {
   Liquid: "Liquid",
   Mara: "Mara",
   Mancer2: "Mancer 2",
+  Meta: "Meta",
   Minimax: "Minimax",
   ModelRun: "ModelRun",
   Mistral: "Mistral",
@@ -91,6 +91,7 @@ export const ProviderName = {
   Stealth: "Stealth",
   StreamLake: "StreamLake",
   Switchpoint: "Switchpoint",
+  Tencent: "Tencent",
   Tenstorrent: "Tenstorrent",
   Together: "Together",
   Upstage: "Upstage",

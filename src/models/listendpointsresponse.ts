@@ -6,12 +6,11 @@
 import * as z from "zod/v4";
 import { remap as remap$ } from "../lib/primitives.js";
 import { safeParse } from "../lib/schemas.js";
-import * as openEnums from "../types/enums.js";
-import { OpenEnum } from "../types/enums.js";
 import { Result as SafeParseResult } from "../types/fp.js";
 import { SDKValidationError } from "./errors/sdkvalidationerror.js";
 import { InputModality, InputModality$inboundSchema } from "./inputmodality.js";
 import { InstructType, InstructType$inboundSchema } from "./instructtype.js";
+import { ModelGroup, ModelGroup$inboundSchema } from "./modelgroup.js";
 import {
   OutputModality,
   OutputModality$inboundSchema,
@@ -20,36 +19,6 @@ import {
   PublicEndpoint,
   PublicEndpoint$inboundSchema,
 } from "./publicendpoint.js";
-
-/**
- * Tokenizer type used by the model
- */
-export const Tokenizer = {
-  Router: "Router",
-  Media: "Media",
-  Other: "Other",
-  Gpt: "GPT",
-  Claude: "Claude",
-  Gemini: "Gemini",
-  Gemma: "Gemma",
-  Grok: "Grok",
-  Cohere: "Cohere",
-  Nova: "Nova",
-  Qwen: "Qwen",
-  Yi: "Yi",
-  DeepSeek: "DeepSeek",
-  Mistral: "Mistral",
-  Llama2: "Llama2",
-  Llama3: "Llama3",
-  Llama4: "Llama4",
-  PaLM: "PaLM",
-  Rwkv: "RWKV",
-  Qwen3: "Qwen3",
-} as const;
-/**
- * Tokenizer type used by the model
- */
-export type Tokenizer = OpenEnum<typeof Tokenizer>;
 
 /**
  * Model architecture information
@@ -71,7 +40,7 @@ export type Architecture = {
    * Supported output modalities
    */
   outputModalities: Array<OutputModality>;
-  tokenizer: Tokenizer | null;
+  tokenizer: ModelGroup | null;
 };
 
 /**
@@ -102,17 +71,13 @@ export type ListEndpointsResponse = {
 };
 
 /** @internal */
-export const Tokenizer$inboundSchema: z.ZodType<Tokenizer, unknown> = openEnums
-  .inboundSchema(Tokenizer);
-
-/** @internal */
 export const Architecture$inboundSchema: z.ZodType<Architecture, unknown> = z
   .object({
     input_modalities: z.array(InputModality$inboundSchema),
     instruct_type: z.nullable(InstructType$inboundSchema),
     modality: z.nullable(z.string()),
     output_modalities: z.array(OutputModality$inboundSchema),
-    tokenizer: z.nullable(Tokenizer$inboundSchema),
+    tokenizer: z.nullable(ModelGroup$inboundSchema),
   }).transform((v) => {
     return remap$(v, {
       "input_modalities": "inputModalities",
