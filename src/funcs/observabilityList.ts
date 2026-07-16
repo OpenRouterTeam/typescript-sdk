@@ -48,6 +48,7 @@ export function observabilityList(
   PageIterator<
     Result<
       operations.ListObservabilityDestinationsResponse,
+      | errors.BadRequestResponseError
       | errors.UnauthorizedResponseError
       | errors.InternalServerResponseError
       | OpenRouterError
@@ -78,6 +79,7 @@ async function $do(
     PageIterator<
       Result<
         operations.ListObservabilityDestinationsResponse,
+        | errors.BadRequestResponseError
         | errors.UnauthorizedResponseError
         | errors.InternalServerResponseError
         | OpenRouterError
@@ -197,6 +199,7 @@ async function $do(
 
   const [result, raw] = await M.match<
     operations.ListObservabilityDestinationsResponse,
+    | errors.BadRequestResponseError
     | errors.UnauthorizedResponseError
     | errors.InternalServerResponseError
     | OpenRouterError
@@ -213,6 +216,7 @@ async function $do(
       operations.ListObservabilityDestinationsResponse$inboundSchema,
       { key: "Result" },
     ),
+    M.jsonErr(400, errors.BadRequestResponseError$inboundSchema),
     M.jsonErr(401, errors.UnauthorizedResponseError$inboundSchema),
     M.jsonErr(500, errors.InternalServerResponseError$inboundSchema),
     M.fail("4XX"),
@@ -232,6 +236,7 @@ async function $do(
     next: Paginator<
       Result<
         operations.ListObservabilityDestinationsResponse,
+        | errors.BadRequestResponseError
         | errors.UnauthorizedResponseError
         | errors.InternalServerResponseError
         | OpenRouterError
