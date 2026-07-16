@@ -70,6 +70,7 @@ export const Provider = {
   Digitalocean: "digitalocean",
   Featherless: "featherless",
   Fireworks: "fireworks",
+  FishAudio: "fish-audio",
   Friendli: "friendli",
   Gmicloud: "gmicloud",
   GoogleAiStudio: "google-ai-studio",

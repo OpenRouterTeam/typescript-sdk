@@ -50,6 +50,7 @@ export type ProviderOptions = {
   fakeProvider?: { [k: string]: any | null } | undefined;
   featherless?: { [k: string]: any | null } | undefined;
   fireworks?: { [k: string]: any | null } | undefined;
+  fishAudio?: { [k: string]: any | null } | undefined;
   friendli?: { [k: string]: any | null } | undefined;
   gmicloud?: { [k: string]: any | null } | undefined;
   googleAiStudio?: { [k: string]: any | null } | undefined;
@@ -177,6 +178,7 @@ export type ProviderOptions$Outbound = {
   "fake-provider"?: { [k: string]: any | null } | undefined;
   featherless?: { [k: string]: any | null } | undefined;
   fireworks?: { [k: string]: any | null } | undefined;
+  "fish-audio"?: { [k: string]: any | null } | undefined;
   friendli?: { [k: string]: any | null } | undefined;
   gmicloud?: { [k: string]: any | null } | undefined;
   "google-ai-studio"?: { [k: string]: any | null } | undefined;
@@ -307,6 +309,7 @@ export const ProviderOptions$outboundSchema: z.ZodType<
   fakeProvider: z.record(z.string(), z.nullable(z.any())).optional(),
   featherless: z.record(z.string(), z.nullable(z.any())).optional(),
   fireworks: z.record(z.string(), z.nullable(z.any())).optional(),
+  fishAudio: z.record(z.string(), z.nullable(z.any())).optional(),
   friendli: z.record(z.string(), z.nullable(z.any())).optional(),
   gmicloud: z.record(z.string(), z.nullable(z.any())).optional(),
   googleAiStudio: z.record(z.string(), z.nullable(z.any())).optional(),
@@ -400,6 +403,7 @@ export const ProviderOptions$outboundSchema: z.ZodType<
     atlasCloud: "atlas-cloud",
     blackForestLabs: "black-forest-labs",
     fakeProvider: "fake-provider",
+    fishAudio: "fish-audio",
     googleAiStudio: "google-ai-studio",
     googleVertex: "google-vertex",
     hyperbolicQuantized: "hyperbolic-quantized",
