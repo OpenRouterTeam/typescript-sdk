@@ -73,14 +73,14 @@
     "lint": "eslint --cache --max-warnings=0 src",
     "build": "tsc",
     "prepublishOnly": "npm run build",
-    "compile": "tsc",
-    "postinstall": "node scripts/check-types.js || true",
     "prepare": "npm run build",
+    "test": "vitest --run --project unit",
     "test:e2e": "vitest --run --project e2e",
     "test:watch": "vitest --watch --project unit",
     "typecheck": "tsc --noEmit",
     "typecheck:transit": "exit 0",
-    "test": "vitest --run --project unit",
+    "compile": "tsc",
+    "postinstall": "node scripts/check-types.js || true",
     "test:transit": "exit 0"
   },
   "peerDependencies": {
