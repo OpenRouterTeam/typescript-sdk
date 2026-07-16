@@ -21,7 +21,7 @@ export type ContextCompactionItem = {
   encryptedContent?: string | null | undefined;
   id?: string | null | undefined;
   type: ContextCompactionItemType;
-  additionalProperties?: { [k: string]: any | null } | undefined;
+  additionalProperties?: { [k: string]: any } | undefined;
 };
 
 /** @internal */
@@ -45,7 +45,7 @@ export const ContextCompactionItem$outboundSchema: z.ZodType<
   encryptedContent: z.nullable(z.string()).optional(),
   id: z.nullable(z.string()).optional(),
   type: ContextCompactionItemType$outboundSchema,
-  additionalProperties: z.record(z.string(), z.nullable(z.any())).optional(),
+  additionalProperties: z.record(z.string(), z.any()).optional(),
 }).transform((v) => {
   return {
     ...v.additionalProperties,

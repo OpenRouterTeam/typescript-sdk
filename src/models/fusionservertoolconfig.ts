@@ -50,7 +50,7 @@ export type FusionServerToolConfigTool = {
   /**
    * Optional configuration forwarded as the tool's `parameters` object.
    */
-  parameters?: { [k: string]: any | null } | undefined;
+  parameters?: { [k: string]: any } | undefined;
   /**
    * Server tool type identifier (e.g. "openrouter:web_search", "openrouter:web_fetch").
    */
@@ -132,7 +132,7 @@ export function fusionServerToolConfigReasoningToJSON(
 
 /** @internal */
 export type FusionServerToolConfigTool$Outbound = {
-  parameters?: { [k: string]: any | null } | undefined;
+  parameters?: { [k: string]: any } | undefined;
   type: string;
 };
 
@@ -141,7 +141,7 @@ export const FusionServerToolConfigTool$outboundSchema: z.ZodType<
   FusionServerToolConfigTool$Outbound,
   FusionServerToolConfigTool
 > = z.object({
-  parameters: z.record(z.string(), z.nullable(z.any())).optional(),
+  parameters: z.record(z.string(), z.any()).optional(),
   type: z.string(),
 });
 
