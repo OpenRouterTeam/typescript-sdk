@@ -37,7 +37,7 @@ generation:
   documentation: mintlify
   preApplyUnionDiscriminators: true
 typescript:
-  version: 0.13.58
+  version: 0.13.59
   acceptHeaderEnum: false
   additionalDependencies:
     dependencies:
