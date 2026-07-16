@@ -15,7 +15,7 @@ import {
 
 export type PipelineStage = {
   costUsd?: number | null | undefined;
-  data?: { [k: string]: any | null } | undefined;
+  data?: { [k: string]: any } | undefined;
   guardrailId?: string | undefined;
   guardrailScope?: string | undefined;
   name: string;
@@ -30,7 +30,7 @@ export type PipelineStage = {
 export const PipelineStage$inboundSchema: z.ZodType<PipelineStage, unknown> = z
   .object({
     cost_usd: z.nullable(z.number()).optional(),
-    data: z.record(z.string(), z.nullable(z.any())).optional(),
+    data: z.record(z.string(), z.any()).optional(),
     guardrail_id: z.string().optional(),
     guardrail_scope: z.string().optional(),
     name: z.string(),

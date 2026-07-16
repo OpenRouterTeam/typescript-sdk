@@ -14,7 +14,7 @@ import { SDKValidationError } from "./errors/sdkvalidationerror.js";
 export type FormatJsonSchemaConfig = {
   description?: string | undefined;
   name: string;
-  schema: { [k: string]: any | null };
+  schema: { [k: string]: any };
   strict?: boolean | null | undefined;
   type: "json_schema";
 };
@@ -26,7 +26,7 @@ export const FormatJsonSchemaConfig$inboundSchema: z.ZodType<
 > = z.object({
   description: z.string().optional(),
   name: z.string(),
-  schema: z.record(z.string(), z.nullable(z.any())),
+  schema: z.record(z.string(), z.any()),
   strict: z.nullable(z.boolean()).optional(),
   type: z.literal("json_schema"),
 });
@@ -34,7 +34,7 @@ export const FormatJsonSchemaConfig$inboundSchema: z.ZodType<
 export type FormatJsonSchemaConfig$Outbound = {
   description?: string | undefined;
   name: string;
-  schema: { [k: string]: any | null };
+  schema: { [k: string]: any };
   strict?: boolean | null | undefined;
   type: "json_schema";
 };
@@ -46,7 +46,7 @@ export const FormatJsonSchemaConfig$outboundSchema: z.ZodType<
 > = z.object({
   description: z.string().optional(),
   name: z.string(),
-  schema: z.record(z.string(), z.nullable(z.any())),
+  schema: z.record(z.string(), z.any()),
   strict: z.nullable(z.boolean()).optional(),
   type: z.literal("json_schema"),
 });

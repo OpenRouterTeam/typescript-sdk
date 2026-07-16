@@ -15,7 +15,7 @@ export type TraceConfig = {
   spanName?: string | undefined;
   traceId?: string | undefined;
   traceName?: string | undefined;
-  additionalProperties?: { [k: string]: any | null } | undefined;
+  additionalProperties?: { [k: string]: any } | undefined;
 };
 
 /** @internal */
@@ -38,7 +38,7 @@ export const TraceConfig$outboundSchema: z.ZodType<
   spanName: z.string().optional(),
   traceId: z.string().optional(),
   traceName: z.string().optional(),
-  additionalProperties: z.record(z.string(), z.nullable(z.any())).optional(),
+  additionalProperties: z.record(z.string(), z.any()).optional(),
 }).transform((v) => {
   return {
     ...v.additionalProperties,
