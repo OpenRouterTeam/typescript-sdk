@@ -19,7 +19,7 @@ export type CompactionItem = {
   encryptedContent: string;
   id?: string | null | undefined;
   type: CompactionItemType;
-  additionalProperties?: { [k: string]: any | null } | undefined;
+  additionalProperties?: { [k: string]: any } | undefined;
 };
 
 /** @internal */
@@ -43,7 +43,7 @@ export const CompactionItem$outboundSchema: z.ZodType<
   encryptedContent: z.string(),
   id: z.nullable(z.string()).optional(),
   type: CompactionItemType$outboundSchema,
-  additionalProperties: z.record(z.string(), z.nullable(z.any())).optional(),
+  additionalProperties: z.record(z.string(), z.any()).optional(),
 }).transform((v) => {
   return {
     ...v.additionalProperties,

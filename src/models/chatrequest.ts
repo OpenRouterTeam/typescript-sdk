@@ -235,7 +235,7 @@ export type ChatRequestServiceTier = OpenEnum<typeof ChatRequestServiceTier>;
 /**
  * Stop sequences (up to 4)
  */
-export type Stop = string | Array<string> | any;
+export type Stop = string | Array<string>;
 
 /**
  * Chat completion request parameters
@@ -371,7 +371,7 @@ export type ChatRequest = {
   /**
    * Stop sequences (up to 4)
    */
-  stop?: string | Array<string> | any | null | undefined;
+  stop?: string | Array<string> | null | undefined;
   /**
    * Stop conditions for the server-tool agent loop. Any condition firing halts the loop (OR logic). When set, this overrides `max_tool_calls`.
    */
@@ -529,13 +529,12 @@ export const ChatRequestServiceTier$outboundSchema: z.ZodType<
 > = openEnums.outboundSchema(ChatRequestServiceTier);
 
 /** @internal */
-export type Stop$Outbound = string | Array<string> | any;
+export type Stop$Outbound = string | Array<string>;
 
 /** @internal */
 export const Stop$outboundSchema: z.ZodType<Stop$Outbound, Stop> = z.union([
   z.string(),
   z.array(z.string()),
-  z.any(),
 ]);
 
 export function stopToJSON(stop: Stop): string {
@@ -590,7 +589,7 @@ export type ChatRequest$Outbound = {
   seed?: number | null | undefined;
   service_tier?: string | null | undefined;
   session_id?: string | undefined;
-  stop?: string | Array<string> | any | null | undefined;
+  stop?: string | Array<string> | null | undefined;
   stop_server_tools_when?:
     | Array<StopServerToolsWhenCondition$Outbound>
     | undefined;
@@ -659,8 +658,7 @@ export const ChatRequest$outboundSchema: z.ZodType<
   seed: z.nullable(z.int()).optional(),
   serviceTier: z.nullable(ChatRequestServiceTier$outboundSchema).optional(),
   sessionId: z.string().optional(),
-  stop: z.nullable(z.union([z.string(), z.array(z.string()), z.any()]))
-    .optional(),
+  stop: z.nullable(z.union([z.string(), z.array(z.string())])).optional(),
   stopServerToolsWhen: z.array(StopServerToolsWhenCondition$outboundSchema)
     .optional(),
   stream: z.boolean().default(false),
