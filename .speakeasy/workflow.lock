@@ -1,4 +1,4 @@
-speakeasyVersion: 1.763.2
+speakeasyVersion: 1.787.0
 sources:
     OpenRouter API:
         sourceNamespace: open-router-chat-completions-api
@@ -14,10 +14,10 @@ targets:
         sourceRevisionDigest: sha256:67391d856a55b3b726c6adc27f96ea51cff7b3a0a107d2e97114379d817769a0
         sourceBlobDigest: sha256:540d18a53f80b0a53375c0811de8d9e3a50e3da98d59ab2908ca07d742257934
         codeSamplesNamespace: open-router-chat-completions-api-typescript-code-samples
-        codeSamplesRevisionDigest: sha256:5addc69318710d06e6c3abd7efe52e47d2381c91480397a0e89bf79282ee1644
+        codeSamplesRevisionDigest: sha256:bf6aa9a111a473716e521af856f3468880bbd81d6264cab236373c309db08a08
 workflow:
     workflowVersion: 1.0.0
-    speakeasyVersion: 1.763.2
+    speakeasyVersion: 1.787.0
     sources:
         OpenRouter API:
             inputs:
