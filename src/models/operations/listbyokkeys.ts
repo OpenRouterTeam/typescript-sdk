@@ -121,6 +121,7 @@ export const Provider = {
   Stepfun: "stepfun",
   Streamlake: "streamlake",
   Switchpoint: "switchpoint",
+  Tencent: "tencent",
   Tenstorrent: "tenstorrent",
   Together: "together",
   Upstage: "upstage",

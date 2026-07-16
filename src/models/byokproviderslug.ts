@@ -94,6 +94,7 @@ export const BYOKProviderSlug = {
   Stepfun: "stepfun",
   Streamlake: "streamlake",
   Switchpoint: "switchpoint",
+  Tencent: "tencent",
   Tenstorrent: "tenstorrent",
   Together: "together",
   Upstage: "upstage",

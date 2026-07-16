@@ -83,7 +83,7 @@ export type ProviderPreferencesOrder = ProviderName | string;
 /**
  * The sorting strategy to use for this request, if "order" is not specified. When set, no load balancing is performed.
  */
-export type ProviderPreferencesSort = ProviderSort | ProviderSortConfig | any;
+export type ProviderPreferencesSort = ProviderSort | ProviderSortConfig;
 
 /**
  * When multiple model providers are available, optionally indicate your routing preference.
@@ -145,7 +145,7 @@ export type ProviderPreferences = {
   /**
    * The sorting strategy to use for this request, if "order" is not specified. When set, no load balancing is performed.
    */
-  sort?: ProviderSort | ProviderSortConfig | any | null | undefined;
+  sort?: ProviderSort | ProviderSortConfig | null | undefined;
   /**
    * Whether to restrict routing to only ZDR (Zero Data Retention) endpoints. When true, only endpoints that do not retain prompts will be used.
    */
@@ -233,18 +233,13 @@ export function providerPreferencesOrderToJSON(
 /** @internal */
 export type ProviderPreferencesSort$Outbound =
   | string
-  | ProviderSortConfig$Outbound
-  | any;
+  | ProviderSortConfig$Outbound;
 
 /** @internal */
 export const ProviderPreferencesSort$outboundSchema: z.ZodType<
   ProviderPreferencesSort$Outbound,
   ProviderPreferencesSort
-> = z.union([
-  ProviderSort$outboundSchema,
-  ProviderSortConfig$outboundSchema,
-  z.any(),
-]);
+> = z.union([ProviderSort$outboundSchema, ProviderSortConfig$outboundSchema]);
 
 export function providerPreferencesSortToJSON(
   providerPreferencesSort: ProviderPreferencesSort,
@@ -267,7 +262,7 @@ export type ProviderPreferences$Outbound = {
   preferred_min_throughput?: PreferredMinThroughput$Outbound | null | undefined;
   quantizations?: Array<string> | null | undefined;
   require_parameters?: boolean | null | undefined;
-  sort?: string | ProviderSortConfig$Outbound | any | null | undefined;
+  sort?: string | ProviderSortConfig$Outbound | null | undefined;
   zdr?: boolean | null | undefined;
 };
 
@@ -294,11 +289,7 @@ export const ProviderPreferences$outboundSchema: z.ZodType<
   quantizations: z.nullable(z.array(Quantization$outboundSchema)).optional(),
   requireParameters: z.nullable(z.boolean()).optional(),
   sort: z.nullable(
-    z.union([
-      ProviderSort$outboundSchema,
-      ProviderSortConfig$outboundSchema,
-      z.any(),
-    ]),
+    z.union([ProviderSort$outboundSchema, ProviderSortConfig$outboundSchema]),
   ).optional(),
   zdr: z.nullable(z.boolean()).optional(),
 }).transform((v) => {

@@ -15,13 +15,13 @@ import {
 
 export type Agent = {
   agentName: string;
-  additionalProperties?: { [k: string]: any | null } | undefined;
+  additionalProperties?: { [k: string]: any } | undefined;
 };
 
 export type ContentEncryptedContent = {
   encryptedContent: string;
   type: "encrypted_content";
-  additionalProperties?: { [k: string]: any | null } | undefined;
+  additionalProperties?: { [k: string]: any } | undefined;
 };
 
 export const AgentMessageItemDetail = {
@@ -63,7 +63,7 @@ export type AgentMessageItem = {
   id?: string | null | undefined;
   recipient: string;
   type: TypeAgentMessage;
-  additionalProperties?: { [k: string]: any | null } | undefined;
+  additionalProperties?: { [k: string]: any } | undefined;
 };
 
 /** @internal */
@@ -75,7 +75,7 @@ export type Agent$Outbound = {
 /** @internal */
 export const Agent$outboundSchema: z.ZodType<Agent$Outbound, Agent> = z.object({
   agentName: z.string(),
-  additionalProperties: z.record(z.string(), z.nullable(z.any())).optional(),
+  additionalProperties: z.record(z.string(), z.any()).optional(),
 }).transform((v) => {
   return {
     ...v.additionalProperties,
@@ -104,7 +104,7 @@ export const ContentEncryptedContent$outboundSchema: z.ZodType<
 > = z.object({
   encryptedContent: z.string(),
   type: z.literal("encrypted_content"),
-  additionalProperties: z.record(z.string(), z.nullable(z.any())).optional(),
+  additionalProperties: z.record(z.string(), z.any()).optional(),
 }).transform((v) => {
   return {
     ...v.additionalProperties,
@@ -223,7 +223,7 @@ export const AgentMessageItem$outboundSchema: z.ZodType<
   id: z.nullable(z.string()).optional(),
   recipient: z.string(),
   type: TypeAgentMessage$outboundSchema,
-  additionalProperties: z.record(z.string(), z.nullable(z.any())).optional(),
+  additionalProperties: z.record(z.string(), z.any()).optional(),
 }).transform((v) => {
   return {
     ...v.additionalProperties,
