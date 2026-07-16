@@ -25,8 +25,8 @@ export type NamespaceFunctionTool = {
   deferLoading?: boolean | undefined;
   description?: string | null | undefined;
   name: string;
-  outputSchema?: { [k: string]: any | null } | null | undefined;
-  parameters?: { [k: string]: any | null } | null | undefined;
+  outputSchema?: { [k: string]: any } | null | undefined;
+  parameters?: { [k: string]: any } | null | undefined;
   strict?: boolean | null | undefined;
   type: "function";
 };
@@ -47,9 +47,8 @@ export const NamespaceFunctionTool$inboundSchema: z.ZodType<
   defer_loading: z.boolean().optional(),
   description: z.nullable(z.string()).optional(),
   name: z.string(),
-  output_schema: z.nullable(z.record(z.string(), z.nullable(z.any())))
-    .optional(),
-  parameters: z.nullable(z.record(z.string(), z.nullable(z.any()))).optional(),
+  output_schema: z.nullable(z.record(z.string(), z.any())).optional(),
+  parameters: z.nullable(z.record(z.string(), z.any())).optional(),
   strict: z.nullable(z.boolean()).optional(),
   type: z.literal("function"),
 }).transform((v) => {
@@ -65,8 +64,8 @@ export type NamespaceFunctionTool$Outbound = {
   defer_loading?: boolean | undefined;
   description?: string | null | undefined;
   name: string;
-  output_schema?: { [k: string]: any | null } | null | undefined;
-  parameters?: { [k: string]: any | null } | null | undefined;
+  output_schema?: { [k: string]: any } | null | undefined;
+  parameters?: { [k: string]: any } | null | undefined;
   strict?: boolean | null | undefined;
   type: "function";
 };
@@ -80,9 +79,8 @@ export const NamespaceFunctionTool$outboundSchema: z.ZodType<
   deferLoading: z.boolean().optional(),
   description: z.nullable(z.string()).optional(),
   name: z.string(),
-  outputSchema: z.nullable(z.record(z.string(), z.nullable(z.any())))
-    .optional(),
-  parameters: z.nullable(z.record(z.string(), z.nullable(z.any()))).optional(),
+  outputSchema: z.nullable(z.record(z.string(), z.any())).optional(),
+  parameters: z.nullable(z.record(z.string(), z.any())).optional(),
   strict: z.nullable(z.boolean()).optional(),
   type: z.literal("function"),
 }).transform((v) => {
