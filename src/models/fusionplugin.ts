@@ -21,11 +21,30 @@ export const PresetEnum = {
  */
 export type PresetEnum = OpenEnum<typeof PresetEnum>;
 
+export type Parameters2 = string | number | boolean;
+
+export type Parameters1 = string | number | boolean;
+
+export type Parameters3 =
+  | string
+  | number
+  | boolean
+  | Array<string | number | boolean | null>
+  | { [k: string]: string | number | boolean | null };
+
 export type FusionPluginTool = {
   /**
    * Optional configuration forwarded as the tool's `parameters` object.
    */
-  parameters?: { [k: string]: any | null } | undefined;
+  parameters?: {
+    [k: string]:
+      | string
+      | number
+      | boolean
+      | Array<string | number | boolean | null>
+      | { [k: string]: string | number | boolean | null }
+      | null;
+  } | undefined;
   /**
    * Server tool type identifier (e.g. "openrouter:web_search", "openrouter:web_fetch").
    */
@@ -65,8 +84,69 @@ export const PresetEnum$outboundSchema: z.ZodType<string, PresetEnum> =
   openEnums.outboundSchema(PresetEnum);
 
 /** @internal */
+export type Parameters2$Outbound = string | number | boolean;
+
+/** @internal */
+export const Parameters2$outboundSchema: z.ZodType<
+  Parameters2$Outbound,
+  Parameters2
+> = z.union([z.string(), z.number(), z.boolean()]);
+
+export function parameters2ToJSON(parameters2: Parameters2): string {
+  return JSON.stringify(Parameters2$outboundSchema.parse(parameters2));
+}
+
+/** @internal */
+export type Parameters1$Outbound = string | number | boolean;
+
+/** @internal */
+export const Parameters1$outboundSchema: z.ZodType<
+  Parameters1$Outbound,
+  Parameters1
+> = z.union([z.string(), z.number(), z.boolean()]);
+
+export function parameters1ToJSON(parameters1: Parameters1): string {
+  return JSON.stringify(Parameters1$outboundSchema.parse(parameters1));
+}
+
+/** @internal */
+export type Parameters3$Outbound =
+  | string
+  | number
+  | boolean
+  | Array<string | number | boolean | null>
+  | { [k: string]: string | number | boolean | null };
+
+/** @internal */
+export const Parameters3$outboundSchema: z.ZodType<
+  Parameters3$Outbound,
+  Parameters3
+> = z.union([
+  z.string(),
+  z.number(),
+  z.boolean(),
+  z.array(z.nullable(z.union([z.string(), z.number(), z.boolean()]))),
+  z.record(
+    z.string(),
+    z.nullable(z.union([z.string(), z.number(), z.boolean()])),
+  ),
+]);
+
+export function parameters3ToJSON(parameters3: Parameters3): string {
+  return JSON.stringify(Parameters3$outboundSchema.parse(parameters3));
+}
+
+/** @internal */
 export type FusionPluginTool$Outbound = {
-  parameters?: { [k: string]: any | null } | undefined;
+  parameters?: {
+    [k: string]:
+      | string
+      | number
+      | boolean
+      | Array<string | number | boolean | null>
+      | { [k: string]: string | number | boolean | null }
+      | null;
+  } | undefined;
   type: string;
 };
 
@@ -75,7 +155,21 @@ export const FusionPluginTool$outboundSchema: z.ZodType<
   FusionPluginTool$Outbound,
   FusionPluginTool
 > = z.object({
-  parameters: z.record(z.string(), z.nullable(z.any())).optional(),
+  parameters: z.record(
+    z.string(),
+    z.nullable(
+      z.union([
+        z.string(),
+        z.number(),
+        z.boolean(),
+        z.array(z.nullable(z.union([z.string(), z.number(), z.boolean()]))),
+        z.record(
+          z.string(),
+          z.nullable(z.union([z.string(), z.number(), z.boolean()])),
+        ),
+      ]),
+    ),
+  ).optional(),
   type: z.string(),
 });
 
