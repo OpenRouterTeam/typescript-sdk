@@ -41,7 +41,7 @@ export type Filters = {
   value: string | number | boolean | Array<string | number>;
 };
 
-export type FiltersUnion = Filters | CompoundFilter | any;
+export type FiltersUnion = Filters | CompoundFilter;
 
 export const Ranker = {
   Auto: "auto",
@@ -63,7 +63,7 @@ export type TypeFileSearch = ClosedEnum<typeof TypeFileSearch>;
  * File search tool configuration
  */
 export type FileSearchServerTool = {
-  filters?: Filters | CompoundFilter | any | null | undefined;
+  filters?: Filters | CompoundFilter | null | undefined;
   maxNumResults?: number | undefined;
   rankingOptions?: RankingOptions | undefined;
   type: TypeFileSearch;
@@ -199,16 +199,9 @@ export function filtersFromJSON(
 
 /** @internal */
 export const FiltersUnion$inboundSchema: z.ZodType<FiltersUnion, unknown> = z
-  .union([
-    z.lazy(() => Filters$inboundSchema),
-    CompoundFilter$inboundSchema,
-    z.any(),
-  ]);
+  .union([z.lazy(() => Filters$inboundSchema), CompoundFilter$inboundSchema]);
 /** @internal */
-export type FiltersUnion$Outbound =
-  | Filters$Outbound
-  | CompoundFilter$Outbound
-  | any;
+export type FiltersUnion$Outbound = Filters$Outbound | CompoundFilter$Outbound;
 
 /** @internal */
 export const FiltersUnion$outboundSchema: z.ZodType<
@@ -217,7 +210,6 @@ export const FiltersUnion$outboundSchema: z.ZodType<
 > = z.union([
   z.lazy(() => Filters$outboundSchema),
   CompoundFilter$outboundSchema,
-  z.any(),
 ]);
 
 export function filtersUnionToJSON(filtersUnion: FiltersUnion): string {
@@ -298,7 +290,6 @@ export const FileSearchServerTool$inboundSchema: z.ZodType<
     z.union([
       z.lazy(() => Filters$inboundSchema),
       CompoundFilter$inboundSchema,
-      z.any(),
     ]),
   ).optional(),
   max_num_results: z.int().optional(),
@@ -314,7 +305,7 @@ export const FileSearchServerTool$inboundSchema: z.ZodType<
 });
 /** @internal */
 export type FileSearchServerTool$Outbound = {
-  filters?: Filters$Outbound | CompoundFilter$Outbound | any | null | undefined;
+  filters?: Filters$Outbound | CompoundFilter$Outbound | null | undefined;
   max_num_results?: number | undefined;
   ranking_options?: RankingOptions$Outbound | undefined;
   type: string;
@@ -330,7 +321,6 @@ export const FileSearchServerTool$outboundSchema: z.ZodType<
     z.union([
       z.lazy(() => Filters$outboundSchema),
       CompoundFilter$outboundSchema,
-      z.any(),
     ]),
   ).optional(),
   maxNumResults: z.int().optional(),
