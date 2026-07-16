@@ -12920,7 +12920,6 @@ components:
                 - Lynn 2
                 - Lynn
                 - Mancer
-                - Meta
                 - Modal
                 - Nineteen
                 - OctoAI
@@ -12983,6 +12982,7 @@ components:
                 - Liquid
                 - Mara
                 - Mancer 2
+                - Meta
                 - Minimax
                 - ModelRun
                 - Mistral
@@ -18619,7 +18619,6 @@ components:
       type: string
     ProviderName:
       enum:
-        - Meta
         - AkashML
         - AI21
         - AionLabs
@@ -18670,6 +18669,7 @@ components:
         - Liquid
         - Mara
         - Mancer 2
+        - Meta
         - Minimax
         - ModelRun
         - Mistral
@@ -19441,7 +19441,6 @@ components:
             - Lynn 2
             - Lynn
             - Mancer
-            - Meta
             - Modal
             - Nineteen
             - OctoAI
@@ -19504,6 +19503,7 @@ components:
             - Liquid
             - Mara
             - Mancer 2
+            - Meta
             - Minimax
             - ModelRun
             - Mistral
