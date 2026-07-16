@@ -48,6 +48,7 @@ export function guardrailsList(
   PageIterator<
     Result<
       operations.ListGuardrailsResponse,
+      | errors.BadRequestResponseError
       | errors.UnauthorizedResponseError
       | errors.InternalServerResponseError
       | OpenRouterError
@@ -78,6 +79,7 @@ async function $do(
     PageIterator<
       Result<
         operations.ListGuardrailsResponse,
+        | errors.BadRequestResponseError
         | errors.UnauthorizedResponseError
         | errors.InternalServerResponseError
         | OpenRouterError
@@ -196,6 +198,7 @@ async function $do(
 
   const [result, raw] = await M.match<
     operations.ListGuardrailsResponse,
+    | errors.BadRequestResponseError
     | errors.UnauthorizedResponseError
     | errors.InternalServerResponseError
     | OpenRouterError
@@ -210,6 +213,7 @@ async function $do(
     M.json(200, operations.ListGuardrailsResponse$inboundSchema, {
       key: "Result",
     }),
+    M.jsonErr(400, errors.BadRequestResponseError$inboundSchema),
     M.jsonErr(401, errors.UnauthorizedResponseError$inboundSchema),
     M.jsonErr(500, errors.InternalServerResponseError$inboundSchema),
     M.fail("4XX"),
@@ -229,6 +233,7 @@ async function $do(
     next: Paginator<
       Result<
         operations.ListGuardrailsResponse,
+        | errors.BadRequestResponseError
         | errors.UnauthorizedResponseError
         | errors.InternalServerResponseError
         | OpenRouterError
