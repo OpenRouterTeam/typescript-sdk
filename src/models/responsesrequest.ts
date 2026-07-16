@@ -377,7 +377,10 @@ export type ResponsesRequest = {
     >
     | undefined;
   presencePenalty?: number | null | undefined;
-  previousResponseId?: string | null | undefined;
+  /**
+   * Not supported. The Responses API is stateless: no responses are stored, so a previous response cannot be referenced. Requests with a non-null value are rejected with a 400 error. Send the full conversation history in `input` instead.
+   */
+  previousResponseId?: any | null | undefined;
   prompt?: StoredPromptTemplate | null | undefined;
   promptCacheKey?: string | null | undefined;
   /**
@@ -689,7 +692,7 @@ export type ResponsesRequest$Outbound = {
     >
     | undefined;
   presence_penalty?: number | null | undefined;
-  previous_response_id?: string | null | undefined;
+  previous_response_id?: any | null | undefined;
   prompt?: StoredPromptTemplate$Outbound | null | undefined;
   prompt_cache_key?: string | null | undefined;
   prompt_cache_options?: PromptCacheOptions$Outbound | null | undefined;
@@ -791,7 +794,7 @@ export const ResponsesRequest$outboundSchema: z.ZodType<
     ]),
   ).optional(),
   presencePenalty: z.nullable(z.number()).optional(),
-  previousResponseId: z.nullable(z.string()).optional(),
+  previousResponseId: z.nullable(z.any()).optional(),
   prompt: z.nullable(StoredPromptTemplate$outboundSchema).optional(),
   promptCacheKey: z.nullable(z.string()).optional(),
   promptCacheOptions: z.nullable(PromptCacheOptions$outboundSchema).optional(),
