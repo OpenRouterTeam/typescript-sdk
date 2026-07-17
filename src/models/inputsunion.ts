@@ -391,6 +391,7 @@ export type InputsMessage = {
     | InputsStatusInProgress1
     | undefined;
   type: InputsTypeMessage;
+  name?: string | null | undefined;
 };
 
 export type InputsUnion1 =
@@ -713,6 +714,7 @@ export type InputsMessage$Outbound = {
   role: string;
   status?: string | string | string | undefined;
   type: string;
+  name?: string | null | undefined;
 };
 
 /** @internal */
@@ -745,6 +747,7 @@ export const InputsMessage$outboundSchema: z.ZodType<
     InputsStatusInProgress1$outboundSchema,
   ]).optional(),
   type: InputsTypeMessage$outboundSchema,
+  name: z.nullable(z.string()).optional(),
 });
 
 export function inputsMessageToJSON(inputsMessage: InputsMessage): string {
