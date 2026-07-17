@@ -221,6 +221,64 @@ export class ModelResult<
     this.requireApprovalFn = options.requireApproval ?? null;
     this.approvedToolCalls = options.approveToolCalls ?? [];
     this.rejectedToolCalls = options.rejectToolCalls ?? [];
+    this.validateApprovalDecisions();
+  }
+
+  /**
+   * Validate approval-decision arrays for intra-array duplicates and for ids
+   * that appear in both approveToolCalls and rejectToolCalls.
+   *
+   * Throws synchronously so malformed input surfaces at the callModel /
+   * ModelResult entry point — before any tool executes or state is mutated.
+   * Approval is a security boundary; an ambiguous decision set is a caller
+   * bug and must not be silently resolved.
+   */
+  private validateApprovalDecisions(): void {
+    const findDuplicates = (ids: string[]): string[] => {
+      const seen = new Set<string>();
+      const dupes = new Set<string>();
+      for (const id of ids) {
+        if (seen.has(id)) {
+          dupes.add(id);
+        } else {
+          seen.add(id);
+        }
+      }
+      return [...dupes];
+    };
+
+    const approveDupes = findDuplicates(this.approvedToolCalls);
+    const rejectDupes = findDuplicates(this.rejectedToolCalls);
+    const approveSet = new Set(this.approvedToolCalls);
+    const conflicts = [
+      ...new Set(this.rejectedToolCalls.filter((id) => approveSet.has(id))),
+    ];
+
+    if (
+      approveDupes.length === 0 &&
+      rejectDupes.length === 0 &&
+      conflicts.length === 0
+    ) {
+      return;
+    }
+
+    const problems: string[] = [];
+    if (approveDupes.length > 0) {
+      problems.push(`duplicate id(s) in approveToolCalls: ${approveDupes.join(', ')}`);
+    }
+    if (rejectDupes.length > 0) {
+      problems.push(`duplicate id(s) in rejectToolCalls: ${rejectDupes.join(', ')}`);
+    }
+    if (conflicts.length > 0) {
+      problems.push(
+        `id(s) present in both approveToolCalls and rejectToolCalls: ${conflicts.join(', ')}`,
+      );
+    }
+
+    throw new Error(
+      `Invalid approval decisions: ${problems.join('; ')}. ` +
+        `Each tool call id may appear at most once, and a tool call cannot be both approved and rejected.`,
+    );
   }
 
   /**

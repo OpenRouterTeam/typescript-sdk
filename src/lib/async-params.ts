@@ -74,9 +74,15 @@ type BaseCallModelInput<
 type ApprovalParamsWithState<TTools extends readonly Tool[] = readonly Tool[]> = {
   /** State accessor for multi-turn persistence and approval gates */
   state: StateAccessor<TTools>;
-  /** Tool call IDs to approve (for resuming from awaiting_approval status) */
+  /**
+   * Tool call IDs to approve (for resuming from awaiting_approval status).
+   * IDs must be distinct within this array and disjoint from rejectToolCalls.
+   */
   approveToolCalls?: string[];
-  /** Tool call IDs to reject (for resuming from awaiting_approval status) */
+  /**
+   * Tool call IDs to reject (for resuming from awaiting_approval status).
+   * IDs must be distinct within this array and disjoint from approveToolCalls.
+   */
   rejectToolCalls?: string[];
 };
 
