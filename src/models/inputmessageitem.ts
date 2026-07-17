@@ -97,6 +97,7 @@ export type InputMessageItem = {
     | null
     | undefined;
   id?: string | undefined;
+  name?: string | null | undefined;
   role:
     | InputMessageItemRoleUser
     | InputMessageItemRoleSystem
@@ -225,6 +226,7 @@ export type InputMessageItem$Outbound = {
     | null
     | undefined;
   id?: string | undefined;
+  name?: string | null | undefined;
   role: string | string | string;
   type?: string | undefined;
 };
@@ -244,6 +246,7 @@ export const InputMessageItem$outboundSchema: z.ZodType<
     ])),
   ).optional(),
   id: z.string().optional(),
+  name: z.nullable(z.string()).optional(),
   role: z.union([
     InputMessageItemRoleUser$outboundSchema,
     InputMessageItemRoleSystem$outboundSchema,
