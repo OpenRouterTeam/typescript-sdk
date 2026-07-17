@@ -4323,6 +4323,7 @@ components:
         - 'digitalocean'
         - 'featherless'
         - 'fireworks'
+        - 'fish-audio'
         - 'friendli'
         - 'gmicloud'
         - 'google-ai-studio'
@@ -13137,6 +13138,7 @@ components:
                 - 'DigitalOcean'
                 - 'Featherless'
                 - 'Fireworks'
+                - 'Fish Audio'
                 - 'Friendli'
                 - 'GMICloud'
                 - 'Google'
@@ -18813,6 +18815,7 @@ components:
         - 'DigitalOcean'
         - 'Featherless'
         - 'Fireworks'
+        - 'Fish Audio'
         - 'Friendli'
         - 'GMICloud'
         - 'Google'
@@ -19003,6 +19006,9 @@ components:
           additionalProperties: {}
           type: 'object'
         fireworks:
+          additionalProperties: {}
+          type: 'object'
+        fish-audio:
           additionalProperties: {}
           type: 'object'
         friendli:
@@ -19509,6 +19515,7 @@ components:
             - 'DigitalOcean'
             - 'Featherless'
             - 'Fireworks'
+            - 'Fish Audio'
             - 'Friendli'
             - 'GMICloud'
             - 'Google'
@@ -25614,6 +25621,7 @@ paths:
               - 'digitalocean'
               - 'featherless'
               - 'fireworks'
+              - 'fish-audio'
               - 'friendli'
               - 'gmicloud'
               - 'google-ai-studio'
