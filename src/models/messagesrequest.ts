@@ -56,6 +56,11 @@ import {
   AnthropicWebSearchToolUserLocation$outboundSchema,
 } from "./anthropicwebsearchtooluserlocation.js";
 import {
+  AutoBetaRouterPlugin,
+  AutoBetaRouterPlugin$Outbound,
+  AutoBetaRouterPlugin$outboundSchema,
+} from "./autobetarouterplugin.js";
+import {
   AutoRouterPlugin,
   AutoRouterPlugin$Outbound,
   AutoRouterPlugin$outboundSchema,
@@ -232,6 +237,7 @@ export type MessagesRequestMetadata = {
 };
 
 export type MessagesRequestPlugin =
+  | AutoBetaRouterPlugin
   | AutoRouterPlugin
   | ContextCompressionPlugin
   | FileParserPlugin
@@ -478,6 +484,7 @@ export type MessagesRequest = {
    */
   plugins?:
     | Array<
+      | AutoBetaRouterPlugin
       | AutoRouterPlugin
       | ContextCompressionPlugin
       | FileParserPlugin
@@ -829,6 +836,7 @@ export function messagesRequestMetadataToJSON(
 
 /** @internal */
 export type MessagesRequestPlugin$Outbound =
+  | AutoBetaRouterPlugin$Outbound
   | AutoRouterPlugin$Outbound
   | ContextCompressionPlugin$Outbound
   | FileParserPlugin$Outbound
@@ -844,6 +852,7 @@ export const MessagesRequestPlugin$outboundSchema: z.ZodType<
   MessagesRequestPlugin$Outbound,
   MessagesRequestPlugin
 > = z.union([
+  AutoBetaRouterPlugin$outboundSchema,
   AutoRouterPlugin$outboundSchema,
   ContextCompressionPlugin$outboundSchema,
   FileParserPlugin$outboundSchema,
@@ -1469,6 +1478,7 @@ export type MessagesRequest$Outbound = {
   output_config?: MessagesOutputConfig$Outbound | undefined;
   plugins?:
     | Array<
+      | AutoBetaRouterPlugin$Outbound
       | AutoRouterPlugin$Outbound
       | ContextCompressionPlugin$Outbound
       | FileParserPlugin$Outbound
@@ -1543,6 +1553,7 @@ export const MessagesRequest$outboundSchema: z.ZodType<
   outputConfig: MessagesOutputConfig$outboundSchema.optional(),
   plugins: z.array(
     z.union([
+      AutoBetaRouterPlugin$outboundSchema,
       AutoRouterPlugin$outboundSchema,
       ContextCompressionPlugin$outboundSchema,
       FileParserPlugin$outboundSchema,

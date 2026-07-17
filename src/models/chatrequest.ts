@@ -13,6 +13,11 @@ import {
   AnthropicCacheControlDirective$outboundSchema,
 } from "./anthropiccachecontroldirective.js";
 import {
+  AutoBetaRouterPlugin,
+  AutoBetaRouterPlugin$Outbound,
+  AutoBetaRouterPlugin$outboundSchema,
+} from "./autobetarouterplugin.js";
+import {
   AutoRouterPlugin,
   AutoRouterPlugin$Outbound,
   AutoRouterPlugin$outboundSchema,
@@ -150,6 +155,7 @@ export const Modality = {
 export type Modality = OpenEnum<typeof Modality>;
 
 export type ChatRequestPlugin =
+  | AutoBetaRouterPlugin
   | AutoRouterPlugin
   | ContextCompressionPlugin
   | FileParserPlugin
@@ -306,6 +312,7 @@ export type ChatRequest = {
    */
   plugins?:
     | Array<
+      | AutoBetaRouterPlugin
       | AutoRouterPlugin
       | ContextCompressionPlugin
       | FileParserPlugin
@@ -428,6 +435,7 @@ export const Modality$outboundSchema: z.ZodType<string, Modality> = openEnums
 
 /** @internal */
 export type ChatRequestPlugin$Outbound =
+  | AutoBetaRouterPlugin$Outbound
   | AutoRouterPlugin$Outbound
   | ContextCompressionPlugin$Outbound
   | FileParserPlugin$Outbound
@@ -443,6 +451,7 @@ export const ChatRequestPlugin$outboundSchema: z.ZodType<
   ChatRequestPlugin$Outbound,
   ChatRequestPlugin
 > = z.union([
+  AutoBetaRouterPlugin$outboundSchema,
   AutoRouterPlugin$outboundSchema,
   ContextCompressionPlugin$outboundSchema,
   FileParserPlugin$outboundSchema,
@@ -560,6 +569,7 @@ export type ChatRequest$Outbound = {
   parallel_tool_calls?: boolean | null | undefined;
   plugins?:
     | Array<
+      | AutoBetaRouterPlugin$Outbound
       | AutoRouterPlugin$Outbound
       | ContextCompressionPlugin$Outbound
       | FileParserPlugin$Outbound
@@ -628,6 +638,7 @@ export const ChatRequest$outboundSchema: z.ZodType<
   parallelToolCalls: z.nullable(z.boolean()).optional(),
   plugins: z.array(
     z.union([
+      AutoBetaRouterPlugin$outboundSchema,
       AutoRouterPlugin$outboundSchema,
       ContextCompressionPlugin$outboundSchema,
       FileParserPlugin$outboundSchema,
