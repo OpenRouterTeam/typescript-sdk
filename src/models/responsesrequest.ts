@@ -28,6 +28,11 @@ import {
   ApplyPatchServerToolOpenRouter$outboundSchema,
 } from "./applypatchservertoolopenrouter.js";
 import {
+  AutoBetaRouterPlugin,
+  AutoBetaRouterPlugin$Outbound,
+  AutoBetaRouterPlugin$outboundSchema,
+} from "./autobetarouterplugin.js";
+import {
   AutoRouterPlugin,
   AutoRouterPlugin$Outbound,
   AutoRouterPlugin$outboundSchema,
@@ -267,6 +272,7 @@ import {
 } from "./websearchservertoolopenrouter.js";
 
 export type ResponsesRequestPlugin =
+  | AutoBetaRouterPlugin
   | AutoRouterPlugin
   | ContextCompressionPlugin
   | FileParserPlugin
@@ -391,6 +397,7 @@ export type ResponsesRequest = {
    */
   plugins?:
     | Array<
+      | AutoBetaRouterPlugin
       | AutoRouterPlugin
       | ContextCompressionPlugin
       | FileParserPlugin
@@ -492,6 +499,7 @@ export type ResponsesRequest = {
 
 /** @internal */
 export type ResponsesRequestPlugin$Outbound =
+  | AutoBetaRouterPlugin$Outbound
   | AutoRouterPlugin$Outbound
   | ContextCompressionPlugin$Outbound
   | FileParserPlugin$Outbound
@@ -507,6 +515,7 @@ export const ResponsesRequestPlugin$outboundSchema: z.ZodType<
   ResponsesRequestPlugin$Outbound,
   ResponsesRequestPlugin
 > = z.union([
+  AutoBetaRouterPlugin$outboundSchema,
   AutoRouterPlugin$outboundSchema,
   ContextCompressionPlugin$outboundSchema,
   FileParserPlugin$outboundSchema,
@@ -739,6 +748,7 @@ export type ResponsesRequest$Outbound = {
   parallel_tool_calls?: boolean | null | undefined;
   plugins?:
     | Array<
+      | AutoBetaRouterPlugin$Outbound
       | AutoRouterPlugin$Outbound
       | ContextCompressionPlugin$Outbound
       | FileParserPlugin$Outbound
@@ -841,6 +851,7 @@ export const ResponsesRequest$outboundSchema: z.ZodType<
   parallelToolCalls: z.nullable(z.boolean()).optional(),
   plugins: z.array(
     z.union([
+      AutoBetaRouterPlugin$outboundSchema,
       AutoRouterPlugin$outboundSchema,
       ContextCompressionPlugin$outboundSchema,
       FileParserPlugin$outboundSchema,
