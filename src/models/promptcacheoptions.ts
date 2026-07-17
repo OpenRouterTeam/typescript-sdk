@@ -4,7 +4,10 @@
  */
 
 import * as z from "zod/v4";
+import { safeParse } from "../lib/schemas.js";
 import { ClosedEnum } from "../types/enums.js";
+import { Result as SafeParseResult } from "../types/fp.js";
+import { SDKValidationError } from "./errors/sdkvalidationerror.js";
 
 export const PromptCacheOptionsMode = {
   Explicit: "explicit",
@@ -20,10 +23,22 @@ export type PromptCacheOptions = {
 };
 
 /** @internal */
-export const PromptCacheOptionsMode$outboundSchema: z.ZodEnum<
+export const PromptCacheOptionsMode$inboundSchema: z.ZodEnum<
   typeof PromptCacheOptionsMode
 > = z.enum(PromptCacheOptionsMode);
+/** @internal */
+export const PromptCacheOptionsMode$outboundSchema: z.ZodEnum<
+  typeof PromptCacheOptionsMode
+> = PromptCacheOptionsMode$inboundSchema;
 
+/** @internal */
+export const PromptCacheOptions$inboundSchema: z.ZodType<
+  PromptCacheOptions,
+  unknown
+> = z.object({
+  mode: PromptCacheOptionsMode$inboundSchema,
+  ttl: z.nullable(z.string()).optional(),
+});
 /** @internal */
 export type PromptCacheOptions$Outbound = {
   mode: string;
@@ -44,5 +59,14 @@ export function promptCacheOptionsToJSON(
 ): string {
   return JSON.stringify(
     PromptCacheOptions$outboundSchema.parse(promptCacheOptions),
+  );
+}
+export function promptCacheOptionsFromJSON(
+  jsonString: string,
+): SafeParseResult<PromptCacheOptions, SDKValidationError> {
+  return safeParse(
+    jsonString,
+    (x) => PromptCacheOptions$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'PromptCacheOptions' from JSON`,
   );
 }
