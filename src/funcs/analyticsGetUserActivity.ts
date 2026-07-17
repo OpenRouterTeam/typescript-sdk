@@ -32,7 +32,7 @@ import { Result } from "../types/fp.js";
  * Get user activity grouped by endpoint
  *
  * @remarks
- * Returns user activity data grouped by endpoint for the last 30 (completed) UTC days. [Management key](/docs/guides/overview/auth/management-api-keys) required.
+ * Returns user activity data grouped by endpoint for the last 30 (completed) UTC days. Pass `workspace_id` to scope the response to a single workspace. Pass `group_by=workspace` to split each row per workspace and include `workspace_id` on every item; by default rows are aggregated across workspaces and `workspace_id` is not returned. Activity recorded before workspace resolution existed is permanently attributed to the account default workspace (no backfill is possible). [Management key](/docs/guides/overview/auth/management-api-keys) required.
  */
 export function analyticsGetUserActivity(
   client: OpenRouterCore,
@@ -105,7 +105,9 @@ async function $do(
   const query = encodeFormQuery({
     "api_key_hash": payload?.api_key_hash,
     "date": payload?.date,
+    "group_by": payload?.group_by,
     "user_id": payload?.user_id,
+    "workspace_id": payload?.workspace_id,
   });
 
   const headers = new Headers(compactMap({
