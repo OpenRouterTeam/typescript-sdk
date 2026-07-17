@@ -174,7 +174,7 @@ export type QueryAnalyticsRequest = {
 };
 
 /**
- * A row of analytics data with metric/dimension values
+ * A row of analytics data with metric/dimension values. Rows grouped by the user dimension include a user_email field when available.
  */
 export type QueryAnalyticsData1 = {};
 
