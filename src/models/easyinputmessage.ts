@@ -136,6 +136,7 @@ export type EasyInputMessage = {
     | string
     | null
     | undefined;
+  name?: string | null | undefined;
   /**
    * The phase of an assistant message. Use `commentary` for an intermediate assistant message and `final_answer` for the final assistant message. For follow-up requests with models like `gpt-5.3-codex` and later, preserve and resend phase on all assistant messages. Omitting it can degrade performance. Not used for user messages.
    */
@@ -349,6 +350,7 @@ export type EasyInputMessage$Outbound = {
     | string
     | null
     | undefined;
+  name?: string | null | undefined;
   phase?: string | string | null | undefined;
   role: string | string | string | string;
   type?: string | undefined;
@@ -371,6 +373,7 @@ export const EasyInputMessage$outboundSchema: z.ZodType<
       z.string(),
     ]),
   ).optional(),
+  name: z.nullable(z.string()).optional(),
   phase: z.nullable(
     z.union([
       EasyInputMessagePhaseCommentary$outboundSchema,
