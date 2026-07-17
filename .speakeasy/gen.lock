@@ -1,19 +1,19 @@
 lockVersion: ""
 id: ""
 management:
-  docChecksum: 4a4f11439dbbd48a591ba5202e537fc1
+  docChecksum: 55f0effc0c7c14be41874aae5139c57f
   docVersion: 1.0.0
   speakeasyVersion: 1.787.0
   generationVersion: 2.914.0
-  releaseVersion: 0.13.63
-  configChecksum: 81f7cdeeccdb6b817c3b512a6515f48a
+  releaseVersion: 0.13.64
+  configChecksum: 3fee279443fbb8cab244868d45bd2666
   repoURL: https://github.com/OpenRouterTeam/typescript-sdk.git
   installationURL: https://github.com/OpenRouterTeam/typescript-sdk
   published: true
 persistentEdits:
-  generation_id: 4b3bf30f-cb4e-4825-aff6-2c2fc9205615
-  pristine_commit_hash: 97aacf8b5ff727844216a1678e097e9e7bf69dc9
-  pristine_tree_hash: a9ce856b668019f78638d6fb6f0f38ddb404a090
+  generation_id: d455251e-96fe-4a3c-a474-b121183a460b
+  pristine_commit_hash: 937fd412994f61d01c90f5bc75cf72a98b066aa4
+  pristine_tree_hash: 243e820cb4c24e62a526c3433d5e2f5e6002594f
 features:
   typescript:
     acceptHeaders: 2.81.2
@@ -8265,8 +8265,8 @@ trackedFiles:
     deleted: true
   docs/models/operations/orderby.mdx:
     id: dbfeee94a561
-    last_write_checksum: sha1:d8eeabccfd30353e2dba7f5fb7d18b6027ef0076
-    pristine_git_object: 7e0164874ae8c4f20accc56854ac27f20a4f2b22
+    last_write_checksum: sha1:3ef10d8fda3e2ce03a0f142e0ad00b1ab8c54bca
+    pristine_git_object: c0a5b8289a0ba0b5e587935070ccb67dbf103405
   docs/models/operations/period.mdx:
     id: 1fe51817870a
     last_write_checksum: sha1:4970aa01ca6fb6eb15f0250c3c47b71cd2a81e15
@@ -12420,12 +12420,12 @@ trackedFiles:
     pristine_git_object: 410efafd6a7f50d91ccb87131fedbe0c3d47e15a
   jsr.json:
     id: 7f6ab7767282
-    last_write_checksum: sha1:4f3b63e080c901221558713b7538fb1c31c8b653
-    pristine_git_object: cbc77cbaca6e55edc1980f61db6498362d6b9ea4
+    last_write_checksum: sha1:17b2204ae2e1c68ef97fa9939084f6cedebaebad
+    pristine_git_object: fc5bcb94b01e447c404a85f16d0e51143118442b
   package.json:
     id: 7030d0b2f71b
-    last_write_checksum: sha1:51d11bb904764cd01c551a7faa0f2c0edb36ff3c
-    pristine_git_object: c0e4272367548be93e66d0e41d9c9f20d17485b3
+    last_write_checksum: sha1:2056437debb699186c0bf8e716c1a94ebc3296af
+    pristine_git_object: fad0f73e2d9a13acab07ffc4f0e7d3e5f7874bda
   src/core.ts:
     id: f431fdbcd144
     last_write_checksum: sha1:5aa66b0b6a5964f3eea7f3098c2eb3c0ee9c0131
@@ -12804,8 +12804,8 @@ trackedFiles:
     pristine_git_object: a187e58707bdb726ca2aff74941efe7493422d4e
   src/lib/config.ts:
     id: 320761608fb3
-    last_write_checksum: sha1:b04c5aeeeccb8e3aa5dfbaa5d0c04fab43fcc768
-    pristine_git_object: 29ea93aca9b27de0301ee888340c41488322797b
+    last_write_checksum: sha1:b4b972ffad2c14184b862202357fcf36788667a7
+    pristine_git_object: f52e16f6218b0ee40fb6ceec63bd2e72202c3ee9
   src/lib/dlv.ts:
     id: b1988214835a
     last_write_checksum: sha1:eaac763b22717206a6199104e0403ed17a4e2711
@@ -14682,8 +14682,8 @@ trackedFiles:
     pristine_git_object: 3db826f1793b5b6d94d25f01af3b9661ed737d22
   src/models/operations/queryanalytics.ts:
     id: 2b9c6044e362
-    last_write_checksum: sha1:ba2f0367e55fb91afa1832a082168590148c14a1
-    pristine_git_object: 5fe8eaf9ec38da4f3b9bc1bedf5c16c905a77640
+    last_write_checksum: sha1:d54e93e13e35018406ec911f40fe53f0511844ca
+    pristine_git_object: 0d23609b67d558cd72995030dba80299a2c27d5d
   src/models/operations/sendchatcompletionrequest.ts:
     id: 52a55a780d2d
     last_write_checksum: sha1:e4b5e0b9cf265e98a00d8fa2f5e528d81b296285
@@ -17310,4 +17310,3 @@ examples:
         "500":
           application/json: {"error": {"code": 500, "message": "Internal Server Error"}}
 examplesVersion: 1.0.2
-releaseNotes: "## Typescript SDK Changes:\n* `openrouter.beta.responses.send()`: \n  *  `request.responsesRequest.provider.ignore[].union(ProviderName).enum(fishAudio)` **Added**\n* `openrouter.tts.createSpeech()`: \n  *  `request.speechRequest.provider.options.fishAudio` **Added**\n* `openrouter.stt.createTranscription()`: \n  *  `request.sttRequest.provider.options.fishAudio` **Added**\n* `openrouter.byok.list()`: \n  *  `request.provider` **Changed**\n  *  `response.data[].provider.enum(fishAudio)` **Added**\n* `openrouter.byok.create()`: \n  *  `request.createByokKeyRequest.provider.enum(fishAudio)` **Added**\n  *  `response.data.provider.enum(fishAudio)` **Added**\n* `openrouter.byok.get()`:  `response.data.provider.enum(fishAudio)` **Added**\n* `openrouter.byok.update()`:  `response.data.provider.enum(fishAudio)` **Added**\n* `openrouter.chat.send()`: \n  *  `request.chatRequest.provider.ignore[].union(ProviderName).enum(fishAudio)` **Added**\n* `openrouter.embeddings.generate()`: \n  *  `request.requestBody.provider.ignore[].union(ProviderName).enum(fishAudio)` **Added**\n* `openrouter.endpoints.listZdrEndpoints()`:  `response.data[].providerName.enum(fishAudio)` **Added**\n* `openrouter.endpoints.list()`:  `response.data.endpoints[].providerName.enum(fishAudio)` **Added**\n* `openrouter.generations.getGeneration()`:  `response.data.providerResponses[].providerName.enum(fishAudio)` **Added**\n* `openrouter.images.generate()`: \n  *  `request.imageGenerationRequest.provider` **Changed**\n* `openrouter.presets.createPresetsChatCompletions()`: \n  *  `request.chatRequest.provider.ignore[].union(ProviderName).enum(fishAudio)` **Added**\n* `openrouter.presets.createPresetsMessages()`: \n  *  `request.messagesRequest.provider.ignore[].union(ProviderName).enum(fishAudio)` **Added**\n* `openrouter.presets.createPresetsResponses()`: \n  *  `request.responsesRequest.provider.ignore[].union(ProviderName).enum(fishAudio)` **Added**\n* `openrouter.rerank.rerank()`: \n  *  `request.requestBody.provider.ignore[].union(ProviderName).enum(fishAudio)` **Added**\n* `openrouter.videoGeneration.generate()`: \n  *  `request.videoGenerationRequest.provider.options.fishAudio` **Added**\n"
