@@ -12,7 +12,7 @@ export type AutoRouterPlugin = {
    */
   allowedModels?: Array<string> | undefined;
   /**
-   * Controls cost vs. quality routing tradeoff (0–10). 0 = pure quality (best model regardless of cost), 10 = maximize for cost (cheapest model wins). Intermediate values blend quality and cost signals continuously. Defaults to 7.
+   * Balances routing between cost and quality on a 0-10 scale. Higher values favor cheaper models. Defaults to 7. For openrouter/auto-beta, the router ranks models for the classified task type by community spend share, then filters candidates by their average cost per generation for that task: 10 keeps only models around the cheapest 10th percentile, while 0 permits models up to the 90th percentile for cost.
    */
   costQualityTradeoff?: number | undefined;
   /**
