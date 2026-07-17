@@ -77,6 +77,10 @@ import {
   PreviewWebSearchServerTool$inboundSchema,
 } from "./previewwebsearchservertool.js";
 import {
+  PromptCacheOptions,
+  PromptCacheOptions$inboundSchema,
+} from "./promptcacheoptions.js";
+import {
   ResponsesErrorField,
   ResponsesErrorField$inboundSchema,
 } from "./responseserrorfield.js";
@@ -206,6 +210,10 @@ export type OpenResponsesResult = {
   previousResponseId?: string | null | undefined;
   prompt?: StoredPromptTemplate | null | undefined;
   promptCacheKey?: string | null | undefined;
+  /**
+   * Request-level prompt-cache controls. `mode: "explicit"` disables OpenAI-managed breakpoints so only blocks marked with `prompt_cache_breakpoint` are cached. Only supported by OpenAI GPT-5.6 and newer.
+   */
+  promptCacheOptions?: PromptCacheOptions | null | undefined;
   reasoning?: BaseReasoningConfig | null | undefined;
   safetyIdentifier?: string | null | undefined;
   serviceTier?: string | null | undefined;
@@ -468,6 +476,7 @@ export const OpenResponsesResult$inboundSchema: z.ZodType<
   previous_response_id: z.nullable(z.string()).optional(),
   prompt: z.nullable(StoredPromptTemplate$inboundSchema).optional(),
   prompt_cache_key: z.nullable(z.string()).optional(),
+  prompt_cache_options: z.nullable(PromptCacheOptions$inboundSchema).optional(),
   reasoning: z.nullable(BaseReasoningConfig$inboundSchema).optional(),
   safety_identifier: z.nullable(z.string()).optional(),
   service_tier: z.nullable(z.string()).optional(),
@@ -540,6 +549,7 @@ export const OpenResponsesResult$inboundSchema: z.ZodType<
     "presence_penalty": "presencePenalty",
     "previous_response_id": "previousResponseId",
     "prompt_cache_key": "promptCacheKey",
+    "prompt_cache_options": "promptCacheOptions",
     "safety_identifier": "safetyIdentifier",
     "service_tier": "serviceTier",
     "tool_choice": "toolChoice",
