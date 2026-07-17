@@ -64,7 +64,6 @@ export * from "./applypatchservertoolopenrouter.js";
 export * from "./applypatchupdatefileoperation.js";
 export * from "./apprankingsitem.js";
 export * from "./apprankingsresponse.js";
-export * from "./autobetarouterplugin.js";
 export * from "./autorouterplugin.js";
 export * from "./badgatewayresponseerrordata.js";
 export * from "./badrequestresponseerrordata.js";
