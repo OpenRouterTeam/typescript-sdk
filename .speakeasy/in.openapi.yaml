@@ -24475,7 +24475,7 @@ paths:
                         - 'desc'
                       type: 'string'
                     field:
-                      description: 'Field to order by'
+                      description: 'Field to order by: a metric included in `metrics` (or "request_count", which may be ordered by without being requested), a requested dimension, or "date".'
                       example: 'request_count'
                       type: 'string'
                   required:
