@@ -61,6 +61,7 @@ export type ImageGenerationProviderPreferencesOptions = {
   fakeProvider?: { [k: string]: any } | undefined;
   featherless?: { [k: string]: any } | undefined;
   fireworks?: { [k: string]: any } | undefined;
+  fishAudio?: { [k: string]: any } | undefined;
   friendli?: { [k: string]: any } | undefined;
   gmicloud?: { [k: string]: any } | undefined;
   googleAiStudio?: { [k: string]: any } | undefined;
@@ -269,6 +270,7 @@ export type ImageGenerationProviderPreferencesOptions$Outbound = {
   "fake-provider"?: { [k: string]: any } | undefined;
   featherless?: { [k: string]: any } | undefined;
   fireworks?: { [k: string]: any } | undefined;
+  "fish-audio"?: { [k: string]: any } | undefined;
   friendli?: { [k: string]: any } | undefined;
   gmicloud?: { [k: string]: any } | undefined;
   "google-ai-studio"?: { [k: string]: any } | undefined;
@@ -401,6 +403,7 @@ export const ImageGenerationProviderPreferencesOptions$outboundSchema:
     fakeProvider: z.record(z.string(), z.any()).optional(),
     featherless: z.record(z.string(), z.any()).optional(),
     fireworks: z.record(z.string(), z.any()).optional(),
+    fishAudio: z.record(z.string(), z.any()).optional(),
     friendli: z.record(z.string(), z.any()).optional(),
     gmicloud: z.record(z.string(), z.any()).optional(),
     googleAiStudio: z.record(z.string(), z.any()).optional(),
@@ -495,6 +498,7 @@ export const ImageGenerationProviderPreferencesOptions$outboundSchema:
       atlasCloud: "atlas-cloud",
       blackForestLabs: "black-forest-labs",
       fakeProvider: "fake-provider",
+      fishAudio: "fish-audio",
       googleAiStudio: "google-ai-studio",
       googleVertex: "google-vertex",
       hyperbolicQuantized: "hyperbolic-quantized",
