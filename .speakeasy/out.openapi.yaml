@@ -3764,6 +3764,8 @@ components:
           type:
             - 'string'
             - 'null'
+        prompt_cache_options:
+          $ref: '#/components/schemas/PromptCacheOptions'
         reasoning:
           $ref: '#/components/schemas/BaseReasoningConfig'
           nullable: true
