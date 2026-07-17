@@ -30,7 +30,7 @@ export type UpdateGuardrailRequest = {
    */
   allowedProviders?: Array<string> | null | undefined;
   /**
-   * Builtin content filters to apply. Set to null to remove. The "flag" action is only supported for "regex-prompt-injection"; PII slugs (email, phone, ssn, credit-card, ip-address, person-name, address) accept "block" or "redact" only.
+   * Builtin content filters to apply. Set to null to remove. Every builtin slug supports "block", "redact", and the detect-only "flag" action.
    */
   contentFilterBuiltins?:
     | Array<ContentFilterBuiltinEntryInput>
