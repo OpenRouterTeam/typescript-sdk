@@ -1,19 +1,19 @@
 lockVersion: ""
 id: ""
 management:
-  docChecksum: 79132029d68df1f691896123fc89ebed
+  docChecksum: 4990b46b3e8c406c806efe3c12c7d055
   docVersion: 1.0.0
   speakeasyVersion: 1.787.0
   generationVersion: 2.914.0
-  releaseVersion: 0.13.65
-  configChecksum: 5c3a0d9d1db9e7fa517e3f796c8886db
+  releaseVersion: 0.13.66
+  configChecksum: 42855e57586dd28f75df55dfe2b5363e
   repoURL: https://github.com/OpenRouterTeam/typescript-sdk.git
   installationURL: https://github.com/OpenRouterTeam/typescript-sdk
   published: true
 persistentEdits:
-  generation_id: f7cccb85-e745-4c2e-a35a-e67bd4ec09dd
-  pristine_commit_hash: c25b49d904b5b6497b10a50cc2ba785a4eef6d5a
-  pristine_tree_hash: 8f3708ad26681ea7f83034817ae94dda07f64a32
+  generation_id: 8aa67a1d-5345-4e66-944a-c56a2a7e418d
+  pristine_commit_hash: ac4914b7ac48be2a6e6a4c8d17f4b0c622035af7
+  pristine_tree_hash: 53e48c20d00914f9d0a781bc71fd5a1c0ad95002
 features:
   typescript:
     acceptHeaders: 2.81.2
@@ -7016,8 +7016,8 @@ trackedFiles:
     deleted: true
   docs/models/operations/createvideosrequest.mdx:
     id: e38a4e8cc1c0
-    last_write_checksum: sha1:bcc11514b22257d152cf70675e2807643e618f50
-    pristine_git_object: b542accfa4e690a04a8d5a3f07720167b3e8caf3
+    last_write_checksum: sha1:9746e862b8a72dd2029d9cc0542063f6a1b235c3
+    pristine_git_object: 46f719cf03dc3063a33dee91d96e3fa5f22edd23
   docs/models/operations/createworkspaceglobals.md:
     id: ac998c8d8f57
     last_write_checksum: sha1:ea15858a0868595a8a4367c2996acbfb221ec331
@@ -11849,8 +11849,8 @@ trackedFiles:
     deleted: true
   docs/models/videogenerationrequest.mdx:
     id: d611129166e2
-    last_write_checksum: sha1:b08401551b7c20492167c153b8e15a30c76b2644
-    pristine_git_object: a30caf77843f96abce8ef4d6c6f691ca05c3da10
+    last_write_checksum: sha1:248e958656042c3dae2e595010feadd50ea97f0e
+    pristine_git_object: 92f685b4277fd4b9cc7e78547bb98902863b76ba
   docs/models/videogenerationrequestaspectratio.md:
     id: 2ecaa5a363b2
     last_write_checksum: sha1:434fd315824c2f5c2faa62de0d95ecfdd04fda9a
@@ -12420,12 +12420,12 @@ trackedFiles:
     pristine_git_object: 410efafd6a7f50d91ccb87131fedbe0c3d47e15a
   jsr.json:
     id: 7f6ab7767282
-    last_write_checksum: sha1:02ea2b950eca3353e9ebcc4e03ded705c1068e8d
-    pristine_git_object: 36d389481f1afbbe2823852a76962b9183ca2f6a
+    last_write_checksum: sha1:00b071740c434efb66ec5b1fab143f164810ddf6
+    pristine_git_object: 36c7fef4c1940d3a29e12c09d2943b06a42d63b2
   package.json:
     id: 7030d0b2f71b
-    last_write_checksum: sha1:8cd9b64157207200c0c63447297425ac435e72cb
-    pristine_git_object: c629d467e299928f3672f5ab0b15ef5f6ea81bc1
+    last_write_checksum: sha1:e36ce4ed5872b600376381b9de3218832a98fa44
+    pristine_git_object: 52ef10f0c580e5d66a4c5594d5c045285c585a26
   src/core.ts:
     id: f431fdbcd144
     last_write_checksum: sha1:5aa66b0b6a5964f3eea7f3098c2eb3c0ee9c0131
@@ -12804,8 +12804,8 @@ trackedFiles:
     pristine_git_object: a187e58707bdb726ca2aff74941efe7493422d4e
   src/lib/config.ts:
     id: 320761608fb3
-    last_write_checksum: sha1:456aa3bce5605150013fe0f5cd0420fc82182c61
-    pristine_git_object: d000afc41edead567471a77992d36ce30eb96adb
+    last_write_checksum: sha1:3a2001a878d1a035f91967a72fdf1068fbf9dcc6
+    pristine_git_object: 4cb5bc88bd1493e7b1b4d8608d32aa11356dbbd3
   src/lib/dlv.ts:
     id: b1988214835a
     last_write_checksum: sha1:eaac763b22717206a6199104e0403ed17a4e2711
@@ -15450,8 +15450,8 @@ trackedFiles:
     pristine_git_object: 43658c2bafcbeba1e20a00c131167f8bef08d03c
   src/models/videogenerationrequest.ts:
     id: e72ea2e4c5b3
-    last_write_checksum: sha1:bba3e61894faefbc2c96993561c7d1fc87a93ef9
-    pristine_git_object: d1ec7f49850403e3b6a6e48e254abf197cb814e1
+    last_write_checksum: sha1:13ca417ecb9381d64e2fef3fd5e3ab7d2745f538
+    pristine_git_object: 9aa20318a6ea70fb0f51cea18cce80df1cf62b3e
   src/models/videogenerationresponse.ts:
     id: 0a96c6ee9eea
     last_write_checksum: sha1:73c631114adc4f4076585919439c06126aa6d55f
@@ -16364,7 +16364,7 @@ examples:
   createVideos:
     speakeasy-default-create-videos:
       requestBody:
-        application/json: {"model": "google/veo-3.1", "prompt": "A serene mountain landscape at sunset"}
+        application/json: {"model": "google/veo-3.1"}
       responses:
         "202":
           application/json: {"id": "job-abc123", "polling_url": "/api/v1/videos/job-abc123", "status": "pending"}
@@ -17310,4 +17310,4 @@ examples:
         "500":
           application/json: {"error": {"code": 500, "message": "Internal Server Error"}}
 examplesVersion: 1.0.2
-releaseNotes: "## Typescript SDK Changes:\n* `openrouter.guardrails.list()`:  `response.data[].contentFilters[].action.enum(flag)` **Added**\n* `openrouter.guardrails.create()`: \n  *  `request.createGuardrailRequest.contentFilters[].action.enum(flag)` **Added**\n  *  `response.data.contentFilters[].action.enum(flag)` **Added**\n* `openrouter.guardrails.get()`:  `response.data.contentFilters[].action.enum(flag)` **Added**\n* `openrouter.guardrails.update()`: \n  *  `request.updateGuardrailRequest.contentFilters[].action.enum(flag)` **Added**\n  *  `response.data.contentFilters[].action.enum(flag)` **Added**\n"
+releaseNotes: "## Typescript SDK Changes:\n* `openrouter.videoGeneration.generate()`: \n  *  `request.videoGenerationRequest.prompt` **Changed**\n"
