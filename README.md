@@ -1,8 +1,8 @@
 ![hero illustration](./assets/banner.png)
 
-# OpenRouter SDK
+# OpenRouter TypeScript SDK
 
-The [OpenRouter SDK](https://openrouter.ai/docs/sdks/typescript) is a TypeScript toolkit designed to help you build AI-powered features and solutions in any JS or TS based runtime. Giving you easy access to 400+ models across providers in an easy and type-safe way.
+The [OpenRouter TypeScript SDK](https://openrouter.ai/docs/sdks/typescript) is the official type-safe toolkit designed to build AI-powered features and solutions in any JS or TS runtime. It provides seamless access to 400+ leading AI models across providers combined with first-class TypeScript support.
 
 To learn more about how to use the OpenRouter SDK, check out our [API Reference](https://openrouter.ai/docs/sdks/typescript/reference) and [Documentation](https://openrouter.ai/docs/sdks/typescript).
 
@@ -190,7 +190,7 @@ run();
 
 You can setup your SDK to emit debug logs for SDK requests and responses.
 
-You can pass a logger that matches `console`'s interface as an SDK option.
+You can pass a logger that matches the standard `console` interface (specifically matching the `Logger` interface containing `.log`, `.info`, `.warn`, `.error`, etc.) as an SDK option.
 
 > [!WARNING]
 > Beware that debug logging will reveal secrets, like API tokens in headers, in log messages printed to a console or files. It's recommended to use this feature only during local development and not in production.
