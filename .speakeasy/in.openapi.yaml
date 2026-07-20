@@ -16626,6 +16626,12 @@ components:
         stdout: "total 0\n"
         type: 'openrouter:bash'
       properties:
+        arguments:
+          description: 'The raw tool-call arguments string as emitted by the model.'
+          type: 'string'
+        call_id:
+          description: 'The model-generated tool call id from the originating turn.'
+          type: 'string'
         command:
           type: 'string'
         exitCode:
