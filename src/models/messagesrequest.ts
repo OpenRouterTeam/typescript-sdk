@@ -41,6 +41,16 @@ import {
   AnthropicThinkingTurns$outboundSchema,
 } from "./anthropicthinkingturns.js";
 import {
+  AnthropicToolSearchToolBm25,
+  AnthropicToolSearchToolBm25$Outbound,
+  AnthropicToolSearchToolBm25$outboundSchema,
+} from "./anthropictoolsearchtoolbm25.js";
+import {
+  AnthropicToolSearchToolRegex,
+  AnthropicToolSearchToolRegex$Outbound,
+  AnthropicToolSearchToolRegex$outboundSchema,
+} from "./anthropictoolsearchtoolregex.js";
+import {
   AnthropicToolUsesKeep,
   AnthropicToolUsesKeep$Outbound,
   AnthropicToolUsesKeep$outboundSchema,
@@ -449,6 +459,8 @@ export type MessagesRequestToolUnion =
   | ToolTextEditor20250124
   | ToolWebSearch20250305
   | ToolWebSearch20260209
+  | AnthropicToolSearchToolBm25
+  | AnthropicToolSearchToolRegex
   | BashServerTool
   | DatetimeServerTool
   | ImageGenerationServerToolOpenRouter
@@ -508,7 +520,7 @@ export type MessagesRequest = {
   speed?: Speed | null | undefined;
   stopSequences?: Array<string> | undefined;
   /**
-   * Stop conditions for the server-tool agent loop. Any condition firing halts the loop (OR logic). When set, this overrides `max_tool_calls`.
+   * Stop conditions for the server-tool agent loop. Any condition firing halts the loop (OR logic). When set, this overrides `max_tool_calls`. When a condition fires while the model is still emitting tool calls, the pending tool calls are executed and one final turn is made with tool calls disabled so the response ends with a natural-language answer instead of an unfinished tool call.
    */
   stopServerToolsWhen?: Array<StopServerToolsWhenCondition> | undefined;
   stream?: boolean | undefined;
@@ -529,6 +541,8 @@ export type MessagesRequest = {
       | ToolTextEditor20250124
       | ToolWebSearch20250305
       | ToolWebSearch20260209
+      | AnthropicToolSearchToolBm25
+      | AnthropicToolSearchToolRegex
       | BashServerTool
       | DatetimeServerTool
       | ImageGenerationServerToolOpenRouter
@@ -1429,6 +1443,8 @@ export type MessagesRequestToolUnion$Outbound =
   | ToolTextEditor20250124$Outbound
   | ToolWebSearch20250305$Outbound
   | ToolWebSearch20260209$Outbound
+  | AnthropicToolSearchToolBm25$Outbound
+  | AnthropicToolSearchToolRegex$Outbound
   | BashServerTool$Outbound
   | DatetimeServerTool$Outbound
   | ImageGenerationServerToolOpenRouter$Outbound
@@ -1448,6 +1464,8 @@ export const MessagesRequestToolUnion$outboundSchema: z.ZodType<
   z.lazy(() => ToolTextEditor20250124$outboundSchema),
   z.lazy(() => ToolWebSearch20250305$outboundSchema),
   z.lazy(() => ToolWebSearch20260209$outboundSchema),
+  AnthropicToolSearchToolBm25$outboundSchema,
+  AnthropicToolSearchToolRegex$outboundSchema,
   BashServerTool$outboundSchema,
   DatetimeServerTool$outboundSchema,
   ImageGenerationServerToolOpenRouter$outboundSchema,
@@ -1520,6 +1538,8 @@ export type MessagesRequest$Outbound = {
       | ToolTextEditor20250124$Outbound
       | ToolWebSearch20250305$Outbound
       | ToolWebSearch20260209$Outbound
+      | AnthropicToolSearchToolBm25$Outbound
+      | AnthropicToolSearchToolRegex$Outbound
       | BashServerTool$Outbound
       | DatetimeServerTool$Outbound
       | ImageGenerationServerToolOpenRouter$Outbound
@@ -1595,6 +1615,8 @@ export const MessagesRequest$outboundSchema: z.ZodType<
       z.lazy(() => ToolTextEditor20250124$outboundSchema),
       z.lazy(() => ToolWebSearch20250305$outboundSchema),
       z.lazy(() => ToolWebSearch20260209$outboundSchema),
+      AnthropicToolSearchToolBm25$outboundSchema,
+      AnthropicToolSearchToolRegex$outboundSchema,
       BashServerTool$outboundSchema,
       DatetimeServerTool$outboundSchema,
       ImageGenerationServerToolOpenRouter$outboundSchema,
