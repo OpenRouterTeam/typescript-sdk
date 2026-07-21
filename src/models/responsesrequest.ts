@@ -431,6 +431,9 @@ export type ResponsesRequest = {
    * Configuration for reasoning mode in the response
    */
   reasoning?: ReasoningConfig | null | undefined;
+  /**
+   * Recommended per-end-user identifier for abuse isolation. Use a stable ID, hash, or pseudonym. When a provider requires a user identity, OpenRouter folds it into the hashed identity sent upstream and never forwards it raw. If omitted, requests use an account-level identity, so provider policy blocks can affect the whole account.
+   */
   safetyIdentifier?: string | null | undefined;
   serviceTier?: ResponsesRequestServiceTier | null | undefined;
   /**
@@ -438,7 +441,7 @@ export type ResponsesRequest = {
    */
   sessionId?: string | undefined;
   /**
-   * Stop conditions for the server-tool agent loop. Any condition firing halts the loop (OR logic). When set, this overrides `max_tool_calls`.
+   * Stop conditions for the server-tool agent loop. Any condition firing halts the loop (OR logic). When set, this overrides `max_tool_calls`. When a condition fires while the model is still emitting tool calls, the pending tool calls are executed and one final turn is made with tool calls disabled so the response ends with a natural-language answer instead of an unfinished tool call.
    */
   stopServerToolsWhen?: Array<StopServerToolsWhenCondition> | undefined;
   store?: false | undefined;
