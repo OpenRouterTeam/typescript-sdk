@@ -1,19 +1,19 @@
 lockVersion: ""
 id: ""
 management:
-  docChecksum: d20c31c1a934bb7091c06f495189e2be
+  docChecksum: 6dbe17673178e44a36cbd5b84dd08dde
   docVersion: 1.0.0
   speakeasyVersion: 1.787.0
   generationVersion: 2.914.0
-  releaseVersion: 1.0.2
-  configChecksum: d5f45dcc489e6688d828153032a330d9
+  releaseVersion: 1.0.3
+  configChecksum: 9e27772b2d5b75bb556e562522c8c3d6
   repoURL: https://github.com/OpenRouterTeam/typescript-sdk.git
   installationURL: https://github.com/OpenRouterTeam/typescript-sdk
   published: true
 persistentEdits:
-  generation_id: 5ce4c5aa-5e6a-4aff-b9da-339974e997ba
-  pristine_commit_hash: 3585786a0268222b2b747f80bcfe13680a7792fb
-  pristine_tree_hash: 7ed1090c8f92b312cdffb101e39726609b6a59c9
+  generation_id: 3d207b8f-2fcc-4cad-a971-e8ff87318e5a
+  pristine_commit_hash: 18d908a856de21b69046a5ffab392c7a8b6dd9d8
+  pristine_tree_hash: cd911320fdc7a65fb40d3ec2a2e6c4bfa8a8e0f0
 features:
   typescript:
     acceptHeaders: 2.81.2
@@ -12221,8 +12221,8 @@ trackedFiles:
     pristine_git_object: 366a193e1f5d40e69bd95b33ae4e1b26e1740d19
   docs/sdks/apikeys/README.mdx:
     id: 27fcaae1c346
-    last_write_checksum: sha1:5d4db28251f854e0e8ec9b135ea993bf424c5e58
-    pristine_git_object: ad029a09871b3cb3ad9a8130db59aa1cdec9b6fb
+    last_write_checksum: sha1:6ac060c7911df15f68ef242fc5c5a7d44349dc0a
+    pristine_git_object: 6e0d73c4412ba4f49851e8dcb070dc09596e0fc5
   docs/sdks/benchmarks/README.md:
     id: 61c16262af9b
     last_write_checksum: sha1:17fd0e4aa4c358c6298ee9a434a14ff68ce83dbf
@@ -12248,8 +12248,8 @@ trackedFiles:
     deleted: true
   docs/sdks/byok/README.mdx:
     id: 17792f3b180d
-    last_write_checksum: sha1:146e69bcdda2ddd937b48bf943f48f530aed9bc8
-    pristine_git_object: 738921367c0a392d1c2288b081fe2529ced46fe7
+    last_write_checksum: sha1:d627d2e35a361ca3df9cbbfe41be9c8a681949f3
+    pristine_git_object: 391abd249f245455828352da1ce5b1222e29160a
   docs/sdks/chat/README.mdx:
     id: 1dd859c23fe1
     last_write_checksum: sha1:b01aa24bc49b080a9d99ca0f7303d1afd546b6ac
@@ -12299,8 +12299,8 @@ trackedFiles:
     pristine_git_object: de912e7107471778e34880ef35d3ed67c36fbd19
   docs/sdks/guardrails/README.mdx:
     id: a0cd4218b8fa
-    last_write_checksum: sha1:209c83f410243586896303ef1d5e58161a650669
-    pristine_git_object: 75fb2adabf0a738dc12042e478163fcc53b122f4
+    last_write_checksum: sha1:c3035ed53834899dc4b7ad553fb6583765c88f4d
+    pristine_git_object: e58eca81388ecd73b38584b9b28f5c86d2562601
   docs/sdks/images/README.md:
     id: cc752c3524d0
     last_write_checksum: sha1:30cb5d17118722e49d11f064014d50e8ba4ddaec
@@ -12325,8 +12325,8 @@ trackedFiles:
     deleted: true
   docs/sdks/observability/README.mdx:
     id: 75811527e651
-    last_write_checksum: sha1:72d71ce1deb3ddb89c596e766d4ba2e3e3b88008
-    pristine_git_object: 0633838ab6699eeb7b617d7242fa9ee409fef488
+    last_write_checksum: sha1:f6b165413e530620f7bb3e134fbf64dcad85cedc
+    pristine_git_object: bb05089875e795f5f33a72be0fa874ccd1727189
   docs/sdks/organization/README.md:
     id: 69e4232b8432
     last_write_checksum: sha1:52adb5056b0cf654a5079dae45853990709380d3
@@ -12420,12 +12420,12 @@ trackedFiles:
     pristine_git_object: 410efafd6a7f50d91ccb87131fedbe0c3d47e15a
   jsr.json:
     id: 7f6ab7767282
-    last_write_checksum: sha1:dbad11c33c19a91f1544349d5bc9903134224c36
-    pristine_git_object: 58a3c484b7e4bb207546ea44d4b9c66ebf53b937
+    last_write_checksum: sha1:f61eaa96f49354a57054506897e7acdd3c3fab4e
+    pristine_git_object: 17d72888b0f22585852674d49153ef5154179e5a
   package.json:
     id: 7030d0b2f71b
-    last_write_checksum: sha1:32854a38012c08ed6c9d0781d867466876ca0ae1
-    pristine_git_object: e826c78d06a7ebefa53c222171eea1ff72a326c4
+    last_write_checksum: sha1:611bc7a9fc6263072281081df00f18d68eab25e0
+    pristine_git_object: 5d02b63425d8f8954100123905aa3afac14b7212
   src/core.ts:
     id: f431fdbcd144
     last_write_checksum: sha1:5aa66b0b6a5964f3eea7f3098c2eb3c0ee9c0131
@@ -12452,8 +12452,8 @@ trackedFiles:
     pristine_git_object: 3663f591c287a545266b761fdfd93e3f4dd0c659
   src/funcs/apiKeysList.ts:
     id: 2afc8d8f1ce0
-    last_write_checksum: sha1:b8205db2a749425da8d5e3c6e145141c5fab6355
-    pristine_git_object: 9b3943208fcd8bc5582519dec499e781a0d01f8a
+    last_write_checksum: sha1:690d5db6255f8a83bc939d9113e0490c68f2a7f0
+    pristine_git_object: fc3c9f8316d86d3128be6f71e168b5cfd8e2f32b
   src/funcs/apiKeysUpdate.ts:
     id: 05700884934b
     last_write_checksum: sha1:1601df51682834e672fa4778f7faa6549ec7ab48
@@ -12488,8 +12488,8 @@ trackedFiles:
     pristine_git_object: e624f249f9b815e3614aff73f9fe64967a842dff
   src/funcs/byokList.ts:
     id: 61b5aac5c0af
-    last_write_checksum: sha1:875396af6d2b89d6aae3645b27f5d1fd8eedff2b
-    pristine_git_object: 7071407b16db717ef0a5579a01244fa0a85bd3bf
+    last_write_checksum: sha1:5cd9b11f1b2fd695bc09472823a596d6128e39ef
+    pristine_git_object: dfb9d43d49aad7afddefd364a0b072818f2e494e
   src/funcs/byokUpdate.ts:
     id: af96a7f06850
     last_write_checksum: sha1:11a389fda6ea8ab038af889305e927164b39bb28
@@ -12592,8 +12592,8 @@ trackedFiles:
     pristine_git_object: f8ce556edd1104e996196a8f0bf6359bfb5470d0
   src/funcs/guardrailsList.ts:
     id: 5a0c89687e40
-    last_write_checksum: sha1:b6263d3c7839476005bd1aba7663ccf762fa9988
-    pristine_git_object: feb1c7e7fcff88467015b077abb9477cbea80384
+    last_write_checksum: sha1:dd9570052cbbb51b69c7f4710305f0c37887d2f3
+    pristine_git_object: da2e27c708d423f393f040c601560ac070fd3cc4
   src/funcs/guardrailsListGuardrailKeyAssignments.ts:
     id: 524ae2fd5189
     last_write_checksum: sha1:b3798fc016c86340e25b258012bed2c9ceed50d7
@@ -12664,8 +12664,8 @@ trackedFiles:
     pristine_git_object: 58ede385945c7875cc6c27741ff174fc837acf73
   src/funcs/observabilityList.ts:
     id: 6b759665eae6
-    last_write_checksum: sha1:58943c6f2f6cc9a5c85453eb175186c90fc15c9c
-    pristine_git_object: 862971356ab15e258544dc051dd490d0889686a5
+    last_write_checksum: sha1:a8ab343cae82e7007736cd98784b6579979ee58e
+    pristine_git_object: a65df6e6e4f6e5232ed150b53c7d5ac175ed3a76
   src/funcs/observabilityUpdate.ts:
     id: e19afc29658d
     last_write_checksum: sha1:6d349a37d1d0014f5907092015fd2652ed558f6e
@@ -12804,8 +12804,8 @@ trackedFiles:
     pristine_git_object: a187e58707bdb726ca2aff74941efe7493422d4e
   src/lib/config.ts:
     id: 320761608fb3
-    last_write_checksum: sha1:ffd7a9d7c39f879a9dbe40d7436b9089b74260cc
-    pristine_git_object: 4d77ca495b925c23e52f454a13a844dd446d23a7
+    last_write_checksum: sha1:a6e52bb9c5353ecc34435c90ca279ad3fe669578
+    pristine_git_object: e11497cf0f4d67358365484708cf6c532776393c
   src/lib/dlv.ts:
     id: b1988214835a
     last_write_checksum: sha1:eaac763b22717206a6199104e0403ed17a4e2711
@@ -16014,6 +16014,8 @@ examples:
           application/json: {"error": {"code": 429, "message": "Rate limit exceeded"}}
         "500":
           application/json: {"error": {"code": 500, "message": "Internal Server Error"}}
+        "400":
+          application/json: {"error": {"code": 400, "message": "Invalid request parameters"}}
   createKeys:
     speakeasy-default-create-keys:
       requestBody:
@@ -16105,6 +16107,8 @@ examples:
           application/json: {"error": {"code": 401, "message": "Missing Authentication header"}}
         "500":
           application/json: {"error": {"code": 500, "message": "Internal Server Error"}}
+        "400":
+          application/json: {"error": {"code": 400, "message": "Invalid request parameters"}}
   createGuardrail:
     speakeasy-default-create-guardrail:
       requestBody:
@@ -16698,6 +16702,8 @@ examples:
           application/json: {"error": {"code": 401, "message": "Missing Authentication header"}}
         "500":
           application/json: {"error": {"code": 500, "message": "Internal Server Error"}}
+        "400":
+          application/json: {"error": {"code": 400, "message": "Invalid request parameters"}}
   getBYOKKey:
     speakeasy-default-get-BYOK-key:
       parameters:
@@ -16725,6 +16731,8 @@ examples:
           application/json: {"error": {"code": 401, "message": "Missing Authentication header"}}
         "500":
           application/json: {"error": {"code": 500, "message": "Internal Server Error"}}
+        "400":
+          application/json: {"error": {"code": 400, "message": "Invalid request parameters"}}
   getObservabilityDestination:
     speakeasy-default-get-observability-destination:
       parameters:
@@ -17322,3 +17330,9 @@ examples:
         "500":
           application/json: {"error": {"code": 500, "message": "Internal Server Error"}}
 examplesVersion: 1.0.2
+releaseNotes: |
+  ## Typescript SDK Changes:
+  * `openrouter.byok.list()`:  `error.status[400]` **Added**
+  * `openrouter.guardrails.list()`:  `error.status[400]` **Added**
+  * `openrouter.apiKeys.list()`:  `error.status[400]` **Added**
+  * `openrouter.observability.list()`:  `error.status[400]` **Added**
