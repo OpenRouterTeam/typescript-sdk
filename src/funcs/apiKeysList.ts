@@ -40,7 +40,6 @@ export function apiKeysList(
 ): APIPromise<
   Result<
     operations.ListResponse,
-    | errors.BadRequestResponseError
     | errors.UnauthorizedResponseError
     | errors.TooManyRequestsResponseError
     | errors.InternalServerResponseError
@@ -69,7 +68,6 @@ async function $do(
   [
     Result<
       operations.ListResponse,
-      | errors.BadRequestResponseError
       | errors.UnauthorizedResponseError
       | errors.TooManyRequestsResponseError
       | errors.InternalServerResponseError
@@ -186,7 +184,6 @@ async function $do(
 
   const [result] = await M.match<
     operations.ListResponse,
-    | errors.BadRequestResponseError
     | errors.UnauthorizedResponseError
     | errors.TooManyRequestsResponseError
     | errors.InternalServerResponseError
@@ -200,7 +197,6 @@ async function $do(
     | SDKValidationError
   >(
     M.json(200, operations.ListResponse$inboundSchema),
-    M.jsonErr(400, errors.BadRequestResponseError$inboundSchema),
     M.jsonErr(401, errors.UnauthorizedResponseError$inboundSchema),
     M.jsonErr(429, errors.TooManyRequestsResponseError$inboundSchema),
     M.jsonErr(500, errors.InternalServerResponseError$inboundSchema),

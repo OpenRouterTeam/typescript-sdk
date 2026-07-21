@@ -17,7 +17,7 @@ import {
 } from "./subagentreasoning.js";
 
 /**
- * Configuration for one openrouter:subagent server tool entry.
+ * Configuration for the openrouter:subagent server tool.
  */
 export type SubagentServerToolConfig = {
   /**
@@ -36,10 +36,6 @@ export type SubagentServerToolConfig = {
    * Slug of the model that executes delegated tasks (any OpenRouter model). Typically a smaller, cheaper, faster model than the one delegating. When omitted, the model from the outer API request is used. The subagent tool itself cannot be the subagent model.
    */
   model?: string | undefined;
-  /**
-   * Optional name for this subagent. The model sees one tool per named subagent (and one default for an unnamed entry). Names must be unique across subagent entries. Letters, digits, spaces, underscores, and dashes; trimmed; 1–64 chars.
-   */
-  name?: string | undefined;
   /**
    * Reasoning configuration forwarded to the subagent call. Use this to control reasoning effort and token budget for models that support extended thinking.
    */
@@ -60,7 +56,6 @@ export type SubagentServerToolConfig$Outbound = {
   max_completion_tokens?: number | undefined;
   max_tool_calls?: number | undefined;
   model?: string | undefined;
-  name?: string | undefined;
   reasoning?: SubagentReasoning$Outbound | undefined;
   temperature?: number | undefined;
   tools?: Array<SubagentNestedTool$Outbound> | undefined;
@@ -75,7 +70,6 @@ export const SubagentServerToolConfig$outboundSchema: z.ZodType<
   maxCompletionTokens: z.int().optional(),
   maxToolCalls: z.int().optional(),
   model: z.string().optional(),
-  name: z.string().optional(),
   reasoning: SubagentReasoning$outboundSchema.optional(),
   temperature: z.number().optional(),
   tools: z.array(SubagentNestedTool$outboundSchema).optional(),
