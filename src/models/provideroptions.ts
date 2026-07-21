@@ -110,6 +110,7 @@ export type ProviderOptions = {
   reka?: { [k: string]: any } | undefined;
   relace?: { [k: string]: any } | undefined;
   replicate?: { [k: string]: any } | undefined;
+  runway?: { [k: string]: any } | undefined;
   sailResearch?: { [k: string]: any } | undefined;
   sakana?: { [k: string]: any } | undefined;
   sambanova?: { [k: string]: any } | undefined;
@@ -239,6 +240,7 @@ export type ProviderOptions$Outbound = {
   reka?: { [k: string]: any } | undefined;
   relace?: { [k: string]: any } | undefined;
   replicate?: { [k: string]: any } | undefined;
+  runway?: { [k: string]: any } | undefined;
   "sail-research"?: { [k: string]: any } | undefined;
   sakana?: { [k: string]: any } | undefined;
   sambanova?: { [k: string]: any } | undefined;
@@ -371,6 +373,7 @@ export const ProviderOptions$outboundSchema: z.ZodType<
   reka: z.record(z.string(), z.any()).optional(),
   relace: z.record(z.string(), z.any()).optional(),
   replicate: z.record(z.string(), z.any()).optional(),
+  runway: z.record(z.string(), z.any()).optional(),
   sailResearch: z.record(z.string(), z.any()).optional(),
   sakana: z.record(z.string(), z.any()).optional(),
   sambanova: z.record(z.string(), z.any()).optional(),
