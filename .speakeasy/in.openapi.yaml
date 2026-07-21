@@ -25499,6 +25499,16 @@ paths:
               schema:
                 $ref: '#/components/schemas/ListBYOKKeysResponse'
           description: 'List of BYOK credentials'
+        '400':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 400
+                  message: 'Invalid request parameters'
+              schema:
+                $ref: '#/components/schemas/BadRequestResponse'
+          description: 'Bad Request - Invalid request parameters or malformed input'
         '401':
           content:
             application/json:
@@ -28001,6 +28011,16 @@ paths:
               schema:
                 $ref: '#/components/schemas/ListGuardrailsResponse'
           description: 'List of guardrails'
+        '400':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 400
+                  message: 'Invalid request parameters'
+              schema:
+                $ref: '#/components/schemas/BadRequestResponse'
+          description: 'Bad Request - Invalid request parameters or malformed input'
         '401':
           content:
             application/json:
@@ -29786,6 +29806,16 @@ paths:
                   - 'data'
                 type: 'object'
           description: 'List of API keys'
+        '400':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 400
+                  message: 'Invalid request parameters'
+              schema:
+                $ref: '#/components/schemas/BadRequestResponse'
+          description: 'Bad Request - Invalid request parameters or malformed input'
         '401':
           content:
             application/json:
@@ -31928,6 +31958,16 @@ paths:
               schema:
                 $ref: '#/components/schemas/ListObservabilityDestinationsResponse'
           description: 'List of observability destinations'
+        '400':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 400
+                  message: 'Invalid request parameters'
+              schema:
+                $ref: '#/components/schemas/BadRequestResponse'
+          description: 'Bad Request - Invalid request parameters or malformed input'
         '401':
           content:
             application/json:
