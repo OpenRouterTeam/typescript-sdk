@@ -380,6 +380,9 @@ export type ResponsesRequest = {
   input?: InputsUnion | undefined;
   instructions?: string | null | undefined;
   maxOutputTokens?: number | null | undefined;
+  /**
+   * Maximum number of server-tool (e.g. `openrouter:web_search`) agent steps the model may take during a request. Defaults to 30, which is also the maximum. Ignored when `stop_server_tools_when` is set.
+   */
   maxToolCalls?: number | null | undefined;
   /**
    * Metadata key-value pairs for the request. Keys must be ≤64 characters and cannot contain brackets. Values must be ≤512 characters. Maximum 16 pairs allowed.
