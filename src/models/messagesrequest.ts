@@ -508,7 +508,7 @@ export type MessagesRequest = {
   speed?: Speed | null | undefined;
   stopSequences?: Array<string> | undefined;
   /**
-   * Stop conditions for the server-tool agent loop. Any condition firing halts the loop (OR logic). When set, this overrides `max_tool_calls`.
+   * Stop conditions for the server-tool agent loop. Any condition firing halts the loop (OR logic). When set, this overrides `max_tool_calls`. When a condition fires while the model is still emitting tool calls, the pending tool calls are executed and one final turn is made with tool calls disabled so the response ends with a natural-language answer instead of an unfinished tool call.
    */
   stopServerToolsWhen?: Array<StopServerToolsWhenCondition> | undefined;
   stream?: boolean | undefined;
