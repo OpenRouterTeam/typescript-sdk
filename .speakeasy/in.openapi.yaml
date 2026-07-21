@@ -20450,6 +20450,8 @@ components:
             - 'integer'
             - 'null'
         max_tool_calls:
+          description: 'Maximum number of server-tool (e.g. `openrouter:web_search`) agent steps the model may take during a request. Defaults to 30, which is also the maximum. Ignored when `stop_server_tools_when` is set.'
+          example: 30
           type:
             - 'integer'
             - 'null'
