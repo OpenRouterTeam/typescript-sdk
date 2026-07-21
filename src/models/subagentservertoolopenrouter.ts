@@ -23,7 +23,7 @@ export type SubagentServerToolOpenRouterType = ClosedEnum<
  */
 export type SubagentServerToolOpenRouter = {
   /**
-   * Configuration for the openrouter:subagent server tool.
+   * Configuration for one openrouter:subagent server tool entry.
    */
   parameters?: SubagentServerToolConfig | undefined;
   type: SubagentServerToolOpenRouterType;
