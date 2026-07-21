@@ -380,6 +380,9 @@ export type ResponsesRequest = {
   input?: InputsUnion | undefined;
   instructions?: string | null | undefined;
   maxOutputTokens?: number | null | undefined;
+  /**
+   * Maximum number of server-tool (e.g. `openrouter:web_search`) agent steps the model may take during a request. Defaults to 30, which is also the maximum. Ignored when `stop_server_tools_when` is set.
+   */
   maxToolCalls?: number | null | undefined;
   /**
    * Metadata key-value pairs for the request. Keys must be ≤64 characters and cannot contain brackets. Values must be ≤512 characters. Maximum 16 pairs allowed.
@@ -428,6 +431,9 @@ export type ResponsesRequest = {
    * Configuration for reasoning mode in the response
    */
   reasoning?: ReasoningConfig | null | undefined;
+  /**
+   * Recommended per-end-user identifier for abuse isolation. Use a stable ID, hash, or pseudonym. When a provider requires a user identity, OpenRouter folds it into the hashed identity sent upstream and never forwards it raw. If omitted, requests use an account-level identity, so provider policy blocks can affect the whole account.
+   */
   safetyIdentifier?: string | null | undefined;
   serviceTier?: ResponsesRequestServiceTier | null | undefined;
   /**
