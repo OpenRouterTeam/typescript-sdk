@@ -60,6 +60,7 @@ export const Provider = {
   Clarifai: "clarifai",
   Cloudflare: "cloudflare",
   Cohere: "cohere",
+  Coreweave: "coreweave",
   Crusoe: "crusoe",
   Darkbloom: "darkbloom",
   Decart: "decart",
