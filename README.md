@@ -190,7 +190,7 @@ run();
 
 You can setup your SDK to emit debug logs for SDK requests and responses.
 
-You can pass a logger that matches the standard `console` interface (specifically matching the `Logger` interface containing `.log`, `.info`, `.warn`, `.error`, etc.) as an SDK option.
+You can pass a logger that matches `console`'s interface as an SDK option.
 
 > [!WARNING]
 > Beware that debug logging will reveal secrets, like API tokens in headers, in log messages printed to a console or files. It's recommended to use this feature only during local development and not in production.
