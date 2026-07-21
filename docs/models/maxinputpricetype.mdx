@@ -1,0 +1,21 @@
+---
+title: "MaxInputPriceType"
+---
+
+Which input price max_input_price is enforced against, and the Pareto frontier price axis. "input_list" uses the catalog list price (endpoint.pricing.prompt). "input_weighted_avg" uses the traffic-weighted effective input price, falling back to list price for models without traffic data. Defaults to "input_list". Ignored unless max_input_price is set.
+
+## Example Usage
+
+```typescript
+import { MaxInputPriceType } from "@openrouter/sdk/models";
+
+let value: MaxInputPriceType = "input_weighted_avg";
+
+// Open enum: unrecognized values are captured as Unrecognized<string>
+```
+
+## Values
+
+```typescript
+"input_list" | "input_weighted_avg" | Unrecognized<string>
+```

@@ -9,6 +9,18 @@ import * as openEnums from "../types/enums.js";
 import { OpenEnum } from "../types/enums.js";
 
 /**
+ * Which input price max_input_price is enforced against, and the Pareto frontier price axis. "input_list" uses the catalog list price (endpoint.pricing.prompt). "input_weighted_avg" uses the traffic-weighted effective input price, falling back to list price for models without traffic data. Defaults to "input_list". Ignored unless max_input_price is set.
+ */
+export const MaxInputPriceType = {
+  InputList: "input_list",
+  InputWeightedAvg: "input_weighted_avg",
+} as const;
+/**
+ * Which input price max_input_price is enforced against, and the Pareto frontier price axis. "input_list" uses the catalog list price (endpoint.pricing.prompt). "input_weighted_avg" uses the traffic-weighted effective input price, falling back to list price for models without traffic data. Defaults to "input_list". Ignored unless max_input_price is set.
+ */
+export type MaxInputPriceType = OpenEnum<typeof MaxInputPriceType>;
+
+/**
  * Price source for the Pareto frontier cost axis. "prompt" uses catalog list price (endpoint.pricing.prompt). "weighted_avg" uses traffic-weighted effective input price from ClickHouse, falling back to prompt price for models without traffic data. Defaults to "prompt".
  */
 export const PriceSource = {
@@ -27,7 +39,17 @@ export type ParetoRouterPlugin = {
   enabled?: boolean | undefined;
   id: "pareto-router";
   /**
-   * Minimum coding quality score between 0 and 1. Maps to internal quality tiers: >= 0.66 → high (top coding models), >= 0.33 → medium (strong modern flagships), < 0.33 → low (capable coders above the median). Omit to default to the highest tier (equivalent to >= 0.66).
+   * Maximum input price in USD per million tokens. When set, quality-tier selection (min_coding_score) is bypassed: the router computes the Pareto frontier over the top coding models and routes to the best-scoring frontier model priced at or below this cap, falling back through cheaper frontier models, then non-frontier models. Returns 404 when no candidate satisfies the cap.
+   */
+  maxInputPrice?: number | undefined;
+  /**
+   * Which input price max_input_price is enforced against, and the Pareto frontier price axis. "input_list" uses the catalog list price (endpoint.pricing.prompt). "input_weighted_avg" uses the traffic-weighted effective input price, falling back to list price for models without traffic data. Defaults to "input_list". Ignored unless max_input_price is set.
+   */
+  maxInputPriceType?: MaxInputPriceType | undefined;
+  /**
+   * Deprecated — prefer max_input_price. Ignored when max_input_price is set. Minimum coding quality score between 0 and 1. Maps to internal quality tiers: >= 0.66 → high (top coding models), >= 0.33 → medium (strong modern flagships), < 0.33 → low (capable coders above the median). Omit to default to the highest tier (equivalent to >= 0.66).
+   *
+   * @deprecated field: This will be removed in a future release, please migrate away from it as soon as possible.
    */
   minCodingScore?: number | undefined;
   /**
@@ -37,6 +59,12 @@ export type ParetoRouterPlugin = {
 };
 
 /** @internal */
+export const MaxInputPriceType$outboundSchema: z.ZodType<
+  string,
+  MaxInputPriceType
+> = openEnums.outboundSchema(MaxInputPriceType);
+
+/** @internal */
 export const PriceSource$outboundSchema: z.ZodType<string, PriceSource> =
   openEnums.outboundSchema(PriceSource);
 
@@ -44,6 +72,8 @@ export const PriceSource$outboundSchema: z.ZodType<string, PriceSource> =
 export type ParetoRouterPlugin$Outbound = {
   enabled?: boolean | undefined;
   id: "pareto-router";
+  max_input_price?: number | undefined;
+  max_input_price_type?: string | undefined;
   min_coding_score?: number | undefined;
   price_source?: string | undefined;
 };
@@ -55,10 +85,14 @@ export const ParetoRouterPlugin$outboundSchema: z.ZodType<
 > = z.object({
   enabled: z.boolean().optional(),
   id: z.literal("pareto-router"),
+  maxInputPrice: z.number().optional(),
+  maxInputPriceType: MaxInputPriceType$outboundSchema.optional(),
   minCodingScore: z.number().optional(),
   priceSource: PriceSource$outboundSchema.optional(),
 }).transform((v) => {
   return remap$(v, {
+    maxInputPrice: "max_input_price",
+    maxInputPriceType: "max_input_price_type",
     minCodingScore: "min_coding_score",
     priceSource: "price_source",
   });
