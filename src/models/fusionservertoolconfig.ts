@@ -14,6 +14,21 @@ import {
 } from "./anthropiccachecontroldirective.js";
 
 /**
+ * Selects how the judge stage synthesizes panel responses. `generic` (default) uses the five research dimensions tuned for one-off UI fusion. `coding` swaps in action-oriented dimensions for multi-turn coding. `council` skips the judge call entirely and returns the raw panel responses.
+ */
+export const FusionServerToolConfigAnalysisMode = {
+  Generic: "generic",
+  Coding: "coding",
+  Council: "council",
+} as const;
+/**
+ * Selects how the judge stage synthesizes panel responses. `generic` (default) uses the five research dimensions tuned for one-off UI fusion. `coding` swaps in action-oriented dimensions for multi-turn coding. `council` skips the judge call entirely and returns the raw panel responses.
+ */
+export type FusionServerToolConfigAnalysisMode = OpenEnum<
+  typeof FusionServerToolConfigAnalysisMode
+>;
+
+/**
  * Reasoning effort level for panelist and judge inner calls.
  */
 export const FusionServerToolConfigEffort = {
@@ -62,6 +77,10 @@ export type FusionServerToolConfigTool = {
  */
 export type FusionServerToolConfig = {
   /**
+   * Selects how the judge stage synthesizes panel responses. `generic` (default) uses the five research dimensions tuned for one-off UI fusion. `coding` swaps in action-oriented dimensions for multi-turn coding. `council` skips the judge call entirely and returns the raw panel responses.
+   */
+  analysisMode?: FusionServerToolConfigAnalysisMode | undefined;
+  /**
    * Slugs of models to run in parallel as the analysis panel. Each model receives the user prompt with openrouter:web_search and openrouter:web_fetch enabled, then a judge model summarizes the collective output into structured analysis JSON. Capped at 8 models to bound cost amplification. Defaults to the Quality preset from /labs/fusion.
    */
   analysisModels?: Array<string> | undefined;
@@ -94,6 +113,12 @@ export type FusionServerToolConfig = {
    */
   tools?: Array<FusionServerToolConfigTool> | undefined;
 };
+
+/** @internal */
+export const FusionServerToolConfigAnalysisMode$outboundSchema: z.ZodType<
+  string,
+  FusionServerToolConfigAnalysisMode
+> = openEnums.outboundSchema(FusionServerToolConfigAnalysisMode);
 
 /** @internal */
 export const FusionServerToolConfigEffort$outboundSchema: z.ZodType<
@@ -155,6 +180,7 @@ export function fusionServerToolConfigToolToJSON(
 
 /** @internal */
 export type FusionServerToolConfig$Outbound = {
+  analysis_mode?: string | undefined;
   analysis_models?: Array<string> | undefined;
   cache_control?: AnthropicCacheControlDirective$Outbound | undefined;
   max_completion_tokens?: number | undefined;
@@ -170,6 +196,7 @@ export const FusionServerToolConfig$outboundSchema: z.ZodType<
   FusionServerToolConfig$Outbound,
   FusionServerToolConfig
 > = z.object({
+  analysisMode: FusionServerToolConfigAnalysisMode$outboundSchema.optional(),
   analysisModels: z.array(z.string()).optional(),
   cacheControl: AnthropicCacheControlDirective$outboundSchema.optional(),
   maxCompletionTokens: z.int().optional(),
@@ -182,6 +209,7 @@ export const FusionServerToolConfig$outboundSchema: z.ZodType<
     .optional(),
 }).transform((v) => {
   return remap$(v, {
+    analysisMode: "analysis_mode",
     analysisModels: "analysis_models",
     cacheControl: "cache_control",
     maxCompletionTokens: "max_completion_tokens",

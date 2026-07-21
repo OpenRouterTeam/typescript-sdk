@@ -222,6 +222,7 @@ export * from "./fusioncallpanelcompletedevent.js";
 export * from "./fusioncallpaneldeltaevent.js";
 export * from "./fusioncallpanelfailedevent.js";
 export * from "./fusioncallpanelreasoningdeltaevent.js";
+export * from "./fusioncodinganalysisresult.js";
 export * from "./fusionplugin.js";
 export * from "./fusionservertoolconfig.js";
 export * from "./fusionservertoolopenrouter.js";
