@@ -41,7 +41,6 @@ export function modelsGet(
 ): APIPromise<
   Result<
     models.ModelResponse,
-    | errors.ForbiddenResponseError
     | errors.NotFoundResponseError
     | errors.InternalServerResponseError
     | OpenRouterError
@@ -69,7 +68,6 @@ async function $do(
   [
     Result<
       models.ModelResponse,
-      | errors.ForbiddenResponseError
       | errors.NotFoundResponseError
       | errors.InternalServerResponseError
       | OpenRouterError
@@ -188,7 +186,6 @@ async function $do(
 
   const [result] = await M.match<
     models.ModelResponse,
-    | errors.ForbiddenResponseError
     | errors.NotFoundResponseError
     | errors.InternalServerResponseError
     | OpenRouterError
@@ -201,7 +198,6 @@ async function $do(
     | SDKValidationError
   >(
     M.json(200, models.ModelResponse$inboundSchema),
-    M.jsonErr(403, errors.ForbiddenResponseError$inboundSchema),
     M.jsonErr(404, errors.NotFoundResponseError$inboundSchema),
     M.jsonErr(500, errors.InternalServerResponseError$inboundSchema),
     M.fail("4XX"),
