@@ -136,6 +136,7 @@ export const ProviderResponseProviderName = {
   WandB: "WandB",
   Quiver: "Quiver",
   Krea: "Krea",
+  Runway: "Runway",
   Xiaomi: "Xiaomi",
   XAI: "xAI",
   ZAi: "Z.AI",
