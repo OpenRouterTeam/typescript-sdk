@@ -4304,6 +4304,7 @@ components:
         - 'clarifai'
         - 'cloudflare'
         - 'cohere'
+        - 'coreweave'
         - 'crusoe'
         - 'darkbloom'
         - 'decart'
@@ -13061,6 +13062,7 @@ components:
                 - 'Clarifai'
                 - 'Cloudflare'
                 - 'Cohere'
+                - 'CoreWeave'
                 - 'Crucible'
                 - 'Crusoe'
                 - 'Darkbloom'
@@ -18729,6 +18731,7 @@ components:
         - 'Clarifai'
         - 'Cloudflare'
         - 'Cohere'
+        - 'CoreWeave'
         - 'Crucible'
         - 'Crusoe'
         - 'Darkbloom'
@@ -18889,6 +18892,9 @@ components:
           additionalProperties: {}
           type: 'object'
         cohere:
+          additionalProperties: {}
+          type: 'object'
+        coreweave:
           additionalProperties: {}
           type: 'object'
         crofai:
@@ -19431,6 +19437,7 @@ components:
             - 'Clarifai'
             - 'Cloudflare'
             - 'Cohere'
+            - 'CoreWeave'
             - 'Crucible'
             - 'Crusoe'
             - 'Darkbloom'
@@ -25458,6 +25465,7 @@ paths:
               - 'clarifai'
               - 'cloudflare'
               - 'cohere'
+              - 'coreweave'
               - 'crusoe'
               - 'darkbloom'
               - 'decart'
