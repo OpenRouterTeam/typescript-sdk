@@ -32,9 +32,17 @@ export type OutputSubagentServerToolItem = {
   error?: string | undefined;
   id?: string | undefined;
   /**
+   * Provider-safe function name of the specific subagent instance that produced this item (e.g. `openrouter_subagent__1`). Present only on items from non-default instances — the second and later subagent entries in the request `tools` array. The first (default) instance omits it, even when multiple subagents are configured. When a replayed item echoes this field back, the transcript rehydrates the call under that instance's tool. This identity is positional: it is derived from the index of the subagent entry in the request `tools` array, so keep the order of subagent entries stable across requests in a conversation.
+   */
+  instanceName?: string | undefined;
+  /**
    * Slug of the worker model that executed the task.
    */
   model?: string | undefined;
+  /**
+   * Configured name of the subagent that executed the task (the `name` on its tool entry). Present only for named subagents; omitted for an unnamed (default) subagent.
+   */
+  name?: string | undefined;
   /**
    * The worker model's result (the outcome text returned to the delegating model).
    */
@@ -67,7 +75,9 @@ export const OutputSubagentServerToolItem$inboundSchema: z.ZodType<
 > = z.object({
   error: z.string().optional(),
   id: z.string().optional(),
+  instance_name: z.string().optional(),
   model: z.string().optional(),
+  name: z.string().optional(),
   outcome: z.string().optional(),
   status: ToolCallStatus$inboundSchema,
   task_description: z.string().optional(),
@@ -75,6 +85,7 @@ export const OutputSubagentServerToolItem$inboundSchema: z.ZodType<
   type: OutputSubagentServerToolItemType$inboundSchema,
 }).transform((v) => {
   return remap$(v, {
+    "instance_name": "instanceName",
     "task_description": "taskDescription",
     "task_name": "taskName",
   });
@@ -83,7 +94,9 @@ export const OutputSubagentServerToolItem$inboundSchema: z.ZodType<
 export type OutputSubagentServerToolItem$Outbound = {
   error?: string | undefined;
   id?: string | undefined;
+  instance_name?: string | undefined;
   model?: string | undefined;
+  name?: string | undefined;
   outcome?: string | undefined;
   status: string;
   task_description?: string | undefined;
@@ -98,7 +111,9 @@ export const OutputSubagentServerToolItem$outboundSchema: z.ZodType<
 > = z.object({
   error: z.string().optional(),
   id: z.string().optional(),
+  instanceName: z.string().optional(),
   model: z.string().optional(),
+  name: z.string().optional(),
   outcome: z.string().optional(),
   status: ToolCallStatus$outboundSchema,
   taskDescription: z.string().optional(),
@@ -106,6 +121,7 @@ export const OutputSubagentServerToolItem$outboundSchema: z.ZodType<
   type: OutputSubagentServerToolItemType$outboundSchema,
 }).transform((v) => {
   return remap$(v, {
+    instanceName: "instance_name",
     taskDescription: "task_description",
     taskName: "task_name",
   });
