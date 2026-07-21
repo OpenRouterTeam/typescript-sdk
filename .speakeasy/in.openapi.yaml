@@ -1997,6 +1997,52 @@ components:
         - 'error_message'
         - 'type'
       type: 'object'
+    AnthropicToolSearchToolBm25:
+      properties:
+        allowed_callers:
+          $ref: '#/components/schemas/AnthropicAllowedCallers'
+        cache_control:
+          $ref: '#/components/schemas/AnthropicCacheControlDirective'
+        defer_loading:
+          type: 'boolean'
+        name:
+          enum:
+            - 'tool_search_tool_bm25'
+          type: 'string'
+        strict:
+          type: 'boolean'
+        type:
+          enum:
+            - 'tool_search_tool_bm25_20251119'
+            - 'tool_search_tool_bm25'
+          type: 'string'
+      required:
+        - 'type'
+        - 'name'
+      type: 'object'
+    AnthropicToolSearchToolRegex:
+      properties:
+        allowed_callers:
+          $ref: '#/components/schemas/AnthropicAllowedCallers'
+        cache_control:
+          $ref: '#/components/schemas/AnthropicCacheControlDirective'
+        defer_loading:
+          type: 'boolean'
+        name:
+          enum:
+            - 'tool_search_tool_regex'
+          type: 'string'
+        strict:
+          type: 'boolean'
+        type:
+          enum:
+            - 'tool_search_tool_regex_20251119'
+            - 'tool_search_tool_regex'
+          type: 'string'
+      required:
+        - 'type'
+        - 'name'
+      type: 'object'
     AnthropicToolSearchToolResult:
       example:
         content:
@@ -12807,6 +12853,8 @@ components:
                 required:
                   - 'type'
                 type: 'object'
+              - $ref: '#/components/schemas/AnthropicToolSearchToolBm25'
+              - $ref: '#/components/schemas/AnthropicToolSearchToolRegex'
           type: 'array'
         top_k:
           type: 'integer'
@@ -21034,7 +21082,7 @@ components:
         - 'voice'
       type: 'object'
     StopServerToolsWhen:
-      description: 'Stop conditions for the server-tool agent loop. Any condition firing halts the loop (OR logic). When set, this overrides `max_tool_calls`.'
+      description: 'Stop conditions for the server-tool agent loop. Any condition firing halts the loop (OR logic). When set, this overrides `max_tool_calls`. When a condition fires while the model is still emitting tool calls, the pending tool calls are executed and one final turn is made with tool calls disabled so the response ends with a natural-language answer instead of an unfinished tool call.'
       example:
         - step_count: 5
           type: 'step_count_is'
