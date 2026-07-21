@@ -13,7 +13,6 @@ import { OpenEnum } from "../types/enums.js";
 export const ContentFilterAction = {
   Redact: "redact",
   Block: "block",
-  Flag: "flag",
 } as const;
 /**
  * Action taken when the pattern matches

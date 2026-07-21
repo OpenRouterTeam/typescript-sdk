@@ -221,10 +221,7 @@ export type VideoGenerationRequest = {
    */
   inputReferences?: Array<InputReference> | undefined;
   model: string;
-  /**
-   * Text prompt describing the video to generate. Optional for models that support generating a video from image input alone; required by all other models.
-   */
-  prompt?: string | undefined;
+  prompt: string;
   /**
    * Provider-specific passthrough configuration
    */
@@ -586,7 +583,7 @@ export type VideoGenerationRequest$Outbound = {
   generate_audio?: boolean | undefined;
   input_references?: Array<InputReference$Outbound> | undefined;
   model: string;
-  prompt?: string | undefined;
+  prompt: string;
   provider?: VideoGenerationRequestProvider$Outbound | undefined;
   resolution?: string | undefined;
   seed?: number | undefined;
@@ -605,7 +602,7 @@ export const VideoGenerationRequest$outboundSchema: z.ZodType<
   generateAudio: z.boolean().optional(),
   inputReferences: z.array(InputReference$outboundSchema).optional(),
   model: z.string(),
-  prompt: z.string().optional(),
+  prompt: z.string(),
   provider: z.lazy(() => VideoGenerationRequestProvider$outboundSchema)
     .optional(),
   resolution: VideoGenerationRequestResolution$outboundSchema.optional(),
