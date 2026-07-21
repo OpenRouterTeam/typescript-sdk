@@ -155,11 +155,11 @@ export type AdditionalToolsItemTool = {
   additionalProperties?: { [k: string]: any } | undefined;
 };
 
-export const AdditionalToolsItemToolType = {
+export const AdditionalToolsItemTypeFunction = {
   Function: "function",
 } as const;
-export type AdditionalToolsItemToolType = ClosedEnum<
-  typeof AdditionalToolsItemToolType
+export type AdditionalToolsItemTypeFunction = ClosedEnum<
+  typeof AdditionalToolsItemTypeFunction
 >;
 
 /**
@@ -170,7 +170,7 @@ export type AdditionalToolsItemToolFunction = {
   name: string;
   parameters: { [k: string]: any } | null;
   strict?: boolean | null | undefined;
-  type: AdditionalToolsItemToolType;
+  type: AdditionalToolsItemTypeFunction;
 };
 
 export type AdditionalToolsItemToolUnion =
@@ -284,9 +284,9 @@ export function additionalToolsItemToolToJSON(
 }
 
 /** @internal */
-export const AdditionalToolsItemToolType$outboundSchema: z.ZodEnum<
-  typeof AdditionalToolsItemToolType
-> = z.enum(AdditionalToolsItemToolType);
+export const AdditionalToolsItemTypeFunction$outboundSchema: z.ZodEnum<
+  typeof AdditionalToolsItemTypeFunction
+> = z.enum(AdditionalToolsItemTypeFunction);
 
 /** @internal */
 export type AdditionalToolsItemToolFunction$Outbound = {
@@ -306,7 +306,7 @@ export const AdditionalToolsItemToolFunction$outboundSchema: z.ZodType<
   name: z.string(),
   parameters: z.nullable(z.record(z.string(), z.any())),
   strict: z.nullable(z.boolean()).optional(),
-  type: AdditionalToolsItemToolType$outboundSchema,
+  type: AdditionalToolsItemTypeFunction$outboundSchema,
 });
 
 export function additionalToolsItemToolFunctionToJSON(

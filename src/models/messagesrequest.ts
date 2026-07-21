@@ -310,6 +310,58 @@ export type MessagesRequestTool = {
   additionalProperties?: { [k: string]: any } | undefined;
 };
 
+export const NameToolSearchToolRegex = {
+  ToolSearchToolRegex: "tool_search_tool_regex",
+} as const;
+export type NameToolSearchToolRegex = ClosedEnum<
+  typeof NameToolSearchToolRegex
+>;
+
+export const MessagesRequestToolType2 = {
+  ToolSearchToolRegex20251119: "tool_search_tool_regex_20251119",
+  ToolSearchToolRegex: "tool_search_tool_regex",
+} as const;
+export type MessagesRequestToolType2 = OpenEnum<
+  typeof MessagesRequestToolType2
+>;
+
+export type ToolToolSearchToolRegex = {
+  allowedCallers?: Array<AnthropicAllowedCallers> | undefined;
+  /**
+   * Enable automatic prompt caching. When set at the top level, the system automatically applies cache breakpoints to the last cacheable block in the request. When set on an individual content block, it marks an explicit cache breakpoint; block-level markers also work on OpenAI models that support explicit prompt caching — OpenRouter converts them to the provider's native format.
+   */
+  cacheControl?: AnthropicCacheControlDirective | undefined;
+  deferLoading?: boolean | undefined;
+  name: NameToolSearchToolRegex;
+  strict?: boolean | undefined;
+  type: MessagesRequestToolType2;
+};
+
+export const NameToolSearchToolBm25 = {
+  ToolSearchToolBm25: "tool_search_tool_bm25",
+} as const;
+export type NameToolSearchToolBm25 = ClosedEnum<typeof NameToolSearchToolBm25>;
+
+export const MessagesRequestToolType1 = {
+  ToolSearchToolBm2520251119: "tool_search_tool_bm25_20251119",
+  ToolSearchToolBm25: "tool_search_tool_bm25",
+} as const;
+export type MessagesRequestToolType1 = OpenEnum<
+  typeof MessagesRequestToolType1
+>;
+
+export type ToolToolSearchToolBm25 = {
+  allowedCallers?: Array<AnthropicAllowedCallers> | undefined;
+  /**
+   * Enable automatic prompt caching. When set at the top level, the system automatically applies cache breakpoints to the last cacheable block in the request. When set on an individual content block, it marks an explicit cache breakpoint; block-level markers also work on OpenAI models that support explicit prompt caching — OpenRouter converts them to the provider's native format.
+   */
+  cacheControl?: AnthropicCacheControlDirective | undefined;
+  deferLoading?: boolean | undefined;
+  name: NameToolSearchToolBm25;
+  strict?: boolean | undefined;
+  type: MessagesRequestToolType1;
+};
+
 export const NameAdvisor = {
   Advisor: "advisor",
 } as const;
@@ -449,6 +501,8 @@ export type MessagesRequestToolUnion =
   | ToolTextEditor20250124
   | ToolWebSearch20250305
   | ToolWebSearch20260209
+  | ToolToolSearchToolBm25
+  | ToolToolSearchToolRegex
   | BashServerTool
   | DatetimeServerTool
   | ImageGenerationServerToolOpenRouter
@@ -529,6 +583,8 @@ export type MessagesRequest = {
       | ToolTextEditor20250124
       | ToolWebSearch20250305
       | ToolWebSearch20260209
+      | ToolToolSearchToolBm25
+      | ToolToolSearchToolRegex
       | BashServerTool
       | DatetimeServerTool
       | ImageGenerationServerToolOpenRouter
@@ -1117,6 +1173,102 @@ export function messagesRequestToolToJSON(
 }
 
 /** @internal */
+export const NameToolSearchToolRegex$outboundSchema: z.ZodEnum<
+  typeof NameToolSearchToolRegex
+> = z.enum(NameToolSearchToolRegex);
+
+/** @internal */
+export const MessagesRequestToolType2$outboundSchema: z.ZodType<
+  string,
+  MessagesRequestToolType2
+> = openEnums.outboundSchema(MessagesRequestToolType2);
+
+/** @internal */
+export type ToolToolSearchToolRegex$Outbound = {
+  allowed_callers?: Array<string> | undefined;
+  cache_control?: AnthropicCacheControlDirective$Outbound | undefined;
+  defer_loading?: boolean | undefined;
+  name: string;
+  strict?: boolean | undefined;
+  type: string;
+};
+
+/** @internal */
+export const ToolToolSearchToolRegex$outboundSchema: z.ZodType<
+  ToolToolSearchToolRegex$Outbound,
+  ToolToolSearchToolRegex
+> = z.object({
+  allowedCallers: z.array(AnthropicAllowedCallers$outboundSchema).optional(),
+  cacheControl: AnthropicCacheControlDirective$outboundSchema.optional(),
+  deferLoading: z.boolean().optional(),
+  name: NameToolSearchToolRegex$outboundSchema,
+  strict: z.boolean().optional(),
+  type: MessagesRequestToolType2$outboundSchema,
+}).transform((v) => {
+  return remap$(v, {
+    allowedCallers: "allowed_callers",
+    cacheControl: "cache_control",
+    deferLoading: "defer_loading",
+  });
+});
+
+export function toolToolSearchToolRegexToJSON(
+  toolToolSearchToolRegex: ToolToolSearchToolRegex,
+): string {
+  return JSON.stringify(
+    ToolToolSearchToolRegex$outboundSchema.parse(toolToolSearchToolRegex),
+  );
+}
+
+/** @internal */
+export const NameToolSearchToolBm25$outboundSchema: z.ZodEnum<
+  typeof NameToolSearchToolBm25
+> = z.enum(NameToolSearchToolBm25);
+
+/** @internal */
+export const MessagesRequestToolType1$outboundSchema: z.ZodType<
+  string,
+  MessagesRequestToolType1
+> = openEnums.outboundSchema(MessagesRequestToolType1);
+
+/** @internal */
+export type ToolToolSearchToolBm25$Outbound = {
+  allowed_callers?: Array<string> | undefined;
+  cache_control?: AnthropicCacheControlDirective$Outbound | undefined;
+  defer_loading?: boolean | undefined;
+  name: string;
+  strict?: boolean | undefined;
+  type: string;
+};
+
+/** @internal */
+export const ToolToolSearchToolBm25$outboundSchema: z.ZodType<
+  ToolToolSearchToolBm25$Outbound,
+  ToolToolSearchToolBm25
+> = z.object({
+  allowedCallers: z.array(AnthropicAllowedCallers$outboundSchema).optional(),
+  cacheControl: AnthropicCacheControlDirective$outboundSchema.optional(),
+  deferLoading: z.boolean().optional(),
+  name: NameToolSearchToolBm25$outboundSchema,
+  strict: z.boolean().optional(),
+  type: MessagesRequestToolType1$outboundSchema,
+}).transform((v) => {
+  return remap$(v, {
+    allowedCallers: "allowed_callers",
+    cacheControl: "cache_control",
+    deferLoading: "defer_loading",
+  });
+});
+
+export function toolToolSearchToolBm25ToJSON(
+  toolToolSearchToolBm25: ToolToolSearchToolBm25,
+): string {
+  return JSON.stringify(
+    ToolToolSearchToolBm25$outboundSchema.parse(toolToolSearchToolBm25),
+  );
+}
+
+/** @internal */
 export const NameAdvisor$outboundSchema: z.ZodEnum<typeof NameAdvisor> = z.enum(
   NameAdvisor,
 );
@@ -1429,6 +1581,8 @@ export type MessagesRequestToolUnion$Outbound =
   | ToolTextEditor20250124$Outbound
   | ToolWebSearch20250305$Outbound
   | ToolWebSearch20260209$Outbound
+  | ToolToolSearchToolBm25$Outbound
+  | ToolToolSearchToolRegex$Outbound
   | BashServerTool$Outbound
   | DatetimeServerTool$Outbound
   | ImageGenerationServerToolOpenRouter$Outbound
@@ -1448,6 +1602,8 @@ export const MessagesRequestToolUnion$outboundSchema: z.ZodType<
   z.lazy(() => ToolTextEditor20250124$outboundSchema),
   z.lazy(() => ToolWebSearch20250305$outboundSchema),
   z.lazy(() => ToolWebSearch20260209$outboundSchema),
+  z.lazy(() => ToolToolSearchToolBm25$outboundSchema),
+  z.lazy(() => ToolToolSearchToolRegex$outboundSchema),
   BashServerTool$outboundSchema,
   DatetimeServerTool$outboundSchema,
   ImageGenerationServerToolOpenRouter$outboundSchema,
@@ -1520,6 +1676,8 @@ export type MessagesRequest$Outbound = {
       | ToolTextEditor20250124$Outbound
       | ToolWebSearch20250305$Outbound
       | ToolWebSearch20260209$Outbound
+      | ToolToolSearchToolBm25$Outbound
+      | ToolToolSearchToolRegex$Outbound
       | BashServerTool$Outbound
       | DatetimeServerTool$Outbound
       | ImageGenerationServerToolOpenRouter$Outbound
@@ -1595,6 +1753,8 @@ export const MessagesRequest$outboundSchema: z.ZodType<
       z.lazy(() => ToolTextEditor20250124$outboundSchema),
       z.lazy(() => ToolWebSearch20250305$outboundSchema),
       z.lazy(() => ToolWebSearch20260209$outboundSchema),
+      z.lazy(() => ToolToolSearchToolBm25$outboundSchema),
+      z.lazy(() => ToolToolSearchToolRegex$outboundSchema),
       BashServerTool$outboundSchema,
       DatetimeServerTool$outboundSchema,
       ImageGenerationServerToolOpenRouter$outboundSchema,
