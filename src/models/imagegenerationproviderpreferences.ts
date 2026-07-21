@@ -47,6 +47,7 @@ export type ImageGenerationProviderPreferencesOptions = {
   clarifai?: { [k: string]: any } | undefined;
   cloudflare?: { [k: string]: any } | undefined;
   cohere?: { [k: string]: any } | undefined;
+  coreweave?: { [k: string]: any } | undefined;
   crofai?: { [k: string]: any } | undefined;
   crucible?: { [k: string]: any } | undefined;
   crusoe?: { [k: string]: any } | undefined;
@@ -257,6 +258,7 @@ export type ImageGenerationProviderPreferencesOptions$Outbound = {
   clarifai?: { [k: string]: any } | undefined;
   cloudflare?: { [k: string]: any } | undefined;
   cohere?: { [k: string]: any } | undefined;
+  coreweave?: { [k: string]: any } | undefined;
   crofai?: { [k: string]: any } | undefined;
   crucible?: { [k: string]: any } | undefined;
   crusoe?: { [k: string]: any } | undefined;
@@ -391,6 +393,7 @@ export const ImageGenerationProviderPreferencesOptions$outboundSchema:
     clarifai: z.record(z.string(), z.any()).optional(),
     cloudflare: z.record(z.string(), z.any()).optional(),
     cohere: z.record(z.string(), z.any()).optional(),
+    coreweave: z.record(z.string(), z.any()).optional(),
     crofai: z.record(z.string(), z.any()).optional(),
     crucible: z.record(z.string(), z.any()).optional(),
     crusoe: z.record(z.string(), z.any()).optional(),
