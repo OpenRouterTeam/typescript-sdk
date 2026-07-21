@@ -1,0 +1,44 @@
+---
+title: "FusionCodingAnalysisResult"
+---
+
+Action-oriented analysis the fusion judge produces in `coding` mode, tuned for multi-turn coding rather than prose synthesis.
+
+## Example Usage
+
+```typescript
+import { FusionCodingAnalysisResult } from "@openrouter/sdk/models";
+
+let value: FusionCodingAnalysisResult = {
+  approachDivergence: [
+    "Claude uses a recursive walk; GPT-5 uses an explicit stack — prefer the stack to bound memory.",
+  ],
+  correctness: [
+    {
+      model: "anthropic/claude-sonnet-4.5",
+      notes: "Compiles and handles the empty-input edge case.",
+      satisfiesSpec: true,
+    },
+  ],
+  defects: [
+    {
+      defect: "Off-by-one in the pagination cursor; drops the last row.",
+      model: "openai/gpt-5",
+    },
+  ],
+  gaps: [
+    "No candidate added tests for the concurrent-write path.",
+  ],
+  recommendedBasis: "Build on GPT-5's structure, lift Claude's error handling.",
+};
+```
+
+## Fields
+
+| Field                                            | Type                                             | Required                                         | Description                                      |
+| ------------------------------------------------ | ------------------------------------------------ | ------------------------------------------------ | ------------------------------------------------ |
+| `approachDivergence`                             | *string*[]                                       | :heavy_check_mark:                               | N/A                                              |
+| `correctness`                                    | [models.Correctness](../models/correctness.mdx)[] | :heavy_check_mark:                               | N/A                                              |
+| `defects`                                        | [models.Defect](../models/defect.mdx)[]           | :heavy_check_mark:                               | N/A                                              |
+| `gaps`                                           | *string*[]                                       | :heavy_check_mark:                               | N/A                                              |
+| `recommendedBasis`                               | *string*                                         | :heavy_check_mark:                               | N/A                                              |
