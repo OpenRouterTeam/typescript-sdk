@@ -147,6 +147,7 @@ export type VideoGenerationRequestOptions = {
   runway?: { [k: string]: any } | undefined;
   sailResearch?: { [k: string]: any } | undefined;
   sakana?: { [k: string]: any } | undefined;
+  sakanaAi?: { [k: string]: any } | undefined;
   sambanova?: { [k: string]: any } | undefined;
   sambanovaCloaked?: { [k: string]: any } | undefined;
   seed?: { [k: string]: any } | undefined;
@@ -167,6 +168,7 @@ export type VideoGenerationRequestOptions = {
   venice?: { [k: string]: any } | undefined;
   wafer?: { [k: string]: any } | undefined;
   wandb?: { [k: string]: any } | undefined;
+  wandbLegacy?: { [k: string]: any } | undefined;
   xai?: { [k: string]: any } | undefined;
   xiaomi?: { [k: string]: any } | undefined;
   zAi?: { [k: string]: any } | undefined;
@@ -357,6 +359,7 @@ export type VideoGenerationRequestOptions$Outbound = {
   runway?: { [k: string]: any } | undefined;
   "sail-research"?: { [k: string]: any } | undefined;
   sakana?: { [k: string]: any } | undefined;
+  "sakana-ai"?: { [k: string]: any } | undefined;
   sambanova?: { [k: string]: any } | undefined;
   "sambanova-cloaked"?: { [k: string]: any } | undefined;
   seed?: { [k: string]: any } | undefined;
@@ -377,6 +380,7 @@ export type VideoGenerationRequestOptions$Outbound = {
   venice?: { [k: string]: any } | undefined;
   wafer?: { [k: string]: any } | undefined;
   wandb?: { [k: string]: any } | undefined;
+  "wandb-legacy"?: { [k: string]: any } | undefined;
   xai?: { [k: string]: any } | undefined;
   xiaomi?: { [k: string]: any } | undefined;
   "z-ai"?: { [k: string]: any } | undefined;
@@ -491,6 +495,7 @@ export const VideoGenerationRequestOptions$outboundSchema: z.ZodType<
   runway: z.record(z.string(), z.any()).optional(),
   sailResearch: z.record(z.string(), z.any()).optional(),
   sakana: z.record(z.string(), z.any()).optional(),
+  sakanaAi: z.record(z.string(), z.any()).optional(),
   sambanova: z.record(z.string(), z.any()).optional(),
   sambanovaCloaked: z.record(z.string(), z.any()).optional(),
   seed: z.record(z.string(), z.any()).optional(),
@@ -511,6 +516,7 @@ export const VideoGenerationRequestOptions$outboundSchema: z.ZodType<
   venice: z.record(z.string(), z.any()).optional(),
   wafer: z.record(z.string(), z.any()).optional(),
   wandb: z.record(z.string(), z.any()).optional(),
+  wandbLegacy: z.record(z.string(), z.any()).optional(),
   xai: z.record(z.string(), z.any()).optional(),
   xiaomi: z.record(z.string(), z.any()).optional(),
   zAi: z.record(z.string(), z.any()).optional(),
@@ -536,9 +542,11 @@ export const VideoGenerationRequestOptions$outboundSchema: z.ZodType<
     nexAgi: "nex-agi",
     openInference: "open-inference",
     sailResearch: "sail-research",
+    sakanaAi: "sakana-ai",
     sambanovaCloaked: "sambanova-cloaked",
     sfCompute: "sf-compute",
     togetherLite: "together-lite",
+    wandbLegacy: "wandb-legacy",
     zAi: "z-ai",
   });
 });
