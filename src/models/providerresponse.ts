@@ -102,6 +102,7 @@ export const ProviderResponseProviderName = {
   Modular: "Modular",
   MoonshotAI: "Moonshot AI",
   Morph: "Morph",
+  VoyageAI: "VoyageAI",
   NCompass: "NCompass",
   Nebius: "Nebius",
   NexAGI: "Nex AGI",
