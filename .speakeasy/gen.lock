@@ -1,19 +1,19 @@
 lockVersion: ""
 id: ""
 management:
-  docChecksum: 27c1d474a20db327bea1a9b7d52414df
+  docChecksum: fa13758514111cd3ab1d3f1d0507b9b4
   docVersion: 1.0.0
   speakeasyVersion: 1.787.0
   generationVersion: 2.914.0
-  releaseVersion: 1.0.11
-  configChecksum: 3daa18bb847ac8294bee8452f770182f
+  releaseVersion: 1.0.12
+  configChecksum: d4cdda604e93506dc126fa084e78817f
   repoURL: https://github.com/OpenRouterTeam/typescript-sdk.git
   installationURL: https://github.com/OpenRouterTeam/typescript-sdk
   published: true
 persistentEdits:
-  generation_id: 5204a515-628b-4fb8-9cba-2b5230507d52
-  pristine_commit_hash: 9596b7de8b74f22cb3b2d89249fcabd2fb7bfe20
-  pristine_tree_hash: 59795058b8c0de8c4fb343cbf2316b15a5aa58d9
+  generation_id: 81217871-7abd-4907-bae2-5b45e1897615
+  pristine_commit_hash: 9f530d1be00ecd579081abc94f57a752de846190
+  pristine_tree_hash: f3cf2e2cf1a4f682ca4075d6fbbf404d475dd9ba
 features:
   typescript:
     acceptHeaders: 2.81.2
@@ -9596,8 +9596,8 @@ trackedFiles:
     deleted: true
   docs/models/paretorouterplugin.mdx:
     id: 519bb1f24ea1
-    last_write_checksum: sha1:91729d38a94c513e3fc7d9d69cda35117d0db9af
-    pristine_git_object: 53e27885df7dd7248e52e862d6b6cb552359f244
+    last_write_checksum: sha1:49a9fe1e911ea20c9cd4371e183e1318f6f318c4
+    pristine_git_object: 187b6db90e5fee36ee32a6516968d25b58e3c29c
   docs/models/partialcoverage.md:
     id: 7880a017d342
     last_write_checksum: sha1:33fbb5ea3f150397c331ffeef83303321307ff85
@@ -9832,8 +9832,8 @@ trackedFiles:
     pristine_git_object: ce9438ce8085d82730889e9de3086d16579435d0
   docs/models/pricesource.mdx:
     id: ba1bd2fe871c
-    last_write_checksum: sha1:5e14006f49dd5da8fbcc75cd6382afdaa1293bd6
-    pristine_git_object: 843be442f194dc0a9bdb41260916e71366d87a30
+    last_write_checksum: sha1:01eb33e3bbfa5c50b57d81c5414cd400b0f70029
+    pristine_git_object: d4c767eef2fc20e07c9cb5207e8d327b89577a88
   docs/models/pricing.mdx:
     id: 47d612460319
     last_write_checksum: sha1:1191febe4df9b23d5139ce40e4b54829e4ed2d2f
@@ -12444,12 +12444,12 @@ trackedFiles:
     pristine_git_object: 410efafd6a7f50d91ccb87131fedbe0c3d47e15a
   jsr.json:
     id: 7f6ab7767282
-    last_write_checksum: sha1:68b14a2bd0a938d82ecfa92bd120b4aa68e79048
-    pristine_git_object: 07cfe014c67c404752a352719495220750b0f988
+    last_write_checksum: sha1:61b38b120e391dbc9d299cd7176e47e1ffa988ac
+    pristine_git_object: 91bebee8696cab9fc1539bd75031757761b13376
   package.json:
     id: 7030d0b2f71b
-    last_write_checksum: sha1:05af681edab4553178c4db96d563292c2452c8ff
-    pristine_git_object: 37dc29819d2c9d70c1bc1c2ef38dd64cb16a542d
+    last_write_checksum: sha1:a205413f7439dc9b062f4089f7ac8466f3b025c3
+    pristine_git_object: 401a4622dd0f9445152be89f7138bb25ed38b11e
   src/core.ts:
     id: f431fdbcd144
     last_write_checksum: sha1:5aa66b0b6a5964f3eea7f3098c2eb3c0ee9c0131
@@ -12828,8 +12828,8 @@ trackedFiles:
     pristine_git_object: a187e58707bdb726ca2aff74941efe7493422d4e
   src/lib/config.ts:
     id: 320761608fb3
-    last_write_checksum: sha1:6e514e071a8bdbd737a37017d66fee2dd79e4ca5
-    pristine_git_object: e985a3e099bedd2fc740812c6ea88a3239b22c65
+    last_write_checksum: sha1:6dfe0b9e487e0506aa4002b5a4325d11953aebec
+    pristine_git_object: 7e22a105ae728214bc05ba6d187f50deb02e5e77
   src/lib/dlv.ts:
     id: b1988214835a
     last_write_checksum: sha1:eaac763b22717206a6199104e0403ed17a4e2711
@@ -14898,8 +14898,8 @@ trackedFiles:
     pristine_git_object: 3c2d97ede748b25d69f9161361dfb7a5181fa81f
   src/models/paretorouterplugin.ts:
     id: 4e557119b1dd
-    last_write_checksum: sha1:6f94a4cb7114a660e00ca29886561c0a3fed2c0a
-    pristine_git_object: 18d3aa4cb70ce086b9d48a783fe3b54d261a9db0
+    last_write_checksum: sha1:1801bea16aa76ec970019c864ac76e6fa5d0ef4e
+    pristine_git_object: bb27e50e332ef3b11902401dc6bebb7eb853e6a7
   src/models/payloadtoolargeresponseerrordata.ts:
     id: 59c2c424ea9b
     last_write_checksum: sha1:b896b3a3ea24b42134408492ad6141f42ec1cc15
@@ -17362,4 +17362,4 @@ examples:
         "500":
           application/json: {"error": {"code": 500, "message": "Internal Server Error"}}
 examplesVersion: 1.0.2
-releaseNotes: "## Typescript SDK Changes:\n* `openrouter.beta.responses.send()`: \n  *  `request.responsesRequest.plugins[].union(auto-router).pinModel` **Added**\n* `openrouter.chat.send()`: \n  *  `request.chatRequest` **Changed**\n  *  `response.choices[].message.model` **Added**\n* `openrouter.presets.createPresetsChatCompletions()`: \n  *  `request.chatRequest` **Changed**\n* `openrouter.presets.createPresetsMessages()`: \n  *  `request.messagesRequest.plugins[].union(auto-router).pinModel` **Added**\n* `openrouter.presets.createPresetsResponses()`: \n  *  `request.responsesRequest.plugins[].union(auto-router).pinModel` **Added**\n"
+releaseNotes: "## Typescript SDK Changes:\n* `openrouter.beta.responses.send()`: \n  *  `request.responsesRequest.plugins[].union(pareto-router).maxPrice` **Added**\n* `openrouter.chat.send()`: \n  *  `request.chatRequest.plugins[].union(pareto-router).maxPrice` **Added**\n* `openrouter.presets.createPresetsChatCompletions()`: \n  *  `request.chatRequest.plugins[].union(pareto-router).maxPrice` **Added**\n* `openrouter.presets.createPresetsMessages()`: \n  *  `request.messagesRequest.plugins[].union(pareto-router).maxPrice` **Added**\n* `openrouter.presets.createPresetsResponses()`: \n  *  `request.responsesRequest.plugins[].union(pareto-router).maxPrice` **Added**\n"
