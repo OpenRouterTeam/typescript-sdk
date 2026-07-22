@@ -27632,6 +27632,7 @@ paths:
       summary: 'List files'
       tags:
         - 'Files'
+      x-hidden: true
       x-speakeasy-name-override: 'list'
       x-speakeasy-pagination:
         inputs:
@@ -27747,6 +27748,7 @@ paths:
       summary: 'Upload a file'
       tags:
         - 'Files'
+      x-hidden: true
       x-speakeasy-name-override: 'upload'
     parameters:
       - $ref: "#/components/parameters/AppIdentifier"
@@ -27825,6 +27827,7 @@ paths:
       summary: 'Delete a file'
       tags:
         - 'Files'
+      x-hidden: true
       x-speakeasy-name-override: 'delete'
     get:
       description: 'Retrieves metadata for a single file owned by the requesting workspace.'
@@ -27903,6 +27906,7 @@ paths:
       summary: 'Get file metadata'
       tags:
         - 'Files'
+      x-hidden: true
       x-speakeasy-name-override: 'retrieve'
     parameters:
       - $ref: "#/components/parameters/AppIdentifier"
@@ -27990,6 +27994,7 @@ paths:
       summary: 'Download file content'
       tags:
         - 'Files'
+      x-hidden: true
       x-speakeasy-name-override: 'download'
     parameters:
       - $ref: "#/components/parameters/AppIdentifier"
