@@ -9,14 +9,14 @@ import * as openEnums from "../types/enums.js";
 import { OpenEnum } from "../types/enums.js";
 
 /**
- * Price source for the Pareto frontier cost axis. "prompt" uses catalog list price (endpoint.pricing.prompt). "weighted_avg" uses traffic-weighted effective input price from ClickHouse, falling back to prompt price for models without traffic data. Defaults to "prompt".
+ * Price source for the Pareto frontier cost axis and for enforcing max_price. "prompt" uses catalog list price (endpoint.pricing.prompt). "weighted_avg" uses traffic-weighted effective input price from ClickHouse, falling back to prompt price for models without traffic data. Defaults to "prompt".
  */
 export const PriceSource = {
   Prompt: "prompt",
   WeightedAvg: "weighted_avg",
 } as const;
 /**
- * Price source for the Pareto frontier cost axis. "prompt" uses catalog list price (endpoint.pricing.prompt). "weighted_avg" uses traffic-weighted effective input price from ClickHouse, falling back to prompt price for models without traffic data. Defaults to "prompt".
+ * Price source for the Pareto frontier cost axis and for enforcing max_price. "prompt" uses catalog list price (endpoint.pricing.prompt). "weighted_avg" uses traffic-weighted effective input price from ClickHouse, falling back to prompt price for models without traffic data. Defaults to "prompt".
  */
 export type PriceSource = OpenEnum<typeof PriceSource>;
 
@@ -27,11 +27,15 @@ export type ParetoRouterPlugin = {
   enabled?: boolean | undefined;
   id: "pareto-router";
   /**
-   * Minimum coding quality score between 0 and 1. Maps to internal quality tiers: >= 0.66 → high (top coding models), >= 0.33 → medium (strong modern flagships), < 0.33 → low (capable coders above the median). Omit to default to the highest tier (equivalent to >= 0.66).
+   * Maximum input price in USD per million tokens. When set, quality-tier selection (min_coding_score) is bypassed: the router computes the Pareto frontier over the top coding models and routes to the best-scoring frontier model priced at or below this cap, falling back through cheaper frontier models, then non-frontier models. Enforced against the price source given by price_source. Returns 404 when no candidate satisfies the cap.
+   */
+  maxPrice?: number | undefined;
+  /**
+   * Minimum coding quality score between 0 and 1. Maps to internal quality tiers: >= 0.66 → high (top coding models), >= 0.33 → medium (strong modern flagships), < 0.33 → low (capable coders above the median). Omit to default to the highest tier (equivalent to >= 0.66). Not used when max_price is set (price-based selection takes over).
    */
   minCodingScore?: number | undefined;
   /**
-   * Price source for the Pareto frontier cost axis. "prompt" uses catalog list price (endpoint.pricing.prompt). "weighted_avg" uses traffic-weighted effective input price from ClickHouse, falling back to prompt price for models without traffic data. Defaults to "prompt".
+   * Price source for the Pareto frontier cost axis and for enforcing max_price. "prompt" uses catalog list price (endpoint.pricing.prompt). "weighted_avg" uses traffic-weighted effective input price from ClickHouse, falling back to prompt price for models without traffic data. Defaults to "prompt".
    */
   priceSource?: PriceSource | undefined;
 };
@@ -44,6 +48,7 @@ export const PriceSource$outboundSchema: z.ZodType<string, PriceSource> =
 export type ParetoRouterPlugin$Outbound = {
   enabled?: boolean | undefined;
   id: "pareto-router";
+  max_price?: number | undefined;
   min_coding_score?: number | undefined;
   price_source?: string | undefined;
 };
@@ -55,10 +60,12 @@ export const ParetoRouterPlugin$outboundSchema: z.ZodType<
 > = z.object({
   enabled: z.boolean().optional(),
   id: z.literal("pareto-router"),
+  maxPrice: z.number().optional(),
   minCodingScore: z.number().optional(),
   priceSource: PriceSource$outboundSchema.optional(),
 }).transform((v) => {
   return remap$(v, {
+    maxPrice: "max_price",
     minCodingScore: "min_coding_score",
     priceSource: "price_source",
   });
