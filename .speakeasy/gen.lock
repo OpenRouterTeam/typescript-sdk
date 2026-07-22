@@ -1,19 +1,19 @@
 lockVersion: ""
 id: ""
 management:
-  docChecksum: 4e56eccf7001a6a27ef3dac812927f5a
+  docChecksum: 3e788a131860d2e9c9b0cddbcb46f5a6
   docVersion: 1.0.0
   speakeasyVersion: 1.787.0
   generationVersion: 2.914.0
-  releaseVersion: 1.0.8
-  configChecksum: 8242ef73d3ccdd79549eb7e4ea257de1
+  releaseVersion: 1.0.9
+  configChecksum: f0da14966ab634c6ff175abe1da0db6a
   repoURL: https://github.com/OpenRouterTeam/typescript-sdk.git
   installationURL: https://github.com/OpenRouterTeam/typescript-sdk
   published: true
 persistentEdits:
-  generation_id: aec19dc0-3e6f-4ff2-a54a-5bb77c654306
-  pristine_commit_hash: a513015db682f4d94cc98e73c9867b87467384a9
-  pristine_tree_hash: f1e53d58653be02b97c992991a984f5366710fa1
+  generation_id: 0e242026-2d74-446f-9a0a-3d04da433b2e
+  pristine_commit_hash: bd7d71c15176896d48596ca577ab93e4dd9c0cf5
+  pristine_tree_hash: 049b820c8dcfdff3e64aa24b522fa71881777059
 features:
   typescript:
     acceptHeaders: 2.81.2
@@ -9033,8 +9033,8 @@ trackedFiles:
     deleted: true
   docs/models/outputimagegenerationcallitem.mdx:
     id: f4944a37452c
-    last_write_checksum: sha1:9ac66fdcb5a6963c2c756957b832b50e780d428d
-    pristine_git_object: d9071cfe887803364c98fcbc1f608b491cd589ad
+    last_write_checksum: sha1:eb9e4aa598bb42e05bcd94460b880958666388a3
+    pristine_git_object: fb6f5e8f3ac7321fe249d2ee9696fab4d04443fe
   docs/models/outputimagegenerationcallitemtype.md:
     id: 0230b362a729
     last_write_checksum: sha1:ea2368cb8831fc4fa9884ff6059b3bb36f9cf18e
@@ -9051,8 +9051,8 @@ trackedFiles:
     deleted: true
   docs/models/outputimagegenerationservertoolitem.mdx:
     id: 63c01166a306
-    last_write_checksum: sha1:9aeae9869e37bd52da9a7d8a39c705881f1762b6
-    pristine_git_object: 8c7e5528cad863c0d4f9b608585d7157cf7f4f25
+    last_write_checksum: sha1:75d28fe6c5936e0529814f44adab98bd0c6045b3
+    pristine_git_object: 70161d9f078111c31c84aeac076511efe69edfce
   docs/models/outputimagegenerationservertoolitemtype.md:
     id: 9ae5d60f0f1d
     last_write_checksum: sha1:84fa9ddba0324cc5b87d6ce056a255a2ce70750d
@@ -12444,12 +12444,12 @@ trackedFiles:
     pristine_git_object: 410efafd6a7f50d91ccb87131fedbe0c3d47e15a
   jsr.json:
     id: 7f6ab7767282
-    last_write_checksum: sha1:3f848f5990a9e793d15e9303cbcd8d96fd28351d
-    pristine_git_object: 273ad74d0a72069e888dcdc3e388b13b384474ac
+    last_write_checksum: sha1:eb0028260e2378c5faeda451b796e7db0cee5290
+    pristine_git_object: 13bd0f9330e63ad075cc50f5e90e3af81b245d3a
   package.json:
     id: 7030d0b2f71b
-    last_write_checksum: sha1:cda358d9ef86d637d2266a45370464993b020455
-    pristine_git_object: edc587782154fc853dacfd2e90777741c739acc9
+    last_write_checksum: sha1:eac552da3737ff1439019f2cc70568472d6c379f
+    pristine_git_object: a39831c1a7233e4201e734620e1c9bdb66f3e381
   src/core.ts:
     id: f431fdbcd144
     last_write_checksum: sha1:5aa66b0b6a5964f3eea7f3098c2eb3c0ee9c0131
@@ -12828,8 +12828,8 @@ trackedFiles:
     pristine_git_object: a187e58707bdb726ca2aff74941efe7493422d4e
   src/lib/config.ts:
     id: 320761608fb3
-    last_write_checksum: sha1:095cc96756677b22cbcb3c5aef4ea7600985f7c6
-    pristine_git_object: 17423eeb9d5be1cb9da444210770f33499b6bd2b
+    last_write_checksum: sha1:c51ac4513d44f8043a175388c9b18e2b3430718f
+    pristine_git_object: e26015ed4298c6d1fb273316ccbc802ec266db38
   src/lib/dlv.ts:
     id: b1988214835a
     last_write_checksum: sha1:eaac763b22717206a6199104e0403ed17a4e2711
@@ -14814,12 +14814,12 @@ trackedFiles:
     pristine_git_object: 13cad0864dc0a82d5fd5878299e8cb572ff8e831
   src/models/outputimagegenerationcallitem.ts:
     id: 618bac10713d
-    last_write_checksum: sha1:f695d6cc4909d90e0c0c0a4b88916f1f4b70eb40
-    pristine_git_object: 2585593597d447cca0e080c517bc6808cc4dfb86
+    last_write_checksum: sha1:41413c2fbfebe62fa16d6aa61fd51aa48fcaef00
+    pristine_git_object: 4e3727beb8d0a346f5e48e80ed91159696fb5249
   src/models/outputimagegenerationservertoolitem.ts:
     id: 1ea34f16eb56
-    last_write_checksum: sha1:fe1653f9c06a29063c43ec5b904991f7b144ff1c
-    pristine_git_object: 6538694bc179eadee53f054e76d1921b22a82b71
+    last_write_checksum: sha1:d495e2531702b1c0afdd09acd456e1bc65352ddc
+    pristine_git_object: 5727072221e959a339674609d8c879150ba5a3ca
   src/models/outputitemimagegenerationcall.ts:
     id: 9c3ac6a7a9ad
     last_write_checksum: sha1:a8471974e8e53999ae94955b7a3227423d637389
@@ -17362,3 +17362,4 @@ examples:
         "500":
           application/json: {"error": {"code": 500, "message": "Internal Server Error"}}
 examplesVersion: 1.0.2
+releaseNotes: "## Typescript SDK Changes:\n* `openrouter.beta.responses.send()`: \n  *  `request.responsesRequest.input.union(Array<>)[]` **Changed**\n  *  `response` **Changed**\n* `openrouter.presets.createPresetsResponses()`: \n  *  `request.responsesRequest.input.union(Array<>)[]` **Changed**\n"
