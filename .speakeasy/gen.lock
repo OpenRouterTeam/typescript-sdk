@@ -1,19 +1,19 @@
 lockVersion: ""
 id: ""
 management:
-  docChecksum: 22ea9da9a58d43eac138bdc0876ada91
+  docChecksum: 27c1d474a20db327bea1a9b7d52414df
   docVersion: 1.0.0
   speakeasyVersion: 1.787.0
   generationVersion: 2.914.0
-  releaseVersion: 1.0.10
-  configChecksum: 55157e73c47fabdc04d46e2ee499988a
+  releaseVersion: 1.0.11
+  configChecksum: 3daa18bb847ac8294bee8452f770182f
   repoURL: https://github.com/OpenRouterTeam/typescript-sdk.git
   installationURL: https://github.com/OpenRouterTeam/typescript-sdk
   published: true
 persistentEdits:
-  generation_id: 2616eda3-7638-4d1f-b13b-f0380089ba4b
-  pristine_commit_hash: c6a4f5579bc6e282a37f9a07d2d8b0279c82fb38
-  pristine_tree_hash: 3f95531b5f0a4cf666efa4dea4b6954d1dbbb6a3
+  generation_id: 5204a515-628b-4fb8-9cba-2b5230507d52
+  pristine_commit_hash: 9596b7de8b74f22cb3b2d89249fcabd2fb7bfe20
+  pristine_tree_hash: 59795058b8c0de8c4fb343cbf2316b15a5aa58d9
 features:
   typescript:
     acceptHeaders: 2.81.2
@@ -1037,8 +1037,8 @@ trackedFiles:
     deleted: true
   docs/models/autorouterplugin.mdx:
     id: 0ed167e1bff5
-    last_write_checksum: sha1:6614eca7dd2feb9fa9d9e5fac6deb7f9b677047d
-    pristine_git_object: f9654e4cb3bf0760c4625ebaeb58400f8a314a55
+    last_write_checksum: sha1:85b209e3f237c97ef76ccfa7704db59c84dad891
+    pristine_git_object: 1ceb665fb95120ae74006ab9015268c0593175e5
   docs/models/background.md:
     id: 3b0fc0aed098
     last_write_checksum: sha1:fc5a93bba90a86a1dfdd0f97f34dda7f224d20b0
@@ -1588,8 +1588,8 @@ trackedFiles:
     deleted: true
   docs/models/chatassistantmessage.mdx:
     id: ff455d846b56
-    last_write_checksum: sha1:caa7a4cd860d7211429298296127e46eaa689e93
-    pristine_git_object: 12c833a39ed3f61064b7b3c233c9e602b31f2720
+    last_write_checksum: sha1:baec54be2c88a55aff72352dfad2e7e9db970678
+    pristine_git_object: d2ec5b1e0e068ac42fc76f30b58f070dbdaa5618
   docs/models/chatassistantmessagecontent.md:
     id: eb7111ca0687
     last_write_checksum: sha1:3ce2a95277a877e8a1660a75a339223702c12d61
@@ -12444,12 +12444,12 @@ trackedFiles:
     pristine_git_object: 410efafd6a7f50d91ccb87131fedbe0c3d47e15a
   jsr.json:
     id: 7f6ab7767282
-    last_write_checksum: sha1:cbdd53225e8391772d8d7a8728439798843c2c8f
-    pristine_git_object: 5fe47bd078476ef2f1cba69566a2afa06ee6a787
+    last_write_checksum: sha1:68b14a2bd0a938d82ecfa92bd120b4aa68e79048
+    pristine_git_object: 07cfe014c67c404752a352719495220750b0f988
   package.json:
     id: 7030d0b2f71b
-    last_write_checksum: sha1:de24ecf5d13af3a6b9434a5b8a74669f4c177bb7
-    pristine_git_object: 43f23471510f4aeff6f5a94604d31d553779f55a
+    last_write_checksum: sha1:05af681edab4553178c4db96d563292c2452c8ff
+    pristine_git_object: 37dc29819d2c9d70c1bc1c2ef38dd64cb16a542d
   src/core.ts:
     id: f431fdbcd144
     last_write_checksum: sha1:5aa66b0b6a5964f3eea7f3098c2eb3c0ee9c0131
@@ -12828,8 +12828,8 @@ trackedFiles:
     pristine_git_object: a187e58707bdb726ca2aff74941efe7493422d4e
   src/lib/config.ts:
     id: 320761608fb3
-    last_write_checksum: sha1:322c90451f5ddd53e582913a49eecb743b9d5e41
-    pristine_git_object: f4b325ecfa5c5b84743d2993f5dec1f74cc8c4ef
+    last_write_checksum: sha1:6e514e071a8bdbd737a37017d66fee2dd79e4ca5
+    pristine_git_object: e985a3e099bedd2fc740812c6ea88a3239b22c65
   src/lib/dlv.ts:
     id: b1988214835a
     last_write_checksum: sha1:eaac763b22717206a6199104e0403ed17a4e2711
@@ -13150,8 +13150,8 @@ trackedFiles:
     pristine_git_object: 73406b789112a82944559bafeaac3a9f05165ddb
   src/models/autorouterplugin.ts:
     id: e3853c83720d
-    last_write_checksum: sha1:6c433a073dde939042dbcb2809679a1b00277e1a
-    pristine_git_object: 261f5e61c0b5a49a453372b6d8968ff2e2a1602d
+    last_write_checksum: sha1:98084eab935575539c9736b92d7568a576546864
+    pristine_git_object: 05e18ab2715014736458abb8899529d4df676a82
   src/models/badgatewayresponseerrordata.ts:
     id: de317517c298
     last_write_checksum: sha1:8e3b5185f0a7c208ec8bfe0c1fc1d7f1b00c847d
@@ -13254,8 +13254,8 @@ trackedFiles:
     pristine_git_object: 058e3f29f7ec7fbc3c10b293a82dd7e44a4c7e2c
   src/models/chatassistantmessage.ts:
     id: d8ae826b4712
-    last_write_checksum: sha1:f894799ccb31609b3c1ed65359d891c5ec9dd56b
-    pristine_git_object: be6dabfcf02186c4dd9bbfcedfdeb2505e8924aa
+    last_write_checksum: sha1:77dc572c373dc798c1fd86daee05b990af1c7189
+    pristine_git_object: f1eb1d5878bb0fe07fde84dbd294eb664a00709b
   src/models/chataudiooutput.ts:
     id: 692ef1eded11
     last_write_checksum: sha1:ae58be46b1a82e1860baf06c23ad33841daee7d7
@@ -17362,3 +17362,4 @@ examples:
         "500":
           application/json: {"error": {"code": 500, "message": "Internal Server Error"}}
 examplesVersion: 1.0.2
+releaseNotes: "## Typescript SDK Changes:\n* `openrouter.beta.responses.send()`: \n  *  `request.responsesRequest.plugins[].union(auto-router).pinModel` **Added**\n* `openrouter.chat.send()`: \n  *  `request.chatRequest` **Changed**\n  *  `response.choices[].message.model` **Added**\n* `openrouter.presets.createPresetsChatCompletions()`: \n  *  `request.chatRequest` **Changed**\n* `openrouter.presets.createPresetsMessages()`: \n  *  `request.messagesRequest.plugins[].union(auto-router).pinModel` **Added**\n* `openrouter.presets.createPresetsResponses()`: \n  *  `request.responsesRequest.plugins[].union(auto-router).pinModel` **Added**\n"
