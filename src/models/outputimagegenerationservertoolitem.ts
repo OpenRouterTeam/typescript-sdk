@@ -29,10 +29,6 @@ export type OutputImageGenerationServerToolItem = {
   imageB64?: string | undefined;
   imageUrl?: string | undefined;
   /**
-   * The prompt (possibly rewritten) that the image was generated from.
-   */
-  prompt?: string | undefined;
-  /**
    * The generated image as a base64-encoded string or URL, matching OpenAI image_generation_call format
    */
   result?: string | null | undefined;
@@ -58,7 +54,6 @@ export const OutputImageGenerationServerToolItem$inboundSchema: z.ZodType<
   id: z.string().optional(),
   imageB64: z.string().optional(),
   imageUrl: z.string().optional(),
-  prompt: z.string().optional(),
   result: z.nullable(z.string()).optional(),
   revisedPrompt: z.string().optional(),
   status: ToolCallStatus$inboundSchema,
@@ -69,7 +64,6 @@ export type OutputImageGenerationServerToolItem$Outbound = {
   id?: string | undefined;
   imageB64?: string | undefined;
   imageUrl?: string | undefined;
-  prompt?: string | undefined;
   result?: string | null | undefined;
   revisedPrompt?: string | undefined;
   status: string;
@@ -84,7 +78,6 @@ export const OutputImageGenerationServerToolItem$outboundSchema: z.ZodType<
   id: z.string().optional(),
   imageB64: z.string().optional(),
   imageUrl: z.string().optional(),
-  prompt: z.string().optional(),
   result: z.nullable(z.string()).optional(),
   revisedPrompt: z.string().optional(),
   status: ToolCallStatus$outboundSchema,
