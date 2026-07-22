@@ -165,6 +165,7 @@ export type VideoGenerationRequestOptions = {
   ubicloud?: { [k: string]: any } | undefined;
   upstage?: { [k: string]: any } | undefined;
   venice?: { [k: string]: any } | undefined;
+  voyageai?: { [k: string]: any } | undefined;
   wafer?: { [k: string]: any } | undefined;
   wandb?: { [k: string]: any } | undefined;
   xai?: { [k: string]: any } | undefined;
@@ -375,6 +376,7 @@ export type VideoGenerationRequestOptions$Outbound = {
   ubicloud?: { [k: string]: any } | undefined;
   upstage?: { [k: string]: any } | undefined;
   venice?: { [k: string]: any } | undefined;
+  voyageai?: { [k: string]: any } | undefined;
   wafer?: { [k: string]: any } | undefined;
   wandb?: { [k: string]: any } | undefined;
   xai?: { [k: string]: any } | undefined;
@@ -509,6 +511,7 @@ export const VideoGenerationRequestOptions$outboundSchema: z.ZodType<
   ubicloud: z.record(z.string(), z.any()).optional(),
   upstage: z.record(z.string(), z.any()).optional(),
   venice: z.record(z.string(), z.any()).optional(),
+  voyageai: z.record(z.string(), z.any()).optional(),
   wafer: z.record(z.string(), z.any()).optional(),
   wandb: z.record(z.string(), z.any()).optional(),
   xai: z.record(z.string(), z.any()).optional(),
