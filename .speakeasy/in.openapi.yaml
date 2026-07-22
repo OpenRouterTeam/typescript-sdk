@@ -2860,6 +2860,7 @@ components:
         cost_quality_tradeoff: 7
         enabled: true
         id: 'auto-router'
+        pin_model: false
       properties:
         allowed_models:
           description: 'List of model patterns to filter which models the auto-router can route between. Supports wildcards (e.g., "anthropic/*" matches all Anthropic models). When not specified, uses the default supported models list.'
@@ -2883,6 +2884,10 @@ components:
           enum:
             - 'auto-router'
           type: 'string'
+        pin_model:
+          description: 'When true, reuses the model from the most recent assistant message''s `model` attribute for subsequent turns. Defaults to false.'
+          example: false
+          type: 'boolean'
       required:
         - 'id'
       type: 'object'
@@ -4421,6 +4426,7 @@ components:
       description: 'Assistant message for requests and responses'
       example:
         content: 'The capital of France is Paris.'
+        model: 'openai/gpt-4o'
         role: 'assistant'
       properties:
         audio:
@@ -4435,6 +4441,10 @@ components:
           description: 'Assistant message content'
         images:
           $ref: '#/components/schemas/ChatAssistantImages'
+        model:
+          description: 'Model that generated this assistant message'
+          example: 'openai/gpt-4o'
+          type: 'string'
         name:
           description: 'Optional name for the assistant'
           type: 'string'
