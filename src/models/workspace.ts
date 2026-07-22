@@ -19,6 +19,10 @@ export type Workspace = {
    */
   createdBy: string | null;
   /**
+   * Deterministic ID of the workspace's implicitly-created default guardrail
+   */
+  defaultGuardrailId: string;
+  /**
    * Default image model for this workspace
    */
   defaultImageModel: string | null;
@@ -76,6 +80,7 @@ export type Workspace = {
 export const Workspace$inboundSchema: z.ZodType<Workspace, unknown> = z.object({
   created_at: z.string(),
   created_by: z.nullable(z.string()),
+  default_guardrail_id: z.string(),
   default_image_model: z.nullable(z.string()),
   default_provider_sort: z.nullable(z.string()),
   default_text_model: z.nullable(z.string()),
@@ -93,6 +98,7 @@ export const Workspace$inboundSchema: z.ZodType<Workspace, unknown> = z.object({
   return remap$(v, {
     "created_at": "createdAt",
     "created_by": "createdBy",
+    "default_guardrail_id": "defaultGuardrailId",
     "default_image_model": "defaultImageModel",
     "default_provider_sort": "defaultProviderSort",
     "default_text_model": "defaultTextModel",
