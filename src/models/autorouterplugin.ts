@@ -20,10 +20,6 @@ export type AutoRouterPlugin = {
    */
   enabled?: boolean | undefined;
   id: "auto-router";
-  /**
-   * When true, reuses the model from the most recent assistant message's `model` attribute for subsequent turns. Defaults to false.
-   */
-  pinModel?: boolean | undefined;
 };
 
 /** @internal */
@@ -32,7 +28,6 @@ export type AutoRouterPlugin$Outbound = {
   cost_quality_tradeoff?: number | undefined;
   enabled?: boolean | undefined;
   id: "auto-router";
-  pin_model?: boolean | undefined;
 };
 
 /** @internal */
@@ -44,12 +39,10 @@ export const AutoRouterPlugin$outboundSchema: z.ZodType<
   costQualityTradeoff: z.int().optional(),
   enabled: z.boolean().optional(),
   id: z.literal("auto-router"),
-  pinModel: z.boolean().optional(),
 }).transform((v) => {
   return remap$(v, {
     allowedModels: "allowed_models",
     costQualityTradeoff: "cost_quality_tradeoff",
-    pinModel: "pin_model",
   });
 });
 
