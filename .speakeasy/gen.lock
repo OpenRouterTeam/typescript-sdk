@@ -1,19 +1,19 @@
 lockVersion: ""
 id: ""
 management:
-  docChecksum: e763e0732e36ec541cc95780f8aad4d0
+  docChecksum: ef7dbe4dd7c82932d37bcb11aa9fa64a
   docVersion: 1.0.0
   speakeasyVersion: 1.787.0
   generationVersion: 2.914.0
-  releaseVersion: 1.0.6
-  configChecksum: ad4595b1b1247692e9b2b44bb4719640
+  releaseVersion: 1.0.7
+  configChecksum: 862785281c9ad5480b361951b850a1f2
   repoURL: https://github.com/OpenRouterTeam/typescript-sdk.git
   installationURL: https://github.com/OpenRouterTeam/typescript-sdk
   published: true
 persistentEdits:
-  generation_id: 12553c1e-e1ee-4b05-8040-7900e96d1ed1
-  pristine_commit_hash: cc3a55e1cf1e31f94989dd07dd4f6a61c0cdc317
-  pristine_tree_hash: ff8673b38477b2a3168cf85ab5a9e1d4fed311c3
+  generation_id: fea6bebd-84a6-4ae2-954f-745453d17a0e
+  pristine_commit_hash: fa14b9d6d8bcdef18c3c76864ab6b9dc7a5b71a0
+  pristine_tree_hash: f9354c783d35cdd9dfdb650d23273ae1894f686c
 features:
   typescript:
     acceptHeaders: 2.81.2
@@ -1028,8 +1028,8 @@ trackedFiles:
     pristine_git_object: 147f6e10f104162f81fe3df2f145892eac826577
   docs/models/autobetarouterplugin.mdx:
     id: ecc97e45ac41
-    last_write_checksum: sha1:68be10fa53e39c09242e02417aa264625d2de32c
-    pristine_git_object: 3371d531a76a6125ed59b30c43857caa3b3d04bf
+    last_write_checksum: sha1:c986f9b0bff681efb86da08df7aa44d0fb64f6d5
+    pristine_git_object: c120a03490c1000d0e2f334296cc09df08e75cd5
   docs/models/autorouterplugin.md:
     id: 96e009b23f15
     last_write_checksum: sha1:15a686d94f3f434759a437e4da83facd46947f83
@@ -3073,8 +3073,8 @@ trackedFiles:
     deleted: true
   docs/models/createworkspaceresponse.mdx:
     id: 753324ec49e4
-    last_write_checksum: sha1:851f53e730b0a0d16a226d3c718154645f22baab
-    pristine_git_object: ea344cd33c46a192939f9c385844751adc8abb7d
+    last_write_checksum: sha1:e723318c8b1daedff9a905cb9e1565422dd45dea
+    pristine_git_object: 8a91305dd27409072f3fa7182d11130a69fa7f11
   docs/models/customtool.md:
     id: f64ed08d154e
     last_write_checksum: sha1:c104cbb8ef454a854cbaa7c9c226e474f9db72c1
@@ -4250,8 +4250,8 @@ trackedFiles:
     deleted: true
   docs/models/getworkspaceresponse.mdx:
     id: 298890b56865
-    last_write_checksum: sha1:3233c6436e0cea14fce70934de73c5952dae65a0
-    pristine_git_object: d249be98e96b74f54eeb2554d66b06d1c42265de
+    last_write_checksum: sha1:cf6b9e1412c349dfa136684e303ccb290858ecb9
+    pristine_git_object: c53f552e5f0eb49dc007edf14895ca8a3a6ca288
   docs/models/group.md:
     id: 565e059670b0
     last_write_checksum: sha1:fc0283e52b0635db66e5772628598cc7bf2cc101
@@ -5288,8 +5288,8 @@ trackedFiles:
     deleted: true
   docs/models/listworkspacesresponse.mdx:
     id: 40a5cb52db47
-    last_write_checksum: sha1:ce1b078f2fd96b8c9729fd901579af474449b6b5
-    pristine_git_object: 52bdc4c9e1b7f01e7b3fde993bf035894fc363f2
+    last_write_checksum: sha1:5c345da06fb3171c9b476c0195d4888a5a4b5162
+    pristine_git_object: 419b443e1437757ad8321dda6dc2a3f5eb2d29b8
   docs/models/localshellcallitem.md:
     id: 91fd9023d6ac
     last_write_checksum: sha1:bf86f49f8940cea62bb91450bd0624e6be7704fc
@@ -8227,8 +8227,8 @@ trackedFiles:
     deleted: true
   docs/models/operations/listworkspacesresponse.mdx:
     id: d61aa0f8a8d2
-    last_write_checksum: sha1:250f453c5d83e0f0575282475c7e4be1e3d4964d
-    pristine_git_object: fea87d3e3a10d1e5272d28727437a75a94e82fc7
+    last_write_checksum: sha1:c59d33fe1005c79bf5c0e9b5c9bd3a2c4c6fd0a8
+    pristine_git_object: de9da9702c72e57fc499d182da2c4ed1bce6e9f9
   docs/models/operations/metadata.md:
     id: 4c22404ca93c
     last_write_checksum: sha1:8608b61aa522ad0692c153dfcae23c0f88afe188
@@ -11787,8 +11787,8 @@ trackedFiles:
     deleted: true
   docs/models/updateworkspaceresponse.mdx:
     id: b02459e1e826
-    last_write_checksum: sha1:e905ba275bdc45f46c82a42c0fce3eb8568369fc
-    pristine_git_object: c896398b4a0eeb998a8f9266e48b06f9ee4e2077
+    last_write_checksum: sha1:d04e6f1dc5ead2aacee23a05e37e41c40fdd95f3
+    pristine_git_object: 7ad4fac6c36f12c05e80dcb81b045e58132a0ca8
   docs/models/upsertworkspacebudgetrequest.md:
     id: 62ee02cdd938
     last_write_checksum: sha1:81557306485380cc13970d9775d05a2497a243ec
@@ -12201,8 +12201,8 @@ trackedFiles:
     deleted: true
   docs/models/workspace.mdx:
     id: a15e7c6b6b9e
-    last_write_checksum: sha1:4ad4484d342ed89b4f8affb7cb59b32529b05fee
-    pristine_git_object: 08fb18e7540c7d538b6aba7b36458dd29ea46794
+    last_write_checksum: sha1:1b3e283afedc05812084009dc7f779d2805f0531
+    pristine_git_object: e977b08fb074c7c67dda43e8bfd976e17dc5f86b
   docs/models/workspacebudget.md:
     id: c678dc2b99c5
     last_write_checksum: sha1:41a7076e626f37245109117de75302fed706700b
@@ -12444,12 +12444,12 @@ trackedFiles:
     pristine_git_object: 410efafd6a7f50d91ccb87131fedbe0c3d47e15a
   jsr.json:
     id: 7f6ab7767282
-    last_write_checksum: sha1:9afb28f4a419bb669acc59aaa70e736f046fc92b
-    pristine_git_object: b0ec6ca6ecc46ec6b690de3f77f8b86c96c16348
+    last_write_checksum: sha1:1f30d243803e95f7225b33becee04bd703901deb
+    pristine_git_object: d42f46d19416b7a32926e431ee5c592c5261a3eb
   package.json:
     id: 7030d0b2f71b
-    last_write_checksum: sha1:8b14000575853199bf28723f5bef61c4a9d0d138
-    pristine_git_object: dc0734076ebb34d0244382e58a5cee12a7dbba1e
+    last_write_checksum: sha1:192bef8f64e6e26f5fb8a0d8b4bc0339f12053b3
+    pristine_git_object: 4ebdf2a60823b489e1328b08ce44ccb5d0660d59
   src/core.ts:
     id: f431fdbcd144
     last_write_checksum: sha1:5aa66b0b6a5964f3eea7f3098c2eb3c0ee9c0131
@@ -12828,8 +12828,8 @@ trackedFiles:
     pristine_git_object: a187e58707bdb726ca2aff74941efe7493422d4e
   src/lib/config.ts:
     id: 320761608fb3
-    last_write_checksum: sha1:5d9aa584008db8b7754356a7e26e9e23452192d6
-    pristine_git_object: 49f756f091761be4996220555140baf4e5e877c1
+    last_write_checksum: sha1:b10a667fa82ff00d0c2467c441eceb583dc3f31f
+    pristine_git_object: 48d45d44c6e228a42c359bd4adb15101119afa79
   src/lib/dlv.ts:
     id: b1988214835a
     last_write_checksum: sha1:eaac763b22717206a6199104e0403ed17a4e2711
@@ -13146,8 +13146,8 @@ trackedFiles:
     pristine_git_object: 514f3e5bdf0f636a0699aaa6eff47d4148ad0651
   src/models/autobetarouterplugin.ts:
     id: 80e04f632d5f
-    last_write_checksum: sha1:b9a31310ed17450a528464c2876b356e8f2efb0a
-    pristine_git_object: e22e82fa500cfa4fa6378e14fa7b82e95c1f6273
+    last_write_checksum: sha1:f2a862b7e0ba33c942402e9aa4a996b29e233b71
+    pristine_git_object: 73406b789112a82944559bafeaac3a9f05165ddb
   src/models/autorouterplugin.ts:
     id: e3853c83720d
     last_write_checksum: sha1:6c433a073dde939042dbcb2809679a1b00277e1a
@@ -15578,8 +15578,8 @@ trackedFiles:
     pristine_git_object: bf3fcacb23e0041799adafd4b666fccb94722358
   src/models/workspace.ts:
     id: f3a6e662c47b
-    last_write_checksum: sha1:ca8783eba8f2af4c546f2f2051d7507da8bc4c42
-    pristine_git_object: 935c4c5abcab3973913fae7ba219e44cafe7a32b
+    last_write_checksum: sha1:53439068636fff52542d91c478666bbc3101f744
+    pristine_git_object: d2eb8407529c3d6fb9e37731d06a26454747c733
   src/models/workspacebudget.ts:
     id: ede50342c11d
     last_write_checksum: sha1:0897338c3b0c31686fd6dca759e5c5b4095ac473
@@ -16529,7 +16529,7 @@ examples:
           limit: 50
       responses:
         "200":
-          application/json: {"data": [{"created_at": "2025-08-24T10:30:00Z", "created_by": "user_abc123", "default_image_model": "openai/dall-e-3", "default_provider_sort": "price", "default_text_model": "openai/gpt-4o", "description": "Production environment workspace", "id": "550e8400-e29b-41d4-a716-446655440000", "io_logging_api_key_ids": null, "io_logging_sampling_rate": 1, "is_data_discount_logging_enabled": true, "is_observability_broadcast_enabled": false, "is_observability_io_logging_enabled": false, "name": "Production", "slug": "production", "updated_at": "2025-08-24T15:45:00Z"}], "total_count": 1}
+          application/json: {"data": [{"created_at": "2025-08-24T10:30:00Z", "created_by": "user_abc123", "default_guardrail_id": "595d5849-7e86-51fd-a7c0-705c34e4afff", "default_image_model": "openai/dall-e-3", "default_provider_sort": "price", "default_text_model": "openai/gpt-4o", "description": "Production environment workspace", "id": "550e8400-e29b-41d4-a716-446655440000", "io_logging_api_key_ids": null, "io_logging_sampling_rate": 1, "is_data_discount_logging_enabled": true, "is_observability_broadcast_enabled": false, "is_observability_io_logging_enabled": false, "name": "Production", "slug": "production", "updated_at": "2025-08-24T15:45:00Z"}], "total_count": 1}
         "401":
           application/json: {"error": {"code": 401, "message": "Missing Authentication header"}}
         "500":
@@ -16540,7 +16540,7 @@ examples:
         application/json: {"name": "Production", "slug": "production"}
       responses:
         "201":
-          application/json: {"data": {"created_at": "2025-08-24T10:30:00Z", "created_by": "user_abc123", "default_image_model": "openai/dall-e-3", "default_provider_sort": "price", "default_text_model": "openai/gpt-4o", "description": "Production environment workspace", "id": "550e8400-e29b-41d4-a716-446655440000", "io_logging_api_key_ids": null, "io_logging_sampling_rate": 1, "is_data_discount_logging_enabled": true, "is_observability_broadcast_enabled": false, "is_observability_io_logging_enabled": false, "name": "Production", "slug": "production", "updated_at": null}}
+          application/json: {"data": {"created_at": "2025-08-24T10:30:00Z", "created_by": "user_abc123", "default_guardrail_id": "595d5849-7e86-51fd-a7c0-705c34e4afff", "default_image_model": "openai/dall-e-3", "default_provider_sort": "price", "default_text_model": "openai/gpt-4o", "description": "Production environment workspace", "id": "550e8400-e29b-41d4-a716-446655440000", "io_logging_api_key_ids": null, "io_logging_sampling_rate": 1, "is_data_discount_logging_enabled": true, "is_observability_broadcast_enabled": false, "is_observability_io_logging_enabled": false, "name": "Production", "slug": "production", "updated_at": null}}
         "400":
           application/json: {"error": {"code": 400, "message": "Invalid request parameters"}}
         "401":
@@ -16574,7 +16574,7 @@ examples:
           id: "production"
       responses:
         "200":
-          application/json: {"data": {"created_at": "2025-08-24T10:30:00Z", "created_by": "user_abc123", "default_image_model": "openai/dall-e-3", "default_provider_sort": "price", "default_text_model": "openai/gpt-4o", "description": "Production environment workspace", "id": "550e8400-e29b-41d4-a716-446655440000", "io_logging_api_key_ids": null, "io_logging_sampling_rate": 1, "is_data_discount_logging_enabled": true, "is_observability_broadcast_enabled": false, "is_observability_io_logging_enabled": false, "name": "Production", "slug": "production", "updated_at": "2025-08-24T15:45:00Z"}}
+          application/json: {"data": {"created_at": "2025-08-24T10:30:00Z", "created_by": "user_abc123", "default_guardrail_id": "595d5849-7e86-51fd-a7c0-705c34e4afff", "default_image_model": "openai/dall-e-3", "default_provider_sort": "price", "default_text_model": "openai/gpt-4o", "description": "Production environment workspace", "id": "550e8400-e29b-41d4-a716-446655440000", "io_logging_api_key_ids": null, "io_logging_sampling_rate": 1, "is_data_discount_logging_enabled": true, "is_observability_broadcast_enabled": false, "is_observability_io_logging_enabled": false, "name": "Production", "slug": "production", "updated_at": "2025-08-24T15:45:00Z"}}
         "401":
           application/json: {"error": {"code": 401, "message": "Missing Authentication header"}}
         "404":
@@ -16590,7 +16590,7 @@ examples:
         application/json: {}
       responses:
         "200":
-          application/json: {"data": {"created_at": "2025-08-24T10:30:00Z", "created_by": "user_abc123", "default_image_model": "openai/dall-e-3", "default_provider_sort": "price", "default_text_model": "openai/gpt-4o", "description": "Production environment workspace", "id": "550e8400-e29b-41d4-a716-446655440000", "io_logging_api_key_ids": null, "io_logging_sampling_rate": 1, "is_data_discount_logging_enabled": true, "is_observability_broadcast_enabled": false, "is_observability_io_logging_enabled": false, "name": "Updated Workspace", "slug": "updated-workspace", "updated_at": "2025-08-25T10:00:00Z"}}
+          application/json: {"data": {"created_at": "2025-08-24T10:30:00Z", "created_by": "user_abc123", "default_guardrail_id": "595d5849-7e86-51fd-a7c0-705c34e4afff", "default_image_model": "openai/dall-e-3", "default_provider_sort": "price", "default_text_model": "openai/gpt-4o", "description": "Production environment workspace", "id": "550e8400-e29b-41d4-a716-446655440000", "io_logging_api_key_ids": null, "io_logging_sampling_rate": 1, "is_data_discount_logging_enabled": true, "is_observability_broadcast_enabled": false, "is_observability_io_logging_enabled": false, "name": "Updated Workspace", "slug": "updated-workspace", "updated_at": "2025-08-25T10:00:00Z"}}
         "400":
           application/json: {"error": {"code": 400, "message": "Invalid request parameters"}}
         "401":
@@ -17362,4 +17362,9 @@ examples:
         "500":
           application/json: {"error": {"code": 500, "message": "Internal Server Error"}}
 examplesVersion: 1.0.2
-releaseNotes: "## Typescript SDK Changes:\n* `openrouter.beta.responses.send()`: \n  *  `request.responsesRequest.provider.ignore[].union(ProviderName).enum(coreWeave)` **Added**\n* `openrouter.tts.createSpeech()`: \n  *  `request.speechRequest.provider.options.coreweave` **Added**\n* `openrouter.stt.createTranscription()`: \n  *  `request.sttRequest.provider.options.coreweave` **Added**\n* `openrouter.byok.list()`: \n  *  `request.provider` **Changed**\n  *  `response.data[].provider.enum(coreweave)` **Added**\n* `openrouter.byok.create()`: \n  *  `request.createByokKeyRequest.provider.enum(coreweave)` **Added**\n  *  `response.data.provider.enum(coreweave)` **Added**\n* `openrouter.byok.get()`:  `response.data.provider.enum(coreweave)` **Added**\n* `openrouter.byok.update()`:  `response.data.provider.enum(coreweave)` **Added**\n* `openrouter.chat.send()`: \n  *  `request.chatRequest.provider.ignore[].union(ProviderName).enum(coreWeave)` **Added**\n* `openrouter.embeddings.generate()`: \n  *  `request.requestBody.provider.ignore[].union(ProviderName).enum(coreWeave)` **Added**\n* `openrouter.endpoints.listZdrEndpoints()`:  `response.data[].providerName.enum(coreWeave)` **Added**\n* `openrouter.endpoints.list()`:  `response.data.endpoints[].providerName.enum(coreWeave)` **Added**\n* `openrouter.generations.getGeneration()`:  `response.data.providerResponses[].providerName.enum(coreWeave)` **Added**\n* `openrouter.images.generate()`: \n  *  `request.imageGenerationRequest.provider` **Changed**\n* `openrouter.presets.createPresetsChatCompletions()`: \n  *  `request.chatRequest.provider.ignore[].union(ProviderName).enum(coreWeave)` **Added**\n* `openrouter.presets.createPresetsMessages()`: \n  *  `request.messagesRequest.provider.ignore[].union(ProviderName).enum(coreWeave)` **Added**\n* `openrouter.presets.createPresetsResponses()`: \n  *  `request.responsesRequest.provider.ignore[].union(ProviderName).enum(coreWeave)` **Added**\n* `openrouter.rerank.rerank()`: \n  *  `request.requestBody.provider.ignore[].union(ProviderName).enum(coreWeave)` **Added**\n* `openrouter.videoGeneration.generate()`: \n  *  `request.videoGenerationRequest.provider.options.coreweave` **Added**\n"
+releaseNotes: |
+  ## Typescript SDK Changes:
+  * `openrouter.workspaces.list()`:  `response.data[].defaultGuardrailId` **Added**
+  * `openrouter.workspaces.create()`:  `response.data.defaultGuardrailId` **Added**
+  * `openrouter.workspaces.get()`:  `response.data.defaultGuardrailId` **Added**
+  * `openrouter.workspaces.update()`:  `response.data.defaultGuardrailId` **Added**
