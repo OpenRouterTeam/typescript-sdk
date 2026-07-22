@@ -17034,7 +17034,10 @@ components:
     OutputImageGenerationCallItem:
       allOf:
         - $ref: '#/components/schemas/OutputItemImageGenerationCall'
-        - properties: {}
+        - properties:
+            prompt:
+              description: 'The prompt (possibly rewritten) that the image was generated from.'
+              type: 'string'
           type: 'object'
       example:
         id: 'img-abc123'
@@ -17055,6 +17058,9 @@ components:
         imageB64:
           type: 'string'
         imageUrl:
+          type: 'string'
+        prompt:
+          description: 'The prompt (possibly rewritten) that the image was generated from.'
           type: 'string'
         result:
           description: 'The generated image as a base64-encoded string or URL, matching OpenAI image_generation_call format'
