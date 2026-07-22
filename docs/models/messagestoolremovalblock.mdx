@@ -1,0 +1,26 @@
+---
+title: "MessagesToolRemovalBlock"
+---
+
+Removes a tool from the conversation mid-conversation without invalidating the prompt cache. Only valid in `role: "system"` messages; requires the `mid-conversation-tool-changes-2026-07-01` beta header.
+
+## Example Usage
+
+```typescript
+import { MessagesToolRemovalBlock } from "@openrouter/sdk/models";
+
+let value: MessagesToolRemovalBlock = {
+  tool: {
+    name: "get_weather",
+    type: "tool_reference",
+  },
+  type: "tool_removal",
+};
+```
+
+## Fields
+
+| Field                                                                            | Type                                                                             | Required                                                                         | Description                                                                      |
+| -------------------------------------------------------------------------------- | -------------------------------------------------------------------------------- | -------------------------------------------------------------------------------- | -------------------------------------------------------------------------------- |
+| `tool`                                                                           | [models.MessagesToolRemovalBlockTool](../models/messagestoolremovalblocktool.mdx) | :heavy_check_mark:                                                               | N/A                                                                              |
+| `type`                                                                           | *"tool_removal"*                                                                 | :heavy_check_mark:                                                               | N/A                                                                              |
