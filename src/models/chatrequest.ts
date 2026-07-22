@@ -424,7 +424,7 @@ export type ChatRequest = {
    */
   trace?: TraceConfig | undefined;
   /**
-   * Per-end-user identifier for abuse isolation. Use a stable ID, hash, or pseudonym. When a provider requires a user identity, OpenRouter folds it into the hashed identity sent upstream and never forwards it raw. If omitted, requests use an account-level identity, so provider policy blocks can affect the whole account.
+   * Unique user identifier
    */
   user?: string | undefined;
 };
