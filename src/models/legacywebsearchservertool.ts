@@ -53,6 +53,10 @@ export type LegacyWebSearchServerTool = {
    */
   maxResults?: number | undefined;
   /**
+   * Maximum number of web searches the model may perform in a single request. Once reached, further search calls return an error result instead of executing. Applies to the Exa, Firecrawl, Parallel, and Perplexity engines; with native provider search, explicit values are forwarded to the provider (e.g. Anthropic `max_uses`).
+   */
+  maxUses?: number | undefined;
+  /**
    * Size of the search context for web search tools
    */
   searchContextSize?: SearchContextSizeEnum | undefined;
@@ -80,12 +84,14 @@ export const LegacyWebSearchServerTool$inboundSchema: z.ZodType<
   engine: WebSearchEngineEnum$inboundSchema.optional(),
   filters: z.nullable(WebSearchDomainFilter$inboundSchema).optional(),
   max_results: z.int().optional(),
+  max_uses: z.int().optional(),
   search_context_size: SearchContextSizeEnum$inboundSchema.optional(),
   type: LegacyWebSearchServerToolType$inboundSchema,
   user_location: z.nullable(WebSearchUserLocation$inboundSchema).optional(),
 }).transform((v) => {
   return remap$(v, {
     "max_results": "maxResults",
+    "max_uses": "maxUses",
     "search_context_size": "searchContextSize",
     "user_location": "userLocation",
   });
@@ -95,6 +101,7 @@ export type LegacyWebSearchServerTool$Outbound = {
   engine?: string | undefined;
   filters?: WebSearchDomainFilter$Outbound | null | undefined;
   max_results?: number | undefined;
+  max_uses?: number | undefined;
   search_context_size?: string | undefined;
   type: string;
   user_location?: WebSearchUserLocation$Outbound | null | undefined;
@@ -108,12 +115,14 @@ export const LegacyWebSearchServerTool$outboundSchema: z.ZodType<
   engine: WebSearchEngineEnum$outboundSchema.optional(),
   filters: z.nullable(WebSearchDomainFilter$outboundSchema).optional(),
   maxResults: z.int().optional(),
+  maxUses: z.int().optional(),
   searchContextSize: SearchContextSizeEnum$outboundSchema.optional(),
   type: LegacyWebSearchServerToolType$outboundSchema,
   userLocation: z.nullable(WebSearchUserLocation$outboundSchema).optional(),
 }).transform((v) => {
   return remap$(v, {
     maxResults: "max_results",
+    maxUses: "max_uses",
     searchContextSize: "search_context_size",
     userLocation: "user_location",
   });
