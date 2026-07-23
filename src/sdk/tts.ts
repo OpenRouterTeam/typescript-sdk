@@ -8,7 +8,7 @@ import { ClientSDK, RequestOptions } from "../lib/sdks.js";
 import * as operations from "../models/operations/index.js";
 import { unwrapAsync } from "../types/fp.js";
 
-export class Tts extends ClientSDK {
+export class TTS extends ClientSDK {
   /**
    * Create speech
    *
