@@ -14,7 +14,7 @@ import * as operations from "../models/operations/index.js";
 import { unwrapAsync } from "../types/fp.js";
 import { PageIterator, unwrapResultIterator } from "../types/operations.js";
 
-export class Byok extends ClientSDK {
+export class BYOK extends ClientSDK {
   /**
    * List BYOK provider credentials
    *
