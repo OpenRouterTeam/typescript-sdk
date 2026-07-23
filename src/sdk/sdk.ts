@@ -8,7 +8,7 @@ import { Analytics } from "./analytics.js";
 import { APIKeys } from "./apikeys.js";
 import { Benchmarks } from "./benchmarks.js";
 import { Beta } from "./beta.js";
-import { Byok } from "./byok.js";
+import { BYOK } from "./byok.js";
 import { Chat } from "./chat.js";
 import { Classifications } from "./classifications.js";
 import { Credits } from "./credits.js";
@@ -26,8 +26,8 @@ import { Organization } from "./organization.js";
 import { Presets } from "./presets.js";
 import { Providers } from "./providers.js";
 import { Rerank } from "./rerank.js";
-import { Stt } from "./stt.js";
-import { Tts } from "./tts.js";
+import { STT } from "./stt.js";
+import { TTS } from "./tts.js";
 import { VideoGeneration } from "./videogeneration.js";
 import { Workspaces } from "./workspaces.js";
 // #region imports
@@ -54,14 +54,14 @@ export class OpenRouter extends ClientSDK {
     return (this._beta ??= new Beta(this._options));
   }
 
-  private _tts?: Tts;
-  get tts(): Tts {
-    return (this._tts ??= new Tts(this._options));
+  private _tts?: TTS;
+  get tts(): TTS {
+    return (this._tts ??= new TTS(this._options));
   }
 
-  private _stt?: Stt;
-  get stt(): Stt {
-    return (this._stt ??= new Stt(this._options));
+  private _stt?: STT;
+  get stt(): STT {
+    return (this._stt ??= new STT(this._options));
   }
 
   private _oAuth?: OAuth;
@@ -74,9 +74,9 @@ export class OpenRouter extends ClientSDK {
     return (this._benchmarks ??= new Benchmarks(this._options));
   }
 
-  private _byok?: Byok;
-  get byok(): Byok {
-    return (this._byok ??= new Byok(this._options));
+  private _byok?: BYOK;
+  get byok(): BYOK {
+    return (this._byok ??= new BYOK(this._options));
   }
 
   private _chat?: Chat;

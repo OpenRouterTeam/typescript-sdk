@@ -37,7 +37,7 @@ generation:
   documentation: mintlify
   preApplyUnionDiscriminators: true
 typescript:
-  version: 1.0.13
+  version: 1.0.14
   acceptHeaderEnum: false
   additionalDependencies:
     dependencies:
@@ -87,6 +87,13 @@ typescript:
     - pnpm
     - install
   constFieldsAlwaysOptional: false
+  customCasings:
+    byok:
+      initialism: true
+    stt:
+      initialism: true
+    tts:
+      initialism: true
   defaultErrorName: OpenRouterDefaultError
   enableCustomCodeRegions: true
   enableMCPServer: false
