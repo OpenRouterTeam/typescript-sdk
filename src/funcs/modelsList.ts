@@ -45,6 +45,7 @@ export function modelsList(
     Result<
       operations.GetModelsResponse,
       | errors.BadRequestResponseError
+      | errors.UnauthorizedResponseError
       | errors.ForbiddenResponseError
       | errors.InternalServerResponseError
       | OpenRouterError
@@ -76,6 +77,7 @@ async function $do(
       Result<
         operations.GetModelsResponse,
         | errors.BadRequestResponseError
+        | errors.UnauthorizedResponseError
         | errors.ForbiddenResponseError
         | errors.InternalServerResponseError
         | OpenRouterError
@@ -135,6 +137,7 @@ async function $do(
     "region": payload?.region,
     "sort": payload?.sort,
     "supported_parameters": payload?.supported_parameters,
+    "workspace_id": payload?.workspace_id,
     "zdr": payload?.zdr,
   });
 
@@ -221,6 +224,7 @@ async function $do(
   const [result, raw] = await M.match<
     operations.GetModelsResponse,
     | errors.BadRequestResponseError
+    | errors.UnauthorizedResponseError
     | errors.ForbiddenResponseError
     | errors.InternalServerResponseError
     | OpenRouterError
@@ -234,6 +238,7 @@ async function $do(
   >(
     M.json(200, operations.GetModelsResponse$inboundSchema, { key: "Result" }),
     M.jsonErr(400, errors.BadRequestResponseError$inboundSchema),
+    M.jsonErr(401, errors.UnauthorizedResponseError$inboundSchema),
     M.jsonErr(403, errors.ForbiddenResponseError$inboundSchema),
     M.jsonErr(500, errors.InternalServerResponseError$inboundSchema),
     M.fail("4XX"),
@@ -254,6 +259,7 @@ async function $do(
       Result<
         operations.GetModelsResponse,
         | errors.BadRequestResponseError
+        | errors.UnauthorizedResponseError
         | errors.ForbiddenResponseError
         | errors.InternalServerResponseError
         | OpenRouterError
