@@ -142,3 +142,27 @@ const value: models.MessagesAdvisorToolResultBlock = {
 };
 ```
 
+### `models.MessagesToolAdditionBlock`
+
+```typescript
+const value: models.MessagesToolAdditionBlock = {
+  tool: {
+    name: "get_forecast",
+    type: "tool_reference",
+  },
+  type: "tool_addition",
+};
+```
+
+### `models.MessagesToolRemovalBlock`
+
+```typescript
+const value: models.MessagesToolRemovalBlock = {
+  tool: {
+    name: "get_weather",
+    type: "tool_reference",
+  },
+  type: "tool_removal",
+};
+```
+
