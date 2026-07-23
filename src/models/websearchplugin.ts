@@ -5,11 +5,25 @@
 
 import * as z from "zod/v4";
 import { remap as remap$ } from "../lib/primitives.js";
-import { ClosedEnum } from "../types/enums.js";
+import * as openEnums from "../types/enums.js";
+import { ClosedEnum, OpenEnum } from "../types/enums.js";
 import {
   WebSearchEngine,
   WebSearchEngine$outboundSchema,
 } from "./websearchengine.js";
+
+/**
+ * How much context to retrieve per search result for native web search.
+ */
+export const SearchContextSize = {
+  Low: "low",
+  Medium: "medium",
+  High: "high",
+} as const;
+/**
+ * How much context to retrieve per search result for native web search.
+ */
+export type SearchContextSize = OpenEnum<typeof SearchContextSize>;
 
 export const WebSearchPluginType = {
   Approximate: "approximate",
@@ -50,9 +64,19 @@ export type WebSearchPlugin = {
    * Maximum number of times the model can invoke web search in a single turn. Passed through to native providers that support it (e.g. Anthropic).
    */
   maxUses?: number | undefined;
+  /**
+   * How much context to retrieve per search result for native web search.
+   */
+  searchContextSize?: SearchContextSize | undefined;
   searchPrompt?: string | undefined;
   userLocation?: UserLocation | null | undefined;
 };
+
+/** @internal */
+export const SearchContextSize$outboundSchema: z.ZodType<
+  string,
+  SearchContextSize
+> = openEnums.outboundSchema(SearchContextSize);
 
 /** @internal */
 export const WebSearchPluginType$outboundSchema: z.ZodEnum<
@@ -93,6 +117,7 @@ export type WebSearchPlugin$Outbound = {
   include_domains?: Array<string> | undefined;
   max_results?: number | undefined;
   max_uses?: number | undefined;
+  search_context_size?: string | undefined;
   search_prompt?: string | undefined;
   user_location?: UserLocation$Outbound | null | undefined;
 };
@@ -109,6 +134,7 @@ export const WebSearchPlugin$outboundSchema: z.ZodType<
   includeDomains: z.array(z.string()).optional(),
   maxResults: z.int().optional(),
   maxUses: z.int().optional(),
+  searchContextSize: SearchContextSize$outboundSchema.optional(),
   searchPrompt: z.string().optional(),
   userLocation: z.nullable(z.lazy(() => UserLocation$outboundSchema))
     .optional(),
@@ -118,6 +144,7 @@ export const WebSearchPlugin$outboundSchema: z.ZodType<
     includeDomains: "include_domains",
     maxResults: "max_results",
     maxUses: "max_uses",
+    searchContextSize: "search_context_size",
     searchPrompt: "search_prompt",
     userLocation: "user_location",
   });
