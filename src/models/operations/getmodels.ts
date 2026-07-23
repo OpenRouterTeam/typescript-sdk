@@ -145,6 +145,10 @@ export type GetModelsRequest = {
    */
   category?: GetModelsCategory | undefined;
   /**
+   * Filter models to those allowed by a workspace. Requires bearer authentication; the caller must be a member of the workspace (401 if unauthenticated, 403 if not a member).
+   */
+  workspaceId?: string | undefined;
+  /**
    * Filter models by supported parameter (comma-separated)
    */
   supportedParameters?: string | undefined;
@@ -282,6 +286,7 @@ export type GetModelsRequest$Outbound = {
   offset: number | null;
   limit: number;
   category?: string | undefined;
+  workspace_id?: string | undefined;
   supported_parameters?: string | undefined;
   output_modalities?: string | undefined;
   sort?: string | undefined;
@@ -321,6 +326,7 @@ export const GetModelsRequest$outboundSchema: z.ZodType<
   offset: z.nullable(z.int().default(0)),
   limit: z.int().default(500),
   category: GetModelsCategory$outboundSchema.optional(),
+  workspaceId: z.string().optional(),
   supportedParameters: z.string().optional(),
   outputModalities: z.string().optional(),
   sort: GetModelsSort$outboundSchema.optional(),
@@ -350,6 +356,7 @@ export const GetModelsRequest$outboundSchema: z.ZodType<
 }).transform((v) => {
   return remap$(v, {
     httpReferer: "HTTP-Referer",
+    workspaceId: "workspace_id",
     supportedParameters: "supported_parameters",
     outputModalities: "output_modalities",
     inputModalities: "input_modalities",
