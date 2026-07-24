@@ -3,7 +3,7 @@
  * @generated-id: fc4b535757c5
  */
 
-import { betaResponsesSend } from "../funcs/betaResponsesSend.js";
+import { responsesSend } from "../funcs/responsesSend.js";
 import { ClientSDK, RequestOptions } from "../lib/sdks.js";
 import * as operations from "../models/operations/index.js";
 import { unwrapAsync } from "../types/fp.js";
@@ -35,7 +35,7 @@ export class Responses extends ClientSDK {
     request: operations.CreateResponsesRequest,
     options?: RequestOptions,
   ): Promise<operations.CreateResponsesResponse> {
-    return unwrapAsync(betaResponsesSend(
+    return unwrapAsync(responsesSend(
       this,
       request,
       options,
