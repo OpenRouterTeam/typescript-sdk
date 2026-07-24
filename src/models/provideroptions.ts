@@ -133,6 +133,7 @@ export type ProviderOptions = {
   ubicloud?: { [k: string]: any } | undefined;
   upstage?: { [k: string]: any } | undefined;
   venice?: { [k: string]: any } | undefined;
+  voyageai?: { [k: string]: any } | undefined;
   wafer?: { [k: string]: any } | undefined;
   wandb?: { [k: string]: any } | undefined;
   wandbLegacy?: { [k: string]: any } | undefined;
@@ -266,6 +267,7 @@ export type ProviderOptions$Outbound = {
   ubicloud?: { [k: string]: any } | undefined;
   upstage?: { [k: string]: any } | undefined;
   venice?: { [k: string]: any } | undefined;
+  voyageai?: { [k: string]: any } | undefined;
   wafer?: { [k: string]: any } | undefined;
   wandb?: { [k: string]: any } | undefined;
   "wandb-legacy"?: { [k: string]: any } | undefined;
@@ -402,6 +404,7 @@ export const ProviderOptions$outboundSchema: z.ZodType<
   ubicloud: z.record(z.string(), z.any()).optional(),
   upstage: z.record(z.string(), z.any()).optional(),
   venice: z.record(z.string(), z.any()).optional(),
+  voyageai: z.record(z.string(), z.any()).optional(),
   wafer: z.record(z.string(), z.any()).optional(),
   wandb: z.record(z.string(), z.any()).optional(),
   wandbLegacy: z.record(z.string(), z.any()).optional(),
