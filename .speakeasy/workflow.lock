@@ -6,6 +6,7 @@ sources:
         sourceBlobDigest: sha256:4421b3fec274a2b24568863fa2ba56f137ca896a168db5241027a17710292f0f
         tags:
             - latest
+            - devin-1784853533-responses-ga
             - 1.0.0
 targets:
     openrouter:
@@ -14,7 +15,7 @@ targets:
         sourceRevisionDigest: sha256:653bbd6294ab3a24f49706074808ca58a4c5e125028fcac0dd1f8283c518c4fe
         sourceBlobDigest: sha256:4421b3fec274a2b24568863fa2ba56f137ca896a168db5241027a17710292f0f
         codeSamplesNamespace: open-router-chat-completions-api-typescript-code-samples
-        codeSamplesRevisionDigest: sha256:979518b45059273d9f829a120220fadcc4a6742535c283ad03a992f6b59f39eb
+        codeSamplesRevisionDigest: sha256:663e077f7231292a7aa8bc8c2a5133ab5a085b8f8a1b2fb72a4571e8b7c17339
 workflow:
     workflowVersion: 1.0.0
     speakeasyVersion: 1.787.0
