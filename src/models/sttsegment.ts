@@ -38,6 +38,10 @@ export type STTSegment = {
    */
   seek?: number | undefined;
   /**
+   * Speaker index for the segment, present when the provider returns diarization data
+   */
+  speaker?: number | undefined;
+  /**
    * Segment start time in seconds
    */
   start: number;
@@ -64,6 +68,7 @@ export const STTSegment$inboundSchema: z.ZodType<STTSegment, unknown> = z
     id: z.int(),
     no_speech_prob: z.number().optional(),
     seek: z.int().optional(),
+    speaker: z.int().optional(),
     start: z.number(),
     temperature: z.number().optional(),
     text: z.string(),
