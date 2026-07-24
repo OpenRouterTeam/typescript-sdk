@@ -446,7 +446,6 @@ export type ToolCustom = {
    * Enable automatic prompt caching. When set at the top level, the system automatically applies cache breakpoints to the last cacheable block in the request. When set on an individual content block, it marks an explicit cache breakpoint; block-level markers also work on OpenAI models that support explicit prompt caching — OpenRouter converts them to the provider's native format.
    */
   cacheControl?: AnthropicCacheControlDirective | undefined;
-  deferLoading?: boolean | undefined;
   description?: string | undefined;
   inputSchema: InputSchema;
   name: string;
@@ -1409,7 +1408,6 @@ export const ToolTypeCustom$outboundSchema: z.ZodEnum<typeof ToolTypeCustom> = z
 /** @internal */
 export type ToolCustom$Outbound = {
   cache_control?: AnthropicCacheControlDirective$Outbound | undefined;
-  defer_loading?: boolean | undefined;
   description?: string | undefined;
   input_schema: InputSchema$Outbound;
   name: string;
@@ -1422,7 +1420,6 @@ export const ToolCustom$outboundSchema: z.ZodType<
   ToolCustom
 > = z.object({
   cacheControl: AnthropicCacheControlDirective$outboundSchema.optional(),
-  deferLoading: z.boolean().optional(),
   description: z.string().optional(),
   inputSchema: z.lazy(() => InputSchema$outboundSchema),
   name: z.string(),
@@ -1430,7 +1427,6 @@ export const ToolCustom$outboundSchema: z.ZodType<
 }).transform((v) => {
   return remap$(v, {
     cacheControl: "cache_control",
-    deferLoading: "defer_loading",
     inputSchema: "input_schema",
   });
 });
