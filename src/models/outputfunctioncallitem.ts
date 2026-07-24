@@ -9,6 +9,12 @@ import { safeParse } from "../lib/schemas.js";
 import { ClosedEnum } from "../types/enums.js";
 import { Result as SafeParseResult } from "../types/fp.js";
 import { SDKValidationError } from "./errors/sdkvalidationerror.js";
+import {
+  ResponseAgentIdentity,
+  ResponseAgentIdentity$inboundSchema,
+  ResponseAgentIdentity$Outbound,
+  ResponseAgentIdentity$outboundSchema,
+} from "./responseagentidentity.js";
 
 export const OutputFunctionCallItemStatusInProgress = {
   InProgress: "in_progress",
@@ -58,6 +64,7 @@ export type OutputFunctionCallItem = {
     | OutputFunctionCallItemStatusInProgress
     | undefined;
   type: OutputFunctionCallItemType;
+  agent?: ResponseAgentIdentity | undefined;
 };
 
 /** @internal */
@@ -156,6 +163,7 @@ export const OutputFunctionCallItem$inboundSchema: z.ZodType<
     OutputFunctionCallItemStatusInProgress$inboundSchema,
   ]).optional(),
   type: OutputFunctionCallItemType$inboundSchema,
+  agent: ResponseAgentIdentity$inboundSchema.optional(),
 }).transform((v) => {
   return remap$(v, {
     "call_id": "callId",
@@ -170,6 +178,7 @@ export type OutputFunctionCallItem$Outbound = {
   namespace?: string | undefined;
   status?: string | string | string | undefined;
   type: string;
+  agent?: ResponseAgentIdentity$Outbound | undefined;
 };
 
 /** @internal */
@@ -188,6 +197,7 @@ export const OutputFunctionCallItem$outboundSchema: z.ZodType<
     OutputFunctionCallItemStatusInProgress$outboundSchema,
   ]).optional(),
   type: OutputFunctionCallItemType$outboundSchema,
+  agent: ResponseAgentIdentity$outboundSchema.optional(),
 }).transform((v) => {
   return remap$(v, {
     callId: "call_id",
