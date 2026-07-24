@@ -40,6 +40,30 @@ export type VideoGenerationRequestAspectRatio = OpenEnum<
 >;
 
 /**
+ * Data collection setting. If no available model provider meets the requirement, your request will return an error.
+ *
+ * @remarks
+ * - allow: (default) allow providers which store user data non-transiently and may train on it
+ *
+ * - deny: use only providers which do not collect user data.
+ */
+export const VideoGenerationRequestDataCollection = {
+  Deny: "deny",
+  Allow: "allow",
+} as const;
+/**
+ * Data collection setting. If no available model provider meets the requirement, your request will return an error.
+ *
+ * @remarks
+ * - allow: (default) allow providers which store user data non-transiently and may train on it
+ *
+ * - deny: use only providers which do not collect user data.
+ */
+export type VideoGenerationRequestDataCollection = OpenEnum<
+  typeof VideoGenerationRequestDataCollection
+>;
+
+/**
  * Provider-specific options keyed by provider slug. Only options for the matched provider are forwarded; the rest are ignored. Unrecognized keys are silently dropped.
  */
 export type VideoGenerationRequestOptions = {
@@ -175,10 +199,23 @@ export type VideoGenerationRequestOptions = {
 };
 
 /**
- * Provider-specific passthrough configuration
+ * Provider routing preferences (data policy) and provider-specific passthrough configuration
  */
 export type VideoGenerationRequestProvider = {
+  /**
+   * Data collection setting. If no available model provider meets the requirement, your request will return an error.
+   *
+   * @remarks
+   * - allow: (default) allow providers which store user data non-transiently and may train on it
+   *
+   * - deny: use only providers which do not collect user data.
+   */
+  dataCollection?: VideoGenerationRequestDataCollection | null | undefined;
   options?: VideoGenerationRequestOptions | undefined;
+  /**
+   * Whether to restrict routing to only ZDR (Zero Data Retention) endpoints. When true, only endpoints that do not retain prompts will be used.
+   */
+  zdr?: boolean | null | undefined;
 };
 
 /**
@@ -230,7 +267,7 @@ export type VideoGenerationRequest = {
    */
   prompt?: string | undefined;
   /**
-   * Provider-specific passthrough configuration
+   * Provider routing preferences (data policy) and provider-specific passthrough configuration
    */
   provider?: VideoGenerationRequestProvider | undefined;
   /**
@@ -252,6 +289,12 @@ export const VideoGenerationRequestAspectRatio$outboundSchema: z.ZodType<
   string,
   VideoGenerationRequestAspectRatio
 > = openEnums.outboundSchema(VideoGenerationRequestAspectRatio);
+
+/** @internal */
+export const VideoGenerationRequestDataCollection$outboundSchema: z.ZodType<
+  string,
+  VideoGenerationRequestDataCollection
+> = openEnums.outboundSchema(VideoGenerationRequestDataCollection);
 
 /** @internal */
 export type VideoGenerationRequestOptions$Outbound = {
@@ -563,7 +606,9 @@ export function videoGenerationRequestOptionsToJSON(
 
 /** @internal */
 export type VideoGenerationRequestProvider$Outbound = {
+  data_collection?: string | null | undefined;
   options?: VideoGenerationRequestOptions$Outbound | undefined;
+  zdr?: boolean | null | undefined;
 };
 
 /** @internal */
@@ -571,8 +616,16 @@ export const VideoGenerationRequestProvider$outboundSchema: z.ZodType<
   VideoGenerationRequestProvider$Outbound,
   VideoGenerationRequestProvider
 > = z.object({
+  dataCollection: z.nullable(
+    VideoGenerationRequestDataCollection$outboundSchema,
+  ).optional(),
   options: z.lazy(() => VideoGenerationRequestOptions$outboundSchema)
     .optional(),
+  zdr: z.nullable(z.boolean()).optional(),
+}).transform((v) => {
+  return remap$(v, {
+    dataCollection: "data_collection",
+  });
 });
 
 export function videoGenerationRequestProviderToJSON(

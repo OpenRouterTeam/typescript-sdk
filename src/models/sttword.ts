@@ -17,6 +17,10 @@ export type STTWord = {
    */
   end: number;
   /**
+   * Speaker index for the word, present when the provider returns diarization data
+   */
+  speaker?: number | undefined;
+  /**
    * Word start time in seconds
    */
   start: number;
@@ -29,6 +33,7 @@ export type STTWord = {
 /** @internal */
 export const STTWord$inboundSchema: z.ZodType<STTWord, unknown> = z.object({
   end: z.number(),
+  speaker: z.int().optional(),
   start: z.number(),
   word: z.string(),
 });
