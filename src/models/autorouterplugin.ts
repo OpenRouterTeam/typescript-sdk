@@ -21,7 +21,7 @@ export type AutoRouterPlugin = {
   enabled?: boolean | undefined;
   id: "auto-router";
   /**
-   * When true, reuses the model from the most recent assistant message's `model` attribute for subsequent turns. Defaults to false.
+   * When true, pins the model resolved on the first turn for subsequent turns in the same session or conversation via server-side sticky caching. Defaults to false.
    */
   pinModel?: boolean | undefined;
 };
