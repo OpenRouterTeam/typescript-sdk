@@ -6,14 +6,33 @@
 import * as z from "zod/v4";
 import { remap as remap$ } from "../lib/primitives.js";
 import { safeParse } from "../lib/schemas.js";
-import { ClosedEnum } from "../types/enums.js";
+import * as openEnums from "../types/enums.js";
+import { ClosedEnum, OpenEnum } from "../types/enums.js";
 import { Result as SafeParseResult } from "../types/fp.js";
 import { SDKValidationError } from "./errors/sdkvalidationerror.js";
+import {
+  SubagentContinuationV1,
+  SubagentContinuationV1$inboundSchema,
+  SubagentContinuationV1$Outbound,
+  SubagentContinuationV1$outboundSchema,
+} from "./subagentcontinuationv1.js";
 import {
   ToolCallStatus,
   ToolCallStatus$inboundSchema,
   ToolCallStatus$outboundSchema,
 } from "./toolcallstatus.js";
+
+export const Operation = {
+  Spawn: "spawn",
+  Send: "send",
+} as const;
+export type Operation = OpenEnum<typeof Operation>;
+
+export const State = {
+  Completed: "completed",
+  WaitingForClient: "waiting_for_client",
+} as const;
+export type State = OpenEnum<typeof State>;
 
 export const OutputSubagentServerToolItemType = {
   OpenrouterSubagent: "openrouter:subagent",
@@ -26,6 +45,18 @@ export type OutputSubagentServerToolItemType = ClosedEnum<
  * An openrouter:subagent server tool output item
  */
 export type OutputSubagentServerToolItem = {
+  /**
+   * Stable child identity across continuation segments.
+   */
+  agentId?: string | undefined;
+  /**
+   * Root-model tool call ID for this subagent operation.
+   */
+  callId?: string | undefined;
+  /**
+   * Structured, stateless child-session data. Echo this object unchanged on later Responses requests so OpenRouter can resume the child.
+   */
+  continuation?: SubagentContinuationV1 | undefined;
   /**
    * Error message when the subagent task did not produce an outcome.
    */
@@ -43,10 +74,12 @@ export type OutputSubagentServerToolItem = {
    * Configured name of the subagent that executed the task (the `name` on its tool entry). Present only for named subagents; omitted for an unnamed (default) subagent.
    */
   name?: string | undefined;
+  operation?: Operation | undefined;
   /**
    * The worker model's result (the outcome text returned to the delegating model).
    */
   outcome?: string | undefined;
+  state?: State | undefined;
   status: ToolCallStatus;
   /**
    * The task description the delegating model sent to the worker.
@@ -58,6 +91,20 @@ export type OutputSubagentServerToolItem = {
   taskName?: string | undefined;
   type: OutputSubagentServerToolItemType;
 };
+
+/** @internal */
+export const Operation$inboundSchema: z.ZodType<Operation, unknown> = openEnums
+  .inboundSchema(Operation);
+/** @internal */
+export const Operation$outboundSchema: z.ZodType<string, Operation> = openEnums
+  .outboundSchema(Operation);
+
+/** @internal */
+export const State$inboundSchema: z.ZodType<State, unknown> = openEnums
+  .inboundSchema(State);
+/** @internal */
+export const State$outboundSchema: z.ZodType<string, State> = openEnums
+  .outboundSchema(State);
 
 /** @internal */
 export const OutputSubagentServerToolItemType$inboundSchema: z.ZodEnum<
@@ -73,18 +120,25 @@ export const OutputSubagentServerToolItem$inboundSchema: z.ZodType<
   OutputSubagentServerToolItem,
   unknown
 > = z.object({
+  agent_id: z.string().optional(),
+  call_id: z.string().optional(),
+  continuation: SubagentContinuationV1$inboundSchema.optional(),
   error: z.string().optional(),
   id: z.string().optional(),
   instance_name: z.string().optional(),
   model: z.string().optional(),
   name: z.string().optional(),
+  operation: Operation$inboundSchema.optional(),
   outcome: z.string().optional(),
+  state: State$inboundSchema.optional(),
   status: ToolCallStatus$inboundSchema,
   task_description: z.string().optional(),
   task_name: z.string().optional(),
   type: OutputSubagentServerToolItemType$inboundSchema,
 }).transform((v) => {
   return remap$(v, {
+    "agent_id": "agentId",
+    "call_id": "callId",
     "instance_name": "instanceName",
     "task_description": "taskDescription",
     "task_name": "taskName",
@@ -92,12 +146,17 @@ export const OutputSubagentServerToolItem$inboundSchema: z.ZodType<
 });
 /** @internal */
 export type OutputSubagentServerToolItem$Outbound = {
+  agent_id?: string | undefined;
+  call_id?: string | undefined;
+  continuation?: SubagentContinuationV1$Outbound | undefined;
   error?: string | undefined;
   id?: string | undefined;
   instance_name?: string | undefined;
   model?: string | undefined;
   name?: string | undefined;
+  operation?: string | undefined;
   outcome?: string | undefined;
+  state?: string | undefined;
   status: string;
   task_description?: string | undefined;
   task_name?: string | undefined;
@@ -109,18 +168,25 @@ export const OutputSubagentServerToolItem$outboundSchema: z.ZodType<
   OutputSubagentServerToolItem$Outbound,
   OutputSubagentServerToolItem
 > = z.object({
+  agentId: z.string().optional(),
+  callId: z.string().optional(),
+  continuation: SubagentContinuationV1$outboundSchema.optional(),
   error: z.string().optional(),
   id: z.string().optional(),
   instanceName: z.string().optional(),
   model: z.string().optional(),
   name: z.string().optional(),
+  operation: Operation$outboundSchema.optional(),
   outcome: z.string().optional(),
+  state: State$outboundSchema.optional(),
   status: ToolCallStatus$outboundSchema,
   taskDescription: z.string().optional(),
   taskName: z.string().optional(),
   type: OutputSubagentServerToolItemType$outboundSchema,
 }).transform((v) => {
   return remap$(v, {
+    agentId: "agent_id",
+    callId: "call_id",
     instanceName: "instance_name",
     taskDescription: "task_description",
     taskName: "task_name",

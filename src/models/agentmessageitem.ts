@@ -13,7 +13,7 @@ import {
   InputText$outboundSchema,
 } from "./inputtext.js";
 
-export type Agent = {
+export type AgentMessageItemAgent = {
   agentName: string;
   additionalProperties?: { [k: string]: any } | undefined;
 };
@@ -55,7 +55,7 @@ export type TypeAgentMessage = ClosedEnum<typeof TypeAgentMessage>;
  * A message routed between agents in a multi-agent session
  */
 export type AgentMessageItem = {
-  agent?: Agent | null | undefined;
+  agent?: AgentMessageItemAgent | null | undefined;
   author: string;
   content: Array<
     InputText | AgentMessageItemContentInputImage | ContentEncryptedContent
@@ -67,13 +67,16 @@ export type AgentMessageItem = {
 };
 
 /** @internal */
-export type Agent$Outbound = {
+export type AgentMessageItemAgent$Outbound = {
   agent_name: string;
   [additionalProperties: string]: unknown;
 };
 
 /** @internal */
-export const Agent$outboundSchema: z.ZodType<Agent$Outbound, Agent> = z.object({
+export const AgentMessageItemAgent$outboundSchema: z.ZodType<
+  AgentMessageItemAgent$Outbound,
+  AgentMessageItemAgent
+> = z.object({
   agentName: z.string(),
   additionalProperties: z.record(z.string(), z.any()).optional(),
 }).transform((v) => {
@@ -86,8 +89,12 @@ export const Agent$outboundSchema: z.ZodType<Agent$Outbound, Agent> = z.object({
   };
 });
 
-export function agentToJSON(agent: Agent): string {
-  return JSON.stringify(Agent$outboundSchema.parse(agent));
+export function agentMessageItemAgentToJSON(
+  agentMessageItemAgent: AgentMessageItemAgent,
+): string {
+  return JSON.stringify(
+    AgentMessageItemAgent$outboundSchema.parse(agentMessageItemAgent),
+  );
 }
 
 /** @internal */
@@ -193,7 +200,7 @@ export const TypeAgentMessage$outboundSchema: z.ZodEnum<
 
 /** @internal */
 export type AgentMessageItem$Outbound = {
-  agent?: Agent$Outbound | null | undefined;
+  agent?: AgentMessageItemAgent$Outbound | null | undefined;
   author: string;
   content: Array<
     | InputText$Outbound
@@ -211,7 +218,8 @@ export const AgentMessageItem$outboundSchema: z.ZodType<
   AgentMessageItem$Outbound,
   AgentMessageItem
 > = z.object({
-  agent: z.nullable(z.lazy(() => Agent$outboundSchema)).optional(),
+  agent: z.nullable(z.lazy(() => AgentMessageItemAgent$outboundSchema))
+    .optional(),
   author: z.string(),
   content: z.array(
     z.union([

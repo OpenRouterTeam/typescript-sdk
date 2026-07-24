@@ -1,0 +1,37 @@
+---
+title: "SubagentContinuationV1"
+---
+
+Structured, stateless child-session data. Echo this object unchanged on later Responses requests so OpenRouter can resume the child.
+
+## Example Usage
+
+```typescript
+import { SubagentContinuationV1 } from "@openrouter/sdk/models";
+
+let value: SubagentContinuationV1 = {
+  agentId: "<id>",
+  items: [
+    {
+      type: "<value>",
+    },
+  ],
+  model: "Ranchero",
+  rootCallId: "<id>",
+  taskDescription: "<value>",
+  taskName: "<value>",
+  version: 2482.55,
+};
+```
+
+## Fields
+
+| Field                                                                      | Type                                                                       | Required                                                                   | Description                                                                |
+| -------------------------------------------------------------------------- | -------------------------------------------------------------------------- | -------------------------------------------------------------------------- | -------------------------------------------------------------------------- |
+| `agentId`                                                                  | *string*                                                                   | :heavy_check_mark:                                                         | N/A                                                                        |
+| `items`                                                                    | [models.SubagentContinuationItem](../models/subagentcontinuationitem.mdx)[] | :heavy_check_mark:                                                         | N/A                                                                        |
+| `model`                                                                    | *string*                                                                   | :heavy_check_mark:                                                         | N/A                                                                        |
+| `rootCallId`                                                               | *string*                                                                   | :heavy_check_mark:                                                         | N/A                                                                        |
+| `taskDescription`                                                          | *string*                                                                   | :heavy_check_mark:                                                         | N/A                                                                        |
+| `taskName`                                                                 | *string*                                                                   | :heavy_check_mark:                                                         | N/A                                                                        |
+| `version`                                                                  | *number*                                                                   | :heavy_check_mark:                                                         | N/A                                                                        |

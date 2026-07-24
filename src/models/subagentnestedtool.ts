@@ -7,7 +7,7 @@ import * as z from "zod/v4";
 import { remap as remap$ } from "../lib/primitives.js";
 
 /**
- * A tool made available to the subagent. Only OpenRouter server tools (e.g. openrouter:web_search) are supported; function tools are rejected because the worker has no way to execute them. The subagent tool may not list itself.
+ * An OpenRouter server tool made available to the subagent. The subagent tool may not list itself.
  */
 export type SubagentNestedTool = {
   parameters?: { [k: string]: any } | undefined;
