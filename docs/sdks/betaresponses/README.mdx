@@ -1,11 +1,11 @@
 ---
-title: "Responses"
-description: "responses endpoints"
+title: "Beta.Responses"
+description: "Deprecated alias of responses. Use responses instead; scheduled for removal (sunset date TBD)."
 ---
 
 ## Overview
 
-responses endpoints
+Deprecated alias of responses. Use responses instead; scheduled for removal (sunset date TBD).
 
 ### Available Operations
 
@@ -28,7 +28,7 @@ const openRouter = new OpenRouter({
 });
 
 async function run() {
-  const result = await openRouter.responses.send({
+  const result = await openRouter.beta.responses.send({
     responsesRequest: {},
   });
 
@@ -82,7 +82,7 @@ const openRouter = new OpenRouter({
 });
 
 async function run() {
-  const result = await openRouter.responses.send({
+  const result = await openRouter.beta.responses.send({
     responsesRequest: {},
   });
 
