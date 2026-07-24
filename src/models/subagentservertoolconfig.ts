@@ -16,6 +16,8 @@ import {
   SubagentReasoning$outboundSchema,
 } from "./subagentreasoning.js";
 
+export type SubagentServerToolConfigTool = SubagentNestedTool | string;
+
 /**
  * Configuration for one openrouter:subagent server tool entry.
  */
@@ -29,11 +31,11 @@ export type SubagentServerToolConfig = {
    */
   maxCompletionTokens?: number | undefined;
   /**
-   * Maximum number of tool-calling steps the subagent may take during its agentic loop. Capped at 25. Only relevant when the subagent is given tools. Accepted and validated but not yet enforced on the subagent call.
+   * Maximum number of tool-calling steps the subagent may take during its agentic loop. Capped at 25. Only relevant when the subagent is given tools.
    */
   maxToolCalls?: number | undefined;
   /**
-   * Slug of the model that executes delegated tasks (any OpenRouter model). Typically a smaller, cheaper, faster model than the one delegating. When omitted, the model from the outer API request is used. The subagent tool itself cannot be the subagent model.
+   * Slug of the model that executes delegated tasks (any OpenRouter model). When omitted, the model from the outer API request is used. The subagent tool itself cannot be the subagent model.
    */
   model?: string | undefined;
   /**
@@ -49,10 +51,31 @@ export type SubagentServerToolConfig = {
    */
   temperature?: number | undefined;
   /**
-   * Tools the subagent may use while executing a delegated task. The subagent runs as an agentic sub-agent over these tools, then returns its outcome. Only OpenRouter server tools are supported — function tools are rejected — and the list must not include the subagent tool itself.
+   * Tools the subagent may use. String entries reference top-level client functions; object entries configure OpenRouter server tools. Inline function definitions are rejected, and the list may not include the subagent tool itself.
    */
-  tools?: Array<SubagentNestedTool> | undefined;
+  tools?: Array<SubagentNestedTool | string> | undefined;
 };
+
+/** @internal */
+export type SubagentServerToolConfigTool$Outbound =
+  | SubagentNestedTool$Outbound
+  | string;
+
+/** @internal */
+export const SubagentServerToolConfigTool$outboundSchema: z.ZodType<
+  SubagentServerToolConfigTool$Outbound,
+  SubagentServerToolConfigTool
+> = z.union([SubagentNestedTool$outboundSchema, z.string()]);
+
+export function subagentServerToolConfigToolToJSON(
+  subagentServerToolConfigTool: SubagentServerToolConfigTool,
+): string {
+  return JSON.stringify(
+    SubagentServerToolConfigTool$outboundSchema.parse(
+      subagentServerToolConfigTool,
+    ),
+  );
+}
 
 /** @internal */
 export type SubagentServerToolConfig$Outbound = {
@@ -63,7 +86,7 @@ export type SubagentServerToolConfig$Outbound = {
   name?: string | undefined;
   reasoning?: SubagentReasoning$Outbound | undefined;
   temperature?: number | undefined;
-  tools?: Array<SubagentNestedTool$Outbound> | undefined;
+  tools?: Array<SubagentNestedTool$Outbound | string> | undefined;
 };
 
 /** @internal */
@@ -78,7 +101,8 @@ export const SubagentServerToolConfig$outboundSchema: z.ZodType<
   name: z.string().optional(),
   reasoning: SubagentReasoning$outboundSchema.optional(),
   temperature: z.number().optional(),
-  tools: z.array(SubagentNestedTool$outboundSchema).optional(),
+  tools: z.array(z.union([SubagentNestedTool$outboundSchema, z.string()]))
+    .optional(),
 }).transform((v) => {
   return remap$(v, {
     maxCompletionTokens: "max_completion_tokens",
