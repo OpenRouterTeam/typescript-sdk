@@ -59,7 +59,6 @@ export type ContentCompaction = {
    */
   cacheControl?: AnthropicCacheControlDirective | undefined;
   content: string | null;
-  encryptedContent?: string | null | undefined;
   type: "compaction";
 };
 
@@ -248,7 +247,6 @@ export type MessagesMessageParam = {
 export type ContentCompaction$Outbound = {
   cache_control?: AnthropicCacheControlDirective$Outbound | undefined;
   content: string | null;
-  encrypted_content?: string | null | undefined;
   type: "compaction";
 };
 
@@ -259,12 +257,10 @@ export const ContentCompaction$outboundSchema: z.ZodType<
 > = z.object({
   cacheControl: AnthropicCacheControlDirective$outboundSchema.optional(),
   content: z.nullable(z.string()),
-  encryptedContent: z.nullable(z.string()).optional(),
   type: z.literal("compaction"),
 }).transform((v) => {
   return remap$(v, {
     cacheControl: "cache_control",
-    encryptedContent: "encrypted_content",
   });
 });
 
