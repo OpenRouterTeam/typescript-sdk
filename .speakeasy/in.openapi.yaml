@@ -12369,6 +12369,8 @@ components:
                       - 'content'
                     type: 'object'
                   - $ref: '#/components/schemas/MessagesAdvisorToolResultBlock'
+                  - $ref: '#/components/schemas/MessagesToolAdditionBlock'
+                  - $ref: '#/components/schemas/MessagesToolRemovalBlock'
               type: 'array'
         role:
           enum:
@@ -12726,6 +12728,8 @@ components:
               - properties:
                   cache_control:
                     $ref: '#/components/schemas/AnthropicCacheControlDirective'
+                  defer_loading:
+                    type: 'boolean'
                   description:
                     type: 'string'
                   input_schema:
@@ -13288,6 +13292,62 @@ components:
       required:
         - 'event'
         - 'data'
+      type: 'object'
+    MessagesToolAdditionBlock:
+      description: 'Loads a previously deferred tool (declared in `tools` with `defer_loading: true`) mid-conversation without invalidating the prompt cache. Only valid in `role: "system"` messages. Not supported on Claude Sonnet 5 or models older than Claude Opus 4.8.'
+      example:
+        tool:
+          name: 'get_forecast'
+          type: 'tool_reference'
+        type: 'tool_addition'
+      properties:
+        tool:
+          properties:
+            name:
+              type: 'string'
+            type:
+              enum:
+                - 'tool_reference'
+              type: 'string'
+          required:
+            - 'type'
+            - 'name'
+          type: 'object'
+        type:
+          enum:
+            - 'tool_addition'
+          type: 'string'
+      required:
+        - 'type'
+        - 'tool'
+      type: 'object'
+    MessagesToolRemovalBlock:
+      description: 'Removes a tool from the conversation mid-conversation without invalidating the prompt cache. Only valid in `role: "system"` messages. Not supported on Claude Sonnet 5 or models older than Claude Opus 4.8.'
+      example:
+        tool:
+          name: 'get_weather'
+          type: 'tool_reference'
+        type: 'tool_removal'
+      properties:
+        tool:
+          properties:
+            name:
+              type: 'string'
+            type:
+              enum:
+                - 'tool_reference'
+              type: 'string'
+          required:
+            - 'type'
+            - 'name'
+          type: 'object'
+        type:
+          enum:
+            - 'tool_removal'
+          type: 'string'
+      required:
+        - 'type'
+        - 'tool'
       type: 'object'
     MetadataLevel:
       description: 'Opt-in level for surfacing routing metadata on the response under `openrouter_metadata`.'

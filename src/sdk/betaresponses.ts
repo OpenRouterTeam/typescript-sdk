@@ -8,9 +8,6 @@ import { ClientSDK, RequestOptions } from "../lib/sdks.js";
 import * as operations from "../models/operations/index.js";
 import { unwrapAsync } from "../types/fp.js";
 
-/**
- * @deprecated Use `client.responses.send()` instead. Scheduled for removal (sunset date TBD).
- */
 export class BetaResponses extends ClientSDK {
   /**
    * Create a response
