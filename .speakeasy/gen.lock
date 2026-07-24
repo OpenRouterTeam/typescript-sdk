@@ -1,19 +1,19 @@
 lockVersion: ""
 id: ""
 management:
-  docChecksum: fa13758514111cd3ab1d3f1d0507b9b4
+  docChecksum: 6186d564984595ccfd8525ea396fdbca
   docVersion: 1.0.0
   speakeasyVersion: 1.787.0
   generationVersion: 2.914.0
-  releaseVersion: 1.0.12
-  configChecksum: d4cdda604e93506dc126fa084e78817f
+  releaseVersion: 1.0.13
+  configChecksum: 43187de1d482cb388a4e51f861234f24
   repoURL: https://github.com/OpenRouterTeam/typescript-sdk.git
   installationURL: https://github.com/OpenRouterTeam/typescript-sdk
   published: true
 persistentEdits:
-  generation_id: 81217871-7abd-4907-bae2-5b45e1897615
-  pristine_commit_hash: 9f530d1be00ecd579081abc94f57a752de846190
-  pristine_tree_hash: f3cf2e2cf1a4f682ca4075d6fbbf404d475dd9ba
+  generation_id: 912f50f5-b49c-43d5-a20e-5c3fce100e80
+  pristine_commit_hash: 3a812c800085238d5eadad11d79c8368298a90b1
+  pristine_tree_hash: 8eb80159a20374cb69e6758f58ec6fc7f27b9dfe
 features:
   typescript:
     acceptHeaders: 2.81.2
@@ -12384,8 +12384,8 @@ trackedFiles:
     pristine_git_object: 2072090c6b0330661f761a9f153f8c50b316b1b3
   docs/sdks/responses/README.mdx:
     id: abab319e080e
-    last_write_checksum: sha1:2f8fbd6c567c15a188f04c189236c63e013b9512
-    pristine_git_object: f8691597eaef5c5fbfe7f325a95f6588b289c969
+    last_write_checksum: sha1:e2ce7d6a494793b3ea455e75f1cd92fb0a5625e6
+    pristine_git_object: 18e247682a0c31a0b51a7d56ca6d5c8fae67dc61
   docs/sdks/stt/README.md:
     id: 0806154492f9
     last_write_checksum: sha1:aa311f9602dfafdcb8dea4d91c4549876cecc37f
@@ -12444,12 +12444,12 @@ trackedFiles:
     pristine_git_object: 410efafd6a7f50d91ccb87131fedbe0c3d47e15a
   jsr.json:
     id: 7f6ab7767282
-    last_write_checksum: sha1:61b38b120e391dbc9d299cd7176e47e1ffa988ac
-    pristine_git_object: 91bebee8696cab9fc1539bd75031757761b13376
+    last_write_checksum: sha1:75572d16729836a7a2e1dd1b1c559728a0bf39c4
+    pristine_git_object: 21f63270b094c1b3439285fd7a6797c6a3c58cce
   package.json:
     id: 7030d0b2f71b
-    last_write_checksum: sha1:a205413f7439dc9b062f4089f7ac8466f3b025c3
-    pristine_git_object: 401a4622dd0f9445152be89f7138bb25ed38b11e
+    last_write_checksum: sha1:ad9bda3bde7f5b4dc3a6d3019e11c78a582081d1
+    pristine_git_object: a0fad9e30f0925220fc75f16bfc535558e0cd74e
   src/core.ts:
     id: f431fdbcd144
     last_write_checksum: sha1:5aa66b0b6a5964f3eea7f3098c2eb3c0ee9c0131
@@ -12494,10 +12494,6 @@ trackedFiles:
     id: 979cbc58b672
     last_write_checksum: sha1:a8edf41f3ad50fd4b33ceac7c622bfafc217d048
     pristine_git_object: e318f63fdacd497130db4ca5ab547d14f49cb833
-  src/funcs/betaResponsesSend.ts:
-    id: c5c4ab0c3f76
-    last_write_checksum: sha1:b319452d4053c6d07a46c683c671598d0a93b698
-    pristine_git_object: c466d83b43f6d1d6993e7ef0192bca9ed1a5ee75
   src/funcs/byokCreate.ts:
     id: 100cd2d38078
     last_write_checksum: sha1:eac0c86e8979088f900a71c8bc61bbe408a526d7
@@ -12734,6 +12730,10 @@ trackedFiles:
     id: 915c20e147a4
     last_write_checksum: sha1:e7992a5ba69d700a441e6209200dd2be2cbc563e
     pristine_git_object: 02d45e4cb8c583bf1b91602f93e5c70d5b408070
+  src/funcs/responsesSend.ts:
+    id: c8d9f439840d
+    last_write_checksum: sha1:b3b6c4f84e95886cfc37e4551a14660043b68ba4
+    pristine_git_object: dd13b6189cf245e1f2f8513badbc77baec082ab3
   src/funcs/sttCreateTranscription.ts:
     id: 90b735003ac7
     last_write_checksum: sha1:14324939a10d6009cfc761ebc6cce6954b6f10c2
@@ -12828,8 +12828,8 @@ trackedFiles:
     pristine_git_object: a187e58707bdb726ca2aff74941efe7493422d4e
   src/lib/config.ts:
     id: 320761608fb3
-    last_write_checksum: sha1:6dfe0b9e487e0506aa4002b5a4325d11953aebec
-    pristine_git_object: 7e22a105ae728214bc05ba6d187f50deb02e5e77
+    last_write_checksum: sha1:37c3f429ba6691dd5cd9ba30608c3c8627f28265
+    pristine_git_object: 8eebb4d917ef93841087f122fd40dca84491e4b5
   src/lib/dlv.ts:
     id: b1988214835a
     last_write_checksum: sha1:eaac763b22717206a6199104e0403ed17a4e2711
@@ -15606,8 +15606,8 @@ trackedFiles:
     pristine_git_object: 53446d145df55261cd64aa200f7a23af2ea4a334
   src/sdk/beta.ts:
     id: afeac65e28f8
-    last_write_checksum: sha1:56537204e5d03cbc46fbdea1d187d3d88592b886
-    pristine_git_object: 1be41420e4d12f40d79c1a23dfad90a88d2c9748
+    last_write_checksum: sha1:67891b5ab2b13860ae348459e514b3e6aa73d42b
+    pristine_git_object: 59dbc6cc2f2222bb18e8ce59c4779c2c8b8cc493
   src/sdk/betaanalytics.ts:
     id: 814879ad7548
     last_write_checksum: sha1:5f1f9ccb7193ff925477b78666eebaab0d10b535
@@ -15690,12 +15690,12 @@ trackedFiles:
     pristine_git_object: 9cedd8f2ef4318c8e5d75e7a563b6732f4dabfee
   src/sdk/responses.ts:
     id: fc4b535757c5
-    last_write_checksum: sha1:fca46121414961309b998ea852811c64d1dbe5d4
-    pristine_git_object: ef96c6394ab1578e32e2942979989d40ad0ccc99
+    last_write_checksum: sha1:09d56ac9a25f505b60563b34c01831b6917782aa
+    pristine_git_object: 7ba7ea89653bce0ac90b00c64d09e4ffb85b931e
   src/sdk/sdk.ts:
     id: 784571af2f69
-    last_write_checksum: sha1:7f2f87637f308ae136d477dbcf290c2f7a4ec37c
-    pristine_git_object: 25257e81b6c5916e613c643b792c2715be83d4b4
+    last_write_checksum: sha1:acdf27edb4cc9fbf1a4d67b412604d375137ec07
+    pristine_git_object: 46837f1ccf7a3775ec6af65f6e5abd777c66d12f
   src/sdk/stt.ts:
     id: fd9e88c22d1f
     last_write_checksum: sha1:ffbdcd6d3d0302bd5082212740a792dadb57a453
@@ -17362,4 +17362,3 @@ examples:
         "500":
           application/json: {"error": {"code": 500, "message": "Internal Server Error"}}
 examplesVersion: 1.0.2
-releaseNotes: "## Typescript SDK Changes:\n* `openrouter.beta.responses.send()`: \n  *  `request.responsesRequest.plugins[].union(pareto-router).maxPrice` **Added**\n* `openrouter.chat.send()`: \n  *  `request.chatRequest.plugins[].union(pareto-router).maxPrice` **Added**\n* `openrouter.presets.createPresetsChatCompletions()`: \n  *  `request.chatRequest.plugins[].union(pareto-router).maxPrice` **Added**\n* `openrouter.presets.createPresetsMessages()`: \n  *  `request.messagesRequest.plugins[].union(pareto-router).maxPrice` **Added**\n* `openrouter.presets.createPresetsResponses()`: \n  *  `request.responsesRequest.plugins[].union(pareto-router).maxPrice` **Added**\n"
