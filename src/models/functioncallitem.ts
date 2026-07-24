@@ -11,10 +11,24 @@ import {
   ToolCallStatus$outboundSchema,
 } from "./toolcallstatus.js";
 
-export const FunctionCallItemType = {
+export const FunctionCallItemTypeFunctionCall = {
   FunctionCall: "function_call",
 } as const;
-export type FunctionCallItemType = ClosedEnum<typeof FunctionCallItemType>;
+export type FunctionCallItemTypeFunctionCall = ClosedEnum<
+  typeof FunctionCallItemTypeFunctionCall
+>;
+
+export const FunctionCallItemTypeSubagent = {
+  Subagent: "subagent",
+} as const;
+export type FunctionCallItemTypeSubagent = ClosedEnum<
+  typeof FunctionCallItemTypeSubagent
+>;
+
+export type FunctionCallItemAgent = {
+  agentId: string;
+  type: FunctionCallItemTypeSubagent;
+};
 
 /**
  * A function call initiated by the model
@@ -29,13 +43,46 @@ export type FunctionCallItem = {
    */
   namespace?: string | undefined;
   status?: ToolCallStatus | undefined;
-  type: FunctionCallItemType;
+  type: FunctionCallItemTypeFunctionCall;
+  agent?: FunctionCallItemAgent | undefined;
 };
 
 /** @internal */
-export const FunctionCallItemType$outboundSchema: z.ZodEnum<
-  typeof FunctionCallItemType
-> = z.enum(FunctionCallItemType);
+export const FunctionCallItemTypeFunctionCall$outboundSchema: z.ZodEnum<
+  typeof FunctionCallItemTypeFunctionCall
+> = z.enum(FunctionCallItemTypeFunctionCall);
+
+/** @internal */
+export const FunctionCallItemTypeSubagent$outboundSchema: z.ZodEnum<
+  typeof FunctionCallItemTypeSubagent
+> = z.enum(FunctionCallItemTypeSubagent);
+
+/** @internal */
+export type FunctionCallItemAgent$Outbound = {
+  agent_id: string;
+  type: string;
+};
+
+/** @internal */
+export const FunctionCallItemAgent$outboundSchema: z.ZodType<
+  FunctionCallItemAgent$Outbound,
+  FunctionCallItemAgent
+> = z.object({
+  agentId: z.string(),
+  type: FunctionCallItemTypeSubagent$outboundSchema,
+}).transform((v) => {
+  return remap$(v, {
+    agentId: "agent_id",
+  });
+});
+
+export function functionCallItemAgentToJSON(
+  functionCallItemAgent: FunctionCallItemAgent,
+): string {
+  return JSON.stringify(
+    FunctionCallItemAgent$outboundSchema.parse(functionCallItemAgent),
+  );
+}
 
 /** @internal */
 export type FunctionCallItem$Outbound = {
@@ -46,6 +93,7 @@ export type FunctionCallItem$Outbound = {
   namespace?: string | undefined;
   status?: string | undefined;
   type: string;
+  agent?: FunctionCallItemAgent$Outbound | undefined;
 };
 
 /** @internal */
@@ -59,7 +107,8 @@ export const FunctionCallItem$outboundSchema: z.ZodType<
   name: z.string(),
   namespace: z.string().optional(),
   status: ToolCallStatus$outboundSchema.optional(),
-  type: FunctionCallItemType$outboundSchema,
+  type: FunctionCallItemTypeFunctionCall$outboundSchema,
+  agent: z.lazy(() => FunctionCallItemAgent$outboundSchema).optional(),
 }).transform((v) => {
   return remap$(v, {
     callId: "call_id",

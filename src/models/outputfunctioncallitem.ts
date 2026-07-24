@@ -36,12 +36,24 @@ export type OutputFunctionCallItemStatusUnion =
   | OutputFunctionCallItemStatusIncomplete
   | OutputFunctionCallItemStatusInProgress;
 
-export const OutputFunctionCallItemType = {
+export const OutputFunctionCallItemTypeFunctionCall = {
   FunctionCall: "function_call",
 } as const;
-export type OutputFunctionCallItemType = ClosedEnum<
-  typeof OutputFunctionCallItemType
+export type OutputFunctionCallItemTypeFunctionCall = ClosedEnum<
+  typeof OutputFunctionCallItemTypeFunctionCall
 >;
+
+export const OutputFunctionCallItemTypeSubagent = {
+  Subagent: "subagent",
+} as const;
+export type OutputFunctionCallItemTypeSubagent = ClosedEnum<
+  typeof OutputFunctionCallItemTypeSubagent
+>;
+
+export type OutputFunctionCallItemAgent = {
+  agentId: string;
+  type: OutputFunctionCallItemTypeSubagent;
+};
 
 export type OutputFunctionCallItem = {
   arguments: string;
@@ -57,7 +69,8 @@ export type OutputFunctionCallItem = {
     | OutputFunctionCallItemStatusIncomplete
     | OutputFunctionCallItemStatusInProgress
     | undefined;
-  type: OutputFunctionCallItemType;
+  type: OutputFunctionCallItemTypeFunctionCall;
+  agent?: OutputFunctionCallItemAgent | undefined;
 };
 
 /** @internal */
@@ -132,13 +145,72 @@ export function outputFunctionCallItemStatusUnionFromJSON(
 }
 
 /** @internal */
-export const OutputFunctionCallItemType$inboundSchema: z.ZodEnum<
-  typeof OutputFunctionCallItemType
-> = z.enum(OutputFunctionCallItemType);
+export const OutputFunctionCallItemTypeFunctionCall$inboundSchema: z.ZodEnum<
+  typeof OutputFunctionCallItemTypeFunctionCall
+> = z.enum(OutputFunctionCallItemTypeFunctionCall);
 /** @internal */
-export const OutputFunctionCallItemType$outboundSchema: z.ZodEnum<
-  typeof OutputFunctionCallItemType
-> = OutputFunctionCallItemType$inboundSchema;
+export const OutputFunctionCallItemTypeFunctionCall$outboundSchema: z.ZodEnum<
+  typeof OutputFunctionCallItemTypeFunctionCall
+> = OutputFunctionCallItemTypeFunctionCall$inboundSchema;
+
+/** @internal */
+export const OutputFunctionCallItemTypeSubagent$inboundSchema: z.ZodEnum<
+  typeof OutputFunctionCallItemTypeSubagent
+> = z.enum(OutputFunctionCallItemTypeSubagent);
+/** @internal */
+export const OutputFunctionCallItemTypeSubagent$outboundSchema: z.ZodEnum<
+  typeof OutputFunctionCallItemTypeSubagent
+> = OutputFunctionCallItemTypeSubagent$inboundSchema;
+
+/** @internal */
+export const OutputFunctionCallItemAgent$inboundSchema: z.ZodType<
+  OutputFunctionCallItemAgent,
+  unknown
+> = z.object({
+  agent_id: z.string(),
+  type: OutputFunctionCallItemTypeSubagent$inboundSchema,
+}).transform((v) => {
+  return remap$(v, {
+    "agent_id": "agentId",
+  });
+});
+/** @internal */
+export type OutputFunctionCallItemAgent$Outbound = {
+  agent_id: string;
+  type: string;
+};
+
+/** @internal */
+export const OutputFunctionCallItemAgent$outboundSchema: z.ZodType<
+  OutputFunctionCallItemAgent$Outbound,
+  OutputFunctionCallItemAgent
+> = z.object({
+  agentId: z.string(),
+  type: OutputFunctionCallItemTypeSubagent$outboundSchema,
+}).transform((v) => {
+  return remap$(v, {
+    agentId: "agent_id",
+  });
+});
+
+export function outputFunctionCallItemAgentToJSON(
+  outputFunctionCallItemAgent: OutputFunctionCallItemAgent,
+): string {
+  return JSON.stringify(
+    OutputFunctionCallItemAgent$outboundSchema.parse(
+      outputFunctionCallItemAgent,
+    ),
+  );
+}
+export function outputFunctionCallItemAgentFromJSON(
+  jsonString: string,
+): SafeParseResult<OutputFunctionCallItemAgent, SDKValidationError> {
+  return safeParse(
+    jsonString,
+    (x) => OutputFunctionCallItemAgent$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'OutputFunctionCallItemAgent' from JSON`,
+  );
+}
 
 /** @internal */
 export const OutputFunctionCallItem$inboundSchema: z.ZodType<
@@ -155,7 +227,8 @@ export const OutputFunctionCallItem$inboundSchema: z.ZodType<
     OutputFunctionCallItemStatusIncomplete$inboundSchema,
     OutputFunctionCallItemStatusInProgress$inboundSchema,
   ]).optional(),
-  type: OutputFunctionCallItemType$inboundSchema,
+  type: OutputFunctionCallItemTypeFunctionCall$inboundSchema,
+  agent: z.lazy(() => OutputFunctionCallItemAgent$inboundSchema).optional(),
 }).transform((v) => {
   return remap$(v, {
     "call_id": "callId",
@@ -170,6 +243,7 @@ export type OutputFunctionCallItem$Outbound = {
   namespace?: string | undefined;
   status?: string | string | string | undefined;
   type: string;
+  agent?: OutputFunctionCallItemAgent$Outbound | undefined;
 };
 
 /** @internal */
@@ -187,7 +261,8 @@ export const OutputFunctionCallItem$outboundSchema: z.ZodType<
     OutputFunctionCallItemStatusIncomplete$outboundSchema,
     OutputFunctionCallItemStatusInProgress$outboundSchema,
   ]).optional(),
-  type: OutputFunctionCallItemType$outboundSchema,
+  type: OutputFunctionCallItemTypeFunctionCall$outboundSchema,
+  agent: z.lazy(() => OutputFunctionCallItemAgent$outboundSchema).optional(),
 }).transform((v) => {
   return remap$(v, {
     callId: "call_id",

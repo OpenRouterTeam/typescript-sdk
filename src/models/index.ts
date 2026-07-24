@@ -502,6 +502,8 @@ export * from "./sttsegment.js";
 export * from "./stttimestampgranularity.js";
 export * from "./sttusage.js";
 export * from "./sttword.js";
+export * from "./subagentcontinuationitem.js";
+export * from "./subagentcontinuationv1.js";
 export * from "./subagentnestedtool.js";
 export * from "./subagentreasoning.js";
 export * from "./subagentservertoolconfig.js";
