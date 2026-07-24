@@ -53,6 +53,10 @@ export type Preview20250311WebSearchServerTool = {
    */
   maxResults?: number | undefined;
   /**
+   * Maximum number of web searches the model may perform in a single request. Once reached, further search calls return an error result instead of executing. Applies to the Exa, Firecrawl, Parallel, and Perplexity engines. With native provider search, forwarded only to Anthropic (as `max_uses`); other native search providers have no equivalent parameter and ignore it.
+   */
+  maxUses?: number | undefined;
+  /**
    * Size of the search context for web search tools
    */
   searchContextSize?: SearchContextSizeEnum | undefined;
@@ -77,6 +81,7 @@ export const Preview20250311WebSearchServerTool$inboundSchema: z.ZodType<
   engine: WebSearchEngineEnum$inboundSchema.optional(),
   filters: z.nullable(WebSearchDomainFilter$inboundSchema).optional(),
   max_results: z.int().optional(),
+  max_uses: z.int().optional(),
   search_context_size: SearchContextSizeEnum$inboundSchema.optional(),
   type: Preview20250311WebSearchServerToolType$inboundSchema,
   user_location: z.nullable(PreviewWebSearchUserLocation$inboundSchema)
@@ -84,6 +89,7 @@ export const Preview20250311WebSearchServerTool$inboundSchema: z.ZodType<
 }).transform((v) => {
   return remap$(v, {
     "max_results": "maxResults",
+    "max_uses": "maxUses",
     "search_context_size": "searchContextSize",
     "user_location": "userLocation",
   });
@@ -93,6 +99,7 @@ export type Preview20250311WebSearchServerTool$Outbound = {
   engine?: string | undefined;
   filters?: WebSearchDomainFilter$Outbound | null | undefined;
   max_results?: number | undefined;
+  max_uses?: number | undefined;
   search_context_size?: string | undefined;
   type: string;
   user_location?: PreviewWebSearchUserLocation$Outbound | null | undefined;
@@ -106,6 +113,7 @@ export const Preview20250311WebSearchServerTool$outboundSchema: z.ZodType<
   engine: WebSearchEngineEnum$outboundSchema.optional(),
   filters: z.nullable(WebSearchDomainFilter$outboundSchema).optional(),
   maxResults: z.int().optional(),
+  maxUses: z.int().optional(),
   searchContextSize: SearchContextSizeEnum$outboundSchema.optional(),
   type: Preview20250311WebSearchServerToolType$outboundSchema,
   userLocation: z.nullable(PreviewWebSearchUserLocation$outboundSchema)
@@ -113,6 +121,7 @@ export const Preview20250311WebSearchServerTool$outboundSchema: z.ZodType<
 }).transform((v) => {
   return remap$(v, {
     maxResults: "max_results",
+    maxUses: "max_uses",
     searchContextSize: "search_context_size",
     userLocation: "user_location",
   });
