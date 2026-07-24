@@ -1,0 +1,26 @@
+---
+title: "MessagesToolAdditionBlock"
+---
+
+Loads a previously deferred tool (declared in `tools` with `defer_loading: true`) mid-conversation without invalidating the prompt cache. Only valid in `role: "system"` messages. Not supported on Claude Sonnet 5 or models older than Claude Opus 4.8.
+
+## Example Usage
+
+```typescript
+import { MessagesToolAdditionBlock } from "@openrouter/sdk/models";
+
+let value: MessagesToolAdditionBlock = {
+  tool: {
+    name: "get_forecast",
+    type: "tool_reference",
+  },
+  type: "tool_addition",
+};
+```
+
+## Fields
+
+| Field                                                                              | Type                                                                               | Required                                                                           | Description                                                                        |
+| ---------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------- |
+| `tool`                                                                             | [models.MessagesToolAdditionBlockTool](../models/messagestooladditionblocktool.mdx) | :heavy_check_mark:                                                                 | N/A                                                                                |
+| `type`                                                                             | *"tool_addition"*                                                                  | :heavy_check_mark:                                                                 | N/A                                                                                |
