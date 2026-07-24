@@ -29,11 +29,11 @@ export type SubagentServerToolConfig = {
    */
   maxCompletionTokens?: number | undefined;
   /**
-   * Maximum number of tool-calling steps the subagent may take during its agentic loop. Capped at 25. Only relevant when the subagent is given tools. Accepted and validated but not yet enforced on the subagent call.
+   * Maximum number of tool-calling steps the subagent may take during its agentic loop. Capped at 25. Only relevant when the subagent is given tools.
    */
   maxToolCalls?: number | undefined;
   /**
-   * Slug of the model that executes delegated tasks (any OpenRouter model). Typically a smaller, cheaper, faster model than the one delegating. When omitted, the model from the outer API request is used. The subagent tool itself cannot be the subagent model.
+   * Slug of the model that executes delegated tasks (any OpenRouter model). When omitted, the model from the outer API request is used. The subagent tool itself cannot be the subagent model.
    */
   model?: string | undefined;
   /**
