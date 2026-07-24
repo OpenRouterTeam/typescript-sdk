@@ -14,6 +14,9 @@ export class Beta extends ClientSDK {
   }
 
   private _responses?: BetaResponses;
+  /**
+   * @deprecated Use `client.responses.send()` instead. Scheduled for removal (sunset date TBD).
+   */
   get responses(): BetaResponses {
     return (this._responses ??= new BetaResponses(this._options));
   }
