@@ -67,6 +67,7 @@ export type VideoGenerationRequestOptions = {
   chutes?: { [k: string]: any } | undefined;
   cirrascale?: { [k: string]: any } | undefined;
   clarifai?: { [k: string]: any } | undefined;
+  claudeOnAws?: { [k: string]: any } | undefined;
   cloudflare?: { [k: string]: any } | undefined;
   cohere?: { [k: string]: any } | undefined;
   coreweave?: { [k: string]: any } | undefined;
@@ -166,6 +167,7 @@ export type VideoGenerationRequestOptions = {
   ubicloud?: { [k: string]: any } | undefined;
   upstage?: { [k: string]: any } | undefined;
   venice?: { [k: string]: any } | undefined;
+  voyageai?: { [k: string]: any } | undefined;
   wafer?: { [k: string]: any } | undefined;
   wandb?: { [k: string]: any } | undefined;
   wandbLegacy?: { [k: string]: any } | undefined;
@@ -279,6 +281,7 @@ export type VideoGenerationRequestOptions$Outbound = {
   chutes?: { [k: string]: any } | undefined;
   cirrascale?: { [k: string]: any } | undefined;
   clarifai?: { [k: string]: any } | undefined;
+  "claude-on-aws"?: { [k: string]: any } | undefined;
   cloudflare?: { [k: string]: any } | undefined;
   cohere?: { [k: string]: any } | undefined;
   coreweave?: { [k: string]: any } | undefined;
@@ -378,6 +381,7 @@ export type VideoGenerationRequestOptions$Outbound = {
   ubicloud?: { [k: string]: any } | undefined;
   upstage?: { [k: string]: any } | undefined;
   venice?: { [k: string]: any } | undefined;
+  voyageai?: { [k: string]: any } | undefined;
   wafer?: { [k: string]: any } | undefined;
   wandb?: { [k: string]: any } | undefined;
   "wandb-legacy"?: { [k: string]: any } | undefined;
@@ -415,6 +419,7 @@ export const VideoGenerationRequestOptions$outboundSchema: z.ZodType<
   chutes: z.record(z.string(), z.any()).optional(),
   cirrascale: z.record(z.string(), z.any()).optional(),
   clarifai: z.record(z.string(), z.any()).optional(),
+  claudeOnAws: z.record(z.string(), z.any()).optional(),
   cloudflare: z.record(z.string(), z.any()).optional(),
   cohere: z.record(z.string(), z.any()).optional(),
   coreweave: z.record(z.string(), z.any()).optional(),
@@ -514,6 +519,7 @@ export const VideoGenerationRequestOptions$outboundSchema: z.ZodType<
   ubicloud: z.record(z.string(), z.any()).optional(),
   upstage: z.record(z.string(), z.any()).optional(),
   venice: z.record(z.string(), z.any()).optional(),
+  voyageai: z.record(z.string(), z.any()).optional(),
   wafer: z.record(z.string(), z.any()).optional(),
   wandb: z.record(z.string(), z.any()).optional(),
   wandbLegacy: z.record(z.string(), z.any()).optional(),
@@ -529,6 +535,7 @@ export const VideoGenerationRequestOptions$outboundSchema: z.ZodType<
     arceeAi: "arcee-ai",
     atlasCloud: "atlas-cloud",
     blackForestLabs: "black-forest-labs",
+    claudeOnAws: "claude-on-aws",
     fakeProvider: "fake-provider",
     fishAudio: "fish-audio",
     googleAiStudio: "google-ai-studio",

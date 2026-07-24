@@ -31,6 +31,7 @@ export const BYOKProviderSlug = {
   Chutes: "chutes",
   Cirrascale: "cirrascale",
   Clarifai: "clarifai",
+  ClaudeOnAws: "claude-on-aws",
   Cloudflare: "cloudflare",
   Cohere: "cohere",
   Coreweave: "coreweave",
