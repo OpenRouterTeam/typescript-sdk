@@ -7,5 +7,6 @@ describe('SDK namespaces', () => {
   it('exposes responses at the top level, not under beta', () => {
     expect(client.responses).toBeDefined();
     expect((client.beta as unknown as Record<string, unknown>).responses).toBeUndefined();
+    expect(client.beta.analytics).toBeDefined();
   });
 });
