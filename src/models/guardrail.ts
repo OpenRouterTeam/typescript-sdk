@@ -85,10 +85,6 @@ export type Guardrail = {
    */
   ignoredProviders?: Array<string> | null | undefined;
   /**
-   * Whether BYOK (bring-your-own-key) inference spend counts toward this guardrail's limit_usd, in addition to OpenRouter credit spend.
-   */
-  includeByokInBudgets: boolean;
-  /**
    * Spending limit in USD
    */
   limitUsd?: number | null | undefined;
@@ -130,7 +126,6 @@ export const Guardrail$inboundSchema: z.ZodType<Guardrail, unknown> = z.object({
   id: z.string(),
   ignored_models: z.nullable(z.array(z.string())).optional(),
   ignored_providers: z.nullable(z.array(z.string())).optional(),
-  include_byok_in_budgets: z.boolean(),
   limit_usd: z.nullable(z.number()).optional(),
   name: z.string(),
   reset_interval: z.nullable(GuardrailInterval$inboundSchema).optional(),
@@ -151,7 +146,6 @@ export const Guardrail$inboundSchema: z.ZodType<Guardrail, unknown> = z.object({
     "enforce_zdr_xai": "enforceZdrXai",
     "ignored_models": "ignoredModels",
     "ignored_providers": "ignoredProviders",
-    "include_byok_in_budgets": "includeByokInBudgets",
     "limit_usd": "limitUsd",
     "reset_interval": "resetInterval",
     "updated_at": "updatedAt",

@@ -224,6 +224,10 @@ export type GenerationResponseData = {
    * The resolved web search engine used for this generation (e.g. exa, firecrawl, parallel)
    */
   webSearchEngine: string | null;
+  /**
+   * ID of the workspace this generation is attributed to. Null for accounts without workspaces. Generations created before workspace resolution existed are attributed to the account default workspace.
+   */
+  workspaceId?: string | null | undefined;
 };
 
 /**
@@ -293,6 +297,7 @@ export const GenerationResponseData$inboundSchema: z.ZodType<
   usage: z.number(),
   user_agent: z.nullable(z.string()),
   web_search_engine: z.nullable(z.string()),
+  workspace_id: z.nullable(z.string()).optional(),
 }).transform((v) => {
   return remap$(v, {
     "api_type": "apiType",
@@ -331,6 +336,7 @@ export const GenerationResponseData$inboundSchema: z.ZodType<
     "upstream_inference_cost": "upstreamInferenceCost",
     "user_agent": "userAgent",
     "web_search_engine": "webSearchEngine",
+    "workspace_id": "workspaceId",
   });
 });
 
