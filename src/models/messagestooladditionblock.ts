@@ -4,62 +4,173 @@
  */
 
 import * as z from "zod/v4";
-import { ClosedEnum } from "../types/enums.js";
+import { remap as remap$ } from "../lib/primitives.js";
+import {
+  AnthropicCacheControlDirective,
+  AnthropicCacheControlDirective$Outbound,
+  AnthropicCacheControlDirective$outboundSchema,
+} from "./anthropiccachecontroldirective.js";
 
-export const MessagesToolAdditionBlockTypeToolReference = {
-  ToolReference: "tool_reference",
-} as const;
-export type MessagesToolAdditionBlockTypeToolReference = ClosedEnum<
-  typeof MessagesToolAdditionBlockTypeToolReference
->;
-
-export type MessagesToolAdditionBlockTool = {
-  name: string;
-  type: MessagesToolAdditionBlockTypeToolReference;
+export type MessagesToolAdditionBlockToolMcpToolsetReference = {
+  serverName: string;
+  type: "mcp_toolset_reference";
 };
+
+export type MessagesToolAdditionBlockToolMcpToolReference = {
+  name: string;
+  serverName: string;
+  type: "mcp_tool_reference";
+};
+
+export type MessagesToolAdditionBlockToolToolReference = {
+  name: string;
+  type: "tool_reference";
+};
+
+export type MessagesToolAdditionBlockToolUnion =
+  | MessagesToolAdditionBlockToolToolReference
+  | MessagesToolAdditionBlockToolMcpToolReference
+  | MessagesToolAdditionBlockToolMcpToolsetReference;
 
 /**
  * Loads a previously deferred tool (declared in `tools` with `defer_loading: true`) mid-conversation without invalidating the prompt cache. Only valid in `role: "system"` messages. Not supported on Claude Sonnet 5 or models older than Claude Opus 4.8.
  */
 export type MessagesToolAdditionBlock = {
-  tool: MessagesToolAdditionBlockTool;
+  /**
+   * Enable automatic prompt caching. When set at the top level, the system automatically applies cache breakpoints to the last cacheable block in the request. When set on an individual content block, it marks an explicit cache breakpoint; block-level markers also work on OpenAI models that support explicit prompt caching — OpenRouter converts them to the provider's native format.
+   */
+  cacheControl?: AnthropicCacheControlDirective | undefined;
+  tool:
+    | MessagesToolAdditionBlockToolToolReference
+    | MessagesToolAdditionBlockToolMcpToolReference
+    | MessagesToolAdditionBlockToolMcpToolsetReference;
   type: "tool_addition";
 };
 
 /** @internal */
-export const MessagesToolAdditionBlockTypeToolReference$outboundSchema:
-  z.ZodEnum<typeof MessagesToolAdditionBlockTypeToolReference> = z.enum(
-    MessagesToolAdditionBlockTypeToolReference,
-  );
-
-/** @internal */
-export type MessagesToolAdditionBlockTool$Outbound = {
-  name: string;
-  type: string;
+export type MessagesToolAdditionBlockToolMcpToolsetReference$Outbound = {
+  server_name: string;
+  type: "mcp_toolset_reference";
 };
 
 /** @internal */
-export const MessagesToolAdditionBlockTool$outboundSchema: z.ZodType<
-  MessagesToolAdditionBlockTool$Outbound,
-  MessagesToolAdditionBlockTool
-> = z.object({
-  name: z.string(),
-  type: MessagesToolAdditionBlockTypeToolReference$outboundSchema,
-});
+export const MessagesToolAdditionBlockToolMcpToolsetReference$outboundSchema:
+  z.ZodType<
+    MessagesToolAdditionBlockToolMcpToolsetReference$Outbound,
+    MessagesToolAdditionBlockToolMcpToolsetReference
+  > = z.object({
+    serverName: z.string(),
+    type: z.literal("mcp_toolset_reference"),
+  }).transform((v) => {
+    return remap$(v, {
+      serverName: "server_name",
+    });
+  });
 
-export function messagesToolAdditionBlockToolToJSON(
-  messagesToolAdditionBlockTool: MessagesToolAdditionBlockTool,
+export function messagesToolAdditionBlockToolMcpToolsetReferenceToJSON(
+  messagesToolAdditionBlockToolMcpToolsetReference:
+    MessagesToolAdditionBlockToolMcpToolsetReference,
 ): string {
   return JSON.stringify(
-    MessagesToolAdditionBlockTool$outboundSchema.parse(
-      messagesToolAdditionBlockTool,
+    MessagesToolAdditionBlockToolMcpToolsetReference$outboundSchema.parse(
+      messagesToolAdditionBlockToolMcpToolsetReference,
+    ),
+  );
+}
+
+/** @internal */
+export type MessagesToolAdditionBlockToolMcpToolReference$Outbound = {
+  name: string;
+  server_name: string;
+  type: "mcp_tool_reference";
+};
+
+/** @internal */
+export const MessagesToolAdditionBlockToolMcpToolReference$outboundSchema:
+  z.ZodType<
+    MessagesToolAdditionBlockToolMcpToolReference$Outbound,
+    MessagesToolAdditionBlockToolMcpToolReference
+  > = z.object({
+    name: z.string(),
+    serverName: z.string(),
+    type: z.literal("mcp_tool_reference"),
+  }).transform((v) => {
+    return remap$(v, {
+      serverName: "server_name",
+    });
+  });
+
+export function messagesToolAdditionBlockToolMcpToolReferenceToJSON(
+  messagesToolAdditionBlockToolMcpToolReference:
+    MessagesToolAdditionBlockToolMcpToolReference,
+): string {
+  return JSON.stringify(
+    MessagesToolAdditionBlockToolMcpToolReference$outboundSchema.parse(
+      messagesToolAdditionBlockToolMcpToolReference,
+    ),
+  );
+}
+
+/** @internal */
+export type MessagesToolAdditionBlockToolToolReference$Outbound = {
+  name: string;
+  type: "tool_reference";
+};
+
+/** @internal */
+export const MessagesToolAdditionBlockToolToolReference$outboundSchema:
+  z.ZodType<
+    MessagesToolAdditionBlockToolToolReference$Outbound,
+    MessagesToolAdditionBlockToolToolReference
+  > = z.object({
+    name: z.string(),
+    type: z.literal("tool_reference"),
+  });
+
+export function messagesToolAdditionBlockToolToolReferenceToJSON(
+  messagesToolAdditionBlockToolToolReference:
+    MessagesToolAdditionBlockToolToolReference,
+): string {
+  return JSON.stringify(
+    MessagesToolAdditionBlockToolToolReference$outboundSchema.parse(
+      messagesToolAdditionBlockToolToolReference,
+    ),
+  );
+}
+
+/** @internal */
+export type MessagesToolAdditionBlockToolUnion$Outbound =
+  | MessagesToolAdditionBlockToolToolReference$Outbound
+  | MessagesToolAdditionBlockToolMcpToolReference$Outbound
+  | MessagesToolAdditionBlockToolMcpToolsetReference$Outbound;
+
+/** @internal */
+export const MessagesToolAdditionBlockToolUnion$outboundSchema: z.ZodType<
+  MessagesToolAdditionBlockToolUnion$Outbound,
+  MessagesToolAdditionBlockToolUnion
+> = z.union([
+  z.lazy(() => MessagesToolAdditionBlockToolToolReference$outboundSchema),
+  z.lazy(() => MessagesToolAdditionBlockToolMcpToolReference$outboundSchema),
+  z.lazy(() => MessagesToolAdditionBlockToolMcpToolsetReference$outboundSchema),
+]);
+
+export function messagesToolAdditionBlockToolUnionToJSON(
+  messagesToolAdditionBlockToolUnion: MessagesToolAdditionBlockToolUnion,
+): string {
+  return JSON.stringify(
+    MessagesToolAdditionBlockToolUnion$outboundSchema.parse(
+      messagesToolAdditionBlockToolUnion,
     ),
   );
 }
 
 /** @internal */
 export type MessagesToolAdditionBlock$Outbound = {
-  tool: MessagesToolAdditionBlockTool$Outbound;
+  cache_control?: AnthropicCacheControlDirective$Outbound | undefined;
+  tool:
+    | MessagesToolAdditionBlockToolToolReference$Outbound
+    | MessagesToolAdditionBlockToolMcpToolReference$Outbound
+    | MessagesToolAdditionBlockToolMcpToolsetReference$Outbound;
   type: "tool_addition";
 };
 
@@ -68,8 +179,19 @@ export const MessagesToolAdditionBlock$outboundSchema: z.ZodType<
   MessagesToolAdditionBlock$Outbound,
   MessagesToolAdditionBlock
 > = z.object({
-  tool: z.lazy(() => MessagesToolAdditionBlockTool$outboundSchema),
+  cacheControl: AnthropicCacheControlDirective$outboundSchema.optional(),
+  tool: z.union([
+    z.lazy(() => MessagesToolAdditionBlockToolToolReference$outboundSchema),
+    z.lazy(() => MessagesToolAdditionBlockToolMcpToolReference$outboundSchema),
+    z.lazy(() =>
+      MessagesToolAdditionBlockToolMcpToolsetReference$outboundSchema
+    ),
+  ]),
   type: z.literal("tool_addition"),
+}).transform((v) => {
+  return remap$(v, {
+    cacheControl: "cache_control",
+  });
 });
 
 export function messagesToolAdditionBlockToJSON(
