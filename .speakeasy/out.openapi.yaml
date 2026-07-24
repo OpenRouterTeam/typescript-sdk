@@ -34956,6 +34956,7 @@ paths:
       summary: 'Create a response'
       tags:
         - 'responses'
+        - beta.responses
       x-speakeasy-name-override: 'send'
       x-speakeasy-stream-request-field: 'stream'
     parameters:
@@ -36292,6 +36293,8 @@ tags:
     name: 'beta.Analytics'
   - description: 'responses endpoints'
     name: 'responses'
+  - name: beta.responses
+    description: 'Deprecated alias of responses. Use responses instead; scheduled for removal (sunset date TBD).'
 x-retry-strategy:
   initialDelay: 500
   maxAttempts: 3
