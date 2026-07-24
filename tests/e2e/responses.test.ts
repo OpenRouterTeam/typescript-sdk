@@ -4,7 +4,7 @@ import { beforeAll, describe, expect, it } from 'vitest';
 import { OpenRouter } from '../../src/sdk/sdk.js';
 import { OutputMessage } from '../../src/models/outputmessage.js';
 
-describe('Beta Responses E2E Tests', () => {
+describe('Responses E2E Tests', () => {
   let client: OpenRouter;
 
   beforeAll(() => {
@@ -18,9 +18,9 @@ describe('Beta Responses E2E Tests', () => {
     });
   });
 
-  describe('beta.responses.send() - Non-streaming', () => {
+  describe('responses.send() - Non-streaming', () => {
     it('should successfully send a responses request and get a response', async () => {
-      const response = await client.beta.responses.send({
+      const response = await client.responses.send({
         responsesRequest: {
           model: 'anthropic/claude-haiku-4.5',
           input: [
@@ -59,7 +59,7 @@ describe('Beta Responses E2E Tests', () => {
     });
 
     it('should handle multi-turn conversations', async () => {
-      const response = await client.beta.responses.send({
+      const response = await client.responses.send({
         responsesRequest: {
           model: 'anthropic/claude-haiku-4.5',
           input: [
@@ -103,7 +103,7 @@ describe('Beta Responses E2E Tests', () => {
     });
 
     it('should respect maxOutputTokens parameter', async () => {
-      const response = await client.beta.responses.send({
+      const response = await client.responses.send({
         responsesRequest: {
           model: 'anthropic/claude-haiku-4.5',
           input: [
@@ -123,7 +123,7 @@ describe('Beta Responses E2E Tests', () => {
     });
 
     it('should handle metadata in request', async () => {
-      const response = await client.beta.responses.send({
+      const response = await client.responses.send({
         responsesRequest: {
           model: 'anthropic/claude-haiku-4.5',
           input: [
@@ -148,7 +148,7 @@ describe('Beta Responses E2E Tests', () => {
     });
 
     it('should handle instructions parameter', async () => {
-      const response = await client.beta.responses.send({
+      const response = await client.responses.send({
         responsesRequest: {
           model: 'anthropic/claude-haiku-4.5',
           input: [
@@ -169,9 +169,9 @@ describe('Beta Responses E2E Tests', () => {
     });
   });
 
-  describe('beta.responses.send() - Streaming', () => {
+  describe('responses.send() - Streaming', () => {
     it('should successfully stream responses', async () => {
-      const response = await client.beta.responses.send({
+      const response = await client.responses.send({
         responsesRequest: {
           model: 'anthropic/claude-haiku-4.5',
           input: [
@@ -208,7 +208,7 @@ describe('Beta Responses E2E Tests', () => {
     }, 30000);
 
     it('should stream complete content progressively', async () => {
-      const response = await client.beta.responses.send({
+      const response = await client.responses.send({
         responsesRequest: {
           model: 'anthropic/claude-haiku-4.5',
           input: [
@@ -244,7 +244,7 @@ describe('Beta Responses E2E Tests', () => {
     }, 30000);
 
     it('should include response.completed event in stream', async () => {
-      const response = await client.beta.responses.send({
+      const response = await client.responses.send({
         responsesRequest: {
           model: 'anthropic/claude-haiku-4.5',
           input: [
@@ -274,7 +274,7 @@ describe('Beta Responses E2E Tests', () => {
     }, 30000);
 
     it('should handle streaming with metadata', async () => {
-      const response = await client.beta.responses.send({
+      const response = await client.responses.send({
         responsesRequest: {
           model: 'anthropic/claude-haiku-4.5',
           input: [
@@ -304,7 +304,7 @@ describe('Beta Responses E2E Tests', () => {
     }, 30000);
 
     it('should concatenate streaming chunks into complete sentence', async () => {
-      const response = await client.beta.responses.send({
+      const response = await client.responses.send({
         responsesRequest: {
           model: 'anthropic/claude-haiku-4.5',
           input: [
