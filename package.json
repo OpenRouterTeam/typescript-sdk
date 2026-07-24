@@ -21,8 +21,8 @@
   "license": "Apache-2.0",
   "packageManager": "pnpm@10.22.0",
   "publishConfig": {
-    "provenance": true,
-    "access": "public"
+    "access": "public",
+    "provenance": true
   },
   "type": "module",
   "main": "./esm/index.js",
@@ -75,13 +75,13 @@
     "prepublishOnly": "npm run build",
     "postinstall": "node scripts/check-types.js || true",
     "prepare": "npm run build",
-    "test": "vitest --run --project unit",
     "test:e2e": "vitest --run --project e2e",
+    "test:transit": "exit 0",
     "test:watch": "vitest --watch --project unit",
-    "typecheck": "tsc --noEmit",
     "typecheck:transit": "exit 0",
     "compile": "tsc",
-    "test:transit": "exit 0"
+    "test": "vitest --run --project unit",
+    "typecheck": "tsc --noEmit"
   },
   "peerDependencies": {},
   "devDependencies": {
