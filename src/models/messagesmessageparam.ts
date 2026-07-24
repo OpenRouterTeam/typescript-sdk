@@ -42,16 +42,6 @@ import {
   MessagesAdvisorToolResultBlock$Outbound,
   MessagesAdvisorToolResultBlock$outboundSchema,
 } from "./messagesadvisortoolresultblock.js";
-import {
-  MessagesToolAdditionBlock,
-  MessagesToolAdditionBlock$Outbound,
-  MessagesToolAdditionBlock$outboundSchema,
-} from "./messagestooladditionblock.js";
-import {
-  MessagesToolRemovalBlock,
-  MessagesToolRemovalBlock$Outbound,
-  MessagesToolRemovalBlock$outboundSchema,
-} from "./messagestoolremovalblock.js";
 
 export type ContentCompaction = {
   /**
@@ -186,9 +176,7 @@ export type MessagesMessageParamContentUnion4 =
   | ContentWebSearchToolResult
   | AnthropicSearchResultBlockParam
   | ContentCompaction
-  | MessagesAdvisorToolResultBlock
-  | MessagesToolAdditionBlock
-  | MessagesToolRemovalBlock;
+  | MessagesAdvisorToolResultBlock;
 
 export type MessagesMessageParamContentUnion5 =
   | string
@@ -205,8 +193,6 @@ export type MessagesMessageParamContentUnion5 =
     | AnthropicSearchResultBlockParam
     | ContentCompaction
     | MessagesAdvisorToolResultBlock
-    | MessagesToolAdditionBlock
-    | MessagesToolRemovalBlock
   >;
 
 export const MessagesMessageParamRole = {
@@ -237,8 +223,6 @@ export type MessagesMessageParam = {
       | AnthropicSearchResultBlockParam
       | ContentCompaction
       | MessagesAdvisorToolResultBlock
-      | MessagesToolAdditionBlock
-      | MessagesToolRemovalBlock
     >;
   role: MessagesMessageParamRole;
 };
@@ -642,9 +626,7 @@ export type MessagesMessageParamContentUnion4$Outbound =
   | ContentWebSearchToolResult$Outbound
   | AnthropicSearchResultBlockParam$Outbound
   | ContentCompaction$Outbound
-  | MessagesAdvisorToolResultBlock$Outbound
-  | MessagesToolAdditionBlock$Outbound
-  | MessagesToolRemovalBlock$Outbound;
+  | MessagesAdvisorToolResultBlock$Outbound;
 
 /** @internal */
 export const MessagesMessageParamContentUnion4$outboundSchema: z.ZodType<
@@ -663,8 +645,6 @@ export const MessagesMessageParamContentUnion4$outboundSchema: z.ZodType<
   AnthropicSearchResultBlockParam$outboundSchema,
   z.lazy(() => ContentCompaction$outboundSchema),
   MessagesAdvisorToolResultBlock$outboundSchema,
-  MessagesToolAdditionBlock$outboundSchema,
-  MessagesToolRemovalBlock$outboundSchema,
 ]);
 
 export function messagesMessageParamContentUnion4ToJSON(
@@ -693,8 +673,6 @@ export type MessagesMessageParamContentUnion5$Outbound =
     | AnthropicSearchResultBlockParam$Outbound
     | ContentCompaction$Outbound
     | MessagesAdvisorToolResultBlock$Outbound
-    | MessagesToolAdditionBlock$Outbound
-    | MessagesToolRemovalBlock$Outbound
   >;
 
 /** @internal */
@@ -717,8 +695,6 @@ export const MessagesMessageParamContentUnion5$outboundSchema: z.ZodType<
       AnthropicSearchResultBlockParam$outboundSchema,
       z.lazy(() => ContentCompaction$outboundSchema),
       MessagesAdvisorToolResultBlock$outboundSchema,
-      MessagesToolAdditionBlock$outboundSchema,
-      MessagesToolRemovalBlock$outboundSchema,
     ]),
   ),
 ]);
@@ -756,8 +732,6 @@ export type MessagesMessageParam$Outbound = {
       | AnthropicSearchResultBlockParam$Outbound
       | ContentCompaction$Outbound
       | MessagesAdvisorToolResultBlock$Outbound
-      | MessagesToolAdditionBlock$Outbound
-      | MessagesToolRemovalBlock$Outbound
     >;
   role: string;
 };
@@ -783,8 +757,6 @@ export const MessagesMessageParam$outboundSchema: z.ZodType<
         AnthropicSearchResultBlockParam$outboundSchema,
         z.lazy(() => ContentCompaction$outboundSchema),
         MessagesAdvisorToolResultBlock$outboundSchema,
-        MessagesToolAdditionBlock$outboundSchema,
-        MessagesToolRemovalBlock$outboundSchema,
       ]),
     ),
   ]),
