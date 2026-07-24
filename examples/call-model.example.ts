@@ -8,7 +8,7 @@ dotenv.config();
  * Example usage of the @openrouter/sdk SDK
  *
  * To run this example from the examples directory:
- * npm run build && npx tsx betaResponsesSend.example.ts
+ * npm run build && npx tsx call-model.example.ts
  */
 
 import { OpenRouter } from "../src/index.js";
