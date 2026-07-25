@@ -62,6 +62,7 @@ export const ProviderResponseProviderName = {
   Cerebras: "Cerebras",
   Chutes: "Chutes",
   Cirrascale: "Cirrascale",
+  ClaudePlatformOnAWS: "Claude Platform on AWS",
   Clarifai: "Clarifai",
   Cloudflare: "Cloudflare",
   Cohere: "Cohere",
