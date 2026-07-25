@@ -1,4 +1,5 @@
 docs/sdks/alpha
+src/funcs/betaResponsesSend.ts
 .npmignore
 docs/docs.json
 docs/overview.mdx
