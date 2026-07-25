@@ -310,6 +310,7 @@ export * from "./messagestooladditionblock.js";
 export * from "./messagestoolremovalblock.js";
 export * from "./metadatalevel.js";
 export * from "./model.js";
+export * from "./modelaliastarget.js";
 export * from "./modelarchitecture.js";
 export * from "./modelbenchmarks.js";
 export * from "./modelgroup.js";
