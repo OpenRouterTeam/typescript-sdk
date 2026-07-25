@@ -5,15 +5,15 @@ management:
   docVersion: 1.0.0
   speakeasyVersion: 1.787.0
   generationVersion: 2.914.0
-  releaseVersion: 1.1.2
-  configChecksum: cb2ed8ebe308d3a456cb7b54204b1311
+  releaseVersion: 1.1.6
+  configChecksum: adb02bd1b1c683964229d525869a515f
   repoURL: https://github.com/OpenRouterTeam/typescript-sdk.git
   installationURL: https://github.com/OpenRouterTeam/typescript-sdk
   published: true
 persistentEdits:
-  generation_id: dc54e2a9-4ae5-444c-8903-be7c8b481b0b
-  pristine_commit_hash: bc92f53d04e813569ba06216c9e073971ca85d2b
-  pristine_tree_hash: e350de4676e0d601f3a67d679f069dcfdb72f7ed
+  generation_id: 20ca4ac0-fd98-4787-a7ed-a439b5a5e984
+  pristine_commit_hash: 0b625180dd353f716037d444458c56094b88b9c3
+  pristine_tree_hash: 83942e8bfa44b2a65a21b100575bc4fd3ed733ee
 features:
   typescript:
     acceptHeaders: 2.81.2
@@ -12513,12 +12513,12 @@ trackedFiles:
     pristine_git_object: 410efafd6a7f50d91ccb87131fedbe0c3d47e15a
   jsr.json:
     id: 7f6ab7767282
-    last_write_checksum: sha1:e46a6ad0104da91705e8e95c29464fd6baa9c2a9
-    pristine_git_object: c51ef02db044fbc068b282372f04b55c74637b95
+    last_write_checksum: sha1:f4db08d4b74d25ed8f89b816f0586844e856fd6f
+    pristine_git_object: df292caa91f9a90741d53f577356659292874aff
   package.json:
     id: 7030d0b2f71b
-    last_write_checksum: sha1:c4ff3e393334ff3f51cbafb01cb320250598864e
-    pristine_git_object: d633de059e5137941a6d2558e1d1d0462089e058
+    last_write_checksum: sha1:2a473ebd39cbfe53a120ce1895b0ff70a092001a
+    pristine_git_object: eacb7833103eb2942a1c86a3c9c88fece5c780f8
   src/core.ts:
     id: f431fdbcd144
     last_write_checksum: sha1:5aa66b0b6a5964f3eea7f3098c2eb3c0ee9c0131
@@ -12563,11 +12563,6 @@ trackedFiles:
     id: 979cbc58b672
     last_write_checksum: sha1:a8edf41f3ad50fd4b33ceac7c622bfafc217d048
     pristine_git_object: e318f63fdacd497130db4ca5ab547d14f49cb833
-  src/funcs/betaResponsesSend.ts:
-    id: c5c4ab0c3f76
-    last_write_checksum: sha1:b319452d4053c6d07a46c683c671598d0a93b698
-    pristine_git_object: c466d83b43f6d1d6993e7ef0192bca9ed1a5ee75
-    deleted: true
   src/funcs/byokCreate.ts:
     id: 100cd2d38078
     last_write_checksum: sha1:eac0c86e8979088f900a71c8bc61bbe408a526d7
@@ -12902,8 +12897,8 @@ trackedFiles:
     pristine_git_object: a187e58707bdb726ca2aff74941efe7493422d4e
   src/lib/config.ts:
     id: 320761608fb3
-    last_write_checksum: sha1:3c37e289d609b328e9b5dd34f413d6e621683e19
-    pristine_git_object: a99a81fd4b03c324277f1514a081f0d5d6cfa19d
+    last_write_checksum: sha1:a5975a33c0f0e8c57150b49708524087c5d539b4
+    pristine_git_object: 838ab6de06c192f9287d0062d77e186c5e8d4dd8
   src/lib/dlv.ts:
     id: b1988214835a
     last_write_checksum: sha1:eaac763b22717206a6199104e0403ed17a4e2711
