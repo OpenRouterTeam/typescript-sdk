@@ -1,0 +1,21 @@
+overlay: 1.0.0
+x-speakeasy-jsonpath: rfc9535
+info:
+  title: Keep beta.responses as a deprecated SDK alias of responses
+  version: 0.0.0
+actions:
+  # Expose the /responses operation under BOTH the GA `responses` namespace and
+  # the legacy `beta.responses` namespace so existing `client.beta.responses.send()`
+  # callers keep working through the deprecation window. Removing this overlay (or
+  # the `beta.responses` tag) on the sunset date is the scheduled breaking change.
+  - target: $.paths['/responses'].post
+    description: Add beta.responses as a second (deprecated) SDK namespace for the responses operation
+    update:
+      tags:
+        - beta.responses
+  # Tag definition carries the deprecation notice into the generated SDK docs.
+  - target: $.tags
+    description: Define the deprecated beta.responses tag
+    update:
+      - name: beta.responses
+        description: 'Deprecated alias of responses. Use responses instead; scheduled for removal (sunset date TBD).'

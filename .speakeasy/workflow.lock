@@ -2,19 +2,20 @@ speakeasyVersion: 1.787.0
 sources:
     OpenRouter API:
         sourceNamespace: open-router-chat-completions-api
-        sourceRevisionDigest: sha256:e018b48072374561b2577a812f9bc3d1961b9d02f3b799ca2471a8da3569bb6e
-        sourceBlobDigest: sha256:87e68679f7dd625a1dcd94d9eb668d5650413290d530dbd17d1d0088b985f38f
+        sourceRevisionDigest: sha256:02968ade60cf270bd823daa61f643a374a1b151824c4627df3281668525a0429
+        sourceBlobDigest: sha256:80b81a7f81722d59ebe16f7329b2da855e3fa49ae6cae3fabcc100e88fc2d9a5
         tags:
             - latest
+            - devin-1784853533-responses-ga
             - 1.0.0
 targets:
     openrouter:
         source: OpenRouter API
         sourceNamespace: open-router-chat-completions-api
-        sourceRevisionDigest: sha256:e018b48072374561b2577a812f9bc3d1961b9d02f3b799ca2471a8da3569bb6e
-        sourceBlobDigest: sha256:87e68679f7dd625a1dcd94d9eb668d5650413290d530dbd17d1d0088b985f38f
+        sourceRevisionDigest: sha256:02968ade60cf270bd823daa61f643a374a1b151824c4627df3281668525a0429
+        sourceBlobDigest: sha256:80b81a7f81722d59ebe16f7329b2da855e3fa49ae6cae3fabcc100e88fc2d9a5
         codeSamplesNamespace: open-router-chat-completions-api-typescript-code-samples
-        codeSamplesRevisionDigest: sha256:fba27606631c669d2628f69a48d0360202b4020a0e69844f2366b099b786137c
+        codeSamplesRevisionDigest: sha256:49591992753ec5bf41f7ee38722c8034d1c0562d73ca59b531ecce7473513c4e
 workflow:
     workflowVersion: 1.0.0
     speakeasyVersion: 1.787.0
@@ -29,6 +30,7 @@ workflow:
                 - location: .speakeasy/overlays/allof-simplify.overlay.yaml
                 - location: .speakeasy/overlays/boolean-query-params.overlay.yaml
                 - location: .speakeasy/overlays/nullable-model-fields.overlay.yaml
+                - location: .speakeasy/overlays/deprecated-beta-responses-alias.overlay.yaml
             output: .speakeasy/out.openapi.yaml
             registry:
                 location: registry.speakeasyapi.dev/openrouter/sdk/open-router-chat-completions-api

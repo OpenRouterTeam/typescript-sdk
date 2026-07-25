@@ -57,9 +57,9 @@ The e2e test suite includes:
   - Progressive content delivery
   - Finish reason detection
 
-### Beta Responses Tests (`responses.test.ts`)
-- Testing the beta responses endpoint
-- Note: This endpoint is in alpha/beta and may require updates
+### Responses Tests (`responses.test.ts`)
+- Testing the responses endpoint
+- Note: This endpoint is generally available
 
 ### Embeddings Tests (`embeddings.test.ts`)
 - **Embeddings generation:**
@@ -76,4 +76,4 @@ The e2e test suite includes:
 - Tests may consume API credits
 - Chat tests use the `anthropic/claude-haiku-4.5` model by default
 - Embeddings tests use the `openai/text-embedding-3-small` model by default
-- The beta responses endpoint has limited test coverage as it's still in development
+- The responses endpoint has limited test coverage

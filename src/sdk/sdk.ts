@@ -26,6 +26,7 @@ import { Organization } from "./organization.js";
 import { Presets } from "./presets.js";
 import { Providers } from "./providers.js";
 import { Rerank } from "./rerank.js";
+import { Responses } from "./responses.js";
 import { Stt } from "./stt.js";
 import { Tts } from "./tts.js";
 import { VideoGeneration } from "./videogeneration.js";
@@ -162,6 +163,11 @@ export class OpenRouter extends ClientSDK {
   private _rerank?: Rerank;
   get rerank(): Rerank {
     return (this._rerank ??= new Rerank(this._options));
+  }
+
+  private _responses?: Responses;
+  get responses(): Responses {
+    return (this._responses ??= new Responses(this._options));
   }
 
   private _videoGeneration?: VideoGeneration;

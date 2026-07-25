@@ -24,7 +24,7 @@ import type {
 import { ToolEventBroadcaster } from './tool-event-broadcaster.js';
 import { type ContextInput, ToolContextStore, resolveContext } from './tool-context.js';
 
-import { betaResponsesSend } from '../funcs/betaResponsesSend.js';
+import { responsesSend } from '../funcs/responsesSend.js';
 import {
   hasAsyncFunctions,
   resolveAsyncFunctions,
@@ -875,7 +875,7 @@ export class ModelResult<
       stream: true,
     };
 
-    const newResult = await betaResponsesSend(
+    const newResult = await responsesSend(
       this.options.client,
       { responsesRequest: newRequest },
       this.options.options,
@@ -1067,7 +1067,7 @@ export class ModelResult<
       const request = this.resolvedRequest;
 
       // Make the API request
-      const apiResult = await betaResponsesSend(
+      const apiResult = await responsesSend(
         this.options.client,
         { responsesRequest: request },
         this.options.options,
@@ -1213,7 +1213,7 @@ export class ModelResult<
     this.resolvedRequest = request;
 
     // Make the API request
-    const apiResult = await betaResponsesSend(
+    const apiResult = await responsesSend(
       this.options.client,
       { responsesRequest: request },
       this.options.options,
