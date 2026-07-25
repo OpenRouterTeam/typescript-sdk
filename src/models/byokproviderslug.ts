@@ -66,6 +66,7 @@ export const BYOKProviderSlug = {
   Meta: "meta",
   Minimax: "minimax",
   Mistral: "mistral",
+  Modal: "modal",
   Modelrun: "modelrun",
   Modular: "modular",
   Moonshotai: "moonshotai",
