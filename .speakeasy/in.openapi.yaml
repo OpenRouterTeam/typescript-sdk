@@ -34665,7 +34665,7 @@ paths:
           description: 'Provider Overloaded - Provider is temporarily overloaded'
       summary: 'Create a response'
       tags:
-        - 'responses'
+        - 'beta.responses'
       x-speakeasy-name-override: 'send'
       x-speakeasy-stream-request-field: 'stream'
   /videos:
@@ -35952,8 +35952,8 @@ tags:
     name: 'Workspaces'
   - description: 'beta.Analytics endpoints'
     name: 'beta.Analytics'
-  - description: 'responses endpoints'
-    name: 'responses'
+  - description: 'beta.responses endpoints'
+    name: 'beta.responses'
 x-retry-strategy:
   initialDelay: 500
   maxAttempts: 3
