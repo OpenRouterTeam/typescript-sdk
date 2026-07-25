@@ -18,11 +18,13 @@ let value: ListWorkspaceBudgetsResponse = {
       workspaceId: "550e8400-e29b-41d4-a716-446655440000",
     },
   ],
+  includeByokInBudgets: false,
 };
 ```
 
 ## Fields
 
-| Field                                                    | Type                                                     | Required                                                 | Description                                              |
-| -------------------------------------------------------- | -------------------------------------------------------- | -------------------------------------------------------- | -------------------------------------------------------- |
-| `data`                                                   | [models.WorkspaceBudget](../models/workspacebudget.mdx)[] | :heavy_check_mark:                                       | List of budgets configured for the workspace             |
+| Field                                                    | Type                                                     | Required                                                 | Description                                              | Example                                                  |
+| -------------------------------------------------------- | -------------------------------------------------------- | -------------------------------------------------------- | -------------------------------------------------------- | -------------------------------------------------------- |
+| `data`                                                   | [models.WorkspaceBudget](../models/workspacebudget.mdx)[] | :heavy_check_mark:                                       | List of budgets configured for the workspace             |                                                          |
+| `includeByokInBudgets`                                   | *boolean*                                                | :heavy_check_mark:                                       | Whether BYOK spend is included in the workspace budgets  | false                                                    |
