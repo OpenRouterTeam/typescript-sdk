@@ -119,7 +119,7 @@ export type ProviderPreferences = {
    */
   maxPrice?: MaxPrice | undefined;
   /**
-   * List of provider slugs to allow. If provided, this list is merged with your account-wide allowed provider settings for this request.
+   * List of provider slugs to allow for this request. If forced allowed providers are configured for your account, they take precedence over this list.
    */
   only?: Array<ProviderName | string> | null | undefined;
   /**
