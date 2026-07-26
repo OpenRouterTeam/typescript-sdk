@@ -123,6 +123,11 @@ import {
   InputsUnion$outboundSchema,
 } from "./inputsunion.js";
 import {
+  InspectImageServerToolOpenRouter,
+  InspectImageServerToolOpenRouter$Outbound,
+  InspectImageServerToolOpenRouter$outboundSchema,
+} from "./inspectimageservertoolopenrouter.js";
+import {
   LegacyWebSearchServerTool,
   LegacyWebSearchServerTool$Outbound,
   LegacyWebSearchServerTool$outboundSchema,
@@ -246,6 +251,11 @@ import {
   TraceConfig$outboundSchema,
 } from "./traceconfig.js";
 import {
+  VisionPlugin,
+  VisionPlugin$Outbound,
+  VisionPlugin$outboundSchema,
+} from "./visionplugin.js";
+import {
   WebFetchPlugin,
   WebFetchPlugin$Outbound,
   WebFetchPlugin$outboundSchema,
@@ -280,6 +290,7 @@ export type ResponsesRequestPlugin =
   | ModerationPlugin
   | ParetoRouterPlugin
   | ResponseHealingPlugin
+  | VisionPlugin
   | WebSearchPlugin
   | WebFetchPlugin;
 
@@ -353,7 +364,8 @@ export type ResponsesRequestToolUnion =
   | (WebSearchServerToolOpenRouter & { type: "openrouter:web_search" })
   | (ApplyPatchServerToolOpenRouter & { type: "openrouter:apply_patch" })
   | (BashServerTool & { type: "openrouter:bash" })
-  | (ShellServerToolOpenRouter & { type: "openrouter:shell" });
+  | (ShellServerToolOpenRouter & { type: "openrouter:shell" })
+  | (InspectImageServerToolOpenRouter & { type: "openrouter:inspect_image" });
 
 /**
  * Request schema for Responses endpoint
@@ -408,6 +420,7 @@ export type ResponsesRequest = {
       | ModerationPlugin
       | ParetoRouterPlugin
       | ResponseHealingPlugin
+      | VisionPlugin
       | WebSearchPlugin
       | WebFetchPlugin
     >
@@ -487,6 +500,9 @@ export type ResponsesRequest = {
       | (ApplyPatchServerToolOpenRouter & { type: "openrouter:apply_patch" })
       | (BashServerTool & { type: "openrouter:bash" })
       | (ShellServerToolOpenRouter & { type: "openrouter:shell" })
+      | (InspectImageServerToolOpenRouter & {
+        type: "openrouter:inspect_image";
+      })
     >
     | undefined;
   topK?: number | undefined;
@@ -513,6 +529,7 @@ export type ResponsesRequestPlugin$Outbound =
   | ModerationPlugin$Outbound
   | ParetoRouterPlugin$Outbound
   | ResponseHealingPlugin$Outbound
+  | VisionPlugin$Outbound
   | WebSearchPlugin$Outbound
   | WebFetchPlugin$Outbound;
 
@@ -529,6 +546,7 @@ export const ResponsesRequestPlugin$outboundSchema: z.ZodType<
   ModerationPlugin$outboundSchema,
   ParetoRouterPlugin$outboundSchema,
   ResponseHealingPlugin$outboundSchema,
+  VisionPlugin$outboundSchema,
   WebSearchPlugin$outboundSchema,
   WebFetchPlugin$outboundSchema,
 ]);
@@ -647,7 +665,10 @@ export type ResponsesRequestToolUnion$Outbound =
     type: "openrouter:apply_patch";
   })
   | (BashServerTool$Outbound & { type: "openrouter:bash" })
-  | (ShellServerToolOpenRouter$Outbound & { type: "openrouter:shell" });
+  | (ShellServerToolOpenRouter$Outbound & { type: "openrouter:shell" })
+  | (InspectImageServerToolOpenRouter$Outbound & {
+    type: "openrouter:inspect_image";
+  });
 
 /** @internal */
 export const ResponsesRequestToolUnion$outboundSchema: z.ZodType<
@@ -725,6 +746,9 @@ export const ResponsesRequestToolUnion$outboundSchema: z.ZodType<
   ShellServerToolOpenRouter$outboundSchema.and(
     z.object({ type: z.literal("openrouter:shell") }),
   ),
+  InspectImageServerToolOpenRouter$outboundSchema.and(
+    z.object({ type: z.literal("openrouter:inspect_image") }),
+  ),
 ]);
 
 export function responsesRequestToolUnionToJSON(
@@ -762,6 +786,7 @@ export type ResponsesRequest$Outbound = {
       | ModerationPlugin$Outbound
       | ParetoRouterPlugin$Outbound
       | ResponseHealingPlugin$Outbound
+      | VisionPlugin$Outbound
       | WebSearchPlugin$Outbound
       | WebFetchPlugin$Outbound
     >
@@ -825,6 +850,9 @@ export type ResponsesRequest$Outbound = {
       })
       | (BashServerTool$Outbound & { type: "openrouter:bash" })
       | (ShellServerToolOpenRouter$Outbound & { type: "openrouter:shell" })
+      | (InspectImageServerToolOpenRouter$Outbound & {
+        type: "openrouter:inspect_image";
+      })
     >
     | undefined;
   top_k?: number | undefined;
@@ -865,6 +893,7 @@ export const ResponsesRequest$outboundSchema: z.ZodType<
       ModerationPlugin$outboundSchema,
       ParetoRouterPlugin$outboundSchema,
       ResponseHealingPlugin$outboundSchema,
+      VisionPlugin$outboundSchema,
       WebSearchPlugin$outboundSchema,
       WebFetchPlugin$outboundSchema,
     ]),
@@ -965,6 +994,9 @@ export const ResponsesRequest$outboundSchema: z.ZodType<
       ),
       ShellServerToolOpenRouter$outboundSchema.and(
         z.object({ type: z.literal("openrouter:shell") }),
+      ),
+      InspectImageServerToolOpenRouter$outboundSchema.and(
+        z.object({ type: z.literal("openrouter:inspect_image") }),
       ),
     ]),
   ).optional(),

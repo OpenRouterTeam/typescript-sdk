@@ -1,0 +1,19 @@
+---
+title: "InspectImageServerToolConfig"
+---
+
+Configuration for the openrouter:inspect_image server tool, which lets a text-only model examine attached images by dispatching questions to a vision-capable model server-side.
+
+## Example Usage
+
+```typescript
+import { InspectImageServerToolConfig } from "@openrouter/sdk/models";
+
+let value: InspectImageServerToolConfig = {};
+```
+
+## Fields
+
+| Field                                                                                                      | Type                                                                                                       | Required                                                                                                   | Description                                                                                                | Example                                                                                                    |
+| ---------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------- |
+| `model`                                                                                                    | *string*                                                                                                   | :heavy_minus_sign:                                                                                         | Vision-capable model that answers the inspection questions. Defaults to the platform default vision model. | google/gemini-2.5-flash                                                                                    |

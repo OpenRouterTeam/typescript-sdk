@@ -161,6 +161,11 @@ import {
   TraceConfig$outboundSchema,
 } from "./traceconfig.js";
 import {
+  VisionPlugin,
+  VisionPlugin$Outbound,
+  VisionPlugin$outboundSchema,
+} from "./visionplugin.js";
+import {
   WebFetchPlugin,
   WebFetchPlugin$Outbound,
   WebFetchPlugin$outboundSchema,
@@ -255,6 +260,7 @@ export type MessagesRequestPlugin =
   | ModerationPlugin
   | ParetoRouterPlugin
   | ResponseHealingPlugin
+  | VisionPlugin
   | WebSearchPlugin
   | WebFetchPlugin;
 
@@ -505,6 +511,7 @@ export type MessagesRequest = {
       | ModerationPlugin
       | ParetoRouterPlugin
       | ResponseHealingPlugin
+      | VisionPlugin
       | WebSearchPlugin
       | WebFetchPlugin
     >
@@ -859,6 +866,7 @@ export type MessagesRequestPlugin$Outbound =
   | ModerationPlugin$Outbound
   | ParetoRouterPlugin$Outbound
   | ResponseHealingPlugin$Outbound
+  | VisionPlugin$Outbound
   | WebSearchPlugin$Outbound
   | WebFetchPlugin$Outbound;
 
@@ -875,6 +883,7 @@ export const MessagesRequestPlugin$outboundSchema: z.ZodType<
   ModerationPlugin$outboundSchema,
   ParetoRouterPlugin$outboundSchema,
   ResponseHealingPlugin$outboundSchema,
+  VisionPlugin$outboundSchema,
   WebSearchPlugin$outboundSchema,
   WebFetchPlugin$outboundSchema,
 ]);
@@ -1508,6 +1517,7 @@ export type MessagesRequest$Outbound = {
       | ModerationPlugin$Outbound
       | ParetoRouterPlugin$Outbound
       | ResponseHealingPlugin$Outbound
+      | VisionPlugin$Outbound
       | WebSearchPlugin$Outbound
       | WebFetchPlugin$Outbound
     >
@@ -1585,6 +1595,7 @@ export const MessagesRequest$outboundSchema: z.ZodType<
       ModerationPlugin$outboundSchema,
       ParetoRouterPlugin$outboundSchema,
       ResponseHealingPlugin$outboundSchema,
+      VisionPlugin$outboundSchema,
       WebSearchPlugin$outboundSchema,
       WebFetchPlugin$outboundSchema,
     ]),

@@ -78,6 +78,11 @@ import {
   ImageGenerationServerToolOpenRouter$outboundSchema,
 } from "./imagegenerationservertoolopenrouter.js";
 import {
+  InspectImageServerToolOpenRouter,
+  InspectImageServerToolOpenRouter$Outbound,
+  InspectImageServerToolOpenRouter$outboundSchema,
+} from "./inspectimageservertoolopenrouter.js";
+import {
   LegacyWebSearchServerTool,
   LegacyWebSearchServerTool$Outbound,
   LegacyWebSearchServerTool$outboundSchema,
@@ -201,6 +206,7 @@ export type AdditionalToolsItemToolUnion =
   | ApplyPatchServerToolOpenRouter
   | BashServerTool
   | ShellServerToolOpenRouter
+  | InspectImageServerToolOpenRouter
   | AdditionalToolsItemTool;
 
 export const TypeAdditionalTools = {
@@ -242,6 +248,7 @@ export type AdditionalToolsItem = {
     | ApplyPatchServerToolOpenRouter
     | BashServerTool
     | ShellServerToolOpenRouter
+    | InspectImageServerToolOpenRouter
     | AdditionalToolsItemTool
   >;
   type: TypeAdditionalTools;
@@ -348,6 +355,7 @@ export type AdditionalToolsItemToolUnion$Outbound =
   | ApplyPatchServerToolOpenRouter$Outbound
   | BashServerTool$Outbound
   | ShellServerToolOpenRouter$Outbound
+  | InspectImageServerToolOpenRouter$Outbound
   | AdditionalToolsItemTool$Outbound;
 
 /** @internal */
@@ -382,6 +390,7 @@ export const AdditionalToolsItemToolUnion$outboundSchema: z.ZodType<
   ApplyPatchServerToolOpenRouter$outboundSchema,
   BashServerTool$outboundSchema,
   ShellServerToolOpenRouter$outboundSchema,
+  InspectImageServerToolOpenRouter$outboundSchema,
   z.lazy(() => AdditionalToolsItemTool$outboundSchema),
 ]);
 
@@ -432,6 +441,7 @@ export type AdditionalToolsItem$Outbound = {
     | ApplyPatchServerToolOpenRouter$Outbound
     | BashServerTool$Outbound
     | ShellServerToolOpenRouter$Outbound
+    | InspectImageServerToolOpenRouter$Outbound
     | AdditionalToolsItemTool$Outbound
   >;
   type: string;
@@ -473,6 +483,7 @@ export const AdditionalToolsItem$outboundSchema: z.ZodType<
       ApplyPatchServerToolOpenRouter$outboundSchema,
       BashServerTool$outboundSchema,
       ShellServerToolOpenRouter$outboundSchema,
+      InspectImageServerToolOpenRouter$outboundSchema,
       z.lazy(() => AdditionalToolsItemTool$outboundSchema),
     ]),
   ),

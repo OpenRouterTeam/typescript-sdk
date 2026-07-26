@@ -137,6 +137,11 @@ import {
   TraceConfig$outboundSchema,
 } from "./traceconfig.js";
 import {
+  VisionPlugin,
+  VisionPlugin$Outbound,
+  VisionPlugin$outboundSchema,
+} from "./visionplugin.js";
+import {
   WebFetchPlugin,
   WebFetchPlugin$Outbound,
   WebFetchPlugin$outboundSchema,
@@ -163,6 +168,7 @@ export type ChatRequestPlugin =
   | ModerationPlugin
   | ParetoRouterPlugin
   | ResponseHealingPlugin
+  | VisionPlugin
   | WebSearchPlugin
   | WebFetchPlugin;
 
@@ -320,6 +326,7 @@ export type ChatRequest = {
       | ModerationPlugin
       | ParetoRouterPlugin
       | ResponseHealingPlugin
+      | VisionPlugin
       | WebSearchPlugin
       | WebFetchPlugin
     >
@@ -443,6 +450,7 @@ export type ChatRequestPlugin$Outbound =
   | ModerationPlugin$Outbound
   | ParetoRouterPlugin$Outbound
   | ResponseHealingPlugin$Outbound
+  | VisionPlugin$Outbound
   | WebSearchPlugin$Outbound
   | WebFetchPlugin$Outbound;
 
@@ -459,6 +467,7 @@ export const ChatRequestPlugin$outboundSchema: z.ZodType<
   ModerationPlugin$outboundSchema,
   ParetoRouterPlugin$outboundSchema,
   ResponseHealingPlugin$outboundSchema,
+  VisionPlugin$outboundSchema,
   WebSearchPlugin$outboundSchema,
   WebFetchPlugin$outboundSchema,
 ]);
@@ -577,6 +586,7 @@ export type ChatRequest$Outbound = {
       | ModerationPlugin$Outbound
       | ParetoRouterPlugin$Outbound
       | ResponseHealingPlugin$Outbound
+      | VisionPlugin$Outbound
       | WebSearchPlugin$Outbound
       | WebFetchPlugin$Outbound
     >
@@ -646,6 +656,7 @@ export const ChatRequest$outboundSchema: z.ZodType<
       ModerationPlugin$outboundSchema,
       ParetoRouterPlugin$outboundSchema,
       ResponseHealingPlugin$outboundSchema,
+      VisionPlugin$outboundSchema,
       WebSearchPlugin$outboundSchema,
       WebFetchPlugin$outboundSchema,
     ]),

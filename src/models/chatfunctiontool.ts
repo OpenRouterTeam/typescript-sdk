@@ -52,6 +52,11 @@ import {
   ImageGenerationServerToolOpenRouter$outboundSchema,
 } from "./imagegenerationservertoolopenrouter.js";
 import {
+  InspectImageServerToolOpenRouter,
+  InspectImageServerToolOpenRouter$Outbound,
+  InspectImageServerToolOpenRouter$outboundSchema,
+} from "./inspectimageservertoolopenrouter.js";
+import {
   OpenRouterWebSearchServerTool,
   OpenRouterWebSearchServerTool$Outbound,
   OpenRouterWebSearchServerTool$outboundSchema,
@@ -117,6 +122,7 @@ export type ChatFunctionTool =
   | FilesServerTool
   | FusionServerToolOpenRouter
   | ImageGenerationServerToolOpenRouter
+  | InspectImageServerToolOpenRouter
   | ChatSearchModelsServerTool
   | SubagentServerToolOpenRouter
   | WebFetchServerTool
@@ -195,6 +201,7 @@ export type ChatFunctionTool$Outbound =
   | FilesServerTool$Outbound
   | FusionServerToolOpenRouter$Outbound
   | ImageGenerationServerToolOpenRouter$Outbound
+  | InspectImageServerToolOpenRouter$Outbound
   | ChatSearchModelsServerTool$Outbound
   | SubagentServerToolOpenRouter$Outbound
   | WebFetchServerTool$Outbound
@@ -213,6 +220,7 @@ export const ChatFunctionTool$outboundSchema: z.ZodType<
   FilesServerTool$outboundSchema,
   FusionServerToolOpenRouter$outboundSchema,
   ImageGenerationServerToolOpenRouter$outboundSchema,
+  InspectImageServerToolOpenRouter$outboundSchema,
   ChatSearchModelsServerTool$outboundSchema,
   SubagentServerToolOpenRouter$outboundSchema,
   WebFetchServerTool$outboundSchema,
