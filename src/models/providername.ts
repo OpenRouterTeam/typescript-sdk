@@ -8,7 +8,6 @@ import * as openEnums from "../types/enums.js";
 import { OpenEnum } from "../types/enums.js";
 
 export const ProviderName = {
-  Modal: "Modal",
   AkashML: "AkashML",
   Ai21: "AI21",
   AionLabs: "AionLabs",
@@ -28,7 +27,6 @@ export const ProviderName = {
   Cerebras: "Cerebras",
   Chutes: "Chutes",
   Cirrascale: "Cirrascale",
-  ClaudePlatformOnAWS: "Claude Platform on AWS",
   Clarifai: "Clarifai",
   Cloudflare: "Cloudflare",
   Cohere: "Cohere",

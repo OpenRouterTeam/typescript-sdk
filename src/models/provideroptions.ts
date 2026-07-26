@@ -34,7 +34,6 @@ export type ProviderOptions = {
   chutes?: { [k: string]: any } | undefined;
   cirrascale?: { [k: string]: any } | undefined;
   clarifai?: { [k: string]: any } | undefined;
-  claudeOnAws?: { [k: string]: any } | undefined;
   cloudflare?: { [k: string]: any } | undefined;
   cohere?: { [k: string]: any } | undefined;
   coreweave?: { [k: string]: any } | undefined;
@@ -169,7 +168,6 @@ export type ProviderOptions$Outbound = {
   chutes?: { [k: string]: any } | undefined;
   cirrascale?: { [k: string]: any } | undefined;
   clarifai?: { [k: string]: any } | undefined;
-  "claude-on-aws"?: { [k: string]: any } | undefined;
   cloudflare?: { [k: string]: any } | undefined;
   cohere?: { [k: string]: any } | undefined;
   coreweave?: { [k: string]: any } | undefined;
@@ -307,7 +305,6 @@ export const ProviderOptions$outboundSchema: z.ZodType<
   chutes: z.record(z.string(), z.any()).optional(),
   cirrascale: z.record(z.string(), z.any()).optional(),
   clarifai: z.record(z.string(), z.any()).optional(),
-  claudeOnAws: z.record(z.string(), z.any()).optional(),
   cloudflare: z.record(z.string(), z.any()).optional(),
   cohere: z.record(z.string(), z.any()).optional(),
   coreweave: z.record(z.string(), z.any()).optional(),
@@ -423,7 +420,6 @@ export const ProviderOptions$outboundSchema: z.ZodType<
     arceeAi: "arcee-ai",
     atlasCloud: "atlas-cloud",
     blackForestLabs: "black-forest-labs",
-    claudeOnAws: "claude-on-aws",
     fakeProvider: "fake-provider",
     fishAudio: "fish-audio",
     googleAiStudio: "google-ai-studio",
