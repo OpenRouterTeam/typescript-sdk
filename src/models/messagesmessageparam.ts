@@ -63,14 +63,77 @@ export type ContentCompaction = {
   type: "compaction";
 };
 
-export const ErrorCode = {
+export type CallerCodeExecution20260120 = {
+  toolId: string;
+  type: "code_execution_20260120";
+};
+
+export type CallerCodeExecution20250825 = {
+  toolId: string;
+  type: "code_execution_20250825";
+};
+
+export type CallerDirect = {
+  type: "direct";
+};
+
+export type Caller =
+  | CallerDirect
+  | CallerCodeExecution20250825
+  | CallerCodeExecution20260120;
+
+export type ContentWebFetchResult = {
+  content: AnthropicDocumentBlockParam;
+  retrievedAt?: string | null | undefined;
+  type: "web_fetch_result";
+  url: string;
+};
+
+export const ErrorCode2 = {
+  InvalidToolInput: "invalid_tool_input",
+  UrlTooLong: "url_too_long",
+  UrlNotAllowed: "url_not_allowed",
+  UrlNotInPriorContext: "url_not_in_prior_context",
+  UrlNotAccessible: "url_not_accessible",
+  UnsupportedContentType: "unsupported_content_type",
+  TooManyRequests: "too_many_requests",
+  MaxUsesExceeded: "max_uses_exceeded",
+  Unavailable: "unavailable",
+} as const;
+export type ErrorCode2 = OpenEnum<typeof ErrorCode2>;
+
+export type ContentWebFetchToolResultError = {
+  errorCode: ErrorCode2;
+  type: "web_fetch_tool_result_error";
+};
+
+export type MessagesMessageParamContentUnion4 =
+  | ContentWebFetchToolResultError
+  | ContentWebFetchResult;
+
+export type ContentWebFetchToolResult = {
+  /**
+   * Enable automatic prompt caching. When set at the top level, the system automatically applies cache breakpoints to the last cacheable block in the request. When set on an individual content block, it marks an explicit cache breakpoint; block-level markers also work on OpenAI models that support explicit prompt caching — OpenRouter converts them to the provider's native format.
+   */
+  cacheControl?: AnthropicCacheControlDirective | undefined;
+  caller?:
+    | CallerDirect
+    | CallerCodeExecution20250825
+    | CallerCodeExecution20260120
+    | undefined;
+  content: ContentWebFetchToolResultError | ContentWebFetchResult;
+  toolUseId: string;
+  type: "web_fetch_tool_result";
+};
+
+export const ErrorCode1 = {
   InvalidToolInput: "invalid_tool_input",
   Unavailable: "unavailable",
   MaxUsesExceeded: "max_uses_exceeded",
   TooManyRequests: "too_many_requests",
   QueryTooLong: "query_too_long",
 } as const;
-export type ErrorCode = OpenEnum<typeof ErrorCode>;
+export type ErrorCode1 = OpenEnum<typeof ErrorCode1>;
 
 export const TypeWebSearchToolResultError = {
   WebSearchToolResultError: "web_search_tool_result_error",
@@ -80,7 +143,7 @@ export type TypeWebSearchToolResultError = ClosedEnum<
 >;
 
 export type ContentWebSearchToolResultError = {
-  errorCode: ErrorCode;
+  errorCode: ErrorCode1;
   type: TypeWebSearchToolResultError;
 };
 
@@ -175,7 +238,7 @@ export type ContentToolUse = {
   type: "tool_use";
 };
 
-export type MessagesMessageParamContentUnion4 =
+export type MessagesMessageParamContentUnion5 =
   | AnthropicTextBlockParam
   | AnthropicImageBlockParam
   | AnthropicDocumentBlockParam
@@ -185,13 +248,14 @@ export type MessagesMessageParamContentUnion4 =
   | ContentRedactedThinking
   | ContentServerToolUse
   | ContentWebSearchToolResult
+  | ContentWebFetchToolResult
   | AnthropicSearchResultBlockParam
   | ContentCompaction
   | MessagesAdvisorToolResultBlock
   | MessagesToolAdditionBlock
   | MessagesToolRemovalBlock;
 
-export type MessagesMessageParamContentUnion5 =
+export type MessagesMessageParamContentUnion6 =
   | string
   | Array<
     | AnthropicTextBlockParam
@@ -203,6 +267,7 @@ export type MessagesMessageParamContentUnion5 =
     | ContentRedactedThinking
     | ContentServerToolUse
     | ContentWebSearchToolResult
+    | ContentWebFetchToolResult
     | AnthropicSearchResultBlockParam
     | ContentCompaction
     | MessagesAdvisorToolResultBlock
@@ -235,6 +300,7 @@ export type MessagesMessageParam = {
       | ContentRedactedThinking
       | ContentServerToolUse
       | ContentWebSearchToolResult
+      | ContentWebFetchToolResult
       | AnthropicSearchResultBlockParam
       | ContentCompaction
       | MessagesAdvisorToolResultBlock
@@ -277,8 +343,236 @@ export function contentCompactionToJSON(
 }
 
 /** @internal */
-export const ErrorCode$outboundSchema: z.ZodType<string, ErrorCode> = openEnums
-  .outboundSchema(ErrorCode);
+export type CallerCodeExecution20260120$Outbound = {
+  tool_id: string;
+  type: "code_execution_20260120";
+};
+
+/** @internal */
+export const CallerCodeExecution20260120$outboundSchema: z.ZodType<
+  CallerCodeExecution20260120$Outbound,
+  CallerCodeExecution20260120
+> = z.object({
+  toolId: z.string(),
+  type: z.literal("code_execution_20260120"),
+}).transform((v) => {
+  return remap$(v, {
+    toolId: "tool_id",
+  });
+});
+
+export function callerCodeExecution20260120ToJSON(
+  callerCodeExecution20260120: CallerCodeExecution20260120,
+): string {
+  return JSON.stringify(
+    CallerCodeExecution20260120$outboundSchema.parse(
+      callerCodeExecution20260120,
+    ),
+  );
+}
+
+/** @internal */
+export type CallerCodeExecution20250825$Outbound = {
+  tool_id: string;
+  type: "code_execution_20250825";
+};
+
+/** @internal */
+export const CallerCodeExecution20250825$outboundSchema: z.ZodType<
+  CallerCodeExecution20250825$Outbound,
+  CallerCodeExecution20250825
+> = z.object({
+  toolId: z.string(),
+  type: z.literal("code_execution_20250825"),
+}).transform((v) => {
+  return remap$(v, {
+    toolId: "tool_id",
+  });
+});
+
+export function callerCodeExecution20250825ToJSON(
+  callerCodeExecution20250825: CallerCodeExecution20250825,
+): string {
+  return JSON.stringify(
+    CallerCodeExecution20250825$outboundSchema.parse(
+      callerCodeExecution20250825,
+    ),
+  );
+}
+
+/** @internal */
+export type CallerDirect$Outbound = {
+  type: "direct";
+};
+
+/** @internal */
+export const CallerDirect$outboundSchema: z.ZodType<
+  CallerDirect$Outbound,
+  CallerDirect
+> = z.object({
+  type: z.literal("direct"),
+});
+
+export function callerDirectToJSON(callerDirect: CallerDirect): string {
+  return JSON.stringify(CallerDirect$outboundSchema.parse(callerDirect));
+}
+
+/** @internal */
+export type Caller$Outbound =
+  | CallerDirect$Outbound
+  | CallerCodeExecution20250825$Outbound
+  | CallerCodeExecution20260120$Outbound;
+
+/** @internal */
+export const Caller$outboundSchema: z.ZodType<Caller$Outbound, Caller> = z
+  .union([
+    z.lazy(() => CallerDirect$outboundSchema),
+    z.lazy(() => CallerCodeExecution20250825$outboundSchema),
+    z.lazy(() => CallerCodeExecution20260120$outboundSchema),
+  ]);
+
+export function callerToJSON(caller: Caller): string {
+  return JSON.stringify(Caller$outboundSchema.parse(caller));
+}
+
+/** @internal */
+export type ContentWebFetchResult$Outbound = {
+  content: AnthropicDocumentBlockParam$Outbound;
+  retrieved_at?: string | null | undefined;
+  type: "web_fetch_result";
+  url: string;
+};
+
+/** @internal */
+export const ContentWebFetchResult$outboundSchema: z.ZodType<
+  ContentWebFetchResult$Outbound,
+  ContentWebFetchResult
+> = z.object({
+  content: AnthropicDocumentBlockParam$outboundSchema,
+  retrievedAt: z.nullable(z.string()).optional(),
+  type: z.literal("web_fetch_result"),
+  url: z.string(),
+}).transform((v) => {
+  return remap$(v, {
+    retrievedAt: "retrieved_at",
+  });
+});
+
+export function contentWebFetchResultToJSON(
+  contentWebFetchResult: ContentWebFetchResult,
+): string {
+  return JSON.stringify(
+    ContentWebFetchResult$outboundSchema.parse(contentWebFetchResult),
+  );
+}
+
+/** @internal */
+export const ErrorCode2$outboundSchema: z.ZodType<string, ErrorCode2> =
+  openEnums.outboundSchema(ErrorCode2);
+
+/** @internal */
+export type ContentWebFetchToolResultError$Outbound = {
+  error_code: string;
+  type: "web_fetch_tool_result_error";
+};
+
+/** @internal */
+export const ContentWebFetchToolResultError$outboundSchema: z.ZodType<
+  ContentWebFetchToolResultError$Outbound,
+  ContentWebFetchToolResultError
+> = z.object({
+  errorCode: ErrorCode2$outboundSchema,
+  type: z.literal("web_fetch_tool_result_error"),
+}).transform((v) => {
+  return remap$(v, {
+    errorCode: "error_code",
+  });
+});
+
+export function contentWebFetchToolResultErrorToJSON(
+  contentWebFetchToolResultError: ContentWebFetchToolResultError,
+): string {
+  return JSON.stringify(
+    ContentWebFetchToolResultError$outboundSchema.parse(
+      contentWebFetchToolResultError,
+    ),
+  );
+}
+
+/** @internal */
+export type MessagesMessageParamContentUnion4$Outbound =
+  | ContentWebFetchToolResultError$Outbound
+  | ContentWebFetchResult$Outbound;
+
+/** @internal */
+export const MessagesMessageParamContentUnion4$outboundSchema: z.ZodType<
+  MessagesMessageParamContentUnion4$Outbound,
+  MessagesMessageParamContentUnion4
+> = z.union([
+  z.lazy(() => ContentWebFetchToolResultError$outboundSchema),
+  z.lazy(() => ContentWebFetchResult$outboundSchema),
+]);
+
+export function messagesMessageParamContentUnion4ToJSON(
+  messagesMessageParamContentUnion4: MessagesMessageParamContentUnion4,
+): string {
+  return JSON.stringify(
+    MessagesMessageParamContentUnion4$outboundSchema.parse(
+      messagesMessageParamContentUnion4,
+    ),
+  );
+}
+
+/** @internal */
+export type ContentWebFetchToolResult$Outbound = {
+  cache_control?: AnthropicCacheControlDirective$Outbound | undefined;
+  caller?:
+    | CallerDirect$Outbound
+    | CallerCodeExecution20250825$Outbound
+    | CallerCodeExecution20260120$Outbound
+    | undefined;
+  content:
+    | ContentWebFetchToolResultError$Outbound
+    | ContentWebFetchResult$Outbound;
+  tool_use_id: string;
+  type: "web_fetch_tool_result";
+};
+
+/** @internal */
+export const ContentWebFetchToolResult$outboundSchema: z.ZodType<
+  ContentWebFetchToolResult$Outbound,
+  ContentWebFetchToolResult
+> = z.object({
+  cacheControl: AnthropicCacheControlDirective$outboundSchema.optional(),
+  caller: z.union([
+    z.lazy(() => CallerDirect$outboundSchema),
+    z.lazy(() => CallerCodeExecution20250825$outboundSchema),
+    z.lazy(() => CallerCodeExecution20260120$outboundSchema),
+  ]).optional(),
+  content: z.union([
+    z.lazy(() => ContentWebFetchToolResultError$outboundSchema),
+    z.lazy(() => ContentWebFetchResult$outboundSchema),
+  ]),
+  toolUseId: z.string(),
+  type: z.literal("web_fetch_tool_result"),
+}).transform((v) => {
+  return remap$(v, {
+    cacheControl: "cache_control",
+    toolUseId: "tool_use_id",
+  });
+});
+
+export function contentWebFetchToolResultToJSON(
+  contentWebFetchToolResult: ContentWebFetchToolResult,
+): string {
+  return JSON.stringify(
+    ContentWebFetchToolResult$outboundSchema.parse(contentWebFetchToolResult),
+  );
+}
+
+/** @internal */
+export const ErrorCode1$outboundSchema: z.ZodType<string, ErrorCode1> =
+  openEnums.outboundSchema(ErrorCode1);
 
 /** @internal */
 export const TypeWebSearchToolResultError$outboundSchema: z.ZodEnum<
@@ -296,7 +590,7 @@ export const ContentWebSearchToolResultError$outboundSchema: z.ZodType<
   ContentWebSearchToolResultError$Outbound,
   ContentWebSearchToolResultError
 > = z.object({
-  errorCode: ErrorCode$outboundSchema,
+  errorCode: ErrorCode1$outboundSchema,
   type: TypeWebSearchToolResultError$outboundSchema,
 }).transform((v) => {
   return remap$(v, {
@@ -634,7 +928,7 @@ export function contentToolUseToJSON(contentToolUse: ContentToolUse): string {
 }
 
 /** @internal */
-export type MessagesMessageParamContentUnion4$Outbound =
+export type MessagesMessageParamContentUnion5$Outbound =
   | AnthropicTextBlockParam$Outbound
   | AnthropicImageBlockParam$Outbound
   | AnthropicDocumentBlockParam$Outbound
@@ -644,6 +938,7 @@ export type MessagesMessageParamContentUnion4$Outbound =
   | ContentRedactedThinking$Outbound
   | ContentServerToolUse$Outbound
   | ContentWebSearchToolResult$Outbound
+  | ContentWebFetchToolResult$Outbound
   | AnthropicSearchResultBlockParam$Outbound
   | ContentCompaction$Outbound
   | MessagesAdvisorToolResultBlock$Outbound
@@ -651,9 +946,9 @@ export type MessagesMessageParamContentUnion4$Outbound =
   | MessagesToolRemovalBlock$Outbound;
 
 /** @internal */
-export const MessagesMessageParamContentUnion4$outboundSchema: z.ZodType<
-  MessagesMessageParamContentUnion4$Outbound,
-  MessagesMessageParamContentUnion4
+export const MessagesMessageParamContentUnion5$outboundSchema: z.ZodType<
+  MessagesMessageParamContentUnion5$Outbound,
+  MessagesMessageParamContentUnion5
 > = z.union([
   AnthropicTextBlockParam$outboundSchema,
   AnthropicImageBlockParam$outboundSchema,
@@ -664,6 +959,7 @@ export const MessagesMessageParamContentUnion4$outboundSchema: z.ZodType<
   z.lazy(() => ContentRedactedThinking$outboundSchema),
   z.lazy(() => ContentServerToolUse$outboundSchema),
   z.lazy(() => ContentWebSearchToolResult$outboundSchema),
+  z.lazy(() => ContentWebFetchToolResult$outboundSchema),
   AnthropicSearchResultBlockParam$outboundSchema,
   z.lazy(() => ContentCompaction$outboundSchema),
   MessagesAdvisorToolResultBlock$outboundSchema,
@@ -671,18 +967,18 @@ export const MessagesMessageParamContentUnion4$outboundSchema: z.ZodType<
   MessagesToolRemovalBlock$outboundSchema,
 ]);
 
-export function messagesMessageParamContentUnion4ToJSON(
-  messagesMessageParamContentUnion4: MessagesMessageParamContentUnion4,
+export function messagesMessageParamContentUnion5ToJSON(
+  messagesMessageParamContentUnion5: MessagesMessageParamContentUnion5,
 ): string {
   return JSON.stringify(
-    MessagesMessageParamContentUnion4$outboundSchema.parse(
-      messagesMessageParamContentUnion4,
+    MessagesMessageParamContentUnion5$outboundSchema.parse(
+      messagesMessageParamContentUnion5,
     ),
   );
 }
 
 /** @internal */
-export type MessagesMessageParamContentUnion5$Outbound =
+export type MessagesMessageParamContentUnion6$Outbound =
   | string
   | Array<
     | AnthropicTextBlockParam$Outbound
@@ -694,6 +990,7 @@ export type MessagesMessageParamContentUnion5$Outbound =
     | ContentRedactedThinking$Outbound
     | ContentServerToolUse$Outbound
     | ContentWebSearchToolResult$Outbound
+    | ContentWebFetchToolResult$Outbound
     | AnthropicSearchResultBlockParam$Outbound
     | ContentCompaction$Outbound
     | MessagesAdvisorToolResultBlock$Outbound
@@ -702,9 +999,9 @@ export type MessagesMessageParamContentUnion5$Outbound =
   >;
 
 /** @internal */
-export const MessagesMessageParamContentUnion5$outboundSchema: z.ZodType<
-  MessagesMessageParamContentUnion5$Outbound,
-  MessagesMessageParamContentUnion5
+export const MessagesMessageParamContentUnion6$outboundSchema: z.ZodType<
+  MessagesMessageParamContentUnion6$Outbound,
+  MessagesMessageParamContentUnion6
 > = z.union([
   z.string(),
   z.array(
@@ -718,6 +1015,7 @@ export const MessagesMessageParamContentUnion5$outboundSchema: z.ZodType<
       z.lazy(() => ContentRedactedThinking$outboundSchema),
       z.lazy(() => ContentServerToolUse$outboundSchema),
       z.lazy(() => ContentWebSearchToolResult$outboundSchema),
+      z.lazy(() => ContentWebFetchToolResult$outboundSchema),
       AnthropicSearchResultBlockParam$outboundSchema,
       z.lazy(() => ContentCompaction$outboundSchema),
       MessagesAdvisorToolResultBlock$outboundSchema,
@@ -727,12 +1025,12 @@ export const MessagesMessageParamContentUnion5$outboundSchema: z.ZodType<
   ),
 ]);
 
-export function messagesMessageParamContentUnion5ToJSON(
-  messagesMessageParamContentUnion5: MessagesMessageParamContentUnion5,
+export function messagesMessageParamContentUnion6ToJSON(
+  messagesMessageParamContentUnion6: MessagesMessageParamContentUnion6,
 ): string {
   return JSON.stringify(
-    MessagesMessageParamContentUnion5$outboundSchema.parse(
-      messagesMessageParamContentUnion5,
+    MessagesMessageParamContentUnion6$outboundSchema.parse(
+      messagesMessageParamContentUnion6,
     ),
   );
 }
@@ -757,6 +1055,7 @@ export type MessagesMessageParam$Outbound = {
       | ContentRedactedThinking$Outbound
       | ContentServerToolUse$Outbound
       | ContentWebSearchToolResult$Outbound
+      | ContentWebFetchToolResult$Outbound
       | AnthropicSearchResultBlockParam$Outbound
       | ContentCompaction$Outbound
       | MessagesAdvisorToolResultBlock$Outbound
@@ -784,6 +1083,7 @@ export const MessagesMessageParam$outboundSchema: z.ZodType<
         z.lazy(() => ContentRedactedThinking$outboundSchema),
         z.lazy(() => ContentServerToolUse$outboundSchema),
         z.lazy(() => ContentWebSearchToolResult$outboundSchema),
+        z.lazy(() => ContentWebFetchToolResult$outboundSchema),
         AnthropicSearchResultBlockParam$outboundSchema,
         z.lazy(() => ContentCompaction$outboundSchema),
         MessagesAdvisorToolResultBlock$outboundSchema,
