@@ -1,0 +1,31 @@
+---
+title: "ContentWebFetchResult"
+---
+
+## Example Usage
+
+```typescript
+import { ContentWebFetchResult } from "@openrouter/sdk/models";
+
+let value: ContentWebFetchResult = {
+  content: {
+    source: {
+      data: "Hello, world!",
+      mediaType: "text/plain",
+      type: "text",
+    },
+    type: "document",
+  },
+  type: "web_fetch_result",
+  url: "https://proud-godparent.biz",
+};
+```
+
+## Fields
+
+| Field                                                                                                     | Type                                                                                                      | Required                                                                                                  | Description                                                                                               | Example                                                                                                   |
+| --------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------- |
+| `content`                                                                                                 | [models.AnthropicDocumentBlockParam](../models/anthropicdocumentblockparam.mdx)                            | :heavy_check_mark:                                                                                        | N/A                                                                                                       | \{<br/>"source": \{<br/>"data": "Hello, world!",<br/>"media_type": "text/plain",<br/>"type": "text"<br/>},<br/>"type": "document"<br/>} |
+| `retrievedAt`                                                                                             | *string*                                                                                                  | :heavy_minus_sign:                                                                                        | N/A                                                                                                       |                                                                                                           |
+| `type`                                                                                                    | *"web_fetch_result"*                                                                                      | :heavy_check_mark:                                                                                        | N/A                                                                                                       |                                                                                                           |
+| `url`                                                                                                     | *string*                                                                                                  | :heavy_check_mark:                                                                                        | N/A                                                                                                       |                                                                                                           |
