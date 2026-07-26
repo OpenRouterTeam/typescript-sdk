@@ -78,6 +78,11 @@ import {
   ImageGenerationServerToolOpenRouter$outboundSchema,
 } from "./imagegenerationservertoolopenrouter.js";
 import {
+  InspectImageServerToolOpenRouter,
+  InspectImageServerToolOpenRouter$Outbound,
+  InspectImageServerToolOpenRouter$outboundSchema,
+} from "./inspectimageservertoolopenrouter.js";
+import {
   LegacyWebSearchServerTool,
   LegacyWebSearchServerTool$Outbound,
   LegacyWebSearchServerTool$outboundSchema,
@@ -195,6 +200,7 @@ export type AdditionalToolsItemToolUnion =
   | FilesServerTool
   | FusionServerToolOpenRouter
   | ImageGenerationServerToolOpenRouter
+  | InspectImageServerToolOpenRouter
   | SearchModelsServerToolOpenRouter
   | WebFetchServerTool
   | WebSearchServerToolOpenRouter
@@ -236,6 +242,7 @@ export type AdditionalToolsItem = {
     | FilesServerTool
     | FusionServerToolOpenRouter
     | ImageGenerationServerToolOpenRouter
+    | InspectImageServerToolOpenRouter
     | SearchModelsServerToolOpenRouter
     | WebFetchServerTool
     | WebSearchServerToolOpenRouter
@@ -342,6 +349,7 @@ export type AdditionalToolsItemToolUnion$Outbound =
   | FilesServerTool$Outbound
   | FusionServerToolOpenRouter$Outbound
   | ImageGenerationServerToolOpenRouter$Outbound
+  | InspectImageServerToolOpenRouter$Outbound
   | SearchModelsServerToolOpenRouter$Outbound
   | WebFetchServerTool$Outbound
   | WebSearchServerToolOpenRouter$Outbound
@@ -376,6 +384,7 @@ export const AdditionalToolsItemToolUnion$outboundSchema: z.ZodType<
   FilesServerTool$outboundSchema,
   FusionServerToolOpenRouter$outboundSchema,
   ImageGenerationServerToolOpenRouter$outboundSchema,
+  InspectImageServerToolOpenRouter$outboundSchema,
   SearchModelsServerToolOpenRouter$outboundSchema,
   WebFetchServerTool$outboundSchema,
   WebSearchServerToolOpenRouter$outboundSchema,
@@ -426,6 +435,7 @@ export type AdditionalToolsItem$Outbound = {
     | FilesServerTool$Outbound
     | FusionServerToolOpenRouter$Outbound
     | ImageGenerationServerToolOpenRouter$Outbound
+    | InspectImageServerToolOpenRouter$Outbound
     | SearchModelsServerToolOpenRouter$Outbound
     | WebFetchServerTool$Outbound
     | WebSearchServerToolOpenRouter$Outbound
@@ -467,6 +477,7 @@ export const AdditionalToolsItem$outboundSchema: z.ZodType<
       FilesServerTool$outboundSchema,
       FusionServerToolOpenRouter$outboundSchema,
       ImageGenerationServerToolOpenRouter$outboundSchema,
+      InspectImageServerToolOpenRouter$outboundSchema,
       SearchModelsServerToolOpenRouter$outboundSchema,
       WebFetchServerTool$outboundSchema,
       WebSearchServerToolOpenRouter$outboundSchema,

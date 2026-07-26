@@ -123,6 +123,11 @@ import {
   InputsUnion$outboundSchema,
 } from "./inputsunion.js";
 import {
+  InspectImageServerToolOpenRouter,
+  InspectImageServerToolOpenRouter$Outbound,
+  InspectImageServerToolOpenRouter$outboundSchema,
+} from "./inspectimageservertoolopenrouter.js";
+import {
   LegacyWebSearchServerTool,
   LegacyWebSearchServerTool$Outbound,
   LegacyWebSearchServerTool$outboundSchema,
@@ -246,6 +251,11 @@ import {
   TraceConfig$outboundSchema,
 } from "./traceconfig.js";
 import {
+  VisionPlugin,
+  VisionPlugin$Outbound,
+  VisionPlugin$outboundSchema,
+} from "./visionplugin.js";
+import {
   WebFetchPlugin,
   WebFetchPlugin$Outbound,
   WebFetchPlugin$outboundSchema,
@@ -280,6 +290,7 @@ export type ResponsesRequestPlugin =
   | ModerationPlugin
   | ParetoRouterPlugin
   | ResponseHealingPlugin
+  | VisionPlugin
   | WebSearchPlugin
   | WebFetchPlugin;
 
@@ -346,6 +357,7 @@ export type ResponsesRequestToolUnion =
   | (ImageGenerationServerToolOpenRouter & {
     type: "openrouter:image_generation";
   })
+  | (InspectImageServerToolOpenRouter & { type: "openrouter:inspect_image" })
   | (SearchModelsServerToolOpenRouter & {
     type: "openrouter:experimental__search_models";
   })
@@ -408,6 +420,7 @@ export type ResponsesRequest = {
       | ModerationPlugin
       | ParetoRouterPlugin
       | ResponseHealingPlugin
+      | VisionPlugin
       | WebSearchPlugin
       | WebFetchPlugin
     >
@@ -479,6 +492,9 @@ export type ResponsesRequest = {
       | (ImageGenerationServerToolOpenRouter & {
         type: "openrouter:image_generation";
       })
+      | (InspectImageServerToolOpenRouter & {
+        type: "openrouter:inspect_image";
+      })
       | (SearchModelsServerToolOpenRouter & {
         type: "openrouter:experimental__search_models";
       })
@@ -513,6 +529,7 @@ export type ResponsesRequestPlugin$Outbound =
   | ModerationPlugin$Outbound
   | ParetoRouterPlugin$Outbound
   | ResponseHealingPlugin$Outbound
+  | VisionPlugin$Outbound
   | WebSearchPlugin$Outbound
   | WebFetchPlugin$Outbound;
 
@@ -529,6 +546,7 @@ export const ResponsesRequestPlugin$outboundSchema: z.ZodType<
   ModerationPlugin$outboundSchema,
   ParetoRouterPlugin$outboundSchema,
   ResponseHealingPlugin$outboundSchema,
+  VisionPlugin$outboundSchema,
   WebSearchPlugin$outboundSchema,
   WebFetchPlugin$outboundSchema,
 ]);
@@ -638,6 +656,9 @@ export type ResponsesRequestToolUnion$Outbound =
   | (ImageGenerationServerToolOpenRouter$Outbound & {
     type: "openrouter:image_generation";
   })
+  | (InspectImageServerToolOpenRouter$Outbound & {
+    type: "openrouter:inspect_image";
+  })
   | (SearchModelsServerToolOpenRouter$Outbound & {
     type: "openrouter:experimental__search_models";
   })
@@ -707,6 +728,9 @@ export const ResponsesRequestToolUnion$outboundSchema: z.ZodType<
   ImageGenerationServerToolOpenRouter$outboundSchema.and(
     z.object({ type: z.literal("openrouter:image_generation") }),
   ),
+  InspectImageServerToolOpenRouter$outboundSchema.and(
+    z.object({ type: z.literal("openrouter:inspect_image") }),
+  ),
   SearchModelsServerToolOpenRouter$outboundSchema.and(
     z.object({ type: z.literal("openrouter:experimental__search_models") }),
   ),
@@ -762,6 +786,7 @@ export type ResponsesRequest$Outbound = {
       | ModerationPlugin$Outbound
       | ParetoRouterPlugin$Outbound
       | ResponseHealingPlugin$Outbound
+      | VisionPlugin$Outbound
       | WebSearchPlugin$Outbound
       | WebFetchPlugin$Outbound
     >
@@ -812,6 +837,9 @@ export type ResponsesRequest$Outbound = {
       | (FusionServerToolOpenRouter$Outbound & { type: "openrouter:fusion" })
       | (ImageGenerationServerToolOpenRouter$Outbound & {
         type: "openrouter:image_generation";
+      })
+      | (InspectImageServerToolOpenRouter$Outbound & {
+        type: "openrouter:inspect_image";
       })
       | (SearchModelsServerToolOpenRouter$Outbound & {
         type: "openrouter:experimental__search_models";
@@ -865,6 +893,7 @@ export const ResponsesRequest$outboundSchema: z.ZodType<
       ModerationPlugin$outboundSchema,
       ParetoRouterPlugin$outboundSchema,
       ResponseHealingPlugin$outboundSchema,
+      VisionPlugin$outboundSchema,
       WebSearchPlugin$outboundSchema,
       WebFetchPlugin$outboundSchema,
     ]),
@@ -947,6 +976,9 @@ export const ResponsesRequest$outboundSchema: z.ZodType<
       ),
       ImageGenerationServerToolOpenRouter$outboundSchema.and(
         z.object({ type: z.literal("openrouter:image_generation") }),
+      ),
+      InspectImageServerToolOpenRouter$outboundSchema.and(
+        z.object({ type: z.literal("openrouter:inspect_image") }),
       ),
       SearchModelsServerToolOpenRouter$outboundSchema.and(
         z.object({ type: z.literal("openrouter:experimental__search_models") }),

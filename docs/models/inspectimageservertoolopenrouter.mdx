@@ -1,0 +1,22 @@
+---
+title: "InspectImageServerToolOpenRouter"
+---
+
+OpenRouter built-in server tool: lets a text-only model examine attached images by dispatching questions to a vision-capable model server-side
+
+## Example Usage
+
+```typescript
+import { InspectImageServerToolOpenRouter } from "@openrouter/sdk/models";
+
+let value: InspectImageServerToolOpenRouter = {
+  type: "openrouter:inspect_image",
+};
+```
+
+## Fields
+
+| Field                                                                                                                                                                            | Type                                                                                                                                                                             | Required                                                                                                                                                                         | Description                                                                                                                                                                      |
+| -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `parameters`                                                                                                                                                                     | [models.InspectImageServerToolConfig](../models/inspectimageservertoolconfig.mdx)                                                                                                 | :heavy_minus_sign:                                                                                                                                                               | Configuration for the openrouter:inspect_image server tool, which lets a text-only model examine attached images by dispatching questions to a vision-capable model server-side. |
+| `type`                                                                                                                                                                           | [models.InspectImageServerToolOpenRouterType](../models/inspectimageservertoolopenroutertype.mdx)                                                                                 | :heavy_check_mark:                                                                                                                                                               | N/A                                                                                                                                                                              |
