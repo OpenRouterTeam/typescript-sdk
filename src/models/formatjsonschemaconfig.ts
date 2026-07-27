@@ -12,7 +12,7 @@ import { SDKValidationError } from "./errors/sdkvalidationerror.js";
  * JSON schema constrained response format
  */
 export type FormatJsonSchemaConfig = {
-  description?: string | undefined;
+  description?: string | null | undefined;
   name: string;
   schema: { [k: string]: any };
   strict?: boolean | null | undefined;
@@ -24,7 +24,7 @@ export const FormatJsonSchemaConfig$inboundSchema: z.ZodType<
   FormatJsonSchemaConfig,
   unknown
 > = z.object({
-  description: z.string().optional(),
+  description: z.nullable(z.string()).optional(),
   name: z.string(),
   schema: z.record(z.string(), z.any()),
   strict: z.nullable(z.boolean()).optional(),
@@ -32,7 +32,7 @@ export const FormatJsonSchemaConfig$inboundSchema: z.ZodType<
 });
 /** @internal */
 export type FormatJsonSchemaConfig$Outbound = {
-  description?: string | undefined;
+  description?: string | null | undefined;
   name: string;
   schema: { [k: string]: any };
   strict?: boolean | null | undefined;
@@ -44,7 +44,7 @@ export const FormatJsonSchemaConfig$outboundSchema: z.ZodType<
   FormatJsonSchemaConfig$Outbound,
   FormatJsonSchemaConfig
 > = z.object({
-  description: z.string().optional(),
+  description: z.nullable(z.string()).optional(),
   name: z.string(),
   schema: z.record(z.string(), z.any()),
   strict: z.nullable(z.boolean()).optional(),
