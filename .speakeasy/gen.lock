@@ -1,19 +1,19 @@
 lockVersion: ""
 id: ""
 management:
-  docChecksum: 701ca778b47d2f01943f5183557bd207
+  docChecksum: b250108bff01b89371169a7c0c82cf5e
   docVersion: 1.0.0
   speakeasyVersion: 1.787.0
   generationVersion: 2.914.0
-  releaseVersion: 1.1.9
-  configChecksum: d0e5e93bcaabd5bea66b6c0eb0cd6ce0
+  releaseVersion: 1.1.10
+  configChecksum: e36990b636553c2495d27c9d2ea7948a
   repoURL: https://github.com/OpenRouterTeam/typescript-sdk.git
   installationURL: https://github.com/OpenRouterTeam/typescript-sdk
   published: true
 persistentEdits:
-  generation_id: 1766fd96-16b9-4de7-9b64-a59fd1690bad
-  pristine_commit_hash: bacf0c1ca93f24694857729257f748c4565a7986
-  pristine_tree_hash: 271b7d66bf0fbb438e7a473998b3ef59625d73de
+  generation_id: 701c8fbf-cd88-4efa-9019-264f46f485b4
+  pristine_commit_hash: 08bf5878089788e087d7ca8ff1d3e0632742c977
+  pristine_tree_hash: b62555322bd7fc55856ecd8a3e0fbdf40139665c
 features:
   typescript:
     acceptHeaders: 2.81.2
@@ -10161,8 +10161,8 @@ trackedFiles:
     deleted: true
   docs/models/reasoningformat.mdx:
     id: 6fea0bfce246
-    last_write_checksum: sha1:f61b95dd9f6c8d6561c265e642ba971c9dfa50ca
-    pristine_git_object: 5b0e7dd966d63d8a7b23d33ca3e5c03de8fd0db5
+    last_write_checksum: sha1:bdfe7ad5a1e877615c94d35df4651a883e8e0427
+    pristine_git_object: d1990babe383c431ba75c5f700173b5d6ab328fb
   docs/models/reasoningitem.md:
     id: 9b64e42a341c
     last_write_checksum: sha1:aedd52e8b127921fb38f25c4181cf8a74c02e822
@@ -12513,12 +12513,12 @@ trackedFiles:
     pristine_git_object: 410efafd6a7f50d91ccb87131fedbe0c3d47e15a
   jsr.json:
     id: 7f6ab7767282
-    last_write_checksum: sha1:004ca8662e69dd2d94b18f2da54ff3db6ec4bdcb
-    pristine_git_object: f527ef3560780e289eda9e0ddb6a2c9340b20641
+    last_write_checksum: sha1:b798b2a78292dc58e7207a28d5cda2cb348a17d0
+    pristine_git_object: 9f82a24134d638c9061e6f5d7075a5d388ae3b5d
   package.json:
     id: 7030d0b2f71b
-    last_write_checksum: sha1:5beb3e90d14ee69af73f8d231b31188cd10ee5e9
-    pristine_git_object: df7a799a509089ebd3987cdb108d6f5e0be16d4f
+    last_write_checksum: sha1:f8483d51e2746ba6a70cd84be40bb57d3f8089ae
+    pristine_git_object: 4ade696e031ce6d42dcc852a6217e3d5c974d17a
   src/core.ts:
     id: f431fdbcd144
     last_write_checksum: sha1:5aa66b0b6a5964f3eea7f3098c2eb3c0ee9c0131
@@ -12897,8 +12897,8 @@ trackedFiles:
     pristine_git_object: a187e58707bdb726ca2aff74941efe7493422d4e
   src/lib/config.ts:
     id: 320761608fb3
-    last_write_checksum: sha1:83d68a48c8f40b5f2414783d3f97c2522d7f6267
-    pristine_git_object: 9424084b45acfc3f3fc97aca0c79881e35b20399
+    last_write_checksum: sha1:3a06389056fa551461563d78dfb33039312a0837
+    pristine_git_object: 75e0999b429b331ead79430d1613612026b6b26c
   src/lib/dlv.ts:
     id: b1988214835a
     last_write_checksum: sha1:eaac763b22717206a6199104e0403ed17a4e2711
@@ -15171,8 +15171,8 @@ trackedFiles:
     pristine_git_object: e9e0767ea0bbd131be060f3f8f4375309a271748
   src/models/reasoningformat.ts:
     id: b523cf757168
-    last_write_checksum: sha1:3e56a79ada5be28280aa1248ac6c5ddbcf7f3f86
-    pristine_git_object: b042d4f878f88f683f72d54b9277217cc5813d8f
+    last_write_checksum: sha1:bea4c4c671fc246974a299507ff2e5123b432f27
+    pristine_git_object: b9a3bb6f75fffe61053f68ff63d1a5a74401d01a
   src/models/reasoningitem.ts:
     id: 347a000c48b1
     last_write_checksum: sha1:be603acb4aad1efd30c4ade22ef80c10c835b17b
@@ -17443,4 +17443,4 @@ examples:
         "500":
           application/json: {"error": {"code": 500, "message": "Internal Server Error"}}
 examplesVersion: 1.0.2
-releaseNotes: "## Typescript SDK Changes:\n* `openrouter.beta.responses.send()`: \n  *  `request.responsesRequest.provider.quantizations[]` **Changed**\n* `openrouter.chat.send()`: \n  *  `request.chatRequest.provider.quantizations[]` **Changed**\n* `openrouter.embeddings.generate()`: \n  *  `request.requestBody.provider.quantizations[]` **Changed**\n* `openrouter.endpoints.listZdrEndpoints()`:  `response.data[].quantization` **Changed**\n* `openrouter.endpoints.list()`:  `response.data.endpoints[].quantization` **Changed**\n* `openrouter.presets.createPresetsChatCompletions()`: \n  *  `request.chatRequest.provider.quantizations[]` **Changed**\n* `openrouter.presets.createPresetsMessages()`: \n  *  `request.messagesRequest.provider.quantizations[]` **Changed**\n* `openrouter.presets.createPresetsResponses()`: \n  *  `request.responsesRequest.provider.quantizations[]` **Changed**\n* `openrouter.rerank.rerank()`: \n  *  `request.requestBody.provider.quantizations[]` **Changed**\n* `openrouter.responses.send()`: \n  *  `request.responsesRequest.provider.quantizations[]` **Changed**\n"
+releaseNotes: "## Typescript SDK Changes:\n* `openrouter.beta.responses.send()`: \n  *  `request.responsesRequest.input.union(Array<>)[].union(class (8)).format.enum(bedrockOpenaiResponsesV1)` **Added**\n  *  `response` **Changed**\n* `openrouter.chat.send()`: \n  *  `request.chatRequest.messages[].union(assistant).reasoningDetails[].union(reasoning.summary).format.enum(bedrockOpenaiResponsesV1)` **Added**\n  *  `response` **Changed**\n* `openrouter.presets.createPresetsChatCompletions()`: \n  *  `request.chatRequest.messages[].union(assistant).reasoningDetails[].union(reasoning.summary).format.enum(bedrockOpenaiResponsesV1)` **Added**\n* `openrouter.presets.createPresetsResponses()`: \n  *  `request.responsesRequest.input.union(Array<>)[].union(ReasoningItem).format.enum(bedrockOpenaiResponsesV1)` **Added**\n* `openrouter.responses.send()`: \n  *  `request.responsesRequest.input.union(Array<>)[].union(ReasoningItem).format.enum(bedrockOpenaiResponsesV1)` **Added**\n  *  `response` **Changed**\n"
