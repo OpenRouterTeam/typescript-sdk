@@ -59,7 +59,7 @@ export type OutputFusionServerToolItemType = ClosedEnum<
  */
 export type OutputFusionServerToolItem = {
   /**
-   * Structured analysis produced by the fusion judge model.
+   * Structured analysis produced by the fusion analyst model.
    */
   analysis?: FusionAnalysisResult | undefined;
   /**
@@ -71,7 +71,7 @@ export type OutputFusionServerToolItem = {
    */
   failedModels?: Array<FailedModel> | undefined;
   /**
-   * Typed failure reason when the fusion run failed. Possible values include: all_panels_failed, insufficient_credits, rate_limited, judge_not_valid_json, judge_schema_mismatch, judge_upstream_error, judge_empty_completion.
+   * Typed failure reason when the fusion run failed. Possible values include: all_panels_failed, insufficient_credits, rate_limited, analyst_not_valid_json, analyst_schema_mismatch, analyst_upstream_error, analyst_empty_completion.
    */
   failureReason?: string | undefined;
   id?: string | undefined;
@@ -80,7 +80,7 @@ export type OutputFusionServerToolItem = {
    */
   responses?: Array<ResponseT> | undefined;
   /**
-   * Web pages the analysis panels and judge retrieved via web search during this fusion run, deduplicated by URL across the whole run. Present when at least one model cited a source.
+   * Web pages the analysis panels and analyst retrieved via web search during this fusion run, deduplicated by URL across the whole run. Present when at least one model cited a source.
    */
   sources?: Array<FusionSource> | undefined;
   status: ToolCallStatus;
