@@ -12,15 +12,23 @@ import {
   FusionAnalysisResult,
   FusionAnalysisResult$inboundSchema,
 } from "./fusionanalysisresult.js";
+import {
+  FusionCodingAnalysisResult,
+  FusionCodingAnalysisResult$inboundSchema,
+} from "./fusioncodinganalysisresult.js";
 
 /**
- * Emitted when the fusion judge completes with the structured analysis.
+ * Emitted when the fusion judge completes with the structured analysis. Carries `analysis` for `generic` runs and `coding_analysis` for `coding` runs; `council` runs skip the judge and never emit this event.
  */
 export type FusionCallAnalysisCompletedEvent = {
   /**
    * Structured analysis produced by the fusion judge model.
    */
-  analysis: FusionAnalysisResult;
+  analysis?: FusionAnalysisResult | undefined;
+  /**
+   * Action-oriented analysis the fusion judge produces in `coding` mode, tuned for multi-turn coding rather than prose synthesis.
+   */
+  codingAnalysis?: FusionCodingAnalysisResult | undefined;
   itemId: string;
   outputIndex: number;
   sequenceNumber: number;
@@ -32,13 +40,15 @@ export const FusionCallAnalysisCompletedEvent$inboundSchema: z.ZodType<
   FusionCallAnalysisCompletedEvent,
   unknown
 > = z.object({
-  analysis: FusionAnalysisResult$inboundSchema,
+  analysis: FusionAnalysisResult$inboundSchema.optional(),
+  coding_analysis: FusionCodingAnalysisResult$inboundSchema.optional(),
   item_id: z.string(),
   output_index: z.int(),
   sequence_number: z.int(),
   type: z.literal("response.fusion_call.analysis.completed"),
 }).transform((v) => {
   return remap$(v, {
+    "coding_analysis": "codingAnalysis",
     "item_id": "itemId",
     "output_index": "outputIndex",
     "sequence_number": "sequenceNumber",

@@ -16,6 +16,12 @@ import {
   FusionAnalysisResult$outboundSchema,
 } from "./fusionanalysisresult.js";
 import {
+  FusionCodingAnalysisResult,
+  FusionCodingAnalysisResult$inboundSchema,
+  FusionCodingAnalysisResult$Outbound,
+  FusionCodingAnalysisResult$outboundSchema,
+} from "./fusioncodinganalysisresult.js";
+import {
   FusionSource,
   FusionSource$inboundSchema,
   FusionSource$Outbound,
@@ -62,6 +68,10 @@ export type OutputFusionServerToolItem = {
    * Structured analysis produced by the fusion judge model.
    */
   analysis?: FusionAnalysisResult | undefined;
+  /**
+   * Action-oriented analysis the fusion judge produces in `coding` mode, tuned for multi-turn coding rather than prose synthesis.
+   */
+  codingAnalysis?: FusionCodingAnalysisResult | undefined;
   /**
    * Error message when the fusion run did not produce an analysis result.
    */
@@ -180,6 +190,7 @@ export const OutputFusionServerToolItem$inboundSchema: z.ZodType<
   unknown
 > = z.object({
   analysis: FusionAnalysisResult$inboundSchema.optional(),
+  coding_analysis: FusionCodingAnalysisResult$inboundSchema.optional(),
   error: z.string().optional(),
   failed_models: z.array(z.lazy(() => FailedModel$inboundSchema)).optional(),
   failure_reason: z.string().optional(),
@@ -190,6 +201,7 @@ export const OutputFusionServerToolItem$inboundSchema: z.ZodType<
   type: OutputFusionServerToolItemType$inboundSchema,
 }).transform((v) => {
   return remap$(v, {
+    "coding_analysis": "codingAnalysis",
     "failed_models": "failedModels",
     "failure_reason": "failureReason",
   });
@@ -197,6 +209,7 @@ export const OutputFusionServerToolItem$inboundSchema: z.ZodType<
 /** @internal */
 export type OutputFusionServerToolItem$Outbound = {
   analysis?: FusionAnalysisResult$Outbound | undefined;
+  coding_analysis?: FusionCodingAnalysisResult$Outbound | undefined;
   error?: string | undefined;
   failed_models?: Array<FailedModel$Outbound> | undefined;
   failure_reason?: string | undefined;
@@ -213,6 +226,7 @@ export const OutputFusionServerToolItem$outboundSchema: z.ZodType<
   OutputFusionServerToolItem
 > = z.object({
   analysis: FusionAnalysisResult$outboundSchema.optional(),
+  codingAnalysis: FusionCodingAnalysisResult$outboundSchema.optional(),
   error: z.string().optional(),
   failedModels: z.array(z.lazy(() => FailedModel$outboundSchema)).optional(),
   failureReason: z.string().optional(),
@@ -223,6 +237,7 @@ export const OutputFusionServerToolItem$outboundSchema: z.ZodType<
   type: OutputFusionServerToolItemType$outboundSchema,
 }).transform((v) => {
   return remap$(v, {
+    codingAnalysis: "coding_analysis",
     failedModels: "failed_models",
     failureReason: "failure_reason",
   });
