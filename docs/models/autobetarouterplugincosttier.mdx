@@ -1,0 +1,21 @@
+---
+title: "AutoBetaRouterPluginCostTier"
+---
+
+Shorthand for cost_quality_tradeoff. Higher tiers spend more on better models: low = 9, medium = 7, high = 5, xhigh = 3, and max = 1. Numeric cost_quality_tradeoff takes precedence when both are provided.
+
+## Example Usage
+
+```typescript
+import { AutoBetaRouterPluginCostTier } from "@openrouter/sdk/models";
+
+let value: AutoBetaRouterPluginCostTier = "low";
+
+// Open enum: unrecognized values are captured as Unrecognized<string>
+```
+
+## Values
+
+```typescript
+"low" | "medium" | "high" | "xhigh" | "max" | Unrecognized<string>
+```
