@@ -30,7 +30,7 @@ export type UniqueInsight = {
 };
 
 /**
- * Structured analysis produced by the fusion judge model.
+ * Structured analysis produced by the fusion analyst model.
  */
 export type FusionAnalysisResult = {
   blindSpots: Array<string>;
