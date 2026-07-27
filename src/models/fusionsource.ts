@@ -17,7 +17,7 @@ export type FusionSource = {
    */
   title: string;
   /**
-   * URL of the web page a panel or the judge retrieved during the run.
+   * URL of the web page a panel or the analyst retrieved during the run.
    */
   url: string;
 };
