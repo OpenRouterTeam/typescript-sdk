@@ -23,6 +23,7 @@ let value: ListWorkspaceBudgetsResponse = {
 
 ## Fields
 
-| Field                                                    | Type                                                     | Required                                                 | Description                                              |
-| -------------------------------------------------------- | -------------------------------------------------------- | -------------------------------------------------------- | -------------------------------------------------------- |
-| `data`                                                   | [models.WorkspaceBudget](../models/workspacebudget.mdx)[] | :heavy_check_mark:                                       | List of budgets configured for the workspace             |
+| Field                                                    | Type                                                     | Required                                                 | Description                                              | Example                                                  |
+| -------------------------------------------------------- | -------------------------------------------------------- | -------------------------------------------------------- | -------------------------------------------------------- | -------------------------------------------------------- |
+| `data`                                                   | [models.WorkspaceBudget](../models/workspacebudget.mdx)[] | :heavy_check_mark:                                       | List of budgets configured for the workspace             |                                                          |
+| `includeByokInBudgets`                                   | *boolean*                                                | :heavy_minus_sign:                                       | Whether BYOK spend is included in the workspace budgets  | false                                                    |
