@@ -637,6 +637,7 @@ async function run() {
     id: "production",
     interval: "monthly",
     upsertWorkspaceBudgetRequest: {
+      includeByokInBudgets: true,
       limitUsd: 100,
     },
   });
@@ -669,6 +670,7 @@ async function run() {
     id: "production",
     interval: "monthly",
     upsertWorkspaceBudgetRequest: {
+      includeByokInBudgets: true,
       limitUsd: 100,
     },
   });

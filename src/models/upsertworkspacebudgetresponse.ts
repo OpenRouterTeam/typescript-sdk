@@ -4,6 +4,7 @@
  */
 
 import * as z from "zod/v4";
+import { remap as remap$ } from "../lib/primitives.js";
 import { safeParse } from "../lib/schemas.js";
 import { Result as SafeParseResult } from "../types/fp.js";
 import { SDKValidationError } from "./errors/sdkvalidationerror.js";
@@ -14,6 +15,10 @@ import {
 
 export type UpsertWorkspaceBudgetResponse = {
   data: WorkspaceBudget;
+  /**
+   * Whether BYOK spend is included in the workspace budgets
+   */
+  includeByokInBudgets: boolean;
 };
 
 /** @internal */
@@ -22,6 +27,11 @@ export const UpsertWorkspaceBudgetResponse$inboundSchema: z.ZodType<
   unknown
 > = z.object({
   data: WorkspaceBudget$inboundSchema,
+  include_byok_in_budgets: z.boolean(),
+}).transform((v) => {
+  return remap$(v, {
+    "include_byok_in_budgets": "includeByokInBudgets",
+  });
 });
 
 export function upsertWorkspaceBudgetResponseFromJSON(
