@@ -5,6 +5,8 @@
 
 import * as z from "zod/v4";
 import { remap as remap$ } from "../../lib/primitives.js";
+import * as openEnums from "../../types/enums.js";
+import { OpenEnum } from "../../types/enums.js";
 
 export type GetFileMetadataGlobals = {
   /**
@@ -27,6 +29,18 @@ export type GetFileMetadataGlobals = {
    */
   appCategories?: string | undefined;
 };
+
+/**
+ * Store or read this file on the named provider using your own API key for it. Omit to use OpenRouter storage.
+ */
+export const GetFileMetadataProvider = {
+  Openai: "openai",
+  Anthropic: "anthropic",
+} as const;
+/**
+ * Store or read this file on the named provider using your own API key for it. Omit to use OpenRouter storage.
+ */
+export type GetFileMetadataProvider = OpenEnum<typeof GetFileMetadataProvider>;
 
 export type GetFileMetadataRequest = {
   /**
@@ -53,7 +67,17 @@ export type GetFileMetadataRequest = {
    * Workspace to scope the request to. Defaults to the caller’s default workspace.
    */
   workspaceId?: string | undefined;
+  /**
+   * Store or read this file on the named provider using your own API key for it. Omit to use OpenRouter storage.
+   */
+  provider?: GetFileMetadataProvider | undefined;
 };
+
+/** @internal */
+export const GetFileMetadataProvider$outboundSchema: z.ZodType<
+  string,
+  GetFileMetadataProvider
+> = openEnums.outboundSchema(GetFileMetadataProvider);
 
 /** @internal */
 export type GetFileMetadataRequest$Outbound = {
@@ -62,6 +86,7 @@ export type GetFileMetadataRequest$Outbound = {
   appCategories?: string | undefined;
   file_id: string;
   workspace_id?: string | undefined;
+  provider?: string | undefined;
 };
 
 /** @internal */
@@ -74,6 +99,7 @@ export const GetFileMetadataRequest$outboundSchema: z.ZodType<
   appCategories: z.string().optional(),
   fileId: z.string(),
   workspaceId: z.string().optional(),
+  provider: GetFileMetadataProvider$outboundSchema.optional(),
 }).transform((v) => {
   return remap$(v, {
     httpReferer: "HTTP-Referer",

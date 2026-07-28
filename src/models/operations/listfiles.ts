@@ -6,6 +6,8 @@
 import * as z from "zod/v4";
 import { remap as remap$ } from "../../lib/primitives.js";
 import { safeParse } from "../../lib/schemas.js";
+import * as openEnums from "../../types/enums.js";
+import { OpenEnum } from "../../types/enums.js";
 import { Result as SafeParseResult } from "../../types/fp.js";
 import { SDKValidationError } from "../errors/sdkvalidationerror.js";
 import * as models from "../index.js";
@@ -31,6 +33,18 @@ export type ListFilesGlobals = {
    */
   appCategories?: string | undefined;
 };
+
+/**
+ * Store or read this file on the named provider using your own API key for it. Omit to use OpenRouter storage.
+ */
+export const ListFilesProvider = {
+  Openai: "openai",
+  Anthropic: "anthropic",
+} as const;
+/**
+ * Store or read this file on the named provider using your own API key for it. Omit to use OpenRouter storage.
+ */
+export type ListFilesProvider = OpenEnum<typeof ListFilesProvider>;
 
 export type ListFilesRequest = {
   /**
@@ -64,11 +78,21 @@ export type ListFilesRequest = {
    * Workspace to scope the request to. Defaults to the caller’s default workspace.
    */
   workspaceId?: string | undefined;
+  /**
+   * Store or read this file on the named provider using your own API key for it. Omit to use OpenRouter storage.
+   */
+  provider?: ListFilesProvider | undefined;
 };
 
 export type ListFilesResponse = {
   result: models.FileListResponse;
 };
+
+/** @internal */
+export const ListFilesProvider$outboundSchema: z.ZodType<
+  string,
+  ListFilesProvider
+> = openEnums.outboundSchema(ListFilesProvider);
 
 /** @internal */
 export type ListFilesRequest$Outbound = {
@@ -78,6 +102,7 @@ export type ListFilesRequest$Outbound = {
   limit?: number | undefined;
   cursor?: string | undefined;
   workspace_id?: string | undefined;
+  provider?: string | undefined;
 };
 
 /** @internal */
@@ -91,6 +116,7 @@ export const ListFilesRequest$outboundSchema: z.ZodType<
   limit: z.int().optional(),
   cursor: z.string().optional(),
   workspaceId: z.string().optional(),
+  provider: ListFilesProvider$outboundSchema.optional(),
 }).transform((v) => {
   return remap$(v, {
     httpReferer: "HTTP-Referer",
