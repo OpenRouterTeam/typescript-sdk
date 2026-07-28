@@ -14,7 +14,7 @@ import {
 } from "./anthropiccachecontroldirective.js";
 
 /**
- * Reasoning effort level for panelist and analyst inner calls.
+ * Reasoning effort level for panelist and judge inner calls.
  */
 export const FusionServerToolConfigEffort = {
   Max: "max",
@@ -26,22 +26,22 @@ export const FusionServerToolConfigEffort = {
   None: "none",
 } as const;
 /**
- * Reasoning effort level for panelist and analyst inner calls.
+ * Reasoning effort level for panelist and judge inner calls.
  */
 export type FusionServerToolConfigEffort = OpenEnum<
   typeof FusionServerToolConfigEffort
 >;
 
 /**
- * Reasoning configuration forwarded to panelist and analyst inner calls. Use this to control reasoning effort and token budget for models that support extended thinking.
+ * Reasoning configuration forwarded to panelist and judge inner calls. Use this to control reasoning effort and token budget for models that support extended thinking.
  */
 export type FusionServerToolConfigReasoning = {
   /**
-   * Reasoning effort level for panelist and analyst inner calls.
+   * Reasoning effort level for panelist and judge inner calls.
    */
   effort?: FusionServerToolConfigEffort | undefined;
   /**
-   * Maximum number of reasoning tokens each panelist and analyst model may use. Helps bound cost when models allocate too much budget to chain-of-thought.
+   * Maximum number of reasoning tokens each panelist and judge model may use. Helps bound cost when models allocate too much budget to chain-of-thought.
    */
   maxTokens?: number | undefined;
 };
@@ -62,7 +62,7 @@ export type FusionServerToolConfigTool = {
  */
 export type FusionServerToolConfig = {
   /**
-   * Slugs of models to run in parallel as the analysis panel. Each model receives the user prompt with openrouter:web_search and openrouter:web_fetch enabled, then an analyst model summarizes the collective output into structured analysis JSON. Capped at 8 models to bound cost amplification. Defaults to the Quality preset from /labs/fusion.
+   * Slugs of models to run in parallel as the analysis panel. Each model receives the user prompt with openrouter:web_search and openrouter:web_fetch enabled, then a judge model summarizes the collective output into structured analysis JSON. Capped at 8 models to bound cost amplification. Defaults to the Quality preset from /labs/fusion.
    */
   analysisModels?: Array<string> | undefined;
   /**
@@ -70,27 +70,27 @@ export type FusionServerToolConfig = {
    */
   cacheControl?: AnthropicCacheControlDirective | undefined;
   /**
-   * Maximum number of output tokens (including reasoning tokens) each panelist and the analyst model may produce per inner call. Controls the total output budget so reasoning-heavy models like GPT-5.5 do not exhaust their token allowance before producing visible text. When omitted, panelists default to 32000 and the analyst to 20000.
+   * Maximum number of output tokens (including reasoning tokens) each panelist and the judge model may produce per inner call. Controls the total output budget so reasoning-heavy models like GPT-5.5 do not exhaust their token allowance before producing visible text. When omitted, panelists default to 32000 and the judge to 20000.
    */
   maxCompletionTokens?: number | undefined;
   /**
-   * Maximum number of tool-calling steps each panelist (analysis model) and the analyst model may take during their agentic web-research loop. Models with web_search/web_fetch enabled iterate until they produce a text response or hit this ceiling. Defaults to 8. Capped at 16.
+   * Maximum number of tool-calling steps each panelist (analysis model) and the judge model may take during their agentic web-research loop. Models with web_search/web_fetch enabled iterate until they produce a text response or hit this ceiling. Defaults to 8. Capped at 16.
    */
   maxToolCalls?: number | undefined;
   /**
-   * Slug of the analyst model that produces the structured analysis JSON. Defaults to the model used in the outer API request.
+   * Slug of the judge model that produces the structured analysis JSON. Defaults to the model used in the outer API request.
    */
   model?: string | undefined;
   /**
-   * Reasoning configuration forwarded to panelist and analyst inner calls. Use this to control reasoning effort and token budget for models that support extended thinking.
+   * Reasoning configuration forwarded to panelist and judge inner calls. Use this to control reasoning effort and token budget for models that support extended thinking.
    */
   reasoning?: FusionServerToolConfigReasoning | undefined;
   /**
-   * Temperature forwarded to panelist inner calls. The analyst always runs at temperature 0 regardless of this value. When omitted, the provider's default applies.
+   * Temperature forwarded to panelist inner calls. The judge always runs at temperature 0 regardless of this value. When omitted, the provider's default applies.
    */
   temperature?: number | undefined;
   /**
-   * Server tools available to panelist and analyst inner calls. Each entry uses the same `{ type, parameters? }` shorthand as the outer Chat Completions request. When omitted, defaults to `[{ type: "openrouter:web_search" }, { type: "openrouter:web_fetch" }]`. Pass an empty array to disable tools entirely (panelists answer from parametric knowledge only).
+   * Server tools available to panelist and judge inner calls. Each entry uses the same `{ type, parameters? }` shorthand as the outer Chat Completions request. When omitted, defaults to `[{ type: "openrouter:web_search" }, { type: "openrouter:web_fetch" }]`. Pass an empty array to disable tools entirely (panelists answer from parametric knowledge only).
    */
   tools?: Array<FusionServerToolConfigTool> | undefined;
 };
