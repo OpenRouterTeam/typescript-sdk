@@ -8232,7 +8232,7 @@ components:
         - 'parameters'
       type: 'object'
     FusionAnalysisResult:
-      description: 'Structured analysis produced by the fusion judge model.'
+      description: 'Structured analysis produced by the fusion analyst model.'
       example:
         blind_spots:
           - 'No model considered the impact on existing API consumers.'
@@ -8317,7 +8317,7 @@ components:
         - 'blind_spots'
       type: 'object'
     FusionCallAnalysisCompletedEvent:
-      description: 'Emitted when the fusion judge completes with the structured analysis.'
+      description: 'Emitted when the fusion analyst completes with the structured analysis.'
       example:
         analysis:
           blind_spots: []
@@ -8350,17 +8350,23 @@ components:
         - 'sequence_number'
       type: 'object'
     FusionCallAnalysisInProgressEvent:
-      description: 'Emitted when the fusion judge starts producing the structured analysis.'
+      description: 'Emitted when the fusion analyst starts producing the structured analysis.'
       example:
+        analyst_model: 'openai/gpt-5'
         item_id: 'st_fusion_abc'
         judge_model: 'openai/gpt-5'
         output_index: 0
         sequence_number: 25
         type: 'response.fusion_call.analysis.in_progress'
       properties:
+        analyst_model:
+          description: 'Slug of the model producing the structured analysis.'
+          type: 'string'
         item_id:
           type: 'string'
         judge_model:
+          deprecated: true
+          description: 'Deprecated alias of `analyst_model`, kept so existing consumers keep working. Always carries the same value. Use `analyst_model`.'
           type: 'string'
         output_index:
           type: 'integer'
@@ -8372,6 +8378,7 @@ components:
           type: 'string'
       required:
         - 'type'
+        - 'analyst_model'
         - 'judge_model'
         - 'output_index'
         - 'item_id'
@@ -8595,7 +8602,7 @@ components:
         model: '~anthropic/claude-opus-latest'
       properties:
         analysis_models:
-          description: 'Slugs of models to run in parallel as the "expert panel" the judge analyzes. Each model receives the same user prompt with web_search + web_fetch enabled. Capped at 8 models to bound cost amplification. When omitted, defaults to the Quality preset from the /labs/fusion UI (~anthropic/claude-opus-latest, ~openai/gpt-latest, ~google/gemini-pro-latest).'
+          description: 'Slugs of models to run in parallel as the "expert panel" the analyst analyzes. Each model receives the same user prompt with web_search + web_fetch enabled. Capped at 8 models to bound cost amplification. When omitted, defaults to the Quality preset from the /labs/fusion UI (~anthropic/claude-opus-latest, ~openai/gpt-latest, ~google/gemini-pro-latest).'
           example:
             - '~anthropic/claude-opus-latest'
             - '~openai/gpt-latest'
@@ -8613,17 +8620,17 @@ components:
             - 'fusion'
           type: 'string'
         max_tool_calls:
-          description: 'Maximum number of tool-calling steps each panelist (analysis model) and the judge model may take during their agentic web-research loop. Models with web_search/web_fetch enabled iterate until they produce a text response or hit this ceiling. Defaults to 8. Capped at 16.'
+          description: 'Maximum number of tool-calling steps each panelist (analysis model) and the analyst model may take during their agentic web-research loop. Models with web_search/web_fetch enabled iterate until they produce a text response or hit this ceiling. Defaults to 8. Capped at 16.'
           example: 12
           maximum: 16
           minimum: 1
           type: 'integer'
         model:
-          description: 'Slug of the model that performs both the judge step (with web_search + web_fetch) and the final synthesis. When omitted, defaults to the first model in the Quality preset.'
+          description: 'Slug of the model that performs both the analyst step (with web_search + web_fetch) and the final synthesis. When omitted, defaults to the first model in the Quality preset.'
           example: '~anthropic/claude-opus-latest'
           type: 'string'
         preset:
-          description: 'A curated OpenRouter fusion preset (slugs follow `<task>-<tier>`, e.g. `general-high`). Expands server-side into the preset''s analysis_models panel and judge model, so callers never name individual models. Explicitly provided `analysis_models` / `model` take precedence.'
+          description: 'A curated OpenRouter fusion preset (slugs follow `<task>-<tier>`, e.g. `general-high`). Expands server-side into the preset''s analysis_models panel and analyst model, so callers never name individual models. Explicitly provided `analysis_models` / `model` take precedence.'
           enum:
             - 'general-high'
             - 'general-budget'
@@ -8631,7 +8638,7 @@ components:
           example: 'general-high'
           type: 'string'
         tools:
-          description: 'Server tools available to panelist and judge inner calls. Each entry uses the same `{ type, parameters? }` shorthand as the outer Chat Completions request. When omitted, defaults to `[{ type: "openrouter:web_search" }, { type: "openrouter:web_fetch" }]`. Pass an empty array to disable tools entirely (panelists answer from parametric knowledge only).'
+          description: 'Server tools available to panelist and analyst inner calls. Each entry uses the same `{ type, parameters? }` shorthand as the outer Chat Completions request. When omitted, defaults to `[{ type: "openrouter:web_search" }, { type: "openrouter:web_fetch" }]`. Pass an empty array to disable tools entirely (panelists answer from parametric knowledge only).'
           example:
             - parameters:
                 excluded_domains:
@@ -8681,7 +8688,7 @@ components:
         - 'id'
       type: 'object'
     FusionServerTool_OpenRouter:
-      description: 'OpenRouter built-in server tool: fans out the user prompt to a panel of analysis models, then asks a judge model to summarize their collective output as structured JSON the outer model can synthesize from.'
+      description: 'OpenRouter built-in server tool: fans out the user prompt to a panel of analysis models, then asks an analyst model to summarize their collective output as structured JSON the outer model can synthesize from.'
       example:
         parameters:
           analysis_models:
@@ -8707,7 +8714,7 @@ components:
           - '~google/gemini-pro-latest'
       properties:
         analysis_models:
-          description: 'Slugs of models to run in parallel as the analysis panel. Each model receives the user prompt with openrouter:web_search and openrouter:web_fetch enabled, then a judge model summarizes the collective output into structured analysis JSON. Capped at 8 models to bound cost amplification. Defaults to the Quality preset from /labs/fusion.'
+          description: 'Slugs of models to run in parallel as the analysis panel. Each model receives the user prompt with openrouter:web_search and openrouter:web_fetch enabled, then an analyst model summarizes the collective output into structured analysis JSON. Capped at 8 models to bound cost amplification. Defaults to the Quality preset from /labs/fusion.'
           example:
             - '~anthropic/claude-opus-latest'
             - '~openai/gpt-latest'
@@ -8720,24 +8727,24 @@ components:
         cache_control:
           $ref: '#/components/schemas/AnthropicCacheControlDirective'
         max_completion_tokens:
-          description: 'Maximum number of output tokens (including reasoning tokens) each panelist and the judge model may produce per inner call. Controls the total output budget so reasoning-heavy models like GPT-5.5 do not exhaust their token allowance before producing visible text. When omitted, panelists default to 32000 and the judge to 20000.'
+          description: 'Maximum number of output tokens (including reasoning tokens) each panelist and the analyst model may produce per inner call. Controls the total output budget so reasoning-heavy models like GPT-5.5 do not exhaust their token allowance before producing visible text. When omitted, panelists default to 32000 and the analyst to 20000.'
           example: 16384
           type: 'integer'
         max_tool_calls:
-          description: 'Maximum number of tool-calling steps each panelist (analysis model) and the judge model may take during their agentic web-research loop. Models with web_search/web_fetch enabled iterate until they produce a text response or hit this ceiling. Defaults to 8. Capped at 16.'
+          description: 'Maximum number of tool-calling steps each panelist (analysis model) and the analyst model may take during their agentic web-research loop. Models with web_search/web_fetch enabled iterate until they produce a text response or hit this ceiling. Defaults to 8. Capped at 16.'
           example: 12
           maximum: 16
           minimum: 1
           type: 'integer'
         model:
-          description: 'Slug of the judge model that produces the structured analysis JSON. Defaults to the model used in the outer API request.'
+          description: 'Slug of the analyst model that produces the structured analysis JSON. Defaults to the model used in the outer API request.'
           example: '~anthropic/claude-opus-latest'
           type: 'string'
         reasoning:
-          description: 'Reasoning configuration forwarded to panelist and judge inner calls. Use this to control reasoning effort and token budget for models that support extended thinking.'
+          description: 'Reasoning configuration forwarded to panelist and analyst inner calls. Use this to control reasoning effort and token budget for models that support extended thinking.'
           properties:
             effort:
-              description: 'Reasoning effort level for panelist and judge inner calls.'
+              description: 'Reasoning effort level for panelist and analyst inner calls.'
               enum:
                 - 'max'
                 - 'xhigh'
@@ -8748,16 +8755,16 @@ components:
                 - 'none'
               type: 'string'
             max_tokens:
-              description: 'Maximum number of reasoning tokens each panelist and judge model may use. Helps bound cost when models allocate too much budget to chain-of-thought.'
+              description: 'Maximum number of reasoning tokens each panelist and analyst model may use. Helps bound cost when models allocate too much budget to chain-of-thought.'
               type: 'integer'
           type: 'object'
         temperature:
-          description: 'Temperature forwarded to panelist inner calls. The judge always runs at temperature 0 regardless of this value. When omitted, the provider''s default applies.'
+          description: 'Temperature forwarded to panelist inner calls. The analyst always runs at temperature 0 regardless of this value. When omitted, the provider''s default applies.'
           example: 0.7
           format: 'double'
           type: 'number'
         tools:
-          description: 'Server tools available to panelist and judge inner calls. Each entry uses the same `{ type, parameters? }` shorthand as the outer Chat Completions request. When omitted, defaults to `[{ type: "openrouter:web_search" }, { type: "openrouter:web_fetch" }]`. Pass an empty array to disable tools entirely (panelists answer from parametric knowledge only).'
+          description: 'Server tools available to panelist and analyst inner calls. Each entry uses the same `{ type, parameters? }` shorthand as the outer Chat Completions request. When omitted, defaults to `[{ type: "openrouter:web_search" }, { type: "openrouter:web_fetch" }]`. Pass an empty array to disable tools entirely (panelists answer from parametric knowledge only).'
           example:
             - parameters:
                 excluded_domains:
@@ -8789,7 +8796,7 @@ components:
           description: 'Title of the retrieved web page.'
           type: 'string'
         url:
-          description: 'URL of the web page a panel or the judge retrieved during the run.'
+          description: 'URL of the web page a panel or the analyst retrieved during the run.'
           type: 'string'
       required:
         - 'url'
@@ -17169,7 +17176,7 @@ components:
             type: 'object'
           type: 'array'
         failure_reason:
-          description: 'Typed failure reason when the fusion run failed. Possible values include: all_panels_failed, insufficient_credits, rate_limited, judge_not_valid_json, judge_schema_mismatch, judge_upstream_error, judge_empty_completion.'
+          description: 'Typed failure reason when the fusion run failed. Possible values include: all_panels_failed, insufficient_credits, rate_limited, judge_not_valid_json, judge_schema_mismatch, judge_upstream_error, judge_empty_completion. The four analysis-stage codes keep their pre-rename `judge_` spelling so existing consumers keep matching.'
           type: 'string'
         id:
           type: 'string'
@@ -17186,7 +17193,7 @@ components:
             type: 'object'
           type: 'array'
         sources:
-          description: 'Web pages the analysis panels and judge retrieved via web search during this fusion run, deduplicated by URL across the whole run. Present when at least one model cited a source.'
+          description: 'Web pages the analysis panels and analyst retrieved via web search during this fusion run, deduplicated by URL across the whole run. Present when at least one model cited a source.'
           items:
             $ref: '#/components/schemas/FusionSource'
           type: 'array'
