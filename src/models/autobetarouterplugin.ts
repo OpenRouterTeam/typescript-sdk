@@ -5,6 +5,25 @@
 
 import * as z from "zod/v4";
 import { remap as remap$ } from "../lib/primitives.js";
+import * as openEnums from "../types/enums.js";
+import { OpenEnum } from "../types/enums.js";
+
+/**
+ * Named cost/quality setting. For auto-beta-router, tiers select cost-percentile bands: low = [0, 20), medium = [20, 40), high = [40, 60), xhigh = [60, 80), and max = [80, 100]. Numeric cost_quality_tradeoff takes precedence and retains ceiling behavior.
+ */
+export const AutoBetaRouterPluginCostTier = {
+  Low: "low",
+  Medium: "medium",
+  High: "high",
+  Xhigh: "xhigh",
+  Max: "max",
+} as const;
+/**
+ * Named cost/quality setting. For auto-beta-router, tiers select cost-percentile bands: low = [0, 20), medium = [20, 40), high = [40, 60), xhigh = [60, 80), and max = [80, 100]. Numeric cost_quality_tradeoff takes precedence and retains ceiling behavior.
+ */
+export type AutoBetaRouterPluginCostTier = OpenEnum<
+  typeof AutoBetaRouterPluginCostTier
+>;
 
 export type AutoBetaRouterPlugin = {
   /**
@@ -16,6 +35,10 @@ export type AutoBetaRouterPlugin = {
    */
   costQualityTradeoff?: number | undefined;
   /**
+   * Named cost/quality setting. For auto-beta-router, tiers select cost-percentile bands: low = [0, 20), medium = [20, 40), high = [40, 60), xhigh = [60, 80), and max = [80, 100]. Numeric cost_quality_tradeoff takes precedence and retains ceiling behavior.
+   */
+  costTier?: AutoBetaRouterPluginCostTier | undefined;
+  /**
    * Set to false to disable the auto-beta-router plugin for this request. Defaults to true.
    */
   enabled?: boolean | undefined;
@@ -23,9 +46,16 @@ export type AutoBetaRouterPlugin = {
 };
 
 /** @internal */
+export const AutoBetaRouterPluginCostTier$outboundSchema: z.ZodType<
+  string,
+  AutoBetaRouterPluginCostTier
+> = openEnums.outboundSchema(AutoBetaRouterPluginCostTier);
+
+/** @internal */
 export type AutoBetaRouterPlugin$Outbound = {
   allowed_models?: Array<string> | undefined;
   cost_quality_tradeoff?: number | undefined;
+  cost_tier?: string | undefined;
   enabled?: boolean | undefined;
   id: "auto-beta-router";
 };
@@ -37,12 +67,14 @@ export const AutoBetaRouterPlugin$outboundSchema: z.ZodType<
 > = z.object({
   allowedModels: z.array(z.string()).optional(),
   costQualityTradeoff: z.int().optional(),
+  costTier: AutoBetaRouterPluginCostTier$outboundSchema.optional(),
   enabled: z.boolean().optional(),
   id: z.literal("auto-beta-router"),
 }).transform((v) => {
   return remap$(v, {
     allowedModels: "allowed_models",
     costQualityTradeoff: "cost_quality_tradeoff",
+    costTier: "cost_tier",
   });
 });
 
