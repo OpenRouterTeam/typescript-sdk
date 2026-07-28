@@ -1,0 +1,23 @@
+---
+title: "UpstreamId"
+---
+
+Searchable upstream provider identifier and its source
+
+## Example Usage
+
+```typescript
+import { UpstreamId } from "@openrouter/sdk/models";
+
+let value: UpstreamId = {
+  source: "http_request_id",
+  value: "req_abc123",
+};
+```
+
+## Fields
+
+| Field                                                                | Type                                                                 | Required                                                             | Description                                                          |
+| -------------------------------------------------------------------- | -------------------------------------------------------------------- | -------------------------------------------------------------------- | -------------------------------------------------------------------- |
+| `source`                                                             | [models.ProviderResponseSource](../models/providerresponsesource.mdx) | :heavy_check_mark:                                                   | N/A                                                                  |
+| `value`                                                              | *string*                                                             | :heavy_check_mark:                                                   | N/A                                                                  |
