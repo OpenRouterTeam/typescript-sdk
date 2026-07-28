@@ -1,19 +1,19 @@
 lockVersion: ""
 id: ""
 management:
-  docChecksum: e6c5fe88927148c7864ed9fb24617fed
+  docChecksum: 842358f2537af9a95a8f31276c8b006c
   docVersion: 1.0.0
   speakeasyVersion: 1.787.0
   generationVersion: 2.914.0
-  releaseVersion: 1.1.13
-  configChecksum: c6f899f7df36e79b5b362b9537960050
+  releaseVersion: 1.1.14
+  configChecksum: 3f915d14b8670e7953de615604c036c7
   repoURL: https://github.com/OpenRouterTeam/typescript-sdk.git
   installationURL: https://github.com/OpenRouterTeam/typescript-sdk
   published: true
 persistentEdits:
-  generation_id: 61be57c4-88db-4be6-9a8c-9a1a937a8997
-  pristine_commit_hash: 41e1c5ad47a38eccd78baa36fcd0d726bb377dd0
-  pristine_tree_hash: 69261b85d54561184c544cb26cf9c72bbd9a4ab4
+  generation_id: b1876d3f-b1b5-430d-b56f-d917c7c3aec7
+  pristine_commit_hash: cab67b040fec6c348ada74fcc65ac0f14a2dc099
+  pristine_tree_hash: 6d3c69a2be30141fd241a28cd23d7d6ef7b69e30
 features:
   typescript:
     acceptHeaders: 2.81.2
@@ -489,8 +489,8 @@ trackedFiles:
     deleted: true
   docs/models/anthropicdocumentblockparamsourceunion.mdx:
     id: d55cd47d251e
-    last_write_checksum: sha1:842f2ceae6659834dae2aeeb8eeaff8c9d43bf7f
-    pristine_git_object: 0cb480df6119330c604b0d0966e5b5401e07c01f
+    last_write_checksum: sha1:1953cda32ddd13fd738644ffa8e4bf5807bc0391
+    pristine_git_object: e8c4464fa4b73e8e94029801646e3d807c7b2a1d
   docs/models/anthropicfiledocumentsource.md:
     id: e98f8a404230
     last_write_checksum: sha1:81d79754243717ddb19df20bbbf5fd67948705d8
@@ -498,8 +498,8 @@ trackedFiles:
     deleted: true
   docs/models/anthropicfiledocumentsource.mdx:
     id: 021c48378555
-    last_write_checksum: sha1:eb22ba4131c060c74a37cf504790e1f9dc1a2cdb
-    pristine_git_object: 0b0fd02e332973176f74c63ce01029c833af65d0
+    last_write_checksum: sha1:b48bae5363a07b8087a42da21aabe7736a94f4fd
+    pristine_git_object: e9e3488ecb8f826dfb63f4d6ad419454f4f81562
   docs/models/anthropicimageblockparam.md:
     id: b31a4bb200d0
     last_write_checksum: sha1:2d8198cf39a36b196ddfb20c2e25a27166934bc7
@@ -3654,8 +3654,8 @@ trackedFiles:
     deleted: true
   docs/models/filedeleteresponse.mdx:
     id: 707bd2b0f320
-    last_write_checksum: sha1:26e477af95b862f638a87d71f97d824b61d69b7b
-    pristine_git_object: 40d6e5eddcff8aecb75602ad8faa349cd7cf809c
+    last_write_checksum: sha1:afbb2d64c681aca591c4db16e84bc289d4bf9ed6
+    pristine_git_object: 0c2c3ea7957f91bba16e3c08968c42bc2dd6b974
   docs/models/filedeleteresponsetype.md:
     id: ebf1a8dc9f9f
     last_write_checksum: sha1:3e9837a0f39095a14ffd5beaf2945d8f2a711bef
@@ -3672,8 +3672,8 @@ trackedFiles:
     deleted: true
   docs/models/filelistresponse.mdx:
     id: bb31c0c89a4a
-    last_write_checksum: sha1:ed6f6f8719112304659b9c8deea3969cf2c3a34b
-    pristine_git_object: e17aaf51d54faef0d6563bebb4c4d93073f77600
+    last_write_checksum: sha1:727c1cfd48c714d9be1af4d40baa697ed4bcb819
+    pristine_git_object: 5a70c88bf26085ea8e4e816cedcca56bb28468c0
   docs/models/filemetadata.md:
     id: 1bb41237a788
     last_write_checksum: sha1:36c2b7e032f721dc1a1a3910e2568d27f2720cbd
@@ -3681,8 +3681,8 @@ trackedFiles:
     deleted: true
   docs/models/filemetadata.mdx:
     id: 52a62085fd35
-    last_write_checksum: sha1:a5120fdca89c9cddaf1c1b7686e2fbcc5ebc8b10
-    pristine_git_object: 3613a565eed2a1acb56fb901632ce5b727e11612
+    last_write_checksum: sha1:9189a0dbd29f85e678c9b4fe668e298f41c7193f
+    pristine_git_object: 7a5acb58cea9a9fd5a1da3ce43ba6d6f1d85d5e0
   docs/models/filemetadatatype.md:
     id: 16d7f02698e9
     last_write_checksum: sha1:aae394963f346d93ec4e732bbccbccca56dde5fd
@@ -7168,8 +7168,8 @@ trackedFiles:
     deleted: true
   docs/models/operations/deletefilerequest.mdx:
     id: 09572e0d323d
-    last_write_checksum: sha1:36c084c6c78865ba98705af05d95d10f76b4aceb
-    pristine_git_object: 7ba117f6d166a5e9da0e2827f287d04f0695466c
+    last_write_checksum: sha1:16a9022986a89e8f1d7e5a04128e5453ba1a13b1
+    pristine_git_object: b00abb3277e9884641fa307f8690846196c8957f
   docs/models/operations/deleteguardrailglobals.mdx:
     id: 3e9af2948d33
     last_write_checksum: sha1:42b324bfa799dbe94da3c9982d91e5fe26a9ab89
@@ -7323,8 +7323,8 @@ trackedFiles:
     deleted: true
   docs/models/operations/downloadfilecontentrequest.mdx:
     id: 417167d13cb0
-    last_write_checksum: sha1:b83b2180e827c6d614fb6a1eaabb2c1a97ba0e32
-    pristine_git_object: 777a83e496c229cb297681737d31928e2626d718
+    last_write_checksum: sha1:24b22089ff8f2e81c16a268448d24a40db78ea43
+    pristine_git_object: bcd6f2fae573419ba6b7a933103dda0482d85480
   docs/models/operations/embedding.mdx:
     id: 530657f66b4b
     last_write_checksum: sha1:7a3872a55e7a3c78bdf1bc824d03e739c687de14
@@ -7552,8 +7552,8 @@ trackedFiles:
     deleted: true
   docs/models/operations/getfilemetadatarequest.mdx:
     id: c0c091f58c77
-    last_write_checksum: sha1:718f3d1387e1cdead14ec12de3d53134c46f501a
-    pristine_git_object: 5a60db5dbe5f866e7a5f165ab67e669f329baa3c
+    last_write_checksum: sha1:d6ca6e555594e6dd89517d0f95a0f42b0c8a54f1
+    pristine_git_object: f40adabf5e60db375332f23b9ba5823a12c81fc1
   docs/models/operations/getgenerationglobals.mdx:
     id: 0f127dd70bb3
     last_write_checksum: sha1:19a9ed294decbf582609d5dde17d34a7b4066e3a
@@ -7898,8 +7898,8 @@ trackedFiles:
     deleted: true
   docs/models/operations/listfilesrequest.mdx:
     id: ddcc860462bc
-    last_write_checksum: sha1:3839b7eccac076829028e25c6da0105e60891b5e
-    pristine_git_object: 3bf343a6df2ea07a060ed519717e9b075cbd3d95
+    last_write_checksum: sha1:19b1f57c883d18fcef09ea75bbfcdfc997e6d8c3
+    pristine_git_object: a845f503d32326222b1899fbf021aca3c3427c2d
   docs/models/operations/listfilesresponse.md:
     id: 391e4b2a0ab6
     last_write_checksum: sha1:ab464764029f8af1de50eb1704c50e47d3746ff7
@@ -7907,8 +7907,8 @@ trackedFiles:
     deleted: true
   docs/models/operations/listfilesresponse.mdx:
     id: 1cb87ee926d8
-    last_write_checksum: sha1:c266c2e282727123ee8f951047f7ea875fb5c14d
-    pristine_git_object: 95f18ba75b5b3d77606782f51080b3ff3bf12c57
+    last_write_checksum: sha1:15dc9621d70e25f2451ef51639adba1aae06b62e
+    pristine_git_object: 417a9c26b8add4ef9b732c5acbfd7dc573234c12
   docs/models/operations/listgenerationcontentglobals.md:
     id: 10768a0cc890
     last_write_checksum: sha1:7464ab28be4817b1d6521cea9e403eda10001e1e
@@ -12513,12 +12513,12 @@ trackedFiles:
     pristine_git_object: 410efafd6a7f50d91ccb87131fedbe0c3d47e15a
   jsr.json:
     id: 7f6ab7767282
-    last_write_checksum: sha1:8bca187296c0558c2b0c17c43d59233b9daf4db4
-    pristine_git_object: 3db0fdca9097149276d2bdd9eab9b2918cdbf880
+    last_write_checksum: sha1:8466f675e1637ef198475aa80b46c4a6025bfef2
+    pristine_git_object: 39fd05616fc2c6575c3e47c52d1c924135b2445e
   package.json:
     id: 7030d0b2f71b
-    last_write_checksum: sha1:eb46976d74f8df2fa31c21c4c7bd3518af4efdc9
-    pristine_git_object: fb57a6f022eee8c3e1bfca3e3ab1c71c417816b1
+    last_write_checksum: sha1:a9c19a9278a7cc71e0bebcd6fbb519323dff5b5c
+    pristine_git_object: edafca532c2ba109cabdd096b9515ba82765eb5c
   src/core.ts:
     id: f431fdbcd144
     last_write_checksum: sha1:5aa66b0b6a5964f3eea7f3098c2eb3c0ee9c0131
@@ -12897,8 +12897,8 @@ trackedFiles:
     pristine_git_object: a187e58707bdb726ca2aff74941efe7493422d4e
   src/lib/config.ts:
     id: 320761608fb3
-    last_write_checksum: sha1:e48e9fd9a61c96c950595cfba16f7a2d966336b0
-    pristine_git_object: 4ae208a55f64d866e4c5823295ad372d0906bb57
+    last_write_checksum: sha1:4ec8746f44dc35b53c7a4bd66e7bf02d66c0db6b
+    pristine_git_object: e37d580a0ea3e731a9bdd492a42d9a500c436c12
   src/lib/dlv.ts:
     id: b1988214835a
     last_write_checksum: sha1:eaac763b22717206a6199104e0403ed17a4e2711
@@ -17202,7 +17202,7 @@ examples:
     speakeasy-default-list-files:
       responses:
         "200":
-          application/json: {"cursor": null, "data": [{"created_at": "2025-01-01T00:00:00Z", "downloadable": false, "filename": "document.pdf", "id": "file_011CNha8iCJcU1wXNR6q4V8w", "mime_type": "application/pdf", "size_bytes": 1024000, "type": "file"}], "first_id": "file_011CNha8iCJcU1wXNR6q4V8w", "has_more": false, "last_id": "file_011CNha8iCJcU1wXNR6q4V8w"}
+          application/json: {"cursor": null, "data": [{"created_at": "2025-01-01T00:00:00Z", "downloadable": false, "filename": "document.pdf", "id": "or_file_011CNha8iCJcU1wXNR6q4V8w", "mime_type": "application/pdf", "size_bytes": 1024000, "type": "file"}], "first_id": "or_file_011CNha8iCJcU1wXNR6q4V8w", "has_more": false, "last_id": "or_file_011CNha8iCJcU1wXNR6q4V8w"}
         "400":
           application/json: {"error": {"code": 400, "message": "Invalid request parameters"}}
         "401":
@@ -17217,7 +17217,7 @@ examples:
         multipart/form-data: {"file": "x-file: example.file"}
       responses:
         "200":
-          application/json: {"created_at": "2025-01-01T00:00:00Z", "downloadable": false, "filename": "document.pdf", "id": "file_011CNha8iCJcU1wXNR6q4V8w", "mime_type": "application/pdf", "size_bytes": 1024000, "type": "file"}
+          application/json: {"created_at": "2025-01-01T00:00:00Z", "downloadable": false, "filename": "document.pdf", "id": "or_file_011CNha8iCJcU1wXNR6q4V8w", "mime_type": "application/pdf", "size_bytes": 1024000, "type": "file"}
         "400":
           application/json: {"error": {"code": 400, "message": "Invalid request parameters"}}
         "401":
@@ -17237,7 +17237,7 @@ examples:
           file_id: "file_011CNha8iCJcU1wXNR6q4V8w"
       responses:
         "200":
-          application/json: {"id": "file_011CNha8iCJcU1wXNR6q4V8w", "type": "file_deleted"}
+          application/json: {"id": "or_file_011CNha8iCJcU1wXNR6q4V8w", "type": "file_deleted"}
         "401":
           application/json: {"error": {"code": 401, "message": "Missing Authentication header"}}
         "404":
@@ -17253,7 +17253,7 @@ examples:
           file_id: "file_011CNha8iCJcU1wXNR6q4V8w"
       responses:
         "200":
-          application/json: {"created_at": "2025-01-01T00:00:00Z", "downloadable": false, "filename": "document.pdf", "id": "file_011CNha8iCJcU1wXNR6q4V8w", "mime_type": "application/pdf", "size_bytes": 1024000, "type": "file"}
+          application/json: {"created_at": "2025-01-01T00:00:00Z", "downloadable": false, "filename": "document.pdf", "id": "or_file_011CNha8iCJcU1wXNR6q4V8w", "mime_type": "application/pdf", "size_bytes": 1024000, "type": "file"}
         "401":
           application/json: {"error": {"code": 401, "message": "Missing Authentication header"}}
         "404":
@@ -17443,4 +17443,3 @@ examples:
         "500":
           application/json: {"error": {"code": 500, "message": "Internal Server Error"}}
 examplesVersion: 1.0.2
-releaseNotes: "## Typescript SDK Changes:\n* `openrouter.beta.responses.send()`: \n  *  `request.responsesRequest.input.union(Array<>)[].union(AdditionalToolsItem).tools[].union(Preview_20250311_WebSearchServerTool).filters.blockedDomains` **Added**\n  *  `response` **Changed**\n* `openrouter.presets.createPresetsResponses()`: \n  *  `request.responsesRequest.input.union(Array<>)[].union(AdditionalToolsItem).tools[].union(Preview_WebSearchServerTool).filters.blockedDomains` **Added**\n* `openrouter.responses.send()`: \n  *  `request.responsesRequest.input.union(Array<>)[].union(AdditionalToolsItem).tools[].union(Preview_WebSearchServerTool).filters.blockedDomains` **Added**\n  *  `response` **Changed**\n"
