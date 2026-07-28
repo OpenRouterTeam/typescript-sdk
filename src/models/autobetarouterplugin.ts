@@ -5,6 +5,25 @@
 
 import * as z from "zod/v4";
 import { remap as remap$ } from "../lib/primitives.js";
+import * as openEnums from "../types/enums.js";
+import { OpenEnum } from "../types/enums.js";
+
+/**
+ * Named cost/quality setting. For auto-beta-router, tiers select cost-percentile bands: low = [0, 20), medium = [20, 40), high = [40, 60), xhigh = [60, 80), and max = [80, 100]. Numeric cost_quality_tradeoff takes precedence and retains ceiling behavior.
+ */
+export const AutoBetaRouterPluginCostTier = {
+  Low: "low",
+  Medium: "medium",
+  High: "high",
+  Xhigh: "xhigh",
+  Max: "max",
+} as const;
+/**
+ * Named cost/quality setting. For auto-beta-router, tiers select cost-percentile bands: low = [0, 20), medium = [20, 40), high = [40, 60), xhigh = [60, 80), and max = [80, 100]. Numeric cost_quality_tradeoff takes precedence and retains ceiling behavior.
+ */
+export type AutoBetaRouterPluginCostTier = OpenEnum<
+  typeof AutoBetaRouterPluginCostTier
+>;
 
 export type AutoBetaRouterPlugin = {
   /**
@@ -12,9 +31,15 @@ export type AutoBetaRouterPlugin = {
    */
   allowedModels?: Array<string> | undefined;
   /**
-   * Balances routing between cost and quality on a 0-10 scale. The auto-beta-router ranks models for the classified task type by community spend share, then filters candidates by their average cost per generation for that task. Higher values favor cheaper models: 10 keeps only models around the cheapest 10th percentile, while 0 permits models up to the 90th percentile for cost. Defaults to 9.
+   * Deprecated: Use cost_tier instead. Balances routing between cost and quality on a 0-10 scale. The auto-beta-router ranks models for the classified task type by community spend share, then filters candidates by their average cost per generation for that task. Higher values favor cheaper models: 10 keeps only models around the cheapest 10th percentile, while 0 permits models up to the 90th percentile for cost. Defaults to 9. Numeric cost_quality_tradeoff remains supported, retains ceiling behavior, and takes precedence over cost_tier when both are provided.
+   *
+   * @deprecated field: This will be removed in a future release, please migrate away from it as soon as possible.
    */
   costQualityTradeoff?: number | undefined;
+  /**
+   * Named cost/quality setting. For auto-beta-router, tiers select cost-percentile bands: low = [0, 20), medium = [20, 40), high = [40, 60), xhigh = [60, 80), and max = [80, 100]. Numeric cost_quality_tradeoff takes precedence and retains ceiling behavior.
+   */
+  costTier?: AutoBetaRouterPluginCostTier | undefined;
   /**
    * Set to false to disable the auto-beta-router plugin for this request. Defaults to true.
    */
@@ -23,9 +48,16 @@ export type AutoBetaRouterPlugin = {
 };
 
 /** @internal */
+export const AutoBetaRouterPluginCostTier$outboundSchema: z.ZodType<
+  string,
+  AutoBetaRouterPluginCostTier
+> = openEnums.outboundSchema(AutoBetaRouterPluginCostTier);
+
+/** @internal */
 export type AutoBetaRouterPlugin$Outbound = {
   allowed_models?: Array<string> | undefined;
   cost_quality_tradeoff?: number | undefined;
+  cost_tier?: string | undefined;
   enabled?: boolean | undefined;
   id: "auto-beta-router";
 };
@@ -37,12 +69,14 @@ export const AutoBetaRouterPlugin$outboundSchema: z.ZodType<
 > = z.object({
   allowedModels: z.array(z.string()).optional(),
   costQualityTradeoff: z.int().optional(),
+  costTier: AutoBetaRouterPluginCostTier$outboundSchema.optional(),
   enabled: z.boolean().optional(),
   id: z.literal("auto-beta-router"),
 }).transform((v) => {
   return remap$(v, {
     allowedModels: "allowed_models",
     costQualityTradeoff: "cost_quality_tradeoff",
+    costTier: "cost_tier",
   });
 });
 
