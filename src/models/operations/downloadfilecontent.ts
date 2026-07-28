@@ -5,6 +5,8 @@
 
 import * as z from "zod/v4";
 import { remap as remap$ } from "../../lib/primitives.js";
+import * as openEnums from "../../types/enums.js";
+import { OpenEnum } from "../../types/enums.js";
 
 export type DownloadFileContentGlobals = {
   /**
@@ -27,6 +29,20 @@ export type DownloadFileContentGlobals = {
    */
   appCategories?: string | undefined;
 };
+
+/**
+ * Store or read this file on the named provider using your own API key for it. Omit to use OpenRouter storage.
+ */
+export const DownloadFileContentProvider = {
+  Openai: "openai",
+  Anthropic: "anthropic",
+} as const;
+/**
+ * Store or read this file on the named provider using your own API key for it. Omit to use OpenRouter storage.
+ */
+export type DownloadFileContentProvider = OpenEnum<
+  typeof DownloadFileContentProvider
+>;
 
 export type DownloadFileContentRequest = {
   /**
@@ -53,7 +69,17 @@ export type DownloadFileContentRequest = {
    * Workspace to scope the request to. Defaults to the caller’s default workspace.
    */
   workspaceId?: string | undefined;
+  /**
+   * Store or read this file on the named provider using your own API key for it. Omit to use OpenRouter storage.
+   */
+  provider?: DownloadFileContentProvider | undefined;
 };
+
+/** @internal */
+export const DownloadFileContentProvider$outboundSchema: z.ZodType<
+  string,
+  DownloadFileContentProvider
+> = openEnums.outboundSchema(DownloadFileContentProvider);
 
 /** @internal */
 export type DownloadFileContentRequest$Outbound = {
@@ -62,6 +88,7 @@ export type DownloadFileContentRequest$Outbound = {
   appCategories?: string | undefined;
   file_id: string;
   workspace_id?: string | undefined;
+  provider?: string | undefined;
 };
 
 /** @internal */
@@ -74,6 +101,7 @@ export const DownloadFileContentRequest$outboundSchema: z.ZodType<
   appCategories: z.string().optional(),
   fileId: z.string(),
   workspaceId: z.string().optional(),
+  provider: DownloadFileContentProvider$outboundSchema.optional(),
 }).transform((v) => {
   return remap$(v, {
     httpReferer: "HTTP-Referer",

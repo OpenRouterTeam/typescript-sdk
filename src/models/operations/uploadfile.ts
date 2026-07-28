@@ -6,6 +6,8 @@
 import * as z from "zod/v4";
 import { remap as remap$ } from "../../lib/primitives.js";
 import { blobLikeSchema } from "../../types/blobs.js";
+import * as openEnums from "../../types/enums.js";
+import { OpenEnum } from "../../types/enums.js";
 
 export type UploadFileGlobals = {
   /**
@@ -28,6 +30,18 @@ export type UploadFileGlobals = {
    */
   appCategories?: string | undefined;
 };
+
+/**
+ * Store or read this file on the named provider using your own API key for it. Omit to use OpenRouter storage.
+ */
+export const UploadFileProvider = {
+  Openai: "openai",
+  Anthropic: "anthropic",
+} as const;
+/**
+ * Store or read this file on the named provider using your own API key for it. Omit to use OpenRouter storage.
+ */
+export type UploadFileProvider = OpenEnum<typeof UploadFileProvider>;
 
 export type UploadFileFile = {
   fileName: string;
@@ -62,8 +76,18 @@ export type UploadFileRequest = {
    * Workspace to scope the request to. Defaults to the caller’s default workspace.
    */
   workspaceId?: string | undefined;
+  /**
+   * Store or read this file on the named provider using your own API key for it. Omit to use OpenRouter storage.
+   */
+  provider?: UploadFileProvider | undefined;
   requestBody: UploadFileRequestBody;
 };
+
+/** @internal */
+export const UploadFileProvider$outboundSchema: z.ZodType<
+  string,
+  UploadFileProvider
+> = openEnums.outboundSchema(UploadFileProvider);
 
 /** @internal */
 export type UploadFileFile$Outbound = {
@@ -116,6 +140,7 @@ export type UploadFileRequest$Outbound = {
   appTitle?: string | undefined;
   appCategories?: string | undefined;
   workspace_id?: string | undefined;
+  provider?: string | undefined;
   RequestBody: UploadFileRequestBody$Outbound;
 };
 
@@ -128,6 +153,7 @@ export const UploadFileRequest$outboundSchema: z.ZodType<
   appTitle: z.string().optional(),
   appCategories: z.string().optional(),
   workspaceId: z.string().optional(),
+  provider: UploadFileProvider$outboundSchema.optional(),
   requestBody: z.lazy(() => UploadFileRequestBody$outboundSchema),
 }).transform((v) => {
   return remap$(v, {

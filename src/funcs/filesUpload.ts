@@ -146,6 +146,7 @@ async function $do(
   const path = pathToFunc("/files")();
 
   const query = encodeFormQuery({
+    "provider": payload.provider,
     "workspace_id": payload.workspace_id,
   });
 
