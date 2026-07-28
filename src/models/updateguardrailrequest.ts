@@ -45,6 +45,18 @@ export type UpdateGuardrailRequest = {
    */
   description?: string | null | undefined;
   /**
+   * Whether this guardrail allows free endpoints that publish prompts.
+   */
+  enableFreeModelPublication?: boolean | null | undefined;
+  /**
+   * Whether this guardrail allows free endpoints that train on request data.
+   */
+  enableFreeModelTraining?: boolean | null | undefined;
+  /**
+   * Whether this guardrail allows paid endpoints that train on request data.
+   */
+  enablePaidModelTraining?: boolean | null | undefined;
+  /**
    * Deprecated. Use enforce_zdr_anthropic, enforce_zdr_openai, enforce_zdr_google, enforce_zdr_xai, and enforce_zdr_other instead. When provided, its value is copied into any of those per-provider fields that are not explicitly specified on the request.
    *
    * @deprecated field: This will be removed in a future release, please migrate away from it as soon as possible.
@@ -106,6 +118,9 @@ export type UpdateGuardrailRequest$Outbound = {
     | undefined;
   content_filters?: Array<ContentFilterEntry$Outbound> | null | undefined;
   description?: string | null | undefined;
+  enable_free_model_publication?: boolean | null | undefined;
+  enable_free_model_training?: boolean | null | undefined;
+  enable_paid_model_training?: boolean | null | undefined;
   enforce_zdr?: boolean | null | undefined;
   enforce_zdr_anthropic?: boolean | null | undefined;
   enforce_zdr_google?: boolean | null | undefined;
@@ -133,6 +148,9 @@ export const UpdateGuardrailRequest$outboundSchema: z.ZodType<
   contentFilters: z.nullable(z.array(ContentFilterEntry$outboundSchema))
     .optional(),
   description: z.nullable(z.string()).optional(),
+  enableFreeModelPublication: z.nullable(z.boolean()).optional(),
+  enableFreeModelTraining: z.nullable(z.boolean()).optional(),
+  enablePaidModelTraining: z.nullable(z.boolean()).optional(),
   enforceZdr: z.nullable(z.boolean()).optional(),
   enforceZdrAnthropic: z.nullable(z.boolean()).optional(),
   enforceZdrGoogle: z.nullable(z.boolean()).optional(),
@@ -151,6 +169,9 @@ export const UpdateGuardrailRequest$outboundSchema: z.ZodType<
     allowedProviders: "allowed_providers",
     contentFilterBuiltins: "content_filter_builtins",
     contentFilters: "content_filters",
+    enableFreeModelPublication: "enable_free_model_publication",
+    enableFreeModelTraining: "enable_free_model_training",
+    enablePaidModelTraining: "enable_paid_model_training",
     enforceZdr: "enforce_zdr",
     enforceZdrAnthropic: "enforce_zdr_anthropic",
     enforceZdrGoogle: "enforce_zdr_google",
