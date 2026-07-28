@@ -4,6 +4,7 @@
  */
 
 import * as z from "zod/v4";
+import { remap as remap$ } from "../lib/primitives.js";
 import { safeParse } from "../lib/schemas.js";
 import { Result as SafeParseResult } from "../types/fp.js";
 import { SDKValidationError } from "./errors/sdkvalidationerror.js";
@@ -13,6 +14,10 @@ export type DeleteWorkspaceBudgetResponse = {
    * Confirmation that the budget was deleted (or did not exist)
    */
   deleted: true;
+  /**
+   * Whether BYOK (bring-your-own-key) spend is included when enforcing the workspace's budgets. This is a workspace-wide setting that applies to all budget intervals (daily, weekly, monthly, and lifetime).
+   */
+  includeByokInBudgets: boolean;
 };
 
 /** @internal */
@@ -21,6 +26,11 @@ export const DeleteWorkspaceBudgetResponse$inboundSchema: z.ZodType<
   unknown
 > = z.object({
   deleted: z.literal(true),
+  include_byok_in_budgets: z.boolean(),
+}).transform((v) => {
+  return remap$(v, {
+    "include_byok_in_budgets": "includeByokInBudgets",
+  });
 });
 
 export function deleteWorkspaceBudgetResponseFromJSON(
