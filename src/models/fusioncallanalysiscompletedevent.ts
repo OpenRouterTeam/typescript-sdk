@@ -14,11 +14,11 @@ import {
 } from "./fusionanalysisresult.js";
 
 /**
- * Emitted when the fusion judge completes with the structured analysis.
+ * Emitted when the fusion analyst completes with the structured analysis.
  */
 export type FusionCallAnalysisCompletedEvent = {
   /**
-   * Structured analysis produced by the fusion judge model.
+   * Structured analysis produced by the fusion analyst model.
    */
   analysis: FusionAnalysisResult;
   itemId: string;

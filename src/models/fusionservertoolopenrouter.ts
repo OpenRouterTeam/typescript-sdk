@@ -19,7 +19,7 @@ export type FusionServerToolOpenRouterType = ClosedEnum<
 >;
 
 /**
- * OpenRouter built-in server tool: fans out the user prompt to a panel of analysis models, then asks a judge model to summarize their collective output as structured JSON the outer model can synthesize from.
+ * OpenRouter built-in server tool: fans out the user prompt to a panel of analysis models, then asks an analyst model to summarize their collective output as structured JSON the outer model can synthesize from.
  */
 export type FusionServerToolOpenRouter = {
   /**
