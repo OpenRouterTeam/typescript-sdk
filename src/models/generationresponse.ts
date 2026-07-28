@@ -33,15 +33,14 @@ export const ApiType = {
 export type ApiType = OpenEnum<typeof ApiType>;
 
 /**
- * The data region this generation was routed through: 'global', 'europe', or 'us'.
+ * The data region this generation was routed through. 'europe' for EU-routed requests, 'global' otherwise.
  */
 export const DataRegion = {
   Global: "global",
   Europe: "europe",
-  Us: "us",
 } as const;
 /**
- * The data region this generation was routed through: 'global', 'europe', or 'us'.
+ * The data region this generation was routed through. 'europe' for EU-routed requests, 'global' otherwise.
  */
 export type DataRegion = OpenEnum<typeof DataRegion>;
 
@@ -70,7 +69,7 @@ export type GenerationResponseData = {
    */
   createdAt: string;
   /**
-   * The data region this generation was routed through: 'global', 'europe', or 'us'.
+   * The data region this generation was routed through. 'europe' for EU-routed requests, 'global' otherwise.
    */
   dataRegion: DataRegion;
   /**

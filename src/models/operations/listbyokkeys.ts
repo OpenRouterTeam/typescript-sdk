@@ -37,7 +37,7 @@ export type ListBYOKKeysGlobals = {
 /**
  * Optional provider slug to filter by (e.g. `openai`, `anthropic`, `amazon-bedrock`).
  */
-export const Provider = {
+export const ListBYOKKeysProvider = {
   Ai21: "ai21",
   AionLabs: "aion-labs",
   Akashml: "akashml",
@@ -141,7 +141,7 @@ export const Provider = {
 /**
  * Optional provider slug to filter by (e.g. `openai`, `anthropic`, `amazon-bedrock`).
  */
-export type Provider = OpenEnum<typeof Provider>;
+export type ListBYOKKeysProvider = OpenEnum<typeof ListBYOKKeysProvider>;
 
 export type ListBYOKKeysRequest = {
   /**
@@ -178,7 +178,7 @@ export type ListBYOKKeysRequest = {
   /**
    * Optional provider slug to filter by (e.g. `openai`, `anthropic`, `amazon-bedrock`).
    */
-  provider?: Provider | undefined;
+  provider?: ListBYOKKeysProvider | undefined;
 };
 
 export type ListBYOKKeysResponse = {
@@ -186,8 +186,10 @@ export type ListBYOKKeysResponse = {
 };
 
 /** @internal */
-export const Provider$outboundSchema: z.ZodType<string, Provider> = openEnums
-  .outboundSchema(Provider);
+export const ListBYOKKeysProvider$outboundSchema: z.ZodType<
+  string,
+  ListBYOKKeysProvider
+> = openEnums.outboundSchema(ListBYOKKeysProvider);
 
 /** @internal */
 export type ListBYOKKeysRequest$Outbound = {
@@ -211,7 +213,7 @@ export const ListBYOKKeysRequest$outboundSchema: z.ZodType<
   offset: z.nullable(z.int().default(0)),
   limit: z.int().default(50),
   workspaceId: z.string().optional(),
-  provider: Provider$outboundSchema.optional(),
+  provider: ListBYOKKeysProvider$outboundSchema.optional(),
 }).transform((v) => {
   return remap$(v, {
     httpReferer: "HTTP-Referer",

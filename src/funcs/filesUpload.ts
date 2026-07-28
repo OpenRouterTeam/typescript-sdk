@@ -52,7 +52,7 @@ export function filesUpload(
   options?: RequestOptions,
 ): APIPromise<
   Result<
-    models.FileMetadata,
+    models.FileResponse,
     | errors.BadRequestResponseError
     | errors.UnauthorizedResponseError
     | errors.ForbiddenResponseError
@@ -83,7 +83,7 @@ async function $do(
 ): Promise<
   [
     Result<
-      models.FileMetadata,
+      models.FileResponse,
       | errors.BadRequestResponseError
       | errors.UnauthorizedResponseError
       | errors.ForbiddenResponseError
@@ -146,6 +146,7 @@ async function $do(
   const path = pathToFunc("/files")();
 
   const query = encodeFormQuery({
+    "provider": payload.provider,
     "workspace_id": payload.workspace_id,
   });
 
@@ -230,7 +231,7 @@ async function $do(
   };
 
   const [result] = await M.match<
-    models.FileMetadata,
+    models.FileResponse,
     | errors.BadRequestResponseError
     | errors.UnauthorizedResponseError
     | errors.ForbiddenResponseError
@@ -246,7 +247,7 @@ async function $do(
     | UnexpectedClientError
     | SDKValidationError
   >(
-    M.json(200, models.FileMetadata$inboundSchema),
+    M.json(200, models.FileResponse$inboundSchema),
     M.jsonErr(400, errors.BadRequestResponseError$inboundSchema),
     M.jsonErr(401, errors.UnauthorizedResponseError$inboundSchema),
     M.jsonErr(403, errors.ForbiddenResponseError$inboundSchema),
