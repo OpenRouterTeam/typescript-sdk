@@ -5,6 +5,7 @@
 
 import * as z from "zod/v4";
 import { remap as remap$ } from "../../lib/primitives.js";
+import { ClosedEnum } from "../../types/enums.js";
 
 export type GetUserActivityGlobals = {
   /**
@@ -27,6 +28,17 @@ export type GetUserActivityGlobals = {
    */
   appCategories?: string | undefined;
 };
+
+/**
+ * Set to 'workspace' to split each row per workspace and include `workspace_id` on every item. Omitted by default, in which case rows are aggregated across workspaces (by date, model, and endpoint) and `workspace_id` is not returned — preserving the historical response shape.
+ */
+export const GroupBy = {
+  Workspace: "workspace",
+} as const;
+/**
+ * Set to 'workspace' to split each row per workspace and include `workspace_id` on every item. Omitted by default, in which case rows are aggregated across workspaces (by date, model, and endpoint) and `workspace_id` is not returned — preserving the historical response shape.
+ */
+export type GroupBy = ClosedEnum<typeof GroupBy>;
 
 export type GetUserActivityRequest = {
   /**
@@ -60,7 +72,20 @@ export type GetUserActivityRequest = {
    * Filter by org member user ID. Only applicable for organization accounts.
    */
   userId?: string | undefined;
+  /**
+   * Set to 'workspace' to split each row per workspace and include `workspace_id` on every item. Omitted by default, in which case rows are aggregated across workspaces (by date, model, and endpoint) and `workspace_id` is not returned — preserving the historical response shape.
+   */
+  groupBy?: GroupBy | undefined;
+  /**
+   * Filter by workspace ID (UUID). Returns only activity attributed to that workspace. The workspace must belong to the authenticated account.
+   */
+  workspaceId?: string | undefined;
 };
+
+/** @internal */
+export const GroupBy$outboundSchema: z.ZodEnum<typeof GroupBy> = z.enum(
+  GroupBy,
+);
 
 /** @internal */
 export type GetUserActivityRequest$Outbound = {
@@ -70,6 +95,8 @@ export type GetUserActivityRequest$Outbound = {
   date?: string | undefined;
   api_key_hash?: string | undefined;
   user_id?: string | undefined;
+  group_by?: string | undefined;
+  workspace_id?: string | undefined;
 };
 
 /** @internal */
@@ -83,11 +110,15 @@ export const GetUserActivityRequest$outboundSchema: z.ZodType<
   date: z.string().optional(),
   apiKeyHash: z.string().optional(),
   userId: z.string().optional(),
+  groupBy: GroupBy$outboundSchema.optional(),
+  workspaceId: z.string().optional(),
 }).transform((v) => {
   return remap$(v, {
     httpReferer: "HTTP-Referer",
     apiKeyHash: "api_key_hash",
     userId: "user_id",
+    groupBy: "group_by",
+    workspaceId: "workspace_id",
   });
 });
 
