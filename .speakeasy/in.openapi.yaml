@@ -8962,10 +8962,11 @@ components:
               example: '2024-07-15T23:33:19.433273+00:00'
               type: 'string'
             data_region:
-              description: 'The data region this generation was routed through. ''europe'' for EU-routed requests, ''global'' otherwise.'
+              description: 'The data region this generation was routed through: ''global'', ''europe'', or ''us''.'
               enum:
                 - 'global'
                 - 'europe'
+                - 'us'
               example: 'global'
               type: 'string'
             external_user:
@@ -34697,7 +34698,7 @@ paths:
           description: 'Provider Overloaded - Provider is temporarily overloaded'
       summary: 'Create a response'
       tags:
-        - 'responses'
+        - 'Responses'
       x-speakeasy-name-override: 'send'
       x-speakeasy-stream-request-field: 'stream'
   /videos:
@@ -35972,6 +35973,8 @@ tags:
     name: 'Providers'
   - description: 'Rerank endpoints'
     name: 'Rerank'
+  - description: 'OpenAI-compatible Responses API endpoints'
+    name: 'Responses'
   - description: 'Speech-to-text endpoints'
     name: 'STT'
     x-displayName: 'Transcriptions'
@@ -35984,8 +35987,6 @@ tags:
     name: 'Workspaces'
   - description: 'beta.Analytics endpoints'
     name: 'beta.Analytics'
-  - description: 'responses endpoints'
-    name: 'responses'
 x-retry-strategy:
   initialDelay: 500
   maxAttempts: 3
