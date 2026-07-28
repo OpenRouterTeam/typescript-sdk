@@ -5,6 +5,25 @@
 
 import * as z from "zod/v4";
 import { remap as remap$ } from "../lib/primitives.js";
+import * as openEnums from "../types/enums.js";
+import { OpenEnum } from "../types/enums.js";
+
+/**
+ * Shorthand for cost_quality_tradeoff. Higher tiers spend more on better models: low = 9, medium = 7, high = 5, xhigh = 3, and max = 1. Numeric cost_quality_tradeoff takes precedence when both are provided.
+ */
+export const AutoRouterPluginCostTier = {
+  Low: "low",
+  Medium: "medium",
+  High: "high",
+  Xhigh: "xhigh",
+  Max: "max",
+} as const;
+/**
+ * Shorthand for cost_quality_tradeoff. Higher tiers spend more on better models: low = 9, medium = 7, high = 5, xhigh = 3, and max = 1. Numeric cost_quality_tradeoff takes precedence when both are provided.
+ */
+export type AutoRouterPluginCostTier = OpenEnum<
+  typeof AutoRouterPluginCostTier
+>;
 
 export type AutoRouterPlugin = {
   /**
@@ -12,9 +31,15 @@ export type AutoRouterPlugin = {
    */
   allowedModels?: Array<string> | undefined;
   /**
-   * Controls cost vs. quality routing tradeoff (0–10). 0 = pure quality (best model regardless of cost), 10 = maximize for cost (cheapest model wins). Intermediate values blend quality and cost signals continuously. Defaults to 7.
+   * Deprecated: Use cost_tier instead. Controls cost vs. quality routing tradeoff (0–10). 0 = pure quality (best model regardless of cost), 10 = maximize for cost (cheapest model wins). Intermediate values blend quality and cost signals continuously. Defaults to 7. Numeric cost_quality_tradeoff remains supported and takes precedence over cost_tier when both are provided.
+   *
+   * @deprecated field: This will be removed in a future release, please migrate away from it as soon as possible.
    */
   costQualityTradeoff?: number | undefined;
+  /**
+   * Shorthand for cost_quality_tradeoff. Higher tiers spend more on better models: low = 9, medium = 7, high = 5, xhigh = 3, and max = 1. Numeric cost_quality_tradeoff takes precedence when both are provided.
+   */
+  costTier?: AutoRouterPluginCostTier | undefined;
   /**
    * Set to false to disable the auto-router plugin for this request. Defaults to true.
    */
@@ -27,9 +52,16 @@ export type AutoRouterPlugin = {
 };
 
 /** @internal */
+export const AutoRouterPluginCostTier$outboundSchema: z.ZodType<
+  string,
+  AutoRouterPluginCostTier
+> = openEnums.outboundSchema(AutoRouterPluginCostTier);
+
+/** @internal */
 export type AutoRouterPlugin$Outbound = {
   allowed_models?: Array<string> | undefined;
   cost_quality_tradeoff?: number | undefined;
+  cost_tier?: string | undefined;
   enabled?: boolean | undefined;
   id: "auto-router";
   pin_model?: boolean | undefined;
@@ -42,6 +74,7 @@ export const AutoRouterPlugin$outboundSchema: z.ZodType<
 > = z.object({
   allowedModels: z.array(z.string()).optional(),
   costQualityTradeoff: z.int().optional(),
+  costTier: AutoRouterPluginCostTier$outboundSchema.optional(),
   enabled: z.boolean().optional(),
   id: z.literal("auto-router"),
   pinModel: z.boolean().optional(),
@@ -49,6 +82,7 @@ export const AutoRouterPlugin$outboundSchema: z.ZodType<
   return remap$(v, {
     allowedModels: "allowed_models",
     costQualityTradeoff: "cost_quality_tradeoff",
+    costTier: "cost_tier",
     pinModel: "pin_model",
   });
 });
