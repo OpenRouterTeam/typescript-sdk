@@ -508,6 +508,7 @@ export * from "./subagentnestedtool.js";
 export * from "./subagentreasoning.js";
 export * from "./subagentservertoolconfig.js";
 export * from "./subagentservertoolopenrouter.js";
+export * from "./subagentsessionitem.js";
 export * from "./submitgenerationfeedbackrequest.js";
 export * from "./submitgenerationfeedbackresponse.js";
 export * from "./taskclassificationitem.js";
