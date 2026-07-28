@@ -1370,7 +1370,7 @@ components:
       type: 'object'
     AnthropicFileDocumentSource:
       example:
-        file_id: 'file_011CNha8iCJcU1wXNR6q4V8w'
+        file_id: 'or_file_011CNha8iCJcU1wXNR6q4V8w'
         type: 'file'
       properties:
         file_id:
@@ -7777,7 +7777,7 @@ components:
     FileDeleteResponse:
       description: 'Confirmation that a file was deleted.'
       example:
-        id: 'file_011CNha8iCJcU1wXNR6q4V8w'
+        id: 'or_file_011CNha8iCJcU1wXNR6q4V8w'
         type: 'file_deleted'
       properties:
         id:
@@ -7798,13 +7798,13 @@ components:
           - created_at: '2025-01-01T00:00:00Z'
             downloadable: false
             filename: 'document.pdf'
-            id: 'file_011CNha8iCJcU1wXNR6q4V8w'
+            id: 'or_file_011CNha8iCJcU1wXNR6q4V8w'
             mime_type: 'application/pdf'
             size_bytes: 1024000
             type: 'file'
-        first_id: 'file_011CNha8iCJcU1wXNR6q4V8w'
+        first_id: 'or_file_011CNha8iCJcU1wXNR6q4V8w'
         has_more: false
-        last_id: 'file_011CNha8iCJcU1wXNR6q4V8w'
+        last_id: 'or_file_011CNha8iCJcU1wXNR6q4V8w'
       properties:
         cursor:
           description: 'Opaque cursor for the next page; null when there are no more results.'
@@ -7838,7 +7838,7 @@ components:
         created_at: '2025-01-01T00:00:00Z'
         downloadable: false
         filename: 'document.pdf'
-        id: 'file_011CNha8iCJcU1wXNR6q4V8w'
+        id: 'or_file_011CNha8iCJcU1wXNR6q4V8w'
         mime_type: 'application/pdf'
         size_bytes: 1024000
         type: 'file'
@@ -27521,7 +27521,7 @@ paths:
           required: false
           schema:
             description: 'Opaque pagination cursor from a previous response.'
-            example: 'eyJjdXJzb3IiOiJmaWxlXzAxMUNOaGE4aUNKY1Uxd1hOUjZxNFY4dyJ9'
+            example: 'eyJjdXJzb3IiOiJvcl9maWxlXzAxMUNOaGE4aUNKY1Uxd1hOUjZxNFY4dyJ9'
             type: 'string'
         - description: 'Workspace to scope the request to. Defaults to the caller’s default workspace.'
           in: 'query'
@@ -27542,13 +27542,13 @@ paths:
                   - created_at: '2025-01-01T00:00:00Z'
                     downloadable: false
                     filename: 'document.pdf'
-                    id: 'file_011CNha8iCJcU1wXNR6q4V8w'
+                    id: 'or_file_011CNha8iCJcU1wXNR6q4V8w'
                     mime_type: 'application/pdf'
                     size_bytes: 1024000
                     type: 'file'
-                first_id: 'file_011CNha8iCJcU1wXNR6q4V8w'
+                first_id: 'or_file_011CNha8iCJcU1wXNR6q4V8w'
                 has_more: false
-                last_id: 'file_011CNha8iCJcU1wXNR6q4V8w'
+                last_id: 'or_file_011CNha8iCJcU1wXNR6q4V8w'
               schema:
                 $ref: '#/components/schemas/FileListResponse'
           description: 'A page of files.'
@@ -27641,7 +27641,7 @@ paths:
                 created_at: '2025-01-01T00:00:00Z'
                 downloadable: false
                 filename: 'document.pdf'
-                id: 'file_011CNha8iCJcU1wXNR6q4V8w'
+                id: 'or_file_011CNha8iCJcU1wXNR6q4V8w'
                 mime_type: 'application/pdf'
                 size_bytes: 1024000
                 type: 'file'
@@ -27722,7 +27722,7 @@ paths:
           name: 'file_id'
           required: true
           schema:
-            example: 'file_011CNha8iCJcU1wXNR6q4V8w'
+            example: 'or_file_011CNha8iCJcU1wXNR6q4V8w'
             type: 'string'
         - description: 'Workspace to scope the request to. Defaults to the caller’s default workspace.'
           in: 'query'
@@ -27738,7 +27738,7 @@ paths:
           content:
             application/json:
               example:
-                id: 'file_011CNha8iCJcU1wXNR6q4V8w'
+                id: 'or_file_011CNha8iCJcU1wXNR6q4V8w'
                 type: 'file_deleted'
               schema:
                 $ref: '#/components/schemas/FileDeleteResponse'
@@ -27796,7 +27796,7 @@ paths:
           name: 'file_id'
           required: true
           schema:
-            example: 'file_011CNha8iCJcU1wXNR6q4V8w'
+            example: 'or_file_011CNha8iCJcU1wXNR6q4V8w'
             type: 'string'
         - description: 'Workspace to scope the request to. Defaults to the caller’s default workspace.'
           in: 'query'
@@ -27815,7 +27815,7 @@ paths:
                 created_at: '2025-01-01T00:00:00Z'
                 downloadable: false
                 filename: 'document.pdf'
-                id: 'file_011CNha8iCJcU1wXNR6q4V8w'
+                id: 'or_file_011CNha8iCJcU1wXNR6q4V8w'
                 mime_type: 'application/pdf'
                 size_bytes: 1024000
                 type: 'file'
@@ -27876,7 +27876,7 @@ paths:
           name: 'file_id'
           required: true
           schema:
-            example: 'file_011CNha8iCJcU1wXNR6q4V8w'
+            example: 'or_file_011CNha8iCJcU1wXNR6q4V8w'
             type: 'string'
         - description: 'Workspace to scope the request to. Defaults to the caller’s default workspace.'
           in: 'query'
