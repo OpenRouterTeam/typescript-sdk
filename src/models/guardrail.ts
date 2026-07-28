@@ -47,18 +47,6 @@ export type Guardrail = {
    */
   description?: string | null | undefined;
   /**
-   * Whether this guardrail allows free endpoints that publish prompts.
-   */
-  enableFreeModelPublication?: boolean | null | undefined;
-  /**
-   * Whether this guardrail allows free endpoints that train on request data.
-   */
-  enableFreeModelTraining?: boolean | null | undefined;
-  /**
-   * Whether this guardrail allows paid endpoints that train on request data.
-   */
-  enablePaidModelTraining?: boolean | null | undefined;
-  /**
    * Deprecated. Use enforce_zdr_anthropic, enforce_zdr_openai, enforce_zdr_google, enforce_zdr_xai, and enforce_zdr_other instead. When provided, its value is copied into any of those per-provider fields that are not explicitly specified on the request.
    *
    * @deprecated field: This will be removed in a future release, please migrate away from it as soon as possible.
@@ -133,9 +121,6 @@ export const Guardrail$inboundSchema: z.ZodType<Guardrail, unknown> = z.object({
     .optional(),
   created_at: z.string(),
   description: z.nullable(z.string()).optional(),
-  enable_free_model_publication: z.nullable(z.boolean()).optional(),
-  enable_free_model_training: z.nullable(z.boolean()).optional(),
-  enable_paid_model_training: z.nullable(z.boolean()).optional(),
   enforce_zdr: z.nullable(z.boolean()).optional(),
   enforce_zdr_anthropic: z.nullable(z.boolean()).optional(),
   enforce_zdr_google: z.nullable(z.boolean()).optional(),
@@ -158,9 +143,6 @@ export const Guardrail$inboundSchema: z.ZodType<Guardrail, unknown> = z.object({
     "content_filter_builtins": "contentFilterBuiltins",
     "content_filters": "contentFilters",
     "created_at": "createdAt",
-    "enable_free_model_publication": "enableFreeModelPublication",
-    "enable_free_model_training": "enableFreeModelTraining",
-    "enable_paid_model_training": "enablePaidModelTraining",
     "enforce_zdr": "enforceZdr",
     "enforce_zdr_anthropic": "enforceZdrAnthropic",
     "enforce_zdr_google": "enforceZdrGoogle",
