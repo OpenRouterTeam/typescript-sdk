@@ -2827,7 +2827,7 @@ components:
         allowed_models:
           - 'anthropic/*'
           - 'openai/gpt-4o'
-        cost_quality_tradeoff: 9
+        cost_tier: 'low'
         enabled: true
         id: 'auto-beta-router'
       properties:
@@ -2841,11 +2841,22 @@ components:
             type: 'string'
           type: 'array'
         cost_quality_tradeoff:
-          description: 'Balances routing between cost and quality on a 0-10 scale. The auto-beta-router ranks models for the classified task type by community spend share, then filters candidates by their average cost per generation for that task. Higher values favor cheaper models: 10 keeps only models around the cheapest 10th percentile, while 0 permits models up to the 90th percentile for cost. Defaults to 9.'
+          deprecated: true
+          description: 'Deprecated: Use cost_tier instead. Balances routing between cost and quality on a 0-10 scale. The auto-beta-router ranks models for the classified task type by community spend share, then filters candidates by their average cost per generation for that task. Higher values favor cheaper models: 10 keeps only models around the cheapest 10th percentile, while 0 permits models up to the 90th percentile for cost. Defaults to 9. Numeric cost_quality_tradeoff remains supported, retains ceiling behavior, and takes precedence over cost_tier when both are provided.'
           example: 9
           maximum: 10
           minimum: 0
           type: 'integer'
+        cost_tier:
+          description: 'Named cost/quality setting. For auto-beta-router, tiers select cost-percentile bands: low = [0, 20), medium = [20, 40), high = [40, 60), xhigh = [60, 80), and max = [80, 100]. Numeric cost_quality_tradeoff takes precedence and retains ceiling behavior.'
+          enum:
+            - 'low'
+            - 'medium'
+            - 'high'
+            - 'xhigh'
+            - 'max'
+          example: 'low'
+          type: 'string'
         enabled:
           description: 'Set to false to disable the auto-beta-router plugin for this request. Defaults to true.'
           type: 'boolean'
@@ -2861,7 +2872,7 @@ components:
         allowed_models:
           - 'anthropic/*'
           - 'openai/gpt-4o'
-        cost_quality_tradeoff: 7
+        cost_tier: 'medium'
         enabled: true
         id: 'auto-router'
         pin_model: false
@@ -2876,11 +2887,22 @@ components:
             type: 'string'
           type: 'array'
         cost_quality_tradeoff:
-          description: 'Controls cost vs. quality routing tradeoff (0–10). 0 = pure quality (best model regardless of cost), 10 = maximize for cost (cheapest model wins). Intermediate values blend quality and cost signals continuously. Defaults to 7.'
+          deprecated: true
+          description: 'Deprecated: Use cost_tier instead. Controls cost vs. quality routing tradeoff (0–10). 0 = pure quality (best model regardless of cost), 10 = maximize for cost (cheapest model wins). Intermediate values blend quality and cost signals continuously. Defaults to 7. Numeric cost_quality_tradeoff remains supported and takes precedence over cost_tier when both are provided.'
           example: 7
           maximum: 10
           minimum: 0
           type: 'integer'
+        cost_tier:
+          description: 'Shorthand for cost_quality_tradeoff. Higher tiers spend more on better models: low = 9, medium = 7, high = 5, xhigh = 3, and max = 1. Numeric cost_quality_tradeoff takes precedence when both are provided.'
+          enum:
+            - 'low'
+            - 'medium'
+            - 'high'
+            - 'xhigh'
+            - 'max'
+          example: 'medium'
+          type: 'string'
         enabled:
           description: 'Set to false to disable the auto-router plugin for this request. Defaults to true.'
           type: 'boolean'
