@@ -1,0 +1,35 @@
+---
+title: "AnthropicFile"
+---
+
+A stored file in Anthropic's Files API shape.
+
+## Example Usage
+
+```typescript
+import { AnthropicFile } from "@openrouter/sdk/models";
+
+let value: AnthropicFile = {
+  shape: "anthropic",
+  createdAt: "2025-01-01T00:00:00Z",
+  downloadable: false,
+  filename: "document.pdf",
+  id: "or_file_011CNha8iCJcU1wXNR6q4V8w",
+  mimeType: "application/pdf",
+  sizeBytes: 1024000,
+  type: "file",
+};
+```
+
+## Fields
+
+| Field                                                        | Type                                                         | Required                                                     | Description                                                  |
+| ------------------------------------------------------------ | ------------------------------------------------------------ | ------------------------------------------------------------ | ------------------------------------------------------------ |
+| `shape`                                                      | [models.AnthropicFileShape](../models/anthropicfileshape.mdx) | :heavy_check_mark:                                           | N/A                                                          |
+| `createdAt`                                                  | *string*                                                     | :heavy_check_mark:                                           | N/A                                                          |
+| `downloadable`                                               | *boolean*                                                    | :heavy_check_mark:                                           | N/A                                                          |
+| `filename`                                                   | *string*                                                     | :heavy_check_mark:                                           | N/A                                                          |
+| `id`                                                         | *string*                                                     | :heavy_check_mark:                                           | N/A                                                          |
+| `mimeType`                                                   | *string*                                                     | :heavy_check_mark:                                           | N/A                                                          |
+| `sizeBytes`                                                  | *number*                                                     | :heavy_check_mark:                                           | N/A                                                          |
+| `type`                                                       | [models.AnthropicFileType](../models/anthropicfiletype.mdx)   | :heavy_check_mark:                                           | N/A                                                          |
