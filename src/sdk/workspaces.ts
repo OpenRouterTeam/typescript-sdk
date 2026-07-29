@@ -9,6 +9,7 @@ import { workspacesCreate } from "../funcs/workspacesCreate.js";
 import { workspacesDelete } from "../funcs/workspacesDelete.js";
 import { workspacesDeleteBudget } from "../funcs/workspacesDeleteBudget.js";
 import { workspacesGet } from "../funcs/workspacesGet.js";
+import { workspacesGetBudget } from "../funcs/workspacesGetBudget.js";
 import { workspacesList } from "../funcs/workspacesList.js";
 import { workspacesListBudgets } from "../funcs/workspacesListBudgets.js";
 import { workspacesListMembers } from "../funcs/workspacesListMembers.js";
@@ -136,6 +137,23 @@ export class Workspaces extends ClientSDK {
     options?: RequestOptions,
   ): Promise<models.DeleteWorkspaceBudgetResponse> {
     return unwrapAsync(workspacesDeleteBudget(
+      this,
+      request,
+      options,
+    ));
+  }
+
+  /**
+   * Get a workspace budget
+   *
+   * @remarks
+   * Retrieve the budget for a given interval. [Management key](/docs/guides/overview/auth/management-api-keys) required.
+   */
+  async getBudget(
+    request: operations.GetWorkspaceBudgetRequest,
+    options?: RequestOptions,
+  ): Promise<models.GetWorkspaceBudgetResponse> {
+    return unwrapAsync(workspacesGetBudget(
       this,
       request,
       options,
