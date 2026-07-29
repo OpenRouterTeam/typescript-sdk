@@ -6,6 +6,8 @@
 import * as z from "zod/v4";
 import { remap as remap$ } from "../../lib/primitives.js";
 import { safeParse } from "../../lib/schemas.js";
+import * as openEnums from "../../types/enums.js";
+import { OpenEnum } from "../../types/enums.js";
 import { Result as SafeParseResult } from "../../types/fp.js";
 import { SDKValidationError } from "../errors/sdkvalidationerror.js";
 import * as models from "../index.js";
@@ -31,6 +33,18 @@ export type ListFilesGlobals = {
    */
   appCategories?: string | undefined;
 };
+
+/**
+ * Sort direction. Only `asc` is supported by OpenRouter storage.
+ */
+export const Order = {
+  Asc: "asc",
+  Desc: "desc",
+} as const;
+/**
+ * Sort direction. Only `asc` is supported by OpenRouter storage.
+ */
+export type Order = OpenEnum<typeof Order>;
 
 export type ListFilesRequest = {
   /**
@@ -64,11 +78,35 @@ export type ListFilesRequest = {
    * Workspace to scope the request to. Defaults to the caller’s default workspace.
    */
   workspaceId?: string | undefined;
+  /**
+   * Store or read this file on the named provider using your own API key for it. Omit to use OpenRouter storage.
+   */
+  provider?: models.FileProvider | undefined;
+  /**
+   * OpenAI-style forward cursor: the id to list after.
+   */
+  after?: string | undefined;
+  /**
+   * Anthropic-style forward cursor: the id to list after.
+   */
+  afterId?: string | undefined;
+  /**
+   * Anthropic-style reverse cursor. Not supported by OpenRouter storage.
+   */
+  beforeId?: string | undefined;
+  /**
+   * Sort direction. Only `asc` is supported by OpenRouter storage.
+   */
+  order?: Order | undefined;
 };
 
 export type ListFilesResponse = {
   result: models.FileListResponse;
 };
+
+/** @internal */
+export const Order$outboundSchema: z.ZodType<string, Order> = openEnums
+  .outboundSchema(Order);
 
 /** @internal */
 export type ListFilesRequest$Outbound = {
@@ -78,6 +116,11 @@ export type ListFilesRequest$Outbound = {
   limit?: number | undefined;
   cursor?: string | undefined;
   workspace_id?: string | undefined;
+  provider?: string | undefined;
+  after?: string | undefined;
+  after_id?: string | undefined;
+  before_id?: string | undefined;
+  order?: string | undefined;
 };
 
 /** @internal */
@@ -91,10 +134,17 @@ export const ListFilesRequest$outboundSchema: z.ZodType<
   limit: z.int().optional(),
   cursor: z.string().optional(),
   workspaceId: z.string().optional(),
+  provider: models.FileProvider$outboundSchema.optional(),
+  after: z.string().optional(),
+  afterId: z.string().optional(),
+  beforeId: z.string().optional(),
+  order: Order$outboundSchema.optional(),
 }).transform((v) => {
   return remap$(v, {
     httpReferer: "HTTP-Referer",
     workspaceId: "workspace_id",
+    afterId: "after_id",
+    beforeId: "before_id",
   });
 });
 
