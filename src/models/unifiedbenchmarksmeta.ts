@@ -17,6 +17,7 @@ import { SDKValidationError } from "./errors/sdkvalidationerror.js";
 export const SourceEnum = {
   ArtificialAnalysis: "artificial-analysis",
   DesignArena: "design-arena",
+  Openrouter: "openrouter",
 } as const;
 /**
  * The source filter applied, or null when all sources are returned.
