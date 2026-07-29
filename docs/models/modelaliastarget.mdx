@@ -1,0 +1,23 @@
+---
+title: "ModelAliasTarget"
+---
+
+Concrete model targeted by this tilde-latest alias, when applicable
+
+## Example Usage
+
+```typescript
+import { ModelAliasTarget } from "@openrouter/sdk/models";
+
+let value: ModelAliasTarget = {
+  name: "Claude Sonnet 4.5",
+  slug: "anthropic/claude-sonnet-4.5",
+};
+```
+
+## Fields
+
+| Field                                                                  | Type                                                                   | Required                                                               | Description                                                            |
+| ---------------------------------------------------------------------- | ---------------------------------------------------------------------- | ---------------------------------------------------------------------- | ---------------------------------------------------------------------- |
+| `name`                                                                 | *string*                                                               | :heavy_check_mark:                                                     | Human-readable name of the concrete model targeted by this alias       |
+| `slug`                                                                 | *string*                                                               | :heavy_check_mark:                                                     | Routable model ID of the concrete target, matching that model row's id |
