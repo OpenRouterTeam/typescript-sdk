@@ -21,16 +21,22 @@ import {
   UnifiedBenchmarksMeta,
   UnifiedBenchmarksMeta$inboundSchema,
 } from "./unifiedbenchmarksmeta.js";
+import {
+  UnifiedBenchmarksORItem,
+  UnifiedBenchmarksORItem$inboundSchema,
+} from "./unifiedbenchmarksoritem.js";
 
 export type UnifiedBenchmarksResponseData =
   | UnifiedBenchmarksAAItem
   | UnifiedBenchmarksDAItem
+  | UnifiedBenchmarksORItem
   | discriminatedUnionTypes.Unknown<"source">;
 
 export type UnifiedBenchmarksResponse = {
   data: Array<
     | UnifiedBenchmarksAAItem
     | UnifiedBenchmarksDAItem
+    | UnifiedBenchmarksORItem
     | discriminatedUnionTypes.Unknown<"source">
   >;
   meta: UnifiedBenchmarksMeta;
@@ -43,6 +49,7 @@ export const UnifiedBenchmarksResponseData$inboundSchema: z.ZodType<
 > = discriminatedUnion("source", {
   ["artificial-analysis"]: UnifiedBenchmarksAAItem$inboundSchema,
   ["design-arena"]: UnifiedBenchmarksDAItem$inboundSchema,
+  openrouter: UnifiedBenchmarksORItem$inboundSchema,
 });
 
 export function unifiedBenchmarksResponseDataFromJSON(
@@ -60,12 +67,11 @@ export const UnifiedBenchmarksResponse$inboundSchema: z.ZodType<
   UnifiedBenchmarksResponse,
   unknown
 > = z.object({
-  data: z.array(
-    discriminatedUnion("source", {
-      ["artificial-analysis"]: UnifiedBenchmarksAAItem$inboundSchema,
-      ["design-arena"]: UnifiedBenchmarksDAItem$inboundSchema,
-    }),
-  ),
+  data: z.array(discriminatedUnion("source", {
+    ["artificial-analysis"]: UnifiedBenchmarksAAItem$inboundSchema,
+    ["design-arena"]: UnifiedBenchmarksDAItem$inboundSchema,
+    openrouter: UnifiedBenchmarksORItem$inboundSchema,
+  })),
   meta: UnifiedBenchmarksMeta$inboundSchema,
 });
 
