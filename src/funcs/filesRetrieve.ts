@@ -40,7 +40,7 @@ export function filesRetrieve(
   options?: RequestOptions,
 ): APIPromise<
   Result<
-    models.FileMetadata,
+    models.FileResponse,
     | errors.UnauthorizedResponseError
     | errors.NotFoundResponseError
     | errors.TooManyRequestsResponseError
@@ -69,7 +69,7 @@ async function $do(
 ): Promise<
   [
     Result<
-      models.FileMetadata,
+      models.FileResponse,
       | errors.UnauthorizedResponseError
       | errors.NotFoundResponseError
       | errors.TooManyRequestsResponseError
@@ -106,6 +106,7 @@ async function $do(
   const path = pathToFunc("/files/{file_id}")(pathParams);
 
   const query = encodeFormQuery({
+    "provider": payload.provider,
     "workspace_id": payload.workspace_id,
   });
 
@@ -190,7 +191,7 @@ async function $do(
   };
 
   const [result] = await M.match<
-    models.FileMetadata,
+    models.FileResponse,
     | errors.UnauthorizedResponseError
     | errors.NotFoundResponseError
     | errors.TooManyRequestsResponseError
@@ -204,7 +205,7 @@ async function $do(
     | UnexpectedClientError
     | SDKValidationError
   >(
-    M.json(200, models.FileMetadata$inboundSchema),
+    M.json(200, models.FileResponse$inboundSchema),
     M.jsonErr(401, errors.UnauthorizedResponseError$inboundSchema),
     M.jsonErr(404, errors.NotFoundResponseError$inboundSchema),
     M.jsonErr(429, errors.TooManyRequestsResponseError$inboundSchema),

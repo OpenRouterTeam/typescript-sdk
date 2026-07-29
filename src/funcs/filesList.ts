@@ -112,8 +112,13 @@ async function $do(
   const path = pathToFunc("/files")();
 
   const query = encodeFormQuery({
+    "after": payload?.after,
+    "after_id": payload?.after_id,
+    "before_id": payload?.before_id,
     "cursor": payload?.cursor,
     "limit": payload?.limit,
+    "order": payload?.order,
+    "provider": payload?.provider,
     "workspace_id": payload?.workspace_id,
   });
 
@@ -250,14 +255,16 @@ async function $do(
     >;
     "~next"?: { cursor: string };
   } => {
-    const nextCursor = (responseData as { cursor: unknown | null }).cursor;
+    const nextCursor = (responseData as { cursor?: unknown } | null | undefined)
+      ?.cursor;
     if (typeof nextCursor !== "string") {
       return { next: () => null };
     }
     if (nextCursor.trim() === "") {
       return { next: () => null };
     }
-    const results = (responseData as { data: unknown }).data;
+    const results = (responseData as { data?: unknown } | null | undefined)
+      ?.data;
     if (!Array.isArray(results) || !results.length) {
       return { next: () => null };
     }
