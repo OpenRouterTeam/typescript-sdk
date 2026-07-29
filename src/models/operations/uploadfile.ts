@@ -6,6 +6,7 @@
 import * as z from "zod/v4";
 import { remap as remap$ } from "../../lib/primitives.js";
 import { blobLikeSchema } from "../../types/blobs.js";
+import * as models from "../index.js";
 
 export type UploadFileGlobals = {
   /**
@@ -62,6 +63,10 @@ export type UploadFileRequest = {
    * Workspace to scope the request to. Defaults to the caller’s default workspace.
    */
   workspaceId?: string | undefined;
+  /**
+   * Store or read this file on the named provider using your own API key for it. Omit to use OpenRouter storage.
+   */
+  provider?: models.FileProvider | undefined;
   requestBody: UploadFileRequestBody;
 };
 
@@ -116,6 +121,7 @@ export type UploadFileRequest$Outbound = {
   appTitle?: string | undefined;
   appCategories?: string | undefined;
   workspace_id?: string | undefined;
+  provider?: string | undefined;
   RequestBody: UploadFileRequestBody$Outbound;
 };
 
@@ -128,6 +134,7 @@ export const UploadFileRequest$outboundSchema: z.ZodType<
   appTitle: z.string().optional(),
   appCategories: z.string().optional(),
   workspaceId: z.string().optional(),
+  provider: models.FileProvider$outboundSchema.optional(),
   requestBody: z.lazy(() => UploadFileRequestBody$outboundSchema),
 }).transform((v) => {
   return remap$(v, {

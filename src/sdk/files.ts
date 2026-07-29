@@ -41,7 +41,7 @@ export class Files extends ClientSDK {
   async upload(
     request: operations.UploadFileRequest,
     options?: RequestOptions,
-  ): Promise<models.FileMetadata> {
+  ): Promise<models.FileResponse> {
     return unwrapAsync(filesUpload(
       this,
       request,
@@ -75,7 +75,7 @@ export class Files extends ClientSDK {
   async retrieve(
     request: operations.GetFileMetadataRequest,
     options?: RequestOptions,
-  ): Promise<models.FileMetadata> {
+  ): Promise<models.FileResponse> {
     return unwrapAsync(filesRetrieve(
       this,
       request,
