@@ -7,6 +7,11 @@ import * as z from "zod/v4";
 import { remap as remap$ } from "../lib/primitives.js";
 import { ClosedEnum } from "../types/enums.js";
 import {
+  ResponseAgentIdentity,
+  ResponseAgentIdentity$Outbound,
+  ResponseAgentIdentity$outboundSchema,
+} from "./responseagentidentity.js";
+import {
   ToolCallStatus,
   ToolCallStatus$outboundSchema,
 } from "./toolcallstatus.js";
@@ -30,6 +35,7 @@ export type FunctionCallItem = {
   namespace?: string | undefined;
   status?: ToolCallStatus | undefined;
   type: FunctionCallItemType;
+  agent?: ResponseAgentIdentity | undefined;
 };
 
 /** @internal */
@@ -46,6 +52,7 @@ export type FunctionCallItem$Outbound = {
   namespace?: string | undefined;
   status?: string | undefined;
   type: string;
+  agent?: ResponseAgentIdentity$Outbound | undefined;
 };
 
 /** @internal */
@@ -60,6 +67,7 @@ export const FunctionCallItem$outboundSchema: z.ZodType<
   namespace: z.string().optional(),
   status: ToolCallStatus$outboundSchema.optional(),
   type: FunctionCallItemType$outboundSchema,
+  agent: ResponseAgentIdentity$outboundSchema.optional(),
 }).transform((v) => {
   return remap$(v, {
     callId: "call_id",
