@@ -13,10 +13,6 @@ import {
 } from "./defaultparameters.js";
 import { SDKValidationError } from "./errors/sdkvalidationerror.js";
 import {
-  ModelAliasTarget,
-  ModelAliasTarget$inboundSchema,
-} from "./modelaliastarget.js";
-import {
   ModelArchitecture,
   ModelArchitecture$inboundSchema,
 } from "./modelarchitecture.js";
@@ -44,10 +40,6 @@ import {
  * Information about an AI model available on OpenRouter
  */
 export type Model = {
-  /**
-   * Concrete model targeted by this tilde-latest alias, when applicable
-   */
-  aliasTarget?: ModelAliasTarget | undefined;
   /**
    * Model architecture information
    */
@@ -128,7 +120,6 @@ export type Model = {
 
 /** @internal */
 export const Model$inboundSchema: z.ZodType<Model, unknown> = z.object({
-  alias_target: ModelAliasTarget$inboundSchema.optional(),
   architecture: ModelArchitecture$inboundSchema,
   benchmarks: ModelBenchmarks$inboundSchema.optional(),
   canonical_slug: z.string(),
@@ -150,7 +141,6 @@ export const Model$inboundSchema: z.ZodType<Model, unknown> = z.object({
   top_provider: TopProviderInfo$inboundSchema,
 }).transform((v) => {
   return remap$(v, {
-    "alias_target": "aliasTarget",
     "canonical_slug": "canonicalSlug",
     "context_length": "contextLength",
     "default_parameters": "defaultParameters",

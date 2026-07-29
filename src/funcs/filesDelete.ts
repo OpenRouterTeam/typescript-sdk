@@ -42,12 +42,9 @@ export function filesDelete(
   Result<
     models.FileDeleteResponse,
     | errors.UnauthorizedResponseError
-    | errors.ForbiddenResponseError
     | errors.NotFoundResponseError
     | errors.TooManyRequestsResponseError
     | errors.InternalServerResponseError
-    | errors.BadGatewayResponseError
-    | errors.ServiceUnavailableResponseError
     | OpenRouterError
     | ResponseValidationError
     | ConnectionError
@@ -74,12 +71,9 @@ async function $do(
     Result<
       models.FileDeleteResponse,
       | errors.UnauthorizedResponseError
-      | errors.ForbiddenResponseError
       | errors.NotFoundResponseError
       | errors.TooManyRequestsResponseError
       | errors.InternalServerResponseError
-      | errors.BadGatewayResponseError
-      | errors.ServiceUnavailableResponseError
       | OpenRouterError
       | ResponseValidationError
       | ConnectionError
@@ -112,7 +106,6 @@ async function $do(
   const path = pathToFunc("/files/{file_id}")(pathParams);
 
   const query = encodeFormQuery({
-    "provider": payload.provider,
     "workspace_id": payload.workspace_id,
   });
 
@@ -199,12 +192,9 @@ async function $do(
   const [result] = await M.match<
     models.FileDeleteResponse,
     | errors.UnauthorizedResponseError
-    | errors.ForbiddenResponseError
     | errors.NotFoundResponseError
     | errors.TooManyRequestsResponseError
     | errors.InternalServerResponseError
-    | errors.BadGatewayResponseError
-    | errors.ServiceUnavailableResponseError
     | OpenRouterError
     | ResponseValidationError
     | ConnectionError
@@ -216,12 +206,9 @@ async function $do(
   >(
     M.json(200, models.FileDeleteResponse$inboundSchema),
     M.jsonErr(401, errors.UnauthorizedResponseError$inboundSchema),
-    M.jsonErr(403, errors.ForbiddenResponseError$inboundSchema),
     M.jsonErr(404, errors.NotFoundResponseError$inboundSchema),
     M.jsonErr(429, errors.TooManyRequestsResponseError$inboundSchema),
     M.jsonErr(500, errors.InternalServerResponseError$inboundSchema),
-    M.jsonErr(502, errors.BadGatewayResponseError$inboundSchema),
-    M.jsonErr(503, errors.ServiceUnavailableResponseError$inboundSchema),
     M.fail("4XX"),
     M.fail("5XX"),
   )(response, req, { extraFields: responseFields });
