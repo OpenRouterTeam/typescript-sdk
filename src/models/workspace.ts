@@ -19,7 +19,7 @@ export type Workspace = {
    */
   createdBy: string | null;
   /**
-   * Deterministic ID of the workspace's implicitly-created default guardrail
+   * Deterministic ID derived from the workspace ID. The default guardrail is materialized when its configuration is first written.
    */
   defaultGuardrailId: string;
   /**
@@ -42,6 +42,10 @@ export type Workspace = {
    * Unique identifier for the workspace
    */
   id: string;
+  /**
+   * Whether BYOK (bring-your-own-key) spend counts toward this workspace's budgets. Set it via the workspace budget endpoints.
+   */
+  includeByokInBudgets?: boolean | undefined;
   /**
    * Optional array of API key IDs to filter I/O logging. Null means all keys are logged.
    */
@@ -86,6 +90,7 @@ export const Workspace$inboundSchema: z.ZodType<Workspace, unknown> = z.object({
   default_text_model: z.nullable(z.string()),
   description: z.nullable(z.string()),
   id: z.string(),
+  include_byok_in_budgets: z.boolean().optional(),
   io_logging_api_key_ids: z.nullable(z.array(z.int())),
   io_logging_sampling_rate: z.number(),
   is_data_discount_logging_enabled: z.boolean(),
@@ -102,6 +107,7 @@ export const Workspace$inboundSchema: z.ZodType<Workspace, unknown> = z.object({
     "default_image_model": "defaultImageModel",
     "default_provider_sort": "defaultProviderSort",
     "default_text_model": "defaultTextModel",
+    "include_byok_in_budgets": "includeByokInBudgets",
     "io_logging_api_key_ids": "ioLoggingApiKeyIds",
     "io_logging_sampling_rate": "ioLoggingSamplingRate",
     "is_data_discount_logging_enabled": "isDataDiscountLoggingEnabled",
