@@ -1,0 +1,46 @@
+---
+title: "UnifiedBenchmarksORItem"
+---
+
+## Example Usage
+
+```typescript
+import { UnifiedBenchmarksORItem } from "@openrouter/sdk/models";
+
+let value: UnifiedBenchmarksORItem = {
+  accuracy: 0.72,
+  accuracyStddev: 0.03,
+  avgCostPerTask: 0.002,
+  avgDurationPerTaskMs: 1200,
+  benchmarkType: "gpqa_diamond",
+  displayName: "GPT-4o",
+  lastRunTimestamp: "2026-06-03T12:00:00Z",
+  modelPermaslug: "openai/gpt-4o",
+  pricing: {
+    completion: "0.00001",
+    prompt: "0.0000025",
+  },
+  providerName: "openai",
+  runCount: 3,
+  source: "openrouter",
+  totalTasks: 300,
+};
+```
+
+## Fields
+
+| Field                                                                        | Type                                                                         | Required                                                                     | Description                                                                  | Example                                                                      |
+| ---------------------------------------------------------------------------- | ---------------------------------------------------------------------------- | ---------------------------------------------------------------------------- | ---------------------------------------------------------------------------- | ---------------------------------------------------------------------------- |
+| `accuracy`                                                                   | *number*                                                                     | :heavy_check_mark:                                                           | Aggregate accuracy score from 0 to 1. Higher is better.                      | 0.72                                                                         |
+| `accuracyStddev`                                                             | *number*                                                                     | :heavy_check_mark:                                                           | Standard deviation of run accuracy, or null for a single run.                | 0.03                                                                         |
+| `avgCostPerTask`                                                             | *number*                                                                     | :heavy_check_mark:                                                           | Average cost per task in USD, or null if unavailable.                        | 0.002                                                                        |
+| `avgDurationPerTaskMs`                                                       | *number*                                                                     | :heavy_check_mark:                                                           | Average duration per task in milliseconds, or null if unavailable.           | 1200                                                                         |
+| `benchmarkType`                                                              | [models.BenchmarkType](../models/benchmarktype.mdx)                           | :heavy_check_mark:                                                           | OpenRouter benchmark evaluation type.                                        | gpqa_diamond                                                                 |
+| `displayName`                                                                | *string*                                                                     | :heavy_check_mark:                                                           | Human-readable model name.                                                   | GPT-4o                                                                       |
+| `lastRunTimestamp`                                                           | *string*                                                                     | :heavy_check_mark:                                                           | Timestamp of the most recent public benchmark run.                           | 2026-06-03T12:00:00Z                                                         |
+| `modelPermaslug`                                                             | *string*                                                                     | :heavy_check_mark:                                                           | Stable OpenRouter model identifier.                                          | openai/gpt-4o                                                                |
+| `pricing`                                                                    | [models.UnifiedBenchmarkPricing](../models/unifiedbenchmarkpricing.mdx)       | :heavy_check_mark:                                                           | OpenRouter pricing per token for this model. Null if pricing is unavailable. | \{<br/>"completion": "0.000015",<br/>"prompt": "0.000003"<br/>}               |
+| `providerName`                                                               | *string*                                                                     | :heavy_check_mark:                                                           | Provider used for the aggregated benchmark runs.                             | openai                                                                       |
+| `runCount`                                                                   | *number*                                                                     | :heavy_check_mark:                                                           | Number of public benchmark runs aggregated.                                  | 3                                                                            |
+| `source`                                                                     | *"openrouter"*                                                               | :heavy_check_mark:                                                           | Benchmark source discriminator.                                              |                                                                              |
+| `totalTasks`                                                                 | *number*                                                                     | :heavy_check_mark:                                                           | Total benchmark tasks across runs.                                           | 300                                                                          |
