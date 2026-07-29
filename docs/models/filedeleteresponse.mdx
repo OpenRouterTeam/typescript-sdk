@@ -2,22 +2,39 @@
 title: "FileDeleteResponse"
 ---
 
-Confirmation that a file was deleted.
+Confirmation that a file was deleted, in the negotiated shape.
 
-## Example Usage
+
+## Supported Types
+
+### `models.AnthropicFileDeleted`
 
 ```typescript
-import { FileDeleteResponse } from "@openrouter/sdk/models";
-
-let value: FileDeleteResponse = {
+const value: models.AnthropicFileDeleted = {
+  shape: "anthropic",
   id: "or_file_011CNha8iCJcU1wXNR6q4V8w",
   type: "file_deleted",
 };
 ```
 
-## Fields
+### `models.OpenAIFileDeleted`
 
-| Field                                                                | Type                                                                 | Required                                                             | Description                                                          |
-| -------------------------------------------------------------------- | -------------------------------------------------------------------- | -------------------------------------------------------------------- | -------------------------------------------------------------------- |
-| `id`                                                                 | *string*                                                             | :heavy_check_mark:                                                   | N/A                                                                  |
-| `type`                                                               | [models.FileDeleteResponseType](../models/filedeleteresponsetype.mdx) | :heavy_check_mark:                                                   | N/A                                                                  |
+```typescript
+const value: models.OpenAIFileDeleted = {
+  shape: "openai",
+  deleted: true,
+  id: "or_file_011CNha8iCJcU1wXNR6q4V8w",
+  object: "file",
+};
+```
+
+### `models.OpenRouterFileDeleted`
+
+```typescript
+const value: models.OpenRouterFileDeleted = {
+  shape: "openrouter",
+  id: "or_file_011CNha8iCJcU1wXNR6q4V8w",
+  type: "file_deleted",
+};
+```
+
