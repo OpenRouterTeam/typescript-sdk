@@ -1,0 +1,27 @@
+---
+title: "OpenAIFileDeleted"
+---
+
+Deletion result in OpenAI's shape.
+
+## Example Usage
+
+```typescript
+import { OpenAIFileDeleted } from "@openrouter/sdk/models";
+
+let value: OpenAIFileDeleted = {
+  shape: "openai",
+  deleted: true,
+  id: "or_file_011CNha8iCJcU1wXNR6q4V8w",
+  object: "file",
+};
+```
+
+## Fields
+
+| Field                                                                  | Type                                                                   | Required                                                               | Description                                                            |
+| ---------------------------------------------------------------------- | ---------------------------------------------------------------------- | ---------------------------------------------------------------------- | ---------------------------------------------------------------------- |
+| `shape`                                                                | *"openai"*                                                             | :heavy_check_mark:                                                     | N/A                                                                    |
+| `deleted`                                                              | *true*                                                                 | :heavy_check_mark:                                                     | N/A                                                                    |
+| `id`                                                                   | *string*                                                               | :heavy_check_mark:                                                     | N/A                                                                    |
+| `object`                                                               | [models.OpenAIFileDeletedObject](../models/openaifiledeletedobject.mdx) | :heavy_check_mark:                                                     | N/A                                                                    |
