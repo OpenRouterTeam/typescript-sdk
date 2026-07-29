@@ -44,10 +44,6 @@ export type AutoRouterPlugin = {
    * Set to false to disable the auto-router plugin for this request. Defaults to true.
    */
   enabled?: boolean | undefined;
-  /**
-   * List of model patterns to exclude from auto-router selection. Supports wildcards (e.g., "meta-llama/*" excludes all Llama models). Applied after allowed_models, so an excluded pattern always wins over an allowed one.
-   */
-  excludedModels?: Array<string> | undefined;
   id: "auto-router";
   /**
    * When true, reuses the model from the most recent assistant message's `model` attribute for subsequent turns. Defaults to false.
@@ -67,7 +63,6 @@ export type AutoRouterPlugin$Outbound = {
   cost_quality_tradeoff?: number | undefined;
   cost_tier?: string | undefined;
   enabled?: boolean | undefined;
-  excluded_models?: Array<string> | undefined;
   id: "auto-router";
   pin_model?: boolean | undefined;
 };
@@ -81,7 +76,6 @@ export const AutoRouterPlugin$outboundSchema: z.ZodType<
   costQualityTradeoff: z.int().optional(),
   costTier: AutoRouterPluginCostTier$outboundSchema.optional(),
   enabled: z.boolean().optional(),
-  excludedModels: z.array(z.string()).optional(),
   id: z.literal("auto-router"),
   pinModel: z.boolean().optional(),
 }).transform((v) => {
@@ -89,7 +83,6 @@ export const AutoRouterPlugin$outboundSchema: z.ZodType<
     allowedModels: "allowed_models",
     costQualityTradeoff: "cost_quality_tradeoff",
     costTier: "cost_tier",
-    excludedModels: "excluded_models",
     pinModel: "pin_model",
   });
 });

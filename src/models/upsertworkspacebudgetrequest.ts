@@ -8,10 +8,6 @@ import { remap as remap$ } from "../lib/primitives.js";
 
 export type UpsertWorkspaceBudgetRequest = {
   /**
-   * Whether to include BYOK (bring-your-own-key) spend when enforcing the workspace's budgets. This is a workspace-wide setting: it applies to every budget interval (daily, weekly, monthly, and lifetime), not just the interval being upserted in this request. Omit to leave the current setting unchanged.
-   */
-  includeByokInBudgets?: boolean | undefined;
-  /**
    * Spending limit in USD. Must be greater than 0.
    */
   limitUsd: number;
@@ -19,7 +15,6 @@ export type UpsertWorkspaceBudgetRequest = {
 
 /** @internal */
 export type UpsertWorkspaceBudgetRequest$Outbound = {
-  include_byok_in_budgets?: boolean | undefined;
   limit_usd: number;
 };
 
@@ -28,11 +23,9 @@ export const UpsertWorkspaceBudgetRequest$outboundSchema: z.ZodType<
   UpsertWorkspaceBudgetRequest$Outbound,
   UpsertWorkspaceBudgetRequest
 > = z.object({
-  includeByokInBudgets: z.boolean().optional(),
   limitUsd: z.number(),
 }).transform((v) => {
   return remap$(v, {
-    includeByokInBudgets: "include_byok_in_budgets",
     limitUsd: "limit_usd",
   });
 });
