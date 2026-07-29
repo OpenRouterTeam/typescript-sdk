@@ -4,43 +4,42 @@
  */
 
 import * as z from "zod/v4";
-import { remap as remap$ } from "../lib/primitives.js";
 import { safeParse } from "../lib/schemas.js";
+import * as discriminatedUnionTypes from "../types/discriminatedUnion.js";
+import { discriminatedUnion } from "../types/discriminatedUnion.js";
 import { Result as SafeParseResult } from "../types/fp.js";
+import {
+  AnthropicFileList,
+  AnthropicFileList$inboundSchema,
+} from "./anthropicfilelist.js";
 import { SDKValidationError } from "./errors/sdkvalidationerror.js";
-import { FileMetadata, FileMetadata$inboundSchema } from "./filemetadata.js";
+import {
+  OpenAIFileList,
+  OpenAIFileList$inboundSchema,
+} from "./openaifilelist.js";
+import {
+  OpenRouterFileList,
+  OpenRouterFileList$inboundSchema,
+} from "./openrouterfilelist.js";
 
 /**
- * A page of files belonging to the requesting workspace.
+ * A page of files, in the negotiated shape.
  */
-export type FileListResponse = {
-  /**
-   * Opaque cursor for the next page; null when there are no more results.
-   */
-  cursor: string | null;
-  data: Array<FileMetadata>;
-  firstId: string | null;
-  hasMore: boolean;
-  lastId: string | null;
-};
+export type FileListResponse =
+  | AnthropicFileList
+  | OpenAIFileList
+  | OpenRouterFileList
+  | discriminatedUnionTypes.Unknown<"shape">;
 
 /** @internal */
 export const FileListResponse$inboundSchema: z.ZodType<
   FileListResponse,
   unknown
-> = z.object({
-  cursor: z.nullable(z.string()),
-  data: z.array(FileMetadata$inboundSchema),
-  first_id: z.nullable(z.string()),
-  has_more: z.boolean(),
-  last_id: z.nullable(z.string()),
-}).transform((v) => {
-  return remap$(v, {
-    "first_id": "firstId",
-    "has_more": "hasMore",
-    "last_id": "lastId",
-  });
-});
+> = discriminatedUnion("_shape", {
+  anthropic: AnthropicFileList$inboundSchema,
+  openai: OpenAIFileList$inboundSchema,
+  openrouter: OpenRouterFileList$inboundSchema,
+}, { outputPropertyName: "shape" });
 
 export function fileListResponseFromJSON(
   jsonString: string,

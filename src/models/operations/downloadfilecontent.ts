@@ -5,6 +5,7 @@
 
 import * as z from "zod/v4";
 import { remap as remap$ } from "../../lib/primitives.js";
+import * as models from "../index.js";
 
 export type DownloadFileContentGlobals = {
   /**
@@ -53,6 +54,10 @@ export type DownloadFileContentRequest = {
    * Workspace to scope the request to. Defaults to the caller’s default workspace.
    */
   workspaceId?: string | undefined;
+  /**
+   * Store or read this file on the named provider using your own API key for it. Omit to use OpenRouter storage.
+   */
+  provider?: models.FileProvider | undefined;
 };
 
 /** @internal */
@@ -62,6 +67,7 @@ export type DownloadFileContentRequest$Outbound = {
   appCategories?: string | undefined;
   file_id: string;
   workspace_id?: string | undefined;
+  provider?: string | undefined;
 };
 
 /** @internal */
@@ -74,6 +80,7 @@ export const DownloadFileContentRequest$outboundSchema: z.ZodType<
   appCategories: z.string().optional(),
   fileId: z.string(),
   workspaceId: z.string().optional(),
+  provider: models.FileProvider$outboundSchema.optional(),
 }).transform((v) => {
   return remap$(v, {
     httpReferer: "HTTP-Referer",

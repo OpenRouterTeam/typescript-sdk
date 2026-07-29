@@ -40,11 +40,12 @@ export function filesRetrieve(
   options?: RequestOptions,
 ): APIPromise<
   Result<
-    models.FileMetadata,
+    models.FileResponse,
     | errors.UnauthorizedResponseError
     | errors.NotFoundResponseError
     | errors.TooManyRequestsResponseError
     | errors.InternalServerResponseError
+    | errors.BadGatewayResponseError
     | OpenRouterError
     | ResponseValidationError
     | ConnectionError
@@ -69,11 +70,12 @@ async function $do(
 ): Promise<
   [
     Result<
-      models.FileMetadata,
+      models.FileResponse,
       | errors.UnauthorizedResponseError
       | errors.NotFoundResponseError
       | errors.TooManyRequestsResponseError
       | errors.InternalServerResponseError
+      | errors.BadGatewayResponseError
       | OpenRouterError
       | ResponseValidationError
       | ConnectionError
@@ -106,6 +108,7 @@ async function $do(
   const path = pathToFunc("/files/{file_id}")(pathParams);
 
   const query = encodeFormQuery({
+    "provider": payload.provider,
     "workspace_id": payload.workspace_id,
   });
 
@@ -190,11 +193,12 @@ async function $do(
   };
 
   const [result] = await M.match<
-    models.FileMetadata,
+    models.FileResponse,
     | errors.UnauthorizedResponseError
     | errors.NotFoundResponseError
     | errors.TooManyRequestsResponseError
     | errors.InternalServerResponseError
+    | errors.BadGatewayResponseError
     | OpenRouterError
     | ResponseValidationError
     | ConnectionError
@@ -204,11 +208,12 @@ async function $do(
     | UnexpectedClientError
     | SDKValidationError
   >(
-    M.json(200, models.FileMetadata$inboundSchema),
+    M.json(200, models.FileResponse$inboundSchema),
     M.jsonErr(401, errors.UnauthorizedResponseError$inboundSchema),
     M.jsonErr(404, errors.NotFoundResponseError$inboundSchema),
     M.jsonErr(429, errors.TooManyRequestsResponseError$inboundSchema),
     M.jsonErr(500, errors.InternalServerResponseError$inboundSchema),
+    M.jsonErr(502, errors.BadGatewayResponseError$inboundSchema),
     M.fail("4XX"),
     M.fail("5XX"),
   )(response, req, { extraFields: responseFields });
