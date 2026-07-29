@@ -11,7 +11,6 @@ import { SDKValidationError } from "./errors/sdkvalidationerror.js";
 
 export type WebSearchDomainFilter = {
   allowedDomains?: Array<string> | null | undefined;
-  blockedDomains?: Array<string> | null | undefined;
   excludedDomains?: Array<string> | null | undefined;
 };
 
@@ -21,19 +20,16 @@ export const WebSearchDomainFilter$inboundSchema: z.ZodType<
   unknown
 > = z.object({
   allowed_domains: z.nullable(z.array(z.string())).optional(),
-  blocked_domains: z.nullable(z.array(z.string())).optional(),
   excluded_domains: z.nullable(z.array(z.string())).optional(),
 }).transform((v) => {
   return remap$(v, {
     "allowed_domains": "allowedDomains",
-    "blocked_domains": "blockedDomains",
     "excluded_domains": "excludedDomains",
   });
 });
 /** @internal */
 export type WebSearchDomainFilter$Outbound = {
   allowed_domains?: Array<string> | null | undefined;
-  blocked_domains?: Array<string> | null | undefined;
   excluded_domains?: Array<string> | null | undefined;
 };
 
@@ -43,12 +39,10 @@ export const WebSearchDomainFilter$outboundSchema: z.ZodType<
   WebSearchDomainFilter
 > = z.object({
   allowedDomains: z.nullable(z.array(z.string())).optional(),
-  blockedDomains: z.nullable(z.array(z.string())).optional(),
   excludedDomains: z.nullable(z.array(z.string())).optional(),
 }).transform((v) => {
   return remap$(v, {
     allowedDomains: "allowed_domains",
-    blockedDomains: "blocked_domains",
     excludedDomains: "excluded_domains",
   });
 });

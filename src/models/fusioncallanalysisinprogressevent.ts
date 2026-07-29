@@ -10,19 +10,10 @@ import { Result as SafeParseResult } from "../types/fp.js";
 import { SDKValidationError } from "./errors/sdkvalidationerror.js";
 
 /**
- * Emitted when the fusion analyst starts producing the structured analysis.
+ * Emitted when the fusion judge starts producing the structured analysis.
  */
 export type FusionCallAnalysisInProgressEvent = {
-  /**
-   * Slug of the model producing the structured analysis.
-   */
-  analystModel: string;
   itemId: string;
-  /**
-   * Deprecated alias of `analyst_model`, kept so existing consumers keep working. Always carries the same value. Use `analyst_model`.
-   *
-   * @deprecated field: This will be removed in a future release, please migrate away from it as soon as possible.
-   */
   judgeModel: string;
   outputIndex: number;
   sequenceNumber: number;
@@ -34,7 +25,6 @@ export const FusionCallAnalysisInProgressEvent$inboundSchema: z.ZodType<
   FusionCallAnalysisInProgressEvent,
   unknown
 > = z.object({
-  analyst_model: z.string(),
   item_id: z.string(),
   judge_model: z.string(),
   output_index: z.int(),
@@ -42,7 +32,6 @@ export const FusionCallAnalysisInProgressEvent$inboundSchema: z.ZodType<
   type: z.literal("response.fusion_call.analysis.in_progress"),
 }).transform((v) => {
   return remap$(v, {
-    "analyst_model": "analystModel",
     "item_id": "itemId",
     "judge_model": "judgeModel",
     "output_index": "outputIndex",

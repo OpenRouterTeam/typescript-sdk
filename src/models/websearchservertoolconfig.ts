@@ -32,7 +32,7 @@ export type WebSearchServerToolConfig = {
    */
   engine?: WebSearchEngineEnum | undefined;
   /**
-   * Exclude search results from these domains. Supported by Exa, Firecrawl, Parallel, Perplexity, Anthropic, OpenAI, and xAI. Cannot be used with allowed_domains.
+   * Exclude search results from these domains. Supported by Exa, Firecrawl, Parallel, Perplexity, Anthropic, and xAI. Not supported with OpenAI (silently ignored). Cannot be used with allowed_domains.
    */
   excludedDomains?: Array<string> | undefined;
   /**
