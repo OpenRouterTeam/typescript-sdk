@@ -5,41 +5,36 @@
 
 import * as z from "zod/v4";
 import { safeParse } from "../lib/schemas.js";
-import * as discriminatedUnionTypes from "../types/discriminatedUnion.js";
-import { discriminatedUnion } from "../types/discriminatedUnion.js";
+import { ClosedEnum } from "../types/enums.js";
 import { Result as SafeParseResult } from "../types/fp.js";
-import {
-  AnthropicFileDeleted,
-  AnthropicFileDeleted$inboundSchema,
-} from "./anthropicfiledeleted.js";
 import { SDKValidationError } from "./errors/sdkvalidationerror.js";
-import {
-  OpenAIFileDeleted,
-  OpenAIFileDeleted$inboundSchema,
-} from "./openaifiledeleted.js";
-import {
-  OpenRouterFileDeleted,
-  OpenRouterFileDeleted$inboundSchema,
-} from "./openrouterfiledeleted.js";
+
+export const FileDeleteResponseType = {
+  FileDeleted: "file_deleted",
+} as const;
+export type FileDeleteResponseType = ClosedEnum<typeof FileDeleteResponseType>;
 
 /**
- * Confirmation that a file was deleted, in the negotiated shape.
+ * Confirmation that a file was deleted.
  */
-export type FileDeleteResponse =
-  | AnthropicFileDeleted
-  | OpenAIFileDeleted
-  | OpenRouterFileDeleted
-  | discriminatedUnionTypes.Unknown<"shape">;
+export type FileDeleteResponse = {
+  id: string;
+  type: FileDeleteResponseType;
+};
+
+/** @internal */
+export const FileDeleteResponseType$inboundSchema: z.ZodEnum<
+  typeof FileDeleteResponseType
+> = z.enum(FileDeleteResponseType);
 
 /** @internal */
 export const FileDeleteResponse$inboundSchema: z.ZodType<
   FileDeleteResponse,
   unknown
-> = discriminatedUnion("_shape", {
-  anthropic: AnthropicFileDeleted$inboundSchema,
-  openai: OpenAIFileDeleted$inboundSchema,
-  openrouter: OpenRouterFileDeleted$inboundSchema,
-}, { outputPropertyName: "shape" });
+> = z.object({
+  id: z.string(),
+  type: FileDeleteResponseType$inboundSchema,
+});
 
 export function fileDeleteResponseFromJSON(
   jsonString: string,
