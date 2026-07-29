@@ -7,6 +7,7 @@ import { modelsCount } from "../funcs/modelsCount.js";
 import { modelsGet } from "../funcs/modelsGet.js";
 import { modelsList } from "../funcs/modelsList.js";
 import { modelsListForUser } from "../funcs/modelsListForUser.js";
+import { modelsListForWorkspace } from "../funcs/modelsListForWorkspace.js";
 import { ClientSDK, RequestOptions } from "../lib/sdks.js";
 import * as models from "../models/index.js";
 import * as operations from "../models/operations/index.js";
@@ -73,6 +74,24 @@ export class Models extends ClientSDK {
     PageIterator<operations.ListModelsUserResponse, { offset: number }>
   > {
     return unwrapResultIterator(modelsListForUser(
+      this,
+      security,
+      request,
+      options,
+    ));
+  }
+
+  /**
+   * List models allowed by a workspace
+   */
+  async listForWorkspace(
+    security: operations.ListModelsWorkspaceSecurity,
+    request: operations.ListModelsWorkspaceRequest,
+    options?: RequestOptions,
+  ): Promise<
+    PageIterator<operations.ListModelsWorkspaceResponse, { offset: number }>
+  > {
+    return unwrapResultIterator(modelsListForWorkspace(
       this,
       security,
       request,
