@@ -1,0 +1,54 @@
+---
+title: "FileResponse"
+---
+
+A stored file. The shape is negotiated per request — see the endpoint description.
+
+
+## Supported Types
+
+### `models.AnthropicFile`
+
+```typescript
+const value: models.AnthropicFile = {
+  shape: "anthropic",
+  createdAt: "2025-01-01T00:00:00Z",
+  downloadable: false,
+  filename: "document.pdf",
+  id: "or_file_011CNha8iCJcU1wXNR6q4V8w",
+  mimeType: "application/pdf",
+  sizeBytes: 1024000,
+  type: "file",
+};
+```
+
+### `models.OpenAIFile`
+
+```typescript
+const value: models.OpenAIFile = {
+  shape: "openai",
+  bytes: 1024000,
+  createdAt: 1735689600,
+  filename: "document.pdf",
+  id: "or_file_011CNha8iCJcU1wXNR6q4V8w",
+  object: "file",
+  purpose: "user_data",
+  status: "processed",
+};
+```
+
+### `models.OpenRouterFile`
+
+```typescript
+const value: models.OpenRouterFile = {
+  shape: "openrouter",
+  createdAt: "2025-01-01T00:00:00Z",
+  downloadable: false,
+  filename: "document.pdf",
+  id: "or_file_011CNha8iCJcU1wXNR6q4V8w",
+  mimeType: "application/pdf",
+  sizeBytes: 1024000,
+  type: "file",
+};
+```
+

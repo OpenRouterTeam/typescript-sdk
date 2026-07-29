@@ -43,9 +43,12 @@ export function filesDownload(
     ReadableStream<Uint8Array>,
     | errors.BadRequestResponseError
     | errors.UnauthorizedResponseError
+    | errors.ForbiddenResponseError
     | errors.NotFoundResponseError
     | errors.TooManyRequestsResponseError
     | errors.InternalServerResponseError
+    | errors.BadGatewayResponseError
+    | errors.ServiceUnavailableResponseError
     | OpenRouterError
     | ResponseValidationError
     | ConnectionError
@@ -73,9 +76,12 @@ async function $do(
       ReadableStream<Uint8Array>,
       | errors.BadRequestResponseError
       | errors.UnauthorizedResponseError
+      | errors.ForbiddenResponseError
       | errors.NotFoundResponseError
       | errors.TooManyRequestsResponseError
       | errors.InternalServerResponseError
+      | errors.BadGatewayResponseError
+      | errors.ServiceUnavailableResponseError
       | OpenRouterError
       | ResponseValidationError
       | ConnectionError
@@ -109,6 +115,7 @@ async function $do(
   const path = pathToFunc("/files/{file_id}/content")(pathParams);
 
   const query = encodeFormQuery({
+    "provider": payload.provider,
     "workspace_id": payload.workspace_id,
   });
 
@@ -196,9 +203,12 @@ async function $do(
     ReadableStream<Uint8Array>,
     | errors.BadRequestResponseError
     | errors.UnauthorizedResponseError
+    | errors.ForbiddenResponseError
     | errors.NotFoundResponseError
     | errors.TooManyRequestsResponseError
     | errors.InternalServerResponseError
+    | errors.BadGatewayResponseError
+    | errors.ServiceUnavailableResponseError
     | OpenRouterError
     | ResponseValidationError
     | ConnectionError
@@ -214,9 +224,12 @@ async function $do(
     ),
     M.jsonErr(400, errors.BadRequestResponseError$inboundSchema),
     M.jsonErr(401, errors.UnauthorizedResponseError$inboundSchema),
+    M.jsonErr(403, errors.ForbiddenResponseError$inboundSchema),
     M.jsonErr(404, errors.NotFoundResponseError$inboundSchema),
     M.jsonErr(429, errors.TooManyRequestsResponseError$inboundSchema),
     M.jsonErr(500, errors.InternalServerResponseError$inboundSchema),
+    M.jsonErr(502, errors.BadGatewayResponseError$inboundSchema),
+    M.jsonErr(503, errors.ServiceUnavailableResponseError$inboundSchema),
     M.fail("4XX"),
     M.fail("5XX"),
   )(response, req, { extraFields: responseFields });

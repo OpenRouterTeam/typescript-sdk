@@ -1,0 +1,31 @@
+---
+title: "OpenAIFileList"
+---
+
+A page of files in OpenAI's shape.
+
+## Example Usage
+
+```typescript
+import { OpenAIFileList } from "@openrouter/sdk/models";
+
+let value: OpenAIFileList = {
+  shape: "openai",
+  data: [],
+  firstId: null,
+  hasMore: false,
+  lastId: null,
+  object: "list",
+};
+```
+
+## Fields
+
+| Field                                                            | Type                                                             | Required                                                         | Description                                                      |
+| ---------------------------------------------------------------- | ---------------------------------------------------------------- | ---------------------------------------------------------------- | ---------------------------------------------------------------- |
+| `shape`                                                          | *"openai"*                                                       | :heavy_check_mark:                                               | N/A                                                              |
+| `data`                                                           | [models.OpenAIFile](../models/openaifile.mdx)[]                   | :heavy_check_mark:                                               | N/A                                                              |
+| `firstId`                                                        | *string*                                                         | :heavy_check_mark:                                               | N/A                                                              |
+| `hasMore`                                                        | *boolean*                                                        | :heavy_check_mark:                                               | N/A                                                              |
+| `lastId`                                                         | *string*                                                         | :heavy_check_mark:                                               | N/A                                                              |
+| `object`                                                         | [models.OpenAIFileListObject](../models/openaifilelistobject.mdx) | :heavy_check_mark:                                               | N/A                                                              |

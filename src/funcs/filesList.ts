@@ -49,8 +49,11 @@ export function filesList(
       operations.ListFilesResponse,
       | errors.BadRequestResponseError
       | errors.UnauthorizedResponseError
+      | errors.ForbiddenResponseError
       | errors.TooManyRequestsResponseError
       | errors.InternalServerResponseError
+      | errors.BadGatewayResponseError
+      | errors.ServiceUnavailableResponseError
       | OpenRouterError
       | ResponseValidationError
       | ConnectionError
@@ -81,8 +84,11 @@ async function $do(
         operations.ListFilesResponse,
         | errors.BadRequestResponseError
         | errors.UnauthorizedResponseError
+        | errors.ForbiddenResponseError
         | errors.TooManyRequestsResponseError
         | errors.InternalServerResponseError
+        | errors.BadGatewayResponseError
+        | errors.ServiceUnavailableResponseError
         | OpenRouterError
         | ResponseValidationError
         | ConnectionError
@@ -112,8 +118,13 @@ async function $do(
   const path = pathToFunc("/files")();
 
   const query = encodeFormQuery({
+    "after": payload?.after,
+    "after_id": payload?.after_id,
+    "before_id": payload?.before_id,
     "cursor": payload?.cursor,
     "limit": payload?.limit,
+    "order": payload?.order,
+    "provider": payload?.provider,
     "workspace_id": payload?.workspace_id,
   });
 
@@ -201,8 +212,11 @@ async function $do(
     operations.ListFilesResponse,
     | errors.BadRequestResponseError
     | errors.UnauthorizedResponseError
+    | errors.ForbiddenResponseError
     | errors.TooManyRequestsResponseError
     | errors.InternalServerResponseError
+    | errors.BadGatewayResponseError
+    | errors.ServiceUnavailableResponseError
     | OpenRouterError
     | ResponseValidationError
     | ConnectionError
@@ -215,8 +229,11 @@ async function $do(
     M.json(200, operations.ListFilesResponse$inboundSchema, { key: "Result" }),
     M.jsonErr(400, errors.BadRequestResponseError$inboundSchema),
     M.jsonErr(401, errors.UnauthorizedResponseError$inboundSchema),
+    M.jsonErr(403, errors.ForbiddenResponseError$inboundSchema),
     M.jsonErr(429, errors.TooManyRequestsResponseError$inboundSchema),
     M.jsonErr(500, errors.InternalServerResponseError$inboundSchema),
+    M.jsonErr(502, errors.BadGatewayResponseError$inboundSchema),
+    M.jsonErr(503, errors.ServiceUnavailableResponseError$inboundSchema),
     M.fail("4XX"),
     M.fail("5XX"),
   )(response, req, { extraFields: responseFields });
@@ -236,8 +253,11 @@ async function $do(
         operations.ListFilesResponse,
         | errors.BadRequestResponseError
         | errors.UnauthorizedResponseError
+        | errors.ForbiddenResponseError
         | errors.TooManyRequestsResponseError
         | errors.InternalServerResponseError
+        | errors.BadGatewayResponseError
+        | errors.ServiceUnavailableResponseError
         | OpenRouterError
         | ResponseValidationError
         | ConnectionError
@@ -250,14 +270,16 @@ async function $do(
     >;
     "~next"?: { cursor: string };
   } => {
-    const nextCursor = (responseData as { cursor: unknown | null }).cursor;
+    const nextCursor = (responseData as { cursor?: unknown } | null | undefined)
+      ?.cursor;
     if (typeof nextCursor !== "string") {
       return { next: () => null };
     }
     if (nextCursor.trim() === "") {
       return { next: () => null };
     }
-    const results = (responseData as { data: unknown }).data;
+    const results = (responseData as { data?: unknown } | null | undefined)
+      ?.data;
     if (!Array.isArray(results) || !results.length) {
       return { next: () => null };
     }
