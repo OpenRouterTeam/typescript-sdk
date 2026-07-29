@@ -1,19 +1,19 @@
 lockVersion: ""
 id: ""
 management:
-  docChecksum: 8ee54fb7684f951a9dc97df6b0e33da9
+  docChecksum: afcf4191ae8552e78a70f45a95953f76
   docVersion: 1.0.0
   speakeasyVersion: 1.787.0
   generationVersion: 2.914.0
-  releaseVersion: 1.1.21
-  configChecksum: 05cb8cd24120f86c1b8b72d46008b897
+  releaseVersion: 1.1.22
+  configChecksum: 9d2be549f7f7b41025e16c0bcc3cd1be
   repoURL: https://github.com/OpenRouterTeam/typescript-sdk.git
   installationURL: https://github.com/OpenRouterTeam/typescript-sdk
   published: true
 persistentEdits:
-  generation_id: 6ae2cdd6-328b-4672-a2b3-5e93a7a90e7a
-  pristine_commit_hash: b7927bf1325df1ddcb4e1352170c19cfac2311c6
-  pristine_tree_hash: 5c54e0c630921133cb0659d0fbe012d6dd5bbc56
+  generation_id: 97e091b5-92c1-43d4-986e-64566df03059
+  pristine_commit_hash: af70793c712de0758ead9bc906541c11923e8844
+  pristine_tree_hash: c81734f52795707682e313d3feaf3b42c66c288e
 features:
   typescript:
     acceptHeaders: 2.81.2
@@ -11280,8 +11280,8 @@ trackedFiles:
     deleted: true
   docs/models/supportedsize.mdx:
     id: bcb235938132
-    last_write_checksum: sha1:7b98db4ab59912dd6e522c3cee0ebdfdfe0d45f5
-    pristine_git_object: aff7a43e249f1ce7bc01bcb6540ece316ff837e5
+    last_write_checksum: sha1:dac2ee82fac034cae0d22e7d0bf0fc7729c16539
+    pristine_git_object: 7c90a26151d1bd6a315e96fbcaaa1cc8ce28085c
   docs/models/syntax.md:
     id: b5f23261fcd5
     last_write_checksum: sha1:5ddcfb4d7a3b0cc1a8830cd48da5bf1f6e98c399
@@ -12617,12 +12617,12 @@ trackedFiles:
     pristine_git_object: 410efafd6a7f50d91ccb87131fedbe0c3d47e15a
   jsr.json:
     id: 7f6ab7767282
-    last_write_checksum: sha1:251bc70e366b0e64696ff4bbefc6e961739946d8
-    pristine_git_object: 1d945847d0b5f249b676eef0d32427eb992a8220
+    last_write_checksum: sha1:b4ed449755039959a5d01b5666b28dd744058f70
+    pristine_git_object: 0b5f8fbc15b93da7e488f9c1830fed4dc18aceb8
   package.json:
     id: 7030d0b2f71b
-    last_write_checksum: sha1:5ceb563ac349313a20737f39a698b3491f960ac1
-    pristine_git_object: a0b9ca8c674ee3884b055e7b129f772097ba2615
+    last_write_checksum: sha1:57febaed712e933e70997f38f3410154557f4133
+    pristine_git_object: a1181ea236412ebbd89ac0fb78fa2e4a8f4d660c
   src/core.ts:
     id: f431fdbcd144
     last_write_checksum: sha1:5aa66b0b6a5964f3eea7f3098c2eb3c0ee9c0131
@@ -13001,8 +13001,8 @@ trackedFiles:
     pristine_git_object: a187e58707bdb726ca2aff74941efe7493422d4e
   src/lib/config.ts:
     id: 320761608fb3
-    last_write_checksum: sha1:a30d2f5030443dbdad4e70122ca79571c4d9e004
-    pristine_git_object: 6d854d4dd2f5bd57ac06aae062a339f7736ee752
+    last_write_checksum: sha1:4be16d556794d3e615aa28de54b34eeb631635ca
+    pristine_git_object: 4266fb2ac47160854cec1c7988e87ff95609b832
   src/lib/dlv.ts:
     id: b1988214835a
     last_write_checksum: sha1:eaac763b22717206a6199104e0403ed17a4e2711
@@ -15723,8 +15723,8 @@ trackedFiles:
     pristine_git_object: edaa1b6b7d0735f2777f7f860d536f3b00eb5ec2
   src/models/videomodel.ts:
     id: 3761c095ec55
-    last_write_checksum: sha1:92c7aa7a34e37d73fd0f388bdfcc01d946d0391e
-    pristine_git_object: 2f220bbb775c1521b9387acc405f9a599492bd37
+    last_write_checksum: sha1:bd6586cb81518eeb5a46bb28b6c939682dd27ca7
+    pristine_git_object: 70d459de8437bf575edfbadcf330055de01688ae
   src/models/videomodelslistresponse.ts:
     id: 3ddde944c8c8
     last_write_checksum: sha1:74c107d5bb0d3221dd465bfab762fecb88d815e3
@@ -17623,4 +17623,6 @@ examples:
         "500":
           application/json: {"error": {"code": 500, "message": "Internal Server Error"}}
 examplesVersion: 1.0.2
-releaseNotes: "## Typescript SDK Changes:\n* `openrouter.beta.responses.send()`: \n  *  `request.responsesRequest.plugins[]` **Changed**\n* `openrouter.chat.send()`: \n  *  `request.chatRequest.plugins[]` **Changed**\n* `openrouter.presets.createPresetsChatCompletions()`: \n  *  `request.chatRequest.plugins[]` **Changed**\n* `openrouter.presets.createPresetsMessages()`: \n  *  `request.messagesRequest.plugins[]` **Changed**\n* `openrouter.presets.createPresetsResponses()`: \n  *  `request.responsesRequest.plugins[]` **Changed**\n* `openrouter.responses.send()`: \n  *  `request.responsesRequest.plugins[]` **Changed**\n"
+releaseNotes: |
+  ## Typescript SDK Changes:
+  * `openrouter.videoGeneration.listVideosModels()`:  `response.data[].supportedSizes[]` **Changed**
