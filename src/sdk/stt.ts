@@ -10,7 +10,7 @@ import * as models from "../models/index.js";
 import * as operations from "../models/operations/index.js";
 import { unwrapAsync } from "../types/fp.js";
 
-export class Stt extends ClientSDK {
+export class STT extends ClientSDK {
   /**
    * Create transcription
    *
