@@ -117,9 +117,9 @@ export type Guardrail = {
    */
   updatedAt?: string | null | undefined;
   /**
-   * The workspace ID this guardrail belongs to.
+   * The workspace this guardrail is scoped to, or `null` when it is global — applying across every workspace in the account. A `null` value does not mean the default workspace.
    */
-  workspaceId: string;
+  workspaceId: string | null;
 };
 
 /** @internal */
@@ -150,7 +150,7 @@ export const Guardrail$inboundSchema: z.ZodType<Guardrail, unknown> = z.object({
   name: z.string(),
   reset_interval: z.nullable(GuardrailInterval$inboundSchema).optional(),
   updated_at: z.nullable(z.string()).optional(),
-  workspace_id: z.string(),
+  workspace_id: z.nullable(z.string()),
 }).transform((v) => {
   return remap$(v, {
     "allowed_models": "allowedModels",
