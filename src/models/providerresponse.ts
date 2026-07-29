@@ -164,6 +164,21 @@ export const RoutedServiceTier = {
  */
 export type RoutedServiceTier = OpenEnum<typeof RoutedServiceTier>;
 
+export const ProviderResponseSource = {
+  ResponseBodyId: "response_body_id",
+  HttpRequestId: "http_request_id",
+  TaskJobId: "task_job_id",
+} as const;
+export type ProviderResponseSource = OpenEnum<typeof ProviderResponseSource>;
+
+/**
+ * Searchable upstream provider identifier and its source
+ */
+export type UpstreamId = {
+  source: ProviderResponseSource;
+  value: string;
+};
+
 /**
  * Details of a provider response for a generation attempt
  */
@@ -200,6 +215,10 @@ export type ProviderResponse = {
    * HTTP status code from the provider
    */
   status: number | null;
+  /**
+   * Searchable upstream provider identifier and its source
+   */
+  upstreamId?: UpstreamId | undefined;
 };
 
 /** @internal */
@@ -215,6 +234,29 @@ export const RoutedServiceTier$inboundSchema: z.ZodType<
 > = openEnums.inboundSchema(RoutedServiceTier);
 
 /** @internal */
+export const ProviderResponseSource$inboundSchema: z.ZodType<
+  ProviderResponseSource,
+  unknown
+> = openEnums.inboundSchema(ProviderResponseSource);
+
+/** @internal */
+export const UpstreamId$inboundSchema: z.ZodType<UpstreamId, unknown> = z
+  .object({
+    source: ProviderResponseSource$inboundSchema,
+    value: z.string(),
+  });
+
+export function upstreamIdFromJSON(
+  jsonString: string,
+): SafeParseResult<UpstreamId, SDKValidationError> {
+  return safeParse(
+    jsonString,
+    (x) => UpstreamId$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'UpstreamId' from JSON`,
+  );
+}
+
+/** @internal */
 export const ProviderResponse$inboundSchema: z.ZodType<
   ProviderResponse,
   unknown
@@ -227,6 +269,7 @@ export const ProviderResponse$inboundSchema: z.ZodType<
   provider_name: ProviderResponseProviderName$inboundSchema.optional(),
   routed_service_tier: RoutedServiceTier$inboundSchema.optional(),
   status: z.nullable(z.int()),
+  upstream_id: z.lazy(() => UpstreamId$inboundSchema).optional(),
 }).transform((v) => {
   return remap$(v, {
     "endpoint_id": "endpointId",
@@ -234,6 +277,7 @@ export const ProviderResponse$inboundSchema: z.ZodType<
     "model_permaslug": "modelPermaslug",
     "provider_name": "providerName",
     "routed_service_tier": "routedServiceTier",
+    "upstream_id": "upstreamId",
   });
 });
 
