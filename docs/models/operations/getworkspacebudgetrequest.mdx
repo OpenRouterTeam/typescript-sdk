@@ -1,18 +1,15 @@
 ---
-title: "UpsertWorkspaceBudgetRequest"
+title: "GetWorkspaceBudgetRequest"
 ---
 
 ## Example Usage
 
 ```typescript
-import { UpsertWorkspaceBudgetRequest } from "@openrouter/sdk/models/operations";
+import { GetWorkspaceBudgetRequest } from "@openrouter/sdk/models/operations";
 
-let value: UpsertWorkspaceBudgetRequest = {
+let value: GetWorkspaceBudgetRequest = {
   id: "production",
   interval: "monthly",
-  upsertWorkspaceBudgetRequest: {
-    limitUsd: 100,
-  },
 };
 ```
 
@@ -25,4 +22,3 @@ let value: UpsertWorkspaceBudgetRequest = {
 | `appCategories`                                                                                                                                   | *string*                                                                                                                                          | :heavy_minus_sign:                                                                                                                                | Comma-separated list of app categories (e.g. "cli-agent,cloud-agent"). Used for marketplace rankings.<br/>                                        |                                                                                                                                                   |
 | `id`                                                                                                                                              | *string*                                                                                                                                          | :heavy_check_mark:                                                                                                                                | The workspace ID (UUID) or slug                                                                                                                   | production                                                                                                                                        |
 | `interval`                                                                                                                                        | [models.WorkspaceBudgetInterval](../../models/workspacebudgetinterval.mdx)                                                                         | :heavy_check_mark:                                                                                                                                | Budget reset interval. Use "lifetime" for a one-time budget that never resets.                                                                    | monthly                                                                                                                                           |
-| `upsertWorkspaceBudgetRequest`                                                                                                                    | [models.UpsertWorkspaceBudgetRequest](../../models/upsertworkspacebudgetrequest.mdx)                                                               | :heavy_check_mark:                                                                                                                                | N/A                                                                                                                                               | \{<br/>"include_byok_in_budgets": true,<br/>"limit_usd": 100<br/>}                                                                                 |
