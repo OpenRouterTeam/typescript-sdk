@@ -47,6 +47,9 @@ jobs:
       - name: Regenerate docs navigation
         run: scripts/gen-docs-nav.sh
 
+      - name: Strip .mdx extensions from docs links
+        run: scripts/fix-docs-links.sh
+
       - name: Validate SDK
         uses: ./.github/actions/validate-sdk
         with:
