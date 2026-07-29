@@ -36,6 +36,7 @@ export type GetBenchmarksGlobals = {
 export const Source = {
   ArtificialAnalysis: "artificial-analysis",
   DesignArena: "design-arena",
+  Openrouter: "openrouter",
 } as const;
 /**
  * Benchmark source to query. Determines the shape of the returned items. When omitted, returns results from all sources.
