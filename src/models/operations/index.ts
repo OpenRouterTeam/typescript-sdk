@@ -71,6 +71,7 @@ export * from "./listkeyassignments.js";
 export * from "./listmemberassignments.js";
 export * from "./listmodelscount.js";
 export * from "./listmodelsuser.js";
+export * from "./listmodelsworkspace.js";
 export * from "./listobservabilitydestinations.js";
 export * from "./listorganizationmembers.js";
 export * from "./listpresets.js";
