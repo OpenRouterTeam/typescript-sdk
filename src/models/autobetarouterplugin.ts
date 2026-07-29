@@ -44,6 +44,10 @@ export type AutoBetaRouterPlugin = {
    * Set to false to disable the auto-beta-router plugin for this request. Defaults to true.
    */
   enabled?: boolean | undefined;
+  /**
+   * List of model patterns to exclude from auto-beta-router selection. Supports wildcards (e.g., "meta-llama/*" excludes all Llama models). Applied after allowed_models, so an excluded pattern always wins over an allowed one.
+   */
+  excludedModels?: Array<string> | undefined;
   id: "auto-beta-router";
 };
 
@@ -59,6 +63,7 @@ export type AutoBetaRouterPlugin$Outbound = {
   cost_quality_tradeoff?: number | undefined;
   cost_tier?: string | undefined;
   enabled?: boolean | undefined;
+  excluded_models?: Array<string> | undefined;
   id: "auto-beta-router";
 };
 
@@ -71,12 +76,14 @@ export const AutoBetaRouterPlugin$outboundSchema: z.ZodType<
   costQualityTradeoff: z.int().optional(),
   costTier: AutoBetaRouterPluginCostTier$outboundSchema.optional(),
   enabled: z.boolean().optional(),
+  excludedModels: z.array(z.string()).optional(),
   id: z.literal("auto-beta-router"),
 }).transform((v) => {
   return remap$(v, {
     allowedModels: "allowed_models",
     costQualityTradeoff: "cost_quality_tradeoff",
     costTier: "cost_tier",
+    excludedModels: "excluded_models",
   });
 });
 
