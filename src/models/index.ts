@@ -528,7 +528,6 @@ export * from "./unifiedbenchmarkpricing.js";
 export * from "./unifiedbenchmarksaaitem.js";
 export * from "./unifiedbenchmarksdaitem.js";
 export * from "./unifiedbenchmarksmeta.js";
-export * from "./unifiedbenchmarksoritem.js";
 export * from "./unifiedbenchmarksresponse.js";
 export * from "./unprocessableentityresponseerrordata.js";
 export * from "./updatebyokkeyrequest.js";
