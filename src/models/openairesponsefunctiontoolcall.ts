@@ -10,6 +10,10 @@ import { ClosedEnum } from "../types/enums.js";
 import { Result as SafeParseResult } from "../types/fp.js";
 import { SDKValidationError } from "./errors/sdkvalidationerror.js";
 import {
+  SubagentSessionItem,
+  SubagentSessionItem$inboundSchema,
+} from "./subagentsessionitem.js";
+import {
   ToolCallStatus,
   ToolCallStatus$inboundSchema,
 } from "./toolcallstatus.js";
@@ -31,6 +35,14 @@ export type OpenAIResponseFunctionToolCall = {
    */
   namespace?: string | undefined;
   status?: ToolCallStatus | undefined;
+  /**
+   * ID of the subagent that issued this function call — the `call_id` of the `openrouter:subagent` tool call that spawned it. Absent on function calls made directly by the root model.
+   */
+  subagentId?: string | undefined;
+  /**
+   * Snapshot of the issuing subagent's session transcript up to this call. Replay it with the function call (and its output) so the subagent can be reconstructed statelessly on the next request.
+   */
+  subagentItems?: Array<SubagentSessionItem> | undefined;
   type: OpenAIResponseFunctionToolCallType;
 };
 
@@ -50,10 +62,14 @@ export const OpenAIResponseFunctionToolCall$inboundSchema: z.ZodType<
   name: z.string(),
   namespace: z.string().optional(),
   status: ToolCallStatus$inboundSchema.optional(),
+  subagent_id: z.string().optional(),
+  subagent_items: z.array(SubagentSessionItem$inboundSchema).optional(),
   type: OpenAIResponseFunctionToolCallType$inboundSchema,
 }).transform((v) => {
   return remap$(v, {
     "call_id": "callId",
+    "subagent_id": "subagentId",
+    "subagent_items": "subagentItems",
   });
 });
 

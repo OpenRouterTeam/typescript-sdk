@@ -9,6 +9,12 @@ import { safeParse } from "../lib/schemas.js";
 import { ClosedEnum } from "../types/enums.js";
 import { Result as SafeParseResult } from "../types/fp.js";
 import { SDKValidationError } from "./errors/sdkvalidationerror.js";
+import {
+  SubagentSessionItem,
+  SubagentSessionItem$inboundSchema,
+  SubagentSessionItem$Outbound,
+  SubagentSessionItem$outboundSchema,
+} from "./subagentsessionitem.js";
 
 export const OutputFunctionCallItemStatusInProgress = {
   InProgress: "in_progress",
@@ -57,6 +63,14 @@ export type OutputFunctionCallItem = {
     | OutputFunctionCallItemStatusIncomplete
     | OutputFunctionCallItemStatusInProgress
     | undefined;
+  /**
+   * ID of the subagent that issued this function call — the `call_id` of the `openrouter:subagent` tool call that spawned it. Absent on function calls made directly by the root model.
+   */
+  subagentId?: string | undefined;
+  /**
+   * Snapshot of the issuing subagent's session transcript up to this call. Replay it with the function call (and its output) so the subagent can be reconstructed statelessly on the next request.
+   */
+  subagentItems?: Array<SubagentSessionItem> | undefined;
   type: OutputFunctionCallItemType;
 };
 
@@ -155,10 +169,14 @@ export const OutputFunctionCallItem$inboundSchema: z.ZodType<
     OutputFunctionCallItemStatusIncomplete$inboundSchema,
     OutputFunctionCallItemStatusInProgress$inboundSchema,
   ]).optional(),
+  subagent_id: z.string().optional(),
+  subagent_items: z.array(SubagentSessionItem$inboundSchema).optional(),
   type: OutputFunctionCallItemType$inboundSchema,
 }).transform((v) => {
   return remap$(v, {
     "call_id": "callId",
+    "subagent_id": "subagentId",
+    "subagent_items": "subagentItems",
   });
 });
 /** @internal */
@@ -169,6 +187,8 @@ export type OutputFunctionCallItem$Outbound = {
   name: string;
   namespace?: string | undefined;
   status?: string | string | string | undefined;
+  subagent_id?: string | undefined;
+  subagent_items?: Array<SubagentSessionItem$Outbound> | undefined;
   type: string;
 };
 
@@ -187,10 +207,14 @@ export const OutputFunctionCallItem$outboundSchema: z.ZodType<
     OutputFunctionCallItemStatusIncomplete$outboundSchema,
     OutputFunctionCallItemStatusInProgress$outboundSchema,
   ]).optional(),
+  subagentId: z.string().optional(),
+  subagentItems: z.array(SubagentSessionItem$outboundSchema).optional(),
   type: OutputFunctionCallItemType$outboundSchema,
 }).transform((v) => {
   return remap$(v, {
     callId: "call_id",
+    subagentId: "subagent_id",
+    subagentItems: "subagent_items",
   });
 });
 

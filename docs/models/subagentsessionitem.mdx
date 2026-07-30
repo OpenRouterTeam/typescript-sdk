@@ -1,0 +1,31 @@
+---
+title: "SubagentSessionItem"
+---
+
+One item of a subagent's session transcript (a Responses conversation item: message, function call, reasoning, ...). Replay it unmodified so the subagent can be reconstructed statelessly.
+
+## Example Usage
+
+```typescript
+import { SubagentSessionItem } from "@openrouter/sdk/models";
+
+let value: SubagentSessionItem = {
+  type: "<value>",
+};
+```
+
+## Fields
+
+| Field                  | Type                   | Required               | Description            |
+| ---------------------- | ---------------------- | ---------------------- | ---------------------- |
+| `arguments`            | *string*               | :heavy_minus_sign:     | N/A                    |
+| `callId`               | *string*               | :heavy_minus_sign:     | N/A                    |
+| `content`              | *any*                  | :heavy_minus_sign:     | N/A                    |
+| `encryptedContent`     | *string*               | :heavy_minus_sign:     | N/A                    |
+| `id`                   | *string*               | :heavy_minus_sign:     | N/A                    |
+| `name`                 | *string*               | :heavy_minus_sign:     | N/A                    |
+| `output`               | *any*                  | :heavy_minus_sign:     | N/A                    |
+| `role`                 | *string*               | :heavy_minus_sign:     | N/A                    |
+| `status`               | *string*               | :heavy_minus_sign:     | N/A                    |
+| `type`                 | *string*               | :heavy_check_mark:     | N/A                    |
+| `additionalProperties` | Record\<string, *any*>  | :heavy_minus_sign:     | N/A                    |
