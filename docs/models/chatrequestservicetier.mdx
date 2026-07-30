@@ -2,7 +2,7 @@
 title: "ChatRequestServiceTier"
 ---
 
-The service tier to use for processing this request.
+The service tier to use for processing this request. `fast` is accepted as an alias for `priority`.
 
 ## Example Usage
 
@@ -17,5 +17,5 @@ let value: ChatRequestServiceTier = "auto";
 ## Values
 
 ```typescript
-"auto" | "default" | "flex" | "priority" | "scale" | Unrecognized<string>
+"auto" | "default" | "flex" | "priority" | "scale" | "fast" | Unrecognized<string>
 ```

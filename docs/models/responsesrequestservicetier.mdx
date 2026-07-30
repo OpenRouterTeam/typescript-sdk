@@ -2,12 +2,14 @@
 title: "ResponsesRequestServiceTier"
 ---
 
+The service tier to use for processing this request. `fast` is accepted as an alias for `priority`.
+
 ## Example Usage
 
 ```typescript
 import { ResponsesRequestServiceTier } from "@openrouter/sdk/models";
 
-let value: ResponsesRequestServiceTier = "scale";
+let value: ResponsesRequestServiceTier = "fast";
 
 // Open enum: unrecognized values are captured as Unrecognized<string>
 ```
@@ -15,5 +17,5 @@ let value: ResponsesRequestServiceTier = "scale";
 ## Values
 
 ```typescript
-"auto" | "default" | "flex" | "priority" | "scale" | Unrecognized<string>
+"auto" | "default" | "flex" | "priority" | "scale" | "fast" | Unrecognized<string>
 ```
