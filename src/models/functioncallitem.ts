@@ -29,6 +29,14 @@ export type FunctionCallItem = {
    */
   namespace?: string | undefined;
   status?: ToolCallStatus | undefined;
+  /**
+   * ID of the subagent that issued this function call — the `call_id` of the `openrouter:subagent` tool call that spawned it. Absent on function calls made directly by the root model.
+   */
+  subagentId?: string | undefined;
+  /**
+   * Snapshot of the issuing subagent's session up to this call, shaped as a full Responses request (model, instructions, tools, and the child's conversation as `input` items). Replay it with the function call (and its output) so the subagent can be reconstructed statelessly on the next request.
+   */
+  subagentItems?: { [k: string]: any } | undefined;
   type: FunctionCallItemType;
 };
 
@@ -45,6 +53,8 @@ export type FunctionCallItem$Outbound = {
   name: string;
   namespace?: string | undefined;
   status?: string | undefined;
+  subagent_id?: string | undefined;
+  subagent_items?: { [k: string]: any } | undefined;
   type: string;
 };
 
@@ -59,10 +69,14 @@ export const FunctionCallItem$outboundSchema: z.ZodType<
   name: z.string(),
   namespace: z.string().optional(),
   status: ToolCallStatus$outboundSchema.optional(),
+  subagentId: z.string().optional(),
+  subagentItems: z.record(z.string(), z.any()).optional(),
   type: FunctionCallItemType$outboundSchema,
 }).transform((v) => {
   return remap$(v, {
     callId: "call_id",
+    subagentId: "subagent_id",
+    subagentItems: "subagent_items",
   });
 });
 
