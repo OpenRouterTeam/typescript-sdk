@@ -7,7 +7,7 @@ title: "Reason"
 ```typescript
 import { Reason } from "@openrouter/sdk/models";
 
-let value: Reason = "content_filter";
+let value: Reason = "pause_turn";
 
 // Open enum: unrecognized values are captured as Unrecognized<string>
 ```
@@ -15,5 +15,5 @@ let value: Reason = "content_filter";
 ## Values
 
 ```typescript
-"max_output_tokens" | "content_filter" | Unrecognized<string>
+"max_output_tokens" | "content_filter" | "pause_turn" | Unrecognized<string>
 ```
