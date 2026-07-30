@@ -189,6 +189,7 @@ export type VideoGenerationRequestProvider = {
 export const VideoGenerationRequestResolution = {
   FourHundredAndEightyp: "480p",
   SevenHundredAndTwentyp: "720p",
+  SevenHundredAndSixtyEightp: "768p",
   OneThousandAndEightyp: "1080p",
   OneK: "1K",
   TwoK: "2K",
