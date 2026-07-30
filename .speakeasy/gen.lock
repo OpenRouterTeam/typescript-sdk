@@ -5,15 +5,15 @@ management:
   docVersion: 1.0.0
   speakeasyVersion: 1.787.0
   generationVersion: 2.914.0
-  releaseVersion: 1.1.25
-  configChecksum: c5e0f09e480d630663591d6849a890e2
+  releaseVersion: 1.2.0
+  configChecksum: 191936e2b667634018a5b2be9cdb2fdb
   repoURL: https://github.com/OpenRouterTeam/typescript-sdk.git
   installationURL: https://github.com/OpenRouterTeam/typescript-sdk
   published: true
 persistentEdits:
-  generation_id: 26a68e2d-57d1-4f44-844d-53427d4c72e4
-  pristine_commit_hash: 72e4007fbd27d906ebc108fabb74ed872afd4698
-  pristine_tree_hash: 22d981dda340426abdd298b903258ed804f4dcb1
+  generation_id: b5245972-d953-4540-a90c-293cc412f9f5
+  pristine_commit_hash: 046a1be74712aebde9cad740e11b8c9cf2c49c6e
+  pristine_tree_hash: 1a020f9543125d47c09168ee9b364c1aa9a5bf05
 features:
   typescript:
     acceptHeaders: 2.81.2
@@ -12561,8 +12561,8 @@ trackedFiles:
     deleted: true
   docs/sdks/byok/README.mdx:
     id: 17792f3b180d
-    last_write_checksum: sha1:d627d2e35a361ca3df9cbbfe41be9c8a681949f3
-    pristine_git_object: 391abd249f245455828352da1ce5b1222e29160a
+    last_write_checksum: sha1:7f172d1ad1099c5b535b60c26b94195684222d71
+    pristine_git_object: fb4ad61591cbaea81fa6bcbb50d639754e9b21b5
   docs/sdks/chat/README.mdx:
     id: 1dd859c23fe1
     last_write_checksum: sha1:b01aa24bc49b080a9d99ca0f7303d1afd546b6ac
@@ -12686,8 +12686,8 @@ trackedFiles:
     deleted: true
   docs/sdks/stt/README.mdx:
     id: 190b0dc9a5d1
-    last_write_checksum: sha1:175c0fe0502a5f089be63bf4e7ffcf8921e71e3f
-    pristine_git_object: 7e0f71c4be95caabd534fd9312927bae48a1f61c
+    last_write_checksum: sha1:19dbcc6d0c7f3ca5592b344d96fe4e4d97ed542d
+    pristine_git_object: bfbef06312f4d0909cf9d4c7021a494bbb123178
   docs/sdks/tts/README.md:
     id: 0c425074d09f
     last_write_checksum: sha1:019ae6737c83daac03ebbe7d56c49b0d3ad11262
@@ -12695,8 +12695,8 @@ trackedFiles:
     deleted: true
   docs/sdks/tts/README.mdx:
     id: cd1132543884
-    last_write_checksum: sha1:b72ac6d2d8126b98d911c9ffa74e3940ba2056d8
-    pristine_git_object: e769301dccdefc0e9c2fb2fd75a535c8744fdc9e
+    last_write_checksum: sha1:abf8333950eec06ec15bba13aa907545bad22ed9
+    pristine_git_object: 1f3460cf97703fd4da310b18f8dc295179ce1280
   docs/sdks/videogeneration/README.md:
     id: b6dbf7b0729c
     last_write_checksum: sha1:71205a37afffed445af770082c3f50f6bcbfadfa
@@ -12737,12 +12737,12 @@ trackedFiles:
     pristine_git_object: 410efafd6a7f50d91ccb87131fedbe0c3d47e15a
   jsr.json:
     id: 7f6ab7767282
-    last_write_checksum: sha1:0ad667bac479b42d629002394ccad2f695ab669d
-    pristine_git_object: 041aba976075d2df7d80c908f6b9fe194686bff2
+    last_write_checksum: sha1:a31b96cef20897b32ff22cd9af4500e4fa638ccf
+    pristine_git_object: 2488b59b1560a0bede282af8ebba0e39c8a3bc5d
   package.json:
     id: 7030d0b2f71b
-    last_write_checksum: sha1:85904f4c542ddedb95d9727e923224e57ccdb5c5
-    pristine_git_object: f52a8f19d438ba8b7955467667c6ef4bbc9a65cd
+    last_write_checksum: sha1:328220de406d002c4f9ffc6187cd4beca6bf95ff
+    pristine_git_object: 089d0c0e7cdb025cf3f7cfcc9ff513fe66326b87
   src/core.ts:
     id: f431fdbcd144
     last_write_checksum: sha1:5aa66b0b6a5964f3eea7f3098c2eb3c0ee9c0131
@@ -13145,8 +13145,8 @@ trackedFiles:
     pristine_git_object: a187e58707bdb726ca2aff74941efe7493422d4e
   src/lib/config.ts:
     id: 320761608fb3
-    last_write_checksum: sha1:564e5d4896da650e9803efadf0b7c1147af1dc01
-    pristine_git_object: e7405773d855d410b88b09104cc69e6e27ed3008
+    last_write_checksum: sha1:2eb96a1ed1a922f989cde6ffaa352003d1c09dac
+    pristine_git_object: 53f6c14aec05bf36d1907b2b84ce52085219f85a
   src/lib/dlv.ts:
     id: b1988214835a
     last_write_checksum: sha1:eaac763b22717206a6199104e0403ed17a4e2711
@@ -14223,8 +14223,8 @@ trackedFiles:
     pristine_git_object: fb1950525224243627836ce1a03eae69c4503027
   src/models/generationresponse.ts:
     id: f9109ae06502
-    last_write_checksum: sha1:26557acaa2ea5e4d4c4540fe4e2a68421afa2440
-    pristine_git_object: dcbc31fe9604d0d1308508fb64e3f32f1e489614
+    last_write_checksum: sha1:0f7b1610b075403c6339e715678912ed9f293a21
+    pristine_git_object: dee98b7209bfc2a74b12592a9340839a17dd4af1
   src/models/getbyokkeyresponse.ts:
     id: c83ed9fbd575
     last_write_checksum: sha1:8c270135769e92feab86d649563a5c6f63bdad7b
@@ -16055,8 +16055,8 @@ trackedFiles:
     pristine_git_object: 0c5a5f3819ab52c8290dc81ed3bc94944b2cc26c
   src/sdk/byok.ts:
     id: 5c1e8a4724b5
-    last_write_checksum: sha1:6743e7d84e50919784e98df8f72bc9e35f1d0384
-    pristine_git_object: 62ad299445854d90dc51058e8e402f02748ba2cc
+    last_write_checksum: sha1:28b7b57f5cb6725c8977efe67e332bcbc66ab79d
+    pristine_git_object: 08df477eee705d425a5f152d2e85b3991523aa98
   src/sdk/chat.ts:
     id: c56babc22a20
     last_write_checksum: sha1:b826d379253d830664e86399eb83d857f7ac94bf
@@ -16139,16 +16139,16 @@ trackedFiles:
     pristine_git_object: d207e07fa9c48cdeb6282df96d238a68c6c38f1f
   src/sdk/sdk.ts:
     id: 784571af2f69
-    last_write_checksum: sha1:8890194f5ec8f7e660fa83b353f613387e416d87
-    pristine_git_object: c11231939bda6534f3805eabfb422440c67cbffd
+    last_write_checksum: sha1:09ce9b3d8941c3c63a31417caf2c1cb1cddf054f
+    pristine_git_object: c95283152c75b72b72141a25b27a0c6eb30b8e49
   src/sdk/stt.ts:
     id: fd9e88c22d1f
-    last_write_checksum: sha1:ffbdcd6d3d0302bd5082212740a792dadb57a453
-    pristine_git_object: 88ee60a6fa3eda60ee2fc50e337e26ecf1477c02
+    last_write_checksum: sha1:baa74a0310eb8b465dea302495e744e3f3ea1ca5
+    pristine_git_object: 7efe904b807115d3c691636b37a98fdf3b079878
   src/sdk/tts.ts:
     id: b3236e8fa217
-    last_write_checksum: sha1:0f25963ae294d2beef73b189db10b09ca3ecf4c6
-    pristine_git_object: 99ba633f15d7e579cf8509df9c5effdb444014d7
+    last_write_checksum: sha1:ebe45b666f4809ceb2406e6fd6f307f9455076b3
+    pristine_git_object: 4d885b023e6aac47f225d63bfe3161b919681f88
   src/sdk/videogeneration.ts:
     id: db34eab5bd5b
     last_write_checksum: sha1:0e8a13f8ca379037c57417f0ebe9a9fe35dc3bea
@@ -17932,11 +17932,3 @@ examples:
         "500":
           application/json: {"error": {"code": 500, "message": "Internal Server Error"}}
 examplesVersion: 1.0.2
-releaseNotes: |
-  ## Typescript SDK Changes:
-  * `openrouter.scim.listMappings()`: **Added**
-  * `openrouter.scim.create()`: **Added**
-  * `openrouter.scim.delete()`: **Added**
-  * `openrouter.scim.read()`: **Added**
-  * `openrouter.scim.update()`: **Added**
-  * `openrouter.scim.listGroups()`: **Added**
