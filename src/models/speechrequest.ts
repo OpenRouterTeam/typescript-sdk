@@ -64,7 +64,7 @@ export type SpeechRequest = {
   /**
    * Voice identifier (provider-specific).
    */
-  voice?: string | undefined;
+  voice: string;
 };
 
 /** @internal */
@@ -101,7 +101,7 @@ export type SpeechRequest$Outbound = {
   provider?: SpeechRequestProvider$Outbound | undefined;
   response_format: string;
   speed?: number | undefined;
-  voice?: string | undefined;
+  voice: string;
 };
 
 /** @internal */
@@ -114,7 +114,7 @@ export const SpeechRequest$outboundSchema: z.ZodType<
   provider: z.lazy(() => SpeechRequestProvider$outboundSchema).optional(),
   responseFormat: SpeechRequestResponseFormat$outboundSchema.default("pcm"),
   speed: z.number().optional(),
-  voice: z.string().optional(),
+  voice: z.string(),
 }).transform((v) => {
   return remap$(v, {
     responseFormat: "response_format",
