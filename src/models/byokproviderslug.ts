@@ -101,6 +101,7 @@ export const BYOKProviderSlug = {
   Switchpoint: "switchpoint",
   Tencent: "tencent",
   Tenstorrent: "tenstorrent",
+  Thinkingmachines: "thinkingmachines",
   Together: "together",
   Upstage: "upstage",
   Venice: "venice",
