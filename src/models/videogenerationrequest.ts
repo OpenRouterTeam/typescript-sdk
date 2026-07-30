@@ -162,6 +162,7 @@ export type VideoGenerationRequestOptions = {
   targon?: { [k: string]: any } | undefined;
   tencent?: { [k: string]: any } | undefined;
   tenstorrent?: { [k: string]: any } | undefined;
+  thinkingmachines?: { [k: string]: any } | undefined;
   together?: { [k: string]: any } | undefined;
   togetherLite?: { [k: string]: any } | undefined;
   ubicloud?: { [k: string]: any } | undefined;
@@ -377,6 +378,7 @@ export type VideoGenerationRequestOptions$Outbound = {
   targon?: { [k: string]: any } | undefined;
   tencent?: { [k: string]: any } | undefined;
   tenstorrent?: { [k: string]: any } | undefined;
+  thinkingmachines?: { [k: string]: any } | undefined;
   together?: { [k: string]: any } | undefined;
   "together-lite"?: { [k: string]: any } | undefined;
   ubicloud?: { [k: string]: any } | undefined;
@@ -515,6 +517,7 @@ export const VideoGenerationRequestOptions$outboundSchema: z.ZodType<
   targon: z.record(z.string(), z.any()).optional(),
   tencent: z.record(z.string(), z.any()).optional(),
   tenstorrent: z.record(z.string(), z.any()).optional(),
+  thinkingmachines: z.record(z.string(), z.any()).optional(),
   together: z.record(z.string(), z.any()).optional(),
   togetherLite: z.record(z.string(), z.any()).optional(),
   ubicloud: z.record(z.string(), z.any()).optional(),
