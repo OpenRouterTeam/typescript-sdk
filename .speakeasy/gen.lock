@@ -1,19 +1,19 @@
 lockVersion: ""
 id: ""
 management:
-  docChecksum: f684366ca1cec60387d5d95559eeac26
+  docChecksum: 17f4783a608e0bc0eec9f1c80712d56e
   docVersion: 1.0.0
   speakeasyVersion: 1.787.0
   generationVersion: 2.914.0
-  releaseVersion: 1.1.23
-  configChecksum: 0c5bbe4d22545f766cf405d9d60c9066
+  releaseVersion: 1.1.24
+  configChecksum: 85fdcef91e6db76accdc19a3e4fc554a
   repoURL: https://github.com/OpenRouterTeam/typescript-sdk.git
   installationURL: https://github.com/OpenRouterTeam/typescript-sdk
   published: true
 persistentEdits:
-  generation_id: 252b98ac-8ac0-4708-b079-2c0eec41c126
-  pristine_commit_hash: 3e1590b9dfe03bdd2dc56dd9fd10f1d43f25d5f2
-  pristine_tree_hash: afd84ddd71a2373c16dd226f72ddb24ffb01a741
+  generation_id: f802237d-48ec-4f61-b0b0-c4d18c3475a4
+  pristine_commit_hash: d0ae684bd21a9f1f26be991ec5d7a3eb86ff0e91
+  pristine_tree_hash: 17f1328559e01538d767b6648b8a9d12c1c0a451
 features:
   typescript:
     acceptHeaders: 2.81.2
@@ -6858,8 +6858,8 @@ trackedFiles:
     deleted: true
   docs/models/operations/createaudiospeechrequest.mdx:
     id: 546c784ed841
-    last_write_checksum: sha1:cfab5eb368556c33c73330dc151a55535eb3cc3a
-    pristine_git_object: f765a84efc20e6149d28a9226a56b6a58c6a5b9e
+    last_write_checksum: sha1:1f59a4285c264a63d8405080a2850a82646b183e
+    pristine_git_object: b76efbcbfd816ae7d5aa676866805582e7c97fb1
   docs/models/operations/createaudiotranscriptionsglobals.md:
     id: f0cc088440ea
     last_write_checksum: sha1:d46db6c0b8b0c1c2b5cc58d6e12253c76a8fc434
@@ -10927,8 +10927,8 @@ trackedFiles:
     deleted: true
   docs/models/speechrequest.mdx:
     id: c9e3c03ff84e
-    last_write_checksum: sha1:b94eb64e883ee8d5aed5d09f703166804fdc33fb
-    pristine_git_object: f4547cde01476afa6a22c35e00c24be12aebcee1
+    last_write_checksum: sha1:54f152261cab96ce8267050eb6b1cd7298643f09
+    pristine_git_object: 248901b4da7943ad48b24595276fbc882ca688ae
   docs/models/speechrequestoptions.md:
     id: 2d3d36e99ad0
     last_write_checksum: sha1:a5810a37b774c3e34bb1d943b64620bc31de2278
@@ -12617,12 +12617,12 @@ trackedFiles:
     pristine_git_object: 410efafd6a7f50d91ccb87131fedbe0c3d47e15a
   jsr.json:
     id: 7f6ab7767282
-    last_write_checksum: sha1:28bb7b10d0691457b990f06a17255b16ce90e7c4
-    pristine_git_object: d743531ecc40cbcb64ca653fe888c6bf5797616c
+    last_write_checksum: sha1:ec520dc31ef56191034d75c2cf75bc5f7d2e8f58
+    pristine_git_object: e4272cdd92cb0c16ce826a02e5bac7c6a8111f77
   package.json:
     id: 7030d0b2f71b
-    last_write_checksum: sha1:09969fc407242e89aaf9687b4229ad146c693122
-    pristine_git_object: 86913335273e86594fbf3287608fc6243d905626
+    last_write_checksum: sha1:a2354f5da3cd11fc7206f8ee1ff8e6a2df7ecf70
+    pristine_git_object: f18a643a647307764516c1cf82d7222249095231
   src/core.ts:
     id: f431fdbcd144
     last_write_checksum: sha1:5aa66b0b6a5964f3eea7f3098c2eb3c0ee9c0131
@@ -13001,8 +13001,8 @@ trackedFiles:
     pristine_git_object: a187e58707bdb726ca2aff74941efe7493422d4e
   src/lib/config.ts:
     id: 320761608fb3
-    last_write_checksum: sha1:4d53e42efceb4f3881e71424e46f4509238b4396
-    pristine_git_object: ddce9cb9635a55e5fbed9e3d71e9c2393e1e3b7e
+    last_write_checksum: sha1:6c7c990b17c66bb322ae20b16a825b835b5c4fdf
+    pristine_git_object: 6f53365ce04eacadf356711fba5b5381260d96a3
   src/lib/dlv.ts:
     id: b1988214835a
     last_write_checksum: sha1:eaac763b22717206a6199104e0403ed17a4e2711
@@ -15467,8 +15467,8 @@ trackedFiles:
     pristine_git_object: b7e831da0a7045eea3f87f9135d9e68af797df11
   src/models/speechrequest.ts:
     id: 96d573d68420
-    last_write_checksum: sha1:263a2b6351d0fdb6ac4d756d862ffcd2358ef81a
-    pristine_git_object: 4d1ed973065fa1854c0446f5dfb138f92d26f287
+    last_write_checksum: sha1:45e707a126a37be711f3fb5bd437b02e2967a894
+    pristine_git_object: bb7c53bf74740828384edaf1f7c5afd97ad1a682
   src/models/stopservertoolswhencondition.ts:
     id: 3c90e3993bad
     last_write_checksum: sha1:b95847e6581593c6f1106971d0508acb2cce1106
@@ -16877,7 +16877,7 @@ examples:
   createAudioSpeech:
     speakeasy-default-create-audio-speech:
       requestBody:
-        application/json: {"input": "Hello world", "model": "mistralai/voxtral-mini-tts-2603", "response_format": "pcm", "voice": "en_paul_neutral"}
+        application/json: {"input": "Hello world", "model": "mistralai/voxtral-mini-tts-2603", "response_format": "pcm"}
       responses:
         "200":
           audio/*: "<binary audio data>"
@@ -17623,4 +17623,4 @@ examples:
         "500":
           application/json: {"error": {"code": 500, "message": "Internal Server Error"}}
 examplesVersion: 1.0.2
-releaseNotes: "## Typescript SDK Changes:\n* `openrouter.videoGeneration.generate()`: \n  *  `request.videoGenerationRequest.resolution.enum(768p)` **Added**\n* `openrouter.videoGeneration.listVideosModels()`:  `response.data[]` **Changed**\n"
+releaseNotes: "## Typescript SDK Changes:\n* `openrouter.tts.createSpeech()`: \n  *  `request.speechRequest.voice` **Changed**\n"
