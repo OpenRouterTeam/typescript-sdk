@@ -34,7 +34,7 @@ import { Quantization, Quantization$outboundSchema } from "./quantization.js";
  *
  * - deny: use only providers which do not collect user data.
  */
-export const DataCollection = {
+export const ProviderPreferencesDataCollection = {
   Deny: "deny",
   Allow: "allow",
 } as const;
@@ -46,7 +46,9 @@ export const DataCollection = {
  *
  * - deny: use only providers which do not collect user data.
  */
-export type DataCollection = OpenEnum<typeof DataCollection>;
+export type ProviderPreferencesDataCollection = OpenEnum<
+  typeof ProviderPreferencesDataCollection
+>;
 
 export type ProviderPreferencesIgnore = ProviderName | string;
 
@@ -105,7 +107,7 @@ export type ProviderPreferences = {
    *
    * - deny: use only providers which do not collect user data.
    */
-  dataCollection?: DataCollection | null | undefined;
+  dataCollection?: ProviderPreferencesDataCollection | null | undefined;
   /**
    * Whether to restrict routing to only models that allow text distillation. When true, only models where the author has allowed distillation will be used.
    */
@@ -153,8 +155,10 @@ export type ProviderPreferences = {
 };
 
 /** @internal */
-export const DataCollection$outboundSchema: z.ZodType<string, DataCollection> =
-  openEnums.outboundSchema(DataCollection);
+export const ProviderPreferencesDataCollection$outboundSchema: z.ZodType<
+  string,
+  ProviderPreferencesDataCollection
+> = openEnums.outboundSchema(ProviderPreferencesDataCollection);
 
 /** @internal */
 export type ProviderPreferencesIgnore$Outbound = string | string;
@@ -272,7 +276,8 @@ export const ProviderPreferences$outboundSchema: z.ZodType<
   ProviderPreferences
 > = z.object({
   allowFallbacks: z.nullable(z.boolean()).optional(),
-  dataCollection: z.nullable(DataCollection$outboundSchema).optional(),
+  dataCollection: z.nullable(ProviderPreferencesDataCollection$outboundSchema)
+    .optional(),
   enforceDistillableText: z.nullable(z.boolean()).optional(),
   ignore: z.nullable(
     z.array(z.union([ProviderName$outboundSchema, z.string()])),
