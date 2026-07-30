@@ -2,6 +2,8 @@
 title: "ChatFinishReasonEnum"
 ---
 
+Normalized finish reason. `pause_turn` is an OpenRouter extension: the provider paused a long-running server-tool turn awaiting continuation, so the partial output is not a completed answer.
+
 ## Example Usage
 
 ```typescript
@@ -15,5 +17,5 @@ let value: ChatFinishReasonEnum = "stop";
 ## Values
 
 ```typescript
-"tool_calls" | "stop" | "length" | "content_filter" | "error" | Unrecognized<string>
+"tool_calls" | "stop" | "length" | "content_filter" | "error" | "pause_turn" | Unrecognized<string>
 ```
