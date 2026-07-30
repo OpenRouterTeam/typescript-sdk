@@ -185,9 +185,9 @@ export type CreateKeysData = {
    */
   usageWeekly: number;
   /**
-   * The workspace ID this API key belongs to.
+   * The workspace this API key is scoped to, or `null` when it is not scoped to any workspace — including provisioning/management keys and keys created before workspaces existed. A `null` value means the key is not tied to any single workspace; it does not mean the default workspace.
    */
-  workspaceId: string;
+  workspaceId: string | null;
 };
 
 /**
@@ -308,7 +308,7 @@ export const CreateKeysData$inboundSchema: z.ZodType<CreateKeysData, unknown> =
     usage_daily: z.number(),
     usage_monthly: z.number(),
     usage_weekly: z.number(),
-    workspace_id: z.string(),
+    workspace_id: z.nullable(z.string()),
   }).transform((v) => {
     return remap$(v, {
       "byok_usage": "byokUsage",
