@@ -21,6 +21,14 @@ import {
  */
 export type SubagentServerToolConfig = {
   /**
+   * Names of client functions defined in the request top-level `tools` list. When the child calls one, OpenRouter returns a normal outer function call.
+   */
+  clientTools?: Array<string> | undefined;
+  /**
+   * Whether the returned `openrouter:subagent` item includes the child's structured `transcript`. Defaults to true. Set false to keep responses small when the transcript is not needed — note the transcript is what makes a session replayable.
+   */
+  includeTranscript?: boolean | undefined;
+  /**
    * System instructions for the subagent. When omitted, the subagent responds with no system prompt of its own.
    */
   instructions?: string | undefined;
@@ -49,13 +57,15 @@ export type SubagentServerToolConfig = {
    */
   temperature?: number | undefined;
   /**
-   * Tools the subagent may use while executing a delegated task. The subagent runs as an agentic sub-agent over these tools, then returns its outcome. Only OpenRouter server tools are supported — function tools are rejected — and the list must not include the subagent tool itself.
+   * Tools the subagent may use while executing a delegated task. The subagent runs as an agentic sub-agent over these tools, then returns its outcome. This list accepts OpenRouter server tools; use `client_tools` for top-level client functions. The list must not include the subagent tool itself.
    */
   tools?: Array<SubagentNestedTool> | undefined;
 };
 
 /** @internal */
 export type SubagentServerToolConfig$Outbound = {
+  client_tools?: Array<string> | undefined;
+  include_transcript?: boolean | undefined;
   instructions?: string | undefined;
   max_completion_tokens?: number | undefined;
   max_tool_calls?: number | undefined;
@@ -71,6 +81,8 @@ export const SubagentServerToolConfig$outboundSchema: z.ZodType<
   SubagentServerToolConfig$Outbound,
   SubagentServerToolConfig
 > = z.object({
+  clientTools: z.array(z.string()).optional(),
+  includeTranscript: z.boolean().optional(),
   instructions: z.string().optional(),
   maxCompletionTokens: z.int().optional(),
   maxToolCalls: z.int().optional(),
@@ -81,6 +93,8 @@ export const SubagentServerToolConfig$outboundSchema: z.ZodType<
   tools: z.array(SubagentNestedTool$outboundSchema).optional(),
 }).transform((v) => {
   return remap$(v, {
+    clientTools: "client_tools",
+    includeTranscript: "include_transcript",
     maxCompletionTokens: "max_completion_tokens",
     maxToolCalls: "max_tool_calls",
   });
