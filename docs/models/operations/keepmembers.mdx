@@ -1,0 +1,21 @@
+---
+title: "KeepMembers"
+---
+
+Required. Whether to keep workspace members after deleting the mapping. `false` **removes** the members this mapping granted access to; `true` deletes the mapping while leaving membership intact as manually-managed. There is deliberately no default — omitting it returns `400` so the destructive path cannot be reached by accident. Mirrors the dashboard, whose `DeleteMappingSchema.keepMembers` is likewise required.
+
+
+## Supported Types
+
+### `operations.KeepMembersEnum`
+
+```typescript
+const value: operations.KeepMembersEnum = "false";
+```
+
+### `boolean`
+
+```typescript
+const value: boolean = false;
+```
+
