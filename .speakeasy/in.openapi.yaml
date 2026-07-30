@@ -5376,10 +5376,11 @@ components:
             - 'integer'
             - 'null'
         service_tier:
-          description: 'The service tier to use for processing this request.'
+          description: 'The service tier to use for processing this request. `fast` is accepted as an alias for `priority`.'
           enum:
             - 'auto'
             - 'default'
+            - 'fast'
             - 'flex'
             - 'priority'
             - 'scale'
@@ -21143,6 +21144,7 @@ components:
             - 'failed_to_download_image'
             - 'image_file_not_found'
             - 'bio_policy'
+            - 'data_residency_mismatch'
           type: 'string'
         message:
           type: 'string'
@@ -21286,9 +21288,11 @@ components:
             - 'null'
         service_tier:
           default: 'auto'
+          description: 'The service tier to use for processing this request. `fast` is accepted as an alias for `priority`.'
           enum:
             - 'auto'
             - 'default'
+            - 'fast'
             - 'flex'
             - 'priority'
             - 'scale'
