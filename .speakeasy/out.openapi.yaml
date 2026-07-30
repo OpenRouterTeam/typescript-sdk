@@ -4580,6 +4580,7 @@ components:
         - 'switchpoint'
         - 'tencent'
         - 'tenstorrent'
+        - 'thinkingmachines'
         - 'together'
         - 'upstage'
         - 'venice'
@@ -13536,6 +13537,7 @@ components:
                 - 'Switchpoint'
                 - 'Tencent'
                 - 'Tenstorrent'
+                - 'Thinking Machines'
                 - 'Together'
                 - 'Upstage'
                 - 'Venice'
@@ -19610,6 +19612,7 @@ components:
         - 'Switchpoint'
         - 'Tencent'
         - 'Tenstorrent'
+        - 'Thinking Machines'
         - 'Together'
         - 'Upstage'
         - 'Venice'
@@ -19988,6 +19991,9 @@ components:
         tenstorrent:
           additionalProperties: {}
           type: 'object'
+        thinkingmachines:
+          additionalProperties: {}
+          type: 'object'
         together:
           additionalProperties: {}
           type: 'object'
@@ -20332,6 +20338,7 @@ components:
             - 'Switchpoint'
             - 'Tencent'
             - 'Tenstorrent'
+            - 'Thinking Machines'
             - 'Together'
             - 'Upstage'
             - 'Venice'
@@ -26741,6 +26748,7 @@ paths:
               - 'switchpoint'
               - 'tencent'
               - 'tenstorrent'
+              - 'thinkingmachines'
               - 'together'
               - 'upstage'
               - 'venice'
