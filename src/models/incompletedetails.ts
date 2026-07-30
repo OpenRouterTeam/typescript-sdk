@@ -13,6 +13,7 @@ import { SDKValidationError } from "./errors/sdkvalidationerror.js";
 export const Reason = {
   MaxOutputTokens: "max_output_tokens",
   ContentFilter: "content_filter",
+  PauseTurn: "pause_turn",
 } as const;
 export type Reason = OpenEnum<typeof Reason>;
 

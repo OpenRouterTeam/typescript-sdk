@@ -7,13 +7,20 @@ import * as z from "zod/v4";
 import * as openEnums from "../types/enums.js";
 import { OpenEnum } from "../types/enums.js";
 
+/**
+ * Normalized finish reason. `pause_turn` is an OpenRouter extension: the provider paused a long-running server-tool turn awaiting continuation, so the partial output is not a completed answer.
+ */
 export const ChatFinishReasonEnum = {
   ToolCalls: "tool_calls",
   Stop: "stop",
   Length: "length",
   ContentFilter: "content_filter",
   Error: "error",
+  PauseTurn: "pause_turn",
 } as const;
+/**
+ * Normalized finish reason. `pause_turn` is an OpenRouter extension: the provider paused a long-running server-tool turn awaiting continuation, so the partial output is not a completed answer.
+ */
 export type ChatFinishReasonEnum = OpenEnum<typeof ChatFinishReasonEnum>;
 
 /** @internal */
