@@ -11,9 +11,9 @@ management:
   installationURL: https://github.com/OpenRouterTeam/typescript-sdk
   published: true
 persistentEdits:
-  generation_id: 4fa0475d-b0bc-497d-95a1-2d7d3e7e6561
-  pristine_commit_hash: c7f480d7c840275e833a9f365ac52d2d69eae694
-  pristine_tree_hash: 5243c3bfff3de4ba046bb481b9583f90605f2892
+  generation_id: b5245972-d953-4540-a90c-293cc412f9f5
+  pristine_commit_hash: 046a1be74712aebde9cad740e11b8c9cf2c49c6e
+  pristine_tree_hash: 1a020f9543125d47c09168ee9b364c1aa9a5bf05
 features:
   typescript:
     acceptHeaders: 2.81.2
@@ -12741,8 +12741,8 @@ trackedFiles:
     pristine_git_object: 2488b59b1560a0bede282af8ebba0e39c8a3bc5d
   package.json:
     id: 7030d0b2f71b
-    last_write_checksum: sha1:e666c99da34939248c73490c7f17f13756935576
-    pristine_git_object: e57e680e3d666540dfa375fa02331a0a35fedf63
+    last_write_checksum: sha1:328220de406d002c4f9ffc6187cd4beca6bf95ff
+    pristine_git_object: 089d0c0e7cdb025cf3f7cfcc9ff513fe66326b87
   src/core.ts:
     id: f431fdbcd144
     last_write_checksum: sha1:5aa66b0b6a5964f3eea7f3098c2eb3c0ee9c0131
