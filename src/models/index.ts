@@ -436,7 +436,6 @@ export * from "./providername.js";
 export * from "./provideroptions.js";
 export * from "./provideroverloadedresponseerrordata.js";
 export * from "./providerpreferences.js";
-export * from "./providerresponse.js";
 export * from "./providersort.js";
 export * from "./providersortconfig.js";
 export * from "./publicendpoint.js";

@@ -10,10 +10,6 @@ import * as openEnums from "../types/enums.js";
 import { OpenEnum } from "../types/enums.js";
 import { Result as SafeParseResult } from "../types/fp.js";
 import { SDKValidationError } from "./errors/sdkvalidationerror.js";
-import {
-  ProviderResponse,
-  ProviderResponse$inboundSchema,
-} from "./providerresponse.js";
 
 /**
  * Type of API used for the generation
@@ -44,6 +40,194 @@ export const DataRegion = {
  * The data region this generation was routed through: 'global', 'europe', or 'us'.
  */
 export type DataRegion = OpenEnum<typeof DataRegion>;
+
+/**
+ * Name of the provider
+ */
+export const GenerationResponseProviderName = {
+  AnyScale: "AnyScale",
+  Atoma: "Atoma",
+  CentML: "Cent-ML",
+  CrofAI: "CrofAI",
+  Enfer: "Enfer",
+  GoPomelo: "GoPomelo",
+  HuggingFace: "HuggingFace",
+  Hyperbolic: "Hyperbolic",
+  Hyperbolic2: "Hyperbolic 2",
+  InoCloud: "InoCloud",
+  Kluster: "Kluster",
+  Lambda: "Lambda",
+  Lepton: "Lepton",
+  Lynn2: "Lynn 2",
+  Lynn: "Lynn",
+  Mancer: "Mancer",
+  Modal: "Modal",
+  Nineteen: "Nineteen",
+  OctoAI: "OctoAI",
+  Recursal: "Recursal",
+  Reflection: "Reflection",
+  Replicate: "Replicate",
+  SambaNova2: "SambaNova 2",
+  SFCompute: "SF Compute",
+  Targon: "Targon",
+  Together2: "Together 2",
+  Ubicloud: "Ubicloud",
+  OneDotAI: "01.AI",
+  AkashML: "AkashML",
+  Ai21: "AI21",
+  AionLabs: "AionLabs",
+  Alibaba: "Alibaba",
+  Ambient: "Ambient",
+  Baidu: "Baidu",
+  AmazonBedrock: "Amazon Bedrock",
+  AmazonNova: "Amazon Nova",
+  Anthropic: "Anthropic",
+  ArceeAI: "Arcee AI",
+  AtlasCloud: "AtlasCloud",
+  Avian: "Avian",
+  Azure: "Azure",
+  BaseTen: "BaseTen",
+  BytePlus: "BytePlus",
+  BlackForestLabs: "Black Forest Labs",
+  Cerebras: "Cerebras",
+  Chutes: "Chutes",
+  Cirrascale: "Cirrascale",
+  ClaudePlatformOnAWS: "Claude Platform on AWS",
+  Clarifai: "Clarifai",
+  Cloudflare: "Cloudflare",
+  Cohere: "Cohere",
+  CoreWeave: "CoreWeave",
+  Crucible: "Crucible",
+  Crusoe: "Crusoe",
+  Darkbloom: "Darkbloom",
+  Decart: "Decart",
+  Deepgram: "Deepgram",
+  DeepInfra: "DeepInfra",
+  DeepSeek: "DeepSeek",
+  DekaLLM: "DekaLLM",
+  DigitalOcean: "DigitalOcean",
+  Featherless: "Featherless",
+  Fireworks: "Fireworks",
+  FishAudio: "Fish Audio",
+  Friendli: "Friendli",
+  GMICloud: "GMICloud",
+  Google: "Google",
+  GoogleAIStudio: "Google AI Studio",
+  Groq: "Groq",
+  HeyGen: "HeyGen",
+  Inception: "Inception",
+  Inceptron: "Inceptron",
+  InferenceNet: "InferenceNet",
+  Ionstream: "Ionstream",
+  Infermatic: "Infermatic",
+  IoNet: "Io Net",
+  InferactVLLM: "Inferact vLLM",
+  Inflection: "Inflection",
+  Liquid: "Liquid",
+  Mara: "Mara",
+  Mancer2: "Mancer 2",
+  Meta: "Meta",
+  Minimax: "Minimax",
+  ModelRun: "ModelRun",
+  Mistral: "Mistral",
+  Modular: "Modular",
+  MoonshotAI: "Moonshot AI",
+  Morph: "Morph",
+  VoyageAIByMongoDB: "VoyageAI by MongoDB",
+  NCompass: "NCompass",
+  Nebius: "Nebius",
+  NexAGI: "Nex AGI",
+  NextBit: "NextBit",
+  Novita: "Novita",
+  Nvidia: "Nvidia",
+  OpenAI: "OpenAI",
+  OpenInference: "OpenInference",
+  Parasail: "Parasail",
+  Poolside: "Poolside",
+  Perceptron: "Perceptron",
+  Perplexity: "Perplexity",
+  Phala: "Phala",
+  Recraft: "Recraft",
+  Reka: "Reka",
+  Relace: "Relace",
+  SailResearch: "Sail Research",
+  SakanaAI: "Sakana AI",
+  SambaNova: "SambaNova",
+  Seed: "Seed",
+  SiliconFlow: "SiliconFlow",
+  Sourceful: "Sourceful",
+  StepFun: "StepFun",
+  Stealth: "Stealth",
+  StreamLake: "StreamLake",
+  Switchpoint: "Switchpoint",
+  Tencent: "Tencent",
+  Tenstorrent: "Tenstorrent",
+  Together: "Together",
+  Upstage: "Upstage",
+  Venice: "Venice",
+  Wafer: "Wafer",
+  WandB: "WandB",
+  Quiver: "Quiver",
+  Krea: "Krea",
+  Runway: "Runway",
+  Xiaomi: "Xiaomi",
+  XAI: "xAI",
+  ZAi: "Z.AI",
+  FakeProvider: "FakeProvider",
+} as const;
+/**
+ * Name of the provider
+ */
+export type GenerationResponseProviderName = OpenEnum<
+  typeof GenerationResponseProviderName
+>;
+
+/**
+ * The service tier this request was routed to (e.g. flex, priority). The tier actually applied and billed is determined by the provider response and may differ.
+ */
+export const RoutedServiceTier = {
+  Flex: "flex",
+  Priority: "priority",
+} as const;
+/**
+ * The service tier this request was routed to (e.g. flex, priority). The tier actually applied and billed is determined by the provider response and may differ.
+ */
+export type RoutedServiceTier = OpenEnum<typeof RoutedServiceTier>;
+
+export type ProviderResponse = {
+  /**
+   * Internal endpoint identifier
+   */
+  endpointId?: string | undefined;
+  /**
+   * Upstream provider response identifier
+   */
+  id?: string | undefined;
+  /**
+   * Whether the request used a bring-your-own-key
+   */
+  isByok?: boolean | undefined;
+  /**
+   * Response latency in milliseconds
+   */
+  latency?: number | undefined;
+  /**
+   * Canonical model slug
+   */
+  modelPermaslug?: string | undefined;
+  /**
+   * Name of the provider
+   */
+  providerName?: GenerationResponseProviderName | undefined;
+  /**
+   * The service tier this request was routed to (e.g. flex, priority). The tier actually applied and billed is determined by the provider response and may differ.
+   */
+  routedServiceTier?: RoutedServiceTier | undefined;
+  /**
+   * HTTP status code from the provider
+   */
+  status: number | null;
+};
 
 /**
  * Generation data
@@ -246,6 +430,51 @@ export const DataRegion$inboundSchema: z.ZodType<DataRegion, unknown> =
   openEnums.inboundSchema(DataRegion);
 
 /** @internal */
+export const GenerationResponseProviderName$inboundSchema: z.ZodType<
+  GenerationResponseProviderName,
+  unknown
+> = openEnums.inboundSchema(GenerationResponseProviderName);
+
+/** @internal */
+export const RoutedServiceTier$inboundSchema: z.ZodType<
+  RoutedServiceTier,
+  unknown
+> = openEnums.inboundSchema(RoutedServiceTier);
+
+/** @internal */
+export const ProviderResponse$inboundSchema: z.ZodType<
+  ProviderResponse,
+  unknown
+> = z.object({
+  endpoint_id: z.string().optional(),
+  id: z.string().optional(),
+  is_byok: z.boolean().optional(),
+  latency: z.number().optional(),
+  model_permaslug: z.string().optional(),
+  provider_name: GenerationResponseProviderName$inboundSchema.optional(),
+  routed_service_tier: RoutedServiceTier$inboundSchema.optional(),
+  status: z.nullable(z.int()),
+}).transform((v) => {
+  return remap$(v, {
+    "endpoint_id": "endpointId",
+    "is_byok": "isByok",
+    "model_permaslug": "modelPermaslug",
+    "provider_name": "providerName",
+    "routed_service_tier": "routedServiceTier",
+  });
+});
+
+export function providerResponseFromJSON(
+  jsonString: string,
+): SafeParseResult<ProviderResponse, SDKValidationError> {
+  return safeParse(
+    jsonString,
+    (x) => ProviderResponse$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'ProviderResponse' from JSON`,
+  );
+}
+
+/** @internal */
 export const GenerationResponseData$inboundSchema: z.ZodType<
   GenerationResponseData,
   unknown
@@ -279,7 +508,9 @@ export const GenerationResponseData$inboundSchema: z.ZodType<
   origin: z.string(),
   preset_id: z.nullable(z.string()),
   provider_name: z.nullable(z.string()),
-  provider_responses: z.nullable(z.array(ProviderResponse$inboundSchema)),
+  provider_responses: z.nullable(
+    z.array(z.lazy(() => ProviderResponse$inboundSchema)),
+  ),
   request_id: z.nullable(z.string()).optional(),
   response_cache_source_id: z.nullable(z.string()).optional(),
   router: z.nullable(z.string()),
