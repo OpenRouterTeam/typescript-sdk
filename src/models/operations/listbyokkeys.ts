@@ -128,7 +128,6 @@ export const Provider = {
   Switchpoint: "switchpoint",
   Tencent: "tencent",
   Tenstorrent: "tenstorrent",
-  Thinkingmachines: "thinkingmachines",
   Together: "together",
   Upstage: "upstage",
   Venice: "venice",
@@ -173,7 +172,7 @@ export type ListBYOKKeysRequest = {
    */
   limit?: number | undefined;
   /**
-   * Optional workspace ID to filter by. Defaults to the authenticated entity's default workspace.
+   * Optional workspace ID to filter by. When omitted, resolves to the account’s active workspace (active default, else the first active workspace); accounts with no active workspace get a 400.
    */
   workspaceId?: string | undefined;
   /**
