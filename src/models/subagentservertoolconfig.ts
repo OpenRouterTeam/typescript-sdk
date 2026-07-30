@@ -21,6 +21,10 @@ import {
  */
 export type SubagentServerToolConfig = {
   /**
+   * Whether the returned `openrouter:subagent` item includes the child's structured `transcript`. Defaults to true. Set false to keep responses small when the transcript is not needed — note the transcript is what makes a session replayable.
+   */
+  includeTranscript?: boolean | undefined;
+  /**
    * System instructions for the subagent. When omitted, the subagent responds with no system prompt of its own.
    */
   instructions?: string | undefined;
@@ -56,6 +60,7 @@ export type SubagentServerToolConfig = {
 
 /** @internal */
 export type SubagentServerToolConfig$Outbound = {
+  include_transcript?: boolean | undefined;
   instructions?: string | undefined;
   max_completion_tokens?: number | undefined;
   max_tool_calls?: number | undefined;
@@ -71,6 +76,7 @@ export const SubagentServerToolConfig$outboundSchema: z.ZodType<
   SubagentServerToolConfig$Outbound,
   SubagentServerToolConfig
 > = z.object({
+  includeTranscript: z.boolean().optional(),
   instructions: z.string().optional(),
   maxCompletionTokens: z.int().optional(),
   maxToolCalls: z.int().optional(),
@@ -81,6 +87,7 @@ export const SubagentServerToolConfig$outboundSchema: z.ZodType<
   tools: z.array(SubagentNestedTool$outboundSchema).optional(),
 }).transform((v) => {
   return remap$(v, {
+    includeTranscript: "include_transcript",
     maxCompletionTokens: "max_completion_tokens",
     maxToolCalls: "max_tool_calls",
   });
