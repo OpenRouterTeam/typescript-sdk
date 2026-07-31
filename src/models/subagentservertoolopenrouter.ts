@@ -4,9 +4,13 @@
  */
 
 import * as z from "zod/v4";
+import { safeParse } from "../lib/schemas.js";
 import { ClosedEnum } from "../types/enums.js";
+import { Result as SafeParseResult } from "../types/fp.js";
+import { SDKValidationError } from "./errors/sdkvalidationerror.js";
 import {
   SubagentServerToolConfig,
+  SubagentServerToolConfig$inboundSchema,
   SubagentServerToolConfig$Outbound,
   SubagentServerToolConfig$outboundSchema,
 } from "./subagentservertoolconfig.js";
@@ -30,10 +34,22 @@ export type SubagentServerToolOpenRouter = {
 };
 
 /** @internal */
-export const SubagentServerToolOpenRouterType$outboundSchema: z.ZodEnum<
+export const SubagentServerToolOpenRouterType$inboundSchema: z.ZodEnum<
   typeof SubagentServerToolOpenRouterType
 > = z.enum(SubagentServerToolOpenRouterType);
+/** @internal */
+export const SubagentServerToolOpenRouterType$outboundSchema: z.ZodEnum<
+  typeof SubagentServerToolOpenRouterType
+> = SubagentServerToolOpenRouterType$inboundSchema;
 
+/** @internal */
+export const SubagentServerToolOpenRouter$inboundSchema: z.ZodType<
+  SubagentServerToolOpenRouter,
+  unknown
+> = z.object({
+  parameters: SubagentServerToolConfig$inboundSchema.optional(),
+  type: SubagentServerToolOpenRouterType$inboundSchema,
+});
 /** @internal */
 export type SubagentServerToolOpenRouter$Outbound = {
   parameters?: SubagentServerToolConfig$Outbound | undefined;
@@ -56,5 +72,14 @@ export function subagentServerToolOpenRouterToJSON(
     SubagentServerToolOpenRouter$outboundSchema.parse(
       subagentServerToolOpenRouter,
     ),
+  );
+}
+export function subagentServerToolOpenRouterFromJSON(
+  jsonString: string,
+): SafeParseResult<SubagentServerToolOpenRouter, SDKValidationError> {
+  return safeParse(
+    jsonString,
+    (x) => SubagentServerToolOpenRouter$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'SubagentServerToolOpenRouter' from JSON`,
   );
 }

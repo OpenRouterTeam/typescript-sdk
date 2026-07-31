@@ -4,9 +4,13 @@
  */
 
 import * as z from "zod/v4";
+import { safeParse } from "../lib/schemas.js";
 import { ClosedEnum } from "../types/enums.js";
+import { Result as SafeParseResult } from "../types/fp.js";
+import { SDKValidationError } from "./errors/sdkvalidationerror.js";
 import {
   ImageGenerationServerToolConfig,
+  ImageGenerationServerToolConfig$inboundSchema,
   ImageGenerationServerToolConfig$Outbound,
   ImageGenerationServerToolConfig$outboundSchema,
 } from "./imagegenerationservertoolconfig.js";
@@ -30,10 +34,22 @@ export type ImageGenerationServerToolOpenRouter = {
 };
 
 /** @internal */
-export const ImageGenerationServerToolOpenRouterType$outboundSchema: z.ZodEnum<
+export const ImageGenerationServerToolOpenRouterType$inboundSchema: z.ZodEnum<
   typeof ImageGenerationServerToolOpenRouterType
 > = z.enum(ImageGenerationServerToolOpenRouterType);
+/** @internal */
+export const ImageGenerationServerToolOpenRouterType$outboundSchema: z.ZodEnum<
+  typeof ImageGenerationServerToolOpenRouterType
+> = ImageGenerationServerToolOpenRouterType$inboundSchema;
 
+/** @internal */
+export const ImageGenerationServerToolOpenRouter$inboundSchema: z.ZodType<
+  ImageGenerationServerToolOpenRouter,
+  unknown
+> = z.object({
+  parameters: ImageGenerationServerToolConfig$inboundSchema.optional(),
+  type: ImageGenerationServerToolOpenRouterType$inboundSchema,
+});
 /** @internal */
 export type ImageGenerationServerToolOpenRouter$Outbound = {
   parameters?: ImageGenerationServerToolConfig$Outbound | undefined;
@@ -56,5 +72,15 @@ export function imageGenerationServerToolOpenRouterToJSON(
     ImageGenerationServerToolOpenRouter$outboundSchema.parse(
       imageGenerationServerToolOpenRouter,
     ),
+  );
+}
+export function imageGenerationServerToolOpenRouterFromJSON(
+  jsonString: string,
+): SafeParseResult<ImageGenerationServerToolOpenRouter, SDKValidationError> {
+  return safeParse(
+    jsonString,
+    (x) =>
+      ImageGenerationServerToolOpenRouter$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'ImageGenerationServerToolOpenRouter' from JSON`,
   );
 }

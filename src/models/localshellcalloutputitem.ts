@@ -4,9 +4,13 @@
  */
 
 import * as z from "zod/v4";
+import { safeParse } from "../lib/schemas.js";
 import { ClosedEnum } from "../types/enums.js";
+import { Result as SafeParseResult } from "../types/fp.js";
+import { SDKValidationError } from "./errors/sdkvalidationerror.js";
 import {
   ToolCallStatus,
+  ToolCallStatus$inboundSchema,
   ToolCallStatus$outboundSchema,
 } from "./toolcallstatus.js";
 
@@ -28,10 +32,24 @@ export type LocalShellCallOutputItem = {
 };
 
 /** @internal */
-export const LocalShellCallOutputItemType$outboundSchema: z.ZodEnum<
+export const LocalShellCallOutputItemType$inboundSchema: z.ZodEnum<
   typeof LocalShellCallOutputItemType
 > = z.enum(LocalShellCallOutputItemType);
+/** @internal */
+export const LocalShellCallOutputItemType$outboundSchema: z.ZodEnum<
+  typeof LocalShellCallOutputItemType
+> = LocalShellCallOutputItemType$inboundSchema;
 
+/** @internal */
+export const LocalShellCallOutputItem$inboundSchema: z.ZodType<
+  LocalShellCallOutputItem,
+  unknown
+> = z.object({
+  id: z.string(),
+  output: z.string(),
+  status: z.nullable(ToolCallStatus$inboundSchema).optional(),
+  type: LocalShellCallOutputItemType$inboundSchema,
+});
 /** @internal */
 export type LocalShellCallOutputItem$Outbound = {
   id: string;
@@ -56,5 +74,14 @@ export function localShellCallOutputItemToJSON(
 ): string {
   return JSON.stringify(
     LocalShellCallOutputItem$outboundSchema.parse(localShellCallOutputItem),
+  );
+}
+export function localShellCallOutputItemFromJSON(
+  jsonString: string,
+): SafeParseResult<LocalShellCallOutputItem, SDKValidationError> {
+  return safeParse(
+    jsonString,
+    (x) => LocalShellCallOutputItem$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'LocalShellCallOutputItem' from JSON`,
   );
 }

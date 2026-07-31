@@ -4,10 +4,14 @@
  */
 
 import * as z from "zod/v4";
+import { safeParse } from "../lib/schemas.js";
+import { Result as SafeParseResult } from "../types/fp.js";
 import {
   ApplyPatchEngineEnum,
+  ApplyPatchEngineEnum$inboundSchema,
   ApplyPatchEngineEnum$outboundSchema,
 } from "./applypatchengineenum.js";
+import { SDKValidationError } from "./errors/sdkvalidationerror.js";
 
 /**
  * Configuration for the openrouter:apply_patch server tool
@@ -19,6 +23,13 @@ export type ApplyPatchServerToolConfig = {
   engine?: ApplyPatchEngineEnum | undefined;
 };
 
+/** @internal */
+export const ApplyPatchServerToolConfig$inboundSchema: z.ZodType<
+  ApplyPatchServerToolConfig,
+  unknown
+> = z.object({
+  engine: ApplyPatchEngineEnum$inboundSchema.optional(),
+});
 /** @internal */
 export type ApplyPatchServerToolConfig$Outbound = {
   engine?: string | undefined;
@@ -37,5 +48,14 @@ export function applyPatchServerToolConfigToJSON(
 ): string {
   return JSON.stringify(
     ApplyPatchServerToolConfig$outboundSchema.parse(applyPatchServerToolConfig),
+  );
+}
+export function applyPatchServerToolConfigFromJSON(
+  jsonString: string,
+): SafeParseResult<ApplyPatchServerToolConfig, SDKValidationError> {
+  return safeParse(
+    jsonString,
+    (x) => ApplyPatchServerToolConfig$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'ApplyPatchServerToolConfig' from JSON`,
   );
 }

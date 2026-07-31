@@ -5,6 +5,12 @@
 
 import * as z from "zod/v4";
 import { remap as remap$ } from "../lib/primitives.js";
+import {
+  collectExtraKeys as collectExtraKeys$,
+  safeParse,
+} from "../lib/schemas.js";
+import { Result as SafeParseResult } from "../types/fp.js";
+import { SDKValidationError } from "./errors/sdkvalidationerror.js";
 
 /**
  * A tool made available to the advisor sub-agent. Only OpenRouter server tools (e.g. openrouter:web_search) are supported; function tools are rejected because the advisor has no way to execute them. The advisor tool may not list itself.
@@ -15,6 +21,18 @@ export type AdvisorNestedTool = {
   additionalProperties?: { [k: string]: any } | undefined;
 };
 
+/** @internal */
+export const AdvisorNestedTool$inboundSchema: z.ZodType<
+  AdvisorNestedTool,
+  unknown
+> = collectExtraKeys$(
+  z.object({
+    parameters: z.record(z.string(), z.any()).optional(),
+    type: z.string(),
+  }).catchall(z.any()),
+  "additionalProperties",
+  true,
+);
 /** @internal */
 export type AdvisorNestedTool$Outbound = {
   parameters?: { [k: string]: any } | undefined;
@@ -44,5 +62,14 @@ export function advisorNestedToolToJSON(
 ): string {
   return JSON.stringify(
     AdvisorNestedTool$outboundSchema.parse(advisorNestedTool),
+  );
+}
+export function advisorNestedToolFromJSON(
+  jsonString: string,
+): SafeParseResult<AdvisorNestedTool, SDKValidationError> {
+  return safeParse(
+    jsonString,
+    (x) => AdvisorNestedTool$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'AdvisorNestedTool' from JSON`,
   );
 }

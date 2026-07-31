@@ -21,6 +21,11 @@ export const SearchQualityLevel = {
 export type SearchQualityLevel = OpenEnum<typeof SearchQualityLevel>;
 
 /** @internal */
+export const SearchQualityLevel$inboundSchema: z.ZodType<
+  SearchQualityLevel,
+  unknown
+> = openEnums.inboundSchema(SearchQualityLevel);
+/** @internal */
 export const SearchQualityLevel$outboundSchema: z.ZodType<
   string,
   SearchQualityLevel
