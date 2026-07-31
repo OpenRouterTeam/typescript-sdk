@@ -5,7 +5,13 @@
 
 import * as z from "zod/v4";
 import { remap as remap$ } from "../lib/primitives.js";
+import {
+  collectExtraKeys as collectExtraKeys$,
+  safeParse,
+} from "../lib/schemas.js";
 import { ClosedEnum } from "../types/enums.js";
+import { Result as SafeParseResult } from "../types/fp.js";
+import { SDKValidationError } from "./errors/sdkvalidationerror.js";
 
 export const CompactionItemType = {
   Compaction: "compaction",
@@ -23,10 +29,29 @@ export type CompactionItem = {
 };
 
 /** @internal */
-export const CompactionItemType$outboundSchema: z.ZodEnum<
+export const CompactionItemType$inboundSchema: z.ZodEnum<
   typeof CompactionItemType
 > = z.enum(CompactionItemType);
+/** @internal */
+export const CompactionItemType$outboundSchema: z.ZodEnum<
+  typeof CompactionItemType
+> = CompactionItemType$inboundSchema;
 
+/** @internal */
+export const CompactionItem$inboundSchema: z.ZodType<CompactionItem, unknown> =
+  collectExtraKeys$(
+    z.object({
+      encrypted_content: z.string(),
+      id: z.nullable(z.string()).optional(),
+      type: CompactionItemType$inboundSchema,
+    }).catchall(z.any()),
+    "additionalProperties",
+    true,
+  ).transform((v) => {
+    return remap$(v, {
+      "encrypted_content": "encryptedContent",
+    });
+  });
 /** @internal */
 export type CompactionItem$Outbound = {
   encrypted_content: string;
@@ -56,4 +81,13 @@ export const CompactionItem$outboundSchema: z.ZodType<
 
 export function compactionItemToJSON(compactionItem: CompactionItem): string {
   return JSON.stringify(CompactionItem$outboundSchema.parse(compactionItem));
+}
+export function compactionItemFromJSON(
+  jsonString: string,
+): SafeParseResult<CompactionItem, SDKValidationError> {
+  return safeParse(
+    jsonString,
+    (x) => CompactionItem$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'CompactionItem' from JSON`,
+  );
 }

@@ -4,11 +4,15 @@
  */
 
 import * as z from "zod/v4";
+import { safeParse } from "../lib/schemas.js";
 import { ClosedEnum } from "../types/enums.js";
+import { Result as SafeParseResult } from "../types/fp.js";
 import {
   AnthropicCacheControlTtl,
+  AnthropicCacheControlTtl$inboundSchema,
   AnthropicCacheControlTtl$outboundSchema,
 } from "./anthropiccachecontrolttl.js";
+import { SDKValidationError } from "./errors/sdkvalidationerror.js";
 
 export const AnthropicCacheControlDirectiveType = {
   Ephemeral: "ephemeral",
@@ -26,10 +30,22 @@ export type AnthropicCacheControlDirective = {
 };
 
 /** @internal */
-export const AnthropicCacheControlDirectiveType$outboundSchema: z.ZodEnum<
+export const AnthropicCacheControlDirectiveType$inboundSchema: z.ZodEnum<
   typeof AnthropicCacheControlDirectiveType
 > = z.enum(AnthropicCacheControlDirectiveType);
+/** @internal */
+export const AnthropicCacheControlDirectiveType$outboundSchema: z.ZodEnum<
+  typeof AnthropicCacheControlDirectiveType
+> = AnthropicCacheControlDirectiveType$inboundSchema;
 
+/** @internal */
+export const AnthropicCacheControlDirective$inboundSchema: z.ZodType<
+  AnthropicCacheControlDirective,
+  unknown
+> = z.object({
+  ttl: AnthropicCacheControlTtl$inboundSchema.optional(),
+  type: AnthropicCacheControlDirectiveType$inboundSchema,
+});
 /** @internal */
 export type AnthropicCacheControlDirective$Outbound = {
   ttl?: string | undefined;
@@ -52,5 +68,14 @@ export function anthropicCacheControlDirectiveToJSON(
     AnthropicCacheControlDirective$outboundSchema.parse(
       anthropicCacheControlDirective,
     ),
+  );
+}
+export function anthropicCacheControlDirectiveFromJSON(
+  jsonString: string,
+): SafeParseResult<AnthropicCacheControlDirective, SDKValidationError> {
+  return safeParse(
+    jsonString,
+    (x) => AnthropicCacheControlDirective$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'AnthropicCacheControlDirective' from JSON`,
   );
 }

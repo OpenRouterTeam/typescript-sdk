@@ -5,10 +5,19 @@
 
 import * as z from "zod/v4";
 import { remap as remap$ } from "../lib/primitives.js";
+import {
+  collectExtraKeys as collectExtraKeys$,
+  safeParse,
+} from "../lib/schemas.js";
+import * as discriminatedUnionTypes from "../types/discriminatedUnion.js";
+import { discriminatedUnion } from "../types/discriminatedUnion.js";
 import * as openEnums from "../types/enums.js";
 import { ClosedEnum, OpenEnum } from "../types/enums.js";
+import { Result as SafeParseResult } from "../types/fp.js";
+import { SDKValidationError } from "./errors/sdkvalidationerror.js";
 import {
   InputText,
+  InputText$inboundSchema,
   InputText$Outbound,
   InputText$outboundSchema,
 } from "./inputtext.js";
@@ -44,7 +53,8 @@ export type AgentMessageItemContentInputImage = {
 export type AgentMessageItemContentUnion =
   | InputText
   | AgentMessageItemContentInputImage
-  | ContentEncryptedContent;
+  | ContentEncryptedContent
+  | discriminatedUnionTypes.Unknown<"type">;
 
 export const TypeAgentMessage = {
   AgentMessage: "agent_message",
@@ -58,7 +68,10 @@ export type AgentMessageItem = {
   agent?: Agent | null | undefined;
   author: string;
   content: Array<
-    InputText | AgentMessageItemContentInputImage | ContentEncryptedContent
+    | InputText
+    | AgentMessageItemContentInputImage
+    | ContentEncryptedContent
+    | discriminatedUnionTypes.Unknown<"type">
   >;
   id?: string | null | undefined;
   recipient: string;
@@ -66,6 +79,18 @@ export type AgentMessageItem = {
   additionalProperties?: { [k: string]: any } | undefined;
 };
 
+/** @internal */
+export const Agent$inboundSchema: z.ZodType<Agent, unknown> = collectExtraKeys$(
+  z.object({
+    agent_name: z.string(),
+  }).catchall(z.any()),
+  "additionalProperties",
+  true,
+).transform((v) => {
+  return remap$(v, {
+    "agent_name": "agentName",
+  });
+});
 /** @internal */
 export type Agent$Outbound = {
   agent_name: string;
@@ -89,7 +114,32 @@ export const Agent$outboundSchema: z.ZodType<Agent$Outbound, Agent> = z.object({
 export function agentToJSON(agent: Agent): string {
   return JSON.stringify(Agent$outboundSchema.parse(agent));
 }
+export function agentFromJSON(
+  jsonString: string,
+): SafeParseResult<Agent, SDKValidationError> {
+  return safeParse(
+    jsonString,
+    (x) => Agent$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'Agent' from JSON`,
+  );
+}
 
+/** @internal */
+export const ContentEncryptedContent$inboundSchema: z.ZodType<
+  ContentEncryptedContent,
+  unknown
+> = collectExtraKeys$(
+  z.object({
+    encrypted_content: z.string(),
+    type: z.literal("encrypted_content"),
+  }).catchall(z.any()),
+  "additionalProperties",
+  true,
+).transform((v) => {
+  return remap$(v, {
+    "encrypted_content": "encryptedContent",
+  });
+});
 /** @internal */
 export type ContentEncryptedContent$Outbound = {
   encrypted_content: string;
@@ -122,13 +172,40 @@ export function contentEncryptedContentToJSON(
     ContentEncryptedContent$outboundSchema.parse(contentEncryptedContent),
   );
 }
+export function contentEncryptedContentFromJSON(
+  jsonString: string,
+): SafeParseResult<ContentEncryptedContent, SDKValidationError> {
+  return safeParse(
+    jsonString,
+    (x) => ContentEncryptedContent$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'ContentEncryptedContent' from JSON`,
+  );
+}
 
+/** @internal */
+export const AgentMessageItemDetail$inboundSchema: z.ZodType<
+  AgentMessageItemDetail,
+  unknown
+> = openEnums.inboundSchema(AgentMessageItemDetail);
 /** @internal */
 export const AgentMessageItemDetail$outboundSchema: z.ZodType<
   string,
   AgentMessageItemDetail
 > = openEnums.outboundSchema(AgentMessageItemDetail);
 
+/** @internal */
+export const AgentMessageItemContentInputImage$inboundSchema: z.ZodType<
+  AgentMessageItemContentInputImage,
+  unknown
+> = z.object({
+  detail: AgentMessageItemDetail$inboundSchema,
+  image_url: z.nullable(z.string()).optional(),
+  type: z.literal("input_image"),
+}).transform((v) => {
+  return remap$(v, {
+    "image_url": "imageUrl",
+  });
+});
 /** @internal */
 export type AgentMessageItemContentInputImage$Outbound = {
   detail: string;
@@ -159,7 +236,25 @@ export function agentMessageItemContentInputImageToJSON(
     ),
   );
 }
+export function agentMessageItemContentInputImageFromJSON(
+  jsonString: string,
+): SafeParseResult<AgentMessageItemContentInputImage, SDKValidationError> {
+  return safeParse(
+    jsonString,
+    (x) => AgentMessageItemContentInputImage$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'AgentMessageItemContentInputImage' from JSON`,
+  );
+}
 
+/** @internal */
+export const AgentMessageItemContentUnion$inboundSchema: z.ZodType<
+  AgentMessageItemContentUnion,
+  unknown
+> = discriminatedUnion("type", {
+  input_text: InputText$inboundSchema,
+  input_image: z.lazy(() => AgentMessageItemContentInputImage$inboundSchema),
+  encrypted_content: z.lazy(() => ContentEncryptedContent$inboundSchema),
+});
 /** @internal */
 export type AgentMessageItemContentUnion$Outbound =
   | InputText$Outbound
@@ -185,12 +280,47 @@ export function agentMessageItemContentUnionToJSON(
     ),
   );
 }
+export function agentMessageItemContentUnionFromJSON(
+  jsonString: string,
+): SafeParseResult<AgentMessageItemContentUnion, SDKValidationError> {
+  return safeParse(
+    jsonString,
+    (x) => AgentMessageItemContentUnion$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'AgentMessageItemContentUnion' from JSON`,
+  );
+}
 
+/** @internal */
+export const TypeAgentMessage$inboundSchema: z.ZodEnum<
+  typeof TypeAgentMessage
+> = z.enum(TypeAgentMessage);
 /** @internal */
 export const TypeAgentMessage$outboundSchema: z.ZodEnum<
   typeof TypeAgentMessage
-> = z.enum(TypeAgentMessage);
+> = TypeAgentMessage$inboundSchema;
 
+/** @internal */
+export const AgentMessageItem$inboundSchema: z.ZodType<
+  AgentMessageItem,
+  unknown
+> = collectExtraKeys$(
+  z.object({
+    agent: z.nullable(z.lazy(() => Agent$inboundSchema)).optional(),
+    author: z.string(),
+    content: z.array(discriminatedUnion("type", {
+      input_text: InputText$inboundSchema,
+      input_image: z.lazy(() =>
+        AgentMessageItemContentInputImage$inboundSchema
+      ),
+      encrypted_content: z.lazy(() => ContentEncryptedContent$inboundSchema),
+    })),
+    id: z.nullable(z.string()).optional(),
+    recipient: z.string(),
+    type: TypeAgentMessage$inboundSchema,
+  }).catchall(z.any()),
+  "additionalProperties",
+  true,
+);
 /** @internal */
 export type AgentMessageItem$Outbound = {
   agent?: Agent$Outbound | null | undefined;
@@ -238,5 +368,14 @@ export function agentMessageItemToJSON(
 ): string {
   return JSON.stringify(
     AgentMessageItem$outboundSchema.parse(agentMessageItem),
+  );
+}
+export function agentMessageItemFromJSON(
+  jsonString: string,
+): SafeParseResult<AgentMessageItem, SDKValidationError> {
+  return safeParse(
+    jsonString,
+    (x) => AgentMessageItem$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'AgentMessageItem' from JSON`,
   );
 }

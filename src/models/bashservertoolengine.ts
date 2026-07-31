@@ -21,6 +21,11 @@ export const BashServerToolEngine = {
 export type BashServerToolEngine = OpenEnum<typeof BashServerToolEngine>;
 
 /** @internal */
+export const BashServerToolEngine$inboundSchema: z.ZodType<
+  BashServerToolEngine,
+  unknown
+> = openEnums.inboundSchema(BashServerToolEngine);
+/** @internal */
 export const BashServerToolEngine$outboundSchema: z.ZodType<
   string,
   BashServerToolEngine

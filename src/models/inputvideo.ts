@@ -5,6 +5,9 @@
 
 import * as z from "zod/v4";
 import { remap as remap$ } from "../lib/primitives.js";
+import { safeParse } from "../lib/schemas.js";
+import { Result as SafeParseResult } from "../types/fp.js";
+import { SDKValidationError } from "./errors/sdkvalidationerror.js";
 
 /**
  * Video input content item
@@ -17,6 +20,16 @@ export type InputVideo = {
   videoUrl: string;
 };
 
+/** @internal */
+export const InputVideo$inboundSchema: z.ZodType<InputVideo, unknown> = z
+  .object({
+    type: z.literal("input_video"),
+    video_url: z.string(),
+  }).transform((v) => {
+    return remap$(v, {
+      "video_url": "videoUrl",
+    });
+  });
 /** @internal */
 export type InputVideo$Outbound = {
   type: "input_video";
@@ -38,4 +51,13 @@ export const InputVideo$outboundSchema: z.ZodType<
 
 export function inputVideoToJSON(inputVideo: InputVideo): string {
   return JSON.stringify(InputVideo$outboundSchema.parse(inputVideo));
+}
+export function inputVideoFromJSON(
+  jsonString: string,
+): SafeParseResult<InputVideo, SDKValidationError> {
+  return safeParse(
+    jsonString,
+    (x) => InputVideo$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'InputVideo' from JSON`,
+  );
 }
