@@ -58,6 +58,14 @@ export type OutputFunctionCallItem = {
     | OutputFunctionCallItemStatusInProgress
     | undefined;
   type: OutputFunctionCallItemType;
+  /**
+   * String id that matches the `call_id` of the `openrouter:subagent` server tool call. Present only if the tool call originates from a subagent spawned by the `openrouter:subagent` server tool.
+   */
+  subagentId?: string | undefined;
+  /**
+   * The subagent's output items produced up to this call (messages, function calls, reasoning, ...). Replay them with the function call (and its output) so the subagent can be reconstructed statelessly on the next request. Present only if the tool call originates from a subagent spawned by the `openrouter:subagent` server tool.
+   */
+  subagentItems?: Array<{ [k: string]: any }> | undefined;
 };
 
 /** @internal */
@@ -156,9 +164,13 @@ export const OutputFunctionCallItem$inboundSchema: z.ZodType<
     OutputFunctionCallItemStatusInProgress$inboundSchema,
   ]).optional(),
   type: OutputFunctionCallItemType$inboundSchema,
+  subagent_id: z.string().optional(),
+  subagent_items: z.array(z.record(z.string(), z.any())).optional(),
 }).transform((v) => {
   return remap$(v, {
     "call_id": "callId",
+    "subagent_id": "subagentId",
+    "subagent_items": "subagentItems",
   });
 });
 /** @internal */
@@ -170,6 +182,8 @@ export type OutputFunctionCallItem$Outbound = {
   namespace?: string | undefined;
   status?: string | string | string | undefined;
   type: string;
+  subagent_id?: string | undefined;
+  subagent_items?: Array<{ [k: string]: any }> | undefined;
 };
 
 /** @internal */
@@ -188,9 +202,13 @@ export const OutputFunctionCallItem$outboundSchema: z.ZodType<
     OutputFunctionCallItemStatusInProgress$outboundSchema,
   ]).optional(),
   type: OutputFunctionCallItemType$outboundSchema,
+  subagentId: z.string().optional(),
+  subagentItems: z.array(z.record(z.string(), z.any())).optional(),
 }).transform((v) => {
   return remap$(v, {
     callId: "call_id",
+    subagentId: "subagent_id",
+    subagentItems: "subagent_items",
   });
 });
 
