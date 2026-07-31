@@ -4,9 +4,13 @@
  */
 
 import * as z from "zod/v4";
+import { safeParse } from "../lib/schemas.js";
 import { ClosedEnum } from "../types/enums.js";
+import { Result as SafeParseResult } from "../types/fp.js";
+import { SDKValidationError } from "./errors/sdkvalidationerror.js";
 import {
   SearchModelsServerToolConfig,
+  SearchModelsServerToolConfig$inboundSchema,
   SearchModelsServerToolConfig$Outbound,
   SearchModelsServerToolConfig$outboundSchema,
 } from "./searchmodelsservertoolconfig.js";
@@ -30,10 +34,22 @@ export type SearchModelsServerToolOpenRouter = {
 };
 
 /** @internal */
-export const SearchModelsServerToolOpenRouterType$outboundSchema: z.ZodEnum<
+export const SearchModelsServerToolOpenRouterType$inboundSchema: z.ZodEnum<
   typeof SearchModelsServerToolOpenRouterType
 > = z.enum(SearchModelsServerToolOpenRouterType);
+/** @internal */
+export const SearchModelsServerToolOpenRouterType$outboundSchema: z.ZodEnum<
+  typeof SearchModelsServerToolOpenRouterType
+> = SearchModelsServerToolOpenRouterType$inboundSchema;
 
+/** @internal */
+export const SearchModelsServerToolOpenRouter$inboundSchema: z.ZodType<
+  SearchModelsServerToolOpenRouter,
+  unknown
+> = z.object({
+  parameters: SearchModelsServerToolConfig$inboundSchema.optional(),
+  type: SearchModelsServerToolOpenRouterType$inboundSchema,
+});
 /** @internal */
 export type SearchModelsServerToolOpenRouter$Outbound = {
   parameters?: SearchModelsServerToolConfig$Outbound | undefined;
@@ -56,5 +72,14 @@ export function searchModelsServerToolOpenRouterToJSON(
     SearchModelsServerToolOpenRouter$outboundSchema.parse(
       searchModelsServerToolOpenRouter,
     ),
+  );
+}
+export function searchModelsServerToolOpenRouterFromJSON(
+  jsonString: string,
+): SafeParseResult<SearchModelsServerToolOpenRouter, SDKValidationError> {
+  return safeParse(
+    jsonString,
+    (x) => SearchModelsServerToolOpenRouter$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'SearchModelsServerToolOpenRouter' from JSON`,
   );
 }

@@ -4,12 +4,20 @@
  */
 
 import * as z from "zod/v4";
+import { safeParse } from "../lib/schemas.js";
+import { Result as SafeParseResult } from "../types/fp.js";
+import { SDKValidationError } from "./errors/sdkvalidationerror.js";
 
 /**
  * Configuration for the openrouter:files server tool
  */
 export type FilesServerToolConfig = {};
 
+/** @internal */
+export const FilesServerToolConfig$inboundSchema: z.ZodType<
+  FilesServerToolConfig,
+  unknown
+> = z.object({});
 /** @internal */
 export type FilesServerToolConfig$Outbound = {};
 
@@ -24,5 +32,14 @@ export function filesServerToolConfigToJSON(
 ): string {
   return JSON.stringify(
     FilesServerToolConfig$outboundSchema.parse(filesServerToolConfig),
+  );
+}
+export function filesServerToolConfigFromJSON(
+  jsonString: string,
+): SafeParseResult<FilesServerToolConfig, SDKValidationError> {
+  return safeParse(
+    jsonString,
+    (x) => FilesServerToolConfig$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'FilesServerToolConfig' from JSON`,
   );
 }

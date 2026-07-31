@@ -4,24 +4,40 @@
  */
 
 import * as z from "zod/v4";
+import { safeParse } from "../lib/schemas.js";
+import * as discriminatedUnionTypes from "../types/discriminatedUnion.js";
+import { discriminatedUnion } from "../types/discriminatedUnion.js";
+import { Result as SafeParseResult } from "../types/fp.js";
 import {
   ContainerAutoEnvironment,
+  ContainerAutoEnvironment$inboundSchema,
   ContainerAutoEnvironment$Outbound,
   ContainerAutoEnvironment$outboundSchema,
 } from "./containerautoenvironment.js";
 import {
   ContainerReferenceEnvironment,
+  ContainerReferenceEnvironment$inboundSchema,
   ContainerReferenceEnvironment$Outbound,
   ContainerReferenceEnvironment$outboundSchema,
 } from "./containerreferenceenvironment.js";
+import { SDKValidationError } from "./errors/sdkvalidationerror.js";
 
 /**
  * Execution environment for the bash server tool.
  */
 export type BashServerToolEnvironment =
   | ContainerAutoEnvironment
-  | ContainerReferenceEnvironment;
+  | ContainerReferenceEnvironment
+  | discriminatedUnionTypes.Unknown<"type">;
 
+/** @internal */
+export const BashServerToolEnvironment$inboundSchema: z.ZodType<
+  BashServerToolEnvironment,
+  unknown
+> = discriminatedUnion("type", {
+  container_auto: ContainerAutoEnvironment$inboundSchema,
+  container_reference: ContainerReferenceEnvironment$inboundSchema,
+});
 /** @internal */
 export type BashServerToolEnvironment$Outbound =
   | ContainerAutoEnvironment$Outbound
@@ -41,5 +57,14 @@ export function bashServerToolEnvironmentToJSON(
 ): string {
   return JSON.stringify(
     BashServerToolEnvironment$outboundSchema.parse(bashServerToolEnvironment),
+  );
+}
+export function bashServerToolEnvironmentFromJSON(
+  jsonString: string,
+): SafeParseResult<BashServerToolEnvironment, SDKValidationError> {
+  return safeParse(
+    jsonString,
+    (x) => BashServerToolEnvironment$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'BashServerToolEnvironment' from JSON`,
   );
 }

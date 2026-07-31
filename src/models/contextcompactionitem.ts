@@ -5,7 +5,13 @@
 
 import * as z from "zod/v4";
 import { remap as remap$ } from "../lib/primitives.js";
+import {
+  collectExtraKeys as collectExtraKeys$,
+  safeParse,
+} from "../lib/schemas.js";
 import { ClosedEnum } from "../types/enums.js";
+import { Result as SafeParseResult } from "../types/fp.js";
+import { SDKValidationError } from "./errors/sdkvalidationerror.js";
 
 export const ContextCompactionItemType = {
   ContextCompaction: "context_compaction",
@@ -25,10 +31,31 @@ export type ContextCompactionItem = {
 };
 
 /** @internal */
-export const ContextCompactionItemType$outboundSchema: z.ZodEnum<
+export const ContextCompactionItemType$inboundSchema: z.ZodEnum<
   typeof ContextCompactionItemType
 > = z.enum(ContextCompactionItemType);
+/** @internal */
+export const ContextCompactionItemType$outboundSchema: z.ZodEnum<
+  typeof ContextCompactionItemType
+> = ContextCompactionItemType$inboundSchema;
 
+/** @internal */
+export const ContextCompactionItem$inboundSchema: z.ZodType<
+  ContextCompactionItem,
+  unknown
+> = collectExtraKeys$(
+  z.object({
+    encrypted_content: z.nullable(z.string()).optional(),
+    id: z.nullable(z.string()).optional(),
+    type: ContextCompactionItemType$inboundSchema,
+  }).catchall(z.any()),
+  "additionalProperties",
+  true,
+).transform((v) => {
+  return remap$(v, {
+    "encrypted_content": "encryptedContent",
+  });
+});
 /** @internal */
 export type ContextCompactionItem$Outbound = {
   encrypted_content?: string | null | undefined;
@@ -61,5 +88,14 @@ export function contextCompactionItemToJSON(
 ): string {
   return JSON.stringify(
     ContextCompactionItem$outboundSchema.parse(contextCompactionItem),
+  );
+}
+export function contextCompactionItemFromJSON(
+  jsonString: string,
+): SafeParseResult<ContextCompactionItem, SDKValidationError> {
+  return safeParse(
+    jsonString,
+    (x) => ContextCompactionItem$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'ContextCompactionItem' from JSON`,
   );
 }
