@@ -29,6 +29,9 @@ export type ChatStreamChoice = {
    * Delta changes in streaming response
    */
   delta: ChatStreamDelta;
+  /**
+   * Normalized finish reason. `pause_turn` is an OpenRouter extension: the provider paused a long-running server-tool turn awaiting continuation, so the partial output is not a completed answer.
+   */
   finishReason: ChatFinishReasonEnum | null;
   /**
    * Choice index
