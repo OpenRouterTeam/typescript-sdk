@@ -21,6 +21,10 @@ import {
  */
 export type SubagentServerToolConfig = {
   /**
+   * When true, the subagent inherits every client function defined in the request top-level `tools` list. When the child calls one, OpenRouter suspends the subagent and returns a normal outer `function_call` item attributed to it via `subagent_id`.
+   */
+  inheritClientTools?: boolean | undefined;
+  /**
    * System instructions for the subagent. When omitted, the subagent responds with no system prompt of its own.
    */
   instructions?: string | undefined;
@@ -56,6 +60,7 @@ export type SubagentServerToolConfig = {
 
 /** @internal */
 export type SubagentServerToolConfig$Outbound = {
+  inherit_client_tools?: boolean | undefined;
   instructions?: string | undefined;
   max_completion_tokens?: number | undefined;
   max_tool_calls?: number | undefined;
@@ -71,6 +76,7 @@ export const SubagentServerToolConfig$outboundSchema: z.ZodType<
   SubagentServerToolConfig$Outbound,
   SubagentServerToolConfig
 > = z.object({
+  inheritClientTools: z.boolean().optional(),
   instructions: z.string().optional(),
   maxCompletionTokens: z.int().optional(),
   maxToolCalls: z.int().optional(),
@@ -81,6 +87,7 @@ export const SubagentServerToolConfig$outboundSchema: z.ZodType<
   tools: z.array(SubagentNestedTool$outboundSchema).optional(),
 }).transform((v) => {
   return remap$(v, {
+    inheritClientTools: "inherit_client_tools",
     maxCompletionTokens: "max_completion_tokens",
     maxToolCalls: "max_tool_calls",
   });
