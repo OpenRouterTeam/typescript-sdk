@@ -5,6 +5,9 @@
 
 import * as z from "zod/v4";
 import { remap as remap$ } from "../lib/primitives.js";
+import { safeParse } from "../lib/schemas.js";
+import { Result as SafeParseResult } from "../types/fp.js";
+import { SDKValidationError } from "./errors/sdkvalidationerror.js";
 
 /**
  * Configuration for the openrouter:experimental__search_models server tool
@@ -16,6 +19,17 @@ export type SearchModelsServerToolConfig = {
   maxResults?: number | undefined;
 };
 
+/** @internal */
+export const SearchModelsServerToolConfig$inboundSchema: z.ZodType<
+  SearchModelsServerToolConfig,
+  unknown
+> = z.object({
+  max_results: z.int().optional(),
+}).transform((v) => {
+  return remap$(v, {
+    "max_results": "maxResults",
+  });
+});
 /** @internal */
 export type SearchModelsServerToolConfig$Outbound = {
   max_results?: number | undefined;
@@ -40,5 +54,14 @@ export function searchModelsServerToolConfigToJSON(
     SearchModelsServerToolConfig$outboundSchema.parse(
       searchModelsServerToolConfig,
     ),
+  );
+}
+export function searchModelsServerToolConfigFromJSON(
+  jsonString: string,
+): SafeParseResult<SearchModelsServerToolConfig, SDKValidationError> {
+  return safeParse(
+    jsonString,
+    (x) => SearchModelsServerToolConfig$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'SearchModelsServerToolConfig' from JSON`,
   );
 }

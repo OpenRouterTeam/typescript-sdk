@@ -5,25 +5,34 @@
 
 import * as z from "zod/v4";
 import { remap as remap$ } from "../lib/primitives.js";
+import { safeParse } from "../lib/schemas.js";
+import * as discriminatedUnionTypes from "../types/discriminatedUnion.js";
+import { discriminatedUnion } from "../types/discriminatedUnion.js";
 import * as openEnums from "../types/enums.js";
 import { ClosedEnum, OpenEnum } from "../types/enums.js";
+import { Result as SafeParseResult } from "../types/fp.js";
+import { SDKValidationError } from "./errors/sdkvalidationerror.js";
 import {
   InputAudio,
+  InputAudio$inboundSchema,
   InputAudio$Outbound,
   InputAudio$outboundSchema,
 } from "./inputaudio.js";
 import {
   InputFile,
+  InputFile$inboundSchema,
   InputFile$Outbound,
   InputFile$outboundSchema,
 } from "./inputfile.js";
 import {
   InputText,
+  InputText$inboundSchema,
   InputText$Outbound,
   InputText$outboundSchema,
 } from "./inputtext.js";
 import {
   InputVideo,
+  InputVideo$inboundSchema,
   InputVideo$Outbound,
   InputVideo$outboundSchema,
 } from "./inputvideo.js";
@@ -50,7 +59,8 @@ export type InputMessageItemContentUnion =
   | InputMessageItemContentInputImage
   | InputFile
   | InputAudio
-  | InputVideo;
+  | InputVideo
+  | discriminatedUnionTypes.Unknown<"type">;
 
 export const InputMessageItemRoleDeveloper = {
   Developer: "developer",
@@ -93,6 +103,7 @@ export type InputMessageItem = {
       | InputFile
       | InputAudio
       | InputVideo
+      | discriminatedUnionTypes.Unknown<"type">
     >
     | null
     | undefined;
@@ -105,11 +116,29 @@ export type InputMessageItem = {
 };
 
 /** @internal */
+export const InputMessageItemDetail$inboundSchema: z.ZodType<
+  InputMessageItemDetail,
+  unknown
+> = openEnums.inboundSchema(InputMessageItemDetail);
+/** @internal */
 export const InputMessageItemDetail$outboundSchema: z.ZodType<
   string,
   InputMessageItemDetail
 > = openEnums.outboundSchema(InputMessageItemDetail);
 
+/** @internal */
+export const InputMessageItemContentInputImage$inboundSchema: z.ZodType<
+  InputMessageItemContentInputImage,
+  unknown
+> = z.object({
+  detail: InputMessageItemDetail$inboundSchema,
+  image_url: z.nullable(z.string()).optional(),
+  type: z.literal("input_image"),
+}).transform((v) => {
+  return remap$(v, {
+    "image_url": "imageUrl",
+  });
+});
 /** @internal */
 export type InputMessageItemContentInputImage$Outbound = {
   detail: string;
@@ -140,7 +169,27 @@ export function inputMessageItemContentInputImageToJSON(
     ),
   );
 }
+export function inputMessageItemContentInputImageFromJSON(
+  jsonString: string,
+): SafeParseResult<InputMessageItemContentInputImage, SDKValidationError> {
+  return safeParse(
+    jsonString,
+    (x) => InputMessageItemContentInputImage$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'InputMessageItemContentInputImage' from JSON`,
+  );
+}
 
+/** @internal */
+export const InputMessageItemContentUnion$inboundSchema: z.ZodType<
+  InputMessageItemContentUnion,
+  unknown
+> = discriminatedUnion("type", {
+  input_text: InputText$inboundSchema,
+  input_image: z.lazy(() => InputMessageItemContentInputImage$inboundSchema),
+  input_file: InputFile$inboundSchema,
+  input_audio: InputAudio$inboundSchema,
+  input_video: InputVideo$inboundSchema,
+});
 /** @internal */
 export type InputMessageItemContentUnion$Outbound =
   | InputText$Outbound
@@ -170,22 +219,52 @@ export function inputMessageItemContentUnionToJSON(
     ),
   );
 }
+export function inputMessageItemContentUnionFromJSON(
+  jsonString: string,
+): SafeParseResult<InputMessageItemContentUnion, SDKValidationError> {
+  return safeParse(
+    jsonString,
+    (x) => InputMessageItemContentUnion$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'InputMessageItemContentUnion' from JSON`,
+  );
+}
 
+/** @internal */
+export const InputMessageItemRoleDeveloper$inboundSchema: z.ZodEnum<
+  typeof InputMessageItemRoleDeveloper
+> = z.enum(InputMessageItemRoleDeveloper);
 /** @internal */
 export const InputMessageItemRoleDeveloper$outboundSchema: z.ZodEnum<
   typeof InputMessageItemRoleDeveloper
-> = z.enum(InputMessageItemRoleDeveloper);
+> = InputMessageItemRoleDeveloper$inboundSchema;
 
+/** @internal */
+export const InputMessageItemRoleSystem$inboundSchema: z.ZodEnum<
+  typeof InputMessageItemRoleSystem
+> = z.enum(InputMessageItemRoleSystem);
 /** @internal */
 export const InputMessageItemRoleSystem$outboundSchema: z.ZodEnum<
   typeof InputMessageItemRoleSystem
-> = z.enum(InputMessageItemRoleSystem);
+> = InputMessageItemRoleSystem$inboundSchema;
 
+/** @internal */
+export const InputMessageItemRoleUser$inboundSchema: z.ZodEnum<
+  typeof InputMessageItemRoleUser
+> = z.enum(InputMessageItemRoleUser);
 /** @internal */
 export const InputMessageItemRoleUser$outboundSchema: z.ZodEnum<
   typeof InputMessageItemRoleUser
-> = z.enum(InputMessageItemRoleUser);
+> = InputMessageItemRoleUser$inboundSchema;
 
+/** @internal */
+export const InputMessageItemRoleUnion$inboundSchema: z.ZodType<
+  InputMessageItemRoleUnion,
+  unknown
+> = z.union([
+  InputMessageItemRoleUser$inboundSchema,
+  InputMessageItemRoleSystem$inboundSchema,
+  InputMessageItemRoleDeveloper$inboundSchema,
+]);
 /** @internal */
 export type InputMessageItemRoleUnion$Outbound = string | string | string;
 
@@ -206,12 +285,45 @@ export function inputMessageItemRoleUnionToJSON(
     InputMessageItemRoleUnion$outboundSchema.parse(inputMessageItemRoleUnion),
   );
 }
+export function inputMessageItemRoleUnionFromJSON(
+  jsonString: string,
+): SafeParseResult<InputMessageItemRoleUnion, SDKValidationError> {
+  return safeParse(
+    jsonString,
+    (x) => InputMessageItemRoleUnion$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'InputMessageItemRoleUnion' from JSON`,
+  );
+}
 
+/** @internal */
+export const InputMessageItemTypeMessage$inboundSchema: z.ZodEnum<
+  typeof InputMessageItemTypeMessage
+> = z.enum(InputMessageItemTypeMessage);
 /** @internal */
 export const InputMessageItemTypeMessage$outboundSchema: z.ZodEnum<
   typeof InputMessageItemTypeMessage
-> = z.enum(InputMessageItemTypeMessage);
+> = InputMessageItemTypeMessage$inboundSchema;
 
+/** @internal */
+export const InputMessageItem$inboundSchema: z.ZodType<
+  InputMessageItem,
+  unknown
+> = z.object({
+  content: z.nullable(z.array(discriminatedUnion("type", {
+    input_text: InputText$inboundSchema,
+    input_image: z.lazy(() => InputMessageItemContentInputImage$inboundSchema),
+    input_file: InputFile$inboundSchema,
+    input_audio: InputAudio$inboundSchema,
+    input_video: InputVideo$inboundSchema,
+  }))).optional(),
+  id: z.string().optional(),
+  role: z.union([
+    InputMessageItemRoleUser$inboundSchema,
+    InputMessageItemRoleSystem$inboundSchema,
+    InputMessageItemRoleDeveloper$inboundSchema,
+  ]),
+  type: InputMessageItemTypeMessage$inboundSchema.optional(),
+});
 /** @internal */
 export type InputMessageItem$Outbound = {
   content?:
@@ -257,5 +369,14 @@ export function inputMessageItemToJSON(
 ): string {
   return JSON.stringify(
     InputMessageItem$outboundSchema.parse(inputMessageItem),
+  );
+}
+export function inputMessageItemFromJSON(
+  jsonString: string,
+): SafeParseResult<InputMessageItem, SDKValidationError> {
+  return safeParse(
+    jsonString,
+    (x) => InputMessageItem$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'InputMessageItem' from JSON`,
   );
 }

@@ -4,9 +4,17 @@
  */
 
 import * as z from "zod/v4";
+import { safeParse } from "../lib/schemas.js";
+import { Result as SafeParseResult } from "../types/fp.js";
+import { SDKValidationError } from "./errors/sdkvalidationerror.js";
 
 export type ImageGenerationServerToolConfigUnion = string | number | Array<any>;
 
+/** @internal */
+export const ImageGenerationServerToolConfigUnion$inboundSchema: z.ZodType<
+  ImageGenerationServerToolConfigUnion,
+  unknown
+> = z.union([z.string(), z.number(), z.array(z.any())]);
 /** @internal */
 export type ImageGenerationServerToolConfigUnion$Outbound =
   | string
@@ -26,5 +34,15 @@ export function imageGenerationServerToolConfigUnionToJSON(
     ImageGenerationServerToolConfigUnion$outboundSchema.parse(
       imageGenerationServerToolConfigUnion,
     ),
+  );
+}
+export function imageGenerationServerToolConfigUnionFromJSON(
+  jsonString: string,
+): SafeParseResult<ImageGenerationServerToolConfigUnion, SDKValidationError> {
+  return safeParse(
+    jsonString,
+    (x) =>
+      ImageGenerationServerToolConfigUnion$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'ImageGenerationServerToolConfigUnion' from JSON`,
   );
 }
