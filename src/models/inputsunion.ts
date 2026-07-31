@@ -390,7 +390,7 @@ export type InputsMessage = {
     | InputsStatusIncomplete1
     | InputsStatusInProgress1
     | undefined;
-  type?: InputsTypeMessage | undefined;
+  type: InputsTypeMessage;
 };
 
 export type InputsUnion1 =
@@ -400,6 +400,7 @@ export type InputsUnion1 =
   | McpApprovalRequestItem
   | McpCallItem
   | ApplyPatchCallItem
+  | InputsMessage
   | OutputFunctionCallItem
   | OutputCustomToolCallItem
   | OutputFileSearchCallItem
@@ -411,7 +412,6 @@ export type InputsUnion1 =
   | ReasoningItem
   | FunctionCallOutputItem
   | ApplyPatchCallOutputItem
-  | InputsMessage
   | InputsReasoning
   | OutputWebSearchCallItem
   | OutputImageGenerationCallItem
@@ -456,6 +456,7 @@ export type InputsUnion =
     | McpApprovalRequestItem
     | McpCallItem
     | ApplyPatchCallItem
+    | InputsMessage
     | OutputFunctionCallItem
     | OutputCustomToolCallItem
     | OutputFileSearchCallItem
@@ -467,7 +468,6 @@ export type InputsUnion =
     | ReasoningItem
     | FunctionCallOutputItem
     | ApplyPatchCallOutputItem
-    | InputsMessage
     | InputsReasoning
     | OutputWebSearchCallItem
     | OutputImageGenerationCallItem
@@ -744,7 +744,7 @@ export const InputsMessage$outboundSchema: z.ZodType<
     InputsStatusIncomplete1$outboundSchema,
     InputsStatusInProgress1$outboundSchema,
   ]).optional(),
-  type: InputsTypeMessage$outboundSchema.default("message"),
+  type: InputsTypeMessage$outboundSchema,
 });
 
 export function inputsMessageToJSON(inputsMessage: InputsMessage): string {
@@ -759,6 +759,7 @@ export type InputsUnion1$Outbound =
   | McpApprovalRequestItem$Outbound
   | McpCallItem$Outbound
   | ApplyPatchCallItem$Outbound
+  | InputsMessage$Outbound
   | OutputFunctionCallItem$Outbound
   | OutputCustomToolCallItem$Outbound
   | OutputFileSearchCallItem$Outbound
@@ -770,7 +771,6 @@ export type InputsUnion1$Outbound =
   | ReasoningItem$Outbound
   | FunctionCallOutputItem$Outbound
   | ApplyPatchCallOutputItem$Outbound
-  | InputsMessage$Outbound
   | InputsReasoning$Outbound
   | OutputWebSearchCallItem$Outbound
   | OutputImageGenerationCallItem$Outbound
@@ -814,6 +814,7 @@ export const InputsUnion1$outboundSchema: z.ZodType<
   McpApprovalRequestItem$outboundSchema,
   McpCallItem$outboundSchema,
   ApplyPatchCallItem$outboundSchema,
+  z.lazy(() => InputsMessage$outboundSchema),
   OutputFunctionCallItem$outboundSchema,
   OutputCustomToolCallItem$outboundSchema,
   OutputFileSearchCallItem$outboundSchema,
@@ -825,7 +826,6 @@ export const InputsUnion1$outboundSchema: z.ZodType<
   ReasoningItem$outboundSchema,
   FunctionCallOutputItem$outboundSchema,
   ApplyPatchCallOutputItem$outboundSchema,
-  z.lazy(() => InputsMessage$outboundSchema),
   z.lazy(() => InputsReasoning$outboundSchema),
   OutputWebSearchCallItem$outboundSchema,
   OutputImageGenerationCallItem$outboundSchema,
@@ -873,6 +873,7 @@ export type InputsUnion$Outbound =
     | McpApprovalRequestItem$Outbound
     | McpCallItem$Outbound
     | ApplyPatchCallItem$Outbound
+    | InputsMessage$Outbound
     | OutputFunctionCallItem$Outbound
     | OutputCustomToolCallItem$Outbound
     | OutputFileSearchCallItem$Outbound
@@ -884,7 +885,6 @@ export type InputsUnion$Outbound =
     | ReasoningItem$Outbound
     | FunctionCallOutputItem$Outbound
     | ApplyPatchCallOutputItem$Outbound
-    | InputsMessage$Outbound
     | InputsReasoning$Outbound
     | OutputWebSearchCallItem$Outbound
     | OutputImageGenerationCallItem$Outbound
@@ -932,6 +932,7 @@ export const InputsUnion$outboundSchema: z.ZodType<
       McpApprovalRequestItem$outboundSchema,
       McpCallItem$outboundSchema,
       ApplyPatchCallItem$outboundSchema,
+      z.lazy(() => InputsMessage$outboundSchema),
       OutputFunctionCallItem$outboundSchema,
       OutputCustomToolCallItem$outboundSchema,
       OutputFileSearchCallItem$outboundSchema,
@@ -943,7 +944,6 @@ export const InputsUnion$outboundSchema: z.ZodType<
       ReasoningItem$outboundSchema,
       FunctionCallOutputItem$outboundSchema,
       ApplyPatchCallOutputItem$outboundSchema,
-      z.lazy(() => InputsMessage$outboundSchema),
       z.lazy(() => InputsReasoning$outboundSchema),
       OutputWebSearchCallItem$outboundSchema,
       OutputImageGenerationCallItem$outboundSchema,
