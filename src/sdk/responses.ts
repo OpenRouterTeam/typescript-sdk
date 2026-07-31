@@ -3,8 +3,10 @@
  * @generated-id: fc4b535757c5
  */
 
+import { responsesCompact } from "../funcs/responsesCompact.js";
 import { responsesSend } from "../funcs/responsesSend.js";
 import { ClientSDK, RequestOptions } from "../lib/sdks.js";
+import * as models from "../models/index.js";
 import * as operations from "../models/operations/index.js";
 import { unwrapAsync } from "../types/fp.js";
 
@@ -36,6 +38,23 @@ export class Responses extends ClientSDK {
     options?: RequestOptions,
   ): Promise<operations.CreateResponsesResponse> {
     return unwrapAsync(responsesSend(
+      this,
+      request,
+      options,
+    ));
+  }
+
+  /**
+   * Compact a conversation
+   *
+   * @remarks
+   * Rewrites a conversation into a smaller context window, returning the canonical next context window: echoed input items followed by a `compaction` item that encodes the compacted history. Pass the returned `output` as the `input` of your next `/responses` request. Currently supported on OpenAI and Azure endpoints only; OpenRouter routes follow-up requests carrying the compaction item back to the producing endpoint.
+   */
+  async compact(
+    request: operations.CreateResponsesCompactRequest,
+    options?: RequestOptions,
+  ): Promise<models.CompactResponse> {
+    return unwrapAsync(responsesCompact(
       this,
       request,
       options,
