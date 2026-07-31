@@ -1,0 +1,23 @@
+---
+title: "ResponsesContextManagementEntry"
+---
+
+A context management entry. Currently only `type: 'compaction'` is supported, which lets the provider automatically compact the conversation into an encrypted compaction item when the context window fills up (optionally at `compact_threshold` input tokens).
+
+## Example Usage
+
+```typescript
+import { ResponsesContextManagementEntry } from "@openrouter/sdk/models";
+
+let value: ResponsesContextManagementEntry = {
+  type: "compaction",
+};
+```
+
+## Fields
+
+| Field                    | Type                     | Required                 | Description              | Example                  |
+| ------------------------ | ------------------------ | ------------------------ | ------------------------ | ------------------------ |
+| `compactThreshold`       | *number*                 | :heavy_minus_sign:       | N/A                      |                          |
+| `type`                   | *string*                 | :heavy_check_mark:       | N/A                      |                          |
+| `additionalProperties`   | Record\<string, *any*>    | :heavy_minus_sign:       | N/A                      | \{<br/>"type": "compaction"<br/>} |

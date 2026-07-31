@@ -21,6 +21,11 @@ export const ApplyPatchEngineEnum = {
 export type ApplyPatchEngineEnum = OpenEnum<typeof ApplyPatchEngineEnum>;
 
 /** @internal */
+export const ApplyPatchEngineEnum$inboundSchema: z.ZodType<
+  ApplyPatchEngineEnum,
+  unknown
+> = openEnums.inboundSchema(ApplyPatchEngineEnum);
+/** @internal */
 export const ApplyPatchEngineEnum$outboundSchema: z.ZodType<
   string,
   ApplyPatchEngineEnum
