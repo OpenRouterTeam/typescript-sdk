@@ -31,6 +31,14 @@ export type OpenAIResponseFunctionToolCall = {
    */
   namespace?: string | undefined;
   status?: ToolCallStatus | undefined;
+  /**
+   * String id that matches the `call_id` of the `openrouter:subagent` server tool call. Present only if the tool call originates from a subagent spawned by the `openrouter:subagent` server tool.
+   */
+  subagentId?: string | undefined;
+  /**
+   * Snapshot of the subagent's session up to this call, shaped as a full Responses request (model, instructions, tools, and the child's conversation as `input` items). Replay it with the function call (and its output) so the subagent can be reconstructed statelessly on the next request. Present only if the tool call originates from a subagent spawned by the `openrouter:subagent` server tool.
+   */
+  subagentItems?: { [k: string]: any } | undefined;
   type: OpenAIResponseFunctionToolCallType;
 };
 
@@ -50,10 +58,14 @@ export const OpenAIResponseFunctionToolCall$inboundSchema: z.ZodType<
   name: z.string(),
   namespace: z.string().optional(),
   status: ToolCallStatus$inboundSchema.optional(),
+  subagent_id: z.string().optional(),
+  subagent_items: z.record(z.string(), z.any()).optional(),
   type: OpenAIResponseFunctionToolCallType$inboundSchema,
 }).transform((v) => {
   return remap$(v, {
     "call_id": "callId",
+    "subagent_id": "subagentId",
+    "subagent_items": "subagentItems",
   });
 });
 

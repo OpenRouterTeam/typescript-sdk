@@ -224,18 +224,17 @@ export type ResponseFormat =
   | ChatFormatTextConfig;
 
 /**
- * The service tier to use for processing this request. `fast` is accepted as an alias for `priority`.
+ * The service tier to use for processing this request.
  */
 export const ChatRequestServiceTier = {
   Auto: "auto",
   Default: "default",
-  Fast: "fast",
   Flex: "flex",
   Priority: "priority",
   Scale: "scale",
 } as const;
 /**
- * The service tier to use for processing this request. `fast` is accepted as an alias for `priority`.
+ * The service tier to use for processing this request.
  */
 export type ChatRequestServiceTier = OpenEnum<typeof ChatRequestServiceTier>;
 
@@ -369,7 +368,7 @@ export type ChatRequest = {
    */
   seed?: number | null | undefined;
   /**
-   * The service tier to use for processing this request. `fast` is accepted as an alias for `priority`.
+   * The service tier to use for processing this request.
    */
   serviceTier?: ChatRequestServiceTier | null | undefined;
   /**
