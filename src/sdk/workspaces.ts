@@ -61,7 +61,7 @@ export class Workspaces extends ClientSDK {
    * Delete a workspace
    *
    * @remarks
-   * Delete an existing workspace. The default workspace cannot be deleted. Workspaces with active API keys cannot be deleted; remove the keys first. [Management key](/docs/guides/overview/auth/management-api-keys) required.
+   * Delete an existing workspace. Workspaces with active API keys cannot be deleted; remove the keys first. Deleting the default workspace requires `confirm_default_settings_deletion=true` and permanently disables the account’s unscoped API keys and its budgets, guardrails, classifiers, and broadcast destinations. [Management key](/docs/guides/overview/auth/management-api-keys) required.
    */
   async delete(
     request: operations.DeleteWorkspaceRequest,
