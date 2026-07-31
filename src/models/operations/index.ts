@@ -24,6 +24,7 @@ export * from "./createpresetsmessages.js";
 export * from "./createpresetsresponses.js";
 export * from "./creatererank.js";
 export * from "./createresponses.js";
+export * from "./createresponsescompact.js";
 export * from "./createscimgroupmapping.js";
 export * from "./createvideos.js";
 export * from "./createworkspace.js";
