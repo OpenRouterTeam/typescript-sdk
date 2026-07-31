@@ -1,0 +1,21 @@
+---
+title: "WebSearchServerToolStatus"
+---
+
+The OpenRouter web-search item reports engine failures as failed, unlike the generic tool-call status.
+
+## Example Usage
+
+```typescript
+import { WebSearchServerToolStatus } from "@openrouter/sdk/models";
+
+let value: WebSearchServerToolStatus = "completed";
+
+// Open enum: unrecognized values are captured as Unrecognized<string>
+```
+
+## Values
+
+```typescript
+"in_progress" | "completed" | "incomplete" | "failed" | Unrecognized<string>
+```
