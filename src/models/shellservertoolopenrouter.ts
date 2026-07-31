@@ -4,9 +4,13 @@
  */
 
 import * as z from "zod/v4";
+import { safeParse } from "../lib/schemas.js";
 import { ClosedEnum } from "../types/enums.js";
+import { Result as SafeParseResult } from "../types/fp.js";
+import { SDKValidationError } from "./errors/sdkvalidationerror.js";
 import {
   ShellServerToolConfig,
+  ShellServerToolConfig$inboundSchema,
   ShellServerToolConfig$Outbound,
   ShellServerToolConfig$outboundSchema,
 } from "./shellservertoolconfig.js";
@@ -30,10 +34,22 @@ export type ShellServerToolOpenRouter = {
 };
 
 /** @internal */
-export const ShellServerToolOpenRouterType$outboundSchema: z.ZodEnum<
+export const ShellServerToolOpenRouterType$inboundSchema: z.ZodEnum<
   typeof ShellServerToolOpenRouterType
 > = z.enum(ShellServerToolOpenRouterType);
+/** @internal */
+export const ShellServerToolOpenRouterType$outboundSchema: z.ZodEnum<
+  typeof ShellServerToolOpenRouterType
+> = ShellServerToolOpenRouterType$inboundSchema;
 
+/** @internal */
+export const ShellServerToolOpenRouter$inboundSchema: z.ZodType<
+  ShellServerToolOpenRouter,
+  unknown
+> = z.object({
+  parameters: ShellServerToolConfig$inboundSchema.optional(),
+  type: ShellServerToolOpenRouterType$inboundSchema,
+});
 /** @internal */
 export type ShellServerToolOpenRouter$Outbound = {
   parameters?: ShellServerToolConfig$Outbound | undefined;
@@ -54,5 +70,14 @@ export function shellServerToolOpenRouterToJSON(
 ): string {
   return JSON.stringify(
     ShellServerToolOpenRouter$outboundSchema.parse(shellServerToolOpenRouter),
+  );
+}
+export function shellServerToolOpenRouterFromJSON(
+  jsonString: string,
+): SafeParseResult<ShellServerToolOpenRouter, SDKValidationError> {
+  return safeParse(
+    jsonString,
+    (x) => ShellServerToolOpenRouter$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'ShellServerToolOpenRouter' from JSON`,
   );
 }

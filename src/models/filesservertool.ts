@@ -4,9 +4,13 @@
  */
 
 import * as z from "zod/v4";
+import { safeParse } from "../lib/schemas.js";
 import { ClosedEnum } from "../types/enums.js";
+import { Result as SafeParseResult } from "../types/fp.js";
+import { SDKValidationError } from "./errors/sdkvalidationerror.js";
 import {
   FilesServerToolConfig,
+  FilesServerToolConfig$inboundSchema,
   FilesServerToolConfig$Outbound,
   FilesServerToolConfig$outboundSchema,
 } from "./filesservertoolconfig.js";
@@ -28,10 +32,22 @@ export type FilesServerTool = {
 };
 
 /** @internal */
-export const FilesServerToolType$outboundSchema: z.ZodEnum<
+export const FilesServerToolType$inboundSchema: z.ZodEnum<
   typeof FilesServerToolType
 > = z.enum(FilesServerToolType);
+/** @internal */
+export const FilesServerToolType$outboundSchema: z.ZodEnum<
+  typeof FilesServerToolType
+> = FilesServerToolType$inboundSchema;
 
+/** @internal */
+export const FilesServerTool$inboundSchema: z.ZodType<
+  FilesServerTool,
+  unknown
+> = z.object({
+  parameters: FilesServerToolConfig$inboundSchema.optional(),
+  type: FilesServerToolType$inboundSchema,
+});
 /** @internal */
 export type FilesServerTool$Outbound = {
   parameters?: FilesServerToolConfig$Outbound | undefined;
@@ -51,4 +67,13 @@ export function filesServerToolToJSON(
   filesServerTool: FilesServerTool,
 ): string {
   return JSON.stringify(FilesServerTool$outboundSchema.parse(filesServerTool));
+}
+export function filesServerToolFromJSON(
+  jsonString: string,
+): SafeParseResult<FilesServerTool, SDKValidationError> {
+  return safeParse(
+    jsonString,
+    (x) => FilesServerTool$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'FilesServerTool' from JSON`,
+  );
 }

@@ -5,15 +5,20 @@
 
 import * as z from "zod/v4";
 import { remap as remap$ } from "../lib/primitives.js";
+import { safeParse } from "../lib/schemas.js";
+import { Result as SafeParseResult } from "../types/fp.js";
 import {
   BashServerToolEngine,
+  BashServerToolEngine$inboundSchema,
   BashServerToolEngine$outboundSchema,
 } from "./bashservertoolengine.js";
 import {
   BashServerToolEnvironment,
+  BashServerToolEnvironment$inboundSchema,
   BashServerToolEnvironment$Outbound,
   BashServerToolEnvironment$outboundSchema,
 } from "./bashservertoolenvironment.js";
+import { SDKValidationError } from "./errors/sdkvalidationerror.js";
 
 /**
  * Configuration for the openrouter:bash server tool
@@ -33,6 +38,19 @@ export type BashServerToolConfig = {
   sleepAfterSeconds?: number | undefined;
 };
 
+/** @internal */
+export const BashServerToolConfig$inboundSchema: z.ZodType<
+  BashServerToolConfig,
+  unknown
+> = z.object({
+  engine: BashServerToolEngine$inboundSchema.optional(),
+  environment: BashServerToolEnvironment$inboundSchema.optional(),
+  sleep_after_seconds: z.int().optional(),
+}).transform((v) => {
+  return remap$(v, {
+    "sleep_after_seconds": "sleepAfterSeconds",
+  });
+});
 /** @internal */
 export type BashServerToolConfig$Outbound = {
   engine?: string | undefined;
@@ -59,5 +77,14 @@ export function bashServerToolConfigToJSON(
 ): string {
   return JSON.stringify(
     BashServerToolConfig$outboundSchema.parse(bashServerToolConfig),
+  );
+}
+export function bashServerToolConfigFromJSON(
+  jsonString: string,
+): SafeParseResult<BashServerToolConfig, SDKValidationError> {
+  return safeParse(
+    jsonString,
+    (x) => BashServerToolConfig$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'BashServerToolConfig' from JSON`,
   );
 }
