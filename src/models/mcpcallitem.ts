@@ -5,7 +5,10 @@
 
 import * as z from "zod/v4";
 import { remap as remap$ } from "../lib/primitives.js";
+import { safeParse } from "../lib/schemas.js";
 import { ClosedEnum } from "../types/enums.js";
+import { Result as SafeParseResult } from "../types/fp.js";
+import { SDKValidationError } from "./errors/sdkvalidationerror.js";
 
 export const McpCallItemType = {
   McpCall: "mcp_call",
@@ -26,9 +29,27 @@ export type McpCallItem = {
 };
 
 /** @internal */
-export const McpCallItemType$outboundSchema: z.ZodEnum<typeof McpCallItemType> =
+export const McpCallItemType$inboundSchema: z.ZodEnum<typeof McpCallItemType> =
   z.enum(McpCallItemType);
+/** @internal */
+export const McpCallItemType$outboundSchema: z.ZodEnum<typeof McpCallItemType> =
+  McpCallItemType$inboundSchema;
 
+/** @internal */
+export const McpCallItem$inboundSchema: z.ZodType<McpCallItem, unknown> = z
+  .object({
+    arguments: z.string(),
+    error: z.nullable(z.string()).optional(),
+    id: z.string(),
+    name: z.string(),
+    output: z.nullable(z.string()).optional(),
+    server_label: z.string(),
+    type: McpCallItemType$inboundSchema,
+  }).transform((v) => {
+    return remap$(v, {
+      "server_label": "serverLabel",
+    });
+  });
 /** @internal */
 export type McpCallItem$Outbound = {
   arguments: string;
@@ -60,4 +81,13 @@ export const McpCallItem$outboundSchema: z.ZodType<
 
 export function mcpCallItemToJSON(mcpCallItem: McpCallItem): string {
   return JSON.stringify(McpCallItem$outboundSchema.parse(mcpCallItem));
+}
+export function mcpCallItemFromJSON(
+  jsonString: string,
+): SafeParseResult<McpCallItem, SDKValidationError> {
+  return safeParse(
+    jsonString,
+    (x) => McpCallItem$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'McpCallItem' from JSON`,
+  );
 }

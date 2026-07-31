@@ -4,12 +4,16 @@
  */
 
 import * as z from "zod/v4";
+import { safeParse } from "../lib/schemas.js";
 import { ClosedEnum } from "../types/enums.js";
+import { Result as SafeParseResult } from "../types/fp.js";
 import {
   BashServerToolConfig,
+  BashServerToolConfig$inboundSchema,
   BashServerToolConfig$Outbound,
   BashServerToolConfig$outboundSchema,
 } from "./bashservertoolconfig.js";
+import { SDKValidationError } from "./errors/sdkvalidationerror.js";
 
 export const BashServerToolType = {
   OpenrouterBash: "openrouter:bash",
@@ -28,10 +32,20 @@ export type BashServerTool = {
 };
 
 /** @internal */
-export const BashServerToolType$outboundSchema: z.ZodEnum<
+export const BashServerToolType$inboundSchema: z.ZodEnum<
   typeof BashServerToolType
 > = z.enum(BashServerToolType);
+/** @internal */
+export const BashServerToolType$outboundSchema: z.ZodEnum<
+  typeof BashServerToolType
+> = BashServerToolType$inboundSchema;
 
+/** @internal */
+export const BashServerTool$inboundSchema: z.ZodType<BashServerTool, unknown> =
+  z.object({
+    parameters: BashServerToolConfig$inboundSchema.optional(),
+    type: BashServerToolType$inboundSchema,
+  });
 /** @internal */
 export type BashServerTool$Outbound = {
   parameters?: BashServerToolConfig$Outbound | undefined;
@@ -49,4 +63,13 @@ export const BashServerTool$outboundSchema: z.ZodType<
 
 export function bashServerToolToJSON(bashServerTool: BashServerTool): string {
   return JSON.stringify(BashServerTool$outboundSchema.parse(bashServerTool));
+}
+export function bashServerToolFromJSON(
+  jsonString: string,
+): SafeParseResult<BashServerTool, SDKValidationError> {
+  return safeParse(
+    jsonString,
+    (x) => BashServerTool$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'BashServerTool' from JSON`,
+  );
 }

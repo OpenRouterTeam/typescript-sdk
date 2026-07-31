@@ -4,12 +4,16 @@
  */
 
 import * as z from "zod/v4";
+import { safeParse } from "../lib/schemas.js";
 import { ClosedEnum } from "../types/enums.js";
+import { Result as SafeParseResult } from "../types/fp.js";
 import {
   DatetimeServerToolConfig,
+  DatetimeServerToolConfig$inboundSchema,
   DatetimeServerToolConfig$Outbound,
   DatetimeServerToolConfig$outboundSchema,
 } from "./datetimeservertoolconfig.js";
+import { SDKValidationError } from "./errors/sdkvalidationerror.js";
 
 export const DatetimeServerToolType = {
   OpenrouterDatetime: "openrouter:datetime",
@@ -28,10 +32,22 @@ export type DatetimeServerTool = {
 };
 
 /** @internal */
-export const DatetimeServerToolType$outboundSchema: z.ZodEnum<
+export const DatetimeServerToolType$inboundSchema: z.ZodEnum<
   typeof DatetimeServerToolType
 > = z.enum(DatetimeServerToolType);
+/** @internal */
+export const DatetimeServerToolType$outboundSchema: z.ZodEnum<
+  typeof DatetimeServerToolType
+> = DatetimeServerToolType$inboundSchema;
 
+/** @internal */
+export const DatetimeServerTool$inboundSchema: z.ZodType<
+  DatetimeServerTool,
+  unknown
+> = z.object({
+  parameters: DatetimeServerToolConfig$inboundSchema.optional(),
+  type: DatetimeServerToolType$inboundSchema,
+});
 /** @internal */
 export type DatetimeServerTool$Outbound = {
   parameters?: DatetimeServerToolConfig$Outbound | undefined;
@@ -52,5 +68,14 @@ export function datetimeServerToolToJSON(
 ): string {
   return JSON.stringify(
     DatetimeServerTool$outboundSchema.parse(datetimeServerTool),
+  );
+}
+export function datetimeServerToolFromJSON(
+  jsonString: string,
+): SafeParseResult<DatetimeServerTool, SDKValidationError> {
+  return safeParse(
+    jsonString,
+    (x) => DatetimeServerTool$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'DatetimeServerTool' from JSON`,
   );
 }

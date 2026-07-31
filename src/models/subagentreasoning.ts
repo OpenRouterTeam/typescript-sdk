@@ -5,8 +5,11 @@
 
 import * as z from "zod/v4";
 import { remap as remap$ } from "../lib/primitives.js";
+import { safeParse } from "../lib/schemas.js";
 import * as openEnums from "../types/enums.js";
 import { OpenEnum } from "../types/enums.js";
+import { Result as SafeParseResult } from "../types/fp.js";
+import { SDKValidationError } from "./errors/sdkvalidationerror.js";
 
 /**
  * Reasoning effort level for the subagent call.
@@ -40,11 +43,28 @@ export type SubagentReasoning = {
 };
 
 /** @internal */
+export const SubagentReasoningEffort$inboundSchema: z.ZodType<
+  SubagentReasoningEffort,
+  unknown
+> = openEnums.inboundSchema(SubagentReasoningEffort);
+/** @internal */
 export const SubagentReasoningEffort$outboundSchema: z.ZodType<
   string,
   SubagentReasoningEffort
 > = openEnums.outboundSchema(SubagentReasoningEffort);
 
+/** @internal */
+export const SubagentReasoning$inboundSchema: z.ZodType<
+  SubagentReasoning,
+  unknown
+> = z.object({
+  effort: SubagentReasoningEffort$inboundSchema.optional(),
+  max_tokens: z.int().optional(),
+}).transform((v) => {
+  return remap$(v, {
+    "max_tokens": "maxTokens",
+  });
+});
 /** @internal */
 export type SubagentReasoning$Outbound = {
   effort?: string | undefined;
@@ -69,5 +89,14 @@ export function subagentReasoningToJSON(
 ): string {
   return JSON.stringify(
     SubagentReasoning$outboundSchema.parse(subagentReasoning),
+  );
+}
+export function subagentReasoningFromJSON(
+  jsonString: string,
+): SafeParseResult<SubagentReasoning, SDKValidationError> {
+  return safeParse(
+    jsonString,
+    (x) => SubagentReasoning$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'SubagentReasoning' from JSON`,
   );
 }
