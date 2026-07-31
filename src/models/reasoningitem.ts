@@ -5,18 +5,24 @@
 
 import * as z from "zod/v4";
 import { remap as remap$ } from "../lib/primitives.js";
+import { safeParse } from "../lib/schemas.js";
 import { ClosedEnum } from "../types/enums.js";
+import { Result as SafeParseResult } from "../types/fp.js";
+import { SDKValidationError } from "./errors/sdkvalidationerror.js";
 import {
   ReasoningFormat,
+  ReasoningFormat$inboundSchema,
   ReasoningFormat$outboundSchema,
 } from "./reasoningformat.js";
 import {
   ReasoningSummaryText,
+  ReasoningSummaryText$inboundSchema,
   ReasoningSummaryText$Outbound,
   ReasoningSummaryText$outboundSchema,
 } from "./reasoningsummarytext.js";
 import {
   ReasoningTextContent,
+  ReasoningTextContent$inboundSchema,
   ReasoningTextContent$Outbound,
   ReasoningTextContent$outboundSchema,
 } from "./reasoningtextcontent.js";
@@ -71,20 +77,41 @@ export type ReasoningItem = {
 };
 
 /** @internal */
-export const ReasoningItemStatusInProgress$outboundSchema: z.ZodEnum<
+export const ReasoningItemStatusInProgress$inboundSchema: z.ZodEnum<
   typeof ReasoningItemStatusInProgress
 > = z.enum(ReasoningItemStatusInProgress);
+/** @internal */
+export const ReasoningItemStatusInProgress$outboundSchema: z.ZodEnum<
+  typeof ReasoningItemStatusInProgress
+> = ReasoningItemStatusInProgress$inboundSchema;
 
+/** @internal */
+export const ReasoningItemStatusIncomplete$inboundSchema: z.ZodEnum<
+  typeof ReasoningItemStatusIncomplete
+> = z.enum(ReasoningItemStatusIncomplete);
 /** @internal */
 export const ReasoningItemStatusIncomplete$outboundSchema: z.ZodEnum<
   typeof ReasoningItemStatusIncomplete
-> = z.enum(ReasoningItemStatusIncomplete);
+> = ReasoningItemStatusIncomplete$inboundSchema;
 
+/** @internal */
+export const ReasoningItemStatusCompleted$inboundSchema: z.ZodEnum<
+  typeof ReasoningItemStatusCompleted
+> = z.enum(ReasoningItemStatusCompleted);
 /** @internal */
 export const ReasoningItemStatusCompleted$outboundSchema: z.ZodEnum<
   typeof ReasoningItemStatusCompleted
-> = z.enum(ReasoningItemStatusCompleted);
+> = ReasoningItemStatusCompleted$inboundSchema;
 
+/** @internal */
+export const ReasoningItemStatusUnion$inboundSchema: z.ZodType<
+  ReasoningItemStatusUnion,
+  unknown
+> = z.union([
+  ReasoningItemStatusCompleted$inboundSchema,
+  ReasoningItemStatusIncomplete$inboundSchema,
+  ReasoningItemStatusInProgress$inboundSchema,
+]);
 /** @internal */
 export type ReasoningItemStatusUnion$Outbound = string | string | string;
 
@@ -105,12 +132,45 @@ export function reasoningItemStatusUnionToJSON(
     ReasoningItemStatusUnion$outboundSchema.parse(reasoningItemStatusUnion),
   );
 }
+export function reasoningItemStatusUnionFromJSON(
+  jsonString: string,
+): SafeParseResult<ReasoningItemStatusUnion, SDKValidationError> {
+  return safeParse(
+    jsonString,
+    (x) => ReasoningItemStatusUnion$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'ReasoningItemStatusUnion' from JSON`,
+  );
+}
 
+/** @internal */
+export const ReasoningItemType$inboundSchema: z.ZodEnum<
+  typeof ReasoningItemType
+> = z.enum(ReasoningItemType);
 /** @internal */
 export const ReasoningItemType$outboundSchema: z.ZodEnum<
   typeof ReasoningItemType
-> = z.enum(ReasoningItemType);
+> = ReasoningItemType$inboundSchema;
 
+/** @internal */
+export const ReasoningItem$inboundSchema: z.ZodType<ReasoningItem, unknown> = z
+  .object({
+    content: z.nullable(z.array(ReasoningTextContent$inboundSchema)).optional(),
+    encrypted_content: z.nullable(z.string()).optional(),
+    id: z.string(),
+    status: z.union([
+      ReasoningItemStatusCompleted$inboundSchema,
+      ReasoningItemStatusIncomplete$inboundSchema,
+      ReasoningItemStatusInProgress$inboundSchema,
+    ]).optional(),
+    summary: z.array(ReasoningSummaryText$inboundSchema),
+    type: ReasoningItemType$inboundSchema,
+    format: z.nullable(ReasoningFormat$inboundSchema).optional(),
+    signature: z.nullable(z.string()).optional(),
+  }).transform((v) => {
+    return remap$(v, {
+      "encrypted_content": "encryptedContent",
+    });
+  });
 /** @internal */
 export type ReasoningItem$Outbound = {
   content?: Array<ReasoningTextContent$Outbound> | null | undefined;
@@ -148,4 +208,13 @@ export const ReasoningItem$outboundSchema: z.ZodType<
 
 export function reasoningItemToJSON(reasoningItem: ReasoningItem): string {
   return JSON.stringify(ReasoningItem$outboundSchema.parse(reasoningItem));
+}
+export function reasoningItemFromJSON(
+  jsonString: string,
+): SafeParseResult<ReasoningItem, SDKValidationError> {
+  return safeParse(
+    jsonString,
+    (x) => ReasoningItem$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'ReasoningItem' from JSON`,
+  );
 }

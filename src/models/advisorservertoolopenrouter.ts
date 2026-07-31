@@ -4,12 +4,16 @@
  */
 
 import * as z from "zod/v4";
+import { safeParse } from "../lib/schemas.js";
 import { ClosedEnum } from "../types/enums.js";
+import { Result as SafeParseResult } from "../types/fp.js";
 import {
   AdvisorServerToolConfig,
+  AdvisorServerToolConfig$inboundSchema,
   AdvisorServerToolConfig$Outbound,
   AdvisorServerToolConfig$outboundSchema,
 } from "./advisorservertoolconfig.js";
+import { SDKValidationError } from "./errors/sdkvalidationerror.js";
 
 export const AdvisorServerToolOpenRouterType = {
   OpenrouterAdvisor: "openrouter:advisor",
@@ -30,10 +34,22 @@ export type AdvisorServerToolOpenRouter = {
 };
 
 /** @internal */
-export const AdvisorServerToolOpenRouterType$outboundSchema: z.ZodEnum<
+export const AdvisorServerToolOpenRouterType$inboundSchema: z.ZodEnum<
   typeof AdvisorServerToolOpenRouterType
 > = z.enum(AdvisorServerToolOpenRouterType);
+/** @internal */
+export const AdvisorServerToolOpenRouterType$outboundSchema: z.ZodEnum<
+  typeof AdvisorServerToolOpenRouterType
+> = AdvisorServerToolOpenRouterType$inboundSchema;
 
+/** @internal */
+export const AdvisorServerToolOpenRouter$inboundSchema: z.ZodType<
+  AdvisorServerToolOpenRouter,
+  unknown
+> = z.object({
+  parameters: AdvisorServerToolConfig$inboundSchema.optional(),
+  type: AdvisorServerToolOpenRouterType$inboundSchema,
+});
 /** @internal */
 export type AdvisorServerToolOpenRouter$Outbound = {
   parameters?: AdvisorServerToolConfig$Outbound | undefined;
@@ -56,5 +72,14 @@ export function advisorServerToolOpenRouterToJSON(
     AdvisorServerToolOpenRouter$outboundSchema.parse(
       advisorServerToolOpenRouter,
     ),
+  );
+}
+export function advisorServerToolOpenRouterFromJSON(
+  jsonString: string,
+): SafeParseResult<AdvisorServerToolOpenRouter, SDKValidationError> {
+  return safeParse(
+    jsonString,
+    (x) => AdvisorServerToolOpenRouter$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'AdvisorServerToolOpenRouter' from JSON`,
   );
 }
