@@ -5,7 +5,10 @@
 
 import * as z from "zod/v4";
 import { remap as remap$ } from "../lib/primitives.js";
+import { safeParse } from "../lib/schemas.js";
 import { ClosedEnum } from "../types/enums.js";
+import { Result as SafeParseResult } from "../types/fp.js";
+import { SDKValidationError } from "./errors/sdkvalidationerror.js";
 
 export const McpApprovalResponseItemType = {
   McpApprovalResponse: "mcp_approval_response",
@@ -26,10 +29,29 @@ export type McpApprovalResponseItem = {
 };
 
 /** @internal */
-export const McpApprovalResponseItemType$outboundSchema: z.ZodEnum<
+export const McpApprovalResponseItemType$inboundSchema: z.ZodEnum<
   typeof McpApprovalResponseItemType
 > = z.enum(McpApprovalResponseItemType);
+/** @internal */
+export const McpApprovalResponseItemType$outboundSchema: z.ZodEnum<
+  typeof McpApprovalResponseItemType
+> = McpApprovalResponseItemType$inboundSchema;
 
+/** @internal */
+export const McpApprovalResponseItem$inboundSchema: z.ZodType<
+  McpApprovalResponseItem,
+  unknown
+> = z.object({
+  approval_request_id: z.string(),
+  approve: z.boolean(),
+  id: z.nullable(z.string()).optional(),
+  reason: z.nullable(z.string()).optional(),
+  type: McpApprovalResponseItemType$inboundSchema,
+}).transform((v) => {
+  return remap$(v, {
+    "approval_request_id": "approvalRequestId",
+  });
+});
 /** @internal */
 export type McpApprovalResponseItem$Outbound = {
   approval_request_id: string;
@@ -60,5 +82,14 @@ export function mcpApprovalResponseItemToJSON(
 ): string {
   return JSON.stringify(
     McpApprovalResponseItem$outboundSchema.parse(mcpApprovalResponseItem),
+  );
+}
+export function mcpApprovalResponseItemFromJSON(
+  jsonString: string,
+): SafeParseResult<McpApprovalResponseItem, SDKValidationError> {
+  return safeParse(
+    jsonString,
+    (x) => McpApprovalResponseItem$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'McpApprovalResponseItem' from JSON`,
   );
 }

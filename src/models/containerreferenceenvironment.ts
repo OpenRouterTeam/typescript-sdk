@@ -5,6 +5,9 @@
 
 import * as z from "zod/v4";
 import { remap as remap$ } from "../lib/primitives.js";
+import { safeParse } from "../lib/schemas.js";
+import { Result as SafeParseResult } from "../types/fp.js";
+import { SDKValidationError } from "./errors/sdkvalidationerror.js";
 
 /**
  * Reference to a previously created container to reuse.
@@ -17,6 +20,18 @@ export type ContainerReferenceEnvironment = {
   type: "container_reference";
 };
 
+/** @internal */
+export const ContainerReferenceEnvironment$inboundSchema: z.ZodType<
+  ContainerReferenceEnvironment,
+  unknown
+> = z.object({
+  container_id: z.string(),
+  type: z.literal("container_reference"),
+}).transform((v) => {
+  return remap$(v, {
+    "container_id": "containerId",
+  });
+});
 /** @internal */
 export type ContainerReferenceEnvironment$Outbound = {
   container_id: string;
@@ -43,5 +58,14 @@ export function containerReferenceEnvironmentToJSON(
     ContainerReferenceEnvironment$outboundSchema.parse(
       containerReferenceEnvironment,
     ),
+  );
+}
+export function containerReferenceEnvironmentFromJSON(
+  jsonString: string,
+): SafeParseResult<ContainerReferenceEnvironment, SDKValidationError> {
+  return safeParse(
+    jsonString,
+    (x) => ContainerReferenceEnvironment$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'ContainerReferenceEnvironment' from JSON`,
   );
 }
