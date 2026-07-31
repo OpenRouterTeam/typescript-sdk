@@ -4,6 +4,9 @@
  */
 
 import * as z from "zod/v4";
+import { safeParse } from "../lib/schemas.js";
+import { Result as SafeParseResult } from "../types/fp.js";
+import { SDKValidationError } from "./errors/sdkvalidationerror.js";
 
 /**
  * An OpenRouter-managed, auto-provisioned ephemeral container.
@@ -12,6 +15,13 @@ export type ContainerAutoEnvironment = {
   type: "container_auto";
 };
 
+/** @internal */
+export const ContainerAutoEnvironment$inboundSchema: z.ZodType<
+  ContainerAutoEnvironment,
+  unknown
+> = z.object({
+  type: z.literal("container_auto"),
+});
 /** @internal */
 export type ContainerAutoEnvironment$Outbound = {
   type: "container_auto";
@@ -30,5 +40,14 @@ export function containerAutoEnvironmentToJSON(
 ): string {
   return JSON.stringify(
     ContainerAutoEnvironment$outboundSchema.parse(containerAutoEnvironment),
+  );
+}
+export function containerAutoEnvironmentFromJSON(
+  jsonString: string,
+): SafeParseResult<ContainerAutoEnvironment, SDKValidationError> {
+  return safeParse(
+    jsonString,
+    (x) => ContainerAutoEnvironment$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'ContainerAutoEnvironment' from JSON`,
   );
 }

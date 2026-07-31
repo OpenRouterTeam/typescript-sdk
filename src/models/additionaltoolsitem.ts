@@ -5,135 +5,167 @@
 
 import * as z from "zod/v4";
 import { remap as remap$ } from "../lib/primitives.js";
+import {
+  collectExtraKeys as collectExtraKeys$,
+  safeParse,
+} from "../lib/schemas.js";
 import * as openEnums from "../types/enums.js";
 import { ClosedEnum, OpenEnum } from "../types/enums.js";
+import { Result as SafeParseResult } from "../types/fp.js";
 import {
   AdvisorServerToolOpenRouter,
+  AdvisorServerToolOpenRouter$inboundSchema,
   AdvisorServerToolOpenRouter$Outbound,
   AdvisorServerToolOpenRouter$outboundSchema,
 } from "./advisorservertoolopenrouter.js";
 import {
   ApplyPatchServerTool,
+  ApplyPatchServerTool$inboundSchema,
   ApplyPatchServerTool$Outbound,
   ApplyPatchServerTool$outboundSchema,
 } from "./applypatchservertool.js";
 import {
   ApplyPatchServerToolOpenRouter,
+  ApplyPatchServerToolOpenRouter$inboundSchema,
   ApplyPatchServerToolOpenRouter$Outbound,
   ApplyPatchServerToolOpenRouter$outboundSchema,
 } from "./applypatchservertoolopenrouter.js";
 import {
   BashServerTool,
+  BashServerTool$inboundSchema,
   BashServerTool$Outbound,
   BashServerTool$outboundSchema,
 } from "./bashservertool.js";
 import {
   CodeInterpreterServerTool,
+  CodeInterpreterServerTool$inboundSchema,
   CodeInterpreterServerTool$Outbound,
   CodeInterpreterServerTool$outboundSchema,
 } from "./codeinterpreterservertool.js";
 import {
   CodexLocalShellTool,
+  CodexLocalShellTool$inboundSchema,
   CodexLocalShellTool$Outbound,
   CodexLocalShellTool$outboundSchema,
 } from "./codexlocalshelltool.js";
 import {
   ComputerUseServerTool,
+  ComputerUseServerTool$inboundSchema,
   ComputerUseServerTool$Outbound,
   ComputerUseServerTool$outboundSchema,
 } from "./computeruseservertool.js";
 import {
   CustomTool,
+  CustomTool$inboundSchema,
   CustomTool$Outbound,
   CustomTool$outboundSchema,
 } from "./customtool.js";
 import {
   DatetimeServerTool,
+  DatetimeServerTool$inboundSchema,
   DatetimeServerTool$Outbound,
   DatetimeServerTool$outboundSchema,
 } from "./datetimeservertool.js";
+import { SDKValidationError } from "./errors/sdkvalidationerror.js";
 import {
   FileSearchServerTool,
+  FileSearchServerTool$inboundSchema,
   FileSearchServerTool$Outbound,
   FileSearchServerTool$outboundSchema,
 } from "./filesearchservertool.js";
 import {
   FilesServerTool,
+  FilesServerTool$inboundSchema,
   FilesServerTool$Outbound,
   FilesServerTool$outboundSchema,
 } from "./filesservertool.js";
 import {
   FusionServerToolOpenRouter,
+  FusionServerToolOpenRouter$inboundSchema,
   FusionServerToolOpenRouter$Outbound,
   FusionServerToolOpenRouter$outboundSchema,
 } from "./fusionservertoolopenrouter.js";
 import {
   ImageGenerationServerTool,
+  ImageGenerationServerTool$inboundSchema,
   ImageGenerationServerTool$Outbound,
   ImageGenerationServerTool$outboundSchema,
 } from "./imagegenerationservertool.js";
 import {
   ImageGenerationServerToolOpenRouter,
+  ImageGenerationServerToolOpenRouter$inboundSchema,
   ImageGenerationServerToolOpenRouter$Outbound,
   ImageGenerationServerToolOpenRouter$outboundSchema,
 } from "./imagegenerationservertoolopenrouter.js";
 import {
   LegacyWebSearchServerTool,
+  LegacyWebSearchServerTool$inboundSchema,
   LegacyWebSearchServerTool$Outbound,
   LegacyWebSearchServerTool$outboundSchema,
 } from "./legacywebsearchservertool.js";
 import {
   McpServerTool,
+  McpServerTool$inboundSchema,
   McpServerTool$Outbound,
   McpServerTool$outboundSchema,
 } from "./mcpservertool.js";
 import {
   NamespaceTool,
+  NamespaceTool$inboundSchema,
   NamespaceTool$Outbound,
   NamespaceTool$outboundSchema,
 } from "./namespacetool.js";
 import {
   Preview20250311WebSearchServerTool,
+  Preview20250311WebSearchServerTool$inboundSchema,
   Preview20250311WebSearchServerTool$Outbound,
   Preview20250311WebSearchServerTool$outboundSchema,
 } from "./preview20250311websearchservertool.js";
 import {
   PreviewWebSearchServerTool,
+  PreviewWebSearchServerTool$inboundSchema,
   PreviewWebSearchServerTool$Outbound,
   PreviewWebSearchServerTool$outboundSchema,
 } from "./previewwebsearchservertool.js";
 import {
   SearchModelsServerToolOpenRouter,
+  SearchModelsServerToolOpenRouter$inboundSchema,
   SearchModelsServerToolOpenRouter$Outbound,
   SearchModelsServerToolOpenRouter$outboundSchema,
 } from "./searchmodelsservertoolopenrouter.js";
 import {
   ShellServerTool,
+  ShellServerTool$inboundSchema,
   ShellServerTool$Outbound,
   ShellServerTool$outboundSchema,
 } from "./shellservertool.js";
 import {
   ShellServerToolOpenRouter,
+  ShellServerToolOpenRouter$inboundSchema,
   ShellServerToolOpenRouter$Outbound,
   ShellServerToolOpenRouter$outboundSchema,
 } from "./shellservertoolopenrouter.js";
 import {
   SubagentServerToolOpenRouter,
+  SubagentServerToolOpenRouter$inboundSchema,
   SubagentServerToolOpenRouter$Outbound,
   SubagentServerToolOpenRouter$outboundSchema,
 } from "./subagentservertoolopenrouter.js";
 import {
   WebFetchServerTool,
+  WebFetchServerTool$inboundSchema,
   WebFetchServerTool$Outbound,
   WebFetchServerTool$outboundSchema,
 } from "./webfetchservertool.js";
 import {
   WebSearchServerTool,
+  WebSearchServerTool$inboundSchema,
   WebSearchServerTool$Outbound,
   WebSearchServerTool$outboundSchema,
 } from "./websearchservertool.js";
 import {
   WebSearchServerToolOpenRouter,
+  WebSearchServerToolOpenRouter$inboundSchema,
   WebSearchServerToolOpenRouter$Outbound,
   WebSearchServerToolOpenRouter$outboundSchema,
 } from "./websearchservertoolopenrouter.js";
@@ -248,11 +280,27 @@ export type AdditionalToolsItem = {
 };
 
 /** @internal */
+export const AdditionalToolsItemRole$inboundSchema: z.ZodType<
+  AdditionalToolsItemRole,
+  unknown
+> = openEnums.inboundSchema(AdditionalToolsItemRole);
+/** @internal */
 export const AdditionalToolsItemRole$outboundSchema: z.ZodType<
   string,
   AdditionalToolsItemRole
 > = openEnums.outboundSchema(AdditionalToolsItemRole);
 
+/** @internal */
+export const AdditionalToolsItemTool$inboundSchema: z.ZodType<
+  AdditionalToolsItemTool,
+  unknown
+> = collectExtraKeys$(
+  z.object({
+    type: z.string(),
+  }).catchall(z.any()),
+  "additionalProperties",
+  true,
+);
 /** @internal */
 export type AdditionalToolsItemTool$Outbound = {
   type: string;
@@ -282,12 +330,36 @@ export function additionalToolsItemToolToJSON(
     AdditionalToolsItemTool$outboundSchema.parse(additionalToolsItemTool),
   );
 }
+export function additionalToolsItemToolFromJSON(
+  jsonString: string,
+): SafeParseResult<AdditionalToolsItemTool, SDKValidationError> {
+  return safeParse(
+    jsonString,
+    (x) => AdditionalToolsItemTool$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'AdditionalToolsItemTool' from JSON`,
+  );
+}
 
+/** @internal */
+export const AdditionalToolsItemTypeFunction$inboundSchema: z.ZodEnum<
+  typeof AdditionalToolsItemTypeFunction
+> = z.enum(AdditionalToolsItemTypeFunction);
 /** @internal */
 export const AdditionalToolsItemTypeFunction$outboundSchema: z.ZodEnum<
   typeof AdditionalToolsItemTypeFunction
-> = z.enum(AdditionalToolsItemTypeFunction);
+> = AdditionalToolsItemTypeFunction$inboundSchema;
 
+/** @internal */
+export const AdditionalToolsItemToolFunction$inboundSchema: z.ZodType<
+  AdditionalToolsItemToolFunction,
+  unknown
+> = z.object({
+  description: z.nullable(z.string()).optional(),
+  name: z.string(),
+  parameters: z.nullable(z.record(z.string(), z.any())),
+  strict: z.nullable(z.boolean()).optional(),
+  type: AdditionalToolsItemTypeFunction$inboundSchema,
+});
 /** @internal */
 export type AdditionalToolsItemToolFunction$Outbound = {
   description?: string | null | undefined;
@@ -318,7 +390,50 @@ export function additionalToolsItemToolFunctionToJSON(
     ),
   );
 }
+export function additionalToolsItemToolFunctionFromJSON(
+  jsonString: string,
+): SafeParseResult<AdditionalToolsItemToolFunction, SDKValidationError> {
+  return safeParse(
+    jsonString,
+    (x) => AdditionalToolsItemToolFunction$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'AdditionalToolsItemToolFunction' from JSON`,
+  );
+}
 
+/** @internal */
+export const AdditionalToolsItemToolUnion$inboundSchema: z.ZodType<
+  AdditionalToolsItemToolUnion,
+  unknown
+> = z.union([
+  ComputerUseServerTool$inboundSchema,
+  NamespaceTool$inboundSchema,
+  z.lazy(() => AdditionalToolsItemToolFunction$inboundSchema),
+  FileSearchServerTool$inboundSchema,
+  CodeInterpreterServerTool$inboundSchema,
+  McpServerTool$inboundSchema,
+  CustomTool$inboundSchema,
+  PreviewWebSearchServerTool$inboundSchema,
+  Preview20250311WebSearchServerTool$inboundSchema,
+  LegacyWebSearchServerTool$inboundSchema,
+  WebSearchServerTool$inboundSchema,
+  ImageGenerationServerTool$inboundSchema,
+  CodexLocalShellTool$inboundSchema,
+  ShellServerTool$inboundSchema,
+  ApplyPatchServerTool$inboundSchema,
+  AdvisorServerToolOpenRouter$inboundSchema,
+  SubagentServerToolOpenRouter$inboundSchema,
+  DatetimeServerTool$inboundSchema,
+  FilesServerTool$inboundSchema,
+  FusionServerToolOpenRouter$inboundSchema,
+  ImageGenerationServerToolOpenRouter$inboundSchema,
+  SearchModelsServerToolOpenRouter$inboundSchema,
+  WebFetchServerTool$inboundSchema,
+  WebSearchServerToolOpenRouter$inboundSchema,
+  ApplyPatchServerToolOpenRouter$inboundSchema,
+  BashServerTool$inboundSchema,
+  ShellServerToolOpenRouter$inboundSchema,
+  z.lazy(() => AdditionalToolsItemTool$inboundSchema),
+]);
 /** @internal */
 export type AdditionalToolsItemToolUnion$Outbound =
   | ComputerUseServerTool$Outbound
@@ -394,12 +509,66 @@ export function additionalToolsItemToolUnionToJSON(
     ),
   );
 }
+export function additionalToolsItemToolUnionFromJSON(
+  jsonString: string,
+): SafeParseResult<AdditionalToolsItemToolUnion, SDKValidationError> {
+  return safeParse(
+    jsonString,
+    (x) => AdditionalToolsItemToolUnion$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'AdditionalToolsItemToolUnion' from JSON`,
+  );
+}
 
+/** @internal */
+export const TypeAdditionalTools$inboundSchema: z.ZodEnum<
+  typeof TypeAdditionalTools
+> = z.enum(TypeAdditionalTools);
 /** @internal */
 export const TypeAdditionalTools$outboundSchema: z.ZodEnum<
   typeof TypeAdditionalTools
-> = z.enum(TypeAdditionalTools);
+> = TypeAdditionalTools$inboundSchema;
 
+/** @internal */
+export const AdditionalToolsItem$inboundSchema: z.ZodType<
+  AdditionalToolsItem,
+  unknown
+> = z.object({
+  id: z.nullable(z.string()).optional(),
+  role: AdditionalToolsItemRole$inboundSchema,
+  tools: z.array(
+    z.union([
+      ComputerUseServerTool$inboundSchema,
+      NamespaceTool$inboundSchema,
+      z.lazy(() => AdditionalToolsItemToolFunction$inboundSchema),
+      FileSearchServerTool$inboundSchema,
+      CodeInterpreterServerTool$inboundSchema,
+      McpServerTool$inboundSchema,
+      CustomTool$inboundSchema,
+      PreviewWebSearchServerTool$inboundSchema,
+      Preview20250311WebSearchServerTool$inboundSchema,
+      LegacyWebSearchServerTool$inboundSchema,
+      WebSearchServerTool$inboundSchema,
+      ImageGenerationServerTool$inboundSchema,
+      CodexLocalShellTool$inboundSchema,
+      ShellServerTool$inboundSchema,
+      ApplyPatchServerTool$inboundSchema,
+      AdvisorServerToolOpenRouter$inboundSchema,
+      SubagentServerToolOpenRouter$inboundSchema,
+      DatetimeServerTool$inboundSchema,
+      FilesServerTool$inboundSchema,
+      FusionServerToolOpenRouter$inboundSchema,
+      ImageGenerationServerToolOpenRouter$inboundSchema,
+      SearchModelsServerToolOpenRouter$inboundSchema,
+      WebFetchServerTool$inboundSchema,
+      WebSearchServerToolOpenRouter$inboundSchema,
+      ApplyPatchServerToolOpenRouter$inboundSchema,
+      BashServerTool$inboundSchema,
+      ShellServerToolOpenRouter$inboundSchema,
+      z.lazy(() => AdditionalToolsItemTool$inboundSchema),
+    ]),
+  ),
+  type: TypeAdditionalTools$inboundSchema,
+});
 /** @internal */
 export type AdditionalToolsItem$Outbound = {
   id?: string | null | undefined;
@@ -484,5 +653,14 @@ export function additionalToolsItemToJSON(
 ): string {
   return JSON.stringify(
     AdditionalToolsItem$outboundSchema.parse(additionalToolsItem),
+  );
+}
+export function additionalToolsItemFromJSON(
+  jsonString: string,
+): SafeParseResult<AdditionalToolsItem, SDKValidationError> {
+  return safeParse(
+    jsonString,
+    (x) => AdditionalToolsItem$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'AdditionalToolsItem' from JSON`,
   );
 }

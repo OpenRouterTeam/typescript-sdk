@@ -5,12 +5,17 @@
 
 import * as z from "zod/v4";
 import { remap as remap$ } from "../lib/primitives.js";
+import { safeParse } from "../lib/schemas.js";
+import { Result as SafeParseResult } from "../types/fp.js";
+import { SDKValidationError } from "./errors/sdkvalidationerror.js";
 import {
   ShellServerToolEngine,
+  ShellServerToolEngine$inboundSchema,
   ShellServerToolEngine$outboundSchema,
 } from "./shellservertoolengine.js";
 import {
   ShellServerToolEnvironment,
+  ShellServerToolEnvironment$inboundSchema,
   ShellServerToolEnvironment$Outbound,
   ShellServerToolEnvironment$outboundSchema,
 } from "./shellservertoolenvironment.js";
@@ -33,6 +38,19 @@ export type ShellServerToolConfig = {
   sleepAfterSeconds?: number | undefined;
 };
 
+/** @internal */
+export const ShellServerToolConfig$inboundSchema: z.ZodType<
+  ShellServerToolConfig,
+  unknown
+> = z.object({
+  engine: ShellServerToolEngine$inboundSchema.optional(),
+  environment: ShellServerToolEnvironment$inboundSchema.optional(),
+  sleep_after_seconds: z.int().optional(),
+}).transform((v) => {
+  return remap$(v, {
+    "sleep_after_seconds": "sleepAfterSeconds",
+  });
+});
 /** @internal */
 export type ShellServerToolConfig$Outbound = {
   engine?: string | undefined;
@@ -59,5 +77,14 @@ export function shellServerToolConfigToJSON(
 ): string {
   return JSON.stringify(
     ShellServerToolConfig$outboundSchema.parse(shellServerToolConfig),
+  );
+}
+export function shellServerToolConfigFromJSON(
+  jsonString: string,
+): SafeParseResult<ShellServerToolConfig, SDKValidationError> {
+  return safeParse(
+    jsonString,
+    (x) => ShellServerToolConfig$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'ShellServerToolConfig' from JSON`,
   );
 }
