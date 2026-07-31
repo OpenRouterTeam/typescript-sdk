@@ -583,6 +583,7 @@ export * from "./websearchplugin.js";
 export * from "./websearchservertool.js";
 export * from "./websearchservertoolconfig.js";
 export * from "./websearchservertoolopenrouter.js";
+export * from "./websearchservertoolstatus.js";
 export * from "./websearchsource.js";
 export * from "./websearchstatus.js";
 export * from "./websearchuserlocation.js";
