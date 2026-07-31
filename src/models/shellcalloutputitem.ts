@@ -5,9 +5,16 @@
 
 import * as z from "zod/v4";
 import { remap as remap$ } from "../lib/primitives.js";
+import {
+  collectExtraKeys as collectExtraKeys$,
+  safeParse,
+} from "../lib/schemas.js";
 import { ClosedEnum } from "../types/enums.js";
+import { Result as SafeParseResult } from "../types/fp.js";
+import { SDKValidationError } from "./errors/sdkvalidationerror.js";
 import {
   ToolCallStatus,
+  ToolCallStatus$inboundSchema,
   ToolCallStatus$outboundSchema,
 } from "./toolcallstatus.js";
 
@@ -37,6 +44,23 @@ export type ShellCallOutputItem = {
   type: ShellCallOutputItemType;
 };
 
+/** @internal */
+export const ShellCallOutputItemOutput$inboundSchema: z.ZodType<
+  ShellCallOutputItemOutput,
+  unknown
+> = collectExtraKeys$(
+  z.object({
+    content: z.nullable(z.string()).optional(),
+    exit_code: z.nullable(z.int()).optional(),
+    type: z.string(),
+  }).catchall(z.any()),
+  "additionalProperties",
+  true,
+).transform((v) => {
+  return remap$(v, {
+    "exit_code": "exitCode",
+  });
+});
 /** @internal */
 export type ShellCallOutputItemOutput$Outbound = {
   content?: string | null | undefined;
@@ -71,12 +95,42 @@ export function shellCallOutputItemOutputToJSON(
     ShellCallOutputItemOutput$outboundSchema.parse(shellCallOutputItemOutput),
   );
 }
+export function shellCallOutputItemOutputFromJSON(
+  jsonString: string,
+): SafeParseResult<ShellCallOutputItemOutput, SDKValidationError> {
+  return safeParse(
+    jsonString,
+    (x) => ShellCallOutputItemOutput$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'ShellCallOutputItemOutput' from JSON`,
+  );
+}
 
+/** @internal */
+export const ShellCallOutputItemType$inboundSchema: z.ZodEnum<
+  typeof ShellCallOutputItemType
+> = z.enum(ShellCallOutputItemType);
 /** @internal */
 export const ShellCallOutputItemType$outboundSchema: z.ZodEnum<
   typeof ShellCallOutputItemType
-> = z.enum(ShellCallOutputItemType);
+> = ShellCallOutputItemType$inboundSchema;
 
+/** @internal */
+export const ShellCallOutputItem$inboundSchema: z.ZodType<
+  ShellCallOutputItem,
+  unknown
+> = z.object({
+  call_id: z.string(),
+  id: z.nullable(z.string()).optional(),
+  max_output_length: z.nullable(z.int()).optional(),
+  output: z.array(z.lazy(() => ShellCallOutputItemOutput$inboundSchema)),
+  status: z.nullable(ToolCallStatus$inboundSchema).optional(),
+  type: ShellCallOutputItemType$inboundSchema,
+}).transform((v) => {
+  return remap$(v, {
+    "call_id": "callId",
+    "max_output_length": "maxOutputLength",
+  });
+});
 /** @internal */
 export type ShellCallOutputItem$Outbound = {
   call_id: string;
@@ -110,5 +164,14 @@ export function shellCallOutputItemToJSON(
 ): string {
   return JSON.stringify(
     ShellCallOutputItem$outboundSchema.parse(shellCallOutputItem),
+  );
+}
+export function shellCallOutputItemFromJSON(
+  jsonString: string,
+): SafeParseResult<ShellCallOutputItem, SDKValidationError> {
+  return safeParse(
+    jsonString,
+    (x) => ShellCallOutputItem$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'ShellCallOutputItem' from JSON`,
   );
 }

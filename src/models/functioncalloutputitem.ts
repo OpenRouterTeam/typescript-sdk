@@ -5,20 +5,28 @@
 
 import * as z from "zod/v4";
 import { remap as remap$ } from "../lib/primitives.js";
+import { safeParse } from "../lib/schemas.js";
+import * as discriminatedUnionTypes from "../types/discriminatedUnion.js";
+import { discriminatedUnion } from "../types/discriminatedUnion.js";
 import * as openEnums from "../types/enums.js";
 import { ClosedEnum, OpenEnum } from "../types/enums.js";
+import { Result as SafeParseResult } from "../types/fp.js";
+import { SDKValidationError } from "./errors/sdkvalidationerror.js";
 import {
   InputFile,
+  InputFile$inboundSchema,
   InputFile$Outbound,
   InputFile$outboundSchema,
 } from "./inputfile.js";
 import {
   InputText,
+  InputText$inboundSchema,
   InputText$Outbound,
   InputText$outboundSchema,
 } from "./inputtext.js";
 import {
   ToolCallStatus,
+  ToolCallStatus$inboundSchema,
   ToolCallStatus$outboundSchema,
 } from "./toolcallstatus.js";
 
@@ -44,11 +52,17 @@ export type FunctionCallOutputItemOutputInputImage = {
 export type FunctionCallOutputItemOutputUnion1 =
   | InputText
   | FunctionCallOutputItemOutputInputImage
-  | InputFile;
+  | InputFile
+  | discriminatedUnionTypes.Unknown<"type">;
 
 export type FunctionCallOutputItemOutputUnion2 =
   | string
-  | Array<InputText | FunctionCallOutputItemOutputInputImage | InputFile>;
+  | Array<
+    | InputText
+    | FunctionCallOutputItemOutputInputImage
+    | InputFile
+    | discriminatedUnionTypes.Unknown<"type">
+  >;
 
 export const FunctionCallOutputItemTypeFunctionCallOutput = {
   FunctionCallOutput: "function_call_output",
@@ -65,17 +79,40 @@ export type FunctionCallOutputItem = {
   id?: string | null | undefined;
   output:
     | string
-    | Array<InputText | FunctionCallOutputItemOutputInputImage | InputFile>;
+    | Array<
+      | InputText
+      | FunctionCallOutputItemOutputInputImage
+      | InputFile
+      | discriminatedUnionTypes.Unknown<"type">
+    >;
   status?: ToolCallStatus | null | undefined;
   type: FunctionCallOutputItemTypeFunctionCallOutput;
 };
 
+/** @internal */
+export const FunctionCallOutputItemDetail$inboundSchema: z.ZodType<
+  FunctionCallOutputItemDetail,
+  unknown
+> = openEnums.inboundSchema(FunctionCallOutputItemDetail);
 /** @internal */
 export const FunctionCallOutputItemDetail$outboundSchema: z.ZodType<
   string,
   FunctionCallOutputItemDetail
 > = openEnums.outboundSchema(FunctionCallOutputItemDetail);
 
+/** @internal */
+export const FunctionCallOutputItemOutputInputImage$inboundSchema: z.ZodType<
+  FunctionCallOutputItemOutputInputImage,
+  unknown
+> = z.object({
+  detail: FunctionCallOutputItemDetail$inboundSchema,
+  image_url: z.nullable(z.string()).optional(),
+  type: z.literal("input_image"),
+}).transform((v) => {
+  return remap$(v, {
+    "image_url": "imageUrl",
+  });
+});
 /** @internal */
 export type FunctionCallOutputItemOutputInputImage$Outbound = {
   detail: string;
@@ -107,7 +144,28 @@ export function functionCallOutputItemOutputInputImageToJSON(
     ),
   );
 }
+export function functionCallOutputItemOutputInputImageFromJSON(
+  jsonString: string,
+): SafeParseResult<FunctionCallOutputItemOutputInputImage, SDKValidationError> {
+  return safeParse(
+    jsonString,
+    (x) =>
+      FunctionCallOutputItemOutputInputImage$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'FunctionCallOutputItemOutputInputImage' from JSON`,
+  );
+}
 
+/** @internal */
+export const FunctionCallOutputItemOutputUnion1$inboundSchema: z.ZodType<
+  FunctionCallOutputItemOutputUnion1,
+  unknown
+> = discriminatedUnion("type", {
+  input_text: InputText$inboundSchema,
+  input_image: z.lazy(() =>
+    FunctionCallOutputItemOutputInputImage$inboundSchema
+  ),
+  input_file: InputFile$inboundSchema,
+});
 /** @internal */
 export type FunctionCallOutputItemOutputUnion1$Outbound =
   | InputText$Outbound
@@ -133,7 +191,33 @@ export function functionCallOutputItemOutputUnion1ToJSON(
     ),
   );
 }
+export function functionCallOutputItemOutputUnion1FromJSON(
+  jsonString: string,
+): SafeParseResult<FunctionCallOutputItemOutputUnion1, SDKValidationError> {
+  return safeParse(
+    jsonString,
+    (x) =>
+      FunctionCallOutputItemOutputUnion1$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'FunctionCallOutputItemOutputUnion1' from JSON`,
+  );
+}
 
+/** @internal */
+export const FunctionCallOutputItemOutputUnion2$inboundSchema: z.ZodType<
+  FunctionCallOutputItemOutputUnion2,
+  unknown
+> = z.union([
+  z.string(),
+  z.array(
+    discriminatedUnion("type", {
+      input_text: InputText$inboundSchema,
+      input_image: z.lazy(() =>
+        FunctionCallOutputItemOutputInputImage$inboundSchema
+      ),
+      input_file: InputFile$inboundSchema,
+    }),
+  ),
+]);
 /** @internal */
 export type FunctionCallOutputItemOutputUnion2$Outbound =
   | string
@@ -165,13 +249,53 @@ export function functionCallOutputItemOutputUnion2ToJSON(
     ),
   );
 }
+export function functionCallOutputItemOutputUnion2FromJSON(
+  jsonString: string,
+): SafeParseResult<FunctionCallOutputItemOutputUnion2, SDKValidationError> {
+  return safeParse(
+    jsonString,
+    (x) =>
+      FunctionCallOutputItemOutputUnion2$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'FunctionCallOutputItemOutputUnion2' from JSON`,
+  );
+}
 
 /** @internal */
-export const FunctionCallOutputItemTypeFunctionCallOutput$outboundSchema:
+export const FunctionCallOutputItemTypeFunctionCallOutput$inboundSchema:
   z.ZodEnum<typeof FunctionCallOutputItemTypeFunctionCallOutput> = z.enum(
     FunctionCallOutputItemTypeFunctionCallOutput,
   );
+/** @internal */
+export const FunctionCallOutputItemTypeFunctionCallOutput$outboundSchema:
+  z.ZodEnum<typeof FunctionCallOutputItemTypeFunctionCallOutput> =
+    FunctionCallOutputItemTypeFunctionCallOutput$inboundSchema;
 
+/** @internal */
+export const FunctionCallOutputItem$inboundSchema: z.ZodType<
+  FunctionCallOutputItem,
+  unknown
+> = z.object({
+  call_id: z.string(),
+  id: z.nullable(z.string()).optional(),
+  output: z.union([
+    z.string(),
+    z.array(
+      discriminatedUnion("type", {
+        input_text: InputText$inboundSchema,
+        input_image: z.lazy(() =>
+          FunctionCallOutputItemOutputInputImage$inboundSchema
+        ),
+        input_file: InputFile$inboundSchema,
+      }),
+    ),
+  ]),
+  status: z.nullable(ToolCallStatus$inboundSchema).optional(),
+  type: FunctionCallOutputItemTypeFunctionCallOutput$inboundSchema,
+}).transform((v) => {
+  return remap$(v, {
+    "call_id": "callId",
+  });
+});
 /** @internal */
 export type FunctionCallOutputItem$Outbound = {
   call_id: string;
@@ -215,5 +339,14 @@ export function functionCallOutputItemToJSON(
 ): string {
   return JSON.stringify(
     FunctionCallOutputItem$outboundSchema.parse(functionCallOutputItem),
+  );
+}
+export function functionCallOutputItemFromJSON(
+  jsonString: string,
+): SafeParseResult<FunctionCallOutputItem, SDKValidationError> {
+  return safeParse(
+    jsonString,
+    (x) => FunctionCallOutputItem$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'FunctionCallOutputItem' from JSON`,
   );
 }

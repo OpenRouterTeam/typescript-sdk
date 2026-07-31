@@ -4,7 +4,10 @@
  */
 
 import * as z from "zod/v4";
+import { safeParse } from "../lib/schemas.js";
 import { ClosedEnum } from "../types/enums.js";
+import { Result as SafeParseResult } from "../types/fp.js";
+import { SDKValidationError } from "./errors/sdkvalidationerror.js";
 
 export const ItemReferenceItemType = {
   ItemReference: "item_reference",
@@ -20,10 +23,22 @@ export type ItemReferenceItem = {
 };
 
 /** @internal */
-export const ItemReferenceItemType$outboundSchema: z.ZodEnum<
+export const ItemReferenceItemType$inboundSchema: z.ZodEnum<
   typeof ItemReferenceItemType
 > = z.enum(ItemReferenceItemType);
+/** @internal */
+export const ItemReferenceItemType$outboundSchema: z.ZodEnum<
+  typeof ItemReferenceItemType
+> = ItemReferenceItemType$inboundSchema;
 
+/** @internal */
+export const ItemReferenceItem$inboundSchema: z.ZodType<
+  ItemReferenceItem,
+  unknown
+> = z.object({
+  id: z.string(),
+  type: ItemReferenceItemType$inboundSchema,
+});
 /** @internal */
 export type ItemReferenceItem$Outbound = {
   id: string;
@@ -44,5 +59,14 @@ export function itemReferenceItemToJSON(
 ): string {
   return JSON.stringify(
     ItemReferenceItem$outboundSchema.parse(itemReferenceItem),
+  );
+}
+export function itemReferenceItemFromJSON(
+  jsonString: string,
+): SafeParseResult<ItemReferenceItem, SDKValidationError> {
+  return safeParse(
+    jsonString,
+    (x) => ItemReferenceItem$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'ItemReferenceItem' from JSON`,
   );
 }

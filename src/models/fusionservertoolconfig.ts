@@ -5,13 +5,17 @@
 
 import * as z from "zod/v4";
 import { remap as remap$ } from "../lib/primitives.js";
+import { safeParse } from "../lib/schemas.js";
 import * as openEnums from "../types/enums.js";
 import { OpenEnum } from "../types/enums.js";
+import { Result as SafeParseResult } from "../types/fp.js";
 import {
   AnthropicCacheControlDirective,
+  AnthropicCacheControlDirective$inboundSchema,
   AnthropicCacheControlDirective$Outbound,
   AnthropicCacheControlDirective$outboundSchema,
 } from "./anthropiccachecontroldirective.js";
+import { SDKValidationError } from "./errors/sdkvalidationerror.js";
 
 /**
  * Reasoning effort level for panelist and analyst inner calls.
@@ -96,11 +100,28 @@ export type FusionServerToolConfig = {
 };
 
 /** @internal */
+export const FusionServerToolConfigEffort$inboundSchema: z.ZodType<
+  FusionServerToolConfigEffort,
+  unknown
+> = openEnums.inboundSchema(FusionServerToolConfigEffort);
+/** @internal */
 export const FusionServerToolConfigEffort$outboundSchema: z.ZodType<
   string,
   FusionServerToolConfigEffort
 > = openEnums.outboundSchema(FusionServerToolConfigEffort);
 
+/** @internal */
+export const FusionServerToolConfigReasoning$inboundSchema: z.ZodType<
+  FusionServerToolConfigReasoning,
+  unknown
+> = z.object({
+  effort: FusionServerToolConfigEffort$inboundSchema.optional(),
+  max_tokens: z.int().optional(),
+}).transform((v) => {
+  return remap$(v, {
+    "max_tokens": "maxTokens",
+  });
+});
 /** @internal */
 export type FusionServerToolConfigReasoning$Outbound = {
   effort?: string | undefined;
@@ -129,7 +150,24 @@ export function fusionServerToolConfigReasoningToJSON(
     ),
   );
 }
+export function fusionServerToolConfigReasoningFromJSON(
+  jsonString: string,
+): SafeParseResult<FusionServerToolConfigReasoning, SDKValidationError> {
+  return safeParse(
+    jsonString,
+    (x) => FusionServerToolConfigReasoning$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'FusionServerToolConfigReasoning' from JSON`,
+  );
+}
 
+/** @internal */
+export const FusionServerToolConfigTool$inboundSchema: z.ZodType<
+  FusionServerToolConfigTool,
+  unknown
+> = z.object({
+  parameters: z.record(z.string(), z.any()).optional(),
+  type: z.string(),
+});
 /** @internal */
 export type FusionServerToolConfigTool$Outbound = {
   parameters?: { [k: string]: any } | undefined;
@@ -152,7 +190,39 @@ export function fusionServerToolConfigToolToJSON(
     FusionServerToolConfigTool$outboundSchema.parse(fusionServerToolConfigTool),
   );
 }
+export function fusionServerToolConfigToolFromJSON(
+  jsonString: string,
+): SafeParseResult<FusionServerToolConfigTool, SDKValidationError> {
+  return safeParse(
+    jsonString,
+    (x) => FusionServerToolConfigTool$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'FusionServerToolConfigTool' from JSON`,
+  );
+}
 
+/** @internal */
+export const FusionServerToolConfig$inboundSchema: z.ZodType<
+  FusionServerToolConfig,
+  unknown
+> = z.object({
+  analysis_models: z.array(z.string()).optional(),
+  cache_control: AnthropicCacheControlDirective$inboundSchema.optional(),
+  max_completion_tokens: z.int().optional(),
+  max_tool_calls: z.int().optional(),
+  model: z.string().optional(),
+  reasoning: z.lazy(() => FusionServerToolConfigReasoning$inboundSchema)
+    .optional(),
+  temperature: z.number().optional(),
+  tools: z.array(z.lazy(() => FusionServerToolConfigTool$inboundSchema))
+    .optional(),
+}).transform((v) => {
+  return remap$(v, {
+    "analysis_models": "analysisModels",
+    "cache_control": "cacheControl",
+    "max_completion_tokens": "maxCompletionTokens",
+    "max_tool_calls": "maxToolCalls",
+  });
+});
 /** @internal */
 export type FusionServerToolConfig$Outbound = {
   analysis_models?: Array<string> | undefined;
@@ -194,5 +264,14 @@ export function fusionServerToolConfigToJSON(
 ): string {
   return JSON.stringify(
     FusionServerToolConfig$outboundSchema.parse(fusionServerToolConfig),
+  );
+}
+export function fusionServerToolConfigFromJSON(
+  jsonString: string,
+): SafeParseResult<FusionServerToolConfig, SDKValidationError> {
+  return safeParse(
+    jsonString,
+    (x) => FusionServerToolConfig$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'FusionServerToolConfig' from JSON`,
   );
 }
