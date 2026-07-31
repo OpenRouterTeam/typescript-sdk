@@ -54,6 +54,14 @@ export type SpeechRequest = {
    */
   provider?: SpeechRequestProvider | undefined;
   /**
+   * Base64-encoded reference audio (optionally a data URI) for stateless voice cloning. Only routed to endpoints that support voice cloning. Supported audio formats are provider-specific.
+   */
+  refAudio?: string | undefined;
+  /**
+   * Transcript of the reference audio. Optional, but improves voice cloning quality on providers that use it. Ignored unless `ref_audio` is set.
+   */
+  refText?: string | undefined;
+  /**
    * Audio output format
    */
   responseFormat?: SpeechRequestResponseFormat | undefined;
@@ -99,6 +107,8 @@ export type SpeechRequest$Outbound = {
   input: string;
   model: string;
   provider?: SpeechRequestProvider$Outbound | undefined;
+  ref_audio?: string | undefined;
+  ref_text?: string | undefined;
   response_format: string;
   speed?: number | undefined;
   voice?: string | undefined;
@@ -112,11 +122,15 @@ export const SpeechRequest$outboundSchema: z.ZodType<
   input: z.string(),
   model: z.string(),
   provider: z.lazy(() => SpeechRequestProvider$outboundSchema).optional(),
+  refAudio: z.string().optional(),
+  refText: z.string().optional(),
   responseFormat: SpeechRequestResponseFormat$outboundSchema.default("pcm"),
   speed: z.number().optional(),
   voice: z.string().optional(),
 }).transform((v) => {
   return remap$(v, {
+    refAudio: "ref_audio",
+    refText: "ref_text",
     responseFormat: "response_format",
   });
 });
