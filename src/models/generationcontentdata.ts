@@ -4,7 +4,10 @@
  */
 
 import * as z from "zod/v4";
+import { remap as remap$ } from "../lib/primitives.js";
 import { safeParse } from "../lib/schemas.js";
+import * as openEnums from "../types/enums.js";
+import { ClosedEnum, OpenEnum } from "../types/enums.js";
 import { Result as SafeParseResult } from "../types/fp.js";
 import { SDKValidationError } from "./errors/sdkvalidationerror.js";
 
@@ -21,6 +24,32 @@ export type Input1 = {
  */
 export type InputUnion = Input1 | Input2;
 
+export type GenerationContentDataFunction = {
+  arguments: string;
+  name: string;
+};
+
+export const ToolKind = {
+  Function: "function",
+  Custom: "custom",
+} as const;
+export type ToolKind = OpenEnum<typeof ToolKind>;
+
+export const GenerationContentDataType = {
+  Function: "function",
+} as const;
+export type GenerationContentDataType = ClosedEnum<
+  typeof GenerationContentDataType
+>;
+
+export type ToolCall = {
+  function: GenerationContentDataFunction;
+  id: string;
+  namespace?: string | undefined;
+  toolKind?: ToolKind | undefined;
+  type: GenerationContentDataType;
+};
+
 /**
  * The output from the generation
  */
@@ -33,6 +62,10 @@ export type GenerationContentDataOutput = {
    * Reasoning/thinking output, if any
    */
   reasoning: string | null;
+  /**
+   * Structured tool calls emitted by the model, if any
+   */
+  toolCalls: Array<ToolCall> | null;
 };
 
 /**
@@ -95,12 +128,68 @@ export function inputUnionFromJSON(
 }
 
 /** @internal */
+export const GenerationContentDataFunction$inboundSchema: z.ZodType<
+  GenerationContentDataFunction,
+  unknown
+> = z.object({
+  arguments: z.string(),
+  name: z.string(),
+});
+
+export function generationContentDataFunctionFromJSON(
+  jsonString: string,
+): SafeParseResult<GenerationContentDataFunction, SDKValidationError> {
+  return safeParse(
+    jsonString,
+    (x) => GenerationContentDataFunction$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'GenerationContentDataFunction' from JSON`,
+  );
+}
+
+/** @internal */
+export const ToolKind$inboundSchema: z.ZodType<ToolKind, unknown> = openEnums
+  .inboundSchema(ToolKind);
+
+/** @internal */
+export const GenerationContentDataType$inboundSchema: z.ZodEnum<
+  typeof GenerationContentDataType
+> = z.enum(GenerationContentDataType);
+
+/** @internal */
+export const ToolCall$inboundSchema: z.ZodType<ToolCall, unknown> = z.object({
+  function: z.lazy(() => GenerationContentDataFunction$inboundSchema),
+  id: z.string(),
+  namespace: z.string().optional(),
+  tool_kind: ToolKind$inboundSchema.optional(),
+  type: GenerationContentDataType$inboundSchema,
+}).transform((v) => {
+  return remap$(v, {
+    "tool_kind": "toolKind",
+  });
+});
+
+export function toolCallFromJSON(
+  jsonString: string,
+): SafeParseResult<ToolCall, SDKValidationError> {
+  return safeParse(
+    jsonString,
+    (x) => ToolCall$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'ToolCall' from JSON`,
+  );
+}
+
+/** @internal */
 export const GenerationContentDataOutput$inboundSchema: z.ZodType<
   GenerationContentDataOutput,
   unknown
 > = z.object({
   completion: z.nullable(z.string()),
   reasoning: z.nullable(z.string()),
+  tool_calls: z.nullable(z.array(z.lazy(() => ToolCall$inboundSchema))),
+}).transform((v) => {
+  return remap$(v, {
+    "tool_calls": "toolCalls",
+  });
 });
 
 export function generationContentDataOutputFromJSON(

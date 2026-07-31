@@ -12,6 +12,7 @@ import { GenerationContentDataOutput } from "@openrouter/sdk/models";
 let value: GenerationContentDataOutput = {
   completion: "The meaning of life is a philosophical question...",
   reasoning: null,
+  toolCalls: null,
 };
 ```
 
@@ -21,3 +22,4 @@ let value: GenerationContentDataOutput = {
 | -------------------------------------------------- | -------------------------------------------------- | -------------------------------------------------- | -------------------------------------------------- | -------------------------------------------------- |
 | `completion`                                       | *string*                                           | :heavy_check_mark:                                 | The completion output                              | The meaning of life is a philosophical question... |
 | `reasoning`                                        | *string*                                           | :heavy_check_mark:                                 | Reasoning/thinking output, if any                  | null                                               |
+| `toolCalls`                                        | [models.ToolCall](../models/toolcall.mdx)[]         | :heavy_check_mark:                                 | Structured tool calls emitted by the model, if any | null                                               |
