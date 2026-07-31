@@ -13,7 +13,7 @@ export class Organization extends ClientSDK {
    * List organization members
    *
    * @remarks
-   * List all members of the organization associated with the authenticated management key. [Management key](/docs/guides/overview/auth/management-api-keys) required.
+   * List the active members of the organization associated with the authenticated management key. Members who have been deactivated are excluded. [Management key](/docs/guides/overview/auth/management-api-keys) required.
    */
   async listMembers(
     request?: operations.ListOrganizationMembersRequest | undefined,
