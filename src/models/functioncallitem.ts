@@ -5,9 +5,13 @@
 
 import * as z from "zod/v4";
 import { remap as remap$ } from "../lib/primitives.js";
+import { safeParse } from "../lib/schemas.js";
 import { ClosedEnum } from "../types/enums.js";
+import { Result as SafeParseResult } from "../types/fp.js";
+import { SDKValidationError } from "./errors/sdkvalidationerror.js";
 import {
   ToolCallStatus,
+  ToolCallStatus$inboundSchema,
   ToolCallStatus$outboundSchema,
 } from "./toolcallstatus.js";
 
@@ -33,10 +37,31 @@ export type FunctionCallItem = {
 };
 
 /** @internal */
-export const FunctionCallItemType$outboundSchema: z.ZodEnum<
+export const FunctionCallItemType$inboundSchema: z.ZodEnum<
   typeof FunctionCallItemType
 > = z.enum(FunctionCallItemType);
+/** @internal */
+export const FunctionCallItemType$outboundSchema: z.ZodEnum<
+  typeof FunctionCallItemType
+> = FunctionCallItemType$inboundSchema;
 
+/** @internal */
+export const FunctionCallItem$inboundSchema: z.ZodType<
+  FunctionCallItem,
+  unknown
+> = z.object({
+  arguments: z.string(),
+  call_id: z.string(),
+  id: z.string(),
+  name: z.string(),
+  namespace: z.string().optional(),
+  status: ToolCallStatus$inboundSchema.optional(),
+  type: FunctionCallItemType$inboundSchema,
+}).transform((v) => {
+  return remap$(v, {
+    "call_id": "callId",
+  });
+});
 /** @internal */
 export type FunctionCallItem$Outbound = {
   arguments: string;
@@ -71,5 +96,14 @@ export function functionCallItemToJSON(
 ): string {
   return JSON.stringify(
     FunctionCallItem$outboundSchema.parse(functionCallItem),
+  );
+}
+export function functionCallItemFromJSON(
+  jsonString: string,
+): SafeParseResult<FunctionCallItem, SDKValidationError> {
+  return safeParse(
+    jsonString,
+    (x) => FunctionCallItem$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'FunctionCallItem' from JSON`,
   );
 }
