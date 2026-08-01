@@ -3,7 +3,6 @@
  * @generated-id: fcfa9e559784
  */
 
-import * as z from "zod/v4";
 import { OpenRouterCore } from "../core.js";
 import { encodeFormQuery, encodeSimple } from "../lib/encodings.js";
 import { matchStatusCode } from "../lib/http.js";
@@ -40,7 +39,7 @@ export function videoGenerationGetVideoContent(
   options?: RequestOptions,
 ): APIPromise<
   Result<
-    ReadableStream<Uint8Array>,
+    operations.ListVideosContentResponse,
     | errors.BadRequestResponseError
     | errors.UnauthorizedResponseError
     | errors.NotFoundResponseError
@@ -70,7 +69,7 @@ async function $do(
 ): Promise<
   [
     Result<
-      ReadableStream<Uint8Array>,
+      operations.ListVideosContentResponse,
       | errors.BadRequestResponseError
       | errors.UnauthorizedResponseError
       | errors.NotFoundResponseError
@@ -192,7 +191,7 @@ async function $do(
   };
 
   const [result] = await M.match<
-    ReadableStream<Uint8Array>,
+    operations.ListVideosContentResponse,
     | errors.BadRequestResponseError
     | errors.UnauthorizedResponseError
     | errors.NotFoundResponseError
@@ -207,17 +206,18 @@ async function $do(
     | UnexpectedClientError
     | SDKValidationError
   >(
-    M.stream(
-      200,
-      z.custom<ReadableStream<Uint8Array>>(x => x instanceof ReadableStream),
-      { ctype: "video/mp4" },
-    ),
+    M.stream(200, operations.ListVideosContentResponse$inboundSchema, {
+      ctype: "video/mp4",
+    }),
+    M.stream(206, operations.ListVideosContentResponse$inboundSchema, {
+      ctype: "video/mp4",
+    }),
     M.jsonErr(400, errors.BadRequestResponseError$inboundSchema),
     M.jsonErr(401, errors.UnauthorizedResponseError$inboundSchema),
     M.jsonErr(404, errors.NotFoundResponseError$inboundSchema),
     M.jsonErr(500, errors.InternalServerResponseError$inboundSchema),
     M.jsonErr(502, errors.BadGatewayResponseError$inboundSchema),
-    M.fail("4XX"),
+    M.fail([416, "4XX"]),
     M.fail("5XX"),
   )(response, req, { extraFields: responseFields });
   if (!result.ok) {
