@@ -16,6 +16,7 @@ export const PDFParserEngineEnum = {
   MistralOcr: "mistral-ocr",
   Native: "native",
   CloudflareAi: "cloudflare-ai",
+  PdfInspector: "pdf-inspector",
 } as const;
 export type PDFParserEngineEnum = OpenEnum<typeof PDFParserEngineEnum>;
 
