@@ -5,6 +5,12 @@
 
 import * as z from "zod/v4";
 import { remap as remap$ } from "../lib/primitives.js";
+import {
+  collectExtraKeys as collectExtraKeys$,
+  safeParse,
+} from "../lib/schemas.js";
+import { Result as SafeParseResult } from "../types/fp.js";
+import { SDKValidationError } from "./errors/sdkvalidationerror.js";
 
 /**
  * A tool made available to the subagent. Only OpenRouter server tools (e.g. openrouter:web_search) are supported; function tools are rejected because the worker has no way to execute them. The subagent tool may not list itself.
@@ -15,6 +21,18 @@ export type SubagentNestedTool = {
   additionalProperties?: { [k: string]: any } | undefined;
 };
 
+/** @internal */
+export const SubagentNestedTool$inboundSchema: z.ZodType<
+  SubagentNestedTool,
+  unknown
+> = collectExtraKeys$(
+  z.object({
+    parameters: z.record(z.string(), z.any()).optional(),
+    type: z.string(),
+  }).catchall(z.any()),
+  "additionalProperties",
+  true,
+);
 /** @internal */
 export type SubagentNestedTool$Outbound = {
   parameters?: { [k: string]: any } | undefined;
@@ -44,5 +62,14 @@ export function subagentNestedToolToJSON(
 ): string {
   return JSON.stringify(
     SubagentNestedTool$outboundSchema.parse(subagentNestedTool),
+  );
+}
+export function subagentNestedToolFromJSON(
+  jsonString: string,
+): SafeParseResult<SubagentNestedTool, SDKValidationError> {
+  return safeParse(
+    jsonString,
+    (x) => SubagentNestedTool$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'SubagentNestedTool' from JSON`,
   );
 }

@@ -5,8 +5,11 @@
 
 import * as z from "zod/v4";
 import { remap as remap$ } from "../lib/primitives.js";
+import { safeParse } from "../lib/schemas.js";
 import * as openEnums from "../types/enums.js";
 import { OpenEnum } from "../types/enums.js";
+import { Result as SafeParseResult } from "../types/fp.js";
+import { SDKValidationError } from "./errors/sdkvalidationerror.js";
 
 /**
  * Reasoning effort level for the advisor call.
@@ -40,11 +43,28 @@ export type AdvisorReasoning = {
 };
 
 /** @internal */
+export const AdvisorReasoningEffort$inboundSchema: z.ZodType<
+  AdvisorReasoningEffort,
+  unknown
+> = openEnums.inboundSchema(AdvisorReasoningEffort);
+/** @internal */
 export const AdvisorReasoningEffort$outboundSchema: z.ZodType<
   string,
   AdvisorReasoningEffort
 > = openEnums.outboundSchema(AdvisorReasoningEffort);
 
+/** @internal */
+export const AdvisorReasoning$inboundSchema: z.ZodType<
+  AdvisorReasoning,
+  unknown
+> = z.object({
+  effort: AdvisorReasoningEffort$inboundSchema.optional(),
+  max_tokens: z.int().optional(),
+}).transform((v) => {
+  return remap$(v, {
+    "max_tokens": "maxTokens",
+  });
+});
 /** @internal */
 export type AdvisorReasoning$Outbound = {
   effort?: string | undefined;
@@ -69,5 +89,14 @@ export function advisorReasoningToJSON(
 ): string {
   return JSON.stringify(
     AdvisorReasoning$outboundSchema.parse(advisorReasoning),
+  );
+}
+export function advisorReasoningFromJSON(
+  jsonString: string,
+): SafeParseResult<AdvisorReasoning, SDKValidationError> {
+  return safeParse(
+    jsonString,
+    (x) => AdvisorReasoning$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'AdvisorReasoning' from JSON`,
   );
 }

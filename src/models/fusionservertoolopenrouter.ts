@@ -4,9 +4,13 @@
  */
 
 import * as z from "zod/v4";
+import { safeParse } from "../lib/schemas.js";
 import { ClosedEnum } from "../types/enums.js";
+import { Result as SafeParseResult } from "../types/fp.js";
+import { SDKValidationError } from "./errors/sdkvalidationerror.js";
 import {
   FusionServerToolConfig,
+  FusionServerToolConfig$inboundSchema,
   FusionServerToolConfig$Outbound,
   FusionServerToolConfig$outboundSchema,
 } from "./fusionservertoolconfig.js";
@@ -30,10 +34,22 @@ export type FusionServerToolOpenRouter = {
 };
 
 /** @internal */
-export const FusionServerToolOpenRouterType$outboundSchema: z.ZodEnum<
+export const FusionServerToolOpenRouterType$inboundSchema: z.ZodEnum<
   typeof FusionServerToolOpenRouterType
 > = z.enum(FusionServerToolOpenRouterType);
+/** @internal */
+export const FusionServerToolOpenRouterType$outboundSchema: z.ZodEnum<
+  typeof FusionServerToolOpenRouterType
+> = FusionServerToolOpenRouterType$inboundSchema;
 
+/** @internal */
+export const FusionServerToolOpenRouter$inboundSchema: z.ZodType<
+  FusionServerToolOpenRouter,
+  unknown
+> = z.object({
+  parameters: FusionServerToolConfig$inboundSchema.optional(),
+  type: FusionServerToolOpenRouterType$inboundSchema,
+});
 /** @internal */
 export type FusionServerToolOpenRouter$Outbound = {
   parameters?: FusionServerToolConfig$Outbound | undefined;
@@ -54,5 +70,14 @@ export function fusionServerToolOpenRouterToJSON(
 ): string {
   return JSON.stringify(
     FusionServerToolOpenRouter$outboundSchema.parse(fusionServerToolOpenRouter),
+  );
+}
+export function fusionServerToolOpenRouterFromJSON(
+  jsonString: string,
+): SafeParseResult<FusionServerToolOpenRouter, SDKValidationError> {
+  return safeParse(
+    jsonString,
+    (x) => FusionServerToolOpenRouter$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'FusionServerToolOpenRouter' from JSON`,
   );
 }
