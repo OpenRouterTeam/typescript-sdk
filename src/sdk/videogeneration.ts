@@ -56,7 +56,7 @@ export class VideoGeneration extends ClientSDK {
   async getVideoContent(
     request: operations.ListVideosContentRequest,
     options?: RequestOptions,
-  ): Promise<ReadableStream<Uint8Array>> {
+  ): Promise<operations.ListVideosContentResponse> {
     return unwrapAsync(videoGenerationGetVideoContent(
       this,
       request,
