@@ -114,6 +114,10 @@ export type PublicEndpoint = {
   status?: EndpointStatus | undefined;
   supportedParameters: Array<Parameter>;
   supportsImplicitCaching: boolean;
+  /**
+   * Whether this TTS endpoint accepts inline reference audio (`ref_audio`) for stateless voice cloning. Requests carrying reference audio are only routed to endpoints where this is true.
+   */
+  supportsVoiceCloning: boolean;
   tag: string;
   throughputLast30m: PercentileStats | null;
   /**
@@ -185,6 +189,7 @@ export const PublicEndpoint$inboundSchema: z.ZodType<PublicEndpoint, unknown> =
     status: EndpointStatus$inboundSchema.optional(),
     supported_parameters: z.array(Parameter$inboundSchema),
     supports_implicit_caching: z.boolean(),
+    supports_voice_cloning: z.boolean(),
     tag: z.string(),
     throughput_last_30m: z.nullable(PercentileStats$inboundSchema),
     uptime_last_1d: z.nullable(z.number()),
@@ -201,6 +206,7 @@ export const PublicEndpoint$inboundSchema: z.ZodType<PublicEndpoint, unknown> =
       "provider_name": "providerName",
       "supported_parameters": "supportedParameters",
       "supports_implicit_caching": "supportsImplicitCaching",
+      "supports_voice_cloning": "supportsVoiceCloning",
       "throughput_last_30m": "throughputLast30m",
       "uptime_last_1d": "uptimeLast1d",
       "uptime_last_30m": "uptimeLast30m",
