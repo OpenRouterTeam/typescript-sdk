@@ -19,7 +19,7 @@ export type Workspace = {
    */
   createdBy: string | null;
   /**
-   * Deterministic ID of the workspace's implicitly-created default guardrail
+   * Deterministic ID derived from the workspace ID. The default guardrail is materialized when its configuration is first written.
    */
   defaultGuardrailId: string;
   /**
