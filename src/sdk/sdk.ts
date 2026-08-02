@@ -76,6 +76,11 @@ export class OpenRouter extends ClientSDK {
     return (this._benchmarks ??= new Benchmarks(this._options));
   }
 
+  private _credits?: Credits;
+  get credits(): Credits {
+    return (this._credits ??= new Credits(this._options));
+  }
+
   private _byok?: BYOK;
   get byok(): BYOK {
     return (this._byok ??= new BYOK(this._options));
@@ -89,11 +94,6 @@ export class OpenRouter extends ClientSDK {
   private _classifications?: Classifications;
   get classifications(): Classifications {
     return (this._classifications ??= new Classifications(this._options));
-  }
-
-  private _credits?: Credits;
-  get credits(): Credits {
-    return (this._credits ??= new Credits(this._options));
   }
 
   private _datasets?: Datasets;

@@ -80,6 +80,8 @@ export * from "./bashservertoolconfig.js";
 export * from "./bashservertoolengine.js";
 export * from "./bashservertoolenvironment.js";
 export * from "./booleancapability.js";
+export * from "./budget.js";
+export * from "./budgetresponse.js";
 export * from "./bulkaddworkspacemembersrequest.js";
 export * from "./bulkaddworkspacemembersresponse.js";
 export * from "./bulkassignkeysrequest.js";

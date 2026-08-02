@@ -42,6 +42,7 @@ export * from "./getapprankings.js";
 export * from "./getbenchmarks.js";
 export * from "./getbyokkey.js";
 export * from "./getcredits.js";
+export * from "./getcurrentbudget.js";
 export * from "./getcurrentkey.js";
 export * from "./getfilemetadata.js";
 export * from "./getgeneration.js";

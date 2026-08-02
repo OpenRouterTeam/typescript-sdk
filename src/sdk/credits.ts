@@ -4,11 +4,32 @@
  */
 
 import { creditsGetCredits } from "../funcs/creditsGetCredits.js";
+import { creditsGetCurrentBudget } from "../funcs/creditsGetCurrentBudget.js";
 import { ClientSDK, RequestOptions } from "../lib/sdks.js";
+import * as models from "../models/index.js";
 import * as operations from "../models/operations/index.js";
 import { unwrapAsync } from "../types/fp.js";
 
 export class Credits extends ClientSDK {
+  /**
+   * Get budgets for the current API key
+   *
+   * @remarks
+   * Returns every spending budget that constrains the API key making the request — account credits, the key limit, guardrail budgets, and workspace budgets — with the limit, reset interval, and spend so far for each. Intended for agents that regulate their own spend. [API key](/docs/api-reference/authentication) required.
+   */
+  async getCurrentBudget(
+    security: operations.GetCurrentBudgetSecurity,
+    request?: operations.GetCurrentBudgetRequest | undefined,
+    options?: RequestOptions,
+  ): Promise<models.BudgetResponse> {
+    return unwrapAsync(creditsGetCurrentBudget(
+      this,
+      security,
+      request,
+      options,
+    ));
+  }
+
   /**
    * Get remaining credits
    *

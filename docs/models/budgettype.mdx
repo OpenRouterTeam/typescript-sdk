@@ -1,0 +1,21 @@
+---
+title: "BudgetType"
+---
+
+Which configured limit this budget comes from. `user_credits` is the account credit balance, `api_key_limit` the spending limit set on the key itself, `api_key_guardrail` / `org_member_guardrail` / `org_default_guardrail` are guardrail budgets, and `workspace_budget` is a budget shared by everything in the key's workspace.
+
+## Example Usage
+
+```typescript
+import { BudgetType } from "@openrouter/sdk/models";
+
+let value: BudgetType = "workspace_budget";
+
+// Open enum: unrecognized values are captured as Unrecognized<string>
+```
+
+## Values
+
+```typescript
+"user_credits" | "api_key_limit" | "api_key_guardrail" | "org_member_guardrail" | "org_default_guardrail" | "workspace_budget" | Unrecognized<string>
+```

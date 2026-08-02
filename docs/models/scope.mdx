@@ -1,0 +1,21 @@
+---
+title: "Scope"
+---
+
+What the spend counted against this budget is accumulated over.
+
+## Example Usage
+
+```typescript
+import { Scope } from "@openrouter/sdk/models";
+
+let value: Scope = "workspace";
+
+// Open enum: unrecognized values are captured as Unrecognized<string>
+```
+
+## Values
+
+```typescript
+"user" | "api_key" | "org_member" | "workspace" | Unrecognized<string>
+```
