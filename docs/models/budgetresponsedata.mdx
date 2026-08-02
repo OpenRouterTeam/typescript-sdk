@@ -1,0 +1,53 @@
+---
+title: "BudgetResponseData"
+---
+
+Budget state for the API key making the request
+
+## Example Usage
+
+```typescript
+import { BudgetResponseData } from "@openrouter/sdk/models";
+
+let value: BudgetResponseData = {
+  budgets: [
+    {
+      id: "770e8400-e29b-41d4-a716-446655440000",
+      includesByok: false,
+      interval: "monthly",
+      isExceeded: false,
+      limitUsd: 500,
+      name: "production",
+      remainingUsd: 376.55,
+      resetsAt: new Date("2025-09-01T00:00:00.000Z"),
+      scope: "workspace",
+      type: "workspace_budget",
+      usageUsd: 123.45,
+      utilization: 0.2469,
+    },
+  ],
+  isExceeded: false,
+  mostConstraining: {
+    id: "770e8400-e29b-41d4-a716-446655440000",
+    includesByok: false,
+    interval: "monthly",
+    isExceeded: false,
+    limitUsd: 500,
+    name: "production",
+    remainingUsd: 376.55,
+    resetsAt: new Date("2025-09-01T00:00:00.000Z"),
+    scope: "workspace",
+    type: "workspace_budget",
+    usageUsd: 123.45,
+    utilization: 0.2469,
+  },
+};
+```
+
+## Fields
+
+| Field                                                                                                                                                                                                                                                                                                                         | Type                                                                                                                                                                                                                                                                                                                          | Required                                                                                                                                                                                                                                                                                                                      | Description                                                                                                                                                                                                                                                                                                                   | Example                                                                                                                                                                                                                                                                                                                       |
+| ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `budgets`                                                                                                                                                                                                                                                                                                                     | [models.Budget](../models/budget.mdx)[]                                                                                                                                                                                                                                                                                        | :heavy_check_mark:                                                                                                                                                                                                                                                                                                            | Every budget currently constraining this API key, in the order they are enforced.                                                                                                                                                                                                                                             |                                                                                                                                                                                                                                                                                                                               |
+| `isExceeded`                                                                                                                                                                                                                                                                                                                  | *boolean*                                                                                                                                                                                                                                                                                                                     | :heavy_check_mark:                                                                                                                                                                                                                                                                                                            | Whether any budget is already exhausted.                                                                                                                                                                                                                                                                                      | false                                                                                                                                                                                                                                                                                                                         |
+| `mostConstraining`                                                                                                                                                                                                                                                                                                            | [models.Budget](../models/budget.mdx)                                                                                                                                                                                                                                                                                          | :heavy_check_mark:                                                                                                                                                                                                                                                                                                            | N/A                                                                                                                                                                                                                                                                                                                           | \{<br/>"id": "770e8400-e29b-41d4-a716-446655440000",<br/>"includes_byok": false,<br/>"interval": "monthly",<br/>"is_exceeded": false,<br/>"limit_usd": 500,<br/>"name": "production",<br/>"remaining_usd": 376.55,<br/>"resets_at": "2025-09-01T00:00:00.000Z",<br/>"scope": "workspace",<br/>"type": "workspace_budget",<br/>"usage_usd": 123.45,<br/>"utilization": 0.2469<br/>} |
