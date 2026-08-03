@@ -12,6 +12,11 @@ import {
   ProviderOptions$Outbound,
   ProviderOptions$outboundSchema,
 } from "./provideroptions.js";
+import {
+  SpeechInputReference,
+  SpeechInputReference$Outbound,
+  SpeechInputReference$outboundSchema,
+} from "./speechinputreference.js";
 
 /**
  * Provider-specific passthrough configuration
@@ -45,6 +50,10 @@ export type SpeechRequest = {
    * Text to synthesize
    */
   input: string;
+  /**
+   * Reference content for stateless voice cloning: one `input_audio` part carrying the voice sample, optionally accompanied by one `text` part with its transcript. Only routed to endpoints that support voice cloning.
+   */
+  inputReferences?: Array<SpeechInputReference> | undefined;
   /**
    * TTS model identifier
    */
@@ -97,6 +106,7 @@ export const SpeechRequestResponseFormat$outboundSchema: z.ZodType<
 /** @internal */
 export type SpeechRequest$Outbound = {
   input: string;
+  input_references?: Array<SpeechInputReference$Outbound> | undefined;
   model: string;
   provider?: SpeechRequestProvider$Outbound | undefined;
   response_format: string;
@@ -110,6 +120,7 @@ export const SpeechRequest$outboundSchema: z.ZodType<
   SpeechRequest
 > = z.object({
   input: z.string(),
+  inputReferences: z.array(SpeechInputReference$outboundSchema).optional(),
   model: z.string(),
   provider: z.lazy(() => SpeechRequestProvider$outboundSchema).optional(),
   responseFormat: SpeechRequestResponseFormat$outboundSchema.default("pcm"),
@@ -117,6 +128,7 @@ export const SpeechRequest$outboundSchema: z.ZodType<
   voice: z.string().optional(),
 }).transform((v) => {
   return remap$(v, {
+    inputReferences: "input_references",
     responseFormat: "response_format",
   });
 });
