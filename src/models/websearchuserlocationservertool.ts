@@ -4,7 +4,10 @@
  */
 
 import * as z from "zod/v4";
+import { safeParse } from "../lib/schemas.js";
 import { ClosedEnum } from "../types/enums.js";
+import { Result as SafeParseResult } from "../types/fp.js";
+import { SDKValidationError } from "./errors/sdkvalidationerror.js";
 
 export const WebSearchUserLocationServerToolType = {
   Approximate: "approximate",
@@ -25,10 +28,25 @@ export type WebSearchUserLocationServerTool = {
 };
 
 /** @internal */
-export const WebSearchUserLocationServerToolType$outboundSchema: z.ZodEnum<
+export const WebSearchUserLocationServerToolType$inboundSchema: z.ZodEnum<
   typeof WebSearchUserLocationServerToolType
 > = z.enum(WebSearchUserLocationServerToolType);
+/** @internal */
+export const WebSearchUserLocationServerToolType$outboundSchema: z.ZodEnum<
+  typeof WebSearchUserLocationServerToolType
+> = WebSearchUserLocationServerToolType$inboundSchema;
 
+/** @internal */
+export const WebSearchUserLocationServerTool$inboundSchema: z.ZodType<
+  WebSearchUserLocationServerTool,
+  unknown
+> = z.object({
+  city: z.nullable(z.string()).optional(),
+  country: z.nullable(z.string()).optional(),
+  region: z.nullable(z.string()).optional(),
+  timezone: z.nullable(z.string()).optional(),
+  type: WebSearchUserLocationServerToolType$inboundSchema.optional(),
+});
 /** @internal */
 export type WebSearchUserLocationServerTool$Outbound = {
   city?: string | null | undefined;
@@ -57,5 +75,14 @@ export function webSearchUserLocationServerToolToJSON(
     WebSearchUserLocationServerTool$outboundSchema.parse(
       webSearchUserLocationServerTool,
     ),
+  );
+}
+export function webSearchUserLocationServerToolFromJSON(
+  jsonString: string,
+): SafeParseResult<WebSearchUserLocationServerTool, SDKValidationError> {
+  return safeParse(
+    jsonString,
+    (x) => WebSearchUserLocationServerTool$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'WebSearchUserLocationServerTool' from JSON`,
   );
 }

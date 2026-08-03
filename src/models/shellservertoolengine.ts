@@ -20,6 +20,11 @@ export const ShellServerToolEngine = {
 export type ShellServerToolEngine = OpenEnum<typeof ShellServerToolEngine>;
 
 /** @internal */
+export const ShellServerToolEngine$inboundSchema: z.ZodType<
+  ShellServerToolEngine,
+  unknown
+> = openEnums.inboundSchema(ShellServerToolEngine);
+/** @internal */
 export const ShellServerToolEngine$outboundSchema: z.ZodType<
   string,
   ShellServerToolEngine
