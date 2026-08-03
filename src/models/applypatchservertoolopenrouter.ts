@@ -4,12 +4,16 @@
  */
 
 import * as z from "zod/v4";
+import { safeParse } from "../lib/schemas.js";
 import { ClosedEnum } from "../types/enums.js";
+import { Result as SafeParseResult } from "../types/fp.js";
 import {
   ApplyPatchServerToolConfig,
+  ApplyPatchServerToolConfig$inboundSchema,
   ApplyPatchServerToolConfig$Outbound,
   ApplyPatchServerToolConfig$outboundSchema,
 } from "./applypatchservertoolconfig.js";
+import { SDKValidationError } from "./errors/sdkvalidationerror.js";
 
 export const ApplyPatchServerToolOpenRouterType = {
   OpenrouterApplyPatch: "openrouter:apply_patch",
@@ -30,10 +34,22 @@ export type ApplyPatchServerToolOpenRouter = {
 };
 
 /** @internal */
-export const ApplyPatchServerToolOpenRouterType$outboundSchema: z.ZodEnum<
+export const ApplyPatchServerToolOpenRouterType$inboundSchema: z.ZodEnum<
   typeof ApplyPatchServerToolOpenRouterType
 > = z.enum(ApplyPatchServerToolOpenRouterType);
+/** @internal */
+export const ApplyPatchServerToolOpenRouterType$outboundSchema: z.ZodEnum<
+  typeof ApplyPatchServerToolOpenRouterType
+> = ApplyPatchServerToolOpenRouterType$inboundSchema;
 
+/** @internal */
+export const ApplyPatchServerToolOpenRouter$inboundSchema: z.ZodType<
+  ApplyPatchServerToolOpenRouter,
+  unknown
+> = z.object({
+  parameters: ApplyPatchServerToolConfig$inboundSchema.optional(),
+  type: ApplyPatchServerToolOpenRouterType$inboundSchema,
+});
 /** @internal */
 export type ApplyPatchServerToolOpenRouter$Outbound = {
   parameters?: ApplyPatchServerToolConfig$Outbound | undefined;
@@ -56,5 +72,14 @@ export function applyPatchServerToolOpenRouterToJSON(
     ApplyPatchServerToolOpenRouter$outboundSchema.parse(
       applyPatchServerToolOpenRouter,
     ),
+  );
+}
+export function applyPatchServerToolOpenRouterFromJSON(
+  jsonString: string,
+): SafeParseResult<ApplyPatchServerToolOpenRouter, SDKValidationError> {
+  return safeParse(
+    jsonString,
+    (x) => ApplyPatchServerToolOpenRouter$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'ApplyPatchServerToolOpenRouter' from JSON`,
   );
 }

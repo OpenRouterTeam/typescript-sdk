@@ -144,12 +144,12 @@ export type OpenResponsesResultToolUnion =
   | (NamespaceTool & { type: "namespace" })
   | discriminatedUnionTypes.Unknown<"type">;
 
-export type InputTokensDetails = {
+export type UsageInputTokensDetails = {
   cacheWriteTokens?: number | null | undefined;
   cachedTokens: number;
 };
 
-export type OutputTokensDetails = {
+export type UsageOutputTokensDetails = {
   reasoningTokens: number;
 };
 
@@ -161,9 +161,9 @@ export type UsageCostDetails = {
 
 export type Usage = {
   inputTokens: number;
-  inputTokensDetails: InputTokensDetails;
+  inputTokensDetails: UsageInputTokensDetails;
   outputTokens: number;
-  outputTokensDetails: OutputTokensDetails;
+  outputTokensDetails: UsageOutputTokensDetails;
   totalTokens: number;
   /**
    * Cost of the completion
@@ -345,8 +345,8 @@ export function openResponsesResultToolUnionFromJSON(
 }
 
 /** @internal */
-export const InputTokensDetails$inboundSchema: z.ZodType<
-  InputTokensDetails,
+export const UsageInputTokensDetails$inboundSchema: z.ZodType<
+  UsageInputTokensDetails,
   unknown
 > = z.object({
   cache_write_tokens: z.nullable(z.int()).optional(),
@@ -358,19 +358,19 @@ export const InputTokensDetails$inboundSchema: z.ZodType<
   });
 });
 
-export function inputTokensDetailsFromJSON(
+export function usageInputTokensDetailsFromJSON(
   jsonString: string,
-): SafeParseResult<InputTokensDetails, SDKValidationError> {
+): SafeParseResult<UsageInputTokensDetails, SDKValidationError> {
   return safeParse(
     jsonString,
-    (x) => InputTokensDetails$inboundSchema.parse(JSON.parse(x)),
-    `Failed to parse 'InputTokensDetails' from JSON`,
+    (x) => UsageInputTokensDetails$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'UsageInputTokensDetails' from JSON`,
   );
 }
 
 /** @internal */
-export const OutputTokensDetails$inboundSchema: z.ZodType<
-  OutputTokensDetails,
+export const UsageOutputTokensDetails$inboundSchema: z.ZodType<
+  UsageOutputTokensDetails,
   unknown
 > = z.object({
   reasoning_tokens: z.int(),
@@ -380,13 +380,13 @@ export const OutputTokensDetails$inboundSchema: z.ZodType<
   });
 });
 
-export function outputTokensDetailsFromJSON(
+export function usageOutputTokensDetailsFromJSON(
   jsonString: string,
-): SafeParseResult<OutputTokensDetails, SDKValidationError> {
+): SafeParseResult<UsageOutputTokensDetails, SDKValidationError> {
   return safeParse(
     jsonString,
-    (x) => OutputTokensDetails$inboundSchema.parse(JSON.parse(x)),
-    `Failed to parse 'OutputTokensDetails' from JSON`,
+    (x) => UsageOutputTokensDetails$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'UsageOutputTokensDetails' from JSON`,
   );
 }
 
@@ -419,9 +419,9 @@ export function usageCostDetailsFromJSON(
 /** @internal */
 export const Usage$inboundSchema: z.ZodType<Usage, unknown> = z.object({
   input_tokens: z.int(),
-  input_tokens_details: z.lazy(() => InputTokensDetails$inboundSchema),
+  input_tokens_details: z.lazy(() => UsageInputTokensDetails$inboundSchema),
   output_tokens: z.int(),
-  output_tokens_details: z.lazy(() => OutputTokensDetails$inboundSchema),
+  output_tokens_details: z.lazy(() => UsageOutputTokensDetails$inboundSchema),
   total_tokens: z.int(),
   cost: z.nullable(z.number()).optional(),
   cost_details: z.lazy(() => UsageCostDetails$inboundSchema).optional(),
