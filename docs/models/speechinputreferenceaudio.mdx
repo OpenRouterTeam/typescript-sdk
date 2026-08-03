@@ -1,0 +1,25 @@
+---
+title: "SpeechInputReferenceAudio"
+---
+
+Reference audio input for stateless voice cloning
+
+## Example Usage
+
+```typescript
+import { SpeechInputReferenceAudio } from "@openrouter/sdk/models";
+
+let value: SpeechInputReferenceAudio = {
+  inputAudio: {
+    data: "data:audio/wav;base64,UklGRuQXDABXQVZF...",
+  },
+  type: "input_audio",
+};
+```
+
+## Fields
+
+| Field                                                                                | Type                                                                                 | Required                                                                             | Description                                                                          |
+| ------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------ |
+| `inputAudio`                                                                         | [models.SpeechInputReferenceAudioInput](../models/speechinputreferenceaudioinput.mdx) | :heavy_check_mark:                                                                   | Reference audio input object                                                         |
+| `type`                                                                               | *"input_audio"*                                                                      | :heavy_check_mark:                                                                   | N/A                                                                                  |
