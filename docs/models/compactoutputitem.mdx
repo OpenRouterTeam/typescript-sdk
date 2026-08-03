@@ -1,0 +1,20 @@
+---
+title: "CompactOutputItem"
+---
+
+## Example Usage
+
+```typescript
+import { CompactOutputItem } from "@openrouter/sdk/models";
+
+let value: CompactOutputItem = {
+  type: "compaction",
+};
+```
+
+## Fields
+
+| Field                                                                          | Type                                                                           | Required                                                                       | Description                                                                    | Example                                                                        |
+| ------------------------------------------------------------------------------ | ------------------------------------------------------------------------------ | ------------------------------------------------------------------------------ | ------------------------------------------------------------------------------ | ------------------------------------------------------------------------------ |
+| `type`                                                                         | *string*                                                                       | :heavy_check_mark:                                                             | N/A                                                                            |                                                                                |
+| `additionalProperties`                                                         | Record\<string, *any*>                                                          | :heavy_minus_sign:                                                             | N/A                                                                            | \{<br/>"encrypted_content": "gAAAAA...",<br/>"id": "cmp_abc123",<br/>"type": "compaction"<br/>} |

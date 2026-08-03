@@ -5,13 +5,18 @@
 
 import * as z from "zod/v4";
 import { remap as remap$ } from "../lib/primitives.js";
+import { safeParse } from "../lib/schemas.js";
+import { Result as SafeParseResult } from "../types/fp.js";
+import { SDKValidationError } from "./errors/sdkvalidationerror.js";
 import {
   SubagentNestedTool,
+  SubagentNestedTool$inboundSchema,
   SubagentNestedTool$Outbound,
   SubagentNestedTool$outboundSchema,
 } from "./subagentnestedtool.js";
 import {
   SubagentReasoning,
+  SubagentReasoning$inboundSchema,
   SubagentReasoning$Outbound,
   SubagentReasoning$outboundSchema,
 } from "./subagentreasoning.js";
@@ -55,6 +60,25 @@ export type SubagentServerToolConfig = {
 };
 
 /** @internal */
+export const SubagentServerToolConfig$inboundSchema: z.ZodType<
+  SubagentServerToolConfig,
+  unknown
+> = z.object({
+  instructions: z.string().optional(),
+  max_completion_tokens: z.int().optional(),
+  max_tool_calls: z.int().optional(),
+  model: z.string().optional(),
+  name: z.string().optional(),
+  reasoning: SubagentReasoning$inboundSchema.optional(),
+  temperature: z.number().optional(),
+  tools: z.array(SubagentNestedTool$inboundSchema).optional(),
+}).transform((v) => {
+  return remap$(v, {
+    "max_completion_tokens": "maxCompletionTokens",
+    "max_tool_calls": "maxToolCalls",
+  });
+});
+/** @internal */
 export type SubagentServerToolConfig$Outbound = {
   instructions?: string | undefined;
   max_completion_tokens?: number | undefined;
@@ -91,5 +115,14 @@ export function subagentServerToolConfigToJSON(
 ): string {
   return JSON.stringify(
     SubagentServerToolConfig$outboundSchema.parse(subagentServerToolConfig),
+  );
+}
+export function subagentServerToolConfigFromJSON(
+  jsonString: string,
+): SafeParseResult<SubagentServerToolConfig, SDKValidationError> {
+  return safeParse(
+    jsonString,
+    (x) => SubagentServerToolConfig$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'SubagentServerToolConfig' from JSON`,
   );
 }

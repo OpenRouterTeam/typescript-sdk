@@ -5,9 +5,13 @@
 
 import * as z from "zod/v4";
 import { remap as remap$ } from "../lib/primitives.js";
+import { safeParse } from "../lib/schemas.js";
 import { ClosedEnum } from "../types/enums.js";
+import { Result as SafeParseResult } from "../types/fp.js";
+import { SDKValidationError } from "./errors/sdkvalidationerror.js";
 import {
   ToolCallStatus,
+  ToolCallStatus$inboundSchema,
   ToolCallStatus$outboundSchema,
 } from "./toolcallstatus.js";
 
@@ -42,10 +46,30 @@ export type LocalShellCallItem = {
 };
 
 /** @internal */
-export const TypeExec$outboundSchema: z.ZodEnum<typeof TypeExec> = z.enum(
+export const TypeExec$inboundSchema: z.ZodEnum<typeof TypeExec> = z.enum(
   TypeExec,
 );
+/** @internal */
+export const TypeExec$outboundSchema: z.ZodEnum<typeof TypeExec> =
+  TypeExec$inboundSchema;
 
+/** @internal */
+export const LocalShellCallItemAction$inboundSchema: z.ZodType<
+  LocalShellCallItemAction,
+  unknown
+> = z.object({
+  command: z.array(z.string()),
+  env: z.record(z.string(), z.string()),
+  timeout_ms: z.nullable(z.int()).optional(),
+  type: TypeExec$inboundSchema,
+  user: z.nullable(z.string()).optional(),
+  working_directory: z.nullable(z.string()).optional(),
+}).transform((v) => {
+  return remap$(v, {
+    "timeout_ms": "timeoutMs",
+    "working_directory": "workingDirectory",
+  });
+});
 /** @internal */
 export type LocalShellCallItemAction$Outbound = {
   command: Array<string>;
@@ -81,12 +105,40 @@ export function localShellCallItemActionToJSON(
     LocalShellCallItemAction$outboundSchema.parse(localShellCallItemAction),
   );
 }
+export function localShellCallItemActionFromJSON(
+  jsonString: string,
+): SafeParseResult<LocalShellCallItemAction, SDKValidationError> {
+  return safeParse(
+    jsonString,
+    (x) => LocalShellCallItemAction$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'LocalShellCallItemAction' from JSON`,
+  );
+}
 
+/** @internal */
+export const TypeLocalShellCall$inboundSchema: z.ZodEnum<
+  typeof TypeLocalShellCall
+> = z.enum(TypeLocalShellCall);
 /** @internal */
 export const TypeLocalShellCall$outboundSchema: z.ZodEnum<
   typeof TypeLocalShellCall
-> = z.enum(TypeLocalShellCall);
+> = TypeLocalShellCall$inboundSchema;
 
+/** @internal */
+export const LocalShellCallItem$inboundSchema: z.ZodType<
+  LocalShellCallItem,
+  unknown
+> = z.object({
+  action: z.lazy(() => LocalShellCallItemAction$inboundSchema),
+  call_id: z.string(),
+  id: z.string(),
+  status: ToolCallStatus$inboundSchema,
+  type: TypeLocalShellCall$inboundSchema,
+}).transform((v) => {
+  return remap$(v, {
+    "call_id": "callId",
+  });
+});
 /** @internal */
 export type LocalShellCallItem$Outbound = {
   action: LocalShellCallItemAction$Outbound;
@@ -117,5 +169,14 @@ export function localShellCallItemToJSON(
 ): string {
   return JSON.stringify(
     LocalShellCallItem$outboundSchema.parse(localShellCallItem),
+  );
+}
+export function localShellCallItemFromJSON(
+  jsonString: string,
+): SafeParseResult<LocalShellCallItem, SDKValidationError> {
+  return safeParse(
+    jsonString,
+    (x) => LocalShellCallItem$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'LocalShellCallItem' from JSON`,
   );
 }

@@ -24,6 +24,11 @@ export const WebFetchEngineEnum = {
 export type WebFetchEngineEnum = OpenEnum<typeof WebFetchEngineEnum>;
 
 /** @internal */
+export const WebFetchEngineEnum$inboundSchema: z.ZodType<
+  WebFetchEngineEnum,
+  unknown
+> = openEnums.inboundSchema(WebFetchEngineEnum);
+/** @internal */
 export const WebFetchEngineEnum$outboundSchema: z.ZodType<
   string,
   WebFetchEngineEnum
