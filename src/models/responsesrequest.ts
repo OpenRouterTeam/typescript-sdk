@@ -28,6 +28,11 @@ import {
   ApplyPatchServerToolOpenRouter$outboundSchema,
 } from "./applypatchservertoolopenrouter.js";
 import {
+  AudioGenerationServerToolOpenRouter,
+  AudioGenerationServerToolOpenRouter$Outbound,
+  AudioGenerationServerToolOpenRouter$outboundSchema,
+} from "./audiogenerationservertoolopenrouter.js";
+import {
   AutoBetaRouterPlugin,
   AutoBetaRouterPlugin$Outbound,
   AutoBetaRouterPlugin$outboundSchema,
@@ -353,6 +358,9 @@ export type ResponsesRequestToolUnion =
   | (ImageGenerationServerToolOpenRouter & {
     type: "openrouter:image_generation";
   })
+  | (AudioGenerationServerToolOpenRouter & {
+    type: "openrouter:audio_generation";
+  })
   | (SearchModelsServerToolOpenRouter & {
     type: "openrouter:experimental__search_models";
   })
@@ -488,6 +496,9 @@ export type ResponsesRequest = {
       | (FusionServerToolOpenRouter & { type: "openrouter:fusion" })
       | (ImageGenerationServerToolOpenRouter & {
         type: "openrouter:image_generation";
+      })
+      | (AudioGenerationServerToolOpenRouter & {
+        type: "openrouter:audio_generation";
       })
       | (SearchModelsServerToolOpenRouter & {
         type: "openrouter:experimental__search_models";
@@ -648,6 +659,9 @@ export type ResponsesRequestToolUnion$Outbound =
   | (ImageGenerationServerToolOpenRouter$Outbound & {
     type: "openrouter:image_generation";
   })
+  | (AudioGenerationServerToolOpenRouter$Outbound & {
+    type: "openrouter:audio_generation";
+  })
   | (SearchModelsServerToolOpenRouter$Outbound & {
     type: "openrouter:experimental__search_models";
   })
@@ -716,6 +730,9 @@ export const ResponsesRequestToolUnion$outboundSchema: z.ZodType<
   ),
   ImageGenerationServerToolOpenRouter$outboundSchema.and(
     z.object({ type: z.literal("openrouter:image_generation") }),
+  ),
+  AudioGenerationServerToolOpenRouter$outboundSchema.and(
+    z.object({ type: z.literal("openrouter:audio_generation") }),
   ),
   SearchModelsServerToolOpenRouter$outboundSchema.and(
     z.object({ type: z.literal("openrouter:experimental__search_models") }),
@@ -822,6 +839,9 @@ export type ResponsesRequest$Outbound = {
       | (FusionServerToolOpenRouter$Outbound & { type: "openrouter:fusion" })
       | (ImageGenerationServerToolOpenRouter$Outbound & {
         type: "openrouter:image_generation";
+      })
+      | (AudioGenerationServerToolOpenRouter$Outbound & {
+        type: "openrouter:audio_generation";
       })
       | (SearchModelsServerToolOpenRouter$Outbound & {
         type: "openrouter:experimental__search_models";
@@ -957,6 +977,9 @@ export const ResponsesRequest$outboundSchema: z.ZodType<
       ),
       ImageGenerationServerToolOpenRouter$outboundSchema.and(
         z.object({ type: z.literal("openrouter:image_generation") }),
+      ),
+      AudioGenerationServerToolOpenRouter$outboundSchema.and(
+        z.object({ type: z.literal("openrouter:audio_generation") }),
       ),
       SearchModelsServerToolOpenRouter$outboundSchema.and(
         z.object({ type: z.literal("openrouter:experimental__search_models") }),

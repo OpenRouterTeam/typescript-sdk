@@ -1,0 +1,21 @@
+---
+title: "AudioGenerationServerToolConfig"
+---
+
+Configuration for the openrouter:audio_generation server tool. Accepts a model, voice, and speed for text-to-speech synthesis.
+
+## Example Usage
+
+```typescript
+import { AudioGenerationServerToolConfig } from "@openrouter/sdk/models";
+
+let value: AudioGenerationServerToolConfig = {};
+```
+
+## Fields
+
+| Field                                                                                                    | Type                                                                                                     | Required                                                                                                 | Description                                                                                              | Example                                                                                                  |
+| -------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------- |
+| `model`                                                                                                  | *string*                                                                                                 | :heavy_minus_sign:                                                                                       | Which text-to-speech model to use (e.g. "openai/gpt-4o-mini-tts"). Defaults to "openai/gpt-4o-mini-tts". | openai/gpt-4o-mini-tts                                                                                   |
+| `speed`                                                                                                  | *number*                                                                                                 | :heavy_minus_sign:                                                                                       | Playback speed multiplier for the synthesized speech.                                                    | 1                                                                                                        |
+| `voice`                                                                                                  | *string*                                                                                                 | :heavy_minus_sign:                                                                                       | The voice to synthesize speech with.                                                                     | alloy                                                                                                    |

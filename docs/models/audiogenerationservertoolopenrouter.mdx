@@ -1,0 +1,22 @@
+---
+title: "AudioGenerationServerToolOpenRouter"
+---
+
+OpenRouter built-in server tool: synthesizes speech from text using a text-to-speech model
+
+## Example Usage
+
+```typescript
+import { AudioGenerationServerToolOpenRouter } from "@openrouter/sdk/models";
+
+let value: AudioGenerationServerToolOpenRouter = {
+  type: "openrouter:audio_generation",
+};
+```
+
+## Fields
+
+| Field                                                                                                                          | Type                                                                                                                           | Required                                                                                                                       | Description                                                                                                                    | Example                                                                                                                        |
+| ------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------ |
+| `parameters`                                                                                                                   | [models.AudioGenerationServerToolConfig](../models/audiogenerationservertoolconfig.mdx)                                         | :heavy_minus_sign:                                                                                                             | Configuration for the openrouter:audio_generation server tool. Accepts a model, voice, and speed for text-to-speech synthesis. | \{<br/>"model": "openai/gpt-4o-mini-tts",<br/>"voice": "alloy"<br/>}                                                            |
+| `type`                                                                                                                         | [models.AudioGenerationServerToolOpenRouterType](../models/audiogenerationservertoolopenroutertype.mdx)                         | :heavy_check_mark:                                                                                                             | N/A                                                                                                                            |                                                                                                                                |

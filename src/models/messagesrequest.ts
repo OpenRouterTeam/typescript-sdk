@@ -66,6 +66,11 @@ import {
   AnthropicWebSearchToolUserLocation$outboundSchema,
 } from "./anthropicwebsearchtooluserlocation.js";
 import {
+  AudioGenerationServerToolOpenRouter,
+  AudioGenerationServerToolOpenRouter$Outbound,
+  AudioGenerationServerToolOpenRouter$outboundSchema,
+} from "./audiogenerationservertoolopenrouter.js";
+import {
   AutoBetaRouterPlugin,
   AutoBetaRouterPlugin$Outbound,
   AutoBetaRouterPlugin$outboundSchema,
@@ -465,6 +470,7 @@ export type MessagesRequestToolUnion =
   | BashServerTool
   | DatetimeServerTool
   | ImageGenerationServerToolOpenRouter
+  | AudioGenerationServerToolOpenRouter
   | MessagesSearchModelsServerTool
   | WebFetchServerTool
   | OpenRouterWebSearchServerTool
@@ -547,6 +553,7 @@ export type MessagesRequest = {
       | BashServerTool
       | DatetimeServerTool
       | ImageGenerationServerToolOpenRouter
+      | AudioGenerationServerToolOpenRouter
       | MessagesSearchModelsServerTool
       | WebFetchServerTool
       | OpenRouterWebSearchServerTool
@@ -1452,6 +1459,7 @@ export type MessagesRequestToolUnion$Outbound =
   | BashServerTool$Outbound
   | DatetimeServerTool$Outbound
   | ImageGenerationServerToolOpenRouter$Outbound
+  | AudioGenerationServerToolOpenRouter$Outbound
   | MessagesSearchModelsServerTool$Outbound
   | WebFetchServerTool$Outbound
   | OpenRouterWebSearchServerTool$Outbound
@@ -1473,6 +1481,7 @@ export const MessagesRequestToolUnion$outboundSchema: z.ZodType<
   BashServerTool$outboundSchema,
   DatetimeServerTool$outboundSchema,
   ImageGenerationServerToolOpenRouter$outboundSchema,
+  AudioGenerationServerToolOpenRouter$outboundSchema,
   MessagesSearchModelsServerTool$outboundSchema,
   WebFetchServerTool$outboundSchema,
   OpenRouterWebSearchServerTool$outboundSchema,
@@ -1547,6 +1556,7 @@ export type MessagesRequest$Outbound = {
       | BashServerTool$Outbound
       | DatetimeServerTool$Outbound
       | ImageGenerationServerToolOpenRouter$Outbound
+      | AudioGenerationServerToolOpenRouter$Outbound
       | MessagesSearchModelsServerTool$Outbound
       | WebFetchServerTool$Outbound
       | OpenRouterWebSearchServerTool$Outbound
@@ -1624,6 +1634,7 @@ export const MessagesRequest$outboundSchema: z.ZodType<
       BashServerTool$outboundSchema,
       DatetimeServerTool$outboundSchema,
       ImageGenerationServerToolOpenRouter$outboundSchema,
+      AudioGenerationServerToolOpenRouter$outboundSchema,
       MessagesSearchModelsServerTool$outboundSchema,
       WebFetchServerTool$outboundSchema,
       OpenRouterWebSearchServerTool$outboundSchema,

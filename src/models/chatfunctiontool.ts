@@ -12,6 +12,11 @@ import {
   AdvisorServerToolOpenRouter$outboundSchema,
 } from "./advisorservertoolopenrouter.js";
 import {
+  AudioGenerationServerToolOpenRouter,
+  AudioGenerationServerToolOpenRouter$Outbound,
+  AudioGenerationServerToolOpenRouter$outboundSchema,
+} from "./audiogenerationservertoolopenrouter.js";
+import {
   BashServerTool,
   BashServerTool$Outbound,
   BashServerTool$outboundSchema,
@@ -117,6 +122,7 @@ export type ChatFunctionTool =
   | FilesServerTool
   | FusionServerToolOpenRouter
   | ImageGenerationServerToolOpenRouter
+  | AudioGenerationServerToolOpenRouter
   | ChatSearchModelsServerTool
   | SubagentServerToolOpenRouter
   | WebFetchServerTool
@@ -195,6 +201,7 @@ export type ChatFunctionTool$Outbound =
   | FilesServerTool$Outbound
   | FusionServerToolOpenRouter$Outbound
   | ImageGenerationServerToolOpenRouter$Outbound
+  | AudioGenerationServerToolOpenRouter$Outbound
   | ChatSearchModelsServerTool$Outbound
   | SubagentServerToolOpenRouter$Outbound
   | WebFetchServerTool$Outbound
@@ -213,6 +220,7 @@ export const ChatFunctionTool$outboundSchema: z.ZodType<
   FilesServerTool$outboundSchema,
   FusionServerToolOpenRouter$outboundSchema,
   ImageGenerationServerToolOpenRouter$outboundSchema,
+  AudioGenerationServerToolOpenRouter$outboundSchema,
   ChatSearchModelsServerTool$outboundSchema,
   SubagentServerToolOpenRouter$outboundSchema,
   WebFetchServerTool$outboundSchema,
