@@ -94,6 +94,10 @@ components:
           example: 0.015
           format: 'double'
           type: 'number'
+        workspace_id:
+          description: 'ID of the workspace this activity is attributed to. Only present when `group_by=workspace` is passed; the response is then split per workspace. Activity recorded before workspace resolution existed is attributed to the account default workspace.'
+          example: '550e8400-e29b-41d4-a716-446655440000'
+          type: 'string'
       required:
         - 'date'
         - 'model'
@@ -9083,6 +9087,7 @@ components:
           usage: 0.0015
           user_agent: 'Mozilla/5.0'
           web_search_engine: 'exa'
+          workspace_id: '550e8400-e29b-41d4-a716-446655440000'
       properties:
         data:
           description: 'Generation data'
@@ -9351,6 +9356,12 @@ components:
               type:
                 - 'string'
                 - 'null'
+            workspace_id:
+              description: 'ID of the workspace this generation is attributed to. Null for accounts without workspaces. Generations created before workspace resolution existed are attributed to the account default workspace.'
+              example: '550e8400-e29b-41d4-a716-446655440000'
+              type:
+                - 'string'
+                - 'null'
           required:
             - 'id'
             - 'upstream_id'
@@ -9393,6 +9404,7 @@ components:
             - 'user_agent'
             - 'http_referer'
             - 'data_region'
+            - 'workspace_id'
           type: 'object'
       required:
         - 'data'
@@ -25119,7 +25131,7 @@ openapi: '3.1.0'
 paths:
   /activity:
     get:
-      description: 'Returns user activity data grouped by endpoint for the last 30 (completed) UTC days. [Management key](/docs/guides/overview/auth/management-api-keys) required.'
+      description: 'Returns user activity data grouped by endpoint for the last 30 (completed) UTC days. Pass `workspace_id` to scope the response to a single workspace. Pass `group_by=workspace` to split each row per workspace and include `workspace_id` on every item; by default rows are aggregated across workspaces and `workspace_id` is not returned. Activity recorded before workspace resolution existed is permanently attributed to the account default workspace (no backfill is possible). [Management key](/docs/guides/overview/auth/management-api-keys) required.'
       operationId: 'getUserActivity'
       parameters:
         - description: 'Filter by a single UTC date in the last 30 days (YYYY-MM-DD format).'
@@ -25145,6 +25157,24 @@ paths:
           schema:
             description: 'Filter by org member user ID. Only applicable for organization accounts.'
             example: 'user_abc123'
+            type: 'string'
+        - description: 'Set to ''workspace'' to split each row per workspace and include `workspace_id` on every item. Omitted by default, in which case rows are aggregated across workspaces (by date, model, and endpoint) and `workspace_id` is not returned — preserving the historical response shape.'
+          in: 'query'
+          name: 'group_by'
+          required: false
+          schema:
+            description: 'Set to ''workspace'' to split each row per workspace and include `workspace_id` on every item. Omitted by default, in which case rows are aggregated across workspaces (by date, model, and endpoint) and `workspace_id` is not returned — preserving the historical response shape.'
+            enum:
+              - 'workspace'
+            example: 'workspace'
+            type: 'string'
+        - description: 'Filter by workspace ID (UUID). Returns only activity attributed to that workspace. The workspace must belong to the authenticated account.'
+          in: 'query'
+          name: 'workspace_id'
+          required: false
+          schema:
+            description: 'Filter by workspace ID (UUID). Returns only activity attributed to that workspace. The workspace must belong to the authenticated account.'
+            example: '550e8400-e29b-41d4-a716-446655440000'
             type: 'string'
       responses:
         '200':
@@ -25219,6 +25249,7 @@ paths:
       summary: 'Get user activity grouped by endpoint'
       tags:
         - 'Analytics'
+      x-speakeasy-max-method-params: 5
   /analytics/meta:
     get:
       description: 'Returns the available metrics, dimensions, filter operators, and granularities for the analytics query endpoint. [Management key](/docs/guides/overview/auth/management-api-keys) required.'
@@ -25499,7 +25530,7 @@ paths:
                                 - format: 'double'
                                   type: 'number'
                             type: 'array'
-                        description: 'Filter value (scalar or array depending on operator). Several dimensions are enriched in responses (returned as human-readable labels), but filters must use the underlying ID: `api_key_id` — numeric ID (from generation metadata) or key hash (64-char hex from GET /api/v1/keys, resolved server-side); `user` — Clerk user ID (e.g. "user_abc123"), not the display name; `workspace` — workspace UUID, not the workspace name; `app` — numeric app ID, not the app title; `model` — permaslug (e.g. "openai/gpt-4o"), not the display name. Other dimensions (provider, origin, country, etc.) are not enriched and accept the value as returned.'
+                        description: 'Filter value (scalar or array depending on operator). Several dimensions are enriched in responses (returned as human-readable labels), but filters must use the underlying ID: `api_key_id` — numeric ID (from generation metadata) or key hash (64-char hex from GET /api/v1/keys, resolved server-side); `user` — Clerk user ID (e.g. "user_abc123"), not the display name; `workspace` — workspace UUID, not the workspace name (filtering or grouping by the account default workspace also covers activity recorded before workspace resolution existed, which is attributed to that default workspace); `app` — numeric app ID, not the app title; `model` — permaslug (e.g. "openai/gpt-4o"), not the display name. Other dimensions (provider, origin, country, etc.) are not enriched and accept the value as returned.'
                     required:
                       - 'field'
                       - 'operator'
