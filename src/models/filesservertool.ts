@@ -17,7 +17,7 @@ export const FilesServerToolType = {
 export type FilesServerToolType = ClosedEnum<typeof FilesServerToolType>;
 
 /**
- * OpenRouter built-in server tool: read, write, edit, and list workspace files via the Files API. Requires the `x-openrouter-file-ids: openrouter` request header.
+ * OpenRouter built-in server tool: read, write, edit, and list workspace files via the Files API. Requires an authenticated workspace.
  */
 export type FilesServerTool = {
   /**
