@@ -298,20 +298,13 @@ export type ReasoningConfig = {
   maxTokens?: number | null | undefined;
 };
 
-/**
- * The service tier to use for processing this request. `fast` is accepted as an alias for `priority`.
- */
 export const ResponsesRequestServiceTier = {
   Auto: "auto",
   Default: "default",
-  Fast: "fast",
   Flex: "flex",
   Priority: "priority",
   Scale: "scale",
 } as const;
-/**
- * The service tier to use for processing this request. `fast` is accepted as an alias for `priority`.
- */
 export type ResponsesRequestServiceTier = OpenEnum<
   typeof ResponsesRequestServiceTier
 >;
@@ -442,9 +435,6 @@ export type ResponsesRequest = {
    * Recommended per-end-user identifier for abuse isolation. Use a stable ID, hash, or pseudonym. When a provider requires a user identity, OpenRouter folds it into the hashed identity sent upstream and never forwards it raw. If omitted, requests use an account-level identity, so provider policy blocks can affect the whole account.
    */
   safetyIdentifier?: string | null | undefined;
-  /**
-   * The service tier to use for processing this request. `fast` is accepted as an alias for `priority`.
-   */
   serviceTier?: ResponsesRequestServiceTier | null | undefined;
   /**
    * A unique identifier for grouping related requests (e.g., a conversation or agent workflow). When provided, OpenRouter uses it as the sticky routing key, routing all requests in the session to the same provider to maximize prompt cache hits. Also used for observability grouping. If provided in both the request body and the x-session-id header, the body value takes precedence. Maximum of 256 characters.

@@ -1,0 +1,21 @@
+---
+title: "OutputStrategy"
+---
+
+How the subagent's `outcome` is produced. 'last_message' (default) returns the subagent's final message. 'summarize' runs an additional summarization turn over the subagent's conversation after it completes and returns that summary as the outcome.
+
+## Example Usage
+
+```typescript
+import { OutputStrategy } from "@openrouter/sdk/models";
+
+let value: OutputStrategy = "summarize";
+
+// Open enum: unrecognized values are captured as Unrecognized<string>
+```
+
+## Values
+
+```typescript
+"last_message" | "summarize" | Unrecognized<string>
+```

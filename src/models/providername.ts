@@ -98,7 +98,6 @@ export const ProviderName = {
   Switchpoint: "Switchpoint",
   Tencent: "Tencent",
   Tenstorrent: "Tenstorrent",
-  ThinkingMachines: "Thinking Machines",
   Together: "Together",
   Upstage: "Upstage",
   Venice: "Venice",
