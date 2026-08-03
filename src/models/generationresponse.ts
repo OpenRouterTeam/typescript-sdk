@@ -65,6 +65,7 @@ export type GenerationResponseData = {
    * Whether the generation was cancelled
    */
   cancelled: boolean | null;
+  completedAt: Date | null;
   /**
    * ISO 8601 timestamp of when the generation was created
    */
@@ -73,6 +74,7 @@ export type GenerationResponseData = {
    * The data region this generation was routed through: 'global', 'europe', or 'us'.
    */
   dataRegion: DataRegion;
+  dispatchedAt: Date | null;
   /**
    * External user identifier
    */
@@ -81,6 +83,7 @@ export type GenerationResponseData = {
    * Reason the generation finished
    */
   finishReason: string | null;
+  firstTokenAt: Date | null;
   /**
    * Time taken for generation in milliseconds
    */
@@ -93,6 +96,10 @@ export type GenerationResponseData = {
    * Unique identifier for the generation
    */
   id: string;
+  /**
+   * Average milliseconds between completion tokens
+   */
+  interTokenLatencyMs: number | null;
   /**
    * Whether this used bring-your-own-key
    */
@@ -194,6 +201,10 @@ export type GenerationResponseData = {
    */
   streamed: boolean | null;
   /**
+   * Completion tokens per second between first token and completion
+   */
+  throughput: number | null;
+  /**
    * Number of tokens in the completion
    */
   tokensCompletion: number | null;
@@ -258,13 +269,23 @@ export const GenerationResponseData$inboundSchema: z.ZodType<
   app_id: z.nullable(z.int()),
   cache_discount: z.nullable(z.number()),
   cancelled: z.nullable(z.boolean()),
+  completed_at: z.nullable(
+    z.iso.datetime({ offset: true }).transform(v => new Date(v)),
+  ),
   created_at: z.string(),
   data_region: DataRegion$inboundSchema,
+  dispatched_at: z.nullable(
+    z.iso.datetime({ offset: true }).transform(v => new Date(v)),
+  ),
   external_user: z.nullable(z.string()),
   finish_reason: z.nullable(z.string()),
+  first_token_at: z.nullable(
+    z.iso.datetime({ offset: true }).transform(v => new Date(v)),
+  ),
   generation_time: z.nullable(z.number()),
   http_referer: z.nullable(z.string()),
   id: z.string(),
+  inter_token_latency_ms: z.nullable(z.number()),
   is_byok: z.boolean(),
   latency: z.nullable(z.number()),
   model: z.string(),
@@ -290,6 +311,7 @@ export const GenerationResponseData$inboundSchema: z.ZodType<
   service_tier: z.nullable(z.string()),
   session_id: z.nullable(z.string()).optional(),
   streamed: z.nullable(z.boolean()),
+  throughput: z.nullable(z.number()),
   tokens_completion: z.nullable(z.int()),
   tokens_prompt: z.nullable(z.int()),
   total_cost: z.number(),
@@ -304,12 +326,16 @@ export const GenerationResponseData$inboundSchema: z.ZodType<
     "api_type": "apiType",
     "app_id": "appId",
     "cache_discount": "cacheDiscount",
+    "completed_at": "completedAt",
     "created_at": "createdAt",
     "data_region": "dataRegion",
+    "dispatched_at": "dispatchedAt",
     "external_user": "externalUser",
     "finish_reason": "finishReason",
+    "first_token_at": "firstTokenAt",
     "generation_time": "generationTime",
     "http_referer": "httpReferer",
+    "inter_token_latency_ms": "interTokenLatencyMs",
     "is_byok": "isByok",
     "moderation_latency": "moderationLatency",
     "native_finish_reason": "nativeFinishReason",
