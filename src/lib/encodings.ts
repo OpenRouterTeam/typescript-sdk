@@ -3,7 +3,7 @@
  * @generated-id: 3bd8ead98afd
  */
 
-import { bytesToBase64 } from "./base64.js";
+import { bytesToBase64 } from "./base64-codec.js";
 import { isPlainObject } from "./primitives.js";
 
 export class EncodingError extends Error {
