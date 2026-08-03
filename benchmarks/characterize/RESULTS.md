@@ -69,3 +69,17 @@ generator-owned operation-private validators that dispatch request tools, stream
 and completed output items by discriminator without constructing every unused branch.
 That remains a generator architecture change; it must pass the exact schema/error
 equivalence suite before replacing the public generated schemas.
+
+## Rejected: dynamic status-error imports
+
+A persistent-edit prototype replaced the fourteen eager Responses HTTP error
+schemas with status-specific dynamic imports. Across 20 fresh processes it
+regressed the `responsesSend` import from 41,988,580 to 99,969,304 median heap
+bytes and increased the minified bundle from 213,200 to 357,667 bytes.
+
+With the current non-splitting Worker/Node bundle, esbuild retained the dynamic
+module graph and its initialization wrappers instead of providing an isolated
+status chunk. The prototype was fully reverted. Status-lazy schemas are only
+viable if the deployment produces real code-split modules and measures their
+combined Worker startup/first-error behavior; they are not a safe optimization
+for the current bundle.
