@@ -22,6 +22,10 @@ import {
   OutputApplyPatchServerToolItem$inboundSchema,
 } from "./outputapplypatchservertoolitem.js";
 import {
+  OutputAudioGenerationServerToolItem,
+  OutputAudioGenerationServerToolItem$inboundSchema,
+} from "./outputaudiogenerationservertoolitem.js";
+import {
   OutputBashServerToolItem,
   OutputBashServerToolItem$inboundSchema,
 } from "./outputbashservertoolitem.js";
@@ -144,6 +148,9 @@ export type OutputItems =
   | OutputMessageItem
   | (OutputAdvisorServerToolItem & { type: "openrouter:advisor" })
   | (OutputApplyPatchServerToolItem & { type: "openrouter:apply_patch" })
+  | (OutputAudioGenerationServerToolItem & {
+    type: "openrouter:audio_generation";
+  })
   | (OutputBashServerToolItem & { type: "openrouter:bash" })
   | (OutputBrowserUseServerToolItem & { type: "openrouter:browser_use" })
   | (OutputCodeInterpreterServerToolItem & {
@@ -200,6 +207,10 @@ export const OutputItems$inboundSchema: z.ZodType<OutputItems, unknown> =
     ),
     ["openrouter:apply_patch"]: OutputApplyPatchServerToolItem$inboundSchema
       .and(z.object({ type: z.literal("openrouter:apply_patch") })),
+    ["openrouter:audio_generation"]:
+      OutputAudioGenerationServerToolItem$inboundSchema.and(
+        z.object({ type: z.literal("openrouter:audio_generation") }),
+      ),
     ["openrouter:bash"]: OutputBashServerToolItem$inboundSchema.and(
       z.object({ type: z.literal("openrouter:bash") }),
     ),

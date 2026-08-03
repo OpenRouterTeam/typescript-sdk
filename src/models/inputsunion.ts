@@ -117,6 +117,11 @@ import {
   OutputApplyPatchServerToolItem$outboundSchema,
 } from "./outputapplypatchservertoolitem.js";
 import {
+  OutputAudioGenerationServerToolItem,
+  OutputAudioGenerationServerToolItem$Outbound,
+  OutputAudioGenerationServerToolItem$outboundSchema,
+} from "./outputaudiogenerationservertoolitem.js";
+import {
   OutputBashServerToolItem,
   OutputBashServerToolItem$Outbound,
   OutputBashServerToolItem$outboundSchema,
@@ -425,6 +430,7 @@ export type InputsUnion1 =
   | OutputCodeInterpreterServerToolItem
   | OutputFileSearchServerToolItem
   | OutputImageGenerationServerToolItem
+  | OutputAudioGenerationServerToolItem
   | OutputBrowserUseServerToolItem
   | OutputBashServerToolItem
   | OutputTextEditorServerToolItem
@@ -481,6 +487,7 @@ export type InputsUnion =
     | OutputCodeInterpreterServerToolItem
     | OutputFileSearchServerToolItem
     | OutputImageGenerationServerToolItem
+    | OutputAudioGenerationServerToolItem
     | OutputBrowserUseServerToolItem
     | OutputBashServerToolItem
     | OutputTextEditorServerToolItem
@@ -784,6 +791,7 @@ export type InputsUnion1$Outbound =
   | OutputCodeInterpreterServerToolItem$Outbound
   | OutputFileSearchServerToolItem$Outbound
   | OutputImageGenerationServerToolItem$Outbound
+  | OutputAudioGenerationServerToolItem$Outbound
   | OutputBrowserUseServerToolItem$Outbound
   | OutputBashServerToolItem$Outbound
   | OutputTextEditorServerToolItem$Outbound
@@ -839,6 +847,7 @@ export const InputsUnion1$outboundSchema: z.ZodType<
   OutputCodeInterpreterServerToolItem$outboundSchema,
   OutputFileSearchServerToolItem$outboundSchema,
   OutputImageGenerationServerToolItem$outboundSchema,
+  OutputAudioGenerationServerToolItem$outboundSchema,
   OutputBrowserUseServerToolItem$outboundSchema,
   OutputBashServerToolItem$outboundSchema,
   OutputTextEditorServerToolItem$outboundSchema,
@@ -898,6 +907,7 @@ export type InputsUnion$Outbound =
     | OutputCodeInterpreterServerToolItem$Outbound
     | OutputFileSearchServerToolItem$Outbound
     | OutputImageGenerationServerToolItem$Outbound
+    | OutputAudioGenerationServerToolItem$Outbound
     | OutputBrowserUseServerToolItem$Outbound
     | OutputBashServerToolItem$Outbound
     | OutputTextEditorServerToolItem$Outbound
@@ -957,6 +967,7 @@ export const InputsUnion$outboundSchema: z.ZodType<
       OutputCodeInterpreterServerToolItem$outboundSchema,
       OutputFileSearchServerToolItem$outboundSchema,
       OutputImageGenerationServerToolItem$outboundSchema,
+      OutputAudioGenerationServerToolItem$outboundSchema,
       OutputBrowserUseServerToolItem$outboundSchema,
       OutputBashServerToolItem$outboundSchema,
       OutputTextEditorServerToolItem$outboundSchema,

@@ -1,0 +1,26 @@
+---
+title: "OutputAudioGenerationServerToolItem"
+---
+
+An openrouter:audio_generation server tool output item
+
+## Example Usage
+
+```typescript
+import { OutputAudioGenerationServerToolItem } from "@openrouter/sdk/models";
+
+let value: OutputAudioGenerationServerToolItem = {
+  status: "completed",
+  type: "openrouter:audio_generation",
+};
+```
+
+## Fields
+
+| Field                                                                                                  | Type                                                                                                   | Required                                                                                               | Description                                                                                            | Example                                                                                                |
+| ------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------ |
+| `audioUrl`                                                                                             | *string*                                                                                               | :heavy_minus_sign:                                                                                     | The synthesized speech as a base64-encoded data URL.                                                   |                                                                                                        |
+| `error`                                                                                                | *string*                                                                                               | :heavy_minus_sign:                                                                                     | Error message when synthesis failed.                                                                   |                                                                                                        |
+| `id`                                                                                                   | *string*                                                                                               | :heavy_minus_sign:                                                                                     | N/A                                                                                                    |                                                                                                        |
+| `status`                                                                                               | [models.ToolCallStatus](../models/toolcallstatus.mdx)                                                   | :heavy_check_mark:                                                                                     | N/A                                                                                                    | completed                                                                                              |
+| `type`                                                                                                 | [models.OutputAudioGenerationServerToolItemType](../models/outputaudiogenerationservertoolitemtype.mdx) | :heavy_check_mark:                                                                                     | N/A                                                                                                    |                                                                                                        |
