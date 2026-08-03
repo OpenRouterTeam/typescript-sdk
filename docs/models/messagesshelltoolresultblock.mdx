@@ -1,0 +1,36 @@
+---
+title: "MessagesShellToolResultBlock"
+---
+
+Output of an `openrouter:shell` call from a prior assistant turn. Accepted on replay and dropped before the provider request — Anthropic has no equivalent block.
+
+## Example Usage
+
+```typescript
+import { MessagesShellToolResultBlock } from "@openrouter/sdk/models";
+
+let value: MessagesShellToolResultBlock = {
+  content: {
+    "output": [
+      {
+        "outcome": {
+          "exit_code": 0,
+          "type": "exit",
+        },
+        "stderr": "",
+        "stdout": "README.md\n",
+      },
+    ],
+  },
+  toolUseId: "srvtoolu_01abc",
+  type: "openrouter_shell_tool_result",
+};
+```
+
+## Fields
+
+| Field                            | Type                             | Required                         | Description                      |
+| -------------------------------- | -------------------------------- | -------------------------------- | -------------------------------- |
+| `content`                        | Record\<string, *any*>            | :heavy_check_mark:               | N/A                              |
+| `toolUseId`                      | *string*                         | :heavy_check_mark:               | N/A                              |
+| `type`                           | *"openrouter_shell_tool_result"* | :heavy_check_mark:               | N/A                              |
