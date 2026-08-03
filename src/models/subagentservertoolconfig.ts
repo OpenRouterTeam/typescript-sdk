@@ -21,6 +21,14 @@ import {
  */
 export type SubagentServerToolConfig = {
   /**
+   * When true, the subagent inherits every client function defined in the request's top-level `tools` list.
+   */
+  inheritFunctions?: boolean | undefined;
+  /**
+   * Names of the top-level function tools that the subagent will inherit. Any tool that matches by name will be copied fully into the tools array of the subagent. When `inherit_functions` is `true`, this list does nothing, because every client function will be inherited by default.
+   */
+  inheritedFunctionNames?: Array<string> | undefined;
+  /**
    * System instructions for the subagent. When omitted, the subagent responds with no system prompt of its own.
    */
   instructions?: string | undefined;
@@ -56,6 +64,8 @@ export type SubagentServerToolConfig = {
 
 /** @internal */
 export type SubagentServerToolConfig$Outbound = {
+  inherit_functions?: boolean | undefined;
+  inherited_function_names?: Array<string> | undefined;
   instructions?: string | undefined;
   max_completion_tokens?: number | undefined;
   max_tool_calls?: number | undefined;
@@ -71,6 +81,8 @@ export const SubagentServerToolConfig$outboundSchema: z.ZodType<
   SubagentServerToolConfig$Outbound,
   SubagentServerToolConfig
 > = z.object({
+  inheritFunctions: z.boolean().optional(),
+  inheritedFunctionNames: z.array(z.string()).optional(),
   instructions: z.string().optional(),
   maxCompletionTokens: z.int().optional(),
   maxToolCalls: z.int().optional(),
@@ -81,6 +93,8 @@ export const SubagentServerToolConfig$outboundSchema: z.ZodType<
   tools: z.array(SubagentNestedTool$outboundSchema).optional(),
 }).transform((v) => {
   return remap$(v, {
+    inheritFunctions: "inherit_functions",
+    inheritedFunctionNames: "inherited_function_names",
     maxCompletionTokens: "max_completion_tokens",
     maxToolCalls: "max_tool_calls",
   });

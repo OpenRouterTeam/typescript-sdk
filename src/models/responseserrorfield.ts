@@ -30,7 +30,6 @@ export const Code = {
   FailedToDownloadImage: "failed_to_download_image",
   ImageFileNotFound: "image_file_not_found",
   BioPolicy: "bio_policy",
-  DataResidencyMismatch: "data_residency_mismatch",
 } as const;
 export type Code = OpenEnum<typeof Code>;
 
