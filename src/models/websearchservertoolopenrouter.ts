@@ -4,9 +4,13 @@
  */
 
 import * as z from "zod/v4";
+import { safeParse } from "../lib/schemas.js";
 import { ClosedEnum } from "../types/enums.js";
+import { Result as SafeParseResult } from "../types/fp.js";
+import { SDKValidationError } from "./errors/sdkvalidationerror.js";
 import {
   WebSearchServerToolConfig,
+  WebSearchServerToolConfig$inboundSchema,
   WebSearchServerToolConfig$Outbound,
   WebSearchServerToolConfig$outboundSchema,
 } from "./websearchservertoolconfig.js";
@@ -30,10 +34,22 @@ export type WebSearchServerToolOpenRouter = {
 };
 
 /** @internal */
-export const WebSearchServerToolOpenRouterType$outboundSchema: z.ZodEnum<
+export const WebSearchServerToolOpenRouterType$inboundSchema: z.ZodEnum<
   typeof WebSearchServerToolOpenRouterType
 > = z.enum(WebSearchServerToolOpenRouterType);
+/** @internal */
+export const WebSearchServerToolOpenRouterType$outboundSchema: z.ZodEnum<
+  typeof WebSearchServerToolOpenRouterType
+> = WebSearchServerToolOpenRouterType$inboundSchema;
 
+/** @internal */
+export const WebSearchServerToolOpenRouter$inboundSchema: z.ZodType<
+  WebSearchServerToolOpenRouter,
+  unknown
+> = z.object({
+  parameters: WebSearchServerToolConfig$inboundSchema.optional(),
+  type: WebSearchServerToolOpenRouterType$inboundSchema,
+});
 /** @internal */
 export type WebSearchServerToolOpenRouter$Outbound = {
   parameters?: WebSearchServerToolConfig$Outbound | undefined;
@@ -56,5 +72,14 @@ export function webSearchServerToolOpenRouterToJSON(
     WebSearchServerToolOpenRouter$outboundSchema.parse(
       webSearchServerToolOpenRouter,
     ),
+  );
+}
+export function webSearchServerToolOpenRouterFromJSON(
+  jsonString: string,
+): SafeParseResult<WebSearchServerToolOpenRouter, SDKValidationError> {
+  return safeParse(
+    jsonString,
+    (x) => WebSearchServerToolOpenRouter$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'WebSearchServerToolOpenRouter' from JSON`,
   );
 }

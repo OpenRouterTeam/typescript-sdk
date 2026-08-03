@@ -5,16 +5,21 @@
 
 import * as z from "zod/v4";
 import { remap as remap$ } from "../lib/primitives.js";
+import { safeParse } from "../lib/schemas.js";
+import { Result as SafeParseResult } from "../types/fp.js";
 import {
   AdvisorNestedTool,
+  AdvisorNestedTool$inboundSchema,
   AdvisorNestedTool$Outbound,
   AdvisorNestedTool$outboundSchema,
 } from "./advisornestedtool.js";
 import {
   AdvisorReasoning,
+  AdvisorReasoning$inboundSchema,
   AdvisorReasoning$Outbound,
   AdvisorReasoning$outboundSchema,
 } from "./advisorreasoning.js";
+import { SDKValidationError } from "./errors/sdkvalidationerror.js";
 
 /**
  * Configuration for one openrouter:advisor server tool entry.
@@ -63,6 +68,28 @@ export type AdvisorServerToolConfig = {
 };
 
 /** @internal */
+export const AdvisorServerToolConfig$inboundSchema: z.ZodType<
+  AdvisorServerToolConfig,
+  unknown
+> = z.object({
+  forward_transcript: z.boolean().optional(),
+  instructions: z.string().optional(),
+  max_completion_tokens: z.int().optional(),
+  max_tool_calls: z.int().optional(),
+  model: z.string().optional(),
+  name: z.string().optional(),
+  reasoning: AdvisorReasoning$inboundSchema.optional(),
+  stream: z.boolean().optional(),
+  temperature: z.number().optional(),
+  tools: z.array(AdvisorNestedTool$inboundSchema).optional(),
+}).transform((v) => {
+  return remap$(v, {
+    "forward_transcript": "forwardTranscript",
+    "max_completion_tokens": "maxCompletionTokens",
+    "max_tool_calls": "maxToolCalls",
+  });
+});
+/** @internal */
 export type AdvisorServerToolConfig$Outbound = {
   forward_transcript?: boolean | undefined;
   instructions?: string | undefined;
@@ -104,5 +131,14 @@ export function advisorServerToolConfigToJSON(
 ): string {
   return JSON.stringify(
     AdvisorServerToolConfig$outboundSchema.parse(advisorServerToolConfig),
+  );
+}
+export function advisorServerToolConfigFromJSON(
+  jsonString: string,
+): SafeParseResult<AdvisorServerToolConfig, SDKValidationError> {
+  return safeParse(
+    jsonString,
+    (x) => AdvisorServerToolConfig$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'AdvisorServerToolConfig' from JSON`,
   );
 }

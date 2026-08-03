@@ -4,24 +4,40 @@
  */
 
 import * as z from "zod/v4";
+import { safeParse } from "../lib/schemas.js";
+import * as discriminatedUnionTypes from "../types/discriminatedUnion.js";
+import { discriminatedUnion } from "../types/discriminatedUnion.js";
+import { Result as SafeParseResult } from "../types/fp.js";
 import {
   ContainerAutoEnvironment,
+  ContainerAutoEnvironment$inboundSchema,
   ContainerAutoEnvironment$Outbound,
   ContainerAutoEnvironment$outboundSchema,
 } from "./containerautoenvironment.js";
 import {
   ContainerReferenceEnvironment,
+  ContainerReferenceEnvironment$inboundSchema,
   ContainerReferenceEnvironment$Outbound,
   ContainerReferenceEnvironment$outboundSchema,
 } from "./containerreferenceenvironment.js";
+import { SDKValidationError } from "./errors/sdkvalidationerror.js";
 
 /**
  * Server-side execution environment for the shell tool. Only container-backed environments are supported; "local" shells are not.
  */
 export type ShellServerToolEnvironment =
   | ContainerAutoEnvironment
-  | ContainerReferenceEnvironment;
+  | ContainerReferenceEnvironment
+  | discriminatedUnionTypes.Unknown<"type">;
 
+/** @internal */
+export const ShellServerToolEnvironment$inboundSchema: z.ZodType<
+  ShellServerToolEnvironment,
+  unknown
+> = discriminatedUnion("type", {
+  container_auto: ContainerAutoEnvironment$inboundSchema,
+  container_reference: ContainerReferenceEnvironment$inboundSchema,
+});
 /** @internal */
 export type ShellServerToolEnvironment$Outbound =
   | ContainerAutoEnvironment$Outbound
@@ -41,5 +57,14 @@ export function shellServerToolEnvironmentToJSON(
 ): string {
   return JSON.stringify(
     ShellServerToolEnvironment$outboundSchema.parse(shellServerToolEnvironment),
+  );
+}
+export function shellServerToolEnvironmentFromJSON(
+  jsonString: string,
+): SafeParseResult<ShellServerToolEnvironment, SDKValidationError> {
+  return safeParse(
+    jsonString,
+    (x) => ShellServerToolEnvironment$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'ShellServerToolEnvironment' from JSON`,
   );
 }
