@@ -217,7 +217,7 @@ async function $do(
     M.jsonErr(404, errors.NotFoundResponseError$inboundSchema),
     M.jsonErr(500, errors.InternalServerResponseError$inboundSchema),
     M.jsonErr(502, errors.BadGatewayResponseError$inboundSchema),
-    M.fail("4XX"),
+    M.fail([416, "4XX"]),
     M.fail("5XX"),
   )(response, req, { extraFields: responseFields });
   if (!result.ok) {
