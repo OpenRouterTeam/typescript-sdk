@@ -151,6 +151,11 @@ import {
   ResponseHealingPlugin$outboundSchema,
 } from "./responsehealingplugin.js";
 import {
+  ShellServerToolOpenRouter,
+  ShellServerToolOpenRouter$Outbound,
+  ShellServerToolOpenRouter$outboundSchema,
+} from "./shellservertoolopenrouter.js";
+import {
   StopServerToolsWhenCondition,
   StopServerToolsWhenCondition$Outbound,
   StopServerToolsWhenCondition$outboundSchema,
@@ -468,6 +473,7 @@ export type MessagesRequestToolUnion =
   | MessagesSearchModelsServerTool
   | WebFetchServerTool
   | OpenRouterWebSearchServerTool
+  | ShellServerToolOpenRouter
   | MessagesRequestTool;
 
 /**
@@ -550,6 +556,7 @@ export type MessagesRequest = {
       | MessagesSearchModelsServerTool
       | WebFetchServerTool
       | OpenRouterWebSearchServerTool
+      | ShellServerToolOpenRouter
       | MessagesRequestTool
     >
     | undefined;
@@ -1455,6 +1462,7 @@ export type MessagesRequestToolUnion$Outbound =
   | MessagesSearchModelsServerTool$Outbound
   | WebFetchServerTool$Outbound
   | OpenRouterWebSearchServerTool$Outbound
+  | ShellServerToolOpenRouter$Outbound
   | MessagesRequestTool$Outbound;
 
 /** @internal */
@@ -1476,6 +1484,7 @@ export const MessagesRequestToolUnion$outboundSchema: z.ZodType<
   MessagesSearchModelsServerTool$outboundSchema,
   WebFetchServerTool$outboundSchema,
   OpenRouterWebSearchServerTool$outboundSchema,
+  ShellServerToolOpenRouter$outboundSchema,
   z.lazy(() => MessagesRequestTool$outboundSchema),
 ]);
 
@@ -1550,6 +1559,7 @@ export type MessagesRequest$Outbound = {
       | MessagesSearchModelsServerTool$Outbound
       | WebFetchServerTool$Outbound
       | OpenRouterWebSearchServerTool$Outbound
+      | ShellServerToolOpenRouter$Outbound
       | MessagesRequestTool$Outbound
     >
     | undefined;
@@ -1627,6 +1637,7 @@ export const MessagesRequest$outboundSchema: z.ZodType<
       MessagesSearchModelsServerTool$outboundSchema,
       WebFetchServerTool$outboundSchema,
       OpenRouterWebSearchServerTool$outboundSchema,
+      ShellServerToolOpenRouter$outboundSchema,
       z.lazy(() => MessagesRequestTool$outboundSchema),
     ]),
   ).optional(),

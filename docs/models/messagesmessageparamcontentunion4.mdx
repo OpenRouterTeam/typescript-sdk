@@ -166,3 +166,39 @@ const value: models.MessagesToolRemovalBlock = {
 };
 ```
 
+### `models.MessagesShellToolResultBlock`
+
+```typescript
+const value: models.MessagesShellToolResultBlock = {
+  content: {
+    "output": [
+      {
+        "outcome": {
+          "exit_code": 0,
+          "type": "exit",
+        },
+        "stderr": "",
+        "stdout": "README.md\n",
+      },
+    ],
+  },
+  toolUseId: "srvtoolu_01abc",
+  type: "openrouter_shell_tool_result",
+};
+```
+
+### `models.MessagesBashToolResultBlock`
+
+```typescript
+const value: models.MessagesBashToolResultBlock = {
+  content: {
+    "command": "ls",
+    "exitCode": 0,
+    "stderr": "",
+    "stdout": "README.md\n",
+  },
+  toolUseId: "srvtoolu_01abc",
+  type: "openrouter_bash_tool_result",
+};
+```
+
