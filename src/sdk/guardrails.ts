@@ -97,7 +97,7 @@ export class Guardrails extends ClientSDK {
    * Update a guardrail
    *
    * @remarks
-   * Update an existing guardrail, or materialize an unconfigured workspace default guardrail. Collection fields use replace semantics: send the full desired set on every update. [Management key](/docs/guides/overview/auth/management-api-keys) required.
+   * Update an existing guardrail. Collection fields use replace semantics: send the full desired set on every update. [Management key](/docs/guides/overview/auth/management-api-keys) required.
    */
   async update(
     request: operations.UpdateGuardrailRequest,
