@@ -27,6 +27,10 @@ export type OutputSubagentServerToolItemType = ClosedEnum<
  */
 export type OutputSubagentServerToolItem = {
   /**
+   * The `call_id` of the tool call that spawned this subagent. This id will also be included as the `subagent_id` on any `function_call` items created by the subagent. This must be returned in the request so the `function_call` can be matched with the correct subagent.
+   */
+  callId?: string | undefined;
+  /**
    * Error message when the subagent task did not produce an outcome.
    */
   error?: string | undefined;
@@ -73,6 +77,7 @@ export const OutputSubagentServerToolItem$inboundSchema: z.ZodType<
   OutputSubagentServerToolItem,
   unknown
 > = z.object({
+  call_id: z.string().optional(),
   error: z.string().optional(),
   id: z.string().optional(),
   instance_name: z.string().optional(),
@@ -85,6 +90,7 @@ export const OutputSubagentServerToolItem$inboundSchema: z.ZodType<
   type: OutputSubagentServerToolItemType$inboundSchema,
 }).transform((v) => {
   return remap$(v, {
+    "call_id": "callId",
     "instance_name": "instanceName",
     "task_description": "taskDescription",
     "task_name": "taskName",
@@ -92,6 +98,7 @@ export const OutputSubagentServerToolItem$inboundSchema: z.ZodType<
 });
 /** @internal */
 export type OutputSubagentServerToolItem$Outbound = {
+  call_id?: string | undefined;
   error?: string | undefined;
   id?: string | undefined;
   instance_name?: string | undefined;
@@ -109,6 +116,7 @@ export const OutputSubagentServerToolItem$outboundSchema: z.ZodType<
   OutputSubagentServerToolItem$Outbound,
   OutputSubagentServerToolItem
 > = z.object({
+  callId: z.string().optional(),
   error: z.string().optional(),
   id: z.string().optional(),
   instanceName: z.string().optional(),
@@ -121,6 +129,7 @@ export const OutputSubagentServerToolItem$outboundSchema: z.ZodType<
   type: OutputSubagentServerToolItemType$outboundSchema,
 }).transform((v) => {
   return remap$(v, {
+    callId: "call_id",
     instanceName: "instance_name",
     taskDescription: "task_description",
     taskName: "task_name",
