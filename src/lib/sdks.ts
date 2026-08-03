@@ -13,7 +13,7 @@ import {
   UnexpectedClientError,
 } from "../models/errors/httpclienterrors.js";
 import { ERR, OK, Result } from "../types/fp.js";
-import { stringToBase64 } from "./base64.js";
+import { stringToBase64 } from "./base64-codec.js";
 import { SDK_METADATA, SDKOptions, serverURLFromOptions } from "./config.js";
 import { encodeForm } from "./encodings.js";
 import { env, fillGlobals } from "./env.js";
