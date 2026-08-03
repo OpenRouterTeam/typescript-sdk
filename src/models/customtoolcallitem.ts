@@ -5,7 +5,10 @@
 
 import * as z from "zod/v4";
 import { remap as remap$ } from "../lib/primitives.js";
+import { safeParse } from "../lib/schemas.js";
 import { ClosedEnum } from "../types/enums.js";
+import { Result as SafeParseResult } from "../types/fp.js";
+import { SDKValidationError } from "./errors/sdkvalidationerror.js";
 
 export const CustomToolCallItemType = {
   CustomToolCall: "custom_tool_call",
@@ -28,10 +31,30 @@ export type CustomToolCallItem = {
 };
 
 /** @internal */
-export const CustomToolCallItemType$outboundSchema: z.ZodEnum<
+export const CustomToolCallItemType$inboundSchema: z.ZodEnum<
   typeof CustomToolCallItemType
 > = z.enum(CustomToolCallItemType);
+/** @internal */
+export const CustomToolCallItemType$outboundSchema: z.ZodEnum<
+  typeof CustomToolCallItemType
+> = CustomToolCallItemType$inboundSchema;
 
+/** @internal */
+export const CustomToolCallItem$inboundSchema: z.ZodType<
+  CustomToolCallItem,
+  unknown
+> = z.object({
+  call_id: z.string(),
+  id: z.string().optional(),
+  input: z.string(),
+  name: z.string(),
+  namespace: z.string().optional(),
+  type: CustomToolCallItemType$inboundSchema,
+}).transform((v) => {
+  return remap$(v, {
+    "call_id": "callId",
+  });
+});
 /** @internal */
 export type CustomToolCallItem$Outbound = {
   call_id: string;
@@ -64,5 +87,14 @@ export function customToolCallItemToJSON(
 ): string {
   return JSON.stringify(
     CustomToolCallItem$outboundSchema.parse(customToolCallItem),
+  );
+}
+export function customToolCallItemFromJSON(
+  jsonString: string,
+): SafeParseResult<CustomToolCallItem, SDKValidationError> {
+  return safeParse(
+    jsonString,
+    (x) => CustomToolCallItem$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'CustomToolCallItem' from JSON`,
   );
 }

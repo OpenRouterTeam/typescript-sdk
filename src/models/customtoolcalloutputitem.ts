@@ -5,15 +5,22 @@
 
 import * as z from "zod/v4";
 import { remap as remap$ } from "../lib/primitives.js";
+import { safeParse } from "../lib/schemas.js";
+import * as discriminatedUnionTypes from "../types/discriminatedUnion.js";
+import { discriminatedUnion } from "../types/discriminatedUnion.js";
 import * as openEnums from "../types/enums.js";
 import { ClosedEnum, OpenEnum } from "../types/enums.js";
+import { Result as SafeParseResult } from "../types/fp.js";
+import { SDKValidationError } from "./errors/sdkvalidationerror.js";
 import {
   InputFile,
+  InputFile$inboundSchema,
   InputFile$Outbound,
   InputFile$outboundSchema,
 } from "./inputfile.js";
 import {
   InputText,
+  InputText$inboundSchema,
   InputText$Outbound,
   InputText$outboundSchema,
 } from "./inputtext.js";
@@ -40,11 +47,17 @@ export type CustomToolCallOutputItemOutputInputImage = {
 export type CustomToolCallOutputItemOutputUnion1 =
   | InputText
   | CustomToolCallOutputItemOutputInputImage
-  | InputFile;
+  | InputFile
+  | discriminatedUnionTypes.Unknown<"type">;
 
 export type CustomToolCallOutputItemOutputUnion2 =
   | string
-  | Array<InputText | CustomToolCallOutputItemOutputInputImage | InputFile>;
+  | Array<
+    | InputText
+    | CustomToolCallOutputItemOutputInputImage
+    | InputFile
+    | discriminatedUnionTypes.Unknown<"type">
+  >;
 
 export const CustomToolCallOutputItemTypeCustomToolCallOutput = {
   CustomToolCallOutput: "custom_tool_call_output",
@@ -61,16 +74,39 @@ export type CustomToolCallOutputItem = {
   id?: string | undefined;
   output:
     | string
-    | Array<InputText | CustomToolCallOutputItemOutputInputImage | InputFile>;
+    | Array<
+      | InputText
+      | CustomToolCallOutputItemOutputInputImage
+      | InputFile
+      | discriminatedUnionTypes.Unknown<"type">
+    >;
   type: CustomToolCallOutputItemTypeCustomToolCallOutput;
 };
 
+/** @internal */
+export const CustomToolCallOutputItemDetail$inboundSchema: z.ZodType<
+  CustomToolCallOutputItemDetail,
+  unknown
+> = openEnums.inboundSchema(CustomToolCallOutputItemDetail);
 /** @internal */
 export const CustomToolCallOutputItemDetail$outboundSchema: z.ZodType<
   string,
   CustomToolCallOutputItemDetail
 > = openEnums.outboundSchema(CustomToolCallOutputItemDetail);
 
+/** @internal */
+export const CustomToolCallOutputItemOutputInputImage$inboundSchema: z.ZodType<
+  CustomToolCallOutputItemOutputInputImage,
+  unknown
+> = z.object({
+  detail: CustomToolCallOutputItemDetail$inboundSchema,
+  image_url: z.nullable(z.string()).optional(),
+  type: z.literal("input_image"),
+}).transform((v) => {
+  return remap$(v, {
+    "image_url": "imageUrl",
+  });
+});
 /** @internal */
 export type CustomToolCallOutputItemOutputInputImage$Outbound = {
   detail: string;
@@ -102,7 +138,33 @@ export function customToolCallOutputItemOutputInputImageToJSON(
     ),
   );
 }
+export function customToolCallOutputItemOutputInputImageFromJSON(
+  jsonString: string,
+): SafeParseResult<
+  CustomToolCallOutputItemOutputInputImage,
+  SDKValidationError
+> {
+  return safeParse(
+    jsonString,
+    (x) =>
+      CustomToolCallOutputItemOutputInputImage$inboundSchema.parse(
+        JSON.parse(x),
+      ),
+    `Failed to parse 'CustomToolCallOutputItemOutputInputImage' from JSON`,
+  );
+}
 
+/** @internal */
+export const CustomToolCallOutputItemOutputUnion1$inboundSchema: z.ZodType<
+  CustomToolCallOutputItemOutputUnion1,
+  unknown
+> = discriminatedUnion("type", {
+  input_text: InputText$inboundSchema,
+  input_image: z.lazy(() =>
+    CustomToolCallOutputItemOutputInputImage$inboundSchema
+  ),
+  input_file: InputFile$inboundSchema,
+});
 /** @internal */
 export type CustomToolCallOutputItemOutputUnion1$Outbound =
   | InputText$Outbound
@@ -128,7 +190,33 @@ export function customToolCallOutputItemOutputUnion1ToJSON(
     ),
   );
 }
+export function customToolCallOutputItemOutputUnion1FromJSON(
+  jsonString: string,
+): SafeParseResult<CustomToolCallOutputItemOutputUnion1, SDKValidationError> {
+  return safeParse(
+    jsonString,
+    (x) =>
+      CustomToolCallOutputItemOutputUnion1$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'CustomToolCallOutputItemOutputUnion1' from JSON`,
+  );
+}
 
+/** @internal */
+export const CustomToolCallOutputItemOutputUnion2$inboundSchema: z.ZodType<
+  CustomToolCallOutputItemOutputUnion2,
+  unknown
+> = z.union([
+  z.string(),
+  z.array(
+    discriminatedUnion("type", {
+      input_text: InputText$inboundSchema,
+      input_image: z.lazy(() =>
+        CustomToolCallOutputItemOutputInputImage$inboundSchema
+      ),
+      input_file: InputFile$inboundSchema,
+    }),
+  ),
+]);
 /** @internal */
 export type CustomToolCallOutputItemOutputUnion2$Outbound =
   | string
@@ -160,13 +248,52 @@ export function customToolCallOutputItemOutputUnion2ToJSON(
     ),
   );
 }
+export function customToolCallOutputItemOutputUnion2FromJSON(
+  jsonString: string,
+): SafeParseResult<CustomToolCallOutputItemOutputUnion2, SDKValidationError> {
+  return safeParse(
+    jsonString,
+    (x) =>
+      CustomToolCallOutputItemOutputUnion2$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'CustomToolCallOutputItemOutputUnion2' from JSON`,
+  );
+}
 
 /** @internal */
-export const CustomToolCallOutputItemTypeCustomToolCallOutput$outboundSchema:
+export const CustomToolCallOutputItemTypeCustomToolCallOutput$inboundSchema:
   z.ZodEnum<typeof CustomToolCallOutputItemTypeCustomToolCallOutput> = z.enum(
     CustomToolCallOutputItemTypeCustomToolCallOutput,
   );
+/** @internal */
+export const CustomToolCallOutputItemTypeCustomToolCallOutput$outboundSchema:
+  z.ZodEnum<typeof CustomToolCallOutputItemTypeCustomToolCallOutput> =
+    CustomToolCallOutputItemTypeCustomToolCallOutput$inboundSchema;
 
+/** @internal */
+export const CustomToolCallOutputItem$inboundSchema: z.ZodType<
+  CustomToolCallOutputItem,
+  unknown
+> = z.object({
+  call_id: z.string(),
+  id: z.string().optional(),
+  output: z.union([
+    z.string(),
+    z.array(
+      discriminatedUnion("type", {
+        input_text: InputText$inboundSchema,
+        input_image: z.lazy(() =>
+          CustomToolCallOutputItemOutputInputImage$inboundSchema
+        ),
+        input_file: InputFile$inboundSchema,
+      }),
+    ),
+  ]),
+  type: CustomToolCallOutputItemTypeCustomToolCallOutput$inboundSchema,
+}).transform((v) => {
+  return remap$(v, {
+    "call_id": "callId",
+  });
+});
 /** @internal */
 export type CustomToolCallOutputItem$Outbound = {
   call_id: string;
@@ -208,5 +335,14 @@ export function customToolCallOutputItemToJSON(
 ): string {
   return JSON.stringify(
     CustomToolCallOutputItem$outboundSchema.parse(customToolCallOutputItem),
+  );
+}
+export function customToolCallOutputItemFromJSON(
+  jsonString: string,
+): SafeParseResult<CustomToolCallOutputItem, SDKValidationError> {
+  return safeParse(
+    jsonString,
+    (x) => CustomToolCallOutputItem$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'CustomToolCallOutputItem' from JSON`,
   );
 }
