@@ -379,6 +379,7 @@ export * from "./openrouterwebsearchservertool.js";
 export * from "./outputadvisorservertoolitem.js";
 export * from "./outputapplypatchcallitem.js";
 export * from "./outputapplypatchservertoolitem.js";
+export * from "./outputaudiogenerationservertoolitem.js";
 export * from "./outputbashservertoolitem.js";
 export * from "./outputbrowseruseservertoolitem.js";
 export * from "./outputcodeinterpretercallitem.js";
