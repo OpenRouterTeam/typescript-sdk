@@ -13,6 +13,30 @@ const benchmarkDirectory = fileURLToPath(new URL('.', import.meta.url));
 const runnerPath = join(benchmarkDirectory, 'runner.mjs');
 const cases = [
   [
+    'core-import',
+    'entries/core-import.ts',
+  ],
+  [
+    'responses-send-import',
+    'entries/responses-send-import.ts',
+  ],
+  [
+    'responses-request-schema',
+    'entries/responses-request-schema.ts',
+  ],
+  [
+    'stream-events-schema',
+    'entries/stream-events-schema.ts',
+  ],
+  [
+    'text-delta-schema',
+    'entries/text-delta-schema.ts',
+  ],
+  [
+    'completed-event-schema',
+    'entries/completed-event-schema.ts',
+  ],
+  [
     'root-import',
     'entries/root-import.ts',
   ],

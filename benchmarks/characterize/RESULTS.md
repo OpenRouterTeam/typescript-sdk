@@ -44,3 +44,28 @@ or generator-owned SDK optimization.
 The retained optimization splits codec-only base64 helpers from the Zod adapters and
 redirects transport imports to the codec module. Speakeasy persistent edits preserved
 all three generated-file import changes during a successful pinned regeneration.
+
+## Twenty-run Responses attribution
+
+The expanded matrix ran each minified, tree-shaken bundle in 20 fresh processes.
+Median retained import heap deltas were:
+
+- `OpenRouterCore`: 965,552 bytes.
+- `responsesSend`: 41,988,580 bytes.
+- `ResponsesRequest$outboundSchema`: 21,757,296 bytes.
+- `StreamEvents$inboundSchema`: 21,580,420 bytes.
+- `TextDeltaEvent$inboundSchema`: 1,087,232 bytes.
+- `StreamEventsResponseCompleted$inboundSchema`: 18,010,468 bytes.
+
+This isolates the impactful remaining target: the transport and SSE framing runtime
+are small, while the generated Responses sender eagerly constructs both broad request
+and stream-event schema graphs. A text-delta-specific schema uses about 95% less retained
+import heap than the all-event union, but the completion schema still loads the full
+response/output graph.
+
+Lazy event dispatch alone would improve startup but not invocation peak because the
+completion event eventually loads its 18 MB graph. A material peak reduction requires
+generator-owned operation-private validators that dispatch request tools, stream events,
+and completed output items by discriminator without constructing every unused branch.
+That remains a generator architecture change; it must pass the exact schema/error
+equivalence suite before replacing the public generated schemas.
