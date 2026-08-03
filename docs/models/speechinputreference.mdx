@@ -1,0 +1,29 @@
+---
+title: "SpeechInputReference"
+---
+
+Reference content part for stateless voice cloning
+
+
+## Supported Types
+
+### `models.SpeechInputReferenceAudio`
+
+```typescript
+const value: models.SpeechInputReferenceAudio = {
+  inputAudio: {
+    data: "data:audio/wav;base64,UklGRuQXDABXQVZF...",
+  },
+  type: "input_audio",
+};
+```
+
+### `models.SpeechInputReferenceText`
+
+```typescript
+const value: models.SpeechInputReferenceText = {
+  text: "I used to rule the world.",
+  type: "text",
+};
+```
+
