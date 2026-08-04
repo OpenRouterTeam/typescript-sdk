@@ -5,6 +5,7 @@
 
 import { datasetsGetAppRankings } from "../funcs/datasetsGetAppRankings.js";
 import { datasetsGetRankingsDaily } from "../funcs/datasetsGetRankingsDaily.js";
+import { datasetsGetSessionCost } from "../funcs/datasetsGetSessionCost.js";
 import { ClientSDK, RequestOptions } from "../lib/sdks.js";
 import * as models from "../models/index.js";
 import * as operations from "../models/operations/index.js";
@@ -89,6 +90,39 @@ export class Datasets extends ClientSDK {
     options?: RequestOptions,
   ): Promise<models.RankingsDailyResponse> {
     return unwrapAsync(datasetsGetRankingsDaily(
+      this,
+      request,
+      options,
+    ));
+  }
+
+  /**
+   * Cost per session by harness and model
+   *
+   * @remarks
+   * Returns weekly refreshed, aggregated cost-per-session cells for the published harnesses.
+   * Sessions are never pooled across apps. Each published cell has at least 200 sampled
+   * sessions and at least 50 distinct users. Medians are of per-session USD spend, and
+   * privacy-preserving aggregation never exposes clerk_user_id values or per-session rows.
+   *
+   * Filter by `app_id`, `model`, or `bucket`. Filtering by `model` alone works across apps
+   * for harness-vs-harness comparison at a fixed model. The `multi-model` model key denotes
+   * sessions without a dominant model. Results refresh weekly and include the source snapshot
+   * window in `meta`.
+   *
+   * Authenticate with any valid OpenRouter API key. Rate-limited to 30 requests/minute per
+   * key and 500 requests/day per account.
+   *
+   * When republishing or quoting this dataset, OpenRouter must be cited as:
+   * "Source: OpenRouter (openrouter.ai/rankings#session-cost), as of {as_of}."
+   */
+  async getSessionCost(
+    request?: operations.GetSessionCostRequest | undefined,
+    options?: RequestOptions,
+  ): Promise<
+    PageIterator<operations.GetSessionCostResponse, { offset: number }>
+  > {
+    return unwrapResultIterator(datasetsGetSessionCost(
       this,
       request,
       options,
