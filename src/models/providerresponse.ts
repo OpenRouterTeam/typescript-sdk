@@ -170,6 +170,10 @@ export type RoutedServiceTier = OpenEnum<typeof RoutedServiceTier>;
  */
 export type ProviderResponse = {
   /**
+   * Timestamp when the provider attempt was dispatched, as an ISO 8601 timestamp
+   */
+  dispatchedAt?: string | undefined;
+  /**
    * Internal endpoint identifier
    */
   endpointId?: string | undefined;
@@ -220,6 +224,7 @@ export const ProviderResponse$inboundSchema: z.ZodType<
   ProviderResponse,
   unknown
 > = z.object({
+  dispatched_at: z.string().optional(),
   endpoint_id: z.string().optional(),
   id: z.string().optional(),
   is_byok: z.boolean().optional(),
@@ -230,6 +235,7 @@ export const ProviderResponse$inboundSchema: z.ZodType<
   status: z.nullable(z.int()),
 }).transform((v) => {
   return remap$(v, {
+    "dispatched_at": "dispatchedAt",
     "endpoint_id": "endpointId",
     "is_byok": "isByok",
     "model_permaslug": "modelPermaslug",
