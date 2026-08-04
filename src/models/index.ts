@@ -139,6 +139,7 @@ export * from "./chattoolmessage.js";
 export * from "./chatusage.js";
 export * from "./chatusermessage.js";
 export * from "./chatwebsearchshorthand.js";
+export * from "./codeinterpreterfileoutput.js";
 export * from "./codeinterpreterservertool.js";
 export * from "./codexlocalshelltool.js";
 export * from "./compactionitem.js";
