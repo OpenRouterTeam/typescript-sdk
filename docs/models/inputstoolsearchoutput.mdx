@@ -1,0 +1,27 @@
+---
+title: "InputsToolSearchOutput"
+---
+
+## Example Usage
+
+```typescript
+import { InputsToolSearchOutput } from "@openrouter/sdk/models";
+
+let value: InputsToolSearchOutput = {
+  tools: [],
+  type: "tool_search_output",
+};
+```
+
+## Fields
+
+| Field                                                            | Type                                                             | Required                                                         | Description                                                      |
+| ---------------------------------------------------------------- | ---------------------------------------------------------------- | ---------------------------------------------------------------- | ---------------------------------------------------------------- |
+| `callId`                                                         | *string*                                                         | :heavy_minus_sign:                                               | N/A                                                              |
+| `createdBy`                                                      | *string*                                                         | :heavy_minus_sign:                                               | N/A                                                              |
+| `execution`                                                      | [models.InputsExecution2](../models/inputsexecution2.mdx)         | :heavy_minus_sign:                                               | N/A                                                              |
+| `id`                                                             | *string*                                                         | :heavy_minus_sign:                                               | N/A                                                              |
+| `status`                                                         | [models.InputsStatusEnum2](../models/inputsstatusenum2.mdx)       | :heavy_minus_sign:                                               | N/A                                                              |
+| `tools`                                                          | *models.InputsToolUnion*[]                                       | :heavy_check_mark:                                               | N/A                                                              |
+| `type`                                                           | [models.TypeToolSearchOutput](../models/typetoolsearchoutput.mdx) | :heavy_check_mark:                                               | N/A                                                              |
+| `additionalProperties`                                           | Record\<string, *any*>                                            | :heavy_minus_sign:                                               | N/A                                                              |

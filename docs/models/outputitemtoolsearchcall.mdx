@@ -1,0 +1,29 @@
+---
+title: "OutputItemToolSearchCall"
+---
+
+## Example Usage
+
+```typescript
+import { OutputItemToolSearchCall } from "@openrouter/sdk/models";
+
+let value: OutputItemToolSearchCall = {
+  callId: "<id>",
+  execution: "client",
+  id: "msg-abc123",
+  status: "completed",
+  type: "tool_search_call",
+};
+```
+
+## Fields
+
+| Field                                                                                      | Type                                                                                       | Required                                                                                   | Description                                                                                |
+| ------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------ |
+| `arguments`                                                                                | *any*                                                                                      | :heavy_minus_sign:                                                                         | N/A                                                                                        |
+| `callId`                                                                                   | *string*                                                                                   | :heavy_check_mark:                                                                         | N/A                                                                                        |
+| `createdBy`                                                                                | *string*                                                                                   | :heavy_minus_sign:                                                                         | N/A                                                                                        |
+| `execution`                                                                                | [models.OutputItemToolSearchCallExecution](../models/outputitemtoolsearchcallexecution.mdx) | :heavy_check_mark:                                                                         | N/A                                                                                        |
+| `id`                                                                                       | *string*                                                                                   | :heavy_check_mark:                                                                         | N/A                                                                                        |
+| `status`                                                                                   | [models.OutputItemToolSearchCallStatus](../models/outputitemtoolsearchcallstatus.mdx)       | :heavy_check_mark:                                                                         | N/A                                                                                        |
+| `type`                                                                                     | *"tool_search_call"*                                                                       | :heavy_check_mark:                                                                         | N/A                                                                                        |

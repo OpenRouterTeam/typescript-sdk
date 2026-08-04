@@ -78,6 +78,10 @@ import {
   OutputImageGenerationServerToolItem$inboundSchema,
 } from "./outputimagegenerationservertoolitem.js";
 import {
+  OutputItemToolSearchCall,
+  OutputItemToolSearchCall$inboundSchema,
+} from "./outputitemtoolsearchcall.js";
+import {
   OutputMcpServerToolItem,
   OutputMcpServerToolItem$inboundSchema,
 } from "./outputmcpservertoolitem.js";
@@ -169,6 +173,7 @@ export type OutputItems =
   | OutputReasoningItem
   | OutputShellCallItem
   | OutputShellCallOutputItem
+  | OutputItemToolSearchCall
   | (OutputWebSearchCallItem & { type: "web_search_call" })
   | discriminatedUnionTypes.Unknown<"type">;
 
@@ -250,6 +255,7 @@ export const OutputItems$inboundSchema: z.ZodType<OutputItems, unknown> =
     reasoning: OutputReasoningItem$inboundSchema,
     shell_call: OutputShellCallItem$inboundSchema,
     shell_call_output: OutputShellCallOutputItem$inboundSchema,
+    tool_search_call: OutputItemToolSearchCall$inboundSchema,
     web_search_call: OutputWebSearchCallItem$inboundSchema.and(
       z.object({ type: z.literal("web_search_call") }),
     ),

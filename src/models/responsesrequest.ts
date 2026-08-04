@@ -241,6 +241,11 @@ import {
   TextExtendedConfig$outboundSchema,
 } from "./textextendedconfig.js";
 import {
+  ToolSearchTool,
+  ToolSearchTool$Outbound,
+  ToolSearchTool$outboundSchema,
+} from "./toolsearchtool.js";
+import {
   TraceConfig,
   TraceConfig$Outbound,
   TraceConfig$outboundSchema,
@@ -345,6 +350,7 @@ export type ResponsesRequestToolUnion =
   | (ApplyPatchServerTool & { type: "apply_patch" })
   | (CustomTool & { type: "custom" })
   | (NamespaceTool & { type: "namespace" })
+  | (ToolSearchTool & { type: "tool_search" })
   | (AdvisorServerToolOpenRouter & { type: "openrouter:advisor" })
   | (SubagentServerToolOpenRouter & { type: "openrouter:subagent" })
   | (DatetimeServerTool & { type: "openrouter:datetime" })
@@ -481,6 +487,7 @@ export type ResponsesRequest = {
       | (ApplyPatchServerTool & { type: "apply_patch" })
       | (CustomTool & { type: "custom" })
       | (NamespaceTool & { type: "namespace" })
+      | (ToolSearchTool & { type: "tool_search" })
       | (AdvisorServerToolOpenRouter & { type: "openrouter:advisor" })
       | (SubagentServerToolOpenRouter & { type: "openrouter:subagent" })
       | (DatetimeServerTool & { type: "openrouter:datetime" })
@@ -640,6 +647,7 @@ export type ResponsesRequestToolUnion$Outbound =
   | (ApplyPatchServerTool$Outbound & { type: "apply_patch" })
   | (CustomTool$Outbound & { type: "custom" })
   | (NamespaceTool$Outbound & { type: "namespace" })
+  | (ToolSearchTool$Outbound & { type: "tool_search" })
   | (AdvisorServerToolOpenRouter$Outbound & { type: "openrouter:advisor" })
   | (SubagentServerToolOpenRouter$Outbound & { type: "openrouter:subagent" })
   | (DatetimeServerTool$Outbound & { type: "openrouter:datetime" })
@@ -699,6 +707,9 @@ export const ResponsesRequestToolUnion$outboundSchema: z.ZodType<
   ),
   CustomTool$outboundSchema.and(z.object({ type: z.literal("custom") })),
   NamespaceTool$outboundSchema.and(z.object({ type: z.literal("namespace") })),
+  ToolSearchTool$outboundSchema.and(
+    z.object({ type: z.literal("tool_search") }),
+  ),
   AdvisorServerToolOpenRouter$outboundSchema.and(
     z.object({ type: z.literal("openrouter:advisor") }),
   ),
@@ -813,6 +824,7 @@ export type ResponsesRequest$Outbound = {
       | (ApplyPatchServerTool$Outbound & { type: "apply_patch" })
       | (CustomTool$Outbound & { type: "custom" })
       | (NamespaceTool$Outbound & { type: "namespace" })
+      | (ToolSearchTool$Outbound & { type: "tool_search" })
       | (AdvisorServerToolOpenRouter$Outbound & { type: "openrouter:advisor" })
       | (SubagentServerToolOpenRouter$Outbound & {
         type: "openrouter:subagent";
@@ -939,6 +951,9 @@ export const ResponsesRequest$outboundSchema: z.ZodType<
       CustomTool$outboundSchema.and(z.object({ type: z.literal("custom") })),
       NamespaceTool$outboundSchema.and(
         z.object({ type: z.literal("namespace") }),
+      ),
+      ToolSearchTool$outboundSchema.and(
+        z.object({ type: z.literal("tool_search") }),
       ),
       AdvisorServerToolOpenRouter$outboundSchema.and(
         z.object({ type: z.literal("openrouter:advisor") }),
