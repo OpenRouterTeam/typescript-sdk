@@ -1,19 +1,19 @@
 lockVersion: ""
 id: ""
 management:
-  docChecksum: 5f02865068c4d82600c91e51c53138bd
+  docChecksum: 7177f8ffefeb2c35557edb5df6b193bc
   docVersion: 1.0.0
   speakeasyVersion: 1.787.0
   generationVersion: 2.914.0
-  releaseVersion: 1.2.6
-  configChecksum: 5bbe4aa9e30b0165d6e6567fea50b5d9
+  releaseVersion: 1.2.7
+  configChecksum: 5fde7843a2fa9d373ab62f11c9052d82
   repoURL: https://github.com/OpenRouterTeam/typescript-sdk.git
   installationURL: https://github.com/OpenRouterTeam/typescript-sdk
   published: true
 persistentEdits:
-  generation_id: f4ebcce9-f230-40bb-9f01-b5e19a9f1503
-  pristine_commit_hash: 97d74d4536695f5d909355ff65b40dacab00bee0
-  pristine_tree_hash: 63780dab6a78d33f16f43c9b00f6be6afcf6aa14
+  generation_id: 1f6cbeeb-2ebf-46a6-affe-15e2cad1970b
+  pristine_commit_hash: 435b331af43e363ea2a31bc0a79bc7bc2bef79de
+  pristine_tree_hash: 760bd4741b75caa87e7bffa0b4200d7aec2dd2a7
 features:
   typescript:
     acceptHeaders: 2.81.2
@@ -4300,6 +4300,10 @@ trackedFiles:
     id: 30c8ab517163
     last_write_checksum: sha1:8aaf5ac8855621bc22c524a59711783540a6dddb
     pristine_git_object: 391f00adb91606fe4805588a4a7f3a2f602aa24b
+  docs/models/getworkspacebudgetresponse.mdx:
+    id: f486a2f837eb
+    last_write_checksum: sha1:ebb2deb16a365062e20e7a7430c8bc01e09578bb
+    pristine_git_object: f262e5dc6da48e7c84b26e25dac049e4e7869597
   docs/models/getworkspaceresponse.md:
     id: 4aacc04e7be8
     last_write_checksum: sha1:17d9e2f8125c16b21acd71619125e1b2d26b5e37
@@ -7898,6 +7902,14 @@ trackedFiles:
     id: 9bcb9a70be2a
     last_write_checksum: sha1:30a6c8d5554323acdd75325e90cf54c60959fd53
     pristine_git_object: 3a9e06ab1c077a8fa2bb8aea5ce3140cad40c56c
+  docs/models/operations/getworkspacebudgetglobals.mdx:
+    id: 7cd8d13967c4
+    last_write_checksum: sha1:67029e8aa36742a4113e3c2051eff913971c6b68
+    pristine_git_object: b340b854223bfb0ca400ccea8849e88776f93133
+  docs/models/operations/getworkspacebudgetrequest.mdx:
+    id: 24dc54420f01
+    last_write_checksum: sha1:14acdcc8c9b024607eb7641fdaa07e36334825d8
+    pristine_git_object: 7a8593ce6b3566904095b03cc96164ad9ad82a40
   docs/models/operations/getworkspaceglobals.md:
     id: cdd5813e58df
     last_write_checksum: sha1:6e36f84330b109168a702883419644516d2a8d50
@@ -12733,8 +12745,8 @@ trackedFiles:
     deleted: true
   docs/sdks/workspaces/README.mdx:
     id: 0c75d023ef6b
-    last_write_checksum: sha1:2ecfc1de7912494268158424395fcc684c3828d1
-    pristine_git_object: dc92166d5a3041f8e3831efa70dacbd3bda94359
+    last_write_checksum: sha1:2840fbf04297fc591e6d65aba8f122a8d33261f6
+    pristine_git_object: 3c5c37b1c4ad20755a8fe1ff17caf90db1410c61
   eslint.config.mjs:
     id: 461c8d07f6da
     last_write_checksum: sha1:9398f326377fe47f67af2df6eb6370750c0790b4
@@ -12757,12 +12769,12 @@ trackedFiles:
     pristine_git_object: 410efafd6a7f50d91ccb87131fedbe0c3d47e15a
   jsr.json:
     id: 7f6ab7767282
-    last_write_checksum: sha1:e363c1cc9b383dfc3a887bb91b8f100d8c5a13e0
-    pristine_git_object: bbd839f7fa3076463efedccc5456daf7bfba2420
+    last_write_checksum: sha1:bc8b7605e717e564eab548451a7bdd5001f382ba
+    pristine_git_object: ccf96d566095e9690cdfa58ad2fb38bb92ea0623
   package.json:
     id: 7030d0b2f71b
-    last_write_checksum: sha1:37c626a93bffdb5d514cb56f7bb6a301cafa2c88
-    pristine_git_object: e60d57911339a1ecd01a31983e40cb84a1f7f043
+    last_write_checksum: sha1:badf95728cb4dcde980458c9a99af3b9bde7e7a0
+    pristine_git_object: c65e7d197b1a7204286573afae85c11ba63ff6ab
   src/core.ts:
     id: f431fdbcd144
     last_write_checksum: sha1:5aa66b0b6a5964f3eea7f3098c2eb3c0ee9c0131
@@ -13117,12 +13129,16 @@ trackedFiles:
     pristine_git_object: d6ac4f90789defa09d6253d7163559d10b3826cf
   src/funcs/workspacesDeleteBudget.ts:
     id: 1aba9dd7a12c
-    last_write_checksum: sha1:d4ded25d7c235c23c5afda21864591dc83301589
-    pristine_git_object: 4016fe70ddfe0cd01148eced025355222ecc6e13
+    last_write_checksum: sha1:b8b87da65e4d0b454a53bb149dbc8b850f942c9c
+    pristine_git_object: 7c0863218d1c5a3f358295be45e5ce8b0899ab7c
   src/funcs/workspacesGet.ts:
     id: f361d34e5bff
     last_write_checksum: sha1:6245dc55d55bfeb33f86c0fc51751dd23f925994
     pristine_git_object: 30a2a069fa9ac92d70767167b8db3f7a4c423f0c
+  src/funcs/workspacesGetBudget.ts:
+    id: cdb084566ab1
+    last_write_checksum: sha1:a82effcbf2c17c03ea55553f844617dcb67b81db
+    pristine_git_object: 7e785cb9082e9951d171a250cbb65e16c764d0c8
   src/funcs/workspacesList.ts:
     id: 6ff9df556ff5
     last_write_checksum: sha1:7356c1ee5fc9519a668f92cbe3b7a833400b3960
@@ -13165,8 +13181,8 @@ trackedFiles:
     pristine_git_object: a187e58707bdb726ca2aff74941efe7493422d4e
   src/lib/config.ts:
     id: 320761608fb3
-    last_write_checksum: sha1:db03c1bac38d342aa0e1d3d3e4ee2391543489c3
-    pristine_git_object: 6b5918f2c141a9872c49b357751cfc44cd96dd89
+    last_write_checksum: sha1:f1d56cbdb8ac807268bf737aa9aeeb1097e46cde
+    pristine_git_object: 5dcb76022712d44c1ebbf8a8034d76b967c28e63
   src/lib/dlv.ts:
     id: b1988214835a
     last_write_checksum: sha1:eaac763b22717206a6199104e0403ed17a4e2711
@@ -14269,6 +14285,10 @@ trackedFiles:
     id: 96e1fbabfc37
     last_write_checksum: sha1:9943ba8d8e5900834f5e3a0c97b92f6540c6438d
     pristine_git_object: 687d466bfddd70cc5bc6560555ca08586002ceda
+  src/models/getworkspacebudgetresponse.ts:
+    id: ccd40e25fb1b
+    last_write_checksum: sha1:b00cd8f433ea625940f8a3f31a37e0f130e21f8b
+    pristine_git_object: 23c8ac6d4b98867da3dea4a515c0b4d0bed85f26
   src/models/getworkspaceresponse.ts:
     id: 2315ba7fb584
     last_write_checksum: sha1:33182d29372d6d785cff2d02e2120b9b1e0b739a
@@ -14395,8 +14415,8 @@ trackedFiles:
     pristine_git_object: 8e109bedfdcf2c4808e49323dda861e3c6069d51
   src/models/index.ts:
     id: f93644b0f37e
-    last_write_checksum: sha1:ebc8f70c65dfdc4556bf9265f83d11b34c20be84
-    pristine_git_object: ac36835d1ba890694bb5f26fe190a68e648c1867
+    last_write_checksum: sha1:daf767551059a5e29a9d40a15bc8bde3e1f98db6
+    pristine_git_object: 8b12ed3f25c32f097c6f33c92e54d881b712def9
   src/models/inputaudio.ts:
     id: 9bdc14c7565f
     last_write_checksum: sha1:2f8dc4c1d6a9c2927d9eb186e0ecedf7b81838e6
@@ -15029,10 +15049,14 @@ trackedFiles:
     id: bd847aca12d8
     last_write_checksum: sha1:b6ed9d8f00e1f554a9096a1ffd60b7c1ea36ea45
     pristine_git_object: 6b14994d428c8fb6d58adc4f880ab796d6a2a2e5
+  src/models/operations/getworkspacebudget.ts:
+    id: 0979c0e7d04e
+    last_write_checksum: sha1:b74a10ab8867f593df05c25d0dec6c66fb059e46
+    pristine_git_object: bb6afaf246e3ca96277cd3a28ce09c274aef9c22
   src/models/operations/index.ts:
     id: 0d9ffaf774d2
-    last_write_checksum: sha1:c4fc59a0ae2f58eb1fd092fa3e3362b98b7b936e
-    pristine_git_object: 8473f9082cb22b4161e5cb63bfca668ccc5228f1
+    last_write_checksum: sha1:f86d55065862130be141e46ca05580645961539e
+    pristine_git_object: e42daa15dac9290b1f3827b28e65c3fb75d57bce
   src/models/operations/list.ts:
     id: ce11386ad30f
     last_write_checksum: sha1:c6f6be4f00954f38c1c900beff6956be260873e0
@@ -16191,8 +16215,8 @@ trackedFiles:
     pristine_git_object: 1e832bb72bd987649300a5443f591582761e7b07
   src/sdk/workspaces.ts:
     id: 72b45379c8d9
-    last_write_checksum: sha1:51da6d567c37277d10ba9f2ee214d0f2ebcdceb7
-    pristine_git_object: ac89cc2bc8f38c40d2732e69446e80101389843e
+    last_write_checksum: sha1:2053a1ed47eb0745da516fd1d78b4f5f655223e8
+    pristine_git_object: c27aa02b1dd2ee20bba03588f7279662751a69e5
   src/types/async.ts:
     id: fac8da972f86
     last_write_checksum: sha1:042571ad6be7fd5ce5a93b292b9c1aefc21ebff7
@@ -17737,6 +17761,8 @@ examples:
           application/json: {"error": {"code": 404, "message": "Resource not found"}}
         "500":
           application/json: {"error": {"code": 500, "message": "Internal Server Error"}}
+        "400":
+          application/json: {"error": {"code": 400, "message": "Invalid request parameters"}}
   upsertWorkspaceBudget:
     speakeasy-default-upsert-workspace-budget:
       parameters:
@@ -17967,5 +17993,25 @@ examples:
           application/json: {"error": {"code": 404, "message": "Resource not found"}}
         "500":
           application/json: {"error": {"code": 500, "message": "Internal Server Error"}}
+  getWorkspaceBudget:
+    speakeasy-default-get-workspace-budget:
+      parameters:
+        path:
+          id: "production"
+          interval: "monthly"
+      responses:
+        "200":
+          application/json: {"data": {"created_at": "2025-08-24T10:30:00Z", "id": "770e8400-e29b-41d4-a716-446655440000", "limit_usd": 100, "reset_interval": "monthly", "updated_at": "2025-08-24T15:45:00Z", "workspace_id": "550e8400-e29b-41d4-a716-446655440000"}}
+        "400":
+          application/json: {"error": {"code": 400, "message": "Invalid request parameters"}}
+        "401":
+          application/json: {"error": {"code": 401, "message": "Missing Authentication header"}}
+        "404":
+          application/json: {"error": {"code": 404, "message": "Resource not found"}}
+        "500":
+          application/json: {"error": {"code": 500, "message": "Internal Server Error"}}
 examplesVersion: 1.0.2
-releaseNotes: "## Typescript SDK Changes:\n* `openrouter.tts.createSpeech()`: \n  *  `request.speechRequest.inputReferences` **Added**\n* `openrouter.endpoints.listZdrEndpoints()`:  `response.data[].supportsVoiceCloning` **Added**\n* `openrouter.endpoints.list()`:  `response.data.endpoints[].supportsVoiceCloning` **Added**\n"
+releaseNotes: |
+  ## Typescript SDK Changes:
+  * `openrouter.workspaces.getBudget()`: **Added**
+  * `openrouter.workspaces.deleteBudget()`:  `error.status[400]` **Added**
