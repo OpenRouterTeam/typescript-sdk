@@ -123,6 +123,11 @@ import {
   SubagentServerToolOpenRouter$outboundSchema,
 } from "./subagentservertoolopenrouter.js";
 import {
+  ToolSearchTool,
+  ToolSearchTool$Outbound,
+  ToolSearchTool$outboundSchema,
+} from "./toolsearchtool.js";
+import {
   WebFetchServerTool,
   WebFetchServerTool$Outbound,
   WebFetchServerTool$outboundSchema,
@@ -189,6 +194,7 @@ export type AdditionalToolsItemToolUnion =
   | CodexLocalShellTool
   | ShellServerTool
   | ApplyPatchServerTool
+  | ToolSearchTool
   | AdvisorServerToolOpenRouter
   | SubagentServerToolOpenRouter
   | DatetimeServerTool
@@ -230,6 +236,7 @@ export type AdditionalToolsItem = {
     | CodexLocalShellTool
     | ShellServerTool
     | ApplyPatchServerTool
+    | ToolSearchTool
     | AdvisorServerToolOpenRouter
     | SubagentServerToolOpenRouter
     | DatetimeServerTool
@@ -336,6 +343,7 @@ export type AdditionalToolsItemToolUnion$Outbound =
   | CodexLocalShellTool$Outbound
   | ShellServerTool$Outbound
   | ApplyPatchServerTool$Outbound
+  | ToolSearchTool$Outbound
   | AdvisorServerToolOpenRouter$Outbound
   | SubagentServerToolOpenRouter$Outbound
   | DatetimeServerTool$Outbound
@@ -370,6 +378,7 @@ export const AdditionalToolsItemToolUnion$outboundSchema: z.ZodType<
   CodexLocalShellTool$outboundSchema,
   ShellServerTool$outboundSchema,
   ApplyPatchServerTool$outboundSchema,
+  ToolSearchTool$outboundSchema,
   AdvisorServerToolOpenRouter$outboundSchema,
   SubagentServerToolOpenRouter$outboundSchema,
   DatetimeServerTool$outboundSchema,
@@ -420,6 +429,7 @@ export type AdditionalToolsItem$Outbound = {
     | CodexLocalShellTool$Outbound
     | ShellServerTool$Outbound
     | ApplyPatchServerTool$Outbound
+    | ToolSearchTool$Outbound
     | AdvisorServerToolOpenRouter$Outbound
     | SubagentServerToolOpenRouter$Outbound
     | DatetimeServerTool$Outbound
@@ -461,6 +471,7 @@ export const AdditionalToolsItem$outboundSchema: z.ZodType<
       CodexLocalShellTool$outboundSchema,
       ShellServerTool$outboundSchema,
       ApplyPatchServerTool$outboundSchema,
+      ToolSearchTool$outboundSchema,
       AdvisorServerToolOpenRouter$outboundSchema,
       SubagentServerToolOpenRouter$outboundSchema,
       DatetimeServerTool$outboundSchema,

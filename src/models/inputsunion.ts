@@ -5,12 +5,18 @@
 
 import * as z from "zod/v4";
 import { remap as remap$ } from "../lib/primitives.js";
-import { ClosedEnum } from "../types/enums.js";
+import * as openEnums from "../types/enums.js";
+import { ClosedEnum, OpenEnum } from "../types/enums.js";
 import {
   AdditionalToolsItem,
   AdditionalToolsItem$Outbound,
   AdditionalToolsItem$outboundSchema,
 } from "./additionaltoolsitem.js";
+import {
+  AdvisorServerToolOpenRouter,
+  AdvisorServerToolOpenRouter$Outbound,
+  AdvisorServerToolOpenRouter$outboundSchema,
+} from "./advisorservertoolopenrouter.js";
 import {
   AgentMessageItem,
   AgentMessageItem$Outbound,
@@ -27,15 +33,50 @@ import {
   ApplyPatchCallOutputItem$outboundSchema,
 } from "./applypatchcalloutputitem.js";
 import {
+  ApplyPatchServerTool,
+  ApplyPatchServerTool$Outbound,
+  ApplyPatchServerTool$outboundSchema,
+} from "./applypatchservertool.js";
+import {
+  ApplyPatchServerToolOpenRouter,
+  ApplyPatchServerToolOpenRouter$Outbound,
+  ApplyPatchServerToolOpenRouter$outboundSchema,
+} from "./applypatchservertoolopenrouter.js";
+import {
+  BashServerTool,
+  BashServerTool$Outbound,
+  BashServerTool$outboundSchema,
+} from "./bashservertool.js";
+import {
+  CodeInterpreterServerTool,
+  CodeInterpreterServerTool$Outbound,
+  CodeInterpreterServerTool$outboundSchema,
+} from "./codeinterpreterservertool.js";
+import {
+  CodexLocalShellTool,
+  CodexLocalShellTool$Outbound,
+  CodexLocalShellTool$outboundSchema,
+} from "./codexlocalshelltool.js";
+import {
   CompactionItem,
   CompactionItem$Outbound,
   CompactionItem$outboundSchema,
 } from "./compactionitem.js";
 import {
+  ComputerUseServerTool,
+  ComputerUseServerTool$Outbound,
+  ComputerUseServerTool$outboundSchema,
+} from "./computeruseservertool.js";
+import {
   ContextCompactionItem,
   ContextCompactionItem$Outbound,
   ContextCompactionItem$outboundSchema,
 } from "./contextcompactionitem.js";
+import {
+  CustomTool,
+  CustomTool$Outbound,
+  CustomTool$outboundSchema,
+} from "./customtool.js";
 import {
   CustomToolCallItem,
   CustomToolCallItem$Outbound,
@@ -47,10 +88,25 @@ import {
   CustomToolCallOutputItem$outboundSchema,
 } from "./customtoolcalloutputitem.js";
 import {
+  DatetimeServerTool,
+  DatetimeServerTool$Outbound,
+  DatetimeServerTool$outboundSchema,
+} from "./datetimeservertool.js";
+import {
   EasyInputMessage,
   EasyInputMessage$Outbound,
   EasyInputMessage$outboundSchema,
 } from "./easyinputmessage.js";
+import {
+  FileSearchServerTool,
+  FileSearchServerTool$Outbound,
+  FileSearchServerTool$outboundSchema,
+} from "./filesearchservertool.js";
+import {
+  FilesServerTool,
+  FilesServerTool$Outbound,
+  FilesServerTool$outboundSchema,
+} from "./filesservertool.js";
 import {
   FunctionCallItem,
   FunctionCallItem$Outbound,
@@ -62,6 +118,21 @@ import {
   FunctionCallOutputItem$outboundSchema,
 } from "./functioncalloutputitem.js";
 import {
+  FusionServerToolOpenRouter,
+  FusionServerToolOpenRouter$Outbound,
+  FusionServerToolOpenRouter$outboundSchema,
+} from "./fusionservertoolopenrouter.js";
+import {
+  ImageGenerationServerTool,
+  ImageGenerationServerTool$Outbound,
+  ImageGenerationServerTool$outboundSchema,
+} from "./imagegenerationservertool.js";
+import {
+  ImageGenerationServerToolOpenRouter,
+  ImageGenerationServerToolOpenRouter$Outbound,
+  ImageGenerationServerToolOpenRouter$outboundSchema,
+} from "./imagegenerationservertoolopenrouter.js";
+import {
   InputMessageItem,
   InputMessageItem$Outbound,
   InputMessageItem$outboundSchema,
@@ -71,6 +142,11 @@ import {
   ItemReferenceItem$Outbound,
   ItemReferenceItem$outboundSchema,
 } from "./itemreferenceitem.js";
+import {
+  LegacyWebSearchServerTool,
+  LegacyWebSearchServerTool$Outbound,
+  LegacyWebSearchServerTool$outboundSchema,
+} from "./legacywebsearchservertool.js";
 import {
   LocalShellCallItem,
   LocalShellCallItem$Outbound,
@@ -101,6 +177,16 @@ import {
   McpListToolsItem$Outbound,
   McpListToolsItem$outboundSchema,
 } from "./mcplisttoolsitem.js";
+import {
+  McpServerTool,
+  McpServerTool$Outbound,
+  McpServerTool$outboundSchema,
+} from "./mcpservertool.js";
+import {
+  NamespaceTool,
+  NamespaceTool$Outbound,
+  NamespaceTool$outboundSchema,
+} from "./namespacetool.js";
 import {
   OpenAIResponsesRefusalContent,
   OpenAIResponsesRefusalContent$Outbound,
@@ -232,6 +318,16 @@ import {
   OutputWebSearchServerToolItem$outboundSchema,
 } from "./outputwebsearchservertoolitem.js";
 import {
+  Preview20250311WebSearchServerTool,
+  Preview20250311WebSearchServerTool$Outbound,
+  Preview20250311WebSearchServerTool$outboundSchema,
+} from "./preview20250311websearchservertool.js";
+import {
+  PreviewWebSearchServerTool,
+  PreviewWebSearchServerTool$Outbound,
+  PreviewWebSearchServerTool$outboundSchema,
+} from "./previewwebsearchservertool.js";
+import {
   ReasoningFormat,
   ReasoningFormat$outboundSchema,
 } from "./reasoningformat.js";
@@ -256,6 +352,11 @@ import {
   ResponseOutputText$outboundSchema,
 } from "./responseoutputtext.js";
 import {
+  SearchModelsServerToolOpenRouter,
+  SearchModelsServerToolOpenRouter$Outbound,
+  SearchModelsServerToolOpenRouter$outboundSchema,
+} from "./searchmodelsservertoolopenrouter.js";
+import {
   ShellCallItem,
   ShellCallItem$Outbound,
   ShellCallItem$outboundSchema,
@@ -265,6 +366,201 @@ import {
   ShellCallOutputItem$Outbound,
   ShellCallOutputItem$outboundSchema,
 } from "./shellcalloutputitem.js";
+import {
+  ShellServerTool,
+  ShellServerTool$Outbound,
+  ShellServerTool$outboundSchema,
+} from "./shellservertool.js";
+import {
+  ShellServerToolOpenRouter,
+  ShellServerToolOpenRouter$Outbound,
+  ShellServerToolOpenRouter$outboundSchema,
+} from "./shellservertoolopenrouter.js";
+import {
+  SubagentServerToolOpenRouter,
+  SubagentServerToolOpenRouter$Outbound,
+  SubagentServerToolOpenRouter$outboundSchema,
+} from "./subagentservertoolopenrouter.js";
+import {
+  ToolSearchTool,
+  ToolSearchTool$Outbound,
+  ToolSearchTool$outboundSchema,
+} from "./toolsearchtool.js";
+import {
+  WebFetchServerTool,
+  WebFetchServerTool$Outbound,
+  WebFetchServerTool$outboundSchema,
+} from "./webfetchservertool.js";
+import {
+  WebSearchServerTool,
+  WebSearchServerTool$Outbound,
+  WebSearchServerTool$outboundSchema,
+} from "./websearchservertool.js";
+import {
+  WebSearchServerToolOpenRouter,
+  WebSearchServerToolOpenRouter$Outbound,
+  WebSearchServerToolOpenRouter$outboundSchema,
+} from "./websearchservertoolopenrouter.js";
+
+export const InputsExecution2 = {
+  Server: "server",
+  Client: "client",
+} as const;
+export type InputsExecution2 = OpenEnum<typeof InputsExecution2>;
+
+export const InputsStatusEnum2 = {
+  InProgress: "in_progress",
+  Completed: "completed",
+  Incomplete: "incomplete",
+} as const;
+export type InputsStatusEnum2 = OpenEnum<typeof InputsStatusEnum2>;
+
+export type InputsTool = {
+  type: string;
+  additionalProperties?: { [k: string]: any } | undefined;
+};
+
+export const InputsTypeFunction2 = {
+  Function: "function",
+} as const;
+export type InputsTypeFunction2 = ClosedEnum<typeof InputsTypeFunction2>;
+
+/**
+ * Function tool definition
+ */
+export type InputsToolFunction2 = {
+  description?: string | null | undefined;
+  name: string;
+  parameters: { [k: string]: any } | null;
+  strict?: boolean | null | undefined;
+  type: InputsTypeFunction2;
+};
+
+export const InputsTypeFunction1 = {
+  Function: "function",
+} as const;
+export type InputsTypeFunction1 = ClosedEnum<typeof InputsTypeFunction1>;
+
+/**
+ * Function tool definition
+ */
+export type InputsToolFunction1 = {
+  description?: string | null | undefined;
+  name: string;
+  parameters: { [k: string]: any } | null;
+  strict?: boolean | null | undefined;
+  type: InputsTypeFunction1;
+};
+
+export type InputsToolUnion =
+  | ComputerUseServerTool
+  | NamespaceTool
+  | InputsToolFunction1
+  | InputsToolFunction2
+  | FileSearchServerTool
+  | CodeInterpreterServerTool
+  | McpServerTool
+  | CustomTool
+  | PreviewWebSearchServerTool
+  | Preview20250311WebSearchServerTool
+  | LegacyWebSearchServerTool
+  | WebSearchServerTool
+  | ImageGenerationServerTool
+  | CodexLocalShellTool
+  | ShellServerTool
+  | ApplyPatchServerTool
+  | ToolSearchTool
+  | AdvisorServerToolOpenRouter
+  | SubagentServerToolOpenRouter
+  | DatetimeServerTool
+  | FilesServerTool
+  | FusionServerToolOpenRouter
+  | ImageGenerationServerToolOpenRouter
+  | SearchModelsServerToolOpenRouter
+  | WebFetchServerTool
+  | WebSearchServerToolOpenRouter
+  | ApplyPatchServerToolOpenRouter
+  | BashServerTool
+  | ShellServerToolOpenRouter
+  | InputsTool;
+
+export const TypeToolSearchOutput = {
+  ToolSearchOutput: "tool_search_output",
+} as const;
+export type TypeToolSearchOutput = ClosedEnum<typeof TypeToolSearchOutput>;
+
+export type InputsToolSearchOutput = {
+  callId?: string | null | undefined;
+  createdBy?: string | undefined;
+  execution?: InputsExecution2 | undefined;
+  id?: string | null | undefined;
+  status?: InputsStatusEnum2 | null | undefined;
+  tools: Array<
+    | ComputerUseServerTool
+    | NamespaceTool
+    | InputsToolFunction1
+    | InputsToolFunction2
+    | FileSearchServerTool
+    | CodeInterpreterServerTool
+    | McpServerTool
+    | CustomTool
+    | PreviewWebSearchServerTool
+    | Preview20250311WebSearchServerTool
+    | LegacyWebSearchServerTool
+    | WebSearchServerTool
+    | ImageGenerationServerTool
+    | CodexLocalShellTool
+    | ShellServerTool
+    | ApplyPatchServerTool
+    | ToolSearchTool
+    | AdvisorServerToolOpenRouter
+    | SubagentServerToolOpenRouter
+    | DatetimeServerTool
+    | FilesServerTool
+    | FusionServerToolOpenRouter
+    | ImageGenerationServerToolOpenRouter
+    | SearchModelsServerToolOpenRouter
+    | WebFetchServerTool
+    | WebSearchServerToolOpenRouter
+    | ApplyPatchServerToolOpenRouter
+    | BashServerTool
+    | ShellServerToolOpenRouter
+    | InputsTool
+  >;
+  type: TypeToolSearchOutput;
+  additionalProperties?: { [k: string]: any } | undefined;
+};
+
+export const InputsExecution1 = {
+  Server: "server",
+  Client: "client",
+} as const;
+export type InputsExecution1 = OpenEnum<typeof InputsExecution1>;
+
+export const InputsStatusEnum1 = {
+  InProgress: "in_progress",
+  Completed: "completed",
+  Incomplete: "incomplete",
+} as const;
+export type InputsStatusEnum1 = OpenEnum<typeof InputsStatusEnum1>;
+
+export const InputsTypeToolSearchCall = {
+  ToolSearchCall: "tool_search_call",
+} as const;
+export type InputsTypeToolSearchCall = ClosedEnum<
+  typeof InputsTypeToolSearchCall
+>;
+
+export type InputsToolSearchCall = {
+  arguments?: any | undefined;
+  callId?: string | null | undefined;
+  createdBy?: string | undefined;
+  execution?: InputsExecution1 | undefined;
+  id?: string | null | undefined;
+  status?: InputsStatusEnum1 | null | undefined;
+  type: InputsTypeToolSearchCall;
+  additionalProperties?: { [k: string]: any } | undefined;
+};
 
 export const InputsStatusInProgress2 = {
   InProgress: "in_progress",
@@ -421,6 +717,7 @@ export type InputsUnion1 =
   | McpApprovalResponseItem
   | CustomToolCallOutputItem
   | AdditionalToolsItem
+  | InputsToolSearchOutput
   | OutputWebSearchServerToolItem
   | OutputCodeInterpreterServerToolItem
   | OutputFileSearchServerToolItem
@@ -442,6 +739,7 @@ export type InputsUnion1 =
   | ItemReferenceItem
   | EasyInputMessage
   | InputMessageItem
+  | InputsToolSearchCall
   | ContextCompactionItem;
 
 /**
@@ -477,6 +775,7 @@ export type InputsUnion =
     | McpApprovalResponseItem
     | CustomToolCallOutputItem
     | AdditionalToolsItem
+    | InputsToolSearchOutput
     | OutputWebSearchServerToolItem
     | OutputCodeInterpreterServerToolItem
     | OutputFileSearchServerToolItem
@@ -498,8 +797,365 @@ export type InputsUnion =
     | ItemReferenceItem
     | EasyInputMessage
     | InputMessageItem
+    | InputsToolSearchCall
     | ContextCompactionItem
   >;
+
+/** @internal */
+export const InputsExecution2$outboundSchema: z.ZodType<
+  string,
+  InputsExecution2
+> = openEnums.outboundSchema(InputsExecution2);
+
+/** @internal */
+export const InputsStatusEnum2$outboundSchema: z.ZodType<
+  string,
+  InputsStatusEnum2
+> = openEnums.outboundSchema(InputsStatusEnum2);
+
+/** @internal */
+export type InputsTool$Outbound = {
+  type: string;
+  [additionalProperties: string]: unknown;
+};
+
+/** @internal */
+export const InputsTool$outboundSchema: z.ZodType<
+  InputsTool$Outbound,
+  InputsTool
+> = z.object({
+  type: z.string(),
+  additionalProperties: z.record(z.string(), z.any()).optional(),
+}).transform((v) => {
+  return {
+    ...v.additionalProperties,
+    ...remap$(v, {
+      additionalProperties: null,
+    }),
+  };
+});
+
+export function inputsToolToJSON(inputsTool: InputsTool): string {
+  return JSON.stringify(InputsTool$outboundSchema.parse(inputsTool));
+}
+
+/** @internal */
+export const InputsTypeFunction2$outboundSchema: z.ZodEnum<
+  typeof InputsTypeFunction2
+> = z.enum(InputsTypeFunction2);
+
+/** @internal */
+export type InputsToolFunction2$Outbound = {
+  description?: string | null | undefined;
+  name: string;
+  parameters: { [k: string]: any } | null;
+  strict?: boolean | null | undefined;
+  type: string;
+};
+
+/** @internal */
+export const InputsToolFunction2$outboundSchema: z.ZodType<
+  InputsToolFunction2$Outbound,
+  InputsToolFunction2
+> = z.object({
+  description: z.nullable(z.string()).optional(),
+  name: z.string(),
+  parameters: z.nullable(z.record(z.string(), z.any())),
+  strict: z.nullable(z.boolean()).optional(),
+  type: InputsTypeFunction2$outboundSchema,
+});
+
+export function inputsToolFunction2ToJSON(
+  inputsToolFunction2: InputsToolFunction2,
+): string {
+  return JSON.stringify(
+    InputsToolFunction2$outboundSchema.parse(inputsToolFunction2),
+  );
+}
+
+/** @internal */
+export const InputsTypeFunction1$outboundSchema: z.ZodEnum<
+  typeof InputsTypeFunction1
+> = z.enum(InputsTypeFunction1);
+
+/** @internal */
+export type InputsToolFunction1$Outbound = {
+  description?: string | null | undefined;
+  name: string;
+  parameters: { [k: string]: any } | null;
+  strict?: boolean | null | undefined;
+  type: string;
+};
+
+/** @internal */
+export const InputsToolFunction1$outboundSchema: z.ZodType<
+  InputsToolFunction1$Outbound,
+  InputsToolFunction1
+> = z.object({
+  description: z.nullable(z.string()).optional(),
+  name: z.string(),
+  parameters: z.nullable(z.record(z.string(), z.any())),
+  strict: z.nullable(z.boolean()).optional(),
+  type: InputsTypeFunction1$outboundSchema,
+});
+
+export function inputsToolFunction1ToJSON(
+  inputsToolFunction1: InputsToolFunction1,
+): string {
+  return JSON.stringify(
+    InputsToolFunction1$outboundSchema.parse(inputsToolFunction1),
+  );
+}
+
+/** @internal */
+export type InputsToolUnion$Outbound =
+  | ComputerUseServerTool$Outbound
+  | NamespaceTool$Outbound
+  | InputsToolFunction1$Outbound
+  | InputsToolFunction2$Outbound
+  | FileSearchServerTool$Outbound
+  | CodeInterpreterServerTool$Outbound
+  | McpServerTool$Outbound
+  | CustomTool$Outbound
+  | PreviewWebSearchServerTool$Outbound
+  | Preview20250311WebSearchServerTool$Outbound
+  | LegacyWebSearchServerTool$Outbound
+  | WebSearchServerTool$Outbound
+  | ImageGenerationServerTool$Outbound
+  | CodexLocalShellTool$Outbound
+  | ShellServerTool$Outbound
+  | ApplyPatchServerTool$Outbound
+  | ToolSearchTool$Outbound
+  | AdvisorServerToolOpenRouter$Outbound
+  | SubagentServerToolOpenRouter$Outbound
+  | DatetimeServerTool$Outbound
+  | FilesServerTool$Outbound
+  | FusionServerToolOpenRouter$Outbound
+  | ImageGenerationServerToolOpenRouter$Outbound
+  | SearchModelsServerToolOpenRouter$Outbound
+  | WebFetchServerTool$Outbound
+  | WebSearchServerToolOpenRouter$Outbound
+  | ApplyPatchServerToolOpenRouter$Outbound
+  | BashServerTool$Outbound
+  | ShellServerToolOpenRouter$Outbound
+  | InputsTool$Outbound;
+
+/** @internal */
+export const InputsToolUnion$outboundSchema: z.ZodType<
+  InputsToolUnion$Outbound,
+  InputsToolUnion
+> = z.union([
+  ComputerUseServerTool$outboundSchema,
+  NamespaceTool$outboundSchema,
+  z.lazy(() => InputsToolFunction1$outboundSchema),
+  z.lazy(() => InputsToolFunction2$outboundSchema),
+  FileSearchServerTool$outboundSchema,
+  CodeInterpreterServerTool$outboundSchema,
+  McpServerTool$outboundSchema,
+  CustomTool$outboundSchema,
+  PreviewWebSearchServerTool$outboundSchema,
+  Preview20250311WebSearchServerTool$outboundSchema,
+  LegacyWebSearchServerTool$outboundSchema,
+  WebSearchServerTool$outboundSchema,
+  ImageGenerationServerTool$outboundSchema,
+  CodexLocalShellTool$outboundSchema,
+  ShellServerTool$outboundSchema,
+  ApplyPatchServerTool$outboundSchema,
+  ToolSearchTool$outboundSchema,
+  AdvisorServerToolOpenRouter$outboundSchema,
+  SubagentServerToolOpenRouter$outboundSchema,
+  DatetimeServerTool$outboundSchema,
+  FilesServerTool$outboundSchema,
+  FusionServerToolOpenRouter$outboundSchema,
+  ImageGenerationServerToolOpenRouter$outboundSchema,
+  SearchModelsServerToolOpenRouter$outboundSchema,
+  WebFetchServerTool$outboundSchema,
+  WebSearchServerToolOpenRouter$outboundSchema,
+  ApplyPatchServerToolOpenRouter$outboundSchema,
+  BashServerTool$outboundSchema,
+  ShellServerToolOpenRouter$outboundSchema,
+  z.lazy(() => InputsTool$outboundSchema),
+]);
+
+export function inputsToolUnionToJSON(
+  inputsToolUnion: InputsToolUnion,
+): string {
+  return JSON.stringify(InputsToolUnion$outboundSchema.parse(inputsToolUnion));
+}
+
+/** @internal */
+export const TypeToolSearchOutput$outboundSchema: z.ZodEnum<
+  typeof TypeToolSearchOutput
+> = z.enum(TypeToolSearchOutput);
+
+/** @internal */
+export type InputsToolSearchOutput$Outbound = {
+  call_id?: string | null | undefined;
+  created_by?: string | undefined;
+  execution?: string | undefined;
+  id?: string | null | undefined;
+  status?: string | null | undefined;
+  tools: Array<
+    | ComputerUseServerTool$Outbound
+    | NamespaceTool$Outbound
+    | InputsToolFunction1$Outbound
+    | InputsToolFunction2$Outbound
+    | FileSearchServerTool$Outbound
+    | CodeInterpreterServerTool$Outbound
+    | McpServerTool$Outbound
+    | CustomTool$Outbound
+    | PreviewWebSearchServerTool$Outbound
+    | Preview20250311WebSearchServerTool$Outbound
+    | LegacyWebSearchServerTool$Outbound
+    | WebSearchServerTool$Outbound
+    | ImageGenerationServerTool$Outbound
+    | CodexLocalShellTool$Outbound
+    | ShellServerTool$Outbound
+    | ApplyPatchServerTool$Outbound
+    | ToolSearchTool$Outbound
+    | AdvisorServerToolOpenRouter$Outbound
+    | SubagentServerToolOpenRouter$Outbound
+    | DatetimeServerTool$Outbound
+    | FilesServerTool$Outbound
+    | FusionServerToolOpenRouter$Outbound
+    | ImageGenerationServerToolOpenRouter$Outbound
+    | SearchModelsServerToolOpenRouter$Outbound
+    | WebFetchServerTool$Outbound
+    | WebSearchServerToolOpenRouter$Outbound
+    | ApplyPatchServerToolOpenRouter$Outbound
+    | BashServerTool$Outbound
+    | ShellServerToolOpenRouter$Outbound
+    | InputsTool$Outbound
+  >;
+  type: string;
+  [additionalProperties: string]: unknown;
+};
+
+/** @internal */
+export const InputsToolSearchOutput$outboundSchema: z.ZodType<
+  InputsToolSearchOutput$Outbound,
+  InputsToolSearchOutput
+> = z.object({
+  callId: z.nullable(z.string()).optional(),
+  createdBy: z.string().optional(),
+  execution: InputsExecution2$outboundSchema.optional(),
+  id: z.nullable(z.string()).optional(),
+  status: z.nullable(InputsStatusEnum2$outboundSchema).optional(),
+  tools: z.array(
+    z.union([
+      ComputerUseServerTool$outboundSchema,
+      NamespaceTool$outboundSchema,
+      z.lazy(() => InputsToolFunction1$outboundSchema),
+      z.lazy(() => InputsToolFunction2$outboundSchema),
+      FileSearchServerTool$outboundSchema,
+      CodeInterpreterServerTool$outboundSchema,
+      McpServerTool$outboundSchema,
+      CustomTool$outboundSchema,
+      PreviewWebSearchServerTool$outboundSchema,
+      Preview20250311WebSearchServerTool$outboundSchema,
+      LegacyWebSearchServerTool$outboundSchema,
+      WebSearchServerTool$outboundSchema,
+      ImageGenerationServerTool$outboundSchema,
+      CodexLocalShellTool$outboundSchema,
+      ShellServerTool$outboundSchema,
+      ApplyPatchServerTool$outboundSchema,
+      ToolSearchTool$outboundSchema,
+      AdvisorServerToolOpenRouter$outboundSchema,
+      SubagentServerToolOpenRouter$outboundSchema,
+      DatetimeServerTool$outboundSchema,
+      FilesServerTool$outboundSchema,
+      FusionServerToolOpenRouter$outboundSchema,
+      ImageGenerationServerToolOpenRouter$outboundSchema,
+      SearchModelsServerToolOpenRouter$outboundSchema,
+      WebFetchServerTool$outboundSchema,
+      WebSearchServerToolOpenRouter$outboundSchema,
+      ApplyPatchServerToolOpenRouter$outboundSchema,
+      BashServerTool$outboundSchema,
+      ShellServerToolOpenRouter$outboundSchema,
+      z.lazy(() => InputsTool$outboundSchema),
+    ]),
+  ),
+  type: TypeToolSearchOutput$outboundSchema,
+  additionalProperties: z.record(z.string(), z.any()).optional(),
+}).transform((v) => {
+  return {
+    ...v.additionalProperties,
+    ...remap$(v, {
+      callId: "call_id",
+      createdBy: "created_by",
+      additionalProperties: null,
+    }),
+  };
+});
+
+export function inputsToolSearchOutputToJSON(
+  inputsToolSearchOutput: InputsToolSearchOutput,
+): string {
+  return JSON.stringify(
+    InputsToolSearchOutput$outboundSchema.parse(inputsToolSearchOutput),
+  );
+}
+
+/** @internal */
+export const InputsExecution1$outboundSchema: z.ZodType<
+  string,
+  InputsExecution1
+> = openEnums.outboundSchema(InputsExecution1);
+
+/** @internal */
+export const InputsStatusEnum1$outboundSchema: z.ZodType<
+  string,
+  InputsStatusEnum1
+> = openEnums.outboundSchema(InputsStatusEnum1);
+
+/** @internal */
+export const InputsTypeToolSearchCall$outboundSchema: z.ZodEnum<
+  typeof InputsTypeToolSearchCall
+> = z.enum(InputsTypeToolSearchCall);
+
+/** @internal */
+export type InputsToolSearchCall$Outbound = {
+  arguments?: any | undefined;
+  call_id?: string | null | undefined;
+  created_by?: string | undefined;
+  execution?: string | undefined;
+  id?: string | null | undefined;
+  status?: string | null | undefined;
+  type: string;
+  [additionalProperties: string]: unknown;
+};
+
+/** @internal */
+export const InputsToolSearchCall$outboundSchema: z.ZodType<
+  InputsToolSearchCall$Outbound,
+  InputsToolSearchCall
+> = z.object({
+  arguments: z.any().optional(),
+  callId: z.nullable(z.string()).optional(),
+  createdBy: z.string().optional(),
+  execution: InputsExecution1$outboundSchema.optional(),
+  id: z.nullable(z.string()).optional(),
+  status: z.nullable(InputsStatusEnum1$outboundSchema).optional(),
+  type: InputsTypeToolSearchCall$outboundSchema,
+  additionalProperties: z.record(z.string(), z.any()).optional(),
+}).transform((v) => {
+  return {
+    ...v.additionalProperties,
+    ...remap$(v, {
+      callId: "call_id",
+      createdBy: "created_by",
+      additionalProperties: null,
+    }),
+  };
+});
+
+export function inputsToolSearchCallToJSON(
+  inputsToolSearchCall: InputsToolSearchCall,
+): string {
+  return JSON.stringify(
+    InputsToolSearchCall$outboundSchema.parse(inputsToolSearchCall),
+  );
+}
 
 /** @internal */
 export const InputsStatusInProgress2$outboundSchema: z.ZodEnum<
@@ -780,6 +1436,7 @@ export type InputsUnion1$Outbound =
   | McpApprovalResponseItem$Outbound
   | CustomToolCallOutputItem$Outbound
   | AdditionalToolsItem$Outbound
+  | InputsToolSearchOutput$Outbound
   | OutputWebSearchServerToolItem$Outbound
   | OutputCodeInterpreterServerToolItem$Outbound
   | OutputFileSearchServerToolItem$Outbound
@@ -801,6 +1458,7 @@ export type InputsUnion1$Outbound =
   | ItemReferenceItem$Outbound
   | EasyInputMessage$Outbound
   | InputMessageItem$Outbound
+  | InputsToolSearchCall$Outbound
   | ContextCompactionItem$Outbound;
 
 /** @internal */
@@ -835,6 +1493,7 @@ export const InputsUnion1$outboundSchema: z.ZodType<
   McpApprovalResponseItem$outboundSchema,
   CustomToolCallOutputItem$outboundSchema,
   AdditionalToolsItem$outboundSchema,
+  z.lazy(() => InputsToolSearchOutput$outboundSchema),
   OutputWebSearchServerToolItem$outboundSchema,
   OutputCodeInterpreterServerToolItem$outboundSchema,
   OutputFileSearchServerToolItem$outboundSchema,
@@ -856,6 +1515,7 @@ export const InputsUnion1$outboundSchema: z.ZodType<
   ItemReferenceItem$outboundSchema,
   EasyInputMessage$outboundSchema,
   InputMessageItem$outboundSchema,
+  z.lazy(() => InputsToolSearchCall$outboundSchema),
   ContextCompactionItem$outboundSchema,
 ]);
 
@@ -894,6 +1554,7 @@ export type InputsUnion$Outbound =
     | McpApprovalResponseItem$Outbound
     | CustomToolCallOutputItem$Outbound
     | AdditionalToolsItem$Outbound
+    | InputsToolSearchOutput$Outbound
     | OutputWebSearchServerToolItem$Outbound
     | OutputCodeInterpreterServerToolItem$Outbound
     | OutputFileSearchServerToolItem$Outbound
@@ -915,6 +1576,7 @@ export type InputsUnion$Outbound =
     | ItemReferenceItem$Outbound
     | EasyInputMessage$Outbound
     | InputMessageItem$Outbound
+    | InputsToolSearchCall$Outbound
     | ContextCompactionItem$Outbound
   >;
 
@@ -953,6 +1615,7 @@ export const InputsUnion$outboundSchema: z.ZodType<
       McpApprovalResponseItem$outboundSchema,
       CustomToolCallOutputItem$outboundSchema,
       AdditionalToolsItem$outboundSchema,
+      z.lazy(() => InputsToolSearchOutput$outboundSchema),
       OutputWebSearchServerToolItem$outboundSchema,
       OutputCodeInterpreterServerToolItem$outboundSchema,
       OutputFileSearchServerToolItem$outboundSchema,
@@ -974,6 +1637,7 @@ export const InputsUnion$outboundSchema: z.ZodType<
       ItemReferenceItem$outboundSchema,
       EasyInputMessage$outboundSchema,
       InputMessageItem$outboundSchema,
+      z.lazy(() => InputsToolSearchCall$outboundSchema),
       ContextCompactionItem$outboundSchema,
     ]),
   ),
