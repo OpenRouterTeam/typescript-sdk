@@ -27,7 +27,7 @@ export type AutoBetaRouterPluginCostTier = OpenEnum<
 
 export type AutoBetaRouterPlugin = {
   /**
-   * List of model patterns to filter which models the auto-beta-router can route between. Supports wildcards (e.g., "anthropic/*" matches all Anthropic models). When not specified, uses the default supported models list.
+   * List of model patterns to filter which models the auto-beta-router can route between. Supports wildcards (e.g., "anthropic/*" matches all Anthropic models). When not specified, every model ranked for the classified task type is a candidate, falling back to a default model set when rankings are unavailable.
    */
   allowedModels?: Array<string> | undefined;
   /**
