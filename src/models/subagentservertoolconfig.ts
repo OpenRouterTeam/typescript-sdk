@@ -5,6 +5,8 @@
 
 import * as z from "zod/v4";
 import { remap as remap$ } from "../lib/primitives.js";
+import * as openEnums from "../types/enums.js";
+import { OpenEnum } from "../types/enums.js";
 import {
   SubagentNestedTool,
   SubagentNestedTool$Outbound,
@@ -17,9 +19,29 @@ import {
 } from "./subagentreasoning.js";
 
 /**
+ * EXPERIMENTAL — subject to change without notice. How the subagent's `outcome` is produced. 'last_message' (default) returns the subagent's final message. 'summarize' runs an additional summarization turn over the subagent's conversation after it completes and returns that summary as the outcome.
+ */
+export const OutputStrategy = {
+  LastMessage: "last_message",
+  Summarize: "summarize",
+} as const;
+/**
+ * EXPERIMENTAL — subject to change without notice. How the subagent's `outcome` is produced. 'last_message' (default) returns the subagent's final message. 'summarize' runs an additional summarization turn over the subagent's conversation after it completes and returns that summary as the outcome.
+ */
+export type OutputStrategy = OpenEnum<typeof OutputStrategy>;
+
+/**
  * Configuration for one openrouter:subagent server tool entry.
  */
 export type SubagentServerToolConfig = {
+  /**
+   * EXPERIMENTAL — subject to change without notice. When true, the subagent inherits every client function defined in the request's top-level `tools` list.
+   */
+  inheritFunctions?: boolean | undefined;
+  /**
+   * EXPERIMENTAL — subject to change without notice. Names of the top-level function tools that the subagent will inherit. Any tool that matches by name will be copied fully into the tools array of the subagent. When `inherit_functions` is `true`, this list does nothing, because every client function will be inherited by default.
+   */
+  inheritedFunctionNames?: Array<string> | undefined;
   /**
    * System instructions for the subagent. When omitted, the subagent responds with no system prompt of its own.
    */
@@ -41,6 +63,10 @@ export type SubagentServerToolConfig = {
    */
   name?: string | undefined;
   /**
+   * EXPERIMENTAL — subject to change without notice. How the subagent's `outcome` is produced. 'last_message' (default) returns the subagent's final message. 'summarize' runs an additional summarization turn over the subagent's conversation after it completes and returns that summary as the outcome.
+   */
+  outputStrategy?: OutputStrategy | undefined;
+  /**
    * Reasoning configuration forwarded to the subagent call. Use this to control reasoning effort and token budget for models that support extended thinking.
    */
   reasoning?: SubagentReasoning | undefined;
@@ -55,12 +81,19 @@ export type SubagentServerToolConfig = {
 };
 
 /** @internal */
+export const OutputStrategy$outboundSchema: z.ZodType<string, OutputStrategy> =
+  openEnums.outboundSchema(OutputStrategy);
+
+/** @internal */
 export type SubagentServerToolConfig$Outbound = {
+  inherit_functions?: boolean | undefined;
+  inherited_function_names?: Array<string> | undefined;
   instructions?: string | undefined;
   max_completion_tokens?: number | undefined;
   max_tool_calls?: number | undefined;
   model?: string | undefined;
   name?: string | undefined;
+  output_strategy?: string | undefined;
   reasoning?: SubagentReasoning$Outbound | undefined;
   temperature?: number | undefined;
   tools?: Array<SubagentNestedTool$Outbound> | undefined;
@@ -71,18 +104,24 @@ export const SubagentServerToolConfig$outboundSchema: z.ZodType<
   SubagentServerToolConfig$Outbound,
   SubagentServerToolConfig
 > = z.object({
+  inheritFunctions: z.boolean().optional(),
+  inheritedFunctionNames: z.array(z.string()).optional(),
   instructions: z.string().optional(),
   maxCompletionTokens: z.int().optional(),
   maxToolCalls: z.int().optional(),
   model: z.string().optional(),
   name: z.string().optional(),
+  outputStrategy: OutputStrategy$outboundSchema.optional(),
   reasoning: SubagentReasoning$outboundSchema.optional(),
   temperature: z.number().optional(),
   tools: z.array(SubagentNestedTool$outboundSchema).optional(),
 }).transform((v) => {
   return remap$(v, {
+    inheritFunctions: "inherit_functions",
+    inheritedFunctionNames: "inherited_function_names",
     maxCompletionTokens: "max_completion_tokens",
     maxToolCalls: "max_tool_calls",
+    outputStrategy: "output_strategy",
   });
 });
 
