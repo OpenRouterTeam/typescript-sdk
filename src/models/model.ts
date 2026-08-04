@@ -124,6 +124,10 @@ export type Model = {
    * Information about the top provider for this model
    */
   topProvider: TopProviderInfo;
+  /**
+   * Virtual variant suffixes available for this model. Append one to the model ID in the `model` request field to change routing behaviour: `:online` (web search), `:nitro` (sort by throughput), `:floor` (sort by lowest price), `:exacto` (sort tool-eligible endpoints by accuracy). Only includes variants applicable to this model.
+   */
+  variantSuffixes: Array<string>;
 };
 
 /** @internal */
@@ -148,6 +152,7 @@ export const Model$inboundSchema: z.ZodType<Model, unknown> = z.object({
   supported_parameters: z.array(Parameter$inboundSchema),
   supported_voices: z.nullable(z.array(z.string())),
   top_provider: TopProviderInfo$inboundSchema,
+  variant_suffixes: z.array(z.string()),
 }).transform((v) => {
   return remap$(v, {
     "alias_target": "aliasTarget",
@@ -161,6 +166,7 @@ export const Model$inboundSchema: z.ZodType<Model, unknown> = z.object({
     "supported_parameters": "supportedParameters",
     "supported_voices": "supportedVoices",
     "top_provider": "topProvider",
+    "variant_suffixes": "variantSuffixes",
   });
 });
 
