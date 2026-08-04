@@ -107,7 +107,7 @@ export type CreateGuardrailRequest = {
    */
   resetInterval?: GuardrailInterval | null | undefined;
   /**
-   * The workspace to create the guardrail in. Defaults to the default workspace if not provided.
+   * The workspace to create the guardrail in. When omitted, the guardrail is created in the default workspace; if that default has been deleted, the request returns a 400 and you must pass `workspace_id` explicitly.
    */
   workspaceId?: string | undefined;
 };
