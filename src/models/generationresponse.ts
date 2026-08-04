@@ -182,6 +182,10 @@ export type GenerationResponseData = {
    */
   router: string | null;
   /**
+   * Routing overhead in milliseconds, including auth, moderation, and failed provider attempts
+   */
+  routerLatency: number | null;
+  /**
    * Service tier the upstream provider reported running this request on, or null if it did not report one.
    */
   serviceTier: string | null;
@@ -287,6 +291,7 @@ export const GenerationResponseData$inboundSchema: z.ZodType<
   request_id: z.nullable(z.string()).optional(),
   response_cache_source_id: z.nullable(z.string()).optional(),
   router: z.nullable(z.string()),
+  router_latency: z.nullable(z.int()),
   service_tier: z.nullable(z.string()),
   session_id: z.nullable(z.string()).optional(),
   streamed: z.nullable(z.boolean()),
@@ -328,6 +333,7 @@ export const GenerationResponseData$inboundSchema: z.ZodType<
     "provider_responses": "providerResponses",
     "request_id": "requestId",
     "response_cache_source_id": "responseCacheSourceId",
+    "router_latency": "routerLatency",
     "service_tier": "serviceTier",
     "session_id": "sessionId",
     "tokens_completion": "tokensCompletion",
