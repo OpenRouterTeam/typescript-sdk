@@ -1,0 +1,31 @@
+---
+title: "SessionCostItem"
+---
+
+## Example Usage
+
+```typescript
+import { SessionCostItem } from "@openrouter/sdk/models";
+
+let value: SessionCostItem = {
+  appId: 3067167,
+  appName: "Hermes Agent",
+  bucket: "core",
+  medianSessionCostUsd: 1.74,
+  modelPermaslug: "anthropic/claude-4.8-opus",
+  sessionCount: 500,
+  userCount: 100,
+};
+```
+
+## Fields
+
+| Field                                                                          | Type                                                                           | Required                                                                       | Description                                                                    | Example                                                                        |
+| ------------------------------------------------------------------------------ | ------------------------------------------------------------------------------ | ------------------------------------------------------------------------------ | ------------------------------------------------------------------------------ | ------------------------------------------------------------------------------ |
+| `appId`                                                                        | *number*                                                                       | :heavy_check_mark:                                                             | Stable numeric identifier of the harness app.                                  | 3067167                                                                        |
+| `appName`                                                                      | *string*                                                                       | :heavy_check_mark:                                                             | Published harness display label.                                               | Hermes Agent                                                                   |
+| `bucket`                                                                       | [models.Bucket](../models/bucket.mdx)                                           | :heavy_check_mark:                                                             | Session-size bucket.                                                           | core                                                                           |
+| `medianSessionCostUsd`                                                         | *number*                                                                       | :heavy_check_mark:                                                             | Median USD spend per sampled session.                                          | 1.74                                                                           |
+| `modelPermaslug`                                                               | *string*                                                                       | :heavy_check_mark:                                                             | Exact model permaslug, or `multi-model` for sessions without a dominant model. | anthropic/claude-4.8-opus                                                      |
+| `sessionCount`                                                                 | *number*                                                                       | :heavy_check_mark:                                                             | Number of sampled sessions in this published cell.                             | 500                                                                            |
+| `userCount`                                                                    | *number*                                                                       | :heavy_check_mark:                                                             | Number of distinct users in this published cell.                               | 100                                                                            |
