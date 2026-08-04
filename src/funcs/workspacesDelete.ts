@@ -4,7 +4,7 @@
  */
 
 import { OpenRouterCore } from "../core.js";
-import { encodeSimple } from "../lib/encodings.js";
+import { encodeFormQuery, encodeSimple } from "../lib/encodings.js";
 import { matchStatusCode } from "../lib/http.js";
 import * as M from "../lib/matchers.js";
 import { compactMap } from "../lib/primitives.js";
@@ -32,7 +32,7 @@ import { Result } from "../types/fp.js";
  * Delete a workspace
  *
  * @remarks
- * Delete an existing workspace. The default workspace cannot be deleted. Workspaces with active API keys cannot be deleted; remove the keys first. [Management key](/docs/guides/overview/auth/management-api-keys) required.
+ * Delete an existing workspace. Workspaces with active API keys cannot be deleted; remove the keys first. Deleting the default workspace is currently limited to internal OpenRouter administrators while the capability rolls out; other callers receive a 403. When permitted, it requires `confirm_default_settings_deletion=true` and permanently disables the account’s unscoped API keys and its budgets, guardrails, classifiers, and broadcast destinations. [Management key](/docs/guides/overview/auth/management-api-keys) required.
  */
 export function workspacesDelete(
   client: OpenRouterCore,
@@ -107,6 +107,11 @@ async function $do(
   };
   const path = pathToFunc("/workspaces/{id}")(pathParams);
 
+  const query = encodeFormQuery({
+    "confirm_default_settings_deletion":
+      payload.confirm_default_settings_deletion,
+  });
+
   const headers = new Headers(compactMap({
     Accept: "application/json",
     "HTTP-Referer": encodeSimple(
@@ -161,6 +166,7 @@ async function $do(
     baseURL: options?.serverURL,
     path: path,
     headers: headers,
+    query: query,
     body: body,
     userAgent: client._options.userAgent,
     timeoutMs: options?.timeoutMs || client._options.timeoutMs || -1,
