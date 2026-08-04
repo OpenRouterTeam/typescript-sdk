@@ -8,14 +8,16 @@ import { remap as remap$ } from "../lib/primitives.js";
 import { safeParse } from "../lib/schemas.js";
 import * as discriminatedUnionTypes from "../types/discriminatedUnion.js";
 import { discriminatedUnion } from "../types/discriminatedUnion.js";
-import { ClosedEnum } from "../types/enums.js";
+import * as openEnums from "../types/enums.js";
+import { ClosedEnum, OpenEnum } from "../types/enums.js";
 import { Result as SafeParseResult } from "../types/fp.js";
-import { SDKValidationError } from "./errors/sdkvalidationerror.js";
 import {
-  ToolCallStatus,
-  ToolCallStatus$inboundSchema,
-  ToolCallStatus$outboundSchema,
-} from "./toolcallstatus.js";
+  CodeInterpreterFileOutput,
+  CodeInterpreterFileOutput$inboundSchema,
+  CodeInterpreterFileOutput$Outbound,
+  CodeInterpreterFileOutput$outboundSchema,
+} from "./codeinterpreterfileoutput.js";
+import { SDKValidationError } from "./errors/sdkvalidationerror.js";
 
 export type OutputLogs = {
   logs: string;
@@ -30,7 +32,19 @@ export type OutputImage = {
 export type OutputCodeInterpreterCallItemOutputUnion =
   | OutputImage
   | OutputLogs
+  | CodeInterpreterFileOutput
   | discriminatedUnionTypes.Unknown<"type">;
+
+export const OutputCodeInterpreterCallItemStatus = {
+  InProgress: "in_progress",
+  Completed: "completed",
+  Incomplete: "incomplete",
+  Interpreting: "interpreting",
+  Failed: "failed",
+} as const;
+export type OutputCodeInterpreterCallItemStatus = OpenEnum<
+  typeof OutputCodeInterpreterCallItemStatus
+>;
 
 export const TypeCodeInterpreterCall = {
   CodeInterpreterCall: "code_interpreter_call",
@@ -43,13 +57,19 @@ export type TypeCodeInterpreterCall = ClosedEnum<
  * A code interpreter execution call with outputs
  */
 export type OutputCodeInterpreterCallItem = {
-  code: string | null;
-  containerId: string;
+  code?: string | null | undefined;
+  containerId?: string | undefined;
   id: string;
-  outputs:
-    | Array<OutputImage | OutputLogs | discriminatedUnionTypes.Unknown<"type">>
-    | null;
-  status: ToolCallStatus;
+  outputs?:
+    | Array<
+      | OutputImage
+      | OutputLogs
+      | CodeInterpreterFileOutput
+      | discriminatedUnionTypes.Unknown<"type">
+    >
+    | null
+    | undefined;
+  status: OutputCodeInterpreterCallItemStatus;
   type: TypeCodeInterpreterCall;
 };
 
@@ -128,11 +148,13 @@ export const OutputCodeInterpreterCallItemOutputUnion$inboundSchema: z.ZodType<
 > = discriminatedUnion("type", {
   image: z.lazy(() => OutputImage$inboundSchema),
   logs: z.lazy(() => OutputLogs$inboundSchema),
+  file: CodeInterpreterFileOutput$inboundSchema,
 });
 /** @internal */
 export type OutputCodeInterpreterCallItemOutputUnion$Outbound =
   | OutputImage$Outbound
-  | OutputLogs$Outbound;
+  | OutputLogs$Outbound
+  | CodeInterpreterFileOutput$Outbound;
 
 /** @internal */
 export const OutputCodeInterpreterCallItemOutputUnion$outboundSchema: z.ZodType<
@@ -141,6 +163,7 @@ export const OutputCodeInterpreterCallItemOutputUnion$outboundSchema: z.ZodType<
 > = z.union([
   z.lazy(() => OutputImage$outboundSchema),
   z.lazy(() => OutputLogs$outboundSchema),
+  CodeInterpreterFileOutput$outboundSchema,
 ]);
 
 export function outputCodeInterpreterCallItemOutputUnionToJSON(
@@ -170,6 +193,17 @@ export function outputCodeInterpreterCallItemOutputUnionFromJSON(
 }
 
 /** @internal */
+export const OutputCodeInterpreterCallItemStatus$inboundSchema: z.ZodType<
+  OutputCodeInterpreterCallItemStatus,
+  unknown
+> = openEnums.inboundSchema(OutputCodeInterpreterCallItemStatus);
+/** @internal */
+export const OutputCodeInterpreterCallItemStatus$outboundSchema: z.ZodType<
+  string,
+  OutputCodeInterpreterCallItemStatus
+> = openEnums.outboundSchema(OutputCodeInterpreterCallItemStatus);
+
+/** @internal */
 export const TypeCodeInterpreterCall$inboundSchema: z.ZodEnum<
   typeof TypeCodeInterpreterCall
 > = z.enum(TypeCodeInterpreterCall);
@@ -183,8 +217,8 @@ export const OutputCodeInterpreterCallItem$inboundSchema: z.ZodType<
   OutputCodeInterpreterCallItem,
   unknown
 > = z.object({
-  code: z.nullable(z.string()),
-  container_id: z.string(),
+  code: z.nullable(z.string()).optional(),
+  container_id: z.string().optional(),
   id: z.string(),
   outputs: z.nullable(
     z.array(discriminatedUnion("type", {
@@ -192,9 +226,10 @@ export const OutputCodeInterpreterCallItem$inboundSchema: z.ZodType<
       logs: z.lazy(() =>
         OutputLogs$inboundSchema
       ),
+      file: CodeInterpreterFileOutput$inboundSchema,
     })),
-  ),
-  status: ToolCallStatus$inboundSchema,
+  ).optional(),
+  status: OutputCodeInterpreterCallItemStatus$inboundSchema,
   type: TypeCodeInterpreterCall$inboundSchema,
 }).transform((v) => {
   return remap$(v, {
@@ -203,10 +238,17 @@ export const OutputCodeInterpreterCallItem$inboundSchema: z.ZodType<
 });
 /** @internal */
 export type OutputCodeInterpreterCallItem$Outbound = {
-  code: string | null;
-  container_id: string;
+  code?: string | null | undefined;
+  container_id?: string | undefined;
   id: string;
-  outputs: Array<OutputImage$Outbound | OutputLogs$Outbound> | null;
+  outputs?:
+    | Array<
+      | OutputImage$Outbound
+      | OutputLogs$Outbound
+      | CodeInterpreterFileOutput$Outbound
+    >
+    | null
+    | undefined;
   status: string;
   type: string;
 };
@@ -216,8 +258,8 @@ export const OutputCodeInterpreterCallItem$outboundSchema: z.ZodType<
   OutputCodeInterpreterCallItem$Outbound,
   OutputCodeInterpreterCallItem
 > = z.object({
-  code: z.nullable(z.string()),
-  containerId: z.string(),
+  code: z.nullable(z.string()).optional(),
+  containerId: z.string().optional(),
   id: z.string(),
   outputs: z.nullable(
     z.array(z.union([
@@ -225,9 +267,10 @@ export const OutputCodeInterpreterCallItem$outboundSchema: z.ZodType<
       z.lazy(() =>
         OutputLogs$outboundSchema
       ),
+      CodeInterpreterFileOutput$outboundSchema,
     ])),
-  ),
-  status: ToolCallStatus$outboundSchema,
+  ).optional(),
+  status: OutputCodeInterpreterCallItemStatus$outboundSchema,
   type: TypeCodeInterpreterCall$outboundSchema,
 }).transform((v) => {
   return remap$(v, {
