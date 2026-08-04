@@ -12268,6 +12268,31 @@ components:
         - 'tool_use_id'
         - 'content'
       type: 'object'
+    MessagesBashToolResultBlock:
+      description: 'Output of a sandbox-executed `openrouter:bash` call from a prior assistant turn. Accepted on replay and dropped before the provider request — Anthropic has no equivalent block.'
+      example:
+        content:
+          command: 'ls'
+          exitCode: 0
+          stderr: ''
+          stdout: "README.md\n"
+        tool_use_id: 'srvtoolu_01abc'
+        type: 'openrouter_bash_tool_result'
+      properties:
+        content:
+          additionalProperties: {}
+          type: 'object'
+        tool_use_id:
+          type: 'string'
+        type:
+          enum:
+            - 'openrouter_bash_tool_result'
+          type: 'string'
+      required:
+        - 'type'
+        - 'tool_use_id'
+        - 'content'
+      type: 'object'
     MessagesContentBlockDeltaEvent:
       description: 'Event sent when content is added to a content block'
       example:
@@ -12401,6 +12426,8 @@ components:
             - $ref: '#/components/schemas/AnthropicContainerUpload'
             - $ref: '#/components/schemas/AnthropicCompactionBlock'
             - $ref: '#/components/schemas/AnthropicAdvisorToolResult'
+            - $ref: '#/components/schemas/ORAnthropicShellToolResult'
+            - $ref: '#/components/schemas/ORAnthropicBashToolResult'
             - properties:
                 content:
                   type:
@@ -12777,6 +12804,8 @@ components:
                   - $ref: '#/components/schemas/MessagesAdvisorToolResultBlock'
                   - $ref: '#/components/schemas/MessagesToolAdditionBlock'
                   - $ref: '#/components/schemas/MessagesToolRemovalBlock'
+                  - $ref: '#/components/schemas/MessagesShellToolResultBlock'
+                  - $ref: '#/components/schemas/MessagesBashToolResultBlock'
               type: 'array'
         role:
           enum:
@@ -13305,6 +13334,7 @@ components:
                 type: 'object'
               - $ref: '#/components/schemas/AnthropicToolSearchToolBm25'
               - $ref: '#/components/schemas/AnthropicToolSearchToolRegex'
+              - $ref: '#/components/schemas/ShellServerTool_OpenRouter'
           type: 'array'
         top_k:
           type: 'integer'
@@ -13420,6 +13450,33 @@ components:
           type: 'string'
       required:
         - 'type'
+      type: 'object'
+    MessagesShellToolResultBlock:
+      description: 'Output of an `openrouter:shell` call from a prior assistant turn. Accepted on replay and dropped before the provider request — Anthropic has no equivalent block.'
+      example:
+        content:
+          output:
+            - outcome:
+                exit_code: 0
+                type: 'exit'
+              stderr: ''
+              stdout: "README.md\n"
+        tool_use_id: 'srvtoolu_01abc'
+        type: 'openrouter_shell_tool_result'
+      properties:
+        content:
+          additionalProperties: {}
+          type: 'object'
+        tool_use_id:
+          type: 'string'
+        type:
+          enum:
+            - 'openrouter_shell_tool_result'
+          type: 'string'
+      required:
+        - 'type'
+        - 'tool_use_id'
+        - 'content'
       type: 'object'
     MessagesStartEvent:
       description: 'Event sent at the start of a streaming message'
@@ -17305,6 +17362,31 @@ components:
       required:
         - 'type'
       type: 'object'
+    ORAnthropicBashToolResult:
+      description: 'Output of an `openrouter:bash` call executed in the OpenRouter sandbox (`engine: ''openrouter''`)'
+      example:
+        content:
+          command: 'ls'
+          exitCode: 0
+          stderr: ''
+          stdout: "README.md\n"
+        tool_use_id: 'srvtoolu_01abc'
+        type: 'openrouter_bash_tool_result'
+      properties:
+        content:
+          additionalProperties: {}
+          type: 'object'
+        tool_use_id:
+          type: 'string'
+        type:
+          enum:
+            - 'openrouter_bash_tool_result'
+          type: 'string'
+      required:
+        - 'type'
+        - 'tool_use_id'
+        - 'content'
+      type: 'object'
     ORAnthropicContentBlock:
       discriminator:
         mapping:
@@ -17313,6 +17395,8 @@ components:
           code_execution_tool_result: '#/components/schemas/AnthropicCodeExecutionToolResult'
           compaction: '#/components/schemas/AnthropicCompactionBlock'
           container_upload: '#/components/schemas/AnthropicContainerUpload'
+          openrouter_bash_tool_result: '#/components/schemas/ORAnthropicBashToolResult'
+          openrouter_shell_tool_result: '#/components/schemas/ORAnthropicShellToolResult'
           redacted_thinking: '#/components/schemas/AnthropicRedactedThinkingBlock'
           server_tool_use: '#/components/schemas/ORAnthropicServerToolUseBlock'
           text: '#/components/schemas/AnthropicTextBlock'
@@ -17342,6 +17426,8 @@ components:
         - $ref: '#/components/schemas/AnthropicContainerUpload'
         - $ref: '#/components/schemas/AnthropicCompactionBlock'
         - $ref: '#/components/schemas/AnthropicAdvisorToolResult'
+        - $ref: '#/components/schemas/ORAnthropicShellToolResult'
+        - $ref: '#/components/schemas/ORAnthropicBashToolResult'
     ORAnthropicNullableCaller:
       discriminator:
         mapping:
@@ -17380,6 +17466,33 @@ components:
         - 'type'
         - 'id'
         - 'name'
+      type: 'object'
+    ORAnthropicShellToolResult:
+      description: 'Output of an `openrouter:shell` call executed in the OpenRouter sandbox'
+      example:
+        content:
+          output:
+            - outcome:
+                exit_code: 0
+                type: 'exit'
+              stderr: ''
+              stdout: "README.md\n"
+        tool_use_id: 'srvtoolu_01abc'
+        type: 'openrouter_shell_tool_result'
+      properties:
+        content:
+          additionalProperties: {}
+          type: 'object'
+        tool_use_id:
+          type: 'string'
+        type:
+          enum:
+            - 'openrouter_shell_tool_result'
+          type: 'string'
+      required:
+        - 'type'
+        - 'tool_use_id'
+        - 'content'
       type: 'object'
     ORAnthropicStopReason:
       enum:
@@ -25828,6 +25941,9 @@ paths:
                         description: 'Dimension to filter on. Use the /meta endpoint for available dimensions.'
                         example: 'model'
                         type: 'string'
+                      include_unset:
+                        description: 'Include rows where the dimension has no value. Applies only to the `in` and `not_in` operators and dimensions that have an unset bucket.'
+                        type: 'boolean'
                       operator:
                         description: 'Filter operator'
                         example: 'eq'
