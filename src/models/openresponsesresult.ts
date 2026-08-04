@@ -100,6 +100,10 @@ import {
   TextExtendedConfig,
   TextExtendedConfig$inboundSchema,
 } from "./textextendedconfig.js";
+import {
+  ToolSearchTool,
+  ToolSearchTool$inboundSchema,
+} from "./toolsearchtool.js";
 import { Truncation, Truncation$inboundSchema } from "./truncation.js";
 import {
   WebSearchServerTool,
@@ -142,6 +146,7 @@ export type OpenResponsesResultToolUnion =
   | (ApplyPatchServerTool & { type: "apply_patch" })
   | (CustomTool & { type: "custom" })
   | (NamespaceTool & { type: "namespace" })
+  | (ToolSearchTool & { type: "tool_search" })
   | discriminatedUnionTypes.Unknown<"type">;
 
 export type InputTokensDetails = {
@@ -243,6 +248,7 @@ export type OpenResponsesResult = {
     | (ApplyPatchServerTool & { type: "apply_patch" })
     | (CustomTool & { type: "custom" })
     | (NamespaceTool & { type: "namespace" })
+    | (ToolSearchTool & { type: "tool_search" })
     | discriminatedUnionTypes.Unknown<"type">
   >;
   topLogprobs?: number | null | undefined;
@@ -331,6 +337,9 @@ export const OpenResponsesResultToolUnion$inboundSchema: z.ZodType<
   custom: CustomTool$inboundSchema.and(z.object({ type: z.literal("custom") })),
   namespace: NamespaceTool$inboundSchema.and(
     z.object({ type: z.literal("namespace") }),
+  ),
+  tool_search: ToolSearchTool$inboundSchema.and(
+    z.object({ type: z.literal("tool_search") }),
   ),
 });
 
@@ -527,6 +536,9 @@ export const OpenResponsesResult$inboundSchema: z.ZodType<
     ),
     namespace: NamespaceTool$inboundSchema.and(
       z.object({ type: z.literal("namespace") }),
+    ),
+    tool_search: ToolSearchTool$inboundSchema.and(
+      z.object({ type: z.literal("tool_search") }),
     ),
   })),
   top_logprobs: z.nullable(z.int()).optional(),

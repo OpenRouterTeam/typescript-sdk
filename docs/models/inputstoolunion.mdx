@@ -1,13 +1,13 @@
 ---
-title: "ResponsesRequestToolUnion"
+title: "InputsToolUnion"
 ---
 
 ## Supported Types
 
-### `models.ResponsesRequestToolFunction`
+### `models.InputsToolFunction`
 
 ```typescript
-const value: models.ResponsesRequestToolFunction = {
+const value: models.InputsToolFunction = {
   name: "get_weather",
   parameters: {
     "properties": {
@@ -263,6 +263,14 @@ const value: models.BashServerTool = {
 ```typescript
 const value: models.ShellServerToolOpenRouter = {
   type: "openrouter:shell",
+};
+```
+
+### `models.InputsTool`
+
+```typescript
+const value: models.InputsTool = {
+  type: "<value>",
 };
 ```
 
