@@ -5,6 +5,8 @@
 
 import * as z from "zod/v4";
 import { remap as remap$ } from "../lib/primitives.js";
+import * as openEnums from "../types/enums.js";
+import { OpenEnum } from "../types/enums.js";
 import { ProviderName, ProviderName$outboundSchema } from "./providername.js";
 import { ProviderSort, ProviderSort$outboundSchema } from "./providersort.js";
 import {
@@ -12,6 +14,30 @@ import {
   ProviderSortConfig$Outbound,
   ProviderSortConfig$outboundSchema,
 } from "./providersortconfig.js";
+
+/**
+ * Data collection setting. If no available model provider meets the requirement, your request will return an error.
+ *
+ * @remarks
+ * - allow: (default) allow providers which store user data non-transiently and may train on it
+ *
+ * - deny: use only providers which do not collect user data.
+ */
+export const ImageGenerationProviderPreferencesDataCollection = {
+  Deny: "deny",
+  Allow: "allow",
+} as const;
+/**
+ * Data collection setting. If no available model provider meets the requirement, your request will return an error.
+ *
+ * @remarks
+ * - allow: (default) allow providers which store user data non-transiently and may train on it
+ *
+ * - deny: use only providers which do not collect user data.
+ */
+export type ImageGenerationProviderPreferencesDataCollection = OpenEnum<
+  typeof ImageGenerationProviderPreferencesDataCollection
+>;
 
 export type ImageGenerationProviderPreferencesIgnore = ProviderName | string;
 
@@ -177,6 +203,18 @@ export type ImageGenerationProviderPreferences = {
    */
   allowFallbacks?: boolean | null | undefined;
   /**
+   * Data collection setting. If no available model provider meets the requirement, your request will return an error.
+   *
+   * @remarks
+   * - allow: (default) allow providers which store user data non-transiently and may train on it
+   *
+   * - deny: use only providers which do not collect user data.
+   */
+  dataCollection?:
+    | ImageGenerationProviderPreferencesDataCollection
+    | null
+    | undefined;
+  /**
    * List of provider slugs to ignore. If provided, this list is merged with your account-wide ignored provider settings for this request.
    */
   ignore?: Array<ProviderName | string> | null | undefined;
@@ -193,7 +231,16 @@ export type ImageGenerationProviderPreferences = {
    * The sorting strategy to use for this request, if "order" is not specified. When set, no load balancing is performed.
    */
   sort?: ProviderSort | ProviderSortConfig | null | undefined;
+  /**
+   * Whether to restrict routing to only ZDR (Zero Data Retention) endpoints. When true, only endpoints that do not retain prompts will be used.
+   */
+  zdr?: boolean | null | undefined;
 };
+
+/** @internal */
+export const ImageGenerationProviderPreferencesDataCollection$outboundSchema:
+  z.ZodType<string, ImageGenerationProviderPreferencesDataCollection> =
+    openEnums.outboundSchema(ImageGenerationProviderPreferencesDataCollection);
 
 /** @internal */
 export type ImageGenerationProviderPreferencesIgnore$Outbound = string | string;
@@ -597,11 +644,13 @@ export function imageGenerationProviderPreferencesSortToJSON(
 /** @internal */
 export type ImageGenerationProviderPreferences$Outbound = {
   allow_fallbacks?: boolean | null | undefined;
+  data_collection?: string | null | undefined;
   ignore?: Array<string | string> | null | undefined;
   only?: Array<string | string> | null | undefined;
   options?: ImageGenerationProviderPreferencesOptions$Outbound | undefined;
   order?: Array<string | string> | null | undefined;
   sort?: string | ProviderSortConfig$Outbound | null | undefined;
+  zdr?: boolean | null | undefined;
 };
 
 /** @internal */
@@ -610,6 +659,9 @@ export const ImageGenerationProviderPreferences$outboundSchema: z.ZodType<
   ImageGenerationProviderPreferences
 > = z.object({
   allowFallbacks: z.nullable(z.boolean()).optional(),
+  dataCollection: z.nullable(
+    ImageGenerationProviderPreferencesDataCollection$outboundSchema,
+  ).optional(),
   ignore: z.nullable(
     z.array(z.union([ProviderName$outboundSchema, z.string()])),
   ).optional(),
@@ -623,9 +675,11 @@ export const ImageGenerationProviderPreferences$outboundSchema: z.ZodType<
   sort: z.nullable(
     z.union([ProviderSort$outboundSchema, ProviderSortConfig$outboundSchema]),
   ).optional(),
+  zdr: z.nullable(z.boolean()).optional(),
 }).transform((v) => {
   return remap$(v, {
     allowFallbacks: "allow_fallbacks",
+    dataCollection: "data_collection",
   });
 });
 
