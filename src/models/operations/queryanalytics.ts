@@ -94,10 +94,6 @@ export type Filter = {
    */
   field: string;
   /**
-   * Include rows where the dimension has no value. Applies only to the `in` and `not_in` operators and dimensions that have an unset bucket.
-   */
-  includeUnset?: boolean | undefined;
-  /**
    * Filter operator
    */
   operator: string;
@@ -358,7 +354,6 @@ export function value1ToJSON(value1: Value1): string {
 /** @internal */
 export type Filter$Outbound = {
   field: string;
-  include_unset?: boolean | undefined;
   operator: string;
   value: string | number | Array<string | number>;
 };
@@ -367,17 +362,12 @@ export type Filter$Outbound = {
 export const Filter$outboundSchema: z.ZodType<Filter$Outbound, Filter> = z
   .object({
     field: z.string(),
-    includeUnset: z.boolean().optional(),
     operator: z.string(),
     value: z.union([
       z.string(),
       z.number(),
       z.array(z.union([z.string(), z.number()])),
     ]),
-  }).transform((v) => {
-    return remap$(v, {
-      includeUnset: "include_unset",
-    });
   });
 
 export function filterToJSON(filter: Filter): string {
