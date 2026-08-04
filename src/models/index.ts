@@ -242,7 +242,6 @@ export * from "./getobservabilitydestinationresponse.js";
 export * from "./getpresetresponse.js";
 export * from "./getpresetversionresponse.js";
 export * from "./getscimgroupmappingresponse.js";
-export * from "./getworkspacebudgetresponse.js";
 export * from "./getworkspaceresponse.js";
 export * from "./guardrail.js";
 export * from "./guardrailinterval.js";
