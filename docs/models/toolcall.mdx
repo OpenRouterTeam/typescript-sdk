@@ -1,0 +1,28 @@
+---
+title: "ToolCall"
+---
+
+## Example Usage
+
+```typescript
+import { ToolCall } from "@openrouter/sdk/models";
+
+let value: ToolCall = {
+  function: {
+    arguments: "<value>",
+    name: "<value>",
+  },
+  id: "<id>",
+  type: "function",
+};
+```
+
+## Fields
+
+| Field                                                                              | Type                                                                               | Required                                                                           | Description                                                                        |
+| ---------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------- |
+| `function`                                                                         | [models.GenerationContentDataFunction](../models/generationcontentdatafunction.mdx) | :heavy_check_mark:                                                                 | N/A                                                                                |
+| `id`                                                                               | *string*                                                                           | :heavy_check_mark:                                                                 | N/A                                                                                |
+| `namespace`                                                                        | *string*                                                                           | :heavy_minus_sign:                                                                 | N/A                                                                                |
+| `toolKind`                                                                         | [models.ToolKind](../models/toolkind.mdx)                                           | :heavy_minus_sign:                                                                 | N/A                                                                                |
+| `type`                                                                             | [models.GenerationContentDataType](../models/generationcontentdatatype.mdx)         | :heavy_check_mark:                                                                 | N/A                                                                                |
