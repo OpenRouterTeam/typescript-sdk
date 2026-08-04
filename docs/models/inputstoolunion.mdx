@@ -1,13 +1,42 @@
 ---
-title: "ResponsesRequestToolUnion"
+title: "InputsToolUnion"
 ---
 
 ## Supported Types
 
-### `models.ResponsesRequestToolFunction`
+### `models.InputsToolFunction1`
 
 ```typescript
-const value: models.ResponsesRequestToolFunction = {
+const value: models.InputsToolFunction1 = {
+  name: "get_weather",
+  parameters: {
+    "properties": {
+      "location": {
+        "description": "The city and state",
+        "type": "string",
+      },
+      "unit": {
+        "enum": [
+          "celsius",
+          "fahrenheit",
+        ],
+        "type": "string",
+        "x-speakeasy-unknown-values": "allow",
+      },
+    },
+    "required": [
+      "location",
+    ],
+    "type": "object",
+  },
+  type: "function",
+};
+```
+
+### `models.InputsToolFunction2`
+
+```typescript
+const value: models.InputsToolFunction2 = {
   name: "get_weather",
   parameters: {
     "properties": {
@@ -263,6 +292,14 @@ const value: models.BashServerTool = {
 ```typescript
 const value: models.ShellServerToolOpenRouter = {
   type: "openrouter:shell",
+};
+```
+
+### `models.InputsTool`
+
+```typescript
+const value: models.InputsTool = {
+  type: "<value>",
 };
 ```
 
