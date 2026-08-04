@@ -240,6 +240,18 @@ export const ChatRequestServiceTier = {
 export type ChatRequestServiceTier = OpenEnum<typeof ChatRequestServiceTier>;
 
 /**
+ * Controls output generation speed. `fast` is interchangeable with `service_tier: "priority"`: it requests the priority tier and, on Anthropic models with a fast sibling, reroutes to the fast sibling. Defaults to `standard` when omitted.
+ */
+export const ChatRequestSpeed = {
+  Fast: "fast",
+  Standard: "standard",
+} as const;
+/**
+ * Controls output generation speed. `fast` is interchangeable with `service_tier: "priority"`: it requests the priority tier and, on Anthropic models with a fast sibling, reroutes to the fast sibling. Defaults to `standard` when omitted.
+ */
+export type ChatRequestSpeed = OpenEnum<typeof ChatRequestSpeed>;
+
+/**
  * Stop sequences (up to 4)
  */
 export type Stop = string | Array<string>;
@@ -376,6 +388,7 @@ export type ChatRequest = {
    * A unique identifier for grouping related requests (e.g., a conversation or agent workflow). When provided, OpenRouter uses it as the sticky routing key, routing all requests in the session to the same provider to maximize prompt cache hits. Also used for observability grouping. If provided in both the request body and the x-session-id header, the body value takes precedence. Maximum of 256 characters.
    */
   sessionId?: string | undefined;
+  speed?: ChatRequestSpeed | null | undefined;
   /**
    * Stop sequences (up to 4)
    */
@@ -539,6 +552,12 @@ export const ChatRequestServiceTier$outboundSchema: z.ZodType<
 > = openEnums.outboundSchema(ChatRequestServiceTier);
 
 /** @internal */
+export const ChatRequestSpeed$outboundSchema: z.ZodType<
+  string,
+  ChatRequestSpeed
+> = openEnums.outboundSchema(ChatRequestSpeed);
+
+/** @internal */
 export type Stop$Outbound = string | Array<string>;
 
 /** @internal */
@@ -600,6 +619,7 @@ export type ChatRequest$Outbound = {
   seed?: number | null | undefined;
   service_tier?: string | null | undefined;
   session_id?: string | undefined;
+  speed?: string | null | undefined;
   stop?: string | Array<string> | null | undefined;
   stop_server_tools_when?:
     | Array<StopServerToolsWhenCondition$Outbound>
@@ -670,6 +690,7 @@ export const ChatRequest$outboundSchema: z.ZodType<
   seed: z.nullable(z.int()).optional(),
   serviceTier: z.nullable(ChatRequestServiceTier$outboundSchema).optional(),
   sessionId: z.string().optional(),
+  speed: z.nullable(ChatRequestSpeed$outboundSchema).optional(),
   stop: z.nullable(z.union([z.string(), z.array(z.string())])).optional(),
   stopServerToolsWhen: z.array(StopServerToolsWhenCondition$outboundSchema)
     .optional(),

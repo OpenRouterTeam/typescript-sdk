@@ -1,0 +1,21 @@
+---
+title: "ChatRequestSpeed"
+---
+
+Controls output generation speed. `fast` is interchangeable with `service_tier: "priority"`: it requests the priority tier and, on Anthropic models with a fast sibling, reroutes to the fast sibling. Defaults to `standard` when omitted.
+
+## Example Usage
+
+```typescript
+import { ChatRequestSpeed } from "@openrouter/sdk/models";
+
+let value: ChatRequestSpeed = "fast";
+
+// Open enum: unrecognized values are captured as Unrecognized<string>
+```
+
+## Values
+
+```typescript
+"fast" | "standard" | Unrecognized<string>
+```

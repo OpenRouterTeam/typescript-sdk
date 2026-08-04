@@ -261,14 +261,14 @@ export type MessagesRequestPlugin =
 /**
  * Controls output generation speed. When set to `fast`, uses a higher-speed inference configuration at premium pricing. Defaults to `standard` when omitted.
  */
-export const Speed = {
+export const MessagesRequestSpeed = {
   Fast: "fast",
   Standard: "standard",
 } as const;
 /**
  * Controls output generation speed. When set to `fast`, uses a higher-speed inference configuration at premium pricing. Defaults to `standard` when omitted.
  */
-export type Speed = OpenEnum<typeof Speed>;
+export type MessagesRequestSpeed = OpenEnum<typeof MessagesRequestSpeed>;
 
 export type System = string | Array<AnthropicTextBlockParam>;
 
@@ -518,7 +518,7 @@ export type MessagesRequest = {
    * A unique identifier for grouping related requests (e.g., a conversation or agent workflow). When provided, OpenRouter uses it as the sticky routing key, routing all requests in the session to the same provider to maximize prompt cache hits. Also used for observability grouping. If provided in both the request body and the x-session-id header, the body value takes precedence. Maximum of 256 characters.
    */
   sessionId?: string | undefined;
-  speed?: Speed | null | undefined;
+  speed?: MessagesRequestSpeed | null | undefined;
   stopSequences?: Array<string> | undefined;
   /**
    * Stop conditions for the server-tool agent loop. Any condition firing halts the loop (OR logic). When set, this overrides `max_tool_calls`. When a condition fires while the model is still emitting tool calls, the pending tool calls are executed and one final turn is made with tool calls disabled so the response ends with a natural-language answer instead of an unfinished tool call.
@@ -888,8 +888,10 @@ export function messagesRequestPluginToJSON(
 }
 
 /** @internal */
-export const Speed$outboundSchema: z.ZodType<string, Speed> = openEnums
-  .outboundSchema(Speed);
+export const MessagesRequestSpeed$outboundSchema: z.ZodType<
+  string,
+  MessagesRequestSpeed
+> = openEnums.outboundSchema(MessagesRequestSpeed);
 
 /** @internal */
 export type System$Outbound = string | Array<AnthropicTextBlockParam$Outbound>;
@@ -1592,7 +1594,7 @@ export const MessagesRequest$outboundSchema: z.ZodType<
   provider: z.nullable(ProviderPreferences$outboundSchema).optional(),
   serviceTier: z.string().optional(),
   sessionId: z.string().optional(),
-  speed: z.nullable(Speed$outboundSchema).optional(),
+  speed: z.nullable(MessagesRequestSpeed$outboundSchema).optional(),
   stopSequences: z.array(z.string()).optional(),
   stopServerToolsWhen: z.array(StopServerToolsWhenCondition$outboundSchema)
     .optional(),
