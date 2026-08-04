@@ -29,6 +29,7 @@ export const VideoGenerationRequestAspectRatio = {
   ThirtyFour: "3:4",
   ThirtyTwo: "3:2",
   TwentyThree: "2:3",
+  TwentyOne: "2:1",
   TwoHundredAndNineteen: "21:9",
   NineHundredAndTwentyOne: "9:21",
 } as const;
