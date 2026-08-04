@@ -374,12 +374,13 @@ export type InputsTypeMessage = ClosedEnum<typeof InputsTypeMessage>;
 /**
  * An output message item
  */
-export type InputsMessage = {
-  content:
+export type InputsAssistant = {
+  content?:
     | Array<ResponseOutputText | OpenAIResponsesRefusalContent>
     | string
-    | null;
-  id: string;
+    | null
+    | undefined;
+  id?: string | undefined;
   /**
    * The phase of an assistant message. Use `commentary` for an intermediate assistant message and `final_answer` for the final assistant message. For follow-up requests with models like `gpt-5.3-codex` and later, preserve and resend phase on all assistant messages. Omitting it can degrade performance. Not used for user messages.
    */
@@ -411,7 +412,6 @@ export type InputsUnion1 =
   | ReasoningItem
   | FunctionCallOutputItem
   | ApplyPatchCallOutputItem
-  | InputsMessage
   | InputsReasoning
   | OutputWebSearchCallItem
   | OutputImageGenerationCallItem
@@ -442,6 +442,7 @@ export type InputsUnion1 =
   | ItemReferenceItem
   | EasyInputMessage
   | InputMessageItem
+  | InputsAssistant
   | ContextCompactionItem;
 
 /**
@@ -467,7 +468,6 @@ export type InputsUnion =
     | ReasoningItem
     | FunctionCallOutputItem
     | ApplyPatchCallOutputItem
-    | InputsMessage
     | InputsReasoning
     | OutputWebSearchCallItem
     | OutputImageGenerationCallItem
@@ -498,6 +498,7 @@ export type InputsUnion =
     | ItemReferenceItem
     | EasyInputMessage
     | InputMessageItem
+    | InputsAssistant
     | ContextCompactionItem
   >;
 
@@ -701,14 +702,15 @@ export const InputsTypeMessage$outboundSchema: z.ZodEnum<
 > = z.enum(InputsTypeMessage);
 
 /** @internal */
-export type InputsMessage$Outbound = {
-  content:
+export type InputsAssistant$Outbound = {
+  content?:
     | Array<
       ResponseOutputText$Outbound | OpenAIResponsesRefusalContent$Outbound
     >
     | string
-    | null;
-  id: string;
+    | null
+    | undefined;
+  id?: string | undefined;
   phase?: string | string | null | undefined;
   role: string;
   status?: string | string | string | undefined;
@@ -716,9 +718,9 @@ export type InputsMessage$Outbound = {
 };
 
 /** @internal */
-export const InputsMessage$outboundSchema: z.ZodType<
-  InputsMessage$Outbound,
-  InputsMessage
+export const InputsAssistant$outboundSchema: z.ZodType<
+  InputsAssistant$Outbound,
+  InputsAssistant
 > = z.object({
   content: z.nullable(
     z.union([
@@ -730,8 +732,8 @@ export const InputsMessage$outboundSchema: z.ZodType<
       ),
       z.string(),
     ]),
-  ),
-  id: z.string(),
+  ).optional(),
+  id: z.string().optional(),
   phase: z.nullable(
     z.union([
       InputsPhaseCommentary$outboundSchema,
@@ -747,8 +749,10 @@ export const InputsMessage$outboundSchema: z.ZodType<
   type: InputsTypeMessage$outboundSchema.default("message"),
 });
 
-export function inputsMessageToJSON(inputsMessage: InputsMessage): string {
-  return JSON.stringify(InputsMessage$outboundSchema.parse(inputsMessage));
+export function inputsAssistantToJSON(
+  inputsAssistant: InputsAssistant,
+): string {
+  return JSON.stringify(InputsAssistant$outboundSchema.parse(inputsAssistant));
 }
 
 /** @internal */
@@ -770,7 +774,6 @@ export type InputsUnion1$Outbound =
   | ReasoningItem$Outbound
   | FunctionCallOutputItem$Outbound
   | ApplyPatchCallOutputItem$Outbound
-  | InputsMessage$Outbound
   | InputsReasoning$Outbound
   | OutputWebSearchCallItem$Outbound
   | OutputImageGenerationCallItem$Outbound
@@ -801,6 +804,7 @@ export type InputsUnion1$Outbound =
   | ItemReferenceItem$Outbound
   | EasyInputMessage$Outbound
   | InputMessageItem$Outbound
+  | InputsAssistant$Outbound
   | ContextCompactionItem$Outbound;
 
 /** @internal */
@@ -825,7 +829,6 @@ export const InputsUnion1$outboundSchema: z.ZodType<
   ReasoningItem$outboundSchema,
   FunctionCallOutputItem$outboundSchema,
   ApplyPatchCallOutputItem$outboundSchema,
-  z.lazy(() => InputsMessage$outboundSchema),
   z.lazy(() => InputsReasoning$outboundSchema),
   OutputWebSearchCallItem$outboundSchema,
   OutputImageGenerationCallItem$outboundSchema,
@@ -856,6 +859,7 @@ export const InputsUnion1$outboundSchema: z.ZodType<
   ItemReferenceItem$outboundSchema,
   EasyInputMessage$outboundSchema,
   InputMessageItem$outboundSchema,
+  z.lazy(() => InputsAssistant$outboundSchema),
   ContextCompactionItem$outboundSchema,
 ]);
 
@@ -884,7 +888,6 @@ export type InputsUnion$Outbound =
     | ReasoningItem$Outbound
     | FunctionCallOutputItem$Outbound
     | ApplyPatchCallOutputItem$Outbound
-    | InputsMessage$Outbound
     | InputsReasoning$Outbound
     | OutputWebSearchCallItem$Outbound
     | OutputImageGenerationCallItem$Outbound
@@ -915,6 +918,7 @@ export type InputsUnion$Outbound =
     | ItemReferenceItem$Outbound
     | EasyInputMessage$Outbound
     | InputMessageItem$Outbound
+    | InputsAssistant$Outbound
     | ContextCompactionItem$Outbound
   >;
 
@@ -943,7 +947,6 @@ export const InputsUnion$outboundSchema: z.ZodType<
       ReasoningItem$outboundSchema,
       FunctionCallOutputItem$outboundSchema,
       ApplyPatchCallOutputItem$outboundSchema,
-      z.lazy(() => InputsMessage$outboundSchema),
       z.lazy(() => InputsReasoning$outboundSchema),
       OutputWebSearchCallItem$outboundSchema,
       OutputImageGenerationCallItem$outboundSchema,
@@ -974,6 +977,7 @@ export const InputsUnion$outboundSchema: z.ZodType<
       ItemReferenceItem$outboundSchema,
       EasyInputMessage$outboundSchema,
       InputMessageItem$outboundSchema,
+      z.lazy(() => InputsAssistant$outboundSchema),
       ContextCompactionItem$outboundSchema,
     ]),
   ),
