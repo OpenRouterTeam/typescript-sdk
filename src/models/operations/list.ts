@@ -87,6 +87,10 @@ export type ListData = {
    */
   createdAt: string;
   /**
+   * The ID of the authenticated principal that created the key. This audit-only field is independent of owner selection and may be an organization ID for management/provisioning keys. It may be absent for keys created before this field was introduced.
+   */
+  createdByPrincipalId?: string | null | undefined;
+  /**
    * The user ID of the key creator. For organization-owned keys, this is the member who created the key. For individual users, this is the user's own ID.
    */
   creatorUserId: string | null;
@@ -202,6 +206,7 @@ export const ListData$inboundSchema: z.ZodType<ListData, unknown> = z.object({
   byok_usage_monthly: z.number(),
   byok_usage_weekly: z.number(),
   created_at: z.string(),
+  created_by_principal_id: z.nullable(z.string()).optional(),
   creator_user_id: z.nullable(z.string()),
   disabled: z.boolean(),
   expires_at: z.nullable(
@@ -227,6 +232,7 @@ export const ListData$inboundSchema: z.ZodType<ListData, unknown> = z.object({
     "byok_usage_monthly": "byokUsageMonthly",
     "byok_usage_weekly": "byokUsageWeekly",
     "created_at": "createdAt",
+    "created_by_principal_id": "createdByPrincipalId",
     "creator_user_id": "creatorUserId",
     "expires_at": "expiresAt",
     "include_byok_in_limit": "includeByokInLimit",
