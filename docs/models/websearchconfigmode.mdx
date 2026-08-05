@@ -1,0 +1,21 @@
+---
+title: "WebSearchConfigMode"
+---
+
+Parallel search mode: turbo (~200 ms, $1/1k requests, English and Japanese), basic (~1 s, $5/1k), or advanced (~3 s, $5/1k). Defaults to basic and is ignored for non-Parallel engines.
+
+## Example Usage
+
+```typescript
+import { WebSearchConfigMode } from "@openrouter/sdk/models";
+
+let value: WebSearchConfigMode = "basic";
+
+// Open enum: unrecognized values are captured as Unrecognized<string>
+```
+
+## Values
+
+```typescript
+"turbo" | "basic" | "advanced" | Unrecognized<string>
+```
