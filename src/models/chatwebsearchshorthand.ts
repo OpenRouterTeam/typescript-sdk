@@ -21,6 +21,10 @@ import {
   WebSearchEngineEnum$outboundSchema,
 } from "./websearchengineenum.js";
 import {
+  WebSearchMode,
+  WebSearchMode$outboundSchema,
+} from "./websearchmode.js";
+import {
   WebSearchUserLocationServerTool,
   WebSearchUserLocationServerTool$Outbound,
   WebSearchUserLocationServerTool$outboundSchema,
@@ -68,6 +72,10 @@ export type ChatWebSearchShorthand = {
    * Maximum number of web searches the model may perform in a single request. Once reached, further search calls return an error result instead of executing. Applies to the Exa, Firecrawl, Parallel, and Perplexity engines. With native provider search, forwarded only to Anthropic (as `max_uses`); other native search providers have no equivalent parameter and ignore it.
    */
   maxUses?: number | undefined;
+  /**
+   * Engine-native search mode; the accepted values depend on the selected engine. Parallel: turbo (~200 ms, $1/1k requests, English and Japanese), basic (~1 s, $5/1k, default), or advanced (~3 s, $5/1k). Rejected when the selected engine doesn't offer the given mode.
+   */
+  mode?: WebSearchMode | undefined;
   parameters?: WebSearchConfig | undefined;
   /**
    * How much context to retrieve per result. Applies to Exa, Parallel, and Perplexity engines; ignored with native provider search and Firecrawl. For Exa, pins a fixed per-result character cap (low=5,000, medium=15,000, high=30,000); when omitted, Exa picks an adaptive size per query and document (typically ~2,000–4,000 characters per result). For Parallel, controls the total characters across all results; when omitted, Parallel uses its own default size. For Perplexity, maps directly to the Search API's native search_context_size parameter. Overridden by `max_characters` when both are set.
@@ -95,6 +103,7 @@ export type ChatWebSearchShorthand$Outbound = {
   max_results?: number | undefined;
   max_total_results?: number | undefined;
   max_uses?: number | undefined;
+  mode?: string | undefined;
   parameters?: WebSearchConfig$Outbound | undefined;
   search_context_size?: string | undefined;
   type: string;
@@ -113,6 +122,7 @@ export const ChatWebSearchShorthand$outboundSchema: z.ZodType<
   maxResults: z.int().optional(),
   maxTotalResults: z.int().optional(),
   maxUses: z.int().optional(),
+  mode: WebSearchMode$outboundSchema.optional(),
   parameters: WebSearchConfig$outboundSchema.optional(),
   searchContextSize: SearchQualityLevel$outboundSchema.optional(),
   type: ChatWebSearchShorthandType$outboundSchema,
