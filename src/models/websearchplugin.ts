@@ -7,6 +7,10 @@ import * as z from "zod/v4";
 import { remap as remap$ } from "../lib/primitives.js";
 import { ClosedEnum } from "../types/enums.js";
 import {
+  ParallelSearchMode,
+  ParallelSearchMode$outboundSchema,
+} from "./parallelsearchmode.js";
+import {
   WebSearchEngine,
   WebSearchEngine$outboundSchema,
 } from "./websearchengine.js";
@@ -50,6 +54,10 @@ export type WebSearchPlugin = {
    * Maximum number of times the model can invoke web search in a single turn. Passed through to native providers that support it (e.g. Anthropic).
    */
   maxUses?: number | undefined;
+  /**
+   * Engine-specific search mode. Currently supported for the Parallel engine: turbo, basic (default), or advanced. Rejected when the selected engine doesn't offer the given mode.
+   */
+  mode?: ParallelSearchMode | undefined;
   searchPrompt?: string | undefined;
   userLocation?: UserLocation | null | undefined;
 };
@@ -93,6 +101,7 @@ export type WebSearchPlugin$Outbound = {
   include_domains?: Array<string> | undefined;
   max_results?: number | undefined;
   max_uses?: number | undefined;
+  mode?: string | undefined;
   search_prompt?: string | undefined;
   user_location?: UserLocation$Outbound | null | undefined;
 };
@@ -109,6 +118,7 @@ export const WebSearchPlugin$outboundSchema: z.ZodType<
   includeDomains: z.array(z.string()).optional(),
   maxResults: z.int().optional(),
   maxUses: z.int().optional(),
+  mode: ParallelSearchMode$outboundSchema.optional(),
   searchPrompt: z.string().optional(),
   userLocation: z.nullable(z.lazy(() => UserLocation$outboundSchema))
     .optional(),
