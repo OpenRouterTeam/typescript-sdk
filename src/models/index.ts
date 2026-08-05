@@ -425,6 +425,7 @@ export * from "./percentilestats.js";
 export * from "./percentilethroughputcutoffs.js";
 export * from "./perrequestlimits.js";
 export * from "./pipelinestage.js";
+export * from "./pipelinestagedata.js";
 export * from "./pipelinestagetype.js";
 export * from "./prediction.js";
 export * from "./predictioncontenttext.js";

@@ -9,13 +9,17 @@ import { safeParse } from "../lib/schemas.js";
 import { Result as SafeParseResult } from "../types/fp.js";
 import { SDKValidationError } from "./errors/sdkvalidationerror.js";
 import {
+  PipelineStageData,
+  PipelineStageData$inboundSchema,
+} from "./pipelinestagedata.js";
+import {
   PipelineStageType,
   PipelineStageType$inboundSchema,
 } from "./pipelinestagetype.js";
 
 export type PipelineStage = {
   costUsd?: number | null | undefined;
-  data?: { [k: string]: any } | undefined;
+  data?: PipelineStageData | undefined;
   guardrailId?: string | undefined;
   guardrailScope?: string | undefined;
   name: string;
@@ -30,7 +34,7 @@ export type PipelineStage = {
 export const PipelineStage$inboundSchema: z.ZodType<PipelineStage, unknown> = z
   .object({
     cost_usd: z.nullable(z.number()).optional(),
-    data: z.record(z.string(), z.any()).optional(),
+    data: PipelineStageData$inboundSchema.optional(),
     guardrail_id: z.string().optional(),
     guardrail_scope: z.string().optional(),
     name: z.string(),
