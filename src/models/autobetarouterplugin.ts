@@ -49,6 +49,10 @@ export type AutoBetaRouterPlugin = {
    */
   excludedModels?: Array<string> | undefined;
   id: "auto-beta-router";
+  /**
+   * When true, reuses the model from the most recent assistant message's `model` attribute for subsequent turns. Defaults to false.
+   */
+  pinModel?: boolean | undefined;
 };
 
 /** @internal */
@@ -65,6 +69,7 @@ export type AutoBetaRouterPlugin$Outbound = {
   enabled?: boolean | undefined;
   excluded_models?: Array<string> | undefined;
   id: "auto-beta-router";
+  pin_model?: boolean | undefined;
 };
 
 /** @internal */
@@ -78,12 +83,14 @@ export const AutoBetaRouterPlugin$outboundSchema: z.ZodType<
   enabled: z.boolean().optional(),
   excludedModels: z.array(z.string()).optional(),
   id: z.literal("auto-beta-router"),
+  pinModel: z.boolean().optional(),
 }).transform((v) => {
   return remap$(v, {
     allowedModels: "allowed_models",
     costQualityTradeoff: "cost_quality_tradeoff",
     costTier: "cost_tier",
     excludedModels: "excluded_models",
+    pinModel: "pin_model",
   });
 });
 
