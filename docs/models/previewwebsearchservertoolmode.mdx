@@ -1,0 +1,21 @@
+---
+title: "PreviewWebSearchServerToolMode"
+---
+
+Engine-native search mode; the accepted values depend on the selected engine. Parallel: turbo (~200 ms, $1/1k requests, English and Japanese), basic (~1 s, $5/1k, default), or advanced (~3 s, $5/1k). Rejected when the selected engine doesn't offer the given mode.
+
+## Example Usage
+
+```typescript
+import { PreviewWebSearchServerToolMode } from "@openrouter/sdk/models";
+
+let value: PreviewWebSearchServerToolMode = "basic";
+
+// Open enum: unrecognized values are captured as Unrecognized<string>
+```
+
+## Values
+
+```typescript
+"turbo" | "basic" | "advanced" | Unrecognized<string>
+```
