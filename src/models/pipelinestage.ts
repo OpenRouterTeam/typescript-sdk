@@ -21,6 +21,10 @@ export type PipelineStage = {
   name: string;
   summary?: string | undefined;
   /**
+   * Task-type tag from the classification taxonomy. Present only on the auto-beta router stage and absent when classification is unavailable. The taxonomy evolves independently of this API contract.
+   */
+  taskType?: string | undefined;
+  /**
    * Categorical kind of a pipeline stage. Multiple plugins can share a type (e.g. all guardrail-level plugins emit `guardrail`); the `name` field disambiguates which plugin emitted it.
    */
   type: PipelineStageType;
@@ -35,12 +39,14 @@ export const PipelineStage$inboundSchema: z.ZodType<PipelineStage, unknown> = z
     guardrail_scope: z.string().optional(),
     name: z.string(),
     summary: z.string().optional(),
+    task_type: z.string().optional(),
     type: PipelineStageType$inboundSchema,
   }).transform((v) => {
     return remap$(v, {
       "cost_usd": "costUsd",
       "guardrail_id": "guardrailId",
       "guardrail_scope": "guardrailScope",
+      "task_type": "taskType",
     });
   });
 
