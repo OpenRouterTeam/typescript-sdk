@@ -9,7 +9,7 @@ import * as openEnums from "../types/enums.js";
 import { OpenEnum } from "../types/enums.js";
 
 /**
- * Shorthand for cost_quality_tradeoff. Higher tiers spend more on better models: low = 9, medium = 7, high = 5, xhigh = 3, and max = 1. Numeric cost_quality_tradeoff takes precedence when both are provided.
+ * Named cost/quality setting. Tiers select cost-percentile bands: low = [0, 20), medium = [20, 40), high = [40, 60), xhigh = [60, 80), and max = [80, 100]. Numeric cost_quality_tradeoff takes precedence and retains ceiling behavior.
  */
 export const AutoRouterPluginCostTier = {
   Low: "low",
@@ -19,7 +19,7 @@ export const AutoRouterPluginCostTier = {
   Max: "max",
 } as const;
 /**
- * Shorthand for cost_quality_tradeoff. Higher tiers spend more on better models: low = 9, medium = 7, high = 5, xhigh = 3, and max = 1. Numeric cost_quality_tradeoff takes precedence when both are provided.
+ * Named cost/quality setting. Tiers select cost-percentile bands: low = [0, 20), medium = [20, 40), high = [40, 60), xhigh = [60, 80), and max = [80, 100]. Numeric cost_quality_tradeoff takes precedence and retains ceiling behavior.
  */
 export type AutoRouterPluginCostTier = OpenEnum<
   typeof AutoRouterPluginCostTier
@@ -27,17 +27,17 @@ export type AutoRouterPluginCostTier = OpenEnum<
 
 export type AutoRouterPlugin = {
   /**
-   * List of model patterns to filter which models the auto-router can route between. Supports wildcards (e.g., "anthropic/*" matches all Anthropic models). When not specified, uses the default supported models list.
+   * List of model patterns to filter which models the auto-router can route between. Supports wildcards (e.g., "anthropic/*" matches all Anthropic models). When not specified, every model ranked for the classified task type is a candidate, falling back to a default model set when rankings are unavailable.
    */
   allowedModels?: Array<string> | undefined;
   /**
-   * Deprecated: Use cost_tier instead. Controls cost vs. quality routing tradeoff (0–10). 0 = pure quality (best model regardless of cost), 10 = maximize for cost (cheapest model wins). Intermediate values blend quality and cost signals continuously. Defaults to 7. Numeric cost_quality_tradeoff remains supported and takes precedence over cost_tier when both are provided.
+   * Deprecated: Use cost_tier instead. Balances routing between cost and quality on a 0-10 scale. The auto-router ranks models for the classified task type by community spend share, then filters candidates by their average cost per generation for that task. Higher values favor cheaper models: 10 keeps only models around the cheapest 10th percentile, while 0 permits models up to the 90th percentile for cost. Defaults to 9. Numeric cost_quality_tradeoff remains supported, retains ceiling behavior, and takes precedence over cost_tier when both are provided.
    *
    * @deprecated field: This will be removed in a future release, please migrate away from it as soon as possible.
    */
   costQualityTradeoff?: number | undefined;
   /**
-   * Shorthand for cost_quality_tradeoff. Higher tiers spend more on better models: low = 9, medium = 7, high = 5, xhigh = 3, and max = 1. Numeric cost_quality_tradeoff takes precedence when both are provided.
+   * Named cost/quality setting. Tiers select cost-percentile bands: low = [0, 20), medium = [20, 40), high = [40, 60), xhigh = [60, 80), and max = [80, 100]. Numeric cost_quality_tradeoff takes precedence and retains ceiling behavior.
    */
   costTier?: AutoRouterPluginCostTier | undefined;
   /**
