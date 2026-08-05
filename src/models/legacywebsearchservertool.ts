@@ -6,7 +6,8 @@
 import * as z from "zod/v4";
 import { remap as remap$ } from "../lib/primitives.js";
 import { safeParse } from "../lib/schemas.js";
-import { ClosedEnum } from "../types/enums.js";
+import * as openEnums from "../types/enums.js";
+import { ClosedEnum, OpenEnum } from "../types/enums.js";
 import { Result as SafeParseResult } from "../types/fp.js";
 import { SDKValidationError } from "./errors/sdkvalidationerror.js";
 import {
@@ -31,6 +32,21 @@ import {
   WebSearchUserLocation$Outbound,
   WebSearchUserLocation$outboundSchema,
 } from "./websearchuserlocation.js";
+
+/**
+ * Engine-native search mode; the accepted values depend on the selected engine. Parallel: turbo (~200 ms, $1/1k requests, English and Japanese), basic (~1 s, $5/1k, default), or advanced (~3 s, $5/1k). Rejected when the selected engine doesn't offer the given mode.
+ */
+export const LegacyWebSearchServerToolMode = {
+  Turbo: "turbo",
+  Basic: "basic",
+  Advanced: "advanced",
+} as const;
+/**
+ * Engine-native search mode; the accepted values depend on the selected engine. Parallel: turbo (~200 ms, $1/1k requests, English and Japanese), basic (~1 s, $5/1k, default), or advanced (~3 s, $5/1k). Rejected when the selected engine doesn't offer the given mode.
+ */
+export type LegacyWebSearchServerToolMode = OpenEnum<
+  typeof LegacyWebSearchServerToolMode
+>;
 
 export const LegacyWebSearchServerToolType = {
   WebSearch: "web_search",
@@ -57,6 +73,10 @@ export type LegacyWebSearchServerTool = {
    */
   maxUses?: number | undefined;
   /**
+   * Engine-native search mode; the accepted values depend on the selected engine. Parallel: turbo (~200 ms, $1/1k requests, English and Japanese), basic (~1 s, $5/1k, default), or advanced (~3 s, $5/1k). Rejected when the selected engine doesn't offer the given mode.
+   */
+  mode?: LegacyWebSearchServerToolMode | undefined;
+  /**
    * Size of the search context for web search tools
    */
   searchContextSize?: SearchContextSizeEnum | undefined;
@@ -66,6 +86,17 @@ export type LegacyWebSearchServerTool = {
    */
   userLocation?: WebSearchUserLocation | null | undefined;
 };
+
+/** @internal */
+export const LegacyWebSearchServerToolMode$inboundSchema: z.ZodType<
+  LegacyWebSearchServerToolMode,
+  unknown
+> = openEnums.inboundSchema(LegacyWebSearchServerToolMode);
+/** @internal */
+export const LegacyWebSearchServerToolMode$outboundSchema: z.ZodType<
+  string,
+  LegacyWebSearchServerToolMode
+> = openEnums.outboundSchema(LegacyWebSearchServerToolMode);
 
 /** @internal */
 export const LegacyWebSearchServerToolType$inboundSchema: z.ZodEnum<
@@ -85,6 +116,7 @@ export const LegacyWebSearchServerTool$inboundSchema: z.ZodType<
   filters: z.nullable(WebSearchDomainFilter$inboundSchema).optional(),
   max_results: z.int().optional(),
   max_uses: z.int().optional(),
+  mode: LegacyWebSearchServerToolMode$inboundSchema.optional(),
   search_context_size: SearchContextSizeEnum$inboundSchema.optional(),
   type: LegacyWebSearchServerToolType$inboundSchema,
   user_location: z.nullable(WebSearchUserLocation$inboundSchema).optional(),
@@ -102,6 +134,7 @@ export type LegacyWebSearchServerTool$Outbound = {
   filters?: WebSearchDomainFilter$Outbound | null | undefined;
   max_results?: number | undefined;
   max_uses?: number | undefined;
+  mode?: string | undefined;
   search_context_size?: string | undefined;
   type: string;
   user_location?: WebSearchUserLocation$Outbound | null | undefined;
@@ -116,6 +149,7 @@ export const LegacyWebSearchServerTool$outboundSchema: z.ZodType<
   filters: z.nullable(WebSearchDomainFilter$outboundSchema).optional(),
   maxResults: z.int().optional(),
   maxUses: z.int().optional(),
+  mode: LegacyWebSearchServerToolMode$outboundSchema.optional(),
   searchContextSize: SearchContextSizeEnum$outboundSchema.optional(),
   type: LegacyWebSearchServerToolType$outboundSchema,
   userLocation: z.nullable(WebSearchUserLocation$outboundSchema).optional(),
