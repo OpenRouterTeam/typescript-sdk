@@ -5,6 +5,8 @@
 
 import * as z from "zod/v4";
 import { remap as remap$ } from "../lib/primitives.js";
+import * as openEnums from "../types/enums.js";
+import { OpenEnum } from "../types/enums.js";
 import {
   SearchQualityLevel,
   SearchQualityLevel$outboundSchema,
@@ -18,6 +20,19 @@ import {
   WebSearchUserLocationServerTool$Outbound,
   WebSearchUserLocationServerTool$outboundSchema,
 } from "./websearchuserlocationservertool.js";
+
+/**
+ * Engine-specific search mode. Currently supported for the Parallel engine: turbo (~200 ms, $1/1k requests, English and Japanese), basic (~1 s, $5/1k, default), or advanced (~3 s, $5/1k). Rejected when the selected engine doesn't offer the given mode.
+ */
+export const WebSearchConfigMode = {
+  Turbo: "turbo",
+  Basic: "basic",
+  Advanced: "advanced",
+} as const;
+/**
+ * Engine-specific search mode. Currently supported for the Parallel engine: turbo (~200 ms, $1/1k requests, English and Japanese), basic (~1 s, $5/1k, default), or advanced (~3 s, $5/1k). Rejected when the selected engine doesn't offer the given mode.
+ */
+export type WebSearchConfigMode = OpenEnum<typeof WebSearchConfigMode>;
 
 export type WebSearchConfig = {
   /**
@@ -49,6 +64,10 @@ export type WebSearchConfig = {
    */
   maxUses?: number | undefined;
   /**
+   * Engine-specific search mode. Currently supported for the Parallel engine: turbo (~200 ms, $1/1k requests, English and Japanese), basic (~1 s, $5/1k, default), or advanced (~3 s, $5/1k). Rejected when the selected engine doesn't offer the given mode.
+   */
+  mode?: WebSearchConfigMode | undefined;
+  /**
    * How much context to retrieve per result. Applies to Exa, Parallel, and Perplexity engines; ignored with native provider search and Firecrawl. For Exa, pins a fixed per-result character cap (low=5,000, medium=15,000, high=30,000); when omitted, Exa picks an adaptive size per query and document (typically ~2,000–4,000 characters per result). For Parallel, controls the total characters across all results; when omitted, Parallel uses its own default size. For Perplexity, maps directly to the Search API's native search_context_size parameter. Overridden by `max_characters` when both are set.
    */
   searchContextSize?: SearchQualityLevel | undefined;
@@ -59,6 +78,12 @@ export type WebSearchConfig = {
 };
 
 /** @internal */
+export const WebSearchConfigMode$outboundSchema: z.ZodType<
+  string,
+  WebSearchConfigMode
+> = openEnums.outboundSchema(WebSearchConfigMode);
+
+/** @internal */
 export type WebSearchConfig$Outbound = {
   allowed_domains?: Array<string> | undefined;
   engine?: string | undefined;
@@ -67,6 +92,7 @@ export type WebSearchConfig$Outbound = {
   max_results?: number | undefined;
   max_total_results?: number | undefined;
   max_uses?: number | undefined;
+  mode?: string | undefined;
   search_context_size?: string | undefined;
   user_location?: WebSearchUserLocationServerTool$Outbound | undefined;
 };
@@ -83,6 +109,7 @@ export const WebSearchConfig$outboundSchema: z.ZodType<
   maxResults: z.int().optional(),
   maxTotalResults: z.int().optional(),
   maxUses: z.int().optional(),
+  mode: WebSearchConfigMode$outboundSchema.optional(),
   searchContextSize: SearchQualityLevel$outboundSchema.optional(),
   userLocation: WebSearchUserLocationServerTool$outboundSchema.optional(),
 }).transform((v) => {

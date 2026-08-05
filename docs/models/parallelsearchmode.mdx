@@ -1,0 +1,21 @@
+---
+title: "ParallelSearchMode"
+---
+
+Engine-specific search mode. Currently supported for the Parallel engine: turbo, basic (default), or advanced. Rejected when the selected engine doesn't offer the given mode.
+
+## Example Usage
+
+```typescript
+import { ParallelSearchMode } from "@openrouter/sdk/models";
+
+let value: ParallelSearchMode = "basic";
+
+// Open enum: unrecognized values are captured as Unrecognized<string>
+```
+
+## Values
+
+```typescript
+"turbo" | "basic" | "advanced" | Unrecognized<string>
+```
