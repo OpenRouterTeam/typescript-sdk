@@ -7,11 +7,17 @@ import * as z from "zod/v4";
 import { remap as remap$ } from "../lib/primitives.js";
 import * as openEnums from "../types/enums.js";
 import { OpenEnum } from "../types/enums.js";
+import {
+  AnthropicCacheControlDirective,
+  AnthropicCacheControlDirective$Outbound,
+  AnthropicCacheControlDirective$outboundSchema,
+} from "./anthropiccachecontroldirective.js";
 
 /**
- * Reasoning effort level for panelist and judge inner calls.
+ * Reasoning effort level for panelist and analyst inner calls.
  */
 export const FusionServerToolConfigEffort = {
+  Max: "max",
   Xhigh: "xhigh",
   High: "high",
   Medium: "medium",
@@ -20,24 +26,35 @@ export const FusionServerToolConfigEffort = {
   None: "none",
 } as const;
 /**
- * Reasoning effort level for panelist and judge inner calls.
+ * Reasoning effort level for panelist and analyst inner calls.
  */
 export type FusionServerToolConfigEffort = OpenEnum<
   typeof FusionServerToolConfigEffort
 >;
 
 /**
- * Reasoning configuration forwarded to panelist and judge inner calls. Use this to control reasoning effort and token budget for models that support extended thinking.
+ * Reasoning configuration forwarded to panelist and analyst inner calls. Use this to control reasoning effort and token budget for models that support extended thinking.
  */
 export type FusionServerToolConfigReasoning = {
   /**
-   * Reasoning effort level for panelist and judge inner calls.
+   * Reasoning effort level for panelist and analyst inner calls.
    */
   effort?: FusionServerToolConfigEffort | undefined;
   /**
-   * Maximum number of reasoning tokens each panelist and judge model may use. Helps bound cost when models allocate too much budget to chain-of-thought.
+   * Maximum number of reasoning tokens each panelist and analyst model may use. Helps bound cost when models allocate too much budget to chain-of-thought.
    */
   maxTokens?: number | undefined;
+};
+
+export type FusionServerToolConfigTool = {
+  /**
+   * Optional configuration forwarded as the tool's `parameters` object.
+   */
+  parameters?: { [k: string]: any } | undefined;
+  /**
+   * Server tool type identifier (e.g. "openrouter:web_search", "openrouter:web_fetch").
+   */
+  type: string;
 };
 
 /**
@@ -45,29 +62,37 @@ export type FusionServerToolConfigReasoning = {
  */
 export type FusionServerToolConfig = {
   /**
-   * Slugs of models to run in parallel as the analysis panel. Each model receives the user prompt with openrouter:web_search and openrouter:web_fetch enabled, then a judge model summarizes the collective output into structured analysis JSON. Capped at 8 models to bound cost amplification. Defaults to the Quality preset from /labs/fusion.
+   * Slugs of models to run in parallel as the analysis panel. Each model receives the user prompt with openrouter:web_search and openrouter:web_fetch enabled, then an analyst model summarizes the collective output into structured analysis JSON. Capped at 8 models to bound cost amplification. Defaults to the Quality preset from /labs/fusion.
    */
   analysisModels?: Array<string> | undefined;
   /**
-   * Maximum number of output tokens (including reasoning tokens) each panelist and the judge model may produce per inner call. Controls the total output budget so reasoning-heavy models like GPT-5.5 do not exhaust their token allowance before producing visible text. When omitted, the provider's default applies.
+   * Enable automatic prompt caching. When set at the top level, the system automatically applies cache breakpoints to the last cacheable block in the request. When set on an individual content block, it marks an explicit cache breakpoint; block-level markers also work on OpenAI models that support explicit prompt caching — OpenRouter converts them to the provider's native format.
+   */
+  cacheControl?: AnthropicCacheControlDirective | undefined;
+  /**
+   * Maximum number of output tokens (including reasoning tokens) each panelist and the analyst model may produce per inner call. Controls the total output budget so reasoning-heavy models like GPT-5.5 do not exhaust their token allowance before producing visible text. When omitted, panelists default to 32000 and the analyst to 20000.
    */
   maxCompletionTokens?: number | undefined;
   /**
-   * Maximum number of tool-calling steps each panelist (analysis model) and the judge model may take during their agentic web-research loop. Models with web_search/web_fetch enabled iterate until they produce a text response or hit this ceiling. Defaults to 8. Capped at 16.
+   * Maximum number of tool-calling steps each panelist (analysis model) and the analyst model may take during their agentic web-research loop. Models with web_search/web_fetch enabled iterate until they produce a text response or hit this ceiling. Defaults to 8. Capped at 16.
    */
   maxToolCalls?: number | undefined;
   /**
-   * Slug of the judge model that produces the structured analysis JSON. Defaults to the model used in the outer API request.
+   * Slug of the analyst model that produces the structured analysis JSON. Defaults to the model used in the outer API request.
    */
   model?: string | undefined;
   /**
-   * Reasoning configuration forwarded to panelist and judge inner calls. Use this to control reasoning effort and token budget for models that support extended thinking.
+   * Reasoning configuration forwarded to panelist and analyst inner calls. Use this to control reasoning effort and token budget for models that support extended thinking.
    */
   reasoning?: FusionServerToolConfigReasoning | undefined;
   /**
-   * Sampling temperature forwarded to panelist and judge inner calls. When omitted, the provider's default applies.
+   * Temperature forwarded to panelist inner calls. The analyst always runs at temperature 0 regardless of this value. When omitted, the provider's default applies.
    */
   temperature?: number | undefined;
+  /**
+   * Server tools available to panelist and analyst inner calls. Each entry uses the same `{ type, parameters? }` shorthand as the outer Chat Completions request. When omitted, defaults to `[{ type: "openrouter:web_search" }, { type: "openrouter:web_fetch" }]`. Pass an empty array to disable tools entirely (panelists answer from parametric knowledge only).
+   */
+  tools?: Array<FusionServerToolConfigTool> | undefined;
 };
 
 /** @internal */
@@ -106,13 +131,38 @@ export function fusionServerToolConfigReasoningToJSON(
 }
 
 /** @internal */
+export type FusionServerToolConfigTool$Outbound = {
+  parameters?: { [k: string]: any } | undefined;
+  type: string;
+};
+
+/** @internal */
+export const FusionServerToolConfigTool$outboundSchema: z.ZodType<
+  FusionServerToolConfigTool$Outbound,
+  FusionServerToolConfigTool
+> = z.object({
+  parameters: z.record(z.string(), z.any()).optional(),
+  type: z.string(),
+});
+
+export function fusionServerToolConfigToolToJSON(
+  fusionServerToolConfigTool: FusionServerToolConfigTool,
+): string {
+  return JSON.stringify(
+    FusionServerToolConfigTool$outboundSchema.parse(fusionServerToolConfigTool),
+  );
+}
+
+/** @internal */
 export type FusionServerToolConfig$Outbound = {
   analysis_models?: Array<string> | undefined;
+  cache_control?: AnthropicCacheControlDirective$Outbound | undefined;
   max_completion_tokens?: number | undefined;
   max_tool_calls?: number | undefined;
   model?: string | undefined;
   reasoning?: FusionServerToolConfigReasoning$Outbound | undefined;
   temperature?: number | undefined;
+  tools?: Array<FusionServerToolConfigTool$Outbound> | undefined;
 };
 
 /** @internal */
@@ -121,15 +171,19 @@ export const FusionServerToolConfig$outboundSchema: z.ZodType<
   FusionServerToolConfig
 > = z.object({
   analysisModels: z.array(z.string()).optional(),
+  cacheControl: AnthropicCacheControlDirective$outboundSchema.optional(),
   maxCompletionTokens: z.int().optional(),
   maxToolCalls: z.int().optional(),
   model: z.string().optional(),
   reasoning: z.lazy(() => FusionServerToolConfigReasoning$outboundSchema)
     .optional(),
   temperature: z.number().optional(),
+  tools: z.array(z.lazy(() => FusionServerToolConfigTool$outboundSchema))
+    .optional(),
 }).transform((v) => {
   return remap$(v, {
     analysisModels: "analysis_models",
+    cacheControl: "cache_control",
     maxCompletionTokens: "max_completion_tokens",
     maxToolCalls: "max_tool_calls",
   });

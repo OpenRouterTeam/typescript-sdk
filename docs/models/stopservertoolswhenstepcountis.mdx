@@ -1,0 +1,23 @@
+---
+title: "StopServerToolsWhenStepCountIs"
+---
+
+Stop after the agent loop has executed this many steps.
+
+## Example Usage
+
+```typescript
+import { StopServerToolsWhenStepCountIs } from "@openrouter/sdk/models";
+
+let value: StopServerToolsWhenStepCountIs = {
+  stepCount: 5,
+  type: "step_count_is",
+};
+```
+
+## Fields
+
+| Field              | Type               | Required           | Description        |
+| ------------------ | ------------------ | ------------------ | ------------------ |
+| `stepCount`        | *number*           | :heavy_check_mark: | N/A                |
+| `type`             | *"step_count_is"*  | :heavy_check_mark: | N/A                |

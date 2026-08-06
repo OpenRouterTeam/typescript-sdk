@@ -1,0 +1,23 @@
+---
+title: "ContentPartInputVideo"
+---
+
+## Example Usage
+
+```typescript
+import { ContentPartInputVideo } from "@openrouter/sdk/models";
+
+let value: ContentPartInputVideo = {
+  inputVideo: {
+    data: "data:video/mp4;base64,AAAAGGZ0eXBtcDQyAAAAAGlzb21tcDQy...",
+  },
+  type: "input_video",
+};
+```
+
+## Fields
+
+| Field                                                                               | Type                                                                                | Required                                                                            | Description                                                                         | Example                                                                             |
+| ----------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------- |
+| `inputVideo`                                                                        | [models.MultimodalMedia](../models/multimodalmedia.mdx)                              | :heavy_check_mark:                                                                  | N/A                                                                                 | \{<br/>"data": "data:audio/wav;base64,UklGRiQAAABXQVZFZm10IBAAAAA...",<br/>"format": "wav"<br/>} |
+| `type`                                                                              | *"input_video"*                                                                     | :heavy_check_mark:                                                                  | N/A                                                                                 |                                                                                     |

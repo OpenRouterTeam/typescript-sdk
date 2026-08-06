@@ -1,0 +1,29 @@
+---
+title: "OutputWebFetchServerToolItem"
+---
+
+An openrouter:web_fetch server tool output item
+
+## Example Usage
+
+```typescript
+import { OutputWebFetchServerToolItem } from "@openrouter/sdk/models";
+
+let value: OutputWebFetchServerToolItem = {
+  status: "completed",
+  type: "openrouter:web_fetch",
+};
+```
+
+## Fields
+
+| Field                                                                                    | Type                                                                                     | Required                                                                                 | Description                                                                              | Example                                                                                  |
+| ---------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------- |
+| `content`                                                                                | *string*                                                                                 | :heavy_minus_sign:                                                                       | N/A                                                                                      |                                                                                          |
+| `error`                                                                                  | *string*                                                                                 | :heavy_minus_sign:                                                                       | The error message if the fetch failed.                                                   |                                                                                          |
+| `httpStatus`                                                                             | *number*                                                                                 | :heavy_minus_sign:                                                                       | The HTTP status code returned by the upstream URL fetch.                                 |                                                                                          |
+| `id`                                                                                     | *string*                                                                                 | :heavy_minus_sign:                                                                       | N/A                                                                                      |                                                                                          |
+| `status`                                                                                 | [models.ToolCallStatus](../models/toolcallstatus.mdx)                                     | :heavy_check_mark:                                                                       | N/A                                                                                      | completed                                                                                |
+| `title`                                                                                  | *string*                                                                                 | :heavy_minus_sign:                                                                       | N/A                                                                                      |                                                                                          |
+| `type`                                                                                   | [models.OutputWebFetchServerToolItemType](../models/outputwebfetchservertoolitemtype.mdx) | :heavy_check_mark:                                                                       | N/A                                                                                      |                                                                                          |
+| `url`                                                                                    | *string*                                                                                 | :heavy_minus_sign:                                                                       | N/A                                                                                      |                                                                                          |

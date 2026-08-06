@@ -31,7 +31,6 @@ export const ProviderResponseProviderName = {
   Lynn2: "Lynn 2",
   Lynn: "Lynn",
   Mancer: "Mancer",
-  Meta: "Meta",
   Modal: "Modal",
   Nineteen: "Nineteen",
   OctoAI: "OctoAI",
@@ -63,39 +62,48 @@ export const ProviderResponseProviderName = {
   Cerebras: "Cerebras",
   Chutes: "Chutes",
   Cirrascale: "Cirrascale",
+  ClaudePlatformOnAWS: "Claude Platform on AWS",
   Clarifai: "Clarifai",
   Cloudflare: "Cloudflare",
   Cohere: "Cohere",
+  CoreWeave: "CoreWeave",
   Crucible: "Crucible",
   Crusoe: "Crusoe",
   Darkbloom: "Darkbloom",
+  Decart: "Decart",
+  Deepgram: "Deepgram",
   DeepInfra: "DeepInfra",
   DeepSeek: "DeepSeek",
   DekaLLM: "DekaLLM",
   DigitalOcean: "DigitalOcean",
   Featherless: "Featherless",
   Fireworks: "Fireworks",
+  FishAudio: "Fish Audio",
   Friendli: "Friendli",
   GMICloud: "GMICloud",
   Google: "Google",
   GoogleAIStudio: "Google AI Studio",
   Groq: "Groq",
+  HeyGen: "HeyGen",
   Inception: "Inception",
   Inceptron: "Inceptron",
   InferenceNet: "InferenceNet",
   Ionstream: "Ionstream",
   Infermatic: "Infermatic",
   IoNet: "Io Net",
+  InferactVLLM: "Inferact vLLM",
   Inflection: "Inflection",
   Liquid: "Liquid",
   Mara: "Mara",
   Mancer2: "Mancer 2",
+  Meta: "Meta",
   Minimax: "Minimax",
   ModelRun: "ModelRun",
   Mistral: "Mistral",
   Modular: "Modular",
   MoonshotAI: "Moonshot AI",
   Morph: "Morph",
+  VoyageAIByMongoDB: "VoyageAI by MongoDB",
   NCompass: "NCompass",
   Nebius: "Nebius",
   NexAGI: "Nex AGI",
@@ -112,6 +120,8 @@ export const ProviderResponseProviderName = {
   Recraft: "Recraft",
   Reka: "Reka",
   Relace: "Relace",
+  SailResearch: "Sail Research",
+  SakanaAI: "Sakana AI",
   SambaNova: "SambaNova",
   Seed: "Seed",
   SiliconFlow: "SiliconFlow",
@@ -120,10 +130,17 @@ export const ProviderResponseProviderName = {
   Stealth: "Stealth",
   StreamLake: "StreamLake",
   Switchpoint: "Switchpoint",
+  Tencent: "Tencent",
+  Tenstorrent: "Tenstorrent",
+  ThinkingMachines: "Thinking Machines",
   Together: "Together",
   Upstage: "Upstage",
   Venice: "Venice",
+  Wafer: "Wafer",
   WandB: "WandB",
+  Quiver: "Quiver",
+  Krea: "Krea",
+  Runway: "Runway",
   Xiaomi: "Xiaomi",
   XAI: "xAI",
   ZAi: "Z.AI",
@@ -135,6 +152,18 @@ export const ProviderResponseProviderName = {
 export type ProviderResponseProviderName = OpenEnum<
   typeof ProviderResponseProviderName
 >;
+
+/**
+ * The service tier this request was routed to (e.g. flex, priority). The tier actually applied and billed is determined by the provider response and may differ.
+ */
+export const RoutedServiceTier = {
+  Flex: "flex",
+  Priority: "priority",
+} as const;
+/**
+ * The service tier this request was routed to (e.g. flex, priority). The tier actually applied and billed is determined by the provider response and may differ.
+ */
+export type RoutedServiceTier = OpenEnum<typeof RoutedServiceTier>;
 
 /**
  * Details of a provider response for a generation attempt
@@ -165,6 +194,10 @@ export type ProviderResponse = {
    */
   providerName?: ProviderResponseProviderName | undefined;
   /**
+   * The service tier this request was routed to (e.g. flex, priority). The tier actually applied and billed is determined by the provider response and may differ.
+   */
+  routedServiceTier?: RoutedServiceTier | undefined;
+  /**
    * HTTP status code from the provider
    */
   status: number | null;
@@ -177,6 +210,12 @@ export const ProviderResponseProviderName$inboundSchema: z.ZodType<
 > = openEnums.inboundSchema(ProviderResponseProviderName);
 
 /** @internal */
+export const RoutedServiceTier$inboundSchema: z.ZodType<
+  RoutedServiceTier,
+  unknown
+> = openEnums.inboundSchema(RoutedServiceTier);
+
+/** @internal */
 export const ProviderResponse$inboundSchema: z.ZodType<
   ProviderResponse,
   unknown
@@ -187,13 +226,15 @@ export const ProviderResponse$inboundSchema: z.ZodType<
   latency: z.number().optional(),
   model_permaslug: z.string().optional(),
   provider_name: ProviderResponseProviderName$inboundSchema.optional(),
-  status: z.nullable(z.number()),
+  routed_service_tier: RoutedServiceTier$inboundSchema.optional(),
+  status: z.nullable(z.int()),
 }).transform((v) => {
   return remap$(v, {
     "endpoint_id": "endpointId",
     "is_byok": "isByok",
     "model_permaslug": "modelPermaslug",
     "provider_name": "providerName",
+    "routed_service_tier": "routedServiceTier",
   });
 });
 

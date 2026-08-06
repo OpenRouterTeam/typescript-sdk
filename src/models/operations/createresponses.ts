@@ -54,9 +54,9 @@ export type CreateResponsesRequest = {
    */
   appCategories?: string | undefined;
   /**
-   * Opt-in to surface routing metadata on the response under `openrouter_metadata`. Defaults to `disabled`.
+   * Opt-in to surface routing metadata on the response under `openrouter_metadata`. Defaults to `disabled`. The legacy header `X-OpenRouter-Experimental-Metadata` is also accepted for backward compatibility.
    */
-  xOpenRouterExperimentalMetadata?: models.MetadataLevel | undefined;
+  xOpenRouterMetadata?: models.MetadataLevel | undefined;
   responsesRequest: models.ResponsesRequest;
 };
 
@@ -69,7 +69,7 @@ export type CreateResponsesRequest$Outbound = {
   "HTTP-Referer"?: string | undefined;
   appTitle?: string | undefined;
   appCategories?: string | undefined;
-  "X-OpenRouter-Experimental-Metadata"?: string | undefined;
+  "X-OpenRouter-Metadata"?: string | undefined;
   ResponsesRequest: models.ResponsesRequest$Outbound;
 };
 
@@ -81,13 +81,12 @@ export const CreateResponsesRequest$outboundSchema: z.ZodType<
   httpReferer: z.string().optional(),
   appTitle: z.string().optional(),
   appCategories: z.string().optional(),
-  xOpenRouterExperimentalMetadata: models.MetadataLevel$outboundSchema
-    .optional(),
+  xOpenRouterMetadata: models.MetadataLevel$outboundSchema.optional(),
   responsesRequest: models.ResponsesRequest$outboundSchema,
 }).transform((v) => {
   return remap$(v, {
     httpReferer: "HTTP-Referer",
-    xOpenRouterExperimentalMetadata: "X-OpenRouter-Experimental-Metadata",
+    xOpenRouterMetadata: "X-OpenRouter-Metadata",
     responsesRequest: "ResponsesRequest",
   });
 });

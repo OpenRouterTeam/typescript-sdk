@@ -47,7 +47,19 @@ export type Guardrail = {
    */
   description?: string | null | undefined;
   /**
-   * Deprecated. Use enforce_zdr_anthropic, enforce_zdr_openai, enforce_zdr_google, and enforce_zdr_other instead. When provided, its value is copied into any of those per-provider fields that are not explicitly specified on the request.
+   * Whether this guardrail allows free endpoints that publish prompts.
+   */
+  enableFreeModelPublication?: boolean | null | undefined;
+  /**
+   * Whether this guardrail allows free endpoints that train on request data.
+   */
+  enableFreeModelTraining?: boolean | null | undefined;
+  /**
+   * Whether this guardrail allows paid endpoints that train on request data.
+   */
+  enablePaidModelTraining?: boolean | null | undefined;
+  /**
+   * Deprecated. Use enforce_zdr_anthropic, enforce_zdr_openai, enforce_zdr_google, enforce_zdr_xai, and enforce_zdr_other instead. When provided, its value is copied into any of those per-provider fields that are not explicitly specified on the request.
    *
    * @deprecated field: This will be removed in a future release, please migrate away from it as soon as possible.
    */
@@ -65,9 +77,13 @@ export type Guardrail = {
    */
   enforceZdrOpenai?: boolean | null | undefined;
   /**
-   * Whether to enforce zero data retention for models that are not from Anthropic, OpenAI, or Google. Falls back to enforce_zdr when not provided.
+   * Whether to enforce zero data retention for models that are not from Anthropic, OpenAI, Google, or xAI. Falls back to enforce_zdr when not provided.
    */
   enforceZdrOther?: boolean | null | undefined;
+  /**
+   * Whether to enforce zero data retention for xAI models. Falls back to enforce_zdr when not provided.
+   */
+  enforceZdrXai?: boolean | null | undefined;
   /**
    * Unique identifier for the guardrail
    */
@@ -80,6 +96,10 @@ export type Guardrail = {
    * List of provider IDs to exclude from routing
    */
   ignoredProviders?: Array<string> | null | undefined;
+  /**
+   * Whether BYOK (bring-your-own-key) inference spend counts toward this guardrail's limit_usd, in addition to OpenRouter credit spend.
+   */
+  includeByokInBudgets: boolean;
   /**
    * Spending limit in USD
    */
@@ -113,14 +133,19 @@ export const Guardrail$inboundSchema: z.ZodType<Guardrail, unknown> = z.object({
     .optional(),
   created_at: z.string(),
   description: z.nullable(z.string()).optional(),
+  enable_free_model_publication: z.nullable(z.boolean()).optional(),
+  enable_free_model_training: z.nullable(z.boolean()).optional(),
+  enable_paid_model_training: z.nullable(z.boolean()).optional(),
   enforce_zdr: z.nullable(z.boolean()).optional(),
   enforce_zdr_anthropic: z.nullable(z.boolean()).optional(),
   enforce_zdr_google: z.nullable(z.boolean()).optional(),
   enforce_zdr_openai: z.nullable(z.boolean()).optional(),
   enforce_zdr_other: z.nullable(z.boolean()).optional(),
+  enforce_zdr_xai: z.nullable(z.boolean()).optional(),
   id: z.string(),
   ignored_models: z.nullable(z.array(z.string())).optional(),
   ignored_providers: z.nullable(z.array(z.string())).optional(),
+  include_byok_in_budgets: z.boolean(),
   limit_usd: z.nullable(z.number()).optional(),
   name: z.string(),
   reset_interval: z.nullable(GuardrailInterval$inboundSchema).optional(),
@@ -133,13 +158,18 @@ export const Guardrail$inboundSchema: z.ZodType<Guardrail, unknown> = z.object({
     "content_filter_builtins": "contentFilterBuiltins",
     "content_filters": "contentFilters",
     "created_at": "createdAt",
+    "enable_free_model_publication": "enableFreeModelPublication",
+    "enable_free_model_training": "enableFreeModelTraining",
+    "enable_paid_model_training": "enablePaidModelTraining",
     "enforce_zdr": "enforceZdr",
     "enforce_zdr_anthropic": "enforceZdrAnthropic",
     "enforce_zdr_google": "enforceZdrGoogle",
     "enforce_zdr_openai": "enforceZdrOpenai",
     "enforce_zdr_other": "enforceZdrOther",
+    "enforce_zdr_xai": "enforceZdrXai",
     "ignored_models": "ignoredModels",
     "ignored_providers": "ignoredProviders",
+    "include_byok_in_budgets": "includeByokInBudgets",
     "limit_usd": "limitUsd",
     "reset_interval": "resetInterval",
     "updated_at": "updatedAt",

@@ -52,11 +52,12 @@ export const TypeWebSearchCall = {
 export type TypeWebSearchCall = ClosedEnum<typeof TypeWebSearchCall>;
 
 export type OutputWebSearchCallItem = {
-  action:
+  action?:
     | OutputWebSearchCallItemActionSearch
     | ActionOpenPage
     | ActionFindInPage
-    | discriminatedUnionTypes.Unknown<"type">;
+    | discriminatedUnionTypes.Unknown<"type">
+    | undefined;
   id: string;
   status: WebSearchStatus;
   type: TypeWebSearchCall;
@@ -240,17 +241,18 @@ export const OutputWebSearchCallItem$inboundSchema: z.ZodType<
     search: z.lazy(() => OutputWebSearchCallItemActionSearch$inboundSchema),
     open_page: z.lazy(() => ActionOpenPage$inboundSchema),
     find_in_page: z.lazy(() => ActionFindInPage$inboundSchema),
-  }),
+  }).optional(),
   id: z.string(),
   status: WebSearchStatus$inboundSchema,
   type: TypeWebSearchCall$inboundSchema,
 });
 /** @internal */
 export type OutputWebSearchCallItem$Outbound = {
-  action:
+  action?:
     | OutputWebSearchCallItemActionSearch$Outbound
     | ActionOpenPage$Outbound
-    | ActionFindInPage$Outbound;
+    | ActionFindInPage$Outbound
+    | undefined;
   id: string;
   status: string;
   type: string;
@@ -265,7 +267,7 @@ export const OutputWebSearchCallItem$outboundSchema: z.ZodType<
     z.lazy(() => OutputWebSearchCallItemActionSearch$outboundSchema),
     z.lazy(() => ActionOpenPage$outboundSchema),
     z.lazy(() => ActionFindInPage$outboundSchema),
-  ]),
+  ]).optional(),
   id: z.string(),
   status: WebSearchStatus$outboundSchema,
   type: TypeWebSearchCall$outboundSchema,

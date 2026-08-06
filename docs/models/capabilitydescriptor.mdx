@@ -1,0 +1,40 @@
+---
+title: "CapabilityDescriptor"
+---
+
+A typed descriptor for one supported request parameter.
+
+
+## Supported Types
+
+### `models.EnumCapability`
+
+```typescript
+const value: models.EnumCapability = {
+  type: "enum",
+  values: [
+    "1K",
+    "2K",
+    "4K",
+  ],
+};
+```
+
+### `models.RangeCapability`
+
+```typescript
+const value: models.RangeCapability = {
+  max: 3533.28,
+  min: 3410.35,
+  type: "range",
+};
+```
+
+### `models.BooleanCapability`
+
+```typescript
+const value: models.BooleanCapability = {
+  type: "boolean",
+};
+```
+

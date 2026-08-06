@@ -30,7 +30,7 @@ export type CreateGuardrailRequest = {
    */
   allowedProviders?: Array<string> | null | undefined;
   /**
-   * Builtin content filters to apply. The "flag" action is only supported for "regex-prompt-injection"; PII slugs (email, phone, ssn, credit-card, ip-address, person-name, address) accept "block" or "redact" only.
+   * Builtin content filters to apply. Every builtin slug supports "block", "redact", and the detect-only "flag" action.
    */
   contentFilterBuiltins?:
     | Array<ContentFilterBuiltinEntryInput>
@@ -45,7 +45,19 @@ export type CreateGuardrailRequest = {
    */
   description?: string | null | undefined;
   /**
-   * Deprecated. Use enforce_zdr_anthropic, enforce_zdr_openai, enforce_zdr_google, and enforce_zdr_other instead. When provided, its value is copied into any of those per-provider fields that are not explicitly specified on the request.
+   * Whether this guardrail allows free endpoints that publish prompts.
+   */
+  enableFreeModelPublication?: boolean | null | undefined;
+  /**
+   * Whether this guardrail allows free endpoints that train on request data.
+   */
+  enableFreeModelTraining?: boolean | null | undefined;
+  /**
+   * Whether this guardrail allows paid endpoints that train on request data.
+   */
+  enablePaidModelTraining?: boolean | null | undefined;
+  /**
+   * Deprecated. Use enforce_zdr_anthropic, enforce_zdr_openai, enforce_zdr_google, enforce_zdr_xai, and enforce_zdr_other instead. When provided, its value is copied into any of those per-provider fields that are not explicitly specified on the request.
    *
    * @deprecated field: This will be removed in a future release, please migrate away from it as soon as possible.
    */
@@ -63,9 +75,13 @@ export type CreateGuardrailRequest = {
    */
   enforceZdrOpenai?: boolean | null | undefined;
   /**
-   * Whether to enforce zero data retention for models that are not from Anthropic, OpenAI, or Google. Falls back to enforce_zdr when not provided.
+   * Whether to enforce zero data retention for models that are not from Anthropic, OpenAI, Google, or xAI. Falls back to enforce_zdr when not provided.
    */
   enforceZdrOther?: boolean | null | undefined;
+  /**
+   * Whether to enforce zero data retention for xAI models. Falls back to enforce_zdr when not provided.
+   */
+  enforceZdrXai?: boolean | null | undefined;
   /**
    * Array of model identifiers to exclude from routing (slug or canonical_slug accepted)
    */
@@ -74,6 +90,10 @@ export type CreateGuardrailRequest = {
    * List of provider IDs to exclude from routing
    */
   ignoredProviders?: Array<string> | null | undefined;
+  /**
+   * Whether BYOK (bring-your-own-key) inference spend counts toward this guardrail's limit_usd, in addition to OpenRouter credit spend. Defaults to false.
+   */
+  includeByokInBudgets?: boolean | undefined;
   /**
    * Spending limit in USD
    */
@@ -102,13 +122,18 @@ export type CreateGuardrailRequest$Outbound = {
     | undefined;
   content_filters?: Array<ContentFilterEntry$Outbound> | null | undefined;
   description?: string | null | undefined;
+  enable_free_model_publication?: boolean | null | undefined;
+  enable_free_model_training?: boolean | null | undefined;
+  enable_paid_model_training?: boolean | null | undefined;
   enforce_zdr?: boolean | null | undefined;
   enforce_zdr_anthropic?: boolean | null | undefined;
   enforce_zdr_google?: boolean | null | undefined;
   enforce_zdr_openai?: boolean | null | undefined;
   enforce_zdr_other?: boolean | null | undefined;
+  enforce_zdr_xai?: boolean | null | undefined;
   ignored_models?: Array<string> | null | undefined;
   ignored_providers?: Array<string> | null | undefined;
+  include_byok_in_budgets?: boolean | undefined;
   limit_usd?: number | null | undefined;
   name: string;
   reset_interval?: string | null | undefined;
@@ -128,13 +153,18 @@ export const CreateGuardrailRequest$outboundSchema: z.ZodType<
   contentFilters: z.nullable(z.array(ContentFilterEntry$outboundSchema))
     .optional(),
   description: z.nullable(z.string()).optional(),
+  enableFreeModelPublication: z.nullable(z.boolean()).optional(),
+  enableFreeModelTraining: z.nullable(z.boolean()).optional(),
+  enablePaidModelTraining: z.nullable(z.boolean()).optional(),
   enforceZdr: z.nullable(z.boolean()).optional(),
   enforceZdrAnthropic: z.nullable(z.boolean()).optional(),
   enforceZdrGoogle: z.nullable(z.boolean()).optional(),
   enforceZdrOpenai: z.nullable(z.boolean()).optional(),
   enforceZdrOther: z.nullable(z.boolean()).optional(),
+  enforceZdrXai: z.nullable(z.boolean()).optional(),
   ignoredModels: z.nullable(z.array(z.string())).optional(),
   ignoredProviders: z.nullable(z.array(z.string())).optional(),
+  includeByokInBudgets: z.boolean().optional(),
   limitUsd: z.nullable(z.number()).optional(),
   name: z.string(),
   resetInterval: z.nullable(GuardrailInterval$outboundSchema).optional(),
@@ -145,13 +175,18 @@ export const CreateGuardrailRequest$outboundSchema: z.ZodType<
     allowedProviders: "allowed_providers",
     contentFilterBuiltins: "content_filter_builtins",
     contentFilters: "content_filters",
+    enableFreeModelPublication: "enable_free_model_publication",
+    enableFreeModelTraining: "enable_free_model_training",
+    enablePaidModelTraining: "enable_paid_model_training",
     enforceZdr: "enforce_zdr",
     enforceZdrAnthropic: "enforce_zdr_anthropic",
     enforceZdrGoogle: "enforce_zdr_google",
     enforceZdrOpenai: "enforce_zdr_openai",
     enforceZdrOther: "enforce_zdr_other",
+    enforceZdrXai: "enforce_zdr_xai",
     ignoredModels: "ignored_models",
     ignoredProviders: "ignored_providers",
+    includeByokInBudgets: "include_byok_in_budgets",
     limitUsd: "limit_usd",
     resetInterval: "reset_interval",
     workspaceId: "workspace_id",

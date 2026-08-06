@@ -39,6 +39,7 @@ export function modelsCount(
   Result<
     models.ModelsCountResponse,
     | errors.BadRequestResponseError
+    | errors.ForbiddenResponseError
     | errors.InternalServerResponseError
     | OpenRouterError
     | ResponseValidationError
@@ -66,6 +67,7 @@ async function $do(
     Result<
       models.ModelsCountResponse,
       | errors.BadRequestResponseError
+      | errors.ForbiddenResponseError
       | errors.InternalServerResponseError
       | OpenRouterError
       | ResponseValidationError
@@ -180,6 +182,7 @@ async function $do(
   const [result] = await M.match<
     models.ModelsCountResponse,
     | errors.BadRequestResponseError
+    | errors.ForbiddenResponseError
     | errors.InternalServerResponseError
     | OpenRouterError
     | ResponseValidationError
@@ -192,6 +195,7 @@ async function $do(
   >(
     M.json(200, models.ModelsCountResponse$inboundSchema),
     M.jsonErr(400, errors.BadRequestResponseError$inboundSchema),
+    M.jsonErr(403, errors.ForbiddenResponseError$inboundSchema),
     M.jsonErr(500, errors.InternalServerResponseError$inboundSchema),
     M.fail("4XX"),
     M.fail("5XX"),

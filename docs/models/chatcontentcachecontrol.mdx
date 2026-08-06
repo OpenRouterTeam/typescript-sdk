@@ -1,0 +1,22 @@
+---
+title: "ChatContentCacheControl"
+---
+
+Anthropic-style cache breakpoint for the content part. Interchangeable with the OpenAI-style `prompt_cache_breakpoint` marker: OpenRouter converts between the two based on the provider serving the request.
+
+## Example Usage
+
+```typescript
+import { ChatContentCacheControl } from "@openrouter/sdk/models";
+
+let value: ChatContentCacheControl = {
+  type: "ephemeral",
+};
+```
+
+## Fields
+
+| Field                                                                          | Type                                                                           | Required                                                                       | Description                                                                    | Example                                                                        |
+| ------------------------------------------------------------------------------ | ------------------------------------------------------------------------------ | ------------------------------------------------------------------------------ | ------------------------------------------------------------------------------ | ------------------------------------------------------------------------------ |
+| `ttl`                                                                          | [models.AnthropicCacheControlTtl](../models/anthropiccachecontrolttl.mdx)       | :heavy_minus_sign:                                                             | N/A                                                                            | 5m                                                                             |
+| `type`                                                                         | [models.ChatContentCacheControlType](../models/chatcontentcachecontroltype.mdx) | :heavy_check_mark:                                                             | N/A                                                                            |                                                                                |

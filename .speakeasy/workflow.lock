@@ -1,9 +1,9 @@
-speakeasyVersion: 1.763.2
+speakeasyVersion: 1.787.0
 sources:
     OpenRouter API:
         sourceNamespace: open-router-chat-completions-api
-        sourceRevisionDigest: sha256:91e321b5b4f62e4502cd9093db0c0cd34d147619e0c51340680fd4ea325b01a5
-        sourceBlobDigest: sha256:2708e187d61537ec414c8c7b80e64dd3e219ab967f0f03150028fd0bcecf534a
+        sourceRevisionDigest: sha256:ea774741cfebeb507a4f6bdfd8907d1e28f65f496d1931a7b1d63d81c191e475
+        sourceBlobDigest: sha256:6d491891af7708455a1c1e19c9b37a0101e8445f4c04922609fe8221652ef1bd
         tags:
             - latest
             - 1.0.0
@@ -11,13 +11,13 @@ targets:
     openrouter:
         source: OpenRouter API
         sourceNamespace: open-router-chat-completions-api
-        sourceRevisionDigest: sha256:91e321b5b4f62e4502cd9093db0c0cd34d147619e0c51340680fd4ea325b01a5
-        sourceBlobDigest: sha256:2708e187d61537ec414c8c7b80e64dd3e219ab967f0f03150028fd0bcecf534a
+        sourceRevisionDigest: sha256:ea774741cfebeb507a4f6bdfd8907d1e28f65f496d1931a7b1d63d81c191e475
+        sourceBlobDigest: sha256:6d491891af7708455a1c1e19c9b37a0101e8445f4c04922609fe8221652ef1bd
         codeSamplesNamespace: open-router-chat-completions-api-typescript-code-samples
-        codeSamplesRevisionDigest: sha256:a82ba21d63b36d40ec98fdb0e31f117fa01b6d4e9ec245a33f338f77f0549b45
+        codeSamplesRevisionDigest: sha256:fa283faf20198c92b704740992baac0aeb9ace04f38a6ec5188a1b5b415237b5
 workflow:
     workflowVersion: 1.0.0
-    speakeasyVersion: 1.763.2
+    speakeasyVersion: 1.787.0
     sources:
         OpenRouter API:
             inputs:
@@ -29,6 +29,7 @@ workflow:
                 - location: .speakeasy/overlays/allof-simplify.overlay.yaml
                 - location: .speakeasy/overlays/boolean-query-params.overlay.yaml
                 - location: .speakeasy/overlays/nullable-model-fields.overlay.yaml
+                - location: .speakeasy/overlays/deprecated-beta-responses-alias.overlay.yaml
             output: .speakeasy/out.openapi.yaml
             registry:
                 location: registry.speakeasyapi.dev/openrouter/sdk/open-router-chat-completions-api

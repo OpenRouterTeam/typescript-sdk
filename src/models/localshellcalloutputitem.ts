@@ -4,17 +4,11 @@
  */
 
 import * as z from "zod/v4";
-import * as openEnums from "../types/enums.js";
-import { ClosedEnum, OpenEnum } from "../types/enums.js";
-
-export const LocalShellCallOutputItemStatus = {
-  InProgress: "in_progress",
-  Completed: "completed",
-  Incomplete: "incomplete",
-} as const;
-export type LocalShellCallOutputItemStatus = OpenEnum<
-  typeof LocalShellCallOutputItemStatus
->;
+import { ClosedEnum } from "../types/enums.js";
+import {
+  ToolCallStatus,
+  ToolCallStatus$outboundSchema,
+} from "./toolcallstatus.js";
 
 export const LocalShellCallOutputItemType = {
   LocalShellCallOutput: "local_shell_call_output",
@@ -29,15 +23,9 @@ export type LocalShellCallOutputItemType = ClosedEnum<
 export type LocalShellCallOutputItem = {
   id: string;
   output: string;
-  status?: LocalShellCallOutputItemStatus | null | undefined;
+  status?: ToolCallStatus | null | undefined;
   type: LocalShellCallOutputItemType;
 };
-
-/** @internal */
-export const LocalShellCallOutputItemStatus$outboundSchema: z.ZodType<
-  string,
-  LocalShellCallOutputItemStatus
-> = openEnums.outboundSchema(LocalShellCallOutputItemStatus);
 
 /** @internal */
 export const LocalShellCallOutputItemType$outboundSchema: z.ZodEnum<
@@ -59,7 +47,7 @@ export const LocalShellCallOutputItem$outboundSchema: z.ZodType<
 > = z.object({
   id: z.string(),
   output: z.string(),
-  status: z.nullable(LocalShellCallOutputItemStatus$outboundSchema).optional(),
+  status: z.nullable(ToolCallStatus$outboundSchema).optional(),
   type: LocalShellCallOutputItemType$outboundSchema,
 });
 

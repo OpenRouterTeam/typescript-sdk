@@ -4,7 +4,6 @@
  */
 
 import { OpenRouterCore } from "../core.js";
-import { dlv } from "../lib/dlv.js";
 import { encodeFormQuery, encodeSimple } from "../lib/encodings.js";
 import { matchStatusCode } from "../lib/http.js";
 import * as M from "../lib/matchers.js";
@@ -48,6 +47,7 @@ export function observabilityList(
   PageIterator<
     Result<
       operations.ListObservabilityDestinationsResponse,
+      | errors.BadRequestResponseError
       | errors.UnauthorizedResponseError
       | errors.InternalServerResponseError
       | OpenRouterError
@@ -78,6 +78,7 @@ async function $do(
     PageIterator<
       Result<
         operations.ListObservabilityDestinationsResponse,
+        | errors.BadRequestResponseError
         | errors.UnauthorizedResponseError
         | errors.InternalServerResponseError
         | OpenRouterError
@@ -197,6 +198,7 @@ async function $do(
 
   const [result, raw] = await M.match<
     operations.ListObservabilityDestinationsResponse,
+    | errors.BadRequestResponseError
     | errors.UnauthorizedResponseError
     | errors.InternalServerResponseError
     | OpenRouterError
@@ -213,6 +215,7 @@ async function $do(
       operations.ListObservabilityDestinationsResponse$inboundSchema,
       { key: "Result" },
     ),
+    M.jsonErr(400, errors.BadRequestResponseError$inboundSchema),
     M.jsonErr(401, errors.UnauthorizedResponseError$inboundSchema),
     M.jsonErr(500, errors.InternalServerResponseError$inboundSchema),
     M.fail("4XX"),
@@ -232,6 +235,7 @@ async function $do(
     next: Paginator<
       Result<
         operations.ListObservabilityDestinationsResponse,
+        | errors.BadRequestResponseError
         | errors.UnauthorizedResponseError
         | errors.InternalServerResponseError
         | OpenRouterError
@@ -251,11 +255,11 @@ async function $do(
     if (!responseData) {
       return { next: () => null };
     }
-    const results = dlv(responseData, "data");
+    const results = (responseData as { data: unknown }).data;
     if (!Array.isArray(results) || !results.length) {
       return { next: () => null };
     }
-    const limit = request?.limit ?? 0;
+    const limit = request?.limit ?? 50;
     if (results.length < limit) {
       return { next: () => null };
     }

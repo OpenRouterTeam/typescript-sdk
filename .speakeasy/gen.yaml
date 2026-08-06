@@ -34,9 +34,10 @@ generation:
     generateTests: false
     generateNewTests: true
     skipResponseBodyAssertions: false
+  documentation: mintlify
   preApplyUnionDiscriminators: true
 typescript:
-  version: 0.12.85
+  version: 1.2.11
   acceptHeaderEnum: false
   additionalDependencies:
     dependencies:
@@ -47,7 +48,7 @@ typescript:
       vitest: ^3.2.4
     peerDependencies: {}
   additionalPackageJSON:
-    description: The OpenRouter TypeScript SDK is a type-safe toolkit for building AI applications with access to 300+ language models through a unified API.
+    description: The OpenRouter TypeScript SDK is a type-safe toolkit for building AI applications with access to 400+ language models through a unified API.
     keywords:
       - openrouter
       - sdk
@@ -78,6 +79,7 @@ typescript:
     typecheck: tsc --noEmit
     typecheck:transit: exit 0
   alwaysIncludeInboundAndOutbound: false
+  apiPromiseHelpers: false
   author: OpenRouter
   baseErrorName: OpenRouterError
   clientServerStatusCodesAsErrors: true
@@ -85,12 +87,20 @@ typescript:
     - pnpm
     - install
   constFieldsAlwaysOptional: false
+  customCasings:
+    byok:
+      initialism: true
+    stt:
+      initialism: true
+    tts:
+      initialism: true
   defaultErrorName: OpenRouterDefaultError
   enableCustomCodeRegions: true
   enableMCPServer: false
   enableReactQuery: false
   enumFormat: union
   envVarPrefix: OPENROUTER
+  eventStreamClassName: EventStream
   exportZodModelNamespace: false
   fixEnumNameSanitization: false
   flatAdditionalProperties: false
@@ -123,6 +133,8 @@ typescript:
   packageName: '@openrouter/sdk'
   preApplyUnionDiscriminators: true
   preserveModelFieldNames: false
+  privateIdentifierPrefix: '#'
+  requestExtras: false
   responseFormat: flat
   sseFlatResponse: true
   templateVersion: v2

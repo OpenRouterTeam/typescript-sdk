@@ -3,10 +3,8 @@
  * @generated-id: fc4b535757c5
  */
 
-import { betaResponsesSend } from "../funcs/betaResponsesSend.js";
-import { EventStream } from "../lib/event-streams.js";
+import { responsesSend } from "../funcs/responsesSend.js";
 import { ClientSDK, RequestOptions } from "../lib/sdks.js";
-import * as models from "../models/index.js";
 import * as operations from "../models/operations/index.js";
 import { unwrapAsync } from "../types/fp.js";
 
@@ -22,13 +20,13 @@ export class Responses extends ClientSDK {
       responsesRequest: { stream?: false | undefined };
     },
     options?: RequestOptions,
-  ): Promise<models.OpenResponsesResult>;
+  ): Promise<operations.CreateResponsesResponse>;
   async send(
     request: operations.CreateResponsesRequest & {
       responsesRequest: { stream: true };
     },
     options?: RequestOptions,
-  ): Promise<EventStream<models.StreamEvents>>;
+  ): Promise<operations.CreateResponsesResponse>;
   async send(
     request: operations.CreateResponsesRequest,
     options?: RequestOptions,
@@ -37,7 +35,7 @@ export class Responses extends ClientSDK {
     request: operations.CreateResponsesRequest,
     options?: RequestOptions,
   ): Promise<operations.CreateResponsesResponse> {
-    return unwrapAsync(betaResponsesSend(
+    return unwrapAsync(responsesSend(
       this,
       request,
       options,

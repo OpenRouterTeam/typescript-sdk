@@ -1,0 +1,43 @@
+---
+title: "OpenRouterMetadata"
+---
+
+## Example Usage
+
+```typescript
+import { OpenRouterMetadata } from "@openrouter/sdk/models";
+
+let value: OpenRouterMetadata = {
+  attempt: 1,
+  endpoints: {
+    available: [
+      {
+        model: "openai/gpt-4o",
+        provider: "OpenAI",
+        selected: true,
+      },
+    ],
+    total: 1,
+  },
+  isByok: false,
+  region: "iad",
+  requested: "openai/gpt-4o",
+  strategy: "direct",
+  summary: "available=1, selected=OpenAI",
+};
+```
+
+## Fields
+
+| Field                                                                                                 | Type                                                                                                  | Required                                                                                              | Description                                                                                           | Example                                                                                               |
+| ----------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------- |
+| `attempt`                                                                                             | *number*                                                                                              | :heavy_check_mark:                                                                                    | N/A                                                                                                   |                                                                                                       |
+| `attempts`                                                                                            | [models.RouterAttempt](../models/routerattempt.mdx)[]                                                  | :heavy_minus_sign:                                                                                    | N/A                                                                                                   |                                                                                                       |
+| `endpoints`                                                                                           | [models.EndpointsMetadata](../models/endpointsmetadata.mdx)                                            | :heavy_check_mark:                                                                                    | N/A                                                                                                   | \{<br/>"available": [<br/>\{<br/>"model": "openai/gpt-4o",<br/>"provider": "OpenAI",<br/>"selected": true<br/>}<br/>],<br/>"total": 3<br/>} |
+| `isByok`                                                                                              | *boolean*                                                                                             | :heavy_check_mark:                                                                                    | N/A                                                                                                   |                                                                                                       |
+| `params`                                                                                              | [models.RouterParams](../models/routerparams.mdx)                                                      | :heavy_minus_sign:                                                                                    | N/A                                                                                                   | \{<br/>"version_group": "anthropic/claude-sonnet-4"<br/>}                                              |
+| `pipeline`                                                                                            | [models.PipelineStage](../models/pipelinestage.mdx)[]                                                  | :heavy_minus_sign:                                                                                    | N/A                                                                                                   |                                                                                                       |
+| `region`                                                                                              | *string*                                                                                              | :heavy_check_mark:                                                                                    | N/A                                                                                                   |                                                                                                       |
+| `requested`                                                                                           | *string*                                                                                              | :heavy_check_mark:                                                                                    | N/A                                                                                                   |                                                                                                       |
+| `strategy`                                                                                            | [models.RoutingStrategy](../models/routingstrategy.mdx)                                                | :heavy_check_mark:                                                                                    | N/A                                                                                                   | direct                                                                                                |
+| `summary`                                                                                             | *string*                                                                                              | :heavy_check_mark:                                                                                    | N/A                                                                                                   |                                                                                                       |

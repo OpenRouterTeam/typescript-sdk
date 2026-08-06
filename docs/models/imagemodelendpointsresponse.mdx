@@ -1,0 +1,48 @@
+---
+title: "ImageModelEndpointsResponse"
+---
+
+The full per-endpoint records for an image model.
+
+## Example Usage
+
+```typescript
+import { ImageModelEndpointsResponse } from "@openrouter/sdk/models";
+
+let value: ImageModelEndpointsResponse = {
+  endpoints: [
+    {
+      allowedPassthroughParameters: [],
+      pricing: [
+        {
+          billable: "output_image",
+          costUsd: 0.05,
+          unit: "image",
+        },
+      ],
+      providerName: "Bytedance",
+      providerSlug: "bytedance",
+      providerTag: "bytedance",
+      supportedParameters: {
+        "resolution": {
+          type: "enum",
+          values: [
+            "1K",
+            "2K",
+            "4K",
+          ],
+        },
+      },
+      supportsStreaming: false,
+    },
+  ],
+  id: "bytedance-seed/seedream-4.5",
+};
+```
+
+## Fields
+
+| Field                                                | Type                                                 | Required                                             | Description                                          | Example                                              |
+| ---------------------------------------------------- | ---------------------------------------------------- | ---------------------------------------------------- | ---------------------------------------------------- | ---------------------------------------------------- |
+| `endpoints`                                          | [models.ImageEndpoint](../models/imageendpoint.mdx)[] | :heavy_check_mark:                                   | N/A                                                  |                                                      |
+| `id`                                                 | *string*                                             | :heavy_check_mark:                                   | Model slug                                           | bytedance-seed/seedream-4.5                          |

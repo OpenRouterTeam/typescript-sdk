@@ -1,0 +1,23 @@
+---
+title: "StopServerToolsWhenMaxCost"
+---
+
+Stop once cumulative cost across the loop exceeds this dollar threshold.
+
+## Example Usage
+
+```typescript
+import { StopServerToolsWhenMaxCost } from "@openrouter/sdk/models";
+
+let value: StopServerToolsWhenMaxCost = {
+  maxCostInDollars: 7287.97,
+  type: "max_cost",
+};
+```
+
+## Fields
+
+| Field              | Type               | Required           | Description        |
+| ------------------ | ------------------ | ------------------ | ------------------ |
+| `maxCostInDollars` | *number*           | :heavy_check_mark: | N/A                |
+| `type`             | *"max_cost"*       | :heavy_check_mark: | N/A                |

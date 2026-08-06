@@ -7,8 +7,13 @@ import { workspacesBulkAddMembers } from "../funcs/workspacesBulkAddMembers.js";
 import { workspacesBulkRemoveMembers } from "../funcs/workspacesBulkRemoveMembers.js";
 import { workspacesCreate } from "../funcs/workspacesCreate.js";
 import { workspacesDelete } from "../funcs/workspacesDelete.js";
+import { workspacesDeleteBudget } from "../funcs/workspacesDeleteBudget.js";
 import { workspacesGet } from "../funcs/workspacesGet.js";
+import { workspacesGetBudget } from "../funcs/workspacesGetBudget.js";
 import { workspacesList } from "../funcs/workspacesList.js";
+import { workspacesListBudgets } from "../funcs/workspacesListBudgets.js";
+import { workspacesListMembers } from "../funcs/workspacesListMembers.js";
+import { workspacesSetBudget } from "../funcs/workspacesSetBudget.js";
 import { workspacesUpdate } from "../funcs/workspacesUpdate.js";
 import { ClientSDK, RequestOptions } from "../lib/sdks.js";
 import * as models from "../models/index.js";
@@ -57,7 +62,7 @@ export class Workspaces extends ClientSDK {
    * Delete a workspace
    *
    * @remarks
-   * Delete an existing workspace. The default workspace cannot be deleted. Workspaces with active API keys cannot be deleted. [Management key](/docs/guides/overview/auth/management-api-keys) required.
+   * Delete an existing workspace. The default workspace cannot be deleted. Workspaces with active API keys cannot be deleted; remove the keys first. [Management key](/docs/guides/overview/auth/management-api-keys) required.
    */
   async delete(
     request: operations.DeleteWorkspaceRequest,
@@ -105,6 +110,93 @@ export class Workspaces extends ClientSDK {
   }
 
   /**
+   * List workspace budgets
+   *
+   * @remarks
+   * List all budgets configured for a workspace. [Management key](/docs/guides/overview/auth/management-api-keys) required.
+   */
+  async listBudgets(
+    request: operations.ListWorkspaceBudgetsRequest,
+    options?: RequestOptions,
+  ): Promise<models.ListWorkspaceBudgetsResponse> {
+    return unwrapAsync(workspacesListBudgets(
+      this,
+      request,
+      options,
+    ));
+  }
+
+  /**
+   * Delete a workspace budget
+   *
+   * @remarks
+   * Remove the budget for a given interval. [Management key](/docs/guides/overview/auth/management-api-keys) required.
+   */
+  async deleteBudget(
+    request: operations.DeleteWorkspaceBudgetRequest,
+    options?: RequestOptions,
+  ): Promise<models.DeleteWorkspaceBudgetResponse> {
+    return unwrapAsync(workspacesDeleteBudget(
+      this,
+      request,
+      options,
+    ));
+  }
+
+  /**
+   * Get a workspace budget
+   *
+   * @remarks
+   * Retrieve the budget for a given interval. [Management key](/docs/guides/overview/auth/management-api-keys) required.
+   */
+  async getBudget(
+    request: operations.GetWorkspaceBudgetRequest,
+    options?: RequestOptions,
+  ): Promise<models.GetWorkspaceBudgetResponse> {
+    return unwrapAsync(workspacesGetBudget(
+      this,
+      request,
+      options,
+    ));
+  }
+
+  /**
+   * Create or update a workspace budget
+   *
+   * @remarks
+   * Create or update the budget for a given interval. Budget limits must strictly decrease as the interval narrows (lifetime > monthly > weekly > daily). The optional `include_byok_in_budgets` flag is a workspace-wide setting: when provided it applies to every budget interval for the workspace, not just the interval in this request. Note that a change made here is applied to budget enforcement immediately, but an already-open workspace settings page in the web dashboard may keep showing the previous value until it is reloaded. [Management key](/docs/guides/overview/auth/management-api-keys) required.
+   */
+  async setBudget(
+    request: operations.UpsertWorkspaceBudgetRequest,
+    options?: RequestOptions,
+  ): Promise<models.UpsertWorkspaceBudgetResponse> {
+    return unwrapAsync(workspacesSetBudget(
+      this,
+      request,
+      options,
+    ));
+  }
+
+  /**
+   * List workspace members
+   *
+   * @remarks
+   * List all members of a workspace. Returns paginated results. For the default workspace, returns all organization members (implicit membership). [Management key](/docs/guides/overview/auth/management-api-keys) required.
+   */
+  async listMembers(
+    request: operations.ListWorkspaceMembersRequest,
+    options?: RequestOptions,
+  ): Promise<
+    PageIterator<operations.ListWorkspaceMembersResponse, { offset: number }>
+  > {
+    return unwrapResultIterator(workspacesListMembers(
+      this,
+      request,
+      options,
+    ));
+  }
+
+  /**
    * Bulk add members to a workspace
    *
    * @remarks
@@ -125,7 +217,7 @@ export class Workspaces extends ClientSDK {
    * Bulk remove members from a workspace
    *
    * @remarks
-   * Remove multiple members from a workspace. Members with active API keys in the workspace cannot be removed. [Management key](/docs/guides/overview/auth/management-api-keys) required.
+   * Remove multiple members from a workspace. Members with active API keys in the workspace cannot be removed. SCIM-managed members cannot be removed; changes must be made in your identity provider. [Management key](/docs/guides/overview/auth/management-api-keys) required.
    */
   async bulkRemoveMembers(
     request: operations.BulkRemoveWorkspaceMembersRequest,

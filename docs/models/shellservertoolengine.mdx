@@ -1,0 +1,21 @@
+---
+title: "ShellServerToolEngine"
+---
+
+Which shell engine to use. "openrouter" runs commands server-side in the OpenRouter sandbox. "auto" (default) keeps the provider's native hosted shell when available (OpenAI); on other providers the call is routed to the OpenRouter sandbox.
+
+## Example Usage
+
+```typescript
+import { ShellServerToolEngine } from "@openrouter/sdk/models";
+
+let value: ShellServerToolEngine = "openrouter";
+
+// Open enum: unrecognized values are captured as Unrecognized<string>
+```
+
+## Values
+
+```typescript
+"auto" | "openrouter" | Unrecognized<string>
+```

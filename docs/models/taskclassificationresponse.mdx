@@ -1,0 +1,48 @@
+---
+title: "TaskClassificationResponse"
+---
+
+## Example Usage
+
+```typescript
+import { TaskClassificationResponse } from "@openrouter/sdk/models";
+
+let value: TaskClassificationResponse = {
+  data: {
+    asOf: "2026-06-17",
+    classifications: [
+      {
+        categoryTokenShare: 0.48,
+        categoryUsageShare: 0.51,
+        displayName: "Code Generation",
+        macroCategory: "code",
+        models: [
+          {
+            id: "openai/gpt-4.1-mini",
+            tagTokenShare: 0.75,
+            tagUsageShare: 0.55,
+          },
+        ],
+        tag: "code:general_impl",
+        tokenShare: 0.31,
+        usageShare: 0.23,
+      },
+    ],
+    macroCategories: [
+      {
+        key: "code",
+        label: "Code",
+        tokenShare: 0.52,
+        usageShare: 0.45,
+      },
+    ],
+    windowDays: 7,
+  },
+};
+```
+
+## Fields
+
+| Field                                                                                | Type                                                                                 | Required                                                                             | Description                                                                          |
+| ------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------ |
+| `data`                                                                               | [models.TaskClassificationResponseData](../models/taskclassificationresponsedata.mdx) | :heavy_check_mark:                                                                   | N/A                                                                                  |

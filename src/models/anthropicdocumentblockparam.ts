@@ -16,6 +16,11 @@ import {
   AnthropicCacheControlDirective$outboundSchema,
 } from "./anthropiccachecontroldirective.js";
 import {
+  AnthropicFileDocumentSource,
+  AnthropicFileDocumentSource$Outbound,
+  AnthropicFileDocumentSource$outboundSchema,
+} from "./anthropicfiledocumentsource.js";
+import {
   AnthropicImageBlockParam,
   AnthropicImageBlockParam$Outbound,
   AnthropicImageBlockParam$outboundSchema,
@@ -57,11 +62,12 @@ export type AnthropicDocumentBlockParamSourceUnion =
   | AnthropicBase64PdfSource
   | AnthropicPlainTextSource
   | SourceContent
-  | AnthropicUrlPdfSource;
+  | AnthropicUrlPdfSource
+  | AnthropicFileDocumentSource;
 
 export type AnthropicDocumentBlockParam = {
   /**
-   * Enable automatic prompt caching. When set at the top level, the system automatically applies cache breakpoints to the last cacheable block in the request. Currently supported for Anthropic Claude models.
+   * Enable automatic prompt caching. When set at the top level, the system automatically applies cache breakpoints to the last cacheable block in the request. When set on an individual content block, it marks an explicit cache breakpoint; block-level markers also work on OpenAI models that support explicit prompt caching — OpenRouter converts them to the provider's native format.
    */
   cacheControl?: AnthropicCacheControlDirective | undefined;
   citations?: AnthropicDocumentBlockParamCitations | null | undefined;
@@ -70,7 +76,8 @@ export type AnthropicDocumentBlockParam = {
     | AnthropicBase64PdfSource
     | AnthropicPlainTextSource
     | SourceContent
-    | AnthropicUrlPdfSource;
+    | AnthropicUrlPdfSource
+    | AnthropicFileDocumentSource;
   title?: string | null | undefined;
   type: "document";
 };
@@ -187,7 +194,8 @@ export type AnthropicDocumentBlockParamSourceUnion$Outbound =
   | AnthropicBase64PdfSource$Outbound
   | AnthropicPlainTextSource$Outbound
   | SourceContent$Outbound
-  | AnthropicUrlPdfSource$Outbound;
+  | AnthropicUrlPdfSource$Outbound
+  | AnthropicFileDocumentSource$Outbound;
 
 /** @internal */
 export const AnthropicDocumentBlockParamSourceUnion$outboundSchema: z.ZodType<
@@ -198,6 +206,7 @@ export const AnthropicDocumentBlockParamSourceUnion$outboundSchema: z.ZodType<
   AnthropicPlainTextSource$outboundSchema,
   z.lazy(() => SourceContent$outboundSchema),
   AnthropicUrlPdfSource$outboundSchema,
+  AnthropicFileDocumentSource$outboundSchema,
 ]);
 
 export function anthropicDocumentBlockParamSourceUnionToJSON(
@@ -220,7 +229,8 @@ export type AnthropicDocumentBlockParam$Outbound = {
     | AnthropicBase64PdfSource$Outbound
     | AnthropicPlainTextSource$Outbound
     | SourceContent$Outbound
-    | AnthropicUrlPdfSource$Outbound;
+    | AnthropicUrlPdfSource$Outbound
+    | AnthropicFileDocumentSource$Outbound;
   title?: string | null | undefined;
   type: "document";
 };
@@ -240,6 +250,7 @@ export const AnthropicDocumentBlockParam$outboundSchema: z.ZodType<
     AnthropicPlainTextSource$outboundSchema,
     z.lazy(() => SourceContent$outboundSchema),
     AnthropicUrlPdfSource$outboundSchema,
+    AnthropicFileDocumentSource$outboundSchema,
   ]),
   title: z.nullable(z.string()).optional(),
   type: z.literal("document"),

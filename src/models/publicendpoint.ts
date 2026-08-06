@@ -6,8 +6,6 @@
 import * as z from "zod/v4";
 import { remap as remap$ } from "../lib/primitives.js";
 import { safeParse } from "../lib/schemas.js";
-import * as openEnums from "../types/enums.js";
-import { OpenEnum } from "../types/enums.js";
 import { Result as SafeParseResult } from "../types/fp.js";
 import {
   EndpointStatus,
@@ -19,39 +17,79 @@ import {
   PercentileStats,
   PercentileStats$inboundSchema,
 } from "./percentilestats.js";
+import {
+  PricingOverride,
+  PricingOverride$inboundSchema,
+} from "./pricingoverride.js";
 import { ProviderName, ProviderName$inboundSchema } from "./providername.js";
+import { Quantization, Quantization$inboundSchema } from "./quantization.js";
 
 export type Pricing = {
+  /**
+   * Price in USD per audio input token
+   */
   audio?: string | undefined;
+  /**
+   * Price in USD per audio output token
+   */
   audioOutput?: string | undefined;
+  /**
+   * Price in USD per token for completion (output) generation
+   */
   completion: string;
+  /**
+   * Fractional discount applied to this endpoint's pricing; the price is multiplied by (1 - discount) (0 = no discount, 1 = free)
+   */
   discount?: number | undefined;
+  /**
+   * Price in USD per input image
+   */
   image?: string | undefined;
+  /**
+   * Price in USD per output image
+   */
   imageOutput?: string | undefined;
+  /**
+   * Price in USD per image token
+   */
   imageToken?: string | undefined;
+  /**
+   * Price in USD per cached audio input token
+   */
   inputAudioCache?: string | undefined;
+  /**
+   * Price in USD per cached input token (read)
+   */
   inputCacheRead?: string | undefined;
+  /**
+   * Price per cache-write token, in USD per token. For providers with multiple cache TTLs (e.g. Anthropic), this is the default (5-minute) cache-write rate.
+   */
   inputCacheWrite?: string | undefined;
+  /**
+   * Price per 1-hour cache-write token, in USD per token. Only present for providers that price an extended (1-hour) cache TTL separately, such as Anthropic.
+   */
+  inputCacheWrite1h?: string | undefined;
+  /**
+   * Price in USD per internal reasoning token
+   */
   internalReasoning?: string | undefined;
+  /**
+   * Conditional overrides of the base pricing (e.g. long-context or time-based pricing). An entry applies when all of its condition fields (e.g. min_prompt_tokens, or the utc_start/utc_end time window) match the request; among applicable entries, later entries win per key; price keys absent from an entry inherit the base price. The top-level pricing keys always reflect the price that applies under default conditions.
+   */
+  overrides?: Array<PricingOverride> | undefined;
+  /**
+   * Price in USD per token for prompt (input) processing
+   */
   prompt: string;
+  /**
+   * Price in USD per request
+   */
   request?: string | undefined;
+  /**
+   * Price in USD per web search
+   */
   webSearch?: string | undefined;
 };
-
-export const PublicEndpointQuantization = {
-  Int4: "int4",
-  Int8: "int8",
-  Fp4: "fp4",
-  Fp6: "fp6",
-  Fp8: "fp8",
-  Fp16: "fp16",
-  Bf16: "bf16",
-  Fp32: "fp32",
-  Unknown: "unknown",
-} as const;
-export type PublicEndpointQuantization = OpenEnum<
-  typeof PublicEndpointQuantization
->;
 
 /**
  * Information about a specific model endpoint
@@ -72,10 +110,14 @@ export type PublicEndpoint = {
   name: string;
   pricing: Pricing;
   providerName: ProviderName;
-  quantization: PublicEndpointQuantization | null;
+  quantization: Quantization | null;
   status?: EndpointStatus | undefined;
   supportedParameters: Array<Parameter>;
   supportsImplicitCaching: boolean;
+  /**
+   * Whether this TTS endpoint accepts inline reference audio (`input_references`) for stateless voice cloning. Requests carrying reference audio are only routed to endpoints where this is true.
+   */
+  supportsVoiceCloning: boolean;
   tag: string;
   throughputLast30m: PercentileStats | null;
   /**
@@ -101,7 +143,9 @@ export const Pricing$inboundSchema: z.ZodType<Pricing, unknown> = z.object({
   input_audio_cache: z.string().optional(),
   input_cache_read: z.string().optional(),
   input_cache_write: z.string().optional(),
+  input_cache_write_1h: z.string().optional(),
   internal_reasoning: z.string().optional(),
+  overrides: z.array(PricingOverride$inboundSchema).optional(),
   prompt: z.string(),
   request: z.string().optional(),
   web_search: z.string().optional(),
@@ -113,6 +157,7 @@ export const Pricing$inboundSchema: z.ZodType<Pricing, unknown> = z.object({
     "input_audio_cache": "inputAudioCache",
     "input_cache_read": "inputCacheRead",
     "input_cache_write": "inputCacheWrite",
+    "input_cache_write_1h": "inputCacheWrite1h",
     "internal_reasoning": "internalReasoning",
     "web_search": "webSearch",
   });
@@ -129,12 +174,6 @@ export function pricingFromJSON(
 }
 
 /** @internal */
-export const PublicEndpointQuantization$inboundSchema: z.ZodType<
-  PublicEndpointQuantization,
-  unknown
-> = openEnums.inboundSchema(PublicEndpointQuantization);
-
-/** @internal */
 export const PublicEndpoint$inboundSchema: z.ZodType<PublicEndpoint, unknown> =
   z.object({
     context_length: z.int(),
@@ -146,10 +185,11 @@ export const PublicEndpoint$inboundSchema: z.ZodType<PublicEndpoint, unknown> =
     name: z.string(),
     pricing: z.lazy(() => Pricing$inboundSchema),
     provider_name: ProviderName$inboundSchema,
-    quantization: z.nullable(PublicEndpointQuantization$inboundSchema),
+    quantization: z.nullable(Quantization$inboundSchema),
     status: EndpointStatus$inboundSchema.optional(),
     supported_parameters: z.array(Parameter$inboundSchema),
     supports_implicit_caching: z.boolean(),
+    supports_voice_cloning: z.boolean().default(false),
     tag: z.string(),
     throughput_last_30m: z.nullable(PercentileStats$inboundSchema),
     uptime_last_1d: z.nullable(z.number()),
@@ -166,6 +206,7 @@ export const PublicEndpoint$inboundSchema: z.ZodType<PublicEndpoint, unknown> =
       "provider_name": "providerName",
       "supported_parameters": "supportedParameters",
       "supports_implicit_caching": "supportsImplicitCaching",
+      "supports_voice_cloning": "supportsVoiceCloning",
       "throughput_last_30m": "throughputLast30m",
       "uptime_last_1d": "uptimeLast1d",
       "uptime_last_30m": "uptimeLast30m",

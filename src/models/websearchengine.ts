@@ -15,6 +15,7 @@ export const WebSearchEngine = {
   Exa: "exa",
   Firecrawl: "firecrawl",
   Parallel: "parallel",
+  Perplexity: "perplexity",
 } as const;
 /**
  * The search engine to use for web search.

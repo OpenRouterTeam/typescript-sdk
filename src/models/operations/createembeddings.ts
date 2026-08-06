@@ -211,6 +211,14 @@ export type CreateEmbeddingsUsage = {
    */
   cost?: number | undefined;
   /**
+   * Breakdown of upstream inference costs
+   */
+  costDetails?: models.CostDetails | null | undefined;
+  /**
+   * Whether a request was made using a Bring Your Own Key configuration
+   */
+  isByok?: boolean | undefined;
+  /**
    * Number of tokens in the input
    */
   promptTokens: number;
@@ -548,12 +556,16 @@ export const CreateEmbeddingsUsage$inboundSchema: z.ZodType<
   unknown
 > = z.object({
   cost: z.number().optional(),
+  cost_details: z.nullable(models.CostDetails$inboundSchema).optional(),
+  is_byok: z.boolean().optional(),
   prompt_tokens: z.int(),
   prompt_tokens_details: z.lazy(() => PromptTokensDetails$inboundSchema)
     .optional(),
   total_tokens: z.int(),
 }).transform((v) => {
   return remap$(v, {
+    "cost_details": "costDetails",
+    "is_byok": "isByok",
     "prompt_tokens": "promptTokens",
     "prompt_tokens_details": "promptTokensDetails",
     "total_tokens": "totalTokens",

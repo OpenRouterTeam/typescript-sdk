@@ -1,0 +1,29 @@
+---
+title: "OutputFilesServerToolItem"
+---
+
+An openrouter:files server tool output item
+
+## Example Usage
+
+```typescript
+import { OutputFilesServerToolItem } from "@openrouter/sdk/models";
+
+let value: OutputFilesServerToolItem = {
+  status: "completed",
+  type: "openrouter:files",
+};
+```
+
+## Fields
+
+| Field                                                                              | Type                                                                               | Required                                                                           | Description                                                                        | Example                                                                            |
+| ---------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------- |
+| `error`                                                                            | *string*                                                                           | :heavy_minus_sign:                                                                 | Error message when the file operation failed.                                      |                                                                                    |
+| `fileId`                                                                           | *string*                                                                           | :heavy_minus_sign:                                                                 | The target file id supplied in the tool-call arguments.                            |                                                                                    |
+| `filename`                                                                         | *string*                                                                           | :heavy_minus_sign:                                                                 | The target filename supplied in the tool-call arguments.                           |                                                                                    |
+| `id`                                                                               | *string*                                                                           | :heavy_minus_sign:                                                                 | N/A                                                                                |                                                                                    |
+| `operation`                                                                        | *string*                                                                           | :heavy_minus_sign:                                                                 | The file operation performed (list, read, write, or edit).                         |                                                                                    |
+| `result`                                                                           | *string*                                                                           | :heavy_minus_sign:                                                                 | JSON-serialized result of the file operation.                                      |                                                                                    |
+| `status`                                                                           | [models.ToolCallStatus](../models/toolcallstatus.mdx)                               | :heavy_check_mark:                                                                 | N/A                                                                                | completed                                                                          |
+| `type`                                                                             | [models.OutputFilesServerToolItemType](../models/outputfilesservertoolitemtype.mdx) | :heavy_check_mark:                                                                 | N/A                                                                                |                                                                                    |

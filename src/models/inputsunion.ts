@@ -7,6 +7,16 @@ import * as z from "zod/v4";
 import { remap as remap$ } from "../lib/primitives.js";
 import { ClosedEnum } from "../types/enums.js";
 import {
+  AdditionalToolsItem,
+  AdditionalToolsItem$Outbound,
+  AdditionalToolsItem$outboundSchema,
+} from "./additionaltoolsitem.js";
+import {
+  AgentMessageItem,
+  AgentMessageItem$Outbound,
+  AgentMessageItem$outboundSchema,
+} from "./agentmessageitem.js";
+import {
   ApplyPatchCallItem,
   ApplyPatchCallItem$Outbound,
   ApplyPatchCallItem$outboundSchema,
@@ -21,6 +31,11 @@ import {
   CompactionItem$Outbound,
   CompactionItem$outboundSchema,
 } from "./compactionitem.js";
+import {
+  ContextCompactionItem,
+  ContextCompactionItem$Outbound,
+  ContextCompactionItem$outboundSchema,
+} from "./contextcompactionitem.js";
 import {
   CustomToolCallItem,
   CustomToolCallItem$Outbound,
@@ -92,6 +107,11 @@ import {
   OpenAIResponsesRefusalContent$outboundSchema,
 } from "./openairesponsesrefusalcontent.js";
 import {
+  OutputAdvisorServerToolItem,
+  OutputAdvisorServerToolItem$Outbound,
+  OutputAdvisorServerToolItem$outboundSchema,
+} from "./outputadvisorservertoolitem.js";
+import {
   OutputApplyPatchServerToolItem,
   OutputApplyPatchServerToolItem$Outbound,
   OutputApplyPatchServerToolItem$outboundSchema,
@@ -142,10 +162,20 @@ import {
   OutputFileSearchServerToolItem$outboundSchema,
 } from "./outputfilesearchservertoolitem.js";
 import {
+  OutputFilesServerToolItem,
+  OutputFilesServerToolItem$Outbound,
+  OutputFilesServerToolItem$outboundSchema,
+} from "./outputfilesservertoolitem.js";
+import {
   OutputFunctionCallItem,
   OutputFunctionCallItem$Outbound,
   OutputFunctionCallItem$outboundSchema,
 } from "./outputfunctioncallitem.js";
+import {
+  OutputFusionServerToolItem,
+  OutputFusionServerToolItem$Outbound,
+  OutputFusionServerToolItem$outboundSchema,
+} from "./outputfusionservertoolitem.js";
 import {
   OutputImageGenerationCallItem,
   OutputImageGenerationCallItem$Outbound,
@@ -171,6 +201,11 @@ import {
   OutputSearchModelsServerToolItem$Outbound,
   OutputSearchModelsServerToolItem$outboundSchema,
 } from "./outputsearchmodelsservertoolitem.js";
+import {
+  OutputSubagentServerToolItem,
+  OutputSubagentServerToolItem$Outbound,
+  OutputSubagentServerToolItem$outboundSchema,
+} from "./outputsubagentservertoolitem.js";
 import {
   OutputTextEditorServerToolItem,
   OutputTextEditorServerToolItem$Outbound,
@@ -285,8 +320,7 @@ export type InputsContent1 = ResponseOutputText | OpenAIResponsesRefusalContent;
 
 export type InputsContent2 =
   | Array<ResponseOutputText | OpenAIResponsesRefusalContent>
-  | string
-  | any;
+  | string;
 
 export const InputsPhaseFinalAnswer = {
   FinalAnswer: "final_answer",
@@ -301,10 +335,7 @@ export type InputsPhaseCommentary = ClosedEnum<typeof InputsPhaseCommentary>;
 /**
  * The phase of an assistant message. Use `commentary` for an intermediate assistant message and `final_answer` for the final assistant message. For follow-up requests with models like `gpt-5.3-codex` and later, preserve and resend phase on all assistant messages. Omitting it can degrade performance. Not used for user messages.
  */
-export type InputsPhaseUnion =
-  | InputsPhaseCommentary
-  | InputsPhaseFinalAnswer
-  | any;
+export type InputsPhaseUnion = InputsPhaseCommentary | InputsPhaseFinalAnswer;
 
 export const InputsRole = {
   Assistant: "assistant",
@@ -347,25 +378,19 @@ export type InputsMessage = {
   content:
     | Array<ResponseOutputText | OpenAIResponsesRefusalContent>
     | string
-    | any
     | null;
   id: string;
   /**
    * The phase of an assistant message. Use `commentary` for an intermediate assistant message and `final_answer` for the final assistant message. For follow-up requests with models like `gpt-5.3-codex` and later, preserve and resend phase on all assistant messages. Omitting it can degrade performance. Not used for user messages.
    */
-  phase?:
-    | InputsPhaseCommentary
-    | InputsPhaseFinalAnswer
-    | any
-    | null
-    | undefined;
+  phase?: InputsPhaseCommentary | InputsPhaseFinalAnswer | null | undefined;
   role: InputsRole;
   status?:
     | InputsStatusCompleted1
     | InputsStatusIncomplete1
     | InputsStatusInProgress1
     | undefined;
-  type: InputsTypeMessage;
+  type?: InputsTypeMessage | undefined;
 };
 
 export type InputsUnion1 =
@@ -375,25 +400,27 @@ export type InputsUnion1 =
   | McpApprovalRequestItem
   | McpCallItem
   | ApplyPatchCallItem
-  | InputsMessage
   | OutputFunctionCallItem
   | OutputCustomToolCallItem
-  | OutputWebSearchCallItem
   | OutputFileSearchCallItem
   | OutputComputerCallItem
   | OutputDatetimeItem
   | McpListToolsItem
   | CustomToolCallItem
+  | AgentMessageItem
   | ReasoningItem
   | FunctionCallOutputItem
   | ApplyPatchCallOutputItem
+  | InputsMessage
   | InputsReasoning
+  | OutputWebSearchCallItem
   | OutputImageGenerationCallItem
   | LocalShellCallOutputItem
   | ShellCallItem
   | ShellCallOutputItem
   | McpApprovalResponseItem
   | CustomToolCallOutputItem
+  | AdditionalToolsItem
   | OutputWebSearchServerToolItem
   | OutputCodeInterpreterServerToolItem
   | OutputFileSearchServerToolItem
@@ -407,10 +434,15 @@ export type InputsUnion1 =
   | OutputMemoryServerToolItem
   | OutputMcpServerToolItem
   | OutputSearchModelsServerToolItem
+  | OutputFusionServerToolItem
+  | OutputAdvisorServerToolItem
+  | OutputSubagentServerToolItem
+  | OutputFilesServerToolItem
   | CompactionItem
   | ItemReferenceItem
   | EasyInputMessage
-  | InputMessageItem;
+  | InputMessageItem
+  | ContextCompactionItem;
 
 /**
  * Input for a response request - can be a string or array of items
@@ -424,25 +456,27 @@ export type InputsUnion =
     | McpApprovalRequestItem
     | McpCallItem
     | ApplyPatchCallItem
-    | InputsMessage
     | OutputFunctionCallItem
     | OutputCustomToolCallItem
-    | OutputWebSearchCallItem
     | OutputFileSearchCallItem
     | OutputComputerCallItem
     | OutputDatetimeItem
     | McpListToolsItem
     | CustomToolCallItem
+    | AgentMessageItem
     | ReasoningItem
     | FunctionCallOutputItem
     | ApplyPatchCallOutputItem
+    | InputsMessage
     | InputsReasoning
+    | OutputWebSearchCallItem
     | OutputImageGenerationCallItem
     | LocalShellCallOutputItem
     | ShellCallItem
     | ShellCallOutputItem
     | McpApprovalResponseItem
     | CustomToolCallOutputItem
+    | AdditionalToolsItem
     | OutputWebSearchServerToolItem
     | OutputCodeInterpreterServerToolItem
     | OutputFileSearchServerToolItem
@@ -456,10 +490,15 @@ export type InputsUnion =
     | OutputMemoryServerToolItem
     | OutputMcpServerToolItem
     | OutputSearchModelsServerToolItem
+    | OutputFusionServerToolItem
+    | OutputAdvisorServerToolItem
+    | OutputSubagentServerToolItem
+    | OutputFilesServerToolItem
     | CompactionItem
     | ItemReferenceItem
     | EasyInputMessage
     | InputMessageItem
+    | ContextCompactionItem
   >;
 
 /** @internal */
@@ -565,8 +604,7 @@ export function inputsContent1ToJSON(inputsContent1: InputsContent1): string {
 /** @internal */
 export type InputsContent2$Outbound =
   | Array<ResponseOutputText$Outbound | OpenAIResponsesRefusalContent$Outbound>
-  | string
-  | any;
+  | string;
 
 /** @internal */
 export const InputsContent2$outboundSchema: z.ZodType<
@@ -580,7 +618,6 @@ export const InputsContent2$outboundSchema: z.ZodType<
     ]),
   ),
   z.string(),
-  z.any(),
 ]);
 
 export function inputsContent2ToJSON(inputsContent2: InputsContent2): string {
@@ -598,7 +635,7 @@ export const InputsPhaseCommentary$outboundSchema: z.ZodEnum<
 > = z.enum(InputsPhaseCommentary);
 
 /** @internal */
-export type InputsPhaseUnion$Outbound = string | string | any;
+export type InputsPhaseUnion$Outbound = string | string;
 
 /** @internal */
 export const InputsPhaseUnion$outboundSchema: z.ZodType<
@@ -607,7 +644,6 @@ export const InputsPhaseUnion$outboundSchema: z.ZodType<
 > = z.union([
   InputsPhaseCommentary$outboundSchema,
   InputsPhaseFinalAnswer$outboundSchema,
-  z.any(),
 ]);
 
 export function inputsPhaseUnionToJSON(
@@ -671,10 +707,9 @@ export type InputsMessage$Outbound = {
       ResponseOutputText$Outbound | OpenAIResponsesRefusalContent$Outbound
     >
     | string
-    | any
     | null;
   id: string;
-  phase?: string | string | any | null | undefined;
+  phase?: string | string | null | undefined;
   role: string;
   status?: string | string | string | undefined;
   type: string;
@@ -694,7 +729,6 @@ export const InputsMessage$outboundSchema: z.ZodType<
         ]),
       ),
       z.string(),
-      z.any(),
     ]),
   ),
   id: z.string(),
@@ -702,7 +736,6 @@ export const InputsMessage$outboundSchema: z.ZodType<
     z.union([
       InputsPhaseCommentary$outboundSchema,
       InputsPhaseFinalAnswer$outboundSchema,
-      z.any(),
     ]),
   ).optional(),
   role: InputsRole$outboundSchema,
@@ -711,7 +744,7 @@ export const InputsMessage$outboundSchema: z.ZodType<
     InputsStatusIncomplete1$outboundSchema,
     InputsStatusInProgress1$outboundSchema,
   ]).optional(),
-  type: InputsTypeMessage$outboundSchema,
+  type: InputsTypeMessage$outboundSchema.default("message"),
 });
 
 export function inputsMessageToJSON(inputsMessage: InputsMessage): string {
@@ -726,25 +759,27 @@ export type InputsUnion1$Outbound =
   | McpApprovalRequestItem$Outbound
   | McpCallItem$Outbound
   | ApplyPatchCallItem$Outbound
-  | InputsMessage$Outbound
   | OutputFunctionCallItem$Outbound
   | OutputCustomToolCallItem$Outbound
-  | OutputWebSearchCallItem$Outbound
   | OutputFileSearchCallItem$Outbound
   | OutputComputerCallItem$Outbound
   | OutputDatetimeItem$Outbound
   | McpListToolsItem$Outbound
   | CustomToolCallItem$Outbound
+  | AgentMessageItem$Outbound
   | ReasoningItem$Outbound
   | FunctionCallOutputItem$Outbound
   | ApplyPatchCallOutputItem$Outbound
+  | InputsMessage$Outbound
   | InputsReasoning$Outbound
+  | OutputWebSearchCallItem$Outbound
   | OutputImageGenerationCallItem$Outbound
   | LocalShellCallOutputItem$Outbound
   | ShellCallItem$Outbound
   | ShellCallOutputItem$Outbound
   | McpApprovalResponseItem$Outbound
   | CustomToolCallOutputItem$Outbound
+  | AdditionalToolsItem$Outbound
   | OutputWebSearchServerToolItem$Outbound
   | OutputCodeInterpreterServerToolItem$Outbound
   | OutputFileSearchServerToolItem$Outbound
@@ -758,10 +793,15 @@ export type InputsUnion1$Outbound =
   | OutputMemoryServerToolItem$Outbound
   | OutputMcpServerToolItem$Outbound
   | OutputSearchModelsServerToolItem$Outbound
+  | OutputFusionServerToolItem$Outbound
+  | OutputAdvisorServerToolItem$Outbound
+  | OutputSubagentServerToolItem$Outbound
+  | OutputFilesServerToolItem$Outbound
   | CompactionItem$Outbound
   | ItemReferenceItem$Outbound
   | EasyInputMessage$Outbound
-  | InputMessageItem$Outbound;
+  | InputMessageItem$Outbound
+  | ContextCompactionItem$Outbound;
 
 /** @internal */
 export const InputsUnion1$outboundSchema: z.ZodType<
@@ -774,25 +814,27 @@ export const InputsUnion1$outboundSchema: z.ZodType<
   McpApprovalRequestItem$outboundSchema,
   McpCallItem$outboundSchema,
   ApplyPatchCallItem$outboundSchema,
-  z.lazy(() => InputsMessage$outboundSchema),
   OutputFunctionCallItem$outboundSchema,
   OutputCustomToolCallItem$outboundSchema,
-  OutputWebSearchCallItem$outboundSchema,
   OutputFileSearchCallItem$outboundSchema,
   OutputComputerCallItem$outboundSchema,
   OutputDatetimeItem$outboundSchema,
   McpListToolsItem$outboundSchema,
   CustomToolCallItem$outboundSchema,
+  AgentMessageItem$outboundSchema,
   ReasoningItem$outboundSchema,
   FunctionCallOutputItem$outboundSchema,
   ApplyPatchCallOutputItem$outboundSchema,
+  z.lazy(() => InputsMessage$outboundSchema),
   z.lazy(() => InputsReasoning$outboundSchema),
+  OutputWebSearchCallItem$outboundSchema,
   OutputImageGenerationCallItem$outboundSchema,
   LocalShellCallOutputItem$outboundSchema,
   ShellCallItem$outboundSchema,
   ShellCallOutputItem$outboundSchema,
   McpApprovalResponseItem$outboundSchema,
   CustomToolCallOutputItem$outboundSchema,
+  AdditionalToolsItem$outboundSchema,
   OutputWebSearchServerToolItem$outboundSchema,
   OutputCodeInterpreterServerToolItem$outboundSchema,
   OutputFileSearchServerToolItem$outboundSchema,
@@ -806,10 +848,15 @@ export const InputsUnion1$outboundSchema: z.ZodType<
   OutputMemoryServerToolItem$outboundSchema,
   OutputMcpServerToolItem$outboundSchema,
   OutputSearchModelsServerToolItem$outboundSchema,
+  OutputFusionServerToolItem$outboundSchema,
+  OutputAdvisorServerToolItem$outboundSchema,
+  OutputSubagentServerToolItem$outboundSchema,
+  OutputFilesServerToolItem$outboundSchema,
   CompactionItem$outboundSchema,
   ItemReferenceItem$outboundSchema,
   EasyInputMessage$outboundSchema,
   InputMessageItem$outboundSchema,
+  ContextCompactionItem$outboundSchema,
 ]);
 
 export function inputsUnion1ToJSON(inputsUnion1: InputsUnion1): string {
@@ -826,25 +873,27 @@ export type InputsUnion$Outbound =
     | McpApprovalRequestItem$Outbound
     | McpCallItem$Outbound
     | ApplyPatchCallItem$Outbound
-    | InputsMessage$Outbound
     | OutputFunctionCallItem$Outbound
     | OutputCustomToolCallItem$Outbound
-    | OutputWebSearchCallItem$Outbound
     | OutputFileSearchCallItem$Outbound
     | OutputComputerCallItem$Outbound
     | OutputDatetimeItem$Outbound
     | McpListToolsItem$Outbound
     | CustomToolCallItem$Outbound
+    | AgentMessageItem$Outbound
     | ReasoningItem$Outbound
     | FunctionCallOutputItem$Outbound
     | ApplyPatchCallOutputItem$Outbound
+    | InputsMessage$Outbound
     | InputsReasoning$Outbound
+    | OutputWebSearchCallItem$Outbound
     | OutputImageGenerationCallItem$Outbound
     | LocalShellCallOutputItem$Outbound
     | ShellCallItem$Outbound
     | ShellCallOutputItem$Outbound
     | McpApprovalResponseItem$Outbound
     | CustomToolCallOutputItem$Outbound
+    | AdditionalToolsItem$Outbound
     | OutputWebSearchServerToolItem$Outbound
     | OutputCodeInterpreterServerToolItem$Outbound
     | OutputFileSearchServerToolItem$Outbound
@@ -858,10 +907,15 @@ export type InputsUnion$Outbound =
     | OutputMemoryServerToolItem$Outbound
     | OutputMcpServerToolItem$Outbound
     | OutputSearchModelsServerToolItem$Outbound
+    | OutputFusionServerToolItem$Outbound
+    | OutputAdvisorServerToolItem$Outbound
+    | OutputSubagentServerToolItem$Outbound
+    | OutputFilesServerToolItem$Outbound
     | CompactionItem$Outbound
     | ItemReferenceItem$Outbound
     | EasyInputMessage$Outbound
     | InputMessageItem$Outbound
+    | ContextCompactionItem$Outbound
   >;
 
 /** @internal */
@@ -878,25 +932,27 @@ export const InputsUnion$outboundSchema: z.ZodType<
       McpApprovalRequestItem$outboundSchema,
       McpCallItem$outboundSchema,
       ApplyPatchCallItem$outboundSchema,
-      z.lazy(() => InputsMessage$outboundSchema),
       OutputFunctionCallItem$outboundSchema,
       OutputCustomToolCallItem$outboundSchema,
-      OutputWebSearchCallItem$outboundSchema,
       OutputFileSearchCallItem$outboundSchema,
       OutputComputerCallItem$outboundSchema,
       OutputDatetimeItem$outboundSchema,
       McpListToolsItem$outboundSchema,
       CustomToolCallItem$outboundSchema,
+      AgentMessageItem$outboundSchema,
       ReasoningItem$outboundSchema,
       FunctionCallOutputItem$outboundSchema,
       ApplyPatchCallOutputItem$outboundSchema,
+      z.lazy(() => InputsMessage$outboundSchema),
       z.lazy(() => InputsReasoning$outboundSchema),
+      OutputWebSearchCallItem$outboundSchema,
       OutputImageGenerationCallItem$outboundSchema,
       LocalShellCallOutputItem$outboundSchema,
       ShellCallItem$outboundSchema,
       ShellCallOutputItem$outboundSchema,
       McpApprovalResponseItem$outboundSchema,
       CustomToolCallOutputItem$outboundSchema,
+      AdditionalToolsItem$outboundSchema,
       OutputWebSearchServerToolItem$outboundSchema,
       OutputCodeInterpreterServerToolItem$outboundSchema,
       OutputFileSearchServerToolItem$outboundSchema,
@@ -910,10 +966,15 @@ export const InputsUnion$outboundSchema: z.ZodType<
       OutputMemoryServerToolItem$outboundSchema,
       OutputMcpServerToolItem$outboundSchema,
       OutputSearchModelsServerToolItem$outboundSchema,
+      OutputFusionServerToolItem$outboundSchema,
+      OutputAdvisorServerToolItem$outboundSchema,
+      OutputSubagentServerToolItem$outboundSchema,
+      OutputFilesServerToolItem$outboundSchema,
       CompactionItem$outboundSchema,
       ItemReferenceItem$outboundSchema,
       EasyInputMessage$outboundSchema,
       InputMessageItem$outboundSchema,
+      ContextCompactionItem$outboundSchema,
     ]),
   ),
 ]);

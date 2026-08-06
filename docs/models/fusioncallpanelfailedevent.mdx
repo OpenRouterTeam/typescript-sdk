@@ -1,0 +1,32 @@
+---
+title: "FusionCallPanelFailedEvent"
+---
+
+Emitted when a fusion panel model fails.
+
+## Example Usage
+
+```typescript
+import { FusionCallPanelFailedEvent } from "@openrouter/sdk/models";
+
+let value: FusionCallPanelFailedEvent = {
+  error: "<value>",
+  itemId: "<id>",
+  model: "2",
+  outputIndex: 930579,
+  sequenceNumber: 0,
+  type: "response.fusion_call.panel.failed",
+};
+```
+
+## Fields
+
+| Field                                 | Type                                  | Required                              | Description                           |
+| ------------------------------------- | ------------------------------------- | ------------------------------------- | ------------------------------------- |
+| `error`                               | *string*                              | :heavy_check_mark:                    | N/A                                   |
+| `itemId`                              | *string*                              | :heavy_check_mark:                    | N/A                                   |
+| `model`                               | *string*                              | :heavy_check_mark:                    | N/A                                   |
+| `outputIndex`                         | *number*                              | :heavy_check_mark:                    | N/A                                   |
+| `sequenceNumber`                      | *number*                              | :heavy_check_mark:                    | N/A                                   |
+| `statusCode`                          | *number*                              | :heavy_minus_sign:                    | N/A                                   |
+| `type`                                | *"response.fusion_call.panel.failed"* | :heavy_check_mark:                    | N/A                                   |

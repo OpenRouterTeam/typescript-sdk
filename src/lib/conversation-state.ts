@@ -89,7 +89,7 @@ export function updateState<TTools extends readonly Tool[] = readonly Tool[]>(
  */
 export function appendToMessages(
   current: models.InputsUnion,
-  newItems: models.BaseInputsUnion[]
+  newItems: models.InputsUnion1[]
 ): models.InputsUnion {
   const currentArray = normalizeInputToArray(current);
   return [...currentArray, ...newItems];

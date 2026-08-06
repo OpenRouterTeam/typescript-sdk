@@ -1,0 +1,24 @@
+---
+title: "ChatStreamChunkError"
+---
+
+Error information
+
+## Example Usage
+
+```typescript
+import { ChatStreamChunkError } from "@openrouter/sdk/models";
+
+let value: ChatStreamChunkError = {
+  code: 429,
+  message: "Rate limit exceeded",
+};
+```
+
+## Fields
+
+| Field                                                                  | Type                                                                   | Required                                                               | Description                                                            | Example                                                                |
+| ---------------------------------------------------------------------- | ---------------------------------------------------------------------- | ---------------------------------------------------------------------- | ---------------------------------------------------------------------- | ---------------------------------------------------------------------- |
+| `code`                                                                 | *number*                                                               | :heavy_check_mark:                                                     | Error code                                                             | 429                                                                    |
+| `message`                                                              | *string*                                                               | :heavy_check_mark:                                                     | Error message                                                          | Rate limit exceeded                                                    |
+| `metadata`                                                             | [models.ChatStreamChunkMetadata](../models/chatstreamchunkmetadata.mdx) | :heavy_minus_sign:                                                     | Structured error metadata                                              |                                                                        |

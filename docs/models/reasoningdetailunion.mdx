@@ -1,0 +1,47 @@
+---
+title: "ReasoningDetailUnion"
+---
+
+Reasoning detail union schema
+
+
+## Supported Types
+
+### `models.ReasoningDetailEncrypted`
+
+```typescript
+const value: models.ReasoningDetailEncrypted = {
+  data: "<value>",
+  type: "reasoning.encrypted",
+};
+```
+
+### `models.ReasoningDetailServerToolCall`
+
+```typescript
+const value: models.ReasoningDetailServerToolCall = {
+  arguments: "<value>",
+  result: "<value>",
+  toolName: "<value>",
+  type: "reasoning.server_tool_call",
+};
+```
+
+### `models.ReasoningDetailSummary`
+
+```typescript
+const value: models.ReasoningDetailSummary = {
+  summary:
+    "The model analyzed the problem by first identifying key constraints, then evaluating possible solutions...",
+  type: "reasoning.summary",
+};
+```
+
+### `models.ReasoningDetailText`
+
+```typescript
+const value: models.ReasoningDetailText = {
+  type: "reasoning.text",
+};
+```
+

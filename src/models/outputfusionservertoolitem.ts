@@ -6,43 +6,26 @@
 import * as z from "zod/v4";
 import { remap as remap$ } from "../lib/primitives.js";
 import { safeParse } from "../lib/schemas.js";
+import { ClosedEnum } from "../types/enums.js";
 import { Result as SafeParseResult } from "../types/fp.js";
 import { SDKValidationError } from "./errors/sdkvalidationerror.js";
 import {
+  FusionAnalysisResult,
+  FusionAnalysisResult$inboundSchema,
+  FusionAnalysisResult$Outbound,
+  FusionAnalysisResult$outboundSchema,
+} from "./fusionanalysisresult.js";
+import {
+  FusionSource,
+  FusionSource$inboundSchema,
+  FusionSource$Outbound,
+  FusionSource$outboundSchema,
+} from "./fusionsource.js";
+import {
   ToolCallStatus,
   ToolCallStatus$inboundSchema,
+  ToolCallStatus$outboundSchema,
 } from "./toolcallstatus.js";
-
-export type Stance = {
-  model: string;
-  stance: string;
-};
-
-export type Contradiction = {
-  stances: Array<Stance>;
-  topic: string;
-};
-
-export type PartialCoverage = {
-  models: Array<string>;
-  point: string;
-};
-
-export type UniqueInsight = {
-  insight: string;
-  model: string;
-};
-
-/**
- * Structured analysis produced by the fusion judge model.
- */
-export type Analysis = {
-  blindSpots: Array<string>;
-  consensus: Array<string>;
-  contradictions: Array<Contradiction>;
-  partialCoverage: Array<PartialCoverage>;
-  uniqueInsights: Array<UniqueInsight>;
-};
 
 export type FailedModel = {
   /**
@@ -60,17 +43,25 @@ export type FailedModel = {
 };
 
 export type ResponseT = {
+  content?: string | undefined;
   model: string;
 };
+
+export const OutputFusionServerToolItemType = {
+  OpenrouterFusion: "openrouter:fusion",
+} as const;
+export type OutputFusionServerToolItemType = ClosedEnum<
+  typeof OutputFusionServerToolItemType
+>;
 
 /**
  * An openrouter:fusion server tool output item
  */
 export type OutputFusionServerToolItem = {
   /**
-   * Structured analysis produced by the fusion judge model.
+   * Structured analysis produced by the fusion analyst model.
    */
-  analysis?: Analysis | undefined;
+  analysis?: FusionAnalysisResult | undefined;
   /**
    * Error message when the fusion run did not produce an analysis result.
    */
@@ -80,111 +71,21 @@ export type OutputFusionServerToolItem = {
    */
   failedModels?: Array<FailedModel> | undefined;
   /**
-   * Typed failure reason when the fusion run failed. Possible values include: all_panels_failed, insufficient_credits, rate_limited, judge_not_valid_json, judge_schema_mismatch, judge_upstream_error, judge_empty_completion.
+   * Typed failure reason when the fusion run failed. Possible values include: all_panels_failed, insufficient_credits, rate_limited, judge_not_valid_json, judge_schema_mismatch, judge_upstream_error, judge_empty_completion. The four analysis-stage codes keep their pre-rename `judge_` spelling so existing consumers keep matching.
    */
   failureReason?: string | undefined;
   id?: string | undefined;
   /**
-   * Slugs of the analysis models that produced a response in this fusion run.
+   * Analysis models that produced a response in this fusion run, with each model's full panel content.
    */
   responses?: Array<ResponseT> | undefined;
+  /**
+   * Web pages the analysis panels and analyst retrieved via web search during this fusion run, deduplicated by URL across the whole run. Present when at least one model cited a source.
+   */
+  sources?: Array<FusionSource> | undefined;
   status: ToolCallStatus;
-  type: "openrouter:fusion";
+  type: OutputFusionServerToolItemType;
 };
-
-/** @internal */
-export const Stance$inboundSchema: z.ZodType<Stance, unknown> = z.object({
-  model: z.string(),
-  stance: z.string(),
-});
-
-export function stanceFromJSON(
-  jsonString: string,
-): SafeParseResult<Stance, SDKValidationError> {
-  return safeParse(
-    jsonString,
-    (x) => Stance$inboundSchema.parse(JSON.parse(x)),
-    `Failed to parse 'Stance' from JSON`,
-  );
-}
-
-/** @internal */
-export const Contradiction$inboundSchema: z.ZodType<Contradiction, unknown> = z
-  .object({
-    stances: z.array(z.lazy(() => Stance$inboundSchema)),
-    topic: z.string(),
-  });
-
-export function contradictionFromJSON(
-  jsonString: string,
-): SafeParseResult<Contradiction, SDKValidationError> {
-  return safeParse(
-    jsonString,
-    (x) => Contradiction$inboundSchema.parse(JSON.parse(x)),
-    `Failed to parse 'Contradiction' from JSON`,
-  );
-}
-
-/** @internal */
-export const PartialCoverage$inboundSchema: z.ZodType<
-  PartialCoverage,
-  unknown
-> = z.object({
-  models: z.array(z.string()),
-  point: z.string(),
-});
-
-export function partialCoverageFromJSON(
-  jsonString: string,
-): SafeParseResult<PartialCoverage, SDKValidationError> {
-  return safeParse(
-    jsonString,
-    (x) => PartialCoverage$inboundSchema.parse(JSON.parse(x)),
-    `Failed to parse 'PartialCoverage' from JSON`,
-  );
-}
-
-/** @internal */
-export const UniqueInsight$inboundSchema: z.ZodType<UniqueInsight, unknown> = z
-  .object({
-    insight: z.string(),
-    model: z.string(),
-  });
-
-export function uniqueInsightFromJSON(
-  jsonString: string,
-): SafeParseResult<UniqueInsight, SDKValidationError> {
-  return safeParse(
-    jsonString,
-    (x) => UniqueInsight$inboundSchema.parse(JSON.parse(x)),
-    `Failed to parse 'UniqueInsight' from JSON`,
-  );
-}
-
-/** @internal */
-export const Analysis$inboundSchema: z.ZodType<Analysis, unknown> = z.object({
-  blind_spots: z.array(z.string()),
-  consensus: z.array(z.string()),
-  contradictions: z.array(z.lazy(() => Contradiction$inboundSchema)),
-  partial_coverage: z.array(z.lazy(() => PartialCoverage$inboundSchema)),
-  unique_insights: z.array(z.lazy(() => UniqueInsight$inboundSchema)),
-}).transform((v) => {
-  return remap$(v, {
-    "blind_spots": "blindSpots",
-    "partial_coverage": "partialCoverage",
-    "unique_insights": "uniqueInsights",
-  });
-});
-
-export function analysisFromJSON(
-  jsonString: string,
-): SafeParseResult<Analysis, SDKValidationError> {
-  return safeParse(
-    jsonString,
-    (x) => Analysis$inboundSchema.parse(JSON.parse(x)),
-    `Failed to parse 'Analysis' from JSON`,
-  );
-}
 
 /** @internal */
 export const FailedModel$inboundSchema: z.ZodType<FailedModel, unknown> = z
@@ -197,7 +98,30 @@ export const FailedModel$inboundSchema: z.ZodType<FailedModel, unknown> = z
       "status_code": "statusCode",
     });
   });
+/** @internal */
+export type FailedModel$Outbound = {
+  error: string;
+  model: string;
+  status_code?: number | undefined;
+};
 
+/** @internal */
+export const FailedModel$outboundSchema: z.ZodType<
+  FailedModel$Outbound,
+  FailedModel
+> = z.object({
+  error: z.string(),
+  model: z.string(),
+  statusCode: z.int().optional(),
+}).transform((v) => {
+  return remap$(v, {
+    statusCode: "status_code",
+  });
+});
+
+export function failedModelToJSON(failedModel: FailedModel): string {
+  return JSON.stringify(FailedModel$outboundSchema.parse(failedModel));
+}
 export function failedModelFromJSON(
   jsonString: string,
 ): SafeParseResult<FailedModel, SDKValidationError> {
@@ -210,9 +134,27 @@ export function failedModelFromJSON(
 
 /** @internal */
 export const ResponseT$inboundSchema: z.ZodType<ResponseT, unknown> = z.object({
+  content: z.string().optional(),
+  model: z.string(),
+});
+/** @internal */
+export type ResponseT$Outbound = {
+  content?: string | undefined;
+  model: string;
+};
+
+/** @internal */
+export const ResponseT$outboundSchema: z.ZodType<
+  ResponseT$Outbound,
+  ResponseT
+> = z.object({
+  content: z.string().optional(),
   model: z.string(),
 });
 
+export function responseToJSON(responseT: ResponseT): string {
+  return JSON.stringify(ResponseT$outboundSchema.parse(responseT));
+}
 export function responseFromJSON(
   jsonString: string,
 ): SafeParseResult<ResponseT, SDKValidationError> {
@@ -224,25 +166,75 @@ export function responseFromJSON(
 }
 
 /** @internal */
+export const OutputFusionServerToolItemType$inboundSchema: z.ZodEnum<
+  typeof OutputFusionServerToolItemType
+> = z.enum(OutputFusionServerToolItemType);
+/** @internal */
+export const OutputFusionServerToolItemType$outboundSchema: z.ZodEnum<
+  typeof OutputFusionServerToolItemType
+> = OutputFusionServerToolItemType$inboundSchema;
+
+/** @internal */
 export const OutputFusionServerToolItem$inboundSchema: z.ZodType<
   OutputFusionServerToolItem,
   unknown
 > = z.object({
-  analysis: z.lazy(() => Analysis$inboundSchema).optional(),
+  analysis: FusionAnalysisResult$inboundSchema.optional(),
   error: z.string().optional(),
   failed_models: z.array(z.lazy(() => FailedModel$inboundSchema)).optional(),
   failure_reason: z.string().optional(),
   id: z.string().optional(),
   responses: z.array(z.lazy(() => ResponseT$inboundSchema)).optional(),
+  sources: z.array(FusionSource$inboundSchema).optional(),
   status: ToolCallStatus$inboundSchema,
-  type: z.literal("openrouter:fusion"),
+  type: OutputFusionServerToolItemType$inboundSchema,
 }).transform((v) => {
   return remap$(v, {
     "failed_models": "failedModels",
     "failure_reason": "failureReason",
   });
 });
+/** @internal */
+export type OutputFusionServerToolItem$Outbound = {
+  analysis?: FusionAnalysisResult$Outbound | undefined;
+  error?: string | undefined;
+  failed_models?: Array<FailedModel$Outbound> | undefined;
+  failure_reason?: string | undefined;
+  id?: string | undefined;
+  responses?: Array<ResponseT$Outbound> | undefined;
+  sources?: Array<FusionSource$Outbound> | undefined;
+  status: string;
+  type: string;
+};
 
+/** @internal */
+export const OutputFusionServerToolItem$outboundSchema: z.ZodType<
+  OutputFusionServerToolItem$Outbound,
+  OutputFusionServerToolItem
+> = z.object({
+  analysis: FusionAnalysisResult$outboundSchema.optional(),
+  error: z.string().optional(),
+  failedModels: z.array(z.lazy(() => FailedModel$outboundSchema)).optional(),
+  failureReason: z.string().optional(),
+  id: z.string().optional(),
+  responses: z.array(z.lazy(() => ResponseT$outboundSchema)).optional(),
+  sources: z.array(FusionSource$outboundSchema).optional(),
+  status: ToolCallStatus$outboundSchema,
+  type: OutputFusionServerToolItemType$outboundSchema,
+}).transform((v) => {
+  return remap$(v, {
+    failedModels: "failed_models",
+    failureReason: "failure_reason",
+  });
+});
+
+export function outputFusionServerToolItemToJSON(
+  outputFusionServerToolItem: OutputFusionServerToolItem,
+): string {
+  return JSON.stringify(
+    OutputFusionServerToolItem$outboundSchema.parse(outputFusionServerToolItem),
+  );
+}
 export function outputFusionServerToolItemFromJSON(
   jsonString: string,
 ): SafeParseResult<OutputFusionServerToolItem, SDKValidationError> {

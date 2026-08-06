@@ -67,7 +67,7 @@ export function buildTurnContext(
  */
 export function normalizeInputToArray(
   input: models.InputsUnion
-): Array<models.BaseInputsUnion> {
+): Array<models.InputsUnion1> {
   if (typeof input === 'string') {
     // Construct object with all required fields - type is optional
     const message: models.EasyInputMessage = {

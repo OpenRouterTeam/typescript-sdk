@@ -1,0 +1,21 @@
+---
+title: "Modality"
+---
+
+Restrict to models for a modality surface: `text` / `image_output` match output modality, `image` / `audio` match input modality, and `tool_calling` keeps only rows that recorded at least one tool call. Exact dataset — cannot be combined with `category` or `language_type`.
+
+## Example Usage
+
+```typescript
+import { Modality } from "@openrouter/sdk/models/operations";
+
+let value: Modality = "text";
+
+// Open enum: unrecognized values are captured as Unrecognized<string>
+```
+
+## Values
+
+```typescript
+"text" | "image" | "image_output" | "audio" | "tool_calling" | Unrecognized<string>
+```

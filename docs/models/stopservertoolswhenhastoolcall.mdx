@@ -1,0 +1,23 @@
+---
+title: "StopServerToolsWhenHasToolCall"
+---
+
+Stop after a tool with this name has been called.
+
+## Example Usage
+
+```typescript
+import { StopServerToolsWhenHasToolCall } from "@openrouter/sdk/models";
+
+let value: StopServerToolsWhenHasToolCall = {
+  toolName: "<value>",
+  type: "has_tool_call",
+};
+```
+
+## Fields
+
+| Field              | Type               | Required           | Description        |
+| ------------------ | ------------------ | ------------------ | ------------------ |
+| `toolName`         | *string*           | :heavy_check_mark: | N/A                |
+| `type`             | *"has_tool_call"*  | :heavy_check_mark: | N/A                |

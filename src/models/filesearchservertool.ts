@@ -7,7 +7,7 @@ import * as z from "zod/v4";
 import { remap as remap$ } from "../lib/primitives.js";
 import { safeParse } from "../lib/schemas.js";
 import * as openEnums from "../types/enums.js";
-import { OpenEnum } from "../types/enums.js";
+import { ClosedEnum, OpenEnum } from "../types/enums.js";
 import { Result as SafeParseResult } from "../types/fp.js";
 import {
   CompoundFilter,
@@ -41,7 +41,7 @@ export type Filters = {
   value: string | number | boolean | Array<string | number>;
 };
 
-export type FiltersUnion = Filters | CompoundFilter | any;
+export type FiltersUnion = Filters | CompoundFilter;
 
 export const Ranker = {
   Auto: "auto",
@@ -54,14 +54,19 @@ export type RankingOptions = {
   scoreThreshold?: number | undefined;
 };
 
+export const TypeFileSearch = {
+  FileSearch: "file_search",
+} as const;
+export type TypeFileSearch = ClosedEnum<typeof TypeFileSearch>;
+
 /**
  * File search tool configuration
  */
 export type FileSearchServerTool = {
-  filters?: Filters | CompoundFilter | any | null | undefined;
+  filters?: Filters | CompoundFilter | null | undefined;
   maxNumResults?: number | undefined;
   rankingOptions?: RankingOptions | undefined;
-  type: "file_search";
+  type: TypeFileSearch;
   vectorStoreIds: Array<string>;
 };
 
@@ -194,16 +199,9 @@ export function filtersFromJSON(
 
 /** @internal */
 export const FiltersUnion$inboundSchema: z.ZodType<FiltersUnion, unknown> = z
-  .union([
-    z.lazy(() => Filters$inboundSchema),
-    CompoundFilter$inboundSchema,
-    z.any(),
-  ]);
+  .union([z.lazy(() => Filters$inboundSchema), CompoundFilter$inboundSchema]);
 /** @internal */
-export type FiltersUnion$Outbound =
-  | Filters$Outbound
-  | CompoundFilter$Outbound
-  | any;
+export type FiltersUnion$Outbound = Filters$Outbound | CompoundFilter$Outbound;
 
 /** @internal */
 export const FiltersUnion$outboundSchema: z.ZodType<
@@ -212,7 +210,6 @@ export const FiltersUnion$outboundSchema: z.ZodType<
 > = z.union([
   z.lazy(() => Filters$outboundSchema),
   CompoundFilter$outboundSchema,
-  z.any(),
 ]);
 
 export function filtersUnionToJSON(filtersUnion: FiltersUnion): string {
@@ -278,6 +275,13 @@ export function rankingOptionsFromJSON(
 }
 
 /** @internal */
+export const TypeFileSearch$inboundSchema: z.ZodEnum<typeof TypeFileSearch> = z
+  .enum(TypeFileSearch);
+/** @internal */
+export const TypeFileSearch$outboundSchema: z.ZodEnum<typeof TypeFileSearch> =
+  TypeFileSearch$inboundSchema;
+
+/** @internal */
 export const FileSearchServerTool$inboundSchema: z.ZodType<
   FileSearchServerTool,
   unknown
@@ -286,12 +290,11 @@ export const FileSearchServerTool$inboundSchema: z.ZodType<
     z.union([
       z.lazy(() => Filters$inboundSchema),
       CompoundFilter$inboundSchema,
-      z.any(),
     ]),
   ).optional(),
   max_num_results: z.int().optional(),
   ranking_options: z.lazy(() => RankingOptions$inboundSchema).optional(),
-  type: z.literal("file_search"),
+  type: TypeFileSearch$inboundSchema,
   vector_store_ids: z.array(z.string()),
 }).transform((v) => {
   return remap$(v, {
@@ -302,10 +305,10 @@ export const FileSearchServerTool$inboundSchema: z.ZodType<
 });
 /** @internal */
 export type FileSearchServerTool$Outbound = {
-  filters?: Filters$Outbound | CompoundFilter$Outbound | any | null | undefined;
+  filters?: Filters$Outbound | CompoundFilter$Outbound | null | undefined;
   max_num_results?: number | undefined;
   ranking_options?: RankingOptions$Outbound | undefined;
-  type: "file_search";
+  type: string;
   vector_store_ids: Array<string>;
 };
 
@@ -318,12 +321,11 @@ export const FileSearchServerTool$outboundSchema: z.ZodType<
     z.union([
       z.lazy(() => Filters$outboundSchema),
       CompoundFilter$outboundSchema,
-      z.any(),
     ]),
   ).optional(),
   maxNumResults: z.int().optional(),
   rankingOptions: z.lazy(() => RankingOptions$outboundSchema).optional(),
-  type: z.literal("file_search"),
+  type: TypeFileSearch$outboundSchema,
   vectorStoreIds: z.array(z.string()),
 }).transform((v) => {
   return remap$(v, {

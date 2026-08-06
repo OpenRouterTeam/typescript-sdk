@@ -21,7 +21,8 @@ export const ResponsesStreamingResponse$inboundSchema: z.ZodType<
   ResponsesStreamingResponse,
   unknown
 > = z.object({
-  data: z.string().transform((v, ctx) => {
+  data: z.unknown().transform((v, ctx) => {
+    if (typeof v !== "string") return v;
     try {
       return JSON.parse(v);
     } catch (err) {

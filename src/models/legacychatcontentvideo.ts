@@ -7,13 +7,13 @@ import * as z from "zod/v4";
 import { remap as remap$ } from "../lib/primitives.js";
 import { safeParse } from "../lib/schemas.js";
 import { Result as SafeParseResult } from "../types/fp.js";
-import {
-  ChatContentVideoInput,
-  ChatContentVideoInput$inboundSchema,
-  ChatContentVideoInput$Outbound,
-  ChatContentVideoInput$outboundSchema,
-} from "./chatcontentvideoinput.js";
 import { SDKValidationError } from "./errors/sdkvalidationerror.js";
+import {
+  LegacyChatContentVideoInput,
+  LegacyChatContentVideoInput$inboundSchema,
+  LegacyChatContentVideoInput$Outbound,
+  LegacyChatContentVideoInput$outboundSchema,
+} from "./legacychatcontentvideoinput.js";
 
 /**
  * Video input content part (legacy format - deprecated)
@@ -25,7 +25,7 @@ export type LegacyChatContentVideo = {
   /**
    * Video input object
    */
-  videoUrl: ChatContentVideoInput;
+  videoUrl: LegacyChatContentVideoInput;
 };
 
 /** @internal */
@@ -34,7 +34,7 @@ export const LegacyChatContentVideo$inboundSchema: z.ZodType<
   unknown
 > = z.object({
   type: z.literal("input_video"),
-  video_url: ChatContentVideoInput$inboundSchema,
+  video_url: LegacyChatContentVideoInput$inboundSchema,
 }).transform((v) => {
   return remap$(v, {
     "video_url": "videoUrl",
@@ -43,7 +43,7 @@ export const LegacyChatContentVideo$inboundSchema: z.ZodType<
 /** @internal */
 export type LegacyChatContentVideo$Outbound = {
   type: "input_video";
-  video_url: ChatContentVideoInput$Outbound;
+  video_url: LegacyChatContentVideoInput$Outbound;
 };
 
 /** @internal */
@@ -52,7 +52,7 @@ export const LegacyChatContentVideo$outboundSchema: z.ZodType<
   LegacyChatContentVideo
 > = z.object({
   type: z.literal("input_video"),
-  videoUrl: ChatContentVideoInput$outboundSchema,
+  videoUrl: LegacyChatContentVideoInput$outboundSchema,
 }).transform((v) => {
   return remap$(v, {
     videoUrl: "video_url",

@@ -1,0 +1,27 @@
+---
+title: "EnumCapability"
+---
+
+A parameter that accepts one of a discrete set of string values.
+
+## Example Usage
+
+```typescript
+import { EnumCapability } from "@openrouter/sdk/models";
+
+let value: EnumCapability = {
+  type: "enum",
+  values: [
+    "1K",
+    "2K",
+    "4K",
+  ],
+};
+```
+
+## Fields
+
+| Field              | Type               | Required           | Description        |
+| ------------------ | ------------------ | ------------------ | ------------------ |
+| `type`             | *"enum"*           | :heavy_check_mark: | N/A                |
+| `values`           | *string*[]         | :heavy_check_mark: | N/A                |

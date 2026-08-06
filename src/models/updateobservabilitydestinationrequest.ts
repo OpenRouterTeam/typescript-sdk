@@ -6,10 +6,10 @@
 import * as z from "zod/v4";
 import { remap as remap$ } from "../lib/primitives.js";
 import {
-  ObservabilityFilterRulesConfig,
-  ObservabilityFilterRulesConfig$Outbound,
-  ObservabilityFilterRulesConfig$outboundSchema,
-} from "./observabilityfilterrulesconfig.js";
+  ObservabilityFilterRulesConfigNullable,
+  ObservabilityFilterRulesConfigNullable$Outbound,
+  ObservabilityFilterRulesConfigNullable$outboundSchema,
+} from "./observabilityfilterrulesconfignullable.js";
 
 export type UpdateObservabilityDestinationRequest = {
   /**
@@ -19,12 +19,12 @@ export type UpdateObservabilityDestinationRequest = {
   /**
    * Provider-specific configuration fields to update. Masked values are ignored; unset fields keep their current value.
    */
-  config?: { [k: string]: any | null } | undefined;
+  config?: { [k: string]: any } | undefined;
   /**
    * Whether the destination is enabled.
    */
   enabled?: boolean | undefined;
-  filterRules?: ObservabilityFilterRulesConfig | null | undefined;
+  filterRules?: ObservabilityFilterRulesConfigNullable | null | undefined;
   /**
    * Human-readable name for the destination.
    */
@@ -42,9 +42,12 @@ export type UpdateObservabilityDestinationRequest = {
 /** @internal */
 export type UpdateObservabilityDestinationRequest$Outbound = {
   api_key_hashes?: Array<string> | null | undefined;
-  config?: { [k: string]: any | null } | undefined;
+  config?: { [k: string]: any } | undefined;
   enabled?: boolean | undefined;
-  filter_rules?: ObservabilityFilterRulesConfig$Outbound | null | undefined;
+  filter_rules?:
+    | ObservabilityFilterRulesConfigNullable$Outbound
+    | null
+    | undefined;
   name?: string | undefined;
   privacy_mode?: boolean | undefined;
   sampling_rate?: number | undefined;
@@ -56,9 +59,9 @@ export const UpdateObservabilityDestinationRequest$outboundSchema: z.ZodType<
   UpdateObservabilityDestinationRequest
 > = z.object({
   apiKeyHashes: z.nullable(z.array(z.string())).optional(),
-  config: z.record(z.string(), z.nullable(z.any())).optional(),
+  config: z.record(z.string(), z.any()).optional(),
   enabled: z.boolean().optional(),
-  filterRules: z.nullable(ObservabilityFilterRulesConfig$outboundSchema)
+  filterRules: z.nullable(ObservabilityFilterRulesConfigNullable$outboundSchema)
     .optional(),
   name: z.string().optional(),
   privacyMode: z.boolean().optional(),

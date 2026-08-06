@@ -1,0 +1,47 @@
+---
+title: "FileListResponse"
+---
+
+A page of files, in the negotiated shape.
+
+
+## Supported Types
+
+### `models.AnthropicFileList`
+
+```typescript
+const value: models.AnthropicFileList = {
+  shape: "anthropic",
+  data: [],
+  firstId: null,
+  hasMore: false,
+  lastId: null,
+};
+```
+
+### `models.OpenAIFileList`
+
+```typescript
+const value: models.OpenAIFileList = {
+  shape: "openai",
+  data: [],
+  firstId: null,
+  hasMore: false,
+  lastId: null,
+  object: "list",
+};
+```
+
+### `models.OpenRouterFileList`
+
+```typescript
+const value: models.OpenRouterFileList = {
+  shape: "openrouter",
+  cursor: null,
+  data: [],
+  firstId: null,
+  hasMore: false,
+  lastId: null,
+};
+```
+

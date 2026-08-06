@@ -12,13 +12,18 @@ import {
   ProviderOptions$Outbound,
   ProviderOptions$outboundSchema,
 } from "./provideroptions.js";
+import {
+  SpeechInputReference,
+  SpeechInputReference$Outbound,
+  SpeechInputReference$outboundSchema,
+} from "./speechinputreference.js";
 
 /**
  * Provider-specific passthrough configuration
  */
 export type SpeechRequestProvider = {
   /**
-   * Provider-specific options keyed by provider slug. The options for the matched provider are spread into the upstream request body.
+   * Provider-specific options keyed by provider slug. Only options for the matched provider are forwarded; the rest are ignored. Unrecognized keys are silently dropped.
    */
   options?: ProviderOptions | undefined;
 };
@@ -26,14 +31,16 @@ export type SpeechRequestProvider = {
 /**
  * Audio output format
  */
-export const ResponseFormatEnum = {
+export const SpeechRequestResponseFormat = {
   Mp3: "mp3",
   Pcm: "pcm",
 } as const;
 /**
  * Audio output format
  */
-export type ResponseFormatEnum = OpenEnum<typeof ResponseFormatEnum>;
+export type SpeechRequestResponseFormat = OpenEnum<
+  typeof SpeechRequestResponseFormat
+>;
 
 /**
  * Text-to-speech request input
@@ -43,6 +50,10 @@ export type SpeechRequest = {
    * Text to synthesize
    */
   input: string;
+  /**
+   * Reference content for stateless voice cloning: one `input_audio` part carrying the voice sample, optionally accompanied by one `text` part with its transcript. Only routed to endpoints that support voice cloning.
+   */
+  inputReferences?: Array<SpeechInputReference> | undefined;
   /**
    * TTS model identifier
    */
@@ -54,7 +65,7 @@ export type SpeechRequest = {
   /**
    * Audio output format
    */
-  responseFormat?: ResponseFormatEnum | undefined;
+  responseFormat?: SpeechRequestResponseFormat | undefined;
   /**
    * Playback speed multiplier. Only used by models that support it (e.g. OpenAI TTS). Ignored by other providers.
    */
@@ -62,7 +73,7 @@ export type SpeechRequest = {
   /**
    * Voice identifier (provider-specific).
    */
-  voice: string;
+  voice?: string | undefined;
 };
 
 /** @internal */
@@ -87,19 +98,20 @@ export function speechRequestProviderToJSON(
 }
 
 /** @internal */
-export const ResponseFormatEnum$outboundSchema: z.ZodType<
+export const SpeechRequestResponseFormat$outboundSchema: z.ZodType<
   string,
-  ResponseFormatEnum
-> = openEnums.outboundSchema(ResponseFormatEnum);
+  SpeechRequestResponseFormat
+> = openEnums.outboundSchema(SpeechRequestResponseFormat);
 
 /** @internal */
 export type SpeechRequest$Outbound = {
   input: string;
+  input_references?: Array<SpeechInputReference$Outbound> | undefined;
   model: string;
   provider?: SpeechRequestProvider$Outbound | undefined;
   response_format: string;
   speed?: number | undefined;
-  voice: string;
+  voice?: string | undefined;
 };
 
 /** @internal */
@@ -108,13 +120,15 @@ export const SpeechRequest$outboundSchema: z.ZodType<
   SpeechRequest
 > = z.object({
   input: z.string(),
+  inputReferences: z.array(SpeechInputReference$outboundSchema).optional(),
   model: z.string(),
   provider: z.lazy(() => SpeechRequestProvider$outboundSchema).optional(),
-  responseFormat: ResponseFormatEnum$outboundSchema.default("pcm"),
+  responseFormat: SpeechRequestResponseFormat$outboundSchema.default("pcm"),
   speed: z.number().optional(),
-  voice: z.string(),
+  voice: z.string().optional(),
 }).transform((v) => {
   return remap$(v, {
+    inputReferences: "input_references",
     responseFormat: "response_format",
   });
 });

@@ -5,6 +5,7 @@
 
 import { generationsGetGeneration } from "../funcs/generationsGetGeneration.js";
 import { generationsListGenerationContent } from "../funcs/generationsListGenerationContent.js";
+import { generationsSubmitFeedback } from "../funcs/generationsSubmitFeedback.js";
 import { ClientSDK, RequestOptions } from "../lib/sdks.js";
 import * as models from "../models/index.js";
 import * as operations from "../models/operations/index.js";
@@ -33,6 +34,23 @@ export class Generations extends ClientSDK {
     options?: RequestOptions,
   ): Promise<models.GenerationContentResponse> {
     return unwrapAsync(generationsListGenerationContent(
+      this,
+      request,
+      options,
+    ));
+  }
+
+  /**
+   * Submit feedback for a generation
+   *
+   * @remarks
+   * Submit structured feedback on a generation the authenticated user made. [Management key](/docs/guides/overview/auth/management-api-keys) required.
+   */
+  async submitFeedback(
+    request: operations.SubmitGenerationFeedbackRequest,
+    options?: RequestOptions,
+  ): Promise<models.SubmitGenerationFeedbackResponse> {
+    return unwrapAsync(generationsSubmitFeedback(
       this,
       request,
       options,

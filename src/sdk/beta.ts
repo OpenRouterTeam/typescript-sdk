@@ -4,11 +4,17 @@
  */
 
 import { ClientSDK } from "../lib/sdks.js";
-import { Responses } from "./responses.js";
+import { BetaAnalytics } from "./betaanalytics.js";
+import { BetaResponses } from "./betaresponses.js";
 
 export class Beta extends ClientSDK {
-  private _responses?: Responses;
-  get responses(): Responses {
-    return (this._responses ??= new Responses(this._options));
+  private _analytics?: BetaAnalytics;
+  get analytics(): BetaAnalytics {
+    return (this._analytics ??= new BetaAnalytics(this._options));
+  }
+
+  private _responses?: BetaResponses;
+  get responses(): BetaResponses {
+    return (this._responses ??= new BetaResponses(this._options));
   }
 }

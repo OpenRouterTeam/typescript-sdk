@@ -1,0 +1,29 @@
+---
+title: "CustomToolCallInputDeltaEvent"
+---
+
+Event emitted when a custom tool call's freeform input is being streamed. Mirrors `response.function_call_arguments.delta` but for `custom` tools whose input is opaque text rather than JSON arguments.
+
+## Example Usage
+
+```typescript
+import { CustomToolCallInputDeltaEvent } from "@openrouter/sdk/models";
+
+let value: CustomToolCallInputDeltaEvent = {
+  delta: "<value>",
+  itemId: "<id>",
+  outputIndex: 992628,
+  sequenceNumber: 0,
+  type: "response.custom_tool_call_input.delta",
+};
+```
+
+## Fields
+
+| Field                                     | Type                                      | Required                                  | Description                               |
+| ----------------------------------------- | ----------------------------------------- | ----------------------------------------- | ----------------------------------------- |
+| `delta`                                   | *string*                                  | :heavy_check_mark:                        | N/A                                       |
+| `itemId`                                  | *string*                                  | :heavy_check_mark:                        | N/A                                       |
+| `outputIndex`                             | *number*                                  | :heavy_check_mark:                        | N/A                                       |
+| `sequenceNumber`                          | *number*                                  | :heavy_check_mark:                        | N/A                                       |
+| `type`                                    | *"response.custom_tool_call_input.delta"* | :heavy_check_mark:                        | N/A                                       |

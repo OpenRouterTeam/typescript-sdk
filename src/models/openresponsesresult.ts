@@ -10,6 +10,7 @@ import * as discriminatedUnionTypes from "../types/discriminatedUnion.js";
 import { discriminatedUnion } from "../types/discriminatedUnion.js";
 import { ClosedEnum } from "../types/enums.js";
 import { Result as SafeParseResult } from "../types/fp.js";
+import { ApiErrorType, ApiErrorType$inboundSchema } from "./apierrortype.js";
 import {
   ApplyPatchServerTool,
   ApplyPatchServerTool$inboundSchema,
@@ -53,6 +54,7 @@ import {
   LegacyWebSearchServerTool$inboundSchema,
 } from "./legacywebsearchservertool.js";
 import { McpServerTool, McpServerTool$inboundSchema } from "./mcpservertool.js";
+import { NamespaceTool, NamespaceTool$inboundSchema } from "./namespacetool.js";
 import {
   OpenAIResponsesResponseStatus,
   OpenAIResponsesResponseStatus$inboundSchema,
@@ -75,9 +77,17 @@ import {
   PreviewWebSearchServerTool$inboundSchema,
 } from "./previewwebsearchservertool.js";
 import {
+  PromptCacheOptions,
+  PromptCacheOptions$inboundSchema,
+} from "./promptcacheoptions.js";
+import {
   ResponsesErrorField,
   ResponsesErrorField$inboundSchema,
 } from "./responseserrorfield.js";
+import {
+  ServerToolUseDetails,
+  ServerToolUseDetails$inboundSchema,
+} from "./servertoolusedetails.js";
 import {
   ShellServerTool,
   ShellServerTool$inboundSchema,
@@ -91,7 +101,6 @@ import {
   TextExtendedConfig$inboundSchema,
 } from "./textextendedconfig.js";
 import { Truncation, Truncation$inboundSchema } from "./truncation.js";
-import { Usage, Usage$inboundSchema } from "./usage.js";
 import {
   WebSearchServerTool,
   WebSearchServerTool$inboundSchema,
@@ -110,27 +119,66 @@ export type OpenResponsesResultObject = ClosedEnum<
 export type OpenResponsesResultToolFunction = {
   description?: string | null | undefined;
   name: string;
-  parameters: { [k: string]: any | null } | null;
+  parameters: { [k: string]: any } | null;
   strict?: boolean | null | undefined;
   type: "function";
 };
 
 export type OpenResponsesResultToolUnion =
   | OpenResponsesResultToolFunction
-  | PreviewWebSearchServerTool
-  | Preview20250311WebSearchServerTool
-  | LegacyWebSearchServerTool
-  | WebSearchServerTool
-  | FileSearchServerTool
-  | ComputerUseServerTool
-  | CodeInterpreterServerTool
-  | McpServerTool
-  | ImageGenerationServerTool
-  | CodexLocalShellTool
-  | ShellServerTool
-  | ApplyPatchServerTool
-  | CustomTool
+  | (PreviewWebSearchServerTool & { type: "web_search_preview" })
+  | (Preview20250311WebSearchServerTool & {
+    type: "web_search_preview_2025_03_11";
+  })
+  | (LegacyWebSearchServerTool & { type: "web_search" })
+  | (WebSearchServerTool & { type: "web_search_2025_08_26" })
+  | (FileSearchServerTool & { type: "file_search" })
+  | (ComputerUseServerTool & { type: "computer_use_preview" })
+  | (CodeInterpreterServerTool & { type: "code_interpreter" })
+  | (McpServerTool & { type: "mcp" })
+  | (ImageGenerationServerTool & { type: "image_generation" })
+  | (CodexLocalShellTool & { type: "local_shell" })
+  | (ShellServerTool & { type: "shell" })
+  | (ApplyPatchServerTool & { type: "apply_patch" })
+  | (CustomTool & { type: "custom" })
+  | (NamespaceTool & { type: "namespace" })
   | discriminatedUnionTypes.Unknown<"type">;
+
+export type InputTokensDetails = {
+  cacheWriteTokens?: number | null | undefined;
+  cachedTokens: number;
+};
+
+export type OutputTokensDetails = {
+  reasoningTokens: number;
+};
+
+export type UsageCostDetails = {
+  upstreamInferenceCost?: number | null | undefined;
+  upstreamInferenceInputCost: number;
+  upstreamInferenceOutputCost: number;
+};
+
+export type Usage = {
+  inputTokens: number;
+  inputTokensDetails: InputTokensDetails;
+  outputTokens: number;
+  outputTokensDetails: OutputTokensDetails;
+  totalTokens: number;
+  /**
+   * Cost of the completion
+   */
+  cost?: number | null | undefined;
+  costDetails?: UsageCostDetails | undefined;
+  /**
+   * Whether a request was made using a Bring Your Own Key configuration
+   */
+  isByok?: boolean | undefined;
+  /**
+   * Usage for server-side tool execution (e.g., web search)
+   */
+  serverToolUseDetails?: ServerToolUseDetails | null | undefined;
+};
 
 /**
  * Complete non-streaming response from the Responses API
@@ -162,6 +210,10 @@ export type OpenResponsesResult = {
   previousResponseId?: string | null | undefined;
   prompt?: StoredPromptTemplate | null | undefined;
   promptCacheKey?: string | null | undefined;
+  /**
+   * Request-level prompt-cache controls. `mode: "explicit"` disables OpenAI-managed breakpoints so only blocks marked with `prompt_cache_breakpoint` are cached. Only supported by OpenAI GPT-5.6 and newer.
+   */
+  promptCacheOptions?: PromptCacheOptions | null | undefined;
   reasoning?: BaseReasoningConfig | null | undefined;
   safetyIdentifier?: string | null | undefined;
   serviceTier?: string | null | undefined;
@@ -175,19 +227,22 @@ export type OpenResponsesResult = {
   toolChoice: OpenAIResponsesToolChoiceUnion;
   tools: Array<
     | OpenResponsesResultToolFunction
-    | PreviewWebSearchServerTool
-    | Preview20250311WebSearchServerTool
-    | LegacyWebSearchServerTool
-    | WebSearchServerTool
-    | FileSearchServerTool
-    | ComputerUseServerTool
-    | CodeInterpreterServerTool
-    | McpServerTool
-    | ImageGenerationServerTool
-    | CodexLocalShellTool
-    | ShellServerTool
-    | ApplyPatchServerTool
-    | CustomTool
+    | (PreviewWebSearchServerTool & { type: "web_search_preview" })
+    | (Preview20250311WebSearchServerTool & {
+      type: "web_search_preview_2025_03_11";
+    })
+    | (LegacyWebSearchServerTool & { type: "web_search" })
+    | (WebSearchServerTool & { type: "web_search_2025_08_26" })
+    | (FileSearchServerTool & { type: "file_search" })
+    | (ComputerUseServerTool & { type: "computer_use_preview" })
+    | (CodeInterpreterServerTool & { type: "code_interpreter" })
+    | (McpServerTool & { type: "mcp" })
+    | (ImageGenerationServerTool & { type: "image_generation" })
+    | (CodexLocalShellTool & { type: "local_shell" })
+    | (ShellServerTool & { type: "shell" })
+    | (ApplyPatchServerTool & { type: "apply_patch" })
+    | (CustomTool & { type: "custom" })
+    | (NamespaceTool & { type: "namespace" })
     | discriminatedUnionTypes.Unknown<"type">
   >;
   topLogprobs?: number | null | undefined;
@@ -198,6 +253,10 @@ export type OpenResponsesResult = {
    */
   usage?: Usage | null | undefined;
   user?: string | null | undefined;
+  /**
+   * Canonical OpenRouter error type, stable across all API formats
+   */
+  errorType?: ApiErrorType | undefined;
   openrouterMetadata?: OpenRouterMetadata | undefined;
 };
 
@@ -213,7 +272,7 @@ export const OpenResponsesResultToolFunction$inboundSchema: z.ZodType<
 > = z.object({
   description: z.nullable(z.string()).optional(),
   name: z.string(),
-  parameters: z.nullable(z.record(z.string(), z.nullable(z.any()))),
+  parameters: z.nullable(z.record(z.string(), z.any())),
   strict: z.nullable(z.boolean()).optional(),
   type: z.literal("function"),
 });
@@ -234,20 +293,45 @@ export const OpenResponsesResultToolUnion$inboundSchema: z.ZodType<
   unknown
 > = discriminatedUnion("type", {
   function: z.lazy(() => OpenResponsesResultToolFunction$inboundSchema),
-  web_search_preview: PreviewWebSearchServerTool$inboundSchema,
+  web_search_preview: PreviewWebSearchServerTool$inboundSchema.and(
+    z.object({ type: z.literal("web_search_preview") }),
+  ),
   web_search_preview_2025_03_11:
-    Preview20250311WebSearchServerTool$inboundSchema,
-  web_search: LegacyWebSearchServerTool$inboundSchema,
-  web_search_2025_08_26: WebSearchServerTool$inboundSchema,
-  file_search: FileSearchServerTool$inboundSchema,
-  computer_use_preview: ComputerUseServerTool$inboundSchema,
-  code_interpreter: CodeInterpreterServerTool$inboundSchema,
-  mcp: McpServerTool$inboundSchema,
-  image_generation: ImageGenerationServerTool$inboundSchema,
-  local_shell: CodexLocalShellTool$inboundSchema,
-  shell: ShellServerTool$inboundSchema,
-  apply_patch: ApplyPatchServerTool$inboundSchema,
-  custom: CustomTool$inboundSchema,
+    Preview20250311WebSearchServerTool$inboundSchema.and(
+      z.object({ type: z.literal("web_search_preview_2025_03_11") }),
+    ),
+  web_search: LegacyWebSearchServerTool$inboundSchema.and(
+    z.object({ type: z.literal("web_search") }),
+  ),
+  web_search_2025_08_26: WebSearchServerTool$inboundSchema.and(
+    z.object({ type: z.literal("web_search_2025_08_26") }),
+  ),
+  file_search: FileSearchServerTool$inboundSchema.and(
+    z.object({ type: z.literal("file_search") }),
+  ),
+  computer_use_preview: ComputerUseServerTool$inboundSchema.and(
+    z.object({ type: z.literal("computer_use_preview") }),
+  ),
+  code_interpreter: CodeInterpreterServerTool$inboundSchema.and(
+    z.object({ type: z.literal("code_interpreter") }),
+  ),
+  mcp: McpServerTool$inboundSchema.and(z.object({ type: z.literal("mcp") })),
+  image_generation: ImageGenerationServerTool$inboundSchema.and(
+    z.object({ type: z.literal("image_generation") }),
+  ),
+  local_shell: CodexLocalShellTool$inboundSchema.and(
+    z.object({ type: z.literal("local_shell") }),
+  ),
+  shell: ShellServerTool$inboundSchema.and(
+    z.object({ type: z.literal("shell") }),
+  ),
+  apply_patch: ApplyPatchServerTool$inboundSchema.and(
+    z.object({ type: z.literal("apply_patch") }),
+  ),
+  custom: CustomTool$inboundSchema.and(z.object({ type: z.literal("custom") })),
+  namespace: NamespaceTool$inboundSchema.and(
+    z.object({ type: z.literal("namespace") }),
+  ),
 });
 
 export function openResponsesResultToolUnionFromJSON(
@@ -257,6 +341,113 @@ export function openResponsesResultToolUnionFromJSON(
     jsonString,
     (x) => OpenResponsesResultToolUnion$inboundSchema.parse(JSON.parse(x)),
     `Failed to parse 'OpenResponsesResultToolUnion' from JSON`,
+  );
+}
+
+/** @internal */
+export const InputTokensDetails$inboundSchema: z.ZodType<
+  InputTokensDetails,
+  unknown
+> = z.object({
+  cache_write_tokens: z.nullable(z.int()).optional(),
+  cached_tokens: z.int(),
+}).transform((v) => {
+  return remap$(v, {
+    "cache_write_tokens": "cacheWriteTokens",
+    "cached_tokens": "cachedTokens",
+  });
+});
+
+export function inputTokensDetailsFromJSON(
+  jsonString: string,
+): SafeParseResult<InputTokensDetails, SDKValidationError> {
+  return safeParse(
+    jsonString,
+    (x) => InputTokensDetails$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'InputTokensDetails' from JSON`,
+  );
+}
+
+/** @internal */
+export const OutputTokensDetails$inboundSchema: z.ZodType<
+  OutputTokensDetails,
+  unknown
+> = z.object({
+  reasoning_tokens: z.int(),
+}).transform((v) => {
+  return remap$(v, {
+    "reasoning_tokens": "reasoningTokens",
+  });
+});
+
+export function outputTokensDetailsFromJSON(
+  jsonString: string,
+): SafeParseResult<OutputTokensDetails, SDKValidationError> {
+  return safeParse(
+    jsonString,
+    (x) => OutputTokensDetails$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'OutputTokensDetails' from JSON`,
+  );
+}
+
+/** @internal */
+export const UsageCostDetails$inboundSchema: z.ZodType<
+  UsageCostDetails,
+  unknown
+> = z.object({
+  upstream_inference_cost: z.nullable(z.number()).optional(),
+  upstream_inference_input_cost: z.number(),
+  upstream_inference_output_cost: z.number(),
+}).transform((v) => {
+  return remap$(v, {
+    "upstream_inference_cost": "upstreamInferenceCost",
+    "upstream_inference_input_cost": "upstreamInferenceInputCost",
+    "upstream_inference_output_cost": "upstreamInferenceOutputCost",
+  });
+});
+
+export function usageCostDetailsFromJSON(
+  jsonString: string,
+): SafeParseResult<UsageCostDetails, SDKValidationError> {
+  return safeParse(
+    jsonString,
+    (x) => UsageCostDetails$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'UsageCostDetails' from JSON`,
+  );
+}
+
+/** @internal */
+export const Usage$inboundSchema: z.ZodType<Usage, unknown> = z.object({
+  input_tokens: z.int(),
+  input_tokens_details: z.lazy(() => InputTokensDetails$inboundSchema),
+  output_tokens: z.int(),
+  output_tokens_details: z.lazy(() => OutputTokensDetails$inboundSchema),
+  total_tokens: z.int(),
+  cost: z.nullable(z.number()).optional(),
+  cost_details: z.lazy(() => UsageCostDetails$inboundSchema).optional(),
+  is_byok: z.boolean().optional(),
+  server_tool_use_details: z.nullable(ServerToolUseDetails$inboundSchema)
+    .optional(),
+}).transform((v) => {
+  return remap$(v, {
+    "input_tokens": "inputTokens",
+    "input_tokens_details": "inputTokensDetails",
+    "output_tokens": "outputTokens",
+    "output_tokens_details": "outputTokensDetails",
+    "total_tokens": "totalTokens",
+    "cost_details": "costDetails",
+    "is_byok": "isByok",
+    "server_tool_use_details": "serverToolUseDetails",
+  });
+});
+
+export function usageFromJSON(
+  jsonString: string,
+): SafeParseResult<Usage, SDKValidationError> {
+  return safeParse(
+    jsonString,
+    (x) => Usage$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'Usage' from JSON`,
   );
 }
 
@@ -285,6 +476,7 @@ export const OpenResponsesResult$inboundSchema: z.ZodType<
   previous_response_id: z.nullable(z.string()).optional(),
   prompt: z.nullable(StoredPromptTemplate$inboundSchema).optional(),
   prompt_cache_key: z.nullable(z.string()).optional(),
+  prompt_cache_options: z.nullable(PromptCacheOptions$inboundSchema).optional(),
   reasoning: z.nullable(BaseReasoningConfig$inboundSchema).optional(),
   safety_identifier: z.nullable(z.string()).optional(),
   service_tier: z.nullable(z.string()).optional(),
@@ -295,26 +487,54 @@ export const OpenResponsesResult$inboundSchema: z.ZodType<
   tool_choice: OpenAIResponsesToolChoiceUnion$inboundSchema,
   tools: z.array(discriminatedUnion("type", {
     function: z.lazy(() => OpenResponsesResultToolFunction$inboundSchema),
-    web_search_preview: PreviewWebSearchServerTool$inboundSchema,
+    web_search_preview: PreviewWebSearchServerTool$inboundSchema.and(
+      z.object({ type: z.literal("web_search_preview") }),
+    ),
     web_search_preview_2025_03_11:
-      Preview20250311WebSearchServerTool$inboundSchema,
-    web_search: LegacyWebSearchServerTool$inboundSchema,
-    web_search_2025_08_26: WebSearchServerTool$inboundSchema,
-    file_search: FileSearchServerTool$inboundSchema,
-    computer_use_preview: ComputerUseServerTool$inboundSchema,
-    code_interpreter: CodeInterpreterServerTool$inboundSchema,
-    mcp: McpServerTool$inboundSchema,
-    image_generation: ImageGenerationServerTool$inboundSchema,
-    local_shell: CodexLocalShellTool$inboundSchema,
-    shell: ShellServerTool$inboundSchema,
-    apply_patch: ApplyPatchServerTool$inboundSchema,
-    custom: CustomTool$inboundSchema,
+      Preview20250311WebSearchServerTool$inboundSchema.and(
+        z.object({ type: z.literal("web_search_preview_2025_03_11") }),
+      ),
+    web_search: LegacyWebSearchServerTool$inboundSchema.and(
+      z.object({ type: z.literal("web_search") }),
+    ),
+    web_search_2025_08_26: WebSearchServerTool$inboundSchema.and(
+      z.object({ type: z.literal("web_search_2025_08_26") }),
+    ),
+    file_search: FileSearchServerTool$inboundSchema.and(
+      z.object({ type: z.literal("file_search") }),
+    ),
+    computer_use_preview: ComputerUseServerTool$inboundSchema.and(
+      z.object({ type: z.literal("computer_use_preview") }),
+    ),
+    code_interpreter: CodeInterpreterServerTool$inboundSchema.and(
+      z.object({ type: z.literal("code_interpreter") }),
+    ),
+    mcp: McpServerTool$inboundSchema.and(z.object({ type: z.literal("mcp") })),
+    image_generation: ImageGenerationServerTool$inboundSchema.and(
+      z.object({ type: z.literal("image_generation") }),
+    ),
+    local_shell: CodexLocalShellTool$inboundSchema.and(
+      z.object({ type: z.literal("local_shell") }),
+    ),
+    shell: ShellServerTool$inboundSchema.and(
+      z.object({ type: z.literal("shell") }),
+    ),
+    apply_patch: ApplyPatchServerTool$inboundSchema.and(
+      z.object({ type: z.literal("apply_patch") }),
+    ),
+    custom: CustomTool$inboundSchema.and(
+      z.object({ type: z.literal("custom") }),
+    ),
+    namespace: NamespaceTool$inboundSchema.and(
+      z.object({ type: z.literal("namespace") }),
+    ),
   })),
   top_logprobs: z.nullable(z.int()).optional(),
   top_p: z.nullable(z.number()),
   truncation: z.nullable(Truncation$inboundSchema).optional(),
-  usage: z.nullable(Usage$inboundSchema).optional(),
+  usage: z.nullable(z.lazy(() => Usage$inboundSchema)).optional(),
   user: z.nullable(z.string()).optional(),
+  error_type: ApiErrorType$inboundSchema.optional(),
   openrouter_metadata: OpenRouterMetadata$inboundSchema.optional(),
 }).transform((v) => {
   return remap$(v, {
@@ -329,11 +549,13 @@ export const OpenResponsesResult$inboundSchema: z.ZodType<
     "presence_penalty": "presencePenalty",
     "previous_response_id": "previousResponseId",
     "prompt_cache_key": "promptCacheKey",
+    "prompt_cache_options": "promptCacheOptions",
     "safety_identifier": "safetyIdentifier",
     "service_tier": "serviceTier",
     "tool_choice": "toolChoice",
     "top_logprobs": "topLogprobs",
     "top_p": "topP",
+    "error_type": "errorType",
     "openrouter_metadata": "openrouterMetadata",
   });
 });

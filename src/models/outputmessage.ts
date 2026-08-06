@@ -43,8 +43,7 @@ export type OutputMessagePhaseCommentary = ClosedEnum<
  */
 export type OutputMessagePhaseUnion =
   | OutputMessagePhaseCommentary
-  | OutputMessagePhaseFinalAnswer
-  | any;
+  | OutputMessagePhaseFinalAnswer;
 
 export const OutputMessageRole = {
   Assistant: "assistant",
@@ -95,7 +94,6 @@ export type OutputMessage = {
   phase?:
     | OutputMessagePhaseCommentary
     | OutputMessagePhaseFinalAnswer
-    | any
     | null
     | undefined;
   role: OutputMessageRole;
@@ -143,7 +141,6 @@ export const OutputMessagePhaseUnion$inboundSchema: z.ZodType<
 > = z.union([
   OutputMessagePhaseCommentary$inboundSchema,
   OutputMessagePhaseFinalAnswer$inboundSchema,
-  z.any(),
 ]);
 
 export function outputMessagePhaseUnionFromJSON(
@@ -215,7 +212,6 @@ export const OutputMessage$inboundSchema: z.ZodType<OutputMessage, unknown> = z
       z.union([
         OutputMessagePhaseCommentary$inboundSchema,
         OutputMessagePhaseFinalAnswer$inboundSchema,
-        z.any(),
       ]),
     ).optional(),
     role: OutputMessageRole$inboundSchema,

@@ -37,9 +37,11 @@ jobs:
     steps:
       - name: Resolve @openrouter/sdk version
         id: ver
+        env:
+          INPUT_VERSION: ${{ github.event.inputs.version }}
         run: |
           set -euo pipefail
-          V="${{ github.event.inputs.version }}"
+          V="$INPUT_VERSION"
           if [ -z "$V" ]; then
             V="$(npm view @openrouter/sdk version)"
           fi
@@ -60,21 +62,32 @@ jobs:
           path: .last-dispatched-sdk
           key: dispatched-sdk-${{ steps.ver.outputs.version }}
 
+      - name: Generate GitHub App token
+        id: app-token
+        uses: actions/create-github-app-token@v3
+        with:
+          app-id: ${{ secrets.GH_DOCS_SYNC_APP_ID }}
+          private-key: ${{ secrets.GH_DOCS_SYNC_APP_PRIVATE_KEY }}
+          owner: OpenRouterTeam
+          repositories: typescript-agent
+
       - name: Dispatch to typescript-agent
         if: steps.dedupe.outputs.cache-hit != 'true'
         env:
-          # Cross-repo PAT. Needs contents:write on
-          # OpenRouterTeam/typescript-agent so the repository_dispatch is accepted.
-          GH_TOKEN: ${{ secrets.GH_TOKEN }}
+          GH_TOKEN: ${{ steps.app-token.outputs.token }}
+          DISPATCH_VERSION: ${{ steps.ver.outputs.version }}
+          SOURCE_RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
         run: |
           set -euo pipefail
           gh api repos/OpenRouterTeam/typescript-agent/dispatches \
             -f event_type=openrouter-sdk-published \
-            -F "client_payload[version]=${{ steps.ver.outputs.version }}" \
-            -F "client_payload[source_run_url]=${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
-          echo "Dispatched openrouter-sdk-published (version ${{ steps.ver.outputs.version }}) to typescript-agent"
-          echo "${{ steps.ver.outputs.version }}" > .last-dispatched-sdk
+            -F "client_payload[version]=${DISPATCH_VERSION}" \
+            -F "client_payload[source_run_url]=${SOURCE_RUN_URL}"
+          echo "Dispatched openrouter-sdk-published (version ${DISPATCH_VERSION}) to typescript-agent"
+          echo "${DISPATCH_VERSION}" > .last-dispatched-sdk
 
       - name: Skipped (already dispatched)
         if: steps.dedupe.outputs.cache-hit == 'true'
-        run: echo "Version ${{ steps.ver.outputs.version }} was already dispatched — skipping"
+        env:
+          DISPATCHED_VERSION: ${{ steps.ver.outputs.version }}
+        run: echo "Version ${DISPATCHED_VERSION} was already dispatched — skipping"

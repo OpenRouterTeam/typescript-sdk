@@ -1,0 +1,43 @@
+{
+  "$schema": "https://mintlify.com/docs.json",
+  "theme": "mint",
+  "name": "TypeScript SDK",
+  "colors": {
+    "primary": "#6467f2",
+    "light": "#6467f2",
+    "dark": "#6467f2"
+  },
+  "navigation": {
+    "pages": [
+      "overview",
+      "sdks/analytics/README",
+      "sdks/apikeys/README",
+      "sdks/benchmarks/README",
+      "sdks/betaanalytics/README",
+      "sdks/betaresponses/README",
+      "sdks/byok/README",
+      "sdks/chat/README",
+      "sdks/classifications/README",
+      "sdks/credits/README",
+      "sdks/datasets/README",
+      "sdks/embeddings/README",
+      "sdks/endpoints/README",
+      "sdks/files/README",
+      "sdks/generations/README",
+      "sdks/guardrails/README",
+      "sdks/images/README",
+      "sdks/models/README",
+      "sdks/oauth/README",
+      "sdks/observability/README",
+      "sdks/organization/README",
+      "sdks/presets/README",
+      "sdks/providers/README",
+      "sdks/rerank/README",
+      "sdks/responses/README",
+      "sdks/stt/README",
+      "sdks/tts/README",
+      "sdks/videogeneration/README",
+      "sdks/workspaces/README"
+    ]
+  }
+}

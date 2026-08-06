@@ -20,7 +20,7 @@ export type ChatJsonSchemaConfig = {
   /**
    * JSON Schema object
    */
-  schema?: { [k: string]: any | null } | undefined;
+  schema?: { [k: string]: any } | undefined;
   /**
    * Enable strict schema adherence
    */
@@ -31,7 +31,7 @@ export type ChatJsonSchemaConfig = {
 export type ChatJsonSchemaConfig$Outbound = {
   description?: string | undefined;
   name: string;
-  schema?: { [k: string]: any | null } | undefined;
+  schema?: { [k: string]: any } | undefined;
   strict?: boolean | null | undefined;
 };
 
@@ -42,7 +42,7 @@ export const ChatJsonSchemaConfig$outboundSchema: z.ZodType<
 > = z.object({
   description: z.string().optional(),
   name: z.string(),
-  schema: z.record(z.string(), z.nullable(z.any())).optional(),
+  schema: z.record(z.string(), z.any()).optional(),
   strict: z.nullable(z.boolean()).optional(),
 });
 

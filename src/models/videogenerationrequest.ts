@@ -21,7 +21,7 @@ import {
 /**
  * Aspect ratio of the generated video
  */
-export const AspectRatio = {
+export const VideoGenerationRequestAspectRatio = {
   OneHundredAndSixtyNine: "16:9",
   NineHundredAndSixteen: "9:16",
   Eleven: "1:1",
@@ -35,140 +35,162 @@ export const AspectRatio = {
 /**
  * Aspect ratio of the generated video
  */
-export type AspectRatio = OpenEnum<typeof AspectRatio>;
+export type VideoGenerationRequestAspectRatio = OpenEnum<
+  typeof VideoGenerationRequestAspectRatio
+>;
 
 /**
- * Provider-specific options keyed by provider slug. The options for the matched provider are spread into the upstream request body.
+ * Provider-specific options keyed by provider slug. Only options for the matched provider are forwarded; the rest are ignored. Unrecognized keys are silently dropped.
  */
-export type Options = {
-  oneai?: { [k: string]: any | null } | undefined;
-  ai21?: { [k: string]: any | null } | undefined;
-  aionLabs?: { [k: string]: any | null } | undefined;
-  akashml?: { [k: string]: any | null } | undefined;
-  alibaba?: { [k: string]: any | null } | undefined;
-  amazonBedrock?: { [k: string]: any | null } | undefined;
-  amazonNova?: { [k: string]: any | null } | undefined;
-  ambient?: { [k: string]: any | null } | undefined;
-  anthropic?: { [k: string]: any | null } | undefined;
-  anyscale?: { [k: string]: any | null } | undefined;
-  arceeAi?: { [k: string]: any | null } | undefined;
-  atlasCloud?: { [k: string]: any | null } | undefined;
-  atoma?: { [k: string]: any | null } | undefined;
-  avian?: { [k: string]: any | null } | undefined;
-  azure?: { [k: string]: any | null } | undefined;
-  baidu?: { [k: string]: any | null } | undefined;
-  baseten?: { [k: string]: any | null } | undefined;
-  blackForestLabs?: { [k: string]: any | null } | undefined;
-  byteplus?: { [k: string]: any | null } | undefined;
-  centml?: { [k: string]: any | null } | undefined;
-  cerebras?: { [k: string]: any | null } | undefined;
-  chutes?: { [k: string]: any | null } | undefined;
-  cirrascale?: { [k: string]: any | null } | undefined;
-  clarifai?: { [k: string]: any | null } | undefined;
-  cloudflare?: { [k: string]: any | null } | undefined;
-  cohere?: { [k: string]: any | null } | undefined;
-  crofai?: { [k: string]: any | null } | undefined;
-  crucible?: { [k: string]: any | null } | undefined;
-  crusoe?: { [k: string]: any | null } | undefined;
-  darkbloom?: { [k: string]: any | null } | undefined;
-  deepinfra?: { [k: string]: any | null } | undefined;
-  deepseek?: { [k: string]: any | null } | undefined;
-  dekallm?: { [k: string]: any | null } | undefined;
-  digitalocean?: { [k: string]: any | null } | undefined;
-  enfer?: { [k: string]: any | null } | undefined;
-  fakeProvider?: { [k: string]: any | null } | undefined;
-  featherless?: { [k: string]: any | null } | undefined;
-  fireworks?: { [k: string]: any | null } | undefined;
-  friendli?: { [k: string]: any | null } | undefined;
-  gmicloud?: { [k: string]: any | null } | undefined;
-  googleAiStudio?: { [k: string]: any | null } | undefined;
-  googleVertex?: { [k: string]: any | null } | undefined;
-  gopomelo?: { [k: string]: any | null } | undefined;
-  groq?: { [k: string]: any | null } | undefined;
-  huggingface?: { [k: string]: any | null } | undefined;
-  hyperbolic?: { [k: string]: any | null } | undefined;
-  hyperbolicQuantized?: { [k: string]: any | null } | undefined;
-  inception?: { [k: string]: any | null } | undefined;
-  inceptron?: { [k: string]: any | null } | undefined;
-  inferenceNet?: { [k: string]: any | null } | undefined;
-  infermatic?: { [k: string]: any | null } | undefined;
-  inflection?: { [k: string]: any | null } | undefined;
-  inocloud?: { [k: string]: any | null } | undefined;
-  ioNet?: { [k: string]: any | null } | undefined;
-  ionstream?: { [k: string]: any | null } | undefined;
-  klusterai?: { [k: string]: any | null } | undefined;
-  lambda?: { [k: string]: any | null } | undefined;
-  lepton?: { [k: string]: any | null } | undefined;
-  liquid?: { [k: string]: any | null } | undefined;
-  lynn?: { [k: string]: any | null } | undefined;
-  lynnPrivate?: { [k: string]: any | null } | undefined;
-  mancer?: { [k: string]: any | null } | undefined;
-  mancerOld?: { [k: string]: any | null } | undefined;
-  mara?: { [k: string]: any | null } | undefined;
-  meta?: { [k: string]: any | null } | undefined;
-  minimax?: { [k: string]: any | null } | undefined;
-  mistral?: { [k: string]: any | null } | undefined;
-  modal?: { [k: string]: any | null } | undefined;
-  modelrun?: { [k: string]: any | null } | undefined;
-  modular?: { [k: string]: any | null } | undefined;
-  moonshotai?: { [k: string]: any | null } | undefined;
-  morph?: { [k: string]: any | null } | undefined;
-  ncompass?: { [k: string]: any | null } | undefined;
-  nebius?: { [k: string]: any | null } | undefined;
-  nexAgi?: { [k: string]: any | null } | undefined;
-  nextbit?: { [k: string]: any | null } | undefined;
-  nineteen?: { [k: string]: any | null } | undefined;
-  novita?: { [k: string]: any | null } | undefined;
-  nvidia?: { [k: string]: any | null } | undefined;
-  octoai?: { [k: string]: any | null } | undefined;
-  openInference?: { [k: string]: any | null } | undefined;
-  openai?: { [k: string]: any | null } | undefined;
-  parasail?: { [k: string]: any | null } | undefined;
-  perceptron?: { [k: string]: any | null } | undefined;
-  perplexity?: { [k: string]: any | null } | undefined;
-  phala?: { [k: string]: any | null } | undefined;
-  poolside?: { [k: string]: any | null } | undefined;
-  recraft?: { [k: string]: any | null } | undefined;
-  recursal?: { [k: string]: any | null } | undefined;
-  reflection?: { [k: string]: any | null } | undefined;
-  reka?: { [k: string]: any | null } | undefined;
-  relace?: { [k: string]: any | null } | undefined;
-  replicate?: { [k: string]: any | null } | undefined;
-  sambanova?: { [k: string]: any | null } | undefined;
-  sambanovaCloaked?: { [k: string]: any | null } | undefined;
-  seed?: { [k: string]: any | null } | undefined;
-  sfCompute?: { [k: string]: any | null } | undefined;
-  siliconflow?: { [k: string]: any | null } | undefined;
-  sourceful?: { [k: string]: any | null } | undefined;
-  stealth?: { [k: string]: any | null } | undefined;
-  stepfun?: { [k: string]: any | null } | undefined;
-  streamlake?: { [k: string]: any | null } | undefined;
-  switchpoint?: { [k: string]: any | null } | undefined;
-  targon?: { [k: string]: any | null } | undefined;
-  together?: { [k: string]: any | null } | undefined;
-  togetherLite?: { [k: string]: any | null } | undefined;
-  ubicloud?: { [k: string]: any | null } | undefined;
-  upstage?: { [k: string]: any | null } | undefined;
-  venice?: { [k: string]: any | null } | undefined;
-  wandb?: { [k: string]: any | null } | undefined;
-  xai?: { [k: string]: any | null } | undefined;
-  xiaomi?: { [k: string]: any | null } | undefined;
-  zAi?: { [k: string]: any | null } | undefined;
+export type VideoGenerationRequestOptions = {
+  oneai?: { [k: string]: any } | undefined;
+  ai21?: { [k: string]: any } | undefined;
+  aionLabs?: { [k: string]: any } | undefined;
+  akashml?: { [k: string]: any } | undefined;
+  alibaba?: { [k: string]: any } | undefined;
+  amazonBedrock?: { [k: string]: any } | undefined;
+  amazonNova?: { [k: string]: any } | undefined;
+  ambient?: { [k: string]: any } | undefined;
+  anthropic?: { [k: string]: any } | undefined;
+  anyscale?: { [k: string]: any } | undefined;
+  arceeAi?: { [k: string]: any } | undefined;
+  atlasCloud?: { [k: string]: any } | undefined;
+  atoma?: { [k: string]: any } | undefined;
+  avian?: { [k: string]: any } | undefined;
+  azure?: { [k: string]: any } | undefined;
+  baidu?: { [k: string]: any } | undefined;
+  baseten?: { [k: string]: any } | undefined;
+  blackForestLabs?: { [k: string]: any } | undefined;
+  byteplus?: { [k: string]: any } | undefined;
+  centml?: { [k: string]: any } | undefined;
+  cerebras?: { [k: string]: any } | undefined;
+  chutes?: { [k: string]: any } | undefined;
+  cirrascale?: { [k: string]: any } | undefined;
+  clarifai?: { [k: string]: any } | undefined;
+  claudeOnAws?: { [k: string]: any } | undefined;
+  cloudflare?: { [k: string]: any } | undefined;
+  cohere?: { [k: string]: any } | undefined;
+  coreweave?: { [k: string]: any } | undefined;
+  crofai?: { [k: string]: any } | undefined;
+  crucible?: { [k: string]: any } | undefined;
+  crusoe?: { [k: string]: any } | undefined;
+  darkbloom?: { [k: string]: any } | undefined;
+  decart?: { [k: string]: any } | undefined;
+  deepgram?: { [k: string]: any } | undefined;
+  deepinfra?: { [k: string]: any } | undefined;
+  deepseek?: { [k: string]: any } | undefined;
+  dekallm?: { [k: string]: any } | undefined;
+  digitalocean?: { [k: string]: any } | undefined;
+  enfer?: { [k: string]: any } | undefined;
+  fakeProvider?: { [k: string]: any } | undefined;
+  featherless?: { [k: string]: any } | undefined;
+  fireworks?: { [k: string]: any } | undefined;
+  fishAudio?: { [k: string]: any } | undefined;
+  friendli?: { [k: string]: any } | undefined;
+  gmicloud?: { [k: string]: any } | undefined;
+  googleAiStudio?: { [k: string]: any } | undefined;
+  googleVertex?: { [k: string]: any } | undefined;
+  gopomelo?: { [k: string]: any } | undefined;
+  groq?: { [k: string]: any } | undefined;
+  heygen?: { [k: string]: any } | undefined;
+  huggingface?: { [k: string]: any } | undefined;
+  hyperbolic?: { [k: string]: any } | undefined;
+  hyperbolicQuantized?: { [k: string]: any } | undefined;
+  inception?: { [k: string]: any } | undefined;
+  inceptron?: { [k: string]: any } | undefined;
+  inferactVllm?: { [k: string]: any } | undefined;
+  inferenceNet?: { [k: string]: any } | undefined;
+  infermatic?: { [k: string]: any } | undefined;
+  inflection?: { [k: string]: any } | undefined;
+  inocloud?: { [k: string]: any } | undefined;
+  ioNet?: { [k: string]: any } | undefined;
+  ionstream?: { [k: string]: any } | undefined;
+  klusterai?: { [k: string]: any } | undefined;
+  krea?: { [k: string]: any } | undefined;
+  lambda?: { [k: string]: any } | undefined;
+  lepton?: { [k: string]: any } | undefined;
+  liquid?: { [k: string]: any } | undefined;
+  lynn?: { [k: string]: any } | undefined;
+  lynnPrivate?: { [k: string]: any } | undefined;
+  mancer?: { [k: string]: any } | undefined;
+  mancerOld?: { [k: string]: any } | undefined;
+  mara?: { [k: string]: any } | undefined;
+  meta?: { [k: string]: any } | undefined;
+  minimax?: { [k: string]: any } | undefined;
+  mistral?: { [k: string]: any } | undefined;
+  modal?: { [k: string]: any } | undefined;
+  modelrun?: { [k: string]: any } | undefined;
+  modular?: { [k: string]: any } | undefined;
+  moonshotai?: { [k: string]: any } | undefined;
+  morph?: { [k: string]: any } | undefined;
+  ncompass?: { [k: string]: any } | undefined;
+  nebius?: { [k: string]: any } | undefined;
+  nexAgi?: { [k: string]: any } | undefined;
+  nextbit?: { [k: string]: any } | undefined;
+  nineteen?: { [k: string]: any } | undefined;
+  novita?: { [k: string]: any } | undefined;
+  nvidia?: { [k: string]: any } | undefined;
+  octoai?: { [k: string]: any } | undefined;
+  openInference?: { [k: string]: any } | undefined;
+  openai?: { [k: string]: any } | undefined;
+  parasail?: { [k: string]: any } | undefined;
+  perceptron?: { [k: string]: any } | undefined;
+  perplexity?: { [k: string]: any } | undefined;
+  phala?: { [k: string]: any } | undefined;
+  poolside?: { [k: string]: any } | undefined;
+  quiver?: { [k: string]: any } | undefined;
+  recraft?: { [k: string]: any } | undefined;
+  recursal?: { [k: string]: any } | undefined;
+  reflection?: { [k: string]: any } | undefined;
+  reka?: { [k: string]: any } | undefined;
+  relace?: { [k: string]: any } | undefined;
+  replicate?: { [k: string]: any } | undefined;
+  runway?: { [k: string]: any } | undefined;
+  sailResearch?: { [k: string]: any } | undefined;
+  sakana?: { [k: string]: any } | undefined;
+  sakanaAi?: { [k: string]: any } | undefined;
+  sambanova?: { [k: string]: any } | undefined;
+  sambanovaCloaked?: { [k: string]: any } | undefined;
+  seed?: { [k: string]: any } | undefined;
+  sfCompute?: { [k: string]: any } | undefined;
+  siliconflow?: { [k: string]: any } | undefined;
+  sourceful?: { [k: string]: any } | undefined;
+  stealth?: { [k: string]: any } | undefined;
+  stepfun?: { [k: string]: any } | undefined;
+  streamlake?: { [k: string]: any } | undefined;
+  switchpoint?: { [k: string]: any } | undefined;
+  targon?: { [k: string]: any } | undefined;
+  tencent?: { [k: string]: any } | undefined;
+  tenstorrent?: { [k: string]: any } | undefined;
+  thinkingmachines?: { [k: string]: any } | undefined;
+  together?: { [k: string]: any } | undefined;
+  togetherLite?: { [k: string]: any } | undefined;
+  ubicloud?: { [k: string]: any } | undefined;
+  upstage?: { [k: string]: any } | undefined;
+  venice?: { [k: string]: any } | undefined;
+  voyageai?: { [k: string]: any } | undefined;
+  wafer?: { [k: string]: any } | undefined;
+  wandb?: { [k: string]: any } | undefined;
+  wandbLegacy?: { [k: string]: any } | undefined;
+  xai?: { [k: string]: any } | undefined;
+  xiaomi?: { [k: string]: any } | undefined;
+  zAi?: { [k: string]: any } | undefined;
 };
 
 /**
  * Provider-specific passthrough configuration
  */
 export type VideoGenerationRequestProvider = {
-  options?: Options | undefined;
+  options?: VideoGenerationRequestOptions | undefined;
 };
 
 /**
  * Resolution of the generated video
  */
-export const Resolution = {
+export const VideoGenerationRequestResolution = {
   FourHundredAndEightyp: "480p",
   SevenHundredAndTwentyp: "720p",
+  SevenHundredAndSixtyEightp: "768p",
   OneThousandAndEightyp: "1080p",
   OneK: "1K",
   TwoK: "2K",
@@ -177,13 +199,15 @@ export const Resolution = {
 /**
  * Resolution of the generated video
  */
-export type Resolution = OpenEnum<typeof Resolution>;
+export type VideoGenerationRequestResolution = OpenEnum<
+  typeof VideoGenerationRequestResolution
+>;
 
 export type VideoGenerationRequest = {
   /**
    * Aspect ratio of the generated video
    */
-  aspectRatio?: AspectRatio | undefined;
+  aspectRatio?: VideoGenerationRequestAspectRatio | undefined;
   /**
    * URL to receive a webhook notification when the video generation job completes. Overrides the workspace-level default callback URL if set. Must be HTTPS.
    */
@@ -205,7 +229,10 @@ export type VideoGenerationRequest = {
    */
   inputReferences?: Array<InputReference> | undefined;
   model: string;
-  prompt: string;
+  /**
+   * Text prompt describing the video to generate. Optional for models that support generating a video from image input alone; required by all other models.
+   */
+  prompt?: string | undefined;
   /**
    * Provider-specific passthrough configuration
    */
@@ -213,7 +240,7 @@ export type VideoGenerationRequest = {
   /**
    * Resolution of the generated video
    */
-  resolution?: Resolution | undefined;
+  resolution?: VideoGenerationRequestResolution | undefined;
   /**
    * If specified, the generation will sample deterministically, such that repeated requests with the same seed and parameters should return the same result. Determinism is not guaranteed for all providers.
    */
@@ -225,275 +252,329 @@ export type VideoGenerationRequest = {
 };
 
 /** @internal */
-export const AspectRatio$outboundSchema: z.ZodType<string, AspectRatio> =
-  openEnums.outboundSchema(AspectRatio);
+export const VideoGenerationRequestAspectRatio$outboundSchema: z.ZodType<
+  string,
+  VideoGenerationRequestAspectRatio
+> = openEnums.outboundSchema(VideoGenerationRequestAspectRatio);
 
 /** @internal */
-export type Options$Outbound = {
-  "01ai"?: { [k: string]: any | null } | undefined;
-  ai21?: { [k: string]: any | null } | undefined;
-  "aion-labs"?: { [k: string]: any | null } | undefined;
-  akashml?: { [k: string]: any | null } | undefined;
-  alibaba?: { [k: string]: any | null } | undefined;
-  "amazon-bedrock"?: { [k: string]: any | null } | undefined;
-  "amazon-nova"?: { [k: string]: any | null } | undefined;
-  ambient?: { [k: string]: any | null } | undefined;
-  anthropic?: { [k: string]: any | null } | undefined;
-  anyscale?: { [k: string]: any | null } | undefined;
-  "arcee-ai"?: { [k: string]: any | null } | undefined;
-  "atlas-cloud"?: { [k: string]: any | null } | undefined;
-  atoma?: { [k: string]: any | null } | undefined;
-  avian?: { [k: string]: any | null } | undefined;
-  azure?: { [k: string]: any | null } | undefined;
-  baidu?: { [k: string]: any | null } | undefined;
-  baseten?: { [k: string]: any | null } | undefined;
-  "black-forest-labs"?: { [k: string]: any | null } | undefined;
-  byteplus?: { [k: string]: any | null } | undefined;
-  centml?: { [k: string]: any | null } | undefined;
-  cerebras?: { [k: string]: any | null } | undefined;
-  chutes?: { [k: string]: any | null } | undefined;
-  cirrascale?: { [k: string]: any | null } | undefined;
-  clarifai?: { [k: string]: any | null } | undefined;
-  cloudflare?: { [k: string]: any | null } | undefined;
-  cohere?: { [k: string]: any | null } | undefined;
-  crofai?: { [k: string]: any | null } | undefined;
-  crucible?: { [k: string]: any | null } | undefined;
-  crusoe?: { [k: string]: any | null } | undefined;
-  darkbloom?: { [k: string]: any | null } | undefined;
-  deepinfra?: { [k: string]: any | null } | undefined;
-  deepseek?: { [k: string]: any | null } | undefined;
-  dekallm?: { [k: string]: any | null } | undefined;
-  digitalocean?: { [k: string]: any | null } | undefined;
-  enfer?: { [k: string]: any | null } | undefined;
-  "fake-provider"?: { [k: string]: any | null } | undefined;
-  featherless?: { [k: string]: any | null } | undefined;
-  fireworks?: { [k: string]: any | null } | undefined;
-  friendli?: { [k: string]: any | null } | undefined;
-  gmicloud?: { [k: string]: any | null } | undefined;
-  "google-ai-studio"?: { [k: string]: any | null } | undefined;
-  "google-vertex"?: { [k: string]: any | null } | undefined;
-  gopomelo?: { [k: string]: any | null } | undefined;
-  groq?: { [k: string]: any | null } | undefined;
-  huggingface?: { [k: string]: any | null } | undefined;
-  hyperbolic?: { [k: string]: any | null } | undefined;
-  "hyperbolic-quantized"?: { [k: string]: any | null } | undefined;
-  inception?: { [k: string]: any | null } | undefined;
-  inceptron?: { [k: string]: any | null } | undefined;
-  "inference-net"?: { [k: string]: any | null } | undefined;
-  infermatic?: { [k: string]: any | null } | undefined;
-  inflection?: { [k: string]: any | null } | undefined;
-  inocloud?: { [k: string]: any | null } | undefined;
-  "io-net"?: { [k: string]: any | null } | undefined;
-  ionstream?: { [k: string]: any | null } | undefined;
-  klusterai?: { [k: string]: any | null } | undefined;
-  lambda?: { [k: string]: any | null } | undefined;
-  lepton?: { [k: string]: any | null } | undefined;
-  liquid?: { [k: string]: any | null } | undefined;
-  lynn?: { [k: string]: any | null } | undefined;
-  "lynn-private"?: { [k: string]: any | null } | undefined;
-  mancer?: { [k: string]: any | null } | undefined;
-  "mancer-old"?: { [k: string]: any | null } | undefined;
-  mara?: { [k: string]: any | null } | undefined;
-  meta?: { [k: string]: any | null } | undefined;
-  minimax?: { [k: string]: any | null } | undefined;
-  mistral?: { [k: string]: any | null } | undefined;
-  modal?: { [k: string]: any | null } | undefined;
-  modelrun?: { [k: string]: any | null } | undefined;
-  modular?: { [k: string]: any | null } | undefined;
-  moonshotai?: { [k: string]: any | null } | undefined;
-  morph?: { [k: string]: any | null } | undefined;
-  ncompass?: { [k: string]: any | null } | undefined;
-  nebius?: { [k: string]: any | null } | undefined;
-  "nex-agi"?: { [k: string]: any | null } | undefined;
-  nextbit?: { [k: string]: any | null } | undefined;
-  nineteen?: { [k: string]: any | null } | undefined;
-  novita?: { [k: string]: any | null } | undefined;
-  nvidia?: { [k: string]: any | null } | undefined;
-  octoai?: { [k: string]: any | null } | undefined;
-  "open-inference"?: { [k: string]: any | null } | undefined;
-  openai?: { [k: string]: any | null } | undefined;
-  parasail?: { [k: string]: any | null } | undefined;
-  perceptron?: { [k: string]: any | null } | undefined;
-  perplexity?: { [k: string]: any | null } | undefined;
-  phala?: { [k: string]: any | null } | undefined;
-  poolside?: { [k: string]: any | null } | undefined;
-  recraft?: { [k: string]: any | null } | undefined;
-  recursal?: { [k: string]: any | null } | undefined;
-  reflection?: { [k: string]: any | null } | undefined;
-  reka?: { [k: string]: any | null } | undefined;
-  relace?: { [k: string]: any | null } | undefined;
-  replicate?: { [k: string]: any | null } | undefined;
-  sambanova?: { [k: string]: any | null } | undefined;
-  "sambanova-cloaked"?: { [k: string]: any | null } | undefined;
-  seed?: { [k: string]: any | null } | undefined;
-  "sf-compute"?: { [k: string]: any | null } | undefined;
-  siliconflow?: { [k: string]: any | null } | undefined;
-  sourceful?: { [k: string]: any | null } | undefined;
-  stealth?: { [k: string]: any | null } | undefined;
-  stepfun?: { [k: string]: any | null } | undefined;
-  streamlake?: { [k: string]: any | null } | undefined;
-  switchpoint?: { [k: string]: any | null } | undefined;
-  targon?: { [k: string]: any | null } | undefined;
-  together?: { [k: string]: any | null } | undefined;
-  "together-lite"?: { [k: string]: any | null } | undefined;
-  ubicloud?: { [k: string]: any | null } | undefined;
-  upstage?: { [k: string]: any | null } | undefined;
-  venice?: { [k: string]: any | null } | undefined;
-  wandb?: { [k: string]: any | null } | undefined;
-  xai?: { [k: string]: any | null } | undefined;
-  xiaomi?: { [k: string]: any | null } | undefined;
-  "z-ai"?: { [k: string]: any | null } | undefined;
+export type VideoGenerationRequestOptions$Outbound = {
+  "01ai"?: { [k: string]: any } | undefined;
+  ai21?: { [k: string]: any } | undefined;
+  "aion-labs"?: { [k: string]: any } | undefined;
+  akashml?: { [k: string]: any } | undefined;
+  alibaba?: { [k: string]: any } | undefined;
+  "amazon-bedrock"?: { [k: string]: any } | undefined;
+  "amazon-nova"?: { [k: string]: any } | undefined;
+  ambient?: { [k: string]: any } | undefined;
+  anthropic?: { [k: string]: any } | undefined;
+  anyscale?: { [k: string]: any } | undefined;
+  "arcee-ai"?: { [k: string]: any } | undefined;
+  "atlas-cloud"?: { [k: string]: any } | undefined;
+  atoma?: { [k: string]: any } | undefined;
+  avian?: { [k: string]: any } | undefined;
+  azure?: { [k: string]: any } | undefined;
+  baidu?: { [k: string]: any } | undefined;
+  baseten?: { [k: string]: any } | undefined;
+  "black-forest-labs"?: { [k: string]: any } | undefined;
+  byteplus?: { [k: string]: any } | undefined;
+  centml?: { [k: string]: any } | undefined;
+  cerebras?: { [k: string]: any } | undefined;
+  chutes?: { [k: string]: any } | undefined;
+  cirrascale?: { [k: string]: any } | undefined;
+  clarifai?: { [k: string]: any } | undefined;
+  "claude-on-aws"?: { [k: string]: any } | undefined;
+  cloudflare?: { [k: string]: any } | undefined;
+  cohere?: { [k: string]: any } | undefined;
+  coreweave?: { [k: string]: any } | undefined;
+  crofai?: { [k: string]: any } | undefined;
+  crucible?: { [k: string]: any } | undefined;
+  crusoe?: { [k: string]: any } | undefined;
+  darkbloom?: { [k: string]: any } | undefined;
+  decart?: { [k: string]: any } | undefined;
+  deepgram?: { [k: string]: any } | undefined;
+  deepinfra?: { [k: string]: any } | undefined;
+  deepseek?: { [k: string]: any } | undefined;
+  dekallm?: { [k: string]: any } | undefined;
+  digitalocean?: { [k: string]: any } | undefined;
+  enfer?: { [k: string]: any } | undefined;
+  "fake-provider"?: { [k: string]: any } | undefined;
+  featherless?: { [k: string]: any } | undefined;
+  fireworks?: { [k: string]: any } | undefined;
+  "fish-audio"?: { [k: string]: any } | undefined;
+  friendli?: { [k: string]: any } | undefined;
+  gmicloud?: { [k: string]: any } | undefined;
+  "google-ai-studio"?: { [k: string]: any } | undefined;
+  "google-vertex"?: { [k: string]: any } | undefined;
+  gopomelo?: { [k: string]: any } | undefined;
+  groq?: { [k: string]: any } | undefined;
+  heygen?: { [k: string]: any } | undefined;
+  huggingface?: { [k: string]: any } | undefined;
+  hyperbolic?: { [k: string]: any } | undefined;
+  "hyperbolic-quantized"?: { [k: string]: any } | undefined;
+  inception?: { [k: string]: any } | undefined;
+  inceptron?: { [k: string]: any } | undefined;
+  "inferact-vllm"?: { [k: string]: any } | undefined;
+  "inference-net"?: { [k: string]: any } | undefined;
+  infermatic?: { [k: string]: any } | undefined;
+  inflection?: { [k: string]: any } | undefined;
+  inocloud?: { [k: string]: any } | undefined;
+  "io-net"?: { [k: string]: any } | undefined;
+  ionstream?: { [k: string]: any } | undefined;
+  klusterai?: { [k: string]: any } | undefined;
+  krea?: { [k: string]: any } | undefined;
+  lambda?: { [k: string]: any } | undefined;
+  lepton?: { [k: string]: any } | undefined;
+  liquid?: { [k: string]: any } | undefined;
+  lynn?: { [k: string]: any } | undefined;
+  "lynn-private"?: { [k: string]: any } | undefined;
+  mancer?: { [k: string]: any } | undefined;
+  "mancer-old"?: { [k: string]: any } | undefined;
+  mara?: { [k: string]: any } | undefined;
+  meta?: { [k: string]: any } | undefined;
+  minimax?: { [k: string]: any } | undefined;
+  mistral?: { [k: string]: any } | undefined;
+  modal?: { [k: string]: any } | undefined;
+  modelrun?: { [k: string]: any } | undefined;
+  modular?: { [k: string]: any } | undefined;
+  moonshotai?: { [k: string]: any } | undefined;
+  morph?: { [k: string]: any } | undefined;
+  ncompass?: { [k: string]: any } | undefined;
+  nebius?: { [k: string]: any } | undefined;
+  "nex-agi"?: { [k: string]: any } | undefined;
+  nextbit?: { [k: string]: any } | undefined;
+  nineteen?: { [k: string]: any } | undefined;
+  novita?: { [k: string]: any } | undefined;
+  nvidia?: { [k: string]: any } | undefined;
+  octoai?: { [k: string]: any } | undefined;
+  "open-inference"?: { [k: string]: any } | undefined;
+  openai?: { [k: string]: any } | undefined;
+  parasail?: { [k: string]: any } | undefined;
+  perceptron?: { [k: string]: any } | undefined;
+  perplexity?: { [k: string]: any } | undefined;
+  phala?: { [k: string]: any } | undefined;
+  poolside?: { [k: string]: any } | undefined;
+  quiver?: { [k: string]: any } | undefined;
+  recraft?: { [k: string]: any } | undefined;
+  recursal?: { [k: string]: any } | undefined;
+  reflection?: { [k: string]: any } | undefined;
+  reka?: { [k: string]: any } | undefined;
+  relace?: { [k: string]: any } | undefined;
+  replicate?: { [k: string]: any } | undefined;
+  runway?: { [k: string]: any } | undefined;
+  "sail-research"?: { [k: string]: any } | undefined;
+  sakana?: { [k: string]: any } | undefined;
+  "sakana-ai"?: { [k: string]: any } | undefined;
+  sambanova?: { [k: string]: any } | undefined;
+  "sambanova-cloaked"?: { [k: string]: any } | undefined;
+  seed?: { [k: string]: any } | undefined;
+  "sf-compute"?: { [k: string]: any } | undefined;
+  siliconflow?: { [k: string]: any } | undefined;
+  sourceful?: { [k: string]: any } | undefined;
+  stealth?: { [k: string]: any } | undefined;
+  stepfun?: { [k: string]: any } | undefined;
+  streamlake?: { [k: string]: any } | undefined;
+  switchpoint?: { [k: string]: any } | undefined;
+  targon?: { [k: string]: any } | undefined;
+  tencent?: { [k: string]: any } | undefined;
+  tenstorrent?: { [k: string]: any } | undefined;
+  thinkingmachines?: { [k: string]: any } | undefined;
+  together?: { [k: string]: any } | undefined;
+  "together-lite"?: { [k: string]: any } | undefined;
+  ubicloud?: { [k: string]: any } | undefined;
+  upstage?: { [k: string]: any } | undefined;
+  venice?: { [k: string]: any } | undefined;
+  voyageai?: { [k: string]: any } | undefined;
+  wafer?: { [k: string]: any } | undefined;
+  wandb?: { [k: string]: any } | undefined;
+  "wandb-legacy"?: { [k: string]: any } | undefined;
+  xai?: { [k: string]: any } | undefined;
+  xiaomi?: { [k: string]: any } | undefined;
+  "z-ai"?: { [k: string]: any } | undefined;
 };
 
 /** @internal */
-export const Options$outboundSchema: z.ZodType<Options$Outbound, Options> = z
-  .object({
-    oneai: z.record(z.string(), z.nullable(z.any())).optional(),
-    ai21: z.record(z.string(), z.nullable(z.any())).optional(),
-    aionLabs: z.record(z.string(), z.nullable(z.any())).optional(),
-    akashml: z.record(z.string(), z.nullable(z.any())).optional(),
-    alibaba: z.record(z.string(), z.nullable(z.any())).optional(),
-    amazonBedrock: z.record(z.string(), z.nullable(z.any())).optional(),
-    amazonNova: z.record(z.string(), z.nullable(z.any())).optional(),
-    ambient: z.record(z.string(), z.nullable(z.any())).optional(),
-    anthropic: z.record(z.string(), z.nullable(z.any())).optional(),
-    anyscale: z.record(z.string(), z.nullable(z.any())).optional(),
-    arceeAi: z.record(z.string(), z.nullable(z.any())).optional(),
-    atlasCloud: z.record(z.string(), z.nullable(z.any())).optional(),
-    atoma: z.record(z.string(), z.nullable(z.any())).optional(),
-    avian: z.record(z.string(), z.nullable(z.any())).optional(),
-    azure: z.record(z.string(), z.nullable(z.any())).optional(),
-    baidu: z.record(z.string(), z.nullable(z.any())).optional(),
-    baseten: z.record(z.string(), z.nullable(z.any())).optional(),
-    blackForestLabs: z.record(z.string(), z.nullable(z.any())).optional(),
-    byteplus: z.record(z.string(), z.nullable(z.any())).optional(),
-    centml: z.record(z.string(), z.nullable(z.any())).optional(),
-    cerebras: z.record(z.string(), z.nullable(z.any())).optional(),
-    chutes: z.record(z.string(), z.nullable(z.any())).optional(),
-    cirrascale: z.record(z.string(), z.nullable(z.any())).optional(),
-    clarifai: z.record(z.string(), z.nullable(z.any())).optional(),
-    cloudflare: z.record(z.string(), z.nullable(z.any())).optional(),
-    cohere: z.record(z.string(), z.nullable(z.any())).optional(),
-    crofai: z.record(z.string(), z.nullable(z.any())).optional(),
-    crucible: z.record(z.string(), z.nullable(z.any())).optional(),
-    crusoe: z.record(z.string(), z.nullable(z.any())).optional(),
-    darkbloom: z.record(z.string(), z.nullable(z.any())).optional(),
-    deepinfra: z.record(z.string(), z.nullable(z.any())).optional(),
-    deepseek: z.record(z.string(), z.nullable(z.any())).optional(),
-    dekallm: z.record(z.string(), z.nullable(z.any())).optional(),
-    digitalocean: z.record(z.string(), z.nullable(z.any())).optional(),
-    enfer: z.record(z.string(), z.nullable(z.any())).optional(),
-    fakeProvider: z.record(z.string(), z.nullable(z.any())).optional(),
-    featherless: z.record(z.string(), z.nullable(z.any())).optional(),
-    fireworks: z.record(z.string(), z.nullable(z.any())).optional(),
-    friendli: z.record(z.string(), z.nullable(z.any())).optional(),
-    gmicloud: z.record(z.string(), z.nullable(z.any())).optional(),
-    googleAiStudio: z.record(z.string(), z.nullable(z.any())).optional(),
-    googleVertex: z.record(z.string(), z.nullable(z.any())).optional(),
-    gopomelo: z.record(z.string(), z.nullable(z.any())).optional(),
-    groq: z.record(z.string(), z.nullable(z.any())).optional(),
-    huggingface: z.record(z.string(), z.nullable(z.any())).optional(),
-    hyperbolic: z.record(z.string(), z.nullable(z.any())).optional(),
-    hyperbolicQuantized: z.record(z.string(), z.nullable(z.any())).optional(),
-    inception: z.record(z.string(), z.nullable(z.any())).optional(),
-    inceptron: z.record(z.string(), z.nullable(z.any())).optional(),
-    inferenceNet: z.record(z.string(), z.nullable(z.any())).optional(),
-    infermatic: z.record(z.string(), z.nullable(z.any())).optional(),
-    inflection: z.record(z.string(), z.nullable(z.any())).optional(),
-    inocloud: z.record(z.string(), z.nullable(z.any())).optional(),
-    ioNet: z.record(z.string(), z.nullable(z.any())).optional(),
-    ionstream: z.record(z.string(), z.nullable(z.any())).optional(),
-    klusterai: z.record(z.string(), z.nullable(z.any())).optional(),
-    lambda: z.record(z.string(), z.nullable(z.any())).optional(),
-    lepton: z.record(z.string(), z.nullable(z.any())).optional(),
-    liquid: z.record(z.string(), z.nullable(z.any())).optional(),
-    lynn: z.record(z.string(), z.nullable(z.any())).optional(),
-    lynnPrivate: z.record(z.string(), z.nullable(z.any())).optional(),
-    mancer: z.record(z.string(), z.nullable(z.any())).optional(),
-    mancerOld: z.record(z.string(), z.nullable(z.any())).optional(),
-    mara: z.record(z.string(), z.nullable(z.any())).optional(),
-    meta: z.record(z.string(), z.nullable(z.any())).optional(),
-    minimax: z.record(z.string(), z.nullable(z.any())).optional(),
-    mistral: z.record(z.string(), z.nullable(z.any())).optional(),
-    modal: z.record(z.string(), z.nullable(z.any())).optional(),
-    modelrun: z.record(z.string(), z.nullable(z.any())).optional(),
-    modular: z.record(z.string(), z.nullable(z.any())).optional(),
-    moonshotai: z.record(z.string(), z.nullable(z.any())).optional(),
-    morph: z.record(z.string(), z.nullable(z.any())).optional(),
-    ncompass: z.record(z.string(), z.nullable(z.any())).optional(),
-    nebius: z.record(z.string(), z.nullable(z.any())).optional(),
-    nexAgi: z.record(z.string(), z.nullable(z.any())).optional(),
-    nextbit: z.record(z.string(), z.nullable(z.any())).optional(),
-    nineteen: z.record(z.string(), z.nullable(z.any())).optional(),
-    novita: z.record(z.string(), z.nullable(z.any())).optional(),
-    nvidia: z.record(z.string(), z.nullable(z.any())).optional(),
-    octoai: z.record(z.string(), z.nullable(z.any())).optional(),
-    openInference: z.record(z.string(), z.nullable(z.any())).optional(),
-    openai: z.record(z.string(), z.nullable(z.any())).optional(),
-    parasail: z.record(z.string(), z.nullable(z.any())).optional(),
-    perceptron: z.record(z.string(), z.nullable(z.any())).optional(),
-    perplexity: z.record(z.string(), z.nullable(z.any())).optional(),
-    phala: z.record(z.string(), z.nullable(z.any())).optional(),
-    poolside: z.record(z.string(), z.nullable(z.any())).optional(),
-    recraft: z.record(z.string(), z.nullable(z.any())).optional(),
-    recursal: z.record(z.string(), z.nullable(z.any())).optional(),
-    reflection: z.record(z.string(), z.nullable(z.any())).optional(),
-    reka: z.record(z.string(), z.nullable(z.any())).optional(),
-    relace: z.record(z.string(), z.nullable(z.any())).optional(),
-    replicate: z.record(z.string(), z.nullable(z.any())).optional(),
-    sambanova: z.record(z.string(), z.nullable(z.any())).optional(),
-    sambanovaCloaked: z.record(z.string(), z.nullable(z.any())).optional(),
-    seed: z.record(z.string(), z.nullable(z.any())).optional(),
-    sfCompute: z.record(z.string(), z.nullable(z.any())).optional(),
-    siliconflow: z.record(z.string(), z.nullable(z.any())).optional(),
-    sourceful: z.record(z.string(), z.nullable(z.any())).optional(),
-    stealth: z.record(z.string(), z.nullable(z.any())).optional(),
-    stepfun: z.record(z.string(), z.nullable(z.any())).optional(),
-    streamlake: z.record(z.string(), z.nullable(z.any())).optional(),
-    switchpoint: z.record(z.string(), z.nullable(z.any())).optional(),
-    targon: z.record(z.string(), z.nullable(z.any())).optional(),
-    together: z.record(z.string(), z.nullable(z.any())).optional(),
-    togetherLite: z.record(z.string(), z.nullable(z.any())).optional(),
-    ubicloud: z.record(z.string(), z.nullable(z.any())).optional(),
-    upstage: z.record(z.string(), z.nullable(z.any())).optional(),
-    venice: z.record(z.string(), z.nullable(z.any())).optional(),
-    wandb: z.record(z.string(), z.nullable(z.any())).optional(),
-    xai: z.record(z.string(), z.nullable(z.any())).optional(),
-    xiaomi: z.record(z.string(), z.nullable(z.any())).optional(),
-    zAi: z.record(z.string(), z.nullable(z.any())).optional(),
-  }).transform((v) => {
-    return remap$(v, {
-      oneai: "01ai",
-      aionLabs: "aion-labs",
-      amazonBedrock: "amazon-bedrock",
-      amazonNova: "amazon-nova",
-      arceeAi: "arcee-ai",
-      atlasCloud: "atlas-cloud",
-      blackForestLabs: "black-forest-labs",
-      fakeProvider: "fake-provider",
-      googleAiStudio: "google-ai-studio",
-      googleVertex: "google-vertex",
-      hyperbolicQuantized: "hyperbolic-quantized",
-      inferenceNet: "inference-net",
-      ioNet: "io-net",
-      lynnPrivate: "lynn-private",
-      mancerOld: "mancer-old",
-      nexAgi: "nex-agi",
-      openInference: "open-inference",
-      sambanovaCloaked: "sambanova-cloaked",
-      sfCompute: "sf-compute",
-      togetherLite: "together-lite",
-      zAi: "z-ai",
-    });
+export const VideoGenerationRequestOptions$outboundSchema: z.ZodType<
+  VideoGenerationRequestOptions$Outbound,
+  VideoGenerationRequestOptions
+> = z.object({
+  oneai: z.record(z.string(), z.any()).optional(),
+  ai21: z.record(z.string(), z.any()).optional(),
+  aionLabs: z.record(z.string(), z.any()).optional(),
+  akashml: z.record(z.string(), z.any()).optional(),
+  alibaba: z.record(z.string(), z.any()).optional(),
+  amazonBedrock: z.record(z.string(), z.any()).optional(),
+  amazonNova: z.record(z.string(), z.any()).optional(),
+  ambient: z.record(z.string(), z.any()).optional(),
+  anthropic: z.record(z.string(), z.any()).optional(),
+  anyscale: z.record(z.string(), z.any()).optional(),
+  arceeAi: z.record(z.string(), z.any()).optional(),
+  atlasCloud: z.record(z.string(), z.any()).optional(),
+  atoma: z.record(z.string(), z.any()).optional(),
+  avian: z.record(z.string(), z.any()).optional(),
+  azure: z.record(z.string(), z.any()).optional(),
+  baidu: z.record(z.string(), z.any()).optional(),
+  baseten: z.record(z.string(), z.any()).optional(),
+  blackForestLabs: z.record(z.string(), z.any()).optional(),
+  byteplus: z.record(z.string(), z.any()).optional(),
+  centml: z.record(z.string(), z.any()).optional(),
+  cerebras: z.record(z.string(), z.any()).optional(),
+  chutes: z.record(z.string(), z.any()).optional(),
+  cirrascale: z.record(z.string(), z.any()).optional(),
+  clarifai: z.record(z.string(), z.any()).optional(),
+  claudeOnAws: z.record(z.string(), z.any()).optional(),
+  cloudflare: z.record(z.string(), z.any()).optional(),
+  cohere: z.record(z.string(), z.any()).optional(),
+  coreweave: z.record(z.string(), z.any()).optional(),
+  crofai: z.record(z.string(), z.any()).optional(),
+  crucible: z.record(z.string(), z.any()).optional(),
+  crusoe: z.record(z.string(), z.any()).optional(),
+  darkbloom: z.record(z.string(), z.any()).optional(),
+  decart: z.record(z.string(), z.any()).optional(),
+  deepgram: z.record(z.string(), z.any()).optional(),
+  deepinfra: z.record(z.string(), z.any()).optional(),
+  deepseek: z.record(z.string(), z.any()).optional(),
+  dekallm: z.record(z.string(), z.any()).optional(),
+  digitalocean: z.record(z.string(), z.any()).optional(),
+  enfer: z.record(z.string(), z.any()).optional(),
+  fakeProvider: z.record(z.string(), z.any()).optional(),
+  featherless: z.record(z.string(), z.any()).optional(),
+  fireworks: z.record(z.string(), z.any()).optional(),
+  fishAudio: z.record(z.string(), z.any()).optional(),
+  friendli: z.record(z.string(), z.any()).optional(),
+  gmicloud: z.record(z.string(), z.any()).optional(),
+  googleAiStudio: z.record(z.string(), z.any()).optional(),
+  googleVertex: z.record(z.string(), z.any()).optional(),
+  gopomelo: z.record(z.string(), z.any()).optional(),
+  groq: z.record(z.string(), z.any()).optional(),
+  heygen: z.record(z.string(), z.any()).optional(),
+  huggingface: z.record(z.string(), z.any()).optional(),
+  hyperbolic: z.record(z.string(), z.any()).optional(),
+  hyperbolicQuantized: z.record(z.string(), z.any()).optional(),
+  inception: z.record(z.string(), z.any()).optional(),
+  inceptron: z.record(z.string(), z.any()).optional(),
+  inferactVllm: z.record(z.string(), z.any()).optional(),
+  inferenceNet: z.record(z.string(), z.any()).optional(),
+  infermatic: z.record(z.string(), z.any()).optional(),
+  inflection: z.record(z.string(), z.any()).optional(),
+  inocloud: z.record(z.string(), z.any()).optional(),
+  ioNet: z.record(z.string(), z.any()).optional(),
+  ionstream: z.record(z.string(), z.any()).optional(),
+  klusterai: z.record(z.string(), z.any()).optional(),
+  krea: z.record(z.string(), z.any()).optional(),
+  lambda: z.record(z.string(), z.any()).optional(),
+  lepton: z.record(z.string(), z.any()).optional(),
+  liquid: z.record(z.string(), z.any()).optional(),
+  lynn: z.record(z.string(), z.any()).optional(),
+  lynnPrivate: z.record(z.string(), z.any()).optional(),
+  mancer: z.record(z.string(), z.any()).optional(),
+  mancerOld: z.record(z.string(), z.any()).optional(),
+  mara: z.record(z.string(), z.any()).optional(),
+  meta: z.record(z.string(), z.any()).optional(),
+  minimax: z.record(z.string(), z.any()).optional(),
+  mistral: z.record(z.string(), z.any()).optional(),
+  modal: z.record(z.string(), z.any()).optional(),
+  modelrun: z.record(z.string(), z.any()).optional(),
+  modular: z.record(z.string(), z.any()).optional(),
+  moonshotai: z.record(z.string(), z.any()).optional(),
+  morph: z.record(z.string(), z.any()).optional(),
+  ncompass: z.record(z.string(), z.any()).optional(),
+  nebius: z.record(z.string(), z.any()).optional(),
+  nexAgi: z.record(z.string(), z.any()).optional(),
+  nextbit: z.record(z.string(), z.any()).optional(),
+  nineteen: z.record(z.string(), z.any()).optional(),
+  novita: z.record(z.string(), z.any()).optional(),
+  nvidia: z.record(z.string(), z.any()).optional(),
+  octoai: z.record(z.string(), z.any()).optional(),
+  openInference: z.record(z.string(), z.any()).optional(),
+  openai: z.record(z.string(), z.any()).optional(),
+  parasail: z.record(z.string(), z.any()).optional(),
+  perceptron: z.record(z.string(), z.any()).optional(),
+  perplexity: z.record(z.string(), z.any()).optional(),
+  phala: z.record(z.string(), z.any()).optional(),
+  poolside: z.record(z.string(), z.any()).optional(),
+  quiver: z.record(z.string(), z.any()).optional(),
+  recraft: z.record(z.string(), z.any()).optional(),
+  recursal: z.record(z.string(), z.any()).optional(),
+  reflection: z.record(z.string(), z.any()).optional(),
+  reka: z.record(z.string(), z.any()).optional(),
+  relace: z.record(z.string(), z.any()).optional(),
+  replicate: z.record(z.string(), z.any()).optional(),
+  runway: z.record(z.string(), z.any()).optional(),
+  sailResearch: z.record(z.string(), z.any()).optional(),
+  sakana: z.record(z.string(), z.any()).optional(),
+  sakanaAi: z.record(z.string(), z.any()).optional(),
+  sambanova: z.record(z.string(), z.any()).optional(),
+  sambanovaCloaked: z.record(z.string(), z.any()).optional(),
+  seed: z.record(z.string(), z.any()).optional(),
+  sfCompute: z.record(z.string(), z.any()).optional(),
+  siliconflow: z.record(z.string(), z.any()).optional(),
+  sourceful: z.record(z.string(), z.any()).optional(),
+  stealth: z.record(z.string(), z.any()).optional(),
+  stepfun: z.record(z.string(), z.any()).optional(),
+  streamlake: z.record(z.string(), z.any()).optional(),
+  switchpoint: z.record(z.string(), z.any()).optional(),
+  targon: z.record(z.string(), z.any()).optional(),
+  tencent: z.record(z.string(), z.any()).optional(),
+  tenstorrent: z.record(z.string(), z.any()).optional(),
+  thinkingmachines: z.record(z.string(), z.any()).optional(),
+  together: z.record(z.string(), z.any()).optional(),
+  togetherLite: z.record(z.string(), z.any()).optional(),
+  ubicloud: z.record(z.string(), z.any()).optional(),
+  upstage: z.record(z.string(), z.any()).optional(),
+  venice: z.record(z.string(), z.any()).optional(),
+  voyageai: z.record(z.string(), z.any()).optional(),
+  wafer: z.record(z.string(), z.any()).optional(),
+  wandb: z.record(z.string(), z.any()).optional(),
+  wandbLegacy: z.record(z.string(), z.any()).optional(),
+  xai: z.record(z.string(), z.any()).optional(),
+  xiaomi: z.record(z.string(), z.any()).optional(),
+  zAi: z.record(z.string(), z.any()).optional(),
+}).transform((v) => {
+  return remap$(v, {
+    oneai: "01ai",
+    aionLabs: "aion-labs",
+    amazonBedrock: "amazon-bedrock",
+    amazonNova: "amazon-nova",
+    arceeAi: "arcee-ai",
+    atlasCloud: "atlas-cloud",
+    blackForestLabs: "black-forest-labs",
+    claudeOnAws: "claude-on-aws",
+    fakeProvider: "fake-provider",
+    fishAudio: "fish-audio",
+    googleAiStudio: "google-ai-studio",
+    googleVertex: "google-vertex",
+    hyperbolicQuantized: "hyperbolic-quantized",
+    inferactVllm: "inferact-vllm",
+    inferenceNet: "inference-net",
+    ioNet: "io-net",
+    lynnPrivate: "lynn-private",
+    mancerOld: "mancer-old",
+    nexAgi: "nex-agi",
+    openInference: "open-inference",
+    sailResearch: "sail-research",
+    sakanaAi: "sakana-ai",
+    sambanovaCloaked: "sambanova-cloaked",
+    sfCompute: "sf-compute",
+    togetherLite: "together-lite",
+    wandbLegacy: "wandb-legacy",
+    zAi: "z-ai",
   });
+});
 
-export function optionsToJSON(options: Options): string {
-  return JSON.stringify(Options$outboundSchema.parse(options));
+export function videoGenerationRequestOptionsToJSON(
+  videoGenerationRequestOptions: VideoGenerationRequestOptions,
+): string {
+  return JSON.stringify(
+    VideoGenerationRequestOptions$outboundSchema.parse(
+      videoGenerationRequestOptions,
+    ),
+  );
 }
 
 /** @internal */
 export type VideoGenerationRequestProvider$Outbound = {
-  options?: Options$Outbound | undefined;
+  options?: VideoGenerationRequestOptions$Outbound | undefined;
 };
 
 /** @internal */
@@ -501,7 +582,8 @@ export const VideoGenerationRequestProvider$outboundSchema: z.ZodType<
   VideoGenerationRequestProvider$Outbound,
   VideoGenerationRequestProvider
 > = z.object({
-  options: z.lazy(() => Options$outboundSchema).optional(),
+  options: z.lazy(() => VideoGenerationRequestOptions$outboundSchema)
+    .optional(),
 });
 
 export function videoGenerationRequestProviderToJSON(
@@ -515,8 +597,10 @@ export function videoGenerationRequestProviderToJSON(
 }
 
 /** @internal */
-export const Resolution$outboundSchema: z.ZodType<string, Resolution> =
-  openEnums.outboundSchema(Resolution);
+export const VideoGenerationRequestResolution$outboundSchema: z.ZodType<
+  string,
+  VideoGenerationRequestResolution
+> = openEnums.outboundSchema(VideoGenerationRequestResolution);
 
 /** @internal */
 export type VideoGenerationRequest$Outbound = {
@@ -527,7 +611,7 @@ export type VideoGenerationRequest$Outbound = {
   generate_audio?: boolean | undefined;
   input_references?: Array<InputReference$Outbound> | undefined;
   model: string;
-  prompt: string;
+  prompt?: string | undefined;
   provider?: VideoGenerationRequestProvider$Outbound | undefined;
   resolution?: string | undefined;
   seed?: number | undefined;
@@ -539,17 +623,17 @@ export const VideoGenerationRequest$outboundSchema: z.ZodType<
   VideoGenerationRequest$Outbound,
   VideoGenerationRequest
 > = z.object({
-  aspectRatio: AspectRatio$outboundSchema.optional(),
+  aspectRatio: VideoGenerationRequestAspectRatio$outboundSchema.optional(),
   callbackUrl: z.string().optional(),
   duration: z.int().optional(),
   frameImages: z.array(FrameImage$outboundSchema).optional(),
   generateAudio: z.boolean().optional(),
   inputReferences: z.array(InputReference$outboundSchema).optional(),
   model: z.string(),
-  prompt: z.string(),
+  prompt: z.string().optional(),
   provider: z.lazy(() => VideoGenerationRequestProvider$outboundSchema)
     .optional(),
-  resolution: Resolution$outboundSchema.optional(),
+  resolution: VideoGenerationRequestResolution$outboundSchema.optional(),
   seed: z.int().optional(),
   size: z.string().optional(),
 }).transform((v) => {

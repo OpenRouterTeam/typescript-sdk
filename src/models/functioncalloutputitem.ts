@@ -17,6 +17,10 @@ import {
   InputText$Outbound,
   InputText$outboundSchema,
 } from "./inputtext.js";
+import {
+  ToolCallStatus,
+  ToolCallStatus$outboundSchema,
+} from "./toolcallstatus.js";
 
 export const FunctionCallOutputItemDetail = {
   Auto: "auto",
@@ -46,15 +50,6 @@ export type FunctionCallOutputItemOutputUnion2 =
   | string
   | Array<InputText | FunctionCallOutputItemOutputInputImage | InputFile>;
 
-export const FunctionCallOutputItemStatus = {
-  InProgress: "in_progress",
-  Completed: "completed",
-  Incomplete: "incomplete",
-} as const;
-export type FunctionCallOutputItemStatus = OpenEnum<
-  typeof FunctionCallOutputItemStatus
->;
-
 export const FunctionCallOutputItemTypeFunctionCallOutput = {
   FunctionCallOutput: "function_call_output",
 } as const;
@@ -71,7 +66,7 @@ export type FunctionCallOutputItem = {
   output:
     | string
     | Array<InputText | FunctionCallOutputItemOutputInputImage | InputFile>;
-  status?: FunctionCallOutputItemStatus | null | undefined;
+  status?: ToolCallStatus | null | undefined;
   type: FunctionCallOutputItemTypeFunctionCallOutput;
 };
 
@@ -172,12 +167,6 @@ export function functionCallOutputItemOutputUnion2ToJSON(
 }
 
 /** @internal */
-export const FunctionCallOutputItemStatus$outboundSchema: z.ZodType<
-  string,
-  FunctionCallOutputItemStatus
-> = openEnums.outboundSchema(FunctionCallOutputItemStatus);
-
-/** @internal */
 export const FunctionCallOutputItemTypeFunctionCallOutput$outboundSchema:
   z.ZodEnum<typeof FunctionCallOutputItemTypeFunctionCallOutput> = z.enum(
     FunctionCallOutputItemTypeFunctionCallOutput,
@@ -213,7 +202,7 @@ export const FunctionCallOutputItem$outboundSchema: z.ZodType<
       InputFile$outboundSchema,
     ])),
   ]),
-  status: z.nullable(FunctionCallOutputItemStatus$outboundSchema).optional(),
+  status: z.nullable(ToolCallStatus$outboundSchema).optional(),
   type: FunctionCallOutputItemTypeFunctionCallOutput$outboundSchema,
 }).transform((v) => {
   return remap$(v, {

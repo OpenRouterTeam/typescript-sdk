@@ -42,13 +42,34 @@ import {
   MessagesAdvisorToolResultBlock$Outbound,
   MessagesAdvisorToolResultBlock$outboundSchema,
 } from "./messagesadvisortoolresultblock.js";
+import {
+  MessagesBashToolResultBlock,
+  MessagesBashToolResultBlock$Outbound,
+  MessagesBashToolResultBlock$outboundSchema,
+} from "./messagesbashtoolresultblock.js";
+import {
+  MessagesShellToolResultBlock,
+  MessagesShellToolResultBlock$Outbound,
+  MessagesShellToolResultBlock$outboundSchema,
+} from "./messagesshelltoolresultblock.js";
+import {
+  MessagesToolAdditionBlock,
+  MessagesToolAdditionBlock$Outbound,
+  MessagesToolAdditionBlock$outboundSchema,
+} from "./messagestooladditionblock.js";
+import {
+  MessagesToolRemovalBlock,
+  MessagesToolRemovalBlock$Outbound,
+  MessagesToolRemovalBlock$outboundSchema,
+} from "./messagestoolremovalblock.js";
 
 export type ContentCompaction = {
   /**
-   * Enable automatic prompt caching. When set at the top level, the system automatically applies cache breakpoints to the last cacheable block in the request. Currently supported for Anthropic Claude models.
+   * Enable automatic prompt caching. When set at the top level, the system automatically applies cache breakpoints to the last cacheable block in the request. When set on an individual content block, it marks an explicit cache breakpoint; block-level markers also work on OpenAI models that support explicit prompt caching — OpenRouter converts them to the provider's native format.
    */
   cacheControl?: AnthropicCacheControlDirective | undefined;
   content: string | null;
+  encryptedContent?: string | null | undefined;
   type: "compaction";
 };
 
@@ -79,7 +100,7 @@ export type MessagesMessageParamContentUnion3 =
 
 export type ContentWebSearchToolResult = {
   /**
-   * Enable automatic prompt caching. When set at the top level, the system automatically applies cache breakpoints to the last cacheable block in the request. Currently supported for Anthropic Claude models.
+   * Enable automatic prompt caching. When set at the top level, the system automatically applies cache breakpoints to the last cacheable block in the request. When set on an individual content block, it marks an explicit cache breakpoint; block-level markers also work on OpenAI models that support explicit prompt caching — OpenRouter converts them to the provider's native format.
    */
   cacheControl?: AnthropicCacheControlDirective | undefined;
   content:
@@ -91,11 +112,11 @@ export type ContentWebSearchToolResult = {
 
 export type ContentServerToolUse = {
   /**
-   * Enable automatic prompt caching. When set at the top level, the system automatically applies cache breakpoints to the last cacheable block in the request. Currently supported for Anthropic Claude models.
+   * Enable automatic prompt caching. When set at the top level, the system automatically applies cache breakpoints to the last cacheable block in the request. When set on an individual content block, it marks an explicit cache breakpoint; block-level markers also work on OpenAI models that support explicit prompt caching — OpenRouter converts them to the provider's native format.
    */
   cacheControl?: AnthropicCacheControlDirective | undefined;
   id: string;
-  input?: any | null | undefined;
+  input?: any | undefined;
   name: string;
   type: "server_tool_use";
 };
@@ -135,7 +156,7 @@ export type MessagesMessageParamContentUnion2 =
 
 export type ContentToolResult = {
   /**
-   * Enable automatic prompt caching. When set at the top level, the system automatically applies cache breakpoints to the last cacheable block in the request. Currently supported for Anthropic Claude models.
+   * Enable automatic prompt caching. When set at the top level, the system automatically applies cache breakpoints to the last cacheable block in the request. When set on an individual content block, it marks an explicit cache breakpoint; block-level markers also work on OpenAI models that support explicit prompt caching — OpenRouter converts them to the provider's native format.
    */
   cacheControl?: AnthropicCacheControlDirective | undefined;
   content?:
@@ -155,11 +176,11 @@ export type ContentToolResult = {
 
 export type ContentToolUse = {
   /**
-   * Enable automatic prompt caching. When set at the top level, the system automatically applies cache breakpoints to the last cacheable block in the request. Currently supported for Anthropic Claude models.
+   * Enable automatic prompt caching. When set at the top level, the system automatically applies cache breakpoints to the last cacheable block in the request. When set on an individual content block, it marks an explicit cache breakpoint; block-level markers also work on OpenAI models that support explicit prompt caching — OpenRouter converts them to the provider's native format.
    */
   cacheControl?: AnthropicCacheControlDirective | undefined;
   id: string;
-  input?: any | null | undefined;
+  input?: any | undefined;
   name: string;
   type: "tool_use";
 };
@@ -176,7 +197,11 @@ export type MessagesMessageParamContentUnion4 =
   | ContentWebSearchToolResult
   | AnthropicSearchResultBlockParam
   | ContentCompaction
-  | MessagesAdvisorToolResultBlock;
+  | MessagesAdvisorToolResultBlock
+  | MessagesToolAdditionBlock
+  | MessagesToolRemovalBlock
+  | MessagesShellToolResultBlock
+  | MessagesBashToolResultBlock;
 
 export type MessagesMessageParamContentUnion5 =
   | string
@@ -193,6 +218,10 @@ export type MessagesMessageParamContentUnion5 =
     | AnthropicSearchResultBlockParam
     | ContentCompaction
     | MessagesAdvisorToolResultBlock
+    | MessagesToolAdditionBlock
+    | MessagesToolRemovalBlock
+    | MessagesShellToolResultBlock
+    | MessagesBashToolResultBlock
   >;
 
 export const MessagesMessageParamRole = {
@@ -223,6 +252,10 @@ export type MessagesMessageParam = {
       | AnthropicSearchResultBlockParam
       | ContentCompaction
       | MessagesAdvisorToolResultBlock
+      | MessagesToolAdditionBlock
+      | MessagesToolRemovalBlock
+      | MessagesShellToolResultBlock
+      | MessagesBashToolResultBlock
     >;
   role: MessagesMessageParamRole;
 };
@@ -231,6 +264,7 @@ export type MessagesMessageParam = {
 export type ContentCompaction$Outbound = {
   cache_control?: AnthropicCacheControlDirective$Outbound | undefined;
   content: string | null;
+  encrypted_content?: string | null | undefined;
   type: "compaction";
 };
 
@@ -241,10 +275,12 @@ export const ContentCompaction$outboundSchema: z.ZodType<
 > = z.object({
   cacheControl: AnthropicCacheControlDirective$outboundSchema.optional(),
   content: z.nullable(z.string()),
+  encryptedContent: z.nullable(z.string()).optional(),
   type: z.literal("compaction"),
 }).transform((v) => {
   return remap$(v, {
     cacheControl: "cache_control",
+    encryptedContent: "encrypted_content",
   });
 });
 
@@ -359,7 +395,7 @@ export function contentWebSearchToolResultToJSON(
 export type ContentServerToolUse$Outbound = {
   cache_control?: AnthropicCacheControlDirective$Outbound | undefined;
   id: string;
-  input?: any | null | undefined;
+  input?: any | undefined;
   name: string;
   type: "server_tool_use";
 };
@@ -371,7 +407,7 @@ export const ContentServerToolUse$outboundSchema: z.ZodType<
 > = z.object({
   cacheControl: AnthropicCacheControlDirective$outboundSchema.optional(),
   id: z.string(),
-  input: z.nullable(z.any()).optional(),
+  input: z.any().optional(),
   name: z.string(),
   type: z.literal("server_tool_use"),
 }).transform((v) => {
@@ -588,7 +624,7 @@ export function contentToolResultToJSON(
 export type ContentToolUse$Outbound = {
   cache_control?: AnthropicCacheControlDirective$Outbound | undefined;
   id: string;
-  input?: any | null | undefined;
+  input?: any | undefined;
   name: string;
   type: "tool_use";
 };
@@ -600,7 +636,7 @@ export const ContentToolUse$outboundSchema: z.ZodType<
 > = z.object({
   cacheControl: AnthropicCacheControlDirective$outboundSchema.optional(),
   id: z.string(),
-  input: z.nullable(z.any()).optional(),
+  input: z.any().optional(),
   name: z.string(),
   type: z.literal("tool_use"),
 }).transform((v) => {
@@ -626,7 +662,11 @@ export type MessagesMessageParamContentUnion4$Outbound =
   | ContentWebSearchToolResult$Outbound
   | AnthropicSearchResultBlockParam$Outbound
   | ContentCompaction$Outbound
-  | MessagesAdvisorToolResultBlock$Outbound;
+  | MessagesAdvisorToolResultBlock$Outbound
+  | MessagesToolAdditionBlock$Outbound
+  | MessagesToolRemovalBlock$Outbound
+  | MessagesShellToolResultBlock$Outbound
+  | MessagesBashToolResultBlock$Outbound;
 
 /** @internal */
 export const MessagesMessageParamContentUnion4$outboundSchema: z.ZodType<
@@ -645,6 +685,10 @@ export const MessagesMessageParamContentUnion4$outboundSchema: z.ZodType<
   AnthropicSearchResultBlockParam$outboundSchema,
   z.lazy(() => ContentCompaction$outboundSchema),
   MessagesAdvisorToolResultBlock$outboundSchema,
+  MessagesToolAdditionBlock$outboundSchema,
+  MessagesToolRemovalBlock$outboundSchema,
+  MessagesShellToolResultBlock$outboundSchema,
+  MessagesBashToolResultBlock$outboundSchema,
 ]);
 
 export function messagesMessageParamContentUnion4ToJSON(
@@ -673,6 +717,10 @@ export type MessagesMessageParamContentUnion5$Outbound =
     | AnthropicSearchResultBlockParam$Outbound
     | ContentCompaction$Outbound
     | MessagesAdvisorToolResultBlock$Outbound
+    | MessagesToolAdditionBlock$Outbound
+    | MessagesToolRemovalBlock$Outbound
+    | MessagesShellToolResultBlock$Outbound
+    | MessagesBashToolResultBlock$Outbound
   >;
 
 /** @internal */
@@ -695,6 +743,10 @@ export const MessagesMessageParamContentUnion5$outboundSchema: z.ZodType<
       AnthropicSearchResultBlockParam$outboundSchema,
       z.lazy(() => ContentCompaction$outboundSchema),
       MessagesAdvisorToolResultBlock$outboundSchema,
+      MessagesToolAdditionBlock$outboundSchema,
+      MessagesToolRemovalBlock$outboundSchema,
+      MessagesShellToolResultBlock$outboundSchema,
+      MessagesBashToolResultBlock$outboundSchema,
     ]),
   ),
 ]);
@@ -732,6 +784,10 @@ export type MessagesMessageParam$Outbound = {
       | AnthropicSearchResultBlockParam$Outbound
       | ContentCompaction$Outbound
       | MessagesAdvisorToolResultBlock$Outbound
+      | MessagesToolAdditionBlock$Outbound
+      | MessagesToolRemovalBlock$Outbound
+      | MessagesShellToolResultBlock$Outbound
+      | MessagesBashToolResultBlock$Outbound
     >;
   role: string;
 };
@@ -757,6 +813,10 @@ export const MessagesMessageParam$outboundSchema: z.ZodType<
         AnthropicSearchResultBlockParam$outboundSchema,
         z.lazy(() => ContentCompaction$outboundSchema),
         MessagesAdvisorToolResultBlock$outboundSchema,
+        MessagesToolAdditionBlock$outboundSchema,
+        MessagesToolRemovalBlock$outboundSchema,
+        MessagesShellToolResultBlock$outboundSchema,
+        MessagesBashToolResultBlock$outboundSchema,
       ]),
     ),
   ]),

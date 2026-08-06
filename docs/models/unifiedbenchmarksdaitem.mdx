@@ -1,0 +1,46 @@
+---
+title: "UnifiedBenchmarksDAItem"
+---
+
+## Example Usage
+
+```typescript
+import { UnifiedBenchmarksDAItem } from "@openrouter/sdk/models";
+
+let value: UnifiedBenchmarksDAItem = {
+  arena: "models",
+  avgGenerationTimeMs: 3200,
+  category: "codecategories",
+  displayName: "Claude Sonnet 4",
+  elo: 1423,
+  modelPermaslug: "anthropic/claude-sonnet-4",
+  pricing: {
+    completion: "0.000015",
+    prompt: "0.000003",
+  },
+  source: "design-arena",
+  tournamentStats: {
+    firstPlace: 12,
+    fourthPlace: 2,
+    secondPlace: 8,
+    thirdPlace: 5,
+    total: 27,
+  },
+  winRate: 72,
+};
+```
+
+## Fields
+
+| Field                                                                                         | Type                                                                                          | Required                                                                                      | Description                                                                                   | Example                                                                                       |
+| --------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------- |
+| `arena`                                                                                       | *string*                                                                                      | :heavy_check_mark:                                                                            | Arena this ranking belongs to.                                                                | models                                                                                        |
+| `avgGenerationTimeMs`                                                                         | *number*                                                                                      | :heavy_check_mark:                                                                            | Average generation time in milliseconds.                                                      | 3200                                                                                          |
+| `category`                                                                                    | *string*                                                                                      | :heavy_check_mark:                                                                            | Category within the arena.                                                                    | codecategories                                                                                |
+| `displayName`                                                                                 | *string*                                                                                      | :heavy_check_mark:                                                                            | Human-readable model name from Design Arena.                                                  | Claude Sonnet 4                                                                               |
+| `elo`                                                                                         | *number*                                                                                      | :heavy_check_mark:                                                                            | ELO rating from head-to-head arena battles.                                                   | 1423                                                                                          |
+| `modelPermaslug`                                                                              | *string*                                                                                      | :heavy_check_mark:                                                                            | Stable OpenRouter model identifier when mapped; otherwise the upstream Design Arena model id. | anthropic/claude-sonnet-4                                                                     |
+| `pricing`                                                                                     | [models.UnifiedBenchmarkPricing](../models/unifiedbenchmarkpricing.mdx)                        | :heavy_check_mark:                                                                            | OpenRouter pricing per token for this model. Null if pricing is unavailable.                  | \{<br/>"completion": "0.000015",<br/>"prompt": "0.000003"<br/>}                                |
+| `source`                                                                                      | *"design-arena"*                                                                              | :heavy_check_mark:                                                                            | Benchmark source discriminator.                                                               |                                                                                               |
+| `tournamentStats`                                                                             | [models.TournamentStats](../models/tournamentstats.mdx)                                        | :heavy_check_mark:                                                                            | Placement distribution from tournament matches.                                               |                                                                                               |
+| `winRate`                                                                                     | *number*                                                                                      | :heavy_check_mark:                                                                            | Win rate as a percentage (0–100).                                                             | 72                                                                                            |

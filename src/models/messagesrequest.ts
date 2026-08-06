@@ -17,10 +17,6 @@ import {
   AnthropicCacheControlDirective$outboundSchema,
 } from "./anthropiccachecontroldirective.js";
 import {
-  AnthropicCacheControlTtl,
-  AnthropicCacheControlTtl$outboundSchema,
-} from "./anthropiccachecontrolttl.js";
-import {
   AnthropicInputTokensClearAtLeast,
   AnthropicInputTokensClearAtLeast$Outbound,
   AnthropicInputTokensClearAtLeast$outboundSchema,
@@ -45,6 +41,16 @@ import {
   AnthropicThinkingTurns$outboundSchema,
 } from "./anthropicthinkingturns.js";
 import {
+  AnthropicToolSearchToolBm25,
+  AnthropicToolSearchToolBm25$Outbound,
+  AnthropicToolSearchToolBm25$outboundSchema,
+} from "./anthropictoolsearchtoolbm25.js";
+import {
+  AnthropicToolSearchToolRegex,
+  AnthropicToolSearchToolRegex$Outbound,
+  AnthropicToolSearchToolRegex$outboundSchema,
+} from "./anthropictoolsearchtoolregex.js";
+import {
   AnthropicToolUsesKeep,
   AnthropicToolUsesKeep$Outbound,
   AnthropicToolUsesKeep$outboundSchema,
@@ -60,15 +66,20 @@ import {
   AnthropicWebSearchToolUserLocation$outboundSchema,
 } from "./anthropicwebsearchtooluserlocation.js";
 import {
+  AutoBetaRouterPlugin,
+  AutoBetaRouterPlugin$Outbound,
+  AutoBetaRouterPlugin$outboundSchema,
+} from "./autobetarouterplugin.js";
+import {
   AutoRouterPlugin,
   AutoRouterPlugin$Outbound,
   AutoRouterPlugin$outboundSchema,
 } from "./autorouterplugin.js";
 import {
-  ChatSearchModelsServerTool,
-  ChatSearchModelsServerTool$Outbound,
-  ChatSearchModelsServerTool$outboundSchema,
-} from "./chatsearchmodelsservertool.js";
+  BashServerTool,
+  BashServerTool$Outbound,
+  BashServerTool$outboundSchema,
+} from "./bashservertool.js";
 import {
   ContextCompressionPlugin,
   ContextCompressionPlugin$Outbound,
@@ -95,6 +106,11 @@ import {
   ImageGenerationServerToolOpenRouter$outboundSchema,
 } from "./imagegenerationservertoolopenrouter.js";
 import {
+  MessagesFallbackParam,
+  MessagesFallbackParam$Outbound,
+  MessagesFallbackParam$outboundSchema,
+} from "./messagesfallbackparam.js";
+import {
   MessagesMessageParam,
   MessagesMessageParam$Outbound,
   MessagesMessageParam$outboundSchema,
@@ -104,6 +120,11 @@ import {
   MessagesOutputConfig$Outbound,
   MessagesOutputConfig$outboundSchema,
 } from "./messagesoutputconfig.js";
+import {
+  MessagesSearchModelsServerTool,
+  MessagesSearchModelsServerTool$Outbound,
+  MessagesSearchModelsServerTool$outboundSchema,
+} from "./messagessearchmodelsservertool.js";
 import {
   ModerationPlugin,
   ModerationPlugin$Outbound,
@@ -129,6 +150,11 @@ import {
   ResponseHealingPlugin$Outbound,
   ResponseHealingPlugin$outboundSchema,
 } from "./responsehealingplugin.js";
+import {
+  ShellServerToolOpenRouter,
+  ShellServerToolOpenRouter$Outbound,
+  ShellServerToolOpenRouter$outboundSchema,
+} from "./shellservertoolopenrouter.js";
 import {
   StopServerToolsWhenCondition,
   StopServerToolsWhenCondition$Outbound,
@@ -193,13 +219,13 @@ export type EditClearThinking20251015 = {
   type: "clear_thinking_20251015";
 };
 
-export type ClearToolInputs = boolean | Array<string> | any;
+export type ClearToolInputs = boolean | Array<string>;
 
 export type Trigger = AnthropicInputTokensTrigger | AnthropicToolUsesTrigger;
 
 export type EditClearToolUses20250919 = {
   clearAtLeast?: AnthropicInputTokensClearAtLeast | null | undefined;
-  clearToolInputs?: boolean | Array<string> | any | null | undefined;
+  clearToolInputs?: boolean | Array<string> | null | undefined;
   excludeTools?: Array<string> | null | undefined;
   keep?: AnthropicToolUsesKeep | undefined;
   trigger?: AnthropicInputTokensTrigger | AnthropicToolUsesTrigger | undefined;
@@ -221,11 +247,12 @@ export type ContextManagement = {
     | undefined;
 };
 
-export type Metadata = {
+export type MessagesRequestMetadata = {
   userId?: string | null | undefined;
 };
 
 export type MessagesRequestPlugin =
+  | AutoBetaRouterPlugin
   | AutoRouterPlugin
   | ContextCompressionPlugin
   | FileParserPlugin
@@ -295,20 +322,7 @@ export type ToolChoice =
 
 export type MessagesRequestTool = {
   type: string;
-  additionalProperties?: { [k: string]: any | null } | undefined;
-};
-
-export const ToolTypeEphemeral = {
-  Ephemeral: "ephemeral",
-} as const;
-export type ToolTypeEphemeral = ClosedEnum<typeof ToolTypeEphemeral>;
-
-/**
- * Enable automatic prompt caching. When set at the top level, the system automatically applies cache breakpoints to the last cacheable block in the request. Currently supported for Anthropic Claude models.
- */
-export type Caching = {
-  ttl?: AnthropicCacheControlTtl | undefined;
-  type: ToolTypeEphemeral;
+  additionalProperties?: { [k: string]: any } | undefined;
 };
 
 export const NameAdvisor = {
@@ -324,10 +338,10 @@ export type TypeAdvisor20260301 = ClosedEnum<typeof TypeAdvisor20260301>;
 export type ToolAdvisor20260301 = {
   allowedCallers?: Array<AnthropicAllowedCallers> | undefined;
   /**
-   * Enable automatic prompt caching. When set at the top level, the system automatically applies cache breakpoints to the last cacheable block in the request. Currently supported for Anthropic Claude models.
+   * Enable automatic prompt caching. When set at the top level, the system automatically applies cache breakpoints to the last cacheable block in the request. When set on an individual content block, it marks an explicit cache breakpoint; block-level markers also work on OpenAI models that support explicit prompt caching — OpenRouter converts them to the provider's native format.
    */
   cacheControl?: AnthropicCacheControlDirective | undefined;
-  caching?: Caching | null | undefined;
+  caching?: AnthropicCacheControlDirective | null | undefined;
   deferLoading?: boolean | undefined;
   maxUses?: number | undefined;
   model: string;
@@ -350,7 +364,7 @@ export type ToolWebSearch20260209 = {
   allowedDomains?: Array<string> | null | undefined;
   blockedDomains?: Array<string> | null | undefined;
   /**
-   * Enable automatic prompt caching. When set at the top level, the system automatically applies cache breakpoints to the last cacheable block in the request. Currently supported for Anthropic Claude models.
+   * Enable automatic prompt caching. When set at the top level, the system automatically applies cache breakpoints to the last cacheable block in the request. When set on an individual content block, it marks an explicit cache breakpoint; block-level markers also work on OpenAI models that support explicit prompt caching — OpenRouter converts them to the provider's native format.
    */
   cacheControl?: AnthropicCacheControlDirective | undefined;
   maxUses?: number | null | undefined;
@@ -373,7 +387,7 @@ export type ToolWebSearch20250305 = {
   allowedDomains?: Array<string> | null | undefined;
   blockedDomains?: Array<string> | null | undefined;
   /**
-   * Enable automatic prompt caching. When set at the top level, the system automatically applies cache breakpoints to the last cacheable block in the request. Currently supported for Anthropic Claude models.
+   * Enable automatic prompt caching. When set at the top level, the system automatically applies cache breakpoints to the last cacheable block in the request. When set on an individual content block, it marks an explicit cache breakpoint; block-level markers also work on OpenAI models that support explicit prompt caching — OpenRouter converts them to the provider's native format.
    */
   cacheControl?: AnthropicCacheControlDirective | undefined;
   maxUses?: number | null | undefined;
@@ -394,7 +408,7 @@ export type TypeTextEditor20250124 = ClosedEnum<typeof TypeTextEditor20250124>;
 
 export type ToolTextEditor20250124 = {
   /**
-   * Enable automatic prompt caching. When set at the top level, the system automatically applies cache breakpoints to the last cacheable block in the request. Currently supported for Anthropic Claude models.
+   * Enable automatic prompt caching. When set at the top level, the system automatically applies cache breakpoints to the last cacheable block in the request. When set on an individual content block, it marks an explicit cache breakpoint; block-level markers also work on OpenAI models that support explicit prompt caching — OpenRouter converts them to the provider's native format.
    */
   cacheControl?: AnthropicCacheControlDirective | undefined;
   name: NameStrReplaceEditor;
@@ -413,7 +427,7 @@ export type TypeBash20250124 = ClosedEnum<typeof TypeBash20250124>;
 
 export type ToolBash20250124 = {
   /**
-   * Enable automatic prompt caching. When set at the top level, the system automatically applies cache breakpoints to the last cacheable block in the request. Currently supported for Anthropic Claude models.
+   * Enable automatic prompt caching. When set at the top level, the system automatically applies cache breakpoints to the last cacheable block in the request. When set on an individual content block, it marks an explicit cache breakpoint; block-level markers also work on OpenAI models that support explicit prompt caching — OpenRouter converts them to the provider's native format.
    */
   cacheControl?: AnthropicCacheControlDirective | undefined;
   name: NameBash;
@@ -421,10 +435,10 @@ export type ToolBash20250124 = {
 };
 
 export type InputSchema = {
-  properties?: any | null | undefined;
+  properties?: any | undefined;
   required?: Array<string> | null | undefined;
   type?: string | undefined;
-  additionalProperties?: { [k: string]: any | null } | undefined;
+  additionalProperties?: { [k: string]: any } | undefined;
 };
 
 export const ToolTypeCustom = {
@@ -434,9 +448,10 @@ export type ToolTypeCustom = ClosedEnum<typeof ToolTypeCustom>;
 
 export type ToolCustom = {
   /**
-   * Enable automatic prompt caching. When set at the top level, the system automatically applies cache breakpoints to the last cacheable block in the request. Currently supported for Anthropic Claude models.
+   * Enable automatic prompt caching. When set at the top level, the system automatically applies cache breakpoints to the last cacheable block in the request. When set on an individual content block, it marks an explicit cache breakpoint; block-level markers also work on OpenAI models that support explicit prompt caching — OpenRouter converts them to the provider's native format.
    */
   cacheControl?: AnthropicCacheControlDirective | undefined;
+  deferLoading?: boolean | undefined;
   description?: string | undefined;
   inputSchema: InputSchema;
   name: string;
@@ -450,25 +465,33 @@ export type MessagesRequestToolUnion =
   | ToolTextEditor20250124
   | ToolWebSearch20250305
   | ToolWebSearch20260209
+  | AnthropicToolSearchToolBm25
+  | AnthropicToolSearchToolRegex
+  | BashServerTool
   | DatetimeServerTool
   | ImageGenerationServerToolOpenRouter
-  | ChatSearchModelsServerTool
+  | MessagesSearchModelsServerTool
   | WebFetchServerTool
   | OpenRouterWebSearchServerTool
-  | MessagesRequestTool;
+  | MessagesRequestTool
+  | ShellServerToolOpenRouter;
 
 /**
  * Request schema for Anthropic Messages API endpoint
  */
 export type MessagesRequest = {
   /**
-   * Enable automatic prompt caching. When set at the top level, the system automatically applies cache breakpoints to the last cacheable block in the request. Currently supported for Anthropic Claude models.
+   * Enable automatic prompt caching. When set at the top level, the system automatically applies cache breakpoints to the last cacheable block in the request. When set on an individual content block, it marks an explicit cache breakpoint; block-level markers also work on OpenAI models that support explicit prompt caching — OpenRouter converts them to the provider's native format.
    */
   cacheControl?: AnthropicCacheControlDirective | undefined;
   contextManagement?: ContextManagement | null | undefined;
+  /**
+   * Fallback models to try if the primary model fails or refuses, in order. Handled by OpenRouter multi-model routing rather than Anthropic server-side fallbacks; cannot be combined with `models`. Each entry accepts only `model`. Maximum of 3 entries.
+   */
+  fallbacks?: Array<MessagesFallbackParam> | null | undefined;
   maxTokens?: number | undefined;
   messages: Array<MessagesMessageParam> | null;
-  metadata?: Metadata | undefined;
+  metadata?: MessagesRequestMetadata | undefined;
   model: string;
   models?: Array<string> | undefined;
   /**
@@ -480,6 +503,7 @@ export type MessagesRequest = {
    */
   plugins?:
     | Array<
+      | AutoBetaRouterPlugin
       | AutoRouterPlugin
       | ContextCompressionPlugin
       | FileParserPlugin
@@ -503,7 +527,7 @@ export type MessagesRequest = {
   speed?: Speed | null | undefined;
   stopSequences?: Array<string> | undefined;
   /**
-   * Stop conditions for the server-tool agent loop. Any condition firing halts the loop (OR logic). When set, this overrides `max_tool_calls`.
+   * Stop conditions for the server-tool agent loop. Any condition firing halts the loop (OR logic). When set, this overrides `max_tool_calls`. When a condition fires while the model is still emitting tool calls, the pending tool calls are executed and one final turn is made with tool calls disabled so the response ends with a natural-language answer instead of an unfinished tool call.
    */
   stopServerToolsWhen?: Array<StopServerToolsWhenCondition> | undefined;
   stream?: boolean | undefined;
@@ -524,12 +548,16 @@ export type MessagesRequest = {
       | ToolTextEditor20250124
       | ToolWebSearch20250305
       | ToolWebSearch20260209
+      | AnthropicToolSearchToolBm25
+      | AnthropicToolSearchToolRegex
+      | BashServerTool
       | DatetimeServerTool
       | ImageGenerationServerToolOpenRouter
-      | ChatSearchModelsServerTool
+      | MessagesSearchModelsServerTool
       | WebFetchServerTool
       | OpenRouterWebSearchServerTool
       | MessagesRequestTool
+      | ShellServerToolOpenRouter
     >
     | undefined;
   topK?: number | undefined;
@@ -678,13 +706,13 @@ export function editClearThinking20251015ToJSON(
 }
 
 /** @internal */
-export type ClearToolInputs$Outbound = boolean | Array<string> | any;
+export type ClearToolInputs$Outbound = boolean | Array<string>;
 
 /** @internal */
 export const ClearToolInputs$outboundSchema: z.ZodType<
   ClearToolInputs$Outbound,
   ClearToolInputs
-> = z.union([z.boolean(), z.array(z.string()), z.any()]);
+> = z.union([z.boolean(), z.array(z.string())]);
 
 export function clearToolInputsToJSON(
   clearToolInputs: ClearToolInputs,
@@ -711,7 +739,7 @@ export function triggerToJSON(trigger: Trigger): string {
 /** @internal */
 export type EditClearToolUses20250919$Outbound = {
   clear_at_least?: AnthropicInputTokensClearAtLeast$Outbound | null | undefined;
-  clear_tool_inputs?: boolean | Array<string> | any | null | undefined;
+  clear_tool_inputs?: boolean | Array<string> | null | undefined;
   exclude_tools?: Array<string> | null | undefined;
   keep?: AnthropicToolUsesKeep$Outbound | undefined;
   trigger?:
@@ -728,9 +756,8 @@ export const EditClearToolUses20250919$outboundSchema: z.ZodType<
 > = z.object({
   clearAtLeast: z.nullable(AnthropicInputTokensClearAtLeast$outboundSchema)
     .optional(),
-  clearToolInputs: z.nullable(
-    z.union([z.boolean(), z.array(z.string()), z.any()]),
-  ).optional(),
+  clearToolInputs: z.nullable(z.union([z.boolean(), z.array(z.string())]))
+    .optional(),
   excludeTools: z.nullable(z.array(z.string())).optional(),
   keep: AnthropicToolUsesKeep$outboundSchema.optional(),
   trigger: z.union([
@@ -805,26 +832,33 @@ export function contextManagementToJSON(
 }
 
 /** @internal */
-export type Metadata$Outbound = {
+export type MessagesRequestMetadata$Outbound = {
   user_id?: string | null | undefined;
 };
 
 /** @internal */
-export const Metadata$outboundSchema: z.ZodType<Metadata$Outbound, Metadata> = z
-  .object({
-    userId: z.nullable(z.string()).optional(),
-  }).transform((v) => {
-    return remap$(v, {
-      userId: "user_id",
-    });
+export const MessagesRequestMetadata$outboundSchema: z.ZodType<
+  MessagesRequestMetadata$Outbound,
+  MessagesRequestMetadata
+> = z.object({
+  userId: z.nullable(z.string()).optional(),
+}).transform((v) => {
+  return remap$(v, {
+    userId: "user_id",
   });
+});
 
-export function metadataToJSON(metadata: Metadata): string {
-  return JSON.stringify(Metadata$outboundSchema.parse(metadata));
+export function messagesRequestMetadataToJSON(
+  messagesRequestMetadata: MessagesRequestMetadata,
+): string {
+  return JSON.stringify(
+    MessagesRequestMetadata$outboundSchema.parse(messagesRequestMetadata),
+  );
 }
 
 /** @internal */
 export type MessagesRequestPlugin$Outbound =
+  | AutoBetaRouterPlugin$Outbound
   | AutoRouterPlugin$Outbound
   | ContextCompressionPlugin$Outbound
   | FileParserPlugin$Outbound
@@ -840,6 +874,7 @@ export const MessagesRequestPlugin$outboundSchema: z.ZodType<
   MessagesRequestPlugin$Outbound,
   MessagesRequestPlugin
 > = z.union([
+  AutoBetaRouterPlugin$outboundSchema,
   AutoRouterPlugin$outboundSchema,
   ContextCompressionPlugin$outboundSchema,
   FileParserPlugin$outboundSchema,
@@ -1085,7 +1120,7 @@ export const MessagesRequestTool$outboundSchema: z.ZodType<
   MessagesRequestTool
 > = z.object({
   type: z.string(),
-  additionalProperties: z.record(z.string(), z.nullable(z.any())).optional(),
+  additionalProperties: z.record(z.string(), z.any()).optional(),
 }).transform((v) => {
   return {
     ...v.additionalProperties,
@@ -1104,28 +1139,6 @@ export function messagesRequestToolToJSON(
 }
 
 /** @internal */
-export const ToolTypeEphemeral$outboundSchema: z.ZodEnum<
-  typeof ToolTypeEphemeral
-> = z.enum(ToolTypeEphemeral);
-
-/** @internal */
-export type Caching$Outbound = {
-  ttl?: string | undefined;
-  type: string;
-};
-
-/** @internal */
-export const Caching$outboundSchema: z.ZodType<Caching$Outbound, Caching> = z
-  .object({
-    ttl: AnthropicCacheControlTtl$outboundSchema.optional(),
-    type: ToolTypeEphemeral$outboundSchema,
-  });
-
-export function cachingToJSON(caching: Caching): string {
-  return JSON.stringify(Caching$outboundSchema.parse(caching));
-}
-
-/** @internal */
 export const NameAdvisor$outboundSchema: z.ZodEnum<typeof NameAdvisor> = z.enum(
   NameAdvisor,
 );
@@ -1139,7 +1152,7 @@ export const TypeAdvisor20260301$outboundSchema: z.ZodEnum<
 export type ToolAdvisor20260301$Outbound = {
   allowed_callers?: Array<string> | undefined;
   cache_control?: AnthropicCacheControlDirective$Outbound | undefined;
-  caching?: Caching$Outbound | null | undefined;
+  caching?: AnthropicCacheControlDirective$Outbound | null | undefined;
   defer_loading?: boolean | undefined;
   max_uses?: number | undefined;
   model: string;
@@ -1154,7 +1167,7 @@ export const ToolAdvisor20260301$outboundSchema: z.ZodType<
 > = z.object({
   allowedCallers: z.array(AnthropicAllowedCallers$outboundSchema).optional(),
   cacheControl: AnthropicCacheControlDirective$outboundSchema.optional(),
-  caching: z.nullable(z.lazy(() => Caching$outboundSchema)).optional(),
+  caching: z.nullable(AnthropicCacheControlDirective$outboundSchema).optional(),
   deferLoading: z.boolean().optional(),
   maxUses: z.int().optional(),
   model: z.string(),
@@ -1368,7 +1381,7 @@ export function toolBash20250124ToJSON(
 
 /** @internal */
 export type InputSchema$Outbound = {
-  properties?: any | null | undefined;
+  properties?: any | undefined;
   required?: Array<string> | null | undefined;
   type: string;
   [additionalProperties: string]: unknown;
@@ -1379,10 +1392,10 @@ export const InputSchema$outboundSchema: z.ZodType<
   InputSchema$Outbound,
   InputSchema
 > = z.object({
-  properties: z.nullable(z.any()).optional(),
+  properties: z.any().optional(),
   required: z.nullable(z.array(z.string())).optional(),
   type: z.string().default("object"),
-  additionalProperties: z.record(z.string(), z.nullable(z.any())).optional(),
+  additionalProperties: z.record(z.string(), z.any()).optional(),
 }).transform((v) => {
   return {
     ...v.additionalProperties,
@@ -1403,6 +1416,7 @@ export const ToolTypeCustom$outboundSchema: z.ZodEnum<typeof ToolTypeCustom> = z
 /** @internal */
 export type ToolCustom$Outbound = {
   cache_control?: AnthropicCacheControlDirective$Outbound | undefined;
+  defer_loading?: boolean | undefined;
   description?: string | undefined;
   input_schema: InputSchema$Outbound;
   name: string;
@@ -1415,6 +1429,7 @@ export const ToolCustom$outboundSchema: z.ZodType<
   ToolCustom
 > = z.object({
   cacheControl: AnthropicCacheControlDirective$outboundSchema.optional(),
+  deferLoading: z.boolean().optional(),
   description: z.string().optional(),
   inputSchema: z.lazy(() => InputSchema$outboundSchema),
   name: z.string(),
@@ -1422,6 +1437,7 @@ export const ToolCustom$outboundSchema: z.ZodType<
 }).transform((v) => {
   return remap$(v, {
     cacheControl: "cache_control",
+    deferLoading: "defer_loading",
     inputSchema: "input_schema",
   });
 });
@@ -1438,12 +1454,16 @@ export type MessagesRequestToolUnion$Outbound =
   | ToolTextEditor20250124$Outbound
   | ToolWebSearch20250305$Outbound
   | ToolWebSearch20260209$Outbound
+  | AnthropicToolSearchToolBm25$Outbound
+  | AnthropicToolSearchToolRegex$Outbound
+  | BashServerTool$Outbound
   | DatetimeServerTool$Outbound
   | ImageGenerationServerToolOpenRouter$Outbound
-  | ChatSearchModelsServerTool$Outbound
+  | MessagesSearchModelsServerTool$Outbound
   | WebFetchServerTool$Outbound
   | OpenRouterWebSearchServerTool$Outbound
-  | MessagesRequestTool$Outbound;
+  | MessagesRequestTool$Outbound
+  | ShellServerToolOpenRouter$Outbound;
 
 /** @internal */
 export const MessagesRequestToolUnion$outboundSchema: z.ZodType<
@@ -1456,12 +1476,16 @@ export const MessagesRequestToolUnion$outboundSchema: z.ZodType<
   z.lazy(() => ToolTextEditor20250124$outboundSchema),
   z.lazy(() => ToolWebSearch20250305$outboundSchema),
   z.lazy(() => ToolWebSearch20260209$outboundSchema),
+  AnthropicToolSearchToolBm25$outboundSchema,
+  AnthropicToolSearchToolRegex$outboundSchema,
+  BashServerTool$outboundSchema,
   DatetimeServerTool$outboundSchema,
   ImageGenerationServerToolOpenRouter$outboundSchema,
-  ChatSearchModelsServerTool$outboundSchema,
+  MessagesSearchModelsServerTool$outboundSchema,
   WebFetchServerTool$outboundSchema,
   OpenRouterWebSearchServerTool$outboundSchema,
   z.lazy(() => MessagesRequestTool$outboundSchema),
+  ShellServerToolOpenRouter$outboundSchema,
 ]);
 
 export function messagesRequestToolUnionToJSON(
@@ -1476,14 +1500,16 @@ export function messagesRequestToolUnionToJSON(
 export type MessagesRequest$Outbound = {
   cache_control?: AnthropicCacheControlDirective$Outbound | undefined;
   context_management?: ContextManagement$Outbound | null | undefined;
+  fallbacks?: Array<MessagesFallbackParam$Outbound> | null | undefined;
   max_tokens?: number | undefined;
   messages: Array<MessagesMessageParam$Outbound> | null;
-  metadata?: Metadata$Outbound | undefined;
+  metadata?: MessagesRequestMetadata$Outbound | undefined;
   model: string;
   models?: Array<string> | undefined;
   output_config?: MessagesOutputConfig$Outbound | undefined;
   plugins?:
     | Array<
+      | AutoBetaRouterPlugin$Outbound
       | AutoRouterPlugin$Outbound
       | ContextCompressionPlugin$Outbound
       | FileParserPlugin$Outbound
@@ -1525,12 +1551,16 @@ export type MessagesRequest$Outbound = {
       | ToolTextEditor20250124$Outbound
       | ToolWebSearch20250305$Outbound
       | ToolWebSearch20260209$Outbound
+      | AnthropicToolSearchToolBm25$Outbound
+      | AnthropicToolSearchToolRegex$Outbound
+      | BashServerTool$Outbound
       | DatetimeServerTool$Outbound
       | ImageGenerationServerToolOpenRouter$Outbound
-      | ChatSearchModelsServerTool$Outbound
+      | MessagesSearchModelsServerTool$Outbound
       | WebFetchServerTool$Outbound
       | OpenRouterWebSearchServerTool$Outbound
       | MessagesRequestTool$Outbound
+      | ShellServerToolOpenRouter$Outbound
     >
     | undefined;
   top_k?: number | undefined;
@@ -1547,14 +1577,17 @@ export const MessagesRequest$outboundSchema: z.ZodType<
   cacheControl: AnthropicCacheControlDirective$outboundSchema.optional(),
   contextManagement: z.nullable(z.lazy(() => ContextManagement$outboundSchema))
     .optional(),
+  fallbacks: z.nullable(z.array(MessagesFallbackParam$outboundSchema))
+    .optional(),
   maxTokens: z.int().optional(),
   messages: z.nullable(z.array(MessagesMessageParam$outboundSchema)),
-  metadata: z.lazy(() => Metadata$outboundSchema).optional(),
+  metadata: z.lazy(() => MessagesRequestMetadata$outboundSchema).optional(),
   model: z.string(),
   models: z.array(z.string()).optional(),
   outputConfig: MessagesOutputConfig$outboundSchema.optional(),
   plugins: z.array(
     z.union([
+      AutoBetaRouterPlugin$outboundSchema,
       AutoRouterPlugin$outboundSchema,
       ContextCompressionPlugin$outboundSchema,
       FileParserPlugin$outboundSchema,
@@ -1596,12 +1629,16 @@ export const MessagesRequest$outboundSchema: z.ZodType<
       z.lazy(() => ToolTextEditor20250124$outboundSchema),
       z.lazy(() => ToolWebSearch20250305$outboundSchema),
       z.lazy(() => ToolWebSearch20260209$outboundSchema),
+      AnthropicToolSearchToolBm25$outboundSchema,
+      AnthropicToolSearchToolRegex$outboundSchema,
+      BashServerTool$outboundSchema,
       DatetimeServerTool$outboundSchema,
       ImageGenerationServerToolOpenRouter$outboundSchema,
-      ChatSearchModelsServerTool$outboundSchema,
+      MessagesSearchModelsServerTool$outboundSchema,
       WebFetchServerTool$outboundSchema,
       OpenRouterWebSearchServerTool$outboundSchema,
       z.lazy(() => MessagesRequestTool$outboundSchema),
+      ShellServerToolOpenRouter$outboundSchema,
     ]),
   ).optional(),
   topK: z.int().optional(),

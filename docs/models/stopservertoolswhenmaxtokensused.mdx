@@ -1,0 +1,23 @@
+---
+title: "StopServerToolsWhenMaxTokensUsed"
+---
+
+Stop once cumulative token usage across the loop exceeds this threshold.
+
+## Example Usage
+
+```typescript
+import { StopServerToolsWhenMaxTokensUsed } from "@openrouter/sdk/models";
+
+let value: StopServerToolsWhenMaxTokensUsed = {
+  maxTokens: 945221,
+  type: "max_tokens_used",
+};
+```
+
+## Fields
+
+| Field               | Type                | Required            | Description         |
+| ------------------- | ------------------- | ------------------- | ------------------- |
+| `maxTokens`         | *number*            | :heavy_check_mark:  | N/A                 |
+| `type`              | *"max_tokens_used"* | :heavy_check_mark:  | N/A                 |

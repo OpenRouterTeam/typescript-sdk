@@ -4,13 +4,23 @@
  */
 
 import * as z from "zod/v4";
+import { remap as remap$ } from "../lib/primitives.js";
 import { safeParse } from "../lib/schemas.js";
+import { ClosedEnum } from "../types/enums.js";
 import { Result as SafeParseResult } from "../types/fp.js";
 import { SDKValidationError } from "./errors/sdkvalidationerror.js";
 import {
   ToolCallStatus,
   ToolCallStatus$inboundSchema,
+  ToolCallStatus$outboundSchema,
 } from "./toolcallstatus.js";
+
+export const OutputAdvisorServerToolItemType = {
+  OpenrouterAdvisor: "openrouter:advisor",
+} as const;
+export type OutputAdvisorServerToolItemType = ClosedEnum<
+  typeof OutputAdvisorServerToolItemType
+>;
 
 /**
  * An openrouter:advisor server tool output item
@@ -26,6 +36,10 @@ export type OutputAdvisorServerToolItem = {
   error?: string | undefined;
   id?: string | undefined;
   /**
+   * Provider-safe function name of the specific advisor instance that produced this item (e.g. `openrouter_advisor__1`). Present only when more than one advisor tool is configured; omitted for the default single advisor. Echo this field back unchanged so the advisor's cross-request memory stays namespaced to the correct instance. This identity is positional: it is derived from the index of the advisor entry in the request `tools` array, so clients must keep the order of advisor tool entries stable across requests in a conversation. Reordering or inserting advisor entries shifts these names and causes each advisor's cross-request memory to be attributed to the wrong instance.
+   */
+  instanceName?: string | undefined;
+  /**
    * Slug of the advisor model that was consulted.
    */
   model?: string | undefined;
@@ -34,8 +48,17 @@ export type OutputAdvisorServerToolItem = {
    */
   prompt?: string | undefined;
   status: ToolCallStatus;
-  type: "openrouter:advisor";
+  type: OutputAdvisorServerToolItemType;
 };
+
+/** @internal */
+export const OutputAdvisorServerToolItemType$inboundSchema: z.ZodEnum<
+  typeof OutputAdvisorServerToolItemType
+> = z.enum(OutputAdvisorServerToolItemType);
+/** @internal */
+export const OutputAdvisorServerToolItemType$outboundSchema: z.ZodEnum<
+  typeof OutputAdvisorServerToolItemType
+> = OutputAdvisorServerToolItemType$inboundSchema;
 
 /** @internal */
 export const OutputAdvisorServerToolItem$inboundSchema: z.ZodType<
@@ -45,12 +68,56 @@ export const OutputAdvisorServerToolItem$inboundSchema: z.ZodType<
   advice: z.string().optional(),
   error: z.string().optional(),
   id: z.string().optional(),
+  instance_name: z.string().optional(),
   model: z.string().optional(),
   prompt: z.string().optional(),
   status: ToolCallStatus$inboundSchema,
-  type: z.literal("openrouter:advisor"),
+  type: OutputAdvisorServerToolItemType$inboundSchema,
+}).transform((v) => {
+  return remap$(v, {
+    "instance_name": "instanceName",
+  });
+});
+/** @internal */
+export type OutputAdvisorServerToolItem$Outbound = {
+  advice?: string | undefined;
+  error?: string | undefined;
+  id?: string | undefined;
+  instance_name?: string | undefined;
+  model?: string | undefined;
+  prompt?: string | undefined;
+  status: string;
+  type: string;
+};
+
+/** @internal */
+export const OutputAdvisorServerToolItem$outboundSchema: z.ZodType<
+  OutputAdvisorServerToolItem$Outbound,
+  OutputAdvisorServerToolItem
+> = z.object({
+  advice: z.string().optional(),
+  error: z.string().optional(),
+  id: z.string().optional(),
+  instanceName: z.string().optional(),
+  model: z.string().optional(),
+  prompt: z.string().optional(),
+  status: ToolCallStatus$outboundSchema,
+  type: OutputAdvisorServerToolItemType$outboundSchema,
+}).transform((v) => {
+  return remap$(v, {
+    instanceName: "instance_name",
+  });
 });
 
+export function outputAdvisorServerToolItemToJSON(
+  outputAdvisorServerToolItem: OutputAdvisorServerToolItem,
+): string {
+  return JSON.stringify(
+    OutputAdvisorServerToolItem$outboundSchema.parse(
+      outputAdvisorServerToolItem,
+    ),
+  );
+}
 export function outputAdvisorServerToolItemFromJSON(
   jsonString: string,
 ): SafeParseResult<OutputAdvisorServerToolItem, SDKValidationError> {

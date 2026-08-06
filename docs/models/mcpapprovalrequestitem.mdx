@@ -1,0 +1,29 @@
+---
+title: "McpApprovalRequestItem"
+---
+
+Request for approval to execute an MCP tool
+
+## Example Usage
+
+```typescript
+import { McpApprovalRequestItem } from "@openrouter/sdk/models";
+
+let value: McpApprovalRequestItem = {
+  arguments: "{\"id\":\"123\"}",
+  id: "approval-abc123",
+  name: "delete_record",
+  serverLabel: "database-server",
+  type: "mcp_approval_request",
+};
+```
+
+## Fields
+
+| Field                                                                        | Type                                                                         | Required                                                                     | Description                                                                  |
+| ---------------------------------------------------------------------------- | ---------------------------------------------------------------------------- | ---------------------------------------------------------------------------- | ---------------------------------------------------------------------------- |
+| `arguments`                                                                  | *string*                                                                     | :heavy_check_mark:                                                           | N/A                                                                          |
+| `id`                                                                         | *string*                                                                     | :heavy_check_mark:                                                           | N/A                                                                          |
+| `name`                                                                       | *string*                                                                     | :heavy_check_mark:                                                           | N/A                                                                          |
+| `serverLabel`                                                                | *string*                                                                     | :heavy_check_mark:                                                           | N/A                                                                          |
+| `type`                                                                       | [models.McpApprovalRequestItemType](../models/mcpapprovalrequestitemtype.mdx) | :heavy_check_mark:                                                           | N/A                                                                          |

@@ -1,0 +1,32 @@
+---
+title: "NamespaceTool"
+---
+
+Groups function/custom tools under a shared namespace
+
+## Example Usage
+
+```typescript
+import { NamespaceTool } from "@openrouter/sdk/models";
+
+let value: NamespaceTool = {
+  description: "Tools for spawning and managing sub-agents.",
+  name: "multi_agent_v1",
+  tools: [
+    {
+      name: "spawn_agent",
+      type: "function",
+    },
+  ],
+  type: "namespace",
+};
+```
+
+## Fields
+
+| Field                                                      | Type                                                       | Required                                                   | Description                                                |
+| ---------------------------------------------------------- | ---------------------------------------------------------- | ---------------------------------------------------------- | ---------------------------------------------------------- |
+| `description`                                              | *string*                                                   | :heavy_check_mark:                                         | N/A                                                        |
+| `name`                                                     | *string*                                                   | :heavy_check_mark:                                         | N/A                                                        |
+| `tools`                                                    | *models.NamespaceToolTool*[]                               | :heavy_check_mark:                                         | N/A                                                        |
+| `type`                                                     | [models.NamespaceToolType](../models/namespacetooltype.mdx) | :heavy_check_mark:                                         | N/A                                                        |

@@ -1,0 +1,21 @@
+---
+title: "ReasoningMode"
+---
+
+Selects the reasoning mode. `standard` is the default; `pro` engages deeper reasoning on models that support it, billed at standard token rates. Only supported by OpenAI GPT-5.6 and newer.
+
+## Example Usage
+
+```typescript
+import { ReasoningMode } from "@openrouter/sdk/models";
+
+let value: ReasoningMode = "standard";
+
+// Open enum: unrecognized values are captured as Unrecognized<string>
+```
+
+## Values
+
+```typescript
+"standard" | "pro" | Unrecognized<string>
+```

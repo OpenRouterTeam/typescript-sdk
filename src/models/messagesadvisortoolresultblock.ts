@@ -10,14 +10,14 @@ import { remap as remap$ } from "../lib/primitives.js";
  * Advisor tool result from a prior assistant turn, replayed back to the model on the next turn. Mirrors the block Anthropic returns in assistant content when the `advisor_20260301` tool runs.
  */
 export type MessagesAdvisorToolResultBlock = {
-  content: { [k: string]: any | null };
+  content: { [k: string]: any };
   toolUseId: string;
   type: "advisor_tool_result";
 };
 
 /** @internal */
 export type MessagesAdvisorToolResultBlock$Outbound = {
-  content: { [k: string]: any | null };
+  content: { [k: string]: any };
   tool_use_id: string;
   type: "advisor_tool_result";
 };
@@ -27,7 +27,7 @@ export const MessagesAdvisorToolResultBlock$outboundSchema: z.ZodType<
   MessagesAdvisorToolResultBlock$Outbound,
   MessagesAdvisorToolResultBlock
 > = z.object({
-  content: z.record(z.string(), z.nullable(z.any())),
+  content: z.record(z.string(), z.any()),
   toolUseId: z.string(),
   type: z.literal("advisor_tool_result"),
 }).transform((v) => {

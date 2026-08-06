@@ -38,7 +38,7 @@ export type OutputMemoryServerToolItem = {
   key?: string | undefined;
   status: ToolCallStatus;
   type: OutputMemoryServerToolItemType;
-  value?: any | null | undefined;
+  value?: any | undefined;
 };
 
 /** @internal */
@@ -67,7 +67,7 @@ export const OutputMemoryServerToolItem$inboundSchema: z.ZodType<
   key: z.string().optional(),
   status: ToolCallStatus$inboundSchema,
   type: OutputMemoryServerToolItemType$inboundSchema,
-  value: z.nullable(z.any()).optional(),
+  value: z.any().optional(),
 });
 /** @internal */
 export type OutputMemoryServerToolItem$Outbound = {
@@ -76,7 +76,7 @@ export type OutputMemoryServerToolItem$Outbound = {
   key?: string | undefined;
   status: string;
   type: string;
-  value?: any | null | undefined;
+  value?: any | undefined;
 };
 
 /** @internal */
@@ -89,7 +89,7 @@ export const OutputMemoryServerToolItem$outboundSchema: z.ZodType<
   key: z.string().optional(),
   status: ToolCallStatus$outboundSchema,
   type: OutputMemoryServerToolItemType$outboundSchema,
-  value: z.nullable(z.any()).optional(),
+  value: z.any().optional(),
 });
 
 export function outputMemoryServerToolItemToJSON(

@@ -12,21 +12,22 @@ import { Result as SafeParseResult } from "../types/fp.js";
 import { SDKValidationError } from "./errors/sdkvalidationerror.js";
 
 /**
- * Image detail level for vision models
+ * Image detail level for vision models. `original` is an OpenRouter extension (not in the OpenAI Chat Completions spec) requesting true original-resolution media; it is downgraded to `high` for providers that lack an original-resolution tier.
  */
 export const ChatContentImageDetail = {
   Auto: "auto",
   Low: "low",
   High: "high",
+  Original: "original",
 } as const;
 /**
- * Image detail level for vision models
+ * Image detail level for vision models. `original` is an OpenRouter extension (not in the OpenAI Chat Completions spec) requesting true original-resolution media; it is downgraded to `high` for providers that lack an original-resolution tier.
  */
 export type ChatContentImageDetail = OpenEnum<typeof ChatContentImageDetail>;
 
 export type ChatContentImageImageUrl = {
   /**
-   * Image detail level for vision models
+   * Image detail level for vision models. `original` is an OpenRouter extension (not in the OpenAI Chat Completions spec) requesting true original-resolution media; it is downgraded to `high` for providers that lack an original-resolution tier.
    */
   detail?: ChatContentImageDetail | undefined;
   /**

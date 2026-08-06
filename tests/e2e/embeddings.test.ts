@@ -1,4 +1,5 @@
 import { beforeAll, describe, expect, it } from 'vitest';
+import { BadRequestResponseError } from '../../src/models/errors/badrequestresponseerror.js';
 import { OpenRouter } from '../../src/sdk/sdk.js';
 
 describe('Embeddings E2E Tests', () => {
@@ -116,23 +117,15 @@ describe('Embeddings E2E Tests', () => {
       }
     });
 
-    it('should handle empty string input gracefully', async () => {
-      const response = await client.embeddings.generate({
-        requestBody: {
-          input: '',
-          model: 'openai/text-embedding-3-small',
-        },
-      });
-
-      expect(response).toBeDefined();
-
-      expect(response.data).toBeDefined();
-      expect(Array.isArray(response.data)).toBe(true);
-
-      if (response.data.length > 0) {
-        const embedding = response.data[0];
-        expect(embedding?.embedding).toBeDefined();
-      }
+    it('should reject an empty string input', async () => {
+      await expect(
+        client.embeddings.generate({
+          requestBody: {
+            input: '',
+            model: 'openai/text-embedding-3-small',
+          },
+        }),
+      ).rejects.toThrow(BadRequestResponseError);
     });
 
     it('should include model information in response', async () => {

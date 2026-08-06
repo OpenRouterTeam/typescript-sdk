@@ -16,7 +16,7 @@ export type PayloadTooLargeResponseErrorData = {
    * Error data for PayloadTooLargeResponse
    */
   error: models.PayloadTooLargeResponseErrorData;
-  openrouterMetadata?: { [k: string]: any | null } | null | undefined;
+  openrouterMetadata?: { [k: string]: any } | null | undefined;
   userId?: string | null | undefined;
 };
 
@@ -28,7 +28,7 @@ export class PayloadTooLargeResponseError extends OpenRouterError {
    * Error data for PayloadTooLargeResponse
    */
   error: models.PayloadTooLargeResponseErrorData;
-  openrouterMetadata?: { [k: string]: any | null } | null | undefined;
+  openrouterMetadata?: { [k: string]: any } | null | undefined;
   userId?: string | null | undefined;
 
   /** The original data that was passed to this error instance. */
@@ -58,8 +58,7 @@ export const PayloadTooLargeResponseError$inboundSchema: z.ZodType<
   unknown
 > = z.object({
   error: models.PayloadTooLargeResponseErrorData$inboundSchema,
-  openrouter_metadata: z.nullable(z.record(z.string(), z.nullable(z.any())))
-    .optional(),
+  openrouter_metadata: z.nullable(z.record(z.string(), z.any())).optional(),
   user_id: z.nullable(z.string()).optional(),
   request$: z.custom<Request>(x => x instanceof Request),
   response$: z.custom<Response>(x => x instanceof Response),

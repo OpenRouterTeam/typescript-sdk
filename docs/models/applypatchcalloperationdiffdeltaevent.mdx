@@ -1,0 +1,29 @@
+---
+title: "ApplyPatchCallOperationDiffDeltaEvent"
+---
+
+Incremental chunk of `operation.diff` for an `apply_patch_call`. Matches OpenAI's streaming shape.
+
+## Example Usage
+
+```typescript
+import { ApplyPatchCallOperationDiffDeltaEvent } from "@openrouter/sdk/models";
+
+let value: ApplyPatchCallOperationDiffDeltaEvent = {
+  delta: "<value>",
+  itemId: "<id>",
+  outputIndex: 790412,
+  sequenceNumber: 0,
+  type: "response.apply_patch_call_operation_diff.delta",
+};
+```
+
+## Fields
+
+| Field                                              | Type                                               | Required                                           | Description                                        |
+| -------------------------------------------------- | -------------------------------------------------- | -------------------------------------------------- | -------------------------------------------------- |
+| `delta`                                            | *string*                                           | :heavy_check_mark:                                 | N/A                                                |
+| `itemId`                                           | *string*                                           | :heavy_check_mark:                                 | N/A                                                |
+| `outputIndex`                                      | *number*                                           | :heavy_check_mark:                                 | N/A                                                |
+| `sequenceNumber`                                   | *number*                                           | :heavy_check_mark:                                 | N/A                                                |
+| `type`                                             | *"response.apply_patch_call_operation_diff.delta"* | :heavy_check_mark:                                 | N/A                                                |

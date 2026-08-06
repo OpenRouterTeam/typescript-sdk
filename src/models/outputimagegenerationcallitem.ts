@@ -26,6 +26,10 @@ export type OutputImageGenerationCallItem = {
   result?: string | null | undefined;
   status: ImageGenerationStatus;
   type: OutputImageGenerationCallItemType;
+  /**
+   * The prompt (possibly rewritten) that the image was generated from.
+   */
+  prompt?: string | undefined;
 };
 
 /** @internal */
@@ -46,6 +50,7 @@ export const OutputImageGenerationCallItem$inboundSchema: z.ZodType<
   result: z.nullable(z.string()).default(null),
   status: ImageGenerationStatus$inboundSchema,
   type: OutputImageGenerationCallItemType$inboundSchema,
+  prompt: z.string().optional(),
 });
 /** @internal */
 export type OutputImageGenerationCallItem$Outbound = {
@@ -53,6 +58,7 @@ export type OutputImageGenerationCallItem$Outbound = {
   result: string | null;
   status: string;
   type: string;
+  prompt?: string | undefined;
 };
 
 /** @internal */
@@ -64,6 +70,7 @@ export const OutputImageGenerationCallItem$outboundSchema: z.ZodType<
   result: z.nullable(z.string()).default(null),
   status: ImageGenerationStatus$outboundSchema,
   type: OutputImageGenerationCallItemType$outboundSchema,
+  prompt: z.string().optional(),
 });
 
 export function outputImageGenerationCallItemToJSON(

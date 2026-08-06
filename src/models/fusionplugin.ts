@@ -5,10 +5,55 @@
 
 import * as z from "zod/v4";
 import { remap as remap$ } from "../lib/primitives.js";
+import * as openEnums from "../types/enums.js";
+import { OpenEnum } from "../types/enums.js";
+
+/**
+ * A curated OpenRouter fusion preset (slugs follow `<task>-<tier>`, e.g. `general-high`). Expands server-side into the preset's analysis_models panel and analyst model, so callers never name individual models. Explicitly provided `analysis_models` / `model` take precedence.
+ */
+export const PresetEnum = {
+  GeneralHigh: "general-high",
+  GeneralBudget: "general-budget",
+  GeneralFast: "general-fast",
+} as const;
+/**
+ * A curated OpenRouter fusion preset (slugs follow `<task>-<tier>`, e.g. `general-high`). Expands server-side into the preset's analysis_models panel and analyst model, so callers never name individual models. Explicitly provided `analysis_models` / `model` take precedence.
+ */
+export type PresetEnum = OpenEnum<typeof PresetEnum>;
+
+export type Parameters2 = string | number | boolean;
+
+export type Parameters1 = string | number | boolean;
+
+export type Parameters3 =
+  | string
+  | number
+  | boolean
+  | Array<string | number | boolean | null>
+  | { [k: string]: string | number | boolean | null };
+
+export type FusionPluginTool = {
+  /**
+   * Optional configuration forwarded as the tool's `parameters` object.
+   */
+  parameters?: {
+    [k: string]:
+      | string
+      | number
+      | boolean
+      | Array<string | number | boolean | null>
+      | { [k: string]: string | number | boolean | null }
+      | null;
+  } | undefined;
+  /**
+   * Server tool type identifier (e.g. "openrouter:web_search", "openrouter:web_fetch").
+   */
+  type: string;
+};
 
 export type FusionPlugin = {
   /**
-   * Slugs of models to run in parallel as the "expert panel" the judge analyzes. Each model receives the same user prompt with web_search + web_fetch enabled. Capped at 8 models to bound cost amplification. When omitted, defaults to the Quality preset from the /labs/fusion UI (~anthropic/claude-opus-latest, ~openai/gpt-latest, ~google/gemini-pro-latest).
+   * Slugs of models to run in parallel as the "expert panel" the analyst analyzes. Each model receives the same user prompt with web_search + web_fetch enabled. Capped at 8 models to bound cost amplification. When omitted, defaults to the Quality preset from the /labs/fusion UI (~anthropic/claude-opus-latest, ~openai/gpt-latest, ~google/gemini-pro-latest).
    */
   analysisModels?: Array<string> | undefined;
   /**
@@ -17,14 +62,124 @@ export type FusionPlugin = {
   enabled?: boolean | undefined;
   id: "fusion";
   /**
-   * Maximum number of tool-calling steps each panelist (analysis model) and the judge model may take during their agentic web-research loop. Models with web_search/web_fetch enabled iterate until they produce a text response or hit this ceiling. Defaults to 8. Capped at 16.
+   * Maximum number of tool-calling steps each panelist (analysis model) and the analyst model may take during their agentic web-research loop. Models with web_search/web_fetch enabled iterate until they produce a text response or hit this ceiling. Defaults to 8. Capped at 16.
    */
   maxToolCalls?: number | undefined;
   /**
-   * Slug of the model that performs both the judge step (with web_search + web_fetch) and the final synthesis. When omitted, defaults to the first model in the Quality preset.
+   * Slug of the model that performs both the analyst step (with web_search + web_fetch) and the final synthesis. When omitted, defaults to the first model in the Quality preset.
    */
   model?: string | undefined;
+  /**
+   * A curated OpenRouter fusion preset (slugs follow `<task>-<tier>`, e.g. `general-high`). Expands server-side into the preset's analysis_models panel and analyst model, so callers never name individual models. Explicitly provided `analysis_models` / `model` take precedence.
+   */
+  preset?: PresetEnum | undefined;
+  /**
+   * Server tools available to panelist and analyst inner calls. Each entry uses the same `{ type, parameters? }` shorthand as the outer Chat Completions request. When omitted, defaults to `[{ type: "openrouter:web_search" }, { type: "openrouter:web_fetch" }]`. Pass an empty array to disable tools entirely (panelists answer from parametric knowledge only).
+   */
+  tools?: Array<FusionPluginTool> | undefined;
 };
+
+/** @internal */
+export const PresetEnum$outboundSchema: z.ZodType<string, PresetEnum> =
+  openEnums.outboundSchema(PresetEnum);
+
+/** @internal */
+export type Parameters2$Outbound = string | number | boolean;
+
+/** @internal */
+export const Parameters2$outboundSchema: z.ZodType<
+  Parameters2$Outbound,
+  Parameters2
+> = z.union([z.string(), z.number(), z.boolean()]);
+
+export function parameters2ToJSON(parameters2: Parameters2): string {
+  return JSON.stringify(Parameters2$outboundSchema.parse(parameters2));
+}
+
+/** @internal */
+export type Parameters1$Outbound = string | number | boolean;
+
+/** @internal */
+export const Parameters1$outboundSchema: z.ZodType<
+  Parameters1$Outbound,
+  Parameters1
+> = z.union([z.string(), z.number(), z.boolean()]);
+
+export function parameters1ToJSON(parameters1: Parameters1): string {
+  return JSON.stringify(Parameters1$outboundSchema.parse(parameters1));
+}
+
+/** @internal */
+export type Parameters3$Outbound =
+  | string
+  | number
+  | boolean
+  | Array<string | number | boolean | null>
+  | { [k: string]: string | number | boolean | null };
+
+/** @internal */
+export const Parameters3$outboundSchema: z.ZodType<
+  Parameters3$Outbound,
+  Parameters3
+> = z.union([
+  z.string(),
+  z.number(),
+  z.boolean(),
+  z.array(z.nullable(z.union([z.string(), z.number(), z.boolean()]))),
+  z.record(
+    z.string(),
+    z.nullable(z.union([z.string(), z.number(), z.boolean()])),
+  ),
+]);
+
+export function parameters3ToJSON(parameters3: Parameters3): string {
+  return JSON.stringify(Parameters3$outboundSchema.parse(parameters3));
+}
+
+/** @internal */
+export type FusionPluginTool$Outbound = {
+  parameters?: {
+    [k: string]:
+      | string
+      | number
+      | boolean
+      | Array<string | number | boolean | null>
+      | { [k: string]: string | number | boolean | null }
+      | null;
+  } | undefined;
+  type: string;
+};
+
+/** @internal */
+export const FusionPluginTool$outboundSchema: z.ZodType<
+  FusionPluginTool$Outbound,
+  FusionPluginTool
+> = z.object({
+  parameters: z.record(
+    z.string(),
+    z.nullable(
+      z.union([
+        z.string(),
+        z.number(),
+        z.boolean(),
+        z.array(z.nullable(z.union([z.string(), z.number(), z.boolean()]))),
+        z.record(
+          z.string(),
+          z.nullable(z.union([z.string(), z.number(), z.boolean()])),
+        ),
+      ]),
+    ),
+  ).optional(),
+  type: z.string(),
+});
+
+export function fusionPluginToolToJSON(
+  fusionPluginTool: FusionPluginTool,
+): string {
+  return JSON.stringify(
+    FusionPluginTool$outboundSchema.parse(fusionPluginTool),
+  );
+}
 
 /** @internal */
 export type FusionPlugin$Outbound = {
@@ -33,6 +188,8 @@ export type FusionPlugin$Outbound = {
   id: "fusion";
   max_tool_calls?: number | undefined;
   model?: string | undefined;
+  preset?: string | undefined;
+  tools?: Array<FusionPluginTool$Outbound> | undefined;
 };
 
 /** @internal */
@@ -45,6 +202,8 @@ export const FusionPlugin$outboundSchema: z.ZodType<
   id: z.literal("fusion"),
   maxToolCalls: z.int().optional(),
   model: z.string().optional(),
+  preset: PresetEnum$outboundSchema.optional(),
+  tools: z.array(z.lazy(() => FusionPluginTool$outboundSchema)).optional(),
 }).transform((v) => {
   return remap$(v, {
     analysisModels: "analysis_models",

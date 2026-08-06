@@ -7,19 +7,17 @@ import * as z from "zod/v4";
 import { remap as remap$ } from "../lib/primitives.js";
 
 /**
- * A tool made available to the advisor sub-agent. Accepts function tools and OpenRouter server tools (e.g. openrouter:web_search). The advisor tool may not list itself.
+ * A tool made available to the advisor sub-agent. Only OpenRouter server tools (e.g. openrouter:web_search) are supported; function tools are rejected because the advisor has no way to execute them. The advisor tool may not list itself.
  */
 export type AdvisorNestedTool = {
-  function?: { [k: string]: any | null } | undefined;
-  parameters?: { [k: string]: any | null } | undefined;
+  parameters?: { [k: string]: any } | undefined;
   type: string;
-  additionalProperties?: { [k: string]: any | null } | undefined;
+  additionalProperties?: { [k: string]: any } | undefined;
 };
 
 /** @internal */
 export type AdvisorNestedTool$Outbound = {
-  function?: { [k: string]: any | null } | undefined;
-  parameters?: { [k: string]: any | null } | undefined;
+  parameters?: { [k: string]: any } | undefined;
   type: string;
   [additionalProperties: string]: unknown;
 };
@@ -29,10 +27,9 @@ export const AdvisorNestedTool$outboundSchema: z.ZodType<
   AdvisorNestedTool$Outbound,
   AdvisorNestedTool
 > = z.object({
-  function: z.record(z.string(), z.nullable(z.any())).optional(),
-  parameters: z.record(z.string(), z.nullable(z.any())).optional(),
+  parameters: z.record(z.string(), z.any()).optional(),
   type: z.string(),
-  additionalProperties: z.record(z.string(), z.nullable(z.any())).optional(),
+  additionalProperties: z.record(z.string(), z.any()).optional(),
 }).transform((v) => {
   return {
     ...v.additionalProperties,

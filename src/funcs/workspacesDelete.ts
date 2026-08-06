@@ -32,7 +32,7 @@ import { Result } from "../types/fp.js";
  * Delete a workspace
  *
  * @remarks
- * Delete an existing workspace. The default workspace cannot be deleted. Workspaces with active API keys cannot be deleted. [Management key](/docs/guides/overview/auth/management-api-keys) required.
+ * Delete an existing workspace. The default workspace cannot be deleted. Workspaces with active API keys cannot be deleted; remove the keys first. [Management key](/docs/guides/overview/auth/management-api-keys) required.
  */
 export function workspacesDelete(
   client: OpenRouterCore,

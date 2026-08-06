@@ -11,8 +11,11 @@ export const Quantization = {
   Int4: "int4",
   Int8: "int8",
   Fp4: "fp4",
+  Mxfp4: "mxfp4",
+  Nvfp4: "nvfp4",
   Fp6: "fp6",
   Fp8: "fp8",
+  Mxfp8: "mxfp8",
   Fp16: "fp16",
   Bf16: "bf16",
   Fp32: "fp32",
@@ -20,6 +23,9 @@ export const Quantization = {
 } as const;
 export type Quantization = OpenEnum<typeof Quantization>;
 
+/** @internal */
+export const Quantization$inboundSchema: z.ZodType<Quantization, unknown> =
+  openEnums.inboundSchema(Quantization);
 /** @internal */
 export const Quantization$outboundSchema: z.ZodType<string, Quantization> =
   openEnums.outboundSchema(Quantization);

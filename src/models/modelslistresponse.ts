@@ -4,10 +4,21 @@
  */
 
 import * as z from "zod/v4";
+import { remap as remap$ } from "../lib/primitives.js";
 import { safeParse } from "../lib/schemas.js";
 import { Result as SafeParseResult } from "../types/fp.js";
 import { SDKValidationError } from "./errors/sdkvalidationerror.js";
 import { Model, Model$inboundSchema } from "./model.js";
+
+/**
+ * Pagination links
+ */
+export type Links = {
+  /**
+   * URL for the next page of results, or null if this is the last page
+   */
+  next: string | null;
+};
 
 /**
  * List of available models
@@ -17,7 +28,30 @@ export type ModelsListResponse = {
    * List of available models
    */
   data: Array<Model>;
+  /**
+   * Pagination links
+   */
+  links: Links;
+  /**
+   * Total number of models matching the query
+   */
+  totalCount: number;
 };
+
+/** @internal */
+export const Links$inboundSchema: z.ZodType<Links, unknown> = z.object({
+  next: z.nullable(z.string()),
+});
+
+export function linksFromJSON(
+  jsonString: string,
+): SafeParseResult<Links, SDKValidationError> {
+  return safeParse(
+    jsonString,
+    (x) => Links$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'Links' from JSON`,
+  );
+}
 
 /** @internal */
 export const ModelsListResponse$inboundSchema: z.ZodType<
@@ -25,6 +59,12 @@ export const ModelsListResponse$inboundSchema: z.ZodType<
   unknown
 > = z.object({
   data: z.array(Model$inboundSchema),
+  links: z.lazy(() => Links$inboundSchema),
+  total_count: z.int(),
+}).transform((v) => {
+  return remap$(v, {
+    "total_count": "totalCount",
+  });
 });
 
 export function modelsListResponseFromJSON(

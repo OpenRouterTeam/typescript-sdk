@@ -22,8 +22,8 @@ export const ApiType = {
   Completions: "completions",
   Embeddings: "embeddings",
   Rerank: "rerank",
-  Tts: "tts",
-  Stt: "stt",
+  TTS: "tts",
+  STT: "stt",
   Video: "video",
   Image: "image",
 } as const;
@@ -31,6 +31,19 @@ export const ApiType = {
  * Type of API used for the generation
  */
 export type ApiType = OpenEnum<typeof ApiType>;
+
+/**
+ * The data region this generation was routed through: 'global', 'europe', or 'us'.
+ */
+export const DataRegion = {
+  Global: "global",
+  Europe: "europe",
+  Us: "us",
+} as const;
+/**
+ * The data region this generation was routed through: 'global', 'europe', or 'us'.
+ */
+export type DataRegion = OpenEnum<typeof DataRegion>;
 
 /**
  * Generation data
@@ -56,6 +69,10 @@ export type GenerationResponseData = {
    * ISO 8601 timestamp of when the generation was created
    */
   createdAt: string;
+  /**
+   * The data region this generation was routed through: 'global', 'europe', or 'us'.
+   */
+  dataRegion: DataRegion;
   /**
    * External user identifier
    */
@@ -208,6 +225,10 @@ export type GenerationResponseData = {
    * The resolved web search engine used for this generation (e.g. exa, firecrawl, parallel)
    */
   webSearchEngine: string | null;
+  /**
+   * ID of the workspace this generation is attributed to. Null for accounts without workspaces. Generations created before workspace resolution existed are attributed to the account default workspace.
+   */
+  workspaceId: string | null;
 };
 
 /**
@@ -225,6 +246,10 @@ export const ApiType$inboundSchema: z.ZodType<ApiType, unknown> = openEnums
   .inboundSchema(ApiType);
 
 /** @internal */
+export const DataRegion$inboundSchema: z.ZodType<DataRegion, unknown> =
+  openEnums.inboundSchema(DataRegion);
+
+/** @internal */
 export const GenerationResponseData$inboundSchema: z.ZodType<
   GenerationResponseData,
   unknown
@@ -234,6 +259,7 @@ export const GenerationResponseData$inboundSchema: z.ZodType<
   cache_discount: z.nullable(z.number()),
   cancelled: z.nullable(z.boolean()),
   created_at: z.string(),
+  data_region: DataRegion$inboundSchema,
   external_user: z.nullable(z.string()),
   finish_reason: z.nullable(z.string()),
   generation_time: z.nullable(z.number()),
@@ -272,12 +298,14 @@ export const GenerationResponseData$inboundSchema: z.ZodType<
   usage: z.number(),
   user_agent: z.nullable(z.string()),
   web_search_engine: z.nullable(z.string()),
+  workspace_id: z.nullable(z.string()),
 }).transform((v) => {
   return remap$(v, {
     "api_type": "apiType",
     "app_id": "appId",
     "cache_discount": "cacheDiscount",
     "created_at": "createdAt",
+    "data_region": "dataRegion",
     "external_user": "externalUser",
     "finish_reason": "finishReason",
     "generation_time": "generationTime",
@@ -309,6 +337,7 @@ export const GenerationResponseData$inboundSchema: z.ZodType<
     "upstream_inference_cost": "upstreamInferenceCost",
     "user_agent": "userAgent",
     "web_search_engine": "webSearchEngine",
+    "workspace_id": "workspaceId",
   });
 });
 

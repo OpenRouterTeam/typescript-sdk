@@ -1,0 +1,31 @@
+---
+title: "ReasoningDetailServerToolCall"
+---
+
+Record of an OpenRouter server-tool invocation (e.g. openrouter:fusion), carried in reasoning_details so a prior tool call can be rehydrated into a later turn of the same conversation.
+
+## Example Usage
+
+```typescript
+import { ReasoningDetailServerToolCall } from "@openrouter/sdk/models";
+
+let value: ReasoningDetailServerToolCall = {
+  arguments: "<value>",
+  result: "<value>",
+  toolName: "<value>",
+  type: "reasoning.server_tool_call",
+};
+```
+
+## Fields
+
+| Field                                                  | Type                                                   | Required                                               | Description                                            | Example                                                |
+| ------------------------------------------------------ | ------------------------------------------------------ | ------------------------------------------------------ | ------------------------------------------------------ | ------------------------------------------------------ |
+| `arguments`                                            | *string*                                               | :heavy_check_mark:                                     | N/A                                                    |                                                        |
+| `format`                                               | [models.ReasoningFormat](../models/reasoningformat.mdx) | :heavy_minus_sign:                                     | N/A                                                    | unknown                                                |
+| `id`                                                   | *string*                                               | :heavy_minus_sign:                                     | N/A                                                    |                                                        |
+| `index`                                                | *number*                                               | :heavy_minus_sign:                                     | N/A                                                    |                                                        |
+| `result`                                               | *string*                                               | :heavy_check_mark:                                     | N/A                                                    |                                                        |
+| `toolCallId`                                           | *string*                                               | :heavy_minus_sign:                                     | N/A                                                    |                                                        |
+| `toolName`                                             | *string*                                               | :heavy_check_mark:                                     | N/A                                                    |                                                        |
+| `type`                                                 | *"reasoning.server_tool_call"*                         | :heavy_check_mark:                                     | N/A                                                    |                                                        |

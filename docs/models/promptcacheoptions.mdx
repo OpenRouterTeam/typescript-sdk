@@ -1,0 +1,22 @@
+---
+title: "PromptCacheOptions"
+---
+
+Request-level prompt-cache controls. `mode: "explicit"` disables OpenAI-managed breakpoints so only blocks marked with `prompt_cache_breakpoint` are cached. Only supported by OpenAI GPT-5.6 and newer.
+
+## Example Usage
+
+```typescript
+import { PromptCacheOptions } from "@openrouter/sdk/models";
+
+let value: PromptCacheOptions = {
+  mode: "explicit",
+};
+```
+
+## Fields
+
+| Field                                                                | Type                                                                 | Required                                                             | Description                                                          |
+| -------------------------------------------------------------------- | -------------------------------------------------------------------- | -------------------------------------------------------------------- | -------------------------------------------------------------------- |
+| `mode`                                                               | [models.PromptCacheOptionsMode](../models/promptcacheoptionsmode.mdx) | :heavy_check_mark:                                                   | N/A                                                                  |
+| `ttl`                                                                | *string*                                                             | :heavy_minus_sign:                                                   | N/A                                                                  |

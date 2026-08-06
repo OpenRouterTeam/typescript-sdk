@@ -31,7 +31,7 @@ export type ToolChoiceAllowedType = ClosedEnum<typeof ToolChoiceAllowedType>;
  */
 export type ToolChoiceAllowed = {
   mode: ModeAuto | ModeRequired;
-  tools: Array<{ [k: string]: any | null }>;
+  tools: Array<{ [k: string]: any }>;
   type: ToolChoiceAllowedType;
 };
 
@@ -92,13 +92,13 @@ export const ToolChoiceAllowed$inboundSchema: z.ZodType<
   unknown
 > = z.object({
   mode: z.union([ModeAuto$inboundSchema, ModeRequired$inboundSchema]),
-  tools: z.array(z.record(z.string(), z.nullable(z.any()))),
+  tools: z.array(z.record(z.string(), z.any())),
   type: ToolChoiceAllowedType$inboundSchema,
 });
 /** @internal */
 export type ToolChoiceAllowed$Outbound = {
   mode: string | string;
-  tools: Array<{ [k: string]: any | null }>;
+  tools: Array<{ [k: string]: any }>;
   type: string;
 };
 
@@ -108,7 +108,7 @@ export const ToolChoiceAllowed$outboundSchema: z.ZodType<
   ToolChoiceAllowed
 > = z.object({
   mode: z.union([ModeAuto$outboundSchema, ModeRequired$outboundSchema]),
-  tools: z.array(z.record(z.string(), z.nullable(z.any()))),
+  tools: z.array(z.record(z.string(), z.any())),
   type: ToolChoiceAllowedType$outboundSchema,
 });
 

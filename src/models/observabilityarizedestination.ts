@@ -20,6 +20,9 @@ export type ObservabilityArizeDestinationConfig = {
    * Custom HTTP headers to include in requests to this destination.
    */
   headers?: { [k: string]: string } | undefined;
+  /**
+   * The name of the tracing project in Arize AX
+   */
   modelId: string;
   spaceKey: string;
 };

@@ -1,0 +1,26 @@
+---
+title: "ListFilesResponse"
+---
+
+## Example Usage
+
+```typescript
+import { ListFilesResponse } from "@openrouter/sdk/models/operations";
+
+let value: ListFilesResponse = {
+  result: {
+    shape: "openrouter",
+    cursor: null,
+    data: [],
+    firstId: null,
+    hasMore: false,
+    lastId: null,
+  },
+};
+```
+
+## Fields
+
+| Field                                                                                                        | Type                                                                                                         | Required                                                                                                     | Description                                                                                                  | Example                                                                                                      |
+| ------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------ |
+| `result`                                                                                                     | *models.FileListResponse*                                                                                    | :heavy_check_mark:                                                                                           | N/A                                                                                                          | \{<br/>"_shape": "openrouter",<br/>"cursor": null,<br/>"data": [],<br/>"first_id": null,<br/>"has_more": false,<br/>"last_id": null<br/>} |

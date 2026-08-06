@@ -1,0 +1,21 @@
+---
+title: "MetadataLevel"
+---
+
+Opt-in level for surfacing routing metadata on the response under `openrouter_metadata`.
+
+## Example Usage
+
+```typescript
+import { MetadataLevel } from "@openrouter/sdk/models";
+
+let value: MetadataLevel = "enabled";
+
+// Open enum: unrecognized values are captured as Unrecognized<string>
+```
+
+## Values
+
+```typescript
+"disabled" | "enabled" | Unrecognized<string>
+```

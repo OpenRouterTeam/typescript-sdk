@@ -1,0 +1,25 @@
+---
+title: "ObservabilityFilterRuleGroup"
+---
+
+## Example Usage
+
+```typescript
+import { ObservabilityFilterRuleGroup } from "@openrouter/sdk/models";
+
+let value: ObservabilityFilterRuleGroup = {
+  rules: [
+    {
+      field: "model",
+      operator: "equals",
+    },
+  ],
+};
+```
+
+## Fields
+
+| Field                              | Type                               | Required                           | Description                        |
+| ---------------------------------- | ---------------------------------- | ---------------------------------- | ---------------------------------- |
+| `logic`                            | [models.Logic](../models/logic.mdx) | :heavy_minus_sign:                 | N/A                                |
+| `rules`                            | [models.Rule](../models/rule.mdx)[] | :heavy_check_mark:                 | N/A                                |

@@ -1,0 +1,26 @@
+---
+title: "OutputApplyPatchServerToolItem"
+---
+
+An openrouter:apply_patch server tool output item. The turn halts when validation succeeds so the client can apply the patch and echo an `apply_patch_call_output` on the next turn.
+
+## Example Usage
+
+```typescript
+import { OutputApplyPatchServerToolItem } from "@openrouter/sdk/models";
+
+let value: OutputApplyPatchServerToolItem = {
+  status: "completed",
+  type: "openrouter:apply_patch",
+};
+```
+
+## Fields
+
+| Field                                                                                                                             | Type                                                                                                                              | Required                                                                                                                          | Description                                                                                                                       | Example                                                                                                                           |
+| --------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------- |
+| `callId`                                                                                                                          | *string*                                                                                                                          | :heavy_minus_sign:                                                                                                                | N/A                                                                                                                               |                                                                                                                                   |
+| `id`                                                                                                                              | *string*                                                                                                                          | :heavy_minus_sign:                                                                                                                | N/A                                                                                                                               |                                                                                                                                   |
+| `operation`                                                                                                                       | *models.ApplyPatchCallOperation*                                                                                                  | :heavy_minus_sign:                                                                                                                | The patch operation requested by an `apply_patch_call`. `create_file` and `update_file` carry a V4A diff; `delete_file` omits it. | \{<br/>"diff": "@@ function main() \{\n+  console.log(\"hi\");\n }",<br/>"path": "/src/main.ts",<br/>"type": "update_file"<br/>}    |
+| `status`                                                                                                                          | [models.ToolCallStatus](../models/toolcallstatus.mdx)                                                                              | :heavy_check_mark:                                                                                                                | N/A                                                                                                                               | completed                                                                                                                         |
+| `type`                                                                                                                            | [models.OutputApplyPatchServerToolItemType](../models/outputapplypatchservertoolitemtype.mdx)                                      | :heavy_check_mark:                                                                                                                | N/A                                                                                                                               |                                                                                                                                   |

@@ -6,23 +6,13 @@
 import * as z from "zod/v4";
 import { remap as remap$ } from "../lib/primitives.js";
 import { safeParse } from "../lib/schemas.js";
-import * as openEnums from "../types/enums.js";
-import { OpenEnum } from "../types/enums.js";
 import { Result as SafeParseResult } from "../types/fp.js";
 import { SDKValidationError } from "./errors/sdkvalidationerror.js";
 import {
   PresetDesignatedVersion,
   PresetDesignatedVersion$inboundSchema,
 } from "./presetdesignatedversion.js";
-
-export const PresetWithDesignatedVersionStatus = {
-  Active: "active",
-  Disabled: "disabled",
-  Archived: "archived",
-} as const;
-export type PresetWithDesignatedVersionStatus = OpenEnum<
-  typeof PresetWithDesignatedVersionStatus
->;
+import { PresetStatus, PresetStatus$inboundSchema } from "./presetstatus.js";
 
 /**
  * A preset with its currently designated version.
@@ -31,25 +21,22 @@ export type PresetWithDesignatedVersion = {
   createdAt: string;
   creatorUserId: string | null;
   description: string | null;
-  /**
-   * A specific version of a preset, containing config and optional system prompt.
-   */
-  designatedVersion: PresetDesignatedVersion | null;
   designatedVersionId: string | null;
   id: string;
   name: string;
   slug: string;
-  status: PresetWithDesignatedVersionStatus;
+  /**
+   * The status of a preset.
+   */
+  status: PresetStatus;
   statusUpdatedAt: string | null;
   updatedAt: string;
   workspaceId: string | null;
+  /**
+   * A specific version of a preset, containing config and optional system prompt.
+   */
+  designatedVersion: PresetDesignatedVersion | null;
 };
-
-/** @internal */
-export const PresetWithDesignatedVersionStatus$inboundSchema: z.ZodType<
-  PresetWithDesignatedVersionStatus,
-  unknown
-> = openEnums.inboundSchema(PresetWithDesignatedVersionStatus);
 
 /** @internal */
 export const PresetWithDesignatedVersion$inboundSchema: z.ZodType<
@@ -59,24 +46,24 @@ export const PresetWithDesignatedVersion$inboundSchema: z.ZodType<
   created_at: z.string(),
   creator_user_id: z.nullable(z.string()),
   description: z.nullable(z.string()),
-  designated_version: z.nullable(PresetDesignatedVersion$inboundSchema),
   designated_version_id: z.nullable(z.string()),
   id: z.string(),
   name: z.string(),
   slug: z.string(),
-  status: PresetWithDesignatedVersionStatus$inboundSchema,
+  status: PresetStatus$inboundSchema,
   status_updated_at: z.nullable(z.string()),
   updated_at: z.string(),
   workspace_id: z.nullable(z.string()),
+  designated_version: z.nullable(PresetDesignatedVersion$inboundSchema),
 }).transform((v) => {
   return remap$(v, {
     "created_at": "createdAt",
     "creator_user_id": "creatorUserId",
-    "designated_version": "designatedVersion",
     "designated_version_id": "designatedVersionId",
     "status_updated_at": "statusUpdatedAt",
     "updated_at": "updatedAt",
     "workspace_id": "workspaceId",
+    "designated_version": "designatedVersion",
   });
 });
 

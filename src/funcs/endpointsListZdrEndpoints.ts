@@ -37,6 +37,7 @@ export function endpointsListZdrEndpoints(
 ): APIPromise<
   Result<
     operations.ListEndpointsZdrResponse,
+    | errors.ForbiddenResponseError
     | errors.InternalServerResponseError
     | OpenRouterError
     | ResponseValidationError
@@ -63,6 +64,7 @@ async function $do(
   [
     Result<
       operations.ListEndpointsZdrResponse,
+      | errors.ForbiddenResponseError
       | errors.InternalServerResponseError
       | OpenRouterError
       | ResponseValidationError
@@ -171,6 +173,7 @@ async function $do(
 
   const [result] = await M.match<
     operations.ListEndpointsZdrResponse,
+    | errors.ForbiddenResponseError
     | errors.InternalServerResponseError
     | OpenRouterError
     | ResponseValidationError
@@ -182,6 +185,7 @@ async function $do(
     | SDKValidationError
   >(
     M.json(200, operations.ListEndpointsZdrResponse$inboundSchema),
+    M.jsonErr(403, errors.ForbiddenResponseError$inboundSchema),
     M.jsonErr(500, errors.InternalServerResponseError$inboundSchema),
     M.fail("4XX"),
     M.fail("5XX"),

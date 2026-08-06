@@ -1,0 +1,54 @@
+---
+title: "StopServerToolsWhenCondition"
+---
+
+A single condition that, when met, halts the server-tool agent loop.
+
+
+## Supported Types
+
+### `models.StopServerToolsWhenFinishReasonIs`
+
+```typescript
+const value: models.StopServerToolsWhenFinishReasonIs = {
+  reason: "<value>",
+  type: "finish_reason_is",
+};
+```
+
+### `models.StopServerToolsWhenHasToolCall`
+
+```typescript
+const value: models.StopServerToolsWhenHasToolCall = {
+  toolName: "<value>",
+  type: "has_tool_call",
+};
+```
+
+### `models.StopServerToolsWhenMaxCost`
+
+```typescript
+const value: models.StopServerToolsWhenMaxCost = {
+  maxCostInDollars: 1543.31,
+  type: "max_cost",
+};
+```
+
+### `models.StopServerToolsWhenMaxTokensUsed`
+
+```typescript
+const value: models.StopServerToolsWhenMaxTokensUsed = {
+  maxTokens: 577706,
+  type: "max_tokens_used",
+};
+```
+
+### `models.StopServerToolsWhenStepCountIs`
+
+```typescript
+const value: models.StopServerToolsWhenStepCountIs = {
+  stepCount: 5,
+  type: "step_count_is",
+};
+```
+

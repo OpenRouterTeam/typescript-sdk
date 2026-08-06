@@ -13,7 +13,7 @@ import { SDKValidationError } from "./errors/sdkvalidationerror.js";
  * A specific version of a preset, containing config and optional system prompt.
  */
 export type PresetDesignatedVersion = {
-  config: { [k: string]: any | null };
+  config: { [k: string]: any };
   createdAt: string;
   creatorId: string;
   id: string;
@@ -28,7 +28,7 @@ export const PresetDesignatedVersion$inboundSchema: z.ZodType<
   PresetDesignatedVersion,
   unknown
 > = z.object({
-  config: z.record(z.string(), z.nullable(z.any())),
+  config: z.record(z.string(), z.any()),
   created_at: z.string(),
   creator_id: z.string(),
   id: z.string(),

@@ -1,0 +1,24 @@
+---
+title: "OpenAIResponseCustomToolCallOutput"
+---
+
+## Example Usage
+
+```typescript
+import { OpenAIResponseCustomToolCallOutput } from "@openrouter/sdk/models";
+
+let value: OpenAIResponseCustomToolCallOutput = {
+  callId: "call-abc123",
+  output: "patch applied successfully",
+  type: "custom_tool_call_output",
+};
+```
+
+## Fields
+
+| Field                                                                                                | Type                                                                                                 | Required                                                                                             | Description                                                                                          |
+| ---------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------- |
+| `callId`                                                                                             | *string*                                                                                             | :heavy_check_mark:                                                                                   | N/A                                                                                                  |
+| `id`                                                                                                 | *string*                                                                                             | :heavy_minus_sign:                                                                                   | N/A                                                                                                  |
+| `output`                                                                                             | *models.OpenAIResponseCustomToolCallOutputOutput2*                                                   | :heavy_check_mark:                                                                                   | N/A                                                                                                  |
+| `type`                                                                                               | [models.OpenAIResponseCustomToolCallOutputType](../models/openairesponsecustomtoolcalloutputtype.mdx) | :heavy_check_mark:                                                                                   | N/A                                                                                                  |
