@@ -15,9 +15,9 @@ import {
   OpenAIResponsesRefusalContent$inboundSchema,
 } from "./openairesponsesrefusalcontent.js";
 import {
-  ReasoningTextContent,
-  ReasoningTextContent$inboundSchema,
-} from "./reasoningtextcontent.js";
+  OpenResponsesReasoningTextContent,
+  OpenResponsesReasoningTextContent$inboundSchema,
+} from "./openresponsesreasoningtextcontent.js";
 import {
   ResponseOutputText,
   ResponseOutputText$inboundSchema,
@@ -25,7 +25,7 @@ import {
 
 export type ContentPartDoneEventPart =
   | ResponseOutputText
-  | (ReasoningTextContent & { type: "reasoning_text" })
+  | (OpenResponsesReasoningTextContent & { type: "reasoning_text" })
   | OpenAIResponsesRefusalContent
   | discriminatedUnionTypes.Unknown<"type">;
 
@@ -38,7 +38,7 @@ export type ContentPartDoneEvent = {
   outputIndex: number;
   part:
     | ResponseOutputText
-    | (ReasoningTextContent & { type: "reasoning_text" })
+    | (OpenResponsesReasoningTextContent & { type: "reasoning_text" })
     | OpenAIResponsesRefusalContent
     | discriminatedUnionTypes.Unknown<"type">;
   sequenceNumber: number;
@@ -51,7 +51,7 @@ export const ContentPartDoneEventPart$inboundSchema: z.ZodType<
   unknown
 > = discriminatedUnion("type", {
   output_text: ResponseOutputText$inboundSchema,
-  reasoning_text: ReasoningTextContent$inboundSchema.and(
+  reasoning_text: OpenResponsesReasoningTextContent$inboundSchema.and(
     z.object({ type: z.literal("reasoning_text") }),
   ),
   refusal: OpenAIResponsesRefusalContent$inboundSchema,
@@ -77,7 +77,7 @@ export const ContentPartDoneEvent$inboundSchema: z.ZodType<
   output_index: z.int(),
   part: discriminatedUnion("type", {
     output_text: ResponseOutputText$inboundSchema,
-    reasoning_text: ReasoningTextContent$inboundSchema.and(
+    reasoning_text: OpenResponsesReasoningTextContent$inboundSchema.and(
       z.object({ type: z.literal("reasoning_text") }),
     ),
     refusal: OpenAIResponsesRefusalContent$inboundSchema,

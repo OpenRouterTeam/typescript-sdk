@@ -7,6 +7,11 @@ import * as z from "zod/v4";
 import { remap as remap$ } from "../lib/primitives.js";
 import { ClosedEnum } from "../types/enums.js";
 import {
+  OpenResponsesReasoningTextContent,
+  OpenResponsesReasoningTextContent$Outbound,
+  OpenResponsesReasoningTextContent$outboundSchema,
+} from "./openresponsesreasoningtextcontent.js";
+import {
   ReasoningFormat,
   ReasoningFormat$outboundSchema,
 } from "./reasoningformat.js";
@@ -15,11 +20,6 @@ import {
   ReasoningSummaryText$Outbound,
   ReasoningSummaryText$outboundSchema,
 } from "./reasoningsummarytext.js";
-import {
-  ReasoningTextContent,
-  ReasoningTextContent$Outbound,
-  ReasoningTextContent$outboundSchema,
-} from "./reasoningtextcontent.js";
 
 export const ReasoningItemStatusInProgress = {
   InProgress: "in_progress",
@@ -56,7 +56,7 @@ export type ReasoningItemType = ClosedEnum<typeof ReasoningItemType>;
  * Reasoning output item with signature and format extensions
  */
 export type ReasoningItem = {
-  content?: Array<ReasoningTextContent> | null | undefined;
+  content?: Array<OpenResponsesReasoningTextContent> | null | undefined;
   encryptedContent?: string | null | undefined;
   id: string;
   status?:
@@ -113,7 +113,10 @@ export const ReasoningItemType$outboundSchema: z.ZodEnum<
 
 /** @internal */
 export type ReasoningItem$Outbound = {
-  content?: Array<ReasoningTextContent$Outbound> | null | undefined;
+  content?:
+    | Array<OpenResponsesReasoningTextContent$Outbound>
+    | null
+    | undefined;
   encrypted_content?: string | null | undefined;
   id: string;
   status?: string | string | string | undefined;
@@ -128,7 +131,8 @@ export const ReasoningItem$outboundSchema: z.ZodType<
   ReasoningItem$Outbound,
   ReasoningItem
 > = z.object({
-  content: z.nullable(z.array(ReasoningTextContent$outboundSchema)).optional(),
+  content: z.nullable(z.array(OpenResponsesReasoningTextContent$outboundSchema))
+    .optional(),
   encryptedContent: z.nullable(z.string()).optional(),
   id: z.string(),
   status: z.union([

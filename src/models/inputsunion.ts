@@ -107,6 +107,11 @@ import {
   OpenAIResponsesRefusalContent$outboundSchema,
 } from "./openairesponsesrefusalcontent.js";
 import {
+  OpenResponsesReasoningTextContent,
+  OpenResponsesReasoningTextContent$Outbound,
+  OpenResponsesReasoningTextContent$outboundSchema,
+} from "./openresponsesreasoningtextcontent.js";
+import {
   OutputAdvisorServerToolItem,
   OutputAdvisorServerToolItem$Outbound,
   OutputAdvisorServerToolItem$outboundSchema,
@@ -246,11 +251,6 @@ import {
   ReasoningSummaryText$outboundSchema,
 } from "./reasoningsummarytext.js";
 import {
-  ReasoningTextContent,
-  ReasoningTextContent$Outbound,
-  ReasoningTextContent$outboundSchema,
-} from "./reasoningtextcontent.js";
-import {
   ResponseOutputText,
   ResponseOutputText$Outbound,
   ResponseOutputText$outboundSchema,
@@ -299,7 +299,7 @@ export type InputsTypeReasoning = ClosedEnum<typeof InputsTypeReasoning>;
  * An output item containing reasoning
  */
 export type InputsReasoning = {
-  content?: Array<ReasoningTextContent> | null | undefined;
+  content?: Array<OpenResponsesReasoningTextContent> | null | undefined;
   encryptedContent?: string | null | undefined;
   id: string;
   status?:
@@ -544,7 +544,10 @@ export const InputsTypeReasoning$outboundSchema: z.ZodEnum<
 
 /** @internal */
 export type InputsReasoning$Outbound = {
-  content?: Array<ReasoningTextContent$Outbound> | null | undefined;
+  content?:
+    | Array<OpenResponsesReasoningTextContent$Outbound>
+    | null
+    | undefined;
   encrypted_content?: string | null | undefined;
   id: string;
   status?: string | string | string | undefined;
@@ -559,7 +562,8 @@ export const InputsReasoning$outboundSchema: z.ZodType<
   InputsReasoning$Outbound,
   InputsReasoning
 > = z.object({
-  content: z.nullable(z.array(ReasoningTextContent$outboundSchema)).optional(),
+  content: z.nullable(z.array(OpenResponsesReasoningTextContent$outboundSchema))
+    .optional(),
   encryptedContent: z.nullable(z.string()).optional(),
   id: z.string(),
   status: z.union([

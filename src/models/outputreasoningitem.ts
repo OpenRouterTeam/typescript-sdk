@@ -10,6 +10,10 @@ import { ClosedEnum } from "../types/enums.js";
 import { Result as SafeParseResult } from "../types/fp.js";
 import { SDKValidationError } from "./errors/sdkvalidationerror.js";
 import {
+  OpenResponsesReasoningTextContent,
+  OpenResponsesReasoningTextContent$inboundSchema,
+} from "./openresponsesreasoningtextcontent.js";
+import {
   ReasoningFormat,
   ReasoningFormat$inboundSchema,
 } from "./reasoningformat.js";
@@ -17,10 +21,6 @@ import {
   ReasoningSummaryText,
   ReasoningSummaryText$inboundSchema,
 } from "./reasoningsummarytext.js";
-import {
-  ReasoningTextContent,
-  ReasoningTextContent$inboundSchema,
-} from "./reasoningtextcontent.js";
 
 export const OutputReasoningItemStatusInProgress = {
   InProgress: "in_progress",
@@ -52,7 +52,7 @@ export type OutputReasoningItemStatusUnion =
  * An output item containing reasoning
  */
 export type OutputReasoningItem = {
-  content?: Array<ReasoningTextContent> | null | undefined;
+  content?: Array<OpenResponsesReasoningTextContent> | null | undefined;
   encryptedContent?: string | null | undefined;
   id: string;
   status?:
@@ -109,7 +109,8 @@ export const OutputReasoningItem$inboundSchema: z.ZodType<
   OutputReasoningItem,
   unknown
 > = z.object({
-  content: z.nullable(z.array(ReasoningTextContent$inboundSchema)).optional(),
+  content: z.nullable(z.array(OpenResponsesReasoningTextContent$inboundSchema))
+    .optional(),
   encrypted_content: z.nullable(z.string()).optional(),
   id: z.string(),
   status: z.union([
