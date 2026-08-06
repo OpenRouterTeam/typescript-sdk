@@ -137,6 +137,10 @@ export type UpdateKeysData = {
    */
   hash: string;
   /**
+   * The ID of the authenticated principal that created the key. This audit-only field is independent of owner selection and may be an organization ID for management/provisioning keys. Legacy keys serialize this field as null.
+   */
+  immutableCreatorId: string | null;
+  /**
    * Whether to include external BYOK usage in the credit limit
    */
   includeByokInLimit: boolean;
@@ -284,6 +288,7 @@ export const UpdateKeysData$inboundSchema: z.ZodType<UpdateKeysData, unknown> =
       z.iso.datetime({ offset: true }).transform(v => new Date(v)),
     ).optional(),
     hash: z.string(),
+    immutable_creator_id: z.nullable(z.string()),
     include_byok_in_limit: z.boolean(),
     label: z.string(),
     limit: z.nullable(z.number()),
@@ -305,6 +310,7 @@ export const UpdateKeysData$inboundSchema: z.ZodType<UpdateKeysData, unknown> =
       "created_at": "createdAt",
       "creator_user_id": "creatorUserId",
       "expires_at": "expiresAt",
+      "immutable_creator_id": "immutableCreatorId",
       "include_byok_in_limit": "includeByokInLimit",
       "limit_remaining": "limitRemaining",
       "limit_reset": "limitReset",
