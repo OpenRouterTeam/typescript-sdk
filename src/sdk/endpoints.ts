@@ -14,9 +14,9 @@ export class Endpoints extends ClientSDK {
    * Preview the impact of ZDR on the available endpoints
    */
   async listZdrEndpoints(
-    request?: operations.ListEndpointsZdrRequest | undefined,
+    request?: operations.ListZdrEndpointsRequest | undefined,
     options?: RequestOptions,
-  ): Promise<operations.ListEndpointsZdrResponse> {
+  ): Promise<operations.ListZdrEndpointsResponse> {
     return unwrapAsync(endpointsListZdrEndpoints(
       this,
       request,

@@ -32,11 +32,11 @@ import { Result } from "../types/fp.js";
  */
 export function endpointsListZdrEndpoints(
   client: OpenRouterCore,
-  request?: operations.ListEndpointsZdrRequest | undefined,
+  request?: operations.ListZdrEndpointsRequest | undefined,
   options?: RequestOptions,
 ): APIPromise<
   Result<
-    operations.ListEndpointsZdrResponse,
+    operations.ListZdrEndpointsResponse,
     | errors.ForbiddenResponseError
     | errors.InternalServerResponseError
     | OpenRouterError
@@ -58,12 +58,12 @@ export function endpointsListZdrEndpoints(
 
 async function $do(
   client: OpenRouterCore,
-  request?: operations.ListEndpointsZdrRequest | undefined,
+  request?: operations.ListZdrEndpointsRequest | undefined,
   options?: RequestOptions,
 ): Promise<
   [
     Result<
-      operations.ListEndpointsZdrResponse,
+      operations.ListZdrEndpointsResponse,
       | errors.ForbiddenResponseError
       | errors.InternalServerResponseError
       | OpenRouterError
@@ -81,7 +81,7 @@ async function $do(
   const parsed = safeParse(
     request,
     (value) =>
-      operations.ListEndpointsZdrRequest$outboundSchema.optional().parse(value),
+      operations.ListZdrEndpointsRequest$outboundSchema.optional().parse(value),
     "Input validation failed",
   );
   if (!parsed.ok) {
@@ -118,7 +118,7 @@ async function $do(
   const context = {
     options: client._options,
     baseURL: options?.serverURL ?? client._baseURL ?? "",
-    operationID: "listEndpointsZdr",
+    operationID: "listZdrEndpoints",
     oAuth2Scopes: null,
 
     resolvedSecurity: requestSecurity,
@@ -172,7 +172,7 @@ async function $do(
   };
 
   const [result] = await M.match<
-    operations.ListEndpointsZdrResponse,
+    operations.ListZdrEndpointsResponse,
     | errors.ForbiddenResponseError
     | errors.InternalServerResponseError
     | OpenRouterError
@@ -184,7 +184,7 @@ async function $do(
     | UnexpectedClientError
     | SDKValidationError
   >(
-    M.json(200, operations.ListEndpointsZdrResponse$inboundSchema),
+    M.json(200, operations.ListZdrEndpointsResponse$inboundSchema),
     M.jsonErr(403, errors.ForbiddenResponseError$inboundSchema),
     M.jsonErr(500, errors.InternalServerResponseError$inboundSchema),
     M.fail("4XX"),
