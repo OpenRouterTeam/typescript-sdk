@@ -31,6 +31,11 @@ import {
   WebSearchEngineEnum$inboundSchema,
   WebSearchEngineEnum$outboundSchema,
 } from "./websearchengineenum.js";
+import {
+  WebSearchMode,
+  WebSearchMode$inboundSchema,
+  WebSearchMode$outboundSchema,
+} from "./websearchmode.js";
 
 export const Preview20250311WebSearchServerToolType = {
   WebSearchPreview20250311: "web_search_preview_2025_03_11",
@@ -57,6 +62,10 @@ export type Preview20250311WebSearchServerTool = {
    */
   maxUses?: number | undefined;
   /**
+   * Engine-native search mode. Exa supports instant, fast, auto (default), deep-lite, deep, and deep-reasoning. Parallel supports turbo, basic (default), and advanced. Modes unsupported by the selected engine are ignored.
+   */
+  mode?: WebSearchMode | undefined;
+  /**
    * Size of the search context for web search tools
    */
   searchContextSize?: SearchContextSizeEnum | undefined;
@@ -82,6 +91,7 @@ export const Preview20250311WebSearchServerTool$inboundSchema: z.ZodType<
   filters: z.nullable(WebSearchDomainFilter$inboundSchema).optional(),
   max_results: z.int().optional(),
   max_uses: z.int().optional(),
+  mode: WebSearchMode$inboundSchema.optional(),
   search_context_size: SearchContextSizeEnum$inboundSchema.optional(),
   type: Preview20250311WebSearchServerToolType$inboundSchema,
   user_location: z.nullable(PreviewWebSearchUserLocation$inboundSchema)
@@ -100,6 +110,7 @@ export type Preview20250311WebSearchServerTool$Outbound = {
   filters?: WebSearchDomainFilter$Outbound | null | undefined;
   max_results?: number | undefined;
   max_uses?: number | undefined;
+  mode?: string | undefined;
   search_context_size?: string | undefined;
   type: string;
   user_location?: PreviewWebSearchUserLocation$Outbound | null | undefined;
@@ -114,6 +125,7 @@ export const Preview20250311WebSearchServerTool$outboundSchema: z.ZodType<
   filters: z.nullable(WebSearchDomainFilter$outboundSchema).optional(),
   maxResults: z.int().optional(),
   maxUses: z.int().optional(),
+  mode: WebSearchMode$outboundSchema.optional(),
   searchContextSize: SearchContextSizeEnum$outboundSchema.optional(),
   type: Preview20250311WebSearchServerToolType$outboundSchema,
   userLocation: z.nullable(PreviewWebSearchUserLocation$outboundSchema)
