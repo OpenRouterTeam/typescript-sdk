@@ -59,9 +59,9 @@ export type BYOKKey = {
    */
   sortOrder: number;
   /**
-   * The workspace this credential is scoped to, or `null` when it is global — usable across every workspace in the account. A `null` value does not mean the default workspace.
+   * ID of the workspace this credential belongs to.
    */
-  workspaceId: string | null;
+  workspaceId: string;
 };
 
 /** @internal */
@@ -77,7 +77,7 @@ export const BYOKKey$inboundSchema: z.ZodType<BYOKKey, unknown> = z.object({
   name: z.nullable(z.string()).optional(),
   provider: BYOKProviderSlug$inboundSchema,
   sort_order: z.int(),
-  workspace_id: z.nullable(z.string()),
+  workspace_id: z.string(),
 }).transform((v) => {
   return remap$(v, {
     "allowed_api_key_hashes": "allowedApiKeyHashes",
