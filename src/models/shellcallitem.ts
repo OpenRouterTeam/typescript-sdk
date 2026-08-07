@@ -26,7 +26,11 @@ export type ShellCallItemType = ClosedEnum<typeof ShellCallItemType>;
  * A shell command execution call (newer variant)
  */
 export type ShellCallItem = {
-  action: ShellCallItemAction;
+  action?: ShellCallItemAction | undefined;
+  /**
+   * The raw tool-call arguments string as emitted by the model. Echo back unchanged when replaying history; used verbatim to preserve provider prompt-cache prefixes.
+   */
+  arguments?: string | undefined;
   callId: string;
   environment?: any | undefined;
   id?: string | null | undefined;
@@ -71,7 +75,8 @@ export const ShellCallItemType$outboundSchema: z.ZodEnum<
 
 /** @internal */
 export type ShellCallItem$Outbound = {
-  action: ShellCallItemAction$Outbound;
+  action?: ShellCallItemAction$Outbound | undefined;
+  arguments?: string | undefined;
   call_id: string;
   environment?: any | undefined;
   id?: string | null | undefined;
@@ -84,7 +89,8 @@ export const ShellCallItem$outboundSchema: z.ZodType<
   ShellCallItem$Outbound,
   ShellCallItem
 > = z.object({
-  action: z.lazy(() => ShellCallItemAction$outboundSchema),
+  action: z.lazy(() => ShellCallItemAction$outboundSchema).optional(),
+  arguments: z.string().optional(),
   callId: z.string(),
   environment: z.any().optional(),
   id: z.nullable(z.string()).optional(),
