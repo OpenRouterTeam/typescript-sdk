@@ -379,6 +379,7 @@ export * from "./openrouterfiledeleted.js";
 export * from "./openrouterfilelist.js";
 export * from "./openroutermetadata.js";
 export * from "./openrouterwebsearchservertool.js";
+export * from "./oranthropicimageblockparam.js";
 export * from "./outputadvisorservertoolitem.js";
 export * from "./outputapplypatchcallitem.js";
 export * from "./outputapplypatchservertoolitem.js";
