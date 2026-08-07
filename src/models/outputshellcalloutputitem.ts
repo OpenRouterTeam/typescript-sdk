@@ -15,24 +15,24 @@ import {
   ShellCallStatus$inboundSchema,
 } from "./shellcallstatus.js";
 
-export type OutcomeTimeout = {
+export type OutputShellCallOutputItemOutcomeTimeout = {
   type: "timeout";
 };
 
-export type OutcomeExit = {
+export type OutputShellCallOutputItemOutcomeExit = {
   exitCode: number;
   type: "exit";
 };
 
-export type Outcome =
-  | OutcomeExit
-  | OutcomeTimeout
+export type OutputShellCallOutputItemOutcomeUnion =
+  | OutputShellCallOutputItemOutcomeExit
+  | OutputShellCallOutputItemOutcomeTimeout
   | discriminatedUnionTypes.Unknown<"type">;
 
 export type OutputShellCallOutputItemOutput = {
   outcome:
-    | OutcomeExit
-    | OutcomeTimeout
+    | OutputShellCallOutputItemOutcomeExit
+    | OutputShellCallOutputItemOutcomeTimeout
     | discriminatedUnionTypes.Unknown<"type">;
   stderr: string;
   stdout: string;
@@ -54,56 +54,70 @@ export type OutputShellCallOutputItem = {
 };
 
 /** @internal */
-export const OutcomeTimeout$inboundSchema: z.ZodType<OutcomeTimeout, unknown> =
-  z.object({
-    type: z.literal("timeout"),
-  });
+export const OutputShellCallOutputItemOutcomeTimeout$inboundSchema: z.ZodType<
+  OutputShellCallOutputItemOutcomeTimeout,
+  unknown
+> = z.object({
+  type: z.literal("timeout"),
+});
 
-export function outcomeTimeoutFromJSON(
+export function outputShellCallOutputItemOutcomeTimeoutFromJSON(
   jsonString: string,
-): SafeParseResult<OutcomeTimeout, SDKValidationError> {
+): SafeParseResult<
+  OutputShellCallOutputItemOutcomeTimeout,
+  SDKValidationError
+> {
   return safeParse(
     jsonString,
-    (x) => OutcomeTimeout$inboundSchema.parse(JSON.parse(x)),
-    `Failed to parse 'OutcomeTimeout' from JSON`,
+    (x) =>
+      OutputShellCallOutputItemOutcomeTimeout$inboundSchema.parse(
+        JSON.parse(x),
+      ),
+    `Failed to parse 'OutputShellCallOutputItemOutcomeTimeout' from JSON`,
   );
 }
 
 /** @internal */
-export const OutcomeExit$inboundSchema: z.ZodType<OutcomeExit, unknown> = z
-  .object({
-    exit_code: z.int(),
-    type: z.literal("exit"),
-  }).transform((v) => {
-    return remap$(v, {
-      "exit_code": "exitCode",
-    });
+export const OutputShellCallOutputItemOutcomeExit$inboundSchema: z.ZodType<
+  OutputShellCallOutputItemOutcomeExit,
+  unknown
+> = z.object({
+  exit_code: z.int(),
+  type: z.literal("exit"),
+}).transform((v) => {
+  return remap$(v, {
+    "exit_code": "exitCode",
   });
+});
 
-export function outcomeExitFromJSON(
+export function outputShellCallOutputItemOutcomeExitFromJSON(
   jsonString: string,
-): SafeParseResult<OutcomeExit, SDKValidationError> {
+): SafeParseResult<OutputShellCallOutputItemOutcomeExit, SDKValidationError> {
   return safeParse(
     jsonString,
-    (x) => OutcomeExit$inboundSchema.parse(JSON.parse(x)),
-    `Failed to parse 'OutcomeExit' from JSON`,
+    (x) =>
+      OutputShellCallOutputItemOutcomeExit$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'OutputShellCallOutputItemOutcomeExit' from JSON`,
   );
 }
 
 /** @internal */
-export const Outcome$inboundSchema: z.ZodType<Outcome, unknown> =
-  discriminatedUnion("type", {
-    exit: z.lazy(() => OutcomeExit$inboundSchema),
-    timeout: z.lazy(() => OutcomeTimeout$inboundSchema),
-  });
+export const OutputShellCallOutputItemOutcomeUnion$inboundSchema: z.ZodType<
+  OutputShellCallOutputItemOutcomeUnion,
+  unknown
+> = discriminatedUnion("type", {
+  exit: z.lazy(() => OutputShellCallOutputItemOutcomeExit$inboundSchema),
+  timeout: z.lazy(() => OutputShellCallOutputItemOutcomeTimeout$inboundSchema),
+});
 
-export function outcomeFromJSON(
+export function outputShellCallOutputItemOutcomeUnionFromJSON(
   jsonString: string,
-): SafeParseResult<Outcome, SDKValidationError> {
+): SafeParseResult<OutputShellCallOutputItemOutcomeUnion, SDKValidationError> {
   return safeParse(
     jsonString,
-    (x) => Outcome$inboundSchema.parse(JSON.parse(x)),
-    `Failed to parse 'Outcome' from JSON`,
+    (x) =>
+      OutputShellCallOutputItemOutcomeUnion$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'OutputShellCallOutputItemOutcomeUnion' from JSON`,
   );
 }
 
@@ -113,8 +127,10 @@ export const OutputShellCallOutputItemOutput$inboundSchema: z.ZodType<
   unknown
 > = z.object({
   outcome: discriminatedUnion("type", {
-    exit: z.lazy(() => OutcomeExit$inboundSchema),
-    timeout: z.lazy(() => OutcomeTimeout$inboundSchema),
+    exit: z.lazy(() => OutputShellCallOutputItemOutcomeExit$inboundSchema),
+    timeout: z.lazy(() =>
+      OutputShellCallOutputItemOutcomeTimeout$inboundSchema
+    ),
   }),
   stderr: z.string(),
   stdout: z.string(),
