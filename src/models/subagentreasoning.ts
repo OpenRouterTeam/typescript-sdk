@@ -34,7 +34,7 @@ export type SubagentReasoning = {
    */
   effort?: SubagentReasoningEffort | undefined;
   /**
-   * Maximum number of reasoning tokens the subagent may use. Accepted and validated but not yet forwarded to the subagent call.
+   * Maximum number of reasoning tokens the subagent may use. Forwarded to the subagent call as `reasoning.max_tokens`.
    */
   maxTokens?: number | undefined;
 };
