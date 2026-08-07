@@ -408,6 +408,7 @@ export * from "./outputreasoningitem.js";
 export * from "./outputsearchmodelsservertoolitem.js";
 export * from "./outputshellcallitem.js";
 export * from "./outputshellcalloutputitem.js";
+export * from "./outputshellservertoolitem.js";
 export * from "./outputsubagentservertoolitem.js";
 export * from "./outputtexteditorservertoolitem.js";
 export * from "./outputtoolsearchservertoolitem.js";
