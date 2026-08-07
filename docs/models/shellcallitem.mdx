@@ -10,12 +10,6 @@ A shell command execution call (newer variant)
 import { ShellCallItem } from "@openrouter/sdk/models";
 
 let value: ShellCallItem = {
-  action: {
-    commands: [
-      "ls",
-      "-la",
-    ],
-  },
   callId: "call-abc123",
   type: "shell_call",
 };
@@ -25,7 +19,7 @@ let value: ShellCallItem = {
 
 | Field                                                          | Type                                                           | Required                                                       | Description                                                    | Example                                                        |
 | -------------------------------------------------------------- | -------------------------------------------------------------- | -------------------------------------------------------------- | -------------------------------------------------------------- | -------------------------------------------------------------- |
-| `action`                                                       | [models.ShellCallItemAction](../models/shellcallitemaction.mdx) | :heavy_check_mark:                                             | N/A                                                            |                                                                |
+| `action`                                                       | [models.ShellCallItemAction](../models/shellcallitemaction.mdx) | :heavy_minus_sign:                                             | N/A                                                            |                                                                |
 | `callId`                                                       | *string*                                                       | :heavy_check_mark:                                             | N/A                                                            |                                                                |
 | `environment`                                                  | *any*                                                          | :heavy_minus_sign:                                             | N/A                                                            |                                                                |
 | `id`                                                           | *string*                                                       | :heavy_minus_sign:                                             | N/A                                                            |                                                                |
