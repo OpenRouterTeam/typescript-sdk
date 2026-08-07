@@ -6133,6 +6133,8 @@ components:
           description: 'Maximum number of web searches the model may perform in a single request. Once reached, further search calls return an error result instead of executing. Applies to the Exa, Firecrawl, Parallel, and Perplexity engines. With native provider search, forwarded only to Anthropic (as `max_uses`); other native search providers have no equivalent parameter and ignore it.'
           example: 3
           type: 'integer'
+        mode:
+          $ref: '#/components/schemas/WebSearchMode'
         parameters:
           $ref: '#/components/schemas/WebSearchConfig'
         search_context_size:
@@ -11354,6 +11356,8 @@ components:
           description: 'Maximum number of web searches the model may perform in a single request. Once reached, further search calls return an error result instead of executing. Applies to the Exa, Firecrawl, Parallel, and Perplexity engines. With native provider search, forwarded only to Anthropic (as `max_uses`); other native search providers have no equivalent parameter and ignore it.'
           example: 3
           type: 'integer'
+        mode:
+          $ref: '#/components/schemas/WebSearchMode'
         search_context_size:
           $ref: '#/components/schemas/SearchContextSizeEnum'
         type:
@@ -19712,6 +19716,8 @@ components:
           description: 'Maximum number of web searches the model may perform in a single request. Once reached, further search calls return an error result instead of executing. Applies to the Exa, Firecrawl, Parallel, and Perplexity engines. With native provider search, forwarded only to Anthropic (as `max_uses`); other native search providers have no equivalent parameter and ignore it.'
           example: 3
           type: 'integer'
+        mode:
+          $ref: '#/components/schemas/WebSearchMode'
         search_context_size:
           $ref: '#/components/schemas/SearchContextSizeEnum'
         type:
@@ -19740,6 +19746,8 @@ components:
           description: 'Maximum number of web searches the model may perform in a single request. Once reached, further search calls return an error result instead of executing. Applies to the Exa, Firecrawl, Parallel, and Perplexity engines. With native provider search, forwarded only to Anthropic (as `max_uses`); other native search providers have no equivalent parameter and ignore it.'
           example: 3
           type: 'integer'
+        mode:
+          $ref: '#/components/schemas/WebSearchMode'
         search_context_size:
           $ref: '#/components/schemas/SearchContextSizeEnum'
         type:
@@ -25163,6 +25171,8 @@ components:
           description: 'Maximum number of web searches the model may perform in a single request. Once reached, further search calls return an error result instead of executing. Applies to the Exa, Firecrawl, Parallel, and Perplexity engines. With native provider search, forwarded only to Anthropic (as `max_uses`); other native search providers have no equivalent parameter and ignore it.'
           example: 3
           type: 'integer'
+        mode:
+          $ref: '#/components/schemas/WebSearchMode'
         search_context_size:
           $ref: '#/components/schemas/SearchQualityLevel'
         user_location:
@@ -25219,6 +25229,20 @@ components:
         - 'auto'
       example: 'auto'
       type: 'string'
+    WebSearchMode:
+      description: 'Engine-native search mode. Exa supports instant, fast, auto (default), deep-lite, deep, and deep-reasoning. Parallel supports turbo (default), basic, and advanced. Modes unsupported by the selected engine are ignored.'
+      enum:
+        - 'instant'
+        - 'fast'
+        - 'auto'
+        - 'deep-lite'
+        - 'deep'
+        - 'deep-reasoning'
+        - 'turbo'
+        - 'basic'
+        - 'advanced'
+      example: 'auto'
+      type: 'string'
     WebSearchPlugin:
       example:
         enabled: true
@@ -25257,6 +25281,8 @@ components:
         max_uses:
           description: 'Maximum number of times the model can invoke web search in a single turn. Passed through to native providers that support it (e.g. Anthropic).'
           type: 'integer'
+        mode:
+          $ref: '#/components/schemas/WebSearchMode'
         search_prompt:
           type: 'string'
         user_location:
@@ -25295,6 +25321,8 @@ components:
           description: 'Maximum number of web searches the model may perform in a single request. Once reached, further search calls return an error result instead of executing. Applies to the Exa, Firecrawl, Parallel, and Perplexity engines. With native provider search, forwarded only to Anthropic (as `max_uses`); other native search providers have no equivalent parameter and ignore it.'
           example: 3
           type: 'integer'
+        mode:
+          $ref: '#/components/schemas/WebSearchMode'
         search_context_size:
           $ref: '#/components/schemas/SearchContextSizeEnum'
         type:
@@ -25356,6 +25384,8 @@ components:
           description: 'Maximum number of web searches the model may perform in a single request. Once reached, further search calls return an error result instead of executing. Applies to the Exa, Firecrawl, Parallel, and Perplexity engines. With native provider search, forwarded only to Anthropic (as `max_uses`); other native search providers have no equivalent parameter and ignore it.'
           example: 3
           type: 'integer'
+        mode:
+          $ref: '#/components/schemas/WebSearchMode'
         search_context_size:
           $ref: '#/components/schemas/SearchQualityLevel'
         user_location:
