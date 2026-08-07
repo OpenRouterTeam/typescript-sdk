@@ -1,0 +1,21 @@
+---
+title: "WebSearchMode"
+---
+
+Engine-native search mode. Exa supports instant, fast, auto (default), deep-lite, deep, and deep-reasoning. Parallel supports turbo (default), basic, and advanced. Modes unsupported by the selected engine are ignored.
+
+## Example Usage
+
+```typescript
+import { WebSearchMode } from "@openrouter/sdk/models";
+
+let value: WebSearchMode = "auto";
+
+// Open enum: unrecognized values are captured as Unrecognized<string>
+```
+
+## Values
+
+```typescript
+"instant" | "fast" | "auto" | "deep-lite" | "deep" | "deep-reasoning" | "turbo" | "basic" | "advanced" | Unrecognized<string>
+```
