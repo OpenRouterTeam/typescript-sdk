@@ -41,7 +41,6 @@ export function workspacesDeleteBudget(
 ): APIPromise<
   Result<
     models.DeleteWorkspaceBudgetResponse,
-    | errors.BadRequestResponseError
     | errors.UnauthorizedResponseError
     | errors.NotFoundResponseError
     | errors.InternalServerResponseError
@@ -70,7 +69,6 @@ async function $do(
   [
     Result<
       models.DeleteWorkspaceBudgetResponse,
-      | errors.BadRequestResponseError
       | errors.UnauthorizedResponseError
       | errors.NotFoundResponseError
       | errors.InternalServerResponseError
@@ -191,7 +189,6 @@ async function $do(
 
   const [result] = await M.match<
     models.DeleteWorkspaceBudgetResponse,
-    | errors.BadRequestResponseError
     | errors.UnauthorizedResponseError
     | errors.NotFoundResponseError
     | errors.InternalServerResponseError
@@ -205,7 +202,6 @@ async function $do(
     | SDKValidationError
   >(
     M.json(200, models.DeleteWorkspaceBudgetResponse$inboundSchema),
-    M.jsonErr(400, errors.BadRequestResponseError$inboundSchema),
     M.jsonErr(401, errors.UnauthorizedResponseError$inboundSchema),
     M.jsonErr(404, errors.NotFoundResponseError$inboundSchema),
     M.jsonErr(500, errors.InternalServerResponseError$inboundSchema),

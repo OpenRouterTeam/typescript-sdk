@@ -48,18 +48,6 @@ export type CreateObservabilityDestinationRequest = {
    */
   apiKeyHashes?: Array<string> | null | undefined;
   /**
-   * When true, include cost and billing generation metadata.
-   */
-  broadcastGenerationCost?: boolean | undefined;
-  /**
-   * When true, include identity generation metadata.
-   */
-  broadcastGenerationIdentity?: boolean | undefined;
-  /**
-   * When true, include request-context generation metadata.
-   */
-  broadcastGenerationRequestContext?: boolean | undefined;
-  /**
    * Provider-specific configuration. The shape depends on `type` and is validated server-side.
    */
   config: { [k: string]: any };
@@ -101,9 +89,6 @@ export const CreateObservabilityDestinationRequestType$outboundSchema:
 /** @internal */
 export type CreateObservabilityDestinationRequest$Outbound = {
   api_key_hashes?: Array<string> | null | undefined;
-  broadcast_generation_cost: boolean;
-  broadcast_generation_identity: boolean;
-  broadcast_generation_request_context: boolean;
   config: { [k: string]: any };
   enabled: boolean;
   filter_rules?:
@@ -123,9 +108,6 @@ export const CreateObservabilityDestinationRequest$outboundSchema: z.ZodType<
   CreateObservabilityDestinationRequest
 > = z.object({
   apiKeyHashes: z.nullable(z.array(z.string())).optional(),
-  broadcastGenerationCost: z.boolean().default(false),
-  broadcastGenerationIdentity: z.boolean().default(false),
-  broadcastGenerationRequestContext: z.boolean().default(false),
   config: z.record(z.string(), z.any()),
   enabled: z.boolean().default(true),
   filterRules: z.nullable(ObservabilityFilterRulesConfigNullable$outboundSchema)
@@ -138,9 +120,6 @@ export const CreateObservabilityDestinationRequest$outboundSchema: z.ZodType<
 }).transform((v) => {
   return remap$(v, {
     apiKeyHashes: "api_key_hashes",
-    broadcastGenerationCost: "broadcast_generation_cost",
-    broadcastGenerationIdentity: "broadcast_generation_identity",
-    broadcastGenerationRequestContext: "broadcast_generation_request_context",
     filterRules: "filter_rules",
     privacyMode: "privacy_mode",
     samplingRate: "sampling_rate",
