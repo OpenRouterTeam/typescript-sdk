@@ -35,18 +35,6 @@ export type ObservabilityNewrelicDestination = {
    * Optional allowlist of OpenRouter API key hashes (`api_keys.hash`) whose traffic is forwarded to this destination. `null` means all keys.
    */
   apiKeyHashes: Array<string> | null;
-  /**
-   * When true, include cost and billing generation metadata.
-   */
-  broadcastGenerationCost: boolean;
-  /**
-   * When true, include identity generation metadata.
-   */
-  broadcastGenerationIdentity: boolean;
-  /**
-   * When true, include request-context generation metadata.
-   */
-  broadcastGenerationRequestContext: boolean;
   config: ObservabilityNewrelicDestinationConfig;
   /**
    * ISO timestamp of when the destination was created.
@@ -118,9 +106,6 @@ export const ObservabilityNewrelicDestination$inboundSchema: z.ZodType<
   unknown
 > = z.object({
   api_key_hashes: z.nullable(z.array(z.string())),
-  broadcast_generation_cost: z.boolean(),
-  broadcast_generation_identity: z.boolean(),
-  broadcast_generation_request_context: z.boolean(),
   config: z.lazy(() => ObservabilityNewrelicDestinationConfig$inboundSchema),
   created_at: z.string(),
   enabled: z.boolean(),
@@ -135,9 +120,6 @@ export const ObservabilityNewrelicDestination$inboundSchema: z.ZodType<
 }).transform((v) => {
   return remap$(v, {
     "api_key_hashes": "apiKeyHashes",
-    "broadcast_generation_cost": "broadcastGenerationCost",
-    "broadcast_generation_identity": "broadcastGenerationIdentity",
-    "broadcast_generation_request_context": "broadcastGenerationRequestContext",
     "created_at": "createdAt",
     "filter_rules": "filterRules",
     "privacy_mode": "privacyMode",
