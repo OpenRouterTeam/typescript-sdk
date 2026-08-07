@@ -10,3 +10,4 @@ export type { PageIterator, Paginator } from "./operations.js";
 export { createPageIterator } from "./operations.js";
 export { RFCDate } from "./rfcdate.js";
 export * from "./unrecognized.js";
+export type { WebhookRecipient } from "./webhooks.js";
