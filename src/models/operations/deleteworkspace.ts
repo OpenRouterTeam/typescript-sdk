@@ -52,6 +52,10 @@ export type DeleteWorkspaceRequest = {
    * The workspace ID (UUID) or slug
    */
   id: string;
+  /**
+   * Required to delete the default workspace (currently limited to internal OpenRouter administrators while the capability rolls out). Deleting it permanently disables the account’s unscoped API keys and its budgets, guardrails, classifiers, and broadcast destinations. Ignored for non-default workspaces.
+   */
+  confirmDefaultSettingsDeletion?: boolean | undefined;
 };
 
 /** @internal */
@@ -60,6 +64,7 @@ export type DeleteWorkspaceRequest$Outbound = {
   appTitle?: string | undefined;
   appCategories?: string | undefined;
   id: string;
+  confirm_default_settings_deletion?: boolean | undefined;
 };
 
 /** @internal */
@@ -71,9 +76,11 @@ export const DeleteWorkspaceRequest$outboundSchema: z.ZodType<
   appTitle: z.string().optional(),
   appCategories: z.string().optional(),
   id: z.string(),
+  confirmDefaultSettingsDeletion: z.boolean().optional(),
 }).transform((v) => {
   return remap$(v, {
     httpReferer: "HTTP-Referer",
+    confirmDefaultSettingsDeletion: "confirm_default_settings_deletion",
   });
 });
 
