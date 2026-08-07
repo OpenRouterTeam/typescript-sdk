@@ -232,6 +232,15 @@ const value: models.OutputMemoryServerToolItem = {
 };
 ```
 
+### `models.OutputShellServerToolItem`
+
+```typescript
+const value: models.OutputShellServerToolItem = {
+  status: "completed",
+  type: "openrouter:shell",
+};
+```
+
 ### `models.OutputSubagentServerToolItem`
 
 ```typescript
@@ -309,7 +318,16 @@ const value: models.OutputShellCallItem = {
 const value: models.OutputShellCallOutputItem = {
   callId: "<id>",
   id: "msg-abc123",
-  output: [],
+  output: [
+    {
+      outcome: {
+        exitCode: 0,
+        type: "exit",
+      },
+      stderr: "",
+      stdout: "total 0\n",
+    },
+  ],
   status: "completed",
   type: "shell_call_output",
 };

@@ -7,16 +7,14 @@ import * as z from "zod/v4";
 import { remap as remap$ } from "../lib/primitives.js";
 import { ClosedEnum } from "../types/enums.js";
 import {
+  ShellCallOutputContent,
+  ShellCallOutputContent$Outbound,
+  ShellCallOutputContent$outboundSchema,
+} from "./shellcalloutputcontent.js";
+import {
   ToolCallStatus,
   ToolCallStatus$outboundSchema,
 } from "./toolcallstatus.js";
-
-export type ShellCallOutputItemOutput = {
-  content?: string | null | undefined;
-  exitCode?: number | null | undefined;
-  type: string;
-  additionalProperties?: { [k: string]: any } | undefined;
-};
 
 export const ShellCallOutputItemType = {
   ShellCallOutput: "shell_call_output",
@@ -32,45 +30,10 @@ export type ShellCallOutputItem = {
   callId: string;
   id?: string | null | undefined;
   maxOutputLength?: number | null | undefined;
-  output: Array<ShellCallOutputItemOutput>;
+  output: Array<ShellCallOutputContent>;
   status?: ToolCallStatus | null | undefined;
   type: ShellCallOutputItemType;
 };
-
-/** @internal */
-export type ShellCallOutputItemOutput$Outbound = {
-  content?: string | null | undefined;
-  exit_code?: number | null | undefined;
-  type: string;
-  [additionalProperties: string]: unknown;
-};
-
-/** @internal */
-export const ShellCallOutputItemOutput$outboundSchema: z.ZodType<
-  ShellCallOutputItemOutput$Outbound,
-  ShellCallOutputItemOutput
-> = z.object({
-  content: z.nullable(z.string()).optional(),
-  exitCode: z.nullable(z.int()).optional(),
-  type: z.string(),
-  additionalProperties: z.record(z.string(), z.any()).optional(),
-}).transform((v) => {
-  return {
-    ...v.additionalProperties,
-    ...remap$(v, {
-      exitCode: "exit_code",
-      additionalProperties: null,
-    }),
-  };
-});
-
-export function shellCallOutputItemOutputToJSON(
-  shellCallOutputItemOutput: ShellCallOutputItemOutput,
-): string {
-  return JSON.stringify(
-    ShellCallOutputItemOutput$outboundSchema.parse(shellCallOutputItemOutput),
-  );
-}
 
 /** @internal */
 export const ShellCallOutputItemType$outboundSchema: z.ZodEnum<
@@ -82,7 +45,7 @@ export type ShellCallOutputItem$Outbound = {
   call_id: string;
   id?: string | null | undefined;
   max_output_length?: number | null | undefined;
-  output: Array<ShellCallOutputItemOutput$Outbound>;
+  output: Array<ShellCallOutputContent$Outbound>;
   status?: string | null | undefined;
   type: string;
 };
@@ -95,7 +58,7 @@ export const ShellCallOutputItem$outboundSchema: z.ZodType<
   callId: z.string(),
   id: z.nullable(z.string()).optional(),
   maxOutputLength: z.nullable(z.int()).optional(),
-  output: z.array(z.lazy(() => ShellCallOutputItemOutput$outboundSchema)),
+  output: z.array(ShellCallOutputContent$outboundSchema),
   status: z.nullable(ToolCallStatus$outboundSchema).optional(),
   type: ShellCallOutputItemType$outboundSchema,
 }).transform((v) => {
