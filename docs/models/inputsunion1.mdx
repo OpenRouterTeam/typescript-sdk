@@ -360,6 +360,15 @@ const value: models.OutputFilesServerToolItem = {
 };
 ```
 
+### `models.OutputShellServerToolItem`
+
+```typescript
+const value: models.OutputShellServerToolItem = {
+  status: "completed",
+  type: "openrouter:shell",
+};
+```
+
 ### `models.LocalShellCallItem`
 
 ```typescript
@@ -395,12 +404,6 @@ const value: models.LocalShellCallOutputItem = {
 
 ```typescript
 const value: models.ShellCallItem = {
-  action: {
-    commands: [
-      "ls",
-      "-la",
-    ],
-  },
   callId: "call-abc123",
   type: "shell_call",
 };
