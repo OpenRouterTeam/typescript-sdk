@@ -58,7 +58,6 @@ export * from "./gettaskclassifications.js";
 export * from "./getuseractivity.js";
 export * from "./getvideos.js";
 export * from "./getworkspace.js";
-export * from "./getworkspacebudget.js";
 export * from "./list.js";
 export * from "./listbyokkeys.js";
 export * from "./listembeddingsmodels.js";
