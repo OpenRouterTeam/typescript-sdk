@@ -40,7 +40,7 @@ export type CreateBYOKKeyRequest = {
    */
   provider: BYOKProviderSlug;
   /**
-   * Optional workspace ID to scope the credential to. When omitted, the credential is created in the account's default workspace; if that default has been deleted, the request returns a 400 and you must pass `workspace_id` explicitly.
+   * Optional workspace ID. Defaults to the authenticated entity's default workspace.
    */
   workspaceId?: string | undefined;
 };
