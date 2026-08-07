@@ -1,0 +1,23 @@
+---
+title: "AlertEventContextCreditsLow"
+---
+
+PII-free context for a credits-low alert event.
+
+## Example Usage
+
+```typescript
+import { AlertEventContextCreditsLow } from "@openrouter/sdk/models";
+
+let value: AlertEventContextCreditsLow = {
+  kind: "credits-low",
+  threshold: 8461.83,
+};
+```
+
+## Fields
+
+| Field                                                 | Type                                                  | Required                                              | Description                                           |
+| ----------------------------------------------------- | ----------------------------------------------------- | ----------------------------------------------------- | ----------------------------------------------------- |
+| `kind`                                                | *"credits-low"*                                       | :heavy_check_mark:                                    | A low remaining-credit balance alert.                 |
+| `threshold`                                           | *number*                                              | :heavy_check_mark:                                    | The remaining-credit threshold in USD for this alert. |
