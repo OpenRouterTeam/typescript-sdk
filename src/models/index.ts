@@ -586,6 +586,7 @@ export * from "./websearchconfig.js";
 export * from "./websearchdomainfilter.js";
 export * from "./websearchengine.js";
 export * from "./websearchengineenum.js";
+export * from "./websearchmode.js";
 export * from "./websearchplugin.js";
 export * from "./websearchservertool.js";
 export * from "./websearchservertoolconfig.js";
