@@ -161,6 +161,10 @@ export type UpdateKeysData = {
    */
   name: string;
   /**
+   * The predecessor API key hash when this key was created by rotation.
+   */
+  rotatedFromHash?: string | null | undefined;
+  /**
    * ISO 8601 timestamp of when the API key was last updated
    */
   updatedAt: string | null;
@@ -290,6 +294,7 @@ export const UpdateKeysData$inboundSchema: z.ZodType<UpdateKeysData, unknown> =
     limit_remaining: z.nullable(z.number()),
     limit_reset: z.nullable(z.string()),
     name: z.string(),
+    rotated_from_hash: z.nullable(z.string()).optional(),
     updated_at: z.nullable(z.string()),
     usage: z.number(),
     usage_daily: z.number(),
@@ -308,6 +313,7 @@ export const UpdateKeysData$inboundSchema: z.ZodType<UpdateKeysData, unknown> =
       "include_byok_in_limit": "includeByokInLimit",
       "limit_remaining": "limitRemaining",
       "limit_reset": "limitReset",
+      "rotated_from_hash": "rotatedFromHash",
       "updated_at": "updatedAt",
       "usage_daily": "usageDaily",
       "usage_monthly": "usageMonthly",
