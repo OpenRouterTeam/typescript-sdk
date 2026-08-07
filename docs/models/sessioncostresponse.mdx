@@ -1,0 +1,26 @@
+---
+title: "SessionCostResponse"
+---
+
+## Example Usage
+
+```typescript
+import { SessionCostResponse } from "@openrouter/sdk/models";
+
+let value: SessionCostResponse = {
+  data: [],
+  meta: {
+    asOf: "2026-05-12T02:00:00Z",
+    version: "v1",
+    windowDays: 30,
+    windowEndDate: "2026-05-11",
+  },
+};
+```
+
+## Fields
+
+| Field                                                    | Type                                                     | Required                                                 | Description                                              |
+| -------------------------------------------------------- | -------------------------------------------------------- | -------------------------------------------------------- | -------------------------------------------------------- |
+| `data`                                                   | [models.SessionCostItem](../models/sessioncostitem.mdx)[] | :heavy_check_mark:                                       | N/A                                                      |
+| `meta`                                                   | [models.SessionCostMeta](../models/sessioncostmeta.mdx)   | :heavy_check_mark:                                       | N/A                                                      |

@@ -1,0 +1,35 @@
+---
+title: "GetSessionCostResponse"
+---
+
+## Example Usage
+
+```typescript
+import { GetSessionCostResponse } from "@openrouter/sdk/models/operations";
+
+let value: GetSessionCostResponse = {
+  result: {
+    data: [
+      {
+        appName: "Hermes Agent",
+        appSlug: "hermes-agent",
+        medianSessionCostUsd: 1.74,
+        modelPermaslug: "anthropic/claude-4.8-opus",
+        turnRange: "10-49-turns",
+      },
+    ],
+    meta: {
+      asOf: "2026-05-12T02:00:00Z",
+      version: "v1",
+      windowDays: 30,
+      windowEndDate: "2026-05-11",
+    },
+  },
+};
+```
+
+## Fields
+
+| Field                                                             | Type                                                              | Required                                                          | Description                                                       |
+| ----------------------------------------------------------------- | ----------------------------------------------------------------- | ----------------------------------------------------------------- | ----------------------------------------------------------------- |
+| `result`                                                          | [models.SessionCostResponse](../../models/sessioncostresponse.mdx) | :heavy_check_mark:                                                | N/A                                                               |
