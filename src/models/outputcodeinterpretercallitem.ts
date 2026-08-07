@@ -5,210 +5,189 @@
 
 import * as z from "zod/v4";
 import { remap as remap$ } from "../lib/primitives.js";
-import { safeParse } from "../lib/schemas.js";
+import {
+  collectExtraKeys as collectExtraKeys$,
+  safeParse,
+} from "../lib/schemas.js";
 import * as discriminatedUnionTypes from "../types/discriminatedUnion.js";
 import { discriminatedUnion } from "../types/discriminatedUnion.js";
-import { ClosedEnum } from "../types/enums.js";
+import * as openEnums from "../types/enums.js";
+import { ClosedEnum, OpenEnum } from "../types/enums.js";
 import { Result as SafeParseResult } from "../types/fp.js";
-import { SDKValidationError } from "./errors/sdkvalidationerror.js";
 import {
-  ToolCallStatus,
-  ToolCallStatus$inboundSchema,
-  ToolCallStatus$outboundSchema,
-} from "./toolcallstatus.js";
+  CodeInterpreterFileOutput,
+  CodeInterpreterFileOutput$inboundSchema,
+  CodeInterpreterFileOutput$Outbound,
+  CodeInterpreterFileOutput$outboundSchema,
+} from "./codeinterpreterfileoutput.js";
+import {
+  CodeInterpreterImageOutput,
+  CodeInterpreterImageOutput$inboundSchema,
+  CodeInterpreterImageOutput$Outbound,
+  CodeInterpreterImageOutput$outboundSchema,
+} from "./codeinterpreterimageoutput.js";
+import {
+  CodeInterpreterLogsOutput,
+  CodeInterpreterLogsOutput$inboundSchema,
+  CodeInterpreterLogsOutput$Outbound,
+  CodeInterpreterLogsOutput$outboundSchema,
+} from "./codeinterpreterlogsoutput.js";
+import { SDKValidationError } from "./errors/sdkvalidationerror.js";
 
-export type OutputLogs = {
-  logs: string;
-  type: "logs";
-};
-
-export type OutputImage = {
-  type: "image";
-  url: string;
-};
-
-export type OutputCodeInterpreterCallItemOutputUnion =
-  | OutputImage
-  | OutputLogs
+export type OutputCodeInterpreterCallItemOutput =
+  | CodeInterpreterLogsOutput
+  | CodeInterpreterImageOutput
+  | CodeInterpreterFileOutput
   | discriminatedUnionTypes.Unknown<"type">;
 
-export const TypeCodeInterpreterCall = {
+export const OutputCodeInterpreterCallItemStatus = {
+  InProgress: "in_progress",
+  Completed: "completed",
+  Incomplete: "incomplete",
+  Interpreting: "interpreting",
+  Failed: "failed",
+} as const;
+export type OutputCodeInterpreterCallItemStatus = OpenEnum<
+  typeof OutputCodeInterpreterCallItemStatus
+>;
+
+export const OutputCodeInterpreterCallItemType = {
   CodeInterpreterCall: "code_interpreter_call",
 } as const;
-export type TypeCodeInterpreterCall = ClosedEnum<
-  typeof TypeCodeInterpreterCall
+export type OutputCodeInterpreterCallItemType = ClosedEnum<
+  typeof OutputCodeInterpreterCallItemType
 >;
 
 /**
  * A code interpreter execution call with outputs
  */
 export type OutputCodeInterpreterCallItem = {
-  code: string | null;
-  containerId: string;
+  code?: string | null | undefined;
+  containerId?: string | undefined;
   id: string;
-  outputs:
-    | Array<OutputImage | OutputLogs | discriminatedUnionTypes.Unknown<"type">>
-    | null;
-  status: ToolCallStatus;
-  type: TypeCodeInterpreterCall;
+  outputs?:
+    | Array<
+      | CodeInterpreterLogsOutput
+      | CodeInterpreterImageOutput
+      | CodeInterpreterFileOutput
+      | discriminatedUnionTypes.Unknown<"type">
+    >
+    | null
+    | undefined;
+  status: OutputCodeInterpreterCallItemStatus;
+  type: OutputCodeInterpreterCallItemType;
+  additionalProperties?: { [k: string]: any } | undefined;
 };
 
 /** @internal */
-export const OutputLogs$inboundSchema: z.ZodType<OutputLogs, unknown> = z
-  .object({
-    logs: z.string(),
-    type: z.literal("logs"),
-  });
-/** @internal */
-export type OutputLogs$Outbound = {
-  logs: string;
-  type: "logs";
-};
-
-/** @internal */
-export const OutputLogs$outboundSchema: z.ZodType<
-  OutputLogs$Outbound,
-  OutputLogs
-> = z.object({
-  logs: z.string(),
-  type: z.literal("logs"),
-});
-
-export function outputLogsToJSON(outputLogs: OutputLogs): string {
-  return JSON.stringify(OutputLogs$outboundSchema.parse(outputLogs));
-}
-export function outputLogsFromJSON(
-  jsonString: string,
-): SafeParseResult<OutputLogs, SDKValidationError> {
-  return safeParse(
-    jsonString,
-    (x) => OutputLogs$inboundSchema.parse(JSON.parse(x)),
-    `Failed to parse 'OutputLogs' from JSON`,
-  );
-}
-
-/** @internal */
-export const OutputImage$inboundSchema: z.ZodType<OutputImage, unknown> = z
-  .object({
-    type: z.literal("image"),
-    url: z.string(),
-  });
-/** @internal */
-export type OutputImage$Outbound = {
-  type: "image";
-  url: string;
-};
-
-/** @internal */
-export const OutputImage$outboundSchema: z.ZodType<
-  OutputImage$Outbound,
-  OutputImage
-> = z.object({
-  type: z.literal("image"),
-  url: z.string(),
-});
-
-export function outputImageToJSON(outputImage: OutputImage): string {
-  return JSON.stringify(OutputImage$outboundSchema.parse(outputImage));
-}
-export function outputImageFromJSON(
-  jsonString: string,
-): SafeParseResult<OutputImage, SDKValidationError> {
-  return safeParse(
-    jsonString,
-    (x) => OutputImage$inboundSchema.parse(JSON.parse(x)),
-    `Failed to parse 'OutputImage' from JSON`,
-  );
-}
-
-/** @internal */
-export const OutputCodeInterpreterCallItemOutputUnion$inboundSchema: z.ZodType<
-  OutputCodeInterpreterCallItemOutputUnion,
+export const OutputCodeInterpreterCallItemOutput$inboundSchema: z.ZodType<
+  OutputCodeInterpreterCallItemOutput,
   unknown
 > = discriminatedUnion("type", {
-  image: z.lazy(() => OutputImage$inboundSchema),
-  logs: z.lazy(() => OutputLogs$inboundSchema),
+  logs: CodeInterpreterLogsOutput$inboundSchema,
+  image: CodeInterpreterImageOutput$inboundSchema,
+  file: CodeInterpreterFileOutput$inboundSchema,
 });
 /** @internal */
-export type OutputCodeInterpreterCallItemOutputUnion$Outbound =
-  | OutputImage$Outbound
-  | OutputLogs$Outbound;
+export type OutputCodeInterpreterCallItemOutput$Outbound =
+  | CodeInterpreterLogsOutput$Outbound
+  | CodeInterpreterImageOutput$Outbound
+  | CodeInterpreterFileOutput$Outbound;
 
 /** @internal */
-export const OutputCodeInterpreterCallItemOutputUnion$outboundSchema: z.ZodType<
-  OutputCodeInterpreterCallItemOutputUnion$Outbound,
-  OutputCodeInterpreterCallItemOutputUnion
+export const OutputCodeInterpreterCallItemOutput$outboundSchema: z.ZodType<
+  OutputCodeInterpreterCallItemOutput$Outbound,
+  OutputCodeInterpreterCallItemOutput
 > = z.union([
-  z.lazy(() => OutputImage$outboundSchema),
-  z.lazy(() => OutputLogs$outboundSchema),
+  CodeInterpreterLogsOutput$outboundSchema,
+  CodeInterpreterImageOutput$outboundSchema,
+  CodeInterpreterFileOutput$outboundSchema,
 ]);
 
-export function outputCodeInterpreterCallItemOutputUnionToJSON(
-  outputCodeInterpreterCallItemOutputUnion:
-    OutputCodeInterpreterCallItemOutputUnion,
+export function outputCodeInterpreterCallItemOutputToJSON(
+  outputCodeInterpreterCallItemOutput: OutputCodeInterpreterCallItemOutput,
 ): string {
   return JSON.stringify(
-    OutputCodeInterpreterCallItemOutputUnion$outboundSchema.parse(
-      outputCodeInterpreterCallItemOutputUnion,
+    OutputCodeInterpreterCallItemOutput$outboundSchema.parse(
+      outputCodeInterpreterCallItemOutput,
     ),
   );
 }
-export function outputCodeInterpreterCallItemOutputUnionFromJSON(
+export function outputCodeInterpreterCallItemOutputFromJSON(
   jsonString: string,
-): SafeParseResult<
-  OutputCodeInterpreterCallItemOutputUnion,
-  SDKValidationError
-> {
+): SafeParseResult<OutputCodeInterpreterCallItemOutput, SDKValidationError> {
   return safeParse(
     jsonString,
     (x) =>
-      OutputCodeInterpreterCallItemOutputUnion$inboundSchema.parse(
-        JSON.parse(x),
-      ),
-    `Failed to parse 'OutputCodeInterpreterCallItemOutputUnion' from JSON`,
+      OutputCodeInterpreterCallItemOutput$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'OutputCodeInterpreterCallItemOutput' from JSON`,
   );
 }
 
 /** @internal */
-export const TypeCodeInterpreterCall$inboundSchema: z.ZodEnum<
-  typeof TypeCodeInterpreterCall
-> = z.enum(TypeCodeInterpreterCall);
+export const OutputCodeInterpreterCallItemStatus$inboundSchema: z.ZodType<
+  OutputCodeInterpreterCallItemStatus,
+  unknown
+> = openEnums.inboundSchema(OutputCodeInterpreterCallItemStatus);
 /** @internal */
-export const TypeCodeInterpreterCall$outboundSchema: z.ZodEnum<
-  typeof TypeCodeInterpreterCall
-> = TypeCodeInterpreterCall$inboundSchema;
+export const OutputCodeInterpreterCallItemStatus$outboundSchema: z.ZodType<
+  string,
+  OutputCodeInterpreterCallItemStatus
+> = openEnums.outboundSchema(OutputCodeInterpreterCallItemStatus);
+
+/** @internal */
+export const OutputCodeInterpreterCallItemType$inboundSchema: z.ZodEnum<
+  typeof OutputCodeInterpreterCallItemType
+> = z.enum(OutputCodeInterpreterCallItemType);
+/** @internal */
+export const OutputCodeInterpreterCallItemType$outboundSchema: z.ZodEnum<
+  typeof OutputCodeInterpreterCallItemType
+> = OutputCodeInterpreterCallItemType$inboundSchema;
 
 /** @internal */
 export const OutputCodeInterpreterCallItem$inboundSchema: z.ZodType<
   OutputCodeInterpreterCallItem,
   unknown
-> = z.object({
-  code: z.nullable(z.string()),
-  container_id: z.string(),
-  id: z.string(),
-  outputs: z.nullable(
-    z.array(discriminatedUnion("type", {
-      image: z.lazy(() => OutputImage$inboundSchema),
-      logs: z.lazy(() =>
-        OutputLogs$inboundSchema
+> = collectExtraKeys$(
+  z.object({
+    code: z.nullable(z.string()).optional(),
+    container_id: z.string().optional(),
+    id: z.string(),
+    outputs: z.nullable(
+      z.array(
+        discriminatedUnion("type", {
+          logs: CodeInterpreterLogsOutput$inboundSchema,
+          image: CodeInterpreterImageOutput$inboundSchema,
+          file: CodeInterpreterFileOutput$inboundSchema,
+        }),
       ),
-    })),
-  ),
-  status: ToolCallStatus$inboundSchema,
-  type: TypeCodeInterpreterCall$inboundSchema,
-}).transform((v) => {
+    ).optional(),
+    status: OutputCodeInterpreterCallItemStatus$inboundSchema,
+    type: OutputCodeInterpreterCallItemType$inboundSchema,
+  }).catchall(z.any()),
+  "additionalProperties",
+  true,
+).transform((v) => {
   return remap$(v, {
     "container_id": "containerId",
   });
 });
 /** @internal */
 export type OutputCodeInterpreterCallItem$Outbound = {
-  code: string | null;
-  container_id: string;
+  code?: string | null | undefined;
+  container_id?: string | undefined;
   id: string;
-  outputs: Array<OutputImage$Outbound | OutputLogs$Outbound> | null;
+  outputs?:
+    | Array<
+      | CodeInterpreterLogsOutput$Outbound
+      | CodeInterpreterImageOutput$Outbound
+      | CodeInterpreterFileOutput$Outbound
+    >
+    | null
+    | undefined;
   status: string;
   type: string;
+  [additionalProperties: string]: unknown;
 };
 
 /** @internal */
@@ -216,23 +195,29 @@ export const OutputCodeInterpreterCallItem$outboundSchema: z.ZodType<
   OutputCodeInterpreterCallItem$Outbound,
   OutputCodeInterpreterCallItem
 > = z.object({
-  code: z.nullable(z.string()),
-  containerId: z.string(),
+  code: z.nullable(z.string()).optional(),
+  containerId: z.string().optional(),
   id: z.string(),
   outputs: z.nullable(
-    z.array(z.union([
-      z.lazy(() => OutputImage$outboundSchema),
-      z.lazy(() =>
-        OutputLogs$outboundSchema
-      ),
-    ])),
-  ),
-  status: ToolCallStatus$outboundSchema,
-  type: TypeCodeInterpreterCall$outboundSchema,
+    z.array(
+      z.union([
+        CodeInterpreterLogsOutput$outboundSchema,
+        CodeInterpreterImageOutput$outboundSchema,
+        CodeInterpreterFileOutput$outboundSchema,
+      ]),
+    ),
+  ).optional(),
+  status: OutputCodeInterpreterCallItemStatus$outboundSchema,
+  type: OutputCodeInterpreterCallItemType$outboundSchema,
+  additionalProperties: z.record(z.string(), z.any()).optional(),
 }).transform((v) => {
-  return remap$(v, {
-    containerId: "container_id",
-  });
+  return {
+    ...v.additionalProperties,
+    ...remap$(v, {
+      containerId: "container_id",
+      additionalProperties: null,
+    }),
+  };
 });
 
 export function outputCodeInterpreterCallItemToJSON(
