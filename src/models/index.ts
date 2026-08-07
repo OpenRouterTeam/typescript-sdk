@@ -314,6 +314,8 @@ export * from "./memberassignment.js";
 export * from "./messagesadvisortoolresultblock.js";
 export * from "./messagesbashtoolresultblock.js";
 export * from "./messagesfallbackparam.js";
+export * from "./messagesmcptoolresultblockparam.js";
+export * from "./messagesmcptooluseblockparam.js";
 export * from "./messagesmessageparam.js";
 export * from "./messagesoutputconfig.js";
 export * from "./messagesrequest.js";
