@@ -1,0 +1,33 @@
+---
+title: "AlertEventContextBudgetLimit"
+---
+
+PII-free context for a budget-limit alert event.
+
+## Example Usage
+
+```typescript
+import { AlertEventContextBudgetLimit } from "@openrouter/sdk/models";
+
+let value: AlertEventContextBudgetLimit = {
+  interval: "monthly",
+  kind: "budget-limit",
+  limitUsd: 1399.55,
+  spend: 9111.82,
+  threshold: 9527.28,
+  workspaceId: "<id>",
+  workspaceName: "<value>",
+};
+```
+
+## Fields
+
+| Field                                                                  | Type                                                                   | Required                                                               | Description                                                            |
+| ---------------------------------------------------------------------- | ---------------------------------------------------------------------- | ---------------------------------------------------------------------- | ---------------------------------------------------------------------- |
+| `interval`                                                             | [models.Interval](../models/interval.mdx)                               | :heavy_check_mark:                                                     | The stable budget reset interval: daily, weekly, monthly, or lifetime. |
+| `kind`                                                                 | *"budget-limit"*                                                       | :heavy_check_mark:                                                     | A workspace budget limit alert.                                        |
+| `limitUsd`                                                             | *number*                                                               | :heavy_check_mark:                                                     | The budget limit in US dollars.                                        |
+| `spend`                                                                | *number*                                                               | :heavy_check_mark:                                                     | The spend counted against the budget, in US dollars.                   |
+| `threshold`                                                            | *number*                                                               | :heavy_check_mark:                                                     | The budget utilization threshold as a percent from 0–100.              |
+| `workspaceId`                                                          | *string*                                                               | :heavy_check_mark:                                                     | The workspace whose budget produced this alert.                        |
+| `workspaceName`                                                        | *string*                                                               | :heavy_check_mark:                                                     | The workspace name used when rendering this alert.                     |
