@@ -8,6 +8,11 @@ import { remap as remap$ } from "../lib/primitives.js";
 import * as openEnums from "../types/enums.js";
 import { ClosedEnum, OpenEnum } from "../types/enums.js";
 import {
+  AdvisorServerToolOpenRouter,
+  AdvisorServerToolOpenRouter$Outbound,
+  AdvisorServerToolOpenRouter$outboundSchema,
+} from "./advisorservertoolopenrouter.js";
+import {
   AnthropicAllowedCallers,
   AnthropicAllowedCallers$outboundSchema,
 } from "./anthropicallowedcallers.js";
@@ -96,10 +101,20 @@ import {
   FileParserPlugin$outboundSchema,
 } from "./fileparserplugin.js";
 import {
+  FilesServerTool,
+  FilesServerTool$Outbound,
+  FilesServerTool$outboundSchema,
+} from "./filesservertool.js";
+import {
   FusionPlugin,
   FusionPlugin$Outbound,
   FusionPlugin$outboundSchema,
 } from "./fusionplugin.js";
+import {
+  FusionServerToolOpenRouter,
+  FusionServerToolOpenRouter$Outbound,
+  FusionServerToolOpenRouter$outboundSchema,
+} from "./fusionservertoolopenrouter.js";
 import {
   ImageGenerationServerToolOpenRouter,
   ImageGenerationServerToolOpenRouter$Outbound,
@@ -160,6 +175,11 @@ import {
   StopServerToolsWhenCondition$Outbound,
   StopServerToolsWhenCondition$outboundSchema,
 } from "./stopservertoolswhencondition.js";
+import {
+  SubagentServerToolOpenRouter,
+  SubagentServerToolOpenRouter$Outbound,
+  SubagentServerToolOpenRouter$outboundSchema,
+} from "./subagentservertoolopenrouter.js";
 import {
   TraceConfig,
   TraceConfig$Outbound,
@@ -474,7 +494,11 @@ export type MessagesRequestToolUnion =
   | WebFetchServerTool
   | OpenRouterWebSearchServerTool
   | MessagesRequestTool
-  | ShellServerToolOpenRouter;
+  | ShellServerToolOpenRouter
+  | AdvisorServerToolOpenRouter
+  | FilesServerTool
+  | FusionServerToolOpenRouter
+  | SubagentServerToolOpenRouter;
 
 /**
  * Request schema for Anthropic Messages API endpoint
@@ -558,6 +582,10 @@ export type MessagesRequest = {
       | OpenRouterWebSearchServerTool
       | MessagesRequestTool
       | ShellServerToolOpenRouter
+      | AdvisorServerToolOpenRouter
+      | FilesServerTool
+      | FusionServerToolOpenRouter
+      | SubagentServerToolOpenRouter
     >
     | undefined;
   topK?: number | undefined;
@@ -1463,7 +1491,11 @@ export type MessagesRequestToolUnion$Outbound =
   | WebFetchServerTool$Outbound
   | OpenRouterWebSearchServerTool$Outbound
   | MessagesRequestTool$Outbound
-  | ShellServerToolOpenRouter$Outbound;
+  | ShellServerToolOpenRouter$Outbound
+  | AdvisorServerToolOpenRouter$Outbound
+  | FilesServerTool$Outbound
+  | FusionServerToolOpenRouter$Outbound
+  | SubagentServerToolOpenRouter$Outbound;
 
 /** @internal */
 export const MessagesRequestToolUnion$outboundSchema: z.ZodType<
@@ -1486,6 +1518,10 @@ export const MessagesRequestToolUnion$outboundSchema: z.ZodType<
   OpenRouterWebSearchServerTool$outboundSchema,
   z.lazy(() => MessagesRequestTool$outboundSchema),
   ShellServerToolOpenRouter$outboundSchema,
+  AdvisorServerToolOpenRouter$outboundSchema,
+  FilesServerTool$outboundSchema,
+  FusionServerToolOpenRouter$outboundSchema,
+  SubagentServerToolOpenRouter$outboundSchema,
 ]);
 
 export function messagesRequestToolUnionToJSON(
@@ -1561,6 +1597,10 @@ export type MessagesRequest$Outbound = {
       | OpenRouterWebSearchServerTool$Outbound
       | MessagesRequestTool$Outbound
       | ShellServerToolOpenRouter$Outbound
+      | AdvisorServerToolOpenRouter$Outbound
+      | FilesServerTool$Outbound
+      | FusionServerToolOpenRouter$Outbound
+      | SubagentServerToolOpenRouter$Outbound
     >
     | undefined;
   top_k?: number | undefined;
@@ -1639,6 +1679,10 @@ export const MessagesRequest$outboundSchema: z.ZodType<
       OpenRouterWebSearchServerTool$outboundSchema,
       z.lazy(() => MessagesRequestTool$outboundSchema),
       ShellServerToolOpenRouter$outboundSchema,
+      AdvisorServerToolOpenRouter$outboundSchema,
+      FilesServerTool$outboundSchema,
+      FusionServerToolOpenRouter$outboundSchema,
+      SubagentServerToolOpenRouter$outboundSchema,
     ]),
   ).optional(),
   topK: z.int().optional(),
