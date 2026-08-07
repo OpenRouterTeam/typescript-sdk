@@ -8,6 +8,7 @@ import { apiKeysDelete } from "../funcs/apiKeysDelete.js";
 import { apiKeysGet } from "../funcs/apiKeysGet.js";
 import { apiKeysGetCurrentKeyMetadata } from "../funcs/apiKeysGetCurrentKeyMetadata.js";
 import { apiKeysList } from "../funcs/apiKeysList.js";
+import { apiKeysRotate } from "../funcs/apiKeysRotate.js";
 import { apiKeysUpdate } from "../funcs/apiKeysUpdate.js";
 import { ClientSDK, RequestOptions } from "../lib/sdks.js";
 import * as operations from "../models/operations/index.js";
@@ -110,6 +111,23 @@ export class APIKeys extends ClientSDK {
     options?: RequestOptions,
   ): Promise<operations.UpdateKeysResponse> {
     return unwrapAsync(apiKeysUpdate(
+      this,
+      request,
+      options,
+    ));
+  }
+
+  /**
+   * Rotate an API key
+   *
+   * @remarks
+   * Create a successor API key with the predecessor configuration and lineage. The plaintext successor key is returned only once. Immediate and delayed revocation use the existing disabled and expires_at lifecycle fields; cached authentication contexts may honor either revocation for a bounded grace period. The successor has a new key ID and is not automatically added to allowlists that reference keys by ID, including BYOK provider-key restrictions; update those references after rotation. [Management key](/docs/guides/overview/auth/management-api-keys) required.
+   */
+  async rotate(
+    request: operations.CreateKeysRotateRequest,
+    options?: RequestOptions,
+  ): Promise<operations.CreateKeysRotateResponse> {
+    return unwrapAsync(apiKeysRotate(
       this,
       request,
       options,
