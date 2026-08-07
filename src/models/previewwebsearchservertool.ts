@@ -31,6 +31,11 @@ import {
   WebSearchEngineEnum$inboundSchema,
   WebSearchEngineEnum$outboundSchema,
 } from "./websearchengineenum.js";
+import {
+  WebSearchMode,
+  WebSearchMode$inboundSchema,
+  WebSearchMode$outboundSchema,
+} from "./websearchmode.js";
 
 export const PreviewWebSearchServerToolType = {
   WebSearchPreview: "web_search_preview",
@@ -57,6 +62,10 @@ export type PreviewWebSearchServerTool = {
    */
   maxUses?: number | undefined;
   /**
+   * Engine-native search mode. Exa supports instant, fast, auto (default), deep-lite, deep, and deep-reasoning. Parallel supports turbo (default), basic, and advanced. Modes unsupported by the selected engine are ignored.
+   */
+  mode?: WebSearchMode | undefined;
+  /**
    * Size of the search context for web search tools
    */
   searchContextSize?: SearchContextSizeEnum | undefined;
@@ -82,6 +91,7 @@ export const PreviewWebSearchServerTool$inboundSchema: z.ZodType<
   filters: z.nullable(WebSearchDomainFilter$inboundSchema).optional(),
   max_results: z.int().optional(),
   max_uses: z.int().optional(),
+  mode: WebSearchMode$inboundSchema.optional(),
   search_context_size: SearchContextSizeEnum$inboundSchema.optional(),
   type: PreviewWebSearchServerToolType$inboundSchema,
   user_location: z.nullable(PreviewWebSearchUserLocation$inboundSchema)
@@ -100,6 +110,7 @@ export type PreviewWebSearchServerTool$Outbound = {
   filters?: WebSearchDomainFilter$Outbound | null | undefined;
   max_results?: number | undefined;
   max_uses?: number | undefined;
+  mode?: string | undefined;
   search_context_size?: string | undefined;
   type: string;
   user_location?: PreviewWebSearchUserLocation$Outbound | null | undefined;
@@ -114,6 +125,7 @@ export const PreviewWebSearchServerTool$outboundSchema: z.ZodType<
   filters: z.nullable(WebSearchDomainFilter$outboundSchema).optional(),
   maxResults: z.int().optional(),
   maxUses: z.int().optional(),
+  mode: WebSearchMode$outboundSchema.optional(),
   searchContextSize: SearchContextSizeEnum$outboundSchema.optional(),
   type: PreviewWebSearchServerToolType$outboundSchema,
   userLocation: z.nullable(PreviewWebSearchUserLocation$outboundSchema)
