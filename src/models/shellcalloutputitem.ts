@@ -11,18 +11,42 @@ import {
   ToolCallStatus$outboundSchema,
 } from "./toolcallstatus.js";
 
-export type ShellCallOutputItemOutput = {
+export type ShellCallOutputItemOutcomeTimeout = {
+  type: "timeout";
+};
+
+export type ShellCallOutputItemOutcomeExit = {
+  exitCode: number;
+  type: "exit";
+};
+
+export type ShellCallOutputItemOutcomeUnion =
+  | ShellCallOutputItemOutcomeExit
+  | ShellCallOutputItemOutcomeTimeout;
+
+export type ShellCallOutputItemOutput2 = {
+  outcome: ShellCallOutputItemOutcomeExit | ShellCallOutputItemOutcomeTimeout;
+  stderr: string;
+  stdout: string;
+  additionalProperties?: { [k: string]: any } | undefined;
+};
+
+export type ShellCallOutputItemOutput1 = {
   content?: string | null | undefined;
   exitCode?: number | null | undefined;
   type: string;
   additionalProperties?: { [k: string]: any } | undefined;
 };
 
-export const ShellCallOutputItemType = {
+export type ShellCallOutputItemOutputUnion =
+  | ShellCallOutputItemOutput2
+  | ShellCallOutputItemOutput1;
+
+export const ShellCallOutputItemTypeShellCallOutput = {
   ShellCallOutput: "shell_call_output",
 } as const;
-export type ShellCallOutputItemType = ClosedEnum<
-  typeof ShellCallOutputItemType
+export type ShellCallOutputItemTypeShellCallOutput = ClosedEnum<
+  typeof ShellCallOutputItemTypeShellCallOutput
 >;
 
 /**
@@ -32,13 +56,128 @@ export type ShellCallOutputItem = {
   callId: string;
   id?: string | null | undefined;
   maxOutputLength?: number | null | undefined;
-  output: Array<ShellCallOutputItemOutput>;
+  output: Array<ShellCallOutputItemOutput2 | ShellCallOutputItemOutput1>;
   status?: ToolCallStatus | null | undefined;
-  type: ShellCallOutputItemType;
+  type: ShellCallOutputItemTypeShellCallOutput;
 };
 
 /** @internal */
-export type ShellCallOutputItemOutput$Outbound = {
+export type ShellCallOutputItemOutcomeTimeout$Outbound = {
+  type: "timeout";
+};
+
+/** @internal */
+export const ShellCallOutputItemOutcomeTimeout$outboundSchema: z.ZodType<
+  ShellCallOutputItemOutcomeTimeout$Outbound,
+  ShellCallOutputItemOutcomeTimeout
+> = z.object({
+  type: z.literal("timeout"),
+});
+
+export function shellCallOutputItemOutcomeTimeoutToJSON(
+  shellCallOutputItemOutcomeTimeout: ShellCallOutputItemOutcomeTimeout,
+): string {
+  return JSON.stringify(
+    ShellCallOutputItemOutcomeTimeout$outboundSchema.parse(
+      shellCallOutputItemOutcomeTimeout,
+    ),
+  );
+}
+
+/** @internal */
+export type ShellCallOutputItemOutcomeExit$Outbound = {
+  exit_code: number;
+  type: "exit";
+};
+
+/** @internal */
+export const ShellCallOutputItemOutcomeExit$outboundSchema: z.ZodType<
+  ShellCallOutputItemOutcomeExit$Outbound,
+  ShellCallOutputItemOutcomeExit
+> = z.object({
+  exitCode: z.int(),
+  type: z.literal("exit"),
+}).transform((v) => {
+  return remap$(v, {
+    exitCode: "exit_code",
+  });
+});
+
+export function shellCallOutputItemOutcomeExitToJSON(
+  shellCallOutputItemOutcomeExit: ShellCallOutputItemOutcomeExit,
+): string {
+  return JSON.stringify(
+    ShellCallOutputItemOutcomeExit$outboundSchema.parse(
+      shellCallOutputItemOutcomeExit,
+    ),
+  );
+}
+
+/** @internal */
+export type ShellCallOutputItemOutcomeUnion$Outbound =
+  | ShellCallOutputItemOutcomeExit$Outbound
+  | ShellCallOutputItemOutcomeTimeout$Outbound;
+
+/** @internal */
+export const ShellCallOutputItemOutcomeUnion$outboundSchema: z.ZodType<
+  ShellCallOutputItemOutcomeUnion$Outbound,
+  ShellCallOutputItemOutcomeUnion
+> = z.union([
+  z.lazy(() => ShellCallOutputItemOutcomeExit$outboundSchema),
+  z.lazy(() => ShellCallOutputItemOutcomeTimeout$outboundSchema),
+]);
+
+export function shellCallOutputItemOutcomeUnionToJSON(
+  shellCallOutputItemOutcomeUnion: ShellCallOutputItemOutcomeUnion,
+): string {
+  return JSON.stringify(
+    ShellCallOutputItemOutcomeUnion$outboundSchema.parse(
+      shellCallOutputItemOutcomeUnion,
+    ),
+  );
+}
+
+/** @internal */
+export type ShellCallOutputItemOutput2$Outbound = {
+  outcome:
+    | ShellCallOutputItemOutcomeExit$Outbound
+    | ShellCallOutputItemOutcomeTimeout$Outbound;
+  stderr: string;
+  stdout: string;
+  [additionalProperties: string]: unknown;
+};
+
+/** @internal */
+export const ShellCallOutputItemOutput2$outboundSchema: z.ZodType<
+  ShellCallOutputItemOutput2$Outbound,
+  ShellCallOutputItemOutput2
+> = z.object({
+  outcome: z.union([
+    z.lazy(() => ShellCallOutputItemOutcomeExit$outboundSchema),
+    z.lazy(() => ShellCallOutputItemOutcomeTimeout$outboundSchema),
+  ]),
+  stderr: z.string(),
+  stdout: z.string(),
+  additionalProperties: z.record(z.string(), z.any()).optional(),
+}).transform((v) => {
+  return {
+    ...v.additionalProperties,
+    ...remap$(v, {
+      additionalProperties: null,
+    }),
+  };
+});
+
+export function shellCallOutputItemOutput2ToJSON(
+  shellCallOutputItemOutput2: ShellCallOutputItemOutput2,
+): string {
+  return JSON.stringify(
+    ShellCallOutputItemOutput2$outboundSchema.parse(shellCallOutputItemOutput2),
+  );
+}
+
+/** @internal */
+export type ShellCallOutputItemOutput1$Outbound = {
   content?: string | null | undefined;
   exit_code?: number | null | undefined;
   type: string;
@@ -46,9 +185,9 @@ export type ShellCallOutputItemOutput$Outbound = {
 };
 
 /** @internal */
-export const ShellCallOutputItemOutput$outboundSchema: z.ZodType<
-  ShellCallOutputItemOutput$Outbound,
-  ShellCallOutputItemOutput
+export const ShellCallOutputItemOutput1$outboundSchema: z.ZodType<
+  ShellCallOutputItemOutput1$Outbound,
+  ShellCallOutputItemOutput1
 > = z.object({
   content: z.nullable(z.string()).optional(),
   exitCode: z.nullable(z.int()).optional(),
@@ -64,25 +203,51 @@ export const ShellCallOutputItemOutput$outboundSchema: z.ZodType<
   };
 });
 
-export function shellCallOutputItemOutputToJSON(
-  shellCallOutputItemOutput: ShellCallOutputItemOutput,
+export function shellCallOutputItemOutput1ToJSON(
+  shellCallOutputItemOutput1: ShellCallOutputItemOutput1,
 ): string {
   return JSON.stringify(
-    ShellCallOutputItemOutput$outboundSchema.parse(shellCallOutputItemOutput),
+    ShellCallOutputItemOutput1$outboundSchema.parse(shellCallOutputItemOutput1),
   );
 }
 
 /** @internal */
-export const ShellCallOutputItemType$outboundSchema: z.ZodEnum<
-  typeof ShellCallOutputItemType
-> = z.enum(ShellCallOutputItemType);
+export type ShellCallOutputItemOutputUnion$Outbound =
+  | ShellCallOutputItemOutput2$Outbound
+  | ShellCallOutputItemOutput1$Outbound;
+
+/** @internal */
+export const ShellCallOutputItemOutputUnion$outboundSchema: z.ZodType<
+  ShellCallOutputItemOutputUnion$Outbound,
+  ShellCallOutputItemOutputUnion
+> = z.union([
+  z.lazy(() => ShellCallOutputItemOutput2$outboundSchema),
+  z.lazy(() => ShellCallOutputItemOutput1$outboundSchema),
+]);
+
+export function shellCallOutputItemOutputUnionToJSON(
+  shellCallOutputItemOutputUnion: ShellCallOutputItemOutputUnion,
+): string {
+  return JSON.stringify(
+    ShellCallOutputItemOutputUnion$outboundSchema.parse(
+      shellCallOutputItemOutputUnion,
+    ),
+  );
+}
+
+/** @internal */
+export const ShellCallOutputItemTypeShellCallOutput$outboundSchema: z.ZodEnum<
+  typeof ShellCallOutputItemTypeShellCallOutput
+> = z.enum(ShellCallOutputItemTypeShellCallOutput);
 
 /** @internal */
 export type ShellCallOutputItem$Outbound = {
   call_id: string;
   id?: string | null | undefined;
   max_output_length?: number | null | undefined;
-  output: Array<ShellCallOutputItemOutput$Outbound>;
+  output: Array<
+    ShellCallOutputItemOutput2$Outbound | ShellCallOutputItemOutput1$Outbound
+  >;
   status?: string | null | undefined;
   type: string;
 };
@@ -95,9 +260,14 @@ export const ShellCallOutputItem$outboundSchema: z.ZodType<
   callId: z.string(),
   id: z.nullable(z.string()).optional(),
   maxOutputLength: z.nullable(z.int()).optional(),
-  output: z.array(z.lazy(() => ShellCallOutputItemOutput$outboundSchema)),
+  output: z.array(
+    z.union([
+      z.lazy(() => ShellCallOutputItemOutput2$outboundSchema),
+      z.lazy(() => ShellCallOutputItemOutput1$outboundSchema),
+    ]),
+  ),
   status: z.nullable(ToolCallStatus$outboundSchema).optional(),
-  type: ShellCallOutputItemType$outboundSchema,
+  type: ShellCallOutputItemTypeShellCallOutput$outboundSchema,
 }).transform((v) => {
   return remap$(v, {
     callId: "call_id",
