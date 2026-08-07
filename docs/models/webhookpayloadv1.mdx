@@ -1,0 +1,53 @@
+---
+title: "WebhookPayloadV1"
+---
+
+Version 1 recipient-PII-free OpenRouter webhook payload. Under version 1, additive optional fields and new context.kind members are non-breaking; consumers must ignore unknown fields and kinds. Renames, removals, and unit changes require WebhookPayloadV2.
+
+## Example Usage
+
+```typescript
+import { WebhookPayloadV1 } from "@openrouter/sdk/models";
+
+let value: WebhookPayloadV1 = {
+  alertKey: "<value>",
+  calculatedValue: 8078.1,
+  dedupKey: "<value>",
+  items: [
+    {
+      context: {
+        interval: "lifetime",
+        kind: "budget-limit",
+        limitUsd: 3029.9,
+        spend: 371.34,
+        threshold: 4205.32,
+        workspaceId: "<id>",
+        workspaceName: "<value>",
+      },
+    },
+  ],
+  occurredAt: "<value>",
+  policyKey: "budget-limit",
+  scope: {},
+  state: "breach",
+  tenantId: "<id>",
+  threshold: 1993.78,
+  version: 289.33,
+};
+```
+
+## Fields
+
+| Field                                                                                | Type                                                                                 | Required                                                                             | Description                                                                          |
+| ------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------ |
+| `alertKey`                                                                           | *string*                                                                             | :heavy_check_mark:                                                                   | An opaque stable string used for trigger-state deduplication.                        |
+| `calculatedValue`                                                                    | *number*                                                                             | :heavy_check_mark:                                                                   | The value compared against the alert threshold.                                      |
+| `dedupKey`                                                                           | *string*                                                                             | :heavy_check_mark:                                                                   | An opaque stable string used as the webhook message ID.                              |
+| `items`                                                                              | *models.Items*[]                                                                     | :heavy_check_mark:                                                                   | Exactly one recipient-PII-free alert context item.                                   |
+| `occurredAt`                                                                         | *string*                                                                             | :heavy_check_mark:                                                                   | Event time that caused this alert delivery, as an RFC 3339 UTC timestamp.            |
+| `policyKey`                                                                          | [models.PolicyKey](../models/policykey.mdx)                                           | :heavy_check_mark:                                                                   | The alert policy that produced this delivery.                                        |
+| `scope`                                                                              | [models.WebhookPayloadV1Scope](../models/webhookpayloadv1scope.mdx)                   | :heavy_check_mark:                                                                   | The tenant scope of the webhook payload.                                             |
+| `state`                                                                              | [models.State](../models/state.mdx)                                                   | :heavy_check_mark:                                                                   | The alert state. Version 1 delivers breach events only.                              |
+| `tenantId`                                                                           | *string*                                                                             | :heavy_check_mark:                                                                   | The tenant whose alert policy produced this delivery.                                |
+| `threshold`                                                                          | *number*                                                                             | :heavy_check_mark:                                                                   | The configured alert threshold: USD for credits-low; percent 0–100 for budget-limit. |
+| `version`                                                                            | *number*                                                                             | :heavy_check_mark:                                                                   | Version of the customer-facing webhook payload.                                      |
