@@ -74,7 +74,7 @@ export type FusionServerToolConfig = {
    */
   maxCompletionTokens?: number | undefined;
   /**
-   * Maximum number of tool-calling steps each panelist (analysis model) and the analyst model may take during their agentic web-research loop. Models with web_search/web_fetch enabled iterate until they produce a text response or hit this ceiling. Defaults to 4. Capped at 16.
+   * Maximum number of tool-calling steps each panelist (analysis model) and the analyst model may take during their agentic web-research loop. Models with web_search/web_fetch enabled iterate until they produce a text response or hit this ceiling. Defaults to 8. Capped at 16.
    */
   maxToolCalls?: number | undefined;
   /**
