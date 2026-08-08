@@ -1,0 +1,32 @@
+---
+title: "AlertEventContext"
+---
+
+PII-free context describing the alert calculation.
+
+
+## Supported Types
+
+### `models.AlertEventContextBudgetLimit`
+
+```typescript
+const value: models.AlertEventContextBudgetLimit = {
+  interval: "monthly",
+  kind: "budget-limit",
+  limitUsd: 1399.55,
+  spend: 9111.82,
+  threshold: 9527.28,
+  workspaceId: "<id>",
+  workspaceName: "<value>",
+};
+```
+
+### `models.AlertEventContextCreditsLow`
+
+```typescript
+const value: models.AlertEventContextCreditsLow = {
+  kind: "credits-low",
+  threshold: 8461.83,
+};
+```
+
