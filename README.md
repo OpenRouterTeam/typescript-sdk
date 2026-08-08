@@ -70,18 +70,20 @@ import { OpenRouter } from "@openrouter/sdk";
 const openRouter = new OpenRouter();
 
 const result = await openRouter.chat.send({
-  messages: [
-    {
-      role: "user",
-      content: "Hello, how are you?",
+  chatRequest: {
+    messages: [
+      {
+        role: "user",
+        content: "Hello, how are you?",
+      },
+    ],
+    model: "openai/gpt-5",
+    provider: {
+      zdr: true,
+      sort: "price",
     },
-  ],
-  model: "openai/gpt-5",
-  provider: {
-    zdr: true,
-    sort: "price",
+    stream: true,
   },
-  stream: true
 });
 
 for await (const chunk of result) {
