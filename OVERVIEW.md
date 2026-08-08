@@ -7,7 +7,7 @@ The OpenRouter TypeScript SDK is a type-safe toolkit for building AI application
 Integrating AI models into applications involves handling different provider APIs, managing model-specific requirements, and avoiding common implementation mistakes. The OpenRouter SDK standardizes these integrations and protects you from footguns.
 
 ```typescript
-import OpenRouter from '@openrouter/sdk';
+import { OpenRouter } from '@openrouter/sdk';
 
 const client = new OpenRouter({
   apiKey: process.env.OPENROUTER_API_KEY
@@ -84,7 +84,7 @@ Get your API key from [openrouter.ai/settings/keys](https://openrouter.ai/settin
 ## Quick start
 
 ```typescript
-import OpenRouter from '@openrouter/sdk';
+import { OpenRouter } from '@openrouter/sdk';
 
 const client = new OpenRouter({
   apiKey: process.env.OPENROUTER_API_KEY
