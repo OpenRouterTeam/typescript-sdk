@@ -1,19 +1,19 @@
 lockVersion: ""
 id: ""
 management:
-  docChecksum: a8f1c52a66e0cf8a1616d3a10e154dc0
+  docChecksum: 964b7067e450ef9f440e74993976b666
   docVersion: 1.0.0
   speakeasyVersion: 1.787.0
   generationVersion: 2.914.0
-  releaseVersion: 1.2.16
-  configChecksum: dca607c120978cf9779c7ecd9868618f
+  releaseVersion: 1.2.17
+  configChecksum: e8ed30f94cb1a1f2183fb1bca57fee81
   repoURL: https://github.com/OpenRouterTeam/typescript-sdk.git
   installationURL: https://github.com/OpenRouterTeam/typescript-sdk
   published: true
 persistentEdits:
-  generation_id: 506449fa-d75e-4790-b8fa-5be26e34c57c
-  pristine_commit_hash: 9d1f5de97d3d8a114f986e0d750a13bfb33691fb
-  pristine_tree_hash: 86944032a06c1ec73249a52dc74f63fb1a10e1e4
+  generation_id: aa793a34-5fea-48c1-919e-a877affe1e4b
+  pristine_commit_hash: 2a2a733f35dbabac542eafe4ad5729fd0b0844ae
+  pristine_tree_hash: 5af7b96ed4fb18d1839b46293298ee422a360118
 features:
   typescript:
     acceptHeaders: 2.81.2
@@ -4155,8 +4155,8 @@ trackedFiles:
     deleted: true
   docs/models/fusionservertoolconfig.mdx:
     id: 07d85f26dc29
-    last_write_checksum: sha1:1bcedca2217c54e5cb96e5cbff5a067959143618
-    pristine_git_object: d4275c8bed35e5f4ee91499b9276654771d4e2e4
+    last_write_checksum: sha1:343e4168fd6dca3b7118d120cfb153a16246ed38
+    pristine_git_object: 396ed8a98c04f26ca2a8bc4d87d9a647f39f442e
   docs/models/fusionservertoolconfigeffort.md:
     id: 8e9519531e12
     last_write_checksum: sha1:7d8e4d53d85b1baf4bee735be03898c7bcd08424
@@ -12781,12 +12781,12 @@ trackedFiles:
     pristine_git_object: 410efafd6a7f50d91ccb87131fedbe0c3d47e15a
   jsr.json:
     id: 7f6ab7767282
-    last_write_checksum: sha1:1eaa78fec5fcc624bdec04c480129a642cc36839
-    pristine_git_object: bce8b4dbc21f571d78503c54e2edb17e5d5ac69f
+    last_write_checksum: sha1:818dd3886b69538883844bca5998bb0eecba1ab4
+    pristine_git_object: 620eee6a83493280a469dec05051d3e447a4c48f
   package.json:
     id: 7030d0b2f71b
-    last_write_checksum: sha1:06b1f85a0e579313277fb2fa6b7880ad29c26f5b
-    pristine_git_object: 6d5dd0fede166784f56e46dfb964c02e0215a06d
+    last_write_checksum: sha1:128ab65a4b1f1a9688ef7f319b921336beaf67ec
+    pristine_git_object: ef45ba89605516783332065ae37b41baeb25ded6
   src/core.ts:
     id: f431fdbcd144
     last_write_checksum: sha1:5aa66b0b6a5964f3eea7f3098c2eb3c0ee9c0131
@@ -13193,8 +13193,8 @@ trackedFiles:
     pristine_git_object: a187e58707bdb726ca2aff74941efe7493422d4e
   src/lib/config.ts:
     id: 320761608fb3
-    last_write_checksum: sha1:84da3924a38b629c82b27038ad9f5e0d0baede0e
-    pristine_git_object: 60fa37de17ac20e0c867d77b1cb36e1f7d5b1f03
+    last_write_checksum: sha1:548059be0135841da5631b9002be74cd9e581691
+    pristine_git_object: 3c99a8f0d3977ca3a6564fc138520dc9ded72924
   src/lib/dlv.ts:
     id: b1988214835a
     last_write_checksum: sha1:eaac763b22717206a6199104e0403ed17a4e2711
@@ -14251,8 +14251,8 @@ trackedFiles:
     pristine_git_object: 008038e1bd315d964c26dd3e963ecec230cc6314
   src/models/fusionservertoolconfig.ts:
     id: 500c34bd192b
-    last_write_checksum: sha1:0d0fbbdcf22f70f3621c30f2c85ef6674919c376
-    pristine_git_object: f5751cffad788c3ffc259e5c939baa7373c7dc2e
+    last_write_checksum: sha1:772ee9ad87799e99000e5a359af7f12fd2129439
+    pristine_git_object: 4b5ee88bba3a75e9df2d33c46e337cae4e21a540
   src/models/fusionservertoolopenrouter.ts:
     id: 01d346f44f6d
     last_write_checksum: sha1:d7e84ee66d90a98616e30a07cb4b7aa026c80210
@@ -18037,6 +18037,3 @@ examples:
         "500":
           application/json: {"error": {"code": 500, "message": "Internal Server Error"}}
 examplesVersion: 1.0.2
-releaseNotes: |
-  ## Typescript SDK Changes:
-  * `openrouter.videoGeneration.listVideosModels()`:  `response.data[].supportedSizes[]` **Changed**
