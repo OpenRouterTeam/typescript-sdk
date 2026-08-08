@@ -7,11 +7,13 @@ import { SDKOptions } from "../lib/config.js";
 import { RequestInput } from "../lib/http.js";
 import { RetryConfig } from "../lib/retries.js";
 import { SecurityState } from "../lib/security.js";
+import { WebhookRecipient } from "../types/webhooks.js";
 
 export type HookContext = {
   baseURL: string | URL;
   operationID: string;
   oAuth2Scopes: string[] | null;
+  webhookRecipient?: WebhookRecipient;
   securitySource?: any | (() => Promise<any>);
   retryConfig: RetryConfig;
   resolvedSecurity: SecurityState | null;

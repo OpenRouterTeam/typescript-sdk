@@ -1,0 +1,21 @@
+---
+title: "Interval"
+---
+
+The stable budget reset interval: daily, weekly, monthly, or lifetime.
+
+## Example Usage
+
+```typescript
+import { Interval } from "@openrouter/sdk/models";
+
+let value: Interval = "lifetime";
+
+// Open enum: unrecognized values are captured as Unrecognized<string>
+```
+
+## Values
+
+```typescript
+"daily" | "weekly" | "monthly" | "lifetime" | Unrecognized<string>
+```
