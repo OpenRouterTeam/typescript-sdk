@@ -1,0 +1,24 @@
+---
+title: "WebhookPayloadV1Item"
+---
+
+The alert context carried by this webhook item.
+
+## Example Usage
+
+```typescript
+import { WebhookPayloadV1Item } from "@openrouter/sdk/models";
+
+let value: WebhookPayloadV1Item = {
+  context: {
+    kind: "credits-low",
+    threshold: 9504.97,
+  },
+};
+```
+
+## Fields
+
+| Field                                              | Type                                               | Required                                           | Description                                        |
+| -------------------------------------------------- | -------------------------------------------------- | -------------------------------------------------- | -------------------------------------------------- |
+| `context`                                          | *models.AlertEventContext*                         | :heavy_check_mark:                                 | PII-free context describing the alert calculation. |

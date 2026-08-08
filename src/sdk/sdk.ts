@@ -3,7 +3,10 @@
  * @generated-id: 784571af2f69
  */
 
+import { validateWebhook } from "../funcs/validateWebhook.js";
 import { ClientSDK } from "../lib/sdks.js";
+import * as models from "../models/index.js";
+import { unwrapAsync } from "../types/fp.js";
 import { Analytics } from "./analytics.js";
 import { APIKeys } from "./apikeys.js";
 import { Benchmarks } from "./benchmarks.js";
@@ -201,4 +204,20 @@ export class OpenRouter extends ClientSDK {
     return callModelFunc(this, request, options);
   }
   // #endregion sdk-class-body
+
+  async validateWebhook({
+    request,
+  }: {
+    request: {
+      body: string;
+      headers: Record<string, string> | Headers;
+      url: string;
+      method: string;
+    } | Request;
+  }): Promise<models.WebhookPayloadV1> {
+    return unwrapAsync(validateWebhook(
+      this,
+      { request },
+    ));
+  }
 }
