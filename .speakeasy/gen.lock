@@ -1,19 +1,19 @@
 lockVersion: ""
 id: ""
 management:
-  docChecksum: 964b7067e450ef9f440e74993976b666
+  docChecksum: f7488f8bb2c773c4f974fac9e51fe532
   docVersion: 1.0.0
   speakeasyVersion: 1.787.0
   generationVersion: 2.914.0
-  releaseVersion: 1.2.17
-  configChecksum: e8ed30f94cb1a1f2183fb1bca57fee81
+  releaseVersion: 1.2.18
+  configChecksum: db6cf57f7559b905ec1173fb7deea2cc
   repoURL: https://github.com/OpenRouterTeam/typescript-sdk.git
   installationURL: https://github.com/OpenRouterTeam/typescript-sdk
   published: true
 persistentEdits:
-  generation_id: aa793a34-5fea-48c1-919e-a877affe1e4b
-  pristine_commit_hash: 2a2a733f35dbabac542eafe4ad5729fd0b0844ae
-  pristine_tree_hash: 5af7b96ed4fb18d1839b46293298ee422a360118
+  generation_id: a0ab524e-8390-48ae-a1d3-30ebe7ca12d7
+  pristine_commit_hash: 457324272dad241a066853ba53937687a0ad6274
+  pristine_tree_hash: ef87415827aa09c7fcfa535daf512fefceb7e0af
 features:
   typescript:
     acceptHeaders: 2.81.2
@@ -4155,8 +4155,8 @@ trackedFiles:
     deleted: true
   docs/models/fusionservertoolconfig.mdx:
     id: 07d85f26dc29
-    last_write_checksum: sha1:343e4168fd6dca3b7118d120cfb153a16246ed38
-    pristine_git_object: 396ed8a98c04f26ca2a8bc4d87d9a647f39f442e
+    last_write_checksum: sha1:686f69cbafb368df3c91bd7c595c42e24284d5f9
+    pristine_git_object: 9ff57eee84c1102ecb5a348f6934fa87ebfe7315
   docs/models/fusionservertoolconfigeffort.md:
     id: 8e9519531e12
     last_write_checksum: sha1:7d8e4d53d85b1baf4bee735be03898c7bcd08424
@@ -12781,12 +12781,12 @@ trackedFiles:
     pristine_git_object: 410efafd6a7f50d91ccb87131fedbe0c3d47e15a
   jsr.json:
     id: 7f6ab7767282
-    last_write_checksum: sha1:818dd3886b69538883844bca5998bb0eecba1ab4
-    pristine_git_object: 620eee6a83493280a469dec05051d3e447a4c48f
+    last_write_checksum: sha1:bc750a583e431db9133817448234014c0c7b3975
+    pristine_git_object: 8d9471c1d1bc26c8ad659dce886cf8d60e8e310d
   package.json:
     id: 7030d0b2f71b
-    last_write_checksum: sha1:128ab65a4b1f1a9688ef7f319b921336beaf67ec
-    pristine_git_object: ef45ba89605516783332065ae37b41baeb25ded6
+    last_write_checksum: sha1:8df84e4c79570232ac040e48d4a8939d4c9cad86
+    pristine_git_object: 14d41665b3f3e592869ce25d6547f01667fdd61d
   src/core.ts:
     id: f431fdbcd144
     last_write_checksum: sha1:5aa66b0b6a5964f3eea7f3098c2eb3c0ee9c0131
@@ -13193,8 +13193,8 @@ trackedFiles:
     pristine_git_object: a187e58707bdb726ca2aff74941efe7493422d4e
   src/lib/config.ts:
     id: 320761608fb3
-    last_write_checksum: sha1:548059be0135841da5631b9002be74cd9e581691
-    pristine_git_object: 3c99a8f0d3977ca3a6564fc138520dc9ded72924
+    last_write_checksum: sha1:a9180caa6b6d5e81a9493c5b53f0af36369f0021
+    pristine_git_object: 83309d80e39f36a19aca5a7532db4fd8f9a7a10e
   src/lib/dlv.ts:
     id: b1988214835a
     last_write_checksum: sha1:eaac763b22717206a6199104e0403ed17a4e2711
@@ -14251,8 +14251,8 @@ trackedFiles:
     pristine_git_object: 008038e1bd315d964c26dd3e963ecec230cc6314
   src/models/fusionservertoolconfig.ts:
     id: 500c34bd192b
-    last_write_checksum: sha1:772ee9ad87799e99000e5a359af7f12fd2129439
-    pristine_git_object: 4b5ee88bba3a75e9df2d33c46e337cae4e21a540
+    last_write_checksum: sha1:9cb2475e03f059446acd5a5d7c5709f52ba29e65
+    pristine_git_object: 50aeb1a803d90a98ae5447aeb3e90a67f6947870
   src/models/fusionservertoolopenrouter.ts:
     id: 01d346f44f6d
     last_write_checksum: sha1:d7e84ee66d90a98616e30a07cb4b7aa026c80210
