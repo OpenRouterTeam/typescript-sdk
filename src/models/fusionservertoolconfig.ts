@@ -70,7 +70,7 @@ export type FusionServerToolConfig = {
    */
   cacheControl?: AnthropicCacheControlDirective | undefined;
   /**
-   * Maximum number of output tokens (including reasoning tokens) each panelist and the analyst model may produce per inner call. Controls the total output budget so reasoning-heavy models like GPT-5.5 do not exhaust their token allowance before producing visible text. When omitted, no cap is sent and each inner call uses its model's own output limit.
+   * Maximum number of output tokens (including reasoning tokens) each panelist and the analyst model may produce per inner call. Controls the total output budget so reasoning-heavy models like GPT-5.5 do not exhaust their token allowance before producing visible text. Defaults to 16000 when omitted.
    */
   maxCompletionTokens?: number | undefined;
   /**
