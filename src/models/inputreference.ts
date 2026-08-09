@@ -21,7 +21,7 @@ import {
 } from "./contentpartvideo.js";
 
 /**
- * A reference asset used to guide video generation. Image references are supported by all providers; audio and video references are only honored by providers that support them (including BytePlus Seedance generation 2 and newer).
+ * A reference asset used to guide video generation. Image references are supported by all providers; audio and video references are only honored by providers that support them (currently BytePlus Seedance 2.0).
  */
 export type InputReference =
   | ContentPartAudio

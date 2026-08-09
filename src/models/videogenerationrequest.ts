@@ -225,7 +225,7 @@ export type VideoGenerationRequest = {
    */
   generateAudio?: boolean | undefined;
   /**
-   * Reference assets to guide video generation. Accepts image, audio, and video references. Audio and video references are only honored by providers that support them (including BytePlus Seedance generation 2 and newer); other providers use image references and ignore the rest.
+   * Reference assets to guide video generation. Accepts image, audio, and video references. Audio and video references are only honored by providers that support them (currently BytePlus Seedance 2.0); other providers use image references and ignore the rest.
    */
   inputReferences?: Array<InputReference> | undefined;
   model: string;
