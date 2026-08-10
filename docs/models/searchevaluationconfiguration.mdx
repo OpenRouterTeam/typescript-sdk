@@ -1,0 +1,58 @@
+---
+title: "SearchEvaluationConfiguration"
+---
+
+The evaluation configuration behind this result. `id` is a stable fingerprint: results are comparable if and only if their configuration ids match.
+
+## Example Usage
+
+```typescript
+import { SearchEvaluationConfiguration } from "@openrouter/sdk/models";
+
+let value: SearchEvaluationConfiguration = {
+  id: "sha256:2c26b46b68ffc68ff99b453c1d30413413422d706483bfa0f98a5e886266e7ae",
+  inference: {
+    costQualityTradeoff: null,
+    costTier: null,
+    maxTokens: null,
+    pinModel: null,
+    providerSort: null,
+    reasoningEffort: "high",
+    temperature: null,
+  },
+  routing: {
+    endpointId: null,
+    mode: "default",
+    providerName: "openai",
+  },
+  schemaVersion: "search-run-v1",
+  search: {
+    allowedDomains: null,
+    configuredEngine: "exa",
+    configuredMaxAgentTurns: 25,
+    configuredMaxResults: null,
+    configuredMaxTotalResults: null,
+    effectiveMaxAgentTurns: 25,
+    effectiveMaxResults: 5,
+    effectiveMaxTotalResults: 50,
+    excludedDomains: null,
+    excludedDomainsPolicy: "benchmark-default",
+    excludedDomainsSha256: null,
+    maxCharacters: null,
+    searchContextSize: null,
+    searchPromptSha256: null,
+    surface: "server-tool",
+    webFetch: null,
+  },
+};
+```
+
+## Fields
+
+| Field                                              | Type                                               | Required                                           | Description                                        |
+| -------------------------------------------------- | -------------------------------------------------- | -------------------------------------------------- | -------------------------------------------------- |
+| `id`                                               | *string*                                           | :heavy_check_mark:                                 | N/A                                                |
+| `inference`                                        | [models.Inference](../models/inference.mdx)         | :heavy_check_mark:                                 | N/A                                                |
+| `routing`                                          | [models.Routing](../models/routing.mdx)             | :heavy_check_mark:                                 | N/A                                                |
+| `schemaVersion`                                    | [models.SchemaVersion](../models/schemaversion.mdx) | :heavy_check_mark:                                 | N/A                                                |
+| `search`                                           | [models.Search](../models/search.mdx)               | :heavy_check_mark:                                 | N/A                                                |
