@@ -1,0 +1,28 @@
+---
+title: "ShellCommandResult"
+---
+
+The result of one shell command.
+
+## Example Usage
+
+```typescript
+import { ShellCommandResult } from "@openrouter/sdk/models";
+
+let value: ShellCommandResult = {
+  outcome: {
+    exitCode: 0,
+    type: "exit",
+  },
+  stderr: "",
+  stdout: "hello\n",
+};
+```
+
+## Fields
+
+| Field              | Type               | Required           | Description        |
+| ------------------ | ------------------ | ------------------ | ------------------ |
+| `outcome`          | *models.Outcome*   | :heavy_check_mark: | N/A                |
+| `stderr`           | *string*           | :heavy_check_mark: | N/A                |
+| `stdout`           | *string*           | :heavy_check_mark: | N/A                |
