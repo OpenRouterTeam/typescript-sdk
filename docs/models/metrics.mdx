@@ -1,0 +1,23 @@
+---
+title: "Metrics"
+---
+
+All published metrics for the configuration.
+
+## Example Usage
+
+```typescript
+import { Metrics } from "@openrouter/sdk/models";
+
+let value: Metrics = {
+  accuracy: 0.72,
+  f1ByItem: null,
+};
+```
+
+## Fields
+
+| Field                                                                                                                                       | Type                                                                                                                                        | Required                                                                                                                                    | Description                                                                                                                                 | Example                                                                                                                                     |
+| ------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------- |
+| `accuracy`                                                                                                                                  | *number*                                                                                                                                    | :heavy_check_mark:                                                                                                                          | Strict binary accuracy (`correct_tasks / total_tasks`). For WideSearch this is all-or-nothing per task, much stricter than the headline F1. | 0.72                                                                                                                                        |
+| `f1ByItem`                                                                                                                                  | *number*                                                                                                                                    | :heavy_check_mark:                                                                                                                          | Item-weighted partial-credit F1. Only populated for suites that score partial credit (WideSearch); null otherwise.                          | null                                                                                                                                        |
