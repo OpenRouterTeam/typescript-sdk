@@ -34,6 +34,7 @@
       "sdks/providers/README",
       "sdks/rerank/README",
       "sdks/responses/README",
+      "sdks/scim/README",
       "sdks/stt/README",
       "sdks/tts/README",
       "sdks/videogeneration/README",
