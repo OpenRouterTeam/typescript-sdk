@@ -12,7 +12,16 @@ import { OutputShellCallOutputItem } from "@openrouter/sdk/models";
 let value: OutputShellCallOutputItem = {
   callId: "<id>",
   id: "msg-abc123",
-  output: [],
+  output: [
+    {
+      outcome: {
+        exitCode: 0,
+        type: "exit",
+      },
+      stderr: "",
+      stdout: "hello\n",
+    },
+  ],
   status: "completed",
   type: "shell_call_output",
 };
@@ -20,11 +29,11 @@ let value: OutputShellCallOutputItem = {
 
 ## Fields
 
-| Field                                                                                    | Type                                                                                     | Required                                                                                 | Description                                                                              | Example                                                                                  |
-| ---------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------- |
-| `callId`                                                                                 | *string*                                                                                 | :heavy_check_mark:                                                                       | N/A                                                                                      |                                                                                          |
-| `id`                                                                                     | *string*                                                                                 | :heavy_check_mark:                                                                       | N/A                                                                                      |                                                                                          |
-| `maxOutputLength`                                                                        | *number*                                                                                 | :heavy_minus_sign:                                                                       | N/A                                                                                      |                                                                                          |
-| `output`                                                                                 | [models.OutputShellCallOutputItemOutput](../models/outputshellcalloutputitemoutput.mdx)[] | :heavy_check_mark:                                                                       | N/A                                                                                      |                                                                                          |
-| `status`                                                                                 | [models.ShellCallStatus](../models/shellcallstatus.mdx)                                   | :heavy_check_mark:                                                                       | Status of a shell call or its output.                                                    | completed                                                                                |
-| `type`                                                                                   | *"shell_call_output"*                                                                    | :heavy_check_mark:                                                                       | N/A                                                                                      |                                                                                          |
+| Field                                                          | Type                                                           | Required                                                       | Description                                                    | Example                                                        |
+| -------------------------------------------------------------- | -------------------------------------------------------------- | -------------------------------------------------------------- | -------------------------------------------------------------- | -------------------------------------------------------------- |
+| `callId`                                                       | *string*                                                       | :heavy_check_mark:                                             | N/A                                                            |                                                                |
+| `id`                                                           | *string*                                                       | :heavy_check_mark:                                             | N/A                                                            |                                                                |
+| `maxOutputLength`                                              | *number*                                                       | :heavy_minus_sign:                                             | N/A                                                            |                                                                |
+| `output`                                                       | [models.ShellCommandResult](../models/shellcommandresult.mdx)[] | :heavy_check_mark:                                             | N/A                                                            |                                                                |
+| `status`                                                       | [models.ShellCallStatus](../models/shellcallstatus.mdx)         | :heavy_check_mark:                                             | Status of a shell call or its output.                          | completed                                                      |
+| `type`                                                         | *"shell_call_output"*                                          | :heavy_check_mark:                                             | N/A                                                            |                                                                |
