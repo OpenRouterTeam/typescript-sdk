@@ -1,0 +1,25 @@
+---
+title: "SessionCostMeta"
+---
+
+## Example Usage
+
+```typescript
+import { SessionCostMeta } from "@openrouter/sdk/models";
+
+let value: SessionCostMeta = {
+  asOf: "2026-05-12T02:00:00Z",
+  version: "v1",
+  windowDays: 30,
+  windowEndDate: "2026-05-11",
+};
+```
+
+## Fields
+
+| Field                                                                                          | Type                                                                                           | Required                                                                                       | Description                                                                                    | Example                                                                                        |
+| ---------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------- |
+| `asOf`                                                                                         | *string*                                                                                       | :heavy_check_mark:                                                                             | ISO-8601 timestamp when the response was generated.                                            | 2026-05-12T02:00:00Z                                                                           |
+| `version`                                                                                      | [models.SessionCostMetaVersion](../models/sessioncostmetaversion.mdx)                           | :heavy_check_mark:                                                                             | Dataset version.                                                                               |                                                                                                |
+| `windowDays`                                                                                   | *number*                                                                                       | :heavy_check_mark:                                                                             | Number of days in the weekly session sample window, or null when no snapshot is published.     | 30                                                                                             |
+| `windowEndDate`                                                                                | *string*                                                                                       | :heavy_check_mark:                                                                             | UTC date of the final day in the session sample window, or null when no snapshot is published. | 2026-05-11                                                                                     |
