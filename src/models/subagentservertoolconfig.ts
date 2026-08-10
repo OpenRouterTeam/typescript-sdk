@@ -21,6 +21,14 @@ import {
  */
 export type SubagentServerToolConfig = {
   /**
+   * EXPERIMENTAL — subject to change without notice. When true, the subagent inherits every client function defined in the request's top-level `tools` list. Supported on the Responses API (`/api/v1/responses`) only; other APIs reject it with a `400`.
+   */
+  inheritFunctions?: boolean | undefined;
+  /**
+   * EXPERIMENTAL — subject to change without notice. Names of the top-level function tools that the subagent will inherit. Any tool that matches by name will be copied fully into the tools array of the subagent. When `inherit_functions` is `true`, this list does nothing, because every client function will be inherited by default. Supported on the Responses API (`/api/v1/responses`) only; other APIs reject it with a `400`.
+   */
+  inheritedFunctionNames?: Array<string> | undefined;
+  /**
    * System instructions for the subagent. When omitted, the subagent responds with no system prompt of its own.
    */
   instructions?: string | undefined;
@@ -29,7 +37,7 @@ export type SubagentServerToolConfig = {
    */
   maxCompletionTokens?: number | undefined;
   /**
-   * Maximum number of tool-calling steps the subagent may take during its agentic loop. Capped at 25. Only relevant when the subagent is given tools. Accepted and validated but not yet enforced on the subagent call.
+   * Maximum number of tool-calling steps the subagent may take during its agentic loop. Capped at 25. Only relevant when the subagent is given tools. Forwarded to the subagent call as `max_tool_calls`.
    */
   maxToolCalls?: number | undefined;
   /**
@@ -56,6 +64,8 @@ export type SubagentServerToolConfig = {
 
 /** @internal */
 export type SubagentServerToolConfig$Outbound = {
+  inherit_functions?: boolean | undefined;
+  inherited_function_names?: Array<string> | undefined;
   instructions?: string | undefined;
   max_completion_tokens?: number | undefined;
   max_tool_calls?: number | undefined;
@@ -71,6 +81,8 @@ export const SubagentServerToolConfig$outboundSchema: z.ZodType<
   SubagentServerToolConfig$Outbound,
   SubagentServerToolConfig
 > = z.object({
+  inheritFunctions: z.boolean().optional(),
+  inheritedFunctionNames: z.array(z.string()).optional(),
   instructions: z.string().optional(),
   maxCompletionTokens: z.int().optional(),
   maxToolCalls: z.int().optional(),
@@ -81,6 +93,8 @@ export const SubagentServerToolConfig$outboundSchema: z.ZodType<
   tools: z.array(SubagentNestedTool$outboundSchema).optional(),
 }).transform((v) => {
   return remap$(v, {
+    inheritFunctions: "inherit_functions",
+    inheritedFunctionNames: "inherited_function_names",
     maxCompletionTokens: "max_completion_tokens",
     maxToolCalls: "max_tool_calls",
   });
