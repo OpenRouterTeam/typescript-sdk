@@ -63,6 +63,14 @@ export type OutputFusionServerToolItem = {
    */
   analysis?: FusionAnalysisResult | undefined;
   /**
+   * The raw tool-call arguments string as emitted by the model.
+   */
+  arguments?: string | undefined;
+  /**
+   * The model-generated tool call id from the originating turn.
+   */
+  callId?: string | undefined;
+  /**
    * Error message when the fusion run did not produce an analysis result.
    */
   error?: string | undefined;
@@ -180,6 +188,8 @@ export const OutputFusionServerToolItem$inboundSchema: z.ZodType<
   unknown
 > = z.object({
   analysis: FusionAnalysisResult$inboundSchema.optional(),
+  arguments: z.string().optional(),
+  call_id: z.string().optional(),
   error: z.string().optional(),
   failed_models: z.array(z.lazy(() => FailedModel$inboundSchema)).optional(),
   failure_reason: z.string().optional(),
@@ -190,6 +200,7 @@ export const OutputFusionServerToolItem$inboundSchema: z.ZodType<
   type: OutputFusionServerToolItemType$inboundSchema,
 }).transform((v) => {
   return remap$(v, {
+    "call_id": "callId",
     "failed_models": "failedModels",
     "failure_reason": "failureReason",
   });
@@ -197,6 +208,8 @@ export const OutputFusionServerToolItem$inboundSchema: z.ZodType<
 /** @internal */
 export type OutputFusionServerToolItem$Outbound = {
   analysis?: FusionAnalysisResult$Outbound | undefined;
+  arguments?: string | undefined;
+  call_id?: string | undefined;
   error?: string | undefined;
   failed_models?: Array<FailedModel$Outbound> | undefined;
   failure_reason?: string | undefined;
@@ -213,6 +226,8 @@ export const OutputFusionServerToolItem$outboundSchema: z.ZodType<
   OutputFusionServerToolItem
 > = z.object({
   analysis: FusionAnalysisResult$outboundSchema.optional(),
+  arguments: z.string().optional(),
+  callId: z.string().optional(),
   error: z.string().optional(),
   failedModels: z.array(z.lazy(() => FailedModel$outboundSchema)).optional(),
   failureReason: z.string().optional(),
@@ -223,6 +238,7 @@ export const OutputFusionServerToolItem$outboundSchema: z.ZodType<
   type: OutputFusionServerToolItemType$outboundSchema,
 }).transform((v) => {
   return remap$(v, {
+    callId: "call_id",
     failedModels: "failed_models",
     failureReason: "failure_reason",
   });
