@@ -570,6 +570,7 @@ export * from "./updateworkspaceresponse.js";
 export * from "./upsertworkspacebudgetrequest.js";
 export * from "./upsertworkspacebudgetresponse.js";
 export * from "./urlcitation.js";
+export * from "./videogenerationproviderpreferences.js";
 export * from "./videogenerationrequest.js";
 export * from "./videogenerationresponse.js";
 export * from "./videogenerationusage.js";
