@@ -202,6 +202,11 @@ import {
   OutputSearchModelsServerToolItem$outboundSchema,
 } from "./outputsearchmodelsservertoolitem.js";
 import {
+  OutputShellServerToolItem,
+  OutputShellServerToolItem$Outbound,
+  OutputShellServerToolItem$outboundSchema,
+} from "./outputshellservertoolitem.js";
+import {
   OutputSubagentServerToolItem,
   OutputSubagentServerToolItem$Outbound,
   OutputSubagentServerToolItem$outboundSchema,
@@ -427,6 +432,7 @@ export type InputsUnion1 =
   | OutputImageGenerationServerToolItem
   | OutputBrowserUseServerToolItem
   | OutputBashServerToolItem
+  | OutputShellServerToolItem
   | OutputTextEditorServerToolItem
   | OutputApplyPatchServerToolItem
   | OutputWebFetchServerToolItem
@@ -483,6 +489,7 @@ export type InputsUnion =
     | OutputImageGenerationServerToolItem
     | OutputBrowserUseServerToolItem
     | OutputBashServerToolItem
+    | OutputShellServerToolItem
     | OutputTextEditorServerToolItem
     | OutputApplyPatchServerToolItem
     | OutputWebFetchServerToolItem
@@ -786,6 +793,7 @@ export type InputsUnion1$Outbound =
   | OutputImageGenerationServerToolItem$Outbound
   | OutputBrowserUseServerToolItem$Outbound
   | OutputBashServerToolItem$Outbound
+  | OutputShellServerToolItem$Outbound
   | OutputTextEditorServerToolItem$Outbound
   | OutputApplyPatchServerToolItem$Outbound
   | OutputWebFetchServerToolItem$Outbound
@@ -841,6 +849,7 @@ export const InputsUnion1$outboundSchema: z.ZodType<
   OutputImageGenerationServerToolItem$outboundSchema,
   OutputBrowserUseServerToolItem$outboundSchema,
   OutputBashServerToolItem$outboundSchema,
+  OutputShellServerToolItem$outboundSchema,
   OutputTextEditorServerToolItem$outboundSchema,
   OutputApplyPatchServerToolItem$outboundSchema,
   OutputWebFetchServerToolItem$outboundSchema,
@@ -900,6 +909,7 @@ export type InputsUnion$Outbound =
     | OutputImageGenerationServerToolItem$Outbound
     | OutputBrowserUseServerToolItem$Outbound
     | OutputBashServerToolItem$Outbound
+    | OutputShellServerToolItem$Outbound
     | OutputTextEditorServerToolItem$Outbound
     | OutputApplyPatchServerToolItem$Outbound
     | OutputWebFetchServerToolItem$Outbound
@@ -959,6 +969,7 @@ export const InputsUnion$outboundSchema: z.ZodType<
       OutputImageGenerationServerToolItem$outboundSchema,
       OutputBrowserUseServerToolItem$outboundSchema,
       OutputBashServerToolItem$outboundSchema,
+      OutputShellServerToolItem$outboundSchema,
       OutputTextEditorServerToolItem$outboundSchema,
       OutputApplyPatchServerToolItem$outboundSchema,
       OutputWebFetchServerToolItem$outboundSchema,

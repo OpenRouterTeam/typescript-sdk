@@ -1,0 +1,27 @@
+---
+title: "OutputShellServerToolItem"
+---
+
+An openrouter:shell server tool output item containing the requested commands and their results.
+
+## Example Usage
+
+```typescript
+import { OutputShellServerToolItem } from "@openrouter/sdk/models";
+
+let value: OutputShellServerToolItem = {
+  status: "completed",
+  type: "openrouter:shell",
+};
+```
+
+## Fields
+
+| Field                                                                                  | Type                                                                                   | Required                                                                               | Description                                                                            | Example                                                                                |
+| -------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------- |
+| `action`                                                                               | [models.OutputShellServerToolItemAction](../models/outputshellservertoolitemaction.mdx) | :heavy_minus_sign:                                                                     | N/A                                                                                    |                                                                                        |
+| `callId`                                                                               | *string*                                                                               | :heavy_minus_sign:                                                                     | N/A                                                                                    |                                                                                        |
+| `id`                                                                                   | *string*                                                                               | :heavy_minus_sign:                                                                     | N/A                                                                                    |                                                                                        |
+| `output`                                                                               | [models.ShellCommandResult](../models/shellcommandresult.mdx)[]                         | :heavy_minus_sign:                                                                     | N/A                                                                                    |                                                                                        |
+| `status`                                                                               | [models.ToolCallStatus](../models/toolcallstatus.mdx)                                   | :heavy_check_mark:                                                                     | N/A                                                                                    | completed                                                                              |
+| `type`                                                                                 | [models.OutputShellServerToolItemType](../models/outputshellservertoolitemtype.mdx)     | :heavy_check_mark:                                                                     | N/A                                                                                    |                                                                                        |
