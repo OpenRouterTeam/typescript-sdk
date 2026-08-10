@@ -4,24 +4,166 @@
  */
 
 import * as z from "zod/v4";
-import {
-  ObservabilityFilterRuleGroup,
-  ObservabilityFilterRuleGroup$Outbound,
-  ObservabilityFilterRuleGroup$outboundSchema,
-} from "./observabilityfilterrulegroup.js";
+import * as openEnums from "../types/enums.js";
+import { OpenEnum } from "../types/enums.js";
+
+export const ObservabilityFilterRulesConfigNullableLogic = {
+  And: "and",
+  Or: "or",
+} as const;
+export type ObservabilityFilterRulesConfigNullableLogic = OpenEnum<
+  typeof ObservabilityFilterRulesConfigNullableLogic
+>;
+
+export const ObservabilityFilterRulesConfigNullableField = {
+  Model: "model",
+  Provider: "provider",
+  SessionId: "session_id",
+  UserId: "user_id",
+  ApiKeyName: "api_key_name",
+  FinishReason: "finish_reason",
+  Input: "input",
+  Output: "output",
+  TotalCost: "total_cost",
+  TotalTokens: "total_tokens",
+  PromptTokens: "prompt_tokens",
+  CompletionTokens: "completion_tokens",
+} as const;
+export type ObservabilityFilterRulesConfigNullableField = OpenEnum<
+  typeof ObservabilityFilterRulesConfigNullableField
+>;
+
+export const ObservabilityFilterRulesConfigNullableOperator = {
+  Equals: "equals",
+  NotEquals: "not_equals",
+  Contains: "contains",
+  NotContains: "not_contains",
+  Regex: "regex",
+  StartsWith: "starts_with",
+  EndsWith: "ends_with",
+  Gt: "gt",
+  Lt: "lt",
+  Gte: "gte",
+  Lte: "lte",
+  Exists: "exists",
+  NotExists: "not_exists",
+} as const;
+export type ObservabilityFilterRulesConfigNullableOperator = OpenEnum<
+  typeof ObservabilityFilterRulesConfigNullableOperator
+>;
+
+export type ObservabilityFilterRulesConfigNullableValue = string | number;
+
+export type ObservabilityFilterRulesConfigNullableRule = {
+  field: ObservabilityFilterRulesConfigNullableField;
+  operator: ObservabilityFilterRulesConfigNullableOperator;
+  value?: string | number | undefined;
+};
+
+export type Group = {
+  logic?: ObservabilityFilterRulesConfigNullableLogic | undefined;
+  rules: Array<ObservabilityFilterRulesConfigNullableRule>;
+};
 
 /**
  * Optional structured filter rules controlling which events are forwarded.
  */
 export type ObservabilityFilterRulesConfigNullable = {
   enabled?: boolean | undefined;
-  groups: Array<ObservabilityFilterRuleGroup>;
+  groups: Array<Group>;
 };
+
+/** @internal */
+export const ObservabilityFilterRulesConfigNullableLogic$outboundSchema:
+  z.ZodType<string, ObservabilityFilterRulesConfigNullableLogic> = openEnums
+    .outboundSchema(ObservabilityFilterRulesConfigNullableLogic);
+
+/** @internal */
+export const ObservabilityFilterRulesConfigNullableField$outboundSchema:
+  z.ZodType<string, ObservabilityFilterRulesConfigNullableField> = openEnums
+    .outboundSchema(ObservabilityFilterRulesConfigNullableField);
+
+/** @internal */
+export const ObservabilityFilterRulesConfigNullableOperator$outboundSchema:
+  z.ZodType<string, ObservabilityFilterRulesConfigNullableOperator> = openEnums
+    .outboundSchema(ObservabilityFilterRulesConfigNullableOperator);
+
+/** @internal */
+export type ObservabilityFilterRulesConfigNullableValue$Outbound =
+  | string
+  | number;
+
+/** @internal */
+export const ObservabilityFilterRulesConfigNullableValue$outboundSchema:
+  z.ZodType<
+    ObservabilityFilterRulesConfigNullableValue$Outbound,
+    ObservabilityFilterRulesConfigNullableValue
+  > = z.union([z.string(), z.number()]);
+
+export function observabilityFilterRulesConfigNullableValueToJSON(
+  observabilityFilterRulesConfigNullableValue:
+    ObservabilityFilterRulesConfigNullableValue,
+): string {
+  return JSON.stringify(
+    ObservabilityFilterRulesConfigNullableValue$outboundSchema.parse(
+      observabilityFilterRulesConfigNullableValue,
+    ),
+  );
+}
+
+/** @internal */
+export type ObservabilityFilterRulesConfigNullableRule$Outbound = {
+  field: string;
+  operator: string;
+  value?: string | number | undefined;
+};
+
+/** @internal */
+export const ObservabilityFilterRulesConfigNullableRule$outboundSchema:
+  z.ZodType<
+    ObservabilityFilterRulesConfigNullableRule$Outbound,
+    ObservabilityFilterRulesConfigNullableRule
+  > = z.object({
+    field: ObservabilityFilterRulesConfigNullableField$outboundSchema,
+    operator: ObservabilityFilterRulesConfigNullableOperator$outboundSchema,
+    value: z.union([z.string(), z.number()]).optional(),
+  });
+
+export function observabilityFilterRulesConfigNullableRuleToJSON(
+  observabilityFilterRulesConfigNullableRule:
+    ObservabilityFilterRulesConfigNullableRule,
+): string {
+  return JSON.stringify(
+    ObservabilityFilterRulesConfigNullableRule$outboundSchema.parse(
+      observabilityFilterRulesConfigNullableRule,
+    ),
+  );
+}
+
+/** @internal */
+export type Group$Outbound = {
+  logic: string;
+  rules: Array<ObservabilityFilterRulesConfigNullableRule$Outbound>;
+};
+
+/** @internal */
+export const Group$outboundSchema: z.ZodType<Group$Outbound, Group> = z.object({
+  logic: ObservabilityFilterRulesConfigNullableLogic$outboundSchema.default(
+    "and",
+  ),
+  rules: z.array(
+    z.lazy(() => ObservabilityFilterRulesConfigNullableRule$outboundSchema),
+  ),
+});
+
+export function groupToJSON(group: Group): string {
+  return JSON.stringify(Group$outboundSchema.parse(group));
+}
 
 /** @internal */
 export type ObservabilityFilterRulesConfigNullable$Outbound = {
   enabled: boolean;
-  groups: Array<ObservabilityFilterRuleGroup$Outbound>;
+  groups: Array<Group$Outbound>;
 };
 
 /** @internal */
@@ -30,7 +172,7 @@ export const ObservabilityFilterRulesConfigNullable$outboundSchema: z.ZodType<
   ObservabilityFilterRulesConfigNullable
 > = z.object({
   enabled: z.boolean().default(true),
-  groups: z.array(ObservabilityFilterRuleGroup$outboundSchema),
+  groups: z.array(z.lazy(() => Group$outboundSchema)),
 });
 
 export function observabilityFilterRulesConfigNullableToJSON(

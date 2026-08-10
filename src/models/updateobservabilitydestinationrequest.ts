@@ -6,10 +6,18 @@
 import * as z from "zod/v4";
 import { remap as remap$ } from "../lib/primitives.js";
 import {
-  ObservabilityFilterRulesConfigNullable,
-  ObservabilityFilterRulesConfigNullable$Outbound,
-  ObservabilityFilterRulesConfigNullable$outboundSchema,
-} from "./observabilityfilterrulesconfignullable.js";
+  ObservabilityFilterRuleGroup,
+  ObservabilityFilterRuleGroup$Outbound,
+  ObservabilityFilterRuleGroup$outboundSchema,
+} from "./observabilityfilterrulegroup.js";
+
+/**
+ * Optional structured filter rules. `null` clears the rules. Omitting keeps the current value.
+ */
+export type FilterRules = {
+  enabled?: boolean | undefined;
+  groups: Array<ObservabilityFilterRuleGroup>;
+};
 
 export type UpdateObservabilityDestinationRequest = {
   /**
@@ -36,7 +44,10 @@ export type UpdateObservabilityDestinationRequest = {
    * Whether the destination is enabled.
    */
   enabled?: boolean | undefined;
-  filterRules?: ObservabilityFilterRulesConfigNullable | null | undefined;
+  /**
+   * Optional structured filter rules. `null` clears the rules. Omitting keeps the current value.
+   */
+  filterRules?: FilterRules | null | undefined;
   /**
    * Human-readable name for the destination.
    */
@@ -52,6 +63,25 @@ export type UpdateObservabilityDestinationRequest = {
 };
 
 /** @internal */
+export type FilterRules$Outbound = {
+  enabled: boolean;
+  groups: Array<ObservabilityFilterRuleGroup$Outbound>;
+};
+
+/** @internal */
+export const FilterRules$outboundSchema: z.ZodType<
+  FilterRules$Outbound,
+  FilterRules
+> = z.object({
+  enabled: z.boolean().default(true),
+  groups: z.array(ObservabilityFilterRuleGroup$outboundSchema),
+});
+
+export function filterRulesToJSON(filterRules: FilterRules): string {
+  return JSON.stringify(FilterRules$outboundSchema.parse(filterRules));
+}
+
+/** @internal */
 export type UpdateObservabilityDestinationRequest$Outbound = {
   api_key_hashes?: Array<string> | null | undefined;
   broadcast_generation_cost?: boolean | undefined;
@@ -59,10 +89,7 @@ export type UpdateObservabilityDestinationRequest$Outbound = {
   broadcast_generation_request_context?: boolean | undefined;
   config?: { [k: string]: any } | undefined;
   enabled?: boolean | undefined;
-  filter_rules?:
-    | ObservabilityFilterRulesConfigNullable$Outbound
-    | null
-    | undefined;
+  filter_rules?: FilterRules$Outbound | null | undefined;
   name?: string | undefined;
   privacy_mode?: boolean | undefined;
   sampling_rate?: number | undefined;
@@ -79,8 +106,7 @@ export const UpdateObservabilityDestinationRequest$outboundSchema: z.ZodType<
   broadcastGenerationRequestContext: z.boolean().optional(),
   config: z.record(z.string(), z.any()).optional(),
   enabled: z.boolean().optional(),
-  filterRules: z.nullable(ObservabilityFilterRulesConfigNullable$outboundSchema)
-    .optional(),
+  filterRules: z.nullable(z.lazy(() => FilterRules$outboundSchema)).optional(),
   name: z.string().optional(),
   privacyMode: z.boolean().optional(),
   samplingRate: z.number().optional(),

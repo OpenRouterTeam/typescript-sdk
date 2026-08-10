@@ -43,6 +43,63 @@ const value: models.ApplyPatchCallOperationDiffDoneEvent = {
 };
 ```
 
+### `models.CodeInterpreterCallCodeDeltaEvent`
+
+```typescript
+const value: models.CodeInterpreterCallCodeDeltaEvent = {
+  delta: "<value>",
+  itemId: "<id>",
+  outputIndex: 650887,
+  sequenceNumber: 0,
+  type: "response.code_interpreter_call_code.delta",
+};
+```
+
+### `models.CodeInterpreterCallCodeDoneEvent`
+
+```typescript
+const value: models.CodeInterpreterCallCodeDoneEvent = {
+  code: "<value>",
+  itemId: "<id>",
+  outputIndex: 477969,
+  sequenceNumber: 0,
+  type: "response.code_interpreter_call_code.done",
+};
+```
+
+### `models.CodeInterpreterCallCompletedEvent`
+
+```typescript
+const value: models.CodeInterpreterCallCompletedEvent = {
+  itemId: "<id>",
+  outputIndex: 869703,
+  sequenceNumber: 0,
+  type: "response.code_interpreter_call.completed",
+};
+```
+
+### `models.CodeInterpreterCallInProgressEvent`
+
+```typescript
+const value: models.CodeInterpreterCallInProgressEvent = {
+  itemId: "<id>",
+  outputIndex: 868387,
+  sequenceNumber: 0,
+  type: "response.code_interpreter_call.in_progress",
+};
+```
+
+### `models.CodeInterpreterCallInterpretingEvent`
+
+```typescript
+const value: models.CodeInterpreterCallInterpretingEvent = {
+  itemId: "<id>",
+  outputIndex: 366025,
+  sequenceNumber: 0,
+  type: "response.code_interpreter_call.interpreting",
+};
+```
+
 ### `models.StreamEventsResponseCompleted`
 
 ```typescript

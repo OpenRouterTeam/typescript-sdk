@@ -1,0 +1,31 @@
+---
+title: "FilterRules"
+---
+
+Optional structured filter rules. `null` clears the rules. Omitting keeps the current value.
+
+## Example Usage
+
+```typescript
+import { FilterRules } from "@openrouter/sdk/models";
+
+let value: FilterRules = {
+  groups: [
+    {
+      rules: [
+        {
+          field: "model",
+          operator: "equals",
+        },
+      ],
+    },
+  ],
+};
+```
+
+## Fields
+
+| Field                                                                              | Type                                                                               | Required                                                                           | Description                                                                        |
+| ---------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------- |
+| `enabled`                                                                          | *boolean*                                                                          | :heavy_minus_sign:                                                                 | N/A                                                                                |
+| `groups`                                                                           | [models.ObservabilityFilterRuleGroup](../models/observabilityfilterrulegroup.mdx)[] | :heavy_check_mark:                                                                 | N/A                                                                                |
