@@ -24,6 +24,12 @@ export type UpdateBYOKKeyRequest = {
    */
   isFallback?: boolean | undefined;
   /**
+   * Deprecated. Whether this credential is required for the models it can serve from this credential’s provider. This setting does not compose well when multiple keys exist for the same provider, may be removed in a future release, and does not prevent OpenRouter-billed endpoints from other providers serving the same model.
+   *
+   * @deprecated field: This will be removed in a future release, please migrate away from it as soon as possible.
+   */
+  isRequired?: boolean | undefined;
+  /**
    * A new raw provider API key to rotate the credential in-place. The previous key material is overwritten and the masked label is regenerated. Encrypted at rest and never returned in API responses.
    */
   key?: string | undefined;
@@ -39,6 +45,7 @@ export type UpdateBYOKKeyRequest$Outbound = {
   allowed_user_ids?: Array<string> | null | undefined;
   disabled?: boolean | undefined;
   is_fallback?: boolean | undefined;
+  is_required?: boolean | undefined;
   key?: string | undefined;
   name?: string | null | undefined;
 };
@@ -52,6 +59,7 @@ export const UpdateBYOKKeyRequest$outboundSchema: z.ZodType<
   allowedUserIds: z.nullable(z.array(z.string())).optional(),
   disabled: z.boolean().optional(),
   isFallback: z.boolean().optional(),
+  isRequired: z.boolean().optional(),
   key: z.string().optional(),
   name: z.nullable(z.string()).optional(),
 }).transform((v) => {
@@ -59,6 +67,7 @@ export const UpdateBYOKKeyRequest$outboundSchema: z.ZodType<
     allowedModels: "allowed_models",
     allowedUserIds: "allowed_user_ids",
     isFallback: "is_fallback",
+    isRequired: "is_required",
   });
 });
 

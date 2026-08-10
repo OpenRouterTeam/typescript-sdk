@@ -4,7 +4,11 @@
  */
 
 import * as z from "zod/v4";
-import { safeParse } from "../lib/schemas.js";
+import { remap as remap$ } from "../lib/primitives.js";
+import {
+  collectExtraKeys as collectExtraKeys$,
+  safeParse,
+} from "../lib/schemas.js";
 import * as discriminatedUnionTypes from "../types/discriminatedUnion.js";
 import { discriminatedUnion } from "../types/discriminatedUnion.js";
 import { ClosedEnum } from "../types/enums.js";
@@ -61,6 +65,7 @@ export type OutputWebSearchCallItem = {
   id: string;
   status: WebSearchStatus;
   type: TypeWebSearchCall;
+  additionalProperties?: { [k: string]: any } | undefined;
 };
 
 /** @internal */
@@ -236,16 +241,20 @@ export const TypeWebSearchCall$outboundSchema: z.ZodEnum<
 export const OutputWebSearchCallItem$inboundSchema: z.ZodType<
   OutputWebSearchCallItem,
   unknown
-> = z.object({
-  action: discriminatedUnion("type", {
-    search: z.lazy(() => OutputWebSearchCallItemActionSearch$inboundSchema),
-    open_page: z.lazy(() => ActionOpenPage$inboundSchema),
-    find_in_page: z.lazy(() => ActionFindInPage$inboundSchema),
-  }).optional(),
-  id: z.string(),
-  status: WebSearchStatus$inboundSchema,
-  type: TypeWebSearchCall$inboundSchema,
-});
+> = collectExtraKeys$(
+  z.object({
+    action: discriminatedUnion("type", {
+      search: z.lazy(() => OutputWebSearchCallItemActionSearch$inboundSchema),
+      open_page: z.lazy(() => ActionOpenPage$inboundSchema),
+      find_in_page: z.lazy(() => ActionFindInPage$inboundSchema),
+    }).optional(),
+    id: z.string(),
+    status: WebSearchStatus$inboundSchema,
+    type: TypeWebSearchCall$inboundSchema,
+  }).catchall(z.any()),
+  "additionalProperties",
+  true,
+);
 /** @internal */
 export type OutputWebSearchCallItem$Outbound = {
   action?:
@@ -256,6 +265,7 @@ export type OutputWebSearchCallItem$Outbound = {
   id: string;
   status: string;
   type: string;
+  [additionalProperties: string]: unknown;
 };
 
 /** @internal */
@@ -271,6 +281,14 @@ export const OutputWebSearchCallItem$outboundSchema: z.ZodType<
   id: z.string(),
   status: WebSearchStatus$outboundSchema,
   type: TypeWebSearchCall$outboundSchema,
+  additionalProperties: z.record(z.string(), z.any()).optional(),
+}).transform((v) => {
+  return {
+    ...v.additionalProperties,
+    ...remap$(v, {
+      additionalProperties: null,
+    }),
+  };
 });
 
 export function outputWebSearchCallItemToJSON(
