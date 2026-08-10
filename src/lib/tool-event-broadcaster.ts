@@ -31,8 +31,18 @@ export class ToolEventBroadcaster<T> {
    * Mark the broadcaster as complete - no more events will be pushed.
    * Optionally pass an error to signal failure to all consumers.
    * Cleans up buffer and consumers after completion.
+   *
+   * Idempotent: the first call wins. This matters when a stream error
+   * completes the broadcaster with an error (e.g. a stalled-stream abort
+   * from the pipe's catch handler) and an unconditional `.finally()`
+   * completion runs afterwards - the later error-less call must not wipe
+   * the recorded failure, or late consumers would see a clean close
+   * instead of the error.
    */
   complete(error?: Error): void {
+    if (this.isComplete) {
+      return;
+    }
     this.isComplete = true;
     this.completionError = error ?? null;
     this.notifyWaitingConsumers();

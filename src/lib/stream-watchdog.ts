@@ -284,6 +284,21 @@ export function applyResponsesStreamWatchdog(
 }
 
 /**
+ * True when at least one watchdog deadline is enabled (set, finite, > 0).
+ * Callers use this to skip per-turn abort plumbing entirely when the
+ * watchdog would be a no-op.
+ */
+export function hasActiveStreamTimeouts(timeouts: StreamTimeoutOptions | undefined): boolean {
+  if (!timeouts) {
+    return false;
+  }
+  return (
+    normalizeTimeout(timeouts.firstContentMs) !== undefined ||
+    normalizeTimeout(timeouts.contentIntervalMs) !== undefined
+  );
+}
+
+/**
  * Treat non-finite and non-positive values as "disabled" so callers can
  * pass raw user input without pre-validating.
  */

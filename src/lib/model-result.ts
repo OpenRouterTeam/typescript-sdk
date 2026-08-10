@@ -70,6 +70,12 @@ import {
   isReasoningDeltaEvent,
   hasTypeProperty,
 } from './stream-type-guards.js';
+import {
+  applyResponsesStreamWatchdog,
+  hasActiveStreamTimeouts,
+  type StreamTimeoutOptions,
+} from './stream-watchdog.js';
+import { combineSignals } from './primitives.js';
 
 /**
  * Default maximum number of tool execution steps if no stopWhen is specified.
@@ -129,7 +135,27 @@ export interface GetResponseOptions<
   onTurnStart?: (context: TurnContext) => void | Promise<void>;
   /** Callback invoked at the end of each tool execution turn */
   onTurnEnd?: (context: TurnContext, response: models.OpenResponsesResult) => void | Promise<void>;
+
+  /**
+   * Opt-in stalled-stream detection. Deadlines are armed per turn; on
+   * expiry the turn's HTTP request is aborted and consumers reject with
+   * `StreamStalledError`. See `StreamTimeoutOptions`.
+   */
+  timeout?: StreamTimeoutOptions;
 }
+
+/**
+ * Per-turn stall-detection context: request options carrying the merged
+ * abort signal, and a wrapper that arms the watchdog on the turn's stream.
+ * When no stall timeout is active, `requestOptions` is the caller's
+ * options unchanged and `watch` is the identity function.
+ */
+type TurnWatchContext = {
+  requestOptions: RequestOptions | undefined;
+  watch: (
+    stream: ReadableStream<models.StreamEvents>,
+  ) => ReadableStream<models.StreamEvents>;
+};
 
 /**
  * A wrapper around a streaming response that provides multiple consumption patterns.
@@ -875,10 +901,12 @@ export class ModelResult<
       stream: true,
     };
 
+    // Stall deadlines re-arm independently for every turn.
+    const turnWatch = this.createTurnWatchContext();
     const newResult = await responsesSend(
       this.options.client,
       { responsesRequest: newRequest },
-      this.options.options,
+      turnWatch.requestOptions,
     );
 
     if (!newResult.ok) {
@@ -888,7 +916,7 @@ export class ModelResult<
     // Handle streaming or non-streaming response
     const value = newResult.value;
     if (isEventStream(value)) {
-      const followUpStream = new ReusableReadableStream(value);
+      const followUpStream = new ReusableReadableStream(turnWatch.watch(value));
 
       if (this.turnBroadcaster) {
         return this.pipeAndConsumeStream(followUpStream, turnNumber);
@@ -920,6 +948,57 @@ export class ModelResult<
   }
 
   /**
+   * Build the stall-detection context for one turn.
+   *
+   * When a stall timeout is configured, the turn gets its own
+   * AbortController (merged with the caller's signal so neither is lost).
+   * The returned `watch` wrapper arms the watchdog on the turn's parsed
+   * event stream; on expiry the watchdog aborts the turn's HTTP request,
+   * tearing down the hung connection, and the stream errors with
+   * `StreamStalledError`.
+   */
+  private createTurnWatchContext(): TurnWatchContext {
+    const timeouts = this.options.timeout;
+    if (!timeouts || !hasActiveStreamTimeouts(timeouts)) {
+      return {
+        requestOptions: this.options.options,
+        watch: (stream) => stream,
+      };
+    }
+
+    const turnAbort = new AbortController();
+    const baseOptions = this.options.options;
+    const callerSignal = baseOptions?.signal ?? baseOptions?.fetchOptions?.signal ?? null;
+
+    /*
+     * The generated request builder only applies `timeoutMs` (via
+     * AbortSignal.timeout) when no signal is provided. Since we are about
+     * to provide one, replicate that behavior here so configuring a stall
+     * watchdog never silently disables the caller's overall timeout.
+     */
+    const timeoutMs = baseOptions?.timeoutMs ?? this.options.client._options.timeoutMs;
+    const timeoutSignal =
+      !callerSignal && timeoutMs && timeoutMs > 0 ? AbortSignal.timeout(timeoutMs) : null;
+
+    const mergedSignal = combineSignals(turnAbort.signal, callerSignal, timeoutSignal);
+
+    const requestOptions: RequestOptions = {
+      ...baseOptions,
+      ...(mergedSignal ? { signal: mergedSignal } : {}),
+    };
+
+    return {
+      requestOptions,
+      watch: (stream) =>
+        applyResponsesStreamWatchdog(stream, timeouts, {
+          onStall: (error) => {
+            turnAbort.abort(error);
+          },
+        }),
+    };
+  }
+
+  /**
    * Resolve async functions in the request for a given turn context.
    * Extracts non-function fields and resolves any async parameter functions.
    *
@@ -932,7 +1011,7 @@ export class ModelResult<
     }
     // Already resolved, extract non-function fields
     // Filter out stopWhen and state-related fields that aren't part of the API request
-    const { stopWhen: _, state: _s, requireApproval: _r, approveToolCalls: _a, rejectToolCalls: _rj, context: _c, ...rest } = this.options.request;
+    const { stopWhen: _, state: _s, requireApproval: _r, approveToolCalls: _a, rejectToolCalls: _rj, context: _c, timeout: _t, ...rest } = this.options.request;
     return rest as ResolvedCallModelInput;
   }
 
@@ -1066,11 +1145,12 @@ export class ModelResult<
       // Force stream mode for initial request
       const request = this.resolvedRequest;
 
-      // Make the API request
+      // Make the API request (with per-turn stall detection when configured)
+      const turnWatch = this.createTurnWatchContext();
       const apiResult = await responsesSend(
         this.options.client,
         { responsesRequest: request },
-        this.options.options,
+        turnWatch.requestOptions,
       );
 
       if (!apiResult.ok) {
@@ -1080,7 +1160,7 @@ export class ModelResult<
       // Handle both streaming and non-streaming responses
       // The API may return a non-streaming response even when stream: true is requested
       if (isEventStream(apiResult.value)) {
-        this.reusableStream = new ReusableReadableStream(apiResult.value);
+        this.reusableStream = new ReusableReadableStream(turnWatch.watch(apiResult.value));
       } else if (this.isNonStreamingResponse(apiResult.value)) {
         // API returned a complete response directly - use it as the final response
         this.finalResponse = apiResult.value;
@@ -1212,11 +1292,12 @@ export class ModelResult<
 
     this.resolvedRequest = request;
 
-    // Make the API request
+    // Make the API request (stall deadlines re-arm for the resumed turn)
+    const turnWatch = this.createTurnWatchContext();
     const apiResult = await responsesSend(
       this.options.client,
       { responsesRequest: request },
-      this.options.options,
+      turnWatch.requestOptions,
     );
 
     if (!apiResult.ok) {
@@ -1225,7 +1306,7 @@ export class ModelResult<
 
     // Handle both streaming and non-streaming responses
     if (isEventStream(apiResult.value)) {
-      this.reusableStream = new ReusableReadableStream(apiResult.value);
+      this.reusableStream = new ReusableReadableStream(turnWatch.watch(apiResult.value));
     } else if (this.isNonStreamingResponse(apiResult.value)) {
       this.finalResponse = apiResult.value;
     } else {
