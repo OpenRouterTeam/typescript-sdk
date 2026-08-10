@@ -14,8 +14,8 @@ let value: ObservabilityFilterRulesConfigNullable = {
     {
       rules: [
         {
-          field: "model",
-          operator: "equals",
+          field: "prompt_tokens",
+          operator: "gte",
         },
       ],
     },
@@ -25,7 +25,7 @@ let value: ObservabilityFilterRulesConfigNullable = {
 
 ## Fields
 
-| Field                                                                              | Type                                                                               | Required                                                                           | Description                                                                        |
-| ---------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------- |
-| `enabled`                                                                          | *boolean*                                                                          | :heavy_minus_sign:                                                                 | N/A                                                                                |
-| `groups`                                                                           | [models.ObservabilityFilterRuleGroup](../models/observabilityfilterrulegroup.mdx)[] | :heavy_check_mark:                                                                 | N/A                                                                                |
+| Field                                | Type                                 | Required                             | Description                          |
+| ------------------------------------ | ------------------------------------ | ------------------------------------ | ------------------------------------ |
+| `enabled`                            | *boolean*                            | :heavy_minus_sign:                   | N/A                                  |
+| `groups`                             | [models.Group](../models/group.mdx)[] | :heavy_check_mark:                   | N/A                                  |
