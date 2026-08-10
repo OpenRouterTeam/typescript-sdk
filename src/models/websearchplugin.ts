@@ -10,10 +10,6 @@ import {
   WebSearchEngine,
   WebSearchEngine$outboundSchema,
 } from "./websearchengine.js";
-import {
-  WebSearchMode,
-  WebSearchMode$outboundSchema,
-} from "./websearchmode.js";
 
 export const WebSearchPluginType = {
   Approximate: "approximate",
@@ -54,10 +50,6 @@ export type WebSearchPlugin = {
    * Maximum number of times the model can invoke web search in a single turn. Passed through to native providers that support it (e.g. Anthropic).
    */
   maxUses?: number | undefined;
-  /**
-   * Engine-native search mode. Exa supports instant, fast, auto (default), deep-lite, deep, and deep-reasoning. Parallel supports turbo (default), basic, and advanced. Modes unsupported by the selected engine are ignored.
-   */
-  mode?: WebSearchMode | undefined;
   searchPrompt?: string | undefined;
   userLocation?: UserLocation | null | undefined;
 };
@@ -101,7 +93,6 @@ export type WebSearchPlugin$Outbound = {
   include_domains?: Array<string> | undefined;
   max_results?: number | undefined;
   max_uses?: number | undefined;
-  mode?: string | undefined;
   search_prompt?: string | undefined;
   user_location?: UserLocation$Outbound | null | undefined;
 };
@@ -118,7 +109,6 @@ export const WebSearchPlugin$outboundSchema: z.ZodType<
   includeDomains: z.array(z.string()).optional(),
   maxResults: z.int().optional(),
   maxUses: z.int().optional(),
-  mode: WebSearchMode$outboundSchema.optional(),
   searchPrompt: z.string().optional(),
   userLocation: z.nullable(z.lazy(() => UserLocation$outboundSchema))
     .optional(),

@@ -14,10 +14,6 @@ import {
   WebSearchEngineEnum$outboundSchema,
 } from "./websearchengineenum.js";
 import {
-  WebSearchMode,
-  WebSearchMode$outboundSchema,
-} from "./websearchmode.js";
-import {
   WebSearchUserLocationServerTool,
   WebSearchUserLocationServerTool$Outbound,
   WebSearchUserLocationServerTool$outboundSchema,
@@ -53,10 +49,6 @@ export type WebSearchConfig = {
    */
   maxUses?: number | undefined;
   /**
-   * Engine-native search mode. Exa supports instant, fast, auto (default), deep-lite, deep, and deep-reasoning. Parallel supports turbo (default), basic, and advanced. Modes unsupported by the selected engine are ignored.
-   */
-  mode?: WebSearchMode | undefined;
-  /**
    * How much context to retrieve per result. Applies to Exa, Parallel, and Perplexity engines; ignored with native provider search and Firecrawl. For Exa, pins a fixed per-result character cap (low=5,000, medium=15,000, high=30,000); when omitted, Exa picks an adaptive size per query and document (typically ~2,000–4,000 characters per result). For Parallel, controls the total characters across all results; when omitted, Parallel uses its own default size. For Perplexity, maps directly to the Search API's native search_context_size parameter. Overridden by `max_characters` when both are set.
    */
   searchContextSize?: SearchQualityLevel | undefined;
@@ -75,7 +67,6 @@ export type WebSearchConfig$Outbound = {
   max_results?: number | undefined;
   max_total_results?: number | undefined;
   max_uses?: number | undefined;
-  mode?: string | undefined;
   search_context_size?: string | undefined;
   user_location?: WebSearchUserLocationServerTool$Outbound | undefined;
 };
@@ -92,7 +83,6 @@ export const WebSearchConfig$outboundSchema: z.ZodType<
   maxResults: z.int().optional(),
   maxTotalResults: z.int().optional(),
   maxUses: z.int().optional(),
-  mode: WebSearchMode$outboundSchema.optional(),
   searchContextSize: SearchQualityLevel$outboundSchema.optional(),
   userLocation: WebSearchUserLocationServerTool$outboundSchema.optional(),
 }).transform((v) => {
