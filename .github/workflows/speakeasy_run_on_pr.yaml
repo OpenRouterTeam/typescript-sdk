@@ -44,6 +44,9 @@ jobs:
         env:
           SPEAKEASY_API_KEY: ${{ secrets.SPEAKEASY_API_KEY }}
 
+      - name: Sanitize generated docs emoji
+        run: scripts/sanitize-docs-emoji.sh
+
       - name: Regenerate docs navigation
         run: scripts/gen-docs-nav.sh
 
