@@ -21,7 +21,7 @@ import {
 /**
  * Provider-specific passthrough configuration
  */
-export type SpeechRequestProvider = {
+export type Provider = {
   /**
    * Provider-specific options keyed by provider slug. Only options for the matched provider are forwarded; the rest are ignored. Unrecognized keys are silently dropped.
    */
@@ -61,7 +61,7 @@ export type SpeechRequest = {
   /**
    * Provider-specific passthrough configuration
    */
-  provider?: SpeechRequestProvider | undefined;
+  provider?: Provider | undefined;
   /**
    * Audio output format
    */
@@ -77,24 +77,18 @@ export type SpeechRequest = {
 };
 
 /** @internal */
-export type SpeechRequestProvider$Outbound = {
+export type Provider$Outbound = {
   options?: ProviderOptions$Outbound | undefined;
 };
 
 /** @internal */
-export const SpeechRequestProvider$outboundSchema: z.ZodType<
-  SpeechRequestProvider$Outbound,
-  SpeechRequestProvider
-> = z.object({
-  options: ProviderOptions$outboundSchema.optional(),
-});
+export const Provider$outboundSchema: z.ZodType<Provider$Outbound, Provider> = z
+  .object({
+    options: ProviderOptions$outboundSchema.optional(),
+  });
 
-export function speechRequestProviderToJSON(
-  speechRequestProvider: SpeechRequestProvider,
-): string {
-  return JSON.stringify(
-    SpeechRequestProvider$outboundSchema.parse(speechRequestProvider),
-  );
+export function providerToJSON(provider: Provider): string {
+  return JSON.stringify(Provider$outboundSchema.parse(provider));
 }
 
 /** @internal */
@@ -108,7 +102,7 @@ export type SpeechRequest$Outbound = {
   input: string;
   input_references?: Array<SpeechInputReference$Outbound> | undefined;
   model: string;
-  provider?: SpeechRequestProvider$Outbound | undefined;
+  provider?: Provider$Outbound | undefined;
   response_format: string;
   speed?: number | undefined;
   voice?: string | undefined;
@@ -122,7 +116,7 @@ export const SpeechRequest$outboundSchema: z.ZodType<
   input: z.string(),
   inputReferences: z.array(SpeechInputReference$outboundSchema).optional(),
   model: z.string(),
-  provider: z.lazy(() => SpeechRequestProvider$outboundSchema).optional(),
+  provider: z.lazy(() => Provider$outboundSchema).optional(),
   responseFormat: SpeechRequestResponseFormat$outboundSchema.default("pcm"),
   speed: z.number().optional(),
   voice: z.string().optional(),
