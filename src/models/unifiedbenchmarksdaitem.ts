@@ -6,12 +6,26 @@
 import * as z from "zod/v4";
 import { remap as remap$ } from "../lib/primitives.js";
 import { safeParse } from "../lib/schemas.js";
+import { ClosedEnum } from "../types/enums.js";
 import { Result as SafeParseResult } from "../types/fp.js";
 import { SDKValidationError } from "./errors/sdkvalidationerror.js";
 import {
   UnifiedBenchmarkPricing,
   UnifiedBenchmarkPricing$inboundSchema,
 } from "./unifiedbenchmarkpricing.js";
+
+/**
+ * Benchmark source discriminator.
+ */
+export const UnifiedBenchmarksDAItemSource = {
+  DesignArena: "design-arena",
+} as const;
+/**
+ * Benchmark source discriminator.
+ */
+export type UnifiedBenchmarksDAItemSource = ClosedEnum<
+  typeof UnifiedBenchmarksDAItemSource
+>;
 
 /**
  * Placement distribution from tournament matches.
@@ -56,7 +70,7 @@ export type UnifiedBenchmarksDAItem = {
   /**
    * Benchmark source discriminator.
    */
-  source: "design-arena";
+  source: UnifiedBenchmarksDAItemSource;
   /**
    * Placement distribution from tournament matches.
    */
@@ -66,6 +80,11 @@ export type UnifiedBenchmarksDAItem = {
    */
   winRate: number;
 };
+
+/** @internal */
+export const UnifiedBenchmarksDAItemSource$inboundSchema: z.ZodEnum<
+  typeof UnifiedBenchmarksDAItemSource
+> = z.enum(UnifiedBenchmarksDAItemSource);
 
 /** @internal */
 export const TournamentStats$inboundSchema: z.ZodType<
@@ -108,7 +127,7 @@ export const UnifiedBenchmarksDAItem$inboundSchema: z.ZodType<
   elo: z.number(),
   model_permaslug: z.string(),
   pricing: z.nullable(UnifiedBenchmarkPricing$inboundSchema),
-  source: z.literal("design-arena"),
+  source: UnifiedBenchmarksDAItemSource$inboundSchema,
   tournament_stats: z.lazy(() => TournamentStats$inboundSchema),
   win_rate: z.number(),
 }).transform((v) => {
