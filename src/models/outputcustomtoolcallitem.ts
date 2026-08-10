@@ -5,7 +5,10 @@
 
 import * as z from "zod/v4";
 import { remap as remap$ } from "../lib/primitives.js";
-import { safeParse } from "../lib/schemas.js";
+import {
+  collectExtraKeys as collectExtraKeys$,
+  safeParse,
+} from "../lib/schemas.js";
 import { ClosedEnum } from "../types/enums.js";
 import { Result as SafeParseResult } from "../types/fp.js";
 import { SDKValidationError } from "./errors/sdkvalidationerror.js";
@@ -30,6 +33,7 @@ export type OutputCustomToolCallItem = {
    */
   namespace?: string | undefined;
   type: OutputCustomToolCallItemType;
+  additionalProperties?: { [k: string]: any } | undefined;
 };
 
 /** @internal */
@@ -45,14 +49,18 @@ export const OutputCustomToolCallItemType$outboundSchema: z.ZodEnum<
 export const OutputCustomToolCallItem$inboundSchema: z.ZodType<
   OutputCustomToolCallItem,
   unknown
-> = z.object({
-  call_id: z.string(),
-  id: z.string().optional(),
-  input: z.string(),
-  name: z.string(),
-  namespace: z.string().optional(),
-  type: OutputCustomToolCallItemType$inboundSchema,
-}).transform((v) => {
+> = collectExtraKeys$(
+  z.object({
+    call_id: z.string(),
+    id: z.string().optional(),
+    input: z.string(),
+    name: z.string(),
+    namespace: z.string().optional(),
+    type: OutputCustomToolCallItemType$inboundSchema,
+  }).catchall(z.any()),
+  "additionalProperties",
+  true,
+).transform((v) => {
   return remap$(v, {
     "call_id": "callId",
   });
@@ -65,6 +73,7 @@ export type OutputCustomToolCallItem$Outbound = {
   name: string;
   namespace?: string | undefined;
   type: string;
+  [additionalProperties: string]: unknown;
 };
 
 /** @internal */
@@ -78,10 +87,15 @@ export const OutputCustomToolCallItem$outboundSchema: z.ZodType<
   name: z.string(),
   namespace: z.string().optional(),
   type: OutputCustomToolCallItemType$outboundSchema,
+  additionalProperties: z.record(z.string(), z.any()).optional(),
 }).transform((v) => {
-  return remap$(v, {
-    callId: "call_id",
-  });
+  return {
+    ...v.additionalProperties,
+    ...remap$(v, {
+      callId: "call_id",
+      additionalProperties: null,
+    }),
+  };
 });
 
 export function outputCustomToolCallItemToJSON(
