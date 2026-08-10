@@ -32,7 +32,7 @@ import { Result } from "../types/fp.js";
  * List Benchmarks
  *
  * @remarks
- * Unified benchmark endpoint that aggregates scores from multiple benchmark sources (Artificial Analysis, Design Arena, and OpenRouter's own tau-bench and GPQA evals). Filter by source to reproduce the exact shapes from the legacy per-source endpoints, or use task_type to find models suited for specific workloads. Authenticate with any valid OpenRouter API key. Rate-limited to 30 requests/minute per key and 500 requests/day per account.
+ * Unified benchmark endpoint that aggregates scores from multiple benchmark sources (Artificial Analysis, Design Arena, and OpenRouter's own tau-bench, GPQA, and web-search evals). Filter by source to reproduce the exact shapes from the legacy per-source endpoints, or use task_type to find models suited for specific workloads. Use task_type=search (or a search_* benchmark_type) for OpenRouter's search benchmark suites, where each result carries the full evaluation configuration and a stable configuration fingerprint. Authenticate with any valid OpenRouter API key. Rate-limited to 30 requests/minute per key and 500 requests/day per account.
  */
 export function benchmarksGetBenchmarks(
   client: OpenRouterCore,
@@ -102,8 +102,13 @@ async function $do(
 
   const query = encodeFormQuery({
     "arena": payload?.arena,
+    "benchmark_type": payload?.benchmark_type,
     "category": payload?.category,
+    "configuration_id": payload?.configuration_id,
+    "max_agent_turns": payload?.max_agent_turns,
     "max_results": payload?.max_results,
+    "search_engine": payload?.search_engine,
+    "search_surface": payload?.search_surface,
     "source": payload?.source,
     "task_type": payload?.task_type,
   });

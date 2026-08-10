@@ -1,0 +1,60 @@
+---
+title: "Search"
+---
+
+## Example Usage
+
+```typescript
+import { Search } from "@openrouter/sdk/models";
+
+let value: Search = {
+  allowedDomains: [
+    "<value 1>",
+    "<value 2>",
+    "<value 3>",
+  ],
+  configuredEngine: "<value>",
+  configuredMaxAgentTurns: 363204,
+  configuredMaxResults: 829179,
+  configuredMaxTotalResults: 396816,
+  effectiveMaxAgentTurns: 886105,
+  effectiveMaxResults: 98749,
+  effectiveMaxTotalResults: 188121,
+  excludedDomains: [
+    "<value 1>",
+    "<value 2>",
+  ],
+  excludedDomainsPolicy: "benchmark-default",
+  excludedDomainsSha256: "<value>",
+  maxCharacters: 275900,
+  searchContextSize: "high",
+  searchPromptSha256: "<value>",
+  surface: "server-tool",
+  webFetch: {
+    configuredEngine: "<value>",
+    maxContentTokens: 701662,
+    maxUses: 255319,
+  },
+};
+```
+
+## Fields
+
+| Field                                                              | Type                                                               | Required                                                           | Description                                                        |
+| ------------------------------------------------------------------ | ------------------------------------------------------------------ | ------------------------------------------------------------------ | ------------------------------------------------------------------ |
+| `allowedDomains`                                                   | *string*[]                                                         | :heavy_check_mark:                                                 | N/A                                                                |
+| `configuredEngine`                                                 | *string*                                                           | :heavy_check_mark:                                                 | N/A                                                                |
+| `configuredMaxAgentTurns`                                          | *number*                                                           | :heavy_check_mark:                                                 | N/A                                                                |
+| `configuredMaxResults`                                             | *number*                                                           | :heavy_check_mark:                                                 | N/A                                                                |
+| `configuredMaxTotalResults`                                        | *number*                                                           | :heavy_check_mark:                                                 | N/A                                                                |
+| `effectiveMaxAgentTurns`                                           | *number*                                                           | :heavy_check_mark:                                                 | N/A                                                                |
+| `effectiveMaxResults`                                              | *number*                                                           | :heavy_check_mark:                                                 | N/A                                                                |
+| `effectiveMaxTotalResults`                                         | *number*                                                           | :heavy_check_mark:                                                 | N/A                                                                |
+| `excludedDomains`                                                  | *string*[]                                                         | :heavy_check_mark:                                                 | N/A                                                                |
+| `excludedDomainsPolicy`                                            | [models.ExcludedDomainsPolicy](../models/excludeddomainspolicy.mdx) | :heavy_check_mark:                                                 | N/A                                                                |
+| `excludedDomainsSha256`                                            | *string*                                                           | :heavy_check_mark:                                                 | N/A                                                                |
+| `maxCharacters`                                                    | *number*                                                           | :heavy_check_mark:                                                 | N/A                                                                |
+| `searchContextSize`                                                | [models.SearchContextSize](../models/searchcontextsize.mdx)         | :heavy_check_mark:                                                 | N/A                                                                |
+| `searchPromptSha256`                                               | *string*                                                           | :heavy_check_mark:                                                 | N/A                                                                |
+| `surface`                                                          | [models.Surface](../models/surface.mdx)                             | :heavy_check_mark:                                                 | N/A                                                                |
+| `webFetch`                                                         | [models.WebFetch](../models/webfetch.mdx)                           | :heavy_check_mark:                                                 | N/A                                                                |

@@ -44,17 +44,46 @@ export const Source = {
 export type Source = OpenEnum<typeof Source>;
 
 /**
- * Filter results by task type. For Artificial Analysis, maps to the corresponding index. For Design Arena, maps to the matching category.
+ * Filter results by task type. For Artificial Analysis, maps to the corresponding index. For Design Arena, maps to the matching category. `search` returns OpenRouter search benchmark results only.
  */
 export const TaskType = {
   Coding: "coding",
   Intelligence: "intelligence",
   Agentic: "agentic",
+  Search: "search",
 } as const;
 /**
- * Filter results by task type. For Artificial Analysis, maps to the corresponding index. For Design Arena, maps to the matching category.
+ * Filter results by task type. For Artificial Analysis, maps to the corresponding index. For Design Arena, maps to the matching category. `search` returns OpenRouter search benchmark results only.
  */
 export type TaskType = OpenEnum<typeof TaskType>;
+
+/**
+ * OpenRouter only: return results for one exact benchmark.
+ */
+export const BenchmarkType = {
+  GpqaDiamond: "gpqa_diamond",
+  TauBenchVerifiedAirline: "tau_bench_verified_airline",
+  SearchBrowsecomp: "search_browsecomp",
+  SearchHle: "search_hle",
+  SearchDsqa: "search_dsqa",
+  SearchWidesearch: "search_widesearch",
+} as const;
+/**
+ * OpenRouter only: return results for one exact benchmark.
+ */
+export type BenchmarkType = OpenEnum<typeof BenchmarkType>;
+
+/**
+ * OpenRouter search benchmarks only: filter by the request surface the lane ran on.
+ */
+export const SearchSurface = {
+  ServerTool: "server-tool",
+  Plugin: "plugin",
+} as const;
+/**
+ * OpenRouter search benchmarks only: filter by the request surface the lane ran on.
+ */
+export type SearchSurface = OpenEnum<typeof SearchSurface>;
 
 /**
  * Design Arena only: arena to query. Defaults to `models` when source is `design-arena`.
@@ -94,9 +123,29 @@ export type GetBenchmarksRequest = {
    */
   source?: Source | undefined;
   /**
-   * Filter results by task type. For Artificial Analysis, maps to the corresponding index. For Design Arena, maps to the matching category.
+   * Filter results by task type. For Artificial Analysis, maps to the corresponding index. For Design Arena, maps to the matching category. `search` returns OpenRouter search benchmark results only.
    */
   taskType?: TaskType | undefined;
+  /**
+   * OpenRouter only: return results for one exact benchmark.
+   */
+  benchmarkType?: BenchmarkType | undefined;
+  /**
+   * OpenRouter search benchmarks only: filter by the search engine used.
+   */
+  searchEngine?: string | undefined;
+  /**
+   * OpenRouter search benchmarks only: filter by the request surface the lane ran on.
+   */
+  searchSurface?: SearchSurface | undefined;
+  /**
+   * OpenRouter search benchmarks only: filter by the agent-turn budget the lane ran with.
+   */
+  maxAgentTurns?: number | undefined;
+  /**
+   * OpenRouter search benchmarks only: return the result for one exact evaluation configuration fingerprint (`sha256:<hex>`).
+   */
+  configurationId?: string | undefined;
   /**
    * Design Arena only: arena to query. Defaults to `models` when source is `design-arena`.
    */
@@ -120,6 +169,14 @@ export const TaskType$outboundSchema: z.ZodType<string, TaskType> = openEnums
   .outboundSchema(TaskType);
 
 /** @internal */
+export const BenchmarkType$outboundSchema: z.ZodType<string, BenchmarkType> =
+  openEnums.outboundSchema(BenchmarkType);
+
+/** @internal */
+export const SearchSurface$outboundSchema: z.ZodType<string, SearchSurface> =
+  openEnums.outboundSchema(SearchSurface);
+
+/** @internal */
 export const Arena$outboundSchema: z.ZodType<string, Arena> = openEnums
   .outboundSchema(Arena);
 
@@ -130,6 +187,11 @@ export type GetBenchmarksRequest$Outbound = {
   appCategories?: string | undefined;
   source?: string | undefined;
   task_type?: string | undefined;
+  benchmark_type?: string | undefined;
+  search_engine?: string | undefined;
+  search_surface?: string | undefined;
+  max_agent_turns?: number | undefined;
+  configuration_id?: string | undefined;
   arena?: string | undefined;
   category?: string | undefined;
   max_results?: number | undefined;
@@ -145,6 +207,11 @@ export const GetBenchmarksRequest$outboundSchema: z.ZodType<
   appCategories: z.string().optional(),
   source: Source$outboundSchema.optional(),
   taskType: TaskType$outboundSchema.optional(),
+  benchmarkType: BenchmarkType$outboundSchema.optional(),
+  searchEngine: z.string().optional(),
+  searchSurface: SearchSurface$outboundSchema.optional(),
+  maxAgentTurns: z.int().optional(),
+  configurationId: z.string().optional(),
   arena: Arena$outboundSchema.optional(),
   category: z.string().optional(),
   maxResults: z.int().optional(),
@@ -152,6 +219,11 @@ export const GetBenchmarksRequest$outboundSchema: z.ZodType<
   return remap$(v, {
     httpReferer: "HTTP-Referer",
     taskType: "task_type",
+    benchmarkType: "benchmark_type",
+    searchEngine: "search_engine",
+    searchSurface: "search_surface",
+    maxAgentTurns: "max_agent_turns",
+    configurationId: "configuration_id",
     maxResults: "max_results",
   });
 });

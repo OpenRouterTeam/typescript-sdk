@@ -63,3 +63,63 @@ const value: models.UnifiedBenchmarksORItem = {
 };
 ```
 
+### `models.UnifiedBenchmarksSearchItem`
+
+```typescript
+const value: models.UnifiedBenchmarksSearchItem = {
+  avgCostPerTask: 0.031,
+  avgLatencyPerTaskMs: 45210,
+  benchmarkType: "search_browsecomp",
+  configuration: {
+    id:
+      "sha256:2c26b46b68ffc68ff99b453c1d30413413422d706483bfa0f98a5e886266e7ae",
+    inference: {
+      costQualityTradeoff: null,
+      costTier: null,
+      maxTokens: null,
+      pinModel: null,
+      providerSort: null,
+      reasoningEffort: "high",
+      temperature: null,
+    },
+    routing: {
+      endpointId: null,
+      mode: "default",
+      providerName: "openai",
+    },
+    schemaVersion: "search-run-v1",
+    search: {
+      allowedDomains: null,
+      configuredEngine: "exa",
+      configuredMaxAgentTurns: 25,
+      configuredMaxResults: null,
+      configuredMaxTotalResults: null,
+      effectiveMaxAgentTurns: 25,
+      effectiveMaxResults: 5,
+      effectiveMaxTotalResults: 50,
+      excludedDomains: null,
+      excludedDomainsPolicy: "benchmark-default",
+      excludedDomainsSha256: null,
+      maxCharacters: null,
+      searchContextSize: null,
+      searchPromptSha256: null,
+      surface: "server-tool",
+      webFetch: null,
+    },
+  },
+  correctTasks: 72,
+  displayName: "GPT-4o",
+  lastRunTimestamp: "2026-07-28T13:38:18Z",
+  metrics: {
+    accuracy: 0.72,
+    f1ByItem: null,
+  },
+  modelPermaslug: "openai/gpt-4o",
+  primaryMetric: "accuracy",
+  primaryScore: 0.72,
+  runCount: 2,
+  source: "openrouter",
+  totalTasks: 100,
+};
+```
+
