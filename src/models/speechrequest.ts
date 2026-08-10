@@ -8,25 +8,15 @@ import { remap as remap$ } from "../lib/primitives.js";
 import * as openEnums from "../types/enums.js";
 import { OpenEnum } from "../types/enums.js";
 import {
-  ProviderOptions,
-  ProviderOptions$Outbound,
-  ProviderOptions$outboundSchema,
-} from "./provideroptions.js";
-import {
   SpeechInputReference,
   SpeechInputReference$Outbound,
   SpeechInputReference$outboundSchema,
 } from "./speechinputreference.js";
-
-/**
- * Provider-specific passthrough configuration
- */
-export type SpeechRequestProvider = {
-  /**
-   * Provider-specific options keyed by provider slug. Only options for the matched provider are forwarded; the rest are ignored. Unrecognized keys are silently dropped.
-   */
-  options?: ProviderOptions | undefined;
-};
+import {
+  TTSProviderPreferences,
+  TTSProviderPreferences$Outbound,
+  TTSProviderPreferences$outboundSchema,
+} from "./ttsproviderpreferences.js";
 
 /**
  * Audio output format
@@ -59,9 +49,9 @@ export type SpeechRequest = {
    */
   model: string;
   /**
-   * Provider-specific passthrough configuration
+   * Provider routing preferences and provider-specific passthrough configuration.
    */
-  provider?: SpeechRequestProvider | undefined;
+  provider?: TTSProviderPreferences | undefined;
   /**
    * Audio output format
    */
@@ -77,27 +67,6 @@ export type SpeechRequest = {
 };
 
 /** @internal */
-export type SpeechRequestProvider$Outbound = {
-  options?: ProviderOptions$Outbound | undefined;
-};
-
-/** @internal */
-export const SpeechRequestProvider$outboundSchema: z.ZodType<
-  SpeechRequestProvider$Outbound,
-  SpeechRequestProvider
-> = z.object({
-  options: ProviderOptions$outboundSchema.optional(),
-});
-
-export function speechRequestProviderToJSON(
-  speechRequestProvider: SpeechRequestProvider,
-): string {
-  return JSON.stringify(
-    SpeechRequestProvider$outboundSchema.parse(speechRequestProvider),
-  );
-}
-
-/** @internal */
 export const SpeechRequestResponseFormat$outboundSchema: z.ZodType<
   string,
   SpeechRequestResponseFormat
@@ -108,7 +77,7 @@ export type SpeechRequest$Outbound = {
   input: string;
   input_references?: Array<SpeechInputReference$Outbound> | undefined;
   model: string;
-  provider?: SpeechRequestProvider$Outbound | undefined;
+  provider?: TTSProviderPreferences$Outbound | undefined;
   response_format: string;
   speed?: number | undefined;
   voice?: string | undefined;
@@ -122,7 +91,7 @@ export const SpeechRequest$outboundSchema: z.ZodType<
   input: z.string(),
   inputReferences: z.array(SpeechInputReference$outboundSchema).optional(),
   model: z.string(),
-  provider: z.lazy(() => SpeechRequestProvider$outboundSchema).optional(),
+  provider: TTSProviderPreferences$outboundSchema.optional(),
   responseFormat: SpeechRequestResponseFormat$outboundSchema.default("pcm"),
   speed: z.number().optional(),
   voice: z.string().optional(),
