@@ -8,29 +8,19 @@ import { remap as remap$ } from "../lib/primitives.js";
 import * as openEnums from "../types/enums.js";
 import { OpenEnum } from "../types/enums.js";
 import {
-  ProviderOptions,
-  ProviderOptions$Outbound,
-  ProviderOptions$outboundSchema,
-} from "./provideroptions.js";
-import {
   STTInputAudio,
   STTInputAudio$Outbound,
   STTInputAudio$outboundSchema,
 } from "./sttinputaudio.js";
 import {
+  STTProviderPreferences,
+  STTProviderPreferences$Outbound,
+  STTProviderPreferences$outboundSchema,
+} from "./sttproviderpreferences.js";
+import {
   STTTimestampGranularity,
   STTTimestampGranularity$outboundSchema,
 } from "./stttimestampgranularity.js";
-
-/**
- * Provider-specific passthrough configuration
- */
-export type STTRequestProvider = {
-  /**
-   * Provider-specific options keyed by provider slug. Only options for the matched provider are forwarded; the rest are ignored. Unrecognized keys are silently dropped.
-   */
-  options?: ProviderOptions | undefined;
-};
 
 /**
  * Output format. "json" (default) returns { text, usage }. "verbose_json" additionally returns task, language, duration, and segment-level timestamps; only supported by OpenAI-compatible providers.
@@ -63,9 +53,9 @@ export type STTRequest = {
    */
   model: string;
   /**
-   * Provider-specific passthrough configuration
+   * Provider routing preferences and provider-specific passthrough configuration.
    */
-  provider?: STTRequestProvider | undefined;
+  provider?: STTProviderPreferences | undefined;
   /**
    * Output format. "json" (default) returns { text, usage }. "verbose_json" additionally returns task, language, duration, and segment-level timestamps; only supported by OpenAI-compatible providers.
    */
@@ -81,27 +71,6 @@ export type STTRequest = {
 };
 
 /** @internal */
-export type STTRequestProvider$Outbound = {
-  options?: ProviderOptions$Outbound | undefined;
-};
-
-/** @internal */
-export const STTRequestProvider$outboundSchema: z.ZodType<
-  STTRequestProvider$Outbound,
-  STTRequestProvider
-> = z.object({
-  options: ProviderOptions$outboundSchema.optional(),
-});
-
-export function sttRequestProviderToJSON(
-  sttRequestProvider: STTRequestProvider,
-): string {
-  return JSON.stringify(
-    STTRequestProvider$outboundSchema.parse(sttRequestProvider),
-  );
-}
-
-/** @internal */
 export const STTRequestResponseFormat$outboundSchema: z.ZodType<
   string,
   STTRequestResponseFormat
@@ -112,7 +81,7 @@ export type STTRequest$Outbound = {
   input_audio: STTInputAudio$Outbound;
   language?: string | undefined;
   model: string;
-  provider?: STTRequestProvider$Outbound | undefined;
+  provider?: STTProviderPreferences$Outbound | undefined;
   response_format?: string | undefined;
   temperature?: number | undefined;
   timestamp_granularities?: Array<string> | undefined;
@@ -126,7 +95,7 @@ export const STTRequest$outboundSchema: z.ZodType<
   inputAudio: STTInputAudio$outboundSchema,
   language: z.string().optional(),
   model: z.string(),
-  provider: z.lazy(() => STTRequestProvider$outboundSchema).optional(),
+  provider: STTProviderPreferences$outboundSchema.optional(),
   responseFormat: STTRequestResponseFormat$outboundSchema.optional(),
   temperature: z.number().optional(),
   timestampGranularities: z.array(STTTimestampGranularity$outboundSchema)
