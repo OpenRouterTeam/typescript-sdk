@@ -1,19 +1,19 @@
 lockVersion: ""
 id: ""
 management:
-  docChecksum: f7488f8bb2c773c4f974fac9e51fe532
+  docChecksum: 0edbb79d5f554217516b15c63e92c10e
   docVersion: 1.0.0
   speakeasyVersion: 1.787.0
   generationVersion: 2.914.0
-  releaseVersion: 1.2.18
-  configChecksum: db6cf57f7559b905ec1173fb7deea2cc
+  releaseVersion: 1.2.19
+  configChecksum: 0101e95d91c2e44874d8f7b280328d09
   repoURL: https://github.com/OpenRouterTeam/typescript-sdk.git
   installationURL: https://github.com/OpenRouterTeam/typescript-sdk
   published: true
 persistentEdits:
-  generation_id: a0ab524e-8390-48ae-a1d3-30ebe7ca12d7
-  pristine_commit_hash: 457324272dad241a066853ba53937687a0ad6274
-  pristine_tree_hash: ef87415827aa09c7fcfa535daf512fefceb7e0af
+  generation_id: 04a5623c-7b8f-4ea9-b6ac-4a55b9d0732e
+  pristine_commit_hash: 322a57e81000ada2da7460731527e38a4c516ab6
+  pristine_tree_hash: 07af4b3fa5e2e6632d8f8a83038bf7bee9f646af
 features:
   typescript:
     acceptHeaders: 2.81.2
@@ -1057,12 +1057,12 @@ trackedFiles:
     pristine_git_object: 147f6e10f104162f81fe3df2f145892eac826577
   docs/models/autobetarouterplugin.mdx:
     id: ecc97e45ac41
-    last_write_checksum: sha1:9fafa2d1875e4c62e58597f5b284e507c590d3b5
-    pristine_git_object: b0299f3dce7f235444334811ac7dfe2ddced1a94
+    last_write_checksum: sha1:619b5c3714d6d37cc7ee9c93a9333bcf61a6ab71
+    pristine_git_object: 5ea37884d35c22d04f251875a066513bf6997a2c
   docs/models/autobetarouterplugincosttier.mdx:
     id: 7b336735cbe8
-    last_write_checksum: sha1:c5439d4d609833cd88d31398349df1ed20cf5047
-    pristine_git_object: 2bf2353fee990c69b0f45363cc39358c6728eaad
+    last_write_checksum: sha1:0ce9f640cae885d6b06a72032f8ae9bb51616eeb
+    pristine_git_object: a2754a6d6d481f251577a43564d21bfbffcd65e8
   docs/models/autorouterplugin.md:
     id: 96e009b23f15
     last_write_checksum: sha1:15a686d94f3f434759a437e4da83facd46947f83
@@ -1070,12 +1070,12 @@ trackedFiles:
     deleted: true
   docs/models/autorouterplugin.mdx:
     id: 0ed167e1bff5
-    last_write_checksum: sha1:89d609126b97fd2aafbfec97d3fcd5eeabc9c870
-    pristine_git_object: b6f18de48301b0e0957eee872adfdd7b309700f7
+    last_write_checksum: sha1:5a3ac07b7912a8bb84e29a254e866ae186e9e8b2
+    pristine_git_object: 37ee18f816545447765713f33a32ef25ce21a4d9
   docs/models/autorouterplugincosttier.mdx:
     id: 93a8b509f865
-    last_write_checksum: sha1:2b0010ae361873be5ddc121add6392f22f9a9133
-    pristine_git_object: e6e4cc2c481f8ea756c445c9890af74f3e5f95ab
+    last_write_checksum: sha1:532d6f6e98c8ef0ed353add12a09fe80b595a493
+    pristine_git_object: 466e839d45b1e72732b21c085366def1374c9105
   docs/models/background.md:
     id: 3b0fc0aed098
     last_write_checksum: sha1:fc5a93bba90a86a1dfdd0f97f34dda7f224d20b0
@@ -12781,12 +12781,12 @@ trackedFiles:
     pristine_git_object: 410efafd6a7f50d91ccb87131fedbe0c3d47e15a
   jsr.json:
     id: 7f6ab7767282
-    last_write_checksum: sha1:bc750a583e431db9133817448234014c0c7b3975
-    pristine_git_object: 8d9471c1d1bc26c8ad659dce886cf8d60e8e310d
+    last_write_checksum: sha1:dfe316141dbecc88995483d53c1a8c5c15edaea6
+    pristine_git_object: bc5d6e7c21538f1c1f3d9f501ca14e8416983d72
   package.json:
     id: 7030d0b2f71b
-    last_write_checksum: sha1:8df84e4c79570232ac040e48d4a8939d4c9cad86
-    pristine_git_object: 14d41665b3f3e592869ce25d6547f01667fdd61d
+    last_write_checksum: sha1:5c07a59d6ca36ad1ee2e73898c4436e51afd2fb2
+    pristine_git_object: 750e79c92c5bb007b8c12447d5be59f28acdbcef
   src/core.ts:
     id: f431fdbcd144
     last_write_checksum: sha1:5aa66b0b6a5964f3eea7f3098c2eb3c0ee9c0131
@@ -13193,8 +13193,8 @@ trackedFiles:
     pristine_git_object: a187e58707bdb726ca2aff74941efe7493422d4e
   src/lib/config.ts:
     id: 320761608fb3
-    last_write_checksum: sha1:a9180caa6b6d5e81a9493c5b53f0af36369f0021
-    pristine_git_object: 83309d80e39f36a19aca5a7532db4fd8f9a7a10e
+    last_write_checksum: sha1:d6ab3f0c30985bc0c77300b7da96a280ad7c6c85
+    pristine_git_object: 897fccbb6f9f18b903dba7b779d5d17d2f15aaf5
   src/lib/dlv.ts:
     id: b1988214835a
     last_write_checksum: sha1:eaac763b22717206a6199104e0403ed17a4e2711
@@ -13523,12 +13523,12 @@ trackedFiles:
     pristine_git_object: 514f3e5bdf0f636a0699aaa6eff47d4148ad0651
   src/models/autobetarouterplugin.ts:
     id: 80e04f632d5f
-    last_write_checksum: sha1:6387e95f49738c2968b89e5c57461aa22afebef3
-    pristine_git_object: c73f6986538d1b8cb7cc0e0bdc8ba13dc63c1bbe
+    last_write_checksum: sha1:dfbf9b1597dad455ed07ac37652cb72df799c5b5
+    pristine_git_object: 5ba908128cf7c84c94ffe856fabb8336aa2da948
   src/models/autorouterplugin.ts:
     id: e3853c83720d
-    last_write_checksum: sha1:717354949ba4841c96c8514b38e2d85b145b31d0
-    pristine_git_object: 4bd7a0549bb97018bf455771fa2bee0a9391d37f
+    last_write_checksum: sha1:a3ae700966a168c33190279a4845ece1c6fd4c6d
+    pristine_git_object: 9ee25422ce5b3bb3aead0f62d93baa7f4745724c
   src/models/badgatewayresponseerrordata.ts:
     id: de317517c298
     last_write_checksum: sha1:8e3b5185f0a7c208ec8bfe0c1fc1d7f1b00c847d
