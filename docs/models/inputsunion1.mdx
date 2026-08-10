@@ -171,7 +171,15 @@ const value: models.OutputImageGenerationCallItem = {
 
 ```typescript
 const value: models.OutputCodeInterpreterCallItem = {
+  code: "print(\"hello\")",
+  containerId: "ctr-xyz789",
   id: "ci-abc123",
+  outputs: [
+    {
+      logs: "hello\n",
+      type: "logs",
+    },
+  ],
   status: "completed",
   type: "code_interpreter_call",
 };
@@ -250,6 +258,15 @@ const value: models.OutputBrowserUseServerToolItem = {
 const value: models.OutputBashServerToolItem = {
   status: "completed",
   type: "openrouter:bash",
+};
+```
+
+### `models.OutputShellServerToolItem`
+
+```typescript
+const value: models.OutputShellServerToolItem = {
+  status: "completed",
+  type: "openrouter:shell",
 };
 ```
 

@@ -21,26 +21,6 @@ import {
   ApplyPatchCallOperationDiffDoneEvent$inboundSchema,
 } from "./applypatchcalloperationdiffdoneevent.js";
 import {
-  CodeInterpreterCallCodeDeltaEvent,
-  CodeInterpreterCallCodeDeltaEvent$inboundSchema,
-} from "./codeinterpretercallcodedeltaevent.js";
-import {
-  CodeInterpreterCallCodeDoneEvent,
-  CodeInterpreterCallCodeDoneEvent$inboundSchema,
-} from "./codeinterpretercallcodedoneevent.js";
-import {
-  CodeInterpreterCallCompletedEvent,
-  CodeInterpreterCallCompletedEvent$inboundSchema,
-} from "./codeinterpretercallcompletedevent.js";
-import {
-  CodeInterpreterCallInProgressEvent,
-  CodeInterpreterCallInProgressEvent$inboundSchema,
-} from "./codeinterpretercallinprogressevent.js";
-import {
-  CodeInterpreterCallInterpretingEvent,
-  CodeInterpreterCallInterpretingEvent$inboundSchema,
-} from "./codeinterpretercallinterpretingevent.js";
-import {
   ContentPartAddedEvent,
   ContentPartAddedEvent$inboundSchema,
 } from "./contentpartaddedevent.js";
@@ -204,11 +184,6 @@ export type StreamEvents =
   | ErrorEvent
   | ApplyPatchCallOperationDiffDeltaEvent
   | ApplyPatchCallOperationDiffDoneEvent
-  | CodeInterpreterCallCodeDeltaEvent
-  | CodeInterpreterCallCodeDoneEvent
-  | CodeInterpreterCallCompletedEvent
-  | CodeInterpreterCallInProgressEvent
-  | CodeInterpreterCallInterpretingEvent
   | StreamEventsResponseCompleted
   | ContentPartAddedEvent
   | ContentPartDoneEvent
@@ -260,16 +235,6 @@ export const StreamEvents$inboundSchema: z.ZodType<StreamEvents, unknown> =
       ApplyPatchCallOperationDiffDeltaEvent$inboundSchema,
     ["response.apply_patch_call_operation_diff.done"]:
       ApplyPatchCallOperationDiffDoneEvent$inboundSchema,
-    ["response.code_interpreter_call_code.delta"]:
-      CodeInterpreterCallCodeDeltaEvent$inboundSchema,
-    ["response.code_interpreter_call_code.done"]:
-      CodeInterpreterCallCodeDoneEvent$inboundSchema,
-    ["response.code_interpreter_call.completed"]:
-      CodeInterpreterCallCompletedEvent$inboundSchema,
-    ["response.code_interpreter_call.in_progress"]:
-      CodeInterpreterCallInProgressEvent$inboundSchema,
-    ["response.code_interpreter_call.interpreting"]:
-      CodeInterpreterCallInterpretingEvent$inboundSchema,
     ["response.completed"]: StreamEventsResponseCompleted$inboundSchema,
     ["response.content_part.added"]: ContentPartAddedEvent$inboundSchema,
     ["response.content_part.done"]: ContentPartDoneEvent$inboundSchema,

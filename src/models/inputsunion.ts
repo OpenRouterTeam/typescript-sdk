@@ -202,6 +202,11 @@ import {
   OutputSearchModelsServerToolItem$outboundSchema,
 } from "./outputsearchmodelsservertoolitem.js";
 import {
+  OutputShellServerToolItem,
+  OutputShellServerToolItem$Outbound,
+  OutputShellServerToolItem$outboundSchema,
+} from "./outputshellservertoolitem.js";
+import {
   OutputSubagentServerToolItem,
   OutputSubagentServerToolItem$Outbound,
   OutputSubagentServerToolItem$outboundSchema,
@@ -394,6 +399,7 @@ export type InputsMessage = {
 };
 
 export type InputsUnion1 =
+  | OutputCodeInterpreterCallItem
   | FunctionCallItem
   | LocalShellCallItem
   | McpApprovalRequestItem
@@ -414,7 +420,6 @@ export type InputsUnion1 =
   | InputsReasoning
   | OutputWebSearchCallItem
   | OutputImageGenerationCallItem
-  | OutputCodeInterpreterCallItem
   | LocalShellCallOutputItem
   | ShellCallItem
   | ShellCallOutputItem
@@ -427,6 +432,7 @@ export type InputsUnion1 =
   | OutputImageGenerationServerToolItem
   | OutputBrowserUseServerToolItem
   | OutputBashServerToolItem
+  | OutputShellServerToolItem
   | OutputTextEditorServerToolItem
   | OutputApplyPatchServerToolItem
   | OutputWebFetchServerToolItem
@@ -450,6 +456,7 @@ export type InputsUnion1 =
 export type InputsUnion =
   | string
   | Array<
+    | OutputCodeInterpreterCallItem
     | FunctionCallItem
     | LocalShellCallItem
     | McpApprovalRequestItem
@@ -470,7 +477,6 @@ export type InputsUnion =
     | InputsReasoning
     | OutputWebSearchCallItem
     | OutputImageGenerationCallItem
-    | OutputCodeInterpreterCallItem
     | LocalShellCallOutputItem
     | ShellCallItem
     | ShellCallOutputItem
@@ -483,6 +489,7 @@ export type InputsUnion =
     | OutputImageGenerationServerToolItem
     | OutputBrowserUseServerToolItem
     | OutputBashServerToolItem
+    | OutputShellServerToolItem
     | OutputTextEditorServerToolItem
     | OutputApplyPatchServerToolItem
     | OutputWebFetchServerToolItem
@@ -753,6 +760,7 @@ export function inputsMessageToJSON(inputsMessage: InputsMessage): string {
 
 /** @internal */
 export type InputsUnion1$Outbound =
+  | OutputCodeInterpreterCallItem$Outbound
   | FunctionCallItem$Outbound
   | LocalShellCallItem$Outbound
   | McpApprovalRequestItem$Outbound
@@ -773,7 +781,6 @@ export type InputsUnion1$Outbound =
   | InputsReasoning$Outbound
   | OutputWebSearchCallItem$Outbound
   | OutputImageGenerationCallItem$Outbound
-  | OutputCodeInterpreterCallItem$Outbound
   | LocalShellCallOutputItem$Outbound
   | ShellCallItem$Outbound
   | ShellCallOutputItem$Outbound
@@ -786,6 +793,7 @@ export type InputsUnion1$Outbound =
   | OutputImageGenerationServerToolItem$Outbound
   | OutputBrowserUseServerToolItem$Outbound
   | OutputBashServerToolItem$Outbound
+  | OutputShellServerToolItem$Outbound
   | OutputTextEditorServerToolItem$Outbound
   | OutputApplyPatchServerToolItem$Outbound
   | OutputWebFetchServerToolItem$Outbound
@@ -808,6 +816,7 @@ export const InputsUnion1$outboundSchema: z.ZodType<
   InputsUnion1$Outbound,
   InputsUnion1
 > = z.union([
+  OutputCodeInterpreterCallItem$outboundSchema,
   FunctionCallItem$outboundSchema,
   LocalShellCallItem$outboundSchema,
   McpApprovalRequestItem$outboundSchema,
@@ -828,7 +837,6 @@ export const InputsUnion1$outboundSchema: z.ZodType<
   z.lazy(() => InputsReasoning$outboundSchema),
   OutputWebSearchCallItem$outboundSchema,
   OutputImageGenerationCallItem$outboundSchema,
-  OutputCodeInterpreterCallItem$outboundSchema,
   LocalShellCallOutputItem$outboundSchema,
   ShellCallItem$outboundSchema,
   ShellCallOutputItem$outboundSchema,
@@ -841,6 +849,7 @@ export const InputsUnion1$outboundSchema: z.ZodType<
   OutputImageGenerationServerToolItem$outboundSchema,
   OutputBrowserUseServerToolItem$outboundSchema,
   OutputBashServerToolItem$outboundSchema,
+  OutputShellServerToolItem$outboundSchema,
   OutputTextEditorServerToolItem$outboundSchema,
   OutputApplyPatchServerToolItem$outboundSchema,
   OutputWebFetchServerToolItem$outboundSchema,
@@ -867,6 +876,7 @@ export function inputsUnion1ToJSON(inputsUnion1: InputsUnion1): string {
 export type InputsUnion$Outbound =
   | string
   | Array<
+    | OutputCodeInterpreterCallItem$Outbound
     | FunctionCallItem$Outbound
     | LocalShellCallItem$Outbound
     | McpApprovalRequestItem$Outbound
@@ -887,7 +897,6 @@ export type InputsUnion$Outbound =
     | InputsReasoning$Outbound
     | OutputWebSearchCallItem$Outbound
     | OutputImageGenerationCallItem$Outbound
-    | OutputCodeInterpreterCallItem$Outbound
     | LocalShellCallOutputItem$Outbound
     | ShellCallItem$Outbound
     | ShellCallOutputItem$Outbound
@@ -900,6 +909,7 @@ export type InputsUnion$Outbound =
     | OutputImageGenerationServerToolItem$Outbound
     | OutputBrowserUseServerToolItem$Outbound
     | OutputBashServerToolItem$Outbound
+    | OutputShellServerToolItem$Outbound
     | OutputTextEditorServerToolItem$Outbound
     | OutputApplyPatchServerToolItem$Outbound
     | OutputWebFetchServerToolItem$Outbound
@@ -926,6 +936,7 @@ export const InputsUnion$outboundSchema: z.ZodType<
   z.string(),
   z.array(
     z.union([
+      OutputCodeInterpreterCallItem$outboundSchema,
       FunctionCallItem$outboundSchema,
       LocalShellCallItem$outboundSchema,
       McpApprovalRequestItem$outboundSchema,
@@ -946,7 +957,6 @@ export const InputsUnion$outboundSchema: z.ZodType<
       z.lazy(() => InputsReasoning$outboundSchema),
       OutputWebSearchCallItem$outboundSchema,
       OutputImageGenerationCallItem$outboundSchema,
-      OutputCodeInterpreterCallItem$outboundSchema,
       LocalShellCallOutputItem$outboundSchema,
       ShellCallItem$outboundSchema,
       ShellCallOutputItem$outboundSchema,
@@ -959,6 +969,7 @@ export const InputsUnion$outboundSchema: z.ZodType<
       OutputImageGenerationServerToolItem$outboundSchema,
       OutputBrowserUseServerToolItem$outboundSchema,
       OutputBashServerToolItem$outboundSchema,
+      OutputShellServerToolItem$outboundSchema,
       OutputTextEditorServerToolItem$outboundSchema,
       OutputApplyPatchServerToolItem$outboundSchema,
       OutputWebFetchServerToolItem$outboundSchema,
