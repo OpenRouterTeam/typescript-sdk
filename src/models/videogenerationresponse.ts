@@ -35,6 +35,10 @@ export type VideoGenerationResponse = {
   generationId?: string | undefined;
   id: string;
   pollingUrl: string;
+  /**
+   * The name of the provider serving this video generation job. Available once the job has been routed to a provider.
+   */
+  providerName?: string | undefined;
   status: VideoGenerationResponseStatus;
   unsignedUrls?: Array<string> | undefined;
   /**
@@ -58,6 +62,7 @@ export const VideoGenerationResponse$inboundSchema: z.ZodType<
   generation_id: z.string().optional(),
   id: z.string(),
   polling_url: z.string(),
+  provider_name: z.string().optional(),
   status: VideoGenerationResponseStatus$inboundSchema,
   unsigned_urls: z.array(z.string()).optional(),
   usage: VideoGenerationUsage$inboundSchema.optional(),
@@ -65,6 +70,7 @@ export const VideoGenerationResponse$inboundSchema: z.ZodType<
   return remap$(v, {
     "generation_id": "generationId",
     "polling_url": "pollingUrl",
+    "provider_name": "providerName",
     "unsigned_urls": "unsignedUrls",
   });
 });
