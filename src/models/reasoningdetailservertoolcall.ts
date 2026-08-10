@@ -23,6 +23,7 @@ export type ReasoningDetailServerToolCall = {
   id?: string | null | undefined;
   index?: number | undefined;
   result: string;
+  routingTraits?: string | null | undefined;
   toolCallId?: string | null | undefined;
   toolName: string;
   type: "reasoning.server_tool_call";
@@ -38,11 +39,13 @@ export const ReasoningDetailServerToolCall$inboundSchema: z.ZodType<
   id: z.nullable(z.string()).optional(),
   index: z.int().optional(),
   result: z.string(),
+  routing_traits: z.nullable(z.string()).optional(),
   tool_call_id: z.nullable(z.string()).optional(),
   tool_name: z.string(),
   type: z.literal("reasoning.server_tool_call"),
 }).transform((v) => {
   return remap$(v, {
+    "routing_traits": "routingTraits",
     "tool_call_id": "toolCallId",
     "tool_name": "toolName",
   });
@@ -54,6 +57,7 @@ export type ReasoningDetailServerToolCall$Outbound = {
   id?: string | null | undefined;
   index?: number | undefined;
   result: string;
+  routing_traits?: string | null | undefined;
   tool_call_id?: string | null | undefined;
   tool_name: string;
   type: "reasoning.server_tool_call";
@@ -69,11 +73,13 @@ export const ReasoningDetailServerToolCall$outboundSchema: z.ZodType<
   id: z.nullable(z.string()).optional(),
   index: z.int().optional(),
   result: z.string(),
+  routingTraits: z.nullable(z.string()).optional(),
   toolCallId: z.nullable(z.string()).optional(),
   toolName: z.string(),
   type: z.literal("reasoning.server_tool_call"),
 }).transform((v) => {
   return remap$(v, {
+    routingTraits: "routing_traits",
     toolCallId: "tool_call_id",
     toolName: "tool_name",
   });

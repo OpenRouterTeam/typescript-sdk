@@ -4,6 +4,7 @@
  */
 
 import * as z from "zod/v4";
+import { remap as remap$ } from "../lib/primitives.js";
 import { safeParse } from "../lib/schemas.js";
 import { Result as SafeParseResult } from "../types/fp.js";
 import { SDKValidationError } from "./errors/sdkvalidationerror.js";
@@ -20,6 +21,7 @@ export type ReasoningDetailText = {
   format?: ReasoningFormat | null | undefined;
   id?: string | null | undefined;
   index?: number | undefined;
+  routingTraits?: string | null | undefined;
   signature?: string | null | undefined;
   text?: string | null | undefined;
   type: "reasoning.text";
@@ -33,15 +35,21 @@ export const ReasoningDetailText$inboundSchema: z.ZodType<
   format: z.nullable(ReasoningFormat$inboundSchema).optional(),
   id: z.nullable(z.string()).optional(),
   index: z.int().optional(),
+  routing_traits: z.nullable(z.string()).optional(),
   signature: z.nullable(z.string()).optional(),
   text: z.nullable(z.string()).optional(),
   type: z.literal("reasoning.text"),
+}).transform((v) => {
+  return remap$(v, {
+    "routing_traits": "routingTraits",
+  });
 });
 /** @internal */
 export type ReasoningDetailText$Outbound = {
   format?: string | null | undefined;
   id?: string | null | undefined;
   index?: number | undefined;
+  routing_traits?: string | null | undefined;
   signature?: string | null | undefined;
   text?: string | null | undefined;
   type: "reasoning.text";
@@ -55,9 +63,14 @@ export const ReasoningDetailText$outboundSchema: z.ZodType<
   format: z.nullable(ReasoningFormat$outboundSchema).optional(),
   id: z.nullable(z.string()).optional(),
   index: z.int().optional(),
+  routingTraits: z.nullable(z.string()).optional(),
   signature: z.nullable(z.string()).optional(),
   text: z.nullable(z.string()).optional(),
   type: z.literal("reasoning.text"),
+}).transform((v) => {
+  return remap$(v, {
+    routingTraits: "routing_traits",
+  });
 });
 
 export function reasoningDetailTextToJSON(
