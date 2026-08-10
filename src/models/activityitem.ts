@@ -54,10 +54,6 @@ export type ActivityItem = {
    * Total cost in USD (OpenRouter credits spent)
    */
   usage: number;
-  /**
-   * ID of the workspace this activity is attributed to. Only present when `group_by=workspace` is passed; the response is then split per workspace. Activity recorded before workspace resolution existed is attributed to the account default workspace.
-   */
-  workspaceId?: string | undefined;
 };
 
 /** @internal */
@@ -74,7 +70,6 @@ export const ActivityItem$inboundSchema: z.ZodType<ActivityItem, unknown> = z
     reasoning_tokens: z.int(),
     requests: z.int(),
     usage: z.number(),
-    workspace_id: z.string().optional(),
   }).transform((v) => {
     return remap$(v, {
       "byok_usage_inference": "byokUsageInference",
@@ -84,7 +79,6 @@ export const ActivityItem$inboundSchema: z.ZodType<ActivityItem, unknown> = z
       "prompt_tokens": "promptTokens",
       "provider_name": "providerName",
       "reasoning_tokens": "reasoningTokens",
-      "workspace_id": "workspaceId",
     });
   });
 

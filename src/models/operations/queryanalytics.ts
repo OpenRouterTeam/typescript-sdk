@@ -84,7 +84,7 @@ export type ClassifierFilters = {
 export type Value2 = string | number;
 
 /**
- * Filter value (scalar or array depending on operator). Several dimensions are enriched in responses (returned as human-readable labels), but filters must use the underlying ID: `api_key_id` — numeric ID (from generation metadata) or key hash (64-char hex from GET /api/v1/keys, resolved server-side); `user` — Clerk user ID (e.g. "user_abc123"), not the display name; `workspace` — workspace UUID, not the workspace name (filtering or grouping by the account default workspace also covers activity recorded before workspace resolution existed, which is attributed to that default workspace); `app` — numeric app ID, not the app title; `model` — permaslug (e.g. "openai/gpt-4o"), not the display name. Other dimensions (provider, origin, country, etc.) are not enriched and accept the value as returned.
+ * Filter value (scalar or array depending on operator). Several dimensions are enriched in responses (returned as human-readable labels), but filters must use the underlying ID: `api_key_id` — numeric ID (from generation metadata) or key hash (64-char hex from GET /api/v1/keys, resolved server-side); `user` — Clerk user ID (e.g. "user_abc123"), not the display name; `workspace` — workspace UUID, not the workspace name; `app` — numeric app ID, not the app title; `model` — permaslug (e.g. "openai/gpt-4o"), not the display name. Other dimensions (provider, origin, country, etc.) are not enriched and accept the value as returned.
  */
 export type Value1 = string | number | Array<string | number>;
 
@@ -94,15 +94,11 @@ export type Filter = {
    */
   field: string;
   /**
-   * Include rows where the dimension has no value. Applies only to the `in` and `not_in` operators and dimensions that have an unset bucket.
-   */
-  includeUnset?: boolean | undefined;
-  /**
    * Filter operator
    */
   operator: string;
   /**
-   * Filter value (scalar or array depending on operator). Several dimensions are enriched in responses (returned as human-readable labels), but filters must use the underlying ID: `api_key_id` — numeric ID (from generation metadata) or key hash (64-char hex from GET /api/v1/keys, resolved server-side); `user` — Clerk user ID (e.g. "user_abc123"), not the display name; `workspace` — workspace UUID, not the workspace name (filtering or grouping by the account default workspace also covers activity recorded before workspace resolution existed, which is attributed to that default workspace); `app` — numeric app ID, not the app title; `model` — permaslug (e.g. "openai/gpt-4o"), not the display name. Other dimensions (provider, origin, country, etc.) are not enriched and accept the value as returned.
+   * Filter value (scalar or array depending on operator). Several dimensions are enriched in responses (returned as human-readable labels), but filters must use the underlying ID: `api_key_id` — numeric ID (from generation metadata) or key hash (64-char hex from GET /api/v1/keys, resolved server-side); `user` — Clerk user ID (e.g. "user_abc123"), not the display name; `workspace` — workspace UUID, not the workspace name; `app` — numeric app ID, not the app title; `model` — permaslug (e.g. "openai/gpt-4o"), not the display name. Other dimensions (provider, origin, country, etc.) are not enriched and accept the value as returned.
    */
   value: string | number | Array<string | number>;
 };
@@ -358,7 +354,6 @@ export function value1ToJSON(value1: Value1): string {
 /** @internal */
 export type Filter$Outbound = {
   field: string;
-  include_unset?: boolean | undefined;
   operator: string;
   value: string | number | Array<string | number>;
 };
@@ -367,17 +362,12 @@ export type Filter$Outbound = {
 export const Filter$outboundSchema: z.ZodType<Filter$Outbound, Filter> = z
   .object({
     field: z.string(),
-    includeUnset: z.boolean().optional(),
     operator: z.string(),
     value: z.union([
       z.string(),
       z.number(),
       z.array(z.union([z.string(), z.number()])),
     ]),
-  }).transform((v) => {
-    return remap$(v, {
-      includeUnset: "include_unset",
-    });
   });
 
 export function filterToJSON(filter: Filter): string {
