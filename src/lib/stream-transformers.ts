@@ -8,6 +8,7 @@ import type {
 } from '../models/claude-message.js';
 import type { ReusableReadableStream } from './reusable-stream.js';
 import type { ParsedToolCall, Tool } from './tool-types.js';
+import { StreamFailedError } from './stream-errors.js';
 import {
   isOutputTextDeltaEvent,
   isReasoningDeltaEvent,
@@ -17,6 +18,7 @@ import {
   isResponseCompletedEvent,
   isResponseFailedEvent,
   isResponseIncompleteEvent,
+  isErrorEvent,
   isFunctionCallArgumentsDoneEvent,
   isOutputMessage,
   isFunctionCallItem,
@@ -503,6 +505,7 @@ export async function consumeStreamForCompletion(
   stream: ReusableReadableStream<models.StreamEvents>,
 ): Promise<models.OpenResponsesResult> {
   const consumer = stream.createConsumer();
+  let errorEvent: models.ErrorEvent | null = null;
 
   for await (const event of consumer) {
     if (!('type' in event)) {
@@ -515,7 +518,14 @@ export async function consumeStreamForCompletion(
 
     if (isResponseFailedEvent(event)) {
       // The failed event contains the full response with error information
-      throw new Error(`Response failed: ${JSON.stringify(event.response.error)}`);
+      throw StreamFailedError.fromFailedResponse(event.response);
+    }
+
+    if (isErrorEvent(event)) {
+      // Recorded, not thrown: only surfaced if the stream ends without a
+      // completion event, so an error followed by a successful completion
+      // keeps working.
+      errorEvent = event;
     }
 
     if (isResponseIncompleteEvent(event)) {
@@ -524,6 +534,9 @@ export async function consumeStreamForCompletion(
     }
   }
 
+  if (errorEvent) {
+    throw StreamFailedError.fromErrorEvent(errorEvent);
+  }
   throw new Error('Stream ended without completion event');
 }
 

@@ -49,6 +49,10 @@ export function isResponseFailedEvent(
   return 'type' in event && event.type === 'response.failed';
 }
 
+export function isErrorEvent(event: models.StreamEvents): event is models.ErrorEvent {
+  return 'type' in event && event.type === 'error';
+}
+
 export function isResponseIncompleteEvent(
   event: models.StreamEvents,
 ): event is models.StreamEventsResponseIncomplete {
