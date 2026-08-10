@@ -22,21 +22,21 @@ import {
   UnifiedBenchmarksMeta$inboundSchema,
 } from "./unifiedbenchmarksmeta.js";
 import {
-  UnifiedBenchmarksORItem,
-  UnifiedBenchmarksORItem$inboundSchema,
-} from "./unifiedbenchmarksoritem.js";
+  UnifiedBenchmarksORAnyItem,
+  UnifiedBenchmarksORAnyItem$inboundSchema,
+} from "./unifiedbenchmarksoranyitem.js";
 
 export type UnifiedBenchmarksResponseData =
   | UnifiedBenchmarksAAItem
   | UnifiedBenchmarksDAItem
-  | UnifiedBenchmarksORItem
+  | (UnifiedBenchmarksORAnyItem & { source: "openrouter" })
   | discriminatedUnionTypes.Unknown<"source">;
 
 export type UnifiedBenchmarksResponse = {
   data: Array<
     | UnifiedBenchmarksAAItem
     | UnifiedBenchmarksDAItem
-    | UnifiedBenchmarksORItem
+    | (UnifiedBenchmarksORAnyItem & { source: "openrouter" })
     | discriminatedUnionTypes.Unknown<"source">
   >;
   meta: UnifiedBenchmarksMeta;
@@ -49,7 +49,9 @@ export const UnifiedBenchmarksResponseData$inboundSchema: z.ZodType<
 > = discriminatedUnion("source", {
   ["artificial-analysis"]: UnifiedBenchmarksAAItem$inboundSchema,
   ["design-arena"]: UnifiedBenchmarksDAItem$inboundSchema,
-  openrouter: UnifiedBenchmarksORItem$inboundSchema,
+  openrouter: UnifiedBenchmarksORAnyItem$inboundSchema.and(
+    z.object({ source: z.literal("openrouter") }),
+  ),
 });
 
 export function unifiedBenchmarksResponseDataFromJSON(
@@ -70,7 +72,9 @@ export const UnifiedBenchmarksResponse$inboundSchema: z.ZodType<
   data: z.array(discriminatedUnion("source", {
     ["artificial-analysis"]: UnifiedBenchmarksAAItem$inboundSchema,
     ["design-arena"]: UnifiedBenchmarksDAItem$inboundSchema,
-    openrouter: UnifiedBenchmarksORItem$inboundSchema,
+    openrouter: UnifiedBenchmarksORAnyItem$inboundSchema.and(
+      z.object({ source: z.literal("openrouter") }),
+    ),
   })),
   meta: UnifiedBenchmarksMeta$inboundSchema,
 });

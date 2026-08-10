@@ -14,7 +14,7 @@ import { SDKValidationError } from "./errors/sdkvalidationerror.js";
 /**
  * The source filter applied, or null when all sources are returned.
  */
-export const SourceEnum = {
+export const UnifiedBenchmarksMetaSource = {
   ArtificialAnalysis: "artificial-analysis",
   DesignArena: "design-arena",
   Openrouter: "openrouter",
@@ -22,7 +22,9 @@ export const SourceEnum = {
 /**
  * The source filter applied, or null when all sources are returned.
  */
-export type SourceEnum = OpenEnum<typeof SourceEnum>;
+export type UnifiedBenchmarksMetaSource = OpenEnum<
+  typeof UnifiedBenchmarksMetaSource
+>;
 
 /**
  * Dataset version.
@@ -47,13 +49,21 @@ export type UnifiedBenchmarksMeta = {
    */
   citation: string | null;
   /**
+   * Number of distinct search evaluation configurations in the response, or null when no search results are included.
+   */
+  configurationCount?: number | null | undefined;
+  /**
    * Number of unique models in the response.
    */
   modelCount: number;
   /**
+   * Number of items in the response.
+   */
+  resultCount?: number | undefined;
+  /**
    * The source filter applied, or null when all sources are returned.
    */
-  source: SourceEnum | null;
+  source: UnifiedBenchmarksMetaSource | null;
   /**
    * URL of the upstream data source, or null when results span multiple sources.
    */
@@ -69,8 +79,10 @@ export type UnifiedBenchmarksMeta = {
 };
 
 /** @internal */
-export const SourceEnum$inboundSchema: z.ZodType<SourceEnum, unknown> =
-  openEnums.inboundSchema(SourceEnum);
+export const UnifiedBenchmarksMetaSource$inboundSchema: z.ZodType<
+  UnifiedBenchmarksMetaSource,
+  unknown
+> = openEnums.inboundSchema(UnifiedBenchmarksMetaSource);
 
 /** @internal */
 export const UnifiedBenchmarksMetaVersion$inboundSchema: z.ZodEnum<
@@ -84,15 +96,19 @@ export const UnifiedBenchmarksMeta$inboundSchema: z.ZodType<
 > = z.object({
   as_of: z.string(),
   citation: z.nullable(z.string()),
+  configuration_count: z.nullable(z.int()).optional(),
   model_count: z.int(),
-  source: z.nullable(SourceEnum$inboundSchema),
+  result_count: z.int().optional(),
+  source: z.nullable(UnifiedBenchmarksMetaSource$inboundSchema),
   source_url: z.nullable(z.string()),
   task_type: z.nullable(z.string()),
   version: UnifiedBenchmarksMetaVersion$inboundSchema,
 }).transform((v) => {
   return remap$(v, {
     "as_of": "asOf",
+    "configuration_count": "configurationCount",
     "model_count": "modelCount",
+    "result_count": "resultCount",
     "source_url": "sourceUrl",
     "task_type": "taskType",
   });
