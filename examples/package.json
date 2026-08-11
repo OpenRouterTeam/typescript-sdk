@@ -13,6 +13,8 @@
     "tsx": "^4.19.2"
   },
   "dependencies": {
-    "@openrouter/sdk": "file:.."
+    "@openrouter/sdk": "file:..",
+    "@valibot/to-json-schema": "^1.7.1",
+    "valibot": "^1.4.2"
   }
 }

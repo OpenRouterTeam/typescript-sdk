@@ -49,6 +49,8 @@ yarn add @openrouter/sdk
 > [!IMPORTANT]
 > `callModel` and its associated types have moved to the [`@openrouter/agent`](https://www.npmjs.com/package/@openrouter/agent) package. If you are using `callModel`, tool definitions, or related types from `@openrouter/sdk`, you should migrate to `@openrouter/agent`.
 >
+> The legacy SDK tool API accepts Zod schemas or any [Standard Schema v1](https://standardschema.dev/) validator for `inputSchema`, `outputSchema`, and `eventSchema`. Because Standard Schema does not define JSON Schema generation, non-Zod input validators must also provide `inputJsonSchema`, which is sent to model providers after `~`-prefixed metadata is removed. Zod input schemas continue to use the built-in `z4.toJSONSchema` path.
+>
 > To assist with the migration, run:
 >
 > ```bash

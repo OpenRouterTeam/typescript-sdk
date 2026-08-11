@@ -127,7 +127,7 @@ Speakeasy's [persistent edits](https://www.speakeasy.com/docs/sdks/customize/cod
 - Uses `ReusableReadableStream` to enable multiple parallel consumers
 
 **Tool System** (`src/lib/tool.ts`, `src/lib/tool-types.ts`, `src/lib/tool-executor.ts`)
-- `tool()` helper creates type-safe tools with Zod schemas
+- `tool()` accepts Zod or Standard Schema v1 validators; non-Zod inputs also require `inputJsonSchema` for provider requests
 - Three tool types:
   - **Regular tools** (`execute: function`) - auto-executed, return final result
   - **Generator tools** (`execute: async generator`) - stream preliminary results

@@ -3,7 +3,7 @@
  *
  * This example demonstrates how to use the tool() function for
  * fully-typed tool definitions where execute params, return types, and event
- * types are automatically inferred from Zod schemas.
+ * types are automatically inferred from Zod or any Standard Schema v1 validator.
  *
  * Tool types are auto-detected based on configuration:
  * - Generator tool: When `eventSchema` is provided
@@ -17,7 +17,10 @@
 import dotenv from "dotenv";
 dotenv.config();
 
-import { OpenRouter, tool } from "../src/index.js";
+import { toJsonSchema } from "@valibot/to-json-schema";
+import * as v from "valibot";
+import { OpenRouter } from "../src/index.js";
+import { tool } from "../src/lib/tool.js";
 import z from "zod";
 
 const openRouter = new OpenRouter({
@@ -27,15 +30,18 @@ const openRouter = new OpenRouter({
 // Create a typed regular tool using tool()
 // The execute function params are automatically typed as z.infer<typeof inputSchema>
 // The return type is enforced based on outputSchema
+const weatherInputSchema = v.object({ location: v.string() });
+
 const weatherTool = tool({
   name: "get_weather",
   description: "Get the current weather for a location",
-  inputSchema: z.object({
-    location: z.string().describe("The city and country, e.g. San Francisco, CA"),
-  }),
-  outputSchema: z.object({
-    temperature: z.number(),
-    description: z.string(),
+  inputSchema: weatherInputSchema,
+  // Standard Schema does not define JSON Schema conversion, so non-Zod
+  // validators provide the schema sent to model providers explicitly.
+  inputJsonSchema: toJsonSchema(weatherInputSchema),
+  outputSchema: v.object({
+    temperature: v.number(),
+    description: v.string(),
   }),
   // params is automatically typed as { location: string }
   execute: async (params) => {

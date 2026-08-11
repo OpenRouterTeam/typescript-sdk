@@ -87,14 +87,17 @@
   "devDependencies": {
     "@eslint/js": "^9.26.0",
     "@types/node": "^22.13.12",
+    "@valibot/to-json-schema": "^1.7.1",
     "dotenv": "^16.4.7",
     "eslint": "^9.26.0",
     "globals": "^15.14.0",
     "typescript": "~5.8.3",
     "typescript-eslint": "^8.26.0",
+    "valibot": "^1.4.2",
     "vitest": "^3.2.4"
   },
   "dependencies": {
+    "@standard-schema/spec": "^1.1.0",
     "zod": "^3.25.0 || ^4.0.0"
   }
 }

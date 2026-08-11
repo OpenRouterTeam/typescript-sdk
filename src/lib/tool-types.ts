@@ -1,7 +1,23 @@
+import type { StandardSchemaV1 } from '@standard-schema/spec';
 import type { $ZodObject, $ZodShape, $ZodType, infer as zodInfer } from 'zod/v4/core';
 import type * as models from '../models/index.js';
 import type { StreamEvents } from '../models/index.js';
 import type { ModelResult } from './model-result.js';
+
+export type ToolInputSchema = $ZodObject<$ZodShape> | StandardSchemaV1<any, any>;
+export type ToolSchema = $ZodType | StandardSchemaV1<any, any>;
+
+export type InferSchemaInput<T extends ToolSchema> = T extends $ZodType
+  ? zodInfer<T>
+  : T extends StandardSchemaV1
+    ? StandardSchemaV1.InferInput<T>
+    : never;
+
+export type InferSchemaOutput<T extends ToolSchema> = T extends $ZodType
+  ? zodInfer<T>
+  : T extends StandardSchemaV1
+    ? StandardSchemaV1.InferOutput<T>
+    : never;
 
 /**
  * Tool type enum for enhanced tools
@@ -136,20 +152,22 @@ export type ToolApprovalCheck<TInput> = (
 
 /**
  * Base tool function interface with inputSchema
- * @template TInput - Zod schema for tool input
+ * @template TInput - Schema for tool input
  */
-export interface BaseToolFunction<TInput extends $ZodObject<$ZodShape>> {
+export interface BaseToolFunction<TInput extends ToolInputSchema> {
   name: string;
   description?: string;
   inputSchema: TInput;
+  /** Raw JSON Schema sent to providers for non-Zod input schemas. */
+  inputJsonSchema?: Record<string, unknown>;
   /** Zod schema declaring the context data this tool needs */
   contextSchema?: $ZodObject<$ZodShape>;
-  nextTurnParams?: NextTurnParamsFunctions<zodInfer<TInput>>;
+  nextTurnParams?: NextTurnParamsFunctions<InferSchemaOutput<TInput>>;
   /**
    * Whether this tool requires human approval before execution
    * Can be a boolean or an async function that receives the tool's input params and context
    */
-  requireApproval?: boolean | ToolApprovalCheck<zodInfer<TInput>>;
+  requireApproval?: boolean | ToolApprovalCheck<InferSchemaOutput<TInput>>;
 }
 
 /**
@@ -158,16 +176,16 @@ export interface BaseToolFunction<TInput extends $ZodObject<$ZodShape>> {
  * @template TName - The tool's literal name string
  */
 export interface ToolFunctionWithExecute<
-  TInput extends $ZodObject<$ZodShape>,
-  TOutput extends $ZodType = $ZodType<unknown>,
+  TInput extends ToolInputSchema,
+  TOutput extends ToolSchema = $ZodType<unknown>,
   TContext extends Record<string, unknown> = Record<string, unknown>,
   TName extends string = string,
 > extends BaseToolFunction<TInput> {
   outputSchema?: TOutput;
   execute: (
-    params: zodInfer<TInput>,
+    params: InferSchemaOutput<TInput>,
     context?: ToolExecuteContext<TName, TContext>,
-  ) => Promise<zodInfer<TOutput>> | zodInfer<TOutput>;
+  ) => Promise<InferSchemaInput<TOutput>> | InferSchemaInput<TOutput>;
 }
 
 /**
@@ -193,26 +211,29 @@ export interface ToolFunctionWithExecute<
  * ```
  */
 export interface ToolFunctionWithGenerator<
-  TInput extends $ZodObject<$ZodShape>,
-  TEvent extends $ZodType = $ZodType<unknown>,
-  TOutput extends $ZodType = $ZodType<unknown>,
+  TInput extends ToolInputSchema,
+  TEvent extends ToolSchema = $ZodType<unknown>,
+  TOutput extends ToolSchema = $ZodType<unknown>,
   TContext extends Record<string, unknown> = Record<string, unknown>,
   TName extends string = string,
 > extends BaseToolFunction<TInput> {
   eventSchema: TEvent;
   outputSchema: TOutput;
   execute: (
-    params: zodInfer<TInput>,
+    params: InferSchemaOutput<TInput>,
     context?: ToolExecuteContext<TName, TContext>,
-  ) => AsyncGenerator<zodInfer<TEvent> | zodInfer<TOutput>, zodInfer<TOutput> | void>;
+  ) => AsyncGenerator<
+    InferSchemaInput<TEvent> | InferSchemaInput<TOutput>,
+    InferSchemaInput<TOutput> | void
+  >;
 }
 
 /**
  * Manual tool without execute function - requires manual handling by developer
  */
 export interface ManualToolFunction<
-  TInput extends $ZodObject<$ZodShape>,
-  TOutput extends $ZodType = $ZodType<unknown>,
+  TInput extends ToolInputSchema,
+  TOutput extends ToolSchema = $ZodType<unknown>,
 > extends BaseToolFunction<TInput> {
   outputSchema?: TOutput;
 }
@@ -221,8 +242,8 @@ export interface ManualToolFunction<
  * Tool with execute function (regular or generator)
  */
 export type ToolWithExecute<
-  TInput extends $ZodObject<$ZodShape> = $ZodObject<$ZodShape>,
-  TOutput extends $ZodType = $ZodType<unknown>,
+  TInput extends ToolInputSchema = $ZodObject<$ZodShape>,
+  TOutput extends ToolSchema = $ZodType<unknown>,
   TContext extends Record<string, unknown> = Record<string, unknown>,
 > = {
   type: ToolType.Function;
@@ -233,9 +254,9 @@ export type ToolWithExecute<
  * Tool with generator execute function
  */
 export type ToolWithGenerator<
-  TInput extends $ZodObject<$ZodShape> = $ZodObject<$ZodShape>,
-  TEvent extends $ZodType = $ZodType<unknown>,
-  TOutput extends $ZodType = $ZodType<unknown>,
+  TInput extends ToolInputSchema = $ZodObject<$ZodShape>,
+  TEvent extends ToolSchema = $ZodType<unknown>,
+  TOutput extends ToolSchema = $ZodType<unknown>,
   TContext extends Record<string, unknown> = Record<string, unknown>,
 > = {
   type: ToolType.Function;
@@ -246,8 +267,8 @@ export type ToolWithGenerator<
  * Tool without execute function (manual handling)
  */
 export type ManualTool<
-  TInput extends $ZodObject<$ZodShape> = $ZodObject<$ZodShape>,
-  TOutput extends $ZodType = $ZodType<unknown>,
+  TInput extends ToolInputSchema = $ZodObject<$ZodShape>,
+  TOutput extends ToolSchema = $ZodType<unknown>,
 > = {
   type: ToolType.Function;
   function: ManualToolFunction<TInput, TOutput>;
@@ -257,26 +278,22 @@ export type ManualTool<
  * Union type of all enhanced tool types
  */
 export type Tool =
-  | ToolWithExecute<$ZodObject<$ZodShape>, $ZodType<unknown>>
-  | ToolWithGenerator<$ZodObject<$ZodShape>, $ZodType<unknown>, $ZodType<unknown>>
-  | ManualTool<$ZodObject<$ZodShape>, $ZodType<unknown>>;
+  | ToolWithExecute<ToolInputSchema, ToolSchema>
+  | ToolWithGenerator<ToolInputSchema, ToolSchema, ToolSchema>
+  | ManualTool<ToolInputSchema, ToolSchema>;
 
 /**
  * Extracts the input type from a tool definition
  */
-export type InferToolInput<T> = T extends { function: { inputSchema: infer S } }
-  ? S extends $ZodType
-  ? zodInfer<S>
-  : unknown
+export type InferToolInput<T> = T extends { function: { inputSchema: infer S extends ToolSchema } }
+  ? InferSchemaOutput<S>
   : unknown;
 
 /**
  * Extracts the output type from a tool definition
  */
-export type InferToolOutput<T> = T extends { function: { outputSchema: infer S } }
-  ? S extends $ZodType
-  ? zodInfer<S>
-  : unknown
+export type InferToolOutput<T> = T extends { function: { outputSchema: infer S extends ToolSchema } }
+  ? InferSchemaOutput<S>
   : unknown;
 
 /**
@@ -314,10 +331,8 @@ export type InferToolOutputsUnion<T extends readonly Tool[]> = {
  * Extracts the event type from a generator tool definition
  * Returns `never` for non-generator tools
  */
-export type InferToolEvent<T> = T extends { function: { eventSchema: infer S } }
-  ? S extends $ZodType
-  ? zodInfer<S>
-  : never
+export type InferToolEvent<T> = T extends { function: { eventSchema: infer S extends ToolSchema } }
+  ? InferSchemaOutput<S>
   : never;
 
 /**
@@ -375,12 +390,8 @@ export interface ParsedToolCall<T extends Tool> {
 export interface ToolExecutionResult<T extends Tool> {
   toolCallId: string;
   toolName: string;
-  result: T extends ToolWithExecute<$ZodObject<$ZodShape>, infer O> | ToolWithGenerator<$ZodObject<$ZodShape>, $ZodType<unknown>, infer O>
-  ? zodInfer<O>
-  : unknown; // Final result (sent to model)
-  preliminaryResults?: T extends ToolWithGenerator<$ZodObject<$ZodShape>, infer E>
-  ? zodInfer<E>[]
-  : undefined; // All yielded values from generator
+  result: InferToolOutput<T>; // Final result (sent to model)
+  preliminaryResults?: InferToolEvent<T>[]; // All yielded values from generator
   error?: Error;
 }
 
