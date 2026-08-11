@@ -1,0 +1,27 @@
+---
+title: "GenerationContentErrorAttempt"
+---
+
+A single failed upstream attempt recorded for the generation
+
+## Example Usage
+
+```typescript
+import { GenerationContentErrorAttempt } from "@openrouter/sdk/models";
+
+let value: GenerationContentErrorAttempt = {
+  code: 429,
+  message: "Provider returned error",
+  providerName: "Google",
+  raw: "{\"error\":{\"code\":429,\"message\":\"Resource exhausted\"}}",
+};
+```
+
+## Fields
+
+| Field                                                 | Type                                                  | Required                                              | Description                                           | Example                                               |
+| ----------------------------------------------------- | ----------------------------------------------------- | ----------------------------------------------------- | ----------------------------------------------------- | ----------------------------------------------------- |
+| `code`                                                | *number*                                              | :heavy_check_mark:                                    | HTTP status returned by this attempt                  | 429                                                   |
+| `message`                                             | *string*                                              | :heavy_check_mark:                                    | Error message returned by this attempt                | Provider returned error                               |
+| `providerName`                                        | *string*                                              | :heavy_check_mark:                                    | Provider that served this attempt, when known         | Google                                                |
+| `raw`                                                 | *string*                                              | :heavy_check_mark:                                    | Raw error body returned by the provider, when stored  | \{"error":\{"code":429,"message":"Resource exhausted"}} |
