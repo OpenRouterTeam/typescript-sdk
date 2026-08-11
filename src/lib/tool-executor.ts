@@ -1,4 +1,4 @@
-import type { StandardSchemaV1 } from '@standard-schema/spec';
+import type { StandardJSONSchemaV1, StandardSchemaV1 } from '@standard-schema/spec';
 import type { $ZodType } from 'zod/v4/core';
 import type { $ZodObject, $ZodShape } from 'zod/v4/core';
 import type {
@@ -110,6 +110,17 @@ function isStandardSchema(value: unknown): value is StandardSchemaV1 {
   return standard.version === 1 && typeof standard.validate === 'function';
 }
 
+function isStandardJsonSchema(value: unknown): value is StandardJSONSchemaV1 {
+  if (typeof value !== 'object' || value === null || !('~standard' in value)) {
+    return false;
+  }
+  const standard = value['~standard'] as {
+    version?: unknown;
+    jsonSchema?: { input?: unknown };
+  };
+  return standard.version === 1 && typeof standard.jsonSchema?.input === 'function';
+}
+
 /**
  * Convert a Zod schema to JSON Schema using Zod v4's toJSONSchema function.
  * Accepts ZodType from the main zod package for user compatibility.
@@ -135,13 +146,25 @@ export function convertZodToJsonSchema(zodSchema: $ZodType): Record<string, unkn
  */
 export function convertToolsToAPIFormat(tools: readonly Tool[]): APITool[] {
   return tools.map((tool) => {
-    const parameters = isZodSchema(tool.function.inputSchema)
-      ? convertZodToJsonSchema(tool.function.inputSchema)
-      : tool.function.inputJsonSchema;
+    let parameters: Record<string, unknown> | undefined;
+
+    if (isZodSchema(tool.function.inputSchema)) {
+      parameters = convertZodToJsonSchema(tool.function.inputSchema);
+    } else if (tool.function.inputJsonSchema) {
+      parameters = tool.function.inputJsonSchema;
+    } else if (isStandardJsonSchema(tool.function.inputSchema)) {
+      try {
+        parameters = tool.function.inputSchema['~standard'].jsonSchema.input({
+          target: 'draft-07',
+        });
+      } catch {
+        // Fall through to the explicit-schema requirement below.
+      }
+    }
 
     if (!parameters) {
       throw new Error(
-        `Tool "${tool.function.name}" must provide inputJsonSchema when inputSchema is not a Zod schema`,
+        `Tool "${tool.function.name}" inputSchema must implement StandardJSONSchemaV1 or provide inputJsonSchema`,
       );
     }
 

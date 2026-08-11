@@ -1,3 +1,4 @@
+import type { StandardJSONSchemaV1 } from '@standard-schema/spec';
 import type { $ZodObject, $ZodShape, $ZodType } from 'zod/v4/core';
 import {
   ToolType,
@@ -18,7 +19,7 @@ import {
 //#region Config Types
 
 type InputSchemaConfig<TInput extends ToolInputSchema> =
-  TInput extends $ZodObject<$ZodShape>
+  TInput extends $ZodObject<$ZodShape> | StandardJSONSchemaV1
     ? { inputSchema: TInput; inputJsonSchema?: Record<string, unknown> }
     : { inputSchema: TInput; inputJsonSchema: Record<string, unknown> };
 

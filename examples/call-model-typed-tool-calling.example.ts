@@ -17,7 +17,7 @@
 import dotenv from "dotenv";
 dotenv.config();
 
-import { toJsonSchema } from "@valibot/to-json-schema";
+import { toStandardJsonSchema } from "@valibot/to-json-schema";
 import * as v from "valibot";
 import { OpenRouter } from "../src/index.js";
 import { tool } from "../src/lib/tool.js";
@@ -30,15 +30,15 @@ const openRouter = new OpenRouter({
 // Create a typed regular tool using tool()
 // The execute function params are automatically typed as z.infer<typeof inputSchema>
 // The return type is enforced based on outputSchema
-const weatherInputSchema = v.object({ location: v.string() });
+const weatherInputSchema = toStandardJsonSchema(
+  v.object({ location: v.string() }),
+);
 
 const weatherTool = tool({
   name: "get_weather",
   description: "Get the current weather for a location",
+  // This wrapper implements validation plus Standard JSON Schema conversion.
   inputSchema: weatherInputSchema,
-  // Standard Schema does not define JSON Schema conversion, so non-Zod
-  // validators provide the schema sent to model providers explicitly.
-  inputJsonSchema: toJsonSchema(weatherInputSchema),
   outputSchema: v.object({
     temperature: v.number(),
     description: v.string(),

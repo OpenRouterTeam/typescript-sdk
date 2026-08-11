@@ -1,5 +1,5 @@
 import type { StandardSchemaV1 } from '@standard-schema/spec';
-import { toJsonSchema } from '@valibot/to-json-schema';
+import { toJsonSchema, toStandardJsonSchema } from '@valibot/to-json-schema';
 import { describe, expect, expectTypeOf, it } from 'vitest';
 import * as v from 'valibot';
 import { z } from 'zod/v4';
@@ -107,6 +107,23 @@ describe('Standard Schema tools', () => {
     expect(invalidOutput.error).toBeInstanceOf(StandardSchemaError);
   });
 
+  it('uses the Standard JSON Schema trait without inputJsonSchema', () => {
+    const schema = toStandardJsonSchema(v.object({ query: v.string() }));
+    const apiTool = convertToolsToAPIFormat([
+      tool({
+        name: 'standard_json_schema',
+        inputSchema: schema,
+        execute: false,
+      }),
+    ])[0];
+
+    expect(apiTool?.parameters).toMatchObject({
+      type: 'object',
+      required: ['query'],
+    });
+    assertNoTildeKeys(apiTool?.parameters);
+  });
+
   it('uses and sanitizes the explicit JSON Schema for providers', () => {
     const apiTool = convertToolsToAPIFormat([
       tool({
@@ -128,7 +145,50 @@ describe('Standard Schema tools', () => {
     assertNoTildeKeys(apiTool?.parameters);
   });
 
-  it('requires explicit JSON Schema for non-Zod validators at runtime', () => {
+  it('uses inputJsonSchema when the Standard JSON Schema converter throws', () => {
+    const throwingSchema = {
+      '~standard': {
+        version: 1 as const,
+        vendor: 'throwing-test',
+        validate: (value: unknown) => ({ value }),
+        jsonSchema: {
+          input: () => {
+            throw new Error('Cannot convert');
+          },
+          output: () => {
+            throw new Error('Cannot convert');
+          },
+        },
+      },
+    };
+
+    const apiTool = convertToolsToAPIFormat([
+      tool({
+        name: 'throwing_converter',
+        inputSchema: throwingSchema,
+        inputJsonSchema: { type: 'string', description: 'fallback' },
+        execute: false,
+      }),
+    ])[0];
+
+    expect(apiTool?.parameters).toEqual({ type: 'string', description: 'fallback' });
+  });
+
+  it('prefers inputJsonSchema over the Standard JSON Schema trait', () => {
+    const schema = toStandardJsonSchema(v.object({ query: v.string() }));
+    const apiTool = convertToolsToAPIFormat([
+      tool({
+        name: 'explicit_override',
+        inputSchema: schema,
+        inputJsonSchema: { type: 'integer', description: 'override' },
+        execute: false,
+      }),
+    ])[0];
+
+    expect(apiTool?.parameters).toEqual({ type: 'integer', description: 'override' });
+  });
+
+  it('requires Standard JSON Schema or explicit JSON Schema at runtime', () => {
     const manuallyConstructedTool = {
       type: 'function' as const,
       function: {
@@ -138,7 +198,7 @@ describe('Standard Schema tools', () => {
     };
 
     expect(() => convertToolsToAPIFormat([manuallyConstructedTool])).toThrow(
-      'must provide inputJsonSchema when inputSchema is not a Zod schema',
+      'must implement StandardJSONSchemaV1 or provide inputJsonSchema',
     );
   });
 

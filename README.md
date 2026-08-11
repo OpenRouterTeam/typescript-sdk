@@ -49,7 +49,7 @@ yarn add @openrouter/sdk
 > [!IMPORTANT]
 > `callModel` and its associated types have moved to the [`@openrouter/agent`](https://www.npmjs.com/package/@openrouter/agent) package. If you are using `callModel`, tool definitions, or related types from `@openrouter/sdk`, you should migrate to `@openrouter/agent`.
 >
-> The legacy SDK tool API accepts Zod schemas or any [Standard Schema v1](https://standardschema.dev/) validator for `inputSchema`, `outputSchema`, and `eventSchema`. Because Standard Schema does not define JSON Schema generation, non-Zod input validators must also provide `inputJsonSchema`, which is sent to model providers after `~`-prefixed metadata is removed. Zod input schemas continue to use the built-in `z4.toJSONSchema` path.
+> The legacy SDK tool API accepts Zod schemas or any [Standard Schema v1](https://standardschema.dev/) validator for `inputSchema`, `outputSchema`, and `eventSchema`. Provider JSON Schema uses three tiers: Zod schemas use the built-in `z4.toJSONSchema` path; non-Zod schemas implementing [Standard JSON Schema v1](https://standardschema.dev/json-schema) use their `~standard.jsonSchema.input` converter; otherwise callers provide `inputJsonSchema`. An explicit `inputJsonSchema` overrides the Standard JSON Schema trait, and all paths remove `~`-prefixed metadata. The trait is available in Zod 4.2+, ArkType 2.1.28+, Zod Mini, VineJS, and Sury; Valibot adds it with `toStandardJsonSchema()` from `@valibot/to-json-schema`.
 >
 > To assist with the migration, run:
 >

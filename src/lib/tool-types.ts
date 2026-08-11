@@ -158,7 +158,7 @@ export interface BaseToolFunction<TInput extends ToolInputSchema> {
   name: string;
   description?: string;
   inputSchema: TInput;
-  /** Raw JSON Schema sent to providers for non-Zod input schemas. */
+  /** Explicit JSON Schema override or fallback for non-Zod input schemas. */
   inputJsonSchema?: Record<string, unknown>;
   /** Zod schema declaring the context data this tool needs */
   contextSchema?: $ZodObject<$ZodShape>;
