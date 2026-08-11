@@ -18,6 +18,7 @@ find "$DOCS_DIR" -type f -name '*.mdx' -exec perl -0pi -e '
 ' {} +
 
 if matches="$(find "$DOCS_DIR" -type f -name '*.mdx' -exec grep -HnE ':[a-z][a-z0-9_+-]*:' {} + || true)" && [[ -n "$matches" ]]; then
+	echo "unmapped emoji shortcodes remain under $DOCS_DIR, add them to this script:" >&2
 	printf '%s\n' "$matches" >&2
 	exit 1
 fi
