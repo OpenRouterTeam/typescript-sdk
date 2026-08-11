@@ -42,7 +42,6 @@ export type ProviderOptions = {
   crucible?: { [k: string]: any } | undefined;
   crusoe?: { [k: string]: any } | undefined;
   darkbloom?: { [k: string]: any } | undefined;
-  databricks?: { [k: string]: any } | undefined;
   decart?: { [k: string]: any } | undefined;
   deepgram?: { [k: string]: any } | undefined;
   deepinfra?: { [k: string]: any } | undefined;
@@ -179,7 +178,6 @@ export type ProviderOptions$Outbound = {
   crucible?: { [k: string]: any } | undefined;
   crusoe?: { [k: string]: any } | undefined;
   darkbloom?: { [k: string]: any } | undefined;
-  databricks?: { [k: string]: any } | undefined;
   decart?: { [k: string]: any } | undefined;
   deepgram?: { [k: string]: any } | undefined;
   deepinfra?: { [k: string]: any } | undefined;
@@ -319,7 +317,6 @@ export const ProviderOptions$outboundSchema: z.ZodType<
   crucible: z.record(z.string(), z.any()).optional(),
   crusoe: z.record(z.string(), z.any()).optional(),
   darkbloom: z.record(z.string(), z.any()).optional(),
-  databricks: z.record(z.string(), z.any()).optional(),
   decart: z.record(z.string(), z.any()).optional(),
   deepgram: z.record(z.string(), z.any()).optional(),
   deepinfra: z.record(z.string(), z.any()).optional(),
