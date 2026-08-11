@@ -1,19 +1,19 @@
 lockVersion: ""
 id: ""
 management:
-  docChecksum: 7156f642c6a4bf8336bcb0dfa0923e4f
+  docChecksum: 9d7d6dec7da01a372098176086670081
   docVersion: 1.0.0
   speakeasyVersion: 1.787.0
   generationVersion: 2.914.0
-  releaseVersion: 1.2.24
-  configChecksum: 3c227826e5a4eb6b77833070cd4fca3c
+  releaseVersion: 1.2.25
+  configChecksum: 4c12eaba670eeef45ebd1517a257358f
   repoURL: https://github.com/OpenRouterTeam/typescript-sdk.git
   installationURL: https://github.com/OpenRouterTeam/typescript-sdk
   published: true
 persistentEdits:
-  generation_id: fcc111af-b27b-4df6-996d-90e9375bd23f
-  pristine_commit_hash: d27cff4d5f4b7655948dbd92b3dc54260a55837b
-  pristine_tree_hash: c7037cf745df965c9004ed51e1523d0b155489cc
+  generation_id: 96a5a140-33d8-4a31-b420-56795ae7c822
+  pristine_commit_hash: 5de9b319af7021986a85b581a2fa718baca572ff
+  pristine_tree_hash: cb1c7319d0cfbb1c2f0ef167e43351481410841a
 features:
   typescript:
     acceptHeaders: 2.81.2
@@ -4241,8 +4241,8 @@ trackedFiles:
     deleted: true
   docs/models/generationcontentdata.mdx:
     id: d920afd44172
-    last_write_checksum: sha1:b845bdb17a059c21875a0bf4be2e0bbbd42ac536
-    pristine_git_object: ca6defbf60820a46204461777c60815a077d5c90
+    last_write_checksum: sha1:e631bfb4c9aaf1433716c5a56d9954349e2bf544
+    pristine_git_object: 63eb628661a6d20f11e1e4fa443ff3b100ab1f89
   docs/models/generationcontentdataoutput.md:
     id: 94b4cb09e929
     last_write_checksum: sha1:15df9ac4e671fcfedbebd03f0f162509586889d9
@@ -4252,6 +4252,14 @@ trackedFiles:
     id: e70fae6654be
     last_write_checksum: sha1:218e3f2de4e1378a04f256e2a0b1c9bf045d2100
     pristine_git_object: d943c30d0654a10c547b1a73fe3edb25eb2a5e95
+  docs/models/generationcontenterror.mdx:
+    id: 78fa70f67b18
+    last_write_checksum: sha1:dc6746ef1421882c55ff6b8d7d985a06a74d403a
+    pristine_git_object: 10489c6c890c748902e52c31874ef7f369fce73d
+  docs/models/generationcontenterrorattempt.mdx:
+    id: 990fb038b688
+    last_write_checksum: sha1:0103499a9379d569c94821c176e1ef1b5c559e37
+    pristine_git_object: cae0497afe7a4e9b705613e0ece45e6cff5ff972
   docs/models/generationcontentresponse.md:
     id: b42d9809254a
     last_write_checksum: sha1:9e41d6ed6a80ce9d7e56beff1f033d82c6d403e0
@@ -4259,8 +4267,8 @@ trackedFiles:
     deleted: true
   docs/models/generationcontentresponse.mdx:
     id: fed6bbbb373e
-    last_write_checksum: sha1:63e9a59bf47db1c72716fb4128e9ae53ae0b92af
-    pristine_git_object: c21bf857c8c2aeb02811fed67839246340db3f44
+    last_write_checksum: sha1:5e6d76b0cd5baee0dbf9f79e7681e806a28246a3
+    pristine_git_object: 7858d9ecf407578b0750958e9fb997fbcc6bbba4
   docs/models/generationresponse.md:
     id: 686f60f23427
     last_write_checksum: sha1:a44ed4c963e8f0468838f26349d7d69b1ebc233f
@@ -12724,8 +12732,8 @@ trackedFiles:
     pristine_git_object: 295c739e9fc60406ccfc6b2173ac3df04352cf54
   docs/sdks/generations/README.mdx:
     id: a754fecc8514
-    last_write_checksum: sha1:949d9261382b7b79e1e25a935f9c09ccca067842
-    pristine_git_object: de912e7107471778e34880ef35d3ed67c36fbd19
+    last_write_checksum: sha1:25a298dfd98a8ff6b9ac4ef6517ac8f06f70fdd3
+    pristine_git_object: c89f724e7696bda6b18490073d4e715c679c4d56
   docs/sdks/guardrails/README.mdx:
     id: a0cd4218b8fa
     last_write_checksum: sha1:26e022a86ff997b7d375a9105fd10de367b9c2a4
@@ -12853,12 +12861,12 @@ trackedFiles:
     pristine_git_object: 410efafd6a7f50d91ccb87131fedbe0c3d47e15a
   jsr.json:
     id: 7f6ab7767282
-    last_write_checksum: sha1:d427aefecba2468a07ef2fd863e3fb144caf1ee3
-    pristine_git_object: 8c5bcaae88955c2f4e3be41a6bf2c104bfda13f1
+    last_write_checksum: sha1:3f530b011f3a89293c77c3d525a8c85cff89d9fa
+    pristine_git_object: b807d28e2b8c4f41cacddb1a0ea82dfc0949ebd2
   package.json:
     id: 7030d0b2f71b
-    last_write_checksum: sha1:43cc0f04c8dee0d2eae1c8b83f333e25271b8be2
-    pristine_git_object: bacb431332a174d6d9934185b5bd3cb1a088e603
+    last_write_checksum: sha1:f40e0009204aa9ff1b38a3be0d0c36cfa1599419
+    pristine_git_object: 4a66cd6cbad747996e02816e38a55b1ebba60525
   src/core.ts:
     id: f431fdbcd144
     last_write_checksum: sha1:5aa66b0b6a5964f3eea7f3098c2eb3c0ee9c0131
@@ -12985,8 +12993,8 @@ trackedFiles:
     pristine_git_object: c1cfe95a7329a79ecdf46220af0c4588de0090d4
   src/funcs/generationsListGenerationContent.ts:
     id: 6528b91d944c
-    last_write_checksum: sha1:a912121f7acdeec80931f4e404fd4cee2bc9261f
-    pristine_git_object: cf9ed5b4d77cf750f6312e4079d8724ee80cbb96
+    last_write_checksum: sha1:c80af85ed7ab0854c6464b2b9aca66cbfeee41d8
+    pristine_git_object: 0603a6ed8e004fa946e1b83e2a1fef3118b8de34
   src/funcs/generationsSubmitFeedback.ts:
     id: 7164852deaac
     last_write_checksum: sha1:279e57e1cb9653a79eb0221a27cb525661bb533b
@@ -13265,8 +13273,8 @@ trackedFiles:
     pristine_git_object: a187e58707bdb726ca2aff74941efe7493422d4e
   src/lib/config.ts:
     id: 320761608fb3
-    last_write_checksum: sha1:dae6051e79ab8a830c08569f9fc8e15177a49fa8
-    pristine_git_object: 8a875fbc0c1be40c657c261250dacf1bc0347dbe
+    last_write_checksum: sha1:fc5ea598037d7b100c73c4fcfbdb63ee1b09f357
+    pristine_git_object: b773fe5fe6c0a8ab7d94c8b7aa7c822e4901fc36
   src/lib/dlv.ts:
     id: b1988214835a
     last_write_checksum: sha1:eaac763b22717206a6199104e0403ed17a4e2711
@@ -14367,12 +14375,20 @@ trackedFiles:
     pristine_git_object: a94f8edeacf76c7edc51a1280b64a700a68943e5
   src/models/generationcontentdata.ts:
     id: f55aeaffdbd5
-    last_write_checksum: sha1:6b316f1c43c9eece0a162bfb51cfb9ce6d25e1c2
-    pristine_git_object: f73ee4d967f0de2a99f368acc61b2136dfc7e7a6
+    last_write_checksum: sha1:071c1af9e18dbce62adcbf8d5bce15d009a10a38
+    pristine_git_object: 891475cbae2740d8aaa625ae837b71232cbc158d
+  src/models/generationcontenterror.ts:
+    id: 5fb5a3b52853
+    last_write_checksum: sha1:1dd690fbe38247e0284410c353808f8ea8d6075e
+    pristine_git_object: b8805614ec073995aacfd73c2d429dcbffa8f9c9
+  src/models/generationcontenterrorattempt.ts:
+    id: 0a3c55570f8e
+    last_write_checksum: sha1:525573b2119218c6fd5446bbb4c16f8b3fc40563
+    pristine_git_object: a20d0457dd7cc85732d45dc63bd4d29242dc8b38
   src/models/generationcontentresponse.ts:
     id: 88f85adb1a59
-    last_write_checksum: sha1:c70d8017fc3b628b3c0c3a430ecc693ba4fe3561
-    pristine_git_object: fb1950525224243627836ce1a03eae69c4503027
+    last_write_checksum: sha1:444965dc59a6b47b2a26f4f290ffef226c16b6b1
+    pristine_git_object: 32fced537ac9c61153c93a9f93d679ea5f1e2e18
   src/models/generationresponse.ts:
     id: f9109ae06502
     last_write_checksum: sha1:ef42338533bfbb9abf0d6c8a6a679a29af4e2218
@@ -14531,8 +14547,8 @@ trackedFiles:
     pristine_git_object: 8e109bedfdcf2c4808e49323dda861e3c6069d51
   src/models/index.ts:
     id: f93644b0f37e
-    last_write_checksum: sha1:30e5c77ebbf4e87b827cd62e60882b46169192cd
-    pristine_git_object: 7300edc2db69a3cabc47feab4340520fe9c8a8dc
+    last_write_checksum: sha1:081b2bbc8129f7533f306d73bbefecdf9ec8c39c
+    pristine_git_object: de45750f44ce6f61bb227567591b44f38765de6d
   src/models/inputaudio.ts:
     id: 9bdc14c7565f
     last_write_checksum: sha1:2f8dc4c1d6a9c2927d9eb186e0ecedf7b81838e6
@@ -16283,8 +16299,8 @@ trackedFiles:
     pristine_git_object: 2fdfa89d2d3e4b589e3002aa247df62187421a9d
   src/sdk/generations.ts:
     id: e28b205da063
-    last_write_checksum: sha1:3a35ecb2d089eecca9d9375e4d1896150412c66f
-    pristine_git_object: 41ebcfabce901b2c3c0ca77059776d57a52c336b
+    last_write_checksum: sha1:931614c0e81c6cf21d88e16eae656fa3164a8c36
+    pristine_git_object: 2c65669fe7eb1744550b82f209e34e8ea5083142
   src/sdk/guardrails.ts:
     id: 30ab0b1cc8db
     last_write_checksum: sha1:44c34bb2da59ab4ff55a73a152ea62dd160d6230
@@ -17145,7 +17161,7 @@ examples:
           id: "gen-1234567890"
       responses:
         "200":
-          application/json: {"data": {"input": {"messages": [{"content": "What is the meaning of life?", "role": "user"}]}, "output": {"completion": "The meaning of life is a philosophical question...", "reasoning": null}}}
+          application/json: {"data": {"error": null, "input": {"messages": [{"content": "What is the meaning of life?", "role": "user"}]}, "output": {"completion": "The meaning of life is a philosophical question...", "reasoning": null}}}
         "401":
           application/json: {"error": {"code": 401, "message": "Missing Authentication header"}}
         "403":
@@ -18152,4 +18168,6 @@ examples:
         "500":
           application/json: {"error": {"code": 500, "message": "Internal Server Error"}}
 examplesVersion: 1.0.2
-releaseNotes: "## Typescript SDK Changes:\n* `openrouter.benchmarks.getBenchmarks()`: \n  *  `request` **Changed**\n  *  `response.data[]` **Changed** (Breaking ⚠️)\n"
+releaseNotes: |
+  ## Typescript SDK Changes:
+  * `openrouter.generations.listGenerationContent()`:  `response.data.error` **Added**
