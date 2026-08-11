@@ -24305,22 +24305,129 @@ components:
       properties:
         data:
           items:
-            discriminator:
-              mapping:
-                artificial-analysis: '#/components/schemas/UnifiedBenchmarksAAItem'
-                design-arena: '#/components/schemas/UnifiedBenchmarksDAItem'
-                openrouter: '#/components/schemas/UnifiedBenchmarksORItem'
-              propertyName: 'source'
             oneOf:
               - $ref: '#/components/schemas/UnifiedBenchmarksAAItem'
               - $ref: '#/components/schemas/UnifiedBenchmarksDAItem'
               - $ref: '#/components/schemas/UnifiedBenchmarksORItem'
+              - $ref: '#/components/schemas/UnifiedBenchmarksSearchItem'
           type: 'array'
         meta:
           $ref: '#/components/schemas/UnifiedBenchmarksMeta'
       required:
         - 'data'
         - 'meta'
+      type: 'object'
+    UnifiedBenchmarksSearchItem:
+      properties:
+        avg_cost_per_task:
+          description: 'Average cost per task in USD, or null if unavailable.'
+          example: 0.031
+          format: 'double'
+          type:
+            - 'number'
+            - 'null'
+        avg_latency_per_task_ms:
+          description: 'Average wall-clock latency per task in milliseconds, or null if unavailable.'
+          example: 45210
+          format: 'double'
+          type:
+            - 'number'
+            - 'null'
+        benchmark_type:
+          description: 'OpenRouter search benchmark.'
+          enum:
+            - 'search_browsecomp'
+            - 'search_hle'
+            - 'search_dsqa'
+            - 'search_widesearch'
+          example: 'search_browsecomp'
+          type: 'string'
+        display_name:
+          description: 'Human-readable model name.'
+          example: 'GPT-4o'
+          type: 'string'
+        last_run_timestamp:
+          description: 'Timestamp of the newest qualifying run in the published configuration''s lane.'
+          example: '2026-07-28T13:38:18Z'
+          type: 'string'
+        model_permaslug:
+          description: 'Stable OpenRouter model identifier.'
+          example: 'openai/gpt-4o'
+          type: 'string'
+        primary_metric:
+          description: 'Identifies the meaning of `primary_score`: `f1_by_item` for WideSearch, `accuracy` for all other search benchmarks.'
+          enum:
+            - 'accuracy'
+            - 'f1_by_item'
+          example: 'accuracy'
+          type: 'string'
+        primary_score:
+          description: 'The benchmark''s headline score from 0 to 1. Its meaning is identified by `primary_metric`: item-weighted F1 for WideSearch or strict accuracy for the other search benchmarks. Higher is better.'
+          example: 0.72
+          format: 'double'
+          type: 'number'
+        run_config:
+          $ref: '#/components/schemas/UnifiedBenchmarksSearchRunConfig'
+        search_engine:
+          description: 'Search engine the published configuration used.'
+          example: 'exa'
+          type: 'string'
+        search_surface:
+          description: 'Request surface the published configuration went through.'
+          enum:
+            - 'server-tool'
+            - 'plugin'
+          example: 'server-tool'
+          type: 'string'
+        source:
+          description: 'Benchmark source discriminator.'
+          enum:
+            - 'openrouter'
+          type: 'string'
+        total_tasks:
+          description: 'Tasks evaluated across the published configuration''s runs.'
+          example: 100
+          type: 'integer'
+      required:
+        - 'source'
+        - 'model_permaslug'
+        - 'display_name'
+        - 'benchmark_type'
+        - 'primary_metric'
+        - 'primary_score'
+        - 'total_tasks'
+        - 'avg_cost_per_task'
+        - 'avg_latency_per_task_ms'
+        - 'search_engine'
+        - 'search_surface'
+        - 'last_run_timestamp'
+      type: 'object'
+    UnifiedBenchmarksSearchRunConfig:
+      description: 'Published lane configuration, included only when include_run_config=true. Only the agent turn count, reasoning effort, and temperature are exposed; other harness settings are intentionally not part of the public contract.'
+      properties:
+        max_agent_turns:
+          description: 'Agent-turn count for the published lane, or null for plugin lanes.'
+          example: 25
+          type:
+            - 'integer'
+            - 'null'
+        reasoning_effort:
+          description: 'Reasoning effort configured for the published lane, or null when omitted.'
+          example: 'high'
+          type:
+            - 'string'
+            - 'null'
+        temperature:
+          description: 'Sampling temperature configured for the published lane, or null when omitted.'
+          example: 0.2
+          format: 'double'
+          type:
+            - 'number'
+            - 'null'
+      required:
+        - 'max_agent_turns'
+        - 'reasoning_effort'
+        - 'temperature'
       type: 'object'
     UnprocessableEntityResponse:
       description: 'Unprocessable Entity - Semantic validation failure'
@@ -27158,7 +27265,7 @@ paths:
       x-speakeasy-name-override: 'createAuthCode'
   /benchmarks:
     get:
-      description: 'Unified benchmark endpoint that aggregates scores from multiple benchmark sources (Artificial Analysis, Design Arena, and OpenRouter''s own tau-bench and GPQA evals). Filter by source to reproduce the exact shapes from the legacy per-source endpoints, or use task_type to find models suited for specific workloads. Authenticate with any valid OpenRouter API key. Rate-limited to 30 requests/minute per key and 500 requests/day per account.'
+      description: 'Unified benchmark endpoint that aggregates scores from multiple benchmark sources (Artificial Analysis, Design Arena, and OpenRouter''s own tau-bench, GPQA, and web-search evals). Filter by source to reproduce the exact shapes from the legacy per-source endpoints, or use task_type to find models suited for specific workloads. Use task_type=search (or a search_* benchmark_type) for OpenRouter''s search benchmarks, which publish each model''s highest-scoring eligible evaluation configuration with same-configuration runs combined by task-weighted mean. Authenticate with any valid OpenRouter API key. Rate-limited to 30 requests/minute per key and 500 requests/day per account.'
       operationId: 'getBenchmarks'
       parameters:
         - description: 'Benchmark source to query. Determines the shape of the returned items. When omitted, returns results from all sources.'
@@ -27173,17 +27280,61 @@ paths:
               - 'openrouter'
             example: 'artificial-analysis'
             type: 'string'
-        - description: 'Filter results by task type. For Artificial Analysis, maps to the corresponding index. For Design Arena, maps to the matching category.'
+        - description: 'Filter results by task type. For Artificial Analysis, maps to the corresponding index. For Design Arena, maps to the matching category. `search` returns OpenRouter search benchmark results only.'
           in: 'query'
           name: 'task_type'
           required: false
           schema:
-            description: 'Filter results by task type. For Artificial Analysis, maps to the corresponding index. For Design Arena, maps to the matching category.'
+            description: 'Filter results by task type. For Artificial Analysis, maps to the corresponding index. For Design Arena, maps to the matching category. `search` returns OpenRouter search benchmark results only.'
             enum:
               - 'coding'
               - 'intelligence'
               - 'agentic'
+              - 'search'
             example: 'coding'
+            type: 'string'
+        - description: 'Return results for one exact OpenRouter benchmark. A `search_*` value narrows the response to search results only; a classic value narrows the OpenRouter items and leaves other sources'' items as they are.'
+          in: 'query'
+          name: 'benchmark_type'
+          required: false
+          schema:
+            description: 'Return results for one exact OpenRouter benchmark. A `search_*` value narrows the response to search results only; a classic value narrows the OpenRouter items and leaves other sources'' items as they are.'
+            enum:
+              - 'gpqa_diamond'
+              - 'tau_bench_verified_airline'
+              - 'search_browsecomp'
+              - 'search_hle'
+              - 'search_dsqa'
+              - 'search_widesearch'
+            example: 'search_widesearch'
+            type: 'string'
+        - description: 'Search benchmarks only: include the published lane configuration whitelist in each search item. Defaults to false. The whitelist is limited to agent turn count, reasoning effort, and temperature so future harness configuration changes do not change the public contract.'
+          in: 'query'
+          name: 'include_run_config'
+          required: false
+          schema:
+            default: false
+            description: 'Search benchmarks only: include the published lane configuration whitelist in each search item. Defaults to false. The whitelist is limited to agent turn count, reasoning effort, and temperature so future harness configuration changes do not change the public contract.'
+            example: true
+            type: 'boolean'
+        - description: 'OpenRouter search benchmarks only: filter by the search engine used.'
+          in: 'query'
+          name: 'search_engine'
+          required: false
+          schema:
+            description: 'OpenRouter search benchmarks only: filter by the search engine used.'
+            example: 'exa'
+            type: 'string'
+        - description: 'OpenRouter search benchmarks only: filter by the request surface the lane ran on.'
+          in: 'query'
+          name: 'search_surface'
+          required: false
+          schema:
+            description: 'OpenRouter search benchmarks only: filter by the request surface the lane ran on.'
+            enum:
+              - 'server-tool'
+              - 'plugin'
+            example: 'server-tool'
             type: 'string'
         - description: 'Design Arena only: arena to query. Defaults to `models` when source is `design-arena`.'
           in: 'query'
