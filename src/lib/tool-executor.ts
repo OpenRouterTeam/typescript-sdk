@@ -19,13 +19,26 @@ import { type ToolContextStore, buildToolExecuteContext } from './tool-context.j
 // Re-export ZodError for convenience
 export const ZodError = z4.ZodError;
 
+export interface StandardSchemaIssue {
+  readonly message: string;
+  readonly path: PropertyKey[];
+}
+
 export class StandardSchemaError extends Error {
-  readonly issues: ReadonlyArray<StandardSchemaV1.Issue>;
+  readonly issues: StandardSchemaIssue[];
 
   constructor(issues: ReadonlyArray<StandardSchemaV1.Issue>) {
-    super('Standard Schema validation failed');
+    const normalized = issues.map((issue) => ({
+      message: issue.message,
+      path: (issue.path ?? []).map((segment) =>
+        typeof segment === 'object' && segment !== null && 'key' in segment
+          ? segment.key
+          : segment,
+      ),
+    }));
+    super(JSON.stringify(normalized));
     this.name = 'StandardSchemaError';
-    this.issues = issues;
+    this.issues = normalized;
   }
 }
 
@@ -87,13 +100,14 @@ function isZodSchema(value: unknown): value is z4.ZodType {
 }
 
 function isStandardSchema(value: unknown): value is StandardSchemaV1 {
-  return typeof value === 'object'
-    && value !== null
-    && '~standard' in value
-    && typeof value['~standard'] === 'object'
-    && value['~standard'] !== null
-    && 'validate' in value['~standard']
-    && typeof value['~standard'].validate === 'function';
+  if (typeof value !== 'object' || value === null || !('~standard' in value)) {
+    return false;
+  }
+  const standard = value['~standard'] as {
+    version?: unknown;
+    validate?: unknown;
+  };
+  return standard.version === 1 && typeof standard.validate === 'function';
 }
 
 /**
@@ -419,11 +433,18 @@ export function formatToolResultForModel(result: ToolExecutionResult<Tool>): str
  * Create a user-friendly error message for tool execution errors
  */
 export function formatToolExecutionError(error: Error, toolCall: ParsedToolCall<Tool>): string {
-  if (error instanceof ZodError || error instanceof StandardSchemaError) {
+  if (error instanceof ZodError) {
     const issues = error.issues.map((issue) => ({
-      path: issue.path
-        ?.map((segment) => typeof segment === 'object' ? segment.key : segment)
-        .join('.') ?? '',
+      path: issue.path.join('.'),
+      message: issue.message,
+    }));
+
+    return `Tool "${toolCall.name}" validation error:\n${JSON.stringify(issues, null, 2)}`;
+  }
+
+  if (error instanceof StandardSchemaError) {
+    const issues = error.issues.map((issue) => ({
+      path: issue.path.join('.'),
       message: issue.message,
     }));
 

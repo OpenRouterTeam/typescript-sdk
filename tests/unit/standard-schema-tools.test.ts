@@ -159,11 +159,31 @@ describe('Standard Schema tools', () => {
     await expect(validateToolInput(asyncSchema, 'valid')).resolves.toBe('valid');
     const error = await validateToolInput(asyncSchema, 'invalid').catch((caught) => caught);
     expect(error).toBeInstanceOf(StandardSchemaError);
+    expect((error as StandardSchemaError).issues).toEqual([
+      { message: 'Expected valid', path: ['value'] },
+    ]);
+    expect((error as Error).message).toBe(
+      '[{"message":"Expected valid","path":["value"]}]',
+    );
     expect(formatToolExecutionError(error as Error, {
       id: 'async-call',
       name: 'async_tool',
       arguments: 'invalid',
     })).toContain('"path": "value"');
+  });
+
+  it('rejects validators that do not declare Standard Schema v1', async () => {
+    const invalidVersionSchema = {
+      '~standard': {
+        version: 2,
+        vendor: 'future-test',
+        validate: (value: unknown) => ({ value }),
+      },
+    } as unknown as StandardSchemaV1;
+
+    expect(() => validateToolInput(invalidVersionSchema, 'value')).toThrow(
+      'Invalid tool schema provided',
+    );
   });
 
   it('validates generator events and output with Standard Schema', async () => {
