@@ -102,7 +102,7 @@ export type UnifiedBenchmarksSearchItem = {
    */
   primaryScore: number;
   /**
-   * Published lane configuration, included only when include_run_config=true. Only the agent turn count, reasoning effort, and temperature are exposed; other harness settings are intentionally not part of the public contract.
+   * Published lane configuration, included only when include_run_config=true. Only the agent turn count, search-result budgets, reasoning effort, and temperature are exposed; other harness settings are intentionally not part of the public contract.
    */
   runConfig?: UnifiedBenchmarksSearchRunConfig | undefined;
   /**
