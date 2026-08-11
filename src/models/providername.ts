@@ -36,6 +36,7 @@ export const ProviderName = {
   Crucible: "Crucible",
   Crusoe: "Crusoe",
   Darkbloom: "Darkbloom",
+  Databricks: "Databricks",
   Decart: "Decart",
   Deepgram: "Deepgram",
   DeepInfra: "DeepInfra",
