@@ -27,7 +27,7 @@ export class Generations extends ClientSDK {
   }
 
   /**
-   * Get stored prompt and completion content for a generation
+   * Get stored prompt, completion, and error content for a generation
    */
   async listGenerationContent(
     request: operations.ListGenerationContentRequest,
