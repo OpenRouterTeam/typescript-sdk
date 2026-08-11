@@ -381,7 +381,7 @@ export type ChatRequest = {
    */
   stop?: string | Array<string> | null | undefined;
   /**
-   * Stop conditions for the server-tool agent loop. Any condition firing halts the loop (OR logic). When set, this overrides `max_tool_calls`. When a condition fires while the model is still emitting tool calls, the pending tool calls are executed and one final turn is made with tool calls disabled so the response ends with a natural-language answer instead of an unfinished tool call.
+   * Stop conditions for the server-tool agent loop. Any condition firing halts the loop (OR logic). Custom conditions run alongside the `max_tool_calls` step cap; if omitted, the 30-step server default still applies. When a condition fires while the model is still emitting tool calls, the pending tool calls are executed and one final turn is made with tool calls disabled so the response ends with a natural-language answer instead of an unfinished tool call.
    */
   stopServerToolsWhen?: Array<StopServerToolsWhenCondition> | undefined;
   /**
