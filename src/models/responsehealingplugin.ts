@@ -4,18 +4,24 @@
  */
 
 import * as z from "zod/v4";
+import { remap as remap$ } from "../lib/primitives.js";
 
 export type ResponseHealingPlugin = {
   /**
    * Set to false to disable the response-healing plugin for this request. Defaults to true.
    */
   enabled?: boolean | undefined;
+  /**
+   * Experimental: heals malformed tool-call arguments in non-streaming responses. Defaults to false.
+   */
+  healToolCalls?: boolean | undefined;
   id: "response-healing";
 };
 
 /** @internal */
 export type ResponseHealingPlugin$Outbound = {
   enabled?: boolean | undefined;
+  heal_tool_calls?: boolean | undefined;
   id: "response-healing";
 };
 
@@ -25,7 +31,12 @@ export const ResponseHealingPlugin$outboundSchema: z.ZodType<
   ResponseHealingPlugin
 > = z.object({
   enabled: z.boolean().optional(),
+  healToolCalls: z.boolean().optional(),
   id: z.literal("response-healing"),
+}).transform((v) => {
+  return remap$(v, {
+    healToolCalls: "heal_tool_calls",
+  });
 });
 
 export function responseHealingPluginToJSON(
