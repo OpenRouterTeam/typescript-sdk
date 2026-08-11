@@ -63,6 +63,7 @@ export const Provider = {
   Coreweave: "coreweave",
   Crusoe: "crusoe",
   Darkbloom: "darkbloom",
+  Databricks: "databricks",
   Decart: "decart",
   Deepgram: "deepgram",
   Deepinfra: "deepinfra",
