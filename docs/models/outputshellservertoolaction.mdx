@@ -1,0 +1,27 @@
+---
+title: "OutputShellServerToolAction"
+---
+
+The shell commands requested by the model.
+
+## Example Usage
+
+```typescript
+import { OutputShellServerToolAction } from "@openrouter/sdk/models";
+
+let value: OutputShellServerToolAction = {
+  commands: [
+    "echo hello",
+  ],
+  maxOutputLength: null,
+  timeoutMs: null,
+};
+```
+
+## Fields
+
+| Field                                                        | Type                                                         | Required                                                     | Description                                                  | Example                                                      |
+| ------------------------------------------------------------ | ------------------------------------------------------------ | ------------------------------------------------------------ | ------------------------------------------------------------ | ------------------------------------------------------------ |
+| `commands`                                                   | *string*[]                                                   | :heavy_check_mark:                                           | Shell commands to run, each in its own invocation, in order. | [<br/>"ls -la",<br/>"cat package.json"<br/>]                 |
+| `maxOutputLength`                                            | *number*                                                     | :heavy_check_mark:                                           | N/A                                                          |                                                              |
+| `timeoutMs`                                                  | *number*                                                     | :heavy_check_mark:                                           | N/A                                                          |                                                              |
