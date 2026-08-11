@@ -29,7 +29,7 @@ import { APICall, APIPromise } from "../types/async.js";
 import { Result } from "../types/fp.js";
 
 /**
- * Get stored prompt and completion content for a generation
+ * Get stored prompt, completion, and error content for a generation
  */
 export function generationsListGenerationContent(
   client: OpenRouterCore,
