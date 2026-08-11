@@ -53,7 +53,7 @@ export type WebSearchConfig = {
    */
   maxUses?: number | undefined;
   /**
-   * Engine-native search mode. Exa supports instant, fast, auto (default), deep-lite, deep, and deep-reasoning. Parallel supports turbo (default), basic, and advanced. Modes unsupported by the selected engine are ignored.
+   * Engine-native search mode. Exa supports instant, fast, auto (default), deep-lite, deep, and deep-reasoning. Parallel supports turbo, basic (default), and advanced. Modes unsupported by the selected engine are ignored.
    */
   mode?: WebSearchMode | undefined;
   /**
