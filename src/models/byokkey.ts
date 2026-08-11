@@ -43,6 +43,12 @@ export type BYOKKey = {
    */
   isFallback: boolean;
   /**
+   * Deprecated. Whether this credential is required for the models it can serve from this credential’s provider. This setting does not compose well when multiple keys exist for the same provider, may be removed in a future release, and does not prevent OpenRouter-billed endpoints from other providers serving the same model.
+   *
+   * @deprecated field: This will be removed in a future release, please migrate away from it as soon as possible.
+   */
+  isRequired?: boolean | undefined;
+  /**
    * Short masked snippet of the key (e.g. the first/last few characters) used to identify it in the UI.
    */
   label: string;
@@ -73,6 +79,7 @@ export const BYOKKey$inboundSchema: z.ZodType<BYOKKey, unknown> = z.object({
   disabled: z.boolean(),
   id: z.string(),
   is_fallback: z.boolean(),
+  is_required: z.boolean().optional(),
   label: z.string(),
   name: z.nullable(z.string()).optional(),
   provider: BYOKProviderSlug$inboundSchema,
@@ -85,6 +92,7 @@ export const BYOKKey$inboundSchema: z.ZodType<BYOKKey, unknown> = z.object({
     "allowed_user_ids": "allowedUserIds",
     "created_at": "createdAt",
     "is_fallback": "isFallback",
+    "is_required": "isRequired",
     "sort_order": "sortOrder",
     "workspace_id": "workspaceId",
   });
