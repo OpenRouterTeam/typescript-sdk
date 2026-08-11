@@ -16,3 +16,8 @@ find "$DOCS_DIR" -type f -name '*.mdx' -exec perl -0pi -e '
 	s/:heavy_minus_sign:/➖/g;
 	s/:warning:/⚠️/g;
 ' {} +
+
+if matches="$(find "$DOCS_DIR" -type f -name '*.mdx' -exec grep -HnE ':[a-z][a-z0-9_+-]*:' {} + || true)" && [[ -n "$matches" ]]; then
+	printf '%s\n' "$matches" >&2
+	exit 1
+fi
