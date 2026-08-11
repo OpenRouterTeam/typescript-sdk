@@ -1,4 +1,4 @@
-import type { StandardJSONSchemaV1 } from '@standard-schema/spec';
+import type { StandardJSONSchemaV1, StandardSchemaV1 } from '@standard-schema/spec';
 import type { $ZodObject, $ZodShape, $ZodType } from 'zod/v4/core';
 import {
   ToolType,
@@ -18,10 +18,30 @@ import {
 
 //#region Config Types
 
-type InputSchemaConfig<TInput extends ToolInputSchema> =
+type InputJsonSchemaRequirement<TInput extends ToolInputSchema> =
   TInput extends $ZodObject<$ZodShape> | StandardJSONSchemaV1
-    ? { inputSchema: TInput; inputJsonSchema?: Record<string, unknown> }
-    : { inputSchema: TInput; inputJsonSchema: Record<string, unknown> };
+    ? { inputJsonSchema?: Record<string, unknown> }
+    : { inputJsonSchema: Record<string, unknown> };
+
+type InputSchemaConfig<TInput extends ToolInputSchema> =
+  { inputSchema: TInput } & InputJsonSchemaRequirement<TInput>;
+
+/**
+ * Non-generic equivalent of InputSchemaConfig for contexts where the schema
+ * type cannot be inferred (e.g. the tool<TShared>() overload, where explicit
+ * type arguments disable inference for the remaining parameters).
+ */
+type LooseInputSchemaConfig =
+  | {
+      inputSchema:
+        | $ZodObject<$ZodShape>
+        | (StandardSchemaV1<any, any> & StandardJSONSchemaV1);
+      inputJsonSchema?: Record<string, unknown>;
+    }
+  | {
+      inputSchema: StandardSchemaV1<any, any>;
+      inputJsonSchema: Record<string, unknown>;
+    };
 
 /**
  * Configuration for a regular tool with outputSchema
@@ -115,8 +135,6 @@ type ManualToolConfig<
 type ToolConfigWithSharedContext<TShared extends Record<string, unknown>> = {
   name: string;
   description?: string;
-  inputSchema: ToolInputSchema;
-  inputJsonSchema?: Record<string, unknown>;
   outputSchema?: ToolSchema;
   eventSchema?: ToolSchema;
   contextSchema?: $ZodObject<$ZodShape>;
@@ -132,7 +150,7 @@ type ToolConfigWithSharedContext<TShared extends Record<string, unknown>> = {
         context?: ToolExecuteContext<string, Record<string, unknown>, TShared>,
       ) => AsyncGenerator<unknown>)
     | false;
-};
+} & LooseInputSchemaConfig;
 
 //#endregion
 

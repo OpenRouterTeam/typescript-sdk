@@ -188,6 +188,68 @@ describe('Standard Schema tools', () => {
     expect(apiTool?.parameters).toEqual({ type: 'integer', description: 'override' });
   });
 
+  it('prefers inputJsonSchema over the Zod fast path', () => {
+    const apiTool = convertToolsToAPIFormat([
+      tool({
+        name: 'zod_explicit_override',
+        inputSchema: z.object({ query: z.string() }),
+        inputJsonSchema: { type: 'object', description: 'explicit override' },
+        execute: false,
+      }),
+    ])[0];
+
+    expect(apiTool?.parameters).toEqual({ type: 'object', description: 'explicit override' });
+  });
+
+  it('handles symbol path segments without crashing error formatting', async () => {
+    const symbolSchema: StandardSchemaV1<string> = {
+      '~standard': {
+        version: 1,
+        vendor: 'symbol-test',
+        validate: () => ({
+          issues: [{ message: 'bad symbol', path: [{ key: Symbol('nested') }] }],
+        }),
+      },
+    };
+
+    const error = await validateToolInput(symbolSchema, 'x').catch((caught) => caught);
+    expect(error).toBeInstanceOf(StandardSchemaError);
+    expect((error as StandardSchemaError).issues).toEqual([
+      { message: 'bad symbol', path: ['Symbol(nested)'] },
+    ]);
+    expect((error as Error).message).toBe(
+      '[{"message":"bad symbol","path":["Symbol(nested)"]}]',
+    );
+    expect(
+      formatToolExecutionError(error as Error, {
+        id: 'symbol-call',
+        name: 'symbol_tool',
+        arguments: 'x',
+      }),
+    ).toContain('Symbol(nested)');
+  });
+
+  it('requires inputJsonSchema for plain Standard Schemas in the tool<TShared>() overload', () => {
+    tool<{ sessionId?: string }>({
+      name: 'shared_plain_standard',
+      // @ts-expect-error plain Standard Schema without the JSON Schema trait must provide inputJsonSchema
+      inputSchema,
+      execute: () => ({ ok: true }),
+    });
+
+    tool<{ sessionId?: string }>({
+      name: 'shared_zod',
+      inputSchema: z.object({ q: z.string() }),
+      execute: () => ({ ok: true }),
+    });
+
+    tool<{ sessionId?: string }>({
+      name: 'shared_trait',
+      inputSchema: toStandardJsonSchema(v.object({ q: v.string() })),
+      execute: () => ({ ok: true }),
+    });
+  });
+
   it('requires Standard JSON Schema or explicit JSON Schema at runtime', () => {
     const manuallyConstructedTool = {
       type: 'function' as const,

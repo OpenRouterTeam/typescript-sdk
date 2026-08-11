@@ -21,7 +21,7 @@ export const ZodError = z4.ZodError;
 
 export interface StandardSchemaIssue {
   readonly message: string;
-  readonly path: PropertyKey[];
+  readonly path: (string | number)[];
 }
 
 export class StandardSchemaError extends Error {
@@ -30,11 +30,14 @@ export class StandardSchemaError extends Error {
   constructor(issues: ReadonlyArray<StandardSchemaV1.Issue>) {
     const normalized = issues.map((issue) => ({
       message: issue.message,
-      path: (issue.path ?? []).map((segment) =>
-        typeof segment === 'object' && segment !== null && 'key' in segment
-          ? segment.key
-          : segment,
-      ),
+      path: (issue.path ?? []).map((segment) => {
+        const key =
+          typeof segment === 'object' && segment !== null && 'key' in segment
+            ? segment.key
+            : segment;
+        // Symbols are legal PropertyKeys but break JSON.stringify and join('.')
+        return typeof key === 'symbol' ? key.toString() : key;
+      }),
     }));
     super(JSON.stringify(normalized));
     this.name = 'StandardSchemaError';
@@ -148,10 +151,12 @@ export function convertToolsToAPIFormat(tools: readonly Tool[]): APITool[] {
   return tools.map((tool) => {
     let parameters: Record<string, unknown> | undefined;
 
-    if (isZodSchema(tool.function.inputSchema)) {
-      parameters = convertZodToJsonSchema(tool.function.inputSchema);
-    } else if (tool.function.inputJsonSchema) {
+    // An explicit inputJsonSchema is the escape hatch and always wins,
+    // including over the Zod fast path.
+    if (tool.function.inputJsonSchema) {
       parameters = tool.function.inputJsonSchema;
+    } else if (isZodSchema(tool.function.inputSchema)) {
+      parameters = convertZodToJsonSchema(tool.function.inputSchema);
     } else if (isStandardJsonSchema(tool.function.inputSchema)) {
       try {
         parameters = tool.function.inputSchema['~standard'].jsonSchema.input({
