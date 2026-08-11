@@ -394,6 +394,7 @@ export type InputsMessage = {
 };
 
 export type InputsUnion1 =
+  | OutputCodeInterpreterCallItem
   | FunctionCallItem
   | LocalShellCallItem
   | McpApprovalRequestItem
@@ -414,7 +415,6 @@ export type InputsUnion1 =
   | InputsReasoning
   | OutputWebSearchCallItem
   | OutputImageGenerationCallItem
-  | OutputCodeInterpreterCallItem
   | LocalShellCallOutputItem
   | ShellCallItem
   | ShellCallOutputItem
@@ -450,6 +450,7 @@ export type InputsUnion1 =
 export type InputsUnion =
   | string
   | Array<
+    | OutputCodeInterpreterCallItem
     | FunctionCallItem
     | LocalShellCallItem
     | McpApprovalRequestItem
@@ -470,7 +471,6 @@ export type InputsUnion =
     | InputsReasoning
     | OutputWebSearchCallItem
     | OutputImageGenerationCallItem
-    | OutputCodeInterpreterCallItem
     | LocalShellCallOutputItem
     | ShellCallItem
     | ShellCallOutputItem
@@ -753,6 +753,7 @@ export function inputsMessageToJSON(inputsMessage: InputsMessage): string {
 
 /** @internal */
 export type InputsUnion1$Outbound =
+  | OutputCodeInterpreterCallItem$Outbound
   | FunctionCallItem$Outbound
   | LocalShellCallItem$Outbound
   | McpApprovalRequestItem$Outbound
@@ -773,7 +774,6 @@ export type InputsUnion1$Outbound =
   | InputsReasoning$Outbound
   | OutputWebSearchCallItem$Outbound
   | OutputImageGenerationCallItem$Outbound
-  | OutputCodeInterpreterCallItem$Outbound
   | LocalShellCallOutputItem$Outbound
   | ShellCallItem$Outbound
   | ShellCallOutputItem$Outbound
@@ -808,6 +808,7 @@ export const InputsUnion1$outboundSchema: z.ZodType<
   InputsUnion1$Outbound,
   InputsUnion1
 > = z.union([
+  OutputCodeInterpreterCallItem$outboundSchema,
   FunctionCallItem$outboundSchema,
   LocalShellCallItem$outboundSchema,
   McpApprovalRequestItem$outboundSchema,
@@ -828,7 +829,6 @@ export const InputsUnion1$outboundSchema: z.ZodType<
   z.lazy(() => InputsReasoning$outboundSchema),
   OutputWebSearchCallItem$outboundSchema,
   OutputImageGenerationCallItem$outboundSchema,
-  OutputCodeInterpreterCallItem$outboundSchema,
   LocalShellCallOutputItem$outboundSchema,
   ShellCallItem$outboundSchema,
   ShellCallOutputItem$outboundSchema,
@@ -867,6 +867,7 @@ export function inputsUnion1ToJSON(inputsUnion1: InputsUnion1): string {
 export type InputsUnion$Outbound =
   | string
   | Array<
+    | OutputCodeInterpreterCallItem$Outbound
     | FunctionCallItem$Outbound
     | LocalShellCallItem$Outbound
     | McpApprovalRequestItem$Outbound
@@ -887,7 +888,6 @@ export type InputsUnion$Outbound =
     | InputsReasoning$Outbound
     | OutputWebSearchCallItem$Outbound
     | OutputImageGenerationCallItem$Outbound
-    | OutputCodeInterpreterCallItem$Outbound
     | LocalShellCallOutputItem$Outbound
     | ShellCallItem$Outbound
     | ShellCallOutputItem$Outbound
@@ -926,6 +926,7 @@ export const InputsUnion$outboundSchema: z.ZodType<
   z.string(),
   z.array(
     z.union([
+      OutputCodeInterpreterCallItem$outboundSchema,
       FunctionCallItem$outboundSchema,
       LocalShellCallItem$outboundSchema,
       McpApprovalRequestItem$outboundSchema,
@@ -946,7 +947,6 @@ export const InputsUnion$outboundSchema: z.ZodType<
       z.lazy(() => InputsReasoning$outboundSchema),
       OutputWebSearchCallItem$outboundSchema,
       OutputImageGenerationCallItem$outboundSchema,
-      OutputCodeInterpreterCallItem$outboundSchema,
       LocalShellCallOutputItem$outboundSchema,
       ShellCallItem$outboundSchema,
       ShellCallOutputItem$outboundSchema,
