@@ -131,7 +131,7 @@ export type GetBenchmarksRequest = {
    */
   benchmarkType?: BenchmarkType | undefined;
   /**
-   * Search benchmarks only: include the published lane configuration whitelist in each search item. Defaults to false. The whitelist is limited to agent turn count, reasoning effort, and temperature so future harness configuration changes do not change the public contract.
+   * Search benchmarks only: include the published lane configuration whitelist in each search item. Defaults to false. The whitelist is limited to agent turn count, search-result budgets, reasoning effort, and temperature so future harness configuration changes do not change the public contract.
    */
   includeRunConfig?: boolean | undefined;
   /**
