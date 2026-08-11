@@ -1,0 +1,26 @@
+---
+title: "OutputShellServerToolItem"
+---
+
+An openrouter:shell server tool output item
+
+## Example Usage
+
+```typescript
+import { OutputShellServerToolItem } from "@openrouter/sdk/models";
+
+let value: OutputShellServerToolItem = {
+  status: "completed",
+  type: "openrouter:shell",
+};
+```
+
+## Fields
+
+| Field                                                                           | Type                                                                            | Required                                                                        | Description                                                                     | Example                                                                         |
+| ------------------------------------------------------------------------------- | ------------------------------------------------------------------------------- | ------------------------------------------------------------------------------- | ------------------------------------------------------------------------------- | ------------------------------------------------------------------------------- |
+| `action`                                                                        | [models.OutputShellServerToolAction](../models/outputshellservertoolaction.mdx)  | :heavy_minus_sign:                                                              | The shell commands requested by the model.                                      | \{<br/>"commands": [<br/>"echo hello"<br/>],<br/>"max_output_length": null,<br/>"timeout_ms": null<br/>} |
+| `callId`                                                                        | *string*                                                                        | :heavy_minus_sign:                                                              | N/A                                                                             |                                                                                 |
+| `id`                                                                            | *string*                                                                        | :heavy_minus_sign:                                                              | N/A                                                                             |                                                                                 |
+| `status`                                                                        | [models.ToolCallStatus](../models/toolcallstatus.mdx)                            | :heavy_check_mark:                                                              | N/A                                                                             | completed                                                                       |
+| `type`                                                                          | *"openrouter:shell"*                                                            | :heavy_check_mark:                                                              | N/A                                                                             |                                                                                 |
