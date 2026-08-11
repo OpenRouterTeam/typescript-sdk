@@ -106,6 +106,10 @@ import {
   OutputShellCallOutputItem$inboundSchema,
 } from "./outputshellcalloutputitem.js";
 import {
+  OutputShellServerToolItem,
+  OutputShellServerToolItem$inboundSchema,
+} from "./outputshellservertoolitem.js";
+import {
   OutputSubagentServerToolItem,
   OutputSubagentServerToolItem$inboundSchema,
 } from "./outputsubagentservertoolitem.js";
@@ -161,6 +165,7 @@ export type OutputItems =
   })
   | (OutputMcpServerToolItem & { type: "openrouter:mcp" })
   | (OutputMemoryServerToolItem & { type: "openrouter:memory" })
+  | OutputShellServerToolItem
   | (OutputSubagentServerToolItem & { type: "openrouter:subagent" })
   | (OutputTextEditorServerToolItem & { type: "openrouter:text_editor" })
   | (OutputToolSearchServerToolItem & { type: "openrouter:tool_search" })
@@ -234,6 +239,7 @@ export const OutputItems$inboundSchema: z.ZodType<OutputItems, unknown> =
     ["openrouter:memory"]: OutputMemoryServerToolItem$inboundSchema.and(
       z.object({ type: z.literal("openrouter:memory") }),
     ),
+    ["openrouter:shell"]: OutputShellServerToolItem$inboundSchema,
     ["openrouter:subagent"]: OutputSubagentServerToolItem$inboundSchema.and(
       z.object({ type: z.literal("openrouter:subagent") }),
     ),
