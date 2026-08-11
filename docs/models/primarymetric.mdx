@@ -1,0 +1,21 @@
+---
+title: "PrimaryMetric"
+---
+
+Identifies the meaning of `primary_score`: `f1_by_item` for WideSearch, `accuracy` for all other search benchmarks.
+
+## Example Usage
+
+```typescript
+import { PrimaryMetric } from "@openrouter/sdk/models";
+
+let value: PrimaryMetric = "accuracy";
+
+// Open enum: unrecognized values are captured as Unrecognized<string>
+```
+
+## Values
+
+```typescript
+"accuracy" | "f1_by_item" | Unrecognized<string>
+```
