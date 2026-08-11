@@ -17,7 +17,7 @@ import {
  */
 export type GenerationContentResponse = {
   /**
-   * Stored prompt and completion content
+   * Stored prompt and completion content, plus the failure error when one was stored
    */
   data: GenerationContentData;
 };

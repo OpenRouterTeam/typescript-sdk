@@ -242,6 +242,8 @@ export * from "./fusionservertoolconfig.js";
 export * from "./fusionservertoolopenrouter.js";
 export * from "./fusionsource.js";
 export * from "./generationcontentdata.js";
+export * from "./generationcontenterror.js";
+export * from "./generationcontenterrorattempt.js";
 export * from "./generationcontentresponse.js";
 export * from "./generationresponse.js";
 export * from "./getbyokkeyresponse.js";
