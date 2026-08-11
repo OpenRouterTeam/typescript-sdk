@@ -1,0 +1,25 @@
+---
+title: "UnifiedBenchmarksSearchRunConfig"
+---
+
+Published lane configuration, included only when include_run_config=true. Only the agent turn count, reasoning effort, and temperature are exposed; other harness settings are intentionally not part of the public contract.
+
+## Example Usage
+
+```typescript
+import { UnifiedBenchmarksSearchRunConfig } from "@openrouter/sdk/models";
+
+let value: UnifiedBenchmarksSearchRunConfig = {
+  maxAgentTurns: 25,
+  reasoningEffort: "high",
+  temperature: 0.2,
+};
+```
+
+## Fields
+
+| Field                                                                         | Type                                                                          | Required                                                                      | Description                                                                   | Example                                                                       |
+| ----------------------------------------------------------------------------- | ----------------------------------------------------------------------------- | ----------------------------------------------------------------------------- | ----------------------------------------------------------------------------- | ----------------------------------------------------------------------------- |
+| `maxAgentTurns`                                                               | *number*                                                                      | :heavy_check_mark:                                                            | Agent-turn count for the published lane, or null for plugin lanes.            | 25                                                                            |
+| `reasoningEffort`                                                             | *string*                                                                      | :heavy_check_mark:                                                            | Reasoning effort configured for the published lane, or null when omitted.     | high                                                                          |
+| `temperature`                                                                 | *number*                                                                      | :heavy_check_mark:                                                            | Sampling temperature configured for the published lane, or null when omitted. | 0.2                                                                           |
