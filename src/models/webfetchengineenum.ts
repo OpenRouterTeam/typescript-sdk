@@ -8,7 +8,7 @@ import * as openEnums from "../types/enums.js";
 import { OpenEnum } from "../types/enums.js";
 
 /**
- * Which fetch engine to use. "auto" (default) uses native if the provider supports it, otherwise Exa. "native" forces the provider's built-in fetch. "exa" uses Exa Contents API. "openrouter" uses direct HTTP fetch. "firecrawl" uses Firecrawl scrape (requires BYOK). "parallel" uses the Parallel extract API.
+ * Which fetch engine to use. "auto" (default) uses native if the provider supports it, otherwise Exa. "native" requests provider-native fetch but fails closed when native passthrough is unavailable. "exa" uses Exa Contents API. "openrouter" direct HTTP fetch is temporarily unavailable because Workers cannot safely pin DNS resolution. "firecrawl" uses Firecrawl scrape (requires BYOK). "parallel" uses the Parallel extract API.
  */
 export const WebFetchEngineEnum = {
   Auto: "auto",
@@ -19,7 +19,7 @@ export const WebFetchEngineEnum = {
   Firecrawl: "firecrawl",
 } as const;
 /**
- * Which fetch engine to use. "auto" (default) uses native if the provider supports it, otherwise Exa. "native" forces the provider's built-in fetch. "exa" uses Exa Contents API. "openrouter" uses direct HTTP fetch. "firecrawl" uses Firecrawl scrape (requires BYOK). "parallel" uses the Parallel extract API.
+ * Which fetch engine to use. "auto" (default) uses native if the provider supports it, otherwise Exa. "native" requests provider-native fetch but fails closed when native passthrough is unavailable. "exa" uses Exa Contents API. "openrouter" direct HTTP fetch is temporarily unavailable because Workers cannot safely pin DNS resolution. "firecrawl" uses Firecrawl scrape (requires BYOK). "parallel" uses the Parallel extract API.
  */
 export type WebFetchEngineEnum = OpenEnum<typeof WebFetchEngineEnum>;
 
