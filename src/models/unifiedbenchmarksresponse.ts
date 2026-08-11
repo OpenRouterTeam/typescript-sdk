@@ -5,8 +5,6 @@
 
 import * as z from "zod/v4";
 import { safeParse } from "../lib/schemas.js";
-import * as discriminatedUnionTypes from "../types/discriminatedUnion.js";
-import { discriminatedUnion } from "../types/discriminatedUnion.js";
 import { Result as SafeParseResult } from "../types/fp.js";
 import { SDKValidationError } from "./errors/sdkvalidationerror.js";
 import {
@@ -25,19 +23,23 @@ import {
   UnifiedBenchmarksORItem,
   UnifiedBenchmarksORItem$inboundSchema,
 } from "./unifiedbenchmarksoritem.js";
+import {
+  UnifiedBenchmarksSearchItem,
+  UnifiedBenchmarksSearchItem$inboundSchema,
+} from "./unifiedbenchmarkssearchitem.js";
 
 export type UnifiedBenchmarksResponseData =
-  | UnifiedBenchmarksAAItem
+  | UnifiedBenchmarksSearchItem
   | UnifiedBenchmarksDAItem
   | UnifiedBenchmarksORItem
-  | discriminatedUnionTypes.Unknown<"source">;
+  | UnifiedBenchmarksAAItem;
 
 export type UnifiedBenchmarksResponse = {
   data: Array<
-    | UnifiedBenchmarksAAItem
+    | UnifiedBenchmarksSearchItem
     | UnifiedBenchmarksDAItem
     | UnifiedBenchmarksORItem
-    | discriminatedUnionTypes.Unknown<"source">
+    | UnifiedBenchmarksAAItem
   >;
   meta: UnifiedBenchmarksMeta;
 };
@@ -46,11 +48,12 @@ export type UnifiedBenchmarksResponse = {
 export const UnifiedBenchmarksResponseData$inboundSchema: z.ZodType<
   UnifiedBenchmarksResponseData,
   unknown
-> = discriminatedUnion("source", {
-  ["artificial-analysis"]: UnifiedBenchmarksAAItem$inboundSchema,
-  ["design-arena"]: UnifiedBenchmarksDAItem$inboundSchema,
-  openrouter: UnifiedBenchmarksORItem$inboundSchema,
-});
+> = z.union([
+  UnifiedBenchmarksSearchItem$inboundSchema,
+  UnifiedBenchmarksDAItem$inboundSchema,
+  UnifiedBenchmarksORItem$inboundSchema,
+  UnifiedBenchmarksAAItem$inboundSchema,
+]);
 
 export function unifiedBenchmarksResponseDataFromJSON(
   jsonString: string,
@@ -67,11 +70,14 @@ export const UnifiedBenchmarksResponse$inboundSchema: z.ZodType<
   UnifiedBenchmarksResponse,
   unknown
 > = z.object({
-  data: z.array(discriminatedUnion("source", {
-    ["artificial-analysis"]: UnifiedBenchmarksAAItem$inboundSchema,
-    ["design-arena"]: UnifiedBenchmarksDAItem$inboundSchema,
-    openrouter: UnifiedBenchmarksORItem$inboundSchema,
-  })),
+  data: z.array(
+    z.union([
+      UnifiedBenchmarksSearchItem$inboundSchema,
+      UnifiedBenchmarksDAItem$inboundSchema,
+      UnifiedBenchmarksORItem$inboundSchema,
+      UnifiedBenchmarksAAItem$inboundSchema,
+    ]),
+  ),
   meta: UnifiedBenchmarksMeta$inboundSchema,
 });
 
