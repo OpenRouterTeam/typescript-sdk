@@ -1,19 +1,19 @@
 lockVersion: ""
 id: ""
 management:
-  docChecksum: 14cdc6b2824437a0c6f6e046f91de865
+  docChecksum: aafc50d2480c48a10499d0e8cc77bcd5
   docVersion: 1.0.0
   speakeasyVersion: 1.787.0
   generationVersion: 2.914.0
-  releaseVersion: 1.2.20
-  configChecksum: 1970da2e2c8c116d48c07b966233726f
+  releaseVersion: 1.2.21
+  configChecksum: 89ca3bba2be86799e928516329863589
   repoURL: https://github.com/OpenRouterTeam/typescript-sdk.git
   installationURL: https://github.com/OpenRouterTeam/typescript-sdk
   published: true
 persistentEdits:
-  generation_id: 1fd0f224-fda0-432d-b053-be304799f582
-  pristine_commit_hash: 625ba2c738cb108ee4b48d5d11edbf4045ba5288
-  pristine_tree_hash: 665ca6a1ca5359abd8f0ffd1e013689a60648f42
+  generation_id: 7a9905de-d822-40c9-98d7-17ef9bf4f45d
+  pristine_commit_hash: 88edc02d370a256523a26041a3a4af16efff77f3
+  pristine_tree_hash: bebbf29b3760927dae56122c482c85794d134d1a
 features:
   typescript:
     acceptHeaders: 2.81.2
@@ -9323,8 +9323,8 @@ trackedFiles:
     deleted: true
   docs/models/outputfusionservertoolitem.mdx:
     id: 3a8a257c7b48
-    last_write_checksum: sha1:99c243e42fae60fc0a948a09f42aa500c53f7677
-    pristine_git_object: 3000ad39bbe9b82834b580dc99a562a56c5b10ab
+    last_write_checksum: sha1:f7723229c769cef9327f2ed6681c811e10e769e2
+    pristine_git_object: 41eef5b0900f234080a06551fee58fcb5982912a
   docs/models/outputfusionservertoolitemtype.md:
     id: eafd1611f253
     last_write_checksum: sha1:1a7f9abf5428e4d2b4881609da95ab3f215aa035
@@ -12809,12 +12809,12 @@ trackedFiles:
     pristine_git_object: 410efafd6a7f50d91ccb87131fedbe0c3d47e15a
   jsr.json:
     id: 7f6ab7767282
-    last_write_checksum: sha1:48adbf0f34639e85923444d94ded835b9de6cbb1
-    pristine_git_object: 2d77d7deb9e613f877b3cc0127d578c5856eefdb
+    last_write_checksum: sha1:d91e5af3a239af68949db2d2dd315b2338fe912f
+    pristine_git_object: 5eb897699d9e19e65d4c3f08743d16afd494f1e9
   package.json:
     id: 7030d0b2f71b
-    last_write_checksum: sha1:a0a4bb9cc28d87e6f93ca19187fbd388ad062b98
-    pristine_git_object: 9cf69896bd64e1acabd37f6794459b19baa956c2
+    last_write_checksum: sha1:598231877e5935a5d5eee588b66c330f94233304
+    pristine_git_object: e1df2006a3977bb446c7c6c9cb283f4d991a2904
   src/core.ts:
     id: f431fdbcd144
     last_write_checksum: sha1:5aa66b0b6a5964f3eea7f3098c2eb3c0ee9c0131
@@ -13221,8 +13221,8 @@ trackedFiles:
     pristine_git_object: a187e58707bdb726ca2aff74941efe7493422d4e
   src/lib/config.ts:
     id: 320761608fb3
-    last_write_checksum: sha1:c14c41d1c3355061c2d423479d2e9af168322bb2
-    pristine_git_object: 45a5903deb487674371146c28a80d425bd2882eb
+    last_write_checksum: sha1:c4d96aca04f5b9f945bcc33e93281814205e8e7c
+    pristine_git_object: eb166f62740783170a652de238553261c411664c
   src/lib/dlv.ts:
     id: b1988214835a
     last_write_checksum: sha1:eaac763b22717206a6199104e0403ed17a4e2711
@@ -15351,8 +15351,8 @@ trackedFiles:
     pristine_git_object: 4c8a471669db452e42832b9f21a906de2606c396
   src/models/outputfusionservertoolitem.ts:
     id: 30bcfe965217
-    last_write_checksum: sha1:ff7d4f0560c6d9999b7ba5c830aa486ba3b69f20
-    pristine_git_object: 1daa9aa378d6e93fc100ef2bdd3db7dd6fbd5b1b
+    last_write_checksum: sha1:576ef86a23c5de5132d4754247f6c00a848d2d50
+    pristine_git_object: daead39530127de3ec7ff64ac6dd3a8ec625e691
   src/models/outputimagegenerationcallitem.ts:
     id: 618bac10713d
     last_write_checksum: sha1:41413c2fbfebe62fa16d6aa61fd51aa48fcaef00
@@ -18097,4 +18097,3 @@ examples:
         "500":
           application/json: {"error": {"code": 500, "message": "Internal Server Error"}}
 examplesVersion: 1.0.2
-releaseNotes: "## Typescript SDK Changes:\n* `openrouter.beta.responses.send()`: \n  *  `request.responsesRequest.input.union(Array<>)[]` **Changed**\n  *  `response` **Changed**\n* `openrouter.presets.createPresetsResponses()`: \n  *  `request.responsesRequest.input.union(Array<>)[]` **Changed**\n* `openrouter.responses.send()`: \n  *  `request.responsesRequest.input.union(Array<>)[]` **Changed**\n  *  `response` **Changed**\n"
