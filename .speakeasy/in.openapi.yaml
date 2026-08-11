@@ -13663,12 +13663,14 @@ components:
                       $ref: '#/components/schemas/AnthropicSpeed'
                   type: 'object'
               example:
-                cache_creation: null
-                cache_creation_input_tokens: null
-                cache_read_input_tokens: null
+                cache_creation:
+                  ephemeral_1h_input_tokens: 0
+                  ephemeral_5m_input_tokens: 7381
+                cache_creation_input_tokens: 7381
+                cache_read_input_tokens: 0
                 inference_geo: null
                 input_tokens: 100
-                output_tokens: 50
+                output_tokens: 1
                 output_tokens_details: null
                 server_tool_use: null
                 service_tier: 'standard'
