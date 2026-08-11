@@ -13,6 +13,12 @@ on:
       - "scripts/gen-docs-nav.sh"
       - ".github/workflows/docs-nav.yaml"
 
+# Shared with speakeasy_run_on_pr.yaml: both push generated files to the PR
+# head branch, so they must not run at the same time on the same PR.
+concurrency:
+  group: generated-files-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: false
+
 jobs:
   gen-docs-nav:
     runs-on: ubuntu-latest

@@ -10,6 +10,12 @@ on:
     paths:
       - .speakeasy/in.openapi.yaml
 
+# Shared with docs-nav.yaml: both push generated files to the PR head branch,
+# so they must not run at the same time on the same PR.
+concurrency:
+  group: generated-files-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: false
+
 jobs:
   run-speakeasy:
     runs-on: ubuntu-latest
