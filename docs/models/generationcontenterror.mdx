@@ -1,0 +1,36 @@
+---
+title: "GenerationContentError"
+---
+
+The stored failure for this generation, or null when it succeeded
+
+## Example Usage
+
+```typescript
+import { GenerationContentError } from "@openrouter/sdk/models";
+
+let value: GenerationContentError = {
+  message: "Timed out waiting for the provider",
+  previousErrors: [
+    {
+      code: 429,
+      message: "Provider returned error",
+      providerName: "Google",
+      raw: "{\"error\":{\"code\":429,\"message\":\"Resource exhausted\"}}",
+    },
+  ],
+  providerName: "Vertex",
+  raw: "{\"error\":{\"code\":504,\"message\":\"Deadline exceeded\"}}",
+  status: 504,
+};
+```
+
+## Fields
+
+| Field                                                                                | Type                                                                                 | Required                                                                             | Description                                                                          | Example                                                                              |
+| ------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------ |
+| `message`                                                                            | *string*                                                                             | :heavy_check_mark:                                                                   | Error message returned to the client                                                 | Timed out waiting for the provider                                                   |
+| `previousErrors`                                                                     | [models.GenerationContentErrorAttempt](../models/generationcontenterrorattempt.mdx)[] | :heavy_check_mark:                                                                   | Every upstream attempt that failed before the returned error, in attempt order       |                                                                                      |
+| `providerName`                                                                       | *string*                                                                             | :heavy_check_mark:                                                                   | Provider whose error was returned to the client, when known                          | Vertex                                                                               |
+| `raw`                                                                                | *string*                                                                             | :heavy_check_mark:                                                                   | Raw error body behind the returned error, when stored                                | \{"error":\{"code":504,"message":"Deadline exceeded"}}                                 |
+| `status`                                                                             | *number*                                                                             | :heavy_check_mark:                                                                   | HTTP status returned to the client                                                   | 504                                                                                  |
