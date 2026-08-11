@@ -10,13 +10,21 @@ import { Result as SafeParseResult } from "../types/fp.js";
 import { SDKValidationError } from "./errors/sdkvalidationerror.js";
 
 /**
- * Published lane configuration, included only when include_run_config=true. Only the agent turn count, reasoning effort, and temperature are exposed; other harness settings are intentionally not part of the public contract.
+ * Published lane configuration, included only when include_run_config=true. Only the agent turn count, search-result budgets, reasoning effort, and temperature are exposed; other harness settings are intentionally not part of the public contract.
  */
 export type UnifiedBenchmarksSearchRunConfig = {
   /**
    * Agent-turn count for the published lane, or null for plugin lanes.
    */
   maxAgentTurns: number | null;
+  /**
+   * Configured maximum search results per search call, or null when omitted or explicitly native. For auto lanes, the configured value may not apply when auto selects native search.
+   */
+  maxResults?: number | null | undefined;
+  /**
+   * Configured maximum cumulative search results across all search calls in one benchmark task/request, or null when omitted or unsupported by the surface or explicit engine. For auto lanes, the configured value may not apply when auto selects native search.
+   */
+  maxTotalResults?: number | null | undefined;
   /**
    * Reasoning effort configured for the published lane, or null when omitted.
    */
@@ -33,11 +41,15 @@ export const UnifiedBenchmarksSearchRunConfig$inboundSchema: z.ZodType<
   unknown
 > = z.object({
   max_agent_turns: z.nullable(z.int()),
+  max_results: z.nullable(z.int()).optional(),
+  max_total_results: z.nullable(z.int()).optional(),
   reasoning_effort: z.nullable(z.string()),
   temperature: z.nullable(z.number()),
 }).transform((v) => {
   return remap$(v, {
     "max_agent_turns": "maxAgentTurns",
+    "max_results": "maxResults",
+    "max_total_results": "maxTotalResults",
     "reasoning_effort": "reasoningEffort",
   });
 });
