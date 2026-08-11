@@ -24,6 +24,10 @@ export type OutputShellCallItemAction = {
  */
 export type OutputShellCallItem = {
   action?: OutputShellCallItemAction | undefined;
+  /**
+   * The raw tool-call arguments string as emitted by the model. Echo back unchanged when replaying history; used verbatim to preserve provider prompt-cache prefixes.
+   */
+  arguments?: string | null | undefined;
   callId: string;
   id: string;
   /**
@@ -64,6 +68,7 @@ export const OutputShellCallItem$inboundSchema: z.ZodType<
   unknown
 > = z.object({
   action: z.lazy(() => OutputShellCallItemAction$inboundSchema).optional(),
+  arguments: z.nullable(z.string()).optional(),
   call_id: z.string(),
   id: z.string(),
   status: ShellCallStatus$inboundSchema,
