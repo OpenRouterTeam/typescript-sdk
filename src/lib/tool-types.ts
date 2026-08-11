@@ -292,8 +292,12 @@ export type InferToolInput<T> = T extends { function: { inputSchema: infer S ext
 /**
  * Extracts the output type from a tool definition
  */
-export type InferToolOutput<T> = T extends { function: { outputSchema: infer S extends ToolSchema } }
-  ? InferSchemaOutput<S>
+// outputSchema is optional on regular/manual tools, so the pattern must
+// tolerate a missing property and reject the undefined-only case.
+export type InferToolOutput<T> = T extends { function: { outputSchema?: infer S } }
+  ? S extends ToolSchema
+    ? InferSchemaOutput<S>
+    : unknown
   : unknown;
 
 /**
