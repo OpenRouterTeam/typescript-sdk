@@ -1,19 +1,19 @@
 lockVersion: ""
 id: ""
 management:
-  docChecksum: 9d7d6dec7da01a372098176086670081
+  docChecksum: de4c290cd9e9fdd0f46382b8499728f6
   docVersion: 1.0.0
   speakeasyVersion: 1.787.0
   generationVersion: 2.914.0
-  releaseVersion: 1.2.25
-  configChecksum: 4c12eaba670eeef45ebd1517a257358f
+  releaseVersion: 1.2.26
+  configChecksum: d34042e40b4f469bd938c30d1992b534
   repoURL: https://github.com/OpenRouterTeam/typescript-sdk.git
   installationURL: https://github.com/OpenRouterTeam/typescript-sdk
   published: true
 persistentEdits:
-  generation_id: 96a5a140-33d8-4a31-b420-56795ae7c822
-  pristine_commit_hash: 5de9b319af7021986a85b581a2fa718baca572ff
-  pristine_tree_hash: cb1c7319d0cfbb1c2f0ef167e43351481410841a
+  generation_id: b84d13ef-c33b-49c8-afdf-28c65a0061c2
+  pristine_commit_hash: 212241c20e6e52d6d53d17aaedc008ef58cd953b
+  pristine_tree_hash: e157f14420dbbb6830045344ea6ffe3e1ef89824
 features:
   typescript:
     acceptHeaders: 2.81.2
@@ -1035,8 +1035,8 @@ trackedFiles:
     deleted: true
   docs/models/apprankingsresponse.mdx:
     id: 2f24a473e4d4
-    last_write_checksum: sha1:a5db5a58d03f192215140f715ba2232bfb372077
-    pristine_git_object: 7856c5c8c0ee29a2de405aaf08d946c15da645d4
+    last_write_checksum: sha1:7398c995b90f73849e149b5e76f51a52e7c4bfd1
+    pristine_git_object: 22df1b089ecd1378aba1386055aec99937fd6add
   docs/models/architecture.mdx:
     id: 99023125c487
     last_write_checksum: sha1:064c785c9241e05299f6c8c2bf25a8bc2cf4360f
@@ -7625,8 +7625,8 @@ trackedFiles:
     deleted: true
   docs/models/operations/getapprankingsresponse.mdx:
     id: 18a4f818cee5
-    last_write_checksum: sha1:c4529657034cfc76c586892b911ec2109063b6d1
-    pristine_git_object: e3c9ad6e153c5433c1a5b653e11a415b5d54fc4a
+    last_write_checksum: sha1:f95e05cd63aaed3ac5ae3ccf264ffb70304e8d61
+    pristine_git_object: c498df47f490c79ee39d2a75670514c22cf513e3
   docs/models/operations/getapprankingssort.md:
     id: a3c13382631d
     last_write_checksum: sha1:dc1ded85dfed0c8f6ae43c4da194460b16bccb5f
@@ -10329,8 +10329,8 @@ trackedFiles:
     deleted: true
   docs/models/rankingsdailymeta.mdx:
     id: 08b01c304619
-    last_write_checksum: sha1:3c677b0f620af98daba2ecb06ad6ac260d6cea4e
-    pristine_git_object: c430cdcdea9d1ecc22d5f3ad4a312fa82fd2abb4
+    last_write_checksum: sha1:5df1a0be0a9aaedf10a06702ad2a87388eba297d
+    pristine_git_object: 0d35ec7727902972333a0a1b95aec0d863cd280d
   docs/models/rankingsdailymetaversion.md:
     id: 017eb80206fc
     last_write_checksum: sha1:9855aa7eeb463c28b5e0642a880a2638ed2f294f
@@ -10347,8 +10347,8 @@ trackedFiles:
     deleted: true
   docs/models/rankingsdailyresponse.mdx:
     id: f45981aaf1df
-    last_write_checksum: sha1:be6fe9785e396f5e9d3c5cf88b7374972ffc2d02
-    pristine_git_object: a67edaa3cb8f426ef0d2d18bfa4f89ebeca32c73
+    last_write_checksum: sha1:80817fc8752ad541bf3da7c80e776ce432d7faea
+    pristine_git_object: 29a10d81774bafaee749d87c5e7b7d98abeec704
   docs/models/reason.mdx:
     id: 45dc51d07c7b
     last_write_checksum: sha1:552e37b2f7f101424fcce283c8fcc65a3b224b8a
@@ -12861,12 +12861,12 @@ trackedFiles:
     pristine_git_object: 410efafd6a7f50d91ccb87131fedbe0c3d47e15a
   jsr.json:
     id: 7f6ab7767282
-    last_write_checksum: sha1:3f530b011f3a89293c77c3d525a8c85cff89d9fa
-    pristine_git_object: b807d28e2b8c4f41cacddb1a0ea82dfc0949ebd2
+    last_write_checksum: sha1:fb19cb24d552b08e53085c3c63ea37c0f72a4916
+    pristine_git_object: 6e743cfba9400f8ab7fdd88b09fbe495c0aab904
   package.json:
     id: 7030d0b2f71b
-    last_write_checksum: sha1:f40e0009204aa9ff1b38a3be0d0c36cfa1599419
-    pristine_git_object: 4a66cd6cbad747996e02816e38a55b1ebba60525
+    last_write_checksum: sha1:dc9b1f336d3278fc90aec2459abe435ee6365390
+    pristine_git_object: 43f948533d9781d8272bcc702ccf6cc3b02b8577
   src/core.ts:
     id: f431fdbcd144
     last_write_checksum: sha1:5aa66b0b6a5964f3eea7f3098c2eb3c0ee9c0131
@@ -13273,8 +13273,8 @@ trackedFiles:
     pristine_git_object: a187e58707bdb726ca2aff74941efe7493422d4e
   src/lib/config.ts:
     id: 320761608fb3
-    last_write_checksum: sha1:fc5ea598037d7b100c73c4fcfbdb63ee1b09f357
-    pristine_git_object: b773fe5fe6c0a8ab7d94c8b7aa7c822e4901fc36
+    last_write_checksum: sha1:3d099f3e0bd3ff26ee85e92cb63051b9c4936cd9
+    pristine_git_object: 0cb91abd42e6bd10d9cf82d916aa744d964170b1
   src/lib/dlv.ts:
     id: b1988214835a
     last_write_checksum: sha1:eaac763b22717206a6199104e0403ed17a4e2711
@@ -17562,7 +17562,7 @@ examples:
     speakeasy-default-get-rankings-daily:
       responses:
         "200":
-          application/json: {"data": [{"date": "2026-05-11", "model_permaslug": "openai/gpt-4o-2024-05-13", "total_tokens": "12345678"}, {"date": "2026-05-11", "model_permaslug": "anthropic/claude-3.5-sonnet-20241022", "total_tokens": "9876543"}], "meta": {"as_of": "2026-05-12T02:00:00Z", "end_date": "2026-05-11", "start_date": "2026-04-12", "version": "v1"}}
+          application/json: {"data": [{"date": "2026-05-11", "model_permaslug": "openai/gpt-4o-2024-05-13", "total_tokens": "12345678"}, {"date": "2026-05-11", "model_permaslug": "anthropic/claude-3.5-sonnet-20241022", "total_tokens": "9876543"}], "meta": {"as_of": "2026-05-12T02:00:00.000Z", "end_date": "2026-05-11", "start_date": "2026-04-12", "version": "v1"}}
         "400":
           application/json: {"error": {"code": 400, "message": "Invalid request parameters"}}
         "401":
@@ -17719,7 +17719,7 @@ examples:
           offset: 0
       responses:
         "200":
-          application/json: {"data": [{"app_id": 12345, "app_name": "Cline", "rank": 1, "total_requests": 4321, "total_tokens": "12345678"}, {"app_id": 67890, "app_name": "Roo Code", "rank": 2, "total_requests": 2109, "total_tokens": "9876543"}], "meta": {"as_of": "2026-05-12T02:00:00Z", "end_date": "2026-05-11", "start_date": "2026-04-12", "version": "v1"}}
+          application/json: {"data": [{"app_id": 12345, "app_name": "Cline", "rank": 1, "total_requests": 4321, "total_tokens": "12345678"}, {"app_id": 67890, "app_name": "Roo Code", "rank": 2, "total_requests": 2109, "total_tokens": "9876543"}], "meta": {"as_of": "2026-05-12T02:00:00.000Z", "end_date": "2026-05-11", "start_date": "2026-04-12", "version": "v1"}}
         "400":
           application/json: {"error": {"code": 400, "message": "Invalid request parameters"}}
         "401":
@@ -18168,6 +18168,3 @@ examples:
         "500":
           application/json: {"error": {"code": 500, "message": "Internal Server Error"}}
 examplesVersion: 1.0.2
-releaseNotes: |
-  ## Typescript SDK Changes:
-  * `openrouter.generations.listGenerationContent()`:  `response.data.error` **Added**
