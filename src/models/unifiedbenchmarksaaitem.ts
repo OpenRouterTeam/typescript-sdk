@@ -6,12 +6,26 @@
 import * as z from "zod/v4";
 import { remap as remap$ } from "../lib/primitives.js";
 import { safeParse } from "../lib/schemas.js";
+import { ClosedEnum } from "../types/enums.js";
 import { Result as SafeParseResult } from "../types/fp.js";
 import { SDKValidationError } from "./errors/sdkvalidationerror.js";
 import {
   UnifiedBenchmarkPricing,
   UnifiedBenchmarkPricing$inboundSchema,
 } from "./unifiedbenchmarkpricing.js";
+
+/**
+ * Benchmark source discriminator.
+ */
+export const UnifiedBenchmarksAAItemSource = {
+  ArtificialAnalysis: "artificial-analysis",
+} as const;
+/**
+ * Benchmark source discriminator.
+ */
+export type UnifiedBenchmarksAAItemSource = ClosedEnum<
+  typeof UnifiedBenchmarksAAItemSource
+>;
 
 export type UnifiedBenchmarksAAItem = {
   /**
@@ -41,8 +55,13 @@ export type UnifiedBenchmarksAAItem = {
   /**
    * Benchmark source discriminator.
    */
-  source: "artificial-analysis";
+  source: UnifiedBenchmarksAAItemSource;
 };
+
+/** @internal */
+export const UnifiedBenchmarksAAItemSource$inboundSchema: z.ZodEnum<
+  typeof UnifiedBenchmarksAAItemSource
+> = z.enum(UnifiedBenchmarksAAItemSource);
 
 /** @internal */
 export const UnifiedBenchmarksAAItem$inboundSchema: z.ZodType<
@@ -55,7 +74,7 @@ export const UnifiedBenchmarksAAItem$inboundSchema: z.ZodType<
   intelligence_index: z.nullable(z.number()),
   model_permaslug: z.string(),
   pricing: z.nullable(UnifiedBenchmarkPricing$inboundSchema),
-  source: z.literal("artificial-analysis"),
+  source: UnifiedBenchmarksAAItemSource$inboundSchema,
 }).transform((v) => {
   return remap$(v, {
     "agentic_index": "agenticIndex",
