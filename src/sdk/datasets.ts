@@ -5,6 +5,7 @@
 
 import { datasetsGetAppRankings } from "../funcs/datasetsGetAppRankings.js";
 import { datasetsGetRankingsDaily } from "../funcs/datasetsGetRankingsDaily.js";
+import { datasetsGetSessionCost } from "../funcs/datasetsGetSessionCost.js";
 import { ClientSDK, RequestOptions } from "../lib/sdks.js";
 import * as models from "../models/index.js";
 import * as operations from "../models/operations/index.js";
@@ -89,6 +90,31 @@ export class Datasets extends ClientSDK {
     options?: RequestOptions,
   ): Promise<models.RankingsDailyResponse> {
     return unwrapAsync(datasetsGetRankingsDaily(
+      this,
+      request,
+      options,
+    ));
+  }
+
+  /**
+   * Cost per session by harness and model
+   *
+   * @remarks
+   * Returns weekly refreshed, aggregated cost-per-session cells for the published harnesses.
+   * Sessions are never pooled across apps. Medians are of per-session USD spend, and
+   * privacy-preserving aggregation never exposes clerk_user_id values or per-session rows.
+   *
+   * Filter by `app_slug`, `model`, or `turn_range`. Filtering by `model` alone works across apps
+   * for harness-vs-harness comparison at a fixed model. Results refresh weekly and include the source snapshot
+   * window in `meta`.
+   */
+  async getSessionCost(
+    request?: operations.GetSessionCostRequest | undefined,
+    options?: RequestOptions,
+  ): Promise<
+    PageIterator<operations.GetSessionCostResponse, { offset: number }>
+  > {
+    return unwrapResultIterator(datasetsGetSessionCost(
       this,
       request,
       options,
