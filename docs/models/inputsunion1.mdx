@@ -352,6 +352,15 @@ const value: models.OutputFilesServerToolItem = {
 };
 ```
 
+### `models.OutputShellServerToolItem`
+
+```typescript
+const value: models.OutputShellServerToolItem = {
+  status: "completed",
+  type: "openrouter:shell",
+};
+```
+
 ### `models.LocalShellCallItem`
 
 ```typescript
@@ -405,7 +414,12 @@ const value: models.ShellCallOutputItem = {
   callId: "call-abc123",
   output: [
     {
-      type: "stdout",
+      outcome: {
+        exitCode: 0,
+        type: "exit",
+      },
+      stderr: "",
+      stdout: "total 0\n",
     },
   ],
   type: "shell_call_output",
