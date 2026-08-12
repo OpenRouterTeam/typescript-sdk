@@ -68,8 +68,23 @@ const TOOL_CALL = {
   status: 'completed',
 } as const;
 
+const WEATHER_TOOL = tool({
+  name: 'weather',
+  inputSchema: z.object({
+    city: z.string(),
+  }),
+  outputSchema: z.object({
+    temperature: z.number(),
+  }),
+  async execute(): Promise<{ temperature: number }> {
+    return {
+      temperature: 72,
+    };
+  },
+});
+
 describe('ModelResult replay-buffer compaction', () => {
-  it('returns the final response after getTextStream drains trimmed events', async () => {
+  it('replays initial events to sequential stream getters by default', async () => {
     const { client } = clientWithResponses([
       completedSseResponse('resp_text', [FINAL_MESSAGE], [textDeltaEvent('hello')]),
     ]);
@@ -80,18 +95,39 @@ describe('ModelResult replay-buffer compaction', () => {
 
     expect(await Array.fromAsync(result.getTextStream())).toEqual(['hello']);
 
+    const replayedEvents = await Array.fromAsync(result.getFullResponsesStream());
+    expect(replayedEvents.map((event) => event.type)).toEqual([
+      'response.created',
+      'response.output_text.delta',
+      'response.completed',
+    ]);
+  });
+
+  it('returns the final response after active-consumer replay trims streamed events', async () => {
+    const { client } = clientWithResponses([
+      completedSseResponse('resp_text', [FINAL_MESSAGE], [textDeltaEvent('hello')]),
+    ]);
+    const result = callModel(client, {
+      model: 'test/model',
+      input: 'Say hello',
+      streamReplay: 'active-consumers',
+    });
+
+    expect(await Array.fromAsync(result.getTextStream())).toEqual(['hello']);
+
     const response = await result.getResponse();
     expect(response.id).toBe('resp_text');
     expect(await result.getText()).toBe('hello');
   });
 
-  it('returns tool calls after getFullResponsesStream drains trimmed events', async () => {
+  it('returns tool calls after active-consumer replay trims streamed events', async () => {
     const { client } = clientWithResponses([
       completedSseResponse('resp_tool_call', [TOOL_CALL]),
     ]);
     const result = callModel(client, {
       model: 'test/model',
       input: 'Check the weather',
+      streamReplay: 'active-consumers',
     });
 
     await Array.fromAsync(result.getFullResponsesStream());
@@ -114,6 +150,7 @@ describe('ModelResult replay-buffer compaction', () => {
     const result = callModel(client, {
       model: 'test/model',
       input: 'Fail this request',
+      streamReplay: 'active-consumers',
     });
 
     await Array.fromAsync(result.getFullResponsesStream());
@@ -121,33 +158,80 @@ describe('ModelResult replay-buffer compaction', () => {
     await expect(result.getResponse()).rejects.toThrow('upstream provider failed');
   });
 
-  it('coordinates the initial pipe with an immediate streaming tool response', async () => {
-    const panelTool = tool({
-      name: 'weather',
-      inputSchema: z.object({
-        city: z.string(),
-      }),
-      outputSchema: z.object({
-        temperature: z.number(),
-      }),
-      async execute(): Promise<{ temperature: number }> {
-        return {
-          temperature: 72,
-        };
-      },
-    });
-    const { client, requestCount } = clientWithResponses([
-      completedSseResponse(
-        'resp_tool_call',
-        [TOOL_CALL],
-        Array.from({ length: 256 }, (_, index) => textDeltaEvent('x', index + 1)),
-      ),
+  it('keeps streamReplay out of initial and reconstructed follow-up request bodies', async () => {
+    const { client, requestBodies } = clientWithResponses([
+      completedSseResponse('resp_tool_call', [TOOL_CALL]),
       completedSseResponse('resp_final', [FINAL_MESSAGE]),
     ]);
     const result = callModel(client, {
       model: 'test/model',
       input: 'Check the weather',
-      tools: [panelTool],
+      tools: [WEATHER_TOOL],
+      streamReplay: 'active-consumers',
+    });
+
+    expect((await result.getResponse()).id).toBe('resp_final');
+    expect(requestBodies()).toHaveLength(2);
+    expect(requestBodies().every((body) => !('streamReplay' in body))).toBe(true);
+  });
+
+  it.each(['response.completed', 'response.incomplete'] as const)(
+    'settles an open body at %s and cancels the source exactly once',
+    async (terminalType) => {
+      const terminal = openTerminalSseResponse(
+        `resp_${terminalType}`,
+        terminalType,
+        [FINAL_MESSAGE],
+        terminalType === 'response.completed',
+      );
+      const { client } = clientWithResponses([terminal.response]);
+      const result = callModel(client, {
+        model: 'test/model',
+        input: 'Say hello',
+      });
+
+      const response = await result.getResponse();
+
+      expect(response.id).toBe(`resp_${terminalType}`);
+      expect(terminal.cancellationCount()).toBe(1);
+    },
+  );
+
+  it('settles an open failed body with the provider error and cancels exactly once', async () => {
+    const terminal = openTerminalSseResponse(
+      'resp_failed_open',
+      'response.failed',
+      [],
+    );
+    const { client } = clientWithResponses([terminal.response]);
+    const result = callModel(client, {
+      model: 'test/model',
+      input: 'Fail this request',
+    });
+
+    await expect(result.getResponse()).rejects.toThrow('upstream provider failed');
+    expect(terminal.cancellationCount()).toBe(1);
+  });
+
+  it('cancels open initial and follow-up bodies while preserving tool event order', async () => {
+    const initial = openTerminalSseResponse(
+      'resp_tool_call',
+      'response.completed',
+      [TOOL_CALL],
+    );
+    const followUp = openTerminalSseResponse(
+      'resp_final',
+      'response.completed',
+      [FINAL_MESSAGE],
+    );
+    const { client, requestCount } = clientWithResponses([
+      initial.response,
+      followUp.response,
+    ]);
+    const result = callModel(client, {
+      model: 'test/model',
+      input: 'Check the weather',
+      tools: [WEATHER_TOOL],
     });
 
     const events = await Array.fromAsync(result.getFullResponsesStream());
@@ -157,18 +241,31 @@ describe('ModelResult replay-buffer compaction', () => {
     expect(events.filter((event) => event.type === 'response.completed')).toHaveLength(2);
     expect(events.filter((event) => event.type === 'tool.result')).toHaveLength(1);
     expect(eventTypes.indexOf('turn.end')).toBeLessThan(eventTypes.indexOf('tool.result'));
+    expect(initial.cancellationCount()).toBe(1);
+    expect(followUp.cancellationCount()).toBe(1);
   });
 });
 
 interface TestClient {
   readonly client: OpenRouterCore;
   readonly requestCount: () => number;
+  readonly requestBodies: () => readonly Record<string, unknown>[];
 }
 
 function clientWithResponses(responses: readonly Response[]): TestClient {
   let requestCount = 0;
+  const requestBodies: Record<string, unknown>[] = [];
   const httpClient = new HTTPClient({
-    async fetcher(): Promise<Response> {
+    async fetcher(input): Promise<Response> {
+      if (!(input instanceof Request)) {
+        throw new TypeError('Expected the SDK to send a Request instance');
+      }
+      const body: unknown = await input.clone().json();
+      if (!isRecord(body)) {
+        throw new TypeError('Expected the SDK request body to be a JSON object');
+      }
+      requestBodies.push(body);
+
       const response = responses[requestCount];
       requestCount++;
       if (!response) {
@@ -184,6 +281,7 @@ function clientWithResponses(responses: readonly Response[]): TestClient {
       httpClient,
     }),
     requestCount: () => requestCount,
+    requestBodies: () => requestBodies,
   };
 }
 
@@ -254,13 +352,86 @@ function textDeltaEvent(delta: string, sequenceNumber = 1): Record<string, unkno
   };
 }
 
+type TerminalEventType =
+  | 'response.completed'
+  | 'response.failed'
+  | 'response.incomplete';
+
+interface OpenTerminalResponse {
+  readonly response: Response;
+  readonly cancellationCount: () => number;
+}
+
+function openTerminalSseResponse(
+  id: string,
+  terminalType: TerminalEventType,
+  output: readonly unknown[],
+  shouldCancellationFail = false,
+  intermediateEvents: readonly Record<string, unknown>[] = [],
+): OpenTerminalResponse {
+  let cancellationCount = 0;
+  const response = {
+    ...RESPONSE_BASE,
+    id,
+    output,
+    status: terminalType.replace('response.', ''),
+    error: terminalType === 'response.failed'
+      ? {
+          code: 'server_error',
+          message: 'upstream provider failed',
+        }
+      : null,
+    incomplete_details: terminalType === 'response.incomplete'
+      ? {
+          reason: 'max_output_tokens',
+        }
+      : null,
+  };
+  const events = [
+    createdEvent(response),
+    ...intermediateEvents,
+    {
+      type: terminalType,
+      sequence_number: intermediateEvents.length + 1,
+      response,
+    },
+  ];
+  const body = new ReadableStream<Uint8Array>({
+    start(controller): void {
+      controller.enqueue(new TextEncoder().encode(serializeSse(events)));
+    },
+    cancel(): void {
+      cancellationCount++;
+      if (shouldCancellationFail) {
+        throw new Error('source cancellation failed');
+      }
+    },
+  });
+
+  return {
+    response: new Response(body, {
+      headers: {
+        'Content-Type': 'text/event-stream',
+      },
+    }),
+    cancellationCount: () => cancellationCount,
+  };
+}
+
 function sseResponse(events: readonly Record<string, unknown>[]): Response {
-  const body = events
-    .map((event) => `event: ${String(event['type'])}\ndata: ${JSON.stringify(event)}\n\n`)
-    .join('');
-  return new Response(body, {
+  return new Response(serializeSse(events), {
     headers: {
       'Content-Type': 'text/event-stream',
     },
   });
+}
+
+function serializeSse(events: readonly Record<string, unknown>[]): string {
+  return events
+    .map((event) => `event: ${String(event['type'])}\ndata: ${JSON.stringify(event)}\n\n`)
+    .join('');
+}
+
+function isRecord(value: unknown): value is Record<string, unknown> {
+  return typeof value === 'object' && value !== null && !Array.isArray(value);
 }

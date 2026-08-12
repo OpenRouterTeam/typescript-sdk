@@ -5,9 +5,18 @@
  * Key features:
  * - Multiple concurrent consumers with independent read positions
  * - New consumers can attach while streaming is active
- * - Efficient memory management with automatic cleanup
+ * - Full replay for delayed and sequential consumers by default
+ * - Opt-in active-consumer replay compaction for bounded memory
  * - Each consumer can read at their own pace
  */
+export type StreamReplay = 'full' | 'active-consumers';
+
+export interface ReusableReadableStreamOptions<T> {
+  streamReplay?: StreamReplay;
+  onValue?: (value: T) => void;
+  isTerminalValue?: (value: T) => boolean;
+}
+
 export class ReusableReadableStream<T> {
   private buffer: (T | undefined)[] = [];
   private bufferHead = 0;
@@ -19,17 +28,25 @@ export class ReusableReadableStream<T> {
   private sourceComplete = false;
   private sourceError: Error | null = null;
   private pumpStarted = false;
+  private sourceCancelPromise: Promise<void> | null = null;
+  private readonly streamReplay: StreamReplay;
+  private readonly onValue: ((value: T) => void) | undefined;
+  private readonly isTerminalValue: ((value: T) => boolean) | undefined;
 
   constructor(
     private sourceStream: ReadableStream<T>,
-    private readonly onValue?: (value: T) => void,
-  ) {}
+    options: ReusableReadableStreamOptions<T> = {},
+  ) {
+    this.streamReplay = options.streamReplay ?? 'full';
+    this.onValue = options.onValue;
+    this.isTerminalValue = options.isTerminalValue;
+  }
 
   /**
    * Create a new consumer that can independently iterate over the stream.
-   * Consumers receive events from the earliest still-buffered position:
-   * position 0 until a first consumer exists, thereafter the trim watermark.
-   * Multiple consumers can be created and will receive the same remaining data.
+   * Full-replay consumers start at position 0. Active-consumer replay starts
+   * at the current trim watermark. Multiple attached consumers advance
+   * independently in either mode.
    */
   createConsumer(): AsyncIterableIterator<T> {
     const consumerId = this.nextConsumerId++;
@@ -156,9 +173,10 @@ export class ReusableReadableStream<T> {
    * Drop buffered chunks every registered consumer has already consumed.
    * Clear slots immediately so payloads are collectable, but physically
    * slice only at 1,024 dead slots and 50% waste to amortize compaction.
+   * This is enabled only for active-consumer replay.
    */
   private trimConsumed(): void {
-    if (this.consumers.size === 0) {
+    if (this.streamReplay === 'full' || this.consumers.size === 0) {
       return;
     }
 
@@ -207,10 +225,11 @@ export class ReusableReadableStream<T> {
     this.pumpStarted = true;
     this.sourceReader = this.sourceStream.getReader();
 
+    const sourceReader = this.sourceReader;
     void (async () => {
       try {
         while (true) {
-          const result = await this.sourceReader!.read();
+          const result = await sourceReader.read();
 
           if (result.done) {
             this.sourceComplete = true;
@@ -224,16 +243,38 @@ export class ReusableReadableStream<T> {
 
           // Notify waiting consumers
           this.notifyAllConsumers();
+
+          if (this.isTerminalValue?.(result.value)) {
+            this.sourceComplete = true;
+            this.notifyAllConsumers();
+            try {
+              await this.cancelSourceReader(sourceReader);
+            } catch {
+              // The terminal event is authoritative; cancellation is cleanup only.
+            }
+            break;
+          }
         }
       } catch (error) {
         this.sourceError = error instanceof Error ? error : new Error(String(error));
         this.notifyAllConsumers();
       } finally {
-        if (this.sourceReader) {
-          this.sourceReader.releaseLock();
+        sourceReader.releaseLock();
+        if (this.sourceReader === sourceReader) {
+          this.sourceReader = null;
         }
       }
     })();
+  }
+
+  /** Cancel the source reader at most once across terminal and public cancellation. */
+  private cancelSourceReader(
+    sourceReader: ReadableStreamDefaultReader<T>,
+  ): Promise<void> {
+    if (!this.sourceCancelPromise) {
+      this.sourceCancelPromise = sourceReader.cancel();
+    }
+    return this.sourceCancelPromise;
   }
 
   /**
@@ -267,8 +308,7 @@ export class ReusableReadableStream<T> {
 
     // Cancel the source stream
     if (this.sourceReader) {
-      await this.sourceReader.cancel();
-      this.sourceReader.releaseLock();
+      await this.cancelSourceReader(this.sourceReader);
     }
   }
 }

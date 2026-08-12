@@ -40,7 +40,10 @@ import {
   unsentResultsToAPIFormat,
   updateState,
 } from './conversation-state.js';
-import { ReusableReadableStream } from './reusable-stream.js';
+import {
+  ReusableReadableStream,
+  type StreamReplay,
+} from './reusable-stream.js';
 import {
   buildItemsStream,
   buildResponsesMessageStream,
@@ -97,6 +100,14 @@ function isEventStream(value: unknown): value is EventStream<models.StreamEvents
   return typeof maybeStream.toReadableStream === 'function';
 }
 
+function isTerminalResponseStreamEvent(event: models.StreamEvents): boolean {
+  return (
+    isResponseCompletedEvent(event) ||
+    isResponseFailedEvent(event) ||
+    isResponseIncompleteEvent(event)
+  );
+}
+
 export interface GetResponseOptions<
   TTools extends readonly Tool[],
   TShared extends Record<string, unknown> = Record<string, never>,
@@ -129,6 +140,8 @@ export interface GetResponseOptions<
   onTurnStart?: (context: TurnContext) => void | Promise<void>;
   /** Callback invoked at the end of each tool execution turn */
   onTurnEnd?: (context: TurnContext, response: models.OpenResponsesResult) => void | Promise<void>;
+  /** Replay history retained for delayed and sequential stream consumers. */
+  streamReplay?: StreamReplay;
 }
 
 /**
@@ -199,12 +212,14 @@ export class ModelResult<
   private initialPipePromise: Promise<void> | null = null;
   private initialResponse: models.OpenResponsesResult | null = null;
   private initialResponseError: Error | null = null;
+  private readonly streamReplay: StreamReplay;
 
   // Context store for typed tool context (persists across turns)
   private contextStore: ToolContextStore | null = null;
 
   constructor(options: GetResponseOptions<TTools, TShared>) {
     this.options = options;
+    this.streamReplay = options.streamReplay ?? 'full';
 
     // Runtime validation: approval decisions require state
     const hasApprovalDecisions =
@@ -233,7 +248,7 @@ export class ModelResult<
     ResponseStreamEvent<InferToolEventsUnion<TTools>, InferToolOutputsUnion<TTools>>
   > {
     if (!this.turnBroadcaster) {
-      this.turnBroadcaster = new ToolEventBroadcaster();
+      this.turnBroadcaster = new ToolEventBroadcaster(this.streamReplay);
     }
     return this.turnBroadcaster;
   }
@@ -299,7 +314,11 @@ export class ModelResult<
     this.initialResponseError = null;
     this.reusableStream = new ReusableReadableStream(
       stream,
-      (event) => this.captureInitialStreamEvent(event),
+      {
+        streamReplay: this.streamReplay,
+        onValue: (event) => this.captureInitialStreamEvent(event),
+        isTerminalValue: isTerminalResponseStreamEvent,
+      },
     );
   }
 
@@ -934,7 +953,10 @@ export class ModelResult<
     // Handle streaming or non-streaming response
     const value = newResult.value;
     if (isEventStream(value)) {
-      const followUpStream = new ReusableReadableStream(value);
+      const followUpStream = new ReusableReadableStream(value, {
+        streamReplay: this.streamReplay,
+        isTerminalValue: isTerminalResponseStreamEvent,
+      });
 
       if (this.turnBroadcaster) {
         return this.pipeAndConsumeStream(followUpStream, turnNumber);
@@ -978,7 +1000,7 @@ export class ModelResult<
     }
     // Already resolved, extract non-function fields
     // Filter out stopWhen and state-related fields that aren't part of the API request
-    const { stopWhen: _, state: _s, requireApproval: _r, approveToolCalls: _a, rejectToolCalls: _rj, context: _c, ...rest } = this.options.request;
+    const { stopWhen: _, state: _s, requireApproval: _r, approveToolCalls: _a, rejectToolCalls: _rj, context: _c, streamReplay: _sr, ...rest } = this.options.request;
     return rest as ResolvedCallModelInput;
   }
 

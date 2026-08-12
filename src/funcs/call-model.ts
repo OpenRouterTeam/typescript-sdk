@@ -87,6 +87,7 @@ export function callModel<
     sharedContextSchema,
     onTurnStart,
     onTurnEnd,
+    streamReplay,
     ...apiRequest
   } = request;
 
@@ -128,5 +129,6 @@ export function callModel<
     ...(sharedContextSchema !== undefined && { sharedContextSchema }),
     ...(onTurnStart !== undefined && { onTurnStart }),
     ...(onTurnEnd !== undefined && { onTurnEnd }),
+    ...(streamReplay !== undefined && { streamReplay }),
   } as GetResponseOptions<TTools, TShared>);
 }

@@ -1,10 +1,13 @@
+import type { StreamReplay } from './reusable-stream.js';
+
 /**
  * A push-based event broadcaster that supports multiple concurrent consumers.
  * Similar to ReusableReadableStream but for push-based events from tool execution.
  *
- * Each consumer gets their own position in the buffer and receives all events
- * from the earliest still-buffered position. This enables real-time streaming
- * of generator tool preliminary results to multiple consumers simultaneously.
+ * Each consumer gets their own position in the buffer. Full replay is the
+ * default; callers can opt into watermark compaction for active consumers.
+ * This enables real-time streaming of generator tool preliminary results to
+ * multiple consumers simultaneously.
  *
  * @template T - The event type being broadcast
  */
@@ -18,10 +21,12 @@ export class ToolEventBroadcaster<T> {
   private isComplete = false;
   private completionError: Error | null = null;
 
+  constructor(private readonly streamReplay: StreamReplay = 'full') {}
+
   /**
    * Push a new event to all consumers.
-   * Events are buffered so late-joining consumers can catch up from the trim
-   * watermark.
+   * Events are buffered so late-joining consumers can catch up according to
+   * the configured replay policy.
    */
   push(event: T): void {
     if (this.isComplete) {
@@ -50,7 +55,11 @@ export class ToolEventBroadcaster<T> {
    */
   private cleanup(): void {
     // Only cleanup if complete and all consumers are done
-    if (this.isComplete && this.consumers.size === 0) {
+    if (
+      this.streamReplay === 'active-consumers' &&
+      this.isComplete &&
+      this.consumers.size === 0
+    ) {
       this.buffer = [];
       this.bufferHead = 0;
     }
@@ -58,9 +67,9 @@ export class ToolEventBroadcaster<T> {
 
   /**
    * Create a new consumer that can independently iterate over events.
-   * Consumers receive events from the earliest still-buffered position:
-   * position 0 until a first consumer exists, thereafter the trim watermark.
-   * Multiple consumers can be created and will all receive the same events.
+   * Full-replay consumers start at position 0. Active-consumer replay starts
+   * at the current trim watermark. Multiple attached consumers advance
+   * independently in either mode.
    */
   createConsumer(): AsyncIterableIterator<T> {
     const consumerId = this.nextConsumerId++;
@@ -159,9 +168,10 @@ export class ToolEventBroadcaster<T> {
    * Drop buffered events every registered consumer has already consumed.
    * Clear slots immediately so payloads are collectable, but physically
    * slice only at 1,024 dead slots and 50% waste to amortize compaction.
+   * This is enabled only for active-consumer replay.
    */
   private trimConsumed(): void {
-    if (this.consumers.size === 0) {
+    if (this.streamReplay === 'full' || this.consumers.size === 0) {
       return;
     }
 

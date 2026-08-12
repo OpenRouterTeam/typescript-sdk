@@ -8,9 +8,19 @@ const PARTIAL_DRAIN_SIZE = 3073;
 const APPENDED_BACKLOG_SIZE = 4096;
 
 describe('SDK replay-buffer compaction', () => {
+  it('keeps full broadcaster replay by default for sequential post-completion consumers', async () => {
+    const broadcaster = new ToolEventBroadcaster<number>();
+    broadcaster.push(1);
+    broadcaster.push(2);
+    broadcaster.complete();
+
+    expect(await Array.fromAsync(broadcaster.createConsumer())).toEqual([1, 2]);
+    expect(await Array.fromAsync(broadcaster.createConsumer())).toEqual([1, 2]);
+  });
+
   it('delivers a large buffered event backlog in order to every attached consumer', async () => {
     const values = numberedValues(LARGE_BACKLOG_SIZE);
-    const broadcaster = new ToolEventBroadcaster<number>();
+    const broadcaster = new ToolEventBroadcaster<number>('active-consumers');
     const fast = broadcaster.createConsumer();
     const slow = broadcaster.createConsumer();
 
@@ -24,7 +34,7 @@ describe('SDK replay-buffer compaction', () => {
   });
 
   it('starts late event consumers after data released when a lagging consumer returns', async () => {
-    const broadcaster = new ToolEventBroadcaster<number>();
+    const broadcaster = new ToolEventBroadcaster<number>('active-consumers');
     const fast = broadcaster.createConsumer();
     const slow = broadcaster.createConsumer();
     [1, 2, 3].forEach((value) => broadcaster.push(value));
@@ -42,7 +52,7 @@ describe('SDK replay-buffer compaction', () => {
   });
 
   it('starts late event consumers after data released when a lagging consumer throws', async () => {
-    const broadcaster = new ToolEventBroadcaster<number>();
+    const broadcaster = new ToolEventBroadcaster<number>('active-consumers');
     const fast = broadcaster.createConsumer();
     const slow = broadcaster.createConsumer();
     [1, 2, 3].forEach((value) => broadcaster.push(value));
@@ -61,7 +71,7 @@ describe('SDK replay-buffer compaction', () => {
   });
 
   it('preserves the unread event suffix after the last consumer returns', async () => {
-    const broadcaster = new ToolEventBroadcaster<number>();
+    const broadcaster = new ToolEventBroadcaster<number>('active-consumers');
     const first = broadcaster.createConsumer();
     [1, 2, 3].forEach((value) => broadcaster.push(value));
     expect((await first.next()).value).toBe(1);
@@ -78,7 +88,7 @@ describe('SDK replay-buffer compaction', () => {
     const initial = valuesWithUndefined(0, LARGE_BACKLOG_SIZE);
     const appended = valuesWithUndefined(LARGE_BACKLOG_SIZE, APPENDED_BACKLOG_SIZE);
     const expected = [...initial, ...appended];
-    const broadcaster = new ToolEventBroadcaster<number | undefined>();
+    const broadcaster = new ToolEventBroadcaster<number | undefined>('active-consumers');
     const fast = broadcaster.createConsumer();
     const slow = broadcaster.createConsumer();
     initial.forEach((value) => broadcaster.push(value));
@@ -108,7 +118,7 @@ describe('SDK replay-buffer compaction', () => {
   });
 
   it('delivers buffered events before throwing the terminal error', async () => {
-    const broadcaster = new ToolEventBroadcaster<number>();
+    const broadcaster = new ToolEventBroadcaster<number>('active-consumers');
     const consumer = broadcaster.createConsumer();
     const error = new Error('terminal broadcaster error');
     broadcaster.push(1);
@@ -120,11 +130,42 @@ describe('SDK replay-buffer compaction', () => {
     await expect(consumer.next()).rejects.toBe(error);
   });
 
+  it('keeps full stream replay by default for sequential post-completion consumers', async () => {
+    const stream = new ReusableReadableStream<number>(streamOf([1, 2]));
+
+    expect(await Array.fromAsync(stream.createConsumer())).toEqual([1, 2]);
+    expect(await Array.fromAsync(stream.createConsumer())).toEqual([1, 2]);
+  });
+
+  it('treats a terminal value as authoritative when source cancellation fails', async () => {
+    let cancellationCount = 0;
+    const source = new ReadableStream<number>({
+      start(controller): void {
+        controller.enqueue(1);
+        controller.enqueue(2);
+      },
+      cancel(): void {
+        cancellationCount++;
+        throw new Error('source cancellation failed');
+      },
+    });
+    const stream = new ReusableReadableStream(source, {
+      isTerminalValue: (value) => value === 2,
+    });
+
+    expect(await Array.fromAsync(stream.createConsumer())).toEqual([1, 2]);
+    await yieldToStreamPump();
+    expect(cancellationCount).toBe(1);
+    expect(source.locked).toBe(false);
+  });
+
   it('delivers a large buffered stream backlog including undefined values in order', async () => {
     const values = Array.from({ length: LARGE_BACKLOG_SIZE }, (_, index) =>
       index % 1024 === 0 ? undefined : index,
     );
-    const stream = new ReusableReadableStream<number | undefined>(streamOf(values));
+    const stream = new ReusableReadableStream<number | undefined>(streamOf(values), {
+      streamReplay: 'active-consumers',
+    });
     const fast = stream.createConsumer();
     const slow = stream.createConsumer();
 
@@ -136,7 +177,9 @@ describe('SDK replay-buffer compaction', () => {
   });
 
   it('starts late stream consumers after data released when a lagging consumer returns', async () => {
-    const stream = new ReusableReadableStream<number>(streamOf([1, 2, 3]));
+    const stream = new ReusableReadableStream<number>(streamOf([1, 2, 3]), {
+      streamReplay: 'active-consumers',
+    });
     const fast = stream.createConsumer();
     const slow = stream.createConsumer();
     expect((await fast.next()).value).toBe(1);
@@ -151,7 +194,9 @@ describe('SDK replay-buffer compaction', () => {
   });
 
   it('starts late stream consumers after data released when a lagging consumer throws', async () => {
-    const stream = new ReusableReadableStream<number>(streamOf([1, 2, 3]));
+    const stream = new ReusableReadableStream<number>(streamOf([1, 2, 3]), {
+      streamReplay: 'active-consumers',
+    });
     const fast = stream.createConsumer();
     const slow = stream.createConsumer();
     expect((await fast.next()).value).toBe(1);
@@ -167,7 +212,9 @@ describe('SDK replay-buffer compaction', () => {
   });
 
   it('preserves the unread stream suffix after the last consumer returns', async () => {
-    const stream = new ReusableReadableStream<number>(streamOf([1, 2, 3]));
+    const stream = new ReusableReadableStream<number>(streamOf([1, 2, 3]), {
+      streamReplay: 'active-consumers',
+    });
     const first = stream.createConsumer();
     expect((await first.next()).value).toBe(1);
 
@@ -194,7 +241,9 @@ describe('SDK replay-buffer compaction', () => {
       throw new Error('ReadableStream did not initialize its controller');
     }
     initial.forEach((value) => controller.enqueue(value));
-    const stream = new ReusableReadableStream<number | undefined>(source);
+    const stream = new ReusableReadableStream<number | undefined>(source, {
+      streamReplay: 'active-consumers',
+    });
     const fast = stream.createConsumer();
     const slow = stream.createConsumer();
     await yieldToStreamPump();

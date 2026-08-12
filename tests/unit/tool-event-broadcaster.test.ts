@@ -82,7 +82,7 @@ describe('ToolEventBroadcaster', () => {
     });
 
     it('should start late consumers at the trim watermark', async () => {
-      const broadcaster = new ToolEventBroadcaster<number>();
+      const broadcaster = new ToolEventBroadcaster<number>('active-consumers');
       const consumer1 = broadcaster.createConsumer();
 
       broadcaster.push(1);
