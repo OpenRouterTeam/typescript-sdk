@@ -54,6 +54,7 @@ export * from "./getpreset.js";
 export * from "./getpresetversion.js";
 export * from "./getrankingsdaily.js";
 export * from "./getscimgroupmapping.js";
+export * from "./getsessioncost.js";
 export * from "./gettaskclassifications.js";
 export * from "./getuseractivity.js";
 export * from "./getvideos.js";
