@@ -3,13 +3,16 @@
  * Similar to ReusableReadableStream but for push-based events from tool execution.
  *
  * Each consumer gets their own position in the buffer and receives all events
- * from their join point onward. This enables real-time streaming of generator
- * tool preliminary results to multiple consumers simultaneously.
+ * from the earliest still-buffered position. This enables real-time streaming
+ * of generator tool preliminary results to multiple consumers simultaneously.
  *
  * @template T - The event type being broadcast
  */
 export class ToolEventBroadcaster<T> {
-  private buffer: T[] = [];
+  private buffer: (T | undefined)[] = [];
+  private bufferHead = 0;
+  // Consumer positions are absolute. Buffer index = bufferHead + position - trimOffset.
+  private trimOffset = 0;
   private consumers = new Map<number, ConsumerState>();
   private nextConsumerId = 0;
   private isComplete = false;
@@ -17,7 +20,8 @@ export class ToolEventBroadcaster<T> {
 
   /**
    * Push a new event to all consumers.
-   * Events are buffered so late-joining consumers can catch up.
+   * Events are buffered so late-joining consumers can catch up from the trim
+   * watermark.
    */
   push(event: T): void {
     if (this.isComplete) {
@@ -48,18 +52,20 @@ export class ToolEventBroadcaster<T> {
     // Only cleanup if complete and all consumers are done
     if (this.isComplete && this.consumers.size === 0) {
       this.buffer = [];
+      this.bufferHead = 0;
     }
   }
 
   /**
    * Create a new consumer that can independently iterate over events.
-   * Consumers can join at any time and will receive events from position 0.
+   * Consumers receive events from the earliest still-buffered position:
+   * position 0 until a first consumer exists, thereafter the trim watermark.
    * Multiple consumers can be created and will all receive the same events.
    */
   createConsumer(): AsyncIterableIterator<T> {
     const consumerId = this.nextConsumerId++;
     const state: ConsumerState = {
-      position: 0,
+      position: this.trimOffset,
       waitingPromise: null,
       cancelled: false,
     };
@@ -80,9 +86,12 @@ export class ToolEventBroadcaster<T> {
         }
 
         // Return buffered event if available
-        if (consumer.position < self.buffer.length) {
-          const value = self.buffer[consumer.position]!;
+        const bufferIndex =
+          self.bufferHead + consumer.position - self.trimOffset;
+        if (bufferIndex < self.buffer.length) {
+          const value = self.buffer[bufferIndex]!;
           consumer.position++;
+          self.trimConsumed();
           return { done: false, value };
         }
 
@@ -104,7 +113,8 @@ export class ToolEventBroadcaster<T> {
           if (
             self.isComplete ||
             self.completionError ||
-            consumer.position < self.buffer.length
+            self.bufferHead + consumer.position - self.trimOffset <
+              self.buffer.length
           ) {
             resolve();
           }
@@ -122,6 +132,7 @@ export class ToolEventBroadcaster<T> {
         if (consumer) {
           consumer.cancelled = true;
           self.consumers.delete(consumerId);
+          self.trimConsumed();
           self.cleanup();
         }
         return { done: true, value: undefined };
@@ -132,6 +143,7 @@ export class ToolEventBroadcaster<T> {
         if (consumer) {
           consumer.cancelled = true;
           self.consumers.delete(consumerId);
+          self.trimConsumed();
           self.cleanup();
         }
         throw e;
@@ -141,6 +153,51 @@ export class ToolEventBroadcaster<T> {
         return this;
       },
     };
+  }
+
+  /**
+   * Drop buffered events every registered consumer has already consumed.
+   * Clear slots immediately so payloads are collectable, but physically
+   * slice only at 1,024 dead slots and 50% waste to amortize compaction.
+   */
+  private trimConsumed(): void {
+    if (this.consumers.size === 0) {
+      return;
+    }
+
+    let min = Infinity;
+    for (const consumer of this.consumers.values()) {
+      if (consumer.position < min) {
+        min = consumer.position;
+      }
+    }
+
+    const nextHead = this.bufferHead + min - this.trimOffset;
+    if (nextHead <= this.bufferHead) {
+      return;
+    }
+
+    this.trimOffset = min;
+    if (nextHead === this.buffer.length) {
+      if (nextHead >= BUFFER_COMPACTION_MIN_HEAD) {
+        this.buffer = [];
+      } else {
+        this.buffer.length = 0;
+      }
+      this.bufferHead = 0;
+      return;
+    }
+
+    this.buffer.fill(undefined, this.bufferHead, nextHead);
+    if (
+      nextHead >= BUFFER_COMPACTION_MIN_HEAD &&
+      nextHead * 2 >= this.buffer.length
+    ) {
+      this.buffer = this.buffer.slice(nextHead);
+      this.bufferHead = 0;
+      return;
+    }
+    this.bufferHead = nextHead;
   }
 
   /**
@@ -168,3 +225,5 @@ interface ConsumerState {
   } | null;
   cancelled: boolean;
 }
+
+const BUFFER_COMPACTION_MIN_HEAD = 1024;

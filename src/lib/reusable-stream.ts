@@ -9,7 +9,10 @@
  * - Each consumer can read at their own pace
  */
 export class ReusableReadableStream<T> {
-  private buffer: T[] = [];
+  private buffer: (T | undefined)[] = [];
+  private bufferHead = 0;
+  // Consumer positions are absolute. Buffer index = bufferHead + position - trimOffset.
+  private trimOffset = 0;
   private consumers = new Map<number, ConsumerState>();
   private nextConsumerId = 0;
   private sourceReader: ReadableStreamDefaultReader<T> | null = null;
@@ -21,12 +24,14 @@ export class ReusableReadableStream<T> {
 
   /**
    * Create a new consumer that can independently iterate over the stream.
-   * Multiple consumers can be created and will all receive the same data.
+   * Consumers receive events from the earliest still-buffered position:
+   * position 0 until a first consumer exists, thereafter the trim watermark.
+   * Multiple consumers can be created and will receive the same remaining data.
    */
   createConsumer(): AsyncIterableIterator<T> {
     const consumerId = this.nextConsumerId++;
     const state: ConsumerState = {
-      position: 0,
+      position: this.trimOffset,
       waitingPromise: null,
       cancelled: false,
     };
@@ -58,10 +63,12 @@ export class ReusableReadableStream<T> {
         }
 
         // If we have buffered data at this position, return it
-        if (consumer.position < self.buffer.length) {
-          const value = self.buffer[consumer.position]!;
+        const bufferIndex =
+          self.bufferHead + consumer.position - self.trimOffset;
+        if (bufferIndex < self.buffer.length) {
+          const value = self.buffer[bufferIndex]!;
           consumer.position++;
-          // Note: We don't clean up buffer to allow sequential/reusable access
+          self.trimConsumed();
           return {
             done: false,
             value,
@@ -94,7 +101,12 @@ export class ReusableReadableStream<T> {
           // Immediately check if we should resolve after setting up the promise
           // This handles the case where data arrived or source completed
           // between our initial checks and promise creation
-          if (self.sourceComplete || self.sourceError || consumer.position < self.buffer.length) {
+          if (
+            self.sourceComplete ||
+            self.sourceError ||
+            self.bufferHead + consumer.position - self.trimOffset <
+              self.buffer.length
+          ) {
             resolve();
           }
         });
@@ -113,6 +125,7 @@ export class ReusableReadableStream<T> {
         if (consumer) {
           consumer.cancelled = true;
           self.consumers.delete(consumerId);
+          self.trimConsumed();
         }
         return {
           done: true,
@@ -125,6 +138,7 @@ export class ReusableReadableStream<T> {
         if (consumer) {
           consumer.cancelled = true;
           self.consumers.delete(consumerId);
+          self.trimConsumed();
         }
         throw e;
       },
@@ -133,6 +147,51 @@ export class ReusableReadableStream<T> {
         return this;
       },
     };
+  }
+
+  /**
+   * Drop buffered chunks every registered consumer has already consumed.
+   * Clear slots immediately so payloads are collectable, but physically
+   * slice only at 1,024 dead slots and 50% waste to amortize compaction.
+   */
+  private trimConsumed(): void {
+    if (this.consumers.size === 0) {
+      return;
+    }
+
+    let min = Infinity;
+    for (const consumer of this.consumers.values()) {
+      if (consumer.position < min) {
+        min = consumer.position;
+      }
+    }
+
+    const nextHead = this.bufferHead + min - this.trimOffset;
+    if (nextHead <= this.bufferHead) {
+      return;
+    }
+
+    this.trimOffset = min;
+    if (nextHead === this.buffer.length) {
+      if (nextHead >= BUFFER_COMPACTION_MIN_HEAD) {
+        this.buffer = [];
+      } else {
+        this.buffer.length = 0;
+      }
+      this.bufferHead = 0;
+      return;
+    }
+
+    this.buffer.fill(undefined, this.bufferHead, nextHead);
+    if (
+      nextHead >= BUFFER_COMPACTION_MIN_HEAD &&
+      nextHead * 2 >= this.buffer.length
+    ) {
+      this.buffer = this.buffer.slice(nextHead);
+      this.bufferHead = 0;
+      return;
+    }
+    this.bufferHead = nextHead;
   }
 
   /**
@@ -218,3 +277,5 @@ interface ConsumerState {
   } | null;
   cancelled: boolean;
 }
+
+const BUFFER_COMPACTION_MIN_HEAD = 1024;
