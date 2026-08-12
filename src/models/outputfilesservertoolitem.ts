@@ -27,6 +27,14 @@ export type OutputFilesServerToolItemType = ClosedEnum<
  */
 export type OutputFilesServerToolItem = {
   /**
+   * The raw tool-call arguments string as emitted by the model.
+   */
+  arguments?: string | null | undefined;
+  /**
+   * The model-generated tool call id from the originating turn.
+   */
+  callId?: string | null | undefined;
+  /**
    * Error message when the file operation failed.
    */
   error?: string | undefined;
@@ -65,6 +73,8 @@ export const OutputFilesServerToolItem$inboundSchema: z.ZodType<
   OutputFilesServerToolItem,
   unknown
 > = z.object({
+  arguments: z.nullable(z.string()).optional(),
+  call_id: z.nullable(z.string()).optional(),
   error: z.string().optional(),
   file_id: z.string().optional(),
   filename: z.string().optional(),
@@ -75,11 +85,14 @@ export const OutputFilesServerToolItem$inboundSchema: z.ZodType<
   type: OutputFilesServerToolItemType$inboundSchema,
 }).transform((v) => {
   return remap$(v, {
+    "call_id": "callId",
     "file_id": "fileId",
   });
 });
 /** @internal */
 export type OutputFilesServerToolItem$Outbound = {
+  arguments?: string | null | undefined;
+  call_id?: string | null | undefined;
   error?: string | undefined;
   file_id?: string | undefined;
   filename?: string | undefined;
@@ -95,6 +108,8 @@ export const OutputFilesServerToolItem$outboundSchema: z.ZodType<
   OutputFilesServerToolItem$Outbound,
   OutputFilesServerToolItem
 > = z.object({
+  arguments: z.nullable(z.string()).optional(),
+  callId: z.nullable(z.string()).optional(),
   error: z.string().optional(),
   fileId: z.string().optional(),
   filename: z.string().optional(),
@@ -105,6 +120,7 @@ export const OutputFilesServerToolItem$outboundSchema: z.ZodType<
   type: OutputFilesServerToolItemType$outboundSchema,
 }).transform((v) => {
   return remap$(v, {
+    callId: "call_id",
     fileId: "file_id",
   });
 });
