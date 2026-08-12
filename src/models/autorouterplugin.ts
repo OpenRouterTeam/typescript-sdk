@@ -27,7 +27,7 @@ export type AutoRouterPluginCostTier = OpenEnum<
 
 export type AutoRouterPlugin = {
   /**
-   * List of model patterns to filter which models the auto-router can route between. Supports wildcards (e.g., "anthropic/*" matches all Anthropic models). When not specified, every model ranked for the classified task type is a candidate, falling back to a default model set when rankings are unavailable.
+   * List of model patterns to filter which models the auto-router can route between. Supports wildcards (e.g., "anthropic/*" matches all Anthropic models). Up to 64 patterns, each at most 128 characters. When not specified, every model ranked for the classified task type is a candidate, falling back to a default model set when rankings are unavailable.
    */
   allowedModels?: Array<string> | undefined;
   /**
@@ -45,7 +45,7 @@ export type AutoRouterPlugin = {
    */
   enabled?: boolean | undefined;
   /**
-   * List of model patterns to exclude from auto-router selection. Supports wildcards (e.g., "meta-llama/*" excludes all Llama models). Applied after allowed_models, so an excluded pattern always wins over an allowed one.
+   * List of model patterns to exclude from auto-router selection. Supports wildcards (e.g., "meta-llama/*" excludes all Llama models). Up to 64 patterns, each at most 128 characters. Applied after allowed_models, so an excluded pattern always wins over an allowed one.
    */
   excludedModels?: Array<string> | undefined;
   id: "auto-router";
