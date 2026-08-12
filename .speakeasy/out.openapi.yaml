@@ -2982,13 +2982,15 @@ components:
         id: 'auto-beta-router'
       properties:
         allowed_models:
-          description: 'List of model patterns to filter which models the auto-beta-router can route between. Supports wildcards (e.g., "anthropic/*" matches all Anthropic models). When not specified, every model ranked for the classified task type is a candidate, falling back to a default model set when rankings are unavailable.'
+          description: 'List of model patterns to filter which models the auto-beta-router can route between. Supports wildcards (e.g., "anthropic/*" matches all Anthropic models). Up to 1024 patterns, each at most 1024 characters, with 65536 total characters across all patterns. When not specified, every model ranked for the classified task type is a candidate, falling back to a default model set when rankings are unavailable.'
           example:
             - 'anthropic/*'
             - 'openai/gpt-4o'
             - 'google/*'
           items:
+            maxLength: 1024
             type: 'string'
+          maxItems: 1024
           type: 'array'
         cost_quality_tradeoff:
           deprecated: true
@@ -3012,12 +3014,14 @@ components:
           description: 'Set to false to disable the auto-beta-router plugin for this request. Defaults to true.'
           type: 'boolean'
         excluded_models:
-          description: 'List of model patterns to exclude from auto-beta-router selection. Supports wildcards (e.g., "meta-llama/*" excludes all Llama models). Applied after allowed_models, so an excluded pattern always wins over an allowed one.'
+          description: 'List of model patterns to exclude from auto-beta-router selection. Supports wildcards (e.g., "meta-llama/*" excludes all Llama models). Up to 1024 patterns, each at most 1024 characters, with 65536 total characters across all patterns. Applied after allowed_models, so an excluded pattern always wins over an allowed one.'
           example:
             - 'openai/gpt-4o'
             - 'meta-llama/*'
           items:
+            maxLength: 1024
             type: 'string'
+          maxItems: 1024
           type: 'array'
         id:
           enum:
@@ -3039,13 +3043,15 @@ components:
         pin_model: false
       properties:
         allowed_models:
-          description: 'List of model patterns to filter which models the auto-router can route between. Supports wildcards (e.g., "anthropic/*" matches all Anthropic models). When not specified, every model ranked for the classified task type is a candidate, falling back to a default model set when rankings are unavailable.'
+          description: 'List of model patterns to filter which models the auto-router can route between. Supports wildcards (e.g., "anthropic/*" matches all Anthropic models). Up to 1024 patterns, each at most 1024 characters, with 65536 total characters across all patterns. When not specified, every model ranked for the classified task type is a candidate, falling back to a default model set when rankings are unavailable.'
           example:
             - 'anthropic/*'
             - 'openai/gpt-4o'
             - 'google/*'
           items:
+            maxLength: 1024
             type: 'string'
+          maxItems: 1024
           type: 'array'
         cost_quality_tradeoff:
           deprecated: true
@@ -3069,12 +3075,14 @@ components:
           description: 'Set to false to disable the auto-router plugin for this request. Defaults to true.'
           type: 'boolean'
         excluded_models:
-          description: 'List of model patterns to exclude from auto-router selection. Supports wildcards (e.g., "meta-llama/*" excludes all Llama models). Applied after allowed_models, so an excluded pattern always wins over an allowed one.'
+          description: 'List of model patterns to exclude from auto-router selection. Supports wildcards (e.g., "meta-llama/*" excludes all Llama models). Up to 1024 patterns, each at most 1024 characters, with 65536 total characters across all patterns. Applied after allowed_models, so an excluded pattern always wins over an allowed one.'
           example:
             - 'openai/gpt-4o'
             - 'meta-llama/*'
           items:
+            maxLength: 1024
             type: 'string'
+          maxItems: 1024
           type: 'array'
         id:
           enum:
@@ -34174,16 +34182,18 @@ paths:
               - 'true'
             example: 'true'
             type: 'string'
-        - description: 'Filter to models with endpoints in the given data region. Currently only "eu" is supported.'
+        - description: 'Filter to models with endpoints in the given data region ("eu" or "us").'
           in: 'query'
           name: 'region'
           required: false
           schema:
-            description: 'Filter to models with endpoints in the given data region. Currently only "eu" is supported.'
+            description: 'Filter to models with endpoints in the given data region ("eu" or "us").'
             enum:
               - 'eu'
+              - 'us'
             example: 'eu'
             type: 'string'
+            x-speakeasy-unknown-values: allow
         - description: 'Minimum completion (output) price in $/M tokens.'
           in: 'query'
           name: 'min_output_price'
@@ -34605,7 +34615,7 @@ paths:
       - $ref: "#/components/parameters/AppCategories"
   /models/user:
     get:
-      description: 'List models filtered by user provider preferences, [privacy settings](https://openrouter.ai/docs/guides/privacy/provider-logging), and [guardrails](https://openrouter.ai/docs/guides/features/guardrails). If requesting through `eu.openrouter.ai/api/v1/...` the results will be filtered to models that satisfy [EU in-region routing](https://openrouter.ai/docs/guides/privacy/provider-logging#enterprise-eu-in-region-routing).'
+      description: 'List models filtered by user provider preferences, [privacy settings](https://openrouter.ai/docs/guides/privacy/provider-logging), and [guardrails](https://openrouter.ai/docs/guides/features/guardrails). If requesting through a regional hostname, the results will be filtered to models that satisfy in-region routing for that region.'
       operationId: 'listModelsUser'
       parameters:
         - description: 'Number of records to skip for pagination. When both offset and limit are omitted, the full list is returned'
