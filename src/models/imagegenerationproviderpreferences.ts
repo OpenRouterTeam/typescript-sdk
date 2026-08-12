@@ -53,7 +53,6 @@ export type ImageGenerationProviderPreferencesOptions = {
   crucible?: { [k: string]: any } | undefined;
   crusoe?: { [k: string]: any } | undefined;
   darkbloom?: { [k: string]: any } | undefined;
-  databricks?: { [k: string]: any } | undefined;
   decart?: { [k: string]: any } | undefined;
   deepgram?: { [k: string]: any } | undefined;
   deepinfra?: { [k: string]: any } | undefined;
@@ -270,7 +269,6 @@ export type ImageGenerationProviderPreferencesOptions$Outbound = {
   crucible?: { [k: string]: any } | undefined;
   crusoe?: { [k: string]: any } | undefined;
   darkbloom?: { [k: string]: any } | undefined;
-  databricks?: { [k: string]: any } | undefined;
   decart?: { [k: string]: any } | undefined;
   deepgram?: { [k: string]: any } | undefined;
   deepinfra?: { [k: string]: any } | undefined;
@@ -411,7 +409,6 @@ export const ImageGenerationProviderPreferencesOptions$outboundSchema:
     crucible: z.record(z.string(), z.any()).optional(),
     crusoe: z.record(z.string(), z.any()).optional(),
     darkbloom: z.record(z.string(), z.any()).optional(),
-    databricks: z.record(z.string(), z.any()).optional(),
     decart: z.record(z.string(), z.any()).optional(),
     deepgram: z.record(z.string(), z.any()).optional(),
     deepinfra: z.record(z.string(), z.any()).optional(),
