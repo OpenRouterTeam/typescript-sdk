@@ -22521,6 +22521,82 @@ components:
         - 'code'
         - 'message'
       type: 'object'
+    SessionCostItem:
+      properties:
+        app_name:
+          description: 'Published harness display label.'
+          example: 'Hermes Agent'
+          type: 'string'
+        app_slug:
+          description: 'Stable public slug of the harness.'
+          example: 'hermes-agent'
+          type: 'string'
+        median_session_cost_usd:
+          description: 'Median USD spend per sampled session.'
+          example: 1.74
+          format: 'double'
+          type: 'number'
+        model_permaslug:
+          description: 'Exact model permaslug.'
+          example: 'anthropic/claude-4.8-opus'
+          type: 'string'
+        turn_range:
+          description: 'Inclusive session turn-count range.'
+          enum:
+            - '1-turn'
+            - '2-9-turns'
+            - '10-49-turns'
+            - '50-plus-turns'
+          example: '10-49-turns'
+          type: 'string'
+      required:
+        - 'app_slug'
+        - 'app_name'
+        - 'turn_range'
+        - 'model_permaslug'
+        - 'median_session_cost_usd'
+      type: 'object'
+    SessionCostMeta:
+      properties:
+        as_of:
+          description: 'ISO-8601 timestamp when the response was generated.'
+          example: '2026-05-12T02:00:00.000Z'
+          type: 'string'
+        version:
+          description: 'Dataset version.'
+          enum:
+            - 'v1'
+          type: 'string'
+        window_days:
+          description: 'Number of days in the weekly session sample window, or null when no snapshot is published.'
+          example: 30
+          type:
+            - 'integer'
+            - 'null'
+        window_end_date:
+          description: 'UTC date of the final day in the session sample window, or null when no snapshot is published.'
+          example: '2026-05-11'
+          type:
+            - 'string'
+            - 'null'
+      required:
+        - 'as_of'
+        - 'version'
+        - 'window_days'
+        - 'window_end_date'
+      type: 'object'
+    SessionCostResponse:
+      properties:
+        data:
+          items:
+            $ref: '#/components/schemas/SessionCostItem'
+          type: 'array'
+        meta:
+          $ref: '#/components/schemas/SessionCostMeta'
+      required:
+        - 'data'
+        - 'meta'
+      type: 'object'
     ShellCallItem:
       description: 'A shell command execution call (newer variant)'
       example:
@@ -28825,6 +28901,137 @@ paths:
       summary: 'Daily token totals for top 50 models'
       tags:
         - 'Datasets'
+  /datasets/session-cost:
+    get:
+      description: "Returns weekly refreshed, aggregated cost-per-session cells for the published harnesses.\nSessions are never pooled across apps. Medians are of per-session USD spend, and\nprivacy-preserving aggregation never exposes clerk_user_id values or per-session rows.\n\nFilter by `app_slug`, `model`, or `turn_range`. Filtering by `model` alone works across apps\nfor harness-vs-harness comparison at a fixed model. Results refresh weekly and include the source snapshot\nwindow in `meta`."
+      operationId: 'getSessionCost'
+      parameters:
+        - description: 'Filter to one published harness slug.'
+          in: 'query'
+          name: 'app_slug'
+          required: false
+          schema:
+            description: 'Filter to one published harness slug.'
+            example: 'hermes-agent'
+            type: 'string'
+        - description: 'Exact model permaslug filter. Works across all harness apps.'
+          in: 'query'
+          name: 'model'
+          required: false
+          schema:
+            description: 'Exact model permaslug filter. Works across all harness apps.'
+            example: 'anthropic/claude-4.8-opus'
+            type: 'string'
+        - description: 'Filter by the inclusive number of turns in a session.'
+          in: 'query'
+          name: 'turn_range'
+          required: false
+          schema:
+            description: 'Filter by the inclusive number of turns in a session.'
+            enum:
+              - '1-turn'
+              - '2-9-turns'
+              - '10-49-turns'
+              - '50-plus-turns'
+            example: '10-49-turns'
+            type: 'string'
+        - description: 'Maximum number of cells to return (1-500). Defaults to 100.'
+          in: 'query'
+          name: 'limit'
+          required: false
+          schema:
+            default: 100
+            description: 'Maximum number of cells to return (1-500). Defaults to 100.'
+            example: 100
+            maximum: 500
+            minimum: 1
+            type: 'integer'
+        - description: 'Number of sorted cells to skip (0-5000). Defaults to 0.'
+          in: 'query'
+          name: 'offset'
+          required: false
+          schema:
+            default: 0
+            description: 'Number of sorted cells to skip (0-5000). Defaults to 0.'
+            example: 0
+            maximum: 5000
+            minimum: 0
+            type:
+              - 'integer'
+              - 'null'
+      responses:
+        '200':
+          content:
+            application/json:
+              example:
+                data:
+                  - app_name: 'Hermes Agent'
+                    app_slug: 'hermes-agent'
+                    median_session_cost_usd: 1.74
+                    model_permaslug: 'anthropic/claude-4.8-opus'
+                    turn_range: '10-49-turns'
+                meta:
+                  as_of: '2026-05-12T02:00:00.000Z'
+                  version: 'v1'
+                  window_days: 30
+                  window_end_date: '2026-05-11'
+              schema:
+                $ref: '#/components/schemas/SessionCostResponse'
+          description: 'Aggregated cost-per-session cells for the requested filters.'
+        '400':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 400
+                  message: 'Invalid request parameters'
+              schema:
+                $ref: '#/components/schemas/BadRequestResponse'
+          description: 'Bad Request - Invalid request parameters or malformed input'
+        '401':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 401
+                  message: 'Missing Authentication header'
+              schema:
+                $ref: '#/components/schemas/UnauthorizedResponse'
+          description: 'Unauthorized - Authentication required or invalid credentials'
+        '429':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 429
+                  message: 'Rate limit exceeded'
+              schema:
+                $ref: '#/components/schemas/TooManyRequestsResponse'
+          description: 'Too Many Requests - Rate limit exceeded'
+        '500':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 500
+                  message: 'Internal Server Error'
+              schema:
+                $ref: '#/components/schemas/InternalServerResponse'
+          description: 'Internal Server Error - Unexpected server error'
+      summary: 'Cost per session by harness and model'
+      tags:
+        - 'Datasets'
+      x-speakeasy-pagination:
+        inputs:
+          - in: 'parameters'
+            name: 'offset'
+            type: 'offset'
+          - in: 'parameters'
+            name: 'limit'
+            type: 'limit'
+        outputs:
+          results: '$.data'
+        type: 'offsetLimit'
   /embeddings:
     post:
       description: 'Submits an embedding request to the embeddings router'
