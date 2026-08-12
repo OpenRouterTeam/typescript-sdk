@@ -5,11 +5,27 @@
 
 import * as z from "zod/v4";
 import { remap as remap$ } from "../lib/primitives.js";
+import { ClosedEnum } from "../types/enums.js";
+
+/**
+ * Video processing mode. `agentic` enables agentic video processing on providers that support it (currently Google Gemini).
+ */
+export const InputVideoProcessing = {
+  Agentic: "agentic",
+} as const;
+/**
+ * Video processing mode. `agentic` enables agentic video processing on providers that support it (currently Google Gemini).
+ */
+export type InputVideoProcessing = ClosedEnum<typeof InputVideoProcessing>;
 
 /**
  * Video input content item
  */
 export type InputVideo = {
+  /**
+   * Video processing mode. `agentic` enables agentic video processing on providers that support it (currently Google Gemini).
+   */
+  processing?: InputVideoProcessing | undefined;
   type: "input_video";
   /**
    * A base64 data URL or remote URL that resolves to a video file
@@ -18,7 +34,13 @@ export type InputVideo = {
 };
 
 /** @internal */
+export const InputVideoProcessing$outboundSchema: z.ZodEnum<
+  typeof InputVideoProcessing
+> = z.enum(InputVideoProcessing);
+
+/** @internal */
 export type InputVideo$Outbound = {
+  processing?: string | undefined;
   type: "input_video";
   video_url: string;
 };
@@ -28,6 +50,7 @@ export const InputVideo$outboundSchema: z.ZodType<
   InputVideo$Outbound,
   InputVideo
 > = z.object({
+  processing: InputVideoProcessing$outboundSchema.optional(),
   type: z.literal("input_video"),
   videoUrl: z.string(),
 }).transform((v) => {
