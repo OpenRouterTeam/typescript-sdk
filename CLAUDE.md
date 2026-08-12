@@ -63,7 +63,7 @@ The SDK is generated from `.speakeasy/in.openapi.yaml` using [Speakeasy](https:/
 
 **Hand-Written Files** (safe to edit):
 - `src/lib/` - All library utilities and helpers
-- `src/funcs/call-model.ts` - High-level model calling abstraction
+- `src/funcs/` - Generated API operation functions
 - `src/index.ts` - Main exports
 - `src/hooks/hooks.ts` and `src/hooks/types.ts` - Custom hooks
 
@@ -113,69 +113,18 @@ Speakeasy's [persistent edits](https://www.speakeasy.com/docs/sdks/customize/cod
 
 ## Architecture
 
-### Core Abstractions
+### SDK Boundary
 
-**callModel** (`src/funcs/call-model.ts`)
-- High-level function for making model requests with tools
-- Returns a `ModelResult` wrapper with multiple consumption patterns
-- Supports async parameter resolution and automatic tool execution
-- Example consumption: `.getText()`, `.getTextStream()`, `.getToolStream()`, etc.
+The published SDK provides generated API clients, model types, transport helpers,
+and request/response utilities. Agent orchestration, tool execution, stop
+conditions, compatibility helpers, and agent-facing streaming consumers live in
+[`@openrouter/agent`](https://www.npmjs.com/package/@openrouter/agent).
 
-**ModelResult** (`src/lib/model-result.ts`)
-- Wraps streaming responses with multiple consumption patterns
-- Handles automatic tool execution and turn orchestration
-- Uses `ReusableReadableStream` to enable multiple parallel consumers
+## Streaming
 
-**Tool System** (`src/lib/tool.ts`, `src/lib/tool-types.ts`, `src/lib/tool-executor.ts`)
-- `tool()` helper creates type-safe tools with Zod schemas
-- Three tool types:
-  - **Regular tools** (`execute: function`) - auto-executed, return final result
-  - **Generator tools** (`execute: async generator`) - stream preliminary results
-  - **Manual tools** (`execute: false`) - return tool calls without execution
-- Tool orchestrator (`src/lib/tool-orchestrator.ts`) manages multi-turn conversations
-
-**Async Parameter Resolution** (`src/lib/async-params.ts`)
-- Any parameter in `CallModelInput` can be a function: `(ctx: TurnContext) => value`
-- Functions resolved before each turn, allowing dynamic parameter adjustment
-- Supports both sync and async functions
-- Example: `model: (ctx) => ctx.numberOfTurns > 3 ? 'gpt-4' : 'gpt-3.5-turbo'`
-
-**Next Turn Params** (`src/lib/next-turn-params.ts`)
-- Tools can define `nextTurnParams` to modify request parameters after execution
-- Functions receive tool input and can return parameter updates
-- Applied after tool execution, before next API request
-- Example: Increase temperature after seeing tool results
-
-**Stop Conditions** (`src/lib/stop-conditions.ts`)
-- Control when tool execution loops terminate
-- Built-in helpers: `stepCountIs()`, `hasToolCall()`, `maxTokensUsed()`, `maxCost()`, `finishReasonIs()`
-- Custom conditions receive full step history
-- Default: `stepCountIs(5)` if not specified
-
-## Message Format Compatibility
-
-The SDK supports multiple message formats:
-
-- **OpenRouter format** (native)
-- **Claude format** via `fromClaudeMessages()` / `toClaudeMessage()` (`src/lib/anthropic-compat.ts`)
-- **OpenAI Chat format** via `fromChatMessages()` / `toChatMessage()` (`src/lib/chat-compat.ts`)
-
-These converters handle content types, tool calls, and format-specific features.
-
-## Streaming Architecture
-
-**ReusableReadableStream** (`src/lib/reusable-stream.ts`)
-
-- Caches stream events to enable multiple independent consumers
-- Critical for allowing parallel consumption patterns (text + tools + reasoning)
-- Handles both SSE and standard ReadableStream
-
-**Stream Transformers** (`src/lib/stream-transformers.ts`)
-
-- Extract specific data from response streams
-- `extractTextDeltas()`, `extractReasoningDeltas()`, `extractToolDeltas()`
-- Build higher-level streams for different consumption patterns
-- Handle both streaming and non-streaming responses uniformly
+The generated SDK clients continue to support API streaming responses. For
+agent-facing stream replay, tool events, and multi-turn consumption patterns,
+use `@openrouter/agent`.
 
 ## Development Workflow
 
@@ -197,16 +146,12 @@ These converters handle content types, tool calls, and format-specific features.
 ```bash
 cd examples
 # Set your API key in .env first
-node --loader ts-node/esm call-model.example.ts
+node --loader ts-node/esm chat-reasoning.example.ts
 ```
 
 Examples demonstrate:
-- `call-model.example.ts` - Basic usage
-- `call-model-typed-tool-calling.example.ts` - Type-safe tools
-- `anthropic-multimodal-tools.example.ts` - Multimodal inputs with tools
-- `anthropic-reasoning.example.ts` - Extended thinking/reasoning
 - `chat-reasoning.example.ts` - Reasoning with chat format
-- `tools-example.ts` - Comprehensive tool usage
+- generated SDK client methods and model types
 
 ## TypeScript Configuration
 
