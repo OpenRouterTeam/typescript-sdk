@@ -20,7 +20,10 @@ export class ReusableReadableStream<T> {
   private sourceError: Error | null = null;
   private pumpStarted = false;
 
-  constructor(private sourceStream: ReadableStream<T>) {}
+  constructor(
+    private sourceStream: ReadableStream<T>,
+    private readonly onValue?: (value: T) => void,
+  ) {}
 
   /**
    * Create a new consumer that can independently iterate over the stream.
@@ -217,6 +220,7 @@ export class ReusableReadableStream<T> {
 
           // Add to buffer
           this.buffer.push(result.value);
+          this.onValue?.(result.value);
 
           // Notify waiting consumers
           this.notifyAllConsumers();

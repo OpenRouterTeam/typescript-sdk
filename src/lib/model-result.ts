@@ -197,6 +197,8 @@ export class ModelResult<
   > | null = null;
   private initialStreamPipeStarted = false;
   private initialPipePromise: Promise<void> | null = null;
+  private initialResponse: models.OpenResponsesResult | null = null;
+  private initialResponseError: Error | null = null;
 
   // Context store for typed tool context (persists across turns)
   private contextStore: ToolContextStore | null = null;
@@ -271,8 +273,34 @@ export class ModelResult<
         timestamp: Date.now(),
       } satisfies TurnEndEvent);
     })().catch((error) => {
-      broadcaster.complete(error instanceof Error ? error : new Error(String(error)));
+      const normalizedError = error instanceof Error ? error : new Error(String(error));
+      this.initialResponseError = normalizedError;
+      broadcaster.complete(normalizedError);
     });
+  }
+
+  /** Cache the terminal response so aggregate readers do not need trimmed history. */
+  private captureInitialStreamEvent(event: models.StreamEvents): void {
+    if (isResponseCompletedEvent(event) || isResponseIncompleteEvent(event)) {
+      this.initialResponse = event.response;
+      return;
+    }
+
+    if (isResponseFailedEvent(event)) {
+      this.initialResponseError = new Error(
+        `Response failed: ${JSON.stringify(event.response.error)}`,
+      );
+    }
+  }
+
+  /** Replace the initial stream and reset its terminal snapshot. */
+  private setReusableStream(stream: ReadableStream<models.StreamEvents>): void {
+    this.initialResponse = null;
+    this.initialResponseError = null;
+    this.reusableStream = new ReusableReadableStream(
+      stream,
+      (event) => this.captureInitialStreamEvent(event),
+    );
   }
 
   /**
@@ -420,6 +448,24 @@ export class ModelResult<
     if (this.finalResponse) {
       return this.finalResponse;
     }
+
+    const initialPipePromise = this.initialPipePromise;
+    if (initialPipePromise) {
+      await initialPipePromise;
+    }
+
+    if (this.initialResponseError) {
+      throw this.initialResponseError;
+    }
+
+    if (this.initialResponse) {
+      return this.initialResponse;
+    }
+
+    if (initialPipePromise) {
+      throw new Error('Stream ended without completion event');
+    }
+
     if (this.reusableStream) {
       return consumeStreamForCompletion(this.reusableStream);
     }
@@ -1080,7 +1126,7 @@ export class ModelResult<
       // Handle both streaming and non-streaming responses
       // The API may return a non-streaming response even when stream: true is requested
       if (isEventStream(apiResult.value)) {
-        this.reusableStream = new ReusableReadableStream(apiResult.value);
+        this.setReusableStream(apiResult.value);
       } else if (this.isNonStreamingResponse(apiResult.value)) {
         // API returned a complete response directly - use it as the final response
         this.finalResponse = apiResult.value;
@@ -1225,7 +1271,7 @@ export class ModelResult<
 
     // Handle both streaming and non-streaming responses
     if (isEventStream(apiResult.value)) {
-      this.reusableStream = new ReusableReadableStream(apiResult.value);
+      this.setReusableStream(apiResult.value);
     } else if (this.isNonStreamingResponse(apiResult.value)) {
       this.finalResponse = apiResult.value;
     } else {
@@ -1679,7 +1725,7 @@ export class ModelResult<
       throw new Error('Stream not initialized');
     }
 
-    const completedResponse = await consumeStreamForCompletion(this.reusableStream);
+    const completedResponse = await this.getInitialResponse();
     return extractToolCallsFromResponse(completedResponse) as ParsedToolCall<TTools[number]>[];
   }
 
