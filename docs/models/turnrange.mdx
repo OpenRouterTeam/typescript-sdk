@@ -1,0 +1,21 @@
+---
+title: "TurnRange"
+---
+
+Inclusive session turn-count range.
+
+## Example Usage
+
+```typescript
+import { TurnRange } from "@openrouter/sdk/models";
+
+let value: TurnRange = "10-49-turns";
+
+// Open enum: unrecognized values are captured as Unrecognized<string>
+```
+
+## Values
+
+```typescript
+"1-turn" | "2-9-turns" | "10-49-turns" | "50-plus-turns" | Unrecognized<string>
+```

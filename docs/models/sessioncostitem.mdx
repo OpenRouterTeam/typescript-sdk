@@ -1,0 +1,27 @@
+---
+title: "SessionCostItem"
+---
+
+## Example Usage
+
+```typescript
+import { SessionCostItem } from "@openrouter/sdk/models";
+
+let value: SessionCostItem = {
+  appName: "Hermes Agent",
+  appSlug: "hermes-agent",
+  medianSessionCostUsd: 1.74,
+  modelPermaslug: "anthropic/claude-4.8-opus",
+  turnRange: "10-49-turns",
+};
+```
+
+## Fields
+
+| Field                                      | Type                                       | Required                                   | Description                                | Example                                    |
+| ------------------------------------------ | ------------------------------------------ | ------------------------------------------ | ------------------------------------------ | ------------------------------------------ |
+| `appName`                                  | *string*                                   | :heavy_check_mark:                         | Published harness display label.           | Hermes Agent                               |
+| `appSlug`                                  | *string*                                   | :heavy_check_mark:                         | Stable public slug of the harness.         | hermes-agent                               |
+| `medianSessionCostUsd`                     | *number*                                   | :heavy_check_mark:                         | Median USD spend per sampled session.      | 1.74                                       |
+| `modelPermaslug`                           | *string*                                   | :heavy_check_mark:                         | Exact model permaslug.                     | anthropic/claude-4.8-opus                  |
+| `turnRange`                                | [models.TurnRange](../models/turnrange.mdx) | :heavy_check_mark:                         | Inclusive session turn-count range.        | 10-49-turns                                |
