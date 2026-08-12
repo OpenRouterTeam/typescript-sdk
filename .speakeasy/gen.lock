@@ -1,19 +1,19 @@
 lockVersion: ""
 id: ""
 management:
-  docChecksum: 3e6631c23b644afd289e547609ea5dfb
+  docChecksum: 12fbc308672675245d5faf5aa120d2cb
   docVersion: 1.0.0
   speakeasyVersion: 1.787.0
   generationVersion: 2.914.0
-  releaseVersion: 1.2.28
-  configChecksum: 0e8365491591679feeeb473354ac0072
+  releaseVersion: 1.2.29
+  configChecksum: 20ed624dbfc262645f5187c343168736
   repoURL: https://github.com/OpenRouterTeam/typescript-sdk.git
   installationURL: https://github.com/OpenRouterTeam/typescript-sdk
   published: true
 persistentEdits:
-  generation_id: a061369b-c1bd-4b98-bc88-337eeacbaadb
-  pristine_commit_hash: 54557c8ab19deb40d0136bf25445f976df77f502
-  pristine_tree_hash: dfa0691fb293bf344463d733d1eb03799cc8bb89
+  generation_id: 7b6a1d55-d47c-44d2-84a6-64ff0a156193
+  pristine_commit_hash: b767a4a93688f047e15d71c55e99bbee35b39180
+  pristine_tree_hash: f894bca9aeeffabf615ef1255cd62c722acc58a4
 features:
   typescript:
     acceptHeaders: 2.81.2
@@ -7430,8 +7430,8 @@ trackedFiles:
     deleted: true
   docs/models/operations/deleteworkspacerequest.mdx:
     id: e8540611cea0
-    last_write_checksum: sha1:3b65ea9a531cec7a76fda0be295bcca1bc6c8d28
-    pristine_git_object: 8363ef70bfa3cc52af9e2fc6e5dfabc7742577f7
+    last_write_checksum: sha1:7331192672926b872e620d8e3ef17fd5d43c942a
+    pristine_git_object: 7710040bd0d35e5d08c97cd4c51171a940e4c672
   docs/models/operations/dimension.md:
     id: 2298189a2a16
     last_write_checksum: sha1:78ec0849dde20c171e96b6a07e23b43f435cf15a
@@ -12837,8 +12837,8 @@ trackedFiles:
     deleted: true
   docs/sdks/workspaces/README.mdx:
     id: 0c75d023ef6b
-    last_write_checksum: sha1:2840fbf04297fc591e6d65aba8f122a8d33261f6
-    pristine_git_object: 3c5c37b1c4ad20755a8fe1ff17caf90db1410c61
+    last_write_checksum: sha1:ff1204ce82724273fe47fd0503ec9349c00af30d
+    pristine_git_object: 5530ac210d346c8f4b72d6f107677f1f7445fd23
   eslint.config.mjs:
     id: 461c8d07f6da
     last_write_checksum: sha1:9398f326377fe47f67af2df6eb6370750c0790b4
@@ -12861,12 +12861,12 @@ trackedFiles:
     pristine_git_object: 410efafd6a7f50d91ccb87131fedbe0c3d47e15a
   jsr.json:
     id: 7f6ab7767282
-    last_write_checksum: sha1:e1554a414c91cfd0117b9a4b11dd9991cc04e576
-    pristine_git_object: 23136f81df7d1a29e1f1b1526db17bae4e4981a1
+    last_write_checksum: sha1:baf1fe5b8d54508893c69ea854175712389f1b3e
+    pristine_git_object: 024efa616eb5587d14fb35b3a1ef96effa28121e
   package.json:
     id: 7030d0b2f71b
-    last_write_checksum: sha1:a9a8effc9427496896b9c8a7b3371e5ae06fb335
-    pristine_git_object: 5234611a94c39044e688ab93f7078deb3ed21998
+    last_write_checksum: sha1:906cb5276b9539e8ca2b398a49a6137bc76b3506
+    pristine_git_object: ab2260a3be48bd23a9f4aec6ead71bf559afb235
   src/core.ts:
     id: f431fdbcd144
     last_write_checksum: sha1:5aa66b0b6a5964f3eea7f3098c2eb3c0ee9c0131
@@ -13217,8 +13217,8 @@ trackedFiles:
     pristine_git_object: 56b37d99a23e7d8a0dcc22d05258898fe19a372c
   src/funcs/workspacesDelete.ts:
     id: 548699dffed1
-    last_write_checksum: sha1:46fab8b5b03d7b8d1e9a5fed1f77c9ebc96fb502
-    pristine_git_object: d6ac4f90789defa09d6253d7163559d10b3826cf
+    last_write_checksum: sha1:441e0bbd95826c688ac2354df8c605f85ac10fd1
+    pristine_git_object: c75566d60111c6c8ce22d70a47b70a1f2616c1f6
   src/funcs/workspacesDeleteBudget.ts:
     id: 1aba9dd7a12c
     last_write_checksum: sha1:b8b87da65e4d0b454a53bb149dbc8b850f942c9c
@@ -13273,8 +13273,8 @@ trackedFiles:
     pristine_git_object: a187e58707bdb726ca2aff74941efe7493422d4e
   src/lib/config.ts:
     id: 320761608fb3
-    last_write_checksum: sha1:8da2632ce91ef75b6b3eb5f1a92ce6f8a69e7fdc
-    pristine_git_object: 0a93eb4881652a6bf26ad9509f28e2bd1793bc9d
+    last_write_checksum: sha1:4de93ec1fe61162b459a5b3ed111eadf4f4b1ac6
+    pristine_git_object: ba2fcb5e67dfc2cca8d9bdc6416564f0bc9fa9f9
   src/lib/dlv.ts:
     id: b1988214835a
     last_write_checksum: sha1:eaac763b22717206a6199104e0403ed17a4e2711
@@ -15091,8 +15091,8 @@ trackedFiles:
     pristine_git_object: 45d7fdf9e103ebc9c1f0e1f955fdfa1adb80f277
   src/models/operations/deleteworkspace.ts:
     id: 38325c1278ba
-    last_write_checksum: sha1:7cf7fe67ac233b746ab9d1cc45328da51f5d31a3
-    pristine_git_object: c0d931b730df2940f75ac557001140ce24346e6b
+    last_write_checksum: sha1:ffeeab79ee489598ef2c621d09fbb636f86f0b2f
+    pristine_git_object: 37b73756fb0391bd0ff270eeae242f7f878a66eb
   src/models/operations/deleteworkspacebudget.ts:
     id: f9fd25ea4948
     last_write_checksum: sha1:32cfff8c74bb71d4a931646247fc0e8666cf70cf
@@ -16367,8 +16367,8 @@ trackedFiles:
     pristine_git_object: 1e832bb72bd987649300a5443f591582761e7b07
   src/sdk/workspaces.ts:
     id: 72b45379c8d9
-    last_write_checksum: sha1:2053a1ed47eb0745da516fd1d78b4f5f655223e8
-    pristine_git_object: c27aa02b1dd2ee20bba03588f7279662751a69e5
+    last_write_checksum: sha1:ded0e52614505642c653ed42441779b94bf6feed
+    pristine_git_object: cf51972daae5cd7ba550371f185e91c0ab872917
   src/types/async.ts:
     id: fac8da972f86
     last_write_checksum: sha1:042571ad6be7fd5ce5a93b292b9c1aefc21ebff7
@@ -18168,4 +18168,4 @@ examples:
         "500":
           application/json: {"error": {"code": 500, "message": "Internal Server Error"}}
 examplesVersion: 1.0.2
-releaseNotes: "## Typescript SDK Changes:\n* `openrouter.models.list()`: \n  *  `request.region` **Changed**\n"
+releaseNotes: "## Typescript SDK Changes:\n* `openrouter.workspaces.delete()`: \n  *  `request.confirmDefaultSettingsDeletion` **Added**\n"
