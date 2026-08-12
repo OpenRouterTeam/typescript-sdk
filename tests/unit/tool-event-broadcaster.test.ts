@@ -81,7 +81,7 @@ describe('ToolEventBroadcaster', () => {
       expect(results2).toEqual(['a', 'b']);
     });
 
-    it('should allow consumers at different read positions', async () => {
+    it('should start late consumers at the trim watermark', async () => {
       const broadcaster = new ToolEventBroadcaster<number>();
       const consumer1 = broadcaster.createConsumer();
 
@@ -103,10 +103,10 @@ describe('ToolEventBroadcaster', () => {
       for await (const e of consumer1) remaining1.push(e);
       expect(remaining1).toEqual([2, 3]);
 
-      // Consumer 2 gets all events from position 0
+      // Consumer 2 starts at the trim watermark after event 1 was consumed
       const all2: number[] = [];
       for await (const e of consumer2) all2.push(e);
-      expect(all2).toEqual([1, 2, 3]);
+      expect(all2).toEqual([2, 3]);
     });
   });
 
