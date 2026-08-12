@@ -6,6 +6,8 @@
 import * as z from "zod/v4";
 import { remap as remap$ } from "../lib/primitives.js";
 import { safeParse } from "../lib/schemas.js";
+import * as openEnums from "../types/enums.js";
+import { OpenEnum } from "../types/enums.js";
 import { Result as SafeParseResult } from "../types/fp.js";
 import {
   EndpointStatus,
@@ -23,6 +25,304 @@ import {
 } from "./pricingoverride.js";
 import { ProviderName, ProviderName$inboundSchema } from "./providername.js";
 import { Quantization, Quantization$inboundSchema } from "./quantization.js";
+
+export const EmbeddingsLatencyMetric = {
+  Latency: "latency",
+  LatencyE2e: "latency_e2e",
+} as const;
+export type EmbeddingsLatencyMetric = OpenEnum<typeof EmbeddingsLatencyMetric>;
+
+export const EmbeddingsPerfWorkload = {
+  TextGeneration: "text_generation",
+  ImageGeneration: "image_generation",
+  VideoGeneration: "video_generation",
+  Embeddings: "embeddings",
+  Rerank: "rerank",
+  TTS: "tts",
+  STT: "stt",
+  Unknown: "unknown",
+} as const;
+export type EmbeddingsPerfWorkload = OpenEnum<typeof EmbeddingsPerfWorkload>;
+
+export type Embeddings = {
+  /**
+   * Latency percentiles in milliseconds over the last 30 minutes. Latency measures time to first token. Only visible when authenticated with an API key or cookie; returns null for unauthenticated requests.
+   */
+  latencyLast30m: PercentileStats | null;
+  latencyMetric: EmbeddingsLatencyMetric;
+  latencyRequestCountLast30m: number | null;
+  perfWorkload: EmbeddingsPerfWorkload;
+  requestCountLast30m: number | null;
+  /**
+   * Latency percentiles in milliseconds over the last 30 minutes. Latency measures time to first token. Only visible when authenticated with an API key or cookie; returns null for unauthenticated requests.
+   */
+  throughputLast30m: PercentileStats | null;
+  throughputRequestCountLast30m: number | null;
+};
+
+export const ImageGenerationLatencyMetric = {
+  Latency: "latency",
+  LatencyE2e: "latency_e2e",
+} as const;
+export type ImageGenerationLatencyMetric = OpenEnum<
+  typeof ImageGenerationLatencyMetric
+>;
+
+export const ImageGenerationPerfWorkload = {
+  TextGeneration: "text_generation",
+  ImageGeneration: "image_generation",
+  VideoGeneration: "video_generation",
+  Embeddings: "embeddings",
+  Rerank: "rerank",
+  TTS: "tts",
+  STT: "stt",
+  Unknown: "unknown",
+} as const;
+export type ImageGenerationPerfWorkload = OpenEnum<
+  typeof ImageGenerationPerfWorkload
+>;
+
+export type ImageGeneration = {
+  /**
+   * Latency percentiles in milliseconds over the last 30 minutes. Latency measures time to first token. Only visible when authenticated with an API key or cookie; returns null for unauthenticated requests.
+   */
+  latencyLast30m: PercentileStats | null;
+  latencyMetric: ImageGenerationLatencyMetric;
+  latencyRequestCountLast30m: number | null;
+  perfWorkload: ImageGenerationPerfWorkload;
+  requestCountLast30m: number | null;
+  /**
+   * Latency percentiles in milliseconds over the last 30 minutes. Latency measures time to first token. Only visible when authenticated with an API key or cookie; returns null for unauthenticated requests.
+   */
+  throughputLast30m: PercentileStats | null;
+  throughputRequestCountLast30m: number | null;
+};
+
+export const RerankLatencyMetric = {
+  Latency: "latency",
+  LatencyE2e: "latency_e2e",
+} as const;
+export type RerankLatencyMetric = OpenEnum<typeof RerankLatencyMetric>;
+
+export const RerankPerfWorkload = {
+  TextGeneration: "text_generation",
+  ImageGeneration: "image_generation",
+  VideoGeneration: "video_generation",
+  Embeddings: "embeddings",
+  Rerank: "rerank",
+  TTS: "tts",
+  STT: "stt",
+  Unknown: "unknown",
+} as const;
+export type RerankPerfWorkload = OpenEnum<typeof RerankPerfWorkload>;
+
+export type Rerank = {
+  /**
+   * Latency percentiles in milliseconds over the last 30 minutes. Latency measures time to first token. Only visible when authenticated with an API key or cookie; returns null for unauthenticated requests.
+   */
+  latencyLast30m: PercentileStats | null;
+  latencyMetric: RerankLatencyMetric;
+  latencyRequestCountLast30m: number | null;
+  perfWorkload: RerankPerfWorkload;
+  requestCountLast30m: number | null;
+  /**
+   * Latency percentiles in milliseconds over the last 30 minutes. Latency measures time to first token. Only visible when authenticated with an API key or cookie; returns null for unauthenticated requests.
+   */
+  throughputLast30m: PercentileStats | null;
+  throughputRequestCountLast30m: number | null;
+};
+
+export const STTLatencyMetric = {
+  Latency: "latency",
+  LatencyE2e: "latency_e2e",
+} as const;
+export type STTLatencyMetric = OpenEnum<typeof STTLatencyMetric>;
+
+export const STTPerfWorkload = {
+  TextGeneration: "text_generation",
+  ImageGeneration: "image_generation",
+  VideoGeneration: "video_generation",
+  Embeddings: "embeddings",
+  Rerank: "rerank",
+  TTS: "tts",
+  STT: "stt",
+  Unknown: "unknown",
+} as const;
+export type STTPerfWorkload = OpenEnum<typeof STTPerfWorkload>;
+
+export type STT = {
+  /**
+   * Latency percentiles in milliseconds over the last 30 minutes. Latency measures time to first token. Only visible when authenticated with an API key or cookie; returns null for unauthenticated requests.
+   */
+  latencyLast30m: PercentileStats | null;
+  latencyMetric: STTLatencyMetric;
+  latencyRequestCountLast30m: number | null;
+  perfWorkload: STTPerfWorkload;
+  requestCountLast30m: number | null;
+  /**
+   * Latency percentiles in milliseconds over the last 30 minutes. Latency measures time to first token. Only visible when authenticated with an API key or cookie; returns null for unauthenticated requests.
+   */
+  throughputLast30m: PercentileStats | null;
+  throughputRequestCountLast30m: number | null;
+};
+
+export const TextGenerationLatencyMetric = {
+  Latency: "latency",
+  LatencyE2e: "latency_e2e",
+} as const;
+export type TextGenerationLatencyMetric = OpenEnum<
+  typeof TextGenerationLatencyMetric
+>;
+
+export const TextGenerationPerfWorkload = {
+  TextGeneration: "text_generation",
+  ImageGeneration: "image_generation",
+  VideoGeneration: "video_generation",
+  Embeddings: "embeddings",
+  Rerank: "rerank",
+  TTS: "tts",
+  STT: "stt",
+  Unknown: "unknown",
+} as const;
+export type TextGenerationPerfWorkload = OpenEnum<
+  typeof TextGenerationPerfWorkload
+>;
+
+export type TextGeneration = {
+  /**
+   * Latency percentiles in milliseconds over the last 30 minutes. Latency measures time to first token. Only visible when authenticated with an API key or cookie; returns null for unauthenticated requests.
+   */
+  latencyLast30m: PercentileStats | null;
+  latencyMetric: TextGenerationLatencyMetric;
+  latencyRequestCountLast30m: number | null;
+  perfWorkload: TextGenerationPerfWorkload;
+  requestCountLast30m: number | null;
+  /**
+   * Latency percentiles in milliseconds over the last 30 minutes. Latency measures time to first token. Only visible when authenticated with an API key or cookie; returns null for unauthenticated requests.
+   */
+  throughputLast30m: PercentileStats | null;
+  throughputRequestCountLast30m: number | null;
+};
+
+export const TTSLatencyMetric = {
+  Latency: "latency",
+  LatencyE2e: "latency_e2e",
+} as const;
+export type TTSLatencyMetric = OpenEnum<typeof TTSLatencyMetric>;
+
+export const TTSPerfWorkload = {
+  TextGeneration: "text_generation",
+  ImageGeneration: "image_generation",
+  VideoGeneration: "video_generation",
+  Embeddings: "embeddings",
+  Rerank: "rerank",
+  TTS: "tts",
+  STT: "stt",
+  Unknown: "unknown",
+} as const;
+export type TTSPerfWorkload = OpenEnum<typeof TTSPerfWorkload>;
+
+export type TTS = {
+  /**
+   * Latency percentiles in milliseconds over the last 30 minutes. Latency measures time to first token. Only visible when authenticated with an API key or cookie; returns null for unauthenticated requests.
+   */
+  latencyLast30m: PercentileStats | null;
+  latencyMetric: TTSLatencyMetric;
+  latencyRequestCountLast30m: number | null;
+  perfWorkload: TTSPerfWorkload;
+  requestCountLast30m: number | null;
+  /**
+   * Latency percentiles in milliseconds over the last 30 minutes. Latency measures time to first token. Only visible when authenticated with an API key or cookie; returns null for unauthenticated requests.
+   */
+  throughputLast30m: PercentileStats | null;
+  throughputRequestCountLast30m: number | null;
+};
+
+export const UnknownLatencyMetric = {
+  Latency: "latency",
+  LatencyE2e: "latency_e2e",
+} as const;
+export type UnknownLatencyMetric = OpenEnum<typeof UnknownLatencyMetric>;
+
+export const UnknownPerfWorkload = {
+  TextGeneration: "text_generation",
+  ImageGeneration: "image_generation",
+  VideoGeneration: "video_generation",
+  Embeddings: "embeddings",
+  Rerank: "rerank",
+  TTS: "tts",
+  STT: "stt",
+  Unknown: "unknown",
+} as const;
+export type UnknownPerfWorkload = OpenEnum<typeof UnknownPerfWorkload>;
+
+export type Unknown = {
+  /**
+   * Latency percentiles in milliseconds over the last 30 minutes. Latency measures time to first token. Only visible when authenticated with an API key or cookie; returns null for unauthenticated requests.
+   */
+  latencyLast30m: PercentileStats | null;
+  latencyMetric: UnknownLatencyMetric;
+  latencyRequestCountLast30m: number | null;
+  perfWorkload: UnknownPerfWorkload;
+  requestCountLast30m: number | null;
+  /**
+   * Latency percentiles in milliseconds over the last 30 minutes. Latency measures time to first token. Only visible when authenticated with an API key or cookie; returns null for unauthenticated requests.
+   */
+  throughputLast30m: PercentileStats | null;
+  throughputRequestCountLast30m: number | null;
+};
+
+export const VideoGenerationLatencyMetric = {
+  Latency: "latency",
+  LatencyE2e: "latency_e2e",
+} as const;
+export type VideoGenerationLatencyMetric = OpenEnum<
+  typeof VideoGenerationLatencyMetric
+>;
+
+export const VideoGenerationPerfWorkload = {
+  TextGeneration: "text_generation",
+  ImageGeneration: "image_generation",
+  VideoGeneration: "video_generation",
+  Embeddings: "embeddings",
+  Rerank: "rerank",
+  TTS: "tts",
+  STT: "stt",
+  Unknown: "unknown",
+} as const;
+export type VideoGenerationPerfWorkload = OpenEnum<
+  typeof VideoGenerationPerfWorkload
+>;
+
+export type VideoGeneration = {
+  /**
+   * Latency percentiles in milliseconds over the last 30 minutes. Latency measures time to first token. Only visible when authenticated with an API key or cookie; returns null for unauthenticated requests.
+   */
+  latencyLast30m: PercentileStats | null;
+  latencyMetric: VideoGenerationLatencyMetric;
+  latencyRequestCountLast30m: number | null;
+  perfWorkload: VideoGenerationPerfWorkload;
+  requestCountLast30m: number | null;
+  /**
+   * Latency percentiles in milliseconds over the last 30 minutes. Latency measures time to first token. Only visible when authenticated with an API key or cookie; returns null for unauthenticated requests.
+   */
+  throughputLast30m: PercentileStats | null;
+  throughputRequestCountLast30m: number | null;
+};
+
+/**
+ * Optional workload-scoped endpoint performance over the last 30 minutes. This is additive to the legacy singular latency and throughput fields. Only visible when authenticated with an API key or cookie.
+ */
+export type PerformanceByWorkloadV1 = {
+  embeddings?: Embeddings | undefined;
+  imageGeneration?: ImageGeneration | undefined;
+  rerank?: Rerank | undefined;
+  stt?: STT | undefined;
+  textGeneration?: TextGeneration | undefined;
+  tts?: TTS | undefined;
+  unknown?: Unknown | undefined;
+  videoGeneration?: VideoGeneration | undefined;
+};
 
 export type Pricing = {
   /**
@@ -108,6 +408,10 @@ export type PublicEndpoint = {
   modelId: string;
   modelName: string;
   name: string;
+  /**
+   * Optional workload-scoped endpoint performance over the last 30 minutes. This is additive to the legacy singular latency and throughput fields. Only visible when authenticated with an API key or cookie.
+   */
+  performanceByWorkloadV1?: PerformanceByWorkloadV1 | undefined;
   pricing: Pricing;
   providerName: ProviderName;
   quantization: Quantization | null;
@@ -130,6 +434,389 @@ export type PublicEndpoint = {
    */
   uptimeLast5m: number | null;
 };
+
+/** @internal */
+export const EmbeddingsLatencyMetric$inboundSchema: z.ZodType<
+  EmbeddingsLatencyMetric,
+  unknown
+> = openEnums.inboundSchema(EmbeddingsLatencyMetric);
+
+/** @internal */
+export const EmbeddingsPerfWorkload$inboundSchema: z.ZodType<
+  EmbeddingsPerfWorkload,
+  unknown
+> = openEnums.inboundSchema(EmbeddingsPerfWorkload);
+
+/** @internal */
+export const Embeddings$inboundSchema: z.ZodType<Embeddings, unknown> = z
+  .object({
+    latency_last_30m: z.nullable(PercentileStats$inboundSchema),
+    latency_metric: EmbeddingsLatencyMetric$inboundSchema,
+    latency_request_count_last_30m: z.nullable(z.int()),
+    perf_workload: EmbeddingsPerfWorkload$inboundSchema,
+    request_count_last_30m: z.nullable(z.int()),
+    throughput_last_30m: z.nullable(PercentileStats$inboundSchema),
+    throughput_request_count_last_30m: z.nullable(z.int()),
+  }).transform((v) => {
+    return remap$(v, {
+      "latency_last_30m": "latencyLast30m",
+      "latency_metric": "latencyMetric",
+      "latency_request_count_last_30m": "latencyRequestCountLast30m",
+      "perf_workload": "perfWorkload",
+      "request_count_last_30m": "requestCountLast30m",
+      "throughput_last_30m": "throughputLast30m",
+      "throughput_request_count_last_30m": "throughputRequestCountLast30m",
+    });
+  });
+
+export function embeddingsFromJSON(
+  jsonString: string,
+): SafeParseResult<Embeddings, SDKValidationError> {
+  return safeParse(
+    jsonString,
+    (x) => Embeddings$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'Embeddings' from JSON`,
+  );
+}
+
+/** @internal */
+export const ImageGenerationLatencyMetric$inboundSchema: z.ZodType<
+  ImageGenerationLatencyMetric,
+  unknown
+> = openEnums.inboundSchema(ImageGenerationLatencyMetric);
+
+/** @internal */
+export const ImageGenerationPerfWorkload$inboundSchema: z.ZodType<
+  ImageGenerationPerfWorkload,
+  unknown
+> = openEnums.inboundSchema(ImageGenerationPerfWorkload);
+
+/** @internal */
+export const ImageGeneration$inboundSchema: z.ZodType<
+  ImageGeneration,
+  unknown
+> = z.object({
+  latency_last_30m: z.nullable(PercentileStats$inboundSchema),
+  latency_metric: ImageGenerationLatencyMetric$inboundSchema,
+  latency_request_count_last_30m: z.nullable(z.int()),
+  perf_workload: ImageGenerationPerfWorkload$inboundSchema,
+  request_count_last_30m: z.nullable(z.int()),
+  throughput_last_30m: z.nullable(PercentileStats$inboundSchema),
+  throughput_request_count_last_30m: z.nullable(z.int()),
+}).transform((v) => {
+  return remap$(v, {
+    "latency_last_30m": "latencyLast30m",
+    "latency_metric": "latencyMetric",
+    "latency_request_count_last_30m": "latencyRequestCountLast30m",
+    "perf_workload": "perfWorkload",
+    "request_count_last_30m": "requestCountLast30m",
+    "throughput_last_30m": "throughputLast30m",
+    "throughput_request_count_last_30m": "throughputRequestCountLast30m",
+  });
+});
+
+export function imageGenerationFromJSON(
+  jsonString: string,
+): SafeParseResult<ImageGeneration, SDKValidationError> {
+  return safeParse(
+    jsonString,
+    (x) => ImageGeneration$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'ImageGeneration' from JSON`,
+  );
+}
+
+/** @internal */
+export const RerankLatencyMetric$inboundSchema: z.ZodType<
+  RerankLatencyMetric,
+  unknown
+> = openEnums.inboundSchema(RerankLatencyMetric);
+
+/** @internal */
+export const RerankPerfWorkload$inboundSchema: z.ZodType<
+  RerankPerfWorkload,
+  unknown
+> = openEnums.inboundSchema(RerankPerfWorkload);
+
+/** @internal */
+export const Rerank$inboundSchema: z.ZodType<Rerank, unknown> = z.object({
+  latency_last_30m: z.nullable(PercentileStats$inboundSchema),
+  latency_metric: RerankLatencyMetric$inboundSchema,
+  latency_request_count_last_30m: z.nullable(z.int()),
+  perf_workload: RerankPerfWorkload$inboundSchema,
+  request_count_last_30m: z.nullable(z.int()),
+  throughput_last_30m: z.nullable(PercentileStats$inboundSchema),
+  throughput_request_count_last_30m: z.nullable(z.int()),
+}).transform((v) => {
+  return remap$(v, {
+    "latency_last_30m": "latencyLast30m",
+    "latency_metric": "latencyMetric",
+    "latency_request_count_last_30m": "latencyRequestCountLast30m",
+    "perf_workload": "perfWorkload",
+    "request_count_last_30m": "requestCountLast30m",
+    "throughput_last_30m": "throughputLast30m",
+    "throughput_request_count_last_30m": "throughputRequestCountLast30m",
+  });
+});
+
+export function rerankFromJSON(
+  jsonString: string,
+): SafeParseResult<Rerank, SDKValidationError> {
+  return safeParse(
+    jsonString,
+    (x) => Rerank$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'Rerank' from JSON`,
+  );
+}
+
+/** @internal */
+export const STTLatencyMetric$inboundSchema: z.ZodType<
+  STTLatencyMetric,
+  unknown
+> = openEnums.inboundSchema(STTLatencyMetric);
+
+/** @internal */
+export const STTPerfWorkload$inboundSchema: z.ZodType<
+  STTPerfWorkload,
+  unknown
+> = openEnums.inboundSchema(STTPerfWorkload);
+
+/** @internal */
+export const STT$inboundSchema: z.ZodType<STT, unknown> = z.object({
+  latency_last_30m: z.nullable(PercentileStats$inboundSchema),
+  latency_metric: STTLatencyMetric$inboundSchema,
+  latency_request_count_last_30m: z.nullable(z.int()),
+  perf_workload: STTPerfWorkload$inboundSchema,
+  request_count_last_30m: z.nullable(z.int()),
+  throughput_last_30m: z.nullable(PercentileStats$inboundSchema),
+  throughput_request_count_last_30m: z.nullable(z.int()),
+}).transform((v) => {
+  return remap$(v, {
+    "latency_last_30m": "latencyLast30m",
+    "latency_metric": "latencyMetric",
+    "latency_request_count_last_30m": "latencyRequestCountLast30m",
+    "perf_workload": "perfWorkload",
+    "request_count_last_30m": "requestCountLast30m",
+    "throughput_last_30m": "throughputLast30m",
+    "throughput_request_count_last_30m": "throughputRequestCountLast30m",
+  });
+});
+
+export function sttFromJSON(
+  jsonString: string,
+): SafeParseResult<STT, SDKValidationError> {
+  return safeParse(
+    jsonString,
+    (x) => STT$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'STT' from JSON`,
+  );
+}
+
+/** @internal */
+export const TextGenerationLatencyMetric$inboundSchema: z.ZodType<
+  TextGenerationLatencyMetric,
+  unknown
+> = openEnums.inboundSchema(TextGenerationLatencyMetric);
+
+/** @internal */
+export const TextGenerationPerfWorkload$inboundSchema: z.ZodType<
+  TextGenerationPerfWorkload,
+  unknown
+> = openEnums.inboundSchema(TextGenerationPerfWorkload);
+
+/** @internal */
+export const TextGeneration$inboundSchema: z.ZodType<TextGeneration, unknown> =
+  z.object({
+    latency_last_30m: z.nullable(PercentileStats$inboundSchema),
+    latency_metric: TextGenerationLatencyMetric$inboundSchema,
+    latency_request_count_last_30m: z.nullable(z.int()),
+    perf_workload: TextGenerationPerfWorkload$inboundSchema,
+    request_count_last_30m: z.nullable(z.int()),
+    throughput_last_30m: z.nullable(PercentileStats$inboundSchema),
+    throughput_request_count_last_30m: z.nullable(z.int()),
+  }).transform((v) => {
+    return remap$(v, {
+      "latency_last_30m": "latencyLast30m",
+      "latency_metric": "latencyMetric",
+      "latency_request_count_last_30m": "latencyRequestCountLast30m",
+      "perf_workload": "perfWorkload",
+      "request_count_last_30m": "requestCountLast30m",
+      "throughput_last_30m": "throughputLast30m",
+      "throughput_request_count_last_30m": "throughputRequestCountLast30m",
+    });
+  });
+
+export function textGenerationFromJSON(
+  jsonString: string,
+): SafeParseResult<TextGeneration, SDKValidationError> {
+  return safeParse(
+    jsonString,
+    (x) => TextGeneration$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'TextGeneration' from JSON`,
+  );
+}
+
+/** @internal */
+export const TTSLatencyMetric$inboundSchema: z.ZodType<
+  TTSLatencyMetric,
+  unknown
+> = openEnums.inboundSchema(TTSLatencyMetric);
+
+/** @internal */
+export const TTSPerfWorkload$inboundSchema: z.ZodType<
+  TTSPerfWorkload,
+  unknown
+> = openEnums.inboundSchema(TTSPerfWorkload);
+
+/** @internal */
+export const TTS$inboundSchema: z.ZodType<TTS, unknown> = z.object({
+  latency_last_30m: z.nullable(PercentileStats$inboundSchema),
+  latency_metric: TTSLatencyMetric$inboundSchema,
+  latency_request_count_last_30m: z.nullable(z.int()),
+  perf_workload: TTSPerfWorkload$inboundSchema,
+  request_count_last_30m: z.nullable(z.int()),
+  throughput_last_30m: z.nullable(PercentileStats$inboundSchema),
+  throughput_request_count_last_30m: z.nullable(z.int()),
+}).transform((v) => {
+  return remap$(v, {
+    "latency_last_30m": "latencyLast30m",
+    "latency_metric": "latencyMetric",
+    "latency_request_count_last_30m": "latencyRequestCountLast30m",
+    "perf_workload": "perfWorkload",
+    "request_count_last_30m": "requestCountLast30m",
+    "throughput_last_30m": "throughputLast30m",
+    "throughput_request_count_last_30m": "throughputRequestCountLast30m",
+  });
+});
+
+export function ttsFromJSON(
+  jsonString: string,
+): SafeParseResult<TTS, SDKValidationError> {
+  return safeParse(
+    jsonString,
+    (x) => TTS$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'TTS' from JSON`,
+  );
+}
+
+/** @internal */
+export const UnknownLatencyMetric$inboundSchema: z.ZodType<
+  UnknownLatencyMetric,
+  unknown
+> = openEnums.inboundSchema(UnknownLatencyMetric);
+
+/** @internal */
+export const UnknownPerfWorkload$inboundSchema: z.ZodType<
+  UnknownPerfWorkload,
+  unknown
+> = openEnums.inboundSchema(UnknownPerfWorkload);
+
+/** @internal */
+export const Unknown$inboundSchema: z.ZodType<Unknown, unknown> = z.object({
+  latency_last_30m: z.nullable(PercentileStats$inboundSchema),
+  latency_metric: UnknownLatencyMetric$inboundSchema,
+  latency_request_count_last_30m: z.nullable(z.int()),
+  perf_workload: UnknownPerfWorkload$inboundSchema,
+  request_count_last_30m: z.nullable(z.int()),
+  throughput_last_30m: z.nullable(PercentileStats$inboundSchema),
+  throughput_request_count_last_30m: z.nullable(z.int()),
+}).transform((v) => {
+  return remap$(v, {
+    "latency_last_30m": "latencyLast30m",
+    "latency_metric": "latencyMetric",
+    "latency_request_count_last_30m": "latencyRequestCountLast30m",
+    "perf_workload": "perfWorkload",
+    "request_count_last_30m": "requestCountLast30m",
+    "throughput_last_30m": "throughputLast30m",
+    "throughput_request_count_last_30m": "throughputRequestCountLast30m",
+  });
+});
+
+export function unknownFromJSON(
+  jsonString: string,
+): SafeParseResult<Unknown, SDKValidationError> {
+  return safeParse(
+    jsonString,
+    (x) => Unknown$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'Unknown' from JSON`,
+  );
+}
+
+/** @internal */
+export const VideoGenerationLatencyMetric$inboundSchema: z.ZodType<
+  VideoGenerationLatencyMetric,
+  unknown
+> = openEnums.inboundSchema(VideoGenerationLatencyMetric);
+
+/** @internal */
+export const VideoGenerationPerfWorkload$inboundSchema: z.ZodType<
+  VideoGenerationPerfWorkload,
+  unknown
+> = openEnums.inboundSchema(VideoGenerationPerfWorkload);
+
+/** @internal */
+export const VideoGeneration$inboundSchema: z.ZodType<
+  VideoGeneration,
+  unknown
+> = z.object({
+  latency_last_30m: z.nullable(PercentileStats$inboundSchema),
+  latency_metric: VideoGenerationLatencyMetric$inboundSchema,
+  latency_request_count_last_30m: z.nullable(z.int()),
+  perf_workload: VideoGenerationPerfWorkload$inboundSchema,
+  request_count_last_30m: z.nullable(z.int()),
+  throughput_last_30m: z.nullable(PercentileStats$inboundSchema),
+  throughput_request_count_last_30m: z.nullable(z.int()),
+}).transform((v) => {
+  return remap$(v, {
+    "latency_last_30m": "latencyLast30m",
+    "latency_metric": "latencyMetric",
+    "latency_request_count_last_30m": "latencyRequestCountLast30m",
+    "perf_workload": "perfWorkload",
+    "request_count_last_30m": "requestCountLast30m",
+    "throughput_last_30m": "throughputLast30m",
+    "throughput_request_count_last_30m": "throughputRequestCountLast30m",
+  });
+});
+
+export function videoGenerationFromJSON(
+  jsonString: string,
+): SafeParseResult<VideoGeneration, SDKValidationError> {
+  return safeParse(
+    jsonString,
+    (x) => VideoGeneration$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'VideoGeneration' from JSON`,
+  );
+}
+
+/** @internal */
+export const PerformanceByWorkloadV1$inboundSchema: z.ZodType<
+  PerformanceByWorkloadV1,
+  unknown
+> = z.object({
+  embeddings: z.lazy(() => Embeddings$inboundSchema).optional(),
+  image_generation: z.lazy(() => ImageGeneration$inboundSchema).optional(),
+  rerank: z.lazy(() => Rerank$inboundSchema).optional(),
+  stt: z.lazy(() => STT$inboundSchema).optional(),
+  text_generation: z.lazy(() => TextGeneration$inboundSchema).optional(),
+  tts: z.lazy(() => TTS$inboundSchema).optional(),
+  unknown: z.lazy(() => Unknown$inboundSchema).optional(),
+  video_generation: z.lazy(() => VideoGeneration$inboundSchema).optional(),
+}).transform((v) => {
+  return remap$(v, {
+    "image_generation": "imageGeneration",
+    "text_generation": "textGeneration",
+    "video_generation": "videoGeneration",
+  });
+});
+
+export function performanceByWorkloadV1FromJSON(
+  jsonString: string,
+): SafeParseResult<PerformanceByWorkloadV1, SDKValidationError> {
+  return safeParse(
+    jsonString,
+    (x) => PerformanceByWorkloadV1$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'PerformanceByWorkloadV1' from JSON`,
+  );
+}
 
 /** @internal */
 export const Pricing$inboundSchema: z.ZodType<Pricing, unknown> = z.object({
@@ -183,6 +870,9 @@ export const PublicEndpoint$inboundSchema: z.ZodType<PublicEndpoint, unknown> =
     model_id: z.string(),
     model_name: z.string(),
     name: z.string(),
+    performance_by_workload_v1: z.lazy(() =>
+      PerformanceByWorkloadV1$inboundSchema
+    ).optional(),
     pricing: z.lazy(() => Pricing$inboundSchema),
     provider_name: ProviderName$inboundSchema,
     quantization: z.nullable(Quantization$inboundSchema),
@@ -203,6 +893,7 @@ export const PublicEndpoint$inboundSchema: z.ZodType<PublicEndpoint, unknown> =
       "max_prompt_tokens": "maxPromptTokens",
       "model_id": "modelId",
       "model_name": "modelName",
+      "performance_by_workload_v1": "performanceByWorkloadV1",
       "provider_name": "providerName",
       "supported_parameters": "supportedParameters",
       "supports_implicit_caching": "supportsImplicitCaching",
