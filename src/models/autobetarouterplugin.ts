@@ -27,7 +27,7 @@ export type AutoBetaRouterPluginCostTier = OpenEnum<
 
 export type AutoBetaRouterPlugin = {
   /**
-   * List of model patterns to filter which models the auto-beta-router can route between. Supports wildcards (e.g., "anthropic/*" matches all Anthropic models). When not specified, every model ranked for the classified task type is a candidate, falling back to a default model set when rankings are unavailable.
+   * List of model patterns to filter which models the auto-beta-router can route between. Supports wildcards (e.g., "anthropic/*" matches all Anthropic models). Up to 1024 patterns, each at most 1024 characters, with 65536 total characters across all patterns. When not specified, every model ranked for the classified task type is a candidate, falling back to a default model set when rankings are unavailable.
    */
   allowedModels?: Array<string> | undefined;
   /**
@@ -45,7 +45,7 @@ export type AutoBetaRouterPlugin = {
    */
   enabled?: boolean | undefined;
   /**
-   * List of model patterns to exclude from auto-beta-router selection. Supports wildcards (e.g., "meta-llama/*" excludes all Llama models). Applied after allowed_models, so an excluded pattern always wins over an allowed one.
+   * List of model patterns to exclude from auto-beta-router selection. Supports wildcards (e.g., "meta-llama/*" excludes all Llama models). Up to 1024 patterns, each at most 1024 characters, with 65536 total characters across all patterns. Applied after allowed_models, so an excluded pattern always wins over an allowed one.
    */
   excludedModels?: Array<string> | undefined;
   id: "auto-beta-router";
