@@ -4,20 +4,34 @@
  */
 
 import * as z from "zod/v4";
+import { remap as remap$ } from "../lib/primitives.js";
 
 /**
  * Configuration for the openrouter:files server tool
  */
-export type FilesServerToolConfig = {};
+export type FilesServerToolConfig = {
+  /**
+   * Allow the model to create and edit files (the `write` and `edit` operations). Defaults to false: without an explicit opt-in the tool is read-only, so prompt injection or untrusted file content cannot mutate workspace storage.
+   */
+  allowWrites?: boolean | undefined;
+};
 
 /** @internal */
-export type FilesServerToolConfig$Outbound = {};
+export type FilesServerToolConfig$Outbound = {
+  allow_writes?: boolean | undefined;
+};
 
 /** @internal */
 export const FilesServerToolConfig$outboundSchema: z.ZodType<
   FilesServerToolConfig$Outbound,
   FilesServerToolConfig
-> = z.object({});
+> = z.object({
+  allowWrites: z.boolean().optional(),
+}).transform((v) => {
+  return remap$(v, {
+    allowWrites: "allow_writes",
+  });
+});
 
 export function filesServerToolConfigToJSON(
   filesServerToolConfig: FilesServerToolConfig,
