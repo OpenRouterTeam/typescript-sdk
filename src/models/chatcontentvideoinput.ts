@@ -5,13 +5,31 @@
 
 import * as z from "zod/v4";
 import { safeParse } from "../lib/schemas.js";
+import { ClosedEnum } from "../types/enums.js";
 import { Result as SafeParseResult } from "../types/fp.js";
 import { SDKValidationError } from "./errors/sdkvalidationerror.js";
+
+/**
+ * Video processing mode. `agentic` enables agentic video processing on providers that support it (currently Google Gemini).
+ */
+export const ChatContentVideoInputProcessing = {
+  Agentic: "agentic",
+} as const;
+/**
+ * Video processing mode. `agentic` enables agentic video processing on providers that support it (currently Google Gemini).
+ */
+export type ChatContentVideoInputProcessing = ClosedEnum<
+  typeof ChatContentVideoInputProcessing
+>;
 
 /**
  * Video input object
  */
 export type ChatContentVideoInput = {
+  /**
+   * Video processing mode. `agentic` enables agentic video processing on providers that support it (currently Google Gemini).
+   */
+  processing?: ChatContentVideoInputProcessing | undefined;
   /**
    * URL of the video (data: URLs supported)
    */
@@ -19,14 +37,25 @@ export type ChatContentVideoInput = {
 };
 
 /** @internal */
+export const ChatContentVideoInputProcessing$inboundSchema: z.ZodEnum<
+  typeof ChatContentVideoInputProcessing
+> = z.enum(ChatContentVideoInputProcessing);
+/** @internal */
+export const ChatContentVideoInputProcessing$outboundSchema: z.ZodEnum<
+  typeof ChatContentVideoInputProcessing
+> = ChatContentVideoInputProcessing$inboundSchema;
+
+/** @internal */
 export const ChatContentVideoInput$inboundSchema: z.ZodType<
   ChatContentVideoInput,
   unknown
 > = z.object({
+  processing: ChatContentVideoInputProcessing$inboundSchema.optional(),
   url: z.string(),
 });
 /** @internal */
 export type ChatContentVideoInput$Outbound = {
+  processing?: string | undefined;
   url: string;
 };
 
@@ -35,6 +64,7 @@ export const ChatContentVideoInput$outboundSchema: z.ZodType<
   ChatContentVideoInput$Outbound,
   ChatContentVideoInput
 > = z.object({
+  processing: ChatContentVideoInputProcessing$outboundSchema.optional(),
   url: z.string(),
 });
 
