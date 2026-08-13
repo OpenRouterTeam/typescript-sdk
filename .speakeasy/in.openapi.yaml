@@ -30423,22 +30423,13 @@ paths:
             application/json:
               example:
                 data:
-                  error:
-                    message: 'Timed out waiting for the provider'
-                    previous_errors:
-                      - code: 429
-                        message: 'Provider returned error'
-                        provider_name: 'Google'
-                        raw: '{"error":{"code":429,"message":"Resource exhausted"}}'
-                    provider_name: 'Vertex'
-                    raw: '{"error":{"code":504,"message":"Deadline exceeded"}}'
-                    status: 504
+                  error: null
                   input:
                     messages:
                       - content: 'What is the meaning of life?'
                         role: 'user'
                   output:
-                    completion: null
+                    completion: 'The meaning of life is a philosophical question...'
                     reasoning: null
               schema:
                 $ref: '#/components/schemas/GenerationContentResponse'
