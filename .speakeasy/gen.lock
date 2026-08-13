@@ -1,19 +1,19 @@
 lockVersion: ""
 id: ""
 management:
-  docChecksum: a4ef5b325f8d2ae2b9ddccd3ecef948a
+  docChecksum: 0f476c86d54dfaaa2a4bdeb8a7f76ae5
   docVersion: 1.0.0
   speakeasyVersion: 1.787.0
   generationVersion: 2.914.0
-  releaseVersion: 1.2.30
-  configChecksum: 5e38117187687ff35f968a84f75c598a
+  releaseVersion: 1.2.31
+  configChecksum: c5d1c9e18e59b4035a91737c7396a6d4
   repoURL: https://github.com/OpenRouterTeam/typescript-sdk.git
   installationURL: https://github.com/OpenRouterTeam/typescript-sdk
   published: true
 persistentEdits:
-  generation_id: 0a64082a-f467-4dcd-ba2d-7451bca57963
-  pristine_commit_hash: a2d968a4287c20ae58e9ac0e02fac5616c264553
-  pristine_tree_hash: ea294e0e1d11d9f56245f378ae7fd4a76e59a685
+  generation_id: 9eb249a6-2d98-41d0-aec8-13736469fe66
+  pristine_commit_hash: 2abbd250381955a805f1bf8c00a3b91a47bf8860
+  pristine_tree_hash: 7ca2ce95b44ef3a4aed4619751f7d8029719fdeb
 features:
   typescript:
     acceptHeaders: 2.81.2
@@ -12897,12 +12897,12 @@ trackedFiles:
     pristine_git_object: 410efafd6a7f50d91ccb87131fedbe0c3d47e15a
   jsr.json:
     id: 7f6ab7767282
-    last_write_checksum: sha1:5a34d33f8f834f8c9a7ddedd5abe194f022fd5a6
-    pristine_git_object: f0aafb6f44e07a8443b72a57773c92f0adbb2f2f
+    last_write_checksum: sha1:1c16953a3e80518950a41596bfd24e987009d791
+    pristine_git_object: 21fa218ebb61a7763d89224ff0b892d5eeca1d03
   package.json:
     id: 7030d0b2f71b
-    last_write_checksum: sha1:2e0cb0fb627c41f5ec0d37d4e1e8a8ac72604eea
-    pristine_git_object: fc49269b471a6c4b8edca154df5acac1b11f56a2
+    last_write_checksum: sha1:d177853c453eb11abc7d8de42aab34c7f9573128
+    pristine_git_object: 608e48a891f39cf76dbb5b6f2da593be1cbc2086
   src/core.ts:
     id: f431fdbcd144
     last_write_checksum: sha1:5aa66b0b6a5964f3eea7f3098c2eb3c0ee9c0131
@@ -13313,8 +13313,8 @@ trackedFiles:
     pristine_git_object: a187e58707bdb726ca2aff74941efe7493422d4e
   src/lib/config.ts:
     id: 320761608fb3
-    last_write_checksum: sha1:1a14c44030aa53c7c5af562a7a35e886c754f8b8
-    pristine_git_object: f6ddc0d557d41a52b16b76b40cf3b6b08e21abfd
+    last_write_checksum: sha1:7735cb8c1c13e0a9db314670c394054b0abce246
+    pristine_git_object: ae0a3cd823e136079d2e1bede76b4341d57adba8
   src/lib/dlv.ts:
     id: b1988214835a
     last_write_checksum: sha1:eaac763b22717206a6199104e0403ed17a4e2711
@@ -18241,6 +18241,3 @@ examples:
         "500":
           application/json: {"error": {"code": 500, "message": "Internal Server Error"}}
 examplesVersion: 1.0.2
-releaseNotes: |
-  ## Typescript SDK Changes:
-  * `openrouter.datasets.getSessionCost()`: **Added**
