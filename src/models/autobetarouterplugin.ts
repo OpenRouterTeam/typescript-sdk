@@ -31,7 +31,7 @@ export type AutoBetaRouterPlugin = {
    */
   allowedModels?: Array<string> | undefined;
   /**
-   * Deprecated: Use cost_tier instead. Balances routing between cost and quality on a 0-10 scale. The auto-beta-router ranks models for the classified task type by community spend share, then filters candidates by their average cost per generation for that task. Higher values favor cheaper models: 10 keeps only models around the cheapest 10th percentile, while 0 permits models up to the 90th percentile for cost. Defaults to 9 when no cost setting is provided. It remains supported and retains ceiling behavior, but cost_tier takes precedence when both are provided.
+   * Deprecated: Use cost_tier instead. Balances routing between cost and quality on a 0-10 scale. The auto-beta-router ranks models for the classified task type by community spend share, then filters candidates by their average cost per generation for that task. Higher values favor cheaper models: 10 keeps only models around the cheapest 10th percentile, while 0 permits models up to the 90th percentile for cost. When no cost setting is provided, candidates keep the unfiltered usage-ranking order. It remains supported and retains ceiling behavior, but cost_tier takes precedence when both are provided.
    *
    * @deprecated field: This will be removed in a future release, please migrate away from it as soon as possible.
    */
