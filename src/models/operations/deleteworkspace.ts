@@ -53,7 +53,7 @@ export type DeleteWorkspaceRequest = {
    */
   id: string;
   /**
-   * Required to delete the default workspace (currently limited to internal OpenRouter administrators while the capability rolls out). Deleting it permanently disables the account’s unscoped inference API keys (management/provisioning keys are retained) and its budgets, guardrails, classifiers, and broadcast destinations. Ignored for non-default workspaces.
+   * Acknowledges that deleting the default workspace also clears the entity’s settings and disables its unscoped inference API keys; management (provisioning) keys are retained. Ignored for non-default workspaces.
    */
   confirmDefaultSettingsDeletion?: boolean | undefined;
 };
