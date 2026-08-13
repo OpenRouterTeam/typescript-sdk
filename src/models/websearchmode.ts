@@ -8,7 +8,7 @@ import * as openEnums from "../types/enums.js";
 import { OpenEnum } from "../types/enums.js";
 
 /**
- * Engine-native search mode. Exa supports instant, fast, auto (default), deep-lite, deep, and deep-reasoning. Parallel supports turbo, basic (default), and advanced. Modes unsupported by the selected engine are ignored.
+ * Engine-native search mode. Exa supports instant, fast, auto (default), deep-lite, deep, and deep-reasoning. Parallel supports turbo, fast, basic (default), and advanced. Modes unsupported by the selected engine are ignored.
  */
 export const WebSearchMode = {
   Instant: "instant",
@@ -22,7 +22,7 @@ export const WebSearchMode = {
   Advanced: "advanced",
 } as const;
 /**
- * Engine-native search mode. Exa supports instant, fast, auto (default), deep-lite, deep, and deep-reasoning. Parallel supports turbo, basic (default), and advanced. Modes unsupported by the selected engine are ignored.
+ * Engine-native search mode. Exa supports instant, fast, auto (default), deep-lite, deep, and deep-reasoning. Parallel supports turbo, fast, basic (default), and advanced. Modes unsupported by the selected engine are ignored.
  */
 export type WebSearchMode = OpenEnum<typeof WebSearchMode>;
 
