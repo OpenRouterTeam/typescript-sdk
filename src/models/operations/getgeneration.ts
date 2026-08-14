@@ -5,6 +5,7 @@
 
 import * as z from "zod/v4";
 import { remap as remap$ } from "../../lib/primitives.js";
+import { ClosedEnum } from "../../types/enums.js";
 
 export type GetGenerationGlobals = {
   /**
@@ -27,6 +28,17 @@ export type GetGenerationGlobals = {
    */
   appCategories?: string | undefined;
 };
+
+/**
+ * Include direct child generation IDs spawned by this generation
+ */
+export const IncludeRelated = {
+  True: "true",
+} as const;
+/**
+ * Include direct child generation IDs spawned by this generation
+ */
+export type IncludeRelated = ClosedEnum<typeof IncludeRelated>;
 
 export type GetGenerationRequest = {
   /**
@@ -52,7 +64,15 @@ export type GetGenerationRequest = {
    * The generation ID
    */
   id: string;
+  /**
+   * Include direct child generation IDs spawned by this generation
+   */
+  includeRelated?: IncludeRelated | undefined;
 };
+
+/** @internal */
+export const IncludeRelated$outboundSchema: z.ZodEnum<typeof IncludeRelated> = z
+  .enum(IncludeRelated);
 
 /** @internal */
 export type GetGenerationRequest$Outbound = {
@@ -60,6 +80,7 @@ export type GetGenerationRequest$Outbound = {
   appTitle?: string | undefined;
   appCategories?: string | undefined;
   id: string;
+  include_related?: string | undefined;
 };
 
 /** @internal */
@@ -71,9 +92,11 @@ export const GetGenerationRequest$outboundSchema: z.ZodType<
   appTitle: z.string().optional(),
   appCategories: z.string().optional(),
   id: z.string(),
+  includeRelated: IncludeRelated$outboundSchema.optional(),
 }).transform((v) => {
   return remap$(v, {
     httpReferer: "HTTP-Referer",
+    includeRelated: "include_related",
   });
 });
 

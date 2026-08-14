@@ -106,6 +106,7 @@ async function $do(
 
   const query = encodeFormQuery({
     "id": payload.id,
+    "include_related": payload.include_related,
   });
 
   const headers = new Headers(compactMap({

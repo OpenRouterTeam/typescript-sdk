@@ -170,6 +170,10 @@ export type GenerationResponseData = {
    */
   providerResponses: Array<ProviderResponse> | null;
   /**
+   * Direct child generation IDs spawned by this generation. Included only when requested.
+   */
+  relatedGenerationIds?: Array<string> | undefined;
+  /**
    * Unique identifier grouping all generations from a single API request
    */
   requestId?: string | null | undefined;
@@ -284,6 +288,7 @@ export const GenerationResponseData$inboundSchema: z.ZodType<
   preset_id: z.nullable(z.string()),
   provider_name: z.nullable(z.string()),
   provider_responses: z.nullable(z.array(ProviderResponse$inboundSchema)),
+  related_generation_ids: z.array(z.string()).optional(),
   request_id: z.nullable(z.string()).optional(),
   response_cache_source_id: z.nullable(z.string()).optional(),
   router: z.nullable(z.string()),
@@ -326,6 +331,7 @@ export const GenerationResponseData$inboundSchema: z.ZodType<
     "preset_id": "presetId",
     "provider_name": "providerName",
     "provider_responses": "providerResponses",
+    "related_generation_ids": "relatedGenerationIds",
     "request_id": "requestId",
     "response_cache_source_id": "responseCacheSourceId",
     "service_tier": "serviceTier",
