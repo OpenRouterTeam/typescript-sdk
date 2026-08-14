@@ -1696,6 +1696,9 @@ components:
           enum:
             - 'cyber'
             - 'bio'
+            - 'frontier_llm'
+            - 'reasoning_extraction'
+            - 'general_harms'
             - null
           type:
             - 'string'
