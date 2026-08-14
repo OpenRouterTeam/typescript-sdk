@@ -65,6 +65,18 @@ export type ListEndpointsResponse = {
    */
   id: string;
   /**
+   * Model-level availability over the last 24 hours of closed hourly windows, calculated as served calls divided by attributable calls. Attributable calls are served, upstream fault, silent 200, and model-wide no-endpoint outcomes. BYOK traffic, terminal 429s, client faults, and caller-constraint no-endpoint outcomes are excluded. The value is scoped to this model and variant. null means there was not enough attributable traffic to trust the ratio, not zero availability.
+   */
+  modelAvailabilityLast24h: number | null;
+  /**
+   * Model-level availability over the last 3 days of closed hourly windows, calculated as served calls divided by attributable calls. Attributable calls are served, upstream fault, silent 200, and model-wide no-endpoint outcomes. BYOK traffic, terminal 429s, client faults, and caller-constraint no-endpoint outcomes are excluded. The value is scoped to this model and variant. null means there was not enough attributable traffic to trust the ratio, not zero availability.
+   */
+  modelAvailabilityLast3d: number | null;
+  /**
+   * Model-level uptime over the last 3 days of closed hourly windows, calculated as (attributable calls minus model-wide no-endpoint calls) divided by attributable calls. Attributable calls are served, upstream fault, silent 200, and model-wide no-endpoint outcomes. BYOK traffic, terminal 429s, client faults, and caller-constraint no-endpoint outcomes are excluded. The value is scoped to this model and variant. null means there was not enough attributable traffic to trust the ratio, not zero uptime.
+   */
+  modelUptimeLast3d: number | null;
+  /**
    * Display name of the model
    */
   name: string;
@@ -106,7 +118,16 @@ export const ListEndpointsResponse$inboundSchema: z.ZodType<
   description: z.string(),
   endpoints: z.array(PublicEndpoint$inboundSchema),
   id: z.string(),
+  model_availability_last_24h: z.nullable(z.number()),
+  model_availability_last_3d: z.nullable(z.number()),
+  model_uptime_last_3d: z.nullable(z.number()),
   name: z.string(),
+}).transform((v) => {
+  return remap$(v, {
+    "model_availability_last_24h": "modelAvailabilityLast24h",
+    "model_availability_last_3d": "modelAvailabilityLast3d",
+    "model_uptime_last_3d": "modelUptimeLast3d",
+  });
 });
 
 export function listEndpointsResponseFromJSON(
