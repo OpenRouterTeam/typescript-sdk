@@ -49,6 +49,14 @@ export type Architecture = {
 export type ListEndpointsResponse = {
   architecture: Architecture;
   /**
+   * Model-level availability over the last 24 hours of closed hourly windows, calculated as served calls divided by attributable calls. Attributable calls are served, upstream fault, silent 200, and model-wide no-endpoint outcomes. BYOK traffic, terminal 429s, client faults, and caller-constraint no-endpoint outcomes are excluded. The value is scoped to this model and variant. null means there was not enough attributable traffic to trust the ratio, not zero availability.
+   */
+  availabilityLast24h: number | null;
+  /**
+   * Model-level availability over the last 3 days of closed hourly windows, calculated as served calls divided by attributable calls. Attributable calls are served, upstream fault, silent 200, and model-wide no-endpoint outcomes. BYOK traffic, terminal 429s, client faults, and caller-constraint no-endpoint outcomes are excluded. The value is scoped to this model and variant. null means there was not enough attributable traffic to trust the ratio, not zero availability.
+   */
+  availabilityLast3d: number | null;
+  /**
    * Unix timestamp of when the model was created
    */
   created: number;
@@ -68,6 +76,10 @@ export type ListEndpointsResponse = {
    * Display name of the model
    */
   name: string;
+  /**
+   * Model-level uptime over the last 3 days of closed hourly windows, calculated as (attributable calls minus model-wide no-endpoint calls) divided by attributable calls. Attributable calls are served, upstream fault, silent 200, and model-wide no-endpoint outcomes. BYOK traffic, terminal 429s, client faults, and caller-constraint no-endpoint outcomes are excluded. The value is scoped to this model and variant. null means there was not enough attributable traffic to trust the ratio, not zero uptime.
+   */
+  uptimeLast3d: number | null;
 };
 
 /** @internal */
@@ -102,11 +114,20 @@ export const ListEndpointsResponse$inboundSchema: z.ZodType<
   unknown
 > = z.object({
   architecture: z.lazy(() => Architecture$inboundSchema),
+  availability_last_24h: z.nullable(z.number()),
+  availability_last_3d: z.nullable(z.number()),
   created: z.int(),
   description: z.string(),
   endpoints: z.array(PublicEndpoint$inboundSchema),
   id: z.string(),
   name: z.string(),
+  uptime_last_3d: z.nullable(z.number()),
+}).transform((v) => {
+  return remap$(v, {
+    "availability_last_24h": "availabilityLast24h",
+    "availability_last_3d": "availabilityLast3d",
+    "uptime_last_3d": "uptimeLast3d",
+  });
 });
 
 export function listEndpointsResponseFromJSON(
