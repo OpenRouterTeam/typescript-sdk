@@ -60,6 +60,8 @@ import {
  * Token counts come from each upstream provider's own tokenizer, so a token attributed
  * to one app is not directly comparable to a token attributed to another app whose
  * traffic flows through a different provider.
+ *
+ * Licensed under [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/): reuse and republish with attribution to OpenRouter.
  */
 export function datasetsGetAppRankings(
   client: OpenRouterCore,
