@@ -40,7 +40,7 @@ export function videoGenerationGetVideoContent(
   options?: RequestOptions,
 ): APIPromise<
   Result<
-    ReadableStream<Uint8Array>,
+    ReadableStream<Uint8Array> | undefined,
     | errors.BadRequestResponseError
     | errors.UnauthorizedResponseError
     | errors.NotFoundResponseError
@@ -70,7 +70,7 @@ async function $do(
 ): Promise<
   [
     Result<
-      ReadableStream<Uint8Array>,
+      ReadableStream<Uint8Array> | undefined,
       | errors.BadRequestResponseError
       | errors.UnauthorizedResponseError
       | errors.NotFoundResponseError
@@ -192,7 +192,7 @@ async function $do(
   };
 
   const [result] = await M.match<
-    ReadableStream<Uint8Array>,
+    ReadableStream<Uint8Array> | undefined,
     | errors.BadRequestResponseError
     | errors.UnauthorizedResponseError
     | errors.NotFoundResponseError
@@ -209,8 +209,14 @@ async function $do(
   >(
     M.stream(
       200,
-      z.custom<ReadableStream<Uint8Array>>(x => x instanceof ReadableStream),
+      z.custom<ReadableStream<Uint8Array>>(x => x instanceof ReadableStream)
+        .optional(),
       { ctype: "video/mp4" },
+    ),
+    M.nil(
+      304,
+      z.custom<ReadableStream<Uint8Array>>(x => x instanceof ReadableStream)
+        .optional(),
     ),
     M.jsonErr(400, errors.BadRequestResponseError$inboundSchema),
     M.jsonErr(401, errors.UnauthorizedResponseError$inboundSchema),
