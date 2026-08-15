@@ -40,8 +40,6 @@ export class Datasets extends ClientSDK {
    * Token counts come from each upstream provider's own tokenizer, so a token attributed
    * to one app is not directly comparable to a token attributed to another app whose
    * traffic flows through a different provider.
-   *
-   * Licensed under [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/): reuse and republish with attribution to OpenRouter.
    */
   async getAppRankings(
     request?: operations.GetAppRankingsRequest | undefined,
@@ -86,8 +84,6 @@ export class Datasets extends ClientSDK {
    * are as reported by Anthropic, OpenAI counts are as reported by OpenAI, etc.), so
    * a token in one row is not directly comparable to a token in another row from a
    * different provider.
-   *
-   * Licensed under [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/): reuse and republish with attribution to OpenRouter.
    */
   async getRankingsDaily(
     request?: operations.GetRankingsDailyRequest | undefined,
@@ -111,8 +107,6 @@ export class Datasets extends ClientSDK {
    * Filter by `app_slug`, `model`, or `turn_range`. Filtering by `model` alone works across apps
    * for harness-vs-harness comparison at a fixed model. Results refresh weekly and include the source snapshot
    * window in `meta`.
-   *
-   * Licensed under [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/): reuse and republish with attribution to OpenRouter.
    */
   async getSessionCost(
     request?: operations.GetSessionCostRequest | undefined,
