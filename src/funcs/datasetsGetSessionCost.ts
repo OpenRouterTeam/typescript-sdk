@@ -44,8 +44,6 @@ import {
  * Filter by `app_slug`, `model`, or `turn_range`. Filtering by `model` alone works across apps
  * for harness-vs-harness comparison at a fixed model. Results refresh weekly and include the source snapshot
  * window in `meta`.
- *
- * Licensed under [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/): reuse and republish with attribution to OpenRouter.
  */
 export function datasetsGetSessionCost(
   client: OpenRouterCore,
