@@ -17040,6 +17040,20 @@ components:
           type: 'string'
         status:
           $ref: '#/components/schemas/ToolCallStatus'
+        subagent_id:
+          description: 'EXPERIMENTAL — subject to change without notice. String id that matches the `call_id` of the `openrouter:subagent` server tool call that spawned the subagent. Present on every `function_call` item the subagent projects; absent on ordinary function calls.'
+          type: 'string'
+        subagent_items:
+          description: 'EXPERIMENTAL — subject to change without notice. The subagent''s output items produced on this turn. Treat this as an opaque object; you must replay it in the request so that the subagent can continue execution of the tool with the same context. If a subagent created multiple parallel tool calls, only the first tool call will have this field. The other tool calls will only have `subagent_id`. Present only if the tool call originates from a subagent spawned by the `openrouter:subagent` server tool.'
+          items:
+            additionalProperties: {}
+            properties:
+              type:
+                type: 'string'
+            required:
+              - 'type'
+            type: 'object'
+          type: 'array'
         type:
           enum:
             - 'function_call'
@@ -18429,7 +18443,21 @@ components:
     OutputFunctionCallItem:
       allOf:
         - $ref: '#/components/schemas/OutputItemFunctionCall'
-        - properties: {}
+        - properties:
+            subagent_id:
+              description: 'EXPERIMENTAL — subject to change without notice. String id that matches the `call_id` of the `openrouter:subagent` server tool call that spawned the subagent. Present on every `function_call` item the subagent projects; absent on ordinary function calls.'
+              type: 'string'
+            subagent_items:
+              description: 'EXPERIMENTAL — subject to change without notice. The subagent''s output items produced on this turn. Treat this as an opaque object; you must replay it in the request so that the subagent can continue execution of the tool with the same context. If a subagent created multiple parallel tool calls, only the first tool call will have this field. The other tool calls will only have `subagent_id`. Present only if the tool call originates from a subagent spawned by the `openrouter:subagent` server tool.'
+              items:
+                additionalProperties: {}
+                properties:
+                  type:
+                    type: 'string'
+                required:
+                  - 'type'
+                type: 'object'
+              type: 'array'
           type: 'object'
       example:
         arguments: '{"location":"San Francisco"}'
@@ -19376,6 +19404,9 @@ components:
         status: 'completed'
         type: 'openrouter:subagent'
       properties:
+        call_id:
+          description: 'EXPERIMENTAL — subject to change without notice. The `call_id` of the tool call that spawned this subagent. This id will also be included as the `subagent_id` on any `function_call` items created by the subagent. This must be returned in the request so the `function_call` can be matched with the correct subagent. A suspended `in_progress` item is announced once and never re-emitted or terminally closed — completion arrives as a new item with the same `call_id`.'
+          type: 'string'
         error:
           description: 'Error message when the subagent task did not produce an outcome.'
           type: 'string'
@@ -23618,7 +23649,7 @@ components:
             - 'none'
           type: 'string'
         max_tokens:
-          description: 'Maximum number of reasoning tokens the subagent may use. Accepted and validated but not yet forwarded to the subagent call.'
+          description: 'Maximum number of reasoning tokens the subagent may use. Forwarded to the subagent call as `reasoning.max_tokens`.'
           type: 'integer'
       type: 'object'
     SubagentServerTool_OpenRouter:
@@ -23643,6 +23674,18 @@ components:
         model: '~anthropic/claude-haiku-latest'
         name: 'summarizer'
       properties:
+        inherit_functions:
+          description: 'EXPERIMENTAL — subject to change without notice. When true, the subagent inherits every client function defined in the request''s top-level `tools` list. Supported on the Responses API (`/api/v1/responses`) only; other APIs reject it with a `400`.'
+          example: true
+          type: 'boolean'
+        inherited_function_names:
+          description: 'EXPERIMENTAL — subject to change without notice. Names of the top-level function tools that the subagent will inherit. Any tool that matches by name will be copied fully into the tools array of the subagent. When `inherit_functions` is `true`, this list does nothing, because every client function will be inherited by default. Names are trimmed before validation, so a whitespace-only name is rejected with a `400`. Supported on the Responses API (`/api/v1/responses`) only; other APIs reject it with a `400`.'
+          example:
+            - 'lookup_order'
+          items:
+            minLength: 1
+            type: 'string'
+          type: 'array'
         instructions:
           description: 'System instructions for the subagent. When omitted, the subagent responds with no system prompt of its own.'
           example: 'You are a fast, focused worker. Complete the task exactly as described.'
@@ -23652,7 +23695,7 @@ components:
           example: 2048
           type: 'integer'
         max_tool_calls:
-          description: 'Maximum number of tool-calling steps the subagent may take during its agentic loop. Capped at 25. Only relevant when the subagent is given tools. Accepted and validated but not yet enforced on the subagent call.'
+          description: 'Maximum number of tool-calling steps the subagent may take during its agentic loop. Capped at 25. Only relevant when the subagent is given tools. Forwarded to the subagent call as `max_tool_calls`.'
           example: 5
           maximum: 25
           minimum: 1
