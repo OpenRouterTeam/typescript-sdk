@@ -1,0 +1,29 @@
+---
+title: "ShellCallOutputContent"
+---
+
+Captured stdout and stderr for one command of a shell call, with its exit or timeout outcome.
+
+## Example Usage
+
+```typescript
+import { ShellCallOutputContent } from "@openrouter/sdk/models";
+
+let value: ShellCallOutputContent = {
+  outcome: {
+    exitCode: 0,
+    type: "exit",
+  },
+  stderr: "",
+  stdout: "total 0\n",
+};
+```
+
+## Fields
+
+| Field                                                                                  | Type                                                                                   | Required                                                                               | Description                                                                            | Example                                                                                |
+| -------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------- |
+| `outcome`                                                                              | *models.Outcome*                                                                       | :heavy_check_mark:                                                                     | N/A                                                                                    |                                                                                        |
+| `stderr`                                                                               | *string*                                                                               | :heavy_check_mark:                                                                     | N/A                                                                                    |                                                                                        |
+| `stdout`                                                                               | *string*                                                                               | :heavy_check_mark:                                                                     | N/A                                                                                    |                                                                                        |
+| `additionalProperties`                                                                 | Record\<string, *any*>                                                                  | :heavy_minus_sign:                                                                     | N/A                                                                                    | \{<br/>"outcome": \{<br/>"exit_code": 0,<br/>"type": "exit"<br/>},<br/>"stderr": "",<br/>"stdout": "total 0\n"<br/>} |
