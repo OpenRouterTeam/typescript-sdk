@@ -11350,6 +11350,7 @@ components:
               - $ref: '#/components/schemas/OutputAdvisorServerToolItem'
               - $ref: '#/components/schemas/OutputSubagentServerToolItem'
               - $ref: '#/components/schemas/OutputFilesServerToolItem'
+              - $ref: '#/components/schemas/OutputShellServerToolItem'
               - $ref: '#/components/schemas/LocalShellCallItem'
               - $ref: '#/components/schemas/LocalShellCallOutputItem'
               - $ref: '#/components/schemas/ShellCallItem'
@@ -18165,10 +18166,14 @@ components:
       properties:
         arguments:
           description: 'The raw tool-call arguments string as emitted by the model.'
-          type: 'string'
+          type:
+            - 'string'
+            - 'null'
         call_id:
           description: 'The model-generated tool call id from the originating turn.'
-          type: 'string'
+          type:
+            - 'string'
+            - 'null'
         command:
           type: 'string'
         exitCode:
@@ -18413,6 +18418,16 @@ components:
         status: 'completed'
         type: 'openrouter:files'
       properties:
+        arguments:
+          description: 'The raw tool-call arguments string as emitted by the model.'
+          type:
+            - 'string'
+            - 'null'
+        call_id:
+          description: 'The model-generated tool call id from the originating turn.'
+          type:
+            - 'string'
+            - 'null'
         error:
           description: 'Error message when the file operation failed.'
           type: 'string'
@@ -18962,6 +18977,7 @@ components:
           openrouter:image_generation: '#/components/schemas/OutputImageGenerationServerToolItem'
           openrouter:mcp: '#/components/schemas/OutputMcpServerToolItem'
           openrouter:memory: '#/components/schemas/OutputMemoryServerToolItem'
+          openrouter:shell: '#/components/schemas/OutputShellServerToolItem'
           openrouter:subagent: '#/components/schemas/OutputSubagentServerToolItem'
           openrouter:text_editor: '#/components/schemas/OutputTextEditorServerToolItem'
           openrouter:tool_search: '#/components/schemas/OutputToolSearchServerToolItem'
@@ -19001,6 +19017,7 @@ components:
         - $ref: '#/components/schemas/OutputApplyPatchCallItem'
         - $ref: '#/components/schemas/OutputShellCallItem'
         - $ref: '#/components/schemas/OutputShellCallOutputItem'
+        - $ref: '#/components/schemas/OutputShellServerToolItem'
         - $ref: '#/components/schemas/OutputWebFetchServerToolItem'
         - $ref: '#/components/schemas/OutputToolSearchServerToolItem'
         - $ref: '#/components/schemas/OutputMemoryServerToolItem'
@@ -19312,6 +19329,11 @@ components:
             - 'max_output_length'
             - 'timeout_ms'
           type: 'object'
+        arguments:
+          description: 'The raw tool-call arguments string as emitted by the model. Echo back unchanged when replaying history; used verbatim to preserve provider prompt-cache prefixes.'
+          type:
+            - 'string'
+            - 'null'
         call_id:
           type: 'string'
         id:
@@ -19352,37 +19374,7 @@ components:
             - 'null'
         output:
           items:
-            properties:
-              outcome:
-                oneOf:
-                  - properties:
-                      exit_code:
-                        type: 'integer'
-                      type:
-                        enum:
-                          - 'exit'
-                        type: 'string'
-                    required:
-                      - 'type'
-                      - 'exit_code'
-                    type: 'object'
-                  - properties:
-                      type:
-                        enum:
-                          - 'timeout'
-                        type: 'string'
-                    required:
-                      - 'type'
-                    type: 'object'
-              stderr:
-                type: 'string'
-              stdout:
-                type: 'string'
-            required:
-              - 'stdout'
-              - 'stderr'
-              - 'outcome'
-            type: 'object'
+            $ref: '#/components/schemas/ShellCallOutputContent'
           type: 'array'
         status:
           $ref: '#/components/schemas/ShellCallStatus'
@@ -19396,6 +19388,68 @@ components:
         - 'call_id'
         - 'status'
         - 'output'
+      type: 'object'
+    OutputShellServerToolItem:
+      description: 'An openrouter:shell server tool output item'
+      example:
+        action:
+          commands:
+            - 'echo hello'
+          max_output_length: null
+          timeout_ms: null
+        call_id: 'call_abc123'
+        id: 'st_tmp_abc123'
+        output:
+          - outcome:
+              exit_code: 0
+              type: 'exit'
+            stderr: ''
+            stdout: "hello\n"
+        status: 'completed'
+        type: 'openrouter:shell'
+      properties:
+        action:
+          properties:
+            commands:
+              items:
+                type: 'string'
+              type: 'array'
+            max_output_length:
+              type:
+                - 'integer'
+                - 'null'
+            timeout_ms:
+              type:
+                - 'integer'
+                - 'null'
+          required:
+            - 'commands'
+          type: 'object'
+        arguments:
+          description: 'The raw tool-call arguments string as emitted by the model.'
+          type:
+            - 'string'
+            - 'null'
+        call_id:
+          description: 'The model-generated tool call id from the originating turn.'
+          type:
+            - 'string'
+            - 'null'
+        id:
+          type: 'string'
+        output:
+          items:
+            $ref: '#/components/schemas/ShellCallOutputContent'
+          type: 'array'
+        status:
+          $ref: '#/components/schemas/ToolCallStatus'
+        type:
+          enum:
+            - 'openrouter:shell'
+          type: 'string'
+      required:
+        - 'status'
+        - 'type'
       type: 'object'
     OutputSubagentServerToolItem:
       description: 'An openrouter:subagent server tool output item'
@@ -22680,6 +22734,11 @@ components:
           required:
             - 'commands'
           type: 'object'
+        arguments:
+          description: 'The raw tool-call arguments string as emitted by the model. Echo back unchanged when replaying history; used verbatim to preserve provider prompt-cache prefixes.'
+          type:
+            - 'string'
+            - 'null'
         call_id:
           type: 'string'
         environment: {}
@@ -22700,13 +22759,58 @@ components:
         - 'call_id'
         - 'action'
       type: 'object'
+    ShellCallOutputContent:
+      additionalProperties: {}
+      description: 'Captured stdout and stderr for one command of a shell call, with its exit or timeout outcome.'
+      example:
+        outcome:
+          exit_code: 0
+          type: 'exit'
+        stderr: ''
+        stdout: "total 0\n"
+      properties:
+        outcome:
+          oneOf:
+            - additionalProperties: {}
+              properties:
+                exit_code:
+                  type: 'integer'
+                type:
+                  enum:
+                    - 'exit'
+                  type: 'string'
+              required:
+                - 'type'
+                - 'exit_code'
+              type: 'object'
+            - additionalProperties: {}
+              properties:
+                type:
+                  enum:
+                    - 'timeout'
+                  type: 'string'
+              required:
+                - 'type'
+              type: 'object'
+        stderr:
+          type: 'string'
+        stdout:
+          type: 'string'
+      required:
+        - 'stdout'
+        - 'stderr'
+        - 'outcome'
+      type: 'object'
     ShellCallOutputItem:
       description: 'Output from a shell command execution (newer variant)'
       example:
         call_id: 'call-abc123'
         output:
-          - content: "total 0\n"
-            type: 'stdout'
+          - outcome:
+              exit_code: 0
+              type: 'exit'
+            stderr: ''
+            stdout: "total 0\n"
         status: 'completed'
         type: 'shell_call_output'
       properties:
@@ -22722,21 +22826,7 @@ components:
             - 'null'
         output:
           items:
-            additionalProperties: {}
-            properties:
-              content:
-                type:
-                  - 'string'
-                  - 'null'
-              exit_code:
-                type:
-                  - 'integer'
-                  - 'null'
-              type:
-                type: 'string'
-            required:
-              - 'type'
-            type: 'object'
+            $ref: '#/components/schemas/ShellCallOutputContent'
           type: 'array'
         status:
           anyOf:
