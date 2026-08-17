@@ -1,0 +1,33 @@
+---
+title: "ProvisionOrganizationResponse"
+---
+
+Organization provisioned or returned from an idempotent replay
+
+## Example Usage
+
+```typescript
+import { ProvisionOrganizationResponse } from "@openrouter/sdk/models/operations";
+
+let value: ProvisionOrganizationResponse = {
+  created: false,
+  grant: {
+    id: "<id>",
+    scopes: [],
+  },
+  organization: {
+    email: "Jaqueline12@gmail.com",
+    id: "<id>",
+    name: "<value>",
+    slug: "<value>",
+  },
+};
+```
+
+## Fields
+
+| Field                                                              | Type                                                               | Required                                                           | Description                                                        |
+| ------------------------------------------------------------------ | ------------------------------------------------------------------ | ------------------------------------------------------------------ | ------------------------------------------------------------------ |
+| `created`                                                          | *boolean*                                                          | :heavy_check_mark:                                                 | N/A                                                                |
+| `grant`                                                            | [operations.Grant](../../models/operations/grant.mdx)               | :heavy_check_mark:                                                 | N/A                                                                |
+| `organization`                                                     | [operations.Organization](../../models/operations/organization.mdx) | :heavy_check_mark:                                                 | N/A                                                                |
