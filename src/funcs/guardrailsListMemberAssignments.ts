@@ -47,7 +47,9 @@ export function guardrailsListMemberAssignments(
   PageIterator<
     Result<
       operations.ListMemberAssignmentsResponse,
+      | errors.BadRequestResponseError
       | errors.UnauthorizedResponseError
+      | errors.ForbiddenResponseError
       | errors.InternalServerResponseError
       | OpenRouterError
       | ResponseValidationError
@@ -77,7 +79,9 @@ async function $do(
     PageIterator<
       Result<
         operations.ListMemberAssignmentsResponse,
+        | errors.BadRequestResponseError
         | errors.UnauthorizedResponseError
+        | errors.ForbiddenResponseError
         | errors.InternalServerResponseError
         | OpenRouterError
         | ResponseValidationError
@@ -196,7 +200,9 @@ async function $do(
 
   const [result, raw] = await M.match<
     operations.ListMemberAssignmentsResponse,
+    | errors.BadRequestResponseError
     | errors.UnauthorizedResponseError
+    | errors.ForbiddenResponseError
     | errors.InternalServerResponseError
     | OpenRouterError
     | ResponseValidationError
@@ -210,7 +216,9 @@ async function $do(
     M.json(200, operations.ListMemberAssignmentsResponse$inboundSchema, {
       key: "Result",
     }),
+    M.jsonErr(400, errors.BadRequestResponseError$inboundSchema),
     M.jsonErr(401, errors.UnauthorizedResponseError$inboundSchema),
+    M.jsonErr(403, errors.ForbiddenResponseError$inboundSchema),
     M.jsonErr(500, errors.InternalServerResponseError$inboundSchema),
     M.fail("4XX"),
     M.fail("5XX"),
@@ -229,7 +237,9 @@ async function $do(
     next: Paginator<
       Result<
         operations.ListMemberAssignmentsResponse,
+        | errors.BadRequestResponseError
         | errors.UnauthorizedResponseError
+        | errors.ForbiddenResponseError
         | errors.InternalServerResponseError
         | OpenRouterError
         | ResponseValidationError
