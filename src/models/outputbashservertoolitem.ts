@@ -29,11 +29,11 @@ export type OutputBashServerToolItem = {
   /**
    * The raw tool-call arguments string as emitted by the model.
    */
-  arguments?: string | undefined;
+  arguments?: string | null | undefined;
   /**
    * The model-generated tool call id from the originating turn.
    */
-  callId?: string | undefined;
+  callId?: string | null | undefined;
   command?: string | undefined;
   exitCode?: number | undefined;
   id?: string | undefined;
@@ -57,8 +57,8 @@ export const OutputBashServerToolItem$inboundSchema: z.ZodType<
   OutputBashServerToolItem,
   unknown
 > = z.object({
-  arguments: z.string().optional(),
-  call_id: z.string().optional(),
+  arguments: z.nullable(z.string()).optional(),
+  call_id: z.nullable(z.string()).optional(),
   command: z.string().optional(),
   exitCode: z.int().optional(),
   id: z.string().optional(),
@@ -73,8 +73,8 @@ export const OutputBashServerToolItem$inboundSchema: z.ZodType<
 });
 /** @internal */
 export type OutputBashServerToolItem$Outbound = {
-  arguments?: string | undefined;
-  call_id?: string | undefined;
+  arguments?: string | null | undefined;
+  call_id?: string | null | undefined;
   command?: string | undefined;
   exitCode?: number | undefined;
   id?: string | undefined;
@@ -89,8 +89,8 @@ export const OutputBashServerToolItem$outboundSchema: z.ZodType<
   OutputBashServerToolItem$Outbound,
   OutputBashServerToolItem
 > = z.object({
-  arguments: z.string().optional(),
-  callId: z.string().optional(),
+  arguments: z.nullable(z.string()).optional(),
+  callId: z.nullable(z.string()).optional(),
   command: z.string().optional(),
   exitCode: z.int().optional(),
   id: z.string().optional(),
