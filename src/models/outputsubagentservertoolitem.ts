@@ -8,12 +8,12 @@ import { remap as remap$ } from "../lib/primitives.js";
 import { safeParse } from "../lib/schemas.js";
 import { ClosedEnum } from "../types/enums.js";
 import { Result as SafeParseResult } from "../types/fp.js";
-import { SDKValidationError } from "./errors/sdkvalidationerror.js";
 import {
-  ToolCallStatus,
-  ToolCallStatus$inboundSchema,
-  ToolCallStatus$outboundSchema,
-} from "./toolcallstatus.js";
+  ErrorableToolCallStatus,
+  ErrorableToolCallStatus$inboundSchema,
+  ErrorableToolCallStatus$outboundSchema,
+} from "./errorabletoolcallstatus.js";
+import { SDKValidationError } from "./errors/sdkvalidationerror.js";
 
 export const OutputSubagentServerToolItemType = {
   OpenrouterSubagent: "openrouter:subagent",
@@ -31,7 +31,7 @@ export type OutputSubagentServerToolItem = {
    */
   callId?: string | undefined;
   /**
-   * Error message when the subagent task did not produce an outcome.
+   * Error message when the subagent task did not produce an outcome. Set together with `status: 'error'` on the terminal item.
    */
   error?: string | undefined;
   id?: string | undefined;
@@ -51,7 +51,7 @@ export type OutputSubagentServerToolItem = {
    * The worker model's result (the outcome text returned to the delegating model).
    */
   outcome?: string | undefined;
-  status: ToolCallStatus;
+  status: ErrorableToolCallStatus;
   /**
    * The task description the delegating model sent to the worker.
    */
@@ -84,7 +84,7 @@ export const OutputSubagentServerToolItem$inboundSchema: z.ZodType<
   model: z.string().optional(),
   name: z.string().optional(),
   outcome: z.string().optional(),
-  status: ToolCallStatus$inboundSchema,
+  status: ErrorableToolCallStatus$inboundSchema,
   task_description: z.string().optional(),
   task_name: z.string().optional(),
   type: OutputSubagentServerToolItemType$inboundSchema,
@@ -123,7 +123,7 @@ export const OutputSubagentServerToolItem$outboundSchema: z.ZodType<
   model: z.string().optional(),
   name: z.string().optional(),
   outcome: z.string().optional(),
-  status: ToolCallStatus$outboundSchema,
+  status: ErrorableToolCallStatus$outboundSchema,
   taskDescription: z.string().optional(),
   taskName: z.string().optional(),
   type: OutputSubagentServerToolItemType$outboundSchema,

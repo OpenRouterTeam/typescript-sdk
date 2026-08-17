@@ -8,12 +8,12 @@ import { remap as remap$ } from "../lib/primitives.js";
 import { safeParse } from "../lib/schemas.js";
 import { ClosedEnum } from "../types/enums.js";
 import { Result as SafeParseResult } from "../types/fp.js";
-import { SDKValidationError } from "./errors/sdkvalidationerror.js";
 import {
-  ToolCallStatus,
-  ToolCallStatus$inboundSchema,
-  ToolCallStatus$outboundSchema,
-} from "./toolcallstatus.js";
+  ErrorableToolCallStatus,
+  ErrorableToolCallStatus$inboundSchema,
+  ErrorableToolCallStatus$outboundSchema,
+} from "./errorabletoolcallstatus.js";
+import { SDKValidationError } from "./errors/sdkvalidationerror.js";
 
 export const OutputAdvisorServerToolItemType = {
   OpenrouterAdvisor: "openrouter:advisor",
@@ -31,7 +31,7 @@ export type OutputAdvisorServerToolItem = {
    */
   advice?: string | undefined;
   /**
-   * Error message when the advisor call did not produce advice.
+   * Error message when the advisor call did not produce advice. Set together with `status: 'error'` on the terminal item.
    */
   error?: string | undefined;
   id?: string | undefined;
@@ -47,7 +47,7 @@ export type OutputAdvisorServerToolItem = {
    * The prompt the executor sent to the advisor.
    */
   prompt?: string | undefined;
-  status: ToolCallStatus;
+  status: ErrorableToolCallStatus;
   type: OutputAdvisorServerToolItemType;
 };
 
@@ -71,7 +71,7 @@ export const OutputAdvisorServerToolItem$inboundSchema: z.ZodType<
   instance_name: z.string().optional(),
   model: z.string().optional(),
   prompt: z.string().optional(),
-  status: ToolCallStatus$inboundSchema,
+  status: ErrorableToolCallStatus$inboundSchema,
   type: OutputAdvisorServerToolItemType$inboundSchema,
 }).transform((v) => {
   return remap$(v, {
@@ -101,7 +101,7 @@ export const OutputAdvisorServerToolItem$outboundSchema: z.ZodType<
   instanceName: z.string().optional(),
   model: z.string().optional(),
   prompt: z.string().optional(),
-  status: ToolCallStatus$outboundSchema,
+  status: ErrorableToolCallStatus$outboundSchema,
   type: OutputAdvisorServerToolItemType$outboundSchema,
 }).transform((v) => {
   return remap$(v, {

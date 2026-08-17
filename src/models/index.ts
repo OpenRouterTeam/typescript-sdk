@@ -206,6 +206,7 @@ export * from "./endpointinfo.js";
 export * from "./endpointsmetadata.js";
 export * from "./endpointstatus.js";
 export * from "./enumcapability.js";
+export * from "./errorabletoolcallstatus.js";
 export * from "./errorevent.js";
 export * from "./filecitation.js";
 export * from "./filedeleteresponse.js";
