@@ -536,6 +536,7 @@ export * from "./streameventsresponseoutputitemadded.js";
 export * from "./streameventsresponseoutputitemdone.js";
 export * from "./streamlogprob.js";
 export * from "./streamlogprobtoplogprob.js";
+export * from "./stripcitationmarkersplugin.js";
 export * from "./sttinputaudio.js";
 export * from "./sttrequest.js";
 export * from "./sttresponse.js";
