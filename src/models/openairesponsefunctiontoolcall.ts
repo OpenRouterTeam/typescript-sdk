@@ -5,7 +5,10 @@
 
 import * as z from "zod/v4";
 import { remap as remap$ } from "../lib/primitives.js";
-import { safeParse } from "../lib/schemas.js";
+import {
+  collectExtraKeys as collectExtraKeys$,
+  safeParse,
+} from "../lib/schemas.js";
 import { ClosedEnum } from "../types/enums.js";
 import { Result as SafeParseResult } from "../types/fp.js";
 import { SDKValidationError } from "./errors/sdkvalidationerror.js";
@@ -13,6 +16,11 @@ import {
   ToolCallStatus,
   ToolCallStatus$inboundSchema,
 } from "./toolcallstatus.js";
+
+export type OpenAIResponseFunctionToolCallSubagentItem = {
+  type: string;
+  additionalProperties?: { [k: string]: any } | undefined;
+};
 
 export const OpenAIResponseFunctionToolCallType = {
   FunctionCall: "function_call",
@@ -31,8 +39,43 @@ export type OpenAIResponseFunctionToolCall = {
    */
   namespace?: string | undefined;
   status?: ToolCallStatus | undefined;
+  /**
+   * EXPERIMENTAL — subject to change without notice. String id that matches the `call_id` of the `openrouter:subagent` server tool call that spawned the subagent. Present on every `function_call` item the subagent projects; absent on ordinary function calls.
+   */
+  subagentId?: string | undefined;
+  /**
+   * EXPERIMENTAL — subject to change without notice. The subagent's output items produced on this turn. Treat this as an opaque object; you must replay it in the request so that the subagent can continue execution of the tool with the same context. If a subagent created multiple parallel tool calls, only the first tool call will have this field. The other tool calls will only have `subagent_id`. Present only if the tool call originates from a subagent spawned by the `openrouter:subagent` server tool.
+   */
+  subagentItems?: Array<OpenAIResponseFunctionToolCallSubagentItem> | undefined;
   type: OpenAIResponseFunctionToolCallType;
 };
+
+/** @internal */
+export const OpenAIResponseFunctionToolCallSubagentItem$inboundSchema:
+  z.ZodType<OpenAIResponseFunctionToolCallSubagentItem, unknown> =
+    collectExtraKeys$(
+      z.object({
+        type: z.string(),
+      }).catchall(z.any()),
+      "additionalProperties",
+      true,
+    );
+
+export function openAIResponseFunctionToolCallSubagentItemFromJSON(
+  jsonString: string,
+): SafeParseResult<
+  OpenAIResponseFunctionToolCallSubagentItem,
+  SDKValidationError
+> {
+  return safeParse(
+    jsonString,
+    (x) =>
+      OpenAIResponseFunctionToolCallSubagentItem$inboundSchema.parse(
+        JSON.parse(x),
+      ),
+    `Failed to parse 'OpenAIResponseFunctionToolCallSubagentItem' from JSON`,
+  );
+}
 
 /** @internal */
 export const OpenAIResponseFunctionToolCallType$inboundSchema: z.ZodEnum<
@@ -50,10 +93,16 @@ export const OpenAIResponseFunctionToolCall$inboundSchema: z.ZodType<
   name: z.string(),
   namespace: z.string().optional(),
   status: ToolCallStatus$inboundSchema.optional(),
+  subagent_id: z.string().optional(),
+  subagent_items: z.array(
+    z.lazy(() => OpenAIResponseFunctionToolCallSubagentItem$inboundSchema),
+  ).optional(),
   type: OpenAIResponseFunctionToolCallType$inboundSchema,
 }).transform((v) => {
   return remap$(v, {
     "call_id": "callId",
+    "subagent_id": "subagentId",
+    "subagent_items": "subagentItems",
   });
 });
 
