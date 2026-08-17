@@ -231,6 +231,11 @@ import {
   StoredPromptTemplate$outboundSchema,
 } from "./storedprompttemplate.js";
 import {
+  StripCitationMarkersPlugin,
+  StripCitationMarkersPlugin$Outbound,
+  StripCitationMarkersPlugin$outboundSchema,
+} from "./stripcitationmarkersplugin.js";
+import {
   SubagentServerToolOpenRouter,
   SubagentServerToolOpenRouter$Outbound,
   SubagentServerToolOpenRouter$outboundSchema,
@@ -280,6 +285,7 @@ export type ResponsesRequestPlugin =
   | ModerationPlugin
   | ParetoRouterPlugin
   | ResponseHealingPlugin
+  | StripCitationMarkersPlugin
   | WebSearchPlugin
   | WebFetchPlugin;
 
@@ -415,6 +421,7 @@ export type ResponsesRequest = {
       | ModerationPlugin
       | ParetoRouterPlugin
       | ResponseHealingPlugin
+      | StripCitationMarkersPlugin
       | WebSearchPlugin
       | WebFetchPlugin
     >
@@ -523,6 +530,7 @@ export type ResponsesRequestPlugin$Outbound =
   | ModerationPlugin$Outbound
   | ParetoRouterPlugin$Outbound
   | ResponseHealingPlugin$Outbound
+  | StripCitationMarkersPlugin$Outbound
   | WebSearchPlugin$Outbound
   | WebFetchPlugin$Outbound;
 
@@ -539,6 +547,7 @@ export const ResponsesRequestPlugin$outboundSchema: z.ZodType<
   ModerationPlugin$outboundSchema,
   ParetoRouterPlugin$outboundSchema,
   ResponseHealingPlugin$outboundSchema,
+  StripCitationMarkersPlugin$outboundSchema,
   WebSearchPlugin$outboundSchema,
   WebFetchPlugin$outboundSchema,
 ]);
@@ -772,6 +781,7 @@ export type ResponsesRequest$Outbound = {
       | ModerationPlugin$Outbound
       | ParetoRouterPlugin$Outbound
       | ResponseHealingPlugin$Outbound
+      | StripCitationMarkersPlugin$Outbound
       | WebSearchPlugin$Outbound
       | WebFetchPlugin$Outbound
     >
@@ -875,6 +885,7 @@ export const ResponsesRequest$outboundSchema: z.ZodType<
       ModerationPlugin$outboundSchema,
       ParetoRouterPlugin$outboundSchema,
       ResponseHealingPlugin$outboundSchema,
+      StripCitationMarkersPlugin$outboundSchema,
       WebSearchPlugin$outboundSchema,
       WebFetchPlugin$outboundSchema,
     ]),
