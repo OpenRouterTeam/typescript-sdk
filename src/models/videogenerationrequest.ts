@@ -49,6 +49,7 @@ export type VideoGenerationRequestOptions = {
   akashml?: { [k: string]: any } | undefined;
   alibaba?: { [k: string]: any } | undefined;
   amazonBedrock?: { [k: string]: any } | undefined;
+  amazonBedrockClaudeOnAws?: { [k: string]: any } | undefined;
   amazonNova?: { [k: string]: any } | undefined;
   ambient?: { [k: string]: any } | undefined;
   anthropic?: { [k: string]: any } | undefined;
@@ -266,6 +267,7 @@ export type VideoGenerationRequestOptions$Outbound = {
   akashml?: { [k: string]: any } | undefined;
   alibaba?: { [k: string]: any } | undefined;
   "amazon-bedrock"?: { [k: string]: any } | undefined;
+  "amazon-bedrock/claude-on-aws"?: { [k: string]: any } | undefined;
   "amazon-nova"?: { [k: string]: any } | undefined;
   ambient?: { [k: string]: any } | undefined;
   anthropic?: { [k: string]: any } | undefined;
@@ -406,6 +408,7 @@ export const VideoGenerationRequestOptions$outboundSchema: z.ZodType<
   akashml: z.record(z.string(), z.any()).optional(),
   alibaba: z.record(z.string(), z.any()).optional(),
   amazonBedrock: z.record(z.string(), z.any()).optional(),
+  amazonBedrockClaudeOnAws: z.record(z.string(), z.any()).optional(),
   amazonNova: z.record(z.string(), z.any()).optional(),
   ambient: z.record(z.string(), z.any()).optional(),
   anthropic: z.record(z.string(), z.any()).optional(),
@@ -538,6 +541,7 @@ export const VideoGenerationRequestOptions$outboundSchema: z.ZodType<
     oneai: "01ai",
     aionLabs: "aion-labs",
     amazonBedrock: "amazon-bedrock",
+    amazonBedrockClaudeOnAws: "amazon-bedrock/claude-on-aws",
     amazonNova: "amazon-nova",
     arceeAi: "arcee-ai",
     atlasCloud: "atlas-cloud",
