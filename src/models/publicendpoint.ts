@@ -121,12 +121,15 @@ export type PublicEndpoint = {
   tag: string;
   throughputLast30m: PercentileStats | null;
   /**
-   * Uptime percentage over the last 1 day, calculated as successful requests / (successful + error requests) * 100. Rate-limited requests are excluded. Returns null if insufficient data.
+   * Uptime percentage over the last 1 day, calculated as successful requests / (successful + error requests) * 100. Rate-limited requests are excluded. Returns null if insufficient data. This measures the individual provider endpoint's uptime from the provider status pipeline and is not comparable with the model-level fields, which are model-wide and computed from a different denominator.
    */
   uptimeLast1d: number | null;
+  /**
+   * Uptime percentage over the last 30 minutes, calculated as successful requests / (successful + error requests) * 100. Rate-limited requests are excluded. Returns null if insufficient data. This measures the individual provider endpoint's uptime from the provider status pipeline and is not comparable with the model-level fields, which are model-wide and computed from a different denominator.
+   */
   uptimeLast30m: number | null;
   /**
-   * Uptime percentage over the last 5 minutes, calculated as successful requests / (successful + error requests) * 100. Rate-limited requests are excluded. Returns null if insufficient data.
+   * Uptime percentage over the last 5 minutes, calculated as successful requests / (successful + error requests) * 100. Rate-limited requests are excluded. Returns null if insufficient data. This measures the individual provider endpoint's uptime from the provider status pipeline and is not comparable with the model-level fields, which are model-wide and computed from a different denominator.
    */
   uptimeLast5m: number | null;
 };
