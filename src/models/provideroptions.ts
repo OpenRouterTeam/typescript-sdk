@@ -20,6 +20,7 @@ export type ProviderOptions = {
   amazonNova?: { [k: string]: any } | undefined;
   ambient?: { [k: string]: any } | undefined;
   anthropic?: { [k: string]: any } | undefined;
+  anthropic2?: { [k: string]: any } | undefined;
   anyscale?: { [k: string]: any } | undefined;
   arceeAi?: { [k: string]: any } | undefined;
   atlasCloud?: { [k: string]: any } | undefined;
@@ -158,6 +159,7 @@ export type ProviderOptions$Outbound = {
   "amazon-nova"?: { [k: string]: any } | undefined;
   ambient?: { [k: string]: any } | undefined;
   anthropic?: { [k: string]: any } | undefined;
+  "anthropic/2"?: { [k: string]: any } | undefined;
   anyscale?: { [k: string]: any } | undefined;
   "arcee-ai"?: { [k: string]: any } | undefined;
   "atlas-cloud"?: { [k: string]: any } | undefined;
@@ -299,6 +301,7 @@ export const ProviderOptions$outboundSchema: z.ZodType<
   amazonNova: z.record(z.string(), z.any()).optional(),
   ambient: z.record(z.string(), z.any()).optional(),
   anthropic: z.record(z.string(), z.any()).optional(),
+  anthropic2: z.record(z.string(), z.any()).optional(),
   anyscale: z.record(z.string(), z.any()).optional(),
   arceeAi: z.record(z.string(), z.any()).optional(),
   atlasCloud: z.record(z.string(), z.any()).optional(),
@@ -430,6 +433,7 @@ export const ProviderOptions$outboundSchema: z.ZodType<
     amazonBedrock: "amazon-bedrock",
     amazonBedrockClaudeOnAws: "amazon-bedrock/claude-on-aws",
     amazonNova: "amazon-nova",
+    anthropic2: "anthropic/2",
     arceeAi: "arcee-ai",
     atlasCloud: "atlas-cloud",
     blackForestLabs: "black-forest-labs",
