@@ -58,8 +58,6 @@ import { Result } from "../types/fp.js";
  * are as reported by Anthropic, OpenAI counts are as reported by OpenAI, etc.), so
  * a token in one row is not directly comparable to a token in another row from a
  * different provider.
- *
- * Licensed under [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/): reuse and republish with attribution to OpenRouter.
  */
 export function datasetsGetRankingsDaily(
   client: OpenRouterCore,
