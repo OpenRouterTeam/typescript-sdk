@@ -3,6 +3,7 @@
  * @generated-id: 320761608fb3
  */
 
+import { env } from "./env.js";
 import { HTTPClient } from "./http.js";
 import { Logger } from "./logger.js";
 import { RetryConfig } from "./retries.js";
@@ -43,7 +44,8 @@ export type SDKOptions = {
    */
   server?: keyof typeof ServerList | undefined;
   /**
-   * Allows overriding the default server URL used by the SDK
+   * Allows overriding the default server URL used by the SDK. When omitted, the
+   * `OPENROUTER_BASE_URL` environment variable is used, if set.
    */
   serverURL?: string | undefined;
   /**
@@ -64,8 +66,10 @@ export function serverURLFromOptions(options: SDKOptions): URL | null {
   const params: Params = {};
 
   if (!serverURL) {
-    const server = options.server ?? ServerProduction;
-    serverURL = ServerList[server] || "";
+    const server = options.server;
+    serverURL =
+      (server ? ServerList[server] : env().OPENROUTER_BASE_URL) ||
+      ServerList[ServerProduction];
   }
 
   const u = pathToFunc(serverURL)(params);
