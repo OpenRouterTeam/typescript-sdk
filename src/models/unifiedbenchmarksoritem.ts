@@ -7,36 +7,21 @@ import * as z from "zod/v4";
 import { remap as remap$ } from "../lib/primitives.js";
 import { safeParse } from "../lib/schemas.js";
 import * as openEnums from "../types/enums.js";
-import { ClosedEnum, OpenEnum } from "../types/enums.js";
+import { OpenEnum } from "../types/enums.js";
 import { Result as SafeParseResult } from "../types/fp.js";
 import { SDKValidationError } from "./errors/sdkvalidationerror.js";
 
 /**
  * OpenRouter benchmark evaluation type.
  */
-export const UnifiedBenchmarksORItemBenchmarkType = {
+export const BenchmarkType = {
   GpqaDiamond: "gpqa_diamond",
   TauBenchVerifiedAirline: "tau_bench_verified_airline",
 } as const;
 /**
  * OpenRouter benchmark evaluation type.
  */
-export type UnifiedBenchmarksORItemBenchmarkType = OpenEnum<
-  typeof UnifiedBenchmarksORItemBenchmarkType
->;
-
-/**
- * Benchmark source discriminator.
- */
-export const UnifiedBenchmarksORItemSource = {
-  Openrouter: "openrouter",
-} as const;
-/**
- * Benchmark source discriminator.
- */
-export type UnifiedBenchmarksORItemSource = ClosedEnum<
-  typeof UnifiedBenchmarksORItemSource
->;
+export type BenchmarkType = OpenEnum<typeof BenchmarkType>;
 
 export type UnifiedBenchmarksORItem = {
   /**
@@ -54,7 +39,7 @@ export type UnifiedBenchmarksORItem = {
   /**
    * OpenRouter benchmark evaluation type.
    */
-  benchmarkType: UnifiedBenchmarksORItemBenchmarkType;
+  benchmarkType: BenchmarkType;
   /**
    * Human-readable model name.
    */
@@ -70,7 +55,7 @@ export type UnifiedBenchmarksORItem = {
   /**
    * Benchmark source discriminator.
    */
-  source: UnifiedBenchmarksORItemSource;
+  source: "openrouter";
   /**
    * Total benchmark tasks across runs.
    */
@@ -78,15 +63,8 @@ export type UnifiedBenchmarksORItem = {
 };
 
 /** @internal */
-export const UnifiedBenchmarksORItemBenchmarkType$inboundSchema: z.ZodType<
-  UnifiedBenchmarksORItemBenchmarkType,
-  unknown
-> = openEnums.inboundSchema(UnifiedBenchmarksORItemBenchmarkType);
-
-/** @internal */
-export const UnifiedBenchmarksORItemSource$inboundSchema: z.ZodEnum<
-  typeof UnifiedBenchmarksORItemSource
-> = z.enum(UnifiedBenchmarksORItemSource);
+export const BenchmarkType$inboundSchema: z.ZodType<BenchmarkType, unknown> =
+  openEnums.inboundSchema(BenchmarkType);
 
 /** @internal */
 export const UnifiedBenchmarksORItem$inboundSchema: z.ZodType<
@@ -96,11 +74,11 @@ export const UnifiedBenchmarksORItem$inboundSchema: z.ZodType<
   accuracy: z.number(),
   accuracy_stddev: z.nullable(z.number()),
   avg_cost_per_task: z.nullable(z.number()),
-  benchmark_type: UnifiedBenchmarksORItemBenchmarkType$inboundSchema,
+  benchmark_type: BenchmarkType$inboundSchema,
   display_name: z.string(),
   last_run_timestamp: z.string(),
   model_permaslug: z.string(),
-  source: UnifiedBenchmarksORItemSource$inboundSchema,
+  source: z.literal("openrouter"),
   total_tasks: z.int(),
 }).transform((v) => {
   return remap$(v, {

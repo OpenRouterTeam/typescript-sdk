@@ -7,10 +7,6 @@ import * as z from "zod/v4";
 import { safeParse } from "../lib/schemas.js";
 import { Result as SafeParseResult } from "../types/fp.js";
 import { SDKValidationError } from "./errors/sdkvalidationerror.js";
-import {
-  GenerationContentError,
-  GenerationContentError$inboundSchema,
-} from "./generationcontenterror.js";
 
 export type Input2 = {
   messages: Array<any>;
@@ -40,13 +36,9 @@ export type GenerationContentDataOutput = {
 };
 
 /**
- * Stored prompt and completion content, plus the failure error when one was stored
+ * Stored prompt and completion content
  */
 export type GenerationContentData = {
-  /**
-   * The stored failure for this generation, or null when it succeeded
-   */
-  error: GenerationContentError | null;
   /**
    * The input to the generation — either a prompt string or an array of messages
    */
@@ -126,7 +118,6 @@ export const GenerationContentData$inboundSchema: z.ZodType<
   GenerationContentData,
   unknown
 > = z.object({
-  error: z.nullable(GenerationContentError$inboundSchema),
   input: z.union([
     z.lazy(() => Input1$inboundSchema),
     z.lazy(() => Input2$inboundSchema),

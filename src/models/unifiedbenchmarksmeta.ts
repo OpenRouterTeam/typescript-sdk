@@ -14,7 +14,7 @@ import { SDKValidationError } from "./errors/sdkvalidationerror.js";
 /**
  * The source filter applied, or null when all sources are returned.
  */
-export const UnifiedBenchmarksMetaSource = {
+export const SourceEnum = {
   ArtificialAnalysis: "artificial-analysis",
   DesignArena: "design-arena",
   Openrouter: "openrouter",
@@ -22,9 +22,7 @@ export const UnifiedBenchmarksMetaSource = {
 /**
  * The source filter applied, or null when all sources are returned.
  */
-export type UnifiedBenchmarksMetaSource = OpenEnum<
-  typeof UnifiedBenchmarksMetaSource
->;
+export type SourceEnum = OpenEnum<typeof SourceEnum>;
 
 /**
  * Dataset version.
@@ -55,7 +53,7 @@ export type UnifiedBenchmarksMeta = {
   /**
    * The source filter applied, or null when all sources are returned.
    */
-  source: UnifiedBenchmarksMetaSource | null;
+  source: SourceEnum | null;
   /**
    * URL of the upstream data source, or null when results span multiple sources.
    */
@@ -71,10 +69,8 @@ export type UnifiedBenchmarksMeta = {
 };
 
 /** @internal */
-export const UnifiedBenchmarksMetaSource$inboundSchema: z.ZodType<
-  UnifiedBenchmarksMetaSource,
-  unknown
-> = openEnums.inboundSchema(UnifiedBenchmarksMetaSource);
+export const SourceEnum$inboundSchema: z.ZodType<SourceEnum, unknown> =
+  openEnums.inboundSchema(SourceEnum);
 
 /** @internal */
 export const UnifiedBenchmarksMetaVersion$inboundSchema: z.ZodEnum<
@@ -89,7 +85,7 @@ export const UnifiedBenchmarksMeta$inboundSchema: z.ZodType<
   as_of: z.string(),
   citation: z.nullable(z.string()),
   model_count: z.int(),
-  source: z.nullable(UnifiedBenchmarksMetaSource$inboundSchema),
+  source: z.nullable(SourceEnum$inboundSchema),
   source_url: z.nullable(z.string()),
   task_type: z.nullable(z.string()),
   version: UnifiedBenchmarksMetaVersion$inboundSchema,
