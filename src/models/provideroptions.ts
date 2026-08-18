@@ -16,11 +16,9 @@ export type ProviderOptions = {
   akashml?: { [k: string]: any } | undefined;
   alibaba?: { [k: string]: any } | undefined;
   amazonBedrock?: { [k: string]: any } | undefined;
-  amazonBedrockClaudeOnAws?: { [k: string]: any } | undefined;
   amazonNova?: { [k: string]: any } | undefined;
   ambient?: { [k: string]: any } | undefined;
   anthropic?: { [k: string]: any } | undefined;
-  anthropic2?: { [k: string]: any } | undefined;
   anyscale?: { [k: string]: any } | undefined;
   arceeAi?: { [k: string]: any } | undefined;
   atlasCloud?: { [k: string]: any } | undefined;
@@ -44,7 +42,6 @@ export type ProviderOptions = {
   crucible?: { [k: string]: any } | undefined;
   crusoe?: { [k: string]: any } | undefined;
   darkbloom?: { [k: string]: any } | undefined;
-  databricks?: { [k: string]: any } | undefined;
   decart?: { [k: string]: any } | undefined;
   deepgram?: { [k: string]: any } | undefined;
   deepinfra?: { [k: string]: any } | undefined;
@@ -155,11 +152,9 @@ export type ProviderOptions$Outbound = {
   akashml?: { [k: string]: any } | undefined;
   alibaba?: { [k: string]: any } | undefined;
   "amazon-bedrock"?: { [k: string]: any } | undefined;
-  "amazon-bedrock/claude-on-aws"?: { [k: string]: any } | undefined;
   "amazon-nova"?: { [k: string]: any } | undefined;
   ambient?: { [k: string]: any } | undefined;
   anthropic?: { [k: string]: any } | undefined;
-  "anthropic/2"?: { [k: string]: any } | undefined;
   anyscale?: { [k: string]: any } | undefined;
   "arcee-ai"?: { [k: string]: any } | undefined;
   "atlas-cloud"?: { [k: string]: any } | undefined;
@@ -183,7 +178,6 @@ export type ProviderOptions$Outbound = {
   crucible?: { [k: string]: any } | undefined;
   crusoe?: { [k: string]: any } | undefined;
   darkbloom?: { [k: string]: any } | undefined;
-  databricks?: { [k: string]: any } | undefined;
   decart?: { [k: string]: any } | undefined;
   deepgram?: { [k: string]: any } | undefined;
   deepinfra?: { [k: string]: any } | undefined;
@@ -297,11 +291,9 @@ export const ProviderOptions$outboundSchema: z.ZodType<
   akashml: z.record(z.string(), z.any()).optional(),
   alibaba: z.record(z.string(), z.any()).optional(),
   amazonBedrock: z.record(z.string(), z.any()).optional(),
-  amazonBedrockClaudeOnAws: z.record(z.string(), z.any()).optional(),
   amazonNova: z.record(z.string(), z.any()).optional(),
   ambient: z.record(z.string(), z.any()).optional(),
   anthropic: z.record(z.string(), z.any()).optional(),
-  anthropic2: z.record(z.string(), z.any()).optional(),
   anyscale: z.record(z.string(), z.any()).optional(),
   arceeAi: z.record(z.string(), z.any()).optional(),
   atlasCloud: z.record(z.string(), z.any()).optional(),
@@ -325,7 +317,6 @@ export const ProviderOptions$outboundSchema: z.ZodType<
   crucible: z.record(z.string(), z.any()).optional(),
   crusoe: z.record(z.string(), z.any()).optional(),
   darkbloom: z.record(z.string(), z.any()).optional(),
-  databricks: z.record(z.string(), z.any()).optional(),
   decart: z.record(z.string(), z.any()).optional(),
   deepgram: z.record(z.string(), z.any()).optional(),
   deepinfra: z.record(z.string(), z.any()).optional(),
@@ -431,9 +422,7 @@ export const ProviderOptions$outboundSchema: z.ZodType<
     oneai: "01ai",
     aionLabs: "aion-labs",
     amazonBedrock: "amazon-bedrock",
-    amazonBedrockClaudeOnAws: "amazon-bedrock/claude-on-aws",
     amazonNova: "amazon-nova",
-    anthropic2: "anthropic/2",
     arceeAi: "arcee-ai",
     atlasCloud: "atlas-cloud",
     blackForestLabs: "black-forest-labs",

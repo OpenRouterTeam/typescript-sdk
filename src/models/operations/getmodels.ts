@@ -102,16 +102,15 @@ export const Zdr = {
 export type Zdr = ClosedEnum<typeof Zdr>;
 
 /**
- * Filter to models with endpoints in the given data region ("eu" or "us").
+ * Filter to models with endpoints in the given data region. Currently only "eu" is supported.
  */
 export const Region = {
   Eu: "eu",
-  Us: "us",
 } as const;
 /**
- * Filter to models with endpoints in the given data region ("eu" or "us").
+ * Filter to models with endpoints in the given data region. Currently only "eu" is supported.
  */
-export type Region = OpenEnum<typeof Region>;
+export type Region = ClosedEnum<typeof Region>;
 
 export type GetModelsRequest = {
   /**
@@ -198,7 +197,7 @@ export type GetModelsRequest = {
    */
   zdr?: Zdr | undefined;
   /**
-   * Filter to models with endpoints in the given data region ("eu" or "us").
+   * Filter to models with endpoints in the given data region. Currently only "eu" is supported.
    */
   region?: Region | undefined;
   /**
@@ -273,8 +272,7 @@ export const Distillable$outboundSchema: z.ZodType<string, Distillable> =
 export const Zdr$outboundSchema: z.ZodEnum<typeof Zdr> = z.enum(Zdr);
 
 /** @internal */
-export const Region$outboundSchema: z.ZodType<string, Region> = openEnums
-  .outboundSchema(Region);
+export const Region$outboundSchema: z.ZodEnum<typeof Region> = z.enum(Region);
 
 /** @internal */
 export type GetModelsRequest$Outbound = {
