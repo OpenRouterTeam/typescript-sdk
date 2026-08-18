@@ -26775,10 +26775,10 @@ paths:
                       type: 'string'
                     dimension_names:
                       items:
-                        description: 'Classifier dimension name (snake_case identifier). When exactly one name is provided, the response uses it as the column key; with multiple names or none, the response uses `clf_dimension_name`/`clf_dimension_value` columns.'
+                        description: 'Classifier dimension name (snake_case identifier). Each name becomes its own column key in the response; providing two names cross-groups results by both dimensions. With no names, the response uses `clf_dimension_name`/`clf_dimension_value` columns (one row per dimension/value pair).'
                         example: 'department'
                         type: 'string'
-                      maxItems: 10
+                      maxItems: 2
                       type: 'array'
                     include_nulls:
                       description: 'When true, also include generations that have no tag from this classifier. Defaults to false, which returns only classified generations.'
