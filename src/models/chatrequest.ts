@@ -132,6 +132,11 @@ import {
   StopServerToolsWhenCondition$outboundSchema,
 } from "./stopservertoolswhencondition.js";
 import {
+  StripCitationMarkersPlugin,
+  StripCitationMarkersPlugin$Outbound,
+  StripCitationMarkersPlugin$outboundSchema,
+} from "./stripcitationmarkersplugin.js";
+import {
   TraceConfig,
   TraceConfig$Outbound,
   TraceConfig$outboundSchema,
@@ -163,6 +168,7 @@ export type ChatRequestPlugin =
   | ModerationPlugin
   | ParetoRouterPlugin
   | ResponseHealingPlugin
+  | StripCitationMarkersPlugin
   | WebSearchPlugin
   | WebFetchPlugin;
 
@@ -321,6 +327,7 @@ export type ChatRequest = {
       | ModerationPlugin
       | ParetoRouterPlugin
       | ResponseHealingPlugin
+      | StripCitationMarkersPlugin
       | WebSearchPlugin
       | WebFetchPlugin
     >
@@ -444,6 +451,7 @@ export type ChatRequestPlugin$Outbound =
   | ModerationPlugin$Outbound
   | ParetoRouterPlugin$Outbound
   | ResponseHealingPlugin$Outbound
+  | StripCitationMarkersPlugin$Outbound
   | WebSearchPlugin$Outbound
   | WebFetchPlugin$Outbound;
 
@@ -460,6 +468,7 @@ export const ChatRequestPlugin$outboundSchema: z.ZodType<
   ModerationPlugin$outboundSchema,
   ParetoRouterPlugin$outboundSchema,
   ResponseHealingPlugin$outboundSchema,
+  StripCitationMarkersPlugin$outboundSchema,
   WebSearchPlugin$outboundSchema,
   WebFetchPlugin$outboundSchema,
 ]);
@@ -578,6 +587,7 @@ export type ChatRequest$Outbound = {
       | ModerationPlugin$Outbound
       | ParetoRouterPlugin$Outbound
       | ResponseHealingPlugin$Outbound
+      | StripCitationMarkersPlugin$Outbound
       | WebSearchPlugin$Outbound
       | WebFetchPlugin$Outbound
     >
@@ -647,6 +657,7 @@ export const ChatRequest$outboundSchema: z.ZodType<
       ModerationPlugin$outboundSchema,
       ParetoRouterPlugin$outboundSchema,
       ResponseHealingPlugin$outboundSchema,
+      StripCitationMarkersPlugin$outboundSchema,
       WebSearchPlugin$outboundSchema,
       WebFetchPlugin$outboundSchema,
     ]),
