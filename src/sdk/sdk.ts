@@ -25,6 +25,7 @@ import { Observability } from "./observability.js";
 import { Organization } from "./organization.js";
 import { Presets } from "./presets.js";
 import { Providers } from "./providers.js";
+import { Provisioning } from "./provisioning.js";
 import { Rerank } from "./rerank.js";
 import { Responses } from "./responses.js";
 import { Scim } from "./scim.js";
@@ -159,6 +160,11 @@ export class OpenRouter extends ClientSDK {
   private _providers?: Providers;
   get providers(): Providers {
     return (this._providers ??= new Providers(this._options));
+  }
+
+  private _provisioning?: Provisioning;
+  get provisioning(): Provisioning {
+    return (this._provisioning ??= new Provisioning(this._options));
   }
 
   private _rerank?: Rerank;
