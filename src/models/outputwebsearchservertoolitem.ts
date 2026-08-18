@@ -9,10 +9,10 @@ import { ClosedEnum } from "../types/enums.js";
 import { Result as SafeParseResult } from "../types/fp.js";
 import { SDKValidationError } from "./errors/sdkvalidationerror.js";
 import {
-  ToolCallStatus,
-  ToolCallStatus$inboundSchema,
-  ToolCallStatus$outboundSchema,
-} from "./toolcallstatus.js";
+  WebSearchServerToolStatus,
+  WebSearchServerToolStatus$inboundSchema,
+  WebSearchServerToolStatus$outboundSchema,
+} from "./websearchservertoolstatus.js";
 
 export const OutputWebSearchServerToolItemTypeURL = {
   Url: "url",
@@ -58,7 +58,10 @@ export type OutputWebSearchServerToolItem = {
    */
   action?: OutputWebSearchServerToolItemAction | undefined;
   id?: string | undefined;
-  status: ToolCallStatus;
+  /**
+   * The OpenRouter web-search item reports engine failures as failed, unlike the generic tool-call status.
+   */
+  status: WebSearchServerToolStatus;
   type: OutputWebSearchServerToolItemTypeOpenrouterWebSearch;
 };
 
@@ -190,7 +193,7 @@ export const OutputWebSearchServerToolItem$inboundSchema: z.ZodType<
   action: z.lazy(() => OutputWebSearchServerToolItemAction$inboundSchema)
     .optional(),
   id: z.string().optional(),
-  status: ToolCallStatus$inboundSchema,
+  status: WebSearchServerToolStatus$inboundSchema,
   type: OutputWebSearchServerToolItemTypeOpenrouterWebSearch$inboundSchema,
 });
 /** @internal */
@@ -209,7 +212,7 @@ export const OutputWebSearchServerToolItem$outboundSchema: z.ZodType<
   action: z.lazy(() => OutputWebSearchServerToolItemAction$outboundSchema)
     .optional(),
   id: z.string().optional(),
-  status: ToolCallStatus$outboundSchema,
+  status: WebSearchServerToolStatus$outboundSchema,
   type: OutputWebSearchServerToolItemTypeOpenrouterWebSearch$outboundSchema,
 });
 
