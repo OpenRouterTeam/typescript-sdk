@@ -521,7 +521,7 @@ export type MessagesRequest = {
   provider?: ProviderPreferences | null | undefined;
   serviceTier?: string | undefined;
   /**
-   * A unique identifier for grouping related requests (e.g., a conversation or agent workflow). When provided, OpenRouter uses it as the sticky routing key, routing all requests in the session to the same provider to maximize prompt cache hits. Also used for observability grouping. If provided in both the request body and the x-session-id header, the body value takes precedence. Maximum of 256 characters.
+   * A unique identifier for grouping related requests (e.g., a conversation or agent workflow). When provided, OpenRouter uses it as the sticky routing key, routing all requests in the session to the same provider to maximize prompt cache hits. Also used for observability grouping. Container-backed server tools (shell, bash) also key their sandbox on it, so shell state persists across the requests of a session instead of being discarded after each request. If provided in both the request body and the x-session-id header, the body value takes precedence. Maximum of 256 characters.
    */
   sessionId?: string | undefined;
   speed?: Speed | null | undefined;
