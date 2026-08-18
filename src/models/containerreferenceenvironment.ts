@@ -7,7 +7,7 @@ import * as z from "zod/v4";
 import { remap as remap$ } from "../lib/primitives.js";
 
 /**
- * Reference to a previously created container to reuse.
+ * Reference to a previously created container to reuse. The same container_id always resolves the same container across requests and sessions, scoped to your account and workspace.
  */
 export type ContainerReferenceEnvironment = {
   /**
