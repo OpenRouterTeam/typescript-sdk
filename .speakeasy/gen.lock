@@ -1,19 +1,19 @@
 lockVersion: ""
 id: ""
 management:
-  docChecksum: fb5ea30949be294a92ab14dfbef446fb
+  docChecksum: d1153dd7d135f6e7d710a0bb96f12d76
   docVersion: 1.0.0
   speakeasyVersion: 1.787.0
   generationVersion: 2.914.0
-  releaseVersion: 1.2.42
-  configChecksum: 0a7a49dba5c1e2c9e8d77d5800cf7559
+  releaseVersion: 1.2.43
+  configChecksum: dc708011aa87d54358f92aff652ef561
   repoURL: https://github.com/OpenRouterTeam/typescript-sdk.git
   installationURL: https://github.com/OpenRouterTeam/typescript-sdk
   published: true
 persistentEdits:
-  generation_id: 0ae8aa27-e7ce-4432-83b3-b01c1910452a
-  pristine_commit_hash: 40698acfc0ee45adf7b7cc70ca0dbede8010334f
-  pristine_tree_hash: 8219d5ebc073bce08698e07d61a84648149ede4a
+  generation_id: c80e5b2d-96ee-4424-9f0b-77c14fc6f0f9
+  pristine_commit_hash: d64a90befca55f3733067cd2977b7af1c52704ac
+  pristine_tree_hash: 87783bec4b9e9337467eec69c0604051ef5c3af5
 features:
   typescript:
     acceptHeaders: 2.81.2
@@ -12917,12 +12917,12 @@ trackedFiles:
     pristine_git_object: 410efafd6a7f50d91ccb87131fedbe0c3d47e15a
   jsr.json:
     id: 7f6ab7767282
-    last_write_checksum: sha1:913ccdfcd5aeb34dd2f74a7f1bd7f07fd5f26cc0
-    pristine_git_object: cc00ed1ab9dd19e80aa39ed678fc07a88c5749a6
+    last_write_checksum: sha1:0fed431f66009ec19384e2f7a3f18093bf44846b
+    pristine_git_object: 73f98fed9d2fe2b2f88e1f28c49f5451112cc65d
   package.json:
     id: 7030d0b2f71b
-    last_write_checksum: sha1:10d7388576186df77e3967cc420b54c34657cf11
-    pristine_git_object: 39ec58759a73bdcae82c052c4cd6267358946c2e
+    last_write_checksum: sha1:a445cf6f6b0a8d8cd056c2f20f83a4578c4a4128
+    pristine_git_object: bed62fa6e16373d6a8b0d6078ea65cbf6590ff96
   src/core.ts:
     id: f431fdbcd144
     last_write_checksum: sha1:5aa66b0b6a5964f3eea7f3098c2eb3c0ee9c0131
@@ -13333,8 +13333,8 @@ trackedFiles:
     pristine_git_object: a187e58707bdb726ca2aff74941efe7493422d4e
   src/lib/config.ts:
     id: 320761608fb3
-    last_write_checksum: sha1:202c794bcdf6d8a387ac3d8a2bb2407b47c97e1a
-    pristine_git_object: 3d5d55d69c4cfa0d839ac74b8c243a5f645365fb
+    last_write_checksum: sha1:24f1af71ce0b014a794f5f3f07e373ae3a1a0c5c
+    pristine_git_object: 2b800ddbfde9ea342689b453dfc1eac84ea63055
   src/lib/dlv.ts:
     id: b1988214835a
     last_write_checksum: sha1:eaac763b22717206a6199104e0403ed17a4e2711
@@ -13346,7 +13346,7 @@ trackedFiles:
     pristine_git_object: 49f15904923362434dfcdd02476c0487210d2f1a
   src/lib/env.ts:
     id: c52972a3b198
-    last_write_checksum: sha1:eb803916d3a892db4507e3b38fe6201f79e16a3a
+    last_write_checksum: sha1:40ee3101af915d716b7b23fee10865a3f2429e9e
     pristine_git_object: 9f50c196edccf8f1433fac289d6217fc121141ac
   src/lib/event-streams.ts:
     id: 3f731f808a79
@@ -18269,4 +18269,3 @@ examples:
         "500":
           application/json: {"error": {"code": 500, "message": "Internal Server Error"}}
 examplesVersion: 1.0.2
-releaseNotes: "## Typescript SDK Changes:\n* `openrouter.tts.createSpeech()`: \n  *  `request.speechRequest.provider.options.anthropic/2` **Added**\n* `openrouter.stt.createTranscription()`: \n  *  `request.sttRequest.provider.options.anthropic/2` **Added**\n* `openrouter.images.generate()`: \n  *  `request.imageGenerationRequest.provider.options.anthropic/2` **Added**\n* `openrouter.videoGeneration.generate()`: \n  *  `request.videoGenerationRequest.provider.options.anthropic/2` **Added**\n"
