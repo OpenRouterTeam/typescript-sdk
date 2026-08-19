@@ -42,6 +42,7 @@ export function apiKeysList(
     operations.ListResponse,
     | errors.BadRequestResponseError
     | errors.UnauthorizedResponseError
+    | errors.ForbiddenResponseError
     | errors.TooManyRequestsResponseError
     | errors.InternalServerResponseError
     | OpenRouterError
@@ -71,6 +72,7 @@ async function $do(
       operations.ListResponse,
       | errors.BadRequestResponseError
       | errors.UnauthorizedResponseError
+      | errors.ForbiddenResponseError
       | errors.TooManyRequestsResponseError
       | errors.InternalServerResponseError
       | OpenRouterError
@@ -188,6 +190,7 @@ async function $do(
     operations.ListResponse,
     | errors.BadRequestResponseError
     | errors.UnauthorizedResponseError
+    | errors.ForbiddenResponseError
     | errors.TooManyRequestsResponseError
     | errors.InternalServerResponseError
     | OpenRouterError
@@ -202,6 +205,7 @@ async function $do(
     M.json(200, operations.ListResponse$inboundSchema),
     M.jsonErr(400, errors.BadRequestResponseError$inboundSchema),
     M.jsonErr(401, errors.UnauthorizedResponseError$inboundSchema),
+    M.jsonErr(403, errors.ForbiddenResponseError$inboundSchema),
     M.jsonErr(429, errors.TooManyRequestsResponseError$inboundSchema),
     M.jsonErr(500, errors.InternalServerResponseError$inboundSchema),
     M.fail("4XX"),
