@@ -7588,6 +7588,12 @@ components:
         sequence_number: 6
         type: 'response.custom_tool_call_input.done'
     CustomToolCallItem:
+      allOf:
+        - $ref: '#/components/schemas/OpenAIResponseCustomToolCall'
+        - properties:
+            status:
+              $ref: '#/components/schemas/ToolCallStatus'
+          type: 'object'
       description: 'A call to a custom (freeform-grammar) tool created by the model — distinct from `function_call`. Used for tools like Codex CLI''s `apply_patch` whose payload is opaque text rather than JSON arguments.'
       example:
         call_id: 'call-abc123'
@@ -7595,28 +7601,6 @@ components:
         input: "*** Begin Patch\n*** End Patch"
         name: 'apply_patch'
         type: 'custom_tool_call'
-      properties:
-        call_id:
-          type: 'string'
-        id:
-          type: 'string'
-        input:
-          type: 'string'
-        name:
-          type: 'string'
-        namespace:
-          description: 'Namespace qualifier for tools registered as part of a namespace tool group (e.g. an MCP server)'
-          type: 'string'
-        type:
-          enum:
-            - 'custom_tool_call'
-          type: 'string'
-      required:
-        - 'type'
-        - 'call_id'
-        - 'name'
-        - 'input'
-      type: 'object'
     CustomToolCallOutputItem:
       allOf:
         - $ref: '#/components/schemas/OpenAIResponseCustomToolCallOutput'
