@@ -1,19 +1,19 @@
 lockVersion: ""
 id: ""
 management:
-  docChecksum: d1153dd7d135f6e7d710a0bb96f12d76
+  docChecksum: c7a9b2804355dc6fdf6997f1829d32d9
   docVersion: 1.0.0
   speakeasyVersion: 1.787.0
   generationVersion: 2.914.0
-  releaseVersion: 1.2.43
-  configChecksum: dc708011aa87d54358f92aff652ef561
+  releaseVersion: 1.2.44
+  configChecksum: 14d9398eb5959ac0f8500699fa0c38ad
   repoURL: https://github.com/OpenRouterTeam/typescript-sdk.git
   installationURL: https://github.com/OpenRouterTeam/typescript-sdk
   published: true
 persistentEdits:
-  generation_id: c80e5b2d-96ee-4424-9f0b-77c14fc6f0f9
-  pristine_commit_hash: d64a90befca55f3733067cd2977b7af1c52704ac
-  pristine_tree_hash: 87783bec4b9e9337467eec69c0604051ef5c3af5
+  generation_id: be240f08-8edf-4a6b-ba38-93f77676ca3f
+  pristine_commit_hash: cbc2d738b6ed8086596cf596ac15a79a771d979b
+  pristine_tree_hash: 421dc0ef6a6255f8552f77bd7bec9279df1ba265
 features:
   typescript:
     acceptHeaders: 2.81.2
@@ -179,10 +179,6 @@ trackedFiles:
     last_write_checksum: sha1:e0bc20e59075a1796cabdb205a70e252b0eac981
     pristine_git_object: e1ae88abcbd8bdee7aa990abd8f4d1d73b23f161
     deleted: true
-  docs/models/advisornestedtool.mdx:
-    id: dce1f9bee7a5
-    last_write_checksum: sha1:29ef97206727570a022b088c7de77f0ad2657b84
-    pristine_git_object: 2491a2e90ddf617f72231a3499e227d4d2f63851
   docs/models/advisorprofile.md:
     id: 5f2c708d769f
     last_write_checksum: sha1:e3c5c2c7e762f588f5f1c73b548ca972b1af1830
@@ -213,8 +209,8 @@ trackedFiles:
     deleted: true
   docs/models/advisorservertoolconfig.mdx:
     id: 1f9915399194
-    last_write_checksum: sha1:9da19247286da81915befdcd4e4d76fa88696d19
-    pristine_git_object: de7b9806a3813fe9a6870f89d4b423772a55b2ec
+    last_write_checksum: sha1:a6e5aa13cb09be8d6d9312a4ca0060120f4098c1
+    pristine_git_object: ed2a1d093df461e9bef308c6088795f63befd1cb
   docs/models/advisorservertoolopenrouter.md:
     id: b11c944f9d7b
     last_write_checksum: sha1:a4e13523e2f5872f49ddc64197a6f70306d879e0
@@ -222,8 +218,8 @@ trackedFiles:
     deleted: true
   docs/models/advisorservertoolopenrouter.mdx:
     id: 18b21c17d281
-    last_write_checksum: sha1:2f3d394062a4317ad048f3047c0e7f7afc9f43a9
-    pristine_git_object: 8911c444544133b1ed648e4f7db5ddabb8aa17c7
+    last_write_checksum: sha1:16ad0e12f03bbb2a2217187f6b6c5528178a0cf9
+    pristine_git_object: 6ee6b33bbca052616a6cec2c72e54ce56622a240
   docs/models/advisorservertoolopenroutertype.md:
     id: 6b35eed55de4
     last_write_checksum: sha1:ac07d4ef7603c719fe297ae643f4cadbf52ed1b9
@@ -12917,12 +12913,12 @@ trackedFiles:
     pristine_git_object: 410efafd6a7f50d91ccb87131fedbe0c3d47e15a
   jsr.json:
     id: 7f6ab7767282
-    last_write_checksum: sha1:0fed431f66009ec19384e2f7a3f18093bf44846b
-    pristine_git_object: 73f98fed9d2fe2b2f88e1f28c49f5451112cc65d
+    last_write_checksum: sha1:c8d002320e320bfa12b081d1ae96360e872ac8b0
+    pristine_git_object: e4484b4b2344bc1387aca6ba9ee214861b957d5f
   package.json:
     id: 7030d0b2f71b
-    last_write_checksum: sha1:a445cf6f6b0a8d8cd056c2f20f83a4578c4a4128
-    pristine_git_object: bed62fa6e16373d6a8b0d6078ea65cbf6590ff96
+    last_write_checksum: sha1:35abcf68aba072791b9c714712307b0ea604165f
+    pristine_git_object: a813f83277c143d9df6f58aeb31c59076945f31e
   src/core.ts:
     id: f431fdbcd144
     last_write_checksum: sha1:5aa66b0b6a5964f3eea7f3098c2eb3c0ee9c0131
@@ -13333,8 +13329,8 @@ trackedFiles:
     pristine_git_object: a187e58707bdb726ca2aff74941efe7493422d4e
   src/lib/config.ts:
     id: 320761608fb3
-    last_write_checksum: sha1:24f1af71ce0b014a794f5f3f07e373ae3a1a0c5c
-    pristine_git_object: 2b800ddbfde9ea342689b453dfc1eac84ea63055
+    last_write_checksum: sha1:c2f67b1cd5171439abd303bc0cfeb3ea79cf2cf3
+    pristine_git_object: ed6691829f2a27767be2e4720d0714a471268fc0
   src/lib/dlv.ts:
     id: b1988214835a
     last_write_checksum: sha1:eaac763b22717206a6199104e0403ed17a4e2711
@@ -13413,22 +13409,18 @@ trackedFiles:
     id: d33059f81c21
     last_write_checksum: sha1:6208413ec7bbc1ac79ac33654452fd5ccd30f2eb
     pristine_git_object: c00d29581aa3722f22e6ff3a13c221f34e1e865c
-  src/models/advisornestedtool.ts:
-    id: 5dc7e04c01b7
-    last_write_checksum: sha1:2a5f4a8e337ccb1b395b9e7ce0e67010bc11a5b5
-    pristine_git_object: 6e3b696deb742cd656d6a8861b3bc45fd46003e6
   src/models/advisorreasoning.ts:
     id: 4c86be6688b0
     last_write_checksum: sha1:e8706d4a0822ef4f7dcea85943851788ed3228a0
     pristine_git_object: 5b8bb504c65c4eae933840a593eef9de8c7a6525
   src/models/advisorservertoolconfig.ts:
     id: 4c2b85fa1b08
-    last_write_checksum: sha1:9141540fadec398ef62732f5e988cd9836330ddb
-    pristine_git_object: 654dae43939b457eafaf4400c7123253c03ac223
+    last_write_checksum: sha1:38a0e442ce08dc008a22dce02da5376b46e68dff
+    pristine_git_object: 0f59a48ae27bc3cff37664cfe107ca60be1b67c4
   src/models/advisorservertoolopenrouter.ts:
     id: 980c275cec65
-    last_write_checksum: sha1:807ecd0b81f1c2d54d3455b33d5007e139b50ed2
-    pristine_git_object: 1f717ade505196570fa7d5fa6e23d4c03f463775
+    last_write_checksum: sha1:0199ffecf6f0042cd51fc8bd1aaa7bb17feb1fe9
+    pristine_git_object: 03f7c77d35d7fe44d5cdd244b1b8974215890faa
   src/models/agentmessageitem.ts:
     id: fc9151085f62
     last_write_checksum: sha1:95d3a7f75f9a022764e81ba6acc359bf43ce1e93
@@ -14607,8 +14599,8 @@ trackedFiles:
     pristine_git_object: 8e109bedfdcf2c4808e49323dda861e3c6069d51
   src/models/index.ts:
     id: f93644b0f37e
-    last_write_checksum: sha1:d367360ee039b54740c6c355a79ebc0f57b787ca
-    pristine_git_object: 8d160a9ea48598f1dd9df2c245e25144d5e647b3
+    last_write_checksum: sha1:1319dcba21b7d4bd19d834d3869772d3c3f94888
+    pristine_git_object: 88edf26ba5c3453fa47963011ac8b3a2338abf96
   src/models/inputaudio.ts:
     id: 9bdc14c7565f
     last_write_checksum: sha1:2f8dc4c1d6a9c2927d9eb186e0ecedf7b81838e6
@@ -18269,3 +18261,4 @@ examples:
         "500":
           application/json: {"error": {"code": 500, "message": "Internal Server Error"}}
 examplesVersion: 1.0.2
+releaseNotes: "## Typescript SDK Changes:\n* `openrouter.beta.responses.send()`: \n  *  `request.responsesRequest.input.union(Array<>)[].union(AdditionalToolsItem).tools[].union(AdvisorServerTool_OpenRouter).parameters` **Changed** (Breaking ⚠️)\n* `openrouter.chat.send()`: \n  *  `request.chatRequest.tools[].union(AdvisorServerTool_OpenRouter).parameters` **Changed** (Breaking ⚠️)\n* `openrouter.presets.createPresetsChatCompletions()`: \n  *  `request.chatRequest.tools[].union(AdvisorServerTool_OpenRouter).parameters` **Changed** (Breaking ⚠️)\n* `openrouter.presets.createPresetsResponses()`: \n  *  `request.responsesRequest.input.union(Array<>)[].union(AdditionalToolsItem).tools[].union(AdvisorServerTool_OpenRouter).parameters` **Changed** (Breaking ⚠️)\n* `openrouter.responses.send()`: \n  *  `request.responsesRequest.input.union(Array<>)[].union(AdditionalToolsItem).tools[].union(AdvisorServerTool_OpenRouter).parameters` **Changed** (Breaking ⚠️)\n"
