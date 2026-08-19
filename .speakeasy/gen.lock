@@ -1,19 +1,19 @@
 lockVersion: ""
 id: ""
 management:
-  docChecksum: c7a9b2804355dc6fdf6997f1829d32d9
+  docChecksum: 19667d1012ba4d5f38b4347169b935ce
   docVersion: 1.0.0
   speakeasyVersion: 1.787.0
   generationVersion: 2.914.0
-  releaseVersion: 1.2.44
-  configChecksum: 14d9398eb5959ac0f8500699fa0c38ad
+  releaseVersion: 1.2.45
+  configChecksum: c43b5c66b529cc97fd8b60502e9fedb9
   repoURL: https://github.com/OpenRouterTeam/typescript-sdk.git
   installationURL: https://github.com/OpenRouterTeam/typescript-sdk
   published: true
 persistentEdits:
-  generation_id: be240f08-8edf-4a6b-ba38-93f77676ca3f
-  pristine_commit_hash: cbc2d738b6ed8086596cf596ac15a79a771d979b
-  pristine_tree_hash: 421dc0ef6a6255f8552f77bd7bec9279df1ba265
+  generation_id: d375b7d6-b41b-48ef-9038-03ba53ff6ed0
+  pristine_commit_hash: bea13d092bf9d1a3720adf7c9cab637ef071d265
+  pristine_tree_hash: b5ed448c18df8751789101c5b7a3c29321338cc3
 features:
   typescript:
     acceptHeaders: 2.81.2
@@ -12246,6 +12246,10 @@ trackedFiles:
     id: b02459e1e826
     last_write_checksum: sha1:14d53fced58555f66ddd91618cae0404b61e2a71
     pristine_git_object: e79e423d1f68866cde28e33ac519930a0696eaea
+  docs/models/upscalefactor.mdx:
+    id: ed468ea0ffa8
+    last_write_checksum: sha1:d80b8afa4cdb48b1f265080adb4cc769b543e7b9
+    pristine_git_object: a0b8e89d7205b2f462f6e1c88d165f39f44ae1c9
   docs/models/upsertworkspacebudgetrequest.md:
     id: 62ee02cdd938
     last_write_checksum: sha1:81557306485380cc13970d9775d05a2497a243ec
@@ -12330,8 +12334,8 @@ trackedFiles:
     deleted: true
   docs/models/videogenerationrequest.mdx:
     id: d611129166e2
-    last_write_checksum: sha1:7672488c0450d6865996fe13e22f8194dcdc96bc
-    pristine_git_object: 480cbc280964a185e8909c78e888fd380c6d398b
+    last_write_checksum: sha1:80b76a39477615b070106dc9a7d55f3cab8c1a9a
+    pristine_git_object: 92dc21577ce10a4255b5aab389576dd39f190573
   docs/models/videogenerationrequestaspectratio.md:
     id: 2ecaa5a363b2
     last_write_checksum: sha1:434fd315824c2f5c2faa62de0d95ecfdd04fda9a
@@ -12402,8 +12406,8 @@ trackedFiles:
     deleted: true
   docs/models/videomodel.mdx:
     id: 76efd76a9051
-    last_write_checksum: sha1:a3aea019e453d8e16bee482a36ed969cc72edb37
-    pristine_git_object: 2771d5f35beb6a29d588685e419d1ec4e4233896
+    last_write_checksum: sha1:1465a48a245e58e1267a3f73cc340628709d4fcb
+    pristine_git_object: d7517af18fe827716cd0f50930a1b50a6b4a734e
   docs/models/videomodelslistresponse.md:
     id: bf7d9398141d
     last_write_checksum: sha1:6f116f2eac3fcbc0a792ac03dff17ff82d3b8382
@@ -12411,8 +12415,8 @@ trackedFiles:
     deleted: true
   docs/models/videomodelslistresponse.mdx:
     id: f7302f8e323b
-    last_write_checksum: sha1:9804c09d84e7c4a71dc21f526403b6244edab463
-    pristine_git_object: 9f039040de0dbe6c11ed3356add8dfdf4ee4c2a5
+    last_write_checksum: sha1:0a06611e96e75a3ffb42a721ea8bd5bd4340d0b0
+    pristine_git_object: 95684350617476d2dddd6268b53451860f2c4168
   docs/models/videourl.md:
     id: 8cb32df5d391
     last_write_checksum: sha1:0f18628543cb15155a766cf0b2f7ec7ebb8fc432
@@ -12913,12 +12917,12 @@ trackedFiles:
     pristine_git_object: 410efafd6a7f50d91ccb87131fedbe0c3d47e15a
   jsr.json:
     id: 7f6ab7767282
-    last_write_checksum: sha1:c8d002320e320bfa12b081d1ae96360e872ac8b0
-    pristine_git_object: e4484b4b2344bc1387aca6ba9ee214861b957d5f
+    last_write_checksum: sha1:e37d25951d0f56758719d88ed65fa7fd3fb3aa06
+    pristine_git_object: 264b386bbdd37e561e572df23d69474601a1f0c0
   package.json:
     id: 7030d0b2f71b
-    last_write_checksum: sha1:35abcf68aba072791b9c714712307b0ea604165f
-    pristine_git_object: a813f83277c143d9df6f58aeb31c59076945f31e
+    last_write_checksum: sha1:485ca5613c347b419519242b1ec8341134d238cf
+    pristine_git_object: 685db800d9b1e6090d2db50bc8ae86f1f649f7cb
   src/core.ts:
     id: f431fdbcd144
     last_write_checksum: sha1:5aa66b0b6a5964f3eea7f3098c2eb3c0ee9c0131
@@ -13329,8 +13333,8 @@ trackedFiles:
     pristine_git_object: a187e58707bdb726ca2aff74941efe7493422d4e
   src/lib/config.ts:
     id: 320761608fb3
-    last_write_checksum: sha1:c2f67b1cd5171439abd303bc0cfeb3ea79cf2cf3
-    pristine_git_object: ed6691829f2a27767be2e4720d0714a471268fc0
+    last_write_checksum: sha1:e10bc24247f5066703066953de52b703719b07c6
+    pristine_git_object: aa27fa9577181c029f690138f9309715297bc889
   src/lib/dlv.ts:
     id: b1988214835a
     last_write_checksum: sha1:eaac763b22717206a6199104e0403ed17a4e2711
@@ -16203,8 +16207,8 @@ trackedFiles:
     pristine_git_object: 43658c2bafcbeba1e20a00c131167f8bef08d03c
   src/models/videogenerationrequest.ts:
     id: e72ea2e4c5b3
-    last_write_checksum: sha1:8ab6df35f414781361a73ee7e20d96eb7d05bbb6
-    pristine_git_object: ba731a9bd469c8d854afed49817a2bd8e40f8f77
+    last_write_checksum: sha1:c3bd3bfc4ec2ab86752f9c3ad9e0332d116a0648
+    pristine_git_object: dfac852b679aa2de4fa25751acc26d87d1a53bd9
   src/models/videogenerationresponse.ts:
     id: 0a96c6ee9eea
     last_write_checksum: sha1:73c631114adc4f4076585919439c06126aa6d55f
@@ -16215,8 +16219,8 @@ trackedFiles:
     pristine_git_object: edaa1b6b7d0735f2777f7f860d536f3b00eb5ec2
   src/models/videomodel.ts:
     id: 3761c095ec55
-    last_write_checksum: sha1:7f7f5c01963b5d95f4e5b74caccdf0fe6d6586b2
-    pristine_git_object: 794b7e83cf03ca29809cb911994d9a5300bc6259
+    last_write_checksum: sha1:808fb535ed1a0ac5a0b809d1303a23dee77f0f7e
+    pristine_git_object: a501013ae452020df2e16bbc50621c5d81c7c814
   src/models/videomodelslistresponse.ts:
     id: 3ddde944c8c8
     last_write_checksum: sha1:74c107d5bb0d3221dd465bfab762fecb88d815e3
@@ -17198,7 +17202,7 @@ examples:
     speakeasy-default-list-videos-models:
       responses:
         "200":
-          application/json: {"data": [{"allowed_passthrough_parameters": [], "canonical_slug": "google/veo-3.1", "created": 1700000000, "generate_audio": true, "id": "google/veo-3.1", "name": "Veo 3.1", "seed": null, "supported_aspect_ratios": ["16:9"], "supported_durations": [5, 8], "supported_frame_images": ["first_frame", "last_frame"], "supported_resolutions": ["720p"], "supported_sizes": null}]}
+          application/json: {"data": [{"allowed_passthrough_parameters": [], "canonical_slug": "google/veo-3.1", "created": 1700000000, "creativity": [], "generate_audio": true, "id": "google/veo-3.1", "name": "Veo 3.1", "seed": null, "supported_aspect_ratios": ["16:9"], "supported_durations": [5, 8], "supported_frame_images": ["first_frame", "last_frame"], "supported_resolutions": ["720p"], "supported_sizes": null, "upscale_factor": {}}]}
         "400":
           application/json: {"error": {"code": 400, "message": "Invalid request parameters"}}
         "500":
@@ -18261,4 +18265,4 @@ examples:
         "500":
           application/json: {"error": {"code": 500, "message": "Internal Server Error"}}
 examplesVersion: 1.0.2
-releaseNotes: "## Typescript SDK Changes:\n* `openrouter.beta.responses.send()`: \n  *  `request.responsesRequest.input.union(Array<>)[].union(AdditionalToolsItem).tools[].union(AdvisorServerTool_OpenRouter).parameters` **Changed** (Breaking ⚠️)\n* `openrouter.chat.send()`: \n  *  `request.chatRequest.tools[].union(AdvisorServerTool_OpenRouter).parameters` **Changed** (Breaking ⚠️)\n* `openrouter.presets.createPresetsChatCompletions()`: \n  *  `request.chatRequest.tools[].union(AdvisorServerTool_OpenRouter).parameters` **Changed** (Breaking ⚠️)\n* `openrouter.presets.createPresetsResponses()`: \n  *  `request.responsesRequest.input.union(Array<>)[].union(AdditionalToolsItem).tools[].union(AdvisorServerTool_OpenRouter).parameters` **Changed** (Breaking ⚠️)\n* `openrouter.responses.send()`: \n  *  `request.responsesRequest.input.union(Array<>)[].union(AdditionalToolsItem).tools[].union(AdvisorServerTool_OpenRouter).parameters` **Changed** (Breaking ⚠️)\n"
+releaseNotes: "## Typescript SDK Changes:\n* `openrouter.videoGeneration.generate()`: \n  *  `request.videoGenerationRequest` **Changed**\n* `openrouter.videoGeneration.listVideosModels()`:  `response.data[]` **Changed**\n"
