@@ -107,6 +107,14 @@ export const SupportedSize = {
 } as const;
 export type SupportedSize = OpenEnum<typeof SupportedSize>;
 
+/**
+ * Supported upscale factor range for video upscaling models
+ */
+export type UpscaleFactor = {
+  max?: number | null | undefined;
+  min?: number | null | undefined;
+};
+
 export type VideoModel = {
   /**
    * List of parameters that are allowed to be passed through to the provider
@@ -120,6 +128,10 @@ export type VideoModel = {
    * Unix timestamp of when the model was created
    */
   created: number;
+  /**
+   * Supported creativity levels for video upscaling models
+   */
+  creativity: Array<number> | null;
   /**
    * Description of the model
    */
@@ -168,6 +180,10 @@ export type VideoModel = {
    * Supported output sizes (width x height)
    */
   supportedSizes: Array<SupportedSize> | null;
+  /**
+   * Supported upscale factor range for video upscaling models
+   */
+  upscaleFactor: UpscaleFactor | null;
 };
 
 /** @internal */
@@ -193,11 +209,29 @@ export const SupportedSize$inboundSchema: z.ZodType<SupportedSize, unknown> =
   openEnums.inboundSchema(SupportedSize);
 
 /** @internal */
+export const UpscaleFactor$inboundSchema: z.ZodType<UpscaleFactor, unknown> = z
+  .object({
+    max: z.nullable(z.number()).optional(),
+    min: z.nullable(z.number()).optional(),
+  });
+
+export function upscaleFactorFromJSON(
+  jsonString: string,
+): SafeParseResult<UpscaleFactor, SDKValidationError> {
+  return safeParse(
+    jsonString,
+    (x) => UpscaleFactor$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'UpscaleFactor' from JSON`,
+  );
+}
+
+/** @internal */
 export const VideoModel$inboundSchema: z.ZodType<VideoModel, unknown> = z
   .object({
     allowed_passthrough_parameters: z.array(z.string()),
     canonical_slug: z.string(),
     created: z.int(),
+    creativity: z.nullable(z.array(z.int())),
     description: z.string().optional(),
     generate_audio: z.nullable(z.boolean()),
     hugging_face_id: z.nullable(z.string()).optional(),
@@ -216,6 +250,7 @@ export const VideoModel$inboundSchema: z.ZodType<VideoModel, unknown> = z
       z.array(SupportedResolution$inboundSchema),
     ),
     supported_sizes: z.nullable(z.array(SupportedSize$inboundSchema)),
+    upscale_factor: z.nullable(z.lazy(() => UpscaleFactor$inboundSchema)),
   }).transform((v) => {
     return remap$(v, {
       "allowed_passthrough_parameters": "allowedPassthroughParameters",
@@ -228,6 +263,7 @@ export const VideoModel$inboundSchema: z.ZodType<VideoModel, unknown> = z
       "supported_frame_images": "supportedFrameImages",
       "supported_resolutions": "supportedResolutions",
       "supported_sizes": "supportedSizes",
+      "upscale_factor": "upscaleFactor",
     });
   });
 
