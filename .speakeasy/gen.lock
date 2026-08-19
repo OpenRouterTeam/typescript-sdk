@@ -1,19 +1,19 @@
 lockVersion: ""
 id: ""
 management:
-  docChecksum: 19667d1012ba4d5f38b4347169b935ce
+  docChecksum: 5b05fb14aa5a8e654b0d6fb9f52e3d49
   docVersion: 1.0.0
   speakeasyVersion: 1.787.0
   generationVersion: 2.914.0
-  releaseVersion: 1.2.45
-  configChecksum: c43b5c66b529cc97fd8b60502e9fedb9
+  releaseVersion: 1.2.46
+  configChecksum: 2efd7ad30a49ad30c0e3f2ff10d3c5e6
   repoURL: https://github.com/OpenRouterTeam/typescript-sdk.git
   installationURL: https://github.com/OpenRouterTeam/typescript-sdk
   published: true
 persistentEdits:
-  generation_id: d375b7d6-b41b-48ef-9038-03ba53ff6ed0
-  pristine_commit_hash: bea13d092bf9d1a3720adf7c9cab637ef071d265
-  pristine_tree_hash: b5ed448c18df8751789101c5b7a3c29321338cc3
+  generation_id: e1e23a47-1367-488a-a308-348bbb05c41c
+  pristine_commit_hash: bb88091f3af50ec1fb3d8a85b8d7382ed5be7810
+  pristine_tree_hash: 0df9ba617a9dfa4098cd446fe5ff79c05ee2f14b
 features:
   typescript:
     acceptHeaders: 2.81.2
@@ -3701,6 +3701,10 @@ trackedFiles:
     id: c8d1bb20b084
     last_write_checksum: sha1:1b6dd7dafde97cef69e4bad044e3ca2c4c3d02c8
     pristine_git_object: 5fce6f8dad8f1d27690ca65b075bfc8377252c40
+  docs/models/failabletoolcallstatus.mdx:
+    id: f44595f5c09a
+    last_write_checksum: sha1:6df525458ab4baebf7191aa748e4bb031b2bff99
+    pristine_git_object: 111054d0705e95237003ae2712b64b14d7d56066
   docs/models/failedmodel.md:
     id: 45c31072c08d
     last_write_checksum: sha1:b897fe84c63f43a5a79ef6c5828e5e877dd375c8
@@ -9059,8 +9063,8 @@ trackedFiles:
     deleted: true
   docs/models/outputadvisorservertoolitem.mdx:
     id: 68cbfff82a80
-    last_write_checksum: sha1:e1feaae1255d0c0f02d2355828fead1135c4b1a2
-    pristine_git_object: 194b0ff0e9d8df8a57c928dfe001bd5eee7f810c
+    last_write_checksum: sha1:86359253500e590d35aeb8894a352588761c72d0
+    pristine_git_object: 90e3f6daf8f01d6b2a894607a87343b0b1f6eea9
   docs/models/outputadvisorservertoolitemtype.md:
     id: e3953e2ecd05
     last_write_checksum: sha1:cfacb30d87c193bfa2bdc79d83aa31afb525e215
@@ -9775,8 +9779,8 @@ trackedFiles:
     deleted: true
   docs/models/outputsubagentservertoolitem.mdx:
     id: d04cd04081d2
-    last_write_checksum: sha1:308dfde8f9400ae4e0b92819f0f95cde424369bb
-    pristine_git_object: b7078ed746d7704596d26a06afaf35eb0282e54d
+    last_write_checksum: sha1:2ccc25094e5ec6a012c248e6021cd8eecb3fa683
+    pristine_git_object: e9d84680371a415c540e862faa243da499792b5f
   docs/models/outputsubagentservertoolitemtype.md:
     id: ea27b09f82dc
     last_write_checksum: sha1:4394b23dfa0a8ae836723f1666e462baa4a01208
@@ -12917,12 +12921,12 @@ trackedFiles:
     pristine_git_object: 410efafd6a7f50d91ccb87131fedbe0c3d47e15a
   jsr.json:
     id: 7f6ab7767282
-    last_write_checksum: sha1:e37d25951d0f56758719d88ed65fa7fd3fb3aa06
-    pristine_git_object: 264b386bbdd37e561e572df23d69474601a1f0c0
+    last_write_checksum: sha1:3b23d691e571431f0e458a036ccba013d8212199
+    pristine_git_object: a88ac17a5e4191439f7b451f83eb54f4e5550b80
   package.json:
     id: 7030d0b2f71b
-    last_write_checksum: sha1:485ca5613c347b419519242b1ec8341134d238cf
-    pristine_git_object: 685db800d9b1e6090d2db50bc8ae86f1f649f7cb
+    last_write_checksum: sha1:8b983b408f9031ce1a370b976ac615496f295bb2
+    pristine_git_object: 4490b31d3dcd45d56d173953da738b6861898e1c
   src/core.ts:
     id: f431fdbcd144
     last_write_checksum: sha1:5aa66b0b6a5964f3eea7f3098c2eb3c0ee9c0131
@@ -13333,8 +13337,8 @@ trackedFiles:
     pristine_git_object: a187e58707bdb726ca2aff74941efe7493422d4e
   src/lib/config.ts:
     id: 320761608fb3
-    last_write_checksum: sha1:e10bc24247f5066703066953de52b703719b07c6
-    pristine_git_object: aa27fa9577181c029f690138f9309715297bc889
+    last_write_checksum: sha1:3e1a007439d646a581db7002f214651802c1dbfb
+    pristine_git_object: 87146f8ecdc1b2507d211d768dc274539e82fe8f
   src/lib/dlv.ts:
     id: b1988214835a
     last_write_checksum: sha1:eaac763b22717206a6199104e0403ed17a4e2711
@@ -14293,6 +14297,10 @@ trackedFiles:
     id: d81e01bbb5e3
     last_write_checksum: sha1:8f37338e9ef4ff00e947020193190328e56ed3b5
     pristine_git_object: 961771702f95387cde359846f42ada6250ab5ae8
+  src/models/failabletoolcallstatus.ts:
+    id: 142c03b0af9f
+    last_write_checksum: sha1:0b8338eec685fc6bd2cc1f66037b04618911d25d
+    pristine_git_object: 6587822be53f729e0c84b323597b2766d700d279
   src/models/filecitation.ts:
     id: 0e609723dbc8
     last_write_checksum: sha1:5311a64d9704440578486a029ca16d32e58d954b
@@ -14603,8 +14611,8 @@ trackedFiles:
     pristine_git_object: 8e109bedfdcf2c4808e49323dda861e3c6069d51
   src/models/index.ts:
     id: f93644b0f37e
-    last_write_checksum: sha1:1319dcba21b7d4bd19d834d3869772d3c3f94888
-    pristine_git_object: 88edf26ba5c3453fa47963011ac8b3a2338abf96
+    last_write_checksum: sha1:697a8905090cb3553d9d5ad09acf1d781d4c5ce7
+    pristine_git_object: c1dba3605636aaaf56329e6816cc15a398ec0f0e
   src/models/inputaudio.ts:
     id: 9bdc14c7565f
     last_write_checksum: sha1:2f8dc4c1d6a9c2927d9eb186e0ecedf7b81838e6
@@ -15415,8 +15423,8 @@ trackedFiles:
     pristine_git_object: 38378370b18ac04a83f8e9ebb62353ddf2c1c655
   src/models/outputadvisorservertoolitem.ts:
     id: 0c9d6ff77975
-    last_write_checksum: sha1:7d0a25df5c89fc974d7c07b60e69288ee1fd4d5f
-    pristine_git_object: 1dcf97222d550d8efcb5f6351da6ed096698aa86
+    last_write_checksum: sha1:ad258b7f79ccbd005042a66708f25e51adbc2a62
+    pristine_git_object: 0a6f836d5197e6a74358243d50bdb5241e157adf
   src/models/outputapplypatchcallitem.ts:
     id: 9cfff773cd37
     last_write_checksum: sha1:7692d657eb4ea5147a87a26a4c109121b3eb80e9
@@ -15535,8 +15543,8 @@ trackedFiles:
     pristine_git_object: 2efd39dbfc21e9354d8949f73436bc7a22ffccde
   src/models/outputsubagentservertoolitem.ts:
     id: 9161bc044a98
-    last_write_checksum: sha1:699f40174c579724dd62d252c97bb0b09d50ebba
-    pristine_git_object: c0a40aaef73d9555d9fde516d7d78c67c3dd9c7f
+    last_write_checksum: sha1:b860e0c58f0d694e29a0182acceba7a1306ce5e7
+    pristine_git_object: 245536571efc7fa82da5eb8585871eb54b7ed78d
   src/models/outputtexteditorservertoolitem.ts:
     id: 6c55837a703d
     last_write_checksum: sha1:cf4f1da9c088c8b67a5f873ea964867a2d00a35e
@@ -18265,4 +18273,4 @@ examples:
         "500":
           application/json: {"error": {"code": 500, "message": "Internal Server Error"}}
 examplesVersion: 1.0.2
-releaseNotes: "## Typescript SDK Changes:\n* `openrouter.videoGeneration.generate()`: \n  *  `request.videoGenerationRequest` **Changed**\n* `openrouter.videoGeneration.listVideosModels()`:  `response.data[]` **Changed**\n"
+releaseNotes: "## Typescript SDK Changes:\n* `openrouter.beta.responses.send()`: \n  *  `request.responsesRequest.input.union(Array<>)[].union(OutputAdvisorServerToolItem).status.enum(failed)` **Added**\n  *  `response` **Changed**\n* `openrouter.presets.createPresetsResponses()`: \n  *  `request.responsesRequest.input.union(Array<>)[].union(OutputSubagentServerToolItem).status.enum(failed)` **Added**\n* `openrouter.responses.send()`: \n  *  `request.responsesRequest.input.union(Array<>)[].union(OutputAdvisorServerToolItem).status.enum(failed)` **Added**\n  *  `response` **Changed**\n"
