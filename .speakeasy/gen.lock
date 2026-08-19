@@ -1,19 +1,19 @@
 lockVersion: ""
 id: ""
 management:
-  docChecksum: 5b05fb14aa5a8e654b0d6fb9f52e3d49
+  docChecksum: 190dbdf5882b3953fc47dbe15f6a2cb8
   docVersion: 1.0.0
   speakeasyVersion: 1.787.0
   generationVersion: 2.914.0
-  releaseVersion: 1.2.46
-  configChecksum: 2efd7ad30a49ad30c0e3f2ff10d3c5e6
+  releaseVersion: 1.2.47
+  configChecksum: 30f17e4f27781e069d789679fe85164f
   repoURL: https://github.com/OpenRouterTeam/typescript-sdk.git
   installationURL: https://github.com/OpenRouterTeam/typescript-sdk
   published: true
 persistentEdits:
-  generation_id: e1e23a47-1367-488a-a308-348bbb05c41c
-  pristine_commit_hash: bb88091f3af50ec1fb3d8a85b8d7382ed5be7810
-  pristine_tree_hash: 0df9ba617a9dfa4098cd446fe5ff79c05ee2f14b
+  generation_id: e89b7eab-6471-4214-ab3f-cd22271b9728
+  pristine_commit_hash: bad2a19e4599a52ab33106eeaab714f1bd553a71
+  pristine_tree_hash: c79b1912d74d9344e441cc657783c14a31d059aa
 features:
   typescript:
     acceptHeaders: 2.81.2
@@ -3186,8 +3186,8 @@ trackedFiles:
     deleted: true
   docs/models/customtoolcallitem.mdx:
     id: f5aefce0cc1b
-    last_write_checksum: sha1:71f9076fb415cacdf965b934a4b17b4967a79162
-    pristine_git_object: 8d9ba1f19bd33606e349a149fb0c8a6ff1fcfc05
+    last_write_checksum: sha1:d044a5ad0b98112a9a9d260de55ac205e797e003
+    pristine_git_object: 6805f5eecb1c5c7fb0b3e80d3c5a80be7335655d
   docs/models/customtoolcallitemtype.md:
     id: 695c2252b124
     last_write_checksum: sha1:3ffede76adb738db02be522a1c36b1d65eec1dcb
@@ -12921,12 +12921,12 @@ trackedFiles:
     pristine_git_object: 410efafd6a7f50d91ccb87131fedbe0c3d47e15a
   jsr.json:
     id: 7f6ab7767282
-    last_write_checksum: sha1:3b23d691e571431f0e458a036ccba013d8212199
-    pristine_git_object: a88ac17a5e4191439f7b451f83eb54f4e5550b80
+    last_write_checksum: sha1:022b0bc3501f80b425a71990a636a39ba9d2bdfe
+    pristine_git_object: 6f35de59ab32f0d53c888b30f4a753333be9aa32
   package.json:
     id: 7030d0b2f71b
-    last_write_checksum: sha1:8b983b408f9031ce1a370b976ac615496f295bb2
-    pristine_git_object: 4490b31d3dcd45d56d173953da738b6861898e1c
+    last_write_checksum: sha1:3cf1382cc8f40b45e9654d87991fb30edff0794c
+    pristine_git_object: 9e32bdc93827f90bb06af68bb5081dd529c881fb
   src/core.ts:
     id: f431fdbcd144
     last_write_checksum: sha1:5aa66b0b6a5964f3eea7f3098c2eb3c0ee9c0131
@@ -13337,8 +13337,8 @@ trackedFiles:
     pristine_git_object: a187e58707bdb726ca2aff74941efe7493422d4e
   src/lib/config.ts:
     id: 320761608fb3
-    last_write_checksum: sha1:3e1a007439d646a581db7002f214651802c1dbfb
-    pristine_git_object: 87146f8ecdc1b2507d211d768dc274539e82fe8f
+    last_write_checksum: sha1:2ffd83f27f9e6cb7fb7b9952897534985e5a6e6a
+    pristine_git_object: 61566e1394d9dd060837bb03584e2af93d6c0c26
   src/lib/dlv.ts:
     id: b1988214835a
     last_write_checksum: sha1:eaac763b22717206a6199104e0403ed17a4e2711
@@ -14135,8 +14135,8 @@ trackedFiles:
     pristine_git_object: a63c85bd87ec074c56e7a2e7b9a458b8c8414302
   src/models/customtoolcallitem.ts:
     id: 84d0034c7065
-    last_write_checksum: sha1:ec12aeed1634aeff86ca3a694fd2ce2b0a8709ed
-    pristine_git_object: ec5709e4842c1a1888cddf3af01c30254b1f6b16
+    last_write_checksum: sha1:62318b541f4604b97b381df23078055f169df5b9
+    pristine_git_object: 2cb753d2b278f2be2fd4ebc9e818e3ecc50c7607
   src/models/customtoolcalloutputitem.ts:
     id: 02aed5cefca5
     last_write_checksum: sha1:fdda79fc4dd37fbe050a8d896d2156678723c71c
@@ -18273,4 +18273,4 @@ examples:
         "500":
           application/json: {"error": {"code": 500, "message": "Internal Server Error"}}
 examplesVersion: 1.0.2
-releaseNotes: "## Typescript SDK Changes:\n* `openrouter.beta.responses.send()`: \n  *  `request.responsesRequest.input.union(Array<>)[].union(OutputAdvisorServerToolItem).status.enum(failed)` **Added**\n  *  `response` **Changed**\n* `openrouter.presets.createPresetsResponses()`: \n  *  `request.responsesRequest.input.union(Array<>)[].union(OutputSubagentServerToolItem).status.enum(failed)` **Added**\n* `openrouter.responses.send()`: \n  *  `request.responsesRequest.input.union(Array<>)[].union(OutputAdvisorServerToolItem).status.enum(failed)` **Added**\n  *  `response` **Changed**\n"
+releaseNotes: "## Typescript SDK Changes:\n* `openrouter.beta.responses.send()`: \n  *  `request.responsesRequest.input.union(Array<>)[].union(CustomToolCallItem).status` **Added**\n* `openrouter.presets.createPresetsResponses()`: \n  *  `request.responsesRequest.input.union(Array<>)[].union(CustomToolCallItem).status` **Added**\n* `openrouter.responses.send()`: \n  *  `request.responsesRequest.input.union(Array<>)[].union(CustomToolCallItem).status` **Added**\n"
