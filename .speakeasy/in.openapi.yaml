@@ -25383,6 +25383,10 @@ components:
           example: 'https://example.com/webhook'
           format: 'uri'
           type: 'string'
+        creativity:
+          description: 'Creativity level for video upscaling models only. This parameter is not supported by video generation models.'
+          example: 1
+          type: 'integer'
         duration:
           description: 'Duration of the generated video in seconds'
           example: 8
@@ -25438,6 +25442,12 @@ components:
           description: 'Exact pixel dimensions of the generated video in "WIDTHxHEIGHT" format (e.g. "1280x720"). Interchangeable with resolution + aspect_ratio.'
           example: '1280x720'
           type: 'string'
+        upscale_factor:
+          description: 'Upscale factor for video upscaling models only. This parameter is not supported by video generation models.'
+          example: 2
+          exclusiveMinimum: true
+          minimum: 0
+          type: 'number'
       required:
         - 'model'
       type: 'object'
@@ -25530,6 +25540,13 @@ components:
           description: 'Unix timestamp of when the model was created'
           example: 1692901234
           type: 'integer'
+        creativity:
+          description: 'Supported creativity levels for video upscaling models'
+          items:
+            type: 'integer'
+          type:
+            - 'array'
+            - 'null'
         description:
           description: 'Description of the model'
           example: 'GPT-4 is a large multimodal model that can solve difficult problems with greater accuracy.'
@@ -25684,6 +25701,22 @@ components:
           type:
             - 'array'
             - 'null'
+        upscale_factor:
+          description: 'Supported upscale factor range for video upscaling models'
+          properties:
+            max:
+              format: 'double'
+              type:
+                - 'number'
+                - 'null'
+            min:
+              format: 'double'
+              type:
+                - 'number'
+                - 'null'
+          type:
+            - 'object'
+            - 'null'
       required:
         - 'id'
         - 'canonical_slug'
@@ -25694,6 +25727,8 @@ components:
         - 'supported_sizes'
         - 'supported_durations'
         - 'supported_frame_images'
+        - 'upscale_factor'
+        - 'creativity'
         - 'generate_audio'
         - 'seed'
         - 'allowed_passthrough_parameters'
