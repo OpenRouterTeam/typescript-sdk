@@ -123,6 +123,11 @@ import {
   SubagentServerToolOpenRouter$outboundSchema,
 } from "./subagentservertoolopenrouter.js";
 import {
+  ToolSearchServerTool,
+  ToolSearchServerTool$Outbound,
+  ToolSearchServerTool$outboundSchema,
+} from "./toolsearchservertool.js";
+import {
   WebFetchServerTool,
   WebFetchServerTool$Outbound,
   WebFetchServerTool$outboundSchema,
@@ -171,6 +176,10 @@ export type AdditionalToolsItemToolFunction = {
   parameters: { [k: string]: any } | null;
   strict?: boolean | null | undefined;
   type: AdditionalToolsItemTypeFunction;
+  /**
+   * Withhold this tool from the model until `openrouter:tool_search` finds it. Requires the tool search server tool; at least one tool must remain non-deferred.
+   */
+  deferLoading?: boolean | undefined;
 };
 
 export type AdditionalToolsItemToolUnion =
@@ -201,6 +210,7 @@ export type AdditionalToolsItemToolUnion =
   | ApplyPatchServerToolOpenRouter
   | BashServerTool
   | ShellServerToolOpenRouter
+  | ToolSearchServerTool
   | AdditionalToolsItemTool;
 
 export const TypeAdditionalTools = {
@@ -242,6 +252,7 @@ export type AdditionalToolsItem = {
     | ApplyPatchServerToolOpenRouter
     | BashServerTool
     | ShellServerToolOpenRouter
+    | ToolSearchServerTool
     | AdditionalToolsItemTool
   >;
   type: TypeAdditionalTools;
@@ -295,6 +306,7 @@ export type AdditionalToolsItemToolFunction$Outbound = {
   parameters: { [k: string]: any } | null;
   strict?: boolean | null | undefined;
   type: string;
+  defer_loading?: boolean | undefined;
 };
 
 /** @internal */
@@ -307,6 +319,11 @@ export const AdditionalToolsItemToolFunction$outboundSchema: z.ZodType<
   parameters: z.nullable(z.record(z.string(), z.any())),
   strict: z.nullable(z.boolean()).optional(),
   type: AdditionalToolsItemTypeFunction$outboundSchema,
+  deferLoading: z.boolean().optional(),
+}).transform((v) => {
+  return remap$(v, {
+    deferLoading: "defer_loading",
+  });
 });
 
 export function additionalToolsItemToolFunctionToJSON(
@@ -348,6 +365,7 @@ export type AdditionalToolsItemToolUnion$Outbound =
   | ApplyPatchServerToolOpenRouter$Outbound
   | BashServerTool$Outbound
   | ShellServerToolOpenRouter$Outbound
+  | ToolSearchServerTool$Outbound
   | AdditionalToolsItemTool$Outbound;
 
 /** @internal */
@@ -382,6 +400,7 @@ export const AdditionalToolsItemToolUnion$outboundSchema: z.ZodType<
   ApplyPatchServerToolOpenRouter$outboundSchema,
   BashServerTool$outboundSchema,
   ShellServerToolOpenRouter$outboundSchema,
+  ToolSearchServerTool$outboundSchema,
   z.lazy(() => AdditionalToolsItemTool$outboundSchema),
 ]);
 
@@ -432,6 +451,7 @@ export type AdditionalToolsItem$Outbound = {
     | ApplyPatchServerToolOpenRouter$Outbound
     | BashServerTool$Outbound
     | ShellServerToolOpenRouter$Outbound
+    | ToolSearchServerTool$Outbound
     | AdditionalToolsItemTool$Outbound
   >;
   type: string;
@@ -473,6 +493,7 @@ export const AdditionalToolsItem$outboundSchema: z.ZodType<
       ApplyPatchServerToolOpenRouter$outboundSchema,
       BashServerTool$outboundSchema,
       ShellServerToolOpenRouter$outboundSchema,
+      ToolSearchServerTool$outboundSchema,
       z.lazy(() => AdditionalToolsItemTool$outboundSchema),
     ]),
   ),
