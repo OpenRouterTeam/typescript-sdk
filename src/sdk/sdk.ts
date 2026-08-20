@@ -51,11 +51,6 @@ export class OpenRouter extends ClientSDK {
     return (this._analytics ??= new Analytics(this._options));
   }
 
-  private _beta?: Beta;
-  get beta(): Beta {
-    return (this._beta ??= new Beta(this._options));
-  }
-
   private _tts?: TTS;
   get tts(): TTS {
     return (this._tts ??= new TTS(this._options));
@@ -169,6 +164,11 @@ export class OpenRouter extends ClientSDK {
   private _responses?: Responses;
   get responses(): Responses {
     return (this._responses ??= new Responses(this._options));
+  }
+
+  private _beta?: Beta;
+  get beta(): Beta {
+    return (this._beta ??= new Beta(this._options));
   }
 
   private _scim?: Scim;
