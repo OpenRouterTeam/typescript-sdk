@@ -87,7 +87,7 @@ export class Files extends ClientSDK {
    * Download file content
    *
    * @remarks
-   * Downloads the raw bytes of a file. Only files created server-side are downloadable; uploaded files return 400.
+   * Downloads the raw bytes of a file. Only files created server-side are downloadable; uploaded files return 400. Pass `session_id` to download a file created by a server-side tool sandbox during that session.
    */
   async download(
     request: operations.DownloadFileContentRequest,

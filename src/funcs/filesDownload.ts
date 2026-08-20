@@ -32,7 +32,7 @@ import { Result } from "../types/fp.js";
  * Download file content
  *
  * @remarks
- * Downloads the raw bytes of a file. Only files created server-side are downloadable; uploaded files return 400.
+ * Downloads the raw bytes of a file. Only files created server-side are downloadable; uploaded files return 400. Pass `session_id` to download a file created by a server-side tool sandbox during that session.
  */
 export function filesDownload(
   client: OpenRouterCore,
@@ -116,6 +116,7 @@ async function $do(
 
   const query = encodeFormQuery({
     "provider": payload.provider,
+    "session_id": payload.session_id,
     "workspace_id": payload.workspace_id,
   });
 
