@@ -47,7 +47,9 @@ export function organizationListMembers(
   PageIterator<
     Result<
       operations.ListOrganizationMembersResponse,
+      | errors.BadRequestResponseError
       | errors.UnauthorizedResponseError
+      | errors.ForbiddenResponseError
       | errors.NotFoundResponseError
       | errors.InternalServerResponseError
       | OpenRouterError
@@ -78,7 +80,9 @@ async function $do(
     PageIterator<
       Result<
         operations.ListOrganizationMembersResponse,
+        | errors.BadRequestResponseError
         | errors.UnauthorizedResponseError
+        | errors.ForbiddenResponseError
         | errors.NotFoundResponseError
         | errors.InternalServerResponseError
         | OpenRouterError
@@ -198,7 +202,9 @@ async function $do(
 
   const [result, raw] = await M.match<
     operations.ListOrganizationMembersResponse,
+    | errors.BadRequestResponseError
     | errors.UnauthorizedResponseError
+    | errors.ForbiddenResponseError
     | errors.NotFoundResponseError
     | errors.InternalServerResponseError
     | OpenRouterError
@@ -213,7 +219,9 @@ async function $do(
     M.json(200, operations.ListOrganizationMembersResponse$inboundSchema, {
       key: "Result",
     }),
+    M.jsonErr(400, errors.BadRequestResponseError$inboundSchema),
     M.jsonErr(401, errors.UnauthorizedResponseError$inboundSchema),
+    M.jsonErr(403, errors.ForbiddenResponseError$inboundSchema),
     M.jsonErr(404, errors.NotFoundResponseError$inboundSchema),
     M.jsonErr(500, errors.InternalServerResponseError$inboundSchema),
     M.fail("4XX"),
@@ -233,7 +241,9 @@ async function $do(
     next: Paginator<
       Result<
         operations.ListOrganizationMembersResponse,
+        | errors.BadRequestResponseError
         | errors.UnauthorizedResponseError
+        | errors.ForbiddenResponseError
         | errors.NotFoundResponseError
         | errors.InternalServerResponseError
         | OpenRouterError
