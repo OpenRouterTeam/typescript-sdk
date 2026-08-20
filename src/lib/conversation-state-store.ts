@@ -258,6 +258,10 @@ export class InMemoryConversationStateBackend<TTools extends readonly Tool[] = r
     this.map.delete(id);
   }
 
+  async list(): Promise<string[]> {
+    return [...this.map.keys()];
+  }
+
   keys(): string[] {
     return [...this.map.keys()];
   }

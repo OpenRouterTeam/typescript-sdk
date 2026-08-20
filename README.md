@@ -55,6 +55,16 @@ yarn add @openrouter/sdk
 > npx skills add OpenRouterTeam/skills --skill openrouter-agent-migration
 > ```
 
+## Multi-turn conversation state
+
+`callModelWithState` carries conversation context across turns: each turn
+loads prior history keyed by a caller-supplied `conversationId`, appends the
+new input and response output, and persists it back — no manual history
+management. State lives in a pluggable `ConversationStateStore` (in-memory
+and file backends included), with optional TTL expiry, `expire()` sweeps, and
+`clear()` for explicit deletion. See [docs/multi-turn-state.md](docs/multi-turn-state.md)
+for keying, configuration, cleanup, and recovery semantics.
+
 <!-- Start Requirements [requirements] -->
 ## Requirements
 
