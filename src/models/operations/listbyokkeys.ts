@@ -89,6 +89,7 @@ export const Provider = {
   Ionstream: "ionstream",
   Krea: "krea",
   Liquid: "liquid",
+  Makora: "makora",
   Mancer: "mancer",
   Mara: "mara",
   Meta: "meta",
