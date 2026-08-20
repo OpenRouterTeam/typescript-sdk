@@ -216,10 +216,6 @@ export type VideoGenerationRequest = {
    */
   callbackUrl?: string | undefined;
   /**
-   * Creativity level for video upscaling models only. This parameter is not supported by video generation models.
-   */
-  creativity?: number | undefined;
-  /**
    * Duration of the generated video in seconds
    */
   duration?: number | undefined;
@@ -256,10 +252,6 @@ export type VideoGenerationRequest = {
    * Exact pixel dimensions of the generated video in "WIDTHxHEIGHT" format (e.g. "1280x720"). Interchangeable with resolution + aspect_ratio.
    */
   size?: string | undefined;
-  /**
-   * Upscale factor for video upscaling models only. This parameter is not supported by video generation models.
-   */
-  upscaleFactor?: number | undefined;
 };
 
 /** @internal */
@@ -625,7 +617,6 @@ export const VideoGenerationRequestResolution$outboundSchema: z.ZodType<
 export type VideoGenerationRequest$Outbound = {
   aspect_ratio?: string | undefined;
   callback_url?: string | undefined;
-  creativity?: number | undefined;
   duration?: number | undefined;
   frame_images?: Array<FrameImage$Outbound> | undefined;
   generate_audio?: boolean | undefined;
@@ -636,7 +627,6 @@ export type VideoGenerationRequest$Outbound = {
   resolution?: string | undefined;
   seed?: number | undefined;
   size?: string | undefined;
-  upscale_factor?: number | undefined;
 };
 
 /** @internal */
@@ -646,7 +636,6 @@ export const VideoGenerationRequest$outboundSchema: z.ZodType<
 > = z.object({
   aspectRatio: VideoGenerationRequestAspectRatio$outboundSchema.optional(),
   callbackUrl: z.string().optional(),
-  creativity: z.int().optional(),
   duration: z.int().optional(),
   frameImages: z.array(FrameImage$outboundSchema).optional(),
   generateAudio: z.boolean().optional(),
@@ -658,7 +647,6 @@ export const VideoGenerationRequest$outboundSchema: z.ZodType<
   resolution: VideoGenerationRequestResolution$outboundSchema.optional(),
   seed: z.int().optional(),
   size: z.string().optional(),
-  upscaleFactor: z.number().optional(),
 }).transform((v) => {
   return remap$(v, {
     aspectRatio: "aspect_ratio",
@@ -666,7 +654,6 @@ export const VideoGenerationRequest$outboundSchema: z.ZodType<
     frameImages: "frame_images",
     generateAudio: "generate_audio",
     inputReferences: "input_references",
-    upscaleFactor: "upscale_factor",
   });
 });
 
