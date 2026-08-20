@@ -53,6 +53,11 @@ import {
   MessagesShellToolResultBlock$outboundSchema,
 } from "./messagesshelltoolresultblock.js";
 import {
+  MessagesSubagentToolResultBlock,
+  MessagesSubagentToolResultBlock$Outbound,
+  MessagesSubagentToolResultBlock$outboundSchema,
+} from "./messagessubagenttoolresultblock.js";
+import {
   MessagesToolAdditionBlock,
   MessagesToolAdditionBlock$Outbound,
   MessagesToolAdditionBlock$outboundSchema,
@@ -174,6 +179,11 @@ export type ContentToolResult = {
   type: "tool_result";
 };
 
+export type MessagesMessageParamSubagentItem = {
+  type: string;
+  additionalProperties?: { [k: string]: any } | undefined;
+};
+
 export type ContentToolUse = {
   /**
    * Enable automatic prompt caching. When set at the top level, the system automatically applies cache breakpoints to the last cacheable block in the request. When set on an individual content block, it marks an explicit cache breakpoint; block-level markers also work on OpenAI models that support explicit prompt caching — OpenRouter converts them to the provider's native format.
@@ -182,6 +192,14 @@ export type ContentToolUse = {
   id: string;
   input?: any | undefined;
   name: string;
+  /**
+   * EXPERIMENTAL — subject to change without notice. String id that matches the `id` of the `server_tool_use` block (and the `call_id` of the `openrouter_subagent_tool_result` block) that spawned the subagent. Replay it exactly as the API returned it so the call can be attributed back to the suspended subagent.
+   */
+  subagentId?: string | undefined;
+  /**
+   * EXPERIMENTAL — subject to change without notice. The subagent's output items produced on this turn. Treat this as an opaque object and replay it exactly as the API returned it so the subagent can continue execution with the same context. Only the first projected call of each round carries it.
+   */
+  subagentItems?: Array<MessagesMessageParamSubagentItem> | undefined;
   type: "tool_use";
 };
 
@@ -201,7 +219,8 @@ export type MessagesMessageParamContentUnion4 =
   | MessagesToolAdditionBlock
   | MessagesToolRemovalBlock
   | MessagesShellToolResultBlock
-  | MessagesBashToolResultBlock;
+  | MessagesBashToolResultBlock
+  | MessagesSubagentToolResultBlock;
 
 export type MessagesMessageParamContentUnion5 =
   | string
@@ -222,6 +241,7 @@ export type MessagesMessageParamContentUnion5 =
     | MessagesToolRemovalBlock
     | MessagesShellToolResultBlock
     | MessagesBashToolResultBlock
+    | MessagesSubagentToolResultBlock
   >;
 
 export const MessagesMessageParamRole = {
@@ -256,6 +276,7 @@ export type MessagesMessageParam = {
       | MessagesToolRemovalBlock
       | MessagesShellToolResultBlock
       | MessagesBashToolResultBlock
+      | MessagesSubagentToolResultBlock
     >;
   role: MessagesMessageParamRole;
 };
@@ -621,11 +642,45 @@ export function contentToolResultToJSON(
 }
 
 /** @internal */
+export type MessagesMessageParamSubagentItem$Outbound = {
+  type: string;
+  [additionalProperties: string]: unknown;
+};
+
+/** @internal */
+export const MessagesMessageParamSubagentItem$outboundSchema: z.ZodType<
+  MessagesMessageParamSubagentItem$Outbound,
+  MessagesMessageParamSubagentItem
+> = z.object({
+  type: z.string(),
+  additionalProperties: z.record(z.string(), z.any()).optional(),
+}).transform((v) => {
+  return {
+    ...v.additionalProperties,
+    ...remap$(v, {
+      additionalProperties: null,
+    }),
+  };
+});
+
+export function messagesMessageParamSubagentItemToJSON(
+  messagesMessageParamSubagentItem: MessagesMessageParamSubagentItem,
+): string {
+  return JSON.stringify(
+    MessagesMessageParamSubagentItem$outboundSchema.parse(
+      messagesMessageParamSubagentItem,
+    ),
+  );
+}
+
+/** @internal */
 export type ContentToolUse$Outbound = {
   cache_control?: AnthropicCacheControlDirective$Outbound | undefined;
   id: string;
   input?: any | undefined;
   name: string;
+  subagent_id?: string | undefined;
+  subagent_items?: Array<MessagesMessageParamSubagentItem$Outbound> | undefined;
   type: "tool_use";
 };
 
@@ -638,10 +693,16 @@ export const ContentToolUse$outboundSchema: z.ZodType<
   id: z.string(),
   input: z.any().optional(),
   name: z.string(),
+  subagentId: z.string().optional(),
+  subagentItems: z.array(
+    z.lazy(() => MessagesMessageParamSubagentItem$outboundSchema),
+  ).optional(),
   type: z.literal("tool_use"),
 }).transform((v) => {
   return remap$(v, {
     cacheControl: "cache_control",
+    subagentId: "subagent_id",
+    subagentItems: "subagent_items",
   });
 });
 
@@ -666,7 +727,8 @@ export type MessagesMessageParamContentUnion4$Outbound =
   | MessagesToolAdditionBlock$Outbound
   | MessagesToolRemovalBlock$Outbound
   | MessagesShellToolResultBlock$Outbound
-  | MessagesBashToolResultBlock$Outbound;
+  | MessagesBashToolResultBlock$Outbound
+  | MessagesSubagentToolResultBlock$Outbound;
 
 /** @internal */
 export const MessagesMessageParamContentUnion4$outboundSchema: z.ZodType<
@@ -689,6 +751,7 @@ export const MessagesMessageParamContentUnion4$outboundSchema: z.ZodType<
   MessagesToolRemovalBlock$outboundSchema,
   MessagesShellToolResultBlock$outboundSchema,
   MessagesBashToolResultBlock$outboundSchema,
+  MessagesSubagentToolResultBlock$outboundSchema,
 ]);
 
 export function messagesMessageParamContentUnion4ToJSON(
@@ -721,6 +784,7 @@ export type MessagesMessageParamContentUnion5$Outbound =
     | MessagesToolRemovalBlock$Outbound
     | MessagesShellToolResultBlock$Outbound
     | MessagesBashToolResultBlock$Outbound
+    | MessagesSubagentToolResultBlock$Outbound
   >;
 
 /** @internal */
@@ -747,6 +811,7 @@ export const MessagesMessageParamContentUnion5$outboundSchema: z.ZodType<
       MessagesToolRemovalBlock$outboundSchema,
       MessagesShellToolResultBlock$outboundSchema,
       MessagesBashToolResultBlock$outboundSchema,
+      MessagesSubagentToolResultBlock$outboundSchema,
     ]),
   ),
 ]);
@@ -788,6 +853,7 @@ export type MessagesMessageParam$Outbound = {
       | MessagesToolRemovalBlock$Outbound
       | MessagesShellToolResultBlock$Outbound
       | MessagesBashToolResultBlock$Outbound
+      | MessagesSubagentToolResultBlock$Outbound
     >;
   role: string;
 };
@@ -817,6 +883,7 @@ export const MessagesMessageParam$outboundSchema: z.ZodType<
         MessagesToolRemovalBlock$outboundSchema,
         MessagesShellToolResultBlock$outboundSchema,
         MessagesBashToolResultBlock$outboundSchema,
+        MessagesSubagentToolResultBlock$outboundSchema,
       ]),
     ),
   ]),

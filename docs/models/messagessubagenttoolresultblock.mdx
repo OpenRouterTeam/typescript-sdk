@@ -1,0 +1,33 @@
+---
+title: "MessagesSubagentToolResultBlock"
+---
+
+Lifecycle and outcome of an `openrouter:subagent` call from a prior assistant turn. Replay it exactly as the API returned it — a `status: in_progress` block is what lets OpenRouter resume the suspended subagent. Never forwarded to the provider; Anthropic has no equivalent block.
+
+## Example Usage
+
+```typescript
+import { MessagesSubagentToolResultBlock } from "@openrouter/sdk/models";
+
+let value: MessagesSubagentToolResultBlock = {
+  status: "in_progress",
+  toolUseId: "srvtoolu_01abc",
+  type: "openrouter_subagent_tool_result",
+};
+```
+
+## Fields
+
+| Field                                                                                              | Type                                                                                               | Required                                                                                           | Description                                                                                        |
+| -------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------- |
+| `callId`                                                                                           | *string*                                                                                           | :heavy_minus_sign:                                                                                 | N/A                                                                                                |
+| `error`                                                                                            | *string*                                                                                           | :heavy_minus_sign:                                                                                 | N/A                                                                                                |
+| `instanceName`                                                                                     | *string*                                                                                           | :heavy_minus_sign:                                                                                 | N/A                                                                                                |
+| `model`                                                                                            | *string*                                                                                           | :heavy_minus_sign:                                                                                 | N/A                                                                                                |
+| `name`                                                                                             | *string*                                                                                           | :heavy_minus_sign:                                                                                 | N/A                                                                                                |
+| `outcome`                                                                                          | *string*                                                                                           | :heavy_minus_sign:                                                                                 | N/A                                                                                                |
+| `status`                                                                                           | [models.MessagesSubagentToolResultBlockStatus](../models/messagessubagenttoolresultblockstatus.mdx) | :heavy_check_mark:                                                                                 | N/A                                                                                                |
+| `taskDescription`                                                                                  | *string*                                                                                           | :heavy_minus_sign:                                                                                 | N/A                                                                                                |
+| `taskName`                                                                                         | *string*                                                                                           | :heavy_minus_sign:                                                                                 | N/A                                                                                                |
+| `toolUseId`                                                                                        | *string*                                                                                           | :heavy_check_mark:                                                                                 | N/A                                                                                                |
+| `type`                                                                                             | *"openrouter_subagent_tool_result"*                                                                | :heavy_check_mark:                                                                                 | N/A                                                                                                |
