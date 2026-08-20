@@ -161,6 +161,11 @@ import {
   StopServerToolsWhenCondition$outboundSchema,
 } from "./stopservertoolswhencondition.js";
 import {
+  SubagentServerToolOpenRouter,
+  SubagentServerToolOpenRouter$Outbound,
+  SubagentServerToolOpenRouter$outboundSchema,
+} from "./subagentservertoolopenrouter.js";
+import {
   TraceConfig,
   TraceConfig$Outbound,
   TraceConfig$outboundSchema,
@@ -474,7 +479,8 @@ export type MessagesRequestToolUnion =
   | WebFetchServerTool
   | OpenRouterWebSearchServerTool
   | MessagesRequestTool
-  | ShellServerToolOpenRouter;
+  | ShellServerToolOpenRouter
+  | SubagentServerToolOpenRouter;
 
 /**
  * Request schema for Anthropic Messages API endpoint
@@ -558,6 +564,7 @@ export type MessagesRequest = {
       | OpenRouterWebSearchServerTool
       | MessagesRequestTool
       | ShellServerToolOpenRouter
+      | SubagentServerToolOpenRouter
     >
     | undefined;
   topK?: number | undefined;
@@ -1463,7 +1470,8 @@ export type MessagesRequestToolUnion$Outbound =
   | WebFetchServerTool$Outbound
   | OpenRouterWebSearchServerTool$Outbound
   | MessagesRequestTool$Outbound
-  | ShellServerToolOpenRouter$Outbound;
+  | ShellServerToolOpenRouter$Outbound
+  | SubagentServerToolOpenRouter$Outbound;
 
 /** @internal */
 export const MessagesRequestToolUnion$outboundSchema: z.ZodType<
@@ -1486,6 +1494,7 @@ export const MessagesRequestToolUnion$outboundSchema: z.ZodType<
   OpenRouterWebSearchServerTool$outboundSchema,
   z.lazy(() => MessagesRequestTool$outboundSchema),
   ShellServerToolOpenRouter$outboundSchema,
+  SubagentServerToolOpenRouter$outboundSchema,
 ]);
 
 export function messagesRequestToolUnionToJSON(
@@ -1561,6 +1570,7 @@ export type MessagesRequest$Outbound = {
       | OpenRouterWebSearchServerTool$Outbound
       | MessagesRequestTool$Outbound
       | ShellServerToolOpenRouter$Outbound
+      | SubagentServerToolOpenRouter$Outbound
     >
     | undefined;
   top_k?: number | undefined;
@@ -1639,6 +1649,7 @@ export const MessagesRequest$outboundSchema: z.ZodType<
       OpenRouterWebSearchServerTool$outboundSchema,
       z.lazy(() => MessagesRequestTool$outboundSchema),
       ShellServerToolOpenRouter$outboundSchema,
+      SubagentServerToolOpenRouter$outboundSchema,
     ]),
   ).optional(),
   topK: z.int().optional(),
