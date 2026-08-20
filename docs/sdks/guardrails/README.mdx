@@ -101,12 +101,13 @@ run();
 | ---------------------------------- | ---------------------------------- | ---------------------------------- |
 | errors.BadRequestResponseError     | 400                                | application/json                   |
 | errors.UnauthorizedResponseError   | 401                                | application/json                   |
+| errors.ForbiddenResponseError      | 403                                | application/json                   |
 | errors.InternalServerResponseError | 500                                | application/json                   |
 | errors.OpenRouterDefaultError      | 4XX, 5XX                           | \*/\*                              |
 
 ## create
 
-Create a new guardrail for the authenticated user. A newly created guardrail enforces nothing until it is assigned to API keys or organization members; `workspace_id` places the guardrail in a workspace but does not apply it to that workspace's traffic. To restrict all traffic in a workspace, update the workspace's default guardrail instead. [Management key](/docs/guides/overview/auth/management-api-keys) required.
+Create a new guardrail for the authenticated user. [Management key](/docs/guides/overview/auth/management-api-keys) required.
 
 ### Example Usage
 
@@ -298,7 +299,9 @@ run();
 
 | Error Type                         | Status Code                        | Content Type                       |
 | ---------------------------------- | ---------------------------------- | ---------------------------------- |
+| errors.BadRequestResponseError     | 400                                | application/json                   |
 | errors.UnauthorizedResponseError   | 401                                | application/json                   |
+| errors.ForbiddenResponseError      | 403                                | application/json                   |
 | errors.NotFoundResponseError       | 404                                | application/json                   |
 | errors.InternalServerResponseError | 500                                | application/json                   |
 | errors.OpenRouterDefaultError      | 4XX, 5XX                           | \*/\*                              |
@@ -379,7 +382,9 @@ run();
 
 | Error Type                         | Status Code                        | Content Type                       |
 | ---------------------------------- | ---------------------------------- | ---------------------------------- |
+| errors.BadRequestResponseError     | 400                                | application/json                   |
 | errors.UnauthorizedResponseError   | 401                                | application/json                   |
+| errors.ForbiddenResponseError      | 403                                | application/json                   |
 | errors.NotFoundResponseError       | 404                                | application/json                   |
 | errors.InternalServerResponseError | 500                                | application/json                   |
 | errors.OpenRouterDefaultError      | 4XX, 5XX                           | \*/\*                              |
@@ -474,6 +479,7 @@ run();
 | ---------------------------------- | ---------------------------------- | ---------------------------------- |
 | errors.BadRequestResponseError     | 400                                | application/json                   |
 | errors.UnauthorizedResponseError   | 401                                | application/json                   |
+| errors.ForbiddenResponseError      | 403                                | application/json                   |
 | errors.NotFoundResponseError       | 404                                | application/json                   |
 | errors.InternalServerResponseError | 500                                | application/json                   |
 | errors.OpenRouterDefaultError      | 4XX, 5XX                           | \*/\*                              |
@@ -558,7 +564,9 @@ run();
 
 | Error Type                         | Status Code                        | Content Type                       |
 | ---------------------------------- | ---------------------------------- | ---------------------------------- |
+| errors.BadRequestResponseError     | 400                                | application/json                   |
 | errors.UnauthorizedResponseError   | 401                                | application/json                   |
+| errors.ForbiddenResponseError      | 403                                | application/json                   |
 | errors.NotFoundResponseError       | 404                                | application/json                   |
 | errors.InternalServerResponseError | 500                                | application/json                   |
 | errors.OpenRouterDefaultError      | 4XX, 5XX                           | \*/\*                              |
@@ -651,6 +659,7 @@ run();
 | ---------------------------------- | ---------------------------------- | ---------------------------------- |
 | errors.BadRequestResponseError     | 400                                | application/json                   |
 | errors.UnauthorizedResponseError   | 401                                | application/json                   |
+| errors.ForbiddenResponseError      | 403                                | application/json                   |
 | errors.NotFoundResponseError       | 404                                | application/json                   |
 | errors.InternalServerResponseError | 500                                | application/json                   |
 | errors.OpenRouterDefaultError      | 4XX, 5XX                           | \*/\*                              |
@@ -743,6 +752,7 @@ run();
 | ---------------------------------- | ---------------------------------- | ---------------------------------- |
 | errors.BadRequestResponseError     | 400                                | application/json                   |
 | errors.UnauthorizedResponseError   | 401                                | application/json                   |
+| errors.ForbiddenResponseError      | 403                                | application/json                   |
 | errors.NotFoundResponseError       | 404                                | application/json                   |
 | errors.InternalServerResponseError | 500                                | application/json                   |
 | errors.OpenRouterDefaultError      | 4XX, 5XX                           | \*/\*                              |
@@ -827,7 +837,9 @@ run();
 
 | Error Type                         | Status Code                        | Content Type                       |
 | ---------------------------------- | ---------------------------------- | ---------------------------------- |
+| errors.BadRequestResponseError     | 400                                | application/json                   |
 | errors.UnauthorizedResponseError   | 401                                | application/json                   |
+| errors.ForbiddenResponseError      | 403                                | application/json                   |
 | errors.NotFoundResponseError       | 404                                | application/json                   |
 | errors.InternalServerResponseError | 500                                | application/json                   |
 | errors.OpenRouterDefaultError      | 4XX, 5XX                           | \*/\*                              |
@@ -922,6 +934,7 @@ run();
 | ---------------------------------- | ---------------------------------- | ---------------------------------- |
 | errors.BadRequestResponseError     | 400                                | application/json                   |
 | errors.UnauthorizedResponseError   | 401                                | application/json                   |
+| errors.ForbiddenResponseError      | 403                                | application/json                   |
 | errors.NotFoundResponseError       | 404                                | application/json                   |
 | errors.InternalServerResponseError | 500                                | application/json                   |
 | errors.OpenRouterDefaultError      | 4XX, 5XX                           | \*/\*                              |
@@ -1016,6 +1029,7 @@ run();
 | ---------------------------------- | ---------------------------------- | ---------------------------------- |
 | errors.BadRequestResponseError     | 400                                | application/json                   |
 | errors.UnauthorizedResponseError   | 401                                | application/json                   |
+| errors.ForbiddenResponseError      | 403                                | application/json                   |
 | errors.NotFoundResponseError       | 404                                | application/json                   |
 | errors.InternalServerResponseError | 500                                | application/json                   |
 | errors.OpenRouterDefaultError      | 4XX, 5XX                           | \*/\*                              |
@@ -1096,7 +1110,9 @@ run();
 
 | Error Type                         | Status Code                        | Content Type                       |
 | ---------------------------------- | ---------------------------------- | ---------------------------------- |
+| errors.BadRequestResponseError     | 400                                | application/json                   |
 | errors.UnauthorizedResponseError   | 401                                | application/json                   |
+| errors.ForbiddenResponseError      | 403                                | application/json                   |
 | errors.InternalServerResponseError | 500                                | application/json                   |
 | errors.OpenRouterDefaultError      | 4XX, 5XX                           | \*/\*                              |
 
@@ -1176,6 +1192,8 @@ run();
 
 | Error Type                         | Status Code                        | Content Type                       |
 | ---------------------------------- | ---------------------------------- | ---------------------------------- |
+| errors.BadRequestResponseError     | 400                                | application/json                   |
 | errors.UnauthorizedResponseError   | 401                                | application/json                   |
+| errors.ForbiddenResponseError      | 403                                | application/json                   |
 | errors.InternalServerResponseError | 500                                | application/json                   |
 | errors.OpenRouterDefaultError      | 4XX, 5XX                           | \*/\*                              |
