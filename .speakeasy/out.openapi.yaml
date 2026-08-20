@@ -26963,7 +26963,7 @@ paths:
           description: 'Internal Server Error - Unexpected server error'
       summary: 'Get available analytics metrics and dimensions'
       tags:
-        - 'beta.Analytics'
+        - 'Analytics'
     parameters:
       - $ref: "#/components/parameters/AppIdentifier"
       - $ref: "#/components/parameters/AppDisplayName"
@@ -27246,7 +27246,7 @@ paths:
           description: 'Internal Server Error - Unexpected server error'
       summary: 'Query analytics data'
       tags:
-        - 'beta.Analytics'
+        - 'Analytics'
     parameters:
       - $ref: "#/components/parameters/AppIdentifier"
       - $ref: "#/components/parameters/AppDisplayName"
@@ -39499,8 +39499,6 @@ tags:
     name: 'Video Generation'
   - description: 'Workspaces endpoints'
     name: 'Workspaces'
-  - description: 'beta.Analytics endpoints'
-    name: 'beta.Analytics'
   - name: beta.responses
     description: 'Deprecated alias of responses. Use responses instead; scheduled for removal (sunset date TBD).'
 x-retry-strategy:
