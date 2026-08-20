@@ -125,6 +125,7 @@ async function $do(
     "limit": payload?.limit,
     "order": payload?.order,
     "provider": payload?.provider,
+    "session_id": payload?.session_id,
     "workspace_id": payload?.workspace_id,
   });
 

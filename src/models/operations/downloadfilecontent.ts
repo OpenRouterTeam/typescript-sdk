@@ -58,6 +58,10 @@ export type DownloadFileContentRequest = {
    * Store or read this file on the named provider using your own API key for it. Omit to use OpenRouter storage.
    */
   provider?: models.FileProvider | undefined;
+  /**
+   * Scope the operation to files created by server-side tool sandboxes (openrouter:shell / openrouter:bash) during this session, instead of uploaded documents. Pass the same session_id used on the inference request.
+   */
+  sessionId?: string | undefined;
 };
 
 /** @internal */
@@ -68,6 +72,7 @@ export type DownloadFileContentRequest$Outbound = {
   file_id: string;
   workspace_id?: string | undefined;
   provider?: string | undefined;
+  session_id?: string | undefined;
 };
 
 /** @internal */
@@ -81,11 +86,13 @@ export const DownloadFileContentRequest$outboundSchema: z.ZodType<
   fileId: z.string(),
   workspaceId: z.string().optional(),
   provider: models.FileProvider$outboundSchema.optional(),
+  sessionId: z.string().optional(),
 }).transform((v) => {
   return remap$(v, {
     httpReferer: "HTTP-Referer",
     fileId: "file_id",
     workspaceId: "workspace_id",
+    sessionId: "session_id",
   });
 });
 
