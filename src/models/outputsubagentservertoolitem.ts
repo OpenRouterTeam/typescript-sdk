@@ -10,10 +10,10 @@ import { ClosedEnum } from "../types/enums.js";
 import { Result as SafeParseResult } from "../types/fp.js";
 import { SDKValidationError } from "./errors/sdkvalidationerror.js";
 import {
-  FailableToolCallStatus,
-  FailableToolCallStatus$inboundSchema,
-  FailableToolCallStatus$outboundSchema,
-} from "./failabletoolcallstatus.js";
+  ToolCallStatus,
+  ToolCallStatus$inboundSchema,
+  ToolCallStatus$outboundSchema,
+} from "./toolcallstatus.js";
 
 export const OutputSubagentServerToolItemType = {
   OpenrouterSubagent: "openrouter:subagent",
@@ -31,7 +31,7 @@ export type OutputSubagentServerToolItem = {
    */
   callId?: string | undefined;
   /**
-   * Error message when the subagent task did not produce an outcome. Set together with `status: 'failed'` on the terminal item.
+   * Error message when the subagent task did not produce an outcome.
    */
   error?: string | undefined;
   id?: string | undefined;
@@ -51,7 +51,7 @@ export type OutputSubagentServerToolItem = {
    * The worker model's result (the outcome text returned to the delegating model).
    */
   outcome?: string | undefined;
-  status: FailableToolCallStatus;
+  status: ToolCallStatus;
   /**
    * The task description the delegating model sent to the worker.
    */
@@ -84,7 +84,7 @@ export const OutputSubagentServerToolItem$inboundSchema: z.ZodType<
   model: z.string().optional(),
   name: z.string().optional(),
   outcome: z.string().optional(),
-  status: FailableToolCallStatus$inboundSchema,
+  status: ToolCallStatus$inboundSchema,
   task_description: z.string().optional(),
   task_name: z.string().optional(),
   type: OutputSubagentServerToolItemType$inboundSchema,
@@ -123,7 +123,7 @@ export const OutputSubagentServerToolItem$outboundSchema: z.ZodType<
   model: z.string().optional(),
   name: z.string().optional(),
   outcome: z.string().optional(),
-  status: FailableToolCallStatus$outboundSchema,
+  status: ToolCallStatus$outboundSchema,
   taskDescription: z.string().optional(),
   taskName: z.string().optional(),
   type: OutputSubagentServerToolItemType$outboundSchema,
