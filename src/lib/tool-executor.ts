@@ -1,3 +1,4 @@
+import type { StandardJSONSchemaV1, StandardSchemaV1 } from '@standard-schema/spec';
 import type { $ZodType } from 'zod/v4/core';
 import type { $ZodObject, $ZodShape } from 'zod/v4/core';
 import type {
@@ -7,6 +8,8 @@ import type {
   ToolExecutionResult,
   TurnContext,
   ToolExecuteContext,
+  ToolSchema,
+  InferSchemaOutput,
 } from './tool-types.js';
 
 import * as z4 from 'zod/v4';
@@ -15,6 +18,32 @@ import { type ToolContextStore, buildToolExecuteContext } from './tool-context.j
 
 // Re-export ZodError for convenience
 export const ZodError = z4.ZodError;
+
+export interface StandardSchemaIssue {
+  readonly message: string;
+  readonly path: (string | number)[];
+}
+
+export class StandardSchemaError extends Error {
+  readonly issues: StandardSchemaIssue[];
+
+  constructor(issues: ReadonlyArray<StandardSchemaV1.Issue>) {
+    const normalized = issues.map((issue) => ({
+      message: issue.message,
+      path: (issue.path ?? []).map((segment) => {
+        const key =
+          typeof segment === 'object' && segment !== null && 'key' in segment
+            ? segment.key
+            : segment;
+        // Symbols are legal PropertyKeys but break JSON.stringify and join('.')
+        return typeof key === 'symbol' ? key.toString() : key;
+      }),
+    }));
+    super(JSON.stringify(normalized));
+    this.name = 'StandardSchemaError';
+    this.issues = normalized;
+  }
+}
 
 /**
  * Typeguard to check if a value is a non-null object (not an array).
@@ -73,6 +102,28 @@ function isZodSchema(value: unknown): value is z4.ZodType {
   return typeof value._zod === 'object';
 }
 
+function isStandardSchema(value: unknown): value is StandardSchemaV1 {
+  if (typeof value !== 'object' || value === null || !('~standard' in value)) {
+    return false;
+  }
+  const standard = value['~standard'] as {
+    version?: unknown;
+    validate?: unknown;
+  };
+  return standard.version === 1 && typeof standard.validate === 'function';
+}
+
+function isStandardJsonSchema(value: unknown): value is StandardJSONSchemaV1 {
+  if (typeof value !== 'object' || value === null || !('~standard' in value)) {
+    return false;
+  }
+  const standard = value['~standard'] as {
+    version?: unknown;
+    jsonSchema?: { input?: unknown };
+  };
+  return standard.version === 1 && typeof standard.jsonSchema?.input === 'function';
+}
+
 /**
  * Convert a Zod schema to JSON Schema using Zod v4's toJSONSchema function.
  * Accepts ZodType from the main zod package for user compatibility.
@@ -97,38 +148,98 @@ export function convertZodToJsonSchema(zodSchema: $ZodType): Record<string, unkn
  * Accepts readonly arrays for better type compatibility
  */
 export function convertToolsToAPIFormat(tools: readonly Tool[]): APITool[] {
-  return tools.map((tool) => ({
-    type: 'function' as const,
-    name: tool.function.name,
-    description: tool.function.description || null,
-    strict: null,
-    parameters: convertZodToJsonSchema(tool.function.inputSchema),
-  }));
+  return tools.map((tool) => {
+    let parameters: Record<string, unknown> | undefined;
+
+    // An explicit inputJsonSchema is the escape hatch and always wins,
+    // including over the Zod fast path.
+    if (tool.function.inputJsonSchema) {
+      parameters = tool.function.inputJsonSchema;
+    } else if (isZodSchema(tool.function.inputSchema)) {
+      parameters = convertZodToJsonSchema(tool.function.inputSchema);
+    } else if (isStandardJsonSchema(tool.function.inputSchema)) {
+      try {
+        parameters = tool.function.inputSchema['~standard'].jsonSchema.input({
+          target: 'draft-07',
+        });
+      } catch {
+        // Fall through to the explicit-schema requirement below.
+      }
+    }
+
+    if (!parameters) {
+      throw new Error(
+        `Tool "${tool.function.name}" inputSchema must implement StandardJSONSchemaV1 or provide inputJsonSchema`,
+      );
+    }
+
+    return {
+      type: 'function' as const,
+      name: tool.function.name,
+      description: tool.function.description || null,
+      strict: null,
+      parameters: sanitizeJsonSchema(parameters),
+    };
+  });
 }
 
 /**
  * Validate tool input against Zod schema
  * @throws ZodError if validation fails
  */
-export function validateToolInput<T>(schema: $ZodType<T>, args: unknown): T {
-  return z4.parse(schema, args);
+function validateSchema<T extends ToolSchema>(
+  schema: T,
+  value: unknown,
+): InferSchemaOutput<T> | Promise<InferSchemaOutput<T>> {
+  if (isZodSchema(schema)) {
+    return z4.parse(schema, value) as InferSchemaOutput<T>;
+  }
+  if (!isStandardSchema(schema)) {
+    throw new Error('Invalid tool schema provided');
+  }
+
+  return Promise.resolve(schema['~standard'].validate(value)).then((result) => {
+    if (result.issues) {
+      throw new StandardSchemaError(result.issues);
+    }
+    return result.value as InferSchemaOutput<T>;
+  });
 }
 
-/**
- * Validate tool output against Zod schema
- * @throws ZodError if validation fails
- */
-export function validateToolOutput<T>(schema: $ZodType<T>, result: unknown): T {
-  return z4.parse(schema, result);
+/** Validate tool input against its schema. Zod validation remains synchronous. */
+export function validateToolInput<T>(schema: $ZodType<T>, args: unknown): T;
+export function validateToolInput<T extends StandardSchemaV1>(
+  schema: T,
+  args: unknown,
+): Promise<StandardSchemaV1.InferOutput<T>>;
+export function validateToolInput<T extends ToolSchema>(
+  schema: T,
+  args: unknown,
+): InferSchemaOutput<T> | Promise<InferSchemaOutput<T>> {
+  return validateSchema(schema, args);
 }
 
-/**
- * Try to validate a value against a Zod schema without throwing
- * @returns true if validation succeeds, false otherwise
- */
-function tryValidate(schema: $ZodType, value: unknown): boolean {
-  const result = z4.safeParse(schema, value);
-  return result.success;
+/** Validate tool output against its schema. Zod validation remains synchronous. */
+export function validateToolOutput<T>(schema: $ZodType<T>, result: unknown): T;
+export function validateToolOutput<T extends StandardSchemaV1>(
+  schema: T,
+  result: unknown,
+): Promise<StandardSchemaV1.InferOutput<T>>;
+export function validateToolOutput<T extends ToolSchema>(
+  schema: T,
+  result: unknown,
+): InferSchemaOutput<T> | Promise<InferSchemaOutput<T>> {
+  return validateSchema(schema, result);
+}
+
+/** Try to validate a value against a schema without throwing. */
+async function tryValidate(schema: ToolSchema, value: unknown): Promise<boolean> {
+  try {
+    await validateSchema(schema, value);
+    return true;
+  } catch {
+    return false;
+  }
 }
 
 /**
@@ -187,7 +298,7 @@ export async function executeRegularTool(
   }
 
   try {
-    const validatedInput = validateToolInput(tool.function.inputSchema, toolCall.arguments);
+    const validatedInput = await validateToolInput(tool.function.inputSchema, toolCall.arguments);
     const executeContext = buildExecuteCtx(tool, context, contextStore, sharedSchema);
 
     // Execute tool with context
@@ -195,7 +306,7 @@ export async function executeRegularTool(
 
     // Validate output if schema is provided
     if (tool.function.outputSchema) {
-      const validatedOutput = validateToolOutput(tool.function.outputSchema, result);
+      const validatedOutput = await validateToolOutput(tool.function.outputSchema, result);
 
       return {
         toolCallId: toolCall.id,
@@ -238,7 +349,7 @@ export async function executeGeneratorTool(
   }
 
   try {
-    const validatedInput = validateToolInput(tool.function.inputSchema, toolCall.arguments);
+    const validatedInput = await validateToolInput(tool.function.inputSchema, toolCall.arguments);
     const executeContext = buildExecuteCtx(tool, context, contextStore, sharedSchema);
 
     const preliminaryResults: unknown[] = [];
@@ -255,14 +366,14 @@ export async function executeGeneratorTool(
       lastEmittedValue = event;
       hasEmittedValue = true;
 
-      const matchesOutputSchema = tryValidate(tool.function.outputSchema, event);
-      const matchesEventSchema = tryValidate(tool.function.eventSchema, event);
+      const matchesOutputSchema = await tryValidate(tool.function.outputSchema, event);
+      const matchesEventSchema = await tryValidate(tool.function.eventSchema, event);
 
       if (matchesOutputSchema && !matchesEventSchema && !hasFinalResult) {
-        finalResult = validateToolOutput(tool.function.outputSchema, event);
+        finalResult = await validateToolOutput(tool.function.outputSchema, event);
         hasFinalResult = true;
       } else {
-        const validatedPreliminary = validateToolOutput(tool.function.eventSchema, event);
+        const validatedPreliminary = await validateToolOutput(tool.function.eventSchema, event);
         preliminaryResults.push(validatedPreliminary);
         if (onPreliminaryResult) {
           onPreliminaryResult(toolCall.id, validatedPreliminary);
@@ -273,7 +384,7 @@ export async function executeGeneratorTool(
     }
 
     if (iterResult.value !== undefined) {
-      finalResult = validateToolOutput(tool.function.outputSchema, iterResult.value);
+      finalResult = await validateToolOutput(tool.function.outputSchema, iterResult.value);
       hasFinalResult = true;
     }
 
@@ -283,7 +394,7 @@ export async function executeGeneratorTool(
           `Generator tool "${toolCall.name}" completed without emitting any values or returning a result`,
         );
       }
-      finalResult = validateToolOutput(tool.function.outputSchema, lastEmittedValue);
+      finalResult = await validateToolOutput(tool.function.outputSchema, lastEmittedValue);
     }
 
     return {
@@ -351,6 +462,15 @@ export function formatToolResultForModel(result: ToolExecutionResult<Tool>): str
  */
 export function formatToolExecutionError(error: Error, toolCall: ParsedToolCall<Tool>): string {
   if (error instanceof ZodError) {
+    const issues = error.issues.map((issue) => ({
+      path: issue.path.join('.'),
+      message: issue.message,
+    }));
+
+    return `Tool "${toolCall.name}" validation error:\n${JSON.stringify(issues, null, 2)}`;
+  }
+
+  if (error instanceof StandardSchemaError) {
     const issues = error.issues.map((issue) => ({
       path: issue.path.join('.'),
       message: issue.message,
