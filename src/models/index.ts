@@ -329,6 +329,7 @@ export * from "./messagesoutputconfig.js";
 export * from "./messagesrequest.js";
 export * from "./messagessearchmodelsservertool.js";
 export * from "./messagesshelltoolresultblock.js";
+export * from "./messagessubagenttoolresultblock.js";
 export * from "./messagestooladditionblock.js";
 export * from "./messagestoolremovalblock.js";
 export * from "./metadatalevel.js";
