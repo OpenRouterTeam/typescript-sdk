@@ -6,10 +6,6 @@
 import * as z from "zod/v4";
 import { remap as remap$ } from "../lib/primitives.js";
 import { ClosedEnum } from "../types/enums.js";
-import {
-  ToolCallStatus,
-  ToolCallStatus$outboundSchema,
-} from "./toolcallstatus.js";
 
 export const CustomToolCallItemType = {
   CustomToolCall: "custom_tool_call",
@@ -29,7 +25,6 @@ export type CustomToolCallItem = {
    */
   namespace?: string | undefined;
   type: CustomToolCallItemType;
-  status?: ToolCallStatus | undefined;
 };
 
 /** @internal */
@@ -45,7 +40,6 @@ export type CustomToolCallItem$Outbound = {
   name: string;
   namespace?: string | undefined;
   type: string;
-  status?: string | undefined;
 };
 
 /** @internal */
@@ -59,7 +53,6 @@ export const CustomToolCallItem$outboundSchema: z.ZodType<
   name: z.string(),
   namespace: z.string().optional(),
   type: CustomToolCallItemType$outboundSchema,
-  status: ToolCallStatus$outboundSchema.optional(),
 }).transform((v) => {
   return remap$(v, {
     callId: "call_id",
