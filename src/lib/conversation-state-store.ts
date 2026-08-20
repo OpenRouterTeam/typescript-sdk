@@ -137,6 +137,13 @@ export function createStateAccessor<TTools extends readonly Tool[] = readonly To
   return {
     load: () => store.get(id),
     save: async (state) => {
+      // Guard: never let a state document leak under a different id than the
+      // one this accessor is bound to. ModelResult creates a random-id state
+      // when load() returns null; saving it would strand the conversation.
+      if (state.id !== id) {
+        await store.put({ ...state, id });
+        return;
+      }
       await store.put(state);
     },
   };

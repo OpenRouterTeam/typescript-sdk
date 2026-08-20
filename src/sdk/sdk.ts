@@ -36,6 +36,10 @@ import {
   callModel as callModelFunc,
   type CallModelInput,
 } from "../funcs/call-model.js";
+import {
+  callModelWithState as callModelWithStateFunc,
+  type CallModelWithStateInput,
+} from "../funcs/call-model-with-state.js";
 import type { ModelResult } from "../lib/model-result.js";
 import type { RequestOptions } from "../lib/sdks.js";
 import { type Tool, ToolType } from "../lib/tool-types.js";
@@ -187,6 +191,24 @@ export class OpenRouter extends ClientSDK {
     options?: RequestOptions,
   ): ModelResult<TTools, TShared> {
     return callModelFunc(this, request, options);
+  }
+
+  /**
+   * Multi-turn variant of {@link callModel}: persists conversation state
+   * across turns via a `ConversationStateStore` keyed on `conversationId`.
+   */
+  callModelWithState<
+    TTools extends readonly Tool[],
+    TSharedSchema extends $ZodObject<$ZodShape> | undefined = undefined,
+    TShared extends Record<string, unknown> = TSharedSchema extends
+      $ZodObject<$ZodShape> ? zodInfer<TSharedSchema> : Record<string, never>,
+  >(
+    request: CallModelWithStateInput<TTools, TShared> & {
+      sharedContextSchema?: TSharedSchema;
+    },
+    options?: RequestOptions,
+  ): ModelResult<TTools, TShared> {
+    return callModelWithStateFunc(this, request, options);
   }
   // #endregion sdk-class-body
 }

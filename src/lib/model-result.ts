@@ -1039,15 +1039,17 @@ export class ModelResult<
       let baseRequest = await this.resolveRequestForContext(initialContext);
 
       // If we have state with existing messages, use those as input
+      let newTurnItems: models.BaseInputsUnion[] | null = null;
       if (this.currentState && this.currentState.messages &&
           Array.isArray(this.currentState.messages) && this.currentState.messages.length > 0) {
         // Append new input to existing messages
         const newInput = baseRequest.input;
         if (newInput) {
           const inputArray = Array.isArray(newInput) ? newInput : [newInput];
+          newTurnItems = inputArray as models.BaseInputsUnion[];
           baseRequest = {
             ...baseRequest,
-            input: appendToMessages(this.currentState.messages, inputArray as models.BaseInputsUnion[]),
+            input: appendToMessages(this.currentState.messages, newTurnItems),
           };
         } else {
           baseRequest = {
@@ -1055,6 +1057,21 @@ export class ModelResult<
             input: this.currentState.messages,
           };
         }
+      } else if (baseRequest.input) {
+        // First turn of a fresh state: the whole input is the new turn.
+        const inputArray = Array.isArray(baseRequest.input)
+          ? baseRequest.input
+          : [baseRequest.input];
+        newTurnItems = inputArray as models.BaseInputsUnion[];
+      }
+
+      // Persist the new-turn input into the stored message history so later
+      // turns can see it (the response output is appended separately once the
+      // API responds, and tool results as they execute).
+      if (this.stateAccessor && this.currentState && newTurnItems) {
+        await this.saveStateSafely({
+          messages: appendToMessages(this.currentState.messages, newTurnItems),
+        });
       }
 
       // Store resolved request with stream mode
