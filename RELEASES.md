@@ -1,5 +1,18 @@
 
 
+## 2026-08-19
+### Changes
+- Fixed graceful handling of stalled streaming responses (DEV-723): a stream
+  that stays connected but stops delivering data is now detected via a
+  per-chunk idle timer and aborted fail-fast with a typed
+  `StreamStalledError` (extends `HTTPClientError`, exposing
+  `stallTimeoutMs`/`elapsedMs`/`eventsDelivered`). The upstream connection is
+  cancelled, partial events remain valid, and no timers leak. The idle
+  threshold is configurable via the new `stallTimeoutMs` option on both the
+  SDK constructor and per-request options (default 30,000 ms; `<= 0`
+  disables). Policy is fail-fast with no automatic retry/resume; callers may
+  catch the error and re-issue the request.
+
 ## 2025-08-22 16:09:25
 ### Changes
 Based on:

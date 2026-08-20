@@ -108,6 +108,86 @@ for await (const chunk of result) {
 
 <!-- No Custom HTTP Client [http-client] -->
 
+<!-- Start Streaming stall detection [stream-stall] -->
+## Streaming stall detection
+
+Streaming responses (e.g. `stream: true` on `chat.send` / `responses.send`) are
+protected against **stalled streams**: a connection that stays open at the TCP
+level but stops delivering data. Before this feature, a silent stall could hang
+a `for await...of` loop forever.
+
+### What is a stalled stream?
+
+A stream is considered stalled when no bytes arrive within a configurable idle
+window. The timer resets on **every received chunk** — including SSE keep-alive
+comments — so slow-but-active streams are never aborted; only streams that go
+completely silent are. Partial events already delivered to the consumer remain
+valid.
+
+### The `StreamStalledError`
+
+When a stall is detected, the SDK aborts the stream, cancels the upstream
+connection, and raises a typed error:
+
+```typescript
+import { OpenRouter, StreamStalledError } from "@openrouter/sdk";
+
+const openRouter = new OpenRouter();
+
+try {
+  const result = await openRouter.chat.send({
+    model: "openai/gpt-5",
+    messages: [{ role: "user", content: "Hello" }],
+    stream: true,
+  });
+  for await (const chunk of result) {
+    process.stdout.write(chunk.choices[0]?.delta?.content ?? "");
+  }
+} catch (err) {
+  if (err instanceof StreamStalledError) {
+    console.error(
+      `Stream stalled after ${err.elapsedMs}ms ` +
+        `(idle limit ${err.stallTimeoutMs}ms, ` +
+        `${err.eventsDelivered} events delivered before the stall).`,
+    );
+    // Re-issue the request here if you want to resume.
+  }
+}
+```
+
+`StreamStalledError` extends `HTTPClientError` and exposes:
+
+- `stallTimeoutMs` — the idle window that elapsed without bytes, in ms
+- `elapsedMs` — total stream lifetime before the stall, in ms
+- `eventsDelivered` — events already delivered to the consumer
+
+It is deliberately **not** classified as a request timeout or connection error
+(the response had already started), so `isTimeoutError` / `isConnectionError`
+do not match it.
+
+### Policy: fail-fast, no automatic retry
+
+The SDK fails fast on a stall: it does **not** automatically retry or resume
+the stream. If you want to resume, catch `StreamStalledError` and re-issue the
+request yourself.
+
+### Configuring the stall threshold
+
+Use the `stallTimeoutMs` option (default: **30,000 ms**; set to `<= 0` to
+disable stall detection):
+
+```typescript
+// Client-wide default
+const openRouter = new OpenRouter({ stallTimeoutMs: 60_000 });
+
+// Per-request override
+await openRouter.chat.send(
+  { model: "openai/gpt-5", messages, stream: true },
+  { stallTimeoutMs: 10_000 },
+);
+```
+<!-- End Streaming stall detection [stream-stall] -->
+
 <!-- Start Pagination [pagination] -->
 ## Pagination
 
