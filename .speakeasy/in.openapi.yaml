@@ -26748,7 +26748,7 @@ paths:
           description: 'Internal Server Error - Unexpected server error'
       summary: 'Get available analytics metrics and dimensions'
       tags:
-        - 'beta.Analytics'
+        - 'Analytics'
   /analytics/query:
     post:
       description: 'Execute an analytics query with specified metrics, dimensions, filters, and time range. [Management key](/docs/guides/overview/auth/management-api-keys) required.'
@@ -27026,7 +27026,7 @@ paths:
           description: 'Internal Server Error - Unexpected server error'
       summary: 'Query analytics data'
       tags:
-        - 'beta.Analytics'
+        - 'Analytics'
   /audio/speech:
     post:
       description: 'Synthesizes audio from the input text. Returns a raw audio bytestream in the requested format (e.g. mp3, pcm, wav).'
@@ -38983,8 +38983,6 @@ tags:
     name: 'Video Generation'
   - description: 'Workspaces endpoints'
     name: 'Workspaces'
-  - description: 'beta.Analytics endpoints'
-    name: 'beta.Analytics'
 x-retry-strategy:
   initialDelay: 500
   maxAttempts: 3
