@@ -1,0 +1,27 @@
+---
+title: "SessionFile"
+---
+
+A file created by a server-side tool sandbox during a session, identified by its path within the sandbox home directory.
+
+## Example Usage
+
+```typescript
+import { SessionFile } from "@openrouter/sdk/models";
+
+let value: SessionFile = {
+  modifiedAt: "2026-08-19T00:00:00.000Z",
+  path: "reports/summary.csv",
+  sizeBytes: 2048,
+  type: "session_file",
+};
+```
+
+## Fields
+
+| Field                                                  | Type                                                   | Required                                               | Description                                            |
+| ------------------------------------------------------ | ------------------------------------------------------ | ------------------------------------------------------ | ------------------------------------------------------ |
+| `modifiedAt`                                           | *string*                                               | :heavy_check_mark:                                     | N/A                                                    |
+| `path`                                                 | *string*                                               | :heavy_check_mark:                                     | N/A                                                    |
+| `sizeBytes`                                            | *number*                                               | :heavy_check_mark:                                     | N/A                                                    |
+| `type`                                                 | [models.SessionFileType](../models/sessionfiletype.mdx) | :heavy_check_mark:                                     | N/A                                                    |

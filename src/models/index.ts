@@ -509,6 +509,8 @@ export * from "./serviceunavailableresponseerrordata.js";
 export * from "./sessioncostitem.js";
 export * from "./sessioncostmeta.js";
 export * from "./sessioncostresponse.js";
+export * from "./sessionfile.js";
+export * from "./sessionfilelist.js";
 export * from "./shellcallitem.js";
 export * from "./shellcalloutputcontent.js";
 export * from "./shellcalloutputitem.js";

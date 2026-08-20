@@ -71,6 +71,10 @@ export type ListFilesRequest = {
    */
   limit?: number | undefined;
   /**
+   * List files created by server-side tool sandboxes (openrouter:shell / openrouter:bash) during this session, instead of uploaded documents. Pass the same session_id used on the inference request.
+   */
+  sessionId?: string | undefined;
+  /**
    * Opaque pagination cursor from a previous response.
    */
   cursor?: string | undefined;
@@ -114,6 +118,7 @@ export type ListFilesRequest$Outbound = {
   appTitle?: string | undefined;
   appCategories?: string | undefined;
   limit?: number | undefined;
+  session_id?: string | undefined;
   cursor?: string | undefined;
   workspace_id?: string | undefined;
   provider?: string | undefined;
@@ -132,6 +137,7 @@ export const ListFilesRequest$outboundSchema: z.ZodType<
   appTitle: z.string().optional(),
   appCategories: z.string().optional(),
   limit: z.int().optional(),
+  sessionId: z.string().optional(),
   cursor: z.string().optional(),
   workspaceId: z.string().optional(),
   provider: models.FileProvider$outboundSchema.optional(),
@@ -142,6 +148,7 @@ export const ListFilesRequest$outboundSchema: z.ZodType<
 }).transform((v) => {
   return remap$(v, {
     httpReferer: "HTTP-Referer",
+    sessionId: "session_id",
     workspaceId: "workspace_id",
     afterId: "after_id",
     beforeId: "before_id",

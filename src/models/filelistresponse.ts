@@ -21,6 +21,10 @@ import {
   OpenRouterFileList,
   OpenRouterFileList$inboundSchema,
 } from "./openrouterfilelist.js";
+import {
+  SessionFileList,
+  SessionFileList$inboundSchema,
+} from "./sessionfilelist.js";
 
 /**
  * A page of files, in the negotiated shape.
@@ -29,6 +33,7 @@ export type FileListResponse =
   | AnthropicFileList
   | OpenAIFileList
   | OpenRouterFileList
+  | SessionFileList
   | discriminatedUnionTypes.Unknown<"shape">;
 
 /** @internal */
@@ -39,6 +44,7 @@ export const FileListResponse$inboundSchema: z.ZodType<
   anthropic: AnthropicFileList$inboundSchema,
   openai: OpenAIFileList$inboundSchema,
   openrouter: OpenRouterFileList$inboundSchema,
+  session: SessionFileList$inboundSchema,
 }, { outputPropertyName: "shape" });
 
 export function fileListResponseFromJSON(
