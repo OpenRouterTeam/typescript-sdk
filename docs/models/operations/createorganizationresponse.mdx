@@ -1,0 +1,35 @@
+---
+title: "CreateOrganizationResponse"
+---
+
+Organization created or returned from an idempotent replay
+
+## Example Usage
+
+```typescript
+import { CreateOrganizationResponse } from "@openrouter/sdk/models/operations";
+
+let value: CreateOrganizationResponse = {
+  created: false,
+  grant: {
+    id: "<id>",
+    scopes: [
+      "organization_members_write",
+    ],
+  },
+  organization: {
+    email: "Magali_Schiller@yahoo.com",
+    id: "<id>",
+    name: "<value>",
+    slug: "<value>",
+  },
+};
+```
+
+## Fields
+
+| Field                                                              | Type                                                               | Required                                                           | Description                                                        |
+| ------------------------------------------------------------------ | ------------------------------------------------------------------ | ------------------------------------------------------------------ | ------------------------------------------------------------------ |
+| `created`                                                          | *boolean*                                                          | :heavy_check_mark:                                                 | N/A                                                                |
+| `grant`                                                            | [operations.Grant](../../models/operations/grant.mdx)               | :heavy_check_mark:                                                 | N/A                                                                |
+| `organization`                                                     | [operations.Organization](../../models/operations/organization.mdx) | :heavy_check_mark:                                                 | N/A                                                                |
