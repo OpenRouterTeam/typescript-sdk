@@ -23,6 +23,7 @@ import { Models } from "./models.js";
 import { OAuth } from "./oauth.js";
 import { Observability } from "./observability.js";
 import { Organization } from "./organization.js";
+import { Orgs } from "./orgs.js";
 import { Presets } from "./presets.js";
 import { Providers } from "./providers.js";
 import { Rerank } from "./rerank.js";
@@ -49,6 +50,11 @@ export class OpenRouter extends ClientSDK {
   private _analytics?: Analytics;
   get analytics(): Analytics {
     return (this._analytics ??= new Analytics(this._options));
+  }
+
+  private _beta?: Beta;
+  get beta(): Beta {
+    return (this._beta ??= new Beta(this._options));
   }
 
   private _tts?: TTS;
@@ -141,6 +147,11 @@ export class OpenRouter extends ClientSDK {
     return (this._observability ??= new Observability(this._options));
   }
 
+  private _orgs?: Orgs;
+  get orgs(): Orgs {
+    return (this._orgs ??= new Orgs(this._options));
+  }
+
   private _organization?: Organization;
   get organization(): Organization {
     return (this._organization ??= new Organization(this._options));
@@ -164,11 +175,6 @@ export class OpenRouter extends ClientSDK {
   private _responses?: Responses;
   get responses(): Responses {
     return (this._responses ??= new Responses(this._options));
-  }
-
-  private _beta?: Beta;
-  get beta(): Beta {
-    return (this._beta ??= new Beta(this._options));
   }
 
   private _scim?: Scim;
