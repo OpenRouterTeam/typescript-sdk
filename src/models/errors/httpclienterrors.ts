@@ -61,3 +61,39 @@ export class RequestTimeoutError extends HTTPClientError {
 export class ConnectionError extends HTTPClientError {
   override readonly name = "ConnectionError";
 }
+
+/**
+ * An error raised when a streaming response stalls: no bytes or events arrive
+ * within the configured stall window after the response headers were
+ * received.
+ *
+ * This is deliberately NOT classified as a request timeout or connection
+ * error: the response had already started, retry heuristics for pre-header
+ * failures do not apply, and the SDK's policy is fail-fast (no automatic
+ * retry or resume). Callers that want to resume should catch this error
+ * and re-issue the request themselves.
+ */
+export class StreamStalledError extends HTTPClientError {
+  override readonly name = "StreamStalledError";
+  /** The idle window that elapsed without any bytes, in ms. */
+  readonly stallTimeoutMs: number;
+  /** Milliseconds since the stream opened (total stream lifetime so far). */
+  readonly elapsedMs: number;
+  /** Events already delivered to the consumer before the stall. */
+  readonly eventsDelivered: number;
+
+  constructor(
+    message: string,
+    opts: {
+      stallTimeoutMs: number;
+      elapsedMs: number;
+      eventsDelivered: number;
+      cause?: unknown;
+    },
+  ) {
+    super(message, opts);
+    this.stallTimeoutMs = opts.stallTimeoutMs;
+    this.elapsedMs = opts.elapsedMs;
+    this.eventsDelivered = opts.eventsDelivered;
+  }
+}

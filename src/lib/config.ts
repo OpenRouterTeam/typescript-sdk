@@ -57,8 +57,24 @@ export type SDKOptions = {
    */
   retryConfig?: RetryConfig;
   timeoutMs?: number;
+  /**
+   * Maximum idle time, in milliseconds, between chunks of a streaming
+   * response before the stream is aborted with a `StreamStalledError`.
+   * Counts idle time between received bytes (including SSE keep-alive
+   * comments), not total stream lifetime, and resets on every chunk.
+   * Defaults to `DEFAULT_STALL_TIMEOUT_MS` (30,000 ms). Set to a value
+   * less than or equal to 0 to disable stall detection.
+   */
+  stallTimeoutMs?: number;
   debugLogger?: Logger;
 };
+
+/**
+ * Default idle window, in milliseconds, allowed between chunks of a
+ * streaming response before the stream is aborted with a
+ * `StreamStalledError` (see `SDKOptions.stallTimeoutMs`).
+ */
+export const DEFAULT_STALL_TIMEOUT_MS = 30_000;
 
 export function serverURLFromOptions(options: SDKOptions): URL | null {
   let serverURL = options.serverURL;

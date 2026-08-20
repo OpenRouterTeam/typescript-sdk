@@ -17,17 +17,53 @@ declare global {
   }
 }
 
+import { StreamStalledError } from "../models/errors/httpclienterrors.js";
+import { DEFAULT_STALL_TIMEOUT_MS } from "./config.js";
+
 export type SseMessage<T> = {
   data?: T | undefined;
   event?: string | null | undefined;
   id?: string | null | undefined;
   retry?: number | null | undefined;
 };
+
+export type EventStreamOptions = {
+  dataRequired?: boolean;
+  /**
+   * Maximum idle time, in milliseconds, allowed between chunks of the
+   * underlying response body before the stream fails with a
+   * `StreamStalledError`. A value <= 0 disables stall detection for this
+   * stream. When omitted, the value set via `setEventStreamStallTimeout`
+   * (wired from `SDKOptions.stallTimeoutMs` at client init) is used,
+   * falling back to `DEFAULT_STALL_TIMEOUT_MS`.
+   */
+  stallTimeoutMs?: number;
+};
+
+/**
+ * Module-level fallback stall window used when no per-stream
+ * `EventStreamOptions.stallTimeoutMs` is provided. Wired from
+ * `SDKOptions.stallTimeoutMs` by `ClientSDK` at client construction via
+ * `setEventStreamStallTimeout`. Pass `undefined` to reset to the default.
+ * @internal
+ */
+let eventStreamStallTimeoutMs: number | undefined;
+
+/** @internal */
+export function setEventStreamStallTimeout(value: number | undefined): void {
+  eventStreamStallTimeoutMs = value;
+}
+
 export class EventStream<T> extends ReadableStream<T> {
+  // Assigned after `super()` to the constructor-scoped ref that the stall
+  // timer resolves through, so per-read resolution sees live overrides
+  // (`setStallTimeoutMs`) and the client-level fallback wired by ClientSDK.
+  #stallOverrideRef!: { value: number | undefined };
+
   constructor(
     responseBody: ReadableStream<Uint8Array>,
     parse: (x: SseMessage<string>) => IteratorResult<T, undefined>,
-    opts?: { dataRequired?: boolean },
+    opts?: EventStreamOptions,
   ) {
     const upstream = responseBody.getReader();
     let buffer: Uint8Array = new Uint8Array(4096);
@@ -35,6 +71,29 @@ export class EventStream<T> extends ReadableStream<T> {
     let searchStart = 0;
     const state = { eventId: undefined as string | undefined };
     const dataRequired = opts?.dataRequired ?? true;
+    const streamStart = Date.now();
+    let eventsDelivered = 0;
+    let stallTimer: ReturnType<typeof setTimeout> | undefined;
+
+    const clearStallTimer = () => {
+      if (stallTimer !== undefined) {
+        clearTimeout(stallTimer);
+        stallTimer = undefined;
+      }
+    };
+
+    // The per-stream override lives in this object so the source callbacks
+    // and `setStallTimeoutMs` (which runs after `super()`) both see the
+    // live value. Base value from the constructor option; the client-level
+    // fallback wired by ClientSDK is read live (module-level).
+    const stallOverrideRef: { value: number | undefined } = {
+      value: opts?.stallTimeoutMs,
+    };
+    const resolveStallTimeoutMs = (): number =>
+      stallOverrideRef.value
+      ?? eventStreamStallTimeoutMs
+      ?? DEFAULT_STALL_TIMEOUT_MS;
+
     super({
       async pull(downstream) {
         try {
@@ -45,8 +104,47 @@ export class EventStream<T> extends ReadableStream<T> {
               // scanned with full lookahead and cannot start a boundary even
               // once more data arrives, so the next scan can skip them.
               searchStart = Math.max(0, bufferLen - MAX_BOUNDARY_LEN + 1);
-              const chunk = await upstream.read();
-              if (chunk.done) return downstream.close();
+
+              const stallTimeoutMs = resolveStallTimeoutMs();
+              const stallDetectionEnabled = stallTimeoutMs > 0;
+              let chunk: Awaited<ReturnType<typeof upstream.read>>;
+              if (stallDetectionEnabled) {
+                // Race the upstream read against the idle stall timer. The
+                // timer counts idle time between received bytes (including
+                // SSE keep-alive comment bytes) and resets on every chunk.
+                const stall = new Promise<never>((_, reject) => {
+                  stallTimer = setTimeout(() => {
+                    const elapsedMs = Date.now() - streamStart;
+                    reject(
+                      new StreamStalledError(
+                        `Stream stalled: no data received for ` +
+                          `${stallTimeoutMs}ms (stream open ${elapsedMs}ms, ` +
+                          `${eventsDelivered} events delivered). The ` +
+                          `connection was aborted. Retry the request to ` +
+                          `resume from scratch.`,
+                        { stallTimeoutMs, elapsedMs, eventsDelivered },
+                      ),
+                    );
+                  }, stallTimeoutMs);
+                });
+                try {
+                  chunk = await Promise.race([upstream.read(), stall]);
+                } catch (e) {
+                  clearStallTimer();
+                  // Tear down the connection on stall so the pending read
+                  // and underlying socket do not stay dangling.
+                  await upstream.cancel(e).catch(() => {});
+                  throw e;
+                }
+                clearStallTimer();
+              } else {
+                chunk = await upstream.read();
+              }
+
+              if (chunk.done) {
+                clearStallTimer();
+                return downstream.close();
+              }
               if (bufferLen + chunk.value.length > buffer.length) {
                 const grown = new Uint8Array(
                   Math.max(buffer.length * 2, bufferLen + chunk.value.length),
@@ -70,19 +168,45 @@ export class EventStream<T> extends ReadableStream<T> {
             }
             searchStart = 0;
             const item = parseMessage(message, parse, state, dataRequired);
-            if (item && !item.done) return downstream.enqueue(item.value);
+            if (item && !item.done) {
+              eventsDelivered++;
+              return downstream.enqueue(item.value);
+            }
             if (item?.done) {
+              clearStallTimer();
               await upstream.cancel("done");
               return downstream.close();
             }
           }
         } catch (e) {
+          clearStallTimer();
           downstream.error(e);
-          await upstream.cancel(e);
+          if (!(e instanceof StreamStalledError)) {
+            // Stall path already cancelled the upstream above.
+            await upstream.cancel(e);
+          }
         }
       },
-      cancel: reason => upstream.cancel(reason),
+      cancel: (reason) => {
+        clearStallTimer();
+        return upstream.cancel(reason);
+      },
     });
+
+    // Wire the post-construction override hook so `setStallTimeoutMs`
+    // writes land in the same ref the stall timer resolves through.
+    this.#stallOverrideRef = stallOverrideRef;
+  }
+
+  /**
+   * Overrides this stream's stall window after construction. Used by call
+   * sites that receive the stream from the generated operation schemas and
+   * need to apply a per-request `RequestOptions.stallTimeoutMs`. The value
+   * is consulted on every upstream read, so setting it before iteration
+   * begins is sufficient.
+   */
+  setStallTimeoutMs(value: number | undefined): void {
+    this.#stallOverrideRef.value = value;
   }
 
   // Use ReadableStream's iterator return type instead of `any` so stream events

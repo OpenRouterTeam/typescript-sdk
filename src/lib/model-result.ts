@@ -78,6 +78,26 @@ import {
 const DEFAULT_MAX_STEPS = 5;
 
 /**
+ * Applies a per-request `RequestOptions.stallTimeoutMs` override to a
+ * streaming response. `EventStream` instances are constructed inside the
+ * generated operation schemas, which have no access to `RequestOptions`,
+ * so the client-level default is wired globally by `ClientSDK`; this
+ * covers the per-request override (higher precedence) on the paths that
+ * wrap the raw `EventStream` in a `ReusableReadableStream`. Direct
+ * `EventStream` consumers relying on `RequestOptions.stallTimeoutMs` get
+ * it via the same mechanism only on paths that call this helper; the
+ * client-level default and constructor option always apply.
+ */
+function applyRequestStallTimeout(
+  stream: EventStream<unknown>,
+  options: RequestOptions | undefined,
+): void {
+  if (options?.stallTimeoutMs !== undefined) {
+    stream.setStallTimeoutMs(options.stallTimeoutMs);
+  }
+}
+
+/**
  * Type guard for stream event with toReadableStream method
  * Checks constructor name, prototype, and method availability
  */
@@ -888,6 +908,7 @@ export class ModelResult<
     // Handle streaming or non-streaming response
     const value = newResult.value;
     if (isEventStream(value)) {
+      applyRequestStallTimeout(value, this.options.options);
       const followUpStream = new ReusableReadableStream(value);
 
       if (this.turnBroadcaster) {
@@ -1080,6 +1101,7 @@ export class ModelResult<
       // Handle both streaming and non-streaming responses
       // The API may return a non-streaming response even when stream: true is requested
       if (isEventStream(apiResult.value)) {
+        applyRequestStallTimeout(apiResult.value, this.options.options);
         this.reusableStream = new ReusableReadableStream(apiResult.value);
       } else if (this.isNonStreamingResponse(apiResult.value)) {
         // API returned a complete response directly - use it as the final response
@@ -1225,6 +1247,7 @@ export class ModelResult<
 
     // Handle both streaming and non-streaming responses
     if (isEventStream(apiResult.value)) {
+      applyRequestStallTimeout(apiResult.value, this.options.options);
       this.reusableStream = new ReusableReadableStream(apiResult.value);
     } else if (this.isNonStreamingResponse(apiResult.value)) {
       this.finalResponse = apiResult.value;

@@ -28,6 +28,7 @@ import { Logger } from "./logger.js";
 import { combineSignals } from "./primitives.js";
 import { retry, RetryConfig } from "./retries.js";
 import { SecurityState } from "./security.js";
+import { setEventStreamStallTimeout } from "./event-streams.js";
 
 export type RequestOptions = {
   /**
@@ -35,6 +36,13 @@ export type RequestOptions = {
    * `fetchOptions.signal` is set then it will take precedence over this option.
    */
   timeoutMs?: number;
+  /**
+   * Maximum idle time, in milliseconds, between chunks of a streaming
+   * response before the stream is aborted with a `StreamStalledError`.
+   * Overrides `SDKOptions.stallTimeoutMs` for this request. Set to a value
+   * less than or equal to 0 to disable stall detection.
+   */
+  stallTimeoutMs?: number;
   /**
    * Set or override a retry policy on HTTP calls.
    */
@@ -110,6 +118,11 @@ export class ClientSDK {
     this.#httpClient = options.httpClient || defaultHttpClient;
 
     this._options = { ...fillGlobals(options), hooks: this.#hooks };
+
+    // Wire the client-level streaming stall window into the SSE reader as
+    // the fallback used when a request does not set its own
+    // `stallTimeoutMs`.
+    setEventStreamStallTimeout(this._options.stallTimeoutMs);
 
     this.#logger = this._options.debugLogger;
     if (!this.#logger && env().OPENROUTER_DEBUG) {
