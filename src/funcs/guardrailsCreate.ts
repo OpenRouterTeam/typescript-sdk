@@ -32,7 +32,7 @@ import { Result } from "../types/fp.js";
  * Create a guardrail
  *
  * @remarks
- * Create a new guardrail for the authenticated user. [Management key](/docs/guides/overview/auth/management-api-keys) required.
+ * Create a new guardrail for the authenticated user. A newly created guardrail enforces nothing until it is assigned to API keys or organization members; `workspace_id` places the guardrail in a workspace but does not apply it to that workspace's traffic. To restrict all traffic in a workspace, update the workspace's default guardrail instead. [Management key](/docs/guides/overview/auth/management-api-keys) required.
  */
 export function guardrailsCreate(
   client: OpenRouterCore,
