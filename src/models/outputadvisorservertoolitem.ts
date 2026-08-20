@@ -10,10 +10,10 @@ import { ClosedEnum } from "../types/enums.js";
 import { Result as SafeParseResult } from "../types/fp.js";
 import { SDKValidationError } from "./errors/sdkvalidationerror.js";
 import {
-  FailableToolCallStatus,
-  FailableToolCallStatus$inboundSchema,
-  FailableToolCallStatus$outboundSchema,
-} from "./failabletoolcallstatus.js";
+  ToolCallStatus,
+  ToolCallStatus$inboundSchema,
+  ToolCallStatus$outboundSchema,
+} from "./toolcallstatus.js";
 
 export const OutputAdvisorServerToolItemType = {
   OpenrouterAdvisor: "openrouter:advisor",
@@ -31,7 +31,7 @@ export type OutputAdvisorServerToolItem = {
    */
   advice?: string | undefined;
   /**
-   * Error message when the advisor call did not produce advice. Set together with `status: 'failed'` on the terminal item.
+   * Error message when the advisor call did not produce advice.
    */
   error?: string | undefined;
   id?: string | undefined;
@@ -47,7 +47,7 @@ export type OutputAdvisorServerToolItem = {
    * The prompt the executor sent to the advisor.
    */
   prompt?: string | undefined;
-  status: FailableToolCallStatus;
+  status: ToolCallStatus;
   type: OutputAdvisorServerToolItemType;
 };
 
@@ -71,7 +71,7 @@ export const OutputAdvisorServerToolItem$inboundSchema: z.ZodType<
   instance_name: z.string().optional(),
   model: z.string().optional(),
   prompt: z.string().optional(),
-  status: FailableToolCallStatus$inboundSchema,
+  status: ToolCallStatus$inboundSchema,
   type: OutputAdvisorServerToolItemType$inboundSchema,
 }).transform((v) => {
   return remap$(v, {
@@ -101,7 +101,7 @@ export const OutputAdvisorServerToolItem$outboundSchema: z.ZodType<
   instanceName: z.string().optional(),
   model: z.string().optional(),
   prompt: z.string().optional(),
-  status: FailableToolCallStatus$outboundSchema,
+  status: ToolCallStatus$outboundSchema,
   type: OutputAdvisorServerToolItemType$outboundSchema,
 }).transform((v) => {
   return remap$(v, {

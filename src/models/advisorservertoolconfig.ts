@@ -6,6 +6,11 @@
 import * as z from "zod/v4";
 import { remap as remap$ } from "../lib/primitives.js";
 import {
+  AdvisorNestedTool,
+  AdvisorNestedTool$Outbound,
+  AdvisorNestedTool$outboundSchema,
+} from "./advisornestedtool.js";
+import {
   AdvisorReasoning,
   AdvisorReasoning$Outbound,
   AdvisorReasoning$outboundSchema,
@@ -28,7 +33,11 @@ export type AdvisorServerToolConfig = {
    */
   maxCompletionTokens?: number | undefined;
   /**
-   * Slug of the advisor model to consult (any OpenRouter model). When omitted, the executor can choose it via the tool call's `model` argument; if neither is set, the model from the outer API request is used.
+   * Maximum number of tool-calling steps the advisor sub-agent may take during its agentic loop. Capped at 25. Only relevant when the advisor is given tools.
+   */
+  maxToolCalls?: number | undefined;
+  /**
+   * Slug of the advisor model to consult (any OpenRouter model). When omitted, the executor can choose it via the tool call's `model` argument; if neither is set, the model from the outer API request is used. The advisor tool itself cannot be the advisor model.
    */
   model?: string | undefined;
   /**
@@ -47,6 +56,10 @@ export type AdvisorServerToolConfig = {
    * Sampling temperature forwarded to the advisor call. When omitted, the provider's default applies.
    */
   temperature?: number | undefined;
+  /**
+   * Tools the advisor sub-agent may use while forming its advice. The advisor runs as an agentic sub-agent over these tools, then returns its text. Only OpenRouter server tools are supported — function tools are rejected — and the list must not include the advisor tool itself.
+   */
+  tools?: Array<AdvisorNestedTool> | undefined;
 };
 
 /** @internal */
@@ -54,11 +67,13 @@ export type AdvisorServerToolConfig$Outbound = {
   forward_transcript?: boolean | undefined;
   instructions?: string | undefined;
   max_completion_tokens?: number | undefined;
+  max_tool_calls?: number | undefined;
   model?: string | undefined;
   name?: string | undefined;
   reasoning?: AdvisorReasoning$Outbound | undefined;
   stream?: boolean | undefined;
   temperature?: number | undefined;
+  tools?: Array<AdvisorNestedTool$Outbound> | undefined;
 };
 
 /** @internal */
@@ -69,15 +84,18 @@ export const AdvisorServerToolConfig$outboundSchema: z.ZodType<
   forwardTranscript: z.boolean().optional(),
   instructions: z.string().optional(),
   maxCompletionTokens: z.int().optional(),
+  maxToolCalls: z.int().optional(),
   model: z.string().optional(),
   name: z.string().optional(),
   reasoning: AdvisorReasoning$outboundSchema.optional(),
   stream: z.boolean().optional(),
   temperature: z.number().optional(),
+  tools: z.array(AdvisorNestedTool$outboundSchema).optional(),
 }).transform((v) => {
   return remap$(v, {
     forwardTranscript: "forward_transcript",
     maxCompletionTokens: "max_completion_tokens",
+    maxToolCalls: "max_tool_calls",
   });
 });
 
