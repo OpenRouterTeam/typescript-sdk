@@ -7189,7 +7189,7 @@ components:
         reset_interval:
           $ref: '#/components/schemas/GuardrailInterval'
         workspace_id:
-          description: 'The workspace to create the guardrail in. When omitted, the guardrail is created in the default workspace; if that default has been deleted, the request returns a 400 and you must pass `workspace_id` explicitly.'
+          description: 'The workspace to create the guardrail in. When omitted, the guardrail is created in the default workspace; if that default has been deleted, the request returns a 400 and you must pass `workspace_id` explicitly. This only places the guardrail in the workspace; the created guardrail enforces nothing for that workspace''s traffic until it is assigned to API keys or members. To restrict all traffic in a workspace, update the workspace''s default guardrail instead.'
           example: '0df9e665-d932-5740-b2c7-b52af166bc11'
           format: 'uuid'
           type: 'string'
@@ -10062,7 +10062,7 @@ components:
             - 'string'
             - 'null'
         workspace_id:
-          description: 'The workspace this guardrail is scoped to, or `null` for an unscoped legacy guardrail predating workspaces. A `null` value does not mean the default workspace, and does not apply the guardrail across every workspace.'
+          description: 'The workspace this guardrail belongs to, or `null` for an unscoped legacy guardrail predating workspaces. Workspace membership organizes the guardrail; it does not apply the guardrail to the workspace''s traffic. A `null` value does not mean the default workspace, and does not apply the guardrail across every workspace.'
           example: '0df9e665-d932-5740-b2c7-b52af166bc11'
           type:
             - 'string'
@@ -30870,7 +30870,7 @@ paths:
           results: '$.data'
         type: 'offsetLimit'
     post:
-      description: 'Create a new guardrail for the authenticated user. [Management key](/docs/guides/overview/auth/management-api-keys) required.'
+      description: 'Create a new guardrail for the authenticated user. A newly created guardrail enforces nothing until it is assigned to API keys or organization members; `workspace_id` places the guardrail in a workspace but does not apply it to that workspace''s traffic. To restrict all traffic in a workspace, update the workspace''s default guardrail instead. [Management key](/docs/guides/overview/auth/management-api-keys) required.'
       operationId: 'createGuardrail'
       requestBody:
         content:
