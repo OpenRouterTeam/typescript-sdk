@@ -1,0 +1,29 @@
+---
+title: "CreateOrganizationRequestBody"
+---
+
+## Example Usage
+
+```typescript
+import { CreateOrganizationRequestBody } from "@openrouter/sdk/models/operations";
+
+let value: CreateOrganizationRequestBody = {
+  email: "Stephania.Ratke96@yahoo.com",
+  externalId: "<id>",
+  name: "<value>",
+  paymentToken: "<value>",
+  scopes: [
+    "observability_destinations_read",
+  ],
+};
+```
+
+## Fields
+
+| Field                                                                | Type                                                                 | Required                                                             | Description                                                          |
+| -------------------------------------------------------------------- | -------------------------------------------------------------------- | -------------------------------------------------------------------- | -------------------------------------------------------------------- |
+| `email`                                                              | *string*                                                             | :heavy_check_mark:                                                   | N/A                                                                  |
+| `externalId`                                                         | *string*                                                             | :heavy_check_mark:                                                   | N/A                                                                  |
+| `name`                                                               | *string*                                                             | :heavy_check_mark:                                                   | N/A                                                                  |
+| `paymentToken`                                                       | *string*                                                             | :heavy_check_mark:                                                   | N/A                                                                  |
+| `scopes`                                                             | [operations.ScopeRequest](../../models/operations/scoperequest.mdx)[] | :heavy_check_mark:                                                   | N/A                                                                  |
