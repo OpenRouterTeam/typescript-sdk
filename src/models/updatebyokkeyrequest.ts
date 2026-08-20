@@ -8,6 +8,10 @@ import { remap as remap$ } from "../lib/primitives.js";
 
 export type UpdateBYOKKeyRequest = {
   /**
+   * Optional allowlist of OpenRouter API key hashes (`api_keys.hash`) that may use this credential. `null` clears the restriction. Must contain at least one hash if provided. Hashes that do not belong to your account return a 400.
+   */
+  allowedApiKeyHashes?: Array<string> | null | undefined;
+  /**
    * Optional allowlist of model slugs this credential may be used for. `null` means no restriction.
    */
   allowedModels?: Array<string> | null | undefined;
@@ -35,6 +39,7 @@ export type UpdateBYOKKeyRequest = {
 
 /** @internal */
 export type UpdateBYOKKeyRequest$Outbound = {
+  allowed_api_key_hashes?: Array<string> | null | undefined;
   allowed_models?: Array<string> | null | undefined;
   allowed_user_ids?: Array<string> | null | undefined;
   disabled?: boolean | undefined;
@@ -48,6 +53,7 @@ export const UpdateBYOKKeyRequest$outboundSchema: z.ZodType<
   UpdateBYOKKeyRequest$Outbound,
   UpdateBYOKKeyRequest
 > = z.object({
+  allowedApiKeyHashes: z.nullable(z.array(z.string())).optional(),
   allowedModels: z.nullable(z.array(z.string())).optional(),
   allowedUserIds: z.nullable(z.array(z.string())).optional(),
   disabled: z.boolean().optional(),
@@ -56,6 +62,7 @@ export const UpdateBYOKKeyRequest$outboundSchema: z.ZodType<
   name: z.nullable(z.string()).optional(),
 }).transform((v) => {
   return remap$(v, {
+    allowedApiKeyHashes: "allowed_api_key_hashes",
     allowedModels: "allowed_models",
     allowedUserIds: "allowed_user_ids",
     isFallback: "is_fallback",
