@@ -117,7 +117,7 @@ export type Guardrail = {
    */
   updatedAt?: string | null | undefined;
   /**
-   * The workspace this guardrail belongs to, or `null` for an unscoped legacy guardrail predating workspaces. Workspace membership organizes the guardrail; it does not apply the guardrail to the workspace's traffic. A `null` value does not mean the default workspace, and does not apply the guardrail across every workspace.
+   * The workspace this guardrail is scoped to, or `null` for an unscoped legacy guardrail predating workspaces. A `null` value does not mean the default workspace, and does not apply the guardrail across every workspace.
    */
   workspaceId: string | null;
 };
