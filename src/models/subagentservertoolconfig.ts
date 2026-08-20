@@ -21,11 +21,11 @@ import {
  */
 export type SubagentServerToolConfig = {
   /**
-   * EXPERIMENTAL — subject to change without notice. When true, the subagent inherits every client function defined in the request's top-level `tools` list. Supported on the Responses API (`/api/v1/responses`) only; other APIs reject it with a `400`.
+   * EXPERIMENTAL — subject to change without notice. When true, the subagent inherits every client function defined in the request's top-level `tools` list. Supported on the Responses API (`/api/v1/responses`) and the Anthropic Messages API (`/api/v1/messages`) only; other APIs reject it with a `400`.
    */
   inheritFunctions?: boolean | undefined;
   /**
-   * EXPERIMENTAL — subject to change without notice. Names of the top-level function tools that the subagent will inherit. Any tool that matches by name will be copied fully into the tools array of the subagent. When `inherit_functions` is `true`, this list does nothing, because every client function will be inherited by default. Names are trimmed before validation, so a whitespace-only name is rejected with a `400`. Supported on the Responses API (`/api/v1/responses`) only; other APIs reject it with a `400`.
+   * EXPERIMENTAL — subject to change without notice. Names of the top-level function tools that the subagent will inherit. Any tool that matches by name will be copied fully into the tools array of the subagent. When `inherit_functions` is `true`, this list does nothing, because every client function will be inherited by default. Names are trimmed before validation, so a whitespace-only name is rejected with a `400`. Supported on the Responses API (`/api/v1/responses`) and the Anthropic Messages API (`/api/v1/messages`) only; other APIs reject it with a `400`.
    */
   inheritedFunctionNames?: Array<string> | undefined;
   /**
