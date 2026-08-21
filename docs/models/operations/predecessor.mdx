@@ -1,0 +1,25 @@
+---
+title: "Predecessor"
+---
+
+The resulting state of the predecessor API key.
+
+## Example Usage
+
+```typescript
+import { Predecessor } from "@openrouter/sdk/models/operations";
+
+let value: Predecessor = {
+  disabled: true,
+  expiresAt: null,
+  hash: "f01d52606dc8f0a8303a7b5cc3fa07109c2e346cec7c0a16b40de462992ce943",
+};
+```
+
+## Fields
+
+| Field                                                                                         | Type                                                                                          | Required                                                                                      | Description                                                                                   | Example                                                                                       |
+| --------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------- |
+| `disabled`                                                                                    | *boolean*                                                                                     | :heavy_check_mark:                                                                            | Whether the predecessor API key was disabled by rotation.                                     | true                                                                                          |
+| `expiresAt`                                                                                   | [Date](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date) | :heavy_check_mark:                                                                            | The predecessor expiration after rotation, or null if none is set.                            | null                                                                                          |
+| `hash`                                                                                        | *string*                                                                                      | :heavy_check_mark:                                                                            | The hash identifier of the predecessor API key.                                               | f01d52606dc8f0a8303a7b5cc3fa07109c2e346cec7c0a16b40de462992ce943                              |
