@@ -61,6 +61,7 @@ export const ProviderName = {
   InferactVLLM: "Inferact vLLM",
   Inflection: "Inflection",
   Liquid: "Liquid",
+  Makora: "Makora",
   Mara: "Mara",
   Mancer2: "Mancer 2",
   Meta: "Meta",
