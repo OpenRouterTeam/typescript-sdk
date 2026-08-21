@@ -1,19 +1,19 @@
 lockVersion: ""
 id: ""
 management:
-  docChecksum: 6569419e2cdab7ca81065d617452eb48
+  docChecksum: fdac5fd7b66f35a75a7b8101956b5242
   docVersion: 1.0.0
   speakeasyVersion: 1.787.0
   generationVersion: 2.914.0
-  releaseVersion: 1.2.50
-  configChecksum: a62921e29eadeb2bd728b55289a59db6
+  releaseVersion: 1.2.51
+  configChecksum: 53f7b98fc4c9fcd7111a98ec80a358ec
   repoURL: https://github.com/OpenRouterTeam/typescript-sdk.git
   installationURL: https://github.com/OpenRouterTeam/typescript-sdk
   published: true
 persistentEdits:
-  generation_id: f951f94e-d946-4387-9929-e436b3449bb6
-  pristine_commit_hash: bdf76d70ef3a01682d646fc5284e7a953dee03c5
-  pristine_tree_hash: 693925e23de2682852873b02e784634bba4b31d4
+  generation_id: d08c871e-0748-4e50-8655-a9fd7770e184
+  pristine_commit_hash: d2e1ba40913a6894aa83c226433b785eebbfc5cc
+  pristine_tree_hash: 57deb3d97b9ebe9d146dbb20a5a9deeddb3efb20
 features:
   typescript:
     acceptHeaders: 2.81.2
@@ -3057,8 +3057,8 @@ trackedFiles:
     deleted: true
   docs/models/createbyokkeyrequest.mdx:
     id: 6a466b641b37
-    last_write_checksum: sha1:c45976f64e66247592b0e4e4f4ed6381aab46cf9
-    pristine_git_object: 78ef2fc70f23e91fdeb7c0bc342327394e99344a
+    last_write_checksum: sha1:48510448125264a34e2d93778a97175a74ee621b
+    pristine_git_object: fa8a9122bbbc3d7018a3dd6508efe974da9a1b99
   docs/models/createbyokkeyresponse.md:
     id: 589ec05e9aa8
     last_write_checksum: sha1:c02336d61d8daee5fe0ea5238cbc0625a0225943
@@ -12173,8 +12173,8 @@ trackedFiles:
     deleted: true
   docs/models/updatebyokkeyrequest.mdx:
     id: 0be70e8f01d0
-    last_write_checksum: sha1:3ff39d742f92f90455f61440f33fa1ea3c482198
-    pristine_git_object: 44910d468eb4bfaad26b8aaee548bb6858048e9a
+    last_write_checksum: sha1:ed5c2012053274661858794f3bd498b693be78b7
+    pristine_git_object: 15fe40e5a2f638ce50087433fe289b4225ac112c
   docs/models/updatebyokkeyresponse.md:
     id: 7a0c1a810e5a
     last_write_checksum: sha1:09d665fd17a7f34e50470c4143bde682823784a6
@@ -12741,8 +12741,8 @@ trackedFiles:
     deleted: true
   docs/sdks/byok/README.mdx:
     id: 17792f3b180d
-    last_write_checksum: sha1:21d61ae40737e3624fd03ca32525ae02e72abdd8
-    pristine_git_object: efb9bc38b4a8a4e4ea76c8148f59d9fdfb060721
+    last_write_checksum: sha1:0ab079f53e5b269e228602ea4c9dc43188fc21fd
+    pristine_git_object: 9aeb0a324ce21ca17127bd37b06d1fc51b5d3157
   docs/sdks/chat/README.mdx:
     id: 1dd859c23fe1
     last_write_checksum: sha1:b01aa24bc49b080a9d99ca0f7303d1afd546b6ac
@@ -12917,12 +12917,12 @@ trackedFiles:
     pristine_git_object: 410efafd6a7f50d91ccb87131fedbe0c3d47e15a
   jsr.json:
     id: 7f6ab7767282
-    last_write_checksum: sha1:e7fd9eacbe6750593c846116e31483941b1ee570
-    pristine_git_object: 638ac96b8ba89aeacdf295d9aff980478f51499a
+    last_write_checksum: sha1:3805d5e6ebb1562234def0658a94afaa9c492e0b
+    pristine_git_object: ae16d87dccc7b33fbe5643fc9295f577abd32025
   package.json:
     id: 7030d0b2f71b
-    last_write_checksum: sha1:b6ea088530e12f344c9506bc26ed19ae57839672
-    pristine_git_object: 86bd6e5276c7750178e8c4029281d9221373d5be
+    last_write_checksum: sha1:ef77b66a816e4765d5511635389773114c4d472d
+    pristine_git_object: 0354b694b6845ad9854b19dc9c81a68d9dad6342
   src/core.ts:
     id: f431fdbcd144
     last_write_checksum: sha1:5aa66b0b6a5964f3eea7f3098c2eb3c0ee9c0131
@@ -12969,8 +12969,8 @@ trackedFiles:
     pristine_git_object: 23eb4089ea8901170a0e99657960d7749d5c40d5
   src/funcs/byokCreate.ts:
     id: 100cd2d38078
-    last_write_checksum: sha1:e31c51196497b050f86a4cc5136d381345c83840
-    pristine_git_object: 824b5009eec52b2cecc4161d46c4e2d5bed1776a
+    last_write_checksum: sha1:a357f46f938f8037397a0c66cc027690ad53994c
+    pristine_git_object: 16c9b81a55fcda09de1059b263f68d67d13c8e89
   src/funcs/byokDelete.ts:
     id: 74888a4f7e62
     last_write_checksum: sha1:cbf9eb39f7b4237f7811a672232583ff57d5eecd
@@ -12985,8 +12985,8 @@ trackedFiles:
     pristine_git_object: dfb9d43d49aad7afddefd364a0b072818f2e494e
   src/funcs/byokUpdate.ts:
     id: af96a7f06850
-    last_write_checksum: sha1:11a389fda6ea8ab038af889305e927164b39bb28
-    pristine_git_object: cedf6dd610c5918752922f4325c7d42216e83679
+    last_write_checksum: sha1:e6cd4623a50137e7ab4c5b977a48fc3bc6bdfaf1
+    pristine_git_object: cd10734043b5049c0d732046065f1e2167d970ab
   src/funcs/chatSend.ts:
     id: 8c3aa3c963bf
     last_write_checksum: sha1:71e76ceebcad45d6f42ef0aefdfb0b3847e6d87d
@@ -13333,8 +13333,8 @@ trackedFiles:
     pristine_git_object: a187e58707bdb726ca2aff74941efe7493422d4e
   src/lib/config.ts:
     id: 320761608fb3
-    last_write_checksum: sha1:60f1bfdc56c243657d9f60d30cfaa89838abc4aa
-    pristine_git_object: 9d2755020ae8f1f6520fd29b1afe2317d9feb7bc
+    last_write_checksum: sha1:1c4ad42137440a89e2d3b43fb260022bc999e4d8
+    pristine_git_object: ad0feefa3b6651e1ff8c5c5476e514a0b0fb2a6b
   src/lib/dlv.ts:
     id: b1988214835a
     last_write_checksum: sha1:eaac763b22717206a6199104e0403ed17a4e2711
@@ -14075,8 +14075,8 @@ trackedFiles:
     pristine_git_object: 81fcaf72ea3b3146afeddf0cb58d15c253224c63
   src/models/createbyokkeyrequest.ts:
     id: 5adb6ef47627
-    last_write_checksum: sha1:ed494e1d16e3d782218c9b8230a63d43e53e1dbd
-    pristine_git_object: 49a3d272d19e391fde66383919a0c6e7a0ababeb
+    last_write_checksum: sha1:e4f708b41cf79b31be2273c47f8c4ebc0c6101ec
+    pristine_git_object: e04d9928d9a18dc18271d5f3c3514c7eb663bf3c
   src/models/createbyokkeyresponse.ts:
     id: 93fb8363303b
     last_write_checksum: sha1:5a3ee4e5d8f90bd181f9ac81e06af4f5295cf255
@@ -16159,8 +16159,8 @@ trackedFiles:
     pristine_git_object: 8db22a6950c3dd45bf8316b459256ff6c7b0142b
   src/models/updatebyokkeyrequest.ts:
     id: e86268c7b05c
-    last_write_checksum: sha1:0c12bab2bea0e836c075f7f7909ad201ec9223e1
-    pristine_git_object: 60b329267870b2426ba8a01c4485eb0b74aece39
+    last_write_checksum: sha1:3bf06dedb66a044932eab29c83c3430e8c3e5dc5
+    pristine_git_object: 0f4e8c9e7940b9cfd1bfd3820f34d6a8e129bf8a
   src/models/updatebyokkeyresponse.ts:
     id: 016842b2461b
     last_write_checksum: sha1:eb08a44de913f4b9779fa375aa41e15154216e16
@@ -16347,8 +16347,8 @@ trackedFiles:
     pristine_git_object: 0c5a5f3819ab52c8290dc81ed3bc94944b2cc26c
   src/sdk/byok.ts:
     id: 5c1e8a4724b5
-    last_write_checksum: sha1:642f4b265778a05fa0112f19edeb22c0c785223d
-    pristine_git_object: 2a59046947ebfac362a2da9334c087f4892dfde3
+    last_write_checksum: sha1:459db79f290d3c134016b8845aa8caf7d79b4539
+    pristine_git_object: ab7ca84e8b826ef84040438f5ef5f8cac6c9440e
   src/sdk/chat.ts:
     id: c56babc22a20
     last_write_checksum: sha1:b826d379253d830664e86399eb83d857f7ac94bf
@@ -18265,3 +18265,4 @@ examples:
         "500":
           application/json: {"error": {"code": 500, "message": "Internal Server Error"}}
 examplesVersion: 1.0.2
+releaseNotes: "## Typescript SDK Changes:\n* `openrouter.byok.create()`: \n  *  `request.createByokKeyRequest.allowedApiKeyHashes` **Added**\n* `openrouter.byok.update()`: \n  *  `request.updateByokKeyRequest.allowedApiKeyHashes` **Added**\n"
