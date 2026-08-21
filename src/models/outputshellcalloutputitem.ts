@@ -6,6 +6,7 @@
 import * as z from "zod/v4";
 import { remap as remap$ } from "../lib/primitives.js";
 import { safeParse } from "../lib/schemas.js";
+import { ClosedEnum } from "../types/enums.js";
 import { Result as SafeParseResult } from "../types/fp.js";
 import { SDKValidationError } from "./errors/sdkvalidationerror.js";
 import {
@@ -17,11 +18,35 @@ import {
   ShellCallStatus$inboundSchema,
 } from "./shellcallstatus.js";
 
+export const OutputShellCallOutputItemTypeContainerFileCitation = {
+  ContainerFileCitation: "container_file_citation",
+} as const;
+export type OutputShellCallOutputItemTypeContainerFileCitation = ClosedEnum<
+  typeof OutputShellCallOutputItemTypeContainerFileCitation
+>;
+
+export type OutputShellCallOutputItemFile = {
+  containerId: string;
+  endIndex: number;
+  fileId: string;
+  filename: string;
+  startIndex: number;
+  type: OutputShellCallOutputItemTypeContainerFileCitation;
+};
+
 /**
  * A native `shell_call_output` item matching OpenAI's Responses API shape. Carries per-command stdout, stderr, and the exit/timeout outcome.
  */
 export type OutputShellCallOutputItem = {
   callId: string;
+  /**
+   * The sandbox container/session key the command ran under — the `{container_id}` for the Container Files API. Present whenever the call had a persistent session key, even when no files changed.
+   */
+  containerId?: string | undefined;
+  /**
+   * Citations for the files the sandbox command created or modified, most-recently-touched first (at most 10). Retrieve them via the Container Files API.
+   */
+  files?: Array<OutputShellCallOutputItemFile> | undefined;
   id: string;
   maxOutputLength?: number | null | undefined;
   output: Array<ShellCallOutputContent>;
@@ -33,11 +58,50 @@ export type OutputShellCallOutputItem = {
 };
 
 /** @internal */
+export const OutputShellCallOutputItemTypeContainerFileCitation$inboundSchema:
+  z.ZodEnum<typeof OutputShellCallOutputItemTypeContainerFileCitation> = z.enum(
+    OutputShellCallOutputItemTypeContainerFileCitation,
+  );
+
+/** @internal */
+export const OutputShellCallOutputItemFile$inboundSchema: z.ZodType<
+  OutputShellCallOutputItemFile,
+  unknown
+> = z.object({
+  container_id: z.string(),
+  end_index: z.int(),
+  file_id: z.string(),
+  filename: z.string(),
+  start_index: z.int(),
+  type: OutputShellCallOutputItemTypeContainerFileCitation$inboundSchema,
+}).transform((v) => {
+  return remap$(v, {
+    "container_id": "containerId",
+    "end_index": "endIndex",
+    "file_id": "fileId",
+    "start_index": "startIndex",
+  });
+});
+
+export function outputShellCallOutputItemFileFromJSON(
+  jsonString: string,
+): SafeParseResult<OutputShellCallOutputItemFile, SDKValidationError> {
+  return safeParse(
+    jsonString,
+    (x) => OutputShellCallOutputItemFile$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'OutputShellCallOutputItemFile' from JSON`,
+  );
+}
+
+/** @internal */
 export const OutputShellCallOutputItem$inboundSchema: z.ZodType<
   OutputShellCallOutputItem,
   unknown
 > = z.object({
   call_id: z.string(),
+  container_id: z.string().optional(),
+  files: z.array(z.lazy(() => OutputShellCallOutputItemFile$inboundSchema))
+    .optional(),
   id: z.string(),
   max_output_length: z.nullable(z.int()).optional(),
   output: z.array(ShellCallOutputContent$inboundSchema),
@@ -46,6 +110,7 @@ export const OutputShellCallOutputItem$inboundSchema: z.ZodType<
 }).transform((v) => {
   return remap$(v, {
     "call_id": "callId",
+    "container_id": "containerId",
     "max_output_length": "maxOutputLength",
   });
 });
