@@ -12,10 +12,6 @@ import {
 
 export type CreateBYOKKeyRequest = {
   /**
-   * Optional allowlist of OpenRouter API key hashes (`api_keys.hash`) that may use this credential. `null` means no restriction. Must contain at least one hash if provided. Hashes that do not belong to your account return a 400.
-   */
-  allowedApiKeyHashes?: Array<string> | null | undefined;
-  /**
    * Optional allowlist of model slugs this credential may be used for. `null` means no restriction.
    */
   allowedModels?: Array<string> | null | undefined;
@@ -51,7 +47,6 @@ export type CreateBYOKKeyRequest = {
 
 /** @internal */
 export type CreateBYOKKeyRequest$Outbound = {
-  allowed_api_key_hashes?: Array<string> | null | undefined;
   allowed_models?: Array<string> | null | undefined;
   allowed_user_ids?: Array<string> | null | undefined;
   disabled?: boolean | undefined;
@@ -67,7 +62,6 @@ export const CreateBYOKKeyRequest$outboundSchema: z.ZodType<
   CreateBYOKKeyRequest$Outbound,
   CreateBYOKKeyRequest
 > = z.object({
-  allowedApiKeyHashes: z.nullable(z.array(z.string())).optional(),
   allowedModels: z.nullable(z.array(z.string())).optional(),
   allowedUserIds: z.nullable(z.array(z.string())).optional(),
   disabled: z.boolean().optional(),
@@ -78,7 +72,6 @@ export const CreateBYOKKeyRequest$outboundSchema: z.ZodType<
   workspaceId: z.string().optional(),
 }).transform((v) => {
   return remap$(v, {
-    allowedApiKeyHashes: "allowed_api_key_hashes",
     allowedModels: "allowed_models",
     allowedUserIds: "allowed_user_ids",
     isFallback: "is_fallback",
