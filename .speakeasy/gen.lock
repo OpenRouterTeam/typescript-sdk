@@ -1,19 +1,19 @@
 lockVersion: ""
 id: ""
 management:
-  docChecksum: 6ac2b9b6dfe33a7f4202a00b5b85f0d8
+  docChecksum: 4364f1781409f98197cbd51b8f99286b
   docVersion: 1.0.0
   speakeasyVersion: 1.787.0
   generationVersion: 2.914.0
-  releaseVersion: 1.2.52
-  configChecksum: d8bdd396b7caa66ff46474c75ff570d6
+  releaseVersion: 1.2.53
+  configChecksum: f68a5db0ec08bf03f36f9b836161be00
   repoURL: https://github.com/OpenRouterTeam/typescript-sdk.git
   installationURL: https://github.com/OpenRouterTeam/typescript-sdk
   published: true
 persistentEdits:
-  generation_id: 8f34f611-5a71-4281-a334-ec356a71c3eb
-  pristine_commit_hash: d401ebb31c9583d45fd6b3b770131be0973fe614
-  pristine_tree_hash: a9151c429c16ac2a5021bbcdc1fbad930cfdf158
+  generation_id: a2ebe492-fdca-4305-a2a9-629dfae50bf0
+  pristine_commit_hash: 5e406e86a3bb1a8f511daf27e32f915a7a3b7aa1
+  pristine_tree_hash: 1746e016dfa18b3282c41dc07ee9448bb8421a81
 features:
   typescript:
     acceptHeaders: 2.81.2
@@ -12771,8 +12771,8 @@ trackedFiles:
     pristine_git_object: 0b972989cca654fde1eb8f0d583efde8b40d2002
   docs/sdks/embeddings/README.mdx:
     id: cd71581df291
-    last_write_checksum: sha1:43614be0c424b9afc23145edc0dee6f4da134b78
-    pristine_git_object: 134fcbc68dcd420a3db5f75efbbbf198486af863
+    last_write_checksum: sha1:92ecbd5a8dd845c193dc24c3033f88affc307e78
+    pristine_git_object: 55d66f6510f9051a65379be069a522f13c3f1b9b
   docs/sdks/endpoints/README.mdx:
     id: 62dfac9f7b71
     last_write_checksum: sha1:9b2fe2a009462a0da7739ad887d2e96ac77ecb65
@@ -12917,12 +12917,12 @@ trackedFiles:
     pristine_git_object: 410efafd6a7f50d91ccb87131fedbe0c3d47e15a
   jsr.json:
     id: 7f6ab7767282
-    last_write_checksum: sha1:3ee1e93a85271770a0c419c4938a510ff323ab2b
-    pristine_git_object: 81771fb1c0b0c44b458df0ef78b4f0b4bc1a694e
+    last_write_checksum: sha1:8eb6149f324ee2897f8e82e03fbda7de81493a2b
+    pristine_git_object: fddde5967a05052254bb7899cf45735166d480f8
   package.json:
     id: 7030d0b2f71b
-    last_write_checksum: sha1:3bf1a99893176038d28cca26684ea830278a208b
-    pristine_git_object: 2757892771b349a1612e515c8fffcc198dfa007f
+    last_write_checksum: sha1:9c8ae7c2859c629dadbd75526be87756c3ba3ff6
+    pristine_git_object: 639d8df94a3e16a69f927cd72a028ecb66720aea
   src/core.ts:
     id: f431fdbcd144
     last_write_checksum: sha1:5aa66b0b6a5964f3eea7f3098c2eb3c0ee9c0131
@@ -13013,8 +13013,8 @@ trackedFiles:
     pristine_git_object: ad63c7dac30db8715143b321c4d77e65b2fe5382
   src/funcs/embeddingsGenerate.ts:
     id: f6455fcfe2c8
-    last_write_checksum: sha1:689ffe08961ffe06d9c515eccf6b71142da52051
-    pristine_git_object: 1a8e3897ad1048fb609bc782fc6aade0cc16c712
+    last_write_checksum: sha1:ef4ae94fa8de6a38b08cc92d924cd9d4a9c0862d
+    pristine_git_object: e7a838f4199c78caa93851dcdebd433558cf34ca
   src/funcs/embeddingsListModels.ts:
     id: dbe9751f8369
     last_write_checksum: sha1:a81c2db74730e3bcc3ce4e6543802ac611b85aad
@@ -13333,8 +13333,8 @@ trackedFiles:
     pristine_git_object: a187e58707bdb726ca2aff74941efe7493422d4e
   src/lib/config.ts:
     id: 320761608fb3
-    last_write_checksum: sha1:c3be3a5672c533ba6cb13890f43f8cb81475ea66
-    pristine_git_object: eebe48337a6663293e5712529b65e0b0615cb4ad
+    last_write_checksum: sha1:b4f2102ca6b3e926c93c7b0b7fd10c0f240382f5
+    pristine_git_object: 0e3d34a8fe4e3e5fa4e7498170f6bc06abc1f71b
   src/lib/dlv.ts:
     id: b1988214835a
     last_write_checksum: sha1:eaac763b22717206a6199104e0403ed17a4e2711
@@ -16661,6 +16661,10 @@ examples:
           application/json: {"error": {"code": 524, "message": "Request timed out. Please try again later."}}
         "529":
           application/json: {"error": {"code": 529, "message": "Provider returned error"}}
+        "408":
+          application/json: {"error": {"code": 408, "message": "Operation timed out. Please try again later."}}
+        "413":
+          application/json: {"error": {"code": 413, "message": "Request payload too large"}}
   listEmbeddingsModels:
     speakeasy-default-list-embeddings-models:
       parameters:
@@ -18265,4 +18269,6 @@ examples:
         "500":
           application/json: {"error": {"code": 500, "message": "Internal Server Error"}}
 examplesVersion: 1.0.2
-releaseNotes: "## Typescript SDK Changes:\n* `openrouter.tts.createSpeech()`: \n  *  `request.speechRequest.provider.options.makora` **Added**\n* `openrouter.stt.createTranscription()`: \n  *  `request.sttRequest.provider.options.makora` **Added**\n* `openrouter.byok.list()`: \n  *  `request.provider` **Changed**\n  *  `response.data[].provider.enum(makora)` **Added**\n* `openrouter.byok.create()`: \n  *  `request.createByokKeyRequest.provider.enum(makora)` **Added**\n  *  `response.data.provider.enum(makora)` **Added**\n* `openrouter.byok.get()`:  `response.data.provider.enum(makora)` **Added**\n* `openrouter.byok.update()`:  `response.data.provider.enum(makora)` **Added**\n* `openrouter.chat.send()`: \n  *  `request.chatRequest.provider.ignore[].union(ProviderName).enum(makora)` **Added**\n* `openrouter.embeddings.generate()`: \n  *  `request.requestBody.provider.ignore[].union(ProviderName).enum(makora)` **Added**\n* `openrouter.endpoints.listZdrEndpoints()`:  `response.data[].providerName.enum(makora)` **Added**\n* `openrouter.endpoints.list()`:  `response.data.endpoints[].providerName.enum(makora)` **Added**\n* `openrouter.generations.getGeneration()`:  `response.data.providerResponses[].providerName.enum(makora)` **Added**\n* `openrouter.images.generate()`: \n  *  `request.imageGenerationRequest.provider` **Changed**\n* `openrouter.presets.createPresetsChatCompletions()`: \n  *  `request.chatRequest.provider.ignore[].union(ProviderName).enum(makora)` **Added**\n* `openrouter.presets.createPresetsMessages()`: \n  *  `request.messagesRequest.provider.ignore[].union(ProviderName).enum(makora)` **Added**\n* `openrouter.presets.createPresetsResponses()`: \n  *  `request.responsesRequest.provider.ignore[].union(ProviderName).enum(makora)` **Added**\n* `openrouter.rerank.rerank()`: \n  *  `request.requestBody.provider.ignore[].union(ProviderName).enum(makora)` **Added**\n* `openrouter.responses.send()`: \n  *  `request.responsesRequest.provider.ignore[].union(ProviderName).enum(makora)` **Added**\n* `openrouter.beta.responses.send()`: \n  *  `request.responsesRequest.provider.ignore[].union(ProviderName).enum(makora)` **Added**\n* `openrouter.videoGeneration.generate()`: \n  *  `request.videoGenerationRequest.provider.options.makora` **Added**\n"
+releaseNotes: |
+  ## Typescript SDK Changes:
+  * `openrouter.embeddings.generate()`:  `error` **Changed**
