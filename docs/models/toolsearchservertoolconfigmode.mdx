@@ -1,0 +1,21 @@
+---
+title: "ToolSearchServerToolConfigMode"
+---
+
+How the model searches. `bm25` (default) ranks tools against a natural-language query; `regex` filters them by a pattern. Anthropic's `tool_search_tool_bm25` and `tool_search_tool_regex` map onto this field.
+
+## Example Usage
+
+```typescript
+import { ToolSearchServerToolConfigMode } from "@openrouter/sdk/models";
+
+let value: ToolSearchServerToolConfigMode = "bm25";
+
+// Open enum: unrecognized values are captured as Unrecognized<string>
+```
+
+## Values
+
+```typescript
+"bm25" | "regex" | Unrecognized<string>
+```

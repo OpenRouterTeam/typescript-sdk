@@ -241,6 +241,11 @@ import {
   TextExtendedConfig$outboundSchema,
 } from "./textextendedconfig.js";
 import {
+  ToolSearchServerTool,
+  ToolSearchServerTool$Outbound,
+  ToolSearchServerTool$outboundSchema,
+} from "./toolsearchservertool.js";
+import {
   TraceConfig,
   TraceConfig$Outbound,
   TraceConfig$outboundSchema,
@@ -325,6 +330,10 @@ export type ResponsesRequestToolFunction = {
   parameters: { [k: string]: any } | null;
   strict?: boolean | null | undefined;
   type: "function";
+  /**
+   * Withhold this tool from the model until `openrouter:tool_search` finds it. Requires the tool search server tool; at least one tool must remain non-deferred.
+   */
+  deferLoading?: boolean | undefined;
 };
 
 export type ResponsesRequestToolUnion =
@@ -360,7 +369,8 @@ export type ResponsesRequestToolUnion =
   | (WebSearchServerToolOpenRouter & { type: "openrouter:web_search" })
   | (ApplyPatchServerToolOpenRouter & { type: "openrouter:apply_patch" })
   | (BashServerTool & { type: "openrouter:bash" })
-  | (ShellServerToolOpenRouter & { type: "openrouter:shell" });
+  | (ShellServerToolOpenRouter & { type: "openrouter:shell" })
+  | (ToolSearchServerTool & { type: "openrouter:tool_search" });
 
 /**
  * Request schema for Responses endpoint
@@ -497,6 +507,7 @@ export type ResponsesRequest = {
       | (ApplyPatchServerToolOpenRouter & { type: "openrouter:apply_patch" })
       | (BashServerTool & { type: "openrouter:bash" })
       | (ShellServerToolOpenRouter & { type: "openrouter:shell" })
+      | (ToolSearchServerTool & { type: "openrouter:tool_search" })
     >
     | undefined;
   topK?: number | undefined;
@@ -597,6 +608,7 @@ export type ResponsesRequestToolFunction$Outbound = {
   parameters: { [k: string]: any } | null;
   strict?: boolean | null | undefined;
   type: "function";
+  defer_loading?: boolean | undefined;
 };
 
 /** @internal */
@@ -609,6 +621,11 @@ export const ResponsesRequestToolFunction$outboundSchema: z.ZodType<
   parameters: z.nullable(z.record(z.string(), z.any())),
   strict: z.nullable(z.boolean()).optional(),
   type: z.literal("function"),
+  deferLoading: z.boolean().optional(),
+}).transform((v) => {
+  return remap$(v, {
+    deferLoading: "defer_loading",
+  });
 });
 
 export function responsesRequestToolFunctionToJSON(
@@ -657,7 +674,8 @@ export type ResponsesRequestToolUnion$Outbound =
     type: "openrouter:apply_patch";
   })
   | (BashServerTool$Outbound & { type: "openrouter:bash" })
-  | (ShellServerToolOpenRouter$Outbound & { type: "openrouter:shell" });
+  | (ShellServerToolOpenRouter$Outbound & { type: "openrouter:shell" })
+  | (ToolSearchServerTool$Outbound & { type: "openrouter:tool_search" });
 
 /** @internal */
 export const ResponsesRequestToolUnion$outboundSchema: z.ZodType<
@@ -734,6 +752,9 @@ export const ResponsesRequestToolUnion$outboundSchema: z.ZodType<
   ),
   ShellServerToolOpenRouter$outboundSchema.and(
     z.object({ type: z.literal("openrouter:shell") }),
+  ),
+  ToolSearchServerTool$outboundSchema.and(
+    z.object({ type: z.literal("openrouter:tool_search") }),
   ),
 ]);
 
@@ -835,6 +856,7 @@ export type ResponsesRequest$Outbound = {
       })
       | (BashServerTool$Outbound & { type: "openrouter:bash" })
       | (ShellServerToolOpenRouter$Outbound & { type: "openrouter:shell" })
+      | (ToolSearchServerTool$Outbound & { type: "openrouter:tool_search" })
     >
     | undefined;
   top_k?: number | undefined;
@@ -975,6 +997,9 @@ export const ResponsesRequest$outboundSchema: z.ZodType<
       ),
       ShellServerToolOpenRouter$outboundSchema.and(
         z.object({ type: z.literal("openrouter:shell") }),
+      ),
+      ToolSearchServerTool$outboundSchema.and(
+        z.object({ type: z.literal("openrouter:tool_search") }),
       ),
     ]),
   ).optional(),
