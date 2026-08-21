@@ -388,7 +388,7 @@ export type ResponsesRequest = {
   instructions?: string | null | undefined;
   maxOutputTokens?: number | null | undefined;
   /**
-   * Maximum number of server-tool (e.g. `openrouter:web_search`) agent steps the model may take during a request. Defaults to 30, which is also the maximum. Ignored when `stop_server_tools_when` is set.
+   * Maximum number of server-tool (e.g. `openrouter:web_search`) agent steps the model may take during a request. Defaults to 30, which is also the maximum. Applies alongside any `stop_server_tools_when` conditions — whichever fires first halts the loop.
    */
   maxToolCalls?: number | null | undefined;
   /**
@@ -451,7 +451,7 @@ export type ResponsesRequest = {
    */
   sessionId?: string | undefined;
   /**
-   * Stop conditions for the server-tool agent loop. Any condition firing halts the loop (OR logic). When set, this overrides `max_tool_calls`. When a condition fires while the model is still emitting tool calls, the pending tool calls are executed and one final turn is made with tool calls disabled so the response ends with a natural-language answer instead of an unfinished tool call.
+   * Stop conditions for the server-tool agent loop. Any condition firing halts the loop (OR logic). Custom conditions run alongside the `max_tool_calls` step cap; if omitted, the 30-step server default still applies. When a condition fires while the model is still emitting tool calls, the pending tool calls are executed and one final turn is made with tool calls disabled so the response ends with a natural-language answer instead of an unfinished tool call.
    */
   stopServerToolsWhen?: Array<StopServerToolsWhenCondition> | undefined;
   store?: false | undefined;
