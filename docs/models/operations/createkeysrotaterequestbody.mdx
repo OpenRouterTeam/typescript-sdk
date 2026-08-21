@@ -1,0 +1,19 @@
+---
+title: "CreateKeysRotateRequestBody"
+---
+
+## Example Usage
+
+```typescript
+import { CreateKeysRotateRequestBody } from "@openrouter/sdk/models/operations";
+
+let value: CreateKeysRotateRequestBody = {
+  revokePreviousAfterSeconds: null,
+};
+```
+
+## Fields
+
+| Field                                                                                                                                                                                          | Type                                                                                                                                                                                           | Required                                                                                                                                                                                       | Description                                                                                                                                                                                    |
+| ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `revokePreviousAfterSeconds`                                                                                                                                                                   | *number*                                                                                                                                                                                       | :heavy_check_mark:                                                                                                                                                                             | How long to keep the predecessor active before revocation, in seconds. 0 revokes immediately; positive values are capped at 30 days; null leaves the predecessor active for manual revocation. |
