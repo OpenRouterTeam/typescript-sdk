@@ -48,7 +48,7 @@ export type CreateKeysLimitReset = OpenEnum<typeof CreateKeysLimitReset>;
 
 export type CreateKeysRequestBody = {
   /**
-   * Optional user ID of the key creator. Only meaningful for organization-owned keys where a specific member is creating the key.
+   * Optional user ID of the key creator. For organization-owned keys, omitting this field or sending null attributes the key to the calling key's creator; provide a member ID to create a key on behalf of that member.
    */
   creatorUserId?: string | null | undefined;
   /**
