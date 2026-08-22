@@ -1,0 +1,22 @@
+---
+title: "ToolSearchServerTool"
+---
+
+OpenRouter built-in server tool: finds tools marked `defer_loading` and makes them callable
+
+## Example Usage
+
+```typescript
+import { ToolSearchServerTool } from "@openrouter/sdk/models";
+
+let value: ToolSearchServerTool = {
+  type: "openrouter:tool_search",
+};
+```
+
+## Fields
+
+| Field                                                                        | Type                                                                         | Required                                                                     | Description                                                                  | Example                                                                      |
+| ---------------------------------------------------------------------------- | ---------------------------------------------------------------------------- | ---------------------------------------------------------------------------- | ---------------------------------------------------------------------------- | ---------------------------------------------------------------------------- |
+| `parameters`                                                                 | [models.ToolSearchServerToolConfig](../models/toolsearchservertoolconfig.mdx) | :heavy_minus_sign:                                                           | Configuration for the openrouter:tool_search server tool                     | \{<br/>"max_results": 5<br/>}                                                 |
+| `type`                                                                       | [models.ToolSearchServerToolType](../models/toolsearchservertooltype.mdx)     | :heavy_check_mark:                                                           | N/A                                                                          |                                                                              |
