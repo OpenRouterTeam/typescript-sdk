@@ -11,6 +11,7 @@ import { Beta } from "./beta.js";
 import { BYOK } from "./byok.js";
 import { Chat } from "./chat.js";
 import { Classifications } from "./classifications.js";
+import { Containers } from "./containers.js";
 import { Credits } from "./credits.js";
 import { Datasets } from "./datasets.js";
 import { Embeddings } from "./embeddings.js";
@@ -84,6 +85,11 @@ export class OpenRouter extends ClientSDK {
   private _classifications?: Classifications;
   get classifications(): Classifications {
     return (this._classifications ??= new Classifications(this._options));
+  }
+
+  private _containers?: Containers;
+  get containers(): Containers {
+    return (this._containers ??= new Containers(this._options));
   }
 
   private _credits?: Credits;
