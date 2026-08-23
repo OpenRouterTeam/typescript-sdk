@@ -1,0 +1,29 @@
+---
+title: "ShellCallCommandAddedEvent"
+---
+
+Emitted when a shell command starts streaming into a `shell_call` item's `action.commands`. Carries the command text already received; the remainder follows as `response.shell_call_command.delta` events.
+
+## Example Usage
+
+```typescript
+import { ShellCallCommandAddedEvent } from "@openrouter/sdk/models";
+
+let value: ShellCallCommandAddedEvent = {
+  command: "<value>",
+  commandIndex: 230589,
+  outputIndex: 868519,
+  sequenceNumber: 0,
+  type: "response.shell_call_command.added",
+};
+```
+
+## Fields
+
+| Field                                 | Type                                  | Required                              | Description                           |
+| ------------------------------------- | ------------------------------------- | ------------------------------------- | ------------------------------------- |
+| `command`                             | *string*                              | :heavy_check_mark:                    | N/A                                   |
+| `commandIndex`                        | *number*                              | :heavy_check_mark:                    | N/A                                   |
+| `outputIndex`                         | *number*                              | :heavy_check_mark:                    | N/A                                   |
+| `sequenceNumber`                      | *number*                              | :heavy_check_mark:                    | N/A                                   |
+| `type`                                | *"response.shell_call_command.added"* | :heavy_check_mark:                    | N/A                                   |
