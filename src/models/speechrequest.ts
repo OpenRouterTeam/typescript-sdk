@@ -67,7 +67,7 @@ export type SpeechRequest = {
    */
   responseFormat?: SpeechRequestResponseFormat | undefined;
   /**
-   * Playback speed multiplier. Only used by models that support it (e.g. OpenAI TTS). Ignored by other providers.
+   * Playback speed multiplier. Support varies by provider: some forward it, some clamp it to their own range, some ignore it, and some reject any value other than 1 with a 400. The accepted range is provider-defined; consult the provider for its limits.
    */
   speed?: number | undefined;
   /**
