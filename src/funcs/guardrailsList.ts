@@ -49,6 +49,7 @@ export function guardrailsList(
       operations.ListGuardrailsResponse,
       | errors.BadRequestResponseError
       | errors.UnauthorizedResponseError
+      | errors.ForbiddenResponseError
       | errors.InternalServerResponseError
       | OpenRouterError
       | ResponseValidationError
@@ -80,6 +81,7 @@ async function $do(
         operations.ListGuardrailsResponse,
         | errors.BadRequestResponseError
         | errors.UnauthorizedResponseError
+        | errors.ForbiddenResponseError
         | errors.InternalServerResponseError
         | OpenRouterError
         | ResponseValidationError
@@ -199,6 +201,7 @@ async function $do(
     operations.ListGuardrailsResponse,
     | errors.BadRequestResponseError
     | errors.UnauthorizedResponseError
+    | errors.ForbiddenResponseError
     | errors.InternalServerResponseError
     | OpenRouterError
     | ResponseValidationError
@@ -214,6 +217,7 @@ async function $do(
     }),
     M.jsonErr(400, errors.BadRequestResponseError$inboundSchema),
     M.jsonErr(401, errors.UnauthorizedResponseError$inboundSchema),
+    M.jsonErr(403, errors.ForbiddenResponseError$inboundSchema),
     M.jsonErr(500, errors.InternalServerResponseError$inboundSchema),
     M.fail("4XX"),
     M.fail("5XX"),
@@ -234,6 +238,7 @@ async function $do(
         operations.ListGuardrailsResponse,
         | errors.BadRequestResponseError
         | errors.UnauthorizedResponseError
+        | errors.ForbiddenResponseError
         | errors.InternalServerResponseError
         | OpenRouterError
         | ResponseValidationError
