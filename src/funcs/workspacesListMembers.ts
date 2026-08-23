@@ -37,7 +37,7 @@ import {
  * List workspace members
  *
  * @remarks
- * List all members of a workspace. Returns paginated results. For the default workspace, returns all organization members (implicit membership). [Management key](/docs/guides/overview/auth/management-api-keys) required.
+ * List all members of a workspace. Returns paginated results. For the default workspace, returns all organization members (implicit membership). Client grants also need the organization_members_read scope to list that implicit roster. [Management key](/docs/guides/overview/auth/management-api-keys) required.
  */
 export function workspacesListMembers(
   client: OpenRouterCore,
@@ -47,6 +47,7 @@ export function workspacesListMembers(
   PageIterator<
     Result<
       operations.ListWorkspaceMembersResponse,
+      | errors.BadRequestResponseError
       | errors.UnauthorizedResponseError
       | errors.ForbiddenResponseError
       | errors.NotFoundResponseError
@@ -79,6 +80,7 @@ async function $do(
     PageIterator<
       Result<
         operations.ListWorkspaceMembersResponse,
+        | errors.BadRequestResponseError
         | errors.UnauthorizedResponseError
         | errors.ForbiddenResponseError
         | errors.NotFoundResponseError
@@ -204,6 +206,7 @@ async function $do(
 
   const [result, raw] = await M.match<
     operations.ListWorkspaceMembersResponse,
+    | errors.BadRequestResponseError
     | errors.UnauthorizedResponseError
     | errors.ForbiddenResponseError
     | errors.NotFoundResponseError
@@ -220,6 +223,7 @@ async function $do(
     M.json(200, operations.ListWorkspaceMembersResponse$inboundSchema, {
       key: "Result",
     }),
+    M.jsonErr(400, errors.BadRequestResponseError$inboundSchema),
     M.jsonErr(401, errors.UnauthorizedResponseError$inboundSchema),
     M.jsonErr(403, errors.ForbiddenResponseError$inboundSchema),
     M.jsonErr(404, errors.NotFoundResponseError$inboundSchema),
@@ -241,6 +245,7 @@ async function $do(
     next: Paginator<
       Result<
         operations.ListWorkspaceMembersResponse,
+        | errors.BadRequestResponseError
         | errors.UnauthorizedResponseError
         | errors.ForbiddenResponseError
         | errors.NotFoundResponseError

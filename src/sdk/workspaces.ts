@@ -181,7 +181,7 @@ export class Workspaces extends ClientSDK {
    * List workspace members
    *
    * @remarks
-   * List all members of a workspace. Returns paginated results. For the default workspace, returns all organization members (implicit membership). [Management key](/docs/guides/overview/auth/management-api-keys) required.
+   * List all members of a workspace. Returns paginated results. For the default workspace, returns all organization members (implicit membership). Client grants also need the organization_members_read scope to list that implicit roster. [Management key](/docs/guides/overview/auth/management-api-keys) required.
    */
   async listMembers(
     request: operations.ListWorkspaceMembersRequest,
