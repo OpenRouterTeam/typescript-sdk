@@ -6575,8 +6575,8 @@ components:
           example: 123
           type: 'integer'
         container_id:
-          description: 'The container the file belongs to — echoes the `session_id` path parameter (OpenAI field name).'
-          example: 'sess-abc123'
+          description: 'The container the file belongs to — echoes the `container_id` path parameter (OpenAI field name).'
+          example: 'sess_abc123'
           type: 'string'
         created_at:
           description: 'Unix timestamp (seconds) when the file was last synced.'
@@ -6592,7 +6592,7 @@ components:
           example: 'container.file'
           type: 'string'
         path:
-          description: 'Session-relative file path inside the container.'
+          description: 'Container-relative file path.'
           example: 'out/report.csv'
           type: 'string'
         source:
@@ -6643,15 +6643,15 @@ components:
         - 'has_more'
       type: 'object'
     ContainerReferenceEnvironment:
-      description: 'Reference to a previously created container to reuse.'
+      description: 'Reference to a container by its canonical id — a previously returned container_id or a fresh name to create a persistent container.'
       example:
-        container_id: 'cntr_abc123'
+        container_id: 'sess_abc123'
         type: 'container_reference'
       properties:
         container_id:
-          description: 'Identifier of an existing container to reuse (max 20 characters).'
-          example: 'cntr_abc123'
-          maxLength: 20
+          description: 'Canonical container id to reuse (max 40 characters, letters/digits/underscores/hyphens). Any container_id previously returned by a bash or shell tool result works here and reattaches to the same container and files — including session-derived ids (sess_...) and generation-derived ids (gen_...). Note that a session-derived id is always sess_ + the sanitized session key, which is not necessarily the raw session id you sent. Using the same container_id from both the bash and shell tools shares the same files, with last-write-wins when both flush concurrently. A fresh name creates a new persistent container. Containers are always scoped to your account and workspace.'
+          example: 'sess_abc123'
+          maxLength: 40
           minLength: 1
           pattern: '^[\w-]+$'
           type: 'string'
@@ -12492,9 +12492,39 @@ components:
         tool_use_id: 'srvtoolu_01abc'
         type: 'openrouter_bash_tool_result'
       properties:
+        container_id:
+          description: 'The canonical container id the command ran under — the `{container_id}` for the Container Files API, reusable as a `container_reference` in later requests. Present on every sandbox-executed call, even when no files changed.'
+          type: 'string'
         content:
           additionalProperties: {}
           type: 'object'
+        files:
+          description: 'Citations for the files the sandbox command created or modified, most-recently-touched first (at most 10). Retrieve them via the Container Files API.'
+          items:
+            properties:
+              container_id:
+                type: 'string'
+              end_index:
+                type: 'integer'
+              file_id:
+                type: 'string'
+              filename:
+                type: 'string'
+              start_index:
+                type: 'integer'
+              type:
+                enum:
+                  - 'container_file_citation'
+                type: 'string'
+            required:
+              - 'type'
+              - 'container_id'
+              - 'file_id'
+              - 'filename'
+              - 'start_index'
+              - 'end_index'
+            type: 'object'
+          type: 'array'
         tool_use_id:
           type: 'string'
         type:
@@ -13642,9 +13672,39 @@ components:
         tool_use_id: 'srvtoolu_01abc'
         type: 'openrouter_shell_tool_result'
       properties:
+        container_id:
+          description: 'The canonical container id the command ran under — the `{container_id}` for the Container Files API, reusable as a `container_reference` in later requests. Present on every sandbox-executed call, even when no files changed.'
+          type: 'string'
         content:
           additionalProperties: {}
           type: 'object'
+        files:
+          description: 'Citations for the files the sandbox command created or modified, most-recently-touched first (at most 10). Retrieve them via the Container Files API.'
+          items:
+            properties:
+              container_id:
+                type: 'string'
+              end_index:
+                type: 'integer'
+              file_id:
+                type: 'string'
+              filename:
+                type: 'string'
+              start_index:
+                type: 'integer'
+              type:
+                enum:
+                  - 'container_file_citation'
+                type: 'string'
+            required:
+              - 'type'
+              - 'container_id'
+              - 'file_id'
+              - 'filename'
+              - 'start_index'
+              - 'end_index'
+            type: 'object'
+          type: 'array'
         tool_use_id:
           type: 'string'
         type:
@@ -17989,9 +18049,39 @@ components:
         tool_use_id: 'srvtoolu_01abc'
         type: 'openrouter_bash_tool_result'
       properties:
+        container_id:
+          description: 'The canonical container id the command ran under — the `{container_id}` for the Container Files API, reusable as a `container_reference` in later requests. Present on every sandbox-executed call, even when no files changed.'
+          type: 'string'
         content:
           additionalProperties: {}
           type: 'object'
+        files:
+          description: 'Citations for the files the sandbox command created or modified, most-recently-touched first (at most 10). Retrieve them via the Container Files API.'
+          items:
+            properties:
+              container_id:
+                type: 'string'
+              end_index:
+                type: 'integer'
+              file_id:
+                type: 'string'
+              filename:
+                type: 'string'
+              start_index:
+                type: 'integer'
+              type:
+                enum:
+                  - 'container_file_citation'
+                type: 'string'
+            required:
+              - 'type'
+              - 'container_id'
+              - 'file_id'
+              - 'filename'
+              - 'start_index'
+              - 'end_index'
+            type: 'object'
+          type: 'array'
         tool_use_id:
           type: 'string'
         type:
@@ -18096,9 +18186,39 @@ components:
         tool_use_id: 'srvtoolu_01abc'
         type: 'openrouter_shell_tool_result'
       properties:
+        container_id:
+          description: 'The canonical container id the command ran under — the `{container_id}` for the Container Files API, reusable as a `container_reference` in later requests. Present on every sandbox-executed call, even when no files changed.'
+          type: 'string'
         content:
           additionalProperties: {}
           type: 'object'
+        files:
+          description: 'Citations for the files the sandbox command created or modified, most-recently-touched first (at most 10). Retrieve them via the Container Files API.'
+          items:
+            properties:
+              container_id:
+                type: 'string'
+              end_index:
+                type: 'integer'
+              file_id:
+                type: 'string'
+              filename:
+                type: 'string'
+              start_index:
+                type: 'integer'
+              type:
+                enum:
+                  - 'container_file_citation'
+                type: 'string'
+            required:
+              - 'type'
+              - 'container_id'
+              - 'file_id'
+              - 'filename'
+              - 'start_index'
+              - 'end_index'
+            type: 'object'
+          type: 'array'
         tool_use_id:
           type: 'string'
         type:
@@ -18241,8 +18361,38 @@ components:
             - 'null'
         command:
           type: 'string'
+        container_id:
+          description: 'The canonical container id the command ran under — the `{container_id}` for the Container Files API, reusable as a `container_reference` in later requests. Present on every sandbox-executed call, even when no files changed.'
+          type: 'string'
         exitCode:
           type: 'integer'
+        files:
+          description: 'Citations for the files the sandbox command created or modified, most-recently-touched first (at most 10). Retrieve them via the Container Files API.'
+          items:
+            properties:
+              container_id:
+                type: 'string'
+              end_index:
+                type: 'integer'
+              file_id:
+                type: 'string'
+              filename:
+                type: 'string'
+              start_index:
+                type: 'integer'
+              type:
+                enum:
+                  - 'container_file_citation'
+                type: 'string'
+            required:
+              - 'type'
+              - 'container_id'
+              - 'file_id'
+              - 'filename'
+              - 'start_index'
+              - 'end_index'
+            type: 'object'
+          type: 'array'
         id:
           type: 'string'
         status:
@@ -19431,6 +19581,36 @@ components:
       properties:
         call_id:
           type: 'string'
+        container_id:
+          description: 'The canonical container id the command ran under — the `{container_id}` for the Container Files API, reusable as a `container_reference` in later requests. Present on every sandbox-executed call, even when no files changed.'
+          type: 'string'
+        files:
+          description: 'Citations for the files the sandbox command created or modified, most-recently-touched first (at most 10). Retrieve them via the Container Files API.'
+          items:
+            properties:
+              container_id:
+                type: 'string'
+              end_index:
+                type: 'integer'
+              file_id:
+                type: 'string'
+              filename:
+                type: 'string'
+              start_index:
+                type: 'integer'
+              type:
+                enum:
+                  - 'container_file_citation'
+                type: 'string'
+            required:
+              - 'type'
+              - 'container_id'
+              - 'file_id'
+              - 'filename'
+              - 'start_index'
+              - 'end_index'
+            type: 'object'
+          type: 'array'
         id:
           type: 'string'
         max_output_length:
@@ -19500,6 +19680,36 @@ components:
           type:
             - 'string'
             - 'null'
+        container_id:
+          description: 'The canonical container id the command ran under — the `{container_id}` for the Container Files API, reusable as a `container_reference` in later requests. Present on every sandbox-executed call, even when no files changed.'
+          type: 'string'
+        files:
+          description: 'Citations for the files the sandbox command created or modified, most-recently-touched first (at most 10). Retrieve them via the Container Files API.'
+          items:
+            properties:
+              container_id:
+                type: 'string'
+              end_index:
+                type: 'integer'
+              file_id:
+                type: 'string'
+              filename:
+                type: 'string'
+              start_index:
+                type: 'integer'
+              type:
+                enum:
+                  - 'container_file_citation'
+                type: 'string'
+            required:
+              - 'type'
+              - 'container_id'
+              - 'file_id'
+              - 'filename'
+              - 'start_index'
+              - 'end_index'
+            type: 'object'
+          type: 'array'
         id:
           type: 'string'
         output:
@@ -28777,18 +28987,18 @@ paths:
       summary: 'Task classification market share'
       tags:
         - 'Classifications'
-  /containers/{session_id}/files:
+  /containers/{container_id}/files:
     get:
-      description: 'Lists the files under a sandbox session prefix, in lexicographic path order. A restarted session is a separate container with its own session id. Paginate with `limit` and `after` (pass the previous page’s `last_id`); `has_more: true` always means the next page is fetchable that way.'
+      description: 'Lists the files in a container, in lexicographic path order. The container id is the canonical id returned in bash/shell tool results; a restarted session is a separate container with its own id. Paginate with `limit` and `after` (pass the previous page’s `last_id`); `has_more: true` always means the next page is fetchable that way.'
       operationId: 'listContainerFiles'
       parameters:
-        - description: 'The sandbox session id, exactly as stored — a restarted session has its own `-r<nonce>`-suffixed id.'
+        - description: 'The canonical container id, exactly as returned in a bash/shell tool result — a restarted session has its own `-r<nonce>`-suffixed id. A session-derived id is always `sess_` + the sanitized session key, which is not necessarily the raw session id that was sent.'
           in: 'path'
-          name: 'session_id'
+          name: 'container_id'
           required: true
           schema:
-            description: 'The sandbox session id, exactly as stored — a restarted session has its own `-r<nonce>`-suffixed id.'
-            example: 'sess-abc123'
+            description: 'The canonical container id, exactly as returned in a bash/shell tool result — a restarted session has its own `-r<nonce>`-suffixed id. A session-derived id is always `sess_` + the sanitized session key, which is not necessarily the raw session id that was sent.'
+            example: 'sess_abc123'
             type: 'string'
         - description: 'Maximum number of files to return (1-1000). Defaults to 100 when absent.'
           in: 'query'
@@ -28816,7 +29026,7 @@ paths:
               example:
                 data:
                   - bytes: 123
-                    container_id: 'sess-abc123'
+                    container_id: 'sess_abc123'
                     created_at: 1755640000
                     id: 'cfile_b3V0L3JlcG9ydC5jc3Y'
                     object: 'container.file'
@@ -28893,18 +29103,18 @@ paths:
       tags:
         - 'Containers'
       x-hidden: true
-  /containers/{session_id}/files/{file_id}:
+  /containers/{container_id}/files/{file_id}:
     get:
-      description: 'Returns the metadata of a single file under a sandbox session prefix.'
+      description: 'Returns the metadata of a single file in a container.'
       operationId: 'getContainerFile'
       parameters:
-        - description: 'The sandbox session id, exactly as stored — a restarted session has its own `-r<nonce>`-suffixed id.'
+        - description: 'The canonical container id, exactly as returned in a bash/shell tool result — a restarted session has its own `-r<nonce>`-suffixed id. A session-derived id is always `sess_` + the sanitized session key, which is not necessarily the raw session id that was sent.'
           in: 'path'
-          name: 'session_id'
+          name: 'container_id'
           required: true
           schema:
-            description: 'The sandbox session id, exactly as stored — a restarted session has its own `-r<nonce>`-suffixed id.'
-            example: 'sess-abc123'
+            description: 'The canonical container id, exactly as returned in a bash/shell tool result — a restarted session has its own `-r<nonce>`-suffixed id. A session-derived id is always `sess_` + the sanitized session key, which is not necessarily the raw session id that was sent.'
+            example: 'sess_abc123'
             type: 'string'
         - description: 'Container file id (`cfile_` + base64url of the file path).'
           in: 'path'
@@ -28920,7 +29130,7 @@ paths:
             application/json:
               example:
                 bytes: 123
-                container_id: 'sess-abc123'
+                container_id: 'sess_abc123'
                 created_at: 1755640000
                 id: 'cfile_b3V0L3JlcG9ydC5jc3Y'
                 object: 'container.file'
@@ -29003,18 +29213,18 @@ paths:
       tags:
         - 'Containers'
       x-hidden: true
-  /containers/{session_id}/files/{file_id}/content:
+  /containers/{container_id}/files/{file_id}/content:
     get:
-      description: 'Streams the raw bytes of a file under a sandbox session prefix.'
+      description: 'Streams the raw bytes of a file in a container.'
       operationId: 'downloadContainerFileContent'
       parameters:
-        - description: 'The sandbox session id, exactly as stored — a restarted session has its own `-r<nonce>`-suffixed id.'
+        - description: 'The canonical container id, exactly as returned in a bash/shell tool result — a restarted session has its own `-r<nonce>`-suffixed id. A session-derived id is always `sess_` + the sanitized session key, which is not necessarily the raw session id that was sent.'
           in: 'path'
-          name: 'session_id'
+          name: 'container_id'
           required: true
           schema:
-            description: 'The sandbox session id, exactly as stored — a restarted session has its own `-r<nonce>`-suffixed id.'
-            example: 'sess-abc123'
+            description: 'The canonical container id, exactly as returned in a bash/shell tool result — a restarted session has its own `-r<nonce>`-suffixed id. A session-derived id is always `sess_` + the sanitized session key, which is not necessarily the raw session id that was sent.'
+            example: 'sess_abc123'
             type: 'string'
         - description: 'Container file id (`cfile_` + base64url of the file path).'
           in: 'path'
