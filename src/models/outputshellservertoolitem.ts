@@ -27,27 +27,11 @@ export type OutputShellServerToolItemAction = {
   timeoutMs?: number | null | undefined;
 };
 
-export const OutputShellServerToolItemTypeContainerFileCitation = {
-  ContainerFileCitation: "container_file_citation",
-} as const;
-export type OutputShellServerToolItemTypeContainerFileCitation = ClosedEnum<
-  typeof OutputShellServerToolItemTypeContainerFileCitation
->;
-
-export type OutputShellServerToolItemFile = {
-  containerId: string;
-  endIndex: number;
-  fileId: string;
-  filename: string;
-  startIndex: number;
-  type: OutputShellServerToolItemTypeContainerFileCitation;
-};
-
-export const OutputShellServerToolItemTypeOpenrouterShell = {
+export const OutputShellServerToolItemType = {
   OpenrouterShell: "openrouter:shell",
 } as const;
-export type OutputShellServerToolItemTypeOpenrouterShell = ClosedEnum<
-  typeof OutputShellServerToolItemTypeOpenrouterShell
+export type OutputShellServerToolItemType = ClosedEnum<
+  typeof OutputShellServerToolItemType
 >;
 
 /**
@@ -63,18 +47,10 @@ export type OutputShellServerToolItem = {
    * The model-generated tool call id from the originating turn.
    */
   callId?: string | null | undefined;
-  /**
-   * The canonical container id the command ran under — the `{container_id}` for the Container Files API, reusable as a `container_reference` in later requests. Present on every sandbox-executed call, even when no files changed.
-   */
-  containerId?: string | undefined;
-  /**
-   * Citations for the files the sandbox command created or modified, most-recently-touched first (at most 10). Retrieve them via the Container Files API.
-   */
-  files?: Array<OutputShellServerToolItemFile> | undefined;
   id?: string | undefined;
   output?: Array<ShellCallOutputContent> | undefined;
   status: ToolCallStatus;
-  type: OutputShellServerToolItemTypeOpenrouterShell;
+  type: OutputShellServerToolItemType;
 };
 
 /** @internal */
@@ -133,92 +109,13 @@ export function outputShellServerToolItemActionFromJSON(
 }
 
 /** @internal */
-export const OutputShellServerToolItemTypeContainerFileCitation$inboundSchema:
-  z.ZodEnum<typeof OutputShellServerToolItemTypeContainerFileCitation> = z.enum(
-    OutputShellServerToolItemTypeContainerFileCitation,
-  );
+export const OutputShellServerToolItemType$inboundSchema: z.ZodEnum<
+  typeof OutputShellServerToolItemType
+> = z.enum(OutputShellServerToolItemType);
 /** @internal */
-export const OutputShellServerToolItemTypeContainerFileCitation$outboundSchema:
-  z.ZodEnum<typeof OutputShellServerToolItemTypeContainerFileCitation> =
-    OutputShellServerToolItemTypeContainerFileCitation$inboundSchema;
-
-/** @internal */
-export const OutputShellServerToolItemFile$inboundSchema: z.ZodType<
-  OutputShellServerToolItemFile,
-  unknown
-> = z.object({
-  container_id: z.string(),
-  end_index: z.int(),
-  file_id: z.string(),
-  filename: z.string(),
-  start_index: z.int(),
-  type: OutputShellServerToolItemTypeContainerFileCitation$inboundSchema,
-}).transform((v) => {
-  return remap$(v, {
-    "container_id": "containerId",
-    "end_index": "endIndex",
-    "file_id": "fileId",
-    "start_index": "startIndex",
-  });
-});
-/** @internal */
-export type OutputShellServerToolItemFile$Outbound = {
-  container_id: string;
-  end_index: number;
-  file_id: string;
-  filename: string;
-  start_index: number;
-  type: string;
-};
-
-/** @internal */
-export const OutputShellServerToolItemFile$outboundSchema: z.ZodType<
-  OutputShellServerToolItemFile$Outbound,
-  OutputShellServerToolItemFile
-> = z.object({
-  containerId: z.string(),
-  endIndex: z.int(),
-  fileId: z.string(),
-  filename: z.string(),
-  startIndex: z.int(),
-  type: OutputShellServerToolItemTypeContainerFileCitation$outboundSchema,
-}).transform((v) => {
-  return remap$(v, {
-    containerId: "container_id",
-    endIndex: "end_index",
-    fileId: "file_id",
-    startIndex: "start_index",
-  });
-});
-
-export function outputShellServerToolItemFileToJSON(
-  outputShellServerToolItemFile: OutputShellServerToolItemFile,
-): string {
-  return JSON.stringify(
-    OutputShellServerToolItemFile$outboundSchema.parse(
-      outputShellServerToolItemFile,
-    ),
-  );
-}
-export function outputShellServerToolItemFileFromJSON(
-  jsonString: string,
-): SafeParseResult<OutputShellServerToolItemFile, SDKValidationError> {
-  return safeParse(
-    jsonString,
-    (x) => OutputShellServerToolItemFile$inboundSchema.parse(JSON.parse(x)),
-    `Failed to parse 'OutputShellServerToolItemFile' from JSON`,
-  );
-}
-
-/** @internal */
-export const OutputShellServerToolItemTypeOpenrouterShell$inboundSchema:
-  z.ZodEnum<typeof OutputShellServerToolItemTypeOpenrouterShell> = z.enum(
-    OutputShellServerToolItemTypeOpenrouterShell,
-  );
-/** @internal */
-export const OutputShellServerToolItemTypeOpenrouterShell$outboundSchema:
-  z.ZodEnum<typeof OutputShellServerToolItemTypeOpenrouterShell> =
-    OutputShellServerToolItemTypeOpenrouterShell$inboundSchema;
+export const OutputShellServerToolItemType$outboundSchema: z.ZodEnum<
+  typeof OutputShellServerToolItemType
+> = OutputShellServerToolItemType$inboundSchema;
 
 /** @internal */
 export const OutputShellServerToolItem$inboundSchema: z.ZodType<
@@ -229,17 +126,13 @@ export const OutputShellServerToolItem$inboundSchema: z.ZodType<
     .optional(),
   arguments: z.nullable(z.string()).optional(),
   call_id: z.nullable(z.string()).optional(),
-  container_id: z.string().optional(),
-  files: z.array(z.lazy(() => OutputShellServerToolItemFile$inboundSchema))
-    .optional(),
   id: z.string().optional(),
   output: z.array(ShellCallOutputContent$inboundSchema).optional(),
   status: ToolCallStatus$inboundSchema,
-  type: OutputShellServerToolItemTypeOpenrouterShell$inboundSchema,
+  type: OutputShellServerToolItemType$inboundSchema,
 }).transform((v) => {
   return remap$(v, {
     "call_id": "callId",
-    "container_id": "containerId",
   });
 });
 /** @internal */
@@ -247,8 +140,6 @@ export type OutputShellServerToolItem$Outbound = {
   action?: OutputShellServerToolItemAction$Outbound | undefined;
   arguments?: string | null | undefined;
   call_id?: string | null | undefined;
-  container_id?: string | undefined;
-  files?: Array<OutputShellServerToolItemFile$Outbound> | undefined;
   id?: string | undefined;
   output?: Array<ShellCallOutputContent$Outbound> | undefined;
   status: string;
@@ -264,17 +155,13 @@ export const OutputShellServerToolItem$outboundSchema: z.ZodType<
     .optional(),
   arguments: z.nullable(z.string()).optional(),
   callId: z.nullable(z.string()).optional(),
-  containerId: z.string().optional(),
-  files: z.array(z.lazy(() => OutputShellServerToolItemFile$outboundSchema))
-    .optional(),
   id: z.string().optional(),
   output: z.array(ShellCallOutputContent$outboundSchema).optional(),
   status: ToolCallStatus$outboundSchema,
-  type: OutputShellServerToolItemTypeOpenrouterShell$outboundSchema,
+  type: OutputShellServerToolItemType$outboundSchema,
 }).transform((v) => {
   return remap$(v, {
     callId: "call_id",
-    containerId: "container_id",
   });
 });
 
