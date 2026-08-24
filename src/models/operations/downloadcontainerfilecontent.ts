@@ -49,9 +49,9 @@ export type DownloadContainerFileContentRequest = {
    */
   appCategories?: string | undefined;
   /**
-   * The sandbox session id, exactly as stored — a restarted session has its own `-r<nonce>`-suffixed id.
+   * The canonical container id, exactly as returned in a bash/shell tool result — a restarted session has its own `-r<nonce>`-suffixed id. A session-derived id is always `sess_` + the sanitized session key, which is not necessarily the raw session id that was sent.
    */
-  sessionId: string;
+  containerId: string;
   /**
    * Container file id (`cfile_` + base64url of the file path).
    */
@@ -63,7 +63,7 @@ export type DownloadContainerFileContentRequest$Outbound = {
   "HTTP-Referer"?: string | undefined;
   appTitle?: string | undefined;
   appCategories?: string | undefined;
-  session_id: string;
+  container_id: string;
   file_id: string;
 };
 
@@ -75,12 +75,12 @@ export const DownloadContainerFileContentRequest$outboundSchema: z.ZodType<
   httpReferer: z.string().optional(),
   appTitle: z.string().optional(),
   appCategories: z.string().optional(),
-  sessionId: z.string(),
+  containerId: z.string(),
   fileId: z.string(),
 }).transform((v) => {
   return remap$(v, {
     httpReferer: "HTTP-Referer",
-    sessionId: "session_id",
+    containerId: "container_id",
     fileId: "file_id",
   });
 });
