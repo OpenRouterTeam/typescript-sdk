@@ -27,7 +27,7 @@ export type ObservabilityDatadogDestinationConfig = {
    */
   mlApp: string;
   /**
-   * Datadog API URL for your region (e.g., https://api.datadoghq.com, https://api.us3.datadoghq.com, https://api.datadoghq.eu)
+   * Datadog API URL for your region (e.g., https://api.datadoghq.com, https://api.us3.datadoghq.com, https://api.us5.datadoghq.com, https://api.datadoghq.eu)
    */
   url: string;
 };
@@ -97,7 +97,7 @@ export const ObservabilityDatadogDestinationConfig$inboundSchema: z.ZodType<
   apiKey: z.string(),
   headers: z.record(z.string(), z.string()).optional(),
   mlApp: z.string(),
-  url: z.string().default("https://api.us5.datadoghq.com"),
+  url: z.string().default("https://api.datadoghq.com"),
 });
 
 export function observabilityDatadogDestinationConfigFromJSON(
