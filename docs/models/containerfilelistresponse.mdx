@@ -1,0 +1,27 @@
+---
+title: "ContainerFileListResponse"
+---
+
+## Example Usage
+
+```typescript
+import { ContainerFileListResponse } from "@openrouter/sdk/models";
+
+let value: ContainerFileListResponse = {
+  data: [],
+  firstId: "cfile_b3V0L3JlcG9ydC5jc3Y",
+  hasMore: false,
+  lastId: "cfile_b3V0L3JlcG9ydC5jc3Y",
+  object: "list",
+};
+```
+
+## Fields
+
+| Field                                                                                  | Type                                                                                   | Required                                                                               | Description                                                                            | Example                                                                                |
+| -------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------- |
+| `data`                                                                                 | [models.ContainerFile](../models/containerfile.mdx)[]                                   | :heavy_check_mark:                                                                     | N/A                                                                                    |                                                                                        |
+| `firstId`                                                                              | *string*                                                                               | :heavy_check_mark:                                                                     | N/A                                                                                    | cfile_b3V0L3JlcG9ydC5jc3Y                                                              |
+| `hasMore`                                                                              | *boolean*                                                                              | :heavy_check_mark:                                                                     | True when another page can be fetched by passing `after=last_id`.                      | false                                                                                  |
+| `lastId`                                                                               | *string*                                                                               | :heavy_check_mark:                                                                     | N/A                                                                                    | cfile_b3V0L3JlcG9ydC5jc3Y                                                              |
+| `object`                                                                               | [models.ContainerFileListResponseObject](../models/containerfilelistresponseobject.mdx) | :heavy_check_mark:                                                                     | N/A                                                                                    | list                                                                                   |
