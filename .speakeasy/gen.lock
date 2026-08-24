@@ -1,19 +1,19 @@
 lockVersion: ""
 id: ""
 management:
-  docChecksum: e8cb591aed63cce676f8d272a3351b0e
+  docChecksum: 309199eed37f3118d120cb83a4bde322
   docVersion: 1.0.0
   speakeasyVersion: 1.787.0
   generationVersion: 2.914.0
-  releaseVersion: 1.2.56
-  configChecksum: bd3553c433a9f60502bb78f655086a26
+  releaseVersion: 1.2.57
+  configChecksum: 9c9450c4707643bf86101b3c84c7ae79
   repoURL: https://github.com/OpenRouterTeam/typescript-sdk.git
   installationURL: https://github.com/OpenRouterTeam/typescript-sdk
   published: true
 persistentEdits:
-  generation_id: 0a56c37e-429b-47eb-8a25-33d1fc285770
-  pristine_commit_hash: f037f61c46d9acb5e83a94d33f3440de4d3883bb
-  pristine_tree_hash: e2bc896b13b3a34e08a14aeaf333401a9a215f21
+  generation_id: aca3e775-3d8e-4fdc-bcb7-3e7338769c0f
+  pristine_commit_hash: 3f20bd08dbca733d26ac2af23e637b7c8007c54c
+  pristine_tree_hash: 308cf27fd3be5b261474fb05557316e19fd91ba7
 features:
   typescript:
     acceptHeaders: 2.81.2
@@ -7146,8 +7146,8 @@ trackedFiles:
     pristine_git_object: 45a9a6b9516497dc77f17670eac7e0242be58b61
   docs/models/operations/createkeysrequestbody.mdx:
     id: 300993eac8d3
-    last_write_checksum: sha1:1a2efac8fdf3a6b13baf1458e5aa34696aed405e
-    pristine_git_object: 9189f92e91968f592591c56e91f27dcad69476e5
+    last_write_checksum: sha1:c944f1a224f3ccea3adcbb683256a7fe0ead6fcb
+    pristine_git_object: 4c20a9984d7f57afff5c0df49aa257c58a7851a0
   docs/models/operations/createkeysresponse.mdx:
     id: 5135de195ccb
     last_write_checksum: sha1:c9273ddfe3c6a499d827bfa7f0729778f4dd93a3
@@ -13017,12 +13017,12 @@ trackedFiles:
     pristine_git_object: 410efafd6a7f50d91ccb87131fedbe0c3d47e15a
   jsr.json:
     id: 7f6ab7767282
-    last_write_checksum: sha1:b12ba416ef3334aa354a3b1c50bfd5a6b70ebc51
-    pristine_git_object: 62cf3b674ba315f6cb8868e50a725de36e971be1
+    last_write_checksum: sha1:d92ce5a1d515045001d94ec9884cbcab217461f1
+    pristine_git_object: f34de7fa1183161423302b7e8291270eaeabde4d
   package.json:
     id: 7030d0b2f71b
-    last_write_checksum: sha1:6db6f3a70568f455720a00210b520928b86419e7
-    pristine_git_object: f674516569a101baf8608ad1bd57c9822c00acfa
+    last_write_checksum: sha1:820b37b7b555743a9c96849bf17355cf857ccdca
+    pristine_git_object: adf1bde459240e80d08c5880af21b7b57d4102ec
   src/core.ts:
     id: f431fdbcd144
     last_write_checksum: sha1:5aa66b0b6a5964f3eea7f3098c2eb3c0ee9c0131
@@ -13445,8 +13445,8 @@ trackedFiles:
     pristine_git_object: a187e58707bdb726ca2aff74941efe7493422d4e
   src/lib/config.ts:
     id: 320761608fb3
-    last_write_checksum: sha1:416c0c5b9917931efee480956d148c14768f79b0
-    pristine_git_object: c938ba20ff00cbe9d6119179aec028e010b1bad0
+    last_write_checksum: sha1:0e2dddab7f9a33cd5483c290600afcf689334da5
+    pristine_git_object: 16e5a1031253e9f3ec091baff8066507b08f50ae
   src/lib/dlv.ts:
     id: b1988214835a
     last_write_checksum: sha1:eaac763b22717206a6199104e0403ed17a4e2711
@@ -15207,8 +15207,8 @@ trackedFiles:
     pristine_git_object: 0a2ca2582247b2b60db1b464933ef5e599e430b8
   src/models/operations/createkeys.ts:
     id: e7a250c8b7bb
-    last_write_checksum: sha1:acf6b76635b875e8105d688eab5b3da275e0572a
-    pristine_git_object: ee4774430a48719e231642d39c5029b7f3f359a5
+    last_write_checksum: sha1:a284afd929876508618175caf4dde4887ba5d42d
+    pristine_git_object: 587ece87a489b2e46c9c1c868a82bad80ac25a75
   src/models/operations/createobservabilitydestination.ts:
     id: 600d023d815b
     last_write_checksum: sha1:5fca52c4a8b4361f8b14e8534703c725b11ea814
@@ -18484,4 +18484,4 @@ examples:
         "503":
           application/json: {"error": {"code": 503, "message": "Service temporarily unavailable"}}
 examplesVersion: 1.0.2
-releaseNotes: "## Typescript SDK Changes:\n* `openrouter.containers.listContainerFiles()`:  `request` **Changed** (Breaking ⚠️)\n* `openrouter.containers.getContainerFile()`:  `request` **Changed** (Breaking ⚠️)\n* `openrouter.containers.downloadContainerFileContent()`:  `request` **Changed** (Breaking ⚠️)\n* `openrouter.presets.createPresetsMessages()`: \n  *  `request.messagesRequest.messages[].content.union(Array<>)[]` **Changed**\n* `openrouter.presets.createPresetsResponses()`: \n  *  `request.responsesRequest.input.union(Array<>)[]` **Changed**\n* `openrouter.responses.send()`: \n  *  `request.responsesRequest.input.union(Array<>)[]` **Changed**\n  *  `response` **Changed**\n* `openrouter.beta.responses.send()`: \n  *  `request.responsesRequest.input.union(Array<>)[]` **Changed**\n  *  `response` **Changed**\n"
+releaseNotes: "## Typescript SDK Changes:\n* `openrouter.apiKeys.create()`: \n  *  `request.requestBody.externalApiKey` **Added**\n"
