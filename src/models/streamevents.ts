@@ -160,6 +160,26 @@ import {
   RefusalDoneEvent$inboundSchema,
 } from "./refusaldoneevent.js";
 import {
+  ShellCallCommandAddedEvent,
+  ShellCallCommandAddedEvent$inboundSchema,
+} from "./shellcallcommandaddedevent.js";
+import {
+  ShellCallCommandDeltaEvent,
+  ShellCallCommandDeltaEvent$inboundSchema,
+} from "./shellcallcommanddeltaevent.js";
+import {
+  ShellCallCommandDoneEvent,
+  ShellCallCommandDoneEvent$inboundSchema,
+} from "./shellcallcommanddoneevent.js";
+import {
+  ShellCallOutputContentDeltaEvent,
+  ShellCallOutputContentDeltaEvent$inboundSchema,
+} from "./shellcalloutputcontentdeltaevent.js";
+import {
+  ShellCallOutputContentDoneEvent,
+  ShellCallOutputContentDoneEvent$inboundSchema,
+} from "./shellcalloutputcontentdoneevent.js";
+import {
   StreamEventsResponseCompleted,
   StreamEventsResponseCompleted$inboundSchema,
 } from "./streameventsresponsecompleted.js";
@@ -247,6 +267,11 @@ export type StreamEvents =
   | ReasoningDoneEvent
   | RefusalDeltaEvent
   | RefusalDoneEvent
+  | ShellCallCommandAddedEvent
+  | ShellCallCommandDeltaEvent
+  | ShellCallCommandDoneEvent
+  | ShellCallOutputContentDeltaEvent
+  | ShellCallOutputContentDoneEvent
   | WebSearchCallCompletedEvent
   | WebSearchCallInProgressEvent
   | WebSearchCallSearchingEvent
@@ -331,6 +356,16 @@ export const StreamEvents$inboundSchema: z.ZodType<StreamEvents, unknown> =
     ["response.reasoning_text.done"]: ReasoningDoneEvent$inboundSchema,
     ["response.refusal.delta"]: RefusalDeltaEvent$inboundSchema,
     ["response.refusal.done"]: RefusalDoneEvent$inboundSchema,
+    ["response.shell_call_command.added"]:
+      ShellCallCommandAddedEvent$inboundSchema,
+    ["response.shell_call_command.delta"]:
+      ShellCallCommandDeltaEvent$inboundSchema,
+    ["response.shell_call_command.done"]:
+      ShellCallCommandDoneEvent$inboundSchema,
+    ["response.shell_call_output_content.delta"]:
+      ShellCallOutputContentDeltaEvent$inboundSchema,
+    ["response.shell_call_output_content.done"]:
+      ShellCallOutputContentDoneEvent$inboundSchema,
     ["response.web_search_call.completed"]:
       WebSearchCallCompletedEvent$inboundSchema,
     ["response.web_search_call.in_progress"]:

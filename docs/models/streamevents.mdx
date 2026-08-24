@@ -739,6 +739,66 @@ const value: models.RefusalDoneEvent = {
 };
 ```
 
+### `models.ShellCallCommandAddedEvent`
+
+```typescript
+const value: models.ShellCallCommandAddedEvent = {
+  command: "<value>",
+  commandIndex: 621435,
+  outputIndex: 472210,
+  sequenceNumber: 0,
+  type: "response.shell_call_command.added",
+};
+```
+
+### `models.ShellCallCommandDeltaEvent`
+
+```typescript
+const value: models.ShellCallCommandDeltaEvent = {
+  commandIndex: 35177,
+  delta: "<value>",
+  outputIndex: 64448,
+  sequenceNumber: 0,
+  type: "response.shell_call_command.delta",
+};
+```
+
+### `models.ShellCallCommandDoneEvent`
+
+```typescript
+const value: models.ShellCallCommandDoneEvent = {
+  command: "<value>",
+  commandIndex: 17999,
+  outputIndex: 696449,
+  sequenceNumber: 0,
+  type: "response.shell_call_command.done",
+};
+```
+
+### `models.ShellCallOutputContentDeltaEvent`
+
+```typescript
+const value: models.ShellCallOutputContentDeltaEvent = {
+  commandIndex: 866755,
+  itemId: "<id>",
+  outputIndex: 244424,
+  sequenceNumber: 0,
+  type: "response.shell_call_output_content.delta",
+};
+```
+
+### `models.ShellCallOutputContentDoneEvent`
+
+```typescript
+const value: models.ShellCallOutputContentDoneEvent = {
+  commandIndex: 826819,
+  itemId: "<id>",
+  outputIndex: 630097,
+  sequenceNumber: 0,
+  type: "response.shell_call_output_content.done",
+};
+```
+
 ### `models.WebSearchCallCompletedEvent`
 
 ```typescript

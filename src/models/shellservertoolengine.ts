@@ -8,14 +8,14 @@ import * as openEnums from "../types/enums.js";
 import { OpenEnum } from "../types/enums.js";
 
 /**
- * Which shell engine to use. "openrouter" runs commands server-side in the OpenRouter sandbox. "auto" (default) keeps the provider's native hosted shell when available (OpenAI); on other providers the call is routed to the OpenRouter sandbox.
+ * Which shell engine to use. "openrouter" runs commands server-side in the OpenRouter sandbox. "auto" (default) keeps the provider's native hosted shell when available (OpenAI endpoints on the Responses API); everywhere else the call is routed to the OpenRouter sandbox. Setting the sandbox-only "environment" or "sleep_after_seconds" options also routes to the OpenRouter sandbox.
  */
 export const ShellServerToolEngine = {
   Auto: "auto",
   Openrouter: "openrouter",
 } as const;
 /**
- * Which shell engine to use. "openrouter" runs commands server-side in the OpenRouter sandbox. "auto" (default) keeps the provider's native hosted shell when available (OpenAI); on other providers the call is routed to the OpenRouter sandbox.
+ * Which shell engine to use. "openrouter" runs commands server-side in the OpenRouter sandbox. "auto" (default) keeps the provider's native hosted shell when available (OpenAI endpoints on the Responses API); everywhere else the call is routed to the OpenRouter sandbox. Setting the sandbox-only "environment" or "sleep_after_seconds" options also routes to the OpenRouter sandbox.
  */
 export type ShellServerToolEngine = OpenEnum<typeof ShellServerToolEngine>;
 

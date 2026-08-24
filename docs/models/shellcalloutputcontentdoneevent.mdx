@@ -1,0 +1,30 @@
+---
+title: "ShellCallOutputContentDoneEvent"
+---
+
+Emitted when output content finishes streaming for a `shell_call_output` item.
+
+## Example Usage
+
+```typescript
+import { ShellCallOutputContentDoneEvent } from "@openrouter/sdk/models";
+
+let value: ShellCallOutputContentDoneEvent = {
+  commandIndex: 61357,
+  itemId: "<id>",
+  outputIndex: 720235,
+  sequenceNumber: 0,
+  type: "response.shell_call_output_content.done",
+};
+```
+
+## Fields
+
+| Field                                       | Type                                        | Required                                    | Description                                 |
+| ------------------------------------------- | ------------------------------------------- | ------------------------------------------- | ------------------------------------------- |
+| `commandIndex`                              | *number*                                    | :heavy_check_mark:                          | N/A                                         |
+| `itemId`                                    | *string*                                    | :heavy_check_mark:                          | N/A                                         |
+| `output`                                    | *any*                                       | :heavy_minus_sign:                          | N/A                                         |
+| `outputIndex`                               | *number*                                    | :heavy_check_mark:                          | N/A                                         |
+| `sequenceNumber`                            | *number*                                    | :heavy_check_mark:                          | N/A                                         |
+| `type`                                      | *"response.shell_call_output_content.done"* | :heavy_check_mark:                          | N/A                                         |

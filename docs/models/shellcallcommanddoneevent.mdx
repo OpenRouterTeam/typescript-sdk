@@ -1,0 +1,29 @@
+---
+title: "ShellCallCommandDoneEvent"
+---
+
+Emitted when a command finishes streaming for a `shell_call`.
+
+## Example Usage
+
+```typescript
+import { ShellCallCommandDoneEvent } from "@openrouter/sdk/models";
+
+let value: ShellCallCommandDoneEvent = {
+  command: "<value>",
+  commandIndex: 692679,
+  outputIndex: 454149,
+  sequenceNumber: 0,
+  type: "response.shell_call_command.done",
+};
+```
+
+## Fields
+
+| Field                                | Type                                 | Required                             | Description                          |
+| ------------------------------------ | ------------------------------------ | ------------------------------------ | ------------------------------------ |
+| `command`                            | *string*                             | :heavy_check_mark:                   | N/A                                  |
+| `commandIndex`                       | *number*                             | :heavy_check_mark:                   | N/A                                  |
+| `outputIndex`                        | *number*                             | :heavy_check_mark:                   | N/A                                  |
+| `sequenceNumber`                     | *number*                             | :heavy_check_mark:                   | N/A                                  |
+| `type`                               | *"response.shell_call_command.done"* | :heavy_check_mark:                   | N/A                                  |

@@ -1,0 +1,29 @@
+---
+title: "ShellCallCommandDeltaEvent"
+---
+
+Incremental chunk of a command string for a `shell_call`. Matches OpenAI's streaming shape.
+
+## Example Usage
+
+```typescript
+import { ShellCallCommandDeltaEvent } from "@openrouter/sdk/models";
+
+let value: ShellCallCommandDeltaEvent = {
+  commandIndex: 333842,
+  delta: "<value>",
+  outputIndex: 135027,
+  sequenceNumber: 0,
+  type: "response.shell_call_command.delta",
+};
+```
+
+## Fields
+
+| Field                                 | Type                                  | Required                              | Description                           |
+| ------------------------------------- | ------------------------------------- | ------------------------------------- | ------------------------------------- |
+| `commandIndex`                        | *number*                              | :heavy_check_mark:                    | N/A                                   |
+| `delta`                               | *string*                              | :heavy_check_mark:                    | N/A                                   |
+| `outputIndex`                         | *number*                              | :heavy_check_mark:                    | N/A                                   |
+| `sequenceNumber`                      | *number*                              | :heavy_check_mark:                    | N/A                                   |
+| `type`                                | *"response.shell_call_command.delta"* | :heavy_check_mark:                    | N/A                                   |
