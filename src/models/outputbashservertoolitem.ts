@@ -15,11 +15,27 @@ import {
   ToolCallStatus$outboundSchema,
 } from "./toolcallstatus.js";
 
-export const OutputBashServerToolItemType = {
+export const OutputBashServerToolItemTypeContainerFileCitation = {
+  ContainerFileCitation: "container_file_citation",
+} as const;
+export type OutputBashServerToolItemTypeContainerFileCitation = ClosedEnum<
+  typeof OutputBashServerToolItemTypeContainerFileCitation
+>;
+
+export type OutputBashServerToolItemFile = {
+  containerId: string;
+  endIndex: number;
+  fileId: string;
+  filename: string;
+  startIndex: number;
+  type: OutputBashServerToolItemTypeContainerFileCitation;
+};
+
+export const OutputBashServerToolItemTypeOpenrouterBash = {
   OpenrouterBash: "openrouter:bash",
 } as const;
-export type OutputBashServerToolItemType = ClosedEnum<
-  typeof OutputBashServerToolItemType
+export type OutputBashServerToolItemTypeOpenrouterBash = ClosedEnum<
+  typeof OutputBashServerToolItemTypeOpenrouterBash
 >;
 
 /**
@@ -35,22 +51,109 @@ export type OutputBashServerToolItem = {
    */
   callId?: string | null | undefined;
   command?: string | undefined;
+  /**
+   * The sandbox container/session key the command ran under — the `{container_id}` for the Container Files API. Present whenever the call had a persistent session key, even when no files changed.
+   */
+  containerId?: string | undefined;
   exitCode?: number | undefined;
+  /**
+   * Citations for the files the sandbox command created or modified, most-recently-touched first (at most 10). Retrieve them via the Container Files API.
+   */
+  files?: Array<OutputBashServerToolItemFile> | undefined;
   id?: string | undefined;
   status: ToolCallStatus;
   stderr?: string | undefined;
   stdout?: string | undefined;
-  type: OutputBashServerToolItemType;
+  type: OutputBashServerToolItemTypeOpenrouterBash;
 };
 
 /** @internal */
-export const OutputBashServerToolItemType$inboundSchema: z.ZodEnum<
-  typeof OutputBashServerToolItemType
-> = z.enum(OutputBashServerToolItemType);
+export const OutputBashServerToolItemTypeContainerFileCitation$inboundSchema:
+  z.ZodEnum<typeof OutputBashServerToolItemTypeContainerFileCitation> = z.enum(
+    OutputBashServerToolItemTypeContainerFileCitation,
+  );
 /** @internal */
-export const OutputBashServerToolItemType$outboundSchema: z.ZodEnum<
-  typeof OutputBashServerToolItemType
-> = OutputBashServerToolItemType$inboundSchema;
+export const OutputBashServerToolItemTypeContainerFileCitation$outboundSchema:
+  z.ZodEnum<typeof OutputBashServerToolItemTypeContainerFileCitation> =
+    OutputBashServerToolItemTypeContainerFileCitation$inboundSchema;
+
+/** @internal */
+export const OutputBashServerToolItemFile$inboundSchema: z.ZodType<
+  OutputBashServerToolItemFile,
+  unknown
+> = z.object({
+  container_id: z.string(),
+  end_index: z.int(),
+  file_id: z.string(),
+  filename: z.string(),
+  start_index: z.int(),
+  type: OutputBashServerToolItemTypeContainerFileCitation$inboundSchema,
+}).transform((v) => {
+  return remap$(v, {
+    "container_id": "containerId",
+    "end_index": "endIndex",
+    "file_id": "fileId",
+    "start_index": "startIndex",
+  });
+});
+/** @internal */
+export type OutputBashServerToolItemFile$Outbound = {
+  container_id: string;
+  end_index: number;
+  file_id: string;
+  filename: string;
+  start_index: number;
+  type: string;
+};
+
+/** @internal */
+export const OutputBashServerToolItemFile$outboundSchema: z.ZodType<
+  OutputBashServerToolItemFile$Outbound,
+  OutputBashServerToolItemFile
+> = z.object({
+  containerId: z.string(),
+  endIndex: z.int(),
+  fileId: z.string(),
+  filename: z.string(),
+  startIndex: z.int(),
+  type: OutputBashServerToolItemTypeContainerFileCitation$outboundSchema,
+}).transform((v) => {
+  return remap$(v, {
+    containerId: "container_id",
+    endIndex: "end_index",
+    fileId: "file_id",
+    startIndex: "start_index",
+  });
+});
+
+export function outputBashServerToolItemFileToJSON(
+  outputBashServerToolItemFile: OutputBashServerToolItemFile,
+): string {
+  return JSON.stringify(
+    OutputBashServerToolItemFile$outboundSchema.parse(
+      outputBashServerToolItemFile,
+    ),
+  );
+}
+export function outputBashServerToolItemFileFromJSON(
+  jsonString: string,
+): SafeParseResult<OutputBashServerToolItemFile, SDKValidationError> {
+  return safeParse(
+    jsonString,
+    (x) => OutputBashServerToolItemFile$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'OutputBashServerToolItemFile' from JSON`,
+  );
+}
+
+/** @internal */
+export const OutputBashServerToolItemTypeOpenrouterBash$inboundSchema:
+  z.ZodEnum<typeof OutputBashServerToolItemTypeOpenrouterBash> = z.enum(
+    OutputBashServerToolItemTypeOpenrouterBash,
+  );
+/** @internal */
+export const OutputBashServerToolItemTypeOpenrouterBash$outboundSchema:
+  z.ZodEnum<typeof OutputBashServerToolItemTypeOpenrouterBash> =
+    OutputBashServerToolItemTypeOpenrouterBash$inboundSchema;
 
 /** @internal */
 export const OutputBashServerToolItem$inboundSchema: z.ZodType<
@@ -60,15 +163,19 @@ export const OutputBashServerToolItem$inboundSchema: z.ZodType<
   arguments: z.nullable(z.string()).optional(),
   call_id: z.nullable(z.string()).optional(),
   command: z.string().optional(),
+  container_id: z.string().optional(),
   exitCode: z.int().optional(),
+  files: z.array(z.lazy(() => OutputBashServerToolItemFile$inboundSchema))
+    .optional(),
   id: z.string().optional(),
   status: ToolCallStatus$inboundSchema,
   stderr: z.string().optional(),
   stdout: z.string().optional(),
-  type: OutputBashServerToolItemType$inboundSchema,
+  type: OutputBashServerToolItemTypeOpenrouterBash$inboundSchema,
 }).transform((v) => {
   return remap$(v, {
     "call_id": "callId",
+    "container_id": "containerId",
   });
 });
 /** @internal */
@@ -76,7 +183,9 @@ export type OutputBashServerToolItem$Outbound = {
   arguments?: string | null | undefined;
   call_id?: string | null | undefined;
   command?: string | undefined;
+  container_id?: string | undefined;
   exitCode?: number | undefined;
+  files?: Array<OutputBashServerToolItemFile$Outbound> | undefined;
   id?: string | undefined;
   status: string;
   stderr?: string | undefined;
@@ -92,15 +201,19 @@ export const OutputBashServerToolItem$outboundSchema: z.ZodType<
   arguments: z.nullable(z.string()).optional(),
   callId: z.nullable(z.string()).optional(),
   command: z.string().optional(),
+  containerId: z.string().optional(),
   exitCode: z.int().optional(),
+  files: z.array(z.lazy(() => OutputBashServerToolItemFile$outboundSchema))
+    .optional(),
   id: z.string().optional(),
   status: ToolCallStatus$outboundSchema,
   stderr: z.string().optional(),
   stdout: z.string().optional(),
-  type: OutputBashServerToolItemType$outboundSchema,
+  type: OutputBashServerToolItemTypeOpenrouterBash$outboundSchema,
 }).transform((v) => {
   return remap$(v, {
     callId: "call_id",
+    containerId: "container_id",
   });
 });
 
