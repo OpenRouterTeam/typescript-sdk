@@ -99,10 +99,6 @@ export type ListData = {
    */
   expiresAt?: Date | null | undefined;
   /**
-   * Partner's end-user identifier used for attribution.
-   */
-  externalUser: string | null;
-  /**
    * Unique hash identifier for the API key
    */
   hash: string;
@@ -211,7 +207,6 @@ export const ListData$inboundSchema: z.ZodType<ListData, unknown> = z.object({
   expires_at: z.nullable(
     z.iso.datetime({ offset: true }).transform(v => new Date(v)),
   ).optional(),
-  external_user: z.nullable(z.string()),
   hash: z.string(),
   include_byok_in_limit: z.boolean(),
   label: z.string(),
@@ -234,7 +229,6 @@ export const ListData$inboundSchema: z.ZodType<ListData, unknown> = z.object({
     "created_at": "createdAt",
     "creator_user_id": "creatorUserId",
     "expires_at": "expiresAt",
-    "external_user": "externalUser",
     "include_byok_in_limit": "includeByokInLimit",
     "limit_remaining": "limitRemaining",
     "limit_reset": "limitReset",

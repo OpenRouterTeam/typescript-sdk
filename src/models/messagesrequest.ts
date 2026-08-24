@@ -161,11 +161,6 @@ import {
   StopServerToolsWhenCondition$outboundSchema,
 } from "./stopservertoolswhencondition.js";
 import {
-  ToolSearchServerTool,
-  ToolSearchServerTool$Outbound,
-  ToolSearchServerTool$outboundSchema,
-} from "./toolsearchservertool.js";
-import {
   TraceConfig,
   TraceConfig$Outbound,
   TraceConfig$outboundSchema,
@@ -479,8 +474,7 @@ export type MessagesRequestToolUnion =
   | WebFetchServerTool
   | OpenRouterWebSearchServerTool
   | MessagesRequestTool
-  | ShellServerToolOpenRouter
-  | ToolSearchServerTool;
+  | ShellServerToolOpenRouter;
 
 /**
  * Request schema for Anthropic Messages API endpoint
@@ -564,7 +558,6 @@ export type MessagesRequest = {
       | OpenRouterWebSearchServerTool
       | MessagesRequestTool
       | ShellServerToolOpenRouter
-      | ToolSearchServerTool
     >
     | undefined;
   topK?: number | undefined;
@@ -1470,8 +1463,7 @@ export type MessagesRequestToolUnion$Outbound =
   | WebFetchServerTool$Outbound
   | OpenRouterWebSearchServerTool$Outbound
   | MessagesRequestTool$Outbound
-  | ShellServerToolOpenRouter$Outbound
-  | ToolSearchServerTool$Outbound;
+  | ShellServerToolOpenRouter$Outbound;
 
 /** @internal */
 export const MessagesRequestToolUnion$outboundSchema: z.ZodType<
@@ -1494,7 +1486,6 @@ export const MessagesRequestToolUnion$outboundSchema: z.ZodType<
   OpenRouterWebSearchServerTool$outboundSchema,
   z.lazy(() => MessagesRequestTool$outboundSchema),
   ShellServerToolOpenRouter$outboundSchema,
-  ToolSearchServerTool$outboundSchema,
 ]);
 
 export function messagesRequestToolUnionToJSON(
@@ -1570,7 +1561,6 @@ export type MessagesRequest$Outbound = {
       | OpenRouterWebSearchServerTool$Outbound
       | MessagesRequestTool$Outbound
       | ShellServerToolOpenRouter$Outbound
-      | ToolSearchServerTool$Outbound
     >
     | undefined;
   top_k?: number | undefined;
@@ -1649,7 +1639,6 @@ export const MessagesRequest$outboundSchema: z.ZodType<
       OpenRouterWebSearchServerTool$outboundSchema,
       z.lazy(() => MessagesRequestTool$outboundSchema),
       ShellServerToolOpenRouter$outboundSchema,
-      ToolSearchServerTool$outboundSchema,
     ]),
   ).optional(),
   topK: z.int().optional(),
