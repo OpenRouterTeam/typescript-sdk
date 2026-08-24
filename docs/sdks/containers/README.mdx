@@ -15,7 +15,7 @@ Containers endpoints
 
 ## listContainerFiles
 
-Lists the files under a sandbox session prefix, in lexicographic path order. A restarted session is a separate container with its own session id. Paginate with `limit` and `after` (pass the previous page’s `last_id`); `has_more: true` always means the next page is fetchable that way.
+Lists the files in a container, in lexicographic path order. The container id is the canonical id returned in bash/shell tool results; a restarted session is a separate container with its own id. Paginate with `limit` and `after` (pass the previous page’s `last_id`); `has_more: true` always means the next page is fetchable that way.
 
 ### Example Usage
 
@@ -31,7 +31,7 @@ const openRouter = new OpenRouter({
 
 async function run() {
   const result = await openRouter.containers.listContainerFiles({
-    sessionId: "sess-abc123",
+    containerId: "sess_abc123",
   });
 
   console.log(result);
@@ -59,7 +59,7 @@ const openRouter = new OpenRouterCore({
 
 async function run() {
   const res = await containersListContainerFiles(openRouter, {
-    sessionId: "sess-abc123",
+    containerId: "sess_abc123",
   });
   if (res.ok) {
     const { value: result } = res;
@@ -99,7 +99,7 @@ run();
 
 ## getContainerFile
 
-Returns the metadata of a single file under a sandbox session prefix.
+Returns the metadata of a single file in a container.
 
 ### Example Usage
 
@@ -115,7 +115,7 @@ const openRouter = new OpenRouter({
 
 async function run() {
   const result = await openRouter.containers.getContainerFile({
-    sessionId: "sess-abc123",
+    containerId: "sess_abc123",
     fileId: "cfile_b3V0L3JlcG9ydC5jc3Y",
   });
 
@@ -144,7 +144,7 @@ const openRouter = new OpenRouterCore({
 
 async function run() {
   const res = await containersGetContainerFile(openRouter, {
-    sessionId: "sess-abc123",
+    containerId: "sess_abc123",
     fileId: "cfile_b3V0L3JlcG9ydC5jc3Y",
   });
   if (res.ok) {
@@ -186,7 +186,7 @@ run();
 
 ## downloadContainerFileContent
 
-Streams the raw bytes of a file under a sandbox session prefix.
+Streams the raw bytes of a file in a container.
 
 ### Example Usage
 
@@ -202,7 +202,7 @@ const openRouter = new OpenRouter({
 
 async function run() {
   const result = await openRouter.containers.downloadContainerFileContent({
-    sessionId: "sess-abc123",
+    containerId: "sess_abc123",
     fileId: "cfile_b3V0L3JlcG9ydC5jc3Y",
   });
 
@@ -231,7 +231,7 @@ const openRouter = new OpenRouterCore({
 
 async function run() {
   const res = await containersDownloadContainerFileContent(openRouter, {
-    sessionId: "sess-abc123",
+    containerId: "sess_abc123",
     fileId: "cfile_b3V0L3JlcG9ydC5jc3Y",
   });
   if (res.ok) {
