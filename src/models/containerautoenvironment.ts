@@ -4,16 +4,22 @@
  */
 
 import * as z from "zod/v4";
+import { remap as remap$ } from "../lib/primitives.js";
 
 /**
  * An OpenRouter-managed, auto-provisioned ephemeral container.
  */
 export type ContainerAutoEnvironment = {
+  /**
+   * Workspace file ids (or_file_…) to attach into the container before the first command runs. Each file is copied to the container home under its stored filename as a writable copy; the source document is never modified. Unknown, foreign, or malformed ids fail the request with a 400 before any command executes. Max 20 ids.
+   */
+  fileIds?: Array<string> | undefined;
   type: "container_auto";
 };
 
 /** @internal */
 export type ContainerAutoEnvironment$Outbound = {
+  file_ids?: Array<string> | undefined;
   type: "container_auto";
 };
 
@@ -22,7 +28,12 @@ export const ContainerAutoEnvironment$outboundSchema: z.ZodType<
   ContainerAutoEnvironment$Outbound,
   ContainerAutoEnvironment
 > = z.object({
+  fileIds: z.array(z.string()).optional(),
   type: z.literal("container_auto"),
+}).transform((v) => {
+  return remap$(v, {
+    fileIds: "file_ids",
+  });
 });
 
 export function containerAutoEnvironmentToJSON(
