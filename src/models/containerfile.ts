@@ -32,7 +32,7 @@ export type ContainerFile = {
    */
   bytes: number;
   /**
-   * The container the file belongs to — echoes the `session_id` path parameter (OpenAI field name).
+   * The container the file belongs to — echoes the `container_id` path parameter (OpenAI field name).
    */
   containerId: string;
   /**
@@ -45,7 +45,7 @@ export type ContainerFile = {
   id: string;
   object: ContainerFileObject;
   /**
-   * Session-relative file path inside the container.
+   * Container-relative file path.
    */
   path: string;
   /**
