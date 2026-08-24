@@ -5,19 +5,91 @@
 
 import * as z from "zod/v4";
 import { remap as remap$ } from "../lib/primitives.js";
+import { ClosedEnum } from "../types/enums.js";
+
+export const MessagesBashToolResultBlockTypeContainerFileCitation = {
+  ContainerFileCitation: "container_file_citation",
+} as const;
+export type MessagesBashToolResultBlockTypeContainerFileCitation = ClosedEnum<
+  typeof MessagesBashToolResultBlockTypeContainerFileCitation
+>;
+
+export type MessagesBashToolResultBlockFile = {
+  containerId: string;
+  endIndex: number;
+  fileId: string;
+  filename: string;
+  startIndex: number;
+  type: MessagesBashToolResultBlockTypeContainerFileCitation;
+};
 
 /**
  * Output of a sandbox-executed `openrouter:bash` call from a prior assistant turn. Accepted on replay and dropped before the provider request — Anthropic has no equivalent block.
  */
 export type MessagesBashToolResultBlock = {
+  /**
+   * The canonical container id the command ran under — the `{container_id}` for the Container Files API, reusable as a `container_reference` in later requests. Present on every sandbox-executed call, even when no files changed.
+   */
+  containerId?: string | undefined;
   content: { [k: string]: any };
+  /**
+   * Citations for the files the sandbox command created or modified, most-recently-touched first (at most 10). Retrieve them via the Container Files API.
+   */
+  files?: Array<MessagesBashToolResultBlockFile> | undefined;
   toolUseId: string;
   type: "openrouter_bash_tool_result";
 };
 
 /** @internal */
+export const MessagesBashToolResultBlockTypeContainerFileCitation$outboundSchema:
+  z.ZodEnum<typeof MessagesBashToolResultBlockTypeContainerFileCitation> = z
+    .enum(MessagesBashToolResultBlockTypeContainerFileCitation);
+
+/** @internal */
+export type MessagesBashToolResultBlockFile$Outbound = {
+  container_id: string;
+  end_index: number;
+  file_id: string;
+  filename: string;
+  start_index: number;
+  type: string;
+};
+
+/** @internal */
+export const MessagesBashToolResultBlockFile$outboundSchema: z.ZodType<
+  MessagesBashToolResultBlockFile$Outbound,
+  MessagesBashToolResultBlockFile
+> = z.object({
+  containerId: z.string(),
+  endIndex: z.int(),
+  fileId: z.string(),
+  filename: z.string(),
+  startIndex: z.int(),
+  type: MessagesBashToolResultBlockTypeContainerFileCitation$outboundSchema,
+}).transform((v) => {
+  return remap$(v, {
+    containerId: "container_id",
+    endIndex: "end_index",
+    fileId: "file_id",
+    startIndex: "start_index",
+  });
+});
+
+export function messagesBashToolResultBlockFileToJSON(
+  messagesBashToolResultBlockFile: MessagesBashToolResultBlockFile,
+): string {
+  return JSON.stringify(
+    MessagesBashToolResultBlockFile$outboundSchema.parse(
+      messagesBashToolResultBlockFile,
+    ),
+  );
+}
+
+/** @internal */
 export type MessagesBashToolResultBlock$Outbound = {
+  container_id?: string | undefined;
   content: { [k: string]: any };
+  files?: Array<MessagesBashToolResultBlockFile$Outbound> | undefined;
   tool_use_id: string;
   type: "openrouter_bash_tool_result";
 };
@@ -27,11 +99,15 @@ export const MessagesBashToolResultBlock$outboundSchema: z.ZodType<
   MessagesBashToolResultBlock$Outbound,
   MessagesBashToolResultBlock
 > = z.object({
+  containerId: z.string().optional(),
   content: z.record(z.string(), z.any()),
+  files: z.array(z.lazy(() => MessagesBashToolResultBlockFile$outboundSchema))
+    .optional(),
   toolUseId: z.string(),
   type: z.literal("openrouter_bash_tool_result"),
 }).transform((v) => {
   return remap$(v, {
+    containerId: "container_id",
     toolUseId: "tool_use_id",
   });
 });

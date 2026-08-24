@@ -32,7 +32,7 @@ import { Result } from "../types/fp.js";
  * List container files
  *
  * @remarks
- * Lists the files under a sandbox session prefix, in lexicographic path order. A restarted session is a separate container with its own session id. Paginate with `limit` and `after` (pass the previous page’s `last_id`); `has_more: true` always means the next page is fetchable that way.
+ * Lists the files in a container, in lexicographic path order. The container id is the canonical id returned in bash/shell tool results; a restarted session is a separate container with its own id. Paginate with `limit` and `after` (pass the previous page’s `last_id`); `has_more: true` always means the next page is fetchable that way.
  */
 export function containersListContainerFiles(
   client: OpenRouterCore,
@@ -102,12 +102,12 @@ async function $do(
   const body = null;
 
   const pathParams = {
-    session_id: encodeSimple("session_id", payload.session_id, {
+    container_id: encodeSimple("container_id", payload.container_id, {
       explode: false,
       charEncoding: "percent",
     }),
   };
-  const path = pathToFunc("/containers/{session_id}/files")(pathParams);
+  const path = pathToFunc("/containers/{container_id}/files")(pathParams);
 
   const query = encodeFormQuery({
     "after": payload.after,
