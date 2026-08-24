@@ -94,6 +94,10 @@ export type GetKeyData = {
    */
   expiresAt?: Date | null | undefined;
   /**
+   * Partner's end-user identifier used for attribution.
+   */
+  externalUser: string | null;
+  /**
    * Unique hash identifier for the API key
    */
   hash: string;
@@ -197,6 +201,7 @@ export const GetKeyData$inboundSchema: z.ZodType<GetKeyData, unknown> = z
     expires_at: z.nullable(
       z.iso.datetime({ offset: true }).transform(v => new Date(v)),
     ).optional(),
+    external_user: z.nullable(z.string()),
     hash: z.string(),
     include_byok_in_limit: z.boolean(),
     label: z.string(),
@@ -219,6 +224,7 @@ export const GetKeyData$inboundSchema: z.ZodType<GetKeyData, unknown> = z
       "created_at": "createdAt",
       "creator_user_id": "creatorUserId",
       "expires_at": "expiresAt",
+      "external_user": "externalUser",
       "include_byok_in_limit": "includeByokInLimit",
       "limit_remaining": "limitRemaining",
       "limit_reset": "limitReset",
