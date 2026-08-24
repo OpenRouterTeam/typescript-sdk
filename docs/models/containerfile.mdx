@@ -1,0 +1,31 @@
+---
+title: "ContainerFile"
+---
+
+## Example Usage
+
+```typescript
+import { ContainerFile } from "@openrouter/sdk/models";
+
+let value: ContainerFile = {
+  bytes: 123,
+  containerId: "sess_abc123",
+  createdAt: 1755640000,
+  id: "cfile_b3V0L3JlcG9ydC5jc3Y",
+  object: "container.file",
+  path: "out/report.csv",
+  source: "assistant",
+};
+```
+
+## Fields
+
+| Field                                                                                             | Type                                                                                              | Required                                                                                          | Description                                                                                       | Example                                                                                           |
+| ------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------- |
+| `bytes`                                                                                           | *number*                                                                                          | :heavy_check_mark:                                                                                | File size in bytes.                                                                               | 123                                                                                               |
+| `containerId`                                                                                     | *string*                                                                                          | :heavy_check_mark:                                                                                | The container the file belongs to — echoes the `container_id` path parameter (OpenAI field name). | sess_abc123                                                                                       |
+| `createdAt`                                                                                       | *number*                                                                                          | :heavy_check_mark:                                                                                | Unix timestamp (seconds) when the file was last synced.                                           | 1755640000                                                                                        |
+| `id`                                                                                              | *string*                                                                                          | :heavy_check_mark:                                                                                | Container file id: `cfile_` + base64url of the file path.                                         | cfile_b3V0L3JlcG9ydC5jc3Y                                                                         |
+| `object`                                                                                          | [models.ContainerFileObject](../models/containerfileobject.mdx)                                    | :heavy_check_mark:                                                                                | N/A                                                                                               | container.file                                                                                    |
+| `path`                                                                                            | *string*                                                                                          | :heavy_check_mark:                                                                                | Container-relative file path.                                                                     | out/report.csv                                                                                    |
+| `source`                                                                                          | [models.ContainerFileSource](../models/containerfilesource.mdx)                                    | :heavy_check_mark:                                                                                | Container files are always produced by the assistant sandbox.                                     | assistant                                                                                         |
