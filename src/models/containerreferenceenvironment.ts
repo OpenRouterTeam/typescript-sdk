@@ -7,11 +7,11 @@ import * as z from "zod/v4";
 import { remap as remap$ } from "../lib/primitives.js";
 
 /**
- * Reference to a previously created container to reuse.
+ * Reference to a container by its canonical id — a previously returned container_id or a fresh name to create a persistent container.
  */
 export type ContainerReferenceEnvironment = {
   /**
-   * Identifier of an existing container to reuse (max 20 characters).
+   * Canonical container id to reuse (max 40 characters, letters/digits/underscores/hyphens). Any container_id previously returned by a bash or shell tool result works here and reattaches to the same container and files — including session-derived ids (sess_...) and generation-derived ids (gen_...). A fresh name creates a new persistent container. Containers are always scoped to your account and workspace.
    */
   containerId: string;
   type: "container_reference";
