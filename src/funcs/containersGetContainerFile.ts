@@ -32,7 +32,7 @@ import { Result } from "../types/fp.js";
  * Retrieve a container file
  *
  * @remarks
- * Returns the metadata of a single file under a sandbox session prefix.
+ * Returns the metadata of a single file in a container.
  */
 export function containersGetContainerFile(
   client: OpenRouterCore,
@@ -104,16 +104,16 @@ async function $do(
   const body = null;
 
   const pathParams = {
+    container_id: encodeSimple("container_id", payload.container_id, {
+      explode: false,
+      charEncoding: "percent",
+    }),
     file_id: encodeSimple("file_id", payload.file_id, {
       explode: false,
       charEncoding: "percent",
     }),
-    session_id: encodeSimple("session_id", payload.session_id, {
-      explode: false,
-      charEncoding: "percent",
-    }),
   };
-  const path = pathToFunc("/containers/{session_id}/files/{file_id}")(
+  const path = pathToFunc("/containers/{container_id}/files/{file_id}")(
     pathParams,
   );
 
