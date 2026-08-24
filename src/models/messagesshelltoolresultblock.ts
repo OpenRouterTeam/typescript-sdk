@@ -5,91 +5,19 @@
 
 import * as z from "zod/v4";
 import { remap as remap$ } from "../lib/primitives.js";
-import { ClosedEnum } from "../types/enums.js";
-
-export const MessagesShellToolResultBlockTypeContainerFileCitation = {
-  ContainerFileCitation: "container_file_citation",
-} as const;
-export type MessagesShellToolResultBlockTypeContainerFileCitation = ClosedEnum<
-  typeof MessagesShellToolResultBlockTypeContainerFileCitation
->;
-
-export type MessagesShellToolResultBlockFile = {
-  containerId: string;
-  endIndex: number;
-  fileId: string;
-  filename: string;
-  startIndex: number;
-  type: MessagesShellToolResultBlockTypeContainerFileCitation;
-};
 
 /**
  * Output of an `openrouter:shell` call from a prior assistant turn. Accepted on replay and dropped before the provider request — Anthropic has no equivalent block.
  */
 export type MessagesShellToolResultBlock = {
-  /**
-   * The canonical container id the command ran under — the `{container_id}` for the Container Files API, reusable as a `container_reference` in later requests. Present on every sandbox-executed call, even when no files changed.
-   */
-  containerId?: string | undefined;
   content: { [k: string]: any };
-  /**
-   * Citations for the files the sandbox command created or modified, most-recently-touched first (at most 10). Retrieve them via the Container Files API.
-   */
-  files?: Array<MessagesShellToolResultBlockFile> | undefined;
   toolUseId: string;
   type: "openrouter_shell_tool_result";
 };
 
 /** @internal */
-export const MessagesShellToolResultBlockTypeContainerFileCitation$outboundSchema:
-  z.ZodEnum<typeof MessagesShellToolResultBlockTypeContainerFileCitation> = z
-    .enum(MessagesShellToolResultBlockTypeContainerFileCitation);
-
-/** @internal */
-export type MessagesShellToolResultBlockFile$Outbound = {
-  container_id: string;
-  end_index: number;
-  file_id: string;
-  filename: string;
-  start_index: number;
-  type: string;
-};
-
-/** @internal */
-export const MessagesShellToolResultBlockFile$outboundSchema: z.ZodType<
-  MessagesShellToolResultBlockFile$Outbound,
-  MessagesShellToolResultBlockFile
-> = z.object({
-  containerId: z.string(),
-  endIndex: z.int(),
-  fileId: z.string(),
-  filename: z.string(),
-  startIndex: z.int(),
-  type: MessagesShellToolResultBlockTypeContainerFileCitation$outboundSchema,
-}).transform((v) => {
-  return remap$(v, {
-    containerId: "container_id",
-    endIndex: "end_index",
-    fileId: "file_id",
-    startIndex: "start_index",
-  });
-});
-
-export function messagesShellToolResultBlockFileToJSON(
-  messagesShellToolResultBlockFile: MessagesShellToolResultBlockFile,
-): string {
-  return JSON.stringify(
-    MessagesShellToolResultBlockFile$outboundSchema.parse(
-      messagesShellToolResultBlockFile,
-    ),
-  );
-}
-
-/** @internal */
 export type MessagesShellToolResultBlock$Outbound = {
-  container_id?: string | undefined;
   content: { [k: string]: any };
-  files?: Array<MessagesShellToolResultBlockFile$Outbound> | undefined;
   tool_use_id: string;
   type: "openrouter_shell_tool_result";
 };
@@ -99,15 +27,11 @@ export const MessagesShellToolResultBlock$outboundSchema: z.ZodType<
   MessagesShellToolResultBlock$Outbound,
   MessagesShellToolResultBlock
 > = z.object({
-  containerId: z.string().optional(),
   content: z.record(z.string(), z.any()),
-  files: z.array(z.lazy(() => MessagesShellToolResultBlockFile$outboundSchema))
-    .optional(),
   toolUseId: z.string(),
   type: z.literal("openrouter_shell_tool_result"),
 }).transform((v) => {
   return remap$(v, {
-    containerId: "container_id",
     toolUseId: "tool_use_id",
   });
 });
