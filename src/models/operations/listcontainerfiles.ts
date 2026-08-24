@@ -49,9 +49,9 @@ export type ListContainerFilesRequest = {
    */
   appCategories?: string | undefined;
   /**
-   * The sandbox session id, exactly as stored — a restarted session has its own `-r<nonce>`-suffixed id.
+   * The canonical container id, exactly as returned in a bash/shell tool result — a restarted session has its own `-r<nonce>`-suffixed id. A session-derived id is always `sess_` + the sanitized session key, which is not necessarily the raw session id that was sent.
    */
-  sessionId: string;
+  containerId: string;
   /**
    * Maximum number of files to return (1-1000). Defaults to 100 when absent.
    */
@@ -67,7 +67,7 @@ export type ListContainerFilesRequest$Outbound = {
   "HTTP-Referer"?: string | undefined;
   appTitle?: string | undefined;
   appCategories?: string | undefined;
-  session_id: string;
+  container_id: string;
   limit: number;
   after?: string | undefined;
 };
@@ -80,13 +80,13 @@ export const ListContainerFilesRequest$outboundSchema: z.ZodType<
   httpReferer: z.string().optional(),
   appTitle: z.string().optional(),
   appCategories: z.string().optional(),
-  sessionId: z.string(),
+  containerId: z.string(),
   limit: z.int().default(100),
   after: z.string().optional(),
 }).transform((v) => {
   return remap$(v, {
     httpReferer: "HTTP-Referer",
-    sessionId: "session_id",
+    containerId: "container_id",
   });
 });
 
