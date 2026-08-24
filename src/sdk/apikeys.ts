@@ -69,7 +69,7 @@ export class APIKeys extends ClientSDK {
    * Delete an API key
    *
    * @remarks
-   * Delete an existing API key. [Management key](/docs/guides/overview/auth/management-api-keys) required.
+   * Delete an existing API key. Authenticate with a [management key](/docs/guides/overview/auth/management-api-keys), or with a Connect client secret. A client secret reaches only the keys that same client created; any other key responds as if it does not exist.
    */
   async delete(
     request: operations.DeleteKeysRequest,
@@ -103,7 +103,7 @@ export class APIKeys extends ClientSDK {
    * Update an API key
    *
    * @remarks
-   * Update an existing API key. [Management key](/docs/guides/overview/auth/management-api-keys) required.
+   * Update an existing API key. Authenticate with a [management key](/docs/guides/overview/auth/management-api-keys), or with a Connect client secret. A client secret reaches only the keys that same client created; any other key responds as if it does not exist.
    */
   async update(
     request: operations.UpdateKeysRequest,
