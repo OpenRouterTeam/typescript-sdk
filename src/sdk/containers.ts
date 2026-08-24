@@ -16,7 +16,7 @@ export class Containers extends ClientSDK {
    * List container files
    *
    * @remarks
-   * Lists the files under a sandbox session prefix, in lexicographic path order. A restarted session is a separate container with its own session id. Paginate with `limit` and `after` (pass the previous page’s `last_id`); `has_more: true` always means the next page is fetchable that way.
+   * Lists the files in a container, in lexicographic path order. The container id is the canonical id returned in bash/shell tool results; a restarted session is a separate container with its own id. Paginate with `limit` and `after` (pass the previous page’s `last_id`); `has_more: true` always means the next page is fetchable that way.
    */
   async listContainerFiles(
     request: operations.ListContainerFilesRequest,
@@ -33,7 +33,7 @@ export class Containers extends ClientSDK {
    * Retrieve a container file
    *
    * @remarks
-   * Returns the metadata of a single file under a sandbox session prefix.
+   * Returns the metadata of a single file in a container.
    */
   async getContainerFile(
     request: operations.GetContainerFileRequest,
@@ -50,7 +50,7 @@ export class Containers extends ClientSDK {
    * Download container file content
    *
    * @remarks
-   * Streams the raw bytes of a file under a sandbox session prefix.
+   * Streams the raw bytes of a file in a container.
    */
   async downloadContainerFileContent(
     request: operations.DownloadContainerFileContentRequest,
