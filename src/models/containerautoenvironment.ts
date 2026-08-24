@@ -4,16 +4,27 @@
  */
 
 import * as z from "zod/v4";
+import { remap as remap$ } from "../lib/primitives.js";
+import {
+  ContainerNetworkPolicy,
+  ContainerNetworkPolicy$Outbound,
+  ContainerNetworkPolicy$outboundSchema,
+} from "./containernetworkpolicy.js";
 
 /**
  * An OpenRouter-managed, auto-provisioned ephemeral container.
  */
 export type ContainerAutoEnvironment = {
+  /**
+   * Network egress policy for the container. "disabled" blocks all outbound internet; "allowlist" permits only hosts matching the listed hostnames or * glob patterns (ports 80/443, DNS via Cloudflare resolvers). The policy is fixed when a container starts: sending a different policy to a warm container fails the request with a 409. Omitted: the container currently keeps open internet access (a closed-internet default is planned).
+   */
+  networkPolicy?: ContainerNetworkPolicy | undefined;
   type: "container_auto";
 };
 
 /** @internal */
 export type ContainerAutoEnvironment$Outbound = {
+  network_policy?: ContainerNetworkPolicy$Outbound | undefined;
   type: "container_auto";
 };
 
@@ -22,7 +33,12 @@ export const ContainerAutoEnvironment$outboundSchema: z.ZodType<
   ContainerAutoEnvironment$Outbound,
   ContainerAutoEnvironment
 > = z.object({
+  networkPolicy: ContainerNetworkPolicy$outboundSchema.optional(),
   type: z.literal("container_auto"),
+}).transform((v) => {
+  return remap$(v, {
+    networkPolicy: "network_policy",
+  });
 });
 
 export function containerAutoEnvironmentToJSON(
