@@ -33407,6 +33407,11 @@ paths:
                   type:
                     - 'string'
                     - 'null'
+                external_api_key:
+                  description: 'Optional partner-supplied API key. Stored as a SHA-256 hash and never returned. Accepted only when authenticating with a Connect client secret.'
+                  maxLength: 512
+                  minLength: 1
+                  type: 'string'
                 include_byok_in_limit:
                   description: 'Whether to include BYOK usage in the limit'
                   example: true
