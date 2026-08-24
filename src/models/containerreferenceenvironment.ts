@@ -5,21 +5,31 @@
 
 import * as z from "zod/v4";
 import { remap as remap$ } from "../lib/primitives.js";
+import {
+  ContainerNetworkPolicy,
+  ContainerNetworkPolicy$Outbound,
+  ContainerNetworkPolicy$outboundSchema,
+} from "./containernetworkpolicy.js";
 
 /**
- * Reference to a previously created container to reuse.
+ * Reference to a container by its canonical id — a previously returned container_id or a fresh name to create a persistent container.
  */
 export type ContainerReferenceEnvironment = {
   /**
-   * Identifier of an existing container to reuse (max 20 characters).
+   * Canonical container id to reuse (max 40 characters, letters/digits/underscores/hyphens). Any container_id previously returned by a bash or shell tool result works here and reattaches to the same container and files — including session-derived ids (sess_...) and generation-derived ids (gen_...). Note that a session-derived id is always sess_ + the sanitized session key, which is not necessarily the raw session id you sent. Using the same container_id from both the bash and shell tools shares the same files, with last-write-wins when both flush concurrently. A fresh name creates a new persistent container. Containers are always scoped to your account and workspace.
    */
   containerId: string;
+  /**
+   * Network egress policy for the container. "disabled" blocks all outbound internet; "allowlist" permits only the listed hostnames (ports 80/443, DNS via Cloudflare resolvers). The policy is fixed when a container starts: sending a different policy to a warm container fails the request with a 409. Omitted: the container currently keeps open internet access (a closed-internet default is planned).
+   */
+  networkPolicy?: ContainerNetworkPolicy | undefined;
   type: "container_reference";
 };
 
 /** @internal */
 export type ContainerReferenceEnvironment$Outbound = {
   container_id: string;
+  network_policy?: ContainerNetworkPolicy$Outbound | undefined;
   type: "container_reference";
 };
 
@@ -29,10 +39,12 @@ export const ContainerReferenceEnvironment$outboundSchema: z.ZodType<
   ContainerReferenceEnvironment
 > = z.object({
   containerId: z.string(),
+  networkPolicy: ContainerNetworkPolicy$outboundSchema.optional(),
   type: z.literal("container_reference"),
 }).transform((v) => {
   return remap$(v, {
     containerId: "container_id",
+    networkPolicy: "network_policy",
   });
 });
 

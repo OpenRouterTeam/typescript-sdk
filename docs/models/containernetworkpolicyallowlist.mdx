@@ -1,0 +1,24 @@
+---
+title: "ContainerNetworkPolicyAllowlist"
+---
+
+## Example Usage
+
+```typescript
+import { ContainerNetworkPolicyAllowlist } from "@openrouter/sdk/models";
+
+let value: ContainerNetworkPolicyAllowlist = {
+  allowedDomains: [
+    "pypi.org",
+    "files.pythonhosted.org",
+  ],
+  type: "allowlist",
+};
+```
+
+## Fields
+
+| Field                                                                                                                                                                                                                    | Type                                                                                                                                                                                                                     | Required                                                                                                                                                                                                                 | Description                                                                                                                                                                                                              | Example                                                                                                                                                                                                                  |
+| ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `allowedDomains`                                                                                                                                                                                                         | *string*[]                                                                                                                                                                                                               | :heavy_check_mark:                                                                                                                                                                                                       | Exact hostnames the container may reach over ports 80/443 (max 50). Wildcards are not supported and subdomains are not auto-covered — list each hostname explicitly. pip needs both pypi.org and files.pythonhosted.org. | [<br/>"pypi.org",<br/>"files.pythonhosted.org"<br/>]                                                                                                                                                                     |
+| `type`                                                                                                                                                                                                                   | *"allowlist"*                                                                                                                                                                                                            | :heavy_check_mark:                                                                                                                                                                                                       | Outbound access restricted to the listed domains.                                                                                                                                                                        |                                                                                                                                                                                                                          |

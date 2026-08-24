@@ -1,0 +1,29 @@
+---
+title: "ContainerNetworkPolicy"
+---
+
+Network egress policy for the container. "disabled" blocks all outbound internet; "allowlist" permits only the listed hostnames (ports 80/443, DNS via Cloudflare resolvers). The policy is fixed when a container starts: sending a different policy to a warm container fails the request with a 409. Omitted: the container currently keeps open internet access (a closed-internet default is planned).
+
+
+## Supported Types
+
+### `models.ContainerNetworkPolicyDisabled`
+
+```typescript
+const value: models.ContainerNetworkPolicyDisabled = {
+  type: "disabled",
+};
+```
+
+### `models.ContainerNetworkPolicyAllowlist`
+
+```typescript
+const value: models.ContainerNetworkPolicyAllowlist = {
+  allowedDomains: [
+    "pypi.org",
+    "files.pythonhosted.org",
+  ],
+  type: "allowlist",
+};
+```
+
