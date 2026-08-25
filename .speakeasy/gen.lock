@@ -1,19 +1,19 @@
 lockVersion: ""
 id: ""
 management:
-  docChecksum: b2dd772d234c097a8e45a46085fa75a8
+  docChecksum: 93f20c7a848811b1cc39aa08c9d538c4
   docVersion: 1.0.0
   speakeasyVersion: 1.787.0
   generationVersion: 2.914.0
-  releaseVersion: 1.2.69
-  configChecksum: a0b6ddaa4ee22c721931d0bc079bef52
+  releaseVersion: 1.2.70
+  configChecksum: 92f7f310b94f58e71b94c99eab930938
   repoURL: https://github.com/OpenRouterTeam/typescript-sdk.git
   installationURL: https://github.com/OpenRouterTeam/typescript-sdk
   published: true
 persistentEdits:
-  generation_id: 5a81aaae-b990-4ce9-8531-04dc17498a7c
-  pristine_commit_hash: b8cdb1d0eadb95a9e128e52d5f512514943b9c4a
-  pristine_tree_hash: e48c59038536b1e0d6dff3e78cd1512111ab06e5
+  generation_id: 316fe32c-046e-41c5-8cae-1602d7099466
+  pristine_commit_hash: 7fdd1986bda3e3a2f0c092f16d8b1bdcfa8f4964
+  pristine_tree_hash: 046c5f96c0be0bbde520d8d2be2d6731cd4330b0
 features:
   typescript:
     acceptHeaders: 2.81.2
@@ -4201,8 +4201,8 @@ trackedFiles:
     deleted: true
   docs/models/fusionplugin.mdx:
     id: 746db79fa0eb
-    last_write_checksum: sha1:7ba2adaab16d9ee14b9f9b8a3b2247008a260f5c
-    pristine_git_object: b12445e90b149548bd73c6212af6551f392e64dc
+    last_write_checksum: sha1:054727d0793c12a6fafef0379c65a5ae2edb6df0
+    pristine_git_object: 3c094dfd9dbb696e05035bdbde40bc2e567e842b
   docs/models/fusionplugintool.md:
     id: 7d3861059f79
     last_write_checksum: sha1:2c8f070d789964069140d67b614b952d30463c69
@@ -10202,8 +10202,8 @@ trackedFiles:
     deleted: true
   docs/models/presetenum.mdx:
     id: 76396e49afdd
-    last_write_checksum: sha1:ce3b033dd33f7a7250cda8808fa8e4824220306f
-    pristine_git_object: 0e62ccf4ef86e6f45fee8943089671cb7f8dbd2c
+    last_write_checksum: sha1:caeb2d9732bc307a0f11201d3f08e8e7c8260385
+    pristine_git_object: 87ce95e30d246da44fda2ea1c1299fc1227984c8
   docs/models/presetstatus.md:
     id: efc645724b80
     last_write_checksum: sha1:10fcdd74d93805fa7f4c42fccb7934f031754a03
@@ -13041,12 +13041,12 @@ trackedFiles:
     pristine_git_object: 410efafd6a7f50d91ccb87131fedbe0c3d47e15a
   jsr.json:
     id: 7f6ab7767282
-    last_write_checksum: sha1:653ea21d1776c1d2a35450bbbd42c9550584302c
-    pristine_git_object: 93840dd125ab23acb3406fe51426a65384709df3
+    last_write_checksum: sha1:10ec8011aefb949d2dab848e22d9c2725849cb65
+    pristine_git_object: d9e68b1ae9157ca51e5ab6f12440f17a0d2ea9d7
   package.json:
     id: 7030d0b2f71b
-    last_write_checksum: sha1:969ae791e85e5bf0e4fb5f91d25fcfa1a35a0bce
-    pristine_git_object: 787cfd1070e3bff9c3c991a79308e7b328397f68
+    last_write_checksum: sha1:f6b27b59cc326ab72dc21873d036c49c43653366
+    pristine_git_object: 4546ee3473dea9268df3eddff482b59f54d55cf6
   src/core.ts:
     id: f431fdbcd144
     last_write_checksum: sha1:5aa66b0b6a5964f3eea7f3098c2eb3c0ee9c0131
@@ -13473,8 +13473,8 @@ trackedFiles:
     pristine_git_object: a187e58707bdb726ca2aff74941efe7493422d4e
   src/lib/config.ts:
     id: 320761608fb3
-    last_write_checksum: sha1:df30ea94fd21ae9f4adff907c535f916727fcc42
-    pristine_git_object: ec9d04655c9059c100388f967e4b9e8d6f5c90c9
+    last_write_checksum: sha1:9c02efd28caf7caa02b85441bcbe488918453b8a
+    pristine_git_object: 0072e2f7ff2a16b097e7d831ed760688f814ae18
   src/lib/dlv.ts:
     id: b1988214835a
     last_write_checksum: sha1:eaac763b22717206a6199104e0403ed17a4e2711
@@ -14571,8 +14571,8 @@ trackedFiles:
     pristine_git_object: ea15abc3d64f380762a1b1f373c7a68cfa266d23
   src/models/fusionplugin.ts:
     id: f2f6926f21f9
-    last_write_checksum: sha1:c5446c8267b1f9da21fd8dd15c09db996f71fbe4
-    pristine_git_object: 008038e1bd315d964c26dd3e963ecec230cc6314
+    last_write_checksum: sha1:1d7099fd46276f84137ef0e8a25753bd5a5b630a
+    pristine_git_object: 3dad906b120951d61f8f6f6b7cf0014853ee7e1e
   src/models/fusionservertoolconfig.ts:
     id: 500c34bd192b
     last_write_checksum: sha1:9cb2475e03f059446acd5a5d7c5709f52ba29e65
@@ -18555,6 +18555,3 @@ examples:
         "503":
           application/json: {"error": {"code": 503, "message": "Service temporarily unavailable"}}
 examplesVersion: 1.0.2
-releaseNotes: |
-  ## Typescript SDK Changes:
-  * `openrouter.images.listModelEndpoints()`:  `response.endpoints[].pricing[].unit.enum(request)` **Added**
