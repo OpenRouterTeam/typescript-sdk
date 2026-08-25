@@ -74,10 +74,6 @@ export type GenerationResponseData = {
    */
   dataRegion: DataRegion;
   /**
-   * External user identifier
-   */
-  externalUser: string | null;
-  /**
    * Reason the generation finished
    */
   finishReason: string | null;
@@ -260,7 +256,6 @@ export const GenerationResponseData$inboundSchema: z.ZodType<
   cancelled: z.nullable(z.boolean()),
   created_at: z.string(),
   data_region: DataRegion$inboundSchema,
-  external_user: z.nullable(z.string()),
   finish_reason: z.nullable(z.string()),
   generation_time: z.nullable(z.number()),
   http_referer: z.nullable(z.string()),
@@ -306,7 +301,6 @@ export const GenerationResponseData$inboundSchema: z.ZodType<
     "cache_discount": "cacheDiscount",
     "created_at": "createdAt",
     "data_region": "dataRegion",
-    "external_user": "externalUser",
     "finish_reason": "finishReason",
     "generation_time": "generationTime",
     "http_referer": "httpReferer",
