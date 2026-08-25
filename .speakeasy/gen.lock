@@ -1,19 +1,19 @@
 lockVersion: ""
 id: ""
 management:
-  docChecksum: dc415af9f5875604fcbc9167ac45c565
+  docChecksum: b2dd772d234c097a8e45a46085fa75a8
   docVersion: 1.0.0
   speakeasyVersion: 1.787.0
   generationVersion: 2.914.0
-  releaseVersion: 1.2.68
-  configChecksum: 7563e1d19341bda2759af80d8e25d181
+  releaseVersion: 1.2.69
+  configChecksum: a0b6ddaa4ee22c721931d0bc079bef52
   repoURL: https://github.com/OpenRouterTeam/typescript-sdk.git
   installationURL: https://github.com/OpenRouterTeam/typescript-sdk
   published: true
 persistentEdits:
-  generation_id: 97e1cf4c-1769-41fb-aa5e-076afbdb2420
-  pristine_commit_hash: ec1f062dab38aafd007315537a15f848f9addfe1
-  pristine_tree_hash: ecb83a06fcd652da47fdf6c7be3ae6504ed9a3bd
+  generation_id: 5a81aaae-b990-4ce9-8531-04dc17498a7c
+  pristine_commit_hash: b8cdb1d0eadb95a9e128e52d5f512514943b9c4a
+  pristine_tree_hash: e48c59038536b1e0d6dff3e78cd1512111ab06e5
 features:
   typescript:
     acceptHeaders: 2.81.2
@@ -12276,8 +12276,8 @@ trackedFiles:
     deleted: true
   docs/models/unit.mdx:
     id: de2fcd94fb33
-    last_write_checksum: sha1:c1ac6e6912af4ac6dc9aad1a9a0660531fad56cf
-    pristine_git_object: 9bebcbbf75b6c957aa9c8538ffa94b8ee4d2727d
+    last_write_checksum: sha1:1ce618aa5c9ad295d1414e16cc12570ff724e17a
+    pristine_git_object: 2110ba1accc7085734993648ef76df2b7e8bf879
   docs/models/unprocessableentityresponseerrordata.mdx:
     id: 320e89d56c08
     last_write_checksum: sha1:6d886deb61e366baf9430bdba24a49aa9bd05dd5
@@ -13041,12 +13041,12 @@ trackedFiles:
     pristine_git_object: 410efafd6a7f50d91ccb87131fedbe0c3d47e15a
   jsr.json:
     id: 7f6ab7767282
-    last_write_checksum: sha1:c963e91cf922a2fa4fb6113d1846dc526b67d691
-    pristine_git_object: a5c3fe219adf2477d8181455fa59a30eb87ca2e8
+    last_write_checksum: sha1:653ea21d1776c1d2a35450bbbd42c9550584302c
+    pristine_git_object: 93840dd125ab23acb3406fe51426a65384709df3
   package.json:
     id: 7030d0b2f71b
-    last_write_checksum: sha1:e41b4d128bc00c64270536c3602a4f242cb7fe4b
-    pristine_git_object: a501d907176e7c734c9a8c1462a66f1422f8c0bc
+    last_write_checksum: sha1:969ae791e85e5bf0e4fb5f91d25fcfa1a35a0bce
+    pristine_git_object: 787cfd1070e3bff9c3c991a79308e7b328397f68
   src/core.ts:
     id: f431fdbcd144
     last_write_checksum: sha1:5aa66b0b6a5964f3eea7f3098c2eb3c0ee9c0131
@@ -13473,8 +13473,8 @@ trackedFiles:
     pristine_git_object: a187e58707bdb726ca2aff74941efe7493422d4e
   src/lib/config.ts:
     id: 320761608fb3
-    last_write_checksum: sha1:29a1e37c8a305d6468beb49168f980e4a83984c0
-    pristine_git_object: 4c6142aa7319a8bd5e29006d781e0d0cd88dfb61
+    last_write_checksum: sha1:df30ea94fd21ae9f4adff907c535f916727fcc42
+    pristine_git_object: ec9d04655c9059c100388f967e4b9e8d6f5c90c9
   src/lib/dlv.ts:
     id: b1988214835a
     last_write_checksum: sha1:eaac763b22717206a6199104e0403ed17a4e2711
@@ -14747,8 +14747,8 @@ trackedFiles:
     pristine_git_object: fdd6b374806ad47b9e2bb8d9d4b2968e2c1f0bb0
   src/models/imagepricingentry.ts:
     id: 7a0d3f05b12c
-    last_write_checksum: sha1:814a2fe0f0c8c63543ee2f0bed1ec5af800b17cf
-    pristine_git_object: 9842d1f2be8893820524067e5501beacb0e3dfe3
+    last_write_checksum: sha1:d7e3b3fb16f876c4f519d2e21abaf3b610359583
+    pristine_git_object: b92362c7c82c9da7c661da2bc0cb48d5400acb13
   src/models/imagestreamingresponse.ts:
     id: 845661ccae1f
     last_write_checksum: sha1:02e41b80a150a0cd1b7be626649d98644d952ca9
@@ -18555,3 +18555,6 @@ examples:
         "503":
           application/json: {"error": {"code": 503, "message": "Service temporarily unavailable"}}
 examplesVersion: 1.0.2
+releaseNotes: |
+  ## Typescript SDK Changes:
+  * `openrouter.images.listModelEndpoints()`:  `response.endpoints[].pricing[].unit.enum(request)` **Added**
