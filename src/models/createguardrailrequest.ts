@@ -95,7 +95,7 @@ export type CreateGuardrailRequest = {
    */
   includeByokInBudgets?: boolean | undefined;
   /**
-   * Spending limit in USD. Must be provided together with `reset_interval`: a request that sets only one of the two is rejected with a 400.
+   * Spending limit in USD
    */
   limitUsd?: number | null | undefined;
   /**

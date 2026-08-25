@@ -91,7 +91,6 @@ export * from "./listvideosmodels.js";
 export * from "./listworkspacebudgets.js";
 export * from "./listworkspacemembers.js";
 export * from "./listworkspaces.js";
-export * from "./promotecontainerfile.js";
 export * from "./queryanalytics.js";
 export * from "./sendchatcompletionrequest.js";
 export * from "./submitgenerationfeedback.js";

@@ -6,7 +6,6 @@
 import { containersDownloadContainerFileContent } from "../funcs/containersDownloadContainerFileContent.js";
 import { containersGetContainerFile } from "../funcs/containersGetContainerFile.js";
 import { containersListContainerFiles } from "../funcs/containersListContainerFiles.js";
-import { containersPromoteContainerFile } from "../funcs/containersPromoteContainerFile.js";
 import { ClientSDK, RequestOptions } from "../lib/sdks.js";
 import * as models from "../models/index.js";
 import * as operations from "../models/operations/index.js";
@@ -58,23 +57,6 @@ export class Containers extends ClientSDK {
     options?: RequestOptions,
   ): Promise<ReadableStream<Uint8Array>> {
     return unwrapAsync(containersDownloadContainerFileContent(
-      this,
-      request,
-      options,
-    ));
-  }
-
-  /**
-   * Promote a container file into workspace documents
-   *
-   * @remarks
-   * Copies a file from the container's sandbox prefix into the workspace's durable document storage, so it outlives the container. Returns the new document in the Files API shape, with a durable file id in the documents namespace. The copy counts against the workspace's storage quota exactly like an upload.
-   */
-  async promoteContainerFile(
-    request: operations.PromoteContainerFileRequest,
-    options?: RequestOptions,
-  ): Promise<models.FileResponse> {
-    return unwrapAsync(containersPromoteContainerFile(
       this,
       request,
       options,
