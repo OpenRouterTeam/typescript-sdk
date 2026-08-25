@@ -24,7 +24,11 @@ import {
   ProviderSortConfig$Outbound,
   ProviderSortConfig$outboundSchema,
 } from "./providersortconfig.js";
-import { Quantization, Quantization$outboundSchema } from "./quantization.js";
+import {
+  RequestQuantization,
+  RequestQuantization$Outbound,
+  RequestQuantization$outboundSchema,
+} from "./requestquantization.js";
 
 /**
  * Data collection setting. If no available model provider meets the requirement, your request will return an error.
@@ -137,7 +141,7 @@ export type ProviderPreferences = {
   /**
    * A list of quantization levels to filter the provider by.
    */
-  quantizations?: Array<Quantization> | null | undefined;
+  quantizations?: Array<RequestQuantization> | null | undefined;
   /**
    * Whether to filter providers to only those that support the parameters you've provided. If this setting is omitted or set to false, then providers will receive only the parameters they support, and ignore the rest.
    */
@@ -260,7 +264,7 @@ export type ProviderPreferences$Outbound = {
   order?: Array<string | string> | null | undefined;
   preferred_max_latency?: PreferredMaxLatency$Outbound | null | undefined;
   preferred_min_throughput?: PreferredMinThroughput$Outbound | null | undefined;
-  quantizations?: Array<string> | null | undefined;
+  quantizations?: Array<RequestQuantization$Outbound> | null | undefined;
   require_parameters?: boolean | null | undefined;
   sort?: string | ProviderSortConfig$Outbound | null | undefined;
   zdr?: boolean | null | undefined;
@@ -286,7 +290,8 @@ export const ProviderPreferences$outboundSchema: z.ZodType<
     .optional(),
   preferredMinThroughput: z.nullable(PreferredMinThroughput$outboundSchema)
     .optional(),
-  quantizations: z.nullable(z.array(Quantization$outboundSchema)).optional(),
+  quantizations: z.nullable(z.array(RequestQuantization$outboundSchema))
+    .optional(),
   requireParameters: z.nullable(z.boolean()).optional(),
   sort: z.nullable(
     z.union([ProviderSort$outboundSchema, ProviderSortConfig$outboundSchema]),
