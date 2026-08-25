@@ -6,21 +6,8 @@
 import * as z from "zod/v4";
 import { remap as remap$ } from "../lib/primitives.js";
 import { safeParse } from "../lib/schemas.js";
-import * as openEnums from "../types/enums.js";
-import { OpenEnum } from "../types/enums.js";
 import { Result as SafeParseResult } from "../types/fp.js";
 import { SDKValidationError } from "./errors/sdkvalidationerror.js";
-
-export const UtcDay = {
-  Monday: "monday",
-  Tuesday: "tuesday",
-  Wednesday: "wednesday",
-  Thursday: "thursday",
-  Friday: "friday",
-  Saturday: "saturday",
-  Sunday: "sunday",
-} as const;
-export type UtcDay = OpenEnum<typeof UtcDay>;
 
 /**
  * A conditional override of the base pricing. An entry applies only when all of its condition fields (e.g. min_prompt_tokens, or the utc_start/utc_end time window) match the request; among applicable entries, later entries win per price key; price keys absent from an entry inherit the base price.
@@ -59,10 +46,6 @@ export type PricingOverride = {
    */
   prompt?: string | undefined;
   /**
-   * Condition: UTC weekdays the entry applies on, evaluated at the request instant. Scopes the utc_start/utc_end window (or, without a window, the whole UTC day) to the listed days. Absent means every day.
-   */
-  utcDays?: Array<UtcDay> | undefined;
-  /**
    * Condition: exclusive end of a daily UTC time window as an HHMM clock number (e.g. 400 = 04:00)
    */
   utcEnd?: number | undefined;
@@ -71,10 +54,6 @@ export type PricingOverride = {
    */
   utcStart?: number | undefined;
 };
-
-/** @internal */
-export const UtcDay$inboundSchema: z.ZodType<UtcDay, unknown> = openEnums
-  .inboundSchema(UtcDay);
 
 /** @internal */
 export const PricingOverride$inboundSchema: z.ZodType<
@@ -89,7 +68,6 @@ export const PricingOverride$inboundSchema: z.ZodType<
   input_cache_write_1h: z.string().optional(),
   min_prompt_tokens: z.number().optional(),
   prompt: z.string().optional(),
-  utc_days: z.array(UtcDay$inboundSchema).optional(),
   utc_end: z.number().optional(),
   utc_start: z.number().optional(),
 }).transform((v) => {
@@ -99,7 +77,6 @@ export const PricingOverride$inboundSchema: z.ZodType<
     "input_cache_write": "inputCacheWrite",
     "input_cache_write_1h": "inputCacheWrite1h",
     "min_prompt_tokens": "minPromptTokens",
-    "utc_days": "utcDays",
     "utc_end": "utcEnd",
     "utc_start": "utcStart",
   });
