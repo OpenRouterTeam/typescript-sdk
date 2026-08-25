@@ -99,16 +99,18 @@ async function $do(
   const body = null;
 
   const pathParams = {
-    id: encodeSimple("id", payload.id, {
-      explode: false,
-      charEncoding: "percent",
-    }),
     interval: encodeSimple("interval", payload.interval, {
       explode: false,
       charEncoding: "percent",
     }),
+    workspace_ref: encodeSimple("workspace_ref", payload.workspace_ref, {
+      explode: false,
+      charEncoding: "percent",
+    }),
   };
-  const path = pathToFunc("/workspaces/{id}/budgets/{interval}")(pathParams);
+  const path = pathToFunc("/workspaces/{workspace_ref}/budgets/{interval}")(
+    pathParams,
+  );
 
   const headers = new Headers(compactMap({
     Accept: "application/json",
