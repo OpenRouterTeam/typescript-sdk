@@ -56,7 +56,7 @@ export type CreateKeysRequestBody = {
    */
   expiresAt?: Date | null | undefined;
   /**
-   * Optional partner-supplied API key. Stored as a SHA-256 hash and never returned. Accepted only when authenticating with a Connect client secret; supplying it with a management key is rejected with 403.
+   * Optional partner-supplied API key with a minimum length of 32 characters and sufficient entropy. Stored as a SHA-256 hash and never returned. Can be presented as a bearer credential. Accepted only when authenticating with a Connect client secret; supplying it with a management key is rejected with 403.
    */
   externalApiKey?: string | undefined;
   /**
