@@ -6561,6 +6561,8 @@ components:
       example:
         type: 'container_auto'
       properties:
+        file_ids:
+          $ref: '#/components/schemas/ContainerFileIds'
         network_policy:
           $ref: '#/components/schemas/ContainerNetworkPolicy'
         type:
@@ -6612,6 +6614,15 @@ components:
         - 'path'
         - 'source'
       type: 'object'
+    ContainerFileIds:
+      description: 'Workspace file ids (or_file_…) to attach into the container before the first command runs. Each file is copied to the container home as a writable copy named {last 8 characters of the file id}-{base filename} (a file stored as data/report.csv with id or_file_…NR6q4V8w attaches to ~/NR6q4V8w-report.csv), so same-named files never collide; the source document is never modified. Unknown, foreign, or malformed ids fail the request with a 400 before any command executes. Max 20 ids.'
+      example:
+        - 'or_file_011CNha8iCJcU1wXNR6q4V8w'
+      items:
+        minLength: 1
+        type: 'string'
+      maxItems: 20
+      type: 'array'
     ContainerFileListResponse:
       properties:
         data:
@@ -6697,6 +6708,8 @@ components:
           minLength: 1
           pattern: '^[\w-]+$'
           type: 'string'
+        file_ids:
+          $ref: '#/components/schemas/ContainerFileIds'
         network_policy:
           $ref: '#/components/schemas/ContainerNetworkPolicy'
         type:
