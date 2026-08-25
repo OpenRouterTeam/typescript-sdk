@@ -45,6 +45,7 @@ export function ttsCreateSpeech(
     | errors.UnauthorizedResponseError
     | errors.PaymentRequiredResponseError
     | errors.NotFoundResponseError
+    | errors.PayloadTooLargeResponseError
     | errors.TooManyRequestsResponseError
     | errors.InternalServerResponseError
     | errors.BadGatewayResponseError
@@ -80,6 +81,7 @@ async function $do(
       | errors.UnauthorizedResponseError
       | errors.PaymentRequiredResponseError
       | errors.NotFoundResponseError
+      | errors.PayloadTooLargeResponseError
       | errors.TooManyRequestsResponseError
       | errors.InternalServerResponseError
       | errors.BadGatewayResponseError
@@ -197,6 +199,7 @@ async function $do(
     | errors.UnauthorizedResponseError
     | errors.PaymentRequiredResponseError
     | errors.NotFoundResponseError
+    | errors.PayloadTooLargeResponseError
     | errors.TooManyRequestsResponseError
     | errors.InternalServerResponseError
     | errors.BadGatewayResponseError
@@ -221,6 +224,7 @@ async function $do(
     M.jsonErr(401, errors.UnauthorizedResponseError$inboundSchema),
     M.jsonErr(402, errors.PaymentRequiredResponseError$inboundSchema),
     M.jsonErr(404, errors.NotFoundResponseError$inboundSchema),
+    M.jsonErr(413, errors.PayloadTooLargeResponseError$inboundSchema),
     M.jsonErr(429, errors.TooManyRequestsResponseError$inboundSchema),
     M.jsonErr(500, errors.InternalServerResponseError$inboundSchema),
     M.jsonErr(502, errors.BadGatewayResponseError$inboundSchema),
