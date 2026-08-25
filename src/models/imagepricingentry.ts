@@ -21,6 +21,7 @@ export const Billable = {
 export type Billable = OpenEnum<typeof Billable>;
 
 export const Unit = {
+  Request: "request",
   Image: "image",
   Megapixel: "megapixel",
   Token: "token",
