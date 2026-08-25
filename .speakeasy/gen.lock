@@ -1,19 +1,19 @@
 lockVersion: ""
 id: ""
 management:
-  docChecksum: cf03273e6cd30ccf7b8de6e6917e3d0a
+  docChecksum: dc415af9f5875604fcbc9167ac45c565
   docVersion: 1.0.0
   speakeasyVersion: 1.787.0
   generationVersion: 2.914.0
-  releaseVersion: 1.2.67
-  configChecksum: 9b672712ce65a9a4e97e264ed45baaa6
+  releaseVersion: 1.2.68
+  configChecksum: 7563e1d19341bda2759af80d8e25d181
   repoURL: https://github.com/OpenRouterTeam/typescript-sdk.git
   installationURL: https://github.com/OpenRouterTeam/typescript-sdk
   published: true
 persistentEdits:
-  generation_id: 0125ce22-afe2-4992-aa2a-cdc5906aa2cc
-  pristine_commit_hash: db92c0d6023a66c6cde6b26ecea05dc8b89c4635
-  pristine_tree_hash: f0542ad1aa902d53777b939f8609372f7c423ee6
+  generation_id: 97e1cf4c-1769-41fb-aa5e-076afbdb2420
+  pristine_commit_hash: ec1f062dab38aafd007315537a15f848f9addfe1
+  pristine_tree_hash: ecb83a06fcd652da47fdf6c7be3ae6504ed9a3bd
 features:
   typescript:
     acceptHeaders: 2.81.2
@@ -3111,8 +3111,8 @@ trackedFiles:
     deleted: true
   docs/models/createguardrailrequest.mdx:
     id: 2bd986770c03
-    last_write_checksum: sha1:9af6c45b7ffd64c31998f94627a80c54959e137b
-    pristine_git_object: d468faa63a16795834ffa6774951630fc1b596f2
+    last_write_checksum: sha1:23ecddd9cd7f50ead49c29d92b0280551e7a51f6
+    pristine_git_object: bc9e82c262669376e668dd80c19a78cd11fdf1d9
   docs/models/createguardrailresponse.md:
     id: 1479b9a825eb
     last_write_checksum: sha1:bee8fafaede91b021bff538b7beefcb0d21395b4
@@ -13041,12 +13041,12 @@ trackedFiles:
     pristine_git_object: 410efafd6a7f50d91ccb87131fedbe0c3d47e15a
   jsr.json:
     id: 7f6ab7767282
-    last_write_checksum: sha1:ae80a2e64d76e82a3ccd1ae5d8ad3d79229dd113
-    pristine_git_object: fcb159e9a179fa4175dc8c208854058469cfd2d2
+    last_write_checksum: sha1:c963e91cf922a2fa4fb6113d1846dc526b67d691
+    pristine_git_object: a5c3fe219adf2477d8181455fa59a30eb87ca2e8
   package.json:
     id: 7030d0b2f71b
-    last_write_checksum: sha1:61d2ed2d85cb1d47df9a00c2c13aea959ff80ebc
-    pristine_git_object: bd1c465c323094611d117ff10f8ed18410a4bfaf
+    last_write_checksum: sha1:e41b4d128bc00c64270536c3602a4f242cb7fe4b
+    pristine_git_object: a501d907176e7c734c9a8c1462a66f1422f8c0bc
   src/core.ts:
     id: f431fdbcd144
     last_write_checksum: sha1:5aa66b0b6a5964f3eea7f3098c2eb3c0ee9c0131
@@ -13473,8 +13473,8 @@ trackedFiles:
     pristine_git_object: a187e58707bdb726ca2aff74941efe7493422d4e
   src/lib/config.ts:
     id: 320761608fb3
-    last_write_checksum: sha1:210d97a845229c706c5591360494a3adea001f57
-    pristine_git_object: d9964bd88e8056557737fb967fa75a4c94ea7af2
+    last_write_checksum: sha1:29a1e37c8a305d6468beb49168f980e4a83984c0
+    pristine_git_object: 4c6142aa7319a8bd5e29006d781e0d0cd88dfb61
   src/lib/dlv.ts:
     id: b1988214835a
     last_write_checksum: sha1:eaac763b22717206a6199104e0403ed17a4e2711
@@ -14235,8 +14235,8 @@ trackedFiles:
     pristine_git_object: db7f7476736a5d486bcbfe50c06b5c80c6e2883e
   src/models/createguardrailrequest.ts:
     id: fbf07f1435fd
-    last_write_checksum: sha1:2ea1f39b30d4f5f0579c9350cc05ec2ed3428e55
-    pristine_git_object: 438c9916c553acab9e76ae64ce84b435ef6357b9
+    last_write_checksum: sha1:d1c92fe9fbc9ee9699083487f6177f08334a77f5
+    pristine_git_object: 51d5d866f1fa5383ed33aad2267d0654c74fbc79
   src/models/createguardrailresponse.ts:
     id: f0b6f29656b5
     last_write_checksum: sha1:f97971ea73141b6983b75e600b0df08df5511d0f
