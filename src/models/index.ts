@@ -490,6 +490,7 @@ export * from "./reasoningsummaryverbosity.js";
 export * from "./reasoningtextcontent.js";
 export * from "./refusaldeltaevent.js";
 export * from "./refusaldoneevent.js";
+export * from "./requestquantization.js";
 export * from "./requesttimeoutresponseerrordata.js";
 export * from "./responsehealingplugin.js";
 export * from "./responseincludesenum.js";
