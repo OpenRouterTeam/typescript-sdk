@@ -7327,7 +7327,7 @@ components:
           example: false
           type: 'boolean'
         limit_usd:
-          description: 'Spending limit in USD'
+          description: 'Spending limit in USD. Must be provided together with `reset_interval`: a request that sets only one of the two is rejected with a 400.'
           example: 50
           format: 'double'
           type:
