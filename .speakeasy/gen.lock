@@ -1,19 +1,19 @@
 lockVersion: ""
 id: ""
 management:
-  docChecksum: 12b73fcbcdbf392370907eb0ec566af2
+  docChecksum: 715b81524a9e854db002ef08969e835c
   docVersion: 1.0.0
   speakeasyVersion: 1.787.0
   generationVersion: 2.914.0
-  releaseVersion: 1.2.65
-  configChecksum: e696443e1bf8b25b143151981228909c
+  releaseVersion: 1.2.66
+  configChecksum: b37173f59e33e2d432afb4f46c4cc892
   repoURL: https://github.com/OpenRouterTeam/typescript-sdk.git
   installationURL: https://github.com/OpenRouterTeam/typescript-sdk
   published: true
 persistentEdits:
-  generation_id: 729bbc79-1fe5-4b49-ab4a-4bfee7402d66
-  pristine_commit_hash: ab5f4edefc90acd16833513d8f93ad9f6c3e5690
-  pristine_tree_hash: 620c2aab4c4e564bcfb3cd5b7ec718f0b1f92627
+  generation_id: 7efbaf5c-04cf-4f47-8048-850fab1f6fbd
+  pristine_commit_hash: e7a9bdf65002b9966454dc641bdcd3d3075a812d
+  pristine_tree_hash: b6819c98302e54fb5f26a7f4271b7e206b2ebbd6
 features:
   typescript:
     acceptHeaders: 2.81.2
@@ -12973,8 +12973,8 @@ trackedFiles:
     deleted: true
   docs/sdks/rerank/README.mdx:
     id: 68cdfc7f7dca
-    last_write_checksum: sha1:d5ebcb3455c87070db30a957dfdce0a42257dc09
-    pristine_git_object: 2072090c6b0330661f761a9f153f8c50b316b1b3
+    last_write_checksum: sha1:ddcaab8027a3cee48b8a39e8922ad490e2ed9d22
+    pristine_git_object: b18495b41d528e69c35a927caf4c93e4a1acf82a
   docs/sdks/responses/README.mdx:
     id: abab319e080e
     last_write_checksum: sha1:12f67584e99c6f82a5e00544a70d5a280badddb2
@@ -12990,8 +12990,8 @@ trackedFiles:
     deleted: true
   docs/sdks/stt/README.mdx:
     id: 190b0dc9a5d1
-    last_write_checksum: sha1:19dbcc6d0c7f3ca5592b344d96fe4e4d97ed542d
-    pristine_git_object: bfbef06312f4d0909cf9d4c7021a494bbb123178
+    last_write_checksum: sha1:452d343cd695643f5e391c54d81fac762c29b77e
+    pristine_git_object: 7dd515ac0b7bd1f5778ea47c1ec8a14b006a085d
   docs/sdks/tts/README.md:
     id: 0c425074d09f
     last_write_checksum: sha1:019ae6737c83daac03ebbe7d56c49b0d3ad11262
@@ -12999,8 +12999,8 @@ trackedFiles:
     deleted: true
   docs/sdks/tts/README.mdx:
     id: cd1132543884
-    last_write_checksum: sha1:abf8333950eec06ec15bba13aa907545bad22ed9
-    pristine_git_object: 1f3460cf97703fd4da310b18f8dc295179ce1280
+    last_write_checksum: sha1:165691a249fd2ba85d0d9553b0b84e0dbe384203
+    pristine_git_object: 6554fdb6905a87c094b3eef78a8e8bda1f4b67b2
   docs/sdks/videogeneration/README.md:
     id: b6dbf7b0729c
     last_write_checksum: sha1:71205a37afffed445af770082c3f50f6bcbfadfa
@@ -13008,8 +13008,8 @@ trackedFiles:
     deleted: true
   docs/sdks/videogeneration/README.mdx:
     id: 9a8fa04c3872
-    last_write_checksum: sha1:e0c0322ed42d665884f955343d5dbf540a4ea3f5
-    pristine_git_object: 7e750e4fada040d7b52f82599fef52c372d35537
+    last_write_checksum: sha1:87ba2c0c914afbfcdbff056e99edc83b6f3ed131
+    pristine_git_object: 8b30f21c9b84da37d2082d3d7f62aba2de703219
   docs/sdks/workspaces/README.md:
     id: 1f5b051a6380
     last_write_checksum: sha1:7177bee7c589601ccf496769472f10578b6a4144
@@ -13041,12 +13041,12 @@ trackedFiles:
     pristine_git_object: 410efafd6a7f50d91ccb87131fedbe0c3d47e15a
   jsr.json:
     id: 7f6ab7767282
-    last_write_checksum: sha1:d3e104d698711f9764bcc70b2a9d24c4e4815326
-    pristine_git_object: 12e9fa562dd8ed9e9f563a9c6c73aae0b8eb7876
+    last_write_checksum: sha1:5dbfa6fd153f70712ec530f92b197666ea09e024
+    pristine_git_object: 9b31c4c0dd3a79123f76e89b014f099e85fc8a8b
   package.json:
     id: 7030d0b2f71b
-    last_write_checksum: sha1:8444a8b92861f70cdc8a5adf0c9746c8f4dcbf5c
-    pristine_git_object: 972e8b176de358c390e15efc3f3733ab927fa46d
+    last_write_checksum: sha1:ad083cda4b533916135496a17233168652a14ef4
+    pristine_git_object: b4ca321af9a707ea55925047a6e3aa26b8f8700f
   src/core.ts:
     id: f431fdbcd144
     last_write_checksum: sha1:5aa66b0b6a5964f3eea7f3098c2eb3c0ee9c0131
@@ -13345,8 +13345,8 @@ trackedFiles:
     pristine_git_object: 1f476bdc4039fd2ac544c347fc8caf36274572f4
   src/funcs/rerankRerank.ts:
     id: 915c20e147a4
-    last_write_checksum: sha1:e7992a5ba69d700a441e6209200dd2be2cbc563e
-    pristine_git_object: 02d45e4cb8c583bf1b91602f93e5c70d5b408070
+    last_write_checksum: sha1:387582e4a40d37f655ce266c136fe0c093637bfa
+    pristine_git_object: 928000f548a731bac502c794c2d43fd415bee05e
   src/funcs/responsesSend.ts:
     id: c8d9f439840d
     last_write_checksum: sha1:b3b6c4f84e95886cfc37e4551a14660043b68ba4
@@ -13377,20 +13377,20 @@ trackedFiles:
     pristine_git_object: ee28b4b8436be56ef32d76d072e1681631d3d238
   src/funcs/sttCreateTranscription.ts:
     id: 90b735003ac7
-    last_write_checksum: sha1:14324939a10d6009cfc761ebc6cce6954b6f10c2
-    pristine_git_object: 17376cac83c1540a625b51a55356700fdccff754
+    last_write_checksum: sha1:2bb33d184465161973bbc063f858062e52494476
+    pristine_git_object: e0cb6533810de6f029686a7052380f2aa3a1c82f
   src/funcs/sttCreateTranscriptionMultipart.ts:
     id: ec09b43036c3
-    last_write_checksum: sha1:adcbc7e31ac589ccc8d77b0a492251f6376ae4eb
-    pristine_git_object: 99e46fefcbf2a7d7476c10f18d500c781046ba44
+    last_write_checksum: sha1:304f114ce506f7c863b7e7a1883cda82f2d7c5fe
+    pristine_git_object: 513c83aad7f817fb320cb8239e90775614f257ee
   src/funcs/ttsCreateSpeech.ts:
     id: ed304f5d6ad8
-    last_write_checksum: sha1:c10aaf95268325ae6691c0d13c7a55c61d68646d
-    pristine_git_object: bd6883ae0f97d92763117d79d6ae4b03bd5dbbc3
+    last_write_checksum: sha1:864ed228d9d7c01505e08cab067919e343fe07b1
+    pristine_git_object: 773ee245bfe7d305f74cc7c6d958f1d824ce3c07
   src/funcs/videoGenerationGenerate.ts:
     id: 6f3650ac9f5e
-    last_write_checksum: sha1:7f4231e9dfb91aa615c52a58e965ae80a690af5c
-    pristine_git_object: 641ddc3c4843175ec79d6d8409feb742560699cc
+    last_write_checksum: sha1:c7d58f106888f557f811b41235addd983db3cf04
+    pristine_git_object: d577353032dc7650af0c04c891216f476ad47e12
   src/funcs/videoGenerationGetGeneration.ts:
     id: 02c7e430a829
     last_write_checksum: sha1:47f7e06659ab622195062681f65247e6ad150fb9
@@ -13473,8 +13473,8 @@ trackedFiles:
     pristine_git_object: a187e58707bdb726ca2aff74941efe7493422d4e
   src/lib/config.ts:
     id: 320761608fb3
-    last_write_checksum: sha1:4627e19622d11d82242c3aa98eceb96f89d8a626
-    pristine_git_object: ec3f503b5c7859a500209f0921506ece340339ef
+    last_write_checksum: sha1:683bbe9383b087e229526ffffeecfc72b4d21cfc
+    pristine_git_object: 6dcd39ebe23e017bdf3ec37b9b544bd9adf13354
   src/lib/dlv.ts:
     id: b1988214835a
     last_write_checksum: sha1:eaac763b22717206a6199104e0403ed17a4e2711
@@ -17328,6 +17328,8 @@ examples:
           application/json: {"error": {"code": 524, "message": "Request timed out. Please try again later."}}
         "529":
           application/json: {"error": {"code": 529, "message": "Provider returned error"}}
+        "413":
+          application/json: {"error": {"code": 413, "message": "Request payload too large"}}
   createVideos:
     speakeasy-default-create-videos:
       requestBody:
@@ -17347,6 +17349,8 @@ examples:
           application/json: {"error": {"code": 429, "message": "Rate limit exceeded"}}
         "500":
           application/json: {"error": {"code": 500, "message": "Internal Server Error"}}
+        "413":
+          application/json: {"error": {"code": 413, "message": "Request payload too large"}}
   getVideos:
     speakeasy-default-get-videos:
       parameters:
@@ -17589,6 +17593,8 @@ examples:
           application/json: {"error": {"code": 524, "message": "Request timed out. Please try again later."}}
         "529":
           application/json: {"error": {"code": 529, "message": "Provider returned error"}}
+        "413":
+          application/json: {"error": {"code": 413, "message": "Request payload too large"}}
   createAudioTranscriptions:
     speakeasy-default-create-audio-transcriptions:
       requestBody:
@@ -17616,6 +17622,8 @@ examples:
           application/json: {"error": {"code": 524, "message": "Request timed out. Please try again later."}}
         "529":
           application/json: {"error": {"code": 529, "message": "Provider returned error"}}
+        "413":
+          application/json: {"error": {"code": 413, "message": "Request payload too large"}}
     speakeasy-default-create-audio-transcriptions-multipart:
       requestBody:
         multipart/form-data: {"file": "x-file: example.file", "model": "Escalade"}
@@ -17642,6 +17650,8 @@ examples:
           application/json: {"error": {"code": 524, "message": "Request timed out. Please try again later."}}
         "529":
           application/json: {"error": {"code": 529, "message": "Provider returned error"}}
+        "413":
+          application/json: {"error": {"code": 413, "message": "Request payload too large"}}
   listBYOKKeys:
     speakeasy-default-list-BYOK-keys:
       parameters:
@@ -18547,4 +18557,8 @@ examples:
 examplesVersion: 1.0.2
 releaseNotes: |
   ## Typescript SDK Changes:
-  * `openrouter.containers.promoteContainerFile()`: **Added**
+  * `openrouter.tts.createSpeech()`:  `error.status[413]` **Added**
+  * `openrouter.stt.createTranscription()`:  `error.status[413]` **Added**
+  * `openrouter.stt.createTranscriptionMultipart()`:  `error.status[413]` **Added**
+  * `openrouter.rerank.rerank()`:  `error.status[413]` **Added**
+  * `openrouter.videoGeneration.generate()`:  `error.status[413]` **Added**
