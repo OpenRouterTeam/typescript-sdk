@@ -471,7 +471,7 @@ const openRouter = new OpenRouter({
 
 async function run() {
   const result = await openRouter.workspaces.listBudgets({
-    id: "production",
+    workspaceId: "production",
   });
 
   console.log(result);
@@ -499,7 +499,7 @@ const openRouter = new OpenRouterCore({
 
 async function run() {
   const res = await workspacesListBudgets(openRouter, {
-    id: "production",
+    workspaceId: "production",
   });
   if (res.ok) {
     const { value: result } = res;
@@ -552,7 +552,7 @@ const openRouter = new OpenRouter({
 
 async function run() {
   const result = await openRouter.workspaces.deleteBudget({
-    id: "production",
+    workspaceId: "production",
     interval: "monthly",
   });
 
@@ -581,7 +581,7 @@ const openRouter = new OpenRouterCore({
 
 async function run() {
   const res = await workspacesDeleteBudget(openRouter, {
-    id: "production",
+    workspaceId: "production",
     interval: "monthly",
   });
   if (res.ok) {
@@ -636,7 +636,7 @@ const openRouter = new OpenRouter({
 
 async function run() {
   const result = await openRouter.workspaces.getBudget({
-    id: "production",
+    workspaceId: "production",
     interval: "monthly",
   });
 
@@ -665,7 +665,7 @@ const openRouter = new OpenRouterCore({
 
 async function run() {
   const res = await workspacesGetBudget(openRouter, {
-    id: "production",
+    workspaceId: "production",
     interval: "monthly",
   });
   if (res.ok) {
@@ -720,7 +720,7 @@ const openRouter = new OpenRouter({
 
 async function run() {
   const result = await openRouter.workspaces.setBudget({
-    id: "production",
+    workspaceId: "production",
     interval: "monthly",
     upsertWorkspaceBudgetRequest: {
       includeByokInBudgets: true,
@@ -753,7 +753,7 @@ const openRouter = new OpenRouterCore({
 
 async function run() {
   const res = await workspacesSetBudget(openRouter, {
-    id: "production",
+    workspaceId: "production",
     interval: "monthly",
     upsertWorkspaceBudgetRequest: {
       includeByokInBudgets: true,
@@ -812,7 +812,7 @@ const openRouter = new OpenRouter({
 
 async function run() {
   const result = await openRouter.workspaces.listMembers({
-    id: "production",
+    workspaceId: "production",
   });
 
   for await (const page of result) {
@@ -842,7 +842,7 @@ const openRouter = new OpenRouterCore({
 
 async function run() {
   const res = await workspacesListMembers(openRouter, {
-    id: "production",
+    workspaceId: "production",
   });
   if (res.ok) {
     const { value: result } = res;
@@ -898,7 +898,7 @@ const openRouter = new OpenRouter({
 
 async function run() {
   const result = await openRouter.workspaces.bulkAddMembers({
-    id: "production",
+    workspaceId: "production",
     bulkAddWorkspaceMembersRequest: {
       userIds: [
         "user_abc123",
@@ -932,7 +932,7 @@ const openRouter = new OpenRouterCore({
 
 async function run() {
   const res = await workspacesBulkAddMembers(openRouter, {
-    id: "production",
+    workspaceId: "production",
     bulkAddWorkspaceMembersRequest: {
       userIds: [
         "user_abc123",
@@ -993,7 +993,7 @@ const openRouter = new OpenRouter({
 
 async function run() {
   const result = await openRouter.workspaces.bulkRemoveMembers({
-    id: "production",
+    workspaceId: "production",
     bulkRemoveWorkspaceMembersRequest: {
       userIds: [
         "user_abc123",
@@ -1027,7 +1027,7 @@ const openRouter = new OpenRouterCore({
 
 async function run() {
   const res = await workspacesBulkRemoveMembers(openRouter, {
-    id: "production",
+    workspaceId: "production",
     bulkRemoveWorkspaceMembersRequest: {
       userIds: [
         "user_abc123",

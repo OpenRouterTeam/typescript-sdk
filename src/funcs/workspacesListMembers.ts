@@ -110,12 +110,12 @@ async function $do(
   const body = null;
 
   const pathParams = {
-    id: encodeSimple("id", payload.id, {
+    workspace_id: encodeSimple("workspace_id", payload.workspace_id, {
       explode: false,
       charEncoding: "percent",
     }),
   };
-  const path = pathToFunc("/workspaces/{id}/members")(pathParams);
+  const path = pathToFunc("/workspaces/{workspace_id}/members")(pathParams);
 
   const query = encodeFormQuery({
     "limit": payload.limit,

@@ -103,12 +103,14 @@ async function $do(
   });
 
   const pathParams = {
-    id: encodeSimple("id", payload.id, {
+    workspace_id: encodeSimple("workspace_id", payload.workspace_id, {
       explode: false,
       charEncoding: "percent",
     }),
   };
-  const path = pathToFunc("/workspaces/{id}/members/remove")(pathParams);
+  const path = pathToFunc("/workspaces/{workspace_id}/members/remove")(
+    pathParams,
+  );
 
   const headers = new Headers(compactMap({
     "Content-Type": "application/json",

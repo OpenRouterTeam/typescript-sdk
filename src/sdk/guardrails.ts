@@ -60,57 +60,6 @@ export class Guardrails extends ClientSDK {
   }
 
   /**
-   * Delete a guardrail
-   *
-   * @remarks
-   * Delete an existing guardrail. [Management key](/docs/guides/overview/auth/management-api-keys) required.
-   */
-  async delete(
-    request: operations.DeleteGuardrailRequest,
-    options?: RequestOptions,
-  ): Promise<models.DeleteGuardrailResponse> {
-    return unwrapAsync(guardrailsDelete(
-      this,
-      request,
-      options,
-    ));
-  }
-
-  /**
-   * Get a guardrail
-   *
-   * @remarks
-   * Get a single guardrail by ID. [Management key](/docs/guides/overview/auth/management-api-keys) required.
-   */
-  async get(
-    request: operations.GetGuardrailRequest,
-    options?: RequestOptions,
-  ): Promise<models.GetGuardrailResponse> {
-    return unwrapAsync(guardrailsGet(
-      this,
-      request,
-      options,
-    ));
-  }
-
-  /**
-   * Update a guardrail
-   *
-   * @remarks
-   * Update an existing guardrail, or materialize an unconfigured workspace default guardrail. Collection fields use replace semantics: send the full desired set on every update. [Management key](/docs/guides/overview/auth/management-api-keys) required.
-   */
-  async update(
-    request: operations.UpdateGuardrailRequest,
-    options?: RequestOptions,
-  ): Promise<models.UpdateGuardrailResponse> {
-    return unwrapAsync(guardrailsUpdate(
-      this,
-      request,
-      options,
-    ));
-  }
-
-  /**
    * List key assignments for a guardrail
    *
    * @remarks
@@ -216,6 +165,57 @@ export class Guardrails extends ClientSDK {
     options?: RequestOptions,
   ): Promise<models.BulkUnassignMembersResponse> {
     return unwrapAsync(guardrailsBulkUnassignMembers(
+      this,
+      request,
+      options,
+    ));
+  }
+
+  /**
+   * Delete a guardrail
+   *
+   * @remarks
+   * Delete an existing guardrail. [Management key](/docs/guides/overview/auth/management-api-keys) required.
+   */
+  async delete(
+    request: operations.DeleteGuardrailRequest,
+    options?: RequestOptions,
+  ): Promise<models.DeleteGuardrailResponse> {
+    return unwrapAsync(guardrailsDelete(
+      this,
+      request,
+      options,
+    ));
+  }
+
+  /**
+   * Get a guardrail
+   *
+   * @remarks
+   * Get a single guardrail by ID. [Management key](/docs/guides/overview/auth/management-api-keys) required.
+   */
+  async get(
+    request: operations.GetGuardrailRequest,
+    options?: RequestOptions,
+  ): Promise<models.GetGuardrailResponse> {
+    return unwrapAsync(guardrailsGet(
+      this,
+      request,
+      options,
+    ));
+  }
+
+  /**
+   * Update a guardrail
+   *
+   * @remarks
+   * Update an existing guardrail, or materialize an unconfigured workspace default guardrail. Collection fields use replace semantics: send the full desired set on every update. [Management key](/docs/guides/overview/auth/management-api-keys) required.
+   */
+  async update(
+    request: operations.UpdateGuardrailRequest,
+    options?: RequestOptions,
+  ): Promise<models.UpdateGuardrailResponse> {
+    return unwrapAsync(guardrailsUpdate(
       this,
       request,
       options,

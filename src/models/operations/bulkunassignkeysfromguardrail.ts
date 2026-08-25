@@ -52,7 +52,7 @@ export type BulkUnassignKeysFromGuardrailRequest = {
   /**
    * The unique identifier of the guardrail
    */
-  id: string;
+  guardrailId: string;
   bulkUnassignKeysRequest: models.BulkUnassignKeysRequest;
 };
 
@@ -61,7 +61,7 @@ export type BulkUnassignKeysFromGuardrailRequest$Outbound = {
   "HTTP-Referer"?: string | undefined;
   appTitle?: string | undefined;
   appCategories?: string | undefined;
-  id: string;
+  guardrail_id: string;
   BulkUnassignKeysRequest: models.BulkUnassignKeysRequest$Outbound;
 };
 
@@ -73,11 +73,12 @@ export const BulkUnassignKeysFromGuardrailRequest$outboundSchema: z.ZodType<
   httpReferer: z.string().optional(),
   appTitle: z.string().optional(),
   appCategories: z.string().optional(),
-  id: z.string(),
+  guardrailId: z.string(),
   bulkUnassignKeysRequest: models.BulkUnassignKeysRequest$outboundSchema,
 }).transform((v) => {
   return remap$(v, {
     httpReferer: "HTTP-Referer",
+    guardrailId: "guardrail_id",
     bulkUnassignKeysRequest: "BulkUnassignKeysRequest",
   });
 });

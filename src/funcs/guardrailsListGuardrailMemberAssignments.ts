@@ -110,12 +110,14 @@ async function $do(
   const body = null;
 
   const pathParams = {
-    id: encodeSimple("id", payload.id, {
+    guardrail_id: encodeSimple("guardrail_id", payload.guardrail_id, {
       explode: false,
       charEncoding: "percent",
     }),
   };
-  const path = pathToFunc("/guardrails/{id}/assignments/members")(pathParams);
+  const path = pathToFunc("/guardrails/{guardrail_id}/assignments/members")(
+    pathParams,
+  );
 
   const query = encodeFormQuery({
     "limit": payload.limit,

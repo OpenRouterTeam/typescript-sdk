@@ -55,7 +55,7 @@ export type ListWorkspaceMembersRequest = {
   /**
    * The workspace ID (UUID) or slug
    */
-  id: string;
+  workspaceId: string;
   /**
    * Number of records to skip for pagination
    */
@@ -75,7 +75,7 @@ export type ListWorkspaceMembersRequest$Outbound = {
   "HTTP-Referer"?: string | undefined;
   appTitle?: string | undefined;
   appCategories?: string | undefined;
-  id: string;
+  workspace_id: string;
   offset: number | null;
   limit: number;
 };
@@ -88,12 +88,13 @@ export const ListWorkspaceMembersRequest$outboundSchema: z.ZodType<
   httpReferer: z.string().optional(),
   appTitle: z.string().optional(),
   appCategories: z.string().optional(),
-  id: z.string(),
+  workspaceId: z.string(),
   offset: z.nullable(z.int().default(0)),
   limit: z.int().default(50),
 }).transform((v) => {
   return remap$(v, {
     httpReferer: "HTTP-Referer",
+    workspaceId: "workspace_id",
   });
 });
 

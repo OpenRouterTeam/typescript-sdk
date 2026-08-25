@@ -52,7 +52,7 @@ export type BulkAssignMembersToGuardrailRequest = {
   /**
    * The unique identifier of the guardrail
    */
-  id: string;
+  guardrailId: string;
   bulkAssignMembersRequest: models.BulkAssignMembersRequest;
 };
 
@@ -61,7 +61,7 @@ export type BulkAssignMembersToGuardrailRequest$Outbound = {
   "HTTP-Referer"?: string | undefined;
   appTitle?: string | undefined;
   appCategories?: string | undefined;
-  id: string;
+  guardrail_id: string;
   BulkAssignMembersRequest: models.BulkAssignMembersRequest$Outbound;
 };
 
@@ -73,11 +73,12 @@ export const BulkAssignMembersToGuardrailRequest$outboundSchema: z.ZodType<
   httpReferer: z.string().optional(),
   appTitle: z.string().optional(),
   appCategories: z.string().optional(),
-  id: z.string(),
+  guardrailId: z.string(),
   bulkAssignMembersRequest: models.BulkAssignMembersRequest$outboundSchema,
 }).transform((v) => {
   return remap$(v, {
     httpReferer: "HTTP-Referer",
+    guardrailId: "guardrail_id",
     bulkAssignMembersRequest: "BulkAssignMembersRequest",
   });
 });

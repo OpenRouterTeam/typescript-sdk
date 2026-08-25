@@ -52,7 +52,7 @@ export type BulkRemoveWorkspaceMembersRequest = {
   /**
    * The workspace ID (UUID) or slug
    */
-  id: string;
+  workspaceId: string;
   bulkRemoveWorkspaceMembersRequest: models.BulkRemoveWorkspaceMembersRequest;
 };
 
@@ -61,7 +61,7 @@ export type BulkRemoveWorkspaceMembersRequest$Outbound = {
   "HTTP-Referer"?: string | undefined;
   appTitle?: string | undefined;
   appCategories?: string | undefined;
-  id: string;
+  workspace_id: string;
   BulkRemoveWorkspaceMembersRequest:
     models.BulkRemoveWorkspaceMembersRequest$Outbound;
 };
@@ -74,12 +74,13 @@ export const BulkRemoveWorkspaceMembersRequest$outboundSchema: z.ZodType<
   httpReferer: z.string().optional(),
   appTitle: z.string().optional(),
   appCategories: z.string().optional(),
-  id: z.string(),
+  workspaceId: z.string(),
   bulkRemoveWorkspaceMembersRequest:
     models.BulkRemoveWorkspaceMembersRequest$outboundSchema,
 }).transform((v) => {
   return remap$(v, {
     httpReferer: "HTTP-Referer",
+    workspaceId: "workspace_id",
     bulkRemoveWorkspaceMembersRequest: "BulkRemoveWorkspaceMembersRequest",
   });
 });

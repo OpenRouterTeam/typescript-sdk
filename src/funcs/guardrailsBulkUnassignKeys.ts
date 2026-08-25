@@ -103,12 +103,12 @@ async function $do(
   });
 
   const pathParams = {
-    id: encodeSimple("id", payload.id, {
+    guardrail_id: encodeSimple("guardrail_id", payload.guardrail_id, {
       explode: false,
       charEncoding: "percent",
     }),
   };
-  const path = pathToFunc("/guardrails/{id}/assignments/keys/remove")(
+  const path = pathToFunc("/guardrails/{guardrail_id}/assignments/keys/remove")(
     pathParams,
   );
 
