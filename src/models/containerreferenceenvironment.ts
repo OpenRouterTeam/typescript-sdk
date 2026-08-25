@@ -20,6 +20,10 @@ export type ContainerReferenceEnvironment = {
    */
   containerId: string;
   /**
+   * Workspace file ids (or_file_…) to attach into the container before the first command runs. Each file is copied to the container home as a writable copy named {last 8 characters of the file id}-{base filename} (a file stored as data/report.csv with id or_file_…NR6q4V8w attaches to ~/NR6q4V8w-report.csv), so same-named files never collide; the source document is never modified. Unknown, foreign, or malformed ids fail the request with a 400 before any command executes. Max 20 ids.
+   */
+  fileIds?: Array<string> | undefined;
+  /**
    * Network egress policy for the container. "disabled" blocks all outbound internet; "allowlist" permits only hosts matching the listed hostnames or * glob patterns (ports 80/443, DNS via Cloudflare resolvers). The policy is fixed when a container starts: sending a different policy to a warm container fails the request with a 409. Omitted: defaults to "disabled" (no outbound internet). For unrestricted egress, use an allowlist of ["*"].
    */
   networkPolicy?: ContainerNetworkPolicy | undefined;
@@ -29,6 +33,7 @@ export type ContainerReferenceEnvironment = {
 /** @internal */
 export type ContainerReferenceEnvironment$Outbound = {
   container_id: string;
+  file_ids?: Array<string> | undefined;
   network_policy?: ContainerNetworkPolicy$Outbound | undefined;
   type: "container_reference";
 };
@@ -39,11 +44,13 @@ export const ContainerReferenceEnvironment$outboundSchema: z.ZodType<
   ContainerReferenceEnvironment
 > = z.object({
   containerId: z.string(),
+  fileIds: z.array(z.string()).optional(),
   networkPolicy: ContainerNetworkPolicy$outboundSchema.optional(),
   type: z.literal("container_reference"),
 }).transform((v) => {
   return remap$(v, {
     containerId: "container_id",
+    fileIds: "file_ids",
     networkPolicy: "network_policy",
   });
 });
