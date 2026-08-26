@@ -285,9 +285,9 @@ export type ChatRequest = {
    */
   messages: Array<ChatMessages>;
   /**
-   * Key-value pairs for additional object information (max 16 pairs, 64 char keys, 512 char values)
+   * Free-form JSON object for labeling the request (e.g. feature, tenant, environment). Stored with the generation and shown in the Activity dashboard, and forwarded to configured broadcast destinations. At most 16 keys; keys at most 64 characters; each value at most 512 characters when serialized; the whole object at most 10000 characters when serialized.
    */
-  metadata?: { [k: string]: string } | undefined;
+  metadata?: { [k: string]: any } | undefined;
   /**
    * Minimum probability threshold relative to the most likely token. Tokens with probability below min_p * (probability of top token) are filtered out. Not all providers support this parameter.
    */
@@ -562,7 +562,7 @@ export type ChatRequest$Outbound = {
   max_completion_tokens?: number | null | undefined;
   max_tokens?: number | null | undefined;
   messages: Array<ChatMessages$Outbound>;
-  metadata?: { [k: string]: string } | undefined;
+  metadata?: { [k: string]: any } | undefined;
   min_p?: number | null | undefined;
   modalities?: Array<string> | undefined;
   model?: string | undefined;
@@ -631,7 +631,7 @@ export const ChatRequest$outboundSchema: z.ZodType<
   maxCompletionTokens: z.nullable(z.int()).optional(),
   maxTokens: z.nullable(z.int()).optional(),
   messages: z.array(ChatMessages$outboundSchema),
-  metadata: z.record(z.string(), z.string()).optional(),
+  metadata: z.record(z.string(), z.any()).optional(),
   minP: z.nullable(z.number()).optional(),
   modalities: z.array(Modality$outboundSchema).optional(),
   model: z.string().optional(),
