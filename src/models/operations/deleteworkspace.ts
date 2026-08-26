@@ -52,6 +52,10 @@ export type DeleteWorkspaceRequest = {
    * The workspace ID (UUID) or slug
    */
   id: string;
+  /**
+   * Required to delete the default workspace. Deleting it permanently disables the account’s unscoped inference API keys (management/provisioning keys are retained) and its budgets, guardrails, classifiers, and broadcast destinations. Ignored for non-default workspaces.
+   */
+  confirmDefaultWorkspaceDeletion?: boolean | undefined;
 };
 
 /** @internal */
@@ -60,6 +64,7 @@ export type DeleteWorkspaceRequest$Outbound = {
   appTitle?: string | undefined;
   appCategories?: string | undefined;
   id: string;
+  confirm_default_workspace_deletion?: boolean | undefined;
 };
 
 /** @internal */
@@ -71,9 +76,11 @@ export const DeleteWorkspaceRequest$outboundSchema: z.ZodType<
   appTitle: z.string().optional(),
   appCategories: z.string().optional(),
   id: z.string(),
+  confirmDefaultWorkspaceDeletion: z.boolean().optional(),
 }).transform((v) => {
   return remap$(v, {
     httpReferer: "HTTP-Referer",
+    confirmDefaultWorkspaceDeletion: "confirm_default_workspace_deletion",
   });
 });
 
