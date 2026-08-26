@@ -51,7 +51,7 @@ export type ListWorkspaceBudgetsRequest = {
   /**
    * The workspace ID (UUID) or slug
    */
-  id: string;
+  workspaceRef: string;
 };
 
 /** @internal */
@@ -59,7 +59,7 @@ export type ListWorkspaceBudgetsRequest$Outbound = {
   "HTTP-Referer"?: string | undefined;
   appTitle?: string | undefined;
   appCategories?: string | undefined;
-  id: string;
+  workspace_ref: string;
 };
 
 /** @internal */
@@ -70,10 +70,11 @@ export const ListWorkspaceBudgetsRequest$outboundSchema: z.ZodType<
   httpReferer: z.string().optional(),
   appTitle: z.string().optional(),
   appCategories: z.string().optional(),
-  id: z.string(),
+  workspaceRef: z.string(),
 }).transform((v) => {
   return remap$(v, {
     httpReferer: "HTTP-Referer",
+    workspaceRef: "workspace_ref",
   });
 });
 

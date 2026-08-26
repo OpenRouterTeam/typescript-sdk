@@ -62,7 +62,7 @@ export class Workspaces extends ClientSDK {
    * Delete a workspace
    *
    * @remarks
-   * Delete an existing workspace. Workspaces with active API keys cannot be deleted; remove the keys first. Deleting the default workspace is not yet generally available; callers not enabled for it receive a 403 while the capability rolls out. Deleting any workspace permanently deletes its budgets and guardrails and disables its classifiers and broadcast destinations. [Management key](/docs/guides/overview/auth/management-api-keys) required.
+   * Delete an existing workspace. Workspaces with active API keys cannot be deleted; remove the keys first. Deleting the default workspace requires confirm_default_workspace_deletion=true. Deleting any workspace permanently deletes its budgets and guardrails and disables its classifiers and broadcast destinations. [Management key](/docs/guides/overview/auth/management-api-keys) required.
    */
   async delete(
     request: operations.DeleteWorkspaceRequest,
@@ -103,6 +103,59 @@ export class Workspaces extends ClientSDK {
     options?: RequestOptions,
   ): Promise<models.UpdateWorkspaceResponse> {
     return unwrapAsync(workspacesUpdate(
+      this,
+      request,
+      options,
+    ));
+  }
+
+  /**
+   * List workspace members
+   *
+   * @remarks
+   * List all members of a workspace. Returns paginated results. For the default workspace, returns all organization members (implicit membership). [Management key](/docs/guides/overview/auth/management-api-keys) required.
+   */
+  async listMembers(
+    request: operations.ListWorkspaceMembersRequest,
+    options?: RequestOptions,
+  ): Promise<
+    PageIterator<operations.ListWorkspaceMembersResponse, { offset: number }>
+  > {
+    return unwrapResultIterator(workspacesListMembers(
+      this,
+      request,
+      options,
+    ));
+  }
+
+  /**
+   * Bulk add members to a workspace
+   *
+   * @remarks
+   * Add multiple organization members to a workspace. Members are assigned the same role they hold in the organization. [Management key](/docs/guides/overview/auth/management-api-keys) required.
+   */
+  async bulkAddMembers(
+    request: operations.BulkAddWorkspaceMembersRequest,
+    options?: RequestOptions,
+  ): Promise<models.BulkAddWorkspaceMembersResponse> {
+    return unwrapAsync(workspacesBulkAddMembers(
+      this,
+      request,
+      options,
+    ));
+  }
+
+  /**
+   * Bulk remove members from a workspace
+   *
+   * @remarks
+   * Remove multiple members from a workspace. Members with active API keys in the workspace cannot be removed. SCIM-managed members cannot be removed; changes must be made in your identity provider. [Management key](/docs/guides/overview/auth/management-api-keys) required.
+   */
+  async bulkRemoveMembers(
+    request: operations.BulkRemoveWorkspaceMembersRequest,
+    options?: RequestOptions,
+  ): Promise<models.BulkRemoveWorkspaceMembersResponse> {
+    return unwrapAsync(workspacesBulkRemoveMembers(
       this,
       request,
       options,
@@ -171,59 +224,6 @@ export class Workspaces extends ClientSDK {
     options?: RequestOptions,
   ): Promise<models.UpsertWorkspaceBudgetResponse> {
     return unwrapAsync(workspacesSetBudget(
-      this,
-      request,
-      options,
-    ));
-  }
-
-  /**
-   * List workspace members
-   *
-   * @remarks
-   * List all members of a workspace. Returns paginated results. For the default workspace, returns all organization members (implicit membership). [Management key](/docs/guides/overview/auth/management-api-keys) required.
-   */
-  async listMembers(
-    request: operations.ListWorkspaceMembersRequest,
-    options?: RequestOptions,
-  ): Promise<
-    PageIterator<operations.ListWorkspaceMembersResponse, { offset: number }>
-  > {
-    return unwrapResultIterator(workspacesListMembers(
-      this,
-      request,
-      options,
-    ));
-  }
-
-  /**
-   * Bulk add members to a workspace
-   *
-   * @remarks
-   * Add multiple organization members to a workspace. Members are assigned the same role they hold in the organization. [Management key](/docs/guides/overview/auth/management-api-keys) required.
-   */
-  async bulkAddMembers(
-    request: operations.BulkAddWorkspaceMembersRequest,
-    options?: RequestOptions,
-  ): Promise<models.BulkAddWorkspaceMembersResponse> {
-    return unwrapAsync(workspacesBulkAddMembers(
-      this,
-      request,
-      options,
-    ));
-  }
-
-  /**
-   * Bulk remove members from a workspace
-   *
-   * @remarks
-   * Remove multiple members from a workspace. Members with active API keys in the workspace cannot be removed. SCIM-managed members cannot be removed; changes must be made in your identity provider. [Management key](/docs/guides/overview/auth/management-api-keys) required.
-   */
-  async bulkRemoveMembers(
-    request: operations.BulkRemoveWorkspaceMembersRequest,
-    options?: RequestOptions,
-  ): Promise<models.BulkRemoveWorkspaceMembersResponse> {
-    return unwrapAsync(workspacesBulkRemoveMembers(
       this,
       request,
       options,
