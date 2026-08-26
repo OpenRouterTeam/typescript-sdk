@@ -39099,6 +39099,18 @@ paths:
             example: 'production'
             minLength: 1
             type: 'string'
+        - description: 'Required to delete the default workspace. Deleting it permanently disables the account’s unscoped inference API keys (management/provisioning keys are retained) and its budgets, guardrails, classifiers, and broadcast destinations. Ignored for non-default workspaces.'
+          in: 'query'
+          name: 'confirm_default_workspace_deletion'
+          required: false
+          schema:
+            description: 'Required to delete the default workspace. Deleting it permanently disables the account’s unscoped inference API keys (management/provisioning keys are retained) and its budgets, guardrails, classifiers, and broadcast destinations. Ignored for non-default workspaces.'
+            enum:
+              - 'true'
+              - 'false'
+            example: 'false'
+            type: 'string'
+            x-openrouter-type: 'boolean'
       responses:
         '200':
           content:
