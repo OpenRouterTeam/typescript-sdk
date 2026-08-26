@@ -15,7 +15,7 @@ export type ContextCompressionPlugin = {
    */
   enabled?: boolean | undefined;
   /**
-   * The compression engine to use. Defaults to "middle-out".
+   * The compression engine to use. Defaults to "middle-out". The "image" engine renders older conversation history into PNG images (billed by pixel rather than by text token) for models that support image input, and falls back to "middle-out" otherwise.
    */
   engine?: ContextCompressionEngine | undefined;
   id: "context-compression";

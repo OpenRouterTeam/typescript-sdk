@@ -2,7 +2,7 @@
 title: "ContextCompressionEngine"
 ---
 
-The compression engine to use. Defaults to "middle-out".
+The compression engine to use. Defaults to "middle-out". The "image" engine renders older conversation history into PNG images (billed by pixel rather than by text token) for models that support image input, and falls back to "middle-out" otherwise.
 
 ## Example Usage
 
@@ -10,10 +10,12 @@ The compression engine to use. Defaults to "middle-out".
 import { ContextCompressionEngine } from "@openrouter/sdk/models";
 
 let value: ContextCompressionEngine = "middle-out";
+
+// Open enum: unrecognized values are captured as Unrecognized<string>
 ```
 
 ## Values
 
 ```typescript
-"middle-out"
+"middle-out" | "image" | Unrecognized<string>
 ```
