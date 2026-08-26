@@ -155,7 +155,6 @@ export * from "./conflictresponseerrordata.js";
 export * from "./containerautoenvironment.js";
 export * from "./containerfile.js";
 export * from "./containerfilelistresponse.js";
-export * from "./containernetworkpolicy.js";
 export * from "./containerreferenceenvironment.js";
 export * from "./contentfilteraction.js";
 export * from "./contentfilterbuiltinaction.js";
