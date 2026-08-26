@@ -6813,7 +6813,7 @@ components:
       type: 'string'
       x-speakeasy-unknown-values: allow
     ContentFilterBuiltinEntry:
-      description: 'A builtin content filter entry. Builtin filters include PII detectors and the regex-based prompt injection detector.'
+      description: 'A builtin content filter entry. Builtin filters include PII detectors, API-key and secret detectors, and the regex-based prompt injection detector.'
       example:
         action: 'redact'
         label: '[EMAIL]'
@@ -6863,6 +6863,7 @@ components:
         - 'ssn'
         - 'credit-card'
         - 'ip-address'
+        - 'secrets'
         - 'person-name'
         - 'address'
         - 'regex-prompt-injection'
@@ -31366,6 +31367,9 @@ paths:
           required: true
           schema:
             example: 'or_file_011CNha8iCJcU1wXNR6q4V8w'
+            maxLength: 256
+            minLength: 1
+            pattern: '^[\w-]+$'
             type: 'string'
         - description: 'Workspace to scope the request to. Defaults to the caller’s default workspace.'
           in: 'query'
@@ -31476,6 +31480,9 @@ paths:
           required: true
           schema:
             example: 'or_file_011CNha8iCJcU1wXNR6q4V8w'
+            maxLength: 256
+            minLength: 1
+            pattern: '^[\w-]+$'
             type: 'string'
         - description: 'Workspace to scope the request to. Defaults to the caller’s default workspace.'
           in: 'query'
@@ -31596,6 +31603,9 @@ paths:
           required: true
           schema:
             example: 'or_file_011CNha8iCJcU1wXNR6q4V8w'
+            maxLength: 256
+            minLength: 1
+            pattern: '^[\w-]+$'
             type: 'string'
         - description: 'Workspace to scope the request to. Defaults to the caller’s default workspace.'
           in: 'query'
