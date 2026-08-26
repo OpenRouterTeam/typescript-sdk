@@ -97,12 +97,12 @@ async function $do(
   const body = null;
 
   const pathParams = {
-    id: encodeSimple("id", payload.id, {
+    workspace_ref: encodeSimple("workspace_ref", payload.workspace_ref, {
       explode: false,
       charEncoding: "percent",
     }),
   };
-  const path = pathToFunc("/workspaces/{id}/budgets")(pathParams);
+  const path = pathToFunc("/workspaces/{workspace_ref}/budgets")(pathParams);
 
   const headers = new Headers(compactMap({
     Accept: "application/json",
