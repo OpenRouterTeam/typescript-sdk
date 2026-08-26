@@ -22,7 +22,7 @@ import {
 } from "./promptinjectionscanscope.js";
 
 /**
- * A builtin content filter entry. Builtin filters include PII detectors and the regex-based prompt injection detector.
+ * A builtin content filter entry. Builtin filters include PII detectors, API-key and secret detectors, and the regex-based prompt injection detector.
  */
 export type ContentFilterBuiltinEntry = {
   /**
