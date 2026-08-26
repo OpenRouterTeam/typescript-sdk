@@ -8,7 +8,7 @@ import * as openEnums from "../types/enums.js";
 import { OpenEnum } from "../types/enums.js";
 
 /**
- * Which fetch engine to use. "auto" (default) uses native if the provider supports it, otherwise Exa. "native" forces the provider's built-in fetch. "exa" uses Exa Contents API. "openrouter" uses direct HTTP fetch. "firecrawl" uses Firecrawl scrape (requires BYOK). "parallel" uses the Parallel extract API.
+ * Which fetch engine to use. "auto" (default) uses native if the provider supports it, otherwise Exa. "native" forces the provider's built-in fetch. "exa" uses Exa Contents API. "openrouter" uses direct HTTP fetch. "firecrawl" uses Firecrawl scrape (requires BYOK). "parallel" uses the Parallel extract API. "kagi" uses the Kagi extract API (requires BYOK).
  */
 export const WebFetchEngineEnum = {
   Auto: "auto",
@@ -17,9 +17,10 @@ export const WebFetchEngineEnum = {
   Exa: "exa",
   Parallel: "parallel",
   Firecrawl: "firecrawl",
+  Kagi: "kagi",
 } as const;
 /**
- * Which fetch engine to use. "auto" (default) uses native if the provider supports it, otherwise Exa. "native" forces the provider's built-in fetch. "exa" uses Exa Contents API. "openrouter" uses direct HTTP fetch. "firecrawl" uses Firecrawl scrape (requires BYOK). "parallel" uses the Parallel extract API.
+ * Which fetch engine to use. "auto" (default) uses native if the provider supports it, otherwise Exa. "native" forces the provider's built-in fetch. "exa" uses Exa Contents API. "openrouter" uses direct HTTP fetch. "firecrawl" uses Firecrawl scrape (requires BYOK). "parallel" uses the Parallel extract API. "kagi" uses the Kagi extract API (requires BYOK).
  */
 export type WebFetchEngineEnum = OpenEnum<typeof WebFetchEngineEnum>;
 

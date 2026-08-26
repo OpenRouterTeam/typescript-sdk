@@ -8,7 +8,7 @@ import * as openEnums from "../types/enums.js";
 import { OpenEnum } from "../types/enums.js";
 
 /**
- * Which search engine to use. "auto" (default) uses native if the provider supports it, otherwise Exa. "native" forces the provider's built-in search. "exa" forces the Exa search API. "firecrawl" uses Firecrawl (requires BYOK). "parallel" uses the Parallel search API. "perplexity" uses the Perplexity Search API (raw ranked results).
+ * Which search engine to use. "auto" (default) uses native if the provider supports it, otherwise Exa. "native" forces the provider's built-in search. "exa" forces the Exa search API. "firecrawl" uses Firecrawl (requires BYOK). "parallel" uses the Parallel search API. "perplexity" uses the Perplexity Search API (raw ranked results). "kagi" uses the Kagi Search API (requires BYOK).
  */
 export const WebSearchEngineEnum = {
   Native: "native",
@@ -16,10 +16,11 @@ export const WebSearchEngineEnum = {
   Parallel: "parallel",
   Firecrawl: "firecrawl",
   Perplexity: "perplexity",
+  Kagi: "kagi",
   Auto: "auto",
 } as const;
 /**
- * Which search engine to use. "auto" (default) uses native if the provider supports it, otherwise Exa. "native" forces the provider's built-in search. "exa" forces the Exa search API. "firecrawl" uses Firecrawl (requires BYOK). "parallel" uses the Parallel search API. "perplexity" uses the Perplexity Search API (raw ranked results).
+ * Which search engine to use. "auto" (default) uses native if the provider supports it, otherwise Exa. "native" forces the provider's built-in search. "exa" forces the Exa search API. "firecrawl" uses Firecrawl (requires BYOK). "parallel" uses the Parallel search API. "perplexity" uses the Perplexity Search API (raw ranked results). "kagi" uses the Kagi Search API (requires BYOK).
  */
 export type WebSearchEngineEnum = OpenEnum<typeof WebSearchEngineEnum>;
 
