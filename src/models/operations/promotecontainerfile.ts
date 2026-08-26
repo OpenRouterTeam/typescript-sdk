@@ -5,6 +5,7 @@
 
 import * as z from "zod/v4";
 import { remap as remap$ } from "../../lib/primitives.js";
+import * as models from "../index.js";
 
 export type PromoteContainerFileGlobals = {
   /**
@@ -56,6 +57,7 @@ export type PromoteContainerFileRequest = {
    * Container file id (`cfile_` + base64url of the file path).
    */
   fileId: string;
+  promoteContainerFileBody: models.PromoteContainerFileBody;
 };
 
 /** @internal */
@@ -65,6 +67,7 @@ export type PromoteContainerFileRequest$Outbound = {
   appCategories?: string | undefined;
   container_id: string;
   file_id: string;
+  PromoteContainerFileBody: models.PromoteContainerFileBody$Outbound;
 };
 
 /** @internal */
@@ -77,11 +80,13 @@ export const PromoteContainerFileRequest$outboundSchema: z.ZodType<
   appCategories: z.string().optional(),
   containerId: z.string(),
   fileId: z.string(),
+  promoteContainerFileBody: models.PromoteContainerFileBody$outboundSchema,
 }).transform((v) => {
   return remap$(v, {
     httpReferer: "HTTP-Referer",
     containerId: "container_id",
     fileId: "file_id",
+    promoteContainerFileBody: "PromoteContainerFileBody",
   });
 });
 

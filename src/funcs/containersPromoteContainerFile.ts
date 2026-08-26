@@ -4,7 +4,7 @@
  */
 
 import { OpenRouterCore } from "../core.js";
-import { encodeSimple } from "../lib/encodings.js";
+import { encodeJSON, encodeSimple } from "../lib/encodings.js";
 import { matchStatusCode } from "../lib/http.js";
 import * as M from "../lib/matchers.js";
 import { compactMap } from "../lib/primitives.js";
@@ -32,7 +32,7 @@ import { Result } from "../types/fp.js";
  * Promote a container file into workspace documents
  *
  * @remarks
- * Copies a file from the container's sandbox prefix into the workspace's durable document storage, so it outlives the container. Returns the new document in the Files API shape, with a durable file id in the documents namespace. The copy counts against the workspace's storage quota exactly like an upload.
+ * Copies a file from the container's sandbox prefix into the workspace's durable document storage, so it outlives the container. Returns the new document in the Files API shape, with a durable file id in the documents namespace. The copy counts against the workspace's storage quota exactly like an upload. An optional filename overrides the container-relative path in the promoted document metadata.
  */
 export function containersPromoteContainerFile(
   client: OpenRouterCore,
@@ -104,7 +104,9 @@ async function $do(
     return [parsed, { status: "invalid" }];
   }
   const payload = parsed.value;
-  const body = null;
+  const body = encodeJSON("body", payload.PromoteContainerFileBody, {
+    explode: true,
+  });
 
   const pathParams = {
     container_id: encodeSimple("container_id", payload.container_id, {
@@ -121,6 +123,7 @@ async function $do(
   );
 
   const headers = new Headers(compactMap({
+    "Content-Type": "application/json",
     Accept: "application/json",
     "HTTP-Referer": encodeSimple(
       "HTTP-Referer",

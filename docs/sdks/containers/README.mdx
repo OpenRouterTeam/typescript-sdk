@@ -274,7 +274,7 @@ run();
 
 ## promoteContainerFile
 
-Copies a file from the container's sandbox prefix into the workspace's durable document storage, so it outlives the container. Returns the new document in the Files API shape, with a durable file id in the documents namespace. The copy counts against the workspace's storage quota exactly like an upload.
+Copies a file from the container's sandbox prefix into the workspace's durable document storage, so it outlives the container. Returns the new document in the Files API shape, with a durable file id in the documents namespace. The copy counts against the workspace's storage quota exactly like an upload. An optional filename overrides the container-relative path in the promoted document metadata.
 
 ### Example Usage
 
@@ -292,6 +292,7 @@ async function run() {
   const result = await openRouter.containers.promoteContainerFile({
     containerId: "sess_abc123",
     fileId: "cfile_b3V0L3JlcG9ydC5jc3Y",
+    promoteContainerFileBody: {},
   });
 
   console.log(result);
@@ -321,6 +322,7 @@ async function run() {
   const res = await containersPromoteContainerFile(openRouter, {
     containerId: "sess_abc123",
     fileId: "cfile_b3V0L3JlcG9ydC5jc3Y",
+    promoteContainerFileBody: {},
   });
   if (res.ok) {
     const { value: result } = res;
