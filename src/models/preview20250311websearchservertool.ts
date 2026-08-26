@@ -49,16 +49,16 @@ export type Preview20250311WebSearchServerToolType = ClosedEnum<
  */
 export type Preview20250311WebSearchServerTool = {
   /**
-   * Which search engine to use. "auto" (default) uses native if the provider supports it, otherwise Exa. "native" forces the provider's built-in search. "exa" forces the Exa search API. "firecrawl" uses Firecrawl (requires BYOK). "parallel" uses the Parallel search API. "perplexity" uses the Perplexity Search API (raw ranked results).
+   * Which search engine to use. "auto" (default) uses native if the provider supports it, otherwise Exa. "native" forces the provider's built-in search. "exa" forces the Exa search API. "firecrawl" uses Firecrawl (requires BYOK). "parallel" uses the Parallel search API. "perplexity" uses the Perplexity Search API (raw ranked results). "kagi" uses the Kagi Search API (requires BYOK).
    */
   engine?: WebSearchEngineEnum | undefined;
   filters?: WebSearchDomainFilter | null | undefined;
   /**
-   * Maximum number of search results to return per search call. Defaults to 5. Applies to Exa, Firecrawl, Parallel, and Perplexity engines; ignored with native provider search. Perplexity supports a maximum of 20; values above 20 are clamped.
+   * Maximum number of search results to return per search call. Defaults to 5. Applies to Exa, Firecrawl, Parallel, Perplexity, and Kagi engines; ignored with native provider search. Perplexity supports a maximum of 20; values above 20 are clamped.
    */
   maxResults?: number | undefined;
   /**
-   * Maximum number of web searches the model may perform in a single request. Once reached, further search calls return an error result instead of executing. Applies to the Exa, Firecrawl, Parallel, and Perplexity engines. With native provider search, forwarded only to Anthropic (as `max_uses`); other native search providers have no equivalent parameter and ignore it.
+   * Maximum number of web searches the model may perform in a single request. Once reached, further search calls return an error result instead of executing. Applies to the Exa, Firecrawl, Parallel, Perplexity, and Kagi engines. With native provider search, forwarded only to Anthropic (as `max_uses`); other native search providers have no equivalent parameter and ignore it.
    */
   maxUses?: number | undefined;
   /**
