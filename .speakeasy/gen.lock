@@ -1,19 +1,19 @@
 lockVersion: ""
 id: ""
 management:
-  docChecksum: ad4b3dd6223143155aaa19dfc650e015
+  docChecksum: 83ec33d1b023713166d44c1d744796a7
   docVersion: 1.0.0
   speakeasyVersion: 1.787.0
   generationVersion: 2.914.0
-  releaseVersion: 1.2.73
-  configChecksum: 7bb8cc5ebacf2a3fed70ca829c2e0c73
+  releaseVersion: 1.2.74
+  configChecksum: 2b75a6c8167751689876afdf5b5fc40b
   repoURL: https://github.com/OpenRouterTeam/typescript-sdk.git
   installationURL: https://github.com/OpenRouterTeam/typescript-sdk
   published: true
 persistentEdits:
-  generation_id: af452da3-e198-4dca-b7c9-4b7ec3a97075
-  pristine_commit_hash: cca2cf2cb0d4543b0e1bc688b97a37fef36b1614
-  pristine_tree_hash: 5f95c8dad700795d82f02d73fd6bbce862054bbd
+  generation_id: ba1312eb-4f7b-4552-8a7e-0731a078775a
+  pristine_commit_hash: 0a9acee247b18476476d6a1568b3038b85b3eb13
+  pristine_tree_hash: 28f79a024366bb2b28ffeca1d5593d1f61cd9617
 features:
   typescript:
     acceptHeaders: 2.81.2
@@ -7486,8 +7486,8 @@ trackedFiles:
     deleted: true
   docs/models/operations/deleteworkspacerequest.mdx:
     id: e8540611cea0
-    last_write_checksum: sha1:3b65ea9a531cec7a76fda0be295bcca1bc6c8d28
-    pristine_git_object: 8363ef70bfa3cc52af9e2fc6e5dfabc7742577f7
+    last_write_checksum: sha1:e56d58b7e78f3a8978ab342efc1e75bc51df30aa
+    pristine_git_object: 450872c0808322c9e824ce567b6d829a6dee6a92
   docs/models/operations/dimension.md:
     id: 2298189a2a16
     last_write_checksum: sha1:78ec0849dde20c171e96b6a07e23b43f435cf15a
@@ -13049,12 +13049,12 @@ trackedFiles:
     pristine_git_object: 410efafd6a7f50d91ccb87131fedbe0c3d47e15a
   jsr.json:
     id: 7f6ab7767282
-    last_write_checksum: sha1:abb9ec5dc947e6bceee718205ccf4f48ff8391f9
-    pristine_git_object: 72377e0ff767c646e8352cdc510f4b36b8b4d7f0
+    last_write_checksum: sha1:d4d7bee7dcd30ccd9b11e8ab282395700f1f5994
+    pristine_git_object: 0b5d650d98edc85892d58fc65a8b5a97797d1394
   package.json:
     id: 7030d0b2f71b
-    last_write_checksum: sha1:d512ad99885668b78d21e3d7234276cdac0a0c41
-    pristine_git_object: 5529c710704438a5565d3c2a78bf213bd9c1d944
+    last_write_checksum: sha1:15a590b0cb5f1902f4f32c7fa8abe253c9564225
+    pristine_git_object: 006a69e04a82bdf284d51857b2a64312a5847367
   src/core.ts:
     id: f431fdbcd144
     last_write_checksum: sha1:5aa66b0b6a5964f3eea7f3098c2eb3c0ee9c0131
@@ -13425,8 +13425,8 @@ trackedFiles:
     pristine_git_object: 56b37d99a23e7d8a0dcc22d05258898fe19a372c
   src/funcs/workspacesDelete.ts:
     id: 548699dffed1
-    last_write_checksum: sha1:167dcae173ee7655ccd9b06c9bd66f9afbfdd203
-    pristine_git_object: ff250d45ffbcc168f85ef9327db00c8d90685afb
+    last_write_checksum: sha1:fc31b5b28a6aba3fc02a3faabb74a674d500f7c0
+    pristine_git_object: 3fc9ba7a63d98d193e083a15508c717503289df7
   src/funcs/workspacesDeleteBudget.ts:
     id: 1aba9dd7a12c
     last_write_checksum: sha1:b8b87da65e4d0b454a53bb149dbc8b850f942c9c
@@ -13481,8 +13481,8 @@ trackedFiles:
     pristine_git_object: a187e58707bdb726ca2aff74941efe7493422d4e
   src/lib/config.ts:
     id: 320761608fb3
-    last_write_checksum: sha1:28ae0df834699e21bdcab79ae71acb6a8cc47ad0
-    pristine_git_object: 3d2d1d082dd6d28830233143d4ce09d2d678fac9
+    last_write_checksum: sha1:d40d73ac9e7772a6fed6723dc36b870b0207efae
+    pristine_git_object: a1741657c57a5cba79e8d09515f35c6f83395403
   src/lib/dlv.ts:
     id: b1988214835a
     last_write_checksum: sha1:eaac763b22717206a6199104e0403ed17a4e2711
@@ -15311,8 +15311,8 @@ trackedFiles:
     pristine_git_object: 45d7fdf9e103ebc9c1f0e1f955fdfa1adb80f277
   src/models/operations/deleteworkspace.ts:
     id: 38325c1278ba
-    last_write_checksum: sha1:7cf7fe67ac233b746ab9d1cc45328da51f5d31a3
-    pristine_git_object: c0d931b730df2940f75ac557001140ce24346e6b
+    last_write_checksum: sha1:75b7b270aaafc68898a90e57ddfe42cddb4314ea
+    pristine_git_object: 5d529df461cc0c1b7d8282b45f1b9c7f21846805
   src/models/operations/deleteworkspacebudget.ts:
     id: f9fd25ea4948
     last_write_checksum: sha1:32cfff8c74bb71d4a931646247fc0e8666cf70cf
@@ -18563,3 +18563,4 @@ examples:
         "503":
           application/json: {"error": {"code": 503, "message": "Service temporarily unavailable"}}
 examplesVersion: 1.0.2
+releaseNotes: "## Typescript SDK Changes:\n* `openrouter.workspaces.delete()`: \n  *  `request.confirmDefaultWorkspaceDeletion` **Added**\n"
