@@ -23185,6 +23185,36 @@ components:
       properties:
         call_id:
           type: 'string'
+        container_id:
+          description: 'The canonical container id the command ran under — the `{container_id}` for the Container Files API, reusable as a `container_reference` in later requests. Present on every sandbox-executed call, even when no files changed.'
+          type: 'string'
+        files:
+          description: 'Citations for the files the sandbox command created or modified, most-recently-touched first (at most 10). Retrieve them via the Container Files API.'
+          items:
+            properties:
+              container_id:
+                type: 'string'
+              end_index:
+                type: 'integer'
+              file_id:
+                type: 'string'
+              filename:
+                type: 'string'
+              start_index:
+                type: 'integer'
+              type:
+                enum:
+                  - 'container_file_citation'
+                type: 'string'
+            required:
+              - 'type'
+              - 'container_id'
+              - 'file_id'
+              - 'filename'
+              - 'start_index'
+              - 'end_index'
+            type: 'object'
+          type: 'array'
         id:
           type:
             - 'string'
@@ -29199,7 +29229,6 @@ paths:
       summary: 'List container files'
       tags:
         - 'Containers'
-      x-hidden: true
   /containers/{container_id}/files/{file_id}:
     get:
       description: 'Returns the metadata of a single file in a container.'
@@ -29309,7 +29338,6 @@ paths:
       summary: 'Retrieve a container file'
       tags:
         - 'Containers'
-      x-hidden: true
   /containers/{container_id}/files/{file_id}/content:
     get:
       description: 'Streams the raw bytes of a file in a container.'
@@ -29413,7 +29441,6 @@ paths:
       summary: 'Download container file content'
       tags:
         - 'Containers'
-      x-hidden: true
   /containers/{container_id}/files/{file_id}/promote:
     post:
       description: 'Copies a file from the container''s sandbox prefix into the workspace''s durable document storage, so it outlives the container. Returns the new document in the Files API shape, with a durable file id in the documents namespace. The copy counts against the workspace''s storage quota exactly like an upload.'
@@ -29534,7 +29561,6 @@ paths:
       summary: 'Promote a container file into workspace documents'
       tags:
         - 'Containers'
-      x-hidden: true
   /credits:
     get:
       description: 'Get total credits purchased and used for the authenticated user. [Management key](/docs/guides/overview/auth/management-api-keys) required.'
@@ -30852,7 +30878,6 @@ paths:
       summary: 'List files'
       tags:
         - 'Files'
-      x-hidden: true
       x-speakeasy-name-override: 'list'
       x-speakeasy-pagination:
         inputs:
@@ -30995,7 +31020,6 @@ paths:
       summary: 'Upload a file'
       tags:
         - 'Files'
-      x-hidden: true
       x-speakeasy-name-override: 'upload'
   /files/{file_id}:
     delete:
@@ -31107,7 +31131,6 @@ paths:
       summary: 'Delete a file'
       tags:
         - 'Files'
-      x-hidden: true
       x-speakeasy-name-override: 'delete'
     get:
       description: 'Retrieves metadata for a single file owned by the requesting workspace.'
@@ -31223,7 +31246,6 @@ paths:
       summary: 'Get file metadata'
       tags:
         - 'Files'
-      x-hidden: true
       x-speakeasy-name-override: 'retrieve'
   /files/{file_id}/content:
     get:
@@ -31344,7 +31366,6 @@ paths:
       summary: 'Download file content'
       tags:
         - 'Files'
-      x-hidden: true
       x-speakeasy-name-override: 'download'
   /generation:
     get:
