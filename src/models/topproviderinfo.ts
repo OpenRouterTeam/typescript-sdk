@@ -22,7 +22,7 @@ export type TopProviderInfo = {
    */
   isModerated: boolean;
   /**
-   * Maximum completion tokens from the top provider. Input and output tokens share the context window, so the effective maximum output for a request is further limited by the context remaining after input tokens.
+   * Maximum completion tokens from the top provider
    */
   maxCompletionTokens?: number | null | undefined;
 };
