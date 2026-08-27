@@ -563,6 +563,7 @@ export * from "./textdoneevent.js";
 export * from "./textextendedconfig.js";
 export * from "./toolcallstatus.js";
 export * from "./toolchoiceallowed.js";
+export * from "./toolchoicesupport.js";
 export * from "./toolsearchservertool.js";
 export * from "./toolsearchservertoolconfig.js";
 export * from "./toomanyrequestsresponseerrordata.js";
