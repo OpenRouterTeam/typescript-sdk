@@ -16,27 +16,11 @@ import {
   ToolCallStatus$outboundSchema,
 } from "./toolcallstatus.js";
 
-export const ShellCallOutputItemTypeContainerFileCitation = {
-  ContainerFileCitation: "container_file_citation",
-} as const;
-export type ShellCallOutputItemTypeContainerFileCitation = ClosedEnum<
-  typeof ShellCallOutputItemTypeContainerFileCitation
->;
-
-export type ShellCallOutputItemFile = {
-  containerId: string;
-  endIndex: number;
-  fileId: string;
-  filename: string;
-  startIndex: number;
-  type: ShellCallOutputItemTypeContainerFileCitation;
-};
-
-export const ShellCallOutputItemTypeShellCallOutput = {
+export const ShellCallOutputItemType = {
   ShellCallOutput: "shell_call_output",
 } as const;
-export type ShellCallOutputItemTypeShellCallOutput = ClosedEnum<
-  typeof ShellCallOutputItemTypeShellCallOutput
+export type ShellCallOutputItemType = ClosedEnum<
+  typeof ShellCallOutputItemType
 >;
 
 /**
@@ -44,75 +28,21 @@ export type ShellCallOutputItemTypeShellCallOutput = ClosedEnum<
  */
 export type ShellCallOutputItem = {
   callId: string;
-  /**
-   * The canonical container id the command ran under — the `{container_id}` for the Container Files API, reusable as a `container_reference` in later requests. Present on every sandbox-executed call, even when no files changed.
-   */
-  containerId?: string | undefined;
-  /**
-   * Citations for the files the sandbox command created or modified, most-recently-touched first (at most 10). Retrieve them via the Container Files API.
-   */
-  files?: Array<ShellCallOutputItemFile> | undefined;
   id?: string | null | undefined;
   maxOutputLength?: number | null | undefined;
   output: Array<ShellCallOutputContent>;
   status?: ToolCallStatus | null | undefined;
-  type: ShellCallOutputItemTypeShellCallOutput;
+  type: ShellCallOutputItemType;
 };
 
 /** @internal */
-export const ShellCallOutputItemTypeContainerFileCitation$outboundSchema:
-  z.ZodEnum<typeof ShellCallOutputItemTypeContainerFileCitation> = z.enum(
-    ShellCallOutputItemTypeContainerFileCitation,
-  );
-
-/** @internal */
-export type ShellCallOutputItemFile$Outbound = {
-  container_id: string;
-  end_index: number;
-  file_id: string;
-  filename: string;
-  start_index: number;
-  type: string;
-};
-
-/** @internal */
-export const ShellCallOutputItemFile$outboundSchema: z.ZodType<
-  ShellCallOutputItemFile$Outbound,
-  ShellCallOutputItemFile
-> = z.object({
-  containerId: z.string(),
-  endIndex: z.int(),
-  fileId: z.string(),
-  filename: z.string(),
-  startIndex: z.int(),
-  type: ShellCallOutputItemTypeContainerFileCitation$outboundSchema,
-}).transform((v) => {
-  return remap$(v, {
-    containerId: "container_id",
-    endIndex: "end_index",
-    fileId: "file_id",
-    startIndex: "start_index",
-  });
-});
-
-export function shellCallOutputItemFileToJSON(
-  shellCallOutputItemFile: ShellCallOutputItemFile,
-): string {
-  return JSON.stringify(
-    ShellCallOutputItemFile$outboundSchema.parse(shellCallOutputItemFile),
-  );
-}
-
-/** @internal */
-export const ShellCallOutputItemTypeShellCallOutput$outboundSchema: z.ZodEnum<
-  typeof ShellCallOutputItemTypeShellCallOutput
-> = z.enum(ShellCallOutputItemTypeShellCallOutput);
+export const ShellCallOutputItemType$outboundSchema: z.ZodEnum<
+  typeof ShellCallOutputItemType
+> = z.enum(ShellCallOutputItemType);
 
 /** @internal */
 export type ShellCallOutputItem$Outbound = {
   call_id: string;
-  container_id?: string | undefined;
-  files?: Array<ShellCallOutputItemFile$Outbound> | undefined;
   id?: string | null | undefined;
   max_output_length?: number | null | undefined;
   output: Array<ShellCallOutputContent$Outbound>;
@@ -126,18 +56,14 @@ export const ShellCallOutputItem$outboundSchema: z.ZodType<
   ShellCallOutputItem
 > = z.object({
   callId: z.string(),
-  containerId: z.string().optional(),
-  files: z.array(z.lazy(() => ShellCallOutputItemFile$outboundSchema))
-    .optional(),
   id: z.nullable(z.string()).optional(),
   maxOutputLength: z.nullable(z.int()).optional(),
   output: z.array(ShellCallOutputContent$outboundSchema),
   status: z.nullable(ToolCallStatus$outboundSchema).optional(),
-  type: ShellCallOutputItemTypeShellCallOutput$outboundSchema,
+  type: ShellCallOutputItemType$outboundSchema,
 }).transform((v) => {
   return remap$(v, {
     callId: "call_id",
-    containerId: "container_id",
     maxOutputLength: "max_output_length",
   });
 });

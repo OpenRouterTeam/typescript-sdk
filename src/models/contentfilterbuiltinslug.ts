@@ -16,7 +16,6 @@ export const ContentFilterBuiltinSlug = {
   Ssn: "ssn",
   CreditCard: "credit-card",
   IpAddress: "ip-address",
-  Secrets: "secrets",
   PersonName: "person-name",
   Address: "address",
   RegexPromptInjection: "regex-prompt-injection",

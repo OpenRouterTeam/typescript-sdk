@@ -27,11 +27,9 @@ export type ImageGenerationProviderPreferencesOptions = {
   akashml?: { [k: string]: any } | undefined;
   alibaba?: { [k: string]: any } | undefined;
   amazonBedrock?: { [k: string]: any } | undefined;
-  amazonBedrockClaudeOnAws?: { [k: string]: any } | undefined;
   amazonNova?: { [k: string]: any } | undefined;
   ambient?: { [k: string]: any } | undefined;
   anthropic?: { [k: string]: any } | undefined;
-  anthropic2?: { [k: string]: any } | undefined;
   anyscale?: { [k: string]: any } | undefined;
   arceeAi?: { [k: string]: any } | undefined;
   atlasCloud?: { [k: string]: any } | undefined;
@@ -93,7 +91,6 @@ export type ImageGenerationProviderPreferencesOptions = {
   liquid?: { [k: string]: any } | undefined;
   lynn?: { [k: string]: any } | undefined;
   lynnPrivate?: { [k: string]: any } | undefined;
-  makora?: { [k: string]: any } | undefined;
   mancer?: { [k: string]: any } | undefined;
   mancerOld?: { [k: string]: any } | undefined;
   mara?: { [k: string]: any } | undefined;
@@ -247,11 +244,9 @@ export type ImageGenerationProviderPreferencesOptions$Outbound = {
   akashml?: { [k: string]: any } | undefined;
   alibaba?: { [k: string]: any } | undefined;
   "amazon-bedrock"?: { [k: string]: any } | undefined;
-  "amazon-bedrock/claude-on-aws"?: { [k: string]: any } | undefined;
   "amazon-nova"?: { [k: string]: any } | undefined;
   ambient?: { [k: string]: any } | undefined;
   anthropic?: { [k: string]: any } | undefined;
-  "anthropic/2"?: { [k: string]: any } | undefined;
   anyscale?: { [k: string]: any } | undefined;
   "arcee-ai"?: { [k: string]: any } | undefined;
   "atlas-cloud"?: { [k: string]: any } | undefined;
@@ -313,7 +308,6 @@ export type ImageGenerationProviderPreferencesOptions$Outbound = {
   liquid?: { [k: string]: any } | undefined;
   lynn?: { [k: string]: any } | undefined;
   "lynn-private"?: { [k: string]: any } | undefined;
-  makora?: { [k: string]: any } | undefined;
   mancer?: { [k: string]: any } | undefined;
   "mancer-old"?: { [k: string]: any } | undefined;
   mara?: { [k: string]: any } | undefined;
@@ -391,11 +385,9 @@ export const ImageGenerationProviderPreferencesOptions$outboundSchema:
     akashml: z.record(z.string(), z.any()).optional(),
     alibaba: z.record(z.string(), z.any()).optional(),
     amazonBedrock: z.record(z.string(), z.any()).optional(),
-    amazonBedrockClaudeOnAws: z.record(z.string(), z.any()).optional(),
     amazonNova: z.record(z.string(), z.any()).optional(),
     ambient: z.record(z.string(), z.any()).optional(),
     anthropic: z.record(z.string(), z.any()).optional(),
-    anthropic2: z.record(z.string(), z.any()).optional(),
     anyscale: z.record(z.string(), z.any()).optional(),
     arceeAi: z.record(z.string(), z.any()).optional(),
     atlasCloud: z.record(z.string(), z.any()).optional(),
@@ -457,7 +449,6 @@ export const ImageGenerationProviderPreferencesOptions$outboundSchema:
     liquid: z.record(z.string(), z.any()).optional(),
     lynn: z.record(z.string(), z.any()).optional(),
     lynnPrivate: z.record(z.string(), z.any()).optional(),
-    makora: z.record(z.string(), z.any()).optional(),
     mancer: z.record(z.string(), z.any()).optional(),
     mancerOld: z.record(z.string(), z.any()).optional(),
     mara: z.record(z.string(), z.any()).optional(),
@@ -526,9 +517,7 @@ export const ImageGenerationProviderPreferencesOptions$outboundSchema:
       oneai: "01ai",
       aionLabs: "aion-labs",
       amazonBedrock: "amazon-bedrock",
-      amazonBedrockClaudeOnAws: "amazon-bedrock/claude-on-aws",
       amazonNova: "amazon-nova",
-      anthropic2: "anthropic/2",
       arceeAi: "arcee-ai",
       atlasCloud: "atlas-cloud",
       blackForestLabs: "black-forest-labs",

@@ -49,11 +49,9 @@ export type VideoGenerationRequestOptions = {
   akashml?: { [k: string]: any } | undefined;
   alibaba?: { [k: string]: any } | undefined;
   amazonBedrock?: { [k: string]: any } | undefined;
-  amazonBedrockClaudeOnAws?: { [k: string]: any } | undefined;
   amazonNova?: { [k: string]: any } | undefined;
   ambient?: { [k: string]: any } | undefined;
   anthropic?: { [k: string]: any } | undefined;
-  anthropic2?: { [k: string]: any } | undefined;
   anyscale?: { [k: string]: any } | undefined;
   arceeAi?: { [k: string]: any } | undefined;
   atlasCloud?: { [k: string]: any } | undefined;
@@ -115,7 +113,6 @@ export type VideoGenerationRequestOptions = {
   liquid?: { [k: string]: any } | undefined;
   lynn?: { [k: string]: any } | undefined;
   lynnPrivate?: { [k: string]: any } | undefined;
-  makora?: { [k: string]: any } | undefined;
   mancer?: { [k: string]: any } | undefined;
   mancerOld?: { [k: string]: any } | undefined;
   mara?: { [k: string]: any } | undefined;
@@ -217,10 +214,6 @@ export type VideoGenerationRequest = {
    */
   callbackUrl?: string | undefined;
   /**
-   * Creativity level for video upscaling models only. This parameter is not supported by video generation models.
-   */
-  creativity?: number | undefined;
-  /**
    * Duration of the generated video in seconds
    */
   duration?: number | undefined;
@@ -257,10 +250,6 @@ export type VideoGenerationRequest = {
    * Exact pixel dimensions of the generated video in "WIDTHxHEIGHT" format (e.g. "1280x720"). Interchangeable with resolution + aspect_ratio.
    */
   size?: string | undefined;
-  /**
-   * Upscale factor for video upscaling models only. This parameter is not supported by video generation models.
-   */
-  upscaleFactor?: number | undefined;
 };
 
 /** @internal */
@@ -277,11 +266,9 @@ export type VideoGenerationRequestOptions$Outbound = {
   akashml?: { [k: string]: any } | undefined;
   alibaba?: { [k: string]: any } | undefined;
   "amazon-bedrock"?: { [k: string]: any } | undefined;
-  "amazon-bedrock/claude-on-aws"?: { [k: string]: any } | undefined;
   "amazon-nova"?: { [k: string]: any } | undefined;
   ambient?: { [k: string]: any } | undefined;
   anthropic?: { [k: string]: any } | undefined;
-  "anthropic/2"?: { [k: string]: any } | undefined;
   anyscale?: { [k: string]: any } | undefined;
   "arcee-ai"?: { [k: string]: any } | undefined;
   "atlas-cloud"?: { [k: string]: any } | undefined;
@@ -343,7 +330,6 @@ export type VideoGenerationRequestOptions$Outbound = {
   liquid?: { [k: string]: any } | undefined;
   lynn?: { [k: string]: any } | undefined;
   "lynn-private"?: { [k: string]: any } | undefined;
-  makora?: { [k: string]: any } | undefined;
   mancer?: { [k: string]: any } | undefined;
   "mancer-old"?: { [k: string]: any } | undefined;
   mara?: { [k: string]: any } | undefined;
@@ -420,11 +406,9 @@ export const VideoGenerationRequestOptions$outboundSchema: z.ZodType<
   akashml: z.record(z.string(), z.any()).optional(),
   alibaba: z.record(z.string(), z.any()).optional(),
   amazonBedrock: z.record(z.string(), z.any()).optional(),
-  amazonBedrockClaudeOnAws: z.record(z.string(), z.any()).optional(),
   amazonNova: z.record(z.string(), z.any()).optional(),
   ambient: z.record(z.string(), z.any()).optional(),
   anthropic: z.record(z.string(), z.any()).optional(),
-  anthropic2: z.record(z.string(), z.any()).optional(),
   anyscale: z.record(z.string(), z.any()).optional(),
   arceeAi: z.record(z.string(), z.any()).optional(),
   atlasCloud: z.record(z.string(), z.any()).optional(),
@@ -486,7 +470,6 @@ export const VideoGenerationRequestOptions$outboundSchema: z.ZodType<
   liquid: z.record(z.string(), z.any()).optional(),
   lynn: z.record(z.string(), z.any()).optional(),
   lynnPrivate: z.record(z.string(), z.any()).optional(),
-  makora: z.record(z.string(), z.any()).optional(),
   mancer: z.record(z.string(), z.any()).optional(),
   mancerOld: z.record(z.string(), z.any()).optional(),
   mara: z.record(z.string(), z.any()).optional(),
@@ -555,9 +538,7 @@ export const VideoGenerationRequestOptions$outboundSchema: z.ZodType<
     oneai: "01ai",
     aionLabs: "aion-labs",
     amazonBedrock: "amazon-bedrock",
-    amazonBedrockClaudeOnAws: "amazon-bedrock/claude-on-aws",
     amazonNova: "amazon-nova",
-    anthropic2: "anthropic/2",
     arceeAi: "arcee-ai",
     atlasCloud: "atlas-cloud",
     blackForestLabs: "black-forest-labs",
@@ -628,7 +609,6 @@ export const VideoGenerationRequestResolution$outboundSchema: z.ZodType<
 export type VideoGenerationRequest$Outbound = {
   aspect_ratio?: string | undefined;
   callback_url?: string | undefined;
-  creativity?: number | undefined;
   duration?: number | undefined;
   frame_images?: Array<FrameImage$Outbound> | undefined;
   generate_audio?: boolean | undefined;
@@ -639,7 +619,6 @@ export type VideoGenerationRequest$Outbound = {
   resolution?: string | undefined;
   seed?: number | undefined;
   size?: string | undefined;
-  upscale_factor?: number | undefined;
 };
 
 /** @internal */
@@ -649,7 +628,6 @@ export const VideoGenerationRequest$outboundSchema: z.ZodType<
 > = z.object({
   aspectRatio: VideoGenerationRequestAspectRatio$outboundSchema.optional(),
   callbackUrl: z.string().optional(),
-  creativity: z.int().optional(),
   duration: z.int().optional(),
   frameImages: z.array(FrameImage$outboundSchema).optional(),
   generateAudio: z.boolean().optional(),
@@ -661,7 +639,6 @@ export const VideoGenerationRequest$outboundSchema: z.ZodType<
   resolution: VideoGenerationRequestResolution$outboundSchema.optional(),
   seed: z.int().optional(),
   size: z.string().optional(),
-  upscaleFactor: z.number().optional(),
 }).transform((v) => {
   return remap$(v, {
     aspectRatio: "aspect_ratio",
@@ -669,7 +646,6 @@ export const VideoGenerationRequest$outboundSchema: z.ZodType<
     frameImages: "frame_images",
     generateAudio: "generate_audio",
     inputReferences: "input_references",
-    upscaleFactor: "upscale_factor",
   });
 });
 

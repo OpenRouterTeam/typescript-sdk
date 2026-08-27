@@ -175,10 +175,6 @@ export type ImageGenerationRequest = {
    * If true, partial images are streamed as SSE events as they become available. Only supported by providers with native streaming (currently OpenAI). Non-streaming providers ignore this flag and return a buffered response.
    */
   stream?: boolean | undefined;
-  /**
-   * A stable identifier for your end-users. Used to help detect and prevent abuse. Never sent to providers verbatim: for providers whose data policy requires user IDs, it is folded into a hashed, per-account upstream user identifier.
-   */
-  user?: string | undefined;
 };
 
 /** @internal */
@@ -227,7 +223,6 @@ export type ImageGenerationRequest$Outbound = {
   seed?: number | undefined;
   size?: string | undefined;
   stream?: boolean | undefined;
-  user?: string | undefined;
 };
 
 /** @internal */
@@ -249,7 +244,6 @@ export const ImageGenerationRequest$outboundSchema: z.ZodType<
   seed: z.int().optional(),
   size: z.string().optional(),
   stream: z.boolean().optional(),
-  user: z.string().optional(),
 }).transform((v) => {
   return remap$(v, {
     aspectRatio: "aspect_ratio",

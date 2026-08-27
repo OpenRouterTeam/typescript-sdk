@@ -11,7 +11,6 @@ import { Beta } from "./beta.js";
 import { BYOK } from "./byok.js";
 import { Chat } from "./chat.js";
 import { Classifications } from "./classifications.js";
-import { Containers } from "./containers.js";
 import { Credits } from "./credits.js";
 import { Datasets } from "./datasets.js";
 import { Embeddings } from "./embeddings.js";
@@ -52,6 +51,11 @@ export class OpenRouter extends ClientSDK {
     return (this._analytics ??= new Analytics(this._options));
   }
 
+  private _beta?: Beta;
+  get beta(): Beta {
+    return (this._beta ??= new Beta(this._options));
+  }
+
   private _tts?: TTS;
   get tts(): TTS {
     return (this._tts ??= new TTS(this._options));
@@ -85,11 +89,6 @@ export class OpenRouter extends ClientSDK {
   private _classifications?: Classifications;
   get classifications(): Classifications {
     return (this._classifications ??= new Classifications(this._options));
-  }
-
-  private _containers?: Containers;
-  get containers(): Containers {
-    return (this._containers ??= new Containers(this._options));
   }
 
   private _credits?: Credits;
@@ -170,11 +169,6 @@ export class OpenRouter extends ClientSDK {
   private _responses?: Responses;
   get responses(): Responses {
     return (this._responses ??= new Responses(this._options));
-  }
-
-  private _beta?: Beta;
-  get beta(): Beta {
-    return (this._beta ??= new Beta(this._options));
   }
 
   private _scim?: Scim;

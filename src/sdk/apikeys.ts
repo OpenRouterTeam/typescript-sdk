@@ -52,7 +52,7 @@ export class APIKeys extends ClientSDK {
    * Create a new API key
    *
    * @remarks
-   * Create a new API key for the authenticated user. The plaintext `key` is returned only in this response. Treat it as a write-only, sensitive value; it cannot be retrieved later. Authenticate with a [management key](/docs/guides/overview/auth/management-api-keys), or with a Connect client secret. `external_user` and `external_api_key` are accepted only with a client secret, and `external_user` is required there; supplying either field with a management key is rejected with 403.
+   * Create a new API key for the authenticated user. The plaintext `key` is returned only in this response. Treat it as a write-only, sensitive value; it cannot be retrieved later. [Management key](/docs/guides/overview/auth/management-api-keys) required.
    */
   async create(
     request: operations.CreateKeysRequest,
@@ -69,7 +69,7 @@ export class APIKeys extends ClientSDK {
    * Delete an API key
    *
    * @remarks
-   * Delete an existing API key. Authenticate with a [management key](/docs/guides/overview/auth/management-api-keys), or with a Connect client secret. A client secret reaches only the keys that same client created; any other key responds as if it does not exist.
+   * Delete an existing API key. [Management key](/docs/guides/overview/auth/management-api-keys) required.
    */
   async delete(
     request: operations.DeleteKeysRequest,
@@ -103,7 +103,7 @@ export class APIKeys extends ClientSDK {
    * Update an API key
    *
    * @remarks
-   * Update an existing API key. Authenticate with a [management key](/docs/guides/overview/auth/management-api-keys), or with a Connect client secret. A client secret reaches only the keys that same client created; any other key responds as if it does not exist.
+   * Update an existing API key. [Management key](/docs/guides/overview/auth/management-api-keys) required.
    */
   async update(
     request: operations.UpdateKeysRequest,
