@@ -102,6 +102,10 @@ export type GenerationResponseData = {
    */
   latency: number | null;
   /**
+   * JSON-serialized free-form metadata object supplied in the request `metadata` field, or null when not provided
+   */
+  metadata: string | null;
+  /**
    * Model used for the generation
    */
   model: string;
@@ -267,6 +271,7 @@ export const GenerationResponseData$inboundSchema: z.ZodType<
   id: z.string(),
   is_byok: z.boolean(),
   latency: z.nullable(z.number()),
+  metadata: z.nullable(z.string()),
   model: z.string(),
   moderation_latency: z.nullable(z.number()),
   native_finish_reason: z.nullable(z.string()),
