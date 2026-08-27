@@ -25,23 +25,23 @@ import {
 
 export type WebSearchConfig = {
   /**
-   * Limit search results to these domains. Supported by Exa, Firecrawl, Parallel, Perplexity, and most native providers (Anthropic, OpenAI, xAI). Cannot be used with excluded_domains.
+   * Limit search results to these domains. Supported by Exa, Firecrawl, Parallel, Perplexity, Kagi, and most native providers (Anthropic, OpenAI, xAI). Kagi supports allowed_domains and excluded_domains together; both are filtered client-side.
    */
   allowedDomains?: Array<string> | undefined;
   /**
-   * Which search engine to use. "auto" (default) uses native if the provider supports it, otherwise Exa. "native" forces the provider's built-in search. "exa" forces the Exa search API. "firecrawl" uses Firecrawl (requires BYOK). "parallel" uses the Parallel search API. "perplexity" uses the Perplexity Search API (raw ranked results).
+   * Which search engine to use. "auto" (default) uses native if the provider supports it, otherwise Exa. "native" forces the provider's built-in search. "exa" forces the Exa search API. "firecrawl" uses Firecrawl (requires BYOK). "parallel" uses the Parallel search API. "perplexity" uses the Perplexity Search API (raw ranked results). "kagi" uses the Kagi Search API (requires BYOK).
    */
   engine?: WebSearchEngineEnum | undefined;
   /**
-   * Exclude search results from these domains. Supported by Exa, Firecrawl, Parallel, Perplexity, Anthropic, OpenAI, and xAI. Cannot be used with allowed_domains.
+   * Exclude search results from these domains. Supported by Exa, Firecrawl, Parallel, Perplexity, Kagi, Anthropic, OpenAI, and xAI. Kagi supports allowed_domains and excluded_domains together; both are filtered client-side.
    */
   excludedDomains?: Array<string> | undefined;
   /**
-   * Exact maximum number of characters of content per search result. Applies to the Exa, Parallel, and Perplexity engines; ignored with native provider search and Firecrawl. For Exa, caps highlight content per result. For Parallel, caps excerpt content per result (default 1,500 when omitted). For Perplexity, maps to the native `max_tokens_per_page` parameter (converted from characters to tokens) and trims the response to the exact character cap. When both `max_characters` and `search_context_size` are set, `max_characters` takes precedence. When omitted, falls back to `search_context_size` mapping (Exa) or engine defaults (Parallel, Perplexity).
+   * Exact maximum number of characters of content per search result. Applies to the Exa, Parallel, Perplexity, and Kagi engines; ignored with native provider search and Firecrawl. For Kagi, caps the per-result snippet. For Exa, caps highlight content per result. For Parallel, caps excerpt content per result (default 1,500 when omitted). For Perplexity, maps to the native `max_tokens_per_page` parameter (converted from characters to tokens) and trims the response to the exact character cap. When both `max_characters` and `search_context_size` are set, `max_characters` takes precedence. When omitted, falls back to `search_context_size` mapping (Exa) or engine defaults (Parallel, Perplexity).
    */
   maxCharacters?: number | undefined;
   /**
-   * Maximum number of search results to return per search call. Defaults to 5. Applies to Exa, Firecrawl, Parallel, and Perplexity engines; ignored with native provider search. Perplexity supports a maximum of 20; values above 20 are clamped.
+   * Maximum number of search results to return per search call. Defaults to 5. Applies to Exa, Firecrawl, Parallel, Perplexity, and Kagi engines; ignored with native provider search. Perplexity supports a maximum of 20; values above 20 are clamped.
    */
   maxResults?: number | undefined;
   /**
@@ -49,7 +49,7 @@ export type WebSearchConfig = {
    */
   maxTotalResults?: number | undefined;
   /**
-   * Maximum number of web searches the model may perform in a single request. Once reached, further search calls return an error result instead of executing. Applies to the Exa, Firecrawl, Parallel, and Perplexity engines. With native provider search, forwarded only to Anthropic (as `max_uses`); other native search providers have no equivalent parameter and ignore it.
+   * Maximum number of web searches the model may perform in a single request. Once reached, further search calls return an error result instead of executing. Applies to the Exa, Firecrawl, Parallel, Perplexity, and Kagi engines. With native provider search, forwarded only to Anthropic (as `max_uses`); other native search providers have no equivalent parameter and ignore it.
    */
   maxUses?: number | undefined;
   /**
@@ -57,7 +57,7 @@ export type WebSearchConfig = {
    */
   mode?: WebSearchMode | undefined;
   /**
-   * How much context to retrieve per result. Applies to Exa, Parallel, and Perplexity engines; ignored with native provider search and Firecrawl. For Exa, pins a fixed per-result character cap (low=5,000, medium=15,000, high=30,000); when omitted, Exa picks an adaptive size per query and document (typically ~2,000–4,000 characters per result). For Parallel, controls the total characters across all results; when omitted, Parallel uses its own default size. For Perplexity, maps directly to the Search API's native search_context_size parameter. Overridden by `max_characters` when both are set.
+   * How much context to retrieve per result. Applies to Exa, Parallel, and Perplexity engines; ignored with native provider search, Firecrawl, and Kagi. For Exa, pins a fixed per-result character cap (low=5,000, medium=15,000, high=30,000); when omitted, Exa picks an adaptive size per query and document (typically ~2,000–4,000 characters per result). For Parallel, controls the total characters across all results; when omitted, Parallel uses its own default size. For Perplexity, maps directly to the Search API's native search_context_size parameter. Overridden by `max_characters` when both are set.
    */
   searchContextSize?: SearchQualityLevel | undefined;
   /**
