@@ -464,7 +464,10 @@ export type ResponsesRequest = {
    * Stop conditions for the server-tool agent loop. Any condition firing halts the loop (OR logic). When set, this overrides `max_tool_calls`. When a condition fires while the model is still emitting tool calls, the pending tool calls are executed and one final turn is made with tool calls disabled so the response ends with a natural-language answer instead of an unfinished tool call.
    */
   stopServerToolsWhen?: Array<StopServerToolsWhenCondition> | undefined;
-  store?: false | undefined;
+  /**
+   * Whether to store the response. Only honored for allowlisted organizations on BYOK OpenAI endpoints, where the request is sent with the user's own provider key. This enables retention in the customer's OpenAI account only; OpenRouter still returns its own response ID and rejects `previous_response_id`, so the stored response cannot be retrieved or continued through this API. Ignored otherwise and sent upstream with `store: false`.
+   */
+  store?: boolean | undefined;
   stream?: boolean | undefined;
   temperature?: number | null | undefined;
   /**
@@ -810,7 +813,7 @@ export type ResponsesRequest$Outbound = {
   stop_server_tools_when?:
     | Array<StopServerToolsWhenCondition$Outbound>
     | undefined;
-  store: false;
+  store: boolean;
   stream: boolean;
   temperature?: number | null | undefined;
   text?: TextExtendedConfig$Outbound | undefined;
@@ -916,7 +919,7 @@ export const ResponsesRequest$outboundSchema: z.ZodType<
   sessionId: z.string().optional(),
   stopServerToolsWhen: z.array(StopServerToolsWhenCondition$outboundSchema)
     .optional(),
-  store: z.literal(false).default(false as const),
+  store: z.boolean().default(false),
   stream: z.boolean().default(false),
   temperature: z.nullable(z.number()).optional(),
   text: TextExtendedConfig$outboundSchema.optional(),
