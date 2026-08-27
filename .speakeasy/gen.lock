@@ -1,19 +1,19 @@
 lockVersion: ""
 id: ""
 management:
-  docChecksum: 7fd906d57b65dd7bdabfaa784cfce2c1
+  docChecksum: 1239c55ea5934b678a33906ec4979a21
   docVersion: 1.0.0
   speakeasyVersion: 1.787.0
   generationVersion: 2.914.0
-  releaseVersion: 1.2.76
-  configChecksum: e845e0e049df59c32fdd788ebd2807a6
+  releaseVersion: 1.2.77
+  configChecksum: 1c1864657a2d746524f1cbfcc412b511
   repoURL: https://github.com/OpenRouterTeam/typescript-sdk.git
   installationURL: https://github.com/OpenRouterTeam/typescript-sdk
   published: true
 persistentEdits:
-  generation_id: cb56d3d7-d624-44f9-9c1b-884398b0536f
-  pristine_commit_hash: 3c4179b49a1f0019793e9fe29f7ec00e07d934eb
-  pristine_tree_hash: 02d98521c11d3becae96619b62487ffc74088666
+  generation_id: 2aed4493-f8fc-49df-9ea5-6b3190f33600
+  pristine_commit_hash: 07c7e908365a21482df4290f4b82057501f48d06
+  pristine_tree_hash: bd3eef74098883c125759ceadba6671751eca054
 features:
   typescript:
     acceptHeaders: 2.81.2
@@ -8273,8 +8273,8 @@ trackedFiles:
     pristine_git_object: bea0e0488be4c79e799a2f3f6cc5236db3ce1613
   docs/models/operations/listguardrailsresponse.mdx:
     id: 61d40234668c
-    last_write_checksum: sha1:320498030d1755f02eb4116dd26d01f79f570558
-    pristine_git_object: 38f483ff9ab0dd914d1b2e1d3ad9ce50c352b664
+    last_write_checksum: sha1:4597bd1138ba6ab811853cc2a5cc2a905792af11
+    pristine_git_object: 88572a7b5386d122f10838d38b95058c21e92d5c
   docs/models/operations/listimagemodelendpointsglobals.md:
     id: 9d81117db516
     last_write_checksum: sha1:e5970cd46e04f5f86c0a877cde54bbb55a63aff2
@@ -13049,12 +13049,12 @@ trackedFiles:
     pristine_git_object: 410efafd6a7f50d91ccb87131fedbe0c3d47e15a
   jsr.json:
     id: 7f6ab7767282
-    last_write_checksum: sha1:9c877da69584a41ad68e2c5e896a3ac963853f10
-    pristine_git_object: de595c73a7d13b12fa92b56fec87bab78ed88d61
+    last_write_checksum: sha1:a0ff5168cccf40a96066e6b4289fc662cd18ccdb
+    pristine_git_object: 2297a3991fb22f2302aa989a1552aac2a9544563
   package.json:
     id: 7030d0b2f71b
-    last_write_checksum: sha1:921a4a5b6f8fbf1c4dd6ad0bdae4172d0d1b9a69
-    pristine_git_object: 8ac0a86d3cb75228f5170d9b919d4604fc4b9456
+    last_write_checksum: sha1:577ea321ad8d561602c3a3640e6440744a627624
+    pristine_git_object: 87c0adb14b900efc9882320efd76cf50a82d785d
   src/core.ts:
     id: f431fdbcd144
     last_write_checksum: sha1:5aa66b0b6a5964f3eea7f3098c2eb3c0ee9c0131
@@ -13481,8 +13481,8 @@ trackedFiles:
     pristine_git_object: a187e58707bdb726ca2aff74941efe7493422d4e
   src/lib/config.ts:
     id: 320761608fb3
-    last_write_checksum: sha1:792b2c550b2664668aa55eaf78c912ec2c810311
-    pristine_git_object: e972ab8be6d306bfba132846ef6e1fd093994364
+    last_write_checksum: sha1:67f25fe5090e558d7a97d46f203dcb35479eb727
+    pristine_git_object: fb2dbf5df7c595e0dad9f9cc7b18333033eb6d21
   src/lib/dlv.ts:
     id: b1988214835a
     last_write_checksum: sha1:eaac763b22717206a6199104e0403ed17a4e2711
