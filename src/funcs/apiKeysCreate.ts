@@ -31,7 +31,7 @@ import { Result } from "../types/fp.js";
  * Create a new API key
  *
  * @remarks
- * Create a new API key for the authenticated user. The plaintext `key` is returned only in this response. Treat it as a write-only, sensitive value; it cannot be retrieved later. Authenticate with a [management key](/docs/guides/overview/auth/management-api-keys), or with a Connect client secret. `external_user` and `external_api_key` are accepted only with a client secret, and `external_user` is required there; supplying either field with a management key is rejected with 403.
+ * Create a new API key for the authenticated user. The plaintext `key` is returned only in this response. Treat it as a write-only, sensitive value; it cannot be retrieved later. Authenticate with a [management key](/docs/guides/overview/auth/management-api-keys). The optional `external` object associates the key with a partner-defined user and lookup key.
  */
 export function apiKeysCreate(
   client: OpenRouterCore,
