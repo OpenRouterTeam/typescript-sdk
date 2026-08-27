@@ -29456,7 +29456,7 @@ paths:
         - 'Containers'
   /containers/{container_id}/files/{file_id}/promote:
     post:
-      description: 'Copies a file from the container''s sandbox prefix into the workspace''s durable document storage, so it outlives the container. Returns the new document in the Files API shape, with a durable file id in the documents namespace. The copy counts against the workspace''s storage quota exactly like an upload.'
+      description: 'Copies a file from the container''s sandbox prefix into the workspace''s durable document storage, so it outlives the container. Returns the new document in the Files API shape, with a durable file id in the documents namespace. The copy counts against the workspace''s storage quota. Unlike a direct upload, promoted files are downloadable.'
       operationId: 'promoteContainerFile'
       parameters:
         - description: 'The canonical container id, exactly as returned in a bash/shell tool result — a restarted session has its own `-r<nonce>`-suffixed id. A session-derived id is always `sess_` + the sanitized session key, which is not necessarily the raw session id that was sent.'
@@ -29482,7 +29482,7 @@ paths:
               example:
                 _shape: 'openrouter'
                 created_at: '2026-08-23T00:00:00Z'
-                downloadable: false
+                downloadable: true
                 filename: 'out/report.csv'
                 id: 'or_file_011CNha8iCJcU1wXNR6q4V8w'
                 mime_type: 'text/csv'
