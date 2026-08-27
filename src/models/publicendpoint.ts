@@ -23,6 +23,10 @@ import {
 } from "./pricingoverride.js";
 import { ProviderName, ProviderName$inboundSchema } from "./providername.js";
 import { Quantization, Quantization$inboundSchema } from "./quantization.js";
+import {
+  ToolChoiceSupport,
+  ToolChoiceSupport$inboundSchema,
+} from "./toolchoicesupport.js";
 
 export type Pricing = {
   /**
@@ -118,6 +122,10 @@ export type PublicEndpoint = {
   supportedParameters: Array<Parameter>;
   supportsImplicitCaching: boolean;
   /**
+   * Per-variant `tool_choice` support. `tool_choice` in `supported_parameters` only says the parameter is accepted; these flags say which of its values passed testing.
+   */
+  supportsToolChoice?: ToolChoiceSupport | undefined;
+  /**
    * Whether this TTS endpoint accepts inline reference audio (`input_references`) for stateless voice cloning. Requests carrying reference audio are only routed to endpoints where this is true.
    */
   supportsVoiceCloning: boolean;
@@ -192,6 +200,7 @@ export const PublicEndpoint$inboundSchema: z.ZodType<PublicEndpoint, unknown> =
     status: EndpointStatus$inboundSchema.optional(),
     supported_parameters: z.array(Parameter$inboundSchema),
     supports_implicit_caching: z.boolean(),
+    supports_tool_choice: ToolChoiceSupport$inboundSchema.optional(),
     supports_voice_cloning: z.boolean().default(false),
     tag: z.string(),
     throughput_last_30m: z.nullable(PercentileStats$inboundSchema),
@@ -209,6 +218,7 @@ export const PublicEndpoint$inboundSchema: z.ZodType<PublicEndpoint, unknown> =
       "provider_name": "providerName",
       "supported_parameters": "supportedParameters",
       "supports_implicit_caching": "supportsImplicitCaching",
+      "supports_tool_choice": "supportsToolChoice",
       "supports_voice_cloning": "supportsVoiceCloning",
       "throughput_last_30m": "throughputLast30m",
       "uptime_last_1d": "uptimeLast1d",
