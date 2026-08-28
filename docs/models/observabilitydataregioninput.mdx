@@ -1,0 +1,21 @@
+---
+title: "ObservabilityDataRegionInput"
+---
+
+`eu` is accepted as an alias for `europe` and normalizes to `europe`.
+
+## Example Usage
+
+```typescript
+import { ObservabilityDataRegionInput } from "@openrouter/sdk/models";
+
+let value: ObservabilityDataRegionInput = "global";
+
+// Open enum: unrecognized values are captured as Unrecognized<string>
+```
+
+## Values
+
+```typescript
+"global" | "europe" | "us" | "eu" | Unrecognized<string>
+```
