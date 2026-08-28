@@ -1,19 +1,19 @@
 lockVersion: ""
 id: ""
 management:
-  docChecksum: 41c62230333ceb37a07989509341408b
+  docChecksum: e18fe3f1f0c9f3cf7f286eda438b3e70
   docVersion: 1.0.0
   speakeasyVersion: 1.787.0
   generationVersion: 2.914.0
-  releaseVersion: 1.2.79
-  configChecksum: 9e75f7f8779441c2f32cdeec41eec57e
+  releaseVersion: 1.2.80
+  configChecksum: 9931980373b2d0e4ff27ca93adc05691
   repoURL: https://github.com/OpenRouterTeam/typescript-sdk.git
   installationURL: https://github.com/OpenRouterTeam/typescript-sdk
   published: true
 persistentEdits:
-  generation_id: 15a304cf-076c-4123-bffc-358b989dcad6
-  pristine_commit_hash: f69faf65737cb28e8277ca9dc044709bbbceb921
-  pristine_tree_hash: 4543c218fc66155571a06e5169ec2551f26978dd
+  generation_id: 2ea96c1f-d924-41ff-8e8f-79d36c83b2d3
+  pristine_commit_hash: 68e6b15726a66328675ed5950a9a11fd7e28f91a
+  pristine_tree_hash: dee3ccac25ebe3583af573c8e83306913344532c
 features:
   typescript:
     acceptHeaders: 2.81.2
@@ -5345,8 +5345,8 @@ trackedFiles:
     pristine_git_object: dda39ed8da96dd1498f986013630f08752ba8a47
   docs/models/listendpointsresponse.mdx:
     id: 67f685fdc519
-    last_write_checksum: sha1:9c31ab6e50a2cad7f4e0b42db955e627eb903ddc
-    pristine_git_object: 8e2fe1316b2cfaffac28e0711022975353faa72b
+    last_write_checksum: sha1:19ab893a11c90440227a4b71d508143f309aa42a
+    pristine_git_object: 0f9fd31c530b5f692e049594d817375070c9bb1f
   docs/models/listguardrailsresponse.md:
     id: 0696b16e9857
     last_write_checksum: sha1:7799b39e536b8f7377af1991b96f4a21e9ea6617
@@ -8176,8 +8176,8 @@ trackedFiles:
     pristine_git_object: 3a3a78ac47d7f5f094baf273bb9acc9afb697019
   docs/models/operations/listendpointsresponse.mdx:
     id: 81feb6eb1985
-    last_write_checksum: sha1:7f9cab1a5f2c9a2246147c255ef6f499d2c87a10
-    pristine_git_object: af89dd00624c4d5d6867acae2813d6729091c5a2
+    last_write_checksum: sha1:86a437f079de0b2008e96337a71ca5846b8e016a
+    pristine_git_object: 4b1954c4c2a807c48f4c0c5494ddcf7e6e4ca099
   docs/models/operations/listendpointszdrglobals.mdx:
     id: a25272735ab0
     last_write_checksum: sha1:e92da33379b4d7b242172f6e63f868cdcb81fcc1
@@ -8188,8 +8188,8 @@ trackedFiles:
     pristine_git_object: a39d224e406dd0d81d83b5db432f0b1beedb7612
   docs/models/operations/listendpointszdrresponse.mdx:
     id: d9ce10710845
-    last_write_checksum: sha1:1e7d68e09feaf85feb4db484d47d9fa531f60795
-    pristine_git_object: 948bf945547782b7a4092fd8fe114422664f750c
+    last_write_checksum: sha1:44150cb1d116952a45ae634650fc68d972a12767
+    pristine_git_object: fb06f00d48219af3863838197f9e977bce5a62fc
   docs/models/operations/listfilesglobals.md:
     id: a1b76a1b24f4
     last_write_checksum: sha1:cf32848052e3200a3f7ff7441fac942766f9cc8f
@@ -10407,8 +10407,8 @@ trackedFiles:
     pristine_git_object: a45a98ba70cff7ba94ef177c560bb6aaf006fe45
   docs/models/publicendpoint.mdx:
     id: 298950f1060d
-    last_write_checksum: sha1:be43514abb5415271ff5f8fe7df88306de0b7ce9
-    pristine_git_object: db2e549cb515f0c1cc39a1ffc992ea5c5b4c5b27
+    last_write_checksum: sha1:1028b9e80e6b02f7250259e05f9c676a92f33b26
+    pristine_git_object: 1d7d1b7306179f4c4ed3e5ca9d198272fff182d6
   docs/models/publicpricing.mdx:
     id: da7987d6141a
     last_write_checksum: sha1:49396adb88727e3fdaff06767101a5ef4479257f
@@ -11903,6 +11903,10 @@ trackedFiles:
     id: 0812d99611af
     last_write_checksum: sha1:119f18393ad97e718cd71cb235c47149c629cab1
     pristine_git_object: 82b1dbff498a415478fdb8416634c5e0c4736f66
+  docs/models/toolchoicesupport.mdx:
+    id: 8b14784157cc
+    last_write_checksum: sha1:59ffd91e53bd92d54c2b2390063b48e2e5195aef
+    pristine_git_object: 359fc6f981a2efb6a3608000b93fd977bc0e200f
   docs/models/toolchoicetool.md:
     id: 280546824ee6
     last_write_checksum: sha1:c1a00f4d2b9b906e33a6ede5e40aa93980cbf020
@@ -13049,12 +13053,12 @@ trackedFiles:
     pristine_git_object: 410efafd6a7f50d91ccb87131fedbe0c3d47e15a
   jsr.json:
     id: 7f6ab7767282
-    last_write_checksum: sha1:585072bdc8e588bd7843832641c1bcb8946eef6d
-    pristine_git_object: 844826ec283b28ad8af52a714b0c8a16601c2a99
+    last_write_checksum: sha1:9cfcc1467db5155597200e782006cd17d177359a
+    pristine_git_object: c5ed365b0b6cf3ae04e2c8a6d8e12a7bfc82509f
   package.json:
     id: 7030d0b2f71b
-    last_write_checksum: sha1:4ea3df417be82f9474e89edad6c706ceeb9837b8
-    pristine_git_object: 759a41d625747ee8502477863a9045b205cdc746
+    last_write_checksum: sha1:2f4f482692a69484d769e1f1f1d47452d8acccba
+    pristine_git_object: 395ad5363fe91a7435dc8a64506ebd927d99def0
   src/core.ts:
     id: f431fdbcd144
     last_write_checksum: sha1:5aa66b0b6a5964f3eea7f3098c2eb3c0ee9c0131
@@ -13481,8 +13485,8 @@ trackedFiles:
     pristine_git_object: a187e58707bdb726ca2aff74941efe7493422d4e
   src/lib/config.ts:
     id: 320761608fb3
-    last_write_checksum: sha1:b09bbde865a5076b646c0e8013f15bae71f19452
-    pristine_git_object: 349ee3796f97d1aa067cb672a8d80cb858449385
+    last_write_checksum: sha1:a9623a62261c56d463652a6c657a1376e627904c
+    pristine_git_object: 5433f00604ee56df3c1c54ebe5ab36d94b272d3f
   src/lib/dlv.ts:
     id: b1988214835a
     last_write_checksum: sha1:eaac763b22717206a6199104e0403ed17a4e2711
@@ -14767,8 +14771,8 @@ trackedFiles:
     pristine_git_object: 8e109bedfdcf2c4808e49323dda861e3c6069d51
   src/models/index.ts:
     id: f93644b0f37e
-    last_write_checksum: sha1:87408be0015c5476340ebd632419722951e37fe7
-    pristine_git_object: bcf25ceba6c5f0aea1a7395b79f52838f64abebe
+    last_write_checksum: sha1:3d8f59b0f0d61b16b0626930183d27b931b01458
+    pristine_git_object: c1564b7f728326e914c520bdf0a186ec26696ea1
   src/models/inputaudio.ts:
     id: 9bdc14c7565f
     last_write_checksum: sha1:2f8dc4c1d6a9c2927d9eb186e0ecedf7b81838e6
@@ -15875,8 +15879,8 @@ trackedFiles:
     pristine_git_object: fc796682165e0c6c8f0787ee2cb37c79671557f9
   src/models/publicendpoint.ts:
     id: 396ce3186017
-    last_write_checksum: sha1:9e15cfe19cb7197b08418c72a5c99f4a008dc5ee
-    pristine_git_object: 98275633f99a7158382e26b655639885e96c3194
+    last_write_checksum: sha1:4e7567ec6d28e829124da546010f85dec7f906f1
+    pristine_git_object: 6ee0f8916016e8800fc96d19e079bacc460ca9c3
   src/models/publicpricing.ts:
     id: 0a44a1c3bab5
     last_write_checksum: sha1:bd478f319c40ea705b9705d3c73a9e4992a16877
@@ -16277,6 +16281,10 @@ trackedFiles:
     id: 82ee236509d6
     last_write_checksum: sha1:dee3fb2b35cdc107dc5631e746d54153e258ff18
     pristine_git_object: 79f6ffb5f9b89ffcdc4b9de5afd8a64aa904b0e9
+  src/models/toolchoicesupport.ts:
+    id: ccb12dd7321c
+    last_write_checksum: sha1:b1bc6087826e6f9f8f83f5613aed644be74e4e2f
+    pristine_git_object: b8051db3bf9238ad0e2492ba0fb64628c353712e
   src/models/toolsearchservertool.ts:
     id: de3e685fadd8
     last_write_checksum: sha1:848b273189be36dd8009fcb2b70f7246cf58d50a
@@ -16941,7 +16949,7 @@ examples:
           slug: "<value>"
       responses:
         "200":
-          application/json: {"data": {"architecture": {"input_modalities": ["text"], "instruct_type": "chatml", "modality": "text->text", "output_modalities": ["text"], "tokenizer": "GPT"}, "created": 1692901234, "description": "GPT-4 is a large multimodal model that can solve difficult problems with greater accuracy.", "endpoints": [{"context_length": 8192, "latency_last_30m": {"p50": 0.25, "p75": 0.35, "p90": 0.48, "p99": 0.85}, "max_completion_tokens": 4096, "max_prompt_tokens": 8192, "model_id": "openai/gpt-4", "model_name": "GPT-4", "name": "OpenAI: GPT-4", "pricing": {"completion": "0.00006", "prompt": "0.00003"}, "provider_name": "OpenAI", "quantization": "fp16", "supported_parameters": ["temperature", "top_p", "max_tokens"], "supports_implicit_caching": true, "supports_voice_cloning": false, "tag": "openai", "throughput_last_30m": {"p50": 45.2, "p75": 38.5, "p90": 28.3, "p99": 15.1}, "uptime_last_1d": 99.8, "uptime_last_30m": 99.5, "uptime_last_5m": 100}], "id": "openai/gpt-4", "name": "GPT-4"}}
+          application/json: {"data": {"architecture": {"input_modalities": ["text"], "instruct_type": "chatml", "modality": "text->text", "output_modalities": ["text"], "tokenizer": "GPT"}, "created": 1692901234, "description": "GPT-4 is a large multimodal model that can solve difficult problems with greater accuracy.", "endpoints": [{"context_length": 8192, "latency_last_30m": {"p50": 0.25, "p75": 0.35, "p90": 0.48, "p99": 0.85}, "max_completion_tokens": 4096, "max_prompt_tokens": 8192, "model_id": "openai/gpt-4", "model_name": "GPT-4", "name": "OpenAI: GPT-4", "pricing": {"completion": "0.00006", "prompt": "0.00003"}, "provider_name": "OpenAI", "quantization": "fp16", "supported_parameters": ["temperature", "top_p", "max_tokens"], "supports_implicit_caching": true, "supports_tool_choice": {"auto": true, "function": true, "none": true, "required": true}, "supports_voice_cloning": false, "tag": "openai", "throughput_last_30m": {"p50": 45.2, "p75": 38.5, "p90": 28.3, "p99": 15.1}, "uptime_last_1d": 99.8, "uptime_last_30m": 99.5, "uptime_last_5m": 100}], "id": "openai/gpt-4", "name": "GPT-4"}}
         "404":
           application/json: {"error": {"code": 404, "message": "Resource not found"}}
         "500":
@@ -16952,7 +16960,7 @@ examples:
     speakeasy-default-list-endpoints-zdr:
       responses:
         "200":
-          application/json: {"data": [{"context_length": 8192, "latency_last_30m": {"p50": 0.25, "p75": 0.35, "p90": 0.48, "p99": 0.85}, "max_completion_tokens": 4096, "max_prompt_tokens": 8192, "model_id": "openai/gpt-4", "model_name": "GPT-4", "name": "OpenAI: GPT-4", "pricing": {"completion": "0.00006", "prompt": "0.00003"}, "provider_name": "OpenAI", "quantization": "fp16", "supported_parameters": ["temperature", "top_p", "max_tokens"], "supports_implicit_caching": true, "supports_voice_cloning": false, "tag": "openai", "throughput_last_30m": {"p50": 45.2, "p75": 38.5, "p90": 28.3, "p99": 15.1}, "uptime_last_1d": 99.8, "uptime_last_30m": 99.5, "uptime_last_5m": 100}]}
+          application/json: {"data": [{"context_length": 8192, "latency_last_30m": {"p50": 0.25, "p75": 0.35, "p90": 0.48, "p99": 0.85}, "max_completion_tokens": 4096, "max_prompt_tokens": 8192, "model_id": "openai/gpt-4", "model_name": "GPT-4", "name": "OpenAI: GPT-4", "pricing": {"completion": "0.00006", "prompt": "0.00003"}, "provider_name": "OpenAI", "quantization": "fp16", "supported_parameters": ["temperature", "top_p", "max_tokens"], "supports_implicit_caching": true, "supports_tool_choice": {"auto": true, "function": true, "none": true, "required": true}, "supports_voice_cloning": false, "tag": "openai", "throughput_last_30m": {"p50": 45.2, "p75": 38.5, "p90": 28.3, "p99": 15.1}, "uptime_last_1d": 99.8, "uptime_last_30m": 99.5, "uptime_last_5m": 100}]}
         "500":
           application/json: {"error": {"code": 500, "message": "Internal Server Error"}}
         "403":
@@ -18563,3 +18571,7 @@ examples:
         "503":
           application/json: {"error": {"code": 503, "message": "Service temporarily unavailable"}}
 examplesVersion: 1.0.2
+releaseNotes: |
+  ## Typescript SDK Changes:
+  * `openrouter.endpoints.listZdrEndpoints()`:  `response.data[].supportsToolChoice` **Added**
+  * `openrouter.endpoints.list()`:  `response.data.endpoints[].supportsToolChoice` **Added**
