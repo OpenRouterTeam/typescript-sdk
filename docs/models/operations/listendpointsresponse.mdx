@@ -51,6 +51,12 @@ let value: ListEndpointsResponse = {
           "max_tokens",
         ],
         supportsImplicitCaching: true,
+        supportsToolChoice: {
+          auto: true,
+          function: true,
+          none: true,
+          required: true,
+        },
         tag: "openai",
         throughputLast30m: {
           p50: 45.2,

@@ -1,0 +1,27 @@
+---
+title: "ToolChoiceSupport"
+---
+
+Per-variant `tool_choice` support. `tool_choice` in `supported_parameters` only says the parameter is accepted; these flags say which of its values passed testing.
+
+## Example Usage
+
+```typescript
+import { ToolChoiceSupport } from "@openrouter/sdk/models";
+
+let value: ToolChoiceSupport = {
+  auto: true,
+  function: true,
+  none: true,
+  required: true,
+};
+```
+
+## Fields
+
+| Field                                                                                        | Type                                                                                         | Required                                                                                     | Description                                                                                  |
+| -------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------- |
+| `auto`                                                                                       | *boolean*                                                                                    | :heavy_check_mark:                                                                           | Whether the endpoint supports `"tool_choice": "auto"`.                                       |
+| `function`                                                                                   | *boolean*                                                                                    | :heavy_check_mark:                                                                           | Whether the endpoint supports naming a function, `"tool_choice": {"type": "function", ...}`. |
+| `none`                                                                                       | *boolean*                                                                                    | :heavy_check_mark:                                                                           | Whether the endpoint supports `"tool_choice": "none"`.                                       |
+| `required`                                                                                   | *boolean*                                                                                    | :heavy_check_mark:                                                                           | Whether the endpoint supports `"tool_choice": "required"`.                                   |
