@@ -52,6 +52,12 @@ let value: ListEndpointsResponse = {
         "presence_penalty",
       ],
       supportsImplicitCaching: true,
+      supportsToolChoice: {
+        auto: true,
+        function: true,
+        none: true,
+        required: true,
+      },
       tag: "openai",
       throughputLast30m: {
         p50: 45.2,
