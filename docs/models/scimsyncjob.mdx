@@ -1,0 +1,33 @@
+---
+title: "ScimSyncJob"
+---
+
+## Example Usage
+
+```typescript
+import { ScimSyncJob } from "@openrouter/sdk/models";
+
+let value: ScimSyncJob = {
+  createdAt: "1717120563145",
+  deletedGroups: null,
+  errorMessage: "<value>",
+  finishedAt: "<value>",
+  id: "15580601-fb00-4868-a8e7-1e1a16bb7a7f",
+  startedAt: "<value>",
+  status: "<value>",
+  syncedGroups: 79933,
+};
+```
+
+## Fields
+
+| Field                                                                  | Type                                                                   | Required                                                               | Description                                                            |
+| ---------------------------------------------------------------------- | ---------------------------------------------------------------------- | ---------------------------------------------------------------------- | ---------------------------------------------------------------------- |
+| `createdAt`                                                            | *string*                                                               | :heavy_check_mark:                                                     | Time when the sync job was created.                                    |
+| `deletedGroups`                                                        | *number*                                                               | :heavy_check_mark:                                                     | Number of groups deleted, when the job completed successfully.         |
+| `errorMessage`                                                         | *string*                                                               | :heavy_check_mark:                                                     | Stable error message when the job failed.                              |
+| `finishedAt`                                                           | *string*                                                               | :heavy_check_mark:                                                     | Time when synchronization finished.                                    |
+| `id`                                                                   | *string*                                                               | :heavy_check_mark:                                                     | Unique identifier for the sync job.                                    |
+| `startedAt`                                                            | *string*                                                               | :heavy_check_mark:                                                     | Time when synchronization started.                                     |
+| `status`                                                               | *string*                                                               | :heavy_check_mark:                                                     | Current status of the sync job: queued, running, succeeded, or failed. |
+| `syncedGroups`                                                         | *number*                                                               | :heavy_check_mark:                                                     | Number of groups synchronized, when the job completed successfully.    |
