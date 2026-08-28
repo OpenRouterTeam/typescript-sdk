@@ -73,6 +73,7 @@ export type VideoGenerationRequestOptions = {
   cloudflare?: { [k: string]: any } | undefined;
   cohere?: { [k: string]: any } | undefined;
   coreweave?: { [k: string]: any } | undefined;
+  cosine?: { [k: string]: any } | undefined;
   crofai?: { [k: string]: any } | undefined;
   crucible?: { [k: string]: any } | undefined;
   crusoe?: { [k: string]: any } | undefined;
@@ -302,6 +303,7 @@ export type VideoGenerationRequestOptions$Outbound = {
   cloudflare?: { [k: string]: any } | undefined;
   cohere?: { [k: string]: any } | undefined;
   coreweave?: { [k: string]: any } | undefined;
+  cosine?: { [k: string]: any } | undefined;
   crofai?: { [k: string]: any } | undefined;
   crucible?: { [k: string]: any } | undefined;
   crusoe?: { [k: string]: any } | undefined;
@@ -446,6 +448,7 @@ export const VideoGenerationRequestOptions$outboundSchema: z.ZodType<
   cloudflare: z.record(z.string(), z.any()).optional(),
   cohere: z.record(z.string(), z.any()).optional(),
   coreweave: z.record(z.string(), z.any()).optional(),
+  cosine: z.record(z.string(), z.any()).optional(),
   crofai: z.record(z.string(), z.any()).optional(),
   crucible: z.record(z.string(), z.any()).optional(),
   crusoe: z.record(z.string(), z.any()).optional(),
