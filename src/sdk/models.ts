@@ -63,7 +63,7 @@ export class Models extends ClientSDK {
    * List models filtered by user provider preferences, privacy settings, and guardrails
    *
    * @remarks
-   * List models filtered by user provider preferences, [privacy settings](https://openrouter.ai/docs/guides/privacy/provider-logging), and [guardrails](https://openrouter.ai/docs/guides/features/guardrails). Returns text-output models by default; pass `output_modalities` (e.g. `image,audio,embeddings` or `all`) to include other modalities. If requesting through a regional hostname, the results will be filtered to models that satisfy in-region routing for that region.
+   * List models filtered by user provider preferences, [privacy settings](https://openrouter.ai/docs/guides/privacy/provider-logging), and [guardrails](https://openrouter.ai/docs/guides/features/guardrails). If requesting through a regional hostname, the results will be filtered to models that satisfy in-region routing for that region.
    */
   async listForUser(
     security: operations.ListModelsUserSecurity,
