@@ -1,0 +1,26 @@
+---
+title: "PerformanceByWorkloadV1"
+---
+
+Optional workload-scoped endpoint performance over the last 30 minutes. This is additive to the legacy singular latency and throughput fields. Only visible when authenticated with an API key or cookie.
+
+## Example Usage
+
+```typescript
+import { PerformanceByWorkloadV1 } from "@openrouter/sdk/models";
+
+let value: PerformanceByWorkloadV1 = {};
+```
+
+## Fields
+
+| Field                                                  | Type                                                   | Required                                               | Description                                            |
+| ------------------------------------------------------ | ------------------------------------------------------ | ------------------------------------------------------ | ------------------------------------------------------ |
+| `embeddings`                                           | [models.Embeddings](../models/embeddings.mdx)           | :heavy_minus_sign:                                     | N/A                                                    |
+| `imageGeneration`                                      | [models.ImageGeneration](../models/imagegeneration.mdx) | :heavy_minus_sign:                                     | N/A                                                    |
+| `rerank`                                               | [models.Rerank](../models/rerank.mdx)                   | :heavy_minus_sign:                                     | N/A                                                    |
+| `stt`                                                  | [models.STT](../models/stt.mdx)                         | :heavy_minus_sign:                                     | N/A                                                    |
+| `textGeneration`                                       | [models.TextGeneration](../models/textgeneration.mdx)   | :heavy_minus_sign:                                     | N/A                                                    |
+| `tts`                                                  | [models.TTS](../models/tts.mdx)                         | :heavy_minus_sign:                                     | N/A                                                    |
+| `unknown`                                              | [models.Unknown](../models/unknown.mdx)                 | :heavy_minus_sign:                                     | N/A                                                    |
+| `videoGeneration`                                      | [models.VideoGeneration](../models/videogeneration.mdx) | :heavy_minus_sign:                                     | N/A                                                    |
