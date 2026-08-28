@@ -79,7 +79,6 @@ export const BYOKProviderSlug = {
   Nextbit: "nextbit",
   Novita: "novita",
   Nvidia: "nvidia",
-  Ollama: "ollama",
   OpenInference: "open-inference",
   Openai: "openai",
   Parasail: "parasail",
