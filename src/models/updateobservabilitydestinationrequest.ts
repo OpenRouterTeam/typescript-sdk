@@ -5,11 +5,22 @@
 
 import * as z from "zod/v4";
 import { remap as remap$ } from "../lib/primitives.js";
+import * as openEnums from "../types/enums.js";
+import { OpenEnum } from "../types/enums.js";
 import {
   ObservabilityFilterRulesConfigNullable,
   ObservabilityFilterRulesConfigNullable$Outbound,
   ObservabilityFilterRulesConfigNullable$outboundSchema,
 } from "./observabilityfilterrulesconfignullable.js";
+
+export const UpdateObservabilityDestinationRequestRegion = {
+  Global: "global",
+  Europe: "europe",
+  Us: "us",
+} as const;
+export type UpdateObservabilityDestinationRequestRegion = OpenEnum<
+  typeof UpdateObservabilityDestinationRequestRegion
+>;
 
 export type UpdateObservabilityDestinationRequest = {
   /**
@@ -46,10 +57,19 @@ export type UpdateObservabilityDestinationRequest = {
    */
   privacyMode?: boolean | undefined;
   /**
+   * Data regions this destination applies to. Omitting this field keeps the current value; it cannot be cleared.
+   */
+  regions?: Array<UpdateObservabilityDestinationRequestRegion> | undefined;
+  /**
    * Sampling rate between 0.0001 and 1 (1 = 100%).
    */
   samplingRate?: number | undefined;
 };
+
+/** @internal */
+export const UpdateObservabilityDestinationRequestRegion$outboundSchema:
+  z.ZodType<string, UpdateObservabilityDestinationRequestRegion> = openEnums
+    .outboundSchema(UpdateObservabilityDestinationRequestRegion);
 
 /** @internal */
 export type UpdateObservabilityDestinationRequest$Outbound = {
@@ -65,6 +85,7 @@ export type UpdateObservabilityDestinationRequest$Outbound = {
     | undefined;
   name?: string | undefined;
   privacy_mode?: boolean | undefined;
+  regions?: Array<string> | undefined;
   sampling_rate?: number | undefined;
 };
 
@@ -83,6 +104,8 @@ export const UpdateObservabilityDestinationRequest$outboundSchema: z.ZodType<
     .optional(),
   name: z.string().optional(),
   privacyMode: z.boolean().optional(),
+  regions: z.array(UpdateObservabilityDestinationRequestRegion$outboundSchema)
+    .optional(),
   samplingRate: z.number().optional(),
 }).transform((v) => {
   return remap$(v, {

@@ -6,6 +6,8 @@
 import * as z from "zod/v4";
 import { remap as remap$ } from "../lib/primitives.js";
 import { safeParse } from "../lib/schemas.js";
+import * as openEnums from "../types/enums.js";
+import { OpenEnum } from "../types/enums.js";
 import { Result as SafeParseResult } from "../types/fp.js";
 import { SDKValidationError } from "./errors/sdkvalidationerror.js";
 import {
@@ -22,6 +24,15 @@ export type ObservabilityBraintrustDestinationConfig = {
   headers?: { [k: string]: string } | undefined;
   projectId: string;
 };
+
+export const ObservabilityBraintrustDestinationRegion = {
+  Global: "global",
+  Europe: "europe",
+  Us: "us",
+} as const;
+export type ObservabilityBraintrustDestinationRegion = OpenEnum<
+  typeof ObservabilityBraintrustDestinationRegion
+>;
 
 export type ObservabilityBraintrustDestination = {
   /**
@@ -66,6 +77,10 @@ export type ObservabilityBraintrustDestination = {
    */
   privacyMode: boolean;
   /**
+   * Data regions this destination applies to. Requests served in a region only fan out to destinations that include that region.
+   */
+  regions: Array<ObservabilityBraintrustDestinationRegion>;
+  /**
    * Sampling rate for events sent to this destination, between 0.0001 and 1 (1 = 100%).
    */
   samplingRate: number;
@@ -108,6 +123,12 @@ export function observabilityBraintrustDestinationConfigFromJSON(
 }
 
 /** @internal */
+export const ObservabilityBraintrustDestinationRegion$inboundSchema: z.ZodType<
+  ObservabilityBraintrustDestinationRegion,
+  unknown
+> = openEnums.inboundSchema(ObservabilityBraintrustDestinationRegion);
+
+/** @internal */
 export const ObservabilityBraintrustDestination$inboundSchema: z.ZodType<
   ObservabilityBraintrustDestination,
   unknown
@@ -123,6 +144,7 @@ export const ObservabilityBraintrustDestination$inboundSchema: z.ZodType<
   id: z.string(),
   name: z.nullable(z.string()),
   privacy_mode: z.boolean(),
+  regions: z.array(ObservabilityBraintrustDestinationRegion$inboundSchema),
   sampling_rate: z.number(),
   type: z.literal("braintrust"),
   updated_at: z.string(),

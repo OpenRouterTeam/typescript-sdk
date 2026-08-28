@@ -27,6 +27,15 @@ export type ObservabilityWebhookDestinationConfig = {
   url: string;
 };
 
+export const ObservabilityWebhookDestinationRegion = {
+  Global: "global",
+  Europe: "europe",
+  Us: "us",
+} as const;
+export type ObservabilityWebhookDestinationRegion = OpenEnum<
+  typeof ObservabilityWebhookDestinationRegion
+>;
+
 export type ObservabilityWebhookDestination = {
   /**
    * Optional allowlist of OpenRouter API key hashes (`api_keys.hash`) whose traffic is forwarded to this destination. `null` means all keys.
@@ -70,6 +79,10 @@ export type ObservabilityWebhookDestination = {
    */
   privacyMode: boolean;
   /**
+   * Data regions this destination applies to. Requests served in a region only fan out to destinations that include that region.
+   */
+  regions: Array<ObservabilityWebhookDestinationRegion>;
+  /**
    * Sampling rate for events sent to this destination, between 0.0001 and 1 (1 = 100%).
    */
   samplingRate: number;
@@ -110,6 +123,12 @@ export function observabilityWebhookDestinationConfigFromJSON(
 }
 
 /** @internal */
+export const ObservabilityWebhookDestinationRegion$inboundSchema: z.ZodType<
+  ObservabilityWebhookDestinationRegion,
+  unknown
+> = openEnums.inboundSchema(ObservabilityWebhookDestinationRegion);
+
+/** @internal */
 export const ObservabilityWebhookDestination$inboundSchema: z.ZodType<
   ObservabilityWebhookDestination,
   unknown
@@ -125,6 +144,7 @@ export const ObservabilityWebhookDestination$inboundSchema: z.ZodType<
   id: z.string(),
   name: z.nullable(z.string()),
   privacy_mode: z.boolean(),
+  regions: z.array(ObservabilityWebhookDestinationRegion$inboundSchema),
   sampling_rate: z.number(),
   type: z.literal("webhook"),
   updated_at: z.string(),
