@@ -6,6 +6,8 @@
 import * as z from "zod/v4";
 import { remap as remap$ } from "../lib/primitives.js";
 import { safeParse } from "../lib/schemas.js";
+import * as openEnums from "../types/enums.js";
+import { OpenEnum } from "../types/enums.js";
 import { Result as SafeParseResult } from "../types/fp.js";
 import { SDKValidationError } from "./errors/sdkvalidationerror.js";
 import {
@@ -21,6 +23,15 @@ export type ObservabilityPosthogDestinationConfig = {
    */
   headers?: { [k: string]: string } | undefined;
 };
+
+export const ObservabilityPosthogDestinationRegion = {
+  Global: "global",
+  Europe: "europe",
+  Us: "us",
+} as const;
+export type ObservabilityPosthogDestinationRegion = OpenEnum<
+  typeof ObservabilityPosthogDestinationRegion
+>;
 
 export type ObservabilityPosthogDestination = {
   /**
@@ -65,6 +76,10 @@ export type ObservabilityPosthogDestination = {
    */
   privacyMode: boolean;
   /**
+   * Data regions this destination applies to. Requests served in a region only fan out to destinations that include that region.
+   */
+  regions: Array<ObservabilityPosthogDestinationRegion>;
+  /**
    * Sampling rate for events sent to this destination, between 0.0001 and 1 (1 = 100%).
    */
   samplingRate: number;
@@ -101,6 +116,12 @@ export function observabilityPosthogDestinationConfigFromJSON(
 }
 
 /** @internal */
+export const ObservabilityPosthogDestinationRegion$inboundSchema: z.ZodType<
+  ObservabilityPosthogDestinationRegion,
+  unknown
+> = openEnums.inboundSchema(ObservabilityPosthogDestinationRegion);
+
+/** @internal */
 export const ObservabilityPosthogDestination$inboundSchema: z.ZodType<
   ObservabilityPosthogDestination,
   unknown
@@ -116,6 +137,7 @@ export const ObservabilityPosthogDestination$inboundSchema: z.ZodType<
   id: z.string(),
   name: z.nullable(z.string()),
   privacy_mode: z.boolean(),
+  regions: z.array(ObservabilityPosthogDestinationRegion$inboundSchema),
   sampling_rate: z.number(),
   type: z.literal("posthog"),
   updated_at: z.string(),

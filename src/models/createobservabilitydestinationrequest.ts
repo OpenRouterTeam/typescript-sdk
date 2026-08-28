@@ -13,6 +13,15 @@ import {
   ObservabilityFilterRulesConfigNullable$outboundSchema,
 } from "./observabilityfilterrulesconfignullable.js";
 
+export const CreateObservabilityDestinationRequestRegion = {
+  Global: "global",
+  Europe: "europe",
+  Us: "us",
+} as const;
+export type CreateObservabilityDestinationRequestRegion = OpenEnum<
+  typeof CreateObservabilityDestinationRequestRegion
+>;
+
 /**
  * The destination type. Only stable destination types are accepted.
  */
@@ -80,6 +89,10 @@ export type CreateObservabilityDestinationRequest = {
    */
   privacyMode?: boolean | undefined;
   /**
+   * Data regions this destination applies to. Omitting this field defaults to ['global']; the array must be non-empty.
+   */
+  regions?: Array<CreateObservabilityDestinationRequestRegion> | undefined;
+  /**
    * Sampling rate between 0.0001 and 1 (1 = 100%).
    */
   samplingRate?: number | undefined;
@@ -92,6 +105,11 @@ export type CreateObservabilityDestinationRequest = {
    */
   workspaceId?: string | undefined;
 };
+
+/** @internal */
+export const CreateObservabilityDestinationRequestRegion$outboundSchema:
+  z.ZodType<string, CreateObservabilityDestinationRequestRegion> = openEnums
+    .outboundSchema(CreateObservabilityDestinationRequestRegion);
 
 /** @internal */
 export const CreateObservabilityDestinationRequestType$outboundSchema:
@@ -112,6 +130,7 @@ export type CreateObservabilityDestinationRequest$Outbound = {
     | undefined;
   name: string;
   privacy_mode: boolean;
+  regions?: Array<string> | undefined;
   sampling_rate?: number | undefined;
   type: string;
   workspace_id?: string | undefined;
@@ -132,6 +151,8 @@ export const CreateObservabilityDestinationRequest$outboundSchema: z.ZodType<
     .optional(),
   name: z.string(),
   privacyMode: z.boolean().default(false),
+  regions: z.array(CreateObservabilityDestinationRequestRegion$outboundSchema)
+    .optional(),
   samplingRate: z.number().optional(),
   type: CreateObservabilityDestinationRequestType$outboundSchema,
   workspaceId: z.string().optional(),

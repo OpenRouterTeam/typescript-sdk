@@ -6,6 +6,8 @@
 import * as z from "zod/v4";
 import { remap as remap$ } from "../lib/primitives.js";
 import { safeParse } from "../lib/schemas.js";
+import * as openEnums from "../types/enums.js";
+import { OpenEnum } from "../types/enums.js";
 import { Result as SafeParseResult } from "../types/fp.js";
 import { SDKValidationError } from "./errors/sdkvalidationerror.js";
 import {
@@ -33,6 +35,15 @@ export type ObservabilityS3DestinationConfig = {
   secretAccessKey: string;
   sessionToken?: string | undefined;
 };
+
+export const ObservabilityS3DestinationRegion = {
+  Global: "global",
+  Europe: "europe",
+  Us: "us",
+} as const;
+export type ObservabilityS3DestinationRegion = OpenEnum<
+  typeof ObservabilityS3DestinationRegion
+>;
 
 export type ObservabilityS3Destination = {
   /**
@@ -77,6 +88,10 @@ export type ObservabilityS3Destination = {
    */
   privacyMode: boolean;
   /**
+   * Data regions this destination applies to. Requests served in a region only fan out to destinations that include that region.
+   */
+  regions: Array<ObservabilityS3DestinationRegion>;
+  /**
    * Sampling rate for events sent to this destination, between 0.0001 and 1 (1 = 100%).
    */
   samplingRate: number;
@@ -118,6 +133,12 @@ export function observabilityS3DestinationConfigFromJSON(
 }
 
 /** @internal */
+export const ObservabilityS3DestinationRegion$inboundSchema: z.ZodType<
+  ObservabilityS3DestinationRegion,
+  unknown
+> = openEnums.inboundSchema(ObservabilityS3DestinationRegion);
+
+/** @internal */
 export const ObservabilityS3Destination$inboundSchema: z.ZodType<
   ObservabilityS3Destination,
   unknown
@@ -133,6 +154,7 @@ export const ObservabilityS3Destination$inboundSchema: z.ZodType<
   id: z.string(),
   name: z.nullable(z.string()),
   privacy_mode: z.boolean(),
+  regions: z.array(ObservabilityS3DestinationRegion$inboundSchema),
   sampling_rate: z.number(),
   type: z.literal("s3"),
   updated_at: z.string(),
