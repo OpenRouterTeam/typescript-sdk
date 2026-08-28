@@ -112,6 +112,7 @@ export const ProviderResponseProviderName = {
   NextBit: "NextBit",
   Novita: "Novita",
   Nvidia: "Nvidia",
+  Ollama: "Ollama",
   OpenAI: "OpenAI",
   OpenInference: "OpenInference",
   Parasail: "Parasail",
