@@ -354,6 +354,8 @@ export * from "./observabilityarizedestination.js";
 export * from "./observabilitybraintrustdestination.js";
 export * from "./observabilityclickhousedestination.js";
 export * from "./observabilitydatadogdestination.js";
+export * from "./observabilitydataregion.js";
+export * from "./observabilitydataregioninput.js";
 export * from "./observabilitydestination.js";
 export * from "./observabilityfilterrulegroup.js";
 export * from "./observabilityfilterrulesconfig.js";
