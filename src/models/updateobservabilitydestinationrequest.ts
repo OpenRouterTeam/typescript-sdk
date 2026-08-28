@@ -6,6 +6,10 @@
 import * as z from "zod/v4";
 import { remap as remap$ } from "../lib/primitives.js";
 import {
+  ObservabilityDataRegion,
+  ObservabilityDataRegion$outboundSchema,
+} from "./observabilitydataregion.js";
+import {
   ObservabilityFilterRulesConfigNullable,
   ObservabilityFilterRulesConfigNullable$Outbound,
   ObservabilityFilterRulesConfigNullable$outboundSchema,
@@ -46,6 +50,10 @@ export type UpdateObservabilityDestinationRequest = {
    */
   privacyMode?: boolean | undefined;
   /**
+   * Data regions this destination applies to. Omitting this field keeps the current value; it cannot be cleared.
+   */
+  regions?: Array<ObservabilityDataRegion> | undefined;
+  /**
    * Sampling rate between 0.0001 and 1 (1 = 100%).
    */
   samplingRate?: number | undefined;
@@ -65,6 +73,7 @@ export type UpdateObservabilityDestinationRequest$Outbound = {
     | undefined;
   name?: string | undefined;
   privacy_mode?: boolean | undefined;
+  regions?: Array<string> | undefined;
   sampling_rate?: number | undefined;
 };
 
@@ -83,6 +92,7 @@ export const UpdateObservabilityDestinationRequest$outboundSchema: z.ZodType<
     .optional(),
   name: z.string().optional(),
   privacyMode: z.boolean().optional(),
+  regions: z.array(ObservabilityDataRegion$outboundSchema).optional(),
   samplingRate: z.number().optional(),
 }).transform((v) => {
   return remap$(v, {
