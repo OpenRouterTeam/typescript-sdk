@@ -102,6 +102,7 @@ export type ProviderOptions = {
   novita?: { [k: string]: any } | undefined;
   nvidia?: { [k: string]: any } | undefined;
   octoai?: { [k: string]: any } | undefined;
+  ollama?: { [k: string]: any } | undefined;
   openInference?: { [k: string]: any } | undefined;
   openai?: { [k: string]: any } | undefined;
   parasail?: { [k: string]: any } | undefined;
@@ -242,6 +243,7 @@ export type ProviderOptions$Outbound = {
   novita?: { [k: string]: any } | undefined;
   nvidia?: { [k: string]: any } | undefined;
   octoai?: { [k: string]: any } | undefined;
+  ollama?: { [k: string]: any } | undefined;
   "open-inference"?: { [k: string]: any } | undefined;
   openai?: { [k: string]: any } | undefined;
   parasail?: { [k: string]: any } | undefined;
@@ -385,6 +387,7 @@ export const ProviderOptions$outboundSchema: z.ZodType<
   novita: z.record(z.string(), z.any()).optional(),
   nvidia: z.record(z.string(), z.any()).optional(),
   octoai: z.record(z.string(), z.any()).optional(),
+  ollama: z.record(z.string(), z.any()).optional(),
   openInference: z.record(z.string(), z.any()).optional(),
   openai: z.record(z.string(), z.any()).optional(),
   parasail: z.record(z.string(), z.any()).optional(),
