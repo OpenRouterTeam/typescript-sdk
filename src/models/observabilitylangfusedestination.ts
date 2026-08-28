@@ -6,6 +6,8 @@
 import * as z from "zod/v4";
 import { remap as remap$ } from "../lib/primitives.js";
 import { safeParse } from "../lib/schemas.js";
+import * as openEnums from "../types/enums.js";
+import { OpenEnum } from "../types/enums.js";
 import { Result as SafeParseResult } from "../types/fp.js";
 import { SDKValidationError } from "./errors/sdkvalidationerror.js";
 import {
@@ -22,6 +24,15 @@ export type ObservabilityLangfuseDestinationConfig = {
   publicKey: string;
   secretKey: string;
 };
+
+export const ObservabilityLangfuseDestinationRegion = {
+  Global: "global",
+  Europe: "europe",
+  Us: "us",
+} as const;
+export type ObservabilityLangfuseDestinationRegion = OpenEnum<
+  typeof ObservabilityLangfuseDestinationRegion
+>;
 
 export type ObservabilityLangfuseDestination = {
   /**
@@ -66,6 +77,10 @@ export type ObservabilityLangfuseDestination = {
    */
   privacyMode: boolean;
   /**
+   * Data regions this destination applies to. Requests served in a region only fan out to destinations that include that region.
+   */
+  regions: Array<ObservabilityLangfuseDestinationRegion>;
+  /**
    * Sampling rate for events sent to this destination, between 0.0001 and 1 (1 = 100%).
    */
   samplingRate: number;
@@ -103,6 +118,12 @@ export function observabilityLangfuseDestinationConfigFromJSON(
 }
 
 /** @internal */
+export const ObservabilityLangfuseDestinationRegion$inboundSchema: z.ZodType<
+  ObservabilityLangfuseDestinationRegion,
+  unknown
+> = openEnums.inboundSchema(ObservabilityLangfuseDestinationRegion);
+
+/** @internal */
 export const ObservabilityLangfuseDestination$inboundSchema: z.ZodType<
   ObservabilityLangfuseDestination,
   unknown
@@ -118,6 +139,7 @@ export const ObservabilityLangfuseDestination$inboundSchema: z.ZodType<
   id: z.string(),
   name: z.nullable(z.string()),
   privacy_mode: z.boolean(),
+  regions: z.array(ObservabilityLangfuseDestinationRegion$inboundSchema),
   sampling_rate: z.number(),
   type: z.literal("langfuse"),
   updated_at: z.string(),

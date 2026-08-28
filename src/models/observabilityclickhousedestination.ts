@@ -6,6 +6,8 @@
 import * as z from "zod/v4";
 import { remap as remap$ } from "../lib/primitives.js";
 import { safeParse } from "../lib/schemas.js";
+import * as openEnums from "../types/enums.js";
+import { OpenEnum } from "../types/enums.js";
 import { Result as SafeParseResult } from "../types/fp.js";
 import { SDKValidationError } from "./errors/sdkvalidationerror.js";
 import {
@@ -27,6 +29,15 @@ export type ObservabilityClickhouseDestinationConfig = {
    */
   username: string;
 };
+
+export const ObservabilityClickhouseDestinationRegion = {
+  Global: "global",
+  Europe: "europe",
+  Us: "us",
+} as const;
+export type ObservabilityClickhouseDestinationRegion = OpenEnum<
+  typeof ObservabilityClickhouseDestinationRegion
+>;
 
 export type ObservabilityClickhouseDestination = {
   /**
@@ -70,6 +81,10 @@ export type ObservabilityClickhouseDestination = {
    * When true, request/response bodies are not forwarded to this destination — only metadata.
    */
   privacyMode: boolean;
+  /**
+   * Data regions this destination applies to. Requests served in a region only fan out to destinations that include that region.
+   */
+  regions: Array<ObservabilityClickhouseDestinationRegion>;
   /**
    * Sampling rate for events sent to this destination, between 0.0001 and 1 (1 = 100%).
    */
@@ -115,6 +130,12 @@ export function observabilityClickhouseDestinationConfigFromJSON(
 }
 
 /** @internal */
+export const ObservabilityClickhouseDestinationRegion$inboundSchema: z.ZodType<
+  ObservabilityClickhouseDestinationRegion,
+  unknown
+> = openEnums.inboundSchema(ObservabilityClickhouseDestinationRegion);
+
+/** @internal */
 export const ObservabilityClickhouseDestination$inboundSchema: z.ZodType<
   ObservabilityClickhouseDestination,
   unknown
@@ -130,6 +151,7 @@ export const ObservabilityClickhouseDestination$inboundSchema: z.ZodType<
   id: z.string(),
   name: z.nullable(z.string()),
   privacy_mode: z.boolean(),
+  regions: z.array(ObservabilityClickhouseDestinationRegion$inboundSchema),
   sampling_rate: z.number(),
   type: z.literal("clickhouse"),
   updated_at: z.string(),

@@ -6,6 +6,8 @@
 import * as z from "zod/v4";
 import { remap as remap$ } from "../lib/primitives.js";
 import { safeParse } from "../lib/schemas.js";
+import * as openEnums from "../types/enums.js";
+import { OpenEnum } from "../types/enums.js";
 import { Result as SafeParseResult } from "../types/fp.js";
 import { SDKValidationError } from "./errors/sdkvalidationerror.js";
 import {
@@ -26,6 +28,15 @@ export type ObservabilityArizeDestinationConfig = {
   modelId: string;
   spaceKey: string;
 };
+
+export const ObservabilityArizeDestinationRegion = {
+  Global: "global",
+  Europe: "europe",
+  Us: "us",
+} as const;
+export type ObservabilityArizeDestinationRegion = OpenEnum<
+  typeof ObservabilityArizeDestinationRegion
+>;
 
 export type ObservabilityArizeDestination = {
   /**
@@ -70,6 +81,10 @@ export type ObservabilityArizeDestination = {
    */
   privacyMode: boolean;
   /**
+   * Data regions this destination applies to. Requests served in a region only fan out to destinations that include that region.
+   */
+  regions: Array<ObservabilityArizeDestinationRegion>;
+  /**
    * Sampling rate for events sent to this destination, between 0.0001 and 1 (1 = 100%).
    */
   samplingRate: number;
@@ -108,6 +123,12 @@ export function observabilityArizeDestinationConfigFromJSON(
 }
 
 /** @internal */
+export const ObservabilityArizeDestinationRegion$inboundSchema: z.ZodType<
+  ObservabilityArizeDestinationRegion,
+  unknown
+> = openEnums.inboundSchema(ObservabilityArizeDestinationRegion);
+
+/** @internal */
 export const ObservabilityArizeDestination$inboundSchema: z.ZodType<
   ObservabilityArizeDestination,
   unknown
@@ -123,6 +144,7 @@ export const ObservabilityArizeDestination$inboundSchema: z.ZodType<
   id: z.string(),
   name: z.nullable(z.string()),
   privacy_mode: z.boolean(),
+  regions: z.array(ObservabilityArizeDestinationRegion$inboundSchema),
   sampling_rate: z.number(),
   type: z.literal("arize"),
   updated_at: z.string(),

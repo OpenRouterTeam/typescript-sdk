@@ -6,6 +6,8 @@
 import * as z from "zod/v4";
 import { remap as remap$ } from "../lib/primitives.js";
 import { safeParse } from "../lib/schemas.js";
+import * as openEnums from "../types/enums.js";
+import { OpenEnum } from "../types/enums.js";
 import { Result as SafeParseResult } from "../types/fp.js";
 import { SDKValidationError } from "./errors/sdkvalidationerror.js";
 import {
@@ -20,6 +22,15 @@ export type ObservabilityOtelCollectorDestinationConfig = {
    */
   headers?: { [k: string]: string } | undefined;
 };
+
+export const ObservabilityOtelCollectorDestinationRegion = {
+  Global: "global",
+  Europe: "europe",
+  Us: "us",
+} as const;
+export type ObservabilityOtelCollectorDestinationRegion = OpenEnum<
+  typeof ObservabilityOtelCollectorDestinationRegion
+>;
 
 export type ObservabilityOtelCollectorDestination = {
   /**
@@ -64,6 +75,10 @@ export type ObservabilityOtelCollectorDestination = {
    */
   privacyMode: boolean;
   /**
+   * Data regions this destination applies to. Requests served in a region only fan out to destinations that include that region.
+   */
+  regions: Array<ObservabilityOtelCollectorDestinationRegion>;
+  /**
    * Sampling rate for events sent to this destination, between 0.0001 and 1 (1 = 100%).
    */
   samplingRate: number;
@@ -102,6 +117,11 @@ export function observabilityOtelCollectorDestinationConfigFromJSON(
 }
 
 /** @internal */
+export const ObservabilityOtelCollectorDestinationRegion$inboundSchema:
+  z.ZodType<ObservabilityOtelCollectorDestinationRegion, unknown> = openEnums
+    .inboundSchema(ObservabilityOtelCollectorDestinationRegion);
+
+/** @internal */
 export const ObservabilityOtelCollectorDestination$inboundSchema: z.ZodType<
   ObservabilityOtelCollectorDestination,
   unknown
@@ -119,6 +139,7 @@ export const ObservabilityOtelCollectorDestination$inboundSchema: z.ZodType<
   id: z.string(),
   name: z.nullable(z.string()),
   privacy_mode: z.boolean(),
+  regions: z.array(ObservabilityOtelCollectorDestinationRegion$inboundSchema),
   sampling_rate: z.number(),
   type: z.literal("otel-collector"),
   updated_at: z.string(),

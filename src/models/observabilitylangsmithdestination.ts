@@ -6,6 +6,8 @@
 import * as z from "zod/v4";
 import { remap as remap$ } from "../lib/primitives.js";
 import { safeParse } from "../lib/schemas.js";
+import * as openEnums from "../types/enums.js";
+import { OpenEnum } from "../types/enums.js";
 import { Result as SafeParseResult } from "../types/fp.js";
 import { SDKValidationError } from "./errors/sdkvalidationerror.js";
 import {
@@ -29,6 +31,15 @@ export type ObservabilityLangsmithDestinationConfig = {
    */
   workspaceId?: string | undefined;
 };
+
+export const ObservabilityLangsmithDestinationRegion = {
+  Global: "global",
+  Europe: "europe",
+  Us: "us",
+} as const;
+export type ObservabilityLangsmithDestinationRegion = OpenEnum<
+  typeof ObservabilityLangsmithDestinationRegion
+>;
 
 export type ObservabilityLangsmithDestination = {
   /**
@@ -73,6 +84,10 @@ export type ObservabilityLangsmithDestination = {
    */
   privacyMode: boolean;
   /**
+   * Data regions this destination applies to. Requests served in a region only fan out to destinations that include that region.
+   */
+  regions: Array<ObservabilityLangsmithDestinationRegion>;
+  /**
    * Sampling rate for events sent to this destination, between 0.0001 and 1 (1 = 100%).
    */
   samplingRate: number;
@@ -116,6 +131,12 @@ export function observabilityLangsmithDestinationConfigFromJSON(
 }
 
 /** @internal */
+export const ObservabilityLangsmithDestinationRegion$inboundSchema: z.ZodType<
+  ObservabilityLangsmithDestinationRegion,
+  unknown
+> = openEnums.inboundSchema(ObservabilityLangsmithDestinationRegion);
+
+/** @internal */
 export const ObservabilityLangsmithDestination$inboundSchema: z.ZodType<
   ObservabilityLangsmithDestination,
   unknown
@@ -131,6 +152,7 @@ export const ObservabilityLangsmithDestination$inboundSchema: z.ZodType<
   id: z.string(),
   name: z.nullable(z.string()),
   privacy_mode: z.boolean(),
+  regions: z.array(ObservabilityLangsmithDestinationRegion$inboundSchema),
   sampling_rate: z.number(),
   type: z.literal("langsmith"),
   updated_at: z.string(),

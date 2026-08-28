@@ -6,6 +6,8 @@
 import * as z from "zod/v4";
 import { remap as remap$ } from "../lib/primitives.js";
 import { safeParse } from "../lib/schemas.js";
+import * as openEnums from "../types/enums.js";
+import { OpenEnum } from "../types/enums.js";
 import { Result as SafeParseResult } from "../types/fp.js";
 import { SDKValidationError } from "./errors/sdkvalidationerror.js";
 import {
@@ -25,6 +27,15 @@ export type ObservabilitySnowflakeDestinationConfig = {
   token: string;
   warehouse: string;
 };
+
+export const ObservabilitySnowflakeDestinationRegion = {
+  Global: "global",
+  Europe: "europe",
+  Us: "us",
+} as const;
+export type ObservabilitySnowflakeDestinationRegion = OpenEnum<
+  typeof ObservabilitySnowflakeDestinationRegion
+>;
 
 export type ObservabilitySnowflakeDestination = {
   /**
@@ -68,6 +79,10 @@ export type ObservabilitySnowflakeDestination = {
    * When true, request/response bodies are not forwarded to this destination — only metadata.
    */
   privacyMode: boolean;
+  /**
+   * Data regions this destination applies to. Requests served in a region only fan out to destinations that include that region.
+   */
+  regions: Array<ObservabilitySnowflakeDestinationRegion>;
   /**
    * Sampling rate for events sent to this destination, between 0.0001 and 1 (1 = 100%).
    */
@@ -114,6 +129,12 @@ export function observabilitySnowflakeDestinationConfigFromJSON(
 }
 
 /** @internal */
+export const ObservabilitySnowflakeDestinationRegion$inboundSchema: z.ZodType<
+  ObservabilitySnowflakeDestinationRegion,
+  unknown
+> = openEnums.inboundSchema(ObservabilitySnowflakeDestinationRegion);
+
+/** @internal */
 export const ObservabilitySnowflakeDestination$inboundSchema: z.ZodType<
   ObservabilitySnowflakeDestination,
   unknown
@@ -129,6 +150,7 @@ export const ObservabilitySnowflakeDestination$inboundSchema: z.ZodType<
   id: z.string(),
   name: z.nullable(z.string()),
   privacy_mode: z.boolean(),
+  regions: z.array(ObservabilitySnowflakeDestinationRegion$inboundSchema),
   sampling_rate: z.number(),
   type: z.literal("snowflake"),
   updated_at: z.string(),
