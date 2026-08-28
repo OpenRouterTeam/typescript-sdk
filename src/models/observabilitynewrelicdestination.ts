@@ -15,11 +15,11 @@ import {
   ObservabilityFilterRulesConfig$inboundSchema,
 } from "./observabilityfilterrulesconfig.js";
 
-export const Region = {
+export const ConfigRegion = {
   Us: "us",
   Eu: "eu",
 } as const;
-export type Region = OpenEnum<typeof Region>;
+export type ConfigRegion = OpenEnum<typeof ConfigRegion>;
 
 export type ObservabilityNewrelicDestinationConfig = {
   /**
@@ -27,8 +27,17 @@ export type ObservabilityNewrelicDestinationConfig = {
    */
   headers?: { [k: string]: string } | undefined;
   licenseKey: string;
-  region: Region;
+  region: ConfigRegion;
 };
+
+export const ObservabilityNewrelicDestinationRegion = {
+  Global: "global",
+  Europe: "europe",
+  Us: "us",
+} as const;
+export type ObservabilityNewrelicDestinationRegion = OpenEnum<
+  typeof ObservabilityNewrelicDestinationRegion
+>;
 
 export type ObservabilityNewrelicDestination = {
   /**
@@ -73,6 +82,10 @@ export type ObservabilityNewrelicDestination = {
    */
   privacyMode: boolean;
   /**
+   * Data regions this destination applies to. Requests served in a region only fan out to destinations that include that region.
+   */
+  regions: Array<ObservabilityNewrelicDestinationRegion>;
+  /**
    * Sampling rate for events sent to this destination, between 0.0001 and 1 (1 = 100%).
    */
   samplingRate: number;
@@ -88,8 +101,8 @@ export type ObservabilityNewrelicDestination = {
 };
 
 /** @internal */
-export const Region$inboundSchema: z.ZodType<Region, unknown> = openEnums
-  .inboundSchema(Region);
+export const ConfigRegion$inboundSchema: z.ZodType<ConfigRegion, unknown> =
+  openEnums.inboundSchema(ConfigRegion);
 
 /** @internal */
 export const ObservabilityNewrelicDestinationConfig$inboundSchema: z.ZodType<
@@ -98,7 +111,7 @@ export const ObservabilityNewrelicDestinationConfig$inboundSchema: z.ZodType<
 > = z.object({
   headers: z.record(z.string(), z.string()).optional(),
   licenseKey: z.string(),
-  region: Region$inboundSchema.default("us"),
+  region: ConfigRegion$inboundSchema.default("us"),
 });
 
 export function observabilityNewrelicDestinationConfigFromJSON(
@@ -111,6 +124,12 @@ export function observabilityNewrelicDestinationConfigFromJSON(
     `Failed to parse 'ObservabilityNewrelicDestinationConfig' from JSON`,
   );
 }
+
+/** @internal */
+export const ObservabilityNewrelicDestinationRegion$inboundSchema: z.ZodType<
+  ObservabilityNewrelicDestinationRegion,
+  unknown
+> = openEnums.inboundSchema(ObservabilityNewrelicDestinationRegion);
 
 /** @internal */
 export const ObservabilityNewrelicDestination$inboundSchema: z.ZodType<
@@ -128,6 +147,7 @@ export const ObservabilityNewrelicDestination$inboundSchema: z.ZodType<
   id: z.string(),
   name: z.nullable(z.string()),
   privacy_mode: z.boolean(),
+  regions: z.array(ObservabilityNewrelicDestinationRegion$inboundSchema),
   sampling_rate: z.number(),
   type: z.literal("newrelic"),
   updated_at: z.string(),

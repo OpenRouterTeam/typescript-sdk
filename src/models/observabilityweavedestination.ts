@@ -6,6 +6,8 @@
 import * as z from "zod/v4";
 import { remap as remap$ } from "../lib/primitives.js";
 import { safeParse } from "../lib/schemas.js";
+import * as openEnums from "../types/enums.js";
+import { OpenEnum } from "../types/enums.js";
 import { Result as SafeParseResult } from "../types/fp.js";
 import { SDKValidationError } from "./errors/sdkvalidationerror.js";
 import {
@@ -23,6 +25,15 @@ export type ObservabilityWeaveDestinationConfig = {
   headers?: { [k: string]: string } | undefined;
   project: string;
 };
+
+export const ObservabilityWeaveDestinationRegion = {
+  Global: "global",
+  Europe: "europe",
+  Us: "us",
+} as const;
+export type ObservabilityWeaveDestinationRegion = OpenEnum<
+  typeof ObservabilityWeaveDestinationRegion
+>;
 
 export type ObservabilityWeaveDestination = {
   /**
@@ -67,6 +78,10 @@ export type ObservabilityWeaveDestination = {
    */
   privacyMode: boolean;
   /**
+   * Data regions this destination applies to. Requests served in a region only fan out to destinations that include that region.
+   */
+  regions: Array<ObservabilityWeaveDestinationRegion>;
+  /**
    * Sampling rate for events sent to this destination, between 0.0001 and 1 (1 = 100%).
    */
   samplingRate: number;
@@ -105,6 +120,12 @@ export function observabilityWeaveDestinationConfigFromJSON(
 }
 
 /** @internal */
+export const ObservabilityWeaveDestinationRegion$inboundSchema: z.ZodType<
+  ObservabilityWeaveDestinationRegion,
+  unknown
+> = openEnums.inboundSchema(ObservabilityWeaveDestinationRegion);
+
+/** @internal */
 export const ObservabilityWeaveDestination$inboundSchema: z.ZodType<
   ObservabilityWeaveDestination,
   unknown
@@ -120,6 +141,7 @@ export const ObservabilityWeaveDestination$inboundSchema: z.ZodType<
   id: z.string(),
   name: z.nullable(z.string()),
   privacy_mode: z.boolean(),
+  regions: z.array(ObservabilityWeaveDestinationRegion$inboundSchema),
   sampling_rate: z.number(),
   type: z.literal("weave"),
   updated_at: z.string(),

@@ -6,6 +6,8 @@
 import * as z from "zod/v4";
 import { remap as remap$ } from "../lib/primitives.js";
 import { safeParse } from "../lib/schemas.js";
+import * as openEnums from "../types/enums.js";
+import { OpenEnum } from "../types/enums.js";
 import { Result as SafeParseResult } from "../types/fp.js";
 import { SDKValidationError } from "./errors/sdkvalidationerror.js";
 import {
@@ -22,6 +24,15 @@ export type ObservabilityOpikDestinationConfig = {
   projectName: string;
   workspace: string;
 };
+
+export const ObservabilityOpikDestinationRegion = {
+  Global: "global",
+  Europe: "europe",
+  Us: "us",
+} as const;
+export type ObservabilityOpikDestinationRegion = OpenEnum<
+  typeof ObservabilityOpikDestinationRegion
+>;
 
 export type ObservabilityOpikDestination = {
   /**
@@ -66,6 +77,10 @@ export type ObservabilityOpikDestination = {
    */
   privacyMode: boolean;
   /**
+   * Data regions this destination applies to. Requests served in a region only fan out to destinations that include that region.
+   */
+  regions: Array<ObservabilityOpikDestinationRegion>;
+  /**
    * Sampling rate for events sent to this destination, between 0.0001 and 1 (1 = 100%).
    */
   samplingRate: number;
@@ -103,6 +118,12 @@ export function observabilityOpikDestinationConfigFromJSON(
 }
 
 /** @internal */
+export const ObservabilityOpikDestinationRegion$inboundSchema: z.ZodType<
+  ObservabilityOpikDestinationRegion,
+  unknown
+> = openEnums.inboundSchema(ObservabilityOpikDestinationRegion);
+
+/** @internal */
 export const ObservabilityOpikDestination$inboundSchema: z.ZodType<
   ObservabilityOpikDestination,
   unknown
@@ -118,6 +139,7 @@ export const ObservabilityOpikDestination$inboundSchema: z.ZodType<
   id: z.string(),
   name: z.nullable(z.string()),
   privacy_mode: z.boolean(),
+  regions: z.array(ObservabilityOpikDestinationRegion$inboundSchema),
   sampling_rate: z.number(),
   type: z.literal("opik"),
   updated_at: z.string(),
