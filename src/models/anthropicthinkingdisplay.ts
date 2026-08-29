@@ -10,6 +10,7 @@ import { OpenEnum } from "../types/enums.js";
 export const AnthropicThinkingDisplay = {
   Summarized: "summarized",
   Omitted: "omitted",
+  Updates: "updates",
 } as const;
 export type AnthropicThinkingDisplay = OpenEnum<
   typeof AnthropicThinkingDisplay
