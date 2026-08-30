@@ -1,19 +1,19 @@
 lockVersion: ""
 id: ""
 management:
-  docChecksum: e278a701cdf1bf69e16950bcc191dbeb
+  docChecksum: eaaf882a7a1b67d88c54534f59459d1c
   docVersion: 1.0.0
   speakeasyVersion: 1.787.0
   generationVersion: 2.914.0
-  releaseVersion: 1.2.83
-  configChecksum: 664433fd1740a7ca8ad63f3f652ff9dd
+  releaseVersion: 1.2.84
+  configChecksum: 0a888da6a061a2071a94265b6476be66
   repoURL: https://github.com/OpenRouterTeam/typescript-sdk.git
   installationURL: https://github.com/OpenRouterTeam/typescript-sdk
   published: true
 persistentEdits:
-  generation_id: a3cfbe5f-c907-4b49-ba77-644c854a0694
-  pristine_commit_hash: d9adeec86c816c7d771c26b88229df0bb4c16c36
-  pristine_tree_hash: 977a4090e6b2bdba2a55ae75fd04ecde10103cd7
+  generation_id: 328037ef-1980-422c-b52e-824f95d3b918
+  pristine_commit_hash: ec9fa7582b27ca6e9059e55bb5e976a2c01e56b6
+  pristine_tree_hash: e205ec33fb182e7084039a9e306d21b5c2143ea3
 features:
   typescript:
     acceptHeaders: 2.81.2
@@ -7048,8 +7048,8 @@ trackedFiles:
     pristine_git_object: 39755411df77ac6f6741d4fdc118ea2b24926b88
   docs/models/operations/createauthkeyscoderequestbody.mdx:
     id: e68f952c6022
-    last_write_checksum: sha1:078c1c2ca263576fa2cd78ae7293a67b0056a775
-    pristine_git_object: dab3b2b1cda44b02c144d772038d6c9826765b3b
+    last_write_checksum: sha1:9a38e70c3d1efbb202c66c985b059bcb4411f5cc
+    pristine_git_object: e911c7440e8255a069f8a04b3991422d38d6444f
   docs/models/operations/createauthkeyscoderesponse.mdx:
     id: 3b8b0b8a4e84
     last_write_checksum: sha1:871ac57d6b03b4d40f666926a26d588a9bc71de3
@@ -7158,8 +7158,8 @@ trackedFiles:
     pristine_git_object: 45a9a6b9516497dc77f17670eac7e0242be58b61
   docs/models/operations/createkeysrequestbody.mdx:
     id: 300993eac8d3
-    last_write_checksum: sha1:0e94e2fd7d6f5c5dea1595eb15667b728175e50a
-    pristine_git_object: e3392134ff6d37ce86506d1852147abfda150d57
+    last_write_checksum: sha1:178915cacfcf85e9e440d07a0e0ac8459937e43b
+    pristine_git_object: b716f3603f59c21d01b7501d40761edc535f2bd2
   docs/models/operations/createkeysresponse.mdx:
     id: 5135de195ccb
     last_write_checksum: sha1:e1002f2fa2094f6ecfe2604f5862f0f241d2b752
@@ -8879,8 +8879,8 @@ trackedFiles:
     deleted: true
   docs/models/operations/timerange.mdx:
     id: 291e7bd950ea
-    last_write_checksum: sha1:cd95731a1a04d2b01c0b2332d9b3f5c26123e23c
-    pristine_git_object: 838df8340cf186499d1450460478c1795baa0cc2
+    last_write_checksum: sha1:8c26600caef75024e649d52df18166131b8f7662
+    pristine_git_object: db735e463117efd6d12e8f34c8a03039dbcefe22
   docs/models/operations/timestampgranularities.mdx:
     id: fbda673978d2
     last_write_checksum: sha1:8672fb673d3543985c76ede8798f9f19c197e6ff
@@ -13053,12 +13053,12 @@ trackedFiles:
     pristine_git_object: 410efafd6a7f50d91ccb87131fedbe0c3d47e15a
   jsr.json:
     id: 7f6ab7767282
-    last_write_checksum: sha1:754c819016fbd4730b3c22fa715c0be9d0192dbd
-    pristine_git_object: e5efb767848200bd27cf96fb1e90b84562594c88
+    last_write_checksum: sha1:4d5a04302be94e17617cdbf2df43368c397abb4c
+    pristine_git_object: 2d3aeeff84a8c953196ff2f213c6818435b64f36
   package.json:
     id: 7030d0b2f71b
-    last_write_checksum: sha1:4ca76093b462ead307b9c23257cfd8c52e6294f7
-    pristine_git_object: a3389a4a2c4d9eeaa4d3fd95ca092866a5603f40
+    last_write_checksum: sha1:a19980a2939550a781afce63dc271900ad472373
+    pristine_git_object: 500886f60361741a9b4cd7ae32ff62c09473ed24
   src/core.ts:
     id: f431fdbcd144
     last_write_checksum: sha1:5aa66b0b6a5964f3eea7f3098c2eb3c0ee9c0131
@@ -13485,8 +13485,8 @@ trackedFiles:
     pristine_git_object: a187e58707bdb726ca2aff74941efe7493422d4e
   src/lib/config.ts:
     id: 320761608fb3
-    last_write_checksum: sha1:e47e61a35e18d6d6e13c072186f410ee07cc6cd7
-    pristine_git_object: 8a95acc3e22ca1cf214836ac8116de0b0cca970b
+    last_write_checksum: sha1:9b3a82e5bb7d685f333c590d3a82039286325632
+    pristine_git_object: 309300d35d853393b6aaef32c02bf1830c4a78da
   src/lib/dlv.ts:
     id: b1988214835a
     last_write_checksum: sha1:eaac763b22717206a6199104e0403ed17a4e2711
@@ -15231,8 +15231,8 @@ trackedFiles:
     pristine_git_object: 1cbb0a53b1fdd9e0117ddefa79bb0473abe4f447
   src/models/operations/createauthkeyscode.ts:
     id: 1443f6afbf40
-    last_write_checksum: sha1:752516c2ce734a4a22ec17355adb8c1607859959
-    pristine_git_object: e305864025f414fcba52aa356aec2ef6b1d39a5e
+    last_write_checksum: sha1:59be6a15c34f2855d2328c8ce15a70037a243d01
+    pristine_git_object: f5c85d4340881eb733f51197cd69afff2dfe5380
   src/models/operations/createbyokkey.ts:
     id: 1725e1bba8d8
     last_write_checksum: sha1:218c27ee6adbf07092c7511fc3f9a09d71b2e8ba
@@ -15251,8 +15251,8 @@ trackedFiles:
     pristine_git_object: 0a2ca2582247b2b60db1b464933ef5e599e430b8
   src/models/operations/createkeys.ts:
     id: e7a250c8b7bb
-    last_write_checksum: sha1:18c7ca736d8325ceae5e0dd7cfbc0a9af2e10569
-    pristine_git_object: 32654187853e5d54d103d15940a669185bf234d6
+    last_write_checksum: sha1:4af0eb6087add204e7a821afd0964e892476ca72
+    pristine_git_object: 901e21447b4a3a5078f29f767aa26b1ffbb09952
   src/models/operations/createobservabilitydestination.ts:
     id: 600d023d815b
     last_write_checksum: sha1:5fca52c4a8b4361f8b14e8534703c725b11ea814
@@ -15555,8 +15555,8 @@ trackedFiles:
     pristine_git_object: ec58a5137bcc192799ece358f9ef949eb11bb6c3
   src/models/operations/queryanalytics.ts:
     id: 2b9c6044e362
-    last_write_checksum: sha1:abafd707a0d620080825df79c035a955e04c4638
-    pristine_git_object: 4a8e9f79fde8af5b5b16bba90279a7e32e1845a2
+    last_write_checksum: sha1:7cb0a811810f6164517fcc8ebcd3b81bdd840e84
+    pristine_git_object: bd762b37545ad5dd4e9f89a7282c12696bbbe34e
   src/models/operations/sendchatcompletionrequest.ts:
     id: 52a55a780d2d
     last_write_checksum: sha1:e4b5e0b9cf265e98a00d8fa2f5e528d81b296285
@@ -18571,4 +18571,3 @@ examples:
         "503":
           application/json: {"error": {"code": 503, "message": "Service temporarily unavailable"}}
 examplesVersion: 1.0.2
-releaseNotes: "## Typescript SDK Changes:\n* `openrouter.models.listForUser()`: \n  *  `request.outputModalities` **Added**\n"
