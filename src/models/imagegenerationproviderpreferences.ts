@@ -51,7 +51,6 @@ export type ImageGenerationProviderPreferencesOptions = {
   cloudflare?: { [k: string]: any } | undefined;
   cohere?: { [k: string]: any } | undefined;
   coreweave?: { [k: string]: any } | undefined;
-  cosine?: { [k: string]: any } | undefined;
   crofai?: { [k: string]: any } | undefined;
   crucible?: { [k: string]: any } | undefined;
   crusoe?: { [k: string]: any } | undefined;
@@ -114,7 +113,6 @@ export type ImageGenerationProviderPreferencesOptions = {
   novita?: { [k: string]: any } | undefined;
   nvidia?: { [k: string]: any } | undefined;
   octoai?: { [k: string]: any } | undefined;
-  ollama?: { [k: string]: any } | undefined;
   openInference?: { [k: string]: any } | undefined;
   openai?: { [k: string]: any } | undefined;
   parasail?: { [k: string]: any } | undefined;
@@ -273,7 +271,6 @@ export type ImageGenerationProviderPreferencesOptions$Outbound = {
   cloudflare?: { [k: string]: any } | undefined;
   cohere?: { [k: string]: any } | undefined;
   coreweave?: { [k: string]: any } | undefined;
-  cosine?: { [k: string]: any } | undefined;
   crofai?: { [k: string]: any } | undefined;
   crucible?: { [k: string]: any } | undefined;
   crusoe?: { [k: string]: any } | undefined;
@@ -336,7 +333,6 @@ export type ImageGenerationProviderPreferencesOptions$Outbound = {
   novita?: { [k: string]: any } | undefined;
   nvidia?: { [k: string]: any } | undefined;
   octoai?: { [k: string]: any } | undefined;
-  ollama?: { [k: string]: any } | undefined;
   "open-inference"?: { [k: string]: any } | undefined;
   openai?: { [k: string]: any } | undefined;
   parasail?: { [k: string]: any } | undefined;
@@ -419,7 +415,6 @@ export const ImageGenerationProviderPreferencesOptions$outboundSchema:
     cloudflare: z.record(z.string(), z.any()).optional(),
     cohere: z.record(z.string(), z.any()).optional(),
     coreweave: z.record(z.string(), z.any()).optional(),
-    cosine: z.record(z.string(), z.any()).optional(),
     crofai: z.record(z.string(), z.any()).optional(),
     crucible: z.record(z.string(), z.any()).optional(),
     crusoe: z.record(z.string(), z.any()).optional(),
@@ -482,7 +477,6 @@ export const ImageGenerationProviderPreferencesOptions$outboundSchema:
     novita: z.record(z.string(), z.any()).optional(),
     nvidia: z.record(z.string(), z.any()).optional(),
     octoai: z.record(z.string(), z.any()).optional(),
-    ollama: z.record(z.string(), z.any()).optional(),
     openInference: z.record(z.string(), z.any()).optional(),
     openai: z.record(z.string(), z.any()).optional(),
     parasail: z.record(z.string(), z.any()).optional(),

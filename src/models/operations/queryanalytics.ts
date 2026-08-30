@@ -122,13 +122,7 @@ export type OrderBy = {
 };
 
 export type TimeRange = {
-  /**
-   * ISO 8601 UTC timestamp. Must include seconds (YYYY-MM-DDTHH:MM:SSZ; fractional seconds allowed); minute-precision timestamps are rejected.
-   */
   end: Date;
-  /**
-   * ISO 8601 UTC timestamp. Must include seconds (YYYY-MM-DDTHH:MM:SSZ; fractional seconds allowed); minute-precision timestamps are rejected.
-   */
   start: Date;
 };
 
