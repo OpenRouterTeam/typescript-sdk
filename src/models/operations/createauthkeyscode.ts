@@ -74,7 +74,7 @@ export type CreateAuthKeysCodeRequestBody = {
    */
   codeChallengeMethod?: CreateAuthKeysCodeCodeChallengeMethod | undefined;
   /**
-   * Optional expiration time for the API key to be created
+   * Optional ISO 8601 UTC expiration timestamp. Must include seconds (YYYY-MM-DDTHH:MM:SSZ; fractional seconds allowed); minute-precision timestamps are rejected.
    */
   expiresAt?: Date | null | undefined;
   /**
