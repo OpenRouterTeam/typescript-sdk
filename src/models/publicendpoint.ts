@@ -28,6 +28,92 @@ import {
   ToolChoiceSupport$inboundSchema,
 } from "./toolchoicesupport.js";
 
+export type Embeddings = {
+  latency: PercentileStats | null;
+  /**
+   * Total requests admitted for this workload in the window.
+   */
+  requestCount: number | null;
+  throughput: PercentileStats | null;
+};
+
+export type ImageGeneration = {
+  latency: PercentileStats | null;
+  /**
+   * Total requests admitted for this workload in the window.
+   */
+  requestCount: number | null;
+  throughput: PercentileStats | null;
+};
+
+export type Rerank = {
+  latency: PercentileStats | null;
+  /**
+   * Total requests admitted for this workload in the window.
+   */
+  requestCount: number | null;
+  throughput: PercentileStats | null;
+};
+
+export type STT = {
+  latency: PercentileStats | null;
+  /**
+   * Total requests admitted for this workload in the window.
+   */
+  requestCount: number | null;
+  throughput: PercentileStats | null;
+};
+
+export type TextGeneration = {
+  latency: PercentileStats | null;
+  /**
+   * Total requests admitted for this workload in the window.
+   */
+  requestCount: number | null;
+  throughput: PercentileStats | null;
+};
+
+export type TTS = {
+  latency: PercentileStats | null;
+  /**
+   * Total requests admitted for this workload in the window.
+   */
+  requestCount: number | null;
+  throughput: PercentileStats | null;
+};
+
+export type Unknown = {
+  latency: PercentileStats | null;
+  /**
+   * Total requests admitted for this workload in the window.
+   */
+  requestCount: number | null;
+  throughput: PercentileStats | null;
+};
+
+export type VideoGeneration = {
+  latency: PercentileStats | null;
+  /**
+   * Total requests admitted for this workload in the window.
+   */
+  requestCount: number | null;
+  throughput: PercentileStats | null;
+};
+
+/**
+ * Endpoint performance over the last 30 minutes, keyed by the kind of request served (e.g. `text_generation`, `image_generation`). Additive to the legacy singular latency and throughput fields; image and video generation report end-to-end latency. Entries reflect default-tier traffic only, and service-tier endpoint variants omit the field. Only visible when authenticated with an API key or cookie.
+ */
+export type PerformanceLast30m = {
+  embeddings?: Embeddings | undefined;
+  imageGeneration?: ImageGeneration | undefined;
+  rerank?: Rerank | undefined;
+  stt?: STT | undefined;
+  textGeneration?: TextGeneration | undefined;
+  tts?: TTS | undefined;
+  unknown?: Unknown | undefined;
+  videoGeneration?: VideoGeneration | undefined;
+};
+
 export type Pricing = {
   /**
    * Price in USD per audio input token
@@ -115,6 +201,10 @@ export type PublicEndpoint = {
   modelId: string;
   modelName: string;
   name: string;
+  /**
+   * Endpoint performance over the last 30 minutes, keyed by the kind of request served (e.g. `text_generation`, `image_generation`). Additive to the legacy singular latency and throughput fields; image and video generation report end-to-end latency. Entries reflect default-tier traffic only, and service-tier endpoint variants omit the field. Only visible when authenticated with an API key or cookie.
+   */
+  performanceLast30m?: PerformanceLast30m | undefined;
   pricing: Pricing;
   providerName: ProviderName;
   quantization: Quantization | null;
@@ -141,6 +231,213 @@ export type PublicEndpoint = {
    */
   uptimeLast5m: number | null;
 };
+
+/** @internal */
+export const Embeddings$inboundSchema: z.ZodType<Embeddings, unknown> = z
+  .object({
+    latency: z.nullable(PercentileStats$inboundSchema),
+    request_count: z.nullable(z.int()),
+    throughput: z.nullable(PercentileStats$inboundSchema),
+  }).transform((v) => {
+    return remap$(v, {
+      "request_count": "requestCount",
+    });
+  });
+
+export function embeddingsFromJSON(
+  jsonString: string,
+): SafeParseResult<Embeddings, SDKValidationError> {
+  return safeParse(
+    jsonString,
+    (x) => Embeddings$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'Embeddings' from JSON`,
+  );
+}
+
+/** @internal */
+export const ImageGeneration$inboundSchema: z.ZodType<
+  ImageGeneration,
+  unknown
+> = z.object({
+  latency: z.nullable(PercentileStats$inboundSchema),
+  request_count: z.nullable(z.int()),
+  throughput: z.nullable(PercentileStats$inboundSchema),
+}).transform((v) => {
+  return remap$(v, {
+    "request_count": "requestCount",
+  });
+});
+
+export function imageGenerationFromJSON(
+  jsonString: string,
+): SafeParseResult<ImageGeneration, SDKValidationError> {
+  return safeParse(
+    jsonString,
+    (x) => ImageGeneration$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'ImageGeneration' from JSON`,
+  );
+}
+
+/** @internal */
+export const Rerank$inboundSchema: z.ZodType<Rerank, unknown> = z.object({
+  latency: z.nullable(PercentileStats$inboundSchema),
+  request_count: z.nullable(z.int()),
+  throughput: z.nullable(PercentileStats$inboundSchema),
+}).transform((v) => {
+  return remap$(v, {
+    "request_count": "requestCount",
+  });
+});
+
+export function rerankFromJSON(
+  jsonString: string,
+): SafeParseResult<Rerank, SDKValidationError> {
+  return safeParse(
+    jsonString,
+    (x) => Rerank$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'Rerank' from JSON`,
+  );
+}
+
+/** @internal */
+export const STT$inboundSchema: z.ZodType<STT, unknown> = z.object({
+  latency: z.nullable(PercentileStats$inboundSchema),
+  request_count: z.nullable(z.int()),
+  throughput: z.nullable(PercentileStats$inboundSchema),
+}).transform((v) => {
+  return remap$(v, {
+    "request_count": "requestCount",
+  });
+});
+
+export function sttFromJSON(
+  jsonString: string,
+): SafeParseResult<STT, SDKValidationError> {
+  return safeParse(
+    jsonString,
+    (x) => STT$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'STT' from JSON`,
+  );
+}
+
+/** @internal */
+export const TextGeneration$inboundSchema: z.ZodType<TextGeneration, unknown> =
+  z.object({
+    latency: z.nullable(PercentileStats$inboundSchema),
+    request_count: z.nullable(z.int()),
+    throughput: z.nullable(PercentileStats$inboundSchema),
+  }).transform((v) => {
+    return remap$(v, {
+      "request_count": "requestCount",
+    });
+  });
+
+export function textGenerationFromJSON(
+  jsonString: string,
+): SafeParseResult<TextGeneration, SDKValidationError> {
+  return safeParse(
+    jsonString,
+    (x) => TextGeneration$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'TextGeneration' from JSON`,
+  );
+}
+
+/** @internal */
+export const TTS$inboundSchema: z.ZodType<TTS, unknown> = z.object({
+  latency: z.nullable(PercentileStats$inboundSchema),
+  request_count: z.nullable(z.int()),
+  throughput: z.nullable(PercentileStats$inboundSchema),
+}).transform((v) => {
+  return remap$(v, {
+    "request_count": "requestCount",
+  });
+});
+
+export function ttsFromJSON(
+  jsonString: string,
+): SafeParseResult<TTS, SDKValidationError> {
+  return safeParse(
+    jsonString,
+    (x) => TTS$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'TTS' from JSON`,
+  );
+}
+
+/** @internal */
+export const Unknown$inboundSchema: z.ZodType<Unknown, unknown> = z.object({
+  latency: z.nullable(PercentileStats$inboundSchema),
+  request_count: z.nullable(z.int()),
+  throughput: z.nullable(PercentileStats$inboundSchema),
+}).transform((v) => {
+  return remap$(v, {
+    "request_count": "requestCount",
+  });
+});
+
+export function unknownFromJSON(
+  jsonString: string,
+): SafeParseResult<Unknown, SDKValidationError> {
+  return safeParse(
+    jsonString,
+    (x) => Unknown$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'Unknown' from JSON`,
+  );
+}
+
+/** @internal */
+export const VideoGeneration$inboundSchema: z.ZodType<
+  VideoGeneration,
+  unknown
+> = z.object({
+  latency: z.nullable(PercentileStats$inboundSchema),
+  request_count: z.nullable(z.int()),
+  throughput: z.nullable(PercentileStats$inboundSchema),
+}).transform((v) => {
+  return remap$(v, {
+    "request_count": "requestCount",
+  });
+});
+
+export function videoGenerationFromJSON(
+  jsonString: string,
+): SafeParseResult<VideoGeneration, SDKValidationError> {
+  return safeParse(
+    jsonString,
+    (x) => VideoGeneration$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'VideoGeneration' from JSON`,
+  );
+}
+
+/** @internal */
+export const PerformanceLast30m$inboundSchema: z.ZodType<
+  PerformanceLast30m,
+  unknown
+> = z.object({
+  embeddings: z.lazy(() => Embeddings$inboundSchema).optional(),
+  image_generation: z.lazy(() => ImageGeneration$inboundSchema).optional(),
+  rerank: z.lazy(() => Rerank$inboundSchema).optional(),
+  stt: z.lazy(() => STT$inboundSchema).optional(),
+  text_generation: z.lazy(() => TextGeneration$inboundSchema).optional(),
+  tts: z.lazy(() => TTS$inboundSchema).optional(),
+  unknown: z.lazy(() => Unknown$inboundSchema).optional(),
+  video_generation: z.lazy(() => VideoGeneration$inboundSchema).optional(),
+}).transform((v) => {
+  return remap$(v, {
+    "image_generation": "imageGeneration",
+    "text_generation": "textGeneration",
+    "video_generation": "videoGeneration",
+  });
+});
+
+export function performanceLast30mFromJSON(
+  jsonString: string,
+): SafeParseResult<PerformanceLast30m, SDKValidationError> {
+  return safeParse(
+    jsonString,
+    (x) => PerformanceLast30m$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'PerformanceLast30m' from JSON`,
+  );
+}
 
 /** @internal */
 export const Pricing$inboundSchema: z.ZodType<Pricing, unknown> = z.object({
@@ -194,6 +491,8 @@ export const PublicEndpoint$inboundSchema: z.ZodType<PublicEndpoint, unknown> =
     model_id: z.string(),
     model_name: z.string(),
     name: z.string(),
+    performance_last_30m: z.lazy(() => PerformanceLast30m$inboundSchema)
+      .optional(),
     pricing: z.lazy(() => Pricing$inboundSchema),
     provider_name: ProviderName$inboundSchema,
     quantization: z.nullable(Quantization$inboundSchema),
@@ -215,6 +514,7 @@ export const PublicEndpoint$inboundSchema: z.ZodType<PublicEndpoint, unknown> =
       "max_prompt_tokens": "maxPromptTokens",
       "model_id": "modelId",
       "model_name": "modelName",
+      "performance_last_30m": "performanceLast30m",
       "provider_name": "providerName",
       "supported_parameters": "supportedParameters",
       "supports_implicit_caching": "supportsImplicitCaching",
