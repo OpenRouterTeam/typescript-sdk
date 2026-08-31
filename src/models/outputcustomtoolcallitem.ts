@@ -6,9 +6,19 @@
 import * as z from "zod/v4";
 import { remap as remap$ } from "../lib/primitives.js";
 import { safeParse } from "../lib/schemas.js";
-import { ClosedEnum } from "../types/enums.js";
+import * as openEnums from "../types/enums.js";
+import { ClosedEnum, OpenEnum } from "../types/enums.js";
 import { Result as SafeParseResult } from "../types/fp.js";
 import { SDKValidationError } from "./errors/sdkvalidationerror.js";
+
+export const OutputCustomToolCallItemStatus = {
+  InProgress: "in_progress",
+  Completed: "completed",
+  Incomplete: "incomplete",
+} as const;
+export type OutputCustomToolCallItemStatus = OpenEnum<
+  typeof OutputCustomToolCallItemStatus
+>;
 
 export const OutputCustomToolCallItemType = {
   CustomToolCall: "custom_tool_call",
@@ -29,8 +39,20 @@ export type OutputCustomToolCallItem = {
    * Namespace qualifier for tools registered as part of a namespace tool group (e.g. an MCP server)
    */
   namespace?: string | undefined;
+  status?: OutputCustomToolCallItemStatus | undefined;
   type: OutputCustomToolCallItemType;
 };
+
+/** @internal */
+export const OutputCustomToolCallItemStatus$inboundSchema: z.ZodType<
+  OutputCustomToolCallItemStatus,
+  unknown
+> = openEnums.inboundSchema(OutputCustomToolCallItemStatus);
+/** @internal */
+export const OutputCustomToolCallItemStatus$outboundSchema: z.ZodType<
+  string,
+  OutputCustomToolCallItemStatus
+> = openEnums.outboundSchema(OutputCustomToolCallItemStatus);
 
 /** @internal */
 export const OutputCustomToolCallItemType$inboundSchema: z.ZodEnum<
@@ -51,6 +73,7 @@ export const OutputCustomToolCallItem$inboundSchema: z.ZodType<
   input: z.string(),
   name: z.string(),
   namespace: z.string().optional(),
+  status: OutputCustomToolCallItemStatus$inboundSchema.optional(),
   type: OutputCustomToolCallItemType$inboundSchema,
 }).transform((v) => {
   return remap$(v, {
@@ -64,6 +87,7 @@ export type OutputCustomToolCallItem$Outbound = {
   input: string;
   name: string;
   namespace?: string | undefined;
+  status?: string | undefined;
   type: string;
 };
 
@@ -77,6 +101,7 @@ export const OutputCustomToolCallItem$outboundSchema: z.ZodType<
   input: z.string(),
   name: z.string(),
   namespace: z.string().optional(),
+  status: OutputCustomToolCallItemStatus$outboundSchema.optional(),
   type: OutputCustomToolCallItemType$outboundSchema,
 }).transform((v) => {
   return remap$(v, {
