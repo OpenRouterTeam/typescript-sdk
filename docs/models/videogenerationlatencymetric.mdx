@@ -1,0 +1,21 @@
+---
+title: "VideoGenerationLatencyMetric"
+---
+
+Which latency measurement `latency_last_30m` carries: `latency` is time to first token or result, `latency_e2e` is full end-to-end generation time (used for image and video workloads, whose raw latency only measures request acknowledgement).
+
+## Example Usage
+
+```typescript
+import { VideoGenerationLatencyMetric } from "@openrouter/sdk/models";
+
+let value: VideoGenerationLatencyMetric = "latency";
+
+// Open enum: unrecognized values are captured as Unrecognized<string>
+```
+
+## Values
+
+```typescript
+"latency" | "latency_e2e" | Unrecognized<string>
+```
