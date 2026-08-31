@@ -1,19 +1,19 @@
 lockVersion: ""
 id: ""
 management:
-  docChecksum: 9c58655790b7a4ed98d87603a68afeca
+  docChecksum: dc08262d5b1aa7a03aac1f989f106fbb
   docVersion: 1.0.0
   speakeasyVersion: 1.787.0
   generationVersion: 2.914.0
-  releaseVersion: 1.2.85
-  configChecksum: a53df84e83f58e97fae6f8718fc2bd5a
+  releaseVersion: 1.2.86
+  configChecksum: d74239646f7e6e19b6ae7a6961ead722
   repoURL: https://github.com/OpenRouterTeam/typescript-sdk.git
   installationURL: https://github.com/OpenRouterTeam/typescript-sdk
   published: true
 persistentEdits:
-  generation_id: 6bcc4c16-23a3-4d1b-bd67-f84633995c04
-  pristine_commit_hash: ea337edb35f385a10c8c80ef756b660ce668c232
-  pristine_tree_hash: c126cd8f998334ecded33ec518660ce4cbbdaadc
+  generation_id: 7c5036de-7ed7-4155-8401-12766d769282
+  pristine_commit_hash: c5de0ab0edbc2a1bead7e92095928dd30da03d8f
+  pristine_tree_hash: 4f6d7dd25e8b746e007a28f84a38354bdd40b99a
 features:
   typescript:
     acceptHeaders: 2.81.2
@@ -9303,8 +9303,12 @@ trackedFiles:
     deleted: true
   docs/models/outputcustomtoolcallitem.mdx:
     id: 908e60a01b9d
-    last_write_checksum: sha1:8187294be3ca223ee70f0ff3d389650c9ef3fa3b
-    pristine_git_object: 78c7ce9ba31ab1b3f7609e7ece591e2ed1f65299
+    last_write_checksum: sha1:2e59064905a0f817633588ca8a61946e5ff2ded2
+    pristine_git_object: 5abe18bb1b8c8d0480e611ea8b81358fecac69c0
+  docs/models/outputcustomtoolcallitemstatus.mdx:
+    id: 6d19bf9c8da3
+    last_write_checksum: sha1:88c00cdeeb8a9292ae4201cb6d6d270987363c78
+    pristine_git_object: a7c9ef5ecaa2cb95ec53c978619b8167d749d339
   docs/models/outputcustomtoolcallitemtype.md:
     id: 3ccd63dfbf1c
     last_write_checksum: sha1:78e3aa761f580f6429cab5704c8d0b7bd7336459
@@ -13053,12 +13057,12 @@ trackedFiles:
     pristine_git_object: 410efafd6a7f50d91ccb87131fedbe0c3d47e15a
   jsr.json:
     id: 7f6ab7767282
-    last_write_checksum: sha1:b198fa74804a97a0d985a783e327d4f4f70cd382
-    pristine_git_object: 53517d9fef468ded89ace58bb3fa72c80497290a
+    last_write_checksum: sha1:224edc518d7b6c98e98c1b7a11d66fff80d18da3
+    pristine_git_object: ce88af2385ae3ddf82f2f4159814e00fec651aba
   package.json:
     id: 7030d0b2f71b
-    last_write_checksum: sha1:60d7a365a11bb71c8ae0e5a4011403c7bb15d6c7
-    pristine_git_object: ae31d6beb55f159a5c2d51f5f028610597d448e7
+    last_write_checksum: sha1:0d3042e233f55c241c4813ca97adcd1c60d3c4c9
+    pristine_git_object: 750e90b8fec2be4eb0aec41be987ad074f3ff823
   src/core.ts:
     id: f431fdbcd144
     last_write_checksum: sha1:5aa66b0b6a5964f3eea7f3098c2eb3c0ee9c0131
@@ -13485,8 +13489,8 @@ trackedFiles:
     pristine_git_object: a187e58707bdb726ca2aff74941efe7493422d4e
   src/lib/config.ts:
     id: 320761608fb3
-    last_write_checksum: sha1:7a6d7784f481dac70ab30873e4312969adaaef8d
-    pristine_git_object: 5f8fd9c7f9bb400bfb9a3d1d803bbd8b2194c1be
+    last_write_checksum: sha1:398a8f89692e9cc0976134872808394039e894dc
+    pristine_git_object: 1bf3c71070dc9c5b30d47423da227e6c6e23b62a
   src/lib/dlv.ts:
     id: b1988214835a
     last_write_checksum: sha1:eaac763b22717206a6199104e0403ed17a4e2711
@@ -15631,8 +15635,8 @@ trackedFiles:
     pristine_git_object: 0b456de74a91e798ad764c716aaccdbe2126646f
   src/models/outputcustomtoolcallitem.ts:
     id: 71596c10c79b
-    last_write_checksum: sha1:6fd41d184fdec8710b148bc2f2bc098dd2c1425a
-    pristine_git_object: 98ca0d1f54fb60754ed825f8c9dd866989c59bf0
+    last_write_checksum: sha1:898d6b16b6d3fa48747f2860d430997b8444a05d
+    pristine_git_object: 10bdda92e139b2a798989cf7f884d107c9df6c27
   src/models/outputdatetimeitem.ts:
     id: 0c1828e72f98
     last_write_checksum: sha1:86f98e5eb24990beb4283eba0d2ff0a12c7048b8
@@ -18571,10 +18575,4 @@ examples:
         "503":
           application/json: {"error": {"code": 503, "message": "Service temporarily unavailable"}}
 examplesVersion: 1.0.2
-releaseNotes: |
-  ## Typescript SDK Changes:
-  * `openrouter.chat.send()`:  `response` **Changed**
-  * `openrouter.embeddings.generate()`:  `response.usage.costDetails.serverToolCost` **Added**
-  * `openrouter.images.generate()`:  `response` **Changed**
-  * `openrouter.responses.send()`:  `response` **Changed**
-  * `openrouter.beta.responses.send()`:  `response` **Changed**
+releaseNotes: "## Typescript SDK Changes:\n* `openrouter.presets.createPresetsResponses()`: \n  *  `request.responsesRequest.input.union(Array<>)[].union(OutputCustomToolCallItem).status` **Added**\n* `openrouter.responses.send()`: \n  *  `request.responsesRequest.input.union(Array<>)[].union(OutputCustomToolCallItem).status` **Added**\n  *  `response` **Changed**\n* `openrouter.beta.responses.send()`: \n  *  `request.responsesRequest.input.union(Array<>)[].union(OutputCustomToolCallItem).status` **Added**\n  *  `response` **Changed**\n"
