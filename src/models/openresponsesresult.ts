@@ -158,10 +158,6 @@ export type OutputTokensDetails = {
 };
 
 export type UsageCostDetails = {
-  /**
-   * Metered server-tool execution cost (for example, shell sandbox time) billed for this request, in USD. Matches the billed checkpoint and settlement amounts exactly.
-   */
-  serverToolCost?: number | null | undefined;
   upstreamInferenceCost?: number | null | undefined;
   upstreamInferenceInputCost: number;
   upstreamInferenceOutputCost: number;
@@ -408,13 +404,11 @@ export const UsageCostDetails$inboundSchema: z.ZodType<
   UsageCostDetails,
   unknown
 > = z.object({
-  server_tool_cost: z.nullable(z.number()).optional(),
   upstream_inference_cost: z.nullable(z.number()).optional(),
   upstream_inference_input_cost: z.number(),
   upstream_inference_output_cost: z.number(),
 }).transform((v) => {
   return remap$(v, {
-    "server_tool_cost": "serverToolCost",
     "upstream_inference_cost": "upstreamInferenceCost",
     "upstream_inference_input_cost": "upstreamInferenceInputCost",
     "upstream_inference_output_cost": "upstreamInferenceOutputCost",
