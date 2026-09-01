@@ -31,6 +31,10 @@ export type OutputSearchModelsServerToolItem = {
   arguments?: string | undefined;
   id?: string | undefined;
   query?: string | undefined;
+  /**
+   * The JSON result returned by the search tool (matched models plus result counts)
+   */
+  results?: string | undefined;
   status: ToolCallStatus;
   type: OutputSearchModelsServerToolItemType;
 };
@@ -52,6 +56,7 @@ export const OutputSearchModelsServerToolItem$inboundSchema: z.ZodType<
   arguments: z.string().optional(),
   id: z.string().optional(),
   query: z.string().optional(),
+  results: z.string().optional(),
   status: ToolCallStatus$inboundSchema,
   type: OutputSearchModelsServerToolItemType$inboundSchema,
 });
@@ -60,6 +65,7 @@ export type OutputSearchModelsServerToolItem$Outbound = {
   arguments?: string | undefined;
   id?: string | undefined;
   query?: string | undefined;
+  results?: string | undefined;
   status: string;
   type: string;
 };
@@ -72,6 +78,7 @@ export const OutputSearchModelsServerToolItem$outboundSchema: z.ZodType<
   arguments: z.string().optional(),
   id: z.string().optional(),
   query: z.string().optional(),
+  results: z.string().optional(),
   status: ToolCallStatus$outboundSchema,
   type: OutputSearchModelsServerToolItemType$outboundSchema,
 });
