@@ -37,7 +37,7 @@ import {
  * List models filtered by user provider preferences, privacy settings, and guardrails
  *
  * @remarks
- * List models filtered by user provider preferences, [privacy settings](https://openrouter.ai/docs/guides/privacy/provider-logging), and [guardrails](https://openrouter.ai/docs/guides/features/guardrails). Returns text-output models by default; pass `output_modalities` (a comma-separated list of `text`, `image`, `embeddings`, `audio`, `video`, `rerank`, `speech`, `transcription`, or `all`) to include other modalities. If requesting through a regional hostname, the results will be filtered to models that satisfy in-region routing for that region.
+ * List models filtered by user provider preferences, [privacy settings](https://openrouter.ai/docs/guides/privacy/provider-logging), and [guardrails](https://openrouter.ai/docs/guides/features/guardrails). If requesting through a regional hostname, the results will be filtered to models that satisfy in-region routing for that region.
  */
 export function modelsListForUser(
   client: OpenRouterCore,
@@ -117,7 +117,6 @@ async function $do(
   const query = encodeFormQuery({
     "limit": payload?.limit,
     "offset": payload?.offset,
-    "output_modalities": payload?.output_modalities,
   });
 
   const headers = new Headers(compactMap({
