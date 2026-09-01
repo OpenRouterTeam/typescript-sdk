@@ -1563,6 +1563,27 @@ components:
         - 'type'
         - 'value'
       type: 'object'
+    AnthropicInputTransformation:
+      additionalProperties: {}
+      description: 'A server-side transformation Anthropic applied to the request input'
+      example:
+        path: 'messages.1.content.0'
+        reason: 'prefix_binding_mismatch'
+        type: 'thinking_dropped'
+      properties:
+        path:
+          type:
+            - 'string'
+            - 'null'
+        reason:
+          type:
+            - 'string'
+            - 'null'
+        type:
+          type: 'string'
+      required:
+        - 'type'
+      type: 'object'
     AnthropicIterationCacheCreation:
       default: null
       example:
@@ -1573,6 +1594,16 @@ components:
           type: 'integer'
         ephemeral_5m_input_tokens:
           type: 'integer'
+      type:
+        - 'object'
+        - 'null'
+    AnthropicMessageOutputConfig:
+      additionalProperties: false
+      example:
+        effort: 'low'
+      properties:
+        effort:
+          $ref: '#/components/schemas/AnthropicOutputEffort'
       type:
         - 'object'
         - 'null'
@@ -1650,6 +1681,19 @@ components:
         input_tokens: 100
         output_tokens: 50
         type: 'message'
+    AnthropicOutputEffort:
+      enum:
+        - 'low'
+        - 'medium'
+        - 'high'
+        - 'xhigh'
+        - 'max'
+        - null
+      example: 'high'
+      type:
+        - 'string'
+        - 'null'
+      x-speakeasy-unknown-values: allow
     AnthropicOutputTokensDetails:
       example:
         thinking_tokens: 0
@@ -1806,6 +1850,15 @@ components:
         - 'standard'
         - null
       example: 'standard'
+      type:
+        - 'string'
+        - 'null'
+      x-speakeasy-unknown-values: allow
+    AnthropicSystemClearAt:
+      enum:
+        - 'next_user_message'
+        - null
+      example: 'next_user_message'
       type:
         - 'string'
         - 'null'
@@ -2084,10 +2137,25 @@ components:
         - 'thinking'
         - 'signature'
       type: 'object'
+    AnthropicThinkingBlockBinding:
+      additionalProperties: false
+      example:
+        prefix_mismatch_behavior: 'drop_block'
+      properties:
+        prefix_mismatch_behavior:
+          enum:
+            - 'drop_block'
+          type: 'string'
+      required:
+        - 'prefix_mismatch_behavior'
+      type:
+        - 'object'
+        - 'null'
     AnthropicThinkingDisplay:
       enum:
         - 'summarized'
         - 'omitted'
+        - 'updates'
         - null
       example: 'summarized'
       type:
@@ -3577,6 +3645,12 @@ components:
           type: 'array'
         id:
           type: 'string'
+        input_transformations:
+          items:
+            $ref: '#/components/schemas/AnthropicInputTransformation'
+          type:
+            - 'array'
+            - 'null'
         model:
           type: 'string'
         role:
@@ -13054,6 +13128,8 @@ components:
         content: 'Hello, how are you?'
         role: 'user'
       properties:
+        clear_at:
+          $ref: '#/components/schemas/AnthropicSystemClearAt'
         content:
           anyOf:
             - type: 'string'
@@ -13220,6 +13296,8 @@ components:
                   - $ref: '#/components/schemas/MessagesShellToolResultBlock'
                   - $ref: '#/components/schemas/MessagesBashToolResultBlock'
               type: 'array'
+        output_config:
+          $ref: '#/components/schemas/AnthropicMessageOutputConfig'
         role:
           enum:
             - 'user'
@@ -13499,6 +13577,8 @@ components:
         thinking:
           oneOf:
             - properties:
+                block_binding:
+                  $ref: '#/components/schemas/AnthropicThinkingBlockBinding'
                 budget_tokens:
                   type: 'integer'
                 display:
@@ -13520,6 +13600,8 @@ components:
                 - 'type'
               type: 'object'
             - properties:
+                block_binding:
+                  $ref: '#/components/schemas/AnthropicThinkingBlockBinding'
                 display:
                   $ref: '#/components/schemas/AnthropicThinkingDisplay'
                 type:
@@ -13957,6 +14039,12 @@ components:
               type: 'array'
             id:
               type: 'string'
+            input_transformations:
+              items:
+                $ref: '#/components/schemas/AnthropicInputTransformation'
+              type:
+                - 'array'
+                - 'null'
             model:
               type: 'string'
             provider:
