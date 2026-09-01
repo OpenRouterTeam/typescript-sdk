@@ -5,28 +5,25 @@
 
 import * as z from "zod/v4";
 import { remap as remap$ } from "../lib/primitives.js";
-import * as openEnums from "../types/enums.js";
-import { OpenEnum } from "../types/enums.js";
+import { ClosedEnum } from "../types/enums.js";
 
 export const PrefixMismatchBehavior = {
-  Error: "error",
   DropBlock: "drop_block",
 } as const;
-export type PrefixMismatchBehavior = OpenEnum<typeof PrefixMismatchBehavior>;
+export type PrefixMismatchBehavior = ClosedEnum<typeof PrefixMismatchBehavior>;
 
 export type AnthropicThinkingBlockBinding = {
-  prefixMismatchBehavior?: PrefixMismatchBehavior | null | undefined;
+  prefixMismatchBehavior: PrefixMismatchBehavior;
 };
 
 /** @internal */
-export const PrefixMismatchBehavior$outboundSchema: z.ZodType<
-  string,
-  PrefixMismatchBehavior
-> = openEnums.outboundSchema(PrefixMismatchBehavior);
+export const PrefixMismatchBehavior$outboundSchema: z.ZodEnum<
+  typeof PrefixMismatchBehavior
+> = z.enum(PrefixMismatchBehavior);
 
 /** @internal */
 export type AnthropicThinkingBlockBinding$Outbound = {
-  prefix_mismatch_behavior?: string | null | undefined;
+  prefix_mismatch_behavior: string;
 };
 
 /** @internal */
@@ -34,8 +31,7 @@ export const AnthropicThinkingBlockBinding$outboundSchema: z.ZodType<
   AnthropicThinkingBlockBinding$Outbound,
   AnthropicThinkingBlockBinding
 > = z.object({
-  prefixMismatchBehavior: z.nullable(PrefixMismatchBehavior$outboundSchema)
-    .optional(),
+  prefixMismatchBehavior: PrefixMismatchBehavior$outboundSchema,
 }).transform((v) => {
   return remap$(v, {
     prefixMismatchBehavior: "prefix_mismatch_behavior",

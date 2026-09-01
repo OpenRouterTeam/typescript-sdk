@@ -7,11 +7,13 @@ title: "AnthropicThinkingBlockBinding"
 ```typescript
 import { AnthropicThinkingBlockBinding } from "@openrouter/sdk/models";
 
-let value: AnthropicThinkingBlockBinding = {};
+let value: AnthropicThinkingBlockBinding = {
+  prefixMismatchBehavior: "drop_block",
+};
 ```
 
 ## Fields
 
 | Field                                                                | Type                                                                 | Required                                                             | Description                                                          |
 | -------------------------------------------------------------------- | -------------------------------------------------------------------- | -------------------------------------------------------------------- | -------------------------------------------------------------------- |
-| `prefixMismatchBehavior`                                             | [models.PrefixMismatchBehavior](../models/prefixmismatchbehavior.mdx) | :heavy_minus_sign:                                                   | N/A                                                                  |
+| `prefixMismatchBehavior`                                             | [models.PrefixMismatchBehavior](../models/prefixmismatchbehavior.mdx) | :heavy_check_mark:                                                   | N/A                                                                  |

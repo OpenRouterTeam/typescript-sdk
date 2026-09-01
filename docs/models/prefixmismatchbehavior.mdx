@@ -7,13 +7,11 @@ title: "PrefixMismatchBehavior"
 ```typescript
 import { PrefixMismatchBehavior } from "@openrouter/sdk/models";
 
-let value: PrefixMismatchBehavior = "error";
-
-// Open enum: unrecognized values are captured as Unrecognized<string>
+let value: PrefixMismatchBehavior = "drop_block";
 ```
 
 ## Values
 
 ```typescript
-"error" | "drop_block" | Unrecognized<string>
+"drop_block"
 ```
