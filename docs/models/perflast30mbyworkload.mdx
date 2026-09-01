@@ -1,0 +1,26 @@
+---
+title: "PerfLast30mByWorkload"
+---
+
+Endpoint performance over the last 30 minutes, keyed by the kind of request served (e.g. `text_generation`, `image_generation`). Additive to the legacy singular latency and throughput fields; image and video generation report end-to-end latency. Only visible when authenticated with an API key or cookie.
+
+## Example Usage
+
+```typescript
+import { PerfLast30mByWorkload } from "@openrouter/sdk/models";
+
+let value: PerfLast30mByWorkload = {};
+```
+
+## Fields
+
+| Field                                                  | Type                                                   | Required                                               | Description                                            |
+| ------------------------------------------------------ | ------------------------------------------------------ | ------------------------------------------------------ | ------------------------------------------------------ |
+| `embeddings`                                           | [models.Embeddings](../models/embeddings.mdx)           | :heavy_minus_sign:                                     | N/A                                                    |
+| `imageGeneration`                                      | [models.ImageGeneration](../models/imagegeneration.mdx) | :heavy_minus_sign:                                     | N/A                                                    |
+| `rerank`                                               | [models.Rerank](../models/rerank.mdx)                   | :heavy_minus_sign:                                     | N/A                                                    |
+| `stt`                                                  | [models.STT](../models/stt.mdx)                         | :heavy_minus_sign:                                     | N/A                                                    |
+| `textGeneration`                                       | [models.TextGeneration](../models/textgeneration.mdx)   | :heavy_minus_sign:                                     | N/A                                                    |
+| `tts`                                                  | [models.TTS](../models/tts.mdx)                         | :heavy_minus_sign:                                     | N/A                                                    |
+| `unknown`                                              | [models.Unknown](../models/unknown.mdx)                 | :heavy_minus_sign:                                     | N/A                                                    |
+| `videoGeneration`                                      | [models.VideoGeneration](../models/videogeneration.mdx) | :heavy_minus_sign:                                     | N/A                                                    |
