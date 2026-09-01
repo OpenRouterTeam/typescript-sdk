@@ -32,11 +32,6 @@ import {
   AnthropicTextBlockParam$outboundSchema,
 } from "./anthropictextblockparam.js";
 import {
-  AnthropicThinkingBlockBinding,
-  AnthropicThinkingBlockBinding$Outbound,
-  AnthropicThinkingBlockBinding$outboundSchema,
-} from "./anthropicthinkingblockbinding.js";
-import {
   AnthropicThinkingDisplay,
   AnthropicThinkingDisplay$outboundSchema,
 } from "./anthropicthinkingdisplay.js";
@@ -288,7 +283,6 @@ export type Speed = OpenEnum<typeof Speed>;
 export type System = string | Array<AnthropicTextBlockParam>;
 
 export type ThinkingAdaptive = {
-  blockBinding?: AnthropicThinkingBlockBinding | null | undefined;
   display?: AnthropicThinkingDisplay | null | undefined;
   type: "adaptive";
 };
@@ -298,7 +292,6 @@ export type ThinkingDisabled = {
 };
 
 export type ThinkingEnabled = {
-  blockBinding?: AnthropicThinkingBlockBinding | null | undefined;
   budgetTokens: number;
   display?: AnthropicThinkingDisplay | null | undefined;
   type: "enabled";
@@ -925,7 +918,6 @@ export function systemToJSON(system: System): string {
 
 /** @internal */
 export type ThinkingAdaptive$Outbound = {
-  block_binding?: AnthropicThinkingBlockBinding$Outbound | null | undefined;
   display?: string | null | undefined;
   type: "adaptive";
 };
@@ -935,14 +927,8 @@ export const ThinkingAdaptive$outboundSchema: z.ZodType<
   ThinkingAdaptive$Outbound,
   ThinkingAdaptive
 > = z.object({
-  blockBinding: z.nullable(AnthropicThinkingBlockBinding$outboundSchema)
-    .optional(),
   display: z.nullable(AnthropicThinkingDisplay$outboundSchema).optional(),
   type: z.literal("adaptive"),
-}).transform((v) => {
-  return remap$(v, {
-    blockBinding: "block_binding",
-  });
 });
 
 export function thinkingAdaptiveToJSON(
@@ -976,7 +962,6 @@ export function thinkingDisabledToJSON(
 
 /** @internal */
 export type ThinkingEnabled$Outbound = {
-  block_binding?: AnthropicThinkingBlockBinding$Outbound | null | undefined;
   budget_tokens: number;
   display?: string | null | undefined;
   type: "enabled";
@@ -987,14 +972,11 @@ export const ThinkingEnabled$outboundSchema: z.ZodType<
   ThinkingEnabled$Outbound,
   ThinkingEnabled
 > = z.object({
-  blockBinding: z.nullable(AnthropicThinkingBlockBinding$outboundSchema)
-    .optional(),
   budgetTokens: z.int(),
   display: z.nullable(AnthropicThinkingDisplay$outboundSchema).optional(),
   type: z.literal("enabled"),
 }).transform((v) => {
   return remap$(v, {
-    blockBinding: "block_binding",
     budgetTokens: "budget_tokens",
   });
 });
