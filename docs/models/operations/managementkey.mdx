@@ -1,0 +1,21 @@
+---
+title: "ManagementKey"
+---
+
+## Example Usage
+
+```typescript
+import { ManagementKey } from "@openrouter/sdk/models/operations";
+
+let value: ManagementKey = {
+  key: "<key>",
+  name: "<value>",
+};
+```
+
+## Fields
+
+| Field                                                                                                                                        | Type                                                                                                                                         | Required                                                                                                                                     | Description                                                                                                                                  |
+| -------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------- |
+| `key`                                                                                                                                        | *string*                                                                                                                                     | :heavy_check_mark:                                                                                                                           | Plaintext management key for the new organization. Returned only by the call that creates the organization and never retrievable afterwards. |
+| `name`                                                                                                                                       | *string*                                                                                                                                     | :heavy_check_mark:                                                                                                                           | N/A                                                                                                                                          |

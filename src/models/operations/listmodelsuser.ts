@@ -64,10 +64,6 @@ export type ListModelsUserRequest = {
    * Maximum number of records to return (max 1000). When both offset and limit are omitted, the full list is returned
    */
   limit?: number | undefined;
-  /**
-   * Filter models by output modality. Accepts a comma-separated list of modalities (text, image, embeddings, audio, video, rerank, speech, transcription) or "all" to include all models. Defaults to "text".
-   */
-  outputModalities?: string | undefined;
 };
 
 export type ListModelsUserResponse = {
@@ -102,7 +98,6 @@ export type ListModelsUserRequest$Outbound = {
   appCategories?: string | undefined;
   offset: number | null;
   limit: number;
-  output_modalities?: string | undefined;
 };
 
 /** @internal */
@@ -115,11 +110,9 @@ export const ListModelsUserRequest$outboundSchema: z.ZodType<
   appCategories: z.string().optional(),
   offset: z.nullable(z.int().default(0)),
   limit: z.int().default(500),
-  outputModalities: z.string().optional(),
 }).transform((v) => {
   return remap$(v, {
     httpReferer: "HTTP-Referer",
-    outputModalities: "output_modalities",
   });
 });
 

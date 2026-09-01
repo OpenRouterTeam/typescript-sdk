@@ -23,19 +23,10 @@ import {
   AnthropicImageBlockParam$outboundSchema,
 } from "./anthropicimageblockparam.js";
 import {
-  AnthropicMessageOutputConfig,
-  AnthropicMessageOutputConfig$Outbound,
-  AnthropicMessageOutputConfig$outboundSchema,
-} from "./anthropicmessageoutputconfig.js";
-import {
   AnthropicSearchResultBlockParam,
   AnthropicSearchResultBlockParam$Outbound,
   AnthropicSearchResultBlockParam$outboundSchema,
 } from "./anthropicsearchresultblockparam.js";
-import {
-  AnthropicSystemClearAt,
-  AnthropicSystemClearAt$outboundSchema,
-} from "./anthropicsystemclearat.js";
 import {
   AnthropicTextBlockParam,
   AnthropicTextBlockParam$Outbound,
@@ -246,7 +237,6 @@ export type MessagesMessageParamRole = OpenEnum<
  * Anthropic message with OpenRouter extensions
  */
 export type MessagesMessageParam = {
-  clearAt?: AnthropicSystemClearAt | null | undefined;
   content:
     | string
     | Array<
@@ -267,7 +257,6 @@ export type MessagesMessageParam = {
       | MessagesShellToolResultBlock
       | MessagesBashToolResultBlock
     >;
-  outputConfig?: AnthropicMessageOutputConfig | null | undefined;
   role: MessagesMessageParamRole;
 };
 
@@ -780,7 +769,6 @@ export const MessagesMessageParamRole$outboundSchema: z.ZodType<
 
 /** @internal */
 export type MessagesMessageParam$Outbound = {
-  clear_at?: string | null | undefined;
   content:
     | string
     | Array<
@@ -801,7 +789,6 @@ export type MessagesMessageParam$Outbound = {
       | MessagesShellToolResultBlock$Outbound
       | MessagesBashToolResultBlock$Outbound
     >;
-  output_config?: AnthropicMessageOutputConfig$Outbound | null | undefined;
   role: string;
 };
 
@@ -810,7 +797,6 @@ export const MessagesMessageParam$outboundSchema: z.ZodType<
   MessagesMessageParam$Outbound,
   MessagesMessageParam
 > = z.object({
-  clearAt: z.nullable(AnthropicSystemClearAt$outboundSchema).optional(),
   content: z.union([
     z.string(),
     z.array(
@@ -834,14 +820,7 @@ export const MessagesMessageParam$outboundSchema: z.ZodType<
       ]),
     ),
   ]),
-  outputConfig: z.nullable(AnthropicMessageOutputConfig$outboundSchema)
-    .optional(),
   role: MessagesMessageParamRole$outboundSchema,
-}).transform((v) => {
-  return remap$(v, {
-    clearAt: "clear_at",
-    outputConfig: "output_config",
-  });
 });
 
 export function messagesMessageParamToJSON(
