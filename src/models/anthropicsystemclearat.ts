@@ -9,6 +9,7 @@ import { OpenEnum } from "../types/enums.js";
 
 export const AnthropicSystemClearAt = {
   NextUserMessage: "next_user_message",
+  Never: "never",
 } as const;
 export type AnthropicSystemClearAt = OpenEnum<typeof AnthropicSystemClearAt>;
 
