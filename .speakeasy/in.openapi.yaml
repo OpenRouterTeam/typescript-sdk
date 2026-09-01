@@ -21656,6 +21656,19 @@ components:
         model_id: 'openai/gpt-4'
         model_name: 'GPT-4'
         name: 'OpenAI: GPT-4'
+        perf_last_30m_by_workload:
+          text_generation:
+            latency:
+              p50: 250
+              p75: 350
+              p90: 480
+              p99: 850
+            request_count: 1000
+            throughput:
+              p50: 45.2
+              p75: 38.5
+              p90: 28.3
+              p99: 15.1
         pricing:
           completion: '0.00006'
           image: '0'
@@ -21706,6 +21719,171 @@ components:
           type: 'string'
         name:
           type: 'string'
+        perf_last_30m_by_workload:
+          additionalProperties: false
+          description: 'Endpoint performance over the last 30 minutes, keyed by the kind of request served (e.g. `text_generation`, `image_generation`). Additive to the legacy singular latency and throughput fields; image and video generation report end-to-end latency. Only visible when authenticated with an API key or cookie.'
+          properties:
+            embeddings:
+              properties:
+                latency:
+                  allOf:
+                    - $ref: '#/components/schemas/PercentileStats'
+                    - description: 'Latency percentiles in milliseconds for this workload. Image and video generation report full end-to-end generation time, because their raw latency only measures request acknowledgement; every other workload reports time to first token or result.'
+                request_count:
+                  description: 'Total requests admitted for this workload in the window.'
+                  type:
+                    - 'integer'
+                    - 'null'
+                throughput:
+                  allOf:
+                    - $ref: '#/components/schemas/PercentileStats'
+                    - description: 'Throughput percentiles in tokens per second. Only meaningful for text generation; null for workloads without token throughput.'
+              required:
+                - 'latency'
+                - 'throughput'
+                - 'request_count'
+              type: 'object'
+            image_generation:
+              properties:
+                latency:
+                  allOf:
+                    - $ref: '#/components/schemas/PercentileStats'
+                    - description: 'Latency percentiles in milliseconds for this workload. Image and video generation report full end-to-end generation time, because their raw latency only measures request acknowledgement; every other workload reports time to first token or result.'
+                request_count:
+                  description: 'Total requests admitted for this workload in the window.'
+                  type:
+                    - 'integer'
+                    - 'null'
+                throughput:
+                  allOf:
+                    - $ref: '#/components/schemas/PercentileStats'
+                    - description: 'Throughput percentiles in tokens per second. Only meaningful for text generation; null for workloads without token throughput.'
+              required:
+                - 'latency'
+                - 'throughput'
+                - 'request_count'
+              type: 'object'
+            rerank:
+              properties:
+                latency:
+                  allOf:
+                    - $ref: '#/components/schemas/PercentileStats'
+                    - description: 'Latency percentiles in milliseconds for this workload. Image and video generation report full end-to-end generation time, because their raw latency only measures request acknowledgement; every other workload reports time to first token or result.'
+                request_count:
+                  description: 'Total requests admitted for this workload in the window.'
+                  type:
+                    - 'integer'
+                    - 'null'
+                throughput:
+                  allOf:
+                    - $ref: '#/components/schemas/PercentileStats'
+                    - description: 'Throughput percentiles in tokens per second. Only meaningful for text generation; null for workloads without token throughput.'
+              required:
+                - 'latency'
+                - 'throughput'
+                - 'request_count'
+              type: 'object'
+            stt:
+              properties:
+                latency:
+                  allOf:
+                    - $ref: '#/components/schemas/PercentileStats'
+                    - description: 'Latency percentiles in milliseconds for this workload. Image and video generation report full end-to-end generation time, because their raw latency only measures request acknowledgement; every other workload reports time to first token or result.'
+                request_count:
+                  description: 'Total requests admitted for this workload in the window.'
+                  type:
+                    - 'integer'
+                    - 'null'
+                throughput:
+                  allOf:
+                    - $ref: '#/components/schemas/PercentileStats'
+                    - description: 'Throughput percentiles in tokens per second. Only meaningful for text generation; null for workloads without token throughput.'
+              required:
+                - 'latency'
+                - 'throughput'
+                - 'request_count'
+              type: 'object'
+            text_generation:
+              properties:
+                latency:
+                  allOf:
+                    - $ref: '#/components/schemas/PercentileStats'
+                    - description: 'Latency percentiles in milliseconds for this workload. Image and video generation report full end-to-end generation time, because their raw latency only measures request acknowledgement; every other workload reports time to first token or result.'
+                request_count:
+                  description: 'Total requests admitted for this workload in the window.'
+                  type:
+                    - 'integer'
+                    - 'null'
+                throughput:
+                  allOf:
+                    - $ref: '#/components/schemas/PercentileStats'
+                    - description: 'Throughput percentiles in tokens per second. Only meaningful for text generation; null for workloads without token throughput.'
+              required:
+                - 'latency'
+                - 'throughput'
+                - 'request_count'
+              type: 'object'
+            tts:
+              properties:
+                latency:
+                  allOf:
+                    - $ref: '#/components/schemas/PercentileStats'
+                    - description: 'Latency percentiles in milliseconds for this workload. Image and video generation report full end-to-end generation time, because their raw latency only measures request acknowledgement; every other workload reports time to first token or result.'
+                request_count:
+                  description: 'Total requests admitted for this workload in the window.'
+                  type:
+                    - 'integer'
+                    - 'null'
+                throughput:
+                  allOf:
+                    - $ref: '#/components/schemas/PercentileStats'
+                    - description: 'Throughput percentiles in tokens per second. Only meaningful for text generation; null for workloads without token throughput.'
+              required:
+                - 'latency'
+                - 'throughput'
+                - 'request_count'
+              type: 'object'
+            unknown:
+              properties:
+                latency:
+                  allOf:
+                    - $ref: '#/components/schemas/PercentileStats'
+                    - description: 'Latency percentiles in milliseconds for this workload. Image and video generation report full end-to-end generation time, because their raw latency only measures request acknowledgement; every other workload reports time to first token or result.'
+                request_count:
+                  description: 'Total requests admitted for this workload in the window.'
+                  type:
+                    - 'integer'
+                    - 'null'
+                throughput:
+                  allOf:
+                    - $ref: '#/components/schemas/PercentileStats'
+                    - description: 'Throughput percentiles in tokens per second. Only meaningful for text generation; null for workloads without token throughput.'
+              required:
+                - 'latency'
+                - 'throughput'
+                - 'request_count'
+              type: 'object'
+            video_generation:
+              properties:
+                latency:
+                  allOf:
+                    - $ref: '#/components/schemas/PercentileStats'
+                    - description: 'Latency percentiles in milliseconds for this workload. Image and video generation report full end-to-end generation time, because their raw latency only measures request acknowledgement; every other workload reports time to first token or result.'
+                request_count:
+                  description: 'Total requests admitted for this workload in the window.'
+                  type:
+                    - 'integer'
+                    - 'null'
+                throughput:
+                  allOf:
+                    - $ref: '#/components/schemas/PercentileStats'
+                    - description: 'Throughput percentiles in tokens per second. Only meaningful for text generation; null for workloads without token throughput.'
+              required:
+                - 'latency'
+                - 'throughput'
+                - 'request_count'
+              type: 'object'
+          type: 'object'
         pricing:
           properties:
             audio:
