@@ -1,0 +1,33 @@
+---
+title: "Rerank"
+---
+
+## Example Usage
+
+```typescript
+import { Rerank } from "@openrouter/sdk/models";
+
+let value: Rerank = {
+  latency: {
+    p50: 25.5,
+    p75: 35.2,
+    p90: 48.7,
+    p99: 85.3,
+  },
+  requestCount: 866609,
+  throughput: {
+    p50: 25.5,
+    p75: 35.2,
+    p90: 48.7,
+    p99: 85.3,
+  },
+};
+```
+
+## Fields
+
+| Field                                                    | Type                                                     | Required                                                 | Description                                              | Example                                                  |
+| -------------------------------------------------------- | -------------------------------------------------------- | -------------------------------------------------------- | -------------------------------------------------------- | -------------------------------------------------------- |
+| `latency`                                                | [models.PercentileStats](../models/percentilestats.mdx)   | :heavy_check_mark:                                       | N/A                                                      | \{<br/>"p50": 25.5,<br/>"p75": 35.2,<br/>"p90": 48.7,<br/>"p99": 85.3<br/>} |
+| `requestCount`                                           | *number*                                                 | :heavy_check_mark:                                       | Total requests admitted for this workload in the window. |                                                          |
+| `throughput`                                             | [models.PercentileStats](../models/percentilestats.mdx)   | :heavy_check_mark:                                       | N/A                                                      | \{<br/>"p50": 25.5,<br/>"p75": 35.2,<br/>"p90": 48.7,<br/>"p99": 85.3<br/>} |
