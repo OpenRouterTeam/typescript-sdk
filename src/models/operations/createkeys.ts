@@ -56,14 +56,6 @@ export type CreateKeysRequestBody = {
    */
   expiresAt?: Date | null | undefined;
   /**
-   * Optional partner-supplied API key. Stored as a SHA-256 hash and never returned. Accepted only when authenticating with a Connect client secret; supplying it with a management key is rejected with 403.
-   */
-  externalApiKey?: string | undefined;
-  /**
-   * Partner's end-user identifier for attribution, between 1 and 512 characters. Accepted only when authenticating with a Connect client secret, where it is required; supplying it with a management key is rejected with 403.
-   */
-  externalUser?: string | undefined;
-  /**
    * Whether to include BYOK usage in the limit
    */
   includeByokInLimit?: boolean | undefined;
@@ -226,8 +218,6 @@ export const CreateKeysLimitReset$outboundSchema: z.ZodType<
 export type CreateKeysRequestBody$Outbound = {
   creator_user_id?: string | null | undefined;
   expires_at?: string | null | undefined;
-  external_api_key?: string | undefined;
-  external_user?: string | undefined;
   include_byok_in_limit?: boolean | undefined;
   limit?: number | null | undefined;
   limit_reset?: string | null | undefined;
@@ -242,8 +232,6 @@ export const CreateKeysRequestBody$outboundSchema: z.ZodType<
 > = z.object({
   creatorUserId: z.nullable(z.string()).optional(),
   expiresAt: z.nullable(z.date().transform(v => v.toISOString())).optional(),
-  externalApiKey: z.string().optional(),
-  externalUser: z.string().optional(),
   includeByokInLimit: z.boolean().optional(),
   limit: z.nullable(z.number()).optional(),
   limitReset: z.nullable(CreateKeysLimitReset$outboundSchema).optional(),
@@ -253,8 +241,6 @@ export const CreateKeysRequestBody$outboundSchema: z.ZodType<
   return remap$(v, {
     creatorUserId: "creator_user_id",
     expiresAt: "expires_at",
-    externalApiKey: "external_api_key",
-    externalUser: "external_user",
     includeByokInLimit: "include_byok_in_limit",
     limitReset: "limit_reset",
     workspaceId: "workspace_id",
