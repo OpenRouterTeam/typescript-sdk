@@ -262,6 +262,7 @@ export * from "./getscimgroupmappingresponse.js";
 export * from "./getworkspacebudgetresponse.js";
 export * from "./getworkspaceresponse.js";
 export * from "./guardrail.js";
+export * from "./guardraildataregion.js";
 export * from "./guardrailinterval.js";
 export * from "./imageconfig.js";
 export * from "./imageendpoint.js";
