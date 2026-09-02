@@ -16,11 +16,19 @@ import {
   ContentFilterEntry$outboundSchema,
 } from "./contentfilterentry.js";
 import {
+  GuardrailDataRegion,
+  GuardrailDataRegion$outboundSchema,
+} from "./guardraildataregion.js";
+import {
   GuardrailInterval,
   GuardrailInterval$outboundSchema,
 } from "./guardrailinterval.js";
 
 export type CreateGuardrailRequest = {
+  /**
+   * Data regions through which requests governed by this guardrail must arrive. `global` is https://openrouter.ai, `europe` is https://eu.openrouter.ai, and `us` is https://us.openrouter.ai. Requests arriving through any other region are rejected. `null` leaves the ingress region unrestricted. When several guardrails apply (workspace default, member, API key), the effective regions are the intersection of every non-null value. An empty array is rejected.
+   */
+  allowedDataRegions?: Array<GuardrailDataRegion> | null | undefined;
   /**
    * Array of model identifiers (slug or canonical_slug accepted)
    */
@@ -114,6 +122,7 @@ export type CreateGuardrailRequest = {
 
 /** @internal */
 export type CreateGuardrailRequest$Outbound = {
+  allowed_data_regions?: Array<string> | null | undefined;
   allowed_models?: Array<string> | null | undefined;
   allowed_providers?: Array<string> | null | undefined;
   content_filter_builtins?:
@@ -145,6 +154,8 @@ export const CreateGuardrailRequest$outboundSchema: z.ZodType<
   CreateGuardrailRequest$Outbound,
   CreateGuardrailRequest
 > = z.object({
+  allowedDataRegions: z.nullable(z.array(GuardrailDataRegion$outboundSchema))
+    .optional(),
   allowedModels: z.nullable(z.array(z.string())).optional(),
   allowedProviders: z.nullable(z.array(z.string())).optional(),
   contentFilterBuiltins: z.nullable(
@@ -171,6 +182,7 @@ export const CreateGuardrailRequest$outboundSchema: z.ZodType<
   workspaceId: z.string().optional(),
 }).transform((v) => {
   return remap$(v, {
+    allowedDataRegions: "allowed_data_regions",
     allowedModels: "allowed_models",
     allowedProviders: "allowed_providers",
     contentFilterBuiltins: "content_filter_builtins",
