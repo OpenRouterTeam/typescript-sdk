@@ -13,10 +13,6 @@ import { SDKValidationError } from "./errors/sdkvalidationerror.js";
  * Breakdown of upstream inference costs
  */
 export type CostDetails = {
-  /**
-   * Metered server-tool execution cost (for example, shell sandbox time) billed for this request, in USD. Matches the billed checkpoint and settlement amounts exactly. 0 when a metered server tool ran but settled at zero dollars; absent when no metered server tool ran.
-   */
-  serverToolCost?: number | null | undefined;
   upstreamInferenceCompletionsCost: number;
   upstreamInferenceCost?: number | null | undefined;
   upstreamInferencePromptCost: number;
@@ -25,13 +21,11 @@ export type CostDetails = {
 /** @internal */
 export const CostDetails$inboundSchema: z.ZodType<CostDetails, unknown> = z
   .object({
-    server_tool_cost: z.nullable(z.number()).optional(),
     upstream_inference_completions_cost: z.number(),
     upstream_inference_cost: z.nullable(z.number()).optional(),
     upstream_inference_prompt_cost: z.number(),
   }).transform((v) => {
     return remap$(v, {
-      "server_tool_cost": "serverToolCost",
       "upstream_inference_completions_cost": "upstreamInferenceCompletionsCost",
       "upstream_inference_cost": "upstreamInferenceCost",
       "upstream_inference_prompt_cost": "upstreamInferencePromptCost",

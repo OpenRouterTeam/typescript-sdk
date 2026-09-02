@@ -43,7 +43,6 @@ export function videoGenerationGetVideoContent(
     ReadableStream<Uint8Array>,
     | errors.BadRequestResponseError
     | errors.UnauthorizedResponseError
-    | errors.ForbiddenResponseError
     | errors.NotFoundResponseError
     | errors.InternalServerResponseError
     | errors.BadGatewayResponseError
@@ -74,7 +73,6 @@ async function $do(
       ReadableStream<Uint8Array>,
       | errors.BadRequestResponseError
       | errors.UnauthorizedResponseError
-      | errors.ForbiddenResponseError
       | errors.NotFoundResponseError
       | errors.InternalServerResponseError
       | errors.BadGatewayResponseError
@@ -197,7 +195,6 @@ async function $do(
     ReadableStream<Uint8Array>,
     | errors.BadRequestResponseError
     | errors.UnauthorizedResponseError
-    | errors.ForbiddenResponseError
     | errors.NotFoundResponseError
     | errors.InternalServerResponseError
     | errors.BadGatewayResponseError
@@ -217,7 +214,6 @@ async function $do(
     ),
     M.jsonErr(400, errors.BadRequestResponseError$inboundSchema),
     M.jsonErr(401, errors.UnauthorizedResponseError$inboundSchema),
-    M.jsonErr(403, errors.ForbiddenResponseError$inboundSchema),
     M.jsonErr(404, errors.NotFoundResponseError$inboundSchema),
     M.jsonErr(500, errors.InternalServerResponseError$inboundSchema),
     M.jsonErr(502, errors.BadGatewayResponseError$inboundSchema),
