@@ -136,7 +136,6 @@ export const Provider = {
   Together: "together",
   Upstage: "upstage",
   Venice: "venice",
-  Voyageai: "voyageai",
   Wafer: "wafer",
   Wandb: "wandb",
   WandbLegacy: "wandb-legacy",
