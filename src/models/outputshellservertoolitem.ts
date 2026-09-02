@@ -68,6 +68,10 @@ export type OutputShellServerToolItem = {
    */
   containerId?: string | undefined;
   /**
+   * The error message when the sandbox call failed before producing a result (for example, the per-user container limit was reached). Absent on a successful call; `output` is omitted when `error` is set.
+   */
+  error?: string | undefined;
+  /**
    * Citations for the files the sandbox command created or modified, most-recently-touched first (at most 10). Retrieve them via the Container Files API.
    */
   files?: Array<OutputShellServerToolItemFile> | undefined;
@@ -230,6 +234,7 @@ export const OutputShellServerToolItem$inboundSchema: z.ZodType<
   arguments: z.nullable(z.string()).optional(),
   call_id: z.nullable(z.string()).optional(),
   container_id: z.string().optional(),
+  error: z.string().optional(),
   files: z.array(z.lazy(() => OutputShellServerToolItemFile$inboundSchema))
     .optional(),
   id: z.string().optional(),
@@ -248,6 +253,7 @@ export type OutputShellServerToolItem$Outbound = {
   arguments?: string | null | undefined;
   call_id?: string | null | undefined;
   container_id?: string | undefined;
+  error?: string | undefined;
   files?: Array<OutputShellServerToolItemFile$Outbound> | undefined;
   id?: string | undefined;
   output?: Array<ShellCallOutputContent$Outbound> | undefined;
@@ -265,6 +271,7 @@ export const OutputShellServerToolItem$outboundSchema: z.ZodType<
   arguments: z.nullable(z.string()).optional(),
   callId: z.nullable(z.string()).optional(),
   containerId: z.string().optional(),
+  error: z.string().optional(),
   files: z.array(z.lazy(() => OutputShellServerToolItemFile$outboundSchema))
     .optional(),
   id: z.string().optional(),
