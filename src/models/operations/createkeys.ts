@@ -52,7 +52,7 @@ export type CreateKeysRequestBody = {
    */
   creatorUserId?: string | null | undefined;
   /**
-   * Optional ISO 8601 UTC expiration timestamp. Must include seconds (YYYY-MM-DDTHH:MM:SSZ; fractional seconds allowed); minute-precision timestamps are rejected.
+   * Optional ISO 8601 UTC timestamp when the API key should expire. Must be UTC, other timezones will be rejected
    */
   expiresAt?: Date | null | undefined;
   /**

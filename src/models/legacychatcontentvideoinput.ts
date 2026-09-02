@@ -5,33 +5,13 @@
 
 import * as z from "zod/v4";
 import { safeParse } from "../lib/schemas.js";
-import * as openEnums from "../types/enums.js";
-import { OpenEnum } from "../types/enums.js";
 import { Result as SafeParseResult } from "../types/fp.js";
 import { SDKValidationError } from "./errors/sdkvalidationerror.js";
-
-/**
- * Video processing mode. `agentic` enables agentic video processing and `static` forces fixed-rate frame sampling on providers that support it (currently Google Gemini).
- */
-export const LegacyChatContentVideoInputProcessing = {
-  Agentic: "agentic",
-  Static: "static",
-} as const;
-/**
- * Video processing mode. `agentic` enables agentic video processing and `static` forces fixed-rate frame sampling on providers that support it (currently Google Gemini).
- */
-export type LegacyChatContentVideoInputProcessing = OpenEnum<
-  typeof LegacyChatContentVideoInputProcessing
->;
 
 /**
  * Video input object
  */
 export type LegacyChatContentVideoInput = {
-  /**
-   * Video processing mode. `agentic` enables agentic video processing and `static` forces fixed-rate frame sampling on providers that support it (currently Google Gemini).
-   */
-  processing?: LegacyChatContentVideoInputProcessing | undefined;
   /**
    * URL of the video (data: URLs supported)
    */
@@ -39,27 +19,14 @@ export type LegacyChatContentVideoInput = {
 };
 
 /** @internal */
-export const LegacyChatContentVideoInputProcessing$inboundSchema: z.ZodType<
-  LegacyChatContentVideoInputProcessing,
-  unknown
-> = openEnums.inboundSchema(LegacyChatContentVideoInputProcessing);
-/** @internal */
-export const LegacyChatContentVideoInputProcessing$outboundSchema: z.ZodType<
-  string,
-  LegacyChatContentVideoInputProcessing
-> = openEnums.outboundSchema(LegacyChatContentVideoInputProcessing);
-
-/** @internal */
 export const LegacyChatContentVideoInput$inboundSchema: z.ZodType<
   LegacyChatContentVideoInput,
   unknown
 > = z.object({
-  processing: LegacyChatContentVideoInputProcessing$inboundSchema.optional(),
   url: z.string(),
 });
 /** @internal */
 export type LegacyChatContentVideoInput$Outbound = {
-  processing?: string | undefined;
   url: string;
 };
 
@@ -68,7 +35,6 @@ export const LegacyChatContentVideoInput$outboundSchema: z.ZodType<
   LegacyChatContentVideoInput$Outbound,
   LegacyChatContentVideoInput
 > = z.object({
-  processing: LegacyChatContentVideoInputProcessing$outboundSchema.optional(),
   url: z.string(),
 });
 
