@@ -1,0 +1,21 @@
+---
+title: "GuardrailDataRegion"
+---
+
+An OpenRouter data region: `global` (https://openrouter.ai), `europe` (https://eu.openrouter.ai), or `us` (https://us.openrouter.ai)
+
+## Example Usage
+
+```typescript
+import { GuardrailDataRegion } from "@openrouter/sdk/models";
+
+let value: GuardrailDataRegion = "europe";
+
+// Open enum: unrecognized values are captured as Unrecognized<string>
+```
+
+## Values
+
+```typescript
+"global" | "europe" | "us" | Unrecognized<string>
+```
