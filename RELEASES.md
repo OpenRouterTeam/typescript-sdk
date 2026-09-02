@@ -3227,3 +3227,13 @@ Based on:
 - [typescript v1.2.93] .
 ### Releases
 - [NPM v1.2.93] https://www.npmjs.com/package/@openrouter/sdk/v/1.2.93 - .
+
+## 2026-09-02 16:00:05
+### Changes
+Based on:
+- OpenAPI Doc  
+- Speakeasy CLI 1.787.0 (2.914.0) https://github.com/speakeasy-api/speakeasy
+### Generated
+- [typescript v1.2.94] .
+### Releases
+- [NPM v1.2.94] https://www.npmjs.com/package/@openrouter/sdk/v/1.2.94 - .

@@ -5057,6 +5057,14 @@ components:
       example:
         url: 'https://example.com/video.mp4'
       properties:
+        processing:
+          description: 'Video processing mode. `agentic` enables agentic video processing and `static` forces fixed-rate frame sampling on providers that support it (currently Google Gemini).'
+          enum:
+            - 'agentic'
+            - 'static'
+          example: 'agentic'
+          type: 'string'
+          x-speakeasy-unknown-values: allow
         url:
           description: 'URL of the video (data: URLs supported)'
           type: 'string'
@@ -11762,6 +11770,14 @@ components:
         type: 'input_video'
         video_url: 'https://example.com/video.mp4'
       properties:
+        processing:
+          description: 'Video processing mode. `agentic` enables agentic video processing and `static` forces fixed-rate frame sampling on providers that support it (currently Google Gemini).'
+          enum:
+            - 'agentic'
+            - 'static'
+          example: 'agentic'
+          type: 'string'
+          x-speakeasy-unknown-values: allow
         type:
           enum:
             - 'input_video'
@@ -11934,6 +11950,14 @@ components:
       example:
         url: 'https://example.com/video.mp4'
       properties:
+        processing:
+          description: 'Video processing mode. `agentic` enables agentic video processing and `static` forces fixed-rate frame sampling on providers that support it (currently Google Gemini).'
+          enum:
+            - 'agentic'
+            - 'static'
+          example: 'agentic'
+          type: 'string'
+          x-speakeasy-unknown-values: allow
         url:
           description: 'URL of the video (data: URLs supported)'
           type: 'string'
@@ -28177,6 +28201,16 @@ paths:
               schema:
                 $ref: '#/components/schemas/PaymentRequiredResponse'
           description: 'Payment Required - Insufficient credits or quota to complete request'
+        '403':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 403
+                  message: 'Only management keys can perform this operation'
+              schema:
+                $ref: '#/components/schemas/ForbiddenResponse'
+          description: 'Forbidden - Authentication successful but insufficient permissions'
         '404':
           content:
             application/json:
@@ -28367,6 +28401,16 @@ paths:
               schema:
                 $ref: '#/components/schemas/PaymentRequiredResponse'
           description: 'Payment Required - Insufficient credits or quota to complete request'
+        '403':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 403
+                  message: 'Only management keys can perform this operation'
+              schema:
+                $ref: '#/components/schemas/ForbiddenResponse'
+          description: 'Forbidden - Authentication successful but insufficient permissions'
         '404':
           content:
             application/json:
@@ -31128,6 +31172,16 @@ paths:
               schema:
                 $ref: '#/components/schemas/PaymentRequiredResponse'
           description: 'Payment Required - Insufficient credits or quota to complete request'
+        '403':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 403
+                  message: 'Only management keys can perform this operation'
+              schema:
+                $ref: '#/components/schemas/ForbiddenResponse'
+          description: 'Forbidden - Authentication successful but insufficient permissions'
         '404':
           content:
             application/json:
@@ -38729,6 +38783,16 @@ paths:
               schema:
                 $ref: '#/components/schemas/PaymentRequiredResponse'
           description: 'Payment Required - Insufficient credits or quota to complete request'
+        '403':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 403
+                  message: 'Only management keys can perform this operation'
+              schema:
+                $ref: '#/components/schemas/ForbiddenResponse'
+          description: 'Forbidden - Authentication successful but insufficient permissions'
         '404':
           content:
             application/json:
@@ -39576,6 +39640,16 @@ paths:
               schema:
                 $ref: '#/components/schemas/PaymentRequiredResponse'
           description: 'Payment Required - Insufficient credits or quota to complete request'
+        '403':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 403
+                  message: 'Only management keys can perform this operation'
+              schema:
+                $ref: '#/components/schemas/ForbiddenResponse'
+          description: 'Forbidden - Authentication successful but insufficient permissions'
         '404':
           content:
             application/json:
@@ -39662,6 +39736,16 @@ paths:
               schema:
                 $ref: '#/components/schemas/UnauthorizedResponse'
           description: 'Unauthorized - Authentication required or invalid credentials'
+        '403':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 403
+                  message: 'Only management keys can perform this operation'
+              schema:
+                $ref: '#/components/schemas/ForbiddenResponse'
+          description: 'Forbidden - Authentication successful but insufficient permissions'
         '404':
           content:
             application/json:
@@ -39741,6 +39825,16 @@ paths:
               schema:
                 $ref: '#/components/schemas/UnauthorizedResponse'
           description: 'Unauthorized - Authentication required or invalid credentials'
+        '403':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 403
+                  message: 'Only management keys can perform this operation'
+              schema:
+                $ref: '#/components/schemas/ForbiddenResponse'
+          description: 'Forbidden - Authentication successful but insufficient permissions'
         '404':
           content:
             application/json:
