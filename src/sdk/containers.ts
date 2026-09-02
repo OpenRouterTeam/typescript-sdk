@@ -6,6 +6,7 @@
 import { containersDownloadContainerFileContent } from "../funcs/containersDownloadContainerFileContent.js";
 import { containersGetContainerFile } from "../funcs/containersGetContainerFile.js";
 import { containersListContainerFiles } from "../funcs/containersListContainerFiles.js";
+import { containersListContainers } from "../funcs/containersListContainers.js";
 import { containersPromoteContainerFile } from "../funcs/containersPromoteContainerFile.js";
 import { ClientSDK, RequestOptions } from "../lib/sdks.js";
 import * as models from "../models/index.js";
@@ -13,6 +14,23 @@ import * as operations from "../models/operations/index.js";
 import { unwrapAsync } from "../types/fp.js";
 
 export class Containers extends ClientSDK {
+  /**
+   * List containers
+   *
+   * @remarks
+   * Lists the workspace’s stored sandbox sessions — the home directories persisted to storage — in ascending id order. Each entry’s `bytes` counts against the workspace storage quota, and a session expires 30 days after its last activity. A listed container is not necessarily running; see `GET /containers/{container_id}/files` for its contents. Paginate with `limit` and `after` (pass the previous page’s `last_id`).
+   */
+  async listContainers(
+    request?: operations.ListContainersRequest | undefined,
+    options?: RequestOptions,
+  ): Promise<models.ContainerListResponse> {
+    return unwrapAsync(containersListContainers(
+      this,
+      request,
+      options,
+    ));
+  }
+
   /**
    * List container files
    *
@@ -68,7 +86,7 @@ export class Containers extends ClientSDK {
    * Promote a container file into workspace documents
    *
    * @remarks
-   * Copies a file from the container's sandbox prefix into the workspace's durable document storage, so it outlives the container. Returns the new document in the Files API shape, with a durable file id in the documents namespace. The copy counts against the workspace's storage quota. Unlike a direct upload, promoted files are downloadable.
+   * Copies a file from the container's sandbox prefix into the workspace's durable document storage, so it outlives the container. Returns the new document in the Files API shape, with a durable file id in the documents namespace. The copy counts against the workspace's storage quota. Unlike a direct upload, promoted files are downloadable. The document lands in the same workspace the container belongs to.
    */
   async promoteContainerFile(
     request: operations.PromoteContainerFileRequest,
