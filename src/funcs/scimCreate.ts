@@ -32,7 +32,7 @@ import { Result } from "../types/fp.js";
  * Create a SCIM group mapping
  *
  * @remarks
- * Create a SCIM group-to-workspace role mapping. [Management key](/docs/guides/overview/auth/management-api-keys) required.
+ * Create a SCIM group-to-workspace role mapping. Creating a mapping that already exists with the same role succeeds and re-applies the mapping to the group members. Requesting a different role for an existing mapping returns 409. [Management key](/docs/guides/overview/auth/management-api-keys) required.
  */
 export function scimCreate(
   client: OpenRouterCore,
