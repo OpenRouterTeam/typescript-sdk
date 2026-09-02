@@ -1,19 +1,19 @@
 lockVersion: ""
 id: ""
 management:
-  docChecksum: 8c11fb3892e8269dfea15500ead7a9b5
+  docChecksum: 936f7f2acc9430bdaf934449aad8bed1
   docVersion: 1.0.0
   speakeasyVersion: 1.787.0
   generationVersion: 2.914.0
-  releaseVersion: 1.2.96
-  configChecksum: 0df01ae3e1aa4f283931ae71d99857ef
+  releaseVersion: 1.2.97
+  configChecksum: 3840f689d224790224f477b5c6644881
   repoURL: https://github.com/OpenRouterTeam/typescript-sdk.git
   installationURL: https://github.com/OpenRouterTeam/typescript-sdk
   published: true
 persistentEdits:
-  generation_id: 0c2fd842-0aa2-42e9-b18e-2859bfd74474
-  pristine_commit_hash: 32a578e9156b5079cd7b5c256d4f2d24f60371b4
-  pristine_tree_hash: 4bd9bc6d53a4911b26f6e6b9129d63869277ea51
+  generation_id: ce5ca7ae-91ee-4f96-9392-6d51e340bf16
+  pristine_commit_hash: ed8fe2936e66e24b2d05a0d2eb4db8464e3dd006
+  pristine_tree_hash: c15ec5df380b06d7783b22fb8ff9027cb75e8550
 features:
   typescript:
     acceptHeaders: 2.81.2
@@ -7194,8 +7194,8 @@ trackedFiles:
     pristine_git_object: 45a9a6b9516497dc77f17670eac7e0242be58b61
   docs/models/operations/createkeysrequestbody.mdx:
     id: 300993eac8d3
-    last_write_checksum: sha1:178915cacfcf85e9e440d07a0e0ac8459937e43b
-    pristine_git_object: b716f3603f59c21d01b7501d40761edc535f2bd2
+    last_write_checksum: sha1:a059d6aefe74a3fc8183d3caf1df77be5ab64643
+    pristine_git_object: 9356f522ce9644f7f626012f656005fc5d0732b3
   docs/models/operations/createkeysresponse.mdx:
     id: 5135de195ccb
     last_write_checksum: sha1:e1002f2fa2094f6ecfe2604f5862f0f241d2b752
@@ -12918,8 +12918,8 @@ trackedFiles:
     pristine_git_object: d83e642dfeee46102ccc469da7a644cc99efab42
   docs/sdks/apikeys/README.mdx:
     id: 27fcaae1c346
-    last_write_checksum: sha1:584450e69df73f87150dae19a4efdd59de7cb4f5
-    pristine_git_object: 05abae8d94cde249e93eb5266063cec93ef7c053
+    last_write_checksum: sha1:bf136b5b82ebedf9b16e5d352c74185bbf0cccc0
+    pristine_git_object: cb1e65174a7a99798ed9f66865ce42638814f57d
   docs/sdks/benchmarks/README.md:
     id: 61c16262af9b
     last_write_checksum: sha1:17fd0e4aa4c358c6298ee9a434a14ff68ce83dbf
@@ -13125,12 +13125,12 @@ trackedFiles:
     pristine_git_object: 410efafd6a7f50d91ccb87131fedbe0c3d47e15a
   jsr.json:
     id: 7f6ab7767282
-    last_write_checksum: sha1:bf13525c645f2a650ae67e898a904d20d8df68db
-    pristine_git_object: 3f5621958f89115f8a9292116ba3bcc67055e847
+    last_write_checksum: sha1:0bb675217f03c8a37fa958a3255c4f1bc4273622
+    pristine_git_object: b46abf5f3cd0003f126502c9cda20066088d859f
   package.json:
     id: 7030d0b2f71b
-    last_write_checksum: sha1:0a52d83bbe292c0815b524206ddce2847bccf5e7
-    pristine_git_object: 71a6ce086fa314ad45257860a6b35ed3e015fdad
+    last_write_checksum: sha1:fdf214fe39fd6814cf8592bfb1201bce1f85642d
+    pristine_git_object: 06df795abbf4ef1e51cfec5133ab62d07bc483b3
   src/core.ts:
     id: f431fdbcd144
     last_write_checksum: sha1:5aa66b0b6a5964f3eea7f3098c2eb3c0ee9c0131
@@ -13149,8 +13149,8 @@ trackedFiles:
     pristine_git_object: c4284631c097d7a4a59a6d387e3f490a4cc69e6c
   src/funcs/apiKeysCreate.ts:
     id: 133e2c5f487c
-    last_write_checksum: sha1:fe034eddd731860d8b8ae6bc63bb0cdd8a304033
-    pristine_git_object: 88444172c147d790dc22920ce266b1d9f6b3974b
+    last_write_checksum: sha1:c53f134b7d1138c39dcc38549fd10e45fadc926a
+    pristine_git_object: 7c68695cad24315c3a0d229402b646c7127bd59b
   src/funcs/apiKeysDelete.ts:
     id: c151c399f75f
     last_write_checksum: sha1:131599af9e6c9bbe1c3d951f6aff284c7a5fa4d2
@@ -13557,8 +13557,8 @@ trackedFiles:
     pristine_git_object: a187e58707bdb726ca2aff74941efe7493422d4e
   src/lib/config.ts:
     id: 320761608fb3
-    last_write_checksum: sha1:9d0c8cf1ee8dbc5fa7ab6faea3f67c80e8d901bc
-    pristine_git_object: 2183965aeec1ee2d3f27cf988edfb8bdd4bdd037
+    last_write_checksum: sha1:7b7e0350e39186326322bfb9e602fa67270d8bac
+    pristine_git_object: 2d7b245cbe49e6c2f20dfbe8a834e8cb87e0bcb2
   src/lib/dlv.ts:
     id: b1988214835a
     last_write_checksum: sha1:eaac763b22717206a6199104e0403ed17a4e2711
@@ -15339,8 +15339,8 @@ trackedFiles:
     pristine_git_object: 0a2ca2582247b2b60db1b464933ef5e599e430b8
   src/models/operations/createkeys.ts:
     id: e7a250c8b7bb
-    last_write_checksum: sha1:4af0eb6087add204e7a821afd0964e892476ca72
-    pristine_git_object: 901e21447b4a3a5078f29f767aa26b1ffbb09952
+    last_write_checksum: sha1:0059f6f55c319b845a0e664376bcbebfd653eb6e
+    pristine_git_object: 6279bfbecd5a7985712ae14d3fe9bdd60fe3aff1
   src/models/operations/createobservabilitydestination.ts:
     id: 600d023d815b
     last_write_checksum: sha1:5fca52c4a8b4361f8b14e8534703c725b11ea814
@@ -16611,8 +16611,8 @@ trackedFiles:
     pristine_git_object: 8a7efa79ead429ae16fd167d1969491766e11751
   src/sdk/apikeys.ts:
     id: 5dda931501e1
-    last_write_checksum: sha1:8697a1e845a08db44e2bead5a0ffe6a1cb8a554d
-    pristine_git_object: da0e9b9420ca201e8a68b9da39796371cba7414b
+    last_write_checksum: sha1:4a3d0088e150a9a36d080477eacecf2fc44326d5
+    pristine_git_object: dfc4cc1191c714d440562951818971972a7dae8c
   src/sdk/benchmarks.ts:
     id: 72ce7b70fba8
     last_write_checksum: sha1:4e243ac5896b6f8dae4ca47e467830c658d5fd65
@@ -18675,8 +18675,4 @@ examples:
         "503":
           application/json: {"error": {"code": 503, "message": "Service temporarily unavailable"}}
 examplesVersion: 1.0.2
-releaseNotes: |
-  ## Typescript SDK Changes:
-  * `openrouter.chat.send()`:  `response` **Changed**
-  * `openrouter.responses.send()`:  `response` **Changed**
-  * `openrouter.beta.responses.send()`:  `response` **Changed**
+releaseNotes: "## Typescript SDK Changes:\n* `openrouter.apiKeys.create()`: \n  *  `request.requestBody` **Changed** (Breaking ⚠️)\n"
