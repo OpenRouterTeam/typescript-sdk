@@ -55,6 +55,10 @@ export type OutputBashServerToolItem = {
    * The canonical container id the command ran under — the `{container_id}` for the Container Files API, reusable as a `container_reference` in later requests. Present on every sandbox-executed call, even when no files changed.
    */
   containerId?: string | undefined;
+  /**
+   * The error message when the sandbox call failed before producing a result (for example, the per-user container limit was reached). Absent on a successful call; a non-zero `exitCode` is a command failure, not a tool failure.
+   */
+  error?: string | undefined;
   exitCode?: number | undefined;
   /**
    * Citations for the files the sandbox command created or modified, most-recently-touched first (at most 10). Retrieve them via the Container Files API.
@@ -164,6 +168,7 @@ export const OutputBashServerToolItem$inboundSchema: z.ZodType<
   call_id: z.nullable(z.string()).optional(),
   command: z.string().optional(),
   container_id: z.string().optional(),
+  error: z.string().optional(),
   exitCode: z.int().optional(),
   files: z.array(z.lazy(() => OutputBashServerToolItemFile$inboundSchema))
     .optional(),
@@ -184,6 +189,7 @@ export type OutputBashServerToolItem$Outbound = {
   call_id?: string | null | undefined;
   command?: string | undefined;
   container_id?: string | undefined;
+  error?: string | undefined;
   exitCode?: number | undefined;
   files?: Array<OutputBashServerToolItemFile$Outbound> | undefined;
   id?: string | undefined;
@@ -202,6 +208,7 @@ export const OutputBashServerToolItem$outboundSchema: z.ZodType<
   callId: z.nullable(z.string()).optional(),
   command: z.string().optional(),
   containerId: z.string().optional(),
+  error: z.string().optional(),
   exitCode: z.int().optional(),
   files: z.array(z.lazy(() => OutputBashServerToolItemFile$outboundSchema))
     .optional(),
