@@ -32,7 +32,7 @@ import { Result } from "../types/fp.js";
  * List container files
  *
  * @remarks
- * Lists the files in a container, in lexicographic path order. The container id is the canonical id returned in bash/shell tool results; a restarted session is a separate container with its own id. Paginate with `limit` and `after` (pass the previous page’s `last_id`); `has_more: true` always means the next page is fetchable that way.
+ * Lists the files in a container, in lexicographic path order. The container id is the canonical id returned in bash/shell tool results; a restarted session is a separate container with its own id. Paginate with `limit` and `after` (pass the previous page’s `last_id`); `has_more: true` always means the next page is fetchable that way. `workspace_id` selects the workspace the container belongs to, defaulting to the API key’s workspace, else the default workspace.
  */
 export function containersListContainerFiles(
   client: OpenRouterCore,
@@ -112,6 +112,7 @@ async function $do(
   const query = encodeFormQuery({
     "after": payload.after,
     "limit": payload.limit,
+    "workspace_id": payload.workspace_id,
   });
 
   const headers = new Headers(compactMap({
