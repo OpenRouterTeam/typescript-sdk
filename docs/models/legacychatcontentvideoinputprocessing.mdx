@@ -1,0 +1,21 @@
+---
+title: "LegacyChatContentVideoInputProcessing"
+---
+
+Video processing mode. `agentic` enables agentic video processing and `static` forces fixed-rate frame sampling on providers that support it (currently Google Gemini).
+
+## Example Usage
+
+```typescript
+import { LegacyChatContentVideoInputProcessing } from "@openrouter/sdk/models";
+
+let value: LegacyChatContentVideoInputProcessing = "agentic";
+
+// Open enum: unrecognized values are captured as Unrecognized<string>
+```
+
+## Values
+
+```typescript
+"agentic" | "static" | Unrecognized<string>
+```
