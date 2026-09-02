@@ -34090,7 +34090,7 @@ paths:
         - 'API Keys'
       x-speakeasy-name-override: 'list'
     post:
-      description: 'Create a new API key for the authenticated user. The plaintext `key` is returned only in this response. Treat it as a write-only, sensitive value; it cannot be retrieved later. Authenticate with a [management key](/docs/guides/overview/auth/management-api-keys), or with a Connect client secret. `external_user` and `external_api_key` are accepted only with a client secret, and `external_user` is required there; supplying either field with a management key is rejected with 403.'
+      description: 'Create a new API key for the authenticated user. The plaintext `key` is returned only in this response. Treat it as a write-only, sensitive value; it cannot be retrieved later. Authenticate with a [management key](/docs/guides/overview/auth/management-api-keys), or with a Connect client secret.'
       operationId: 'createKeys'
       requestBody:
         content:
@@ -34123,16 +34123,6 @@ paths:
                   type:
                     - 'string'
                     - 'null'
-                external_api_key:
-                  description: 'Optional partner-supplied API key. Stored as a SHA-256 hash and never returned. Accepted only when authenticating with a Connect client secret; supplying it with a management key is rejected with 403.'
-                  maxLength: 512
-                  minLength: 1
-                  type: 'string'
-                external_user:
-                  description: 'Partner''s end-user identifier for attribution, between 1 and 512 characters. Accepted only when authenticating with a Connect client secret, where it is required; supplying it with a management key is rejected with 403.'
-                  maxLength: 512
-                  minLength: 1
-                  type: 'string'
                 include_byok_in_limit:
                   description: 'Whether to include BYOK usage in the limit'
                   example: true
