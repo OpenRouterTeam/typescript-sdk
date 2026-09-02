@@ -6,6 +6,7 @@
 import { containersDownloadContainerFileContent } from "../funcs/containersDownloadContainerFileContent.js";
 import { containersGetContainerFile } from "../funcs/containersGetContainerFile.js";
 import { containersListContainerFiles } from "../funcs/containersListContainerFiles.js";
+import { containersListContainers } from "../funcs/containersListContainers.js";
 import { containersPromoteContainerFile } from "../funcs/containersPromoteContainerFile.js";
 import { ClientSDK, RequestOptions } from "../lib/sdks.js";
 import * as models from "../models/index.js";
@@ -14,10 +15,27 @@ import { unwrapAsync } from "../types/fp.js";
 
 export class Containers extends ClientSDK {
   /**
+   * List containers
+   *
+   * @remarks
+   * Lists the workspace’s stored sandbox sessions — the home directories persisted to storage — in ascending id order. Each entry’s `bytes` counts against the workspace storage quota, and a session expires 30 days after its last activity. A listed container is not necessarily running; see `GET /containers/{container_id}/files` for its contents. Paginate with `limit` and `after` (pass the previous page’s `last_id`). `workspace_id` selects the workspace, defaulting to the API key’s workspace, else the default workspace.
+   */
+  async listContainers(
+    request?: operations.ListContainersRequest | undefined,
+    options?: RequestOptions,
+  ): Promise<models.ContainerListResponse> {
+    return unwrapAsync(containersListContainers(
+      this,
+      request,
+      options,
+    ));
+  }
+
+  /**
    * List container files
    *
    * @remarks
-   * Lists the files in a container, in lexicographic path order. The container id is the canonical id returned in bash/shell tool results; a restarted session is a separate container with its own id. Paginate with `limit` and `after` (pass the previous page’s `last_id`); `has_more: true` always means the next page is fetchable that way.
+   * Lists the files in a container, in lexicographic path order. The container id is the canonical id returned in bash/shell tool results; a restarted session is a separate container with its own id. Paginate with `limit` and `after` (pass the previous page’s `last_id`); `has_more: true` always means the next page is fetchable that way. `workspace_id` selects the workspace the container belongs to, defaulting to the API key’s workspace, else the default workspace.
    */
   async listContainerFiles(
     request: operations.ListContainerFilesRequest,
@@ -34,7 +52,7 @@ export class Containers extends ClientSDK {
    * Retrieve a container file
    *
    * @remarks
-   * Returns the metadata of a single file in a container.
+   * Returns the metadata of a single file in a container. `workspace_id` selects the workspace the container belongs to, defaulting to the API key’s workspace, else the default workspace.
    */
   async getContainerFile(
     request: operations.GetContainerFileRequest,
@@ -51,7 +69,7 @@ export class Containers extends ClientSDK {
    * Download container file content
    *
    * @remarks
-   * Streams the raw bytes of a file in a container.
+   * Streams the raw bytes of a file in a container. `workspace_id` selects the workspace the container belongs to, defaulting to the API key’s workspace, else the default workspace.
    */
   async downloadContainerFileContent(
     request: operations.DownloadContainerFileContentRequest,
@@ -68,7 +86,7 @@ export class Containers extends ClientSDK {
    * Promote a container file into workspace documents
    *
    * @remarks
-   * Copies a file from the container's sandbox prefix into the workspace's durable document storage, so it outlives the container. Returns the new document in the Files API shape, with a durable file id in the documents namespace. The copy counts against the workspace's storage quota. Unlike a direct upload, promoted files are downloadable.
+   * Copies a file from the container's sandbox prefix into the workspace's durable document storage, so it outlives the container. Returns the new document in the Files API shape, with a durable file id in the documents namespace. The copy counts against the workspace's storage quota. Unlike a direct upload, promoted files are downloadable. `workspace_id` selects the workspace the container belongs to (and that receives the document), defaulting to the API key's workspace, else the default workspace.
    */
   async promoteContainerFile(
     request: operations.PromoteContainerFileRequest,
