@@ -53,6 +53,10 @@ export type ListContainerFilesRequest = {
    */
   containerId: string;
   /**
+   * Workspace to scope the request to. Defaults to the caller’s default workspace.
+   */
+  workspaceId?: string | undefined;
+  /**
    * Maximum number of files to return (1-1000). Defaults to 100 when absent.
    */
   limit?: number | undefined;
@@ -68,6 +72,7 @@ export type ListContainerFilesRequest$Outbound = {
   appTitle?: string | undefined;
   appCategories?: string | undefined;
   container_id: string;
+  workspace_id?: string | undefined;
   limit: number;
   after?: string | undefined;
 };
@@ -81,12 +86,14 @@ export const ListContainerFilesRequest$outboundSchema: z.ZodType<
   appTitle: z.string().optional(),
   appCategories: z.string().optional(),
   containerId: z.string(),
+  workspaceId: z.string().optional(),
   limit: z.int().default(100),
   after: z.string().optional(),
 }).transform((v) => {
   return remap$(v, {
     httpReferer: "HTTP-Referer",
     containerId: "container_id",
+    workspaceId: "workspace_id",
   });
 });
 
