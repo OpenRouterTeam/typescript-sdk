@@ -4,7 +4,7 @@
  */
 
 import { OpenRouterCore } from "../core.js";
-import { encodeSimple } from "../lib/encodings.js";
+import { encodeFormQuery, encodeSimple } from "../lib/encodings.js";
 import { matchStatusCode } from "../lib/http.js";
 import * as M from "../lib/matchers.js";
 import { compactMap } from "../lib/primitives.js";
@@ -32,7 +32,7 @@ import { Result } from "../types/fp.js";
  * Promote a container file into workspace documents
  *
  * @remarks
- * Copies a file from the container's sandbox prefix into the workspace's durable document storage, so it outlives the container. Returns the new document in the Files API shape, with a durable file id in the documents namespace. The copy counts against the workspace's storage quota. Unlike a direct upload, promoted files are downloadable.
+ * Copies a file from the container's sandbox prefix into the workspace's durable document storage, so it outlives the container. Returns the new document in the Files API shape, with a durable file id in the documents namespace. The copy counts against the workspace's storage quota. Unlike a direct upload, promoted files are downloadable. `workspace_id` selects the workspace the container belongs to (and that receives the document), defaulting to the API key's workspace, else the default workspace.
  */
 export function containersPromoteContainerFile(
   client: OpenRouterCore,
@@ -120,6 +120,10 @@ async function $do(
     pathParams,
   );
 
+  const query = encodeFormQuery({
+    "workspace_id": payload.workspace_id,
+  });
+
   const headers = new Headers(compactMap({
     Accept: "application/json",
     "HTTP-Referer": encodeSimple(
@@ -174,6 +178,7 @@ async function $do(
     baseURL: options?.serverURL,
     path: path,
     headers: headers,
+    query: query,
     body: body,
     userAgent: client._options.userAgent,
     timeoutMs: options?.timeoutMs || client._options.timeoutMs || -1,
