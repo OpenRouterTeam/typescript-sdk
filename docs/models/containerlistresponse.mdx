@@ -1,0 +1,27 @@
+---
+title: "ContainerListResponse"
+---
+
+## Example Usage
+
+```typescript
+import { ContainerListResponse } from "@openrouter/sdk/models";
+
+let value: ContainerListResponse = {
+  data: [],
+  firstId: "sess_abc123",
+  hasMore: false,
+  lastId: "sess_abc123",
+  object: "list",
+};
+```
+
+## Fields
+
+| Field                                                                          | Type                                                                           | Required                                                                       | Description                                                                    | Example                                                                        |
+| ------------------------------------------------------------------------------ | ------------------------------------------------------------------------------ | ------------------------------------------------------------------------------ | ------------------------------------------------------------------------------ | ------------------------------------------------------------------------------ |
+| `data`                                                                         | [models.Container](../models/container.mdx)[]                                   | :heavy_check_mark:                                                             | N/A                                                                            |                                                                                |
+| `firstId`                                                                      | *string*                                                                       | :heavy_check_mark:                                                             | N/A                                                                            | sess_abc123                                                                    |
+| `hasMore`                                                                      | *boolean*                                                                      | :heavy_check_mark:                                                             | True when another page can be fetched by passing `after=last_id`.              | false                                                                          |
+| `lastId`                                                                       | *string*                                                                       | :heavy_check_mark:                                                             | N/A                                                                            | sess_abc123                                                                    |
+| `object`                                                                       | [models.ContainerListResponseObject](../models/containerlistresponseobject.mdx) | :heavy_check_mark:                                                             | N/A                                                                            | list                                                                           |
