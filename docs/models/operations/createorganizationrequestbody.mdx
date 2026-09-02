@@ -1,0 +1,21 @@
+---
+title: "CreateOrganizationRequestBody"
+---
+
+## Example Usage
+
+```typescript
+import { CreateOrganizationRequestBody } from "@openrouter/sdk/models/operations";
+
+let value: CreateOrganizationRequestBody = {
+  email: "owner@acme.example",
+  name: "Acme Corp",
+};
+```
+
+## Fields
+
+| Field                                                                                                                                      | Type                                                                                                                                       | Required                                                                                                                                   | Description                                                                                                                                | Example                                                                                                                                    |
+| ------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------ |
+| `email`                                                                                                                                    | *string*                                                                                                                                   | :heavy_check_mark:                                                                                                                         | Email address of the managed owner account created for the organization.                                                                   | owner@acme.example                                                                                                                         |
+| `name`                                                                                                                                     | *string*                                                                                                                                   | :heavy_check_mark:                                                                                                                         | The customer name. The organization is created as "[Parent] Customer", using the display name of the organization holding the Connect key. | Acme Corp                                                                                                                                  |
