@@ -14,7 +14,7 @@ import { SDKValidationError } from "./errors/sdkvalidationerror.js";
  */
 export type CostDetails = {
   /**
-   * Metered server-tool execution cost (for example, shell sandbox time) billed for this request, in USD. Matches the billed checkpoint and settlement amounts exactly.
+   * Metered server-tool execution cost (for example, shell sandbox time) billed for this request, in USD. Matches the billed checkpoint and settlement amounts exactly. 0 when a metered server tool ran but settled at zero dollars; absent when no metered server tool ran.
    */
   serverToolCost?: number | null | undefined;
   upstreamInferenceCompletionsCost: number;
