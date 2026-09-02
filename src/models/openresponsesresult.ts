@@ -159,7 +159,7 @@ export type OutputTokensDetails = {
 
 export type UsageCostDetails = {
   /**
-   * Metered server-tool execution cost (for example, shell sandbox time) billed for this request, in USD. Matches the billed checkpoint and settlement amounts exactly. 0 when a metered server tool ran but settled at zero dollars; absent when no metered server tool ran.
+   * Metered server-tool execution cost (for example, shell sandbox time) billed for this request, in USD. Matches the billed checkpoint and settlement amounts exactly.
    */
   serverToolCost?: number | null | undefined;
   upstreamInferenceCost?: number | null | undefined;
@@ -178,6 +178,10 @@ export type Usage = {
    */
   cost?: number | null | undefined;
   costDetails?: UsageCostDetails | undefined;
+  /**
+   * Milliseconds OpenRouter measured for the generation, from dispatching the upstream request until its response body ended. Divide output_tokens by this to get throughput.
+   */
+  generationTime?: number | null | undefined;
   /**
    * Whether a request was made using a Bring Your Own Key configuration
    */
@@ -440,6 +444,7 @@ export const Usage$inboundSchema: z.ZodType<Usage, unknown> = z.object({
   total_tokens: z.int(),
   cost: z.nullable(z.number()).optional(),
   cost_details: z.lazy(() => UsageCostDetails$inboundSchema).optional(),
+  generation_time: z.nullable(z.int()).optional(),
   is_byok: z.boolean().optional(),
   server_tool_use_details: z.nullable(ServerToolUseDetails$inboundSchema)
     .optional(),
@@ -451,6 +456,7 @@ export const Usage$inboundSchema: z.ZodType<Usage, unknown> = z.object({
     "output_tokens_details": "outputTokensDetails",
     "total_tokens": "totalTokens",
     "cost_details": "costDetails",
+    "generation_time": "generationTime",
     "is_byok": "isByok",
     "server_tool_use_details": "serverToolUseDetails",
   });

@@ -103,6 +103,10 @@ export type ImageGenerationUsage = {
    */
   costDetails?: CostDetails | null | undefined;
   /**
+   * Milliseconds OpenRouter measured for the generation, from dispatching the upstream request until its response body ended. Divide completion_tokens by this to get throughput.
+   */
+  generationTime?: number | null | undefined;
+  /**
    * Whether a request was made using a Bring Your Own Key configuration
    */
   isByok?: boolean | undefined;
@@ -235,6 +239,7 @@ export const ImageGenerationUsage$inboundSchema: z.ZodType<
   ).optional(),
   cost: z.nullable(z.number()).optional(),
   cost_details: z.nullable(CostDetails$inboundSchema).optional(),
+  generation_time: z.nullable(z.int()).optional(),
   is_byok: z.boolean().optional(),
   iterations: z.nullable(z.array(AnthropicUsageIteration$inboundSchema))
     .optional(),
@@ -253,6 +258,7 @@ export const ImageGenerationUsage$inboundSchema: z.ZodType<
     "completion_tokens": "completionTokens",
     "completion_tokens_details": "completionTokensDetails",
     "cost_details": "costDetails",
+    "generation_time": "generationTime",
     "is_byok": "isByok",
     "prompt_tokens": "promptTokens",
     "prompt_tokens_details": "promptTokensDetails",

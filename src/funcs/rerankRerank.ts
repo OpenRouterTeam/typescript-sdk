@@ -43,7 +43,6 @@ export function rerankRerank(
     | errors.BadRequestResponseError
     | errors.UnauthorizedResponseError
     | errors.PaymentRequiredResponseError
-    | errors.ForbiddenResponseError
     | errors.NotFoundResponseError
     | errors.PayloadTooLargeResponseError
     | errors.TooManyRequestsResponseError
@@ -80,7 +79,6 @@ async function $do(
       | errors.BadRequestResponseError
       | errors.UnauthorizedResponseError
       | errors.PaymentRequiredResponseError
-      | errors.ForbiddenResponseError
       | errors.NotFoundResponseError
       | errors.PayloadTooLargeResponseError
       | errors.TooManyRequestsResponseError
@@ -199,7 +197,6 @@ async function $do(
     | errors.BadRequestResponseError
     | errors.UnauthorizedResponseError
     | errors.PaymentRequiredResponseError
-    | errors.ForbiddenResponseError
     | errors.NotFoundResponseError
     | errors.PayloadTooLargeResponseError
     | errors.TooManyRequestsResponseError
@@ -224,7 +221,6 @@ async function $do(
     M.jsonErr(400, errors.BadRequestResponseError$inboundSchema),
     M.jsonErr(401, errors.UnauthorizedResponseError$inboundSchema),
     M.jsonErr(402, errors.PaymentRequiredResponseError$inboundSchema),
-    M.jsonErr(403, errors.ForbiddenResponseError$inboundSchema),
     M.jsonErr(404, errors.NotFoundResponseError$inboundSchema),
     M.jsonErr(413, errors.PayloadTooLargeResponseError$inboundSchema),
     M.jsonErr(429, errors.TooManyRequestsResponseError$inboundSchema),
