@@ -30,7 +30,7 @@ export type ContainerAuto = {
   type: ContainerType;
 };
 
-export type Container = ContainerAuto | string;
+export type ContainerUnion = ContainerAuto | string;
 
 export const TypeCodeInterpreter = {
   CodeInterpreter: "code_interpreter",
@@ -107,29 +107,27 @@ export function containerAutoFromJSON(
 }
 
 /** @internal */
-export const Container$inboundSchema: z.ZodType<Container, unknown> = z.union([
-  z.lazy(() => ContainerAuto$inboundSchema),
-  z.string(),
-]);
+export const ContainerUnion$inboundSchema: z.ZodType<ContainerUnion, unknown> =
+  z.union([z.lazy(() => ContainerAuto$inboundSchema), z.string()]);
 /** @internal */
-export type Container$Outbound = ContainerAuto$Outbound | string;
+export type ContainerUnion$Outbound = ContainerAuto$Outbound | string;
 
 /** @internal */
-export const Container$outboundSchema: z.ZodType<
-  Container$Outbound,
-  Container
+export const ContainerUnion$outboundSchema: z.ZodType<
+  ContainerUnion$Outbound,
+  ContainerUnion
 > = z.union([z.lazy(() => ContainerAuto$outboundSchema), z.string()]);
 
-export function containerToJSON(container: Container): string {
-  return JSON.stringify(Container$outboundSchema.parse(container));
+export function containerUnionToJSON(containerUnion: ContainerUnion): string {
+  return JSON.stringify(ContainerUnion$outboundSchema.parse(containerUnion));
 }
-export function containerFromJSON(
+export function containerUnionFromJSON(
   jsonString: string,
-): SafeParseResult<Container, SDKValidationError> {
+): SafeParseResult<ContainerUnion, SDKValidationError> {
   return safeParse(
     jsonString,
-    (x) => Container$inboundSchema.parse(JSON.parse(x)),
-    `Failed to parse 'Container' from JSON`,
+    (x) => ContainerUnion$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'ContainerUnion' from JSON`,
   );
 }
 
