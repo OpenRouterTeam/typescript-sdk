@@ -31,7 +31,7 @@ import { Result } from "../types/fp.js";
  * Update an API key
  *
  * @remarks
- * Update an existing API key. Authenticate with a [management key](/docs/guides/overview/auth/management-api-keys), or with a Connect client secret. A client secret reaches only the keys that same client created; any other key responds as if it does not exist.
+ * Update an existing API key. Authenticate with a [management key](/docs/guides/overview/auth/management-api-keys).
  */
 export function apiKeysUpdate(
   client: OpenRouterCore,
