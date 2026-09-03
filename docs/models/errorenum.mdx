@@ -1,0 +1,19 @@
+---
+title: "ErrorEnum"
+---
+
+## Example Usage
+
+```typescript
+import { ErrorEnum } from "@openrouter/sdk/models";
+
+let value: ErrorEnum = "unsupported_grant_type";
+
+// Open enum: unrecognized values are captured as Unrecognized<string>
+```
+
+## Values
+
+```typescript
+"invalid_request" | "invalid_grant" | "unsupported_grant_type" | "invalid_scope" | "server_error" | "temporarily_unavailable" | Unrecognized<string>
+```
