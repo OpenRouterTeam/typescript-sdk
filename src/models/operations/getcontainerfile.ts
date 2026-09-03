@@ -56,6 +56,10 @@ export type GetContainerFileRequest = {
    * Container file id (`cfile_` + base64url of the file path).
    */
   fileId: string;
+  /**
+   * Workspace to scope the request to. Defaults to the caller’s default workspace.
+   */
+  workspaceId?: string | undefined;
 };
 
 /** @internal */
@@ -65,6 +69,7 @@ export type GetContainerFileRequest$Outbound = {
   appCategories?: string | undefined;
   container_id: string;
   file_id: string;
+  workspace_id?: string | undefined;
 };
 
 /** @internal */
@@ -77,11 +82,13 @@ export const GetContainerFileRequest$outboundSchema: z.ZodType<
   appCategories: z.string().optional(),
   containerId: z.string(),
   fileId: z.string(),
+  workspaceId: z.string().optional(),
 }).transform((v) => {
   return remap$(v, {
     httpReferer: "HTTP-Referer",
     containerId: "container_id",
     fileId: "file_id",
+    workspaceId: "workspace_id",
   });
 });
 
