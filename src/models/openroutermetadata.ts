@@ -24,10 +24,6 @@ export type OpenRouterMetadata = {
   attempt: number;
   attempts?: Array<RouterAttempt> | undefined;
   endpoints: EndpointsMetadata;
-  /**
-   * Milliseconds measured for the generation, from dispatching the upstream request until its response body ended. Divide the completion token count by this for throughput. Absent when no upstream request was dispatched.
-   */
-  generationTime?: number | undefined;
   isByok: boolean;
   params?: RouterParams | undefined;
   pipeline?: Array<PipelineStage> | undefined;
@@ -45,7 +41,6 @@ export const OpenRouterMetadata$inboundSchema: z.ZodType<
   attempt: z.int(),
   attempts: z.array(RouterAttempt$inboundSchema).optional(),
   endpoints: EndpointsMetadata$inboundSchema,
-  generation_time: z.int().optional(),
   is_byok: z.boolean(),
   params: RouterParams$inboundSchema.optional(),
   pipeline: z.array(PipelineStage$inboundSchema).optional(),
@@ -55,7 +50,6 @@ export const OpenRouterMetadata$inboundSchema: z.ZodType<
   summary: z.string(),
 }).transform((v) => {
   return remap$(v, {
-    "generation_time": "generationTime",
     "is_byok": "isByok",
   });
 });

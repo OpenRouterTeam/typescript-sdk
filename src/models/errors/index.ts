@@ -11,7 +11,6 @@ export * from "./forbiddenresponseerror.js";
 export * from "./httpclienterrors.js";
 export * from "./internalserverresponseerror.js";
 export * from "./notfoundresponseerror.js";
-export * from "./oautherrorresponse.js";
 export * from "./openrouterdefaulterror.js";
 export * from "./openroutererror.js";
 export * from "./payloadtoolargeresponseerror.js";
