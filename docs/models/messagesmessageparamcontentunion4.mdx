@@ -202,3 +202,17 @@ const value: models.MessagesBashToolResultBlock = {
 };
 ```
 
+### `models.MessagesSandboxToolResultBlock`
+
+```typescript
+const value: models.MessagesSandboxToolResultBlock = {
+  content: {
+    "operation": "read",
+    "output": "export const answer = 42;\n",
+    "path": "src/index.ts",
+  },
+  toolUseId: "srvtoolu_01abc",
+  type: "openrouter_sandbox_tool_result",
+};
+```
+

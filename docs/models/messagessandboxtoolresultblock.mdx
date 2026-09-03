@@ -1,0 +1,30 @@
+---
+title: "MessagesSandboxToolResultBlock"
+---
+
+Output of an `openrouter:sandbox` file operation from a prior assistant turn. Accepted on replay and dropped before the provider request — Anthropic has no equivalent block.
+
+## Example Usage
+
+```typescript
+import { MessagesSandboxToolResultBlock } from "@openrouter/sdk/models";
+
+let value: MessagesSandboxToolResultBlock = {
+  content: {
+    "operation": "read",
+    "output": "export const answer = 42;\n",
+    "path": "src/index.ts",
+  },
+  toolUseId: "srvtoolu_01abc",
+  type: "openrouter_sandbox_tool_result",
+};
+```
+
+## Fields
+
+| Field                                                                                                  | Type                                                                                                   | Required                                                                                               | Description                                                                                            |
+| ------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------ |
+| `containerId`                                                                                          | *string*                                                                                               | :heavy_minus_sign:                                                                                     | The canonical container id the file operation ran on — the same id the owning shell/bash call reports. |
+| `content`                                                                                              | Record\<string, *any*>                                                                                  | :heavy_check_mark:                                                                                     | N/A                                                                                                    |
+| `toolUseId`                                                                                            | *string*                                                                                               | :heavy_check_mark:                                                                                     | N/A                                                                                                    |
+| `type`                                                                                                 | *"openrouter_sandbox_tool_result"*                                                                     | :heavy_check_mark:                                                                                     | N/A                                                                                                    |

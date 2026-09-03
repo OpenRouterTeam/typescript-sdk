@@ -94,6 +94,10 @@ import {
   OutputReasoningItem$inboundSchema,
 } from "./outputreasoningitem.js";
 import {
+  OutputSandboxServerToolItem,
+  OutputSandboxServerToolItem$inboundSchema,
+} from "./outputsandboxservertoolitem.js";
+import {
   OutputSearchModelsServerToolItem,
   OutputSearchModelsServerToolItem$inboundSchema,
 } from "./outputsearchmodelsservertoolitem.js";
@@ -165,6 +169,7 @@ export type OutputItems =
   })
   | (OutputMcpServerToolItem & { type: "openrouter:mcp" })
   | (OutputMemoryServerToolItem & { type: "openrouter:memory" })
+  | (OutputSandboxServerToolItem & { type: "openrouter:sandbox" })
   | (OutputShellServerToolItem & { type: "openrouter:shell" })
   | (OutputSubagentServerToolItem & { type: "openrouter:subagent" })
   | (OutputTextEditorServerToolItem & { type: "openrouter:text_editor" })
@@ -238,6 +243,9 @@ export const OutputItems$inboundSchema: z.ZodType<OutputItems, unknown> =
     ),
     ["openrouter:memory"]: OutputMemoryServerToolItem$inboundSchema.and(
       z.object({ type: z.literal("openrouter:memory") }),
+    ),
+    ["openrouter:sandbox"]: OutputSandboxServerToolItem$inboundSchema.and(
+      z.object({ type: z.literal("openrouter:sandbox") }),
     ),
     ["openrouter:shell"]: OutputShellServerToolItem$inboundSchema.and(
       z.object({ type: z.literal("openrouter:shell") }),
