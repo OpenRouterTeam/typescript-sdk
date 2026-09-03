@@ -197,6 +197,11 @@ import {
   OutputMemoryServerToolItem$outboundSchema,
 } from "./outputmemoryservertoolitem.js";
 import {
+  OutputSandboxServerToolItem,
+  OutputSandboxServerToolItem$Outbound,
+  OutputSandboxServerToolItem$outboundSchema,
+} from "./outputsandboxservertoolitem.js";
+import {
   OutputSearchModelsServerToolItem,
   OutputSearchModelsServerToolItem$Outbound,
   OutputSearchModelsServerToolItem$outboundSchema,
@@ -443,6 +448,7 @@ export type InputsUnion1 =
   | OutputAdvisorServerToolItem
   | OutputSubagentServerToolItem
   | OutputFilesServerToolItem
+  | OutputSandboxServerToolItem
   | OutputShellServerToolItem
   | CompactionItem
   | ItemReferenceItem
@@ -500,6 +506,7 @@ export type InputsUnion =
     | OutputAdvisorServerToolItem
     | OutputSubagentServerToolItem
     | OutputFilesServerToolItem
+    | OutputSandboxServerToolItem
     | OutputShellServerToolItem
     | CompactionItem
     | ItemReferenceItem
@@ -804,6 +811,7 @@ export type InputsUnion1$Outbound =
   | OutputAdvisorServerToolItem$Outbound
   | OutputSubagentServerToolItem$Outbound
   | OutputFilesServerToolItem$Outbound
+  | OutputSandboxServerToolItem$Outbound
   | OutputShellServerToolItem$Outbound
   | CompactionItem$Outbound
   | ItemReferenceItem$Outbound
@@ -860,6 +868,7 @@ export const InputsUnion1$outboundSchema: z.ZodType<
   OutputAdvisorServerToolItem$outboundSchema,
   OutputSubagentServerToolItem$outboundSchema,
   OutputFilesServerToolItem$outboundSchema,
+  OutputSandboxServerToolItem$outboundSchema,
   OutputShellServerToolItem$outboundSchema,
   CompactionItem$outboundSchema,
   ItemReferenceItem$outboundSchema,
@@ -920,6 +929,7 @@ export type InputsUnion$Outbound =
     | OutputAdvisorServerToolItem$Outbound
     | OutputSubagentServerToolItem$Outbound
     | OutputFilesServerToolItem$Outbound
+    | OutputSandboxServerToolItem$Outbound
     | OutputShellServerToolItem$Outbound
     | CompactionItem$Outbound
     | ItemReferenceItem$Outbound
@@ -980,6 +990,7 @@ export const InputsUnion$outboundSchema: z.ZodType<
       OutputAdvisorServerToolItem$outboundSchema,
       OutputSubagentServerToolItem$outboundSchema,
       OutputFilesServerToolItem$outboundSchema,
+      OutputSandboxServerToolItem$outboundSchema,
       OutputShellServerToolItem$outboundSchema,
       CompactionItem$outboundSchema,
       ItemReferenceItem$outboundSchema,
