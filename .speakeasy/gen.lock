@@ -1,19 +1,19 @@
 lockVersion: ""
 id: ""
 management:
-  docChecksum: ef8750de1ce5141a64e0d49e7877ee19
+  docChecksum: 4a71963525ada631c3ffdbddd74deab2
   docVersion: 1.0.0
   speakeasyVersion: 1.787.0
   generationVersion: 2.914.0
-  releaseVersion: 1.2.101
-  configChecksum: 5a1d56585d6ee3db63a81990c8e8415a
+  releaseVersion: 1.2.102
+  configChecksum: 892e3b557d273062a0db368f6b990ab0
   repoURL: https://github.com/OpenRouterTeam/typescript-sdk.git
   installationURL: https://github.com/OpenRouterTeam/typescript-sdk
   published: true
 persistentEdits:
-  generation_id: b26b5c7a-838c-4266-9841-ef8e9b479b8e
-  pristine_commit_hash: cda4bc765feac6e6e834b649f7b0a9419eaa7916
-  pristine_tree_hash: 76701b2ad3a6335265141c543a4433a919549c43
+  generation_id: a4c91511-81c8-4bd9-b5b2-7f3b90d6d960
+  pristine_commit_hash: e3f3272ee5eff10c296899699b8805e0b7ab1dcb
+  pristine_tree_hash: bc033dc3322ab76de12924d2f349c9cd63fbb8d5
 features:
   typescript:
     acceptHeaders: 2.81.2
@@ -13088,8 +13088,8 @@ trackedFiles:
     pristine_git_object: c89f724e7696bda6b18490073d4e715c679c4d56
   docs/sdks/guardrails/README.mdx:
     id: a0cd4218b8fa
-    last_write_checksum: sha1:5772bfa3972dd9273dfa198b32d905366459fd98
-    pristine_git_object: 9df7217d925029c0ae6d6b5f8257b755f840ef4f
+    last_write_checksum: sha1:0446b1fac31e2d10ab76eceb3f3b9b19907a854b
+    pristine_git_object: a8002be604f7336cabac4a212cbdf13861f46429
   docs/sdks/images/README.md:
     id: cc752c3524d0
     last_write_checksum: sha1:30cb5d17118722e49d11f064014d50e8ba4ddaec
@@ -13213,12 +13213,12 @@ trackedFiles:
     pristine_git_object: 410efafd6a7f50d91ccb87131fedbe0c3d47e15a
   jsr.json:
     id: 7f6ab7767282
-    last_write_checksum: sha1:52bf528dcf6e8323b02919d72996710edca2f971
-    pristine_git_object: dc03ecea868c439c3fce54f1ea4416103fd9de34
+    last_write_checksum: sha1:e0b421d9997b2c989625cdea5381b2563bbef30d
+    pristine_git_object: d345ffbc18fc70d973528c2eb538e05817b8d4bd
   package.json:
     id: 7030d0b2f71b
-    last_write_checksum: sha1:6e3a70ff866b3690f2dd4dc2f1e26e17350d8880
-    pristine_git_object: 0b887cca3cebf60d59526daabdffee36c58a156f
+    last_write_checksum: sha1:43da08366d4d511a7bb0c9a94e183770f6bb45a1
+    pristine_git_object: 317d4ef4f7d8e6d861ecdbf41667491846262f64
   src/core.ts:
     id: f431fdbcd144
     last_write_checksum: sha1:5aa66b0b6a5964f3eea7f3098c2eb3c0ee9c0131
@@ -13421,8 +13421,8 @@ trackedFiles:
     pristine_git_object: b7a0f27318f3f3b808719b4632be9e2646f8a66f
   src/funcs/guardrailsUpdate.ts:
     id: f8685ead7098
-    last_write_checksum: sha1:984862155f41eb5913522521144261dd226344b4
-    pristine_git_object: 43c56935d6ee79c2eaf15375ef3fe1d58ff39417
+    last_write_checksum: sha1:eb0056067dd4ed1c18b2f5607895cff7c4b0d68e
+    pristine_git_object: ae246e06ce05c6424c89e1cafd1557aef836e1ce
   src/funcs/imagesGenerate.ts:
     id: 5e770eb62f14
     last_write_checksum: sha1:52c1ca8bfb3c993ebda554eea8c45e7e8a93b87d
@@ -13653,8 +13653,8 @@ trackedFiles:
     pristine_git_object: a187e58707bdb726ca2aff74941efe7493422d4e
   src/lib/config.ts:
     id: 320761608fb3
-    last_write_checksum: sha1:4a7db65448ecc7282e0b1576c4e271185812957a
-    pristine_git_object: 61527e9fe706cc4ca6f0f9a0c7dd278a9c91bbd3
+    last_write_checksum: sha1:1e4873d23f7bc43902a08301ad337b61108405cf
+    pristine_git_object: 6599c501b757ee66b26584fc3b7deb900bd633dd
   src/lib/dlv.ts:
     id: b1988214835a
     last_write_checksum: sha1:eaac763b22717206a6199104e0403ed17a4e2711
@@ -17343,6 +17343,8 @@ examples:
           application/json: {"error": {"code": 404, "message": "Resource not found"}}
         "500":
           application/json: {"error": {"code": 500, "message": "Internal Server Error"}}
+        "409":
+          application/json: {"error": {"code": 409, "message": "Resource conflict. Please try again later."}}
   deleteGuardrail:
     speakeasy-default-delete-guardrail:
       parameters:
@@ -18821,3 +18823,6 @@ examples:
         "500":
           application/json: {"error": "invalid_grant", "error_description": "The subject token was not accepted."}
 examplesVersion: 1.0.2
+releaseNotes: |
+  ## Typescript SDK Changes:
+  * `openrouter.guardrails.update()`:  `error.status[409]` **Added**
