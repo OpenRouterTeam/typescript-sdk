@@ -408,7 +408,6 @@ export type InputsUnion1 =
   | OutputCustomToolCallItem
   | OutputFileSearchCallItem
   | OutputComputerCallItem
-  | OutputDatetimeItem
   | McpListToolsItem
   | CustomToolCallItem
   | AgentMessageItem
@@ -426,6 +425,7 @@ export type InputsUnion1 =
   | McpApprovalResponseItem
   | CustomToolCallOutputItem
   | AdditionalToolsItem
+  | OutputDatetimeItem
   | OutputWebSearchServerToolItem
   | OutputCodeInterpreterServerToolItem
   | OutputFileSearchServerToolItem
@@ -465,7 +465,6 @@ export type InputsUnion =
     | OutputCustomToolCallItem
     | OutputFileSearchCallItem
     | OutputComputerCallItem
-    | OutputDatetimeItem
     | McpListToolsItem
     | CustomToolCallItem
     | AgentMessageItem
@@ -483,6 +482,7 @@ export type InputsUnion =
     | McpApprovalResponseItem
     | CustomToolCallOutputItem
     | AdditionalToolsItem
+    | OutputDatetimeItem
     | OutputWebSearchServerToolItem
     | OutputCodeInterpreterServerToolItem
     | OutputFileSearchServerToolItem
@@ -769,7 +769,6 @@ export type InputsUnion1$Outbound =
   | OutputCustomToolCallItem$Outbound
   | OutputFileSearchCallItem$Outbound
   | OutputComputerCallItem$Outbound
-  | OutputDatetimeItem$Outbound
   | McpListToolsItem$Outbound
   | CustomToolCallItem$Outbound
   | AgentMessageItem$Outbound
@@ -787,6 +786,7 @@ export type InputsUnion1$Outbound =
   | McpApprovalResponseItem$Outbound
   | CustomToolCallOutputItem$Outbound
   | AdditionalToolsItem$Outbound
+  | OutputDatetimeItem$Outbound
   | OutputWebSearchServerToolItem$Outbound
   | OutputCodeInterpreterServerToolItem$Outbound
   | OutputFileSearchServerToolItem$Outbound
@@ -825,7 +825,6 @@ export const InputsUnion1$outboundSchema: z.ZodType<
   OutputCustomToolCallItem$outboundSchema,
   OutputFileSearchCallItem$outboundSchema,
   OutputComputerCallItem$outboundSchema,
-  OutputDatetimeItem$outboundSchema,
   McpListToolsItem$outboundSchema,
   CustomToolCallItem$outboundSchema,
   AgentMessageItem$outboundSchema,
@@ -843,6 +842,7 @@ export const InputsUnion1$outboundSchema: z.ZodType<
   McpApprovalResponseItem$outboundSchema,
   CustomToolCallOutputItem$outboundSchema,
   AdditionalToolsItem$outboundSchema,
+  OutputDatetimeItem$outboundSchema,
   OutputWebSearchServerToolItem$outboundSchema,
   OutputCodeInterpreterServerToolItem$outboundSchema,
   OutputFileSearchServerToolItem$outboundSchema,
@@ -885,7 +885,6 @@ export type InputsUnion$Outbound =
     | OutputCustomToolCallItem$Outbound
     | OutputFileSearchCallItem$Outbound
     | OutputComputerCallItem$Outbound
-    | OutputDatetimeItem$Outbound
     | McpListToolsItem$Outbound
     | CustomToolCallItem$Outbound
     | AgentMessageItem$Outbound
@@ -903,6 +902,7 @@ export type InputsUnion$Outbound =
     | McpApprovalResponseItem$Outbound
     | CustomToolCallOutputItem$Outbound
     | AdditionalToolsItem$Outbound
+    | OutputDatetimeItem$Outbound
     | OutputWebSearchServerToolItem$Outbound
     | OutputCodeInterpreterServerToolItem$Outbound
     | OutputFileSearchServerToolItem$Outbound
@@ -945,7 +945,6 @@ export const InputsUnion$outboundSchema: z.ZodType<
       OutputCustomToolCallItem$outboundSchema,
       OutputFileSearchCallItem$outboundSchema,
       OutputComputerCallItem$outboundSchema,
-      OutputDatetimeItem$outboundSchema,
       McpListToolsItem$outboundSchema,
       CustomToolCallItem$outboundSchema,
       AgentMessageItem$outboundSchema,
@@ -963,6 +962,7 @@ export const InputsUnion$outboundSchema: z.ZodType<
       McpApprovalResponseItem$outboundSchema,
       CustomToolCallOutputItem$outboundSchema,
       AdditionalToolsItem$outboundSchema,
+      OutputDatetimeItem$outboundSchema,
       OutputWebSearchServerToolItem$outboundSchema,
       OutputCodeInterpreterServerToolItem$outboundSchema,
       OutputFileSearchServerToolItem$outboundSchema,

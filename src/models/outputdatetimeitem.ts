@@ -9,10 +9,10 @@ import { ClosedEnum } from "../types/enums.js";
 import { Result as SafeParseResult } from "../types/fp.js";
 import { SDKValidationError } from "./errors/sdkvalidationerror.js";
 import {
-  ToolCallStatus,
-  ToolCallStatus$inboundSchema,
-  ToolCallStatus$outboundSchema,
-} from "./toolcallstatus.js";
+  FailableToolCallStatus,
+  FailableToolCallStatus$inboundSchema,
+  FailableToolCallStatus$outboundSchema,
+} from "./failabletoolcallstatus.js";
 
 export const OutputDatetimeItemType = {
   OpenrouterDatetime: "openrouter:datetime",
@@ -26,13 +26,17 @@ export type OutputDatetimeItem = {
   /**
    * ISO 8601 datetime string
    */
-  datetime: string;
+  datetime?: string | undefined;
+  /**
+   * The error message when the tool call failed before producing a result. Set together with `status: 'failed'`; absent on a successful call.
+   */
+  error?: string | undefined;
   id?: string | undefined;
-  status: ToolCallStatus;
+  status: FailableToolCallStatus;
   /**
    * IANA timezone name
    */
-  timezone: string;
+  timezone?: string | undefined;
   type: OutputDatetimeItemType;
 };
 
@@ -50,18 +54,20 @@ export const OutputDatetimeItem$inboundSchema: z.ZodType<
   OutputDatetimeItem,
   unknown
 > = z.object({
-  datetime: z.string(),
+  datetime: z.string().optional(),
+  error: z.string().optional(),
   id: z.string().optional(),
-  status: ToolCallStatus$inboundSchema,
-  timezone: z.string(),
+  status: FailableToolCallStatus$inboundSchema,
+  timezone: z.string().optional(),
   type: OutputDatetimeItemType$inboundSchema,
 });
 /** @internal */
 export type OutputDatetimeItem$Outbound = {
-  datetime: string;
+  datetime?: string | undefined;
+  error?: string | undefined;
   id?: string | undefined;
   status: string;
-  timezone: string;
+  timezone?: string | undefined;
   type: string;
 };
 
@@ -70,10 +76,11 @@ export const OutputDatetimeItem$outboundSchema: z.ZodType<
   OutputDatetimeItem$Outbound,
   OutputDatetimeItem
 > = z.object({
-  datetime: z.string(),
+  datetime: z.string().optional(),
+  error: z.string().optional(),
   id: z.string().optional(),
-  status: ToolCallStatus$outboundSchema,
-  timezone: z.string(),
+  status: FailableToolCallStatus$outboundSchema,
+  timezone: z.string().optional(),
   type: OutputDatetimeItemType$outboundSchema,
 });
 
