@@ -4667,6 +4667,7 @@ components:
         - 'perplexity'
         - 'phala'
         - 'poolside'
+        - 'prime-intellect'
         - 'quiver'
         - 'recraft'
         - 'reka'
@@ -14097,6 +14098,7 @@ components:
                 - 'OpenInference'
                 - 'Parasail'
                 - 'Poolside'
+                - 'PrimeIntellect'
                 - 'Perceptron'
                 - 'Perplexity'
                 - 'Phala'
@@ -21069,6 +21071,7 @@ components:
         - 'OpenInference'
         - 'Parasail'
         - 'Poolside'
+        - 'PrimeIntellect'
         - 'Perceptron'
         - 'Perplexity'
         - 'Phala'
@@ -21409,6 +21412,9 @@ components:
           additionalProperties: {}
           type: 'object'
         poolside:
+          additionalProperties: {}
+          type: 'object'
+        prime-intellect:
           additionalProperties: {}
           type: 'object'
         quiver:
@@ -21815,6 +21821,7 @@ components:
             - 'OpenInference'
             - 'Parasail'
             - 'Poolside'
+            - 'PrimeIntellect'
             - 'Perceptron'
             - 'Perplexity'
             - 'Phala'
@@ -29039,6 +29046,7 @@ paths:
               - 'perplexity'
               - 'phala'
               - 'poolside'
+              - 'prime-intellect'
               - 'quiver'
               - 'recraft'
               - 'reka'
