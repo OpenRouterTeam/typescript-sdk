@@ -14,6 +14,10 @@ import {
   BashServerToolEnvironment$Outbound,
   BashServerToolEnvironment$outboundSchema,
 } from "./bashservertoolenvironment.js";
+import {
+  SandboxToolsConfig,
+  SandboxToolsConfig$outboundSchema,
+} from "./sandboxtoolsconfig.js";
 
 /**
  * Configuration for the openrouter:bash server tool
@@ -28,6 +32,10 @@ export type BashServerToolConfig = {
    */
   environment?: BashServerToolEnvironment | undefined;
   /**
+   * File operations (read, write, edit) to expose to the model as the openrouter:sandbox tool, operating on the same container as this tool. Only applies when the commands run in the OpenRouter sandbox. Omit to attach all three; pass an empty array to attach none.
+   */
+  sandboxTools?: Array<SandboxToolsConfig> | undefined;
+  /**
    * How long (in seconds) the container stays warm after its last command before sleeping, freeing its capacity slot. Idle-based: each command renews the timer. Defaults to 900 (15 minutes); capped at 14400 (4 hours).
    */
   sleepAfterSeconds?: number | undefined;
@@ -37,6 +45,7 @@ export type BashServerToolConfig = {
 export type BashServerToolConfig$Outbound = {
   engine?: string | undefined;
   environment?: BashServerToolEnvironment$Outbound | undefined;
+  sandbox_tools?: Array<string> | undefined;
   sleep_after_seconds?: number | undefined;
 };
 
@@ -47,9 +56,11 @@ export const BashServerToolConfig$outboundSchema: z.ZodType<
 > = z.object({
   engine: BashServerToolEngine$outboundSchema.optional(),
   environment: BashServerToolEnvironment$outboundSchema.optional(),
+  sandboxTools: z.array(SandboxToolsConfig$outboundSchema).optional(),
   sleepAfterSeconds: z.int().optional(),
 }).transform((v) => {
   return remap$(v, {
+    sandboxTools: "sandbox_tools",
     sleepAfterSeconds: "sleep_after_seconds",
   });
 });
