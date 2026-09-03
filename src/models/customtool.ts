@@ -42,6 +42,10 @@ export type CustomToolTypeCustom = ClosedEnum<typeof CustomToolTypeCustom>;
  * Custom tool configuration
  */
 export type CustomTool = {
+  /**
+   * Lets the model keep working after calling this tool instead of waiting for its output. The tool is still executed by the client; return the result in a later request as a `function_call_output` with the original `call_id`. Only honored by providers whose Responses API supports async tools; ignored elsewhere.
+   */
+  async?: boolean | undefined;
   description?: string | undefined;
   format?:
     | FormatText
@@ -168,6 +172,7 @@ export const CustomToolTypeCustom$outboundSchema: z.ZodEnum<
 /** @internal */
 export const CustomTool$inboundSchema: z.ZodType<CustomTool, unknown> = z
   .object({
+    async: z.boolean().optional(),
     description: z.string().optional(),
     format: discriminatedUnion("type", {
       text: z.lazy(() => FormatText$inboundSchema),
@@ -178,6 +183,7 @@ export const CustomTool$inboundSchema: z.ZodType<CustomTool, unknown> = z
   });
 /** @internal */
 export type CustomTool$Outbound = {
+  async?: boolean | undefined;
   description?: string | undefined;
   format?: FormatText$Outbound | FormatGrammar$Outbound | undefined;
   name: string;
@@ -189,6 +195,7 @@ export const CustomTool$outboundSchema: z.ZodType<
   CustomTool$Outbound,
   CustomTool
 > = z.object({
+  async: z.boolean().optional(),
   description: z.string().optional(),
   format: z.union([
     z.lazy(() => FormatText$outboundSchema),
