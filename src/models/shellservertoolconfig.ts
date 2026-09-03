@@ -6,6 +6,10 @@
 import * as z from "zod/v4";
 import { remap as remap$ } from "../lib/primitives.js";
 import {
+  SandboxToolsConfig,
+  SandboxToolsConfig$outboundSchema,
+} from "./sandboxtoolsconfig.js";
+import {
   ShellServerToolEngine,
   ShellServerToolEngine$outboundSchema,
 } from "./shellservertoolengine.js";
@@ -28,6 +32,10 @@ export type ShellServerToolConfig = {
    */
   environment?: ShellServerToolEnvironment | undefined;
   /**
+   * File operations (read, write, edit) to expose to the model as the openrouter:sandbox tool, operating on the same container as this tool. Only applies when the commands run in the OpenRouter sandbox. Omit to attach all three; pass an empty array to attach none.
+   */
+  sandboxTools?: Array<SandboxToolsConfig> | undefined;
+  /**
    * How long (in seconds) the container stays warm after its last command before sleeping, freeing its capacity slot. Idle-based: each command renews the timer. Defaults to 900 (15 minutes); capped at 14400 (4 hours).
    */
   sleepAfterSeconds?: number | undefined;
@@ -37,6 +45,7 @@ export type ShellServerToolConfig = {
 export type ShellServerToolConfig$Outbound = {
   engine?: string | undefined;
   environment?: ShellServerToolEnvironment$Outbound | undefined;
+  sandbox_tools?: Array<string> | undefined;
   sleep_after_seconds?: number | undefined;
 };
 
@@ -47,9 +56,11 @@ export const ShellServerToolConfig$outboundSchema: z.ZodType<
 > = z.object({
   engine: ShellServerToolEngine$outboundSchema.optional(),
   environment: ShellServerToolEnvironment$outboundSchema.optional(),
+  sandboxTools: z.array(SandboxToolsConfig$outboundSchema).optional(),
   sleepAfterSeconds: z.int().optional(),
 }).transform((v) => {
   return remap$(v, {
+    sandboxTools: "sandbox_tools",
     sleepAfterSeconds: "sleep_after_seconds",
   });
 });
