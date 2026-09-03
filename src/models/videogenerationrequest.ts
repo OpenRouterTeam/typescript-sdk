@@ -144,6 +144,7 @@ export type VideoGenerationRequestOptions = {
   perplexity?: { [k: string]: any } | undefined;
   phala?: { [k: string]: any } | undefined;
   poolside?: { [k: string]: any } | undefined;
+  primeIntellect?: { [k: string]: any } | undefined;
   quiver?: { [k: string]: any } | undefined;
   recraft?: { [k: string]: any } | undefined;
   recursal?: { [k: string]: any } | undefined;
@@ -374,6 +375,7 @@ export type VideoGenerationRequestOptions$Outbound = {
   perplexity?: { [k: string]: any } | undefined;
   phala?: { [k: string]: any } | undefined;
   poolside?: { [k: string]: any } | undefined;
+  "prime-intellect"?: { [k: string]: any } | undefined;
   quiver?: { [k: string]: any } | undefined;
   recraft?: { [k: string]: any } | undefined;
   recursal?: { [k: string]: any } | undefined;
@@ -519,6 +521,7 @@ export const VideoGenerationRequestOptions$outboundSchema: z.ZodType<
   perplexity: z.record(z.string(), z.any()).optional(),
   phala: z.record(z.string(), z.any()).optional(),
   poolside: z.record(z.string(), z.any()).optional(),
+  primeIntellect: z.record(z.string(), z.any()).optional(),
   quiver: z.record(z.string(), z.any()).optional(),
   recraft: z.record(z.string(), z.any()).optional(),
   recursal: z.record(z.string(), z.any()).optional(),
@@ -580,6 +583,7 @@ export const VideoGenerationRequestOptions$outboundSchema: z.ZodType<
     mancerOld: "mancer-old",
     nexAgi: "nex-agi",
     openInference: "open-inference",
+    primeIntellect: "prime-intellect",
     sailResearch: "sail-research",
     sakanaAi: "sakana-ai",
     sambanovaCloaked: "sambanova-cloaked",
