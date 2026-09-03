@@ -32778,7 +32778,7 @@ paths:
                   message: 'Invalid request parameters'
               schema:
                 $ref: '#/components/schemas/BadRequestResponse'
-          description: 'Invalid request, or an attempt to change a workspace default guardrail''s name (which is derived from its workspace and not editable).'
+          description: 'Invalid request, or an attempt to change a workspace default guardrail''s name (which is derived from its workspace and not editable; sending the current name unchanged is accepted).'
         '401':
           content:
             application/json:
@@ -32799,6 +32799,16 @@ paths:
               schema:
                 $ref: '#/components/schemas/NotFoundResponse'
           description: 'Not Found - Resource does not exist'
+        '409':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 409
+                  message: 'Resource conflict. Please try again later.'
+              schema:
+                $ref: '#/components/schemas/ConflictResponse'
+          description: 'Guardrail name conflict — another guardrail in this workspace already uses the requested name.'
         '500':
           content:
             application/json:
