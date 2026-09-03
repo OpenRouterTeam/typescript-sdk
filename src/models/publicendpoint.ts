@@ -210,6 +210,10 @@ export type PublicEndpoint = {
   quantization: Quantization | null;
   status?: EndpointStatus | undefined;
   supportedParameters: Array<Parameter>;
+  /**
+   * Whether this STT endpoint can label each transcript segment with a speaker (speaker diarization). False when the endpoint has not declared support.
+   */
+  supportsDiarization: boolean;
   supportsImplicitCaching: boolean;
   /**
    * Per-variant `tool_choice` support. `tool_choice` in `supported_parameters` only says the parameter is accepted; these flags say which of its values passed testing.
@@ -498,6 +502,7 @@ export const PublicEndpoint$inboundSchema: z.ZodType<PublicEndpoint, unknown> =
     quantization: z.nullable(Quantization$inboundSchema),
     status: EndpointStatus$inboundSchema.optional(),
     supported_parameters: z.array(Parameter$inboundSchema),
+    supports_diarization: z.boolean().default(false),
     supports_implicit_caching: z.boolean(),
     supports_tool_choice: ToolChoiceSupport$inboundSchema,
     supports_voice_cloning: z.boolean().default(false),
@@ -517,6 +522,7 @@ export const PublicEndpoint$inboundSchema: z.ZodType<PublicEndpoint, unknown> =
       "perf_last_30m_by_workload": "perfLast30mByWorkload",
       "provider_name": "providerName",
       "supported_parameters": "supportedParameters",
+      "supports_diarization": "supportsDiarization",
       "supports_implicit_caching": "supportsImplicitCaching",
       "supports_tool_choice": "supportsToolChoice",
       "supports_voice_cloning": "supportsVoiceCloning",
