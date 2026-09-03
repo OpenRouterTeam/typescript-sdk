@@ -1,19 +1,19 @@
 lockVersion: ""
 id: ""
 management:
-  docChecksum: 6de6f629295147f45d5827cec7755b29
+  docChecksum: ef8750de1ce5141a64e0d49e7877ee19
   docVersion: 1.0.0
   speakeasyVersion: 1.787.0
   generationVersion: 2.914.0
-  releaseVersion: 1.2.100
-  configChecksum: 1e30bec2b60816c32bb51ea2352208ef
+  releaseVersion: 1.2.101
+  configChecksum: 5a1d56585d6ee3db63a81990c8e8415a
   repoURL: https://github.com/OpenRouterTeam/typescript-sdk.git
   installationURL: https://github.com/OpenRouterTeam/typescript-sdk
   published: true
 persistentEdits:
-  generation_id: 4c941873-4ef6-4379-9146-1e55e5bc8c50
-  pristine_commit_hash: 14834504d91925e2c9efd2ec46f9e0505ab41ecf
-  pristine_tree_hash: 73e781d8de63b449c356bb62fd1c7cc59ac6e485
+  generation_id: b26b5c7a-838c-4266-9841-ef8e9b479b8e
+  pristine_commit_hash: cda4bc765feac6e6e834b649f7b0a9419eaa7916
+  pristine_tree_hash: 76701b2ad3a6335265141c543a4433a919549c43
 features:
   typescript:
     acceptHeaders: 2.81.2
@@ -13088,8 +13088,8 @@ trackedFiles:
     pristine_git_object: c89f724e7696bda6b18490073d4e715c679c4d56
   docs/sdks/guardrails/README.mdx:
     id: a0cd4218b8fa
-    last_write_checksum: sha1:e66953acd154f44caf9caafa5382c12c01c97b0b
-    pristine_git_object: cd17dff3c448ce38f651697fab49751388afb324
+    last_write_checksum: sha1:5772bfa3972dd9273dfa198b32d905366459fd98
+    pristine_git_object: 9df7217d925029c0ae6d6b5f8257b755f840ef4f
   docs/sdks/images/README.md:
     id: cc752c3524d0
     last_write_checksum: sha1:30cb5d17118722e49d11f064014d50e8ba4ddaec
@@ -13213,12 +13213,12 @@ trackedFiles:
     pristine_git_object: 410efafd6a7f50d91ccb87131fedbe0c3d47e15a
   jsr.json:
     id: 7f6ab7767282
-    last_write_checksum: sha1:293de6af7f0c79dd3997a6db17255d8edd391972
-    pristine_git_object: 9b7ba5c4d1257a44f1fe70119b1ed68246046857
+    last_write_checksum: sha1:52bf528dcf6e8323b02919d72996710edca2f971
+    pristine_git_object: dc03ecea868c439c3fce54f1ea4416103fd9de34
   package.json:
     id: 7030d0b2f71b
-    last_write_checksum: sha1:0c1adb81ac14c7825e2164a7d911cd372906754e
-    pristine_git_object: 706d9ecba88ec253388b3c390379b8e1bb273190
+    last_write_checksum: sha1:6e3a70ff866b3690f2dd4dc2f1e26e17350d8880
+    pristine_git_object: 0b887cca3cebf60d59526daabdffee36c58a156f
   src/core.ts:
     id: f431fdbcd144
     last_write_checksum: sha1:5aa66b0b6a5964f3eea7f3098c2eb3c0ee9c0131
@@ -13389,8 +13389,8 @@ trackedFiles:
     pristine_git_object: 1c6dfff559f3c60dc0ddd1e6ee0576418781fed2
   src/funcs/guardrailsCreate.ts:
     id: 6d61eb74274f
-    last_write_checksum: sha1:b6d0e502d050f18b9b73e0c8b7eae02c4ca01fd5
-    pristine_git_object: f8bc97b7b2efcb2f09f50c3013050605b0ebc219
+    last_write_checksum: sha1:6717409ac4733ee93b5ba648d08e1744137631bf
+    pristine_git_object: 4d2925bd5b48d03d0dc71993f23c76bcdd6b69cd
   src/funcs/guardrailsDelete.ts:
     id: 2ee7e7eaab9a
     last_write_checksum: sha1:183cb6d13536f5bb56304e5d3c7386b13185b46c
@@ -13653,8 +13653,8 @@ trackedFiles:
     pristine_git_object: a187e58707bdb726ca2aff74941efe7493422d4e
   src/lib/config.ts:
     id: 320761608fb3
-    last_write_checksum: sha1:656475ab22ebd838a8cc7963bf942f20f402b894
-    pristine_git_object: 24470b00da675951d7571eced2668d013fab9b56
+    last_write_checksum: sha1:4a7db65448ecc7282e0b1576c4e271185812957a
+    pristine_git_object: 61527e9fe706cc4ca6f0f9a0c7dd278a9c91bbd3
   src/lib/dlv.ts:
     id: b1988214835a
     last_write_checksum: sha1:eaac763b22717206a6199104e0403ed17a4e2711
@@ -16795,8 +16795,8 @@ trackedFiles:
     pristine_git_object: 2c65669fe7eb1744550b82f209e34e8ea5083142
   src/sdk/guardrails.ts:
     id: 30ab0b1cc8db
-    last_write_checksum: sha1:790ab1906e0a37bd3353adfcfe682ed822e8ac6b
-    pristine_git_object: 28a577e1cb2f523b5156de00ce327201b3f790ce
+    last_write_checksum: sha1:837b970c5d2098a52eb22c0b85ab160d16ad022b
+    pristine_git_object: 97892dcd0d8dd2fa1ea8e60c687c380359932c28
   src/sdk/images.ts:
     id: 5b5822276576
     last_write_checksum: sha1:11888bee1b49ca1ca0eadc23a7a25e4d693eafc7
@@ -18821,4 +18821,3 @@ examples:
         "500":
           application/json: {"error": "invalid_grant", "error_description": "The subject token was not accepted."}
 examplesVersion: 1.0.2
-releaseNotes: "## Typescript SDK Changes:\n* `openrouter.apiKeys.create()`: \n  *  `request.requestBody.external` **Added**\n"
