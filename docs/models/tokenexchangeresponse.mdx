@@ -1,0 +1,29 @@
+---
+title: "TokenExchangeResponse"
+---
+
+RFC 8693 token exchange response.
+
+## Example Usage
+
+```typescript
+import { TokenExchangeResponse } from "@openrouter/sdk/models";
+
+let value: TokenExchangeResponse = {
+  accessToken: "<short-lived openrouter access token jwt>",
+  expiresIn: 900,
+  issuedTokenType: "urn:ietf:params:oauth:token-type:access_token",
+  scope: "inference",
+  tokenType: "Bearer",
+};
+```
+
+## Fields
+
+| Field                                                                                                       | Type                                                                                                        | Required                                                                                                    | Description                                                                                                 | Example                                                                                                     |
+| ----------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------- |
+| `accessToken`                                                                                               | *string*                                                                                                    | :heavy_check_mark:                                                                                          | A short-lived JWT to send as `Authorization: Bearer` to the inference API.                                  | \<short-lived openrouter access token jwt>                                                                   |
+| `expiresIn`                                                                                                 | *number*                                                                                                    | :heavy_check_mark:                                                                                          | Seconds until the access token expires: at most 15 minutes, and never later than the subject token expires. | 900                                                                                                         |
+| `issuedTokenType`                                                                                           | [models.IssuedTokenType](../models/issuedtokentype.mdx)                                                      | :heavy_check_mark:                                                                                          | N/A                                                                                                         | urn:ietf:params:oauth:token-type:access_token                                                               |
+| `scope`                                                                                                     | *string*                                                                                                    | :heavy_check_mark:                                                                                          | N/A                                                                                                         | inference                                                                                                   |
+| `tokenType`                                                                                                 | [models.TokenType](../models/tokentype.mdx)                                                                  | :heavy_check_mark:                                                                                          | N/A                                                                                                         | Bearer                                                                                                      |
