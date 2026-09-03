@@ -4,7 +4,9 @@
  */
 
 import { scimCreate } from "../funcs/scimCreate.js";
+import { scimCreateSyncJob } from "../funcs/scimCreateSyncJob.js";
 import { scimDelete } from "../funcs/scimDelete.js";
+import { scimGetSyncJob } from "../funcs/scimGetSyncJob.js";
 import { scimListGroups } from "../funcs/scimListGroups.js";
 import { scimListMappings } from "../funcs/scimListMappings.js";
 import { scimRead } from "../funcs/scimRead.js";
@@ -116,6 +118,40 @@ export class Scim extends ClientSDK {
     PageIterator<operations.ListScimGroupsResponse, { offset: number }>
   > {
     return unwrapResultIterator(scimListGroups(
+      this,
+      request,
+      options,
+    ));
+  }
+
+  /**
+   * Start a SCIM directory sync
+   *
+   * @remarks
+   * Start a SCIM directory sync. [Management key](/docs/guides/overview/auth/management-api-keys) required.
+   */
+  async createSyncJob(
+    request?: operations.CreateScimSyncJobRequest | undefined,
+    options?: RequestOptions,
+  ): Promise<operations.CreateScimSyncJobResponse> {
+    return unwrapAsync(scimCreateSyncJob(
+      this,
+      request,
+      options,
+    ));
+  }
+
+  /**
+   * Get SCIM directory sync status
+   *
+   * @remarks
+   * Get SCIM directory sync status. [Management key](/docs/guides/overview/auth/management-api-keys) required.
+   */
+  async getSyncJob(
+    request: operations.GetScimSyncJobRequest,
+    options?: RequestOptions,
+  ): Promise<models.GetScimSyncJobResponse> {
+    return unwrapAsync(scimGetSyncJob(
       this,
       request,
       options,
