@@ -34,6 +34,20 @@ export type CreateKeysGlobals = {
 };
 
 /**
+ * Optional partner-defined identity associated with the created API key.
+ */
+export type External = {
+  /**
+   * Optional partner-supplied API key with a minimum length of 32 characters and sufficient entropy. Stored as a SHA-256 hash and never returned.
+   */
+  apiKey?: string | undefined;
+  /**
+   * Partner's end-user identifier for attribution.
+   */
+  user: string;
+};
+
+/**
  * Type of limit reset for the API key (daily, weekly, monthly, or null for no reset). Resets happen automatically at midnight UTC, and weeks are Monday through Sunday.
  */
 export const CreateKeysLimitReset = {
@@ -55,6 +69,10 @@ export type CreateKeysRequestBody = {
    * Optional ISO 8601 UTC expiration timestamp. Must include seconds (YYYY-MM-DDTHH:MM:SSZ; fractional seconds allowed); minute-precision timestamps are rejected.
    */
   expiresAt?: Date | null | undefined;
+  /**
+   * Optional partner-defined identity associated with the created API key.
+   */
+  external?: External | undefined;
   /**
    * Whether to include BYOK usage in the limit
    */
@@ -209,6 +227,27 @@ export type CreateKeysResponse = {
 };
 
 /** @internal */
+export type External$Outbound = {
+  api_key?: string | undefined;
+  user: string;
+};
+
+/** @internal */
+export const External$outboundSchema: z.ZodType<External$Outbound, External> = z
+  .object({
+    apiKey: z.string().optional(),
+    user: z.string(),
+  }).transform((v) => {
+    return remap$(v, {
+      apiKey: "api_key",
+    });
+  });
+
+export function externalToJSON(external: External): string {
+  return JSON.stringify(External$outboundSchema.parse(external));
+}
+
+/** @internal */
 export const CreateKeysLimitReset$outboundSchema: z.ZodType<
   string,
   CreateKeysLimitReset
@@ -218,6 +257,7 @@ export const CreateKeysLimitReset$outboundSchema: z.ZodType<
 export type CreateKeysRequestBody$Outbound = {
   creator_user_id?: string | null | undefined;
   expires_at?: string | null | undefined;
+  external?: External$Outbound | undefined;
   include_byok_in_limit?: boolean | undefined;
   limit?: number | null | undefined;
   limit_reset?: string | null | undefined;
@@ -232,6 +272,7 @@ export const CreateKeysRequestBody$outboundSchema: z.ZodType<
 > = z.object({
   creatorUserId: z.nullable(z.string()).optional(),
   expiresAt: z.nullable(z.date().transform(v => v.toISOString())).optional(),
+  external: z.lazy(() => External$outboundSchema).optional(),
   includeByokInLimit: z.boolean().optional(),
   limit: z.nullable(z.number()).optional(),
   limitReset: z.nullable(CreateKeysLimitReset$outboundSchema).optional(),
