@@ -20,6 +20,7 @@ export * from "./createimages.js";
 export * from "./createkeys.js";
 export * from "./createoauthtoken.js";
 export * from "./createobservabilitydestination.js";
+export * from "./createorganization.js";
 export * from "./createpresetschatcompletions.js";
 export * from "./createpresetsmessages.js";
 export * from "./createpresetsresponses.js";
