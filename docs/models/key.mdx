@@ -1,0 +1,31 @@
+---
+title: "Key"
+---
+
+## Example Usage
+
+```typescript
+import { Key } from "@openrouter/sdk/models";
+
+let value: Key = {
+  alg: "ES256",
+  crv: "P-256",
+  kid: "<id>",
+  kty: "EC",
+  use: "sig",
+  x: "<value>",
+  y: "<value>",
+};
+```
+
+## Fields
+
+| Field                          | Type                           | Required                       | Description                    |
+| ------------------------------ | ------------------------------ | ------------------------------ | ------------------------------ |
+| `alg`                          | [models.Alg](../models/alg.mdx) | :heavy_check_mark:             | N/A                            |
+| `crv`                          | [models.Crv](../models/crv.mdx) | :heavy_check_mark:             | N/A                            |
+| `kid`                          | *string*                       | :heavy_check_mark:             | N/A                            |
+| `kty`                          | [models.Kty](../models/kty.mdx) | :heavy_check_mark:             | N/A                            |
+| `use`                          | [models.Use](../models/use.mdx) | :heavy_check_mark:             | N/A                            |
+| `x`                            | *string*                       | :heavy_check_mark:             | N/A                            |
+| `y`                            | *string*                       | :heavy_check_mark:             | N/A                            |
