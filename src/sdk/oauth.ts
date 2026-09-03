@@ -4,8 +4,11 @@
  */
 
 import { oAuthCreateAuthCode } from "../funcs/oAuthCreateAuthCode.js";
+import { oAuthCreateOauthToken } from "../funcs/oAuthCreateOauthToken.js";
 import { oAuthExchangeAuthCodeForAPIKey } from "../funcs/oAuthExchangeAuthCodeForAPIKey.js";
+import { oAuthListOauthJwks } from "../funcs/oAuthListOauthJwks.js";
 import { ClientSDK, RequestOptions } from "../lib/sdks.js";
+import * as models from "../models/index.js";
 import * as operations from "../models/operations/index.js";
 import { unwrapAsync } from "../types/fp.js";
 // #region imports
@@ -87,6 +90,40 @@ export class OAuth extends ClientSDK {
     options?: RequestOptions,
   ): Promise<operations.CreateAuthKeysCodeResponse> {
     return unwrapAsync(oAuthCreateAuthCode(
+      this,
+      request,
+      options,
+    ));
+  }
+
+  /**
+   * OpenRouter access token signing keys
+   *
+   * @remarks
+   * RFC 7517 JWK Set containing the public keys OpenRouter signs access tokens with.
+   */
+  async listOauthJwks(
+    request?: operations.ListOauthJwksRequest | undefined,
+    options?: RequestOptions,
+  ): Promise<models.OAuthJwks> {
+    return unwrapAsync(oAuthListOauthJwks(
+      this,
+      request,
+      options,
+    ));
+  }
+
+  /**
+   * Exchange a workload identity token
+   *
+   * @remarks
+   * RFC 8693 token exchange. Presents a JWT from an issuer your organization trusts (Settings → Workload identity) and receives a short-lived OpenRouter access token that acts as the API key the matching federation policy targets.
+   */
+  async createOauthToken(
+    request: operations.CreateOauthTokenRequest,
+    options?: RequestOptions,
+  ): Promise<models.TokenExchangeResponse> {
+    return unwrapAsync(oAuthCreateOauthToken(
       this,
       request,
       options,
