@@ -1,0 +1,29 @@
+---
+title: "TokenExchangeRequest"
+---
+
+RFC 8693 token exchange request body (application/x-www-form-urlencoded).
+
+## Example Usage
+
+```typescript
+import { TokenExchangeRequest } from "@openrouter/sdk/models";
+
+let value: TokenExchangeRequest = {
+  federationPolicyId: "4b2f7d1e-8c3a-4e5f-9a6b-1c2d3e4f5a6b",
+  grantType: "urn:ietf:params:oauth:grant-type:token-exchange",
+  subjectToken: "<jwt from your identity provider>",
+  subjectTokenType: "urn:ietf:params:oauth:token-type:jwt",
+};
+```
+
+## Fields
+
+| Field                                                                                                         | Type                                                                                                          | Required                                                                                                      | Description                                                                                                   | Example                                                                                                       |
+| ------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------- |
+| `federationPolicyId`                                                                                          | *string*                                                                                                      | :heavy_check_mark:                                                                                            | The federation policy to evaluate, from Settings → Workload identity. Binds the exchange to one organization. | 4b2f7d1e-8c3a-4e5f-9a6b-1c2d3e4f5a6b                                                                          |
+| `grantType`                                                                                                   | [models.GrantType](../models/granttype.mdx)                                                                    | :heavy_check_mark:                                                                                            | Must be `urn:ietf:params:oauth:grant-type:token-exchange`.                                                    | urn:ietf:params:oauth:grant-type:token-exchange                                                               |
+| `requestedTokenType`                                                                                          | [models.RequestedTokenType](../models/requestedtokentype.mdx)                                                  | :heavy_minus_sign:                                                                                            | Optional; when present must be `urn:ietf:params:oauth:token-type:access_token`.                               | urn:ietf:params:oauth:token-type:access_token                                                                 |
+| `scope`                                                                                                       | [models.Scope](../models/scope.mdx)                                                                            | :heavy_minus_sign:                                                                                            | Optional; only `inference` is available.                                                                      | inference                                                                                                     |
+| `subjectToken`                                                                                                | *string*                                                                                                      | :heavy_check_mark:                                                                                            | The JWT issued by your identity provider.                                                                     | \<jwt from your identity provider>                                                                             |
+| `subjectTokenType`                                                                                            | [models.SubjectTokenType](../models/subjecttokentype.mdx)                                                      | :heavy_check_mark:                                                                                            | Must be `urn:ietf:params:oauth:token-type:jwt`.                                                               | urn:ietf:params:oauth:token-type:jwt                                                                          |
