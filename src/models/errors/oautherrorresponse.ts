@@ -12,7 +12,13 @@ import { OpenRouterError } from "./openroutererror.js";
  * RFC 6749 §5.2 error response.
  */
 export type OAuthErrorResponseData = {
+  /**
+   * OAuth error code.
+   */
   error: models.ErrorEnum;
+  /**
+   * Human-readable detail.
+   */
   errorDescription: string;
 };
 
@@ -20,7 +26,13 @@ export type OAuthErrorResponseData = {
  * RFC 6749 §5.2 error response.
  */
 export class OAuthErrorResponse extends OpenRouterError {
+  /**
+   * OAuth error code.
+   */
   error: models.ErrorEnum;
+  /**
+   * Human-readable detail.
+   */
   errorDescription: string;
 
   /** The original data that was passed to this error instance. */
