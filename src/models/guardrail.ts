@@ -17,19 +17,11 @@ import {
 } from "./contentfilterentry.js";
 import { SDKValidationError } from "./errors/sdkvalidationerror.js";
 import {
-  GuardrailDataRegion,
-  GuardrailDataRegion$inboundSchema,
-} from "./guardraildataregion.js";
-import {
   GuardrailInterval,
   GuardrailInterval$inboundSchema,
 } from "./guardrailinterval.js";
 
 export type Guardrail = {
-  /**
-   * Data regions through which requests governed by this guardrail must arrive. `global` is https://openrouter.ai, `europe` is https://eu.openrouter.ai, and `us` is https://us.openrouter.ai. Requests arriving through any other region are rejected. `null` leaves the ingress region unrestricted. When several guardrails apply (workspace default, member, API key), the effective regions are the intersection of every non-null value.
-   */
-  allowedDataRegions?: Array<GuardrailDataRegion> | null | undefined;
   /**
    * Array of model canonical_slugs (immutable identifiers)
    */
@@ -132,8 +124,6 @@ export type Guardrail = {
 
 /** @internal */
 export const Guardrail$inboundSchema: z.ZodType<Guardrail, unknown> = z.object({
-  allowed_data_regions: z.nullable(z.array(GuardrailDataRegion$inboundSchema))
-    .optional(),
   allowed_models: z.nullable(z.array(z.string())).optional(),
   allowed_providers: z.nullable(z.array(z.string())).optional(),
   content_filter_builtins: z.nullable(
@@ -163,7 +153,6 @@ export const Guardrail$inboundSchema: z.ZodType<Guardrail, unknown> = z.object({
   workspace_id: z.nullable(z.string()),
 }).transform((v) => {
   return remap$(v, {
-    "allowed_data_regions": "allowedDataRegions",
     "allowed_models": "allowedModels",
     "allowed_providers": "allowedProviders",
     "content_filter_builtins": "contentFilterBuiltins",
