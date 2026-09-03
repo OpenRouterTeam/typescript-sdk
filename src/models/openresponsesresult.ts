@@ -123,6 +123,10 @@ export type OpenResponsesResultToolFunction = {
   strict?: boolean | null | undefined;
   type: "function";
   /**
+   * Lets the model keep working after calling this tool instead of waiting for its output. The tool is still executed by the client; return the result in a later request as a `function_call_output` with the original `call_id`. Only honored by providers whose Responses API supports async tools; ignored elsewhere.
+   */
+  async?: boolean | undefined;
+  /**
    * Withhold this tool from the model until `openrouter:tool_search` finds it. Requires the tool search server tool; at least one tool must remain non-deferred.
    */
   deferLoading?: boolean | undefined;
@@ -283,6 +287,7 @@ export const OpenResponsesResultToolFunction$inboundSchema: z.ZodType<
   parameters: z.nullable(z.record(z.string(), z.any())),
   strict: z.nullable(z.boolean()).optional(),
   type: z.literal("function"),
+  async: z.boolean().optional(),
   defer_loading: z.boolean().optional(),
 }).transform((v) => {
   return remap$(v, {
