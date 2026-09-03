@@ -2,19 +2,24 @@
 title: "Container"
 ---
 
-## Supported Types
-
-### `string`
+## Example Usage
 
 ```typescript
-const value: string = "<value>";
-```
+import { Container } from "@openrouter/sdk/models";
 
-### `models.ContainerAuto`
-
-```typescript
-const value: models.ContainerAuto = {
-  type: "auto",
+let value: Container = {
+  bytes: 12345,
+  id: "sess_abc123",
+  lastActiveAt: 1755640000,
+  object: "container",
 };
 ```
 
+## Fields
+
+| Field                                                                                                     | Type                                                                                                      | Required                                                                                                  | Description                                                                                               | Example                                                                                                   |
+| --------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------- |
+| `bytes`                                                                                                   | *number*                                                                                                  | :heavy_check_mark:                                                                                        | Stored size of the session in bytes, as last settled; counts against the workspace storage quota.         | 12345                                                                                                     |
+| `id`                                                                                                      | *string*                                                                                                  | :heavy_check_mark:                                                                                        | Container id: the canonical sandbox session key, usable as `container_id` on the container-file routes.   | sess_abc123                                                                                               |
+| `lastActiveAt`                                                                                            | *number*                                                                                                  | :heavy_check_mark:                                                                                        | Unix timestamp (seconds) of the last storage activity. The session and its files expire 30 days after it. | 1755640000                                                                                                |
+| `object`                                                                                                  | [models.ContainerObject](../models/containerobject.mdx)                                                    | :heavy_check_mark:                                                                                        | N/A                                                                                                       | container                                                                                                 |
