@@ -2,12 +2,14 @@
 title: "ErrorEnum"
 ---
 
+OAuth error code.
+
 ## Example Usage
 
 ```typescript
 import { ErrorEnum } from "@openrouter/sdk/models";
 
-let value: ErrorEnum = "unsupported_grant_type";
+let value: ErrorEnum = "invalid_request";
 
 // Open enum: unrecognized values are captured as Unrecognized<string>
 ```
@@ -15,5 +17,5 @@ let value: ErrorEnum = "unsupported_grant_type";
 ## Values
 
 ```typescript
-"invalid_request" | "invalid_grant" | "unsupported_grant_type" | "invalid_scope" | "server_error" | "temporarily_unavailable" | Unrecognized<string>
+"invalid_request" | "invalid_client" | "invalid_grant" | "unauthorized_client" | "unsupported_grant_type" | "invalid_scope" | "server_error" | "temporarily_unavailable" | "invalid_token" | "invalid_redirect_uri" | "invalid_client_metadata" | "slow_down" | Unrecognized<string>
 ```

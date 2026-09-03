@@ -7,14 +7,26 @@ import * as z from "zod/v4";
 import * as openEnums from "../types/enums.js";
 import { OpenEnum } from "../types/enums.js";
 
+/**
+ * OAuth error code.
+ */
 export const ErrorEnum = {
   InvalidRequest: "invalid_request",
+  InvalidClient: "invalid_client",
   InvalidGrant: "invalid_grant",
+  UnauthorizedClient: "unauthorized_client",
   UnsupportedGrantType: "unsupported_grant_type",
   InvalidScope: "invalid_scope",
   ServerError: "server_error",
   TemporarilyUnavailable: "temporarily_unavailable",
+  InvalidToken: "invalid_token",
+  InvalidRedirectUri: "invalid_redirect_uri",
+  InvalidClientMetadata: "invalid_client_metadata",
+  SlowDown: "slow_down",
 } as const;
+/**
+ * OAuth error code.
+ */
 export type ErrorEnum = OpenEnum<typeof ErrorEnum>;
 
 /** @internal */
