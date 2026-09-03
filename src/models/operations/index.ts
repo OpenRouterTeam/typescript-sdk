@@ -66,6 +66,7 @@ export * from "./getworkspacebudget.js";
 export * from "./list.js";
 export * from "./listbyokkeys.js";
 export * from "./listcontainerfiles.js";
+export * from "./listcontainers.js";
 export * from "./listembeddingsmodels.js";
 export * from "./listendpoints.js";
 export * from "./listendpointszdr.js";
