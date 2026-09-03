@@ -14,7 +14,7 @@ import { OAuthErrorResponse } from "@openrouter/sdk/models/errors";
 
 ## Fields
 
-| Field                                         | Type                                          | Required                                      | Description                                   |
-| --------------------------------------------- | --------------------------------------------- | --------------------------------------------- | --------------------------------------------- |
-| `error`                                       | [models.ErrorEnum](../../models/errorenum.mdx) | :heavy_check_mark:                            | N/A                                           |
-| `errorDescription`                            | *string*                                      | :heavy_check_mark:                            | N/A                                           |
+| Field                                         | Type                                          | Required                                      | Description                                   | Example                                       |
+| --------------------------------------------- | --------------------------------------------- | --------------------------------------------- | --------------------------------------------- | --------------------------------------------- |
+| `error`                                       | [models.ErrorEnum](../../models/errorenum.mdx) | :heavy_check_mark:                            | OAuth error code.                             | invalid_request                               |
+| `errorDescription`                            | *string*                                      | :heavy_check_mark:                            | Human-readable detail.                        | grant_type is required.                       |
