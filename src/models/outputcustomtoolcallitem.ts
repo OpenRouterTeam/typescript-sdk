@@ -31,6 +31,10 @@ export type OutputCustomToolCallItemType = ClosedEnum<
  * A call to a custom (freeform-grammar) tool created by the model — distinct from `function_call`. Used for tools like Codex CLI's `apply_patch` whose payload is opaque text rather than JSON arguments.
  */
 export type OutputCustomToolCallItem = {
+  /**
+   * True when the model called a tool declared with `async: true` and may continue its turn before the output is returned. Return the result in a later request as a `function_call_output` with this `call_id`.
+   */
+  async?: boolean | undefined;
   callId: string;
   id?: string | undefined;
   input: string;
@@ -68,6 +72,7 @@ export const OutputCustomToolCallItem$inboundSchema: z.ZodType<
   OutputCustomToolCallItem,
   unknown
 > = z.object({
+  async: z.boolean().optional(),
   call_id: z.string(),
   id: z.string().optional(),
   input: z.string(),
@@ -82,6 +87,7 @@ export const OutputCustomToolCallItem$inboundSchema: z.ZodType<
 });
 /** @internal */
 export type OutputCustomToolCallItem$Outbound = {
+  async?: boolean | undefined;
   call_id: string;
   id?: string | undefined;
   input: string;
@@ -96,6 +102,7 @@ export const OutputCustomToolCallItem$outboundSchema: z.ZodType<
   OutputCustomToolCallItem$Outbound,
   OutputCustomToolCallItem
 > = z.object({
+  async: z.boolean().optional(),
   callId: z.string(),
   id: z.string().optional(),
   input: z.string(),
