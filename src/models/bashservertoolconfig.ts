@@ -4,7 +4,6 @@
  */
 
 import * as z from "zod/v4";
-import { remap as remap$ } from "../lib/primitives.js";
 import {
   BashServerToolEngine,
   BashServerToolEngine$outboundSchema,
@@ -27,17 +26,12 @@ export type BashServerToolConfig = {
    * Execution environment for the bash server tool.
    */
   environment?: BashServerToolEnvironment | undefined;
-  /**
-   * How long (in seconds) the container stays warm after its last command before sleeping, freeing its capacity slot. Idle-based: each command renews the timer. Defaults to 900 (15 minutes); capped at 14400 (4 hours).
-   */
-  sleepAfterSeconds?: number | undefined;
 };
 
 /** @internal */
 export type BashServerToolConfig$Outbound = {
   engine?: string | undefined;
   environment?: BashServerToolEnvironment$Outbound | undefined;
-  sleep_after_seconds?: number | undefined;
 };
 
 /** @internal */
@@ -47,11 +41,6 @@ export const BashServerToolConfig$outboundSchema: z.ZodType<
 > = z.object({
   engine: BashServerToolEngine$outboundSchema.optional(),
   environment: BashServerToolEnvironment$outboundSchema.optional(),
-  sleepAfterSeconds: z.int().optional(),
-}).transform((v) => {
-  return remap$(v, {
-    sleepAfterSeconds: "sleep_after_seconds",
-  });
 });
 
 export function bashServerToolConfigToJSON(
