@@ -10,16 +10,16 @@ import { ClosedEnum } from "../types/enums.js";
 import { Result as SafeParseResult } from "../types/fp.js";
 import { SDKValidationError } from "./errors/sdkvalidationerror.js";
 import {
+  FailableToolCallStatus,
+  FailableToolCallStatus$inboundSchema,
+  FailableToolCallStatus$outboundSchema,
+} from "./failabletoolcallstatus.js";
+import {
   ShellCallOutputContent,
   ShellCallOutputContent$inboundSchema,
   ShellCallOutputContent$Outbound,
   ShellCallOutputContent$outboundSchema,
 } from "./shellcalloutputcontent.js";
-import {
-  ToolCallStatus,
-  ToolCallStatus$inboundSchema,
-  ToolCallStatus$outboundSchema,
-} from "./toolcallstatus.js";
 
 export type OutputShellServerToolItemAction = {
   commands: Array<string>;
@@ -68,12 +68,16 @@ export type OutputShellServerToolItem = {
    */
   containerId?: string | undefined;
   /**
+   * The error message when the sandbox call failed before producing a result (for example, the per-user container limit was reached). Set together with `status: 'failed'`; absent on a successful call. `output` is omitted when `error` is set.
+   */
+  error?: string | undefined;
+  /**
    * Citations for the files the sandbox command created or modified, most-recently-touched first (at most 10). Retrieve them via the Container Files API.
    */
   files?: Array<OutputShellServerToolItemFile> | undefined;
   id?: string | undefined;
   output?: Array<ShellCallOutputContent> | undefined;
-  status: ToolCallStatus;
+  status: FailableToolCallStatus;
   type: OutputShellServerToolItemTypeOpenrouterShell;
 };
 
@@ -230,11 +234,12 @@ export const OutputShellServerToolItem$inboundSchema: z.ZodType<
   arguments: z.nullable(z.string()).optional(),
   call_id: z.nullable(z.string()).optional(),
   container_id: z.string().optional(),
+  error: z.string().optional(),
   files: z.array(z.lazy(() => OutputShellServerToolItemFile$inboundSchema))
     .optional(),
   id: z.string().optional(),
   output: z.array(ShellCallOutputContent$inboundSchema).optional(),
-  status: ToolCallStatus$inboundSchema,
+  status: FailableToolCallStatus$inboundSchema,
   type: OutputShellServerToolItemTypeOpenrouterShell$inboundSchema,
 }).transform((v) => {
   return remap$(v, {
@@ -248,6 +253,7 @@ export type OutputShellServerToolItem$Outbound = {
   arguments?: string | null | undefined;
   call_id?: string | null | undefined;
   container_id?: string | undefined;
+  error?: string | undefined;
   files?: Array<OutputShellServerToolItemFile$Outbound> | undefined;
   id?: string | undefined;
   output?: Array<ShellCallOutputContent$Outbound> | undefined;
@@ -265,11 +271,12 @@ export const OutputShellServerToolItem$outboundSchema: z.ZodType<
   arguments: z.nullable(z.string()).optional(),
   callId: z.nullable(z.string()).optional(),
   containerId: z.string().optional(),
+  error: z.string().optional(),
   files: z.array(z.lazy(() => OutputShellServerToolItemFile$outboundSchema))
     .optional(),
   id: z.string().optional(),
   output: z.array(ShellCallOutputContent$outboundSchema).optional(),
-  status: ToolCallStatus$outboundSchema,
+  status: FailableToolCallStatus$outboundSchema,
   type: OutputShellServerToolItemTypeOpenrouterShell$outboundSchema,
 }).transform((v) => {
   return remap$(v, {
