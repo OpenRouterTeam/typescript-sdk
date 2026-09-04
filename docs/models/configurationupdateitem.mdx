@@ -1,0 +1,26 @@
+---
+title: "ConfigurationUpdateItem"
+---
+
+Changes reasoning effort from this point in the conversation onward without invalidating the prompt cache for the preceding items. Place it before the user message it should apply to; it stays in effect until another configuration update. Two adjacent configuration updates are rejected. Only supported by models that accept mid-conversation effort changes.
+
+## Example Usage
+
+```typescript
+import { ConfigurationUpdateItem } from "@openrouter/sdk/models";
+
+let value: ConfigurationUpdateItem = {
+  reasoning: {
+    effort: "low",
+  },
+  type: "configuration_update",
+};
+```
+
+## Fields
+
+| Field                                                                            | Type                                                                             | Required                                                                         | Description                                                                      | Example                                                                          |
+| -------------------------------------------------------------------------------- | -------------------------------------------------------------------------------- | -------------------------------------------------------------------------------- | -------------------------------------------------------------------------------- | -------------------------------------------------------------------------------- |
+| `id`                                                                             | *string*                                                                         | :heavy_minus_sign:                                                               | N/A                                                                              |                                                                                  |
+| `reasoning`                                                                      | [models.ConfigurationUpdateReasoning](../models/configurationupdatereasoning.mdx) | :heavy_check_mark:                                                               | Reasoning settings applied from this point in the conversation onward            | \{<br/>"effort": "low"<br/>}                                                      |
+| `type`                                                                           | [models.ConfigurationUpdateItemType](../models/configurationupdateitemtype.mdx)   | :heavy_check_mark:                                                               | N/A                                                                              |                                                                                  |
