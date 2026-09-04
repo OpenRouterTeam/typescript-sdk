@@ -7701,6 +7701,13 @@ components:
       required:
         - 'data'
       type: 'object'
+    CreateScimSyncJobResponse:
+      properties:
+        data:
+          $ref: '#/components/schemas/ScimSyncJob'
+      required:
+        - 'data'
+      type: 'object'
     CreateWorkspaceRequest:
       example:
         default_image_model: 'openai/dall-e-3'
@@ -10070,6 +10077,13 @@ components:
       properties:
         data:
           $ref: '#/components/schemas/ScimGroupMapping'
+      required:
+        - 'data'
+      type: 'object'
+    GetScimSyncJobResponse:
+      properties:
+        data:
+          $ref: '#/components/schemas/ScimSyncJob'
       required:
         - 'data'
       type: 'object'
@@ -23376,6 +23390,58 @@ components:
         - 'role'
         - 'created_at'
         - 'updated_at'
+      type: 'object'
+    ScimSyncJob:
+      properties:
+        created_at:
+          description: 'Time when the sync job was created.'
+          type: 'string'
+        deleted_groups:
+          description: 'Number of groups deleted, when the job completed successfully.'
+          type:
+            - 'integer'
+            - 'null'
+        error_message:
+          description: 'Stable error message when the job failed.'
+          type:
+            - 'string'
+            - 'null'
+        finished_at:
+          description: 'Time when synchronization finished.'
+          type:
+            - 'string'
+            - 'null'
+        id:
+          description: 'Unique identifier for the sync job.'
+          format: 'uuid'
+          type: 'string'
+        started_at:
+          description: 'Time when synchronization started.'
+          type:
+            - 'string'
+            - 'null'
+        status:
+          description: 'Current status of the sync job: queued, running, succeeded, or failed.'
+          enum:
+            - 'queued'
+            - 'running'
+            - 'succeeded'
+            - 'failed'
+          type: 'string'
+        synced_groups:
+          description: 'Number of groups synchronized, when the job completed successfully.'
+          type:
+            - 'integer'
+            - 'null'
+      required:
+        - 'id'
+        - 'status'
+        - 'synced_groups'
+        - 'deleted_groups'
+        - 'error_message'
+        - 'created_at'
+        - 'started_at'
+        - 'finished_at'
       type: 'object'
     SearchContextSizeEnum:
       description: 'Size of the search context for web search tools'
@@ -39380,6 +39446,110 @@ paths:
         outputs:
           results: '$.data'
         type: 'offsetLimit'
+  /scim/sync-jobs:
+    post:
+      description: 'Start a SCIM directory sync. [Management key](/docs/guides/overview/auth/management-api-keys) required.'
+      operationId: 'createScimSyncJob'
+      responses:
+        '202':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CreateScimSyncJobResponse'
+          description: 'SCIM directory sync job queued'
+          headers:
+            Location:
+              description: 'Poll URL for the created sync job.'
+              required: true
+              schema:
+                description: 'Poll URL for the created sync job.'
+                type: 'string'
+        '401':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 401
+                  message: 'Missing Authentication header'
+              schema:
+                $ref: '#/components/schemas/UnauthorizedResponse'
+          description: 'Unauthorized - Authentication required or invalid credentials'
+        '404':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 404
+                  message: 'Resource not found'
+              schema:
+                $ref: '#/components/schemas/NotFoundResponse'
+          description: 'Not Found - Resource does not exist'
+        '500':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 500
+                  message: 'Internal Server Error'
+              schema:
+                $ref: '#/components/schemas/InternalServerResponse'
+          description: 'Internal Server Error - Unexpected server error'
+      summary: 'Start a SCIM directory sync'
+      tags:
+        - 'SCIM'
+      x-speakeasy-name-override: 'createSyncJob'
+  /scim/sync-jobs/{id}:
+    get:
+      description: 'Get SCIM directory sync status. [Management key](/docs/guides/overview/auth/management-api-keys) required.'
+      operationId: 'getScimSyncJob'
+      parameters:
+        - in: 'path'
+          name: 'id'
+          required: true
+          schema:
+            format: 'uuid'
+            type: 'string'
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetScimSyncJobResponse'
+          description: 'SCIM directory sync job'
+        '401':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 401
+                  message: 'Missing Authentication header'
+              schema:
+                $ref: '#/components/schemas/UnauthorizedResponse'
+          description: 'Unauthorized - Authentication required or invalid credentials'
+        '404':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 404
+                  message: 'Resource not found'
+              schema:
+                $ref: '#/components/schemas/NotFoundResponse'
+          description: 'Not Found - Resource does not exist'
+        '500':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 500
+                  message: 'Internal Server Error'
+              schema:
+                $ref: '#/components/schemas/InternalServerResponse'
+          description: 'Internal Server Error - Unexpected server error'
+      summary: 'Get SCIM directory sync status'
+      tags:
+        - 'SCIM'
+      x-speakeasy-name-override: 'getSyncJob'
   /videos:
     post:
       description: 'Submits a video generation request and returns a polling URL to check status'
