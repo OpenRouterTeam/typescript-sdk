@@ -1,0 +1,25 @@
+---
+title: "McpHttpError"
+---
+
+The MCP server request failed at the HTTP layer
+
+## Example Usage
+
+```typescript
+import { McpHttpError } from "@openrouter/sdk/models";
+
+let value: McpHttpError = {
+  code: 503,
+  message: "Service Unavailable",
+  type: "http_error",
+};
+```
+
+## Fields
+
+| Field                                                    | Type                                                     | Required                                                 | Description                                              |
+| -------------------------------------------------------- | -------------------------------------------------------- | -------------------------------------------------------- | -------------------------------------------------------- |
+| `code`                                                   | *number*                                                 | :heavy_check_mark:                                       | N/A                                                      |
+| `message`                                                | *string*                                                 | :heavy_check_mark:                                       | N/A                                                      |
+| `type`                                                   | [models.McpHttpErrorType](../models/mcphttperrortype.mdx) | :heavy_check_mark:                                       | N/A                                                      |

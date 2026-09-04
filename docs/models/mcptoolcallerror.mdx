@@ -1,0 +1,43 @@
+---
+title: "McpToolCallError"
+---
+
+Error from an MCP tool call, either a plain message or a structured error
+
+
+## Supported Types
+
+### `string`
+
+```typescript
+const value: string = "<value>";
+```
+
+### `models.McpProtocolError`
+
+```typescript
+const value: models.McpProtocolError = {
+  code: 503,
+  message: "Service Unavailable",
+  type: "mcp_protocol_error",
+};
+```
+
+### `models.McpToolExecutionError`
+
+```typescript
+const value: models.McpToolExecutionError = {
+  type: "mcp_tool_execution_error",
+};
+```
+
+### `models.McpHttpError`
+
+```typescript
+const value: models.McpHttpError = {
+  code: 503,
+  message: "Service Unavailable",
+  type: "http_error",
+};
+```
+
