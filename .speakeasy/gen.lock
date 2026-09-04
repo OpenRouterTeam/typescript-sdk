@@ -1,19 +1,19 @@
 lockVersion: ""
 id: ""
 management:
-  docChecksum: 7c435a4640e0b02ddeea0123531e7b9c
+  docChecksum: 0eba3c3ead5ff2d8059e7206a189ae5e
   docVersion: 1.0.0
   speakeasyVersion: 1.787.0
   generationVersion: 2.914.0
-  releaseVersion: 1.2.103
-  configChecksum: ebd0261b5b01d3ceb2371abd56bd0112
+  releaseVersion: 1.2.104
+  configChecksum: acf3e9cae5ecc544b23fbad9e044c882
   repoURL: https://github.com/OpenRouterTeam/typescript-sdk.git
   installationURL: https://github.com/OpenRouterTeam/typescript-sdk
   published: true
 persistentEdits:
-  generation_id: e2e5fb70-4353-4dcd-b09f-49ff7c042693
-  pristine_commit_hash: be4aa28bcf6b27eafd8be003c74c4f403b3ebc16
-  pristine_tree_hash: a651d79d18b68a579bb89d513062a79b4dc0f63d
+  generation_id: 2b8a59ba-5ce1-459c-9834-12e76967ceff
+  pristine_commit_hash: b593a3fcb32f1e50549f99f06b29bf7b2a32d067
+  pristine_tree_hash: cc42059f37bea7c45949898430af44e98a752521
 features:
   typescript:
     acceptHeaders: 2.81.2
@@ -3194,6 +3194,10 @@ trackedFiles:
     id: ce774c659526
     last_write_checksum: sha1:84277df5147f215e3b07d6fc0d9a3bba149b3f7b
     pristine_git_object: 5c0465f04d6181e6e847f3733af16120d0b35213
+  docs/models/createscimsyncjobresponse.mdx:
+    id: 9b5f284ac7eb
+    last_write_checksum: sha1:c934056fc97772775f0ee261faefc6e622ec4161
+    pristine_git_object: 0f4494f40a3191a64113c49e22668bcb16520c7c
   docs/models/createworkspacerequest.md:
     id: 8e9411a464de
     last_write_checksum: sha1:e90b29dbe637a8fb0d8be53f0593ffc9787cc1bf
@@ -4412,6 +4416,10 @@ trackedFiles:
     id: 30c8ab517163
     last_write_checksum: sha1:8aaf5ac8855621bc22c524a59711783540a6dddb
     pristine_git_object: 391f00adb91606fe4805588a4a7f3a2f602aa24b
+  docs/models/getscimsyncjobresponse.mdx:
+    id: 00ba09581ff7
+    last_write_checksum: sha1:e24f58e010cae5048bf0575f14bbda33a3316e13
+    pristine_git_object: 8e052f829cf9ff54e9ba0bee39a1e12a87de726b
   docs/models/getworkspacebudgetresponse.mdx:
     id: f486a2f837eb
     last_write_checksum: sha1:ebb2deb16a365062e20e7a7430c8bc01e09578bb
@@ -7394,6 +7402,18 @@ trackedFiles:
     id: a7e4ecedbca6
     last_write_checksum: sha1:1ce1687e1dad3b884a848292cedc84c1f7444bee
     pristine_git_object: 6796ca9b7b0967a91bad67fc1fc54dc950fceb97
+  docs/models/operations/createscimsyncjobglobals.mdx:
+    id: 0e136a2581b6
+    last_write_checksum: sha1:02c9c5c7bf7c88a7ecd6f53e55523fc55acaccbd
+    pristine_git_object: 7813b03dc073bfc6a1278fc26d2b59af1acd3922
+  docs/models/operations/createscimsyncjobrequest.mdx:
+    id: 167c96071827
+    last_write_checksum: sha1:5d7f047791bc4213e67ada2f9cbf90c82b7466c8
+    pristine_git_object: fc8b687419506a3e72f8be679924f97ba6891910
+  docs/models/operations/createscimsyncjobresponse.mdx:
+    id: 2d76b1e8e8b7
+    last_write_checksum: sha1:0cd53c1569a60f47eb1d4cd7392d34d54ef16fa5
+    pristine_git_object: 2199321b31cfce31bf1ee7a7aa106f359e49120a
   docs/models/operations/createttsglobals.md:
     id: d77253ce42ea
     last_write_checksum: sha1:9516108a1caa4256a40d277dd24f9d3be5f92a2d
@@ -8066,6 +8086,14 @@ trackedFiles:
     id: 22025542670f
     last_write_checksum: sha1:c1f39828219ae0fae641393c78edc05fba449b0e
     pristine_git_object: 3da57c2476aeb4a2c533281e2885d34b290dc4b9
+  docs/models/operations/getscimsyncjobglobals.mdx:
+    id: fef7f1ef794c
+    last_write_checksum: sha1:844952556231048ac3e67fb68b9096dab8793b51
+    pristine_git_object: e9c4294e7f5e1b948ab202af52072b4efaa0b91c
+  docs/models/operations/getscimsyncjobrequest.mdx:
+    id: 1e1a3a6e629c
+    last_write_checksum: sha1:8fc0c72cd1584759e72e927ec7889630261b8113
+    pristine_git_object: 118fa00e3fc25214f7bf3d42dfbf6b10de906f7e
   docs/models/operations/getsessioncostglobals.mdx:
     id: 721fda76b72b
     last_write_checksum: sha1:62a6f5e641274d6e57477d878683812fee5e80f7
@@ -11127,6 +11155,14 @@ trackedFiles:
     id: 277a61c893a8
     last_write_checksum: sha1:8d97b2a4f804b3e21ef7f9724dc9b802d32302b7
     pristine_git_object: b0e19d2967a61bc0ca4d798f80229165ef22364b
+  docs/models/scimsyncjob.mdx:
+    id: aea737fccca9
+    last_write_checksum: sha1:5cb6c720f6d41076f6cf807f728db8c3d8f6b13c
+    pristine_git_object: 585ca324ab4bb267b43d375c22f6be09bed2948f
+  docs/models/scimsyncjobstatus.mdx:
+    id: 2c7ac4015da5
+    last_write_checksum: sha1:494e2054437406ff149c4a9749e1c80714bc765d
+    pristine_git_object: ee8ecb43ffd4b07579511e9c29717a78caa9fef2
   docs/models/scope.mdx:
     id: 53060439ddc4
     last_write_checksum: sha1:3bde46df57dee7681df97045b31432ea6452b6eb
@@ -13153,8 +13189,8 @@ trackedFiles:
     pristine_git_object: a6ae7a34aecc0cf38695561110c2ff9189ec0958
   docs/sdks/scim/README.mdx:
     id: fd6d8a91a053
-    last_write_checksum: sha1:8e95090afca9f088d351db6426decf1705d4bea5
-    pristine_git_object: 96dd8f13b665096e7e70a3387a90f8116ab5800c
+    last_write_checksum: sha1:b48f390c46bff8181d30167365452ab2342f7861
+    pristine_git_object: b79b813e8b8f63c417a44ca18e29b34a4f4c1a46
   docs/sdks/stt/README.md:
     id: 0806154492f9
     last_write_checksum: sha1:aa311f9602dfafdcb8dea4d91c4549876cecc37f
@@ -13213,12 +13249,12 @@ trackedFiles:
     pristine_git_object: 410efafd6a7f50d91ccb87131fedbe0c3d47e15a
   jsr.json:
     id: 7f6ab7767282
-    last_write_checksum: sha1:6cc4d78c57e5a9da9c0848ed2ca3df5948d8a029
-    pristine_git_object: 70e30c499089d70720d3bc9651b864464bbaaf52
+    last_write_checksum: sha1:d4b00f01591c709b37b5dd024f383a702e27361f
+    pristine_git_object: 13bd6eeb36345d165796f4f6b93d950330a6347e
   package.json:
     id: 7030d0b2f71b
-    last_write_checksum: sha1:000248d523bec20560cd0b58ae90f172b3979c20
-    pristine_git_object: 88b62cef2b3a01861d045d5c81be0d40f3c92e29
+    last_write_checksum: sha1:d0948d037a26391afaa98647aa028f386f8647e6
+    pristine_git_object: ac23178865e5403f558848affd5cf2477c782781
   src/core.ts:
     id: f431fdbcd144
     last_write_checksum: sha1:5aa66b0b6a5964f3eea7f3098c2eb3c0ee9c0131
@@ -13535,10 +13571,18 @@ trackedFiles:
     id: a8ea14125a34
     last_write_checksum: sha1:e3bc981f4d91997b9ef34c39fc917b2b55306230
     pristine_git_object: 0675da1b046ca6741242f9889f57910393df9d9c
+  src/funcs/scimCreateSyncJob.ts:
+    id: e5a91c340b44
+    last_write_checksum: sha1:42f24b615a1a4f4a0ed880108367417e59ddf31e
+    pristine_git_object: e4d2bde2d6e518d82b733e91efe7625732cb9bcb
   src/funcs/scimDelete.ts:
     id: 441ae3f88a98
     last_write_checksum: sha1:20d77e5c8e46e5b00341e630cb81f6d0ef991a8e
     pristine_git_object: 375fd5d1fd18dd690ed3f59c2b8cf584d8a4c103
+  src/funcs/scimGetSyncJob.ts:
+    id: 95876bc94c5c
+    last_write_checksum: sha1:65c863d6394131bbb95f79edc0b635cb1d362816
+    pristine_git_object: 1c739f0350864d678de9416fdd4adc4d417a6fce
   src/funcs/scimListGroups.ts:
     id: bf94e6973603
     last_write_checksum: sha1:73108f728f39f9e306d480564ab9308d8bd2138a
@@ -13653,8 +13697,8 @@ trackedFiles:
     pristine_git_object: a187e58707bdb726ca2aff74941efe7493422d4e
   src/lib/config.ts:
     id: 320761608fb3
-    last_write_checksum: sha1:45077069b2cab53cf380f08caa4d93a9c9da23eb
-    pristine_git_object: da2e5c12501dde74600b9088ba756b4c92e1a252
+    last_write_checksum: sha1:69f02b1a082234f0d70e8eb83b417092595b9441
+    pristine_git_object: 7569409c26f3cac1e855048aeb79479c252a2720
   src/lib/dlv.ts:
     id: b1988214835a
     last_write_checksum: sha1:eaac763b22717206a6199104e0403ed17a4e2711
@@ -14457,6 +14501,10 @@ trackedFiles:
     id: b3723e0973bc
     last_write_checksum: sha1:866f5585a404f63d2ab8705793bd682f67e29da7
     pristine_git_object: a6e1bde4814431bc17d0260f23dd4b79bfea3a89
+  src/models/createscimsyncjobresponse.ts:
+    id: cbd527ad55e4
+    last_write_checksum: sha1:d0b3a70338bf9e5f5c10578fc3801763a54d5f40
+    pristine_git_object: 0f81d8c1e34b62759ab8d1b92ceb94675a577ebb
   src/models/createworkspacerequest.ts:
     id: 729716a42b74
     last_write_checksum: sha1:b9d04def65fb3e312cf6299b0a04a0aa16be79a6
@@ -14829,6 +14877,10 @@ trackedFiles:
     id: 96e1fbabfc37
     last_write_checksum: sha1:9943ba8d8e5900834f5e3a0c97b92f6540c6438d
     pristine_git_object: 687d466bfddd70cc5bc6560555ca08586002ceda
+  src/models/getscimsyncjobresponse.ts:
+    id: 3ada334326d5
+    last_write_checksum: sha1:978720f0c836107cb4fd3221d93e827a349acd23
+    pristine_git_object: bc05db7bd7d9a273ca038e9950aab7c1030665a2
   src/models/getworkspacebudgetresponse.ts:
     id: ccd40e25fb1b
     last_write_checksum: sha1:b00cd8f433ea625940f8a3f31a37e0f130e21f8b
@@ -14963,8 +15015,8 @@ trackedFiles:
     pristine_git_object: 8e109bedfdcf2c4808e49323dda861e3c6069d51
   src/models/index.ts:
     id: f93644b0f37e
-    last_write_checksum: sha1:bd40aa7ed07db761a82f5b956bf05403991ddffe
-    pristine_git_object: d8969b27ee407dc49948708b58e6add3bd2684c1
+    last_write_checksum: sha1:1af1f6eb126c1bf04e3197e9013f020759992612
+    pristine_git_object: 5d1a1040bea1957d47c58e1e25fdcf374910c8b0
   src/models/inputaudio.ts:
     id: 9bdc14c7565f
     last_write_checksum: sha1:2f8dc4c1d6a9c2927d9eb186e0ecedf7b81838e6
@@ -15485,6 +15537,10 @@ trackedFiles:
     id: c5875c4ab24d
     last_write_checksum: sha1:ae2c3b7c171b6b7efa074766653b1548bf9c69ab
     pristine_git_object: 98b1062e237236013090bc0069786cc8ad13953a
+  src/models/operations/createscimsyncjob.ts:
+    id: ebd7800a291d
+    last_write_checksum: sha1:0fbbd383b5a354b70f758c06ba85d2001802e189
+    pristine_git_object: 38b8d8511d4503a767e6483091e00d06047cb276
   src/models/operations/createvideos.ts:
     id: 06dc92996e18
     last_write_checksum: sha1:debbfb49bdfed99a57248da4ed95dc06be8c1e43
@@ -15609,6 +15665,10 @@ trackedFiles:
     id: 770ff3da0b58
     last_write_checksum: sha1:7f59e0d0fa643c7e163477b08c30761261605e83
     pristine_git_object: 8208ddb9588e6c4e6a85afa8638f7aa39bc80442
+  src/models/operations/getscimsyncjob.ts:
+    id: 7ab3b0cef3ee
+    last_write_checksum: sha1:78bd385ad6a7de0534c5cc7120cb95b8dff0244f
+    pristine_git_object: 24e3bb771f065657ed6a23f936dc8334269c3c78
   src/models/operations/getsessioncost.ts:
     id: 64d7aeafa13e
     last_write_checksum: sha1:439dc1877d9fc5cf8ff8b1f24927c4333e0eb171
@@ -15635,8 +15695,8 @@ trackedFiles:
     pristine_git_object: bb6afaf246e3ca96277cd3a28ce09c274aef9c22
   src/models/operations/index.ts:
     id: 0d9ffaf774d2
-    last_write_checksum: sha1:482694515affce715e55c06304a52b92a9402aa1
-    pristine_git_object: 42cbef62f73516e26285cc745cb6f7ebf9983726
+    last_write_checksum: sha1:3953810fb26997a147a0d19e0048f68007af82bf
+    pristine_git_object: ed9bc17767ba8392d18671524ed3cbce60a6d10d
   src/models/operations/list.ts:
     id: ce11386ad30f
     last_write_checksum: sha1:357fb735d77e377eba5fec5742d7a4dca6747f47
@@ -16245,6 +16305,10 @@ trackedFiles:
     id: 851ea3a51b22
     last_write_checksum: sha1:234f4f55f87d641555edb833889283ff1d60beaf
     pristine_git_object: 062b2385af8e875bd872a8dfe1377ce60e084a6b
+  src/models/scimsyncjob.ts:
+    id: c04d52fe7194
+    last_write_checksum: sha1:5fce3c759558ffae62fec54a63d6d859d49aff7b
+    pristine_git_object: 7601217a1f6d41110833d0c38e62ee52432df006
   src/models/searchcontextsizeenum.ts:
     id: d76263d711fe
     last_write_checksum: sha1:84b915e8d44e263ab6436d727663d69caa799149
@@ -16839,8 +16903,8 @@ trackedFiles:
     pristine_git_object: 7ba7ea89653bce0ac90b00c64d09e4ffb85b931e
   src/sdk/scim.ts:
     id: ecf200b1abaf
-    last_write_checksum: sha1:74d5b15c0296fde81595a11b5a4d3046f80cd526
-    pristine_git_object: 8d64821a9d1cec221b6b25febffa1eb81d8c7c65
+    last_write_checksum: sha1:79df5617745c2fe7b7c708c725a0e5583f176e6d
+    pristine_git_object: 8e9b4047e476a17451b5feb7e9d4a32eec7f61f8
   src/sdk/sdk.ts:
     id: 784571af2f69
     last_write_checksum: sha1:ade865f795ba9ad202abbafaedcf67539dddcfc5
@@ -18822,5 +18886,33 @@ examples:
           application/json: {"error": "invalid_grant", "error_description": "The subject token was not accepted."}
         "500":
           application/json: {"error": "invalid_grant", "error_description": "The subject token was not accepted."}
+  createScimSyncJob:
+    speakeasy-default-create-scim-sync-job:
+      responses:
+        "202":
+          application/json: {"data": {"created_at": "1712777141098", "deleted_groups": 182193, "error_message": null, "finished_at": "<value>", "id": "7d10512f-6c8e-413d-b6f9-117bd47a1c48", "started_at": "<value>", "status": "succeeded", "synced_groups": 985942}}
+        "401":
+          application/json: {"error": {"code": 401, "message": "Missing Authentication header"}}
+        "404":
+          application/json: {"error": {"code": 404, "message": "Resource not found"}}
+        "500":
+          application/json: {"error": {"code": 500, "message": "Internal Server Error"}}
+  getScimSyncJob:
+    speakeasy-default-get-scim-sync-job:
+      parameters:
+        path:
+          id: "11506961-3c26-4184-a388-53273cc64c83"
+      responses:
+        "200":
+          application/json: {"data": {"created_at": "1709974767907", "deleted_groups": 892856, "error_message": "<value>", "finished_at": "<value>", "id": "07b0436b-79eb-4e01-940e-aa9d5306e4c4", "started_at": "<value>", "status": "queued", "synced_groups": 824296}}
+        "401":
+          application/json: {"error": {"code": 401, "message": "Missing Authentication header"}}
+        "404":
+          application/json: {"error": {"code": 404, "message": "Resource not found"}}
+        "500":
+          application/json: {"error": {"code": 500, "message": "Internal Server Error"}}
 examplesVersion: 1.0.2
-releaseNotes: "## Typescript SDK Changes:\n* `openrouter.tts.createSpeech()`: \n  *  `request.speechRequest.provider.options.primeIntellect` **Added**\n* `openrouter.stt.createTranscription()`: \n  *  `request.sttRequest.provider.options.primeIntellect` **Added**\n* `openrouter.byok.list()`: \n  *  `request.provider` **Changed**\n  *  `response.data[].provider.enum(primeIntellect)` **Added**\n* `openrouter.byok.create()`: \n  *  `request.createByokKeyRequest.provider.enum(primeIntellect)` **Added**\n  *  `response.data.provider.enum(primeIntellect)` **Added**\n* `openrouter.byok.get()`:  `response.data.provider.enum(primeIntellect)` **Added**\n* `openrouter.byok.update()`:  `response.data.provider.enum(primeIntellect)` **Added**\n* `openrouter.chat.send()`: \n  *  `request.chatRequest.provider.ignore[].union(ProviderName).enum(primeIntellect)` **Added**\n* `openrouter.embeddings.generate()`: \n  *  `request.requestBody.provider.ignore[].union(ProviderName).enum(primeIntellect)` **Added**\n* `openrouter.endpoints.listZdrEndpoints()`:  `response.data[].providerName.enum(primeIntellect)` **Added**\n* `openrouter.endpoints.list()`:  `response.data.endpoints[].providerName.enum(primeIntellect)` **Added**\n* `openrouter.generations.getGeneration()`:  `response.data.providerResponses[].providerName.enum(primeIntellect)` **Added**\n* `openrouter.images.generate()`: \n  *  `request.imageGenerationRequest.provider` **Changed**\n* `openrouter.presets.createPresetsChatCompletions()`: \n  *  `request.chatRequest.provider.ignore[].union(ProviderName).enum(primeIntellect)` **Added**\n* `openrouter.presets.createPresetsMessages()`: \n  *  `request.messagesRequest.provider.ignore[].union(ProviderName).enum(primeIntellect)` **Added**\n* `openrouter.presets.createPresetsResponses()`: \n  *  `request.responsesRequest.provider.ignore[].union(ProviderName).enum(primeIntellect)` **Added**\n* `openrouter.rerank.rerank()`: \n  *  `request.requestBody.provider.ignore[].union(ProviderName).enum(primeIntellect)` **Added**\n* `openrouter.responses.send()`: \n  *  `request.responsesRequest.provider.ignore[].union(ProviderName).enum(primeIntellect)` **Added**\n* `openrouter.beta.responses.send()`: \n  *  `request.responsesRequest.provider.ignore[].union(ProviderName).enum(primeIntellect)` **Added**\n* `openrouter.videoGeneration.generate()`: \n  *  `request.videoGenerationRequest.provider.options.primeIntellect` **Added**\n"
+releaseNotes: |
+  ## Typescript SDK Changes:
+  * `openrouter.scim.createSyncJob()`: **Added**
+  * `openrouter.scim.getSyncJob()`: **Added**
