@@ -1,0 +1,25 @@
+---
+title: "McpProtocolError"
+---
+
+The MCP server returned a protocol-level error
+
+## Example Usage
+
+```typescript
+import { McpProtocolError } from "@openrouter/sdk/models";
+
+let value: McpProtocolError = {
+  code: 503,
+  message: "Service Unavailable",
+  type: "mcp_protocol_error",
+};
+```
+
+## Fields
+
+| Field                                                            | Type                                                             | Required                                                         | Description                                                      |
+| ---------------------------------------------------------------- | ---------------------------------------------------------------- | ---------------------------------------------------------------- | ---------------------------------------------------------------- |
+| `code`                                                           | *number*                                                         | :heavy_check_mark:                                               | N/A                                                              |
+| `message`                                                        | *string*                                                         | :heavy_check_mark:                                               | N/A                                                              |
+| `type`                                                           | [models.McpProtocolErrorType](../models/mcpprotocolerrortype.mdx) | :heavy_check_mark:                                               | N/A                                                              |
