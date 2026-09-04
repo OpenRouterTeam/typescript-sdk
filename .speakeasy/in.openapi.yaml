@@ -3586,6 +3586,7 @@ components:
               - $ref: '#/components/schemas/OpenAIResponseCustomToolCallOutput'
               - $ref: '#/components/schemas/ApplyPatchCallItem'
               - $ref: '#/components/schemas/ApplyPatchCallOutputItem'
+              - $ref: '#/components/schemas/ConfigurationUpdateItem'
           type: 'array'
         - type: 'null'
       example:
@@ -5972,6 +5973,20 @@ components:
         name: 'Assistant Config'
         role: 'system'
       properties:
+        configuration_update:
+          additionalProperties: false
+          description: 'OpenRouter extension. Changes reasoning effort from this point in the conversation onward without invalidating the prompt cache for the preceding turns. Place it on a content-less system message (`content: ""`) directly before the user message it should apply to, and keep it at that position in later requests. Equivalent to the OpenAI Responses `configuration_update` input item and the Anthropic Messages per-message `output_config.effort`.'
+          example:
+            reasoning:
+              effort: 'low'
+          properties:
+            reasoning:
+              $ref: '#/components/schemas/ConfigurationUpdateReasoning'
+          required:
+            - 'reasoning'
+          type:
+            - 'object'
+            - 'null'
         content:
           anyOf:
             - type: 'string'
@@ -6629,6 +6644,48 @@ components:
         - 'display_height'
         - 'display_width'
         - 'environment'
+      type: 'object'
+    ConfigurationUpdateItem:
+      description: 'Changes reasoning effort from this point in the conversation onward without invalidating the prompt cache for the preceding items. Place it before the user message it should apply to; it stays in effect until another configuration update. Two adjacent configuration updates are rejected. Only supported by models that accept mid-conversation effort changes.'
+      example:
+        reasoning:
+          effort: 'low'
+        type: 'configuration_update'
+      properties:
+        id:
+          type:
+            - 'string'
+            - 'null'
+        reasoning:
+          $ref: '#/components/schemas/ConfigurationUpdateReasoning'
+        type:
+          enum:
+            - 'configuration_update'
+          type: 'string'
+      required:
+        - 'type'
+        - 'reasoning'
+      type: 'object'
+    ConfigurationUpdateReasoning:
+      additionalProperties: false
+      description: 'Reasoning settings applied from this point in the conversation onward'
+      example:
+        effort: 'low'
+      properties:
+        effort:
+          description: 'Reasoning effort to apply from this point in the conversation onward'
+          enum:
+            - 'max'
+            - 'xhigh'
+            - 'high'
+            - 'medium'
+            - 'low'
+            - 'minimal'
+            - 'none'
+          example: 'low'
+          type: 'string'
+      required:
+        - 'effort'
       type: 'object'
     ConflictResponse:
       description: 'Conflict - Resource conflict or concurrent modification'
@@ -11660,6 +11717,7 @@ components:
               - $ref: '#/components/schemas/ItemReferenceItem'
               - $ref: '#/components/schemas/AdditionalToolsItem'
               - $ref: '#/components/schemas/AgentMessageItem'
+              - $ref: '#/components/schemas/ConfigurationUpdateItem'
           type: 'array'
       description: 'Input for a response request - can be a string or array of items'
       example:
@@ -12507,9 +12565,7 @@ components:
         arguments:
           type: 'string'
         error:
-          type:
-            - 'string'
-            - 'null'
+          $ref: '#/components/schemas/McpToolCallError'
         id:
           type: 'string'
         name:
@@ -12530,6 +12586,26 @@ components:
         - 'name'
         - 'arguments'
         - 'server_label'
+      type: 'object'
+    McpHttpError:
+      description: 'The MCP server request failed at the HTTP layer'
+      example:
+        code: 503
+        message: 'Service Unavailable'
+        type: 'http_error'
+      properties:
+        code:
+          type: 'integer'
+        message:
+          type: 'string'
+        type:
+          enum:
+            - 'http_error'
+          type: 'string'
+      required:
+        - 'type'
+        - 'code'
+        - 'message'
       type: 'object'
     McpListToolsItem:
       description: 'List of available MCP tools from a server'
@@ -12581,6 +12657,26 @@ components:
         - 'id'
         - 'server_label'
         - 'tools'
+      type: 'object'
+    McpProtocolError:
+      description: 'The MCP server returned a protocol-level error'
+      example:
+        code: -32601
+        message: 'Method not found'
+        type: 'mcp_protocol_error'
+      properties:
+        code:
+          type: 'integer'
+        message:
+          type: 'string'
+        type:
+          enum:
+            - 'mcp_protocol_error'
+          type: 'string'
+      required:
+        - 'type'
+        - 'code'
+        - 'message'
       type: 'object'
     McpServerTool:
       description: 'MCP (Model Context Protocol) tool configuration'
@@ -12660,6 +12756,32 @@ components:
       required:
         - 'type'
         - 'server_label'
+      type: 'object'
+    McpToolCallError:
+      anyOf:
+        - type: 'string'
+        - $ref: '#/components/schemas/McpProtocolError'
+        - $ref: '#/components/schemas/McpToolExecutionError'
+        - $ref: '#/components/schemas/McpHttpError'
+        - type: 'null'
+      description: 'Error from an MCP tool call, either a plain message or a structured error'
+      example:
+        code: 503
+        message: 'Service Unavailable'
+        type: 'http_error'
+    McpToolExecutionError:
+      description: 'The MCP tool ran but reported a failure'
+      example:
+        content: 'Connection refused'
+        type: 'mcp_tool_execution_error'
+      properties:
+        content: {}
+        type:
+          enum:
+            - 'mcp_tool_execution_error'
+          type: 'string'
+      required:
+        - 'type'
       type: 'object'
     MemberAssignment:
       example:
@@ -23001,6 +23123,7 @@ components:
             - 'failed_to_download_image'
             - 'image_file_not_found'
             - 'bio_policy'
+            - 'misalignment_policy_violation'
             - 'data_residency_mismatch'
           type: 'string'
         message:
