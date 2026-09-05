@@ -8,6 +8,10 @@ import { remap as remap$ } from "../lib/primitives.js";
 import * as openEnums from "../types/enums.js";
 import { OpenEnum } from "../types/enums.js";
 import {
+  ObservabilityDataRegionInput,
+  ObservabilityDataRegionInput$outboundSchema,
+} from "./observabilitydataregioninput.js";
+import {
   ObservabilityFilterRulesConfigNullable,
   ObservabilityFilterRulesConfigNullable$Outbound,
   ObservabilityFilterRulesConfigNullable$outboundSchema,
@@ -80,6 +84,10 @@ export type CreateObservabilityDestinationRequest = {
    */
   privacyMode?: boolean | undefined;
   /**
+   * Data regions this destination applies to. `eu` is accepted as an alias for `europe` and normalizes to `europe`. Omitting this field defaults to ['global']; the array must be non-empty.
+   */
+  regions?: Array<ObservabilityDataRegionInput> | undefined;
+  /**
    * Sampling rate between 0.0001 and 1 (1 = 100%).
    */
   samplingRate?: number | undefined;
@@ -112,6 +120,7 @@ export type CreateObservabilityDestinationRequest$Outbound = {
     | undefined;
   name: string;
   privacy_mode: boolean;
+  regions?: Array<string> | undefined;
   sampling_rate?: number | undefined;
   type: string;
   workspace_id?: string | undefined;
@@ -132,6 +141,7 @@ export const CreateObservabilityDestinationRequest$outboundSchema: z.ZodType<
     .optional(),
   name: z.string(),
   privacyMode: z.boolean().default(false),
+  regions: z.array(ObservabilityDataRegionInput$outboundSchema).optional(),
   samplingRate: z.number().optional(),
   type: CreateObservabilityDestinationRequestType$outboundSchema,
   workspaceId: z.string().optional(),
