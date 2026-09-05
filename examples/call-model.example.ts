@@ -12,7 +12,7 @@ dotenv.config();
  */
 
 import { OpenRouter } from "../src/index.js";
-import type { OpenResponsesEasyInputMessage } from "../src/models";
+import type { InputMessageItem } from "../src/models";
 
 
 const openRouter = new OpenRouter({
@@ -20,7 +20,7 @@ const openRouter = new OpenRouter({
 });
 
 const text = "Hello! What is your name?";
-const responsesMessages: OpenResponsesEasyInputMessage[] = [
+const responsesMessages: InputMessageItem[] = [
   {
     type: "message",
     role: "user",
