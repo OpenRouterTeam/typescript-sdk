@@ -74,7 +74,11 @@ import {
 import { StreamFailedError } from './stream-errors.js';
 import {
   applyResponsesStreamWatchdog,
+  awaitFirstContent,
   hasActiveStreamTimeouts,
+  isContentBearingStreamEvent,
+  isTerminalStreamEvent,
+  normalizeStallRetries,
   type StreamTimeoutOptions,
 } from './stream-watchdog.js';
 import { combineSignals } from './primitives.js';
@@ -913,32 +917,17 @@ export class ModelResult<
     };
 
     // Stall deadlines re-arm independently for every turn.
-    const turnWatch = this.createTurnWatchContext();
-    const newResult = await responsesSend(
-      this.options.client,
-      { responsesRequest: newRequest },
-      turnWatch.requestOptions,
-    );
-
-    if (!newResult.ok) {
-      throw newResult.error;
-    }
-
-    // Handle streaming or non-streaming response
-    const value = newResult.value;
-    if (isEventStream(value)) {
-      const followUpStream = new ReusableReadableStream(turnWatch.watch(value));
+    const turnResult = await this.sendTurnRequest(newRequest);
+    if (turnResult.kind === 'stream') {
+      const followUpStream = new ReusableReadableStream(turnResult.stream);
 
       if (this.turnBroadcaster) {
         return this.pipeAndConsumeStream(followUpStream, turnNumber);
       }
 
       return consumeStreamForCompletion(followUpStream);
-    } else if (this.isNonStreamingResponse(value)) {
-      return value;
-    } else {
-      throw new Error('Unexpected response type from API');
     }
+    return turnResult.response;
   }
 
   /**
@@ -955,6 +944,70 @@ export class ModelResult<
     }
     if (!Array.isArray(response.output) || response.output.length === 0) {
       throw new Error('Invalid final response: empty or invalid output');
+    }
+  }
+
+  /**
+   * Send one turn's request with stall protection.
+   *
+   * Wraps `responsesSend` with the per-turn watchdog, and — when
+   * `timeout.maxStallRetries` is set — transparently re-issues the
+   * request on pre-content stalls. Retries are provably safe: the stream
+   * is only handed to the caller after its first content-bearing (or
+   * terminal) event arrives, so a discarded stalled attempt never leaked
+   * events downstream. Stalls after content started are never retried.
+   */
+  private async sendTurnRequest(
+    request: models.ResponsesRequest,
+  ): Promise<
+    | { kind: 'stream'; stream: ReadableStream<models.StreamEvents> }
+    | { kind: 'response'; response: models.OpenResponsesResult }
+  > {
+    const maxStallRetries = normalizeStallRetries(this.options.timeout);
+
+    for (let attempt = 0; ; attempt++) {
+      const turnWatch = this.createTurnWatchContext();
+      const apiResult = await responsesSend(
+        this.options.client,
+        { responsesRequest: request },
+        turnWatch.requestOptions,
+      );
+
+      if (!apiResult.ok) {
+        throw apiResult.error;
+      }
+
+      const value = apiResult.value;
+      if (this.isNonStreamingResponse(value)) {
+        return { kind: 'response', response: value };
+      }
+      if (!isEventStream(value)) {
+        throw new Error('Unexpected response type from API');
+      }
+
+      const watched = turnWatch.watch(value);
+
+      // Without retries, hand the watched stream straight through — events
+      // flow to consumers in real time exactly as before.
+      if (maxStallRetries === 0) {
+        return { kind: 'stream', stream: watched };
+      }
+
+      // With retries, hold the stream back until it proves alive. Metadata
+      // events are buffered and replayed, so consumers still see the
+      // complete event sequence of the winning attempt only.
+      const outcome = await awaitFirstContent(
+        watched,
+        (event) => isContentBearingStreamEvent(event) || isTerminalStreamEvent(event),
+      );
+      if (outcome.kind === 'live') {
+        return { kind: 'stream', stream: outcome.stream };
+      }
+      if (attempt >= maxStallRetries) {
+        throw outcome.error;
+      }
+      // Pre-content stall with budget left: the previous attempt's request
+      // was already aborted by its watchdog; go again.
     }
   }
 
@@ -1156,27 +1209,15 @@ export class ModelResult<
       // Force stream mode for initial request
       const request = this.resolvedRequest;
 
-      // Make the API request (with per-turn stall detection when configured)
-      const turnWatch = this.createTurnWatchContext();
-      const apiResult = await responsesSend(
-        this.options.client,
-        { responsesRequest: request },
-        turnWatch.requestOptions,
-      );
-
-      if (!apiResult.ok) {
-        throw apiResult.error;
-      }
-
-      // Handle both streaming and non-streaming responses
-      // The API may return a non-streaming response even when stream: true is requested
-      if (isEventStream(apiResult.value)) {
-        this.reusableStream = new ReusableReadableStream(turnWatch.watch(apiResult.value));
-      } else if (this.isNonStreamingResponse(apiResult.value)) {
-        // API returned a complete response directly - use it as the final response
-        this.finalResponse = apiResult.value;
+      // Make the API request (with per-turn stall detection when configured).
+      // The API may return a non-streaming response even when stream: true
+      // is requested.
+      const turnResult = await this.sendTurnRequest(request);
+      if (turnResult.kind === 'stream') {
+        this.reusableStream = new ReusableReadableStream(turnResult.stream);
       } else {
-        throw new Error('Unexpected response type from API');
+        // API returned a complete response directly - use it as the final response
+        this.finalResponse = turnResult.response;
       }
     })();
 
@@ -1304,24 +1345,11 @@ export class ModelResult<
     this.resolvedRequest = request;
 
     // Make the API request (stall deadlines re-arm for the resumed turn)
-    const turnWatch = this.createTurnWatchContext();
-    const apiResult = await responsesSend(
-      this.options.client,
-      { responsesRequest: request },
-      turnWatch.requestOptions,
-    );
-
-    if (!apiResult.ok) {
-      throw apiResult.error;
-    }
-
-    // Handle both streaming and non-streaming responses
-    if (isEventStream(apiResult.value)) {
-      this.reusableStream = new ReusableReadableStream(turnWatch.watch(apiResult.value));
-    } else if (this.isNonStreamingResponse(apiResult.value)) {
-      this.finalResponse = apiResult.value;
+    const turnResult = await this.sendTurnRequest(request);
+    if (turnResult.kind === 'stream') {
+      this.reusableStream = new ReusableReadableStream(turnResult.stream);
     } else {
-      throw new Error('Unexpected response type from API');
+      this.finalResponse = turnResult.response;
     }
   }
 
