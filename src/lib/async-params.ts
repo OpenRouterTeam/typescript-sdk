@@ -2,6 +2,7 @@ import type * as models from '../models/index.js';
 import type { ToolContextMapWithShared, ParsedToolCall, StateAccessor, StopWhen, Tool, TurnContext } from './tool-types.js';
 import type { OpenResponsesResult } from '../models/index.js';
 import type { ContextInput } from './tool-context.js';
+import type { StreamTimeoutOptions } from './stream-watchdog.js';
 
 // Re-export Tool type for convenience
 export type { Tool } from './tool-types.js';
@@ -46,6 +47,23 @@ type BaseCallModelInput<
 } & {
   tools?: TTools;
   stopWhen?: StopWhen<TTools>;
+  /**
+   * Opt-in stalled-stream detection (fail fast instead of hanging on a
+   * stream that returns headers but never produces content).
+   *
+   * - `firstContentMs`: max milliseconds between a turn's response stream
+   *   starting and its first content-bearing event (text/reasoning delta,
+   *   tool-call arguments, ...). Keep-alives and metadata events do not
+   *   satisfy or reset it.
+   * - `contentIntervalMs`: max gap between content-bearing events once
+   *   content has started.
+   *
+   * Deadlines re-arm for every turn in multi-turn tool loops. On expiry the
+   * in-flight request is aborted and all consumers reject with
+   * `StreamStalledError` (its `retryable` getter is true only when no
+   * content had been received). Unset by default: no watchdog runs.
+   */
+  timeout?: StreamTimeoutOptions;
   /** Typed context data passed to tools via contextSchema. Includes optional `shared` key. */
   context?: ContextInput<ToolContextMapWithShared<TTools, TShared>>;
   /**
@@ -162,6 +180,7 @@ export async function resolveAsyncFunctions<TTools extends readonly Tool[] = rea
     'sharedContextSchema',   // Client-side schema for shared context validation
     'onTurnStart',           // Client-side turn start callback
     'onTurnEnd',             // Client-side turn end callback
+    'timeout',               // Client-side stalled-stream watchdog config
   ]);
 
   // Iterate over all keys in the input
