@@ -32,11 +32,6 @@ import {
   CompactionItem$outboundSchema,
 } from "./compactionitem.js";
 import {
-  ConfigurationUpdateItem,
-  ConfigurationUpdateItem$Outbound,
-  ConfigurationUpdateItem$outboundSchema,
-} from "./configurationupdateitem.js";
-import {
   ContextCompactionItem,
   ContextCompactionItem$Outbound,
   ContextCompactionItem$outboundSchema,
@@ -451,7 +446,6 @@ export type InputsUnion1 =
   | OutputShellServerToolItem
   | CompactionItem
   | ItemReferenceItem
-  | ConfigurationUpdateItem
   | EasyInputMessage
   | InputMessageItem
   | ContextCompactionItem;
@@ -509,7 +503,6 @@ export type InputsUnion =
     | OutputShellServerToolItem
     | CompactionItem
     | ItemReferenceItem
-    | ConfigurationUpdateItem
     | EasyInputMessage
     | InputMessageItem
     | ContextCompactionItem
@@ -814,7 +807,6 @@ export type InputsUnion1$Outbound =
   | OutputShellServerToolItem$Outbound
   | CompactionItem$Outbound
   | ItemReferenceItem$Outbound
-  | ConfigurationUpdateItem$Outbound
   | EasyInputMessage$Outbound
   | InputMessageItem$Outbound
   | ContextCompactionItem$Outbound;
@@ -871,7 +863,6 @@ export const InputsUnion1$outboundSchema: z.ZodType<
   OutputShellServerToolItem$outboundSchema,
   CompactionItem$outboundSchema,
   ItemReferenceItem$outboundSchema,
-  ConfigurationUpdateItem$outboundSchema,
   EasyInputMessage$outboundSchema,
   InputMessageItem$outboundSchema,
   ContextCompactionItem$outboundSchema,
@@ -932,7 +923,6 @@ export type InputsUnion$Outbound =
     | OutputShellServerToolItem$Outbound
     | CompactionItem$Outbound
     | ItemReferenceItem$Outbound
-    | ConfigurationUpdateItem$Outbound
     | EasyInputMessage$Outbound
     | InputMessageItem$Outbound
     | ContextCompactionItem$Outbound
@@ -993,7 +983,6 @@ export const InputsUnion$outboundSchema: z.ZodType<
       OutputShellServerToolItem$outboundSchema,
       CompactionItem$outboundSchema,
       ItemReferenceItem$outboundSchema,
-      ConfigurationUpdateItem$outboundSchema,
       EasyInputMessage$outboundSchema,
       InputMessageItem$outboundSchema,
       ContextCompactionItem$outboundSchema,

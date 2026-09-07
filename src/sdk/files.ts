@@ -8,6 +8,7 @@ import { filesDownload } from "../funcs/filesDownload.js";
 import { filesList } from "../funcs/filesList.js";
 import { filesRetrieve } from "../funcs/filesRetrieve.js";
 import { filesUpload } from "../funcs/filesUpload.js";
+import { filesUsage } from "../funcs/filesUsage.js";
 import { ClientSDK, RequestOptions } from "../lib/sdks.js";
 import * as models from "../models/index.js";
 import * as operations from "../models/operations/index.js";
@@ -94,6 +95,23 @@ export class Files extends ClientSDK {
     options?: RequestOptions,
   ): Promise<ReadableStream<Uint8Array>> {
     return unwrapAsync(filesDownload(
+      this,
+      request,
+      options,
+    ));
+  }
+
+  /**
+   * Get storage usage
+   *
+   * @remarks
+   * Reports how many bytes the authenticating entity stores in OpenRouter storage, against its cap. The cap is shared by every workspace of the entity.
+   */
+  async usage(
+    request?: operations.GetFilesUsageRequest | undefined,
+    options?: RequestOptions,
+  ): Promise<operations.GetFilesUsageResponse> {
+    return unwrapAsync(filesUsage(
       this,
       request,
       options,

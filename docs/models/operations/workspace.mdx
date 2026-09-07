@@ -1,0 +1,23 @@
+---
+title: "Workspace"
+---
+
+## Example Usage
+
+```typescript
+import { Workspace } from "@openrouter/sdk/models/operations";
+
+let value: Workspace = {
+  fileBytes: 560765,
+  sessionBytes: 665282,
+  workspaceId: "<id>",
+};
+```
+
+## Fields
+
+| Field                                       | Type                                        | Required                                    | Description                                 |
+| ------------------------------------------- | ------------------------------------------- | ------------------------------------------- | ------------------------------------------- |
+| `fileBytes`                                 | *number*                                    | :heavy_check_mark:                          | Bytes held by uploaded and generated files. |
+| `sessionBytes`                              | *number*                                    | :heavy_check_mark:                          | Bytes held by sandbox session storage.      |
+| `workspaceId`                               | *string*                                    | :heavy_check_mark:                          | Workspace the bytes belong to.              |
