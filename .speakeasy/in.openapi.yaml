@@ -24778,6 +24778,7 @@ components:
           type: 'string'
         format:
           description: 'Audio format (e.g., wav, mp3, flac, m4a, ogg, webm, aac). Supported formats vary by provider.'
+          pattern: '^[a-zA-Z0-9][a-zA-Z0-9+._-]{0,15}$'
           type: 'string'
       required:
         - 'data'
