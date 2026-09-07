@@ -17,10 +17,6 @@ import {
   ApplyPatchCallOutputItem,
   ApplyPatchCallOutputItem$inboundSchema,
 } from "./applypatchcalloutputitem.js";
-import {
-  ConfigurationUpdateItem,
-  ConfigurationUpdateItem$inboundSchema,
-} from "./configurationupdateitem.js";
 import { SDKValidationError } from "./errors/sdkvalidationerror.js";
 import { InputAudio, InputAudio$inboundSchema } from "./inputaudio.js";
 import { InputFile, InputFile$inboundSchema } from "./inputfile.js";
@@ -155,8 +151,7 @@ export type BaseInputsUnion1 =
   | OutputItemImageGenerationCall
   | OpenAIResponseCustomToolCallOutput
   | ApplyPatchCallOutputItem
-  | BaseInputsMessage
-  | ConfigurationUpdateItem;
+  | BaseInputsMessage;
 
 export type BaseInputsUnion =
   | string
@@ -171,7 +166,6 @@ export type BaseInputsUnion =
     | OpenAIResponseCustomToolCallOutput
     | ApplyPatchCallOutputItem
     | BaseInputsMessage
-    | ConfigurationUpdateItem
   >;
 
 /** @internal */
@@ -353,7 +347,6 @@ export const BaseInputsUnion1$inboundSchema: z.ZodType<
   OpenAIResponseCustomToolCallOutput$inboundSchema,
   ApplyPatchCallOutputItem$inboundSchema,
   z.lazy(() => BaseInputsMessage$inboundSchema),
-  ConfigurationUpdateItem$inboundSchema,
 ]);
 
 export function baseInputsUnion1FromJSON(
@@ -384,7 +377,6 @@ export const BaseInputsUnion$inboundSchema: z.ZodType<
       OpenAIResponseCustomToolCallOutput$inboundSchema,
       ApplyPatchCallOutputItem$inboundSchema,
       z.lazy(() => BaseInputsMessage$inboundSchema),
-      ConfigurationUpdateItem$inboundSchema,
     ]),
   ),
 ]);

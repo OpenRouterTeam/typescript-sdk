@@ -6,11 +6,6 @@
 import * as z from "zod/v4";
 import { remap as remap$ } from "../lib/primitives.js";
 import { ClosedEnum } from "../types/enums.js";
-import {
-  McpToolCallError,
-  McpToolCallError$Outbound,
-  McpToolCallError$outboundSchema,
-} from "./mcptoolcallerror.js";
 
 export const McpCallItemType = {
   McpCall: "mcp_call",
@@ -22,10 +17,7 @@ export type McpCallItemType = ClosedEnum<typeof McpCallItemType>;
  */
 export type McpCallItem = {
   arguments: string;
-  /**
-   * Error from an MCP tool call, either a plain message or a structured error
-   */
-  error?: McpToolCallError | null | undefined;
+  error?: string | null | undefined;
   id: string;
   name: string;
   output?: string | null | undefined;
@@ -40,7 +32,7 @@ export const McpCallItemType$outboundSchema: z.ZodEnum<typeof McpCallItemType> =
 /** @internal */
 export type McpCallItem$Outbound = {
   arguments: string;
-  error?: McpToolCallError$Outbound | null | undefined;
+  error?: string | null | undefined;
   id: string;
   name: string;
   output?: string | null | undefined;
@@ -54,7 +46,7 @@ export const McpCallItem$outboundSchema: z.ZodType<
   McpCallItem
 > = z.object({
   arguments: z.string(),
-  error: z.nullable(McpToolCallError$outboundSchema).optional(),
+  error: z.nullable(z.string()).optional(),
   id: z.string(),
   name: z.string(),
   output: z.nullable(z.string()).optional(),
