@@ -114,7 +114,7 @@ export const Provider = {
   Perplexity: "perplexity",
   Phala: "phala",
   Poolside: "poolside",
-  PrimeIntellect: "prime-intellect",
+  Primeintellect: "primeintellect",
   Quiver: "quiver",
   Recraft: "recraft",
   Reka: "reka",
