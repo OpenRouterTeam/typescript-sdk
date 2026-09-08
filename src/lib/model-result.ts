@@ -66,10 +66,12 @@ import {
   isResponseCompletedEvent,
   isResponseFailedEvent,
   isResponseIncompleteEvent,
+  isErrorEvent,
   isOutputTextDeltaEvent,
   isReasoningDeltaEvent,
   hasTypeProperty,
 } from './stream-type-guards.js';
+import { StreamFailedError } from './stream-errors.js';
 import {
   applyResponsesStreamWatchdog,
   hasActiveStreamTimeouts,
@@ -319,6 +321,7 @@ export class ModelResult<
 
     const consumer = stream.createConsumer();
     let completedResponse: models.OpenResponsesResult | null = null;
+    let errorEvent: models.ErrorEvent | null = null;
 
     for await (const event of consumer) {
       broadcaster.push(event);
@@ -326,8 +329,13 @@ export class ModelResult<
         completedResponse = event.response;
       }
       if (isResponseFailedEvent(event)) {
-        const errorMsg = 'message' in event ? String(event.message) : 'Response failed';
-        throw new Error(errorMsg);
+        throw StreamFailedError.fromFailedResponse(event.response);
+      }
+      if (isErrorEvent(event)) {
+        // Recorded, not thrown: only surfaced if the stream ends without a
+        // completed response, so an error followed by a successful
+        // completion keeps working.
+        errorEvent = event;
       }
       if (isResponseIncompleteEvent(event)) {
         completedResponse = event.response;
@@ -341,6 +349,9 @@ export class ModelResult<
     } satisfies TurnEndEvent);
 
     if (!completedResponse) {
+      if (errorEvent) {
+        throw StreamFailedError.fromErrorEvent(errorEvent);
+      }
       throw new Error('Follow-up stream ended without a completed response');
     }
 
