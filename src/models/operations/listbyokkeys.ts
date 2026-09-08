@@ -101,7 +101,6 @@ export const Provider = {
   Modular: "modular",
   Moonshotai: "moonshotai",
   Morph: "morph",
-  Ncompass: "ncompass",
   Nebius: "nebius",
   NexAgi: "nex-agi",
   Nextbit: "nextbit",
