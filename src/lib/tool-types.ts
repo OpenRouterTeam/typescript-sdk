@@ -99,8 +99,8 @@ export type NextTurnParamsContext = {
   input: models.InputsUnion;
   /** Current model selection */
   model: string;
-  /** Current models array */
-  models: string[];
+  /** Current models array (fallback model IDs or reason-gated entries) */
+  models: NonNullable<models.ResponsesRequest['models']>;
   /** Current temperature */
   temperature: number | null;
   /** Current maxOutputTokens */
