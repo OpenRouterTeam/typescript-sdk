@@ -4269,8 +4269,6 @@ components:
           $ref: '#/components/schemas/BashServerToolEngine'
         environment:
           $ref: '#/components/schemas/BashServerToolEnvironment'
-        sleep_after_seconds:
-          $ref: '#/components/schemas/SandboxSleepAfterSeconds'
       type: 'object'
     BashServerToolEngine:
       description: 'Which bash engine to use. "openrouter" runs commands server-side in the OpenRouter sandbox. "auto" (default) and "native" use native passthrough, returning the tool call to your application to run client-side; OpenRouter does not execute the commands.'
@@ -23674,10 +23672,6 @@ components:
         - 'fusion'
       example: 'direct'
       type: 'string'
-    SandboxSleepAfterSeconds:
-      description: 'How long (in seconds) the container stays warm after its last command before sleeping, freeing its capacity slot. Idle-based: each command renews the timer. Defaults to 300 (5 minutes); capped at 14400 (4 hours).'
-      example: 300
-      type: 'integer'
     ScimGroup:
       example:
         created_at: '2025-08-24T10:30:00.000Z'
@@ -24211,8 +24205,6 @@ components:
           $ref: '#/components/schemas/ShellServerToolEngine'
         environment:
           $ref: '#/components/schemas/ShellServerToolEnvironment'
-        sleep_after_seconds:
-          $ref: '#/components/schemas/SandboxSleepAfterSeconds'
       type: 'object'
     ShellServerToolEngine:
       description: 'Which shell engine to use. "openrouter" runs commands server-side in the OpenRouter sandbox. "auto" (default) keeps the provider''s native hosted shell when available (OpenAI); on other providers the call is routed to the OpenRouter sandbox.'
