@@ -73,7 +73,6 @@ export const ProviderName = {
   MoonshotAI: "Moonshot AI",
   Morph: "Morph",
   VoyageAIByMongoDB: "VoyageAI by MongoDB",
-  NCompass: "NCompass",
   Nebius: "Nebius",
   NexAGI: "Nex AGI",
   NextBit: "NextBit",
