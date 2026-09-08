@@ -5089,6 +5089,20 @@ components:
         content: 'This is a message from the developer.'
         role: 'developer'
       properties:
+        configuration_update:
+          additionalProperties: false
+          description: 'OpenRouter extension. Same as the system message `configuration_update`: changes reasoning effort from this point in the conversation onward without invalidating the prompt cache for the preceding turns.'
+          example:
+            reasoning:
+              effort: 'low'
+          properties:
+            reasoning:
+              $ref: '#/components/schemas/ConfigurationUpdateReasoning'
+          required:
+            - 'reasoning'
+          type:
+            - 'object'
+            - 'null'
         content:
           anyOf:
             - type: 'string'
