@@ -91,6 +91,8 @@ export const ImageGenerationRequestQuality = {
   Low: "low",
   Medium: "medium",
   High: "high",
+  Xhigh: "xhigh",
+  Max: "max",
 } as const;
 /**
  * Rendering quality. Providers without a quality knob ignore this.
