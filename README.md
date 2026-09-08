@@ -100,6 +100,83 @@ for await (const chunk of result) {
 
 <!-- No Server-sent event streaming [eventstream] -->
 
+## Stalled-stream detection
+
+A streaming response can return headers quickly, then never emit a content
+chunk — the connection stays open (keep-alive comments may even keep
+arriving) while no output flows. Transport-level timeouts cannot catch
+this. The SDK ships an opt-in watchdog with two semantic deadlines based
+on parsed events, not socket activity:
+
+- `firstContentMs` — max time between the response stream starting and its
+  first content-bearing event (text/reasoning/refusal delta, tool-call
+  arguments). Keep-alives, `response.created`, and empty role preludes do
+  not satisfy or reset it.
+- `contentIntervalMs` — max gap between content-bearing events once
+  content has started.
+
+With `callModel`, pass `timeout` (deadlines re-arm for every turn in a
+tool loop, and the stalled turn's HTTP request is aborted):
+
+```typescript
+import { OpenRouter, StreamStalledError } from "@openrouter/sdk";
+
+const openRouter = new OpenRouter();
+
+const result = openRouter.callModel({
+  model: "openai/gpt-5",
+  input: "Hello!",
+  timeout: {
+    firstContentMs: 15_000,
+    contentIntervalMs: 30_000,
+    // Optional: transparently re-issue a turn that stalls before any
+    // content arrived (never retries after content started, so output
+    // cannot be duplicated).
+    maxStallRetries: 1,
+  },
+});
+
+try {
+  console.log(await result.getText());
+} catch (error) {
+  if (error instanceof StreamStalledError) {
+    // error.phase: "first_content" | "between_content"
+    // error.retryable: true only if no content was received
+    console.error(`Stream stalled after ${error.elapsedMs}ms`, error.phase);
+  }
+  throw error;
+}
+```
+
+For raw streams (`chat.send` / `responses.send` with `stream: true`), wrap
+the event stream yourself:
+
+```typescript
+import { OpenRouter, applyChatStreamWatchdog } from "@openrouter/sdk";
+
+const openRouter = new OpenRouter();
+
+const stream = await openRouter.chat.send({
+  model: "openai/gpt-5",
+  messages: [{ role: "user", content: "Hello!" }],
+  stream: true,
+});
+
+if (stream instanceof ReadableStream) {
+  const watched = applyChatStreamWatchdog(stream, { firstContentMs: 15_000 });
+  for await (const chunk of watched) {
+    console.log(chunk.choices[0]?.delta.content);
+  }
+}
+```
+
+(`applyResponsesStreamWatchdog` is the equivalent for the Responses API.)
+
+Separately from stalls, server-reported stream failures (`response.failed`
+or stream `error` events) throw `StreamFailedError` carrying `code`,
+`errorType`, the failed `response`, and a `retryable` hint — instead of a
+bare `Error`.
+
 <!-- No Retries [retries] -->
 
 <!-- No Error Handling [errors] -->
