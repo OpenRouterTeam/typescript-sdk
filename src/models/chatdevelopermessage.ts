@@ -4,11 +4,27 @@
  */
 
 import * as z from "zod/v4";
+import { remap as remap$ } from "../lib/primitives.js";
 import {
   ChatContentText,
   ChatContentText$Outbound,
   ChatContentText$outboundSchema,
 } from "./chatcontenttext.js";
+import {
+  ConfigurationUpdateReasoning,
+  ConfigurationUpdateReasoning$Outbound,
+  ConfigurationUpdateReasoning$outboundSchema,
+} from "./configurationupdatereasoning.js";
+
+/**
+ * OpenRouter extension. Same as the system message `configuration_update`: changes reasoning effort from this point in the conversation onward without invalidating the prompt cache for the preceding turns.
+ */
+export type ChatDeveloperMessageConfigurationUpdate = {
+  /**
+   * Reasoning settings applied from this point in the conversation onward
+   */
+  reasoning: ConfigurationUpdateReasoning;
+};
 
 /**
  * Developer message content
@@ -20,6 +36,13 @@ export type ChatDeveloperMessageContent = string | Array<ChatContentText>;
  */
 export type ChatDeveloperMessage = {
   /**
+   * OpenRouter extension. Same as the system message `configuration_update`: changes reasoning effort from this point in the conversation onward without invalidating the prompt cache for the preceding turns.
+   */
+  configurationUpdate?:
+    | ChatDeveloperMessageConfigurationUpdate
+    | null
+    | undefined;
+  /**
    * Developer message content
    */
   content: string | Array<ChatContentText>;
@@ -29,6 +52,30 @@ export type ChatDeveloperMessage = {
   name?: string | undefined;
   role: "developer";
 };
+
+/** @internal */
+export type ChatDeveloperMessageConfigurationUpdate$Outbound = {
+  reasoning: ConfigurationUpdateReasoning$Outbound;
+};
+
+/** @internal */
+export const ChatDeveloperMessageConfigurationUpdate$outboundSchema: z.ZodType<
+  ChatDeveloperMessageConfigurationUpdate$Outbound,
+  ChatDeveloperMessageConfigurationUpdate
+> = z.object({
+  reasoning: ConfigurationUpdateReasoning$outboundSchema,
+});
+
+export function chatDeveloperMessageConfigurationUpdateToJSON(
+  chatDeveloperMessageConfigurationUpdate:
+    ChatDeveloperMessageConfigurationUpdate,
+): string {
+  return JSON.stringify(
+    ChatDeveloperMessageConfigurationUpdate$outboundSchema.parse(
+      chatDeveloperMessageConfigurationUpdate,
+    ),
+  );
+}
 
 /** @internal */
 export type ChatDeveloperMessageContent$Outbound =
@@ -53,6 +100,10 @@ export function chatDeveloperMessageContentToJSON(
 
 /** @internal */
 export type ChatDeveloperMessage$Outbound = {
+  configuration_update?:
+    | ChatDeveloperMessageConfigurationUpdate$Outbound
+    | null
+    | undefined;
   content: string | Array<ChatContentText$Outbound>;
   name?: string | undefined;
   role: "developer";
@@ -63,9 +114,16 @@ export const ChatDeveloperMessage$outboundSchema: z.ZodType<
   ChatDeveloperMessage$Outbound,
   ChatDeveloperMessage
 > = z.object({
+  configurationUpdate: z.nullable(
+    z.lazy(() => ChatDeveloperMessageConfigurationUpdate$outboundSchema),
+  ).optional(),
   content: z.union([z.string(), z.array(ChatContentText$outboundSchema)]),
   name: z.string().optional(),
   role: z.literal("developer"),
+}).transform((v) => {
+  return remap$(v, {
+    configurationUpdate: "configuration_update",
+  });
 });
 
 export function chatDeveloperMessageToJSON(

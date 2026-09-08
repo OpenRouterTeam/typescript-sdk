@@ -1,0 +1,23 @@
+---
+title: "ChatDeveloperMessageConfigurationUpdate"
+---
+
+OpenRouter extension. Same as the system message `configuration_update`: changes reasoning effort from this point in the conversation onward without invalidating the prompt cache for the preceding turns.
+
+## Example Usage
+
+```typescript
+import { ChatDeveloperMessageConfigurationUpdate } from "@openrouter/sdk/models";
+
+let value: ChatDeveloperMessageConfigurationUpdate = {
+  reasoning: {
+    effort: "low",
+  },
+};
+```
+
+## Fields
+
+| Field                                                                            | Type                                                                             | Required                                                                         | Description                                                                      | Example                                                                          |
+| -------------------------------------------------------------------------------- | -------------------------------------------------------------------------------- | -------------------------------------------------------------------------------- | -------------------------------------------------------------------------------- | -------------------------------------------------------------------------------- |
+| `reasoning`                                                                      | [models.ConfigurationUpdateReasoning](../models/configurationupdatereasoning.mdx) | :heavy_check_mark:                                                               | Reasoning settings applied from this point in the conversation onward            | \{<br/>"effort": "low"<br/>}                                                      |
