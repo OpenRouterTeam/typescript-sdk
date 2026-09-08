@@ -1,19 +1,19 @@
 lockVersion: ""
 id: ""
 management:
-  docChecksum: 620136d000104d780497d44dc538ac71
+  docChecksum: 87904ea166fe79b274b0f61b7c161af8
   docVersion: 1.0.0
   speakeasyVersion: 1.787.0
   generationVersion: 2.914.0
-  releaseVersion: 1.2.109
-  configChecksum: 2cd4fad4b6e5bcdd7cf3f756159014e6
+  releaseVersion: 1.2.110
+  configChecksum: 0b25ba79c7412488cc5eab0a3bcee00e
   repoURL: https://github.com/OpenRouterTeam/typescript-sdk.git
   installationURL: https://github.com/OpenRouterTeam/typescript-sdk
   published: true
 persistentEdits:
-  generation_id: 3e9dd25a-51f9-4062-b6aa-79f1c1dc9886
-  pristine_commit_hash: 22dd61db159416cab4e9c73850ac2f611de22fc1
-  pristine_tree_hash: 86cef1432b6f51940f1fa719dc7e13a20877dc87
+  generation_id: 4b29735a-2c40-4047-a306-39d2e66d40b1
+  pristine_commit_hash: c8ad197d41a9f31bfe44bc492768ef0c3e0f749a
+  pristine_tree_hash: 3eacb5b5513685e4d83a263f99261921cdd19098
 features:
   typescript:
     acceptHeaders: 2.81.2
@@ -1351,8 +1351,8 @@ trackedFiles:
     deleted: true
   docs/models/bashservertoolconfig.mdx:
     id: 25f57a480ac6
-    last_write_checksum: sha1:041516adf3ef436acbb0a91c000f578f472ff6fc
-    pristine_git_object: d28501de24952173c93c9267bb87f4059bef85a9
+    last_write_checksum: sha1:f57154c0e0e7f2929b36ebb1d7d6b5e4581122fa
+    pristine_git_object: ae3566311f51cb05b5a9caef8a2a3ebea0878073
   docs/models/bashservertoolengine.md:
     id: 21528215cfd4
     last_write_checksum: sha1:edde9aaa91adb51b1c458c1f61ed93843422fd89
@@ -11405,8 +11405,8 @@ trackedFiles:
     deleted: true
   docs/models/shellservertoolconfig.mdx:
     id: cfca505a4cd3
-    last_write_checksum: sha1:1f7e8bebf037cf6c92c616ed96efbdd32d8f4aad
-    pristine_git_object: 719ac28a0336c7c3722db241f749ad0249e9da50
+    last_write_checksum: sha1:8f3732f55e5ec247bb377be89e069c391f3fd2c0
+    pristine_git_object: cd8c49cb76736b8fe16945be63b84795f1996db5
   docs/models/shellservertoolengine.md:
     id: e4ecba29de85
     last_write_checksum: sha1:2ed9743f7898db93e2b96a7616386723cc7cb0dd
@@ -13309,12 +13309,12 @@ trackedFiles:
     pristine_git_object: 410efafd6a7f50d91ccb87131fedbe0c3d47e15a
   jsr.json:
     id: 7f6ab7767282
-    last_write_checksum: sha1:bb6cd402f90cbbce29f5c0561df1a8c6436738de
-    pristine_git_object: 410bb8ab10ede5dd719468974bc30162a78607c8
+    last_write_checksum: sha1:2438486ed3515689b15268a1912171e40b99a121
+    pristine_git_object: 9c03aea9619fee4feb36b49d99135f7209b0bf33
   package.json:
     id: 7030d0b2f71b
-    last_write_checksum: sha1:6a1f2d6175efb2045a6e22a03f539684d426a53b
-    pristine_git_object: 21c321079b75d9eb4e3e75ee59d0dc6d262bb1e4
+    last_write_checksum: sha1:153a2b009a9cdb6ed8f0e4bf0e1c15efb5a714fe
+    pristine_git_object: fab84790c842b7a1926c7322b0a3b4c90436e507
   src/core.ts:
     id: f431fdbcd144
     last_write_checksum: sha1:5aa66b0b6a5964f3eea7f3098c2eb3c0ee9c0131
@@ -13757,8 +13757,8 @@ trackedFiles:
     pristine_git_object: a187e58707bdb726ca2aff74941efe7493422d4e
   src/lib/config.ts:
     id: 320761608fb3
-    last_write_checksum: sha1:e420cdf0dcd2e587db35bd5c49419ff1cae0ab07
-    pristine_git_object: 395aef64ded2a56d1edfdf53613658b3eb4252d4
+    last_write_checksum: sha1:e15ca19d79ef3af3c64d99e438938885f08e5523
+    pristine_git_object: 17d97d88f9e71553f02f08aa59575a0b1b98cb7f
   src/lib/dlv.ts:
     id: b1988214835a
     last_write_checksum: sha1:eaac763b22717206a6199104e0403ed17a4e2711
@@ -14127,8 +14127,8 @@ trackedFiles:
     pristine_git_object: ad26fc3610ffbe319002fb722623e552dc410997
   src/models/bashservertoolconfig.ts:
     id: 77c2f874ae9c
-    last_write_checksum: sha1:37b30ce809de01b1edad48cdebd7685da4ab1414
-    pristine_git_object: 16ecd96581d3bc392d11ff94e15e8d2d6f4451ec
+    last_write_checksum: sha1:f7ab6851ff475076c586a1abded03b13daff53e7
+    pristine_git_object: 0338a77a2f1adfc5ab11ff711481c85e3b87bf4d
   src/models/bashservertoolengine.ts:
     id: a4d8929dda05
     last_write_checksum: sha1:f28046e51bd064761d3612dfd5f0420a45ced16f
@@ -16463,8 +16463,8 @@ trackedFiles:
     pristine_git_object: 141947b7caf61d1ab146943c614baea6e889d50d
   src/models/shellservertoolconfig.ts:
     id: c6c92c223699
-    last_write_checksum: sha1:f81384bae21675f1e3a4798dcdd8190781d7d8a3
-    pristine_git_object: 15e8fcef3cb4a552936844084c0b329e057b8b03
+    last_write_checksum: sha1:2791f7f152b83355b77334944e6c831bc6f37cd5
+    pristine_git_object: 189fe8145cccc9ba69d5b65b61d4208d5abdbe26
   src/models/shellservertoolengine.ts:
     id: 65e8f719b40b
     last_write_checksum: sha1:19da76502970e4a5ec58f88f7bc88554f5ab687f
@@ -19004,4 +19004,4 @@ examples:
         "500":
           application/json: {"error": {"code": 500, "message": "Internal Server Error"}}
 examplesVersion: 1.0.2
-releaseNotes: "## Typescript SDK Changes:\n* `openrouter.chat.send()`: \n  *  `request.chatRequest.messages[].union(developer).configurationUpdate` **Added**\n* `openrouter.presets.createPresetsChatCompletions()`: \n  *  `request.chatRequest.messages[].union(developer).configurationUpdate` **Added**\n"
+releaseNotes: "## Typescript SDK Changes:\n* `openrouter.chat.send()`: \n  *  `request.chatRequest.tools[].union(BashServerTool).parameters.sleepAfterSeconds` **Removed** (Breaking ⚠️)\n* `openrouter.presets.createPresetsChatCompletions()`: \n  *  `request.chatRequest.tools[].union(BashServerTool).parameters.sleepAfterSeconds` **Removed** (Breaking ⚠️)\n* `openrouter.presets.createPresetsMessages()`: \n  *  `request.messagesRequest.tools[]` **Changed** (Breaking ⚠️)\n* `openrouter.presets.createPresetsResponses()`: \n  *  `request.responsesRequest.input.union(Array<>)[].union(AdditionalToolsItem).tools[]` **Changed** (Breaking ⚠️)\n* `openrouter.responses.send()`: \n  *  `request.responsesRequest.input.union(Array<>)[].union(AdditionalToolsItem).tools[]` **Changed** (Breaking ⚠️)\n* `openrouter.beta.responses.send()`: \n  *  `request.responsesRequest.input.union(Array<>)[].union(AdditionalToolsItem).tools[]` **Changed** (Breaking ⚠️)\n"
