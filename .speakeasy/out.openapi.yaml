@@ -10904,6 +10904,8 @@ components:
             - 'low'
             - 'medium'
             - 'high'
+            - 'xhigh'
+            - 'max'
           example: 'high'
           type: 'string'
           x-speakeasy-unknown-values: allow

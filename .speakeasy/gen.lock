@@ -1,19 +1,19 @@
 lockVersion: ""
 id: ""
 management:
-  docChecksum: 0bfd41dee15578c555a41a9e9eaa3a17
+  docChecksum: 42dcaccef10eb478fa6ee2f872b688b8
   docVersion: 1.0.0
   speakeasyVersion: 1.787.0
   generationVersion: 2.914.0
-  releaseVersion: 1.2.112
-  configChecksum: 440bceaa54564ccbf7ba2691b643eaa2
+  releaseVersion: 1.2.113
+  configChecksum: 9298c6952b916a342ac2687bc5118c59
   repoURL: https://github.com/OpenRouterTeam/typescript-sdk.git
   installationURL: https://github.com/OpenRouterTeam/typescript-sdk
   published: true
 persistentEdits:
-  generation_id: 07fce9c3-207b-4752-995b-ff60df7d993c
-  pristine_commit_hash: 350b9f6fe1121da727f6f5f8959a521b287a012b
-  pristine_tree_hash: 633520d9aefe827e73139c55bbb25e60e86bb9d4
+  generation_id: 3976a6da-b35d-4dab-893c-b20ed8d1492d
+  pristine_commit_hash: 39a888cfcae774867d3da7520a803efb1e2e4ed6
+  pristine_tree_hash: 67584996f7b4926f4c79aa447b183b82082038a9
 features:
   typescript:
     acceptHeaders: 2.81.2
@@ -4637,8 +4637,8 @@ trackedFiles:
     deleted: true
   docs/models/imagegenerationrequestquality.mdx:
     id: 051c7ba6a30c
-    last_write_checksum: sha1:5f1149e9d03bff3f4e07f539743d6013959cce7a
-    pristine_git_object: 64afec853f51159274c8dd897b5ba31522401849
+    last_write_checksum: sha1:aaa159812d958954073f5d61e72ddfd8143c028a
+    pristine_git_object: c1281b4cae7c8c5f36ec868e8634d0b655ebf1bc
   docs/models/imagegenerationrequestresolution.md:
     id: 4536d03d9634
     last_write_checksum: sha1:6f3b47a4671ced490dd37779f4ab69c1787d4d1b
@@ -13309,12 +13309,12 @@ trackedFiles:
     pristine_git_object: 410efafd6a7f50d91ccb87131fedbe0c3d47e15a
   jsr.json:
     id: 7f6ab7767282
-    last_write_checksum: sha1:49c2d654324163aacb5adc2fafaf024e430c5bbd
-    pristine_git_object: 5f10e8da8d37c6ed51fca7c955aa3ba6a3c5494b
+    last_write_checksum: sha1:9089b9d8b80303a440592517de03670d86d7c615
+    pristine_git_object: caf97fe64c6f6b6a3ebf97bccc01e313e66d1abf
   package.json:
     id: 7030d0b2f71b
-    last_write_checksum: sha1:0b507a9b0335ee2d864510c1dc4cb4a3d14aa444
-    pristine_git_object: 0fbd1af7a8650f39da33cf091729131453440741
+    last_write_checksum: sha1:a40534693a4199fd2301f3482d1a13d85e1c1495
+    pristine_git_object: 761b1e24d533cd8496790cc49f89df3dca4221b3
   src/core.ts:
     id: f431fdbcd144
     last_write_checksum: sha1:5aa66b0b6a5964f3eea7f3098c2eb3c0ee9c0131
@@ -13757,8 +13757,8 @@ trackedFiles:
     pristine_git_object: a187e58707bdb726ca2aff74941efe7493422d4e
   src/lib/config.ts:
     id: 320761608fb3
-    last_write_checksum: sha1:ecdaed0042b158c53d94a453b56ec129ea0dfc03
-    pristine_git_object: af13d5f914214520403aa257b0598da9d4606cb9
+    last_write_checksum: sha1:ad7875aec8c6a43be1dcae6c7b84b6b700182d42
+    pristine_git_object: 9d955894f95ce54674c7dafa48da5ec1efde57fb
   src/lib/dlv.ts:
     id: b1988214835a
     last_write_checksum: sha1:eaac763b22717206a6199104e0403ed17a4e2711
@@ -15003,8 +15003,8 @@ trackedFiles:
     pristine_git_object: 54b341603a79ceed9931ddf22f28a76e8b777861
   src/models/imagegenerationrequest.ts:
     id: ea1ffc0d2470
-    last_write_checksum: sha1:1f0eebc130d9c945009e4bd6e94b342a2e52becd
-    pristine_git_object: 3e4af7e2e5fadb27651907fa7cdb7637ce0e7c74
+    last_write_checksum: sha1:927f09d80361b615f48ceae7cefc11d7e77b86df
+    pristine_git_object: bff383fa5966cfe7b091748be0e8fcf4008c0dd5
   src/models/imagegenerationresponse.ts:
     id: 18aeba0f13cc
     last_write_checksum: sha1:4cd19da234bbdae4d406bd1cbc9629bd2e15f2a5
@@ -19004,4 +19004,4 @@ examples:
         "500":
           application/json: {"error": {"code": 500, "message": "Internal Server Error"}}
 examplesVersion: 1.0.2
-releaseNotes: "## Typescript SDK Changes:\n* `openrouter.tts.createSpeech()`: \n  *  `request.speechRequest.provider.options` **Changed** (Breaking ⚠️)\n* `openrouter.stt.createTranscription()`: \n  *  `request.sttRequest.provider.options` **Changed** (Breaking ⚠️)\n* `openrouter.byok.list()`: \n  *  `request.provider` **Changed** (Breaking ⚠️)\n  *  `response.data[].provider` **Changed** (Breaking ⚠️)\n* `openrouter.byok.create()`: \n  *  `request.createByokKeyRequest.provider` **Changed** (Breaking ⚠️)\n  *  `response.data.provider` **Changed** (Breaking ⚠️)\n* `openrouter.byok.get()`:  `response.data.provider` **Changed** (Breaking ⚠️)\n* `openrouter.byok.update()`:  `response.data.provider` **Changed** (Breaking ⚠️)\n* `openrouter.images.generate()`: \n  *  `request.imageGenerationRequest.provider.options` **Changed** (Breaking ⚠️)\n* `openrouter.videoGeneration.generate()`: \n  *  `request.videoGenerationRequest.provider.options` **Changed** (Breaking ⚠️)\n"
+releaseNotes: "## Typescript SDK Changes:\n* `openrouter.images.generate()`: \n  *  `request.imageGenerationRequest.quality` **Changed**\n"
