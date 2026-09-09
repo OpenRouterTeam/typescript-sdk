@@ -1,19 +1,19 @@
 lockVersion: ""
 id: ""
 management:
-  docChecksum: 37b43fdc711416072d9030de6188d606
+  docChecksum: d9d748ecdd96c61599930ca3cf3dafaa
   docVersion: 1.0.0
   speakeasyVersion: 1.787.0
   generationVersion: 2.914.0
-  releaseVersion: 1.2.115
-  configChecksum: df44df70ef3a272057877626f43e00fc
+  releaseVersion: 1.2.116
+  configChecksum: bfe12c014cce26a534c978f64ad2369e
   repoURL: https://github.com/OpenRouterTeam/typescript-sdk.git
   installationURL: https://github.com/OpenRouterTeam/typescript-sdk
   published: true
 persistentEdits:
-  generation_id: 89163bf7-893e-48e9-8f86-dc7c64d8462c
-  pristine_commit_hash: f8dfbe9a2ede092d71dc6a74ce980af10d32308c
-  pristine_tree_hash: e207f6c76fba8879b7fd28030f022445006037ef
+  generation_id: 448c8b93-ae4a-496f-b919-b8be8dc8dd0d
+  pristine_commit_hash: 4ab472357226d22b0dd9ae5d41903dda7b21b97e
+  pristine_tree_hash: 7393bd6a08121ee378803c885db20f6af950598e
 features:
   typescript:
     acceptHeaders: 2.81.2
@@ -673,8 +673,8 @@ trackedFiles:
     pristine_git_object: df34fd1a267fe91036007b15b1b0572174b384f8
   docs/models/anthropicthinkingblockbinding.mdx:
     id: a958eb316eb7
-    last_write_checksum: sha1:6b3a693850dfe34491b589d1e99a5d60d4aa0d45
-    pristine_git_object: 4ce9f666df540820d56ec715977d6a3b68b0ebca
+    last_write_checksum: sha1:a475336df3ebd7aa47f29a93da03a9dc22d9e76f
+    pristine_git_object: ac2385ae87d6fa253e4f2d76c79eb583616fac58
   docs/models/anthropicthinkingdisplay.md:
     id: 91228592cf8d
     last_write_checksum: sha1:688d4a83b7661ef28f7096ac204f82a083b1bb88
@@ -6020,6 +6020,10 @@ trackedFiles:
     id: 6bfdb5878ef4
     last_write_checksum: sha1:179b8badd12d0d10450204e5580384ccf403fb19
     pristine_git_object: 0b7f298442a5dd21b7ef00407f82a528bd8b5a77
+  docs/models/mismatchbehavior.mdx:
+    id: 1d95e2ebb3f4
+    last_write_checksum: sha1:5b6665628f68c68fd98ef330a24902d91b9c33e1
+    pristine_git_object: 6b379caa19d27a292b7db2d90a69daf11a6e7e34
   docs/models/modality.mdx:
     id: 5f1c7217ddd9
     last_write_checksum: sha1:170c8dcb528d92b9009bf2be126e33c330a31baf
@@ -13309,12 +13313,12 @@ trackedFiles:
     pristine_git_object: 410efafd6a7f50d91ccb87131fedbe0c3d47e15a
   jsr.json:
     id: 7f6ab7767282
-    last_write_checksum: sha1:828906cc7bb7f656f0fbe55c7c015f732fc8c940
-    pristine_git_object: d7b98e78af85c791b1b4dd53d4522536daa27b53
+    last_write_checksum: sha1:8eb765b22114a0f6104110df492905c3375cc2bd
+    pristine_git_object: cab7919dd4d1fd0a0d96bd050fdbf503b24ebb1d
   package.json:
     id: 7030d0b2f71b
-    last_write_checksum: sha1:c62a9e7cfee8134398782b82bf823b018d228d49
-    pristine_git_object: 2f2dec8dc23debad9d873be9b72828c83428706f
+    last_write_checksum: sha1:e18b9d4fff5ec9629b8900d79f6af40ac95aa2da
+    pristine_git_object: 871e8d62a395f736144083fbb90632cb7d1da9f1
   src/core.ts:
     id: f431fdbcd144
     last_write_checksum: sha1:5aa66b0b6a5964f3eea7f3098c2eb3c0ee9c0131
@@ -13757,8 +13761,8 @@ trackedFiles:
     pristine_git_object: a187e58707bdb726ca2aff74941efe7493422d4e
   src/lib/config.ts:
     id: 320761608fb3
-    last_write_checksum: sha1:3a137139eface34902ca75d53df558642a8e72dc
-    pristine_git_object: 1af133f95c6969fc482c1fe7b1a080de82ae928f
+    last_write_checksum: sha1:622b912a4eddfb89d73bd5940d4db7560dbe0f92
+    pristine_git_object: 3089cb750b28afbbb48b992e7a45029617a2d7f9
   src/lib/dlv.ts:
     id: b1988214835a
     last_write_checksum: sha1:eaac763b22717206a6199104e0403ed17a4e2711
@@ -13983,8 +13987,8 @@ trackedFiles:
     pristine_git_object: b4d01dbca8f515a050ea730848316cc22bd860b3
   src/models/anthropicthinkingblockbinding.ts:
     id: b71a9eb413ec
-    last_write_checksum: sha1:8ebca97fc4b4c6ccaa42381f72f5424d0ae75033
-    pristine_git_object: 3d68c98d8d426c2fbdc70da48de53374645efec3
+    last_write_checksum: sha1:89cd963a3b0a004c413e452de1aa56611d64479a
+    pristine_git_object: 0e45cd9d853b148a958580a6b6807d9b39591be4
   src/models/anthropicthinkingdisplay.ts:
     id: 43a490494a57
     last_write_checksum: sha1:8d6f254129a80743b6f7e34a017d322c7f1315a1
@@ -19004,4 +19008,4 @@ examples:
         "500":
           application/json: {"error": {"code": 500, "message": "Internal Server Error"}}
 examplesVersion: 1.0.2
-releaseNotes: "## Typescript SDK Changes:\n* `openrouter.tts.createSpeech()`: \n  *  `request.speechRequest.provider.options.nearAi` **Added**\n* `openrouter.stt.createTranscription()`: \n  *  `request.sttRequest.provider.options.nearAi` **Added**\n* `openrouter.byok.list()`: \n  *  `request.provider` **Changed**\n  *  `response.data[].provider.enum(nearAi)` **Added**\n* `openrouter.byok.create()`: \n  *  `request.createByokKeyRequest.provider.enum(nearAi)` **Added**\n  *  `response.data.provider.enum(nearAi)` **Added**\n* `openrouter.byok.get()`:  `response.data.provider.enum(nearAi)` **Added**\n* `openrouter.byok.update()`:  `response.data.provider.enum(nearAi)` **Added**\n* `openrouter.chat.send()`: \n  *  `request.chatRequest.provider.ignore[].union(ProviderName).enum(nearAi)` **Added**\n* `openrouter.embeddings.generate()`: \n  *  `request.requestBody.provider.ignore[].union(ProviderName).enum(nearAi)` **Added**\n* `openrouter.endpoints.listZdrEndpoints()`:  `response.data[].providerName.enum(nearAi)` **Added**\n* `openrouter.endpoints.list()`:  `response.data.endpoints[].providerName.enum(nearAi)` **Added**\n* `openrouter.generations.getGeneration()`:  `response.data.providerResponses[].providerName.enum(nearAi)` **Added**\n* `openrouter.images.generate()`: \n  *  `request.imageGenerationRequest.provider` **Changed**\n* `openrouter.presets.createPresetsChatCompletions()`: \n  *  `request.chatRequest.provider.ignore[].union(ProviderName).enum(nearAi)` **Added**\n* `openrouter.presets.createPresetsMessages()`: \n  *  `request.messagesRequest.provider.ignore[].union(ProviderName).enum(nearAi)` **Added**\n* `openrouter.presets.createPresetsResponses()`: \n  *  `request.responsesRequest.provider.ignore[].union(ProviderName).enum(nearAi)` **Added**\n* `openrouter.rerank.rerank()`: \n  *  `request.requestBody.provider.ignore[].union(ProviderName).enum(nearAi)` **Added**\n* `openrouter.responses.send()`: \n  *  `request.responsesRequest.provider.ignore[].union(ProviderName).enum(nearAi)` **Added**\n* `openrouter.beta.responses.send()`: \n  *  `request.responsesRequest.provider.ignore[].union(ProviderName).enum(nearAi)` **Added**\n* `openrouter.videoGeneration.generate()`: \n  *  `request.videoGenerationRequest.provider.options.nearAi` **Added**\n"
+releaseNotes: "## Typescript SDK Changes:\n* `openrouter.presets.createPresetsMessages()`: \n  *  `request.messagesRequest.thinking.union(enabled).blockBinding.mismatchBehavior` **Added**\n"
