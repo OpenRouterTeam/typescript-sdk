@@ -1,0 +1,23 @@
+---
+title: "~~MismatchBehavior~~"
+---
+
+Deprecated: legacy alias of prefix_mismatch_behavior. Send only one of the two.
+
+> :warning: **DEPRECATED**: This will be removed in a future release, please migrate away from it as soon as possible.
+
+## Example Usage
+
+```typescript
+import { MismatchBehavior } from "@openrouter/sdk/models";
+
+let value: MismatchBehavior = "drop_block";
+
+// Open enum: unrecognized values are captured as Unrecognized<string>
+```
+
+## Values
+
+```typescript
+"error" | "drop_block" | Unrecognized<string>
+```

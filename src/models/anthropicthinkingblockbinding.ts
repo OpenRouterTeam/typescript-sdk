@@ -8,6 +8,22 @@ import { remap as remap$ } from "../lib/primitives.js";
 import * as openEnums from "../types/enums.js";
 import { OpenEnum } from "../types/enums.js";
 
+/**
+ * Deprecated: legacy alias of prefix_mismatch_behavior. Send only one of the two.
+ *
+ * @deprecated enum: This will be removed in a future release, please migrate away from it as soon as possible.
+ */
+export const MismatchBehavior = {
+  Error: "error",
+  DropBlock: "drop_block",
+} as const;
+/**
+ * Deprecated: legacy alias of prefix_mismatch_behavior. Send only one of the two.
+ *
+ * @deprecated enum: This will be removed in a future release, please migrate away from it as soon as possible.
+ */
+export type MismatchBehavior = OpenEnum<typeof MismatchBehavior>;
+
 export const PrefixMismatchBehavior = {
   Error: "error",
   DropBlock: "drop_block",
@@ -15,8 +31,20 @@ export const PrefixMismatchBehavior = {
 export type PrefixMismatchBehavior = OpenEnum<typeof PrefixMismatchBehavior>;
 
 export type AnthropicThinkingBlockBinding = {
+  /**
+   * Deprecated: legacy alias of prefix_mismatch_behavior. Send only one of the two.
+   *
+   * @deprecated field: This will be removed in a future release, please migrate away from it as soon as possible.
+   */
+  mismatchBehavior?: MismatchBehavior | null | undefined;
   prefixMismatchBehavior?: PrefixMismatchBehavior | null | undefined;
 };
+
+/** @internal */
+export const MismatchBehavior$outboundSchema: z.ZodType<
+  string,
+  MismatchBehavior
+> = openEnums.outboundSchema(MismatchBehavior);
 
 /** @internal */
 export const PrefixMismatchBehavior$outboundSchema: z.ZodType<
@@ -26,6 +54,7 @@ export const PrefixMismatchBehavior$outboundSchema: z.ZodType<
 
 /** @internal */
 export type AnthropicThinkingBlockBinding$Outbound = {
+  mismatch_behavior?: string | null | undefined;
   prefix_mismatch_behavior?: string | null | undefined;
 };
 
@@ -34,10 +63,12 @@ export const AnthropicThinkingBlockBinding$outboundSchema: z.ZodType<
   AnthropicThinkingBlockBinding$Outbound,
   AnthropicThinkingBlockBinding
 > = z.object({
+  mismatchBehavior: z.nullable(MismatchBehavior$outboundSchema).optional(),
   prefixMismatchBehavior: z.nullable(PrefixMismatchBehavior$outboundSchema)
     .optional(),
 }).transform((v) => {
   return remap$(v, {
+    mismatchBehavior: "mismatch_behavior",
     prefixMismatchBehavior: "prefix_mismatch_behavior",
   });
 });
