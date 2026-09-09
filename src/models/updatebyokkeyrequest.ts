@@ -24,9 +24,17 @@ export type UpdateBYOKKeyRequest = {
    */
   disabled?: boolean | undefined;
   /**
-   * Whether this credential is treated as a fallback — used only after non-fallback keys for the same provider have been tried.
+   * Whether OpenRouter's shared endpoints on this provider are removed for every model, including models outside `allowed_models` and after all of your keys for the provider fail. The provider is skipped instead of spending OpenRouter credits. Only valid on non-fallback credentials. Omit to leave the stored value unchanged.
+   */
+  isByokOnly?: boolean | undefined;
+  /**
+   * Whether this credential is treated as a fallback — used only after non-fallback keys for the same provider have been tried. Cannot be combined with `is_byok_only`. Omit to leave the stored value unchanged.
    */
   isFallback?: boolean | undefined;
+  /**
+   * Whether OpenRouter's shared endpoints on this provider are removed for the models this credential applies to (its `allowed_models`, or every model when `null`). Requests for those models run only on your keys; models outside the allowlist may still fall back to shared capacity on this provider. Omit to leave the stored value unchanged.
+   */
+  isRequired?: boolean | undefined;
   /**
    * A new raw provider API key to rotate the credential in-place. The previous key material is overwritten and the masked label is regenerated. Encrypted at rest and never returned in API responses.
    */
@@ -43,7 +51,9 @@ export type UpdateBYOKKeyRequest$Outbound = {
   allowed_models?: Array<string> | null | undefined;
   allowed_user_ids?: Array<string> | null | undefined;
   disabled?: boolean | undefined;
+  is_byok_only?: boolean | undefined;
   is_fallback?: boolean | undefined;
+  is_required?: boolean | undefined;
   key?: string | undefined;
   name?: string | null | undefined;
 };
@@ -57,7 +67,9 @@ export const UpdateBYOKKeyRequest$outboundSchema: z.ZodType<
   allowedModels: z.nullable(z.array(z.string())).optional(),
   allowedUserIds: z.nullable(z.array(z.string())).optional(),
   disabled: z.boolean().optional(),
+  isByokOnly: z.boolean().optional(),
   isFallback: z.boolean().optional(),
+  isRequired: z.boolean().optional(),
   key: z.string().optional(),
   name: z.nullable(z.string()).optional(),
 }).transform((v) => {
@@ -65,7 +77,9 @@ export const UpdateBYOKKeyRequest$outboundSchema: z.ZodType<
     allowedApiKeyHashes: "allowed_api_key_hashes",
     allowedModels: "allowed_models",
     allowedUserIds: "allowed_user_ids",
+    isByokOnly: "is_byok_only",
     isFallback: "is_fallback",
+    isRequired: "is_required",
   });
 });
 

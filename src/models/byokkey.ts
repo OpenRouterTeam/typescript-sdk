@@ -39,9 +39,17 @@ export type BYOKKey = {
    */
   id: string;
   /**
-   * Whether this credential is treated as a fallback — used only after non-fallback keys for the same provider have been tried.
+   * Whether OpenRouter's shared endpoints on this provider are removed for every model, including models outside `allowed_models` and after all of your keys for the provider fail. The provider is skipped instead of spending OpenRouter credits. Only valid on non-fallback credentials.
+   */
+  isByokOnly: boolean;
+  /**
+   * Whether this credential is treated as a fallback — used only after non-fallback keys for the same provider have been tried. Cannot be combined with `is_byok_only`.
    */
   isFallback: boolean;
+  /**
+   * Whether OpenRouter's shared endpoints on this provider are removed for the models this credential applies to (its `allowed_models`, or every model when `null`). Requests for those models run only on your keys; models outside the allowlist may still fall back to shared capacity on this provider.
+   */
+  isRequired: boolean;
   /**
    * Short masked snippet of the key (e.g. the first/last few characters) used to identify it in the UI.
    */
@@ -72,7 +80,9 @@ export const BYOKKey$inboundSchema: z.ZodType<BYOKKey, unknown> = z.object({
   created_at: z.string(),
   disabled: z.boolean(),
   id: z.string(),
+  is_byok_only: z.boolean(),
   is_fallback: z.boolean(),
+  is_required: z.boolean(),
   label: z.string(),
   name: z.nullable(z.string()).optional(),
   provider: BYOKProviderSlug$inboundSchema,
@@ -84,7 +94,9 @@ export const BYOKKey$inboundSchema: z.ZodType<BYOKKey, unknown> = z.object({
     "allowed_models": "allowedModels",
     "allowed_user_ids": "allowedUserIds",
     "created_at": "createdAt",
+    "is_byok_only": "isByokOnly",
     "is_fallback": "isFallback",
+    "is_required": "isRequired",
     "sort_order": "sortOrder",
     "workspace_id": "workspaceId",
   });
