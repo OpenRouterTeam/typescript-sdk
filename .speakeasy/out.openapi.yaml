@@ -4728,6 +4728,7 @@ components:
         - 'modular'
         - 'moonshotai'
         - 'morph'
+        - 'near-ai'
         - 'nebius'
         - 'nex-agi'
         - 'nextbit'
@@ -14412,6 +14413,7 @@ components:
                 - 'Moonshot AI'
                 - 'Morph'
                 - 'VoyageAI by MongoDB'
+                - 'Near AI'
                 - 'Nebius'
                 - 'Nex AGI'
                 - 'NextBit'
@@ -21621,6 +21623,7 @@ components:
         - 'Moonshot AI'
         - 'Morph'
         - 'VoyageAI by MongoDB'
+        - 'Near AI'
         - 'Nebius'
         - 'Nex AGI'
         - 'NextBit'
@@ -21928,6 +21931,9 @@ components:
           additionalProperties: {}
           type: 'object'
         ncompass:
+          additionalProperties: {}
+          type: 'object'
+        near-ai:
           additionalProperties: {}
           type: 'object'
         nebius:
@@ -22373,6 +22379,7 @@ components:
             - 'Moonshot AI'
             - 'Morph'
             - 'VoyageAI by MongoDB'
+            - 'Near AI'
             - 'Nebius'
             - 'Nex AGI'
             - 'NextBit'
@@ -29765,6 +29772,7 @@ paths:
               - 'modular'
               - 'moonshotai'
               - 'morph'
+              - 'near-ai'
               - 'nebius'
               - 'nex-agi'
               - 'nextbit'
