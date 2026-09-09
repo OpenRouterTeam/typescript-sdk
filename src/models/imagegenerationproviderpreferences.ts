@@ -107,6 +107,7 @@ export type ImageGenerationProviderPreferencesOptions = {
   moonshotai?: { [k: string]: any } | undefined;
   morph?: { [k: string]: any } | undefined;
   ncompass?: { [k: string]: any } | undefined;
+  nearAi?: { [k: string]: any } | undefined;
   nebius?: { [k: string]: any } | undefined;
   nexAgi?: { [k: string]: any } | undefined;
   nextbit?: { [k: string]: any } | undefined;
@@ -330,6 +331,7 @@ export type ImageGenerationProviderPreferencesOptions$Outbound = {
   moonshotai?: { [k: string]: any } | undefined;
   morph?: { [k: string]: any } | undefined;
   ncompass?: { [k: string]: any } | undefined;
+  "near-ai"?: { [k: string]: any } | undefined;
   nebius?: { [k: string]: any } | undefined;
   "nex-agi"?: { [k: string]: any } | undefined;
   nextbit?: { [k: string]: any } | undefined;
@@ -477,6 +479,7 @@ export const ImageGenerationProviderPreferencesOptions$outboundSchema:
     moonshotai: z.record(z.string(), z.any()).optional(),
     morph: z.record(z.string(), z.any()).optional(),
     ncompass: z.record(z.string(), z.any()).optional(),
+    nearAi: z.record(z.string(), z.any()).optional(),
     nebius: z.record(z.string(), z.any()).optional(),
     nexAgi: z.record(z.string(), z.any()).optional(),
     nextbit: z.record(z.string(), z.any()).optional(),
@@ -552,6 +555,7 @@ export const ImageGenerationProviderPreferencesOptions$outboundSchema:
       ioNet: "io-net",
       lynnPrivate: "lynn-private",
       mancerOld: "mancer-old",
+      nearAi: "near-ai",
       nexAgi: "nex-agi",
       openInference: "open-inference",
       sailResearch: "sail-research",
