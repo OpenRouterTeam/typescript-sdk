@@ -52,7 +52,7 @@ export type UpsertWorkspaceBudgetRequest = {
   /**
    * The workspace ID (UUID) or slug
    */
-  id: string;
+  workspaceRef: string;
   /**
    * Budget reset interval. Use "lifetime" for a one-time budget that never resets.
    */
@@ -65,7 +65,7 @@ export type UpsertWorkspaceBudgetRequest$Outbound = {
   "HTTP-Referer"?: string | undefined;
   appTitle?: string | undefined;
   appCategories?: string | undefined;
-  id: string;
+  workspace_ref: string;
   interval: string;
   UpsertWorkspaceBudgetRequest: models.UpsertWorkspaceBudgetRequest$Outbound;
 };
@@ -78,13 +78,14 @@ export const UpsertWorkspaceBudgetRequest$outboundSchema: z.ZodType<
   httpReferer: z.string().optional(),
   appTitle: z.string().optional(),
   appCategories: z.string().optional(),
-  id: z.string(),
+  workspaceRef: z.string(),
   interval: models.WorkspaceBudgetInterval$outboundSchema,
   upsertWorkspaceBudgetRequest:
     models.UpsertWorkspaceBudgetRequest$outboundSchema,
 }).transform((v) => {
   return remap$(v, {
     httpReferer: "HTTP-Referer",
+    workspaceRef: "workspace_ref",
     upsertWorkspaceBudgetRequest: "UpsertWorkspaceBudgetRequest",
   });
 });
