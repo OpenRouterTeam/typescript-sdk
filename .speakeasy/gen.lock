@@ -1,19 +1,19 @@
 lockVersion: ""
 id: ""
 management:
-  docChecksum: d9d748ecdd96c61599930ca3cf3dafaa
+  docChecksum: 1d98f85e72400b97453cd787ef6d3892
   docVersion: 1.0.0
   speakeasyVersion: 1.787.0
   generationVersion: 2.914.0
-  releaseVersion: 1.2.116
-  configChecksum: bfe12c014cce26a534c978f64ad2369e
+  releaseVersion: 1.2.117
+  configChecksum: 86f94eda464ba632a84268abea8bc20b
   repoURL: https://github.com/OpenRouterTeam/typescript-sdk.git
   installationURL: https://github.com/OpenRouterTeam/typescript-sdk
   published: true
 persistentEdits:
-  generation_id: 448c8b93-ae4a-496f-b919-b8be8dc8dd0d
-  pristine_commit_hash: 4ab472357226d22b0dd9ae5d41903dda7b21b97e
-  pristine_tree_hash: 7393bd6a08121ee378803c885db20f6af950598e
+  generation_id: d82a626c-74c3-43b9-9652-88673d6a5e50
+  pristine_commit_hash: 836dcc0a41fb5091e79895f98365d9b76d46c242
+  pristine_tree_hash: b65b2d6debb2f235401dbf95172417d814ac3d25
 features:
   typescript:
     acceptHeaders: 2.81.2
@@ -7636,8 +7636,8 @@ trackedFiles:
     deleted: true
   docs/models/operations/deleteworkspacebudgetrequest.mdx:
     id: 9125508603b4
-    last_write_checksum: sha1:9cdf12fed972a6b6886853416f35db89ce652db0
-    pristine_git_object: 242b8c841b625c96d4601b54b25125f67352e290
+    last_write_checksum: sha1:cb48ef79a60e8c5e12a26c1b29dbed0c6ff1e018
+    pristine_git_object: 4e497b43a5693314117bdfb6cbd0b80a65b7fa5a
   docs/models/operations/deleteworkspaceglobals.md:
     id: 43fe94eda9d4
     last_write_checksum: sha1:258f7d4f27d2fb9d9a77304b3eab908ae8fbc0ab
@@ -8220,8 +8220,8 @@ trackedFiles:
     pristine_git_object: b340b854223bfb0ca400ccea8849e88776f93133
   docs/models/operations/getworkspacebudgetrequest.mdx:
     id: 24dc54420f01
-    last_write_checksum: sha1:14acdcc8c9b024607eb7641fdaa07e36334825d8
-    pristine_git_object: 7a8593ce6b3566904095b03cc96164ad9ad82a40
+    last_write_checksum: sha1:8dcaf65752c6cb6a16661407868442501fb04d55
+    pristine_git_object: 2c7d852a0da0efeaa733d378f9ad03e6753cf6b2
   docs/models/operations/getworkspaceglobals.md:
     id: cdd5813e58df
     last_write_checksum: sha1:6e36f84330b109168a702883419644516d2a8d50
@@ -8773,8 +8773,8 @@ trackedFiles:
     deleted: true
   docs/models/operations/listworkspacebudgetsrequest.mdx:
     id: acc7b39841a0
-    last_write_checksum: sha1:a60c9da00c991a07a075889bfa6ef8427900b62e
-    pristine_git_object: 0a25a7b6cbb9a627f823773bbd55724f930d8867
+    last_write_checksum: sha1:e14904ce50ef795f589c95344bf652b74625de61
+    pristine_git_object: 63bb939032587d78870fadaab246335b9bd0edd1
   docs/models/operations/listworkspacemembersglobals.mdx:
     id: 8104728dde1f
     last_write_checksum: sha1:37b04f95d2fda25e991c84d191e517ecb0cb4c97
@@ -9218,8 +9218,8 @@ trackedFiles:
     deleted: true
   docs/models/operations/upsertworkspacebudgetrequest.mdx:
     id: 774bbc8c97c1
-    last_write_checksum: sha1:a83afa2594dbdd8bc81a55d7f13fc3ec8b1a0763
-    pristine_git_object: 3426140c137fb3d3b0eb87e882c843cbc4c243b7
+    last_write_checksum: sha1:ea1328b7d1925675e76754839d2cda0044fa1bc3
+    pristine_git_object: 45ac1e6fc3cdde76f65618523e3dc3d5b2a35f8a
   docs/models/operations/usagelimittype.mdx:
     id: 7d0714760ba1
     last_write_checksum: sha1:072670dedd8fe297aa32abe64c1ecab91e72edeb
@@ -13289,8 +13289,8 @@ trackedFiles:
     deleted: true
   docs/sdks/workspaces/README.mdx:
     id: 0c75d023ef6b
-    last_write_checksum: sha1:0cde691225e4f9a3bad2a672209096e4393b5134
-    pristine_git_object: 5b680a4625fb05ddff8fc346837a11c93080351f
+    last_write_checksum: sha1:60d2be2e6cc0d5aa577e19293cbd784b0515ae76
+    pristine_git_object: 58f1fd91022bf2ad67ab011ad63e4577e493d99f
   eslint.config.mjs:
     id: 461c8d07f6da
     last_write_checksum: sha1:9398f326377fe47f67af2df6eb6370750c0790b4
@@ -13313,12 +13313,12 @@ trackedFiles:
     pristine_git_object: 410efafd6a7f50d91ccb87131fedbe0c3d47e15a
   jsr.json:
     id: 7f6ab7767282
-    last_write_checksum: sha1:8eb765b22114a0f6104110df492905c3375cc2bd
-    pristine_git_object: cab7919dd4d1fd0a0d96bd050fdbf503b24ebb1d
+    last_write_checksum: sha1:bc84946ecfaf5c0940d39d8c3d298678194603ce
+    pristine_git_object: 2a0c9d8e9f04708817bb02f99b33252a1278b23d
   package.json:
     id: 7030d0b2f71b
-    last_write_checksum: sha1:e18b9d4fff5ec9629b8900d79f6af40ac95aa2da
-    pristine_git_object: 871e8d62a395f736144083fbb90632cb7d1da9f1
+    last_write_checksum: sha1:a9ca840b117cd567e79ecb59b33e74ae42f1d36b
+    pristine_git_object: 8a2ab2d7391af53db9d1bcf1d81845115e389f08
   src/core.ts:
     id: f431fdbcd144
     last_write_checksum: sha1:5aa66b0b6a5964f3eea7f3098c2eb3c0ee9c0131
@@ -13709,32 +13709,32 @@ trackedFiles:
     pristine_git_object: 3fc9ba7a63d98d193e083a15508c717503289df7
   src/funcs/workspacesDeleteBudget.ts:
     id: 1aba9dd7a12c
-    last_write_checksum: sha1:b8b87da65e4d0b454a53bb149dbc8b850f942c9c
-    pristine_git_object: 7c0863218d1c5a3f358295be45e5ce8b0899ab7c
+    last_write_checksum: sha1:33faad8055151ba1f85c25e9072ccfe616445ddf
+    pristine_git_object: 2dd154131f3ff580e7106ad1b3d265b20b0daae9
   src/funcs/workspacesGet.ts:
     id: f361d34e5bff
     last_write_checksum: sha1:6245dc55d55bfeb33f86c0fc51751dd23f925994
     pristine_git_object: 30a2a069fa9ac92d70767167b8db3f7a4c423f0c
   src/funcs/workspacesGetBudget.ts:
     id: cdb084566ab1
-    last_write_checksum: sha1:a82effcbf2c17c03ea55553f844617dcb67b81db
-    pristine_git_object: 7e785cb9082e9951d171a250cbb65e16c764d0c8
+    last_write_checksum: sha1:3ae88052b30fa162f60ac528312db36d53897a91
+    pristine_git_object: 7dfa52c1318abecf95a281ab9f36f55303e17351
   src/funcs/workspacesList.ts:
     id: 6ff9df556ff5
     last_write_checksum: sha1:7356c1ee5fc9519a668f92cbe3b7a833400b3960
     pristine_git_object: 739a8e5cea57182ca0057b0731d62caa94fca5cc
   src/funcs/workspacesListBudgets.ts:
     id: b9c711e0ccbd
-    last_write_checksum: sha1:8595057c2020a236bf7244c6ac3037e14bc4cdab
-    pristine_git_object: 9cebfa442fe99c21731f527d2ec943491c972288
+    last_write_checksum: sha1:28223bbc10512a691c74cbdb8b008e137a3e61ed
+    pristine_git_object: f1e9c2df6232f5aaf65ed1e84509003a11479b09
   src/funcs/workspacesListMembers.ts:
     id: 52e1d4037081
     last_write_checksum: sha1:48b7b6074ef3f934fa13bcc03cd337948d8df355
     pristine_git_object: 013fe8a35d5ab08bcce4f1bc57a2023717238d91
   src/funcs/workspacesSetBudget.ts:
     id: fa41d5f31215
-    last_write_checksum: sha1:0ac102e5c48599740d998c889736c4dce62c4acc
-    pristine_git_object: 7e70780ad891c29d94fe8d8fbebc5c045af3b65a
+    last_write_checksum: sha1:95af2ea1aef8a5a3f00de87d41c68af2395c4198
+    pristine_git_object: cf4dd7d0943dab063257c620b3ae9360df454e46
   src/funcs/workspacesUpdate.ts:
     id: f0404418dd03
     last_write_checksum: sha1:eabf2b4e7fa9c30fbeb32a37c8574a9e551ad847
@@ -13761,8 +13761,8 @@ trackedFiles:
     pristine_git_object: a187e58707bdb726ca2aff74941efe7493422d4e
   src/lib/config.ts:
     id: 320761608fb3
-    last_write_checksum: sha1:622b912a4eddfb89d73bd5940d4db7560dbe0f92
-    pristine_git_object: 3089cb750b28afbbb48b992e7a45029617a2d7f9
+    last_write_checksum: sha1:ec126338a521e6b745998a42c5a5898a77faf5c9
+    pristine_git_object: e581d492ee1ec6aff09c171532be4e5e549a28da
   src/lib/dlv.ts:
     id: b1988214835a
     last_write_checksum: sha1:eaac763b22717206a6199104e0403ed17a4e2711
@@ -15675,8 +15675,8 @@ trackedFiles:
     pristine_git_object: 5d529df461cc0c1b7d8282b45f1b9c7f21846805
   src/models/operations/deleteworkspacebudget.ts:
     id: f9fd25ea4948
-    last_write_checksum: sha1:32cfff8c74bb71d4a931646247fc0e8666cf70cf
-    pristine_git_object: fae4200960fa7d4ac63a9b9dd09b1c8ff6307553
+    last_write_checksum: sha1:d3cd764352b11bada75aacd818cfb9f10a1da416
+    pristine_git_object: 2d4d8addac13b7140a917a0d1bb7c3ca1469a101
   src/models/operations/downloadcontainerfilecontent.ts:
     id: 0bc1bd778769
     last_write_checksum: sha1:e11d009e8b7c1022d1e5727b283dfdbe0e1778d5
@@ -15787,8 +15787,8 @@ trackedFiles:
     pristine_git_object: 6b14994d428c8fb6d58adc4f880ab796d6a2a2e5
   src/models/operations/getworkspacebudget.ts:
     id: 0979c0e7d04e
-    last_write_checksum: sha1:b74a10ab8867f593df05c25d0dec6c66fb059e46
-    pristine_git_object: bb6afaf246e3ca96277cd3a28ce09c274aef9c22
+    last_write_checksum: sha1:0c4bd27b48e73aeb2bdc5e4066470cd7b81f1aa7
+    pristine_git_object: a052ed42bd123e79be1f05dc823c808f8c32b383
   src/models/operations/index.ts:
     id: 0d9ffaf774d2
     last_write_checksum: sha1:3953810fb26997a147a0d19e0048f68007af82bf
@@ -15903,8 +15903,8 @@ trackedFiles:
     pristine_git_object: 109571232e773ce4866edc3f18d137a7593d7396
   src/models/operations/listworkspacebudgets.ts:
     id: ba0d3148fcc4
-    last_write_checksum: sha1:582889dc2d498a7a53316077cd3bbc73ab8d0171
-    pristine_git_object: b283d8ec9d2e58bbceebd62b6fca9f9f387249c7
+    last_write_checksum: sha1:d7df66ae8727d10a9d0f3290db6dce59b8cbbad5
+    pristine_git_object: 87db3c7b9e93570c12bc4f3c55b6c96ae6e924de
   src/models/operations/listworkspacemembers.ts:
     id: 009ed1f62eb4
     last_write_checksum: sha1:459239dc324953d2801d21868c6335b7a0f48bf9
@@ -15959,8 +15959,8 @@ trackedFiles:
     pristine_git_object: 055b4934b086a7bf14587e4d65dbf672963aa7f9
   src/models/operations/upsertworkspacebudget.ts:
     id: f2bb866e828c
-    last_write_checksum: sha1:09b9c57afb77dc8e927807726ab5976a95dff7b0
-    pristine_git_object: 38378370b18ac04a83f8e9ebb62353ddf2c1c655
+    last_write_checksum: sha1:9bc85cc6e33775e22b52af52fbfb14f2dda816ed
+    pristine_git_object: e03c5c2da7ba12d97a414a9af7347e3d3c1a4c83
   src/models/outputadvisorservertoolitem.ts:
     id: 0c9d6ff77975
     last_write_checksum: sha1:ad258b7f79ccbd005042a66708f25e51adbc2a62
@@ -17019,8 +17019,8 @@ trackedFiles:
     pristine_git_object: 1e832bb72bd987649300a5443f591582761e7b07
   src/sdk/workspaces.ts:
     id: 72b45379c8d9
-    last_write_checksum: sha1:7f03098ff2902e7ce1ce8bd403d77fdcc29ae009
-    pristine_git_object: 4666e7c7416be77bd44cf6fc5013f9aa9ae1356a
+    last_write_checksum: sha1:74412b9b0a9b875101887a9990f1edf8911698cf
+    pristine_git_object: 24b1e302ad7a50d26f0bd19fdd3ae7c22cc3ed4d
   src/types/async.ts:
     id: fac8da972f86
     last_write_checksum: sha1:042571ad6be7fd5ce5a93b292b9c1aefc21ebff7
@@ -18575,6 +18575,7 @@ examples:
       parameters:
         path:
           id: "production"
+          workspace_ref: "production"
       responses:
         "200":
           application/json: {"data": [{"created_at": "2025-08-24T10:30:00Z", "id": "770e8400-e29b-41d4-a716-446655440000", "limit_usd": 100, "reset_interval": "monthly", "updated_at": "2025-08-24T15:45:00Z", "workspace_id": "550e8400-e29b-41d4-a716-446655440000"}]}
@@ -18590,6 +18591,7 @@ examples:
         path:
           id: "production"
           interval: "monthly"
+          workspace_ref: "production"
       responses:
         "200":
           application/json: {"deleted": true}
@@ -18607,6 +18609,7 @@ examples:
         path:
           id: "production"
           interval: "monthly"
+          workspace_ref: "production"
       requestBody:
         application/json: {"limit_usd": 100}
       responses:
@@ -18840,6 +18843,7 @@ examples:
         path:
           id: "production"
           interval: "monthly"
+          workspace_ref: "production"
       responses:
         "200":
           application/json: {"data": {"created_at": "2025-08-24T10:30:00Z", "id": "770e8400-e29b-41d4-a716-446655440000", "limit_usd": 100, "reset_interval": "monthly", "updated_at": "2025-08-24T15:45:00Z", "workspace_id": "550e8400-e29b-41d4-a716-446655440000"}}
@@ -19008,4 +19012,9 @@ examples:
         "500":
           application/json: {"error": {"code": 500, "message": "Internal Server Error"}}
 examplesVersion: 1.0.2
-releaseNotes: "## Typescript SDK Changes:\n* `openrouter.presets.createPresetsMessages()`: \n  *  `request.messagesRequest.thinking.union(enabled).blockBinding.mismatchBehavior` **Added**\n"
+releaseNotes: |
+  ## Typescript SDK Changes:
+  * `openrouter.workspaces.listBudgets()`:  `request` **Changed** (Breaking ⚠️)
+  * `openrouter.workspaces.deleteBudget()`:  `request` **Changed** (Breaking ⚠️)
+  * `openrouter.workspaces.getBudget()`:  `request` **Changed** (Breaking ⚠️)
+  * `openrouter.workspaces.setBudget()`:  `request` **Changed** (Breaking ⚠️)
