@@ -1,19 +1,19 @@
 lockVersion: ""
 id: ""
 management:
-  docChecksum: 4e3a7decb0983fd885239f88ab71b279
+  docChecksum: 8aa0a7b554a3a89c7414d4b2f308b447
   docVersion: 1.0.0
   speakeasyVersion: 1.787.0
   generationVersion: 2.914.0
-  releaseVersion: 1.2.118
-  configChecksum: c53870ed7b7a294d7a9eafaaadaf7679
+  releaseVersion: 1.2.119
+  configChecksum: 581a6d8225eedda9b1366e6ac94df3c7
   repoURL: https://github.com/OpenRouterTeam/typescript-sdk.git
   installationURL: https://github.com/OpenRouterTeam/typescript-sdk
   published: true
 persistentEdits:
-  generation_id: 5ab7f1d6-4b53-4f64-b8f6-08910f947c59
-  pristine_commit_hash: ffa5759a7a2cad0a5955994f07f36291e02438a8
-  pristine_tree_hash: fb1e1e83b2e86555226441c621342d79073119e6
+  generation_id: b8d11d8b-2476-487f-bf0b-63635e2076d5
+  pristine_commit_hash: 854624d12967515f47fd05954fdfc05e4ffb45c9
+  pristine_tree_hash: ba2b8505fb4b40cbb44fe9ad44e13080ade9d41a
 features:
   typescript:
     acceptHeaders: 2.81.2
@@ -1591,8 +1591,8 @@ trackedFiles:
     deleted: true
   docs/models/byokproviderslug.mdx:
     id: d719e6f9fe4e
-    last_write_checksum: sha1:16671bb81151308060e6b2ab2738bf4a2a9bb006
-    pristine_git_object: 647a19434be220cf92ea413c71094a95acc82563
+    last_write_checksum: sha1:103435b5c0b12c7ec4f16be96cf8a37cc94dce43
+    pristine_git_object: 96dd400e7c4e769ce95b2296f39c52e4da025c02
   docs/models/cachecontrol.md:
     id: 400a7240e8c2
     last_write_checksum: sha1:0813cddf0350d7885b906084988a79ace1ddea15
@@ -8908,8 +8908,8 @@ trackedFiles:
     deleted: true
   docs/models/operations/provider.mdx:
     id: 45f471a16baa
-    last_write_checksum: sha1:c4c05341b95c8393bc418da1cca024e72c65df23
-    pristine_git_object: a23fafba075e4d8210a9e7e2c97d5860e62475cb
+    last_write_checksum: sha1:a58a5eb2a0aad76af129c54eed458700f17eba13
+    pristine_git_object: 39defe239012e78dea3e8fb62528673b3c5e9714
   docs/models/operations/queryanalyticsdata1.md:
     id: ecb6e11852f5
     last_write_checksum: sha1:d7153b0a35bd6b99a27c2239be0212dc6c749a78
@@ -13313,12 +13313,12 @@ trackedFiles:
     pristine_git_object: 410efafd6a7f50d91ccb87131fedbe0c3d47e15a
   jsr.json:
     id: 7f6ab7767282
-    last_write_checksum: sha1:4820fc55082408051f5ff8eccd743544812c3896
-    pristine_git_object: 55d3c0d4eea245d9d43b3d5b7e1c2a480f86ceec
+    last_write_checksum: sha1:820c41fae2e27d3625a6f3c31607ca60aba3eea9
+    pristine_git_object: 01d9fd58e2f93335e784afb79d124732fbca3c06
   package.json:
     id: 7030d0b2f71b
-    last_write_checksum: sha1:13f9b5b5faf7367a7ddac8e6dca9d621fdcc4460
-    pristine_git_object: 00adafc446fe1a7a2815e2c808465973b451574b
+    last_write_checksum: sha1:2288a2a4632bb27aaa76d092d624780d985563fd
+    pristine_git_object: 48694035e1289f1645fcd14cbbb9d427ea8e6f87
   src/core.ts:
     id: f431fdbcd144
     last_write_checksum: sha1:5aa66b0b6a5964f3eea7f3098c2eb3c0ee9c0131
@@ -13761,8 +13761,8 @@ trackedFiles:
     pristine_git_object: a187e58707bdb726ca2aff74941efe7493422d4e
   src/lib/config.ts:
     id: 320761608fb3
-    last_write_checksum: sha1:9a5fe511f22e4fc5dd8b007c6e15c65f8c3fff20
-    pristine_git_object: cfae1750c0333b14957acb67f2fe7fcfd87372f5
+    last_write_checksum: sha1:041365d369e7a32c3894ad1514716cdb2ea3cc95
+    pristine_git_object: ac7dfbe3b12eb8a57bb868b38dec11caf86df561
   src/lib/dlv.ts:
     id: b1988214835a
     last_write_checksum: sha1:eaac763b22717206a6199104e0403ed17a4e2711
@@ -14199,8 +14199,8 @@ trackedFiles:
     pristine_git_object: da9bbed278ba5c9c2e9ad3db28d456a2ad764d75
   src/models/byokproviderslug.ts:
     id: f8e7a5a4b0a2
-    last_write_checksum: sha1:f1acea2510706cba6d248852077efb72beb36d24
-    pristine_git_object: 8557f960aa6f3aa5230601459f7a5c66777b4242
+    last_write_checksum: sha1:c64b97c90eecc4fa12e40ea3f5abd5d008ffad1b
+    pristine_git_object: 839fe28a6cabb1cd6d87d69ab950e80af4d7ab1a
   src/models/capabilitydescriptor.ts:
     id: 867d654ac8ab
     last_write_checksum: sha1:85657be17f920009d3e8ee58b548d9bf64995059
@@ -15799,8 +15799,8 @@ trackedFiles:
     pristine_git_object: 1b025b64611d7dfc01df57b52dec8342b4777def
   src/models/operations/listbyokkeys.ts:
     id: 953de50b8d0e
-    last_write_checksum: sha1:74a984a4fc655989d0a6dbd4940d31cbbb8324cb
-    pristine_git_object: 9c65fc28bdab4e353a3e6e8ca5e7c620a6f7f436
+    last_write_checksum: sha1:a7ffa119912fe97570c3787924d0be11bfc82bf9
+    pristine_git_object: 091f57df072561f7e32d32b30567e2f67631857a
   src/models/operations/listcontainerfiles.ts:
     id: 833ac1772f55
     last_write_checksum: sha1:788a717daa7787fec35b2a9ae784f8f672007862
@@ -19012,4 +19012,4 @@ examples:
         "500":
           application/json: {"error": {"code": 500, "message": "Internal Server Error"}}
 examplesVersion: 1.0.2
-releaseNotes: "## Typescript SDK Changes:\n* `openrouter.presets.createPresetsResponses()`: \n  *  `request.responsesRequest` **Changed**\n* `openrouter.responses.send()`: \n  *  `request.responsesRequest` **Changed**\n  *  `response` **Changed**\n* `openrouter.beta.responses.send()`: \n  *  `request.responsesRequest` **Changed**\n  *  `response` **Changed**\n"
+releaseNotes: "## Typescript SDK Changes:\n* `openrouter.byok.list()`: \n  *  `request.provider` **Changed**\n  *  `response.data[].provider` **Changed**\n* `openrouter.byok.create()`: \n  *  `request.createByokKeyRequest.provider` **Changed**\n  *  `response.data.provider` **Changed**\n* `openrouter.byok.get()`:  `response.data.provider` **Changed**\n* `openrouter.byok.update()`:  `response.data.provider` **Changed**\n"
