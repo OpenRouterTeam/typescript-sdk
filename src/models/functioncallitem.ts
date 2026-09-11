@@ -26,6 +26,10 @@ export type FunctionCallItemType = ClosedEnum<typeof FunctionCallItemType>;
  */
 export type FunctionCallItem = {
   arguments: string;
+  /**
+   * True when the model called a tool declared with `async: true` and may continue its turn before the output is returned. Return the result in a later request as a `function_call_output` with this `call_id`.
+   */
+  async?: boolean | undefined;
   callId: string;
   id: string;
   name: string;
@@ -85,6 +89,7 @@ export const FunctionCallItemType$outboundSchema: z.ZodEnum<
 /** @internal */
 export type FunctionCallItem$Outbound = {
   arguments: string;
+  async?: boolean | undefined;
   call_id: string;
   id: string;
   name: string;
@@ -101,6 +106,7 @@ export const FunctionCallItem$outboundSchema: z.ZodType<
   FunctionCallItem
 > = z.object({
   arguments: z.string(),
+  async: z.boolean().optional(),
   callId: z.string(),
   id: z.string(),
   name: z.string(),
