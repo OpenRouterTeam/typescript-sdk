@@ -177,6 +177,10 @@ export type AdditionalToolsItemToolFunction = {
   strict?: boolean | null | undefined;
   type: AdditionalToolsItemTypeFunction;
   /**
+   * Lets the model keep working after calling this tool instead of waiting for its output. The tool is still executed by the client; return the result in a later request as a `function_call_output` with the original `call_id`. Only honored by providers whose Responses API supports async tools; ignored elsewhere.
+   */
+  async?: boolean | undefined;
+  /**
    * Withhold this tool from the model until `openrouter:tool_search` finds it. Requires the tool search server tool; at least one tool must remain non-deferred.
    */
   deferLoading?: boolean | undefined;
@@ -306,6 +310,7 @@ export type AdditionalToolsItemToolFunction$Outbound = {
   parameters: { [k: string]: any } | null;
   strict?: boolean | null | undefined;
   type: string;
+  async?: boolean | undefined;
   defer_loading?: boolean | undefined;
 };
 
@@ -319,6 +324,7 @@ export const AdditionalToolsItemToolFunction$outboundSchema: z.ZodType<
   parameters: z.nullable(z.record(z.string(), z.any())),
   strict: z.nullable(z.boolean()).optional(),
   type: AdditionalToolsItemTypeFunction$outboundSchema,
+  async: z.boolean().optional(),
   deferLoading: z.boolean().optional(),
 }).transform((v) => {
   return remap$(v, {

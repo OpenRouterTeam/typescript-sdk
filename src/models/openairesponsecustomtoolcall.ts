@@ -18,6 +18,10 @@ export type OpenAIResponseCustomToolCallType = ClosedEnum<
 >;
 
 export type OpenAIResponseCustomToolCall = {
+  /**
+   * True when the model called a tool declared with `async: true` and may continue its turn before the output is returned. Return the result in a later request as a `function_call_output` with this `call_id`.
+   */
+  async?: boolean | undefined;
   callId: string;
   id?: string | undefined;
   input: string;
@@ -39,6 +43,7 @@ export const OpenAIResponseCustomToolCall$inboundSchema: z.ZodType<
   OpenAIResponseCustomToolCall,
   unknown
 > = z.object({
+  async: z.boolean().optional(),
   call_id: z.string(),
   id: z.string().optional(),
   input: z.string(),

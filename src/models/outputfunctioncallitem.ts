@@ -53,6 +53,10 @@ export type OutputFunctionCallItemSubagentItem = {
 
 export type OutputFunctionCallItem = {
   arguments: string;
+  /**
+   * True when the model called a tool declared with `async: true` and may continue its turn before the output is returned. Return the result in a later request as a `function_call_output` with this `call_id`.
+   */
+  async?: boolean | undefined;
   callId: string;
   id?: string | undefined;
   name: string;
@@ -215,6 +219,7 @@ export const OutputFunctionCallItem$inboundSchema: z.ZodType<
   unknown
 > = z.object({
   arguments: z.string(),
+  async: z.boolean().optional(),
   call_id: z.string(),
   id: z.string().optional(),
   name: z.string(),
@@ -239,6 +244,7 @@ export const OutputFunctionCallItem$inboundSchema: z.ZodType<
 /** @internal */
 export type OutputFunctionCallItem$Outbound = {
   arguments: string;
+  async?: boolean | undefined;
   call_id: string;
   id?: string | undefined;
   name: string;
@@ -257,6 +263,7 @@ export const OutputFunctionCallItem$outboundSchema: z.ZodType<
   OutputFunctionCallItem
 > = z.object({
   arguments: z.string(),
+  async: z.boolean().optional(),
   callId: z.string(),
   id: z.string().optional(),
   name: z.string(),

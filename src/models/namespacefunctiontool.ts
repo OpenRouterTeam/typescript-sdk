@@ -22,6 +22,10 @@ export type AllowedCaller = OpenEnum<typeof AllowedCaller>;
  */
 export type NamespaceFunctionTool = {
   allowedCallers?: Array<AllowedCaller> | null | undefined;
+  /**
+   * Lets the model keep working after calling this tool instead of waiting for its output. The tool is still executed by the client; return the result in a later request as a `function_call_output` with the original `call_id`. Only honored by providers whose Responses API supports async tools; ignored elsewhere.
+   */
+  async?: boolean | undefined;
   deferLoading?: boolean | undefined;
   description?: string | null | undefined;
   name: string;
@@ -44,6 +48,7 @@ export const NamespaceFunctionTool$inboundSchema: z.ZodType<
   unknown
 > = z.object({
   allowed_callers: z.nullable(z.array(AllowedCaller$inboundSchema)).optional(),
+  async: z.boolean().optional(),
   defer_loading: z.boolean().optional(),
   description: z.nullable(z.string()).optional(),
   name: z.string(),
@@ -61,6 +66,7 @@ export const NamespaceFunctionTool$inboundSchema: z.ZodType<
 /** @internal */
 export type NamespaceFunctionTool$Outbound = {
   allowed_callers?: Array<string> | null | undefined;
+  async?: boolean | undefined;
   defer_loading?: boolean | undefined;
   description?: string | null | undefined;
   name: string;
@@ -76,6 +82,7 @@ export const NamespaceFunctionTool$outboundSchema: z.ZodType<
   NamespaceFunctionTool
 > = z.object({
   allowedCallers: z.nullable(z.array(AllowedCaller$outboundSchema)).optional(),
+  async: z.boolean().optional(),
   deferLoading: z.boolean().optional(),
   description: z.nullable(z.string()).optional(),
   name: z.string(),
