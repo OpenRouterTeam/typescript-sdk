@@ -40282,6 +40282,26 @@ paths:
               schema:
                 $ref: '#/components/schemas/NotFoundResponse'
           description: 'Not Found - Resource does not exist'
+        '409':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 409
+                  message: 'Resource conflict. Please try again later.'
+              schema:
+                $ref: '#/components/schemas/ConflictResponse'
+          description: 'Conflict - Resource conflict or concurrent modification'
+        '410':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 410
+                  message: 'The Coinbase APIs used by this endpoint have been deprecated, so the Coinbase Commerce credits API has been removed. Use the web credits purchase flow instead.'
+              schema:
+                $ref: '#/components/schemas/GoneResponse'
+          description: 'Gone - Endpoint has been permanently removed or deprecated'
         '500':
           content:
             application/json:
