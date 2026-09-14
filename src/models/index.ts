@@ -265,6 +265,7 @@ export * from "./getscimgroupmappingresponse.js";
 export * from "./getscimsyncjobresponse.js";
 export * from "./getworkspacebudgetresponse.js";
 export * from "./getworkspaceresponse.js";
+export * from "./goneresponseerrordata.js";
 export * from "./guardrail.js";
 export * from "./guardraildataregion.js";
 export * from "./guardrailinterval.js";
