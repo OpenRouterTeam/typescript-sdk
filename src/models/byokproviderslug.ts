@@ -22,6 +22,7 @@ export const BYOKProviderSlug = {
   Anthropic: "anthropic",
   Anthropic2: "anthropic/2",
   ArceeAi: "arcee-ai",
+  Assemblyai: "assemblyai",
   AtlasCloud: "atlas-cloud",
   Avian: "avian",
   Azure: "azure",
