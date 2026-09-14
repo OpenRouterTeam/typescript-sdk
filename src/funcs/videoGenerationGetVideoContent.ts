@@ -45,6 +45,8 @@ export function videoGenerationGetVideoContent(
     | errors.UnauthorizedResponseError
     | errors.ForbiddenResponseError
     | errors.NotFoundResponseError
+    | errors.ConflictResponseError
+    | errors.GoneResponseError
     | errors.InternalServerResponseError
     | errors.BadGatewayResponseError
     | OpenRouterError
@@ -76,6 +78,8 @@ async function $do(
       | errors.UnauthorizedResponseError
       | errors.ForbiddenResponseError
       | errors.NotFoundResponseError
+      | errors.ConflictResponseError
+      | errors.GoneResponseError
       | errors.InternalServerResponseError
       | errors.BadGatewayResponseError
       | OpenRouterError
@@ -199,6 +203,8 @@ async function $do(
     | errors.UnauthorizedResponseError
     | errors.ForbiddenResponseError
     | errors.NotFoundResponseError
+    | errors.ConflictResponseError
+    | errors.GoneResponseError
     | errors.InternalServerResponseError
     | errors.BadGatewayResponseError
     | OpenRouterError
@@ -219,6 +225,8 @@ async function $do(
     M.jsonErr(401, errors.UnauthorizedResponseError$inboundSchema),
     M.jsonErr(403, errors.ForbiddenResponseError$inboundSchema),
     M.jsonErr(404, errors.NotFoundResponseError$inboundSchema),
+    M.jsonErr(409, errors.ConflictResponseError$inboundSchema),
+    M.jsonErr(410, errors.GoneResponseError$inboundSchema),
     M.jsonErr(500, errors.InternalServerResponseError$inboundSchema),
     M.jsonErr(502, errors.BadGatewayResponseError$inboundSchema),
     M.fail("4XX"),

@@ -1,19 +1,19 @@
 lockVersion: ""
 id: ""
 management:
-  docChecksum: 8aa0a7b554a3a89c7414d4b2f308b447
+  docChecksum: e94ca54b87c94b1acef8db89370762da
   docVersion: 1.0.0
   speakeasyVersion: 1.787.0
   generationVersion: 2.914.0
-  releaseVersion: 1.2.119
-  configChecksum: 581a6d8225eedda9b1366e6ac94df3c7
+  releaseVersion: 1.2.120
+  configChecksum: fc272ba911a37954aade2c96d331f379
   repoURL: https://github.com/OpenRouterTeam/typescript-sdk.git
   installationURL: https://github.com/OpenRouterTeam/typescript-sdk
   published: true
 persistentEdits:
-  generation_id: b8d11d8b-2476-487f-bf0b-63635e2076d5
-  pristine_commit_hash: 854624d12967515f47fd05954fdfc05e4ffb45c9
-  pristine_tree_hash: ba2b8505fb4b40cbb44fe9ad44e13080ade9d41a
+  generation_id: 15dba8c7-1531-47e3-8066-0ccf8e75dea7
+  pristine_commit_hash: 1a76e525b2229db7ef75ed9d8470445db8d35def
+  pristine_tree_hash: b098ffb85b4b4cf41345a532adc4290f28470490
 features:
   typescript:
     acceptHeaders: 2.81.2
@@ -3752,6 +3752,10 @@ trackedFiles:
     id: 3b8213ee0627
     last_write_checksum: sha1:06ae7cc22c1a3448382b3fe0bfb93e96794af607
     pristine_git_object: 12da58092d2c671824b812e9f82c2186c4925e15
+  docs/models/errors/goneresponseerror.mdx:
+    id: 6dc8f021a44f
+    last_write_checksum: sha1:7292b5bccc779b8c780303faa912c8741b8b9d4a
+    pristine_git_object: 9623e61e79b71106afe731243c03c45c25b49a6d
   docs/models/errors/internalserverresponseerror.mdx:
     id: eae368e33b97
     last_write_checksum: sha1:0c675a81267cd7f2db79e800ccb72e40ec9c5053
@@ -4457,6 +4461,10 @@ trackedFiles:
     id: 298890b56865
     last_write_checksum: sha1:2838552448fa9179d437c63d994788fbba68996b
     pristine_git_object: 8f0e5adf26ef943ec64d6789fc8e547c53d342a7
+  docs/models/goneresponseerrordata.mdx:
+    id: 97a33bbc437d
+    last_write_checksum: sha1:a3713aa1057fffbefa2549683af6dbbfbb67d0e3
+    pristine_git_object: b13973a52956953d57e6f21b3feaad18e4698a8e
   docs/models/granttype.mdx:
     id: 7e7883d50a4c
     last_write_checksum: sha1:75bb39e588cfc555ea54d4250a095d8b223ee326
@@ -13280,8 +13288,8 @@ trackedFiles:
     deleted: true
   docs/sdks/videogeneration/README.mdx:
     id: 9a8fa04c3872
-    last_write_checksum: sha1:79f95de2a0a64bf557f6406c8bf8d0cef8a82cd3
-    pristine_git_object: 4ccdb0a0db6af6b67039e9373353d88cdd4e7e1a
+    last_write_checksum: sha1:2b8a4b8c4818c97acdb3ad1a1fca3f233ca7b9c9
+    pristine_git_object: 37374134e75741429dbfa5aa783623b5eecc4f3a
   docs/sdks/workspaces/README.md:
     id: 1f5b051a6380
     last_write_checksum: sha1:7177bee7c589601ccf496769472f10578b6a4144
@@ -13313,12 +13321,12 @@ trackedFiles:
     pristine_git_object: 410efafd6a7f50d91ccb87131fedbe0c3d47e15a
   jsr.json:
     id: 7f6ab7767282
-    last_write_checksum: sha1:820c41fae2e27d3625a6f3c31607ca60aba3eea9
-    pristine_git_object: 01d9fd58e2f93335e784afb79d124732fbca3c06
+    last_write_checksum: sha1:8a411cf5c7d0066e4f9ae8182499b66eedd58a4c
+    pristine_git_object: 7b16e3376e940087004182c4b7554cb133c26b2b
   package.json:
     id: 7030d0b2f71b
-    last_write_checksum: sha1:2288a2a4632bb27aaa76d092d624780d985563fd
-    pristine_git_object: 48694035e1289f1645fcd14cbbb9d427ea8e6f87
+    last_write_checksum: sha1:76944c5c6781ed0451255c680244051fd76988fd
+    pristine_git_object: 5d943c06c2c5fe886201887ef9048d08dd58a44a
   src/core.ts:
     id: f431fdbcd144
     last_write_checksum: sha1:5aa66b0b6a5964f3eea7f3098c2eb3c0ee9c0131
@@ -13685,8 +13693,8 @@ trackedFiles:
     pristine_git_object: de2f2cf1158b8501c90aa3de2a53e46031cef2f5
   src/funcs/videoGenerationGetVideoContent.ts:
     id: fcfa9e559784
-    last_write_checksum: sha1:1fd626a9b5c5c767960fb9be9b3a10645fc136ef
-    pristine_git_object: 90ec076b10e2bb31e4685fb369e90d0bb92c0a27
+    last_write_checksum: sha1:4e1ef04ad50008e27e874bb86cc66c3a60df52f1
+    pristine_git_object: 0dae951ac34577a13e2e92e75c700d9af64be185
   src/funcs/videoGenerationListVideosModels.ts:
     id: c46f1fcd7679
     last_write_checksum: sha1:898ac77512ae3890e66ecebfc53a85dfda8d6f7e
@@ -13761,8 +13769,8 @@ trackedFiles:
     pristine_git_object: a187e58707bdb726ca2aff74941efe7493422d4e
   src/lib/config.ts:
     id: 320761608fb3
-    last_write_checksum: sha1:041365d369e7a32c3894ad1514716cdb2ea3cc95
-    pristine_git_object: ac7dfbe3b12eb8a57bb868b38dec11caf86df561
+    last_write_checksum: sha1:5b3ba7dea630381232a7c4045b501c4938225635
+    pristine_git_object: 02a9ee09631bd8fc624fadae31a0b95664f8ebfb
   src/lib/dlv.ts:
     id: b1988214835a
     last_write_checksum: sha1:eaac763b22717206a6199104e0403ed17a4e2711
@@ -14697,14 +14705,18 @@ trackedFiles:
     id: d08a9d9ee588
     last_write_checksum: sha1:a1708e30abceed6ff2a136ccc7fa0c26df8b6428
     pristine_git_object: b9f702537187664bcb399b666b184c59dffadd49
+  src/models/errors/goneresponseerror.ts:
+    id: 1ef067a14e46
+    last_write_checksum: sha1:9ebe0753a43d0fa532cfe7b797fca473a5386eec
+    pristine_git_object: 3e5ff503985474f5defd0fb785ded6dff584dfae
   src/models/errors/httpclienterrors.ts:
     id: 6948de76af99
     last_write_checksum: sha1:ecfe6470690d643550eb3f425796c18ff9311aa7
     pristine_git_object: 53bb3cfae157b89fda8e4a5b0f1dd709da82c1c9
   src/models/errors/index.ts:
     id: c4e22507cb83
-    last_write_checksum: sha1:35752f4258d69c744fd04ce6baf7984da0143b43
-    pristine_git_object: 9ec49fa8a0760beaf5c1e3b6df3c9edc55af56a4
+    last_write_checksum: sha1:29933fcee3feb3ecdb40a000dd8aa2be9152d377
+    pristine_git_object: 0080ec64896e3e45943a9481c74d633e8363e7c1
   src/models/errors/internalserverresponseerror.ts:
     id: 02b76cec85f0
     last_write_checksum: sha1:18ef8306c531d997e7f560018498aeccddd0bbee
@@ -14961,6 +14973,10 @@ trackedFiles:
     id: 2315ba7fb584
     last_write_checksum: sha1:33182d29372d6d785cff2d02e2120b9b1e0b739a
     pristine_git_object: 9c277536b41c5c21f984109dc24df2093a26ac79
+  src/models/goneresponseerrordata.ts:
+    id: f206bbd2db1a
+    last_write_checksum: sha1:c79e005acfc12ca4fb88f47d7bd77131083f171a
+    pristine_git_object: aeb6d01013f040ef578a351c8ae232cb1391dd20
   src/models/guardrail.ts:
     id: 240a4b8d7a7d
     last_write_checksum: sha1:72d460c997fb21d3a862880475a9d743f10a600c
@@ -15087,8 +15103,8 @@ trackedFiles:
     pristine_git_object: 8e109bedfdcf2c4808e49323dda861e3c6069d51
   src/models/index.ts:
     id: f93644b0f37e
-    last_write_checksum: sha1:1b7b5664dede0a7a7d5ee538883de9bb37a0cff7
-    pristine_git_object: 7e7d1b1350985e800aa7fec5a73d9bcfc196c117
+    last_write_checksum: sha1:dc2cb985f29f582cda753e56a125563fbb93f042
+    pristine_git_object: f066ee6d59978efab490bffa270d6d8638daadc8
   src/models/inputaudio.ts:
     id: 9bdc14c7565f
     last_write_checksum: sha1:2f8dc4c1d6a9c2927d9eb186e0ecedf7b81838e6
@@ -17790,6 +17806,10 @@ examples:
           application/json: {"error": {"code": 502, "message": "Provider returned error"}}
         "403":
           application/json: {"error": {"code": 403, "message": "Only management keys can perform this operation"}}
+        "409":
+          application/json: {"error": {"code": 409, "message": "Resource conflict. Please try again later."}}
+        "410":
+          application/json: {"error": {"code": 410, "message": "The Coinbase APIs used by this endpoint have been deprecated, so the Coinbase Commerce credits API has been removed. Use the web credits purchase flow instead."}}
   listVideosModels:
     speakeasy-default-list-videos-models:
       responses:
@@ -19012,4 +19032,6 @@ examples:
         "500":
           application/json: {"error": {"code": 500, "message": "Internal Server Error"}}
 examplesVersion: 1.0.2
-releaseNotes: "## Typescript SDK Changes:\n* `openrouter.byok.list()`: \n  *  `request.provider` **Changed**\n  *  `response.data[].provider` **Changed**\n* `openrouter.byok.create()`: \n  *  `request.createByokKeyRequest.provider` **Changed**\n  *  `response.data.provider` **Changed**\n* `openrouter.byok.get()`:  `response.data.provider` **Changed**\n* `openrouter.byok.update()`:  `response.data.provider` **Changed**\n"
+releaseNotes: |
+  ## Typescript SDK Changes:
+  * `openrouter.videoGeneration.getVideoContent()`:  `error` **Changed**
