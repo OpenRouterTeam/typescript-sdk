@@ -45,6 +45,14 @@ export type StreamTimeoutOptions = {
    * window — that is `firstContentMs`'s job. Unset by default.
    */
   contentIntervalMs?: number | undefined;
+  /**
+   * How many times to transparently re-issue a turn's request when it
+   * stalls before producing any content (`callModel` only; raw-stream
+   * helpers ignore it). Only pre-content stalls are retried — they are
+   * provably safe because no output has been observed. Stalls after
+   * content started are never retried. Defaults to 0 (no retries).
+   */
+  maxStallRetries?: number | undefined;
 };
 
 /**
@@ -284,6 +292,145 @@ export function applyResponsesStreamWatchdog(
 }
 
 /**
+ * True when a chat-completions stream chunk carries model output: a choice
+ * delta with content, reasoning, refusal, tool-call arguments, or audio.
+ * Role-only preludes (`delta: { role: 'assistant' }`) and usage-only
+ * chunks are neutral.
+ */
+export function isContentBearingChatChunk(chunk: models.ChatStreamChunk): boolean {
+  return chunk.choices.some((choice) => {
+    const delta = choice.delta;
+    if (!delta) {
+      return false;
+    }
+    return (
+      (typeof delta.content === 'string' && delta.content.length > 0) ||
+      (typeof delta.reasoning === 'string' && delta.reasoning.length > 0) ||
+      (typeof delta.refusal === 'string' && delta.refusal.length > 0) ||
+      (delta.reasoningDetails !== undefined && delta.reasoningDetails.length > 0) ||
+      (delta.toolCalls !== undefined && delta.toolCalls.length > 0) ||
+      delta.audio !== undefined
+    );
+  });
+}
+
+/**
+ * True when a chat-completions stream chunk signals the response is
+ * finishing: a non-null finish reason on any choice, or a chunk-level
+ * error payload.
+ */
+export function isTerminalChatChunk(chunk: models.ChatStreamChunk): boolean {
+  if (chunk.error !== undefined) {
+    return true;
+  }
+  return chunk.choices.some((choice) => choice.finishReason !== null && choice.finishReason !== undefined);
+}
+
+/**
+ * Convenience wrapper of {@link applyStreamWatchdog} for chat-completions
+ * chunk streams, using the standard chunk classification.
+ */
+export function applyChatStreamWatchdog(
+  source: ReadableStream<models.ChatStreamChunk>,
+  timeouts: StreamTimeoutOptions,
+  hooks?: { onStall?: ((error: StreamStalledError) => void) | undefined },
+): ReadableStream<models.ChatStreamChunk> {
+  return applyStreamWatchdog(source, timeouts, {
+    isContentEvent: isContentBearingChatChunk,
+    isTerminalEvent: isTerminalChatChunk,
+    onStall: hooks?.onStall,
+  });
+}
+
+/**
+ * Outcome of waiting for a stream's first committed (content or terminal)
+ * event. `live` carries a stream that replays everything observed so far
+ * followed by the remainder of the source. `stalled` means the watchdog
+ * fired before any content: nothing was handed downstream, so the caller
+ * can safely retry the whole request.
+ */
+export type FirstContentOutcome<T> =
+  | { kind: 'live'; stream: ReadableStream<T> }
+  | { kind: 'stalled'; error: StreamStalledError };
+
+/**
+ * Read from `source` until an event satisfying `isCommitEvent` arrives
+ * (or the stream closes), buffering everything seen. Used to make
+ * pre-content stall retries safe: the returned stream only exists once
+ * the attempt has proven alive, so a discarded attempt never leaks
+ * events downstream.
+ *
+ * Non-stall errors and post-content stalls propagate as rejections.
+ */
+export async function awaitFirstContent<T>(
+  source: ReadableStream<T>,
+  isCommitEvent: (event: T) => boolean,
+): Promise<FirstContentOutcome<T>> {
+  const reader = source.getReader();
+  const buffered: T[] = [];
+  try {
+    while (true) {
+      const result = await reader.read();
+      if (result.done) {
+        return { kind: 'live', stream: replayThenPipe(buffered, reader) };
+      }
+      buffered.push(result.value);
+      if (isCommitEvent(result.value)) {
+        return { kind: 'live', stream: replayThenPipe(buffered, reader) };
+      }
+    }
+  } catch (error) {
+    if (error instanceof StreamStalledError && !error.receivedAnyContent) {
+      return { kind: 'stalled', error };
+    }
+    throw error;
+  }
+}
+
+/**
+ * A stream that replays `events`, then pipes the remainder of `reader`.
+ * Reading a finished reader resolves `done`, so this also covers sources
+ * that closed during buffering.
+ */
+function replayThenPipe<T>(events: T[], reader: ReadableStreamDefaultReader<T>): ReadableStream<T> {
+  return new ReadableStream<T>({
+    start(controller) {
+      for (const event of events) {
+        controller.enqueue(event);
+      }
+      void (async () => {
+        try {
+          while (true) {
+            const result = await reader.read();
+            if (result.done) {
+              controller.close();
+              return;
+            }
+            controller.enqueue(result.value);
+          }
+        } catch (error) {
+          controller.error(error);
+        }
+      })();
+    },
+    cancel(reason) {
+      return reader.cancel(reason);
+    },
+  });
+}
+
+/**
+ * Clamp `maxStallRetries` to a non-negative integer (0 = disabled).
+ */
+export function normalizeStallRetries(timeouts: StreamTimeoutOptions | undefined): number {
+  const value = timeouts?.maxStallRetries;
+  if (value === undefined || !Number.isFinite(value) || value <= 0) {
+    return 0;
+  }
+  return Math.floor(value);
+}
+
+/**
  * True when at least one watchdog deadline is enabled (set, finite, > 0).
  * Callers use this to skip per-turn abort plumbing entirely when the
  * watchdog would be a no-op.
@@ -308,3 +455,4 @@ function normalizeTimeout(value: number | undefined): number | undefined {
   }
   return value;
 }
+
