@@ -54,6 +54,7 @@ export const ProviderResponseProviderName = {
   AmazonNova: "Amazon Nova",
   Anthropic: "Anthropic",
   ArceeAI: "Arcee AI",
+  AssemblyAI: "AssemblyAI",
   AtlasCloud: "AtlasCloud",
   Avian: "Avian",
   Azure: "Azure",

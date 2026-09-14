@@ -23,6 +23,7 @@ export type ProviderOptions = {
   anthropic2?: { [k: string]: any } | undefined;
   anyscale?: { [k: string]: any } | undefined;
   arceeAi?: { [k: string]: any } | undefined;
+  assemblyai?: { [k: string]: any } | undefined;
   atlasCloud?: { [k: string]: any } | undefined;
   atoma?: { [k: string]: any } | undefined;
   avian?: { [k: string]: any } | undefined;
@@ -167,6 +168,7 @@ export type ProviderOptions$Outbound = {
   "anthropic/2"?: { [k: string]: any } | undefined;
   anyscale?: { [k: string]: any } | undefined;
   "arcee-ai"?: { [k: string]: any } | undefined;
+  assemblyai?: { [k: string]: any } | undefined;
   "atlas-cloud"?: { [k: string]: any } | undefined;
   atoma?: { [k: string]: any } | undefined;
   avian?: { [k: string]: any } | undefined;
@@ -314,6 +316,7 @@ export const ProviderOptions$outboundSchema: z.ZodType<
   anthropic2: z.record(z.string(), z.any()).optional(),
   anyscale: z.record(z.string(), z.any()).optional(),
   arceeAi: z.record(z.string(), z.any()).optional(),
+  assemblyai: z.record(z.string(), z.any()).optional(),
   atlasCloud: z.record(z.string(), z.any()).optional(),
   atoma: z.record(z.string(), z.any()).optional(),
   avian: z.record(z.string(), z.any()).optional(),
