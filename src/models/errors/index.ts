@@ -8,6 +8,7 @@ export * from "./badrequestresponseerror.js";
 export * from "./conflictresponseerror.js";
 export * from "./edgenetworktimeoutresponseerror.js";
 export * from "./forbiddenresponseerror.js";
+export * from "./goneresponseerror.js";
 export * from "./httpclienterrors.js";
 export * from "./internalserverresponseerror.js";
 export * from "./notfoundresponseerror.js";
