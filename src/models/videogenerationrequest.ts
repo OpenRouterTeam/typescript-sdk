@@ -17,6 +17,11 @@ import {
   InputReference$Outbound,
   InputReference$outboundSchema,
 } from "./inputreference.js";
+import {
+  TraceConfig,
+  TraceConfig$Outbound,
+  TraceConfig$outboundSchema,
+} from "./traceconfig.js";
 
 /**
  * Aspect ratio of the generated video
@@ -262,6 +267,10 @@ export type VideoGenerationRequest = {
    * Exact pixel dimensions of the generated video in "WIDTHxHEIGHT" format (e.g. "1280x720"). Interchangeable with resolution + aspect_ratio.
    */
   size?: string | undefined;
+  /**
+   * Metadata for observability and tracing. Known keys (trace_id, trace_name, span_name, generation_name, parent_span_id) have special handling. Additional keys are passed through as custom metadata to configured broadcast destinations.
+   */
+  trace?: TraceConfig | undefined;
   /**
    * Upscale factor for video upscaling models only. This parameter is not supported by video generation models.
    */
@@ -659,6 +668,7 @@ export type VideoGenerationRequest$Outbound = {
   resolution?: string | undefined;
   seed?: number | undefined;
   size?: string | undefined;
+  trace?: TraceConfig$Outbound | undefined;
   upscale_factor?: number | undefined;
   user?: string | undefined;
 };
@@ -682,6 +692,7 @@ export const VideoGenerationRequest$outboundSchema: z.ZodType<
   resolution: VideoGenerationRequestResolution$outboundSchema.optional(),
   seed: z.int().optional(),
   size: z.string().optional(),
+  trace: TraceConfig$outboundSchema.optional(),
   upscaleFactor: z.number().optional(),
   user: z.string().optional(),
 }).transform((v) => {

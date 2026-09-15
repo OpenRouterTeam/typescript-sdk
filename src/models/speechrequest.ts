@@ -17,6 +17,11 @@ import {
   SpeechInputReference$Outbound,
   SpeechInputReference$outboundSchema,
 } from "./speechinputreference.js";
+import {
+  TraceConfig,
+  TraceConfig$Outbound,
+  TraceConfig$outboundSchema,
+} from "./traceconfig.js";
 
 /**
  * Provider-specific passthrough configuration
@@ -71,6 +76,10 @@ export type SpeechRequest = {
    */
   speed?: number | undefined;
   /**
+   * Metadata for observability and tracing. Known keys (trace_id, trace_name, span_name, generation_name, parent_span_id) have special handling. Additional keys are passed through as custom metadata to configured broadcast destinations.
+   */
+  trace?: TraceConfig | undefined;
+  /**
    * A unique identifier representing your end-user. Forwarded to Broadcast and private logging as the end-user id; never sent to the provider.
    */
   user?: string | undefined;
@@ -115,6 +124,7 @@ export type SpeechRequest$Outbound = {
   provider?: SpeechRequestProvider$Outbound | undefined;
   response_format: string;
   speed?: number | undefined;
+  trace?: TraceConfig$Outbound | undefined;
   user?: string | undefined;
   voice?: string | undefined;
 };
@@ -130,6 +140,7 @@ export const SpeechRequest$outboundSchema: z.ZodType<
   provider: z.lazy(() => SpeechRequestProvider$outboundSchema).optional(),
   responseFormat: SpeechRequestResponseFormat$outboundSchema.default("pcm"),
   speed: z.number().optional(),
+  trace: TraceConfig$outboundSchema.optional(),
   user: z.string().optional(),
   voice: z.string().optional(),
 }).transform((v) => {

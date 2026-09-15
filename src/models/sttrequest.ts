@@ -21,6 +21,11 @@ import {
   STTTimestampGranularity,
   STTTimestampGranularity$outboundSchema,
 } from "./stttimestampgranularity.js";
+import {
+  TraceConfig,
+  TraceConfig$Outbound,
+  TraceConfig$outboundSchema,
+} from "./traceconfig.js";
 
 /**
  * Provider-specific passthrough configuration
@@ -79,6 +84,10 @@ export type STTRequest = {
    */
   timestampGranularities?: Array<STTTimestampGranularity> | undefined;
   /**
+   * Metadata for observability and tracing. Known keys (trace_id, trace_name, span_name, generation_name, parent_span_id) have special handling. Additional keys are passed through as custom metadata to configured broadcast destinations.
+   */
+  trace?: TraceConfig | undefined;
+  /**
    * A unique identifier representing your end-user. Forwarded to Broadcast and private logging as the end-user id; never sent to the provider.
    */
   user?: string | undefined;
@@ -120,6 +129,7 @@ export type STTRequest$Outbound = {
   response_format?: string | undefined;
   temperature?: number | undefined;
   timestamp_granularities?: Array<string> | undefined;
+  trace?: TraceConfig$Outbound | undefined;
   user?: string | undefined;
 };
 
@@ -136,6 +146,7 @@ export const STTRequest$outboundSchema: z.ZodType<
   temperature: z.number().optional(),
   timestampGranularities: z.array(STTTimestampGranularity$outboundSchema)
     .optional(),
+  trace: TraceConfig$outboundSchema.optional(),
   user: z.string().optional(),
 }).transform((v) => {
   return remap$(v, {
