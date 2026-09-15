@@ -1,19 +1,19 @@
 lockVersion: ""
 id: ""
 management:
-  docChecksum: b6d6e0030086f082ec2ff759f2eb4f0f
+  docChecksum: 426f53823eaf374ddb3abe9068121ac8
   docVersion: 1.0.0
   speakeasyVersion: 1.787.0
   generationVersion: 2.914.0
-  releaseVersion: 1.2.123
-  configChecksum: 6bb18a1d6ba867eb269ffa7e3b4f7938
+  releaseVersion: 1.2.124
+  configChecksum: f02ab62e86b54b3ce8d776e734fbbe4a
   repoURL: https://github.com/OpenRouterTeam/typescript-sdk.git
   installationURL: https://github.com/OpenRouterTeam/typescript-sdk
   published: true
 persistentEdits:
-  generation_id: ae967df0-8b20-4294-aca8-163fdd91fd40
-  pristine_commit_hash: b8618d70a3c417ab2bd412f3886ee314f7c3b2ae
-  pristine_tree_hash: 867d28c9decd42450dee1c665bee47177fadc114
+  generation_id: 5760809d-2d1e-4b03-8e51-6f0d03cb22e4
+  pristine_commit_hash: 2f5437e6601d3efdad2bc06db5a37da2d623478e
+  pristine_tree_hash: ba39db851216d15aa43e72c454a63d5fc1de6df9
 features:
   typescript:
     acceptHeaders: 2.81.2
@@ -13196,8 +13196,8 @@ trackedFiles:
     pristine_git_object: c89f724e7696bda6b18490073d4e715c679c4d56
   docs/sdks/guardrails/README.mdx:
     id: a0cd4218b8fa
-    last_write_checksum: sha1:0446b1fac31e2d10ab76eceb3f3b9b19907a854b
-    pristine_git_object: a8002be604f7336cabac4a212cbdf13861f46429
+    last_write_checksum: sha1:62a7078149962d36069ce08b4de5db93af364c27
+    pristine_git_object: 674979300e1645d82a90ad8caf376ee951fc44f5
   docs/sdks/images/README.md:
     id: cc752c3524d0
     last_write_checksum: sha1:30cb5d17118722e49d11f064014d50e8ba4ddaec
@@ -13321,12 +13321,12 @@ trackedFiles:
     pristine_git_object: 410efafd6a7f50d91ccb87131fedbe0c3d47e15a
   jsr.json:
     id: 7f6ab7767282
-    last_write_checksum: sha1:5089b69fe8773cd5439dd8e5dc27ca3d6dba9388
-    pristine_git_object: add7e2a576dadbb90a2dd87386abd8eb70c36d87
+    last_write_checksum: sha1:7ab7aee4f6b04bb4a9746324cbd5f877eb7c2882
+    pristine_git_object: 1b3693f56daed24fcefbfa8708931ed368e28377
   package.json:
     id: 7030d0b2f71b
-    last_write_checksum: sha1:73dfcf23956cf79628e2ea209c51550342c0ea74
-    pristine_git_object: 36d67ec2d6a9501cd68170f7a343bd064d595add
+    last_write_checksum: sha1:08e3b642cc5ad6d84762e908e42525a3295d3cb4
+    pristine_git_object: ac98f5d6d1523f9f9aaa8da7be28683513f4264f
   src/core.ts:
     id: f431fdbcd144
     last_write_checksum: sha1:5aa66b0b6a5964f3eea7f3098c2eb3c0ee9c0131
@@ -13481,8 +13481,8 @@ trackedFiles:
     pristine_git_object: 78b20f58d11747924fd2b4e462f8f932db575d6e
   src/funcs/guardrailsBulkAssignKeys.ts:
     id: a97261f248c8
-    last_write_checksum: sha1:82f15720d77e261d846082e7b59f1f31d1b0e146
-    pristine_git_object: e3e6cb456cc2e435e7f12dec09979b434e8e244c
+    last_write_checksum: sha1:c4f2630a0bedea542135af4aafa333a935ad6a02
+    pristine_git_object: 5115a7f12330ca6c92fdb8080c175cca3f93eab2
   src/funcs/guardrailsBulkAssignMembers.ts:
     id: a1c1e49b5bfc
     last_write_checksum: sha1:13818648dcdcbf367a4d8c1f3421c16028614976
@@ -13529,8 +13529,8 @@ trackedFiles:
     pristine_git_object: b7a0f27318f3f3b808719b4632be9e2646f8a66f
   src/funcs/guardrailsUpdate.ts:
     id: f8685ead7098
-    last_write_checksum: sha1:eb0056067dd4ed1c18b2f5607895cff7c4b0d68e
-    pristine_git_object: ae246e06ce05c6424c89e1cafd1557aef836e1ce
+    last_write_checksum: sha1:86ffe7806f6b7d6bb2e0c741dee74bd377f4db54
+    pristine_git_object: 24efe40c05cbb4ec50252b9c1d1a842bda0309d0
   src/funcs/imagesGenerate.ts:
     id: 5e770eb62f14
     last_write_checksum: sha1:52c1ca8bfb3c993ebda554eea8c45e7e8a93b87d
@@ -13769,8 +13769,8 @@ trackedFiles:
     pristine_git_object: a187e58707bdb726ca2aff74941efe7493422d4e
   src/lib/config.ts:
     id: 320761608fb3
-    last_write_checksum: sha1:9b9a3d294703b4c79538af8c7505b229970865d4
-    pristine_git_object: 2225f0dc27879b2eccee97b1379c72fbbd6985f4
+    last_write_checksum: sha1:295b156f6776bee36230b063923a4bc91040266e
+    pristine_git_object: 47e0b917c7177645db03258bbddd3160e18aa52b
   src/lib/dlv.ts:
     id: b1988214835a
     last_write_checksum: sha1:eaac763b22717206a6199104e0403ed17a4e2711
@@ -17521,6 +17521,8 @@ examples:
           application/json: {"error": {"code": 500, "message": "Internal Server Error"}}
         "409":
           application/json: {"error": {"code": 409, "message": "Resource conflict. Please try again later."}}
+        "403":
+          application/json: {"error": {"code": 403, "message": "Only management keys can perform this operation"}}
   deleteGuardrail:
     speakeasy-default-delete-guardrail:
       parameters:
@@ -17596,6 +17598,8 @@ examples:
           application/json: {"error": {"code": 404, "message": "Resource not found"}}
         "500":
           application/json: {"error": {"code": 500, "message": "Internal Server Error"}}
+        "403":
+          application/json: {"error": {"code": 403, "message": "Only management keys can perform this operation"}}
   listGuardrailMemberAssignments:
     speakeasy-default-list-guardrail-member-assignments:
       parameters:
@@ -19032,4 +19036,7 @@ examples:
         "500":
           application/json: {"error": {"code": 500, "message": "Internal Server Error"}}
 examplesVersion: 1.0.2
-releaseNotes: "## Typescript SDK Changes:\n* `openrouter.images.generate()`: \n  *  `request.imageGenerationRequest.aspectRatio` **Changed**\n"
+releaseNotes: |
+  ## Typescript SDK Changes:
+  * `openrouter.guardrails.update()`:  `error.status[403]` **Added**
+  * `openrouter.guardrails.bulkAssignKeys()`:  `error.status[403]` **Added**

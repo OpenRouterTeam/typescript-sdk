@@ -33495,7 +33495,7 @@ paths:
                   message: 'Only management keys can perform this operation'
               schema:
                 $ref: '#/components/schemas/ForbiddenResponse'
-          description: 'Forbidden - Authentication successful but insufficient permissions'
+          description: 'The workspace is not owned by this account, or the guardrail would give a HIPAA-enabled workspace a person-name or address sensitive-info filter, which is not available there.'
         '500':
           content:
             application/json:
@@ -33717,6 +33717,16 @@ paths:
               schema:
                 $ref: '#/components/schemas/UnauthorizedResponse'
           description: 'Unauthorized - Authentication required or invalid credentials'
+        '403':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 403
+                  message: 'Only management keys can perform this operation'
+              schema:
+                $ref: '#/components/schemas/ForbiddenResponse'
+          description: 'The update would give a HIPAA-enabled workspace a person-name or address sensitive-info filter, which is not available there.'
         '404':
           content:
             application/json:
@@ -33905,6 +33915,16 @@ paths:
               schema:
                 $ref: '#/components/schemas/UnauthorizedResponse'
           description: 'Unauthorized - Authentication required or invalid credentials'
+        '403':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 403
+                  message: 'Only management keys can perform this operation'
+              schema:
+                $ref: '#/components/schemas/ForbiddenResponse'
+          description: 'The guardrail has no workspace and carries a person-name or address sensitive-info filter, and at least one target key belongs to a HIPAA-enabled workspace, where that filter is not available.'
         '404':
           content:
             application/json:
