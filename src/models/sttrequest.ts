@@ -78,6 +78,10 @@ export type STTRequest = {
    * Timestamp detail levels to include when response_format is "verbose_json". "segment" returns segment-level timestamps; "word" additionally returns word-level timestamps in the words array. Ignored unless response_format is "verbose_json".
    */
   timestampGranularities?: Array<STTTimestampGranularity> | undefined;
+  /**
+   * A unique identifier representing your end-user. Forwarded to Broadcast and private logging as the end-user id; never sent to the provider.
+   */
+  user?: string | undefined;
 };
 
 /** @internal */
@@ -116,6 +120,7 @@ export type STTRequest$Outbound = {
   response_format?: string | undefined;
   temperature?: number | undefined;
   timestamp_granularities?: Array<string> | undefined;
+  user?: string | undefined;
 };
 
 /** @internal */
@@ -131,6 +136,7 @@ export const STTRequest$outboundSchema: z.ZodType<
   temperature: z.number().optional(),
   timestampGranularities: z.array(STTTimestampGranularity$outboundSchema)
     .optional(),
+  user: z.string().optional(),
 }).transform((v) => {
   return remap$(v, {
     inputAudio: "input_audio",

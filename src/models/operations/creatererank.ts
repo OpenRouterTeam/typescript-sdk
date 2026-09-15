@@ -72,6 +72,10 @@ export type CreateRerankRequestBody = {
    * Number of most relevant documents to return
    */
   topN?: number | undefined;
+  /**
+   * A unique identifier representing your end-user. Forwarded to Broadcast and private logging as the end-user id; never sent to the provider.
+   */
+  user?: string | undefined;
 };
 
 export type CreateRerankRequest = {
@@ -214,6 +218,7 @@ export type CreateRerankRequestBody$Outbound = {
   provider?: models.ProviderPreferences$Outbound | null | undefined;
   query: string;
   top_n?: number | undefined;
+  user?: string | undefined;
 };
 
 /** @internal */
@@ -228,6 +233,7 @@ export const CreateRerankRequestBody$outboundSchema: z.ZodType<
   provider: z.nullable(models.ProviderPreferences$outboundSchema).optional(),
   query: z.string(),
   topN: z.int().optional(),
+  user: z.string().optional(),
 }).transform((v) => {
   return remap$(v, {
     topN: "top_n",
