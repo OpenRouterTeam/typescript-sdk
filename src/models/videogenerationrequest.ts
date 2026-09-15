@@ -266,6 +266,10 @@ export type VideoGenerationRequest = {
    * Upscale factor for video upscaling models only. This parameter is not supported by video generation models.
    */
   upscaleFactor?: number | undefined;
+  /**
+   * A unique identifier representing your end-user. Forwarded to Broadcast and private logging as the end-user id; never sent to the provider.
+   */
+  user?: string | undefined;
 };
 
 /** @internal */
@@ -656,6 +660,7 @@ export type VideoGenerationRequest$Outbound = {
   seed?: number | undefined;
   size?: string | undefined;
   upscale_factor?: number | undefined;
+  user?: string | undefined;
 };
 
 /** @internal */
@@ -678,6 +683,7 @@ export const VideoGenerationRequest$outboundSchema: z.ZodType<
   seed: z.int().optional(),
   size: z.string().optional(),
   upscaleFactor: z.number().optional(),
+  user: z.string().optional(),
 }).transform((v) => {
   return remap$(v, {
     aspectRatio: "aspect_ratio",

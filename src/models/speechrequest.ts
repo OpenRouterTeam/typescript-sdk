@@ -71,6 +71,10 @@ export type SpeechRequest = {
    */
   speed?: number | undefined;
   /**
+   * A unique identifier representing your end-user. Forwarded to Broadcast and private logging as the end-user id; never sent to the provider.
+   */
+  user?: string | undefined;
+  /**
    * Voice identifier (provider-specific).
    */
   voice?: string | undefined;
@@ -111,6 +115,7 @@ export type SpeechRequest$Outbound = {
   provider?: SpeechRequestProvider$Outbound | undefined;
   response_format: string;
   speed?: number | undefined;
+  user?: string | undefined;
   voice?: string | undefined;
 };
 
@@ -125,6 +130,7 @@ export const SpeechRequest$outboundSchema: z.ZodType<
   provider: z.lazy(() => SpeechRequestProvider$outboundSchema).optional(),
   responseFormat: SpeechRequestResponseFormat$outboundSchema.default("pcm"),
   speed: z.number().optional(),
+  user: z.string().optional(),
   voice: z.string().optional(),
 }).transform((v) => {
   return remap$(v, {
