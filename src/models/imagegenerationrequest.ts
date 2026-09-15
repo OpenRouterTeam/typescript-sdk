@@ -17,6 +17,11 @@ import {
   ImageGenerationProviderPreferences$Outbound,
   ImageGenerationProviderPreferences$outboundSchema,
 } from "./imagegenerationproviderpreferences.js";
+import {
+  TraceConfig,
+  TraceConfig$Outbound,
+  TraceConfig$outboundSchema,
+} from "./traceconfig.js";
 
 /**
  * Normalized aspect ratio of the generated image. Providers clamp to their supported subset.
@@ -180,6 +185,10 @@ export type ImageGenerationRequest = {
    */
   stream?: boolean | undefined;
   /**
+   * Metadata for observability and tracing. Known keys (trace_id, trace_name, span_name, generation_name, parent_span_id) have special handling. Additional keys are passed through as custom metadata to configured broadcast destinations.
+   */
+  trace?: TraceConfig | undefined;
+  /**
    * A stable identifier for your end-users. Used to help detect and prevent abuse. Never sent to providers verbatim: for providers whose data policy requires user IDs, it is folded into a hashed, per-account upstream user identifier.
    */
   user?: string | undefined;
@@ -231,6 +240,7 @@ export type ImageGenerationRequest$Outbound = {
   seed?: number | undefined;
   size?: string | undefined;
   stream?: boolean | undefined;
+  trace?: TraceConfig$Outbound | undefined;
   user?: string | undefined;
 };
 
@@ -253,6 +263,7 @@ export const ImageGenerationRequest$outboundSchema: z.ZodType<
   seed: z.int().optional(),
   size: z.string().optional(),
   stream: z.boolean().optional(),
+  trace: TraceConfig$outboundSchema.optional(),
   user: z.string().optional(),
 }).transform((v) => {
   return remap$(v, {

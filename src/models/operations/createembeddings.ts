@@ -118,6 +118,10 @@ export type CreateEmbeddingsRequestBody = {
   model: string;
   provider?: models.ProviderPreferences | null | undefined;
   /**
+   * Metadata for observability and tracing. Known keys (trace_id, trace_name, span_name, generation_name, parent_span_id) have special handling. Additional keys are passed through as custom metadata to configured broadcast destinations.
+   */
+  trace?: models.TraceConfig | undefined;
+  /**
    * A unique identifier for the end-user
    */
   user?: string | undefined;
@@ -407,6 +411,7 @@ export type CreateEmbeddingsRequestBody$Outbound = {
   input_type?: string | undefined;
   model: string;
   provider?: models.ProviderPreferences$Outbound | null | undefined;
+  trace?: models.TraceConfig$Outbound | undefined;
   user?: string | undefined;
 };
 
@@ -427,6 +432,7 @@ export const CreateEmbeddingsRequestBody$outboundSchema: z.ZodType<
   inputType: z.string().optional(),
   model: z.string(),
   provider: z.nullable(models.ProviderPreferences$outboundSchema).optional(),
+  trace: models.TraceConfig$outboundSchema.optional(),
   user: z.string().optional(),
 }).transform((v) => {
   return remap$(v, {
