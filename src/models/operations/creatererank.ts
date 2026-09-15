@@ -73,6 +73,10 @@ export type CreateRerankRequestBody = {
    */
   topN?: number | undefined;
   /**
+   * Metadata for observability and tracing. Known keys (trace_id, trace_name, span_name, generation_name, parent_span_id) have special handling. Additional keys are passed through as custom metadata to configured broadcast destinations.
+   */
+  trace?: models.TraceConfig | undefined;
+  /**
    * A unique identifier representing your end-user. Forwarded to Broadcast and private logging as the end-user id; never sent to the provider.
    */
   user?: string | undefined;
@@ -218,6 +222,7 @@ export type CreateRerankRequestBody$Outbound = {
   provider?: models.ProviderPreferences$Outbound | null | undefined;
   query: string;
   top_n?: number | undefined;
+  trace?: models.TraceConfig$Outbound | undefined;
   user?: string | undefined;
 };
 
@@ -233,6 +238,7 @@ export const CreateRerankRequestBody$outboundSchema: z.ZodType<
   provider: z.nullable(models.ProviderPreferences$outboundSchema).optional(),
   query: z.string(),
   topN: z.int().optional(),
+  trace: models.TraceConfig$outboundSchema.optional(),
   user: z.string().optional(),
 }).transform((v) => {
   return remap$(v, {

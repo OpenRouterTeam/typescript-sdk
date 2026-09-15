@@ -10983,6 +10983,8 @@ components:
         stream:
           description: 'If true, partial images are streamed as SSE events as they become available. Only supported by providers with native streaming (currently OpenAI). Non-streaming providers ignore this flag and return a buffered response.'
           type: 'boolean'
+        trace:
+          $ref: '#/components/schemas/TraceConfig'
         user:
           description: 'A stable identifier for your end-users. Used to help detect and prevent abuse. Never sent to providers verbatim: for providers whose data policy requires user IDs, it is folded into a hashed, per-account upstream user identifier.'
           example: 'end-user-abc123'
@@ -24624,6 +24626,8 @@ components:
           example: 1
           format: 'double'
           type: 'number'
+        trace:
+          $ref: '#/components/schemas/TraceConfig'
         user:
           description: 'A unique identifier representing your end-user. Forwarded to Broadcast and private logging as the end-user id; never sent to the provider.'
           example: 'user-1234'
@@ -25130,6 +25134,8 @@ components:
           items:
             $ref: '#/components/schemas/STTTimestampGranularity'
           type: 'array'
+        trace:
+          $ref: '#/components/schemas/TraceConfig'
         user:
           description: 'A unique identifier representing your end-user. Forwarded to Broadcast and private logging as the end-user id; never sent to the provider.'
           example: 'user-1234'
@@ -27282,6 +27288,8 @@ components:
           description: 'Exact pixel dimensions of the generated video in "WIDTHxHEIGHT" format (e.g. "1280x720"). Interchangeable with resolution + aspect_ratio.'
           example: '1280x720'
           type: 'string'
+        trace:
+          $ref: '#/components/schemas/TraceConfig'
         upscale_factor:
           description: 'Upscale factor for video upscaling models only. This parameter is not supported by video generation models.'
           example: 2
@@ -31778,6 +31786,8 @@ paths:
                   allOf:
                     - $ref: '#/components/schemas/ProviderPreferences'
                     - description: 'Provider routing preferences for the request.'
+                trace:
+                  $ref: '#/components/schemas/TraceConfig'
                 user:
                   description: 'A unique identifier for the end-user'
                   example: 'user-1234'
@@ -39544,6 +39554,8 @@ paths:
                   example: 3
                   minimum: 1
                   type: 'integer'
+                trace:
+                  $ref: '#/components/schemas/TraceConfig'
                 user:
                   description: 'A unique identifier representing your end-user. Forwarded to Broadcast and private logging as the end-user id; never sent to the provider.'
                   example: 'user-1234'
