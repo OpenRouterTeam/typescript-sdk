@@ -10874,6 +10874,7 @@ components:
         user:
           description: 'A stable identifier for your end-users. Used to help detect and prevent abuse. Never sent to providers verbatim: for providers whose data policy requires user IDs, it is folded into a hashed, per-account upstream user identifier.'
           example: 'end-user-abc123'
+          maxLength: 256
           type: 'string'
       required:
         - 'model'
@@ -24430,6 +24431,11 @@ components:
           example: 1
           format: 'double'
           type: 'number'
+        user:
+          description: 'A unique identifier representing your end-user. Forwarded to Broadcast and private logging as the end-user id; never sent to the provider.'
+          example: 'user-1234'
+          maxLength: 256
+          type: 'string'
         voice:
           description: 'Voice identifier (provider-specific).'
           example: 'en_paul_neutral'
@@ -24930,6 +24936,11 @@ components:
           items:
             $ref: '#/components/schemas/STTTimestampGranularity'
           type: 'array'
+        user:
+          description: 'A unique identifier representing your end-user. Forwarded to Broadcast and private logging as the end-user id; never sent to the provider.'
+          example: 'user-1234'
+          maxLength: 256
+          type: 'string'
       required:
         - 'model'
         - 'input_audio'
@@ -27066,6 +27077,11 @@ components:
           exclusiveMinimum: true
           minimum: 0
           type: 'number'
+        user:
+          description: 'A unique identifier representing your end-user. Forwarded to Broadcast and private logging as the end-user id; never sent to the provider.'
+          example: 'user-1234'
+          maxLength: 256
+          type: 'string'
       required:
         - 'model'
       type: 'object'
@@ -39037,6 +39053,11 @@ paths:
                   example: 3
                   minimum: 1
                   type: 'integer'
+                user:
+                  description: 'A unique identifier representing your end-user. Forwarded to Broadcast and private logging as the end-user id; never sent to the provider.'
+                  example: 'user-1234'
+                  maxLength: 256
+                  type: 'string'
               required:
                 - 'model'
                 - 'query'
