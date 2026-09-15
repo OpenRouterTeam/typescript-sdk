@@ -1,19 +1,19 @@
 lockVersion: ""
 id: ""
 management:
-  docChecksum: ca0082f923b7111e16b64223fa6a8a43
+  docChecksum: b6d6e0030086f082ec2ff759f2eb4f0f
   docVersion: 1.0.0
   speakeasyVersion: 1.787.0
   generationVersion: 2.914.0
-  releaseVersion: 1.2.122
-  configChecksum: 9a75671610380372d03bd485a36574ff
+  releaseVersion: 1.2.123
+  configChecksum: 6bb18a1d6ba867eb269ffa7e3b4f7938
   repoURL: https://github.com/OpenRouterTeam/typescript-sdk.git
   installationURL: https://github.com/OpenRouterTeam/typescript-sdk
   published: true
 persistentEdits:
-  generation_id: 4bdb76ab-c00f-44ef-bd81-517e28ff9c85
-  pristine_commit_hash: 6537f5a6d382706c69ae8e001c3f5f599ae34fe9
-  pristine_tree_hash: f0437d6a89bbdad968ce7bbbe5e9c36ab8085e3d
+  generation_id: ae967df0-8b20-4294-aca8-163fdd91fd40
+  pristine_commit_hash: b8618d70a3c417ab2bd412f3886ee314f7c3b2ae
+  pristine_tree_hash: 867d28c9decd42450dee1c665bee47177fadc114
 features:
   typescript:
     acceptHeaders: 2.81.2
@@ -4608,8 +4608,8 @@ trackedFiles:
     deleted: true
   docs/models/imagegenerationrequestaspectratio.mdx:
     id: a674c3688ab3
-    last_write_checksum: sha1:6a5542884b7e26850fa6be973abd3644bbdbd9f0
-    pristine_git_object: 1777ac4ef10ee79153cd50feadab6cef3e564d90
+    last_write_checksum: sha1:46fd38c3f51ff5f28fc22e8ad8cc9d5f06662f8f
+    pristine_git_object: 3c7e617a0c5f4cc75549e14d3fdce8eb4470fcc5
   docs/models/imagegenerationrequestbackground.md:
     id: 2d9d17879f83
     last_write_checksum: sha1:bc3e4aae4b21a006b3e2f915f5048a7fa03c96f9
@@ -13321,12 +13321,12 @@ trackedFiles:
     pristine_git_object: 410efafd6a7f50d91ccb87131fedbe0c3d47e15a
   jsr.json:
     id: 7f6ab7767282
-    last_write_checksum: sha1:36b5ee82e1713eebfa7882365af84a2153d01ccc
-    pristine_git_object: 1694f11958280d14b25ad1a47e2a74f5c8614c36
+    last_write_checksum: sha1:5089b69fe8773cd5439dd8e5dc27ca3d6dba9388
+    pristine_git_object: add7e2a576dadbb90a2dd87386abd8eb70c36d87
   package.json:
     id: 7030d0b2f71b
-    last_write_checksum: sha1:01efd4c0b98aa4f7afd77dac8265bb0ee25d3bee
-    pristine_git_object: 99cf5b68e6e8ce11e2f22d88db2a3e287631c2d5
+    last_write_checksum: sha1:73dfcf23956cf79628e2ea209c51550342c0ea74
+    pristine_git_object: 36d67ec2d6a9501cd68170f7a343bd064d595add
   src/core.ts:
     id: f431fdbcd144
     last_write_checksum: sha1:5aa66b0b6a5964f3eea7f3098c2eb3c0ee9c0131
@@ -13769,8 +13769,8 @@ trackedFiles:
     pristine_git_object: a187e58707bdb726ca2aff74941efe7493422d4e
   src/lib/config.ts:
     id: 320761608fb3
-    last_write_checksum: sha1:4400ebee13e799d19a58ba75ceb2af1423898977
-    pristine_git_object: 1478f53a5afda5271891c0b8d19b519fb436ea93
+    last_write_checksum: sha1:9b9a3d294703b4c79538af8c7505b229970865d4
+    pristine_git_object: 2225f0dc27879b2eccee97b1379c72fbbd6985f4
   src/lib/dlv.ts:
     id: b1988214835a
     last_write_checksum: sha1:eaac763b22717206a6199104e0403ed17a4e2711
@@ -15023,8 +15023,8 @@ trackedFiles:
     pristine_git_object: c416b1c7c621e7d523b4f5eabea3ccba2ed62d82
   src/models/imagegenerationrequest.ts:
     id: ea1ffc0d2470
-    last_write_checksum: sha1:927f09d80361b615f48ceae7cefc11d7e77b86df
-    pristine_git_object: bff383fa5966cfe7b091748be0e8fcf4008c0dd5
+    last_write_checksum: sha1:fec3d3cf74225e6d8a295b66cf4ed71cafdbeea3
+    pristine_git_object: 95ba4ac721d456eb2a1a1aa29bbe2ead7a7c9bb0
   src/models/imagegenerationresponse.ts:
     id: 18aeba0f13cc
     last_write_checksum: sha1:4cd19da234bbdae4d406bd1cbc9629bd2e15f2a5
@@ -19032,4 +19032,4 @@ examples:
         "500":
           application/json: {"error": {"code": 500, "message": "Internal Server Error"}}
 examplesVersion: 1.0.2
-releaseNotes: "## Typescript SDK Changes:\n* `openrouter.tts.createSpeech()`: \n  *  `request.speechRequest.provider.options.assemblyai` **Added**\n* `openrouter.stt.createTranscription()`: \n  *  `request.sttRequest.provider.options.assemblyai` **Added**\n* `openrouter.byok.list()`: \n  *  `request.provider` **Changed**\n  *  `response.data[].provider.enum(assemblyai)` **Added**\n* `openrouter.byok.create()`: \n  *  `request.createByokKeyRequest.provider.enum(assemblyai)` **Added**\n  *  `response.data.provider.enum(assemblyai)` **Added**\n* `openrouter.byok.get()`:  `response.data.provider.enum(assemblyai)` **Added**\n* `openrouter.byok.update()`:  `response.data.provider.enum(assemblyai)` **Added**\n* `openrouter.chat.send()`: \n  *  `request.chatRequest.provider.ignore[].union(ProviderName).enum(assemblyAi)` **Added**\n* `openrouter.embeddings.generate()`: \n  *  `request.requestBody.provider.ignore[].union(ProviderName).enum(assemblyAi)` **Added**\n* `openrouter.endpoints.listZdrEndpoints()`:  `response.data[].providerName.enum(assemblyAi)` **Added**\n* `openrouter.endpoints.list()`:  `response.data.endpoints[].providerName.enum(assemblyAi)` **Added**\n* `openrouter.generations.getGeneration()`:  `response.data.providerResponses[].providerName.enum(assemblyAi)` **Added**\n* `openrouter.images.generate()`: \n  *  `request.imageGenerationRequest.provider` **Changed**\n* `openrouter.presets.createPresetsChatCompletions()`: \n  *  `request.chatRequest.provider.ignore[].union(ProviderName).enum(assemblyAi)` **Added**\n* `openrouter.presets.createPresetsMessages()`: \n  *  `request.messagesRequest.provider.ignore[].union(ProviderName).enum(assemblyAi)` **Added**\n* `openrouter.presets.createPresetsResponses()`: \n  *  `request.responsesRequest.provider.ignore[].union(ProviderName).enum(assemblyAi)` **Added**\n* `openrouter.rerank.rerank()`: \n  *  `request.requestBody.provider.ignore[].union(ProviderName).enum(assemblyAi)` **Added**\n* `openrouter.responses.send()`: \n  *  `request.responsesRequest.provider.ignore[].union(ProviderName).enum(assemblyAi)` **Added**\n* `openrouter.beta.responses.send()`: \n  *  `request.responsesRequest.provider.ignore[].union(ProviderName).enum(assemblyAi)` **Added**\n* `openrouter.videoGeneration.generate()`: \n  *  `request.videoGenerationRequest.provider.options.assemblyai` **Added**\n"
+releaseNotes: "## Typescript SDK Changes:\n* `openrouter.images.generate()`: \n  *  `request.imageGenerationRequest.aspectRatio` **Changed**\n"
