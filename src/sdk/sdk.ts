@@ -31,6 +31,7 @@ import { Responses } from "./responses.js";
 import { Scim } from "./scim.js";
 import { STT } from "./stt.js";
 import { TTS } from "./tts.js";
+import { Vault } from "./vault.js";
 import { VideoGeneration } from "./videogeneration.js";
 import { Workspaces } from "./workspaces.js";
 // #region imports
@@ -180,6 +181,11 @@ export class OpenRouter extends ClientSDK {
   private _scim?: Scim;
   get scim(): Scim {
     return (this._scim ??= new Scim(this._options));
+  }
+
+  private _vault?: Vault;
+  get vault(): Vault {
+    return (this._vault ??= new Vault(this._options));
   }
 
   private _videoGeneration?: VideoGeneration;
