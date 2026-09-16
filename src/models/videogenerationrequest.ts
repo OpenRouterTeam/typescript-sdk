@@ -264,6 +264,10 @@ export type VideoGenerationRequest = {
    */
   seed?: number | undefined;
   /**
+   * A unique identifier for grouping related requests (e.g., a conversation or agent workflow). Used for observability grouping in Broadcast and private logging; never sent to the provider. If provided in both the request body and the x-session-id header, the body value takes precedence. Maximum of 256 characters.
+   */
+  sessionId?: string | undefined;
+  /**
    * Exact pixel dimensions of the generated video in "WIDTHxHEIGHT" format (e.g. "1280x720"). Interchangeable with resolution + aspect_ratio.
    */
   size?: string | undefined;
@@ -667,6 +671,7 @@ export type VideoGenerationRequest$Outbound = {
   provider?: VideoGenerationRequestProvider$Outbound | undefined;
   resolution?: string | undefined;
   seed?: number | undefined;
+  session_id?: string | undefined;
   size?: string | undefined;
   trace?: TraceConfig$Outbound | undefined;
   upscale_factor?: number | undefined;
@@ -691,6 +696,7 @@ export const VideoGenerationRequest$outboundSchema: z.ZodType<
     .optional(),
   resolution: VideoGenerationRequestResolution$outboundSchema.optional(),
   seed: z.int().optional(),
+  sessionId: z.string().optional(),
   size: z.string().optional(),
   trace: TraceConfig$outboundSchema.optional(),
   upscaleFactor: z.number().optional(),
@@ -702,6 +708,7 @@ export const VideoGenerationRequest$outboundSchema: z.ZodType<
     frameImages: "frame_images",
     generateAudio: "generate_audio",
     inputReferences: "input_references",
+    sessionId: "session_id",
     upscaleFactor: "upscale_factor",
   });
 });

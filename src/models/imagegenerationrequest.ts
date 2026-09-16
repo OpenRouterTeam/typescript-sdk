@@ -177,6 +177,10 @@ export type ImageGenerationRequest = {
    */
   seed?: number | undefined;
   /**
+   * A unique identifier for grouping related requests (e.g., a conversation or agent workflow). Used for observability grouping in Broadcast and private logging; never sent to the provider. If provided in both the request body and the x-session-id header, the body value takes precedence. Maximum of 256 characters.
+   */
+  sessionId?: string | undefined;
+  /**
    * Optional. A convenience shorthand for output dimensions — pass a tier ("2K", "4K") or explicit pixels ("2048x2048") and we normalize it to the right dimensions for the chosen provider. A tier size is equivalent to setting `resolution` and combines with `aspect_ratio`. An explicit pixel size is authoritative: a mismatched `resolution` or `aspect_ratio` alongside it is rejected with a 400.
    */
   size?: string | undefined;
@@ -238,6 +242,7 @@ export type ImageGenerationRequest$Outbound = {
   quality?: string | undefined;
   resolution?: string | undefined;
   seed?: number | undefined;
+  session_id?: string | undefined;
   size?: string | undefined;
   stream?: boolean | undefined;
   trace?: TraceConfig$Outbound | undefined;
@@ -261,6 +266,7 @@ export const ImageGenerationRequest$outboundSchema: z.ZodType<
   quality: ImageGenerationRequestQuality$outboundSchema.optional(),
   resolution: ImageGenerationRequestResolution$outboundSchema.optional(),
   seed: z.int().optional(),
+  sessionId: z.string().optional(),
   size: z.string().optional(),
   stream: z.boolean().optional(),
   trace: TraceConfig$outboundSchema.optional(),
@@ -271,6 +277,7 @@ export const ImageGenerationRequest$outboundSchema: z.ZodType<
     inputReferences: "input_references",
     outputCompression: "output_compression",
     outputFormat: "output_format",
+    sessionId: "session_id",
   });
 });
 

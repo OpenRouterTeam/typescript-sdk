@@ -76,6 +76,10 @@ export type STTRequest = {
    */
   responseFormat?: STTRequestResponseFormat | undefined;
   /**
+   * A unique identifier for grouping related requests (e.g., a conversation or agent workflow). Used for observability grouping in Broadcast and private logging; never sent to the provider. If provided in both the request body and the x-session-id header, the body value takes precedence. Maximum of 256 characters.
+   */
+  sessionId?: string | undefined;
+  /**
    * Sampling temperature for transcription
    */
   temperature?: number | undefined;
@@ -127,6 +131,7 @@ export type STTRequest$Outbound = {
   model: string;
   provider?: STTRequestProvider$Outbound | undefined;
   response_format?: string | undefined;
+  session_id?: string | undefined;
   temperature?: number | undefined;
   timestamp_granularities?: Array<string> | undefined;
   trace?: TraceConfig$Outbound | undefined;
@@ -143,6 +148,7 @@ export const STTRequest$outboundSchema: z.ZodType<
   model: z.string(),
   provider: z.lazy(() => STTRequestProvider$outboundSchema).optional(),
   responseFormat: STTRequestResponseFormat$outboundSchema.optional(),
+  sessionId: z.string().optional(),
   temperature: z.number().optional(),
   timestampGranularities: z.array(STTTimestampGranularity$outboundSchema)
     .optional(),
@@ -152,6 +158,7 @@ export const STTRequest$outboundSchema: z.ZodType<
   return remap$(v, {
     inputAudio: "input_audio",
     responseFormat: "response_format",
+    sessionId: "session_id",
     timestampGranularities: "timestamp_granularities",
   });
 });

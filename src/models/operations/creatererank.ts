@@ -69,6 +69,10 @@ export type CreateRerankRequestBody = {
    */
   query: string;
   /**
+   * A unique identifier for grouping related requests (e.g., a conversation or agent workflow). Used for observability grouping in Broadcast and private logging; never sent to the provider. If provided in both the request body and the x-session-id header, the body value takes precedence. Maximum of 256 characters.
+   */
+  sessionId?: string | undefined;
+  /**
    * Number of most relevant documents to return
    */
   topN?: number | undefined;
@@ -221,6 +225,7 @@ export type CreateRerankRequestBody$Outbound = {
   model: string;
   provider?: models.ProviderPreferences$Outbound | null | undefined;
   query: string;
+  session_id?: string | undefined;
   top_n?: number | undefined;
   trace?: models.TraceConfig$Outbound | undefined;
   user?: string | undefined;
@@ -237,11 +242,13 @@ export const CreateRerankRequestBody$outboundSchema: z.ZodType<
   model: z.string(),
   provider: z.nullable(models.ProviderPreferences$outboundSchema).optional(),
   query: z.string(),
+  sessionId: z.string().optional(),
   topN: z.int().optional(),
   trace: models.TraceConfig$outboundSchema.optional(),
   user: z.string().optional(),
 }).transform((v) => {
   return remap$(v, {
+    sessionId: "session_id",
     topN: "top_n",
   });
 });
