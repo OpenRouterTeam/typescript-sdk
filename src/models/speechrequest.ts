@@ -72,6 +72,10 @@ export type SpeechRequest = {
    */
   responseFormat?: SpeechRequestResponseFormat | undefined;
   /**
+   * A unique identifier for grouping related requests (e.g., a conversation or agent workflow). Used for observability grouping in Broadcast and private logging; never sent to the provider. If provided in both the request body and the x-session-id header, the body value takes precedence. Maximum of 256 characters.
+   */
+  sessionId?: string | undefined;
+  /**
    * Playback speed multiplier. Only used by models that support it (e.g. OpenAI TTS). Ignored by other providers.
    */
   speed?: number | undefined;
@@ -123,6 +127,7 @@ export type SpeechRequest$Outbound = {
   model: string;
   provider?: SpeechRequestProvider$Outbound | undefined;
   response_format: string;
+  session_id?: string | undefined;
   speed?: number | undefined;
   trace?: TraceConfig$Outbound | undefined;
   user?: string | undefined;
@@ -139,6 +144,7 @@ export const SpeechRequest$outboundSchema: z.ZodType<
   model: z.string(),
   provider: z.lazy(() => SpeechRequestProvider$outboundSchema).optional(),
   responseFormat: SpeechRequestResponseFormat$outboundSchema.default("pcm"),
+  sessionId: z.string().optional(),
   speed: z.number().optional(),
   trace: TraceConfig$outboundSchema.optional(),
   user: z.string().optional(),
@@ -147,6 +153,7 @@ export const SpeechRequest$outboundSchema: z.ZodType<
   return remap$(v, {
     inputReferences: "input_references",
     responseFormat: "response_format",
+    sessionId: "session_id",
   });
 });
 
