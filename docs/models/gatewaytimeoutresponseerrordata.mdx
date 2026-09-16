@@ -1,0 +1,24 @@
+---
+title: "GatewayTimeoutResponseErrorData"
+---
+
+Error data for GatewayTimeoutResponse
+
+## Example Usage
+
+```typescript
+import { GatewayTimeoutResponseErrorData } from "@openrouter/sdk/models";
+
+let value: GatewayTimeoutResponseErrorData = {
+  code: 504,
+  message: "The operation was aborted due to timeout",
+};
+```
+
+## Fields
+
+| Field                 | Type                  | Required              | Description           |
+| --------------------- | --------------------- | --------------------- | --------------------- |
+| `code`                | *number*              | :heavy_check_mark:    | N/A                   |
+| `message`             | *string*              | :heavy_check_mark:    | N/A                   |
+| `metadata`            | Record\<string, *any*> | :heavy_minus_sign:    | N/A                   |

@@ -51,6 +51,7 @@ export function sttCreateTranscription(
     | errors.InternalServerResponseError
     | errors.BadGatewayResponseError
     | errors.ServiceUnavailableResponseError
+    | errors.GatewayTimeoutResponseError
     | errors.EdgeNetworkTimeoutResponseError
     | errors.ProviderOverloadedResponseError
     | OpenRouterError
@@ -88,6 +89,7 @@ async function $do(
       | errors.InternalServerResponseError
       | errors.BadGatewayResponseError
       | errors.ServiceUnavailableResponseError
+      | errors.GatewayTimeoutResponseError
       | errors.EdgeNetworkTimeoutResponseError
       | errors.ProviderOverloadedResponseError
       | OpenRouterError
@@ -208,6 +210,7 @@ async function $do(
     | errors.InternalServerResponseError
     | errors.BadGatewayResponseError
     | errors.ServiceUnavailableResponseError
+    | errors.GatewayTimeoutResponseError
     | errors.EdgeNetworkTimeoutResponseError
     | errors.ProviderOverloadedResponseError
     | OpenRouterError
@@ -230,6 +233,7 @@ async function $do(
     M.jsonErr(500, errors.InternalServerResponseError$inboundSchema),
     M.jsonErr(502, errors.BadGatewayResponseError$inboundSchema),
     M.jsonErr(503, errors.ServiceUnavailableResponseError$inboundSchema),
+    M.jsonErr(504, errors.GatewayTimeoutResponseError$inboundSchema),
     M.jsonErr(524, errors.EdgeNetworkTimeoutResponseError$inboundSchema),
     M.jsonErr(529, errors.ProviderOverloadedResponseError$inboundSchema),
     M.fail("4XX"),
