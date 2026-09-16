@@ -8943,6 +8943,30 @@ components:
         image_url:
           url: 'https://example.com/image.png'
         type: 'image_url'
+    FreeModelDailyRequests:
+      description: 'Free-model (`:free` variant) daily request quota for the account that owns the key. Reports the same counter and tier limit that free-model enforcement reads for accounts subject to the free-model limits; the counter resets at UTC midnight. Accounts and endpoints exempt from free-model limits, and BYOK requests, are not gated by it, so `remaining` is the tier policy rather than an enforced ceiling for them.'
+      example:
+        limit: 50
+        remaining: 38
+        used: 12
+      properties:
+        limit:
+          description: 'Free-model requests the account may make per UTC day; the ceiling depends on total credits purchased and is independent of `is_free_tier`'
+          example: 50
+          type: 'integer'
+        remaining:
+          description: 'Free-model requests left in the current UTC day'
+          example: 38
+          type: 'integer'
+        used:
+          description: 'Free-model requests recorded for the account so far in the current UTC day'
+          example: 12
+          type: 'integer'
+      required:
+        - 'used'
+        - 'limit'
+        - 'remaining'
+      type: 'object'
     FunctionCallArgsDeltaEvent:
       allOf:
         - $ref: '#/components/schemas/BaseFunctionCallArgsDeltaEvent'
@@ -34781,6 +34805,10 @@ paths:
                   byok_usage_weekly: 17.38
                   creator_user_id: 'user_2dHFtVWx2n56w6HkM0000000000'
                   expires_at: '2027-12-31T23:59:59Z'
+                  free_model_daily_requests:
+                    limit: 50
+                    remaining: 38
+                    used: 12
                   include_byok_in_limit: false
                   is_free_tier: false
                   is_management_key: false
@@ -34806,6 +34834,10 @@ paths:
                     byok_usage_weekly: 17.38
                     creator_user_id: 'user_2dHFtVWx2n56w6HkM0000000000'
                     expires_at: '2027-12-31T23:59:59Z'
+                    free_model_daily_requests:
+                      limit: 50
+                      remaining: 38
+                      used: 12
                     include_byok_in_limit: false
                     is_free_tier: false
                     is_management_key: false
@@ -34832,6 +34864,10 @@ paths:
                       byok_usage_weekly: 17.38
                       creator_user_id: 'user_2dHFtVWx2n56w6HkM0000000000'
                       expires_at: '2027-12-31T23:59:59Z'
+                      free_model_daily_requests:
+                        limit: 50
+                        remaining: 38
+                        used: 12
                       include_byok_in_limit: false
                       is_free_tier: false
                       is_management_key: false
@@ -34882,6 +34918,8 @@ paths:
                         type:
                           - 'string'
                           - 'null'
+                      free_model_daily_requests:
+                        $ref: '#/components/schemas/FreeModelDailyRequests'
                       include_byok_in_limit:
                         description: 'Whether to include external BYOK usage in the credit limit'
                         example: false
@@ -34986,6 +35024,7 @@ paths:
                       - 'limit_reset'
                       - 'include_byok_in_limit'
                       - 'creator_user_id'
+                      - 'free_model_daily_requests'
                       - 'rate_limit'
                     type: 'object'
                 required:

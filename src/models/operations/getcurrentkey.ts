@@ -8,6 +8,7 @@ import { remap as remap$ } from "../../lib/primitives.js";
 import { safeParse } from "../../lib/schemas.js";
 import { Result as SafeParseResult } from "../../types/fp.js";
 import { SDKValidationError } from "../errors/sdkvalidationerror.js";
+import * as models from "../index.js";
 
 export type GetCurrentKeyGlobals = {
   /**
@@ -101,6 +102,10 @@ export type GetCurrentKeyData = {
    * ISO 8601 UTC timestamp when the API key expires, or null if no expiration
    */
   expiresAt?: Date | null | undefined;
+  /**
+   * Free-model (`:free` variant) daily request quota for the account that owns the key. Reports the same counter and tier limit that free-model enforcement reads for accounts subject to the free-model limits; the counter resets at UTC midnight. Accounts and endpoints exempt from free-model limits, and BYOK requests, are not gated by it, so `remaining` is the tier policy rather than an enforced ceiling for them.
+   */
+  freeModelDailyRequests: models.FreeModelDailyRequests;
   /**
    * Whether to include external BYOK usage in the credit limit
    */
@@ -228,6 +233,7 @@ export const GetCurrentKeyData$inboundSchema: z.ZodType<
   expires_at: z.nullable(
     z.iso.datetime({ offset: true }).transform(v => new Date(v)),
   ).optional(),
+  free_model_daily_requests: models.FreeModelDailyRequests$inboundSchema,
   include_byok_in_limit: z.boolean(),
   is_free_tier: z.boolean(),
   is_management_key: z.boolean(),
@@ -249,6 +255,7 @@ export const GetCurrentKeyData$inboundSchema: z.ZodType<
     "byok_usage_weekly": "byokUsageWeekly",
     "creator_user_id": "creatorUserId",
     "expires_at": "expiresAt",
+    "free_model_daily_requests": "freeModelDailyRequests",
     "include_byok_in_limit": "includeByokInLimit",
     "is_free_tier": "isFreeTier",
     "is_management_key": "isManagementKey",

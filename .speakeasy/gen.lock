@@ -1,19 +1,19 @@
 lockVersion: ""
 id: ""
 management:
-  docChecksum: 231fd31ac08cec83975c629190460e1f
+  docChecksum: faf921b42fd71e6d0d84397f98820ae3
   docVersion: 1.0.0
   speakeasyVersion: 1.787.0
   generationVersion: 2.914.0
-  releaseVersion: 1.2.126
-  configChecksum: a8e9a24a642216ef0541c0678489819b
+  releaseVersion: 1.2.127
+  configChecksum: 1873dbe33ea20541827a78ff8e93bb07
   repoURL: https://github.com/OpenRouterTeam/typescript-sdk.git
   installationURL: https://github.com/OpenRouterTeam/typescript-sdk
   published: true
 persistentEdits:
-  generation_id: 74327ef4-6ff6-4d19-a3af-5739fe2492ba
-  pristine_commit_hash: b697810b6a2a125e7f0b4c0a35492afda9a952c6
-  pristine_tree_hash: 35df548c0746fec46230926281da02b4ed0def4d
+  generation_id: d440672e-62f1-408c-9d92-c5cec59303b3
+  pristine_commit_hash: e4fac654c5757f213d9478ff49bfd6078a5d8e05
+  pristine_tree_hash: e5f80dc7f982a99435bbccb051b7aa972d0aaac4
 features:
   typescript:
     acceptHeaders: 2.81.2
@@ -4077,6 +4077,10 @@ trackedFiles:
     id: 98dbfad9a402
     last_write_checksum: sha1:b2f6da7e3f1a2c791bff69b7003aec2b72ee077b
     pristine_git_object: c9065abc4ac42c942c917548571b95474c2e9c79
+  docs/models/freemodeldailyrequests.mdx:
+    id: 64f0e2374157
+    last_write_checksum: sha1:74c8fb407a7d0daabfa12d7219e97b70c24a64c1
+    pristine_git_object: ba3a2a078f5c5e6d232ff6ff766825e2628d6cb3
   docs/models/functioncallargsdeltaevent.md:
     id: abcf083f706b
     last_write_checksum: sha1:20ae217a26f1ec698fa694ef2037ac12e763dac8
@@ -7962,8 +7966,8 @@ trackedFiles:
     pristine_git_object: 1b5382b9150491037fe2023fe7de189932f30b25
   docs/models/operations/getcurrentkeydata.mdx:
     id: 20d20b34fed5
-    last_write_checksum: sha1:058030618e2180fd7d8d067161d414fb272a6b02
-    pristine_git_object: c36327c671814750be8e4c9e4119eb7641451f3e
+    last_write_checksum: sha1:dd36ebcb59a7a423f355d2898e4e581b1f9a92cd
+    pristine_git_object: 4528877733d8fbc135ba09f64ef5b46e5d9b61c5
   docs/models/operations/getcurrentkeyglobals.mdx:
     id: 453020e0c1cf
     last_write_checksum: sha1:f9bd518f87fedb12a0ad1404e516d3e5c28aaa3e
@@ -7974,8 +7978,8 @@ trackedFiles:
     pristine_git_object: 8a69d464c969970914d392d0e6224666a1b83dba
   docs/models/operations/getcurrentkeyresponse.mdx:
     id: 7e3452452864
-    last_write_checksum: sha1:0f6187051d328bd3f6d22d81b89e0028aa485ace
-    pristine_git_object: 6a2188134404577c9652b7c5e710b5b32ccd1cb0
+    last_write_checksum: sha1:4abaa565ba3f41cb8bf9887c87360bdaaf200847
+    pristine_git_object: 59d69e1fa33193570139568c3eae68ed9831751d
   docs/models/operations/getfilemetadataglobals.md:
     id: 83c2510439af
     last_write_checksum: sha1:9f6fcba5f236fe99b92fa110a87d20708d0d1bbf
@@ -13321,12 +13325,12 @@ trackedFiles:
     pristine_git_object: 410efafd6a7f50d91ccb87131fedbe0c3d47e15a
   jsr.json:
     id: 7f6ab7767282
-    last_write_checksum: sha1:36011125bbcc142b31b8e640430cbf7ddc63370f
-    pristine_git_object: 096f9da083f4629bc9dfa05423f0222a99c6639a
+    last_write_checksum: sha1:5355e6ff2fa58b1756d52604abee4108de341f7a
+    pristine_git_object: 208899f48beacb3549991125bafc92eaa21e0b5f
   package.json:
     id: 7030d0b2f71b
-    last_write_checksum: sha1:7ada6a86e08240848de29810eb026cb84e55e332
-    pristine_git_object: d45a7ef1df15c3fba61e053b90fbfb476827e6ba
+    last_write_checksum: sha1:242bdc5bb901eed36a9b7e24e858424106a24e01
+    pristine_git_object: 2eb064ba6f976a9aabaec005f186dc41f482f91d
   src/core.ts:
     id: f431fdbcd144
     last_write_checksum: sha1:5aa66b0b6a5964f3eea7f3098c2eb3c0ee9c0131
@@ -13769,8 +13773,8 @@ trackedFiles:
     pristine_git_object: a187e58707bdb726ca2aff74941efe7493422d4e
   src/lib/config.ts:
     id: 320761608fb3
-    last_write_checksum: sha1:eda7c1267971b9759ecbc2173bc68d4df9eb72ba
-    pristine_git_object: 59af05394c918306f5386a2f620564df5fb359e0
+    last_write_checksum: sha1:6c79b56d09c883b22b30c65ecc096dd6299e8bca
+    pristine_git_object: cc6516eecc0c08859cf4a5aae6a5122f7cf1c8b6
   src/lib/dlv.ts:
     id: b1988214835a
     last_write_checksum: sha1:eaac763b22717206a6199104e0403ed17a4e2711
@@ -14845,6 +14849,10 @@ trackedFiles:
     id: 97fccf1b68ca
     last_write_checksum: sha1:b858771f58504bd17b801fa2019639667a860295
     pristine_git_object: a6ca7877018bd091510684e542b6b34b9cff3c53
+  src/models/freemodeldailyrequests.ts:
+    id: 6ed229ff1382
+    last_write_checksum: sha1:c2684af0f3e879949e7ef1d9d6af31c898168d0d
+    pristine_git_object: 153dc8aa1c1fa618b24318a6b676530086ad7bb6
   src/models/functioncallargsdeltaevent.ts:
     id: 2f23b040fdad
     last_write_checksum: sha1:90f176e0c8d4eccde487822f41945736a6e87298
@@ -15103,8 +15111,8 @@ trackedFiles:
     pristine_git_object: 8e109bedfdcf2c4808e49323dda861e3c6069d51
   src/models/index.ts:
     id: f93644b0f37e
-    last_write_checksum: sha1:dc2cb985f29f582cda753e56a125563fbb93f042
-    pristine_git_object: f066ee6d59978efab490bffa270d6d8638daadc8
+    last_write_checksum: sha1:b283a6745bde35e54e9f1e05cea1065c5d52b2a3
+    pristine_git_object: cddffe0fe01f6622cab04d610d578826285e66b5
   src/models/inputaudio.ts:
     id: 9bdc14c7565f
     last_write_checksum: sha1:2f8dc4c1d6a9c2927d9eb186e0ecedf7b81838e6
@@ -15731,8 +15739,8 @@ trackedFiles:
     pristine_git_object: 582583b06840936f57378e254912c100f7082cf8
   src/models/operations/getcurrentkey.ts:
     id: ddb4fa558414
-    last_write_checksum: sha1:b5edc0ba68e938b1c70fabc09b29eed94ee2d3d1
-    pristine_git_object: d5ca05bed5356a1cd2e5665873d4547dcb841d64
+    last_write_checksum: sha1:7949416e6a7fc1a3974badbe8c139791fa83bb56
+    pristine_git_object: ed7e2a6e4a0570e8652fc2db1bebeea27df5faee
   src/models/operations/getfilemetadata.ts:
     id: accbd0757579
     last_write_checksum: sha1:9f6dfcf8d2a144589a41fa60fcd55d9b15c2f98d
@@ -17452,7 +17460,7 @@ examples:
     speakeasy-default-get-current-key:
       responses:
         "200":
-          application/json: {"data": {"byok_usage": 17.38, "byok_usage_daily": 17.38, "byok_usage_monthly": 17.38, "byok_usage_weekly": 17.38, "creator_user_id": "user_2dHFtVWx2n56w6HkM0000000000", "include_byok_in_limit": false, "is_free_tier": false, "is_management_key": false, "is_provisioning_key": false, "label": "sk-or-v1-au7...890", "limit": 100, "limit_remaining": 74.5, "limit_reset": "monthly", "rate_limit": {"interval": "1h", "note": "This field is deprecated and safe to ignore.", "requests": 1000}, "usage": 25.5, "usage_daily": 25.5, "usage_monthly": 25.5, "usage_weekly": 25.5}}
+          application/json: {"data": {"byok_usage": 17.38, "byok_usage_daily": 17.38, "byok_usage_monthly": 17.38, "byok_usage_weekly": 17.38, "creator_user_id": "user_2dHFtVWx2n56w6HkM0000000000", "free_model_daily_requests": {"limit": 50, "remaining": 38, "used": 12}, "include_byok_in_limit": false, "is_free_tier": false, "is_management_key": false, "is_provisioning_key": false, "label": "sk-or-v1-au7...890", "limit": 100, "limit_remaining": 74.5, "limit_reset": "monthly", "rate_limit": {"interval": "1h", "note": "This field is deprecated and safe to ignore.", "requests": 1000}, "usage": 25.5, "usage_daily": 25.5, "usage_monthly": 25.5, "usage_weekly": 25.5}}
         "401":
           application/json: {"error": {"code": 401, "message": "Missing Authentication header"}}
         "500":
@@ -19036,4 +19044,6 @@ examples:
         "500":
           application/json: {"error": {"code": 500, "message": "Internal Server Error"}}
 examplesVersion: 1.0.2
-releaseNotes: "## Typescript SDK Changes:\n* `openrouter.tts.createSpeech()`: \n  *  `request.speechRequest.trace` **Added**\n* `openrouter.stt.createTranscription()`: \n  *  `request.sttRequest.trace` **Added**\n* `openrouter.embeddings.generate()`: \n  *  `request.requestBody.trace` **Added**\n* `openrouter.images.generate()`: \n  *  `request.imageGenerationRequest.trace` **Added**\n* `openrouter.rerank.rerank()`: \n  *  `request.requestBody.trace` **Added**\n* `openrouter.videoGeneration.generate()`: \n  *  `request.videoGenerationRequest.trace` **Added**\n"
+releaseNotes: |
+  ## Typescript SDK Changes:
+  * `openrouter.apiKeys.getCurrentKeyMetadata()`:  `response.data.freeModelDailyRequests` **Added**
