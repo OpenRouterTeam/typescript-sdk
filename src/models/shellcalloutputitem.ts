@@ -49,6 +49,10 @@ export type ShellCallOutputItem = {
    */
   containerId?: string | undefined;
   /**
+   * The error message when the sandbox call failed before producing a result, as echoed from a failed `shell_call_output` emission.
+   */
+  error?: string | undefined;
+  /**
    * Citations for the files the sandbox command created or modified, most-recently-touched first (at most 10). Retrieve them via the Container Files API.
    */
   files?: Array<ShellCallOutputItemFile> | undefined;
@@ -112,6 +116,7 @@ export const ShellCallOutputItemTypeShellCallOutput$outboundSchema: z.ZodEnum<
 export type ShellCallOutputItem$Outbound = {
   call_id: string;
   container_id?: string | undefined;
+  error?: string | undefined;
   files?: Array<ShellCallOutputItemFile$Outbound> | undefined;
   id?: string | null | undefined;
   max_output_length?: number | null | undefined;
@@ -127,6 +132,7 @@ export const ShellCallOutputItem$outboundSchema: z.ZodType<
 > = z.object({
   callId: z.string(),
   containerId: z.string().optional(),
+  error: z.string().optional(),
   files: z.array(z.lazy(() => ShellCallOutputItemFile$outboundSchema))
     .optional(),
   id: z.nullable(z.string()).optional(),
