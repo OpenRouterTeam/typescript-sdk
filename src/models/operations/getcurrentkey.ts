@@ -6,6 +6,8 @@
 import * as z from "zod/v4";
 import { remap as remap$ } from "../../lib/primitives.js";
 import { safeParse } from "../../lib/schemas.js";
+import * as openEnums from "../../types/enums.js";
+import { OpenEnum } from "../../types/enums.js";
 import { Result as SafeParseResult } from "../../types/fp.js";
 import { SDKValidationError } from "../errors/sdkvalidationerror.js";
 import * as models from "../index.js";
@@ -54,6 +56,13 @@ export type GetCurrentKeyRequest = {
   appCategories?: string | undefined;
 };
 
+export const AllowedDataRegion = {
+  Global: "global",
+  Europe: "europe",
+  Us: "us",
+} as const;
+export type AllowedDataRegion = OpenEnum<typeof AllowedDataRegion>;
+
 /**
  * Legacy rate limit information about a key. Will always return -1.
  *
@@ -78,6 +87,10 @@ export type RateLimit = {
  * Current API key information
  */
 export type GetCurrentKeyData = {
+  /**
+   * Data regions permitted for this API key by the guardrail policies on the key and the account regional-routing entitlement. Empty when no region is permitted. Reflects region policy only: other key restrictions, such as management keys being blocked from inference, still apply.
+   */
+  allowedDataRegions: Array<AllowedDataRegion>;
   /**
    * Total external BYOK usage (in USD) for the API key
    */
@@ -204,6 +217,12 @@ export function getCurrentKeyRequestToJSON(
 }
 
 /** @internal */
+export const AllowedDataRegion$inboundSchema: z.ZodType<
+  AllowedDataRegion,
+  unknown
+> = openEnums.inboundSchema(AllowedDataRegion);
+
+/** @internal */
 export const RateLimit$inboundSchema: z.ZodType<RateLimit, unknown> = z.object({
   interval: z.string(),
   note: z.string(),
@@ -225,6 +244,7 @@ export const GetCurrentKeyData$inboundSchema: z.ZodType<
   GetCurrentKeyData,
   unknown
 > = z.object({
+  allowed_data_regions: z.array(AllowedDataRegion$inboundSchema),
   byok_usage: z.number(),
   byok_usage_daily: z.number(),
   byok_usage_monthly: z.number(),
@@ -249,6 +269,7 @@ export const GetCurrentKeyData$inboundSchema: z.ZodType<
   usage_weekly: z.number(),
 }).transform((v) => {
   return remap$(v, {
+    "allowed_data_regions": "allowedDataRegions",
     "byok_usage": "byokUsage",
     "byok_usage_daily": "byokUsageDaily",
     "byok_usage_monthly": "byokUsageMonthly",
