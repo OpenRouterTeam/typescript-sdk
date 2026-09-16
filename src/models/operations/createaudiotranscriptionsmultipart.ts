@@ -72,6 +72,10 @@ export type CreateAudioTranscriptionsMultipartRequestBody = {
    */
   responseFormat?: ResponseFormat | undefined;
   /**
+   * A unique identifier for grouping related requests (e.g., a conversation or agent workflow). Used for observability grouping in Broadcast and private logging; never sent to the provider. If provided in both the request body and the x-session-id header, the body value takes precedence.
+   */
+  sessionId?: string | undefined;
+  /**
    * The sampling temperature.
    */
   temperature?: number | undefined;
@@ -79,6 +83,14 @@ export type CreateAudioTranscriptionsMultipartRequestBody = {
    * Timestamp detail levels to include when response_format is "verbose_json". "word" additionally returns word-level timestamps in the words array.
    */
   timestampGranularities?: Array<TimestampGranularities> | undefined;
+  /**
+   * JSON-encoded trace metadata object (trace_id, trace_name, span_name, generation_name, parent_span_id and custom keys) attached to the Broadcast trace. Must decode to a JSON object.
+   */
+  trace?: string | undefined;
+  /**
+   * A unique identifier representing your end-user. Forwarded to Broadcast and private logging as the end-user id; never sent to the provider.
+   */
+  user?: string | undefined;
 };
 
 export type CreateAudioTranscriptionsMultipartRequest = {
@@ -151,8 +163,11 @@ export type CreateAudioTranscriptionsMultipartRequestBody$Outbound = {
   language?: string | undefined;
   model: string;
   response_format?: string | undefined;
+  session_id?: string | undefined;
   temperature?: number | undefined;
   "timestamp_granularities[]"?: Array<string> | undefined;
+  trace?: string | undefined;
+  user?: string | undefined;
 };
 
 /** @internal */
@@ -166,12 +181,16 @@ export const CreateAudioTranscriptionsMultipartRequestBody$outboundSchema:
     language: z.string().optional(),
     model: z.string(),
     responseFormat: ResponseFormat$outboundSchema.optional(),
+    sessionId: z.string().optional(),
     temperature: z.number().optional(),
     timestampGranularities: z.array(TimestampGranularities$outboundSchema)
       .optional(),
+    trace: z.string().optional(),
+    user: z.string().optional(),
   }).transform((v) => {
     return remap$(v, {
       responseFormat: "response_format",
+      sessionId: "session_id",
       timestampGranularities: "timestamp_granularities[]",
     });
   });
