@@ -1,0 +1,21 @@
+---
+title: "GatewayTimeoutResponseError"
+---
+
+Gateway Timeout - Provider did not respond before the upstream deadline
+
+## Example Usage
+
+```typescript
+import { GatewayTimeoutResponseError } from "@openrouter/sdk/models/errors";
+
+// No examples available for this model
+```
+
+## Fields
+
+| Field                                                                                     | Type                                                                                      | Required                                                                                  | Description                                                                               | Example                                                                                   |
+| ----------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------- |
+| `error`                                                                                   | [models.GatewayTimeoutResponseErrorData](../../models/gatewaytimeoutresponseerrordata.mdx) | :heavy_check_mark:                                                                        | Error data for GatewayTimeoutResponse                                                     | \{<br/>"code": 504,<br/>"message": "The operation was aborted due to timeout"<br/>}        |
+| `openrouterMetadata`                                                                      | Record\<string, *any*>                                                                     | :heavy_minus_sign:                                                                        | N/A                                                                                       |                                                                                           |
+| `userId`                                                                                  | *string*                                                                                  | :heavy_minus_sign:                                                                        | N/A                                                                                       |                                                                                           |
