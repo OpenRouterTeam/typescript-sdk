@@ -11040,6 +11040,11 @@ components:
         seed:
           description: 'If specified, the generation will sample deterministically, such that repeated requests with the same seed and parameters should return the same result. Determinism is not guaranteed for all providers.'
           type: 'integer'
+        session_id:
+          description: 'A unique identifier for grouping related requests (e.g., a conversation or agent workflow). Used for observability grouping in Broadcast and private logging; never sent to the provider. If provided in both the request body and the x-session-id header, the body value takes precedence. Maximum of 256 characters.'
+          example: 'session-1234'
+          maxLength: 256
+          type: 'string'
         size:
           description: 'Optional. A convenience shorthand for output dimensions — pass a tier ("2K", "4K") or explicit pixels ("2048x2048") and we normalize it to the right dimensions for the chosen provider. A tier size is equivalent to setting `resolution` and combines with `aspect_ratio`. An explicit pixel size is authoritative: a mismatched `resolution` or `aspect_ratio` alongside it is rejected with a 400.'
           example: '2K'
@@ -24697,6 +24702,11 @@ components:
           example: 'pcm'
           type: 'string'
           x-speakeasy-unknown-values: allow
+        session_id:
+          description: 'A unique identifier for grouping related requests (e.g., a conversation or agent workflow). Used for observability grouping in Broadcast and private logging; never sent to the provider. If provided in both the request body and the x-session-id header, the body value takes precedence. Maximum of 256 characters.'
+          example: 'session-1234'
+          maxLength: 256
+          type: 'string'
         speed:
           description: 'Playback speed multiplier. Only used by models that support it (e.g. OpenAI TTS). Ignored by other providers.'
           example: 1
@@ -25198,6 +25208,11 @@ components:
           example: 'json'
           type: 'string'
           x-speakeasy-unknown-values: allow
+        session_id:
+          description: 'A unique identifier for grouping related requests (e.g., a conversation or agent workflow). Used for observability grouping in Broadcast and private logging; never sent to the provider. If provided in both the request body and the x-session-id header, the body value takes precedence. Maximum of 256 characters.'
+          example: 'session-1234'
+          maxLength: 256
+          type: 'string'
         temperature:
           description: 'Sampling temperature for transcription'
           example: 0
@@ -27360,6 +27375,11 @@ components:
         seed:
           description: 'If specified, the generation will sample deterministically, such that repeated requests with the same seed and parameters should return the same result. Determinism is not guaranteed for all providers.'
           type: 'integer'
+        session_id:
+          description: 'A unique identifier for grouping related requests (e.g., a conversation or agent workflow). Used for observability grouping in Broadcast and private logging; never sent to the provider. If provided in both the request body and the x-session-id header, the body value takes precedence. Maximum of 256 characters.'
+          example: 'session-1234'
+          maxLength: 256
+          type: 'string'
         size:
           description: 'Exact pixel dimensions of the generated video in "WIDTHxHEIGHT" format (e.g. "1280x720"). Interchangeable with resolution + aspect_ratio.'
           example: '1280x720'
@@ -31872,6 +31892,11 @@ paths:
                   allOf:
                     - $ref: '#/components/schemas/ProviderPreferences'
                     - description: 'Provider routing preferences for the request.'
+                session_id:
+                  description: 'A unique identifier for grouping related requests (e.g., a conversation or agent workflow). Used for observability grouping in Broadcast and private logging; never sent to the provider. If provided in both the request body and the x-session-id header, the body value takes precedence. Maximum of 256 characters.'
+                  example: 'session-1234'
+                  maxLength: 256
+                  type: 'string'
                 trace:
                   $ref: '#/components/schemas/TraceConfig'
                 user:
@@ -39676,6 +39701,11 @@ paths:
                 query:
                   description: 'The search query to rerank documents against'
                   example: 'What is the capital of France?'
+                  type: 'string'
+                session_id:
+                  description: 'A unique identifier for grouping related requests (e.g., a conversation or agent workflow). Used for observability grouping in Broadcast and private logging; never sent to the provider. If provided in both the request body and the x-session-id header, the body value takes precedence. Maximum of 256 characters.'
+                  example: 'session-1234'
+                  maxLength: 256
                   type: 'string'
                 top_n:
                   description: 'Number of most relevant documents to return'

@@ -118,6 +118,10 @@ export type CreateEmbeddingsRequestBody = {
   model: string;
   provider?: models.ProviderPreferences | null | undefined;
   /**
+   * A unique identifier for grouping related requests (e.g., a conversation or agent workflow). Used for observability grouping in Broadcast and private logging; never sent to the provider. If provided in both the request body and the x-session-id header, the body value takes precedence. Maximum of 256 characters.
+   */
+  sessionId?: string | undefined;
+  /**
    * Metadata for observability and tracing. Known keys (trace_id, trace_name, span_name, generation_name, parent_span_id) have special handling. Additional keys are passed through as custom metadata to configured broadcast destinations.
    */
   trace?: models.TraceConfig | undefined;
@@ -411,6 +415,7 @@ export type CreateEmbeddingsRequestBody$Outbound = {
   input_type?: string | undefined;
   model: string;
   provider?: models.ProviderPreferences$Outbound | null | undefined;
+  session_id?: string | undefined;
   trace?: models.TraceConfig$Outbound | undefined;
   user?: string | undefined;
 };
@@ -432,12 +437,14 @@ export const CreateEmbeddingsRequestBody$outboundSchema: z.ZodType<
   inputType: z.string().optional(),
   model: z.string(),
   provider: z.nullable(models.ProviderPreferences$outboundSchema).optional(),
+  sessionId: z.string().optional(),
   trace: models.TraceConfig$outboundSchema.optional(),
   user: z.string().optional(),
 }).transform((v) => {
   return remap$(v, {
     encodingFormat: "encoding_format",
     inputType: "input_type",
+    sessionId: "session_id",
   });
 });
 
