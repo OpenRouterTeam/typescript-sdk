@@ -161,6 +161,9 @@ async function $do(
   if (payload.RequestBody.response_format !== undefined) {
     appendForm(body, "response_format", payload.RequestBody.response_format);
   }
+  if (payload.RequestBody.session_id !== undefined) {
+    appendForm(body, "session_id", payload.RequestBody.session_id);
+  }
   if (payload.RequestBody.temperature !== undefined) {
     appendForm(body, "temperature", payload.RequestBody.temperature);
   }
@@ -170,6 +173,12 @@ async function $do(
       "timestamp_granularities[]",
       payload.RequestBody["timestamp_granularities[]"],
     );
+  }
+  if (payload.RequestBody.trace !== undefined) {
+    appendForm(body, "trace", payload.RequestBody.trace);
+  }
+  if (payload.RequestBody.user !== undefined) {
+    appendForm(body, "user", payload.RequestBody.user);
   }
 
   const path = pathToFunc("/audio/transcriptions")();

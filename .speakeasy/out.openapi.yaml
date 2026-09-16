@@ -29357,6 +29357,10 @@ paths:
                     - 'verbose_json'
                   type: 'string'
                   x-speakeasy-unknown-values: allow
+                session_id:
+                  description: 'A unique identifier for grouping related requests (e.g., a conversation or agent workflow). Used for observability grouping in Broadcast and private logging; never sent to the provider. If provided in both the request body and the x-session-id header, the body value takes precedence.'
+                  maxLength: 256
+                  type: 'string'
                 temperature:
                   description: 'The sampling temperature.'
                   type: 'number'
@@ -29369,6 +29373,13 @@ paths:
                     type: 'string'
                     x-speakeasy-unknown-values: allow
                   type: 'array'
+                trace:
+                  description: 'JSON-encoded trace metadata object (trace_id, trace_name, span_name, generation_name, parent_span_id and custom keys) attached to the Broadcast trace. Must decode to a JSON object.'
+                  type: 'string'
+                user:
+                  description: 'A unique identifier representing your end-user. Forwarded to Broadcast and private logging as the end-user id; never sent to the provider.'
+                  maxLength: 256
+                  type: 'string'
               required:
                 - 'file'
                 - 'model'

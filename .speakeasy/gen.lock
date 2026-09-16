@@ -1,19 +1,19 @@
 lockVersion: ""
 id: ""
 management:
-  docChecksum: f68c5642bc22feef227eb432c81abd7b
+  docChecksum: 66f50cdd1cb12e7b45eb2cd1b6cfee3e
   docVersion: 1.0.0
   speakeasyVersion: 1.787.0
   generationVersion: 2.914.0
-  releaseVersion: 1.2.132
-  configChecksum: 7941b51f9082642a667f47e988331a38
+  releaseVersion: 1.2.133
+  configChecksum: 5277fca710ec5bfb9195866d00900ba1
   repoURL: https://github.com/OpenRouterTeam/typescript-sdk.git
   installationURL: https://github.com/OpenRouterTeam/typescript-sdk
   published: true
 persistentEdits:
-  generation_id: 08c8592b-5e95-42c9-8bd1-053f5e626f9d
-  pristine_commit_hash: 0ee23bf2b5fde36fd450976be82b7b088f9d3ccd
-  pristine_tree_hash: 5752568244aecbc73b49094e164b49292c6da6fe
+  generation_id: 0b2fed71-8066-48ed-bd17-aa8714002ce3
+  pristine_commit_hash: 3b95cbca8edf7541793eeb64fad583d2ba40a91c
+  pristine_tree_hash: d133e9ed8acf06cf29d5bbecd3fe352cc5b0ed8e
 features:
   typescript:
     acceptHeaders: 2.81.2
@@ -7199,8 +7199,8 @@ trackedFiles:
     pristine_git_object: e08cabe8838f39f909b860ebc6d5870e25674b5f
   docs/models/operations/createaudiotranscriptionsmultipartrequestbody.mdx:
     id: fc22099a3f6b
-    last_write_checksum: sha1:b4c6635571d38d6a05b94279d9cf7124ef9c4ea2
-    pristine_git_object: bfcbac846ddc9b6509e631b90f93d10f88ac9b80
+    last_write_checksum: sha1:01958668e2a190aefc8092069c8d54d2800f93b5
+    pristine_git_object: 10149533a5252a27f65b5d5f12029e6c7a9e4a47
   docs/models/operations/createaudiotranscriptionsrequest.md:
     id: 31a341d016bb
     last_write_checksum: sha1:d5048af13afe597d60f3731c62cc347041551ed9
@@ -13421,12 +13421,12 @@ trackedFiles:
     pristine_git_object: 410efafd6a7f50d91ccb87131fedbe0c3d47e15a
   jsr.json:
     id: 7f6ab7767282
-    last_write_checksum: sha1:379c09e7a19fd64815b77b2d3f489ada6186628a
-    pristine_git_object: f98353bd93d542120b58f3f888d24809618ace78
+    last_write_checksum: sha1:297206318a6b8641e40845e76ea488e583bc8542
+    pristine_git_object: 722f51bb9f7c7dbfe66c91d85f9d28c9d9acac63
   package.json:
     id: 7030d0b2f71b
-    last_write_checksum: sha1:4b9d0eba80f284cc4b9883245f7820973fdf3814
-    pristine_git_object: 599f6bfd6b5cd99ca16fe9b6c1d7e19b81b998d6
+    last_write_checksum: sha1:9163ced1ede8473dd5f98403b2c48c596426b002
+    pristine_git_object: 67abb05ffd65d4f92398a439fc82628629bab455
   src/core.ts:
     id: f431fdbcd144
     last_write_checksum: sha1:5aa66b0b6a5964f3eea7f3098c2eb3c0ee9c0131
@@ -13777,8 +13777,8 @@ trackedFiles:
     pristine_git_object: 41d564b68234b01ff6929afba94ef5c7f91bb938
   src/funcs/sttCreateTranscriptionMultipart.ts:
     id: ec09b43036c3
-    last_write_checksum: sha1:f257dc35a4081ed6fdfe348c3031299e6b49c62b
-    pristine_git_object: b08006fb20e9cc196be487c75987e96d0ecacd15
+    last_write_checksum: sha1:a4ccbbbf93dc4b205afcae8e2fec5e769056a8ce
+    pristine_git_object: c0a7ee9d613521068a759c5c7de0ec298aa30723
   src/funcs/ttsCreateSpeech.ts:
     id: ed304f5d6ad8
     last_write_checksum: sha1:9036bff1fc295e995ac27b32a022b378b548b3bd
@@ -13897,8 +13897,8 @@ trackedFiles:
     pristine_git_object: a187e58707bdb726ca2aff74941efe7493422d4e
   src/lib/config.ts:
     id: 320761608fb3
-    last_write_checksum: sha1:b3b8b2811e5412739216c31c9b52e79de2f6855e
-    pristine_git_object: 25d3678bde5fd5a6f4e808c5639e9b4612b8cdf5
+    last_write_checksum: sha1:c1be43f197ba6f4b139997455ee6ae9bc703999e
+    pristine_git_object: db416e22890be5a601a03b35450cc01c9e85ffc0
   src/lib/dlv.ts:
     id: b1988214835a
     last_write_checksum: sha1:eaac763b22717206a6199104e0403ed17a4e2711
@@ -15735,8 +15735,8 @@ trackedFiles:
     pristine_git_object: 680fccc1542fed95993d96651f175c345bb4c687
   src/models/operations/createaudiotranscriptionsmultipart.ts:
     id: 29a4e7468387
-    last_write_checksum: sha1:b2e483531f8ffbb3df7dff19a4500c967933685b
-    pristine_git_object: 1cbb0a53b1fdd9e0117ddefa79bb0473abe4f447
+    last_write_checksum: sha1:5fcce0bf552b59f0f4426b15596ee4666de56844
+    pristine_git_object: 8dd0d87eb9e612d8ac2ddb759ccc48ddbc498978
   src/models/operations/createauthkeyscode.ts:
     id: 1443f6afbf40
     last_write_checksum: sha1:59be6a15c34f2855d2328c8ce15a70037a243d01
@@ -20351,12 +20351,4 @@ examples:
         "504":
           application/json: {"error": {"code": 504, "message": "Vault request timed out"}}
 examplesVersion: 1.0.2
-releaseNotes: |
-  ## Typescript SDK Changes:
-  * `openrouter.vault.listInternVaultSecrets()`: **Added**
-  * `openrouter.vault.deleteInternVaultSecret()`: **Added**
-  * `openrouter.vault.storeInternVaultSecret()`: **Added**
-  * `openrouter.vault.copyVaultSecretsToIntern()`: **Added**
-  * `openrouter.vault.listVaultSecrets()`: **Added**
-  * `openrouter.vault.deleteVaultSecret()`: **Added**
-  * `openrouter.vault.storeVaultSecret()`: **Added**
+releaseNotes: "## Typescript SDK Changes:\n* `openrouter.stt.createTranscriptionMultipart()`: \n  *  `request.requestBody` **Changed**\n"
