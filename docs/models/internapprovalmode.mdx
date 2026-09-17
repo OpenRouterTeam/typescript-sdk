@@ -1,0 +1,21 @@
+---
+title: "InternApprovalMode"
+---
+
+How the run started by this prompt handles tool approvals. `self-drive` (the default when omitted) consents on your behalf and runs the shell unsandboxed. `manual` asks you before an approval-bearing tool runs, as an `openrouter.provide_input` permission request, and keeps the shell sandboxed until an escalation is allowed. The mode applies to the run this prompt starts and is not remembered by the session. Repeat it on each new prompt that should use it. A `tool` reply continues the run under the mode it started with.
+
+## Example Usage
+
+```typescript
+import { InternApprovalMode } from "@openrouter/sdk/models";
+
+let value: InternApprovalMode = "manual";
+
+// Open enum: unrecognized values are captured as Unrecognized<string>
+```
+
+## Values
+
+```typescript
+"manual" | "self-drive" | Unrecognized<string>
+```

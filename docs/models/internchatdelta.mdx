@@ -1,0 +1,22 @@
+---
+title: "InternChatDelta"
+---
+
+The incremental content of one chunk. The first chunk carries `role`, text chunks carry `content`, reasoning chunks carry `reasoning`, and an interaction chunk carries one complete `tool_calls` entry.
+
+## Example Usage
+
+```typescript
+import { InternChatDelta } from "@openrouter/sdk/models";
+
+let value: InternChatDelta = {};
+```
+
+## Fields
+
+| Field                                                          | Type                                                           | Required                                                       | Description                                                    |
+| -------------------------------------------------------------- | -------------------------------------------------------------- | -------------------------------------------------------------- | -------------------------------------------------------------- |
+| `content`                                                      | *string*                                                       | :heavy_minus_sign:                                             | N/A                                                            |
+| `reasoning`                                                    | *string*                                                       | :heavy_minus_sign:                                             | N/A                                                            |
+| `role`                                                         | [models.InternChatDeltaRole](../models/internchatdeltarole.mdx) | :heavy_minus_sign:                                             | N/A                                                            |
+| `toolCalls`                                                    | [models.InternChatToolCall](../models/internchattoolcall.mdx)[] | :heavy_minus_sign:                                             | N/A                                                            |

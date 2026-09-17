@@ -1,0 +1,27 @@
+---
+title: "InternChatStreamError"
+---
+
+A failure after the response headers were sent. The chunk that carries it has `finish_reason: "error"`, then the final empty-`choices` chunk and `[DONE]` follow. Reasons here are `attachment_failed`, `busy`, `client_closed_request`, `interaction_not_pending`, `interaction_unknown`, `intern_unreachable`, `run_ended`, `stream_severed`, `timeout` or `turn_failed`. `run_ended` reports an ending the intern confirmed, such as a cancellation or a deadline, while `stream_severed` reports a connection lost without that confirmation.
+
+## Example Usage
+
+```typescript
+import { InternChatStreamError } from "@openrouter/sdk/models";
+
+let value: InternChatStreamError = {
+  code: 502,
+  message: "The intern could not continue this run.",
+  metadata: {
+    reason: "attachment_failed",
+  },
+};
+```
+
+## Fields
+
+| Field                                                                  | Type                                                                   | Required                                                               | Description                                                            | Example                                                                |
+| ---------------------------------------------------------------------- | ---------------------------------------------------------------------- | ---------------------------------------------------------------------- | ---------------------------------------------------------------------- | ---------------------------------------------------------------------- |
+| `code`                                                                 | *number*                                                               | :heavy_check_mark:                                                     | The HTTP status this failure would have had before the stream opened.  |                                                                        |
+| `message`                                                              | *string*                                                               | :heavy_check_mark:                                                     | N/A                                                                    |                                                                        |
+| `metadata`                                                             | [models.InternChatErrorMetadata](../models/internchaterrormetadata.mdx) | :heavy_check_mark:                                                     | Machine-readable detail for the failure.                               | \{<br/>"reason": "interaction_not_pending"<br/>}                        |
