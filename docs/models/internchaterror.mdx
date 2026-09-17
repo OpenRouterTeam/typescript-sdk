@@ -1,0 +1,24 @@
+---
+title: "InternChatError"
+---
+
+The OpenAI-compatible error object. `metadata` is present on refusals from the chat route. Authentication refusals (`401`), the departed-creator `403` and the programme `404` carry only `code` and `message`.
+
+## Example Usage
+
+```typescript
+import { InternChatError } from "@openrouter/sdk/models";
+
+let value: InternChatError = {
+  code: 409,
+  message: "That question is no longer waiting for an answer.",
+};
+```
+
+## Fields
+
+| Field                                                                  | Type                                                                   | Required                                                               | Description                                                            | Example                                                                |
+| ---------------------------------------------------------------------- | ---------------------------------------------------------------------- | ---------------------------------------------------------------------- | ---------------------------------------------------------------------- | ---------------------------------------------------------------------- |
+| `code`                                                                 | *number*                                                               | :heavy_check_mark:                                                     | The HTTP status of the response.                                       |                                                                        |
+| `message`                                                              | *string*                                                               | :heavy_check_mark:                                                     | N/A                                                                    |                                                                        |
+| `metadata`                                                             | [models.InternChatErrorMetadata](../models/internchaterrormetadata.mdx) | :heavy_minus_sign:                                                     | Machine-readable detail for the failure.                               | \{<br/>"reason": "interaction_not_pending"<br/>}                        |

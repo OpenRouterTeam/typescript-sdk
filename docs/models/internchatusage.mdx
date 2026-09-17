@@ -1,0 +1,27 @@
+---
+title: "InternChatUsage"
+---
+
+Token usage for the run as the daemon reported it, on the final chunk before `[DONE]`. `null` when the daemon reported none, and always `null` after `tool_calls` because the turn is not over.
+
+## Example Usage
+
+```typescript
+import { InternChatUsage } from "@openrouter/sdk/models";
+
+let value: InternChatUsage = {
+  completionTokens: 12,
+  promptTokens: 40,
+  totalTokens: 52,
+};
+```
+
+## Fields
+
+| Field                                                                              | Type                                                                               | Required                                                                           | Description                                                                        | Example                                                                            |
+| ---------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------- |
+| `completionTokens`                                                                 | *number*                                                                           | :heavy_check_mark:                                                                 | N/A                                                                                |                                                                                    |
+| `cost`                                                                             | *number*                                                                           | :heavy_minus_sign:                                                                 | The cost of the run in USD, when the daemon reported one.                          |                                                                                    |
+| `promptTokens`                                                                     | *number*                                                                           | :heavy_check_mark:                                                                 | N/A                                                                                |                                                                                    |
+| `promptTokensDetails`                                                              | [models.InternChatPromptTokensDetails](../models/internchatprompttokensdetails.mdx) | :heavy_minus_sign:                                                                 | Prompt tokens served from cache, when the daemon reported them.                    | \{<br/>"cached_tokens": 1024<br/>}                                                  |
+| `totalTokens`                                                                      | *number*                                                                           | :heavy_check_mark:                                                                 | N/A                                                                                |                                                                                    |

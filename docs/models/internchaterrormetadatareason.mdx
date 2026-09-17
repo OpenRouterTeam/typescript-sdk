@@ -1,0 +1,21 @@
+---
+title: "InternChatErrorMetadataReason"
+---
+
+A stable reason a client can branch on.
+
+## Example Usage
+
+```typescript
+import { InternChatErrorMetadataReason } from "@openrouter/sdk/models";
+
+let value: InternChatErrorMetadataReason = "client_closed_request";
+
+// Open enum: unrecognized values are captured as Unrecognized<string>
+```
+
+## Values
+
+```typescript
+"attachment_failed" | "bad_request" | "busy" | "client_closed_request" | "interaction_not_pending" | "interaction_unknown" | "intern_not_ready" | "intern_rejected" | "intern_unreachable" | "not_found" | "payload_too_large" | "rate_limited" | "run_ended" | "stream_severed" | "timeout" | "turn_failed" | Unrecognized<string>
+```

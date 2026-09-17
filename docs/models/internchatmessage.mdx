@@ -1,0 +1,55 @@
+---
+title: "InternChatMessage"
+---
+
+One OpenAI-compatible chat message, discriminated by `role`.
+
+
+## Supported Types
+
+### `models.InternChatAssistantMessage`
+
+```typescript
+const value: models.InternChatAssistantMessage = {
+  content: "Summarize the open pull requests.",
+  role: "assistant",
+};
+```
+
+### `models.InternChatDeveloperMessage`
+
+```typescript
+const value: models.InternChatDeveloperMessage = {
+  content: "Summarize the open pull requests.",
+  role: "developer",
+};
+```
+
+### `models.InternChatSystemMessage`
+
+```typescript
+const value: models.InternChatSystemMessage = {
+  content: "Summarize the open pull requests.",
+  role: "system",
+};
+```
+
+### `models.InternChatToolMessage`
+
+```typescript
+const value: models.InternChatToolMessage = {
+  content: "Summarize the open pull requests.",
+  role: "tool",
+  toolCallId: "<id>",
+};
+```
+
+### `models.InternChatUserMessage`
+
+```typescript
+const value: models.InternChatUserMessage = {
+  content: "Summarize the open pull requests.",
+  role: "user",
+};
+```
+
