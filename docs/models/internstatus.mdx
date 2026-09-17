@@ -1,0 +1,21 @@
+---
+title: "InternStatus"
+---
+
+Lifecycle status.
+
+## Example Usage
+
+```typescript
+import { InternStatus } from "@openrouter/sdk/models";
+
+let value: InternStatus = "provisioning";
+
+// Open enum: unrecognized values are captured as Unrecognized<string>
+```
+
+## Values
+
+```typescript
+"awaiting_slack_install" | "queued" | "provisioning" | "running" | "failed" | "stopped" | "destroying" | "destroy_failed" | Unrecognized<string>
+```

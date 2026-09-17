@@ -10,7 +10,7 @@ import { OpenEnum } from "../types/enums.js";
 import { Result as SafeParseResult } from "../types/fp.js";
 import { SDKValidationError } from "./errors/sdkvalidationerror.js";
 
-export const Code = {
+export const CodeEnum = {
   ServerError: "server_error",
   RateLimitExceeded: "rate_limit_exceeded",
   InvalidPrompt: "invalid_prompt",
@@ -34,26 +34,26 @@ export const Code = {
   MisalignmentPolicyViolation: "misalignment_policy_violation",
   DataResidencyMismatch: "data_residency_mismatch",
 } as const;
-export type Code = OpenEnum<typeof Code>;
+export type CodeEnum = OpenEnum<typeof CodeEnum>;
 
 /**
  * Error information returned from the API
  */
 export type ResponsesErrorField = {
-  code: Code;
+  code: CodeEnum;
   message: string;
 };
 
 /** @internal */
-export const Code$inboundSchema: z.ZodType<Code, unknown> = openEnums
-  .inboundSchema(Code);
+export const CodeEnum$inboundSchema: z.ZodType<CodeEnum, unknown> = openEnums
+  .inboundSchema(CodeEnum);
 
 /** @internal */
 export const ResponsesErrorField$inboundSchema: z.ZodType<
   ResponsesErrorField,
   unknown
 > = z.object({
-  code: Code$inboundSchema,
+  code: CodeEnum$inboundSchema,
   message: z.string(),
 });
 

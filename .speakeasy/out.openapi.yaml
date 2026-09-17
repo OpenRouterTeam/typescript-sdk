@@ -7720,6 +7720,48 @@ components:
       required:
         - 'data'
       type: 'object'
+    CreateInternRequest:
+      additionalProperties: false
+      description: 'Settings for a new intern in an explicit workspace.'
+      example:
+        name: 'research-assistant'
+        provision: true
+        workspace_id: '89f9f5b2-3f89-4eaf-83ca-5ceae149e8bb'
+      properties:
+        description:
+          description: 'Free-form description, or null.'
+          maxLength: 2000
+          type:
+            - 'string'
+            - 'null'
+        instructions:
+          description: 'Standing instructions the intern boots with, or null.'
+          maxLength: 100000
+          type:
+            - 'string'
+            - 'null'
+        name:
+          description: 'Intern name, unique per creator within the workspace.'
+          maxLength: 17
+          minLength: 2
+          pattern: '^[a-z][a-z0-9]*(-[a-z0-9]+)*$'
+          type: 'string'
+        provision:
+          default: false
+          description: 'Start provisioning during this create operation. Defaults to false.'
+          type: 'boolean'
+        vault_id:
+          description: 'Vault owned by another intern in this workspace to attach as a borrowed vault.'
+          format: 'uuid'
+          type: 'string'
+        workspace_id:
+          description: 'Workspace that will own the intern. It must match the API key workspace.'
+          format: 'uuid'
+          type: 'string'
+      required:
+        - 'name'
+        - 'workspace_id'
+      type: 'object'
     CreateObservabilityDestinationRequest:
       example:
         config:
@@ -8322,6 +8364,15 @@ components:
           type: 'boolean'
       required:
         - 'deleted'
+      type: 'object'
+    DeleteInternResponse:
+      additionalProperties: false
+      properties:
+        deleting:
+          const: true
+          type: 'boolean'
+      required:
+        - 'deleting'
       type: 'object'
     DeleteObservabilityDestinationResponse:
       example:
@@ -12078,6 +12129,122 @@ components:
         - 'string'
         - 'null'
       x-speakeasy-unknown-values: allow
+    Intern:
+      description: 'Public lifecycle state and settings for one intern.'
+      example:
+        attached_vault_id: null
+        createdAt: '2026-09-16T08:30:00.000Z'
+        description: 'Researches customer questions'
+        hostname: 'research-assistant.openrouter.ai'
+        id: '7c9e6679-7425-40de-944b-e07fc1f90ae7'
+        instructions: null
+        lastFailureMessage: null
+        model: 'openai/gpt-5.4'
+        name: 'research-assistant'
+        progress: null
+        status: 'running'
+        updatedAt: '2026-09-16T08:45:00.000Z'
+        vault_id: 'b431c59d-6eed-41ac-bc89-9a89be79a121'
+        workspaceId: '89f9f5b2-3f89-4eaf-83ca-5ceae149e8bb'
+      properties:
+        attached_vault_id:
+          description: 'Vault the intern borrows from another intern, or null when it borrows none.'
+          type:
+            - 'string'
+            - 'null'
+        createdAt:
+          description: 'ISO 8601 creation time.'
+          type: 'string'
+        description:
+          description: 'Free-form description.'
+          type:
+            - 'string'
+            - 'null'
+        hostname:
+          description: 'Public hostname the intern is reachable at, or null until provisioning has assigned one.'
+          type:
+            - 'string'
+            - 'null'
+        id:
+          description: 'Intern id.'
+          type: 'string'
+        instructions:
+          description: 'Standing instructions the intern boots with.'
+          type:
+            - 'string'
+            - 'null'
+        lastFailureMessage:
+          description: 'Why the last provisioning attempt failed, when status is failed.'
+          type:
+            - 'string'
+            - 'null'
+        model:
+          description: 'OpenRouter model slug the intern runs, or null for the workspace default.'
+          type:
+            - 'string'
+            - 'null'
+        name:
+          description: 'Intern name, unique per creator within a workspace.'
+          type: 'string'
+        progress:
+          description: 'Active provisioning step, or null once provisioning has settled.'
+          properties:
+            stepLabel:
+              description: 'Human-readable label of the active provisioning step.'
+              type: 'string'
+            stepNumber:
+              description: 'One-based index of the active step.'
+              type: 'integer'
+            totalSteps:
+              description: 'Number of provisioning steps.'
+              type: 'integer'
+          required:
+            - 'stepLabel'
+            - 'stepNumber'
+            - 'totalSteps'
+          type:
+            - 'object'
+            - 'null'
+        status:
+          description: 'Lifecycle status.'
+          enum:
+            - 'awaiting_slack_install'
+            - 'queued'
+            - 'provisioning'
+            - 'running'
+            - 'failed'
+            - 'stopped'
+            - 'destroying'
+            - 'destroy_failed'
+          type: 'string'
+          x-speakeasy-unknown-values: allow
+        updatedAt:
+          description: 'ISO 8601 last update time.'
+          type: 'string'
+        vault_id:
+          description: 'Vault the intern owns, or null before it has been created.'
+          type:
+            - 'string'
+            - 'null'
+        workspaceId:
+          description: 'Workspace that owns the intern and scopes its secrets.'
+          type: 'string'
+      required:
+        - 'id'
+        - 'name'
+        - 'description'
+        - 'instructions'
+        - 'model'
+        - 'status'
+        - 'lastFailureMessage'
+        - 'progress'
+        - 'hostname'
+        - 'workspaceId'
+        - 'vault_id'
+        - 'attached_vault_id'
+        - 'createdAt'
+        - 'updatedAt'
+      type: 'object'
     InternalServerResponse:
       description: 'Internal Server Error - Unexpected server error'
       example:
@@ -12117,6 +12284,62 @@ components:
       required:
         - 'code'
         - 'message'
+      type: 'object'
+    InternLifecycleError:
+      additionalProperties: false
+      description: 'Intern lifecycle request failure.'
+      example:
+        error:
+          code: 'not_found'
+          message: 'Intern not found'
+      properties:
+        error:
+          additionalProperties: false
+          properties:
+            code:
+              anyOf:
+                - type: 'string'
+                - type: 'integer'
+            message:
+              type: 'string'
+          required:
+            - 'code'
+            - 'message'
+          type: 'object'
+      required:
+        - 'error'
+      type: 'object'
+    InternListResponse:
+      additionalProperties: false
+      description: 'Interns visible to the authenticated API key.'
+      example:
+        data:
+          - attached_vault_id: null
+            createdAt: '2026-09-16T08:30:00.000Z'
+            description: 'Researches customer questions'
+            hostname: 'research-assistant.openrouter.ai'
+            id: '7c9e6679-7425-40de-944b-e07fc1f90ae7'
+            instructions: null
+            lastFailureMessage: null
+            model: 'openai/gpt-5.4'
+            name: 'research-assistant'
+            progress: null
+            status: 'running'
+            updatedAt: '2026-09-16T08:45:00.000Z'
+            vault_id: 'b431c59d-6eed-41ac-bc89-9a89be79a121'
+            workspaceId: '89f9f5b2-3f89-4eaf-83ca-5ceae149e8bb'
+        has_more: false
+      properties:
+        data:
+          items:
+            $ref: '#/components/schemas/Intern'
+          type: 'array'
+        has_more:
+          description: 'True when more interns match the current filters.'
+          type: 'boolean'
+      required:
+        - 'data'
+        - 'has_more'
       type: 'object'
     ItemReferenceItem:
       description: 'A reference to a previous response item by ID'
@@ -22625,6 +22848,15 @@ components:
             - 'null'
           x-speakeasy-unknown-values: allow
       type: 'object'
+    ProvisionInternResponse:
+      additionalProperties: false
+      properties:
+        provisioning:
+          const: true
+          type: 'boolean'
+      required:
+        - 'provisioning'
+      type: 'object'
     PublicEndpoint:
       description: 'Information about a specific model endpoint'
       example:
@@ -25601,6 +25833,15 @@ components:
         seed:
           type: 'boolean'
       type: 'object'
+    SuspendInternResponse:
+      additionalProperties: false
+      properties:
+        suspended:
+          const: true
+          type: 'boolean'
+      required:
+        - 'suspended'
+      type: 'object'
     TaskClassificationItem:
       example:
         category_token_share: 0.48
@@ -26958,6 +27199,38 @@ components:
             - description: 'The updated guardrail'
       required:
         - 'data'
+      type: 'object'
+    UpdateInternRequest:
+      additionalProperties: false
+      description: 'Lifecycle settings to change. Omitted fields stay unchanged and null clears a field.'
+      example:
+        description: 'Researches customer questions'
+        model: 'openai/gpt-5.4'
+      properties:
+        description:
+          description: 'New free-form description. Null clears it.'
+          maxLength: 2000
+          type:
+            - 'string'
+            - 'null'
+        instructions:
+          description: 'New standing instructions. Null clears them.'
+          maxLength: 100000
+          type:
+            - 'string'
+            - 'null'
+        model:
+          description: 'New OpenRouter model slug. Null restores the workspace default.'
+          maxLength: 200
+          type:
+            - 'string'
+            - 'null'
+        name:
+          description: 'New intern name, unique per creator within the workspace.'
+          maxLength: 17
+          minLength: 2
+          pattern: '^[a-z][a-z0-9]*(-[a-z0-9]+)*$'
+          type: 'string'
       type: 'object'
     UpdateObservabilityDestinationRequest:
       example:
@@ -35031,6 +35304,823 @@ paths:
       tags:
         - 'Images'
       x-speakeasy-name-override: 'listModelEndpoints'
+    parameters:
+      - $ref: "#/components/parameters/AppIdentifier"
+      - $ref: "#/components/parameters/AppDisplayName"
+      - $ref: "#/components/parameters/AppCategories"
+  /interns:
+    get:
+      description: 'Lists interns visible to the authenticated key, newest first. Filter by workspace and one or more lifecycle statuses. The API key selects the caller, workspace and visible interns. There is no default workspace fallback. Requests on regional hostnames such as `eu.openrouter.ai` are refused. [API key](/docs/api-reference/authentication) required.'
+      operationId: 'listInterns'
+      parameters:
+        - description: 'Maximum number of interns to return, from 1 through 500.'
+          in: 'query'
+          name: 'limit'
+          required: false
+          schema:
+            description: 'Maximum number of interns to return, from 1 through 500.'
+            example: 50
+            maximum: 500
+            minimum: 1
+            type: 'integer'
+        - description: 'Comma-separated lifecycle statuses to include.'
+          explode: false
+          in: 'query'
+          name: 'status'
+          required: false
+          schema:
+            description: 'Comma-separated lifecycle statuses to include.'
+            example:
+              - 'queued'
+              - 'running'
+            items:
+              enum:
+                - 'awaiting_slack_install'
+                - 'queued'
+                - 'provisioning'
+                - 'running'
+                - 'failed'
+                - 'stopped'
+                - 'destroying'
+                - 'destroy_failed'
+              type: 'string'
+              x-speakeasy-unknown-values: allow
+            type: 'array'
+          style: 'form'
+        - description: 'Only return interns in this workspace. It must match the API key workspace.'
+          in: 'query'
+          name: 'workspace_id'
+          required: false
+          schema:
+            description: 'Only return interns in this workspace. It must match the API key workspace.'
+            example: '89f9f5b2-3f89-4eaf-83ca-5ceae149e8bb'
+            format: 'uuid'
+            type: 'string'
+      responses:
+        '200':
+          content:
+            application/json:
+              example:
+                data:
+                  - attached_vault_id: null
+                    createdAt: '2026-09-16T08:30:00.000Z'
+                    description: 'Researches customer questions'
+                    hostname: 'research-assistant.openrouter.ai'
+                    id: '7c9e6679-7425-40de-944b-e07fc1f90ae7'
+                    instructions: null
+                    lastFailureMessage: null
+                    model: 'openai/gpt-5.4'
+                    name: 'research-assistant'
+                    progress: null
+                    status: 'running'
+                    updatedAt: '2026-09-16T08:45:00.000Z'
+                    vault_id: 'b431c59d-6eed-41ac-bc89-9a89be79a121'
+                    workspaceId: '89f9f5b2-3f89-4eaf-83ca-5ceae149e8bb'
+                has_more: false
+              schema:
+                $ref: '#/components/schemas/InternListResponse'
+          description: 'Interns matching the filters.'
+        '400':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 'invalid_body'
+                  message: 'Invalid list query'
+              schema:
+                $ref: '#/components/schemas/InternLifecycleError'
+          description: 'The list filters are invalid.'
+        '401':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 401
+                  message: 'Invalid or missing API key'
+              schema:
+                $ref: '#/components/schemas/InternLifecycleError'
+          description: 'Missing, unknown or provisioning API key.'
+        '403':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 403
+                  message: 'Forbidden'
+              schema:
+                $ref: '#/components/schemas/InternLifecycleError'
+          description: 'The key owner no longer has access, or the request used a regional hostname.'
+        '404':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 'not_found'
+                  message: 'Intern not found'
+              schema:
+                $ref: '#/components/schemas/InternLifecycleError'
+          description: 'The caller is outside the Intern API programme, the intern is hidden, or lifecycle writes are disabled.'
+        '408':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 408
+                  message: 'Request timed out'
+              schema:
+                $ref: '#/components/schemas/InternLifecycleError'
+          description: 'The request exceeded its route deadline.'
+        '500':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 'internal_error'
+                  message: 'The request could not be completed'
+              schema:
+                $ref: '#/components/schemas/InternLifecycleError'
+          description: 'The request could not be completed.'
+      security:
+        - apiKey: []
+      summary: 'List interns'
+      tags:
+        - 'Interns'
+    post:
+      description: 'Creates an intern in an explicit workspace. The operation also creates its private vault. It can start provisioning immediately or wait for a later provision call. A retry with the same idempotency key and body resumes unfinished work. The request body is capped at 1048576 bytes and a larger body is refused with 413. The API key selects the caller, workspace and visible interns. There is no default workspace fallback. Requests on regional hostnames such as `eu.openrouter.ai` are refused. [API key](/docs/api-reference/authentication) required.'
+      operationId: 'createIntern'
+      parameters:
+        - description: 'Key that makes retries resume the same create operation. Without one, the server derives a stable key from the request body.'
+          in: 'header'
+          name: 'Idempotency-Key'
+          required: false
+          schema:
+            description: 'Key that makes retries resume the same create operation. Without one, the server derives a stable key from the request body.'
+            example: 'create-research-assistant-2026-09-16'
+            minLength: 1
+            type: 'string'
+      requestBody:
+        content:
+          application/json:
+            example:
+              name: 'research-assistant'
+              provision: true
+              workspace_id: '89f9f5b2-3f89-4eaf-83ca-5ceae149e8bb'
+            schema:
+              $ref: '#/components/schemas/CreateInternRequest'
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              example:
+                attached_vault_id: null
+                createdAt: '2026-09-16T08:30:00.000Z'
+                description: 'Researches customer questions'
+                hostname: 'research-assistant.openrouter.ai'
+                id: '7c9e6679-7425-40de-944b-e07fc1f90ae7'
+                instructions: null
+                lastFailureMessage: null
+                model: 'openai/gpt-5.4'
+                name: 'research-assistant'
+                progress: null
+                status: 'running'
+                updatedAt: '2026-09-16T08:45:00.000Z'
+                vault_id: 'b431c59d-6eed-41ac-bc89-9a89be79a121'
+                workspaceId: '89f9f5b2-3f89-4eaf-83ca-5ceae149e8bb'
+              schema:
+                $ref: '#/components/schemas/Intern'
+          description: 'A completed create operation was replayed.'
+        '201':
+          content:
+            application/json:
+              example:
+                attached_vault_id: null
+                createdAt: '2026-09-16T08:30:00.000Z'
+                description: 'Researches customer questions'
+                hostname: 'research-assistant.openrouter.ai'
+                id: '7c9e6679-7425-40de-944b-e07fc1f90ae7'
+                instructions: null
+                lastFailureMessage: null
+                model: 'openai/gpt-5.4'
+                name: 'research-assistant'
+                progress: null
+                status: 'running'
+                updatedAt: '2026-09-16T08:45:00.000Z'
+                vault_id: 'b431c59d-6eed-41ac-bc89-9a89be79a121'
+                workspaceId: '89f9f5b2-3f89-4eaf-83ca-5ceae149e8bb'
+              schema:
+                $ref: '#/components/schemas/Intern'
+          description: 'Intern created.'
+        '400':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 'invalid_body'
+                  message: 'Invalid request body'
+              schema:
+                $ref: '#/components/schemas/InternLifecycleError'
+          description: 'The request body is invalid.'
+        '401':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 401
+                  message: 'Invalid or missing API key'
+              schema:
+                $ref: '#/components/schemas/InternLifecycleError'
+          description: 'Missing, unknown or provisioning API key.'
+        '403':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 'no_acting_user'
+                  message: 'This key acts as the organization and has no member to own a new intern'
+              schema:
+                $ref: '#/components/schemas/InternLifecycleError'
+          description: 'The key acts as an organization and has no member who can own the intern, or regional access is refused.'
+        '404':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 'not_found'
+                  message: 'Intern not found'
+              schema:
+                $ref: '#/components/schemas/InternLifecycleError'
+          description: 'The caller is outside the Intern API programme, the intern is hidden, or lifecycle writes are disabled.'
+        '408':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 408
+                  message: 'Request timed out'
+              schema:
+                $ref: '#/components/schemas/InternLifecycleError'
+          description: 'The request exceeded its route deadline.'
+        '409':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 'idempotency_key_reused'
+                  message: 'This Idempotency-Key was already used with a different request'
+              schema:
+                $ref: '#/components/schemas/InternLifecycleError'
+          description: 'The idempotency key was reused, the member reached the intern limit, or the requested vault cannot be attached.'
+        '413':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 'payload_too_large'
+                  message: 'Request body exceeds 1048576 bytes'
+              schema:
+                $ref: '#/components/schemas/InternLifecycleError'
+          description: 'The request body is larger than 1048576 bytes.'
+        '500':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 'internal_error'
+                  message: 'The request could not be completed'
+              schema:
+                $ref: '#/components/schemas/InternLifecycleError'
+          description: 'The request could not be completed.'
+        '502':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 'upstream_unavailable'
+                  message: 'The intern was created but setup is not ready yet, retry the request'
+              schema:
+                $ref: '#/components/schemas/InternLifecycleError'
+          description: 'The vault or provisioner did not complete a recoverable create step. Retry the same request.'
+      security:
+        - apiKey: []
+      summary: 'Create an intern'
+      tags:
+        - 'Interns'
+    parameters:
+      - $ref: "#/components/parameters/AppIdentifier"
+      - $ref: "#/components/parameters/AppDisplayName"
+      - $ref: "#/components/parameters/AppCategories"
+  /interns/{internId}:
+    delete:
+      description: 'Starts safe teardown of the intern, its runtime and its private vault. The API key selects the caller, workspace and visible interns. There is no default workspace fallback. Requests on regional hostnames such as `eu.openrouter.ai` are refused. [API key](/docs/api-reference/authentication) required.'
+      operationId: 'deleteIntern'
+      parameters:
+        - description: 'ID of an intern visible to the authenticated API key.'
+          in: 'path'
+          name: 'internId'
+          required: true
+          schema:
+            description: 'ID of an intern visible to the authenticated API key.'
+            example: '7c9e6679-7425-40de-944b-e07fc1f90ae7'
+            minLength: 1
+            type: 'string'
+      responses:
+        '202':
+          content:
+            application/json:
+              example:
+                deleting: true
+              schema:
+                $ref: '#/components/schemas/DeleteInternResponse'
+          description: 'The operation was accepted.'
+        '401':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 401
+                  message: 'Invalid or missing API key'
+              schema:
+                $ref: '#/components/schemas/InternLifecycleError'
+          description: 'Missing, unknown or provisioning API key.'
+        '403':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 403
+                  message: 'Forbidden'
+              schema:
+                $ref: '#/components/schemas/InternLifecycleError'
+          description: 'The key owner no longer has access, or the request used a regional hostname.'
+        '404':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 'not_found'
+                  message: 'Intern not found'
+              schema:
+                $ref: '#/components/schemas/InternLifecycleError'
+          description: 'The caller is outside the Intern API programme, the intern is hidden, or lifecycle writes are disabled.'
+        '408':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 408
+                  message: 'Request timed out'
+              schema:
+                $ref: '#/components/schemas/InternLifecycleError'
+          description: 'The request exceeded its route deadline.'
+        '409':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 'intern_busy'
+                  message: 'The intern is not in a state that allows this operation'
+              schema:
+                $ref: '#/components/schemas/InternLifecycleError'
+          description: 'The intern is not in a state that allows this operation.'
+        '500':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 'internal_error'
+                  message: 'The request could not be completed'
+              schema:
+                $ref: '#/components/schemas/InternLifecycleError'
+          description: 'The request could not be completed.'
+        '502':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 'upstream_unavailable'
+                  message: 'The intern service could not be reached, retry the request'
+              schema:
+                $ref: '#/components/schemas/InternLifecycleError'
+          description: 'The intern service could not accept the operation.'
+      security:
+        - apiKey: []
+      summary: 'Delete an intern'
+      tags:
+        - 'Interns'
+    get:
+      description: 'Returns the public lifecycle state and settings for one visible intern. The API key selects the caller, workspace and visible interns. There is no default workspace fallback. Requests on regional hostnames such as `eu.openrouter.ai` are refused. [API key](/docs/api-reference/authentication) required.'
+      operationId: 'getIntern'
+      parameters:
+        - description: 'ID of an intern visible to the authenticated API key.'
+          in: 'path'
+          name: 'internId'
+          required: true
+          schema:
+            description: 'ID of an intern visible to the authenticated API key.'
+            example: '7c9e6679-7425-40de-944b-e07fc1f90ae7'
+            minLength: 1
+            type: 'string'
+      responses:
+        '200':
+          content:
+            application/json:
+              example:
+                attached_vault_id: null
+                createdAt: '2026-09-16T08:30:00.000Z'
+                description: 'Researches customer questions'
+                hostname: 'research-assistant.openrouter.ai'
+                id: '7c9e6679-7425-40de-944b-e07fc1f90ae7'
+                instructions: null
+                lastFailureMessage: null
+                model: 'openai/gpt-5.4'
+                name: 'research-assistant'
+                progress: null
+                status: 'running'
+                updatedAt: '2026-09-16T08:45:00.000Z'
+                vault_id: 'b431c59d-6eed-41ac-bc89-9a89be79a121'
+                workspaceId: '89f9f5b2-3f89-4eaf-83ca-5ceae149e8bb'
+              schema:
+                $ref: '#/components/schemas/Intern'
+          description: 'Intern lifecycle state and settings.'
+        '401':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 401
+                  message: 'Invalid or missing API key'
+              schema:
+                $ref: '#/components/schemas/InternLifecycleError'
+          description: 'Missing, unknown or provisioning API key.'
+        '403':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 403
+                  message: 'Forbidden'
+              schema:
+                $ref: '#/components/schemas/InternLifecycleError'
+          description: 'The key owner no longer has access, or the request used a regional hostname.'
+        '404':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 'not_found'
+                  message: 'Intern not found'
+              schema:
+                $ref: '#/components/schemas/InternLifecycleError'
+          description: 'The caller is outside the Intern API programme, the intern is hidden, or lifecycle writes are disabled.'
+        '408':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 408
+                  message: 'Request timed out'
+              schema:
+                $ref: '#/components/schemas/InternLifecycleError'
+          description: 'The request exceeded its route deadline.'
+        '500':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 'internal_error'
+                  message: 'The request could not be completed'
+              schema:
+                $ref: '#/components/schemas/InternLifecycleError'
+          description: 'The request could not be completed.'
+      security:
+        - apiKey: []
+      summary: 'Get an intern'
+      tags:
+        - 'Interns'
+    patch:
+      description: 'Changes the intern name, description, instructions or model. Omitted fields stay unchanged. The request body is capped at 1048576 bytes and a larger body is refused with 413. The API key selects the caller, workspace and visible interns. There is no default workspace fallback. Requests on regional hostnames such as `eu.openrouter.ai` are refused. [API key](/docs/api-reference/authentication) required.'
+      operationId: 'updateIntern'
+      parameters:
+        - description: 'ID of an intern visible to the authenticated API key.'
+          in: 'path'
+          name: 'internId'
+          required: true
+          schema:
+            description: 'ID of an intern visible to the authenticated API key.'
+            example: '7c9e6679-7425-40de-944b-e07fc1f90ae7'
+            minLength: 1
+            type: 'string'
+      requestBody:
+        content:
+          application/json:
+            example:
+              description: 'Researches customer questions'
+              model: 'openai/gpt-5.4'
+            schema:
+              $ref: '#/components/schemas/UpdateInternRequest'
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              example:
+                attached_vault_id: null
+                createdAt: '2026-09-16T08:30:00.000Z'
+                description: 'Researches customer questions'
+                hostname: 'research-assistant.openrouter.ai'
+                id: '7c9e6679-7425-40de-944b-e07fc1f90ae7'
+                instructions: null
+                lastFailureMessage: null
+                model: 'openai/gpt-5.4'
+                name: 'research-assistant'
+                progress: null
+                status: 'running'
+                updatedAt: '2026-09-16T08:45:00.000Z'
+                vault_id: 'b431c59d-6eed-41ac-bc89-9a89be79a121'
+                workspaceId: '89f9f5b2-3f89-4eaf-83ca-5ceae149e8bb'
+              schema:
+                $ref: '#/components/schemas/Intern'
+          description: 'Updated intern.'
+        '400':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 'invalid_body'
+                  message: 'Invalid request body'
+              schema:
+                $ref: '#/components/schemas/InternLifecycleError'
+          description: 'The request body is invalid.'
+        '401':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 401
+                  message: 'Invalid or missing API key'
+              schema:
+                $ref: '#/components/schemas/InternLifecycleError'
+          description: 'Missing, unknown or provisioning API key.'
+        '403':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 403
+                  message: 'Forbidden'
+              schema:
+                $ref: '#/components/schemas/InternLifecycleError'
+          description: 'The key owner no longer has access, or the request used a regional hostname.'
+        '404':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 'not_found'
+                  message: 'Intern not found'
+              schema:
+                $ref: '#/components/schemas/InternLifecycleError'
+          description: 'The caller is outside the Intern API programme, the intern is hidden, or lifecycle writes are disabled.'
+        '408':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 408
+                  message: 'Request timed out'
+              schema:
+                $ref: '#/components/schemas/InternLifecycleError'
+          description: 'The request exceeded its route deadline.'
+        '413':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 'payload_too_large'
+                  message: 'Request body exceeds 1048576 bytes'
+              schema:
+                $ref: '#/components/schemas/InternLifecycleError'
+          description: 'The request body is larger than 1048576 bytes.'
+        '500':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 'internal_error'
+                  message: 'The request could not be completed'
+              schema:
+                $ref: '#/components/schemas/InternLifecycleError'
+          description: 'The request could not be completed.'
+      security:
+        - apiKey: []
+      summary: 'Update an intern'
+      tags:
+        - 'Interns'
+    parameters:
+      - $ref: "#/components/parameters/AppIdentifier"
+      - $ref: "#/components/parameters/AppDisplayName"
+      - $ref: "#/components/parameters/AppCategories"
+  /interns/{internId}/provision:
+    post:
+      description: 'Starts the first boot, or resumes an intern after suspension. The API key selects the caller, workspace and visible interns. There is no default workspace fallback. Requests on regional hostnames such as `eu.openrouter.ai` are refused. [API key](/docs/api-reference/authentication) required.'
+      operationId: 'provisionIntern'
+      parameters:
+        - description: 'ID of an intern visible to the authenticated API key.'
+          in: 'path'
+          name: 'internId'
+          required: true
+          schema:
+            description: 'ID of an intern visible to the authenticated API key.'
+            example: '7c9e6679-7425-40de-944b-e07fc1f90ae7'
+            minLength: 1
+            type: 'string'
+      responses:
+        '202':
+          content:
+            application/json:
+              example:
+                provisioning: true
+              schema:
+                $ref: '#/components/schemas/ProvisionInternResponse'
+          description: 'The operation was accepted.'
+        '401':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 401
+                  message: 'Invalid or missing API key'
+              schema:
+                $ref: '#/components/schemas/InternLifecycleError'
+          description: 'Missing, unknown or provisioning API key.'
+        '403':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 403
+                  message: 'Forbidden'
+              schema:
+                $ref: '#/components/schemas/InternLifecycleError'
+          description: 'The key owner no longer has access, or the request used a regional hostname.'
+        '404':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 'not_found'
+                  message: 'Intern not found'
+              schema:
+                $ref: '#/components/schemas/InternLifecycleError'
+          description: 'The caller is outside the Intern API programme, the intern is hidden, or lifecycle writes are disabled.'
+        '408':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 408
+                  message: 'Request timed out'
+              schema:
+                $ref: '#/components/schemas/InternLifecycleError'
+          description: 'The request exceeded its route deadline.'
+        '409':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 'intern_busy'
+                  message: 'The intern is not in a state that allows this operation'
+              schema:
+                $ref: '#/components/schemas/InternLifecycleError'
+          description: 'The intern is not in a state that allows this operation.'
+        '500':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 'internal_error'
+                  message: 'The request could not be completed'
+              schema:
+                $ref: '#/components/schemas/InternLifecycleError'
+          description: 'The request could not be completed.'
+        '502':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 'upstream_unavailable'
+                  message: 'The intern service could not be reached, retry the request'
+              schema:
+                $ref: '#/components/schemas/InternLifecycleError'
+          description: 'The intern service could not accept the operation.'
+      security:
+        - apiKey: []
+      summary: 'Provision an intern'
+      tags:
+        - 'Interns'
+    parameters:
+      - $ref: "#/components/parameters/AppIdentifier"
+      - $ref: "#/components/parameters/AppDisplayName"
+      - $ref: "#/components/parameters/AppCategories"
+  /interns/{internId}/suspend:
+    post:
+      description: 'Stops the intern runtime while keeping its disk and configuration for a later provision call. The API key selects the caller, workspace and visible interns. There is no default workspace fallback. Requests on regional hostnames such as `eu.openrouter.ai` are refused. [API key](/docs/api-reference/authentication) required.'
+      operationId: 'suspendIntern'
+      parameters:
+        - description: 'ID of an intern visible to the authenticated API key.'
+          in: 'path'
+          name: 'internId'
+          required: true
+          schema:
+            description: 'ID of an intern visible to the authenticated API key.'
+            example: '7c9e6679-7425-40de-944b-e07fc1f90ae7'
+            minLength: 1
+            type: 'string'
+      responses:
+        '200':
+          content:
+            application/json:
+              example:
+                suspended: true
+              schema:
+                $ref: '#/components/schemas/SuspendInternResponse'
+          description: 'Intern suspended.'
+        '401':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 401
+                  message: 'Invalid or missing API key'
+              schema:
+                $ref: '#/components/schemas/InternLifecycleError'
+          description: 'Missing, unknown or provisioning API key.'
+        '403':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 403
+                  message: 'Forbidden'
+              schema:
+                $ref: '#/components/schemas/InternLifecycleError'
+          description: 'The key owner no longer has access, or the request used a regional hostname.'
+        '404':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 'not_found'
+                  message: 'Intern not found'
+              schema:
+                $ref: '#/components/schemas/InternLifecycleError'
+          description: 'The caller is outside the Intern API programme, the intern is hidden, or lifecycle writes are disabled.'
+        '408':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 408
+                  message: 'Request timed out'
+              schema:
+                $ref: '#/components/schemas/InternLifecycleError'
+          description: 'The request exceeded its route deadline.'
+        '409':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 'intern_busy'
+                  message: 'The intern is not in a state that allows this operation'
+              schema:
+                $ref: '#/components/schemas/InternLifecycleError'
+          description: 'The intern is not in a state that allows this operation.'
+        '500':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 'internal_error'
+                  message: 'The request could not be completed'
+              schema:
+                $ref: '#/components/schemas/InternLifecycleError'
+          description: 'The request could not be completed.'
+        '502':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 'upstream_unavailable'
+                  message: 'The intern service could not be reached, retry the request'
+              schema:
+                $ref: '#/components/schemas/InternLifecycleError'
+          description: 'The intern service could not accept the operation.'
+      security:
+        - apiKey: []
+      summary: 'Suspend an intern'
+      tags:
+        - 'Interns'
     parameters:
       - $ref: "#/components/parameters/AppIdentifier"
       - $ref: "#/components/parameters/AppDisplayName"
@@ -43872,6 +44962,8 @@ tags:
     name: 'Guardrails'
   - description: 'Images endpoints'
     name: 'Images'
+  - description: 'Create, inspect, update, provision, suspend and delete OpenRouter interns through an API key.'
+    name: 'Interns'
   - description: 'Model information endpoints'
     name: 'Models'
   - description: 'OAuth authentication endpoints'
