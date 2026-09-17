@@ -1,19 +1,19 @@
 lockVersion: ""
 id: ""
 management:
-  docChecksum: 66f50cdd1cb12e7b45eb2cd1b6cfee3e
+  docChecksum: 43891a52d25ac976799147bfcdb1f919
   docVersion: 1.0.0
   speakeasyVersion: 1.787.0
   generationVersion: 2.914.0
-  releaseVersion: 1.2.133
-  configChecksum: 5277fca710ec5bfb9195866d00900ba1
+  releaseVersion: 1.2.134
+  configChecksum: 96fa081e5859b342aa1a61a7e6909c07
   repoURL: https://github.com/OpenRouterTeam/typescript-sdk.git
   installationURL: https://github.com/OpenRouterTeam/typescript-sdk
   published: true
 persistentEdits:
-  generation_id: 0b2fed71-8066-48ed-bd17-aa8714002ce3
-  pristine_commit_hash: 3b95cbca8edf7541793eeb64fad583d2ba40a91c
-  pristine_tree_hash: d133e9ed8acf06cf29d5bbecd3fe352cc5b0ed8e
+  generation_id: 0d83dfa2-b2c3-4e03-9f5a-b674c86f46d2
+  pristine_commit_hash: 001f66102334adee19cd8262228cdfd3f004767d
+  pristine_tree_hash: 3f39a5d086637dcce43cc8baa3366a800312fa53
 features:
   typescript:
     acceptHeaders: 2.81.2
@@ -540,8 +540,8 @@ trackedFiles:
     deleted: true
   docs/models/anthropicimageblockparamsource.mdx:
     id: e5b7acc33e47
-    last_write_checksum: sha1:943955e5f22ed6cffaa27de29a1d5ac2579e61ef
-    pristine_git_object: e3e767e2b44f17e2f0c0299cecc287b193e74602
+    last_write_checksum: sha1:b2ca8dc021b7efb22d8347a82ddbf0237464577b
+    pristine_git_object: 72c193c5b7408030383061b3754521e4fa299306
   docs/models/anthropicimagemimetype.md:
     id: dda87a29bd1a
     last_write_checksum: sha1:7af5fe599cb3df58fbd70c6c0305571807fd0b51
@@ -13421,12 +13421,12 @@ trackedFiles:
     pristine_git_object: 410efafd6a7f50d91ccb87131fedbe0c3d47e15a
   jsr.json:
     id: 7f6ab7767282
-    last_write_checksum: sha1:297206318a6b8641e40845e76ea488e583bc8542
-    pristine_git_object: 722f51bb9f7c7dbfe66c91d85f9d28c9d9acac63
+    last_write_checksum: sha1:f5eec8529c03b79005889ac95bcd2af07fe86482
+    pristine_git_object: 2cbe17973c8f989fc01ecf89b2f876448344c5d7
   package.json:
     id: 7030d0b2f71b
-    last_write_checksum: sha1:9163ced1ede8473dd5f98403b2c48c596426b002
-    pristine_git_object: 67abb05ffd65d4f92398a439fc82628629bab455
+    last_write_checksum: sha1:9472e50b501769caed7b69152645f158c1830f45
+    pristine_git_object: 057305fba91b201d6c708781ad56675f44dff697
   src/core.ts:
     id: f431fdbcd144
     last_write_checksum: sha1:5aa66b0b6a5964f3eea7f3098c2eb3c0ee9c0131
@@ -13897,8 +13897,8 @@ trackedFiles:
     pristine_git_object: a187e58707bdb726ca2aff74941efe7493422d4e
   src/lib/config.ts:
     id: 320761608fb3
-    last_write_checksum: sha1:c1be43f197ba6f4b139997455ee6ae9bc703999e
-    pristine_git_object: db416e22890be5a601a03b35450cc01c9e85ffc0
+    last_write_checksum: sha1:515d11bf55d5488f56a3a1e548d31785859a0f98
+    pristine_git_object: eabb4f0c33bb0b53f39b0460486f9af7cffeff2a
   src/lib/dlv.ts:
     id: b1988214835a
     last_write_checksum: sha1:eaac763b22717206a6199104e0403ed17a4e2711
@@ -14071,8 +14071,8 @@ trackedFiles:
     pristine_git_object: 8f6aaed2340a8c82fad5cc0ff548673490b68d11
   src/models/anthropicimageblockparam.ts:
     id: 463612aae623
-    last_write_checksum: sha1:0cca27c10ff0604a61ace78d19391d407d05b970
-    pristine_git_object: 801ea8cc5a918cf198514cd660426e0e51d4d7c2
+    last_write_checksum: sha1:b5eddb414b6a4eb2158ff3c5abe5a415c710aa91
+    pristine_git_object: e44eb58c3a58cf14d833b08767139e707dd4d808
   src/models/anthropicimagemimetype.ts:
     id: 14923724a710
     last_write_checksum: sha1:a56f53b30ce752bf7910b42d8300a32e8b5643a9
@@ -20351,4 +20351,4 @@ examples:
         "504":
           application/json: {"error": {"code": 504, "message": "Vault request timed out"}}
 examplesVersion: 1.0.2
-releaseNotes: "## Typescript SDK Changes:\n* `openrouter.stt.createTranscriptionMultipart()`: \n  *  `request.requestBody` **Changed**\n"
+releaseNotes: "## Typescript SDK Changes:\n* `openrouter.presets.createPresetsMessages()`: \n  *  `request.messagesRequest.messages[].content.union(Array<>)[].union(document).source.union(content).content.union(Array<>)[].union(image).source.union(file)` **Added**\n"
