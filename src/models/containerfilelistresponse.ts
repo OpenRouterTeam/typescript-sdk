@@ -22,9 +22,12 @@ export type ContainerFileListResponse = {
   data: Array<ContainerFile>;
   firstId: string | null;
   /**
-   * True when another page can be fetched by passing `after=last_id`.
+   * True when another page can be fetched by passing `after=last_id`; `last_id` is non-null whenever this is true.
    */
   hasMore: boolean;
+  /**
+   * Cursor for the next page (pass as `after`). The last entry’s id, except when the page stopped at the per-request scan bound on hidden bookkeeping objects: then it names the scan position and may not appear in `data`. Null only when `has_more` is false and `data` is empty.
+   */
   lastId: string | null;
   object: ContainerFileListResponseObject;
 };
