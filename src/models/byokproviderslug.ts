@@ -113,6 +113,7 @@ export const BYOKProviderSlug = {
   Thinkingmachines: "thinkingmachines",
   Together: "together",
   Typesafe: "typesafe",
+  Unbiased: "unbiased",
   Upstage: "upstage",
   Venice: "venice",
   Voyageai: "voyageai",
