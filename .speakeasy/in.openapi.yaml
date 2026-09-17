@@ -1511,11 +1511,13 @@ components:
           discriminator:
             mapping:
               base64: '#/components/schemas/AnthropicBase64ImageSource'
+              file: '#/components/schemas/AnthropicFileDocumentSource'
               url: '#/components/schemas/AnthropicUrlImageSource'
             propertyName: 'type'
           oneOf:
             - $ref: '#/components/schemas/AnthropicBase64ImageSource'
             - $ref: '#/components/schemas/AnthropicUrlImageSource'
+            - $ref: '#/components/schemas/AnthropicFileDocumentSource'
         type:
           enum:
             - 'image'
