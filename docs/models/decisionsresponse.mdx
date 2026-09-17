@@ -1,0 +1,28 @@
+---
+title: "DecisionsResponse"
+---
+
+## Example Usage
+
+```typescript
+import { DecisionsResponse } from "@openrouter/sdk/models";
+
+let value: DecisionsResponse = {
+  answers: {},
+  model: "A8",
+  usage: {
+    inputTokens: 709923,
+    outputTokens: 313639,
+  },
+};
+```
+
+## Fields
+
+| Field                                                                | Type                                                                 | Required                                                             | Description                                                          |
+| -------------------------------------------------------------------- | -------------------------------------------------------------------- | -------------------------------------------------------------------- | -------------------------------------------------------------------- |
+| `answers`                                                            | Record\<string, *models.Answers*>                                     | :heavy_check_mark:                                                   | N/A                                                                  |
+| `id`                                                                 | *string*                                                             | :heavy_minus_sign:                                                   | N/A                                                                  |
+| `model`                                                              | *string*                                                             | :heavy_check_mark:                                                   | N/A                                                                  |
+| `provider`                                                           | *string*                                                             | :heavy_minus_sign:                                                   | N/A                                                                  |
+| `usage`                                                              | [models.DecisionsResponseUsage](../models/decisionsresponseusage.mdx) | :heavy_check_mark:                                                   | N/A                                                                  |

@@ -1,0 +1,42 @@
+---
+title: "Questions"
+---
+
+A Decisions question using a boolean, choice, or ordered score evaluation.
+
+
+## Supported Types
+
+### `models.DecisionsChoiceQuestion`
+
+```typescript
+const value: models.DecisionsChoiceQuestion = {
+  criteria: {
+    "key": "<value>",
+    "key1": "<value>",
+    "key2": "<value>",
+  },
+  instructions: "<value>",
+  type: "choice",
+};
+```
+
+### `models.DecisionsNoulQuestion`
+
+```typescript
+const value: models.DecisionsNoulQuestion = {
+  instructions: "<value>",
+  type: "noul",
+};
+```
+
+### `models.DecisionsScoreQuestion`
+
+```typescript
+const value: models.DecisionsScoreQuestion = {
+  criteria: [],
+  instructions: "<value>",
+  type: "score",
+};
+```
+
