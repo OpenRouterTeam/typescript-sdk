@@ -2,7 +2,7 @@
 title: "InputMessageItemContentInputImage"
 ---
 
-Image input content item
+Image input content item. Provide either an image_url (a URL or a base64 data URL) or the file_id of an uploaded image.
 
 ## Example Usage
 
@@ -20,5 +20,6 @@ let value: InputMessageItemContentInputImage = {
 | Field                                                                | Type                                                                 | Required                                                             | Description                                                          |
 | -------------------------------------------------------------------- | -------------------------------------------------------------------- | -------------------------------------------------------------------- | -------------------------------------------------------------------- |
 | `detail`                                                             | [models.InputMessageItemDetail](../models/inputmessageitemdetail.mdx) | :heavy_check_mark:                                                   | N/A                                                                  |
+| `fileId`                                                             | *string*                                                             | :heavy_minus_sign:                                                   | N/A                                                                  |
 | `imageUrl`                                                           | *string*                                                             | :heavy_minus_sign:                                                   | N/A                                                                  |
 | `type`                                                               | *"input_image"*                                                      | :heavy_check_mark:                                                   | N/A                                                                  |

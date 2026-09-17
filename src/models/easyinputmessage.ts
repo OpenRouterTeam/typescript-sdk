@@ -37,10 +37,11 @@ export const EasyInputMessageDetail = {
 export type EasyInputMessageDetail = OpenEnum<typeof EasyInputMessageDetail>;
 
 /**
- * Image input content item
+ * Image input content item. Provide either an image_url (a URL or a base64 data URL) or the file_id of an uploaded image.
  */
 export type EasyInputMessageContentInputImage = {
   detail: EasyInputMessageDetail;
+  fileId?: string | null | undefined;
   imageUrl?: string | null | undefined;
   type: "input_image";
 };
@@ -161,6 +162,7 @@ export const EasyInputMessageDetail$outboundSchema: z.ZodType<
 /** @internal */
 export type EasyInputMessageContentInputImage$Outbound = {
   detail: string;
+  file_id?: string | null | undefined;
   image_url?: string | null | undefined;
   type: "input_image";
 };
@@ -171,10 +173,12 @@ export const EasyInputMessageContentInputImage$outboundSchema: z.ZodType<
   EasyInputMessageContentInputImage
 > = z.object({
   detail: EasyInputMessageDetail$outboundSchema,
+  fileId: z.nullable(z.string()).optional(),
   imageUrl: z.nullable(z.string()).optional(),
   type: z.literal("input_image"),
 }).transform((v) => {
   return remap$(v, {
+    fileId: "file_id",
     imageUrl: "image_url",
   });
 });
