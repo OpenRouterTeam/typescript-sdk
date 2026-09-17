@@ -13,6 +13,10 @@ import { SDKValidationError } from "./errors/sdkvalidationerror.js";
  */
 export type STTWord = {
   /**
+   * Provider confidence for the word from 0 to 1, present when the provider returns per-word confidence
+   */
+  confidence?: number | undefined;
+  /**
    * Word end time in seconds
    */
   end: number;
@@ -32,6 +36,7 @@ export type STTWord = {
 
 /** @internal */
 export const STTWord$inboundSchema: z.ZodType<STTWord, unknown> = z.object({
+  confidence: z.number().optional(),
   end: z.number(),
   speaker: z.int().optional(),
   start: z.number(),

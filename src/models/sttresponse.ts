@@ -16,6 +16,10 @@ import { STTWord, STTWord$inboundSchema } from "./sttword.js";
  */
 export type STTResponse = {
   /**
+   * Provider confidence for the whole transcript from 0 to 1, present when response_format is verbose_json and the provider scores the full transcript
+   */
+  confidence?: number | undefined;
+  /**
    * Duration of the input audio in seconds, present when response_format is verbose_json
    */
   duration?: number | undefined;
@@ -48,6 +52,7 @@ export type STTResponse = {
 /** @internal */
 export const STTResponse$inboundSchema: z.ZodType<STTResponse, unknown> = z
   .object({
+    confidence: z.number().optional(),
     duration: z.number().optional(),
     language: z.string().optional(),
     segments: z.array(STTSegment$inboundSchema).optional(),
