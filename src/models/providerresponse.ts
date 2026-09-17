@@ -142,6 +142,7 @@ export const ProviderResponseProviderName = {
   Tenstorrent: "Tenstorrent",
   ThinkingMachines: "Thinking Machines",
   Together: "Together",
+  Unbiased: "Unbiased",
   Upstage: "Upstage",
   Venice: "Venice",
   Wafer: "Wafer",
