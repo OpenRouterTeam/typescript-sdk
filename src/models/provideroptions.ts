@@ -141,6 +141,7 @@ export type ProviderOptions = {
   thinkingmachines?: { [k: string]: any } | undefined;
   together?: { [k: string]: any } | undefined;
   togetherLite?: { [k: string]: any } | undefined;
+  typesafe?: { [k: string]: any } | undefined;
   ubicloud?: { [k: string]: any } | undefined;
   upstage?: { [k: string]: any } | undefined;
   venice?: { [k: string]: any } | undefined;
@@ -286,6 +287,7 @@ export type ProviderOptions$Outbound = {
   thinkingmachines?: { [k: string]: any } | undefined;
   together?: { [k: string]: any } | undefined;
   "together-lite"?: { [k: string]: any } | undefined;
+  typesafe?: { [k: string]: any } | undefined;
   ubicloud?: { [k: string]: any } | undefined;
   upstage?: { [k: string]: any } | undefined;
   venice?: { [k: string]: any } | undefined;
@@ -434,6 +436,7 @@ export const ProviderOptions$outboundSchema: z.ZodType<
   thinkingmachines: z.record(z.string(), z.any()).optional(),
   together: z.record(z.string(), z.any()).optional(),
   togetherLite: z.record(z.string(), z.any()).optional(),
+  typesafe: z.record(z.string(), z.any()).optional(),
   ubicloud: z.record(z.string(), z.any()).optional(),
   upstage: z.record(z.string(), z.any()).optional(),
   venice: z.record(z.string(), z.any()).optional(),

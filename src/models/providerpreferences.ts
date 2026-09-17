@@ -86,7 +86,7 @@ export type ProviderPreferencesOrder = ProviderName | string;
 export type ProviderPreferencesSort = ProviderSort | ProviderSortConfig;
 
 /**
- * When multiple model providers are available, optionally indicate your routing preference.
+ * Provider routing preferences for the request.
  */
 export type ProviderPreferences = {
   /**
