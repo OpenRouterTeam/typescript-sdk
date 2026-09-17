@@ -1,0 +1,25 @@
+---
+title: "Progress"
+---
+
+Active provisioning step, or null once provisioning has settled.
+
+## Example Usage
+
+```typescript
+import { Progress } from "@openrouter/sdk/models";
+
+let value: Progress = {
+  stepLabel: "<value>",
+  stepNumber: 641278,
+  totalSteps: 340252,
+};
+```
+
+## Fields
+
+| Field                                                 | Type                                                  | Required                                              | Description                                           |
+| ----------------------------------------------------- | ----------------------------------------------------- | ----------------------------------------------------- | ----------------------------------------------------- |
+| `stepLabel`                                           | *string*                                              | :heavy_check_mark:                                    | Human-readable label of the active provisioning step. |
+| `stepNumber`                                          | *number*                                              | :heavy_check_mark:                                    | One-based index of the active step.                   |
+| `totalSteps`                                          | *number*                                              | :heavy_check_mark:                                    | Number of provisioning steps.                         |

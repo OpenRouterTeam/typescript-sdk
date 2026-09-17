@@ -1,0 +1,27 @@
+---
+title: "CreateInternRequest"
+---
+
+## Example Usage
+
+```typescript
+import { CreateInternRequest } from "@openrouter/sdk/models/operations";
+
+let value: CreateInternRequest = {
+  createInternRequest: {
+    name: "research-assistant",
+    provision: true,
+    workspaceId: "89f9f5b2-3f89-4eaf-83ca-5ceae149e8bb",
+  },
+};
+```
+
+## Fields
+
+| Field                                                                                                                                             | Type                                                                                                                                              | Required                                                                                                                                          | Description                                                                                                                                       | Example                                                                                                                                           |
+| ------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `httpReferer`                                                                                                                                     | *string*                                                                                                                                          | :heavy_minus_sign:                                                                                                                                | The app identifier should be your app's URL and is used as the primary identifier for rankings.<br/>This is used to track API usage per application.<br/> |                                                                                                                                                   |
+| `appTitle`                                                                                                                                        | *string*                                                                                                                                          | :heavy_minus_sign:                                                                                                                                | The app display name allows you to customize how your app appears in OpenRouter's dashboard.<br/>                                                 |                                                                                                                                                   |
+| `appCategories`                                                                                                                                   | *string*                                                                                                                                          | :heavy_minus_sign:                                                                                                                                | Comma-separated list of app categories (e.g. "cli-agent,cloud-agent"). Used for marketplace rankings.<br/>                                        |                                                                                                                                                   |
+| `idempotencyKey`                                                                                                                                  | *string*                                                                                                                                          | :heavy_minus_sign:                                                                                                                                | Key that makes retries resume the same create operation. Without one, the server derives a stable key from the request body.                      | create-research-assistant-2026-09-16                                                                                                              |
+| `createInternRequest`                                                                                                                             | [models.CreateInternRequest](../../models/createinternrequest.mdx)                                                                                 | :heavy_check_mark:                                                                                                                                | N/A                                                                                                                                               | \{<br/>"name": "research-assistant",<br/>"provision": true,<br/>"workspace_id": "89f9f5b2-3f89-4eaf-83ca-5ceae149e8bb"<br/>}                       |

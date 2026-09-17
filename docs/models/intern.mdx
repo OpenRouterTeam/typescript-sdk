@@ -1,0 +1,47 @@
+---
+title: "Intern"
+---
+
+Public lifecycle state and settings for one intern.
+
+## Example Usage
+
+```typescript
+import { Intern } from "@openrouter/sdk/models";
+
+let value: Intern = {
+  attachedVaultId: null,
+  createdAt: "2026-09-16T08:30:00.000Z",
+  description: "Researches customer questions",
+  hostname: "research-assistant.openrouter.ai",
+  id: "7c9e6679-7425-40de-944b-e07fc1f90ae7",
+  instructions: null,
+  lastFailureMessage: null,
+  model: "openai/gpt-5.4",
+  name: "research-assistant",
+  progress: null,
+  status: "running",
+  updatedAt: "2026-09-16T08:45:00.000Z",
+  vaultId: "b431c59d-6eed-41ac-bc89-9a89be79a121",
+  workspaceId: "89f9f5b2-3f89-4eaf-83ca-5ceae149e8bb",
+};
+```
+
+## Fields
+
+| Field                                                                                    | Type                                                                                     | Required                                                                                 | Description                                                                              |
+| ---------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------- |
+| `attachedVaultId`                                                                        | *string*                                                                                 | :heavy_check_mark:                                                                       | Vault the intern borrows from another intern, or null when it borrows none.              |
+| `createdAt`                                                                              | *string*                                                                                 | :heavy_check_mark:                                                                       | ISO 8601 creation time.                                                                  |
+| `description`                                                                            | *string*                                                                                 | :heavy_check_mark:                                                                       | Free-form description.                                                                   |
+| `hostname`                                                                               | *string*                                                                                 | :heavy_check_mark:                                                                       | Public hostname the intern is reachable at, or null until provisioning has assigned one. |
+| `id`                                                                                     | *string*                                                                                 | :heavy_check_mark:                                                                       | Intern id.                                                                               |
+| `instructions`                                                                           | *string*                                                                                 | :heavy_check_mark:                                                                       | Standing instructions the intern boots with.                                             |
+| `lastFailureMessage`                                                                     | *string*                                                                                 | :heavy_check_mark:                                                                       | Why the last provisioning attempt failed, when status is failed.                         |
+| `model`                                                                                  | *string*                                                                                 | :heavy_check_mark:                                                                       | OpenRouter model slug the intern runs, or null for the workspace default.                |
+| `name`                                                                                   | *string*                                                                                 | :heavy_check_mark:                                                                       | Intern name, unique per creator within a workspace.                                      |
+| `progress`                                                                               | [models.Progress](../models/progress.mdx)                                                 | :heavy_check_mark:                                                                       | Active provisioning step, or null once provisioning has settled.                         |
+| `status`                                                                                 | [models.InternStatus](../models/internstatus.mdx)                                         | :heavy_check_mark:                                                                       | Lifecycle status.                                                                        |
+| `updatedAt`                                                                              | *string*                                                                                 | :heavy_check_mark:                                                                       | ISO 8601 last update time.                                                               |
+| `vaultId`                                                                                | *string*                                                                                 | :heavy_check_mark:                                                                       | Vault the intern owns, or null before it has been created.                               |
+| `workspaceId`                                                                            | *string*                                                                                 | :heavy_check_mark:                                                                       | Workspace that owns the intern and scopes its secrets.                                   |
