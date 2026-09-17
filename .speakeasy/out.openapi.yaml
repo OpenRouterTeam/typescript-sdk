@@ -8394,7 +8394,14 @@ components:
           example: 'session-1234'
           maxLength: 256
           type: 'string'
-        state: {}
+        state:
+          anyOf:
+            - type: 'string'
+            - additionalProperties: {}
+              type: 'object'
+            - items: {}
+              type: 'array'
+          description: 'The content to evaluate: a plain string, or a JSON object or array of related context.'
         trace:
           $ref: '#/components/schemas/TraceConfig'
         user:
@@ -30296,7 +30303,7 @@ paths:
       summary: 'Submit a Decisions (questions and answers) request'
       tags:
         - 'Decisions'
-      x-speakeasy-name-override: 'decisions'
+      x-speakeasy-name-override: 'create'
     parameters:
       - $ref: "#/components/parameters/AppIdentifier"
       - $ref: "#/components/parameters/AppDisplayName"
