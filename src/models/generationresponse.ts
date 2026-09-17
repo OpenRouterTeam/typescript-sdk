@@ -26,6 +26,7 @@ export const ApiType = {
   STT: "stt",
   Video: "video",
   Image: "image",
+  Decisions: "decisions",
 } as const;
 /**
  * Type of API used for the generation

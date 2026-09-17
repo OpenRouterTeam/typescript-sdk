@@ -14,6 +14,7 @@ export const ImageOutputModality = {
   Audio: "audio",
   Video: "video",
   Rerank: "rerank",
+  Decisions: "decisions",
   Speech: "speech",
   Transcription: "transcription",
 } as const;

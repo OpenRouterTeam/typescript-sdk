@@ -1,0 +1,23 @@
+---
+title: "DecisionsChoiceAnswer"
+---
+
+## Example Usage
+
+```typescript
+import { DecisionsChoiceAnswer } from "@openrouter/sdk/models";
+
+let value: DecisionsChoiceAnswer = {
+  choice: "<value>",
+  type: "choice",
+};
+```
+
+## Fields
+
+| Field                    | Type                     | Required                 | Description              |
+| ------------------------ | ------------------------ | ------------------------ | ------------------------ |
+| `choice`                 | *string*                 | :heavy_check_mark:       | N/A                      |
+| `confidence`             | *number*                 | :heavy_minus_sign:       | N/A                      |
+| `probabilities`          | Record\<string, *number*> | :heavy_minus_sign:       | N/A                      |
+| `type`                   | *"choice"*               | :heavy_check_mark:       | N/A                      |
