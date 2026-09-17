@@ -3,7 +3,7 @@
  * @generated-id: 0e5d2e557690
  */
 
-import { decisionsDecisions } from "../funcs/decisionsDecisions.js";
+import { decisionsCreate } from "../funcs/decisionsCreate.js";
 import { ClientSDK, RequestOptions } from "../lib/sdks.js";
 import * as models from "../models/index.js";
 import * as operations from "../models/operations/index.js";
@@ -16,11 +16,11 @@ export class Decisions extends ClientSDK {
    * @remarks
    * Submits a Decisions request to the Decisions router
    */
-  async decisions(
+  async create(
     request: operations.CreateApiAlphaDecisionsRequest,
     options?: RequestOptions,
   ): Promise<models.DecisionsResponse> {
-    return unwrapAsync(decisionsDecisions(
+    return unwrapAsync(decisionsCreate(
       this,
       request,
       options,

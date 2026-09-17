@@ -9,9 +9,9 @@ Decisions endpoints
 
 ### Available Operations
 
-* [decisions](#decisions) - Submit a Decisions (questions and answers) request
+* [create](#create) - Submit a Decisions (questions and answers) request
 
-## decisions
+## create
 
 Submits a Decisions request to the Decisions router
 
@@ -28,7 +28,7 @@ const openRouter = new OpenRouter({
 });
 
 async function run() {
-  const result = await openRouter.decisions.decisions({
+  const result = await openRouter.decisions.create({
     decisionsRequest: {
       model: "Grand Cherokee",
       questions: {
@@ -50,7 +50,7 @@ The standalone function version of this method:
 
 ```typescript
 import { OpenRouterCore } from "@openrouter/sdk/core.js";
-import { decisionsDecisions } from "@openrouter/sdk/funcs/decisionsDecisions.js";
+import { decisionsCreate } from "@openrouter/sdk/funcs/decisionsCreate.js";
 
 // Use `OpenRouterCore` for best tree-shaking performance.
 // You can create one instance of it to use across an application.
@@ -62,7 +62,7 @@ const openRouter = new OpenRouterCore({
 });
 
 async function run() {
-  const res = await decisionsDecisions(openRouter, {
+  const res = await decisionsCreate(openRouter, {
     decisionsRequest: {
       model: "Grand Cherokee",
       questions: {
@@ -75,7 +75,7 @@ async function run() {
     const { value: result } = res;
     console.log(result);
   } else {
-    console.log("decisionsDecisions failed:", res.error);
+    console.log("decisionsCreate failed:", res.error);
   }
 }
 

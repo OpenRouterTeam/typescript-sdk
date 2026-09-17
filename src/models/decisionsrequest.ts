@@ -39,6 +39,11 @@ export type Questions =
   | DecisionsNoulQuestion
   | DecisionsScoreQuestion;
 
+/**
+ * The content to evaluate: a plain string, or a JSON object or array of related context.
+ */
+export type State = string | { [k: string]: any } | Array<any>;
+
 export type DecisionsRequest = {
   model: string;
   provider?: ProviderPreferences | null | undefined;
@@ -52,7 +57,10 @@ export type DecisionsRequest = {
    * A unique identifier for grouping related requests (e.g., a conversation or agent workflow). Used for observability grouping in Broadcast and private logging; never sent to the provider. If provided in both the request body and the x-session-id header, the body value takes precedence. Maximum of 256 characters.
    */
   sessionId?: string | undefined;
-  state: any;
+  /**
+   * The content to evaluate: a plain string, or a JSON object or array of related context.
+   */
+  state: string | { [k: string]: any } | Array<any>;
   /**
    * Metadata for observability and tracing. Known keys (trace_id, trace_name, span_name, generation_name, parent_span_id) have special handling. Additional keys are passed through as custom metadata to configured broadcast destinations.
    */
@@ -81,6 +89,20 @@ export function questionsToJSON(questions: Questions): string {
 }
 
 /** @internal */
+export type State$Outbound = string | { [k: string]: any } | Array<any>;
+
+/** @internal */
+export const State$outboundSchema: z.ZodType<State$Outbound, State> = z.union([
+  z.string(),
+  z.record(z.string(), z.any()),
+  z.array(z.any()),
+]);
+
+export function stateToJSON(state: State): string {
+  return JSON.stringify(State$outboundSchema.parse(state));
+}
+
+/** @internal */
 export type DecisionsRequest$Outbound = {
   model: string;
   provider?: ProviderPreferences$Outbound | null | undefined;
@@ -91,7 +113,7 @@ export type DecisionsRequest$Outbound = {
       | DecisionsScoreQuestion$Outbound;
   };
   session_id?: string | undefined;
-  state: any;
+  state: string | { [k: string]: any } | Array<any>;
   trace?: TraceConfig$Outbound | undefined;
   user?: string | undefined;
 };
@@ -112,7 +134,7 @@ export const DecisionsRequest$outboundSchema: z.ZodType<
     ]),
   ),
   sessionId: z.string().optional(),
-  state: z.any(),
+  state: z.union([z.string(), z.record(z.string(), z.any()), z.array(z.any())]),
   trace: TraceConfig$outboundSchema.optional(),
   user: z.string().optional(),
 }).transform((v) => {
