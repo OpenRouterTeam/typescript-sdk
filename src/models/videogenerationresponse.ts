@@ -33,6 +33,9 @@ export type VideoGenerationResponse = {
    * The generation ID associated with this video generation job. Available once the job has been processed.
    */
   generationId?: string | undefined;
+  /**
+   * The video job ID, in the `gen-vid-<timestamp>-<20 alphanumerics>` generation ID format. Pass it as `previous_job_id` to continue the generation.
+   */
   id: string;
   pollingUrl: string;
   status: VideoGenerationResponseStatus;

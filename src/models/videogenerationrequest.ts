@@ -249,6 +249,10 @@ export type VideoGenerationRequest = {
   inputReferences?: Array<InputReference> | undefined;
   model: string;
   /**
+   * ID of a completed video job to edit or extend, as returned by the submit response. The new job runs on the same model and endpoint that produced the previous one. Only models that support continuation accept this field.
+   */
+  previousJobId?: string | undefined;
+  /**
    * Text prompt describing the video to generate. Optional for models that support generating a video from image input alone; required by all other models.
    */
   prompt?: string | undefined;
@@ -670,6 +674,7 @@ export type VideoGenerationRequest$Outbound = {
   generate_audio?: boolean | undefined;
   input_references?: Array<InputReference$Outbound> | undefined;
   model: string;
+  previous_job_id?: string | undefined;
   prompt?: string | undefined;
   provider?: VideoGenerationRequestProvider$Outbound | undefined;
   resolution?: string | undefined;
@@ -694,6 +699,7 @@ export const VideoGenerationRequest$outboundSchema: z.ZodType<
   generateAudio: z.boolean().optional(),
   inputReferences: z.array(InputReference$outboundSchema).optional(),
   model: z.string(),
+  previousJobId: z.string().optional(),
   prompt: z.string().optional(),
   provider: z.lazy(() => VideoGenerationRequestProvider$outboundSchema)
     .optional(),
@@ -711,6 +717,7 @@ export const VideoGenerationRequest$outboundSchema: z.ZodType<
     frameImages: "frame_images",
     generateAudio: "generate_audio",
     inputReferences: "input_references",
+    previousJobId: "previous_job_id",
     sessionId: "session_id",
     upscaleFactor: "upscale_factor",
   });

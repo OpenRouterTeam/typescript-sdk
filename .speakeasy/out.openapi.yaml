@@ -28490,6 +28490,11 @@ components:
           type: 'array'
         model:
           type: 'string'
+        previous_job_id:
+          description: 'ID of a completed video job to edit or extend, as returned by the submit response. The new job runs on the same model and endpoint that produced the previous one. Only models that support continuation accept this field.'
+          example: 'gen-vid-1789493115-a1B2c3D4e5F6g7H8i9J0'
+          pattern: '^gen-vid-\d+-[0-9A-Za-z]{20}$'
+          type: 'string'
         prompt:
           description: 'Text prompt describing the video to generate. Optional for models that support generating a video from image input alone; required by all other models.'
           example: 'A serene mountain landscape at sunset'
@@ -28548,9 +28553,9 @@ components:
       type: 'object'
     VideoGenerationResponse:
       example:
-        generation_id: 'gen-xyz789'
-        id: 'job-abc123'
-        polling_url: '/api/v1/videos/job-abc123'
+        generation_id: 'gen-vid-1789480874-Ab3dEf9hIjKlMnOpQrSt'
+        id: 'gen-vid-1789480874-Ab3dEf9hIjKlMnOpQrSt'
+        polling_url: '/api/v1/videos/gen-vid-1789480874-Ab3dEf9hIjKlMnOpQrSt'
         status: 'pending'
       properties:
         error:
@@ -28559,6 +28564,7 @@ components:
           description: 'The generation ID associated with this video generation job. Available once the job has been processed.'
           type: 'string'
         id:
+          description: 'The video job ID, in the `gen-vid-<timestamp>-<20 alphanumerics>` generation ID format. Pass it as `previous_job_id` to continue the generation.'
           type: 'string'
         polling_url:
           type: 'string'
