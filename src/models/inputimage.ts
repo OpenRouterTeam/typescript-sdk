@@ -25,10 +25,11 @@ export const InputImageTypeEnum = {
 export type InputImageTypeEnum = ClosedEnum<typeof InputImageTypeEnum>;
 
 /**
- * Image input content item
+ * Image input content item. Provide either an image_url (a URL or a base64 data URL) or the file_id of an uploaded image.
  */
 export type InputImage = {
   detail: InputImageDetail;
+  fileId?: string | null | undefined;
   imageUrl?: string | null | undefined;
   type: InputImageTypeEnum;
 };
@@ -57,16 +58,19 @@ export const InputImageTypeEnum$outboundSchema: z.ZodEnum<
 export const InputImage$inboundSchema: z.ZodType<InputImage, unknown> = z
   .object({
     detail: InputImageDetail$inboundSchema,
+    file_id: z.nullable(z.string()).optional(),
     image_url: z.nullable(z.string()).optional(),
     type: InputImageTypeEnum$inboundSchema,
   }).transform((v) => {
     return remap$(v, {
+      "file_id": "fileId",
       "image_url": "imageUrl",
     });
   });
 /** @internal */
 export type InputImage$Outbound = {
   detail: string;
+  file_id?: string | null | undefined;
   image_url?: string | null | undefined;
   type: string;
 };
@@ -77,10 +81,12 @@ export const InputImage$outboundSchema: z.ZodType<
   InputImage
 > = z.object({
   detail: InputImageDetail$outboundSchema,
+  fileId: z.nullable(z.string()).optional(),
   imageUrl: z.nullable(z.string()).optional(),
   type: InputImageTypeEnum$outboundSchema,
 }).transform((v) => {
   return remap$(v, {
+    fileId: "file_id",
     imageUrl: "image_url",
   });
 });

@@ -33,10 +33,11 @@ export const AgentMessageItemDetail = {
 export type AgentMessageItemDetail = OpenEnum<typeof AgentMessageItemDetail>;
 
 /**
- * Image input content item
+ * Image input content item. Provide either an image_url (a URL or a base64 data URL) or the file_id of an uploaded image.
  */
 export type AgentMessageItemContentInputImage = {
   detail: AgentMessageItemDetail;
+  fileId?: string | null | undefined;
   imageUrl?: string | null | undefined;
   type: "input_image";
 };
@@ -132,6 +133,7 @@ export const AgentMessageItemDetail$outboundSchema: z.ZodType<
 /** @internal */
 export type AgentMessageItemContentInputImage$Outbound = {
   detail: string;
+  file_id?: string | null | undefined;
   image_url?: string | null | undefined;
   type: "input_image";
 };
@@ -142,10 +144,12 @@ export const AgentMessageItemContentInputImage$outboundSchema: z.ZodType<
   AgentMessageItemContentInputImage
 > = z.object({
   detail: AgentMessageItemDetail$outboundSchema,
+  fileId: z.nullable(z.string()).optional(),
   imageUrl: z.nullable(z.string()).optional(),
   type: z.literal("input_image"),
 }).transform((v) => {
   return remap$(v, {
+    fileId: "file_id",
     imageUrl: "image_url",
   });
 });
