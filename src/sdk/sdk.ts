@@ -52,7 +52,11 @@ export {
   StreamStalledError,
   type StreamStallPhase,
 } from "../lib/stream-errors.js";
-export type { StreamTimeoutOptions } from "../lib/stream-watchdog.js";
+export {
+  applyChatStreamWatchdog,
+  applyResponsesStreamWatchdog,
+  type StreamTimeoutOptions,
+} from "../lib/stream-watchdog.js";
 // #endregion imports
 
 export class OpenRouter extends ClientSDK {
