@@ -1,0 +1,40 @@
+---
+title: "InternListResponse"
+---
+
+Interns visible to the authenticated API key.
+
+## Example Usage
+
+```typescript
+import { InternListResponse } from "@openrouter/sdk/models";
+
+let value: InternListResponse = {
+  data: [
+    {
+      attachedVaultId: null,
+      createdAt: "2026-09-16T08:30:00.000Z",
+      description: "Researches customer questions",
+      hostname: "research-assistant.openrouter.ai",
+      id: "7c9e6679-7425-40de-944b-e07fc1f90ae7",
+      instructions: null,
+      lastFailureMessage: null,
+      model: "openai/gpt-5.4",
+      name: "research-assistant",
+      progress: null,
+      status: "running",
+      updatedAt: "2026-09-16T08:45:00.000Z",
+      vaultId: "b431c59d-6eed-41ac-bc89-9a89be79a121",
+      workspaceId: "89f9f5b2-3f89-4eaf-83ca-5ceae149e8bb",
+    },
+  ],
+  hasMore: false,
+};
+```
+
+## Fields
+
+| Field                                             | Type                                              | Required                                          | Description                                       |
+| ------------------------------------------------- | ------------------------------------------------- | ------------------------------------------------- | ------------------------------------------------- |
+| `data`                                            | [models.Intern](../models/intern.mdx)[]            | :heavy_check_mark:                                | N/A                                               |
+| `hasMore`                                         | *boolean*                                         | :heavy_check_mark:                                | True when more interns match the current filters. |

@@ -1,0 +1,28 @@
+---
+title: "CreateInternRequest"
+---
+
+Settings for a new intern in an explicit workspace.
+
+## Example Usage
+
+```typescript
+import { CreateInternRequest } from "@openrouter/sdk/models";
+
+let value: CreateInternRequest = {
+  name: "research-assistant",
+  provision: true,
+  workspaceId: "89f9f5b2-3f89-4eaf-83ca-5ceae149e8bb",
+};
+```
+
+## Fields
+
+| Field                                                                          | Type                                                                           | Required                                                                       | Description                                                                    |
+| ------------------------------------------------------------------------------ | ------------------------------------------------------------------------------ | ------------------------------------------------------------------------------ | ------------------------------------------------------------------------------ |
+| `description`                                                                  | *string*                                                                       | :heavy_minus_sign:                                                             | Free-form description, or null.                                                |
+| `instructions`                                                                 | *string*                                                                       | :heavy_minus_sign:                                                             | Standing instructions the intern boots with, or null.                          |
+| `name`                                                                         | *string*                                                                       | :heavy_check_mark:                                                             | Intern name, unique per creator within the workspace.                          |
+| `provision`                                                                    | *boolean*                                                                      | :heavy_minus_sign:                                                             | Start provisioning during this create operation. Defaults to false.            |
+| `vaultId`                                                                      | *string*                                                                       | :heavy_minus_sign:                                                             | Vault owned by another intern in this workspace to attach as a borrowed vault. |
+| `workspaceId`                                                                  | *string*                                                                       | :heavy_check_mark:                                                             | Workspace that will own the intern. It must match the API key workspace.       |

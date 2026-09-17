@@ -1,0 +1,22 @@
+---
+title: "UpdateInternRequest"
+---
+
+Lifecycle settings to change. Omitted fields stay unchanged and null clears a field.
+
+## Example Usage
+
+```typescript
+import { UpdateInternRequest } from "@openrouter/sdk/models";
+
+let value: UpdateInternRequest = {};
+```
+
+## Fields
+
+| Field                                                           | Type                                                            | Required                                                        | Description                                                     |
+| --------------------------------------------------------------- | --------------------------------------------------------------- | --------------------------------------------------------------- | --------------------------------------------------------------- |
+| `description`                                                   | *string*                                                        | :heavy_minus_sign:                                              | New free-form description. Null clears it.                      |
+| `instructions`                                                  | *string*                                                        | :heavy_minus_sign:                                              | New standing instructions. Null clears them.                    |
+| `model`                                                         | *string*                                                        | :heavy_minus_sign:                                              | New OpenRouter model slug. Null restores the workspace default. |
+| `name`                                                          | *string*                                                        | :heavy_minus_sign:                                              | New intern name, unique per creator within the workspace.       |
