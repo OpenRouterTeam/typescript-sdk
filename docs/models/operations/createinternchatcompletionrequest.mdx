@@ -1,0 +1,32 @@
+---
+title: "CreateInternChatCompletionRequest"
+---
+
+## Example Usage
+
+```typescript
+import { CreateInternChatCompletionRequest } from "@openrouter/sdk/models/operations";
+
+let value: CreateInternChatCompletionRequest = {
+  internId: "a11e0000-0000-4000-8000-000000000005",
+  internChatCompletionRequest: {
+    messages: [
+      {
+        content: "Summarize the open pull requests.",
+        role: "user",
+      },
+    ],
+    stream: true,
+  },
+};
+```
+
+## Fields
+
+| Field                                                                                                                                             | Type                                                                                                                                              | Required                                                                                                                                          | Description                                                                                                                                       | Example                                                                                                                                           |
+| ------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `httpReferer`                                                                                                                                     | *string*                                                                                                                                          | :heavy_minus_sign:                                                                                                                                | The app identifier should be your app's URL and is used as the primary identifier for rankings.<br/>This is used to track API usage per application.<br/> |                                                                                                                                                   |
+| `appTitle`                                                                                                                                        | *string*                                                                                                                                          | :heavy_minus_sign:                                                                                                                                | The app display name allows you to customize how your app appears in OpenRouter's dashboard.<br/>                                                 |                                                                                                                                                   |
+| `appCategories`                                                                                                                                   | *string*                                                                                                                                          | :heavy_minus_sign:                                                                                                                                | Comma-separated list of app categories (e.g. "cli-agent,cloud-agent"). Used for marketplace rankings.<br/>                                        |                                                                                                                                                   |
+| `internId`                                                                                                                                        | *string*                                                                                                                                          | :heavy_check_mark:                                                                                                                                | The intern to talk to.                                                                                                                            | a11e0000-0000-4000-8000-000000000005                                                                                                              |
+| `internChatCompletionRequest`                                                                                                                     | [models.InternChatCompletionRequest](../../models/internchatcompletionrequest.mdx)                                                                 | :heavy_check_mark:                                                                                                                                | N/A                                                                                                                                               | \{<br/>"approval_mode": "manual",<br/>"messages": [<br/>\{<br/>"content": "Summarize the open pull requests.",<br/>"role": "user"<br/>}<br/>],<br/>"stream": true<br/>} |

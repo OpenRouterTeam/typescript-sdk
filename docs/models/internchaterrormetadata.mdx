@@ -1,0 +1,21 @@
+---
+title: "InternChatErrorMetadata"
+---
+
+Machine-readable detail for the failure.
+
+## Example Usage
+
+```typescript
+import { InternChatErrorMetadata } from "@openrouter/sdk/models";
+
+let value: InternChatErrorMetadata = {
+  reason: "interaction_not_pending",
+};
+```
+
+## Fields
+
+| Field                                                                              | Type                                                                               | Required                                                                           | Description                                                                        |
+| ---------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------- |
+| `reason`                                                                           | [models.InternChatErrorMetadataReason](../models/internchaterrormetadatareason.mdx) | :heavy_check_mark:                                                                 | A stable reason a client can branch on.                                            |

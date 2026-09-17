@@ -1,0 +1,23 @@
+---
+title: "InternChatSystemMessage"
+---
+
+A system message. Accepted for client compatibility and not forwarded.
+
+## Example Usage
+
+```typescript
+import { InternChatSystemMessage } from "@openrouter/sdk/models";
+
+let value: InternChatSystemMessage = {
+  content: "Summarize the open pull requests.",
+  role: "system",
+};
+```
+
+## Fields
+
+| Field                                                                                                                                                                                    | Type                                                                                                                                                                                     | Required                                                                                                                                                                                 | Description                                                                                                                                                                              | Example                                                                                                                                                                                  |
+| ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `content`                                                                                                                                                                                | *models.InternChatMessageContent*                                                                                                                                                        | :heavy_check_mark:                                                                                                                                                                       | Message text as a string or a list of text parts. Assistant history may carry null. Only the last message is read; earlier messages are accepted so ordinary clients can resend history. | Summarize the open pull requests.                                                                                                                                                        |
+| `role`                                                                                                                                                                                   | *"system"*                                                                                                                                                                               | :heavy_check_mark:                                                                                                                                                                       | N/A                                                                                                                                                                                      |                                                                                                                                                                                          |

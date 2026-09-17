@@ -1,0 +1,26 @@
+---
+title: "InternChatMessageContent"
+---
+
+Message text as a string or a list of text parts. Assistant history may carry null. Only the last message is read; earlier messages are accepted so ordinary clients can resend history.
+
+
+## Supported Types
+
+### `string`
+
+```typescript
+const value: string = "Summarize the open pull requests.";
+```
+
+### `models.InternChatTextPart[]`
+
+```typescript
+const value: models.InternChatTextPart[] = [
+  {
+    text: "Summarize the open pull requests.",
+    type: "text",
+  },
+];
+```
+

@@ -19,6 +19,7 @@ export * from "./createembeddings.js";
 export * from "./createguardrail.js";
 export * from "./createimages.js";
 export * from "./createintern.js";
+export * from "./createinternchatcompletion.js";
 export * from "./createkeys.js";
 export * from "./createoauthtoken.js";
 export * from "./createobservabilitydestination.js";

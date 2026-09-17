@@ -1,0 +1,27 @@
+---
+title: "InternChatEchoedToolCall"
+---
+
+The `openrouter.provide_input` tool call from the previous response, echoed back unchanged. Its `id` is the interaction the following `tool` message answers.
+
+## Example Usage
+
+```typescript
+import { InternChatEchoedToolCall } from "@openrouter/sdk/models";
+
+let value: InternChatEchoedToolCall = {
+  function: {
+    arguments:
+      "{\"kind\":\"permission\",\"operation\":\"shell\",\"options\":[\"allow_once\",\"reject_once\"]}",
+    name: "openrouter.provide_input",
+  },
+  id: "15e90ad6-5320-4a59-af4f-b371428154fa",
+};
+```
+
+## Fields
+
+| Field                                                                                                                                                 | Type                                                                                                                                                  | Required                                                                                                                                              | Description                                                                                                                                           | Example                                                                                                                                               |
+| ----------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `function`                                                                                                                                            | [models.InternChatEchoedToolCallFunction](../models/internchatechoedtoolcallfunction.mdx)                                                              | :heavy_check_mark:                                                                                                                                    | The function name and JSON arguments string exactly as streamed.                                                                                      | \{<br/>"arguments": "\{\"kind\":\"permission\",\"operation\":\"shell\",\"options\":[\"allow_once\",\"reject_once\"]}",<br/>"name": "openrouter.provide_input"<br/>} |
+| `id`                                                                                                                                                  | *string*                                                                                                                                              | :heavy_check_mark:                                                                                                                                    | N/A                                                                                                                                                   |                                                                                                                                                       |
