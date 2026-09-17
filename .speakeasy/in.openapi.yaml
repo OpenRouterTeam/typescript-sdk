@@ -349,7 +349,7 @@ components:
                   - $ref: '#/components/schemas/InputImage'
                   - properties: {}
                     type: 'object'
-                description: 'Image input content item'
+                description: 'Image input content item. Provide either an image_url (a URL or a base64 data URL) or the file_id of an uploaded image.'
                 example:
                   detail: 'auto'
                   image_url: 'https://example.com/image.jpg'
@@ -8083,7 +8083,7 @@ components:
                           - $ref: '#/components/schemas/InputImage'
                           - properties: {}
                             type: 'object'
-                        description: 'Image input content item'
+                        description: 'Image input content item. Provide either an image_url (a URL or a base64 data URL) or the file_id of an uploaded image.'
                         example:
                           detail: 'auto'
                           image_url: 'https://example.com/image.jpg'
@@ -8353,7 +8353,7 @@ components:
                       - $ref: '#/components/schemas/InputImage'
                       - properties: {}
                         type: 'object'
-                    description: 'Image input content item'
+                    description: 'Image input content item. Provide either an image_url (a URL or a base64 data URL) or the file_id of an uploaded image.'
                     example:
                       detail: 'auto'
                       image_url: 'https://example.com/image.jpg'
@@ -8975,7 +8975,7 @@ components:
                           - $ref: '#/components/schemas/InputImage'
                           - properties: {}
                             type: 'object'
-                        description: 'Image input content item'
+                        description: 'Image input content item. Provide either an image_url (a URL or a base64 data URL) or the file_id of an uploaded image.'
                         example:
                           detail: 'auto'
                           image_url: 'https://example.com/image.jpg'
@@ -11721,7 +11721,7 @@ components:
         - 'type'
       type: 'object'
     InputImage:
-      description: 'Image input content item'
+      description: 'Image input content item. Provide either an image_url (a URL or a base64 data URL) or the file_id of an uploaded image.'
       example:
         detail: 'auto'
         image_url: 'https://example.com/image.jpg'
@@ -11734,6 +11734,10 @@ components:
             - 'low'
             - 'original'
           type: 'string'
+        file_id:
+          type:
+            - 'string'
+            - 'null'
         image_url:
           type:
             - 'string'
@@ -11763,7 +11767,7 @@ components:
                   - $ref: '#/components/schemas/InputImage'
                   - properties: {}
                     type: 'object'
-                description: 'Image input content item'
+                description: 'Image input content item. Provide either an image_url (a URL or a base64 data URL) or the file_id of an uploaded image.'
                 example:
                   detail: 'auto'
                   image_url: 'https://example.com/image.jpg'
