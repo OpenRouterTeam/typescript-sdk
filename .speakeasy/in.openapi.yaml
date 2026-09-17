@@ -4722,6 +4722,7 @@ components:
         - 'tenstorrent'
         - 'thinkingmachines'
         - 'together'
+        - 'typesafe'
         - 'upstage'
         - 'venice'
         - 'voyageai'
@@ -8206,6 +8207,198 @@ components:
         - 'debug'
         - 'sequence_number'
       type: 'object'
+    DecisionsChoiceAnswer:
+      properties:
+        choice:
+          type: 'string'
+        confidence:
+          format: 'double'
+          type: 'number'
+        probabilities:
+          additionalProperties:
+            format: 'double'
+            type: 'number'
+          type: 'object'
+        type:
+          enum:
+            - 'choice'
+          type: 'string'
+      required:
+        - 'type'
+        - 'choice'
+      type: 'object'
+    DecisionsChoiceQuestion:
+      properties:
+        criteria:
+          additionalProperties:
+            type: 'string'
+          type: 'object'
+        instructions:
+          type: 'string'
+        type:
+          enum:
+            - 'choice'
+          type: 'string'
+      required:
+        - 'type'
+        - 'instructions'
+        - 'criteria'
+      type: 'object'
+    DecisionsNoulAnswer:
+      properties:
+        noul:
+          format: 'double'
+          type: 'number'
+        type:
+          enum:
+            - 'noul'
+          type: 'string'
+      required:
+        - 'type'
+        - 'noul'
+      type: 'object'
+    DecisionsNoulQuestion:
+      properties:
+        criteria:
+          properties:
+            'false':
+              type: 'string'
+            'true':
+              type: 'string'
+          required:
+            - 'true'
+            - 'false'
+          type: 'object'
+        instructions:
+          type: 'string'
+        type:
+          enum:
+            - 'noul'
+          type: 'string'
+      required:
+        - 'type'
+        - 'instructions'
+      type: 'object'
+    DecisionsRequest:
+      properties:
+        model:
+          type: 'string'
+        provider:
+          allOf:
+            - $ref: '#/components/schemas/ProviderPreferences'
+            - description: 'Provider routing preferences for the request.'
+        questions:
+          additionalProperties:
+            description: 'A Decisions question using a boolean, choice, or ordered score evaluation.'
+            discriminator:
+              mapping:
+                choice: '#/components/schemas/DecisionsChoiceQuestion'
+                noul: '#/components/schemas/DecisionsNoulQuestion'
+                score: '#/components/schemas/DecisionsScoreQuestion'
+              propertyName: 'type'
+            oneOf:
+              - $ref: '#/components/schemas/DecisionsNoulQuestion'
+              - $ref: '#/components/schemas/DecisionsChoiceQuestion'
+              - $ref: '#/components/schemas/DecisionsScoreQuestion'
+          type: 'object'
+        session_id:
+          description: 'A unique identifier for grouping related requests (e.g., a conversation or agent workflow). Used for observability grouping in Broadcast and private logging; never sent to the provider. If provided in both the request body and the x-session-id header, the body value takes precedence. Maximum of 256 characters.'
+          example: 'session-1234'
+          maxLength: 256
+          type: 'string'
+        state: {}
+        trace:
+          $ref: '#/components/schemas/TraceConfig'
+        user:
+          maxLength: 256
+          type: 'string'
+      required:
+        - 'model'
+        - 'state'
+        - 'questions'
+      type: 'object'
+    DecisionsResponse:
+      properties:
+        answers:
+          additionalProperties:
+            description: 'A Decisions answer using a boolean, choice, or score evaluation.'
+            discriminator:
+              mapping:
+                choice: '#/components/schemas/DecisionsChoiceAnswer'
+                noul: '#/components/schemas/DecisionsNoulAnswer'
+                score: '#/components/schemas/DecisionsScoreAnswer'
+              propertyName: 'type'
+            oneOf:
+              - $ref: '#/components/schemas/DecisionsNoulAnswer'
+              - $ref: '#/components/schemas/DecisionsChoiceAnswer'
+              - $ref: '#/components/schemas/DecisionsScoreAnswer'
+          type: 'object'
+        id:
+          type: 'string'
+        model:
+          type: 'string'
+        provider:
+          type: 'string'
+        usage:
+          properties:
+            cost:
+              format: 'double'
+              type: 'number'
+            input_tokens:
+              type: 'integer'
+            output_tokens:
+              type: 'integer'
+          required:
+            - 'input_tokens'
+            - 'output_tokens'
+          type: 'object'
+      required:
+        - 'model'
+        - 'answers'
+        - 'usage'
+      type: 'object'
+    DecisionsScoreAnswer:
+      properties:
+        confidence:
+          format: 'double'
+          type: 'number'
+        legend:
+          additionalProperties:
+            type: 'string'
+          type: 'object'
+        probabilities:
+          additionalProperties:
+            format: 'double'
+            type: 'number'
+          type: 'object'
+        score:
+          format: 'double'
+          type: 'number'
+        type:
+          enum:
+            - 'score'
+          type: 'string'
+      required:
+        - 'type'
+        - 'score'
+      type: 'object'
+    DecisionsScoreQuestion:
+      properties:
+        criteria:
+          items:
+            type: 'string'
+          type: 'array'
+        instructions:
+          type: 'string'
+        type:
+          enum:
+            - 'score'
+          type: 'string'
+      required:
+        - 'type'
+        - 'instructions'
+        - 'criteria'
+      type: 'object'
     DefaultParameters:
       additionalProperties: false
       description: 'Default parameters for this model'
@@ -9868,6 +10061,7 @@ components:
                 - 'stt'
                 - 'video'
                 - 'image'
+                - 'decisions'
                 - null
               type:
                 - 'string'
@@ -11525,6 +11719,7 @@ components:
         - 'audio'
         - 'video'
         - 'rerank'
+        - 'decisions'
         - 'speech'
         - 'transcription'
       example: 'image'
@@ -15107,6 +15302,7 @@ components:
                 - 'Moonshot AI'
                 - 'Morph'
                 - 'VoyageAI by MongoDB'
+                - 'TypeSafe'
                 - 'Near AI'
                 - 'Nebius'
                 - 'Nex AGI'
@@ -21055,6 +21251,7 @@ components:
         - 'audio'
         - 'video'
         - 'rerank'
+        - 'decisions'
         - 'speech'
         - 'transcription'
       example: 'text'
@@ -22319,6 +22516,7 @@ components:
         - 'Moonshot AI'
         - 'Morph'
         - 'VoyageAI by MongoDB'
+        - 'TypeSafe'
         - 'Near AI'
         - 'Nebius'
         - 'Nex AGI'
@@ -22763,6 +22961,9 @@ components:
         together-lite:
           additionalProperties: {}
           type: 'object'
+        typesafe:
+          additionalProperties: {}
+          type: 'object'
         ubicloud:
           additionalProperties: {}
           type: 'object'
@@ -23077,6 +23278,7 @@ components:
             - 'Moonshot AI'
             - 'Morph'
             - 'VoyageAI by MongoDB'
+            - 'TypeSafe'
             - 'Near AI'
             - 'Nebius'
             - 'Nex AGI'
@@ -29709,6 +29911,147 @@ paths:
       summary: 'Query analytics data'
       tags:
         - 'Analytics'
+  /api/alpha/decisions:
+    post:
+      description: 'Submits a Decisions request to the Decisions router'
+      operationId: 'createApiAlphaDecisions'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DecisionsRequest'
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DecisionsResponse'
+          description: 'Decisions response'
+        '400':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 400
+                  message: 'Invalid request parameters'
+              schema:
+                $ref: '#/components/schemas/BadRequestResponse'
+          description: 'Bad Request - Invalid request parameters or malformed input'
+        '401':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 401
+                  message: 'Missing Authentication header'
+              schema:
+                $ref: '#/components/schemas/UnauthorizedResponse'
+          description: 'Unauthorized - Authentication required or invalid credentials'
+        '402':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 402
+                  message: 'Insufficient credits. Add more using https://openrouter.ai/credits'
+              schema:
+                $ref: '#/components/schemas/PaymentRequiredResponse'
+          description: 'Payment Required - Insufficient credits or quota to complete request'
+        '403':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 403
+                  message: 'Only management keys can perform this operation'
+              schema:
+                $ref: '#/components/schemas/ForbiddenResponse'
+          description: 'Forbidden - Authentication successful but insufficient permissions'
+        '404':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 404
+                  message: 'Resource not found'
+              schema:
+                $ref: '#/components/schemas/NotFoundResponse'
+          description: 'Not Found - Resource does not exist'
+        '413':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 413
+                  message: 'Request payload too large'
+              schema:
+                $ref: '#/components/schemas/PayloadTooLargeResponse'
+          description: 'Payload Too Large - Request payload exceeds size limits'
+        '429':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 429
+                  message: 'Rate limit exceeded'
+              schema:
+                $ref: '#/components/schemas/TooManyRequestsResponse'
+          description: 'Too Many Requests - Rate limit exceeded'
+        '500':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 500
+                  message: 'Internal Server Error'
+              schema:
+                $ref: '#/components/schemas/InternalServerResponse'
+          description: 'Internal Server Error - Unexpected server error'
+        '502':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 502
+                  message: 'Provider returned error'
+              schema:
+                $ref: '#/components/schemas/BadGatewayResponse'
+          description: 'Bad Gateway - Provider/upstream API failure'
+        '503':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 503
+                  message: 'Service temporarily unavailable'
+              schema:
+                $ref: '#/components/schemas/ServiceUnavailableResponse'
+          description: 'Service Unavailable - Service temporarily unavailable'
+        '524':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 524
+                  message: 'Request timed out. Please try again later.'
+              schema:
+                $ref: '#/components/schemas/EdgeNetworkTimeoutResponse'
+          description: 'Infrastructure Timeout - Provider request timed out at edge network'
+        '529':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 529
+                  message: 'Provider returned error'
+              schema:
+                $ref: '#/components/schemas/ProviderOverloadedResponse'
+          description: 'Provider Overloaded - Provider is temporarily overloaded'
+      summary: 'Submit a Decisions (questions and answers) request'
+      tags:
+        - 'Decisions'
+      x-speakeasy-name-override: 'decisions'
   /audio/speech:
     post:
       description: 'Synthesizes audio from the input text. Returns a raw audio bytestream in the requested format (e.g. mp3, pcm, wav).'
@@ -30677,6 +31020,7 @@ paths:
               - 'tenstorrent'
               - 'thinkingmachines'
               - 'together'
+              - 'typesafe'
               - 'upstage'
               - 'venice'
               - 'voyageai'
@@ -38372,12 +38716,12 @@ paths:
             description: 'Filter models by supported parameter (comma-separated)'
             example: 'temperature'
             type: 'string'
-        - description: 'Filter models by output modality. Accepts a comma-separated list of modalities (text, image, embeddings, audio, video, rerank, speech, transcription) or "all" to include all models. Defaults to "text".'
+        - description: 'Filter models by output modality. Accepts a comma-separated list of modalities (text, image, embeddings, audio, video, rerank, decisions, speech, transcription) or "all" to include all models. Defaults to "text".'
           in: 'query'
           name: 'output_modalities'
           required: false
           schema:
-            description: 'Filter models by output modality. Accepts a comma-separated list of modalities (text, image, embeddings, audio, video, rerank, speech, transcription) or "all" to include all models. Defaults to "text".'
+            description: 'Filter models by output modality. Accepts a comma-separated list of modalities (text, image, embeddings, audio, video, rerank, decisions, speech, transcription) or "all" to include all models. Defaults to "text".'
             example: 'text'
             type: 'string'
         - description: 'Sort the returned models server-side. Prefer this over fetching the full list and sorting client-side. Options: pricing-low-to-high, pricing-high-to-low (average prompt/completion price), context-high-to-low (context length), throughput-high-to-low, latency-low-to-high (recent median performance), most-popular, top-weekly (tokens processed in the last week), newest (creation date), intelligence-high-to-low, coding-high-to-low, agentic-high-to-low (Artificial Analysis indices), design-arena-elo-high-to-low (best Design Arena ELO across arenas). Models without a score for the chosen benchmark are placed last. When omitted, the existing default ordering is preserved.'
@@ -38880,12 +39224,12 @@ paths:
     get:
       operationId: 'listModelsCount'
       parameters:
-        - description: 'Filter models by output modality. Accepts a comma-separated list of modalities (text, image, embeddings, audio, video, rerank, speech, transcription) or "all" to include all models. Defaults to "text".'
+        - description: 'Filter models by output modality. Accepts a comma-separated list of modalities (text, image, embeddings, audio, video, rerank, decisions, speech, transcription) or "all" to include all models. Defaults to "text".'
           in: 'query'
           name: 'output_modalities'
           required: false
           schema:
-            description: 'Filter models by output modality. Accepts a comma-separated list of modalities (text, image, embeddings, audio, video, rerank, speech, transcription) or "all" to include all models. Defaults to "text".'
+            description: 'Filter models by output modality. Accepts a comma-separated list of modalities (text, image, embeddings, audio, video, rerank, decisions, speech, transcription) or "all" to include all models. Defaults to "text".'
             example: 'text'
             type: 'string'
       responses:
@@ -38960,12 +39304,12 @@ paths:
             maximum: 1000
             minimum: 1
             type: 'integer'
-        - description: 'Filter models by output modality. Accepts a comma-separated list of modalities (text, image, embeddings, audio, video, rerank, speech, transcription) or "all" to include all models. Defaults to "text".'
+        - description: 'Filter models by output modality. Accepts a comma-separated list of modalities (text, image, embeddings, audio, video, rerank, decisions, speech, transcription) or "all" to include all models. Defaults to "text".'
           in: 'query'
           name: 'output_modalities'
           required: false
           schema:
-            description: 'Filter models by output modality. Accepts a comma-separated list of modalities (text, image, embeddings, audio, video, rerank, speech, transcription) or "all" to include all models. Defaults to "text".'
+            description: 'Filter models by output modality. Accepts a comma-separated list of modalities (text, image, embeddings, audio, video, rerank, decisions, speech, transcription) or "all" to include all models. Defaults to "text".'
             example: 'text'
             type: 'string'
       responses:
@@ -45043,6 +45387,8 @@ tags:
     name: 'Credits'
   - description: 'Public OpenRouter usage datasets. Data returned by these endpoints is licensed under CC BY 4.0 (https://creativecommons.org/licenses/by/4.0/): reuse and republish it, including commercially, with attribution to OpenRouter.'
     name: 'Datasets'
+  - description: 'Decisions endpoints'
+    name: 'Decisions'
   - description: 'Text embedding endpoints'
     name: 'Embeddings'
   - description: 'Endpoint information'
