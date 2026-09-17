@@ -154,6 +154,7 @@ export type ImageGenerationProviderPreferencesOptions = {
   togetherLite?: { [k: string]: any } | undefined;
   typesafe?: { [k: string]: any } | undefined;
   ubicloud?: { [k: string]: any } | undefined;
+  unbiased?: { [k: string]: any } | undefined;
   upstage?: { [k: string]: any } | undefined;
   venice?: { [k: string]: any } | undefined;
   voyageai?: { [k: string]: any } | undefined;
@@ -380,6 +381,7 @@ export type ImageGenerationProviderPreferencesOptions$Outbound = {
   "together-lite"?: { [k: string]: any } | undefined;
   typesafe?: { [k: string]: any } | undefined;
   ubicloud?: { [k: string]: any } | undefined;
+  unbiased?: { [k: string]: any } | undefined;
   upstage?: { [k: string]: any } | undefined;
   venice?: { [k: string]: any } | undefined;
   voyageai?: { [k: string]: any } | undefined;
@@ -530,6 +532,7 @@ export const ImageGenerationProviderPreferencesOptions$outboundSchema:
     togetherLite: z.record(z.string(), z.any()).optional(),
     typesafe: z.record(z.string(), z.any()).optional(),
     ubicloud: z.record(z.string(), z.any()).optional(),
+    unbiased: z.record(z.string(), z.any()).optional(),
     upstage: z.record(z.string(), z.any()).optional(),
     venice: z.record(z.string(), z.any()).optional(),
     voyageai: z.record(z.string(), z.any()).optional(),
