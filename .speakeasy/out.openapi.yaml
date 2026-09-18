@@ -23709,6 +23709,26 @@ components:
           additionalProperties: false
           description: 'Endpoint performance over the last 30 minutes, keyed by the kind of request served (e.g. `text_generation`, `image_generation`). Additive to the legacy singular latency and throughput fields; image and video generation report end-to-end latency. Only visible when authenticated with an API key or cookie.'
           properties:
+            decisions:
+              properties:
+                latency:
+                  allOf:
+                    - $ref: '#/components/schemas/PercentileStats'
+                    - description: 'Latency percentiles in milliseconds for this workload. Image and video generation report full end-to-end generation time, because their raw latency only measures request acknowledgement; every other workload reports time to first token or result.'
+                request_count:
+                  description: 'Total requests admitted for this workload in the window.'
+                  type:
+                    - 'integer'
+                    - 'null'
+                throughput:
+                  allOf:
+                    - $ref: '#/components/schemas/PercentileStats'
+                    - description: 'Throughput percentiles in tokens per second. Only meaningful for text generation; null for workloads without token throughput.'
+              required:
+                - 'latency'
+                - 'throughput'
+                - 'request_count'
+              type: 'object'
             embeddings:
               properties:
                 latency:
