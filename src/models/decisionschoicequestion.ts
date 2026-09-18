@@ -5,16 +5,64 @@
 
 import * as z from "zod/v4";
 
+/**
+ * A plain string, or a JSON object or array of structured guidance.
+ */
+export type Criteria = string | { [k: string]: any } | Array<any>;
+
+/**
+ * A plain string, or a JSON object or array of structured guidance.
+ */
+export type DecisionsChoiceQuestionInstructions =
+  | string
+  | { [k: string]: any }
+  | Array<any>;
+
 export type DecisionsChoiceQuestion = {
-  criteria: { [k: string]: string };
-  instructions: string;
+  criteria: { [k: string]: string | { [k: string]: any } | Array<any> | null };
+  /**
+   * A plain string, or a JSON object or array of structured guidance.
+   */
+  instructions: string | { [k: string]: any } | Array<any>;
   type: "choice";
 };
 
 /** @internal */
+export type Criteria$Outbound = string | { [k: string]: any } | Array<any>;
+
+/** @internal */
+export const Criteria$outboundSchema: z.ZodType<Criteria$Outbound, Criteria> = z
+  .union([z.string(), z.record(z.string(), z.any()), z.array(z.any())]);
+
+export function criteriaToJSON(criteria: Criteria): string {
+  return JSON.stringify(Criteria$outboundSchema.parse(criteria));
+}
+
+/** @internal */
+export type DecisionsChoiceQuestionInstructions$Outbound = string | {
+  [k: string]: any;
+} | Array<any>;
+
+/** @internal */
+export const DecisionsChoiceQuestionInstructions$outboundSchema: z.ZodType<
+  DecisionsChoiceQuestionInstructions$Outbound,
+  DecisionsChoiceQuestionInstructions
+> = z.union([z.string(), z.record(z.string(), z.any()), z.array(z.any())]);
+
+export function decisionsChoiceQuestionInstructionsToJSON(
+  decisionsChoiceQuestionInstructions: DecisionsChoiceQuestionInstructions,
+): string {
+  return JSON.stringify(
+    DecisionsChoiceQuestionInstructions$outboundSchema.parse(
+      decisionsChoiceQuestionInstructions,
+    ),
+  );
+}
+
+/** @internal */
 export type DecisionsChoiceQuestion$Outbound = {
-  criteria: { [k: string]: string };
-  instructions: string;
+  criteria: { [k: string]: string | { [k: string]: any } | Array<any> | null };
+  instructions: string | { [k: string]: any } | Array<any>;
   type: "choice";
 };
 
@@ -23,8 +71,17 @@ export const DecisionsChoiceQuestion$outboundSchema: z.ZodType<
   DecisionsChoiceQuestion$Outbound,
   DecisionsChoiceQuestion
 > = z.object({
-  criteria: z.record(z.string(), z.string()),
-  instructions: z.string(),
+  criteria: z.record(
+    z.string(),
+    z.nullable(
+      z.union([z.string(), z.record(z.string(), z.any()), z.array(z.any())]),
+    ),
+  ),
+  instructions: z.union([
+    z.string(),
+    z.record(z.string(), z.any()),
+    z.array(z.any()),
+  ]),
   type: z.literal("choice"),
 });
 

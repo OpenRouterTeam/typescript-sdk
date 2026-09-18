@@ -5,16 +5,66 @@
 
 import * as z from "zod/v4";
 
+/**
+ * A plain string, or a JSON object or array of structured guidance.
+ */
+export type Criterion = string | { [k: string]: any } | Array<any>;
+
+/**
+ * A plain string, or a JSON object or array of structured guidance.
+ */
+export type DecisionsScoreQuestionInstructions =
+  | string
+  | { [k: string]: any }
+  | Array<any>;
+
 export type DecisionsScoreQuestion = {
-  criteria: Array<string>;
-  instructions: string;
+  criteria: Array<string | { [k: string]: any } | Array<any>>;
+  /**
+   * A plain string, or a JSON object or array of structured guidance.
+   */
+  instructions: string | { [k: string]: any } | Array<any>;
   type: "score";
 };
 
 /** @internal */
+export type Criterion$Outbound = string | { [k: string]: any } | Array<any>;
+
+/** @internal */
+export const Criterion$outboundSchema: z.ZodType<
+  Criterion$Outbound,
+  Criterion
+> = z.union([z.string(), z.record(z.string(), z.any()), z.array(z.any())]);
+
+export function criterionToJSON(criterion: Criterion): string {
+  return JSON.stringify(Criterion$outboundSchema.parse(criterion));
+}
+
+/** @internal */
+export type DecisionsScoreQuestionInstructions$Outbound = string | {
+  [k: string]: any;
+} | Array<any>;
+
+/** @internal */
+export const DecisionsScoreQuestionInstructions$outboundSchema: z.ZodType<
+  DecisionsScoreQuestionInstructions$Outbound,
+  DecisionsScoreQuestionInstructions
+> = z.union([z.string(), z.record(z.string(), z.any()), z.array(z.any())]);
+
+export function decisionsScoreQuestionInstructionsToJSON(
+  decisionsScoreQuestionInstructions: DecisionsScoreQuestionInstructions,
+): string {
+  return JSON.stringify(
+    DecisionsScoreQuestionInstructions$outboundSchema.parse(
+      decisionsScoreQuestionInstructions,
+    ),
+  );
+}
+
+/** @internal */
 export type DecisionsScoreQuestion$Outbound = {
-  criteria: Array<string>;
-  instructions: string;
+  criteria: Array<string | { [k: string]: any } | Array<any>>;
+  instructions: string | { [k: string]: any } | Array<any>;
   type: "score";
 };
 
@@ -23,8 +73,14 @@ export const DecisionsScoreQuestion$outboundSchema: z.ZodType<
   DecisionsScoreQuestion$Outbound,
   DecisionsScoreQuestion
 > = z.object({
-  criteria: z.array(z.string()),
-  instructions: z.string(),
+  criteria: z.array(
+    z.union([z.string(), z.record(z.string(), z.any()), z.array(z.any())]),
+  ),
+  instructions: z.union([
+    z.string(),
+    z.record(z.string(), z.any()),
+    z.array(z.any()),
+  ]),
   type: z.literal("score"),
 });
 

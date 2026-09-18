@@ -9,19 +9,21 @@ import { DecisionsChoiceQuestion } from "@openrouter/sdk/models";
 
 let value: DecisionsChoiceQuestion = {
   criteria: {
-    "key": "<value>",
-    "key1": "<value>",
-    "key2": "<value>",
+    "key": {
+      "key": "<value>",
+    },
   },
-  instructions: "<value>",
+  instructions: {
+    "0": "<value 1>",
+  },
   type: "choice",
 };
 ```
 
 ## Fields
 
-| Field                    | Type                     | Required                 | Description              |
-| ------------------------ | ------------------------ | ------------------------ | ------------------------ |
-| `criteria`               | Record\<string, *string*> | :heavy_check_mark:       | N/A                      |
-| `instructions`           | *string*                 | :heavy_check_mark:       | N/A                      |
-| `type`                   | *"choice"*               | :heavy_check_mark:       | N/A                      |
+| Field                                                             | Type                                                              | Required                                                          | Description                                                       |
+| ----------------------------------------------------------------- | ----------------------------------------------------------------- | ----------------------------------------------------------------- | ----------------------------------------------------------------- |
+| `criteria`                                                        | Record\<string, *models.Criteria*>                                 | :heavy_check_mark:                                                | N/A                                                               |
+| `instructions`                                                    | *models.DecisionsChoiceQuestionInstructions*                      | :heavy_check_mark:                                                | A plain string, or a JSON object or array of structured guidance. |
+| `type`                                                            | *"choice"*                                                        | :heavy_check_mark:                                                | N/A                                                               |
