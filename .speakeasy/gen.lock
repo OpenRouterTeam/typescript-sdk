@@ -1,19 +1,19 @@
 lockVersion: ""
 id: ""
 management:
-  docChecksum: 189f8c484d1c19c432005f67f02f30cc
+  docChecksum: d82f5c788d40ef788e3af0237680bcfb
   docVersion: 1.0.0
   speakeasyVersion: 1.787.0
   generationVersion: 2.914.0
-  releaseVersion: 1.2.143
-  configChecksum: a53db3c17ebc9bccf5a8de04aa218ad4
+  releaseVersion: 1.2.144
+  configChecksum: 8a2f67d0c8c2aa3ff2feeacc75a844c4
   repoURL: https://github.com/OpenRouterTeam/typescript-sdk.git
   installationURL: https://github.com/OpenRouterTeam/typescript-sdk
   published: true
 persistentEdits:
-  generation_id: 89cd10cf-5eea-4845-b573-3b9404aca8ce
-  pristine_commit_hash: 568531b688636f24e743885cca6fdf4ea7774757
-  pristine_tree_hash: a83ce3e4351b366e1c64a41ec00b3daeee193a66
+  generation_id: 2435d8c7-de00-488d-84e5-2fd40ea2e51e
+  pristine_commit_hash: 690710d006beaf8208e5c62cdc71dce50f8e1c3a
+  pristine_tree_hash: c4aa96d9e0c26e49f0d2a1c3258e209fecd113e7
 features:
   typescript:
     acceptHeaders: 2.81.2
@@ -13729,12 +13729,12 @@ trackedFiles:
     pristine_git_object: 410efafd6a7f50d91ccb87131fedbe0c3d47e15a
   jsr.json:
     id: 7f6ab7767282
-    last_write_checksum: sha1:2b381c8ad16a429fc3f96a300ff530b2c6614aba
-    pristine_git_object: a8c6fe4157c7c98a303cda6880376e925ed4c17f
+    last_write_checksum: sha1:6478ab1a321cff23a9147cfc8192c7770f901d38
+    pristine_git_object: 03caa3db6a6aab66b7a46067446cede41759370f
   package.json:
     id: 7030d0b2f71b
-    last_write_checksum: sha1:bc3ff8b0850cf71a6f3b9349587b70eadfa7400b
-    pristine_git_object: aa785f7fc95da10618a6bef9c56ce8d598936472
+    last_write_checksum: sha1:8d4dfb8997a74af037c0616d6b1f1e6de906adb0
+    pristine_git_object: 10150f3d8aee92e0de571d77c950d60303bb1414
   src/core.ts:
     id: f431fdbcd144
     last_write_checksum: sha1:5aa66b0b6a5964f3eea7f3098c2eb3c0ee9c0131
@@ -14241,8 +14241,8 @@ trackedFiles:
     pristine_git_object: a187e58707bdb726ca2aff74941efe7493422d4e
   src/lib/config.ts:
     id: 320761608fb3
-    last_write_checksum: sha1:0bbb7e61123fbf9523f1bf2c9ec302ab839e017b
-    pristine_git_object: d3201add84382e89098b4e61c3042c41c401e46d
+    last_write_checksum: sha1:b3a3fc8f0a1ce2aa82d437b3e3a11ae671a42fea
+    pristine_git_object: d6c0b5b0571355464091dd680b317310f65f7a06
   src/lib/dlv.ts:
     id: b1988214835a
     last_write_checksum: sha1:eaac763b22717206a6199104e0403ed17a4e2711
@@ -21028,4 +21028,3 @@ examples:
         "529":
           application/json: {"error": {"code": 529, "message": "Provider returned error"}}
 examplesVersion: 1.0.2
-releaseNotes: "## Typescript SDK Changes:\n* `openrouter.decisions.create()`: \n  *  `request.decisionsRequest.provider.ignore[].union(ProviderName).enum(unbiased)` **Added**\n* `openrouter.tts.createSpeech()`: \n  *  `request.speechRequest.provider.options.unbiased` **Added**\n* `openrouter.stt.createTranscription()`: \n  *  `request.sttRequest.provider.options.unbiased` **Added**\n* `openrouter.byok.list()`: \n  *  `request.provider` **Changed**\n  *  `response.data[].provider.enum(unbiased)` **Added**\n* `openrouter.byok.create()`: \n  *  `request.createByokKeyRequest.provider.enum(unbiased)` **Added**\n  *  `response.data.provider.enum(unbiased)` **Added**\n* `openrouter.byok.get()`:  `response.data.provider.enum(unbiased)` **Added**\n* `openrouter.byok.update()`:  `response.data.provider.enum(unbiased)` **Added**\n* `openrouter.chat.send()`: \n  *  `request.chatRequest.provider.ignore[].union(ProviderName).enum(unbiased)` **Added**\n* `openrouter.embeddings.generate()`: \n  *  `request.requestBody.provider.ignore[].union(ProviderName).enum(unbiased)` **Added**\n* `openrouter.endpoints.listZdrEndpoints()`:  `response.data[].providerName.enum(unbiased)` **Added**\n* `openrouter.endpoints.list()`:  `response.data.endpoints[].providerName.enum(unbiased)` **Added**\n* `openrouter.generations.getGeneration()`:  `response.data.providerResponses[].providerName.enum(unbiased)` **Added**\n* `openrouter.images.generate()`: \n  *  `request.imageGenerationRequest.provider` **Changed**\n* `openrouter.presets.createPresetsChatCompletions()`: \n  *  `request.chatRequest.provider.ignore[].union(ProviderName).enum(unbiased)` **Added**\n* `openrouter.presets.createPresetsMessages()`: \n  *  `request.messagesRequest.provider.ignore[].union(ProviderName).enum(unbiased)` **Added**\n* `openrouter.presets.createPresetsResponses()`: \n  *  `request.responsesRequest.provider.ignore[].union(ProviderName).enum(unbiased)` **Added**\n* `openrouter.rerank.rerank()`: \n  *  `request.requestBody.provider.ignore[].union(ProviderName).enum(unbiased)` **Added**\n* `openrouter.responses.send()`: \n  *  `request.responsesRequest.provider.ignore[].union(ProviderName).enum(unbiased)` **Added**\n* `openrouter.beta.responses.send()`: \n  *  `request.responsesRequest.provider.ignore[].union(ProviderName).enum(unbiased)` **Added**\n* `openrouter.videoGeneration.generate()`: \n  *  `request.videoGenerationRequest.provider.options.unbiased` **Added**\n"
