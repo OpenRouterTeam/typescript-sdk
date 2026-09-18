@@ -1,19 +1,19 @@
 lockVersion: ""
 id: ""
 management:
-  docChecksum: 266da32ca2e7dfff46be49053bd90e51
+  docChecksum: 1e5c969b584369bfe12aff59a6511d56
   docVersion: 1.0.0
   speakeasyVersion: 1.787.0
   generationVersion: 2.914.0
-  releaseVersion: 1.2.147
-  configChecksum: 0290a711d5a709f9e367cf6b626f4653
+  releaseVersion: 1.2.148
+  configChecksum: fa0bfe3564e69958703debca9f49503d
   repoURL: https://github.com/OpenRouterTeam/typescript-sdk.git
   installationURL: https://github.com/OpenRouterTeam/typescript-sdk
   published: true
 persistentEdits:
-  generation_id: f5f98eb4-0132-431e-b301-cfbb964c9ba9
-  pristine_commit_hash: 460e41db8312a0dafea6ed2f2e5ac3c68e53745a
-  pristine_tree_hash: 7c77d45d5df26d08e30c311d384278f4f539c388
+  generation_id: 7a485976-c0f7-48bb-9051-d54d8602d405
+  pristine_commit_hash: 8d54930904f45aeb1e78628a816b635f1144a67a
+  pristine_tree_hash: 7c6ad2671108fa4c73f185b0dfb12bf67c5c8aab
 features:
   typescript:
     acceptHeaders: 2.81.2
@@ -13765,12 +13765,12 @@ trackedFiles:
     pristine_git_object: 410efafd6a7f50d91ccb87131fedbe0c3d47e15a
   jsr.json:
     id: 7f6ab7767282
-    last_write_checksum: sha1:d93ed797c008083737ada33eae3b1fc03ff85690
-    pristine_git_object: c7fd097a8cd0a0778de01fb711338076afc65314
+    last_write_checksum: sha1:5be90abaa6c240c10d9e403fc2e908b46ac73ca4
+    pristine_git_object: 0c8c3687899c5923c4903674cd57735e2aed8e5a
   package.json:
     id: 7030d0b2f71b
-    last_write_checksum: sha1:335524c595c76c8c0cf77dbb7b1db467b8a7107d
-    pristine_git_object: 1998af029841de0e47684f752242697fdf8fac25
+    last_write_checksum: sha1:0809669d455d08398f39274f8dfcb35becf19b37
+    pristine_git_object: 947282fd8c1c0691397b463757753de856e30201
   src/core.ts:
     id: f431fdbcd144
     last_write_checksum: sha1:5aa66b0b6a5964f3eea7f3098c2eb3c0ee9c0131
@@ -14277,8 +14277,8 @@ trackedFiles:
     pristine_git_object: a187e58707bdb726ca2aff74941efe7493422d4e
   src/lib/config.ts:
     id: 320761608fb3
-    last_write_checksum: sha1:d901c7c101745b67bf26e3e5daa4b3133eb5f517
-    pristine_git_object: d51f73ef4bb17a20affa0b08ff80729238d2cc83
+    last_write_checksum: sha1:64cbde24a45bfa0526057adafa76675db30776d7
+    pristine_git_object: 33cfea7d5843722b7f8a6e2c31e890197ddde825
   src/lib/dlv.ts:
     id: b1988214835a
     last_write_checksum: sha1:eaac763b22717206a6199104e0403ed17a4e2711
@@ -15715,8 +15715,8 @@ trackedFiles:
     pristine_git_object: 339d2ae8ea1481ce2773571d214d8ba0966161be
   src/models/intern.ts:
     id: 88580bab3ce4
-    last_write_checksum: sha1:7a56bce104c1dff886fff02ea3e1d01e9c7612a8
-    pristine_git_object: 66d043a37070a089f38a4bc5546039df3144832a
+    last_write_checksum: sha1:e1cd6ce83869607dc6908e03dde5f95b6cab89d4
+    pristine_git_object: fabc7864bcd2854d5819564d26807bc65dab8023
   src/models/internalserverresponseerrordata.ts:
     id: 48c17eec376a
     last_write_checksum: sha1:30c28127e79d166a956d27d9b06e3772f08e9710
@@ -20946,7 +20946,7 @@ examples:
     speakeasy-default-list-interns:
       responses:
         "200":
-          application/json: {"data": [{"attached_vault_id": null, "createdAt": "2026-09-16T08:30:00.000Z", "description": "Researches customer questions", "hostname": "research-assistant.openrouter.ai", "id": "7c9e6679-7425-40de-944b-e07fc1f90ae7", "instructions": null, "lastFailureMessage": null, "model": "openai/gpt-5.4", "name": "research-assistant", "progress": null, "status": "running", "updatedAt": "2026-09-16T08:45:00.000Z", "vault_id": "b431c59d-6eed-41ac-bc89-9a89be79a121", "workspaceId": "89f9f5b2-3f89-4eaf-83ca-5ceae149e8bb"}], "has_more": false}
+          application/json: {"data": [{"attached_vault_id": null, "created_at": "2026-09-16T08:30:00.000Z", "description": "Researches customer questions", "hostname": "research-assistant.openrouter.ai", "id": "7c9e6679-7425-40de-944b-e07fc1f90ae7", "instructions": null, "last_failure_message": null, "model": "openai/gpt-5.4", "name": "research-assistant", "progress": null, "status": "running", "updated_at": "2026-09-16T08:45:00.000Z", "vault_id": "b431c59d-6eed-41ac-bc89-9a89be79a121", "workspace_id": "89f9f5b2-3f89-4eaf-83ca-5ceae149e8bb"}], "has_more": false}
         "400":
           application/json: {"error": {"code": "not_found", "message": "Intern not found"}}
         "500":
@@ -20957,7 +20957,7 @@ examples:
         application/json: {"name": "research-assistant", "provision": true, "workspace_id": "89f9f5b2-3f89-4eaf-83ca-5ceae149e8bb"}
       responses:
         "200":
-          application/json: {"attached_vault_id": null, "createdAt": "2026-09-16T08:30:00.000Z", "description": "Researches customer questions", "hostname": "research-assistant.openrouter.ai", "id": "7c9e6679-7425-40de-944b-e07fc1f90ae7", "instructions": null, "lastFailureMessage": null, "model": "openai/gpt-5.4", "name": "research-assistant", "progress": null, "status": "running", "updatedAt": "2026-09-16T08:45:00.000Z", "vault_id": "b431c59d-6eed-41ac-bc89-9a89be79a121", "workspaceId": "89f9f5b2-3f89-4eaf-83ca-5ceae149e8bb"}
+          application/json: {"attached_vault_id": null, "created_at": "2026-09-16T08:30:00.000Z", "description": "Researches customer questions", "hostname": "research-assistant.openrouter.ai", "id": "7c9e6679-7425-40de-944b-e07fc1f90ae7", "instructions": null, "last_failure_message": null, "model": "openai/gpt-5.4", "name": "research-assistant", "progress": null, "status": "running", "updated_at": "2026-09-16T08:45:00.000Z", "vault_id": "b431c59d-6eed-41ac-bc89-9a89be79a121", "workspace_id": "89f9f5b2-3f89-4eaf-83ca-5ceae149e8bb"}
         "400":
           application/json: {"error": {"code": "not_found", "message": "Intern not found"}}
         "500":
@@ -20981,7 +20981,7 @@ examples:
           internId: "7c9e6679-7425-40de-944b-e07fc1f90ae7"
       responses:
         "200":
-          application/json: {"attached_vault_id": null, "createdAt": "2026-09-16T08:30:00.000Z", "description": "Researches customer questions", "hostname": "research-assistant.openrouter.ai", "id": "7c9e6679-7425-40de-944b-e07fc1f90ae7", "instructions": null, "lastFailureMessage": null, "model": "openai/gpt-5.4", "name": "research-assistant", "progress": null, "status": "running", "updatedAt": "2026-09-16T08:45:00.000Z", "vault_id": "b431c59d-6eed-41ac-bc89-9a89be79a121", "workspaceId": "89f9f5b2-3f89-4eaf-83ca-5ceae149e8bb"}
+          application/json: {"attached_vault_id": null, "created_at": "2026-09-16T08:30:00.000Z", "description": "Researches customer questions", "hostname": "research-assistant.openrouter.ai", "id": "7c9e6679-7425-40de-944b-e07fc1f90ae7", "instructions": null, "last_failure_message": null, "model": "openai/gpt-5.4", "name": "research-assistant", "progress": null, "status": "running", "updated_at": "2026-09-16T08:45:00.000Z", "vault_id": "b431c59d-6eed-41ac-bc89-9a89be79a121", "workspace_id": "89f9f5b2-3f89-4eaf-83ca-5ceae149e8bb"}
         "401":
           application/json: {"error": {"code": "not_found", "message": "Intern not found"}}
         "500":
@@ -20995,7 +20995,7 @@ examples:
         application/json: {}
       responses:
         "200":
-          application/json: {"attached_vault_id": null, "createdAt": "2026-09-16T08:30:00.000Z", "description": "Researches customer questions", "hostname": "research-assistant.openrouter.ai", "id": "7c9e6679-7425-40de-944b-e07fc1f90ae7", "instructions": null, "lastFailureMessage": null, "model": "openai/gpt-5.4", "name": "research-assistant", "progress": null, "status": "running", "updatedAt": "2026-09-16T08:45:00.000Z", "vault_id": "b431c59d-6eed-41ac-bc89-9a89be79a121", "workspaceId": "89f9f5b2-3f89-4eaf-83ca-5ceae149e8bb"}
+          application/json: {"attached_vault_id": null, "created_at": "2026-09-16T08:30:00.000Z", "description": "Researches customer questions", "hostname": "research-assistant.openrouter.ai", "id": "7c9e6679-7425-40de-944b-e07fc1f90ae7", "instructions": null, "last_failure_message": null, "model": "openai/gpt-5.4", "name": "research-assistant", "progress": null, "status": "running", "updated_at": "2026-09-16T08:45:00.000Z", "vault_id": "b431c59d-6eed-41ac-bc89-9a89be79a121", "workspace_id": "89f9f5b2-3f89-4eaf-83ca-5ceae149e8bb"}
         "400":
           application/json: {"error": {"code": "not_found", "message": "Intern not found"}}
         "500":
@@ -21070,5 +21070,7 @@ examples:
 examplesVersion: 1.0.2
 releaseNotes: |
   ## Typescript SDK Changes:
-  * `openrouter.endpoints.listZdrEndpoints()`:  `response.data[].perfLast30mByWorkload.decisions` **Added**
-  * `openrouter.endpoints.list()`:  `response.data.endpoints[].perfLast30mByWorkload.decisions` **Added**
+  * `openrouter.interns.listInterns()`:  `response.data[]` **Changed** (Breaking ⚠️)
+  * `openrouter.interns.createIntern()`:  `response` **Changed** (Breaking ⚠️)
+  * `openrouter.interns.getIntern()`:  `response` **Changed** (Breaking ⚠️)
+  * `openrouter.interns.updateIntern()`:  `response` **Changed** (Breaking ⚠️)
