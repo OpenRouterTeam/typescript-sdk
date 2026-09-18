@@ -28,6 +28,15 @@ import {
   ToolChoiceSupport$inboundSchema,
 } from "./toolchoicesupport.js";
 
+export type Decisions = {
+  latency: PercentileStats | null;
+  /**
+   * Total requests admitted for this workload in the window.
+   */
+  requestCount: number | null;
+  throughput: PercentileStats | null;
+};
+
 export type Embeddings = {
   latency: PercentileStats | null;
   /**
@@ -104,6 +113,7 @@ export type VideoGeneration = {
  * Endpoint performance over the last 30 minutes, keyed by the kind of request served (e.g. `text_generation`, `image_generation`). Additive to the legacy singular latency and throughput fields; image and video generation report end-to-end latency. Only visible when authenticated with an API key or cookie.
  */
 export type PerfLast30mByWorkload = {
+  decisions?: Decisions | undefined;
   embeddings?: Embeddings | undefined;
   imageGeneration?: ImageGeneration | undefined;
   rerank?: Rerank | undefined;
@@ -231,6 +241,27 @@ export type PublicEndpoint = {
    */
   uptimeLast5m: number | null;
 };
+
+/** @internal */
+export const Decisions$inboundSchema: z.ZodType<Decisions, unknown> = z.object({
+  latency: z.nullable(PercentileStats$inboundSchema),
+  request_count: z.nullable(z.int()),
+  throughput: z.nullable(PercentileStats$inboundSchema),
+}).transform((v) => {
+  return remap$(v, {
+    "request_count": "requestCount",
+  });
+});
+
+export function decisionsFromJSON(
+  jsonString: string,
+): SafeParseResult<Decisions, SDKValidationError> {
+  return safeParse(
+    jsonString,
+    (x) => Decisions$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'Decisions' from JSON`,
+  );
+}
 
 /** @internal */
 export const Embeddings$inboundSchema: z.ZodType<Embeddings, unknown> = z
@@ -413,6 +444,7 @@ export const PerfLast30mByWorkload$inboundSchema: z.ZodType<
   PerfLast30mByWorkload,
   unknown
 > = z.object({
+  decisions: z.lazy(() => Decisions$inboundSchema).optional(),
   embeddings: z.lazy(() => Embeddings$inboundSchema).optional(),
   image_generation: z.lazy(() => ImageGeneration$inboundSchema).optional(),
   rerank: z.lazy(() => Rerank$inboundSchema).optional(),
