@@ -1,19 +1,19 @@
 lockVersion: ""
 id: ""
 management:
-  docChecksum: d01156639c0c24c5e731810026fc0782
+  docChecksum: b5c8f193bd2874757c45f65ff9dc855a
   docVersion: 1.0.0
   speakeasyVersion: 1.787.0
   generationVersion: 2.914.0
-  releaseVersion: 1.2.149
-  configChecksum: 329cb9655ad42df8eaf8eeee2d3ccbec
+  releaseVersion: 1.3.0
+  configChecksum: e5f144d53cd7624325bb95ef3c6ad832
   repoURL: https://github.com/OpenRouterTeam/typescript-sdk.git
   installationURL: https://github.com/OpenRouterTeam/typescript-sdk
   published: true
 persistentEdits:
-  generation_id: ae97ba02-f2b1-425f-b600-c37bb4bea747
-  pristine_commit_hash: 96cdfef3272ae34972ccac2a4d6819c92aee0c0b
-  pristine_tree_hash: 7f342d503af9d720fd868d1cd86fbfb9190da036
+  generation_id: b1cb50b8-084c-42ec-8ff4-6b1a08c98402
+  pristine_commit_hash: eea2b2dc4d013b57c49549ebd1755713c9e648bc
+  pristine_tree_hash: ee8718f8f05c87fade79356b184a858a0d2f580a
 features:
   typescript:
     acceptHeaders: 2.81.2
@@ -37,6 +37,7 @@ features:
     ignores: 2.81.1
     methodArguments: 0.1.2
     methodSecurity: 2.82.8
+    methodServerURLs: 2.82.2
     nameOverrides: 2.81.4
     nullables: 0.1.1
     openEnums: 0.1.3
@@ -13607,8 +13608,8 @@ trackedFiles:
     pristine_git_object: 0b972989cca654fde1eb8f0d583efde8b40d2002
   docs/sdks/decisions/README.mdx:
     id: a52a116ee1f3
-    last_write_checksum: sha1:27bf9554344ca888c42705bf62d66c3a2de2df7e
-    pristine_git_object: 0280ca40ad3532c0d399b6e39fbfa626cd972336
+    last_write_checksum: sha1:3527e6c1cb4b9cfed1b878cd0320431c57273538
+    pristine_git_object: a26fd6ac129071e4eead698ba241f16b42cf7343
   docs/sdks/embeddings/README.mdx:
     id: cd71581df291
     last_write_checksum: sha1:bbed37fab060807c9d9460dbcc78859c8f5f26f3
@@ -13765,20 +13766,20 @@ trackedFiles:
     pristine_git_object: 410efafd6a7f50d91ccb87131fedbe0c3d47e15a
   jsr.json:
     id: 7f6ab7767282
-    last_write_checksum: sha1:4bce4a0abc969a850fc2f340bc9e280bbb5c86ea
-    pristine_git_object: e4cdba786974ec27e7d0ad7ee1baf0c5ca5b229d
+    last_write_checksum: sha1:a5e6739017284dbc12bb9b6219214f5889630f9d
+    pristine_git_object: 4b36a659898ba773533bd3e46850b4de797f53f8
   package.json:
     id: 7030d0b2f71b
-    last_write_checksum: sha1:0061a59c97f6a6b886baf437acc8b515af837665
-    pristine_git_object: b8344f4a940efb894b79044919ebc1e47dd25d14
+    last_write_checksum: sha1:84ae586fd91dfaeb9554ec41d65f56f351dbac0a
+    pristine_git_object: fa5f33135b5820c5d27541e2cb0ec56c58902bbf
   src/core.ts:
     id: f431fdbcd144
     last_write_checksum: sha1:5aa66b0b6a5964f3eea7f3098c2eb3c0ee9c0131
     pristine_git_object: 8747345312bcc83a569602bf521f20f0e1559fb1
   src/funcs/alphaDecisionsCreate.ts:
     id: f8369846dfed
-    last_write_checksum: sha1:573d8c66df1d7b08950544f604a5ec3bd450d7fe
-    pristine_git_object: 139c42c708ddd58116db67017f36a9e85c74df65
+    last_write_checksum: sha1:eec02494c849bc4d2d14aedc44fc124fbda4809c
+    pristine_git_object: 6b44e84f2f68ddb943c048b80dc28f71d6fc9b0b
   src/funcs/analyticsGetAnalyticsMeta.ts:
     id: f7372eee4934
     last_write_checksum: sha1:2475e5c898554d7b67e52f9a8e80a543e9edd8a9
@@ -14277,8 +14278,8 @@ trackedFiles:
     pristine_git_object: a187e58707bdb726ca2aff74941efe7493422d4e
   src/lib/config.ts:
     id: 320761608fb3
-    last_write_checksum: sha1:11ee94e1399dcb3ea953bd34ff6de9a563fd269a
-    pristine_git_object: f820ef469127bcd7b09ee6e61342e65d03734a36
+    last_write_checksum: sha1:05d207a5dde9d1f586dff3b22ed5ab17e59ca3e8
+    pristine_git_object: 805d4b3a2f733ec9724c0dd530c54bc6e97ac68d
   src/lib/dlv.ts:
     id: b1988214835a
     last_write_checksum: sha1:eaac763b22717206a6199104e0403ed17a4e2711
@@ -16259,8 +16260,8 @@ trackedFiles:
     pristine_git_object: ee1ad30f05e1f759aa263d75815cb47536426c4b
   src/models/operations/createapialphadecisions.ts:
     id: 84d520ce3957
-    last_write_checksum: sha1:b81c0d8456668e895b1d8d0b49846b8088ffe358
-    pristine_git_object: 4b93574a52019d261ef9551c50fda8b78d80b584
+    last_write_checksum: sha1:a9616e8ada0611537c0f4d76ba477fff7bb04dc5
+    pristine_git_object: f19780e50bfd78e235ed1986fdcdab0983035322
   src/models/operations/createaudiospeech.ts:
     id: 70089adf9736
     last_write_checksum: sha1:6bd9af928089632c1679dd6c4d5940ae7fddbd2a

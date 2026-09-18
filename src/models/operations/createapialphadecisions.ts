@@ -7,6 +7,10 @@ import * as z from "zod/v4";
 import { remap as remap$ } from "../../lib/primitives.js";
 import * as models from "../index.js";
 
+export const CreateApiAlphaDecisionsServerList = [
+  "https://openrouter.ai",
+] as const;
+
 export type CreateApiAlphaDecisionsGlobals = {
   /**
    * The app identifier should be your app's URL and is used as the primary identifier for rankings.
