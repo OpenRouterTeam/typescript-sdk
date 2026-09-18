@@ -8232,10 +8232,23 @@ components:
       properties:
         criteria:
           additionalProperties:
-            type: 'string'
+            anyOf:
+              - type: 'string'
+              - additionalProperties: {}
+                type: 'object'
+              - items: {}
+                type: 'array'
+              - type: 'null'
+            description: 'A plain string, or a JSON object or array of structured guidance.'
           type: 'object'
         instructions:
-          type: 'string'
+          anyOf:
+            - type: 'string'
+            - additionalProperties: {}
+              type: 'object'
+            - items: {}
+              type: 'array'
+          description: 'A plain string, or a JSON object or array of structured guidance.'
         type:
           enum:
             - 'choice'
@@ -8263,15 +8276,33 @@ components:
         criteria:
           properties:
             'false':
-              type: 'string'
+              anyOf:
+                - type: 'string'
+                - additionalProperties: {}
+                  type: 'object'
+                - items: {}
+                  type: 'array'
+              description: 'A plain string, or a JSON object or array of structured guidance.'
             'true':
-              type: 'string'
+              anyOf:
+                - type: 'string'
+                - additionalProperties: {}
+                  type: 'object'
+                - items: {}
+                  type: 'array'
+              description: 'A plain string, or a JSON object or array of structured guidance.'
           required:
             - 'true'
             - 'false'
           type: 'object'
         instructions:
-          type: 'string'
+          anyOf:
+            - type: 'string'
+            - additionalProperties: {}
+              type: 'object'
+            - items: {}
+              type: 'array'
+          description: 'A plain string, or a JSON object or array of structured guidance.'
         type:
           enum:
             - 'noul'
@@ -8372,7 +8403,13 @@ components:
           type: 'number'
         legend:
           additionalProperties:
-            type: 'string'
+            anyOf:
+              - type: 'string'
+              - additionalProperties: {}
+                type: 'object'
+              - items: {}
+                type: 'array'
+            description: 'A plain string, or a JSON object or array of structured guidance.'
           type: 'object'
         probabilities:
           additionalProperties:
@@ -8394,11 +8431,23 @@ components:
       properties:
         criteria:
           items:
-            type: 'string'
+            anyOf:
+              - type: 'string'
+              - additionalProperties: {}
+                type: 'object'
+              - items: {}
+                type: 'array'
+            description: 'A plain string, or a JSON object or array of structured guidance.'
           minItems: 1
           type: 'array'
         instructions:
-          type: 'string'
+          anyOf:
+            - type: 'string'
+            - additionalProperties: {}
+              type: 'object'
+            - items: {}
+              type: 'array'
+          description: 'A plain string, or a JSON object or array of structured guidance.'
         type:
           enum:
             - 'score'
@@ -30071,7 +30120,7 @@ paths:
           description: 'Provider Overloaded - Provider is temporarily overloaded'
       summary: 'Submit a Decisions (questions and answers) request'
       tags:
-        - 'Decisions'
+        - 'alpha.decisions'
       x-speakeasy-name-override: 'create'
   /audio/speech:
     post:
@@ -45409,8 +45458,6 @@ tags:
     name: 'Credits'
   - description: 'Public OpenRouter usage datasets. Data returned by these endpoints is licensed under CC BY 4.0 (https://creativecommons.org/licenses/by/4.0/): reuse and republish it, including commercially, with attribution to OpenRouter.'
     name: 'Datasets'
-  - description: 'Decisions endpoints'
-    name: 'Decisions'
   - description: 'Text embedding endpoints'
     name: 'Embeddings'
   - description: 'Endpoint information'
@@ -45455,6 +45502,8 @@ tags:
     name: 'Video Generation'
   - description: 'Workspaces endpoints'
     name: 'Workspaces'
+  - description: 'Alpha feature endpoints for Decisions (questions and answers) requests'
+    name: 'alpha.decisions'
 x-retry-strategy:
   initialDelay: 500
   maxAttempts: 3
