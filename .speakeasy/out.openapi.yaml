@@ -30441,6 +30441,8 @@ paths:
               schema:
                 $ref: '#/components/schemas/ProviderOverloadedResponse'
           description: 'Provider Overloaded - Provider is temporarily overloaded'
+      servers:
+        - url: 'https://openrouter.ai'
       summary: 'Submit a Decisions (questions and answers) request'
       tags:
         - 'alpha.decisions'
