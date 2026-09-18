@@ -111,9 +111,15 @@ export type Intern = {
 
 /** @internal */
 export const Progress$inboundSchema: z.ZodType<Progress, unknown> = z.object({
-  stepLabel: z.string(),
-  stepNumber: z.int(),
-  totalSteps: z.int(),
+  step_label: z.string(),
+  step_number: z.int(),
+  total_steps: z.int(),
+}).transform((v) => {
+  return remap$(v, {
+    "step_label": "stepLabel",
+    "step_number": "stepNumber",
+    "total_steps": "totalSteps",
+  });
 });
 
 export function progressFromJSON(
@@ -133,23 +139,27 @@ export const InternStatus$inboundSchema: z.ZodType<InternStatus, unknown> =
 /** @internal */
 export const Intern$inboundSchema: z.ZodType<Intern, unknown> = z.object({
   attached_vault_id: z.nullable(z.string()),
-  createdAt: z.string(),
+  created_at: z.string(),
   description: z.nullable(z.string()),
   hostname: z.nullable(z.string()),
   id: z.string(),
   instructions: z.nullable(z.string()),
-  lastFailureMessage: z.nullable(z.string()),
+  last_failure_message: z.nullable(z.string()),
   model: z.nullable(z.string()),
   name: z.string(),
   progress: z.nullable(z.lazy(() => Progress$inboundSchema)),
   status: InternStatus$inboundSchema,
-  updatedAt: z.string(),
+  updated_at: z.string(),
   vault_id: z.nullable(z.string()),
-  workspaceId: z.string(),
+  workspace_id: z.string(),
 }).transform((v) => {
   return remap$(v, {
     "attached_vault_id": "attachedVaultId",
+    "created_at": "createdAt",
+    "last_failure_message": "lastFailureMessage",
+    "updated_at": "updatedAt",
     "vault_id": "vaultId",
+    "workspace_id": "workspaceId",
   });
 });
 
