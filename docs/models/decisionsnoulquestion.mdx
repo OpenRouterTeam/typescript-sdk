@@ -15,8 +15,8 @@ let value: DecisionsNoulQuestion = {
 
 ## Fields
 
-| Field                                    | Type                                     | Required                                 | Description                              |
-| ---------------------------------------- | ---------------------------------------- | ---------------------------------------- | ---------------------------------------- |
-| `criteria`                               | [models.Criteria](../models/criteria.mdx) | :heavy_minus_sign:                       | N/A                                      |
-| `instructions`                           | *string*                                 | :heavy_check_mark:                       | N/A                                      |
-| `type`                                   | *"noul"*                                 | :heavy_check_mark:                       | N/A                                      |
+| Field                                                                              | Type                                                                               | Required                                                                           | Description                                                                        |
+| ---------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------- |
+| `criteria`                                                                         | [models.DecisionsNoulQuestionCriteria](../models/decisionsnoulquestioncriteria.mdx) | :heavy_minus_sign:                                                                 | N/A                                                                                |
+| `instructions`                                                                     | *models.DecisionsNoulQuestionInstructions*                                         | :heavy_check_mark:                                                                 | A plain string, or a JSON object or array of structured guidance.                  |
+| `type`                                                                             | *"noul"*                                                                           | :heavy_check_mark:                                                                 | N/A                                                                                |

@@ -12,11 +12,13 @@ A Decisions question using a boolean, choice, or ordered score evaluation.
 ```typescript
 const value: models.DecisionsChoiceQuestion = {
   criteria: {
-    "key": "<value>",
-    "key1": "<value>",
-    "key2": "<value>",
+    "key": {
+      "key": "<value>",
+    },
   },
-  instructions: "<value>",
+  instructions: {
+    "0": "<value 1>",
+  },
   type: "choice",
 };
 ```
@@ -35,7 +37,11 @@ const value: models.DecisionsNoulQuestion = {
 ```typescript
 const value: models.DecisionsScoreQuestion = {
   criteria: [],
-  instructions: "<value>",
+  instructions: {
+    "0": "<value 1>",
+    "1": "<value 2>",
+    "2": "<value 3>",
+  },
   type: "score",
 };
 ```
