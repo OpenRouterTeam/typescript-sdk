@@ -1,0 +1,32 @@
+name: Docs navigation
+
+permissions:
+  contents: write
+  pull-requests: write
+
+on:
+  workflow_dispatch:
+  pull_request:
+    paths:
+      - "docs/sdks/**"
+      - "scripts/gen-docs-nav.sh"
+      - ".github/workflows/docs-nav.yaml"
+
+jobs:
+  gen-docs-nav:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v5
+        with:
+          ref: ${{ github.event.pull_request.head.ref }}
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      # jq is preinstalled on GitHub-hosted ubuntu runners.
+      - name: Regenerate docs navigation
+        run: scripts/gen-docs-nav.sh
+
+      - name: Auto-commit docs.json navigation
+        uses: int128/update-generated-files-action@v2
+        with:
+          commit-message: "Chore: regenerate docs navigation"
