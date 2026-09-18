@@ -8,13 +8,37 @@ import { safeParse } from "../lib/schemas.js";
 import { Result as SafeParseResult } from "../types/fp.js";
 import { SDKValidationError } from "./errors/sdkvalidationerror.js";
 
+/**
+ * A plain string, or a JSON object or array of structured guidance.
+ */
+export type Legend = string | { [k: string]: any } | Array<any>;
+
 export type DecisionsScoreAnswer = {
   confidence?: number | undefined;
-  legend?: { [k: string]: string } | undefined;
+  legend?:
+    | { [k: string]: string | { [k: string]: any } | Array<any> }
+    | undefined;
   probabilities?: { [k: string]: number } | undefined;
   score: number;
   type: "score";
 };
+
+/** @internal */
+export const Legend$inboundSchema: z.ZodType<Legend, unknown> = z.union([
+  z.string(),
+  z.record(z.string(), z.any()),
+  z.array(z.any()),
+]);
+
+export function legendFromJSON(
+  jsonString: string,
+): SafeParseResult<Legend, SDKValidationError> {
+  return safeParse(
+    jsonString,
+    (x) => Legend$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'Legend' from JSON`,
+  );
+}
 
 /** @internal */
 export const DecisionsScoreAnswer$inboundSchema: z.ZodType<
@@ -22,7 +46,10 @@ export const DecisionsScoreAnswer$inboundSchema: z.ZodType<
   unknown
 > = z.object({
   confidence: z.number().optional(),
-  legend: z.record(z.string(), z.string()).optional(),
+  legend: z.record(
+    z.string(),
+    z.union([z.string(), z.record(z.string(), z.any()), z.array(z.any())]),
+  ).optional(),
   probabilities: z.record(z.string(), z.number()).optional(),
   score: z.number(),
   type: z.literal("score"),

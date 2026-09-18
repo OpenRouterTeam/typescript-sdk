@@ -3,7 +3,7 @@
  * @generated-id: 0e5d2e557690
  */
 
-import { decisionsCreate } from "../funcs/decisionsCreate.js";
+import { alphaDecisionsCreate } from "../funcs/alphaDecisionsCreate.js";
 import { ClientSDK, RequestOptions } from "../lib/sdks.js";
 import * as models from "../models/index.js";
 import * as operations from "../models/operations/index.js";
@@ -20,7 +20,7 @@ export class Decisions extends ClientSDK {
     request: operations.CreateApiAlphaDecisionsRequest,
     options?: RequestOptions,
   ): Promise<models.DecisionsResponse> {
-    return unwrapAsync(decisionsCreate(
+    return unwrapAsync(alphaDecisionsCreate(
       this,
       request,
       options,

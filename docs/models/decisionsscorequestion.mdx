@@ -9,15 +9,19 @@ import { DecisionsScoreQuestion } from "@openrouter/sdk/models";
 
 let value: DecisionsScoreQuestion = {
   criteria: [],
-  instructions: "<value>",
+  instructions: {
+    "0": "<value 1>",
+    "1": "<value 2>",
+    "2": "<value 3>",
+  },
   type: "score",
 };
 ```
 
 ## Fields
 
-| Field              | Type               | Required           | Description        |
-| ------------------ | ------------------ | ------------------ | ------------------ |
-| `criteria`         | *string*[]         | :heavy_check_mark: | N/A                |
-| `instructions`     | *string*           | :heavy_check_mark: | N/A                |
-| `type`             | *"score"*          | :heavy_check_mark: | N/A                |
+| Field                                                             | Type                                                              | Required                                                          | Description                                                       |
+| ----------------------------------------------------------------- | ----------------------------------------------------------------- | ----------------------------------------------------------------- | ----------------------------------------------------------------- |
+| `criteria`                                                        | *models.Criterion*[]                                              | :heavy_check_mark:                                                | N/A                                                               |
+| `instructions`                                                    | *models.DecisionsScoreQuestionInstructions*                       | :heavy_check_mark:                                                | A plain string, or a JSON object or array of structured guidance. |
+| `type`                                                            | *"score"*                                                         | :heavy_check_mark:                                                | N/A                                                               |

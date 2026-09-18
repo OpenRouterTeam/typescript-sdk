@@ -4,6 +4,7 @@
  */
 
 import { ClientSDK } from "../lib/sdks.js";
+import { Alpha } from "./alpha.js";
 import { Analytics } from "./analytics.js";
 import { APIKeys } from "./apikeys.js";
 import { Benchmarks } from "./benchmarks.js";
@@ -14,7 +15,6 @@ import { Classifications } from "./classifications.js";
 import { Containers } from "./containers.js";
 import { Credits } from "./credits.js";
 import { Datasets } from "./datasets.js";
-import { Decisions } from "./decisions.js";
 import { Embeddings } from "./embeddings.js";
 import { Endpoints } from "./endpoints.js";
 import { Files } from "./files.js";
@@ -55,9 +55,9 @@ export class OpenRouter extends ClientSDK {
     return (this._analytics ??= new Analytics(this._options));
   }
 
-  private _decisions?: Decisions;
-  get decisions(): Decisions {
-    return (this._decisions ??= new Decisions(this._options));
+  private _alpha?: Alpha;
+  get alpha(): Alpha {
+    return (this._alpha ??= new Alpha(this._options));
   }
 
   private _tts?: TTS;
