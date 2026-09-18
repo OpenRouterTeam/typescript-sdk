@@ -30,11 +30,39 @@ const openRouter = new OpenRouter({
 async function run() {
   const result = await openRouter.alpha.decisions.create({
     decisionsRequest: {
-      model: "Grand Cherokee",
+      model: "typesafe/jev-1.13",
       questions: {
-
+        "is_bug": {
+          criteria: {
+            false: "The customer is asking a question or requesting a feature.",
+            true: "The customer describes broken or unexpected product behavior.",
+          },
+          instructions: "Is the customer reporting a software defect?",
+          type: "noul",
+        },
+        "team": {
+          criteria: {
+            "account": "Login, permissions, or profile issues.",
+            "frontend": "Rendering, layout, or browser compatibility issues.",
+            "payments": "Checkout, billing, or payment processing issues.",
+          },
+          instructions: "Which team should own this ticket?",
+          type: "choice",
+        },
+        "urgency": {
+          criteria: [
+            "Can wait for the next release",
+            "Should be fixed this week",
+            "Blocking revenue right now",
+          ],
+          instructions: "How urgent is this ticket?",
+          type: "score",
+        },
       },
-      state: "Maine",
+      state: {
+        "customer_tier": "enterprise",
+        "ticket": "My checkout page shows a blank screen after I click Pay. I have tried two browsers.",
+      },
     },
   });
 
@@ -64,11 +92,39 @@ const openRouter = new OpenRouterCore({
 async function run() {
   const res = await alphaDecisionsCreate(openRouter, {
     decisionsRequest: {
-      model: "Grand Cherokee",
+      model: "typesafe/jev-1.13",
       questions: {
-  
+        "is_bug": {
+          criteria: {
+            false: "The customer is asking a question or requesting a feature.",
+            true: "The customer describes broken or unexpected product behavior.",
+          },
+          instructions: "Is the customer reporting a software defect?",
+          type: "noul",
+        },
+        "team": {
+          criteria: {
+            "account": "Login, permissions, or profile issues.",
+            "frontend": "Rendering, layout, or browser compatibility issues.",
+            "payments": "Checkout, billing, or payment processing issues.",
+          },
+          instructions: "Which team should own this ticket?",
+          type: "choice",
+        },
+        "urgency": {
+          criteria: [
+            "Can wait for the next release",
+            "Should be fixed this week",
+            "Blocking revenue right now",
+          ],
+          instructions: "How urgent is this ticket?",
+          type: "score",
+        },
       },
-      state: "Maine",
+      state: {
+        "customer_tier": "enterprise",
+        "ticket": "My checkout page shows a blank screen after I click Pay. I have tried two browsers.",
+      },
     },
   });
   if (res.ok) {

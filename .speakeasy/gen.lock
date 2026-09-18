@@ -1,19 +1,19 @@
 lockVersion: ""
 id: ""
 management:
-  docChecksum: d7984f42c029588d61e352d372e088e4
+  docChecksum: 1a1ee65b3e3dd10cb4503e798859309a
   docVersion: 1.0.0
   speakeasyVersion: 1.787.0
   generationVersion: 2.914.0
-  releaseVersion: 1.2.145
-  configChecksum: 1863092fd399d87d5a6d992c6d66c68d
+  releaseVersion: 1.2.146
+  configChecksum: 5159238c89e0b1d55faf884fb4091d58
   repoURL: https://github.com/OpenRouterTeam/typescript-sdk.git
   installationURL: https://github.com/OpenRouterTeam/typescript-sdk
   published: true
 persistentEdits:
-  generation_id: 60211c19-0dba-47b2-8cc9-3626a4a43671
-  pristine_commit_hash: 4988b70b3fcfe491e0e27d88dddea980acf2ac20
-  pristine_tree_hash: 45c73c15ffc3eda513ab6b890d1582ecd58af66a
+  generation_id: c5be200b-b10b-4cdc-99ef-559604cc47f9
+  pristine_commit_hash: d5ebc481c8356a6bdf0c48df9f8d68c994bd6c56
+  pristine_tree_hash: a8d91a446f0a8887df35b91bdca839e548ac1d2c
 features:
   typescript:
     acceptHeaders: 2.81.2
@@ -13603,8 +13603,8 @@ trackedFiles:
     pristine_git_object: 0b972989cca654fde1eb8f0d583efde8b40d2002
   docs/sdks/decisions/README.mdx:
     id: a52a116ee1f3
-    last_write_checksum: sha1:4b12e96c38ca7eae48b9c423382195482ecd9d58
-    pristine_git_object: 37af8e741093f6d7603c344a41d916c82e6d0a51
+    last_write_checksum: sha1:27bf9554344ca888c42705bf62d66c3a2de2df7e
+    pristine_git_object: 0280ca40ad3532c0d399b6e39fbfa626cd972336
   docs/sdks/embeddings/README.mdx:
     id: cd71581df291
     last_write_checksum: sha1:bbed37fab060807c9d9460dbcc78859c8f5f26f3
@@ -13761,12 +13761,12 @@ trackedFiles:
     pristine_git_object: 410efafd6a7f50d91ccb87131fedbe0c3d47e15a
   jsr.json:
     id: 7f6ab7767282
-    last_write_checksum: sha1:d8be3edd7923e04802df8ffba60e2bd432f3b6ff
-    pristine_git_object: 0114fa81e2ea940433a0d2108b1622187adeefb6
+    last_write_checksum: sha1:a04a384016723e151a450b01fa21cd20bd22018a
+    pristine_git_object: aca74fd8ecf588334f427334b1d8a1dca366e292
   package.json:
     id: 7030d0b2f71b
-    last_write_checksum: sha1:cd64398de628386adf448ed81b24a0b343bd74ca
-    pristine_git_object: cf391f3cb0d20d1bc9c8d64a82c86f95c3720314
+    last_write_checksum: sha1:ff3b579bb85ab0b54e93b46cc39be47b3d670b69
+    pristine_git_object: 5621f48c8c3ade5052441eea798c11bfbf649a0c
   src/core.ts:
     id: f431fdbcd144
     last_write_checksum: sha1:5aa66b0b6a5964f3eea7f3098c2eb3c0ee9c0131
@@ -14273,8 +14273,8 @@ trackedFiles:
     pristine_git_object: a187e58707bdb726ca2aff74941efe7493422d4e
   src/lib/config.ts:
     id: 320761608fb3
-    last_write_checksum: sha1:e7ec4f67864d0e1afc746918013f44d554d94ce6
-    pristine_git_object: 27a1512aa3875e57a988e3073f7be213a1d0b9aa
+    last_write_checksum: sha1:53630ef4e980e8d375ba48ed80791d2da3ecd24e
+    pristine_git_object: 6ab3c5ac8788b241ea87981e77134c37466e48c6
   src/lib/dlv.ts:
     id: b1988214835a
     last_write_checksum: sha1:eaac763b22717206a6199104e0403ed17a4e2711
@@ -21064,7 +21064,3 @@ examples:
         "529":
           application/json: {"error": {"code": 529, "message": "Provider returned error"}}
 examplesVersion: 1.0.2
-releaseNotes: |
-  ## Typescript SDK Changes:
-  * `openrouter.alpha.decisions.create()`: **Added**
-  * `openrouter.decisions.create()`: **Removed** (Breaking ⚠️)
