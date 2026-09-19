@@ -8523,6 +8523,17 @@ components:
       required:
         - 'deleted'
       type: 'object'
+    DeleteInternRequest:
+      additionalProperties: false
+      description: 'Optional consent for a teardown that discards the workspace.'
+      example:
+        acknowledge_workspace_loss: true
+      properties:
+        acknowledge_workspace_loss:
+          default: false
+          description: 'Delete even though the workspace backup was not confirmed. Defaults to false, which refuses the teardown when a workspace archive is missing.'
+          type: 'boolean'
+      type: 'object'
     DeleteInternResponse:
       additionalProperties: false
       properties:
@@ -12497,14 +12508,14 @@ components:
           example: 'chatcmpl-f727571a-3bad-4e0d-8a9e-f18f8cda9750'
           type: 'string'
         model:
-          description: 'The request `model` when given, or `openrouter/intern`. The final chunk may carry the model the intern reported for the run instead.'
+          description: 'The runtime''s identifier for the model the intern is running, as the intern reports it. Each chunk carries the model from the event behind it: `openrouter/intern` on chunks emitted before the intern has reported one and on chunks the API emits itself (timeout, run-ended and severed-stream errors and their final usage chunk), even after an earlier chunk named a model. It can change within a stream. It is not an OpenRouter model slug, and the request `model` is never used.'
           type: 'string'
         object:
           enum:
             - 'chat.completion.chunk'
           type: 'string'
         session_id:
-          description: 'On the final chunk of every response, the daemon session to continue with, or `null` when the run failed before the intern reported one. Send it as `session_id` on the next request, including the `tool` reply to an interaction.'
+          description: 'On the final chunk of every response, the daemon session to continue with, or `null` when the run failed before the intern reported one. Send it as `session_id` on the next request, including the `tool` reply to an interaction. Session ids are client-visible and scoped to the intern''s own daemon.'
           example: 'ses_7f3c9a'
           type:
             - 'string'
@@ -12536,20 +12547,20 @@ components:
           minItems: 1
           type: 'array'
         model:
-          description: 'Accepted for OpenAI compatibility and ignored. Streamed chunks report the model the intern actually used, or `openrouter/intern` when it did not report one.'
+          description: 'Accepted for OpenAI compatibility and never used. The intern runs the model configured on it (`PATCH` the intern to change it). Streamed chunks report the runtime''s identifier for that model as the intern reports it, or `openrouter/intern` on chunks whose event carries no model (before the intern reports one, and on the chunks the API emits itself: the timeout, run-ended and severed-stream error chunks, the stop chunk of a replay that ends without a terminal daemon event, and the final usage chunk after any of them). A usage chunk that follows a daemon completion event carries the model the intern reported.'
           example: 'openrouter/intern'
           maxLength: 256
           minLength: 1
           type: 'string'
         session_id:
-          description: 'The daemon session to continue, as returned in `session_id` on the final chunk of an earlier response. Omit it to start a new session. Required when the last message has role `tool`.'
+          description: 'The daemon session to continue, as returned in `session_id` on the final chunk of an earlier response. Omit it to start a new session. An id the intern has not seen before is not an error: it starts a new session under that id, so a mistyped id forks the conversation. Sessions are scoped to the intern''s own daemon. Required when the last message has role `tool`.'
           example: 'ses_7f3c9a'
           maxLength: 256
           minLength: 1
           type: 'string'
         stream:
           const: true
-          description: 'Must be `true`. This endpoint only streams.'
+          description: 'Must be `true`. This endpoint only streams. `false` or an omitted `stream` is refused with `400` and reason `bad_request`.'
           example: true
           type: 'boolean'
       required:
@@ -27809,8 +27820,10 @@ components:
             - 'string'
             - 'null'
         model:
-          description: 'New OpenRouter model slug. Null restores the workspace default.'
+          description: 'New OpenRouter model slug in `author/slug` form (an optional `:variant` suffix is accepted). Other shapes are refused with 400. Null restores the workspace default. Takes effect on the next provision: until then `GET` shows this configured model while chat chunks show the model the running intern reports.'
           maxLength: 200
+          minLength: 1
+          pattern: '^[A-Za-z0-9~._:@+-]+\/[A-Za-z0-9~._:@+-]+$'
           type:
             - 'string'
             - 'null'
@@ -36205,7 +36218,7 @@ paths:
         - 'Interns'
   /interns/{internId}:
     delete:
-      description: 'Starts safe teardown of the intern, its runtime and its private vault. The API key selects the caller, workspace and visible interns. There is no default workspace fallback. Requests on regional hostnames such as `eu.openrouter.ai` are refused. [API key](/docs/api-reference/authentication) required.'
+      description: 'Starts safe teardown of the intern, its runtime and its private vault. The body is optional. Send `{"acknowledge_workspace_loss": true}` to delete a `destroy_failed` intern whose `last_failure_message` names `workspace_archive_failed`, accepting that its workspace is not backed up. The request body is capped at 1048576 bytes and a larger body is refused with 413. The API key selects the caller, workspace and visible interns. There is no default workspace fallback. Requests on regional hostnames such as `eu.openrouter.ai` are refused. [API key](/docs/api-reference/authentication) required.'
       operationId: 'deleteIntern'
       parameters:
         - description: 'ID of an intern visible to the authenticated API key.'
@@ -36217,6 +36230,14 @@ paths:
             example: '7c9e6679-7425-40de-944b-e07fc1f90ae7'
             minLength: 1
             type: 'string'
+      requestBody:
+        content:
+          application/json:
+            example:
+              acknowledge_workspace_loss: true
+            schema:
+              $ref: '#/components/schemas/DeleteInternRequest'
+        required: true
       responses:
         '202':
           content:
@@ -36226,6 +36247,16 @@ paths:
               schema:
                 $ref: '#/components/schemas/DeleteInternResponse'
           description: 'The operation was accepted.'
+        '400':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 'invalid_body'
+                  message: 'Invalid request body'
+              schema:
+                $ref: '#/components/schemas/InternLifecycleError'
+          description: 'The request body is invalid.'
         '401':
           content:
             application/json:
@@ -36276,6 +36307,16 @@ paths:
               schema:
                 $ref: '#/components/schemas/InternLifecycleError'
           description: 'The intern is not in a state that allows this operation.'
+        '413':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 'payload_too_large'
+                  message: 'Request body exceeds 1048576 bytes'
+              schema:
+                $ref: '#/components/schemas/InternLifecycleError'
+          description: 'The request body is larger than 1048576 bytes.'
         '500':
           content:
             application/json:
