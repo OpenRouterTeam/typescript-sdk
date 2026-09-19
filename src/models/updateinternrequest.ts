@@ -18,7 +18,7 @@ export type UpdateInternRequest = {
    */
   instructions?: string | null | undefined;
   /**
-   * New OpenRouter model slug. Null restores the workspace default.
+   * New OpenRouter model slug in `author/slug` form (an optional `:variant` suffix is accepted). Other shapes are refused with 400. Null restores the workspace default. Takes effect on the next provision: until then `GET` shows this configured model while chat chunks show the model the running intern reports.
    */
   model?: string | null | undefined;
   /**

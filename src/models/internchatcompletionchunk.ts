@@ -47,12 +47,12 @@ export type InternChatCompletionChunk = {
    */
   id: string;
   /**
-   * The request `model` when given, or `openrouter/intern`. The final chunk may carry the model the intern reported for the run instead.
+   * The runtime's identifier for the model the intern is running, as the intern reports it. Each chunk carries the model from the event behind it: `openrouter/intern` on chunks emitted before the intern has reported one and on chunks the API emits itself (timeout, run-ended and severed-stream errors and their final usage chunk), even after an earlier chunk named a model. It can change within a stream. It is not an OpenRouter model slug, and the request `model` is never used.
    */
   model: string;
   object: InternChatCompletionChunkObject;
   /**
-   * On the final chunk of every response, the daemon session to continue with, or `null` when the run failed before the intern reported one. Send it as `session_id` on the next request, including the `tool` reply to an interaction.
+   * On the final chunk of every response, the daemon session to continue with, or `null` when the run failed before the intern reported one. Send it as `session_id` on the next request, including the `tool` reply to an interaction. Session ids are client-visible and scoped to the intern's own daemon.
    */
   sessionId?: string | null | undefined;
   /**
