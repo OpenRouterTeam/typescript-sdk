@@ -28,15 +28,15 @@ export type InternChatCompletionRequest = {
    */
   messages: Array<InternChatMessage>;
   /**
-   * Accepted for OpenAI compatibility and ignored. Streamed chunks report the model the intern actually used, or `openrouter/intern` when it did not report one.
+   * Accepted for OpenAI compatibility and never used. The intern runs the model configured on it (`PATCH` the intern to change it). Streamed chunks report the runtime's identifier for that model as the intern reports it, or `openrouter/intern` on chunks whose event carries no model (before the intern reports one, and on the chunks the API emits itself: the timeout, run-ended and severed-stream error chunks, the stop chunk of a replay that ends without a terminal daemon event, and the final usage chunk after any of them). A usage chunk that follows a daemon completion event carries the model the intern reported.
    */
   model?: string | undefined;
   /**
-   * The daemon session to continue, as returned in `session_id` on the final chunk of an earlier response. Omit it to start a new session. Required when the last message has role `tool`.
+   * The daemon session to continue, as returned in `session_id` on the final chunk of an earlier response. Omit it to start a new session. An id the intern has not seen before is not an error: it starts a new session under that id, so a mistyped id forks the conversation. Sessions are scoped to the intern's own daemon. Required when the last message has role `tool`.
    */
   sessionId?: string | undefined;
   /**
-   * Must be `true`. This endpoint only streams.
+   * Must be `true`. This endpoint only streams. `false` or an omitted `stream` is refused with `400` and reason `bad_request`.
    */
   stream: true;
 };

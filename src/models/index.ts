@@ -214,6 +214,7 @@ export * from "./decisionsscorequestion.js";
 export * from "./defaultparameters.js";
 export * from "./deletebyokkeyresponse.js";
 export * from "./deleteguardrailresponse.js";
+export * from "./deleteinternrequest.js";
 export * from "./deleteinternresponse.js";
 export * from "./deleteobservabilitydestinationresponse.js";
 export * from "./deletescimgroupmappingresponse.js";
