@@ -5,6 +5,7 @@
 
 import * as z from "zod/v4";
 import { remap as remap$ } from "../../lib/primitives.js";
+import * as models from "../index.js";
 
 export type DeleteInternGlobals = {
   /**
@@ -52,6 +53,7 @@ export type DeleteInternRequest = {
    * ID of an intern visible to the authenticated API key.
    */
   internId: string;
+  deleteInternRequest: models.DeleteInternRequest;
 };
 
 /** @internal */
@@ -60,6 +62,7 @@ export type DeleteInternRequest$Outbound = {
   appTitle?: string | undefined;
   appCategories?: string | undefined;
   internId: string;
+  DeleteInternRequest: models.DeleteInternRequest$Outbound;
 };
 
 /** @internal */
@@ -71,9 +74,11 @@ export const DeleteInternRequest$outboundSchema: z.ZodType<
   appTitle: z.string().optional(),
   appCategories: z.string().optional(),
   internId: z.string(),
+  deleteInternRequest: models.DeleteInternRequest$outboundSchema,
 }).transform((v) => {
   return remap$(v, {
     httpReferer: "HTTP-Referer",
+    deleteInternRequest: "DeleteInternRequest",
   });
 });
 

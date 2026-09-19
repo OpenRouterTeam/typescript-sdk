@@ -1,0 +1,21 @@
+---
+title: "DeleteInternRequest"
+---
+
+Optional consent for a teardown that discards the workspace.
+
+## Example Usage
+
+```typescript
+import { DeleteInternRequest } from "@openrouter/sdk/models";
+
+let value: DeleteInternRequest = {
+  acknowledgeWorkspaceLoss: true,
+};
+```
+
+## Fields
+
+| Field                                                                                                                                         | Type                                                                                                                                          | Required                                                                                                                                      | Description                                                                                                                                   |
+| --------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------- |
+| `acknowledgeWorkspaceLoss`                                                                                                                    | *boolean*                                                                                                                                     | :heavy_minus_sign:                                                                                                                            | Delete even though the workspace backup was not confirmed. Defaults to false, which refuses the teardown when a workspace archive is missing. |
