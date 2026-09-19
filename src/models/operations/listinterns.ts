@@ -71,6 +71,10 @@ export type ListInternsRequest = {
    */
   status?: Array<Status> | undefined;
   /**
+   * The opaque `next_cursor` of the previous page. Returns the interns that come after it in the newest-first order. A malformed cursor is a 400.
+   */
+  startingAfter?: string | undefined;
+  /**
    * Only return interns in this workspace. It must match the API key workspace.
    */
   workspaceId?: string | undefined;
@@ -87,6 +91,7 @@ export type ListInternsRequest$Outbound = {
   appCategories?: string | undefined;
   limit?: number | undefined;
   status?: Array<string> | undefined;
+  starting_after?: string | undefined;
   workspace_id?: string | undefined;
 };
 
@@ -100,10 +105,12 @@ export const ListInternsRequest$outboundSchema: z.ZodType<
   appCategories: z.string().optional(),
   limit: z.int().optional(),
   status: z.array(Status$outboundSchema).optional(),
+  startingAfter: z.string().optional(),
   workspaceId: z.string().optional(),
 }).transform((v) => {
   return remap$(v, {
     httpReferer: "HTTP-Referer",
+    startingAfter: "starting_after",
     workspaceId: "workspace_id",
   });
 });
