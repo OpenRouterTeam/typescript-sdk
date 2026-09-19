@@ -19,6 +19,10 @@ export type InternListResponse = {
    * True when more interns match the current filters.
    */
   hasMore: boolean;
+  /**
+   * Opaque cursor, present when `has_more` is true. Pass it as `starting_after` to fetch the next page.
+   */
+  nextCursor?: string | undefined;
 };
 
 /** @internal */
@@ -28,9 +32,11 @@ export const InternListResponse$inboundSchema: z.ZodType<
 > = z.object({
   data: z.array(Intern$inboundSchema),
   has_more: z.boolean(),
+  next_cursor: z.string().optional(),
 }).transform((v) => {
   return remap$(v, {
     "has_more": "hasMore",
+    "next_cursor": "nextCursor",
   });
 });
 
