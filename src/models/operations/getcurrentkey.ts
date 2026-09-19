@@ -154,6 +154,10 @@ export type GetCurrentKeyData = {
    */
   limitReset: string | null;
   /**
+   * The ID of the organization that owns this API key, or null when an individual account owns it.
+   */
+  organizationId: string | null;
+  /**
    * Legacy rate limit information about a key. Will always return -1.
    *
    * @deprecated field: This will be removed in a future release, please migrate away from it as soon as possible.
@@ -175,6 +179,10 @@ export type GetCurrentKeyData = {
    * OpenRouter credit usage (in USD) for the current UTC week (Monday-Sunday)
    */
   usageWeekly: number;
+  /**
+   * The ID of the workspace this API key spends in, or null when no active workspace resolved for it, for example because the key's workspace was deleted.
+   */
+  workspaceId: string | null;
 };
 
 /**
@@ -262,11 +270,13 @@ export const GetCurrentKeyData$inboundSchema: z.ZodType<
   limit: z.nullable(z.number()),
   limit_remaining: z.nullable(z.number()),
   limit_reset: z.nullable(z.string()),
+  organization_id: z.nullable(z.string()),
   rate_limit: z.lazy(() => RateLimit$inboundSchema),
   usage: z.number(),
   usage_daily: z.number(),
   usage_monthly: z.number(),
   usage_weekly: z.number(),
+  workspace_id: z.nullable(z.string()),
 }).transform((v) => {
   return remap$(v, {
     "allowed_data_regions": "allowedDataRegions",
@@ -283,10 +293,12 @@ export const GetCurrentKeyData$inboundSchema: z.ZodType<
     "is_provisioning_key": "isProvisioningKey",
     "limit_remaining": "limitRemaining",
     "limit_reset": "limitReset",
+    "organization_id": "organizationId",
     "rate_limit": "rateLimit",
     "usage_daily": "usageDaily",
     "usage_monthly": "usageMonthly",
     "usage_weekly": "usageWeekly",
+    "workspace_id": "workspaceId",
   });
 });
 
