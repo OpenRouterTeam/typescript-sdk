@@ -23,14 +23,14 @@ export type InternChatAssistantMessage = {
   /**
    * Message text as a string or a list of text parts. Assistant history may carry null. Only the last message is read; earlier messages are accepted so ordinary clients can resend history.
    */
-  content: InternChatMessageContent | null;
+  content?: InternChatMessageContent | null | undefined;
   role: "assistant";
   toolCalls?: Array<InternChatEchoedToolCall> | undefined;
 };
 
 /** @internal */
 export type InternChatAssistantMessage$Outbound = {
-  content: InternChatMessageContent$Outbound | null;
+  content?: InternChatMessageContent$Outbound | null | undefined;
   role: "assistant";
   tool_calls?: Array<InternChatEchoedToolCall$Outbound> | undefined;
 };
@@ -40,7 +40,7 @@ export const InternChatAssistantMessage$outboundSchema: z.ZodType<
   InternChatAssistantMessage$Outbound,
   InternChatAssistantMessage
 > = z.object({
-  content: z.nullable(InternChatMessageContent$outboundSchema),
+  content: z.nullable(InternChatMessageContent$outboundSchema).optional(),
   role: z.literal("assistant"),
   toolCalls: z.array(InternChatEchoedToolCall$outboundSchema).optional(),
 }).transform((v) => {
