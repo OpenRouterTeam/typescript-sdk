@@ -26927,6 +26927,7 @@ components:
           example: '<jwt from your identity provider>'
           maxLength: 16384
           minLength: 1
+          pattern: '^[\w-]+\.[\w-]+\.[\w-]+$'
           type: 'string'
         subject_token_type:
           description: 'Must be `urn:ietf:params:oauth:token-type:jwt`.'
