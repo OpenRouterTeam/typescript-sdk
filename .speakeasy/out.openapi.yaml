@@ -36579,13 +36579,20 @@ paths:
         '409':
           content:
             application/json:
-              example:
-                error:
-                  code: 'idempotency_key_reused'
-                  message: 'This Idempotency-Key was already used with a different request'
+              examples:
+                idempotency_key_reused:
+                  value:
+                    error:
+                      code: 'idempotency_key_reused'
+                      message: 'This Idempotency-Key was already used with a different request'
+                name_taken:
+                  value:
+                    error:
+                      code: 'name_taken'
+                      message: 'An intern named "research-assistant" already exists in this workspace'
               schema:
                 $ref: '#/components/schemas/InternLifecycleError'
-          description: 'The idempotency key was reused, the member reached the intern limit, or the requested vault cannot be attached.'
+          description: 'The idempotency key was reused, the intern name is already taken in the workspace, the member reached the intern limit, or the requested vault cannot be attached.'
         '413':
           content:
             application/json:
