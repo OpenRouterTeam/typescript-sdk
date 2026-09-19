@@ -7,7 +7,7 @@ import * as z from "zod/v4";
 import { remap as remap$ } from "../lib/primitives.js";
 
 /**
- * Settings for a new intern in an explicit workspace.
+ * Settings for a new intern.
  */
 export type CreateInternRequest = {
   /**
@@ -31,9 +31,9 @@ export type CreateInternRequest = {
    */
   vaultId?: string | undefined;
   /**
-   * Workspace that will own the intern. It must match the API key workspace.
+   * Workspace that will own the intern. Defaults to the workspace the API key resolves to. When given, it must match the API key workspace.
    */
-  workspaceId: string;
+  workspaceId?: string | undefined;
 };
 
 /** @internal */
@@ -43,7 +43,7 @@ export type CreateInternRequest$Outbound = {
   name: string;
   provision: boolean;
   vault_id?: string | undefined;
-  workspace_id: string;
+  workspace_id?: string | undefined;
 };
 
 /** @internal */
@@ -56,7 +56,7 @@ export const CreateInternRequest$outboundSchema: z.ZodType<
   name: z.string(),
   provision: z.boolean().default(false),
   vaultId: z.string().optional(),
-  workspaceId: z.string(),
+  workspaceId: z.string().optional(),
 }).transform((v) => {
   return remap$(v, {
     vaultId: "vault_id",
