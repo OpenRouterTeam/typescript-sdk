@@ -32,6 +32,7 @@ import { Rerank } from "./rerank.js";
 import { Responses } from "./responses.js";
 import { Scim } from "./scim.js";
 import { STT } from "./stt.js";
+import { SystemOne } from "./systemone.js";
 import { TTS } from "./tts.js";
 import { Vault } from "./vault.js";
 import { VideoGeneration } from "./videogeneration.js";
@@ -193,6 +194,11 @@ export class OpenRouter extends ClientSDK {
   private _scim?: Scim;
   get scim(): Scim {
     return (this._scim ??= new Scim(this._options));
+  }
+
+  private _systemOne?: SystemOne;
+  get systemOne(): SystemOne {
+    return (this._systemOne ??= new SystemOne(this._options));
   }
 
   private _vault?: Vault;
