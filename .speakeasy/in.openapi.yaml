@@ -42760,6 +42760,205 @@ paths:
       tags:
         - 'SCIM'
       x-speakeasy-name-override: 'getSyncJob'
+  /systemone:
+    post:
+      description: 'TypeSafe SDK compatible alias for `POST /api/alpha/decisions`. Accepts the same request body and returns the same response. Bare TypeSafe model IDs such as `jev-1.13` and `jev-latest` are mapped onto the `typesafe/` namespace.'
+      operationId: 'createSystemone'
+      requestBody:
+        content:
+          application/json:
+            example:
+              model: 'typesafe/jev-1.13'
+              questions:
+                is_bug:
+                  criteria:
+                    'false': 'The customer is asking a question or requesting a feature.'
+                    'true': 'The customer describes broken or unexpected product behavior.'
+                  instructions: 'Is the customer reporting a software defect?'
+                  type: 'noul'
+                team:
+                  criteria:
+                    account: 'Login, permissions, or profile issues.'
+                    frontend: 'Rendering, layout, or browser compatibility issues.'
+                    payments: 'Checkout, billing, or payment processing issues.'
+                  instructions: 'Which team should own this ticket?'
+                  type: 'choice'
+                urgency:
+                  criteria:
+                    - 'Can wait for the next release'
+                    - 'Should be fixed this week'
+                    - 'Blocking revenue right now'
+                  instructions: 'How urgent is this ticket?'
+                  type: 'score'
+              state:
+                customer_tier: 'enterprise'
+                ticket: 'My checkout page shows a blank screen after I click Pay. I have tried two browsers.'
+            schema:
+              $ref: '#/components/schemas/DecisionsRequest'
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              example:
+                answers:
+                  is_bug:
+                    noul: 0.96
+                    type: 'noul'
+                  team:
+                    choice: 'payments'
+                    confidence: 0.75
+                    probabilities:
+                      account: 0
+                      frontend: 0.16
+                      payments: 0.84
+                    type: 'choice'
+                  urgency:
+                    confidence: 0.99
+                    legend:
+                      '0': 'Can wait for the next release'
+                      '1': 'Should be fixed this week'
+                      '2': 'Blocking revenue right now'
+                    probabilities:
+                      '0': 0
+                      '1': 0.01
+                      '2': 0.99
+                    score: 1.99
+                    type: 'score'
+                id: 'gen-dec-1789738314-X5e5eKGQdvR9rblyX250'
+                model: 'typesafe/jev-1.13-20260917'
+                provider: 'TypeSafe'
+                usage:
+                  cost: 0.000019992
+                  input_tokens: 476
+                  output_tokens: 70
+              schema:
+                $ref: '#/components/schemas/DecisionsResponse'
+          description: 'Decisions response'
+        '400':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 400
+                  message: 'Invalid request parameters'
+              schema:
+                $ref: '#/components/schemas/BadRequestResponse'
+          description: 'Bad Request - Invalid request parameters or malformed input'
+        '401':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 401
+                  message: 'Missing Authentication header'
+              schema:
+                $ref: '#/components/schemas/UnauthorizedResponse'
+          description: 'Unauthorized - Authentication required or invalid credentials'
+        '402':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 402
+                  message: 'Insufficient credits. Add more using https://openrouter.ai/credits'
+              schema:
+                $ref: '#/components/schemas/PaymentRequiredResponse'
+          description: 'Payment Required - Insufficient credits or quota to complete request'
+        '403':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 403
+                  message: 'Only management keys can perform this operation'
+              schema:
+                $ref: '#/components/schemas/ForbiddenResponse'
+          description: 'Forbidden - Authentication successful but insufficient permissions'
+        '404':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 404
+                  message: 'Resource not found'
+              schema:
+                $ref: '#/components/schemas/NotFoundResponse'
+          description: 'Not Found - Resource does not exist'
+        '413':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 413
+                  message: 'Request payload too large'
+              schema:
+                $ref: '#/components/schemas/PayloadTooLargeResponse'
+          description: 'Payload Too Large - Request payload exceeds size limits'
+        '429':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 429
+                  message: 'Rate limit exceeded'
+              schema:
+                $ref: '#/components/schemas/TooManyRequestsResponse'
+          description: 'Too Many Requests - Rate limit exceeded'
+        '500':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 500
+                  message: 'Internal Server Error'
+              schema:
+                $ref: '#/components/schemas/InternalServerResponse'
+          description: 'Internal Server Error - Unexpected server error'
+        '502':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 502
+                  message: 'Provider returned error'
+              schema:
+                $ref: '#/components/schemas/BadGatewayResponse'
+          description: 'Bad Gateway - Provider/upstream API failure'
+        '503':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 503
+                  message: 'Service temporarily unavailable'
+              schema:
+                $ref: '#/components/schemas/ServiceUnavailableResponse'
+          description: 'Service Unavailable - Service temporarily unavailable'
+        '524':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 524
+                  message: 'Request timed out. Please try again later.'
+              schema:
+                $ref: '#/components/schemas/EdgeNetworkTimeoutResponse'
+          description: 'Infrastructure Timeout - Provider request timed out at edge network'
+        '529':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 529
+                  message: 'Provider returned error'
+              schema:
+                $ref: '#/components/schemas/ProviderOverloadedResponse'
+          description: 'Provider Overloaded - Provider is temporarily overloaded'
+      summary: 'Submit a System One request (TypeSafe SDK compatible alias)'
+      tags:
+        - 'alpha.decisions'
+      x-speakeasy-ignore: true
   /vault/interns/{internId}/secrets:
     get:
       description: 'Lists secret metadata stored for one intern. Responses contain names, bound hosts, fingerprints and creation times, never secret values. Results are ordered by name and paginated with `limit` and `offset`. The scope is selected by the API key: workspace routes act on the key''s active workspace and intern routes act on one intern inside that workspace. There is no default workspace and no fallback to another scope. Every vault route, including reads, requires access to the Intern API programme and returns 404 outside it. Requests on regional hostnames such as `eu.openrouter.ai` are refused. [API key](/docs/api-reference/authentication) required.'
