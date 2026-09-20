@@ -42762,7 +42762,7 @@ paths:
       x-speakeasy-name-override: 'getSyncJob'
   /systemone:
     post:
-      description: 'TypeSafe SDK compatible alias for `POST /api/alpha/decisions`. Accepts the same request body and returns the same response. Bare TypeSafe model IDs such as `jev-1.13` and `jev-latest` are mapped onto the `typesafe/` namespace.'
+      description: 'Sends state and typed questions to a System One model such as Jev and returns its answers. Compatible with the TypeSafe SDKs. Bare System One model IDs such as `jev-1.13` and `jev-latest` are mapped onto the `typesafe/` namespace.'
       operationId: 'createSystemone'
       requestBody:
         content:
@@ -42955,10 +42955,10 @@ paths:
               schema:
                 $ref: '#/components/schemas/ProviderOverloadedResponse'
           description: 'Provider Overloaded - Provider is temporarily overloaded'
-      summary: 'Submit a System One request (TypeSafe SDK compatible alias)'
+      summary: 'Submit a System One request'
       tags:
-        - 'alpha.decisions'
-      x-speakeasy-ignore: true
+        - 'SystemOne'
+      x-speakeasy-name-override: 'create'
   /vault/interns/{internId}/secrets:
     get:
       description: 'Lists secret metadata stored for one intern. Responses contain names, bound hosts, fingerprints and creation times, never secret values. Results are ordered by name and paginated with `limit` and `offset`. The scope is selected by the API key: workspace routes act on the key''s active workspace and intern routes act on one intern inside that workspace. There is no default workspace and no fallback to another scope. Every vault route, including reads, requires access to the Intern API programme and returns 404 outside it. Requests on regional hostnames such as `eu.openrouter.ai` are refused. [API key](/docs/api-reference/authentication) required.'
@@ -45861,6 +45861,9 @@ tags:
   - description: 'Speech-to-text endpoints'
     name: 'STT'
     x-displayName: 'Transcriptions'
+  - description: 'System One endpoints for models such as Jev, compatible with the TypeSafe SDKs. See https://openrouter.ai/docs/guides/community/typesafe-sdk.'
+    name: 'SystemOne'
+    x-displayName: 'System One'
   - description: 'Text-to-speech endpoints'
     name: 'TTS'
     x-displayName: 'Speech'
