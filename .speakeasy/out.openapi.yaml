@@ -43313,7 +43313,7 @@ paths:
       - $ref: "#/components/parameters/AppCategories"
   /systemone:
     post:
-      description: 'TypeSafe SDK compatible alias for `POST /api/alpha/decisions`. Accepts the same request body and returns the same response. Bare TypeSafe model IDs such as `jev-1.13` and `jev-latest` are mapped onto the `typesafe/` namespace.'
+      description: 'Sends state and typed questions to a System One model such as Jev and returns its answers. Compatible with the TypeSafe SDKs. Bare System One model IDs such as `jev-1.13` and `jev-latest` are mapped onto the `typesafe/` namespace.'
       operationId: 'createSystemone'
       requestBody:
         content:
@@ -43506,10 +43506,10 @@ paths:
               schema:
                 $ref: '#/components/schemas/ProviderOverloadedResponse'
           description: 'Provider Overloaded - Provider is temporarily overloaded'
-      summary: 'Submit a System One request (TypeSafe SDK compatible alias)'
+      summary: 'Submit a System One request'
       tags:
-        - 'alpha.decisions'
-      x-speakeasy-ignore: true
+        - 'SystemOne'
+      x-speakeasy-name-override: 'create'
     parameters:
       - $ref: "#/components/parameters/AppIdentifier"
       - $ref: "#/components/parameters/AppDisplayName"
@@ -46481,6 +46481,9 @@ tags:
   - description: 'Speech-to-text endpoints'
     name: 'STT'
     x-displayName: 'Transcriptions'
+  - description: 'System One endpoints for models such as Jev, compatible with the TypeSafe SDKs. See https://openrouter.ai/docs/guides/community/typesafe-sdk.'
+    name: 'SystemOne'
+    x-displayName: 'System One'
   - description: 'Text-to-speech endpoints'
     name: 'TTS'
     x-displayName: 'Speech'

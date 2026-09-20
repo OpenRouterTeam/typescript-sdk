@@ -1,19 +1,19 @@
 lockVersion: ""
 id: ""
 management:
-  docChecksum: 2a0db5478432d0ae3c6c404e1a8df654
+  docChecksum: 02b4c06ec2d52324408d051bd1168781
   docVersion: 1.0.0
   speakeasyVersion: 1.787.0
   generationVersion: 2.914.0
-  releaseVersion: 1.3.7
-  configChecksum: 2c146ec2b9f4f8ceaab02caddffce2a4
+  releaseVersion: 1.3.8
+  configChecksum: e7d73e099a3f00a2b6a28aba29165bf3
   repoURL: https://github.com/OpenRouterTeam/typescript-sdk.git
   installationURL: https://github.com/OpenRouterTeam/typescript-sdk
   published: true
 persistentEdits:
-  generation_id: f872b08a-0cd4-490a-89f8-f7ce86abe31a
-  pristine_commit_hash: 0fa91667ac56411438d4c89f2e96abb5f5e40568
-  pristine_tree_hash: 5ef6b97b4c4b477c54679de3f1f7b790ae011aef
+  generation_id: 2f195164-ed59-4a37-99e5-bf853e71c5c7
+  pristine_commit_hash: be866010dc5972ed501e239d2b6e6ac7e5b527b0
+  pristine_tree_hash: d8367ee92538fa9973b18117f9d3673bdd02af78
 features:
   typescript:
     acceptHeaders: 2.81.2
@@ -7775,6 +7775,14 @@ trackedFiles:
     id: 2d76b1e8e8b7
     last_write_checksum: sha1:0cd53c1569a60f47eb1d4cd7392d34d54ef16fa5
     pristine_git_object: 2199321b31cfce31bf1ee7a7aa106f359e49120a
+  docs/models/operations/createsystemoneglobals.mdx:
+    id: 984ed7850b98
+    last_write_checksum: sha1:27052d1b6c33f4a154546b80c50b1c05e8ca712f
+    pristine_git_object: 50ad8be8e54484ad67402683ca3a6dcb90563455
+  docs/models/operations/createsystemonerequest.mdx:
+    id: b366ea72f04b
+    last_write_checksum: sha1:a0fd9ef1035d64ef5a37a74cc418c583ac95e5a3
+    pristine_git_object: d5b6c52bc93c20c7fc887370e12d17b86155f0af
   docs/models/operations/createttsglobals.md:
     id: d77253ce42ea
     last_write_checksum: sha1:9516108a1caa4256a40d277dd24f9d3be5f92a2d
@@ -13717,6 +13725,10 @@ trackedFiles:
     id: 190b0dc9a5d1
     last_write_checksum: sha1:b835cb30bf693fe45095b52a0ae93c0f65fabce4
     pristine_git_object: 5dbc5cf9ec9371f37d3470af2be60d2f1c815695
+  docs/sdks/systemone/README.mdx:
+    id: 55c317c71f3d
+    last_write_checksum: sha1:bc9bdc066212391be32e4418438b965694faa2c8
+    pristine_git_object: b537f54a24ec9db99114c4e3c87aad4394218e5f
   docs/sdks/tts/README.md:
     id: 0c425074d09f
     last_write_checksum: sha1:019ae6737c83daac03ebbe7d56c49b0d3ad11262
@@ -13770,12 +13782,12 @@ trackedFiles:
     pristine_git_object: 410efafd6a7f50d91ccb87131fedbe0c3d47e15a
   jsr.json:
     id: 7f6ab7767282
-    last_write_checksum: sha1:743b1e4539e309eee48126d7fcbd5ea655727b5f
-    pristine_git_object: e3372dc4b537db14c011f1ab756ab37b342dba62
+    last_write_checksum: sha1:d6f8a7ef49bc1b7a5bb8a927882c66b271e7c8eb
+    pristine_git_object: be3e0babc6a39b526683ecc11e6407f18963292e
   package.json:
     id: 7030d0b2f71b
-    last_write_checksum: sha1:a80684464694855cc69fcc9c6c4e81267157f1b5
-    pristine_git_object: 3fbf5c9e1acb2ce102c98990ad52da4564bdcaef
+    last_write_checksum: sha1:d74eaf28ee1efc7a498f0046d0beabce53f40cb3
+    pristine_git_object: 4cf3a1777ced6eac316f37c97a3bd222637b286c
   src/core.ts:
     id: f431fdbcd144
     last_write_checksum: sha1:5aa66b0b6a5964f3eea7f3098c2eb3c0ee9c0131
@@ -14164,6 +14176,10 @@ trackedFiles:
     id: ec09b43036c3
     last_write_checksum: sha1:a4ccbbbf93dc4b205afcae8e2fec5e769056a8ce
     pristine_git_object: c0a7ee9d613521068a759c5c7de0ec298aa30723
+  src/funcs/systemOneCreate.ts:
+    id: 446a269bb013
+    last_write_checksum: sha1:371dfcdd07849de9b435b70f4a853d5296cb4101
+    pristine_git_object: 7ff9ffc17f233b69e4b603894acf1ef5a443b0d1
   src/funcs/ttsCreateSpeech.ts:
     id: ed304f5d6ad8
     last_write_checksum: sha1:9036bff1fc295e995ac27b32a022b378b548b3bd
@@ -14282,8 +14298,8 @@ trackedFiles:
     pristine_git_object: a187e58707bdb726ca2aff74941efe7493422d4e
   src/lib/config.ts:
     id: 320761608fb3
-    last_write_checksum: sha1:fd11a36b280af275a71abd346a80a0b648c3b592
-    pristine_git_object: a005a25f16d860375833b94762fd8204c3250740
+    last_write_checksum: sha1:9fade4cf1bca63a2b085ab8abaa6dc19b5fecd82
+    pristine_git_object: 8aec2c30548ca1528f9a8dda377c1e34f751315a
   src/lib/dlv.ts:
     id: b1988214835a
     last_write_checksum: sha1:eaac763b22717206a6199104e0403ed17a4e2711
@@ -16350,6 +16366,10 @@ trackedFiles:
     id: ebd7800a291d
     last_write_checksum: sha1:0fbbd383b5a354b70f758c06ba85d2001802e189
     pristine_git_object: 38b8d8511d4503a767e6483091e00d06047cb276
+  src/models/operations/createsystemone.ts:
+    id: ac12b9bcab42
+    last_write_checksum: sha1:6bd652a9c0c725768dd1f5386a417ecbff1ca304
+    pristine_git_object: 8577f62cf4d311802bfaa54f3d251c5b4894d9b3
   src/models/operations/createvideos.ts:
     id: 06dc92996e18
     last_write_checksum: sha1:debbfb49bdfed99a57248da4ed95dc06be8c1e43
@@ -16520,8 +16540,8 @@ trackedFiles:
     pristine_git_object: a052ed42bd123e79be1f05dc823c808f8c32b383
   src/models/operations/index.ts:
     id: 0d9ffaf774d2
-    last_write_checksum: sha1:ae345b4b04b8059f56f1b33dea4739f5a7b2a0a5
-    pristine_git_object: 1309cce46cb496de3d21f05b77bf4349cc9e2558
+    last_write_checksum: sha1:b52bbe7ff22d625b02bf92fbcf5aa834df8768b0
+    pristine_git_object: 811736c154678b258d041233c1e70c50ae70cc0c
   src/models/operations/list.ts:
     id: ce11386ad30f
     last_write_checksum: sha1:357fb735d77e377eba5fec5742d7a4dca6747f47
@@ -17812,12 +17832,16 @@ trackedFiles:
     pristine_git_object: 8e9b4047e476a17451b5feb7e9d4a32eec7f61f8
   src/sdk/sdk.ts:
     id: 784571af2f69
-    last_write_checksum: sha1:fc11c771bddc7539fe381439004ae7de407d112b
-    pristine_git_object: dee18dfe000e6d40dc50a884a4ec91650971d3d4
+    last_write_checksum: sha1:45eb0c06159c711db01045e7c5f9d798a3ad9a7c
+    pristine_git_object: d15ef3c72127a043a25e40474d479b750d44d523
   src/sdk/stt.ts:
     id: fd9e88c22d1f
     last_write_checksum: sha1:baa74a0310eb8b465dea302495e744e3f3ea1ca5
     pristine_git_object: 7efe904b807115d3c691636b37a98fdf3b079878
+  src/sdk/systemone.ts:
+    id: af359eaea7c4
+    last_write_checksum: sha1:6159ff585ccef54dab6c74d100869f46f1d38360
+    pristine_git_object: 7e2b7285263de15e0803472e1411eea57057f5b5
   src/sdk/tts.ts:
     id: b3236e8fa217
     last_write_checksum: sha1:ebe45b666f4809ceb2406e6fd6f307f9455076b3
@@ -21082,4 +21106,38 @@ examples:
           application/json: {"error": {"code": 524, "message": "Request timed out. Please try again later."}}
         "529":
           application/json: {"error": {"code": 529, "message": "Provider returned error"}}
+  createSystemone:
+    speakeasy-default-create-systemone:
+      requestBody:
+        application/json: {"model": "Taurus", "questions": {}, "state": {"key": "Utah", "key1": "Alaska", "key2": "Ohio"}}
+      responses:
+        "200":
+          application/json: {"answers": {"key": {"score": 9690, "type": "score"}}, "model": "Model Y", "usage": {"input_tokens": 514823, "output_tokens": 883118}}
+        "400":
+          application/json: {"error": {"code": 400, "message": "Invalid request parameters"}}
+        "401":
+          application/json: {"error": {"code": 401, "message": "Missing Authentication header"}}
+        "402":
+          application/json: {"error": {"code": 402, "message": "Insufficient credits. Add more using https://openrouter.ai/credits"}}
+        "403":
+          application/json: {"error": {"code": 403, "message": "Only management keys can perform this operation"}}
+        "404":
+          application/json: {"error": {"code": 404, "message": "Resource not found"}}
+        "413":
+          application/json: {"error": {"code": 413, "message": "Request payload too large"}}
+        "429":
+          application/json: {"error": {"code": 429, "message": "Rate limit exceeded"}}
+        "500":
+          application/json: {"error": {"code": 500, "message": "Internal Server Error"}}
+        "502":
+          application/json: {"error": {"code": 502, "message": "Provider returned error"}}
+        "503":
+          application/json: {"error": {"code": 503, "message": "Service temporarily unavailable"}}
+        "524":
+          application/json: {"error": {"code": 524, "message": "Request timed out. Please try again later."}}
+        "529":
+          application/json: {"error": {"code": 529, "message": "Provider returned error"}}
 examplesVersion: 1.0.2
+releaseNotes: |
+  ## Typescript SDK Changes:
+  * `openrouter.systemOne.create()`: **Added**
