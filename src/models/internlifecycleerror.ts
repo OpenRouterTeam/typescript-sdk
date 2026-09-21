@@ -10,9 +10,15 @@ import { SDKValidationError } from "./errors/sdkvalidationerror.js";
 
 export type Code = string | number;
 
+export type InternLifecycleErrorMetadata = {
+  reason: string;
+  retryable: boolean;
+};
+
 export type InternLifecycleErrorError = {
   code: string | number;
   message: string;
+  metadata?: InternLifecycleErrorMetadata | undefined;
 };
 
 /** @internal */
@@ -32,12 +38,32 @@ export function codeFromJSON(
 }
 
 /** @internal */
+export const InternLifecycleErrorMetadata$inboundSchema: z.ZodType<
+  InternLifecycleErrorMetadata,
+  unknown
+> = z.object({
+  reason: z.string(),
+  retryable: z.boolean(),
+});
+
+export function internLifecycleErrorMetadataFromJSON(
+  jsonString: string,
+): SafeParseResult<InternLifecycleErrorMetadata, SDKValidationError> {
+  return safeParse(
+    jsonString,
+    (x) => InternLifecycleErrorMetadata$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'InternLifecycleErrorMetadata' from JSON`,
+  );
+}
+
+/** @internal */
 export const InternLifecycleErrorError$inboundSchema: z.ZodType<
   InternLifecycleErrorError,
   unknown
 > = z.object({
   code: z.union([z.string(), z.int()]),
   message: z.string(),
+  metadata: z.lazy(() => InternLifecycleErrorMetadata$inboundSchema).optional(),
 });
 
 export function internLifecycleErrorErrorFromJSON(

@@ -12772,6 +12772,7 @@ components:
         message: 'That question is no longer waiting for an answer.'
         metadata:
           reason: 'interaction_not_pending'
+          retryable: false
       properties:
         code:
           description: 'The HTTP status of the response.'
@@ -12788,6 +12789,7 @@ components:
       description: 'Machine-readable detail for the failure.'
       example:
         reason: 'interaction_not_pending'
+        retryable: false
       properties:
         reason:
           description: 'A stable reason a client can branch on.'
@@ -12810,8 +12812,12 @@ components:
             - 'turn_failed'
           type: 'string'
           x-speakeasy-unknown-values: allow
+        retryable:
+          description: 'Whether the same request may be sent again unchanged. Always `true` for the transient refusals — `busy`, `intern_not_ready`, `intern_unreachable`, `rate_limited`, `stream_severed` and `timeout` — and always `false` for the ones a retry cannot fix. For `turn_failed` it varies by failure and is the intern''s own classification of what went wrong: `true` for an upstream overload, rate limit, timeout or transport fault, `false` for an authentication or bad-request failure that would be rejected the same way again. Branch on this field rather than on `reason` when deciding whether to retry. A `429`, and a `409` or `503` with reason `busy`, also carry a `Retry-After` header saying how long to wait.'
+          type: 'boolean'
       required:
         - 'reason'
+        - 'retryable'
       type: 'object'
     InternChatErrorResponse:
       description: 'A refusal before the stream opens. Once the response is `200` and streaming, failures arrive as a chunk with `finish_reason: "error"` instead.'
@@ -12821,6 +12827,7 @@ components:
           message: 'That question is no longer waiting for an answer.'
           metadata:
             reason: 'interaction_not_pending'
+            retryable: false
       properties:
         error:
           $ref: '#/components/schemas/InternChatError'
@@ -12872,6 +12879,7 @@ components:
         message: 'The intern could not continue this run.'
         metadata:
           reason: 'attachment_failed'
+          retryable: false
       properties:
         code:
           description: 'The HTTP status this failure would have had before the stream opened.'
@@ -13057,8 +13065,11 @@ components:
       description: 'Intern lifecycle request failure.'
       example:
         error:
-          code: 'not_found'
+          code: 404
           message: 'Intern not found'
+          metadata:
+            reason: 'not_found'
+            retryable: false
       properties:
         error:
           additionalProperties: false
@@ -13069,6 +13080,17 @@ components:
                 - type: 'integer'
             message:
               type: 'string'
+            metadata:
+              additionalProperties: false
+              properties:
+                reason:
+                  type: 'string'
+                retryable:
+                  type: 'boolean'
+              required:
+                - 'reason'
+                - 'retryable'
+              type: 'object'
           required:
             - 'code'
             - 'message'
@@ -36364,13 +36386,13 @@ paths:
             maximum: 500
             minimum: 1
             type: 'integer'
-        - description: 'Comma-separated lifecycle statuses to include.'
+        - description: 'Comma-separated lifecycle statuses to include, at most 8. Repeats are collapsed.'
           explode: false
           in: 'query'
           name: 'status'
           required: false
           schema:
-            description: 'Comma-separated lifecycle statuses to include.'
+            description: 'Comma-separated lifecycle statuses to include, at most 8. Repeats are collapsed.'
             example:
               - 'queued'
               - 'running'
@@ -36386,6 +36408,7 @@ paths:
                 - 'destroy_failed'
               type: 'string'
               x-speakeasy-unknown-values: allow
+            maxItems: 8
             type: 'array'
           style: 'form'
         - description: 'The opaque `next_cursor` of the previous page. Returns the interns that come after it in the newest-first order. A malformed cursor is a 400.'
@@ -36434,8 +36457,11 @@ paths:
             application/json:
               example:
                 error:
-                  code: 'invalid_body'
+                  code: 400
                   message: 'Invalid list query'
+                  metadata:
+                    reason: 'invalid_body'
+                    retryable: false
               schema:
                 $ref: '#/components/schemas/InternLifecycleError'
           description: 'The list filters are invalid.'
@@ -36464,8 +36490,11 @@ paths:
             application/json:
               example:
                 error:
-                  code: 'not_found'
+                  code: 404
                   message: 'Intern not found'
+                  metadata:
+                    reason: 'not_found'
+                    retryable: false
               schema:
                 $ref: '#/components/schemas/InternLifecycleError'
           description: 'The caller is outside the Intern API programme, the intern is hidden, or lifecycle writes are disabled.'
@@ -36475,20 +36504,26 @@ paths:
               example:
                 error:
                   code: 408
-                  message: 'Request timed out'
+                  message: 'Operation timed out after 10s. Please try again later.'
+                  metadata:
+                    reason: 'timeout'
+                    retryable: true
               schema:
                 $ref: '#/components/schemas/InternLifecycleError'
-          description: 'The request exceeded its route deadline.'
+          description: 'The request exceeded its route deadline. The deadline quoted in the message is the route''s own, so it differs between operations.'
         '500':
           content:
             application/json:
               example:
                 error:
-                  code: 'internal_error'
+                  code: 500
                   message: 'The request could not be completed'
+                  metadata:
+                    reason: 'internal_error'
+                    retryable: true
               schema:
                 $ref: '#/components/schemas/InternLifecycleError'
-          description: 'The request could not be completed.'
+          description: 'The request could not be completed. `metadata.reason` says whether to try again: `internal_error` is a transient failure and carries `metadata.retryable: true`, so the same request may be sent again, while `configuration_error` carries `retryable: false` because the next attempt reads the same missing binding or unusable stored credential.'
       security:
         - apiKey: []
       summary: 'List interns'
@@ -36498,13 +36533,14 @@ paths:
       description: 'Creates an intern in an explicit workspace. The operation also creates its private vault. It can start provisioning immediately or wait for a later provision call. A retry with the same idempotency key and body resumes unfinished work. The request body is capped at 1048576 bytes and a larger body is refused with 413. The API key selects the caller, workspace and visible interns. There is no default workspace fallback. Requests on regional hostnames such as `eu.openrouter.ai` are refused. [API key](/docs/api-reference/authentication) required.'
       operationId: 'createIntern'
       parameters:
-        - description: 'Key that makes retries resume the same create operation. Without one, the server derives a stable key from the request body.'
+        - description: 'Key that makes retries resume the same create operation, from 1 through 255 characters. An empty or longer key is refused with 400. Without the header, the server derives a stable key from the request body.'
           in: 'header'
           name: 'Idempotency-Key'
           required: false
           schema:
-            description: 'Key that makes retries resume the same create operation. Without one, the server derives a stable key from the request body.'
+            description: 'Key that makes retries resume the same create operation, from 1 through 255 characters. An empty or longer key is refused with 400. Without the header, the server derives a stable key from the request body.'
             example: 'create-research-assistant-2026-09-16'
+            maxLength: 255
             minLength: 1
             type: 'string'
       requestBody:
@@ -36565,8 +36601,11 @@ paths:
             application/json:
               example:
                 error:
-                  code: 'invalid_body'
+                  code: 400
                   message: 'Invalid request body'
+                  metadata:
+                    reason: 'invalid_body'
+                    retryable: false
               schema:
                 $ref: '#/components/schemas/InternLifecycleError'
           description: 'The request body is invalid.'
@@ -36585,8 +36624,11 @@ paths:
             application/json:
               example:
                 error:
-                  code: 'no_acting_user'
+                  code: 403
                   message: 'This key acts as the organization and has no member to own a new intern'
+                  metadata:
+                    reason: 'no_acting_user'
+                    retryable: false
               schema:
                 $ref: '#/components/schemas/InternLifecycleError'
           description: 'The key acts as an organization and has no member who can own the intern, or regional access is refused.'
@@ -36595,8 +36637,11 @@ paths:
             application/json:
               example:
                 error:
-                  code: 'not_found'
+                  code: 404
                   message: 'Intern not found'
+                  metadata:
+                    reason: 'not_found'
+                    retryable: false
               schema:
                 $ref: '#/components/schemas/InternLifecycleError'
           description: 'The caller is outside the Intern API programme, the intern is hidden, or lifecycle writes are disabled.'
@@ -36606,10 +36651,13 @@ paths:
               example:
                 error:
                   code: 408
-                  message: 'Request timed out'
+                  message: 'Operation timed out after 10s. Please try again later.'
+                  metadata:
+                    reason: 'timeout'
+                    retryable: true
               schema:
                 $ref: '#/components/schemas/InternLifecycleError'
-          description: 'The request exceeded its route deadline.'
+          description: 'The request exceeded its route deadline. The deadline quoted in the message is the route''s own, so it differs between operations.'
         '409':
           content:
             application/json:
@@ -36617,13 +36665,19 @@ paths:
                 idempotency_key_reused:
                   value:
                     error:
-                      code: 'idempotency_key_reused'
+                      code: 409
                       message: 'This Idempotency-Key was already used with a different request'
+                      metadata:
+                        reason: 'idempotency_key_reused'
+                        retryable: false
                 name_taken:
                   value:
                     error:
-                      code: 'name_taken'
+                      code: 409
                       message: 'An intern named "research-assistant" already exists in this workspace'
+                      metadata:
+                        reason: 'name_taken'
+                        retryable: false
               schema:
                 $ref: '#/components/schemas/InternLifecycleError'
           description: 'The idempotency key was reused, the intern name is already taken in the workspace, the member reached the intern limit, or the requested vault cannot be attached.'
@@ -36632,8 +36686,11 @@ paths:
             application/json:
               example:
                 error:
-                  code: 'payload_too_large'
+                  code: 413
                   message: 'Request body exceeds 1048576 bytes'
+                  metadata:
+                    reason: 'payload_too_large'
+                    retryable: false
               schema:
                 $ref: '#/components/schemas/InternLifecycleError'
           description: 'The request body is larger than 1048576 bytes.'
@@ -36642,18 +36699,24 @@ paths:
             application/json:
               example:
                 error:
-                  code: 'internal_error'
+                  code: 500
                   message: 'The request could not be completed'
+                  metadata:
+                    reason: 'internal_error'
+                    retryable: true
               schema:
                 $ref: '#/components/schemas/InternLifecycleError'
-          description: 'The request could not be completed.'
+          description: 'The request could not be completed. `metadata.reason` says whether to try again: `internal_error` is a transient failure and carries `metadata.retryable: true`, so the same request may be sent again, while `configuration_error` carries `retryable: false` because the next attempt reads the same missing binding or unusable stored credential.'
         '502':
           content:
             application/json:
               example:
                 error:
-                  code: 'upstream_unavailable'
+                  code: 502
                   message: 'The intern was created but setup is not ready yet, retry the request'
+                  metadata:
+                    reason: 'upstream_unavailable'
+                    retryable: true
               schema:
                 $ref: '#/components/schemas/InternLifecycleError'
           description: 'The vault or provisioner did not complete a recoverable create step. Retry the same request.'
@@ -36702,8 +36765,11 @@ paths:
             application/json:
               example:
                 error:
-                  code: 'invalid_body'
+                  code: 400
                   message: 'Invalid request body'
+                  metadata:
+                    reason: 'invalid_body'
+                    retryable: false
               schema:
                 $ref: '#/components/schemas/InternLifecycleError'
           description: 'The request body is invalid.'
@@ -36732,8 +36798,11 @@ paths:
             application/json:
               example:
                 error:
-                  code: 'not_found'
+                  code: 404
                   message: 'Intern not found'
+                  metadata:
+                    reason: 'not_found'
+                    retryable: false
               schema:
                 $ref: '#/components/schemas/InternLifecycleError'
           description: 'The caller is outside the Intern API programme, the intern is hidden, or lifecycle writes are disabled.'
@@ -36743,17 +36812,23 @@ paths:
               example:
                 error:
                   code: 408
-                  message: 'Request timed out'
+                  message: 'Operation timed out after 10s. Please try again later.'
+                  metadata:
+                    reason: 'timeout'
+                    retryable: true
               schema:
                 $ref: '#/components/schemas/InternLifecycleError'
-          description: 'The request exceeded its route deadline.'
+          description: 'The request exceeded its route deadline. The deadline quoted in the message is the route''s own, so it differs between operations.'
         '409':
           content:
             application/json:
               example:
                 error:
-                  code: 'intern_busy'
+                  code: 409
                   message: 'The intern is not in a state that allows this operation'
+                  metadata:
+                    reason: 'intern_busy'
+                    retryable: false
               schema:
                 $ref: '#/components/schemas/InternLifecycleError'
           description: 'The intern is not in a state that allows this operation.'
@@ -36762,8 +36837,11 @@ paths:
             application/json:
               example:
                 error:
-                  code: 'payload_too_large'
+                  code: 413
                   message: 'Request body exceeds 1048576 bytes'
+                  metadata:
+                    reason: 'payload_too_large'
+                    retryable: false
               schema:
                 $ref: '#/components/schemas/InternLifecycleError'
           description: 'The request body is larger than 1048576 bytes.'
@@ -36772,18 +36850,24 @@ paths:
             application/json:
               example:
                 error:
-                  code: 'internal_error'
+                  code: 500
                   message: 'The request could not be completed'
+                  metadata:
+                    reason: 'internal_error'
+                    retryable: true
               schema:
                 $ref: '#/components/schemas/InternLifecycleError'
-          description: 'The request could not be completed.'
+          description: 'The request could not be completed. `metadata.reason` says whether to try again: `internal_error` is a transient failure and carries `metadata.retryable: true`, so the same request may be sent again, while `configuration_error` carries `retryable: false` because the next attempt reads the same missing binding or unusable stored credential.'
         '502':
           content:
             application/json:
               example:
                 error:
-                  code: 'upstream_unavailable'
+                  code: 502
                   message: 'The intern service could not be reached, retry the request'
+                  metadata:
+                    reason: 'upstream_unavailable'
+                    retryable: true
               schema:
                 $ref: '#/components/schemas/InternLifecycleError'
           description: 'The intern service could not accept the operation.'
@@ -36852,8 +36936,11 @@ paths:
             application/json:
               example:
                 error:
-                  code: 'not_found'
+                  code: 404
                   message: 'Intern not found'
+                  metadata:
+                    reason: 'not_found'
+                    retryable: false
               schema:
                 $ref: '#/components/schemas/InternLifecycleError'
           description: 'The caller is outside the Intern API programme, the intern is hidden, or lifecycle writes are disabled.'
@@ -36863,20 +36950,26 @@ paths:
               example:
                 error:
                   code: 408
-                  message: 'Request timed out'
+                  message: 'Operation timed out after 10s. Please try again later.'
+                  metadata:
+                    reason: 'timeout'
+                    retryable: true
               schema:
                 $ref: '#/components/schemas/InternLifecycleError'
-          description: 'The request exceeded its route deadline.'
+          description: 'The request exceeded its route deadline. The deadline quoted in the message is the route''s own, so it differs between operations.'
         '500':
           content:
             application/json:
               example:
                 error:
-                  code: 'internal_error'
+                  code: 500
                   message: 'The request could not be completed'
+                  metadata:
+                    reason: 'internal_error'
+                    retryable: true
               schema:
                 $ref: '#/components/schemas/InternLifecycleError'
-          description: 'The request could not be completed.'
+          description: 'The request could not be completed. `metadata.reason` says whether to try again: `internal_error` is a transient failure and carries `metadata.retryable: true`, so the same request may be sent again, while `configuration_error` carries `retryable: false` because the next attempt reads the same missing binding or unusable stored credential.'
       security:
         - apiKey: []
       summary: 'Get an intern'
@@ -36931,8 +37024,11 @@ paths:
             application/json:
               example:
                 error:
-                  code: 'invalid_body'
+                  code: 400
                   message: 'Invalid request body'
+                  metadata:
+                    reason: 'invalid_body'
+                    retryable: false
               schema:
                 $ref: '#/components/schemas/InternLifecycleError'
           description: 'The request body is invalid.'
@@ -36961,8 +37057,11 @@ paths:
             application/json:
               example:
                 error:
-                  code: 'not_found'
+                  code: 404
                   message: 'Intern not found'
+                  metadata:
+                    reason: 'not_found'
+                    retryable: false
               schema:
                 $ref: '#/components/schemas/InternLifecycleError'
           description: 'The caller is outside the Intern API programme, the intern is hidden, or lifecycle writes are disabled.'
@@ -36972,17 +37071,36 @@ paths:
               example:
                 error:
                   code: 408
-                  message: 'Request timed out'
+                  message: 'Operation timed out after 10s. Please try again later.'
+                  metadata:
+                    reason: 'timeout'
+                    retryable: true
               schema:
                 $ref: '#/components/schemas/InternLifecycleError'
-          description: 'The request exceeded its route deadline.'
+          description: 'The request exceeded its route deadline. The deadline quoted in the message is the route''s own, so it differs between operations.'
+        '409':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 409
+                  message: 'An intern named "research-assistant" already exists in this workspace'
+                  metadata:
+                    reason: 'name_taken'
+                    retryable: false
+              schema:
+                $ref: '#/components/schemas/InternLifecycleError'
+          description: 'The new name is already taken by an intern in this workspace.'
         '413':
           content:
             application/json:
               example:
                 error:
-                  code: 'payload_too_large'
+                  code: 413
                   message: 'Request body exceeds 1048576 bytes'
+                  metadata:
+                    reason: 'payload_too_large'
+                    retryable: false
               schema:
                 $ref: '#/components/schemas/InternLifecycleError'
           description: 'The request body is larger than 1048576 bytes.'
@@ -36991,11 +37109,14 @@ paths:
             application/json:
               example:
                 error:
-                  code: 'internal_error'
+                  code: 500
                   message: 'The request could not be completed'
+                  metadata:
+                    reason: 'internal_error'
+                    retryable: true
               schema:
                 $ref: '#/components/schemas/InternLifecycleError'
-          description: 'The request could not be completed.'
+          description: 'The request could not be completed. `metadata.reason` says whether to try again: `internal_error` is a transient failure and carries `metadata.retryable: true`, so the same request may be sent again, while `configuration_error` carries `retryable: false` because the next attempt reads the same missing binding or unusable stored credential.'
       security:
         - apiKey: []
       summary: 'Update an intern'
@@ -37064,6 +37185,7 @@ paths:
                   message: 'The intern did not accept that answer for this tool_call_id.'
                   metadata:
                     reason: 'bad_request'
+                    retryable: false
               schema:
                 $ref: '#/components/schemas/InternChatErrorResponse'
           description: 'The body is not a valid request (`bad_request`), or the intern did not accept the answer for the pending question, such as a permission option it did not offer.'
@@ -37096,9 +37218,23 @@ paths:
                   message: 'No pending question has this tool_call_id.'
                   metadata:
                     reason: 'interaction_unknown'
+                    retryable: false
               schema:
                 $ref: '#/components/schemas/InternChatErrorResponse'
           description: 'The caller is outside the interns programme, the intern does not exist for this key (`not_found`), or no pending question has this `tool_call_id` in this session (`interaction_unknown`).'
+        '408':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 408
+                  message: 'Operation timed out after 300s. Please try again later.'
+                  metadata:
+                    reason: 'timeout'
+                    retryable: true
+              schema:
+                $ref: '#/components/schemas/InternChatErrorResponse'
+          description: 'The request exceeded the route''s own deadline before the handler answered (`timeout`). Distinct from the 504, which is the intern failing to answer within the turn budget.'
         '409':
           content:
             application/json:
@@ -37108,9 +37244,18 @@ paths:
                   message: 'The run that asked this question has already ended.'
                   metadata:
                     reason: 'interaction_not_pending'
+                    retryable: false
               schema:
                 $ref: '#/components/schemas/InternChatErrorResponse'
-          description: 'The intern is not running (`intern_not_ready`), another turn is running in this session (`busy`), the question is no longer waiting (`interaction_not_pending`), or another request is already attached to the run (`attachment_failed`).'
+          description: 'The intern is not running (`intern_not_ready`), another turn is already running on this intern (`busy`), the question is no longer waiting (`interaction_not_pending`), or another request is already attached to the run (`attachment_failed`). The turn lock is per intern, not per session. `intern_not_ready` and `busy` report `retryable: true`, and a `busy` refusal carries `Retry-After`.'
+          headers:
+            Retry-After:
+              description: 'Seconds to wait before retrying this request. Present only on a `busy` refusal.'
+              required: false
+              schema:
+                description: 'Seconds to wait before retrying this request. Present only on a `busy` refusal.'
+                example: '5'
+                type: 'string'
         '410':
           content:
             application/json:
@@ -37120,6 +37265,7 @@ paths:
                   message: 'The run produced more output than the intern retains for replay.'
                   metadata:
                     reason: 'attachment_failed'
+                    retryable: false
               schema:
                 $ref: '#/components/schemas/InternChatErrorResponse'
           description: 'The run produced more output than the intern retains, so the paused stream cannot be resumed (`attachment_failed`).'
@@ -37132,6 +37278,7 @@ paths:
                   message: 'Request body exceeds 1048576 bytes'
                   metadata:
                     reason: 'payload_too_large'
+                    retryable: false
               schema:
                 $ref: '#/components/schemas/InternChatErrorResponse'
           description: 'The body exceeds 1 MiB (`payload_too_large`).'
@@ -37144,9 +37291,18 @@ paths:
                   message: 'Too many intern turns. Please wait a moment.'
                   metadata:
                     reason: 'rate_limited'
+                    retryable: true
               schema:
                 $ref: '#/components/schemas/InternChatErrorResponse'
-          description: 'Too many turns for the user or organization this key acts as (`rate_limited`).'
+          description: 'Too many turns for the user or organization this key acts as (`rate_limited`). It reports `retryable: true` and carries `Retry-After`.'
+          headers:
+            Retry-After:
+              description: 'Seconds to wait before retrying this request.'
+              required: true
+              schema:
+                description: 'Seconds to wait before retrying this request.'
+                example: '60'
+                type: 'string'
         '502':
           content:
             application/json:
@@ -37156,9 +37312,10 @@ paths:
                   message: 'The intern could not be reached.'
                   metadata:
                     reason: 'intern_unreachable'
+                    retryable: true
               schema:
                 $ref: '#/components/schemas/InternChatErrorResponse'
-          description: 'The intern could not be reached or rejected the request (`intern_unreachable`, `intern_rejected`), the intern refused the turn before any output (`turn_failed`), or its stream ended before the turn started (`stream_severed`).'
+          description: 'The intern could not be reached or rejected the request (`intern_unreachable`, `intern_rejected`), the intern refused the turn before any output (`turn_failed`), or its stream ended before the turn started (`stream_severed`). `intern_unreachable` and `stream_severed` are transient and report `retryable: true`; `intern_rejected` reports `false`. A `turn_failed` varies by failure and carries the intern''s own classification of what went wrong, so read `metadata.retryable` rather than assuming from the reason.'
         '503':
           content:
             application/json:
@@ -37168,9 +37325,18 @@ paths:
                   message: 'The intern cannot hold another run open across a question right now. Retry later.'
                   metadata:
                     reason: 'busy'
+                    retryable: true
               schema:
                 $ref: '#/components/schemas/InternChatErrorResponse'
-          description: 'The intern cannot hold another run open across a question right now (`busy`). Retry later.'
+          description: 'The intern cannot hold another run open across a question right now (`busy`). It reports `retryable: true` and carries `Retry-After`.'
+          headers:
+            Retry-After:
+              description: 'Seconds to wait before retrying this request.'
+              required: true
+              schema:
+                description: 'Seconds to wait before retrying this request.'
+                example: '5'
+                type: 'string'
         '504':
           content:
             application/json:
@@ -37180,6 +37346,7 @@ paths:
                   message: 'The intern did not answer in time.'
                   metadata:
                     reason: 'timeout'
+                    retryable: true
               schema:
                 $ref: '#/components/schemas/InternChatErrorResponse'
           description: 'The intern did not answer within the request budget (`timeout`).'
@@ -37196,7 +37363,7 @@ paths:
       - $ref: "#/components/parameters/AppCategories"
   /interns/{internId}/provision:
     post:
-      description: 'Starts the first boot, or resumes an intern after suspension. The API key selects the caller, workspace and visible interns. There is no default workspace fallback. Requests on regional hostnames such as `eu.openrouter.ai` are refused. [API key](/docs/api-reference/authentication) required.'
+      description: 'Starts the first boot, or resumes an intern after suspension. This operation takes no request body. A body carrying any field is refused with 400 rather than ignored. The API key selects the caller, workspace and visible interns. There is no default workspace fallback. Requests on regional hostnames such as `eu.openrouter.ai` are refused. [API key](/docs/api-reference/authentication) required.'
       operationId: 'provisionIntern'
       parameters:
         - description: 'ID of an intern visible to the authenticated API key.'
@@ -37217,6 +37384,19 @@ paths:
               schema:
                 $ref: '#/components/schemas/ProvisionInternResponse'
           description: 'The operation was accepted.'
+        '400':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 400
+                  message: 'Invalid request body'
+                  metadata:
+                    reason: 'invalid_body'
+                    retryable: false
+              schema:
+                $ref: '#/components/schemas/InternLifecycleError'
+          description: 'The request body is invalid.'
         '401':
           content:
             application/json:
@@ -37242,8 +37422,11 @@ paths:
             application/json:
               example:
                 error:
-                  code: 'not_found'
+                  code: 404
                   message: 'Intern not found'
+                  metadata:
+                    reason: 'not_found'
+                    retryable: false
               schema:
                 $ref: '#/components/schemas/InternLifecycleError'
           description: 'The caller is outside the Intern API programme, the intern is hidden, or lifecycle writes are disabled.'
@@ -37253,37 +37436,62 @@ paths:
               example:
                 error:
                   code: 408
-                  message: 'Request timed out'
+                  message: 'Operation timed out after 10s. Please try again later.'
+                  metadata:
+                    reason: 'timeout'
+                    retryable: true
               schema:
                 $ref: '#/components/schemas/InternLifecycleError'
-          description: 'The request exceeded its route deadline.'
+          description: 'The request exceeded its route deadline. The deadline quoted in the message is the route''s own, so it differs between operations.'
         '409':
           content:
             application/json:
               example:
                 error:
-                  code: 'intern_busy'
+                  code: 409
                   message: 'The intern is not in a state that allows this operation'
+                  metadata:
+                    reason: 'intern_busy'
+                    retryable: false
               schema:
                 $ref: '#/components/schemas/InternLifecycleError'
           description: 'The intern is not in a state that allows this operation.'
+        '413':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 413
+                  message: 'Request body exceeds 1048576 bytes'
+                  metadata:
+                    reason: 'payload_too_large'
+                    retryable: false
+              schema:
+                $ref: '#/components/schemas/InternLifecycleError'
+          description: 'The request body is larger than 1048576 bytes.'
         '500':
           content:
             application/json:
               example:
                 error:
-                  code: 'internal_error'
+                  code: 500
                   message: 'The request could not be completed'
+                  metadata:
+                    reason: 'internal_error'
+                    retryable: true
               schema:
                 $ref: '#/components/schemas/InternLifecycleError'
-          description: 'The request could not be completed.'
+          description: 'The request could not be completed. `metadata.reason` says whether to try again: `internal_error` is a transient failure and carries `metadata.retryable: true`, so the same request may be sent again, while `configuration_error` carries `retryable: false` because the next attempt reads the same missing binding or unusable stored credential.'
         '502':
           content:
             application/json:
               example:
                 error:
-                  code: 'upstream_unavailable'
+                  code: 502
                   message: 'The intern service could not be reached, retry the request'
+                  metadata:
+                    reason: 'upstream_unavailable'
+                    retryable: true
               schema:
                 $ref: '#/components/schemas/InternLifecycleError'
           description: 'The intern service could not accept the operation.'
@@ -37298,7 +37506,7 @@ paths:
       - $ref: "#/components/parameters/AppCategories"
   /interns/{internId}/suspend:
     post:
-      description: 'Stops the intern runtime while keeping its disk and configuration for a later provision call. The API key selects the caller, workspace and visible interns. There is no default workspace fallback. Requests on regional hostnames such as `eu.openrouter.ai` are refused. [API key](/docs/api-reference/authentication) required.'
+      description: 'Stops the intern runtime while keeping its disk and configuration for a later provision call. This operation takes no request body. A body carrying any field is refused with 400 rather than ignored. The API key selects the caller, workspace and visible interns. There is no default workspace fallback. Requests on regional hostnames such as `eu.openrouter.ai` are refused. [API key](/docs/api-reference/authentication) required.'
       operationId: 'suspendIntern'
       parameters:
         - description: 'ID of an intern visible to the authenticated API key.'
@@ -37319,6 +37527,19 @@ paths:
               schema:
                 $ref: '#/components/schemas/SuspendInternResponse'
           description: 'Intern suspended.'
+        '400':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 400
+                  message: 'Invalid request body'
+                  metadata:
+                    reason: 'invalid_body'
+                    retryable: false
+              schema:
+                $ref: '#/components/schemas/InternLifecycleError'
+          description: 'The request body is invalid.'
         '401':
           content:
             application/json:
@@ -37344,8 +37565,11 @@ paths:
             application/json:
               example:
                 error:
-                  code: 'not_found'
+                  code: 404
                   message: 'Intern not found'
+                  metadata:
+                    reason: 'not_found'
+                    retryable: false
               schema:
                 $ref: '#/components/schemas/InternLifecycleError'
           description: 'The caller is outside the Intern API programme, the intern is hidden, or lifecycle writes are disabled.'
@@ -37355,37 +37579,62 @@ paths:
               example:
                 error:
                   code: 408
-                  message: 'Request timed out'
+                  message: 'Operation timed out after 10s. Please try again later.'
+                  metadata:
+                    reason: 'timeout'
+                    retryable: true
               schema:
                 $ref: '#/components/schemas/InternLifecycleError'
-          description: 'The request exceeded its route deadline.'
+          description: 'The request exceeded its route deadline. The deadline quoted in the message is the route''s own, so it differs between operations.'
         '409':
           content:
             application/json:
               example:
                 error:
-                  code: 'intern_busy'
+                  code: 409
                   message: 'The intern is not in a state that allows this operation'
+                  metadata:
+                    reason: 'intern_busy'
+                    retryable: false
               schema:
                 $ref: '#/components/schemas/InternLifecycleError'
           description: 'The intern is not in a state that allows this operation.'
+        '413':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 413
+                  message: 'Request body exceeds 1048576 bytes'
+                  metadata:
+                    reason: 'payload_too_large'
+                    retryable: false
+              schema:
+                $ref: '#/components/schemas/InternLifecycleError'
+          description: 'The request body is larger than 1048576 bytes.'
         '500':
           content:
             application/json:
               example:
                 error:
-                  code: 'internal_error'
+                  code: 500
                   message: 'The request could not be completed'
+                  metadata:
+                    reason: 'internal_error'
+                    retryable: true
               schema:
                 $ref: '#/components/schemas/InternLifecycleError'
-          description: 'The request could not be completed.'
+          description: 'The request could not be completed. `metadata.reason` says whether to try again: `internal_error` is a transient failure and carries `metadata.retryable: true`, so the same request may be sent again, while `configuration_error` carries `retryable: false` because the next attempt reads the same missing binding or unusable stored credential.'
         '502':
           content:
             application/json:
               example:
                 error:
-                  code: 'upstream_unavailable'
+                  code: 502
                   message: 'The intern service could not be reached, retry the request'
+                  metadata:
+                    reason: 'upstream_unavailable'
+                    retryable: true
               schema:
                 $ref: '#/components/schemas/InternLifecycleError'
           description: 'The intern service could not accept the operation.'

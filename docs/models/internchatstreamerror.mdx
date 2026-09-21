@@ -14,6 +14,7 @@ let value: InternChatStreamError = {
   message: "The intern could not continue this run.",
   metadata: {
     reason: "attachment_failed",
+    retryable: false,
   },
 };
 ```
@@ -24,4 +25,4 @@ let value: InternChatStreamError = {
 | ---------------------------------------------------------------------- | ---------------------------------------------------------------------- | ---------------------------------------------------------------------- | ---------------------------------------------------------------------- | ---------------------------------------------------------------------- |
 | `code`                                                                 | *number*                                                               | :heavy_check_mark:                                                     | The HTTP status this failure would have had before the stream opened.  |                                                                        |
 | `message`                                                              | *string*                                                               | :heavy_check_mark:                                                     | N/A                                                                    |                                                                        |
-| `metadata`                                                             | [models.InternChatErrorMetadata](../models/internchaterrormetadata.mdx) | :heavy_check_mark:                                                     | Machine-readable detail for the failure.                               | \{<br/>"reason": "interaction_not_pending"<br/>}                        |
+| `metadata`                                                             | [models.InternChatErrorMetadata](../models/internchaterrormetadata.mdx) | :heavy_check_mark:                                                     | Machine-readable detail for the failure.                               | \{<br/>"reason": "interaction_not_pending",<br/>"retryable": false<br/>} |

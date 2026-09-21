@@ -50,7 +50,7 @@ export type CreateInternRequest = {
    */
   appCategories?: string | undefined;
   /**
-   * Key that makes retries resume the same create operation. Without one, the server derives a stable key from the request body.
+   * Key that makes retries resume the same create operation, from 1 through 255 characters. An empty or longer key is refused with 400. Without the header, the server derives a stable key from the request body.
    */
   idempotencyKey?: string | undefined;
   createInternRequest: models.CreateInternRequest;

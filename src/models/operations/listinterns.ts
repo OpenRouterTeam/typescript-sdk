@@ -67,7 +67,7 @@ export type ListInternsRequest = {
    */
   limit?: number | undefined;
   /**
-   * Comma-separated lifecycle statuses to include.
+   * Comma-separated lifecycle statuses to include, at most 8. Repeats are collapsed.
    */
   status?: Array<Status> | undefined;
   /**
