@@ -1,0 +1,23 @@
+---
+title: "AnthropicSafeguard"
+---
+
+A server-side safeguard Anthropic evaluates alongside the completion
+
+## Example Usage
+
+```typescript
+import { AnthropicSafeguard } from "@openrouter/sdk/models";
+
+let value: AnthropicSafeguard = {
+  type: "dangerous_tool_use",
+};
+```
+
+## Fields
+
+| Field                                                                                         | Type                                                                                          | Required                                                                                      | Description                                                                                   | Example                                                                                       |
+| --------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------- |
+| `classifierContext`                                                                           | Record\<string, *any*>                                                                         | :heavy_minus_sign:                                                                            | N/A                                                                                           |                                                                                               |
+| `type`                                                                                        | *string*                                                                                      | :heavy_check_mark:                                                                            | N/A                                                                                           |                                                                                               |
+| `additionalProperties`                                                                        | Record\<string, *any*>                                                                         | :heavy_minus_sign:                                                                            | N/A                                                                                           | \{<br/>"classifier_context": \{<br/>"permission_mode": "auto",<br/>"v": 1<br/>},<br/>"type": "dangerous_tool_use"<br/>} |
