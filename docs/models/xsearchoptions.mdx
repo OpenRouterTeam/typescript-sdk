@@ -1,0 +1,24 @@
+---
+title: "XSearchOptions"
+---
+
+Enable SpaceXAI X (Twitter) search alongside native web search, with optional filters. Only applies to SpaceXAI endpoints with native search; omit to search the web only. X search is billed separately by SpaceXAI, per post and per user profile fetched.
+
+## Example Usage
+
+```typescript
+import { XSearchOptions } from "@openrouter/sdk/models";
+
+let value: XSearchOptions = {};
+```
+
+## Fields
+
+| Field                                                                                     | Type                                                                                      | Required                                                                                  | Description                                                                               | Example                                                                                   |
+| ----------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------- |
+| `allowedXHandles`                                                                         | *string*[]                                                                                | :heavy_minus_sign:                                                                        | Only include posts from these X handles (max 20). Cannot be used with excluded_x_handles. | [<br/>"OpenRouterAI"<br/>]                                                                |
+| `enableImageUnderstanding`                                                                | *boolean*                                                                                 | :heavy_minus_sign:                                                                        | Analyze images attached to matching posts.                                                |                                                                                           |
+| `enableVideoUnderstanding`                                                                | *boolean*                                                                                 | :heavy_minus_sign:                                                                        | Analyze videos attached to matching posts.                                                |                                                                                           |
+| `excludedXHandles`                                                                        | *string*[]                                                                                | :heavy_minus_sign:                                                                        | Exclude posts from these X handles (max 20). Cannot be used with allowed_x_handles.       | [<br/>"spamaccount"<br/>]                                                                 |
+| `fromDate`                                                                                | [RFCDate](../types/rfcdate.mdx)                                                            | :heavy_minus_sign:                                                                        | Start of the post date range (ISO 8601 date, e.g. "2025-01-01").                          | 2025-01-01                                                                                |
+| `toDate`                                                                                  | [RFCDate](../types/rfcdate.mdx)                                                            | :heavy_minus_sign:                                                                        | End of the post date range (ISO 8601 date, e.g. "2025-12-31").                            | 2025-12-31                                                                                |

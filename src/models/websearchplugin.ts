@@ -14,6 +14,11 @@ import {
   WebSearchMode,
   WebSearchMode$outboundSchema,
 } from "./websearchmode.js";
+import {
+  XSearchOptions,
+  XSearchOptions$Outbound,
+  XSearchOptions$outboundSchema,
+} from "./xsearchoptions.js";
 
 export const WebSearchPluginType = {
   Approximate: "approximate",
@@ -60,6 +65,10 @@ export type WebSearchPlugin = {
   mode?: WebSearchMode | undefined;
   searchPrompt?: string | undefined;
   userLocation?: UserLocation | null | undefined;
+  /**
+   * Enable SpaceXAI X (Twitter) search alongside native web search, with optional filters. Only applies to SpaceXAI endpoints with native search; omit to search the web only. X search is billed separately by SpaceXAI, per post and per user profile fetched.
+   */
+  xSearch?: XSearchOptions | undefined;
 };
 
 /** @internal */
@@ -104,6 +113,7 @@ export type WebSearchPlugin$Outbound = {
   mode?: string | undefined;
   search_prompt?: string | undefined;
   user_location?: UserLocation$Outbound | null | undefined;
+  x_search?: XSearchOptions$Outbound | undefined;
 };
 
 /** @internal */
@@ -122,6 +132,7 @@ export const WebSearchPlugin$outboundSchema: z.ZodType<
   searchPrompt: z.string().optional(),
   userLocation: z.nullable(z.lazy(() => UserLocation$outboundSchema))
     .optional(),
+  xSearch: XSearchOptions$outboundSchema.optional(),
 }).transform((v) => {
   return remap$(v, {
     excludeDomains: "exclude_domains",
@@ -130,6 +141,7 @@ export const WebSearchPlugin$outboundSchema: z.ZodType<
     maxUses: "max_uses",
     searchPrompt: "search_prompt",
     userLocation: "user_location",
+    xSearch: "x_search",
   });
 });
 

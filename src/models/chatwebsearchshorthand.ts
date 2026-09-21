@@ -29,6 +29,11 @@ import {
   WebSearchUserLocationServerTool$Outbound,
   WebSearchUserLocationServerTool$outboundSchema,
 } from "./websearchuserlocationservertool.js";
+import {
+  XSearchOptions,
+  XSearchOptions$Outbound,
+  XSearchOptions$outboundSchema,
+} from "./xsearchoptions.js";
 
 export const ChatWebSearchShorthandType = {
   WebSearch: "web_search",
@@ -45,7 +50,7 @@ export type ChatWebSearchShorthandType = OpenEnum<
  */
 export type ChatWebSearchShorthand = {
   /**
-   * Limit search results to these domains. Supported by Exa, Firecrawl, Parallel, Perplexity, and most native providers (Anthropic, OpenAI, xAI). Cannot be used with excluded_domains.
+   * Limit search results to these domains. Supported by Exa, Firecrawl, Parallel, Perplexity, and most native providers (Anthropic, OpenAI, SpaceXAI). Cannot be used with excluded_domains.
    */
   allowedDomains?: Array<string> | undefined;
   /**
@@ -53,7 +58,7 @@ export type ChatWebSearchShorthand = {
    */
   engine?: WebSearchEngineEnum | undefined;
   /**
-   * Exclude search results from these domains. Supported by Exa, Firecrawl, Parallel, Perplexity, Anthropic, OpenAI, and xAI. Cannot be used with allowed_domains.
+   * Exclude search results from these domains. Supported by Exa, Firecrawl, Parallel, Perplexity, Anthropic, OpenAI, and SpaceXAI. Cannot be used with allowed_domains.
    */
   excludedDomains?: Array<string> | undefined;
   /**
@@ -86,6 +91,10 @@ export type ChatWebSearchShorthand = {
    * Approximate user location for location-biased results.
    */
   userLocation?: WebSearchUserLocationServerTool | undefined;
+  /**
+   * Enable SpaceXAI X (Twitter) search alongside native web search, with optional filters. Only applies to SpaceXAI endpoints with native search; omit to search the web only. X search is billed separately by SpaceXAI, per post and per user profile fetched.
+   */
+  xSearch?: XSearchOptions | undefined;
 };
 
 /** @internal */
@@ -108,6 +117,7 @@ export type ChatWebSearchShorthand$Outbound = {
   search_context_size?: string | undefined;
   type: string;
   user_location?: WebSearchUserLocationServerTool$Outbound | undefined;
+  x_search?: XSearchOptions$Outbound | undefined;
 };
 
 /** @internal */
@@ -127,6 +137,7 @@ export const ChatWebSearchShorthand$outboundSchema: z.ZodType<
   searchContextSize: SearchQualityLevel$outboundSchema.optional(),
   type: ChatWebSearchShorthandType$outboundSchema,
   userLocation: WebSearchUserLocationServerTool$outboundSchema.optional(),
+  xSearch: XSearchOptions$outboundSchema.optional(),
 }).transform((v) => {
   return remap$(v, {
     allowedDomains: "allowed_domains",
@@ -137,6 +148,7 @@ export const ChatWebSearchShorthand$outboundSchema: z.ZodType<
     maxUses: "max_uses",
     searchContextSize: "search_context_size",
     userLocation: "user_location",
+    xSearch: "x_search",
   });
 });
 
