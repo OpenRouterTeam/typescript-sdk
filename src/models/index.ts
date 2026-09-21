@@ -39,6 +39,7 @@ export * from "./anthropicmessageoutputconfig.js";
 export * from "./anthropicmessageusageiteration.js";
 export * from "./anthropicoutputeffort.js";
 export * from "./anthropicplaintextsource.js";
+export * from "./anthropicsafeguard.js";
 export * from "./anthropicsearchresultblockparam.js";
 export * from "./anthropicspeed.js";
 export * from "./anthropicsystemclearat.js";

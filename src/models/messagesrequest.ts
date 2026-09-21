@@ -27,6 +27,11 @@ import {
   AnthropicInputTokensTrigger$outboundSchema,
 } from "./anthropicinputtokenstrigger.js";
 import {
+  AnthropicSafeguard,
+  AnthropicSafeguard$Outbound,
+  AnthropicSafeguard$outboundSchema,
+} from "./anthropicsafeguard.js";
+import {
   AnthropicTextBlockParam,
   AnthropicTextBlockParam$Outbound,
   AnthropicTextBlockParam$outboundSchema,
@@ -532,6 +537,7 @@ export type MessagesRequest = {
    * When multiple model providers are available, optionally indicate your routing preference.
    */
   provider?: ProviderPreferences | null | undefined;
+  safeguards?: Array<AnthropicSafeguard> | null | undefined;
   serviceTier?: string | undefined;
   /**
    * A unique identifier for grouping related requests (e.g., a conversation or agent workflow). When provided, OpenRouter uses it as the sticky routing key, routing all requests in the session to the same provider to maximize prompt cache hits. Also used for observability grouping. If provided in both the request body and the x-session-id header, the body value takes precedence. Maximum of 256 characters.
@@ -1549,6 +1555,7 @@ export type MessagesRequest$Outbound = {
     >
     | undefined;
   provider?: ProviderPreferences$Outbound | null | undefined;
+  safeguards?: Array<AnthropicSafeguard$Outbound> | null | undefined;
   service_tier?: string | undefined;
   session_id?: string | undefined;
   speed?: string | null | undefined;
@@ -1628,6 +1635,7 @@ export const MessagesRequest$outboundSchema: z.ZodType<
     ]),
   ).optional(),
   provider: z.nullable(ProviderPreferences$outboundSchema).optional(),
+  safeguards: z.nullable(z.array(AnthropicSafeguard$outboundSchema)).optional(),
   serviceTier: z.string().optional(),
   sessionId: z.string().optional(),
   speed: z.nullable(Speed$outboundSchema).optional(),
