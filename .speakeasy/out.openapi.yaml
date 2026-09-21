@@ -4581,6 +4581,7 @@ components:
         allowed_models: null
         allowed_user_ids: null
         created_at: '2025-08-24T10:30:00Z'
+        declared_zdr: null
         disabled: false
         id: '11111111-2222-3333-4444-555555555555'
         is_byok_only: false
@@ -4624,6 +4625,12 @@ components:
           description: 'ISO timestamp of when the credential was created.'
           example: '2025-08-24T10:30:00Z'
           type: 'string'
+        declared_zdr:
+          description: 'Your declaration of whether the upstream provider account behind this credential has zero data retention (ZDR). `null` inherits OpenRouter''s data policy for the provider''s endpoint; `true` declares the account ZDR so requests that require ZDR may route to this credential even when the shared endpoint retains data; `false` declares it non-ZDR so such requests never route to it. Self-declared and not verified by OpenRouter.'
+          example: null
+          type:
+            - 'boolean'
+            - 'null'
         disabled:
           description: 'Whether this credential is currently disabled.'
           example: false
@@ -4677,6 +4684,7 @@ components:
         - 'is_fallback'
         - 'is_required'
         - 'is_byok_only'
+        - 'declared_zdr'
         - 'allowed_models'
         - 'allowed_api_key_hashes'
         - 'allowed_user_ids'
@@ -7394,6 +7402,12 @@ components:
           type:
             - 'array'
             - 'null'
+        declared_zdr:
+          description: 'Your declaration of whether the upstream provider account behind this credential has zero data retention (ZDR). `null` inherits OpenRouter''s data policy for the provider''s endpoint; `true` declares the account ZDR so requests that require ZDR may route to this credential even when the shared endpoint retains data; `false` declares it non-ZDR so such requests never route to it. Self-declared and not verified by OpenRouter. Defaults to `null`.'
+          example: null
+          type:
+            - 'boolean'
+            - 'null'
         disabled:
           description: 'Whether this credential should be created in a disabled state.'
           example: false
@@ -7440,6 +7454,7 @@ components:
           allowed_models: null
           allowed_user_ids: null
           created_at: '2025-08-24T10:30:00Z'
+          declared_zdr: null
           disabled: false
           id: '11111111-2222-3333-4444-555555555555'
           is_byok_only: false
@@ -10230,11 +10245,11 @@ components:
                 - 'completions'
                 - 'embeddings'
                 - 'rerank'
+                - 'decisions'
+                - 'video'
                 - 'tts'
                 - 'stt'
-                - 'video'
                 - 'image'
-                - 'decisions'
                 - null
               type:
                 - 'string'
@@ -10551,6 +10566,7 @@ components:
           allowed_models: null
           allowed_user_ids: null
           created_at: '2025-08-24T10:30:00Z'
+          declared_zdr: null
           disabled: false
           id: '11111111-2222-3333-4444-555555555555'
           is_byok_only: false
@@ -12874,6 +12890,25 @@ components:
       required:
         - 'cached_tokens'
       type: 'object'
+    InternChatSteeredResponse:
+      description: 'The message was delivered into the turn already running on the same session. Its effect is streamed on that turn, not here.'
+      example:
+        session_id: 'sess_01j9x0k4q7v8r2t3m6n5p8w9y1'
+        status: 'steered'
+      properties:
+        session_id:
+          description: 'The session of the running turn the message was delivered to.'
+          example: 'sess_01j9x0k4q7v8r2t3m6n5p8w9y1'
+          type: 'string'
+        status:
+          description: 'The message was handed to the turn already running on this session.'
+          enum:
+            - 'steered'
+          type: 'string'
+      required:
+        - 'session_id'
+        - 'status'
+      type: 'object'
     InternChatStreamError:
       description: 'A failure after the response headers were sent. The chunk that carries it has `finish_reason: "error"`, then the final empty-`choices` chunk and `[DONE]` follow. Reasons here are `attachment_failed`, `busy`, `client_closed_request`, `interaction_not_pending`, `interaction_unknown`, `intern_unreachable`, `run_ended`, `stream_severed`, `timeout` or `turn_failed`. `run_ended` reports an ending the intern confirmed, such as a cancellation or a deadline, while `stream_severed` reports a connection lost without that confirmation.'
       example:
@@ -13283,6 +13318,7 @@ components:
             allowed_models: null
             allowed_user_ids: null
             created_at: '2025-08-24T10:30:00Z'
+            declared_zdr: null
             disabled: false
             id: '11111111-2222-3333-4444-555555555555'
             is_byok_only: false
@@ -27794,6 +27830,12 @@ components:
           type:
             - 'array'
             - 'null'
+        declared_zdr:
+          description: 'Your declaration of whether the upstream provider account behind this credential has zero data retention (ZDR). `null` inherits OpenRouter''s data policy for the provider''s endpoint; `true` declares the account ZDR so requests that require ZDR may route to this credential even when the shared endpoint retains data; `false` declares it non-ZDR so such requests never route to it. Self-declared and not verified by OpenRouter. Omit to leave the stored value unchanged; `null` clears the declaration.'
+          example: null
+          type:
+            - 'boolean'
+            - 'null'
         disabled:
           description: 'Whether this credential is disabled.'
           example: false
@@ -27830,6 +27872,7 @@ components:
           allowed_models: null
           allowed_user_ids: null
           created_at: '2025-08-24T10:30:00Z'
+          declared_zdr: null
           disabled: false
           id: '11111111-2222-3333-4444-555555555555'
           is_byok_only: false
@@ -31579,6 +31622,7 @@ paths:
                     allowed_models: null
                     allowed_user_ids: null
                     created_at: '2025-08-24T10:30:00Z'
+                    declared_zdr: null
                     disabled: false
                     id: '11111111-2222-3333-4444-555555555555'
                     is_byok_only: false
@@ -31661,6 +31705,7 @@ paths:
                   allowed_models: null
                   allowed_user_ids: null
                   created_at: '2025-08-24T10:30:00Z'
+                  declared_zdr: null
                   disabled: false
                   id: '11111111-2222-3333-4444-555555555555'
                   is_byok_only: false
@@ -31802,6 +31847,7 @@ paths:
                   allowed_models: null
                   allowed_user_ids: null
                   created_at: '2025-08-24T10:30:00Z'
+                  declared_zdr: null
                   disabled: false
                   id: '11111111-2222-3333-4444-555555555555'
                   is_byok_only: false
@@ -31881,6 +31927,7 @@ paths:
                   allowed_models: null
                   allowed_user_ids: null
                   created_at: '2025-08-24T10:30:00Z'
+                  declared_zdr: null
                   disabled: false
                   id: '11111111-2222-3333-4444-555555555555'
                   is_byok_only: false
@@ -37244,6 +37291,12 @@ paths:
                 $ref: '#/components/schemas/InternChatStreamingResponse'
               x-speakeasy-sse-sentinel: '[DONE]'
           description: 'The streamed completion. Chunks carry text, then a finish chunk: `finish_reason: "stop"` when the turn is complete, `finish_reason: "tool_calls"` when the intern is waiting for an answer, or `finish_reason: "error"` for a failure after this status. A final chunk with empty `choices` follows in every case, carrying `session_id` and `usage` (`null` unless the intern reported usage, and always `null` after `tool_calls`), and the stream ends with `data: [DONE]`.'
+        '202':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InternChatSteeredResponse'
+          description: 'A turn is already running on this intern for the same `session_id`, and the message was delivered into it instead of starting a new turn. Nothing streams here: the intern takes the message up on the running turn, whose stream continues on the request that started it. Sent only for a `user` message with a `session_id`; a `tool` reply, a request without a `session_id`, or one for another session gets `409 busy`, as does a message the intern could not take.'
         '400':
           content:
             application/json:
@@ -37315,7 +37368,7 @@ paths:
                     retryable: false
               schema:
                 $ref: '#/components/schemas/InternChatErrorResponse'
-          description: 'The intern is not running (`intern_not_ready`), another turn is already running on this intern (`busy`), the question is no longer waiting (`interaction_not_pending`), or another request is already attached to the run (`attachment_failed`). The turn lock is per intern, not per session. `intern_not_ready` and `busy` report `retryable: true`, and a `busy` refusal carries `Retry-After`.'
+          description: 'The intern is not running (`intern_not_ready`), another turn is already running on this intern for a different session, for no session, or for a `tool` reply (`busy`), the question is no longer waiting (`interaction_not_pending`), or another request is already attached to the run (`attachment_failed`). The turn lock is per intern, not per session. `intern_not_ready` and `busy` report `retryable: true`, and a `busy` refusal carries `Retry-After`.'
           headers:
             Retry-After:
               description: 'Seconds to wait before retrying this request. Present only on a `busy` refusal.'

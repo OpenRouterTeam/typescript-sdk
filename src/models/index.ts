@@ -336,6 +336,7 @@ export * from "./internchaterrormetadata.js";
 export * from "./internchatmessage.js";
 export * from "./internchatmessagecontent.js";
 export * from "./internchatprompttokensdetails.js";
+export * from "./internchatsteeredresponse.js";
 export * from "./internchatstreamerror.js";
 export * from "./internchatstreamingresponse.js";
 export * from "./internchatsystemmessage.js";

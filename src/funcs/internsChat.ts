@@ -49,6 +49,64 @@ import { Result } from "../types/fp.js";
  */
 export function internsChat(
   client: OpenRouterCore,
+  request: operations.CreateInternChatCompletionRequest & {
+    internChatCompletionRequest: { stream?: false };
+  },
+  options?: RequestOptions,
+): APIPromise<
+  Result<
+    operations.CreateInternChatCompletionResponse,
+    | errors.InternChatErrorResponse
+    | OpenRouterError
+    | ResponseValidationError
+    | ConnectionError
+    | RequestAbortedError
+    | RequestTimeoutError
+    | InvalidRequestError
+    | UnexpectedClientError
+    | SDKValidationError
+  >
+>;
+export function internsChat(
+  client: OpenRouterCore,
+  request: operations.CreateInternChatCompletionRequest & {
+    internChatCompletionRequest: { stream: true };
+  },
+  options?: RequestOptions,
+): APIPromise<
+  Result<
+    operations.CreateInternChatCompletionResponse,
+    | errors.InternChatErrorResponse
+    | OpenRouterError
+    | ResponseValidationError
+    | ConnectionError
+    | RequestAbortedError
+    | RequestTimeoutError
+    | InvalidRequestError
+    | UnexpectedClientError
+    | SDKValidationError
+  >
+>;
+export function internsChat(
+  client: OpenRouterCore,
+  request: operations.CreateInternChatCompletionRequest,
+  options?: RequestOptions,
+): APIPromise<
+  Result<
+    operations.CreateInternChatCompletionResponse,
+    | errors.InternChatErrorResponse
+    | OpenRouterError
+    | ResponseValidationError
+    | ConnectionError
+    | RequestAbortedError
+    | RequestTimeoutError
+    | InvalidRequestError
+    | UnexpectedClientError
+    | SDKValidationError
+  >
+>;
+export function internsChat(
+  client: OpenRouterCore,
   request: operations.CreateInternChatCompletionRequest,
   options?: RequestOptions,
 ): APIPromise<
@@ -117,7 +175,9 @@ async function $do(
 
   const headers = new Headers(compactMap({
     "Content-Type": "application/json",
-    Accept: "text/event-stream",
+    Accept: request?.internChatCompletionRequest?.stream
+      ? "text/event-stream"
+      : "application/json",
     "HTTP-Referer": encodeSimple(
       "HTTP-Referer",
       payload["HTTP-Referer"] ?? client._options.httpReferer,
@@ -208,6 +268,9 @@ async function $do(
     | SDKValidationError
   >(
     M.sse(200, operations.CreateInternChatCompletionResponse$inboundSchema, {
+      key: "Result",
+    }),
+    M.json(202, operations.CreateInternChatCompletionResponse$inboundSchema, {
       key: "Result",
     }),
     M.jsonErr(
