@@ -31,6 +31,7 @@ export const SupportedFrameImage = {
 export type SupportedFrameImage = OpenEnum<typeof SupportedFrameImage>;
 
 export const SupportedResolution = {
+  ThreeHundredAndSixtyp: "360p",
   FourHundredAndEightyp: "480p",
   SevenHundredAndTwentyp: "720p",
   SevenHundredAndSixtyEightp: "768p",
@@ -42,12 +43,20 @@ export const SupportedResolution = {
 export type SupportedResolution = OpenEnum<typeof SupportedResolution>;
 
 export const SupportedSize = {
+  ThreeHundredAndSixtyx360: "360x360",
+  ThreeHundredAndSixtyx480: "360x480",
+  ThreeHundredAndSixtyx540: "360x540",
+  ThreeHundredAndSixtyx640: "360x640",
+  ThreeHundredAndSixtyx840: "360x840",
+  FourHundredAndEightyx360: "480x360",
   FourHundredAndEightyx480: "480x480",
   FourHundredAndEightyx640: "480x640",
   FourHundredAndEightyx720: "480x720",
   FourHundredAndEightyx854: "480x854",
   FourHundredAndEightyx1120: "480x1120",
+  FiveHundredAndFortyx360: "540x360",
   FiveHundredAndSixtyx752: "560x752",
+  SixHundredAndFortyx360: "640x360",
   SixHundredAndFortyx480: "640x480",
   SixHundredAndFortyx640: "640x640",
   SevenHundredAndTwentyx480: "720x480",
@@ -63,6 +72,7 @@ export const SupportedSize = {
   SevenHundredAndSixtyEightx1366: "768x1366",
   SevenHundredAndSixtyEightx1792: "768x1792",
   EightHundredAndThirtyFourx1112: "834x1112",
+  EightHundredAndFortyx360: "840x360",
   EightHundredAndFiftyFourx480: "854x480",
   NineHundredAndSixtyx720: "960x720",
   NineHundredAndSixtyx960: "960x960",
