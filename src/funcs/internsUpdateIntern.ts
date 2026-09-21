@@ -32,7 +32,7 @@ import { Result } from "../types/fp.js";
  * Update an intern
  *
  * @remarks
- * Changes the intern name, description, instructions or model. Omitted fields stay unchanged. The request body is capped at 1048576 bytes and a larger body is refused with 413. The API key selects the caller, workspace and visible interns. There is no default workspace fallback. Requests on regional hostnames such as `eu.openrouter.ai` are refused. [API key](/docs/api-reference/authentication) required.
+ * Changes the intern name, description, instructions or model. Omitted fields stay unchanged. The request body is capped at 1048576 bytes and a larger body is refused with 413. A non-empty body must declare `Content-Type: application/json` or it is refused with 415. The API key selects the caller, workspace and visible interns. There is no default workspace fallback. Requests on regional hostnames such as `eu.openrouter.ai` are refused. [API key](/docs/api-reference/authentication) required.
  *
  * If set, this operation will use {@link Security.apiKey} from the global security.
  */
@@ -197,7 +197,7 @@ async function $do(
   >(
     M.json(200, models.Intern$inboundSchema),
     M.jsonErr(
-      [400, 401, 403, 404, 408, 409, 413],
+      [400, 401, 403, 404, 408, 409, 413, 415],
       errors.InternLifecycleError$inboundSchema,
     ),
     M.jsonErr(500, errors.InternLifecycleError$inboundSchema),
