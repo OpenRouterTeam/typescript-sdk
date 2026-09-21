@@ -20,6 +20,10 @@ export type UpdateBYOKKeyRequest = {
    */
   allowedUserIds?: Array<string> | null | undefined;
   /**
+   * Your declaration of whether the upstream provider account behind this credential has zero data retention (ZDR). `null` inherits OpenRouter's data policy for the provider's endpoint; `true` declares the account ZDR so requests that require ZDR may route to this credential even when the shared endpoint retains data; `false` declares it non-ZDR so such requests never route to it. Self-declared and not verified by OpenRouter. Omit to leave the stored value unchanged; `null` clears the declaration.
+   */
+  declaredZdr?: boolean | null | undefined;
+  /**
    * Whether this credential is disabled.
    */
   disabled?: boolean | undefined;
@@ -50,6 +54,7 @@ export type UpdateBYOKKeyRequest$Outbound = {
   allowed_api_key_hashes?: Array<string> | null | undefined;
   allowed_models?: Array<string> | null | undefined;
   allowed_user_ids?: Array<string> | null | undefined;
+  declared_zdr?: boolean | null | undefined;
   disabled?: boolean | undefined;
   is_byok_only?: boolean | undefined;
   is_fallback?: boolean | undefined;
@@ -66,6 +71,7 @@ export const UpdateBYOKKeyRequest$outboundSchema: z.ZodType<
   allowedApiKeyHashes: z.nullable(z.array(z.string())).optional(),
   allowedModels: z.nullable(z.array(z.string())).optional(),
   allowedUserIds: z.nullable(z.array(z.string())).optional(),
+  declaredZdr: z.nullable(z.boolean()).optional(),
   disabled: z.boolean().optional(),
   isByokOnly: z.boolean().optional(),
   isFallback: z.boolean().optional(),
@@ -77,6 +83,7 @@ export const UpdateBYOKKeyRequest$outboundSchema: z.ZodType<
     allowedApiKeyHashes: "allowed_api_key_hashes",
     allowedModels: "allowed_models",
     allowedUserIds: "allowed_user_ids",
+    declaredZdr: "declared_zdr",
     isByokOnly: "is_byok_only",
     isFallback: "is_fallback",
     isRequired: "is_required",

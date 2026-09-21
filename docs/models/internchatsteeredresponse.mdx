@@ -1,0 +1,23 @@
+---
+title: "InternChatSteeredResponse"
+---
+
+The message was delivered into the turn already running on the same session. Its effect is streamed on that turn, not here.
+
+## Example Usage
+
+```typescript
+import { InternChatSteeredResponse } from "@openrouter/sdk/models";
+
+let value: InternChatSteeredResponse = {
+  sessionId: "sess_01j9x0k4q7v8r2t3m6n5p8w9y1",
+  status: "steered",
+};
+```
+
+## Fields
+
+| Field                                                                                  | Type                                                                                   | Required                                                                               | Description                                                                            | Example                                                                                |
+| -------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------- |
+| `sessionId`                                                                            | *string*                                                                               | :heavy_check_mark:                                                                     | The session of the running turn the message was delivered to.                          | sess_01j9x0k4q7v8r2t3m6n5p8w9y1                                                        |
+| `status`                                                                               | [models.InternChatSteeredResponseStatus](../models/internchatsteeredresponsestatus.mdx) | :heavy_check_mark:                                                                     | The message was handed to the turn already running on this session.                    |                                                                                        |

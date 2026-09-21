@@ -60,9 +60,15 @@ export type CreateInternChatCompletionRequest = {
   internChatCompletionRequest: models.InternChatCompletionRequest;
 };
 
+export type CreateInternChatCompletionResponseResult =
+  | models.InternChatSteeredResponse
+  | EventStream<models.InternChatCompletionChunk>;
+
 export type CreateInternChatCompletionResponse = {
   headers: { [k: string]: Array<string> };
-  result: EventStream<models.InternChatCompletionChunk>;
+  result:
+    | models.InternChatSteeredResponse
+    | EventStream<models.InternChatCompletionChunk>;
 };
 
 /** @internal */
@@ -103,12 +109,12 @@ export function createInternChatCompletionRequestToJSON(
 }
 
 /** @internal */
-export const CreateInternChatCompletionResponse$inboundSchema: z.ZodType<
-  CreateInternChatCompletionResponse,
+export const CreateInternChatCompletionResponseResult$inboundSchema: z.ZodType<
+  CreateInternChatCompletionResponseResult,
   unknown
-> = z.object({
-  Headers: z.record(z.string(), z.array(z.string())).default({}),
-  Result: z.custom<ReadableStream<Uint8Array>>(x => x instanceof ReadableStream)
+> = z.union([
+  models.InternChatSteeredResponse$inboundSchema,
+  z.custom<ReadableStream<Uint8Array>>(x => x instanceof ReadableStream)
     .transform(stream => {
       return new EventStream(stream, rawEvent => {
         if (rawEvent.data === "[DONE]") return { done: true, value: undefined };
@@ -120,6 +126,47 @@ export const CreateInternChatCompletionResponse$inboundSchema: z.ZodType<
         };
       });
     }),
+]);
+
+export function createInternChatCompletionResponseResultFromJSON(
+  jsonString: string,
+): SafeParseResult<
+  CreateInternChatCompletionResponseResult,
+  SDKValidationError
+> {
+  return safeParse(
+    jsonString,
+    (x) =>
+      CreateInternChatCompletionResponseResult$inboundSchema.parse(
+        JSON.parse(x),
+      ),
+    `Failed to parse 'CreateInternChatCompletionResponseResult' from JSON`,
+  );
+}
+
+/** @internal */
+export const CreateInternChatCompletionResponse$inboundSchema: z.ZodType<
+  CreateInternChatCompletionResponse,
+  unknown
+> = z.object({
+  Headers: z.record(z.string(), z.array(z.string())).default({}),
+  Result: z.union([
+    models.InternChatSteeredResponse$inboundSchema,
+    z.custom<ReadableStream<Uint8Array>>(x => x instanceof ReadableStream)
+      .transform(stream => {
+        return new EventStream(stream, rawEvent => {
+          if (rawEvent.data === "[DONE]") {
+            return { done: true, value: undefined };
+          }
+          return {
+            done: false,
+            value: models.InternChatStreamingResponse$inboundSchema.parse(
+              rawEvent,
+            )?.data,
+          };
+        });
+      }),
+  ]),
 }).transform((v) => {
   return remap$(v, {
     "Headers": "headers",
