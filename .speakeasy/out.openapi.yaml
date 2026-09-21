@@ -36645,7 +36645,7 @@ paths:
       tags:
         - 'Interns'
     post:
-      description: 'Creates an intern in an explicit workspace. The operation also creates its private vault. It can start provisioning immediately or wait for a later provision call. A retry with the same idempotency key and body resumes unfinished work. The request body is capped at 1048576 bytes and a larger body is refused with 413. The API key selects the caller, workspace and visible interns. There is no default workspace fallback. Requests on regional hostnames such as `eu.openrouter.ai` are refused. [API key](/docs/api-reference/authentication) required.'
+      description: 'Creates an intern in an explicit workspace. The operation also creates its private vault. It can start provisioning immediately or wait for a later provision call. A retry with the same idempotency key and body resumes unfinished work. The request body is capped at 1048576 bytes and a larger body is refused with 413. A non-empty body must declare `Content-Type: application/json` or it is refused with 415. The API key selects the caller, workspace and visible interns. There is no default workspace fallback. Requests on regional hostnames such as `eu.openrouter.ai` are refused. [API key](/docs/api-reference/authentication) required.'
       operationId: 'createIntern'
       parameters:
         - description: 'Key that makes retries resume the same create operation, from 1 through 255 characters. An empty or longer key is refused with 400. Without the header, the server derives a stable key from the request body.'
@@ -36809,6 +36809,19 @@ paths:
               schema:
                 $ref: '#/components/schemas/InternLifecycleError'
           description: 'The request body is larger than 1048576 bytes.'
+        '415':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 415
+                  message: 'Request body must be sent as application/json'
+                  metadata:
+                    reason: 'unsupported_media_type'
+                    retryable: false
+              schema:
+                $ref: '#/components/schemas/InternLifecycleError'
+          description: 'The request body is non-empty and its Content-Type is not application/json.'
         '500':
           content:
             application/json:
@@ -36846,7 +36859,7 @@ paths:
       - $ref: "#/components/parameters/AppCategories"
   /interns/{internId}:
     delete:
-      description: 'Starts safe teardown of the intern, its runtime and its private vault. The body is optional. Send `{"acknowledge_workspace_loss": true}` to delete a `destroy_failed` intern whose `last_failure_message` names `workspace_archive_failed`, accepting that its workspace is not backed up. The request body is capped at 1048576 bytes and a larger body is refused with 413. The API key selects the caller, workspace and visible interns. There is no default workspace fallback. Requests on regional hostnames such as `eu.openrouter.ai` are refused. [API key](/docs/api-reference/authentication) required.'
+      description: 'Starts safe teardown of the intern, its runtime and its private vault. The body is optional. Send `{"acknowledge_workspace_loss": true}` to delete a `destroy_failed` intern whose `last_failure_message` names `workspace_archive_failed`, accepting that its workspace is not backed up. The request body is capped at 1048576 bytes and a larger body is refused with 413. A non-empty body must declare `Content-Type: application/json` or it is refused with 415. The API key selects the caller, workspace and visible interns. There is no default workspace fallback. Requests on regional hostnames such as `eu.openrouter.ai` are refused. [API key](/docs/api-reference/authentication) required.'
       operationId: 'deleteIntern'
       parameters:
         - description: 'ID of an intern visible to the authenticated API key.'
@@ -36960,6 +36973,19 @@ paths:
               schema:
                 $ref: '#/components/schemas/InternLifecycleError'
           description: 'The request body is larger than 1048576 bytes.'
+        '415':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 415
+                  message: 'Request body must be sent as application/json'
+                  metadata:
+                    reason: 'unsupported_media_type'
+                    retryable: false
+              schema:
+                $ref: '#/components/schemas/InternLifecycleError'
+          description: 'The request body is non-empty and its Content-Type is not application/json.'
         '500':
           content:
             application/json:
@@ -37091,7 +37117,7 @@ paths:
       tags:
         - 'Interns'
     patch:
-      description: 'Changes the intern name, description, instructions or model. Omitted fields stay unchanged. The request body is capped at 1048576 bytes and a larger body is refused with 413. The API key selects the caller, workspace and visible interns. There is no default workspace fallback. Requests on regional hostnames such as `eu.openrouter.ai` are refused. [API key](/docs/api-reference/authentication) required.'
+      description: 'Changes the intern name, description, instructions or model. Omitted fields stay unchanged. The request body is capped at 1048576 bytes and a larger body is refused with 413. A non-empty body must declare `Content-Type: application/json` or it is refused with 415. The API key selects the caller, workspace and visible interns. There is no default workspace fallback. Requests on regional hostnames such as `eu.openrouter.ai` are refused. [API key](/docs/api-reference/authentication) required.'
       operationId: 'updateIntern'
       parameters:
         - description: 'ID of an intern visible to the authenticated API key.'
@@ -37219,6 +37245,19 @@ paths:
               schema:
                 $ref: '#/components/schemas/InternLifecycleError'
           description: 'The request body is larger than 1048576 bytes.'
+        '415':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 415
+                  message: 'Request body must be sent as application/json'
+                  metadata:
+                    reason: 'unsupported_media_type'
+                    retryable: false
+              schema:
+                $ref: '#/components/schemas/InternLifecycleError'
+          description: 'The request body is non-empty and its Content-Type is not application/json.'
         '500':
           content:
             application/json:
@@ -37590,6 +37629,19 @@ paths:
               schema:
                 $ref: '#/components/schemas/InternLifecycleError'
           description: 'The request body is larger than 1048576 bytes.'
+        '415':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 415
+                  message: 'Request body must be sent as application/json'
+                  metadata:
+                    reason: 'unsupported_media_type'
+                    retryable: false
+              schema:
+                $ref: '#/components/schemas/InternLifecycleError'
+          description: 'The request body is non-empty and its Content-Type is not application/json.'
         '500':
           content:
             application/json:
@@ -37733,6 +37785,19 @@ paths:
               schema:
                 $ref: '#/components/schemas/InternLifecycleError'
           description: 'The request body is larger than 1048576 bytes.'
+        '415':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 415
+                  message: 'Request body must be sent as application/json'
+                  metadata:
+                    reason: 'unsupported_media_type'
+                    retryable: false
+              schema:
+                $ref: '#/components/schemas/InternLifecycleError'
+          description: 'The request body is non-empty and its Content-Type is not application/json.'
         '500':
           content:
             application/json:

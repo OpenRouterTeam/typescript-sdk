@@ -194,7 +194,7 @@ async function $do(
   >(
     M.json(200, models.SuspendInternResponse$inboundSchema),
     M.jsonErr(
-      [400, 401, 403, 404, 408, 409, 413],
+      [400, 401, 403, 404, 408, 409, 413, 415],
       errors.InternLifecycleError$inboundSchema,
     ),
     M.jsonErr([500, 502], errors.InternLifecycleError$inboundSchema),
