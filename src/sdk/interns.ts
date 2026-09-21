@@ -38,7 +38,7 @@ export class Interns extends ClientSDK {
    * Create an intern
    *
    * @remarks
-   * Creates an intern in an explicit workspace. The operation also creates its private vault. It can start provisioning immediately or wait for a later provision call. A retry with the same idempotency key and body resumes unfinished work. The request body is capped at 1048576 bytes and a larger body is refused with 413. The API key selects the caller, workspace and visible interns. There is no default workspace fallback. Requests on regional hostnames such as `eu.openrouter.ai` are refused. [API key](/docs/api-reference/authentication) required.
+   * Creates an intern in an explicit workspace. The operation also creates its private vault. It can start provisioning immediately or wait for a later provision call. A retry with the same idempotency key and body resumes unfinished work. The request body is capped at 1048576 bytes and a larger body is refused with 413. A non-empty body must declare `Content-Type: application/json` or it is refused with 415. The API key selects the caller, workspace and visible interns. There is no default workspace fallback. Requests on regional hostnames such as `eu.openrouter.ai` are refused. [API key](/docs/api-reference/authentication) required.
    */
   async createIntern(
     request: operations.CreateInternRequest,
@@ -55,7 +55,7 @@ export class Interns extends ClientSDK {
    * Delete an intern
    *
    * @remarks
-   * Starts safe teardown of the intern, its runtime and its private vault. The body is optional. Send `{"acknowledge_workspace_loss": true}` to delete a `destroy_failed` intern whose `last_failure_message` names `workspace_archive_failed`, accepting that its workspace is not backed up. The request body is capped at 1048576 bytes and a larger body is refused with 413. The API key selects the caller, workspace and visible interns. There is no default workspace fallback. Requests on regional hostnames such as `eu.openrouter.ai` are refused. [API key](/docs/api-reference/authentication) required.
+   * Starts safe teardown of the intern, its runtime and its private vault. The body is optional. Send `{"acknowledge_workspace_loss": true}` to delete a `destroy_failed` intern whose `last_failure_message` names `workspace_archive_failed`, accepting that its workspace is not backed up. The request body is capped at 1048576 bytes and a larger body is refused with 413. A non-empty body must declare `Content-Type: application/json` or it is refused with 415. The API key selects the caller, workspace and visible interns. There is no default workspace fallback. Requests on regional hostnames such as `eu.openrouter.ai` are refused. [API key](/docs/api-reference/authentication) required.
    */
   async deleteIntern(
     request: operations.DeleteInternRequest,
@@ -89,7 +89,7 @@ export class Interns extends ClientSDK {
    * Update an intern
    *
    * @remarks
-   * Changes the intern name, description, instructions or model. Omitted fields stay unchanged. The request body is capped at 1048576 bytes and a larger body is refused with 413. The API key selects the caller, workspace and visible interns. There is no default workspace fallback. Requests on regional hostnames such as `eu.openrouter.ai` are refused. [API key](/docs/api-reference/authentication) required.
+   * Changes the intern name, description, instructions or model. Omitted fields stay unchanged. The request body is capped at 1048576 bytes and a larger body is refused with 413. A non-empty body must declare `Content-Type: application/json` or it is refused with 415. The API key selects the caller, workspace and visible interns. There is no default workspace fallback. Requests on regional hostnames such as `eu.openrouter.ai` are refused. [API key](/docs/api-reference/authentication) required.
    */
   async updateIntern(
     request: operations.UpdateInternRequest,
