@@ -22,11 +22,11 @@ export const ApiType = {
   Completions: "completions",
   Embeddings: "embeddings",
   Rerank: "rerank",
+  Decisions: "decisions",
+  Video: "video",
   TTS: "tts",
   STT: "stt",
-  Video: "video",
   Image: "image",
-  Decisions: "decisions",
 } as const;
 /**
  * Type of API used for the generation

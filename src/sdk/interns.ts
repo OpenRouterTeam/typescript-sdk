@@ -155,6 +155,22 @@ export class Interns extends ClientSDK {
    * Available to interns programme members. Callers outside the programme receive `404` for every path under `/api/v1/interns`.
    */
   async chat(
+    request: operations.CreateInternChatCompletionRequest & {
+      internChatCompletionRequest: { stream?: false | undefined };
+    },
+    options?: RequestOptions,
+  ): Promise<operations.CreateInternChatCompletionResponse>;
+  async chat(
+    request: operations.CreateInternChatCompletionRequest & {
+      internChatCompletionRequest: { stream: true };
+    },
+    options?: RequestOptions,
+  ): Promise<operations.CreateInternChatCompletionResponse>;
+  async chat(
+    request: operations.CreateInternChatCompletionRequest,
+    options?: RequestOptions,
+  ): Promise<operations.CreateInternChatCompletionResponse>;
+  async chat(
     request: operations.CreateInternChatCompletionRequest,
     options?: RequestOptions,
   ): Promise<operations.CreateInternChatCompletionResponse> {

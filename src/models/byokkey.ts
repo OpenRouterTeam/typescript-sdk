@@ -31,6 +31,10 @@ export type BYOKKey = {
    */
   createdAt: string;
   /**
+   * Your declaration of whether the upstream provider account behind this credential has zero data retention (ZDR). `null` inherits OpenRouter's data policy for the provider's endpoint; `true` declares the account ZDR so requests that require ZDR may route to this credential even when the shared endpoint retains data; `false` declares it non-ZDR so such requests never route to it. Self-declared and not verified by OpenRouter.
+   */
+  declaredZdr: boolean | null;
+  /**
    * Whether this credential is currently disabled.
    */
   disabled: boolean;
@@ -78,6 +82,7 @@ export const BYOKKey$inboundSchema: z.ZodType<BYOKKey, unknown> = z.object({
   allowed_models: z.nullable(z.array(z.string())),
   allowed_user_ids: z.nullable(z.array(z.string())),
   created_at: z.string(),
+  declared_zdr: z.nullable(z.boolean()),
   disabled: z.boolean(),
   id: z.string(),
   is_byok_only: z.boolean(),
@@ -94,6 +99,7 @@ export const BYOKKey$inboundSchema: z.ZodType<BYOKKey, unknown> = z.object({
     "allowed_models": "allowedModels",
     "allowed_user_ids": "allowedUserIds",
     "created_at": "createdAt",
+    "declared_zdr": "declaredZdr",
     "is_byok_only": "isByokOnly",
     "is_fallback": "isFallback",
     "is_required": "isRequired",
