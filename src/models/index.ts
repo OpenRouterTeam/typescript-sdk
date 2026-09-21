@@ -691,3 +691,4 @@ export * from "./workspace.js";
 export * from "./workspacebudget.js";
 export * from "./workspacebudgetinterval.js";
 export * from "./workspacemember.js";
+export * from "./xsearchoptions.js";

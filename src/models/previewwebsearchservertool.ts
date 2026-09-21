@@ -36,6 +36,12 @@ import {
   WebSearchMode$inboundSchema,
   WebSearchMode$outboundSchema,
 } from "./websearchmode.js";
+import {
+  XSearchOptions,
+  XSearchOptions$inboundSchema,
+  XSearchOptions$Outbound,
+  XSearchOptions$outboundSchema,
+} from "./xsearchoptions.js";
 
 export const PreviewWebSearchServerToolType = {
   WebSearchPreview: "web_search_preview",
@@ -71,6 +77,10 @@ export type PreviewWebSearchServerTool = {
   searchContextSize?: SearchContextSizeEnum | undefined;
   type: PreviewWebSearchServerToolType;
   userLocation?: PreviewWebSearchUserLocation | null | undefined;
+  /**
+   * Enable SpaceXAI X (Twitter) search alongside native web search, with optional filters. Only applies to SpaceXAI endpoints with native search; omit to search the web only. X search is billed separately by SpaceXAI, per post and per user profile fetched.
+   */
+  xSearch?: XSearchOptions | undefined;
 };
 
 /** @internal */
@@ -96,12 +106,14 @@ export const PreviewWebSearchServerTool$inboundSchema: z.ZodType<
   type: PreviewWebSearchServerToolType$inboundSchema,
   user_location: z.nullable(PreviewWebSearchUserLocation$inboundSchema)
     .optional(),
+  x_search: XSearchOptions$inboundSchema.optional(),
 }).transform((v) => {
   return remap$(v, {
     "max_results": "maxResults",
     "max_uses": "maxUses",
     "search_context_size": "searchContextSize",
     "user_location": "userLocation",
+    "x_search": "xSearch",
   });
 });
 /** @internal */
@@ -114,6 +126,7 @@ export type PreviewWebSearchServerTool$Outbound = {
   search_context_size?: string | undefined;
   type: string;
   user_location?: PreviewWebSearchUserLocation$Outbound | null | undefined;
+  x_search?: XSearchOptions$Outbound | undefined;
 };
 
 /** @internal */
@@ -130,12 +143,14 @@ export const PreviewWebSearchServerTool$outboundSchema: z.ZodType<
   type: PreviewWebSearchServerToolType$outboundSchema,
   userLocation: z.nullable(PreviewWebSearchUserLocation$outboundSchema)
     .optional(),
+  xSearch: XSearchOptions$outboundSchema.optional(),
 }).transform((v) => {
   return remap$(v, {
     maxResults: "max_results",
     maxUses: "max_uses",
     searchContextSize: "search_context_size",
     userLocation: "user_location",
+    xSearch: "x_search",
   });
 });
 
