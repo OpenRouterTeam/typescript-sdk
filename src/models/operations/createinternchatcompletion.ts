@@ -4,7 +4,11 @@
  */
 
 import * as z from "zod/v4";
+import { EventStream } from "../../lib/event-streams.js";
 import { remap as remap$ } from "../../lib/primitives.js";
+import { safeParse } from "../../lib/schemas.js";
+import { Result as SafeParseResult } from "../../types/fp.js";
+import { SDKValidationError } from "../errors/sdkvalidationerror.js";
 import * as models from "../index.js";
 
 export type CreateInternChatCompletionGlobals = {
@@ -56,6 +60,11 @@ export type CreateInternChatCompletionRequest = {
   internChatCompletionRequest: models.InternChatCompletionRequest;
 };
 
+export type CreateInternChatCompletionResponse = {
+  headers: { [k: string]: Array<string> };
+  result: EventStream<models.InternChatCompletionChunk>;
+};
+
 /** @internal */
 export type CreateInternChatCompletionRequest$Outbound = {
   "HTTP-Referer"?: string | undefined;
@@ -90,5 +99,41 @@ export function createInternChatCompletionRequestToJSON(
     CreateInternChatCompletionRequest$outboundSchema.parse(
       createInternChatCompletionRequest,
     ),
+  );
+}
+
+/** @internal */
+export const CreateInternChatCompletionResponse$inboundSchema: z.ZodType<
+  CreateInternChatCompletionResponse,
+  unknown
+> = z.object({
+  Headers: z.record(z.string(), z.array(z.string())).default({}),
+  Result: z.custom<ReadableStream<Uint8Array>>(x => x instanceof ReadableStream)
+    .transform(stream => {
+      return new EventStream(stream, rawEvent => {
+        if (rawEvent.data === "[DONE]") return { done: true, value: undefined };
+        return {
+          done: false,
+          value: models.InternChatStreamingResponse$inboundSchema.parse(
+            rawEvent,
+          )?.data,
+        };
+      });
+    }),
+}).transform((v) => {
+  return remap$(v, {
+    "Headers": "headers",
+    "Result": "result",
+  });
+});
+
+export function createInternChatCompletionResponseFromJSON(
+  jsonString: string,
+): SafeParseResult<CreateInternChatCompletionResponse, SDKValidationError> {
+  return safeParse(
+    jsonString,
+    (x) =>
+      CreateInternChatCompletionResponse$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'CreateInternChatCompletionResponse' from JSON`,
   );
 }

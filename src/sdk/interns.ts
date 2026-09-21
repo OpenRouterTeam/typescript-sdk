@@ -11,7 +11,6 @@ import { internsListInterns } from "../funcs/internsListInterns.js";
 import { internsProvisionIntern } from "../funcs/internsProvisionIntern.js";
 import { internsSuspendIntern } from "../funcs/internsSuspendIntern.js";
 import { internsUpdateIntern } from "../funcs/internsUpdateIntern.js";
-import { EventStream } from "../lib/event-streams.js";
 import { ClientSDK, RequestOptions } from "../lib/sdks.js";
 import * as models from "../models/index.js";
 import * as operations from "../models/operations/index.js";
@@ -107,7 +106,7 @@ export class Interns extends ClientSDK {
    * Provision an intern
    *
    * @remarks
-   * Starts the first boot, or resumes an intern after suspension. The API key selects the caller, workspace and visible interns. There is no default workspace fallback. Requests on regional hostnames such as `eu.openrouter.ai` are refused. [API key](/docs/api-reference/authentication) required.
+   * Starts the first boot, or resumes an intern after suspension. This operation takes no request body. A body carrying any field is refused with 400 rather than ignored. The API key selects the caller, workspace and visible interns. There is no default workspace fallback. Requests on regional hostnames such as `eu.openrouter.ai` are refused. [API key](/docs/api-reference/authentication) required.
    */
   async provisionIntern(
     request: operations.ProvisionInternRequest,
@@ -124,7 +123,7 @@ export class Interns extends ClientSDK {
    * Suspend an intern
    *
    * @remarks
-   * Stops the intern runtime while keeping its disk and configuration for a later provision call. The API key selects the caller, workspace and visible interns. There is no default workspace fallback. Requests on regional hostnames such as `eu.openrouter.ai` are refused. [API key](/docs/api-reference/authentication) required.
+   * Stops the intern runtime while keeping its disk and configuration for a later provision call. This operation takes no request body. A body carrying any field is refused with 400 rather than ignored. The API key selects the caller, workspace and visible interns. There is no default workspace fallback. Requests on regional hostnames such as `eu.openrouter.ai` are refused. [API key](/docs/api-reference/authentication) required.
    */
   async suspendIntern(
     request: operations.SuspendInternRequest,
@@ -158,7 +157,7 @@ export class Interns extends ClientSDK {
   async chat(
     request: operations.CreateInternChatCompletionRequest,
     options?: RequestOptions,
-  ): Promise<EventStream<models.InternChatCompletionChunk>> {
+  ): Promise<operations.CreateInternChatCompletionResponse> {
     return unwrapAsync(internsChat(
       this,
       request,
