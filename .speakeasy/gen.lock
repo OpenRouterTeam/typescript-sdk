@@ -1,19 +1,19 @@
 lockVersion: ""
 id: ""
 management:
-  docChecksum: bbf4b94181ce514922a85b674fe8a9d6
+  docChecksum: d4a9d87f4ec30a764230530ed0dc48bd
   docVersion: 1.0.0
   speakeasyVersion: 1.787.0
   generationVersion: 2.914.0
-  releaseVersion: 1.3.9
-  configChecksum: 750331a981585266cb185054afe594ed
+  releaseVersion: 1.3.10
+  configChecksum: b839f9515e0cf701237971c95432fb4d
   repoURL: https://github.com/OpenRouterTeam/typescript-sdk.git
   installationURL: https://github.com/OpenRouterTeam/typescript-sdk
   published: true
 persistentEdits:
-  generation_id: b02f39b4-24a8-4a34-a5c7-e90576f817ae
-  pristine_commit_hash: c29d4ccc16b66bb21a1cc66bf9b597dcff7899c1
-  pristine_tree_hash: aada573d0db51250b52d4657abfd6d6c785a9f2b
+  generation_id: 661c7854-bb89-4697-84c7-2359f692aaa2
+  pristine_commit_hash: fb0b91cdb5365cab33ac477458e51b0895f202b3
+  pristine_tree_hash: c39f4743023543b36a69ff355ff3be05297ed786
 features:
   typescript:
     acceptHeaders: 2.81.2
@@ -12280,8 +12280,8 @@ trackedFiles:
     deleted: true
   docs/models/supportedresolution.mdx:
     id: eaa3905949cd
-    last_write_checksum: sha1:6899ad302e1ad3554cafd1f373c5cf1908d708a0
-    pristine_git_object: 2f1c2d864e0eaad127eb6dbb0030edb124306c99
+    last_write_checksum: sha1:37a31551c391992c80b20d86d4889006f0b85a4f
+    pristine_git_object: 3e0ed9978ce10ab461bd3c7bfe5654004bc99b7b
   docs/models/supportedsize.md:
     id: 8e46a1057de1
     last_write_checksum: sha1:ba470460d11152c5080466f93e43d8777a721fa8
@@ -12289,8 +12289,8 @@ trackedFiles:
     deleted: true
   docs/models/supportedsize.mdx:
     id: bcb235938132
-    last_write_checksum: sha1:b57c5d1115f58c2b3304a4d2fcb895ce8da1c096
-    pristine_git_object: 017f2b4eb3c7ded2a842117960190495a1de5dc2
+    last_write_checksum: sha1:8760e16a1c689ef750ba80131ad3cdff3faa0cc8
+    pristine_git_object: 5fe6e0d75f9dafe993374fe618cc0e3ff8082d23
   docs/models/suspendinternresponse.mdx:
     id: cbec0d2e0f79
     last_write_checksum: sha1:8c51f466d888433241c3cc3eca499e1e7d091faf
@@ -13227,8 +13227,8 @@ trackedFiles:
     deleted: true
   docs/models/videogenerationrequestresolution.mdx:
     id: fb41fb711752
-    last_write_checksum: sha1:2334bf8dbed973f9f7f8aab44bf039be0e500061
-    pristine_git_object: 577a56456733987c35adfb2e0bd21741bbc78d6e
+    last_write_checksum: sha1:1806568193ccc9c3eb27cd70489195af7b020fbf
+    pristine_git_object: 5cc4b161061bf0ef018115055ef58983adf5bd46
   docs/models/videogenerationresponse.md:
     id: a34cc8c878a2
     last_write_checksum: sha1:ab1cd51722f034f5edd024a6006efa4fb3adbbf8
@@ -13790,12 +13790,12 @@ trackedFiles:
     pristine_git_object: 410efafd6a7f50d91ccb87131fedbe0c3d47e15a
   jsr.json:
     id: 7f6ab7767282
-    last_write_checksum: sha1:d80bfa1b7b8c18894ed100f384f9106e9220227a
-    pristine_git_object: 9bbc05101617430a1fab01263154591de5d1ff7b
+    last_write_checksum: sha1:b9e74828a2ae7a92a084cea2ba67589d1a509192
+    pristine_git_object: 19bf287f9560119fe0394d00516fa9534e1261d0
   package.json:
     id: 7030d0b2f71b
-    last_write_checksum: sha1:073f34db59b4c3090e0f6abfb0a83ae0b0aa9bc0
-    pristine_git_object: 3f929892c1828d9b014f21f47340d088ff67c046
+    last_write_checksum: sha1:a228c5150585f1278f7374daf08a2a40551b8d4a
+    pristine_git_object: 68560ed80196da9232f534d8815ef67a6c8c5cea
   src/core.ts:
     id: f431fdbcd144
     last_write_checksum: sha1:5aa66b0b6a5964f3eea7f3098c2eb3c0ee9c0131
@@ -14306,8 +14306,8 @@ trackedFiles:
     pristine_git_object: a187e58707bdb726ca2aff74941efe7493422d4e
   src/lib/config.ts:
     id: 320761608fb3
-    last_write_checksum: sha1:a2de76c31f1366e18d2b2ee7c69e637ab10a5e83
-    pristine_git_object: 85397d0335e526f0053fbce5addfb364b8c2503a
+    last_write_checksum: sha1:c4c88e90a73fa603195825bf7924660de7c567ef
+    pristine_git_object: 35cb62b8085b5c3b1360e7c8aa36609c31ffafa4
   src/lib/dlv.ts:
     id: b1988214835a
     last_write_checksum: sha1:eaac763b22717206a6199104e0403ed17a4e2711
@@ -17604,8 +17604,8 @@ trackedFiles:
     pristine_git_object: fcb320875bf6acf4d359f04c3c475d8688da5a2d
   src/models/videogenerationrequest.ts:
     id: e72ea2e4c5b3
-    last_write_checksum: sha1:f679247b06cf0414184b96b69c7575e71d654e20
-    pristine_git_object: 6c5306ee696ab2064bc45966dfbe2a36cabc0906
+    last_write_checksum: sha1:b5f150f58c8df609beeb4985d4d57bc9a443b4e9
+    pristine_git_object: 148d4845b6b2d39689e18a5af689f8b98213ebdd
   src/models/videogenerationresponse.ts:
     id: 0a96c6ee9eea
     last_write_checksum: sha1:1128cee8ad6711bef9a82476dd8b09042ff29b73
@@ -17616,8 +17616,8 @@ trackedFiles:
     pristine_git_object: edaa1b6b7d0735f2777f7f860d536f3b00eb5ec2
   src/models/videomodel.ts:
     id: 3761c095ec55
-    last_write_checksum: sha1:808fb535ed1a0ac5a0b809d1303a23dee77f0f7e
-    pristine_git_object: a501013ae452020df2e16bbc50621c5d81c7c814
+    last_write_checksum: sha1:bb90cbbb56a05108c3272bbd3340e551f16b2cce
+    pristine_git_object: 1f3c4bf86657d0d069b0c7ad8d8bcfc9cabb298b
   src/models/videomodelslistresponse.ts:
     id: 3ddde944c8c8
     last_write_checksum: sha1:74c107d5bb0d3221dd465bfab762fecb88d815e3
@@ -21154,4 +21154,4 @@ examples:
         "529":
           application/json: {"error": {"code": 529, "message": "Provider returned error"}}
 examplesVersion: 1.0.2
-releaseNotes: "## Typescript SDK Changes:\n* `openrouter.interns.listInterns()`:  `error.metadata` **Added**\n* `openrouter.interns.createIntern()`:  `error.metadata` **Added**\n* `openrouter.interns.deleteIntern()`:  `error.metadata` **Added**\n* `openrouter.interns.getIntern()`:  `error.metadata` **Added**\n* `openrouter.interns.updateIntern()`:  `error` **Changed**\n* `openrouter.interns.provisionIntern()`:  `error` **Changed**\n* `openrouter.interns.suspendIntern()`:  `error` **Changed**\n* `openrouter.interns.chat()`: \n  *  `response.[].data.error.metadata.retryable` **Added**\n  *  `error` **Changed**\n"
+releaseNotes: "## Typescript SDK Changes:\n* `openrouter.videoGeneration.generate()`: \n  *  `request.videoGenerationRequest.resolution.enum(360p)` **Added**\n* `openrouter.videoGeneration.listVideosModels()`:  `response.data[]` **Changed**\n"
