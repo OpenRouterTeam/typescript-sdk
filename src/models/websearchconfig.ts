@@ -22,10 +22,15 @@ import {
   WebSearchUserLocationServerTool$Outbound,
   WebSearchUserLocationServerTool$outboundSchema,
 } from "./websearchuserlocationservertool.js";
+import {
+  XSearchOptions,
+  XSearchOptions$Outbound,
+  XSearchOptions$outboundSchema,
+} from "./xsearchoptions.js";
 
 export type WebSearchConfig = {
   /**
-   * Limit search results to these domains. Supported by Exa, Firecrawl, Parallel, Perplexity, and most native providers (Anthropic, OpenAI, xAI). Cannot be used with excluded_domains.
+   * Limit search results to these domains. Supported by Exa, Firecrawl, Parallel, Perplexity, and most native providers (Anthropic, OpenAI, SpaceXAI). Cannot be used with excluded_domains.
    */
   allowedDomains?: Array<string> | undefined;
   /**
@@ -33,7 +38,7 @@ export type WebSearchConfig = {
    */
   engine?: WebSearchEngineEnum | undefined;
   /**
-   * Exclude search results from these domains. Supported by Exa, Firecrawl, Parallel, Perplexity, Anthropic, OpenAI, and xAI. Cannot be used with allowed_domains.
+   * Exclude search results from these domains. Supported by Exa, Firecrawl, Parallel, Perplexity, Anthropic, OpenAI, and SpaceXAI. Cannot be used with allowed_domains.
    */
   excludedDomains?: Array<string> | undefined;
   /**
@@ -64,6 +69,10 @@ export type WebSearchConfig = {
    * Approximate user location for location-biased results.
    */
   userLocation?: WebSearchUserLocationServerTool | undefined;
+  /**
+   * Enable SpaceXAI X (Twitter) search alongside native web search, with optional filters. Only applies to SpaceXAI endpoints with native search; omit to search the web only. X search is billed separately by SpaceXAI, per post and per user profile fetched.
+   */
+  xSearch?: XSearchOptions | undefined;
 };
 
 /** @internal */
@@ -78,6 +87,7 @@ export type WebSearchConfig$Outbound = {
   mode?: string | undefined;
   search_context_size?: string | undefined;
   user_location?: WebSearchUserLocationServerTool$Outbound | undefined;
+  x_search?: XSearchOptions$Outbound | undefined;
 };
 
 /** @internal */
@@ -95,6 +105,7 @@ export const WebSearchConfig$outboundSchema: z.ZodType<
   mode: WebSearchMode$outboundSchema.optional(),
   searchContextSize: SearchQualityLevel$outboundSchema.optional(),
   userLocation: WebSearchUserLocationServerTool$outboundSchema.optional(),
+  xSearch: XSearchOptions$outboundSchema.optional(),
 }).transform((v) => {
   return remap$(v, {
     allowedDomains: "allowed_domains",
@@ -105,6 +116,7 @@ export const WebSearchConfig$outboundSchema: z.ZodType<
     maxUses: "max_uses",
     searchContextSize: "search_context_size",
     userLocation: "user_location",
+    xSearch: "x_search",
   });
 });
 

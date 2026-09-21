@@ -36,6 +36,12 @@ import {
   WebSearchUserLocation$Outbound,
   WebSearchUserLocation$outboundSchema,
 } from "./websearchuserlocation.js";
+import {
+  XSearchOptions,
+  XSearchOptions$inboundSchema,
+  XSearchOptions$Outbound,
+  XSearchOptions$outboundSchema,
+} from "./xsearchoptions.js";
 
 export const WebSearchServerToolType = {
   WebSearch20250826: "web_search_2025_08_26",
@@ -74,6 +80,10 @@ export type WebSearchServerTool = {
    * User location information for web search
    */
   userLocation?: WebSearchUserLocation | null | undefined;
+  /**
+   * Enable SpaceXAI X (Twitter) search alongside native web search, with optional filters. Only applies to SpaceXAI endpoints with native search; omit to search the web only. X search is billed separately by SpaceXAI, per post and per user profile fetched.
+   */
+  xSearch?: XSearchOptions | undefined;
 };
 
 /** @internal */
@@ -98,12 +108,14 @@ export const WebSearchServerTool$inboundSchema: z.ZodType<
   search_context_size: SearchContextSizeEnum$inboundSchema.optional(),
   type: WebSearchServerToolType$inboundSchema,
   user_location: z.nullable(WebSearchUserLocation$inboundSchema).optional(),
+  x_search: XSearchOptions$inboundSchema.optional(),
 }).transform((v) => {
   return remap$(v, {
     "max_results": "maxResults",
     "max_uses": "maxUses",
     "search_context_size": "searchContextSize",
     "user_location": "userLocation",
+    "x_search": "xSearch",
   });
 });
 /** @internal */
@@ -116,6 +128,7 @@ export type WebSearchServerTool$Outbound = {
   search_context_size?: string | undefined;
   type: string;
   user_location?: WebSearchUserLocation$Outbound | null | undefined;
+  x_search?: XSearchOptions$Outbound | undefined;
 };
 
 /** @internal */
@@ -131,12 +144,14 @@ export const WebSearchServerTool$outboundSchema: z.ZodType<
   searchContextSize: SearchContextSizeEnum$outboundSchema.optional(),
   type: WebSearchServerToolType$outboundSchema,
   userLocation: z.nullable(WebSearchUserLocation$outboundSchema).optional(),
+  xSearch: XSearchOptions$outboundSchema.optional(),
 }).transform((v) => {
   return remap$(v, {
     maxResults: "max_results",
     maxUses: "max_uses",
     searchContextSize: "search_context_size",
     userLocation: "user_location",
+    xSearch: "x_search",
   });
 });
 
