@@ -430,15 +430,15 @@ run();
 
 ### Errors
 
-| Error Type                    | Status Code                   | Content Type                  |
-| ----------------------------- | ----------------------------- | ----------------------------- |
-| errors.InternLifecycleError   | 400, 401, 403, 404, 408, 413  | application/json              |
-| errors.InternLifecycleError   | 500                           | application/json              |
-| errors.OpenRouterDefaultError | 4XX, 5XX                      | \*/\*                         |
+| Error Type                        | Status Code                       | Content Type                      |
+| --------------------------------- | --------------------------------- | --------------------------------- |
+| errors.InternLifecycleError       | 400, 401, 403, 404, 408, 409, 413 | application/json                  |
+| errors.InternLifecycleError       | 500                               | application/json                  |
+| errors.OpenRouterDefaultError     | 4XX, 5XX                          | \*/\*                             |
 
 ## provisionIntern
 
-Starts the first boot, or resumes an intern after suspension. The API key selects the caller, workspace and visible interns. There is no default workspace fallback. Requests on regional hostnames such as `eu.openrouter.ai` are refused. [API key](/docs/api-reference/authentication) required.
+Starts the first boot, or resumes an intern after suspension. This operation takes no request body. A body carrying any field is refused with 400 rather than ignored. The API key selects the caller, workspace and visible interns. There is no default workspace fallback. Requests on regional hostnames such as `eu.openrouter.ai` are refused. [API key](/docs/api-reference/authentication) required.
 
 ### Example Usage
 
@@ -510,15 +510,15 @@ run();
 
 ### Errors
 
-| Error Type                    | Status Code                   | Content Type                  |
-| ----------------------------- | ----------------------------- | ----------------------------- |
-| errors.InternLifecycleError   | 401, 403, 404, 408, 409       | application/json              |
-| errors.InternLifecycleError   | 500, 502                      | application/json              |
-| errors.OpenRouterDefaultError | 4XX, 5XX                      | \*/\*                         |
+| Error Type                        | Status Code                       | Content Type                      |
+| --------------------------------- | --------------------------------- | --------------------------------- |
+| errors.InternLifecycleError       | 400, 401, 403, 404, 408, 409, 413 | application/json                  |
+| errors.InternLifecycleError       | 500, 502                          | application/json                  |
+| errors.OpenRouterDefaultError     | 4XX, 5XX                          | \*/\*                             |
 
 ## suspendIntern
 
-Stops the intern runtime while keeping its disk and configuration for a later provision call. The API key selects the caller, workspace and visible interns. There is no default workspace fallback. Requests on regional hostnames such as `eu.openrouter.ai` are refused. [API key](/docs/api-reference/authentication) required.
+Stops the intern runtime while keeping its disk and configuration for a later provision call. This operation takes no request body. A body carrying any field is refused with 400 rather than ignored. The API key selects the caller, workspace and visible interns. There is no default workspace fallback. Requests on regional hostnames such as `eu.openrouter.ai` are refused. [API key](/docs/api-reference/authentication) required.
 
 ### Example Usage
 
@@ -590,11 +590,11 @@ run();
 
 ### Errors
 
-| Error Type                    | Status Code                   | Content Type                  |
-| ----------------------------- | ----------------------------- | ----------------------------- |
-| errors.InternLifecycleError   | 401, 403, 404, 408, 409       | application/json              |
-| errors.InternLifecycleError   | 500, 502                      | application/json              |
-| errors.OpenRouterDefaultError | 4XX, 5XX                      | \*/\*                         |
+| Error Type                        | Status Code                       | Content Type                      |
+| --------------------------------- | --------------------------------- | --------------------------------- |
+| errors.InternLifecycleError       | 400, 401, 403, 404, 408, 409, 413 | application/json                  |
+| errors.InternLifecycleError       | 500, 502                          | application/json                  |
+| errors.OpenRouterDefaultError     | 4XX, 5XX                          | \*/\*                             |
 
 ## chat
 
@@ -702,12 +702,14 @@ run();
 
 ### Response
 
-**Promise\<[EventStream\<models.InternChatStreamingResponse>](../../models/.mdx)\>**
+**Promise\<[operations.CreateInternChatCompletionResponse](../../models/operations/createinternchatcompletionresponse.mdx)\>**
 
 ### Errors
 
-| Error Type                             | Status Code                            | Content Type                           |
-| -------------------------------------- | -------------------------------------- | -------------------------------------- |
-| errors.InternChatErrorResponse         | 400, 401, 403, 404, 409, 410, 413, 429 | application/json                       |
-| errors.InternChatErrorResponse         | 502, 503, 504                          | application/json                       |
-| errors.OpenRouterDefaultError          | 4XX, 5XX                               | \*/\*                                  |
+| Error Type                        | Status Code                       | Content Type                      |
+| --------------------------------- | --------------------------------- | --------------------------------- |
+| errors.InternChatErrorResponse    | 400, 401, 403, 404, 408, 410, 413 | application/json                  |
+| errors.InternChatErrorResponse    | 409, 429                          | application/json                  |
+| errors.InternChatErrorResponse    | 503                               | application/json                  |
+| errors.InternChatErrorResponse    | 502, 504                          | application/json                  |
+| errors.OpenRouterDefaultError     | 4XX, 5XX                          | \*/\*                             |

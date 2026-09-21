@@ -46,6 +46,10 @@ export type InternChatErrorMetadata = {
    * A stable reason a client can branch on.
    */
   reason: InternChatErrorMetadataReason;
+  /**
+   * Whether the same request may be sent again unchanged. Always `true` for the transient refusals — `busy`, `intern_not_ready`, `intern_unreachable`, `rate_limited`, `stream_severed` and `timeout` — and always `false` for the ones a retry cannot fix. For `turn_failed` it varies by failure and is the intern's own classification of what went wrong: `true` for an upstream overload, rate limit, timeout or transport fault, `false` for an authentication or bad-request failure that would be rejected the same way again. Branch on this field rather than on `reason` when deciding whether to retry. A `429`, and a `409` or `503` with reason `busy`, also carry a `Retry-After` header saying how long to wait.
+   */
+  retryable: boolean;
 };
 
 /** @internal */
@@ -60,6 +64,7 @@ export const InternChatErrorMetadata$inboundSchema: z.ZodType<
   unknown
 > = z.object({
   reason: InternChatErrorMetadataReason$inboundSchema,
+  retryable: z.boolean(),
 });
 
 export function internChatErrorMetadataFromJSON(

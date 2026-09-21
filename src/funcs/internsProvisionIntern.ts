@@ -32,7 +32,7 @@ import { Result } from "../types/fp.js";
  * Provision an intern
  *
  * @remarks
- * Starts the first boot, or resumes an intern after suspension. The API key selects the caller, workspace and visible interns. There is no default workspace fallback. Requests on regional hostnames such as `eu.openrouter.ai` are refused. [API key](/docs/api-reference/authentication) required.
+ * Starts the first boot, or resumes an intern after suspension. This operation takes no request body. A body carrying any field is refused with 400 rather than ignored. The API key selects the caller, workspace and visible interns. There is no default workspace fallback. Requests on regional hostnames such as `eu.openrouter.ai` are refused. [API key](/docs/api-reference/authentication) required.
  *
  * If set, this operation will use {@link Security.apiKey} from the global security.
  */
@@ -194,7 +194,7 @@ async function $do(
   >(
     M.json(202, models.ProvisionInternResponse$inboundSchema),
     M.jsonErr(
-      [401, 403, 404, 408, 409],
+      [400, 401, 403, 404, 408, 409, 413],
       errors.InternLifecycleError$inboundSchema,
     ),
     M.jsonErr([500, 502], errors.InternLifecycleError$inboundSchema),
