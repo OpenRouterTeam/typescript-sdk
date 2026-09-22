@@ -39,6 +39,10 @@ export type Workspace = {
    */
   description: string | null;
   /**
+   * OpenRouter server tools (e.g. openrouter:web_search) that requests in this workspace may not invoke. Null means no tools are disabled.
+   */
+  disabledServerTools?: Array<string> | null | undefined;
+  /**
    * Unique identifier for the workspace
    */
   id: string;
@@ -89,6 +93,7 @@ export const Workspace$inboundSchema: z.ZodType<Workspace, unknown> = z.object({
   default_provider_sort: z.nullable(z.string()),
   default_text_model: z.nullable(z.string()),
   description: z.nullable(z.string()),
+  disabled_server_tools: z.nullable(z.array(z.string())).optional(),
   id: z.string(),
   include_byok_in_budgets: z.boolean().optional(),
   io_logging_api_key_ids: z.nullable(z.array(z.int())),
@@ -107,6 +112,7 @@ export const Workspace$inboundSchema: z.ZodType<Workspace, unknown> = z.object({
     "default_image_model": "defaultImageModel",
     "default_provider_sort": "defaultProviderSort",
     "default_text_model": "defaultTextModel",
+    "disabled_server_tools": "disabledServerTools",
     "include_byok_in_budgets": "includeByokInBudgets",
     "io_logging_api_key_ids": "ioLoggingApiKeyIds",
     "io_logging_sampling_rate": "ioLoggingSamplingRate",
