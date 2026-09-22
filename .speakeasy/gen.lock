@@ -1,19 +1,19 @@
 lockVersion: ""
 id: ""
 management:
-  docChecksum: 70365587e30214c7e64c5b9998a92d64
+  docChecksum: c9375a3faa01729505f08812d2069ff2
   docVersion: 1.0.0
   speakeasyVersion: 1.787.0
   generationVersion: 2.914.0
-  releaseVersion: 1.3.17
-  configChecksum: 3a0673e141435640760dfb3b36c6a38d
+  releaseVersion: 1.3.18
+  configChecksum: 17dd495efb4f96ee36484dc258838e53
   repoURL: https://github.com/OpenRouterTeam/typescript-sdk.git
   installationURL: https://github.com/OpenRouterTeam/typescript-sdk
   published: true
 persistentEdits:
-  generation_id: c192d7c2-eaed-411d-a0c5-8691d12716cc
-  pristine_commit_hash: 8fbebac6ce89d0e1b7851be9d8e431ace3c1f928
-  pristine_tree_hash: 987a9c295584f07babd72b0cdd4a48a77b8f6210
+  generation_id: 98e3e4d7-7d6a-4af1-b157-b562399b3639
+  pristine_commit_hash: 80e5340c09bf1a4d09939a5f6bc03a986484d4d2
+  pristine_tree_hash: 58eb914884030673666f2347389c0a2c2fd1e829
 features:
   typescript:
     acceptHeaders: 2.81.2
@@ -13822,12 +13822,12 @@ trackedFiles:
     pristine_git_object: 410efafd6a7f50d91ccb87131fedbe0c3d47e15a
   jsr.json:
     id: 7f6ab7767282
-    last_write_checksum: sha1:c83c7d1b61f1a1ef647d5ea42a9ada71e6f77775
-    pristine_git_object: 583c80ca7ae44f9a550fea48f80df4d0ca86d10b
+    last_write_checksum: sha1:f45832570745af63ecf84c3d64c53dc3ab72dbbe
+    pristine_git_object: e1470fe5ba5961d1b58cce0d6e07dfd1a49fbf72
   package.json:
     id: 7030d0b2f71b
-    last_write_checksum: sha1:7144a2412ff7d507599bd9621911eca72fcf7f57
-    pristine_git_object: cd86ab442c19fedecca1750b0052d96543089d9f
+    last_write_checksum: sha1:e03e0b9a17038f68bff23ca6e3668204c0bacf66
+    pristine_git_object: 04387de7accf70a9f718268b04314e32f3ace5ac
   src/core.ts:
     id: f431fdbcd144
     last_write_checksum: sha1:5aa66b0b6a5964f3eea7f3098c2eb3c0ee9c0131
@@ -14338,8 +14338,8 @@ trackedFiles:
     pristine_git_object: a187e58707bdb726ca2aff74941efe7493422d4e
   src/lib/config.ts:
     id: 320761608fb3
-    last_write_checksum: sha1:69f1cf2456bd1629f9cfa082897d951ee5b3d80b
-    pristine_git_object: f36af1e912d6a0d8f459530b37c33d56059aff0f
+    last_write_checksum: sha1:cf122f868ac3d0cf4caf8ed47c0a8ced98b7e465
+    pristine_git_object: 97e830b7e9cf8d7e3d80c784cf34b3cbbb2bf69b
   src/lib/dlv.ts:
     id: b1988214835a
     last_write_checksum: sha1:eaac763b22717206a6199104e0403ed17a4e2711
