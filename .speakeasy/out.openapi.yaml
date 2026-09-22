@@ -37457,7 +37457,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/InternChatSteeredResponse'
-          description: 'A turn is already running on this intern for the same `session_id`, and the message was delivered into it instead of starting a new turn. Nothing streams here: the intern takes the message up on the running turn, whose stream continues on the request that started it. Sent only for a `user` message with a `session_id`; a `tool` reply, a request without a `session_id`, or one for another session gets `409 busy`, as does a message the intern could not take.'
+          description: 'A turn is already running in this `session_id`, and the message was delivered into it instead of starting a new turn. Nothing streams here: the intern takes the message up on the running turn, whose stream continues on the request that started it. Sent only for a `user` message with a `session_id`; a `tool` reply into a running session gets `409 busy`, as does a message the intern could not take. Other sessions on the same intern are not affected and run in parallel.'
         '400':
           content:
             application/json:
@@ -37529,7 +37529,7 @@ paths:
                     retryable: false
               schema:
                 $ref: '#/components/schemas/InternChatErrorResponse'
-          description: 'The intern is not running (`intern_not_ready`), another turn is already running on this intern for a different session, for no session, or for a `tool` reply (`busy`), the question is no longer waiting (`interaction_not_pending`), or another request is already attached to the run (`attachment_failed`). The turn lock is per intern, not per session. `intern_not_ready` and `busy` report `retryable: true`, and a `busy` refusal carries `Retry-After`.'
+          description: 'The intern is not running (`intern_not_ready`), a turn is already running in this session and did not take the message within 15 seconds (`busy`, also sent when the turn is waiting on a question of its own), the question is no longer waiting (`interaction_not_pending`), or another request is already attached to the run (`attachment_failed`). Turns in different sessions on the same intern run in parallel. `intern_not_ready` and `busy` report `retryable: true`, and a `busy` refusal carries `Retry-After`.'
           headers:
             Retry-After:
               description: 'Seconds to wait before retrying this request. Present only on a `busy` refusal.'
