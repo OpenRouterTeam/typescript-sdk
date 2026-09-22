@@ -5,6 +5,26 @@
 
 import * as z from "zod/v4";
 import { remap as remap$ } from "../lib/primitives.js";
+import * as openEnums from "../types/enums.js";
+import { OpenEnum } from "../types/enums.js";
+
+export const UpdateWorkspaceRequestDisabledServerTool = {
+  OpenrouterAdvisor: "openrouter:advisor",
+  OpenrouterApplyPatch: "openrouter:apply_patch",
+  OpenrouterBash: "openrouter:bash",
+  OpenrouterDatetime: "openrouter:datetime",
+  OpenrouterFusion: "openrouter:fusion",
+  OpenrouterImageGeneration: "openrouter:image_generation",
+  OpenrouterExperimentalSearchModels: "openrouter:experimental__search_models",
+  OpenrouterShell: "openrouter:shell",
+  OpenrouterSubagent: "openrouter:subagent",
+  OpenrouterToolSearch: "openrouter:tool_search",
+  OpenrouterWebFetch: "openrouter:web_fetch",
+  OpenrouterWebSearch: "openrouter:web_search",
+} as const;
+export type UpdateWorkspaceRequestDisabledServerTool = OpenEnum<
+  typeof UpdateWorkspaceRequestDisabledServerTool
+>;
 
 export type UpdateWorkspaceRequest = {
   /**
@@ -23,6 +43,13 @@ export type UpdateWorkspaceRequest = {
    * New description for the workspace
    */
   description?: string | null | undefined;
+  /**
+   * OpenRouter server tools that requests in this workspace may not invoke. Requests naming a disabled tool are rejected with 403. An empty array or null clears the list.
+   */
+  disabledServerTools?:
+    | Array<UpdateWorkspaceRequestDisabledServerTool>
+    | null
+    | undefined;
   /**
    * Optional array of API key IDs to filter I/O logging
    */
@@ -54,11 +81,18 @@ export type UpdateWorkspaceRequest = {
 };
 
 /** @internal */
+export const UpdateWorkspaceRequestDisabledServerTool$outboundSchema: z.ZodType<
+  string,
+  UpdateWorkspaceRequestDisabledServerTool
+> = openEnums.outboundSchema(UpdateWorkspaceRequestDisabledServerTool);
+
+/** @internal */
 export type UpdateWorkspaceRequest$Outbound = {
   default_image_model?: string | null | undefined;
   default_provider_sort?: string | null | undefined;
   default_text_model?: string | null | undefined;
   description?: string | null | undefined;
+  disabled_server_tools?: Array<string> | null | undefined;
   io_logging_api_key_ids?: Array<number> | null | undefined;
   io_logging_sampling_rate?: number | undefined;
   is_data_discount_logging_enabled?: boolean | undefined;
@@ -77,6 +111,9 @@ export const UpdateWorkspaceRequest$outboundSchema: z.ZodType<
   defaultProviderSort: z.nullable(z.string()).optional(),
   defaultTextModel: z.nullable(z.string()).optional(),
   description: z.nullable(z.string()).optional(),
+  disabledServerTools: z.nullable(
+    z.array(UpdateWorkspaceRequestDisabledServerTool$outboundSchema),
+  ).optional(),
   ioLoggingApiKeyIds: z.nullable(z.array(z.int())).optional(),
   ioLoggingSamplingRate: z.number().optional(),
   isDataDiscountLoggingEnabled: z.boolean().optional(),
@@ -89,6 +126,7 @@ export const UpdateWorkspaceRequest$outboundSchema: z.ZodType<
     defaultImageModel: "default_image_model",
     defaultProviderSort: "default_provider_sort",
     defaultTextModel: "default_text_model",
+    disabledServerTools: "disabled_server_tools",
     ioLoggingApiKeyIds: "io_logging_api_key_ids",
     ioLoggingSamplingRate: "io_logging_sampling_rate",
     isDataDiscountLoggingEnabled: "is_data_discount_logging_enabled",
