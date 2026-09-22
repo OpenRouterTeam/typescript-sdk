@@ -132,6 +132,11 @@ import {
   StopServerToolsWhenCondition$outboundSchema,
 } from "./stopservertoolswhencondition.js";
 import {
+  SwitchyardRouterPlugin,
+  SwitchyardRouterPlugin$Outbound,
+  SwitchyardRouterPlugin$outboundSchema,
+} from "./switchyardrouterplugin.js";
+import {
   TraceConfig,
   TraceConfig$Outbound,
   TraceConfig$outboundSchema,
@@ -163,6 +168,7 @@ export type ChatRequestPlugin =
   | ModerationPlugin
   | ParetoRouterPlugin
   | ResponseHealingPlugin
+  | SwitchyardRouterPlugin
   | WebSearchPlugin
   | WebFetchPlugin;
 
@@ -321,6 +327,7 @@ export type ChatRequest = {
       | ModerationPlugin
       | ParetoRouterPlugin
       | ResponseHealingPlugin
+      | SwitchyardRouterPlugin
       | WebSearchPlugin
       | WebFetchPlugin
     >
@@ -444,6 +451,7 @@ export type ChatRequestPlugin$Outbound =
   | ModerationPlugin$Outbound
   | ParetoRouterPlugin$Outbound
   | ResponseHealingPlugin$Outbound
+  | SwitchyardRouterPlugin$Outbound
   | WebSearchPlugin$Outbound
   | WebFetchPlugin$Outbound;
 
@@ -460,6 +468,7 @@ export const ChatRequestPlugin$outboundSchema: z.ZodType<
   ModerationPlugin$outboundSchema,
   ParetoRouterPlugin$outboundSchema,
   ResponseHealingPlugin$outboundSchema,
+  SwitchyardRouterPlugin$outboundSchema,
   WebSearchPlugin$outboundSchema,
   WebFetchPlugin$outboundSchema,
 ]);
@@ -578,6 +587,7 @@ export type ChatRequest$Outbound = {
       | ModerationPlugin$Outbound
       | ParetoRouterPlugin$Outbound
       | ResponseHealingPlugin$Outbound
+      | SwitchyardRouterPlugin$Outbound
       | WebSearchPlugin$Outbound
       | WebFetchPlugin$Outbound
     >
@@ -647,6 +657,7 @@ export const ChatRequest$outboundSchema: z.ZodType<
       ModerationPlugin$outboundSchema,
       ParetoRouterPlugin$outboundSchema,
       ResponseHealingPlugin$outboundSchema,
+      SwitchyardRouterPlugin$outboundSchema,
       WebSearchPlugin$outboundSchema,
       WebFetchPlugin$outboundSchema,
     ]),
