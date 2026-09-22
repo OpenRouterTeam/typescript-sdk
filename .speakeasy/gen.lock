@@ -1,19 +1,19 @@
 lockVersion: ""
 id: ""
 management:
-  docChecksum: b81534e498f49a515c66ba4700ee3516
+  docChecksum: ece6c9f7a5b627932a10d4c740b3eb02
   docVersion: 1.0.0
   speakeasyVersion: 1.787.0
   generationVersion: 2.914.0
-  releaseVersion: 1.3.15
-  configChecksum: ec51a8b72ab625bb1e4d6a1e3d62f88a
+  releaseVersion: 1.3.16
+  configChecksum: 1dd433b7d83a902f0dde1609d15b29b3
   repoURL: https://github.com/OpenRouterTeam/typescript-sdk.git
   installationURL: https://github.com/OpenRouterTeam/typescript-sdk
   published: true
 persistentEdits:
-  generation_id: a1cb1585-e3af-48a8-a146-6c4a26e7e053
-  pristine_commit_hash: 7bde66d698e7e6c5dafb142af0b61ba52bb646fa
-  pristine_tree_hash: 1df8611b416bcd96c80bf9908699d6d37d9efbfd
+  generation_id: 2aa23b6a-a555-451a-9ac9-6900bdce5a74
+  pristine_commit_hash: b95c8078d660ae37d71a0730ebf29a52c8b1df51
+  pristine_tree_hash: 7723ab68822ffdecad666e7a7b9403d0ca7ee916
 features:
   typescript:
     acceptHeaders: 2.81.2
@@ -11477,8 +11477,8 @@ trackedFiles:
     deleted: true
   docs/models/responsesrequest.mdx:
     id: 947c781fc5e6
-    last_write_checksum: sha1:520b50923e44e597e72333fe6df50206d5529bc2
-    pristine_git_object: cf19787a6e93f0fdf520f9239da5279c4a2f8956
+    last_write_checksum: sha1:8e4ecedefa4b4b54657653909ba75157dfc6c8e9
+    pristine_git_object: 47f9d07aa5a3bc2930bca5718af1d79b6e9c5327
   docs/models/responsesrequestignore.md:
     id: c4f071afde0b
     last_write_checksum: sha1:1d8443ce44e3c7f5a15fbbcedb391e780e158cbd
@@ -13822,12 +13822,12 @@ trackedFiles:
     pristine_git_object: 410efafd6a7f50d91ccb87131fedbe0c3d47e15a
   jsr.json:
     id: 7f6ab7767282
-    last_write_checksum: sha1:ece44202ec99ab691915773824be03403d1a421f
-    pristine_git_object: 7ecb6a4ae9b9310136b2fc5d2a3da5c55f1dc76d
+    last_write_checksum: sha1:60d4cecfcbe739c3452e894eda8900b946134d78
+    pristine_git_object: f36f8854704e6815e921ea44633dd63f34d1d809
   package.json:
     id: 7030d0b2f71b
-    last_write_checksum: sha1:74a544376ce0b5892155012262ec8490e9171d5a
-    pristine_git_object: c1e5b3ec2bf5ce4230acf4dc7fc50aff5ea71094
+    last_write_checksum: sha1:3dc54b98e9d70bf5f1fae6f0fa0ac8b2421cf2d8
+    pristine_git_object: 9acf08b2ff9a0a33ee955bf5cb791a8b22a00abb
   src/core.ts:
     id: f431fdbcd144
     last_write_checksum: sha1:5aa66b0b6a5964f3eea7f3098c2eb3c0ee9c0131
@@ -14338,8 +14338,8 @@ trackedFiles:
     pristine_git_object: a187e58707bdb726ca2aff74941efe7493422d4e
   src/lib/config.ts:
     id: 320761608fb3
-    last_write_checksum: sha1:77548ec8513f06c69d1cf179536d1e01368b1cad
-    pristine_git_object: c449913ab36440296c72f49f4e4d78c3419b0078
+    last_write_checksum: sha1:94d6d97e882575b10ae4c19c2cbe4aed42f1dbe4
+    pristine_git_object: d5385bb531c86b627f06e6e614d383b3c7db389f
   src/lib/dlv.ts:
     id: b1988214835a
     last_write_checksum: sha1:eaac763b22717206a6199104e0403ed17a4e2711
@@ -17208,8 +17208,8 @@ trackedFiles:
     pristine_git_object: db904c9a928385925ada038bdd2ce164618bcc6d
   src/models/responsesrequest.ts:
     id: 39799702f982
-    last_write_checksum: sha1:f9e5d5dbe890bebb1f30ee3393901ac33c98804d
-    pristine_git_object: 5fcce89f264490d114ea6d5c5dcd0e3fc9bb1bfb
+    last_write_checksum: sha1:3bf68db210d6f0097308c22524bf4c087a6ddacb
+    pristine_git_object: 1f11949516877cf11a2af177ebb7153744b6240a
   src/models/responsesstreamingresponse.ts:
     id: 69284d63df45
     last_write_checksum: sha1:215a40ab5dab91267bbc60f1e7c7e9d3cf6082d2
@@ -21200,4 +21200,3 @@ examples:
         "529":
           application/json: {"error": {"code": 529, "message": "Provider returned error"}}
 examplesVersion: 1.0.2
-releaseNotes: "## Typescript SDK Changes:\n* `openrouter.workspaces.list()`:  `response.data[].disabledServerTools` **Added**\n* `openrouter.workspaces.create()`: \n  *  `request.createWorkspaceRequest.disabledServerTools` **Added**\n  *  `response.data.disabledServerTools` **Added**\n* `openrouter.workspaces.get()`:  `response.data.disabledServerTools` **Added**\n* `openrouter.workspaces.update()`: \n  *  `request.updateWorkspaceRequest.disabledServerTools` **Added**\n  *  `response.data.disabledServerTools` **Added**\n"
