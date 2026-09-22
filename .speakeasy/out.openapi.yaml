@@ -30714,7 +30714,7 @@ paths:
           description: 'Provider Overloaded - Provider is temporarily overloaded'
       servers:
         - url: 'https://openrouter.ai'
-      summary: 'Submit a Decisions (questions and answers) request'
+      summary: 'Submit a Decisions request'
       tags:
         - 'alpha.decisions'
       x-speakeasy-name-override: 'create'
@@ -47054,7 +47054,7 @@ tags:
     name: 'Video Generation'
   - description: 'Workspaces endpoints'
     name: 'Workspaces'
-  - description: 'Alpha feature endpoints for Decisions (questions and answers) requests'
+  - description: 'Alpha feature endpoints for Decisions requests'
     name: 'alpha.decisions'
   - name: beta.responses
     description: 'Deprecated alias of responses. Use responses instead; scheduled for removal (sunset date TBD).'
