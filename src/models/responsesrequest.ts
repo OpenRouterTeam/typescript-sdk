@@ -236,6 +236,11 @@ import {
   SubagentServerToolOpenRouter$outboundSchema,
 } from "./subagentservertoolopenrouter.js";
 import {
+  SwitchyardRouterPlugin,
+  SwitchyardRouterPlugin$Outbound,
+  SwitchyardRouterPlugin$outboundSchema,
+} from "./switchyardrouterplugin.js";
+import {
   TextExtendedConfig,
   TextExtendedConfig$Outbound,
   TextExtendedConfig$outboundSchema,
@@ -285,6 +290,7 @@ export type ResponsesRequestPlugin =
   | ModerationPlugin
   | ParetoRouterPlugin
   | ResponseHealingPlugin
+  | SwitchyardRouterPlugin
   | WebSearchPlugin
   | WebFetchPlugin;
 
@@ -429,6 +435,7 @@ export type ResponsesRequest = {
       | ModerationPlugin
       | ParetoRouterPlugin
       | ResponseHealingPlugin
+      | SwitchyardRouterPlugin
       | WebSearchPlugin
       | WebFetchPlugin
     >
@@ -538,6 +545,7 @@ export type ResponsesRequestPlugin$Outbound =
   | ModerationPlugin$Outbound
   | ParetoRouterPlugin$Outbound
   | ResponseHealingPlugin$Outbound
+  | SwitchyardRouterPlugin$Outbound
   | WebSearchPlugin$Outbound
   | WebFetchPlugin$Outbound;
 
@@ -554,6 +562,7 @@ export const ResponsesRequestPlugin$outboundSchema: z.ZodType<
   ModerationPlugin$outboundSchema,
   ParetoRouterPlugin$outboundSchema,
   ResponseHealingPlugin$outboundSchema,
+  SwitchyardRouterPlugin$outboundSchema,
   WebSearchPlugin$outboundSchema,
   WebFetchPlugin$outboundSchema,
 ]);
@@ -799,6 +808,7 @@ export type ResponsesRequest$Outbound = {
       | ModerationPlugin$Outbound
       | ParetoRouterPlugin$Outbound
       | ResponseHealingPlugin$Outbound
+      | SwitchyardRouterPlugin$Outbound
       | WebSearchPlugin$Outbound
       | WebFetchPlugin$Outbound
     >
@@ -903,6 +913,7 @@ export const ResponsesRequest$outboundSchema: z.ZodType<
       ModerationPlugin$outboundSchema,
       ParetoRouterPlugin$outboundSchema,
       ResponseHealingPlugin$outboundSchema,
+      SwitchyardRouterPlugin$outboundSchema,
       WebSearchPlugin$outboundSchema,
       WebFetchPlugin$outboundSchema,
     ]),

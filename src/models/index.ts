@@ -616,6 +616,7 @@ export * from "./subagentservertoolopenrouter.js";
 export * from "./submitgenerationfeedbackrequest.js";
 export * from "./submitgenerationfeedbackresponse.js";
 export * from "./suspendinternresponse.js";
+export * from "./switchyardrouterplugin.js";
 export * from "./taskclassificationitem.js";
 export * from "./taskclassificationmacrocategory.js";
 export * from "./taskclassificationmodel.js";
