@@ -171,6 +171,11 @@ import {
   StopServerToolsWhenCondition$outboundSchema,
 } from "./stopservertoolswhencondition.js";
 import {
+  SwitchyardRouterPlugin,
+  SwitchyardRouterPlugin$Outbound,
+  SwitchyardRouterPlugin$outboundSchema,
+} from "./switchyardrouterplugin.js";
+import {
   ToolSearchServerTool,
   ToolSearchServerTool$Outbound,
   ToolSearchServerTool$outboundSchema,
@@ -275,6 +280,7 @@ export type MessagesRequestPlugin =
   | ModerationPlugin
   | ParetoRouterPlugin
   | ResponseHealingPlugin
+  | SwitchyardRouterPlugin
   | WebSearchPlugin
   | WebFetchPlugin;
 
@@ -529,6 +535,7 @@ export type MessagesRequest = {
       | ModerationPlugin
       | ParetoRouterPlugin
       | ResponseHealingPlugin
+      | SwitchyardRouterPlugin
       | WebSearchPlugin
       | WebFetchPlugin
     >
@@ -886,6 +893,7 @@ export type MessagesRequestPlugin$Outbound =
   | ModerationPlugin$Outbound
   | ParetoRouterPlugin$Outbound
   | ResponseHealingPlugin$Outbound
+  | SwitchyardRouterPlugin$Outbound
   | WebSearchPlugin$Outbound
   | WebFetchPlugin$Outbound;
 
@@ -902,6 +910,7 @@ export const MessagesRequestPlugin$outboundSchema: z.ZodType<
   ModerationPlugin$outboundSchema,
   ParetoRouterPlugin$outboundSchema,
   ResponseHealingPlugin$outboundSchema,
+  SwitchyardRouterPlugin$outboundSchema,
   WebSearchPlugin$outboundSchema,
   WebFetchPlugin$outboundSchema,
 ]);
@@ -1550,6 +1559,7 @@ export type MessagesRequest$Outbound = {
       | ModerationPlugin$Outbound
       | ParetoRouterPlugin$Outbound
       | ResponseHealingPlugin$Outbound
+      | SwitchyardRouterPlugin$Outbound
       | WebSearchPlugin$Outbound
       | WebFetchPlugin$Outbound
     >
@@ -1630,6 +1640,7 @@ export const MessagesRequest$outboundSchema: z.ZodType<
       ModerationPlugin$outboundSchema,
       ParetoRouterPlugin$outboundSchema,
       ResponseHealingPlugin$outboundSchema,
+      SwitchyardRouterPlugin$outboundSchema,
       WebSearchPlugin$outboundSchema,
       WebFetchPlugin$outboundSchema,
     ]),
