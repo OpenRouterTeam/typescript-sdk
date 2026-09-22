@@ -30,7 +30,7 @@ import { APICall, APIPromise } from "../types/async.js";
 import { Result } from "../types/fp.js";
 
 /**
- * Submit a Decisions (questions and answers) request
+ * Submit a Decisions request
  *
  * @remarks
  * Submits a Decisions request to the Decisions router

@@ -11,7 +11,7 @@ import { unwrapAsync } from "../types/fp.js";
 
 export class Decisions extends ClientSDK {
   /**
-   * Submit a Decisions (questions and answers) request
+   * Submit a Decisions request
    *
    * @remarks
    * Submits a Decisions request to the Decisions router
