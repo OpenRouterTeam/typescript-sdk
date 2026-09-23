@@ -1,0 +1,24 @@
+---
+title: "InvokeInternResponse"
+---
+
+## Example Usage
+
+```typescript
+import { InvokeInternResponse } from "@openrouter/sdk/models/operations";
+
+let value: InvokeInternResponse = {
+  headers: {},
+  result: {
+    sessionId: "b51a0e21-368b-4780-a220-14655bf28c55",
+    status: "started",
+  },
+};
+```
+
+## Fields
+
+| Field                                                                               | Type                                                                                | Required                                                                            | Description                                                                         | Example                                                                             |
+| ----------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------- |
+| `headers`                                                                           | Record\<string, *string*[]>                                                          | :heavy_check_mark:                                                                  | N/A                                                                                 |                                                                                     |
+| `result`                                                                            | [models.InternInvokeAcceptedResponse](../../models/interninvokeacceptedresponse.mdx) | :heavy_check_mark:                                                                  | N/A                                                                                 | \{<br/>"session_id": "b51a0e21-368b-4780-a220-14655bf28c55",<br/>"status": "started"<br/>} |
