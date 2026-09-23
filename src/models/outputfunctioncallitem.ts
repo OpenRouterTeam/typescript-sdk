@@ -39,13 +39,6 @@ export type OutputFunctionCallItemStatusUnion =
   | OutputFunctionCallItemStatusIncomplete
   | OutputFunctionCallItemStatusInProgress;
 
-export const OutputFunctionCallItemType = {
-  FunctionCall: "function_call",
-} as const;
-export type OutputFunctionCallItemType = ClosedEnum<
-  typeof OutputFunctionCallItemType
->;
-
 export type OutputFunctionCallItemSubagentItem = {
   type: string;
   additionalProperties?: { [k: string]: any } | undefined;
@@ -69,7 +62,7 @@ export type OutputFunctionCallItem = {
     | OutputFunctionCallItemStatusIncomplete
     | OutputFunctionCallItemStatusInProgress
     | undefined;
-  type: OutputFunctionCallItemType;
+  type: "function_call";
   /**
    * EXPERIMENTAL — subject to change without notice. String id that matches the `call_id` of the `openrouter:subagent` server tool call that spawned the subagent. Present on every `function_call` item the subagent projects; absent on ordinary function calls.
    */
@@ -84,28 +77,16 @@ export type OutputFunctionCallItem = {
 export const OutputFunctionCallItemStatusInProgress$inboundSchema: z.ZodEnum<
   typeof OutputFunctionCallItemStatusInProgress
 > = z.enum(OutputFunctionCallItemStatusInProgress);
-/** @internal */
-export const OutputFunctionCallItemStatusInProgress$outboundSchema: z.ZodEnum<
-  typeof OutputFunctionCallItemStatusInProgress
-> = OutputFunctionCallItemStatusInProgress$inboundSchema;
 
 /** @internal */
 export const OutputFunctionCallItemStatusIncomplete$inboundSchema: z.ZodEnum<
   typeof OutputFunctionCallItemStatusIncomplete
 > = z.enum(OutputFunctionCallItemStatusIncomplete);
-/** @internal */
-export const OutputFunctionCallItemStatusIncomplete$outboundSchema: z.ZodEnum<
-  typeof OutputFunctionCallItemStatusIncomplete
-> = OutputFunctionCallItemStatusIncomplete$inboundSchema;
 
 /** @internal */
 export const OutputFunctionCallItemStatusCompleted$inboundSchema: z.ZodEnum<
   typeof OutputFunctionCallItemStatusCompleted
 > = z.enum(OutputFunctionCallItemStatusCompleted);
-/** @internal */
-export const OutputFunctionCallItemStatusCompleted$outboundSchema: z.ZodEnum<
-  typeof OutputFunctionCallItemStatusCompleted
-> = OutputFunctionCallItemStatusCompleted$inboundSchema;
 
 /** @internal */
 export const OutputFunctionCallItemStatusUnion$inboundSchema: z.ZodType<
@@ -116,31 +97,7 @@ export const OutputFunctionCallItemStatusUnion$inboundSchema: z.ZodType<
   OutputFunctionCallItemStatusIncomplete$inboundSchema,
   OutputFunctionCallItemStatusInProgress$inboundSchema,
 ]);
-/** @internal */
-export type OutputFunctionCallItemStatusUnion$Outbound =
-  | string
-  | string
-  | string;
 
-/** @internal */
-export const OutputFunctionCallItemStatusUnion$outboundSchema: z.ZodType<
-  OutputFunctionCallItemStatusUnion$Outbound,
-  OutputFunctionCallItemStatusUnion
-> = z.union([
-  OutputFunctionCallItemStatusCompleted$outboundSchema,
-  OutputFunctionCallItemStatusIncomplete$outboundSchema,
-  OutputFunctionCallItemStatusInProgress$outboundSchema,
-]);
-
-export function outputFunctionCallItemStatusUnionToJSON(
-  outputFunctionCallItemStatusUnion: OutputFunctionCallItemStatusUnion,
-): string {
-  return JSON.stringify(
-    OutputFunctionCallItemStatusUnion$outboundSchema.parse(
-      outputFunctionCallItemStatusUnion,
-    ),
-  );
-}
 export function outputFunctionCallItemStatusUnionFromJSON(
   jsonString: string,
 ): SafeParseResult<OutputFunctionCallItemStatusUnion, SDKValidationError> {
@@ -150,15 +107,6 @@ export function outputFunctionCallItemStatusUnionFromJSON(
     `Failed to parse 'OutputFunctionCallItemStatusUnion' from JSON`,
   );
 }
-
-/** @internal */
-export const OutputFunctionCallItemType$inboundSchema: z.ZodEnum<
-  typeof OutputFunctionCallItemType
-> = z.enum(OutputFunctionCallItemType);
-/** @internal */
-export const OutputFunctionCallItemType$outboundSchema: z.ZodEnum<
-  typeof OutputFunctionCallItemType
-> = OutputFunctionCallItemType$inboundSchema;
 
 /** @internal */
 export const OutputFunctionCallItemSubagentItem$inboundSchema: z.ZodType<
@@ -171,37 +119,7 @@ export const OutputFunctionCallItemSubagentItem$inboundSchema: z.ZodType<
   "additionalProperties",
   true,
 );
-/** @internal */
-export type OutputFunctionCallItemSubagentItem$Outbound = {
-  type: string;
-  [additionalProperties: string]: unknown;
-};
 
-/** @internal */
-export const OutputFunctionCallItemSubagentItem$outboundSchema: z.ZodType<
-  OutputFunctionCallItemSubagentItem$Outbound,
-  OutputFunctionCallItemSubagentItem
-> = z.object({
-  type: z.string(),
-  additionalProperties: z.record(z.string(), z.any()).optional(),
-}).transform((v) => {
-  return {
-    ...v.additionalProperties,
-    ...remap$(v, {
-      additionalProperties: null,
-    }),
-  };
-});
-
-export function outputFunctionCallItemSubagentItemToJSON(
-  outputFunctionCallItemSubagentItem: OutputFunctionCallItemSubagentItem,
-): string {
-  return JSON.stringify(
-    OutputFunctionCallItemSubagentItem$outboundSchema.parse(
-      outputFunctionCallItemSubagentItem,
-    ),
-  );
-}
 export function outputFunctionCallItemSubagentItemFromJSON(
   jsonString: string,
 ): SafeParseResult<OutputFunctionCallItemSubagentItem, SDKValidationError> {
@@ -229,7 +147,7 @@ export const OutputFunctionCallItem$inboundSchema: z.ZodType<
     OutputFunctionCallItemStatusIncomplete$inboundSchema,
     OutputFunctionCallItemStatusInProgress$inboundSchema,
   ]).optional(),
-  type: OutputFunctionCallItemType$inboundSchema,
+  type: z.literal("function_call"),
   subagent_id: z.string().optional(),
   subagent_items: z.array(
     z.lazy(() => OutputFunctionCallItemSubagentItem$inboundSchema),
@@ -241,58 +159,7 @@ export const OutputFunctionCallItem$inboundSchema: z.ZodType<
     "subagent_items": "subagentItems",
   });
 });
-/** @internal */
-export type OutputFunctionCallItem$Outbound = {
-  arguments: string;
-  async?: boolean | undefined;
-  call_id: string;
-  id?: string | undefined;
-  name: string;
-  namespace?: string | undefined;
-  status?: string | string | string | undefined;
-  type: string;
-  subagent_id?: string | undefined;
-  subagent_items?:
-    | Array<OutputFunctionCallItemSubagentItem$Outbound>
-    | undefined;
-};
 
-/** @internal */
-export const OutputFunctionCallItem$outboundSchema: z.ZodType<
-  OutputFunctionCallItem$Outbound,
-  OutputFunctionCallItem
-> = z.object({
-  arguments: z.string(),
-  async: z.boolean().optional(),
-  callId: z.string(),
-  id: z.string().optional(),
-  name: z.string(),
-  namespace: z.string().optional(),
-  status: z.union([
-    OutputFunctionCallItemStatusCompleted$outboundSchema,
-    OutputFunctionCallItemStatusIncomplete$outboundSchema,
-    OutputFunctionCallItemStatusInProgress$outboundSchema,
-  ]).optional(),
-  type: OutputFunctionCallItemType$outboundSchema,
-  subagentId: z.string().optional(),
-  subagentItems: z.array(
-    z.lazy(() => OutputFunctionCallItemSubagentItem$outboundSchema),
-  ).optional(),
-}).transform((v) => {
-  return remap$(v, {
-    callId: "call_id",
-    subagentId: "subagent_id",
-    subagentItems: "subagent_items",
-  });
-});
-
-export function outputFunctionCallItemToJSON(
-  outputFunctionCallItem: OutputFunctionCallItem,
-): string {
-  return JSON.stringify(
-    OutputFunctionCallItem$outboundSchema.parse(outputFunctionCallItem),
-  );
-}
 export function outputFunctionCallItemFromJSON(
   jsonString: string,
 ): SafeParseResult<OutputFunctionCallItem, SDKValidationError> {
