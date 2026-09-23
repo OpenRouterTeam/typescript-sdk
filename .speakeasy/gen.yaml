@@ -69,7 +69,8 @@ typescript:
       access: public
       provenance: true
   additionalScripts:
-    compile: tsc
+    build: tsc && node scripts/unbarrel-imports.js
+    compile: tsc && node scripts/unbarrel-imports.js
     postinstall: node scripts/check-types.js || true
     prepare: npm run build
     test: vitest --run --project unit

@@ -1,4 +1,11 @@
-import type * as models from '../models/index.js';
+import type { EasyInputMessage, EasyInputMessageRoleUnion } from '../models/easyinputmessage.js';
+import type { FunctionCallItem } from '../models/functioncallitem.js';
+import type { FunctionCallOutputItem } from '../models/functioncalloutputitem.js';
+import type { InputImage } from '../models/inputimage.js';
+import type { InputMessageItem } from '../models/inputmessageitem.js';
+import type { InputsUnion } from '../models/inputsunion.js';
+import type { InputText } from '../models/inputtext.js';
+import type { OutputImageGenerationCallItem } from '../models/outputimagegenerationcallitem.js';
 import type {
   ClaudeImageBlockParam,
   ClaudeMessageParam,
@@ -17,7 +24,7 @@ import { convertToClaudeMessage } from './stream-transformers.js';
 /**
  * Maps Claude role strings to OpenResponses role types
  */
-function mapClaudeRole(role: 'user' | 'assistant'): models.EasyInputMessageRoleUnion {
+function mapClaudeRole(role: 'user' | 'assistant'): EasyInputMessageRoleUnion {
   if (role === 'user') {
     return EasyInputMessageRoleUser.User;
   }
@@ -30,7 +37,7 @@ function mapClaudeRole(role: 'user' | 'assistant'): models.EasyInputMessageRoleU
 function createEasyInputMessage(
   role: 'user' | 'assistant',
   content: string,
-): models.EasyInputMessage {
+): EasyInputMessage {
   return {
     role: mapClaudeRole(role),
     content,
@@ -43,7 +50,7 @@ function createEasyInputMessage(
 function createFunctionCallOutput(
   callId: string,
   output: string,
-): models.FunctionCallOutputItem {
+): FunctionCallOutputItem {
   return {
     type: "function_call_output" as const,
     callId,
@@ -78,13 +85,13 @@ function createFunctionCallOutput(
  */
 export function fromClaudeMessages(
   messages: ClaudeMessageParam[],
-): models.InputsUnion {
+): InputsUnion {
   const result: (
-    | models.EasyInputMessage
-    | models.InputMessageItem
-    | models.FunctionCallOutputItem
-    | models.FunctionCallItem
-    | models.OutputImageGenerationCallItem
+    | EasyInputMessage
+    | InputMessageItem
+    | FunctionCallOutputItem
+    | FunctionCallItem
+    | OutputImageGenerationCallItem
   )[] = [];
 
   for (const msg of messages) {
@@ -186,7 +193,7 @@ export function fromClaudeMessages(
 
     // Process text and image blocks (these become message content)
     if (textBlocks.length > 0 || imageBlocks.length > 0) {
-      const contentItems: (models.InputText | models.InputImage)[] = [];
+      const contentItems: (InputText | InputImage)[] = [];
 
       // Add text blocks
       for (const textBlock of textBlocks) {
@@ -230,7 +237,7 @@ export function fromClaudeMessages(
       } else {
         // Use simple string format for text-only messages
         const textContent = contentItems
-          .filter((item): item is models.InputText => item.type === 'input_text')
+          .filter((item): item is InputText => item.type === 'input_text')
           .map((item) => item.text)
           .join('');
 

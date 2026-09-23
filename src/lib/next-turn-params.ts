@@ -1,4 +1,4 @@
-import type * as models from '../models/index.js';
+import type { ResponsesRequest } from '../models/responsesrequest.js';
 import type { NextTurnParamsContext, ParsedToolCall, Tool } from './tool-types.js';
 
 /**
@@ -16,7 +16,7 @@ function isRecord(value: unknown): value is Record<string, unknown> {
  * @returns Context object with current parameter values
  */
 export function buildNextTurnParamsContext(
-  request: models.ResponsesRequest
+  request: ResponsesRequest
 ): NextTurnParamsContext {
   return {
     input: request.input ?? [],
@@ -42,7 +42,7 @@ export function buildNextTurnParamsContext(
 export async function executeNextTurnParamsFunctions(
   toolCalls: ParsedToolCall<Tool>[],
   tools: readonly Tool[],
-  currentRequest: models.ResponsesRequest
+  currentRequest: ResponsesRequest
 ): Promise<Partial<NextTurnParamsContext>> {
   // Build initial context from current request
   const context = buildNextTurnParamsContext(currentRequest);
@@ -161,9 +161,9 @@ function setNextTurnParam<K extends keyof NextTurnParamsContext>(
  * @returns New request with updated parameters
  */
 export function applyNextTurnParamsToRequest(
-  request: models.ResponsesRequest,
+  request: ResponsesRequest,
   computedParams: Partial<NextTurnParamsContext>
-): models.ResponsesRequest {
+): ResponsesRequest {
   // Strip null values to undefined so they're compatible with ResponsesRequest
   // fields that may be typed as `number | undefined` (without null)
   const sanitized: Record<string, unknown> = {};

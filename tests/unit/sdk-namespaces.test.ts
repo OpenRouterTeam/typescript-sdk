@@ -20,7 +20,8 @@ describe('SDK namespaces', () => {
     expect(betaResponsesSend).toBe(responsesSend);
   });
 
-  it('leaves other beta namespaces intact', () => {
-    expect(client.beta.analytics).toBeDefined();
+  it('exposes analytics at the top level, not under beta', () => {
+    expect(client.analytics).toBeDefined();
+    expect(client.beta).not.toHaveProperty('analytics');
   });
 });

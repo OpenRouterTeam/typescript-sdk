@@ -1,6 +1,6 @@
-import type * as models from '../models/index.js';
+import type { OpenResponsesResult } from '../models/openresponsesresult.js';
+import type { ResponsesRequest } from '../models/responsesrequest.js';
 import type { ToolContextMapWithShared, ParsedToolCall, StateAccessor, StopWhen, Tool, TurnContext } from './tool-types.js';
-import type { OpenResponsesResult } from '../models/index.js';
 import type { ContextInput } from './tool-context.js';
 
 // Re-export Tool type for convenience
@@ -40,8 +40,8 @@ type BaseCallModelInput<
   TTools extends readonly Tool[] = readonly Tool[],
   TShared extends Record<string, unknown> = Record<string, never>,
 > = {
-  [K in keyof Omit<models.ResponsesRequest, 'stream' | 'tools'>]?: FieldOrAsyncFunction<
-    models.ResponsesRequest[K]
+  [K in keyof Omit<ResponsesRequest, 'stream' | 'tools'>]?: FieldOrAsyncFunction<
+    ResponsesRequest[K]
   >;
 } & {
   tools?: TTools;
@@ -120,7 +120,7 @@ export type CallModelInputWithState<
  * Resolved CallModelInput (all functions evaluated to values)
  * This is the type after all async functions have been resolved to their values
  */
-export type ResolvedCallModelInput = Omit<models.ResponsesRequest, 'stream' | 'tools'> & {
+export type ResolvedCallModelInput = Omit<ResponsesRequest, 'stream' | 'tools'> & {
   tools?: never;
 };
 

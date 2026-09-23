@@ -71,9 +71,9 @@
   },
   "scripts": {
     "lint": "eslint --cache --max-warnings=0 src",
-    "build": "tsc",
+    "build": "tsc && node scripts/unbarrel-imports.js",
     "prepublishOnly": "npm run build",
-    "compile": "tsc",
+    "compile": "tsc && node scripts/unbarrel-imports.js",
     "test:e2e": "vitest --run --project e2e",
     "test:transit": "exit 0",
     "test:watch": "vitest --watch --project unit",

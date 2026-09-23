@@ -1,4 +1,6 @@
-import type * as models from '../models/index.js';
+import type { FunctionCallOutputItem } from '../models/functioncalloutputitem.js';
+import type { InputsUnion, InputsUnion1 } from '../models/inputsunion.js';
+import type { OpenResponsesResult } from '../models/openresponsesresult.js';
 import type {
   ConversationState,
   ParsedToolCall,
@@ -88,9 +90,9 @@ export function updateState<TTools extends readonly Tool[] = readonly Tool[]>(
  * Append new items to the message history
  */
 export function appendToMessages(
-  current: models.InputsUnion,
-  newItems: models.InputsUnion1[]
-): models.InputsUnion {
+  current: InputsUnion,
+  newItems: InputsUnion1[]
+): InputsUnion {
   const currentArray = normalizeInputToArray(current);
   return [...currentArray, ...newItems];
 }
@@ -198,7 +200,7 @@ export function createRejectedResult<TTools extends readonly Tool[] = readonly T
  */
 export function unsentResultsToAPIFormat(
   results: UnsentToolResult[]
-): models.FunctionCallOutputItem[] {
+): FunctionCallOutputItem[] {
   return results.map(r => ({
     type: 'function_call_output' as const,
     id: `output_${r.callId}`,
@@ -213,7 +215,7 @@ export function unsentResultsToAPIFormat(
  * Extract text content from a response
  */
 export function extractTextFromResponse(
-  response: models.OpenResponsesResult
+  response: OpenResponsesResult
 ): string {
   if (!response.output) {
     return '';
@@ -239,7 +241,7 @@ export function extractTextFromResponse(
  * Extract tool calls from a response
  */
 export function extractToolCallsFromResponse<TTools extends readonly Tool[]>(
-  response: models.OpenResponsesResult
+  response: OpenResponsesResult
 ): ParsedToolCall<TTools[number]>[] {
   if (!response.output) {
     return [];
