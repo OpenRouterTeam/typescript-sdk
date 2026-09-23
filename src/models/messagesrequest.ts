@@ -478,6 +478,7 @@ export type ToolCustom = {
   description?: string | undefined;
   inputSchema: InputSchema;
   name: string;
+  strict?: boolean | undefined;
   type?: ToolTypeCustom | undefined;
 };
 
@@ -1460,6 +1461,7 @@ export type ToolCustom$Outbound = {
   description?: string | undefined;
   input_schema: InputSchema$Outbound;
   name: string;
+  strict?: boolean | undefined;
   type?: string | undefined;
 };
 
@@ -1473,6 +1475,7 @@ export const ToolCustom$outboundSchema: z.ZodType<
   description: z.string().optional(),
   inputSchema: z.lazy(() => InputSchema$outboundSchema),
   name: z.string(),
+  strict: z.boolean().optional(),
   type: ToolTypeCustom$outboundSchema.optional(),
 }).transform((v) => {
   return remap$(v, {
