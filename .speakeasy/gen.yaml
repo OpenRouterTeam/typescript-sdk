@@ -69,8 +69,8 @@ typescript:
       access: public
       provenance: true
   additionalScripts:
-    build: node scripts/barrels.mjs && tsc
-    compile: node scripts/barrels.mjs && tsc
+    build: tsc && node scripts/unbarrel-imports.js
+    compile: tsc && node scripts/unbarrel-imports.js
     postinstall: node scripts/check-types.js || true
     prepare: npm run build
     test: vitest --run --project unit
@@ -141,7 +141,7 @@ typescript:
   templateVersion: v2
   unionStrategy: left-to-right
   usageSDKInitImports: []
-  useIndexModules: false
+  useIndexModules: true
   useOxlint: false
   useTsgo: false
   zodVersion: v4

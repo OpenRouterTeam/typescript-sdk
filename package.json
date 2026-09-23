@@ -71,9 +71,9 @@
   },
   "scripts": {
     "lint": "eslint --cache --max-warnings=0 src",
-    "build": "node scripts/barrels.mjs && tsc",
+    "build": "tsc && node scripts/unbarrel-imports.js",
     "prepublishOnly": "npm run build",
-    "compile": "node scripts/barrels.mjs && tsc",
+    "compile": "tsc && node scripts/unbarrel-imports.js",
     "postinstall": "node scripts/check-types.js || true",
     "prepare": "npm run build",
     "test:transit": "exit 0",
