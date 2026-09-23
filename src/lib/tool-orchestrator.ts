@@ -1,4 +1,8 @@
-import type * as models from '../models/index.js';
+import type { FunctionCallItem } from '../models/functioncallitem.js';
+import type { InputsUnion } from '../models/inputsunion.js';
+import type { OpenResponsesResult } from '../models/openresponsesresult.js';
+import type { OutputFunctionCallItem } from '../models/outputfunctioncallitem.js';
+import type { ResponsesRequest } from '../models/responsesrequest.js';
 import type { APITool, Tool, ToolExecutionResult } from './tool-types.js';
 
 import { extractToolCallsFromResponse, responseHasToolCalls } from './stream-transformers.js';
@@ -19,10 +23,10 @@ export interface ToolExecutionOptions {
  * Result of the tool execution loop
  */
 export interface ToolOrchestrationResult {
-  finalResponse: models.OpenResponsesResult;
-  allResponses: models.OpenResponsesResult[];
+  finalResponse: OpenResponsesResult;
+  allResponses: OpenResponsesResult[];
   toolExecutionResults: ToolExecutionResult<Tool>[];
-  conversationInput: models.InputsUnion;
+  conversationInput: InputsUnion;
 }
 
 /**
@@ -39,24 +43,24 @@ export interface ToolOrchestrationResult {
  */
 export async function executeToolLoop(
   sendRequest: (
-    input: models.InputsUnion,
+    input: InputsUnion,
     tools: APITool[],
-  ) => Promise<models.OpenResponsesResult>,
-  initialInput: models.InputsUnion,
-  initialRequest: models.ResponsesRequest,
+  ) => Promise<OpenResponsesResult>,
+  initialInput: InputsUnion,
+  initialRequest: ResponsesRequest,
   tools: Tool[],
   apiTools: APITool[],
   options: ToolExecutionOptions = {},
 ): Promise<ToolOrchestrationResult> {
   const onPreliminaryResult = options.onPreliminaryResult;
 
-  const allResponses: models.OpenResponsesResult[] = [];
+  const allResponses: OpenResponsesResult[] = [];
   const toolExecutionResults: ToolExecutionResult<Tool>[] = [];
-  let conversationInput: models.InputsUnion = initialInput;
-  let currentRequest: models.ResponsesRequest = { ...initialRequest };
+  let conversationInput: InputsUnion = initialInput;
+  let currentRequest: ResponsesRequest = { ...initialRequest };
 
   let currentRound = 0;
-  let currentResponse: models.OpenResponsesResult;
+  let currentResponse: OpenResponsesResult;
 
   // Initial request
   currentResponse = await sendRequest(conversationInput, apiTools);
@@ -105,7 +109,7 @@ export async function executeToolLoop(
 
       // Find the raw tool call from the response output
       const rawToolCall = currentResponse.output.find(
-        (item): item is models.OutputFunctionCallItem =>
+        (item): item is OutputFunctionCallItem =>
           isFunctionCallItem(item) && item.callId === toolCall.id,
       );
 
@@ -114,7 +118,7 @@ export async function executeToolLoop(
       }
 
       // Convert to FunctionCallItem format
-      const openResponsesToolCall: models.FunctionCallItem = {
+      const openResponsesToolCall: FunctionCallItem = {
         type: 'function_call' as const,
         callId: rawToolCall.callId,
         name: rawToolCall.name,

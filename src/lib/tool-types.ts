@@ -1,6 +1,10 @@
 import type { $ZodObject, $ZodShape, $ZodType, infer as zodInfer } from 'zod/v4/core';
-import type * as models from '../models/index.js';
-import type { StreamEvents } from '../models/index.js';
+import type { FunctionCallItem } from '../models/functioncallitem.js';
+import type { FunctionCallOutputItem } from '../models/functioncalloutputitem.js';
+import type { InputsUnion } from '../models/inputsunion.js';
+import type { OpenResponsesResult, Usage } from '../models/openresponsesresult.js';
+import type { ResponsesRequest } from '../models/responsesrequest.js';
+import type { StreamEvents } from '../models/streamevents.js';
 import type { ModelResult } from './model-result.js';
 
 /**
@@ -16,11 +20,11 @@ export enum ToolType {
  */
 export interface TurnContext {
   /** The specific tool call being executed (only available during tool execution) */
-  toolCall?: models.FunctionCallItem;
+  toolCall?: FunctionCallItem;
   /** Number of tool execution turns so far (1-indexed: first turn = 1, 0 = initial request) */
   numberOfTurns: number;
   /** The full request being sent to the API (only available during tool execution) */
-  turnRequest?: models.ResponsesRequest;
+  turnRequest?: ResponsesRequest;
 }
 
 //#region Context Types
@@ -96,7 +100,7 @@ export const SHARED_CONTEXT_KEY = 'shared' as const;
  */
 export type NextTurnParamsContext = {
   /** Current input (messages) */
-  input: models.InputsUnion;
+  input: InputsUnion;
   /** Current model selection */
   model: string;
   /** Current models array */
@@ -401,8 +405,8 @@ export interface StepResult<TTools extends readonly Tool[] = readonly Tool[]> {
   readonly text: string;
   readonly toolCalls: TypedToolCallUnion<TTools>[];
   readonly toolResults: ToolExecutionResultUnion<TTools>[];
-  readonly response: models.OpenResponsesResult;
-  readonly usage?: models.Usage | null | undefined;
+  readonly response: OpenResponsesResult;
+  readonly usage?: Usage | null | undefined;
   readonly finishReason?: string | undefined;
   readonly warnings?: Warning[] | undefined;
   readonly experimental_providerMetadata?: Record<string, unknown> | undefined;
@@ -486,7 +490,7 @@ export type ToolResultEvent<TResult = unknown, TPreliminaryResults = unknown> = 
  */
 export type ToolCallOutputEvent = {
   type: 'tool.call_output';
-  output: models.FunctionCallOutputItem;
+  output: FunctionCallOutputItem;
   timestamp: number;
 };
 
@@ -597,7 +601,7 @@ export type ChatStreamEvent<TEvent = unknown> =
   }
   | {
     type: 'message.complete';
-    response: models.OpenResponsesResult;
+    response: OpenResponsesResult;
   }
   | {
     type: 'tool.preliminary_result';
@@ -652,7 +656,7 @@ export interface ConversationState<TTools extends readonly Tool[] = readonly Too
   /** Unique identifier for this conversation */
   id: string;
   /** Full message history */
-  messages: models.InputsUnion;
+  messages: InputsUnion;
   /** Previous response ID for chaining (OpenRouter server-side optimization) */
   previousResponseId?: string;
   /** Tool calls awaiting human approval */

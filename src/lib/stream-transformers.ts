@@ -1,4 +1,15 @@
-import type * as models from '../models/index.js';
+import type { ChatAssistantMessage } from '../models/chatassistantmessage.js';
+import type { FunctionCallOutputItem } from '../models/functioncalloutputitem.js';
+import type { OpenAIResponsesAnnotation } from '../models/openairesponsesannotation.js';
+import type { OpenResponsesResult } from '../models/openresponsesresult.js';
+import type { OutputFileSearchCallItem } from '../models/outputfilesearchcallitem.js';
+import type { OutputFunctionCallItem } from '../models/outputfunctioncallitem.js';
+import type { OutputImageGenerationCallItem } from '../models/outputimagegenerationcallitem.js';
+import type { OutputMessage } from '../models/outputmessage.js';
+import type { OutputReasoningItem } from '../models/outputreasoningitem.js';
+import type { OutputWebSearchCallItem } from '../models/outputwebsearchcallitem.js';
+import type { ResponseOutputText } from '../models/responseoutputtext.js';
+import type { StreamEvents } from '../models/streamevents.js';
 import type {
   ClaudeContentBlock,
   ClaudeMessage,
@@ -35,7 +46,7 @@ import {
  * Extract text deltas from responses stream events
  */
 export async function* extractTextDeltas(
-  stream: ReusableReadableStream<models.StreamEvents>,
+  stream: ReusableReadableStream<StreamEvents>,
 ): AsyncIterableIterator<string> {
   const consumer = stream.createConsumer();
 
@@ -52,7 +63,7 @@ export async function* extractTextDeltas(
  * Extract reasoning deltas from responses stream events
  */
 export async function* extractReasoningDeltas(
-  stream: ReusableReadableStream<models.StreamEvents>,
+  stream: ReusableReadableStream<StreamEvents>,
 ): AsyncIterableIterator<string> {
   const consumer = stream.createConsumer();
 
@@ -69,7 +80,7 @@ export async function* extractReasoningDeltas(
  * Extract tool call argument deltas from responses stream events
  */
 export async function* extractToolDeltas(
-  stream: ReusableReadableStream<models.StreamEvents>,
+  stream: ReusableReadableStream<StreamEvents>,
 ): AsyncIterableIterator<string> {
   const consumer = stream.createConsumer();
 
@@ -87,12 +98,12 @@ export async function* extractToolDeltas(
  * Accumulates text deltas and yields updates
  */
 async function* buildMessageStreamCore(
-  stream: ReusableReadableStream<models.StreamEvents>,
+  stream: ReusableReadableStream<StreamEvents>,
 ): AsyncIterableIterator<{
   type: 'delta' | 'complete';
   text?: string;
   messageId?: string;
-  completeMessage?: models.OutputMessage;
+  completeMessage?: OutputMessage;
 }> {
   const consumer = stream.createConsumer();
 
@@ -163,8 +174,8 @@ async function* buildMessageStreamCore(
  * Returns OutputMessage (assistant/responses format)
  */
 export async function* buildResponsesMessageStream(
-  stream: ReusableReadableStream<models.StreamEvents>,
-): AsyncIterableIterator<models.OutputMessage> {
+  stream: ReusableReadableStream<StreamEvents>,
+): AsyncIterableIterator<OutputMessage> {
   for await (const update of buildMessageStreamCore(stream)) {
     if (update.type === 'delta' && update.text !== undefined && update.messageId !== undefined) {
       // Yield incremental update in OutputMessage format
@@ -194,13 +205,13 @@ export async function* buildResponsesMessageStream(
  * plus function_call_output for tool results.
  */
 export type StreamableOutputItem =
-  | models.OutputMessage // type: "message"
-  | models.OutputFunctionCallItem // type: "function_call"
-  | models.OutputReasoningItem // type: "reasoning"
-  | models.OutputWebSearchCallItem // type: "web_search_call"
-  | models.OutputFileSearchCallItem // type: "file_search_call"
-  | models.OutputImageGenerationCallItem // type: "image_generation_call"
-  | models.FunctionCallOutputItem; // type: "function_call_output" (tool results)
+  | OutputMessage // type: "message"
+  | OutputFunctionCallItem // type: "function_call"
+  | OutputReasoningItem // type: "reasoning"
+  | OutputWebSearchCallItem // type: "web_search_call"
+  | OutputFileSearchCallItem // type: "file_search_call"
+  | OutputImageGenerationCallItem // type: "image_generation_call"
+  | FunctionCallOutputItem; // type: "function_call_output" (tool results)
 
 //#region ItemsStream Types and Handlers
 
@@ -217,7 +228,7 @@ export type ItemInProgress =
  * Handle output_item.added event - Initialize tracking for new items
  */
 function handleOutputItemAdded(
-  event: models.StreamEvents,
+  event: StreamEvents,
   itemsInProgress: Map<string, ItemInProgress>,
 ): StreamableOutputItem | undefined {
   if (!isOutputItemAddedEvent(event) || !event.item) {
@@ -294,7 +305,7 @@ function handleOutputItemAdded(
  * Handle text delta event for messages
  */
 function handleTextDelta(
-  event: models.StreamEvents,
+  event: StreamEvents,
   itemsInProgress: Map<string, ItemInProgress>,
 ): StreamableOutputItem | undefined {
   if (!isOutputTextDeltaEvent(event) || !event.delta) {
@@ -326,7 +337,7 @@ function handleTextDelta(
  * Handle function call argument delta event
  */
 function handleFunctionCallDelta(
-  event: models.StreamEvents,
+  event: StreamEvents,
   itemsInProgress: Map<string, ItemInProgress>,
 ): StreamableOutputItem | undefined {
   if (!isFunctionCallArgumentsDeltaEvent(event) || !event.delta) {
@@ -354,7 +365,7 @@ function handleFunctionCallDelta(
  * Handle reasoning text delta event
  */
 function handleReasoningDelta(
-  event: models.StreamEvents,
+  event: StreamEvents,
   itemsInProgress: Map<string, ItemInProgress>,
 ): StreamableOutputItem | undefined {
   if (!isReasoningDeltaEvent(event) || !event.delta) {
@@ -384,7 +395,7 @@ function handleReasoningDelta(
  * Handle output_item.done event - Yield final complete item
  */
 function handleOutputItemDone(
-  event: models.StreamEvents,
+  event: StreamEvents,
   itemsInProgress: Map<string, ItemInProgress>,
 ): StreamableOutputItem | undefined {
   if (!isOutputItemDoneEvent(event) || !event.item) {
@@ -425,7 +436,7 @@ function handleOutputItemDone(
 }
 
 type ItemsStreamHandler = (
-  event: models.StreamEvents,
+  event: StreamEvents,
   itemsInProgress: Map<string, ItemInProgress>,
 ) => StreamableOutputItem | undefined;
 
@@ -451,7 +462,7 @@ export const streamTerminationEvents = new Set([
  * with the same ID but progressively updated content as streaming progresses.
  */
 export async function* buildItemsStream(
-  stream: ReusableReadableStream<models.StreamEvents>,
+  stream: ReusableReadableStream<StreamEvents>,
 ): AsyncIterableIterator<StreamableOutputItem> {
   const consumer = stream.createConsumer();
   const itemsInProgress = new Map<string, ItemInProgress>();
@@ -480,8 +491,8 @@ export async function* buildItemsStream(
  * Returns ChatAssistantMessage (chat format) instead of OutputMessage
  */
 export async function* buildMessageStream(
-  stream: ReusableReadableStream<models.StreamEvents>,
-): AsyncIterableIterator<models.ChatAssistantMessage> {
+  stream: ReusableReadableStream<StreamEvents>,
+): AsyncIterableIterator<ChatAssistantMessage> {
   for await (const update of buildMessageStreamCore(stream)) {
     if (update.type === 'delta' && update.text !== undefined) {
       // Yield incremental update in chat format
@@ -500,8 +511,8 @@ export async function* buildMessageStream(
  * Consume stream until completion and return the complete response
  */
 export async function consumeStreamForCompletion(
-  stream: ReusableReadableStream<models.StreamEvents>,
-): Promise<models.OpenResponsesResult> {
+  stream: ReusableReadableStream<StreamEvents>,
+): Promise<OpenResponsesResult> {
   const consumer = stream.createConsumer();
 
   for await (const event of consumer) {
@@ -531,12 +542,12 @@ export async function consumeStreamForCompletion(
  * Convert OutputMessage to ChatAssistantMessage (chat format)
  */
 function convertToAssistantMessage(
-  outputMessage: models.OutputMessage,
-): models.ChatAssistantMessage {
+  outputMessage: OutputMessage,
+): ChatAssistantMessage {
   // Extract text content
   const textContent = outputMessage.content
     .filter(
-      (part): part is models.ResponseOutputText => 'type' in part && part.type === 'output_text',
+      (part): part is ResponseOutputText => 'type' in part && part.type === 'output_text',
     )
     .map((part) => part.text)
     .join('');
@@ -551,10 +562,10 @@ function convertToAssistantMessage(
  * Extract the first message from a completed response (chat format)
  */
 export function extractMessageFromResponse(
-  response: models.OpenResponsesResult,
-): models.ChatAssistantMessage {
+  response: OpenResponsesResult,
+): ChatAssistantMessage {
   const messageItem = response.output.find(
-    (item): item is models.OutputMessage => 'type' in item && item.type === 'message',
+    (item): item is OutputMessage => 'type' in item && item.type === 'message',
   );
 
   if (!messageItem) {
@@ -568,10 +579,10 @@ export function extractMessageFromResponse(
  * Extract the first message from a completed response (responses format)
  */
 export function extractResponsesMessageFromResponse(
-  response: models.OpenResponsesResult,
-): models.OutputMessage {
+  response: OpenResponsesResult,
+): OutputMessage {
   const messageItem = response.output.find(
-    (item): item is models.OutputMessage => 'type' in item && item.type === 'message',
+    (item): item is OutputMessage => 'type' in item && item.type === 'message',
   );
 
   if (!messageItem) {
@@ -585,7 +596,7 @@ export function extractResponsesMessageFromResponse(
  * Extract text from a response, either from outputText or by concatenating message content
  */
 export function extractTextFromResponse(
-  response: models.OpenResponsesResult,
+  response: OpenResponsesResult,
 ): string {
   // Use pre-concatenated outputText if available
   if (response.outputText) {
@@ -594,7 +605,7 @@ export function extractTextFromResponse(
 
   // Check if there's a message in the output
   const hasMessage = response.output.some(
-    (item): item is models.OutputMessage => 'type' in item && item.type === 'message',
+    (item): item is OutputMessage => 'type' in item && item.type === 'message',
   );
 
   if (!hasMessage) {
@@ -618,7 +629,7 @@ export function extractTextFromResponse(
  * Returns parsed tool calls with arguments as objects (not JSON strings)
  */
 export function extractToolCallsFromResponse(
-  response: models.OpenResponsesResult,
+  response: OpenResponsesResult,
 ): ParsedToolCall<Tool>[] {
   const toolCalls: ParsedToolCall<Tool>[] = [];
 
@@ -657,7 +668,7 @@ export function extractToolCallsFromResponse(
  * Yields structured tool call objects as they're built from deltas
  */
 export async function* buildToolCallStream(
-  stream: ReusableReadableStream<models.StreamEvents>,
+  stream: ReusableReadableStream<StreamEvents>,
 ): AsyncIterableIterator<ParsedToolCall<Tool>> {
   const consumer = stream.createConsumer();
 
@@ -769,7 +780,7 @@ export async function* buildToolCallStream(
 /**
  * Check if a response contains any tool calls
  */
-export function responseHasToolCalls(response: models.OpenResponsesResult): boolean {
+export function responseHasToolCalls(response: OpenResponsesResult): boolean {
   return response.output.some((item) => 'type' in item && item.type === 'function_call');
 }
 
@@ -777,7 +788,7 @@ export function responseHasToolCalls(response: models.OpenResponsesResult): bool
  * Convert OpenRouter annotations to Claude citations
  */
 function mapAnnotationsToCitations(
-  annotations?: Array<models.OpenAIResponsesAnnotation>,
+  annotations?: Array<OpenAIResponsesAnnotation>,
 ): ClaudeTextCitation[] | undefined {
   if (!annotations || annotations.length === 0) {
     return undefined;
@@ -847,7 +858,7 @@ function mapAnnotationsToCitations(
  * Map OpenResponses status to Claude stop reason
  */
 function mapStopReason(
-  response: models.OpenResponsesResult,
+  response: OpenResponsesResult,
 ): ClaudeStopReason | null {
   // Check if any tool calls exist in the response
   const hasToolCalls = response.output.some(
@@ -880,7 +891,7 @@ function mapStopReason(
  * Compatible with the Anthropic SDK BetaMessage type
  */
 export function convertToClaudeMessage(
-  response: models.OpenResponsesResult,
+  response: OpenResponsesResult,
 ): ClaudeMessage {
   const content: ClaudeContentBlock[] = [];
   const unsupportedContent: UnsupportedContent[] = [];

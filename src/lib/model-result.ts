@@ -1,5 +1,13 @@
 import type { OpenRouterCore } from '../core.js';
-import type * as models from '../models/index.js';
+import type { FunctionCallOutputItem } from '../models/functioncalloutputitem.js';
+import type { InputsUnion, InputsUnion1 } from '../models/inputsunion.js';
+import type { OpenResponsesResult } from '../models/openresponsesresult.js';
+import type { OutputFunctionCallItem } from '../models/outputfunctioncallitem.js';
+import type { OutputMessage } from '../models/outputmessage.js';
+import type { ReasoningDeltaEvent } from '../models/reasoningdeltaevent.js';
+import type { ResponsesRequest } from '../models/responsesrequest.js';
+import type { StreamEvents } from '../models/streamevents.js';
+import type { TextDeltaEvent } from '../models/textdeltaevent.js';
 import type { CallModelInput } from './async-params.js';
 import type { EventStream } from './event-streams.js';
 import type { RequestOptions } from './sdks.js';
@@ -81,7 +89,7 @@ const DEFAULT_MAX_STEPS = 5;
  * Type guard for stream event with toReadableStream method
  * Checks constructor name, prototype, and method availability
  */
-function isEventStream(value: unknown): value is EventStream<models.StreamEvents> {
+function isEventStream(value: unknown): value is EventStream<StreamEvents> {
   if (value === null || typeof value !== 'object') {
     return false;
   }
@@ -128,7 +136,7 @@ export interface GetResponseOptions<
   /** Callback invoked at the start of each tool execution turn */
   onTurnStart?: (context: TurnContext) => void | Promise<void>;
   /** Callback invoked at the end of each tool execution turn */
-  onTurnEnd?: (context: TurnContext, response: models.OpenResponsesResult) => void | Promise<void>;
+  onTurnEnd?: (context: TurnContext, response: OpenResponsesResult) => void | Promise<void>;
 }
 
 /**
@@ -155,12 +163,12 @@ export class ModelResult<
   TTools extends readonly Tool[],
   TShared extends Record<string, unknown> = Record<string, never>,
 > {
-  private reusableStream: ReusableReadableStream<models.StreamEvents> | null = null;
+  private reusableStream: ReusableReadableStream<StreamEvents> | null = null;
   private textPromise: Promise<string> | null = null;
   private options: GetResponseOptions<TTools, TShared>;
   private initPromise: Promise<void> | null = null;
   private toolExecutionPromise: Promise<void> | null = null;
-  private finalResponse: models.OpenResponsesResult | null = null;
+  private finalResponse: OpenResponsesResult | null = null;
   private toolEventBroadcaster: ToolEventBroadcaster<
     | {
         type: 'preliminary_result';
@@ -177,11 +185,11 @@ export class ModelResult<
   private allToolExecutionRounds: Array<{
     round: number;
     toolCalls: ParsedToolCall<Tool>[];
-    response: models.OpenResponsesResult;
-    toolResults: Array<models.FunctionCallOutputItem>;
+    response: OpenResponsesResult;
+    toolResults: Array<FunctionCallOutputItem>;
   }> = [];
   // Track resolved request after async function resolution
-  private resolvedRequest: models.ResponsesRequest | null = null;
+  private resolvedRequest: ResponsesRequest | null = null;
 
   // State management for multi-turn conversations
   private stateAccessor: StateAccessor<TTools> | null = null;
@@ -280,9 +288,9 @@ export class ModelResult<
    * Emits turn.start / turn.end delimiters around the stream events.
    */
   private async pipeAndConsumeStream(
-    stream: ReusableReadableStream<models.StreamEvents>,
+    stream: ReusableReadableStream<StreamEvents>,
     turnNumber: number
-  ): Promise<models.OpenResponsesResult> {
+  ): Promise<OpenResponsesResult> {
     const broadcaster = this.turnBroadcaster!;
 
     broadcaster.push({
@@ -292,7 +300,7 @@ export class ModelResult<
     } satisfies TurnStartEvent);
 
     const consumer = stream.createConsumer();
-    let completedResponse: models.OpenResponsesResult | null = null;
+    let completedResponse: OpenResponsesResult | null = null;
 
     for await (const event of consumer) {
       broadcaster.push(event);
@@ -396,7 +404,7 @@ export class ModelResult<
    */
   private isNonStreamingResponse(
     value: unknown,
-  ): value is models.OpenResponsesResult {
+  ): value is OpenResponsesResult {
     return (
       value !== null &&
       typeof value === 'object' &&
@@ -416,7 +424,7 @@ export class ModelResult<
    * @returns The complete non-streaming response
    * @throws Error if neither stream nor response has been initialized
    */
-  private async getInitialResponse(): Promise<models.OpenResponsesResult> {
+  private async getInitialResponse(): Promise<OpenResponsesResult> {
     if (this.finalResponse) {
       return this.finalResponse;
     }
@@ -433,7 +441,7 @@ export class ModelResult<
    * @param response - The API response to save
    */
   private async saveResponseToState(
-    response: models.OpenResponsesResult
+    response: OpenResponsesResult
   ): Promise<void> {
     if (!this.stateAccessor || !this.currentState) return;
 
@@ -444,7 +452,7 @@ export class ModelResult<
     await this.saveStateSafely({
       messages: appendToMessages(
         this.currentState.messages,
-        outputItems as models.InputsUnion1[]
+        outputItems as InputsUnion1[]
       ),
       previousResponseId: response.id,
     });
@@ -465,7 +473,7 @@ export class ModelResult<
    * @param toolResults - The tool execution results to save
    */
   private async saveToolResultsToState(
-    toolResults: models.FunctionCallOutputItem[]
+    toolResults: FunctionCallOutputItem[]
   ): Promise<void> {
     if (!this.currentState) return;
     await this.saveStateSafely({
@@ -481,7 +489,7 @@ export class ModelResult<
    * @returns True if interrupted and caller should exit, false to continue
    */
   private async checkForInterruption(
-    currentResponse: models.OpenResponsesResult
+    currentResponse: OpenResponsesResult
   ): Promise<boolean> {
     if (!this.stateAccessor) return false;
 
@@ -613,7 +621,7 @@ export class ModelResult<
   private async handleApprovalCheck(
     toolCalls: ParsedToolCall<Tool>[],
     currentRound: number,
-    currentResponse: models.OpenResponsesResult
+    currentResponse: OpenResponsesResult
   ): Promise<boolean> {
     if (!this.options.tools) return false;
 
@@ -668,7 +676,7 @@ export class ModelResult<
   private async executeToolRound(
     toolCalls: ParsedToolCall<Tool>[],
     turnContext: TurnContext
-  ): Promise<models.FunctionCallOutputItem[]> {
+  ): Promise<FunctionCallOutputItem[]> {
     const toolCallPromises = toolCalls.map(async (toolCall) => {
       const tool = this.options.tools?.find((t) => t.function.name === toolCall.name);
       if (!tool || !hasExecuteFunction(tool)) {
@@ -720,7 +728,7 @@ export class ModelResult<
     });
 
     const settledResults = await Promise.allSettled(toolCallPromises);
-    const toolResults: models.FunctionCallOutputItem[] = [];
+    const toolResults: FunctionCallOutputItem[] = [];
 
     for (let i = 0; i < settledResults.length; i++) {
       const settled = settledResults[i];
@@ -734,7 +742,7 @@ export class ModelResult<
 
         this.broadcastToolResult(originalToolCall.id, { error: errorMessage } as InferToolOutputsUnion<TTools>);
 
-        const rejectedOutput: models.FunctionCallOutputItem = {
+        const rejectedOutput: FunctionCallOutputItem = {
           type: 'function_call_output' as const,
           id: `output_${originalToolCall.id}`,
           callId: originalToolCall.id,
@@ -771,7 +779,7 @@ export class ModelResult<
         value.preliminaryResultsForCall.length > 0 ? value.preliminaryResultsForCall : undefined
       );
 
-      const executedOutput: models.FunctionCallOutputItem = {
+      const executedOutput: FunctionCallOutputItem = {
         type: 'function_call_output' as const,
         id: `output_${value.toolCall.id}`,
         callId: value.toolCall.id,
@@ -840,23 +848,23 @@ export class ModelResult<
    * Uses streaming and pipes events through the turn broadcaster when available.
    */
   private async makeFollowupRequest(
-    currentResponse: models.OpenResponsesResult,
-    toolResults: models.FunctionCallOutputItem[],
+    currentResponse: OpenResponsesResult,
+    toolResults: FunctionCallOutputItem[],
     turnNumber: number
-  ): Promise<models.OpenResponsesResult> {
+  ): Promise<OpenResponsesResult> {
     const originalInput = this.resolvedRequest?.input;
-    const normalizedOriginalInput: models.InputsUnion1[] =
+    const normalizedOriginalInput: InputsUnion1[] =
       Array.isArray(originalInput)
         ? originalInput
         : originalInput
           ? [{ role: 'user', content: originalInput }]
           : [];
 
-    const newInput: models.InputsUnion = [
+    const newInput: InputsUnion = [
       ...normalizedOriginalInput,
       ...((Array.isArray(currentResponse.output)
         ? currentResponse.output
-        : [currentResponse.output]) as models.InputsUnion1[]),
+        : [currentResponse.output]) as InputsUnion1[]),
       ...toolResults,
     ];
 
@@ -870,7 +878,7 @@ export class ModelResult<
       input: newInput,
     };
 
-    const newRequest: models.ResponsesRequest = {
+    const newRequest: ResponsesRequest = {
       ...this.resolvedRequest,
       stream: true,
     };
@@ -909,7 +917,7 @@ export class ModelResult<
    * @throws Error if response is missing required fields or has invalid output
    */
   private validateFinalResponse(
-    response: models.OpenResponsesResult
+    response: OpenResponsesResult
   ): void {
     if (!response?.id || !response?.output) {
       throw new Error('Invalid final response: missing required fields');
@@ -1047,7 +1055,7 @@ export class ModelResult<
           const inputArray = Array.isArray(newInput) ? newInput : [newInput];
           baseRequest = {
             ...baseRequest,
-            input: appendToMessages(this.currentState.messages, inputArray as models.InputsUnion1[]),
+            input: appendToMessages(this.currentState.messages, inputArray as InputsUnion1[]),
           };
         } else {
           baseRequest = {
@@ -1204,7 +1212,7 @@ export class ModelResult<
     const baseRequest = await this.resolveRequestForContext(turnContext);
 
     // Create request with the accumulated messages
-    const request: models.ResponsesRequest = {
+    const request: ResponsesRequest = {
       ...baseRequest,
       input: newInput,
       stream: true,
@@ -1385,7 +1393,7 @@ export class ModelResult<
    * This will consume the stream until completion and execute any tools.
    * Returns the full OpenResponsesResult with usage data (inputTokens, outputTokens, cachedTokens, etc.)
    */
-  async getResponse(): Promise<models.OpenResponsesResult> {
+  async getResponse(): Promise<OpenResponsesResult> {
     await this.executeToolsIfNeeded();
 
     if (!this.finalResponse) {
@@ -1451,8 +1459,8 @@ export class ModelResult<
       const { consumer, executionPromise } = this.startTurnBroadcasterExecution();
 
       for await (const event of consumer) {
-        if (isOutputTextDeltaEvent(event as models.StreamEvents)) {
-          yield (event as models.TextDeltaEvent).delta;
+        if (isOutputTextDeltaEvent(event as StreamEvents)) {
+          yield (event as TextDeltaEvent).delta;
         }
       }
 
@@ -1516,7 +1524,7 @@ export class ModelResult<
           const handler = itemsStreamHandlers[event.type];
           if (handler) {
             const result = handler(
-              event as models.StreamEvents,
+              event as StreamEvents,
               itemsInProgress,
             );
             if (result) {
@@ -1542,7 +1550,7 @@ export class ModelResult<
    * compatible with OpenAI Responses API format.
    */
   getNewMessagesStream(): AsyncIterableIterator<
-    models.OutputMessage | models.FunctionCallOutputItem | models.OutputFunctionCallItem
+    OutputMessage | FunctionCallOutputItem | OutputFunctionCallItem
   > {
     return async function* (this: ModelResult<TTools>) {
       await this.initStream();
@@ -1609,8 +1617,8 @@ export class ModelResult<
       const { consumer, executionPromise } = this.startTurnBroadcasterExecution();
 
       for await (const event of consumer) {
-        if (isReasoningDeltaEvent(event as models.StreamEvents)) {
-          yield (event as models.ReasoningDeltaEvent).delta;
+        if (isReasoningDeltaEvent(event as StreamEvents)) {
+          yield (event as ReasoningDeltaEvent).delta;
         }
       }
 

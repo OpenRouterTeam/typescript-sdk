@@ -1,4 +1,9 @@
-import type * as models from "../models/index.js";
+import type { ChatAssistantMessage } from "../models/chatassistantmessage.js";
+import type { ChatMessages } from "../models/chatmessages.js";
+import type { ChatToolMessage } from "../models/chattoolmessage.js";
+import type { EasyInputMessage, EasyInputMessageRoleUnion } from "../models/easyinputmessage.js";
+import type { FunctionCallOutputItem } from "../models/functioncalloutputitem.js";
+import type { InputsUnion } from "../models/inputsunion.js";
 import {
   EasyInputMessageRoleUser,
   EasyInputMessageRoleSystem,
@@ -11,8 +16,8 @@ import { extractMessageFromResponse } from "./stream-transformers.js";
  * Type guard for ChatToolMessage
  */
 function isToolResponseMessage(
-  msg: models.ChatMessages
-): msg is models.ChatToolMessage {
+  msg: ChatMessages
+): msg is ChatToolMessage {
   return msg.role === "tool";
 }
 
@@ -20,8 +25,8 @@ function isToolResponseMessage(
  * Type guard for ChatAssistantMessage
  */
 function isAssistantMessage(
-  msg: models.ChatMessages
-): msg is models.ChatAssistantMessage {
+  msg: ChatMessages
+): msg is ChatAssistantMessage {
   return msg.role === "assistant";
 }
 
@@ -30,7 +35,7 @@ function isAssistantMessage(
  */
 function mapChatRole(
   role: "user" | "system" | "assistant" | "developer"
-): models.EasyInputMessageRoleUnion {
+): EasyInputMessageRoleUnion {
   switch (role) {
     case "user":
       return EasyInputMessageRoleUser.User;
@@ -83,14 +88,14 @@ function contentToString(content: unknown): string {
  * ```
  */
 export function fromChatMessages(
-  messages: models.ChatMessages[]
-): models.InputsUnion {
+  messages: ChatMessages[]
+): InputsUnion {
   return messages.map(
     (
       msg
     ):
-      | models.EasyInputMessage
-      | models.FunctionCallOutputItem => {
+      | EasyInputMessage
+      | FunctionCallOutputItem => {
       if (isToolResponseMessage(msg)) {
         return {
           type: "function_call_output" as const,
