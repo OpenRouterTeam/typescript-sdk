@@ -1,4 +1,8 @@
-import * as models from '../models/index.js';
+import type { EasyInputMessage } from '../models/easyinputmessage.js';
+import { EasyInputMessageRoleUser } from '../models/easyinputmessage.js';
+import type { FunctionCallItem } from '../models/functioncallitem.js';
+import type { InputsUnion, InputsUnion1 } from '../models/inputsunion.js';
+import type { ResponsesRequest } from '../models/responsesrequest.js';
 import type { TurnContext } from './tool-types.js';
 
 /**
@@ -8,9 +12,9 @@ export interface BuildTurnContextOptions {
   /** Number of turns so far (1-indexed for tool execution, 0 for initial request) */
   numberOfTurns: number;
   /** The specific tool call being executed (optional for initial/async resolution contexts) */
-  toolCall?: models.FunctionCallItem;
+  toolCall?: FunctionCallItem;
   /** The full request being sent to the API (optional for initial/async resolution contexts) */
-  turnRequest?: models.ResponsesRequest;
+  turnRequest?: ResponsesRequest;
 }
 
 /**
@@ -66,12 +70,12 @@ export function buildTurnContext(
  * ```
  */
 export function normalizeInputToArray(
-  input: models.InputsUnion
-): Array<models.InputsUnion1> {
+  input: InputsUnion
+): Array<InputsUnion1> {
   if (typeof input === 'string') {
     // Construct object with all required fields - type is optional
-    const message: models.EasyInputMessage = {
-      role: models.EasyInputMessageRoleUser.User,
+    const message: EasyInputMessage = {
+      role: EasyInputMessageRoleUser.User,
       content: input,
     };
     return [message];
