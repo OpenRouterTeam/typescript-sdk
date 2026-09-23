@@ -48,9 +48,9 @@ const value: models.OutputComputerCallItem = {
 
 ```typescript
 const value: models.OutputCustomToolCallItem = {
-  callId: "call-abc123",
-  input: "*** Begin Patch\n*** End Patch",
-  name: "apply_patch",
+  callId: "<id>",
+  input: "<value>",
+  name: "<value>",
   type: "custom_tool_call",
 };
 ```
@@ -72,9 +72,9 @@ const value: models.OutputFileSearchCallItem = {
 
 ```typescript
 const value: models.OutputFunctionCallItem = {
-  arguments: "{\"location\":\"San Francisco\"}",
-  callId: "call-abc123",
-  name: "get_weather",
+  arguments: "<value>",
+  callId: "<id>",
+  name: "<value>",
   type: "function_call",
 };
 ```

@@ -23,17 +23,17 @@ export type CustomToolCallItem = {
   /**
    * True when the model called a tool declared with `async: true` and may continue its turn before the output is returned. Return the result in a later request as a `function_call_output` with this `call_id`.
    */
-  async?: boolean | undefined;
+  async?: boolean | null | undefined;
   callId: string;
-  id?: string | undefined;
+  id?: string | null | undefined;
   input: string;
   name: string;
   /**
    * Namespace qualifier for tools registered as part of a namespace tool group (e.g. an MCP server)
    */
-  namespace?: string | undefined;
+  namespace?: string | null | undefined;
+  status?: ToolCallStatus | null | undefined;
   type: CustomToolCallItemType;
-  status?: ToolCallStatus | undefined;
 };
 
 /** @internal */
@@ -43,14 +43,14 @@ export const CustomToolCallItemType$outboundSchema: z.ZodEnum<
 
 /** @internal */
 export type CustomToolCallItem$Outbound = {
-  async?: boolean | undefined;
+  async?: boolean | null | undefined;
   call_id: string;
-  id?: string | undefined;
+  id?: string | null | undefined;
   input: string;
   name: string;
-  namespace?: string | undefined;
+  namespace?: string | null | undefined;
+  status?: string | null | undefined;
   type: string;
-  status?: string | undefined;
 };
 
 /** @internal */
@@ -58,14 +58,14 @@ export const CustomToolCallItem$outboundSchema: z.ZodType<
   CustomToolCallItem$Outbound,
   CustomToolCallItem
 > = z.object({
-  async: z.boolean().optional(),
+  async: z.nullable(z.boolean()).optional(),
   callId: z.string(),
-  id: z.string().optional(),
+  id: z.nullable(z.string()).optional(),
   input: z.string(),
   name: z.string(),
-  namespace: z.string().optional(),
+  namespace: z.nullable(z.string()).optional(),
+  status: z.nullable(ToolCallStatus$outboundSchema).optional(),
   type: CustomToolCallItemType$outboundSchema,
-  status: ToolCallStatus$outboundSchema.optional(),
 }).transform((v) => {
   return remap$(v, {
     callId: "call_id",

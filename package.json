@@ -71,16 +71,16 @@
   },
   "scripts": {
     "lint": "eslint --cache --max-warnings=0 src",
-    "build": "tsc",
+    "build": "tsc && node scripts/unbarrel-imports.js",
     "prepublishOnly": "npm run build",
-    "compile": "tsc",
+    "test:watch": "vitest --watch --project unit",
+    "prepare": "npm run build",
     "test:e2e": "vitest --run --project e2e",
     "test:transit": "exit 0",
-    "test:watch": "vitest --watch --project unit",
     "typecheck": "tsc --noEmit",
     "typecheck:transit": "exit 0",
+    "compile": "tsc && node scripts/unbarrel-imports.js",
     "postinstall": "node scripts/check-types.js || true",
-    "prepare": "npm run build",
     "test": "vitest --run --project unit"
   },
   "peerDependencies": {
