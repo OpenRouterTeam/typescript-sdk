@@ -59,8 +59,12 @@ describe('unbarrelImports', () => {
   });
 
   it.each([
-    ['namespace-as-value', /namespace operations is used as a value/],
-    ['namespace-assignment', /assignment to operations\.SendChatRequest\$outboundSchema/],
+    ['namespace-as-value', /unsupported use of namespace operations/],
+    ['namespace-assignment', /mutation of operations\.SendChatRequest\$outboundSchema/],
+    ['namespace-mutation', /mutation of operations\.SendChatRequest\$outboundSchema/],
+    ['namespace-delete', /mutation of operations\.SendChatRequest\$outboundSchema/],
+    ['namespace-destructure', /mutation of operations\.SendChatRequest\$outboundSchema/],
+    ['unrecognized-barrel', /namespace import of unrecognized barrel/],
     ['alias-collision', /alias operations_SendChatRequest\$outboundSchema already exists/],
     ['unknown-name', /operations\.SendChatRequst\$outboundSchema is not exported/],
     ['named-barrel-import', /barrel imported in an unsupported form/],
@@ -81,6 +85,10 @@ describe('specifierFor', () => {
 
   it('prefixes same-directory modules with ./', () => {
     expect(specifierFor('/sdk/esm/models/a.js', '/sdk/esm/models/b.js', path.posix)).toBe('./b.js');
+  });
+
+  it('prefixes dot-directory modules with ./', () => {
+    expect(specifierFor('/sdk/esm/a.js', '/sdk/esm/.cache/b.js', path.posix)).toBe('./.cache/b.js');
   });
 });
 

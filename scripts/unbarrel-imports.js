@@ -18,7 +18,7 @@
  */
 
 import { readdirSync, readFileSync, writeFileSync } from 'node:fs';
-import path, { dirname, join, relative, resolve, sep } from 'node:path';
+import path, { basename, dirname, join, relative, resolve, sep } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import ts from 'typescript';
 
@@ -60,7 +60,7 @@ function resolveSpecifier(file, specifier) {
  */
 export function specifierFor(file, module, pathApi = path) {
   const joined = pathApi.relative(pathApi.dirname(file), module).split(pathApi.sep).join('/');
-  return joined.startsWith('.') ? joined : `./${joined}`;
+  return joined.startsWith('./') || joined.startsWith('../') ? joined : `./${joined}`;
 }
 
 const isExported = (statement) =>
@@ -124,9 +124,17 @@ function barrelImports(file, source, barrels) {
   for (const statement of source.statements) {
     if (!ts.isImportDeclaration(statement) || !ts.isStringLiteral(statement.moduleSpecifier)) continue;
     const target = resolveSpecifier(file, statement.moduleSpecifier.text);
-    if (!target || !barrels.includes(target)) continue;
+    if (!target) continue;
     const clause = statement.importClause;
     const bindings = clause?.namedBindings;
+    if (!barrels.includes(target)) {
+      // A namespace import of some other index.js is likely a barrel this
+      // script does not know; refuse rather than leave it silently.
+      if (bindings && ts.isNamespaceImport(bindings) && basename(target) === 'index.js') {
+        fail(file, statement, source, `namespace import of unrecognized barrel ${statement.moduleSpecifier.text} (add it to BARREL_DIRS)`);
+      }
+      continue;
+    }
     if (!clause || clause.name || !bindings || !ts.isNamespaceImport(bindings)) {
       fail(file, statement, source, 'barrel imported in an unsupported form (expected `import * as ns`)');
     }
@@ -172,13 +180,29 @@ function rewriteFile(file, exportsByBarrel) {
     if (ts.isIdentifier(node) && byNamespace.has(node.text) && !isPropertyName(node)) {
       const parent = node.parent;
       if (!ts.isPropertyAccessExpression(parent) || parent.expression !== node || !ts.isIdentifier(parent.name)) {
-        fail(file, node, source, `namespace ${node.text} is used as a value, cannot rewrite`);
+        fail(file, node, source, `unsupported use of namespace ${node.text} (only \`${node.text}.Name\` reads can be rewritten)`);
       }
-      if (ts.isShorthandPropertyAssignment(parent)) fail(file, node, source, `namespace ${node.text} used in shorthand`);
-      const assignTarget = ts.isBinaryExpression(parent.parent) && parent.parent.left === parent
-        && parent.parent.operatorToken.kind >= ts.SyntaxKind.FirstAssignment
-        && parent.parent.operatorToken.kind <= ts.SyntaxKind.LastAssignment;
-      if (assignTarget) fail(file, node, source, `assignment to ${node.text}.${parent.name.text}`);
+      // `ns.x` may sit inside a destructuring target like `{a: ns.x} = y` or
+      // `for ([ns.x] of y)`; climb out of the pattern so the write check sees
+      // the statement-level operator.
+      let pattern = parent;
+      let scope = parent.parent;
+      while (
+        ts.isObjectLiteralExpression(scope) || ts.isArrayLiteralExpression(scope)
+        || ts.isPropertyAssignment(scope) || ts.isShorthandPropertyAssignment(scope)
+        || ts.isSpreadElement(scope) || ts.isSpreadAssignment(scope) || ts.isBindingElement(scope)
+      ) {
+        pattern = scope;
+        scope = scope.parent;
+      }
+      const isWrite = (ts.isBinaryExpression(scope) && scope.left === pattern
+          && scope.operatorToken.kind >= ts.SyntaxKind.FirstAssignment
+          && scope.operatorToken.kind <= ts.SyntaxKind.LastAssignment)
+        || (ts.isDeleteExpression(scope) && scope.expression === pattern)
+        || ((ts.isPrefixUnaryExpression(scope) || ts.isPostfixUnaryExpression(scope)) && scope.operand === pattern
+          && (scope.operator === ts.SyntaxKind.PlusPlusToken || scope.operator === ts.SyntaxKind.MinusMinusToken))
+        || ((ts.isForInStatement(scope) || ts.isForOfStatement(scope)) && scope.initializer === pattern);
+      if (isWrite) fail(file, node, source, `mutation of ${node.text}.${parent.name.text} cannot be rewritten`);
       used.get(node.text).add(parent.name.text);
       accesses.push(parent);
     }
@@ -199,7 +223,7 @@ function rewriteFile(file, exportsByBarrel) {
       byModule.get(module).push(name);
     }
     const replacement = [...byModule]
-      .sort(([a], [b]) => a.localeCompare(b))
+      .sort(([a], [b]) => (a < b ? -1 : a > b ? 1 : 0))
       .map(([module, names]) => {
         const specifiers = names.map((name) => `${name} as ${namespace}_${name}`).join(', ');
         return `import { ${specifiers} } from ${JSON.stringify(specifierFor(file, module))};`;
