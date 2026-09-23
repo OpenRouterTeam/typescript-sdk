@@ -1,19 +1,19 @@
 lockVersion: ""
 id: ""
 management:
-  docChecksum: 96846c90a0a88f55beef02f79f2e01a6
+  docChecksum: 3abb6b4a8a62e373458c8480286873c4
   docVersion: 1.0.0
   speakeasyVersion: 1.787.0
   generationVersion: 2.914.0
-  releaseVersion: 1.3.19
-  configChecksum: b2052c84f33822a0463c31b90b86a952
+  releaseVersion: 1.3.20
+  configChecksum: 40a8b3da22d107d0af11140cbb8b6e94
   repoURL: https://github.com/OpenRouterTeam/typescript-sdk.git
   installationURL: https://github.com/OpenRouterTeam/typescript-sdk
   published: true
 persistentEdits:
-  generation_id: bf93a8c9-375c-4192-a8dd-0426f2c95a26
-  pristine_commit_hash: 8af915c7135fccd38e1e5c63f3b072dcf1c5adce
-  pristine_tree_hash: 36dbc1696e2487ab50c868359772ba7773a8b07b
+  generation_id: faebb21f-2c13-4b03-857c-1e54743bd461
+  pristine_commit_hash: c12903491ba2f26a946f365e182438ff40636c7a
+  pristine_tree_hash: f988b051193b11b412eb26eafd43b201e9f163ae
 features:
   typescript:
     acceptHeaders: 2.81.2
@@ -12624,8 +12624,8 @@ trackedFiles:
     deleted: true
   docs/models/toolcustom.mdx:
     id: 15a188295bea
-    last_write_checksum: sha1:189ce0f2b15d6f284a84bf94b01cc460e86cdd15
-    pristine_git_object: 4134908d59ed60258fcf967854a24c3c61768ceb
+    last_write_checksum: sha1:6f544aa9f60e55801dbc663acc220cb5785590d9
+    pristine_git_object: a0994d1aed7a0860ee0fd856b50445b77dc1084f
   docs/models/toolsearchservertool.mdx:
     id: 4100b980cfd4
     last_write_checksum: sha1:ed6646d8515fbb34444fb20d7ee2556f59079a18
@@ -13830,12 +13830,12 @@ trackedFiles:
     pristine_git_object: 410efafd6a7f50d91ccb87131fedbe0c3d47e15a
   jsr.json:
     id: 7f6ab7767282
-    last_write_checksum: sha1:a031494efc80b6d089101b6911e25f4483c95a89
-    pristine_git_object: 47b3a20f0d789f52b0bf0dc00003095df366ab88
+    last_write_checksum: sha1:79d0d5679ace3c2a69c006e47fb16312a2a9f868
+    pristine_git_object: 0b0287c37e8abbcb075c889513b28ef27cc47fbb
   package.json:
     id: 7030d0b2f71b
-    last_write_checksum: sha1:ce1eb7f0764e7a9130d8403af6c836b96ac0d714
-    pristine_git_object: ce4e41b5139ba8927473a9d7a86415f9afc2728a
+    last_write_checksum: sha1:e8b0f189f25feb69b003ddfacb96ef1b678d0c6f
+    pristine_git_object: 2019515972da47f7ded2bb6e0aa23fef76c515ec
   src/core.ts:
     id: f431fdbcd144
     last_write_checksum: sha1:5aa66b0b6a5964f3eea7f3098c2eb3c0ee9c0131
@@ -14346,8 +14346,8 @@ trackedFiles:
     pristine_git_object: a187e58707bdb726ca2aff74941efe7493422d4e
   src/lib/config.ts:
     id: 320761608fb3
-    last_write_checksum: sha1:cacc244327a10674c4e311ad4c2b4d80939055f9
-    pristine_git_object: 4d81929c756d23a61b038c08cb476b3d5bcf5535
+    last_write_checksum: sha1:5de7b45cbce771b51fb7fc3f4116f149a80ff43d
+    pristine_git_object: 37bb5edfe7bd7a8325c3edf4b392d8f10c11ad4a
   src/lib/dlv.ts:
     id: b1988214835a
     last_write_checksum: sha1:eaac763b22717206a6199104e0403ed17a4e2711
@@ -16044,8 +16044,8 @@ trackedFiles:
     pristine_git_object: 8f4f88900de657b7845cb49b57877f0ad0dbcc50
   src/models/messagesrequest.ts:
     id: 572964d5906d
-    last_write_checksum: sha1:cd8bb93afd46e2ef3810f1f2c31d1a1004b51a24
-    pristine_git_object: 7105b19e9d772e4374ab062e807510becf23537f
+    last_write_checksum: sha1:12ed50ce8f46807daa3cc67782cfa6c8e93c29a7
+    pristine_git_object: 98e9d5f902e0c347095b78a65eb82b67e0867f81
   src/models/messagessearchmodelsservertool.ts:
     id: 5ae7644a901f
     last_write_checksum: sha1:ecc43a76945e8ee23cc2f4104dc6c18cc6ba680d
@@ -21212,4 +21212,4 @@ examples:
         "529":
           application/json: {"error": {"code": 529, "message": "Provider returned error"}}
 examplesVersion: 1.0.2
-releaseNotes: "## Typescript SDK Changes:\n* `openrouter.chat.send()`: \n  *  `request.chatRequest.plugins[].union(switchyard-router)` **Added**\n* `openrouter.presets.createPresetsChatCompletions()`: \n  *  `request.chatRequest.plugins[].union(switchyard-router)` **Added**\n* `openrouter.presets.createPresetsMessages()`: \n  *  `request.messagesRequest.plugins[].union(switchyard-router)` **Added**\n* `openrouter.presets.createPresetsResponses()`: \n  *  `request.responsesRequest.plugins[].union(switchyard-router)` **Added**\n* `openrouter.responses.send()`: \n  *  `request.responsesRequest.plugins[].union(switchyard-router)` **Added**\n* `openrouter.beta.responses.send()`: \n  *  `request.responsesRequest.plugins[].union(switchyard-router)` **Added**\n"
+releaseNotes: "## Typescript SDK Changes:\n* `openrouter.presets.createPresetsMessages()`: \n  *  `request.messagesRequest.tools[].union(class (0)).strict` **Added**\n"
