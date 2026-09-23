@@ -21,17 +21,17 @@ import ts from 'typescript';
 
 export const ESM = join(resolve(dirname(fileURLToPath(import.meta.url)), '..'), 'esm');
 
-/** Barrel directories, relative to `esm/`. */
-export const BARREL_DIRS = ['models', 'models/operations', 'models/errors'];
+/** Barrel directories, relative to the compiled root. */
+const BARREL_DIRS = ['models', 'models/operations', 'models/errors'];
 
-const barrelFile = (dir) => join(ESM, dir, 'index.js');
+const barrelsIn = (root) => BARREL_DIRS.map((dir) => resolve(root, dir, 'index.js'));
 
 function parse(file) {
   return ts.createSourceFile(file, readFileSync(file, 'utf8'), ts.ScriptTarget.Latest, true);
 }
 
 /** Every `.js` file under `dir`, recursively. */
-export function listModules(dir) {
+function listModules(dir) {
   return readdirSync(dir, { withFileTypes: true }).flatMap((entry) => {
     const full = join(dir, entry.name);
     if (entry.isDirectory()) return listModules(full);
@@ -81,22 +81,21 @@ function moduleExports(module) {
   return names;
 }
 
-/** Namespace imports of a known barrel in `source`: `import * as ns from "<barrel>"`. */
-export function barrelImports(file, source = parse(file)) {
-  const barrels = new Set(BARREL_DIRS.map(barrelFile));
+/** Namespace imports of one of `barrels` in `source`: `import * as ns from "<barrel>"`. */
+function barrelImports(file, source, barrels) {
   return source.statements.flatMap((statement) => {
     if (!ts.isImportDeclaration(statement)) return [];
     const bindings = statement.importClause?.namedBindings;
     if (!bindings || !ts.isNamespaceImport(bindings)) return [];
     const target = resolveSpecifier(file, statement.moduleSpecifier.text);
-    return target && barrels.has(target) ? [{ statement, namespace: bindings.name.text, barrel: target }] : [];
+    return target && barrels.includes(target) ? [{ statement, namespace: bindings.name.text, barrel: target }] : [];
   });
 }
 
 /** Rewrite one file's barrel imports. Returns the new source, or undefined when unchanged. */
-export function rewriteFile(file, exportsByBarrel) {
+function rewriteFile(file, exportsByBarrel) {
   const source = parse(file);
-  const imports = barrelImports(file, source);
+  const imports = barrelImports(file, source, [...exportsByBarrel.keys()]);
   if (imports.length === 0) return undefined;
   const namespaces = new Map(imports.map((entry) => [entry.namespace, entry]));
   const used = new Map([...namespaces.keys()].map((ns) => [ns, new Set()]));
@@ -108,7 +107,7 @@ export function rewriteFile(file, exportsByBarrel) {
       return;
     }
     if (ts.isIdentifier(node) && namespaces.has(node.text) && !ts.isNamespaceImport(node.parent)) {
-      throw new Error(`${relative(ESM, file)}: namespace ${node.text} is used as a value, cannot rewrite`);
+      throw new Error(`${file}: namespace ${node.text} is used as a value, cannot rewrite`);
     }
     ts.forEachChild(node, visit);
   };
@@ -120,7 +119,7 @@ export function rewriteFile(file, exportsByBarrel) {
     const byModule = new Map();
     for (const name of [...used.get(namespace)].sort()) {
       const module = exported.get(name);
-      if (!module) throw new Error(`${relative(ESM, file)}: ${namespace}.${name} not exported by ${relative(ESM, barrel)}`);
+      if (!module) throw new Error(`${file}: ${namespace}.${name} not exported by ${barrel}`);
       if (!byModule.has(module)) byModule.set(module, []);
       byModule.get(module).push(name);
     }
@@ -141,17 +140,31 @@ export function rewriteFile(file, exportsByBarrel) {
   return text;
 }
 
-function main() {
-  const exportsByBarrel = new Map(BARREL_DIRS.map((dir) => [barrelFile(dir), barrelExports(barrelFile(dir))]));
+/** Modules under `root` that import a model barrel as a namespace, as `path (namespace)`. */
+export function remainingBarrelImports(root = ESM) {
+  root = resolve(root);
+  const barrels = barrelsIn(root);
+  return listModules(root).flatMap((file) =>
+    barrelImports(file, parse(file), barrels).map(({ namespace }) => `${relative(root, file)} (${namespace})`),
+  );
+}
+
+/** Rewrite every module under `root` in place. Returns the number of files changed. */
+export function unbarrelImports(root = ESM) {
+  root = resolve(root);
+  const exportsByBarrel = new Map(barrelsIn(root).map((barrel) => [barrel, barrelExports(barrel)]));
   let rewritten = 0;
-  for (const file of listModules(ESM)) {
-    if (exportsByBarrel.has(file)) continue;
+  for (const file of listModules(root)) {
     const text = rewriteFile(file, exportsByBarrel);
     if (text === undefined) continue;
     writeFileSync(file, text);
     rewritten += 1;
   }
-  console.log(`unbarrel-imports: rewrote ${rewritten} files`);
+  const remaining = remainingBarrelImports(root);
+  if (remaining.length > 0) throw new Error(`barrel imports left after rewrite:\n${remaining.join('\n')}`);
+  return rewritten;
 }
 
-if (process.argv[1] === fileURLToPath(import.meta.url)) main();
+if (process.argv[1] === fileURLToPath(import.meta.url)) {
+  console.log(`unbarrel-imports: rewrote ${unbarrelImports()} files`);
+}
