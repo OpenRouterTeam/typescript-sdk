@@ -8143,12 +8143,6 @@ components:
         sequence_number: 6
         type: 'response.custom_tool_call_input.done'
     CustomToolCallItem:
-      allOf:
-        - $ref: '#/components/schemas/OpenAIResponseCustomToolCall'
-        - properties:
-            status:
-              $ref: '#/components/schemas/ToolCallStatus'
-          type: 'object'
       description: 'A call to a custom (freeform-grammar) tool created by the model — distinct from `function_call`. Used for tools like Codex CLI''s `apply_patch` whose payload is opaque text rather than JSON arguments.'
       example:
         call_id: 'call-abc123'
@@ -8156,6 +8150,42 @@ components:
         input: "*** Begin Patch\n*** End Patch"
         name: 'apply_patch'
         type: 'custom_tool_call'
+      properties:
+        async:
+          description: 'True when the model called a tool declared with `async: true` and may continue its turn before the output is returned. Return the result in a later request as a `function_call_output` with this `call_id`.'
+          example: true
+          type:
+            - 'boolean'
+            - 'null'
+        call_id:
+          type: 'string'
+        id:
+          type:
+            - 'string'
+            - 'null'
+        input:
+          type: 'string'
+        name:
+          type: 'string'
+        namespace:
+          description: 'Namespace qualifier for tools registered as part of a namespace tool group (e.g. an MCP server)'
+          type:
+            - 'string'
+            - 'null'
+        status:
+          anyOf:
+            - $ref: '#/components/schemas/ToolCallStatus'
+            - type: 'null'
+        type:
+          enum:
+            - 'custom_tool_call'
+          type: 'string'
+      required:
+        - 'type'
+        - 'call_id'
+        - 'name'
+        - 'input'
+      type: 'object'
     CustomToolCallOutputItem:
       allOf:
         - $ref: '#/components/schemas/OpenAIResponseCustomToolCallOutput'
@@ -9294,12 +9324,6 @@ components:
         sequence_number: 6
         type: 'response.function_call_arguments.done'
     FunctionCallItem:
-      allOf:
-        - $ref: '#/components/schemas/OpenAIResponseFunctionToolCall'
-        - properties: {}
-          required:
-            - 'id'
-          type: 'object'
       description: 'A function call initiated by the model'
       example:
         arguments: '{"location":"San Francisco"}'
@@ -9308,6 +9332,60 @@ components:
         name: 'get_weather'
         status: 'completed'
         type: 'function_call'
+      properties:
+        arguments:
+          type: 'string'
+        async:
+          description: 'True when the model called a tool declared with `async: true` and may continue its turn before the output is returned. Return the result in a later request as a `function_call_output` with this `call_id`.'
+          example: true
+          type:
+            - 'boolean'
+            - 'null'
+        call_id:
+          type: 'string'
+        id:
+          type:
+            - 'string'
+            - 'null'
+        name:
+          type: 'string'
+        namespace:
+          description: 'Namespace qualifier for tools registered as part of a namespace tool group (e.g. an MCP server)'
+          type:
+            - 'string'
+            - 'null'
+        status:
+          anyOf:
+            - $ref: '#/components/schemas/ToolCallStatus'
+            - type: 'null'
+        subagent_id:
+          description: 'EXPERIMENTAL — subject to change without notice. String id that matches the `call_id` of the `openrouter:subagent` server tool call that spawned the subagent. Present on every `function_call` item the subagent projects; absent on ordinary function calls.'
+          type:
+            - 'string'
+            - 'null'
+        subagent_items:
+          description: 'EXPERIMENTAL — subject to change without notice. The subagent''s output items produced on this turn. Treat this as an opaque object; you must replay it in the request so that the subagent can continue execution of the tool with the same context. If a subagent created multiple parallel tool calls, only the first tool call will have this field. The other tool calls will only have `subagent_id`. Present only if the tool call originates from a subagent spawned by the `openrouter:subagent` server tool.'
+          items:
+            additionalProperties: {}
+            properties:
+              type:
+                type: 'string'
+            required:
+              - 'type'
+            type: 'object'
+          type:
+            - 'array'
+            - 'null'
+        type:
+          enum:
+            - 'function_call'
+          type: 'string'
+      required:
+        - 'type'
+        - 'call_id'
+        - 'name'
+        - 'arguments'
+      type: 'object'
     FunctionCallOutputItem:
       allOf:
         - $ref: '#/components/schemas/OpenAIResponseFunctionToolCallOutput'
@@ -12237,8 +12315,6 @@ components:
                     - text: 'Analyzed the problem and found the optimal solution.'
                       type: 'summary_text'
                   type: 'reasoning'
-              - $ref: '#/components/schemas/OutputFunctionCallItem'
-              - $ref: '#/components/schemas/OutputCustomToolCallItem'
               - $ref: '#/components/schemas/OutputWebSearchCallItem'
               - $ref: '#/components/schemas/OutputFileSearchCallItem'
               - $ref: '#/components/schemas/OutputImageGenerationCallItem'
