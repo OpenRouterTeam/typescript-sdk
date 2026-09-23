@@ -7,6 +7,7 @@ import { internsChat } from "../funcs/internsChat.js";
 import { internsCreateIntern } from "../funcs/internsCreateIntern.js";
 import { internsDeleteIntern } from "../funcs/internsDeleteIntern.js";
 import { internsGetIntern } from "../funcs/internsGetIntern.js";
+import { internsInvoke } from "../funcs/internsInvoke.js";
 import { internsListInterns } from "../funcs/internsListInterns.js";
 import { internsProvisionIntern } from "../funcs/internsProvisionIntern.js";
 import { internsSuspendIntern } from "../funcs/internsSuspendIntern.js";
@@ -175,6 +176,29 @@ export class Interns extends ClientSDK {
     options?: RequestOptions,
   ): Promise<operations.CreateInternChatCompletionResponse> {
     return unwrapAsync(internsChat(
+      this,
+      request,
+      options,
+    ));
+  }
+
+  /**
+   * Start an intern run without waiting for it
+   *
+   * @remarks
+   * Starts a run on one of your interns and answers `202` with the `session_id` as soon as the intern accepts it. The run keeps going on the intern after the response. Nothing about its progress comes back on this request; the intern reports through its own tools, such as Slack.
+   *
+   * Send the same `session_id` later to continue the conversation, for example to hand the intern a decision on work it started. If that session already has a run going, the prompt is delivered into it and the status is `steered`. A `session_id` is accepted only from the caller it was issued to, on the same intern; any other, including sessions started from Slack or the chat endpoint, is refused with `404`.
+   *
+   * Runs started here self-drive: the intern consents to its own tool approvals, and a question it asks is answered by its own fallback. A run ends when the intern finishes it or after its execution deadline (1 hour by default).
+   *
+   * Available to interns programme members. Callers outside the programme receive `404` for every path under `/api/v1/interns`.
+   */
+  async invoke(
+    request: operations.InvokeInternRequest,
+    options?: RequestOptions,
+  ): Promise<operations.InvokeInternResponse> {
+    return unwrapAsync(internsInvoke(
       this,
       request,
       options,

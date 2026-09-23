@@ -1,0 +1,23 @@
+---
+title: "InternInvokeAcceptedResponse"
+---
+
+The intern admitted the prompt. The run continues on the intern.
+
+## Example Usage
+
+```typescript
+import { InternInvokeAcceptedResponse } from "@openrouter/sdk/models";
+
+let value: InternInvokeAcceptedResponse = {
+  sessionId: "b51a0e21-368b-4780-a220-14655bf28c55",
+  status: "started",
+};
+```
+
+## Fields
+
+| Field                                                                                                                            | Type                                                                                                                             | Required                                                                                                                         | Description                                                                                                                      | Example                                                                                                                          |
+| -------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------- |
+| `sessionId`                                                                                                                      | *string*                                                                                                                         | :heavy_check_mark:                                                                                                               | The session the run belongs to. Send it back to continue the conversation.                                                       | b51a0e21-368b-4780-a220-14655bf28c55                                                                                             |
+| `status`                                                                                                                         | [models.InternInvokeAcceptedResponseStatus](../models/interninvokeacceptedresponsestatus.mdx)                                     | :heavy_check_mark:                                                                                                               | `started` when a new run began. `steered` when the session already had a run going and the prompt was delivered into it instead. | started                                                                                                                          |
