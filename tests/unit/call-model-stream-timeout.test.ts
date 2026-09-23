@@ -376,6 +376,85 @@ describe('callModel stream timeout integration', () => {
     expect(observed.requests[1]?.signal.aborted).toBe(true);
   });
 
+  it('maxStallRetries re-issues a pre-content stall and succeeds on the retry', async () => {
+    const { client, observed } = scriptedClient([
+      [frame(createdFrame, 5)], // attempt 1: stalls before content
+      HEALTHY_SCRIPT, // attempt 2: healthy
+    ]);
+
+    const result = client.callModel({
+      model: 'test-model',
+      input: 'hi',
+      timeout: { firstContentMs: 60, maxStallRetries: 1 },
+    });
+
+    expect(await result.getText()).toBe('Hello world');
+    expect(observed.requests).toHaveLength(2);
+    expect(observed.requests[0]?.signal.aborted).toBe(true); // stalled attempt torn down
+    expect(observed.requests[1]?.signal.aborted).toBe(false);
+  });
+
+  it('maxStallRetries respects the retry budget and rethrows the final stall', async () => {
+    const { client, observed } = scriptedClient([
+      [frame(createdFrame, 5)], // attempt 1: stalls
+      [frame(createdFrame, 5)], // attempt 2 (retry 1): stalls
+    ]);
+
+    const result = client.callModel({
+      model: 'test-model',
+      input: 'hi',
+      timeout: { firstContentMs: 50, maxStallRetries: 1 },
+    });
+
+    const error = await result.getText().then(
+      () => null,
+      (e: unknown) => e,
+    );
+    expect(error).toBeInstanceOf(StreamStalledError);
+    expect(observed.requests).toHaveLength(2); // initial + exactly one retry
+  });
+
+  it('maxStallRetries never retries a mid-content stall', async () => {
+    const { client, observed } = scriptedClient([
+      [frame(createdFrame, 5), frame(textDeltaFrame('partial'), 5)], // content, then stall
+    ]);
+
+    const result = client.callModel({
+      model: 'test-model',
+      input: 'hi',
+      timeout: { firstContentMs: 300, contentIntervalMs: 60, maxStallRetries: 3 },
+    });
+
+    const error = await result.getText().then(
+      () => null,
+      (e: unknown) => e,
+    );
+    expect(error).toBeInstanceOf(StreamStalledError);
+    expect((error as StreamStalledError).phase).toBe('between_content');
+    // No second request: output was already observed, retrying could duplicate it.
+    expect(observed.requests).toHaveLength(1);
+  });
+
+  it('streaming consumers see each event exactly once when a retry succeeds', async () => {
+    const { client } = scriptedClient([
+      [frame(createdFrame, 5)], // attempt 1: stalls
+      HEALTHY_SCRIPT, // attempt 2: healthy
+    ]);
+
+    const result = client.callModel({
+      model: 'test-model',
+      input: 'hi',
+      timeout: { firstContentMs: 60, maxStallRetries: 1 },
+    });
+
+    const deltas: string[] = [];
+    for await (const delta of result.getTextStream()) {
+      deltas.push(delta);
+    }
+    // Only the winning attempt's deltas, no duplicates from the stalled one.
+    expect(deltas).toEqual(['Hello', ' world']);
+  });
+
   it('caller abort signals still work alongside the watchdog', async () => {
     const { client } = scriptedClient([
       [frame(createdFrame, 5)], // hangs, but watchdog is generous
