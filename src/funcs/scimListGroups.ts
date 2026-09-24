@@ -110,6 +110,8 @@ async function $do(
   const path = pathToFunc("/scim/groups")();
 
   const query = encodeFormQuery({
+    "display_name": payload?.display_name,
+    "external_id": payload?.external_id,
     "limit": payload?.limit,
     "offset": payload?.offset,
   });
