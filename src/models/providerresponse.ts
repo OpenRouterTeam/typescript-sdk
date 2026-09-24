@@ -131,6 +131,7 @@ export const ProviderResponseProviderName = {
   SailResearch: "Sail Research",
   SakanaAI: "Sakana AI",
   SambaNova: "SambaNova",
+  ScaleDown: "ScaleDown",
   Seed: "Seed",
   SiliconFlow: "SiliconFlow",
   Sourceful: "Sourceful",
