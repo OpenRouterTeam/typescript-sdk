@@ -147,11 +147,6 @@ import {
   OutputComputerCallItem$outboundSchema,
 } from "./outputcomputercallitem.js";
 import {
-  OutputCustomToolCallItem,
-  OutputCustomToolCallItem$Outbound,
-  OutputCustomToolCallItem$outboundSchema,
-} from "./outputcustomtoolcallitem.js";
-import {
   OutputDatetimeItem,
   OutputDatetimeItem$Outbound,
   OutputDatetimeItem$outboundSchema,
@@ -171,11 +166,6 @@ import {
   OutputFilesServerToolItem$Outbound,
   OutputFilesServerToolItem$outboundSchema,
 } from "./outputfilesservertoolitem.js";
-import {
-  OutputFunctionCallItem,
-  OutputFunctionCallItem$Outbound,
-  OutputFunctionCallItem$outboundSchema,
-} from "./outputfunctioncallitem.js";
 import {
   OutputFusionServerToolItem,
   OutputFusionServerToolItem$Outbound,
@@ -404,13 +394,11 @@ export type InputsMessage = {
 };
 
 export type InputsUnion1 =
-  | FunctionCallItem
   | LocalShellCallItem
   | McpApprovalRequestItem
   | McpCallItem
+  | FunctionCallItem
   | ApplyPatchCallItem
-  | OutputFunctionCallItem
-  | OutputCustomToolCallItem
   | OutputFileSearchCallItem
   | OutputComputerCallItem
   | OutputDatetimeItem
@@ -462,13 +450,11 @@ export type InputsUnion1 =
 export type InputsUnion =
   | string
   | Array<
-    | FunctionCallItem
     | LocalShellCallItem
     | McpApprovalRequestItem
     | McpCallItem
+    | FunctionCallItem
     | ApplyPatchCallItem
-    | OutputFunctionCallItem
-    | OutputCustomToolCallItem
     | OutputFileSearchCallItem
     | OutputComputerCallItem
     | OutputDatetimeItem
@@ -767,13 +753,11 @@ export function inputsMessageToJSON(inputsMessage: InputsMessage): string {
 
 /** @internal */
 export type InputsUnion1$Outbound =
-  | FunctionCallItem$Outbound
   | LocalShellCallItem$Outbound
   | McpApprovalRequestItem$Outbound
   | McpCallItem$Outbound
+  | FunctionCallItem$Outbound
   | ApplyPatchCallItem$Outbound
-  | OutputFunctionCallItem$Outbound
-  | OutputCustomToolCallItem$Outbound
   | OutputFileSearchCallItem$Outbound
   | OutputComputerCallItem$Outbound
   | OutputDatetimeItem$Outbound
@@ -824,13 +808,11 @@ export const InputsUnion1$outboundSchema: z.ZodType<
   InputsUnion1$Outbound,
   InputsUnion1
 > = z.union([
-  FunctionCallItem$outboundSchema,
   LocalShellCallItem$outboundSchema,
   McpApprovalRequestItem$outboundSchema,
   McpCallItem$outboundSchema,
+  FunctionCallItem$outboundSchema,
   ApplyPatchCallItem$outboundSchema,
-  OutputFunctionCallItem$outboundSchema,
-  OutputCustomToolCallItem$outboundSchema,
   OutputFileSearchCallItem$outboundSchema,
   OutputComputerCallItem$outboundSchema,
   OutputDatetimeItem$outboundSchema,
@@ -885,13 +867,11 @@ export function inputsUnion1ToJSON(inputsUnion1: InputsUnion1): string {
 export type InputsUnion$Outbound =
   | string
   | Array<
-    | FunctionCallItem$Outbound
     | LocalShellCallItem$Outbound
     | McpApprovalRequestItem$Outbound
     | McpCallItem$Outbound
+    | FunctionCallItem$Outbound
     | ApplyPatchCallItem$Outbound
-    | OutputFunctionCallItem$Outbound
-    | OutputCustomToolCallItem$Outbound
     | OutputFileSearchCallItem$Outbound
     | OutputComputerCallItem$Outbound
     | OutputDatetimeItem$Outbound
@@ -946,13 +926,11 @@ export const InputsUnion$outboundSchema: z.ZodType<
   z.string(),
   z.array(
     z.union([
-      FunctionCallItem$outboundSchema,
       LocalShellCallItem$outboundSchema,
       McpApprovalRequestItem$outboundSchema,
       McpCallItem$outboundSchema,
+      FunctionCallItem$outboundSchema,
       ApplyPatchCallItem$outboundSchema,
-      OutputFunctionCallItem$outboundSchema,
-      OutputCustomToolCallItem$outboundSchema,
       OutputFileSearchCallItem$outboundSchema,
       OutputComputerCallItem$outboundSchema,
       OutputDatetimeItem$outboundSchema,
