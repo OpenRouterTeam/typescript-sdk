@@ -29,23 +29,23 @@ export type FunctionCallItem = {
   /**
    * True when the model called a tool declared with `async: true` and may continue its turn before the output is returned. Return the result in a later request as a `function_call_output` with this `call_id`.
    */
-  async?: boolean | undefined;
+  async?: boolean | null | undefined;
   callId: string;
-  id: string;
+  id?: string | null | undefined;
   name: string;
   /**
    * Namespace qualifier for tools registered as part of a namespace tool group (e.g. an MCP server)
    */
-  namespace?: string | undefined;
-  status?: ToolCallStatus | undefined;
+  namespace?: string | null | undefined;
+  status?: ToolCallStatus | null | undefined;
   /**
    * EXPERIMENTAL — subject to change without notice. String id that matches the `call_id` of the `openrouter:subagent` server tool call that spawned the subagent. Present on every `function_call` item the subagent projects; absent on ordinary function calls.
    */
-  subagentId?: string | undefined;
+  subagentId?: string | null | undefined;
   /**
    * EXPERIMENTAL — subject to change without notice. The subagent's output items produced on this turn. Treat this as an opaque object; you must replay it in the request so that the subagent can continue execution of the tool with the same context. If a subagent created multiple parallel tool calls, only the first tool call will have this field. The other tool calls will only have `subagent_id`. Present only if the tool call originates from a subagent spawned by the `openrouter:subagent` server tool.
    */
-  subagentItems?: Array<FunctionCallItemSubagentItem> | undefined;
+  subagentItems?: Array<FunctionCallItemSubagentItem> | null | undefined;
   type: FunctionCallItemType;
 };
 
@@ -89,14 +89,17 @@ export const FunctionCallItemType$outboundSchema: z.ZodEnum<
 /** @internal */
 export type FunctionCallItem$Outbound = {
   arguments: string;
-  async?: boolean | undefined;
+  async?: boolean | null | undefined;
   call_id: string;
-  id: string;
+  id?: string | null | undefined;
   name: string;
-  namespace?: string | undefined;
-  status?: string | undefined;
-  subagent_id?: string | undefined;
-  subagent_items?: Array<FunctionCallItemSubagentItem$Outbound> | undefined;
+  namespace?: string | null | undefined;
+  status?: string | null | undefined;
+  subagent_id?: string | null | undefined;
+  subagent_items?:
+    | Array<FunctionCallItemSubagentItem$Outbound>
+    | null
+    | undefined;
   type: string;
 };
 
@@ -106,15 +109,15 @@ export const FunctionCallItem$outboundSchema: z.ZodType<
   FunctionCallItem
 > = z.object({
   arguments: z.string(),
-  async: z.boolean().optional(),
+  async: z.nullable(z.boolean()).optional(),
   callId: z.string(),
-  id: z.string(),
+  id: z.nullable(z.string()).optional(),
   name: z.string(),
-  namespace: z.string().optional(),
-  status: ToolCallStatus$outboundSchema.optional(),
-  subagentId: z.string().optional(),
-  subagentItems: z.array(
-    z.lazy(() => FunctionCallItemSubagentItem$outboundSchema),
+  namespace: z.nullable(z.string()).optional(),
+  status: z.nullable(ToolCallStatus$outboundSchema).optional(),
+  subagentId: z.nullable(z.string()).optional(),
+  subagentItems: z.nullable(
+    z.array(z.lazy(() => FunctionCallItemSubagentItem$outboundSchema)),
   ).optional(),
   type: FunctionCallItemType$outboundSchema,
 }).transform((v) => {

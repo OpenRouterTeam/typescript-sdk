@@ -7,7 +7,7 @@ import * as z from "zod/v4";
 import { remap as remap$ } from "../lib/primitives.js";
 import { safeParse } from "../lib/schemas.js";
 import * as openEnums from "../types/enums.js";
-import { ClosedEnum, OpenEnum } from "../types/enums.js";
+import { OpenEnum } from "../types/enums.js";
 import { Result as SafeParseResult } from "../types/fp.js";
 import { SDKValidationError } from "./errors/sdkvalidationerror.js";
 
@@ -18,13 +18,6 @@ export const OutputCustomToolCallItemStatus = {
 } as const;
 export type OutputCustomToolCallItemStatus = OpenEnum<
   typeof OutputCustomToolCallItemStatus
->;
-
-export const OutputCustomToolCallItemType = {
-  CustomToolCall: "custom_tool_call",
-} as const;
-export type OutputCustomToolCallItemType = ClosedEnum<
-  typeof OutputCustomToolCallItemType
 >;
 
 /**
@@ -44,7 +37,7 @@ export type OutputCustomToolCallItem = {
    */
   namespace?: string | undefined;
   status?: OutputCustomToolCallItemStatus | undefined;
-  type: OutputCustomToolCallItemType;
+  type: "custom_tool_call";
 };
 
 /** @internal */
@@ -52,20 +45,6 @@ export const OutputCustomToolCallItemStatus$inboundSchema: z.ZodType<
   OutputCustomToolCallItemStatus,
   unknown
 > = openEnums.inboundSchema(OutputCustomToolCallItemStatus);
-/** @internal */
-export const OutputCustomToolCallItemStatus$outboundSchema: z.ZodType<
-  string,
-  OutputCustomToolCallItemStatus
-> = openEnums.outboundSchema(OutputCustomToolCallItemStatus);
-
-/** @internal */
-export const OutputCustomToolCallItemType$inboundSchema: z.ZodEnum<
-  typeof OutputCustomToolCallItemType
-> = z.enum(OutputCustomToolCallItemType);
-/** @internal */
-export const OutputCustomToolCallItemType$outboundSchema: z.ZodEnum<
-  typeof OutputCustomToolCallItemType
-> = OutputCustomToolCallItemType$inboundSchema;
 
 /** @internal */
 export const OutputCustomToolCallItem$inboundSchema: z.ZodType<
@@ -79,50 +58,13 @@ export const OutputCustomToolCallItem$inboundSchema: z.ZodType<
   name: z.string(),
   namespace: z.string().optional(),
   status: OutputCustomToolCallItemStatus$inboundSchema.optional(),
-  type: OutputCustomToolCallItemType$inboundSchema,
+  type: z.literal("custom_tool_call"),
 }).transform((v) => {
   return remap$(v, {
     "call_id": "callId",
   });
 });
-/** @internal */
-export type OutputCustomToolCallItem$Outbound = {
-  async?: boolean | undefined;
-  call_id: string;
-  id?: string | undefined;
-  input: string;
-  name: string;
-  namespace?: string | undefined;
-  status?: string | undefined;
-  type: string;
-};
 
-/** @internal */
-export const OutputCustomToolCallItem$outboundSchema: z.ZodType<
-  OutputCustomToolCallItem$Outbound,
-  OutputCustomToolCallItem
-> = z.object({
-  async: z.boolean().optional(),
-  callId: z.string(),
-  id: z.string().optional(),
-  input: z.string(),
-  name: z.string(),
-  namespace: z.string().optional(),
-  status: OutputCustomToolCallItemStatus$outboundSchema.optional(),
-  type: OutputCustomToolCallItemType$outboundSchema,
-}).transform((v) => {
-  return remap$(v, {
-    callId: "call_id",
-  });
-});
-
-export function outputCustomToolCallItemToJSON(
-  outputCustomToolCallItem: OutputCustomToolCallItem,
-): string {
-  return JSON.stringify(
-    OutputCustomToolCallItem$outboundSchema.parse(outputCustomToolCallItem),
-  );
-}
 export function outputCustomToolCallItemFromJSON(
   jsonString: string,
 ): SafeParseResult<OutputCustomToolCallItem, SDKValidationError> {
