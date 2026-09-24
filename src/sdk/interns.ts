@@ -7,6 +7,7 @@ import { internsChat } from "../funcs/internsChat.js";
 import { internsCreateIntern } from "../funcs/internsCreateIntern.js";
 import { internsDeleteIntern } from "../funcs/internsDeleteIntern.js";
 import { internsGetIntern } from "../funcs/internsGetIntern.js";
+import { internsGetInternDaemonAccess } from "../funcs/internsGetInternDaemonAccess.js";
 import { internsInvoke } from "../funcs/internsInvoke.js";
 import { internsListInterns } from "../funcs/internsListInterns.js";
 import { internsProvisionIntern } from "../funcs/internsProvisionIntern.js";
@@ -97,6 +98,23 @@ export class Interns extends ClientSDK {
     options?: RequestOptions,
   ): Promise<models.Intern> {
     return unwrapAsync(internsUpdateIntern(
+      this,
+      request,
+      options,
+    ));
+  }
+
+  /**
+   * Get an intern's daemon access
+   *
+   * @remarks
+   * Returns the origin and daemon token that attach `ori tui --host` to one visible, running intern. The token is a credential: the response is sent with `Cache-Control: no-store`, each reveal is logged by caller and intern, and a caller may make 10 reveals per minute. The API key selects the caller, workspace and visible interns. There is no default workspace fallback. Requests on regional hostnames such as `eu.openrouter.ai` are refused. [API key](/docs/api-reference/authentication) required.
+   */
+  async getInternDaemonAccess(
+    request: operations.GetInternDaemonAccessRequest,
+    options?: RequestOptions,
+  ): Promise<models.InternDaemonAccess> {
+    return unwrapAsync(internsGetInternDaemonAccess(
       this,
       request,
       options,
