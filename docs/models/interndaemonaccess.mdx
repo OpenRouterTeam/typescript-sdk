@@ -1,0 +1,23 @@
+---
+title: "InternDaemonAccess"
+---
+
+The intern daemon's origin and the bearer `ori tui --host` sends to it as `ORI_DAEMON_TOKEN`.
+
+## Example Usage
+
+```typescript
+import { InternDaemonAccess } from "@openrouter/sdk/models";
+
+let value: InternDaemonAccess = {
+  origin: "https://research-assistant-7c9e6679.or.bot",
+  token: "daemon_token",
+};
+```
+
+## Fields
+
+| Field              | Type               | Required           | Description        |
+| ------------------ | ------------------ | ------------------ | ------------------ |
+| `origin`           | *string*           | :heavy_check_mark: | N/A                |
+| `token`            | *string*           | :heavy_check_mark: | N/A                |

@@ -59,6 +59,7 @@ export * from "./getfilemetadata.js";
 export * from "./getgeneration.js";
 export * from "./getguardrail.js";
 export * from "./getintern.js";
+export * from "./getinterndaemonaccess.js";
 export * from "./getkey.js";
 export * from "./getmodel.js";
 export * from "./getmodels.js";
