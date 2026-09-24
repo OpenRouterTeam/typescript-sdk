@@ -4828,6 +4828,7 @@ components:
         - 'sakana'
         - 'sakana-ai'
         - 'sambanova'
+        - 'scaledown'
         - 'seed'
         - 'siliconflow'
         - 'sourceful'
@@ -15823,6 +15824,7 @@ components:
                 - 'Sail Research'
                 - 'Sakana AI'
                 - 'SambaNova'
+                - 'ScaleDown'
                 - 'Seed'
                 - 'SiliconFlow'
                 - 'Sourceful'
@@ -23074,6 +23076,7 @@ components:
         - 'Sail Research'
         - 'Sakana AI'
         - 'SambaNova'
+        - 'ScaleDown'
         - 'Seed'
         - 'SiliconFlow'
         - 'Sourceful'
@@ -23455,6 +23458,9 @@ components:
           additionalProperties: {}
           type: 'object'
         sambanova-cloaked:
+          additionalProperties: {}
+          type: 'object'
+        scaledown:
           additionalProperties: {}
           type: 'object'
         seed:
@@ -23844,6 +23850,7 @@ components:
             - 'Sail Research'
             - 'Sakana AI'
             - 'SambaNova'
+            - 'ScaleDown'
             - 'Seed'
             - 'SiliconFlow'
             - 'Sourceful'
@@ -31877,6 +31884,7 @@ paths:
               - 'sakana'
               - 'sakana-ai'
               - 'sambanova'
+              - 'scaledown'
               - 'seed'
               - 'siliconflow'
               - 'sourceful'

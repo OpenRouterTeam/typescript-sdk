@@ -127,6 +127,7 @@ export type ProviderOptions = {
   sakanaAi?: { [k: string]: any } | undefined;
   sambanova?: { [k: string]: any } | undefined;
   sambanovaCloaked?: { [k: string]: any } | undefined;
+  scaledown?: { [k: string]: any } | undefined;
   seed?: { [k: string]: any } | undefined;
   sfCompute?: { [k: string]: any } | undefined;
   siliconflow?: { [k: string]: any } | undefined;
@@ -274,6 +275,7 @@ export type ProviderOptions$Outbound = {
   "sakana-ai"?: { [k: string]: any } | undefined;
   sambanova?: { [k: string]: any } | undefined;
   "sambanova-cloaked"?: { [k: string]: any } | undefined;
+  scaledown?: { [k: string]: any } | undefined;
   seed?: { [k: string]: any } | undefined;
   "sf-compute"?: { [k: string]: any } | undefined;
   siliconflow?: { [k: string]: any } | undefined;
@@ -424,6 +426,7 @@ export const ProviderOptions$outboundSchema: z.ZodType<
   sakanaAi: z.record(z.string(), z.any()).optional(),
   sambanova: z.record(z.string(), z.any()).optional(),
   sambanovaCloaked: z.record(z.string(), z.any()).optional(),
+  scaledown: z.record(z.string(), z.any()).optional(),
   seed: z.record(z.string(), z.any()).optional(),
   sfCompute: z.record(z.string(), z.any()).optional(),
   siliconflow: z.record(z.string(), z.any()).optional(),
