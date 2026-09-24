@@ -5,15 +5,15 @@ management:
   docVersion: 1.0.0
   speakeasyVersion: 1.787.0
   generationVersion: 2.914.0
-  releaseVersion: 1.3.22
-  configChecksum: f085e25640bb097d0590f353c9065299
+  releaseVersion: 1.3.23
+  configChecksum: ae14bc8e9a620a5eb1725abe5a823297
   repoURL: https://github.com/OpenRouterTeam/typescript-sdk.git
   installationURL: https://github.com/OpenRouterTeam/typescript-sdk
   published: true
 persistentEdits:
-  generation_id: 50695a38-d1f3-4b3d-8322-630b2b7669bc
-  pristine_commit_hash: d576bb615fa11001cf537ff3b9de893fa496afbe
-  pristine_tree_hash: 82f61570805d4c4b4bbacf0ca6e4fe619850f3d5
+  generation_id: d6b67e9c-312e-484d-b345-6a30b51fceba
+  pristine_commit_hash: fd241eb35afe2867c1860a5b9589fbea6c9b765d
+  pristine_tree_hash: 7b5b81f7a2a829875c35e84785f58d0e0820ce95
 features:
   typescript:
     acceptHeaders: 2.81.2
@@ -73,7 +73,7 @@ trackedFiles:
     pristine_git_object: 53f6ec5a48eedd8f5ea2d8881c4c926a39ff2c45
   RUNTIMES.md:
     id: 620c490847b6
-    last_write_checksum: sha1:e45b854f02c357cbcfdb8c3663000e8339e16505
+    last_write_checksum: sha1:f05738c7be58b818f2bcfa26e5d325e78f9ae2f5
     pristine_git_object: 27731c3b5ace66bedc454ed5acbe15075aacd3dc
   USAGE.md:
     id: 3aed33ce6e6f
@@ -13846,12 +13846,12 @@ trackedFiles:
     pristine_git_object: 410efafd6a7f50d91ccb87131fedbe0c3d47e15a
   jsr.json:
     id: 7f6ab7767282
-    last_write_checksum: sha1:fe14138ecbe4f64104dbfd42ec5ec0e530556c22
-    pristine_git_object: 3364a1d51e35493c42681c346f10d4ae44ef9554
+    last_write_checksum: sha1:1f24fea8165cb89d565657a595a1e1c28b4165fa
+    pristine_git_object: b1dc5951631911c6a1950dfaeca70b4de8b014c0
   package.json:
     id: 7030d0b2f71b
-    last_write_checksum: sha1:7918fc0d8c6396d4605350d5c53cf915c8e4b8bf
-    pristine_git_object: 2f282a24fb68efbb6c9f9fdb290f5578ac5213ad
+    last_write_checksum: sha1:5951316670dff7ed3fc37c4a3f44ab4f87603664
+    pristine_git_object: 1038f6821c0bb838b4e7d86d826d4dadbd6cd348
   src/core.ts:
     id: f431fdbcd144
     last_write_checksum: sha1:5aa66b0b6a5964f3eea7f3098c2eb3c0ee9c0131
@@ -14366,8 +14366,8 @@ trackedFiles:
     pristine_git_object: a187e58707bdb726ca2aff74941efe7493422d4e
   src/lib/config.ts:
     id: 320761608fb3
-    last_write_checksum: sha1:b151dbcdc259897ea99b85a488c9c76aaa83a2b6
-    pristine_git_object: 014e127cdbe73cd3f079dc32a60d9e99451c86ae
+    last_write_checksum: sha1:03912a05acdb18ac72e3268e94d33500c1122205
+    pristine_git_object: 6bd1fc4b835f0170acafef3496b788437bb52662
   src/lib/dlv.ts:
     id: b1988214835a
     last_write_checksum: sha1:eaac763b22717206a6199104e0403ed17a4e2711
@@ -14379,7 +14379,7 @@ trackedFiles:
     pristine_git_object: 49f15904923362434dfcdd02476c0487210d2f1a
   src/lib/env.ts:
     id: c52972a3b198
-    last_write_checksum: sha1:eb803916d3a892db4507e3b38fe6201f79e16a3a
+    last_write_checksum: sha1:40ee3101af915d716b7b23fee10865a3f2429e9e
     pristine_git_object: 9f50c196edccf8f1433fac289d6217fc121141ac
   src/lib/event-streams.ts:
     id: 3f731f808a79
@@ -18000,7 +18000,7 @@ trackedFiles:
     pristine_git_object: 4ccb9fff749ad463884a4375063cc21884883d92
   tsconfig.json:
     id: 61ebb9fd6e8c
-    last_write_checksum: sha1:4f9c4daf3281a9be06591b2814e5bbcf98b5c803
+    last_write_checksum: sha1:f97cb62a7710b248267b5a7adf7578affa8bf3f1
     pristine_git_object: e6cd950ad724815ee1ed48ef2e52389cbd3a9143
 examples:
   createResponses:
@@ -21262,3 +21262,4 @@ examples:
         "500":
           application/json: {"error": {"code": 409, "message": "That question is no longer waiting for an answer."}}
 examplesVersion: 1.0.2
+releaseNotes: "## Typescript SDK Changes:\n* `openrouter.presets.createPresetsResponses()`: \n  *  `request.responsesRequest.input.union(Array<>)[]` **Changed** (Breaking ⚠️)\n* `openrouter.responses.send()`: \n  *  `request.responsesRequest.input.union(Array<>)[]` **Changed** (Breaking ⚠️)\n  *  `response` **Changed** (Breaking ⚠️)\n* `openrouter.beta.responses.send()`: \n  *  `request.responsesRequest.input.union(Array<>)[]` **Changed** (Breaking ⚠️)\n  *  `response` **Changed** (Breaking ⚠️)\n"
