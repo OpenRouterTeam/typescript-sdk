@@ -347,6 +347,7 @@ export * from "./internchattoolcallfunction.js";
 export * from "./internchattoolmessage.js";
 export * from "./internchatusage.js";
 export * from "./internchatusermessage.js";
+export * from "./interndaemonaccess.js";
 export * from "./interninvokeacceptedresponse.js";
 export * from "./interninvokerequest.js";
 export * from "./internlifecycleerror.js";
