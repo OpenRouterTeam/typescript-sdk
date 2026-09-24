@@ -102,6 +102,7 @@ export const BYOKProviderSlug = {
   Sakana: "sakana",
   SakanaAi: "sakana-ai",
   Sambanova: "sambanova",
+  Scaledown: "scaledown",
   Seed: "seed",
   Siliconflow: "siliconflow",
   Sourceful: "sourceful",
