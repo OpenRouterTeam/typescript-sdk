@@ -44193,6 +44193,22 @@ paths:
             maximum: 100
             minimum: 1
             type: 'integer'
+        - description: 'Exact match filter on display_name. Omitted or empty returns groups unfiltered by name (subject to offset/limit). When external_id is also present, both must match.'
+          in: 'query'
+          name: 'display_name'
+          required: false
+          schema:
+            description: 'Exact match filter on display_name. Omitted or empty returns groups unfiltered by name (subject to offset/limit). When external_id is also present, both must match.'
+            example: 'Engineering'
+            type: 'string'
+        - description: 'Exact match filter on external_id, e.g. the identity provider (such as Entra ID) group object ID. Omitted or empty returns groups unfiltered by external_id (subject to offset/limit). When display_name is also present, both must match.'
+          in: 'query'
+          name: 'external_id'
+          required: false
+          schema:
+            description: 'Exact match filter on external_id, e.g. the identity provider (such as Entra ID) group object ID. Omitted or empty returns groups unfiltered by external_id (subject to offset/limit). When display_name is also present, both must match.'
+            example: 'a1b2c3d4-e5f6-7890-abcd-ef1234567890'
+            type: 'string'
       responses:
         '200':
           content:
