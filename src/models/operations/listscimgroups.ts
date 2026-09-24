@@ -60,6 +60,14 @@ export type ListScimGroupsRequest = {
    * Maximum number of records to return (max 100)
    */
   limit?: number | undefined;
+  /**
+   * Exact match filter on display_name. Omitted or empty returns groups unfiltered by name (subject to offset/limit). When external_id is also present, both must match.
+   */
+  displayName?: string | undefined;
+  /**
+   * Exact match filter on external_id, e.g. the identity provider (such as Entra ID) group object ID. Omitted or empty returns groups unfiltered by external_id (subject to offset/limit). When display_name is also present, both must match.
+   */
+  externalId?: string | undefined;
 };
 
 export type ListScimGroupsResponse = {
@@ -73,6 +81,8 @@ export type ListScimGroupsRequest$Outbound = {
   appCategories?: string | undefined;
   offset: number | null;
   limit: number;
+  display_name?: string | undefined;
+  external_id?: string | undefined;
 };
 
 /** @internal */
@@ -85,9 +95,13 @@ export const ListScimGroupsRequest$outboundSchema: z.ZodType<
   appCategories: z.string().optional(),
   offset: z.nullable(z.int().default(0)),
   limit: z.int().default(50),
+  displayName: z.string().optional(),
+  externalId: z.string().optional(),
 }).transform((v) => {
   return remap$(v, {
     httpReferer: "HTTP-Referer",
+    displayName: "display_name",
+    externalId: "external_id",
   });
 });
 
