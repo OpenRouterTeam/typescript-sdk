@@ -23457,6 +23457,8 @@ components:
           type:
             - 'array'
             - 'null'
+        options:
+          $ref: '#/components/schemas/ProviderOptions'
         order:
           description: 'An ordered list of provider slugs. The router will attempt to use the first provider in the subset of this list that supports your requested model, and fall back to the next if it is unavailable. If no providers are available, the request will fail with an error message.'
           example:
