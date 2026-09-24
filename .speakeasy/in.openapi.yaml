@@ -13110,6 +13110,22 @@ components:
         - 'content'
         - 'role'
       type: 'object'
+    InternDaemonAccess:
+      description: 'The intern daemon''s origin and the bearer `ori tui --host` sends to it as `ORI_DAEMON_TOKEN`.'
+      example:
+        origin: 'https://research-assistant-7c9e6679.or.bot'
+        token: 'daemon_token'
+      properties:
+        origin:
+          pattern: '^https?:\/\/([a-z0-9](?:[a-z0-9-]{0,61}[a-z0-9])?(?:\.[a-z0-9](?:[a-z0-9-]{0,61}[a-z0-9])?)*)(?::(\d{1,5}))?$/iu'
+          type: 'string'
+        token:
+          pattern: '^[\w-]+$/u'
+          type: 'string'
+      required:
+        - 'origin'
+        - 'token'
+      type: 'object'
     InternInvokeAcceptedResponse:
       description: 'The intern admitted the prompt. The run continues on the intern.'
       example:
@@ -37354,6 +37370,117 @@ paths:
         - 'Interns'
       x-speakeasy-group: 'interns'
       x-speakeasy-name-override: 'chat'
+  /interns/{internId}/daemon-access:
+    get:
+      description: 'Returns the origin and daemon token that attach `ori tui --host` to one visible, running intern. The token is a credential: the response is sent with `Cache-Control: no-store`, each reveal is logged by caller and intern, and a caller may make 10 reveals per minute. The API key selects the caller, workspace and visible interns. There is no default workspace fallback. Requests on regional hostnames such as `eu.openrouter.ai` are refused. [API key](/docs/api-reference/authentication) required.'
+      operationId: 'getInternDaemonAccess'
+      parameters:
+        - description: 'ID of an intern visible to the authenticated API key.'
+          in: 'path'
+          name: 'internId'
+          required: true
+          schema:
+            description: 'ID of an intern visible to the authenticated API key.'
+            example: '7c9e6679-7425-40de-944b-e07fc1f90ae7'
+            minLength: 1
+            type: 'string'
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InternDaemonAccess'
+          description: 'Daemon origin and token.'
+        '401':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 401
+                  message: 'Invalid or missing API key'
+              schema:
+                $ref: '#/components/schemas/InternLifecycleError'
+          description: 'Missing, unknown or provisioning API key.'
+        '403':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 403
+                  message: 'Forbidden'
+              schema:
+                $ref: '#/components/schemas/InternLifecycleError'
+          description: 'The key owner no longer has access, or the request used a regional hostname.'
+        '404':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 404
+                  message: 'Intern not found'
+                  metadata:
+                    reason: 'not_found'
+                    retryable: false
+              schema:
+                $ref: '#/components/schemas/InternLifecycleError'
+          description: 'The caller is outside the Intern API programme, the intern is hidden, or lifecycle writes are disabled.'
+        '408':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 408
+                  message: 'Operation timed out after 10s. Please try again later.'
+                  metadata:
+                    reason: 'timeout'
+                    retryable: true
+              schema:
+                $ref: '#/components/schemas/InternLifecycleError'
+          description: 'The request exceeded its route deadline. The deadline quoted in the message is the route''s own, so it differs between operations.'
+        '409':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 409
+                  message: 'This intern is not running.'
+                  metadata:
+                    reason: 'intern_not_running'
+                    retryable: false
+              schema:
+                $ref: '#/components/schemas/InternLifecycleError'
+          description: 'The intern cannot be attached to. `metadata.reason` is `intern_not_running`, `intern_unreachable` when it has no usable address yet, or `intern_needs_restart` when it was provisioned before daemon access was available.'
+        '429':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 429
+                  message: 'Too many token reveals. Please wait a moment.'
+                  metadata:
+                    reason: 'rate_limited'
+                    retryable: true
+              schema:
+                $ref: '#/components/schemas/InternLifecycleError'
+          description: 'The caller made more than 10 reveals in the last minute. Wait for `Retry-After` seconds.'
+        '500':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 500
+                  message: 'The request could not be completed'
+                  metadata:
+                    reason: 'internal_error'
+                    retryable: true
+              schema:
+                $ref: '#/components/schemas/InternLifecycleError'
+          description: 'The request could not be completed. `metadata.reason` says whether to try again: `internal_error` is a transient failure and carries `metadata.retryable: true`, so the same request may be sent again, while `configuration_error` carries `retryable: false` because the next attempt reads the same missing binding or unusable stored credential.'
+      security:
+        - apiKey: []
+      summary: 'Get an intern''s daemon access'
+      tags:
+        - 'Interns'
   /interns/{internId}/invoke:
     post:
       description: "Starts a run on one of your interns and answers `202` with the `session_id` as soon as the intern accepts it. The run keeps going on the intern after the response. Nothing about its progress comes back on this request; the intern reports through its own tools, such as Slack.\n\nSend the same `session_id` later to continue the conversation, for example to hand the intern a decision on work it started. If that session already has a run going, the prompt is delivered into it and the status is `steered`. A `session_id` is accepted only from the caller it was issued to, on the same intern; any other, including sessions started from Slack or the chat endpoint, is refused with `404`.\n\nRuns started here self-drive: the intern consents to its own tool approvals, and a question it asks is answered by its own fallback. A run ends when the intern finishes it or after its execution deadline (1 hour by default).\n\nAvailable to interns programme members. Callers outside the programme receive `404` for every path under `/api/v1/interns`."
