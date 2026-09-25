@@ -1,19 +1,19 @@
 lockVersion: ""
 id: ""
 management:
-  docChecksum: cd0654dfe0e5f9616494a6b7bcf34624
+  docChecksum: 544f51110e99d7005f82f3949f348ea0
   docVersion: 1.0.0
   speakeasyVersion: 1.787.0
   generationVersion: 2.914.0
-  releaseVersion: 1.3.27
-  configChecksum: 7933506f3867e131fd87333eb4ab270a
+  releaseVersion: 1.3.28
+  configChecksum: 4c6f8f74944865d2ac7f5c55657dbad9
   repoURL: https://github.com/OpenRouterTeam/typescript-sdk.git
   installationURL: https://github.com/OpenRouterTeam/typescript-sdk
   published: true
 persistentEdits:
-  generation_id: 6f329a62-71ac-4089-99e0-2f0d2685213b
-  pristine_commit_hash: 4e0d32aa3d789936c70f992e27f5c0eb7eb049c1
-  pristine_tree_hash: 0b084d629e0814069ed37e2de2701256d69c1ec8
+  generation_id: febd10d5-46be-4c46-bda0-7e0520512880
+  pristine_commit_hash: 9ac2ef016574a0560d500d75aa4b822613cd4726
+  pristine_tree_hash: e251c7d6ab3e285aa3ce6742c55f8e92411289e6
 features:
   typescript:
     acceptHeaders: 2.81.2
@@ -13730,8 +13730,8 @@ trackedFiles:
     pristine_git_object: 15b7b4c80d50dd3aa0f7adc3ab4d9fb03a8efaa7
   docs/sdks/interns/README.mdx:
     id: 2f8a053ffe78
-    last_write_checksum: sha1:c1e818b8d48d82e01095701a36b8f1992aa16f66
-    pristine_git_object: 4f026d8da9f57f5edd819600e36a3cada0ecc085
+    last_write_checksum: sha1:6ef3ea672e9714b6c2322363bfd709e0a77c7173
+    pristine_git_object: f4b2e62439d54bfd714187eb0fe0c25e44d0b81f
   docs/sdks/models/README.mdx:
     id: 58f1ca464e0b
     last_write_checksum: sha1:dbae6f74244ab3e9fe38e075ab67f926f33ef87d
@@ -13858,12 +13858,12 @@ trackedFiles:
     pristine_git_object: 410efafd6a7f50d91ccb87131fedbe0c3d47e15a
   jsr.json:
     id: 7f6ab7767282
-    last_write_checksum: sha1:1ccce89f5da3d9ae9fc20e2504e149e6c90e3877
-    pristine_git_object: c982d59312e87ddcef547bfbce9a07453534ab59
+    last_write_checksum: sha1:a84b98446306e53f9f04431a32aafc1a7f19190d
+    pristine_git_object: b7cb50b39134ce807bbed9e1a9211fd179d1f510
   package.json:
     id: 7030d0b2f71b
-    last_write_checksum: sha1:78b8e600ce5b1b4d5a0ee3e330ec9d91a9be6a40
-    pristine_git_object: 5d3032003d5ab785f351f0260f0d82e05796b12f
+    last_write_checksum: sha1:feb9f09cd3ac7157f87970a12d120f26be1f214a
+    pristine_git_object: bb04a9b024f58dddfefd11b0ea188635195bb63f
   src/core.ts:
     id: f431fdbcd144
     last_write_checksum: sha1:5aa66b0b6a5964f3eea7f3098c2eb3c0ee9c0131
@@ -14102,8 +14102,8 @@ trackedFiles:
     pristine_git_object: 84985cfee5e79c648083370d42e07563d54f8fd2
   src/funcs/internsGetInternDaemonAccess.ts:
     id: 464f7f69e2f0
-    last_write_checksum: sha1:fd0d117dc329ee0d8fd531b9b5638add781b9b53
-    pristine_git_object: 54d97bd84a956c36ea35ebfb7eebcfefcc6a7ef5
+    last_write_checksum: sha1:eacd878c100320dfd02e4bf10e54b3c06819c17b
+    pristine_git_object: 64de9e8c5741500aeec8ae130193cd328768cbdb
   src/funcs/internsInvoke.ts:
     id: d0be40cd89cf
     last_write_checksum: sha1:e7e5db94633812351a50eca92befa7aa032e49a7
@@ -14382,8 +14382,8 @@ trackedFiles:
     pristine_git_object: a187e58707bdb726ca2aff74941efe7493422d4e
   src/lib/config.ts:
     id: 320761608fb3
-    last_write_checksum: sha1:3e7561927e788c21cc9df69d97633da26d68826a
-    pristine_git_object: c4d8e875a3506521cc1265847b4674668b2cf4bd
+    last_write_checksum: sha1:fc29463433712de9fe0c8a9fe00e66790503ecd4
+    pristine_git_object: 23b5c39678dda1a2fbc4fdad617bbe7cea24d858
   src/lib/dlv.ts:
     id: b1988214835a
     last_write_checksum: sha1:eaac763b22717206a6199104e0403ed17a4e2711
@@ -17912,8 +17912,8 @@ trackedFiles:
     pristine_git_object: 5c82fe389f888827f98aa52788b850ef43422e07
   src/sdk/interns.ts:
     id: fc3b4e6c5008
-    last_write_checksum: sha1:6a8aa9f7d2c69a56699c16a7b3c22e4dfaf5d3b7
-    pristine_git_object: 9ee4f78cbaf6b1dc7cb2de86bf84081cd0f1c7fa
+    last_write_checksum: sha1:7e3e9c6ef2130e371246014753382b6b5531d237
+    pristine_git_object: 4bc027afb4919a5c3debd28c467e6ae38009ffa4
   src/sdk/models.ts:
     id: 8c761ab180fd
     last_write_checksum: sha1:0c5e5cefb7079fc69eb11ef157af6d2cb5255933
@@ -21298,4 +21298,6 @@ examples:
         "500":
           application/json: {"error": {"code": 404, "message": "Intern not found"}}
 examplesVersion: 1.0.2
-releaseNotes: "## Typescript SDK Changes:\n* `openrouter.alpha.decisions.create()`: \n  *  `request.decisionsRequest.provider` **Changed**\n* `openrouter.tts.createSpeech()`: \n  *  `request.speechRequest.provider.options.scaledown` **Added**\n* `openrouter.stt.createTranscription()`: \n  *  `request.sttRequest.provider.options.scaledown` **Added**\n* `openrouter.byok.list()`: \n  *  `request.provider` **Changed**\n  *  `response.data[].provider.enum(scaledown)` **Added**\n* `openrouter.byok.create()`: \n  *  `request.createByokKeyRequest.provider.enum(scaledown)` **Added**\n  *  `response.data.provider.enum(scaledown)` **Added**\n* `openrouter.byok.get()`:  `response.data.provider.enum(scaledown)` **Added**\n* `openrouter.byok.update()`:  `response.data.provider.enum(scaledown)` **Added**\n* `openrouter.chat.send()`: \n  *  `request.chatRequest.provider` **Changed**\n* `openrouter.embeddings.generate()`: \n  *  `request.requestBody.provider` **Changed**\n* `openrouter.endpoints.listZdrEndpoints()`:  `response.data[].providerName.enum(scaleDown)` **Added**\n* `openrouter.endpoints.list()`:  `response.data.endpoints[].providerName.enum(scaleDown)` **Added**\n* `openrouter.generations.getGeneration()`:  `response.data.providerResponses[].providerName.enum(scaleDown)` **Added**\n* `openrouter.images.generate()`: \n  *  `request.imageGenerationRequest.provider` **Changed**\n* `openrouter.presets.createPresetsChatCompletions()`: \n  *  `request.chatRequest.provider` **Changed**\n* `openrouter.presets.createPresetsMessages()`: \n  *  `request.messagesRequest.provider` **Changed**\n* `openrouter.presets.createPresetsResponses()`: \n  *  `request.responsesRequest.provider` **Changed**\n* `openrouter.rerank.rerank()`: \n  *  `request.requestBody.provider` **Changed**\n* `openrouter.responses.send()`: \n  *  `request.responsesRequest.provider` **Changed**\n* `openrouter.beta.responses.send()`: \n  *  `request.responsesRequest.provider` **Changed**\n* `openrouter.systemOne.create()`: \n  *  `request.decisionsRequest.provider` **Changed**\n* `openrouter.videoGeneration.generate()`: \n  *  `request.videoGenerationRequest.provider.options.scaledown` **Added**\n"
+releaseNotes: |
+  ## Typescript SDK Changes:
+  * `openrouter.interns.getInternDaemonAccess()`:  `error.status[429]` **Removed** (Breaking ⚠️)

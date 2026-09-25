@@ -32,7 +32,7 @@ import { Result } from "../types/fp.js";
  * Get an intern's daemon access
  *
  * @remarks
- * Returns the origin and daemon token that attach `ori tui --host` to one visible, running intern. The token is a credential: the response is sent with `Cache-Control: no-store`, each reveal is logged by caller and intern, and a caller may make 10 reveals per minute. The API key selects the caller, workspace and visible interns. There is no default workspace fallback. Requests on regional hostnames such as `eu.openrouter.ai` are refused. [API key](/docs/api-reference/authentication) required.
+ * Returns the origin and daemon token that attach `ori tui --host` to one visible, running intern. The token is a credential: the response is sent with `Cache-Control: no-store`, and each reveal is logged by caller and intern. The API key selects the caller, workspace and visible interns. There is no default workspace fallback. Requests on regional hostnames such as `eu.openrouter.ai` are refused. [API key](/docs/api-reference/authentication) required.
  *
  * If set, this operation will use {@link Security.apiKey} from the global security.
  */
@@ -195,7 +195,7 @@ async function $do(
   >(
     M.json(200, models.InternDaemonAccess$inboundSchema),
     M.jsonErr(
-      [401, 403, 404, 408, 409, 429],
+      [401, 403, 404, 408, 409],
       errors.InternLifecycleError$inboundSchema,
     ),
     M.jsonErr(500, errors.InternLifecycleError$inboundSchema),
