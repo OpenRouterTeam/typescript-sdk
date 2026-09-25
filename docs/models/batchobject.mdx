@@ -1,0 +1,97 @@
+---
+title: "BatchObject"
+---
+
+## Example Usage
+
+```typescript
+import { BatchObject } from "@openrouter/sdk/models";
+
+let value: BatchObject = {
+  completionWindow: "24h",
+  createdAt: 931790,
+  endpoint: "<value>",
+  error: {
+    message: "<value>",
+  },
+  finalizedAt: 113361,
+  id: "<id>",
+  model: "XC90",
+  object: "batch",
+  requestCounts: {
+    completed: 325090,
+    failed: 387647,
+    total: 515228,
+  },
+  results: [
+    {
+      customId: "<id>",
+      error: {
+        message: "<value>",
+        param: "<value>",
+        type: "<value>",
+      },
+      id: "<id>",
+      response: {
+        body: {
+          completedAt: 1704067210,
+          createdAt: 1704067200,
+          error: null,
+          frequencyPenalty: null,
+          id: "resp-abc123",
+          incompleteDetails: null,
+          instructions: null,
+          metadata: null,
+          model: "gpt-4",
+          object: "response",
+          output: [
+            {
+              content: [
+                {
+                  text: "Hello! How can I help you today?",
+                  type: "output_text",
+                },
+              ],
+              id: "msg-abc123",
+              role: "assistant",
+              type: "message",
+            },
+          ],
+          parallelToolCalls: true,
+          presencePenalty: null,
+          status: "completed",
+          temperature: null,
+          toolChoice: "auto",
+          tools: [],
+          topP: null,
+        },
+        requestId: "<id>",
+        statusCode: 170920,
+      },
+    },
+  ],
+  status: "in_progress",
+  usage: {
+    completionTokens: 621146,
+    promptTokens: 401122,
+    totalTokens: 291986,
+  },
+};
+```
+
+## Fields
+
+| Field                                                                          | Type                                                                           | Required                                                                       | Description                                                                    |
+| ------------------------------------------------------------------------------ | ------------------------------------------------------------------------------ | ------------------------------------------------------------------------------ | ------------------------------------------------------------------------------ |
+| `completionWindow`                                                             | [models.BatchObjectCompletionWindow](../models/batchobjectcompletionwindow.mdx) | :heavy_check_mark:                                                             | N/A                                                                            |
+| `createdAt`                                                                    | *number*                                                                       | :heavy_check_mark:                                                             | N/A                                                                            |
+| `endpoint`                                                                     | *string*                                                                       | :heavy_check_mark:                                                             | N/A                                                                            |
+| `error`                                                                        | [models.BatchObjectError](../models/batchobjecterror.mdx)                       | :heavy_check_mark:                                                             | N/A                                                                            |
+| `finalizedAt`                                                                  | *number*                                                                       | :heavy_check_mark:                                                             | N/A                                                                            |
+| `id`                                                                           | *string*                                                                       | :heavy_check_mark:                                                             | N/A                                                                            |
+| `model`                                                                        | *string*                                                                       | :heavy_check_mark:                                                             | N/A                                                                            |
+| `object`                                                                       | [models.BatchObjectObjectBatch](../models/batchobjectobjectbatch.mdx)           | :heavy_check_mark:                                                             | N/A                                                                            |
+| `requestCounts`                                                                | [models.BatchObjectRequestCounts](../models/batchobjectrequestcounts.mdx)       | :heavy_check_mark:                                                             | N/A                                                                            |
+| `results`                                                                      | [models.Result](../models/result.mdx)[]                                         | :heavy_check_mark:                                                             | N/A                                                                            |
+| `status`                                                                       | [models.BatchObjectStatus](../models/batchobjectstatus.mdx)                     | :heavy_check_mark:                                                             | N/A                                                                            |
+| `usage`                                                                        | [models.BatchObjectUsage](../models/batchobjectusage.mdx)                       | :heavy_check_mark:                                                             | N/A                                                                            |

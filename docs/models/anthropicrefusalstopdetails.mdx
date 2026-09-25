@@ -1,0 +1,25 @@
+---
+title: "AnthropicRefusalStopDetails"
+---
+
+Structured information about a refusal
+
+## Example Usage
+
+```typescript
+import { AnthropicRefusalStopDetails } from "@openrouter/sdk/models";
+
+let value: AnthropicRefusalStopDetails = {
+  category: "cyber",
+  explanation: "The request was refused due to policy.",
+  type: "refusal",
+};
+```
+
+## Fields
+
+| Field                                                                                          | Type                                                                                           | Required                                                                                       | Description                                                                                    |
+| ---------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------- |
+| `category`                                                                                     | [models.AnthropicRefusalStopDetailsCategory](../models/anthropicrefusalstopdetailscategory.mdx) | :heavy_check_mark:                                                                             | N/A                                                                                            |
+| `explanation`                                                                                  | *string*                                                                                       | :heavy_check_mark:                                                                             | N/A                                                                                            |
+| `type`                                                                                         | [models.AnthropicRefusalStopDetailsType](../models/anthropicrefusalstopdetailstype.mdx)         | :heavy_check_mark:                                                                             | N/A                                                                                            |

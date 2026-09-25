@@ -10,9 +10,9 @@ Record of an OpenRouter server-tool invocation (e.g. openrouter:fusion), carried
 import { ReasoningDetailServerToolCall } from "@openrouter/sdk/models";
 
 let value: ReasoningDetailServerToolCall = {
-  arguments: "<value>",
-  result: "<value>",
-  toolName: "<value>",
+  arguments: "{\"prompt\":\"Compare carbon tax proposals\"}",
+  result: "{\"status\":\"ok\",\"models\":[\"openai/gpt-4o\"]}",
+  toolName: "openrouter:fusion",
   type: "reasoning.server_tool_call",
 };
 ```

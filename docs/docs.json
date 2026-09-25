@@ -12,6 +12,7 @@
       "overview",
       "sdks/analytics/README",
       "sdks/apikeys/README",
+      "sdks/batch/README",
       "sdks/benchmarks/README",
       "sdks/betaresponses/README",
       "sdks/byok/README",

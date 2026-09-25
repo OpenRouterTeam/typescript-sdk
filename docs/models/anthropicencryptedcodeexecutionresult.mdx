@@ -1,0 +1,27 @@
+---
+title: "AnthropicEncryptedCodeExecutionResult"
+---
+
+## Example Usage
+
+```typescript
+import { AnthropicEncryptedCodeExecutionResult } from "@openrouter/sdk/models";
+
+let value: AnthropicEncryptedCodeExecutionResult = {
+  content: [],
+  encryptedStdout: "<value>",
+  returnCode: 0,
+  stderr: "",
+  type: "encrypted_code_execution_result",
+};
+```
+
+## Fields
+
+| Field                                                                              | Type                                                                               | Required                                                                           | Description                                                                        |
+| ---------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------- |
+| `content`                                                                          | [models.AnthropicCodeExecutionOutput](../models/anthropiccodeexecutionoutput.mdx)[] | :heavy_check_mark:                                                                 | N/A                                                                                |
+| `encryptedStdout`                                                                  | *string*                                                                           | :heavy_check_mark:                                                                 | N/A                                                                                |
+| `returnCode`                                                                       | *number*                                                                           | :heavy_check_mark:                                                                 | N/A                                                                                |
+| `stderr`                                                                           | *string*                                                                           | :heavy_check_mark:                                                                 | N/A                                                                                |
+| `type`                                                                             | *"encrypted_code_execution_result"*                                                | :heavy_check_mark:                                                                 | N/A                                                                                |

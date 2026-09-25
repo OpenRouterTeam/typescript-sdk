@@ -1,0 +1,26 @@
+---
+title: "AnthropicToolSearchResult"
+---
+
+## Example Usage
+
+```typescript
+import { AnthropicToolSearchResult } from "@openrouter/sdk/models";
+
+let value: AnthropicToolSearchResult = {
+  toolReferences: [
+    {
+      toolName: "my_tool",
+      type: "tool_reference",
+    },
+  ],
+  type: "tool_search_tool_search_result",
+};
+```
+
+## Fields
+
+| Field                                                                  | Type                                                                   | Required                                                               | Description                                                            |
+| ---------------------------------------------------------------------- | ---------------------------------------------------------------------- | ---------------------------------------------------------------------- | ---------------------------------------------------------------------- |
+| `toolReferences`                                                       | [models.AnthropicToolReference](../models/anthropictoolreference.mdx)[] | :heavy_check_mark:                                                     | N/A                                                                    |
+| `type`                                                                 | *"tool_search_tool_search_result"*                                     | :heavy_check_mark:                                                     | N/A                                                                    |

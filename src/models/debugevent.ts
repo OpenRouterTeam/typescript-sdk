@@ -11,42 +11,47 @@ import { OpenEnum } from "../types/enums.js";
 import { Result as SafeParseResult } from "../types/fp.js";
 import { SDKValidationError } from "./errors/sdkvalidationerror.js";
 
-export const Event = {
+export const DebugEventEvent = {
   AdapterRequest: "adapter_request",
   UpstreamHeadersReceived: "upstream_headers_received",
   FirstTokenReceived: "first_token_received",
   UpstreamBodyEnded: "upstream_body_ended",
 } as const;
-export type Event = OpenEnum<typeof Event>;
+export type DebugEventEvent = OpenEnum<typeof DebugEventEvent>;
 
-export type Timings = {
+export type DebugEventTimings = {
   epochMs: number;
-  event: Event;
+  event: DebugEventEvent;
   startMs: number;
 };
 
-export type Debug = {
+export type DebugEventDebug = {
   echoUpstreamBody?: { [k: string]: any } | undefined;
-  timings?: Timings | undefined;
+  timings?: DebugEventTimings | undefined;
 };
 
 /**
  * Debug event emitted when debug.echo_upstream_body is true. Contains the transformed upstream request body or timing milestones.
  */
 export type DebugEvent = {
-  debug: Debug;
+  debug: DebugEventDebug;
   sequenceNumber: number;
   type: "response.debug";
 };
 
 /** @internal */
-export const Event$inboundSchema: z.ZodType<Event, unknown> = openEnums
-  .inboundSchema(Event);
+export const DebugEventEvent$inboundSchema: z.ZodType<
+  DebugEventEvent,
+  unknown
+> = openEnums.inboundSchema(DebugEventEvent);
 
 /** @internal */
-export const Timings$inboundSchema: z.ZodType<Timings, unknown> = z.object({
+export const DebugEventTimings$inboundSchema: z.ZodType<
+  DebugEventTimings,
+  unknown
+> = z.object({
   epoch_ms: z.int(),
-  event: Event$inboundSchema,
+  event: DebugEventEvent$inboundSchema,
   start_ms: z.int(),
 }).transform((v) => {
   return remap$(v, {
@@ -55,40 +60,43 @@ export const Timings$inboundSchema: z.ZodType<Timings, unknown> = z.object({
   });
 });
 
-export function timingsFromJSON(
+export function debugEventTimingsFromJSON(
   jsonString: string,
-): SafeParseResult<Timings, SDKValidationError> {
+): SafeParseResult<DebugEventTimings, SDKValidationError> {
   return safeParse(
     jsonString,
-    (x) => Timings$inboundSchema.parse(JSON.parse(x)),
-    `Failed to parse 'Timings' from JSON`,
+    (x) => DebugEventTimings$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'DebugEventTimings' from JSON`,
   );
 }
 
 /** @internal */
-export const Debug$inboundSchema: z.ZodType<Debug, unknown> = z.object({
+export const DebugEventDebug$inboundSchema: z.ZodType<
+  DebugEventDebug,
+  unknown
+> = z.object({
   echo_upstream_body: z.record(z.string(), z.any()).optional(),
-  timings: z.lazy(() => Timings$inboundSchema).optional(),
+  timings: z.lazy(() => DebugEventTimings$inboundSchema).optional(),
 }).transform((v) => {
   return remap$(v, {
     "echo_upstream_body": "echoUpstreamBody",
   });
 });
 
-export function debugFromJSON(
+export function debugEventDebugFromJSON(
   jsonString: string,
-): SafeParseResult<Debug, SDKValidationError> {
+): SafeParseResult<DebugEventDebug, SDKValidationError> {
   return safeParse(
     jsonString,
-    (x) => Debug$inboundSchema.parse(JSON.parse(x)),
-    `Failed to parse 'Debug' from JSON`,
+    (x) => DebugEventDebug$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'DebugEventDebug' from JSON`,
   );
 }
 
 /** @internal */
 export const DebugEvent$inboundSchema: z.ZodType<DebugEvent, unknown> = z
   .object({
-    debug: z.lazy(() => Debug$inboundSchema),
+    debug: z.lazy(() => DebugEventDebug$inboundSchema),
     sequence_number: z.int(),
     type: z.literal("response.debug"),
   }).transform((v) => {

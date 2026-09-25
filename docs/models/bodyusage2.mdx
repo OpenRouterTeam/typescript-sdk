@@ -1,0 +1,37 @@
+---
+title: "BodyUsage2"
+---
+
+## Example Usage
+
+```typescript
+import { BodyUsage2 } from "@openrouter/sdk/models";
+
+let value: BodyUsage2 = {
+  cacheCreation: null,
+  cacheCreationInputTokens: null,
+  cacheReadInputTokens: null,
+  inferenceGeo: null,
+  inputTokens: 100,
+  outputTokens: 50,
+  outputTokensDetails: null,
+  serverToolUse: null,
+  serviceTier: "standard",
+};
+```
+
+## Fields
+
+| Field                                                                            | Type                                                                             | Required                                                                         | Description                                                                      | Example                                                                          |
+| -------------------------------------------------------------------------------- | -------------------------------------------------------------------------------- | -------------------------------------------------------------------------------- | -------------------------------------------------------------------------------- | -------------------------------------------------------------------------------- |
+| `cacheCreation`                                                                  | [models.AnthropicCacheCreation](../models/anthropiccachecreation.mdx)             | :heavy_check_mark:                                                               | N/A                                                                              | \{<br/>"ephemeral_1h_input_tokens": 0,<br/>"ephemeral_5m_input_tokens": 100<br/>} |
+| `cacheCreationInputTokens`                                                       | *number*                                                                         | :heavy_check_mark:                                                               | N/A                                                                              |                                                                                  |
+| `cacheReadInputTokens`                                                           | *number*                                                                         | :heavy_check_mark:                                                               | N/A                                                                              |                                                                                  |
+| `inferenceGeo`                                                                   | *string*                                                                         | :heavy_check_mark:                                                               | N/A                                                                              |                                                                                  |
+| `inputTokens`                                                                    | *number*                                                                         | :heavy_check_mark:                                                               | N/A                                                                              |                                                                                  |
+| `outputTokens`                                                                   | *number*                                                                         | :heavy_check_mark:                                                               | N/A                                                                              |                                                                                  |
+| `outputTokensDetails`                                                            | [models.AnthropicOutputTokensDetails](../models/anthropicoutputtokensdetails.mdx) | :heavy_check_mark:                                                               | N/A                                                                              | \{<br/>"thinking_tokens": 0<br/>}                                                 |
+| `serverToolUse`                                                                  | [models.AnthropicServerToolUsage](../models/anthropicservertoolusage.mdx)         | :heavy_check_mark:                                                               | N/A                                                                              | \{<br/>"web_fetch_requests": 0,<br/>"web_search_requests": 1<br/>}                |
+| `serviceTier`                                                                    | [models.AnthropicServiceTier](../models/anthropicservicetier.mdx)                 | :heavy_check_mark:                                                               | N/A                                                                              | standard                                                                         |
+| `iterations`                                                                     | *models.AnthropicUsageIteration*[]                                               | :heavy_minus_sign:                                                               | N/A                                                                              |                                                                                  |
+| `speed`                                                                          | [models.AnthropicSpeed](../models/anthropicspeed.mdx)                             | :heavy_minus_sign:                                                               | N/A                                                                              | standard                                                                         |

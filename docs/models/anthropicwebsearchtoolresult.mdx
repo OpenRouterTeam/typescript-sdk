@@ -1,0 +1,30 @@
+---
+title: "AnthropicWebSearchToolResult"
+---
+
+## Example Usage
+
+```typescript
+import { AnthropicWebSearchToolResult } from "@openrouter/sdk/models";
+
+let value: AnthropicWebSearchToolResult = {
+  caller: {
+    type: "direct",
+  },
+  content: {
+    errorCode: "unavailable",
+    type: "web_search_tool_result_error",
+  },
+  toolUseId: "<id>",
+  type: "web_search_tool_result",
+};
+```
+
+## Fields
+
+| Field                                        | Type                                         | Required                                     | Description                                  | Example                                      |
+| -------------------------------------------- | -------------------------------------------- | -------------------------------------------- | -------------------------------------------- | -------------------------------------------- |
+| `caller`                                     | *models.AnthropicCaller*                     | :heavy_check_mark:                           | N/A                                          | \{<br/>"type": "direct"<br/>}                 |
+| `content`                                    | *models.AnthropicWebSearchToolResultContent* | :heavy_check_mark:                           | N/A                                          |                                              |
+| `toolUseId`                                  | *string*                                     | :heavy_check_mark:                           | N/A                                          |                                              |
+| `type`                                       | *"web_search_tool_result"*                   | :heavy_check_mark:                           | N/A                                          |                                              |

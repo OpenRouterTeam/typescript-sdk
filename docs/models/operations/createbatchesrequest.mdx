@@ -1,0 +1,26 @@
+---
+title: "CreateBatchesRequest"
+---
+
+## Example Usage
+
+```typescript
+import { CreateBatchesRequest } from "@openrouter/sdk/models/operations";
+
+let value: CreateBatchesRequest = {
+  batchSubmitBody: {
+    endpoint: "/v1/responses",
+    model: "Roadster",
+    requests: [],
+  },
+};
+```
+
+## Fields
+
+| Field                                                                                                                                             | Type                                                                                                                                              | Required                                                                                                                                          | Description                                                                                                                                       |
+| ------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `httpReferer`                                                                                                                                     | *string*                                                                                                                                          | :heavy_minus_sign:                                                                                                                                | The app identifier should be your app's URL and is used as the primary identifier for rankings.<br/>This is used to track API usage per application.<br/> |
+| `appTitle`                                                                                                                                        | *string*                                                                                                                                          | :heavy_minus_sign:                                                                                                                                | The app display name allows you to customize how your app appears in OpenRouter's dashboard.<br/>                                                 |
+| `appCategories`                                                                                                                                   | *string*                                                                                                                                          | :heavy_minus_sign:                                                                                                                                | Comma-separated list of app categories (e.g. "cli-agent,cloud-agent"). Used for marketplace rankings.<br/>                                        |
+| `batchSubmitBody`                                                                                                                                 | [models.BatchSubmitBody](../../models/batchsubmitbody.mdx)                                                                                         | :heavy_check_mark:                                                                                                                                | The batch to create. Each item in `requests` has a unique `custom_id` and a `body` in the request format of the chosen `endpoint`.                |

@@ -1,0 +1,33 @@
+---
+title: "AnthropicWebFetchBlock"
+---
+
+## Example Usage
+
+```typescript
+import { AnthropicWebFetchBlock } from "@openrouter/sdk/models";
+
+let value: AnthropicWebFetchBlock = {
+  content: {
+    source: {
+      data: "",
+      mediaType: "text/plain",
+      type: "text",
+    },
+    title: null,
+    type: "document",
+  },
+  retrievedAt: null,
+  type: "web_fetch_result",
+  url: "https://example.com",
+};
+```
+
+## Fields
+
+| Field                                                                                                                                       | Type                                                                                                                                        | Required                                                                                                                                    | Description                                                                                                                                 | Example                                                                                                                                     |
+| ------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------- |
+| `content`                                                                                                                                   | [models.AnthropicDocumentBlock](../models/anthropicdocumentblock.mdx)                                                                        | :heavy_check_mark:                                                                                                                          | N/A                                                                                                                                         | \{<br/>"citations": null,<br/>"source": \{<br/>"data": "Hello, world!",<br/>"media_type": "text/plain",<br/>"type": "text"<br/>},<br/>"title": null,<br/>"type": "document"<br/>} |
+| `retrievedAt`                                                                                                                               | *string*                                                                                                                                    | :heavy_check_mark:                                                                                                                          | N/A                                                                                                                                         |                                                                                                                                             |
+| `type`                                                                                                                                      | *"web_fetch_result"*                                                                                                                        | :heavy_check_mark:                                                                                                                          | N/A                                                                                                                                         |                                                                                                                                             |
+| `url`                                                                                                                                       | *string*                                                                                                                                    | :heavy_check_mark:                                                                                                                          | N/A                                                                                                                                         |                                                                                                                                             |

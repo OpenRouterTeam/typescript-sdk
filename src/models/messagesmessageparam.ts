@@ -82,25 +82,27 @@ export type ContentCompaction = {
   type: "compaction";
 };
 
-export const ErrorCode = {
+export const MessagesMessageParamErrorCode = {
   InvalidToolInput: "invalid_tool_input",
   Unavailable: "unavailable",
   MaxUsesExceeded: "max_uses_exceeded",
   TooManyRequests: "too_many_requests",
   QueryTooLong: "query_too_long",
 } as const;
-export type ErrorCode = OpenEnum<typeof ErrorCode>;
+export type MessagesMessageParamErrorCode = OpenEnum<
+  typeof MessagesMessageParamErrorCode
+>;
 
-export const TypeWebSearchToolResultError = {
+export const MessagesMessageParamTypeWebSearchToolResultError = {
   WebSearchToolResultError: "web_search_tool_result_error",
 } as const;
-export type TypeWebSearchToolResultError = ClosedEnum<
-  typeof TypeWebSearchToolResultError
+export type MessagesMessageParamTypeWebSearchToolResultError = ClosedEnum<
+  typeof MessagesMessageParamTypeWebSearchToolResultError
 >;
 
 export type ContentWebSearchToolResultError = {
-  errorCode: ErrorCode;
-  type: TypeWebSearchToolResultError;
+  errorCode: MessagesMessageParamErrorCode;
+  type: MessagesMessageParamTypeWebSearchToolResultError;
 };
 
 export type MessagesMessageParamContentUnion3 =
@@ -304,13 +306,16 @@ export function contentCompactionToJSON(
 }
 
 /** @internal */
-export const ErrorCode$outboundSchema: z.ZodType<string, ErrorCode> = openEnums
-  .outboundSchema(ErrorCode);
+export const MessagesMessageParamErrorCode$outboundSchema: z.ZodType<
+  string,
+  MessagesMessageParamErrorCode
+> = openEnums.outboundSchema(MessagesMessageParamErrorCode);
 
 /** @internal */
-export const TypeWebSearchToolResultError$outboundSchema: z.ZodEnum<
-  typeof TypeWebSearchToolResultError
-> = z.enum(TypeWebSearchToolResultError);
+export const MessagesMessageParamTypeWebSearchToolResultError$outboundSchema:
+  z.ZodEnum<typeof MessagesMessageParamTypeWebSearchToolResultError> = z.enum(
+    MessagesMessageParamTypeWebSearchToolResultError,
+  );
 
 /** @internal */
 export type ContentWebSearchToolResultError$Outbound = {
@@ -323,8 +328,8 @@ export const ContentWebSearchToolResultError$outboundSchema: z.ZodType<
   ContentWebSearchToolResultError$Outbound,
   ContentWebSearchToolResultError
 > = z.object({
-  errorCode: ErrorCode$outboundSchema,
-  type: TypeWebSearchToolResultError$outboundSchema,
+  errorCode: MessagesMessageParamErrorCode$outboundSchema,
+  type: MessagesMessageParamTypeWebSearchToolResultError$outboundSchema,
 }).transform((v) => {
   return remap$(v, {
     errorCode: "error_code",

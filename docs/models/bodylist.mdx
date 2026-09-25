@@ -1,0 +1,36 @@
+---
+title: "BodyList"
+---
+
+Embeddings response containing embedding vectors
+
+## Example Usage
+
+```typescript
+import { BodyList } from "@openrouter/sdk/models";
+
+let value: BodyList = {
+  data: [
+    {
+      embedding: [
+        0.0023064255,
+        -0.009327292,
+        0.015797347,
+      ],
+      object: "embedding",
+    },
+  ],
+  model: "openai/text-embedding-3-small",
+  object: "list",
+};
+```
+
+## Fields
+
+| Field                                                                                               | Type                                                                                                | Required                                                                                            | Description                                                                                         | Example                                                                                             |
+| --------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------- |
+| `data`                                                                                              | [models.BatchObjectData](../models/batchobjectdata.mdx)[]                                            | :heavy_check_mark:                                                                                  | List of embedding objects                                                                           | [<br/>\{<br/>"embedding": [<br/>0.0023064255,<br/>-0.009327292,<br/>0.015797347<br/>],<br/>"index": 0,<br/>"object": "embedding"<br/>}<br/>] |
+| `id`                                                                                                | *string*                                                                                            | :heavy_minus_sign:                                                                                  | Unique identifier for the embeddings response                                                       | embd-1234567890                                                                                     |
+| `model`                                                                                             | *string*                                                                                            | :heavy_check_mark:                                                                                  | The model used for embeddings                                                                       | openai/text-embedding-3-small                                                                       |
+| `object`                                                                                            | [models.BodyObjectList](../models/bodyobjectlist.mdx)                                                | :heavy_check_mark:                                                                                  | N/A                                                                                                 |                                                                                                     |
+| `usage`                                                                                             | [models.BodyUsage3](../models/bodyusage3.mdx)                                                        | :heavy_minus_sign:                                                                                  | Token usage statistics                                                                              | \{<br/>"prompt_tokens": 8,<br/>"total_tokens": 8<br/>}                                               |

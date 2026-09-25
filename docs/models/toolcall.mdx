@@ -1,0 +1,28 @@
+---
+title: "ToolCall"
+---
+
+## Example Usage
+
+```typescript
+import { ToolCall } from "@openrouter/sdk/models";
+
+let value: ToolCall = {
+  function: {
+    arguments: "<value>",
+    name: "<value>",
+  },
+  id: "<id>",
+  index: 448237,
+  type: "function",
+};
+```
+
+## Fields
+
+| Field                                                          | Type                                                           | Required                                                       | Description                                                    |
+| -------------------------------------------------------------- | -------------------------------------------------------------- | -------------------------------------------------------------- | -------------------------------------------------------------- |
+| `function`                                                     | [models.BatchObjectFunction](../models/batchobjectfunction.mdx) | :heavy_check_mark:                                             | N/A                                                            |
+| `id`                                                           | *string*                                                       | :heavy_check_mark:                                             | N/A                                                            |
+| `index`                                                        | *number*                                                       | :heavy_check_mark:                                             | N/A                                                            |
+| `type`                                                         | [models.ChoiceTypeFunction](../models/choicetypefunction.mdx)   | :heavy_check_mark:                                             | N/A                                                            |

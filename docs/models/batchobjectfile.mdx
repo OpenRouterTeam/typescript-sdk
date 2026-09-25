@@ -1,0 +1,29 @@
+---
+title: "BatchObjectFile"
+---
+
+## Example Usage
+
+```typescript
+import { BatchObjectFile } from "@openrouter/sdk/models";
+
+let value: BatchObjectFile = {
+  content: [
+    {
+      imageUrl: {
+        url: "https://zealous-march.biz/",
+      },
+      type: "image_url",
+    },
+  ],
+  hash: "<value>",
+};
+```
+
+## Fields
+
+| Field                             | Type                              | Required                          | Description                       |
+| --------------------------------- | --------------------------------- | --------------------------------- | --------------------------------- |
+| `content`                         | *models.AnnotationContentUnion*[] | :heavy_check_mark:                | N/A                               |
+| `hash`                            | *string*                          | :heavy_check_mark:                | N/A                               |
+| `name`                            | *string*                          | :heavy_minus_sign:                | N/A                               |

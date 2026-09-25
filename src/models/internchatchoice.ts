@@ -18,7 +18,7 @@ import {
 /**
  * `null` while streaming. `stop` when the run completed, `tool_calls` when the run is waiting for the caller to answer the streamed tool call, `error` on the terminal error chunk.
  */
-export const FinishReason = {
+export const InternChatChoiceFinishReason = {
   Error: "error",
   Stop: "stop",
   ToolCalls: "tool_calls",
@@ -26,7 +26,9 @@ export const FinishReason = {
 /**
  * `null` while streaming. `stop` when the run completed, `tool_calls` when the run is waiting for the caller to answer the streamed tool call, `error` on the terminal error chunk.
  */
-export type FinishReason = OpenEnum<typeof FinishReason>;
+export type InternChatChoiceFinishReason = OpenEnum<
+  typeof InternChatChoiceFinishReason
+>;
 
 /**
  * The single choice this endpoint streams.
@@ -39,13 +41,15 @@ export type InternChatChoice = {
   /**
    * `null` while streaming. `stop` when the run completed, `tool_calls` when the run is waiting for the caller to answer the streamed tool call, `error` on the terminal error chunk.
    */
-  finishReason: FinishReason | null;
+  finishReason: InternChatChoiceFinishReason | null;
   index: number;
 };
 
 /** @internal */
-export const FinishReason$inboundSchema: z.ZodType<FinishReason, unknown> =
-  openEnums.inboundSchema(FinishReason);
+export const InternChatChoiceFinishReason$inboundSchema: z.ZodType<
+  InternChatChoiceFinishReason,
+  unknown
+> = openEnums.inboundSchema(InternChatChoiceFinishReason);
 
 /** @internal */
 export const InternChatChoice$inboundSchema: z.ZodType<
@@ -53,7 +57,7 @@ export const InternChatChoice$inboundSchema: z.ZodType<
   unknown
 > = z.object({
   delta: InternChatDelta$inboundSchema,
-  finish_reason: z.nullable(FinishReason$inboundSchema),
+  finish_reason: z.nullable(InternChatChoiceFinishReason$inboundSchema),
   index: z.int(),
 }).transform((v) => {
   return remap$(v, {

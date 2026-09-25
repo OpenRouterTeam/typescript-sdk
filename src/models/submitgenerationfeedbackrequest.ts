@@ -11,7 +11,7 @@ import { OpenEnum } from "../types/enums.js";
 /**
  * The category of feedback being reported
  */
-export const Category = {
+export const SubmitGenerationFeedbackRequestCategory = {
   Latency: "latency",
   Incoherence: "incoherence",
   IncorrectResponse: "incorrect_response",
@@ -23,7 +23,9 @@ export const Category = {
 /**
  * The category of feedback being reported
  */
-export type Category = OpenEnum<typeof Category>;
+export type SubmitGenerationFeedbackRequestCategory = OpenEnum<
+  typeof SubmitGenerationFeedbackRequestCategory
+>;
 
 /**
  * Structured feedback about a specific generation
@@ -32,7 +34,7 @@ export type SubmitGenerationFeedbackRequest = {
   /**
    * The category of feedback being reported
    */
-  category: Category;
+  category: SubmitGenerationFeedbackRequestCategory;
   /**
    * An optional free-text comment describing the feedback
    */
@@ -44,8 +46,10 @@ export type SubmitGenerationFeedbackRequest = {
 };
 
 /** @internal */
-export const Category$outboundSchema: z.ZodType<string, Category> = openEnums
-  .outboundSchema(Category);
+export const SubmitGenerationFeedbackRequestCategory$outboundSchema: z.ZodType<
+  string,
+  SubmitGenerationFeedbackRequestCategory
+> = openEnums.outboundSchema(SubmitGenerationFeedbackRequestCategory);
 
 /** @internal */
 export type SubmitGenerationFeedbackRequest$Outbound = {
@@ -59,7 +63,7 @@ export const SubmitGenerationFeedbackRequest$outboundSchema: z.ZodType<
   SubmitGenerationFeedbackRequest$Outbound,
   SubmitGenerationFeedbackRequest
 > = z.object({
-  category: Category$outboundSchema,
+  category: SubmitGenerationFeedbackRequestCategory$outboundSchema,
   comment: z.string().optional(),
   generationId: z.string(),
 }).transform((v) => {

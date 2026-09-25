@@ -1,0 +1,39 @@
+---
+title: "AnthropicCodeExecutionContent"
+---
+
+## Supported Types
+
+### `models.AnthropicCodeExecutionResult`
+
+```typescript
+const value: models.AnthropicCodeExecutionResult = {
+  content: [],
+  returnCode: 0,
+  stderr: "",
+  stdout: "Hello",
+  type: "code_execution_result",
+};
+```
+
+### `models.AnthropicCodeExecutionToolResultError`
+
+```typescript
+const value: models.AnthropicCodeExecutionToolResultError = {
+  errorCode: "unavailable",
+  type: "code_execution_tool_result_error",
+};
+```
+
+### `models.AnthropicEncryptedCodeExecutionResult`
+
+```typescript
+const value: models.AnthropicEncryptedCodeExecutionResult = {
+  content: [],
+  encryptedStdout: "<value>",
+  returnCode: 0,
+  stderr: "",
+  type: "encrypted_code_execution_result",
+};
+```
+

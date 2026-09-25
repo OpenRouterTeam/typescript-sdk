@@ -1,0 +1,225 @@
+---
+title: "ORAnthropicContentBlock"
+---
+
+## Supported Types
+
+### `models.AnthropicAdvisorToolResult`
+
+```typescript
+const value: models.AnthropicAdvisorToolResult = {
+  content: {
+    "key": "<value>",
+    "key1": "<value>",
+    "key2": "<value>",
+  },
+  toolUseId: "<id>",
+  type: "advisor_tool_result",
+};
+```
+
+### `models.AnthropicBashCodeExecutionToolResult`
+
+```typescript
+const value: models.AnthropicBashCodeExecutionToolResult = {
+  content: {
+    content: [],
+    returnCode: 0,
+    stderr: "",
+    stdout: "Hello",
+    type: "bash_code_execution_result",
+  },
+  toolUseId: "<id>",
+  type: "bash_code_execution_tool_result",
+};
+```
+
+### `models.AnthropicCodeExecutionToolResult`
+
+```typescript
+const value: models.AnthropicCodeExecutionToolResult = {
+  content: {
+    content: [],
+    returnCode: 0,
+    stderr: "",
+    stdout: "Hello",
+    type: "code_execution_result",
+  },
+  toolUseId: "<id>",
+  type: "code_execution_tool_result",
+};
+```
+
+### `models.AnthropicCompactionBlock`
+
+```typescript
+const value: models.AnthropicCompactionBlock = {
+  content: "<value>",
+  type: "compaction",
+};
+```
+
+### `models.AnthropicContainerUpload`
+
+```typescript
+const value: models.AnthropicContainerUpload = {
+  fileId: "<id>",
+  type: "container_upload",
+};
+```
+
+### `models.ORAnthropicBashToolResult`
+
+```typescript
+const value: models.ORAnthropicBashToolResult = {
+  content: {
+    "key": "<value>",
+    "key1": "<value>",
+    "key2": "<value>",
+  },
+  toolUseId: "<id>",
+  type: "openrouter_bash_tool_result",
+};
+```
+
+### `models.ORAnthropicShellToolResult`
+
+```typescript
+const value: models.ORAnthropicShellToolResult = {
+  content: {
+    "key": "<value>",
+  },
+  toolUseId: "<id>",
+  type: "openrouter_shell_tool_result",
+};
+```
+
+### `models.AnthropicRedactedThinkingBlock`
+
+```typescript
+const value: models.AnthropicRedactedThinkingBlock = {
+  data: "<value>",
+  type: "redacted_thinking",
+};
+```
+
+### `models.ORAnthropicServerToolUseBlock`
+
+```typescript
+const value: models.ORAnthropicServerToolUseBlock = {
+  id: "<id>",
+  name: "<value>",
+  type: "server_tool_use",
+};
+```
+
+### `models.AnthropicTextBlock`
+
+```typescript
+const value: models.AnthropicTextBlock = {
+  citations: null,
+  text: "Hello, world!",
+  type: "text",
+};
+```
+
+### `models.AnthropicTextEditorCodeExecutionToolResult`
+
+```typescript
+const value: models.AnthropicTextEditorCodeExecutionToolResult = {
+  content: {
+    content: "file content",
+    fileType: "text",
+    numLines: 10,
+    startLine: 1,
+    totalLines: 10,
+    type: "text_editor_code_execution_view_result",
+  },
+  toolUseId: "<id>",
+  type: "text_editor_code_execution_tool_result",
+};
+```
+
+### `models.AnthropicThinkingBlock`
+
+```typescript
+const value: models.AnthropicThinkingBlock = {
+  signature: "<value>",
+  thinking: "<value>",
+  type: "thinking",
+};
+```
+
+### `models.AnthropicToolSearchToolResult`
+
+```typescript
+const value: models.AnthropicToolSearchToolResult = {
+  content: {
+    toolReferences: [
+      {
+        toolName: "my_tool",
+        type: "tool_reference",
+      },
+    ],
+    type: "tool_search_tool_search_result",
+  },
+  toolUseId: "<id>",
+  type: "tool_search_tool_result",
+};
+```
+
+### `models.AnthropicToolUseBlock`
+
+```typescript
+const value: models.AnthropicToolUseBlock = {
+  caller: {
+    type: "direct",
+  },
+  id: "<id>",
+  name: "<value>",
+  type: "tool_use",
+};
+```
+
+### `models.AnthropicWebFetchToolResult`
+
+```typescript
+const value: models.AnthropicWebFetchToolResult = {
+  caller: {
+    type: "direct",
+  },
+  content: {
+    content: {
+      source: {
+        data: "",
+        mediaType: "text/plain",
+        type: "text",
+      },
+      title: null,
+      type: "document",
+    },
+    retrievedAt: null,
+    type: "web_fetch_result",
+    url: "https://example.com",
+  },
+  toolUseId: "<id>",
+  type: "web_fetch_tool_result",
+};
+```
+
+### `models.AnthropicWebSearchToolResult`
+
+```typescript
+const value: models.AnthropicWebSearchToolResult = {
+  caller: {
+    type: "direct",
+  },
+  content: {
+    errorCode: "unavailable",
+    type: "web_search_tool_result_error",
+  },
+  toolUseId: "<id>",
+  type: "web_search_tool_result",
+};
+```
+

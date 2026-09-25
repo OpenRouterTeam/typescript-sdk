@@ -59,8 +59,8 @@ export type SourceContent = {
 };
 
 export type AnthropicDocumentBlockParamSourceUnion =
-  | AnthropicBase64PdfSource
-  | AnthropicPlainTextSource
+  | (AnthropicBase64PdfSource & { type: "base64" })
+  | (AnthropicPlainTextSource & { type: "text" })
   | SourceContent
   | AnthropicUrlPdfSource
   | AnthropicFileDocumentSource;
@@ -73,8 +73,8 @@ export type AnthropicDocumentBlockParam = {
   citations?: AnthropicDocumentBlockParamCitations | null | undefined;
   context?: string | null | undefined;
   source:
-    | AnthropicBase64PdfSource
-    | AnthropicPlainTextSource
+    | (AnthropicBase64PdfSource & { type: "base64" })
+    | (AnthropicPlainTextSource & { type: "text" })
     | SourceContent
     | AnthropicUrlPdfSource
     | AnthropicFileDocumentSource;
@@ -191,8 +191,8 @@ export function sourceContentToJSON(sourceContent: SourceContent): string {
 
 /** @internal */
 export type AnthropicDocumentBlockParamSourceUnion$Outbound =
-  | AnthropicBase64PdfSource$Outbound
-  | AnthropicPlainTextSource$Outbound
+  | (AnthropicBase64PdfSource$Outbound & { type: "base64" })
+  | (AnthropicPlainTextSource$Outbound & { type: "text" })
   | SourceContent$Outbound
   | AnthropicUrlPdfSource$Outbound
   | AnthropicFileDocumentSource$Outbound;
@@ -202,8 +202,12 @@ export const AnthropicDocumentBlockParamSourceUnion$outboundSchema: z.ZodType<
   AnthropicDocumentBlockParamSourceUnion$Outbound,
   AnthropicDocumentBlockParamSourceUnion
 > = z.union([
-  AnthropicBase64PdfSource$outboundSchema,
-  AnthropicPlainTextSource$outboundSchema,
+  AnthropicBase64PdfSource$outboundSchema.and(
+    z.object({ type: z.literal("base64") }),
+  ),
+  AnthropicPlainTextSource$outboundSchema.and(
+    z.object({ type: z.literal("text") }),
+  ),
   z.lazy(() => SourceContent$outboundSchema),
   AnthropicUrlPdfSource$outboundSchema,
   AnthropicFileDocumentSource$outboundSchema,
@@ -226,8 +230,8 @@ export type AnthropicDocumentBlockParam$Outbound = {
   citations?: AnthropicDocumentBlockParamCitations$Outbound | null | undefined;
   context?: string | null | undefined;
   source:
-    | AnthropicBase64PdfSource$Outbound
-    | AnthropicPlainTextSource$Outbound
+    | (AnthropicBase64PdfSource$Outbound & { type: "base64" })
+    | (AnthropicPlainTextSource$Outbound & { type: "text" })
     | SourceContent$Outbound
     | AnthropicUrlPdfSource$Outbound
     | AnthropicFileDocumentSource$Outbound;
@@ -246,8 +250,12 @@ export const AnthropicDocumentBlockParam$outboundSchema: z.ZodType<
   ).optional(),
   context: z.nullable(z.string()).optional(),
   source: z.union([
-    AnthropicBase64PdfSource$outboundSchema,
-    AnthropicPlainTextSource$outboundSchema,
+    AnthropicBase64PdfSource$outboundSchema.and(
+      z.object({ type: z.literal("base64") }),
+    ),
+    AnthropicPlainTextSource$outboundSchema.and(
+      z.object({ type: z.literal("text") }),
+    ),
     z.lazy(() => SourceContent$outboundSchema),
     AnthropicUrlPdfSource$outboundSchema,
     AnthropicFileDocumentSource$outboundSchema,

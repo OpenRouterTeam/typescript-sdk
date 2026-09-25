@@ -1,0 +1,54 @@
+---
+title: "AnthropicTextEditorCodeExecutionContent"
+---
+
+## Supported Types
+
+### `models.AnthropicTextEditorCodeExecutionCreateResult`
+
+```typescript
+const value: models.AnthropicTextEditorCodeExecutionCreateResult = {
+  isFileUpdate: false,
+  type: "text_editor_code_execution_create_result",
+};
+```
+
+### `models.AnthropicTextEditorCodeExecutionStrReplaceResult`
+
+```typescript
+const value: models.AnthropicTextEditorCodeExecutionStrReplaceResult = {
+  lines: [
+    "<value 1>",
+    "<value 2>",
+  ],
+  newLines: null,
+  newStart: 446855,
+  oldLines: 449453,
+  oldStart: 595089,
+  type: "text_editor_code_execution_str_replace_result",
+};
+```
+
+### `models.AnthropicTextEditorCodeExecutionToolResultError`
+
+```typescript
+const value: models.AnthropicTextEditorCodeExecutionToolResultError = {
+  errorCode: "invalid_tool_input",
+  errorMessage: "<value>",
+  type: "text_editor_code_execution_tool_result_error",
+};
+```
+
+### `models.AnthropicTextEditorCodeExecutionViewResult`
+
+```typescript
+const value: models.AnthropicTextEditorCodeExecutionViewResult = {
+  content: "file content",
+  fileType: "text",
+  numLines: 10,
+  startLine: 1,
+  totalLines: 10,
+  type: "text_editor_code_execution_view_result",
+};
+```
+

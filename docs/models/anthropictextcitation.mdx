@@ -1,0 +1,74 @@
+---
+title: "AnthropicTextCitation"
+---
+
+## Supported Types
+
+### `models.AnthropicCitationCharLocation`
+
+```typescript
+const value: models.AnthropicCitationCharLocation = {
+  citedText: "Example text",
+  documentIndex: 0,
+  documentTitle: null,
+  endCharIndex: 10,
+  fileId: null,
+  startCharIndex: 0,
+  type: "char_location",
+};
+```
+
+### `models.AnthropicCitationContentBlockLocation`
+
+```typescript
+const value: models.AnthropicCitationContentBlockLocation = {
+  citedText: "Example text",
+  documentIndex: 0,
+  documentTitle: null,
+  endBlockIndex: 604853,
+  fileId: null,
+  startBlockIndex: 996471,
+  type: "content_block_location",
+};
+```
+
+### `models.AnthropicCitationPageLocation`
+
+```typescript
+const value: models.AnthropicCitationPageLocation = {
+  citedText: "Example text",
+  documentIndex: 0,
+  documentTitle: null,
+  endPageNumber: 431333,
+  fileId: null,
+  startPageNumber: 44719,
+  type: "page_location",
+};
+```
+
+### `models.AnthropicCitationSearchResultLocation`
+
+```typescript
+const value: models.AnthropicCitationSearchResultLocation = {
+  citedText: "Example text",
+  endBlockIndex: 782840,
+  searchResultIndex: 96845,
+  source: "<value>",
+  startBlockIndex: 145706,
+  title: "<value>",
+  type: "search_result_location",
+};
+```
+
+### `models.AnthropicCitationWebSearchResultLocation`
+
+```typescript
+const value: models.AnthropicCitationWebSearchResultLocation = {
+  citedText: "Example text",
+  encryptedIndex: "<value>",
+  title: "<value>",
+  type: "web_search_result_location",
+  url: "https://baggy-disconnection.net",
+};
+```
+

@@ -1,0 +1,29 @@
+---
+title: "AnthropicCodeExecutionToolResult"
+---
+
+## Example Usage
+
+```typescript
+import { AnthropicCodeExecutionToolResult } from "@openrouter/sdk/models";
+
+let value: AnthropicCodeExecutionToolResult = {
+  content: {
+    content: [],
+    returnCode: 0,
+    stderr: "",
+    stdout: "Hello",
+    type: "code_execution_result",
+  },
+  toolUseId: "<id>",
+  type: "code_execution_tool_result",
+};
+```
+
+## Fields
+
+| Field                                                                                                 | Type                                                                                                  | Required                                                                                              | Description                                                                                           | Example                                                                                               |
+| ----------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------- |
+| `content`                                                                                             | *models.AnthropicCodeExecutionContent*                                                                | :heavy_check_mark:                                                                                    | N/A                                                                                                   | \{<br/>"content": [],<br/>"return_code": 0,<br/>"stderr": "",<br/>"stdout": "Hello",<br/>"type": "code_execution_result"<br/>} |
+| `toolUseId`                                                                                           | *string*                                                                                              | :heavy_check_mark:                                                                                    | N/A                                                                                                   |                                                                                                       |
+| `type`                                                                                                | *"code_execution_tool_result"*                                                                        | :heavy_check_mark:                                                                                    | N/A                                                                                                   |                                                                                                       |

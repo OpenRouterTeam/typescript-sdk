@@ -1,0 +1,27 @@
+---
+title: "BodyUsage1"
+---
+
+## Example Usage
+
+```typescript
+import { BodyUsage1 } from "@openrouter/sdk/models";
+
+let value: BodyUsage1 = {
+  completionTokens: 406555,
+  promptTokens: 855556,
+  totalTokens: 244239,
+};
+```
+
+## Fields
+
+| Field                                                                                  | Type                                                                                   | Required                                                                               | Description                                                                            |
+| -------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------- |
+| `completionTokens`                                                                     | *number*                                                                               | :heavy_check_mark:                                                                     | The tokens generated                                                                   |
+| `completionTokensDetails`                                                              | [models.BodyCompletionTokensDetails](../models/bodycompletiontokensdetails.mdx)         | :heavy_minus_sign:                                                                     | N/A                                                                                    |
+| `promptTokens`                                                                         | *number*                                                                               | :heavy_check_mark:                                                                     | Including images, input audio, and tools if any                                        |
+| `promptTokensDetails`                                                                  | [models.BodyPromptTokensDetails1](../models/bodyprompttokensdetails1.mdx)               | :heavy_minus_sign:                                                                     | Breakdown of tokens used in the prompt.                                                |
+| `serverToolUse`                                                                        | [models.BodyServerToolUse](../models/bodyservertooluse.mdx)                             | :heavy_minus_sign:                                                                     | Usage for server-side tool execution (e.g., web search)                                |
+| `serverToolUseDetails`                                                                 | [models.BatchObjectServerToolUseDetails](../models/batchobjectservertoolusedetails.mdx) | :heavy_minus_sign:                                                                     | Usage for server-side tool execution (e.g., web search)                                |
+| `totalTokens`                                                                          | *number*                                                                               | :heavy_check_mark:                                                                     | Sum of the above two fields                                                            |

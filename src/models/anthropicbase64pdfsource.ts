@@ -5,7 +5,10 @@
 
 import * as z from "zod/v4";
 import { remap as remap$ } from "../lib/primitives.js";
+import { safeParse } from "../lib/schemas.js";
 import { ClosedEnum } from "../types/enums.js";
+import { Result as SafeParseResult } from "../types/fp.js";
+import { SDKValidationError } from "./errors/sdkvalidationerror.js";
 
 export const AnthropicBase64PdfSourceMediaType = {
   ApplicationPdf: "application/pdf",
@@ -14,22 +17,55 @@ export type AnthropicBase64PdfSourceMediaType = ClosedEnum<
   typeof AnthropicBase64PdfSourceMediaType
 >;
 
+export const AnthropicBase64PdfSourceType = {
+  Base64: "base64",
+} as const;
+export type AnthropicBase64PdfSourceType = ClosedEnum<
+  typeof AnthropicBase64PdfSourceType
+>;
+
 export type AnthropicBase64PdfSource = {
   data: string;
   mediaType: AnthropicBase64PdfSourceMediaType;
-  type: "base64";
+  type: AnthropicBase64PdfSourceType;
 };
 
 /** @internal */
-export const AnthropicBase64PdfSourceMediaType$outboundSchema: z.ZodEnum<
+export const AnthropicBase64PdfSourceMediaType$inboundSchema: z.ZodEnum<
   typeof AnthropicBase64PdfSourceMediaType
 > = z.enum(AnthropicBase64PdfSourceMediaType);
+/** @internal */
+export const AnthropicBase64PdfSourceMediaType$outboundSchema: z.ZodEnum<
+  typeof AnthropicBase64PdfSourceMediaType
+> = AnthropicBase64PdfSourceMediaType$inboundSchema;
 
+/** @internal */
+export const AnthropicBase64PdfSourceType$inboundSchema: z.ZodEnum<
+  typeof AnthropicBase64PdfSourceType
+> = z.enum(AnthropicBase64PdfSourceType);
+/** @internal */
+export const AnthropicBase64PdfSourceType$outboundSchema: z.ZodEnum<
+  typeof AnthropicBase64PdfSourceType
+> = AnthropicBase64PdfSourceType$inboundSchema;
+
+/** @internal */
+export const AnthropicBase64PdfSource$inboundSchema: z.ZodType<
+  AnthropicBase64PdfSource,
+  unknown
+> = z.object({
+  data: z.string(),
+  media_type: AnthropicBase64PdfSourceMediaType$inboundSchema,
+  type: AnthropicBase64PdfSourceType$inboundSchema,
+}).transform((v) => {
+  return remap$(v, {
+    "media_type": "mediaType",
+  });
+});
 /** @internal */
 export type AnthropicBase64PdfSource$Outbound = {
   data: string;
   media_type: string;
-  type: "base64";
+  type: string;
 };
 
 /** @internal */
@@ -39,7 +75,7 @@ export const AnthropicBase64PdfSource$outboundSchema: z.ZodType<
 > = z.object({
   data: z.string(),
   mediaType: AnthropicBase64PdfSourceMediaType$outboundSchema,
-  type: z.literal("base64"),
+  type: AnthropicBase64PdfSourceType$outboundSchema,
 }).transform((v) => {
   return remap$(v, {
     mediaType: "media_type",
@@ -51,5 +87,14 @@ export function anthropicBase64PdfSourceToJSON(
 ): string {
   return JSON.stringify(
     AnthropicBase64PdfSource$outboundSchema.parse(anthropicBase64PdfSource),
+  );
+}
+export function anthropicBase64PdfSourceFromJSON(
+  jsonString: string,
+): SafeParseResult<AnthropicBase64PdfSource, SDKValidationError> {
+  return safeParse(
+    jsonString,
+    (x) => AnthropicBase64PdfSource$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'AnthropicBase64PdfSource' from JSON`,
   );
 }
