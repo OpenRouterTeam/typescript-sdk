@@ -41,6 +41,8 @@ export const ImageGenerationRequestAspectRatio = {
   FortyFive: "4:5",
   FiftyTwo: "5:2",
   FiftyFour: "5:4",
+  FiftySeven: "5:7",
+  SeventyFive: "7:5",
   EightyOne: "8:1",
   NineHundredAndSixteen: "9:16",
   OneHundredAndSixtyNine: "16:9",
@@ -113,6 +115,7 @@ export type ImageGenerationRequestQuality = OpenEnum<
  */
 export const ImageGenerationRequestResolution = {
   FiveHundredAndTwelve: "512",
+  SevenHundredAndSixtyEight: "768",
   OneK: "1K",
   TwoK: "2K",
   FourK: "4K",
