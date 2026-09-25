@@ -2,7 +2,7 @@
 title: "SpeechInputReferenceAudio"
 ---
 
-Reference audio input for stateless voice cloning
+Reference audio input for stateless voice cloning. Up to three parts per request; the Nth audio part is addressable from `input` as `@AudioN` on providers that support multiple references.
 
 ## Example Usage
 
@@ -10,9 +10,7 @@ Reference audio input for stateless voice cloning
 import { SpeechInputReferenceAudio } from "@openrouter/sdk/models";
 
 let value: SpeechInputReferenceAudio = {
-  inputAudio: {
-    data: "data:audio/wav;base64,UklGRuQXDABXQVZF...",
-  },
+  inputAudio: {},
   type: "input_audio",
 };
 ```

@@ -10,20 +10,27 @@ import {
   SpeechInputReferenceAudio$outboundSchema,
 } from "./speechinputreferenceaudio.js";
 import {
+  SpeechInputReferenceImage,
+  SpeechInputReferenceImage$Outbound,
+  SpeechInputReferenceImage$outboundSchema,
+} from "./speechinputreferenceimage.js";
+import {
   SpeechInputReferenceText,
   SpeechInputReferenceText$Outbound,
   SpeechInputReferenceText$outboundSchema,
 } from "./speechinputreferencetext.js";
 
 /**
- * Reference content part for stateless voice cloning
+ * Reference content part for stateless voice cloning or voice design
  */
 export type SpeechInputReference =
+  | SpeechInputReferenceImage
   | SpeechInputReferenceAudio
   | SpeechInputReferenceText;
 
 /** @internal */
 export type SpeechInputReference$Outbound =
+  | SpeechInputReferenceImage$Outbound
   | SpeechInputReferenceAudio$Outbound
   | SpeechInputReferenceText$Outbound;
 
@@ -32,6 +39,7 @@ export const SpeechInputReference$outboundSchema: z.ZodType<
   SpeechInputReference$Outbound,
   SpeechInputReference
 > = z.union([
+  SpeechInputReferenceImage$outboundSchema,
   SpeechInputReferenceAudio$outboundSchema,
   SpeechInputReferenceText$outboundSchema,
 ]);

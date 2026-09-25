@@ -56,7 +56,7 @@ export type SpeechRequest = {
    */
   input: string;
   /**
-   * Reference content for stateless voice cloning: one `input_audio` part carrying the voice sample, optionally accompanied by one `text` part with its transcript. Only routed to endpoints that support voice cloning.
+   * Reference content for stateless voice cloning or voice design. Audio mode: one to three `input_audio` parts, each optionally paired with a `text` part carrying its transcript (a single clip accepts its transcript before or after it; with multiple clips each transcript immediately follows its clip); only routed to endpoints that support voice cloning (and multiple references when more than one part is sent). Image mode: exactly one `image_url` part; only routed to endpoints that support image references. The two modes cannot be mixed. An empty array is treated as no reference.
    */
   inputReferences?: Array<SpeechInputReference> | undefined;
   /**

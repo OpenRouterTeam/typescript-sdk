@@ -2,18 +2,27 @@
 title: "SpeechInputReference"
 ---
 
-Reference content part for stateless voice cloning
+Reference content part for stateless voice cloning or voice design
 
 
 ## Supported Types
+
+### `models.SpeechInputReferenceImage`
+
+```typescript
+const value: models.SpeechInputReferenceImage = {
+  imageUrl: {
+    url: "data:image/png;base64,iVBORw0KGgo...",
+  },
+  type: "image_url",
+};
+```
 
 ### `models.SpeechInputReferenceAudio`
 
 ```typescript
 const value: models.SpeechInputReferenceAudio = {
-  inputAudio: {
-    data: "data:audio/wav;base64,UklGRuQXDABXQVZF...",
-  },
+  inputAudio: {},
   type: "input_audio",
 };
 ```

@@ -10,19 +10,24 @@ import * as z from "zod/v4";
  */
 export type SpeechInputReferenceAudioInput = {
   /**
-   * Base64-encoded reference audio (optionally a data URI). Supported audio formats are provider-specific. Limited to 20 MiB of base64 (15 MiB of decoded audio).
+   * Base64-encoded reference audio (optionally a data URI). Supported audio formats are provider-specific. Limited to 20 MiB of base64 (15 MiB of decoded audio). Exactly one of `data` or `url` is required.
    */
-  data: string;
+  data?: string | undefined;
   /**
    * Audio format of the reference audio (e.g., wav, mp3). Optional; most providers detect the format from the audio bytes.
    */
   format?: string | undefined;
+  /**
+   * Public http(s) URL of the reference audio. OpenRouter downloads it (15 MiB max) and forwards the bytes, never the URL. Exactly one of `data` or `url` is required.
+   */
+  url?: string | undefined;
 };
 
 /** @internal */
 export type SpeechInputReferenceAudioInput$Outbound = {
-  data: string;
+  data?: string | undefined;
   format?: string | undefined;
+  url?: string | undefined;
 };
 
 /** @internal */
@@ -30,8 +35,9 @@ export const SpeechInputReferenceAudioInput$outboundSchema: z.ZodType<
   SpeechInputReferenceAudioInput$Outbound,
   SpeechInputReferenceAudioInput
 > = z.object({
-  data: z.string(),
+  data: z.string().optional(),
   format: z.string().optional(),
+  url: z.string().optional(),
 });
 
 export function speechInputReferenceAudioInputToJSON(

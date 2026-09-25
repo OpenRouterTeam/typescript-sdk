@@ -1,0 +1,25 @@
+---
+title: "SpeechInputReferenceImage"
+---
+
+Reference image describing the desired voice. Cannot be combined with `input_audio` parts. Only routed to endpoints that support image references.
+
+## Example Usage
+
+```typescript
+import { SpeechInputReferenceImage } from "@openrouter/sdk/models";
+
+let value: SpeechInputReferenceImage = {
+  imageUrl: {
+    url: "data:image/png;base64,iVBORw0KGgo...",
+  },
+  type: "image_url",
+};
+```
+
+## Fields
+
+| Field                                                                                | Type                                                                                 | Required                                                                             | Description                                                                          |
+| ------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------ |
+| `imageUrl`                                                                           | [models.SpeechInputReferenceImageInput](../models/speechinputreferenceimageinput.mdx) | :heavy_check_mark:                                                                   | Reference image input object                                                         |
+| `type`                                                                               | *"image_url"*                                                                        | :heavy_check_mark:                                                                   | N/A                                                                                  |

@@ -1,0 +1,21 @@
+---
+title: "SpeechInputReferenceImageInput"
+---
+
+Reference image input object
+
+## Example Usage
+
+```typescript
+import { SpeechInputReferenceImageInput } from "@openrouter/sdk/models";
+
+let value: SpeechInputReferenceImageInput = {
+  url: "data:image/png;base64,iVBORw0KGgo...",
+};
+```
+
+## Fields
+
+| Field                                                                                                                                                                | Type                                                                                                                                                                 | Required                                                                                                                                                             | Description                                                                                                                                                          | Example                                                                                                                                                              |
+| -------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `url`                                                                                                                                                                | *string*                                                                                                                                                             | :heavy_check_mark:                                                                                                                                                   | JPEG, PNG, or WebP reference image as a base64 data URI or a public http(s) URL. Remote images are downloaded (15 MiB max) and forwarded as bytes, never as the URL. | data:image/png;base64,iVBORw0KGgo...                                                                                                                                 |

@@ -12,7 +12,7 @@ import {
 } from "./speechinputreferenceaudioinput.js";
 
 /**
- * Reference audio input for stateless voice cloning
+ * Reference audio input for stateless voice cloning. Up to three parts per request; the Nth audio part is addressable from `input` as `@AudioN` on providers that support multiple references.
  */
 export type SpeechInputReferenceAudio = {
   /**
