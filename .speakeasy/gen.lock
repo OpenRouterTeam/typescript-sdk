@@ -1,19 +1,19 @@
 lockVersion: ""
 id: ""
 management:
-  docChecksum: ba82888840e08d34bfb16fd3eb4a1faa
+  docChecksum: c3e3b5c345cc003eaafd99fd2d11711e
   docVersion: 1.0.0
   speakeasyVersion: 1.787.0
   generationVersion: 2.914.0
-  releaseVersion: 1.3.30
-  configChecksum: 92781223b52769fec6ebbe3cefff371a
+  releaseVersion: 1.3.31
+  configChecksum: 79f1c21569f4500107e6777b1e7ba9ad
   repoURL: https://github.com/OpenRouterTeam/typescript-sdk.git
   installationURL: https://github.com/OpenRouterTeam/typescript-sdk
   published: true
 persistentEdits:
-  generation_id: 66ccbb4b-246b-42f3-b549-9522d78fb666
-  pristine_commit_hash: d87fe1be0e0c99d67b7f3b892a694a4e6e411b5c
-  pristine_tree_hash: e26e9c40b13ea693975ead2a8c3f5c05696b3ada
+  generation_id: 128f08a5-e170-43d0-b9f9-eb0c2243cfdb
+  pristine_commit_hash: f0454051b5ad459553973dbb05a0e3b68f5ca869
+  pristine_tree_hash: f24a80fae859b10417eb32fcd1e43e8fbfa320a5
 features:
   typescript:
     acceptHeaders: 2.81.2
@@ -5365,8 +5365,8 @@ trackedFiles:
     deleted: true
   docs/models/imagegenerationrequestaspectratio.mdx:
     id: a674c3688ab3
-    last_write_checksum: sha1:46fd38c3f51ff5f28fc22e8ad8cc9d5f06662f8f
-    pristine_git_object: 3c7e617a0c5f4cc75549e14d3fdce8eb4470fcc5
+    last_write_checksum: sha1:c5059c1f465141b1369e7998a52741a414429866
+    pristine_git_object: c6ed7540834e377cd58fe197c716f2779ee248cf
   docs/models/imagegenerationrequestbackground.md:
     id: 2d9d17879f83
     last_write_checksum: sha1:bc3e4aae4b21a006b3e2f915f5048a7fa03c96f9
@@ -5411,8 +5411,8 @@ trackedFiles:
     deleted: true
   docs/models/imagegenerationrequestresolution.mdx:
     id: af414d7f0420
-    last_write_checksum: sha1:65c860496985e907cb62825e324cb223d18d5093
-    pristine_git_object: 0d2ee01b3373d51e34b2e7237989beb5c60ab974
+    last_write_checksum: sha1:ea2a3fa73676b03dcdef68dc6802c083207f9bdb
+    pristine_git_object: 92bb9db3dda8e7aa22d0d7f24556495fae510aff
   docs/models/imagegenerationresponse.md:
     id: 0de6a70c78ff
     last_write_checksum: sha1:7f7115263248c8de7c6a5533f10cb6d70a459f6a
@@ -14642,12 +14642,12 @@ trackedFiles:
     pristine_git_object: 410efafd6a7f50d91ccb87131fedbe0c3d47e15a
   jsr.json:
     id: 7f6ab7767282
-    last_write_checksum: sha1:8d2b6864741ad4e60a26e203d814d248641e063f
-    pristine_git_object: 8ce62f33bc92270a2826baedfb87d10fe1a523f0
+    last_write_checksum: sha1:3bf8971b372a6d627bc0785ea36c5eb75808cbc3
+    pristine_git_object: b4d698b0550549ec8974e7b5b0966d52b93c138c
   package.json:
     id: 7030d0b2f71b
-    last_write_checksum: sha1:3835232a8cd4ae30fce12474cf5cf081c57531cc
-    pristine_git_object: bce51426bb1624c0c97100d2c4cad5020c5c9c87
+    last_write_checksum: sha1:ac1178fc84676d4912d43aa2c5ae9f7dfb2c2767
+    pristine_git_object: 3035bbd3276ec641929c795ed405f4b00d9012e7
   src/core.ts:
     id: f431fdbcd144
     last_write_checksum: sha1:5aa66b0b6a5964f3eea7f3098c2eb3c0ee9c0131
@@ -15182,8 +15182,8 @@ trackedFiles:
     pristine_git_object: a187e58707bdb726ca2aff74941efe7493422d4e
   src/lib/config.ts:
     id: 320761608fb3
-    last_write_checksum: sha1:8d504b4e43f4803f0114fe0596f3603ec3359788
-    pristine_git_object: 51d9534baedbce1d434216e75f04205e7cbc254d
+    last_write_checksum: sha1:d3d5743ccc33043359ee5ad599cacf76c15dc875
+    pristine_git_object: db5841ebe0bb350713ee7b7733c22a8337229e87
   src/lib/dlv.ts:
     id: b1988214835a
     last_write_checksum: sha1:eaac763b22717206a6199104e0403ed17a4e2711
@@ -16788,8 +16788,8 @@ trackedFiles:
     pristine_git_object: 6c8479d7249043931b46f5f8fe393ce773efbf96
   src/models/imagegenerationrequest.ts:
     id: ea1ffc0d2470
-    last_write_checksum: sha1:61af792935e8011030cb68784f867806635e0e0e
-    pristine_git_object: 88a75d17591b97c2510343b7487a0d542d7c6649
+    last_write_checksum: sha1:7836149b2dabcd85748e2f8c907f53dfc88ac8bf
+    pristine_git_object: 73b7571ee252158173fa32e320b386c864c5d73c
   src/models/imagegenerationresponse.ts:
     id: 18aeba0f13cc
     last_write_checksum: sha1:4cd19da234bbdae4d406bd1cbc9629bd2e15f2a5
@@ -22520,4 +22520,4 @@ examples:
         "500":
           application/json: {"error": {"code": 400, "message": "custom_id is required on requests[0]."}}
 examplesVersion: 1.0.2
-releaseNotes: "## Typescript SDK Changes:\n* `openrouter.presets.createPresetsMessages()`: \n  *  `request.messagesRequest.messages[].content.union(Array<>)[].union(document).source` **Changed** (Breaking ⚠️)\n* `openrouter.batch.list()`: **Added**\n* `openrouter.batch.createBatches()`: **Added**\n* `openrouter.batch.delete()`: **Added**\n* `openrouter.batch.getBatches()`: **Added**\n"
+releaseNotes: "## Typescript SDK Changes:\n* `openrouter.images.generate()`: \n  *  `request.imageGenerationRequest` **Changed**\n"
