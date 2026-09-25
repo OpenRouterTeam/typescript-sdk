@@ -588,6 +588,8 @@ export * from "./shellservertoolopenrouter.js";
 export * from "./speechinputreference.js";
 export * from "./speechinputreferenceaudio.js";
 export * from "./speechinputreferenceaudioinput.js";
+export * from "./speechinputreferenceimage.js";
+export * from "./speechinputreferenceimageinput.js";
 export * from "./speechinputreferencetext.js";
 export * from "./speechrequest.js";
 export * from "./stopservertoolswhencondition.js";

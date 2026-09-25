@@ -6,11 +6,11 @@
 import * as z from "zod/v4";
 
 /**
- * Transcript of the accompanying reference audio
+ * Transcript of an `input_audio` part
  */
 export type SpeechInputReferenceText = {
   /**
-   * Transcript of the accompanying reference audio.
+   * Transcript of an `input_audio` part. With a single clip it may appear before or after the clip; with multiple clips it must immediately follow the clip it transcribes.
    */
   text: string;
   type: "text";

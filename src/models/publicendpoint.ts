@@ -220,7 +220,15 @@ export type PublicEndpoint = {
   quantization: Quantization | null;
   status?: EndpointStatus | undefined;
   supportedParameters: Array<Parameter>;
+  /**
+   * Whether this TTS endpoint accepts an `image_url` reference describing the desired voice. Requests carrying an image reference are only routed to endpoints where this is true.
+   */
+  supportsImageReference: boolean;
   supportsImplicitCaching: boolean;
+  /**
+   * Whether this TTS endpoint accepts more than one `input_audio` reference clip per request. Requests carrying several clips are only routed to endpoints where this is true.
+   */
+  supportsMultipleAudioReferences: boolean;
   /**
    * Per-variant `tool_choice` support. `tool_choice` in `supported_parameters` only says the parameter is accepted; these flags say which of its values passed testing.
    */
@@ -530,7 +538,9 @@ export const PublicEndpoint$inboundSchema: z.ZodType<PublicEndpoint, unknown> =
     quantization: z.nullable(Quantization$inboundSchema),
     status: EndpointStatus$inboundSchema.optional(),
     supported_parameters: z.array(Parameter$inboundSchema),
+    supports_image_reference: z.boolean().default(false),
     supports_implicit_caching: z.boolean(),
+    supports_multiple_audio_references: z.boolean().default(false),
     supports_tool_choice: ToolChoiceSupport$inboundSchema,
     supports_voice_cloning: z.boolean().default(false),
     tag: z.string(),
@@ -549,7 +559,9 @@ export const PublicEndpoint$inboundSchema: z.ZodType<PublicEndpoint, unknown> =
       "perf_last_30m_by_workload": "perfLast30mByWorkload",
       "provider_name": "providerName",
       "supported_parameters": "supportedParameters",
+      "supports_image_reference": "supportsImageReference",
       "supports_implicit_caching": "supportsImplicitCaching",
+      "supports_multiple_audio_references": "supportsMultipleAudioReferences",
       "supports_tool_choice": "supportsToolChoice",
       "supports_voice_cloning": "supportsVoiceCloning",
       "throughput_last_30m": "throughputLast30m",

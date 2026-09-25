@@ -1,19 +1,19 @@
 lockVersion: ""
 id: ""
 management:
-  docChecksum: 544f51110e99d7005f82f3949f348ea0
+  docChecksum: 4162460b4e4c0ad3640d7ef614732117
   docVersion: 1.0.0
   speakeasyVersion: 1.787.0
   generationVersion: 2.914.0
-  releaseVersion: 1.3.28
-  configChecksum: 4c6f8f74944865d2ac7f5c55657dbad9
+  releaseVersion: 1.3.29
+  configChecksum: 691cf13390450c7b27d1758ff9904045
   repoURL: https://github.com/OpenRouterTeam/typescript-sdk.git
   installationURL: https://github.com/OpenRouterTeam/typescript-sdk
   published: true
 persistentEdits:
-  generation_id: febd10d5-46be-4c46-bda0-7e0520512880
-  pristine_commit_hash: 9ac2ef016574a0560d500d75aa4b822613cd4726
-  pristine_tree_hash: e251c7d6ab3e285aa3ce6742c55f8e92411289e6
+  generation_id: 75a4fbcd-178d-4d65-9e31-a7648fa6de61
+  pristine_commit_hash: 33f456ce6d73d27204af6f589637c84233c03d9b
+  pristine_tree_hash: dcbe4d107655a18be7144f87f0578944315c793e
 features:
   typescript:
     acceptHeaders: 2.81.2
@@ -11080,8 +11080,8 @@ trackedFiles:
     pristine_git_object: f39845ad4cd48709b0a95065779be54f1be55997
   docs/models/publicendpoint.mdx:
     id: 298950f1060d
-    last_write_checksum: sha1:c8a941ca7b2ce1d1ee7962aed38793a197ca9f13
-    pristine_git_object: 6a931fa03809aa9b35f8df8fe5af92709769b097
+    last_write_checksum: sha1:6419531ade48974b983d7befdd3c448ba9530bf4
+    pristine_git_object: b56a7d583a6e0a1ebfaba92d3ed8231a44e5bc28
   docs/models/publicpricing.mdx:
     id: da7987d6141a
     last_write_checksum: sha1:49396adb88727e3fdaff06767101a5ef4479257f
@@ -11955,20 +11955,28 @@ trackedFiles:
     deleted: true
   docs/models/speechinputreference.mdx:
     id: 185904811fc6
-    last_write_checksum: sha1:4ad4ef214e73bb6e118d2866889eaaf5f8764211
-    pristine_git_object: d95674028f67a020208128b7922319355889f3fd
+    last_write_checksum: sha1:dbf62d978e3b54f67edcb17963059946cb6e3034
+    pristine_git_object: a03f5f3401eba71192d69dc880a7c376240b2725
   docs/models/speechinputreferenceaudio.mdx:
     id: 396eede2c948
-    last_write_checksum: sha1:b24b8cb685ec43a6eed6be8ba5351d88560aa8af
-    pristine_git_object: 260053ef6e55cdb1cd05af0f1179318d673b9456
+    last_write_checksum: sha1:aac9e5eeafddf6f7b2d87cd9551b988a15431dae
+    pristine_git_object: 72f677f7bcaaf93302c6a1ff5f081e2e64565fe3
   docs/models/speechinputreferenceaudioinput.mdx:
     id: 38c61bd6aa17
-    last_write_checksum: sha1:d0639ffc05bb2da9266106afe4b95b795414f89c
-    pristine_git_object: cb044aa5e1618cc788634fa73d5f9b47758d0225
+    last_write_checksum: sha1:af7d9e585a5d1400b80aa274ff66961a8c0fc3e4
+    pristine_git_object: 7dc5c2cc4a3ed74470279348f73a2a1f7ce03037
+  docs/models/speechinputreferenceimage.mdx:
+    id: 1230dca41222
+    last_write_checksum: sha1:4ea7d8b18d598ac8dca810b1e8d5ae894e621a48
+    pristine_git_object: 042996bad0e03d87255de61189ff5af4f55d25ac
+  docs/models/speechinputreferenceimageinput.mdx:
+    id: ff3c72c30311
+    last_write_checksum: sha1:85e6ad83336c8be129d177bd7dbabf27c9676c8b
+    pristine_git_object: 871636012da4255b36cd292662ac145d97879314
   docs/models/speechinputreferencetext.mdx:
     id: a8fcc50d87e3
-    last_write_checksum: sha1:2b5ed0f197bb4fc925970abff3b90141c2f2ef10
-    pristine_git_object: d282057cc9377b1ffac4acd9a580f5fe82249057
+    last_write_checksum: sha1:2c053d13d524bc73506f692a88502091f3aa93b7
+    pristine_git_object: 95f3c95b545dfaac21a509a9ee8ced2a069be741
   docs/models/speechrequest.md:
     id: 1403855cf560
     last_write_checksum: sha1:a5b9df15e47f688c711938f0760f0a5de6cfd7b5
@@ -11976,8 +11984,8 @@ trackedFiles:
     deleted: true
   docs/models/speechrequest.mdx:
     id: c9e3c03ff84e
-    last_write_checksum: sha1:3b688f1a97116c3f52e71ea2b9a4eb03eb39867a
-    pristine_git_object: 4acf9e895b7b28ef8db6d3217a8bb7f2599ca62e
+    last_write_checksum: sha1:45f14f2b4d74f3df613de2983d94739349396508
+    pristine_git_object: e5647ce3ad6e014e37a66ae64fb9672775dff631
   docs/models/speechrequestoptions.md:
     id: 2d3d36e99ad0
     last_write_checksum: sha1:a5810a37b774c3e34bb1d943b64620bc31de2278
@@ -13858,12 +13866,12 @@ trackedFiles:
     pristine_git_object: 410efafd6a7f50d91ccb87131fedbe0c3d47e15a
   jsr.json:
     id: 7f6ab7767282
-    last_write_checksum: sha1:a84b98446306e53f9f04431a32aafc1a7f19190d
-    pristine_git_object: b7cb50b39134ce807bbed9e1a9211fd179d1f510
+    last_write_checksum: sha1:102ba02c930fcb4cc9ccbce36e0b164914c314e3
+    pristine_git_object: a3abc6d47cc8be200d20aa141c9ad66aca4e7cb3
   package.json:
     id: 7030d0b2f71b
-    last_write_checksum: sha1:feb9f09cd3ac7157f87970a12d120f26be1f214a
-    pristine_git_object: bb04a9b024f58dddfefd11b0ea188635195bb63f
+    last_write_checksum: sha1:b8ef604edeabb5d9243a401e136fcc8c8efc0180
+    pristine_git_object: 565aa641c954336d780802a6a6c59846532fe5f6
   src/core.ts:
     id: f431fdbcd144
     last_write_checksum: sha1:5aa66b0b6a5964f3eea7f3098c2eb3c0ee9c0131
@@ -14382,8 +14390,8 @@ trackedFiles:
     pristine_git_object: a187e58707bdb726ca2aff74941efe7493422d4e
   src/lib/config.ts:
     id: 320761608fb3
-    last_write_checksum: sha1:fc29463433712de9fe0c8a9fe00e66790503ecd4
-    pristine_git_object: 23b5c39678dda1a2fbc4fdad617bbe7cea24d858
+    last_write_checksum: sha1:98ab23fb46b946cfc5e61f10f6c6cd92c39ce97a
+    pristine_git_object: 07bcda2597e762b55cdd24d9f17a9c1b61483227
   src/lib/dlv.ts:
     id: b1988214835a
     last_write_checksum: sha1:eaac763b22717206a6199104e0403ed17a4e2711
@@ -15784,8 +15792,8 @@ trackedFiles:
     pristine_git_object: 7abdfe096d3adff317db6837dc689c69db92e127
   src/models/index.ts:
     id: f93644b0f37e
-    last_write_checksum: sha1:4efd1fde13b102e2ab46712c313193563d9f98cd
-    pristine_git_object: 72d92b2c5f06ed1994345dd09ae56b114d91d293
+    last_write_checksum: sha1:970d0f9bfa1b668f99598a66d856a87c3c4d7740
+    pristine_git_object: 930bfcc8382cd3b5df96c16c187db3335b7aa90f
   src/models/inputaudio.ts:
     id: 9bdc14c7565f
     last_write_checksum: sha1:2f8dc4c1d6a9c2927d9eb186e0ecedf7b81838e6
@@ -17140,8 +17148,8 @@ trackedFiles:
     pristine_git_object: 5960d3c3b97f3571ffdc2f633f503fdfc10ec88d
   src/models/publicendpoint.ts:
     id: 396ce3186017
-    last_write_checksum: sha1:455804f56e64d434682cc3e49a7f939c613f64a1
-    pristine_git_object: 7eb0e3b104b8cb336da9a7cac48dd14ca1daf667
+    last_write_checksum: sha1:639fa91de62d1912ce709e32a7da43160f5e45a9
+    pristine_git_object: b487e4ff11adcaed40ecb5089bf08ddf9cce8020
   src/models/publicpricing.ts:
     id: 0a44a1c3bab5
     last_write_checksum: sha1:bd478f319c40ea705b9705d3c73a9e4992a16877
@@ -17380,24 +17388,32 @@ trackedFiles:
     pristine_git_object: b7e831da0a7045eea3f87f9135d9e68af797df11
   src/models/speechinputreference.ts:
     id: 25b19e4fa954
-    last_write_checksum: sha1:3ecc9d1efba16becba862d3168838a139172cd77
-    pristine_git_object: 25f478821f957fe0f07b2fded7d0533445605441
+    last_write_checksum: sha1:4815d0bf1f8cb82c15020d02b475e6c7ec405203
+    pristine_git_object: cf8f0de91dfa4d54fcd6537256e8517cdca70e52
   src/models/speechinputreferenceaudio.ts:
     id: d7299510c0e7
-    last_write_checksum: sha1:32c84c7f67b1f8ae068e73d03cdbd06a01d26bd5
-    pristine_git_object: 798b33dab4254213969a730be682e9c8cf74cee7
+    last_write_checksum: sha1:ba2635214a0c4af6b8294c2954b6c3a0ff87d4de
+    pristine_git_object: d22c73addae286fa5d86a9bb94d0e4cbbba02e56
   src/models/speechinputreferenceaudioinput.ts:
     id: 7f6147039895
-    last_write_checksum: sha1:7363e612401d8be5a04a7935251935792517186d
-    pristine_git_object: 04ff60eb78c2233ac73f12b426381dd6cfa34278
+    last_write_checksum: sha1:3945dee32a21a83e86ddf902d0c127a08080dbce
+    pristine_git_object: 0efae28e8990a997fb30f216b564a2eb98dad940
+  src/models/speechinputreferenceimage.ts:
+    id: ee7097a5c9df
+    last_write_checksum: sha1:9562f00e059837d30d027aa45f91242b3be52750
+    pristine_git_object: 60fbd6a24bfffb2a3d9b0ca5e7f26b0e3e2f79ac
+  src/models/speechinputreferenceimageinput.ts:
+    id: 36100583e975
+    last_write_checksum: sha1:26df4e569b83a32e612dcb89d0ffdf74b447d837
+    pristine_git_object: db60a7d57e8c5e219bc4f9ab538b722cefdde057
   src/models/speechinputreferencetext.ts:
     id: 88f12d1ebfa6
-    last_write_checksum: sha1:80487a870d9c7e4c368b5aa084b1b15daf47864f
-    pristine_git_object: dd8e518866345a2b921986bff08878e424f3c69f
+    last_write_checksum: sha1:20c804f6ca2c37fea399e955491707f4f797d689
+    pristine_git_object: 9736271f1eca14fc2be3d7281472b25fc79fec3e
   src/models/speechrequest.ts:
     id: 96d573d68420
-    last_write_checksum: sha1:4c495f08e92920adb92e6edf454a80a7447addd3
-    pristine_git_object: 8d8512c0e84c8fff8e07b6bd66af44f964552f02
+    last_write_checksum: sha1:4e32364681988b66f4ea420e7ce902316a024971
+    pristine_git_object: c70a2be33c926cf57a72595deea82a4c5c225717
   src/models/stopservertoolswhencondition.ts:
     id: 3c90e3993bad
     last_write_checksum: sha1:b95847e6581593c6f1106971d0508acb2cce1106
@@ -18284,7 +18300,7 @@ examples:
           slug: "<value>"
       responses:
         "200":
-          application/json: {"data": {"architecture": {"input_modalities": ["text"], "instruct_type": "chatml", "modality": "text->text", "output_modalities": ["text"], "tokenizer": "GPT"}, "created": 1692901234, "description": "GPT-4 is a large multimodal model that can solve difficult problems with greater accuracy.", "endpoints": [{"context_length": 8192, "latency_last_30m": {"p50": 0.25, "p75": 0.35, "p90": 0.48, "p99": 0.85}, "max_completion_tokens": 4096, "max_prompt_tokens": 8192, "model_id": "openai/gpt-4", "model_name": "GPT-4", "name": "OpenAI: GPT-4", "pricing": {"completion": "0.00006", "prompt": "0.00003"}, "provider_name": "OpenAI", "quantization": "fp16", "supported_parameters": ["temperature", "top_p", "max_tokens"], "supports_implicit_caching": true, "supports_tool_choice": {"auto": true, "function": true, "none": true, "required": true}, "supports_voice_cloning": false, "tag": "openai", "throughput_last_30m": {"p50": 45.2, "p75": 38.5, "p90": 28.3, "p99": 15.1}, "uptime_last_1d": 99.8, "uptime_last_30m": 99.5, "uptime_last_5m": 100}], "id": "openai/gpt-4", "name": "GPT-4"}}
+          application/json: {"data": {"architecture": {"input_modalities": ["text"], "instruct_type": "chatml", "modality": "text->text", "output_modalities": ["text"], "tokenizer": "GPT"}, "created": 1692901234, "description": "GPT-4 is a large multimodal model that can solve difficult problems with greater accuracy.", "endpoints": [{"context_length": 8192, "latency_last_30m": {"p50": 0.25, "p75": 0.35, "p90": 0.48, "p99": 0.85}, "max_completion_tokens": 4096, "max_prompt_tokens": 8192, "model_id": "openai/gpt-4", "model_name": "GPT-4", "name": "OpenAI: GPT-4", "pricing": {"completion": "0.00006", "prompt": "0.00003"}, "provider_name": "OpenAI", "quantization": "fp16", "supported_parameters": ["temperature", "top_p", "max_tokens"], "supports_image_reference": false, "supports_implicit_caching": true, "supports_multiple_audio_references": false, "supports_tool_choice": {"auto": true, "function": true, "none": true, "required": true}, "supports_voice_cloning": false, "tag": "openai", "throughput_last_30m": {"p50": 45.2, "p75": 38.5, "p90": 28.3, "p99": 15.1}, "uptime_last_1d": 99.8, "uptime_last_30m": 99.5, "uptime_last_5m": 100}], "id": "openai/gpt-4", "name": "GPT-4"}}
         "404":
           application/json: {"error": {"code": 404, "message": "Resource not found"}}
         "500":
@@ -18295,7 +18311,7 @@ examples:
     speakeasy-default-list-endpoints-zdr:
       responses:
         "200":
-          application/json: {"data": [{"context_length": 8192, "latency_last_30m": {"p50": 0.25, "p75": 0.35, "p90": 0.48, "p99": 0.85}, "max_completion_tokens": 4096, "max_prompt_tokens": 8192, "model_id": "openai/gpt-4", "model_name": "GPT-4", "name": "OpenAI: GPT-4", "pricing": {"completion": "0.00006", "prompt": "0.00003"}, "provider_name": "OpenAI", "quantization": "fp16", "supported_parameters": ["temperature", "top_p", "max_tokens"], "supports_implicit_caching": true, "supports_tool_choice": {"auto": true, "function": true, "none": true, "required": true}, "supports_voice_cloning": false, "tag": "openai", "throughput_last_30m": {"p50": 45.2, "p75": 38.5, "p90": 28.3, "p99": 15.1}, "uptime_last_1d": 99.8, "uptime_last_30m": 99.5, "uptime_last_5m": 100}]}
+          application/json: {"data": [{"context_length": 8192, "latency_last_30m": {"p50": 0.25, "p75": 0.35, "p90": 0.48, "p99": 0.85}, "max_completion_tokens": 4096, "max_prompt_tokens": 8192, "model_id": "openai/gpt-4", "model_name": "GPT-4", "name": "OpenAI: GPT-4", "pricing": {"completion": "0.00006", "prompt": "0.00003"}, "provider_name": "OpenAI", "quantization": "fp16", "supported_parameters": ["temperature", "top_p", "max_tokens"], "supports_image_reference": false, "supports_implicit_caching": true, "supports_multiple_audio_references": false, "supports_tool_choice": {"auto": true, "function": true, "none": true, "required": true}, "supports_voice_cloning": false, "tag": "openai", "throughput_last_30m": {"p50": 45.2, "p75": 38.5, "p90": 28.3, "p99": 15.1}, "uptime_last_1d": 99.8, "uptime_last_30m": 99.5, "uptime_last_5m": 100}]}
         "500":
           application/json: {"error": {"code": 500, "message": "Internal Server Error"}}
         "403":
@@ -21298,6 +21314,4 @@ examples:
         "500":
           application/json: {"error": {"code": 404, "message": "Intern not found"}}
 examplesVersion: 1.0.2
-releaseNotes: |
-  ## Typescript SDK Changes:
-  * `openrouter.interns.getInternDaemonAccess()`:  `error.status[429]` **Removed** (Breaking ⚠️)
+releaseNotes: "## Typescript SDK Changes:\n* `openrouter.tts.createSpeech()`: \n  *  `request.speechRequest.inputReferences[]` **Changed**\n* `openrouter.endpoints.listZdrEndpoints()`:  `response.data[]` **Changed**\n* `openrouter.endpoints.list()`:  `response.data.endpoints[]` **Changed**\n"
