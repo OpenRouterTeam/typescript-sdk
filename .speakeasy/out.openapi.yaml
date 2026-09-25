@@ -12939,6 +12939,8 @@ components:
             - '4:5'
             - '5:2'
             - '5:4'
+            - '5:7'
+            - '7:5'
             - '8:1'
             - '9:16'
             - '16:9'
@@ -13012,6 +13014,7 @@ components:
           description: 'Normalized resolution tier of the generated image. Concrete pixel dimensions are derived per-provider.'
           enum:
             - '512'
+            - '768'
             - '1K'
             - '2K'
             - '4K'
