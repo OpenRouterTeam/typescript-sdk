@@ -97,6 +97,7 @@ export const BYOKProviderSlug = {
   Recraft: "recraft",
   Reka: "reka",
   Relace: "relace",
+  Respan: "respan",
   Runway: "runway",
   SailResearch: "sail-research",
   Sakana: "sakana",
