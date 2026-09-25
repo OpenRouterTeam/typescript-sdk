@@ -1,0 +1,28 @@
+---
+title: "AnthropicDocumentBlock"
+---
+
+## Example Usage
+
+```typescript
+import { AnthropicDocumentBlock } from "@openrouter/sdk/models";
+
+let value: AnthropicDocumentBlock = {
+  source: {
+    data: "Hello, world!",
+    mediaType: "text/plain",
+    type: "text",
+  },
+  title: null,
+  type: "document",
+};
+```
+
+## Fields
+
+| Field                                                                        | Type                                                                         | Required                                                                     | Description                                                                  | Example                                                                      |
+| ---------------------------------------------------------------------------- | ---------------------------------------------------------------------------- | ---------------------------------------------------------------------------- | ---------------------------------------------------------------------------- | ---------------------------------------------------------------------------- |
+| `citations`                                                                  | [models.AnthropicCitationsConfig](../models/anthropiccitationsconfig.mdx)     | :heavy_minus_sign:                                                           | N/A                                                                          | \{<br/>"enabled": true<br/>}                                                  |
+| `source`                                                                     | *models.AnthropicDocumentBlockSource*                                        | :heavy_check_mark:                                                           | N/A                                                                          |                                                                              |
+| `title`                                                                      | *string*                                                                     | :heavy_check_mark:                                                           | N/A                                                                          |                                                                              |
+| `type`                                                                       | [models.AnthropicDocumentBlockType](../models/anthropicdocumentblocktype.mdx) | :heavy_check_mark:                                                           | N/A                                                                          |                                                                              |

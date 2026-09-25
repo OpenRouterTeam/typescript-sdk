@@ -2,14 +2,12 @@
 title: "FinishReason"
 ---
 
-`null` while streaming. `stop` when the run completed, `tool_calls` when the run is waiting for the caller to answer the streamed tool call, `error` on the terminal error chunk.
-
 ## Example Usage
 
 ```typescript
 import { FinishReason } from "@openrouter/sdk/models";
 
-let value: FinishReason = "tool_calls";
+let value: FinishReason = "stop";
 
 // Open enum: unrecognized values are captured as Unrecognized<string>
 ```
@@ -17,5 +15,5 @@ let value: FinishReason = "tool_calls";
 ## Values
 
 ```typescript
-"error" | "stop" | "tool_calls" | Unrecognized<string>
+"stop" | "length" | "tool_calls" | "content_filter" | "function_call" | Unrecognized<string>
 ```

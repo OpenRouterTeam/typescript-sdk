@@ -1,0 +1,29 @@
+---
+title: "BatchListResponse"
+---
+
+A newest-first page of metadata-only batch objects.
+
+## Example Usage
+
+```typescript
+import { BatchListResponse } from "@openrouter/sdk/models";
+
+let value: BatchListResponse = {
+  data: [],
+  firstId: null,
+  hasMore: false,
+  lastId: null,
+  object: "list",
+};
+```
+
+## Fields
+
+| Field                                                                  | Type                                                                   | Required                                                               | Description                                                            |
+| ---------------------------------------------------------------------- | ---------------------------------------------------------------------- | ---------------------------------------------------------------------- | ---------------------------------------------------------------------- |
+| `data`                                                                 | [models.BatchListItem](../models/batchlistitem.mdx)[]                   | :heavy_check_mark:                                                     | N/A                                                                    |
+| `firstId`                                                              | *string*                                                               | :heavy_check_mark:                                                     | N/A                                                                    |
+| `hasMore`                                                              | *boolean*                                                              | :heavy_check_mark:                                                     | N/A                                                                    |
+| `lastId`                                                               | *string*                                                               | :heavy_check_mark:                                                     | N/A                                                                    |
+| `object`                                                               | [models.BatchListResponseObject](../models/batchlistresponseobject.mdx) | :heavy_check_mark:                                                     | N/A                                                                    |

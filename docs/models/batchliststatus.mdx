@@ -1,0 +1,21 @@
+---
+title: "BatchListStatus"
+---
+
+A batch status that is durably represented by the list data source. `finalizing` and `cancelling` are not accepted because stored jobs collapse those phases into `in_progress`.
+
+## Example Usage
+
+```typescript
+import { BatchListStatus } from "@openrouter/sdk/models";
+
+let value: BatchListStatus = "completed";
+
+// Open enum: unrecognized values are captured as Unrecognized<string>
+```
+
+## Values
+
+```typescript
+"validating" | "in_progress" | "completed" | "failed" | "expired" | "cancelled" | Unrecognized<string>
+```

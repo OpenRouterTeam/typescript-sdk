@@ -1,0 +1,23 @@
+---
+title: "Upstream"
+---
+
+The upstream batch deletion outcome; omitted when no provider was assigned.
+
+## Example Usage
+
+```typescript
+import { Upstream } from "@openrouter/sdk/models";
+
+let value: Upstream = {
+  provider: "OpenAI",
+  status: "deleted",
+};
+```
+
+## Fields
+
+| Field                                                                                                                                                                                                     | Type                                                                                                                                                                                                      | Required                                                                                                                                                                                                  | Description                                                                                                                                                                                               | Example                                                                                                                                                                                                   |
+| --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `provider`                                                                                                                                                                                                | *string*                                                                                                                                                                                                  | :heavy_check_mark:                                                                                                                                                                                        | The provider name stored on the batch.                                                                                                                                                                    | OpenAI                                                                                                                                                                                                    |
+| `status`                                                                                                                                                                                                  | [models.BatchDeletionOutcome](../models/batchdeletionoutcome.mdx)                                                                                                                                          | :heavy_check_mark:                                                                                                                                                                                        | Outcome for one deletion target: `deleted` (removed), `unsupported` (the provider has no batch-delete API; supported file cleanup still runs), or `not_applicable` (the batch never reached that target). | deleted                                                                                                                                                                                                   |

@@ -11,7 +11,7 @@ Reasoning detail union schema
 
 ```typescript
 const value: models.ReasoningDetailEncrypted = {
-  data: "<value>",
+  data: "encrypted data",
   type: "reasoning.encrypted",
 };
 ```
@@ -20,9 +20,9 @@ const value: models.ReasoningDetailEncrypted = {
 
 ```typescript
 const value: models.ReasoningDetailServerToolCall = {
-  arguments: "<value>",
-  result: "<value>",
-  toolName: "<value>",
+  arguments: "{\"prompt\":\"Compare carbon tax proposals\"}",
+  result: "{\"status\":\"ok\",\"models\":[\"openai/gpt-4o\"]}",
+  toolName: "openrouter:fusion",
   type: "reasoning.server_tool_call",
 };
 ```

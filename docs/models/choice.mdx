@@ -1,0 +1,40 @@
+---
+title: "Choice"
+---
+
+## Example Usage
+
+```typescript
+import { Choice } from "@openrouter/sdk/models";
+
+let value: Choice = {
+  finishReason: "stop",
+  index: 225795,
+  logprobs: {
+    content: [
+      {
+        bytes: null,
+        logprob: 3124.33,
+        token: "<value>",
+        topLogprobs: [],
+      },
+    ],
+  },
+  message: {
+    content: "<value>",
+    refusal: "<value>",
+    role: "assistant",
+  },
+  nativeFinishReason: "<value>",
+};
+```
+
+## Fields
+
+| Field                                            | Type                                             | Required                                         | Description                                      | Example                                          |
+| ------------------------------------------------ | ------------------------------------------------ | ------------------------------------------------ | ------------------------------------------------ | ------------------------------------------------ |
+| `finishReason`                                   | [models.FinishReason](../models/finishreason.mdx) | :heavy_check_mark:                               | N/A                                              | stop                                             |
+| `index`                                          | *number*                                         | :heavy_check_mark:                               | N/A                                              |                                                  |
+| `logprobs`                                       | [models.Logprobs](../models/logprobs.mdx)         | :heavy_check_mark:                               | N/A                                              |                                                  |
+| `message`                                        | [models.Message](../models/message.mdx)           | :heavy_check_mark:                               | N/A                                              |                                                  |
+| `nativeFinishReason`                             | *string*                                         | :heavy_check_mark:                               | N/A                                              |                                                  |

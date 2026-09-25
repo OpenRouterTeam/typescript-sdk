@@ -1,0 +1,25 @@
+---
+title: "ListBatchesResponse"
+---
+
+## Example Usage
+
+```typescript
+import { ListBatchesResponse } from "@openrouter/sdk/models/operations";
+
+let value: ListBatchesResponse = {
+  result: {
+    data: [],
+    firstId: null,
+    hasMore: false,
+    lastId: null,
+    object: "list",
+  },
+};
+```
+
+## Fields
+
+| Field                                                                                  | Type                                                                                   | Required                                                                               | Description                                                                            | Example                                                                                |
+| -------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------- |
+| `result`                                                                               | [models.BatchListResponse](../../models/batchlistresponse.mdx)                          | :heavy_check_mark:                                                                     | N/A                                                                                    | \{<br/>"data": [],<br/>"first_id": null,<br/>"has_more": false,<br/>"last_id": null,<br/>"object": "list"<br/>} |

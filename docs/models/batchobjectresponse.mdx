@@ -1,0 +1,54 @@
+---
+title: "BatchObjectResponse"
+---
+
+## Example Usage
+
+```typescript
+import { BatchObjectResponse } from "@openrouter/sdk/models";
+
+let value: BatchObjectResponse = {
+  body: {
+    completedAt: 1704067210,
+    createdAt: 1704067200,
+    error: null,
+    frequencyPenalty: null,
+    id: "resp-abc123",
+    incompleteDetails: null,
+    instructions: null,
+    metadata: null,
+    model: "gpt-4",
+    object: "response",
+    output: [
+      {
+        content: [
+          {
+            text: "Hello! How can I help you today?",
+            type: "output_text",
+          },
+        ],
+        id: "msg-abc123",
+        role: "assistant",
+        type: "message",
+      },
+    ],
+    parallelToolCalls: true,
+    presencePenalty: null,
+    status: "completed",
+    temperature: null,
+    toolChoice: "auto",
+    tools: [],
+    topP: null,
+  },
+  requestId: "<id>",
+  statusCode: 500675,
+};
+```
+
+## Fields
+
+| Field              | Type               | Required           | Description        |
+| ------------------ | ------------------ | ------------------ | ------------------ |
+| `body`             | *models.Body*      | :heavy_check_mark: | N/A                |
+| `requestId`        | *string*           | :heavy_check_mark: | N/A                |
+| `statusCode`       | *number*           | :heavy_check_mark: | N/A                |

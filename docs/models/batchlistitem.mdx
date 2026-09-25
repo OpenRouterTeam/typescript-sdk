@@ -1,0 +1,53 @@
+---
+title: "BatchListItem"
+---
+
+Metadata-only batch object. `results` is always `null` in list responses.
+
+## Example Usage
+
+```typescript
+import { BatchListItem } from "@openrouter/sdk/models";
+
+let value: BatchListItem = {
+  completionWindow: "24h",
+  createdAt: 818782,
+  endpoint: "<value>",
+  error: {
+    message: "<value>",
+  },
+  finalizedAt: 579660,
+  id: "<id>",
+  model: "Durango",
+  object: "batch",
+  requestCounts: {
+    completed: 311945,
+    failed: 214442,
+    total: 609620,
+  },
+  results: "<value>",
+  status: "in_progress",
+  usage: {
+    completionTokens: 20018,
+    promptTokens: 657059,
+    totalTokens: 490076,
+  },
+};
+```
+
+## Fields
+
+| Field                                                                              | Type                                                                               | Required                                                                           | Description                                                                        |
+| ---------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------- |
+| `completionWindow`                                                                 | [models.BatchListItemCompletionWindow](../models/batchlistitemcompletionwindow.mdx) | :heavy_check_mark:                                                                 | N/A                                                                                |
+| `createdAt`                                                                        | *number*                                                                           | :heavy_check_mark:                                                                 | N/A                                                                                |
+| `endpoint`                                                                         | *string*                                                                           | :heavy_check_mark:                                                                 | N/A                                                                                |
+| `error`                                                                            | [models.BatchListItemError](../models/batchlistitemerror.mdx)                       | :heavy_check_mark:                                                                 | N/A                                                                                |
+| `finalizedAt`                                                                      | *number*                                                                           | :heavy_check_mark:                                                                 | N/A                                                                                |
+| `id`                                                                               | *string*                                                                           | :heavy_check_mark:                                                                 | N/A                                                                                |
+| `model`                                                                            | *string*                                                                           | :heavy_check_mark:                                                                 | N/A                                                                                |
+| `object`                                                                           | [models.BatchListItemObject](../models/batchlistitemobject.mdx)                     | :heavy_check_mark:                                                                 | N/A                                                                                |
+| `requestCounts`                                                                    | [models.BatchListItemRequestCounts](../models/batchlistitemrequestcounts.mdx)       | :heavy_check_mark:                                                                 | N/A                                                                                |
+| `results`                                                                          | *any*                                                                              | :heavy_check_mark:                                                                 | Always null: retrieve the batch with `GET /batches/{id}` to access its results.    |
+| `status`                                                                           | [models.BatchListItemStatus](../models/batchlistitemstatus.mdx)                     | :heavy_check_mark:                                                                 | N/A                                                                                |
+| `usage`                                                                            | [models.BatchListItemUsage](../models/batchlistitemusage.mdx)                       | :heavy_check_mark:                                                                 | N/A                                                                                |

@@ -131,7 +131,7 @@ const openRouter = new OpenRouter({
 });
 
 async function run() {
-  const result = await openRouter.byok.list();
+  const result = await openRouter.batch.list();
 
   for await (const page of result) {
     console.log(page);

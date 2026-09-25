@@ -1,0 +1,30 @@
+---
+title: "AnthropicToolSearchContent"
+---
+
+## Supported Types
+
+### `models.AnthropicToolSearchResultError`
+
+```typescript
+const value: models.AnthropicToolSearchResultError = {
+  errorCode: "unavailable",
+  errorMessage: "<value>",
+  type: "tool_search_tool_result_error",
+};
+```
+
+### `models.AnthropicToolSearchResult`
+
+```typescript
+const value: models.AnthropicToolSearchResult = {
+  toolReferences: [
+    {
+      toolName: "my_tool",
+      type: "tool_reference",
+    },
+  ],
+  type: "tool_search_tool_search_result",
+};
+```
+

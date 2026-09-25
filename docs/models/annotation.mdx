@@ -1,0 +1,44 @@
+---
+title: "Annotation"
+---
+
+## Supported Types
+
+### `models.AnnotationFile`
+
+```typescript
+const value: models.AnnotationFile = {
+  file: {
+    content: [],
+    hash: "<value>",
+  },
+  type: "file",
+};
+```
+
+### `models.AnnotationURLCitation`
+
+```typescript
+const value: models.AnnotationURLCitation = {
+  type: "url_citation",
+  urlCitation: {
+    endIndex: 95056,
+    startIndex: 185867,
+    title: "<value>",
+    url: "https://mindless-in-joke.name/",
+  },
+};
+```
+
+### `models.AnnotationWebSearchCitation`
+
+```typescript
+const value: models.AnnotationWebSearchCitation = {
+  type: "web_search_citation",
+  webSearchCitation: {
+    title: "<value>",
+    url: "https://favorite-issue.info",
+  },
+};
+```
+

@@ -1,0 +1,40 @@
+---
+title: "AnthropicWebFetchToolResult"
+---
+
+## Example Usage
+
+```typescript
+import { AnthropicWebFetchToolResult } from "@openrouter/sdk/models";
+
+let value: AnthropicWebFetchToolResult = {
+  caller: {
+    type: "direct",
+  },
+  content: {
+    content: {
+      source: {
+        data: "",
+        mediaType: "text/plain",
+        type: "text",
+      },
+      title: null,
+      type: "document",
+    },
+    retrievedAt: null,
+    type: "web_fetch_result",
+    url: "https://example.com",
+  },
+  toolUseId: "<id>",
+  type: "web_fetch_tool_result",
+};
+```
+
+## Fields
+
+| Field                                                                                                                                                                                                                         | Type                                                                                                                                                                                                                          | Required                                                                                                                                                                                                                      | Description                                                                                                                                                                                                                   | Example                                                                                                                                                                                                                       |
+| ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `caller`                                                                                                                                                                                                                      | *models.AnthropicCaller*                                                                                                                                                                                                      | :heavy_check_mark:                                                                                                                                                                                                            | N/A                                                                                                                                                                                                                           | \{<br/>"type": "direct"<br/>}                                                                                                                                                                                                  |
+| `content`                                                                                                                                                                                                                     | *models.AnthropicWebFetchContent*                                                                                                                                                                                             | :heavy_check_mark:                                                                                                                                                                                                            | N/A                                                                                                                                                                                                                           | \{<br/>"content": \{<br/>"citations": null,<br/>"source": \{<br/>"data": "",<br/>"media_type": "text/plain",<br/>"type": "text"<br/>},<br/>"title": null,<br/>"type": "document"<br/>},<br/>"retrieved_at": null,<br/>"type": "web_fetch_result",<br/>"url": "https://example.com"<br/>} |
+| `toolUseId`                                                                                                                                                                                                                   | *string*                                                                                                                                                                                                                      | :heavy_check_mark:                                                                                                                                                                                                            | N/A                                                                                                                                                                                                                           |                                                                                                                                                                                                                               |
+| `type`                                                                                                                                                                                                                        | *"web_fetch_tool_result"*                                                                                                                                                                                                     | :heavy_check_mark:                                                                                                                                                                                                            | N/A                                                                                                                                                                                                                           |                                                                                                                                                                                                                               |

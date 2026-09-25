@@ -7,6 +7,7 @@ import { ClientSDK } from "../lib/sdks.js";
 import { Alpha } from "./alpha.js";
 import { Analytics } from "./analytics.js";
 import { APIKeys } from "./apikeys.js";
+import { Batch } from "./batch.js";
 import { Benchmarks } from "./benchmarks.js";
 import { Beta } from "./beta.js";
 import { BYOK } from "./byok.js";
@@ -74,6 +75,11 @@ export class OpenRouter extends ClientSDK {
   private _oAuth?: OAuth;
   get oAuth(): OAuth {
     return (this._oAuth ??= new OAuth(this._options));
+  }
+
+  private _batch?: Batch;
+  get batch(): Batch {
+    return (this._batch ??= new Batch(this._options));
   }
 
   private _benchmarks?: Benchmarks;

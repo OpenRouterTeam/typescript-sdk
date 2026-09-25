@@ -66,7 +66,7 @@ export type ImageGenerationUsagePromptTokensDetails = {
 /**
  * Usage for server-side tool execution (e.g., web search)
  */
-export type ServerToolUse = {
+export type ImageGenerationUsageServerToolUse = {
   /**
    * Number of OpenRouter server tool calls that executed and produced a result.
    */
@@ -121,7 +121,7 @@ export type ImageGenerationUsage = {
   /**
    * Usage for server-side tool execution (e.g., web search)
    */
-  serverToolUse?: ServerToolUse | null | undefined;
+  serverToolUse?: ImageGenerationUsageServerToolUse | null | undefined;
   /**
    * The service tier used by the upstream provider for this request
    */
@@ -200,26 +200,28 @@ export function imageGenerationUsagePromptTokensDetailsFromJSON(
 }
 
 /** @internal */
-export const ServerToolUse$inboundSchema: z.ZodType<ServerToolUse, unknown> = z
-  .object({
-    tool_calls_executed: z.nullable(z.int()).optional(),
-    tool_calls_requested: z.nullable(z.int()).optional(),
-    web_search_requests: z.nullable(z.int()).optional(),
-  }).transform((v) => {
-    return remap$(v, {
-      "tool_calls_executed": "toolCallsExecuted",
-      "tool_calls_requested": "toolCallsRequested",
-      "web_search_requests": "webSearchRequests",
-    });
+export const ImageGenerationUsageServerToolUse$inboundSchema: z.ZodType<
+  ImageGenerationUsageServerToolUse,
+  unknown
+> = z.object({
+  tool_calls_executed: z.nullable(z.int()).optional(),
+  tool_calls_requested: z.nullable(z.int()).optional(),
+  web_search_requests: z.nullable(z.int()).optional(),
+}).transform((v) => {
+  return remap$(v, {
+    "tool_calls_executed": "toolCallsExecuted",
+    "tool_calls_requested": "toolCallsRequested",
+    "web_search_requests": "webSearchRequests",
   });
+});
 
-export function serverToolUseFromJSON(
+export function imageGenerationUsageServerToolUseFromJSON(
   jsonString: string,
-): SafeParseResult<ServerToolUse, SDKValidationError> {
+): SafeParseResult<ImageGenerationUsageServerToolUse, SDKValidationError> {
   return safeParse(
     jsonString,
-    (x) => ServerToolUse$inboundSchema.parse(JSON.parse(x)),
-    `Failed to parse 'ServerToolUse' from JSON`,
+    (x) => ImageGenerationUsageServerToolUse$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'ImageGenerationUsageServerToolUse' from JSON`,
   );
 }
 
@@ -242,8 +244,9 @@ export const ImageGenerationUsage$inboundSchema: z.ZodType<
   prompt_tokens_details: z.nullable(
     z.lazy(() => ImageGenerationUsagePromptTokensDetails$inboundSchema),
   ).optional(),
-  server_tool_use: z.nullable(z.lazy(() => ServerToolUse$inboundSchema))
-    .optional(),
+  server_tool_use: z.nullable(
+    z.lazy(() => ImageGenerationUsageServerToolUse$inboundSchema),
+  ).optional(),
   service_tier: z.nullable(z.string()).optional(),
   speed: z.nullable(AnthropicSpeed$inboundSchema).optional(),
   total_tokens: z.int(),

@@ -1,0 +1,27 @@
+---
+title: "AnthropicBashCodeExecutionResult"
+---
+
+## Example Usage
+
+```typescript
+import { AnthropicBashCodeExecutionResult } from "@openrouter/sdk/models";
+
+let value: AnthropicBashCodeExecutionResult = {
+  content: [],
+  returnCode: 0,
+  stderr: "",
+  stdout: "Hello",
+  type: "bash_code_execution_result",
+};
+```
+
+## Fields
+
+| Field                                                                                      | Type                                                                                       | Required                                                                                   | Description                                                                                |
+| ------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------ |
+| `content`                                                                                  | [models.AnthropicBashCodeExecutionOutput](../models/anthropicbashcodeexecutionoutput.mdx)[] | :heavy_check_mark:                                                                         | N/A                                                                                        |
+| `returnCode`                                                                               | *number*                                                                                   | :heavy_check_mark:                                                                         | N/A                                                                                        |
+| `stderr`                                                                                   | *string*                                                                                   | :heavy_check_mark:                                                                         | N/A                                                                                        |
+| `stdout`                                                                                   | *string*                                                                                   | :heavy_check_mark:                                                                         | N/A                                                                                        |
+| `type`                                                                                     | *"bash_code_execution_result"*                                                             | :heavy_check_mark:                                                                         | N/A                                                                                        |
