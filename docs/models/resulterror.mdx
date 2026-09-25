@@ -1,0 +1,24 @@
+---
+title: "ResultError"
+---
+
+## Example Usage
+
+```typescript
+import { ResultError } from "@openrouter/sdk/models";
+
+let value: ResultError = {
+  message: "<value>",
+  param: "<value>",
+  type: "<value>",
+};
+```
+
+## Fields
+
+| Field                                                          | Type                                                           | Required                                                       | Description                                                    | Example                                                        |
+| -------------------------------------------------------------- | -------------------------------------------------------------- | -------------------------------------------------------------- | -------------------------------------------------------------- | -------------------------------------------------------------- |
+| `errorType`                                                    | [models.ApiErrorType](../models/apierrortype.mdx)               | :heavy_minus_sign:                                             | Canonical OpenRouter error type, stable across all API formats | rate_limit_exceeded                                            |
+| `message`                                                      | *string*                                                       | :heavy_check_mark:                                             | N/A                                                            |                                                                |
+| `param`                                                        | *string*                                                       | :heavy_check_mark:                                             | N/A                                                            |                                                                |
+| `type`                                                         | *string*                                                       | :heavy_check_mark:                                             | N/A                                                            |                                                                |

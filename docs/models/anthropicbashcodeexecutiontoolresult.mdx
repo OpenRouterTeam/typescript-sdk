@@ -1,0 +1,29 @@
+---
+title: "AnthropicBashCodeExecutionToolResult"
+---
+
+## Example Usage
+
+```typescript
+import { AnthropicBashCodeExecutionToolResult } from "@openrouter/sdk/models";
+
+let value: AnthropicBashCodeExecutionToolResult = {
+  content: {
+    content: [],
+    returnCode: 0,
+    stderr: "",
+    stdout: "Hello",
+    type: "bash_code_execution_result",
+  },
+  toolUseId: "<id>",
+  type: "bash_code_execution_tool_result",
+};
+```
+
+## Fields
+
+| Field                                                                                                      | Type                                                                                                       | Required                                                                                                   | Description                                                                                                | Example                                                                                                    |
+| ---------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------- |
+| `content`                                                                                                  | *models.AnthropicBashCodeExecutionContent*                                                                 | :heavy_check_mark:                                                                                         | N/A                                                                                                        | \{<br/>"content": [],<br/>"return_code": 0,<br/>"stderr": "",<br/>"stdout": "Hello",<br/>"type": "bash_code_execution_result"<br/>} |
+| `toolUseId`                                                                                                | *string*                                                                                                   | :heavy_check_mark:                                                                                         | N/A                                                                                                        |                                                                                                            |
+| `type`                                                                                                     | *"bash_code_execution_tool_result"*                                                                        | :heavy_check_mark:                                                                                         | N/A                                                                                                        |                                                                                                            |

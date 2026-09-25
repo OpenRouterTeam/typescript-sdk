@@ -1,0 +1,27 @@
+---
+title: "BatchSubmitBody"
+---
+
+Batch submit request body.
+
+## Example Usage
+
+```typescript
+import { BatchSubmitBody } from "@openrouter/sdk/models";
+
+let value: BatchSubmitBody = {
+  endpoint: "/v1/chat/completions",
+  model: "Fiesta",
+  requests: [],
+};
+```
+
+## Fields
+
+| Field                                                                                  | Type                                                                                   | Required                                                                               | Description                                                                            | Example                                                                                |
+| -------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------- |
+| `completionWindow`                                                                     | [models.BatchSubmitBodyCompletionWindow](../models/batchsubmitbodycompletionwindow.mdx) | :heavy_minus_sign:                                                                     | N/A                                                                                    |                                                                                        |
+| `endpoint`                                                                             | [models.Endpoint](../models/endpoint.mdx)                                               | :heavy_check_mark:                                                                     | N/A                                                                                    |                                                                                        |
+| `model`                                                                                | *string*                                                                               | :heavy_check_mark:                                                                     | N/A                                                                                    |                                                                                        |
+| `provider`                                                                             | [models.BatchProviderPreferences](../models/batchproviderpreferences.mdx)               | :heavy_minus_sign:                                                                     | Batch provider routing preferences. Only `provider.only` is supported.                 | \{<br/>"only": [<br/>"google-vertex"<br/>]<br/>}                                        |
+| `requests`                                                                             | [models.RequestT](../models/requestt.mdx)[]                                             | :heavy_check_mark:                                                                     | N/A                                                                                    |                                                                                        |

@@ -1,0 +1,35 @@
+---
+title: "Refusal"
+---
+
+## Example Usage
+
+```typescript
+import { Refusal } from "@openrouter/sdk/models";
+
+let value: Refusal = {
+  bytes: null,
+  logprob: 7310.99,
+  token: "<value>",
+  topLogprobs: [
+    {
+      bytes: [
+        56010,
+        967373,
+        9048,
+      ],
+      logprob: 4843.75,
+      token: "<value>",
+    },
+  ],
+};
+```
+
+## Fields
+
+| Field                                                        | Type                                                         | Required                                                     | Description                                                  |
+| ------------------------------------------------------------ | ------------------------------------------------------------ | ------------------------------------------------------------ | ------------------------------------------------------------ |
+| `bytes`                                                      | *number*[]                                                   | :heavy_check_mark:                                           | N/A                                                          |
+| `logprob`                                                    | *number*                                                     | :heavy_check_mark:                                           | N/A                                                          |
+| `token`                                                      | *string*                                                     | :heavy_check_mark:                                           | N/A                                                          |
+| `topLogprobs`                                                | [models.RefusalTopLogprob](../models/refusaltoplogprob.mdx)[] | :heavy_check_mark:                                           | N/A                                                          |

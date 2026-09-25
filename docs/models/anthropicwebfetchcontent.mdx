@@ -1,0 +1,34 @@
+---
+title: "AnthropicWebFetchContent"
+---
+
+## Supported Types
+
+### `models.AnthropicWebFetchBlock`
+
+```typescript
+const value: models.AnthropicWebFetchBlock = {
+  content: {
+    source: {
+      data: "",
+      mediaType: "text/plain",
+      type: "text",
+    },
+    title: null,
+    type: "document",
+  },
+  retrievedAt: null,
+  type: "web_fetch_result",
+  url: "https://example.com",
+};
+```
+
+### `models.AnthropicWebFetchToolResultError`
+
+```typescript
+const value: models.AnthropicWebFetchToolResultError = {
+  errorCode: "unsupported_content_type",
+  type: "web_fetch_tool_result_error",
+};
+```
+

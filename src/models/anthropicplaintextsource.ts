@@ -5,7 +5,10 @@
 
 import * as z from "zod/v4";
 import { remap as remap$ } from "../lib/primitives.js";
+import { safeParse } from "../lib/schemas.js";
 import { ClosedEnum } from "../types/enums.js";
+import { Result as SafeParseResult } from "../types/fp.js";
+import { SDKValidationError } from "./errors/sdkvalidationerror.js";
 
 export const AnthropicPlainTextSourceMediaType = {
   TextPlain: "text/plain",
@@ -14,22 +17,55 @@ export type AnthropicPlainTextSourceMediaType = ClosedEnum<
   typeof AnthropicPlainTextSourceMediaType
 >;
 
+export const AnthropicPlainTextSourceType = {
+  Text: "text",
+} as const;
+export type AnthropicPlainTextSourceType = ClosedEnum<
+  typeof AnthropicPlainTextSourceType
+>;
+
 export type AnthropicPlainTextSource = {
   data: string;
   mediaType: AnthropicPlainTextSourceMediaType;
-  type: "text";
+  type: AnthropicPlainTextSourceType;
 };
 
 /** @internal */
-export const AnthropicPlainTextSourceMediaType$outboundSchema: z.ZodEnum<
+export const AnthropicPlainTextSourceMediaType$inboundSchema: z.ZodEnum<
   typeof AnthropicPlainTextSourceMediaType
 > = z.enum(AnthropicPlainTextSourceMediaType);
+/** @internal */
+export const AnthropicPlainTextSourceMediaType$outboundSchema: z.ZodEnum<
+  typeof AnthropicPlainTextSourceMediaType
+> = AnthropicPlainTextSourceMediaType$inboundSchema;
 
+/** @internal */
+export const AnthropicPlainTextSourceType$inboundSchema: z.ZodEnum<
+  typeof AnthropicPlainTextSourceType
+> = z.enum(AnthropicPlainTextSourceType);
+/** @internal */
+export const AnthropicPlainTextSourceType$outboundSchema: z.ZodEnum<
+  typeof AnthropicPlainTextSourceType
+> = AnthropicPlainTextSourceType$inboundSchema;
+
+/** @internal */
+export const AnthropicPlainTextSource$inboundSchema: z.ZodType<
+  AnthropicPlainTextSource,
+  unknown
+> = z.object({
+  data: z.string(),
+  media_type: AnthropicPlainTextSourceMediaType$inboundSchema,
+  type: AnthropicPlainTextSourceType$inboundSchema,
+}).transform((v) => {
+  return remap$(v, {
+    "media_type": "mediaType",
+  });
+});
 /** @internal */
 export type AnthropicPlainTextSource$Outbound = {
   data: string;
   media_type: string;
-  type: "text";
+  type: string;
 };
 
 /** @internal */
@@ -39,7 +75,7 @@ export const AnthropicPlainTextSource$outboundSchema: z.ZodType<
 > = z.object({
   data: z.string(),
   mediaType: AnthropicPlainTextSourceMediaType$outboundSchema,
-  type: z.literal("text"),
+  type: AnthropicPlainTextSourceType$outboundSchema,
 }).transform((v) => {
   return remap$(v, {
     mediaType: "media_type",
@@ -51,5 +87,14 @@ export function anthropicPlainTextSourceToJSON(
 ): string {
   return JSON.stringify(
     AnthropicPlainTextSource$outboundSchema.parse(anthropicPlainTextSource),
+  );
+}
+export function anthropicPlainTextSourceFromJSON(
+  jsonString: string,
+): SafeParseResult<AnthropicPlainTextSource, SDKValidationError> {
+  return safeParse(
+    jsonString,
+    (x) => AnthropicPlainTextSource$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'AnthropicPlainTextSource' from JSON`,
   );
 }

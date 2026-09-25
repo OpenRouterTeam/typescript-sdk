@@ -1,0 +1,27 @@
+---
+title: "BatchDeletedObject"
+---
+
+Confirms a terminal batch was removed from the API and its OpenRouter-held artifacts purged. Deletion is not cancellation and does not erase billing or audit records.
+
+## Example Usage
+
+```typescript
+import { BatchDeletedObject } from "@openrouter/sdk/models";
+
+let value: BatchDeletedObject = {
+  deletion: {
+    openrouter: "deleted",
+  },
+  id: "batch_abc123",
+  object: "batch",
+};
+```
+
+## Fields
+
+| Field                                                                                      | Type                                                                                       | Required                                                                                   | Description                                                                                | Example                                                                                    |
+| ------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------ |
+| `deletion`                                                                                 | [models.BatchDeletionTargets](../models/batchdeletiontargets.mdx)                           | :heavy_check_mark:                                                                         | OpenRouter cleanup and, when a provider was assigned, the upstream batch deletion outcome. | \{<br/>"openrouter": "deleted",<br/>"upstream": \{<br/>"provider": "Anthropic",<br/>"status": "deleted"<br/>}<br/>} |
+| `id`                                                                                       | *string*                                                                                   | :heavy_check_mark:                                                                         | N/A                                                                                        | batch_abc123                                                                               |
+| `object`                                                                                   | [models.BatchDeletedObjectObject](../models/batchdeletedobjectobject.mdx)                   | :heavy_check_mark:                                                                         | N/A                                                                                        |                                                                                            |

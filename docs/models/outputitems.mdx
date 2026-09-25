@@ -27,7 +27,7 @@ const value: models.OutputApplyPatchCallItem = {
 
 ```typescript
 const value: models.OutputCodeInterpreterCallItem = {
-  id: "ci-abc123",
+  id: "msg-abc123",
   status: "completed",
   type: "code_interpreter_call",
 };
@@ -37,7 +37,7 @@ const value: models.OutputCodeInterpreterCallItem = {
 
 ```typescript
 const value: models.OutputComputerCallItem = {
-  callId: "call-abc123",
+  callId: "<id>",
   pendingSafetyChecks: [],
   status: "completed",
   type: "computer_call",
@@ -59,9 +59,9 @@ const value: models.OutputCustomToolCallItem = {
 
 ```typescript
 const value: models.OutputFileSearchCallItem = {
-  id: "fs-abc123",
+  id: "msg-abc123",
   queries: [
-    "search term",
+    "<value 1>",
   ],
   status: "completed",
   type: "file_search_call",
@@ -83,7 +83,7 @@ const value: models.OutputFunctionCallItem = {
 
 ```typescript
 const value: models.OutputImageGenerationCallItem = {
-  id: "img-abc123",
+  id: "msg-abc123",
   status: "completed",
   type: "image_generation_call",
 };
@@ -154,9 +154,9 @@ const value: models.OutputCodeInterpreterServerToolItem = {
 
 ```typescript
 const value: models.OutputDatetimeItem = {
-  datetime: "2026-03-12T14:30:00.000Z",
+  datetime: "2024-12-31T05:26:30.868Z",
   status: "completed",
-  timezone: "UTC",
+  timezone: "Europe/Vatican",
   type: "openrouter:datetime",
 };
 ```
@@ -329,7 +329,7 @@ const value: models.OutputShellCallOutputItem = {
 
 ```typescript
 const value: models.OutputWebSearchCallItem = {
-  id: "ws-abc123",
+  id: "msg-abc123",
   status: "completed",
   type: "web_search_call",
 };

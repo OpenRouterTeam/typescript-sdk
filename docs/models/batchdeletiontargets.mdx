@@ -1,0 +1,22 @@
+---
+title: "BatchDeletionTargets"
+---
+
+OpenRouter cleanup and, when a provider was assigned, the upstream batch deletion outcome.
+
+## Example Usage
+
+```typescript
+import { BatchDeletionTargets } from "@openrouter/sdk/models";
+
+let value: BatchDeletionTargets = {
+  openrouter: "deleted",
+};
+```
+
+## Fields
+
+| Field                                                                       | Type                                                                        | Required                                                                    | Description                                                                 |
+| --------------------------------------------------------------------------- | --------------------------------------------------------------------------- | --------------------------------------------------------------------------- | --------------------------------------------------------------------------- |
+| `openrouter`                                                                | [models.Openrouter](../models/openrouter.mdx)                                | :heavy_check_mark:                                                          | OpenRouter-held request and result artifacts were purged.                   |
+| `upstream`                                                                  | [models.Upstream](../models/upstream.mdx)                                    | :heavy_minus_sign:                                                          | The upstream batch deletion outcome; omitted when no provider was assigned. |

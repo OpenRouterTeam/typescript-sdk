@@ -1,0 +1,135 @@
+---
+title: "Body"
+---
+
+## Supported Types
+
+### `models.BodyChatCompletion`
+
+```typescript
+const value: models.BodyChatCompletion = {
+  choices: [
+    {
+      finishReason: "stop",
+      index: 613758,
+      logprobs: {
+        content: [
+          {
+            bytes: null,
+            logprob: 3124.33,
+            token: "<value>",
+            topLogprobs: [],
+          },
+        ],
+      },
+      message: {
+        content: "<value>",
+        refusal: "<value>",
+        role: "assistant",
+      },
+      nativeFinishReason: "<value>",
+    },
+  ],
+  created: 610535,
+  id: "<id>",
+  model: "Fortwo",
+  object: "chat.completion",
+};
+```
+
+### `models.OpenResponsesResult`
+
+```typescript
+const value: models.OpenResponsesResult = {
+  completedAt: 1704067210,
+  createdAt: 1704067200,
+  error: null,
+  frequencyPenalty: null,
+  id: "resp-abc123",
+  incompleteDetails: null,
+  instructions: null,
+  metadata: null,
+  model: "gpt-4",
+  object: "response",
+  output: [
+    {
+      content: [
+        {
+          text: "Hello! How can I help you today?",
+          type: "output_text",
+        },
+      ],
+      id: "msg-abc123",
+      role: "assistant",
+      type: "message",
+    },
+  ],
+  parallelToolCalls: true,
+  presencePenalty: null,
+  status: "completed",
+  temperature: null,
+  toolChoice: "auto",
+  tools: [],
+  topP: null,
+};
+```
+
+### `models.BodyMessage`
+
+```typescript
+const value: models.BodyMessage = {
+  container: {
+    expiresAt: "2026-04-08T00:00:00Z",
+    id: "ctr_01abc",
+  },
+  content: [
+    {
+      citations: null,
+      text: "Hello, world!",
+      type: "text",
+    },
+  ],
+  id: "<id>",
+  model: "Expedition",
+  role: "assistant",
+  stopDetails: {
+    category: "cyber",
+    explanation: "The request was refused due to policy.",
+    type: "refusal",
+  },
+  stopReason: "end_turn",
+  stopSequence: "<value>",
+  type: "message",
+  usage: {
+    cacheCreation: null,
+    cacheCreationInputTokens: null,
+    cacheReadInputTokens: null,
+    inferenceGeo: null,
+    inputTokens: 100,
+    outputTokens: 50,
+    outputTokensDetails: null,
+    serverToolUse: null,
+    serviceTier: "standard",
+  },
+};
+```
+
+### `models.BodyList`
+
+```typescript
+const value: models.BodyList = {
+  data: [
+    {
+      embedding: [
+        0.0023064255,
+        -0.009327292,
+        0.015797347,
+      ],
+      object: "embedding",
+    },
+  ],
+  model: "openai/text-embedding-3-small",
+  object: "list",
+};
+```
+

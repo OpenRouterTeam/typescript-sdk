@@ -1,0 +1,28 @@
+---
+title: "Message"
+---
+
+## Example Usage
+
+```typescript
+import { Message } from "@openrouter/sdk/models";
+
+let value: Message = {
+  content: "<value>",
+  refusal: "<value>",
+  role: "assistant",
+};
+```
+
+## Fields
+
+| Field                                        | Type                                         | Required                                     | Description                                  |
+| -------------------------------------------- | -------------------------------------------- | -------------------------------------------- | -------------------------------------------- |
+| `annotations`                                | *models.Annotation*[]                        | :heavy_minus_sign:                           | N/A                                          |
+| `content`                                    | *string*                                     | :heavy_check_mark:                           | N/A                                          |
+| `images`                                     | [models.Image](../models/image.mdx)[]         | :heavy_minus_sign:                           | N/A                                          |
+| `reasoning`                                  | *string*                                     | :heavy_minus_sign:                           | N/A                                          |
+| `reasoningDetails`                           | *models.ReasoningDetail*[]                   | :heavy_minus_sign:                           | N/A                                          |
+| `refusal`                                    | *string*                                     | :heavy_check_mark:                           | N/A                                          |
+| `role`                                       | [models.ChoiceRole](../models/choicerole.mdx) | :heavy_check_mark:                           | N/A                                          |
+| `toolCalls`                                  | [models.ToolCall](../models/toolcall.mdx)[]   | :heavy_minus_sign:                           | N/A                                          |

@@ -1,0 +1,31 @@
+---
+title: "AnthropicToolSearchToolResult"
+---
+
+## Example Usage
+
+```typescript
+import { AnthropicToolSearchToolResult } from "@openrouter/sdk/models";
+
+let value: AnthropicToolSearchToolResult = {
+  content: {
+    toolReferences: [
+      {
+        toolName: "my_tool",
+        type: "tool_reference",
+      },
+    ],
+    type: "tool_search_tool_search_result",
+  },
+  toolUseId: "<id>",
+  type: "tool_search_tool_result",
+};
+```
+
+## Fields
+
+| Field                                                                                                                     | Type                                                                                                                      | Required                                                                                                                  | Description                                                                                                               | Example                                                                                                                   |
+| ------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------- |
+| `content`                                                                                                                 | *models.AnthropicToolSearchContent*                                                                                       | :heavy_check_mark:                                                                                                        | N/A                                                                                                                       | \{<br/>"tool_references": [<br/>\{<br/>"tool_name": "my_tool",<br/>"type": "tool_reference"<br/>}<br/>],<br/>"type": "tool_search_tool_search_result"<br/>} |
+| `toolUseId`                                                                                                               | *string*                                                                                                                  | :heavy_check_mark:                                                                                                        | N/A                                                                                                                       |                                                                                                                           |
+| `type`                                                                                                                    | *"tool_search_tool_result"*                                                                                               | :heavy_check_mark:                                                                                                        | N/A                                                                                                                       |                                                                                                                           |

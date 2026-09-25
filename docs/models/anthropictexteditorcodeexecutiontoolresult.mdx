@@ -1,0 +1,30 @@
+---
+title: "AnthropicTextEditorCodeExecutionToolResult"
+---
+
+## Example Usage
+
+```typescript
+import { AnthropicTextEditorCodeExecutionToolResult } from "@openrouter/sdk/models";
+
+let value: AnthropicTextEditorCodeExecutionToolResult = {
+  content: {
+    content: "file content",
+    fileType: "text",
+    numLines: 10,
+    startLine: 1,
+    totalLines: 10,
+    type: "text_editor_code_execution_view_result",
+  },
+  toolUseId: "<id>",
+  type: "text_editor_code_execution_tool_result",
+};
+```
+
+## Fields
+
+| Field                                                                                                                                                     | Type                                                                                                                                                      | Required                                                                                                                                                  | Description                                                                                                                                               | Example                                                                                                                                                   |
+| --------------------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `content`                                                                                                                                                 | *models.AnthropicTextEditorCodeExecutionContent*                                                                                                          | :heavy_check_mark:                                                                                                                                        | N/A                                                                                                                                                       | \{<br/>"content": "file content",<br/>"file_type": "text",<br/>"num_lines": 10,<br/>"start_line": 1,<br/>"total_lines": 10,<br/>"type": "text_editor_code_execution_view_result"<br/>} |
+| `toolUseId`                                                                                                                                               | *string*                                                                                                                                                  | :heavy_check_mark:                                                                                                                                        | N/A                                                                                                                                                       |                                                                                                                                                           |
+| `type`                                                                                                                                                    | *"text_editor_code_execution_tool_result"*                                                                                                                | :heavy_check_mark:                                                                                                                                        | N/A                                                                                                                                                       |                                                                                                                                                           |

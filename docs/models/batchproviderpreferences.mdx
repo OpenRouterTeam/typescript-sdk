@@ -1,0 +1,19 @@
+---
+title: "BatchProviderPreferences"
+---
+
+Batch provider routing preferences. Only `provider.only` is supported.
+
+## Example Usage
+
+```typescript
+import { BatchProviderPreferences } from "@openrouter/sdk/models";
+
+let value: BatchProviderPreferences = {};
+```
+
+## Fields
+
+| Field                                                                                                                                | Type                                                                                                                                 | Required                                                                                                                             | Description                                                                                                                          | Example                                                                                                                              |
+| ------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------ |
+| `only`                                                                                                                               | *models.BatchProviderPreferencesOnly*[]                                                                                              | :heavy_minus_sign:                                                                                                                   | List of provider slugs to allow. If provided, this list is merged with your account-wide allowed provider settings for this request. | [<br/>"openai",<br/>"anthropic"<br/>]                                                                                                |

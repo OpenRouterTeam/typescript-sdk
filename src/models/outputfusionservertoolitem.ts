@@ -42,7 +42,7 @@ export type FailedModel = {
   statusCode?: number | undefined;
 };
 
-export type ResponseT = {
+export type OutputFusionServerToolItemResponse = {
   content?: string | undefined;
   model: string;
 };
@@ -78,7 +78,7 @@ export type OutputFusionServerToolItem = {
   /**
    * Analysis models that produced a response in this fusion run, with each model's full panel content.
    */
-  responses?: Array<ResponseT> | undefined;
+  responses?: Array<OutputFusionServerToolItemResponse> | undefined;
   /**
    * Web pages the analysis panels and analyst retrieved via web search during this fusion run, deduplicated by URL across the whole run. Present when at least one model cited a source.
    */
@@ -133,35 +133,45 @@ export function failedModelFromJSON(
 }
 
 /** @internal */
-export const ResponseT$inboundSchema: z.ZodType<ResponseT, unknown> = z.object({
+export const OutputFusionServerToolItemResponse$inboundSchema: z.ZodType<
+  OutputFusionServerToolItemResponse,
+  unknown
+> = z.object({
   content: z.string().optional(),
   model: z.string(),
 });
 /** @internal */
-export type ResponseT$Outbound = {
+export type OutputFusionServerToolItemResponse$Outbound = {
   content?: string | undefined;
   model: string;
 };
 
 /** @internal */
-export const ResponseT$outboundSchema: z.ZodType<
-  ResponseT$Outbound,
-  ResponseT
+export const OutputFusionServerToolItemResponse$outboundSchema: z.ZodType<
+  OutputFusionServerToolItemResponse$Outbound,
+  OutputFusionServerToolItemResponse
 > = z.object({
   content: z.string().optional(),
   model: z.string(),
 });
 
-export function responseToJSON(responseT: ResponseT): string {
-  return JSON.stringify(ResponseT$outboundSchema.parse(responseT));
+export function outputFusionServerToolItemResponseToJSON(
+  outputFusionServerToolItemResponse: OutputFusionServerToolItemResponse,
+): string {
+  return JSON.stringify(
+    OutputFusionServerToolItemResponse$outboundSchema.parse(
+      outputFusionServerToolItemResponse,
+    ),
+  );
 }
-export function responseFromJSON(
+export function outputFusionServerToolItemResponseFromJSON(
   jsonString: string,
-): SafeParseResult<ResponseT, SDKValidationError> {
+): SafeParseResult<OutputFusionServerToolItemResponse, SDKValidationError> {
   return safeParse(
     jsonString,
-    (x) => ResponseT$inboundSchema.parse(JSON.parse(x)),
-    `Failed to parse 'ResponseT' from JSON`,
+    (x) =>
+      OutputFusionServerToolItemResponse$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'OutputFusionServerToolItemResponse' from JSON`,
   );
 }
 
@@ -184,7 +194,9 @@ export const OutputFusionServerToolItem$inboundSchema: z.ZodType<
   failed_models: z.array(z.lazy(() => FailedModel$inboundSchema)).optional(),
   failure_reason: z.string().optional(),
   id: z.string().optional(),
-  responses: z.array(z.lazy(() => ResponseT$inboundSchema)).optional(),
+  responses: z.array(
+    z.lazy(() => OutputFusionServerToolItemResponse$inboundSchema),
+  ).optional(),
   sources: z.array(FusionSource$inboundSchema).optional(),
   status: ToolCallStatus$inboundSchema,
   type: OutputFusionServerToolItemType$inboundSchema,
@@ -201,7 +213,7 @@ export type OutputFusionServerToolItem$Outbound = {
   failed_models?: Array<FailedModel$Outbound> | undefined;
   failure_reason?: string | undefined;
   id?: string | undefined;
-  responses?: Array<ResponseT$Outbound> | undefined;
+  responses?: Array<OutputFusionServerToolItemResponse$Outbound> | undefined;
   sources?: Array<FusionSource$Outbound> | undefined;
   status: string;
   type: string;
@@ -217,7 +229,9 @@ export const OutputFusionServerToolItem$outboundSchema: z.ZodType<
   failedModels: z.array(z.lazy(() => FailedModel$outboundSchema)).optional(),
   failureReason: z.string().optional(),
   id: z.string().optional(),
-  responses: z.array(z.lazy(() => ResponseT$outboundSchema)).optional(),
+  responses: z.array(
+    z.lazy(() => OutputFusionServerToolItemResponse$outboundSchema),
+  ).optional(),
   sources: z.array(FusionSource$outboundSchema).optional(),
   status: ToolCallStatus$outboundSchema,
   type: OutputFusionServerToolItemType$outboundSchema,

@@ -1,0 +1,21 @@
+---
+title: "BatchDeletionOutcome"
+---
+
+Outcome for one deletion target: `deleted` (removed), `unsupported` (the provider has no batch-delete API; supported file cleanup still runs), or `not_applicable` (the batch never reached that target).
+
+## Example Usage
+
+```typescript
+import { BatchDeletionOutcome } from "@openrouter/sdk/models";
+
+let value: BatchDeletionOutcome = "deleted";
+
+// Open enum: unrecognized values are captured as Unrecognized<string>
+```
+
+## Values
+
+```typescript
+"deleted" | "unsupported" | "not_applicable" | Unrecognized<string>
+```

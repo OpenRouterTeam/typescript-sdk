@@ -1,0 +1,44 @@
+---
+title: "ReasoningDetail"
+---
+
+## Supported Types
+
+### `models.ReasoningDetailSummary`
+
+```typescript
+const value: models.ReasoningDetailSummary = {
+  summary:
+    "The model analyzed the problem by first identifying key constraints, then evaluating possible solutions...",
+  type: "reasoning.summary",
+};
+```
+
+### `models.ReasoningDetailEncrypted`
+
+```typescript
+const value: models.ReasoningDetailEncrypted = {
+  data: "encrypted data",
+  type: "reasoning.encrypted",
+};
+```
+
+### `models.ReasoningDetailText`
+
+```typescript
+const value: models.ReasoningDetailText = {
+  type: "reasoning.text",
+};
+```
+
+### `models.ReasoningDetailServerToolCall`
+
+```typescript
+const value: models.ReasoningDetailServerToolCall = {
+  arguments: "{\"prompt\":\"Compare carbon tax proposals\"}",
+  result: "{\"status\":\"ok\",\"models\":[\"openai/gpt-4o\"]}",
+  toolName: "openrouter:fusion",
+  type: "reasoning.server_tool_call",
+};
+```
+

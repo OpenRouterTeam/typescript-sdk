@@ -5,6 +5,8 @@
 
 export * from "./badgatewayresponseerror.js";
 export * from "./badrequestresponseerror.js";
+export * from "./batcherrorresponse.js";
+export * from "./batchpaymentrequiredresponseerror.js";
 export * from "./conflictresponseerror.js";
 export * from "./edgenetworktimeoutresponseerror.js";
 export * from "./forbiddenresponseerror.js";
