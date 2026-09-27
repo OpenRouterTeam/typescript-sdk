@@ -35724,6 +35724,16 @@ paths:
               schema:
                 $ref: '#/components/schemas/ServiceUnavailableResponse'
           description: 'Service Unavailable - Service temporarily unavailable'
+        '504':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 504
+                  message: 'The operation was aborted due to timeout'
+              schema:
+                $ref: '#/components/schemas/GatewayTimeoutResponse'
+          description: 'Gateway Timeout - Provider did not respond before the upstream deadline'
         '524':
           content:
             application/json:
