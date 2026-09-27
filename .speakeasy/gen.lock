@@ -1,19 +1,19 @@
 lockVersion: ""
 id: ""
 management:
-  docChecksum: 2e7bdb518e4453464c62b013d1d389d9
+  docChecksum: 0c5d349577a02d8380dc00df7adbbb46
   docVersion: 1.0.0
   speakeasyVersion: 1.787.0
   generationVersion: 2.914.0
-  releaseVersion: 1.3.32
-  configChecksum: c3083d18149828c4222cdad5d3a44c3c
+  releaseVersion: 1.3.33
+  configChecksum: 6ed0d117898e497f37f2ea83d7446eea
   repoURL: https://github.com/OpenRouterTeam/typescript-sdk.git
   installationURL: https://github.com/OpenRouterTeam/typescript-sdk
   published: true
 persistentEdits:
-  generation_id: 6e0fc35d-f6df-4d1f-8dd3-5f8e45f6f5dd
-  pristine_commit_hash: c2191db22452207599bc0fccd8b56cd87d57e334
-  pristine_tree_hash: cf05e4280eaf909bca4cdd17a58f5a9eb2274456
+  generation_id: 2c2630b5-4840-46b7-87f5-8d06958fed91
+  pristine_commit_hash: a5610a3327e021534462c7d657c706fa913a46db
+  pristine_tree_hash: ca0532da9ef049108502267df9b6cbe69c6c3def
 features:
   typescript:
     acceptHeaders: 2.81.2
@@ -14480,8 +14480,8 @@ trackedFiles:
     pristine_git_object: ca2390f495b75c6ad9ad3252ff5f91fa184c856f
   docs/sdks/embeddings/README.mdx:
     id: cd71581df291
-    last_write_checksum: sha1:bbed37fab060807c9d9460dbcc78859c8f5f26f3
-    pristine_git_object: a79b07c8c25b3765faa006bab223ddbfebec05d0
+    last_write_checksum: sha1:bcaf7a211667f689b0e63f5a41a3a05b02e2e206
+    pristine_git_object: 238a10055ea2b473e3d0404047aae8e627707f61
   docs/sdks/endpoints/README.mdx:
     id: 62dfac9f7b71
     last_write_checksum: sha1:9b2fe2a009462a0da7739ad887d2e96ac77ecb65
@@ -14642,12 +14642,12 @@ trackedFiles:
     pristine_git_object: 410efafd6a7f50d91ccb87131fedbe0c3d47e15a
   jsr.json:
     id: 7f6ab7767282
-    last_write_checksum: sha1:d39cfc3275d576dab3f8aa6db400e98e93a3e3b4
-    pristine_git_object: 25296b4f42a4d5d7aa113f4d4b83c5f0727737ce
+    last_write_checksum: sha1:f9775a48592c3f05dc22b05bead91628839895a7
+    pristine_git_object: 52c4ad60d4086ce0c6edc0cc954cba2771ce266b
   package.json:
     id: 7030d0b2f71b
-    last_write_checksum: sha1:4981cc9b4336846860aab38b44e0c7f679ae0cb4
-    pristine_git_object: fe984b8a2303039c483801d8f90ae5e9d53717c8
+    last_write_checksum: sha1:ecdbccf4c93bfe7d1cac80a692c0d960cf2f54f5
+    pristine_git_object: b5ffa293c769bb22db9738c46401a0b5ef3140bd
   src/core.ts:
     id: f431fdbcd144
     last_write_checksum: sha1:5aa66b0b6a5964f3eea7f3098c2eb3c0ee9c0131
@@ -14774,8 +14774,8 @@ trackedFiles:
     pristine_git_object: ad63c7dac30db8715143b321c4d77e65b2fe5382
   src/funcs/embeddingsGenerate.ts:
     id: f6455fcfe2c8
-    last_write_checksum: sha1:18d82a945fda8a113aab18beff5df7ab7865bf4d
-    pristine_git_object: a2002da2bb5297ee3fa9452e62c2d4958d0b9aa4
+    last_write_checksum: sha1:090bb582c7cb27ebfc58ac687c5e8aba60a5c561
+    pristine_git_object: 28fd7db8ebc7f97ba10182b81a2258f5603f2a9b
   src/funcs/embeddingsListModels.ts:
     id: dbe9751f8369
     last_write_checksum: sha1:a81c2db74730e3bcc3ce4e6543802ac611b85aad
@@ -15182,8 +15182,8 @@ trackedFiles:
     pristine_git_object: a187e58707bdb726ca2aff74941efe7493422d4e
   src/lib/config.ts:
     id: 320761608fb3
-    last_write_checksum: sha1:4828587f09dda696d4c010b90b05304b81be1f54
-    pristine_git_object: 5a710d4f304a8b8f17811a4a7d783932bebe27a5
+    last_write_checksum: sha1:c5cc8f6880e734dc9146dc0e5b736165050508c8
+    pristine_git_object: a97e5d9a3d8ba8fc2441b1e5ee6059865c69f315
   src/lib/dlv.ts:
     id: b1988214835a
     last_write_checksum: sha1:eaac763b22717206a6199104e0403ed17a4e2711
@@ -19332,6 +19332,8 @@ examples:
           application/json: {"error": {"code": 413, "message": "Request payload too large"}}
         "403":
           application/json: {"error": {"code": 403, "message": "Only management keys can perform this operation"}}
+        "504":
+          application/json: {"error": {"code": 504, "message": "The operation was aborted due to timeout"}}
   listEmbeddingsModels:
     speakeasy-default-list-embeddings-models:
       parameters:
@@ -22520,4 +22522,6 @@ examples:
         "500":
           application/json: {"error": {"code": 400, "message": "custom_id is required on requests[0]."}}
 examplesVersion: 1.0.2
-releaseNotes: "## Typescript SDK Changes:\n* `openrouter.alpha.decisions.create()`: \n  *  `request.decisionsRequest.provider` **Changed**\n* `openrouter.tts.createSpeech()`: \n  *  `request.speechRequest.provider.options.respan` **Added**\n* `openrouter.stt.createTranscription()`: \n  *  `request.sttRequest.provider.options.respan` **Added**\n* `openrouter.batch.createBatches()`: \n  *  `request.batchSubmitBody.provider.only[].union(ProviderName).enum(respan)` **Added**\n* `openrouter.byok.list()`: \n  *  `request.provider` **Changed**\n  *  `response.data[].provider.enum(respan)` **Added**\n* `openrouter.byok.create()`: \n  *  `request.createByokKeyRequest.provider.enum(respan)` **Added**\n  *  `response.data.provider.enum(respan)` **Added**\n* `openrouter.byok.get()`:  `response.data.provider.enum(respan)` **Added**\n* `openrouter.byok.update()`:  `response.data.provider.enum(respan)` **Added**\n* `openrouter.chat.send()`: \n  *  `request.chatRequest.provider` **Changed**\n* `openrouter.embeddings.generate()`: \n  *  `request.requestBody.provider` **Changed**\n* `openrouter.endpoints.listZdrEndpoints()`:  `response.data[].providerName.enum(respan)` **Added**\n* `openrouter.endpoints.list()`:  `response.data.endpoints[].providerName.enum(respan)` **Added**\n* `openrouter.generations.getGeneration()`:  `response.data.providerResponses[].providerName.enum(respan)` **Added**\n* `openrouter.images.generate()`: \n  *  `request.imageGenerationRequest.provider` **Changed**\n* `openrouter.presets.createPresetsChatCompletions()`: \n  *  `request.chatRequest.provider` **Changed**\n* `openrouter.presets.createPresetsMessages()`: \n  *  `request.messagesRequest.provider` **Changed**\n* `openrouter.presets.createPresetsResponses()`: \n  *  `request.responsesRequest.provider` **Changed**\n* `openrouter.rerank.rerank()`: \n  *  `request.requestBody.provider` **Changed**\n* `openrouter.responses.send()`: \n  *  `request.responsesRequest.provider` **Changed**\n* `openrouter.beta.responses.send()`: \n  *  `request.responsesRequest.provider` **Changed**\n* `openrouter.systemOne.create()`: \n  *  `request.decisionsRequest.provider` **Changed**\n* `openrouter.videoGeneration.generate()`: \n  *  `request.videoGenerationRequest.provider.options.respan` **Added**\n"
+releaseNotes: |
+  ## Typescript SDK Changes:
+  * `openrouter.embeddings.generate()`:  `error.status[504]` **Added**
