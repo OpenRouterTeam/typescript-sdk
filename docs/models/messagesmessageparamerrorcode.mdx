@@ -7,7 +7,7 @@ title: "MessagesMessageParamErrorCode"
 ```typescript
 import { MessagesMessageParamErrorCode } from "@openrouter/sdk/models";
 
-let value: MessagesMessageParamErrorCode = "too_many_requests";
+let value: MessagesMessageParamErrorCode = "query_too_long";
 
 // Open enum: unrecognized values are captured as Unrecognized<string>
 ```
@@ -15,5 +15,5 @@ let value: MessagesMessageParamErrorCode = "too_many_requests";
 ## Values
 
 ```typescript
-"invalid_tool_input" | "unavailable" | "max_uses_exceeded" | "too_many_requests" | "query_too_long" | Unrecognized<string>
+"invalid_tool_input" | "unavailable" | "max_uses_exceeded" | "too_many_requests" | "query_too_long" | "request_too_large" | Unrecognized<string>
 ```

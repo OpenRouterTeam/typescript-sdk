@@ -15,6 +15,7 @@ export const AnthropicWebFetchToolResultErrorErrorCode = {
   InvalidToolInput: "invalid_tool_input",
   UrlTooLong: "url_too_long",
   UrlNotAllowed: "url_not_allowed",
+  UrlNotInPriorContext: "url_not_in_prior_context",
   UrlNotAccessible: "url_not_accessible",
   UnsupportedContentType: "unsupported_content_type",
   TooManyRequests: "too_many_requests",
