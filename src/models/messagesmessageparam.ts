@@ -88,6 +88,7 @@ export const MessagesMessageParamErrorCode = {
   MaxUsesExceeded: "max_uses_exceeded",
   TooManyRequests: "too_many_requests",
   QueryTooLong: "query_too_long",
+  RequestTooLarge: "request_too_large",
 } as const;
 export type MessagesMessageParamErrorCode = OpenEnum<
   typeof MessagesMessageParamErrorCode

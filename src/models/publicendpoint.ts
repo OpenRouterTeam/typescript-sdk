@@ -28,6 +28,13 @@ import {
   ToolChoiceSupport$inboundSchema,
 } from "./toolchoicesupport.js";
 
+export type NativeTools = {
+  /**
+   * The provider tool type the request is translated to when this tool runs natively, e.g. `web_search_20260209` on Anthropic or `google_search` on Gemini.
+   */
+  type: string;
+};
+
 export type Decisions = {
   latency: PercentileStats | null;
   /**
@@ -212,6 +219,10 @@ export type PublicEndpoint = {
   modelName: string;
   name: string;
   /**
+   * The server tools this endpoint accepts as the provider's own built-in tool (`engine: "native"`) instead of an OpenRouter engine, keyed by canonical `openrouter:*` name. Each value names the provider tool type the request is translated to. Where that tool runs (provider-side, or returned to the client as with Anthropic bash) is documented per tool. Empty when the provider has none.
+   */
+  nativeTools: { [k: string]: NativeTools };
+  /**
    * Endpoint performance over the last 30 minutes, keyed by the kind of request served (e.g. `text_generation`, `image_generation`). Additive to the legacy singular latency and throughput fields; image and video generation report end-to-end latency. Only visible when authenticated with an API key or cookie.
    */
   perfLast30mByWorkload?: PerfLast30mByWorkload | undefined;
@@ -249,6 +260,22 @@ export type PublicEndpoint = {
    */
   uptimeLast5m: number | null;
 };
+
+/** @internal */
+export const NativeTools$inboundSchema: z.ZodType<NativeTools, unknown> = z
+  .object({
+    type: z.string(),
+  });
+
+export function nativeToolsFromJSON(
+  jsonString: string,
+): SafeParseResult<NativeTools, SDKValidationError> {
+  return safeParse(
+    jsonString,
+    (x) => NativeTools$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'NativeTools' from JSON`,
+  );
+}
 
 /** @internal */
 export const Decisions$inboundSchema: z.ZodType<Decisions, unknown> = z.object({
@@ -531,6 +558,7 @@ export const PublicEndpoint$inboundSchema: z.ZodType<PublicEndpoint, unknown> =
     model_id: z.string(),
     model_name: z.string(),
     name: z.string(),
+    native_tools: z.record(z.string(), z.lazy(() => NativeTools$inboundSchema)),
     perf_last_30m_by_workload: z.lazy(() => PerfLast30mByWorkload$inboundSchema)
       .optional(),
     pricing: z.lazy(() => Pricing$inboundSchema),
@@ -556,6 +584,7 @@ export const PublicEndpoint$inboundSchema: z.ZodType<PublicEndpoint, unknown> =
       "max_prompt_tokens": "maxPromptTokens",
       "model_id": "modelId",
       "model_name": "modelName",
+      "native_tools": "nativeTools",
       "perf_last_30m_by_workload": "perfLast30mByWorkload",
       "provider_name": "providerName",
       "supported_parameters": "supportedParameters",
