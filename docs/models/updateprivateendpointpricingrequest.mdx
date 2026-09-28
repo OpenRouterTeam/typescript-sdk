@@ -1,0 +1,22 @@
+---
+title: "UpdatePrivateEndpointPricingRequest"
+---
+
+## Example Usage
+
+```typescript
+import { UpdatePrivateEndpointPricingRequest } from "@openrouter/sdk/models";
+
+let value: UpdatePrivateEndpointPricingRequest = {
+  pricing: {
+    completion: "0.00001",
+    prompt: "0.0000025",
+  },
+};
+```
+
+## Fields
+
+| Field                                                                     | Type                                                                      | Required                                                                  | Description                                                               | Example                                                                   |
+| ------------------------------------------------------------------------- | ------------------------------------------------------------------------- | ------------------------------------------------------------------------- | ------------------------------------------------------------------------- | ------------------------------------------------------------------------- |
+| `pricing`                                                                 | [models.PrivateEndpointPricing](../models/privateendpointpricing.mdx)      | :heavy_check_mark:                                                        | Negotiated per-token rates reported for requests routed to this endpoint. | \{<br/>"completion": "0.00001",<br/>"prompt": "0.0000025"<br/>}            |

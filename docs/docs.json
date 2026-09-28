@@ -34,6 +34,7 @@
       "sdks/observability/README",
       "sdks/organization/README",
       "sdks/presets/README",
+      "sdks/privateendpoints/README",
       "sdks/providers/README",
       "sdks/rerank/README",
       "sdks/responses/README",

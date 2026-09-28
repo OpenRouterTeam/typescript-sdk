@@ -1,0 +1,26 @@
+---
+title: "PrivateEndpointValidation"
+---
+
+## Example Usage
+
+```typescript
+import { PrivateEndpointValidation } from "@openrouter/sdk/models";
+
+let value: PrivateEndpointValidation = {
+  checks: [
+    {
+      name: "auth_ok",
+      passed: true,
+    },
+  ],
+  passed: true,
+};
+```
+
+## Fields
+
+| Field                                                              | Type                                                               | Required                                                           | Description                                                        | Example                                                            |
+| ------------------------------------------------------------------ | ------------------------------------------------------------------ | ------------------------------------------------------------------ | ------------------------------------------------------------------ | ------------------------------------------------------------------ |
+| `checks`                                                           | [models.PrivateEndpointCheck](../models/privateendpointcheck.mdx)[] | :heavy_check_mark:                                                 | N/A                                                                |                                                                    |
+| `passed`                                                           | *boolean*                                                          | :heavy_check_mark:                                                 | Whether every check passed.                                        | true                                                               |
