@@ -1,19 +1,19 @@
 lockVersion: ""
 id: ""
 management:
-  docChecksum: 78829fa8dcb3e15279bd418630a39535
+  docChecksum: 0054f66ff1f94c2dfde2bde0df38d26e
   docVersion: 1.0.0
   speakeasyVersion: 1.787.0
   generationVersion: 2.914.0
-  releaseVersion: 1.3.34
-  configChecksum: 7e8c5c5bb1a8d8d530611ddef590c528
+  releaseVersion: 1.3.35
+  configChecksum: 62cc17d61f951506061ab544c02ba76b
   repoURL: https://github.com/OpenRouterTeam/typescript-sdk.git
   installationURL: https://github.com/OpenRouterTeam/typescript-sdk
   published: true
 persistentEdits:
-  generation_id: be755991-f393-4e7d-b82b-d592a1f9350e
-  pristine_commit_hash: 402a93f7c76a763ef9d503139d637178942c4746
-  pristine_tree_hash: f8b5f973f921dd6393e3e225bac38f2a86f1a455
+  generation_id: 58ad77b5-5443-4197-be8a-29ef70347ea1
+  pristine_commit_hash: dfc65db153e3e363c51e8d6b7f22e16ba523d4b1
+  pristine_tree_hash: c4230da596967918c3726c457d601a13eaa778ab
 features:
   typescript:
     acceptHeaders: 2.81.2
@@ -9083,6 +9083,14 @@ trackedFiles:
     id: 7c557e903580
     last_write_checksum: sha1:72481b521ca186b390c0acd82ffcf06e94d7a8bc
     pristine_git_object: e1d3429dc01d3939dbae1b3aa0c7bb62e41ecc2e
+  docs/models/operations/getinterndaemonglobals.mdx:
+    id: e22ae1ab795e
+    last_write_checksum: sha1:5de835e543cd220cab2e71a8378d06e69aa77264
+    pristine_git_object: c9ae9a91bfdf0161e72c09e0ebb10556961b3a58
+  docs/models/operations/getinterndaemonrequest.mdx:
+    id: b7f9c365664a
+    last_write_checksum: sha1:52862abf52673bee00a034bbc71d92a39d2d4fe2
+    pristine_git_object: 07b1fb851fa4ab95ff801f97d5f7675072004e24
   docs/models/operations/getinternglobals.mdx:
     id: 3168d4c01772
     last_write_checksum: sha1:b0c4131956e491c0528e50505c180c5134a5485f
@@ -13276,8 +13284,8 @@ trackedFiles:
     deleted: true
   docs/models/thinking.mdx:
     id: 376226c6e4d1
-    last_write_checksum: sha1:8dfdc0c3118e62afbd905e394e7f97a44f234eee
-    pristine_git_object: cd1804c15745e41de1e7e7367a4860d845e2398c
+    last_write_checksum: sha1:ca74774ec5592873b34b037933ed79e91ec0097f
+    pristine_git_object: d050b6bd5bbf1c806920009ff072312f3b809e9e
   docs/models/thinkingadaptive.md:
     id: c4280ef5edcd
     last_write_checksum: sha1:aace923f619ee67b869e7ec3c8a8b5972ef108b0
@@ -13287,6 +13295,10 @@ trackedFiles:
     id: 448d427b8ce1
     last_write_checksum: sha1:55f062f9d685c991d68b29d68cc394d95de2a322
     pristine_git_object: ee0ad1dad0d09eddc57730e6592ed043219fd0b2
+  docs/models/thinkingbetweentools.mdx:
+    id: 0aae8c3f812e
+    last_write_checksum: sha1:50eb6b292a057cac863e3aca854b5b8d82f88083
+    pristine_git_object: 74750209985625b053f07d48206dd0b08c4c51c5
   docs/models/thinkingdisabled.md:
     id: 30dfc6b9330c
     last_write_checksum: sha1:f2adeef0f26ebe08ac29bfca6f0a0c78b6f21653
@@ -14518,8 +14530,8 @@ trackedFiles:
     pristine_git_object: 15b7b4c80d50dd3aa0f7adc3ab4d9fb03a8efaa7
   docs/sdks/interns/README.mdx:
     id: 2f8a053ffe78
-    last_write_checksum: sha1:6ef3ea672e9714b6c2322363bfd709e0a77c7173
-    pristine_git_object: f4b2e62439d54bfd714187eb0fe0c25e44d0b81f
+    last_write_checksum: sha1:854e8be236339d0a7def72a56e9f4f79a37fb017
+    pristine_git_object: 229d03a6798b5efb0487bd98f2b86824ee212f03
   docs/sdks/models/README.mdx:
     id: 58f1ca464e0b
     last_write_checksum: sha1:dbae6f74244ab3e9fe38e075ab67f926f33ef87d
@@ -14646,12 +14658,12 @@ trackedFiles:
     pristine_git_object: 410efafd6a7f50d91ccb87131fedbe0c3d47e15a
   jsr.json:
     id: 7f6ab7767282
-    last_write_checksum: sha1:5fb90e46a65443245a6340b1ceb79a214b7dba22
-    pristine_git_object: 4751a0178b3808264f2f6d644674c9f2d1ed3738
+    last_write_checksum: sha1:95a10ab641640d3c18f0783f770f3f4d6a099399
+    pristine_git_object: 8427bf11f3eb74ab6a67bbd5602893e5c0de5e52
   package.json:
     id: 7030d0b2f71b
-    last_write_checksum: sha1:ebf48ea931dea941e57aa7d4df76bf1e3b0cd819
-    pristine_git_object: db959a8f75fcbc419f5b2b2094f62e4a1f56295c
+    last_write_checksum: sha1:305dd03e5f04dae7f9b95dd19c5d6063b1520061
+    pristine_git_object: b322c679a0e2f06f8dc889db8226a3d7fe7ce44d
   src/core.ts:
     id: f431fdbcd144
     last_write_checksum: sha1:5aa66b0b6a5964f3eea7f3098c2eb3c0ee9c0131
@@ -14904,10 +14916,14 @@ trackedFiles:
     id: 484b04c35876
     last_write_checksum: sha1:95616ff94e6ef4fe3248885d25aa71a6b01f5186
     pristine_git_object: 84985cfee5e79c648083370d42e07563d54f8fd2
+  src/funcs/internsGetInternDaemon.ts:
+    id: 727cbeff5468
+    last_write_checksum: sha1:8d8de1ac422ef03425af979f67c464b08364a8fc
+    pristine_git_object: 00c6a4c15409bac36e463ced4131b301716b52ac
   src/funcs/internsGetInternDaemonAccess.ts:
     id: 464f7f69e2f0
-    last_write_checksum: sha1:eacd878c100320dfd02e4bf10e54b3c06819c17b
-    pristine_git_object: 64de9e8c5741500aeec8ae130193cd328768cbdb
+    last_write_checksum: sha1:ceb2ab2eef61e74c12b82dd7095ef1118909af81
+    pristine_git_object: a60cc07695a9e26fd271e2d52dd877ab517b8f85
   src/funcs/internsInvoke.ts:
     id: d0be40cd89cf
     last_write_checksum: sha1:e7e5db94633812351a50eca92befa7aa032e49a7
@@ -15186,8 +15202,8 @@ trackedFiles:
     pristine_git_object: a187e58707bdb726ca2aff74941efe7493422d4e
   src/lib/config.ts:
     id: 320761608fb3
-    last_write_checksum: sha1:cdb5d2f77948587591ecd804f6cd6441bbd5bca9
-    pristine_git_object: 7cf31e77ec89ed0cdcd269d55ba0c216e83aee46
+    last_write_checksum: sha1:6e3604a704908b8ab2ce70d5d1e2f7197f183f5c
+    pristine_git_object: f882fd2bce77ac9e05bb23165b6d2837c354008a
   src/lib/dlv.ts:
     id: b1988214835a
     last_write_checksum: sha1:eaac763b22717206a6199104e0403ed17a4e2711
@@ -17180,8 +17196,8 @@ trackedFiles:
     pristine_git_object: 8f4f88900de657b7845cb49b57877f0ad0dbcc50
   src/models/messagesrequest.ts:
     id: 572964d5906d
-    last_write_checksum: sha1:12ed50ce8f46807daa3cc67782cfa6c8e93c29a7
-    pristine_git_object: 98e9d5f902e0c347095b78a65eb82b67e0867f81
+    last_write_checksum: sha1:f3b9c8582a41d29621d6d3c7b64c19b20963112a
+    pristine_git_object: 084c0925e3cd8ab4bdda6b2b031232423c68aa89
   src/models/messagessearchmodelsservertool.ts:
     id: 5ae7644a901f
     last_write_checksum: sha1:ecc43a76945e8ee23cc2f4104dc6c18cc6ba680d
@@ -17682,6 +17698,10 @@ trackedFiles:
     id: f7646f94d5c3
     last_write_checksum: sha1:8d293535cb8b5f21012724b6f13f3b0ab1c53561
     pristine_git_object: f468ba5502f118abe986888c04270e5e5c8dfae6
+  src/models/operations/getinterndaemon.ts:
+    id: 2f48932593a9
+    last_write_checksum: sha1:ee79674c4539119cbe1d4deb627afaf893f1f496
+    pristine_git_object: 3d714ef7992dfa4a39bb38b9bf3206ccb80e34bf
   src/models/operations/getinterndaemonaccess.ts:
     id: 2320374f9c4b
     last_write_checksum: sha1:989fdb1240545b0368bba31eb155246a3fc99bbe
@@ -17748,8 +17768,8 @@ trackedFiles:
     pristine_git_object: a052ed42bd123e79be1f05dc823c808f8c32b383
   src/models/operations/index.ts:
     id: 0d9ffaf774d2
-    last_write_checksum: sha1:3f8bfdb04f18d63d2b4986519de0323e239ef2ed
-    pristine_git_object: 19e2b028c9553906c7853ee60bd04beb88c49da2
+    last_write_checksum: sha1:2d641f5b28cdd363365c30b1a47067494a14e3a4
+    pristine_git_object: 0c0dc1d66d760ab4956262245db7c7256c2a1731
   src/models/operations/invokeintern.ts:
     id: f2b19fbd8a96
     last_write_checksum: sha1:55f0d7c3a2020919fbf3e92c2c7524a75a412504
@@ -19052,8 +19072,8 @@ trackedFiles:
     pristine_git_object: 5c82fe389f888827f98aa52788b850ef43422e07
   src/sdk/interns.ts:
     id: fc3b4e6c5008
-    last_write_checksum: sha1:7e3e9c6ef2130e371246014753382b6b5531d237
-    pristine_git_object: 4bc027afb4919a5c3debd28c467e6ae38009ffa4
+    last_write_checksum: sha1:44ad31c08bc5f25f3048c0e7a3a5fd5e7dec677f
+    pristine_git_object: f55ab379944f24af8e8db60fd4b13e93965d5e11
   src/sdk/models.ts:
     id: 8c761ab180fd
     last_write_checksum: sha1:0c5e5cefb7079fc69eb11ef157af6d2cb5255933
@@ -22525,5 +22545,17 @@ examples:
           application/json: {"error": {"code": 400, "message": "custom_id is required on requests[0]."}}
         "500":
           application/json: {"error": {"code": 400, "message": "custom_id is required on requests[0]."}}
+  getInternDaemon:
+    speakeasy-default-get-intern-daemon:
+      parameters:
+        path:
+          internId: "7c9e6679-7425-40de-944b-e07fc1f90ae7"
+      responses:
+        "200":
+          application/json: {"origin": "https://research-assistant-7c9e6679.or.bot", "token": "daemon_token"}
+        "401":
+          application/json: {"error": {"code": 404, "message": "Intern not found"}}
+        "500":
+          application/json: {"error": {"code": 404, "message": "Intern not found"}}
 examplesVersion: 1.0.2
-releaseNotes: "## Typescript SDK Changes:\n* `openrouter.batch.createBatches()`:  `response.results[].response.body.union(class (2)).content[].union(web_fetch_tool_result).content.union(web_fetch_tool_result_error).errorCode.enum(urlNotInPriorContext)` **Added**\n* `openrouter.batch.getBatches()`:  `response.results[].response.body.union(class (2)).content[].union(web_fetch_tool_result).content.union(web_fetch_tool_result_error).errorCode.enum(urlNotInPriorContext)` **Added**\n* `openrouter.endpoints.listZdrEndpoints()`:  `response.data[].nativeTools` **Added**\n* `openrouter.endpoints.list()`:  `response.data.endpoints[].nativeTools` **Added**\n* `openrouter.presets.createPresetsMessages()`: \n  *  `request.messagesRequest.messages[].content.union(Array<>)[].union(web_search_tool_result).content.union(class (1)).errorCode.enum(requestTooLarge)` **Added**\n"
+releaseNotes: "## Typescript SDK Changes:\n* `openrouter.interns.getInternDaemon()`: **Added**\n* `openrouter.interns.getInternDaemonAccess()`: **Deprecated**\n* `openrouter.presets.createPresetsMessages()`: \n  *  `request.messagesRequest.thinking.union(between_tools)` **Added**\n"

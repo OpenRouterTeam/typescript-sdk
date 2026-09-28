@@ -298,6 +298,10 @@ export type Speed = OpenEnum<typeof Speed>;
 
 export type System = string | Array<AnthropicTextBlockParam>;
 
+export type ThinkingBetweenTools = {
+  type: "between_tools";
+};
+
 export type ThinkingAdaptive = {
   blockBinding?: AnthropicThinkingBlockBinding | null | undefined;
   display?: AnthropicThinkingDisplay | null | undefined;
@@ -315,7 +319,11 @@ export type ThinkingEnabled = {
   type: "enabled";
 };
 
-export type Thinking = ThinkingEnabled | ThinkingDisabled | ThinkingAdaptive;
+export type Thinking =
+  | ThinkingEnabled
+  | ThinkingDisabled
+  | ThinkingAdaptive
+  | ThinkingBetweenTools;
 
 export type ToolChoiceTool = {
   disableParallelToolUse?: boolean | undefined;
@@ -560,7 +568,12 @@ export type MessagesRequest = {
   stream?: boolean | undefined;
   system?: string | Array<AnthropicTextBlockParam> | undefined;
   temperature?: number | undefined;
-  thinking?: ThinkingEnabled | ThinkingDisabled | ThinkingAdaptive | undefined;
+  thinking?:
+    | ThinkingEnabled
+    | ThinkingDisabled
+    | ThinkingAdaptive
+    | ThinkingBetweenTools
+    | undefined;
   toolChoice?:
     | ToolChoiceAuto
     | ToolChoiceAny
@@ -940,6 +953,27 @@ export function systemToJSON(system: System): string {
 }
 
 /** @internal */
+export type ThinkingBetweenTools$Outbound = {
+  type: "between_tools";
+};
+
+/** @internal */
+export const ThinkingBetweenTools$outboundSchema: z.ZodType<
+  ThinkingBetweenTools$Outbound,
+  ThinkingBetweenTools
+> = z.object({
+  type: z.literal("between_tools"),
+});
+
+export function thinkingBetweenToolsToJSON(
+  thinkingBetweenTools: ThinkingBetweenTools,
+): string {
+  return JSON.stringify(
+    ThinkingBetweenTools$outboundSchema.parse(thinkingBetweenTools),
+  );
+}
+
+/** @internal */
 export type ThinkingAdaptive$Outbound = {
   block_binding?: AnthropicThinkingBlockBinding$Outbound | null | undefined;
   display?: string | null | undefined;
@@ -1025,7 +1059,8 @@ export function thinkingEnabledToJSON(
 export type Thinking$Outbound =
   | ThinkingEnabled$Outbound
   | ThinkingDisabled$Outbound
-  | ThinkingAdaptive$Outbound;
+  | ThinkingAdaptive$Outbound
+  | ThinkingBetweenTools$Outbound;
 
 /** @internal */
 export const Thinking$outboundSchema: z.ZodType<Thinking$Outbound, Thinking> = z
@@ -1033,6 +1068,7 @@ export const Thinking$outboundSchema: z.ZodType<Thinking$Outbound, Thinking> = z
     z.lazy(() => ThinkingEnabled$outboundSchema),
     z.lazy(() => ThinkingDisabled$outboundSchema),
     z.lazy(() => ThinkingAdaptive$outboundSchema),
+    z.lazy(() => ThinkingBetweenTools$outboundSchema),
   ]);
 
 export function thinkingToJSON(thinking: Thinking): string {
@@ -1583,6 +1619,7 @@ export type MessagesRequest$Outbound = {
     | ThinkingEnabled$Outbound
     | ThinkingDisabled$Outbound
     | ThinkingAdaptive$Outbound
+    | ThinkingBetweenTools$Outbound
     | undefined;
   tool_choice?:
     | ToolChoiceAuto$Outbound
@@ -1664,6 +1701,7 @@ export const MessagesRequest$outboundSchema: z.ZodType<
     z.lazy(() => ThinkingEnabled$outboundSchema),
     z.lazy(() => ThinkingDisabled$outboundSchema),
     z.lazy(() => ThinkingAdaptive$outboundSchema),
+    z.lazy(() => ThinkingBetweenTools$outboundSchema),
   ]).optional(),
   toolChoice: z.union([
     z.lazy(() => ToolChoiceAuto$outboundSchema),
