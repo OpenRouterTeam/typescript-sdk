@@ -7,6 +7,7 @@ import { internsChat } from "../funcs/internsChat.js";
 import { internsCreateIntern } from "../funcs/internsCreateIntern.js";
 import { internsDeleteIntern } from "../funcs/internsDeleteIntern.js";
 import { internsGetIntern } from "../funcs/internsGetIntern.js";
+import { internsGetInternDaemon } from "../funcs/internsGetInternDaemon.js";
 import { internsGetInternDaemonAccess } from "../funcs/internsGetInternDaemonAccess.js";
 import { internsInvoke } from "../funcs/internsInvoke.js";
 import { internsListInterns } from "../funcs/internsListInterns.js";
@@ -109,6 +110,25 @@ export class Interns extends ClientSDK {
    *
    * @remarks
    * Returns the origin and daemon token that attach `ori tui --host` to one visible, running intern. The token is a credential: the response is sent with `Cache-Control: no-store`, and each reveal is logged by caller and intern. The API key selects the caller, workspace and visible interns. There is no default workspace fallback. Requests on regional hostnames such as `eu.openrouter.ai` are refused. [API key](/docs/api-reference/authentication) required.
+   */
+  async getInternDaemon(
+    request: operations.GetInternDaemonRequest,
+    options?: RequestOptions,
+  ): Promise<models.InternDaemonAccess> {
+    return unwrapAsync(internsGetInternDaemon(
+      this,
+      request,
+      options,
+    ));
+  }
+
+  /**
+   * Get an intern's daemon access (deprecated alias)
+   *
+   * @remarks
+   * Deprecated alias of `GET /interns/{internId}/daemon` with the same request, response, and errors. The API key selects the caller, workspace and visible interns. There is no default workspace fallback. Requests on regional hostnames such as `eu.openrouter.ai` are refused. [API key](/docs/api-reference/authentication) required.
+   *
+   * @deprecated method: This will be removed in a future release, please migrate away from it as soon as possible.
    */
   async getInternDaemonAccess(
     request: operations.GetInternDaemonAccessRequest,
