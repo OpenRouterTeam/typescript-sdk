@@ -1,19 +1,19 @@
 lockVersion: ""
 id: ""
 management:
-  docChecksum: 0054f66ff1f94c2dfde2bde0df38d26e
+  docChecksum: 62138fc980ba80b989932511d322e32e
   docVersion: 1.0.0
   speakeasyVersion: 1.787.0
   generationVersion: 2.914.0
-  releaseVersion: 1.3.35
-  configChecksum: 62cc17d61f951506061ab544c02ba76b
+  releaseVersion: 1.3.36
+  configChecksum: fd57e13284e9b46ecea1b2322de17d3c
   repoURL: https://github.com/OpenRouterTeam/typescript-sdk.git
   installationURL: https://github.com/OpenRouterTeam/typescript-sdk
   published: true
 persistentEdits:
-  generation_id: 58ad77b5-5443-4197-be8a-29ef70347ea1
-  pristine_commit_hash: dfc65db153e3e363c51e8d6b7f22e16ba523d4b1
-  pristine_tree_hash: c4230da596967918c3726c457d601a13eaa778ab
+  generation_id: f2053693-304e-4023-a8f3-312b884be805
+  pristine_commit_hash: c883f285d0db9ddcb3a4bb882245b0a809df2873
+  pristine_tree_hash: 5b5ab0dced4be27e5280d83f50535b00d7040471
 features:
   typescript:
     acceptHeaders: 2.81.2
@@ -1080,12 +1080,12 @@ trackedFiles:
     pristine_git_object: 3f0652bde0cd43ac9ec74bcadaa6ec0f72ec3918
   docs/models/anthropicwebfetchtoolresulterror.mdx:
     id: 5eccabfaff5b
-    last_write_checksum: sha1:2c29b9d44d00369874a5fc729631811c5681bf80
-    pristine_git_object: 552e27153b36ab7bba869ac1f8d29895e5317ea1
+    last_write_checksum: sha1:4f543370044376e87a17b2875b8f9d9e49df569b
+    pristine_git_object: 6ef7bf3441b006d9a1c63bd51b3483e83c4a1a5b
   docs/models/anthropicwebfetchtoolresulterrorerrorcode.mdx:
     id: feb416ca7f84
-    last_write_checksum: sha1:85ff9696d930f572129489a73e861420297ea932
-    pristine_git_object: 6e9013f31517d25f665b2a65882aeaa27fab5c24
+    last_write_checksum: sha1:d84f3161877835ab70699484a26196cd4407202e
+    pristine_git_object: 81c001a583bc539d3c513adb45a711580478b579
   docs/models/anthropicwebsearchresult.mdx:
     id: 6303470f4c67
     last_write_checksum: sha1:9c0d2f1470920f21a3352fb23e01953314731cbe
@@ -14658,12 +14658,12 @@ trackedFiles:
     pristine_git_object: 410efafd6a7f50d91ccb87131fedbe0c3d47e15a
   jsr.json:
     id: 7f6ab7767282
-    last_write_checksum: sha1:95a10ab641640d3c18f0783f770f3f4d6a099399
-    pristine_git_object: 8427bf11f3eb74ab6a67bbd5602893e5c0de5e52
+    last_write_checksum: sha1:2b52326f3fe42b5cc4c596215063e5aa8a479d3a
+    pristine_git_object: d05cd6897f96ea77b297b67377b7b0d6dc5e0be4
   package.json:
     id: 7030d0b2f71b
-    last_write_checksum: sha1:305dd03e5f04dae7f9b95dd19c5d6063b1520061
-    pristine_git_object: b322c679a0e2f06f8dc889db8226a3d7fe7ce44d
+    last_write_checksum: sha1:94967db824de0b443e7c8d67306705a724738917
+    pristine_git_object: 95d48827349b1f5f07218693f098d2870122651a
   src/core.ts:
     id: f431fdbcd144
     last_write_checksum: sha1:5aa66b0b6a5964f3eea7f3098c2eb3c0ee9c0131
@@ -15202,8 +15202,8 @@ trackedFiles:
     pristine_git_object: a187e58707bdb726ca2aff74941efe7493422d4e
   src/lib/config.ts:
     id: 320761608fb3
-    last_write_checksum: sha1:6e3604a704908b8ab2ce70d5d1e2f7197f183f5c
-    pristine_git_object: f882fd2bce77ac9e05bb23165b6d2837c354008a
+    last_write_checksum: sha1:92d6cbb7ecabfdb930faf65f54cf79a592be45b6
+    pristine_git_object: 7f7bdb2d25519ff273609e30cb54afcd4685eff6
   src/lib/dlv.ts:
     id: b1988214835a
     last_write_checksum: sha1:eaac763b22717206a6199104e0403ed17a4e2711
@@ -15684,8 +15684,8 @@ trackedFiles:
     pristine_git_object: 70f8c7e9e6171fed19a68e2d034e1ef75ea4e72f
   src/models/anthropicwebfetchtoolresulterror.ts:
     id: 51ade5a2476e
-    last_write_checksum: sha1:92cd1f042d10f3808547d85586c08042d5d43a0d
-    pristine_git_object: 2744fdc41e10cd338e371af547b8baa256d84fb6
+    last_write_checksum: sha1:9018733b7abffa2b48653a4620a03a3fd3b87907
+    pristine_git_object: 65920801c53990d8693987b43076edf3cd17cb38
   src/models/anthropicwebsearchresult.ts:
     id: 8e1525a04bc3
     last_write_checksum: sha1:b6fda82cccdbb013bfc7d333373f91eb7cb7759b
@@ -22558,4 +22558,7 @@ examples:
         "500":
           application/json: {"error": {"code": 404, "message": "Intern not found"}}
 examplesVersion: 1.0.2
-releaseNotes: "## Typescript SDK Changes:\n* `openrouter.interns.getInternDaemon()`: **Added**\n* `openrouter.interns.getInternDaemonAccess()`: **Deprecated**\n* `openrouter.presets.createPresetsMessages()`: \n  *  `request.messagesRequest.thinking.union(between_tools)` **Added**\n"
+releaseNotes: |
+  ## Typescript SDK Changes:
+  * `openrouter.batch.createBatches()`:  `response.results[].response.body.union(class (2)).content[].union(web_fetch_tool_result).content.union(web_fetch_tool_result_error).errorCode.enum(contentTooLarge)` **Added**
+  * `openrouter.batch.getBatches()`:  `response.results[].response.body.union(class (2)).content[].union(web_fetch_tool_result).content.union(web_fetch_tool_result_error).errorCode.enum(contentTooLarge)` **Added**

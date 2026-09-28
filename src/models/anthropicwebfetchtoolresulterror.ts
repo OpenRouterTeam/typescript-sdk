@@ -12,6 +12,7 @@ import { Result as SafeParseResult } from "../types/fp.js";
 import { SDKValidationError } from "./errors/sdkvalidationerror.js";
 
 export const AnthropicWebFetchToolResultErrorErrorCode = {
+  ContentTooLarge: "content_too_large",
   InvalidToolInput: "invalid_tool_input",
   UrlTooLong: "url_too_long",
   UrlNotAllowed: "url_not_allowed",
