@@ -1,0 +1,21 @@
+---
+title: "PrivateEndpointStatus"
+---
+
+Lifecycle state. `draft` endpoints are not routable until validated and activated; `disabled` endpoints are activated but temporarily not routable.
+
+## Example Usage
+
+```typescript
+import { PrivateEndpointStatus } from "@openrouter/sdk/models";
+
+let value: PrivateEndpointStatus = "active";
+
+// Open enum: unrecognized values are captured as Unrecognized<string>
+```
+
+## Values
+
+```typescript
+"draft" | "active" | "disabled" | Unrecognized<string>
+```

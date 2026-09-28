@@ -1,0 +1,21 @@
+---
+title: "DraftOnly"
+---
+
+When `true`, only delete the endpoint if it is still a draft (409 otherwise).
+
+## Example Usage
+
+```typescript
+import { DraftOnly } from "@openrouter/sdk/models/operations";
+
+let value: DraftOnly = "true";
+
+// Open enum: unrecognized values are captured as Unrecognized<string>
+```
+
+## Values
+
+```typescript
+"true" | "false" | Unrecognized<string>
+```

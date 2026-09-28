@@ -1,0 +1,53 @@
+---
+title: "BadGateway"
+---
+
+An upstream dependency failed. When `activate` was passed and the draft was created, `data` carries it and any validation checks.
+
+
+## Supported Types
+
+### `errors.CreatePrivateEndpointValidationFailedResponseError`
+
+```typescript
+const value: errors.CreatePrivateEndpointValidationFailedResponseError = {
+  data: {
+    endpoint: {
+      createdAt: "2026-09-24T10:30:00Z",
+      id: "5b1c4c4e-7d0a-4a8e-9f3a-2d6c1b0e8a11",
+      modelName: "OpenAI: GPT-4o",
+      modelPermaslug: "openai/gpt-4o-2024-08-06",
+      modelSlug: "openai/gpt-4o",
+      providerName: "Azure",
+      status: "active",
+      declaredRegion: "us",
+      declaredZdr: true,
+    },
+    validation: {
+      checks: [
+        {
+          name: "auth_ok",
+          passed: true,
+        },
+      ],
+      passed: true,
+    },
+  },
+  error: {
+    code: 734895,
+    message: "<value>",
+  },
+};
+```
+
+### `errors.BadGatewayResponseError`
+
+```typescript
+const value: errors.BadGatewayResponseError = {
+  error: {
+    code: 502,
+    message: "Provider returned error",
+  },
+};
+```
+

@@ -28,6 +28,7 @@ import { OAuth } from "./oauth.js";
 import { Observability } from "./observability.js";
 import { Organization } from "./organization.js";
 import { Presets } from "./presets.js";
+import { PrivateEndpoints } from "./privateendpoints.js";
 import { Providers } from "./providers.js";
 import { Rerank } from "./rerank.js";
 import { Responses } from "./responses.js";
@@ -175,6 +176,11 @@ export class OpenRouter extends ClientSDK {
   private _presets?: Presets;
   get presets(): Presets {
     return (this._presets ??= new Presets(this._options));
+  }
+
+  private _privateEndpoints?: PrivateEndpoints;
+  get privateEndpoints(): PrivateEndpoints {
+    return (this._privateEndpoints ??= new PrivateEndpoints(this._options));
   }
 
   private _providers?: Providers;

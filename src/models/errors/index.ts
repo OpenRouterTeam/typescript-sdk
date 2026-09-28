@@ -8,6 +8,8 @@ export * from "./badrequestresponseerror.js";
 export * from "./batcherrorresponse.js";
 export * from "./batchpaymentrequiredresponseerror.js";
 export * from "./conflictresponseerror.js";
+export * from "./createprivateendpoint.js";
+export * from "./createprivateendpointvalidationfailedresponseerror.js";
 export * from "./edgenetworktimeoutresponseerror.js";
 export * from "./forbiddenresponseerror.js";
 export * from "./gatewaytimeoutresponseerror.js";

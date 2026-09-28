@@ -1,19 +1,19 @@
 lockVersion: ""
 id: ""
 management:
-  docChecksum: 62138fc980ba80b989932511d322e32e
+  docChecksum: 77a5b0dd8ab45001d15e1b5a27808278
   docVersion: 1.0.0
   speakeasyVersion: 1.787.0
   generationVersion: 2.914.0
-  releaseVersion: 1.3.36
-  configChecksum: fd57e13284e9b46ecea1b2322de17d3c
+  releaseVersion: 1.4.0
+  configChecksum: c6f97602909da6a554bd1756310947c6
   repoURL: https://github.com/OpenRouterTeam/typescript-sdk.git
   installationURL: https://github.com/OpenRouterTeam/typescript-sdk
   published: true
 persistentEdits:
-  generation_id: f2053693-304e-4023-a8f3-312b884be805
-  pristine_commit_hash: c883f285d0db9ddcb3a4bb882245b0a809df2873
-  pristine_tree_hash: 5b5ab0dced4be27e5280d83f50535b00d7040471
+  generation_id: 71da85c9-72b8-47cb-9523-9051538ff5df
+  pristine_commit_hash: 36a234faeeb6cc824bcf043f2df18aef1069300f
+  pristine_tree_hash: d90da52046add890cce0571519434c361f61e719
 features:
   typescript:
     acceptHeaders: 2.81.2
@@ -28,6 +28,7 @@ features:
     downloadStreams: 0.1.1
     enumUnions: 0.1.0
     envVarSecurityUsage: 0.1.2
+    errorUnions: 0.1.1
     globalSecurity: 2.82.16
     globalSecurityCallbacks: 0.1.0
     globalSecurityFlattening: 0.1.1
@@ -3835,6 +3836,22 @@ trackedFiles:
     id: b01c4567352d
     last_write_checksum: sha1:e034a7fe57d74ec8b062b3c88ff3c55d26131b3c
     pristine_git_object: 5d5ab8aae8325edf75c452ec6c5016e200873ae5
+  docs/models/createprivateendpointrequest.mdx:
+    id: faedff659c73
+    last_write_checksum: sha1:25285c18401fa9e175203fc575fd8bcb51b429ac
+    pristine_git_object: 18c19034dfe491352c1487fc465df94953e2437a
+  docs/models/createprivateendpointrequestdeclaredregion.mdx:
+    id: 39d200d93a78
+    last_write_checksum: sha1:3ffb0e7b17d45cb95a223dfb87f315a683580100
+    pristine_git_object: daaa7a2b1d4bb8e7458b98e7325f9d780a2d9cc8
+  docs/models/createprivateendpointvalidationfailedresponsedata.mdx:
+    id: d98b08383d3a
+    last_write_checksum: sha1:d4f143fc0454eebe0c8e1fe19bb70a2ba4795e3c
+    pristine_git_object: 15fb6a0fb24c2c80425e72a56bf5415341ee7854
+  docs/models/createprivateendpointvalidationfailedresponseerror.mdx:
+    id: 753618bb720a
+    last_write_checksum: sha1:5d34faeff363c5250555288346166990c8d6fe4a
+    pristine_git_object: 0e81205ba05e7ce5bdbc38a9e1cdadc37f6dff1e
   docs/models/createscimgroupmappingrequest.mdx:
     id: 4c4b31da6b91
     last_write_checksum: sha1:25cd70f09c9b9aa484058de4c2e38553da738bf6
@@ -4172,6 +4189,14 @@ trackedFiles:
     id: 891768bbd4b4
     last_write_checksum: sha1:8e6b8e817d83d7c7fc3b2cc2615a37d4bb51b27a
     pristine_git_object: 788f496e113fb4ddf285b6ff0adefcd077ab3db3
+  docs/models/deleteprivateendpointresponse.mdx:
+    id: 611ede73dc04
+    last_write_checksum: sha1:7bf6e844bfbbe49897bd3c15a3c39df80b8e9197
+    pristine_git_object: fe84465d374969475f2428cd88d574a51f6c7333
+  docs/models/deleteprivateendpointresponsedata.mdx:
+    id: c423384851c8
+    last_write_checksum: sha1:f1762633f563355cd441db4bef23c118cf7ab5b6
+    pristine_git_object: 31d2be37bab8ba03d57ff8d5a3d02c39335f7343
   docs/models/deletescimgroupmappingresponse.mdx:
     id: 1c9494165922
     last_write_checksum: sha1:512df025934ca9641fbd1ba9c8523f291a89b660
@@ -4444,6 +4469,10 @@ trackedFiles:
     id: c98b3d6c8ac3
     last_write_checksum: sha1:38d401b5fb5104354b6bb2de2c96404b8447f72a
     pristine_git_object: 9f2858756fc1c4528f59cb29de24a1278d5eed8d
+  docs/models/errors/badgateway.mdx:
+    id: 59671cbdc562
+    last_write_checksum: sha1:44c79f955fd443562262d403b87a7522bc41e8a0
+    pristine_git_object: a19062dbba1053ac790afe544035b4944ea81a33
   docs/models/errors/badgatewayresponseerror.mdx:
     id: 164bc61d645d
     last_write_checksum: sha1:9a4e7fee2b34fbf8c0cb6693178594d82ea9f3eb
@@ -4460,6 +4489,10 @@ trackedFiles:
     id: 6bbc01c5cb1e
     last_write_checksum: sha1:2d2370224d361d5cbdd42a45a52982d874f6453b
     pristine_git_object: 6b20230a44b12fcd8a543b01fc4dc77ca3e92c66
+  docs/models/errors/conflict.mdx:
+    id: 66edc75fdb63
+    last_write_checksum: sha1:6f7029e4531dcc88ed1aaf8ac8fcc58c5d691717
+    pristine_git_object: e461ec84294525cca8e3ce49ac35f11b09fbfbe4
   docs/models/errors/conflictresponseerror.md:
     id: dfa7a1e4c341
     last_write_checksum: sha1:d53f5f938627d044a770dae613abd3d59c834484
@@ -4469,6 +4502,10 @@ trackedFiles:
     id: 52642332cd5b
     last_write_checksum: sha1:c14e4bda793c247c4cb9d38154dcb63aad9e67c7
     pristine_git_object: 7bbe2652479607037a6cb5ffdc8b285dc2e34bd3
+  docs/models/errors/createprivateendpointvalidationfailedresponseerror.mdx:
+    id: 9ed5e5f1264c
+    last_write_checksum: sha1:be76326882bd011b89550f48a4d19cb01aaf566f
+    pristine_git_object: 501547393742eed4117dd5a99b35630059d1cfc3
   docs/models/errors/edgenetworktimeoutresponseerror.mdx:
     id: 9dfa2f911aba
     last_write_checksum: sha1:2c22f4809926b9713880a5c1344f2d984b064d28
@@ -4485,6 +4522,10 @@ trackedFiles:
     id: 6dc8f021a44f
     last_write_checksum: sha1:7292b5bccc779b8c780303faa912c8741b8b9d4a
     pristine_git_object: 9623e61e79b71106afe731243c03c45c25b49a6d
+  docs/models/errors/internalservererror.mdx:
+    id: 996ee5bf4fe9
+    last_write_checksum: sha1:b51b5d104e8f4bddbe02fa3f7e2b6fa479655aaf
+    pristine_git_object: 43e749b20a334b038b616bcdb4841a2c64b1a428
   docs/models/errors/internalserverresponseerror.mdx:
     id: eae368e33b97
     last_write_checksum: sha1:0c675a81267cd7f2db79e800ccb72e40ec9c5053
@@ -4497,6 +4538,10 @@ trackedFiles:
     id: "187091522104"
     last_write_checksum: sha1:73dedffc08184418b70832c52e9d1e4ab6c7d9eb
     pristine_git_object: 2c8afff638629aa5c9bc51c195b2541c09a2679c
+  docs/models/errors/notfound.mdx:
+    id: cd0b9b2a5f76
+    last_write_checksum: sha1:3952f473e51cd08584eebb7e2140c9cd02d90ff8
+    pristine_git_object: f994baa230e28f30de98888b13567ced5b7769f5
   docs/models/errors/notfoundresponseerror.mdx:
     id: 207b2340162c
     last_write_checksum: sha1:73089aefceb28d5be92d1cef6a9e0a1f3a226db0
@@ -4533,6 +4578,10 @@ trackedFiles:
     id: 452fbc680c35
     last_write_checksum: sha1:b752ea565c80fe4a3f2ff7e60d6f319a422fcb98
     pristine_git_object: 6d4c4de606598079861ae08c5bf47caff17c7a22
+  docs/models/errors/unprocessableentity.mdx:
+    id: 1d6b919e5404
+    last_write_checksum: sha1:d22c31a076a0403d9221e44042c386e35ca5cd75
+    pristine_git_object: c1f81d5e04031a0e1440dabf7ad294b20ba34972
   docs/models/errors/unprocessableentityresponseerror.mdx:
     id: 50b6ce923b0c
     last_write_checksum: sha1:da3ac2823db229d3f7162032e4bbfe4d419ec15f
@@ -6446,6 +6495,10 @@ trackedFiles:
     id: a2564e571fb7
     last_write_checksum: sha1:b24dafe18d1417cb22f772c16f171603f4f976ee
     pristine_git_object: 5efa47c6a621f9525bdd337c552172856adb0180
+  docs/models/listprivateendpointsresponse.mdx:
+    id: 63c7373ad709
+    last_write_checksum: sha1:5aba1241eefb561ce648e393fb1ddcb86e1799df
+    pristine_git_object: 107f75d6d499789844e6d43de291a2baf0f4dbcd
   docs/models/listscimgroupmappingsresponse.mdx:
     id: 3941744ebf1d
     last_write_checksum: sha1:67580beb356734614cf456e824d733e9d24b6fed
@@ -6543,6 +6596,14 @@ trackedFiles:
     id: 10d27dd0dc00
     last_write_checksum: sha1:e4a0aacbe52bb2182af73bc458ddd7ea452877b1
     pristine_git_object: 0173d0ed6d6bef6a31de2a261fb2eb811dce0ba5
+  docs/models/managedprivateendpoint.mdx:
+    id: fdba71af7e3e
+    last_write_checksum: sha1:54d9200c8fe5d9106ad11c52f99711864d10f810
+    pristine_git_object: ab79730a4c2a0a7bf27448457f412ef773a10a2c
+  docs/models/managedprivateendpointresponse.mdx:
+    id: f859daf863bc
+    last_write_checksum: sha1:46d5ef0222d28d7c17745d1418330cbb3b3bd485
+    pristine_git_object: f6db869a3b55495e7116eea625a81678a20cf232
   docs/models/maxprice.md:
     id: 7c7c9e7845a0
     last_write_checksum: sha1:41f27034d453b56df8d89e75f43e0585320f7aa7
@@ -7981,6 +8042,14 @@ trackedFiles:
     last_write_checksum: sha1:6a2f794e1a18827f61da7321f8c59f4275da2b28
     pristine_git_object: cded56c5bb4d071a79a9f0dad927e48e02debb65
     deleted: true
+  docs/models/operations/activateprivateendpointglobals.mdx:
+    id: 0d173453de38
+    last_write_checksum: sha1:bbafeceb566490ab660ce4557610c7749cddd4c5
+    pristine_git_object: 327237c10c3ea40681d8960cb8270d0e932fcdf9
+  docs/models/operations/activateprivateendpointrequest.mdx:
+    id: 5be961b57d8b
+    last_write_checksum: sha1:7516ba7ecd49f89a037eae8ae3f2a5c15f4b46c8
+    pristine_git_object: e96edc41b2d716e7c9f3c41d62cb9843b60d2f52
   docs/models/operations/alloweddataregion.mdx:
     id: 149c27f32b70
     last_write_checksum: sha1:5ab3c86184bf28586906db9ea1e5b4c8d4c3c13e
@@ -8417,6 +8486,14 @@ trackedFiles:
     id: bcecfb6b235a
     last_write_checksum: sha1:e161ccd7c4bfd3bbe5f4d1009127d55b132a1811
     pristine_git_object: 30f45321b4e85e4b6c389b422a236575cee289c6
+  docs/models/operations/createprivateendpointglobals.mdx:
+    id: afbc06e01bc1
+    last_write_checksum: sha1:e2d2f5fd8b02f2e8d309082ff731c71dbc276944
+    pristine_git_object: 3a032d87a9da5ad87a79800d67724087e2a08ff9
+  docs/models/operations/createprivateendpointrequest.mdx:
+    id: 875d7a8b2217
+    last_write_checksum: sha1:f58bfa247fbdccb478dc1acefa2a7e7a9e26938e
+    pristine_git_object: d2e556237f02f5ca9ae01e5a8c830f89775894c4
   docs/models/operations/creatererankglobals.md:
     id: a69e0c2ebb3a
     last_write_checksum: sha1:81de6495768fe15d967381108daa6e453e868ea8
@@ -8669,6 +8746,14 @@ trackedFiles:
     id: dc9c62d598fd
     last_write_checksum: sha1:0a31703d26914486ab8c68c912c4df2b70edd434
     pristine_git_object: 9dc8670434b0877e87cb674b206b48977cdb7376
+  docs/models/operations/deleteprivateendpointglobals.mdx:
+    id: c677fe9cb871
+    last_write_checksum: sha1:fd065130e1a88ff09623e07ba27e0047d5fc4b01
+    pristine_git_object: d098bee935892a60b5e6eff0bea55e6e42d2b21e
+  docs/models/operations/deleteprivateendpointrequest.mdx:
+    id: d1f9f1ec5c66
+    last_write_checksum: sha1:46d76c5a46104da2d077804a8060d8f8fffd5d3a
+    pristine_git_object: 984b8f16e0463ab9c87e5612a6890b06be574e07
   docs/models/operations/deletescimgroupmappingglobals.mdx:
     id: 82cbe41fa51c
     last_write_checksum: sha1:127a2cbf344df7bc8aaf2588d37033d152e06241
@@ -8739,6 +8824,14 @@ trackedFiles:
     id: 20ac8101a29f
     last_write_checksum: sha1:51cdedce0feaf2dd11b185dd4a41122383cd0bea
     pristine_git_object: 63acaa947c889ccbcb6e989f5b7efa7ca1740fff
+  docs/models/operations/disableprivateendpointglobals.mdx:
+    id: 928972aab354
+    last_write_checksum: sha1:cfa032c549e438948e7cf1126280abed1bc0b45e
+    pristine_git_object: bf2a851a084a8d1ca7210afdfcc8672424dd15d6
+  docs/models/operations/disableprivateendpointrequest.mdx:
+    id: 3d7dd3c3ec7f
+    last_write_checksum: sha1:cb2f1d88f1d8f7a209dea9d110a54698e6991609
+    pristine_git_object: 5dedf94b47115517c4c3859f191c5ac245df1ea9
   docs/models/operations/displayformat.md:
     id: 93647ce5b476
     last_write_checksum: sha1:d9883114bf785daf66bf3c4d96263439e4fa407c
@@ -8810,10 +8903,22 @@ trackedFiles:
     id: 417167d13cb0
     last_write_checksum: sha1:bd6bdcf0ec9b83e60457ec49cf4cd7afe0686beb
     pristine_git_object: 2d1ff0a875d39f68c771f26e6b11c7c52fa16267
+  docs/models/operations/draftonly.mdx:
+    id: cd9f681ab493
+    last_write_checksum: sha1:20d36f92a4a06d3b52ee5e95866b8cc2c21e43ab
+    pristine_git_object: 4c67694493bd4968db6457cd16d177c222901c1c
   docs/models/operations/embedding.mdx:
     id: 530657f66b4b
     last_write_checksum: sha1:7a3872a55e7a3c78bdf1bc824d03e739c687de14
     pristine_git_object: f3567b6f337e6834fcc83efa8a60a5a420eca882
+  docs/models/operations/enableprivateendpointglobals.mdx:
+    id: a305650a9496
+    last_write_checksum: sha1:634ba3e652682e68bc87a58a52ca523f9bf4c769
+    pristine_git_object: 5109c77b0aa514b7380c59c3b3dc47a2a2c39329
+  docs/models/operations/enableprivateendpointrequest.mdx:
+    id: a2ee64b5e8b5
+    last_write_checksum: sha1:c963f42b24a672e1743e04c3d3d3a31cfda7a939
+    pristine_git_object: 18e8678409ea2740c79b9002155d3e93e79d4c39
   docs/models/operations/encodingformat.mdx:
     id: fa97dd9130c6
     last_write_checksum: sha1:d07ba3329367d35dba200bc5624affb4178d7699
@@ -9217,6 +9322,14 @@ trackedFiles:
     id: 41262a2f0b75
     last_write_checksum: sha1:e9fb19ccdd6d045e10b52a461043d11cdc11ee72
     pristine_git_object: 4b0ffbd7bc7bfcc06a75cf0611b9e62245e1123c
+  docs/models/operations/getprivateendpointglobals.mdx:
+    id: 3ab891cd22be
+    last_write_checksum: sha1:3885b7b61338067cf585e8080424649d3ef4f496
+    pristine_git_object: 9aff82686d2485f12f64c6bfd9611963ab2c9933
+  docs/models/operations/getprivateendpointrequest.mdx:
+    id: 95a3dcd75cbe
+    last_write_checksum: sha1:dd39a17720f6765be4403a79255d55421f697342
+    pristine_git_object: 4a9fee9c70749324e637b0778bfe8e76c09f79df
   docs/models/operations/getrankingsdailycategory.mdx:
     id: 9307256562a8
     last_write_checksum: sha1:b3c8e6bde94778a0a92f60587c369a476fa21feb
@@ -9810,6 +9923,14 @@ trackedFiles:
     id: 699d3b1de7a7
     last_write_checksum: sha1:f834c026d7e877a30296d9f58d1c066400b19942
     pristine_git_object: 6eba043057ace9a849c9653fe24d2b1a7d6cabbd
+  docs/models/operations/listprivateendpointsglobals.mdx:
+    id: 8cfb58294fdf
+    last_write_checksum: sha1:ded2329ea41a1d7cb2963aed10bdf39a4c6c55b4
+    pristine_git_object: c38091d4729b7c11a03535aab0c00b44dfd4fa31
+  docs/models/operations/listprivateendpointsrequest.mdx:
+    id: d852e4a5454e
+    last_write_checksum: sha1:470c06abcc9efbd8e6310509c3c1c9c4f4b4d553
+    pristine_git_object: f6386ba862293f2216d9c4498243b6e9bd55945a
   docs/models/operations/listprovidersdata.mdx:
     id: 119e591a8eaa
     last_write_checksum: sha1:b684e1f7fbe99b69d5cb8d1399e906de3ced69f3
@@ -10334,6 +10455,22 @@ trackedFiles:
     id: 33e401a234d7
     last_write_checksum: sha1:35934e25f5a6b927654c2b85617532a429a7fac6
     pristine_git_object: 72e84345c57f502d0b3833aa8978343f7a26720c
+  docs/models/operations/updateprivateendpointglobals.mdx:
+    id: 9ce285727649
+    last_write_checksum: sha1:c34cf69a82fc68255964c916ffb59386e3b5aa5e
+    pristine_git_object: 94830e0d818ce1dea41e36c185c9a2533f4944b8
+  docs/models/operations/updateprivateendpointpricingglobals.mdx:
+    id: e343848bf2b2
+    last_write_checksum: sha1:c7e21aa2a8a2d7e4e33dc56a861829ea8df47e9f
+    pristine_git_object: acdb1211bf4b1e184480a5e89224c9f3a056e6df
+  docs/models/operations/updateprivateendpointpricingrequest.mdx:
+    id: 7f47bc0b082e
+    last_write_checksum: sha1:46a4c1d9938bbb42308a670cfb3de7dfaacf5b1e
+    pristine_git_object: c478f857490597f976acdcf6c7c476716388ddea
+  docs/models/operations/updateprivateendpointrequest.mdx:
+    id: 0b559c40a967
+    last_write_checksum: sha1:a88626684bcd578c449729afc3ff95d570a6e4b8
+    pristine_git_object: bfaf53ce6e4ad8d52eee93191d2b268fc32793e4
   docs/models/operations/updatescimgroupmappingglobals.mdx:
     id: 402cc107fd5a
     last_write_checksum: sha1:ae4251ebbb9eb03ecfbe853871a7bec2e387e4c6
@@ -10413,6 +10550,14 @@ trackedFiles:
     id: 7d0714760ba1
     last_write_checksum: sha1:072670dedd8fe297aa32abe64c1ecab91e72edeb
     pristine_git_object: 319d7d43f0103693383b06e106f545fcefaa9b5f
+  docs/models/operations/validateprivateendpointglobals.mdx:
+    id: c61db68f6b38
+    last_write_checksum: sha1:a02d27365f3ea1a23f696972e0947158b49d6e58
+    pristine_git_object: 0c0a95fd784d536d915768e32ebafd69a2cd6e74
+  docs/models/operations/validateprivateendpointrequest.mdx:
+    id: 71261e59f683
+    last_write_checksum: sha1:fe2ab428a114c7c75d47a13b6404d2f257d3f94a
+    pristine_git_object: eed9e1298c2affb758ab82aebb83566a0b094928
   docs/models/operations/value1.md:
     id: 523d8c155e57
     last_write_checksum: sha1:98df0eba6dcf58b45422c81fd5bba8eb0bee94fa
@@ -11732,6 +11877,54 @@ trackedFiles:
     id: 7c4a8c10dda7
     last_write_checksum: sha1:b9ddcac03d5e24fe60a281b91820791c6bc9c88b
     pristine_git_object: a16979519e2cb8f7542be8885266eacfb4aa17e2
+  docs/models/privateendpoint.mdx:
+    id: d14587778779
+    last_write_checksum: sha1:e16fb57791b9321d0c6bb61839ffc10d4933beff
+    pristine_git_object: 8c4bebf675c75d2fd49c8663afca63879503e579
+  docs/models/privateendpointactivation.mdx:
+    id: 2ba1d446dd2a
+    last_write_checksum: sha1:32fb12301262a29ad1f9f9a15d86a5983e7e65f9
+    pristine_git_object: 825fd3da210fd01e6ecdcc2376a908baf3f4ffd2
+  docs/models/privateendpointcheck.mdx:
+    id: c199bff4f246
+    last_write_checksum: sha1:eb415af22f0a8a7fcea092083272e9d3bf3775ea
+    pristine_git_object: c30272a741c205da0cbb6a0ebbab40a00bb51e6f
+  docs/models/privateendpointcheckreason.mdx:
+    id: efb417c042b5
+    last_write_checksum: sha1:8dcdb63f8ec9ff45e9317139a765faad2864f76c
+    pristine_git_object: a358e2ec078afa8a4366d37a1bdee2e6366caf83
+  docs/models/privateendpointdeclaredregion.mdx:
+    id: f0bd5726115e
+    last_write_checksum: sha1:91ea39293d33d68034afef546ba990b12714feae
+    pristine_git_object: 454128f02c166d034d115ffd2ad0c1c60b83d6a1
+  docs/models/privateendpointpricing.mdx:
+    id: 064406fd1903
+    last_write_checksum: sha1:922ae4ea4ea99c7051021ed81e344705d92ecc41
+    pristine_git_object: bda4aab1b24a7d322f8a1bc4aa134ca91e1e77a5
+  docs/models/privateendpointresponse.mdx:
+    id: 860e4fb87f5b
+    last_write_checksum: sha1:f6ac418b19cc84add6183d421d649d1db1a954be
+    pristine_git_object: 5dfda23d994900297c509ca6324ba39404299666
+  docs/models/privateendpointstatus.mdx:
+    id: f193a97a0b0e
+    last_write_checksum: sha1:6172fb914807fbd7de9f70c23f1126263a5de9fa
+    pristine_git_object: c3d5a0f7160efd8c8453e2adf07b3fe9257e481e
+  docs/models/privateendpointsummary.mdx:
+    id: 8a7acf83baf7
+    last_write_checksum: sha1:7d89d21100d98cb571e6d4a30e9cfea1b9c28277
+    pristine_git_object: 4159642b9eb58b22fd949f81f4ee7fd2af0b23ca
+  docs/models/privateendpointvalidation.mdx:
+    id: b9f64d74b3fa
+    last_write_checksum: sha1:dc372b9b0f97ff0cb7c22839ff29c2dc2ea24f4f
+    pristine_git_object: 3b9511b0b9bf342ba341c7aedfc825d8e71fb201
+  docs/models/privateendpointvalidationnullable.mdx:
+    id: b6c1f7af4aad
+    last_write_checksum: sha1:0cbfbc07bc0f5f5b49ef9c78c63d6640affa6375
+    pristine_git_object: adeea7abc97437097c48809058f2d4294da24839
+  docs/models/privateendpointvalidationresponse.mdx:
+    id: a225cbca85ce
+    last_write_checksum: sha1:854f06de6b1d321c7889f6f6b2ed2efe0ea62a9b
+    pristine_git_object: 6ade23890a276ec70e6097f13581df532f09c7e3
   docs/models/progress.mdx:
     id: e3a7647bc262
     last_write_checksum: sha1:d14c7c4028882b1fd58c615b10fe2fce334bb8bb
@@ -13881,6 +14074,18 @@ trackedFiles:
     id: 2fdc00eca436
     last_write_checksum: sha1:e8ce72b1c8b9e4328e1e97feeb6b0511132409b0
     pristine_git_object: 6cde229bbac84c2f411652e9e9226d95c2cf70eb
+  docs/models/updateprivateendpointpricingrequest.mdx:
+    id: c6aa3a0ee6af
+    last_write_checksum: sha1:cd60a6fc2c519eeb464730c608c62a8a36a900ee
+    pristine_git_object: e69b0630523e803dcdffb33de2b2476affe33b39
+  docs/models/updateprivateendpointrequest.mdx:
+    id: d298e4499123
+    last_write_checksum: sha1:f9428c4c4e621075e2780560f0b32344df36fe14
+    pristine_git_object: 81d0896f7062af32c09e821cc3406048b92c9193
+  docs/models/updateprivateendpointrequestdeclaredregion.mdx:
+    id: 6b0ff8868102
+    last_write_checksum: sha1:747fcad75cd5d2ea5d0d5a1da76054f876f10a40
+    pristine_git_object: 93dbd8ff4ceabe63b840201a0acef2de5aed9138
   docs/models/updatescimgroupmappingrequest.mdx:
     id: 59fbe6749cef
     last_write_checksum: sha1:f0762a8b028d45a26bc98968ee25f5ab371066ec
@@ -13980,6 +14185,10 @@ trackedFiles:
     id: 17a15cad5966
     last_write_checksum: sha1:0ed000d7795399164149c948c57a020215801f73
     pristine_git_object: b5155a2172cd6fd3f0d92b7b313f19f7ade095a9
+  docs/models/validateprivateendpointrequest.mdx:
+    id: 3f02e8eb0760
+    last_write_checksum: sha1:3a1ab2dd38fa430a77675ba0eb0cb7500f88637e
+    pristine_git_object: a452a13a35e3b2801a3109239ddf579ed0973240
   docs/models/value1.md:
     id: 5d6c54c6615a
     last_write_checksum: sha1:8f0d1850d9d5b27f3717389e66940ea8b79522bc
@@ -14567,6 +14776,10 @@ trackedFiles:
     id: eeb505928d52
     last_write_checksum: sha1:519878d0e916e65f3763aabf472d51355ce2ec1d
     pristine_git_object: ca3de1fb0bbfddf610d0d5bc508568732beefc46
+  docs/sdks/privateendpoints/README.mdx:
+    id: 54dee70b8cc7
+    last_write_checksum: sha1:f60da0d90708317741d620affae798077dedfb5c
+    pristine_git_object: 5c99c685a530d2e52f14968dfc85162f09453882
   docs/sdks/providers/README.mdx:
     id: 5ea9af111324
     last_write_checksum: sha1:f554b81f0ae123acda48aef70af0a9bebc5c07e3
@@ -14658,12 +14871,12 @@ trackedFiles:
     pristine_git_object: 410efafd6a7f50d91ccb87131fedbe0c3d47e15a
   jsr.json:
     id: 7f6ab7767282
-    last_write_checksum: sha1:2b52326f3fe42b5cc4c596215063e5aa8a479d3a
-    pristine_git_object: d05cd6897f96ea77b297b67377b7b0d6dc5e0be4
+    last_write_checksum: sha1:539d1627d0e4c38387c6f62ae3a4abc5826d1b51
+    pristine_git_object: 76f67d38de69f459a000d8878d10d12b57d1b47b
   package.json:
     id: 7030d0b2f71b
-    last_write_checksum: sha1:94967db824de0b443e7c8d67306705a724738917
-    pristine_git_object: 95d48827349b1f5f07218693f098d2870122651a
+    last_write_checksum: sha1:e45707a9c63986788ff1265b227dbcedbf26e67f
+    pristine_git_object: 8841b3ac795df26b937e875feae1848830dbfc65
   src/core.ts:
     id: f431fdbcd144
     last_write_checksum: sha1:5aa66b0b6a5964f3eea7f3098c2eb3c0ee9c0131
@@ -15028,6 +15241,46 @@ trackedFiles:
     id: 326969b5ca64
     last_write_checksum: sha1:3c34af3d8d46f04f205601fae71f4215b824ae42
     pristine_git_object: 579b0e57da48c4f06f7304d26cd6d82408e168be
+  src/funcs/privateEndpointsActivate.ts:
+    id: fb4e7d40387c
+    last_write_checksum: sha1:72af23faed27ab7436d385e7e60deb8f9d9f8406
+    pristine_git_object: 31a3eb044b6be171fca841e322d74e96847139d8
+  src/funcs/privateEndpointsCreate.ts:
+    id: 59e376dd1895
+    last_write_checksum: sha1:f801dcf7d89f7711e1c7b051f996da7adf1c8a7d
+    pristine_git_object: 7b0f24722b82779dde74d736de91a42e185610cd
+  src/funcs/privateEndpointsDelete.ts:
+    id: 475f87370ef8
+    last_write_checksum: sha1:64b634cd1aa44ebe485aa251468d2e90641184fe
+    pristine_git_object: 799a8dde7af9f81cf712166ee1255c44718fad50
+  src/funcs/privateEndpointsDisable.ts:
+    id: c89fcb6fd3d0
+    last_write_checksum: sha1:0141c7cd689f8fef09be280efca0102fadd89c99
+    pristine_git_object: ca6eca68e421f4e3f78a7cca6c750daffb6355ff
+  src/funcs/privateEndpointsEnable.ts:
+    id: 3ccc0615e23f
+    last_write_checksum: sha1:b72117fd5059dfcda9c9d8bda08d907e68383135
+    pristine_git_object: 76b435c664665a46dac79bce8170a8d4ed7a65a6
+  src/funcs/privateEndpointsGet.ts:
+    id: 2b89eb5a92da
+    last_write_checksum: sha1:fe5fce5846ca98615af0e35fcd805c2d4f8ac8d2
+    pristine_git_object: 2e28f5e1a890c02424d92aa3058930be79a18311
+  src/funcs/privateEndpointsList.ts:
+    id: f8b91cc1013a
+    last_write_checksum: sha1:f90934e0150fe7a3586f2dd01bfd923131eb7955
+    pristine_git_object: 61c7fc448f2bd33033ef33f7f47ef97413ffd563
+  src/funcs/privateEndpointsUpdate.ts:
+    id: a2d429fd280a
+    last_write_checksum: sha1:8fa90f11080bb4164f1f1314161c767dbc30a777
+    pristine_git_object: 47d10883d630763c8f55c9ff8f2b2f1ed193f45b
+  src/funcs/privateEndpointsUpdatePricing.ts:
+    id: 5824e06c594a
+    last_write_checksum: sha1:c2f3929a2ce763d1df7a1f8e37b0305da27100b7
+    pristine_git_object: 41ed6bb2e5cdf96eae6b97c7d69a2fd77d99a74b
+  src/funcs/privateEndpointsValidate.ts:
+    id: 4337dd4863e1
+    last_write_checksum: sha1:98efd9c508dc51a0d5c0a6998c316961f86d33b2
+    pristine_git_object: a6f14a037b54381ec92c496fb29099b8279261be
   src/funcs/providersList.ts:
     id: 8ad87e7210ae
     last_write_checksum: sha1:12f45009411e6e4d0697aadc19030125a316052a
@@ -15202,8 +15455,8 @@ trackedFiles:
     pristine_git_object: a187e58707bdb726ca2aff74941efe7493422d4e
   src/lib/config.ts:
     id: 320761608fb3
-    last_write_checksum: sha1:92d6cbb7ecabfdb930faf65f54cf79a592be45b6
-    pristine_git_object: 7f7bdb2d25519ff273609e30cb54afcd4685eff6
+    last_write_checksum: sha1:52873324419700d41a96e7876fe1267297381f3a
+    pristine_git_object: 807876cf7be2cab1595c72e416b11010db710106
   src/lib/dlv.ts:
     id: b1988214835a
     last_write_checksum: sha1:eaac763b22717206a6199104e0403ed17a4e2711
@@ -16286,6 +16539,14 @@ trackedFiles:
     id: dc6bff35f5a1
     last_write_checksum: sha1:9df16036cebe587e20d7b9078e85a51b008f1ed4
     pristine_git_object: 1bd2a805f55379a24b45aa945dd7ca50a88796b1
+  src/models/createprivateendpointrequest.ts:
+    id: 466afc9b7d23
+    last_write_checksum: sha1:cbcc72b93a8485fdc6c144ba92a3701cdb962571
+    pristine_git_object: 0c397ca5d153898daf375f36c276b59d2ea1ec0a
+  src/models/createprivateendpointvalidationfailedresponseerror.ts:
+    id: 4e00bbe15ec8
+    last_write_checksum: sha1:1a72c5005700e70699edcefcdbfff0ef659a6b8c
+    pristine_git_object: f88b32f6cb02dc247b90ac81a62adf3d4d623769
   src/models/createscimgroupmappingrequest.ts:
     id: b5fef01e7c38
     last_write_checksum: sha1:d2c75aaf339c26de3b954af571f390b567cf8848
@@ -16398,6 +16659,10 @@ trackedFiles:
     id: 86995b7dad27
     last_write_checksum: sha1:48f68140327741024cf0185005993a461d0412a9
     pristine_git_object: 5a9d9e01bb3bb945d68148ba59d07650d3a5c8b3
+  src/models/deleteprivateendpointresponse.ts:
+    id: f98c78f263f4
+    last_write_checksum: sha1:dcce79c461a7141fcd25305953cdc5d34e691436
+    pristine_git_object: 68fc9e7c8ac736606d1190110786f1f5f96e13c9
   src/models/deletescimgroupmappingresponse.ts:
     id: 6773f6e7c59d
     last_write_checksum: sha1:bdfe5036cfdf3657c6d73275c9f9a320172438fe
@@ -16458,6 +16723,14 @@ trackedFiles:
     id: 3d49b17cca5f
     last_write_checksum: sha1:6a00de58c6ba80ea6bc64b708bd482a827e60562
     pristine_git_object: f0879cc7f2d069e4da547347831f630e574fdfa1
+  src/models/errors/createprivateendpoint.ts:
+    id: 677d100a981d
+    last_write_checksum: sha1:a154517e4454c0799a186b4b04d2f08203532f71
+    pristine_git_object: 3a31214d6bf11d9c945f992135361183af704243
+  src/models/errors/createprivateendpointvalidationfailedresponseerror.ts:
+    id: 81ce190d6cf1
+    last_write_checksum: sha1:5313a030247b54132c626ebde6a32c8e479ad5cc
+    pristine_git_object: 75e7abc9c9ccd74e94129dd80c9b44424617af9f
   src/models/errors/edgenetworktimeoutresponseerror.ts:
     id: da53f308c771
     last_write_checksum: sha1:52b7c94145c8375bd64be7a8ae5a7904e20ea7bc
@@ -16480,8 +16753,8 @@ trackedFiles:
     pristine_git_object: 53bb3cfae157b89fda8e4a5b0f1dd709da82c1c9
   src/models/errors/index.ts:
     id: c4e22507cb83
-    last_write_checksum: sha1:ee23779618533a7bbf0836c59b26da331ef623ba
-    pristine_git_object: 3afbbe438cbceb71b2352aefc6e1c56107856761
+    last_write_checksum: sha1:c2326c700e4457fd0c5ba40ae8c775d25766bbcd
+    pristine_git_object: 31a9d14cbe211da68f8e692fd021296385786d1f
   src/models/errors/internalserverresponseerror.ts:
     id: 02b76cec85f0
     last_write_checksum: sha1:18ef8306c531d997e7f560018498aeccddd0bbee
@@ -16888,8 +17161,8 @@ trackedFiles:
     pristine_git_object: 7abdfe096d3adff317db6837dc689c69db92e127
   src/models/index.ts:
     id: f93644b0f37e
-    last_write_checksum: sha1:676099c62a7ed941a213d56d36f66f86c30a0ea6
-    pristine_git_object: a9452658a5d1829db89e3b8e4918851dd3bc6fda
+    last_write_checksum: sha1:c629a47b67329439856b5e22c4191d7e320e617f
+    pristine_git_object: a0d021c48903b01a2fbcf1ff8e2db8f10cf3613e
   src/models/inputaudio.ts:
     id: 9bdc14c7565f
     last_write_checksum: sha1:2f8dc4c1d6a9c2927d9eb186e0ecedf7b81838e6
@@ -17106,6 +17379,10 @@ trackedFiles:
     id: 071060ed138f
     last_write_checksum: sha1:548646b202bf9f3661023b53bd5028ad505f8e58
     pristine_git_object: d026810ad0f86584200274e319f7c883b4200906
+  src/models/listprivateendpointsresponse.ts:
+    id: 0f316944ddb9
+    last_write_checksum: sha1:7dcb2e0b2438a66ba8432ee13d49a695b5b518fb
+    pristine_git_object: 7dee96a0b44597598370df2cae1de743b1ec870e
   src/models/listscimgroupmappingsresponse.ts:
     id: c04288fe6dbf
     last_write_checksum: sha1:259fdc2b380f62cd3708dbc7c9803ceed7ad477e
@@ -17134,6 +17411,14 @@ trackedFiles:
     id: 07d6199bf63f
     last_write_checksum: sha1:45c918e1ee16841f146774cc8ed13ede218b4a6b
     pristine_git_object: 6a847d2e295237f3f3f7448d65f44105863421bf
+  src/models/managedprivateendpoint.ts:
+    id: aa79ac02afd9
+    last_write_checksum: sha1:c36709febff88e015ad426566ac1fa1c5ab028a4
+    pristine_git_object: fa5c1e732723468dc2e0dee95041652ba31650ba
+  src/models/managedprivateendpointresponse.ts:
+    id: 24ff2f9760bd
+    last_write_checksum: sha1:81ae5630f0bf617c10d5e341dd76d39ebcd2546f
+    pristine_git_object: 7b1681e8d0dbc614e31138137e22149fb5ace200
   src/models/mcpapprovalrequestitem.ts:
     id: 03d997756e6c
     last_write_checksum: sha1:8004c461c49bc4edb1a8c25d6b89a11d8a50decc
@@ -17462,6 +17747,10 @@ trackedFiles:
     id: 4d50f36832ad
     last_write_checksum: sha1:ed710b20f8c4200dddf713871475c22590faa63a
     pristine_git_object: 8be325a42cbadbf7b6180d5fe24d0e047ec11b23
+  src/models/operations/activateprivateendpoint.ts:
+    id: 67a95de4b97f
+    last_write_checksum: sha1:221db5c1a5234c0a3521e422e6c4a809b5658002
+    pristine_git_object: 80a5856be3920ee678330f72482b013ef18aa151
   src/models/operations/bulkaddworkspacemembers.ts:
     id: 5868f2fbd4d9
     last_write_checksum: sha1:914bda7c34b93868f67bfe2771f4248a17b68ddd
@@ -17562,6 +17851,10 @@ trackedFiles:
     id: c0a2f8b46a1c
     last_write_checksum: sha1:089374c1a950fbf6bc0adcb6a66f7c2c2e13c9fb
     pristine_git_object: f9b360bb3d14c0200ed02833f77c61ef5f525690
+  src/models/operations/createprivateendpoint.ts:
+    id: 469b6f483a53
+    last_write_checksum: sha1:fc6f9dceaf0c144addcc405fc7733c6015099e1f
+    pristine_git_object: c263f7e660954f6c8da7f8f780ab074ceb5b02d2
   src/models/operations/creatererank.ts:
     id: e1de55b94363
     last_write_checksum: sha1:eb3f551d0b5421fcff5fb638ecb08054cf84f977
@@ -17622,6 +17915,10 @@ trackedFiles:
     id: a6ab575f608d
     last_write_checksum: sha1:0fedf5958fb382251ff4cf7bcdedac6f8b71ab9b
     pristine_git_object: 5cebb7f937c9cfb20b0d63b9f9422578dc272f02
+  src/models/operations/deleteprivateendpoint.ts:
+    id: a0caf4badde5
+    last_write_checksum: sha1:417ff199d2de486574f7a574aa50385d4d99c9b4
+    pristine_git_object: 095db735135aba43e90271679640838fd4f7694c
   src/models/operations/deletescimgroupmapping.ts:
     id: 28528c6c5f62
     last_write_checksum: sha1:ef705be3b0ace6ee33d2f9e48295c59c170212ee
@@ -17638,6 +17935,10 @@ trackedFiles:
     id: f9fd25ea4948
     last_write_checksum: sha1:d3cd764352b11bada75aacd818cfb9f10a1da416
     pristine_git_object: 2d4d8addac13b7140a917a0d1bb7c3ca1469a101
+  src/models/operations/disableprivateendpoint.ts:
+    id: 3a08f5ad738c
+    last_write_checksum: sha1:71da424f3ec4a3741e69a31bf6a05058ae2d576c
+    pristine_git_object: b2cc74b9dae3feac5d558850bdc8d054c0cb00f3
   src/models/operations/downloadcontainerfilecontent.ts:
     id: 0bc1bd778769
     last_write_checksum: sha1:e11d009e8b7c1022d1e5727b283dfdbe0e1778d5
@@ -17646,6 +17947,10 @@ trackedFiles:
     id: 1c7f08d2fedf
     last_write_checksum: sha1:dadd6bb96a3937e36a02d2890fcd00e8491da320
     pristine_git_object: 8dcf75e09db8dee253500c4351cbb5e769e78f19
+  src/models/operations/enableprivateendpoint.ts:
+    id: e1500a47cc96
+    last_write_checksum: sha1:34c952fcfa2a63ee5ef82b8bb72b54dabf091366
+    pristine_git_object: ca6303454492cbe3b5a27dd9cda42c4c2e656088
   src/models/operations/exchangeauthcodeforapikey.ts:
     id: 440595fac2ad
     last_write_checksum: sha1:7ebe26079a39df4ed8b3b8357d1b44b91bdc1454
@@ -17730,6 +18035,10 @@ trackedFiles:
     id: e1b248af1f73
     last_write_checksum: sha1:fe86238b200935c2f0bcd39afe0f84cb0fc79e66
     pristine_git_object: 6720ddf5594b84e705b19f0d494809a9ed17c537
+  src/models/operations/getprivateendpoint.ts:
+    id: d2a00e755d45
+    last_write_checksum: sha1:00d28090e82f995eee51a341883a0b5479ec3b7f
+    pristine_git_object: ad17c1289840f878e0c4acce6a1ed926f6d4b2ff
   src/models/operations/getrankingsdaily.ts:
     id: b165b39aba3b
     last_write_checksum: sha1:32bf3b847bf3c69eda9be0575af092236369d58f
@@ -17768,8 +18077,8 @@ trackedFiles:
     pristine_git_object: a052ed42bd123e79be1f05dc823c808f8c32b383
   src/models/operations/index.ts:
     id: 0d9ffaf774d2
-    last_write_checksum: sha1:2d641f5b28cdd363365c30b1a47067494a14e3a4
-    pristine_git_object: 0c0dc1d66d760ab4956262245db7c7256c2a1731
+    last_write_checksum: sha1:7084571e42a12b1c2fb564bb91c346f068b1653c
+    pristine_git_object: 700a9ee1da516f6586693b0238382e6d6721ca60
   src/models/operations/invokeintern.ts:
     id: f2b19fbd8a96
     last_write_checksum: sha1:55f0d7c3a2020919fbf3e92c2c7524a75a412504
@@ -17874,6 +18183,10 @@ trackedFiles:
     id: 7971ca6e4018
     last_write_checksum: sha1:3eec59b3a02eec059acd341778d8b1d6fe58e92f
     pristine_git_object: 40e57aeff4fcc5a61f86f65c11af0c6f2b3f050d
+  src/models/operations/listprivateendpoints.ts:
+    id: 21c6af9f454c
+    last_write_checksum: sha1:ad7bdc80157b7a11fdcd215b3a3c9aefa5143202
+    pristine_git_object: adbf585fb905aada980b318eaf0d07922126d5ff
   src/models/operations/listproviders.ts:
     id: 76a35169de06
     last_write_checksum: sha1:503279e69e79eb16b187320616c248aa9973567e
@@ -17962,6 +18275,14 @@ trackedFiles:
     id: efb1e13263f5
     last_write_checksum: sha1:f45abdbd2aaa233c10479dd83468fd91c9614665
     pristine_git_object: 5ca7155df4018f85796f4fddf486f6f1784f6897
+  src/models/operations/updateprivateendpoint.ts:
+    id: 05253f9e2009
+    last_write_checksum: sha1:37f9ad769e6e5e8eb280d747ecf5919aa50e9701
+    pristine_git_object: b97e901df4551b27a6cabb864f6b7857fdac971e
+  src/models/operations/updateprivateendpointpricing.ts:
+    id: 412bca3c778f
+    last_write_checksum: sha1:1b900196c41dd361ba6118bbc2d6c757e8101eab
+    pristine_git_object: 61681e8c2a3571e54a09ec91c940f0af970df708
   src/models/operations/updatescimgroupmapping.ts:
     id: 6b5a9008ec50
     last_write_checksum: sha1:d79c7f61099e5c7eb8106abb5ab24b0e1f9a7c75
@@ -17978,6 +18299,10 @@ trackedFiles:
     id: f2bb866e828c
     last_write_checksum: sha1:9bc85cc6e33775e22b52af52fbfb14f2dda816ed
     pristine_git_object: e03c5c2da7ba12d97a414a9af7347e3d3c1a4c83
+  src/models/operations/validateprivateendpoint.ts:
+    id: 7b1a6ff8bf8d
+    last_write_checksum: sha1:47a54115bcb5376948bf5d3ec1e03b8a48f390a3
+    pristine_git_object: 70c510f4f371e9ff40affc2d90689ad709a4b46f
   src/models/oranthropicbashtoolresult.ts:
     id: 13070e32efe3
     last_write_checksum: sha1:097525bdec2eb64b1eca30509a31f9c7127c6537
@@ -18242,6 +18567,54 @@ trackedFiles:
     id: b1116f9327ef
     last_write_checksum: sha1:eca00827da27079b7974395d253ed63f8779c226
     pristine_git_object: cb35565ab92c961fdea95cadc07a5135203f4ea7
+  src/models/privateendpoint.ts:
+    id: facf19d1d363
+    last_write_checksum: sha1:a225f97905763c265660af26f73874d9841c7540
+    pristine_git_object: 436826c72671f846730565eb2f099d376d9db6d8
+  src/models/privateendpointactivation.ts:
+    id: 1cd601dfa05c
+    last_write_checksum: sha1:40032e5c5e4b2f96403f1837a3ed1dc99b3824ee
+    pristine_git_object: d65964fe90f74d8f8565a450db351843961e2116
+  src/models/privateendpointcheck.ts:
+    id: 680e5562177c
+    last_write_checksum: sha1:4ca9d3fb72facad7e0cc4a57bdb950075f053bca
+    pristine_git_object: a6d8a2ce0ce4ef38ff6dda07d7aa06cc975c8ff2
+  src/models/privateendpointcheckreason.ts:
+    id: 5d4379eaa453
+    last_write_checksum: sha1:c1a01c95a323c7cd390982439ab823ac37f61917
+    pristine_git_object: b01a8ad4ffc46fb69e9c4bdd8888e1618ace4575
+  src/models/privateendpointdeclaredregion.ts:
+    id: e91a7cba073a
+    last_write_checksum: sha1:f06e4d0bd39d1e44067a56c776efd0838372f0cb
+    pristine_git_object: 19644f7c06bbf8a6920dc5206312fb4be5878ede
+  src/models/privateendpointpricing.ts:
+    id: c780fa3f1dc9
+    last_write_checksum: sha1:0515be40d82bed85725d65bd67f4075ff6dd2a0a
+    pristine_git_object: d02dc47471bb0abb7c7e8d17361116aaf5166e7b
+  src/models/privateendpointresponse.ts:
+    id: 852b6135ff3d
+    last_write_checksum: sha1:01b7ba92eabd9e66eb54dc8151f3707a8fba0bf8
+    pristine_git_object: d8bf6c3a7035d09c1b155b0a1eaea8066870dc6a
+  src/models/privateendpointstatus.ts:
+    id: d539deb2b851
+    last_write_checksum: sha1:2decef82b2f5345b7d450cd28b6089874265e14f
+    pristine_git_object: e1907c3a2c1db0a6491b6bff8ae88282124a1e2e
+  src/models/privateendpointsummary.ts:
+    id: 8f13349c68fa
+    last_write_checksum: sha1:eda6a7fa042ef3b1b4246cf7722b3293ad6c022f
+    pristine_git_object: 5bc7b9dcbe19ddf7d2d9bd4983a590e1d0ab490d
+  src/models/privateendpointvalidation.ts:
+    id: c29e1f33143e
+    last_write_checksum: sha1:594da53aee22f941e46ffc2b3c42cb37c6593643
+    pristine_git_object: 23d5992f571419c0fc63796d803e7adf30850d53
+  src/models/privateendpointvalidationnullable.ts:
+    id: cf4aae30836f
+    last_write_checksum: sha1:1a3d1cfcd456ac798c2b4eff2dc34d09b93dbd2b
+    pristine_git_object: 2ea8fa8b15edd5e718306ab63f15308322a03be8
+  src/models/privateendpointvalidationresponse.ts:
+    id: a3a95aa177a5
+    last_write_checksum: sha1:471d50712b382a2c76f46bd6bcd0885cb8c90eaf
+    pristine_git_object: 31d1f4b970eda9dc80df965ec6b443af4eafa4ac
   src/models/promptcachebreakpoint.ts:
     id: f8222f76987b
     last_write_checksum: sha1:dde10f33a8e7f5001fd1af2ba6a875c7a717440c
@@ -18814,6 +19187,14 @@ trackedFiles:
     id: 784690ec7bf0
     last_write_checksum: sha1:9804041cdeea6f0f667d799a4903848bfd0abb1b
     pristine_git_object: 14c95b9e7b432df315e2c95891e83d10399b408d
+  src/models/updateprivateendpointpricingrequest.ts:
+    id: af98cc8bf348
+    last_write_checksum: sha1:c237baf2102cf9fd6afaa2c7a02de97fb8b865f4
+    pristine_git_object: f80838e498a97b6a70732bfcbd3228fff6f4bc0a
+  src/models/updateprivateendpointrequest.ts:
+    id: 998472d2d99c
+    last_write_checksum: sha1:8534cd67baf624e9116f4d0433b5625676ecaaa3
+    pristine_git_object: e4dc175c26e8af2de635cca849439d9aae2ba02a
   src/models/updatescimgroupmappingrequest.ts:
     id: ae49c0bf110c
     last_write_checksum: sha1:4fb857d9e295a637c25a169c46018989f1696036
@@ -18842,6 +19223,10 @@ trackedFiles:
     id: ccd6ecd62c64
     last_write_checksum: sha1:00a88d8fc47fc4af818951f18b97437de5c7a979
     pristine_git_object: 43658c2bafcbeba1e20a00c131167f8bef08d03c
+  src/models/validateprivateendpointrequest.ts:
+    id: f7909806f4e1
+    last_write_checksum: sha1:fbdbc3aa6a79633c1d12c1f4eb28f820964804f7
+    pristine_git_object: ebf610c9efacd08a3d9c5960465e9708564f7458
   src/models/vaultsecret.ts:
     id: daa0ae6ffc96
     last_write_checksum: sha1:2ef7624a977d16ce5546dba23aed15dbba49eb1c
@@ -19094,6 +19479,10 @@ trackedFiles:
     id: c13a03e2e16b
     last_write_checksum: sha1:f37254ae887dbd98bd62ab2d9b3e4ba6048995ab
     pristine_git_object: 954592d2ab2afdd31bf5f55458672a787a1a767b
+  src/sdk/privateendpoints.ts:
+    id: ed31ec182fa7
+    last_write_checksum: sha1:959ae4473738d2df307135b55cb9a00f5f1ddcb0
+    pristine_git_object: 2a55996be9255841a54c12c5ec5819964d97042c
   src/sdk/providers.ts:
     id: fb8faa7013d0
     last_write_checksum: sha1:80c337cdcdfb182fcaa124dd2e1c62947faf74cf
@@ -19112,8 +19501,8 @@ trackedFiles:
     pristine_git_object: 8e9b4047e476a17451b5feb7e9d4a32eec7f61f8
   src/sdk/sdk.ts:
     id: 784571af2f69
-    last_write_checksum: sha1:cd9b0964c8fc1dd4700d9330b5de6c74f21f4a91
-    pristine_git_object: b83fbcaad80bee4591d0227fd390c3ef4bf9d295
+    last_write_checksum: sha1:272af33238eb84f5f569800cbfb76018253dc261
+    pristine_git_object: d5726986f92f5958854fe3804915fed0cdb9eee5
   src/sdk/stt.ts:
     id: fd9e88c22d1f
     last_write_checksum: sha1:baa74a0310eb8b465dea302495e744e3f3ea1ca5
@@ -22557,8 +22946,260 @@ examples:
           application/json: {"error": {"code": 404, "message": "Intern not found"}}
         "500":
           application/json: {"error": {"code": 404, "message": "Intern not found"}}
+  listPrivateEndpoints:
+    speakeasy-default-list-private-endpoints:
+      responses:
+        "200":
+          application/json: {"data": [{"created_at": "2026-09-24T10:30:00Z", "id": "5b1c4c4e-7d0a-4a8e-9f3a-2d6c1b0e8a11", "model_name": "OpenAI: GPT-4o", "model_permaslug": "openai/gpt-4o-2024-08-06", "model_slug": "openai/gpt-4o", "provider_name": "Azure", "status": "active"}]}
+        "401":
+          application/json: {"error": {"code": 401, "message": "Missing Authentication header"}}
+        "403":
+          application/json: {"error": {"code": 403, "message": "Only management keys can perform this operation"}}
+        "408":
+          application/json: {"error": {"code": 408, "message": "Operation timed out. Please try again later."}}
+        "500":
+          application/json: {"error": {"code": 500, "message": "Internal Server Error"}}
+  createPrivateEndpoint:
+    speakeasy-default-create-private-endpoint:
+      requestBody:
+        application/json: {"model_permaslug": "openai/gpt-4o-2024-08-06", "provider_slug": "azure", "upstream_model_id": "gpt-4o-prod"}
+      responses:
+        "201":
+          application/json: {"data": {"created_at": "2026-09-24T10:30:00Z", "id": "5b1c4c4e-7d0a-4a8e-9f3a-2d6c1b0e8a11", "model_name": "OpenAI: GPT-4o", "model_permaslug": "openai/gpt-4o-2024-08-06", "model_slug": "openai/gpt-4o", "provider_name": "Azure", "status": "active", "declared_region": "us", "declared_zdr": true}}
+        "400":
+          application/json: {"error": {"code": 400, "message": "Invalid request parameters"}}
+        "401":
+          application/json: {"error": {"code": 401, "message": "Missing Authentication header"}}
+        "403":
+          application/json: {"error": {"code": 403, "message": "Only management keys can perform this operation"}}
+        "404":
+          application/json: {"error": {"code": 404, "message": "Resource not found"}}
+        "408":
+          application/json: {"error": {"code": 408, "message": "Operation timed out. Please try again later."}}
+        "409":
+          application/json: {"error": {"code": 409, "message": "Resource conflict. Please try again later."}}
+        "422":
+          application/json: {"error": {"code": 422, "message": "Invalid argument"}}
+        "500":
+          application/json: {"error": {"code": 500, "message": "Internal Server Error"}}
+        "502":
+          application/json: {"error": {"code": 502, "message": "Provider returned error"}}
+  deletePrivateEndpoint:
+    speakeasy-default-delete-private-endpoint:
+      parameters:
+        path:
+          id: "5b1c4c4e-7d0a-4a8e-9f3a-2d6c1b0e8a11"
+      responses:
+        "200":
+          application/json: {"data": {"id": "5b1c4c4e-7d0a-4a8e-9f3a-2d6c1b0e8a11"}}
+        "400":
+          application/json: {"error": {"code": 400, "message": "Invalid request parameters"}}
+        "401":
+          application/json: {"error": {"code": 401, "message": "Missing Authentication header"}}
+        "403":
+          application/json: {"error": {"code": 403, "message": "Only management keys can perform this operation"}}
+        "404":
+          application/json: {"error": {"code": 404, "message": "Resource not found"}}
+        "408":
+          application/json: {"error": {"code": 408, "message": "Operation timed out. Please try again later."}}
+        "409":
+          application/json: {"error": {"code": 409, "message": "Resource conflict. Please try again later."}}
+        "422":
+          application/json: {"error": {"code": 422, "message": "Invalid argument"}}
+        "500":
+          application/json: {"error": {"code": 500, "message": "Internal Server Error"}}
+        "502":
+          application/json: {"error": {"code": 502, "message": "Provider returned error"}}
+  getPrivateEndpoint:
+    speakeasy-default-get-private-endpoint:
+      parameters:
+        path:
+          id: "5b1c4c4e-7d0a-4a8e-9f3a-2d6c1b0e8a11"
+      responses:
+        "200":
+          application/json: {"data": {"base_url": "https://contoso.openai.azure.com", "declared_region": "us", "declared_zdr": true, "id": "5b1c4c4e-7d0a-4a8e-9f3a-2d6c1b0e8a11", "model_name": "OpenAI: GPT-4o", "model_permaslug": "openai/gpt-4o-2024-08-06", "model_slug": "openai/gpt-4o", "pricing": {"completion": "0.00001", "prompt": "0.0000025"}, "provider_name": "Azure", "provider_slug": "azure", "status": "active", "upstream_model_id": "gpt-4o-prod"}}
+        "401":
+          application/json: {"error": {"code": 401, "message": "Missing Authentication header"}}
+        "403":
+          application/json: {"error": {"code": 403, "message": "Only management keys can perform this operation"}}
+        "404":
+          application/json: {"error": {"code": 404, "message": "Resource not found"}}
+        "408":
+          application/json: {"error": {"code": 408, "message": "Operation timed out. Please try again later."}}
+        "500":
+          application/json: {"error": {"code": 500, "message": "Internal Server Error"}}
+  updatePrivateEndpoint:
+    speakeasy-default-update-private-endpoint:
+      parameters:
+        path:
+          id: "5b1c4c4e-7d0a-4a8e-9f3a-2d6c1b0e8a11"
+      requestBody:
+        application/json: {"upstream_model_id": "gpt-4o-prod"}
+      responses:
+        "200":
+          application/json: {"data": {"base_url": "https://contoso.openai.azure.com", "declared_region": "us", "declared_zdr": true, "id": "5b1c4c4e-7d0a-4a8e-9f3a-2d6c1b0e8a11", "model_name": "OpenAI: GPT-4o", "model_permaslug": "openai/gpt-4o-2024-08-06", "model_slug": "openai/gpt-4o", "pricing": {"completion": "0.00001", "prompt": "0.0000025"}, "provider_name": "Azure", "provider_slug": "azure", "status": "active", "upstream_model_id": "gpt-4o-prod"}}
+        "400":
+          application/json: {"error": {"code": 400, "message": "Invalid request parameters"}}
+        "401":
+          application/json: {"error": {"code": 401, "message": "Missing Authentication header"}}
+        "403":
+          application/json: {"error": {"code": 403, "message": "Only management keys can perform this operation"}}
+        "404":
+          application/json: {"error": {"code": 404, "message": "Resource not found"}}
+        "408":
+          application/json: {"error": {"code": 408, "message": "Operation timed out. Please try again later."}}
+        "409":
+          application/json: {"error": {"code": 409, "message": "Resource conflict. Please try again later."}}
+        "422":
+          application/json: {"error": {"code": 422, "message": "Invalid argument"}}
+        "500":
+          application/json: {"error": {"code": 500, "message": "Internal Server Error"}}
+        "502":
+          application/json: {"error": {"code": 502, "message": "Provider returned error"}}
+  activatePrivateEndpoint:
+    speakeasy-default-activate-private-endpoint:
+      parameters:
+        path:
+          id: "5b1c4c4e-7d0a-4a8e-9f3a-2d6c1b0e8a11"
+      responses:
+        "200":
+          application/json: {"data": {"created_at": "2026-09-24T10:30:00Z", "id": "5b1c4c4e-7d0a-4a8e-9f3a-2d6c1b0e8a11", "model_name": "OpenAI: GPT-4o", "model_permaslug": "openai/gpt-4o-2024-08-06", "model_slug": "openai/gpt-4o", "provider_name": "Azure", "status": "active", "declared_region": "us", "declared_zdr": true}}
+        "400":
+          application/json: {"error": {"code": 400, "message": "Invalid request parameters"}}
+        "401":
+          application/json: {"error": {"code": 401, "message": "Missing Authentication header"}}
+        "403":
+          application/json: {"error": {"code": 403, "message": "Only management keys can perform this operation"}}
+        "404":
+          application/json: {"error": {"code": 404, "message": "Resource not found"}}
+        "408":
+          application/json: {"error": {"code": 408, "message": "Operation timed out. Please try again later."}}
+        "409":
+          application/json: {"error": {"code": 409, "message": "Resource conflict. Please try again later."}}
+        "422":
+          application/json: {"error": {"code": 422, "message": "Invalid argument"}}
+        "500":
+          application/json: {"error": {"code": 500, "message": "Internal Server Error"}}
+        "502":
+          application/json: {"error": {"code": 502, "message": "Provider returned error"}}
+  disablePrivateEndpoint:
+    speakeasy-default-disable-private-endpoint:
+      parameters:
+        path:
+          id: "5b1c4c4e-7d0a-4a8e-9f3a-2d6c1b0e8a11"
+      responses:
+        "200":
+          application/json: {"data": {"created_at": "2026-09-24T10:30:00Z", "id": "5b1c4c4e-7d0a-4a8e-9f3a-2d6c1b0e8a11", "model_name": "OpenAI: GPT-4o", "model_permaslug": "openai/gpt-4o-2024-08-06", "model_slug": "openai/gpt-4o", "provider_name": "Azure", "status": "active", "declared_region": "us", "declared_zdr": true}}
+        "400":
+          application/json: {"error": {"code": 400, "message": "Invalid request parameters"}}
+        "401":
+          application/json: {"error": {"code": 401, "message": "Missing Authentication header"}}
+        "403":
+          application/json: {"error": {"code": 403, "message": "Only management keys can perform this operation"}}
+        "404":
+          application/json: {"error": {"code": 404, "message": "Resource not found"}}
+        "408":
+          application/json: {"error": {"code": 408, "message": "Operation timed out. Please try again later."}}
+        "409":
+          application/json: {"error": {"code": 409, "message": "Resource conflict. Please try again later."}}
+        "422":
+          application/json: {"error": {"code": 422, "message": "Invalid argument"}}
+        "500":
+          application/json: {"error": {"code": 500, "message": "Internal Server Error"}}
+        "502":
+          application/json: {"error": {"code": 502, "message": "Provider returned error"}}
+  enablePrivateEndpoint:
+    speakeasy-default-enable-private-endpoint:
+      parameters:
+        path:
+          id: "5b1c4c4e-7d0a-4a8e-9f3a-2d6c1b0e8a11"
+      responses:
+        "200":
+          application/json: {"data": {"created_at": "2026-09-24T10:30:00Z", "id": "5b1c4c4e-7d0a-4a8e-9f3a-2d6c1b0e8a11", "model_name": "OpenAI: GPT-4o", "model_permaslug": "openai/gpt-4o-2024-08-06", "model_slug": "openai/gpt-4o", "provider_name": "Azure", "status": "active", "declared_region": "us", "declared_zdr": true}}
+        "400":
+          application/json: {"error": {"code": 400, "message": "Invalid request parameters"}}
+        "401":
+          application/json: {"error": {"code": 401, "message": "Missing Authentication header"}}
+        "403":
+          application/json: {"error": {"code": 403, "message": "Only management keys can perform this operation"}}
+        "404":
+          application/json: {"error": {"code": 404, "message": "Resource not found"}}
+        "408":
+          application/json: {"error": {"code": 408, "message": "Operation timed out. Please try again later."}}
+        "409":
+          application/json: {"error": {"code": 409, "message": "Resource conflict. Please try again later."}}
+        "422":
+          application/json: {"error": {"code": 422, "message": "Invalid argument"}}
+        "500":
+          application/json: {"error": {"code": 500, "message": "Internal Server Error"}}
+        "502":
+          application/json: {"error": {"code": 502, "message": "Provider returned error"}}
+  updatePrivateEndpointPricing:
+    speakeasy-default-update-private-endpoint-pricing:
+      parameters:
+        path:
+          id: "5b1c4c4e-7d0a-4a8e-9f3a-2d6c1b0e8a11"
+      requestBody:
+        application/json: {"pricing": {"completion": "0.00001", "prompt": "0.0000025"}}
+      responses:
+        "200":
+          application/json: {"data": {"base_url": "https://contoso.openai.azure.com", "declared_region": "us", "declared_zdr": true, "id": "5b1c4c4e-7d0a-4a8e-9f3a-2d6c1b0e8a11", "model_name": "OpenAI: GPT-4o", "model_permaslug": "openai/gpt-4o-2024-08-06", "model_slug": "openai/gpt-4o", "pricing": {"completion": "0.00001", "prompt": "0.0000025"}, "provider_name": "Azure", "provider_slug": "azure", "status": "active", "upstream_model_id": "gpt-4o-prod"}}
+        "400":
+          application/json: {"error": {"code": 400, "message": "Invalid request parameters"}}
+        "401":
+          application/json: {"error": {"code": 401, "message": "Missing Authentication header"}}
+        "403":
+          application/json: {"error": {"code": 403, "message": "Only management keys can perform this operation"}}
+        "404":
+          application/json: {"error": {"code": 404, "message": "Resource not found"}}
+        "408":
+          application/json: {"error": {"code": 408, "message": "Operation timed out. Please try again later."}}
+        "409":
+          application/json: {"error": {"code": 409, "message": "Resource conflict. Please try again later."}}
+        "422":
+          application/json: {"error": {"code": 422, "message": "Invalid argument"}}
+        "500":
+          application/json: {"error": {"code": 500, "message": "Internal Server Error"}}
+        "502":
+          application/json: {"error": {"code": 502, "message": "Provider returned error"}}
+  validatePrivateEndpoint:
+    speakeasy-default-validate-private-endpoint:
+      parameters:
+        path:
+          id: "5b1c4c4e-7d0a-4a8e-9f3a-2d6c1b0e8a11"
+      requestBody:
+        application/json: {"workspace_id": "550e8400-e29b-41d4-a716-446655440000"}
+      responses:
+        "200":
+          application/json: {"data": {"checks": [{"name": "auth_ok", "passed": true}], "passed": true}}
+        "400":
+          application/json: {"error": {"code": 400, "message": "Invalid request parameters"}}
+        "401":
+          application/json: {"error": {"code": 401, "message": "Missing Authentication header"}}
+        "403":
+          application/json: {"error": {"code": 403, "message": "Only management keys can perform this operation"}}
+        "404":
+          application/json: {"error": {"code": 404, "message": "Resource not found"}}
+        "408":
+          application/json: {"error": {"code": 408, "message": "Operation timed out. Please try again later."}}
+        "409":
+          application/json: {"error": {"code": 409, "message": "Resource conflict. Please try again later."}}
+        "422":
+          application/json: {"error": {"code": 422, "message": "Invalid argument"}}
+        "500":
+          application/json: {"error": {"code": 500, "message": "Internal Server Error"}}
+        "502":
+          application/json: {"error": {"code": 502, "message": "Provider returned error"}}
 examplesVersion: 1.0.2
 releaseNotes: |
   ## Typescript SDK Changes:
-  * `openrouter.batch.createBatches()`:  `response.results[].response.body.union(class (2)).content[].union(web_fetch_tool_result).content.union(web_fetch_tool_result_error).errorCode.enum(contentTooLarge)` **Added**
-  * `openrouter.batch.getBatches()`:  `response.results[].response.body.union(class (2)).content[].union(web_fetch_tool_result).content.union(web_fetch_tool_result_error).errorCode.enum(contentTooLarge)` **Added**
+  * `openrouter.privateEndpoints.list()`: **Added**
+  * `openrouter.privateEndpoints.create()`: **Added**
+  * `openrouter.privateEndpoints.delete()`: **Added**
+  * `openrouter.privateEndpoints.get()`: **Added**
+  * `openrouter.privateEndpoints.update()`: **Added**
+  * `openrouter.privateEndpoints.activate()`: **Added**
+  * `openrouter.privateEndpoints.disable()`: **Added**
+  * `openrouter.privateEndpoints.enable()`: **Added**
+  * `openrouter.privateEndpoints.updatePricing()`: **Added**
+  * `openrouter.privateEndpoints.validate()`: **Added**
