@@ -1,0 +1,23 @@
+---
+title: "PrivateEndpointPricing"
+---
+
+Negotiated per-token rates reported for requests routed to this endpoint.
+
+## Example Usage
+
+```typescript
+import { PrivateEndpointPricing } from "@openrouter/sdk/models";
+
+let value: PrivateEndpointPricing = {
+  completion: "0.00001",
+  prompt: "0.0000025",
+};
+```
+
+## Fields
+
+| Field                                          | Type                                           | Required                                       | Description                                    | Example                                        |
+| ---------------------------------------------- | ---------------------------------------------- | ---------------------------------------------- | ---------------------------------------------- | ---------------------------------------------- |
+| `completion`                                   | *string*                                       | :heavy_check_mark:                             | USD per completion token, as a decimal string. | 0.00001                                        |
+| `prompt`                                       | *string*                                       | :heavy_check_mark:                             | USD per prompt token, as a decimal string.     | 0.0000025                                      |
