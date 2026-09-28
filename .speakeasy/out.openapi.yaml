@@ -2671,6 +2671,7 @@ components:
             - 'invalid_tool_input'
             - 'url_too_long'
             - 'url_not_allowed'
+            - 'url_not_in_prior_context'
             - 'url_not_accessible'
             - 'unsupported_content_type'
             - 'too_many_requests'
@@ -16391,6 +16392,7 @@ components:
                                   - 'max_uses_exceeded'
                                   - 'too_many_requests'
                                   - 'query_too_long'
+                                  - 'request_too_large'
                                 type: 'string'
                                 x-speakeasy-unknown-values: allow
                               type:
@@ -25465,6 +25467,9 @@ components:
         model_id: 'openai/gpt-4'
         model_name: 'GPT-4'
         name: 'OpenAI: GPT-4'
+        native_tools:
+          openrouter:web_search:
+            type: 'web_search_20260209'
         perf_last_30m_by_workload:
           text_generation:
             latency:
@@ -25530,6 +25535,20 @@ components:
           type: 'string'
         name:
           type: 'string'
+        native_tools:
+          additionalProperties:
+            properties:
+              type:
+                description: 'The provider tool type the request is translated to when this tool runs natively, e.g. `web_search_20260209` on Anthropic or `google_search` on Gemini.'
+                type: 'string'
+            required:
+              - 'type'
+            type: 'object'
+          description: 'The server tools this endpoint accepts as the provider''s own built-in tool (`engine: "native"`) instead of an OpenRouter engine, keyed by canonical `openrouter:*` name. Each value names the provider tool type the request is translated to. Where that tool runs (provider-side, or returned to the client as with Anthropic bash) is documented per tool. Empty when the provider has none.'
+          example:
+            openrouter:web_search:
+              type: 'web_search_20260209'
+          type: 'object'
         perf_last_30m_by_workload:
           additionalProperties: false
           description: 'Endpoint performance over the last 30 minutes, keyed by the kind of request served (e.g. `text_generation`, `image_generation`). Additive to the legacy singular latency and throughput fields; image and video generation report end-to-end latency. Only visible when authenticated with an API key or cookie.'
@@ -25840,6 +25859,7 @@ components:
         - 'uptime_last_5m'
         - 'uptime_last_1d'
         - 'supports_implicit_caching'
+        - 'native_tools'
         - 'latency_last_30m'
         - 'throughput_last_30m'
       type: 'object'
@@ -36251,6 +36271,7 @@ paths:
                     model_id: 'openai/gpt-4'
                     model_name: 'GPT-4'
                     name: 'OpenAI: GPT-4'
+                    native_tools: {}
                     pricing:
                       completion: '0.00006'
                       image: '0'
@@ -36290,6 +36311,7 @@ paths:
                       model_id: 'openai/gpt-4'
                       model_name: 'GPT-4'
                       name: 'OpenAI: GPT-4'
+                      native_tools: {}
                       pricing:
                         completion: '0.00006'
                         image: '0'
@@ -42929,6 +42951,7 @@ paths:
                         model_id: 'openai/gpt-4'
                         model_name: 'GPT-4'
                         name: 'OpenAI: GPT-4'
+                        native_tools: {}
                         pricing:
                           completion: '0.00006'
                           image: '0'
