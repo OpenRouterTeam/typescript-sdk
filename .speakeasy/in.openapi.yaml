@@ -2622,6 +2622,7 @@ components:
       properties:
         error_code:
           enum:
+            - 'content_too_large'
             - 'invalid_tool_input'
             - 'url_too_long'
             - 'url_not_allowed'
