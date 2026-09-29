@@ -1,0 +1,24 @@
+---
+title: "ServerToolNativeModel"
+---
+
+## Example Usage
+
+```typescript
+import { ServerToolNativeModel } from "@openrouter/sdk/models";
+
+let value: ServerToolNativeModel = {
+  providers: [
+    "Anthropic",
+    "Google",
+  ],
+  slug: "anthropic/claude-4.5-sonnet",
+};
+```
+
+## Fields
+
+| Field                       | Type                        | Required                    | Description                 | Example                     |
+| --------------------------- | --------------------------- | --------------------------- | --------------------------- | --------------------------- |
+| `providers`                 | *string*[]                  | :heavy_check_mark:          | N/A                         | [<br/>"Anthropic",<br/>"Google"<br/>] |
+| `slug`                      | *string*                    | :heavy_check_mark:          | N/A                         | anthropic/claude-4.5-sonnet |

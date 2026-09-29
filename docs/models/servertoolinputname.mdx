@@ -1,0 +1,28 @@
+---
+title: "ServerToolInputName"
+---
+
+## Example Usage
+
+```typescript
+import { ServerToolInputName } from "@openrouter/sdk/models";
+
+let value: ServerToolInputName = {
+  apiFormats: [],
+  outputNames: [
+    {
+      apiFormat: "anthropic-messages",
+      type: "web_search_call",
+    },
+  ],
+  type: "web_search_20250305",
+};
+```
+
+## Fields
+
+| Field                                                                                                                                                    | Type                                                                                                                                                     | Required                                                                                                                                                 | Description                                                                                                                                              | Example                                                                                                                                                  |
+| -------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `apiFormats`                                                                                                                                             | [models.ServerToolInputNameApiFormat](../models/servertoolinputnameapiformat.mdx)[]                                                                       | :heavy_check_mark:                                                                                                                                       | API formats that accept this spelling in `tools[].type`                                                                                                  |                                                                                                                                                          |
+| `outputNames`                                                                                                                                            | [models.ServerToolOutputName](../models/servertooloutputname.mdx)[]                                                                                       | :heavy_check_mark:                                                                                                                                       | What the call surfaces as on each accepting API format when requested under this spelling; a format is absent when the call is not visible to the caller |                                                                                                                                                          |
+| `type`                                                                                                                                                   | *string*                                                                                                                                                 | :heavy_check_mark:                                                                                                                                       | N/A                                                                                                                                                      | web_search_20250305                                                                                                                                      |
