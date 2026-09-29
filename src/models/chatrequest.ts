@@ -97,6 +97,11 @@ import {
   ImageConfig$outboundSchema,
 } from "./imageconfig.js";
 import {
+  JevRouterPlugin,
+  JevRouterPlugin$Outbound,
+  JevRouterPlugin$outboundSchema,
+} from "./jevrouterplugin.js";
+import {
   ModerationPlugin,
   ModerationPlugin$Outbound,
   ModerationPlugin$outboundSchema,
@@ -165,6 +170,7 @@ export type ChatRequestPlugin =
   | ContextCompressionPlugin
   | FileParserPlugin
   | FusionPlugin
+  | JevRouterPlugin
   | ModerationPlugin
   | ParetoRouterPlugin
   | ResponseHealingPlugin
@@ -324,6 +330,7 @@ export type ChatRequest = {
       | ContextCompressionPlugin
       | FileParserPlugin
       | FusionPlugin
+      | JevRouterPlugin
       | ModerationPlugin
       | ParetoRouterPlugin
       | ResponseHealingPlugin
@@ -448,6 +455,7 @@ export type ChatRequestPlugin$Outbound =
   | ContextCompressionPlugin$Outbound
   | FileParserPlugin$Outbound
   | FusionPlugin$Outbound
+  | JevRouterPlugin$Outbound
   | ModerationPlugin$Outbound
   | ParetoRouterPlugin$Outbound
   | ResponseHealingPlugin$Outbound
@@ -465,6 +473,7 @@ export const ChatRequestPlugin$outboundSchema: z.ZodType<
   ContextCompressionPlugin$outboundSchema,
   FileParserPlugin$outboundSchema,
   FusionPlugin$outboundSchema,
+  JevRouterPlugin$outboundSchema,
   ModerationPlugin$outboundSchema,
   ParetoRouterPlugin$outboundSchema,
   ResponseHealingPlugin$outboundSchema,
@@ -584,6 +593,7 @@ export type ChatRequest$Outbound = {
       | ContextCompressionPlugin$Outbound
       | FileParserPlugin$Outbound
       | FusionPlugin$Outbound
+      | JevRouterPlugin$Outbound
       | ModerationPlugin$Outbound
       | ParetoRouterPlugin$Outbound
       | ResponseHealingPlugin$Outbound
@@ -654,6 +664,7 @@ export const ChatRequest$outboundSchema: z.ZodType<
       ContextCompressionPlugin$outboundSchema,
       FileParserPlugin$outboundSchema,
       FusionPlugin$outboundSchema,
+      JevRouterPlugin$outboundSchema,
       ModerationPlugin$outboundSchema,
       ParetoRouterPlugin$outboundSchema,
       ResponseHealingPlugin$outboundSchema,
