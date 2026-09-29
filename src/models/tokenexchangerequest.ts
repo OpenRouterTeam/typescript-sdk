@@ -34,13 +34,15 @@ export type RequestedTokenType = ClosedEnum<typeof RequestedTokenType>;
 /**
  * Optional; only `inference` is available.
  */
-export const Scope = {
+export const TokenExchangeRequestScope = {
   Inference: "inference",
 } as const;
 /**
  * Optional; only `inference` is available.
  */
-export type Scope = ClosedEnum<typeof Scope>;
+export type TokenExchangeRequestScope = ClosedEnum<
+  typeof TokenExchangeRequestScope
+>;
 
 /**
  * Must be `urn:ietf:params:oauth:token-type:jwt`.
@@ -72,7 +74,7 @@ export type TokenExchangeRequest = {
   /**
    * Optional; only `inference` is available.
    */
-  scope?: Scope | undefined;
+  scope?: TokenExchangeRequestScope | undefined;
   /**
    * The JWT issued by your identity provider.
    */
@@ -94,7 +96,9 @@ export const RequestedTokenType$outboundSchema: z.ZodEnum<
 > = z.enum(RequestedTokenType);
 
 /** @internal */
-export const Scope$outboundSchema: z.ZodEnum<typeof Scope> = z.enum(Scope);
+export const TokenExchangeRequestScope$outboundSchema: z.ZodEnum<
+  typeof TokenExchangeRequestScope
+> = z.enum(TokenExchangeRequestScope);
 
 /** @internal */
 export const SubjectTokenType$outboundSchema: z.ZodEnum<
@@ -119,7 +123,7 @@ export const TokenExchangeRequest$outboundSchema: z.ZodType<
   federationPolicyId: z.string(),
   grantType: GrantType$outboundSchema,
   requestedTokenType: RequestedTokenType$outboundSchema.optional(),
-  scope: Scope$outboundSchema.optional(),
+  scope: TokenExchangeRequestScope$outboundSchema.optional(),
   subjectToken: z.string(),
   subjectTokenType: SubjectTokenType$outboundSchema,
 }).transform((v) => {
