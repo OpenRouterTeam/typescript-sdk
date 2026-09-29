@@ -18,6 +18,10 @@ export type STTSegment = {
    */
   avgLogprob?: number | undefined;
   /**
+   * Zero-based audio channel index for the segment, present when the provider transcribes channels separately
+   */
+  channel?: number | undefined;
+  /**
    * Compression ratio of the segment
    */
   compressionRatio?: number | undefined;
@@ -42,6 +46,10 @@ export type STTSegment = {
    */
   speaker?: number | undefined;
   /**
+   * Provider speaker label for the segment, present when the provider labels speakers with a string
+   */
+  speakerLabel?: string | undefined;
+  /**
    * Segment start time in seconds
    */
   start: number;
@@ -63,12 +71,14 @@ export type STTSegment = {
 export const STTSegment$inboundSchema: z.ZodType<STTSegment, unknown> = z
   .object({
     avg_logprob: z.number().optional(),
+    channel: z.int().optional(),
     compression_ratio: z.number().optional(),
     end: z.number(),
     id: z.int(),
     no_speech_prob: z.number().optional(),
     seek: z.int().optional(),
     speaker: z.int().optional(),
+    speaker_label: z.string().optional(),
     start: z.number(),
     temperature: z.number().optional(),
     text: z.string(),
@@ -78,6 +88,7 @@ export const STTSegment$inboundSchema: z.ZodType<STTSegment, unknown> = z
       "avg_logprob": "avgLogprob",
       "compression_ratio": "compressionRatio",
       "no_speech_prob": "noSpeechProb",
+      "speaker_label": "speakerLabel",
     });
   });
 

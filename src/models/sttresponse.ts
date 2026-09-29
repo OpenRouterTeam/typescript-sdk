@@ -4,9 +4,11 @@
  */
 
 import * as z from "zod/v4";
+import { remap as remap$ } from "../lib/primitives.js";
 import { safeParse } from "../lib/schemas.js";
 import { Result as SafeParseResult } from "../types/fp.js";
 import { SDKValidationError } from "./errors/sdkvalidationerror.js";
+import { STTEntity, STTEntity$inboundSchema } from "./sttentity.js";
 import { STTSegment, STTSegment$inboundSchema } from "./sttsegment.js";
 import { STTUsage, STTUsage$inboundSchema } from "./sttusage.js";
 import { STTWord, STTWord$inboundSchema } from "./sttword.js";
@@ -24,9 +26,17 @@ export type STTResponse = {
    */
   duration?: number | undefined;
   /**
+   * Detected entities with character offsets into text, present when the provider runs entity detection
+   */
+  entities?: Array<STTEntity> | undefined;
+  /**
    * Detected or forced language, present when response_format is verbose_json
    */
   language?: string | undefined;
+  /**
+   * Provider confidence in the detected language from 0 to 1, present when response_format is verbose_json and the provider scores language detection
+   */
+  languageConfidence?: number | undefined;
   /**
    * Timestamped transcript segments, present when response_format is verbose_json
    */
@@ -54,12 +64,18 @@ export const STTResponse$inboundSchema: z.ZodType<STTResponse, unknown> = z
   .object({
     confidence: z.number().optional(),
     duration: z.number().optional(),
+    entities: z.array(STTEntity$inboundSchema).optional(),
     language: z.string().optional(),
+    language_confidence: z.number().optional(),
     segments: z.array(STTSegment$inboundSchema).optional(),
     task: z.string().optional(),
     text: z.string(),
     usage: STTUsage$inboundSchema.optional(),
     words: z.array(STTWord$inboundSchema).optional(),
+  }).transform((v) => {
+    return remap$(v, {
+      "language_confidence": "languageConfidence",
+    });
   });
 
 export function sttResponseFromJSON(

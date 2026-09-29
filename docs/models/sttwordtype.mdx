@@ -1,0 +1,21 @@
+---
+title: "STTWordType"
+---
+
+Kind of entry; omitted or "word" for spoken words, "audio_event" for non-speech sounds the provider tags with timestamps
+
+## Example Usage
+
+```typescript
+import { STTWordType } from "@openrouter/sdk/models";
+
+let value: STTWordType = "word";
+
+// Open enum: unrecognized values are captured as Unrecognized<string>
+```
+
+## Values
+
+```typescript
+"word" | "audio_event" | Unrecognized<string>
+```
