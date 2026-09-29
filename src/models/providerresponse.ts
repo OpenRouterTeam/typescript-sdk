@@ -171,6 +171,7 @@ export type ProviderResponseProviderName = OpenEnum<
 export const RoutedServiceTier = {
   Flex: "flex",
   Priority: "priority",
+  Ultrafast: "ultrafast",
 } as const;
 /**
  * The service tier this request was routed to (e.g. flex, priority). The tier actually applied and billed is determined by the provider response and may differ.
