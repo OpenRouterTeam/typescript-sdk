@@ -1,0 +1,25 @@
+---
+title: "ServerToolPrice"
+---
+
+## Example Usage
+
+```typescript
+import { ServerToolPrice } from "@openrouter/sdk/models";
+
+let value: ServerToolPrice = {
+  maxUnitsPerCall: 803046,
+  mode: "auto",
+  price: "0.007",
+  unit: "request",
+};
+```
+
+## Fields
+
+| Field                                                                                                                                  | Type                                                                                                                                   | Required                                                                                                                               | Description                                                                                                                            | Example                                                                                                                                |
+| -------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------- |
+| `maxUnitsPerCall`                                                                                                                      | *number*                                                                                                                               | :heavy_check_mark:                                                                                                                     | N/A                                                                                                                                    |                                                                                                                                        |
+| `mode`                                                                                                                                 | *string*                                                                                                                               | :heavy_check_mark:                                                                                                                     | The `parameters.mode` this price applies to; null for prices that do not depend on the mode. A request bills exactly one `request` row | auto                                                                                                                                   |
+| `price`                                                                                                                                | *string*                                                                                                                               | :heavy_check_mark:                                                                                                                     | USD per unit, as a decimal string                                                                                                      | 0.007                                                                                                                                  |
+| `unit`                                                                                                                                 | *string*                                                                                                                               | :heavy_check_mark:                                                                                                                     | N/A                                                                                                                                    | request                                                                                                                                |

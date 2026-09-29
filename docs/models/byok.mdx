@@ -1,0 +1,21 @@
+---
+title: "BYOK"
+---
+
+Whether the engine needs the caller's own key, saved in plugin settings: `required` (OpenRouter holds none), `optional` (OpenRouter's key is used unless the caller saved one), or `none`
+
+## Example Usage
+
+```typescript
+import { BYOK } from "@openrouter/sdk/models";
+
+let value: BYOK = "none";
+
+// Open enum: unrecognized values are captured as Unrecognized<string>
+```
+
+## Values
+
+```typescript
+"required" | "optional" | "none" | Unrecognized<string>
+```
