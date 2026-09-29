@@ -316,7 +316,7 @@ export type ReasoningConfig = {
 };
 
 /**
- * The service tier to use for processing this request. `fast` is accepted as an alias for `priority`.
+ * The service tier to use for processing this request. `fast` is accepted as an alias for `priority`. `ultrafast` prefers ultrafast endpoints and falls back to `priority`, then default endpoints.
  */
 export const ResponsesRequestServiceTier = {
   Auto: "auto",
@@ -325,9 +325,10 @@ export const ResponsesRequestServiceTier = {
   Flex: "flex",
   Priority: "priority",
   Scale: "scale",
+  Ultrafast: "ultrafast",
 } as const;
 /**
- * The service tier to use for processing this request. `fast` is accepted as an alias for `priority`.
+ * The service tier to use for processing this request. `fast` is accepted as an alias for `priority`. `ultrafast` prefers ultrafast endpoints and falls back to `priority`, then default endpoints.
  */
 export type ResponsesRequestServiceTier = OpenEnum<
   typeof ResponsesRequestServiceTier
@@ -471,7 +472,7 @@ export type ResponsesRequest = {
    */
   safetyIdentifier?: string | null | undefined;
   /**
-   * The service tier to use for processing this request. `fast` is accepted as an alias for `priority`.
+   * The service tier to use for processing this request. `fast` is accepted as an alias for `priority`. `ultrafast` prefers ultrafast endpoints and falls back to `priority`, then default endpoints.
    */
   serviceTier?: ResponsesRequestServiceTier | null | undefined;
   /**

@@ -236,7 +236,7 @@ export type ResponseFormat =
   | ChatFormatTextConfig;
 
 /**
- * The service tier to use for processing this request. `fast` is accepted as an alias for `priority`.
+ * The service tier to use for processing this request. `fast` is accepted as an alias for `priority`. `ultrafast` prefers ultrafast endpoints and falls back to `priority`, then default endpoints.
  */
 export const ChatRequestServiceTier = {
   Auto: "auto",
@@ -245,9 +245,10 @@ export const ChatRequestServiceTier = {
   Flex: "flex",
   Priority: "priority",
   Scale: "scale",
+  Ultrafast: "ultrafast",
 } as const;
 /**
- * The service tier to use for processing this request. `fast` is accepted as an alias for `priority`.
+ * The service tier to use for processing this request. `fast` is accepted as an alias for `priority`. `ultrafast` prefers ultrafast endpoints and falls back to `priority`, then default endpoints.
  */
 export type ChatRequestServiceTier = OpenEnum<typeof ChatRequestServiceTier>;
 
@@ -383,7 +384,7 @@ export type ChatRequest = {
    */
   seed?: number | null | undefined;
   /**
-   * The service tier to use for processing this request. `fast` is accepted as an alias for `priority`.
+   * The service tier to use for processing this request. `fast` is accepted as an alias for `priority`. `ultrafast` prefers ultrafast endpoints and falls back to `priority`, then default endpoints.
    */
   serviceTier?: ChatRequestServiceTier | null | undefined;
   /**
