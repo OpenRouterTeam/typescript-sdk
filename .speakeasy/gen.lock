@@ -1,19 +1,19 @@
 lockVersion: ""
 id: ""
 management:
-  docChecksum: a4ec22cacdcd10ca0a9440d83d267499
+  docChecksum: 810dcc4db103a54f5c3b2bde8ac3d5e8
   docVersion: 1.0.0
   speakeasyVersion: 1.787.0
   generationVersion: 2.914.0
-  releaseVersion: 1.4.5
-  configChecksum: ad81a38f97fdb9349d67eaeab01236c2
+  releaseVersion: 1.4.6
+  configChecksum: 21bbbd37a55f78b83f5d1ad6f1dc1315
   repoURL: https://github.com/OpenRouterTeam/typescript-sdk.git
   installationURL: https://github.com/OpenRouterTeam/typescript-sdk
   published: true
 persistentEdits:
-  generation_id: 6ad47fd3-3cef-4ffb-ad26-7a4bd3cb93dd
-  pristine_commit_hash: 0e86b3b99782b572a38ffb846f764bf69bdecd11
-  pristine_tree_hash: 0baefa281563b93c2dc413d36b252896db41830a
+  generation_id: 3ead8787-c8a3-44a3-8936-c7ee4f39659d
+  pristine_commit_hash: 8bebe3b236c2093a2ff6c9eb37074c00b30b00f1
+  pristine_tree_hash: 955ada63396fcd13e445f09468bafe684df4bccc
 features:
   typescript:
     acceptHeaders: 2.81.2
@@ -2596,8 +2596,8 @@ trackedFiles:
     deleted: true
   docs/models/chatrequest.mdx:
     id: 86070ea62940
-    last_write_checksum: sha1:8199de539269965394a95973875e63e582763b7d
-    pristine_git_object: 3ccdd2ebf9a7980e613db8ff58cd1aecd3896d40
+    last_write_checksum: sha1:84910b2b8d71faa3cbbe9893ea13559cc174a5f8
+    pristine_git_object: 6437bdc3328f09a488abb4799b0cd784bb4ef9d5
   docs/models/chatrequestby.md:
     id: e3079b5d3b81
     last_write_checksum: sha1:06b68e6b0bbc0d1355e5bc694d4ba44971ffc2e6
@@ -2736,8 +2736,8 @@ trackedFiles:
     deleted: true
   docs/models/chatrequestservicetier.mdx:
     id: f9102059bcce
-    last_write_checksum: sha1:60fb9dbf477fbddb9166af0ac3f7683c7327d865
-    pristine_git_object: 3fe0ef81e058cded04d5f5e9a9946e10b0bbf6f4
+    last_write_checksum: sha1:aa126af75236c0dcae68fd7f38986957fe38e761
+    pristine_git_object: 6f1ae8be441b8012981fca99276298929d3349bb
   docs/models/chatrequestsortenum.md:
     id: 58a6a84f6912
     last_write_checksum: sha1:b325b2c63ce97912e193283e08d83879b863038e
@@ -12490,8 +12490,8 @@ trackedFiles:
     deleted: true
   docs/models/responsesrequest.mdx:
     id: 947c781fc5e6
-    last_write_checksum: sha1:8e4ecedefa4b4b54657653909ba75157dfc6c8e9
-    pristine_git_object: 47f9d07aa5a3bc2930bca5718af1d79b6e9c5327
+    last_write_checksum: sha1:4396d5385207f18f438d3f98ae5680700c45ee60
+    pristine_git_object: da7bb8854b6d36a0cf46dd3bf7bcb25ffa7ed53f
   docs/models/responsesrequestignore.md:
     id: c4f071afde0b
     last_write_checksum: sha1:1d8443ce44e3c7f5a15fbbcedb391e780e158cbd
@@ -12573,8 +12573,8 @@ trackedFiles:
     deleted: true
   docs/models/responsesrequestservicetier.mdx:
     id: cba8b046e691
-    last_write_checksum: sha1:493f226869c85dbdc82173af56e38f26c62fdc1e
-    pristine_git_object: 85bc4d2a07b2b06fdc837afcd11ee0ba34088d32
+    last_write_checksum: sha1:cf178a32078ae1e96539c2de35d5f8e3099857b8
+    pristine_git_object: 7a6b2b2fe5e6aea325e28f4c679e92a982ff8300
   docs/models/responsesrequestsort.md:
     id: 58bd32eeaa12
     last_write_checksum: sha1:d2e7907d583d15cd538c24416639400309bd90c2
@@ -12627,8 +12627,8 @@ trackedFiles:
     pristine_git_object: 46ae380dc1149f897149f72ba3a026482e4bb513
   docs/models/routedservicetier.mdx:
     id: fd7b0f1d910c
-    last_write_checksum: sha1:80867edc9f5bd48b535009bbbd5d38630298d444
-    pristine_git_object: 1de800f46e5a2386a9b244155fd3d5f3321e875c
+    last_write_checksum: sha1:eae44306b9b42175b7c85680003ca29fbbb59428
+    pristine_git_object: d5d804f8d885650d33937362acca6c3412413c41
   docs/models/routerattempt.md:
     id: 6bcaf53856f9
     last_write_checksum: sha1:3d95c6d314ed76aad76acfc3b632cddefb9833b3
@@ -14911,12 +14911,12 @@ trackedFiles:
     pristine_git_object: 410efafd6a7f50d91ccb87131fedbe0c3d47e15a
   jsr.json:
     id: 7f6ab7767282
-    last_write_checksum: sha1:32a28c81ca1fc051d131c2df3b03aed49d632d9d
-    pristine_git_object: 21113ae66bad30b61d8bba755a8a10ea59bd62cd
+    last_write_checksum: sha1:996ba1aacc7316f17573e43bc67f3d8651baa65b
+    pristine_git_object: 9e9cb32c6c9e254abfe4fd365d2db09a39c567ad
   package.json:
     id: 7030d0b2f71b
-    last_write_checksum: sha1:7d6242b9c25030913267cd6d055e9a2c1999cb7c
-    pristine_git_object: 5802cf47036fb4c84362386202e0b47b97347605
+    last_write_checksum: sha1:10b2f069e49b56d16365c5646cc2af512eef7108
+    pristine_git_object: 381066c41b36c1917f12ca5eac8b016cd08fb0ee
   src/core.ts:
     id: f431fdbcd144
     last_write_checksum: sha1:5aa66b0b6a5964f3eea7f3098c2eb3c0ee9c0131
@@ -15499,8 +15499,8 @@ trackedFiles:
     pristine_git_object: a187e58707bdb726ca2aff74941efe7493422d4e
   src/lib/config.ts:
     id: 320761608fb3
-    last_write_checksum: sha1:ec7d0ea736c8f9c0757eb4aded5a64df58726c3c
-    pristine_git_object: 982245ada786cf00fb392f889b025fef4649a52e
+    last_write_checksum: sha1:f096b61448a470f4ed6d0aaa40a2475d33de641a
+    pristine_git_object: 9866cf0fa46b7fa7985856f1ce940eca3fad6bb5
   src/lib/dlv.ts:
     id: b1988214835a
     last_write_checksum: sha1:eaac763b22717206a6199104e0403ed17a4e2711
@@ -16321,8 +16321,8 @@ trackedFiles:
     pristine_git_object: 321dcdebd677779915fa4f9a805175997936d368
   src/models/chatrequest.ts:
     id: 5d2646ed8dcf
-    last_write_checksum: sha1:39f6000326c18f206185e95477b7935266d43a9a
-    pristine_git_object: 780da20d4a5104b19a7e1ff1d00cd7f6f375da4b
+    last_write_checksum: sha1:d77cd8694f9ab4c1aa5f8d5d1e55c66e114b9a74
+    pristine_git_object: 578738c7c6ee13670a64ca9d4acba9127a36f284
   src/models/chatresult.ts:
     id: afefd8aadd09
     last_write_checksum: sha1:7372ab41490e6da62942059bdfd3f4f775171009
@@ -18697,8 +18697,8 @@ trackedFiles:
     pristine_git_object: 59f176460f7d485d697eb3edfa8ceec3dc7c0983
   src/models/providerresponse.ts:
     id: 7427d17a27bc
-    last_write_checksum: sha1:365c70d39b7c1586b8f7b65385c86a8cb77cd5dc
-    pristine_git_object: 25e844006a750f27f6c77519e0ef41dbce36097f
+    last_write_checksum: sha1:695ee8823e7bd75e6e22a62d1d233a148dd415d9
+    pristine_git_object: 346914294e407ab47fd0caa6a6b8e23f057378fa
   src/models/providersort.ts:
     id: 7d1e919d1ec3
     last_write_checksum: sha1:4c871e5fc8af6042ca41d12c54ba8640706c0863
@@ -18845,8 +18845,8 @@ trackedFiles:
     pristine_git_object: db904c9a928385925ada038bdd2ce164618bcc6d
   src/models/responsesrequest.ts:
     id: 39799702f982
-    last_write_checksum: sha1:b3e370b02bda19f6602279a525ef2dd2cf20d6ac
-    pristine_git_object: 436c9ef055edc7515314dd1550daf6e259af00cc
+    last_write_checksum: sha1:015d7eeda1c410c6e3745eb6bbf2e1557e1e3a21
+    pristine_git_object: e66b0eb0097c3721cd2a6bfae4382097e27db759
   src/models/responsesstreamingresponse.ts:
     id: 69284d63df45
     last_write_checksum: sha1:215a40ab5dab91267bbc60f1e7c7e9d3cf6082d2
@@ -23434,4 +23434,3 @@ examples:
         "504":
           application/json: {"error": {"code": 504, "message": "Vault request timed out"}}
 examplesVersion: 1.0.2
-releaseNotes: "## Typescript SDK Changes:\n* `openrouter.stt.createTranscription()`: \n  *  `request.sttRequest` **Changed** (Breaking ⚠️)\n  *  `response` **Changed**\n* `openrouter.embeddings.generate()`: \n  *  `request.requestBody.provider` **Changed**\n* `openrouter.endpoints.list()`:  `response.data.endpoints[].providerName.enum(elevenLabs)` **Added**\n* `openrouter.stt.createTranscriptionMultipart()`: \n  *  `request.requestBody` **Changed**\n  *  `response` **Changed**\n* `openrouter.batch.createBatches()`: \n  *  `request.batchSubmitBody.provider.only[].union(ProviderName).enum(elevenLabs)` **Added**\n* `openrouter.byok.list()`: \n  *  `request.provider` **Changed**\n  *  `response.data[].provider.enum(elevenlabs)` **Added**\n* `openrouter.byok.create()`: \n  *  `request.createByokKeyRequest.provider.enum(elevenlabs)` **Added**\n  *  `response.data.provider.enum(elevenlabs)` **Added**\n* `openrouter.byok.get()`:  `response.data.provider.enum(elevenlabs)` **Added**\n* `openrouter.byok.update()`:  `response.data.provider.enum(elevenlabs)` **Added**\n* `openrouter.chat.send()`: \n  *  `request.chatRequest.provider` **Changed**\n* `openrouter.generations.getGeneration()`:  `response.data.providerResponses[].providerName.enum(elevenLabs)` **Added**\n* `openrouter.tts.createSpeech()`: \n  *  `request.speechRequest.provider.options.elevenlabs` **Added**\n* `openrouter.endpoints.listZdrEndpoints()`:  `response.data[].providerName.enum(elevenLabs)` **Added**\n* `openrouter.alpha.decisions.create()`: \n  *  `request.decisionsRequest.provider` **Changed**\n* `openrouter.images.generate()`: \n  *  `request.imageGenerationRequest.provider` **Changed**\n* `openrouter.presets.createPresetsChatCompletions()`: \n  *  `request.chatRequest.provider` **Changed**\n* `openrouter.presets.createPresetsMessages()`: \n  *  `request.messagesRequest.provider` **Changed**\n* `openrouter.presets.createPresetsResponses()`: \n  *  `request.responsesRequest.provider` **Changed**\n* `openrouter.rerank.rerank()`: \n  *  `request.requestBody.provider` **Changed**\n* `openrouter.responses.send()`: \n  *  `request.responsesRequest.provider` **Changed**\n* `openrouter.beta.responses.send()`: \n  *  `request.responsesRequest.provider` **Changed**\n* `openrouter.systemOne.create()`: \n  *  `request.decisionsRequest.provider` **Changed**\n* `openrouter.videoGeneration.generate()`: \n  *  `request.videoGenerationRequest.provider.options.elevenlabs` **Added**\n"
