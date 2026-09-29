@@ -123,6 +123,11 @@ import {
   InputsUnion$outboundSchema,
 } from "./inputsunion.js";
 import {
+  JevRouterPlugin,
+  JevRouterPlugin$Outbound,
+  JevRouterPlugin$outboundSchema,
+} from "./jevrouterplugin.js";
+import {
   LegacyWebSearchServerTool,
   LegacyWebSearchServerTool$Outbound,
   LegacyWebSearchServerTool$outboundSchema,
@@ -287,6 +292,7 @@ export type ResponsesRequestPlugin =
   | ContextCompressionPlugin
   | FileParserPlugin
   | FusionPlugin
+  | JevRouterPlugin
   | ModerationPlugin
   | ParetoRouterPlugin
   | ResponseHealingPlugin
@@ -432,6 +438,7 @@ export type ResponsesRequest = {
       | ContextCompressionPlugin
       | FileParserPlugin
       | FusionPlugin
+      | JevRouterPlugin
       | ModerationPlugin
       | ParetoRouterPlugin
       | ResponseHealingPlugin
@@ -542,6 +549,7 @@ export type ResponsesRequestPlugin$Outbound =
   | ContextCompressionPlugin$Outbound
   | FileParserPlugin$Outbound
   | FusionPlugin$Outbound
+  | JevRouterPlugin$Outbound
   | ModerationPlugin$Outbound
   | ParetoRouterPlugin$Outbound
   | ResponseHealingPlugin$Outbound
@@ -559,6 +567,7 @@ export const ResponsesRequestPlugin$outboundSchema: z.ZodType<
   ContextCompressionPlugin$outboundSchema,
   FileParserPlugin$outboundSchema,
   FusionPlugin$outboundSchema,
+  JevRouterPlugin$outboundSchema,
   ModerationPlugin$outboundSchema,
   ParetoRouterPlugin$outboundSchema,
   ResponseHealingPlugin$outboundSchema,
@@ -805,6 +814,7 @@ export type ResponsesRequest$Outbound = {
       | ContextCompressionPlugin$Outbound
       | FileParserPlugin$Outbound
       | FusionPlugin$Outbound
+      | JevRouterPlugin$Outbound
       | ModerationPlugin$Outbound
       | ParetoRouterPlugin$Outbound
       | ResponseHealingPlugin$Outbound
@@ -910,6 +920,7 @@ export const ResponsesRequest$outboundSchema: z.ZodType<
       ContextCompressionPlugin$outboundSchema,
       FileParserPlugin$outboundSchema,
       FusionPlugin$outboundSchema,
+      JevRouterPlugin$outboundSchema,
       ModerationPlugin$outboundSchema,
       ParetoRouterPlugin$outboundSchema,
       ResponseHealingPlugin$outboundSchema,

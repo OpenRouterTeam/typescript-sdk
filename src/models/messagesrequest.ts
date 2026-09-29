@@ -116,6 +116,11 @@ import {
   ImageGenerationServerToolOpenRouter$outboundSchema,
 } from "./imagegenerationservertoolopenrouter.js";
 import {
+  JevRouterPlugin,
+  JevRouterPlugin$Outbound,
+  JevRouterPlugin$outboundSchema,
+} from "./jevrouterplugin.js";
+import {
   MessagesFallbackParam,
   MessagesFallbackParam$Outbound,
   MessagesFallbackParam$outboundSchema,
@@ -277,6 +282,7 @@ export type MessagesRequestPlugin =
   | ContextCompressionPlugin
   | FileParserPlugin
   | FusionPlugin
+  | JevRouterPlugin
   | ModerationPlugin
   | ParetoRouterPlugin
   | ResponseHealingPlugin
@@ -541,6 +547,7 @@ export type MessagesRequest = {
       | ContextCompressionPlugin
       | FileParserPlugin
       | FusionPlugin
+      | JevRouterPlugin
       | ModerationPlugin
       | ParetoRouterPlugin
       | ResponseHealingPlugin
@@ -904,6 +911,7 @@ export type MessagesRequestPlugin$Outbound =
   | ContextCompressionPlugin$Outbound
   | FileParserPlugin$Outbound
   | FusionPlugin$Outbound
+  | JevRouterPlugin$Outbound
   | ModerationPlugin$Outbound
   | ParetoRouterPlugin$Outbound
   | ResponseHealingPlugin$Outbound
@@ -921,6 +929,7 @@ export const MessagesRequestPlugin$outboundSchema: z.ZodType<
   ContextCompressionPlugin$outboundSchema,
   FileParserPlugin$outboundSchema,
   FusionPlugin$outboundSchema,
+  JevRouterPlugin$outboundSchema,
   ModerationPlugin$outboundSchema,
   ParetoRouterPlugin$outboundSchema,
   ResponseHealingPlugin$outboundSchema,
@@ -1595,6 +1604,7 @@ export type MessagesRequest$Outbound = {
       | ContextCompressionPlugin$Outbound
       | FileParserPlugin$Outbound
       | FusionPlugin$Outbound
+      | JevRouterPlugin$Outbound
       | ModerationPlugin$Outbound
       | ParetoRouterPlugin$Outbound
       | ResponseHealingPlugin$Outbound
@@ -1677,6 +1687,7 @@ export const MessagesRequest$outboundSchema: z.ZodType<
       ContextCompressionPlugin$outboundSchema,
       FileParserPlugin$outboundSchema,
       FusionPlugin$outboundSchema,
+      JevRouterPlugin$outboundSchema,
       ModerationPlugin$outboundSchema,
       ParetoRouterPlugin$outboundSchema,
       ResponseHealingPlugin$outboundSchema,
