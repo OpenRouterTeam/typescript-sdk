@@ -1,0 +1,50 @@
+---
+title: "GetToolResponse"
+---
+
+## Example Usage
+
+```typescript
+import { GetToolResponse } from "@openrouter/sdk/models";
+
+let value: GetToolResponse = {
+  data: {
+    aliases: [],
+    defaultEngine: "native",
+    docsUrl: "https://aged-mountain.net/",
+    engines: [],
+    fallbackEngine: "exa",
+    id: "openrouter:web_search",
+    inputSchema: {
+      "properties": {},
+      "type": "object",
+    },
+    name: "Web search",
+    nativeSupport: {
+      endpointCount: 18,
+      modelCount: 12,
+      models: [],
+    },
+    outputSchema: {
+      "properties": {},
+      "type": "object",
+    },
+    parametersSchema: {
+      "properties": {},
+      "type": "object",
+    },
+    status: "active",
+    summary: "<value>",
+    supportedApiFormats: [
+      "responses",
+    ],
+    toolDescription: "<value>",
+  },
+};
+```
+
+## Fields
+
+| Field                                                      | Type                                                       | Required                                                   | Description                                                |
+| ---------------------------------------------------------- | ---------------------------------------------------------- | ---------------------------------------------------------- | ---------------------------------------------------------- |
+| `data`                                                     | [models.ServerToolDetails](../models/servertooldetails.mdx) | :heavy_check_mark:                                         | N/A                                                        |

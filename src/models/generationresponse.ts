@@ -36,7 +36,7 @@ export type ApiType = OpenEnum<typeof ApiType>;
 /**
  * The data region this generation was routed through: 'global', 'europe', or 'us'.
  */
-export const DataRegion = {
+export const GenerationResponseDataRegion = {
   Global: "global",
   Europe: "europe",
   Us: "us",
@@ -44,7 +44,9 @@ export const DataRegion = {
 /**
  * The data region this generation was routed through: 'global', 'europe', or 'us'.
  */
-export type DataRegion = OpenEnum<typeof DataRegion>;
+export type GenerationResponseDataRegion = OpenEnum<
+  typeof GenerationResponseDataRegion
+>;
 
 /**
  * Generation data
@@ -73,7 +75,7 @@ export type GenerationResponseData = {
   /**
    * The data region this generation was routed through: 'global', 'europe', or 'us'.
    */
-  dataRegion: DataRegion;
+  dataRegion: GenerationResponseDataRegion;
   /**
    * External user identifier
    */
@@ -247,8 +249,10 @@ export const ApiType$inboundSchema: z.ZodType<ApiType, unknown> = openEnums
   .inboundSchema(ApiType);
 
 /** @internal */
-export const DataRegion$inboundSchema: z.ZodType<DataRegion, unknown> =
-  openEnums.inboundSchema(DataRegion);
+export const GenerationResponseDataRegion$inboundSchema: z.ZodType<
+  GenerationResponseDataRegion,
+  unknown
+> = openEnums.inboundSchema(GenerationResponseDataRegion);
 
 /** @internal */
 export const GenerationResponseData$inboundSchema: z.ZodType<
@@ -260,7 +264,7 @@ export const GenerationResponseData$inboundSchema: z.ZodType<
   cache_discount: z.nullable(z.number()),
   cancelled: z.nullable(z.boolean()),
   created_at: z.string(),
-  data_region: DataRegion$inboundSchema,
+  data_region: GenerationResponseDataRegion$inboundSchema,
   external_user: z.nullable(z.string()),
   finish_reason: z.nullable(z.string()),
   generation_time: z.nullable(z.number()),

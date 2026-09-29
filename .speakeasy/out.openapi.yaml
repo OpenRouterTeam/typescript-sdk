@@ -12465,6 +12465,13 @@ components:
       required:
         - 'data'
       type: 'object'
+    GetToolResponse:
+      properties:
+        data:
+          $ref: '#/components/schemas/ServerToolDetails'
+      required:
+        - 'data'
+      type: 'object'
     GetWorkspaceBudgetResponse:
       example:
         data:
@@ -15525,6 +15532,32 @@ components:
       required:
         - 'data'
         - 'total_count'
+      type: 'object'
+    ListToolsResponse:
+      properties:
+        data:
+          items:
+            $ref: '#/components/schemas/ServerTool'
+          type: 'array'
+        links:
+          properties:
+            next:
+              description: 'URL for the next page of results, or null if this is the last page'
+              example: null
+              type:
+                - 'string'
+                - 'null'
+          required:
+            - 'next'
+          type: 'object'
+        total_count:
+          description: 'Total number of tools'
+          example: 12
+          type: 'integer'
+      required:
+        - 'data'
+        - 'total_count'
+        - 'links'
       type: 'object'
     ListWorkspaceBudgetsResponse:
       example:
@@ -27553,6 +27586,306 @@ components:
       example: 'medium'
       type: 'string'
       x-speakeasy-unknown-values: allow
+    ServerTool:
+      properties:
+        aliases:
+          description: 'Every spelling accepted in `tools[].type` for this tool, including the canonical `id`, and what the call surfaces as under each'
+          items:
+            $ref: '#/components/schemas/ServerToolInputName'
+          type: 'array'
+        default_engine:
+          description: 'The engine a request without `parameters.engine` (or with `engine: "auto"`) runs on; `native` applies where the endpoint runs the tool itself, otherwise `fallback_engine`. A request pinned to a data region skips either engine when its `data_regions` does not list that region. Null for a tool without an engine parameter'
+          example: 'native'
+          type:
+            - 'string'
+            - 'null'
+        docs_url:
+          format: 'uri'
+          type: 'string'
+        engines:
+          items:
+            $ref: '#/components/schemas/ServerToolEngine'
+          type: 'array'
+        fallback_engine:
+          description: 'The engine an unpinned request runs on when `default_engine` is `native` and the endpoint does not run the tool itself; null when there is no fallback'
+          example: 'exa'
+          type:
+            - 'string'
+            - 'null'
+        id:
+          description: 'Canonical `openrouter:*` name; the stable `tools[].type` on every API format in `supported_api_formats`'
+          example: 'openrouter:web_search'
+          type: 'string'
+        input_schema:
+          additionalProperties: {}
+          description: 'JSON Schema of the arguments the model emits when calling the tool'
+          example:
+            properties: {}
+            type: 'object'
+          type: 'object'
+        name:
+          example: 'Web search'
+          type: 'string'
+        native_support:
+          $ref: '#/components/schemas/ServerToolNativeSupport'
+        output_schema:
+          additionalProperties: {}
+          description: 'JSON Schema of the result returned to the model; null when undeclared'
+          example:
+            properties: {}
+            type: 'object'
+          type:
+            - 'object'
+            - 'null'
+        parameters_schema:
+          additionalProperties: {}
+          description: 'JSON Schema for the caller-side `tools[].parameters` object'
+          example:
+            properties: {}
+            type: 'object'
+          type: 'object'
+        status:
+          enum:
+            - 'active'
+            - 'deprecated'
+          example: 'active'
+          type: 'string'
+          x-speakeasy-unknown-values: allow
+        summary:
+          description: 'One sentence for cards and search results; never sent to a model'
+          type: 'string'
+        supported_api_formats:
+          items:
+            enum:
+              - 'responses'
+              - 'chat-completions'
+              - 'anthropic-messages'
+            type: 'string'
+            x-speakeasy-unknown-values: allow
+          type: 'array'
+        tool_description:
+          description: 'The description sent upstream as the function tool description'
+          type: 'string'
+      required:
+        - 'id'
+        - 'name'
+        - 'summary'
+        - 'tool_description'
+        - 'status'
+        - 'docs_url'
+        - 'aliases'
+        - 'supported_api_formats'
+        - 'default_engine'
+        - 'fallback_engine'
+        - 'parameters_schema'
+        - 'input_schema'
+        - 'output_schema'
+        - 'engines'
+        - 'native_support'
+      type: 'object'
+    ServerToolDetails:
+      allOf:
+        - $ref: '#/components/schemas/ServerTool'
+        - properties:
+            native_support:
+              allOf:
+                - $ref: '#/components/schemas/ServerToolNativeSupport'
+                - properties:
+                    models:
+                      items:
+                        $ref: '#/components/schemas/ServerToolNativeModel'
+                      type: 'array'
+                  required:
+                    - 'models'
+                  type: 'object'
+              description: 'Endpoints whose provider runs this tool itself during inference. Zero for tools no provider runs natively.'
+              example:
+                endpoint_count: 18
+                model_count: 12
+          type: 'object'
+    ServerToolEngine:
+      properties:
+        byok:
+          description: 'Whether the engine needs the caller''s own key, saved in plugin settings: `required` (OpenRouter holds none), `optional` (OpenRouter''s key is used unless the caller saved one), or `none`'
+          enum:
+            - 'required'
+            - 'optional'
+            - 'none'
+          example: 'none'
+          type: 'string'
+          x-speakeasy-unknown-values: allow
+        data_regions:
+          description: 'The data regions whose requests this engine serves without leaving the region. A request pinned to a region can only use engines that list it; `global` is always listed.'
+          example:
+            - 'global'
+            - 'us'
+          items:
+            enum:
+              - 'global'
+              - 'europe'
+              - 'us'
+            type: 'string'
+            x-speakeasy-unknown-values: allow
+          type: 'array'
+        default_mode:
+          description: 'The `parameters.mode` a request without one runs and bills as; null for engines without modes. The `pricing[]` row with this `mode` is what an unmoded request bills'
+          example: 'auto'
+          type:
+            - 'string'
+            - 'null'
+        executed_by:
+          $ref: '#/components/schemas/ServerToolExecutedBy'
+        id:
+          description: 'The `parameters.engine` value that selects this engine; null for the single engine of a tool without an engine parameter'
+          example: 'exa'
+          type:
+            - 'string'
+            - 'null'
+        name:
+          example: 'Exa'
+          type: 'string'
+        pricing:
+          description: 'The rows OpenRouter bills; non-empty exactly when `pricing_source` is `openrouter`'
+          items:
+            $ref: '#/components/schemas/ServerToolPrice'
+          type: 'array'
+        pricing_doc_url:
+          description: 'Where the rates are documented when `pricing_source` is `provider` or `byok`; null otherwise'
+          example: null
+          type:
+            - 'string'
+            - 'null'
+        pricing_source:
+          description: 'Who bills the engine''s calls beyond the model''s tokens: `openrouter` (the `pricing` rows, from the caller''s credits), `provider` (a per-call tool fee from the model''s provider on the inference call, at its own rates), `byok` (the engine''s vendor, against the caller''s own key), or `none` (no charge)'
+          enum:
+            - 'openrouter'
+            - 'provider'
+            - 'byok'
+            - 'none'
+          example: 'openrouter'
+          type: 'string'
+          x-speakeasy-unknown-values: allow
+      required:
+        - 'id'
+        - 'name'
+        - 'executed_by'
+        - 'data_regions'
+        - 'byok'
+        - 'default_mode'
+        - 'pricing_source'
+        - 'pricing_doc_url'
+        - 'pricing'
+      type: 'object'
+    ServerToolExecutedBy:
+      description: 'Who runs the tool call: the model provider during inference (`provider`), OpenRouter (`openrouter`), or the caller''s application after the call is returned (`client`).'
+      enum:
+        - 'provider'
+        - 'openrouter'
+        - 'client'
+      example: 'openrouter'
+      type: 'string'
+      x-speakeasy-unknown-values: allow
+    ServerToolInputName:
+      properties:
+        api_formats:
+          description: 'API formats that accept this spelling in `tools[].type`'
+          items:
+            enum:
+              - 'responses'
+              - 'chat-completions'
+              - 'anthropic-messages'
+            type: 'string'
+            x-speakeasy-unknown-values: allow
+          type: 'array'
+        output_names:
+          description: 'What the call surfaces as on each accepting API format when requested under this spelling; a format is absent when the call is not visible to the caller'
+          items:
+            $ref: '#/components/schemas/ServerToolOutputName'
+          type: 'array'
+        type:
+          example: 'web_search_20250305'
+          type: 'string'
+      required:
+        - 'type'
+        - 'api_formats'
+        - 'output_names'
+      type: 'object'
+    ServerToolNativeModel:
+      properties:
+        providers:
+          example:
+            - 'Anthropic'
+            - 'Google'
+          items:
+            type: 'string'
+          type: 'array'
+        slug:
+          example: 'anthropic/claude-4.5-sonnet'
+          type: 'string'
+      required:
+        - 'slug'
+        - 'providers'
+      type: 'object'
+    ServerToolNativeSupport:
+      description: 'Endpoints whose provider runs this tool itself during inference. Zero for tools no provider runs natively.'
+      example:
+        endpoint_count: 18
+        model_count: 12
+      properties:
+        endpoint_count:
+          example: 18
+          type: 'integer'
+        model_count:
+          example: 12
+          type: 'integer'
+      required:
+        - 'endpoint_count'
+        - 'model_count'
+      type: 'object'
+    ServerToolOutputName:
+      properties:
+        api_format:
+          enum:
+            - 'responses'
+            - 'chat-completions'
+            - 'anthropic-messages'
+          type: 'string'
+          x-speakeasy-unknown-values: allow
+        name:
+          description: 'Anthropic Messages `server_tool_use` block `name`, when the call surfaces as one'
+          example: 'web_search'
+          type: 'string'
+        type:
+          description: 'Output item `type` on Responses, content block `type` on Anthropic Messages, `reasoning_details[].type` on Chat Completions'
+          example: 'web_search_call'
+          type: 'string'
+      required:
+        - 'api_format'
+        - 'type'
+      type: 'object'
+    ServerToolPrice:
+      properties:
+        max_units_per_call:
+          type: 'integer'
+        mode:
+          description: 'The `parameters.mode` this price applies to; null for prices that do not depend on the mode. A request bills exactly one `request` row'
+          example: 'auto'
+          type:
+            - 'string'
+            - 'null'
+        price:
+          description: 'USD per unit, as a decimal string'
+          example: '0.007'
+          type: 'string'
+        unit:
+          example: 'request'
+          type: 'string'
+      required:
+        - 'mode'
+        - 'unit'
+        - 'price'
+        - 'max_units_per_call'
+      type: 'object'
     ServerToolUseDetails:
       description: 'Usage for server-side tool execution (e.g., web search)'
       example:
@@ -48574,6 +48907,180 @@ paths:
       - $ref: "#/components/parameters/AppIdentifier"
       - $ref: "#/components/parameters/AppDisplayName"
       - $ref: "#/components/parameters/AppCategories"
+  /tools:
+    get:
+      description: 'Lists every server tool OpenRouter can run on behalf of a model: accepted `tools[].type` spellings per API format, the engines behind it with their pricing, and how many endpoints run it natively.'
+      operationId: 'listTools'
+      parameters:
+        - description: 'Number of records to skip for pagination. When both offset and limit are omitted, the full list is returned'
+          in: 'query'
+          name: 'offset'
+          required: false
+          schema:
+            default: 0
+            description: 'Number of records to skip for pagination. When both offset and limit are omitted, the full list is returned'
+            example: 0
+            minimum: 0
+            type:
+              - 'integer'
+              - 'null'
+        - description: 'Maximum number of records to return (max 100). When both offset and limit are omitted, the full list is returned'
+          in: 'query'
+          name: 'limit'
+          required: false
+          schema:
+            default: 50
+            description: 'Maximum number of records to return (max 100). When both offset and limit are omitted, the full list is returned'
+            example: 50
+            maximum: 100
+            minimum: 1
+            type: 'integer'
+        - description: 'Only tools usable on this API format'
+          in: 'query'
+          name: 'api_format'
+          required: false
+          schema:
+            description: 'Only tools usable on this API format'
+            enum:
+              - 'responses'
+              - 'chat-completions'
+              - 'anthropic-messages'
+            example: 'responses'
+            type: 'string'
+            x-speakeasy-unknown-values: allow
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ListToolsResponse'
+          description: 'The server tool catalog'
+        '401':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 401
+                  message: 'Missing Authentication header'
+              schema:
+                $ref: '#/components/schemas/UnauthorizedResponse'
+          description: 'Unauthorized - Authentication required or invalid credentials'
+        '403':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 403
+                  message: 'Only management keys can perform this operation'
+              schema:
+                $ref: '#/components/schemas/ForbiddenResponse'
+          description: 'Forbidden - Authentication successful but insufficient permissions'
+        '404':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 404
+                  message: 'Resource not found'
+              schema:
+                $ref: '#/components/schemas/NotFoundResponse'
+          description: 'Not Found - Resource does not exist'
+        '500':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 500
+                  message: 'Internal Server Error'
+              schema:
+                $ref: '#/components/schemas/InternalServerResponse'
+          description: 'Internal Server Error - Unexpected server error'
+      security:
+        - bearer: []
+      summary: 'List server tools'
+      tags:
+        - 'Tools'
+    parameters:
+      - $ref: "#/components/parameters/AppIdentifier"
+      - $ref: "#/components/parameters/AppDisplayName"
+      - $ref: "#/components/parameters/AppCategories"
+  /tools/{name}:
+    get:
+      description: 'One server tool by canonical name or any accepted alias, with the models that run it natively.'
+      operationId: 'getTool'
+      parameters:
+        - description: 'Canonical `openrouter:*` name or any accepted `tools[].type` alias'
+          in: 'path'
+          name: 'name'
+          required: true
+          schema:
+            description: 'Canonical `openrouter:*` name or any accepted `tools[].type` alias'
+            example: 'openrouter:web_search'
+            type: 'string'
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetToolResponse'
+          description: 'The server tool'
+        '308':
+          description: 'An alias was given; `Location` is the canonical tool URL'
+          headers:
+            Location:
+              required: true
+              schema:
+                example: '/api/v1/tools/openrouter:web_search'
+                type: 'string'
+        '401':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 401
+                  message: 'Missing Authentication header'
+              schema:
+                $ref: '#/components/schemas/UnauthorizedResponse'
+          description: 'Unauthorized - Authentication required or invalid credentials'
+        '403':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 403
+                  message: 'Only management keys can perform this operation'
+              schema:
+                $ref: '#/components/schemas/ForbiddenResponse'
+          description: 'Forbidden - Authentication successful but insufficient permissions'
+        '404':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 404
+                  message: 'Resource not found'
+              schema:
+                $ref: '#/components/schemas/NotFoundResponse'
+          description: 'Not Found - Resource does not exist'
+        '500':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 500
+                  message: 'Internal Server Error'
+              schema:
+                $ref: '#/components/schemas/InternalServerResponse'
+          description: 'Internal Server Error - Unexpected server error'
+      security:
+        - bearer: []
+      summary: 'Get a server tool'
+      tags:
+        - 'Tools'
+    parameters:
+      - $ref: "#/components/parameters/AppIdentifier"
+      - $ref: "#/components/parameters/AppDisplayName"
+      - $ref: "#/components/parameters/AppCategories"
   /vault/interns/{internId}/effective-secrets:
     get:
       description: 'Lists, one entry per name, the secret the intern''s outbound requests receive: its own secrets, secrets from an attached vault, and workspace secrets, including ones stored before workspace-scoped storage. Where several vaults hold a name, the entry is the one that wins, in the order intern, attached, workspace. The same resolution decides what outbound requests receive, so this list and the intern''s requests agree. `scope` says which vault the entry comes from. Responses carry metadata only, never values. Results are ordered by name and paginated with `limit` and `offset`. Returns 404 when the intern''s attached vault is no longer available, since the intern then receives no secrets. The scope is selected by the API key: workspace routes act on the key''s active workspace and intern routes act on one intern inside that workspace. There is no default workspace and no fallback to another scope. Every vault route, including reads, requires access to the Intern API programme and returns 404 outside it. An intern''s own API key is confined to that intern: it can always read the intern''s secrets and effective secrets, writes to them follow the rules above, and every other intern and every workspace route answers 404. Requests on regional hostnames such as `eu.openrouter.ai` are refused. [API key](/docs/api-reference/authentication) required.'
@@ -51781,6 +52288,8 @@ tags:
   - description: 'Text-to-speech endpoints'
     name: 'TTS'
     x-displayName: 'Speech'
+  - description: 'The catalog of server tools OpenRouter runs on behalf of a model: accepted `tools[].type` spellings per API format, engines and pricing, and which endpoints run each tool natively. See https://openrouter.ai/docs/guides/features/server-tools.'
+    name: 'Tools'
   - description: 'Store host-bound secrets for a workspace or for one intern. Scope is selected by the API key. Responses return metadata only, never secret values. See https://openrouter.ai/docs/guides/ori/vault.'
     name: 'Vault'
   - description: 'Video Generation endpoints'
