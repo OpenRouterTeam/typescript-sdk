@@ -425,6 +425,7 @@ export * from "./interninvokerequest.js";
 export * from "./internlifecycleerror.js";
 export * from "./internlistresponse.js";
 export * from "./itemreferenceitem.js";
+export * from "./jevrouterplugin.js";
 export * from "./keyassignment.js";
 export * from "./legacychatcontentvideo.js";
 export * from "./legacychatcontentvideoinput.js";
