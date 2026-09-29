@@ -45,6 +45,7 @@ export const ProviderName = {
   DeepSeek: "DeepSeek",
   DekaLLM: "DekaLLM",
   DigitalOcean: "DigitalOcean",
+  ElevenLabs: "ElevenLabs",
   Featherless: "Featherless",
   Fireworks: "Fireworks",
   FishAudio: "Fish Audio",

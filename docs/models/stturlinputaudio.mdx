@@ -1,0 +1,22 @@
+---
+title: "STTUrlInputAudio"
+---
+
+Audio input fetched by the provider from a URL
+
+## Example Usage
+
+```typescript
+import { STTUrlInputAudio } from "@openrouter/sdk/models";
+
+let value: STTUrlInputAudio = {
+  url: "https://example.com/meeting.mp3",
+};
+```
+
+## Fields
+
+| Field                                                                                                                                                                   | Type                                                                                                                                                                    | Required                                                                                                                                                                | Description                                                                                                                                                             |
+| ----------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `format`                                                                                                                                                                | *string*                                                                                                                                                                | :heavy_minus_sign:                                                                                                                                                      | Audio format of the file at the URL. Defaults to the extension of the URL path; required when the path has no extension.                                                |
+| `url`                                                                                                                                                                   | *string*                                                                                                                                                                | :heavy_check_mark:                                                                                                                                                      | Publicly reachable http(s) URL of the audio file. The provider downloads it directly, so the inline upload size limit does not apply. Only supported by some providers. |

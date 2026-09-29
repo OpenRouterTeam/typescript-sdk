@@ -15,7 +15,7 @@ export class STT extends ClientSDK {
    * Create transcription
    *
    * @remarks
-   * Transcribes audio into text. Accepts base64-encoded audio input as JSON or an OpenAI-style multipart/form-data file upload, and returns the transcribed text.
+   * Transcribes audio into text. Accepts base64-encoded audio input as JSON, an OpenAI-style multipart/form-data file upload, or a URL the provider downloads directly, and returns the transcribed text.
    */
   async createTranscription(
     request: operations.CreateAudioTranscriptionsRequest,
@@ -32,7 +32,7 @@ export class STT extends ClientSDK {
    * Create transcription
    *
    * @remarks
-   * Transcribes audio into text. Accepts base64-encoded audio input as JSON or an OpenAI-style multipart/form-data file upload, and returns the transcribed text.
+   * Transcribes audio into text. Accepts base64-encoded audio input as JSON, an OpenAI-style multipart/form-data file upload, or a URL the provider downloads directly, and returns the transcribed text.
    */
   async createTranscriptionMultipart(
     request: operations.CreateAudioTranscriptionsMultipartRequest,

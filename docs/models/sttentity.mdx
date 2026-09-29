@@ -1,0 +1,27 @@
+---
+title: "STTEntity"
+---
+
+A detected entity, returned when the provider runs entity detection
+
+## Example Usage
+
+```typescript
+import { STTEntity } from "@openrouter/sdk/models";
+
+let value: STTEntity = {
+  endChar: 25,
+  startChar: 15,
+  text: "John Smith",
+  type: "name",
+};
+```
+
+## Fields
+
+| Field                                                                                                | Type                                                                                                 | Required                                                                                             | Description                                                                                          | Example                                                                                              |
+| ---------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------- |
+| `endChar`                                                                                            | *number*                                                                                             | :heavy_check_mark:                                                                                   | Zero-based exclusive character offset of the entity end within the response-level text (not seconds) | 25                                                                                                   |
+| `startChar`                                                                                          | *number*                                                                                             | :heavy_check_mark:                                                                                   | Zero-based character offset of the entity start within the response-level text (not seconds)         | 15                                                                                                   |
+| `text`                                                                                               | *string*                                                                                             | :heavy_check_mark:                                                                                   | Entity text as it appears in the transcript                                                          |                                                                                                      |
+| `type`                                                                                               | *string*                                                                                             | :heavy_check_mark:                                                                                   | Provider entity type label                                                                           | name                                                                                                 |

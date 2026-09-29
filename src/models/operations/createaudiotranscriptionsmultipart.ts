@@ -56,9 +56,17 @@ export type TimestampGranularities = OpenEnum<typeof TimestampGranularities>;
 
 export type CreateAudioTranscriptionsMultipartRequestBody = {
   /**
-   * The audio file to transcribe. The format is derived from the filename extension or the file part content type. Max 25 MB; send larger files as base64 JSON via input_audio.
+   * Label each word with the speaker who said it (words[].speaker, words[].speaker_label). Requires response_format "verbose_json" (400 otherwise); word timestamps are included even when timestamp_granularities[] omits "word". Only supported by some providers; 400 when the selected model cannot diarize.
    */
-  file: CreateAudioTranscriptionsMultipartFile | Blob;
+  diarize?: boolean | undefined;
+  /**
+   * The audio file to transcribe. The format is derived from the filename extension or the file part content type. Max 25 MB; send larger files as base64 JSON via input_audio, or by URL via source_url. Exactly one of file or source_url is required.
+   */
+  file?: CreateAudioTranscriptionsMultipartFile | Blob | undefined;
+  /**
+   * Domain terms, names, or phrases to bias recognition toward; repeat the part once per term (keyterms=... is also accepted). Only supported by some providers; 400 when the selected model cannot use keyterms.
+   */
+  keyterms?: Array<string> | undefined;
   /**
    * The language of the input audio (ISO-639-1).
    */
@@ -68,6 +76,10 @@ export type CreateAudioTranscriptionsMultipartRequestBody = {
    */
   model: string;
   /**
+   * JSON-encoded provider preferences object, the same shape as the JSON body field: { "options": { "<provider-slug>": { ... } } }. Only options for the matched provider are forwarded. Must decode to a JSON object.
+   */
+  provider?: string | undefined;
+  /**
    * The response format. "json" (default) returns { text, usage }; "verbose_json" additionally returns task, language, duration, and segment-level timestamps (OpenAI-compatible providers only).
    */
   responseFormat?: ResponseFormat | undefined;
@@ -75,6 +87,10 @@ export type CreateAudioTranscriptionsMultipartRequestBody = {
    * A unique identifier for grouping related requests (e.g., a conversation or agent workflow). Used for observability grouping in Broadcast and private logging; never sent to the provider. If provided in both the request body and the x-session-id header, the body value takes precedence.
    */
   sessionId?: string | undefined;
+  /**
+   * Publicly reachable http(s) URL of the audio file, downloaded by the provider directly (no size limit on our side). The format is derived from the URL path extension. Only supported by some providers; exactly one of file or source_url is required.
+   */
+  sourceUrl?: string | undefined;
   /**
    * The sampling temperature.
    */
@@ -159,11 +175,15 @@ export const TimestampGranularities$outboundSchema: z.ZodType<
 
 /** @internal */
 export type CreateAudioTranscriptionsMultipartRequestBody$Outbound = {
-  file: CreateAudioTranscriptionsMultipartFile$Outbound | Blob;
+  diarize?: boolean | undefined;
+  file?: CreateAudioTranscriptionsMultipartFile$Outbound | Blob | undefined;
+  "keyterms[]"?: Array<string> | undefined;
   language?: string | undefined;
   model: string;
+  provider?: string | undefined;
   response_format?: string | undefined;
   session_id?: string | undefined;
+  source_url?: string | undefined;
   temperature?: number | undefined;
   "timestamp_granularities[]"?: Array<string> | undefined;
   trace?: string | undefined;
@@ -176,12 +196,16 @@ export const CreateAudioTranscriptionsMultipartRequestBody$outboundSchema:
     CreateAudioTranscriptionsMultipartRequestBody$Outbound,
     CreateAudioTranscriptionsMultipartRequestBody
   > = z.object({
+    diarize: z.boolean().optional(),
     file: z.lazy(() => CreateAudioTranscriptionsMultipartFile$outboundSchema)
-      .or(blobLikeSchema),
+      .or(blobLikeSchema).optional(),
+    keyterms: z.array(z.string()).optional(),
     language: z.string().optional(),
     model: z.string(),
+    provider: z.string().optional(),
     responseFormat: ResponseFormat$outboundSchema.optional(),
     sessionId: z.string().optional(),
+    sourceUrl: z.string().optional(),
     temperature: z.number().optional(),
     timestampGranularities: z.array(TimestampGranularities$outboundSchema)
       .optional(),
@@ -189,8 +213,10 @@ export const CreateAudioTranscriptionsMultipartRequestBody$outboundSchema:
     user: z.string().optional(),
   }).transform((v) => {
     return remap$(v, {
+      keyterms: "keyterms[]",
       responseFormat: "response_format",
       sessionId: "session_id",
+      sourceUrl: "source_url",
       timestampGranularities: "timestamp_granularities[]",
     });
   });

@@ -4,35 +4,35 @@
  */
 
 import * as z from "zod/v4";
+import {
+  STTInlineInputAudio,
+  STTInlineInputAudio$Outbound,
+  STTInlineInputAudio$outboundSchema,
+} from "./sttinlineinputaudio.js";
+import {
+  STTUrlInputAudio,
+  STTUrlInputAudio$Outbound,
+  STTUrlInputAudio$outboundSchema,
+} from "./stturlinputaudio.js";
 
 /**
- * Base64-encoded audio to transcribe
+ * Audio to transcribe: inline base64 bytes, or a URL the provider downloads directly.
  */
-export type STTInputAudio = {
-  /**
-   * Base64-encoded audio data (raw bytes, not a data URI)
-   */
-  data: string;
-  /**
-   * Audio format (e.g., wav, mp3, flac, m4a, ogg, webm, aac). Supported formats vary by provider.
-   */
-  format: string;
-};
+export type STTInputAudio = STTInlineInputAudio | STTUrlInputAudio;
 
 /** @internal */
-export type STTInputAudio$Outbound = {
-  data: string;
-  format: string;
-};
+export type STTInputAudio$Outbound =
+  | STTInlineInputAudio$Outbound
+  | STTUrlInputAudio$Outbound;
 
 /** @internal */
 export const STTInputAudio$outboundSchema: z.ZodType<
   STTInputAudio$Outbound,
   STTInputAudio
-> = z.object({
-  data: z.string(),
-  format: z.string(),
-});
+> = z.union([
+  STTInlineInputAudio$outboundSchema,
+  STTUrlInputAudio$outboundSchema,
+]);
 
 export function sttInputAudioToJSON(sttInputAudio: STTInputAudio): string {
   return JSON.stringify(STTInputAudio$outboundSchema.parse(sttInputAudio));
