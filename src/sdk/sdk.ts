@@ -35,6 +35,7 @@ import { Responses } from "./responses.js";
 import { Scim } from "./scim.js";
 import { STT } from "./stt.js";
 import { SystemOne } from "./systemone.js";
+import { Tools } from "./tools.js";
 import { TTS } from "./tts.js";
 import { Vault } from "./vault.js";
 import { VideoGeneration } from "./videogeneration.js";
@@ -211,6 +212,11 @@ export class OpenRouter extends ClientSDK {
   private _systemOne?: SystemOne;
   get systemOne(): SystemOne {
     return (this._systemOne ??= new SystemOne(this._options));
+  }
+
+  private _tools?: Tools;
+  get tools(): Tools {
+    return (this._tools ??= new Tools(this._options));
   }
 
   private _vault?: Vault;

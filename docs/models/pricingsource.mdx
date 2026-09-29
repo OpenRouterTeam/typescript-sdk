@@ -1,0 +1,21 @@
+---
+title: "PricingSource"
+---
+
+Who bills the engine's calls beyond the model's tokens: `openrouter` (the `pricing` rows, from the caller's credits), `provider` (a per-call tool fee from the model's provider on the inference call, at its own rates), `byok` (the engine's vendor, against the caller's own key), or `none` (no charge)
+
+## Example Usage
+
+```typescript
+import { PricingSource } from "@openrouter/sdk/models";
+
+let value: PricingSource = "openrouter";
+
+// Open enum: unrecognized values are captured as Unrecognized<string>
+```
+
+## Values
+
+```typescript
+"openrouter" | "provider" | "byok" | "none" | Unrecognized<string>
+```

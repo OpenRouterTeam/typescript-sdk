@@ -1,0 +1,22 @@
+---
+title: "ServerToolOutputName"
+---
+
+## Example Usage
+
+```typescript
+import { ServerToolOutputName } from "@openrouter/sdk/models";
+
+let value: ServerToolOutputName = {
+  apiFormat: "chat-completions",
+  type: "web_search_call",
+};
+```
+
+## Fields
+
+| Field                                                                                                                       | Type                                                                                                                        | Required                                                                                                                    | Description                                                                                                                 | Example                                                                                                                     |
+| --------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------- |
+| `apiFormat`                                                                                                                 | [models.ServerToolOutputNameApiFormat](../models/servertooloutputnameapiformat.mdx)                                          | :heavy_check_mark:                                                                                                          | N/A                                                                                                                         |                                                                                                                             |
+| `name`                                                                                                                      | *string*                                                                                                                    | :heavy_minus_sign:                                                                                                          | Anthropic Messages `server_tool_use` block `name`, when the call surfaces as one                                            | web_search                                                                                                                  |
+| `type`                                                                                                                      | *string*                                                                                                                    | :heavy_check_mark:                                                                                                          | Output item `type` on Responses, content block `type` on Anthropic Messages, `reasoning_details[].type` on Chat Completions | web_search_call                                                                                                             |

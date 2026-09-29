@@ -1,0 +1,25 @@
+---
+title: "ListToolsResponse"
+---
+
+## Example Usage
+
+```typescript
+import { ListToolsResponse } from "@openrouter/sdk/models";
+
+let value: ListToolsResponse = {
+  data: [],
+  links: {
+    next: null,
+  },
+  totalCount: 12,
+};
+```
+
+## Fields
+
+| Field                                                                | Type                                                                 | Required                                                             | Description                                                          | Example                                                              |
+| -------------------------------------------------------------------- | -------------------------------------------------------------------- | -------------------------------------------------------------------- | -------------------------------------------------------------------- | -------------------------------------------------------------------- |
+| `data`                                                               | [models.ServerTool](../models/servertool.mdx)[]                       | :heavy_check_mark:                                                   | N/A                                                                  |                                                                      |
+| `links`                                                              | [models.ListToolsResponseLinks](../models/listtoolsresponselinks.mdx) | :heavy_check_mark:                                                   | N/A                                                                  |                                                                      |
+| `totalCount`                                                         | *number*                                                             | :heavy_check_mark:                                                   | Total number of tools                                                | 12                                                                   |

@@ -1,0 +1,21 @@
+---
+title: "ServerToolExecutedBy"
+---
+
+Who runs the tool call: the model provider during inference (`provider`), OpenRouter (`openrouter`), or the caller's application after the call is returned (`client`).
+
+## Example Usage
+
+```typescript
+import { ServerToolExecutedBy } from "@openrouter/sdk/models";
+
+let value: ServerToolExecutedBy = "openrouter";
+
+// Open enum: unrecognized values are captured as Unrecognized<string>
+```
+
+## Values
+
+```typescript
+"provider" | "openrouter" | "client" | Unrecognized<string>
+```
