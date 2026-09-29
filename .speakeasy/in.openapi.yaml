@@ -28209,7 +28209,7 @@ components:
           maxLength: 256
           type: 'string'
         speed:
-          description: 'Playback speed multiplier. Only used by models that support it (e.g. OpenAI TTS). Ignored by other providers.'
+          description: 'Playback speed multiplier. Honored by models that support it (e.g. OpenAI TTS). Other providers either ignore it or return a 400 for a non-default value when the model has no speed control.'
           example: 1
           format: 'double'
           type: 'number'
