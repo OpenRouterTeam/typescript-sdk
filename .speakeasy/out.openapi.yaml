@@ -34109,6 +34109,16 @@ paths:
               schema:
                 $ref: '#/components/schemas/BatchErrorResponse'
           description: 'No batch exists for the given id.'
+        '410':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 410
+                  message: 'Batch results have expired. OpenRouter deletes batch results 30 days after the batch is created.'
+              schema:
+                $ref: '#/components/schemas/BatchErrorResponse'
+          description: 'The batch results were deleted after the 30-day retention window.'
         '429':
           content:
             application/json:

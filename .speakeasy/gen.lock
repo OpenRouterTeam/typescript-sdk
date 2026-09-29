@@ -1,19 +1,19 @@
 lockVersion: ""
 id: ""
 management:
-  docChecksum: c7f055f07cc959c2ff196ea20eb35f37
+  docChecksum: e3d1e1d5e3989dd7e0b68cef45ce3794
   docVersion: 1.0.0
   speakeasyVersion: 1.787.0
   generationVersion: 2.914.0
-  releaseVersion: 1.4.2
-  configChecksum: d079ef13878db387e960a0b69864e925
+  releaseVersion: 1.4.3
+  configChecksum: 1bb9a51535dbf32361cbed5bb15b91b3
   repoURL: https://github.com/OpenRouterTeam/typescript-sdk.git
   installationURL: https://github.com/OpenRouterTeam/typescript-sdk
   published: true
 persistentEdits:
-  generation_id: 598494bf-240d-4364-853b-adf0cbfee0d4
-  pristine_commit_hash: fe5b794dabfe295d0f2170f8d44c2ce930ecb711
-  pristine_tree_hash: 81c173f65b213614d77972605845de2d4b4db5d4
+  generation_id: 78f7db45-bd84-48a9-ad61-78d5912937c4
+  pristine_commit_hash: 5163568d2b59e5d63f36fb11f81636ac9ea106d3
+  pristine_tree_hash: f85725eb23b379e35bf23dbe3704bc8899ef78b2
 features:
   typescript:
     acceptHeaders: 2.81.2
@@ -14660,8 +14660,8 @@ trackedFiles:
     pristine_git_object: 5003dfe082082b968b6d20a2e0020d8c6bae06fb
   docs/sdks/batch/README.mdx:
     id: e367aa4f4295
-    last_write_checksum: sha1:8a5228f41b48d49da0d1166e957bd928563008ed
-    pristine_git_object: 5321bbffbae9866c06edced1185f6abb408e0123
+    last_write_checksum: sha1:6a7b49a4ad9ba8dc1600a20d20417e8ee45d69c9
+    pristine_git_object: 51c33f632d703db4670552a33540d7e356df6913
   docs/sdks/benchmarks/README.md:
     id: 61c16262af9b
     last_write_checksum: sha1:17fd0e4aa4c358c6298ee9a434a14ff68ce83dbf
@@ -14891,12 +14891,12 @@ trackedFiles:
     pristine_git_object: 410efafd6a7f50d91ccb87131fedbe0c3d47e15a
   jsr.json:
     id: 7f6ab7767282
-    last_write_checksum: sha1:a27c37683530b040f731e510c203559bf09ae651
-    pristine_git_object: 8c697531a8bfc36b5f0474d881585ae46d14e347
+    last_write_checksum: sha1:1ab2ded071896f1e7f5ef9a11522ddb5ada2f8f5
+    pristine_git_object: c15fa3f32e9216f86464f0985092dd33c3f3f165
   package.json:
     id: 7030d0b2f71b
-    last_write_checksum: sha1:8c7ff32db8f48db05c58eac1ca92ae3f36cd4faa
-    pristine_git_object: 5a0e48ac342b8135fa339b5cb50215f4ffedf401
+    last_write_checksum: sha1:2f604bb88fbb1f6703e501dbe9afbac48c86bdd5
+    pristine_git_object: afe3c378bcb3d483f5609df1a799809984d61e46
   src/core.ts:
     id: f431fdbcd144
     last_write_checksum: sha1:5aa66b0b6a5964f3eea7f3098c2eb3c0ee9c0131
@@ -14951,8 +14951,8 @@ trackedFiles:
     pristine_git_object: 67513fd42436ab5f4cebd899a0eb8d531df0cefd
   src/funcs/batchGetBatches.ts:
     id: d4804b94cd90
-    last_write_checksum: sha1:08e019a10597410e9150e3a0b64c5a4de1797a5e
-    pristine_git_object: c18c552d93a4b872c476cf5823ee0fd3d1574f51
+    last_write_checksum: sha1:9760d3ca3018ddc059f64f6ae774ecae378cb924
+    pristine_git_object: 31a68016a503e8c5744e212d5c3812fa13bdf326
   src/funcs/batchList.ts:
     id: 8709844813ac
     last_write_checksum: sha1:50a34174bad5bdf1b47e1361a3cc676dd26cc7b0
@@ -15479,8 +15479,8 @@ trackedFiles:
     pristine_git_object: a187e58707bdb726ca2aff74941efe7493422d4e
   src/lib/config.ts:
     id: 320761608fb3
-    last_write_checksum: sha1:5c4e60f96c93eb48e89aad21b8eca57e0871e3e2
-    pristine_git_object: 74920e53c91519c055fb2bc30c3fb83a81c1dccc
+    last_write_checksum: sha1:0cb8425fd86a379f85a5859019f4de6369857e6a
+    pristine_git_object: 9c59877dd6c17fcab4bc7d0aef54e8b593173aac
   src/lib/dlv.ts:
     id: b1988214835a
     last_write_checksum: sha1:eaac763b22717206a6199104e0403ed17a4e2711
@@ -23398,3 +23398,6 @@ examples:
         "504":
           application/json: {"error": {"code": 504, "message": "Vault request timed out"}}
 examplesVersion: 1.0.2
+releaseNotes: |
+  ## Typescript SDK Changes:
+  * `openrouter.batch.getBatches()`:  `error.status[410]` **Added**

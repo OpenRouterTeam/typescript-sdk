@@ -195,7 +195,7 @@ async function $do(
   >(
     M.json(200, models.BatchObject$inboundSchema),
     M.jsonErr(402, errors.BatchPaymentRequiredResponseError$inboundSchema),
-    M.jsonErr([401, 404, 429], errors.BatchErrorResponse$inboundSchema),
+    M.jsonErr([401, 404, 410, 429], errors.BatchErrorResponse$inboundSchema),
     M.jsonErr([500, 502], errors.BatchErrorResponse$inboundSchema),
     M.fail("4XX"),
     M.fail("5XX"),
