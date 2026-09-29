@@ -100,6 +100,7 @@ export * from "./listguardrailmemberassignments.js";
 export * from "./listguardrails.js";
 export * from "./listimagemodelendpoints.js";
 export * from "./listimagemodels.js";
+export * from "./listinterneffectivevaultsecrets.js";
 export * from "./listinterns.js";
 export * from "./listinternvaultsecrets.js";
 export * from "./listkeyassignments.js";

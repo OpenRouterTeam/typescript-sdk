@@ -1,19 +1,19 @@
 lockVersion: ""
 id: ""
 management:
-  docChecksum: 77a5b0dd8ab45001d15e1b5a27808278
+  docChecksum: abd7f52b7429f0a020f709b0dcca0625
   docVersion: 1.0.0
   speakeasyVersion: 1.787.0
   generationVersion: 2.914.0
-  releaseVersion: 1.4.0
-  configChecksum: c6f97602909da6a554bd1756310947c6
+  releaseVersion: 1.4.1
+  configChecksum: 9f6e8601f83dbe83fca3af20c3c48dd8
   repoURL: https://github.com/OpenRouterTeam/typescript-sdk.git
   installationURL: https://github.com/OpenRouterTeam/typescript-sdk
   published: true
 persistentEdits:
-  generation_id: 71da85c9-72b8-47cb-9523-9051538ff5df
-  pristine_commit_hash: 36a234faeeb6cc824bcf043f2df18aef1069300f
-  pristine_tree_hash: d90da52046add890cce0571519434c361f61e719
+  generation_id: 74733277-66b9-4d04-a5b6-9b34bd0c76e0
+  pristine_commit_hash: e6cdef4812f4f55039b6f73397802ea641101d48
+  pristine_tree_hash: b8f036befdebe377af840152f0bc6cfea3730008
 features:
   typescript:
     acceptHeaders: 2.81.2
@@ -9725,6 +9725,14 @@ trackedFiles:
     id: 9ad03ead3ab8
     last_write_checksum: sha1:3cdf9854e1ef01f10a4723b19cb042dec8c269b1
     pristine_git_object: 6880d9d81935f6fa48b6d87bab9fbe78803534f6
+  docs/models/operations/listinterneffectivevaultsecretsglobals.mdx:
+    id: 755d10265dbb
+    last_write_checksum: sha1:f3ce7cbed31f2a8d0aeab6834a329564d5cff226
+    pristine_git_object: 3e627a5b3de2ad62bb119abd6692f7e3201479cf
+  docs/models/operations/listinterneffectivevaultsecretsrequest.mdx:
+    id: 903c64583cbf
+    last_write_checksum: sha1:3460bef46ccd501a9cf48ea2ba9f394a9f46c44b
+    pristine_git_object: 8f8748a2b627719b1b967d7c4689f96fab9e42c6
   docs/models/operations/listinternsglobals.mdx:
     id: f62b829b195b
     last_write_checksum: sha1:02ff172832aa7c664ac878c2801fecfc2dc7fc90
@@ -12673,10 +12681,6 @@ trackedFiles:
     id: 2c7ac4015da5
     last_write_checksum: sha1:494e2054437406ff149c4a9749e1c80714bc765d
     pristine_git_object: ee8ecb43ffd4b07579511e9c29717a78caa9fef2
-  docs/models/scope.mdx:
-    id: 53060439ddc4
-    last_write_checksum: sha1:3bde46df57dee7681df97045b31432ea6452b6eb
-    pristine_git_object: 0d989e65007420d73a145d5eee5da7822610b0f3
   docs/models/searchcontextsizeenum.md:
     id: 4de34693233a
     last_write_checksum: sha1:efc7659126209876e2b83b5fd67b1dc379796ad0
@@ -13517,8 +13521,12 @@ trackedFiles:
     deleted: true
   docs/models/tokenexchangerequest.mdx:
     id: 20223978500d
-    last_write_checksum: sha1:e6de0f3e1084ffa011464a3b2cb54c9b9ba6124b
-    pristine_git_object: 4f5a6c113ce78b17bf8e91563e8c9593e489eb2f
+    last_write_checksum: sha1:eb82c51c5807f56577eeae1386835e019de414f1
+    pristine_git_object: 4fd88c444695d890270622ed12a9a5b31b27dc4b
+  docs/models/tokenexchangerequestscope.mdx:
+    id: e19f72333221
+    last_write_checksum: sha1:f1645539b1fd483cab39c77a24d3c8d70f49e8e1
+    pristine_git_object: cc3c4dd07a8889b40790e433acfb08c337abb6d2
   docs/models/tokenexchangeresponse.mdx:
     id: 29ffda782ee3
     last_write_checksum: sha1:4f5b18c6072ab5dd16e1de671f8773e1cab83383
@@ -14203,6 +14211,18 @@ trackedFiles:
     id: a898d6bbef33
     last_write_checksum: sha1:02aa8646079d62293338ef295481809bfe413ece
     pristine_git_object: 50ceaea11a7c0a924c93ccce5b1aa57b5ad7f6a7
+  docs/models/vaulteffectivesecret.mdx:
+    id: 692f3ab2cea9
+    last_write_checksum: sha1:069ce3bc10f0fb747d56aa7c55977ae5a1cbc3a1
+    pristine_git_object: 4430f34570acd28bb746aa42c1870d94ee983855
+  docs/models/vaulteffectivesecretlistresponse.mdx:
+    id: 88ab2dfa3a17
+    last_write_checksum: sha1:290e4ed44394e926bbfcf89945fbe1bd1aa2c014
+    pristine_git_object: afade5fcfb67115be67a6b265d94ab2e7cc594ef
+  docs/models/vaulteffectivesecretscope.mdx:
+    id: 4244d990fa78
+    last_write_checksum: sha1:6f66ece5b96de2aae764cf286932b4b528cd5578
+    pristine_git_object: 257dd2675b039455e90334f3122ee0c46e1aa276
   docs/models/vaultsecret.mdx:
     id: 2043e343062a
     last_write_checksum: sha1:09e26a0a774a4b5b0e51d0c9ec19c0ec139b0cba
@@ -14739,8 +14759,8 @@ trackedFiles:
     pristine_git_object: 15b7b4c80d50dd3aa0f7adc3ab4d9fb03a8efaa7
   docs/sdks/interns/README.mdx:
     id: 2f8a053ffe78
-    last_write_checksum: sha1:854e8be236339d0a7def72a56e9f4f79a37fb017
-    pristine_git_object: 229d03a6798b5efb0487bd98f2b86824ee212f03
+    last_write_checksum: sha1:a1a2aa6f2885ece37ca4fa89a171f053b947864a
+    pristine_git_object: 58668ffc9a9d59e3f2755650ec6ad7b7e221b228
   docs/sdks/models/README.mdx:
     id: 58f1ca464e0b
     last_write_checksum: sha1:dbae6f74244ab3e9fe38e075ab67f926f33ef87d
@@ -14825,8 +14845,8 @@ trackedFiles:
     pristine_git_object: f268a989002642a92428fedba701bf5ddf4ed3e3
   docs/sdks/vault/README.mdx:
     id: 3738c6722acd
-    last_write_checksum: sha1:b643a4e3d8a8946ad887ef8b916bb88c1794e491
-    pristine_git_object: 30a5e8e15229fad1d2493e482a0057dc1021fe50
+    last_write_checksum: sha1:060c7999f93108fb9d779646f187013f35aee9b9
+    pristine_git_object: f537caf25d55a2c7806318b2ea76947182abbea1
   docs/sdks/videogeneration/README.md:
     id: b6dbf7b0729c
     last_write_checksum: sha1:71205a37afffed445af770082c3f50f6bcbfadfa
@@ -14871,12 +14891,12 @@ trackedFiles:
     pristine_git_object: 410efafd6a7f50d91ccb87131fedbe0c3d47e15a
   jsr.json:
     id: 7f6ab7767282
-    last_write_checksum: sha1:539d1627d0e4c38387c6f62ae3a4abc5826d1b51
-    pristine_git_object: 76f67d38de69f459a000d8878d10d12b57d1b47b
+    last_write_checksum: sha1:cd7fd0b0693c7f0f53ce65833490e5f06f3cff92
+    pristine_git_object: 6e684a8436ce5811d0a4350025edc3ddd20f2f1e
   package.json:
     id: 7030d0b2f71b
-    last_write_checksum: sha1:e45707a9c63986788ff1265b227dbcedbf26e67f
-    pristine_git_object: 8841b3ac795df26b937e875feae1848830dbfc65
+    last_write_checksum: sha1:c9accc9d671f99e39e8765104543e1e4bd4cbf87
+    pristine_git_object: 3505a46bcd6668d17628348fedc3bf6e94a3d94e
   src/core.ts:
     id: f431fdbcd144
     last_write_checksum: sha1:5aa66b0b6a5964f3eea7f3098c2eb3c0ee9c0131
@@ -15119,44 +15139,44 @@ trackedFiles:
     pristine_git_object: b73e7606a33f6e568e0e0f0f6edc6a2cf683b295
   src/funcs/internsCreateIntern.ts:
     id: 74ff6cd8e4b0
-    last_write_checksum: sha1:552a9f984d38571d742dead0f6a3834cbfb85959
-    pristine_git_object: 8081c1a61184489df9b770ba4381831301a0063f
+    last_write_checksum: sha1:e14cdb0c5c98f918f869b55aa8182f2179bb048b
+    pristine_git_object: 7bf7c9123f51cf2d488d3c3f2a7fa9385344982c
   src/funcs/internsDeleteIntern.ts:
     id: 7eb35f20da18
-    last_write_checksum: sha1:4659c2c43af730669c2e4163d142c0275c6b9ce8
-    pristine_git_object: ffda40ba9072eb0aa1bea616b31f212617e404ce
+    last_write_checksum: sha1:59305c57df6deee411feed4b59260afd87347394
+    pristine_git_object: 76ca8ecadfc9d0f0b6c0ac0645802bf24106b3f1
   src/funcs/internsGetIntern.ts:
     id: 484b04c35876
-    last_write_checksum: sha1:95616ff94e6ef4fe3248885d25aa71a6b01f5186
-    pristine_git_object: 84985cfee5e79c648083370d42e07563d54f8fd2
+    last_write_checksum: sha1:eb25ad753db871626ce9e204fe72c18dc6263ab0
+    pristine_git_object: c63d853cce364f3ca7fe036e521b95b66062d667
   src/funcs/internsGetInternDaemon.ts:
     id: 727cbeff5468
-    last_write_checksum: sha1:8d8de1ac422ef03425af979f67c464b08364a8fc
-    pristine_git_object: 00c6a4c15409bac36e463ced4131b301716b52ac
+    last_write_checksum: sha1:597ebdf44726ef1d0907068f99947032f23f5933
+    pristine_git_object: 8ddfabc318a1f61b2a9835745a7d01b9fb4128de
   src/funcs/internsGetInternDaemonAccess.ts:
     id: 464f7f69e2f0
-    last_write_checksum: sha1:ceb2ab2eef61e74c12b82dd7095ef1118909af81
-    pristine_git_object: a60cc07695a9e26fd271e2d52dd877ab517b8f85
+    last_write_checksum: sha1:7c1abbc5d3d112b11e8e744dc8b91e18a82018b5
+    pristine_git_object: 7d1a84bfbf78854398ec7fb9ef868a984551f6fd
   src/funcs/internsInvoke.ts:
     id: d0be40cd89cf
     last_write_checksum: sha1:e7e5db94633812351a50eca92befa7aa032e49a7
     pristine_git_object: 60325197f9d904257d8a5cfb86c1ebd1a10586d1
   src/funcs/internsListInterns.ts:
     id: eceaf7dad653
-    last_write_checksum: sha1:e5dd060b7ff96038d687efc0a5495064efc84621
-    pristine_git_object: 48cd8682b2086de133ae3bb3c85c9b42a87a8b23
+    last_write_checksum: sha1:4765be7bd7c69b5b1458abef7180ac280d883a96
+    pristine_git_object: 0e97597846738288bdf287cdaf8dec78bad7f60a
   src/funcs/internsProvisionIntern.ts:
     id: 38001699f102
-    last_write_checksum: sha1:b2cf753b37585b3e9b29f565d86b3eb348fd2ef7
-    pristine_git_object: 6d022614a1853377a0d2534f07d2d311a70cc221
+    last_write_checksum: sha1:eea2e3e2024851c619d6ae2e5b1b8d265f7b94e3
+    pristine_git_object: 84f3dddbf8bb57856bf9297f7e2f26e5d8a04ed9
   src/funcs/internsSuspendIntern.ts:
     id: 5928ef254c09
-    last_write_checksum: sha1:5c8412c56b26feee1a898aa34252ffcaa3cb46b4
-    pristine_git_object: e1668e0fb434a4b48d824f10e384050c4803ed44
+    last_write_checksum: sha1:cda18c1920e1538e7313ff1ec2e8f907618bf81a
+    pristine_git_object: 5c20a90b19ec1815bea71d28471b540378caac90
   src/funcs/internsUpdateIntern.ts:
     id: 1d493469e489
-    last_write_checksum: sha1:b6662f9745d583855df6f1cc37d91894f021ba0a
-    pristine_git_object: 23c9a21b02d88278d1fdc8316e813aeedb25009e
+    last_write_checksum: sha1:3d31621ac5975fa26fd6671b77cb8dc1a21c744a
+    pristine_git_object: 8f5a82f87ec4ff137716429fc0ee1364e2abc80c
   src/funcs/modelsCount.ts:
     id: 371adfc67b48
     last_write_checksum: sha1:b5207eb21e0d08e0f1384059f5507fdb2eb16fe0
@@ -15343,32 +15363,36 @@ trackedFiles:
     pristine_git_object: 4cea6cce545cae422b69b0bab5ecd02faa79a840
   src/funcs/vaultCopyVaultSecretsToIntern.ts:
     id: 5f2c033bee20
-    last_write_checksum: sha1:e9ef734e6e9ba4dfcd32ddf5fbf1a842d4033b94
-    pristine_git_object: 526fbaee4f131b4254ef1044d957e8f67d72fe43
+    last_write_checksum: sha1:a8c3f695bd8d91e9dda10ded4bebd6cb8eb5b78f
+    pristine_git_object: 9d243e38cddcb44dc7fc7d2de80b77c715bd8579
   src/funcs/vaultDeleteInternVaultSecret.ts:
     id: b714b9bd8f2a
-    last_write_checksum: sha1:bfdf71a96f0ee7ab592bd4a005a9374c35f16ecb
-    pristine_git_object: 25af9eaeaa655c1803046a0e1469c98136317fed
+    last_write_checksum: sha1:ea9a172199f83c66c61db7bd669bec4a93c694b0
+    pristine_git_object: d090681b037762b179c0e8b3353ed088c92c7bc3
   src/funcs/vaultDeleteVaultSecret.ts:
     id: 9af36010c726
-    last_write_checksum: sha1:d5796eefdd2badd0f386cd2da459034068fd3e3d
-    pristine_git_object: 403d962a989a7d4c4c16306fddc4e2d9b3279642
+    last_write_checksum: sha1:c507f78b438a289f8a8f1b2b62a6b9a852384900
+    pristine_git_object: 545d976d7a49294740f0062390f08aa7c24d5294
+  src/funcs/vaultListInternEffectiveVaultSecrets.ts:
+    id: f8d9b6f715e3
+    last_write_checksum: sha1:0cb71702dae5dcb48db8a5f53e368c09306f5814
+    pristine_git_object: 7168ce2b5c1a2953fdeccea41969cad4d04cb9e6
   src/funcs/vaultListInternVaultSecrets.ts:
     id: 2b49f136fb3f
-    last_write_checksum: sha1:ef690c4173904f174e6b4abb58c1dc5f1baf130b
-    pristine_git_object: 84c05cb1436808a17cb1a0b86fb6d6d1ed6f5edc
+    last_write_checksum: sha1:cbf9126a832da6587e4f006debe6e371f7dc0705
+    pristine_git_object: 7c3ed63c842a4e28288603ef011542825f3d7e39
   src/funcs/vaultListVaultSecrets.ts:
     id: f701a28ac32e
-    last_write_checksum: sha1:4a424e78fda2bf513d1a90c30d55a1d77fd14958
-    pristine_git_object: bada0a942371fbf44e804261911847da8580fb05
+    last_write_checksum: sha1:40ccfbac60c31b354cd3832edae2163e37bdb8b4
+    pristine_git_object: 96980dcfb889948901ffe8bf44f886e6fc91a147
   src/funcs/vaultStoreInternVaultSecret.ts:
     id: 8216704a5d50
-    last_write_checksum: sha1:16215dbed1b74337e0d203c5bd34e0cd4a7f4592
-    pristine_git_object: 6cfaad97ca094f08888fc497aada8fa58a2905de
+    last_write_checksum: sha1:6041a86e6b360657bb36aa566b6dae2b07c53dbc
+    pristine_git_object: 8deb2e158fcbb2596bf1b517385e7493d371d128
   src/funcs/vaultStoreVaultSecret.ts:
     id: 2a58f9053954
-    last_write_checksum: sha1:71d29dc9ef7c9d05c992d713000593e9396fa226
-    pristine_git_object: 7fba356aa94e5008a87955c77efceac14848bce6
+    last_write_checksum: sha1:ac94d2eda5d1b5d670884336d90fb3a331d8341c
+    pristine_git_object: e2f549547b29784b11dc9b25709f88c3113d1a1c
   src/funcs/videoGenerationGenerate.ts:
     id: 6f3650ac9f5e
     last_write_checksum: sha1:d39927b5c5226aa530b5dbc779db7a5a3ba4aaeb
@@ -15455,8 +15479,8 @@ trackedFiles:
     pristine_git_object: a187e58707bdb726ca2aff74941efe7493422d4e
   src/lib/config.ts:
     id: 320761608fb3
-    last_write_checksum: sha1:52873324419700d41a96e7876fe1267297381f3a
-    pristine_git_object: 807876cf7be2cab1595c72e416b11010db710106
+    last_write_checksum: sha1:21051571a2accf7f25d72e5b7a46529f87ddaf88
+    pristine_git_object: a4b8fda54c8362fe9e6ee930015ae9926af8f05e
   src/lib/dlv.ts:
     id: b1988214835a
     last_write_checksum: sha1:eaac763b22717206a6199104e0403ed17a4e2711
@@ -17161,8 +17185,8 @@ trackedFiles:
     pristine_git_object: 7abdfe096d3adff317db6837dc689c69db92e127
   src/models/index.ts:
     id: f93644b0f37e
-    last_write_checksum: sha1:c629a47b67329439856b5e22c4191d7e320e617f
-    pristine_git_object: a0d021c48903b01a2fbcf1ff8e2db8f10cf3613e
+    last_write_checksum: sha1:539fcd021455b5fee975bd9761e5f02c98a54b99
+    pristine_git_object: c8e320117a048dee3cfc5c242f0718a7fe59c573
   src/models/inputaudio.ts:
     id: 9bdc14c7565f
     last_write_checksum: sha1:2f8dc4c1d6a9c2927d9eb186e0ecedf7b81838e6
@@ -18077,8 +18101,8 @@ trackedFiles:
     pristine_git_object: a052ed42bd123e79be1f05dc823c808f8c32b383
   src/models/operations/index.ts:
     id: 0d9ffaf774d2
-    last_write_checksum: sha1:7084571e42a12b1c2fb564bb91c346f068b1653c
-    pristine_git_object: 700a9ee1da516f6586693b0238382e6d6721ca60
+    last_write_checksum: sha1:cd2d2fc3f3339a115b795fa1e85e0a3056c0a45e
+    pristine_git_object: dffc4fdceb8ca7ff1da7d5b4731439d5953dddc6
   src/models/operations/invokeintern.ts:
     id: f2b19fbd8a96
     last_write_checksum: sha1:55f0d7c3a2020919fbf3e92c2c7524a75a412504
@@ -18139,6 +18163,10 @@ trackedFiles:
     id: 439d3eed4cf3
     last_write_checksum: sha1:8c63a2f39b210f1cd71ffa89f58e42168ccde4b8
     pristine_git_object: 53af57ce4fbd45ca669919b1e55d41052b43bb74
+  src/models/operations/listinterneffectivevaultsecrets.ts:
+    id: 8162d29b4032
+    last_write_checksum: sha1:9ee1bc688169aa52e40fac2cb5049318d5dc49b3
+    pristine_git_object: 50bfa2a6310e7534e6d3c848574b71785e0bec4b
   src/models/operations/listinterns.ts:
     id: 3fe8f2b8da99
     last_write_checksum: sha1:9b698c834a6e3f647f566ea445980e3e28378ebd
@@ -19077,8 +19105,8 @@ trackedFiles:
     pristine_git_object: 3896234004dafb4ef489fc1127b3fbcc5c78132d
   src/models/tokenexchangerequest.ts:
     id: 27152e05f952
-    last_write_checksum: sha1:6a7d58272a24deb3724312724d4af051c2d6750e
-    pristine_git_object: 66dc2d82cece08f48fa0b8387a58a91fb2fba47c
+    last_write_checksum: sha1:f951ef0a92f250123fd0b55761462d86da629f3d
+    pristine_git_object: 7b425caaf82169dbb24e0f586b56c0995455be5d
   src/models/tokenexchangeresponse.ts:
     id: e2774cad9e5e
     last_write_checksum: sha1:b6df8a206e572d6058783b0d04d45726cae1d598
@@ -19227,6 +19255,14 @@ trackedFiles:
     id: f7909806f4e1
     last_write_checksum: sha1:fbdbc3aa6a79633c1d12c1f4eb28f820964804f7
     pristine_git_object: ebf610c9efacd08a3d9c5960465e9708564f7458
+  src/models/vaulteffectivesecret.ts:
+    id: 0e9a217f3be7
+    last_write_checksum: sha1:0ba03e286e92b3d730b18d4182bd4e466f6e0fdf
+    pristine_git_object: 0b2b0a631e921540bf00edfc393150ea592ce809
+  src/models/vaulteffectivesecretlistresponse.ts:
+    id: 053f6551d3f4
+    last_write_checksum: sha1:7bce76517f06d1568b577c88e138521430a6395d
+    pristine_git_object: bbd427e458ce5311b003816cf31d232815040e4a
   src/models/vaultsecret.ts:
     id: daa0ae6ffc96
     last_write_checksum: sha1:2ef7624a977d16ce5546dba23aed15dbba49eb1c
@@ -19457,8 +19493,8 @@ trackedFiles:
     pristine_git_object: 5c82fe389f888827f98aa52788b850ef43422e07
   src/sdk/interns.ts:
     id: fc3b4e6c5008
-    last_write_checksum: sha1:44ad31c08bc5f25f3048c0e7a3a5fd5e7dec677f
-    pristine_git_object: f55ab379944f24af8e8db60fd4b13e93965d5e11
+    last_write_checksum: sha1:b9f1bdbf5343b7c9da3b949b0d3246c7a7e4c2ed
+    pristine_git_object: 5a881b1ded0ed6cc57609d61d11eaff0fa458fa3
   src/sdk/models.ts:
     id: 8c761ab180fd
     last_write_checksum: sha1:0c5e5cefb7079fc69eb11ef157af6d2cb5255933
@@ -19517,8 +19553,8 @@ trackedFiles:
     pristine_git_object: 4d885b023e6aac47f225d63bfe3161b919681f88
   src/sdk/vault.ts:
     id: adbb922fff4a
-    last_write_checksum: sha1:de2320505db5b9e852aa1a8797d5fbfbeeb78b27
-    pristine_git_object: 418352481b3a27d27d56ab3d63dc8d61e1dde522
+    last_write_checksum: sha1:74c9dee006dbe549f4e21abe5ad2dc988b64ee5a
+    pristine_git_object: 65c32ea3f43fb27a0072e4e59f50d994e3aafdf0
   src/sdk/videogeneration.ts:
     id: db34eab5bd5b
     last_write_checksum: sha1:0e8a13f8ca379037c57417f0ebe9a9fe35dc3bea
@@ -23190,16 +23226,178 @@ examples:
           application/json: {"error": {"code": 500, "message": "Internal Server Error"}}
         "502":
           application/json: {"error": {"code": 502, "message": "Provider returned error"}}
+  listInternEffectiveVaultSecrets:
+    speakeasy-default-list-intern-effective-vault-secrets:
+      parameters:
+        path:
+          internId: "7c9e6679-7425-40de-944b-e07fc1f90ae7"
+        query:
+          limit: 50
+          offset: 0
+      responses:
+        "200":
+          application/json: {"data": [{"created_at": "2026-09-15T17:44:00.000Z", "fingerprint": "sha256:9f86d081884c7d659a2feaa0c55ad015a3bf4f1b2b0b822cd15d6c15b0f00a08", "hosts": ["api.github.com"], "name": "github_token", "scope": "intern"}, {"created_at": "2026-09-15T17:44:00.000Z", "fingerprint": "sha256:bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb", "hosts": ["api.linear.app"], "name": "linear_api_key", "scope": "workspace"}, {"created_at": "2026-08-01T09:30:00.000Z", "fingerprint": null, "hosts": null, "name": "legacy_token", "scope": "workspace"}], "has_more": false}
+        "400":
+          application/json: {"error": {"code": 400, "message": "Invalid request parameters"}}
+        "401":
+          application/json: {"error": {"code": 401, "message": "Missing Authentication header"}}
+        "403":
+          application/json: {"error": {"code": 403, "message": "Only management keys can perform this operation"}}
+        "404":
+          application/json: {"error": {"code": 404, "message": "Resource not found"}}
+        "408":
+          application/json: {"error": {"code": 408, "message": "Operation timed out. Please try again later."}}
+        "429":
+          application/json: {"error": {"code": 429, "message": "Rate limit exceeded"}}
+        "500":
+          application/json: {"error": {"code": 500, "message": "Internal Server Error"}}
+        "502":
+          application/json: {"error": {"code": 502, "message": "Provider returned error"}}
+        "503":
+          application/json: {"error": {"code": 503, "message": "Service temporarily unavailable"}}
+        "504":
+          application/json: {"error": {"code": 504, "message": "The operation was aborted due to timeout"}}
+    invalid-vault-request:
+      parameters:
+        path:
+          internId: "7c9e6679-7425-40de-944b-e07fc1f90ae7"
+        query:
+          limit: 50
+          offset: 0
+      responses:
+        "400":
+          application/json: {"error": {"code": 400, "message": "Invalid vault request"}}
+    invalid-or-missing-api-key:
+      parameters:
+        path:
+          internId: "7c9e6679-7425-40de-944b-e07fc1f90ae7"
+        query:
+          limit: 50
+          offset: 0
+      responses:
+        "401":
+          application/json: {"error": {"code": 401, "message": "Invalid or missing API key"}}
+    regional-hostname:
+      parameters:
+        path:
+          internId: "7c9e6679-7425-40de-944b-e07fc1f90ae7"
+        query:
+          limit: 50
+          offset: 0
+      responses:
+        "403":
+          application/json: {"error": {"code": 403, "message": "The Intern API does not support regional data residency yet. Please use the global endpoint at openrouter.ai."}}
+    workspace-scope-unavailable:
+      parameters:
+        path:
+          internId: "7c9e6679-7425-40de-944b-e07fc1f90ae7"
+        query:
+          limit: 50
+          offset: 0
+      responses:
+        "403":
+          application/json: {"error": {"code": 403, "message": "Vault scope is unavailable"}}
+    not-found:
+      parameters:
+        path:
+          internId: "7c9e6679-7425-40de-944b-e07fc1f90ae7"
+        query:
+          limit: 50
+          offset: 0
+      responses:
+        "404":
+          application/json: {"error": {"code": 404, "message": "Not found"}}
+    body-timed-out:
+      parameters:
+        path:
+          internId: "7c9e6679-7425-40de-944b-e07fc1f90ae7"
+        query:
+          limit: 50
+          offset: 0
+      responses:
+        "408":
+          application/json: {"error": {"code": 408, "message": "Request body timed out"}}
+    route-deadline:
+      parameters:
+        path:
+          internId: "7c9e6679-7425-40de-944b-e07fc1f90ae7"
+        query:
+          limit: 50
+          offset: 0
+      responses:
+        "408":
+          application/json: {"error": {"code": 408, "message": "Vault request timed out"}}
+    rate-limited:
+      parameters:
+        path:
+          internId: "7c9e6679-7425-40de-944b-e07fc1f90ae7"
+        query:
+          limit: 50
+          offset: 0
+      responses:
+        "429":
+          application/json: {"error": {"code": 429, "message": "Too many vault requests"}}
+    internal-error:
+      parameters:
+        path:
+          internId: "7c9e6679-7425-40de-944b-e07fc1f90ae7"
+        query:
+          limit: 50
+          offset: 0
+      responses:
+        "500":
+          application/json: {"error": {"code": 500, "message": "Internal Server Error"}}
+    invalid-vault-response:
+      parameters:
+        path:
+          internId: "7c9e6679-7425-40de-944b-e07fc1f90ae7"
+        query:
+          limit: 50
+          offset: 0
+      responses:
+        "502":
+          application/json: {"error": {"code": 502, "message": "Invalid vault response"}}
+    vault-request-failed:
+      parameters:
+        path:
+          internId: "7c9e6679-7425-40de-944b-e07fc1f90ae7"
+        query:
+          limit: 50
+          offset: 0
+      responses:
+        "502":
+          application/json: {"error": {"code": 502, "message": "Vault request failed"}}
+    vault-unavailable:
+      parameters:
+        path:
+          internId: "7c9e6679-7425-40de-944b-e07fc1f90ae7"
+        query:
+          limit: 50
+          offset: 0
+      responses:
+        "503":
+          application/json: {"error": {"code": 503, "message": "Vault service is unavailable"}}
+    writes-disabled:
+      parameters:
+        path:
+          internId: "7c9e6679-7425-40de-944b-e07fc1f90ae7"
+        query:
+          limit: 50
+          offset: 0
+      responses:
+        "503":
+          application/json: {"error": {"code": 503, "message": "Vault writes are not enabled"}}
+    vault-timed-out:
+      parameters:
+        path:
+          internId: "7c9e6679-7425-40de-944b-e07fc1f90ae7"
+        query:
+          limit: 50
+          offset: 0
+      responses:
+        "504":
+          application/json: {"error": {"code": 504, "message": "Vault request timed out"}}
 examplesVersion: 1.0.2
 releaseNotes: |
   ## Typescript SDK Changes:
-  * `openrouter.privateEndpoints.list()`: **Added**
-  * `openrouter.privateEndpoints.create()`: **Added**
-  * `openrouter.privateEndpoints.delete()`: **Added**
-  * `openrouter.privateEndpoints.get()`: **Added**
-  * `openrouter.privateEndpoints.update()`: **Added**
-  * `openrouter.privateEndpoints.activate()`: **Added**
-  * `openrouter.privateEndpoints.disable()`: **Added**
-  * `openrouter.privateEndpoints.enable()`: **Added**
-  * `openrouter.privateEndpoints.updatePricing()`: **Added**
-  * `openrouter.privateEndpoints.validate()`: **Added**
+  * `openrouter.vault.listInternEffectiveVaultSecrets()`: **Added**
