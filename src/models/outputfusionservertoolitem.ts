@@ -67,7 +67,7 @@ export type OutputFusionServerToolItem = {
    */
   error?: string | undefined;
   /**
-   * Models that were requested as part of the analysis panel but did not produce a response. Present when at least one requested analysis model failed. The fusion result is still usable but was produced from a degraded panel.
+   * Models that were requested as part of the analysis panel but did not produce a response. Present when at least one requested analysis model failed. On a completed item the fusion result is still usable but was produced from a degraded panel; on a failed item it lists the panels that failed before the run stopped, so the caller can see which models were attempted even though no analysis was produced.
    */
   failedModels?: Array<FailedModel> | undefined;
   /**

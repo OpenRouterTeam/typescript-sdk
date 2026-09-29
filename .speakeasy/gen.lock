@@ -1,19 +1,19 @@
 lockVersion: ""
 id: ""
 management:
-  docChecksum: abd7f52b7429f0a020f709b0dcca0625
+  docChecksum: c7f055f07cc959c2ff196ea20eb35f37
   docVersion: 1.0.0
   speakeasyVersion: 1.787.0
   generationVersion: 2.914.0
-  releaseVersion: 1.4.1
-  configChecksum: 9f6e8601f83dbe83fca3af20c3c48dd8
+  releaseVersion: 1.4.2
+  configChecksum: d079ef13878db387e960a0b69864e925
   repoURL: https://github.com/OpenRouterTeam/typescript-sdk.git
   installationURL: https://github.com/OpenRouterTeam/typescript-sdk
   published: true
 persistentEdits:
-  generation_id: 74733277-66b9-4d04-a5b6-9b34bd0c76e0
-  pristine_commit_hash: e6cdef4812f4f55039b6f73397802ea641101d48
-  pristine_tree_hash: b8f036befdebe377af840152f0bc6cfea3730008
+  generation_id: 598494bf-240d-4364-853b-adf0cbfee0d4
+  pristine_commit_hash: fe5b794dabfe295d0f2170f8d44c2ce930ecb711
+  pristine_tree_hash: 81c173f65b213614d77972605845de2d4b4db5d4
 features:
   typescript:
     acceptHeaders: 2.81.2
@@ -11017,8 +11017,8 @@ trackedFiles:
     deleted: true
   docs/models/outputfusionservertoolitem.mdx:
     id: 3a8a257c7b48
-    last_write_checksum: sha1:15432a6be27f9b5791b579a0aca7f35a97c5de55
-    pristine_git_object: 8a70606ef5c18026c5c38f2a7457724ac66cfe11
+    last_write_checksum: sha1:03eda40c923250e33293e6846dd42d48cf85321e
+    pristine_git_object: d2a1a65c4b7924b20aa052489c6712e3089e86af
   docs/models/outputfusionservertoolitemresponse.mdx:
     id: dcbed43a3ad7
     last_write_checksum: sha1:1a0fd880e507ca579b1beb7ca8476a58c481ee88
@@ -14891,12 +14891,12 @@ trackedFiles:
     pristine_git_object: 410efafd6a7f50d91ccb87131fedbe0c3d47e15a
   jsr.json:
     id: 7f6ab7767282
-    last_write_checksum: sha1:cd7fd0b0693c7f0f53ce65833490e5f06f3cff92
-    pristine_git_object: 6e684a8436ce5811d0a4350025edc3ddd20f2f1e
+    last_write_checksum: sha1:a27c37683530b040f731e510c203559bf09ae651
+    pristine_git_object: 8c697531a8bfc36b5f0474d881585ae46d14e347
   package.json:
     id: 7030d0b2f71b
-    last_write_checksum: sha1:c9accc9d671f99e39e8765104543e1e4bd4cbf87
-    pristine_git_object: 3505a46bcd6668d17628348fedc3bf6e94a3d94e
+    last_write_checksum: sha1:8c7ff32db8f48db05c58eac1ca92ae3f36cd4faa
+    pristine_git_object: 5a0e48ac342b8135fa339b5cb50215f4ffedf401
   src/core.ts:
     id: f431fdbcd144
     last_write_checksum: sha1:5aa66b0b6a5964f3eea7f3098c2eb3c0ee9c0131
@@ -15479,8 +15479,8 @@ trackedFiles:
     pristine_git_object: a187e58707bdb726ca2aff74941efe7493422d4e
   src/lib/config.ts:
     id: 320761608fb3
-    last_write_checksum: sha1:21051571a2accf7f25d72e5b7a46529f87ddaf88
-    pristine_git_object: a4b8fda54c8362fe9e6ee930015ae9926af8f05e
+    last_write_checksum: sha1:5c4e60f96c93eb48e89aad21b8eca57e0871e3e2
+    pristine_git_object: 74920e53c91519c055fb2bc30c3fb83a81c1dccc
   src/lib/dlv.ts:
     id: b1988214835a
     last_write_checksum: sha1:eaac763b22717206a6199104e0403ed17a4e2711
@@ -18413,8 +18413,8 @@ trackedFiles:
     pristine_git_object: 7ceca95161626a8148c05eca0ad540640f1907c4
   src/models/outputfusionservertoolitem.ts:
     id: 30bcfe965217
-    last_write_checksum: sha1:fa22a981b43ae4d6bf59d387967bab87bdd73631
-    pristine_git_object: 7673b9524737febdeef1a3424f57e1fe79a13e64
+    last_write_checksum: sha1:407025478d58c0a557bdec9b83ca30d1c1328035
+    pristine_git_object: bf9b6025315dc3a36b1a5d54a53f053b4304e6f2
   src/models/outputimagegenerationcallitem.ts:
     id: 618bac10713d
     last_write_checksum: sha1:41413c2fbfebe62fa16d6aa61fd51aa48fcaef00
@@ -23398,6 +23398,3 @@ examples:
         "504":
           application/json: {"error": {"code": 504, "message": "Vault request timed out"}}
 examplesVersion: 1.0.2
-releaseNotes: |
-  ## Typescript SDK Changes:
-  * `openrouter.vault.listInternEffectiveVaultSecrets()`: **Added**
