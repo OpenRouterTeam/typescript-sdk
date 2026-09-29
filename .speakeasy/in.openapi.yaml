@@ -22489,7 +22489,7 @@ components:
           description: 'Error message when the fusion run did not produce an analysis result.'
           type: 'string'
         failed_models:
-          description: 'Models that were requested as part of the analysis panel but did not produce a response. Present when at least one requested analysis model failed. The fusion result is still usable but was produced from a degraded panel.'
+          description: 'Models that were requested as part of the analysis panel but did not produce a response. Present when at least one requested analysis model failed. On a completed item the fusion result is still usable but was produced from a degraded panel; on a failed item it lists the panels that failed before the run stopped, so the caller can see which models were attempted even though no analysis was produced.'
           items:
             properties:
               error:
