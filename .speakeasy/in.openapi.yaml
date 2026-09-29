@@ -30544,6 +30544,89 @@ components:
       required:
         - 'workspace_id'
       type: 'object'
+    VaultEffectiveSecret:
+      additionalProperties: false
+      description: 'Metadata for the one secret the intern''s outbound requests receive under this name. The secret value is never returned. The intern receives it only on requests to a hostname in `hosts`, or on any request when `hosts` is `null`; a request to any other hostname receives no secret under this name, even when another vault holds one. `fingerprint` is comparable only within one vault.'
+      example:
+        created_at: '2026-09-15T17:44:00.000Z'
+        fingerprint: 'sha256:9f86d081884c7d659a2feaa0c55ad015a3bf4f1b2b0b822cd15d6c15b0f00a08'
+        hosts:
+          - 'api.github.com'
+        name: 'github_token'
+        scope: 'intern'
+      properties:
+        created_at:
+          format: 'date-time'
+          type: 'string'
+        fingerprint:
+          pattern: '^sha256:[a-f0-9]{64}$'
+          type:
+            - 'string'
+            - 'null'
+        hosts:
+          items:
+            maxLength: 254
+            type: 'string'
+          maxItems: 100
+          minItems: 1
+          type:
+            - 'array'
+            - 'null'
+        name:
+          maxLength: 255
+          minLength: 1
+          pattern: '^(?!.*__)[a-z]([a-z0-9_]*[a-z0-9])?$'
+          type: 'string'
+        scope:
+          description: 'Where the delivered secret is stored: `intern` for the intern''s own vault, `attached` for a vault attached to the intern, `workspace` for the workspace vault.'
+          enum:
+            - 'intern'
+            - 'attached'
+            - 'workspace'
+          type: 'string'
+      required:
+        - 'name'
+        - 'hosts'
+        - 'fingerprint'
+        - 'created_at'
+        - 'scope'
+      type: 'object'
+    VaultEffectiveSecretListResponse:
+      additionalProperties: false
+      description: 'One page of the secrets an intern receives, one entry per name.'
+      example:
+        data:
+          - created_at: '2026-09-15T17:44:00.000Z'
+            fingerprint: 'sha256:9f86d081884c7d659a2feaa0c55ad015a3bf4f1b2b0b822cd15d6c15b0f00a08'
+            hosts:
+              - 'api.github.com'
+            name: 'github_token'
+            scope: 'intern'
+          - created_at: '2026-09-15T17:44:00.000Z'
+            fingerprint: 'sha256:bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb'
+            hosts:
+              - 'api.linear.app'
+            name: 'linear_api_key'
+            scope: 'workspace'
+          - created_at: '2026-08-01T09:30:00.000Z'
+            fingerprint: null
+            hosts: null
+            name: 'legacy_token'
+            scope: 'workspace'
+        has_more: false
+      properties:
+        data:
+          items:
+            $ref: '#/components/schemas/VaultEffectiveSecret'
+          maxItems: 100
+          type: 'array'
+        has_more:
+          description: 'True when more secrets exist beyond this page. Request the next page with `offset` increased by the number of returned entries.'
+          type: 'boolean'
+      required:
+        - 'data'
+        - 'has_more'
+      type: 'object'
     VaultSecret:
       additionalProperties: false
       description: 'Metadata for one stored secret. The secret value is never returned. `fingerprint` is an HMAC-SHA-256 of the value keyed with that vault''s own data key, so it is comparable only within one vault: equal fingerprints in one vault mean equal values, and rewriting the same value keeps its fingerprint. The same value stored in two vaults (for example a workspace secret and its intern copy) carries different fingerprints, so comparing fingerprints across vaults cannot show that a copy matches or that a rotation propagated. `hosts` and `fingerprint` are `null` only for legacy rows written before host binding was required; storing the secret again assigns hosts.'
@@ -38856,7 +38939,7 @@ paths:
       x-speakeasy-name-override: 'listModelEndpoints'
   /interns:
     get:
-      description: 'Lists interns visible to the authenticated key, newest first. Filter by workspace and one or more lifecycle statuses. The API key selects the caller, workspace and visible interns. There is no default workspace fallback. Requests on regional hostnames such as `eu.openrouter.ai` are refused. [API key](/docs/api-reference/authentication) required.'
+      description: 'Lists interns visible to the authenticated key, newest first. Filter by workspace and one or more lifecycle statuses. The API key selects the caller, workspace and visible interns. An intern''s own API key sees only that intern: the collection and every other intern answer 404 to it. There is no default workspace fallback. Requests on regional hostnames such as `eu.openrouter.ai` are refused. [API key](/docs/api-reference/authentication) required.'
       operationId: 'listInterns'
       parameters:
         - description: 'Maximum number of interns to return, from 1 through 500.'
@@ -39012,7 +39095,7 @@ paths:
       tags:
         - 'Interns'
     post:
-      description: 'Creates an intern in an explicit workspace. The operation also creates its private vault. It can start provisioning immediately or wait for a later provision call. A retry with the same idempotency key and body resumes unfinished work. The request body is capped at 1048576 bytes and a larger body is refused with 413. A non-empty body must declare `Content-Type: application/json` or it is refused with 415. The API key selects the caller, workspace and visible interns. There is no default workspace fallback. Requests on regional hostnames such as `eu.openrouter.ai` are refused. [API key](/docs/api-reference/authentication) required.'
+      description: 'Creates an intern in an explicit workspace. The operation also creates its private vault. It can start provisioning immediately or wait for a later provision call. A retry with the same idempotency key and body resumes unfinished work. The request body is capped at 1048576 bytes and a larger body is refused with 413. A non-empty body must declare `Content-Type: application/json` or it is refused with 415. The API key selects the caller, workspace and visible interns. An intern''s own API key sees only that intern: the collection and every other intern answer 404 to it. There is no default workspace fallback. Requests on regional hostnames such as `eu.openrouter.ai` are refused. [API key](/docs/api-reference/authentication) required.'
       operationId: 'createIntern'
       parameters:
         - description: 'Key that makes retries resume the same create operation, from 1 through 255 characters. An empty or longer key is refused with 400. Without the header, the server derives a stable key from the request body.'
@@ -39222,7 +39305,7 @@ paths:
         - 'Interns'
   /interns/{internId}:
     delete:
-      description: 'Starts safe teardown of the intern, its runtime and its private vault. The body is optional. Send `{"acknowledge_workspace_loss": true}` to delete a `destroy_failed` intern whose `last_failure_message` names `workspace_archive_failed`, accepting that its workspace is not backed up. The request body is capped at 1048576 bytes and a larger body is refused with 413. A non-empty body must declare `Content-Type: application/json` or it is refused with 415. The API key selects the caller, workspace and visible interns. There is no default workspace fallback. Requests on regional hostnames such as `eu.openrouter.ai` are refused. [API key](/docs/api-reference/authentication) required.'
+      description: 'Starts safe teardown of the intern, its runtime and its private vault. The body is optional. Send `{"acknowledge_workspace_loss": true}` to delete a `destroy_failed` intern whose `last_failure_message` names `workspace_archive_failed`, accepting that its workspace is not backed up. The request body is capped at 1048576 bytes and a larger body is refused with 413. A non-empty body must declare `Content-Type: application/json` or it is refused with 415. The API key selects the caller, workspace and visible interns. An intern''s own API key sees only that intern: the collection and every other intern answer 404 to it. There is no default workspace fallback. Requests on regional hostnames such as `eu.openrouter.ai` are refused. [API key](/docs/api-reference/authentication) required.'
       operationId: 'deleteIntern'
       parameters:
         - description: 'ID of an intern visible to the authenticated API key.'
@@ -39381,7 +39464,7 @@ paths:
       tags:
         - 'Interns'
     get:
-      description: 'Returns the public lifecycle state and settings for one visible intern. The API key selects the caller, workspace and visible interns. There is no default workspace fallback. Requests on regional hostnames such as `eu.openrouter.ai` are refused. [API key](/docs/api-reference/authentication) required.'
+      description: 'Returns the public lifecycle state and settings for one visible intern. The API key selects the caller, workspace and visible interns. An intern''s own API key sees only that intern: the collection and every other intern answer 404 to it. There is no default workspace fallback. Requests on regional hostnames such as `eu.openrouter.ai` are refused. [API key](/docs/api-reference/authentication) required.'
       operationId: 'getIntern'
       parameters:
         - description: 'ID of an intern visible to the authenticated API key.'
@@ -39480,7 +39563,7 @@ paths:
       tags:
         - 'Interns'
     patch:
-      description: 'Changes the intern name, description, instructions or model. Omitted fields stay unchanged. The request body is capped at 1048576 bytes and a larger body is refused with 413. A non-empty body must declare `Content-Type: application/json` or it is refused with 415. The API key selects the caller, workspace and visible interns. There is no default workspace fallback. Requests on regional hostnames such as `eu.openrouter.ai` are refused. [API key](/docs/api-reference/authentication) required.'
+      description: 'Changes the intern name, description, instructions or model. Omitted fields stay unchanged. The request body is capped at 1048576 bytes and a larger body is refused with 413. A non-empty body must declare `Content-Type: application/json` or it is refused with 415. The API key selects the caller, workspace and visible interns. An intern''s own API key sees only that intern: the collection and every other intern answer 404 to it. There is no default workspace fallback. Requests on regional hostnames such as `eu.openrouter.ai` are refused. [API key](/docs/api-reference/authentication) required.'
       operationId: 'updateIntern'
       parameters:
         - description: 'ID of an intern visible to the authenticated API key.'
@@ -39878,7 +39961,7 @@ paths:
       x-speakeasy-name-override: 'chat'
   /interns/{internId}/daemon:
     get:
-      description: 'Returns the origin and daemon token that attach `ori tui --host` to one visible, running intern. The token is a credential: the response is sent with `Cache-Control: no-store`, and each reveal is logged by caller and intern. The API key selects the caller, workspace and visible interns. There is no default workspace fallback. Requests on regional hostnames such as `eu.openrouter.ai` are refused. [API key](/docs/api-reference/authentication) required.'
+      description: 'Returns the origin and daemon token that attach `ori tui --host` to one visible, running intern. The token is a credential: the response is sent with `Cache-Control: no-store`, and each reveal is logged by caller and intern. The API key selects the caller, workspace and visible interns. An intern''s own API key sees only that intern: the collection and every other intern answer 404 to it. There is no default workspace fallback. Requests on regional hostnames such as `eu.openrouter.ai` are refused. [API key](/docs/api-reference/authentication) required.'
       operationId: 'getInternDaemon'
       parameters:
         - description: 'ID of an intern visible to the authenticated API key.'
@@ -39977,7 +40060,7 @@ paths:
   /interns/{internId}/daemon-access:
     get:
       deprecated: true
-      description: 'Deprecated alias of `GET /interns/{internId}/daemon` with the same request, response, and errors. The API key selects the caller, workspace and visible interns. There is no default workspace fallback. Requests on regional hostnames such as `eu.openrouter.ai` are refused. [API key](/docs/api-reference/authentication) required.'
+      description: 'Deprecated alias of `GET /interns/{internId}/daemon` with the same request, response, and errors. The API key selects the caller, workspace and visible interns. An intern''s own API key sees only that intern: the collection and every other intern answer 404 to it. There is no default workspace fallback. Requests on regional hostnames such as `eu.openrouter.ai` are refused. [API key](/docs/api-reference/authentication) required.'
       operationId: 'getInternDaemonAccess'
       parameters:
         - description: 'ID of an intern visible to the authenticated API key.'
@@ -40282,7 +40365,7 @@ paths:
       x-speakeasy-name-override: 'invoke'
   /interns/{internId}/provision:
     post:
-      description: 'Starts the first boot, or resumes an intern after suspension. This operation takes no request body. A body carrying any field is refused with 400 rather than ignored. The API key selects the caller, workspace and visible interns. There is no default workspace fallback. Requests on regional hostnames such as `eu.openrouter.ai` are refused. [API key](/docs/api-reference/authentication) required.'
+      description: 'Starts the first boot, or resumes an intern after suspension. This operation takes no request body. A body carrying any field is refused with 400 rather than ignored. The API key selects the caller, workspace and visible interns. An intern''s own API key sees only that intern: the collection and every other intern answer 404 to it. There is no default workspace fallback. Requests on regional hostnames such as `eu.openrouter.ai` are refused. [API key](/docs/api-reference/authentication) required.'
       operationId: 'provisionIntern'
       parameters:
         - description: 'ID of an intern visible to the authenticated API key.'
@@ -40434,7 +40517,7 @@ paths:
         - 'Interns'
   /interns/{internId}/suspend:
     post:
-      description: 'Stops the intern runtime while keeping its disk and configuration for a later provision call. This operation takes no request body. A body carrying any field is refused with 400 rather than ignored. The API key selects the caller, workspace and visible interns. There is no default workspace fallback. Requests on regional hostnames such as `eu.openrouter.ai` are refused. [API key](/docs/api-reference/authentication) required.'
+      description: 'Stops the intern runtime while keeping its disk and configuration for a later provision call. This operation takes no request body. A body carrying any field is refused with 400 rather than ignored. The API key selects the caller, workspace and visible interns. An intern''s own API key sees only that intern: the collection and every other intern answer 404 to it. There is no default workspace fallback. Requests on regional hostnames such as `eu.openrouter.ai` are refused. [API key](/docs/api-reference/authentication) required.'
       operationId: 'suspendIntern'
       parameters:
         - description: 'ID of an intern visible to the authenticated API key.'
@@ -47678,9 +47761,231 @@ paths:
       tags:
         - 'SystemOne'
       x-speakeasy-name-override: 'create'
+  /vault/interns/{internId}/effective-secrets:
+    get:
+      description: 'Lists, one entry per name, the secret the intern''s outbound requests receive: its own secrets, secrets from an attached vault, and workspace secrets, including ones stored before workspace-scoped storage. Where several vaults hold a name, the entry is the one that wins, in the order intern, attached, workspace. The same resolution decides what outbound requests receive, so this list and the intern''s requests agree. `scope` says which vault the entry comes from. Responses carry metadata only, never values. Results are ordered by name and paginated with `limit` and `offset`. Returns 404 when the intern''s attached vault is no longer available, since the intern then receives no secrets. The scope is selected by the API key: workspace routes act on the key''s active workspace and intern routes act on one intern inside that workspace. There is no default workspace and no fallback to another scope. Every vault route, including reads, requires access to the Intern API programme and returns 404 outside it. An intern''s own API key is confined to that intern: it can always read the intern''s secrets and effective secrets, writes to them follow the rules above, and every other intern and every workspace route answers 404. Requests on regional hostnames such as `eu.openrouter.ai` are refused. [API key](/docs/api-reference/authentication) required.'
+      operationId: 'listInternEffectiveVaultSecrets'
+      parameters:
+        - description: 'UUID of an intern in the workspace selected by the API key.'
+          in: 'path'
+          name: 'internId'
+          required: true
+          schema:
+            description: 'UUID of an intern in the workspace selected by the API key.'
+            example: '7c9e6679-7425-40de-944b-e07fc1f90ae7'
+            format: 'uuid'
+            type: 'string'
+        - description: 'Page size, 1 to 100. Defaults to 100.'
+          in: 'query'
+          name: 'limit'
+          required: false
+          schema:
+            default: 100
+            description: 'Page size, 1 to 100. Defaults to 100.'
+            example: 50
+            maximum: 100
+            minimum: 1
+            type: 'integer'
+        - description: 'Number of secrets to skip, 0 to 10000. Defaults to 0.'
+          in: 'query'
+          name: 'offset'
+          required: false
+          schema:
+            default: 0
+            description: 'Number of secrets to skip, 0 to 10000. Defaults to 0.'
+            example: 0
+            maximum: 10000
+            minimum: 0
+            type: 'integer'
+      responses:
+        '200':
+          content:
+            application/json:
+              example:
+                data:
+                  - created_at: '2026-09-15T17:44:00.000Z'
+                    fingerprint: 'sha256:9f86d081884c7d659a2feaa0c55ad015a3bf4f1b2b0b822cd15d6c15b0f00a08'
+                    hosts:
+                      - 'api.github.com'
+                    name: 'github_token'
+                    scope: 'intern'
+                  - created_at: '2026-09-15T17:44:00.000Z'
+                    fingerprint: 'sha256:bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb'
+                    hosts:
+                      - 'api.linear.app'
+                    name: 'linear_api_key'
+                    scope: 'workspace'
+                  - created_at: '2026-08-01T09:30:00.000Z'
+                    fingerprint: null
+                    hosts: null
+                    name: 'legacy_token'
+                    scope: 'workspace'
+                has_more: false
+              schema:
+                $ref: '#/components/schemas/VaultEffectiveSecretListResponse'
+          description: 'One page of the secrets the intern receives.'
+        '400':
+          content:
+            application/json:
+              examples:
+                invalid-vault-request:
+                  summary: 'Invalid vault request'
+                  value:
+                    error:
+                      code: 400
+                      message: 'Invalid vault request'
+              schema:
+                $ref: '#/components/schemas/BadRequestResponse'
+          description: 'Bad Request - The secret name, path, query or JSON body failed validation. The vault returns 400 for a malformed request as well.'
+        '401':
+          content:
+            application/json:
+              examples:
+                invalid-or-missing-api-key:
+                  summary: 'Invalid or missing API key'
+                  value:
+                    error:
+                      code: 401
+                      message: 'Invalid or missing API key'
+              schema:
+                $ref: '#/components/schemas/UnauthorizedResponse'
+          description: 'Unauthorized - Missing or unknown API key. Provisioning keys cannot call vault routes.'
+        '403':
+          content:
+            application/json:
+              examples:
+                regional-hostname:
+                  summary: 'Regional hostname'
+                  value:
+                    error:
+                      code: 403
+                      message: 'The Intern API does not support regional data residency yet. Please use the global endpoint at openrouter.ai.'
+                workspace-scope-unavailable:
+                  summary: 'Workspace scope unavailable'
+                  value:
+                    error:
+                      code: 403
+                      message: 'Vault scope is unavailable'
+              schema:
+                $ref: '#/components/schemas/ForbiddenResponse'
+          description: 'Forbidden - The key has no usable workspace scope, or the request arrived on a regional hostname.'
+        '404':
+          content:
+            application/json:
+              examples:
+                not-found:
+                  summary: 'Not found'
+                  value:
+                    error:
+                      code: 404
+                      message: 'Not found'
+              schema:
+                $ref: '#/components/schemas/NotFoundResponse'
+          description: 'Not Found - The intern is not in the selected workspace or is not visible to the key (a member key without an admin role sees only interns its member created or interns in workspaces they administer), the secret does not exist in the selected scope, or the caller is outside the intern programme.'
+        '408':
+          content:
+            application/json:
+              examples:
+                body-timed-out:
+                  summary: 'Body timed out'
+                  value:
+                    error:
+                      code: 408
+                      message: 'Request body timed out'
+                route-deadline:
+                  summary: 'Route deadline'
+                  value:
+                    error:
+                      code: 408
+                      message: 'Vault request timed out'
+              schema:
+                $ref: '#/components/schemas/RequestTimeoutResponse'
+          description: 'Request Timeout - The route deadline passed before the request completed, or the request body stopped arriving.'
+        '429':
+          content:
+            application/json:
+              examples:
+                rate-limited:
+                  summary: 'Rate limited'
+                  value:
+                    error:
+                      code: 429
+                      message: 'Too many vault requests'
+              schema:
+                $ref: '#/components/schemas/TooManyRequestsResponse'
+          description: 'Too Many Requests - The vault rate limit was reached.'
+        '500':
+          content:
+            application/json:
+              examples:
+                internal-error:
+                  summary: 'Internal error'
+                  value:
+                    error:
+                      code: 500
+                      message: 'Internal Server Error'
+              schema:
+                $ref: '#/components/schemas/InternalServerResponse'
+          description: 'Internal Server Error - Scope lookup failed.'
+        '502':
+          content:
+            application/json:
+              examples:
+                invalid-vault-response:
+                  summary: 'Invalid vault response'
+                  value:
+                    error:
+                      code: 502
+                      message: 'Invalid vault response'
+                vault-request-failed:
+                  summary: 'Vault request failed'
+                  value:
+                    error:
+                      code: 502
+                      message: 'Vault request failed'
+              schema:
+                $ref: '#/components/schemas/BadGatewayResponse'
+          description: 'Bad Gateway - The vault could not be reached or returned an unexpected response.'
+        '503':
+          content:
+            application/json:
+              examples:
+                vault-unavailable:
+                  summary: 'Vault unavailable'
+                  value:
+                    error:
+                      code: 503
+                      message: 'Vault service is unavailable'
+                writes-disabled:
+                  summary: 'Writes disabled'
+                  value:
+                    error:
+                      code: 503
+                      message: 'Vault writes are not enabled'
+              schema:
+                $ref: '#/components/schemas/ServiceUnavailableResponse'
+          description: 'Service Unavailable - Vault writes are disabled for the caller, or the vault is not configured.'
+        '504':
+          content:
+            application/json:
+              examples:
+                vault-timed-out:
+                  summary: 'Vault timed out'
+                  value:
+                    error:
+                      code: 504
+                      message: 'Vault request timed out'
+              schema:
+                $ref: '#/components/schemas/GatewayTimeoutResponse'
+          description: 'Gateway Timeout - The vault did not answer in time.'
+      security:
+        - apiKey: []
+      summary: 'List the secrets an intern receives'
+      tags:
+        - 'Vault'
   /vault/interns/{internId}/secrets:
     get:
-      description: 'Lists secret metadata stored for one intern. Responses contain names, bound hosts, fingerprints and creation times, never secret values. Results are ordered by name and paginated with `limit` and `offset`. The scope is selected by the API key: workspace routes act on the key''s active workspace and intern routes act on one intern inside that workspace. There is no default workspace and no fallback to another scope. Every vault route, including reads, requires access to the Intern API programme and returns 404 outside it. Requests on regional hostnames such as `eu.openrouter.ai` are refused. [API key](/docs/api-reference/authentication) required.'
+      description: 'Lists secret metadata stored for one intern. The list includes secrets stored from the dashboard or at provisioning before workspace-scoped storage; where both exist under one name, the one stored through this API is listed. Those older secrets cannot be deleted or copied through this API, and storing the same name through this API replaces them. Responses contain names, bound hosts, fingerprints and creation times, never secret values. Results are ordered by name and paginated with `limit` and `offset`. The scope is selected by the API key: workspace routes act on the key''s active workspace and intern routes act on one intern inside that workspace. There is no default workspace and no fallback to another scope. Every vault route, including reads, requires access to the Intern API programme and returns 404 outside it. An intern''s own API key is confined to that intern: it can always read the intern''s secrets and effective secrets, writes to them follow the rules above, and every other intern and every workspace route answers 404. Requests on regional hostnames such as `eu.openrouter.ai` are refused. [API key](/docs/api-reference/authentication) required.'
       operationId: 'listInternVaultSecrets'
       parameters:
         - description: 'UUID of an intern in the workspace selected by the API key.'
@@ -47790,7 +48095,7 @@ paths:
                       message: 'Not found'
               schema:
                 $ref: '#/components/schemas/NotFoundResponse'
-          description: 'Not Found - The intern is not in the selected workspace, the secret does not exist in the selected scope, or the caller is outside the intern programme.'
+          description: 'Not Found - The intern is not in the selected workspace or is not visible to the key (a member key without an admin role sees only interns its member created or interns in workspaces they administer), the secret does not exist in the selected scope, or the caller is outside the intern programme.'
         '408':
           content:
             application/json:
@@ -47894,7 +48199,7 @@ paths:
         - 'Vault'
   /vault/interns/{internId}/secrets/{name}:
     delete:
-      description: 'Deletes a secret stored for one intern. Returns 204 with no body on success and 404 when the secret does not exist in the selected scope. Writes return 503 while vault writes are disabled for the caller. The scope is selected by the API key: workspace routes act on the key''s active workspace and intern routes act on one intern inside that workspace. There is no default workspace and no fallback to another scope. Every vault route, including reads, requires access to the Intern API programme and returns 404 outside it. Requests on regional hostnames such as `eu.openrouter.ai` are refused. [API key](/docs/api-reference/authentication) required.'
+      description: 'Deletes a secret stored for one intern. Returns 204 with no body on success and 404 when the secret does not exist in the selected scope. Writes return 503 while vault writes are disabled for the caller. The scope is selected by the API key: workspace routes act on the key''s active workspace and intern routes act on one intern inside that workspace. There is no default workspace and no fallback to another scope. Every vault route, including reads, requires access to the Intern API programme and returns 404 outside it. An intern''s own API key is confined to that intern: it can always read the intern''s secrets and effective secrets, writes to them follow the rules above, and every other intern and every workspace route answers 404. Requests on regional hostnames such as `eu.openrouter.ai` are refused. [API key](/docs/api-reference/authentication) required.'
       operationId: 'deleteInternVaultSecret'
       parameters:
         - description: 'UUID of an intern in the workspace selected by the API key.'
@@ -47977,7 +48282,7 @@ paths:
                       message: 'Not found'
               schema:
                 $ref: '#/components/schemas/NotFoundResponse'
-          description: 'Not Found - The intern is not in the selected workspace, the secret does not exist in the selected scope, or the caller is outside the intern programme.'
+          description: 'Not Found - The intern is not in the selected workspace or is not visible to the key (a member key without an admin role sees only interns its member created or interns in workspaces they administer), the secret does not exist in the selected scope, or the caller is outside the intern programme.'
         '408':
           content:
             application/json:
@@ -48080,7 +48385,7 @@ paths:
       tags:
         - 'Vault'
     put:
-      description: 'Creates or replaces a secret stored for one intern. The value is encrypted at rest and released only to the exact hostnames in `hosts`. The response carries metadata only. Writes return 503 while vault writes are disabled for the caller. The scope is selected by the API key: workspace routes act on the key''s active workspace and intern routes act on one intern inside that workspace. There is no default workspace and no fallback to another scope. Every vault route, including reads, requires access to the Intern API programme and returns 404 outside it. Requests on regional hostnames such as `eu.openrouter.ai` are refused. [API key](/docs/api-reference/authentication) required.'
+      description: 'Creates or replaces a secret stored for one intern. The value is encrypted at rest and released only to the exact hostnames in `hosts`. The response carries metadata only. Writes return 503 while vault writes are disabled for the caller. The scope is selected by the API key: workspace routes act on the key''s active workspace and intern routes act on one intern inside that workspace. There is no default workspace and no fallback to another scope. Every vault route, including reads, requires access to the Intern API programme and returns 404 outside it. An intern''s own API key is confined to that intern: it can always read the intern''s secrets and effective secrets, writes to them follow the rules above, and every other intern and every workspace route answers 404. Requests on regional hostnames such as `eu.openrouter.ai` are refused. [API key](/docs/api-reference/authentication) required.'
       operationId: 'storeInternVaultSecret'
       parameters:
         - description: 'UUID of an intern in the workspace selected by the API key.'
@@ -48184,7 +48489,7 @@ paths:
                       message: 'Not found'
               schema:
                 $ref: '#/components/schemas/NotFoundResponse'
-          description: 'Not Found - The intern is not in the selected workspace, the secret does not exist in the selected scope, or the caller is outside the intern programme.'
+          description: 'Not Found - The intern is not in the selected workspace or is not visible to the key (a member key without an admin role sees only interns its member created or interns in workspaces they administer), the secret does not exist in the selected scope, or the caller is outside the intern programme.'
         '408':
           content:
             application/json:
@@ -48314,7 +48619,7 @@ paths:
         - 'Vault'
   /vault/interns/{internId}/secrets/copy:
     post:
-      description: 'Copies the named workspace secrets into one intern''s scope, replacing any intern secret with the same name. Each copy keeps the source value and host bindings. Every name must exist in the workspace scope or the request fails with 404 and nothing is copied. A workspace secret whose `hosts` is `null` cannot be copied: the request fails with 409 and nothing is copied until that secret is stored again with hosts. The response carries metadata only. Writes return 503 while vault writes are disabled for the caller. The scope is selected by the API key: workspace routes act on the key''s active workspace and intern routes act on one intern inside that workspace. There is no default workspace and no fallback to another scope. Every vault route, including reads, requires access to the Intern API programme and returns 404 outside it. Requests on regional hostnames such as `eu.openrouter.ai` are refused. [API key](/docs/api-reference/authentication) required.'
+      description: 'Copies the named workspace secrets into one intern''s scope, replacing any intern secret with the same name. Each copy keeps the source value and host bindings. Every name must exist in the workspace scope or the request fails with 404 and nothing is copied. A workspace secret whose `hosts` is `null` cannot be copied: the request fails with 409 and nothing is copied until that secret is stored again with hosts. The response carries metadata only. Writes return 503 while vault writes are disabled for the caller. The scope is selected by the API key: workspace routes act on the key''s active workspace and intern routes act on one intern inside that workspace. There is no default workspace and no fallback to another scope. Every vault route, including reads, requires access to the Intern API programme and returns 404 outside it. An intern''s own API key is confined to that intern: it can always read the intern''s secrets and effective secrets, writes to them follow the rules above, and every other intern and every workspace route answers 404. Requests on regional hostnames such as `eu.openrouter.ai` are refused. [API key](/docs/api-reference/authentication) required.'
       operationId: 'copyVaultSecretsToIntern'
       parameters:
         - description: 'UUID of an intern in the workspace selected by the API key.'
@@ -48406,7 +48711,7 @@ paths:
                       message: 'Not found'
               schema:
                 $ref: '#/components/schemas/NotFoundResponse'
-          description: 'Not Found - The intern is not in the selected workspace, the secret does not exist in the selected scope, or the caller is outside the intern programme.'
+          description: 'Not Found - The intern is not in the selected workspace or is not visible to the key (a member key without an admin role sees only interns its member created or interns in workspaces they administer), the secret does not exist in the selected scope, or the caller is outside the intern programme.'
         '408':
           content:
             application/json:
@@ -48536,7 +48841,7 @@ paths:
         - 'Vault'
   /vault/secrets:
     get:
-      description: 'Lists secret metadata for the workspace of the authenticated API key. Responses contain names, bound hosts, fingerprints and creation times, never secret values. Results are ordered by name and paginated with `limit` and `offset`. The scope is selected by the API key: workspace routes act on the key''s active workspace and intern routes act on one intern inside that workspace. There is no default workspace and no fallback to another scope. Every vault route, including reads, requires access to the Intern API programme and returns 404 outside it. Requests on regional hostnames such as `eu.openrouter.ai` are refused. [API key](/docs/api-reference/authentication) required.'
+      description: 'Lists secret metadata for the workspace of the authenticated API key. The list includes secrets stored from the dashboard or at provisioning before workspace-scoped storage; where both exist under one name, the one stored through this API is listed. Those older secrets cannot be deleted or copied through this API, and storing the same name through this API replaces them. Responses contain names, bound hosts, fingerprints and creation times, never secret values. Results are ordered by name and paginated with `limit` and `offset`. The scope is selected by the API key: workspace routes act on the key''s active workspace and intern routes act on one intern inside that workspace. There is no default workspace and no fallback to another scope. Every vault route, including reads, requires access to the Intern API programme and returns 404 outside it. An intern''s own API key is confined to that intern: it can always read the intern''s secrets and effective secrets, writes to them follow the rules above, and every other intern and every workspace route answers 404. Requests on regional hostnames such as `eu.openrouter.ai` are refused. [API key](/docs/api-reference/authentication) required.'
       operationId: 'listVaultSecrets'
       parameters:
         - description: 'Page size, 1 to 100. Defaults to 100.'
@@ -48637,7 +48942,7 @@ paths:
                       message: 'Not found'
               schema:
                 $ref: '#/components/schemas/NotFoundResponse'
-          description: 'Not Found - The intern is not in the selected workspace, the secret does not exist in the selected scope, or the caller is outside the intern programme.'
+          description: 'Not Found - The intern is not in the selected workspace or is not visible to the key (a member key without an admin role sees only interns its member created or interns in workspaces they administer), the secret does not exist in the selected scope, or the caller is outside the intern programme.'
         '408':
           content:
             application/json:
@@ -48741,7 +49046,7 @@ paths:
         - 'Vault'
   /vault/secrets/{name}:
     delete:
-      description: 'Deletes a secret from the workspace of the authenticated API key. Returns 204 with no body on success and 404 when the secret does not exist in the selected scope. Writes return 503 while vault writes are disabled for the caller. The scope is selected by the API key: workspace routes act on the key''s active workspace and intern routes act on one intern inside that workspace. There is no default workspace and no fallback to another scope. Every vault route, including reads, requires access to the Intern API programme and returns 404 outside it. Requests on regional hostnames such as `eu.openrouter.ai` are refused. [API key](/docs/api-reference/authentication) required.'
+      description: 'Deletes a secret from the workspace of the authenticated API key. Returns 204 with no body on success and 404 when the secret does not exist in the selected scope. Writes return 503 while vault writes are disabled for the caller. The scope is selected by the API key: workspace routes act on the key''s active workspace and intern routes act on one intern inside that workspace. There is no default workspace and no fallback to another scope. Every vault route, including reads, requires access to the Intern API programme and returns 404 outside it. An intern''s own API key is confined to that intern: it can always read the intern''s secrets and effective secrets, writes to them follow the rules above, and every other intern and every workspace route answers 404. Requests on regional hostnames such as `eu.openrouter.ai` are refused. [API key](/docs/api-reference/authentication) required.'
       operationId: 'deleteVaultSecret'
       parameters:
         - description: 'Secret name. Lowercase letters, digits and single underscores, starting with a letter and not ending with an underscore, 1 to 255 characters.'
@@ -48815,7 +49120,7 @@ paths:
                       message: 'Not found'
               schema:
                 $ref: '#/components/schemas/NotFoundResponse'
-          description: 'Not Found - The intern is not in the selected workspace, the secret does not exist in the selected scope, or the caller is outside the intern programme.'
+          description: 'Not Found - The intern is not in the selected workspace or is not visible to the key (a member key without an admin role sees only interns its member created or interns in workspaces they administer), the secret does not exist in the selected scope, or the caller is outside the intern programme.'
         '408':
           content:
             application/json:
@@ -48918,7 +49223,7 @@ paths:
       tags:
         - 'Vault'
     put:
-      description: 'Creates or replaces a secret in the workspace of the authenticated API key. The value is encrypted at rest and released only to the exact hostnames in `hosts`. The response carries metadata only. Writes return 503 while vault writes are disabled for the caller. The scope is selected by the API key: workspace routes act on the key''s active workspace and intern routes act on one intern inside that workspace. There is no default workspace and no fallback to another scope. Every vault route, including reads, requires access to the Intern API programme and returns 404 outside it. Requests on regional hostnames such as `eu.openrouter.ai` are refused. [API key](/docs/api-reference/authentication) required.'
+      description: 'Creates or replaces a secret in the workspace of the authenticated API key. The value is encrypted at rest and released only to the exact hostnames in `hosts`. The response carries metadata only. Writes return 503 while vault writes are disabled for the caller. The scope is selected by the API key: workspace routes act on the key''s active workspace and intern routes act on one intern inside that workspace. There is no default workspace and no fallback to another scope. Every vault route, including reads, requires access to the Intern API programme and returns 404 outside it. An intern''s own API key is confined to that intern: it can always read the intern''s secrets and effective secrets, writes to them follow the rules above, and every other intern and every workspace route answers 404. Requests on regional hostnames such as `eu.openrouter.ai` are refused. [API key](/docs/api-reference/authentication) required.'
       operationId: 'storeVaultSecret'
       parameters:
         - description: 'Secret name. Lowercase letters, digits and single underscores, starting with a letter and not ending with an underscore, 1 to 255 characters.'
@@ -49013,7 +49318,7 @@ paths:
                       message: 'Not found'
               schema:
                 $ref: '#/components/schemas/NotFoundResponse'
-          description: 'Not Found - The intern is not in the selected workspace, the secret does not exist in the selected scope, or the caller is outside the intern programme.'
+          description: 'Not Found - The intern is not in the selected workspace or is not visible to the key (a member key without an admin role sees only interns its member created or interns in workspaces they administer), the secret does not exist in the selected scope, or the caller is outside the intern programme.'
         '408':
           content:
             application/json:
