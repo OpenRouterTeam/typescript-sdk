@@ -13,7 +13,7 @@ import { Model, Model$inboundSchema } from "./model.js";
 /**
  * Pagination links
  */
-export type Links = {
+export type ModelsListResponseLinks = {
   /**
    * URL for the next page of results, or null if this is the last page
    */
@@ -31,7 +31,7 @@ export type ModelsListResponse = {
   /**
    * Pagination links
    */
-  links: Links;
+  links: ModelsListResponseLinks;
   /**
    * Total number of models matching the query
    */
@@ -39,17 +39,20 @@ export type ModelsListResponse = {
 };
 
 /** @internal */
-export const Links$inboundSchema: z.ZodType<Links, unknown> = z.object({
+export const ModelsListResponseLinks$inboundSchema: z.ZodType<
+  ModelsListResponseLinks,
+  unknown
+> = z.object({
   next: z.nullable(z.string()),
 });
 
-export function linksFromJSON(
+export function modelsListResponseLinksFromJSON(
   jsonString: string,
-): SafeParseResult<Links, SDKValidationError> {
+): SafeParseResult<ModelsListResponseLinks, SDKValidationError> {
   return safeParse(
     jsonString,
-    (x) => Links$inboundSchema.parse(JSON.parse(x)),
-    `Failed to parse 'Links' from JSON`,
+    (x) => ModelsListResponseLinks$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'ModelsListResponseLinks' from JSON`,
   );
 }
 
@@ -59,7 +62,7 @@ export const ModelsListResponse$inboundSchema: z.ZodType<
   unknown
 > = z.object({
   data: z.array(Model$inboundSchema),
-  links: z.lazy(() => Links$inboundSchema),
+  links: z.lazy(() => ModelsListResponseLinks$inboundSchema),
   total_count: z.int(),
 }).transform((v) => {
   return remap$(v, {

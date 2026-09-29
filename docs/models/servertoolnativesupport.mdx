@@ -1,0 +1,23 @@
+---
+title: "ServerToolNativeSupport"
+---
+
+Endpoints whose provider runs this tool itself during inference. Zero for tools no provider runs natively.
+
+## Example Usage
+
+```typescript
+import { ServerToolNativeSupport } from "@openrouter/sdk/models";
+
+let value: ServerToolNativeSupport = {
+  endpointCount: 18,
+  modelCount: 12,
+};
+```
+
+## Fields
+
+| Field              | Type               | Required           | Description        | Example            |
+| ------------------ | ------------------ | ------------------ | ------------------ | ------------------ |
+| `endpointCount`    | *number*           | :heavy_check_mark: | N/A                | 18                 |
+| `modelCount`       | *number*           | :heavy_check_mark: | N/A                | 12                 |
