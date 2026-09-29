@@ -32,7 +32,7 @@ import { Result } from "../types/fp.js";
  * Get an intern's daemon access (deprecated alias)
  *
  * @remarks
- * Deprecated alias of `GET /interns/{internId}/daemon` with the same request, response, and errors. The API key selects the caller, workspace and visible interns. There is no default workspace fallback. Requests on regional hostnames such as `eu.openrouter.ai` are refused. [API key](/docs/api-reference/authentication) required.
+ * Deprecated alias of `GET /interns/{internId}/daemon` with the same request, response, and errors. The API key selects the caller, workspace and visible interns. An intern's own API key sees only that intern: the collection and every other intern answer 404 to it. There is no default workspace fallback. Requests on regional hostnames such as `eu.openrouter.ai` are refused. [API key](/docs/api-reference/authentication) required.
  *
  * If set, this operation will use {@link Security.apiKey} from the global security.
  *
