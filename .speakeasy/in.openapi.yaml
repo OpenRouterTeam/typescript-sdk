@@ -7026,6 +7026,7 @@ components:
                 context-compression: '#/components/schemas/ContextCompressionPlugin'
                 file-parser: '#/components/schemas/FileParserPlugin'
                 fusion: '#/components/schemas/FusionPlugin'
+                jev-router: '#/components/schemas/JevRouterPlugin'
                 moderation: '#/components/schemas/ModerationPlugin'
                 pareto-router: '#/components/schemas/ParetoRouterPlugin'
                 response-healing: '#/components/schemas/ResponseHealingPlugin'
@@ -7045,6 +7046,7 @@ components:
               - $ref: '#/components/schemas/ParetoRouterPlugin'
               - $ref: '#/components/schemas/FusionPlugin'
               - $ref: '#/components/schemas/SwitchyardRouterPlugin'
+              - $ref: '#/components/schemas/JevRouterPlugin'
           type: 'array'
         prediction:
           $ref: '#/components/schemas/Prediction'
@@ -14841,6 +14843,42 @@ components:
         - 'type'
         - 'id'
       type: 'object'
+    JevRouterPlugin:
+      example:
+        excluded_models:
+          - 'openai/gpt-6-astra'
+        id: 'jev-router'
+        models:
+          - 'anthropic/*'
+          - 'openai/gpt-5.6-sol'
+      properties:
+        excluded_models:
+          description: 'Remove these models from the router. Each entry is a model slug or a wildcard pattern (e.g. "xiaomi/*"). Up to 1024 patterns, each at most 1024 characters, with 65536 total characters across all patterns. Applied after `models`, so an excluded pattern always wins over an included one; excluding every pool model fails the request with 404 rather than routing to an excluded model.'
+          example:
+            - 'openai/gpt-6-astra'
+            - 'xiaomi/*'
+          items:
+            maxLength: 1024
+            type: 'string'
+          maxItems: 1024
+          type: 'array'
+        id:
+          enum:
+            - 'jev-router'
+          type: 'string'
+        models:
+          description: 'Restrict the router to these models. Each entry is a model slug or a wildcard pattern (e.g. "anthropic/*"), matched against the current pool; models outside the pool are ignored. Up to 1024 patterns, each at most 1024 characters, with 65536 total characters across all patterns. When omitted or empty, every model in the pool is a candidate; when no pool model matches, the list is ignored and the whole pool is used (`excluded_models` still apply).'
+          example:
+            - 'anthropic/*'
+            - 'openai/gpt-5.6-sol'
+          items:
+            maxLength: 1024
+            type: 'string'
+          maxItems: 1024
+          type: 'array'
+      required:
+        - 'id'
+      type: 'object'
     KeyAssignment:
       example:
         assigned_by: 'user_abc123'
@@ -16641,6 +16679,7 @@ components:
                 context-compression: '#/components/schemas/ContextCompressionPlugin'
                 file-parser: '#/components/schemas/FileParserPlugin'
                 fusion: '#/components/schemas/FusionPlugin'
+                jev-router: '#/components/schemas/JevRouterPlugin'
                 moderation: '#/components/schemas/ModerationPlugin'
                 pareto-router: '#/components/schemas/ParetoRouterPlugin'
                 response-healing: '#/components/schemas/ResponseHealingPlugin'
@@ -16660,6 +16699,7 @@ components:
               - $ref: '#/components/schemas/ParetoRouterPlugin'
               - $ref: '#/components/schemas/FusionPlugin'
               - $ref: '#/components/schemas/SwitchyardRouterPlugin'
+              - $ref: '#/components/schemas/JevRouterPlugin'
           type: 'array'
         provider:
           $ref: '#/components/schemas/ProviderPreferences'
@@ -26896,6 +26936,7 @@ components:
                 context-compression: '#/components/schemas/ContextCompressionPlugin'
                 file-parser: '#/components/schemas/FileParserPlugin'
                 fusion: '#/components/schemas/FusionPlugin'
+                jev-router: '#/components/schemas/JevRouterPlugin'
                 moderation: '#/components/schemas/ModerationPlugin'
                 pareto-router: '#/components/schemas/ParetoRouterPlugin'
                 response-healing: '#/components/schemas/ResponseHealingPlugin'
@@ -26915,6 +26956,7 @@ components:
               - $ref: '#/components/schemas/ParetoRouterPlugin'
               - $ref: '#/components/schemas/FusionPlugin'
               - $ref: '#/components/schemas/SwitchyardRouterPlugin'
+              - $ref: '#/components/schemas/JevRouterPlugin'
           type: 'array'
         presence_penalty:
           format: 'double'
