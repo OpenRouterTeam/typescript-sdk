@@ -52,13 +52,21 @@ export type STTRequestResponseFormat = OpenEnum<
 >;
 
 /**
- * Speech-to-text request input. Accepts a JSON body with input_audio containing base64-encoded audio.
+ * Speech-to-text request input. Accepts a JSON body with input_audio containing base64-encoded audio or a URL the provider downloads.
  */
 export type STTRequest = {
   /**
-   * Base64-encoded audio to transcribe
+   * Label each word with the speaker who said it. Speaker labels are returned on the words array (speaker, speaker_label), so response_format must be "verbose_json" (a "json" request is rejected with a 400) and word timestamps are included even when timestamp_granularities omits "word". Only supported by some providers; the request is rejected with a 400 when the selected model cannot diarize. Providers may charge extra.
+   */
+  diarize?: boolean | undefined;
+  /**
+   * Audio to transcribe: inline base64 bytes, or a URL the provider downloads directly.
    */
   inputAudio: STTInputAudio;
+  /**
+   * Domain terms, names, or phrases to bias recognition toward. Only supported by some providers; the request is rejected with a 400 when the selected model cannot use keyterms. Providers may cap the number of terms or characters per term and may charge extra.
+   */
+  keyterms?: Array<string> | undefined;
   /**
    * ISO-639-1 language code (e.g., "en", "ja"). Auto-detected if omitted.
    */
@@ -126,7 +134,9 @@ export const STTRequestResponseFormat$outboundSchema: z.ZodType<
 
 /** @internal */
 export type STTRequest$Outbound = {
+  diarize?: boolean | undefined;
   input_audio: STTInputAudio$Outbound;
+  keyterms?: Array<string> | undefined;
   language?: string | undefined;
   model: string;
   provider?: STTRequestProvider$Outbound | undefined;
@@ -143,7 +153,9 @@ export const STTRequest$outboundSchema: z.ZodType<
   STTRequest$Outbound,
   STTRequest
 > = z.object({
+  diarize: z.boolean().optional(),
   inputAudio: STTInputAudio$outboundSchema,
+  keyterms: z.array(z.string()).optional(),
   language: z.string().optional(),
   model: z.string(),
   provider: z.lazy(() => STTRequestProvider$outboundSchema).optional(),

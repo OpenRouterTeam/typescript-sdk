@@ -4,14 +4,33 @@
  */
 
 import * as z from "zod/v4";
+import { remap as remap$ } from "../lib/primitives.js";
 import { safeParse } from "../lib/schemas.js";
+import * as openEnums from "../types/enums.js";
+import { OpenEnum } from "../types/enums.js";
 import { Result as SafeParseResult } from "../types/fp.js";
 import { SDKValidationError } from "./errors/sdkvalidationerror.js";
+
+/**
+ * Kind of entry; omitted or "word" for spoken words, "audio_event" for non-speech sounds the provider tags with timestamps
+ */
+export const STTWordType = {
+  Word: "word",
+  AudioEvent: "audio_event",
+} as const;
+/**
+ * Kind of entry; omitted or "word" for spoken words, "audio_event" for non-speech sounds the provider tags with timestamps
+ */
+export type STTWordType = OpenEnum<typeof STTWordType>;
 
 /**
  * A timestamped word, returned when the provider includes word-level timestamps
  */
 export type STTWord = {
+  /**
+   * Zero-based audio channel index for the word, present when the provider transcribes channels separately
+   */
+  channel?: number | undefined;
   /**
    * Provider confidence for the word from 0 to 1, present when the provider returns per-word confidence
    */
@@ -25,22 +44,41 @@ export type STTWord = {
    */
   speaker?: number | undefined;
   /**
+   * Provider speaker label for the word, present when the provider labels speakers with a string
+   */
+  speakerLabel?: string | undefined;
+  /**
    * Word start time in seconds
    */
   start: number;
   /**
-   * The transcribed word
+   * Kind of entry; omitted or "word" for spoken words, "audio_event" for non-speech sounds the provider tags with timestamps
+   */
+  type?: STTWordType | undefined;
+  /**
+   * The transcribed word, or the event tag such as "(laughter)" when type is audio_event
    */
   word: string;
 };
 
 /** @internal */
+export const STTWordType$inboundSchema: z.ZodType<STTWordType, unknown> =
+  openEnums.inboundSchema(STTWordType);
+
+/** @internal */
 export const STTWord$inboundSchema: z.ZodType<STTWord, unknown> = z.object({
+  channel: z.int().optional(),
   confidence: z.number().optional(),
   end: z.number(),
   speaker: z.int().optional(),
+  speaker_label: z.string().optional(),
   start: z.number(),
+  type: STTWordType$inboundSchema.optional(),
   word: z.string(),
+}).transform((v) => {
+  return remap$(v, {
+    "speaker_label": "speakerLabel",
+  });
 });
 
 export function sttWordFromJSON(

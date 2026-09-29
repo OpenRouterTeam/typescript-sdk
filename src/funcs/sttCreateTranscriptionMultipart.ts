@@ -39,7 +39,7 @@ import { isReadableStream } from "../types/streams.js";
  * Create transcription
  *
  * @remarks
- * Transcribes audio into text. Accepts base64-encoded audio input as JSON or an OpenAI-style multipart/form-data file upload, and returns the transcribed text.
+ * Transcribes audio into text. Accepts base64-encoded audio input as JSON, an OpenAI-style multipart/form-data file upload, or a URL the provider downloads directly, and returns the transcribed text.
  */
 export function sttCreateTranscriptionMultipart(
   client: OpenRouterCore,
@@ -125,44 +125,58 @@ async function $do(
   const payload = parsed.value;
   const body = new FormData();
 
-  if (isBlobLike(payload.RequestBody.file)) {
-    const file = payload.RequestBody.file;
-    const blob = await normalizeBlob(file);
-    const name = "name" in file ? (file.name as string) : undefined;
-    appendForm(body, "file", blob, name);
-  } else if (isReadableStream(payload.RequestBody.file.content)) {
-    const buffer = await readableStreamToArrayBuffer(
-      payload.RequestBody.file.content,
-    );
-    const contentType =
-      getContentTypeFromFileName(payload.RequestBody.file.fileName)
-      || "application/octet-stream";
-    appendForm(
-      body,
-      "file",
-      bytesToBlob(buffer, contentType),
-      payload.RequestBody.file.fileName,
-    );
-  } else {
-    const contentType =
-      getContentTypeFromFileName(payload.RequestBody.file.fileName)
-      || "application/octet-stream";
-    appendForm(
-      body,
-      "file",
-      bytesToBlob(payload.RequestBody.file.content, contentType),
-      payload.RequestBody.file.fileName,
-    );
-  }
   appendForm(body, "model", payload.RequestBody.model);
+  if (payload.RequestBody.diarize !== undefined) {
+    appendForm(body, "diarize", payload.RequestBody.diarize);
+  }
+  if (payload.RequestBody.file !== undefined) {
+    if (isBlobLike(payload.RequestBody.file)) {
+      const file = payload.RequestBody.file;
+      const blob = await normalizeBlob(file);
+      const name = "name" in file ? (file.name as string) : undefined;
+      appendForm(body, "file", blob, name);
+    } else if (isReadableStream(payload.RequestBody.file.content)) {
+      const buffer = await readableStreamToArrayBuffer(
+        payload.RequestBody.file.content,
+      );
+      const contentType =
+        getContentTypeFromFileName(payload.RequestBody.file.fileName)
+        || "application/octet-stream";
+      appendForm(
+        body,
+        "file",
+        bytesToBlob(buffer, contentType),
+        payload.RequestBody.file.fileName,
+      );
+    } else {
+      const contentType =
+        getContentTypeFromFileName(payload.RequestBody.file.fileName)
+        || "application/octet-stream";
+      appendForm(
+        body,
+        "file",
+        bytesToBlob(payload.RequestBody.file.content, contentType),
+        payload.RequestBody.file.fileName,
+      );
+    }
+  }
+  if (payload.RequestBody["keyterms[]"] !== undefined) {
+    appendForm(body, "keyterms[]", payload.RequestBody["keyterms[]"]);
+  }
   if (payload.RequestBody.language !== undefined) {
     appendForm(body, "language", payload.RequestBody.language);
+  }
+  if (payload.RequestBody.provider !== undefined) {
+    appendForm(body, "provider", payload.RequestBody.provider);
   }
   if (payload.RequestBody.response_format !== undefined) {
     appendForm(body, "response_format", payload.RequestBody.response_format);
   }
   if (payload.RequestBody.session_id !== undefined) {
     appendForm(body, "session_id", payload.RequestBody.session_id);
+  }
+  if (payload.RequestBody.source_url !== undefined) {
+    appendForm(body, "source_url", payload.RequestBody.source_url);
   }
   if (payload.RequestBody.temperature !== undefined) {
     appendForm(body, "temperature", payload.RequestBody.temperature);
