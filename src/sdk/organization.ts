@@ -3,9 +3,12 @@
  * @generated-id: 976de6f449fe
  */
 
+import { organizationGetSettings } from "../funcs/organizationGetSettings.js";
 import { organizationListMembers } from "../funcs/organizationListMembers.js";
+import { organizationUpdateSettings } from "../funcs/organizationUpdateSettings.js";
 import { ClientSDK, RequestOptions } from "../lib/sdks.js";
 import * as operations from "../models/operations/index.js";
+import { unwrapAsync } from "../types/fp.js";
 import { PageIterator, unwrapResultIterator } from "../types/operations.js";
 
 export class Organization extends ClientSDK {
@@ -22,6 +25,40 @@ export class Organization extends ClientSDK {
     PageIterator<operations.ListOrganizationMembersResponse, { offset: number }>
   > {
     return unwrapResultIterator(organizationListMembers(
+      this,
+      request,
+      options,
+    ));
+  }
+
+  /**
+   * Get organization settings
+   *
+   * @remarks
+   * Get the settings of the organization associated with the authenticated management key. [Management key](/docs/guides/overview/auth/management-api-keys) required.
+   */
+  async getSettings(
+    request?: operations.GetOrganizationSettingsRequest | undefined,
+    options?: RequestOptions,
+  ): Promise<operations.GetOrganizationSettingsResponse> {
+    return unwrapAsync(organizationGetSettings(
+      this,
+      request,
+      options,
+    ));
+  }
+
+  /**
+   * Update organization settings
+   *
+   * @remarks
+   * Update the settings of the organization associated with the authenticated management key. [Management key](/docs/guides/overview/auth/management-api-keys) required.
+   */
+  async updateSettings(
+    request: operations.UpdateOrganizationSettingsRequest,
+    options?: RequestOptions,
+  ): Promise<operations.UpdateOrganizationSettingsResponse> {
+    return unwrapAsync(organizationUpdateSettings(
       this,
       request,
       options,
