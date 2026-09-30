@@ -1,0 +1,24 @@
+---
+title: "UpdateOrganizationSettingsResponse"
+---
+
+Organization settings updated successfully
+
+## Example Usage
+
+```typescript
+import { UpdateOrganizationSettingsResponse } from "@openrouter/sdk/models/operations";
+
+let value: UpdateOrganizationSettingsResponse = {
+  data: {
+    id: "org_2dHFtVWx2n56w6HkM0000000000",
+    isFilteredModelCatalogEnabled: true,
+  },
+};
+```
+
+## Fields
+
+| Field                                                                                  | Type                                                                                   | Required                                                                               | Description                                                                            | Example                                                                                |
+| -------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------- |
+| `data`                                                                                 | [models.OrganizationSettings](../../models/organizationsettings.mdx)                    | :heavy_check_mark:                                                                     | N/A                                                                                    | \{<br/>"id": "org_2dHFtVWx2n56w6HkM0000000000",<br/>"is_filtered_model_catalog_enabled": true<br/>} |
