@@ -1,0 +1,28 @@
+---
+title: "ListEndUsersResponse"
+---
+
+## Example Usage
+
+```typescript
+import { ListEndUsersResponse } from "@openrouter/sdk/models";
+
+let value: ListEndUsersResponse = {
+  data: [
+    {
+      createdAt: new Date("2026-09-16T12:00:00Z"),
+      isActive: true,
+      updatedAt: new Date("2026-09-16T12:00:00Z"),
+      user: "employee_123",
+    },
+  ],
+  totalCount: 1,
+};
+```
+
+## Fields
+
+| Field                                                           | Type                                                            | Required                                                        | Description                                                     | Example                                                         |
+| --------------------------------------------------------------- | --------------------------------------------------------------- | --------------------------------------------------------------- | --------------------------------------------------------------- | --------------------------------------------------------------- |
+| `data`                                                          | [models.EndUser](../models/enduser.mdx)[]                        | :heavy_check_mark:                                              | N/A                                                             |                                                                 |
+| `totalCount`                                                    | *number*                                                        | :heavy_check_mark:                                              | Number of registrations matching the filters before pagination. | 1                                                               |
