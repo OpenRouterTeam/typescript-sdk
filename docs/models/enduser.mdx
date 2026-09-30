@@ -1,0 +1,25 @@
+---
+title: "EndUser"
+---
+
+## Example Usage
+
+```typescript
+import { EndUser } from "@openrouter/sdk/models";
+
+let value: EndUser = {
+  createdAt: new Date("2026-09-16T12:00:00Z"),
+  isActive: true,
+  updatedAt: new Date("2026-09-16T12:00:00Z"),
+  user: "employee_123",
+};
+```
+
+## Fields
+
+| Field                                                                                                             | Type                                                                                                              | Required                                                                                                          | Description                                                                                                       | Example                                                                                                           |
+| ----------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------- |
+| `createdAt`                                                                                                       | [Date](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date)                     | :heavy_check_mark:                                                                                                | Registration creation time.                                                                                       | 2026-09-16T12:00:00Z                                                                                              |
+| `isActive`                                                                                                        | *boolean*                                                                                                         | :heavy_check_mark:                                                                                                | Whether this registration is active. Not an inference authorization decision.                                     | true                                                                                                              |
+| `updatedAt`                                                                                                       | [Date](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date)                     | :heavy_check_mark:                                                                                                | Last registration lifecycle update time.                                                                          | 2026-09-16T12:00:00Z                                                                                              |
+| `user`                                                                                                            | *string*                                                                                                          | :heavy_check_mark:                                                                                                | Immutable case-sensitive tracking string supplied as user on inference requests. URL-encode it in resource paths. | employee_123                                                                                                      |
