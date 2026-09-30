@@ -1,19 +1,19 @@
 lockVersion: ""
 id: ""
 management:
-  docChecksum: 30286a44807d99c2bbc0c525a15ee248
+  docChecksum: e93cb9dbb6b9c37266ae7513bb89abfa
   docVersion: 1.0.0
   speakeasyVersion: 1.787.0
   generationVersion: 2.914.0
-  releaseVersion: 1.4.12
-  configChecksum: 5d8e819222b31b367a32e48cfd1a8ea3
+  releaseVersion: 1.4.13
+  configChecksum: a1e228a2481ea2bac6454d4cc1773ee5
   repoURL: https://github.com/OpenRouterTeam/typescript-sdk.git
   installationURL: https://github.com/OpenRouterTeam/typescript-sdk
   published: true
 persistentEdits:
-  generation_id: 0e034986-afee-4669-8772-8f41b933fae8
-  pristine_commit_hash: c3b026e6afdbdd0c12a0e0579f605ff6877af48c
-  pristine_tree_hash: 055e98b7f7a52390dd0311769e0ec15d74150710
+  generation_id: 94990f0b-6624-41ef-a03a-f3520a702449
+  pristine_commit_hash: b5d0a3f6c3f747d82918d85374a38fb605580925
+  pristine_tree_hash: f4360ec002e5884f72c090e579b86a7414b193e6
 features:
   typescript:
     acceptHeaders: 2.81.2
@@ -245,8 +245,8 @@ trackedFiles:
     pristine_git_object: 6e7e6a00a3eec4ff782641aa7f79516a2b368f50
   docs/models/algorithm.mdx:
     id: 6096f04a2219
-    last_write_checksum: sha1:c17493cf1153ce5641a5a6149da5abe2962d1e25
-    pristine_git_object: 7f1eddc982cfb70c08f4e2967d8f56062416f062
+    last_write_checksum: sha1:cab7d93089c48c2905e40e31af64cc7d4de20b95
+    pristine_git_object: a8df10e14051da6f7c277b9b5b186ed05e0699be
   docs/models/alignment.mdx:
     id: aef2d433e8a6
     last_write_checksum: sha1:26b33524b8c5b111f541c730d19b4ccaf82f21c7
@@ -13742,8 +13742,8 @@ trackedFiles:
     pristine_git_object: 28c6767d56f4c97fbc9bbec80ed82761891c3a2b
   docs/models/switchyardrouterplugin.mdx:
     id: 58f9fabcbcf9
-    last_write_checksum: sha1:98472ddf289c063e12ed68ff3a566c5ed2b6110c
-    pristine_git_object: 33b6a59d085a34e9ef2c0bee9440729d9a6d1ccb
+    last_write_checksum: sha1:c3d95e921c9bea531ee8205eb7c24665fdb46725
+    pristine_git_object: db9ecdeddd4e0ea65422bd3c46e44664d67e0e43
   docs/models/syntax.md:
     id: b5f23261fcd5
     last_write_checksum: sha1:5ddcfb4d7a3b0cc1a8830cd48da5bf1f6e98c399
@@ -15311,12 +15311,12 @@ trackedFiles:
     pristine_git_object: 410efafd6a7f50d91ccb87131fedbe0c3d47e15a
   jsr.json:
     id: 7f6ab7767282
-    last_write_checksum: sha1:0b58bae0459d3c20b7621e000bb4dd86009961a6
-    pristine_git_object: 464e751bac60bfee78080604733a6bc36c21d7ca
+    last_write_checksum: sha1:e8b4a68d7209a9555434477f6392015dcd82917d
+    pristine_git_object: fc8e49e0c9278ce03086cabf95ef32d3345b5275
   package.json:
     id: 7030d0b2f71b
-    last_write_checksum: sha1:2bd38be3017b3098bdebc0ee6d76f7ed863584e2
-    pristine_git_object: 360efaa1bb2995ee5367308435f932caaf9c0975
+    last_write_checksum: sha1:3b508b1cbb826f98cb8be1984a10b322a0e5940e
+    pristine_git_object: a91d57df24a2ca4ad0fcad8c1b13f97223521f5c
   src/core.ts:
     id: f431fdbcd144
     last_write_checksum: sha1:5aa66b0b6a5964f3eea7f3098c2eb3c0ee9c0131
@@ -15935,8 +15935,8 @@ trackedFiles:
     pristine_git_object: a187e58707bdb726ca2aff74941efe7493422d4e
   src/lib/config.ts:
     id: 320761608fb3
-    last_write_checksum: sha1:62862a8e98788b2d5e467f77f2f0bbfffffbc280
-    pristine_git_object: d981783b515eef312b5f9d96cfb01cd401ead7ba
+    last_write_checksum: sha1:01cfeb33d29bce9c5343331dd748181c8b0e74bd
+    pristine_git_object: 139622b9e84b367f4b049eec01e80c303bf5c627
   src/lib/dlv.ts:
     id: b1988214835a
     last_write_checksum: sha1:eaac763b22717206a6199104e0403ed17a4e2711
@@ -19729,8 +19729,8 @@ trackedFiles:
     pristine_git_object: 59c0163a1041af96c877b4aaa619e9e6607b6809
   src/models/switchyardrouterplugin.ts:
     id: 90395eb02944
-    last_write_checksum: sha1:953057bc74e039095a14eeabe635e529c5c6485e
-    pristine_git_object: cdd4e71f0080f5dec461cf3d10009164a7d55fc0
+    last_write_checksum: sha1:a55da94822db45b52ee8c01c571f41de4c8cde35
+    pristine_git_object: 865726cab0f1fd9a02260deb66d1d9dbfb8a9210
   src/models/taskclassificationitem.ts:
     id: 58896645e490
     last_write_checksum: sha1:03c3da09f40461a2faa1a7b19390326aef87b7d8
