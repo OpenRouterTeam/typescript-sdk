@@ -10,6 +10,7 @@ import * as discriminatedUnionTypes from "../types/discriminatedUnion.js";
 import { discriminatedUnion } from "../types/discriminatedUnion.js";
 import { ClosedEnum } from "../types/enums.js";
 import { Result as SafeParseResult } from "../types/fp.js";
+import { Alignment, Alignment$inboundSchema } from "./alignment.js";
 import { ApiErrorType, ApiErrorType$inboundSchema } from "./apierrortype.js";
 import {
   ApplyPatchServerTool,
@@ -64,6 +65,10 @@ import {
   OpenAIResponsesToolChoiceUnion$inboundSchema,
 } from "./openairesponsestoolchoiceunion.js";
 import {
+  OpenResponsesErrorField,
+  OpenResponsesErrorField$inboundSchema,
+} from "./openresponseserrorfield.js";
+import {
   OpenRouterMetadata,
   OpenRouterMetadata$inboundSchema,
 } from "./openroutermetadata.js";
@@ -80,10 +85,6 @@ import {
   PromptCacheOptions,
   PromptCacheOptions$inboundSchema,
 } from "./promptcacheoptions.js";
-import {
-  ResponsesErrorField,
-  ResponsesErrorField$inboundSchema,
-} from "./responseserrorfield.js";
 import {
   ServerToolUseDetails,
   ServerToolUseDetails$inboundSchema,
@@ -200,9 +201,9 @@ export type OpenResponsesResult = {
   completedAt: number | null;
   createdAt: number;
   /**
-   * Error information returned from the API
+   * Error of a failed response; `metadata` carries OpenRouter-specific details.
    */
-  error: ResponsesErrorField | null;
+  error: OpenResponsesErrorField | null;
   frequencyPenalty: number | null;
   id: string;
   incompleteDetails: IncompleteDetails | null;
@@ -265,6 +266,10 @@ export type OpenResponsesResult = {
    */
   usage?: Usage | null | undefined;
   user?: string | null | undefined;
+  /**
+   * Beta. The result of the alignment plugin for this request; the shape may change.
+   */
+  alignment?: Alignment | undefined;
   /**
    * Canonical OpenRouter error type, stable across all API formats
    */
@@ -479,7 +484,7 @@ export const OpenResponsesResult$inboundSchema: z.ZodType<
   background: z.nullable(z.boolean()).optional(),
   completed_at: z.nullable(z.int()),
   created_at: z.int(),
-  error: z.nullable(ResponsesErrorField$inboundSchema),
+  error: z.nullable(OpenResponsesErrorField$inboundSchema),
   frequency_penalty: z.nullable(z.number()),
   id: z.string(),
   incomplete_details: z.nullable(IncompleteDetails$inboundSchema),
@@ -554,6 +559,7 @@ export const OpenResponsesResult$inboundSchema: z.ZodType<
   truncation: z.nullable(Truncation$inboundSchema).optional(),
   usage: z.nullable(z.lazy(() => Usage$inboundSchema)).optional(),
   user: z.nullable(z.string()).optional(),
+  alignment: Alignment$inboundSchema.optional(),
   error_type: ApiErrorType$inboundSchema.optional(),
   openrouter_metadata: OpenRouterMetadata$inboundSchema.optional(),
 }).transform((v) => {

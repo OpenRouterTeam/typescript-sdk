@@ -8,6 +8,11 @@ import { remap as remap$ } from "../lib/primitives.js";
 import * as openEnums from "../types/enums.js";
 import { ClosedEnum, OpenEnum } from "../types/enums.js";
 import {
+  AlignmentPlugin,
+  AlignmentPlugin$Outbound,
+  AlignmentPlugin$outboundSchema,
+} from "./alignmentplugin.js";
+import {
   AnthropicAllowedCallers,
   AnthropicAllowedCallers$outboundSchema,
 } from "./anthropicallowedcallers.js";
@@ -277,6 +282,7 @@ export type MessagesRequestMetadata = {
 };
 
 export type MessagesRequestPlugin =
+  | AlignmentPlugin
   | AutoBetaRouterPlugin
   | AutoRouterPlugin
   | ContextCompressionPlugin
@@ -542,6 +548,7 @@ export type MessagesRequest = {
    */
   plugins?:
     | Array<
+      | AlignmentPlugin
       | AutoBetaRouterPlugin
       | AutoRouterPlugin
       | ContextCompressionPlugin
@@ -906,6 +913,7 @@ export function messagesRequestMetadataToJSON(
 
 /** @internal */
 export type MessagesRequestPlugin$Outbound =
+  | AlignmentPlugin$Outbound
   | AutoBetaRouterPlugin$Outbound
   | AutoRouterPlugin$Outbound
   | ContextCompressionPlugin$Outbound
@@ -924,6 +932,7 @@ export const MessagesRequestPlugin$outboundSchema: z.ZodType<
   MessagesRequestPlugin$Outbound,
   MessagesRequestPlugin
 > = z.union([
+  AlignmentPlugin$outboundSchema,
   AutoBetaRouterPlugin$outboundSchema,
   AutoRouterPlugin$outboundSchema,
   ContextCompressionPlugin$outboundSchema,
@@ -1599,6 +1608,7 @@ export type MessagesRequest$Outbound = {
   output_config?: MessagesOutputConfig$Outbound | undefined;
   plugins?:
     | Array<
+      | AlignmentPlugin$Outbound
       | AutoBetaRouterPlugin$Outbound
       | AutoRouterPlugin$Outbound
       | ContextCompressionPlugin$Outbound
@@ -1682,6 +1692,7 @@ export const MessagesRequest$outboundSchema: z.ZodType<
   outputConfig: MessagesOutputConfig$outboundSchema.optional(),
   plugins: z.array(
     z.union([
+      AlignmentPlugin$outboundSchema,
       AutoBetaRouterPlugin$outboundSchema,
       AutoRouterPlugin$outboundSchema,
       ContextCompressionPlugin$outboundSchema,

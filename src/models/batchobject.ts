@@ -14,6 +14,7 @@ import { discriminatedUnion } from "../types/discriminatedUnion.js";
 import * as openEnums from "../types/enums.js";
 import { ClosedEnum, OpenEnum } from "../types/enums.js";
 import { Result as SafeParseResult } from "../types/fp.js";
+import { Alignment, Alignment$inboundSchema } from "./alignment.js";
 import {
   AnthropicCacheCreation,
   AnthropicCacheCreation$inboundSchema,
@@ -575,6 +576,10 @@ export type BodyUsage1 = {
 };
 
 export type BodyChatCompletion = {
+  /**
+   * Beta. The result of the alignment plugin for this request; the shape may change.
+   */
+  alignment?: Alignment | undefined;
   choices: Array<Choice>;
   created: number;
   debug?: BatchObjectDebug | undefined;
@@ -1746,6 +1751,7 @@ export const BodyChatCompletion$inboundSchema: z.ZodType<
   BodyChatCompletion,
   unknown
 > = z.object({
+  alignment: Alignment$inboundSchema.optional(),
   choices: z.array(z.lazy(() => Choice$inboundSchema)),
   created: z.int(),
   debug: z.lazy(() => BatchObjectDebug$inboundSchema).optional(),

@@ -1,0 +1,34 @@
+---
+title: "AlignmentRejected"
+---
+
+## Supported Types
+
+### `models.AlignmentChatRejected`
+
+```typescript
+const value: models.AlignmentChatRejected = {
+  content: "Sure, I can take 20% off your order.",
+  refusal: null,
+  role: "assistant",
+};
+```
+
+### `models.AlignmentResponsesRejected[]`
+
+```typescript
+const value: models.AlignmentResponsesRejected[] = [
+  {
+    content: [
+      {
+        text: "Sure, I can take 20% off your order.",
+        type: "output_text",
+      },
+    ],
+    id: "msg_1",
+    role: "assistant",
+    type: "message",
+  },
+];
+```
+

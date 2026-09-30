@@ -1,0 +1,28 @@
+---
+title: "OutputItemFileSearchCall"
+---
+
+## Example Usage
+
+```typescript
+import { OutputItemFileSearchCall } from "@openrouter/sdk/models";
+
+let value: OutputItemFileSearchCall = {
+  id: "filesearch-abc123",
+  queries: [
+    "machine learning algorithms",
+    "neural networks",
+  ],
+  status: "completed",
+  type: "file_search_call",
+};
+```
+
+## Fields
+
+| Field                                                  | Type                                                   | Required                                               | Description                                            | Example                                                |
+| ------------------------------------------------------ | ------------------------------------------------------ | ------------------------------------------------------ | ------------------------------------------------------ | ------------------------------------------------------ |
+| `id`                                                   | *string*                                               | :heavy_check_mark:                                     | N/A                                                    |                                                        |
+| `queries`                                              | *string*[]                                             | :heavy_check_mark:                                     | N/A                                                    |                                                        |
+| `status`                                               | [models.WebSearchStatus](../models/websearchstatus.mdx) | :heavy_check_mark:                                     | N/A                                                    | completed                                              |
+| `type`                                                 | *"file_search_call"*                                   | :heavy_check_mark:                                     | N/A                                                    |                                                        |

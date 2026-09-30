@@ -1,0 +1,33 @@
+---
+title: "OutputWebSearchCallItemActionUnion"
+---
+
+## Supported Types
+
+### `models.OutputWebSearchCallItemActionSearch`
+
+```typescript
+const value: models.OutputWebSearchCallItemActionSearch = {
+  query: "<value>",
+  type: "search",
+};
+```
+
+### `models.OutputWebSearchCallItemActionOpenPage`
+
+```typescript
+const value: models.OutputWebSearchCallItemActionOpenPage = {
+  type: "open_page",
+};
+```
+
+### `models.OutputWebSearchCallItemActionFindInPage`
+
+```typescript
+const value: models.OutputWebSearchCallItemActionFindInPage = {
+  pattern: "<value>",
+  type: "find_in_page",
+  url: "https://first-crocodile.org/",
+};
+```
+

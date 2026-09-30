@@ -1,0 +1,22 @@
+---
+title: "AlignmentChatAudio"
+---
+
+The audio of the withheld message: its `id` and `transcript`. The plugin does not retain `data` or `expires_at`.
+
+## Example Usage
+
+```typescript
+import { AlignmentChatAudio } from "@openrouter/sdk/models";
+
+let value: AlignmentChatAudio = {
+  transcript: "Sure, I can take 20% off your order.",
+};
+```
+
+## Fields
+
+| Field                         | Type                          | Required                      | Description                   |
+| ----------------------------- | ----------------------------- | ----------------------------- | ----------------------------- |
+| `id`                          | *string*                      | :heavy_minus_sign:            | The provider id of the audio. |
+| `transcript`                  | *string*                      | :heavy_check_mark:            | The transcript of the audio.  |

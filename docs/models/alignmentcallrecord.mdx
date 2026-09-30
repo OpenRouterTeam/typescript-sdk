@@ -1,0 +1,41 @@
+---
+title: "AlignmentCallRecord"
+---
+
+## Supported Types
+
+### `models.AlignmentAllowedCallRecord`
+
+```typescript
+const value: models.AlignmentAllowedCallRecord = {
+  call: 340795,
+  outcome: "allowed",
+  rules: [
+    {
+      broken: false,
+      probability: 5809.74,
+    },
+  ],
+};
+```
+
+### `models.AlignmentBlockedCallRecord`
+
+```typescript
+const value: models.AlignmentBlockedCallRecord = {
+  call: 253444,
+  outcome: "blocked",
+  rules: [],
+};
+```
+
+### `models.AlignmentUnavailableCallRecord`
+
+```typescript
+const value: models.AlignmentUnavailableCallRecord = {
+  call: 108245,
+  outcome: "unavailable",
+  reason: "evaluator_error",
+};
+```
+

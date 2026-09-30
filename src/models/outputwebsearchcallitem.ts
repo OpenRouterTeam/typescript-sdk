@@ -26,13 +26,13 @@ import {
   WebSearchStatus$outboundSchema,
 } from "./websearchstatus.js";
 
-export type ActionFindInPage = {
+export type OutputWebSearchCallItemActionFindInPage = {
   pattern: string;
   type: "find_in_page";
   url: string;
 };
 
-export type ActionOpenPage = {
+export type OutputWebSearchCallItemActionOpenPage = {
   type: "open_page";
   url?: string | null | undefined;
 };
@@ -44,33 +44,35 @@ export type OutputWebSearchCallItemActionSearch = {
   type: "search";
 };
 
-export type Action =
+export type OutputWebSearchCallItemActionUnion =
   | OutputWebSearchCallItemActionSearch
-  | ActionOpenPage
-  | ActionFindInPage
+  | OutputWebSearchCallItemActionOpenPage
+  | OutputWebSearchCallItemActionFindInPage
   | discriminatedUnionTypes.Unknown<"type">;
 
-export const TypeWebSearchCall = {
+export const OutputWebSearchCallItemTypeWebSearchCall = {
   WebSearchCall: "web_search_call",
 } as const;
-export type TypeWebSearchCall = ClosedEnum<typeof TypeWebSearchCall>;
+export type OutputWebSearchCallItemTypeWebSearchCall = ClosedEnum<
+  typeof OutputWebSearchCallItemTypeWebSearchCall
+>;
 
 export type OutputWebSearchCallItem = {
   action?:
     | OutputWebSearchCallItemActionSearch
-    | ActionOpenPage
-    | ActionFindInPage
+    | OutputWebSearchCallItemActionOpenPage
+    | OutputWebSearchCallItemActionFindInPage
     | discriminatedUnionTypes.Unknown<"type">
     | undefined;
   id: string;
   status: WebSearchStatus;
-  type: TypeWebSearchCall;
+  type: OutputWebSearchCallItemTypeWebSearchCall;
   additionalProperties?: { [k: string]: any } | undefined;
 };
 
 /** @internal */
-export const ActionFindInPage$inboundSchema: z.ZodType<
-  ActionFindInPage,
+export const OutputWebSearchCallItemActionFindInPage$inboundSchema: z.ZodType<
+  OutputWebSearchCallItemActionFindInPage,
   unknown
 > = z.object({
   pattern: z.string(),
@@ -78,70 +80,88 @@ export const ActionFindInPage$inboundSchema: z.ZodType<
   url: z.string(),
 });
 /** @internal */
-export type ActionFindInPage$Outbound = {
+export type OutputWebSearchCallItemActionFindInPage$Outbound = {
   pattern: string;
   type: "find_in_page";
   url: string;
 };
 
 /** @internal */
-export const ActionFindInPage$outboundSchema: z.ZodType<
-  ActionFindInPage$Outbound,
-  ActionFindInPage
+export const OutputWebSearchCallItemActionFindInPage$outboundSchema: z.ZodType<
+  OutputWebSearchCallItemActionFindInPage$Outbound,
+  OutputWebSearchCallItemActionFindInPage
 > = z.object({
   pattern: z.string(),
   type: z.literal("find_in_page"),
   url: z.string(),
 });
 
-export function actionFindInPageToJSON(
-  actionFindInPage: ActionFindInPage,
+export function outputWebSearchCallItemActionFindInPageToJSON(
+  outputWebSearchCallItemActionFindInPage:
+    OutputWebSearchCallItemActionFindInPage,
 ): string {
   return JSON.stringify(
-    ActionFindInPage$outboundSchema.parse(actionFindInPage),
+    OutputWebSearchCallItemActionFindInPage$outboundSchema.parse(
+      outputWebSearchCallItemActionFindInPage,
+    ),
   );
 }
-export function actionFindInPageFromJSON(
+export function outputWebSearchCallItemActionFindInPageFromJSON(
   jsonString: string,
-): SafeParseResult<ActionFindInPage, SDKValidationError> {
+): SafeParseResult<
+  OutputWebSearchCallItemActionFindInPage,
+  SDKValidationError
+> {
   return safeParse(
     jsonString,
-    (x) => ActionFindInPage$inboundSchema.parse(JSON.parse(x)),
-    `Failed to parse 'ActionFindInPage' from JSON`,
+    (x) =>
+      OutputWebSearchCallItemActionFindInPage$inboundSchema.parse(
+        JSON.parse(x),
+      ),
+    `Failed to parse 'OutputWebSearchCallItemActionFindInPage' from JSON`,
   );
 }
 
 /** @internal */
-export const ActionOpenPage$inboundSchema: z.ZodType<ActionOpenPage, unknown> =
-  z.object({
-    type: z.literal("open_page"),
-    url: z.nullable(z.string()).optional(),
-  });
+export const OutputWebSearchCallItemActionOpenPage$inboundSchema: z.ZodType<
+  OutputWebSearchCallItemActionOpenPage,
+  unknown
+> = z.object({
+  type: z.literal("open_page"),
+  url: z.nullable(z.string()).optional(),
+});
 /** @internal */
-export type ActionOpenPage$Outbound = {
+export type OutputWebSearchCallItemActionOpenPage$Outbound = {
   type: "open_page";
   url?: string | null | undefined;
 };
 
 /** @internal */
-export const ActionOpenPage$outboundSchema: z.ZodType<
-  ActionOpenPage$Outbound,
-  ActionOpenPage
+export const OutputWebSearchCallItemActionOpenPage$outboundSchema: z.ZodType<
+  OutputWebSearchCallItemActionOpenPage$Outbound,
+  OutputWebSearchCallItemActionOpenPage
 > = z.object({
   type: z.literal("open_page"),
   url: z.nullable(z.string()).optional(),
 });
 
-export function actionOpenPageToJSON(actionOpenPage: ActionOpenPage): string {
-  return JSON.stringify(ActionOpenPage$outboundSchema.parse(actionOpenPage));
+export function outputWebSearchCallItemActionOpenPageToJSON(
+  outputWebSearchCallItemActionOpenPage: OutputWebSearchCallItemActionOpenPage,
+): string {
+  return JSON.stringify(
+    OutputWebSearchCallItemActionOpenPage$outboundSchema.parse(
+      outputWebSearchCallItemActionOpenPage,
+    ),
+  );
 }
-export function actionOpenPageFromJSON(
+export function outputWebSearchCallItemActionOpenPageFromJSON(
   jsonString: string,
-): SafeParseResult<ActionOpenPage, SDKValidationError> {
+): SafeParseResult<OutputWebSearchCallItemActionOpenPage, SDKValidationError> {
   return safeParse(
     jsonString,
-    (x) => ActionOpenPage$inboundSchema.parse(JSON.parse(x)),
-    `Failed to parse 'ActionOpenPage' from JSON`,
+    (x) =>
+      OutputWebSearchCallItemActionOpenPage$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'OutputWebSearchCallItemActionOpenPage' from JSON`,
   );
 }
 
@@ -195,47 +215,60 @@ export function outputWebSearchCallItemActionSearchFromJSON(
 }
 
 /** @internal */
-export const Action$inboundSchema: z.ZodType<Action, unknown> =
-  discriminatedUnion("type", {
-    search: z.lazy(() => OutputWebSearchCallItemActionSearch$inboundSchema),
-    open_page: z.lazy(() => ActionOpenPage$inboundSchema),
-    find_in_page: z.lazy(() => ActionFindInPage$inboundSchema),
-  });
+export const OutputWebSearchCallItemActionUnion$inboundSchema: z.ZodType<
+  OutputWebSearchCallItemActionUnion,
+  unknown
+> = discriminatedUnion("type", {
+  search: z.lazy(() => OutputWebSearchCallItemActionSearch$inboundSchema),
+  open_page: z.lazy(() => OutputWebSearchCallItemActionOpenPage$inboundSchema),
+  find_in_page: z.lazy(() =>
+    OutputWebSearchCallItemActionFindInPage$inboundSchema
+  ),
+});
 /** @internal */
-export type Action$Outbound =
+export type OutputWebSearchCallItemActionUnion$Outbound =
   | OutputWebSearchCallItemActionSearch$Outbound
-  | ActionOpenPage$Outbound
-  | ActionFindInPage$Outbound;
+  | OutputWebSearchCallItemActionOpenPage$Outbound
+  | OutputWebSearchCallItemActionFindInPage$Outbound;
 
 /** @internal */
-export const Action$outboundSchema: z.ZodType<Action$Outbound, Action> = z
-  .union([
-    z.lazy(() => OutputWebSearchCallItemActionSearch$outboundSchema),
-    z.lazy(() => ActionOpenPage$outboundSchema),
-    z.lazy(() => ActionFindInPage$outboundSchema),
-  ]);
+export const OutputWebSearchCallItemActionUnion$outboundSchema: z.ZodType<
+  OutputWebSearchCallItemActionUnion$Outbound,
+  OutputWebSearchCallItemActionUnion
+> = z.union([
+  z.lazy(() => OutputWebSearchCallItemActionSearch$outboundSchema),
+  z.lazy(() => OutputWebSearchCallItemActionOpenPage$outboundSchema),
+  z.lazy(() => OutputWebSearchCallItemActionFindInPage$outboundSchema),
+]);
 
-export function actionToJSON(action: Action): string {
-  return JSON.stringify(Action$outboundSchema.parse(action));
+export function outputWebSearchCallItemActionUnionToJSON(
+  outputWebSearchCallItemActionUnion: OutputWebSearchCallItemActionUnion,
+): string {
+  return JSON.stringify(
+    OutputWebSearchCallItemActionUnion$outboundSchema.parse(
+      outputWebSearchCallItemActionUnion,
+    ),
+  );
 }
-export function actionFromJSON(
+export function outputWebSearchCallItemActionUnionFromJSON(
   jsonString: string,
-): SafeParseResult<Action, SDKValidationError> {
+): SafeParseResult<OutputWebSearchCallItemActionUnion, SDKValidationError> {
   return safeParse(
     jsonString,
-    (x) => Action$inboundSchema.parse(JSON.parse(x)),
-    `Failed to parse 'Action' from JSON`,
+    (x) =>
+      OutputWebSearchCallItemActionUnion$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'OutputWebSearchCallItemActionUnion' from JSON`,
   );
 }
 
 /** @internal */
-export const TypeWebSearchCall$inboundSchema: z.ZodEnum<
-  typeof TypeWebSearchCall
-> = z.enum(TypeWebSearchCall);
+export const OutputWebSearchCallItemTypeWebSearchCall$inboundSchema: z.ZodEnum<
+  typeof OutputWebSearchCallItemTypeWebSearchCall
+> = z.enum(OutputWebSearchCallItemTypeWebSearchCall);
 /** @internal */
-export const TypeWebSearchCall$outboundSchema: z.ZodEnum<
-  typeof TypeWebSearchCall
-> = TypeWebSearchCall$inboundSchema;
+export const OutputWebSearchCallItemTypeWebSearchCall$outboundSchema: z.ZodEnum<
+  typeof OutputWebSearchCallItemTypeWebSearchCall
+> = OutputWebSearchCallItemTypeWebSearchCall$inboundSchema;
 
 /** @internal */
 export const OutputWebSearchCallItem$inboundSchema: z.ZodType<
@@ -245,12 +278,16 @@ export const OutputWebSearchCallItem$inboundSchema: z.ZodType<
   z.object({
     action: discriminatedUnion("type", {
       search: z.lazy(() => OutputWebSearchCallItemActionSearch$inboundSchema),
-      open_page: z.lazy(() => ActionOpenPage$inboundSchema),
-      find_in_page: z.lazy(() => ActionFindInPage$inboundSchema),
+      open_page: z.lazy(() =>
+        OutputWebSearchCallItemActionOpenPage$inboundSchema
+      ),
+      find_in_page: z.lazy(() =>
+        OutputWebSearchCallItemActionFindInPage$inboundSchema
+      ),
     }).optional(),
     id: z.string(),
     status: WebSearchStatus$inboundSchema,
-    type: TypeWebSearchCall$inboundSchema,
+    type: OutputWebSearchCallItemTypeWebSearchCall$inboundSchema,
   }).catchall(z.any()),
   "additionalProperties",
   true,
@@ -259,8 +296,8 @@ export const OutputWebSearchCallItem$inboundSchema: z.ZodType<
 export type OutputWebSearchCallItem$Outbound = {
   action?:
     | OutputWebSearchCallItemActionSearch$Outbound
-    | ActionOpenPage$Outbound
-    | ActionFindInPage$Outbound
+    | OutputWebSearchCallItemActionOpenPage$Outbound
+    | OutputWebSearchCallItemActionFindInPage$Outbound
     | undefined;
   id: string;
   status: string;
@@ -275,12 +312,12 @@ export const OutputWebSearchCallItem$outboundSchema: z.ZodType<
 > = z.object({
   action: z.union([
     z.lazy(() => OutputWebSearchCallItemActionSearch$outboundSchema),
-    z.lazy(() => ActionOpenPage$outboundSchema),
-    z.lazy(() => ActionFindInPage$outboundSchema),
+    z.lazy(() => OutputWebSearchCallItemActionOpenPage$outboundSchema),
+    z.lazy(() => OutputWebSearchCallItemActionFindInPage$outboundSchema),
   ]).optional(),
   id: z.string(),
   status: WebSearchStatus$outboundSchema,
-  type: TypeWebSearchCall$outboundSchema,
+  type: OutputWebSearchCallItemTypeWebSearchCall$outboundSchema,
   additionalProperties: z.record(z.string(), z.any()).optional(),
 }).transform((v) => {
   return {

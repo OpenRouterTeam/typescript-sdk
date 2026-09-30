@@ -1,0 +1,21 @@
+---
+title: "AlignmentRuleRecord"
+---
+
+## Example Usage
+
+```typescript
+import { AlignmentRuleRecord } from "@openrouter/sdk/models";
+
+let value: AlignmentRuleRecord = {
+  broken: true,
+  probability: 1666.51,
+};
+```
+
+## Fields
+
+| Field                                                      | Type                                                       | Required                                                   | Description                                                |
+| ---------------------------------------------------------- | ---------------------------------------------------------- | ---------------------------------------------------------- | ---------------------------------------------------------- |
+| `broken`                                                   | *boolean*                                                  | :heavy_check_mark:                                         | Whether probability is at or above the threshold.          |
+| `probability`                                              | *number*                                                   | :heavy_check_mark:                                         | The evaluator's probability that the turn breaks the rule. |

@@ -1,0 +1,23 @@
+---
+title: "AlignmentBlockedCallRecord"
+---
+
+## Example Usage
+
+```typescript
+import { AlignmentBlockedCallRecord } from "@openrouter/sdk/models";
+
+let value: AlignmentBlockedCallRecord = {
+  call: 253444,
+  outcome: "blocked",
+  rules: [],
+};
+```
+
+## Fields
+
+| Field                                                                                                                                                                                                         | Type                                                                                                                                                                                                          | Required                                                                                                                                                                                                      | Description                                                                                                                                                                                                   |
+| ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `call`                                                                                                                                                                                                        | *number*                                                                                                                                                                                                      | :heavy_check_mark:                                                                                                                                                                                            | Number of the record, from 1. A record is one evaluated assistant message; a model call of a server-tool loop that produces several messages has one record per message, and a retry continues the numbering. |
+| `outcome`                                                                                                                                                                                                     | *"blocked"*                                                                                                                                                                                                   | :heavy_check_mark:                                                                                                                                                                                            | N/A                                                                                                                                                                                                           |
+| `rules`                                                                                                                                                                                                       | [models.AlignmentRuleRecord](../models/alignmentrulerecord.mdx)[]                                                                                                                                              | :heavy_check_mark:                                                                                                                                                                                            | One record per rule, in the order of `rules` in the request.                                                                                                                                                  |

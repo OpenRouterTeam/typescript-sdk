@@ -1,0 +1,28 @@
+---
+title: "AlignmentChatRejected"
+---
+
+The assistant message of the withheld turn, without reasoning. `audio` holds the id and transcript of the audio, without `data` or `expires_at`.
+
+## Example Usage
+
+```typescript
+import { AlignmentChatRejected } from "@openrouter/sdk/models";
+
+let value: AlignmentChatRejected = {
+  content: "Sure, I can take 20% off your order.",
+  refusal: null,
+  role: "assistant",
+};
+```
+
+## Fields
+
+| Field                                                                                                            | Type                                                                                                             | Required                                                                                                         | Description                                                                                                      | Example                                                                                                          |
+| ---------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------- |
+| `audio`                                                                                                          | [models.AlignmentChatAudio](../models/alignmentchataudio.mdx)                                                     | :heavy_minus_sign:                                                                                               | The audio of the withheld message: its `id` and `transcript`. The plugin does not retain `data` or `expires_at`. | \{<br/>"id": "audio_abc123",<br/>"transcript": "Sure, I can take 20% off your order."<br/>}                       |
+| `content`                                                                                                        | *string*                                                                                                         | :heavy_check_mark:                                                                                               | N/A                                                                                                              |                                                                                                                  |
+| `images`                                                                                                         | [models.AlignmentChatImage](../models/alignmentchatimage.mdx)[]                                                   | :heavy_minus_sign:                                                                                               | N/A                                                                                                              |                                                                                                                  |
+| `refusal`                                                                                                        | *string*                                                                                                         | :heavy_check_mark:                                                                                               | N/A                                                                                                              |                                                                                                                  |
+| `role`                                                                                                           | [models.AlignmentChatRejectedRole](../models/alignmentchatrejectedrole.mdx)                                       | :heavy_check_mark:                                                                                               | N/A                                                                                                              |                                                                                                                  |
+| `toolCalls`                                                                                                      | [models.AlignmentChatToolCall](../models/alignmentchattoolcall.mdx)[]                                             | :heavy_minus_sign:                                                                                               | N/A                                                                                                              |                                                                                                                  |
