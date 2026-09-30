@@ -5,7 +5,6 @@
 
 import * as z from "zod/v4";
 import { safeParse } from "../lib/schemas.js";
-import { ClosedEnum } from "../types/enums.js";
 import { Result as SafeParseResult } from "../types/fp.js";
 import { SDKValidationError } from "./errors/sdkvalidationerror.js";
 import {
@@ -13,24 +12,12 @@ import {
   ImageGenerationStatus$inboundSchema,
 } from "./imagegenerationstatus.js";
 
-export const OutputItemImageGenerationCallType = {
-  ImageGenerationCall: "image_generation_call",
-} as const;
-export type OutputItemImageGenerationCallType = ClosedEnum<
-  typeof OutputItemImageGenerationCallType
->;
-
 export type OutputItemImageGenerationCall = {
   id: string;
   result: string | null;
   status: ImageGenerationStatus;
-  type: OutputItemImageGenerationCallType;
+  type: "image_generation_call";
 };
-
-/** @internal */
-export const OutputItemImageGenerationCallType$inboundSchema: z.ZodEnum<
-  typeof OutputItemImageGenerationCallType
-> = z.enum(OutputItemImageGenerationCallType);
 
 /** @internal */
 export const OutputItemImageGenerationCall$inboundSchema: z.ZodType<
@@ -40,7 +27,7 @@ export const OutputItemImageGenerationCall$inboundSchema: z.ZodType<
   id: z.string(),
   result: z.nullable(z.string()).default(null),
   status: ImageGenerationStatus$inboundSchema,
-  type: OutputItemImageGenerationCallType$inboundSchema,
+  type: z.literal("image_generation_call"),
 });
 
 export function outputItemImageGenerationCallFromJSON(

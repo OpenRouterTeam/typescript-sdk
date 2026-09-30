@@ -1,0 +1,121 @@
+---
+title: "AlignmentResponsesRejected"
+---
+
+## Supported Types
+
+### `models.OutputItemApplyPatchCall`
+
+```typescript
+const value: models.OutputItemApplyPatchCall = {
+  callId: "call_abc123",
+  id: "apc_abc123",
+  operation: {
+    diff: "@@ function main() {\n+  console.log(\"hi\");\n }",
+    path: "/src/main.ts",
+    type: "update_file",
+  },
+  status: "completed",
+  type: "apply_patch_call",
+};
+```
+
+### `models.OutputItemCodeInterpreterCall`
+
+```typescript
+const value: models.OutputItemCodeInterpreterCall = {
+  id: "ci_abc123",
+  status: "completed",
+  type: "code_interpreter_call",
+};
+```
+
+### `models.OutputItemCustomToolCall`
+
+```typescript
+const value: models.OutputItemCustomToolCall = {
+  callId: "call-abc123",
+  input: "*** Begin Patch\n*** End Patch",
+  name: "apply_patch",
+  type: "custom_tool_call",
+};
+```
+
+### `models.OutputItemFileSearchCall`
+
+```typescript
+const value: models.OutputItemFileSearchCall = {
+  id: "filesearch-abc123",
+  queries: [
+    "machine learning algorithms",
+    "neural networks",
+  ],
+  status: "completed",
+  type: "file_search_call",
+};
+```
+
+### `models.OutputItemFunctionCall`
+
+```typescript
+const value: models.OutputItemFunctionCall = {
+  arguments: "{\"location\":\"San Francisco\",\"unit\":\"celsius\"}",
+  callId: "call-abc123",
+  name: "get_weather",
+  type: "function_call",
+};
+```
+
+### `models.OutputItemImageGenerationCall`
+
+```typescript
+const value: models.OutputItemImageGenerationCall = {
+  id: "imagegen-abc123",
+  result:
+    "iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+M9QDwADhgGAWjR9awAAAABJRU5ErkJggg==",
+  status: "completed",
+  type: "image_generation_call",
+};
+```
+
+### `models.OutputMessage`
+
+```typescript
+const value: models.OutputMessage = {
+  content: [
+    {
+      text: "Hello! How can I help you today?",
+      type: "output_text",
+    },
+  ],
+  id: "msg-abc123",
+  role: "assistant",
+  type: "message",
+};
+```
+
+### `models.OutputItemReasoning`
+
+```typescript
+const value: models.OutputItemReasoning = {
+  id: "reasoning-abc123",
+  summary: [
+    {
+      text: "Analyzed the problem using first principles",
+      type: "summary_text",
+    },
+  ],
+  type: "reasoning",
+};
+```
+
+### `models.OutputItemWebSearchCall`
+
+```typescript
+const value: models.OutputItemWebSearchCall = {
+  id: "search-abc123",
+  status: "completed",
+  type: "web_search_call",
+};
+```
+

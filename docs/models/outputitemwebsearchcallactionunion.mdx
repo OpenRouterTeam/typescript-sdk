@@ -1,0 +1,33 @@
+---
+title: "OutputItemWebSearchCallActionUnion"
+---
+
+## Supported Types
+
+### `models.OutputItemWebSearchCallActionSearch`
+
+```typescript
+const value: models.OutputItemWebSearchCallActionSearch = {
+  query: "<value>",
+  type: "search",
+};
+```
+
+### `models.OutputItemWebSearchCallActionOpenPage`
+
+```typescript
+const value: models.OutputItemWebSearchCallActionOpenPage = {
+  type: "open_page",
+};
+```
+
+### `models.OutputItemWebSearchCallActionFindInPage`
+
+```typescript
+const value: models.OutputItemWebSearchCallActionFindInPage = {
+  pattern: "<value>",
+  type: "find_in_page",
+  url: "https://blaring-begonia.name/",
+};
+```
+
