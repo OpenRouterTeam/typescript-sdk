@@ -76,7 +76,7 @@ export type SpeechRequest = {
    */
   sessionId?: string | undefined;
   /**
-   * Playback speed multiplier. Only used by models that support it (e.g. OpenAI TTS). Ignored by other providers.
+   * Playback speed multiplier. Honored by models that support it (e.g. OpenAI TTS). Other providers either ignore it or return a 400 for a non-default value when the model has no speed control.
    */
   speed?: number | undefined;
   /**
