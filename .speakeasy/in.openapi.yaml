@@ -22557,6 +22557,23 @@ components:
       type:
         - 'string'
         - 'null'
+    OrganizationSettings:
+      example:
+        id: 'org_2dHFtVWx2n56w6HkM0000000000'
+        is_filtered_model_catalog_enabled: true
+      properties:
+        id:
+          description: 'ID of the organization the settings belong to'
+          example: 'org_2dHFtVWx2n56w6HkM0000000000'
+          type: 'string'
+        is_filtered_model_catalog_enabled:
+          description: 'When true, `GET /api/v1/models` called with one of the organization''s API keys returns only the models that key can use (the `/api/v1/models/user` catalog), and the signed-in dashboard shows the same list. Anonymous requests always receive the public catalog.'
+          example: true
+          type: 'boolean'
+      required:
+        - 'id'
+        - 'is_filtered_model_catalog_enabled'
+      type: 'object'
     OutputAdvisorServerToolItem:
       description: 'An openrouter:advisor server tool output item'
       example:
@@ -31197,6 +31214,16 @@ components:
             - description: 'The updated observability destination.'
       required:
         - 'data'
+      type: 'object'
+    UpdateOrganizationSettingsRequest:
+      additionalProperties: false
+      properties:
+        is_filtered_model_catalog_enabled:
+          description: 'When true, `GET /api/v1/models` called with one of the organization''s API keys returns only the models that key can use (the `/api/v1/models/user` catalog), and the signed-in dashboard shows the same list. Anonymous requests always receive the public catalog.'
+          example: true
+          type: 'boolean'
+      required:
+        - 'is_filtered_model_catalog_enabled'
       type: 'object'
     UpdatePrivateEndpointPricingRequest:
       properties:
@@ -45419,6 +45446,131 @@ paths:
         outputs:
           results: '$.data'
         type: 'offsetLimit'
+  /organization/settings:
+    get:
+      description: 'Get the settings of the organization associated with the authenticated management key. [Management key](/docs/guides/overview/auth/management-api-keys) required.'
+      operationId: 'getOrganizationSettings'
+      responses:
+        '200':
+          content:
+            application/json:
+              example:
+                data:
+                  id: 'org_2dHFtVWx2n56w6HkM0000000000'
+                  is_filtered_model_catalog_enabled: true
+              schema:
+                properties:
+                  data:
+                    $ref: '#/components/schemas/OrganizationSettings'
+                required:
+                  - 'data'
+                type: 'object'
+          description: 'Organization settings'
+        '401':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 401
+                  message: 'Missing Authentication header'
+              schema:
+                $ref: '#/components/schemas/UnauthorizedResponse'
+          description: 'Unauthorized - Authentication required or invalid credentials'
+        '404':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 404
+                  message: 'Resource not found'
+              schema:
+                $ref: '#/components/schemas/NotFoundResponse'
+          description: 'Not Found - Resource does not exist'
+        '500':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 500
+                  message: 'Internal Server Error'
+              schema:
+                $ref: '#/components/schemas/InternalServerResponse'
+          description: 'Internal Server Error - Unexpected server error'
+      summary: 'Get organization settings'
+      tags:
+        - 'Organization'
+      x-speakeasy-name-override: 'getSettings'
+    patch:
+      description: 'Update the settings of the organization associated with the authenticated management key. [Management key](/docs/guides/overview/auth/management-api-keys) required.'
+      operationId: 'updateOrganizationSettings'
+      requestBody:
+        content:
+          application/json:
+            example:
+              is_filtered_model_catalog_enabled: true
+            schema:
+              $ref: '#/components/schemas/UpdateOrganizationSettingsRequest'
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              example:
+                data:
+                  id: 'org_2dHFtVWx2n56w6HkM0000000000'
+                  is_filtered_model_catalog_enabled: true
+              schema:
+                properties:
+                  data:
+                    $ref: '#/components/schemas/OrganizationSettings'
+                required:
+                  - 'data'
+                type: 'object'
+          description: 'Organization settings updated successfully'
+        '400':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 400
+                  message: 'Invalid request parameters'
+              schema:
+                $ref: '#/components/schemas/BadRequestResponse'
+          description: 'Bad Request - Invalid request parameters or malformed input'
+        '401':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 401
+                  message: 'Missing Authentication header'
+              schema:
+                $ref: '#/components/schemas/UnauthorizedResponse'
+          description: 'Unauthorized - Authentication required or invalid credentials'
+        '404':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 404
+                  message: 'Resource not found'
+              schema:
+                $ref: '#/components/schemas/NotFoundResponse'
+          description: 'Not Found - Resource does not exist'
+        '500':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 500
+                  message: 'Internal Server Error'
+              schema:
+                $ref: '#/components/schemas/InternalServerResponse'
+          description: 'Internal Server Error - Unexpected server error'
+      summary: 'Update organization settings'
+      tags:
+        - 'Organization'
+      x-speakeasy-name-override: 'updateSettings'
   /presets:
     get:
       description: 'Lists all presets for the authenticated user, ordered by most recently updated first.'
