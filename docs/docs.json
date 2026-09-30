@@ -24,6 +24,7 @@
       "sdks/decisions/README",
       "sdks/embeddings/README",
       "sdks/endpoints/README",
+      "sdks/endusers/README",
       "sdks/files/README",
       "sdks/generations/README",
       "sdks/guardrails/README",
