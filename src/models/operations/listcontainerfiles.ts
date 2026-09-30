@@ -57,7 +57,7 @@ export type ListContainerFilesRequest = {
    */
   limit?: number | undefined;
   /**
-   * Forward cursor: the previous page’s `last_id` (or any container file id); listing resumes strictly after that path.
+   * Forward cursor: the previous page’s `last_id` (or any container file id); listing resumes strictly after that path. A `last_id` from a page that stopped at the scan bound may name a directory-marker path (trailing `/`) that was never listed as a file; such cursors are accepted.
    */
   after?: string | undefined;
 };
