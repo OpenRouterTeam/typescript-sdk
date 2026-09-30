@@ -8,6 +8,11 @@ import { remap as remap$ } from "../lib/primitives.js";
 import * as openEnums from "../types/enums.js";
 import { OpenEnum } from "../types/enums.js";
 import {
+  AlignmentPlugin,
+  AlignmentPlugin$Outbound,
+  AlignmentPlugin$outboundSchema,
+} from "./alignmentplugin.js";
+import {
   AnthropicCacheControlDirective,
   AnthropicCacheControlDirective$Outbound,
   AnthropicCacheControlDirective$outboundSchema,
@@ -165,6 +170,7 @@ export const Modality = {
 export type Modality = OpenEnum<typeof Modality>;
 
 export type ChatRequestPlugin =
+  | AlignmentPlugin
   | AutoBetaRouterPlugin
   | AutoRouterPlugin
   | ContextCompressionPlugin
@@ -326,6 +332,7 @@ export type ChatRequest = {
    */
   plugins?:
     | Array<
+      | AlignmentPlugin
       | AutoBetaRouterPlugin
       | AutoRouterPlugin
       | ContextCompressionPlugin
@@ -451,6 +458,7 @@ export const Modality$outboundSchema: z.ZodType<string, Modality> = openEnums
 
 /** @internal */
 export type ChatRequestPlugin$Outbound =
+  | AlignmentPlugin$Outbound
   | AutoBetaRouterPlugin$Outbound
   | AutoRouterPlugin$Outbound
   | ContextCompressionPlugin$Outbound
@@ -469,6 +477,7 @@ export const ChatRequestPlugin$outboundSchema: z.ZodType<
   ChatRequestPlugin$Outbound,
   ChatRequestPlugin
 > = z.union([
+  AlignmentPlugin$outboundSchema,
   AutoBetaRouterPlugin$outboundSchema,
   AutoRouterPlugin$outboundSchema,
   ContextCompressionPlugin$outboundSchema,
@@ -589,6 +598,7 @@ export type ChatRequest$Outbound = {
   parallel_tool_calls?: boolean | null | undefined;
   plugins?:
     | Array<
+      | AlignmentPlugin$Outbound
       | AutoBetaRouterPlugin$Outbound
       | AutoRouterPlugin$Outbound
       | ContextCompressionPlugin$Outbound
@@ -660,6 +670,7 @@ export const ChatRequest$outboundSchema: z.ZodType<
   parallelToolCalls: z.nullable(z.boolean()).optional(),
   plugins: z.array(
     z.union([
+      AlignmentPlugin$outboundSchema,
       AutoBetaRouterPlugin$outboundSchema,
       AutoRouterPlugin$outboundSchema,
       ContextCompressionPlugin$outboundSchema,

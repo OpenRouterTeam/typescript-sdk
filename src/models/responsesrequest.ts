@@ -13,6 +13,11 @@ import {
   AdvisorServerToolOpenRouter$outboundSchema,
 } from "./advisorservertoolopenrouter.js";
 import {
+  AlignmentPlugin,
+  AlignmentPlugin$Outbound,
+  AlignmentPlugin$outboundSchema,
+} from "./alignmentplugin.js";
+import {
   AnthropicCacheControlDirective,
   AnthropicCacheControlDirective$Outbound,
   AnthropicCacheControlDirective$outboundSchema,
@@ -287,6 +292,7 @@ import {
 } from "./websearchservertoolopenrouter.js";
 
 export type ResponsesRequestPlugin =
+  | AlignmentPlugin
   | AutoBetaRouterPlugin
   | AutoRouterPlugin
   | ContextCompressionPlugin
@@ -434,6 +440,7 @@ export type ResponsesRequest = {
    */
   plugins?:
     | Array<
+      | AlignmentPlugin
       | AutoBetaRouterPlugin
       | AutoRouterPlugin
       | ContextCompressionPlugin
@@ -545,6 +552,7 @@ export type ResponsesRequest = {
 
 /** @internal */
 export type ResponsesRequestPlugin$Outbound =
+  | AlignmentPlugin$Outbound
   | AutoBetaRouterPlugin$Outbound
   | AutoRouterPlugin$Outbound
   | ContextCompressionPlugin$Outbound
@@ -563,6 +571,7 @@ export const ResponsesRequestPlugin$outboundSchema: z.ZodType<
   ResponsesRequestPlugin$Outbound,
   ResponsesRequestPlugin
 > = z.union([
+  AlignmentPlugin$outboundSchema,
   AutoBetaRouterPlugin$outboundSchema,
   AutoRouterPlugin$outboundSchema,
   ContextCompressionPlugin$outboundSchema,
@@ -810,6 +819,7 @@ export type ResponsesRequest$Outbound = {
   parallel_tool_calls?: boolean | null | undefined;
   plugins?:
     | Array<
+      | AlignmentPlugin$Outbound
       | AutoBetaRouterPlugin$Outbound
       | AutoRouterPlugin$Outbound
       | ContextCompressionPlugin$Outbound
@@ -916,6 +926,7 @@ export const ResponsesRequest$outboundSchema: z.ZodType<
   parallelToolCalls: z.nullable(z.boolean()).optional(),
   plugins: z.array(
     z.union([
+      AlignmentPlugin$outboundSchema,
       AutoBetaRouterPlugin$outboundSchema,
       AutoRouterPlugin$outboundSchema,
       ContextCompressionPlugin$outboundSchema,

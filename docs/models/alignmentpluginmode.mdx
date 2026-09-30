@@ -1,0 +1,21 @@
+---
+title: "AlignmentPluginMode"
+---
+
+`enforce`: a turn that breaks a rule is withheld, retried, and finally returned as an error. `audit`: every turn is evaluated and returned. Default `enforce`.
+
+## Example Usage
+
+```typescript
+import { AlignmentPluginMode } from "@openrouter/sdk/models";
+
+let value: AlignmentPluginMode = "audit";
+
+// Open enum: unrecognized values are captured as Unrecognized<string>
+```
+
+## Values
+
+```typescript
+"enforce" | "audit" | Unrecognized<string>
+```

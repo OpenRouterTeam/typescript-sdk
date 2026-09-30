@@ -1,0 +1,32 @@
+---
+title: "Alignment"
+---
+
+Beta. The result of the alignment plugin for this request; the shape may change.
+
+## Example Usage
+
+```typescript
+import { Alignment } from "@openrouter/sdk/models";
+
+let value: Alignment = {
+  calls: [
+    {
+      call: 1,
+      outcome: "allowed",
+      rules: [
+        {
+          broken: false,
+          probability: 0.04,
+        },
+      ],
+    },
+  ],
+};
+```
+
+## Fields
+
+| Field                                                                                               | Type                                                                                                | Required                                                                                            | Description                                                                                         |
+| --------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------- |
+| `calls`                                                                                             | *models.AlignmentCallRecord*[]                                                                      | :heavy_check_mark:                                                                                  | One record per evaluated assistant message of the request, in the order the messages were produced. |

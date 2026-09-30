@@ -11,7 +11,7 @@ The patch operation requested by an `apply_patch_call`. `create_file` and `updat
 
 ```typescript
 const value: models.ApplyPatchCreateFileOperation = {
-  diff: "@@ function main() {\n+  console.log(\"hi\");\n }",
+  diff: "@@\n+console.log(\"hi\");\n",
   path: "/src/main.ts",
   type: "create_file",
 };

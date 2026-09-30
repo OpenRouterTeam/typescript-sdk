@@ -76,11 +76,6 @@ export type OutputMessageStatusUnion =
   | OutputMessageStatusIncomplete
   | OutputMessageStatusInProgress;
 
-export const OutputMessageType = {
-  Message: "message",
-} as const;
-export type OutputMessageType = ClosedEnum<typeof OutputMessageType>;
-
 export type OutputMessage = {
   content: Array<
     | ResponseOutputText
@@ -102,7 +97,7 @@ export type OutputMessage = {
     | OutputMessageStatusIncomplete
     | OutputMessageStatusInProgress
     | undefined;
-  type: OutputMessageType;
+  type: "message";
 };
 
 /** @internal */
@@ -194,11 +189,6 @@ export function outputMessageStatusUnionFromJSON(
 }
 
 /** @internal */
-export const OutputMessageType$inboundSchema: z.ZodEnum<
-  typeof OutputMessageType
-> = z.enum(OutputMessageType);
-
-/** @internal */
 export const OutputMessage$inboundSchema: z.ZodType<OutputMessage, unknown> = z
   .object({
     content: z.array(
@@ -220,7 +210,7 @@ export const OutputMessage$inboundSchema: z.ZodType<OutputMessage, unknown> = z
       OutputMessageStatusIncomplete$inboundSchema,
       OutputMessageStatusInProgress$inboundSchema,
     ]).optional(),
-    type: OutputMessageType$inboundSchema,
+    type: z.literal("message"),
   });
 
 export function outputMessageFromJSON(

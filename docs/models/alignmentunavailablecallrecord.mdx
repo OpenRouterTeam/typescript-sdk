@@ -1,0 +1,23 @@
+---
+title: "AlignmentUnavailableCallRecord"
+---
+
+## Example Usage
+
+```typescript
+import { AlignmentUnavailableCallRecord } from "@openrouter/sdk/models";
+
+let value: AlignmentUnavailableCallRecord = {
+  call: 108245,
+  outcome: "unavailable",
+  reason: "evaluator_error",
+};
+```
+
+## Fields
+
+| Field                                                                                                                                                                                                         | Type                                                                                                                                                                                                          | Required                                                                                                                                                                                                      | Description                                                                                                                                                                                                   |
+| ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `call`                                                                                                                                                                                                        | *number*                                                                                                                                                                                                      | :heavy_check_mark:                                                                                                                                                                                            | Number of the record, from 1. A record is one evaluated assistant message; a model call of a server-tool loop that produces several messages has one record per message, and a retry continues the numbering. |
+| `outcome`                                                                                                                                                                                                     | *"unavailable"*                                                                                                                                                                                               | :heavy_check_mark:                                                                                                                                                                                            | N/A                                                                                                                                                                                                           |
+| `reason`                                                                                                                                                                                                      | [models.AlignmentUnavailableCallRecordReason](../models/alignmentunavailablecallrecordreason.mdx)                                                                                                              | :heavy_check_mark:                                                                                                                                                                                            | N/A                                                                                                                                                                                                           |
