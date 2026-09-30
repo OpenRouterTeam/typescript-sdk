@@ -9258,6 +9258,21 @@ components:
         - 'response'
         - 'sequence_number'
       type: 'object'
+    CreateEndUserRequest:
+      additionalProperties: false
+      example:
+        user: 'employee_123'
+      properties:
+        user:
+          description: 'Immutable case-sensitive tracking string supplied as user on inference requests. URL-encode it in resource paths.'
+          example: 'employee_123'
+          maxLength: 256
+          minLength: 1
+          pattern: '^[^\p{Cc}]+$'
+          type: 'string'
+      required:
+        - 'user'
+      type: 'object'
     CreateGuardrailRequest:
       example:
         allowed_models: null
@@ -10731,6 +10746,54 @@ components:
         - -10
       example: 0
       type: 'integer'
+    EndUser:
+      additionalProperties: false
+      example:
+        created_at: '2026-09-16T12:00:00Z'
+        is_active: true
+        updated_at: '2026-09-16T12:00:00Z'
+        user: 'employee_123'
+      properties:
+        created_at:
+          description: 'Registration creation time.'
+          example: '2026-09-16T12:00:00Z'
+          format: 'date-time'
+          type: 'string'
+        is_active:
+          description: 'Whether this registration is active. Not an inference authorization decision.'
+          example: true
+          type: 'boolean'
+        updated_at:
+          description: 'Last registration lifecycle update time.'
+          example: '2026-09-16T12:00:00Z'
+          format: 'date-time'
+          type: 'string'
+        user:
+          description: 'Immutable case-sensitive tracking string supplied as user on inference requests. URL-encode it in resource paths.'
+          example: 'employee_123'
+          maxLength: 256
+          minLength: 1
+          pattern: '^[^\p{Cc}]+$'
+          type: 'string'
+      required:
+        - 'user'
+        - 'is_active'
+        - 'created_at'
+        - 'updated_at'
+      type: 'object'
+    EndUserResponse:
+      example:
+        data:
+          created_at: '2026-09-16T12:00:00Z'
+          is_active: true
+          updated_at: '2026-09-16T12:00:00Z'
+          user: 'employee_123'
+      properties:
+        data:
+          $ref: '#/components/schemas/EndUser'
+      required:
+        - 'data'
+      type: 'object'
     EnumCapability:
       description: 'A parameter that accepts one of a discrete set of string values.'
       example:
@@ -15463,6 +15526,27 @@ components:
         - 'description'
         - 'architecture'
         - 'endpoints'
+      type: 'object'
+    ListEndUsersResponse:
+      example:
+        data:
+          - created_at: '2026-09-16T12:00:00Z'
+            is_active: true
+            updated_at: '2026-09-16T12:00:00Z'
+            user: 'employee_123'
+        total_count: 1
+      properties:
+        data:
+          items:
+            $ref: '#/components/schemas/EndUser'
+          type: 'array'
+        total_count:
+          description: 'Number of registrations matching the filters before pagination.'
+          example: 1
+          type: 'integer'
+      required:
+        - 'data'
+        - 'total_count'
       type: 'object'
     ListGuardrailsResponse:
       example:
@@ -30775,6 +30859,18 @@ components:
       required:
         - 'data'
       type: 'object'
+    UpdateEndUserRequest:
+      additionalProperties: false
+      example:
+        is_active: true
+      properties:
+        is_active:
+          description: 'Registration state only; does not enforce inference access.'
+          example: true
+          type: 'boolean'
+      required:
+        - 'is_active'
+      type: 'object'
     UpdateGuardrailRequest:
       example:
         description: 'Updated description'
@@ -37310,6 +37406,416 @@ paths:
         outputs:
           results: '$.data'
         type: 'offsetLimit'
+  /end-users:
+    get:
+      description: 'List registrations belonging to the authenticated organization. Inactive registrations are excluded by default. [Management key](/docs/guides/overview/auth/management-api-keys) required.'
+      operationId: 'listEndUsers'
+      parameters:
+        - description: 'Number of records to skip for pagination'
+          in: 'query'
+          name: 'offset'
+          required: false
+          schema:
+            default: 0
+            description: 'Number of records to skip for pagination'
+            example: 0
+            minimum: 0
+            type:
+              - 'integer'
+              - 'null'
+        - description: 'Maximum number of records to return (max 100)'
+          in: 'query'
+          name: 'limit'
+          required: false
+          schema:
+            default: 50
+            description: 'Maximum number of records to return (max 100)'
+            example: 50
+            maximum: 100
+            minimum: 1
+            type: 'integer'
+        - description: 'Immutable case-sensitive tracking string supplied as user on inference requests. URL-encode it in resource paths.'
+          in: 'query'
+          name: 'user'
+          required: false
+          schema:
+            description: 'Immutable case-sensitive tracking string supplied as user on inference requests. URL-encode it in resource paths.'
+            example: 'employee_123'
+            maxLength: 256
+            minLength: 1
+            pattern: '^[^\p{Cc}]+$'
+            type: 'string'
+        - description: 'Include deactivated registrations.'
+          in: 'query'
+          name: 'include_inactive'
+          required: false
+          schema:
+            default: false
+            description: 'Include deactivated registrations.'
+            example: false
+            type: 'boolean'
+      responses:
+        '200':
+          content:
+            application/json:
+              example:
+                data:
+                  - created_at: '2026-09-16T12:00:00Z'
+                    is_active: true
+                    updated_at: '2026-09-16T12:00:00Z'
+                    user: 'employee_123'
+                total_count: 1
+              schema:
+                $ref: '#/components/schemas/ListEndUsersResponse'
+          description: 'Matching registrations and their total count.'
+        '400':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 400
+                  message: 'Invalid request parameters'
+              schema:
+                $ref: '#/components/schemas/BadRequestResponse'
+          description: 'Bad Request - Invalid request parameters or malformed input'
+        '401':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 401
+                  message: 'Missing Authentication header'
+              schema:
+                $ref: '#/components/schemas/UnauthorizedResponse'
+          description: 'Unauthorized - Authentication required or invalid credentials'
+        '404':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 404
+                  message: 'Resource not found'
+              schema:
+                $ref: '#/components/schemas/NotFoundResponse'
+          description: 'Not Found - Resource does not exist'
+        '500':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 500
+                  message: 'Internal Server Error'
+              schema:
+                $ref: '#/components/schemas/InternalServerResponse'
+          description: 'Internal Server Error - Unexpected server error'
+      summary: 'List registered end users'
+      tags:
+        - 'End Users'
+      x-speakeasy-name-override: 'list'
+      x-speakeasy-pagination:
+        inputs:
+          - in: 'parameters'
+            name: 'offset'
+            type: 'offset'
+          - in: 'parameters'
+            name: 'limit'
+            type: 'limit'
+        outputs:
+          results: '$.data'
+        type: 'offsetLimit'
+    post:
+      description: 'Register a caller-supplied tracking ID under the authenticated organization. No login account, policy, or credentials are created. [Management key](/docs/guides/overview/auth/management-api-keys) required.'
+      operationId: 'createEndUser'
+      requestBody:
+        content:
+          application/json:
+            example:
+              user: 'employee_123'
+            schema:
+              $ref: '#/components/schemas/CreateEndUserRequest'
+        required: true
+      responses:
+        '201':
+          content:
+            application/json:
+              example:
+                data:
+                  created_at: '2026-09-16T12:00:00Z'
+                  is_active: true
+                  updated_at: '2026-09-16T12:00:00Z'
+                  user: 'employee_123'
+              schema:
+                $ref: '#/components/schemas/EndUserResponse'
+          description: 'The registered end user. No generated public identifier is returned.'
+        '400':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 400
+                  message: 'Invalid request parameters'
+              schema:
+                $ref: '#/components/schemas/BadRequestResponse'
+          description: 'Bad Request - Invalid request parameters or malformed input'
+        '401':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 401
+                  message: 'Missing Authentication header'
+              schema:
+                $ref: '#/components/schemas/UnauthorizedResponse'
+          description: 'Unauthorized - Authentication required or invalid credentials'
+        '404':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 404
+                  message: 'Resource not found'
+              schema:
+                $ref: '#/components/schemas/NotFoundResponse'
+          description: 'Not Found - Resource does not exist'
+        '409':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 409
+                  message: 'This tracking ID is already registered'
+              schema:
+                $ref: '#/components/schemas/ConflictResponse'
+          description: 'The tracking ID is already registered in this organization, active or not.'
+        '500':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 500
+                  message: 'Internal Server Error'
+              schema:
+                $ref: '#/components/schemas/InternalServerResponse'
+          description: 'Internal Server Error - Unexpected server error'
+      summary: 'Register an end user'
+      tags:
+        - 'End Users'
+      x-speakeasy-name-override: 'create'
+  /end-users/{user}:
+    delete:
+      description: 'Soft-deactivate a registration while retaining its tracking ID. Repeat deactivation succeeds. This does not block inference; reactivate through PATCH. [Management key](/docs/guides/overview/auth/management-api-keys) required.'
+      operationId: 'deleteEndUser'
+      parameters:
+        - description: 'Immutable case-sensitive tracking string supplied as user on inference requests. URL-encode it in resource paths.'
+          in: 'path'
+          name: 'user'
+          required: true
+          schema:
+            description: 'Immutable case-sensitive tracking string supplied as user on inference requests. URL-encode it in resource paths.'
+            example: 'employee_123'
+            maxLength: 256
+            minLength: 1
+            pattern: '^[^\p{Cc}]+$'
+            type: 'string'
+      responses:
+        '204':
+          description: 'Registration is inactive.'
+        '400':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 400
+                  message: 'Invalid request parameters'
+              schema:
+                $ref: '#/components/schemas/BadRequestResponse'
+          description: 'Bad Request - Invalid request parameters or malformed input'
+        '401':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 401
+                  message: 'Missing Authentication header'
+              schema:
+                $ref: '#/components/schemas/UnauthorizedResponse'
+          description: 'Unauthorized - Authentication required or invalid credentials'
+        '404':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 404
+                  message: 'Resource not found'
+              schema:
+                $ref: '#/components/schemas/NotFoundResponse'
+          description: 'Not Found - Resource does not exist'
+        '500':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 500
+                  message: 'Internal Server Error'
+              schema:
+                $ref: '#/components/schemas/InternalServerResponse'
+          description: 'Internal Server Error - Unexpected server error'
+      summary: 'Deactivate a registered end user'
+      tags:
+        - 'End Users'
+      x-speakeasy-name-override: 'delete'
+    get:
+      description: 'Retrieve an active or inactive registration by its URL-encoded, caller-supplied tracking ID. [Management key](/docs/guides/overview/auth/management-api-keys) required.'
+      operationId: 'getEndUser'
+      parameters:
+        - description: 'Immutable case-sensitive tracking string supplied as user on inference requests. URL-encode it in resource paths.'
+          in: 'path'
+          name: 'user'
+          required: true
+          schema:
+            description: 'Immutable case-sensitive tracking string supplied as user on inference requests. URL-encode it in resource paths.'
+            example: 'employee_123'
+            maxLength: 256
+            minLength: 1
+            pattern: '^[^\p{Cc}]+$'
+            type: 'string'
+      responses:
+        '200':
+          content:
+            application/json:
+              example:
+                data:
+                  created_at: '2026-09-16T12:00:00Z'
+                  is_active: true
+                  updated_at: '2026-09-16T12:00:00Z'
+                  user: 'employee_123'
+              schema:
+                $ref: '#/components/schemas/EndUserResponse'
+          description: 'The registered end user. No generated public identifier is returned.'
+        '400':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 400
+                  message: 'Invalid request parameters'
+              schema:
+                $ref: '#/components/schemas/BadRequestResponse'
+          description: 'Bad Request - Invalid request parameters or malformed input'
+        '401':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 401
+                  message: 'Missing Authentication header'
+              schema:
+                $ref: '#/components/schemas/UnauthorizedResponse'
+          description: 'Unauthorized - Authentication required or invalid credentials'
+        '404':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 404
+                  message: 'Resource not found'
+              schema:
+                $ref: '#/components/schemas/NotFoundResponse'
+          description: 'Not Found - Resource does not exist'
+        '500':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 500
+                  message: 'Internal Server Error'
+              schema:
+                $ref: '#/components/schemas/InternalServerResponse'
+          description: 'Internal Server Error - Unexpected server error'
+      summary: 'Get a registered end user'
+      tags:
+        - 'End Users'
+      x-speakeasy-name-override: 'get'
+    patch:
+      description: 'Update registration state without changing identity. State changes do not enforce inference access. [Management key](/docs/guides/overview/auth/management-api-keys) required.'
+      operationId: 'updateEndUser'
+      parameters:
+        - description: 'Immutable case-sensitive tracking string supplied as user on inference requests. URL-encode it in resource paths.'
+          in: 'path'
+          name: 'user'
+          required: true
+          schema:
+            description: 'Immutable case-sensitive tracking string supplied as user on inference requests. URL-encode it in resource paths.'
+            example: 'employee_123'
+            maxLength: 256
+            minLength: 1
+            pattern: '^[^\p{Cc}]+$'
+            type: 'string'
+      requestBody:
+        content:
+          application/json:
+            example:
+              is_active: true
+            schema:
+              $ref: '#/components/schemas/UpdateEndUserRequest'
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              example:
+                data:
+                  created_at: '2026-09-16T12:00:00Z'
+                  is_active: true
+                  updated_at: '2026-09-16T12:00:00Z'
+                  user: 'employee_123'
+              schema:
+                $ref: '#/components/schemas/EndUserResponse'
+          description: 'The registered end user. No generated public identifier is returned.'
+        '400':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 400
+                  message: 'Invalid request parameters'
+              schema:
+                $ref: '#/components/schemas/BadRequestResponse'
+          description: 'Bad Request - Invalid request parameters or malformed input'
+        '401':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 401
+                  message: 'Missing Authentication header'
+              schema:
+                $ref: '#/components/schemas/UnauthorizedResponse'
+          description: 'Unauthorized - Authentication required or invalid credentials'
+        '404':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 404
+                  message: 'Resource not found'
+              schema:
+                $ref: '#/components/schemas/NotFoundResponse'
+          description: 'Not Found - Resource does not exist'
+        '500':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 500
+                  message: 'Internal Server Error'
+              schema:
+                $ref: '#/components/schemas/InternalServerResponse'
+          description: 'Internal Server Error - Unexpected server error'
+      summary: 'Update a registered end user'
+      tags:
+        - 'End Users'
+      x-speakeasy-name-override: 'update'
   /endpoints/zdr:
     get:
       operationId: 'listEndpointsZdr'
@@ -51916,6 +52422,8 @@ tags:
     name: 'Datasets'
   - description: 'Text embedding endpoints'
     name: 'Embeddings'
+  - description: 'End Users endpoints'
+    name: 'End Users'
   - description: 'Endpoint information'
     name: 'Endpoints'
   - description: 'Files endpoints'
