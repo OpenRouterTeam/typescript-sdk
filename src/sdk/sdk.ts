@@ -18,6 +18,7 @@ import { Credits } from "./credits.js";
 import { Datasets } from "./datasets.js";
 import { Embeddings } from "./embeddings.js";
 import { Endpoints } from "./endpoints.js";
+import { EndUsers } from "./endusers.js";
 import { Files } from "./files.js";
 import { Generations } from "./generations.js";
 import { Guardrails } from "./guardrails.js";
@@ -122,6 +123,11 @@ export class OpenRouter extends ClientSDK {
   private _embeddings?: Embeddings;
   get embeddings(): Embeddings {
     return (this._embeddings ??= new Embeddings(this._options));
+  }
+
+  private _endUsers?: EndUsers;
+  get endUsers(): EndUsers {
+    return (this._endUsers ??= new EndUsers(this._options));
   }
 
   private _endpoints?: Endpoints;
