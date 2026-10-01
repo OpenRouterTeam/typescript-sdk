@@ -1,19 +1,19 @@
 lockVersion: ""
 id: ""
 management:
-  docChecksum: a9575ea2449f9486f69e57b06702b72c
+  docChecksum: c4ddd907c6e8e688476fc791fddce30d
   docVersion: 1.0.0
   speakeasyVersion: 1.787.0
   generationVersion: 2.914.0
-  releaseVersion: 1.4.17
-  configChecksum: 62f7a5c003602a55ae84c2ae8ae2080b
+  releaseVersion: 1.4.18
+  configChecksum: a63a5c0344bab35c87ba20c6c5769aff
   repoURL: https://github.com/OpenRouterTeam/typescript-sdk.git
   installationURL: https://github.com/OpenRouterTeam/typescript-sdk
   published: true
 persistentEdits:
-  generation_id: c6dfa0d2-bd22-409c-b0d7-0b7b8fe8c3b7
-  pristine_commit_hash: 5d8ada8837c73d45a55f1e33c1b16f1956a7e72e
-  pristine_tree_hash: 4c2a0e93e78dd0e995a076610418ad01804a7459
+  generation_id: 4bd9d864-a9cd-4706-a283-13c542b9c149
+  pristine_commit_hash: 917f7ce2b7bf791698fa0077b23d68d682ef20bb
+  pristine_tree_hash: f84112239f39812abeda7d056c53c58c9e847ac0
 features:
   typescript:
     acceptHeaders: 2.81.2
@@ -15072,8 +15072,8 @@ trackedFiles:
     pristine_git_object: d83e642dfeee46102ccc469da7a644cc99efab42
   docs/sdks/apikeys/README.mdx:
     id: 27fcaae1c346
-    last_write_checksum: sha1:a1cb4fab7f31bcf8597520dad9290d3ede3be19a
-    pristine_git_object: 5003dfe082082b968b6d20a2e0020d8c6bae06fb
+    last_write_checksum: sha1:428eb6435f85eaf5a685da33b169beb9485735f5
+    pristine_git_object: 36cad6b72875be9c4ae1edadafea3c90cfecda62
   docs/sdks/batch/README.mdx:
     id: e367aa4f4295
     last_write_checksum: sha1:6a7b49a4ad9ba8dc1600a20d20417e8ee45d69c9
@@ -15315,12 +15315,12 @@ trackedFiles:
     pristine_git_object: 410efafd6a7f50d91ccb87131fedbe0c3d47e15a
   jsr.json:
     id: 7f6ab7767282
-    last_write_checksum: sha1:759f3c4362503dcf57b212fc2eb61c2ae8f8f866
-    pristine_git_object: 56bbb8f8d561d468f02cacb7f0d9d28a9a6710fe
+    last_write_checksum: sha1:45bedeb23c7fadf1252f091f81afb5799396900d
+    pristine_git_object: 4ea4c1e2e992f5ff6641c5c7ddeb02fa9be7d36b
   package.json:
     id: 7030d0b2f71b
-    last_write_checksum: sha1:f91d6cb3b662c030c4b69d9d328d5e54a8b55983
-    pristine_git_object: 1a78e5411ecaaa48189dcd6c9feded121dd2dc12
+    last_write_checksum: sha1:745d04123d32122b71f1810484cd2125892794d0
+    pristine_git_object: 431df562b6aeacec2435ea37ba07908a5ebfd01d
   src/core.ts:
     id: f431fdbcd144
     last_write_checksum: sha1:5aa66b0b6a5964f3eea7f3098c2eb3c0ee9c0131
@@ -15363,8 +15363,8 @@ trackedFiles:
     pristine_git_object: fc3c9f8316d86d3128be6f71e168b5cfd8e2f32b
   src/funcs/apiKeysUpdate.ts:
     id: 05700884934b
-    last_write_checksum: sha1:6724255025710798b8169f2db96ea2ac23392875
-    pristine_git_object: b236ec536229e23a813c2c9683072417c3a9ea47
+    last_write_checksum: sha1:d4286a929ca48618e2b3441ea2751fed4d59c432
+    pristine_git_object: fca49cdeeaea702ca58d988351aebe7d5ec53075
   src/funcs/batchCreateBatches.ts:
     id: 8796df347125
     last_write_checksum: sha1:bbf2369387e8922cdf18a33b28840c40e2b79c4e
@@ -15939,8 +15939,8 @@ trackedFiles:
     pristine_git_object: a187e58707bdb726ca2aff74941efe7493422d4e
   src/lib/config.ts:
     id: 320761608fb3
-    last_write_checksum: sha1:37e1d400a9d539c897846bdf94ba9c318df3e4ab
-    pristine_git_object: 726859d0bccf85a38714199b227468517e3ca657
+    last_write_checksum: sha1:0fe125981ae33a67aeb5c6e142c0e2e31d754a2e
+    pristine_git_object: 42199d9d95e8a44cef1b4ff5f822e244e102c9c1
   src/lib/dlv.ts:
     id: b1988214835a
     last_write_checksum: sha1:eaac763b22717206a6199104e0403ed17a4e2711
@@ -20089,8 +20089,8 @@ trackedFiles:
     pristine_git_object: 8a7efa79ead429ae16fd167d1969491766e11751
   src/sdk/apikeys.ts:
     id: 5dda931501e1
-    last_write_checksum: sha1:5703cc8f8b2aa6c33d491e2319eae43753bf5ba1
-    pristine_git_object: afff539f0e658b5ecf98eef83184aaae83def189
+    last_write_checksum: sha1:7e44ec7cd3247c94658a3be3063e53bf3d3137fc
+    pristine_git_object: 99315a8ad4fc70adead9752c56b4e582f29a8a80
   src/sdk/batch.ts:
     id: 254a218f7d6b
     last_write_checksum: sha1:060fefc69e19501be3cabe381e44091a14f36c12
@@ -20626,6 +20626,24 @@ examples:
           application/json: {"error": {"code": 429, "message": "Rate limit exceeded"}}
         "500":
           application/json: {"error": {"code": 500, "message": "Internal Server Error"}}
+    invalid_parameters:
+      parameters:
+        path:
+          hash: "f01d52606dc8f0a8303a7b5cc3fa07109c2e346cec7c0a16b40de462992ce943"
+      requestBody:
+        application/json: {}
+      responses:
+        "400":
+          application/json: {"error": {"code": 400, "message": "Invalid request parameters"}}
+    no_update_fields:
+      parameters:
+        path:
+          hash: "f01d52606dc8f0a8303a7b5cc3fa07109c2e346cec7c0a16b40de462992ce943"
+      requestBody:
+        application/json: {}
+      responses:
+        "400":
+          application/json: {"error": {"code": 400, "message": "No update fields provided"}}
   deleteKeys:
     speakeasy-default-delete-keys:
       parameters:
@@ -24224,4 +24242,3 @@ examples:
         "500":
           application/json: {"error": {"code": 500, "message": "Internal Server Error"}}
 examplesVersion: 1.0.2
-releaseNotes: "## Typescript SDK Changes:\n* `openrouter.images.generate()`: \n  *  `request.imageGenerationRequest.resolution.enum(1.5K)` **Added**\n"

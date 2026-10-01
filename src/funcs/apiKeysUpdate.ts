@@ -32,6 +32,10 @@ import { Result } from "../types/fp.js";
  *
  * @remarks
  * Update an existing API key. Authenticate with a [management key](/docs/guides/overview/auth/management-api-keys).
+ *
+ * <Warning>
+ * You can't change `workspace_id` through the API. The request body accepts only the fields listed below, and unrecognized fields are ignored. To move a key to another workspace, use the OpenRouter dashboard. If the body contains none of the accepted fields, the request fails with `400` and the message `No update fields provided`.
+ * </Warning>
  */
 export function apiKeysUpdate(
   client: OpenRouterCore,
