@@ -7000,6 +7000,20 @@ components:
         - 'role'
         - 'content'
       type: 'object'
+    ChatDynamicServerTool:
+      description: 'Generic OpenRouter server-tool envelope. `type` names a registered server tool (canonical `openrouter:*` form or a registered shorthand); `parameters` carries tool-specific configuration validated against the tool definition.'
+      example:
+        parameters: {}
+        type: 'openrouter:datetime_v2'
+      properties:
+        parameters:
+          additionalProperties: {}
+          type: 'object'
+        type:
+          type: 'string'
+      required:
+        - 'type'
+      type: 'object'
     ChatFinishReasonEnum:
       enum:
         - 'tool_calls'
@@ -7159,6 +7173,7 @@ components:
         - $ref: '#/components/schemas/WebFetchServerTool'
         - $ref: '#/components/schemas/OpenRouterWebSearchServerTool'
         - $ref: '#/components/schemas/ChatWebSearchShorthand'
+        - $ref: '#/components/schemas/ChatDynamicServerTool'
       description: 'Tool definition for function calling (regular function or OpenRouter built-in server tool)'
       example:
         function:
