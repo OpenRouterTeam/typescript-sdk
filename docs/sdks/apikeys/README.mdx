@@ -433,7 +433,11 @@ run();
 
 Update an existing API key. Authenticate with a [management key](/docs/guides/overview/auth/management-api-keys).
 
-### Example Usage
+\<Warning>
+You can't change `workspace_id` through the API. The request body accepts only the fields listed below, and unrecognized fields are ignored. To move a key to another workspace, use the OpenRouter dashboard. If the body contains none of the accepted fields, the request fails with `400` and the message `No update fields provided`.
+</Warning>
+
+### Example Usage: invalid_parameters
 
 ```typescript
 import { OpenRouter } from "@openrouter/sdk";
@@ -448,13 +452,7 @@ const openRouter = new OpenRouter({
 async function run() {
   const result = await openRouter.apiKeys.update({
     hash: "f01d52606dc8f0a8303a7b5cc3fa07109c2e346cec7c0a16b40de462992ce943",
-    requestBody: {
-      disabled: false,
-      includeByokInLimit: true,
-      limit: 75,
-      limitReset: "daily",
-      name: "Updated API Key Name",
-    },
+    requestBody: {},
   });
 
   console.log(result);
@@ -483,13 +481,63 @@ const openRouter = new OpenRouterCore({
 async function run() {
   const res = await apiKeysUpdate(openRouter, {
     hash: "f01d52606dc8f0a8303a7b5cc3fa07109c2e346cec7c0a16b40de462992ce943",
-    requestBody: {
-      disabled: false,
-      includeByokInLimit: true,
-      limit: 75,
-      limitReset: "daily",
-      name: "Updated API Key Name",
-    },
+    requestBody: {},
+  });
+  if (res.ok) {
+    const { value: result } = res;
+    console.log(result);
+  } else {
+    console.log("apiKeysUpdate failed:", res.error);
+  }
+}
+
+run();
+```
+### Example Usage: no_update_fields
+
+```typescript
+import { OpenRouter } from "@openrouter/sdk";
+
+const openRouter = new OpenRouter({
+  httpReferer: "<value>",
+  appTitle: "<value>",
+  appCategories: "<value>",
+  apiKey: process.env["OPENROUTER_API_KEY"] ?? "",
+});
+
+async function run() {
+  const result = await openRouter.apiKeys.update({
+    hash: "f01d52606dc8f0a8303a7b5cc3fa07109c2e346cec7c0a16b40de462992ce943",
+    requestBody: {},
+  });
+
+  console.log(result);
+}
+
+run();
+```
+
+### Standalone function
+
+The standalone function version of this method:
+
+```typescript
+import { OpenRouterCore } from "@openrouter/sdk/core.js";
+import { apiKeysUpdate } from "@openrouter/sdk/funcs/apiKeysUpdate.js";
+
+// Use `OpenRouterCore` for best tree-shaking performance.
+// You can create one instance of it to use across an application.
+const openRouter = new OpenRouterCore({
+  httpReferer: "<value>",
+  appTitle: "<value>",
+  appCategories: "<value>",
+  apiKey: process.env["OPENROUTER_API_KEY"] ?? "",
+});
+
+async function run() {
+  const res = await apiKeysUpdate(openRouter, {
+    hash: "f01d52606dc8f0a8303a7b5cc3fa07109c2e346cec7c0a16b40de462992ce943",
+    requestBody: {},
   });
   if (res.ok) {
     const { value: result } = res;
