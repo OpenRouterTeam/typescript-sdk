@@ -194,6 +194,7 @@ export * from "./chatcontentvideo.js";
 export * from "./chatcontentvideoinput.js";
 export * from "./chatdebugoptions.js";
 export * from "./chatdevelopermessage.js";
+export * from "./chatdynamicservertool.js";
 export * from "./chatfinishreasonenum.js";
 export * from "./chatformatgrammarconfig.js";
 export * from "./chatformatjsonobjectconfig.js";
