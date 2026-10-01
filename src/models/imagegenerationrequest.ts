@@ -117,6 +117,7 @@ export const ImageGenerationRequestResolution = {
   FiveHundredAndTwelve: "512",
   SevenHundredAndSixtyEight: "768",
   OneK: "1K",
+  OneDot5K: "1.5K",
   TwoK: "2K",
   FourK: "4K",
 } as const;
