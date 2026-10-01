@@ -38653,7 +38653,8 @@ paths:
           schema:
             description: 'The generation ID'
             example: 'gen-1234567890'
-            minLength: 1
+            maxLength: 128
+            pattern: '^gen-[0-9A-Za-z-]+$'
             type: 'string'
       responses:
         '200':
@@ -38707,6 +38708,16 @@ paths:
               schema:
                 $ref: '#/components/schemas/GenerationResponse'
           description: 'Returns the request metadata for this generation'
+        '400':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 400
+                  message: 'Invalid request parameters'
+              schema:
+                $ref: '#/components/schemas/BadRequestResponse'
+          description: 'Bad Request - Invalid request parameters or malformed input'
         '401':
           content:
             application/json:
@@ -38801,7 +38812,8 @@ paths:
           schema:
             description: 'The generation ID'
             example: 'gen-1234567890'
-            minLength: 1
+            maxLength: 128
+            pattern: '^gen-[0-9A-Za-z-]+$'
             type: 'string'
       responses:
         '200':
@@ -38820,6 +38832,16 @@ paths:
               schema:
                 $ref: '#/components/schemas/GenerationContentResponse'
           description: 'Returns the stored prompt and completion content, plus the failure error when the generation failed'
+        '400':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 400
+                  message: 'Invalid request parameters'
+              schema:
+                $ref: '#/components/schemas/BadRequestResponse'
+          description: 'Bad Request - Invalid request parameters or malformed input'
         '401':
           content:
             application/json:
