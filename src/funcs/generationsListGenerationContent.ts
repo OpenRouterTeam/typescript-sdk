@@ -38,6 +38,7 @@ export function generationsListGenerationContent(
 ): APIPromise<
   Result<
     models.GenerationContentResponse,
+    | errors.BadRequestResponseError
     | errors.UnauthorizedResponseError
     | errors.ForbiddenResponseError
     | errors.NotFoundResponseError
@@ -71,6 +72,7 @@ async function $do(
   [
     Result<
       models.GenerationContentResponse,
+      | errors.BadRequestResponseError
       | errors.UnauthorizedResponseError
       | errors.ForbiddenResponseError
       | errors.NotFoundResponseError
@@ -191,6 +193,7 @@ async function $do(
 
   const [result] = await M.match<
     models.GenerationContentResponse,
+    | errors.BadRequestResponseError
     | errors.UnauthorizedResponseError
     | errors.ForbiddenResponseError
     | errors.NotFoundResponseError
@@ -209,6 +212,7 @@ async function $do(
     | SDKValidationError
   >(
     M.json(200, models.GenerationContentResponse$inboundSchema),
+    M.jsonErr(400, errors.BadRequestResponseError$inboundSchema),
     M.jsonErr(401, errors.UnauthorizedResponseError$inboundSchema),
     M.jsonErr(403, errors.ForbiddenResponseError$inboundSchema),
     M.jsonErr(404, errors.NotFoundResponseError$inboundSchema),

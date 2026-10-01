@@ -38,6 +38,7 @@ export function generationsGetGeneration(
 ): APIPromise<
   Result<
     models.GenerationResponse,
+    | errors.BadRequestResponseError
     | errors.UnauthorizedResponseError
     | errors.PaymentRequiredResponseError
     | errors.NotFoundResponseError
@@ -71,6 +72,7 @@ async function $do(
   [
     Result<
       models.GenerationResponse,
+      | errors.BadRequestResponseError
       | errors.UnauthorizedResponseError
       | errors.PaymentRequiredResponseError
       | errors.NotFoundResponseError
@@ -190,6 +192,7 @@ async function $do(
 
   const [result] = await M.match<
     models.GenerationResponse,
+    | errors.BadRequestResponseError
     | errors.UnauthorizedResponseError
     | errors.PaymentRequiredResponseError
     | errors.NotFoundResponseError
@@ -208,6 +211,7 @@ async function $do(
     | SDKValidationError
   >(
     M.json(200, models.GenerationResponse$inboundSchema),
+    M.jsonErr(400, errors.BadRequestResponseError$inboundSchema),
     M.jsonErr(401, errors.UnauthorizedResponseError$inboundSchema),
     M.jsonErr(402, errors.PaymentRequiredResponseError$inboundSchema),
     M.jsonErr(404, errors.NotFoundResponseError$inboundSchema),

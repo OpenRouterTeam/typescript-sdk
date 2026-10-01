@@ -1,19 +1,19 @@
 lockVersion: ""
 id: ""
 management:
-  docChecksum: 241c8463586ba1b12f5091607ff82ad5
+  docChecksum: 74950c32e0e230b17ac912212d074775
   docVersion: 1.0.0
   speakeasyVersion: 1.787.0
   generationVersion: 2.914.0
-  releaseVersion: 1.4.14
-  configChecksum: 6f320831a9eb7abf1be3f63f87038f2e
+  releaseVersion: 1.4.15
+  configChecksum: 15d349a47e9426ff0d9eb207b9709269
   repoURL: https://github.com/OpenRouterTeam/typescript-sdk.git
   installationURL: https://github.com/OpenRouterTeam/typescript-sdk
   published: true
 persistentEdits:
-  generation_id: cb4ac7e0-8275-40ad-b1d3-0457477c8737
-  pristine_commit_hash: 00573c457d5a0152007c68b5eea0502fc29a472c
-  pristine_tree_hash: 919f6de3a987442c8126ff45bd3b752f24f76ca3
+  generation_id: 060a25da-bb76-4ef8-b619-1687d19026b1
+  pristine_commit_hash: adc72e4330db981d278515a4382a2b3154a2021a
+  pristine_tree_hash: c8d282fc5270c4c7da7dcc83101103ae46b23195
 features:
   typescript:
     acceptHeaders: 2.81.2
@@ -15162,8 +15162,8 @@ trackedFiles:
     pristine_git_object: 295c739e9fc60406ccfc6b2173ac3df04352cf54
   docs/sdks/generations/README.mdx:
     id: a754fecc8514
-    last_write_checksum: sha1:25a298dfd98a8ff6b9ac4ef6517ac8f06f70fdd3
-    pristine_git_object: c89f724e7696bda6b18490073d4e715c679c4d56
+    last_write_checksum: sha1:003ce298aa49f039a6d52c7609a528b350e85347
+    pristine_git_object: a82cc0ed7ec517ec6824af4f1c1286f823555540
   docs/sdks/guardrails/README.mdx:
     id: a0cd4218b8fa
     last_write_checksum: sha1:62a7078149962d36069ce08b4de5db93af364c27
@@ -15315,12 +15315,12 @@ trackedFiles:
     pristine_git_object: 410efafd6a7f50d91ccb87131fedbe0c3d47e15a
   jsr.json:
     id: 7f6ab7767282
-    last_write_checksum: sha1:68829995bc6d6d7beb8e908838eb186f1e6f56da
-    pristine_git_object: 08765687fa0acf8e3c208251f913e51fb004899f
+    last_write_checksum: sha1:650c13196cf07897e794cfb2ec34033990af7e0a
+    pristine_git_object: 568d17a12421b3311ad32214f46e6312a2f515e0
   package.json:
     id: 7030d0b2f71b
-    last_write_checksum: sha1:230871e85b8bdb150ba09927db0d289d34bfc151
-    pristine_git_object: 9fc51032b30b1894a330b35ffbf2f5c0332fc618
+    last_write_checksum: sha1:1e1feb4f7071c397fb5728c6ee0fa836ae9fcb42
+    pristine_git_object: a7fdd713f85585699f120dfc4b7af918ba7e4b55
   src/core.ts:
     id: f431fdbcd144
     last_write_checksum: sha1:5aa66b0b6a5964f3eea7f3098c2eb3c0ee9c0131
@@ -15503,12 +15503,12 @@ trackedFiles:
     pristine_git_object: 7ef73bab3ca62ff5b0152f617c77f6ff4570baf1
   src/funcs/generationsGetGeneration.ts:
     id: dac2d205a08d
-    last_write_checksum: sha1:df30787e54f6e48be96db656f8ad629a154f15bd
-    pristine_git_object: c1cfe95a7329a79ecdf46220af0c4588de0090d4
+    last_write_checksum: sha1:53bf624cee288d7b2d7f52c3b2167f8233038411
+    pristine_git_object: 43e40838978d59b57614a866b320cddbbec45657
   src/funcs/generationsListGenerationContent.ts:
     id: 6528b91d944c
-    last_write_checksum: sha1:c80af85ed7ab0854c6464b2b9aca66cbfeee41d8
-    pristine_git_object: 0603a6ed8e004fa946e1b83e2a1fef3118b8de34
+    last_write_checksum: sha1:e90765984e215e05058619701c1f1cfe69e2f3ca
+    pristine_git_object: d9cad5d73d53d3a6b7da3f27b3ddf8a385b873ff
   src/funcs/generationsSubmitFeedback.ts:
     id: 7164852deaac
     last_write_checksum: sha1:279e57e1cb9653a79eb0221a27cb525661bb533b
@@ -15939,8 +15939,8 @@ trackedFiles:
     pristine_git_object: a187e58707bdb726ca2aff74941efe7493422d4e
   src/lib/config.ts:
     id: 320761608fb3
-    last_write_checksum: sha1:5fd669a96e1c6e58ec2245b6e19d610550313d9c
-    pristine_git_object: fdfe33f2cd077b037219c75526828117beaebb90
+    last_write_checksum: sha1:5d9a0c437cd9e390a940dad31639c73ecf5c5e5f
+    pristine_git_object: f563485228da8f20d9d31b2de0dae95ea16429aa
   src/lib/dlv.ts:
     id: b1988214835a
     last_write_checksum: sha1:eaac763b22717206a6199104e0403ed17a4e2711
@@ -20500,6 +20500,8 @@ examples:
           application/json: {"error": {"code": 524, "message": "Request timed out. Please try again later."}}
         "529":
           application/json: {"error": {"code": 529, "message": "Provider returned error"}}
+        "400":
+          application/json: {"error": {"code": 400, "message": "Invalid request parameters"}}
   listModelsCount:
     speakeasy-default-list-models-count:
       responses:
@@ -21082,6 +21084,8 @@ examples:
           application/json: {"error": {"code": 524, "message": "Request timed out. Please try again later."}}
         "529":
           application/json: {"error": {"code": 529, "message": "Provider returned error"}}
+        "400":
+          application/json: {"error": {"code": 400, "message": "Invalid request parameters"}}
   listWorkspaces:
     speakeasy-default-list-workspaces:
       parameters:
@@ -24220,4 +24224,7 @@ examples:
         "500":
           application/json: {"error": {"code": 500, "message": "Internal Server Error"}}
 examplesVersion: 1.0.2
-releaseNotes: "## Typescript SDK Changes:\n* `openrouter.chat.send()`: \n  *  `request.chatRequest.tools[].union(ChatDynamicServerTool)` **Added**\n* `openrouter.presets.createPresetsChatCompletions()`: \n  *  `request.chatRequest.tools[].union(ChatDynamicServerTool)` **Added**\n"
+releaseNotes: |
+  ## Typescript SDK Changes:
+  * `openrouter.generations.getGeneration()`:  `error.status[400]` **Added**
+  * `openrouter.generations.listGenerationContent()`:  `error.status[400]` **Added**
