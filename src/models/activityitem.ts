@@ -15,6 +15,10 @@ export type ActivityItem = {
    */
   byokUsageInference: number;
   /**
+   * Total prompt tokens read from the provider prompt cache (cache hits). Generally a subset of `prompt_tokens`; for replayed response-cache hits the provider may report the two counters over disjoint token sets, so `cached_tokens` can exceed `prompt_tokens`.
+   */
+  cachedTokens: number;
+  /**
    * Total completion tokens generated
    */
   completionTokens: number;
@@ -64,6 +68,7 @@ export type ActivityItem = {
 export const ActivityItem$inboundSchema: z.ZodType<ActivityItem, unknown> = z
   .object({
     byok_usage_inference: z.number(),
+    cached_tokens: z.int(),
     completion_tokens: z.int(),
     date: z.string(),
     endpoint_id: z.string(),
@@ -78,6 +83,7 @@ export const ActivityItem$inboundSchema: z.ZodType<ActivityItem, unknown> = z
   }).transform((v) => {
     return remap$(v, {
       "byok_usage_inference": "byokUsageInference",
+      "cached_tokens": "cachedTokens",
       "completion_tokens": "completionTokens",
       "endpoint_id": "endpointId",
       "model_permaslug": "modelPermaslug",
