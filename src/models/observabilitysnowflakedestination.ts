@@ -25,6 +25,10 @@ export type ObservabilitySnowflakeDestinationConfig = {
    */
   headers?: { [k: string]: string } | undefined;
   schema: string;
+  /**
+   * Send the cache_write_tokens column (schema v2). Turn this on after the table has that column.
+   */
+  shouldIncludeCacheWriteTokens: boolean;
   table: string;
   token: string;
   warehouse: string;
@@ -100,6 +104,7 @@ export const ObservabilitySnowflakeDestinationConfig$inboundSchema: z.ZodType<
   database: z.string().default("SNOWFLAKE_LEARNING_DB"),
   headers: z.record(z.string(), z.string()).optional(),
   schema: z.string().default("PUBLIC"),
+  shouldIncludeCacheWriteTokens: z.boolean().default(false),
   table: z.string().default("OPENROUTER_TRACES"),
   token: z.string(),
   warehouse: z.string().default("COMPUTE_WH"),
