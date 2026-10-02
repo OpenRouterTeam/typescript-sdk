@@ -1,19 +1,19 @@
 lockVersion: ""
 id: ""
 management:
-  docChecksum: 6b5972e315fc469f5bdd67bde5b8168f
+  docChecksum: 36f27dcd75489b42ad033daba7fcf2dd
   docVersion: 1.0.0
   speakeasyVersion: 1.787.0
   generationVersion: 2.914.0
-  releaseVersion: 1.4.19
-  configChecksum: e30bb40afd243bba0c67799ba9f827b5
+  releaseVersion: 1.4.20
+  configChecksum: fe75d0e7731e8681333017316da3a55b
   repoURL: https://github.com/OpenRouterTeam/typescript-sdk.git
   installationURL: https://github.com/OpenRouterTeam/typescript-sdk
   published: true
 persistentEdits:
-  generation_id: b2d61f79-619e-4d61-b631-063f601994d7
-  pristine_commit_hash: f2159503f3917c936cf3cd0a4798a9aab7bf7697
-  pristine_tree_hash: 0cb0e33bb887384cf29157fea1379ca2e251243d
+  generation_id: 8a0d0477-f014-405f-9e90-f037ea181ffe
+  pristine_commit_hash: 4587ada019a958aec4d1312c81ff1e5f322ae2fd
+  pristine_tree_hash: e4344a3f0bafa75c47e4ca31c4e50646d6c411d2
 features:
   typescript:
     acceptHeaders: 2.81.2
@@ -7428,8 +7428,8 @@ trackedFiles:
     deleted: true
   docs/models/observabilityclickhousedestinationconfig.mdx:
     id: 71aee22f2f68
-    last_write_checksum: sha1:e9f4eb6a913eb843e7fe62f9ed01f77310a2b2f4
-    pristine_git_object: d85b1a4085126830ab2d2921b86e520ea28584b2
+    last_write_checksum: sha1:f0b0f38c65a32d97e4f19c2ac0468bd757a07738
+    pristine_git_object: 2a268fc438739678b41bbbaaeccc2b53ab85330d
   docs/models/observabilitydatadogdestination.md:
     id: 8e55431b002b
     last_write_checksum: sha1:45661153468be9f377be8041711f48c2687073f3
@@ -7687,8 +7687,8 @@ trackedFiles:
     deleted: true
   docs/models/observabilitysnowflakedestinationconfig.mdx:
     id: 70515049f10e
-    last_write_checksum: sha1:350bd5aed545f03bae7f0ab08921223c687c6c5d
-    pristine_git_object: 1641d2892c1837300253295cdcb3878599365e1e
+    last_write_checksum: sha1:9ffea849a726517940d9ed431b36f7f8b118e969
+    pristine_git_object: acc9fb7af397413dfb634a4633ae94b57991a70e
   docs/models/observabilityweavedestination.md:
     id: dee5f194e0ec
     last_write_checksum: sha1:bf9ab7c5e8e8d3f3fc09611711f95d722efb9f73
@@ -15315,12 +15315,12 @@ trackedFiles:
     pristine_git_object: 410efafd6a7f50d91ccb87131fedbe0c3d47e15a
   jsr.json:
     id: 7f6ab7767282
-    last_write_checksum: sha1:b90b527d535d8a4814cadcf47e2fbb2110556892
-    pristine_git_object: 4efb1c5683e97ff5371a9ae9e1291f5fb55048f1
+    last_write_checksum: sha1:69b243ec6dc9dd30a123175d5607926621f80d01
+    pristine_git_object: d77d899bc4fde628ec92c9d8a6a753226af99e09
   package.json:
     id: 7030d0b2f71b
-    last_write_checksum: sha1:c29f1caf2c2d16bc4953dffe669e6227c3ca2887
-    pristine_git_object: b55666fdc3e0ec357e0f66b2a0d0fd3112676702
+    last_write_checksum: sha1:99ae4526db7e84255d4245f31a257fd83913c78f
+    pristine_git_object: 5bdd8012b7fc8d3b336459772857bfa3c678dd6b
   src/core.ts:
     id: f431fdbcd144
     last_write_checksum: sha1:5aa66b0b6a5964f3eea7f3098c2eb3c0ee9c0131
@@ -15939,8 +15939,8 @@ trackedFiles:
     pristine_git_object: a187e58707bdb726ca2aff74941efe7493422d4e
   src/lib/config.ts:
     id: 320761608fb3
-    last_write_checksum: sha1:c6338898199e7e47482df84c31d4d6d2edf29bd4
-    pristine_git_object: 08aba635dc279e3a34363a5a86f55eed3532af9e
+    last_write_checksum: sha1:9d03e5de92cb748e9e4ca37e14816a05c95b9aaa
+    pristine_git_object: 1c39f076f4e15faa406ce9f3fa208079a983464e
   src/lib/dlv.ts:
     id: b1988214835a
     last_write_checksum: sha1:eaac763b22717206a6199104e0403ed17a4e2711
@@ -18149,8 +18149,8 @@ trackedFiles:
     pristine_git_object: 968c8494971736b80d0fc756bcacda635cd35da3
   src/models/observabilityclickhousedestination.ts:
     id: 628ce2e2989d
-    last_write_checksum: sha1:4e1a33539a8158e1a81b3c329d2d7041c41c5237
-    pristine_git_object: 27531b99e973816c812ea448c9ba9ca5e14bca94
+    last_write_checksum: sha1:217dfd9bc1583310abeaa7484656267b9d8e012a
+    pristine_git_object: cd880b5b53a63496465a21774017dabe00dd562e
   src/models/observabilitydatadogdestination.ts:
     id: 791210a608e6
     last_write_checksum: sha1:bcdc61ef0d104c73548559933dfd8a61db2ac15d
@@ -18221,8 +18221,8 @@ trackedFiles:
     pristine_git_object: 58ebfff5750c10bbabb4d072dd5aa88141adf987
   src/models/observabilitysnowflakedestination.ts:
     id: 9b4968dabbd6
-    last_write_checksum: sha1:bffeb49b955d070c13ce5d676c29cb79e58158ce
-    pristine_git_object: 4a061c8236634df0518ba3f744571e01b2aeae7a
+    last_write_checksum: sha1:79d390b0f0d79dbea6d70601878c492b12efe7a6
+    pristine_git_object: 6adccfcaa5e1ae8a51a5c689062fa665663c933f
   src/models/observabilityweavedestination.ts:
     id: beb41ac4527c
     last_write_checksum: sha1:aa612efd448bd0e71de200b5092b7d5560393bba
@@ -24242,3 +24242,9 @@ examples:
         "500":
           application/json: {"error": {"code": 500, "message": "Internal Server Error"}}
 examplesVersion: 1.0.2
+releaseNotes: |
+  ## Typescript SDK Changes:
+  * `openrouter.observability.list()`:  `response.data[]` **Changed**
+  * `openrouter.observability.create()`:  `response.data` **Changed**
+  * `openrouter.observability.get()`:  `response.data` **Changed**
+  * `openrouter.observability.update()`:  `response.data` **Changed**
