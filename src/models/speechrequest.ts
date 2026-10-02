@@ -24,13 +24,50 @@ import {
 } from "./traceconfig.js";
 
 /**
- * Provider-specific passthrough configuration
+ * Data collection setting. If no available model provider meets the requirement, your request will return an error.
+ *
+ * @remarks
+ * - allow: (default) allow providers which store user data non-transiently and may train on it
+ *
+ * - deny: use only providers which do not collect user data.
+ */
+export const SpeechRequestDataCollection = {
+  Deny: "deny",
+  Allow: "allow",
+} as const;
+/**
+ * Data collection setting. If no available model provider meets the requirement, your request will return an error.
+ *
+ * @remarks
+ * - allow: (default) allow providers which store user data non-transiently and may train on it
+ *
+ * - deny: use only providers which do not collect user data.
+ */
+export type SpeechRequestDataCollection = OpenEnum<
+  typeof SpeechRequestDataCollection
+>;
+
+/**
+ * Provider configuration: data policy routing preferences (`zdr`, `data_collection`) and provider-specific passthrough options
  */
 export type SpeechRequestProvider = {
+  /**
+   * Data collection setting. If no available model provider meets the requirement, your request will return an error.
+   *
+   * @remarks
+   * - allow: (default) allow providers which store user data non-transiently and may train on it
+   *
+   * - deny: use only providers which do not collect user data.
+   */
+  dataCollection?: SpeechRequestDataCollection | null | undefined;
   /**
    * Provider-specific options keyed by provider slug. Only options for the matched provider are forwarded; the rest are ignored. Unrecognized keys are silently dropped.
    */
   options?: ProviderOptions | undefined;
+  /**
+   * Whether to restrict routing to only ZDR (Zero Data Retention) endpoints. When true, only endpoints that do not retain prompts will be used.
+   */
+  zdr?: boolean | null | undefined;
 };
 
 /**
@@ -64,7 +101,7 @@ export type SpeechRequest = {
    */
   model: string;
   /**
-   * Provider-specific passthrough configuration
+   * Provider configuration: data policy routing preferences (`zdr`, `data_collection`) and provider-specific passthrough options
    */
   provider?: SpeechRequestProvider | undefined;
   /**
@@ -94,8 +131,16 @@ export type SpeechRequest = {
 };
 
 /** @internal */
+export const SpeechRequestDataCollection$outboundSchema: z.ZodType<
+  string,
+  SpeechRequestDataCollection
+> = openEnums.outboundSchema(SpeechRequestDataCollection);
+
+/** @internal */
 export type SpeechRequestProvider$Outbound = {
+  data_collection?: string | null | undefined;
   options?: ProviderOptions$Outbound | undefined;
+  zdr?: boolean | null | undefined;
 };
 
 /** @internal */
@@ -103,7 +148,14 @@ export const SpeechRequestProvider$outboundSchema: z.ZodType<
   SpeechRequestProvider$Outbound,
   SpeechRequestProvider
 > = z.object({
+  dataCollection: z.nullable(SpeechRequestDataCollection$outboundSchema)
+    .optional(),
   options: ProviderOptions$outboundSchema.optional(),
+  zdr: z.nullable(z.boolean()).optional(),
+}).transform((v) => {
+  return remap$(v, {
+    dataCollection: "data_collection",
+  });
 });
 
 export function speechRequestProviderToJSON(
