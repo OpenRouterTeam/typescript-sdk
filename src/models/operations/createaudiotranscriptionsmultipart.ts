@@ -76,7 +76,7 @@ export type CreateAudioTranscriptionsMultipartRequestBody = {
    */
   model: string;
   /**
-   * JSON-encoded provider preferences object, the same shape as the JSON body field: { "options": { "<provider-slug>": { ... } } }. Only options for the matched provider are forwarded. Must decode to a JSON object.
+   * JSON-encoded provider preferences object, the same shape as the JSON body field: { "zdr": true, "data_collection": "deny", "options": { "<provider-slug>": { ... } } }. Only options for the matched provider are forwarded. Must decode to a JSON object.
    */
   provider?: string | undefined;
   /**
