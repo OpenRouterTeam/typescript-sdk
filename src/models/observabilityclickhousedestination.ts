@@ -25,6 +25,10 @@ export type ObservabilityClickhouseDestinationConfig = {
   headers?: { [k: string]: string } | undefined;
   host: string;
   password: string;
+  /**
+   * Send the cache_write_tokens column (schema v2). Turn this on after the table has that column.
+   */
+  shouldIncludeCacheWriteTokens: boolean;
   table: string;
   /**
    * If you have not set a specific username in ClickHouse, simply type in 'default' below.
@@ -102,6 +106,7 @@ export const ObservabilityClickhouseDestinationConfig$inboundSchema: z.ZodType<
   headers: z.record(z.string(), z.string()).optional(),
   host: z.string(),
   password: z.string(),
+  shouldIncludeCacheWriteTokens: z.boolean().default(false),
   table: z.string().default("OPENROUTER_TRACES"),
   username: z.string(),
 });
