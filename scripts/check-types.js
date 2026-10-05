@@ -23,7 +23,11 @@ import { dirname, resolve } from 'node:path';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
-const TYPES_FILE_PATH = resolve(__dirname, '../src/types/models.ts');
+// Published packages ship compiled `esm/` output; the repo checkout has `src/`.
+const TYPES_FILE_PATHS = [
+  resolve(__dirname, '../esm/types/models.js'),
+  resolve(__dirname, '../src/types/models.ts'),
+];
 const API_URL = 'https://openrouter.ai/api/v1/models';
 const TIMEOUT_MS = 5000;
 
@@ -92,15 +96,18 @@ async function main() {
 
   try {
     /** @type {string | null} */
-    let existingHash;
-    try {
-      const content = await readFile(TYPES_FILE_PATH, 'utf-8');
-      existingHash = extractHash(content);
-    } catch (error) {
-      if (isNodeError(error) && error.code === 'ENOENT') {
-        return;
+    let existingHash = null;
+    for (const typesFilePath of TYPES_FILE_PATHS) {
+      try {
+        const content = await readFile(typesFilePath, 'utf-8');
+        existingHash = extractHash(content);
+        break;
+      } catch (error) {
+        if (isNodeError(error) && error.code === 'ENOENT') {
+          continue;
+        }
+        throw error;
       }
-      throw error;
     }
 
     if (!existingHash) {
