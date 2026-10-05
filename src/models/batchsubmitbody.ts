@@ -44,7 +44,7 @@ export type BatchSubmitBody = {
   endpoint: Endpoint;
   model: string;
   /**
-   * Batch provider routing preferences. Only `provider.only` is supported.
+   * Batch provider routing preferences. Only `provider.only` and `provider.allow_fallbacks` are supported.
    */
   provider?: BatchProviderPreferences | null | undefined;
   requests: Array<RequestT>;
