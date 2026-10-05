@@ -4,14 +4,23 @@
  */
 
 import * as z from "zod/v4";
+import { remap as remap$ } from "../lib/primitives.js";
 import { ProviderName, ProviderName$outboundSchema } from "./providername.js";
 
 export type BatchProviderPreferencesOnly = ProviderName | string;
 
 /**
- * Batch provider routing preferences. Only `provider.only` is supported.
+ * Batch provider routing preferences. Only `provider.only` and `provider.allow_fallbacks` are supported.
  */
 export type BatchProviderPreferences = {
+  /**
+   * Whether to allow backup providers to serve requests
+   *
+   * @remarks
+   * - true: (default) when the primary provider (or your custom providers in "order") is unavailable, use the next best provider.
+   * - false: use only the primary/custom provider, and return the upstream error if it's unavailable.
+   */
+  allowFallbacks?: boolean | null | undefined;
   /**
    * List of provider slugs to allow. If provided, this list is merged with your account-wide allowed provider settings for this request.
    */
@@ -39,6 +48,7 @@ export function batchProviderPreferencesOnlyToJSON(
 
 /** @internal */
 export type BatchProviderPreferences$Outbound = {
+  allow_fallbacks?: boolean | null | undefined;
   only?: Array<string | string> | null | undefined;
 };
 
@@ -47,8 +57,13 @@ export const BatchProviderPreferences$outboundSchema: z.ZodType<
   BatchProviderPreferences$Outbound,
   BatchProviderPreferences
 > = z.object({
+  allowFallbacks: z.nullable(z.boolean()).optional(),
   only: z.nullable(z.array(z.union([ProviderName$outboundSchema, z.string()])))
     .optional(),
+}).transform((v) => {
+  return remap$(v, {
+    allowFallbacks: "allow_fallbacks",
+  });
 });
 
 export function batchProviderPreferencesToJSON(
