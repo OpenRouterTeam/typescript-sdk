@@ -171,13 +171,13 @@ export function resolveSecurity(
 
     switch (type) {
       case "apiKey:header":
-        state.headers[spec.fieldName] = spec.value;
+        setSecurityField(state.headers, spec.fieldName, spec.value);
         break;
       case "apiKey:query":
-        state.queryParams[spec.fieldName] = spec.value;
+        setSecurityField(state.queryParams, spec.fieldName, spec.value);
         break;
       case "apiKey:cookie":
-        state.cookies[spec.fieldName] = spec.value;
+        setSecurityField(state.cookies, spec.fieldName, spec.value);
         break;
       case "http:basic":
         applyBasic(state, spec);
@@ -204,6 +204,29 @@ export function resolveSecurity(
   });
 
   return state;
+}
+
+const UNSAFE_PROPERTY_NAMES = new Set([
+  "__proto__",
+  "constructor",
+  "prototype",
+]);
+
+function setSecurityField(
+  target: Record<string, string>,
+  fieldName: string,
+  value: string,
+) {
+  if (UNSAFE_PROPERTY_NAMES.has(fieldName)) {
+    return;
+  }
+
+  Object.defineProperty(target, fieldName, {
+    value,
+    enumerable: true,
+    configurable: true,
+    writable: true,
+  });
 }
 
 function applyBasic(
@@ -235,7 +258,7 @@ function applyBearer(
   }
 
   if (spec.fieldName !== undefined) {
-    state.headers[spec.fieldName] = value;
+    setSecurityField(state.headers, spec.fieldName, value);
   }
 }
 
