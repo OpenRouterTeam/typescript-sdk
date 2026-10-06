@@ -42603,6 +42603,7 @@ paths:
                     hash: 'f01d52606dc8f0a8303a7b5cc3fa07109c2e346cec7c0a16b40de462992ce943'
                     include_byok_in_limit: false
                     label: 'Production API Key'
+                    last_used_at: '2026-09-15T15:45:00Z'
                     limit: 100
                     limit_remaining: 74.5
                     limit_reset: 'monthly'
@@ -42628,6 +42629,7 @@ paths:
                       hash: 'f01d52606dc8f0a8303a7b5cc3fa07109c2e346cec7c0a16b40de462992ce943'
                       include_byok_in_limit: false
                       label: 'Production API Key'
+                      last_used_at: '2026-09-15T15:45:00Z'
                       limit: 100
                       limit_remaining: 74.5
                       limit_reset: 'monthly'
@@ -42655,6 +42657,7 @@ paths:
                         hash: 'f01d52606dc8f0a8303a7b5cc3fa07109c2e346cec7c0a16b40de462992ce943'
                         include_byok_in_limit: false
                         label: 'sk-or-v1-0e6...1c96'
+                        last_used_at: '2026-09-15T15:45:00Z'
                         limit: 100
                         limit_remaining: 74.5
                         limit_reset: 'monthly'
@@ -42725,6 +42728,13 @@ paths:
                           description: 'Human-readable label for the API key'
                           example: 'sk-or-v1-0e6...1c96'
                           type: 'string'
+                        last_used_at:
+                          description: 'ISO 8601 UTC timestamp of the most recent usage recorded for the API key, or null if no usage has been recorded since the end of 2025'
+                          example: '2026-09-15T15:45:00Z'
+                          format: 'date-time'
+                          type:
+                            - 'string'
+                            - 'null'
                         limit:
                           description: 'Spending limit for the API key in USD'
                           example: 100
@@ -42798,6 +42808,7 @@ paths:
                         - 'byok_usage_monthly'
                         - 'created_at'
                         - 'updated_at'
+                        - 'last_used_at'
                         - 'external_user'
                         - 'creator_user_id'
                         - 'workspace_id'
@@ -42956,6 +42967,7 @@ paths:
                   hash: 'f01d52606dc8f0a8303a7b5cc3fa07109c2e346cec7c0a16b40de462992ce943'
                   include_byok_in_limit: true
                   label: 'My New API Key'
+                  last_used_at: null
                   limit: 50
                   limit_remaining: 50
                   limit_reset: 'monthly'
@@ -42982,6 +42994,7 @@ paths:
                     hash: 'f01d52606dc8f0a8303a7b5cc3fa07109c2e346cec7c0a16b40de462992ce943'
                     include_byok_in_limit: true
                     label: 'My New API Key'
+                    last_used_at: null
                     limit: 50
                     limit_remaining: 50
                     limit_reset: 'monthly'
@@ -43009,6 +43022,7 @@ paths:
                       hash: 'f01d52606dc8f0a8303a7b5cc3fa07109c2e346cec7c0a16b40de462992ce943'
                       include_byok_in_limit: false
                       label: 'sk-or-v1-0e6...1c96'
+                      last_used_at: '2026-09-15T15:45:00Z'
                       limit: 100
                       limit_remaining: 74.5
                       limit_reset: 'monthly'
@@ -43079,6 +43093,13 @@ paths:
                         description: 'Human-readable label for the API key'
                         example: 'sk-or-v1-0e6...1c96'
                         type: 'string'
+                      last_used_at:
+                        description: 'ISO 8601 UTC timestamp of the most recent usage recorded for the API key, or null if no usage has been recorded since the end of 2025'
+                        example: '2026-09-15T15:45:00Z'
+                        format: 'date-time'
+                        type:
+                          - 'string'
+                          - 'null'
                       limit:
                         description: 'Spending limit for the API key in USD'
                         example: 100
@@ -43152,6 +43173,7 @@ paths:
                       - 'byok_usage_monthly'
                       - 'created_at'
                       - 'updated_at'
+                      - 'last_used_at'
                       - 'external_user'
                       - 'creator_user_id'
                       - 'workspace_id'
@@ -43324,6 +43346,7 @@ paths:
                   hash: 'f01d52606dc8f0a8303a7b5cc3fa07109c2e346cec7c0a16b40de462992ce943'
                   include_byok_in_limit: false
                   label: 'Production API Key'
+                  last_used_at: '2026-09-15T15:45:00Z'
                   limit: 100
                   limit_remaining: 74.5
                   limit_reset: 'monthly'
@@ -43349,6 +43372,7 @@ paths:
                     hash: 'f01d52606dc8f0a8303a7b5cc3fa07109c2e346cec7c0a16b40de462992ce943'
                     include_byok_in_limit: false
                     label: 'Production API Key'
+                    last_used_at: '2026-09-15T15:45:00Z'
                     limit: 100
                     limit_remaining: 74.5
                     limit_reset: 'monthly'
@@ -43375,6 +43399,7 @@ paths:
                       hash: 'f01d52606dc8f0a8303a7b5cc3fa07109c2e346cec7c0a16b40de462992ce943'
                       include_byok_in_limit: false
                       label: 'sk-or-v1-0e6...1c96'
+                      last_used_at: '2026-09-15T15:45:00Z'
                       limit: 100
                       limit_remaining: 74.5
                       limit_reset: 'monthly'
@@ -43445,6 +43470,13 @@ paths:
                         description: 'Human-readable label for the API key'
                         example: 'sk-or-v1-0e6...1c96'
                         type: 'string'
+                      last_used_at:
+                        description: 'ISO 8601 UTC timestamp of the most recent usage recorded for the API key, or null if no usage has been recorded since the end of 2025'
+                        example: '2026-09-15T15:45:00Z'
+                        format: 'date-time'
+                        type:
+                          - 'string'
+                          - 'null'
                       limit:
                         description: 'Spending limit for the API key in USD'
                         example: 100
@@ -43518,6 +43550,7 @@ paths:
                       - 'byok_usage_monthly'
                       - 'created_at'
                       - 'updated_at'
+                      - 'last_used_at'
                       - 'external_user'
                       - 'creator_user_id'
                       - 'workspace_id'
@@ -43648,6 +43681,7 @@ paths:
                   hash: 'f01d52606dc8f0a8303a7b5cc3fa07109c2e346cec7c0a16b40de462992ce943'
                   include_byok_in_limit: true
                   label: 'Updated API Key Name'
+                  last_used_at: '2026-09-15T15:45:00Z'
                   limit: 75
                   limit_remaining: 49.5
                   limit_reset: 'daily'
@@ -43673,6 +43707,7 @@ paths:
                     hash: 'f01d52606dc8f0a8303a7b5cc3fa07109c2e346cec7c0a16b40de462992ce943'
                     include_byok_in_limit: true
                     label: 'Updated API Key Name'
+                    last_used_at: '2026-09-15T15:45:00Z'
                     limit: 75
                     limit_remaining: 49.5
                     limit_reset: 'daily'
@@ -43699,6 +43734,7 @@ paths:
                       hash: 'f01d52606dc8f0a8303a7b5cc3fa07109c2e346cec7c0a16b40de462992ce943'
                       include_byok_in_limit: false
                       label: 'sk-or-v1-0e6...1c96'
+                      last_used_at: '2026-09-15T15:45:00Z'
                       limit: 100
                       limit_remaining: 74.5
                       limit_reset: 'monthly'
@@ -43769,6 +43805,13 @@ paths:
                         description: 'Human-readable label for the API key'
                         example: 'sk-or-v1-0e6...1c96'
                         type: 'string'
+                      last_used_at:
+                        description: 'ISO 8601 UTC timestamp of the most recent usage recorded for the API key, or null if no usage has been recorded since the end of 2025'
+                        example: '2026-09-15T15:45:00Z'
+                        format: 'date-time'
+                        type:
+                          - 'string'
+                          - 'null'
                       limit:
                         description: 'Spending limit for the API key in USD'
                         example: 100
@@ -43842,6 +43885,7 @@ paths:
                       - 'byok_usage_monthly'
                       - 'created_at'
                       - 'updated_at'
+                      - 'last_used_at'
                       - 'external_user'
                       - 'creator_user_id'
                       - 'workspace_id'
