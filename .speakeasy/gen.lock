@@ -1,19 +1,19 @@
 lockVersion: ""
 id: ""
 management:
-  docChecksum: ee1ea001311376b07ab80289a73b464f
+  docChecksum: f40b12f2a0e0ed31de2e154eb7129061
   docVersion: 1.0.0
   speakeasyVersion: 1.787.0
   generationVersion: 2.914.0
-  releaseVersion: 1.4.23
-  configChecksum: 607d61760c4129efc88607030c0eb271
+  releaseVersion: 1.4.24
+  configChecksum: fc7bb22895bd6bb7dc7626f38e7600d8
   repoURL: https://github.com/OpenRouterTeam/typescript-sdk.git
   installationURL: https://github.com/OpenRouterTeam/typescript-sdk
   published: true
 persistentEdits:
-  generation_id: 88a955ec-41ee-4991-add7-f9dcaf757aa6
-  pristine_commit_hash: 3ea7f69182c26049d4dca113525eb129c29f0ca4
-  pristine_tree_hash: fbe0c29058032ba1c547008df58ae2129743cd07
+  generation_id: b96051e8-5d78-4d4e-8011-a9a8bf40b23a
+  pristine_commit_hash: 256ebc2572460fa7144223c243509897d1c3cd69
+  pristine_tree_hash: a1333472c3aacc5f653ffcb454c00bb4ff237a64
 features:
   typescript:
     acceptHeaders: 2.81.2
@@ -13762,8 +13762,8 @@ trackedFiles:
     pristine_git_object: 28c6767d56f4c97fbc9bbec80ed82761891c3a2b
   docs/models/switchyardrouterplugin.mdx:
     id: 58f9fabcbcf9
-    last_write_checksum: sha1:c3d95e921c9bea531ee8205eb7c24665fdb46725
-    pristine_git_object: db9ecdeddd4e0ea65422bd3c46e44664d67e0e43
+    last_write_checksum: sha1:6b808b16783328a4cd3d9d0e90653a829707dce9
+    pristine_git_object: 436a80f1d3fe3918f23ece60a840a373db2bc929
   docs/models/syntax.md:
     id: b5f23261fcd5
     last_write_checksum: sha1:5ddcfb4d7a3b0cc1a8830cd48da5bf1f6e98c399
@@ -15335,12 +15335,12 @@ trackedFiles:
     pristine_git_object: 410efafd6a7f50d91ccb87131fedbe0c3d47e15a
   jsr.json:
     id: 7f6ab7767282
-    last_write_checksum: sha1:3ba337f180f574b226dd452270cd3278f69fc0d0
-    pristine_git_object: 1c0232dad45bbc3e775ac6f94fd1d2f4f7b546a1
+    last_write_checksum: sha1:d831af2b3690205b1d4c008223305dfdb60ef7b3
+    pristine_git_object: 993c4a06cf07f3312fc0412b3e0a8ed5cd912081
   package.json:
     id: 7030d0b2f71b
-    last_write_checksum: sha1:a2cae7fbe13dd8dd0ebe77d8734ac236a9c2b3a6
-    pristine_git_object: ee656b968d57e2c83296012f042fa3664aa4a766
+    last_write_checksum: sha1:f6a20145589ed78976b4885cec3c4ee2cf42f4b1
+    pristine_git_object: 397a52e32246fab0e66817ae638046af94a9c49c
   src/core.ts:
     id: f431fdbcd144
     last_write_checksum: sha1:5aa66b0b6a5964f3eea7f3098c2eb3c0ee9c0131
@@ -15959,8 +15959,8 @@ trackedFiles:
     pristine_git_object: a187e58707bdb726ca2aff74941efe7493422d4e
   src/lib/config.ts:
     id: 320761608fb3
-    last_write_checksum: sha1:c35f91c854a466f5fbb4413deeb900802fdd09cf
-    pristine_git_object: 48c7f6904838f30a85264d1dc4ac2cb85fc7f45d
+    last_write_checksum: sha1:f1a37b636768011ec55244ffdbbf55f738bad028
+    pristine_git_object: ff08213e5a5d80d1b68966b23f08a0fe94fd4e3e
   src/lib/dlv.ts:
     id: b1988214835a
     last_write_checksum: sha1:eaac763b22717206a6199104e0403ed17a4e2711
@@ -19757,8 +19757,8 @@ trackedFiles:
     pristine_git_object: 59c0163a1041af96c877b4aaa619e9e6607b6809
   src/models/switchyardrouterplugin.ts:
     id: 90395eb02944
-    last_write_checksum: sha1:a55da94822db45b52ee8c01c571f41de4c8cde35
-    pristine_git_object: 865726cab0f1fd9a02260deb66d1d9dbfb8a9210
+    last_write_checksum: sha1:6e2e7c19ec41ef00bcdd73dcf7115f155b7a41f4
+    pristine_git_object: 984ef753fc330c9a33e16c851b9d6cb4d5ccf17d
   src/models/taskclassificationitem.ts:
     id: 58896645e490
     last_write_checksum: sha1:03c3da09f40461a2faa1a7b19390326aef87b7d8
@@ -24264,4 +24264,4 @@ examples:
         "500":
           application/json: {"error": {"code": 500, "message": "Internal Server Error"}}
 examplesVersion: 1.0.2
-releaseNotes: "## Typescript SDK Changes:\n* `openrouter.byok.list()`:  `response.data[].declaredRegion` **Added**\n* `openrouter.byok.create()`: \n  *  `request.createByokKeyRequest.declaredRegion` **Added**\n  *  `response.data.declaredRegion` **Added**\n* `openrouter.byok.get()`:  `response.data.declaredRegion` **Added**\n* `openrouter.byok.update()`: \n  *  `request.updateByokKeyRequest.declaredRegion` **Added**\n  *  `response.data.declaredRegion` **Added**\n  *  `error.status[409]` **Added**\n"
+releaseNotes: "## Typescript SDK Changes:\n* `openrouter.chat.send()`: \n  *  `request.chatRequest.plugins[].union(switchyard-router).judgeModel` **Added**\n* `openrouter.presets.createPresetsChatCompletions()`: \n  *  `request.chatRequest.plugins[].union(switchyard-router).judgeModel` **Added**\n* `openrouter.presets.createPresetsMessages()`: \n  *  `request.messagesRequest.plugins[].union(switchyard-router).judgeModel` **Added**\n* `openrouter.presets.createPresetsResponses()`: \n  *  `request.responsesRequest.plugins[].union(switchyard-router).judgeModel` **Added**\n* `openrouter.responses.send()`: \n  *  `request.responsesRequest.plugins[].union(switchyard-router).judgeModel` **Added**\n* `openrouter.beta.responses.send()`: \n  *  `request.responsesRequest.plugins[].union(switchyard-router).judgeModel` **Added**\n"
