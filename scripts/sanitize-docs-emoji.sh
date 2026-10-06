@@ -17,7 +17,12 @@ find "$DOCS_DIR" -type f -name '*.mdx' -exec perl -0pi -e '
 	s/:warning:/⚠️/g;
 ' {} +
 
-if matches="$(find "$DOCS_DIR" -type f -name '*.mdx' -exec grep -HnP '(?<![\w:]):[a-z][a-z0-9_+-]*:(?![\w:])' {} + || true)" && [[ -n "$matches" ]]; then
+# perl rather than grep -P so the guard also works on BSD/macOS; a scan error aborts via set -e.
+matches="$(find "$DOCS_DIR" -type f -name '*.mdx' -exec perl -ne '
+	print "$ARGV:$.:$_" if /(?<![\w:]):[a-z][a-z0-9_+-]*:(?![\w:])/;
+	close ARGV if eof;
+' {} +)"
+if [[ -n "$matches" ]]; then
 	echo "unmapped emoji shortcodes remain under $DOCS_DIR, add them to this script:" >&2
 	printf '%s\n' "$matches" >&2
 	exit 1
