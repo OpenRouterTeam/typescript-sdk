@@ -171,6 +171,10 @@ export type CreateKeysData = {
    */
   label: string;
   /**
+   * ISO 8601 UTC timestamp of the most recent usage recorded for the API key, or null if no usage has been recorded since the end of 2025
+   */
+  lastUsedAt: Date | null;
+  /**
    * Spending limit for the API key in USD
    */
   limit: number | null;
@@ -345,6 +349,9 @@ export const CreateKeysData$inboundSchema: z.ZodType<CreateKeysData, unknown> =
     hash: z.string(),
     include_byok_in_limit: z.boolean(),
     label: z.string(),
+    last_used_at: z.nullable(
+      z.iso.datetime({ offset: true }).transform(v => new Date(v)),
+    ),
     limit: z.nullable(z.number()),
     limit_remaining: z.nullable(z.number()),
     limit_reset: z.nullable(z.string()),
@@ -366,6 +373,7 @@ export const CreateKeysData$inboundSchema: z.ZodType<CreateKeysData, unknown> =
       "expires_at": "expiresAt",
       "external_user": "externalUser",
       "include_byok_in_limit": "includeByokInLimit",
+      "last_used_at": "lastUsedAt",
       "limit_remaining": "limitRemaining",
       "limit_reset": "limitReset",
       "updated_at": "updatedAt",
