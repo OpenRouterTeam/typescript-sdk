@@ -28606,6 +28606,15 @@ components:
       oneOf:
         - $ref: '#/components/schemas/ContainerAutoEnvironment'
         - $ref: '#/components/schemas/ContainerReferenceEnvironment'
+    SpeechInput:
+      anyOf:
+        - type: 'string'
+        - items:
+            $ref: '#/components/schemas/SpeechTurn'
+          minItems: 1
+          type: 'array'
+      description: 'Text to synthesize, or a list of turns for multi-speaker input. Each turn has its own text, voice, and instructions. Multi-speaker input is currently supported by Gemini TTS models only.'
+      example: 'Hello world'
     SpeechInputReference:
       description: 'Reference content part for stateless voice cloning or voice design'
       discriminator:
@@ -28713,9 +28722,7 @@ components:
         voice: 'en_paul_neutral'
       properties:
         input:
-          description: 'Text to synthesize'
-          example: 'Hello world'
-          type: 'string'
+          $ref: '#/components/schemas/SpeechInput'
         input_references:
           description: 'Reference content for stateless voice cloning or voice design. Audio mode: one to three `input_audio` parts, each optionally paired with a `text` part carrying its transcript (a single clip accepts its transcript before or after it; with multiple clips each transcript immediately follows its clip); only routed to endpoints that support voice cloning (and multiple references when more than one part is sent). Image mode: exactly one `image_url` part; only routed to endpoints that support image references. The two modes cannot be mixed. An empty array is treated as no reference.'
           example:
@@ -28727,6 +28734,10 @@ components:
           items:
             $ref: '#/components/schemas/SpeechInputReference'
           type: 'array'
+        instructions:
+          description: 'Delivery instructions for the whole request, such as tone, pacing, or emotion. Supported by OpenAI gpt-4o-mini-tts and Gemini TTS models. Ignored by other providers.'
+          example: 'Speak in a warm and friendly tone.'
+          type: 'string'
         model:
           description: 'TTS model identifier'
           example: 'mistralai/voxtral-mini-tts-2603'
@@ -28787,6 +28798,24 @@ components:
       required:
         - 'model'
         - 'input'
+      type: 'object'
+    SpeechTurn:
+      properties:
+        instructions:
+          description: 'Delivery instructions for this turn, such as tone, pacing, or emotion. Overrides the top-level `instructions`.'
+          example: 'whispering'
+          type: 'string'
+        text:
+          description: 'Text to synthesize'
+          example: 'Hi Jane.'
+          type: 'string'
+        voice:
+          description: 'Voice for this turn. Defaults to the top-level `voice`.'
+          example: 'Kore'
+          minLength: 1
+          type: 'string'
+      required:
+        - 'text'
       type: 'object'
     StopServerToolsWhen:
       description: 'Stop conditions for the server-tool agent loop. Any condition firing halts the loop (OR logic). When set, this overrides `max_tool_calls`. When a condition fires while the model is still emitting tool calls, the pending tool calls are executed and one final turn is made with tool calls disabled so the response ends with a natural-language answer instead of an unfinished tool call.'
