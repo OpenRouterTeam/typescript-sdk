@@ -4,6 +4,7 @@
  */
 
 import * as z from "zod/v4";
+import { remap as remap$ } from "../lib/primitives.js";
 import * as openEnums from "../types/enums.js";
 import { OpenEnum } from "../types/enums.js";
 
@@ -29,6 +30,10 @@ export type SwitchyardRouterPlugin = {
    */
   algorithm?: Algorithm | undefined;
   id: "switchyard-router";
+  /**
+   * The model that runs the judge call for the judge-backed algorithms ("capability", "stage", and "composite"). The model must support structured outputs and have a provider that your account and request settings allow. Otherwise, the request uses the platform default judge, google/gemini-2.5-flash-lite, and reports the reason in the routing metadata. The judge call is billed to you like any other request.
+   */
+  judgeModel?: string | undefined;
 };
 
 /** @internal */
@@ -39,6 +44,7 @@ export const Algorithm$outboundSchema: z.ZodType<string, Algorithm> = openEnums
 export type SwitchyardRouterPlugin$Outbound = {
   algorithm?: string | undefined;
   id: "switchyard-router";
+  judge_model?: string | undefined;
 };
 
 /** @internal */
@@ -48,6 +54,11 @@ export const SwitchyardRouterPlugin$outboundSchema: z.ZodType<
 > = z.object({
   algorithm: Algorithm$outboundSchema.optional(),
   id: z.literal("switchyard-router"),
+  judgeModel: z.string().optional(),
+}).transform((v) => {
+  return remap$(v, {
+    judgeModel: "judge_model",
+  });
 });
 
 export function switchyardRouterPluginToJSON(
