@@ -36,7 +36,10 @@ jobs:
       - name: Regenerate docs navigation
         run: scripts/gen-docs-nav.sh
 
+      # On manual dispatch there is no PR head ref, so checkout falls back to
+      # main; never auto-commit there.
       - name: Auto-commit generated docs files
+        if: github.event_name == 'pull_request'
         uses: int128/update-generated-files-action@v2
         with:
           commit-message: "Chore: sanitize generated docs emoji"
