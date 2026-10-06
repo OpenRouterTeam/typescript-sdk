@@ -8,9 +8,16 @@ on:
   workflow_dispatch:
   pull_request:
     paths:
-      - "docs/sdks/**"
+      - "docs/**"
+      - "scripts/sanitize-docs-emoji.sh"
       - "scripts/gen-docs-nav.sh"
       - ".github/workflows/docs-nav.yaml"
+
+# Shared with speakeasy_run_on_pr.yaml: both push generated files to the PR
+# head branch, so they must not run at the same time on the same PR.
+concurrency:
+  group: generated-files-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: false
 
 jobs:
   gen-docs-nav:
@@ -22,11 +29,17 @@ jobs:
           ref: ${{ github.event.pull_request.head.ref }}
           token: ${{ secrets.GITHUB_TOKEN }}
 
+      - name: Sanitize generated docs emoji
+        run: scripts/sanitize-docs-emoji.sh
+
       # jq is preinstalled on GitHub-hosted ubuntu runners.
       - name: Regenerate docs navigation
         run: scripts/gen-docs-nav.sh
 
-      - name: Auto-commit docs.json navigation
+      # On manual dispatch there is no PR head ref, so checkout falls back to
+      # main; never auto-commit there.
+      - name: Auto-commit generated docs files
+        if: github.event_name == 'pull_request'
         uses: int128/update-generated-files-action@v2
         with:
-          commit-message: "Chore: regenerate docs navigation"
+          commit-message: "Chore: sanitize generated docs emoji"
