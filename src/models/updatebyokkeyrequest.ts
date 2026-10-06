@@ -5,6 +5,23 @@
 
 import * as z from "zod/v4";
 import { remap as remap$ } from "../lib/primitives.js";
+import * as openEnums from "../types/enums.js";
+import { OpenEnum } from "../types/enums.js";
+
+/**
+ * Your declaration of the data region in which the upstream provider account behind this credential processes requests, used for routing eligibility on OpenRouter's regional hosts. `null` means undeclared and `global` is behaviorally identical: the credential follows the region OpenRouter records for the endpoint. `europe` or `us` lets requests to `eu.openrouter.ai` or `us.openrouter.ai` use this credential for that provider (private endpoints, endpoints pinned to another cloud region, cross-region inference profiles and video models are excluded). Self-declared and not verified by OpenRouter. For OpenAI and Fireworks the region comes from the key material (a `{"api_key": ..., "region": ...}` key), so the value must match the key's region. Among other providers, only Azure accepts `europe` or `us`. Omit to leave the stored value unchanged (rotating an OpenAI or Fireworks `key` re-derives it from the new key); `null` clears the declaration.
+ */
+export const UpdateBYOKKeyRequestDeclaredRegion = {
+  Global: "global",
+  Europe: "europe",
+  Us: "us",
+} as const;
+/**
+ * Your declaration of the data region in which the upstream provider account behind this credential processes requests, used for routing eligibility on OpenRouter's regional hosts. `null` means undeclared and `global` is behaviorally identical: the credential follows the region OpenRouter records for the endpoint. `europe` or `us` lets requests to `eu.openrouter.ai` or `us.openrouter.ai` use this credential for that provider (private endpoints, endpoints pinned to another cloud region, cross-region inference profiles and video models are excluded). Self-declared and not verified by OpenRouter. For OpenAI and Fireworks the region comes from the key material (a `{"api_key": ..., "region": ...}` key), so the value must match the key's region. Among other providers, only Azure accepts `europe` or `us`. Omit to leave the stored value unchanged (rotating an OpenAI or Fireworks `key` re-derives it from the new key); `null` clears the declaration.
+ */
+export type UpdateBYOKKeyRequestDeclaredRegion = OpenEnum<
+  typeof UpdateBYOKKeyRequestDeclaredRegion
+>;
 
 export type UpdateBYOKKeyRequest = {
   /**
@@ -19,6 +36,10 @@ export type UpdateBYOKKeyRequest = {
    * Optional allowlist of user IDs that may use this credential. `null` means no restriction.
    */
   allowedUserIds?: Array<string> | null | undefined;
+  /**
+   * Your declaration of the data region in which the upstream provider account behind this credential processes requests, used for routing eligibility on OpenRouter's regional hosts. `null` means undeclared and `global` is behaviorally identical: the credential follows the region OpenRouter records for the endpoint. `europe` or `us` lets requests to `eu.openrouter.ai` or `us.openrouter.ai` use this credential for that provider (private endpoints, endpoints pinned to another cloud region, cross-region inference profiles and video models are excluded). Self-declared and not verified by OpenRouter. For OpenAI and Fireworks the region comes from the key material (a `{"api_key": ..., "region": ...}` key), so the value must match the key's region. Among other providers, only Azure accepts `europe` or `us`. Omit to leave the stored value unchanged (rotating an OpenAI or Fireworks `key` re-derives it from the new key); `null` clears the declaration.
+   */
+  declaredRegion?: UpdateBYOKKeyRequestDeclaredRegion | null | undefined;
   /**
    * Your declaration of whether the upstream provider account behind this credential has zero data retention (ZDR). `null` inherits OpenRouter's data policy for the provider's endpoint; `true` declares the account ZDR so requests that require ZDR may route to this credential even when the shared endpoint retains data; `false` declares it non-ZDR so such requests never route to it. Self-declared and not verified by OpenRouter. Omit to leave the stored value unchanged; `null` clears the declaration.
    */
@@ -50,10 +71,17 @@ export type UpdateBYOKKeyRequest = {
 };
 
 /** @internal */
+export const UpdateBYOKKeyRequestDeclaredRegion$outboundSchema: z.ZodType<
+  string,
+  UpdateBYOKKeyRequestDeclaredRegion
+> = openEnums.outboundSchema(UpdateBYOKKeyRequestDeclaredRegion);
+
+/** @internal */
 export type UpdateBYOKKeyRequest$Outbound = {
   allowed_api_key_hashes?: Array<string> | null | undefined;
   allowed_models?: Array<string> | null | undefined;
   allowed_user_ids?: Array<string> | null | undefined;
+  declared_region?: string | null | undefined;
   declared_zdr?: boolean | null | undefined;
   disabled?: boolean | undefined;
   is_byok_only?: boolean | undefined;
@@ -71,6 +99,8 @@ export const UpdateBYOKKeyRequest$outboundSchema: z.ZodType<
   allowedApiKeyHashes: z.nullable(z.array(z.string())).optional(),
   allowedModels: z.nullable(z.array(z.string())).optional(),
   allowedUserIds: z.nullable(z.array(z.string())).optional(),
+  declaredRegion: z.nullable(UpdateBYOKKeyRequestDeclaredRegion$outboundSchema)
+    .optional(),
   declaredZdr: z.nullable(z.boolean()).optional(),
   disabled: z.boolean().optional(),
   isByokOnly: z.boolean().optional(),
@@ -83,6 +113,7 @@ export const UpdateBYOKKeyRequest$outboundSchema: z.ZodType<
     allowedApiKeyHashes: "allowed_api_key_hashes",
     allowedModels: "allowed_models",
     allowedUserIds: "allowed_user_ids",
+    declaredRegion: "declared_region",
     declaredZdr: "declared_zdr",
     isByokOnly: "is_byok_only",
     isFallback: "is_fallback",
