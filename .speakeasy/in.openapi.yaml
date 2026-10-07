@@ -23637,6 +23637,7 @@ components:
           reasoning: '#/components/schemas/OutputReasoningItem'
           shell_call: '#/components/schemas/OutputShellCallItem'
           shell_call_output: '#/components/schemas/OutputShellCallOutputItem'
+          tool_search_call: '#/components/schemas/OutputToolSearchCallItem'
           web_search_call: '#/components/schemas/OutputWebSearchCallItem'
         propertyName: 'type'
       example:
@@ -23679,6 +23680,7 @@ components:
         - $ref: '#/components/schemas/OutputSubagentServerToolItem'
         - $ref: '#/components/schemas/OutputFilesServerToolItem'
         - $ref: '#/components/schemas/OutputCustomToolCallItem'
+        - $ref: '#/components/schemas/OutputToolSearchCallItem'
     OutputItemWebSearchCall:
       additionalProperties: {}
       example:
@@ -24247,6 +24249,38 @@ components:
       required:
         - 'status'
         - 'type'
+      type: 'object'
+    OutputToolSearchCallItem:
+      description: 'A call the model made to a `tool_search` tool declared with `"execution": "client"`. The client runs the search and replays this item with a `tool_search_output` item.'
+      example:
+        arguments:
+          query: 'weather'
+        call_id: 'call-abc123'
+        execution: 'client'
+        id: 'tsc-abc123'
+        status: 'completed'
+        type: 'tool_search_call'
+      properties:
+        arguments: {}
+        call_id:
+          type: 'string'
+        execution:
+          enum:
+            - 'client'
+          type: 'string'
+        id:
+          type: 'string'
+        status:
+          $ref: '#/components/schemas/ToolCallStatus'
+        type:
+          enum:
+            - 'tool_search_call'
+          type: 'string'
+      required:
+        - 'type'
+        - 'execution'
+        - 'call_id'
+        - 'status'
       type: 'object'
     OutputToolSearchServerToolItem:
       description: 'An openrouter:tool_search server tool output item'
