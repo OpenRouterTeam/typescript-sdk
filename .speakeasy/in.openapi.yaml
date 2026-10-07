@@ -28634,6 +28634,39 @@ components:
       oneOf:
         - $ref: '#/components/schemas/ContainerAutoEnvironment'
         - $ref: '#/components/schemas/ContainerReferenceEnvironment'
+    SignInternDaemonRequest:
+      additionalProperties: false
+      properties:
+        bodySha256:
+          description: 'Lower-case hex SHA-256 of the exact bytes the CLI will send as the daemon request body.'
+          example: 'e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855'
+          pattern: '^[0-9a-f]{64}$'
+          type: 'string'
+      required:
+        - 'bodySha256'
+      type: 'object'
+    SignInternDaemonResponse:
+      additionalProperties: false
+      description: 'Headers the CLI copies onto the daemon request so the sidecar can verify who is asking.'
+      example:
+        x-ori-invoke-signature: 'MEUCIQ...'
+        x-ori-invoke-timestamp: '1789000000'
+        x-ori-invoke-user: 'user_2abc'
+      properties:
+        x-ori-invoke-signature:
+          description: 'Base64 Ed25519 signature over the intern id, timestamp, user and body digest.'
+          type: 'string'
+        x-ori-invoke-timestamp:
+          description: 'Unix seconds at signing; the daemon refuses proofs older than its window.'
+          type: 'string'
+        x-ori-invoke-user:
+          description: 'The verified OAuth subject the proof names. Never taken from the request.'
+          type: 'string'
+      required:
+        - 'x-ori-invoke-signature'
+        - 'x-ori-invoke-timestamp'
+        - 'x-ori-invoke-user'
+      type: 'object'
     SpeechInput:
       anyOf:
         - type: 'string'
@@ -41942,6 +41975,315 @@ paths:
       security:
         - apiKey: []
       summary: 'Get an intern''s daemon access (deprecated alias)'
+      tags:
+        - 'Interns'
+  /interns/{internId}/daemon-access/sign:
+    post:
+      deprecated: true
+      description: 'Deprecated alias of `POST /interns/{internId}/daemon/sign` with the same request, response, and errors. The API key selects the caller, workspace and visible interns. An intern''s own API key sees only that intern: the collection and every other intern answer 404 to it. There is no default workspace fallback. Requests on regional hostnames such as `eu.openrouter.ai` are refused. [API key](/docs/api-reference/authentication) required.'
+      operationId: 'signInternDaemonAccessRequest'
+      parameters:
+        - description: 'ID of an intern visible to the authenticated API key.'
+          in: 'path'
+          name: 'internId'
+          required: true
+          schema:
+            description: 'ID of an intern visible to the authenticated API key.'
+            example: '7c9e6679-7425-40de-944b-e07fc1f90ae7'
+            minLength: 1
+            type: 'string'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SignInternDaemonRequest'
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SignInternDaemonResponse'
+          description: 'Signature headers for the digest.'
+        '400':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 400
+                  message: 'Invalid request body'
+                  metadata:
+                    reason: 'invalid_body'
+                    retryable: false
+              schema:
+                $ref: '#/components/schemas/InternLifecycleError'
+          description: 'The request body is invalid.'
+        '401':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 401
+                  message: 'Invalid or missing API key'
+              schema:
+                $ref: '#/components/schemas/InternLifecycleError'
+          description: 'Missing, unknown or provisioning API key.'
+        '403':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 403
+                  message: 'Personal connections require ori login --oidc.'
+                  metadata:
+                    reason: 'personal_identity_required'
+                    retryable: false
+              schema:
+                $ref: '#/components/schemas/InternLifecycleError'
+          description: 'The caller is an API key, which names no person (`personal_identity_required`), or an OAuth grant without `vault:read` (`insufficient_scope`). Also returned when the key owner no longer has access or the request used a regional hostname.'
+        '404':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 404
+                  message: 'Intern not found'
+                  metadata:
+                    reason: 'not_found'
+                    retryable: false
+              schema:
+                $ref: '#/components/schemas/InternLifecycleError'
+          description: 'The caller is outside the Intern API programme, the intern is hidden, or lifecycle writes are disabled.'
+        '408':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 408
+                  message: 'Operation timed out after 10s. Please try again later.'
+                  metadata:
+                    reason: 'timeout'
+                    retryable: true
+              schema:
+                $ref: '#/components/schemas/InternLifecycleError'
+          description: 'The request exceeded its route deadline. The deadline quoted in the message is the route''s own, so it differs between operations.'
+        '413':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 413
+                  message: 'Request body exceeds 1048576 bytes'
+                  metadata:
+                    reason: 'payload_too_large'
+                    retryable: false
+              schema:
+                $ref: '#/components/schemas/InternLifecycleError'
+          description: 'The request body is larger than 1048576 bytes.'
+        '415':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 415
+                  message: 'Request body must be sent as application/json'
+                  metadata:
+                    reason: 'unsupported_media_type'
+                    retryable: false
+              schema:
+                $ref: '#/components/schemas/InternLifecycleError'
+          description: 'The request body is non-empty and its Content-Type is not application/json.'
+        '429':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 429
+                  message: 'Too many intern turns. Please wait a moment.'
+                  metadata:
+                    reason: 'rate_limited'
+                    retryable: true
+              schema:
+                $ref: '#/components/schemas/InternLifecycleError'
+          description: 'Too many turns for the user or organization this credential acts as (`rate_limited`). Shares the chat turn limiter, reports `retryable: true` and carries `Retry-After`.'
+          headers:
+            Retry-After:
+              description: 'Seconds to wait before retrying this request.'
+              required: true
+              schema:
+                description: 'Seconds to wait before retrying this request.'
+                example: '60'
+                type: 'string'
+        '500':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 500
+                  message: 'The request could not be completed'
+                  metadata:
+                    reason: 'internal_error'
+                    retryable: true
+              schema:
+                $ref: '#/components/schemas/InternLifecycleError'
+          description: 'The request could not be completed. `metadata.reason` says whether to try again: `internal_error` is a transient failure and carries `metadata.retryable: true`, so the same request may be sent again, while `configuration_error` carries `retryable: false` because the next attempt reads the same missing binding or unusable stored credential.'
+      security:
+        - apiKey: []
+      summary: 'Sign a daemon request with the caller''s identity (deprecated alias)'
+      tags:
+        - 'Interns'
+  /interns/{internId}/daemon/sign:
+    post:
+      description: 'Signs the SHA-256 digest of one request the CLI is about to send to the intern daemon, binding it to the intern and to the signed-in member so personal connections resolve. Only an OAuth session from `ori login --oidc` whose grant carries `vault:read` can sign: an API key is refused with 403 because it names no person, and an `interns`-only grant is refused with 403 because a proof releases that user''s personal connections. The route is behind the same gate as chat and counts against the chat turn limiter. The response is sent with `Cache-Control: no-store`. The API key selects the caller, workspace and visible interns. An intern''s own API key sees only that intern: the collection and every other intern answer 404 to it. There is no default workspace fallback. Requests on regional hostnames such as `eu.openrouter.ai` are refused. [API key](/docs/api-reference/authentication) required.'
+      operationId: 'signInternDaemonRequest'
+      parameters:
+        - description: 'ID of an intern visible to the authenticated API key.'
+          in: 'path'
+          name: 'internId'
+          required: true
+          schema:
+            description: 'ID of an intern visible to the authenticated API key.'
+            example: '7c9e6679-7425-40de-944b-e07fc1f90ae7'
+            minLength: 1
+            type: 'string'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SignInternDaemonRequest'
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SignInternDaemonResponse'
+          description: 'Signature headers for the digest.'
+        '400':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 400
+                  message: 'Invalid request body'
+                  metadata:
+                    reason: 'invalid_body'
+                    retryable: false
+              schema:
+                $ref: '#/components/schemas/InternLifecycleError'
+          description: 'The request body is invalid.'
+        '401':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 401
+                  message: 'Invalid or missing API key'
+              schema:
+                $ref: '#/components/schemas/InternLifecycleError'
+          description: 'Missing, unknown or provisioning API key.'
+        '403':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 403
+                  message: 'Personal connections require ori login --oidc.'
+                  metadata:
+                    reason: 'personal_identity_required'
+                    retryable: false
+              schema:
+                $ref: '#/components/schemas/InternLifecycleError'
+          description: 'The caller is an API key, which names no person (`personal_identity_required`), or an OAuth grant without `vault:read` (`insufficient_scope`). Also returned when the key owner no longer has access or the request used a regional hostname.'
+        '404':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 404
+                  message: 'Intern not found'
+                  metadata:
+                    reason: 'not_found'
+                    retryable: false
+              schema:
+                $ref: '#/components/schemas/InternLifecycleError'
+          description: 'The caller is outside the Intern API programme, the intern is hidden, or lifecycle writes are disabled.'
+        '408':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 408
+                  message: 'Operation timed out after 10s. Please try again later.'
+                  metadata:
+                    reason: 'timeout'
+                    retryable: true
+              schema:
+                $ref: '#/components/schemas/InternLifecycleError'
+          description: 'The request exceeded its route deadline. The deadline quoted in the message is the route''s own, so it differs between operations.'
+        '413':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 413
+                  message: 'Request body exceeds 1048576 bytes'
+                  metadata:
+                    reason: 'payload_too_large'
+                    retryable: false
+              schema:
+                $ref: '#/components/schemas/InternLifecycleError'
+          description: 'The request body is larger than 1048576 bytes.'
+        '415':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 415
+                  message: 'Request body must be sent as application/json'
+                  metadata:
+                    reason: 'unsupported_media_type'
+                    retryable: false
+              schema:
+                $ref: '#/components/schemas/InternLifecycleError'
+          description: 'The request body is non-empty and its Content-Type is not application/json.'
+        '429':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 429
+                  message: 'Too many intern turns. Please wait a moment.'
+                  metadata:
+                    reason: 'rate_limited'
+                    retryable: true
+              schema:
+                $ref: '#/components/schemas/InternLifecycleError'
+          description: 'Too many turns for the user or organization this credential acts as (`rate_limited`). Shares the chat turn limiter, reports `retryable: true` and carries `Retry-After`.'
+          headers:
+            Retry-After:
+              description: 'Seconds to wait before retrying this request.'
+              required: true
+              schema:
+                description: 'Seconds to wait before retrying this request.'
+                example: '60'
+                type: 'string'
+        '500':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 500
+                  message: 'The request could not be completed'
+                  metadata:
+                    reason: 'internal_error'
+                    retryable: true
+              schema:
+                $ref: '#/components/schemas/InternLifecycleError'
+          description: 'The request could not be completed. `metadata.reason` says whether to try again: `internal_error` is a transient failure and carries `metadata.retryable: true`, so the same request may be sent again, while `configuration_error` carries `retryable: false` because the next attempt reads the same missing binding or unusable stored credential.'
+      security:
+        - apiKey: []
+      summary: 'Sign a daemon request with the caller''s identity'
       tags:
         - 'Interns'
   /interns/{internId}/invoke:
