@@ -13,6 +13,11 @@ import {
   ProviderOptions$outboundSchema,
 } from "./provideroptions.js";
 import {
+  SpeechInput,
+  SpeechInput$Outbound,
+  SpeechInput$outboundSchema,
+} from "./speechinput.js";
+import {
   SpeechInputReference,
   SpeechInputReference$Outbound,
   SpeechInputReference$outboundSchema,
@@ -89,13 +94,17 @@ export type SpeechRequestResponseFormat = OpenEnum<
  */
 export type SpeechRequest = {
   /**
-   * Text to synthesize
+   * Text to synthesize, or a list of turns for multi-speaker input. Each turn has its own text, voice, and instructions. Multi-speaker input is currently supported by Gemini TTS models only.
    */
-  input: string;
+  input: SpeechInput;
   /**
    * Reference content for stateless voice cloning or voice design. Audio mode: one to three `input_audio` parts, each optionally paired with a `text` part carrying its transcript (a single clip accepts its transcript before or after it; with multiple clips each transcript immediately follows its clip); only routed to endpoints that support voice cloning (and multiple references when more than one part is sent). Image mode: exactly one `image_url` part; only routed to endpoints that support image references. The two modes cannot be mixed. An empty array is treated as no reference.
    */
   inputReferences?: Array<SpeechInputReference> | undefined;
+  /**
+   * Delivery instructions for the whole request, such as tone, pacing, or emotion. Supported by OpenAI gpt-4o-mini-tts and Gemini TTS models. Ignored by other providers.
+   */
+  instructions?: string | undefined;
   /**
    * TTS model identifier
    */
@@ -174,8 +183,9 @@ export const SpeechRequestResponseFormat$outboundSchema: z.ZodType<
 
 /** @internal */
 export type SpeechRequest$Outbound = {
-  input: string;
+  input: SpeechInput$Outbound;
   input_references?: Array<SpeechInputReference$Outbound> | undefined;
+  instructions?: string | undefined;
   model: string;
   provider?: SpeechRequestProvider$Outbound | undefined;
   response_format: string;
@@ -191,8 +201,9 @@ export const SpeechRequest$outboundSchema: z.ZodType<
   SpeechRequest$Outbound,
   SpeechRequest
 > = z.object({
-  input: z.string(),
+  input: SpeechInput$outboundSchema,
   inputReferences: z.array(SpeechInputReference$outboundSchema).optional(),
+  instructions: z.string().optional(),
   model: z.string(),
   provider: z.lazy(() => SpeechRequestProvider$outboundSchema).optional(),
   responseFormat: SpeechRequestResponseFormat$outboundSchema.default("pcm"),

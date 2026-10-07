@@ -31,7 +31,7 @@ export type SwitchyardRouterPlugin = {
   algorithm?: Algorithm | undefined;
   id: "switchyard-router";
   /**
-   * The model that runs the judge call for the judge-backed algorithms ("capability", "stage", and "composite"). The model must support structured outputs and have a provider that your account and request settings allow. Otherwise, the request uses the platform default judge, google/gemini-2.5-flash-lite, and reports the reason in the routing metadata. The judge call is billed to you like any other request.
+   * The model that runs the judge call for the judge-backed algorithms ("capability", "stage", and "composite"). The model must support structured outputs and have a provider that your account and request settings allow. Otherwise, the request uses the platform default judge, google/gemini-3.5-flash-lite, or openai/gpt-4o-mini when the default does not fit either, and reports the reason in the routing metadata. The judge call is billed to you like any other request.
    */
   judgeModel?: string | undefined;
 };
