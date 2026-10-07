@@ -1,0 +1,33 @@
+---
+title: "ToolSearchOutputItem"
+---
+
+The tools a client-executed tool search loaded
+
+## Example Usage
+
+```typescript
+import { ToolSearchOutputItem } from "@openrouter/sdk/models";
+
+let value: ToolSearchOutputItem = {
+  callId: "call_search_1",
+  execution: "client",
+  tools: [
+    {
+      type: "function",
+    },
+  ],
+  type: "tool_search_output",
+};
+```
+
+## Fields
+
+| Field                                                                              | Type                                                                               | Required                                                                           | Description                                                                        |
+| ---------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------- |
+| `callId`                                                                           | *string*                                                                           | :heavy_check_mark:                                                                 | N/A                                                                                |
+| `execution`                                                                        | [models.ToolSearchOutputItemExecution](../models/toolsearchoutputitemexecution.mdx) | :heavy_check_mark:                                                                 | N/A                                                                                |
+| `id`                                                                               | *string*                                                                           | :heavy_minus_sign:                                                                 | N/A                                                                                |
+| `status`                                                                           | [models.ToolSearchOutputItemStatus](../models/toolsearchoutputitemstatus.mdx)       | :heavy_minus_sign:                                                                 | N/A                                                                                |
+| `tools`                                                                            | *models.ToolSearchOutputItemToolUnion*[]                                           | :heavy_check_mark:                                                                 | N/A                                                                                |
+| `type`                                                                             | [models.TypeToolSearchOutput](../models/typetoolsearchoutput.mdx)                   | :heavy_check_mark:                                                                 | N/A                                                                                |
