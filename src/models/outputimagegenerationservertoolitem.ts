@@ -9,10 +9,10 @@ import { ClosedEnum } from "../types/enums.js";
 import { Result as SafeParseResult } from "../types/fp.js";
 import { SDKValidationError } from "./errors/sdkvalidationerror.js";
 import {
-  ToolCallStatus,
-  ToolCallStatus$inboundSchema,
-  ToolCallStatus$outboundSchema,
-} from "./toolcallstatus.js";
+  FailableToolCallStatus,
+  FailableToolCallStatus$inboundSchema,
+  FailableToolCallStatus$outboundSchema,
+} from "./failabletoolcallstatus.js";
 
 export const OutputImageGenerationServerToolItemType = {
   OpenrouterImageGeneration: "openrouter:image_generation",
@@ -25,6 +25,10 @@ export type OutputImageGenerationServerToolItemType = ClosedEnum<
  * An openrouter:image_generation server tool output item
  */
 export type OutputImageGenerationServerToolItem = {
+  /**
+   * The error message when the tool call failed before producing a result. Set together with `status: 'failed'`; absent on a successful call.
+   */
+  error?: string | undefined;
   id?: string | undefined;
   imageB64?: string | undefined;
   imageUrl?: string | undefined;
@@ -37,7 +41,7 @@ export type OutputImageGenerationServerToolItem = {
    */
   result?: string | null | undefined;
   revisedPrompt?: string | undefined;
-  status: ToolCallStatus;
+  status: FailableToolCallStatus;
   type: OutputImageGenerationServerToolItemType;
 };
 
@@ -55,17 +59,19 @@ export const OutputImageGenerationServerToolItem$inboundSchema: z.ZodType<
   OutputImageGenerationServerToolItem,
   unknown
 > = z.object({
+  error: z.string().optional(),
   id: z.string().optional(),
   imageB64: z.string().optional(),
   imageUrl: z.string().optional(),
   prompt: z.string().optional(),
   result: z.nullable(z.string()).optional(),
   revisedPrompt: z.string().optional(),
-  status: ToolCallStatus$inboundSchema,
+  status: FailableToolCallStatus$inboundSchema,
   type: OutputImageGenerationServerToolItemType$inboundSchema,
 });
 /** @internal */
 export type OutputImageGenerationServerToolItem$Outbound = {
+  error?: string | undefined;
   id?: string | undefined;
   imageB64?: string | undefined;
   imageUrl?: string | undefined;
@@ -81,13 +87,14 @@ export const OutputImageGenerationServerToolItem$outboundSchema: z.ZodType<
   OutputImageGenerationServerToolItem$Outbound,
   OutputImageGenerationServerToolItem
 > = z.object({
+  error: z.string().optional(),
   id: z.string().optional(),
   imageB64: z.string().optional(),
   imageUrl: z.string().optional(),
   prompt: z.string().optional(),
   result: z.nullable(z.string()).optional(),
   revisedPrompt: z.string().optional(),
-  status: ToolCallStatus$outboundSchema,
+  status: FailableToolCallStatus$outboundSchema,
   type: OutputImageGenerationServerToolItemType$outboundSchema,
 });
 
