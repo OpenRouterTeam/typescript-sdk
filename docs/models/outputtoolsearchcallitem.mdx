@@ -1,0 +1,29 @@
+---
+title: "OutputToolSearchCallItem"
+---
+
+A call the model made to a `tool_search` tool declared with `"execution": "client"`. The client runs the search and replays this item with a `tool_search_output` item.
+
+## Example Usage
+
+```typescript
+import { OutputToolSearchCallItem } from "@openrouter/sdk/models";
+
+let value: OutputToolSearchCallItem = {
+  callId: "<id>",
+  execution: "client",
+  status: "completed",
+  type: "tool_search_call",
+};
+```
+
+## Fields
+
+| Field                                                                                      | Type                                                                                       | Required                                                                                   | Description                                                                                | Example                                                                                    |
+| ------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------ |
+| `arguments`                                                                                | *any*                                                                                      | :heavy_minus_sign:                                                                         | N/A                                                                                        |                                                                                            |
+| `callId`                                                                                   | *string*                                                                                   | :heavy_check_mark:                                                                         | N/A                                                                                        |                                                                                            |
+| `execution`                                                                                | [models.OutputToolSearchCallItemExecution](../models/outputtoolsearchcallitemexecution.mdx) | :heavy_check_mark:                                                                         | N/A                                                                                        |                                                                                            |
+| `id`                                                                                       | *string*                                                                                   | :heavy_minus_sign:                                                                         | N/A                                                                                        |                                                                                            |
+| `status`                                                                                   | [models.ToolCallStatus](../models/toolcallstatus.mdx)                                       | :heavy_check_mark:                                                                         | N/A                                                                                        | completed                                                                                  |
+| `type`                                                                                     | *"tool_search_call"*                                                                       | :heavy_check_mark:                                                                         | N/A                                                                                        |                                                                                            |

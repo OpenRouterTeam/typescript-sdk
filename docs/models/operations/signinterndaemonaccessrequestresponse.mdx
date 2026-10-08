@@ -1,0 +1,32 @@
+---
+title: "SignInternDaemonAccessRequestResponse"
+---
+
+## Example Usage
+
+```typescript
+import { SignInternDaemonAccessRequestResponse } from "@openrouter/sdk/models/operations";
+
+let value: SignInternDaemonAccessRequestResponse = {
+  headers: {
+    "key": [
+      "<value 1>",
+      "<value 2>",
+      "<value 3>",
+    ],
+    "key1": [],
+  },
+  result: {
+    xOriInvokeSignature: "MEUCIQ...",
+    xOriInvokeTimestamp: "1789000000",
+    xOriInvokeUser: "user_2abc",
+  },
+};
+```
+
+## Fields
+
+| Field                                                                                                               | Type                                                                                                                | Required                                                                                                            | Description                                                                                                         | Example                                                                                                             |
+| ------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------- |
+| `headers`                                                                                                           | Record\<string, *string*[]>                                                                                          | :heavy_check_mark:                                                                                                  | N/A                                                                                                                 |                                                                                                                     |
+| `result`                                                                                                            | [models.SignInternDaemonResponse](../../models/signinterndaemonresponse.mdx)                                         | :heavy_check_mark:                                                                                                  | N/A                                                                                                                 | \{<br/>"x-ori-invoke-signature": "MEUCIQ...",<br/>"x-ori-invoke-timestamp": "1789000000",<br/>"x-ori-invoke-user": "user_2abc"<br/>} |
