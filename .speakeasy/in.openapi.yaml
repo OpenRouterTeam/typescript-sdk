@@ -6208,6 +6208,7 @@ components:
           items:
             minLength: 1
             type: 'string'
+          maxItems: 500
           minItems: 1
           type: 'array'
       required:
@@ -6296,6 +6297,7 @@ components:
           items:
             minLength: 1
             type: 'string'
+          maxItems: 500
           minItems: 1
           type: 'array'
       required:
