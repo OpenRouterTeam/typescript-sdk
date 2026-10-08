@@ -41049,16 +41049,26 @@ paths:
         '403':
           content:
             application/json:
-              example:
-                error:
-                  code: 403
-                  message: 'This key acts as the organization and has no member to own a new intern'
-                  metadata:
-                    reason: 'no_acting_user'
-                    retryable: false
+              examples:
+                no_acting_user:
+                  value:
+                    error:
+                      code: 403
+                      message: 'This key acts as the organization and has no member to own a new intern'
+                      metadata:
+                        reason: 'no_acting_user'
+                        retryable: false
+                workspace_capability_unavailable:
+                  value:
+                    error:
+                      code: 403
+                      message: 'This feature is not available in this workspace.'
+                      metadata:
+                        reason: 'workspace_capability_unavailable'
+                        retryable: false
               schema:
                 $ref: '#/components/schemas/InternLifecycleError'
-          description: 'The key acts as an organization and has no member who can own the intern, or regional access is refused.'
+          description: 'The key acts as an organization and has no member who can own the intern, the workspace does not allow interns (a HIPAA workspace), or regional access is refused.'
         '404':
           content:
             application/json:
