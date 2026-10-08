@@ -43160,6 +43160,15 @@ paths:
             example: 'false'
             type: 'string'
             x-openrouter-type: 'boolean'
+        - description: 'Whether to include expired API keys in the response. Expired keys are excluded by default and returned only when this is true.'
+          in: 'query'
+          name: 'include_expired'
+          required: false
+          schema:
+            description: 'Whether to include expired API keys in the response. Expired keys are excluded by default and returned only when this is true.'
+            example: 'false'
+            type: 'string'
+            x-openrouter-type: 'boolean'
         - description: 'Number of API keys to skip for pagination'
           in: 'query'
           name: 'offset'
