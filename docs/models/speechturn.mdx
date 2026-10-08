@@ -1,0 +1,21 @@
+---
+title: "SpeechTurn"
+---
+
+## Example Usage
+
+```typescript
+import { SpeechTurn } from "@openrouter/sdk/models";
+
+let value: SpeechTurn = {
+  text: "Hi Jane.",
+};
+```
+
+## Fields
+
+| Field                                                                                                          | Type                                                                                                           | Required                                                                                                       | Description                                                                                                    | Example                                                                                                        |
+| -------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------- |
+| `instructions`                                                                                                 | *string*                                                                                                       | :heavy_minus_sign:                                                                                             | Delivery instructions for this turn, such as tone, pacing, or emotion. Overrides the top-level `instructions`. | whispering                                                                                                     |
+| `text`                                                                                                         | *string*                                                                                                       | :heavy_check_mark:                                                                                             | Text to synthesize                                                                                             | Hi Jane.                                                                                                       |
+| `voice`                                                                                                        | *string*                                                                                                       | :heavy_minus_sign:                                                                                             | Voice for this turn. Defaults to the top-level `voice`.                                                        | Kore                                                                                                           |
