@@ -227,7 +227,7 @@ export class ClientSDK {
       ...options?.fetchOptions,
       ...options,
     };
-    if (!fetchOptions?.signal && conf.timeoutMs != null && conf.timeoutMs > 0) {
+    if (conf.timeoutMs != null && conf.timeoutMs > 0) {
       context.timeoutMs = conf.timeoutMs;
     }
 
