@@ -15287,6 +15287,11 @@ components:
             type: 'string'
           maxItems: 1024
           type: 'array'
+        cost_tier:
+          description: 'Select low, medium, high, or a cost tier configured by the operator. Overrides the live-config tier and replaces the shared routing policy with that tier. Omit to use the live configuration. Model exclusions and the router kill switch still apply.'
+          example: 'medium'
+          pattern: '^[a-z][a-z0-9_-]{0,31}$'
+          type: 'string'
         excluded_models:
           description: 'Remove these models from the router. Each entry is a model slug or a wildcard pattern (e.g. "xiaomi/*"). A `~author/family-latest` alias matches every revision of that family. Up to 1024 patterns, each at most 1024 characters, with 65536 total characters across all patterns. Applied after `models`, so an excluded pattern always wins over an included one; when the lists leave no model the request can use, it fails with 404 rather than routing outside them.'
           example:
