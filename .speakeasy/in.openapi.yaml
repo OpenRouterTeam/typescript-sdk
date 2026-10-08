@@ -26738,7 +26738,7 @@ components:
             - $ref: '#/components/schemas/PercentileStats'
             - description: 'Throughput percentiles in tokens per second over the last 30 minutes. Throughput measures output token generation speed. Only visible when authenticated with an API key or cookie; returns null for unauthenticated requests.'
         uptime_last_1d:
-          description: 'Uptime percentage over the last 1 day, calculated as successful requests / (successful + error requests) * 100. Rate-limited requests are excluded. Returns null if insufficient data.'
+          description: 'Uptime percentage over the last day: the share of minutes in which at least 80% of provider attempts succeeded, counting only minutes with 10 or more attempts. Rate-limited and caller-caused failures are excluded. Null when no minute had enough traffic.'
           format: 'double'
           type:
             - 'number'
@@ -26749,7 +26749,7 @@ components:
             - 'number'
             - 'null'
         uptime_last_5m:
-          description: 'Uptime percentage over the last 5 minutes, calculated as successful requests / (successful + error requests) * 100. Rate-limited requests are excluded. Returns null if insufficient data.'
+          description: 'Uptime percentage over the last 5 minutes: the share of minutes in which at least 80% of provider attempts succeeded, counting only minutes with 10 or more attempts. Rate-limited and caller-caused failures are excluded. Null when no minute had enough traffic.'
           format: 'double'
           type:
             - 'number'
