@@ -1,0 +1,20 @@
+---
+title: "SignInternDaemonRequest"
+---
+
+## Example Usage
+
+```typescript
+import { SignInternDaemonRequest } from "@openrouter/sdk/models";
+
+let value: SignInternDaemonRequest = {
+  bodySha256:
+    "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+};
+```
+
+## Fields
+
+| Field                                                                                   | Type                                                                                    | Required                                                                                | Description                                                                             | Example                                                                                 |
+| --------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------- |
+| `bodySha256`                                                                            | *string*                                                                                | :heavy_check_mark:                                                                      | Lower-case hex SHA-256 of the exact bytes the CLI will send as the daemon request body. | e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855                        |

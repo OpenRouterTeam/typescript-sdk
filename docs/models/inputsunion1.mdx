@@ -548,3 +548,28 @@ const value: models.ConfigurationUpdateItem = {
 };
 ```
 
+### `models.ToolSearchCallItem`
+
+```typescript
+const value: models.ToolSearchCallItem = {
+  callId: "call_search_1",
+  execution: "client",
+  type: "tool_search_call",
+};
+```
+
+### `models.ToolSearchOutputItem`
+
+```typescript
+const value: models.ToolSearchOutputItem = {
+  callId: "call_search_1",
+  execution: "client",
+  tools: [
+    {
+      type: "function",
+    },
+  ],
+  type: "tool_search_output",
+};
+```
+
