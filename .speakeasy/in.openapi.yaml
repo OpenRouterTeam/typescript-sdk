@@ -564,7 +564,7 @@ components:
       type: 'object'
     AlignmentPlugin:
       additionalProperties: false
-      description: 'Beta. States the listed rules to the model and evaluates every turn against them. Requests are evaluated only for entities admitted to the beta; the configuration, metadata, and error shapes may change.'
+      description: 'Beta. States the listed rules to the model and evaluates every turn against them; the configuration, metadata, and error shapes may change.'
       example:
         id: 'alignment'
         mode: 'audit'
