@@ -9318,11 +9318,11 @@ components:
         user: 'employee_123'
       properties:
         user:
-          description: 'Immutable case-sensitive tracking string supplied as user on inference requests. URL-encode it in resource paths.'
+          description: 'Immutable case-sensitive tracking string supplied as user on inference requests or as external.user on API keys: 1 to 512 characters, well-formed Unicode, no NUL, no surrounding whitespace. URL-encode it in resource paths; an ID of `.` or `..` cannot be addressed by path, so look it up with the list filter.'
           example: 'employee_123'
-          maxLength: 256
+          maxLength: 512
           minLength: 1
-          pattern: '^[^\p{Cc}]+$'
+          pattern: '^[^\u0000]+$'
           type: 'string'
       required:
         - 'user'
@@ -10823,11 +10823,11 @@ components:
           format: 'date-time'
           type: 'string'
         user:
-          description: 'Immutable case-sensitive tracking string supplied as user on inference requests. URL-encode it in resource paths.'
+          description: 'Immutable case-sensitive tracking string supplied as user on inference requests or as external.user on API keys: 1 to 512 characters, well-formed Unicode, no NUL, no surrounding whitespace. URL-encode it in resource paths; an ID of `.` or `..` cannot be addressed by path, so look it up with the list filter.'
           example: 'employee_123'
-          maxLength: 256
+          maxLength: 512
           minLength: 1
-          pattern: '^[^\p{Cc}]+$'
+          pattern: '^[^\u0000]+$'
           type: 'string'
       required:
         - 'user'
@@ -37875,16 +37875,16 @@ paths:
             maximum: 100
             minimum: 1
             type: 'integer'
-        - description: 'Immutable case-sensitive tracking string supplied as user on inference requests. URL-encode it in resource paths.'
+        - description: 'Immutable case-sensitive tracking string supplied as user on inference requests or as external.user on API keys: 1 to 512 characters, well-formed Unicode, no NUL, no surrounding whitespace. URL-encode it in resource paths; an ID of `.` or `..` cannot be addressed by path, so look it up with the list filter.'
           in: 'query'
           name: 'user'
           required: false
           schema:
-            description: 'Immutable case-sensitive tracking string supplied as user on inference requests. URL-encode it in resource paths.'
+            description: 'Immutable case-sensitive tracking string supplied as user on inference requests or as external.user on API keys: 1 to 512 characters, well-formed Unicode, no NUL, no surrounding whitespace. URL-encode it in resource paths; an ID of `.` or `..` cannot be addressed by path, so look it up with the list filter.'
             example: 'employee_123'
-            maxLength: 256
+            maxLength: 512
             minLength: 1
-            pattern: '^[^\p{Cc}]+$'
+            pattern: '^[^\u0000]+$'
             type: 'string'
         - description: 'Include deactivated registrations.'
           in: 'query'
@@ -38047,16 +38047,16 @@ paths:
       description: 'Soft-deactivate a registration while retaining its tracking ID. Repeat deactivation succeeds. This does not block inference; reactivate through PATCH. [Management key](/docs/guides/overview/auth/management-api-keys) required.'
       operationId: 'deleteEndUser'
       parameters:
-        - description: 'Immutable case-sensitive tracking string supplied as user on inference requests. URL-encode it in resource paths.'
+        - description: 'Immutable case-sensitive tracking string supplied as user on inference requests or as external.user on API keys: 1 to 512 characters, well-formed Unicode, no NUL, no surrounding whitespace. URL-encode it in resource paths; an ID of `.` or `..` cannot be addressed by path, so look it up with the list filter.'
           in: 'path'
           name: 'user'
           required: true
           schema:
-            description: 'Immutable case-sensitive tracking string supplied as user on inference requests. URL-encode it in resource paths.'
+            description: 'Immutable case-sensitive tracking string supplied as user on inference requests or as external.user on API keys: 1 to 512 characters, well-formed Unicode, no NUL, no surrounding whitespace. URL-encode it in resource paths; an ID of `.` or `..` cannot be addressed by path, so look it up with the list filter.'
             example: 'employee_123'
-            maxLength: 256
+            maxLength: 512
             minLength: 1
-            pattern: '^[^\p{Cc}]+$'
+            pattern: '^[^\u0000]+$'
             type: 'string'
       responses:
         '204':
@@ -38109,16 +38109,16 @@ paths:
       description: 'Retrieve an active or inactive registration by its URL-encoded, caller-supplied tracking ID. [Management key](/docs/guides/overview/auth/management-api-keys) required.'
       operationId: 'getEndUser'
       parameters:
-        - description: 'Immutable case-sensitive tracking string supplied as user on inference requests. URL-encode it in resource paths.'
+        - description: 'Immutable case-sensitive tracking string supplied as user on inference requests or as external.user on API keys: 1 to 512 characters, well-formed Unicode, no NUL, no surrounding whitespace. URL-encode it in resource paths; an ID of `.` or `..` cannot be addressed by path, so look it up with the list filter.'
           in: 'path'
           name: 'user'
           required: true
           schema:
-            description: 'Immutable case-sensitive tracking string supplied as user on inference requests. URL-encode it in resource paths.'
+            description: 'Immutable case-sensitive tracking string supplied as user on inference requests or as external.user on API keys: 1 to 512 characters, well-formed Unicode, no NUL, no surrounding whitespace. URL-encode it in resource paths; an ID of `.` or `..` cannot be addressed by path, so look it up with the list filter.'
             example: 'employee_123'
-            maxLength: 256
+            maxLength: 512
             minLength: 1
-            pattern: '^[^\p{Cc}]+$'
+            pattern: '^[^\u0000]+$'
             type: 'string'
       responses:
         '200':
@@ -38181,16 +38181,16 @@ paths:
       description: 'Update registration state without changing identity. State changes do not enforce inference access. [Management key](/docs/guides/overview/auth/management-api-keys) required.'
       operationId: 'updateEndUser'
       parameters:
-        - description: 'Immutable case-sensitive tracking string supplied as user on inference requests. URL-encode it in resource paths.'
+        - description: 'Immutable case-sensitive tracking string supplied as user on inference requests or as external.user on API keys: 1 to 512 characters, well-formed Unicode, no NUL, no surrounding whitespace. URL-encode it in resource paths; an ID of `.` or `..` cannot be addressed by path, so look it up with the list filter.'
           in: 'path'
           name: 'user'
           required: true
           schema:
-            description: 'Immutable case-sensitive tracking string supplied as user on inference requests. URL-encode it in resource paths.'
+            description: 'Immutable case-sensitive tracking string supplied as user on inference requests or as external.user on API keys: 1 to 512 characters, well-formed Unicode, no NUL, no surrounding whitespace. URL-encode it in resource paths; an ID of `.` or `..` cannot be addressed by path, so look it up with the list filter.'
             example: 'employee_123'
-            maxLength: 256
+            maxLength: 512
             minLength: 1
-            pattern: '^[^\p{Cc}]+$'
+            pattern: '^[^\u0000]+$'
             type: 'string'
       requestBody:
         content:
