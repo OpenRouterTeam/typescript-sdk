@@ -44217,7 +44217,7 @@ paths:
         - 'API Keys'
       x-speakeasy-name-override: 'get'
     patch:
-      description: "Update an existing API key. Authenticate with a [management key](/docs/guides/overview/auth/management-api-keys).\n\n<Warning>\nYou can't change `workspace_id` through the API. The request body accepts only the fields listed below, and unrecognized fields are ignored. To move a key to another workspace, use the OpenRouter dashboard. If the body contains none of the accepted fields, the request fails with `400` and the message `No update fields provided`.\n</Warning>"
+      description: "Update an existing API key. Authenticate with a [management key](/docs/guides/overview/auth/management-api-keys).\n\nSet `workspace_id` to move the key to another workspace. The key keeps its value, and any other fields in the same request are applied atomically with the move. Guardrail selections move with the key; other workspace-scoped settings (presets, BYOK keys, broadcast destinations, routing rules) do not. A move into or out of a HIPAA workspace is refused with `403`. In an organization, if the key's creator is not a member of a non-default target workspace, the request fails with `409`; add them to the workspace first.\n\n<Warning>\nThe request body accepts only the fields listed below, and unrecognized fields are ignored. If the body contains none of the accepted fields, the request fails with `400` and the message `No update fields provided`.\n</Warning>"
       operationId: 'updateKeys'
       parameters:
         - description: 'The hash identifier of the API key to update'
@@ -44274,6 +44274,11 @@ paths:
                 name:
                   description: 'New name for the API key'
                   example: 'Updated API Key Name'
+                  type: 'string'
+                workspace_id:
+                  description: 'Move the API key to this workspace. The key keeps its value; guardrail selections move with it, while other workspace-scoped settings (presets, BYOK keys, broadcast destinations, routing rules) do not. Sending the key''s current workspace is a no-op.'
+                  example: '0df9e665-d932-5740-b2c7-b52af166bc11'
+                  format: 'uuid'
                   type: 'string'
               type: 'object'
         required: true
@@ -44518,7 +44523,7 @@ paths:
                       code: 400
                       message: 'Invalid request parameters'
                 no_update_fields:
-                  description: 'Returned when the body contains none of the accepted fields, for example `{"workspace_id": "..."}`. `workspace_id` can''t be changed through the API.'
+                  description: 'Returned when the body contains none of the accepted fields, for example `{"label": "..."}`.'
                   summary: 'No accepted fields in the request body'
                   value:
                     error:
@@ -44537,6 +44542,16 @@ paths:
               schema:
                 $ref: '#/components/schemas/UnauthorizedResponse'
           description: 'Unauthorized - Authentication required or invalid credentials'
+        '403':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 403
+                  message: 'Only management keys can perform this operation'
+              schema:
+                $ref: '#/components/schemas/ForbiddenResponse'
+          description: 'Forbidden - Authentication successful but insufficient permissions'
         '404':
           content:
             application/json:
@@ -44547,6 +44562,16 @@ paths:
               schema:
                 $ref: '#/components/schemas/NotFoundResponse'
           description: 'Not Found - Resource does not exist'
+        '409':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 409
+                  message: 'The API key creator is not a member of the target workspace. Add them to the workspace, then retry.'
+              schema:
+                $ref: '#/components/schemas/ConflictResponse'
+          description: 'Conflict - Resource conflict or concurrent modification'
         '429':
           content:
             application/json:
