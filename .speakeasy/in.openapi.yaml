@@ -39599,7 +39599,7 @@ paths:
                   message: 'Only management keys can perform this operation'
               schema:
                 $ref: '#/components/schemas/ForbiddenResponse'
-          description: 'The workspace is not owned by this account, or the guardrail would give a HIPAA-enabled workspace a person-name or address sensitive-info filter, which is not available there.'
+          description: 'The workspace is not owned by this account, or the workspace does not allow a person-name or address sensitive-info filter.'
         '500':
           content:
             application/json:
@@ -39826,7 +39826,7 @@ paths:
                   message: 'Only management keys can perform this operation'
               schema:
                 $ref: '#/components/schemas/ForbiddenResponse'
-          description: 'The update would give a HIPAA-enabled workspace a person-name or address sensitive-info filter, which is not available there.'
+          description: 'The update would add a person-name or address sensitive-info filter to a workspace that does not allow it.'
         '404':
           content:
             application/json:
@@ -40020,7 +40020,7 @@ paths:
                   message: 'Only management keys can perform this operation'
               schema:
                 $ref: '#/components/schemas/ForbiddenResponse'
-          description: 'The guardrail has no workspace and carries a person-name or address sensitive-info filter, and at least one target key belongs to a HIPAA-enabled workspace, where that filter is not available.'
+          description: 'The guardrail has no workspace and carries a person-name or address sensitive-info filter, and at least one target key belongs to a workspace that does not allow that filter.'
         '404':
           content:
             application/json:
@@ -41068,7 +41068,7 @@ paths:
                         retryable: false
               schema:
                 $ref: '#/components/schemas/InternLifecycleError'
-          description: 'The key acts as an organization and has no member who can own the intern, the workspace does not allow interns (a HIPAA workspace), or regional access is refused.'
+          description: 'The key acts as an organization and has no member who can own the intern, the workspace does not allow interns, or regional access is refused.'
         '404':
           content:
             application/json:
@@ -44217,7 +44217,7 @@ paths:
         - 'API Keys'
       x-speakeasy-name-override: 'get'
     patch:
-      description: "Update an existing API key. Authenticate with a [management key](/docs/guides/overview/auth/management-api-keys).\n\nSet `workspace_id` to move the key to another workspace. The key keeps its value, and any other fields in the same request are applied atomically with the move. Guardrail selections move with the key; other workspace-scoped settings (presets, BYOK keys, broadcast destinations, routing rules) do not. A move into or out of a HIPAA workspace is refused with `403`. In an organization, if the key's creator is not a member of a non-default target workspace, the request fails with `409`; add them to the workspace first.\n\n<Warning>\nThe request body accepts only the fields listed below, and unrecognized fields are ignored. If the body contains none of the accepted fields, the request fails with `400` and the message `No update fields provided`.\n</Warning>"
+      description: "Update an existing API key. Authenticate with a [management key](/docs/guides/overview/auth/management-api-keys).\n\nSet `workspace_id` to move the key to another workspace.\n\n<Warning>\nThe request body accepts only the fields listed below, and unrecognized fields are ignored. If the body contains none of the accepted fields, the request fails with `400` and the message `No update fields provided`.\n</Warning>"
       operationId: 'updateKeys'
       parameters:
         - description: 'The hash identifier of the API key to update'
