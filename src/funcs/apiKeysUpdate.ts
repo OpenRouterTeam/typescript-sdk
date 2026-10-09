@@ -33,8 +33,10 @@ import { Result } from "../types/fp.js";
  * @remarks
  * Update an existing API key. Authenticate with a [management key](/docs/guides/overview/auth/management-api-keys).
  *
+ * Set `workspace_id` to move the key to another workspace. The key keeps its value, and any other fields in the same request are applied atomically with the move. Guardrail selections move with the key; other workspace-scoped settings (presets, BYOK keys, broadcast destinations, routing rules) do not. A move into or out of a HIPAA workspace is refused with `403`. In an organization, if the key's creator is not a member of a non-default target workspace, the request fails with `409`; add them to the workspace first.
+ *
  * <Warning>
- * You can't change `workspace_id` through the API. The request body accepts only the fields listed below, and unrecognized fields are ignored. To move a key to another workspace, use the OpenRouter dashboard. If the body contains none of the accepted fields, the request fails with `400` and the message `No update fields provided`.
+ * The request body accepts only the fields listed below, and unrecognized fields are ignored. If the body contains none of the accepted fields, the request fails with `400` and the message `No update fields provided`.
  * </Warning>
  */
 export function apiKeysUpdate(
@@ -46,7 +48,9 @@ export function apiKeysUpdate(
     operations.UpdateKeysResponse,
     | errors.BadRequestResponseError
     | errors.UnauthorizedResponseError
+    | errors.ForbiddenResponseError
     | errors.NotFoundResponseError
+    | errors.ConflictResponseError
     | errors.TooManyRequestsResponseError
     | errors.InternalServerResponseError
     | OpenRouterError
@@ -76,7 +80,9 @@ async function $do(
       operations.UpdateKeysResponse,
       | errors.BadRequestResponseError
       | errors.UnauthorizedResponseError
+      | errors.ForbiddenResponseError
       | errors.NotFoundResponseError
+      | errors.ConflictResponseError
       | errors.TooManyRequestsResponseError
       | errors.InternalServerResponseError
       | OpenRouterError
@@ -194,7 +200,9 @@ async function $do(
     operations.UpdateKeysResponse,
     | errors.BadRequestResponseError
     | errors.UnauthorizedResponseError
+    | errors.ForbiddenResponseError
     | errors.NotFoundResponseError
+    | errors.ConflictResponseError
     | errors.TooManyRequestsResponseError
     | errors.InternalServerResponseError
     | OpenRouterError
@@ -209,7 +217,9 @@ async function $do(
     M.json(200, operations.UpdateKeysResponse$inboundSchema),
     M.jsonErr(400, errors.BadRequestResponseError$inboundSchema),
     M.jsonErr(401, errors.UnauthorizedResponseError$inboundSchema),
+    M.jsonErr(403, errors.ForbiddenResponseError$inboundSchema),
     M.jsonErr(404, errors.NotFoundResponseError$inboundSchema),
+    M.jsonErr(409, errors.ConflictResponseError$inboundSchema),
     M.jsonErr(429, errors.TooManyRequestsResponseError$inboundSchema),
     M.jsonErr(500, errors.InternalServerResponseError$inboundSchema),
     M.fail("4XX"),
