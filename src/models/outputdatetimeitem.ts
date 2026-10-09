@@ -9,10 +9,10 @@ import { ClosedEnum } from "../types/enums.js";
 import { Result as SafeParseResult } from "../types/fp.js";
 import { SDKValidationError } from "./errors/sdkvalidationerror.js";
 import {
-  ToolCallStatus,
-  ToolCallStatus$inboundSchema,
-  ToolCallStatus$outboundSchema,
-} from "./toolcallstatus.js";
+  FailableToolCallStatus,
+  FailableToolCallStatus$inboundSchema,
+  FailableToolCallStatus$outboundSchema,
+} from "./failabletoolcallstatus.js";
 
 export const OutputDatetimeItemType = {
   OpenrouterDatetime: "openrouter:datetime",
@@ -27,8 +27,12 @@ export type OutputDatetimeItem = {
    * ISO 8601 datetime string
    */
   datetime: string;
+  /**
+   * The error message when the tool call failed before producing a result. Set together with `status: 'failed'`; absent on a successful call.
+   */
+  error?: string | undefined;
   id?: string | undefined;
-  status: ToolCallStatus;
+  status: FailableToolCallStatus;
   /**
    * IANA timezone name
    */
@@ -51,14 +55,16 @@ export const OutputDatetimeItem$inboundSchema: z.ZodType<
   unknown
 > = z.object({
   datetime: z.string(),
+  error: z.string().optional(),
   id: z.string().optional(),
-  status: ToolCallStatus$inboundSchema,
+  status: FailableToolCallStatus$inboundSchema,
   timezone: z.string(),
   type: OutputDatetimeItemType$inboundSchema,
 });
 /** @internal */
 export type OutputDatetimeItem$Outbound = {
   datetime: string;
+  error?: string | undefined;
   id?: string | undefined;
   status: string;
   timezone: string;
@@ -71,8 +77,9 @@ export const OutputDatetimeItem$outboundSchema: z.ZodType<
   OutputDatetimeItem
 > = z.object({
   datetime: z.string(),
+  error: z.string().optional(),
   id: z.string().optional(),
-  status: ToolCallStatus$outboundSchema,
+  status: FailableToolCallStatus$outboundSchema,
   timezone: z.string(),
   type: OutputDatetimeItemType$outboundSchema,
 });

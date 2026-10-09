@@ -1,0 +1,25 @@
+---
+title: "SignInternDaemonResponse"
+---
+
+Headers the CLI copies onto the daemon request so the sidecar can verify who is asking.
+
+## Example Usage
+
+```typescript
+import { SignInternDaemonResponse } from "@openrouter/sdk/models";
+
+let value: SignInternDaemonResponse = {
+  xOriInvokeSignature: "MEUCIQ...",
+  xOriInvokeTimestamp: "1789000000",
+  xOriInvokeUser: "user_2abc",
+};
+```
+
+## Fields
+
+| Field                                                                         | Type                                                                          | Required                                                                      | Description                                                                   |
+| ----------------------------------------------------------------------------- | ----------------------------------------------------------------------------- | ----------------------------------------------------------------------------- | ----------------------------------------------------------------------------- |
+| `xOriInvokeSignature`                                                         | *string*                                                                      | :heavy_check_mark:                                                            | Base64 Ed25519 signature over the intern id, timestamp, user and body digest. |
+| `xOriInvokeTimestamp`                                                         | *string*                                                                      | :heavy_check_mark:                                                            | Unix seconds at signing; the daemon refuses proofs older than its window.     |
+| `xOriInvokeUser`                                                              | *string*                                                                      | :heavy_check_mark:                                                            | The verified OAuth subject the proof names. Never taken from the request.     |

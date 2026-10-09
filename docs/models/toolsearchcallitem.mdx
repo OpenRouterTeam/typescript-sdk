@@ -1,0 +1,28 @@
+---
+title: "ToolSearchCallItem"
+---
+
+A tool search call the client executed
+
+## Example Usage
+
+```typescript
+import { ToolSearchCallItem } from "@openrouter/sdk/models";
+
+let value: ToolSearchCallItem = {
+  callId: "call_search_1",
+  execution: "client",
+  type: "tool_search_call",
+};
+```
+
+## Fields
+
+| Field                                                                          | Type                                                                           | Required                                                                       | Description                                                                    |
+| ------------------------------------------------------------------------------ | ------------------------------------------------------------------------------ | ------------------------------------------------------------------------------ | ------------------------------------------------------------------------------ |
+| `arguments`                                                                    | *any*                                                                          | :heavy_minus_sign:                                                             | N/A                                                                            |
+| `callId`                                                                       | *string*                                                                       | :heavy_check_mark:                                                             | N/A                                                                            |
+| `execution`                                                                    | [models.ToolSearchCallItemExecution](../models/toolsearchcallitemexecution.mdx) | :heavy_check_mark:                                                             | N/A                                                                            |
+| `id`                                                                           | *string*                                                                       | :heavy_minus_sign:                                                             | N/A                                                                            |
+| `status`                                                                       | [models.ToolSearchCallItemStatus](../models/toolsearchcallitemstatus.mdx)       | :heavy_minus_sign:                                                             | N/A                                                                            |
+| `type`                                                                         | [models.ToolSearchCallItemType](../models/toolsearchcallitemtype.mdx)           | :heavy_check_mark:                                                             | N/A                                                                            |
