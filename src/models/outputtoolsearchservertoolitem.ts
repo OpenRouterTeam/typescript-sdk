@@ -9,10 +9,10 @@ import { ClosedEnum } from "../types/enums.js";
 import { Result as SafeParseResult } from "../types/fp.js";
 import { SDKValidationError } from "./errors/sdkvalidationerror.js";
 import {
-  ToolCallStatus,
-  ToolCallStatus$inboundSchema,
-  ToolCallStatus$outboundSchema,
-} from "./toolcallstatus.js";
+  FailableToolCallStatus,
+  FailableToolCallStatus$inboundSchema,
+  FailableToolCallStatus$outboundSchema,
+} from "./failabletoolcallstatus.js";
 
 export const OutputToolSearchServerToolItemType = {
   OpenrouterToolSearch: "openrouter:tool_search",
@@ -25,9 +25,13 @@ export type OutputToolSearchServerToolItemType = ClosedEnum<
  * An openrouter:tool_search server tool output item
  */
 export type OutputToolSearchServerToolItem = {
+  /**
+   * The error message when the tool call failed before producing a result. Set together with `status: 'failed'`; absent on a successful call.
+   */
+  error?: string | undefined;
   id?: string | undefined;
   query?: string | undefined;
-  status: ToolCallStatus;
+  status: FailableToolCallStatus;
   type: OutputToolSearchServerToolItemType;
 };
 
@@ -45,13 +49,15 @@ export const OutputToolSearchServerToolItem$inboundSchema: z.ZodType<
   OutputToolSearchServerToolItem,
   unknown
 > = z.object({
+  error: z.string().optional(),
   id: z.string().optional(),
   query: z.string().optional(),
-  status: ToolCallStatus$inboundSchema,
+  status: FailableToolCallStatus$inboundSchema,
   type: OutputToolSearchServerToolItemType$inboundSchema,
 });
 /** @internal */
 export type OutputToolSearchServerToolItem$Outbound = {
+  error?: string | undefined;
   id?: string | undefined;
   query?: string | undefined;
   status: string;
@@ -63,9 +69,10 @@ export const OutputToolSearchServerToolItem$outboundSchema: z.ZodType<
   OutputToolSearchServerToolItem$Outbound,
   OutputToolSearchServerToolItem
 > = z.object({
+  error: z.string().optional(),
   id: z.string().optional(),
   query: z.string().optional(),
-  status: ToolCallStatus$outboundSchema,
+  status: FailableToolCallStatus$outboundSchema,
   type: OutputToolSearchServerToolItemType$outboundSchema,
 });
 
