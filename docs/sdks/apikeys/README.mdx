@@ -433,8 +433,10 @@ run();
 
 Update an existing API key. Authenticate with a [management key](/docs/guides/overview/auth/management-api-keys).
 
+Set `workspace_id` to move the key to another workspace.
+
 \<Warning>
-You can't change `workspace_id` through the API. The request body accepts only the fields listed below, and unrecognized fields are ignored. To move a key to another workspace, use the OpenRouter dashboard. If the body contains none of the accepted fields, the request fails with `400` and the message `No update fields provided`.
+The request body accepts only the fields listed below, and unrecognized fields are ignored. If the body contains none of the accepted fields, the request fails with `400` and the message `No update fields provided`.
 </Warning>
 
 ### Example Usage: invalid_parameters
@@ -569,7 +571,9 @@ run();
 | ----------------------------------- | ----------------------------------- | ----------------------------------- |
 | errors.BadRequestResponseError      | 400                                 | application/json                    |
 | errors.UnauthorizedResponseError    | 401                                 | application/json                    |
+| errors.ForbiddenResponseError       | 403                                 | application/json                    |
 | errors.NotFoundResponseError        | 404                                 | application/json                    |
+| errors.ConflictResponseError        | 409                                 | application/json                    |
 | errors.TooManyRequestsResponseError | 429                                 | application/json                    |
 | errors.InternalServerResponseError  | 500                                 | application/json                    |
 | errors.OpenRouterDefaultError       | 4XX, 5XX                            | \*/\*                               |
