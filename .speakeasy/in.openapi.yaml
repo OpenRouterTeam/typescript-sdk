@@ -176,14 +176,28 @@ components:
               - allOf:
                   - $ref: '#/components/schemas/FunctionTool'
                   - properties:
+                      allowed_callers:
+                        items:
+                          enum:
+                            - 'direct'
+                            - 'programmatic'
+                          type: 'string'
+                        type:
+                          - 'array'
+                          - 'null'
                       async:
                         description: 'Lets the model keep working after calling this tool instead of waiting for its output. The tool is still executed by the client; return the result in a later request as a `function_call_output` with the original `call_id`. Only honored by providers whose Responses API supports async tools; ignored elsewhere.'
                         example: true
                         type: 'boolean'
                       defer_loading:
-                        description: 'Withhold this tool from the model until `openrouter:tool_search` finds it. Requires the tool search server tool; at least one tool must remain non-deferred.'
+                        description: 'Withhold this tool from the model until `openrouter:tool_search` finds it. Where the request declares no search tool, OpenRouter may add `openrouter:tool_search` to serve the flag, and otherwise sends the tool in full. A request that declares the search tool itself must keep at least one tool non-deferred.'
                         example: true
                         type: 'boolean'
+                      output_schema:
+                        additionalProperties: {}
+                        type:
+                          - 'object'
+                          - 'null'
                     type: 'object'
                 description: 'Function tool definition'
                 example:
@@ -4454,14 +4468,28 @@ components:
               - allOf:
                   - $ref: '#/components/schemas/FunctionTool'
                   - properties:
+                      allowed_callers:
+                        items:
+                          enum:
+                            - 'direct'
+                            - 'programmatic'
+                          type: 'string'
+                        type:
+                          - 'array'
+                          - 'null'
                       async:
                         description: 'Lets the model keep working after calling this tool instead of waiting for its output. The tool is still executed by the client; return the result in a later request as a `function_call_output` with the original `call_id`. Only honored by providers whose Responses API supports async tools; ignored elsewhere.'
                         example: true
                         type: 'boolean'
                       defer_loading:
-                        description: 'Withhold this tool from the model until `openrouter:tool_search` finds it. Requires the tool search server tool; at least one tool must remain non-deferred.'
+                        description: 'Withhold this tool from the model until `openrouter:tool_search` finds it. Where the request declares no search tool, OpenRouter may add `openrouter:tool_search` to serve the flag, and otherwise sends the tool in full. A request that declares the search tool itself must keep at least one tool non-deferred.'
                         example: true
                         type: 'boolean'
+                      output_schema:
+                        additionalProperties: {}
+                        type:
+                          - 'object'
+                          - 'null'
                     type: 'object'
                 description: 'Function tool definition'
                 example:
@@ -7058,6 +7086,8 @@ components:
         - properties:
             cache_control:
               $ref: '#/components/schemas/ChatContentCacheControl'
+            defer_loading:
+              type: 'boolean'
             function:
               description: 'Function definition for tool calling'
               example:
@@ -7072,6 +7102,8 @@ components:
                     - 'location'
                   type: 'object'
               properties:
+                defer_loading:
+                  type: 'boolean'
                 description:
                   description: 'Function description for the model'
                   example: 'Get the current weather for a location'
@@ -7271,6 +7303,8 @@ components:
           $ref: '#/components/schemas/AnthropicCacheControlDirective'
         debug:
           $ref: '#/components/schemas/ChatDebugOptions'
+        deferred_tools:
+          $ref: '#/components/schemas/DeferredToolsControl'
         frequency_penalty:
           description: 'Frequency penalty (-2.0 to 2.0)'
           example: 0
@@ -10006,6 +10040,8 @@ components:
           description: 'Lets the model keep working after calling this tool instead of waiting for its output. The tool is still executed by the client; return the result in a later request as a `function_call_output` with the original `call_id`. Only honored by providers whose Responses API supports async tools; ignored elsewhere.'
           example: true
           type: 'boolean'
+        defer_loading:
+          type: 'boolean'
         description:
           type: 'string'
         format:
@@ -10542,6 +10578,108 @@ components:
       type:
         - 'object'
         - 'null'
+    DeferredBm25Search:
+      description: 'Deterministic BM25 retrieval over supplied tool definitions.'
+      example:
+        max_results: 5
+        type: 'bm25'
+      properties:
+        max_results:
+          type: 'integer'
+        type:
+          enum:
+            - 'bm25'
+          type: 'string'
+      required:
+        - 'type'
+      type: 'object'
+    DeferredCustomSearch:
+      description: 'Caller-executed search returning existing tool identities under result_key.'
+      example:
+        max_results: 5
+        result_key: 'tool_names'
+        tool_id: 'search_catalog'
+        type: 'custom'
+      properties:
+        max_results:
+          type: 'integer'
+        result_key:
+          minLength: 1
+          type: 'string'
+        tool_id:
+          minLength: 1
+          type: 'string'
+        type:
+          enum:
+            - 'custom'
+          type: 'string'
+      required:
+        - 'type'
+        - 'tool_id'
+        - 'result_key'
+      type: 'object'
+    DeferredRegexSearch:
+      description: 'Versioned safe-regex retrieval over supplied tool definitions.'
+      example:
+        max_results: 5
+        type: 'regex'
+      properties:
+        max_results:
+          type: 'integer'
+        type:
+          enum:
+            - 'regex'
+          type: 'string'
+      required:
+        - 'type'
+      type: 'object'
+    DeferredToolsControl:
+      description: 'Opt-in versioned router-level deferred-tool protocol. Replay assistant reasoning unchanged on continuation; keep the catalog unchanged.'
+      example:
+        profile: 'portable'
+        protocol: 'v1'
+        search:
+          max_results: 5
+          type: 'bm25'
+        validation: 'runtime'
+      properties:
+        profile:
+          description: 'Loading profile. Only `portable` is available in this release: OpenRouter serves deferral with router-built search and call wrappers on any model.'
+          enum:
+            - 'portable'
+          type: 'string'
+        protocol:
+          enum:
+            - 'v1'
+          type: 'string'
+        search:
+          $ref: '#/components/schemas/DeferredToolsSearchStrategy'
+        validation:
+          description: 'Where tool-call arguments are checked against the original schema. Only `runtime` (in OpenRouter) is available in this release.'
+          enum:
+            - 'runtime'
+          type: 'string'
+      required:
+        - 'protocol'
+        - 'profile'
+        - 'validation'
+        - 'search'
+      type: 'object'
+    DeferredToolsSearchStrategy:
+      description: 'Router-local regex/BM25 or caller-owned custom search.'
+      discriminator:
+        mapping:
+          bm25: '#/components/schemas/DeferredBm25Search'
+          custom: '#/components/schemas/DeferredCustomSearch'
+          regex: '#/components/schemas/DeferredRegexSearch'
+        propertyName: 'type'
+      example:
+        max_results: 5
+        type: 'bm25'
+      oneOf:
+        - $ref: '#/components/schemas/DeferredRegexSearch'
+        - $ref: '#/components/schemas/DeferredBm25Search'
+        - $ref: '#/components/schemas/DeferredCustomSearch'
     DeleteBYOKKeyResponse:
       example:
         deleted: true
@@ -15372,6 +15510,90 @@ components:
         - 'assigned_by'
         - 'created_at'
       type: 'object'
+    KeyBudget:
+      description: 'One budget layer that applies to requests made with this key, with the spend enforcement compares against it.'
+      example:
+        budget_id: null
+        guardrail_id: '0df9e665-d932-5740-b2c7-b52af166bc11'
+        include_byok: false
+        limit_usd: 50
+        remaining_usd: 17.5
+        reset_interval: 'weekly'
+        resets_at: '2026-10-12T00:00:00.000Z'
+        scope: 'member'
+        spend_usd: 32.5
+      properties:
+        budget_id:
+          description: 'ID of the workspace budget for the `workspace` scope; null for other scopes.'
+          example: null
+          type:
+            - 'string'
+            - 'null'
+        guardrail_id:
+          description: 'ID of the guardrail that carries this budget; null for other scopes.'
+          example: '0df9e665-d932-5740-b2c7-b52af166bc11'
+          type:
+            - 'string'
+            - 'null'
+        include_byok:
+          description: 'Whether external BYOK inference spend counts toward this budget.'
+          example: false
+          type: 'boolean'
+        limit_usd:
+          description: 'Budget limit in USD for the current window.'
+          example: 50
+          format: 'double'
+          type: 'number'
+        remaining_usd:
+          description: '`limit_usd - spend_usd`. Zero or negative means this layer rejects requests with a 403 until it resets.'
+          example: 17.5
+          format: 'double'
+          type: 'number'
+        reset_interval:
+          description: 'UTC window the spend is counted over (weeks start Monday); null for a lifetime budget that never resets.'
+          enum:
+            - 'daily'
+            - 'weekly'
+            - 'monthly'
+            - null
+          example: 'weekly'
+          type:
+            - 'string'
+            - 'null'
+        resets_at:
+          description: 'ISO 8601 UTC instant at which the window rolls over and spend returns to zero; null for a lifetime budget.'
+          example: '2026-10-12T00:00:00.000Z'
+          format: 'date-time'
+          type:
+            - 'string'
+            - 'null'
+        scope:
+          description: 'Which budget layer this is, in the order enforcement checks them: the workspace default guardrail against the member aggregate (`workspace_default_member`) and against this key (`workspace_default_key`), the member guardrail (`member`), the API key guardrail (`api_key`), a workspace budget (`workspace`), or the key''s own limit (`key_limit`).'
+          enum:
+            - 'workspace_default_member'
+            - 'workspace_default_key'
+            - 'member'
+            - 'api_key'
+            - 'workspace'
+            - 'key_limit'
+          example: 'member'
+          type: 'string'
+        spend_usd:
+          description: 'Spend in USD that enforcement counts against this limit in the current window: the member aggregate for member-scoped layers, otherwise this key or workspace.'
+          example: 32.5
+          format: 'double'
+          type: 'number'
+      required:
+        - 'scope'
+        - 'guardrail_id'
+        - 'budget_id'
+        - 'limit_usd'
+        - 'spend_usd'
+        - 'remaining_usd'
+        - 'reset_interval'
+        - 'resets_at'
+        - 'include_byok'
+      type: 'object'
     Legacy_ChatContentVideo:
       deprecated: true
       description: 'Video input content part (legacy format - deprecated)'
@@ -16599,6 +16821,7 @@ components:
             - $ref: '#/components/schemas/AnthropicAdvisorToolResult'
             - $ref: '#/components/schemas/ORAnthropicShellToolResult'
             - $ref: '#/components/schemas/ORAnthropicBashToolResult'
+            - $ref: '#/components/schemas/ORAnthropicToolSearchResult'
             - properties:
                 content:
                   type:
@@ -16942,6 +17165,7 @@ components:
                   - $ref: '#/components/schemas/MessagesToolRemovalBlock'
                   - $ref: '#/components/schemas/MessagesShellToolResultBlock'
                   - $ref: '#/components/schemas/MessagesBashToolResultBlock'
+                  - $ref: '#/components/schemas/ORAnthropicToolSearchResultParam'
               type: 'array'
         output_config:
           $ref: '#/components/schemas/AnthropicMessageOutputConfig'
@@ -17127,6 +17351,8 @@ components:
           type:
             - 'object'
             - 'null'
+        deferred_tools:
+          $ref: '#/components/schemas/DeferredToolsControl'
         fallbacks:
           description: 'Fallback models to try if the primary model fails or refuses, in order. Handled by OpenRouter multi-model routing rather than Anthropic server-side fallbacks; cannot be combined with `models`. Each entry accepts only `model`. Maximum of 3 entries.'
           example:
@@ -22467,6 +22693,7 @@ components:
           container_upload: '#/components/schemas/AnthropicContainerUpload'
           openrouter_bash_tool_result: '#/components/schemas/ORAnthropicBashToolResult'
           openrouter_shell_tool_result: '#/components/schemas/ORAnthropicShellToolResult'
+          openrouter_tool_search_result: '#/components/schemas/ORAnthropicToolSearchResult'
           redacted_thinking: '#/components/schemas/AnthropicRedactedThinkingBlock'
           server_tool_use: '#/components/schemas/ORAnthropicServerToolUseBlock'
           text: '#/components/schemas/AnthropicTextBlock'
@@ -22498,6 +22725,7 @@ components:
         - $ref: '#/components/schemas/AnthropicAdvisorToolResult'
         - $ref: '#/components/schemas/ORAnthropicShellToolResult'
         - $ref: '#/components/schemas/ORAnthropicBashToolResult'
+        - $ref: '#/components/schemas/ORAnthropicToolSearchResult'
     ORAnthropicNullableCaller:
       discriminator:
         mapping:
@@ -22630,6 +22858,50 @@ components:
       type:
         - 'string'
         - 'null'
+    ORAnthropicToolSearchResult:
+      description: 'Router-owned deferred discovery result containing original selected tool definitions.'
+      example:
+        content:
+          matches: []
+        tool_use_id: 'search'
+        type: 'openrouter_tool_search_result'
+      properties:
+        content:
+          additionalProperties: {}
+          type: 'object'
+        tool_use_id:
+          type: 'string'
+        type:
+          enum:
+            - 'openrouter_tool_search_result'
+          type: 'string'
+      required:
+        - 'type'
+        - 'tool_use_id'
+        - 'content'
+      type: 'object'
+    ORAnthropicToolSearchResultParam:
+      description: 'Router-owned deferred discovery result for continuation.'
+      example:
+        content:
+          matches: []
+        tool_use_id: 'search'
+        type: 'openrouter_tool_search_result'
+      properties:
+        content:
+          additionalProperties: {}
+          type: 'object'
+        tool_use_id:
+          type: 'string'
+        type:
+          enum:
+            - 'openrouter_tool_search_result'
+          type: 'string'
+      required:
+        - 'type'
+        - 'tool_use_id'
+        - 'content'
+      type: 'object'
     OrganizationSettings:
       example:
         id: 'org_2dHFtVWx2n56w6HkM0000000000'
@@ -24303,6 +24575,22 @@ components:
           type: 'string'
         id:
           type: 'string'
+        matches:
+          items:
+            properties:
+              definition:
+                additionalProperties: {}
+                type: 'object'
+              schema_digest:
+                type: 'string'
+              tool_id:
+                type: 'string'
+            required:
+              - 'tool_id'
+              - 'schema_digest'
+              - 'definition'
+            type: 'object'
+          type: 'array'
         query:
           type: 'string'
         status:
@@ -27538,6 +27826,8 @@ components:
           $ref: '#/components/schemas/AnthropicCacheControlDirective'
         debug:
           $ref: '#/components/schemas/ChatDebugOptions'
+        deferred_tools:
+          $ref: '#/components/schemas/DeferredToolsControl'
         frequency_penalty:
           format: 'double'
           type:
@@ -27691,14 +27981,28 @@ components:
               - allOf:
                   - $ref: '#/components/schemas/FunctionTool'
                   - properties:
+                      allowed_callers:
+                        items:
+                          enum:
+                            - 'direct'
+                            - 'programmatic'
+                          type: 'string'
+                        type:
+                          - 'array'
+                          - 'null'
                       async:
                         description: 'Lets the model keep working after calling this tool instead of waiting for its output. The tool is still executed by the client; return the result in a later request as a `function_call_output` with the original `call_id`. Only honored by providers whose Responses API supports async tools; ignored elsewhere.'
                         example: true
                         type: 'boolean'
                       defer_loading:
-                        description: 'Withhold this tool from the model until `openrouter:tool_search` finds it. Requires the tool search server tool; at least one tool must remain non-deferred.'
+                        description: 'Withhold this tool from the model until `openrouter:tool_search` finds it. Where the request declares no search tool, OpenRouter may add `openrouter:tool_search` to serve the flag, and otherwise sends the tool in full. A request that declares the search tool itself must keep at least one tool non-deferred.'
                         example: true
                         type: 'boolean'
+                      output_schema:
+                        additionalProperties: {}
+                        type:
+                          - 'object'
+                          - 'null'
                     type: 'object'
                 description: 'Function tool definition'
                 example:
@@ -30432,14 +30736,28 @@ components:
               - allOf:
                   - $ref: '#/components/schemas/FunctionTool'
                   - properties:
+                      allowed_callers:
+                        items:
+                          enum:
+                            - 'direct'
+                            - 'programmatic'
+                          type: 'string'
+                        type:
+                          - 'array'
+                          - 'null'
                       async:
                         description: 'Lets the model keep working after calling this tool instead of waiting for its output. The tool is still executed by the client; return the result in a later request as a `function_call_output` with the original `call_id`. Only honored by providers whose Responses API supports async tools; ignored elsewhere.'
                         example: true
                         type: 'boolean'
                       defer_loading:
-                        description: 'Withhold this tool from the model until `openrouter:tool_search` finds it. Requires the tool search server tool; at least one tool must remain non-deferred.'
+                        description: 'Withhold this tool from the model until `openrouter:tool_search` finds it. Where the request declares no search tool, OpenRouter may add `openrouter:tool_search` to serve the flag, and otherwise sends the tool in full. A request that declares the search tool itself must keep at least one tool non-deferred.'
                         example: true
                         type: 'boolean'
+                      output_schema:
+                        additionalProperties: {}
+                        type:
+                          - 'object'
+                          - 'null'
                     type: 'object'
                 description: 'Function tool definition'
                 example:
@@ -32285,6 +32603,9 @@ components:
       properties:
         error:
           type: 'string'
+        expires_at:
+          description: 'Unix timestamp in seconds when OpenRouter''s stored copy of the outputs stops being available. Present only when that copy exists.'
+          type: 'integer'
         generation_id:
           description: 'The generation ID associated with this video generation job. Available once the job has been processed.'
           type: 'string'
@@ -42862,11 +43183,31 @@ paths:
                     - 'global'
                     - 'europe'
                     - 'us'
+                  budgets:
+                    - budget_id: null
+                      guardrail_id: '0df9e665-d932-5740-b2c7-b52af166bc11'
+                      include_byok: false
+                      limit_usd: 50
+                      remaining_usd: 17.5
+                      reset_interval: 'weekly'
+                      resets_at: '2026-10-12T00:00:00.000Z'
+                      scope: 'member'
+                      spend_usd: 32.5
                   byok_usage: 17.38
                   byok_usage_daily: 17.38
                   byok_usage_monthly: 17.38
                   byok_usage_weekly: 17.38
                   creator_user_id: 'user_2dHFtVWx2n56w6HkM0000000000'
+                  effective_budget:
+                    budget_id: null
+                    guardrail_id: '0df9e665-d932-5740-b2c7-b52af166bc11'
+                    include_byok: false
+                    limit_usd: 50
+                    remaining_usd: 17.5
+                    reset_interval: 'weekly'
+                    resets_at: '2026-10-12T00:00:00.000Z'
+                    scope: 'member'
+                    spend_usd: 32.5
                   expires_at: '2027-12-31T23:59:59Z'
                   free_model_daily_requests:
                     limit: 50
@@ -42897,11 +43238,31 @@ paths:
                       - 'global'
                       - 'europe'
                       - 'us'
+                    budgets:
+                      - budget_id: null
+                        guardrail_id: '0df9e665-d932-5740-b2c7-b52af166bc11'
+                        include_byok: false
+                        limit_usd: 50
+                        remaining_usd: 17.5
+                        reset_interval: 'weekly'
+                        resets_at: '2026-10-12T00:00:00.000Z'
+                        scope: 'member'
+                        spend_usd: 32.5
                     byok_usage: 17.38
                     byok_usage_daily: 17.38
                     byok_usage_monthly: 17.38
                     byok_usage_weekly: 17.38
                     creator_user_id: 'user_2dHFtVWx2n56w6HkM0000000000'
+                    effective_budget:
+                      budget_id: null
+                      guardrail_id: '0df9e665-d932-5740-b2c7-b52af166bc11'
+                      include_byok: false
+                      limit_usd: 50
+                      remaining_usd: 17.5
+                      reset_interval: 'weekly'
+                      resets_at: '2026-10-12T00:00:00.000Z'
+                      scope: 'member'
+                      spend_usd: 32.5
                     expires_at: '2027-12-31T23:59:59Z'
                     free_model_daily_requests:
                       limit: 50
@@ -42931,11 +43292,31 @@ paths:
                         - 'global'
                         - 'europe'
                         - 'us'
+                      budgets:
+                        - budget_id: null
+                          guardrail_id: '0df9e665-d932-5740-b2c7-b52af166bc11'
+                          include_byok: false
+                          limit_usd: 50
+                          remaining_usd: 17.5
+                          reset_interval: 'weekly'
+                          resets_at: '2026-10-12T00:00:00.000Z'
+                          scope: 'member'
+                          spend_usd: 32.5
                       byok_usage: 17.38
                       byok_usage_daily: 17.38
                       byok_usage_monthly: 17.38
                       byok_usage_weekly: 17.38
                       creator_user_id: 'user_2dHFtVWx2n56w6HkM0000000000'
+                      effective_budget:
+                        budget_id: null
+                        guardrail_id: '0df9e665-d932-5740-b2c7-b52af166bc11'
+                        include_byok: false
+                        limit_usd: 50
+                        remaining_usd: 17.5
+                        reset_interval: 'weekly'
+                        resets_at: '2026-10-12T00:00:00.000Z'
+                        scope: 'member'
+                        spend_usd: 32.5
                       expires_at: '2027-12-31T23:59:59Z'
                       free_model_daily_requests:
                         limit: 50
@@ -42971,6 +43352,21 @@ paths:
                             - 'us'
                           type: 'string'
                         type: 'array'
+                      budgets:
+                        description: 'Every budget layer enforcement checks for requests made with this key, in the order it checks them: guardrail budgets, workspace budgets, then the key''s own limit. Empty when nothing is budgeted. `effective_budget` is the budget that blocks requests first: the entry enforcement rejects on when one is already spent, otherwise the entry with the least `remaining_usd`; null when nothing is budgeted. `limit` and `limit_remaining` above describe only the key''s own limit.'
+                        example:
+                          - budget_id: null
+                            guardrail_id: '0df9e665-d932-5740-b2c7-b52af166bc11'
+                            include_byok: false
+                            limit_usd: 50
+                            remaining_usd: 17.5
+                            reset_interval: 'weekly'
+                            resets_at: '2026-10-12T00:00:00.000Z'
+                            scope: 'member'
+                            spend_usd: 32.5
+                        items:
+                          $ref: '#/components/schemas/KeyBudget'
+                        type: 'array'
                       byok_usage:
                         description: 'Total external BYOK usage (in USD) for the API key'
                         example: 17.38
@@ -42997,6 +43393,10 @@ paths:
                         type:
                           - 'string'
                           - 'null'
+                      effective_budget:
+                        anyOf:
+                          - $ref: '#/components/schemas/KeyBudget'
+                          - type: 'null'
                       expires_at:
                         description: 'ISO 8601 UTC timestamp when the API key expires, or null if no expiration'
                         example: '2027-12-31T23:59:59Z'
@@ -43121,6 +43521,8 @@ paths:
                       - 'limit_remaining'
                       - 'limit_reset'
                       - 'include_byok_in_limit'
+                      - 'budgets'
+                      - 'effective_budget'
                       - 'creator_user_id'
                       - 'organization_id'
                       - 'workspace_id'
