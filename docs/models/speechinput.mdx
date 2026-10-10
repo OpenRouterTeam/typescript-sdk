@@ -1,0 +1,25 @@
+---
+title: "SpeechInput"
+---
+
+Text to synthesize, or a list of turns for multi-speaker input. Each turn has its own text, voice, and instructions. Multi-speaker input is currently supported by Gemini TTS models only.
+
+
+## Supported Types
+
+### `string`
+
+```typescript
+const value: string = "Hello world";
+```
+
+### `models.SpeechTurn[]`
+
+```typescript
+const value: models.SpeechTurn[] = [
+  {
+    text: "Hi Jane.",
+  },
+];
+```
+

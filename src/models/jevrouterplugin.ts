@@ -12,6 +12,10 @@ export type JevRouterPlugin = {
    */
   allowedModels?: Array<string> | undefined;
   /**
+   * Select low, medium, high, or a cost tier configured by the operator. Overrides the live-config tier and replaces the shared routing policy with that tier. Omit to use the live configuration. Model exclusions and the router kill switch still apply.
+   */
+  costTier?: string | undefined;
+  /**
    * Remove these models from the router. Each entry is a model slug or a wildcard pattern (e.g. "xiaomi/*"). A `~author/family-latest` alias matches every revision of that family. Up to 1024 patterns, each at most 1024 characters, with 65536 total characters across all patterns. Applied after `models`, so an excluded pattern always wins over an included one; when the lists leave no model the request can use, it fails with 404 rather than routing outside them.
    */
   excludedModels?: Array<string> | undefined;
@@ -25,6 +29,7 @@ export type JevRouterPlugin = {
 /** @internal */
 export type JevRouterPlugin$Outbound = {
   allowed_models?: Array<string> | undefined;
+  cost_tier?: string | undefined;
   excluded_models?: Array<string> | undefined;
   id: "jev-router";
   models?: Array<string> | undefined;
@@ -36,12 +41,14 @@ export const JevRouterPlugin$outboundSchema: z.ZodType<
   JevRouterPlugin
 > = z.object({
   allowedModels: z.array(z.string()).optional(),
+  costTier: z.string().optional(),
   excludedModels: z.array(z.string()).optional(),
   id: z.literal("jev-router"),
   models: z.array(z.string()).optional(),
 }).transform((v) => {
   return remap$(v, {
     allowedModels: "allowed_models",
+    costTier: "cost_tier",
     excludedModels: "excluded_models",
   });
 });
