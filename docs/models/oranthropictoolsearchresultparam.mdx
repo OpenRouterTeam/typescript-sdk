@@ -1,0 +1,27 @@
+---
+title: "ORAnthropicToolSearchResultParam"
+---
+
+Router-owned deferred discovery result for continuation.
+
+## Example Usage
+
+```typescript
+import { ORAnthropicToolSearchResultParam } from "@openrouter/sdk/models";
+
+let value: ORAnthropicToolSearchResultParam = {
+  content: {
+    "matches": [],
+  },
+  toolUseId: "search",
+  type: "openrouter_tool_search_result",
+};
+```
+
+## Fields
+
+| Field                             | Type                              | Required                          | Description                       |
+| --------------------------------- | --------------------------------- | --------------------------------- | --------------------------------- |
+| `content`                         | Record\<string, *any*>             | :heavy_check_mark:                | N/A                               |
+| `toolUseId`                       | *string*                          | :heavy_check_mark:                | N/A                               |
+| `type`                            | *"openrouter_tool_search_result"* | :heavy_check_mark:                | N/A                               |

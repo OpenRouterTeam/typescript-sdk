@@ -73,6 +73,10 @@ import {
   ORAnthropicShellToolResult,
   ORAnthropicShellToolResult$inboundSchema,
 } from "./oranthropicshelltoolresult.js";
+import {
+  ORAnthropicToolSearchResult,
+  ORAnthropicToolSearchResult$inboundSchema,
+} from "./oranthropictoolsearchresult.js";
 
 export type ORAnthropicContentBlock =
   | AnthropicAdvisorToolResult
@@ -82,6 +86,7 @@ export type ORAnthropicContentBlock =
   | AnthropicContainerUpload
   | ORAnthropicBashToolResult
   | ORAnthropicShellToolResult
+  | ORAnthropicToolSearchResult
   | AnthropicRedactedThinkingBlock
   | ORAnthropicServerToolUseBlock
   | AnthropicTextBlock
@@ -106,6 +111,7 @@ export const ORAnthropicContentBlock$inboundSchema: z.ZodType<
   container_upload: AnthropicContainerUpload$inboundSchema,
   openrouter_bash_tool_result: ORAnthropicBashToolResult$inboundSchema,
   openrouter_shell_tool_result: ORAnthropicShellToolResult$inboundSchema,
+  openrouter_tool_search_result: ORAnthropicToolSearchResult$inboundSchema,
   redacted_thinking: AnthropicRedactedThinkingBlock$inboundSchema,
   server_tool_use: ORAnthropicServerToolUseBlock$inboundSchema,
   text: AnthropicTextBlock$inboundSchema,

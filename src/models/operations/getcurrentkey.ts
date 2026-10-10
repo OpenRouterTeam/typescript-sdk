@@ -92,6 +92,10 @@ export type GetCurrentKeyData = {
    */
   allowedDataRegions: Array<AllowedDataRegion>;
   /**
+   * Every budget layer enforcement checks for requests made with this key, in the order it checks them: guardrail budgets, workspace budgets, then the key's own limit. Empty when nothing is budgeted. `effective_budget` is the budget that blocks requests first: the entry enforcement rejects on when one is already spent, otherwise the entry with the least `remaining_usd`; null when nothing is budgeted. `limit` and `limit_remaining` above describe only the key's own limit.
+   */
+  budgets: Array<models.KeyBudget>;
+  /**
    * Total external BYOK usage (in USD) for the API key
    */
   byokUsage: number;
@@ -111,6 +115,7 @@ export type GetCurrentKeyData = {
    * The user ID of the key creator. For organization-owned keys, this is the member who created the key. For individual users, this is the user's own ID.
    */
   creatorUserId: string | null;
+  effectiveBudget: models.KeyBudget | null;
   /**
    * ISO 8601 UTC timestamp when the API key expires, or null if no expiration
    */
@@ -253,11 +258,13 @@ export const GetCurrentKeyData$inboundSchema: z.ZodType<
   unknown
 > = z.object({
   allowed_data_regions: z.array(AllowedDataRegion$inboundSchema),
+  budgets: z.array(models.KeyBudget$inboundSchema),
   byok_usage: z.number(),
   byok_usage_daily: z.number(),
   byok_usage_monthly: z.number(),
   byok_usage_weekly: z.number(),
   creator_user_id: z.nullable(z.string()),
+  effective_budget: z.nullable(models.KeyBudget$inboundSchema),
   expires_at: z.nullable(
     z.iso.datetime({ offset: true }).transform(v => new Date(v)),
   ).optional(),
@@ -285,6 +292,7 @@ export const GetCurrentKeyData$inboundSchema: z.ZodType<
     "byok_usage_monthly": "byokUsageMonthly",
     "byok_usage_weekly": "byokUsageWeekly",
     "creator_user_id": "creatorUserId",
+    "effective_budget": "effectiveBudget",
     "expires_at": "expiresAt",
     "free_model_daily_requests": "freeModelDailyRequests",
     "include_byok_in_limit": "includeByokInLimit",

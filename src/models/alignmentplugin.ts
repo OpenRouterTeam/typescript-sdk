@@ -21,7 +21,7 @@ export const AlignmentPluginMode = {
 export type AlignmentPluginMode = OpenEnum<typeof AlignmentPluginMode>;
 
 /**
- * Beta. States the listed rules to the model and evaluates every turn against them. Requests are evaluated only for entities admitted to the beta; the configuration, metadata, and error shapes may change.
+ * Beta. States the listed rules to the model and evaluates every turn against them; the configuration, metadata, and error shapes may change.
  */
 export type AlignmentPlugin = {
   id: "alignment";

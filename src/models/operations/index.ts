@@ -133,6 +133,8 @@ export * from "./promotecontainerfile.js";
 export * from "./provisionintern.js";
 export * from "./queryanalytics.js";
 export * from "./sendchatcompletionrequest.js";
+export * from "./signinterndaemonaccessrequest.js";
+export * from "./signinterndaemonrequest.js";
 export * from "./storeinternvaultsecret.js";
 export * from "./storevaultsecret.js";
 export * from "./submitgenerationfeedback.js";

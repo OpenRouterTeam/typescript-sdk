@@ -4,15 +4,22 @@
  */
 
 import * as z from "zod/v4";
+import { remap as remap$ } from "../lib/primitives.js";
 import { safeParse } from "../lib/schemas.js";
 import { ClosedEnum } from "../types/enums.js";
 import { Result as SafeParseResult } from "../types/fp.js";
 import { SDKValidationError } from "./errors/sdkvalidationerror.js";
 import {
-  ToolCallStatus,
-  ToolCallStatus$inboundSchema,
-  ToolCallStatus$outboundSchema,
-} from "./toolcallstatus.js";
+  FailableToolCallStatus,
+  FailableToolCallStatus$inboundSchema,
+  FailableToolCallStatus$outboundSchema,
+} from "./failabletoolcallstatus.js";
+
+export type Match = {
+  definition: { [k: string]: any };
+  schemaDigest: string;
+  toolId: string;
+};
 
 export const OutputToolSearchServerToolItemType = {
   OpenrouterToolSearch: "openrouter:tool_search",
@@ -25,11 +32,59 @@ export type OutputToolSearchServerToolItemType = ClosedEnum<
  * An openrouter:tool_search server tool output item
  */
 export type OutputToolSearchServerToolItem = {
+  /**
+   * The error message when the tool call failed before producing a result. Set together with `status: 'failed'`; absent on a successful call.
+   */
+  error?: string | undefined;
   id?: string | undefined;
+  matches?: Array<Match> | undefined;
   query?: string | undefined;
-  status: ToolCallStatus;
+  status: FailableToolCallStatus;
   type: OutputToolSearchServerToolItemType;
 };
+
+/** @internal */
+export const Match$inboundSchema: z.ZodType<Match, unknown> = z.object({
+  definition: z.record(z.string(), z.any()),
+  schema_digest: z.string(),
+  tool_id: z.string(),
+}).transform((v) => {
+  return remap$(v, {
+    "schema_digest": "schemaDigest",
+    "tool_id": "toolId",
+  });
+});
+/** @internal */
+export type Match$Outbound = {
+  definition: { [k: string]: any };
+  schema_digest: string;
+  tool_id: string;
+};
+
+/** @internal */
+export const Match$outboundSchema: z.ZodType<Match$Outbound, Match> = z.object({
+  definition: z.record(z.string(), z.any()),
+  schemaDigest: z.string(),
+  toolId: z.string(),
+}).transform((v) => {
+  return remap$(v, {
+    schemaDigest: "schema_digest",
+    toolId: "tool_id",
+  });
+});
+
+export function matchToJSON(match: Match): string {
+  return JSON.stringify(Match$outboundSchema.parse(match));
+}
+export function matchFromJSON(
+  jsonString: string,
+): SafeParseResult<Match, SDKValidationError> {
+  return safeParse(
+    jsonString,
+    (x) => Match$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'Match' from JSON`,
+  );
+}
 
 /** @internal */
 export const OutputToolSearchServerToolItemType$inboundSchema: z.ZodEnum<
@@ -45,14 +100,18 @@ export const OutputToolSearchServerToolItem$inboundSchema: z.ZodType<
   OutputToolSearchServerToolItem,
   unknown
 > = z.object({
+  error: z.string().optional(),
   id: z.string().optional(),
+  matches: z.array(z.lazy(() => Match$inboundSchema)).optional(),
   query: z.string().optional(),
-  status: ToolCallStatus$inboundSchema,
+  status: FailableToolCallStatus$inboundSchema,
   type: OutputToolSearchServerToolItemType$inboundSchema,
 });
 /** @internal */
 export type OutputToolSearchServerToolItem$Outbound = {
+  error?: string | undefined;
   id?: string | undefined;
+  matches?: Array<Match$Outbound> | undefined;
   query?: string | undefined;
   status: string;
   type: string;
@@ -63,9 +122,11 @@ export const OutputToolSearchServerToolItem$outboundSchema: z.ZodType<
   OutputToolSearchServerToolItem$Outbound,
   OutputToolSearchServerToolItem
 > = z.object({
+  error: z.string().optional(),
   id: z.string().optional(),
+  matches: z.array(z.lazy(() => Match$outboundSchema)).optional(),
   query: z.string().optional(),
-  status: ToolCallStatus$outboundSchema,
+  status: FailableToolCallStatus$outboundSchema,
   type: OutputToolSearchServerToolItemType$outboundSchema,
 });
 

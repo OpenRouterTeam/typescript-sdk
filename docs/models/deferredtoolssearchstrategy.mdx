@@ -1,0 +1,35 @@
+---
+title: "DeferredToolsSearchStrategy"
+---
+
+Router-local regex/BM25 or caller-owned custom search.
+
+
+## Supported Types
+
+### `models.DeferredBm25Search`
+
+```typescript
+const value: models.DeferredBm25Search = {
+  type: "bm25",
+};
+```
+
+### `models.DeferredCustomSearch`
+
+```typescript
+const value: models.DeferredCustomSearch = {
+  resultKey: "<value>",
+  toolId: "<id>",
+  type: "custom",
+};
+```
+
+### `models.DeferredRegexSearch`
+
+```typescript
+const value: models.DeferredRegexSearch = {
+  type: "regex",
+};
+```
+
