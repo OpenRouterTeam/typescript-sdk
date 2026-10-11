@@ -38103,7 +38103,7 @@ paths:
                       input_modalities:
                         - 'text'
                       instruct_type: null
-                      modality: 'text->text'
+                      modality: 'text->embeddings'
                       output_modalities:
                         - 'embeddings'
                       tokenizer: 'GPT'
