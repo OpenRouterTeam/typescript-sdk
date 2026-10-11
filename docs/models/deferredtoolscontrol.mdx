@@ -1,0 +1,29 @@
+---
+title: "DeferredToolsControl"
+---
+
+Opt-in versioned router-level deferred-tool protocol. Replay assistant reasoning unchanged on continuation; keep the catalog unchanged.
+
+## Example Usage
+
+```typescript
+import { DeferredToolsControl } from "@openrouter/sdk/models";
+
+let value: DeferredToolsControl = {
+  profile: "portable",
+  protocol: "v1",
+  search: {
+    type: "bm25",
+  },
+  validation: "runtime",
+};
+```
+
+## Fields
+
+| Field                                                                                                                                              | Type                                                                                                                                               | Required                                                                                                                                           | Description                                                                                                                                        | Example                                                                                                                                            |
+| -------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `profile`                                                                                                                                          | [models.Profile](../models/profile.mdx)                                                                                                             | :heavy_check_mark:                                                                                                                                 | Loading profile. Only `portable` is available in this release: OpenRouter serves deferral with router-built search and call wrappers on any model. |                                                                                                                                                    |
+| `protocol`                                                                                                                                         | [models.Protocol](../models/protocol.mdx)                                                                                                           | :heavy_check_mark:                                                                                                                                 | N/A                                                                                                                                                |                                                                                                                                                    |
+| `search`                                                                                                                                           | *models.DeferredToolsSearchStrategy*                                                                                                               | :heavy_check_mark:                                                                                                                                 | Router-local regex/BM25 or caller-owned custom search.                                                                                             | \{<br/>"max_results": 5,<br/>"type": "bm25"<br/>}                                                                                                   |
+| `validation`                                                                                                                                       | [models.Validation](../models/validation.mdx)                                                                                                       | :heavy_check_mark:                                                                                                                                 | Where tool-call arguments are checked against the original schema. Only `runtime` (in OpenRouter) is available in this release.                    |                                                                                                                                                    |

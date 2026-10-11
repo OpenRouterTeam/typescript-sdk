@@ -1,0 +1,21 @@
+---
+title: "KeyBudgetResetInterval"
+---
+
+UTC window the spend is counted over (weeks start Monday); null for a lifetime budget that never resets.
+
+## Example Usage
+
+```typescript
+import { KeyBudgetResetInterval } from "@openrouter/sdk/models";
+
+let value: KeyBudgetResetInterval = "weekly";
+
+// Open enum: unrecognized values are captured as Unrecognized<string>
+```
+
+## Values
+
+```typescript
+"daily" | "weekly" | "monthly" | Unrecognized<string>
+```
