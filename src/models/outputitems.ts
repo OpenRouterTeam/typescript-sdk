@@ -118,6 +118,10 @@ import {
   OutputTextEditorServerToolItem$inboundSchema,
 } from "./outputtexteditorservertoolitem.js";
 import {
+  OutputToolSearchCallItem,
+  OutputToolSearchCallItem$inboundSchema,
+} from "./outputtoolsearchcallitem.js";
+import {
   OutputToolSearchServerToolItem,
   OutputToolSearchServerToolItem$inboundSchema,
 } from "./outputtoolsearchservertoolitem.js";
@@ -174,6 +178,7 @@ export type OutputItems =
   | OutputReasoningItem
   | OutputShellCallItem
   | OutputShellCallOutputItem
+  | OutputToolSearchCallItem
   | (OutputWebSearchCallItem & { type: "web_search_call" })
   | discriminatedUnionTypes.Unknown<"type">;
 
@@ -254,6 +259,7 @@ export const OutputItems$inboundSchema: z.ZodType<OutputItems, unknown> =
     reasoning: OutputReasoningItem$inboundSchema,
     shell_call: OutputShellCallItem$inboundSchema,
     shell_call_output: OutputShellCallOutputItem$inboundSchema,
+    tool_search_call: OutputToolSearchCallItem$inboundSchema,
     web_search_call: OutputWebSearchCallItem$inboundSchema.and(
       z.object({ type: z.literal("web_search_call") }),
     ),
