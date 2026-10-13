@@ -9384,6 +9384,12 @@ components:
         name: 'My New Guardrail'
         reset_interval: 'monthly'
       properties:
+        allow_safety_retention_google:
+          description: 'Whether ZDR-only requests to google/* models may use endpoints that may retain prompts for safety monitoring. false allows only zero-retention endpoints. A guardrail can only be more restrictive than the account setting. Inherits the account setting when not provided.'
+          example: true
+          type:
+            - 'boolean'
+            - 'null'
         allowed_data_regions:
           description: 'Data regions through which requests governed by this guardrail must arrive. `global` is https://openrouter.ai, `europe` is https://eu.openrouter.ai, and `us` is https://us.openrouter.ai. Requests arriving through any other region are rejected. `null` leaves the ingress region unrestricted. When several guardrails apply (workspace default, member, API key), the effective regions are the intersection of every non-null value. An empty array is rejected.'
           example:
@@ -13042,6 +13048,12 @@ components:
         updated_at: '2025-08-24T15:45:00Z'
         workspace_id: '0df9e665-d932-5740-b2c7-b52af166bc11'
       properties:
+        allow_safety_retention_google:
+          description: 'Whether ZDR-only requests to google/* models may use endpoints that may retain prompts for safety monitoring. false allows only zero-retention endpoints. A guardrail can only be more restrictive than the account setting. Inherits the account setting when not provided.'
+          example: true
+          type:
+            - 'boolean'
+            - 'null'
         allowed_data_regions:
           description: 'Data regions through which requests governed by this guardrail must arrive. `global` is https://openrouter.ai, `europe` is https://eu.openrouter.ai, and `us` is https://us.openrouter.ai. Requests arriving through any other region are rejected. `null` leaves the ingress region unrestricted. When several guardrails apply (workspace default, member, API key), the effective regions are the intersection of every non-null value.'
           example:
@@ -29183,7 +29195,7 @@ components:
             $ref: '#/components/schemas/SpeechTurn'
           minItems: 1
           type: 'array'
-      description: 'Text to synthesize, or a list of turns for multi-speaker input. Each turn has its own text, voice, and instructions. Multi-speaker input is currently supported by Gemini TTS models only.'
+      description: 'Text to synthesize, or a list of turns for multi-speaker input. Each turn has its own text, voice, and instructions. Multi-speaker input is supported by Gemini TTS models and by Fish Audio models other than S1.'
       example: 'Hello world'
     SpeechInputReference:
       description: 'Reference content part for stateless voice cloning or voice design'
@@ -29305,7 +29317,7 @@ components:
             $ref: '#/components/schemas/SpeechInputReference'
           type: 'array'
         instructions:
-          description: 'Delivery instructions for the whole request, such as tone, pacing, or emotion. Supported by OpenAI gpt-4o-mini-tts and Gemini TTS models. Ignored by other providers.'
+          description: 'Delivery instructions for the whole request, such as tone, pacing, or emotion. Supported by OpenAI gpt-4o-mini-tts, Gemini TTS, and Fish Audio models. Ignored by other providers.'
           example: 'Speak in a warm and friendly tone.'
           type: 'string'
         model:
@@ -31776,6 +31788,12 @@ components:
         name: 'Updated Guardrail Name'
         reset_interval: 'weekly'
       properties:
+        allow_safety_retention_google:
+          description: 'Whether ZDR-only requests to google/* models may use endpoints that may retain prompts for safety monitoring. false allows only zero-retention endpoints. A guardrail can only be more restrictive than the account setting. Inherits the account setting when not provided.'
+          example: false
+          type:
+            - 'boolean'
+            - 'null'
         allowed_data_regions:
           description: 'Data regions through which requests governed by this guardrail must arrive. `global` is https://openrouter.ai, `europe` is https://eu.openrouter.ai, and `us` is https://us.openrouter.ai. Requests arriving through any other region are rejected. `null` leaves the ingress region unrestricted. When several guardrails apply (workspace default, member, API key), the effective regions are the intersection of every non-null value. An empty array is rejected.'
           example:
