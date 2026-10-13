@@ -26,6 +26,10 @@ import {
 
 export type CreateGuardrailRequest = {
   /**
+   * Whether ZDR-only requests to google/* models may use endpoints that may retain prompts for safety monitoring. false allows only zero-retention endpoints. A guardrail can only be more restrictive than the account setting. Inherits the account setting when not provided.
+   */
+  allowSafetyRetentionGoogle?: boolean | null | undefined;
+  /**
    * Data regions through which requests governed by this guardrail must arrive. `global` is https://openrouter.ai, `europe` is https://eu.openrouter.ai, and `us` is https://us.openrouter.ai. Requests arriving through any other region are rejected. `null` leaves the ingress region unrestricted. When several guardrails apply (workspace default, member, API key), the effective regions are the intersection of every non-null value. An empty array is rejected.
    */
   allowedDataRegions?: Array<GuardrailDataRegion> | null | undefined;
@@ -122,6 +126,7 @@ export type CreateGuardrailRequest = {
 
 /** @internal */
 export type CreateGuardrailRequest$Outbound = {
+  allow_safety_retention_google?: boolean | null | undefined;
   allowed_data_regions?: Array<string> | null | undefined;
   allowed_models?: Array<string> | null | undefined;
   allowed_providers?: Array<string> | null | undefined;
@@ -154,6 +159,7 @@ export const CreateGuardrailRequest$outboundSchema: z.ZodType<
   CreateGuardrailRequest$Outbound,
   CreateGuardrailRequest
 > = z.object({
+  allowSafetyRetentionGoogle: z.nullable(z.boolean()).optional(),
   allowedDataRegions: z.nullable(z.array(GuardrailDataRegion$outboundSchema))
     .optional(),
   allowedModels: z.nullable(z.array(z.string())).optional(),
@@ -182,6 +188,7 @@ export const CreateGuardrailRequest$outboundSchema: z.ZodType<
   workspaceId: z.string().optional(),
 }).transform((v) => {
   return remap$(v, {
+    allowSafetyRetentionGoogle: "allow_safety_retention_google",
     allowedDataRegions: "allowed_data_regions",
     allowedModels: "allowed_models",
     allowedProviders: "allowed_providers",
