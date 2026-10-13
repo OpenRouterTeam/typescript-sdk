@@ -67,6 +67,10 @@ export type UpdateKeysRequestBody = {
    * New name for the API key
    */
   name?: string | undefined;
+  /**
+   * Move the API key to this workspace. The key keeps its value; guardrail selections move with it, while other workspace-scoped settings (presets, BYOK keys, broadcast destinations, routing rules) do not. Sending the key's current workspace is a no-op.
+   */
+  workspaceId?: string | undefined;
 };
 
 export type UpdateKeysRequest = {
@@ -217,6 +221,7 @@ export type UpdateKeysRequestBody$Outbound = {
   limit?: number | null | undefined;
   limit_reset?: string | null | undefined;
   name?: string | undefined;
+  workspace_id?: string | undefined;
 };
 
 /** @internal */
@@ -229,10 +234,12 @@ export const UpdateKeysRequestBody$outboundSchema: z.ZodType<
   limit: z.nullable(z.number()).optional(),
   limitReset: z.nullable(UpdateKeysLimitReset$outboundSchema).optional(),
   name: z.string().optional(),
+  workspaceId: z.string().optional(),
 }).transform((v) => {
   return remap$(v, {
     includeByokInLimit: "include_byok_in_limit",
     limitReset: "limit_reset",
+    workspaceId: "workspace_id",
   });
 });
 
