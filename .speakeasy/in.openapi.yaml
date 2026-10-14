@@ -412,14 +412,14 @@ components:
           - call: 1
             outcome: 'allowed'
             rules:
-              - broken: false
+              - applicable: true
+                broken: false
                 probability: 0.04
       properties:
         calls:
-          description: 'One record per evaluated assistant message of the request, in the order the messages were produced.'
+          description: 'One record per evaluated assistant message of the request, in the order the messages were produced. Empty when no message of the request had content to evaluate.'
           items:
             $ref: '#/components/schemas/AlignmentCallRecord'
-          minItems: 1
           type: 'array'
       required:
         - 'calls'
@@ -583,7 +583,9 @@ components:
         id: 'alignment'
         mode: 'audit'
         rules:
-          - 'Never offer a discount.'
+          - rule: 'Never offer a discount.'
+            watch:
+              - 'content'
       properties:
         id:
           enum:
@@ -596,26 +598,27 @@ components:
           description: 'Provider calls made again after a blocked turn, in enforce mode. Default 1.'
           type: 'integer'
         mode:
-          description: '`enforce`: a turn that breaks a rule is withheld, retried, and finally returned as an error. `audit`: every turn is evaluated and returned. Default `enforce`.'
+          description: '`enforce`: a turn that breaks a rule is withheld, retried, and finally returned as an error. `audit`: every turn is evaluated and returned. Default `audit`.'
           enum:
             - 'enforce'
             - 'audit'
           type: 'string'
         rules:
-          description: 'Texts that state what the reply must do or must not do. Each rule is evaluated on its own.'
+          description: 'Rules the reply must follow. Each rule is evaluated on its own.'
           example:
-            - 'Never offer a discount.'
-            - 'End with exactly one question.'
+            - rule: 'Never offer a discount.'
+              watch:
+                - 'content'
+            - rule: 'Never call delete_file.'
+              watch:
+                - 'tool_calls'
           items:
-            maxLength: 200
-            minLength: 1
-            pattern: '^[^\n\r]*$'
-            type: 'string'
+            $ref: '#/components/schemas/AlignmentRule'
           maxItems: 128
           minItems: 1
           type: 'array'
         threshold:
-          description: 'Probability at or above which a rule is broken. Default 0.7.'
+          description: 'Probability at or above which a rule is broken, from 0.01 to 1. Default 0.7.'
           format: 'double'
           type: 'number'
       required:
@@ -661,17 +664,53 @@ components:
           - $ref: '#/components/schemas/OutputItemApplyPatchCall'
           - $ref: '#/components/schemas/OutputItemCodeInterpreterCall'
       type: 'array'
+    AlignmentRule:
+      additionalProperties: false
+      example:
+        rule: 'Never offer a discount.'
+        watch:
+          - 'content'
+      properties:
+        rule:
+          description: 'Text that states what the reply must do or must not do.'
+          maxLength: 200
+          minLength: 1
+          type: 'string'
+        watch:
+          description: 'Fields of the assistant message the rule applies to. The rule is evaluated on a message that has at least one of them and is not applicable to any other message.'
+          items:
+            enum:
+              - 'content'
+              - 'tool_calls'
+              - 'refusal'
+              - 'images'
+              - 'audio'
+            type: 'string'
+          maxItems: 5
+          minItems: 1
+          type: 'array'
+          uniqueItems: true
+      required:
+        - 'rule'
+        - 'watch'
+      type: 'object'
     AlignmentRuleRecord:
       additionalProperties: false
       properties:
+        applicable:
+          description: 'Whether the message has a field the rule watches. Only an applicable rule is evaluated.'
+          type: 'boolean'
         broken:
-          description: 'Whether probability is at or above the threshold.'
+          description: 'Whether probability is at or above the threshold. False when the rule is not applicable.'
           type: 'boolean'
         probability:
-          description: 'The evaluator''s probability that the turn breaks the rule.'
+          description: 'The evaluator''s probability that the turn breaks the rule; null when the rule is not applicable.'
           format: 'double'
-          type: 'number'
+          type:
+            - 'number'
+            - 'null'
       required:
+        - 'applicable'
         - 'probability'
         - 'broken'
       type: 'object'
@@ -7623,6 +7662,8 @@ components:
           prompt_tokens: 10
           total_tokens: 25
       properties:
+        alignment:
+          $ref: '#/components/schemas/Alignment'
         choices:
           description: 'List of completion choices'
           items:
@@ -7734,6 +7775,10 @@ components:
         model: 'openai/gpt-4'
         object: 'chat.completion.chunk'
       properties:
+        alignment:
+          allOf:
+            - $ref: '#/components/schemas/Alignment'
+            - description: 'Beta. On the last data event of a request with the alignment plugin.'
         choices:
           description: 'List of streaming chunk choices'
           items:
@@ -22416,6 +22461,7 @@ components:
             - 'cyber_policy'
             - 'misalignment_policy_violation'
             - 'data_residency_mismatch'
+            - 'permission_denied'
           type: 'string'
         message:
           type: 'string'
@@ -22450,7 +22496,8 @@ components:
               - call: 1
                 outcome: 'allowed'
                 rules:
-                  - broken: false
+                  - applicable: true
+                    broken: false
                     probability: 0.04
       type: 'object'
     OpenResponsesInProgressEvent:
@@ -27977,6 +28024,7 @@ components:
             - 'cyber_policy'
             - 'misalignment_policy_violation'
             - 'data_residency_mismatch'
+            - 'permission_denied'
           type: 'string'
         message:
           type: 'string'
