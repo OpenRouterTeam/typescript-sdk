@@ -8,6 +8,7 @@ import { remap as remap$ } from "../lib/primitives.js";
 import { safeParse } from "../lib/schemas.js";
 import { ClosedEnum } from "../types/enums.js";
 import { Result as SafeParseResult } from "../types/fp.js";
+import { Alignment, Alignment$inboundSchema } from "./alignment.js";
 import { ApiErrorType, ApiErrorType$inboundSchema } from "./apierrortype.js";
 import {
   ChatStreamChoice,
@@ -61,6 +62,7 @@ export type ChatStreamChunkObject = ClosedEnum<typeof ChatStreamChunkObject>;
  * Streaming chat completion chunk
  */
 export type ChatStreamChunk = {
+  alignment?: Alignment | undefined;
   /**
    * List of streaming chunk choices
    */
@@ -151,6 +153,7 @@ export const ChatStreamChunk$inboundSchema: z.ZodType<
   ChatStreamChunk,
   unknown
 > = z.object({
+  alignment: Alignment$inboundSchema.optional(),
   choices: z.array(ChatStreamChoice$inboundSchema),
   created: z.int(),
   error: z.lazy(() => ChatStreamChunkError$inboundSchema).optional(),

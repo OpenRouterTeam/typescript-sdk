@@ -8,6 +8,7 @@ import { remap as remap$ } from "../lib/primitives.js";
 import { safeParse } from "../lib/schemas.js";
 import { ClosedEnum } from "../types/enums.js";
 import { Result as SafeParseResult } from "../types/fp.js";
+import { Alignment, Alignment$inboundSchema } from "./alignment.js";
 import { ChatChoice, ChatChoice$inboundSchema } from "./chatchoice.js";
 import { ChatUsage, ChatUsage$inboundSchema } from "./chatusage.js";
 import { SDKValidationError } from "./errors/sdkvalidationerror.js";
@@ -25,6 +26,10 @@ export type ChatResultObject = ClosedEnum<typeof ChatResultObject>;
  * Chat completion response
  */
 export type ChatResult = {
+  /**
+   * Beta. The result of the alignment plugin for this request; the shape may change.
+   */
+  alignment?: Alignment | undefined;
   /**
    * List of completion choices
    */
@@ -65,6 +70,7 @@ export const ChatResultObject$inboundSchema: z.ZodEnum<
 /** @internal */
 export const ChatResult$inboundSchema: z.ZodType<ChatResult, unknown> = z
   .object({
+    alignment: Alignment$inboundSchema.optional(),
     choices: z.array(ChatChoice$inboundSchema),
     created: z.int(),
     id: z.string(),

@@ -30,6 +30,10 @@ export type VideoGenerationResponseStatus = OpenEnum<
 export type VideoGenerationResponse = {
   error?: string | undefined;
   /**
+   * Unix timestamp in seconds when OpenRouter's stored copy of the outputs stops being available. Present only when that copy exists.
+   */
+  expiresAt?: number | undefined;
+  /**
    * The generation ID associated with this video generation job. Available once the job has been processed.
    */
   generationId?: string | undefined;
@@ -58,6 +62,7 @@ export const VideoGenerationResponse$inboundSchema: z.ZodType<
   unknown
 > = z.object({
   error: z.string().optional(),
+  expires_at: z.int().optional(),
   generation_id: z.string().optional(),
   id: z.string(),
   polling_url: z.string(),
@@ -66,6 +71,7 @@ export const VideoGenerationResponse$inboundSchema: z.ZodType<
   usage: VideoGenerationUsage$inboundSchema.optional(),
 }).transform((v) => {
   return remap$(v, {
+    "expires_at": "expiresAt",
     "generation_id": "generationId",
     "polling_url": "pollingUrl",
     "unsigned_urls": "unsignedUrls",

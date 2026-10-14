@@ -106,6 +106,11 @@ import {
   DatetimeServerTool$outboundSchema,
 } from "./datetimeservertool.js";
 import {
+  DeferredToolsControl,
+  DeferredToolsControl$Outbound,
+  DeferredToolsControl$outboundSchema,
+} from "./deferredtoolscontrol.js";
+import {
   FileParserPlugin,
   FileParserPlugin$Outbound,
   FileParserPlugin$outboundSchema,
@@ -530,6 +535,10 @@ export type MessagesRequest = {
    */
   cacheControl?: AnthropicCacheControlDirective | undefined;
   contextManagement?: ContextManagement | null | undefined;
+  /**
+   * Opt-in versioned router-level deferred-tool protocol. Replay assistant reasoning unchanged on continuation; keep the catalog unchanged.
+   */
+  deferredTools?: DeferredToolsControl | undefined;
   /**
    * Fallback models to try if the primary model fails or refuses, in order. Handled by OpenRouter multi-model routing rather than Anthropic server-side fallbacks; cannot be combined with `models`. Each entry accepts only `model`. Maximum of 3 entries.
    */
@@ -1599,6 +1608,7 @@ export function messagesRequestToolUnionToJSON(
 export type MessagesRequest$Outbound = {
   cache_control?: AnthropicCacheControlDirective$Outbound | undefined;
   context_management?: ContextManagement$Outbound | null | undefined;
+  deferred_tools?: DeferredToolsControl$Outbound | undefined;
   fallbacks?: Array<MessagesFallbackParam$Outbound> | null | undefined;
   max_tokens?: number | undefined;
   messages: Array<MessagesMessageParam$Outbound> | null;
@@ -1682,6 +1692,7 @@ export const MessagesRequest$outboundSchema: z.ZodType<
   cacheControl: AnthropicCacheControlDirective$outboundSchema.optional(),
   contextManagement: z.nullable(z.lazy(() => ContextManagement$outboundSchema))
     .optional(),
+  deferredTools: DeferredToolsControl$outboundSchema.optional(),
   fallbacks: z.nullable(z.array(MessagesFallbackParam$outboundSchema))
     .optional(),
   maxTokens: z.int().optional(),
@@ -1760,6 +1771,7 @@ export const MessagesRequest$outboundSchema: z.ZodType<
   return remap$(v, {
     cacheControl: "cache_control",
     contextManagement: "context_management",
+    deferredTools: "deferred_tools",
     maxTokens: "max_tokens",
     outputConfig: "output_config",
     serviceTier: "service_tier",

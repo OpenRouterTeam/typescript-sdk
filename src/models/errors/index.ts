@@ -7,6 +7,7 @@ export * from "./badgatewayresponseerror.js";
 export * from "./badrequestresponseerror.js";
 export * from "./batcherrorresponse.js";
 export * from "./batchpaymentrequiredresponseerror.js";
+export * from "./clientclosedrequestresponseerror.js";
 export * from "./conflictresponseerror.js";
 export * from "./createprivateendpoint.js";
 export * from "./createprivateendpointvalidationfailedresponseerror.js";
