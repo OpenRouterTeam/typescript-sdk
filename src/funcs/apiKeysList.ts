@@ -100,6 +100,7 @@ async function $do(
 
   const query = encodeFormQuery({
     "include_disabled": payload?.include_disabled,
+    "include_expired": payload?.include_expired,
     "offset": payload?.offset,
     "workspace_id": payload?.workspace_id,
   });
