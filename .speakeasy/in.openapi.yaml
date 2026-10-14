@@ -10628,6 +10628,57 @@ components:
         - 'debug'
         - 'sequence_number'
       type: 'object'
+    DecisionsBoxAnswer:
+      properties:
+        box:
+          properties:
+            bottom:
+              format: 'double'
+              type: 'number'
+            left:
+              format: 'double'
+              type: 'number'
+            right:
+              format: 'double'
+              type: 'number'
+            top:
+              format: 'double'
+              type: 'number'
+          required:
+            - 'top'
+            - 'bottom'
+            - 'left'
+            - 'right'
+          type: 'object'
+        confidence:
+          format: 'double'
+          type: 'number'
+        type:
+          enum:
+            - 'box'
+          type: 'string'
+      required:
+        - 'type'
+        - 'box'
+      type: 'object'
+    DecisionsBoxQuestion:
+      properties:
+        instructions:
+          anyOf:
+            - type: 'string'
+            - additionalProperties: {}
+              type: 'object'
+            - items: {}
+              type: 'array'
+          description: 'A plain string, or a JSON object or array of structured guidance.'
+        type:
+          enum:
+            - 'box'
+          type: 'string'
+      required:
+        - 'type'
+        - 'instructions'
+      type: 'object'
     DecisionsChoiceAnswer:
       properties:
         choice:
@@ -10741,9 +10792,10 @@ components:
             - description: 'Provider routing preferences for the request.'
         questions:
           additionalProperties:
-            description: 'A Decisions question using a boolean, choice, or ordered score evaluation.'
+            description: 'A Decisions question using a boolean, choice, ordered score, or image bounding-box evaluation.'
             discriminator:
               mapping:
+                box: '#/components/schemas/DecisionsBoxQuestion'
                 choice: '#/components/schemas/DecisionsChoiceQuestion'
                 noul: '#/components/schemas/DecisionsNoulQuestion'
                 score: '#/components/schemas/DecisionsScoreQuestion'
@@ -10752,6 +10804,7 @@ components:
               - $ref: '#/components/schemas/DecisionsNoulQuestion'
               - $ref: '#/components/schemas/DecisionsChoiceQuestion'
               - $ref: '#/components/schemas/DecisionsScoreQuestion'
+              - $ref: '#/components/schemas/DecisionsBoxQuestion'
           type: 'object'
         session_id:
           description: 'A unique identifier for grouping related requests (e.g., a conversation or agent workflow). Used for observability grouping in Broadcast and private logging; never sent to the provider. If provided in both the request body and the x-session-id header, the body value takes precedence. Maximum of 256 characters.'
@@ -10780,9 +10833,10 @@ components:
       properties:
         answers:
           additionalProperties:
-            description: 'A Decisions answer using a boolean, choice, or score evaluation.'
+            description: 'A Decisions answer using a boolean, choice, score, or image bounding-box evaluation.'
             discriminator:
               mapping:
+                box: '#/components/schemas/DecisionsBoxAnswer'
                 choice: '#/components/schemas/DecisionsChoiceAnswer'
                 noul: '#/components/schemas/DecisionsNoulAnswer'
                 score: '#/components/schemas/DecisionsScoreAnswer'
@@ -10791,6 +10845,7 @@ components:
               - $ref: '#/components/schemas/DecisionsNoulAnswer'
               - $ref: '#/components/schemas/DecisionsChoiceAnswer'
               - $ref: '#/components/schemas/DecisionsScoreAnswer'
+              - $ref: '#/components/schemas/DecisionsBoxAnswer'
           type: 'object'
         id:
           type: 'string'
