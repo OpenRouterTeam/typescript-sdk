@@ -7,21 +7,26 @@ import * as z from "zod/v4";
 import { remap as remap$ } from "../lib/primitives.js";
 import * as openEnums from "../types/enums.js";
 import { OpenEnum } from "../types/enums.js";
+import {
+  AlignmentRule,
+  AlignmentRule$Outbound,
+  AlignmentRule$outboundSchema,
+} from "./alignmentrule.js";
 
 /**
- * `enforce`: a turn that breaks a rule is withheld, retried, and finally returned as an error. `audit`: every turn is evaluated and returned. Default `enforce`.
+ * `enforce`: a turn that breaks a rule is withheld, retried, and finally returned as an error. `audit`: every turn is evaluated and returned. Default `audit`.
  */
 export const AlignmentPluginMode = {
   Enforce: "enforce",
   Audit: "audit",
 } as const;
 /**
- * `enforce`: a turn that breaks a rule is withheld, retried, and finally returned as an error. `audit`: every turn is evaluated and returned. Default `enforce`.
+ * `enforce`: a turn that breaks a rule is withheld, retried, and finally returned as an error. `audit`: every turn is evaluated and returned. Default `audit`.
  */
 export type AlignmentPluginMode = OpenEnum<typeof AlignmentPluginMode>;
 
 /**
- * Beta. States the listed rules to the model and evaluates every turn against them. Requests are evaluated only for entities admitted to the beta; the configuration, metadata, and error shapes may change.
+ * Beta. States the listed rules to the model and evaluates every turn against them; the configuration, metadata, and error shapes may change.
  */
 export type AlignmentPlugin = {
   id: "alignment";
@@ -34,15 +39,15 @@ export type AlignmentPlugin = {
    */
   maxRetries?: number | undefined;
   /**
-   * `enforce`: a turn that breaks a rule is withheld, retried, and finally returned as an error. `audit`: every turn is evaluated and returned. Default `enforce`.
+   * `enforce`: a turn that breaks a rule is withheld, retried, and finally returned as an error. `audit`: every turn is evaluated and returned. Default `audit`.
    */
   mode?: AlignmentPluginMode | undefined;
   /**
-   * Texts that state what the reply must do or must not do. Each rule is evaluated on its own.
+   * Rules the reply must follow. Each rule is evaluated on its own.
    */
-  rules: Array<string>;
+  rules: Array<AlignmentRule>;
   /**
-   * Probability at or above which a rule is broken. Default 0.7.
+   * Probability at or above which a rule is broken, from 0.01 to 1. Default 0.7.
    */
   threshold?: number | undefined;
 };
@@ -59,7 +64,7 @@ export type AlignmentPlugin$Outbound = {
   instruct?: boolean | undefined;
   max_retries?: number | undefined;
   mode?: string | undefined;
-  rules: Array<string>;
+  rules: Array<AlignmentRule$Outbound>;
   threshold?: number | undefined;
 };
 
@@ -72,7 +77,7 @@ export const AlignmentPlugin$outboundSchema: z.ZodType<
   instruct: z.boolean().optional(),
   maxRetries: z.int().optional(),
   mode: AlignmentPluginMode$outboundSchema.optional(),
-  rules: z.array(z.string()),
+  rules: z.array(AlignmentRule$outboundSchema),
   threshold: z.number().optional(),
 }).transform((v) => {
   return remap$(v, {
