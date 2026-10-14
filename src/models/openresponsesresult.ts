@@ -8,7 +8,8 @@ import { remap as remap$ } from "../lib/primitives.js";
 import { safeParse } from "../lib/schemas.js";
 import * as discriminatedUnionTypes from "../types/discriminatedUnion.js";
 import { discriminatedUnion } from "../types/discriminatedUnion.js";
-import { ClosedEnum } from "../types/enums.js";
+import * as openEnums from "../types/enums.js";
+import { ClosedEnum, OpenEnum } from "../types/enums.js";
 import { Result as SafeParseResult } from "../types/fp.js";
 import { Alignment, Alignment$inboundSchema } from "./alignment.js";
 import { ApiErrorType, ApiErrorType$inboundSchema } from "./apierrortype.js";
@@ -114,6 +115,14 @@ export type OpenResponsesResultObject = ClosedEnum<
   typeof OpenResponsesResultObject
 >;
 
+export const OpenResponsesResultAllowedCaller = {
+  Direct: "direct",
+  Programmatic: "programmatic",
+} as const;
+export type OpenResponsesResultAllowedCaller = OpenEnum<
+  typeof OpenResponsesResultAllowedCaller
+>;
+
 /**
  * Function tool definition
  */
@@ -123,14 +132,16 @@ export type OpenResponsesResultToolFunction = {
   parameters: { [k: string]: any } | null;
   strict?: boolean | null | undefined;
   type: "function";
+  allowedCallers?: Array<OpenResponsesResultAllowedCaller> | null | undefined;
   /**
    * Lets the model keep working after calling this tool instead of waiting for its output. The tool is still executed by the client; return the result in a later request as a `function_call_output` with the original `call_id`. Only honored by providers whose Responses API supports async tools; ignored elsewhere.
    */
   async?: boolean | undefined;
   /**
-   * Withhold this tool from the model until `openrouter:tool_search` finds it. Requires the tool search server tool; at least one tool must remain non-deferred.
+   * Withhold this tool from the model until `openrouter:tool_search` finds it. Where the request declares no search tool, OpenRouter may add `openrouter:tool_search` to serve the flag, and otherwise sends the tool in full. A request that declares the search tool itself must keep at least one tool non-deferred.
    */
   deferLoading?: boolean | undefined;
+  outputSchema?: { [k: string]: any } | null | undefined;
 };
 
 export type OpenResponsesResultToolUnion =
@@ -283,6 +294,12 @@ export const OpenResponsesResultObject$inboundSchema: z.ZodEnum<
 > = z.enum(OpenResponsesResultObject);
 
 /** @internal */
+export const OpenResponsesResultAllowedCaller$inboundSchema: z.ZodType<
+  OpenResponsesResultAllowedCaller,
+  unknown
+> = openEnums.inboundSchema(OpenResponsesResultAllowedCaller);
+
+/** @internal */
 export const OpenResponsesResultToolFunction$inboundSchema: z.ZodType<
   OpenResponsesResultToolFunction,
   unknown
@@ -292,11 +309,17 @@ export const OpenResponsesResultToolFunction$inboundSchema: z.ZodType<
   parameters: z.nullable(z.record(z.string(), z.any())),
   strict: z.nullable(z.boolean()).optional(),
   type: z.literal("function"),
+  allowed_callers: z.nullable(
+    z.array(OpenResponsesResultAllowedCaller$inboundSchema),
+  ).optional(),
   async: z.boolean().optional(),
   defer_loading: z.boolean().optional(),
+  output_schema: z.nullable(z.record(z.string(), z.any())).optional(),
 }).transform((v) => {
   return remap$(v, {
+    "allowed_callers": "allowedCallers",
     "defer_loading": "deferLoading",
+    "output_schema": "outputSchema",
   });
 });
 

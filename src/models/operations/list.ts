@@ -56,6 +56,10 @@ export type ListRequest = {
    */
   includeDisabled?: boolean | undefined;
   /**
+   * Whether to include expired API keys in the response. Expired keys are excluded by default and returned only when this is true.
+   */
+  includeExpired?: boolean | undefined;
+  /**
    * Number of API keys to skip for pagination
    */
   offset?: number | null | undefined;
@@ -176,6 +180,7 @@ export type ListRequest$Outbound = {
   appTitle?: string | undefined;
   appCategories?: string | undefined;
   include_disabled?: boolean | undefined;
+  include_expired?: boolean | undefined;
   offset?: number | null | undefined;
   workspace_id?: string | undefined;
 };
@@ -189,12 +194,14 @@ export const ListRequest$outboundSchema: z.ZodType<
   appTitle: z.string().optional(),
   appCategories: z.string().optional(),
   includeDisabled: z.boolean().optional(),
+  includeExpired: z.boolean().optional(),
   offset: z.nullable(z.int()).optional(),
   workspaceId: z.string().optional(),
 }).transform((v) => {
   return remap$(v, {
     httpReferer: "HTTP-Referer",
     includeDisabled: "include_disabled",
+    includeExpired: "include_expired",
     workspaceId: "workspace_id",
   });
 });
