@@ -8343,6 +8343,46 @@ components:
       required:
         - 'type'
       type: 'object'
+    ClientClosedRequestResponse:
+      description: 'Client Closed Request - The caller cancelled the request'
+      example:
+        error:
+          code: 499
+          message: 'The request was cancelled.'
+      properties:
+        error:
+          $ref: '#/components/schemas/ClientClosedRequestResponseErrorData'
+        openrouter_metadata:
+          additionalProperties: {}
+          type:
+            - 'object'
+            - 'null'
+        user_id:
+          type:
+            - 'string'
+            - 'null'
+      required:
+        - 'error'
+      type: 'object'
+    ClientClosedRequestResponseErrorData:
+      description: 'Error data for ClientClosedRequestResponse'
+      example:
+        code: 499
+        message: 'The request was cancelled.'
+      properties:
+        code:
+          type: 'integer'
+        message:
+          type: 'string'
+        metadata:
+          additionalProperties: {}
+          type:
+            - 'object'
+            - 'null'
+      required:
+        - 'code'
+        - 'message'
+      type: 'object'
     CodeInterpreterCallCodeDeltaEvent:
       allOf:
         - $ref: '#/components/schemas/OpenAIResponsesCodeInterpreterCallCodeDelta'
@@ -37334,6 +37374,16 @@ paths:
               schema:
                 $ref: '#/components/schemas/TooManyRequestsResponse'
           description: 'Too Many Requests - Rate limit exceeded'
+        '499':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 499
+                  message: 'The request was cancelled.'
+              schema:
+                $ref: '#/components/schemas/ClientClosedRequestResponse'
+          description: 'Client Closed Request - The caller cancelled the request'
         '500':
           content:
             application/json:
@@ -38254,6 +38304,16 @@ paths:
               schema:
                 $ref: '#/components/schemas/TooManyRequestsResponse'
           description: 'Too Many Requests - Rate limit exceeded'
+        '499':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 499
+                  message: 'The request was cancelled.'
+              schema:
+                $ref: '#/components/schemas/ClientClosedRequestResponse'
+          description: 'Client Closed Request - The caller cancelled the request'
         '500':
           content:
             application/json:
@@ -39226,6 +39286,16 @@ paths:
               schema:
                 $ref: '#/components/schemas/TooManyRequestsResponse'
           description: 'Too Many Requests - Rate limit exceeded'
+        '499':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 499
+                  message: 'The request was cancelled.'
+              schema:
+                $ref: '#/components/schemas/ClientClosedRequestResponse'
+          description: 'Client Closed Request - The caller cancelled the request'
         '500':
           content:
             application/json:
@@ -52749,6 +52819,16 @@ paths:
               schema:
                 $ref: '#/components/schemas/TooManyRequestsResponse'
           description: 'Too Many Requests - Rate limit exceeded'
+        '499':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 499
+                  message: 'The request was cancelled.'
+              schema:
+                $ref: '#/components/schemas/ClientClosedRequestResponse'
+          description: 'Client Closed Request - The caller cancelled the request'
         '500':
           content:
             application/json:
@@ -52759,6 +52839,16 @@ paths:
               schema:
                 $ref: '#/components/schemas/InternalServerResponse'
           description: 'Internal Server Error - Unexpected server error'
+        '503':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 503
+                  message: 'Service temporarily unavailable'
+              schema:
+                $ref: '#/components/schemas/ServiceUnavailableResponse'
+          description: 'Service Unavailable - Service temporarily unavailable'
       summary: 'Submit a video generation request'
       tags:
         - 'Video Generation'
