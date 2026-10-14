@@ -71,6 +71,11 @@ import {
   MessagesToolRemovalBlock$Outbound,
   MessagesToolRemovalBlock$outboundSchema,
 } from "./messagestoolremovalblock.js";
+import {
+  ORAnthropicToolSearchResultParam,
+  ORAnthropicToolSearchResultParam$Outbound,
+  ORAnthropicToolSearchResultParam$outboundSchema,
+} from "./oranthropictoolsearchresultparam.js";
 
 export type ContentCompaction = {
   /**
@@ -213,7 +218,8 @@ export type MessagesMessageParamContentUnion4 =
   | MessagesToolAdditionBlock
   | MessagesToolRemovalBlock
   | MessagesShellToolResultBlock
-  | MessagesBashToolResultBlock;
+  | MessagesBashToolResultBlock
+  | ORAnthropicToolSearchResultParam;
 
 export type MessagesMessageParamContentUnion5 =
   | string
@@ -234,6 +240,7 @@ export type MessagesMessageParamContentUnion5 =
     | MessagesToolRemovalBlock
     | MessagesShellToolResultBlock
     | MessagesBashToolResultBlock
+    | ORAnthropicToolSearchResultParam
   >;
 
 export const MessagesMessageParamRole = {
@@ -269,6 +276,7 @@ export type MessagesMessageParam = {
       | MessagesToolRemovalBlock
       | MessagesShellToolResultBlock
       | MessagesBashToolResultBlock
+      | ORAnthropicToolSearchResultParam
     >;
   outputConfig?: AnthropicMessageOutputConfig | null | undefined;
   role: MessagesMessageParamRole;
@@ -683,7 +691,8 @@ export type MessagesMessageParamContentUnion4$Outbound =
   | MessagesToolAdditionBlock$Outbound
   | MessagesToolRemovalBlock$Outbound
   | MessagesShellToolResultBlock$Outbound
-  | MessagesBashToolResultBlock$Outbound;
+  | MessagesBashToolResultBlock$Outbound
+  | ORAnthropicToolSearchResultParam$Outbound;
 
 /** @internal */
 export const MessagesMessageParamContentUnion4$outboundSchema: z.ZodType<
@@ -706,6 +715,7 @@ export const MessagesMessageParamContentUnion4$outboundSchema: z.ZodType<
   MessagesToolRemovalBlock$outboundSchema,
   MessagesShellToolResultBlock$outboundSchema,
   MessagesBashToolResultBlock$outboundSchema,
+  ORAnthropicToolSearchResultParam$outboundSchema,
 ]);
 
 export function messagesMessageParamContentUnion4ToJSON(
@@ -738,6 +748,7 @@ export type MessagesMessageParamContentUnion5$Outbound =
     | MessagesToolRemovalBlock$Outbound
     | MessagesShellToolResultBlock$Outbound
     | MessagesBashToolResultBlock$Outbound
+    | ORAnthropicToolSearchResultParam$Outbound
   >;
 
 /** @internal */
@@ -764,6 +775,7 @@ export const MessagesMessageParamContentUnion5$outboundSchema: z.ZodType<
       MessagesToolRemovalBlock$outboundSchema,
       MessagesShellToolResultBlock$outboundSchema,
       MessagesBashToolResultBlock$outboundSchema,
+      ORAnthropicToolSearchResultParam$outboundSchema,
     ]),
   ),
 ]);
@@ -806,6 +818,7 @@ export type MessagesMessageParam$Outbound = {
       | MessagesToolRemovalBlock$Outbound
       | MessagesShellToolResultBlock$Outbound
       | MessagesBashToolResultBlock$Outbound
+      | ORAnthropicToolSearchResultParam$Outbound
     >;
   output_config?: AnthropicMessageOutputConfig$Outbound | null | undefined;
   role: string;
@@ -837,6 +850,7 @@ export const MessagesMessageParam$outboundSchema: z.ZodType<
         MessagesToolRemovalBlock$outboundSchema,
         MessagesShellToolResultBlock$outboundSchema,
         MessagesBashToolResultBlock$outboundSchema,
+        ORAnthropicToolSearchResultParam$outboundSchema,
       ]),
     ),
   ]),
