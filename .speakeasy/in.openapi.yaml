@@ -3471,6 +3471,228 @@ components:
         - 'data'
         - 'meta'
       type: 'object'
+    ArmorAutoMode:
+      properties:
+        allow:
+          items:
+            anyOf:
+              - maxLength: 8122
+                minLength: 1
+                type: 'string'
+              - $ref: '#/components/schemas/ArmorRule'
+          type: 'array'
+        environment:
+          items:
+            anyOf:
+              - maxLength: 4122
+                minLength: 1
+                type: 'string'
+              - $ref: '#/components/schemas/ArmorEnvironmentEntry'
+          type: 'array'
+        hard_deny:
+          items:
+            anyOf:
+              - maxLength: 8122
+                minLength: 1
+                type: 'string'
+              - $ref: '#/components/schemas/ArmorRule'
+          type: 'array'
+        soft_deny:
+          items:
+            anyOf:
+              - maxLength: 8122
+                minLength: 1
+                type: 'string'
+              - $ref: '#/components/schemas/ArmorRule'
+          type: 'array'
+      type: 'object'
+    ArmorContext:
+      additionalProperties:
+        description: 'Carried unchanged; any JSON value.'
+      description: 'The Armor context: Claude Code''s `classifier_context` (v1), with `auto_mode.{hard_deny,soft_deny,allow}` rules as strings or `{ id, instructions, threshold? }` objects and `auto_mode.environment` entries as `"Name: value"` strings or `{ name, value }` objects. `threshold` applies when Armor evaluates; when the provider evaluates natively (Anthropic dangerous-tool-use beta) rules are judged at the provider''s own boundary.'
+      example:
+        auto_mode:
+          allow: []
+          environment:
+            - 'Trusted repo: github.com/acme/app'
+          hard_deny: []
+          soft_deny:
+            - id: 'secrets-in-vcs'
+              instructions: 'Staging, committing or pushing a file that holds secrets, including indirectly through git add -A when the tree shows one.'
+        v: 1
+      properties:
+        auto_mode:
+          $ref: '#/components/schemas/ArmorAutoMode'
+        v:
+          enum:
+            - 1
+          type: 'number'
+      required:
+        - 'v'
+      type: 'object'
+    ArmorEnvironmentEntry:
+      properties:
+        name:
+          maxLength: 120
+          minLength: 1
+          type: 'string'
+        value:
+          maxLength: 4000
+          type: 'string'
+      required:
+        - 'name'
+        - 'value'
+      type: 'object'
+    ArmorPlugin:
+      additionalProperties: false
+      description: 'Evaluates every client tool call the model emits against a rule stack (hard-deny, soft-deny, allow) before it reaches the caller. The stack merges the workspace guardrail, this plugin, and any Anthropic `safeguards`; on endpoints that support Anthropic''s `dangerous-tool-use` beta the evaluation is native, elsewhere it is one decisions call per tool call. Evaluation is not billed during the beta. Verdicts are reported as `safeguard_results`.'
+      example:
+        classifier_context:
+          auto_mode:
+            environment:
+              - 'Trusted repo: github.com/acme/app'
+            soft_deny:
+              - id: 'no-migrations-delete'
+                instructions: 'Deleting a file under db/migrations.'
+          v: 1
+        id: 'armor'
+        use_cc_style_default_rules: true
+      properties:
+        classifier_context:
+          $ref: '#/components/schemas/ArmorContext'
+        enabled:
+          description: 'Set to false to disable Armor for this request. Defaults to true.'
+          type: 'boolean'
+        evaluate_native_tools:
+          description: 'Run provider-native server tools (web search, code execution, ...) through the agent loop so Armor evaluates them too. Defaults to false: native passthrough stands and such calls are reported `skipped`.'
+          type: 'boolean'
+        id:
+          enum:
+            - 'armor'
+          type: 'string'
+        mode:
+          description: '`enforce` withholds blocked calls; `audit` evaluates and reports the same verdicts without withholding any calls, regardless of `on_error`. Default `enforce`.'
+          enum:
+            - 'enforce'
+            - 'audit'
+          type: 'string'
+        on_error:
+          description: 'When the classifier cannot answer (timeout, upstream error, context too long) the call is reported `unavailable`; `block` rejects it and `log` releases it. Default `block`.'
+          enum:
+            - 'log'
+            - 'block'
+          type: 'string'
+        output_mode:
+          description: 'How a blocked call reaches the caller. `text` (the default): the call is withheld and an `<openrouter_armor_blocked>` marker stands in assistant text. `custom_item` (Responses API only): the call is withheld and an `openrouter:armor_blocked` output item carries its id, name, arguments and the rule that fired. `claude_code_compatibility` (Messages API only; the default when the request carries a `dangerous_tool_use` safeguard, i.e. the client speaks Claude Code''s protocol): the `tool_use` stays in `content[]` and the verdict is `flagged` in `safeguard_results`, so the client withholds execution and writes the error tool result as under the native classifier. Under `text` and `custom_item` the model received a failure result in the loop and continued in the same request; under `claude_code_compatibility` the turn ends on the flagged call and the model continues on the next request, after the client''s denial.'
+          enum:
+            - 'text'
+            - 'custom_item'
+            - 'claude_code_compatibility'
+          type: 'string'
+        use_cc_style_default_rules:
+          description: 'Prepend Claude Code''s built-in auto-mode rule set (1 hard-deny, 72 soft-deny, 17 allow, 21 environment slots) ahead of every configured rule. Defaults to true on the Anthropic Messages API and false elsewhere.'
+          type: 'boolean'
+      required:
+        - 'id'
+      type: 'object'
+    ArmorRule:
+      properties:
+        id:
+          description: 'Stable id, unique within its source; reported as the deciding rule when it fires.'
+          maxLength: 64
+          minLength: 1
+          pattern: '^[a-z0-9][a-z0-9_-]*$'
+          type: 'string'
+        instructions:
+          description: 'What the rule matches, written for the classifier.'
+          maxLength: 8000
+          minLength: 1
+          type: 'string'
+        name:
+          description: 'Display name shown in verdict explanations; defaults to the id.'
+          maxLength: 120
+          minLength: 1
+          type: 'string'
+        threshold:
+          description: 'Probability at or above which the rule counts as matched. Defaults to 0.6 for hard-deny and soft-deny rules and 0.7 for allow rules (an exception needs stronger evidence to clear a matched soft deny).'
+          format: 'double'
+          type: 'number'
+      required:
+        - 'id'
+        - 'instructions'
+      type: 'object'
+    ArmorSafeguardResult:
+      description: 'The outcome of OpenRouter Armor for each client tool call of the response, keyed by tool-call id, in the same shape Anthropic reports its server-side safeguards.'
+      example:
+        status:
+          tool_uses:
+            call_abc:
+              explanation: '[Data Exfiltration]'
+              outcome: 'flagged'
+              type: 'evaluated'
+            call_def:
+              outcome: 'not_flagged'
+              type: 'evaluated'
+          type: 'available'
+        type: 'dangerous_tool_use'
+      properties:
+        status:
+          properties:
+            tool_uses:
+              additionalProperties:
+                oneOf:
+                  - properties:
+                      explanation:
+                        type: 'string'
+                      outcome:
+                        enum:
+                          - 'flagged'
+                          - 'not_flagged'
+                        type: 'string'
+                      type:
+                        enum:
+                          - 'evaluated'
+                        type: 'string'
+                    required:
+                      - 'type'
+                      - 'outcome'
+                    type: 'object'
+                  - properties:
+                      type:
+                        enum:
+                          - 'skipped'
+                        type: 'string'
+                    required:
+                      - 'type'
+                    type: 'object'
+                  - properties:
+                      reason:
+                        type: 'string'
+                      type:
+                        enum:
+                          - 'unavailable'
+                        type: 'string'
+                    required:
+                      - 'type'
+                      - 'reason'
+                    type: 'object'
+              type: 'object'
+            type:
+              enum:
+                - 'available'
+              type: 'string'
+          required:
+            - 'type'
+            - 'tool_uses'
+          type: 'object'
+        type:
+          enum:
+            - 'dangerous_tool_use'
+          type: 'string'
+      required:
+        - 'type'
+        - 'status'
+      type: 'object'
     AutoBetaRouterPlugin:
       example:
         allowed_models:
@@ -5473,6 +5695,11 @@ components:
                             type:
                               - 'string'
                               - 'null'
+                          safeguard_results:
+                            description: 'OpenRouter Armor''s verdict for each client tool call of this response, present whenever Armor evaluated the response (even when nothing was flagged). Independent of the `openrouter_metadata` opt-in.'
+                            items:
+                              $ref: '#/components/schemas/ArmorSafeguardResult'
+                            type: 'array'
                           service_tier:
                             type:
                               - 'string'
@@ -7433,6 +7660,7 @@ components:
             discriminator:
               mapping:
                 alignment: '#/components/schemas/AlignmentPlugin'
+                armor: '#/components/schemas/ArmorPlugin'
                 auto-beta-router: '#/components/schemas/AutoBetaRouterPlugin'
                 auto-router: '#/components/schemas/AutoRouterPlugin'
                 context-compression: '#/components/schemas/ContextCompressionPlugin'
@@ -7460,6 +7688,7 @@ components:
               - $ref: '#/components/schemas/SwitchyardRouterPlugin'
               - $ref: '#/components/schemas/JevRouterPlugin'
               - $ref: '#/components/schemas/AlignmentPlugin'
+              - $ref: '#/components/schemas/ArmorPlugin'
           type: 'array'
         prediction:
           $ref: '#/components/schemas/Prediction'
@@ -7687,6 +7916,11 @@ components:
           type: 'string'
         openrouter_metadata:
           $ref: '#/components/schemas/OpenRouterMetadata'
+        safeguard_results:
+          description: 'OpenRouter Armor''s verdict for each client tool call of this response, present whenever Armor evaluated the response (even when nothing was flagged). Independent of the `openrouter_metadata` opt-in.'
+          items:
+            $ref: '#/components/schemas/ArmorSafeguardResult'
+          type: 'array'
         service_tier:
           description: 'The service tier used by the upstream provider for this request'
           example: 'default'
@@ -7834,6 +8068,11 @@ components:
           type: 'string'
         openrouter_metadata:
           $ref: '#/components/schemas/OpenRouterMetadata'
+        safeguard_results:
+          description: 'OpenRouter Armor''s verdict for each client tool call of this response, present whenever Armor evaluated the response (even when nothing was flagged). Independent of the `openrouter_metadata` opt-in.'
+          items:
+            $ref: '#/components/schemas/ArmorSafeguardResult'
+          type: 'array'
         service_tier:
           description: 'The service tier used by the upstream provider for this request'
           example: 'default'
@@ -17509,6 +17748,7 @@ components:
             discriminator:
               mapping:
                 alignment: '#/components/schemas/AlignmentPlugin'
+                armor: '#/components/schemas/ArmorPlugin'
                 auto-beta-router: '#/components/schemas/AutoBetaRouterPlugin'
                 auto-router: '#/components/schemas/AutoRouterPlugin'
                 context-compression: '#/components/schemas/ContextCompressionPlugin'
@@ -17536,6 +17776,7 @@ components:
               - $ref: '#/components/schemas/SwitchyardRouterPlugin'
               - $ref: '#/components/schemas/JevRouterPlugin'
               - $ref: '#/components/schemas/AlignmentPlugin'
+              - $ref: '#/components/schemas/ArmorPlugin'
           type: 'array'
         provider:
           $ref: '#/components/schemas/ProviderPreferences'
@@ -22612,6 +22853,11 @@ components:
             output:
               items:
                 $ref: '#/components/schemas/OutputItems'
+              type: 'array'
+            safeguard_results:
+              description: 'OpenRouter Armor''s verdict for each client tool call of this response, present whenever Armor evaluated the response (even when nothing was flagged). Independent of the `openrouter_metadata` opt-in.'
+              items:
+                $ref: '#/components/schemas/ArmorSafeguardResult'
               type: 'array'
             service_tier:
               type:
@@ -28159,6 +28405,7 @@ components:
             discriminator:
               mapping:
                 alignment: '#/components/schemas/AlignmentPlugin'
+                armor: '#/components/schemas/ArmorPlugin'
                 auto-beta-router: '#/components/schemas/AutoBetaRouterPlugin'
                 auto-router: '#/components/schemas/AutoRouterPlugin'
                 context-compression: '#/components/schemas/ContextCompressionPlugin'
@@ -28186,6 +28433,7 @@ components:
               - $ref: '#/components/schemas/SwitchyardRouterPlugin'
               - $ref: '#/components/schemas/JevRouterPlugin'
               - $ref: '#/components/schemas/AlignmentPlugin'
+              - $ref: '#/components/schemas/ArmorPlugin'
           type: 'array'
         presence_penalty:
           format: 'double'
