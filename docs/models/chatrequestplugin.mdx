@@ -10,7 +10,12 @@ title: "ChatRequestPlugin"
 const value: models.AlignmentPlugin = {
   id: "alignment",
   rules: [
-    "Never offer a discount.",
+    {
+      rule: "Never offer a discount.",
+      watch: [
+        "content",
+      ],
+    },
   ],
 };
 ```
