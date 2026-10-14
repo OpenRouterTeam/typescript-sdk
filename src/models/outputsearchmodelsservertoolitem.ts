@@ -9,10 +9,10 @@ import { ClosedEnum } from "../types/enums.js";
 import { Result as SafeParseResult } from "../types/fp.js";
 import { SDKValidationError } from "./errors/sdkvalidationerror.js";
 import {
-  ToolCallStatus,
-  ToolCallStatus$inboundSchema,
-  ToolCallStatus$outboundSchema,
-} from "./toolcallstatus.js";
+  FailableToolCallStatus,
+  FailableToolCallStatus$inboundSchema,
+  FailableToolCallStatus$outboundSchema,
+} from "./failabletoolcallstatus.js";
 
 export const OutputSearchModelsServerToolItemType = {
   OpenrouterExperimentalSearchModels: "openrouter:experimental__search_models",
@@ -29,9 +29,13 @@ export type OutputSearchModelsServerToolItem = {
    * The JSON arguments submitted to the search tool (e.g. {"query":"Claude"})
    */
   arguments?: string | undefined;
+  /**
+   * The error message when the tool call failed before producing a result. Set together with `status: 'failed'`; absent on a successful call.
+   */
+  error?: string | undefined;
   id?: string | undefined;
   query?: string | undefined;
-  status: ToolCallStatus;
+  status: FailableToolCallStatus;
   type: OutputSearchModelsServerToolItemType;
 };
 
@@ -50,14 +54,16 @@ export const OutputSearchModelsServerToolItem$inboundSchema: z.ZodType<
   unknown
 > = z.object({
   arguments: z.string().optional(),
+  error: z.string().optional(),
   id: z.string().optional(),
   query: z.string().optional(),
-  status: ToolCallStatus$inboundSchema,
+  status: FailableToolCallStatus$inboundSchema,
   type: OutputSearchModelsServerToolItemType$inboundSchema,
 });
 /** @internal */
 export type OutputSearchModelsServerToolItem$Outbound = {
   arguments?: string | undefined;
+  error?: string | undefined;
   id?: string | undefined;
   query?: string | undefined;
   status: string;
@@ -70,9 +76,10 @@ export const OutputSearchModelsServerToolItem$outboundSchema: z.ZodType<
   OutputSearchModelsServerToolItem
 > = z.object({
   arguments: z.string().optional(),
+  error: z.string().optional(),
   id: z.string().optional(),
   query: z.string().optional(),
-  status: ToolCallStatus$outboundSchema,
+  status: FailableToolCallStatus$outboundSchema,
   type: OutputSearchModelsServerToolItemType$outboundSchema,
 });
 
