@@ -18,6 +18,11 @@ import {
   AnthropicCacheControlDirective$outboundSchema,
 } from "./anthropiccachecontroldirective.js";
 import {
+  ArmorPlugin,
+  ArmorPlugin$Outbound,
+  ArmorPlugin$outboundSchema,
+} from "./armorplugin.js";
+import {
   AutoBetaRouterPlugin,
   AutoBetaRouterPlugin$Outbound,
   AutoBetaRouterPlugin$outboundSchema,
@@ -86,6 +91,11 @@ import {
   ContextCompressionPlugin$Outbound,
   ContextCompressionPlugin$outboundSchema,
 } from "./contextcompressionplugin.js";
+import {
+  DeferredToolsControl,
+  DeferredToolsControl$Outbound,
+  DeferredToolsControl$outboundSchema,
+} from "./deferredtoolscontrol.js";
 import {
   FileParserPlugin,
   FileParserPlugin$Outbound,
@@ -171,6 +181,7 @@ export type Modality = OpenEnum<typeof Modality>;
 
 export type ChatRequestPlugin =
   | AlignmentPlugin
+  | ArmorPlugin
   | AutoBetaRouterPlugin
   | AutoRouterPlugin
   | ContextCompressionPlugin
@@ -276,6 +287,10 @@ export type ChatRequest = {
    */
   debug?: ChatDebugOptions | undefined;
   /**
+   * Opt-in versioned router-level deferred-tool protocol. Replay assistant reasoning unchanged on continuation; keep the catalog unchanged.
+   */
+  deferredTools?: DeferredToolsControl | undefined;
+  /**
    * Frequency penalty (-2.0 to 2.0)
    */
   frequencyPenalty?: number | null | undefined;
@@ -333,6 +348,7 @@ export type ChatRequest = {
   plugins?:
     | Array<
       | AlignmentPlugin
+      | ArmorPlugin
       | AutoBetaRouterPlugin
       | AutoRouterPlugin
       | ContextCompressionPlugin
@@ -459,6 +475,7 @@ export const Modality$outboundSchema: z.ZodType<string, Modality> = openEnums
 /** @internal */
 export type ChatRequestPlugin$Outbound =
   | AlignmentPlugin$Outbound
+  | ArmorPlugin$Outbound
   | AutoBetaRouterPlugin$Outbound
   | AutoRouterPlugin$Outbound
   | ContextCompressionPlugin$Outbound
@@ -478,6 +495,7 @@ export const ChatRequestPlugin$outboundSchema: z.ZodType<
   ChatRequestPlugin
 > = z.union([
   AlignmentPlugin$outboundSchema,
+  ArmorPlugin$outboundSchema,
   AutoBetaRouterPlugin$outboundSchema,
   AutoRouterPlugin$outboundSchema,
   ContextCompressionPlugin$outboundSchema,
@@ -583,6 +601,7 @@ export function stopToJSON(stop: Stop): string {
 export type ChatRequest$Outbound = {
   cache_control?: AnthropicCacheControlDirective$Outbound | undefined;
   debug?: ChatDebugOptions$Outbound | undefined;
+  deferred_tools?: DeferredToolsControl$Outbound | undefined;
   frequency_penalty?: number | null | undefined;
   image_config?: { [k: string]: ImageConfig$Outbound } | undefined;
   logit_bias?: { [k: string]: number } | null | undefined;
@@ -599,6 +618,7 @@ export type ChatRequest$Outbound = {
   plugins?:
     | Array<
       | AlignmentPlugin$Outbound
+      | ArmorPlugin$Outbound
       | AutoBetaRouterPlugin$Outbound
       | AutoRouterPlugin$Outbound
       | ContextCompressionPlugin$Outbound
@@ -655,6 +675,7 @@ export const ChatRequest$outboundSchema: z.ZodType<
 > = z.object({
   cacheControl: AnthropicCacheControlDirective$outboundSchema.optional(),
   debug: ChatDebugOptions$outboundSchema.optional(),
+  deferredTools: DeferredToolsControl$outboundSchema.optional(),
   frequencyPenalty: z.nullable(z.number()).optional(),
   imageConfig: z.record(z.string(), ImageConfig$outboundSchema).optional(),
   logitBias: z.nullable(z.record(z.string(), z.number())).optional(),
@@ -671,6 +692,7 @@ export const ChatRequest$outboundSchema: z.ZodType<
   plugins: z.array(
     z.union([
       AlignmentPlugin$outboundSchema,
+      ArmorPlugin$outboundSchema,
       AutoBetaRouterPlugin$outboundSchema,
       AutoRouterPlugin$outboundSchema,
       ContextCompressionPlugin$outboundSchema,
@@ -721,6 +743,7 @@ export const ChatRequest$outboundSchema: z.ZodType<
 }).transform((v) => {
   return remap$(v, {
     cacheControl: "cache_control",
+    deferredTools: "deferred_tools",
     frequencyPenalty: "frequency_penalty",
     imageConfig: "image_config",
     logitBias: "logit_bias",
