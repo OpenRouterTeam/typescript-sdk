@@ -131,6 +131,18 @@ describe('Conversation State Utilities', () => {
       expect(await toolRequiresApproval(toolCall, [toolWithApproval, toolWithoutApproval], context)).toBe(false);
     });
 
+    it('should evaluate tool-level predicates against schema-parsed arguments', async () => {
+      const deleteTool = tool({
+        name: 'delete_files',
+        inputSchema: z.object({ recursive: z.boolean().default(true) }),
+        requireApproval: (args) => args.recursive,
+        execute: async () => ({}),
+      });
+      const toolCall = { id: '1', name: 'delete_files', arguments: {} };
+
+      expect(await toolRequiresApproval(toolCall, [deleteTool], context)).toBe(true);
+    });
+
     it('should use call-level check when provided', async () => {
       const toolCall = { id: '1', name: 'safe_action', arguments: {} };
       const alwaysRequire = () => true;

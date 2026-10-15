@@ -9,6 +9,7 @@ import type {
   UnsentToolResult,
 } from './tool-types.js';
 import { normalizeInputToArray } from './turn-context.js';
+import * as z4 from 'zod/v4';
 
 /**
  * Type guard to verify an object is a valid UnsentToolResult
@@ -122,8 +123,11 @@ export async function toolRequiresApproval<TTools extends readonly Tool[]>(
   const requireApproval = tool.function.requireApproval;
 
   // If it's a function, call it with the tool's arguments and context
+  // Evaluate the predicate against the arguments the tool will actually run with,
+  // including schema defaults and coercions.
   if (typeof requireApproval === 'function') {
-    return requireApproval(toolCall.arguments, context);
+    const parsed = z4.safeParse(tool.function.inputSchema, toolCall.arguments);
+    return requireApproval(parsed.success ? parsed.data : toolCall.arguments, context);
   }
 
   // Otherwise treat as boolean
