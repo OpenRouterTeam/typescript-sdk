@@ -56,6 +56,10 @@ export type CreateObservabilityDestinationRequest = {
    */
   broadcastGenerationCost?: boolean | undefined;
   /**
+   * Beta. When true, include openrouter_cost_allocation: per-token-kind usage and cost, sent only when they reconcile with the billed cost.
+   */
+  broadcastGenerationCostAllocation?: boolean | undefined;
+  /**
    * When true, include identity generation metadata.
    */
   broadcastGenerationIdentity?: boolean | undefined;
@@ -110,6 +114,7 @@ export const CreateObservabilityDestinationRequestType$outboundSchema:
 export type CreateObservabilityDestinationRequest$Outbound = {
   api_key_hashes?: Array<string> | null | undefined;
   broadcast_generation_cost: boolean;
+  broadcast_generation_cost_allocation: boolean;
   broadcast_generation_identity: boolean;
   broadcast_generation_request_context: boolean;
   config: { [k: string]: any };
@@ -133,6 +138,7 @@ export const CreateObservabilityDestinationRequest$outboundSchema: z.ZodType<
 > = z.object({
   apiKeyHashes: z.nullable(z.array(z.string())).optional(),
   broadcastGenerationCost: z.boolean().default(false),
+  broadcastGenerationCostAllocation: z.boolean().default(false),
   broadcastGenerationIdentity: z.boolean().default(false),
   broadcastGenerationRequestContext: z.boolean().default(false),
   config: z.record(z.string(), z.any()),
@@ -149,6 +155,7 @@ export const CreateObservabilityDestinationRequest$outboundSchema: z.ZodType<
   return remap$(v, {
     apiKeyHashes: "api_key_hashes",
     broadcastGenerationCost: "broadcast_generation_cost",
+    broadcastGenerationCostAllocation: "broadcast_generation_cost_allocation",
     broadcastGenerationIdentity: "broadcast_generation_identity",
     broadcastGenerationRequestContext: "broadcast_generation_request_context",
     filterRules: "filter_rules",

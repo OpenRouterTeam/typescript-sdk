@@ -52,6 +52,10 @@ import {
   AnthropicUsageIteration$inboundSchema,
 } from "./anthropicusageiteration.js";
 import { ApiErrorType, ApiErrorType$inboundSchema } from "./apierrortype.js";
+import {
+  ArmorSafeguardResult,
+  ArmorSafeguardResult$inboundSchema,
+} from "./armorsafeguardresult.js";
 import { CostDetails, CostDetails$inboundSchema } from "./costdetails.js";
 import { SDKValidationError } from "./errors/sdkvalidationerror.js";
 import { FinishReason, FinishReason$inboundSchema } from "./finishreason.js";
@@ -588,6 +592,10 @@ export type BodyChatCompletion = {
   object: BodyObjectChatCompletion;
   openrouterMetadata?: OpenRouterMetadata | undefined;
   provider?: string | null | undefined;
+  /**
+   * OpenRouter Armor's verdict for each client tool call of this response, present whenever Armor evaluated the response (even when nothing was flagged). Independent of the `openrouter_metadata` opt-in.
+   */
+  safeguardResults?: Array<ArmorSafeguardResult> | undefined;
   serviceTier?: string | null | undefined;
   systemFingerprint?: string | null | undefined;
   usage?: BodyUsage1 | undefined;
@@ -1760,12 +1768,14 @@ export const BodyChatCompletion$inboundSchema: z.ZodType<
   object: BodyObjectChatCompletion$inboundSchema,
   openrouter_metadata: OpenRouterMetadata$inboundSchema.optional(),
   provider: z.nullable(z.string()).optional(),
+  safeguard_results: z.array(ArmorSafeguardResult$inboundSchema).optional(),
   service_tier: z.nullable(z.string()).optional(),
   system_fingerprint: z.nullable(z.string()).optional(),
   usage: z.lazy(() => BodyUsage1$inboundSchema).optional(),
 }).transform((v) => {
   return remap$(v, {
     "openrouter_metadata": "openrouterMetadata",
+    "safeguard_results": "safeguardResults",
     "service_tier": "serviceTier",
     "system_fingerprint": "systemFingerprint",
   });
