@@ -281,6 +281,7 @@ run();
 | errors.ForbiddenResponseError          | 403                                    | application/json                       |
 | errors.NotFoundResponseError           | 404                                    | application/json                       |
 | errors.RequestTimeoutResponseError     | 408                                    | application/json                       |
+| errors.ConflictResponseError           | 409                                    | application/json                       |
 | errors.TooManyRequestsResponseError    | 429                                    | application/json                       |
 | errors.InternalServerResponseError     | 500                                    | application/json                       |
 | errors.BadGatewayResponseError         | 502                                    | application/json                       |
@@ -361,6 +362,74 @@ async function run() {
 run();
 ```
 ### Example Usage: body-too-large
+
+```typescript
+import { OpenRouter } from "@openrouter/sdk";
+
+const openRouter = new OpenRouter({
+  httpReferer: "<value>",
+  appTitle: "<value>",
+  appCategories: "<value>",
+  apiKey: process.env["OPENROUTER_API_KEY"] ?? "",
+});
+
+async function run() {
+  const result = await openRouter.vault.storeInternVaultSecret({
+    internId: "7c9e6679-7425-40de-944b-e07fc1f90ae7",
+    name: "github_token",
+    vaultSecretWriteRequest: {
+      hosts: [
+        "api.github.com",
+      ],
+      value: "ghp_exampleTokenValue",
+    },
+  });
+
+  console.log(result);
+}
+
+run();
+```
+
+### Standalone function
+
+The standalone function version of this method:
+
+```typescript
+import { OpenRouterCore } from "@openrouter/sdk/core.js";
+import { vaultStoreInternVaultSecret } from "@openrouter/sdk/funcs/vaultStoreInternVaultSecret.js";
+
+// Use `OpenRouterCore` for best tree-shaking performance.
+// You can create one instance of it to use across an application.
+const openRouter = new OpenRouterCore({
+  httpReferer: "<value>",
+  appTitle: "<value>",
+  appCategories: "<value>",
+  apiKey: process.env["OPENROUTER_API_KEY"] ?? "",
+});
+
+async function run() {
+  const res = await vaultStoreInternVaultSecret(openRouter, {
+    internId: "7c9e6679-7425-40de-944b-e07fc1f90ae7",
+    name: "github_token",
+    vaultSecretWriteRequest: {
+      hosts: [
+        "api.github.com",
+      ],
+      value: "ghp_exampleTokenValue",
+    },
+  });
+  if (res.ok) {
+    const { value: result } = res;
+    console.log(result);
+  } else {
+    console.log("vaultStoreInternVaultSecret failed:", res.error);
+  }
+}
+
+run();
+```
+### Example Usage: conflict
 
 ```typescript
 import { OpenRouter } from "@openrouter/sdk";
@@ -2637,6 +2706,7 @@ run();
 | errors.ForbiddenResponseError          | 403                                    | application/json                       |
 | errors.NotFoundResponseError           | 404                                    | application/json                       |
 | errors.RequestTimeoutResponseError     | 408                                    | application/json                       |
+| errors.ConflictResponseError           | 409                                    | application/json                       |
 | errors.TooManyRequestsResponseError    | 429                                    | application/json                       |
 | errors.InternalServerResponseError     | 500                                    | application/json                       |
 | errors.BadGatewayResponseError         | 502                                    | application/json                       |
@@ -2715,6 +2785,72 @@ async function run() {
 run();
 ```
 ### Example Usage: body-too-large
+
+```typescript
+import { OpenRouter } from "@openrouter/sdk";
+
+const openRouter = new OpenRouter({
+  httpReferer: "<value>",
+  appTitle: "<value>",
+  appCategories: "<value>",
+  apiKey: process.env["OPENROUTER_API_KEY"] ?? "",
+});
+
+async function run() {
+  const result = await openRouter.vault.storeVaultSecret({
+    name: "github_token",
+    vaultSecretWriteRequest: {
+      hosts: [
+        "api.github.com",
+      ],
+      value: "ghp_exampleTokenValue",
+    },
+  });
+
+  console.log(result);
+}
+
+run();
+```
+
+### Standalone function
+
+The standalone function version of this method:
+
+```typescript
+import { OpenRouterCore } from "@openrouter/sdk/core.js";
+import { vaultStoreVaultSecret } from "@openrouter/sdk/funcs/vaultStoreVaultSecret.js";
+
+// Use `OpenRouterCore` for best tree-shaking performance.
+// You can create one instance of it to use across an application.
+const openRouter = new OpenRouterCore({
+  httpReferer: "<value>",
+  appTitle: "<value>",
+  appCategories: "<value>",
+  apiKey: process.env["OPENROUTER_API_KEY"] ?? "",
+});
+
+async function run() {
+  const res = await vaultStoreVaultSecret(openRouter, {
+    name: "github_token",
+    vaultSecretWriteRequest: {
+      hosts: [
+        "api.github.com",
+      ],
+      value: "ghp_exampleTokenValue",
+    },
+  });
+  if (res.ok) {
+    const { value: result } = res;
+    console.log(result);
+  } else {
+    console.log("vaultStoreVaultSecret failed:", res.error);
+  }
+}
+
+run();
+```
+### Example Usage: conflict
 
 ```typescript
 import { OpenRouter } from "@openrouter/sdk";
@@ -3661,6 +3797,7 @@ run();
 | errors.ForbiddenResponseError          | 403                                    | application/json                       |
 | errors.NotFoundResponseError           | 404                                    | application/json                       |
 | errors.RequestTimeoutResponseError     | 408                                    | application/json                       |
+| errors.ConflictResponseError           | 409                                    | application/json                       |
 | errors.PayloadTooLargeResponseError    | 413                                    | application/json                       |
 | errors.TooManyRequestsResponseError    | 429                                    | application/json                       |
 | errors.InternalServerResponseError     | 500                                    | application/json                       |
