@@ -33,6 +33,11 @@ import {
   ApplyPatchServerToolOpenRouter$outboundSchema,
 } from "./applypatchservertoolopenrouter.js";
 import {
+  ArmorPlugin,
+  ArmorPlugin$Outbound,
+  ArmorPlugin$outboundSchema,
+} from "./armorplugin.js";
+import {
   AutoBetaRouterPlugin,
   AutoBetaRouterPlugin$Outbound,
   AutoBetaRouterPlugin$outboundSchema,
@@ -82,6 +87,11 @@ import {
   DatetimeServerTool$Outbound,
   DatetimeServerTool$outboundSchema,
 } from "./datetimeservertool.js";
+import {
+  DeferredToolsControl,
+  DeferredToolsControl$Outbound,
+  DeferredToolsControl$outboundSchema,
+} from "./deferredtoolscontrol.js";
 import {
   FileParserPlugin,
   FileParserPlugin$Outbound,
@@ -293,6 +303,7 @@ import {
 
 export type ResponsesRequestPlugin =
   | AlignmentPlugin
+  | ArmorPlugin
   | AutoBetaRouterPlugin
   | AutoRouterPlugin
   | ContextCompressionPlugin
@@ -341,6 +352,19 @@ export type ResponsesRequestServiceTier = OpenEnum<
 >;
 
 /**
+ * Stop sequences (up to 4)
+ */
+export type ResponsesRequestStop = string | Array<string>;
+
+export const ResponsesRequestAllowedCaller = {
+  Direct: "direct",
+  Programmatic: "programmatic",
+} as const;
+export type ResponsesRequestAllowedCaller = OpenEnum<
+  typeof ResponsesRequestAllowedCaller
+>;
+
+/**
  * Function tool definition
  */
 export type ResponsesRequestToolFunction = {
@@ -349,14 +373,16 @@ export type ResponsesRequestToolFunction = {
   parameters: { [k: string]: any } | null;
   strict?: boolean | null | undefined;
   type: "function";
+  allowedCallers?: Array<ResponsesRequestAllowedCaller> | null | undefined;
   /**
    * Lets the model keep working after calling this tool instead of waiting for its output. The tool is still executed by the client; return the result in a later request as a `function_call_output` with the original `call_id`. Only honored by providers whose Responses API supports async tools; ignored elsewhere.
    */
   async?: boolean | undefined;
   /**
-   * Withhold this tool from the model until `openrouter:tool_search` finds it. Requires the tool search server tool; at least one tool must remain non-deferred.
+   * Withhold this tool from the model until `openrouter:tool_search` finds it. Where the request declares no search tool, OpenRouter may add `openrouter:tool_search` to serve the flag, and otherwise sends the tool in full. A request that declares the search tool itself must keep at least one tool non-deferred.
    */
   deferLoading?: boolean | undefined;
+  outputSchema?: { [k: string]: any } | null | undefined;
 };
 
 export type ResponsesRequestToolUnion =
@@ -408,6 +434,10 @@ export type ResponsesRequest = {
    * Debug options for inspecting request transformations (streaming only)
    */
   debug?: ChatDebugOptions | undefined;
+  /**
+   * Opt-in versioned router-level deferred-tool protocol. Replay assistant reasoning unchanged on continuation; keep the catalog unchanged.
+   */
+  deferredTools?: DeferredToolsControl | undefined;
   frequencyPenalty?: number | null | undefined;
   /**
    * Provider-specific image configuration options. Keys and values vary by model/provider. See https://openrouter.ai/docs/guides/overview/multimodal/image-generation for more details.
@@ -441,6 +471,7 @@ export type ResponsesRequest = {
   plugins?:
     | Array<
       | AlignmentPlugin
+      | ArmorPlugin
       | AutoBetaRouterPlugin
       | AutoRouterPlugin
       | ContextCompressionPlugin
@@ -486,6 +517,10 @@ export type ResponsesRequest = {
    * A unique identifier for grouping related requests (e.g., a conversation or agent workflow). When provided, OpenRouter uses it as the sticky routing key, routing all requests in the session to the same provider to maximize prompt cache hits. Also used for observability grouping. If provided in both the request body and the x-session-id header, the body value takes precedence. Maximum of 256 characters.
    */
   sessionId?: string | undefined;
+  /**
+   * Stop sequences (up to 4)
+   */
+  stop?: string | Array<string> | null | undefined;
   /**
    * Stop conditions for the server-tool agent loop. Any condition firing halts the loop (OR logic). When set, this overrides `max_tool_calls`. When a condition fires while the model is still emitting tool calls, the pending tool calls are executed and one final turn is made with tool calls disabled so the response ends with a natural-language answer instead of an unfinished tool call.
    */
@@ -553,6 +588,7 @@ export type ResponsesRequest = {
 /** @internal */
 export type ResponsesRequestPlugin$Outbound =
   | AlignmentPlugin$Outbound
+  | ArmorPlugin$Outbound
   | AutoBetaRouterPlugin$Outbound
   | AutoRouterPlugin$Outbound
   | ContextCompressionPlugin$Outbound
@@ -572,6 +608,7 @@ export const ResponsesRequestPlugin$outboundSchema: z.ZodType<
   ResponsesRequestPlugin
 > = z.union([
   AlignmentPlugin$outboundSchema,
+  ArmorPlugin$outboundSchema,
   AutoBetaRouterPlugin$outboundSchema,
   AutoRouterPlugin$outboundSchema,
   ContextCompressionPlugin$outboundSchema,
@@ -634,14 +671,39 @@ export const ResponsesRequestServiceTier$outboundSchema: z.ZodType<
 > = openEnums.outboundSchema(ResponsesRequestServiceTier);
 
 /** @internal */
+export type ResponsesRequestStop$Outbound = string | Array<string>;
+
+/** @internal */
+export const ResponsesRequestStop$outboundSchema: z.ZodType<
+  ResponsesRequestStop$Outbound,
+  ResponsesRequestStop
+> = z.union([z.string(), z.array(z.string())]);
+
+export function responsesRequestStopToJSON(
+  responsesRequestStop: ResponsesRequestStop,
+): string {
+  return JSON.stringify(
+    ResponsesRequestStop$outboundSchema.parse(responsesRequestStop),
+  );
+}
+
+/** @internal */
+export const ResponsesRequestAllowedCaller$outboundSchema: z.ZodType<
+  string,
+  ResponsesRequestAllowedCaller
+> = openEnums.outboundSchema(ResponsesRequestAllowedCaller);
+
+/** @internal */
 export type ResponsesRequestToolFunction$Outbound = {
   description?: string | null | undefined;
   name: string;
   parameters: { [k: string]: any } | null;
   strict?: boolean | null | undefined;
   type: "function";
+  allowed_callers?: Array<string> | null | undefined;
   async?: boolean | undefined;
   defer_loading?: boolean | undefined;
+  output_schema?: { [k: string]: any } | null | undefined;
 };
 
 /** @internal */
@@ -654,11 +716,17 @@ export const ResponsesRequestToolFunction$outboundSchema: z.ZodType<
   parameters: z.nullable(z.record(z.string(), z.any())),
   strict: z.nullable(z.boolean()).optional(),
   type: z.literal("function"),
+  allowedCallers: z.nullable(
+    z.array(ResponsesRequestAllowedCaller$outboundSchema),
+  ).optional(),
   async: z.boolean().optional(),
   deferLoading: z.boolean().optional(),
+  outputSchema: z.nullable(z.record(z.string(), z.any())).optional(),
 }).transform((v) => {
   return remap$(v, {
+    allowedCallers: "allowed_callers",
     deferLoading: "defer_loading",
+    outputSchema: "output_schema",
   });
 });
 
@@ -805,6 +873,7 @@ export type ResponsesRequest$Outbound = {
   background?: boolean | null | undefined;
   cache_control?: AnthropicCacheControlDirective$Outbound | undefined;
   debug?: ChatDebugOptions$Outbound | undefined;
+  deferred_tools?: DeferredToolsControl$Outbound | undefined;
   frequency_penalty?: number | null | undefined;
   image_config?: { [k: string]: ImageConfig$Outbound } | undefined;
   include?: Array<string> | null | undefined;
@@ -820,6 +889,7 @@ export type ResponsesRequest$Outbound = {
   plugins?:
     | Array<
       | AlignmentPlugin$Outbound
+      | ArmorPlugin$Outbound
       | AutoBetaRouterPlugin$Outbound
       | AutoRouterPlugin$Outbound
       | ContextCompressionPlugin$Outbound
@@ -844,6 +914,7 @@ export type ResponsesRequest$Outbound = {
   safety_identifier?: string | null | undefined;
   service_tier: string | null;
   session_id?: string | undefined;
+  stop?: string | Array<string> | null | undefined;
   stop_server_tools_when?:
     | Array<StopServerToolsWhenCondition$Outbound>
     | undefined;
@@ -912,6 +983,7 @@ export const ResponsesRequest$outboundSchema: z.ZodType<
   background: z.nullable(z.boolean()).optional(),
   cacheControl: AnthropicCacheControlDirective$outboundSchema.optional(),
   debug: ChatDebugOptions$outboundSchema.optional(),
+  deferredTools: DeferredToolsControl$outboundSchema.optional(),
   frequencyPenalty: z.nullable(z.number()).optional(),
   imageConfig: z.record(z.string(), ImageConfig$outboundSchema).optional(),
   include: z.nullable(z.array(ResponseIncludesEnum$outboundSchema)).optional(),
@@ -927,6 +999,7 @@ export const ResponsesRequest$outboundSchema: z.ZodType<
   plugins: z.array(
     z.union([
       AlignmentPlugin$outboundSchema,
+      ArmorPlugin$outboundSchema,
       AutoBetaRouterPlugin$outboundSchema,
       AutoRouterPlugin$outboundSchema,
       ContextCompressionPlugin$outboundSchema,
@@ -954,6 +1027,7 @@ export const ResponsesRequest$outboundSchema: z.ZodType<
     ResponsesRequestServiceTier$outboundSchema.default("auto"),
   ),
   sessionId: z.string().optional(),
+  stop: z.nullable(z.union([z.string(), z.array(z.string())])).optional(),
   stopServerToolsWhen: z.array(StopServerToolsWhenCondition$outboundSchema)
     .optional(),
   store: z.literal(false).default(false as const),
@@ -1052,6 +1126,7 @@ export const ResponsesRequest$outboundSchema: z.ZodType<
 }).transform((v) => {
   return remap$(v, {
     cacheControl: "cache_control",
+    deferredTools: "deferred_tools",
     frequencyPenalty: "frequency_penalty",
     imageConfig: "image_config",
     maxOutputTokens: "max_output_tokens",
