@@ -3,6 +3,8 @@
  * @generated-id: 5b5822276576
  */
 
+import { imagesEdit } from "../funcs/imagesEdit.js";
+import { imagesEditMultipart } from "../funcs/imagesEditMultipart.js";
 import { imagesGenerate } from "../funcs/imagesGenerate.js";
 import { imagesListModelEndpoints } from "../funcs/imagesListModelEndpoints.js";
 import { imagesListModels } from "../funcs/imagesListModels.js";
@@ -39,6 +41,40 @@ export class Images extends ClientSDK {
     options?: RequestOptions,
   ): Promise<operations.CreateImagesResponse> {
     return unwrapAsync(imagesGenerate(
+      this,
+      request,
+      options,
+    ));
+  }
+
+  /**
+   * Edit an image
+   *
+   * @remarks
+   * Edits one or more input images from a text prompt via the image generation router. Accepts the OpenAI images/edits body as JSON or multipart form data.
+   */
+  async edit(
+    request: operations.CreateImagesEditsRequest,
+    options?: RequestOptions,
+  ): Promise<models.ImageGenerationResponse> {
+    return unwrapAsync(imagesEdit(
+      this,
+      request,
+      options,
+    ));
+  }
+
+  /**
+   * Edit an image
+   *
+   * @remarks
+   * Edits one or more input images from a text prompt via the image generation router. Accepts the OpenAI images/edits body as JSON or multipart form data.
+   */
+  async editMultipart(
+    request: operations.CreateImagesEditsMultipartRequest,
+    options?: RequestOptions,
+  ): Promise<models.ImageGenerationResponse> {
+    return unwrapAsync(imagesEditMultipart(
       this,
       request,
       options,
