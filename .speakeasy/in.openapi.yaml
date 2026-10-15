@@ -27274,6 +27274,7 @@ components:
           request: '0'
         provider_name: 'OpenAI'
         quantization: 'fp16'
+        service_tier: null
         status: 0
         supported_parameters:
           - 'temperature'
@@ -27582,6 +27583,8 @@ components:
           anyOf:
             - $ref: '#/components/schemas/Quantization'
             - type: 'null'
+        service_tier:
+          $ref: '#/components/schemas/PublicServiceTier'
         status:
           $ref: '#/components/schemas/EndpointStatus'
         supported_parameters:
@@ -27638,6 +27641,7 @@ components:
         - 'pricing'
         - 'provider_name'
         - 'tag'
+        - 'service_tier'
         - 'quantization'
         - 'max_completion_tokens'
         - 'max_prompt_tokens'
@@ -27715,6 +27719,17 @@ components:
         - 'prompt'
         - 'completion'
       type: 'object'
+    PublicServiceTier:
+      description: 'The service tier this endpoint sells, or null for a standard endpoint. The same value whether the provider selects the tier with a request parameter or with a dedicated model id. Always the canonical tier: priority covers the fast request alias and the turbo, highspeed, and prime provider model-id spellings, none of which this field reports.'
+      enum:
+        - 'flex'
+        - 'priority'
+        - 'ultrafast'
+        - null
+      example: 'priority'
+      type:
+        - 'string'
+        - 'null'
     Quantization:
       enum:
         - 'int4'
