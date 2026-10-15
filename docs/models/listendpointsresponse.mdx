@@ -49,6 +49,7 @@ let value: ListEndpointsResponse = {
       },
       providerName: "OpenAI",
       quantization: "fp16",
+      serviceTier: "priority",
       supportedParameters: [
         "temperature",
         "top_p",
@@ -56,6 +57,7 @@ let value: ListEndpointsResponse = {
         "frequency_penalty",
         "presence_penalty",
       ],
+      supportsDiarization: false,
       supportsImplicitCaching: true,
       supportsToolChoice: {
         auto: true,

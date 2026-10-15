@@ -52,6 +52,10 @@ import {
   AnthropicUsageIteration$inboundSchema,
 } from "./anthropicusageiteration.js";
 import { ApiErrorType, ApiErrorType$inboundSchema } from "./apierrortype.js";
+import {
+  ArmorSafeguardResult,
+  ArmorSafeguardResult$inboundSchema,
+} from "./armorsafeguardresult.js";
 import { CostDetails, CostDetails$inboundSchema } from "./costdetails.js";
 import { SDKValidationError } from "./errors/sdkvalidationerror.js";
 import { FinishReason, FinishReason$inboundSchema } from "./finishreason.js";
@@ -373,7 +377,7 @@ export const ChoiceTypeImageURLEnum = {
 } as const;
 export type ChoiceTypeImageURLEnum = ClosedEnum<typeof ChoiceTypeImageURLEnum>;
 
-export type Image = {
+export type BatchObjectImage = {
   imageUrl: BatchObjectImageUrl;
   type: ChoiceTypeImageURLEnum;
 };
@@ -417,7 +421,7 @@ export type Message = {
     >
     | undefined;
   content: string | null;
-  images?: Array<Image> | null | undefined;
+  images?: Array<BatchObjectImage> | null | undefined;
   reasoning?: string | null | undefined;
   reasoningDetails?:
     | Array<
@@ -588,6 +592,10 @@ export type BodyChatCompletion = {
   object: BodyObjectChatCompletion;
   openrouterMetadata?: OpenRouterMetadata | undefined;
   provider?: string | null | undefined;
+  /**
+   * OpenRouter Armor's verdict for each client tool call of this response, present whenever Armor evaluated the response (even when nothing was flagged). Independent of the `openrouter_metadata` opt-in.
+   */
+  safeguardResults?: Array<ArmorSafeguardResult> | undefined;
   serviceTier?: string | null | undefined;
   systemFingerprint?: string | null | undefined;
   usage?: BodyUsage1 | undefined;
@@ -1387,7 +1395,10 @@ export const ChoiceTypeImageURLEnum$inboundSchema: z.ZodEnum<
 > = z.enum(ChoiceTypeImageURLEnum);
 
 /** @internal */
-export const Image$inboundSchema: z.ZodType<Image, unknown> = z.object({
+export const BatchObjectImage$inboundSchema: z.ZodType<
+  BatchObjectImage,
+  unknown
+> = z.object({
   image_url: z.lazy(() => BatchObjectImageUrl$inboundSchema),
   type: ChoiceTypeImageURLEnum$inboundSchema,
 }).transform((v) => {
@@ -1396,13 +1407,13 @@ export const Image$inboundSchema: z.ZodType<Image, unknown> = z.object({
   });
 });
 
-export function imageFromJSON(
+export function batchObjectImageFromJSON(
   jsonString: string,
-): SafeParseResult<Image, SDKValidationError> {
+): SafeParseResult<BatchObjectImage, SDKValidationError> {
   return safeParse(
     jsonString,
-    (x) => Image$inboundSchema.parse(JSON.parse(x)),
-    `Failed to parse 'Image' from JSON`,
+    (x) => BatchObjectImage$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'BatchObjectImage' from JSON`,
   );
 }
 
@@ -1484,7 +1495,8 @@ export const Message$inboundSchema: z.ZodType<Message, unknown> = z.object({
     ),
   })).optional(),
   content: z.nullable(z.string()),
-  images: z.nullable(z.array(z.lazy(() => Image$inboundSchema))).optional(),
+  images: z.nullable(z.array(z.lazy(() => BatchObjectImage$inboundSchema)))
+    .optional(),
   reasoning: z.nullable(z.string()).optional(),
   reasoning_details: z.nullable(z.array(z.nullable(discriminatedUnion("type", {
     ["reasoning.summary"]: ReasoningDetailSummary$inboundSchema,
@@ -1760,12 +1772,14 @@ export const BodyChatCompletion$inboundSchema: z.ZodType<
   object: BodyObjectChatCompletion$inboundSchema,
   openrouter_metadata: OpenRouterMetadata$inboundSchema.optional(),
   provider: z.nullable(z.string()).optional(),
+  safeguard_results: z.array(ArmorSafeguardResult$inboundSchema).optional(),
   service_tier: z.nullable(z.string()).optional(),
   system_fingerprint: z.nullable(z.string()).optional(),
   usage: z.lazy(() => BodyUsage1$inboundSchema).optional(),
 }).transform((v) => {
   return remap$(v, {
     "openrouter_metadata": "openrouterMetadata",
+    "safeguard_results": "safeguardResults",
     "service_tier": "serviceTier",
     "system_fingerprint": "systemFingerprint",
   });
