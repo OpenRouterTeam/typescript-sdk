@@ -29682,7 +29682,7 @@ components:
           type: 'string'
       type: 'object'
     SpeechInputReferenceImage:
-      description: 'Reference image describing the desired voice. Cannot be combined with `input_audio` parts. Only routed to endpoints that support image references.'
+      description: 'Reference image. On its own it describes the desired voice (voice design); alongside an `input_audio` part it is a scene image describing the setting the cloned voice speaks in. At most one per request. Only routed to endpoints that support image references.'
       example:
         image_url:
           url: 'data:image/png;base64,iVBORw0KGgo...'
@@ -29741,7 +29741,7 @@ components:
         input:
           $ref: '#/components/schemas/SpeechInput'
         input_references:
-          description: 'Reference content for stateless voice cloning or voice design. Audio mode: one to three `input_audio` parts, each optionally paired with a `text` part carrying its transcript (a single clip accepts its transcript before or after it; with multiple clips each transcript immediately follows its clip); only routed to endpoints that support voice cloning (and multiple references when more than one part is sent). Image mode: exactly one `image_url` part; only routed to endpoints that support image references. The two modes cannot be mixed. An empty array is treated as no reference.'
+          description: 'Reference content for stateless voice cloning or voice design. Audio mode: one to three `input_audio` parts, each optionally paired with a `text` part carrying its transcript (a single clip accepts its transcript before or after it; with multiple clips each transcript immediately follows its clip), plus at most one `image_url` part as a scene image on providers that condition the cloned voice on its setting; only routed to endpoints that support voice cloning (and multiple references or image references when those parts are sent). Image mode: exactly one `image_url` part; only routed to endpoints that support image references. An empty array is treated as no reference.'
           example:
             - input_audio:
                 data: 'data:audio/wav;base64,UklGRuQXDABXQVZF...'
