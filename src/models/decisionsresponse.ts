@@ -10,6 +10,10 @@ import * as discriminatedUnionTypes from "../types/discriminatedUnion.js";
 import { discriminatedUnion } from "../types/discriminatedUnion.js";
 import { Result as SafeParseResult } from "../types/fp.js";
 import {
+  DecisionsBoxAnswer,
+  DecisionsBoxAnswer$inboundSchema,
+} from "./decisionsboxanswer.js";
+import {
   DecisionsChoiceAnswer,
   DecisionsChoiceAnswer$inboundSchema,
 } from "./decisionschoiceanswer.js";
@@ -24,9 +28,10 @@ import {
 import { SDKValidationError } from "./errors/sdkvalidationerror.js";
 
 /**
- * A Decisions answer using a boolean, choice, or score evaluation.
+ * A Decisions answer using a boolean, choice, score, or image bounding-box evaluation.
  */
 export type Answers =
+  | DecisionsBoxAnswer
   | DecisionsChoiceAnswer
   | DecisionsNoulAnswer
   | DecisionsScoreAnswer
@@ -41,6 +46,7 @@ export type DecisionsResponseUsage = {
 export type DecisionsResponse = {
   answers: {
     [k: string]:
+      | DecisionsBoxAnswer
       | DecisionsChoiceAnswer
       | DecisionsNoulAnswer
       | DecisionsScoreAnswer
@@ -55,6 +61,7 @@ export type DecisionsResponse = {
 /** @internal */
 export const Answers$inboundSchema: z.ZodType<Answers, unknown> =
   discriminatedUnion("type", {
+    box: DecisionsBoxAnswer$inboundSchema,
     choice: DecisionsChoiceAnswer$inboundSchema,
     noul: DecisionsNoulAnswer$inboundSchema,
     score: DecisionsScoreAnswer$inboundSchema,
@@ -103,6 +110,7 @@ export const DecisionsResponse$inboundSchema: z.ZodType<
   answers: z.record(
     z.string(),
     discriminatedUnion("type", {
+      box: DecisionsBoxAnswer$inboundSchema,
       choice: DecisionsChoiceAnswer$inboundSchema,
       noul: DecisionsNoulAnswer$inboundSchema,
       score: DecisionsScoreAnswer$inboundSchema,
