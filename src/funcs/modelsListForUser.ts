@@ -118,6 +118,7 @@ async function $do(
     "limit": payload?.limit,
     "offset": payload?.offset,
     "output_modalities": payload?.output_modalities,
+    "sort": payload?.sort,
   });
 
   const headers = new Headers(compactMap({
