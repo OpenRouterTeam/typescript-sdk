@@ -1,0 +1,21 @@
+---
+title: "OnError"
+---
+
+When the classifier cannot answer (timeout, upstream error, context too long) the call is reported `unavailable`; `block` rejects it and `log` releases it. Default `block`.
+
+## Example Usage
+
+```typescript
+import { OnError } from "@openrouter/sdk/models";
+
+let value: OnError = "block";
+
+// Open enum: unrecognized values are captured as Unrecognized<string>
+```
+
+## Values
+
+```typescript
+"log" | "block" | Unrecognized<string>
+```
