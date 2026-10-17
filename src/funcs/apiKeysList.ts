@@ -42,6 +42,7 @@ export function apiKeysList(
     operations.ListResponse,
     | errors.BadRequestResponseError
     | errors.UnauthorizedResponseError
+    | errors.NotFoundResponseError
     | errors.TooManyRequestsResponseError
     | errors.InternalServerResponseError
     | OpenRouterError
@@ -71,6 +72,7 @@ async function $do(
       operations.ListResponse,
       | errors.BadRequestResponseError
       | errors.UnauthorizedResponseError
+      | errors.NotFoundResponseError
       | errors.TooManyRequestsResponseError
       | errors.InternalServerResponseError
       | OpenRouterError
@@ -100,6 +102,7 @@ async function $do(
 
   const query = encodeFormQuery({
     "include_disabled": payload?.include_disabled,
+    "include_expired": payload?.include_expired,
     "offset": payload?.offset,
     "workspace_id": payload?.workspace_id,
   });
@@ -188,6 +191,7 @@ async function $do(
     operations.ListResponse,
     | errors.BadRequestResponseError
     | errors.UnauthorizedResponseError
+    | errors.NotFoundResponseError
     | errors.TooManyRequestsResponseError
     | errors.InternalServerResponseError
     | OpenRouterError
@@ -202,6 +206,7 @@ async function $do(
     M.json(200, operations.ListResponse$inboundSchema),
     M.jsonErr(400, errors.BadRequestResponseError$inboundSchema),
     M.jsonErr(401, errors.UnauthorizedResponseError$inboundSchema),
+    M.jsonErr(404, errors.NotFoundResponseError$inboundSchema),
     M.jsonErr(429, errors.TooManyRequestsResponseError$inboundSchema),
     M.jsonErr(500, errors.InternalServerResponseError$inboundSchema),
     M.fail("4XX"),
