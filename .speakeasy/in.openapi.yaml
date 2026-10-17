@@ -6434,6 +6434,10 @@ components:
     BatchSubmitBody:
       description: 'Batch submit request body.'
       properties:
+        callback_url:
+          description: 'HTTPS URL that receives a `batch.completed`, `batch.failed`, `batch.cancelled` or `batch.expired` webhook event when the batch reaches a terminal status. Must appear before `requests` in the request body.'
+          format: 'uri'
+          type: 'string'
         completion_window:
           default: '24h'
           enum:
