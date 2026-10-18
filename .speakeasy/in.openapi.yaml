@@ -29638,6 +29638,24 @@ components:
           example: 'e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855'
           pattern: '^[0-9a-f]{64}$'
           type: 'string'
+        route:
+          additionalProperties: false
+          description: 'The daemon request the proof is for. When present the response also carries the single-use, route-bound proof (`x-ori-invoke-signature-v2`, `x-ori-invoke-nonce`).'
+          properties:
+            method:
+              description: 'The HTTP method of the daemon request.'
+              enum:
+                - 'POST'
+              type: 'string'
+            path:
+              description: 'The daemon request path, percent-encoded as sent, without origin or query. The route-bound proof admits only this path.'
+              example: '/api/invoke'
+              pattern: '^\/[!"$->@-~]{0,2047}$'
+              type: 'string'
+          required:
+            - 'method'
+            - 'path'
+          type: 'object'
       required:
         - 'bodySha256'
       type: 'object'
@@ -29649,8 +29667,14 @@ components:
         x-ori-invoke-timestamp: '1789000000'
         x-ori-invoke-user: 'user_2abc'
       properties:
+        x-ori-invoke-nonce:
+          description: 'Present with `x-ori-invoke-signature-v2`: the single-use id that proof is bound to.'
+          type: 'string'
         x-ori-invoke-signature:
           description: 'Base64 Ed25519 signature over the intern id, timestamp, user and body digest.'
+          type: 'string'
+        x-ori-invoke-signature-v2:
+          description: 'Present when the request named a `route`: Base64 Ed25519 signature over the intern id, timestamp, nonce, user, method, path and body digest. The intern accepts it once.'
           type: 'string'
         x-ori-invoke-timestamp:
           description: 'Unix seconds at signing; the daemon refuses proofs older than its window.'
@@ -42902,7 +42926,7 @@ paths:
       x-speakeasy-name-override: 'chat'
   /interns/{internId}/daemon:
     get:
-      description: 'Returns the origin and daemon token that attach `ori tui --host` to one visible, running intern. The token is a credential: the response is sent with `Cache-Control: no-store`, and each reveal is logged by caller and intern. The API key selects the caller, workspace and visible interns. An intern''s own API key sees only that intern: the collection and every other intern answer 404 to it. There is no default workspace fallback. Requests on regional hostnames such as `eu.openrouter.ai` are refused. [API key](/docs/api-reference/authentication) required.'
+      description: 'Returns the origin and daemon token that attach `ori tui --host` to one visible, running intern. The token is a credential: only an OAuth-token caller (`ori login --oidc`) may read it, the response is sent with `Cache-Control: no-store`, and each reveal is logged by caller and intern. API keys get 403 `personal_identity_required`. The API key selects the caller, workspace and visible interns. An intern''s own API key sees only that intern: the collection and every other intern answer 404 to it. There is no default workspace fallback. Requests on regional hostnames such as `eu.openrouter.ai` are refused. [API key](/docs/api-reference/authentication) required.'
       operationId: 'getInternDaemon'
       parameters:
         - description: 'ID of an intern visible to the authenticated API key.'
