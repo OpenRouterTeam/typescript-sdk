@@ -167,6 +167,14 @@ export type AdditionalToolsItemTypeFunction = ClosedEnum<
   typeof AdditionalToolsItemTypeFunction
 >;
 
+export const AdditionalToolsItemAllowedCaller = {
+  Direct: "direct",
+  Programmatic: "programmatic",
+} as const;
+export type AdditionalToolsItemAllowedCaller = OpenEnum<
+  typeof AdditionalToolsItemAllowedCaller
+>;
+
 /**
  * Function tool definition
  */
@@ -176,14 +184,16 @@ export type AdditionalToolsItemToolFunction = {
   parameters: { [k: string]: any } | null;
   strict?: boolean | null | undefined;
   type: AdditionalToolsItemTypeFunction;
+  allowedCallers?: Array<AdditionalToolsItemAllowedCaller> | null | undefined;
   /**
    * Lets the model keep working after calling this tool instead of waiting for its output. The tool is still executed by the client; return the result in a later request as a `function_call_output` with the original `call_id`. Only honored by providers whose Responses API supports async tools; ignored elsewhere.
    */
   async?: boolean | undefined;
   /**
-   * Withhold this tool from the model until `openrouter:tool_search` finds it. Requires the tool search server tool; at least one tool must remain non-deferred.
+   * Withhold this tool from the model until `openrouter:tool_search` finds it. Where the request declares no search tool, OpenRouter may add `openrouter:tool_search` to serve the flag, and otherwise sends the tool in full. A request that declares the search tool itself must keep at least one tool non-deferred.
    */
   deferLoading?: boolean | undefined;
+  outputSchema?: { [k: string]: any } | null | undefined;
 };
 
 export type AdditionalToolsItemToolUnion =
@@ -304,14 +314,22 @@ export const AdditionalToolsItemTypeFunction$outboundSchema: z.ZodEnum<
 > = z.enum(AdditionalToolsItemTypeFunction);
 
 /** @internal */
+export const AdditionalToolsItemAllowedCaller$outboundSchema: z.ZodType<
+  string,
+  AdditionalToolsItemAllowedCaller
+> = openEnums.outboundSchema(AdditionalToolsItemAllowedCaller);
+
+/** @internal */
 export type AdditionalToolsItemToolFunction$Outbound = {
   description?: string | null | undefined;
   name: string;
   parameters: { [k: string]: any } | null;
   strict?: boolean | null | undefined;
   type: string;
+  allowed_callers?: Array<string> | null | undefined;
   async?: boolean | undefined;
   defer_loading?: boolean | undefined;
+  output_schema?: { [k: string]: any } | null | undefined;
 };
 
 /** @internal */
@@ -324,11 +342,17 @@ export const AdditionalToolsItemToolFunction$outboundSchema: z.ZodType<
   parameters: z.nullable(z.record(z.string(), z.any())),
   strict: z.nullable(z.boolean()).optional(),
   type: AdditionalToolsItemTypeFunction$outboundSchema,
+  allowedCallers: z.nullable(
+    z.array(AdditionalToolsItemAllowedCaller$outboundSchema),
+  ).optional(),
   async: z.boolean().optional(),
   deferLoading: z.boolean().optional(),
+  outputSchema: z.nullable(z.record(z.string(), z.any())).optional(),
 }).transform((v) => {
   return remap$(v, {
+    allowedCallers: "allowed_callers",
     deferLoading: "defer_loading",
+    outputSchema: "output_schema",
   });
 });
 
