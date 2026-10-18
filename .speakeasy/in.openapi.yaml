@@ -51506,6 +51506,202 @@ paths:
       summary: 'Get a server tool'
       tags:
         - 'Tools'
+  /vault/interns/{internId}/connections:
+    get:
+      description: 'Lists the connections in scope for the intern, by the key of their card on the dashboard''s Connections tab: `github`, `slack`, `google`, a catalog MCP server such as `linear` or `notion`, or `mcp:<host>` for a custom MCP server. A connection is listed when it is stored, enabled, and not turned off or hidden for this intern, as the Connections tab lists it; whether its last test passed is not part of the rule. `ori features add` checks a feature''s `ori.requires.connections` against this list. Keys only, never credentials. Returns 404 for an intern the key cannot see. The scope is selected by the API key: workspace routes act on the key''s active workspace and intern routes act on one intern inside that workspace. There is no default workspace and no fallback to another scope. Every vault route, including reads, requires access to the Intern API programme and returns 404 outside it. An intern''s own API key is confined to that intern: it can always read the intern''s secrets and effective secrets, writes to them follow the rules above, and every other intern and every workspace route answers 404. Requests on regional hostnames such as `eu.openrouter.ai` are refused. [API key](/docs/api-reference/authentication) required.'
+      operationId: 'listInternConnections'
+      parameters:
+        - description: 'UUID of an intern in the workspace selected by the API key.'
+          in: 'path'
+          name: 'internId'
+          required: true
+          schema:
+            description: 'UUID of an intern in the workspace selected by the API key.'
+            example: '7c9e6679-7425-40de-944b-e07fc1f90ae7'
+            format: 'uuid'
+            type: 'string'
+      responses:
+        '200':
+          content:
+            application/json:
+              example:
+                data:
+                  - key: 'github'
+                  - key: 'linear'
+              schema:
+                properties:
+                  data:
+                    items:
+                      properties:
+                        key:
+                          type: 'string'
+                      required:
+                        - 'key'
+                      type: 'object'
+                    type: 'array'
+                required:
+                  - 'data'
+                type: 'object'
+          description: 'The connections the intern can use.'
+        '400':
+          content:
+            application/json:
+              examples:
+                invalid-vault-request:
+                  summary: 'Invalid vault request'
+                  value:
+                    error:
+                      code: 400
+                      message: 'Invalid vault request'
+              schema:
+                $ref: '#/components/schemas/BadRequestResponse'
+          description: 'Bad Request - The secret name, path, query or JSON body failed validation. The vault returns 400 for a malformed request as well.'
+        '401':
+          content:
+            application/json:
+              examples:
+                invalid-or-missing-api-key:
+                  summary: 'Invalid or missing API key'
+                  value:
+                    error:
+                      code: 401
+                      message: 'Invalid or missing API key'
+              schema:
+                $ref: '#/components/schemas/UnauthorizedResponse'
+          description: 'Unauthorized - Missing or unknown API key. Provisioning keys cannot call vault routes.'
+        '403':
+          content:
+            application/json:
+              examples:
+                regional-hostname:
+                  summary: 'Regional hostname'
+                  value:
+                    error:
+                      code: 403
+                      message: 'The Intern API does not support regional data residency yet. Please use the global endpoint at openrouter.ai.'
+                workspace-scope-unavailable:
+                  summary: 'Workspace scope unavailable'
+                  value:
+                    error:
+                      code: 403
+                      message: 'Vault scope is unavailable'
+              schema:
+                $ref: '#/components/schemas/ForbiddenResponse'
+          description: 'Forbidden - The key has no usable workspace scope, or the request arrived on a regional hostname.'
+        '404':
+          content:
+            application/json:
+              examples:
+                not-found:
+                  summary: 'Not found'
+                  value:
+                    error:
+                      code: 404
+                      message: 'Not found'
+              schema:
+                $ref: '#/components/schemas/NotFoundResponse'
+          description: 'Not Found - The intern is not in the selected workspace or is not visible to the key (a member key without an admin role sees only interns its member created or interns in workspaces they administer), the secret does not exist in the selected scope, or the caller is outside the intern programme.'
+        '408':
+          content:
+            application/json:
+              examples:
+                body-timed-out:
+                  summary: 'Body timed out'
+                  value:
+                    error:
+                      code: 408
+                      message: 'Request body timed out'
+                route-deadline:
+                  summary: 'Route deadline'
+                  value:
+                    error:
+                      code: 408
+                      message: 'Vault request timed out'
+              schema:
+                $ref: '#/components/schemas/RequestTimeoutResponse'
+          description: 'Request Timeout - The route deadline passed before the request completed, or the request body stopped arriving.'
+        '429':
+          content:
+            application/json:
+              examples:
+                rate-limited:
+                  summary: 'Rate limited'
+                  value:
+                    error:
+                      code: 429
+                      message: 'Too many vault requests'
+              schema:
+                $ref: '#/components/schemas/TooManyRequestsResponse'
+          description: 'Too Many Requests - The vault rate limit was reached.'
+        '500':
+          content:
+            application/json:
+              examples:
+                internal-error:
+                  summary: 'Internal error'
+                  value:
+                    error:
+                      code: 500
+                      message: 'Internal Server Error'
+              schema:
+                $ref: '#/components/schemas/InternalServerResponse'
+          description: 'Internal Server Error - Scope lookup failed.'
+        '502':
+          content:
+            application/json:
+              examples:
+                invalid-vault-response:
+                  summary: 'Invalid vault response'
+                  value:
+                    error:
+                      code: 502
+                      message: 'Invalid vault response'
+                vault-request-failed:
+                  summary: 'Vault request failed'
+                  value:
+                    error:
+                      code: 502
+                      message: 'Vault request failed'
+              schema:
+                $ref: '#/components/schemas/BadGatewayResponse'
+          description: 'Bad Gateway - The vault could not be reached or returned an unexpected response.'
+        '503':
+          content:
+            application/json:
+              examples:
+                vault-unavailable:
+                  summary: 'Vault unavailable'
+                  value:
+                    error:
+                      code: 503
+                      message: 'Vault service is unavailable'
+                writes-disabled:
+                  summary: 'Writes disabled'
+                  value:
+                    error:
+                      code: 503
+                      message: 'Vault writes are not enabled'
+              schema:
+                $ref: '#/components/schemas/ServiceUnavailableResponse'
+          description: 'Service Unavailable - Vault writes are disabled for the caller, or the vault is not configured.'
+        '504':
+          content:
+            application/json:
+              examples:
+                vault-timed-out:
+                  summary: 'Vault timed out'
+                  value:
+                    error:
+                      code: 504
+                      message: 'Vault request timed out'
+              schema:
+                $ref: '#/components/schemas/GatewayTimeoutResponse'
+          description: 'Gateway Timeout - The vault did not answer in time.'
+      security:
+        - apiKey: []
+      summary: 'List the connections an intern can use'
+      tags:
+        - 'Vault'
   /vault/interns/{internId}/effective-secrets:
     get:
       description: 'Lists, one entry per name, the secret the intern''s outbound requests receive: its own secrets, secrets from an attached vault, and workspace secrets, including ones stored before workspace-scoped storage. Where several vaults hold a name, the entry is the one that wins, in the order intern, attached, workspace. The same resolution decides what outbound requests receive, so this list and the intern''s requests agree. `scope` says which vault the entry comes from. Responses carry metadata only, never values. Results are ordered by name and paginated with `limit` and `offset`. Returns 404 when the intern''s attached vault is no longer available, since the intern then receives no secrets. The scope is selected by the API key: workspace routes act on the key''s active workspace and intern routes act on one intern inside that workspace. There is no default workspace and no fallback to another scope. Every vault route, including reads, requires access to the Intern API programme and returns 404 outside it. An intern''s own API key is confined to that intern: it can always read the intern''s secrets and effective secrets, writes to them follow the rules above, and every other intern and every workspace route answers 404. Requests on regional hostnames such as `eu.openrouter.ai` are refused. [API key](/docs/api-reference/authentication) required.'
