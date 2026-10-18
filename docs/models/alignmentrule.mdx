@@ -1,0 +1,23 @@
+---
+title: "AlignmentRule"
+---
+
+## Example Usage
+
+```typescript
+import { AlignmentRule } from "@openrouter/sdk/models";
+
+let value: AlignmentRule = {
+  rule: "Never offer a discount.",
+  watch: [
+    "content",
+  ],
+};
+```
+
+## Fields
+
+| Field                                                                                                                                                             | Type                                                                                                                                                              | Required                                                                                                                                                          | Description                                                                                                                                                       |
+| ----------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `rule`                                                                                                                                                            | *string*                                                                                                                                                          | :heavy_check_mark:                                                                                                                                                | Text that states what the reply must do or must not do.                                                                                                           |
+| `watch`                                                                                                                                                           | [models.Watch](../models/watch.mdx)[]                                                                                                                              | :heavy_check_mark:                                                                                                                                                | Fields of the assistant message the rule applies to. The rule is evaluated on a message that has at least one of them and is not applicable to any other message. |

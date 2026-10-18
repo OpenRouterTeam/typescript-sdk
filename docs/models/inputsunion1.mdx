@@ -275,6 +275,21 @@ const value: models.OutputMemoryServerToolItem = {
 };
 ```
 
+### `models.OutputArmorBlockedItem`
+
+```typescript
+const value: models.OutputArmorBlockedItem = {
+  arguments: "<value>",
+  callId: "<id>",
+  explanation: "<value>",
+  id: "msg-abc123",
+  name: "<value>",
+  reason: "<value>",
+  status: "completed",
+  type: "openrouter:armor_blocked",
+};
+```
+
 ### `models.OutputMcpServerToolItem`
 
 ```typescript
@@ -545,6 +560,31 @@ const value: models.ConfigurationUpdateItem = {
     effort: "low",
   },
   type: "configuration_update",
+};
+```
+
+### `models.ToolSearchCallItem`
+
+```typescript
+const value: models.ToolSearchCallItem = {
+  callId: "call_search_1",
+  execution: "client",
+  type: "tool_search_call",
+};
+```
+
+### `models.ToolSearchOutputItem`
+
+```typescript
+const value: models.ToolSearchOutputItem = {
+  callId: "call_search_1",
+  execution: "client",
+  tools: [
+    {
+      type: "function",
+    },
+  ],
+  type: "tool_search_output",
 };
 ```
 

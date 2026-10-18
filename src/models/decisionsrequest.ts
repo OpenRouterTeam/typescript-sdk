@@ -6,6 +6,11 @@
 import * as z from "zod/v4";
 import { remap as remap$ } from "../lib/primitives.js";
 import {
+  DecisionsBoxQuestion,
+  DecisionsBoxQuestion$Outbound,
+  DecisionsBoxQuestion$outboundSchema,
+} from "./decisionsboxquestion.js";
+import {
   DecisionsChoiceQuestion,
   DecisionsChoiceQuestion$Outbound,
   DecisionsChoiceQuestion$outboundSchema,
@@ -32,9 +37,10 @@ import {
 } from "./traceconfig.js";
 
 /**
- * A Decisions question using a boolean, choice, or ordered score evaluation.
+ * A Decisions question using a boolean, choice, ordered score, or image bounding-box evaluation.
  */
 export type Questions =
+  | DecisionsBoxQuestion
   | DecisionsChoiceQuestion
   | DecisionsNoulQuestion
   | DecisionsScoreQuestion;
@@ -49,6 +55,7 @@ export type DecisionsRequest = {
   provider?: ProviderPreferences | null | undefined;
   questions: {
     [k: string]:
+      | DecisionsBoxQuestion
       | DecisionsChoiceQuestion
       | DecisionsNoulQuestion
       | DecisionsScoreQuestion;
@@ -70,6 +77,7 @@ export type DecisionsRequest = {
 
 /** @internal */
 export type Questions$Outbound =
+  | DecisionsBoxQuestion$Outbound
   | DecisionsChoiceQuestion$Outbound
   | DecisionsNoulQuestion$Outbound
   | DecisionsScoreQuestion$Outbound;
@@ -79,6 +87,7 @@ export const Questions$outboundSchema: z.ZodType<
   Questions$Outbound,
   Questions
 > = z.union([
+  DecisionsBoxQuestion$outboundSchema,
   DecisionsChoiceQuestion$outboundSchema,
   DecisionsNoulQuestion$outboundSchema,
   DecisionsScoreQuestion$outboundSchema,
@@ -108,6 +117,7 @@ export type DecisionsRequest$Outbound = {
   provider?: ProviderPreferences$Outbound | null | undefined;
   questions: {
     [k: string]:
+      | DecisionsBoxQuestion$Outbound
       | DecisionsChoiceQuestion$Outbound
       | DecisionsNoulQuestion$Outbound
       | DecisionsScoreQuestion$Outbound;
@@ -128,6 +138,7 @@ export const DecisionsRequest$outboundSchema: z.ZodType<
   questions: z.record(
     z.string(),
     z.union([
+      DecisionsBoxQuestion$outboundSchema,
       DecisionsChoiceQuestion$outboundSchema,
       DecisionsNoulQuestion$outboundSchema,
       DecisionsScoreQuestion$outboundSchema,
