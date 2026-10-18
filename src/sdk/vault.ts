@@ -6,6 +6,7 @@
 import { vaultCopyVaultSecretsToIntern } from "../funcs/vaultCopyVaultSecretsToIntern.js";
 import { vaultDeleteInternVaultSecret } from "../funcs/vaultDeleteInternVaultSecret.js";
 import { vaultDeleteVaultSecret } from "../funcs/vaultDeleteVaultSecret.js";
+import { vaultListInternConnections } from "../funcs/vaultListInternConnections.js";
 import { vaultListInternEffectiveVaultSecrets } from "../funcs/vaultListInternEffectiveVaultSecrets.js";
 import { vaultListInternVaultSecrets } from "../funcs/vaultListInternVaultSecrets.js";
 import { vaultListVaultSecrets } from "../funcs/vaultListVaultSecrets.js";
@@ -17,6 +18,23 @@ import * as operations from "../models/operations/index.js";
 import { unwrapAsync } from "../types/fp.js";
 
 export class Vault extends ClientSDK {
+  /**
+   * List the connections an intern can use
+   *
+   * @remarks
+   * Lists the connections in scope for the intern, by the key of their card on the dashboard's Connections tab: `github`, `slack`, `google`, a catalog MCP server such as `linear` or `notion`, or `mcp:<host>` for a custom MCP server. A connection is listed when it is stored, enabled, and not turned off or hidden for this intern, as the Connections tab lists it; whether its last test passed is not part of the rule. `ori features add` checks a feature's `ori.requires.connections` against this list. Keys only, never credentials. Returns 404 for an intern the key cannot see. The scope is selected by the API key: workspace routes act on the key's active workspace and intern routes act on one intern inside that workspace. There is no default workspace and no fallback to another scope. Every vault route, including reads, requires access to the Intern API programme and returns 404 outside it. An intern's own API key is confined to that intern: it can always read the intern's secrets and effective secrets, writes to them follow the rules above, and every other intern and every workspace route answers 404. Requests on regional hostnames such as `eu.openrouter.ai` are refused. [API key](/docs/api-reference/authentication) required.
+   */
+  async listInternConnections(
+    request: operations.ListInternConnectionsRequest,
+    options?: RequestOptions,
+  ): Promise<operations.ListInternConnectionsResponse> {
+    return unwrapAsync(vaultListInternConnections(
+      this,
+      request,
+      options,
+    ));
+  }
+
   /**
    * List the secrets an intern receives
    *

@@ -2,7 +2,7 @@
 title: "TokenExchangeRequestScope"
 ---
 
-Optional; only `inference` is available.
+Optional; when present must match the policy's key: `management` for a management key, `inference` otherwise.
 
 ## Example Usage
 
@@ -10,10 +10,12 @@ Optional; only `inference` is available.
 import { TokenExchangeRequestScope } from "@openrouter/sdk/models";
 
 let value: TokenExchangeRequestScope = "inference";
+
+// Open enum: unrecognized values are captured as Unrecognized<string>
 ```
 
 ## Values
 
 ```typescript
-"inference"
+"inference" | "management" | Unrecognized<string>
 ```
