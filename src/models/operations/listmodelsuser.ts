@@ -6,6 +6,8 @@
 import * as z from "zod/v4";
 import { remap as remap$ } from "../../lib/primitives.js";
 import { safeParse } from "../../lib/schemas.js";
+import * as openEnums from "../../types/enums.js";
+import { OpenEnum } from "../../types/enums.js";
 import { Result as SafeParseResult } from "../../types/fp.js";
 import { SDKValidationError } from "../errors/sdkvalidationerror.js";
 import * as models from "../index.js";
@@ -35,6 +37,28 @@ export type ListModelsUserGlobals = {
 export type ListModelsUserSecurity = {
   bearer: string;
 };
+
+/**
+ * Sort the returned models server-side. Prefer this over fetching the full list and sorting client-side. Options: pricing-low-to-high, pricing-high-to-low (average prompt/completion price), context-high-to-low (context length), throughput-high-to-low, latency-low-to-high (recent median performance), most-popular, top-weekly (tokens processed in the last week), newest (creation date), intelligence-high-to-low, coding-high-to-low, agentic-high-to-low (Artificial Analysis indices), design-arena-elo-high-to-low (best Design Arena ELO across arenas). Models without a score for the chosen benchmark are placed last. When omitted, the existing default ordering is preserved.
+ */
+export const ListModelsUserSort = {
+  MostPopular: "most-popular",
+  Newest: "newest",
+  TopWeekly: "top-weekly",
+  PricingLowToHigh: "pricing-low-to-high",
+  PricingHighToLow: "pricing-high-to-low",
+  ContextHighToLow: "context-high-to-low",
+  ThroughputHighToLow: "throughput-high-to-low",
+  LatencyLowToHigh: "latency-low-to-high",
+  IntelligenceHighToLow: "intelligence-high-to-low",
+  CodingHighToLow: "coding-high-to-low",
+  AgenticHighToLow: "agentic-high-to-low",
+  DesignArenaEloHighToLow: "design-arena-elo-high-to-low",
+} as const;
+/**
+ * Sort the returned models server-side. Prefer this over fetching the full list and sorting client-side. Options: pricing-low-to-high, pricing-high-to-low (average prompt/completion price), context-high-to-low (context length), throughput-high-to-low, latency-low-to-high (recent median performance), most-popular, top-weekly (tokens processed in the last week), newest (creation date), intelligence-high-to-low, coding-high-to-low, agentic-high-to-low (Artificial Analysis indices), design-arena-elo-high-to-low (best Design Arena ELO across arenas). Models without a score for the chosen benchmark are placed last. When omitted, the existing default ordering is preserved.
+ */
+export type ListModelsUserSort = OpenEnum<typeof ListModelsUserSort>;
 
 export type ListModelsUserRequest = {
   /**
@@ -68,6 +92,10 @@ export type ListModelsUserRequest = {
    * Filter models by output modality. Accepts a comma-separated list of modalities (text, image, embeddings, audio, video, rerank, decisions, speech, transcription) or "all" to include all models. Defaults to "text".
    */
   outputModalities?: string | undefined;
+  /**
+   * Sort the returned models server-side. Prefer this over fetching the full list and sorting client-side. Options: pricing-low-to-high, pricing-high-to-low (average prompt/completion price), context-high-to-low (context length), throughput-high-to-low, latency-low-to-high (recent median performance), most-popular, top-weekly (tokens processed in the last week), newest (creation date), intelligence-high-to-low, coding-high-to-low, agentic-high-to-low (Artificial Analysis indices), design-arena-elo-high-to-low (best Design Arena ELO across arenas). Models without a score for the chosen benchmark are placed last. When omitted, the existing default ordering is preserved.
+   */
+  sort?: ListModelsUserSort | undefined;
 };
 
 export type ListModelsUserResponse = {
@@ -96,6 +124,12 @@ export function listModelsUserSecurityToJSON(
 }
 
 /** @internal */
+export const ListModelsUserSort$outboundSchema: z.ZodType<
+  string,
+  ListModelsUserSort
+> = openEnums.outboundSchema(ListModelsUserSort);
+
+/** @internal */
 export type ListModelsUserRequest$Outbound = {
   "HTTP-Referer"?: string | undefined;
   appTitle?: string | undefined;
@@ -103,6 +137,7 @@ export type ListModelsUserRequest$Outbound = {
   offset: number | null;
   limit: number;
   output_modalities?: string | undefined;
+  sort?: string | undefined;
 };
 
 /** @internal */
@@ -116,6 +151,7 @@ export const ListModelsUserRequest$outboundSchema: z.ZodType<
   offset: z.nullable(z.int().default(0)),
   limit: z.int().default(500),
   outputModalities: z.string().optional(),
+  sort: ListModelsUserSort$outboundSchema.optional(),
 }).transform((v) => {
   return remap$(v, {
     httpReferer: "HTTP-Referer",
