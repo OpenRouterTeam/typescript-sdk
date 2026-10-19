@@ -1,0 +1,28 @@
+---
+title: "ORAnthropicToolSearchResult"
+---
+
+Router-owned deferred discovery result containing original selected tool definitions.
+
+## Example Usage
+
+```typescript
+import { ORAnthropicToolSearchResult } from "@openrouter/sdk/models";
+
+let value: ORAnthropicToolSearchResult = {
+  content: {
+    "key": "<value>",
+    "key1": "<value>",
+  },
+  toolUseId: "<id>",
+  type: "openrouter_tool_search_result",
+};
+```
+
+## Fields
+
+| Field                             | Type                              | Required                          | Description                       |
+| --------------------------------- | --------------------------------- | --------------------------------- | --------------------------------- |
+| `content`                         | Record\<string, *any*>             | :heavy_check_mark:                | N/A                               |
+| `toolUseId`                       | *string*                          | :heavy_check_mark:                | N/A                               |
+| `type`                            | *"openrouter_tool_search_result"* | :heavy_check_mark:                | N/A                               |

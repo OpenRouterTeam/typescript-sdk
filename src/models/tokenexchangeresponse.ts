@@ -34,6 +34,9 @@ export type TokenExchangeResponse = {
    */
   expiresIn: number;
   issuedTokenType: IssuedTokenType;
+  /**
+   * The one capability the token grants, fixed by the kind of key the policy acts as: `inference` or `management`.
+   */
   scope: string;
   tokenType: TokenType;
 };
