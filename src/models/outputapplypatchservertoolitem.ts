@@ -16,10 +16,10 @@ import {
 } from "./applypatchcalloperation.js";
 import { SDKValidationError } from "./errors/sdkvalidationerror.js";
 import {
-  ToolCallStatus,
-  ToolCallStatus$inboundSchema,
-  ToolCallStatus$outboundSchema,
-} from "./toolcallstatus.js";
+  FailableToolCallStatus,
+  FailableToolCallStatus$inboundSchema,
+  FailableToolCallStatus$outboundSchema,
+} from "./failabletoolcallstatus.js";
 
 export const OutputApplyPatchServerToolItemType = {
   OpenrouterApplyPatch: "openrouter:apply_patch",
@@ -33,12 +33,16 @@ export type OutputApplyPatchServerToolItemType = ClosedEnum<
  */
 export type OutputApplyPatchServerToolItem = {
   callId?: string | undefined;
+  /**
+   * The error message when the tool call failed before producing a result. Set together with `status: 'failed'`; absent on a successful call.
+   */
+  error?: string | undefined;
   id?: string | undefined;
   /**
    * The patch operation requested by an `apply_patch_call`. `create_file` and `update_file` carry a V4A diff; `delete_file` omits it.
    */
   operation?: ApplyPatchCallOperation | undefined;
-  status: ToolCallStatus;
+  status: FailableToolCallStatus;
   type: OutputApplyPatchServerToolItemType;
 };
 
@@ -57,9 +61,10 @@ export const OutputApplyPatchServerToolItem$inboundSchema: z.ZodType<
   unknown
 > = z.object({
   call_id: z.string().optional(),
+  error: z.string().optional(),
   id: z.string().optional(),
   operation: ApplyPatchCallOperation$inboundSchema.optional(),
-  status: ToolCallStatus$inboundSchema,
+  status: FailableToolCallStatus$inboundSchema,
   type: OutputApplyPatchServerToolItemType$inboundSchema,
 }).transform((v) => {
   return remap$(v, {
@@ -69,6 +74,7 @@ export const OutputApplyPatchServerToolItem$inboundSchema: z.ZodType<
 /** @internal */
 export type OutputApplyPatchServerToolItem$Outbound = {
   call_id?: string | undefined;
+  error?: string | undefined;
   id?: string | undefined;
   operation?: ApplyPatchCallOperation$Outbound | undefined;
   status: string;
@@ -81,9 +87,10 @@ export const OutputApplyPatchServerToolItem$outboundSchema: z.ZodType<
   OutputApplyPatchServerToolItem
 > = z.object({
   callId: z.string().optional(),
+  error: z.string().optional(),
   id: z.string().optional(),
   operation: ApplyPatchCallOperation$outboundSchema.optional(),
-  status: ToolCallStatus$outboundSchema,
+  status: FailableToolCallStatus$outboundSchema,
   type: OutputApplyPatchServerToolItemType$outboundSchema,
 }).transform((v) => {
   return remap$(v, {
