@@ -86,6 +86,7 @@ export const ProviderName = {
   OpenAI: "OpenAI",
   OpenInference: "OpenInference",
   Parasail: "Parasail",
+  ParetoAlpha: "ParetoAlpha",
   Poolside: "Poolside",
   PrimeIntellect: "PrimeIntellect",
   Perceptron: "Perceptron",

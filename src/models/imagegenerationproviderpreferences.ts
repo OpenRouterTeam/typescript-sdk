@@ -121,6 +121,7 @@ export type ImageGenerationProviderPreferencesOptions = {
   openInference?: { [k: string]: any } | undefined;
   openai?: { [k: string]: any } | undefined;
   parasail?: { [k: string]: any } | undefined;
+  paretoAlpha?: { [k: string]: any } | undefined;
   perceptron?: { [k: string]: any } | undefined;
   perplexity?: { [k: string]: any } | undefined;
   phala?: { [k: string]: any } | undefined;
@@ -351,6 +352,7 @@ export type ImageGenerationProviderPreferencesOptions$Outbound = {
   "open-inference"?: { [k: string]: any } | undefined;
   openai?: { [k: string]: any } | undefined;
   parasail?: { [k: string]: any } | undefined;
+  "pareto-alpha"?: { [k: string]: any } | undefined;
   perceptron?: { [k: string]: any } | undefined;
   perplexity?: { [k: string]: any } | undefined;
   phala?: { [k: string]: any } | undefined;
@@ -505,6 +507,7 @@ export const ImageGenerationProviderPreferencesOptions$outboundSchema:
     openInference: z.record(z.string(), z.any()).optional(),
     openai: z.record(z.string(), z.any()).optional(),
     parasail: z.record(z.string(), z.any()).optional(),
+    paretoAlpha: z.record(z.string(), z.any()).optional(),
     perceptron: z.record(z.string(), z.any()).optional(),
     perplexity: z.record(z.string(), z.any()).optional(),
     phala: z.record(z.string(), z.any()).optional(),
@@ -576,6 +579,7 @@ export const ImageGenerationProviderPreferencesOptions$outboundSchema:
       nearAi: "near-ai",
       nexAgi: "nex-agi",
       openInference: "open-inference",
+      paretoAlpha: "pareto-alpha",
       sailResearch: "sail-research",
       sakanaAi: "sakana-ai",
       sambanovaCloaked: "sambanova-cloaked",
