@@ -8,14 +8,16 @@ title: "AlignmentRuleRecord"
 import { AlignmentRuleRecord } from "@openrouter/sdk/models";
 
 let value: AlignmentRuleRecord = {
+  applicable: true,
   broken: true,
-  probability: 1666.51,
+  probability: 904.94,
 };
 ```
 
 ## Fields
 
-| Field                                                      | Type                                                       | Required                                                   | Description                                                |
-| ---------------------------------------------------------- | ---------------------------------------------------------- | ---------------------------------------------------------- | ---------------------------------------------------------- |
-| `broken`                                                   | *boolean*                                                  | :heavy_check_mark:                                         | Whether probability is at or above the threshold.          |
-| `probability`                                              | *number*                                                   | :heavy_check_mark:                                         | The evaluator's probability that the turn breaks the rule. |
+| Field                                                                                            | Type                                                                                             | Required                                                                                         | Description                                                                                      |
+| ------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------ |
+| `applicable`                                                                                     | *boolean*                                                                                        | :heavy_check_mark:                                                                               | Whether the message has a field the rule watches. Only an applicable rule is evaluated.          |
+| `broken`                                                                                         | *boolean*                                                                                        | :heavy_check_mark:                                                                               | Whether probability is at or above the threshold. False when the rule is not applicable.         |
+| `probability`                                                                                    | *number*                                                                                         | :heavy_check_mark:                                                                               | The evaluator's probability that the turn breaks the rule; null when the rule is not applicable. |

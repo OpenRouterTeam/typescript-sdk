@@ -27,6 +27,14 @@ import {
 
 export type Guardrail = {
   /**
+   * Whether ZDR-only requests to google/* models may use endpoints that may retain prompts for safety monitoring. false allows only zero-retention endpoints. A guardrail can only be more restrictive than the account setting. Inherits the account setting when not provided.
+   */
+  allowSafetyRetentionGoogle?: boolean | null | undefined;
+  /**
+   * Whether ZDR-only requests to models outside the named providers (for example open-weight models on Vertex) may use endpoints that may retain prompts for safety monitoring. false allows only zero-retention endpoints. A guardrail can only be more restrictive than the account setting. Inherits the account setting when not provided.
+   */
+  allowSafetyRetentionOther?: boolean | null | undefined;
+  /**
    * Data regions through which requests governed by this guardrail must arrive. `global` is https://openrouter.ai, `europe` is https://eu.openrouter.ai, and `us` is https://us.openrouter.ai. Requests arriving through any other region are rejected. `null` leaves the ingress region unrestricted. When several guardrails apply (workspace default, member, API key), the effective regions are the intersection of every non-null value.
    */
   allowedDataRegions?: Array<GuardrailDataRegion> | null | undefined;
@@ -132,6 +140,8 @@ export type Guardrail = {
 
 /** @internal */
 export const Guardrail$inboundSchema: z.ZodType<Guardrail, unknown> = z.object({
+  allow_safety_retention_google: z.nullable(z.boolean()).optional(),
+  allow_safety_retention_other: z.nullable(z.boolean()).optional(),
   allowed_data_regions: z.nullable(z.array(GuardrailDataRegion$inboundSchema))
     .optional(),
   allowed_models: z.nullable(z.array(z.string())).optional(),
@@ -163,6 +173,8 @@ export const Guardrail$inboundSchema: z.ZodType<Guardrail, unknown> = z.object({
   workspace_id: z.nullable(z.string()),
 }).transform((v) => {
   return remap$(v, {
+    "allow_safety_retention_google": "allowSafetyRetentionGoogle",
+    "allow_safety_retention_other": "allowSafetyRetentionOther",
     "allowed_data_regions": "allowedDataRegions",
     "allowed_models": "allowedModels",
     "allowed_providers": "allowedProviders",

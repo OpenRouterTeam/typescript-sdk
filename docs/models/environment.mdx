@@ -2,18 +2,20 @@
 title: "Environment"
 ---
 
-## Example Usage
+## Supported Types
+
+### `string`
 
 ```typescript
-import { Environment } from "@openrouter/sdk/models";
-
-let value: Environment = "ubuntu";
-
-// Open enum: unrecognized values are captured as Unrecognized<string>
+const value: string = "<value>";
 ```
 
-## Values
+### `models.ArmorEnvironmentEntry`
 
 ```typescript
-"windows" | "mac" | "linux" | "ubuntu" | "browser" | Unrecognized<string>
+const value: models.ArmorEnvironmentEntry = {
+  name: "<value>",
+  value: "<value>",
+};
 ```
+

@@ -22,6 +22,10 @@ import {
   PricingOverride$inboundSchema,
 } from "./pricingoverride.js";
 import { ProviderName, ProviderName$inboundSchema } from "./providername.js";
+import {
+  PublicServiceTier,
+  PublicServiceTier$inboundSchema,
+} from "./publicservicetier.js";
 import { Quantization, Quantization$inboundSchema } from "./quantization.js";
 import {
   ToolChoiceSupport,
@@ -229,8 +233,16 @@ export type PublicEndpoint = {
   pricing: Pricing;
   providerName: ProviderName;
   quantization: Quantization | null;
+  /**
+   * The service tier this endpoint sells, or null for a standard endpoint. The same value whether the provider selects the tier with a request parameter or with a dedicated model id. Always the canonical tier: priority covers the fast request alias and the turbo, highspeed, and prime provider model-id spellings, none of which this field reports.
+   */
+  serviceTier: PublicServiceTier | null;
   status?: EndpointStatus | undefined;
   supportedParameters: Array<Parameter>;
+  /**
+   * Whether this STT endpoint can label each transcript segment with a speaker (speaker diarization). False when the endpoint has not declared support.
+   */
+  supportsDiarization: boolean;
   /**
    * Whether this TTS endpoint accepts an `image_url` reference describing the desired voice. Requests carrying an image reference are only routed to endpoints where this is true.
    */
@@ -251,12 +263,12 @@ export type PublicEndpoint = {
   tag: string;
   throughputLast30m: PercentileStats | null;
   /**
-   * Uptime percentage over the last 1 day, calculated as successful requests / (successful + error requests) * 100. Rate-limited requests are excluded. Returns null if insufficient data.
+   * Uptime percentage over the last day: the share of minutes in which at least 80% of provider attempts succeeded, counting only minutes with 10 or more attempts. Rate-limited and caller-caused failures are excluded. Null when no minute had enough traffic.
    */
   uptimeLast1d: number | null;
   uptimeLast30m: number | null;
   /**
-   * Uptime percentage over the last 5 minutes, calculated as successful requests / (successful + error requests) * 100. Rate-limited requests are excluded. Returns null if insufficient data.
+   * Uptime percentage over the last 5 minutes: the share of minutes in which at least 80% of provider attempts succeeded, counting only minutes with 10 or more attempts. Rate-limited and caller-caused failures are excluded. Null when no minute had enough traffic.
    */
   uptimeLast5m: number | null;
 };
@@ -564,8 +576,10 @@ export const PublicEndpoint$inboundSchema: z.ZodType<PublicEndpoint, unknown> =
     pricing: z.lazy(() => Pricing$inboundSchema),
     provider_name: ProviderName$inboundSchema,
     quantization: z.nullable(Quantization$inboundSchema),
+    service_tier: z.nullable(PublicServiceTier$inboundSchema),
     status: EndpointStatus$inboundSchema.optional(),
     supported_parameters: z.array(Parameter$inboundSchema),
+    supports_diarization: z.boolean(),
     supports_image_reference: z.boolean().default(false),
     supports_implicit_caching: z.boolean(),
     supports_multiple_audio_references: z.boolean().default(false),
@@ -587,7 +601,9 @@ export const PublicEndpoint$inboundSchema: z.ZodType<PublicEndpoint, unknown> =
       "native_tools": "nativeTools",
       "perf_last_30m_by_workload": "perfLast30mByWorkload",
       "provider_name": "providerName",
+      "service_tier": "serviceTier",
       "supported_parameters": "supportedParameters",
+      "supports_diarization": "supportsDiarization",
       "supports_image_reference": "supportsImageReference",
       "supports_implicit_caching": "supportsImplicitCaching",
       "supports_multiple_audio_references": "supportsMultipleAudioReferences",
