@@ -14,7 +14,7 @@ import { SDKValidationError } from "./errors/sdkvalidationerror.js";
 /**
  * Interval at which spend resets. Null means a lifetime (one-time) budget.
  */
-export const ResetInterval = {
+export const WorkspaceBudgetResetInterval = {
   Daily: "daily",
   Weekly: "weekly",
   Monthly: "monthly",
@@ -22,7 +22,9 @@ export const ResetInterval = {
 /**
  * Interval at which spend resets. Null means a lifetime (one-time) budget.
  */
-export type ResetInterval = OpenEnum<typeof ResetInterval>;
+export type WorkspaceBudgetResetInterval = OpenEnum<
+  typeof WorkspaceBudgetResetInterval
+>;
 
 export type WorkspaceBudget = {
   /**
@@ -40,7 +42,7 @@ export type WorkspaceBudget = {
   /**
    * Interval at which spend resets. Null means a lifetime (one-time) budget.
    */
-  resetInterval: ResetInterval | null;
+  resetInterval: WorkspaceBudgetResetInterval | null;
   /**
    * ISO 8601 timestamp of when the budget was last updated
    */
@@ -52,8 +54,10 @@ export type WorkspaceBudget = {
 };
 
 /** @internal */
-export const ResetInterval$inboundSchema: z.ZodType<ResetInterval, unknown> =
-  openEnums.inboundSchema(ResetInterval);
+export const WorkspaceBudgetResetInterval$inboundSchema: z.ZodType<
+  WorkspaceBudgetResetInterval,
+  unknown
+> = openEnums.inboundSchema(WorkspaceBudgetResetInterval);
 
 /** @internal */
 export const WorkspaceBudget$inboundSchema: z.ZodType<
@@ -63,7 +67,7 @@ export const WorkspaceBudget$inboundSchema: z.ZodType<
   created_at: z.string(),
   id: z.string(),
   limit_usd: z.number(),
-  reset_interval: z.nullable(ResetInterval$inboundSchema),
+  reset_interval: z.nullable(WorkspaceBudgetResetInterval$inboundSchema),
   updated_at: z.string(),
   workspace_id: z.string(),
 }).transform((v) => {

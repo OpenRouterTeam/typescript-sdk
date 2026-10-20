@@ -11,17 +11,19 @@ import { OpenEnum } from "../types/enums.js";
 import { Result as SafeParseResult } from "../types/fp.js";
 import { SDKValidationError } from "./errors/sdkvalidationerror.js";
 
-export const AllowedCaller = {
+export const NamespaceFunctionToolAllowedCaller = {
   Direct: "direct",
   Programmatic: "programmatic",
 } as const;
-export type AllowedCaller = OpenEnum<typeof AllowedCaller>;
+export type NamespaceFunctionToolAllowedCaller = OpenEnum<
+  typeof NamespaceFunctionToolAllowedCaller
+>;
 
 /**
  * A function tool grouped inside a namespace tool
  */
 export type NamespaceFunctionTool = {
-  allowedCallers?: Array<AllowedCaller> | null | undefined;
+  allowedCallers?: Array<NamespaceFunctionToolAllowedCaller> | null | undefined;
   /**
    * Lets the model keep working after calling this tool instead of waiting for its output. The tool is still executed by the client; return the result in a later request as a `function_call_output` with the original `call_id`. Only honored by providers whose Responses API supports async tools; ignored elsewhere.
    */
@@ -36,18 +38,24 @@ export type NamespaceFunctionTool = {
 };
 
 /** @internal */
-export const AllowedCaller$inboundSchema: z.ZodType<AllowedCaller, unknown> =
-  openEnums.inboundSchema(AllowedCaller);
+export const NamespaceFunctionToolAllowedCaller$inboundSchema: z.ZodType<
+  NamespaceFunctionToolAllowedCaller,
+  unknown
+> = openEnums.inboundSchema(NamespaceFunctionToolAllowedCaller);
 /** @internal */
-export const AllowedCaller$outboundSchema: z.ZodType<string, AllowedCaller> =
-  openEnums.outboundSchema(AllowedCaller);
+export const NamespaceFunctionToolAllowedCaller$outboundSchema: z.ZodType<
+  string,
+  NamespaceFunctionToolAllowedCaller
+> = openEnums.outboundSchema(NamespaceFunctionToolAllowedCaller);
 
 /** @internal */
 export const NamespaceFunctionTool$inboundSchema: z.ZodType<
   NamespaceFunctionTool,
   unknown
 > = z.object({
-  allowed_callers: z.nullable(z.array(AllowedCaller$inboundSchema)).optional(),
+  allowed_callers: z.nullable(
+    z.array(NamespaceFunctionToolAllowedCaller$inboundSchema),
+  ).optional(),
   async: z.boolean().optional(),
   defer_loading: z.boolean().optional(),
   description: z.nullable(z.string()).optional(),
@@ -81,7 +89,9 @@ export const NamespaceFunctionTool$outboundSchema: z.ZodType<
   NamespaceFunctionTool$Outbound,
   NamespaceFunctionTool
 > = z.object({
-  allowedCallers: z.nullable(z.array(AllowedCaller$outboundSchema)).optional(),
+  allowedCallers: z.nullable(
+    z.array(NamespaceFunctionToolAllowedCaller$outboundSchema),
+  ).optional(),
   async: z.boolean().optional(),
   deferLoading: z.boolean().optional(),
   description: z.nullable(z.string()).optional(),
