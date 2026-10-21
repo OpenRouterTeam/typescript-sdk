@@ -6573,6 +6573,7 @@ components:
           items:
             minLength: 1
             type: 'string'
+          maxItems: 500
           minItems: 1
           type: 'array'
       required:
@@ -6662,6 +6663,7 @@ components:
           items:
             minLength: 1
             type: 'string'
+          maxItems: 500
           minItems: 1
           type: 'array'
       required:
@@ -46220,7 +46222,6 @@ paths:
                 event: 'content_block_delta'
               schema:
                 $ref: '#/components/schemas/MessagesStreamingResponse'
-              x-speakeasy-sse-sentinel: '[DONE]'
           description: 'Successful response'
         '400':
           content:
