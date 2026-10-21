@@ -2,10 +2,24 @@
 title: "Answers"
 ---
 
-A Decisions answer using a boolean, choice, or score evaluation.
+A Decisions answer using a boolean, choice, score, or image bounding-box evaluation.
 
 
 ## Supported Types
+
+### `models.DecisionsBoxAnswer`
+
+```typescript
+const value: models.DecisionsBoxAnswer = {
+  box: {
+    bottom: 9340.36,
+    left: 4735.52,
+    right: 3044.6,
+    top: 1951.55,
+  },
+  type: "box",
+};
+```
 
 ### `models.DecisionsChoiceAnswer`
 
