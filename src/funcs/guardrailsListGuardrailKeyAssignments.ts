@@ -48,6 +48,7 @@ export function guardrailsListGuardrailKeyAssignments(
     Result<
       operations.ListGuardrailKeyAssignmentsResponse,
       | errors.UnauthorizedResponseError
+      | errors.ForbiddenResponseError
       | errors.NotFoundResponseError
       | errors.InternalServerResponseError
       | OpenRouterError
@@ -79,6 +80,7 @@ async function $do(
       Result<
         operations.ListGuardrailKeyAssignmentsResponse,
         | errors.UnauthorizedResponseError
+        | errors.ForbiddenResponseError
         | errors.NotFoundResponseError
         | errors.InternalServerResponseError
         | OpenRouterError
@@ -203,6 +205,7 @@ async function $do(
   const [result, raw] = await M.match<
     operations.ListGuardrailKeyAssignmentsResponse,
     | errors.UnauthorizedResponseError
+    | errors.ForbiddenResponseError
     | errors.NotFoundResponseError
     | errors.InternalServerResponseError
     | OpenRouterError
@@ -218,6 +221,7 @@ async function $do(
       key: "Result",
     }),
     M.jsonErr(401, errors.UnauthorizedResponseError$inboundSchema),
+    M.jsonErr(403, errors.ForbiddenResponseError$inboundSchema),
     M.jsonErr(404, errors.NotFoundResponseError$inboundSchema),
     M.jsonErr(500, errors.InternalServerResponseError$inboundSchema),
     M.fail("4XX"),
@@ -238,6 +242,7 @@ async function $do(
       Result<
         operations.ListGuardrailKeyAssignmentsResponse,
         | errors.UnauthorizedResponseError
+        | errors.ForbiddenResponseError
         | errors.NotFoundResponseError
         | errors.InternalServerResponseError
         | OpenRouterError
