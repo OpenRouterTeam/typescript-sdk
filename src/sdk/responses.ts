@@ -4,7 +4,9 @@
  */
 
 import { responsesSend } from "../funcs/responsesSend.js";
+import { EventStream } from "../lib/event-streams.js";
 import { ClientSDK, RequestOptions } from "../lib/sdks.js";
+import * as models from "../models/index.js";
 import * as operations from "../models/operations/index.js";
 import { unwrapAsync } from "../types/fp.js";
 
@@ -20,13 +22,13 @@ export class Responses extends ClientSDK {
       responsesRequest: { stream?: false | undefined };
     },
     options?: RequestOptions,
-  ): Promise<operations.CreateResponsesResponse>;
+  ): Promise<models.OpenResponsesResult>;
   async send(
     request: operations.CreateResponsesRequest & {
       responsesRequest: { stream: true };
     },
     options?: RequestOptions,
-  ): Promise<operations.CreateResponsesResponse>;
+  ): Promise<EventStream<models.StreamEvents>>;
   async send(
     request: operations.CreateResponsesRequest,
     options?: RequestOptions,

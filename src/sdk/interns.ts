@@ -189,7 +189,7 @@ export class Interns extends ClientSDK {
   async getInternIcon(
     request: operations.GetInternIconRequest,
     options?: RequestOptions,
-  ): Promise<operations.GetInternIconResponse> {
+  ): Promise<ReadableStream<Uint8Array>> {
     return unwrapAsync(internsGetInternIcon(
       this,
       request,

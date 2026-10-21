@@ -5,9 +5,6 @@
 
 import * as z from "zod/v4";
 import { remap as remap$ } from "../../lib/primitives.js";
-import { safeParse } from "../../lib/schemas.js";
-import { Result as SafeParseResult } from "../../types/fp.js";
-import { SDKValidationError } from "../errors/sdkvalidationerror.js";
 
 export type GetInternIconGlobals = {
   /**
@@ -61,10 +58,6 @@ export type GetInternIconRequest = {
   v?: string | undefined;
 };
 
-export type GetInternIconResponse =
-  | ReadableStream<Uint8Array>
-  | ReadableStream<Uint8Array>;
-
 /** @internal */
 export type GetInternIconRequest$Outbound = {
   "HTTP-Referer"?: string | undefined;
@@ -95,24 +88,5 @@ export function getInternIconRequestToJSON(
 ): string {
   return JSON.stringify(
     GetInternIconRequest$outboundSchema.parse(getInternIconRequest),
-  );
-}
-
-/** @internal */
-export const GetInternIconResponse$inboundSchema: z.ZodType<
-  GetInternIconResponse,
-  unknown
-> = z.union([
-  z.custom<ReadableStream<Uint8Array>>(x => x instanceof ReadableStream),
-  z.custom<ReadableStream<Uint8Array>>(x => x instanceof ReadableStream),
-]);
-
-export function getInternIconResponseFromJSON(
-  jsonString: string,
-): SafeParseResult<GetInternIconResponse, SDKValidationError> {
-  return safeParse(
-    jsonString,
-    (x) => GetInternIconResponse$inboundSchema.parse(JSON.parse(x)),
-    `Failed to parse 'GetInternIconResponse' from JSON`,
   );
 }
