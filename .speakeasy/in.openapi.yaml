@@ -15039,6 +15039,7 @@ components:
       description: 'Public lifecycle state and settings for one intern.'
       example:
         attached_vault_id: null
+        can_edit: true
         created_at: '2026-09-16T08:30:00.000Z'
         created_by_you: true
         description: 'Researches customer questions'
@@ -15060,6 +15061,9 @@ components:
           type:
             - 'string'
             - 'null'
+        can_edit:
+          description: 'Whether this key may change the intern (update, provision, suspend, delete). Present on list and retrieve; false while lifecycle writes are closed for the account.'
+          type: 'boolean'
         created_at:
           description: 'ISO 8601 creation time.'
           type: 'string'
@@ -15723,6 +15727,135 @@ components:
         - 'content'
         - 'role'
       type: 'object'
+    InternConnection:
+      properties:
+        account:
+          properties:
+            acts_as:
+              description: 'Whose account it acts as, when known.'
+              type:
+                - 'string'
+                - 'null'
+            is_your_account_linked:
+              type:
+                - 'boolean'
+                - 'null'
+            note:
+              type:
+                - 'string'
+                - 'null'
+            scope:
+              description: '`workspace` for a shared connection, `yours` for the key user''s personal account, `shared` for a teammate''s.'
+              enum:
+                - 'workspace'
+                - 'yours'
+                - 'shared'
+              type: 'string'
+          required:
+            - 'acts_as'
+            - 'is_your_account_linked'
+            - 'note'
+            - 'scope'
+          type: 'object'
+        id:
+          description: 'Stable id: the credential id of an MCP server, else the kind (`slack`, `github`, `google`).'
+          type: 'string'
+        is_enabled:
+          description: 'Whether the intern reaches it now.'
+          type: 'boolean'
+        is_intern_only:
+          description: 'Scoped to this intern rather than shared by the workspace.'
+          type: 'boolean'
+        kind:
+          enum:
+            - 'slack'
+            - 'github'
+            - 'google'
+            - 'mcp'
+          type: 'string'
+        mcp_server_name:
+          description: 'The name the intern''s MCP config keys the server by; null when it is not an MCP server or is off.'
+          type:
+            - 'string'
+            - 'null'
+        name:
+          description: 'Display name.'
+          type: 'string'
+        off_reason:
+          description: '`switched_off` for this intern, `disabled` for the whole workspace; null while on.'
+          enum:
+            - 'switched_off'
+            - 'disabled'
+            - null
+          type:
+            - 'string'
+            - 'null'
+        server:
+          properties:
+            host:
+              type:
+                - 'string'
+                - 'null'
+            surface:
+              type: 'string'
+            transport:
+              type: 'string'
+            url:
+              type:
+                - 'string'
+                - 'null'
+          required:
+            - 'host'
+            - 'surface'
+            - 'transport'
+            - 'url'
+          type:
+            - 'object'
+            - 'null'
+        status:
+          properties:
+            reason:
+              type:
+                - 'string'
+                - 'null'
+            state:
+              enum:
+                - 'connected'
+                - 'needs_reconnect'
+                - 'not_tested'
+                - 'error'
+              type: 'string'
+          required:
+            - 'state'
+            - 'reason'
+          type: 'object'
+        tool_count:
+          description: 'Tools found by the last successful test.'
+          type:
+            - 'integer'
+            - 'null'
+      required:
+        - 'id'
+        - 'kind'
+        - 'name'
+        - 'is_enabled'
+        - 'is_intern_only'
+        - 'off_reason'
+        - 'mcp_server_name'
+        - 'server'
+        - 'status'
+        - 'tool_count'
+        - 'account'
+      type: 'object'
+    InternConnectionList:
+      properties:
+        data:
+          items:
+            $ref: '#/components/schemas/InternConnection'
+          type: 'array'
+      required:
+        - 'data'
+      type: 'object'
     InternDaemonAccess:
       description: 'The intern daemon''s origin and the bearer `ori tui --host` sends to it as `ORI_DAEMON_TOKEN`.'
       example:
@@ -15824,6 +15957,7 @@ components:
       example:
         data:
           - attached_vault_id: null
+            can_edit: true
             created_at: '2026-09-16T08:30:00.000Z'
             created_by_you: true
             description: 'Researches customer questions'
@@ -26289,21 +26423,26 @@ components:
         - 'data'
       type: 'object'
     PromptCacheBreakpoint:
-      description: 'Marks an explicit prompt-cache boundary on this content block (OpenAI-style). Everything through the block carrying this marker is part of the candidate cached prefix. Supported natively by OpenAI GPT-5.6 and newer; on providers that use Anthropic-style `cache_control`, OpenRouter converts the marker to that format automatically.'
+      description: 'Marks an explicit prompt-cache boundary on this content block (OpenAI-style). Everything through the block carrying this marker is part of the candidate cached prefix. Supported natively by OpenAI GPT-5.6 and newer; on providers that use Anthropic-style `cache_control`, OpenRouter converts the marker to that format automatically. `ttl` ("30m" or "12h") overrides the request-level `prompt_cache_options.ttl` for this boundary; 12h writes bill at the higher cache-write rate.'
       example:
         mode: 'explicit'
+        ttl: '30m'
       properties:
         mode:
           enum:
             - 'explicit'
           type: 'string'
+        ttl:
+          type:
+            - 'string'
+            - 'null'
       required:
         - 'mode'
       type:
         - 'object'
         - 'null'
     PromptCacheOptions:
-      description: 'Request-level prompt-cache controls. `mode: "explicit"` disables OpenAI-managed breakpoints so only blocks marked with `prompt_cache_breakpoint` are cached. Only supported by OpenAI GPT-5.6 and newer.'
+      description: 'Request-level prompt-cache controls. `mode: "explicit"` disables OpenAI-managed breakpoints so only blocks marked with `prompt_cache_breakpoint` are cached. `ttl` sets the minimum cache lifetime for every breakpoint the request writes: "30m" (default) or "12h" (billed at the higher 12h cache-write rate). Only supported by OpenAI GPT-5.6 and newer.'
       example:
         mode: 'explicit'
         ttl: '30m'
@@ -41980,6 +42119,7 @@ paths:
               example:
                 data:
                   - attached_vault_id: null
+                    can_edit: true
                     created_at: '2026-09-16T08:30:00.000Z'
                     created_by_you: true
                     description: 'Researches customer questions'
@@ -42106,6 +42246,7 @@ paths:
             application/json:
               example:
                 attached_vault_id: null
+                can_edit: true
                 created_at: '2026-09-16T08:30:00.000Z'
                 created_by_you: true
                 description: 'Researches customer questions'
@@ -42129,6 +42270,7 @@ paths:
             application/json:
               example:
                 attached_vault_id: null
+                can_edit: true
                 created_at: '2026-09-16T08:30:00.000Z'
                 created_by_you: true
                 description: 'Researches customer questions'
@@ -42478,6 +42620,7 @@ paths:
             application/json:
               example:
                 attached_vault_id: null
+                can_edit: true
                 created_at: '2026-09-16T08:30:00.000Z'
                 created_by_you: true
                 description: 'Researches customer questions'
@@ -42588,6 +42731,7 @@ paths:
             application/json:
               example:
                 attached_vault_id: null
+                can_edit: true
                 created_at: '2026-09-16T08:30:00.000Z'
                 created_by_you: true
                 description: 'Researches customer questions'
@@ -42959,6 +43103,110 @@ paths:
         - 'Interns'
       x-speakeasy-group: 'interns'
       x-speakeasy-name-override: 'chat'
+  /interns/{internId}/connections:
+    get:
+      description: 'Returns the Slack, GitHub, Google Workspace and MCP connections one visible intern can reach, and the shared ones switched off for it or disabled for the workspace. An OAuth grant needs `vault:read`, because the list names members'' personal accounts; without it the route answers 403 `insufficient_scope`. The response is sent with `Cache-Control: no-store`. The API key selects the caller, workspace and visible interns. An intern''s own API key sees only that intern: the collection and every other intern answer 404 to it. There is no default workspace fallback. Requests on regional hostnames such as `eu.openrouter.ai` are refused. [API key](/docs/api-reference/authentication) required.'
+      operationId: 'getInternConnections'
+      parameters:
+        - description: 'ID of an intern visible to the authenticated API key.'
+          in: 'path'
+          name: 'internId'
+          required: true
+          schema:
+            description: 'ID of an intern visible to the authenticated API key.'
+            example: '7c9e6679-7425-40de-944b-e07fc1f90ae7'
+            minLength: 1
+            type: 'string'
+      responses:
+        '200':
+          content:
+            application/json:
+              example:
+                data:
+                  - account:
+                      acts_as: null
+                      is_your_account_linked: null
+                      note: null
+                      scope: 'workspace'
+                    id: 'github'
+                    is_enabled: true
+                    is_intern_only: false
+                    kind: 'github'
+                    mcp_server_name: null
+                    name: 'GitHub'
+                    off_reason: null
+                    server: null
+                    status:
+                      reason: null
+                      state: 'connected'
+                    tool_count: null
+              schema:
+                $ref: '#/components/schemas/InternConnectionList'
+          description: 'The intern connections.'
+        '401':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 401
+                  message: 'Invalid or missing API key'
+              schema:
+                $ref: '#/components/schemas/InternLifecycleError'
+          description: 'Missing, unknown or provisioning API key.'
+        '403':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 403
+                  message: 'Forbidden'
+              schema:
+                $ref: '#/components/schemas/InternLifecycleError'
+          description: 'The key owner no longer has access, or the request used a regional hostname.'
+        '404':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 404
+                  message: 'Intern not found'
+                  metadata:
+                    reason: 'not_found'
+                    retryable: false
+              schema:
+                $ref: '#/components/schemas/InternLifecycleError'
+          description: 'The caller is outside the Intern API programme, the intern is hidden, or lifecycle writes are disabled.'
+        '408':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 408
+                  message: 'Operation timed out after 10s. Please try again later.'
+                  metadata:
+                    reason: 'timeout'
+                    retryable: true
+              schema:
+                $ref: '#/components/schemas/InternLifecycleError'
+          description: 'The request exceeded its route deadline. The deadline quoted in the message is the route''s own, so it differs between operations.'
+        '500':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 500
+                  message: 'The request could not be completed'
+                  metadata:
+                    reason: 'internal_error'
+                    retryable: true
+              schema:
+                $ref: '#/components/schemas/InternLifecycleError'
+          description: 'The request could not be completed. `metadata.reason` says whether to try again: `internal_error` is a transient failure and carries `metadata.retryable: true`, so the same request may be sent again, while `configuration_error` carries `retryable: false` because the next attempt reads the same missing binding or unusable stored credential.'
+      security:
+        - apiKey: []
+      summary: 'List an intern''s connections'
+      tags:
+        - 'Interns'
   /interns/{internId}/daemon:
     get:
       description: 'Returns the origin and daemon token that attach `ori tui --host` to one visible, running intern. The token is a credential: only an OAuth-token caller (`ori login --oidc`) may read it, the response is sent with `Cache-Control: no-store`, and each reveal is logged by caller and intern. API keys get 403 `personal_identity_required`. The API key selects the caller, workspace and visible interns. An intern''s own API key sees only that intern: the collection and every other intern answer 404 to it. There is no default workspace fallback. Requests on regional hostnames such as `eu.openrouter.ai` are refused. [API key](/docs/api-reference/authentication) required.'
