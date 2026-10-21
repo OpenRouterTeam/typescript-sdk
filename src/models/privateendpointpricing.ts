@@ -4,6 +4,7 @@
  */
 
 import * as z from "zod/v4";
+import { remap as remap$ } from "../lib/primitives.js";
 import { safeParse } from "../lib/schemas.js";
 import { Result as SafeParseResult } from "../types/fp.js";
 import { SDKValidationError } from "./errors/sdkvalidationerror.js";
@@ -12,6 +13,14 @@ import { SDKValidationError } from "./errors/sdkvalidationerror.js";
  * Negotiated per-token rates reported for requests routed to this endpoint.
  */
 export type PrivateEndpointPricing = {
+  /**
+   * USD per cache-read prompt token, as a decimal string. Omit it to bill cache reads at the provider pricing strategy's default, which for most strategies is the prompt rate.
+   */
+  cacheRead?: string | undefined;
+  /**
+   * USD per cache-write prompt token, as a decimal string. Omit it to bill cache writes at the provider pricing strategy's default.
+   */
+  cacheWrite?: string | undefined;
   /**
    * USD per completion token, as a decimal string.
    */
@@ -27,11 +36,20 @@ export const PrivateEndpointPricing$inboundSchema: z.ZodType<
   PrivateEndpointPricing,
   unknown
 > = z.object({
+  cache_read: z.string().optional(),
+  cache_write: z.string().optional(),
   completion: z.string(),
   prompt: z.string(),
+}).transform((v) => {
+  return remap$(v, {
+    "cache_read": "cacheRead",
+    "cache_write": "cacheWrite",
+  });
 });
 /** @internal */
 export type PrivateEndpointPricing$Outbound = {
+  cache_read?: string | undefined;
+  cache_write?: string | undefined;
   completion: string;
   prompt: string;
 };
@@ -41,8 +59,15 @@ export const PrivateEndpointPricing$outboundSchema: z.ZodType<
   PrivateEndpointPricing$Outbound,
   PrivateEndpointPricing
 > = z.object({
+  cacheRead: z.string().optional(),
+  cacheWrite: z.string().optional(),
   completion: z.string(),
   prompt: z.string(),
+}).transform((v) => {
+  return remap$(v, {
+    cacheRead: "cache_read",
+    cacheWrite: "cache_write",
+  });
 });
 
 export function privateEndpointPricingToJSON(

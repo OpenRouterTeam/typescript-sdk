@@ -1,0 +1,25 @@
+---
+title: "Account"
+---
+
+## Example Usage
+
+```typescript
+import { Account } from "@openrouter/sdk/models";
+
+let value: Account = {
+  actsAs: "<value>",
+  isYourAccountLinked: true,
+  note: "<value>",
+  scope: "workspace",
+};
+```
+
+## Fields
+
+| Field                                                                                                        | Type                                                                                                         | Required                                                                                                     | Description                                                                                                  |
+| ------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------ |
+| `actsAs`                                                                                                     | *string*                                                                                                     | :heavy_check_mark:                                                                                           | Whose account it acts as, when known.                                                                        |
+| `isYourAccountLinked`                                                                                        | *boolean*                                                                                                    | :heavy_check_mark:                                                                                           | N/A                                                                                                          |
+| `note`                                                                                                       | *string*                                                                                                     | :heavy_check_mark:                                                                                           | N/A                                                                                                          |
+| `scope`                                                                                                      | [models.InternConnectionScope](../models/internconnectionscope.mdx)                                           | :heavy_check_mark:                                                                                           | `workspace` for a shared connection, `yours` for the key user's personal account, `shared` for a teammate's. |

@@ -56,9 +56,17 @@ export type Intern = {
    */
   attachedVaultId: string | null;
   /**
+   * Whether this key may change the intern (update, provision, suspend, delete). Present on list and retrieve; false while lifecycle writes are closed for the account.
+   */
+  canEdit?: boolean | undefined;
+  /**
    * ISO 8601 creation time.
    */
   createdAt: string;
+  /**
+   * Whether the user behind the key created the intern. Present on list and retrieve; absent for organization keys, which act for no user.
+   */
+  createdByYou?: boolean | undefined;
   /**
    * Free-form description.
    */
@@ -67,6 +75,10 @@ export type Intern = {
    * Public hostname the intern is reachable at, or null until provisioning has assigned one.
    */
   hostname: string | null;
+  /**
+   * SHA-256 of the intern icon, or null when it has none. Present on list and retrieve; fetch the bytes from `GET /api/v1/interns/{intern_id}/icon`.
+   */
+  iconSha256?: string | null | undefined;
   /**
    * Intern id.
    */
@@ -139,9 +151,12 @@ export const InternStatus$inboundSchema: z.ZodType<InternStatus, unknown> =
 /** @internal */
 export const Intern$inboundSchema: z.ZodType<Intern, unknown> = z.object({
   attached_vault_id: z.nullable(z.string()),
+  can_edit: z.boolean().optional(),
   created_at: z.string(),
+  created_by_you: z.boolean().optional(),
   description: z.nullable(z.string()),
   hostname: z.nullable(z.string()),
+  icon_sha256: z.nullable(z.string()).optional(),
   id: z.string(),
   instructions: z.nullable(z.string()),
   last_failure_message: z.nullable(z.string()),
@@ -155,7 +170,10 @@ export const Intern$inboundSchema: z.ZodType<Intern, unknown> = z.object({
 }).transform((v) => {
   return remap$(v, {
     "attached_vault_id": "attachedVaultId",
+    "can_edit": "canEdit",
     "created_at": "createdAt",
+    "created_by_you": "createdByYou",
+    "icon_sha256": "iconSha256",
     "last_failure_message": "lastFailureMessage",
     "updated_at": "updatedAt",
     "vault_id": "vaultId",

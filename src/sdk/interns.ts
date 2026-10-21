@@ -7,11 +7,15 @@ import { internsChat } from "../funcs/internsChat.js";
 import { internsCreateIntern } from "../funcs/internsCreateIntern.js";
 import { internsDeleteIntern } from "../funcs/internsDeleteIntern.js";
 import { internsGetIntern } from "../funcs/internsGetIntern.js";
+import { internsGetInternConnections } from "../funcs/internsGetInternConnections.js";
 import { internsGetInternDaemon } from "../funcs/internsGetInternDaemon.js";
 import { internsGetInternDaemonAccess } from "../funcs/internsGetInternDaemonAccess.js";
+import { internsGetInternIcon } from "../funcs/internsGetInternIcon.js";
 import { internsInvoke } from "../funcs/internsInvoke.js";
 import { internsListInterns } from "../funcs/internsListInterns.js";
 import { internsProvisionIntern } from "../funcs/internsProvisionIntern.js";
+import { internsSignInternDaemonAccessRequest } from "../funcs/internsSignInternDaemonAccessRequest.js";
+import { internsSignInternDaemonRequest } from "../funcs/internsSignInternDaemonRequest.js";
 import { internsSuspendIntern } from "../funcs/internsSuspendIntern.js";
 import { internsUpdateIntern } from "../funcs/internsUpdateIntern.js";
 import { ClientSDK, RequestOptions } from "../lib/sdks.js";
@@ -106,10 +110,27 @@ export class Interns extends ClientSDK {
   }
 
   /**
+   * List an intern's connections
+   *
+   * @remarks
+   * Returns the Slack, GitHub, Google Workspace and MCP connections one visible intern can reach, and the shared ones switched off for it or disabled for the workspace. An OAuth grant needs `vault:read`, because the list names members' personal accounts; without it the route answers 403 `insufficient_scope`. The response is sent with `Cache-Control: no-store`. The API key selects the caller, workspace and visible interns. An intern's own API key sees only that intern: the collection and every other intern answer 404 to it. There is no default workspace fallback. Requests on regional hostnames such as `eu.openrouter.ai` are refused. [API key](/docs/api-reference/authentication) required.
+   */
+  async getInternConnections(
+    request: operations.GetInternConnectionsRequest,
+    options?: RequestOptions,
+  ): Promise<models.InternConnectionList> {
+    return unwrapAsync(internsGetInternConnections(
+      this,
+      request,
+      options,
+    ));
+  }
+
+  /**
    * Get an intern's daemon access
    *
    * @remarks
-   * Returns the origin and daemon token that attach `ori tui --host` to one visible, running intern. The token is a credential: the response is sent with `Cache-Control: no-store`, and each reveal is logged by caller and intern. The API key selects the caller, workspace and visible interns. An intern's own API key sees only that intern: the collection and every other intern answer 404 to it. There is no default workspace fallback. Requests on regional hostnames such as `eu.openrouter.ai` are refused. [API key](/docs/api-reference/authentication) required.
+   * Returns the origin and daemon token that attach `ori tui --host` to one visible, running intern. The token is a credential: only an OAuth-token caller (`ori login --oidc`) may read it, the response is sent with `Cache-Control: no-store`, and each reveal is logged by caller and intern. API keys get 403 `personal_identity_required`. The API key selects the caller, workspace and visible interns. An intern's own API key sees only that intern: the collection and every other intern answer 404 to it. There is no default workspace fallback. Requests on regional hostnames such as `eu.openrouter.ai` are refused. [API key](/docs/api-reference/authentication) required.
    */
   async getInternDaemon(
     request: operations.GetInternDaemonRequest,
@@ -135,6 +156,59 @@ export class Interns extends ClientSDK {
     options?: RequestOptions,
   ): Promise<models.InternDaemonAccess> {
     return unwrapAsync(internsGetInternDaemonAccess(
+      this,
+      request,
+      options,
+    ));
+  }
+
+  /**
+   * Sign a daemon request with the caller's identity (deprecated alias)
+   *
+   * @remarks
+   * Deprecated alias of `POST /interns/{internId}/daemon/sign` with the same request, response, and errors. The API key selects the caller, workspace and visible interns. An intern's own API key sees only that intern: the collection and every other intern answer 404 to it. There is no default workspace fallback. Requests on regional hostnames such as `eu.openrouter.ai` are refused. [API key](/docs/api-reference/authentication) required.
+   *
+   * @deprecated method: This will be removed in a future release, please migrate away from it as soon as possible.
+   */
+  async signInternDaemonAccessRequest(
+    request: operations.SignInternDaemonAccessRequestRequest,
+    options?: RequestOptions,
+  ): Promise<operations.SignInternDaemonAccessRequestResponse> {
+    return unwrapAsync(internsSignInternDaemonAccessRequest(
+      this,
+      request,
+      options,
+    ));
+  }
+
+  /**
+   * Sign a daemon request with the caller's identity
+   *
+   * @remarks
+   * Signs the SHA-256 digest of one request the CLI is about to send to the intern daemon, binding it to the intern and to the signed-in member so personal connections resolve. Only an OAuth session from `ori login --oidc` whose grant carries `vault:read` can sign: an API key is refused with 403 because it names no person, and an `interns`-only grant is refused with 403 because a proof releases that user's personal connections. The route is behind the same gate as chat and counts against the chat turn limiter. The response is sent with `Cache-Control: no-store`. The API key selects the caller, workspace and visible interns. An intern's own API key sees only that intern: the collection and every other intern answer 404 to it. There is no default workspace fallback. Requests on regional hostnames such as `eu.openrouter.ai` are refused. [API key](/docs/api-reference/authentication) required.
+   */
+  async signInternDaemonRequest(
+    request: operations.SignInternDaemonRequestRequest,
+    options?: RequestOptions,
+  ): Promise<operations.SignInternDaemonRequestResponse> {
+    return unwrapAsync(internsSignInternDaemonRequest(
+      this,
+      request,
+      options,
+    ));
+  }
+
+  /**
+   * Get an intern's icon
+   *
+   * @remarks
+   * Returns the icon image of one visible intern. Pass the intern's `icon_sha256` as `v` to receive a response that can be cached indefinitely. The API key selects the caller, workspace and visible interns. An intern's own API key sees only that intern: the collection and every other intern answer 404 to it. There is no default workspace fallback. Requests on regional hostnames such as `eu.openrouter.ai` are refused. [API key](/docs/api-reference/authentication) required.
+   */
+  async getInternIcon(
+    request: operations.GetInternIconRequest,
+    options?: RequestOptions,
+  ): Promise<ReadableStream<Uint8Array>> {
+    return unwrapAsync(internsGetInternIcon(
       this,
       request,
       options,

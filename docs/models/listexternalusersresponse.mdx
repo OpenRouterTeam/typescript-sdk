@@ -1,0 +1,28 @@
+---
+title: "ListExternalUsersResponse"
+---
+
+## Example Usage
+
+```typescript
+import { ListExternalUsersResponse } from "@openrouter/sdk/models";
+
+let value: ListExternalUsersResponse = {
+  data: [
+    {
+      createdAt: new Date("2026-09-16T12:00:00Z"),
+      isActive: true,
+      updatedAt: new Date("2026-09-16T12:00:00Z"),
+      user: "employee_123",
+    },
+  ],
+  totalCount: 1,
+};
+```
+
+## Fields
+
+| Field                                                           | Type                                                            | Required                                                        | Description                                                     | Example                                                         |
+| --------------------------------------------------------------- | --------------------------------------------------------------- | --------------------------------------------------------------- | --------------------------------------------------------------- | --------------------------------------------------------------- |
+| `data`                                                          | [models.ExternalUser](../models/externaluser.mdx)[]              | :heavy_check_mark:                                              | N/A                                                             |                                                                 |
+| `totalCount`                                                    | *number*                                                        | :heavy_check_mark:                                              | Number of registrations matching the filters before pagination. | 1                                                               |

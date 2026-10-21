@@ -17,10 +17,11 @@ export type PromptCacheBreakpointMode = ClosedEnum<
 >;
 
 /**
- * Marks an explicit prompt-cache boundary on this content block (OpenAI-style). Everything through the block carrying this marker is part of the candidate cached prefix. Supported natively by OpenAI GPT-5.6 and newer; on providers that use Anthropic-style `cache_control`, OpenRouter converts the marker to that format automatically.
+ * Marks an explicit prompt-cache boundary on this content block (OpenAI-style). Everything through the block carrying this marker is part of the candidate cached prefix. Supported natively by OpenAI GPT-5.6 and newer; on providers that use Anthropic-style `cache_control`, OpenRouter converts the marker to that format automatically. `ttl` ("30m" or "12h") overrides the request-level `prompt_cache_options.ttl` for this boundary; 12h writes bill at the higher cache-write rate.
  */
 export type PromptCacheBreakpoint = {
   mode: PromptCacheBreakpointMode;
+  ttl?: string | null | undefined;
 };
 
 /** @internal */
@@ -38,10 +39,12 @@ export const PromptCacheBreakpoint$inboundSchema: z.ZodType<
   unknown
 > = z.object({
   mode: PromptCacheBreakpointMode$inboundSchema,
+  ttl: z.nullable(z.string()).optional(),
 });
 /** @internal */
 export type PromptCacheBreakpoint$Outbound = {
   mode: string;
+  ttl?: string | null | undefined;
 };
 
 /** @internal */
@@ -50,6 +53,7 @@ export const PromptCacheBreakpoint$outboundSchema: z.ZodType<
   PromptCacheBreakpoint
 > = z.object({
   mode: PromptCacheBreakpointMode$outboundSchema,
+  ttl: z.nullable(z.string()).optional(),
 });
 
 export function promptCacheBreakpointToJSON(
