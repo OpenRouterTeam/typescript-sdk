@@ -8,13 +8,36 @@ import { safeParse } from "../lib/schemas.js";
 import { Result as SafeParseResult } from "../types/fp.js";
 import { SDKValidationError } from "./errors/sdkvalidationerror.js";
 
+export type Viewer = {
+  /**
+   * The caller's Ori principals on this intern: `clerk:<user>`, and, when the grant carries `vault:read`, `slack:<team>:<user>` for each Slack account they linked to it. A session started by one of them in a one-to-one Slack DM is the caller's to see.
+   */
+  principals: Array<string>;
+};
+
 /**
- * The intern daemon's origin and the bearer `ori tui --host` sends to it as `ORI_DAEMON_TOKEN`.
+ * The intern daemon's origin, the bearer `ori tui --host` sends to it as `ORI_DAEMON_TOKEN`, and who the caller is on the intern.
  */
 export type InternDaemonAccess = {
   origin: string;
   token: string;
+  viewer: Viewer;
 };
+
+/** @internal */
+export const Viewer$inboundSchema: z.ZodType<Viewer, unknown> = z.object({
+  principals: z.array(z.string()),
+});
+
+export function viewerFromJSON(
+  jsonString: string,
+): SafeParseResult<Viewer, SDKValidationError> {
+  return safeParse(
+    jsonString,
+    (x) => Viewer$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'Viewer' from JSON`,
+  );
+}
 
 /** @internal */
 export const InternDaemonAccess$inboundSchema: z.ZodType<
@@ -23,6 +46,7 @@ export const InternDaemonAccess$inboundSchema: z.ZodType<
 > = z.object({
   origin: z.string(),
   token: z.string(),
+  viewer: z.lazy(() => Viewer$inboundSchema),
 });
 
 export function internDaemonAccessFromJSON(
