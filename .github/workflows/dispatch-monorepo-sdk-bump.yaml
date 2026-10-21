@@ -36,6 +36,18 @@ jobs:
       github.event.workflow_run.conclusion == 'success'
     runs-on: ubuntu-latest
     steps:
+      # On workflow_run, use the version in package.json at the commit Publish
+      # released. npm latest can still be the previous release at this point.
+      # Waits up to ~5 min for that version to reach npm.
+      - name: Checkout published commit
+        if: github.event_name == 'workflow_run'
+        uses: actions/checkout@v5
+        with:
+          ref: ${{ github.event.workflow_run.head_sha }}
+          sparse-checkout: package.json
+          sparse-checkout-cone-mode: false
+          persist-credentials: false
+
       - name: Resolve @openrouter/sdk version
         id: ver
         env:
@@ -43,11 +55,25 @@ jobs:
         run: |
           set -euo pipefail
           V="$INPUT_VERSION"
+          if [ -z "$V" ] && [ -f package.json ]; then
+            V="$(jq -r .version package.json)"
+          fi
           if [ -z "$V" ]; then
             V="$(npm view @openrouter/sdk version)"
           fi
-          if [ -z "$V" ]; then
+          if [ -z "$V" ] || [ "$V" = "null" ]; then
             echo "::error::Could not resolve @openrouter/sdk version"
+            exit 1
+          fi
+          for _ in $(seq 1 15); do
+            if npm view "@openrouter/sdk@$V" version >/dev/null 2>&1; then
+              break
+            fi
+            echo "Waiting for @openrouter/sdk@$V to appear on npm..."
+            sleep 20
+          done
+          if ! npm view "@openrouter/sdk@$V" version >/dev/null 2>&1; then
+            echo "::error::@openrouter/sdk@$V is not on npm"
             exit 1
           fi
           echo "version=$V" >> "$GITHUB_OUTPUT"
