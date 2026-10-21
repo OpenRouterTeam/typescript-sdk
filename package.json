@@ -73,6 +73,7 @@
     "lint": "eslint --cache --max-warnings=0 src",
     "build": "tsc && node scripts/unbarrel-imports.js",
     "prepublishOnly": "npm run build",
+    "test:transit": "exit 0",
     "postinstall": "node scripts/check-types.js || true",
     "prepare": "npm run build",
     "test:watch": "vitest --watch --project unit",
@@ -80,8 +81,7 @@
     "typecheck:transit": "exit 0",
     "compile": "tsc && node scripts/unbarrel-imports.js",
     "test": "vitest --run --project unit",
-    "test:e2e": "vitest --run --project e2e",
-    "test:transit": "exit 0"
+    "test:e2e": "vitest --run --project e2e"
   },
   "peerDependencies": {
     
