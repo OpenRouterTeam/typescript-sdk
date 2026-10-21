@@ -157,6 +157,7 @@ export type VideoGenerationRequestOptions = {
   quiver?: { [k: string]: any } | undefined;
   recraft?: { [k: string]: any } | undefined;
   recursal?: { [k: string]: any } | undefined;
+  recursive?: { [k: string]: any } | undefined;
   reflection?: { [k: string]: any } | undefined;
   reka?: { [k: string]: any } | undefined;
   relace?: { [k: string]: any } | undefined;
@@ -413,6 +414,7 @@ export type VideoGenerationRequestOptions$Outbound = {
   quiver?: { [k: string]: any } | undefined;
   recraft?: { [k: string]: any } | undefined;
   recursal?: { [k: string]: any } | undefined;
+  recursive?: { [k: string]: any } | undefined;
   reflection?: { [k: string]: any } | undefined;
   reka?: { [k: string]: any } | undefined;
   relace?: { [k: string]: any } | undefined;
@@ -567,6 +569,7 @@ export const VideoGenerationRequestOptions$outboundSchema: z.ZodType<
   quiver: z.record(z.string(), z.any()).optional(),
   recraft: z.record(z.string(), z.any()).optional(),
   recursal: z.record(z.string(), z.any()).optional(),
+  recursive: z.record(z.string(), z.any()).optional(),
   reflection: z.record(z.string(), z.any()).optional(),
   reka: z.record(z.string(), z.any()).optional(),
   relace: z.record(z.string(), z.any()).optional(),
