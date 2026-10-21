@@ -10,8 +10,21 @@ title: "MessagesRequestPlugin"
 const value: models.AlignmentPlugin = {
   id: "alignment",
   rules: [
-    "Never offer a discount.",
+    {
+      rule: "Never offer a discount.",
+      watch: [
+        "content",
+      ],
+    },
   ],
+};
+```
+
+### `models.ArmorPlugin`
+
+```typescript
+const value: models.ArmorPlugin = {
+  id: "armor",
 };
 ```
 
