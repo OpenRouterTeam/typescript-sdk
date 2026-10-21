@@ -12,6 +12,7 @@ sources:
             - location: .speakeasy/overlays/boolean-query-params.overlay.yaml
             - location: .speakeasy/overlays/nullable-model-fields.overlay.yaml
             - location: .speakeasy/overlays/deprecated-beta-responses-alias.overlay.yaml
+            - location: .speakeasy/overlays/deprecated-end-users-alias.overlay.yaml
         output: .speakeasy/out.openapi.yaml
         registry:
             location: registry.speakeasyapi.dev/openrouter/sdk/open-router-chat-completions-api

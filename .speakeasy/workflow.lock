@@ -2,8 +2,8 @@ speakeasyVersion: 1.802.0
 sources:
     OpenRouter API:
         sourceNamespace: open-router-chat-completions-api
-        sourceRevisionDigest: sha256:938cd21a26523fc27e2d8234a562df8ccfa9d8b8c34b3609dec2f4b388cba1e3
-        sourceBlobDigest: sha256:7e16a2f37607eaded876c634ad9f9aa11072b2db1b945df7532d29305e72ac80
+        sourceRevisionDigest: sha256:99626768ba392ce279041fbb5b063f385e0e108094a8533736db0d561064fde0
+        sourceBlobDigest: sha256:bcbc1d651fbdeae5d8aec232285ab8dc53478f0bc573ec46b55202d6461e7960
         tags:
             - latest
             - 1.0.0
@@ -11,10 +11,10 @@ targets:
     openrouter:
         source: OpenRouter API
         sourceNamespace: open-router-chat-completions-api
-        sourceRevisionDigest: sha256:938cd21a26523fc27e2d8234a562df8ccfa9d8b8c34b3609dec2f4b388cba1e3
-        sourceBlobDigest: sha256:7e16a2f37607eaded876c634ad9f9aa11072b2db1b945df7532d29305e72ac80
+        sourceRevisionDigest: sha256:99626768ba392ce279041fbb5b063f385e0e108094a8533736db0d561064fde0
+        sourceBlobDigest: sha256:bcbc1d651fbdeae5d8aec232285ab8dc53478f0bc573ec46b55202d6461e7960
         codeSamplesNamespace: open-router-chat-completions-api-typescript-code-samples
-        codeSamplesRevisionDigest: sha256:3158ebd4cf845ac8152580cbaa20eb757fe5e3aa0902e70a0cb799defc068834
+        codeSamplesRevisionDigest: sha256:51545a2d7dd40f451c1841d0c7ef19b44f2daa4cd896aa1ae0b288920438d634
 workflow:
     workflowVersion: 1.0.0
     speakeasyVersion: 1.802.0
@@ -30,6 +30,7 @@ workflow:
                 - location: .speakeasy/overlays/boolean-query-params.overlay.yaml
                 - location: .speakeasy/overlays/nullable-model-fields.overlay.yaml
                 - location: .speakeasy/overlays/deprecated-beta-responses-alias.overlay.yaml
+                - location: .speakeasy/overlays/deprecated-end-users-alias.overlay.yaml
             output: .speakeasy/out.openapi.yaml
             registry:
                 location: registry.speakeasyapi.dev/openrouter/sdk/open-router-chat-completions-api

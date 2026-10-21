@@ -39692,7 +39692,7 @@ paths:
       summary: 'List registered external users'
       tags:
         - 'External Users'
-      x-speakeasy-group: 'externalUsers'
+        - End Users
       x-speakeasy-name-override: 'list'
       x-speakeasy-pagination:
         inputs:
@@ -39782,7 +39782,7 @@ paths:
       summary: 'Register an external user'
       tags:
         - 'External Users'
-      x-speakeasy-group: 'externalUsers'
+        - End Users
       x-speakeasy-name-override: 'create'
     parameters:
       - $ref: "#/components/parameters/AppIdentifier"
@@ -39850,7 +39850,7 @@ paths:
       summary: 'Deactivate a registered external user'
       tags:
         - 'External Users'
-      x-speakeasy-group: 'externalUsers'
+        - End Users
       x-speakeasy-name-override: 'delete'
     get:
       description: 'Retrieve an active or inactive registration by its URL-encoded, caller-supplied tracking ID. [Management key](/docs/guides/overview/auth/management-api-keys) required.'
@@ -39923,7 +39923,7 @@ paths:
       summary: 'Get a registered external user'
       tags:
         - 'External Users'
-      x-speakeasy-group: 'externalUsers'
+        - End Users
       x-speakeasy-name-override: 'get'
     patch:
       description: 'Update registration state without changing identity. State changes do not enforce inference access. [Management key](/docs/guides/overview/auth/management-api-keys) required.'
@@ -40004,7 +40004,7 @@ paths:
       summary: 'Update a registered external user'
       tags:
         - 'External Users'
-      x-speakeasy-group: 'externalUsers'
+        - End Users
       x-speakeasy-name-override: 'update'
     parameters:
       - $ref: "#/components/parameters/AppIdentifier"
@@ -56084,6 +56084,8 @@ tags:
     name: 'alpha.decisions'
   - name: beta.responses
     description: 'Deprecated alias of responses. Use responses instead; scheduled for removal (sunset date TBD).'
+  - name: End Users
+    description: 'Deprecated alias of externalUsers. Use externalUsers instead; scheduled for removal (sunset date TBD).'
 x-retry-strategy:
   initialDelay: 500
   maxAttempts: 3
