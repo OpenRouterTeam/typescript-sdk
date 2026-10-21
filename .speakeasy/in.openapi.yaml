@@ -6898,6 +6898,7 @@ components:
         - 'primeintellect'
         - 'quiver'
         - 'recraft'
+        - 'recursive'
         - 'reka'
         - 'relace'
         - 'respan'
@@ -18668,6 +18669,7 @@ components:
                 - 'Perplexity'
                 - 'Phala'
                 - 'Recraft'
+                - 'Recursive'
                 - 'Reka'
                 - 'Relace'
                 - 'Respan'
@@ -26159,6 +26161,8 @@ components:
         model_permaslug: 'openai/gpt-4o-2024-08-06'
         model_slug: 'openai/gpt-4o'
         pricing:
+          cache_read: '0.00000025'
+          cache_write: '0.000003125'
           completion: '0.00001'
           prompt: '0.0000025'
         provider_name: 'Azure'
@@ -26313,9 +26317,21 @@ components:
     PrivateEndpointPricing:
       description: 'Negotiated per-token rates reported for requests routed to this endpoint.'
       example:
+        cache_read: '0.00000025'
+        cache_write: '0.000003125'
         completion: '0.00001'
         prompt: '0.0000025'
       properties:
+        cache_read:
+          description: 'USD per cache-read prompt token, as a decimal string. Omit it to bill cache reads at the provider pricing strategy''s default, which for most strategies is the prompt rate.'
+          example: '0.00000025'
+          pattern: '^\d+(\.\d+)?$'
+          type: 'string'
+        cache_write:
+          description: 'USD per cache-write prompt token, as a decimal string. Omit it to bill cache writes at the provider pricing strategy''s default.'
+          example: '0.000003125'
+          pattern: '^\d+(\.\d+)?$'
+          type: 'string'
         completion:
           description: 'USD per completion token, as a decimal string.'
           example: '0.00001'
@@ -26556,6 +26572,7 @@ components:
         - 'Perplexity'
         - 'Phala'
         - 'Recraft'
+        - 'Recursive'
         - 'Reka'
         - 'Relace'
         - 'Respan'
@@ -26919,6 +26936,9 @@ components:
           additionalProperties: {}
           type: 'object'
         recursal:
+          additionalProperties: {}
+          type: 'object'
+        recursive:
           additionalProperties: {}
           type: 'object'
         reflection:
@@ -27340,6 +27360,7 @@ components:
             - 'Perplexity'
             - 'Phala'
             - 'Recraft'
+            - 'Recursive'
             - 'Reka'
             - 'Relace'
             - 'Respan'
@@ -36756,6 +36777,7 @@ paths:
               - 'primeintellect'
               - 'quiver'
               - 'recraft'
+              - 'recursive'
               - 'reka'
               - 'relace'
               - 'respan'
@@ -49588,7 +49610,7 @@ paths:
       x-speakeasy-name-override: 'enable'
   /private-endpoints/{id}/pricing:
     put:
-      description: 'Set the negotiated per-token rates reported for requests routed to this endpoint. Applies to drafts and active endpoints; new rates take effect for subsequent requests. [Management key](/docs/guides/overview/auth/management-api-keys) required.'
+      description: 'Set the negotiated per-token rates reported for requests routed to this endpoint. Applies to drafts and active endpoints; new rates take effect for subsequent requests. The body replaces the whole pricing object: omitting `cache_read` or `cache_write` reverts that rate to the provider pricing strategy''s default, even if it was set before. [Management key](/docs/guides/overview/auth/management-api-keys) required.'
       operationId: 'updatePrivateEndpointPricing'
       parameters:
         - description: 'Stable identifier of the private endpoint.'
