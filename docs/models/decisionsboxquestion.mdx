@@ -1,0 +1,24 @@
+---
+title: "DecisionsBoxQuestion"
+---
+
+## Example Usage
+
+```typescript
+import { DecisionsBoxQuestion } from "@openrouter/sdk/models";
+
+let value: DecisionsBoxQuestion = {
+  instructions: {
+    "key": "<value>",
+    "key1": "<value>",
+  },
+  type: "box",
+};
+```
+
+## Fields
+
+| Field                                                             | Type                                                              | Required                                                          | Description                                                       |
+| ----------------------------------------------------------------- | ----------------------------------------------------------------- | ----------------------------------------------------------------- | ----------------------------------------------------------------- |
+| `instructions`                                                    | *models.DecisionsBoxQuestionInstructions*                         | ✔️                                                | A plain string, or a JSON object or array of structured guidance. |
+| `type`                                                            | *"box"*                                                           | ✔️                                                | N/A                                                               |

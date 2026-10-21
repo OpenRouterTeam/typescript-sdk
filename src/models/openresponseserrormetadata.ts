@@ -21,7 +21,7 @@ import { SDKValidationError } from "./errors/sdkvalidationerror.js";
  */
 export type OpenResponsesErrorMetadataAlignment = {
   /**
-   * One record per evaluated assistant message of the request, in the order the messages were produced.
+   * One record per evaluated assistant message of the request, in the order the messages were produced. Empty when no message of the request had content to evaluate.
    */
   calls: Array<AlignmentCallRecord>;
   rejected?: AlignmentRejected | undefined;

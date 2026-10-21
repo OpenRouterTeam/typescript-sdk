@@ -148,6 +148,7 @@ export type VideoGenerationRequestOptions = {
   openInference?: { [k: string]: any } | undefined;
   openai?: { [k: string]: any } | undefined;
   parasail?: { [k: string]: any } | undefined;
+  paretoAlpha?: { [k: string]: any } | undefined;
   perceptron?: { [k: string]: any } | undefined;
   perplexity?: { [k: string]: any } | undefined;
   phala?: { [k: string]: any } | undefined;
@@ -156,6 +157,7 @@ export type VideoGenerationRequestOptions = {
   quiver?: { [k: string]: any } | undefined;
   recraft?: { [k: string]: any } | undefined;
   recursal?: { [k: string]: any } | undefined;
+  recursive?: { [k: string]: any } | undefined;
   reflection?: { [k: string]: any } | undefined;
   reka?: { [k: string]: any } | undefined;
   relace?: { [k: string]: any } | undefined;
@@ -403,6 +405,7 @@ export type VideoGenerationRequestOptions$Outbound = {
   "open-inference"?: { [k: string]: any } | undefined;
   openai?: { [k: string]: any } | undefined;
   parasail?: { [k: string]: any } | undefined;
+  "pareto-alpha"?: { [k: string]: any } | undefined;
   perceptron?: { [k: string]: any } | undefined;
   perplexity?: { [k: string]: any } | undefined;
   phala?: { [k: string]: any } | undefined;
@@ -411,6 +414,7 @@ export type VideoGenerationRequestOptions$Outbound = {
   quiver?: { [k: string]: any } | undefined;
   recraft?: { [k: string]: any } | undefined;
   recursal?: { [k: string]: any } | undefined;
+  recursive?: { [k: string]: any } | undefined;
   reflection?: { [k: string]: any } | undefined;
   reka?: { [k: string]: any } | undefined;
   relace?: { [k: string]: any } | undefined;
@@ -556,6 +560,7 @@ export const VideoGenerationRequestOptions$outboundSchema: z.ZodType<
   openInference: z.record(z.string(), z.any()).optional(),
   openai: z.record(z.string(), z.any()).optional(),
   parasail: z.record(z.string(), z.any()).optional(),
+  paretoAlpha: z.record(z.string(), z.any()).optional(),
   perceptron: z.record(z.string(), z.any()).optional(),
   perplexity: z.record(z.string(), z.any()).optional(),
   phala: z.record(z.string(), z.any()).optional(),
@@ -564,6 +569,7 @@ export const VideoGenerationRequestOptions$outboundSchema: z.ZodType<
   quiver: z.record(z.string(), z.any()).optional(),
   recraft: z.record(z.string(), z.any()).optional(),
   recursal: z.record(z.string(), z.any()).optional(),
+  recursive: z.record(z.string(), z.any()).optional(),
   reflection: z.record(z.string(), z.any()).optional(),
   reka: z.record(z.string(), z.any()).optional(),
   relace: z.record(z.string(), z.any()).optional(),
@@ -627,6 +633,7 @@ export const VideoGenerationRequestOptions$outboundSchema: z.ZodType<
     nearAi: "near-ai",
     nexAgi: "nex-agi",
     openInference: "open-inference",
+    paretoAlpha: "pareto-alpha",
     sailResearch: "sail-research",
     sakanaAi: "sakana-ai",
     sambanovaCloaked: "sambanova-cloaked",

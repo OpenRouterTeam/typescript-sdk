@@ -3,11 +3,11 @@
  * @generated-id: 8e12697ee658
  */
 
-import { endUsersCreate } from "../funcs/endUsersCreate.js";
-import { endUsersDelete } from "../funcs/endUsersDelete.js";
-import { endUsersGet } from "../funcs/endUsersGet.js";
-import { endUsersList } from "../funcs/endUsersList.js";
-import { endUsersUpdate } from "../funcs/endUsersUpdate.js";
+import { externalUsersCreate } from "../funcs/externalUsersCreate.js";
+import { externalUsersDelete } from "../funcs/externalUsersDelete.js";
+import { externalUsersGet } from "../funcs/externalUsersGet.js";
+import { externalUsersList } from "../funcs/externalUsersList.js";
+import { externalUsersUpdate } from "../funcs/externalUsersUpdate.js";
 import { ClientSDK, RequestOptions } from "../lib/sdks.js";
 import * as models from "../models/index.js";
 import * as operations from "../models/operations/index.js";
@@ -16,18 +16,18 @@ import { PageIterator, unwrapResultIterator } from "../types/operations.js";
 
 export class EndUsers extends ClientSDK {
   /**
-   * List registered end users
+   * List registered external users
    *
    * @remarks
    * List registrations belonging to the authenticated organization. Inactive registrations are excluded by default. [Management key](/docs/guides/overview/auth/management-api-keys) required.
    */
   async list(
-    request?: operations.ListEndUsersRequest | undefined,
+    request?: operations.ListExternalUsersRequest | undefined,
     options?: RequestOptions,
   ): Promise<
-    PageIterator<operations.ListEndUsersResponse, { offset: number }>
+    PageIterator<operations.ListExternalUsersResponse, { offset: number }>
   > {
-    return unwrapResultIterator(endUsersList(
+    return unwrapResultIterator(externalUsersList(
       this,
       request,
       options,
@@ -35,16 +35,16 @@ export class EndUsers extends ClientSDK {
   }
 
   /**
-   * Register an end user
+   * Register an external user
    *
    * @remarks
    * Register a caller-supplied tracking ID under the authenticated organization. No login account, policy, or credentials are created. [Management key](/docs/guides/overview/auth/management-api-keys) required.
    */
   async create(
-    request: operations.CreateEndUserRequest,
+    request: operations.CreateExternalUserRequest,
     options?: RequestOptions,
-  ): Promise<models.EndUserResponse> {
-    return unwrapAsync(endUsersCreate(
+  ): Promise<models.ExternalUserResponse> {
+    return unwrapAsync(externalUsersCreate(
       this,
       request,
       options,
@@ -52,16 +52,16 @@ export class EndUsers extends ClientSDK {
   }
 
   /**
-   * Deactivate a registered end user
+   * Deactivate a registered external user
    *
    * @remarks
    * Soft-deactivate a registration while retaining its tracking ID. Repeat deactivation succeeds. This does not block inference; reactivate through PATCH. [Management key](/docs/guides/overview/auth/management-api-keys) required.
    */
   async delete(
-    request: operations.DeleteEndUserRequest,
+    request: operations.DeleteExternalUserRequest,
     options?: RequestOptions,
   ): Promise<void> {
-    return unwrapAsync(endUsersDelete(
+    return unwrapAsync(externalUsersDelete(
       this,
       request,
       options,
@@ -69,16 +69,16 @@ export class EndUsers extends ClientSDK {
   }
 
   /**
-   * Get a registered end user
+   * Get a registered external user
    *
    * @remarks
    * Retrieve an active or inactive registration by its URL-encoded, caller-supplied tracking ID. [Management key](/docs/guides/overview/auth/management-api-keys) required.
    */
   async get(
-    request: operations.GetEndUserRequest,
+    request: operations.GetExternalUserRequest,
     options?: RequestOptions,
-  ): Promise<models.EndUserResponse> {
-    return unwrapAsync(endUsersGet(
+  ): Promise<models.ExternalUserResponse> {
+    return unwrapAsync(externalUsersGet(
       this,
       request,
       options,
@@ -86,16 +86,16 @@ export class EndUsers extends ClientSDK {
   }
 
   /**
-   * Update a registered end user
+   * Update a registered external user
    *
    * @remarks
    * Update registration state without changing identity. State changes do not enforce inference access. [Management key](/docs/guides/overview/auth/management-api-keys) required.
    */
   async update(
-    request: operations.UpdateEndUserRequest,
+    request: operations.UpdateExternalUserRequest,
     options?: RequestOptions,
-  ): Promise<models.EndUserResponse> {
-    return unwrapAsync(endUsersUpdate(
+  ): Promise<models.ExternalUserResponse> {
+    return unwrapAsync(externalUsersUpdate(
       this,
       request,
       options,

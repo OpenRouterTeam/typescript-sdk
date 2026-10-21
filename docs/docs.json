@@ -25,6 +25,7 @@
       "sdks/embeddings/README",
       "sdks/endpoints/README",
       "sdks/endusers/README",
+      "sdks/externalusers/README",
       "sdks/files/README",
       "sdks/generations/README",
       "sdks/guardrails/README",

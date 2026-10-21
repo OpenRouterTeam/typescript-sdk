@@ -159,7 +159,7 @@ export class PrivateEndpoints extends ClientSDK {
    * Set private endpoint pricing
    *
    * @remarks
-   * Set the negotiated per-token rates reported for requests routed to this endpoint. Applies to drafts and active endpoints; new rates take effect for subsequent requests. [Management key](/docs/guides/overview/auth/management-api-keys) required.
+   * Set the negotiated per-token rates reported for requests routed to this endpoint. Applies to drafts and active endpoints; new rates take effect for subsequent requests. The body replaces the whole pricing object: omitting `cache_read` or `cache_write` reverts that rate to the provider pricing strategy's default, even if it was set before. [Management key](/docs/guides/overview/auth/management-api-keys) required.
    */
   async updatePricing(
     request: operations.UpdatePrivateEndpointPricingRequest,

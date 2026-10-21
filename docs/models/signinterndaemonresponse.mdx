@@ -1,0 +1,27 @@
+---
+title: "SignInternDaemonResponse"
+---
+
+Headers the CLI copies onto the daemon request so the sidecar can verify who is asking.
+
+## Example Usage
+
+```typescript
+import { SignInternDaemonResponse } from "@openrouter/sdk/models";
+
+let value: SignInternDaemonResponse = {
+  xOriInvokeSignature: "MEUCIQ...",
+  xOriInvokeTimestamp: "1789000000",
+  xOriInvokeUser: "user_2abc",
+};
+```
+
+## Fields
+
+| Field                                                                                                                                                                    | Type                                                                                                                                                                     | Required                                                                                                                                                                 | Description                                                                                                                                                              |
+| ------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `xOriInvokeNonce`                                                                                                                                                        | *string*                                                                                                                                                                 | ➖                                                                                                                                                       | Present with `x-ori-invoke-signature-v2`: the single-use id that proof is bound to.                                                                                      |
+| `xOriInvokeSignature`                                                                                                                                                    | *string*                                                                                                                                                                 | ✔️                                                                                                                                                       | Base64 Ed25519 signature over the intern id, timestamp, user and body digest.                                                                                            |
+| `xOriInvokeSignatureV2`                                                                                                                                                  | *string*                                                                                                                                                                 | ➖                                                                                                                                                       | Present when the request named a `route`: Base64 Ed25519 signature over the intern id, timestamp, nonce, user, method, path and body digest. The intern accepts it once. |
+| `xOriInvokeTimestamp`                                                                                                                                                    | *string*                                                                                                                                                                 | ✔️                                                                                                                                                       | Unix seconds at signing; the daemon refuses proofs older than its window.                                                                                                |
+| `xOriInvokeUser`                                                                                                                                                         | *string*                                                                                                                                                                 | ✔️                                                                                                                                                       | The verified OAuth subject the proof names. Never taken from the request.                                                                                                |

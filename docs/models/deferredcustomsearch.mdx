@@ -1,0 +1,26 @@
+---
+title: "DeferredCustomSearch"
+---
+
+Caller-executed search returning existing tool identities under result_key.
+
+## Example Usage
+
+```typescript
+import { DeferredCustomSearch } from "@openrouter/sdk/models";
+
+let value: DeferredCustomSearch = {
+  resultKey: "<value>",
+  toolId: "<id>",
+  type: "custom",
+};
+```
+
+## Fields
+
+| Field              | Type               | Required           | Description        |
+| ------------------ | ------------------ | ------------------ | ------------------ |
+| `maxResults`       | *number*           | ➖ | N/A                |
+| `resultKey`        | *string*           | ✔️ | N/A                |
+| `toolId`           | *string*           | ✔️ | N/A                |
+| `type`             | *"custom"*         | ✔️ | N/A                |

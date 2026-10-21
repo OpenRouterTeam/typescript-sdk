@@ -67,11 +67,11 @@ export type ListBatchesRequest = {
   /**
    * Only include batches created strictly after this timestamp.
    */
-  createdAfter?: models.BatchListTimestamp | undefined;
+  createdAfter?: any | undefined;
   /**
    * Only include batches created strictly before this timestamp.
    */
-  createdBefore?: models.BatchListTimestamp | undefined;
+  createdBefore?: any | undefined;
 };
 
 export type ListBatchesResponse = {
@@ -86,8 +86,8 @@ export type ListBatchesRequest$Outbound = {
   limit?: number | undefined;
   after?: string | undefined;
   status?: Array<string> | undefined;
-  created_after?: models.BatchListTimestamp$Outbound | undefined;
-  created_before?: models.BatchListTimestamp$Outbound | undefined;
+  created_after?: any | undefined;
+  created_before?: any | undefined;
 };
 
 /** @internal */
@@ -101,8 +101,8 @@ export const ListBatchesRequest$outboundSchema: z.ZodType<
   limit: z.int().optional(),
   after: z.string().optional(),
   status: z.array(models.BatchListStatus$outboundSchema).optional(),
-  createdAfter: models.BatchListTimestamp$outboundSchema.optional(),
-  createdBefore: models.BatchListTimestamp$outboundSchema.optional(),
+  createdAfter: z.any().optional(),
+  createdBefore: z.any().optional(),
 }).transform((v) => {
   return remap$(v, {
     httpReferer: "HTTP-Referer",

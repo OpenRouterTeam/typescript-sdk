@@ -37,7 +37,7 @@ generation:
   documentation: mintlify
   preApplyUnionDiscriminators: true
 typescript:
-  version: 1.4.25
+  version: 1.5.0
   acceptHeaderEnum: false
   additionalDependencies:
     dependencies:
@@ -130,6 +130,7 @@ typescript:
   modelPropertyCasing: camel
   moduleFormat: esm
   multipartArrayFormat: legacy
+  numericEnumMemberNames: legacy
   outputModelSuffix: output
   packageName: '@openrouter/sdk'
   preApplyUnionDiscriminators: true

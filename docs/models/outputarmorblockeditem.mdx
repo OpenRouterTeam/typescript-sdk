@@ -1,0 +1,36 @@
+---
+title: "OutputArmorBlockedItem"
+---
+
+A client tool call that OpenRouter Armor blocked. Emitted in place of the call when `plugins[armor].output_mode` is `custom_item`.
+
+## Example Usage
+
+```typescript
+import { OutputArmorBlockedItem } from "@openrouter/sdk/models";
+
+let value: OutputArmorBlockedItem = {
+  arguments: "<value>",
+  callId: "<id>",
+  explanation: "<value>",
+  id: "msg-abc123",
+  name: "<value>",
+  reason: "<value>",
+  status: "completed",
+  type: "openrouter:armor_blocked",
+};
+```
+
+## Fields
+
+| Field                                                                                                                | Type                                                                                                                 | Required                                                                                                             | Description                                                                                                          |
+| -------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------- |
+| `arguments`                                                                                                          | *string*                                                                                                             | ✔️                                                                                                   | The arguments exactly as the model wrote them.                                                                       |
+| `callId`                                                                                                             | *string*                                                                                                             | ✔️                                                                                                   | The call id the model chose. Use it to find this call in `safeguard_results`.                                        |
+| `explanation`                                                                                                        | *string*                                                                                                             | ✔️                                                                                                   | The rule that blocked the call, in the same `[Rule Name]` form as `safeguard_results`.                               |
+| `id`                                                                                                                 | *string*                                                                                                             | ✔️                                                                                                   | N/A                                                                                                                  |
+| `name`                                                                                                               | *string*                                                                                                             | ✔️                                                                                                   | The name of the tool the model called.                                                                               |
+| `namespace`                                                                                                          | *string*                                                                                                             | ➖                                                                                                   | The namespace the tool belongs to, for namespaced tools such as MCP. Absent for a plain function tool.               |
+| `reason`                                                                                                             | *string*                                                                                                             | ✔️                                                                                                   | The error text the model received as the result of this call. Sending this item back replays that text to the model. |
+| `status`                                                                                                             | [models.OutputArmorBlockedItemStatus](../models/outputarmorblockeditemstatus.mdx)                                     | ✔️                                                                                                   | N/A                                                                                                                  |
+| `type`                                                                                                               | [models.OutputArmorBlockedItemType](../models/outputarmorblockeditemtype.mdx)                                         | ✔️                                                                                                   | N/A                                                                                                                  |
