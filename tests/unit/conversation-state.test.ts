@@ -1,4 +1,4 @@
-import { describe, expect, it } from 'vitest';
+import { describe, expect, it, vi } from 'vitest';
 import { z } from 'zod/v4';
 import {
   createInitialState,
@@ -141,6 +141,84 @@ describe('Conversation State Utilities', () => {
       const toolCall = { id: '1', name: 'delete_files', arguments: {} };
 
       expect(await toolRequiresApproval(toolCall, [deleteTool], context)).toBe(true);
+    });
+
+    it('should apply schema coercions before a tool-level predicate', async () => {
+      const seen: unknown[] = [];
+      const transfer = tool({
+        name: 'transfer',
+        inputSchema: z.object({ amount: z.coerce.number() }),
+        requireApproval: (args) => {
+          seen.push(args);
+          return args.amount > 100;
+        },
+        execute: async () => ({}),
+      });
+      const toolCall = { id: '1', name: 'transfer', arguments: { amount: '500' } };
+
+      expect(await toolRequiresApproval(toolCall, [transfer], context)).toBe(true);
+      expect(seen).toEqual([{ amount: 500 }]);
+    });
+
+    it('should fail closed when arguments fail schema validation for a tool-level predicate', async () => {
+      const predicate = vi.fn(() => false);
+      const strict = tool({
+        name: 'strict_action',
+        inputSchema: z.object({ target: z.string() }),
+        requireApproval: predicate,
+        execute: async () => ({}),
+      });
+      const toolCall = { id: '1', name: 'strict_action', arguments: {} };
+
+      expect(await toolRequiresApproval(toolCall, [strict], context)).toBe(true);
+      expect(predicate).not.toHaveBeenCalled();
+    });
+
+    it('should fail closed when the schema parses to a non-object value', async () => {
+      const predicate = vi.fn(() => false);
+      const weird = tool({
+        name: 'weird_action',
+        inputSchema: z.object({ target: z.string() }),
+        requireApproval: predicate,
+        execute: async () => ({}),
+      });
+      (weird.function as { inputSchema: unknown }).inputSchema = z
+        .object({ target: z.string() })
+        .transform(() => ['not', 'a', 'record']);
+      const toolCall = { id: '1', name: 'weird_action', arguments: { target: 'x' } };
+
+      expect(await toolRequiresApproval(toolCall, [weird], context)).toBe(true);
+      expect(predicate).not.toHaveBeenCalled();
+    });
+
+    it('should pass schema-parsed arguments to a call-level check without mutating the call', async () => {
+      const defaulted = tool({
+        name: 'defaulted_action',
+        inputSchema: z.object({ destructive: z.boolean().default(true) }),
+        execute: async () => ({}),
+      });
+      const toolCall = { id: '1', name: 'defaulted_action', arguments: {} };
+      const callLevelCheck = vi.fn((tc: { arguments: Record<string, unknown> }) => tc.arguments['destructive'] === true);
+
+      expect(await toolRequiresApproval(toolCall, [defaulted], context, callLevelCheck)).toBe(true);
+      expect(callLevelCheck).toHaveBeenCalledWith({ ...toolCall, arguments: { destructive: true } }, context);
+      expect(toolCall.arguments).toEqual({});
+    });
+
+    it('should honor a call-level check with the raw call when arguments fail schema validation', async () => {
+      const strict = tool({
+        name: 'strict_action',
+        inputSchema: z.object({ target: z.string() }),
+        execute: async () => ({}),
+      });
+      const toolCall = { id: '1', name: 'strict_action', arguments: {} };
+      const allow = vi.fn(() => false);
+      const deny = vi.fn(() => true);
+
+      expect(await toolRequiresApproval(toolCall, [strict], context, allow)).toBe(false);
+      expect(allow).toHaveBeenCalledWith(toolCall, context);
+      expect(await toolRequiresApproval(toolCall, [strict], context, deny)).toBe(true);
+      expect(deny).toHaveBeenCalledWith(toolCall, context);
     });
 
     it('should use call-level check when provided', async () => {
