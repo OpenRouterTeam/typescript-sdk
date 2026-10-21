@@ -31,11 +31,13 @@ let value: ListEndpointsZdrResponse = {
       },
       providerName: "OpenAI",
       quantization: "fp16",
+      serviceTier: "priority",
       supportedParameters: [
         "temperature",
         "top_p",
         "max_tokens",
       ],
+      supportsDiarization: false,
       supportsImplicitCaching: true,
       supportsToolChoice: {
         auto: true,
@@ -62,4 +64,4 @@ let value: ListEndpointsZdrResponse = {
 
 | Field                                                     | Type                                                      | Required                                                  | Description                                               |
 | --------------------------------------------------------- | --------------------------------------------------------- | --------------------------------------------------------- | --------------------------------------------------------- |
-| `data`                                                    | [models.PublicEndpoint](../../models/publicendpoint.mdx)[] | ✅                                        | N/A                                                       |
+| `data`                                                    | [models.PublicEndpoint](../../models/publicendpoint.mdx)[] | :heavy_check_mark:                                        | N/A                                                       |

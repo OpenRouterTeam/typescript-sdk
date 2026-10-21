@@ -116,6 +116,7 @@ export const Provider = {
   OpenInference: "open-inference",
   Openai: "openai",
   Parasail: "parasail",
+  ParetoAlpha: "pareto-alpha",
   Perceptron: "perceptron",
   Perplexity: "perplexity",
   Phala: "phala",
