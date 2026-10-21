@@ -123,6 +123,21 @@ const value: models.OutputApplyPatchServerToolItem = {
 };
 ```
 
+### `models.OutputArmorBlockedItem`
+
+```typescript
+const value: models.OutputArmorBlockedItem = {
+  arguments: "<value>",
+  callId: "<id>",
+  explanation: "<value>",
+  id: "msg-abc123",
+  name: "<value>",
+  reason: "<value>",
+  status: "completed",
+  type: "openrouter:armor_blocked",
+};
+```
+
 ### `models.OutputBashServerToolItem`
 
 ```typescript
@@ -322,6 +337,17 @@ const value: models.OutputShellCallOutputItem = {
   ],
   status: "completed",
   type: "shell_call_output",
+};
+```
+
+### `models.OutputToolSearchCallItem`
+
+```typescript
+const value: models.OutputToolSearchCallItem = {
+  callId: "<id>",
+  execution: "client",
+  status: "completed",
+  type: "tool_search_call",
 };
 ```
 

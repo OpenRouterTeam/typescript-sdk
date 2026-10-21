@@ -81,6 +81,11 @@ import {
   AnthropicWebSearchToolUserLocation$outboundSchema,
 } from "./anthropicwebsearchtooluserlocation.js";
 import {
+  ArmorPlugin,
+  ArmorPlugin$Outbound,
+  ArmorPlugin$outboundSchema,
+} from "./armorplugin.js";
+import {
   AutoBetaRouterPlugin,
   AutoBetaRouterPlugin$Outbound,
   AutoBetaRouterPlugin$outboundSchema,
@@ -105,6 +110,11 @@ import {
   DatetimeServerTool$Outbound,
   DatetimeServerTool$outboundSchema,
 } from "./datetimeservertool.js";
+import {
+  DeferredToolsControl,
+  DeferredToolsControl$Outbound,
+  DeferredToolsControl$outboundSchema,
+} from "./deferredtoolscontrol.js";
 import {
   FileParserPlugin,
   FileParserPlugin$Outbound,
@@ -283,6 +293,7 @@ export type MessagesRequestMetadata = {
 
 export type MessagesRequestPlugin =
   | AlignmentPlugin
+  | ArmorPlugin
   | AutoBetaRouterPlugin
   | AutoRouterPlugin
   | ContextCompressionPlugin
@@ -531,6 +542,10 @@ export type MessagesRequest = {
   cacheControl?: AnthropicCacheControlDirective | undefined;
   contextManagement?: ContextManagement | null | undefined;
   /**
+   * Opt-in versioned router-level deferred-tool protocol. Replay assistant reasoning unchanged on continuation; keep the catalog unchanged.
+   */
+  deferredTools?: DeferredToolsControl | undefined;
+  /**
    * Fallback models to try if the primary model fails or refuses, in order. Handled by OpenRouter multi-model routing rather than Anthropic server-side fallbacks; cannot be combined with `models`. Each entry accepts only `model`. Maximum of 3 entries.
    */
   fallbacks?: Array<MessagesFallbackParam> | null | undefined;
@@ -549,6 +564,7 @@ export type MessagesRequest = {
   plugins?:
     | Array<
       | AlignmentPlugin
+      | ArmorPlugin
       | AutoBetaRouterPlugin
       | AutoRouterPlugin
       | ContextCompressionPlugin
@@ -914,6 +930,7 @@ export function messagesRequestMetadataToJSON(
 /** @internal */
 export type MessagesRequestPlugin$Outbound =
   | AlignmentPlugin$Outbound
+  | ArmorPlugin$Outbound
   | AutoBetaRouterPlugin$Outbound
   | AutoRouterPlugin$Outbound
   | ContextCompressionPlugin$Outbound
@@ -933,6 +950,7 @@ export const MessagesRequestPlugin$outboundSchema: z.ZodType<
   MessagesRequestPlugin
 > = z.union([
   AlignmentPlugin$outboundSchema,
+  ArmorPlugin$outboundSchema,
   AutoBetaRouterPlugin$outboundSchema,
   AutoRouterPlugin$outboundSchema,
   ContextCompressionPlugin$outboundSchema,
@@ -1599,6 +1617,7 @@ export function messagesRequestToolUnionToJSON(
 export type MessagesRequest$Outbound = {
   cache_control?: AnthropicCacheControlDirective$Outbound | undefined;
   context_management?: ContextManagement$Outbound | null | undefined;
+  deferred_tools?: DeferredToolsControl$Outbound | undefined;
   fallbacks?: Array<MessagesFallbackParam$Outbound> | null | undefined;
   max_tokens?: number | undefined;
   messages: Array<MessagesMessageParam$Outbound> | null;
@@ -1609,6 +1628,7 @@ export type MessagesRequest$Outbound = {
   plugins?:
     | Array<
       | AlignmentPlugin$Outbound
+      | ArmorPlugin$Outbound
       | AutoBetaRouterPlugin$Outbound
       | AutoRouterPlugin$Outbound
       | ContextCompressionPlugin$Outbound
@@ -1682,6 +1702,7 @@ export const MessagesRequest$outboundSchema: z.ZodType<
   cacheControl: AnthropicCacheControlDirective$outboundSchema.optional(),
   contextManagement: z.nullable(z.lazy(() => ContextManagement$outboundSchema))
     .optional(),
+  deferredTools: DeferredToolsControl$outboundSchema.optional(),
   fallbacks: z.nullable(z.array(MessagesFallbackParam$outboundSchema))
     .optional(),
   maxTokens: z.int().optional(),
@@ -1693,6 +1714,7 @@ export const MessagesRequest$outboundSchema: z.ZodType<
   plugins: z.array(
     z.union([
       AlignmentPlugin$outboundSchema,
+      ArmorPlugin$outboundSchema,
       AutoBetaRouterPlugin$outboundSchema,
       AutoRouterPlugin$outboundSchema,
       ContextCompressionPlugin$outboundSchema,
@@ -1760,6 +1782,7 @@ export const MessagesRequest$outboundSchema: z.ZodType<
   return remap$(v, {
     cacheControl: "cache_control",
     contextManagement: "context_management",
+    deferredTools: "deferred_tools",
     maxTokens: "max_tokens",
     outputConfig: "output_config",
     serviceTier: "service_tier",
