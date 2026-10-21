@@ -239,7 +239,7 @@ export type OpenResponsesResult = {
   prompt?: StoredPromptTemplate | null | undefined;
   promptCacheKey?: string | null | undefined;
   /**
-   * Request-level prompt-cache controls. `mode: "explicit"` disables OpenAI-managed breakpoints so only blocks marked with `prompt_cache_breakpoint` are cached. Only supported by OpenAI GPT-5.6 and newer.
+   * Request-level prompt-cache controls. `mode: "explicit"` disables OpenAI-managed breakpoints so only blocks marked with `prompt_cache_breakpoint` are cached. `ttl` sets the minimum cache lifetime for every breakpoint the request writes: "30m" (default) or "12h" (billed at the higher 12h cache-write rate). Only supported by OpenAI GPT-5.6 and newer.
    */
   promptCacheOptions?: PromptCacheOptions | null | undefined;
   reasoning?: BaseReasoningConfig | null | undefined;

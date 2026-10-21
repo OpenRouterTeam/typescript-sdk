@@ -1,0 +1,25 @@
+---
+title: "Account"
+---
+
+## Example Usage
+
+```typescript
+import { Account } from "@openrouter/sdk/models";
+
+let value: Account = {
+  actsAs: "<value>",
+  isYourAccountLinked: true,
+  note: "<value>",
+  scope: "workspace",
+};
+```
+
+## Fields
+
+| Field                                                                                                        | Type                                                                                                         | Required                                                                                                     | Description                                                                                                  |
+| ------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------ |
+| `actsAs`                                                                                                     | *string*                                                                                                     | ✔️                                                                                           | Whose account it acts as, when known.                                                                        |
+| `isYourAccountLinked`                                                                                        | *boolean*                                                                                                    | ✔️                                                                                           | N/A                                                                                                          |
+| `note`                                                                                                       | *string*                                                                                                     | ✔️                                                                                           | N/A                                                                                                          |
+| `scope`                                                                                                      | [models.InternConnectionScope](../models/internconnectionscope.mdx)                                           | ✔️                                                                                           | `workspace` for a shared connection, `yours` for the key user's personal account, `shared` for a teammate's. |
