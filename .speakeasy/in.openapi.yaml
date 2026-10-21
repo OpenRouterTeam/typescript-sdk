@@ -15860,10 +15860,14 @@ components:
         - 'data'
       type: 'object'
     InternDaemonAccess:
-      description: 'The intern daemon''s origin and the bearer `ori tui --host` sends to it as `ORI_DAEMON_TOKEN`.'
+      description: 'The intern daemon''s origin, the bearer `ori tui --host` sends to it as `ORI_DAEMON_TOKEN`, and who the caller is on the intern.'
       example:
         origin: 'https://research-assistant-7c9e6679.or.bot'
         token: 'daemon_token'
+        viewer:
+          principals:
+            - 'clerk:user_2abc'
+            - 'slack:T0123:U0456'
       properties:
         origin:
           pattern: '^https?:\/\/([a-z0-9](?:[a-z0-9-]{0,61}[a-z0-9])?(?:\.[a-z0-9](?:[a-z0-9-]{0,61}[a-z0-9])?)*)(?::(\d{1,5}))?$/iu'
@@ -15871,9 +15875,20 @@ components:
         token:
           pattern: '^[\w-]+$/u'
           type: 'string'
+        viewer:
+          properties:
+            principals:
+              description: 'The caller''s Ori principals on this intern: `clerk:<user>`, and, when the grant carries `vault:read`, `slack:<team>:<user>` for each Slack account they linked to it. A session started by one of them in a one-to-one Slack DM is the caller''s to see.'
+              items:
+                type: 'string'
+              type: 'array'
+          required:
+            - 'principals'
+          type: 'object'
       required:
         - 'origin'
         - 'token'
+        - 'viewer'
       type: 'object'
     InternInvokeAcceptedResponse:
       description: 'The intern admitted the prompt. The run continues on the intern.'
@@ -47863,6 +47878,16 @@ paths:
               schema:
                 $ref: '#/components/schemas/UnauthorizedResponse'
           description: 'Unauthorized - Authentication required or invalid credentials'
+        '403':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 403
+                  message: 'Only management keys can perform this operation'
+              schema:
+                $ref: '#/components/schemas/ForbiddenResponse'
+          description: 'Forbidden - Authentication successful but insufficient permissions'
         '404':
           content:
             application/json:
@@ -47928,6 +47953,16 @@ paths:
               schema:
                 $ref: '#/components/schemas/UnauthorizedResponse'
           description: 'Unauthorized - Authentication required or invalid credentials'
+        '403':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 403
+                  message: 'Only management keys can perform this operation'
+              schema:
+                $ref: '#/components/schemas/ForbiddenResponse'
+          description: 'Forbidden - Authentication successful but insufficient permissions'
         '404':
           content:
             application/json:
@@ -47999,6 +48034,16 @@ paths:
               schema:
                 $ref: '#/components/schemas/UnauthorizedResponse'
           description: 'Unauthorized - Authentication required or invalid credentials'
+        '403':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 403
+                  message: 'Only management keys can perform this operation'
+              schema:
+                $ref: '#/components/schemas/ForbiddenResponse'
+          description: 'Forbidden - Authentication successful but insufficient permissions'
         '404':
           content:
             application/json:
