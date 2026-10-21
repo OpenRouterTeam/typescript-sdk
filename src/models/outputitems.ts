@@ -22,6 +22,10 @@ import {
   OutputApplyPatchServerToolItem$inboundSchema,
 } from "./outputapplypatchservertoolitem.js";
 import {
+  OutputArmorBlockedItem,
+  OutputArmorBlockedItem$inboundSchema,
+} from "./outputarmorblockeditem.js";
+import {
   OutputBashServerToolItem,
   OutputBashServerToolItem$inboundSchema,
 } from "./outputbashservertoolitem.js";
@@ -118,6 +122,10 @@ import {
   OutputTextEditorServerToolItem$inboundSchema,
 } from "./outputtexteditorservertoolitem.js";
 import {
+  OutputToolSearchCallItem,
+  OutputToolSearchCallItem$inboundSchema,
+} from "./outputtoolsearchcallitem.js";
+import {
   OutputToolSearchServerToolItem,
   OutputToolSearchServerToolItem$inboundSchema,
 } from "./outputtoolsearchservertoolitem.js";
@@ -148,6 +156,7 @@ export type OutputItems =
   | OutputMessageItem
   | (OutputAdvisorServerToolItem & { type: "openrouter:advisor" })
   | (OutputApplyPatchServerToolItem & { type: "openrouter:apply_patch" })
+  | (OutputArmorBlockedItem & { type: "openrouter:armor_blocked" })
   | (OutputBashServerToolItem & { type: "openrouter:bash" })
   | (OutputBrowserUseServerToolItem & { type: "openrouter:browser_use" })
   | (OutputCodeInterpreterServerToolItem & {
@@ -174,6 +183,7 @@ export type OutputItems =
   | OutputReasoningItem
   | OutputShellCallItem
   | OutputShellCallOutputItem
+  | OutputToolSearchCallItem
   | (OutputWebSearchCallItem & { type: "web_search_call" })
   | discriminatedUnionTypes.Unknown<"type">;
 
@@ -201,6 +211,9 @@ export const OutputItems$inboundSchema: z.ZodType<OutputItems, unknown> =
     ),
     ["openrouter:apply_patch"]: OutputApplyPatchServerToolItem$inboundSchema
       .and(z.object({ type: z.literal("openrouter:apply_patch") })),
+    ["openrouter:armor_blocked"]: OutputArmorBlockedItem$inboundSchema.and(
+      z.object({ type: z.literal("openrouter:armor_blocked") }),
+    ),
     ["openrouter:bash"]: OutputBashServerToolItem$inboundSchema.and(
       z.object({ type: z.literal("openrouter:bash") }),
     ),
@@ -254,6 +267,7 @@ export const OutputItems$inboundSchema: z.ZodType<OutputItems, unknown> =
     reasoning: OutputReasoningItem$inboundSchema,
     shell_call: OutputShellCallItem$inboundSchema,
     shell_call_output: OutputShellCallOutputItem$inboundSchema,
+    tool_search_call: OutputToolSearchCallItem$inboundSchema,
     web_search_call: OutputWebSearchCallItem$inboundSchema.and(
       z.object({ type: z.literal("web_search_call") }),
     ),

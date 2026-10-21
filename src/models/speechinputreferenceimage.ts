@@ -12,7 +12,7 @@ import {
 } from "./speechinputreferenceimageinput.js";
 
 /**
- * Reference image describing the desired voice. Cannot be combined with `input_audio` parts. Only routed to endpoints that support image references.
+ * Reference image. On its own it describes the desired voice (voice design); alongside an `input_audio` part it is a scene image describing the setting the cloned voice speaks in. At most one per request. Only routed to endpoints that support image references.
  */
 export type SpeechInputReferenceImage = {
   /**
