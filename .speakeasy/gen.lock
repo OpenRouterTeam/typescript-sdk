@@ -1,19 +1,19 @@
 lockVersion: ""
 id: ""
 management:
-  docChecksum: f7d28a931f5ae44ea4dbe58ceb4e20b5
+  docChecksum: 5bd5596f7174f91cb1018d9dc1db07c1
   docVersion: 1.0.0
   speakeasyVersion: 1.802.0
   generationVersion: 2.948.4
-  releaseVersion: 1.5.0
-  configChecksum: 5e01d6d06b5886eea2f219ac274143e5
+  releaseVersion: 1.5.1
+  configChecksum: 70d9a96afa4ca323b84ba0b6c9858621
   repoURL: https://github.com/OpenRouterTeam/typescript-sdk.git
   installationURL: https://github.com/OpenRouterTeam/typescript-sdk
   published: true
 persistentEdits:
-  generation_id: 2b757616-d5e1-4702-825a-8ce0431d8412
-  pristine_commit_hash: e12cf6adc863e32ce5786d9f5097928ac9edff96
-  pristine_tree_hash: d55ccd8dfe9ee9ec67b3db7187f2d25c82f739ee
+  generation_id: 0520c835-4d23-4c09-8fe4-248e43f0be12
+  pristine_commit_hash: 6de0d9dc755b334060feba82920f9c90da6a040f
+  pristine_tree_hash: a479f0e0622f1d5cf3f8081e30c10d5a7bf0cf71
 features:
   typescript:
     acceptHeaders: 2.81.2
@@ -6487,8 +6487,8 @@ trackedFiles:
     pristine_git_object: a966e542a995fa0c065dfe3d15ca7ef598687240
   docs/models/interndaemonaccess.mdx:
     id: 6ee5b68e2d7d
-    last_write_checksum: sha1:b84987b8845dc6bbf7b39412cc30436085ed8248
-    pristine_git_object: f813fdf3aebd672c1b81debb71c8539df7d3a5f5
+    last_write_checksum: sha1:0fd286c8fa95660f3d808bec2f34ffb3a0ab67b9
+    pristine_git_object: 23af535a3e47a8d79dcf21573587015ec37937de
   docs/models/interninvokeacceptedresponse.mdx:
     id: 10c7b75df88b
     last_write_checksum: sha1:a67b038babad0eb609f8c6fb8d5cd6b6f38cfaa1
@@ -15172,6 +15172,10 @@ trackedFiles:
     id: 7f0f523754d0
     last_write_checksum: sha1:d1a74a240c328761c5146e42f3d8b1ce901e7b94
     pristine_git_object: 02867f5a01f0940ecfc926c4ad9effac6a74669f
+  docs/models/viewer.mdx:
+    id: f7670b556250
+    last_write_checksum: sha1:55ee2bf5a64c28de93511fba2b668749cae4e323
+    pristine_git_object: 550b13bca8199d380c6c3950814b12a210f560b5
   docs/models/watch.mdx:
     id: de77819821b3
     last_write_checksum: sha1:6363de7a86386c7195d40e2cc4b2b346ac79592d
@@ -15609,8 +15613,8 @@ trackedFiles:
     deleted: true
   docs/sdks/organization/README.mdx:
     id: f41b85542db0
-    last_write_checksum: sha1:cf2a8d929faf00c4f309ff75beb38d9ac35efc02
-    pristine_git_object: 8dc07207f14b5847da901e465376a1fbab8df191
+    last_write_checksum: sha1:2d552e28e6e38ca4c6a40b722a5b92004a2a76c0
+    pristine_git_object: efda2fceb9326b6827e83454a9484db55f70bd6a
   docs/sdks/presets/README.md:
     id: ead9668ae1dd
     last_write_checksum: sha1:4e59b17066bbd58c9c965e08e81dcbccc05bfe98
@@ -15719,12 +15723,12 @@ trackedFiles:
     pristine_git_object: 410efafd6a7f50d91ccb87131fedbe0c3d47e15a
   jsr.json:
     id: 7f6ab7767282
-    last_write_checksum: sha1:89e9c1a55e97ddce95f95f640055dc942a800f40
-    pristine_git_object: a7a9a4586590023c60444dc66b495123641575e4
+    last_write_checksum: sha1:a94e908534ebf69d9d06a51d6309f56a2842c229
+    pristine_git_object: f55dd6fadcc46aa8a41498be7851f1b1548608f0
   package.json:
     id: 7030d0b2f71b
-    last_write_checksum: sha1:4663d2273cdea39b18437643235d5030df68d08c
-    pristine_git_object: 41f4775603014a34abe2be6dc799893c8d1846f7
+    last_write_checksum: sha1:3581f5a581384d86d53992608be66faaf15c0213
+    pristine_git_object: fee579470b1ac98b305e0adc50ccc203d9ddc002
   src/core.ts:
     id: f431fdbcd144
     last_write_checksum: sha1:5aa66b0b6a5964f3eea7f3098c2eb3c0ee9c0131
@@ -16095,16 +16099,16 @@ trackedFiles:
     pristine_git_object: 82e250dcf0cdd7de31983cac4fbf4b43d65f72ce
   src/funcs/organizationGetSettings.ts:
     id: e3ea6fbd3a31
-    last_write_checksum: sha1:93af9a7e4b460e7c436463173c5279a8671ee3e8
-    pristine_git_object: e8e1e9d1affe1da6dbbba71de0fb9ba43fa2bf73
+    last_write_checksum: sha1:84ec871b14e58341ab159e0407a0429cba953dbc
+    pristine_git_object: 8e4d881ec404c8e1dfb34c111d779aefd32f5291
   src/funcs/organizationListMembers.ts:
     id: dc6644106a4d
-    last_write_checksum: sha1:51665e40b6ea64a19e66af2304967f9109c31cdf
-    pristine_git_object: 6dae9c5790203308c5a89269ea71bb6c923ddb10
+    last_write_checksum: sha1:733d99be2a4e5b1c444aa1fbbb51b7c079944c82
+    pristine_git_object: 682add372182e60bce15ff3c02362db8f4c690f3
   src/funcs/organizationUpdateSettings.ts:
     id: 2754b74e3bb3
-    last_write_checksum: sha1:d174ffe6e96b26067dee35e6036302c6c765de53
-    pristine_git_object: dbd02af5c25ec3cddbbbbc41628ee85b1c210fcf
+    last_write_checksum: sha1:5393b83fc4cf2218104603e589079ad197d25454
+    pristine_git_object: 6acfc6fc03b826e1197390ffbe6cea063ec33ba2
   src/funcs/presetsCreatePresetsChatCompletions.ts:
     id: 4386fe202ea5
     last_write_checksum: sha1:52ee13dadf5498d6ae4ea40e3b74fa642e8046e6
@@ -16363,8 +16367,8 @@ trackedFiles:
     pristine_git_object: a187e58707bdb726ca2aff74941efe7493422d4e
   src/lib/config.ts:
     id: 320761608fb3
-    last_write_checksum: sha1:6e647da618dab120e5421d541dd1fda97045dc3e
-    pristine_git_object: 5abb8b7fff612885c947ad0e6cf7ea41120205f4
+    last_write_checksum: sha1:2db63d06b3456607a5fadb41fa4abea9ead61094
+    pristine_git_object: 6dd2299139e05cb83ec2a3dc515960748690c534
   src/lib/dlv.ts:
     id: b1988214835a
     last_write_checksum: sha1:eaac763b22717206a6199104e0403ed17a4e2711
@@ -18357,8 +18361,8 @@ trackedFiles:
     pristine_git_object: d6de2cf2c6f1174aa02cfcdae06f0490f725fdc6
   src/models/interndaemonaccess.ts:
     id: 3e1c71908a89
-    last_write_checksum: sha1:6c0b7f58caf45389cfe09adee68cd496fe7b6a47
-    pristine_git_object: 7f67f5db6a53e3151659e2ad5a9f508cb5c28d9b
+    last_write_checksum: sha1:80d31fde6f1837ce88eba741dc8152b86ad12408
+    pristine_git_object: 5a8c2fb3a113a310627555ca3e65fb58dafecad3
   src/models/interninvokeacceptedresponse.ts:
     id: 4684252ebfd9
     last_write_checksum: sha1:7a648fb23e8bfb9ffccc70155bae637aa272d695
@@ -21524,6 +21528,8 @@ examples:
           application/json: {"error": {"code": 404, "message": "Resource not found"}}
         "500":
           application/json: {"error": {"code": 500, "message": "Internal Server Error"}}
+        "403":
+          application/json: {"error": {"code": 403, "message": "Only management keys can perform this operation"}}
   createRerank:
     speakeasy-default-create-rerank:
       requestBody:
@@ -24211,7 +24217,7 @@ examples:
           internId: "7c9e6679-7425-40de-944b-e07fc1f90ae7"
       responses:
         "200":
-          application/json: {"origin": "https://research-assistant-7c9e6679.or.bot", "token": "daemon_token"}
+          application/json: {"origin": "https://research-assistant-7c9e6679.or.bot", "token": "daemon_token", "viewer": {"principals": ["clerk:user_2abc", "slack:T0123:U0456"]}}
         "401":
           application/json: {"error": {"code": 404, "message": "Intern not found"}}
         "500":
@@ -24309,7 +24315,7 @@ examples:
           internId: "7c9e6679-7425-40de-944b-e07fc1f90ae7"
       responses:
         "200":
-          application/json: {"origin": "https://research-assistant-7c9e6679.or.bot", "token": "daemon_token"}
+          application/json: {"origin": "https://research-assistant-7c9e6679.or.bot", "token": "daemon_token", "viewer": {"principals": ["clerk:user_2abc", "slack:T0123:U0456"]}}
         "401":
           application/json: {"error": {"code": 404, "message": "Intern not found"}}
         "500":
@@ -24856,6 +24862,8 @@ examples:
           application/json: {"error": {"code": 404, "message": "Resource not found"}}
         "500":
           application/json: {"error": {"code": 500, "message": "Internal Server Error"}}
+        "403":
+          application/json: {"error": {"code": 403, "message": "Only management keys can perform this operation"}}
   updateOrganizationSettings:
     speakeasy-default-update-organization-settings:
       requestBody:
@@ -24871,6 +24879,8 @@ examples:
           application/json: {"error": {"code": 404, "message": "Resource not found"}}
         "500":
           application/json: {"error": {"code": 500, "message": "Internal Server Error"}}
+        "403":
+          application/json: {"error": {"code": 403, "message": "Only management keys can perform this operation"}}
   signInternDaemonAccessRequest:
     speakeasy-default-sign-intern-daemon-access-request:
       parameters:
@@ -25139,3 +25149,4 @@ examples:
         "500":
           application/json: {"error": {"code": 404, "message": "Intern not found"}}
 examplesVersion: 1.0.2
+releaseNotes: "## Typescript SDK Changes:\n* `openrouter.alpha.decisions.create()`: \n  *  `request.decisionsRequest.provider` **Changed**\n* `openrouter.tts.createSpeech()`: \n  *  `request.speechRequest.provider.options.recursive` **Added**\n* `openrouter.stt.createTranscription()`: \n  *  `request.sttRequest.provider.options.recursive` **Added**\n* `openrouter.batch.createBatches()`: \n  *  `request.batchSubmitBody.provider.only[].union(ProviderName).enum(recursive)` **Added**\n* `openrouter.byok.list()`: \n  *  `request.provider` **Changed**\n  *  `response.data[].provider.enum(recursive)` **Added**\n* `openrouter.byok.create()`: \n  *  `request.createByokKeyRequest.provider.enum(recursive)` **Added**\n  *  `response.data.provider.enum(recursive)` **Added**\n* `openrouter.byok.get()`:  `response.data.provider.enum(recursive)` **Added**\n* `openrouter.byok.update()`:  `response.data.provider.enum(recursive)` **Added**\n* `openrouter.embeddings.generate()`: \n  *  `request.requestBody.provider` **Changed**\n* `openrouter.endpoints.listZdrEndpoints()`:  `response.data[].providerName.enum(recursive)` **Added**\n* `openrouter.endpoints.list()`:  `response.data.endpoints[].providerName.enum(recursive)` **Added**\n* `openrouter.generations.getGeneration()`:  `response.data.providerResponses[].providerName.enum(recursive)` **Added**\n* `openrouter.interns.getInternDaemon()`:  `response.viewer` **Added**\n* `openrouter.interns.getInternDaemonAccess()`:  `response.viewer` **Added**\n* `openrouter.organization.listMembers()`:  `error.status[403]` **Added**\n* `openrouter.organization.getSettings()`:  `error.status[403]` **Added**\n* `openrouter.organization.updateSettings()`:  `error.status[403]` **Added**\n* `openrouter.presets.createPresetsChatCompletions()`: \n  *  `request.chatRequest.provider` **Changed**\n* `openrouter.presets.createPresetsMessages()`: \n  *  `request.messagesRequest.provider` **Changed**\n* `openrouter.presets.createPresetsResponses()`: \n  *  `request.responsesRequest.provider` **Changed**\n* `openrouter.privateEndpoints.create()`: \n  *  `request.createPrivateEndpointRequest.pricing` **Changed**\n* `openrouter.privateEndpoints.get()`:  `response.data.pricing` **Changed**\n* `openrouter.privateEndpoints.update()`:  `response.data.pricing` **Changed**\n* `openrouter.privateEndpoints.updatePricing()`: \n  *  `request.updatePrivateEndpointPricingRequest.pricing` **Changed**\n  *  `response.data.pricing` **Changed**\n* `openrouter.rerank.rerank()`: \n  *  `request.requestBody.provider` **Changed**\n* `openrouter.systemOne.create()`: \n  *  `request.decisionsRequest.provider` **Changed**\n* `openrouter.videoGeneration.generate()`: \n  *  `request.videoGenerationRequest.provider.options.recursive` **Added**\n"
