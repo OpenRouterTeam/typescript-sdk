@@ -3,6 +3,7 @@
  * @generated-id: df9f8b537f86
  */
 
+import * as z from "zod/v4";
 import { OpenRouterCore } from "../core.js";
 import { encodeFormQuery, encodeSimple } from "../lib/encodings.js";
 import { matchStatusCode } from "../lib/http.js";
@@ -41,7 +42,7 @@ export function internsGetInternIcon(
   options?: RequestOptions,
 ): APIPromise<
   Result<
-    operations.GetInternIconResponse,
+    ReadableStream<Uint8Array>,
     | errors.InternLifecycleError
     | OpenRouterError
     | ResponseValidationError
@@ -67,7 +68,7 @@ async function $do(
 ): Promise<
   [
     Result<
-      operations.GetInternIconResponse,
+      ReadableStream<Uint8Array>,
       | errors.InternLifecycleError
       | OpenRouterError
       | ResponseValidationError
@@ -105,7 +106,7 @@ async function $do(
   });
 
   const headers = new Headers(compactMap({
-    Accept: "image/jpeg;q=1, image/png;q=0",
+    Accept: "image/*",
     "HTTP-Referer": encodeSimple(
       "HTTP-Referer",
       payload["HTTP-Referer"] ?? client._options.httpReferer,
@@ -185,7 +186,7 @@ async function $do(
   };
 
   const [result] = await M.match<
-    operations.GetInternIconResponse,
+    ReadableStream<Uint8Array>,
     | errors.InternLifecycleError
     | OpenRouterError
     | ResponseValidationError
@@ -196,12 +197,11 @@ async function $do(
     | UnexpectedClientError
     | SDKValidationError
   >(
-    M.stream(200, operations.GetInternIconResponse$inboundSchema, {
-      ctype: "image/jpeg",
-    }),
-    M.stream(200, operations.GetInternIconResponse$inboundSchema, {
-      ctype: "image/png",
-    }),
+    M.stream(
+      200,
+      z.custom<ReadableStream<Uint8Array>>(x => x instanceof ReadableStream),
+      { ctype: "image/*" },
+    ),
     M.jsonErr([401, 403, 404, 408], errors.InternLifecycleError$inboundSchema),
     M.jsonErr(500, errors.InternLifecycleError$inboundSchema),
     M.fail("4XX"),

@@ -6,6 +6,7 @@
 import { imagesGenerate } from "../funcs/imagesGenerate.js";
 import { imagesListModelEndpoints } from "../funcs/imagesListModelEndpoints.js";
 import { imagesListModels } from "../funcs/imagesListModels.js";
+import { EventStream } from "../lib/event-streams.js";
 import { ClientSDK, RequestOptions } from "../lib/sdks.js";
 import * as models from "../models/index.js";
 import * as operations from "../models/operations/index.js";
@@ -23,13 +24,13 @@ export class Images extends ClientSDK {
       imageGenerationRequest: { stream?: false | undefined };
     },
     options?: RequestOptions,
-  ): Promise<operations.CreateImagesResponse>;
+  ): Promise<models.ImageGenerationResponse>;
   async generate(
     request: operations.CreateImagesRequest & {
       imageGenerationRequest: { stream: true };
     },
     options?: RequestOptions,
-  ): Promise<operations.CreateImagesResponse>;
+  ): Promise<EventStream<models.ImageStreamingResponseData>>;
   async generate(
     request: operations.CreateImagesRequest,
     options?: RequestOptions,

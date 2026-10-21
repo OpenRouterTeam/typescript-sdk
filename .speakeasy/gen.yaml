@@ -130,6 +130,7 @@ typescript:
   modelPropertyCasing: camel
   moduleFormat: esm
   multipartArrayFormat: legacy
+  numericEnumMemberNames: legacy
   outputModelSuffix: output
   packageName: '@openrouter/sdk'
   preApplyUnionDiscriminators: true
