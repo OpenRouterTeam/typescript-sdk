@@ -124,6 +124,7 @@ export const Provider = {
   Primeintellect: "primeintellect",
   Quiver: "quiver",
   Recraft: "recraft",
+  Recursive: "recursive",
   Reka: "reka",
   Relace: "relace",
   Respan: "respan",

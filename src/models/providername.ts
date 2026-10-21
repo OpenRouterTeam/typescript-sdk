@@ -93,6 +93,7 @@ export const ProviderName = {
   Perplexity: "Perplexity",
   Phala: "Phala",
   Recraft: "Recraft",
+  Recursive: "Recursive",
   Reka: "Reka",
   Relace: "Relace",
   Respan: "Respan",
