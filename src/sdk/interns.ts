@@ -7,6 +7,7 @@ import { internsChat } from "../funcs/internsChat.js";
 import { internsCreateIntern } from "../funcs/internsCreateIntern.js";
 import { internsDeleteIntern } from "../funcs/internsDeleteIntern.js";
 import { internsGetIntern } from "../funcs/internsGetIntern.js";
+import { internsGetInternConnections } from "../funcs/internsGetInternConnections.js";
 import { internsGetInternDaemon } from "../funcs/internsGetInternDaemon.js";
 import { internsGetInternDaemonAccess } from "../funcs/internsGetInternDaemonAccess.js";
 import { internsGetInternIcon } from "../funcs/internsGetInternIcon.js";
@@ -102,6 +103,23 @@ export class Interns extends ClientSDK {
     options?: RequestOptions,
   ): Promise<models.Intern> {
     return unwrapAsync(internsUpdateIntern(
+      this,
+      request,
+      options,
+    ));
+  }
+
+  /**
+   * List an intern's connections
+   *
+   * @remarks
+   * Returns the Slack, GitHub, Google Workspace and MCP connections one visible intern can reach, and the shared ones switched off for it or disabled for the workspace. An OAuth grant needs `vault:read`, because the list names members' personal accounts; without it the route answers 403 `insufficient_scope`. The response is sent with `Cache-Control: no-store`. The API key selects the caller, workspace and visible interns. An intern's own API key sees only that intern: the collection and every other intern answer 404 to it. There is no default workspace fallback. Requests on regional hostnames such as `eu.openrouter.ai` are refused. [API key](/docs/api-reference/authentication) required.
+   */
+  async getInternConnections(
+    request: operations.GetInternConnectionsRequest,
+    options?: RequestOptions,
+  ): Promise<models.InternConnectionList> {
+    return unwrapAsync(internsGetInternConnections(
       this,
       request,
       options,

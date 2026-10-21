@@ -56,6 +56,10 @@ export type Intern = {
    */
   attachedVaultId: string | null;
   /**
+   * Whether this key may change the intern (update, provision, suspend, delete). Present on list and retrieve; false while lifecycle writes are closed for the account.
+   */
+  canEdit?: boolean | undefined;
+  /**
    * ISO 8601 creation time.
    */
   createdAt: string;
@@ -147,6 +151,7 @@ export const InternStatus$inboundSchema: z.ZodType<InternStatus, unknown> =
 /** @internal */
 export const Intern$inboundSchema: z.ZodType<Intern, unknown> = z.object({
   attached_vault_id: z.nullable(z.string()),
+  can_edit: z.boolean().optional(),
   created_at: z.string(),
   created_by_you: z.boolean().optional(),
   description: z.nullable(z.string()),
@@ -165,6 +170,7 @@ export const Intern$inboundSchema: z.ZodType<Intern, unknown> = z.object({
 }).transform((v) => {
   return remap$(v, {
     "attached_vault_id": "attachedVaultId",
+    "can_edit": "canEdit",
     "created_at": "createdAt",
     "created_by_you": "createdByYou",
     "icon_sha256": "iconSha256",
