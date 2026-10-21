@@ -171,10 +171,18 @@ export type BatchListItem = {
   createdAt: number;
   endpoint: string;
   error: BatchListItemError | null;
+  /**
+   * Unix timestamp after which the assigned provider no longer completes unfinished requests. Derived from the provider's documented batch window, so it can exceed `created_at` plus `completion_window` (Google Vertex can take up to 96 hours). `null` when the provider documents no hard expiry.
+   */
+  expiresAt: number | null;
   finalizedAt: number | null;
   id: string;
   model: string;
   object: BatchListItemObject;
+  /**
+   * Provider OpenRouter assigned to run the batch, using the same name as the `provider` field of sync responses.
+   */
+  provider: string | null;
   requestCounts: BatchListItemRequestCounts;
   /**
    * Always null: retrieve the batch with `GET /batches/{id}` to access its results.
@@ -378,10 +386,12 @@ export const BatchListItem$inboundSchema: z.ZodType<BatchListItem, unknown> = z
     created_at: z.int(),
     endpoint: z.string(),
     error: z.nullable(z.lazy(() => BatchListItemError$inboundSchema)),
+    expires_at: z.nullable(z.int()),
     finalized_at: z.nullable(z.int()),
     id: z.string(),
     model: z.string(),
     object: BatchListItemObject$inboundSchema,
+    provider: z.nullable(z.string()),
     request_counts: z.lazy(() => BatchListItemRequestCounts$inboundSchema),
     results: z.nullable(z.any()),
     status: BatchListItemStatus$inboundSchema,
@@ -390,6 +400,7 @@ export const BatchListItem$inboundSchema: z.ZodType<BatchListItem, unknown> = z
     return remap$(v, {
       "completion_window": "completionWindow",
       "created_at": "createdAt",
+      "expires_at": "expiresAt",
       "finalized_at": "finalizedAt",
       "request_counts": "requestCounts",
     });

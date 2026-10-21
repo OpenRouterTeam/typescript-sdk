@@ -105,8 +105,10 @@ export class APIKeys extends ClientSDK {
    * @remarks
    * Update an existing API key. Authenticate with a [management key](/docs/guides/overview/auth/management-api-keys).
    *
+   * Set `workspace_id` to move the key to another workspace.
+   *
    * <Warning>
-   * You can't change `workspace_id` through the API. The request body accepts only the fields listed below, and unrecognized fields are ignored. To move a key to another workspace, use the OpenRouter dashboard. If the body contains none of the accepted fields, the request fails with `400` and the message `No update fields provided`.
+   * The request body accepts only the fields listed below, and unrecognized fields are ignored. If the body contains none of the accepted fields, the request fails with `400` and the message `No update fields provided`.
    * </Warning>
    */
   async update(
