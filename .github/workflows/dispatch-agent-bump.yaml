@@ -37,7 +37,7 @@ jobs:
     steps:
       # On workflow_run, use the version in package.json at the commit Publish
       # released. npm latest can still be the previous release at this point.
-      # Waits up to ~5 min for that version to reach npm.
+      # Waits up to ~20 min for that version to reach npm (1.5.0 took ~12).
       - name: Checkout published commit
         if: github.event_name == 'workflow_run'
         uses: actions/checkout@v5
@@ -64,7 +64,7 @@ jobs:
             echo "::error::Could not resolve @openrouter/sdk version"
             exit 1
           fi
-          for _ in $(seq 1 15); do
+          for _ in $(seq 1 60); do
             if npm view "@openrouter/sdk@$V" version >/dev/null 2>&1; then
               break
             fi
