@@ -1,19 +1,19 @@
 lockVersion: ""
 id: ""
 management:
-  docChecksum: 5bd5596f7174f91cb1018d9dc1db07c1
+  docChecksum: d74817ae9d726fba2bfae344e5917b67
   docVersion: 1.0.0
   speakeasyVersion: 1.802.0
   generationVersion: 2.948.4
-  releaseVersion: 1.5.1
-  configChecksum: 70d9a96afa4ca323b84ba0b6c9858621
+  releaseVersion: 1.5.2
+  configChecksum: e4cf0592873b78417bac903f688cb291
   repoURL: https://github.com/OpenRouterTeam/typescript-sdk.git
   installationURL: https://github.com/OpenRouterTeam/typescript-sdk
   published: true
 persistentEdits:
-  generation_id: 0520c835-4d23-4c09-8fe4-248e43f0be12
-  pristine_commit_hash: 6de0d9dc755b334060feba82920f9c90da6a040f
-  pristine_tree_hash: a479f0e0622f1d5cf3f8081e30c10d5a7bf0cf71
+  generation_id: 6798ecf1-d231-4e5b-8a75-bdd9cb9ada8e
+  pristine_commit_hash: b0d8b068096f920818e5fec69d6edf884fbfd4b5
+  pristine_tree_hash: fe46b91c1d25850f6428e220d37649e3e5354d60
 features:
   typescript:
     acceptHeaders: 2.81.2
@@ -15574,8 +15574,8 @@ trackedFiles:
     pristine_git_object: dc7beaa0b116b99c9a27b43f143f44f6568525da
   docs/sdks/guardrails/README.mdx:
     id: a0cd4218b8fa
-    last_write_checksum: sha1:69c73f4874c557cc6b0f51a1554dcfb72672434a
-    pristine_git_object: 09840bf35ba414447d730a9149f6afc1c89668eb
+    last_write_checksum: sha1:d9d70aa53c7d6f7c5084a61356c7ab122b479035
+    pristine_git_object: effa756fa68a0c1134c221cd161eeb393c3c9aa8
   docs/sdks/images/README.md:
     id: cc752c3524d0
     last_write_checksum: sha1:30cb5d17118722e49d11f064014d50e8ba4ddaec
@@ -15695,8 +15695,8 @@ trackedFiles:
     deleted: true
   docs/sdks/workspaces/README.mdx:
     id: 0c75d023ef6b
-    last_write_checksum: sha1:cb5388bbeb137e2a3db65a7b837c27977a45e10b
-    pristine_git_object: 01c7d3754fedfa878ecb0c9f0c8dba1a983c7981
+    last_write_checksum: sha1:4a3d5ee008ecd96a07e8ad6c06480ccc8a761f09
+    pristine_git_object: c374a01c15717e59aa704b70339b0d04c5e4540b
   docs/types/rfcdate.mdx:
     id: f867bf2acf77
     last_write_checksum: sha1:71e1d31d073a7a46d6a09bb93788b6862f667d8e
@@ -15723,12 +15723,12 @@ trackedFiles:
     pristine_git_object: 410efafd6a7f50d91ccb87131fedbe0c3d47e15a
   jsr.json:
     id: 7f6ab7767282
-    last_write_checksum: sha1:a94e908534ebf69d9d06a51d6309f56a2842c229
-    pristine_git_object: f55dd6fadcc46aa8a41498be7851f1b1548608f0
+    last_write_checksum: sha1:6ed1593afeb2cb76f5114253b3bde05aee9b9e2b
+    pristine_git_object: bab45ea1ea38aa453022e079929a1daf92fb9756
   package.json:
     id: 7030d0b2f71b
-    last_write_checksum: sha1:3581f5a581384d86d53992608be66faaf15c0213
-    pristine_git_object: fee579470b1ac98b305e0adc50ccc203d9ddc002
+    last_write_checksum: sha1:f9408b48c0bae48315dc59ea3b49bc73b421a435
+    pristine_git_object: 9fe73f27373e70766ff72c302f4bee2bfad43eff
   src/core.ts:
     id: f431fdbcd144
     last_write_checksum: sha1:5aa66b0b6a5964f3eea7f3098c2eb3c0ee9c0131
@@ -15927,48 +15927,48 @@ trackedFiles:
     pristine_git_object: 5115a7f12330ca6c92fdb8080c175cca3f93eab2
   src/funcs/guardrailsBulkAssignMembers.ts:
     id: a1c1e49b5bfc
-    last_write_checksum: sha1:13818648dcdcbf367a4d8c1f3421c16028614976
-    pristine_git_object: 12f385463a6bf54f76849b9f1ebb8d2fabad63fe
+    last_write_checksum: sha1:3eea51605c4e0bb225eea7b657e94e1b38a075cc
+    pristine_git_object: f323c96bebf25fb38a226147e9fdf6a821b4d740
   src/funcs/guardrailsBulkUnassignKeys.ts:
     id: 605482eb28f5
-    last_write_checksum: sha1:2de4762f70463a951c257ab619d52a467df6befb
-    pristine_git_object: b0848dc95b1e19e8d438e40b7ae09dd070bdd8e5
+    last_write_checksum: sha1:6828d3ee4df0e1df55b7b0f58f04ae7ea12cf71d
+    pristine_git_object: cc7090df3528167e2e4f5af2eb025859e4135dab
   src/funcs/guardrailsBulkUnassignMembers.ts:
     id: 582edea4287b
-    last_write_checksum: sha1:3af00c841ac5ddcd406fbe888b481137d46b7dd3
-    pristine_git_object: 1c6dfff559f3c60dc0ddd1e6ee0576418781fed2
+    last_write_checksum: sha1:b8e19886747b8a7138c2eb5fc2dc7885e90b27a7
+    pristine_git_object: cc16fd1da5630cf9ae542c544963c4ecf3157931
   src/funcs/guardrailsCreate.ts:
     id: 6d61eb74274f
     last_write_checksum: sha1:6717409ac4733ee93b5ba648d08e1744137631bf
     pristine_git_object: 4d2925bd5b48d03d0dc71993f23c76bcdd6b69cd
   src/funcs/guardrailsDelete.ts:
     id: 2ee7e7eaab9a
-    last_write_checksum: sha1:183cb6d13536f5bb56304e5d3c7386b13185b46c
-    pristine_git_object: abc0cab24bdcad19d6d5a4e22da38347e32783e3
+    last_write_checksum: sha1:993d90f091ee0990e314245e81e339f8c7687fa6
+    pristine_git_object: 3db1e7a638f9d6d1f7214663ba7d7764ad43ed89
   src/funcs/guardrailsGet.ts:
     id: 259eaa63a20a
-    last_write_checksum: sha1:b7bcebf12599fd754f1936f7cdee07278ad7a5dc
-    pristine_git_object: f8ce556edd1104e996196a8f0bf6359bfb5470d0
+    last_write_checksum: sha1:818bd9e43c2e8a89336e061db4ff10c310952885
+    pristine_git_object: 90d1d93e7e1fb077219898571377efecac9598cf
   src/funcs/guardrailsList.ts:
     id: 5a0c89687e40
-    last_write_checksum: sha1:dd9570052cbbb51b69c7f4710305f0c37887d2f3
-    pristine_git_object: da2e27c708d423f393f040c601560ac070fd3cc4
+    last_write_checksum: sha1:8fd20cf46a74a940b0091a9ea56e8e7144c1995c
+    pristine_git_object: 741645dabcd9c620e77cc7c3afa6c486ea5d3055
   src/funcs/guardrailsListGuardrailKeyAssignments.ts:
     id: 524ae2fd5189
-    last_write_checksum: sha1:b3798fc016c86340e25b258012bed2c9ceed50d7
-    pristine_git_object: 80f9a14230cdf7e7f333972c74735df99ec6b7e5
+    last_write_checksum: sha1:d53d24392433e2e5b224ed8dacfeb2b7677daba0
+    pristine_git_object: a455613f993ba075d0bbef67fe32a490506a07e9
   src/funcs/guardrailsListGuardrailMemberAssignments.ts:
     id: fc84c185d2b3
-    last_write_checksum: sha1:526232665c75473d3e40e33a63426088790bd315
-    pristine_git_object: 1f26d12ba75e483fbcbcc9157913c1e9cef04348
+    last_write_checksum: sha1:78a37a015a735586ccb8865b8fd48c2f9f1dfe80
+    pristine_git_object: be902575c4d68c39d4698f284142c7d6210989bf
   src/funcs/guardrailsListKeyAssignments.ts:
     id: f654b4f757b2
-    last_write_checksum: sha1:2ddc2d0bfb71e5f3c048e3ab45c7619b692289ed
-    pristine_git_object: d6dbbd190908e6b361751d0ef588ec31cf233080
+    last_write_checksum: sha1:ec9372bccc37d1fed441cb60db47a2949ad2a615
+    pristine_git_object: 145632eb5ced893217c8271a97bb2508967b3b32
   src/funcs/guardrailsListMemberAssignments.ts:
     id: c2762783a96a
-    last_write_checksum: sha1:d5066231ceb7c3cb573b9e42642cd6cee671ec89
-    pristine_git_object: a09fe49089104b3351541a27897304779ae2b33b
+    last_write_checksum: sha1:a9ebab312543a0c7e6f5d56c4401d8c33022349f
+    pristine_git_object: 92bff7c73b4d72dd4be6e57472cb56e903494025
   src/funcs/guardrailsUpdate.ts:
     id: f8685ead7098
     last_write_checksum: sha1:86ffe7806f6b7d6bb2e0c741dee74bd377f4db54
@@ -16315,32 +16315,32 @@ trackedFiles:
     pristine_git_object: 3fc9ba7a63d98d193e083a15508c717503289df7
   src/funcs/workspacesDeleteBudget.ts:
     id: 1aba9dd7a12c
-    last_write_checksum: sha1:33faad8055151ba1f85c25e9072ccfe616445ddf
-    pristine_git_object: 2dd154131f3ff580e7106ad1b3d265b20b0daae9
+    last_write_checksum: sha1:0b45dca5bb0569a79b7fdedff8f6b9be517eaa9b
+    pristine_git_object: e808c3283f071e75cd8f9264f47b35c5112b3a4b
   src/funcs/workspacesGet.ts:
     id: f361d34e5bff
-    last_write_checksum: sha1:6245dc55d55bfeb33f86c0fc51751dd23f925994
-    pristine_git_object: 30a2a069fa9ac92d70767167b8db3f7a4c423f0c
+    last_write_checksum: sha1:8862d65b62ce5e3371a25ee9f273052848dc87b7
+    pristine_git_object: 098f9f53ee4afe19c43fb083ed9249f672beb992
   src/funcs/workspacesGetBudget.ts:
     id: cdb084566ab1
-    last_write_checksum: sha1:3ae88052b30fa162f60ac528312db36d53897a91
-    pristine_git_object: 7dfa52c1318abecf95a281ab9f36f55303e17351
+    last_write_checksum: sha1:ff15b9e4d39520684e90e0908da7a263f69e795e
+    pristine_git_object: d34cc0fd7fb384e911305e7f379a181bd2d2d057
   src/funcs/workspacesList.ts:
     id: 6ff9df556ff5
-    last_write_checksum: sha1:7356c1ee5fc9519a668f92cbe3b7a833400b3960
-    pristine_git_object: 739a8e5cea57182ca0057b0731d62caa94fca5cc
+    last_write_checksum: sha1:a37cd05359bef09f8a492997019c1261f713f4ba
+    pristine_git_object: 5f1916bb51a9334f54933f801f00486d63cffdcd
   src/funcs/workspacesListBudgets.ts:
     id: b9c711e0ccbd
-    last_write_checksum: sha1:28223bbc10512a691c74cbdb8b008e137a3e61ed
-    pristine_git_object: f1e9c2df6232f5aaf65ed1e84509003a11479b09
+    last_write_checksum: sha1:fc8ba217619b3a4f6ff5c1a1a775460b4b43d673
+    pristine_git_object: 5d619006bfcd0843f5d72ef7224b5081e5b851ec
   src/funcs/workspacesListMembers.ts:
     id: 52e1d4037081
     last_write_checksum: sha1:48b7b6074ef3f934fa13bcc03cd337948d8df355
     pristine_git_object: 013fe8a35d5ab08bcce4f1bc57a2023717238d91
   src/funcs/workspacesSetBudget.ts:
     id: fa41d5f31215
-    last_write_checksum: sha1:95af2ea1aef8a5a3f00de87d41c68af2395c4198
-    pristine_git_object: cf4dd7d0943dab063257c620b3ae9360df454e46
+    last_write_checksum: sha1:181f67db6ce3b3db00d637fb51c79371aed45dca
+    pristine_git_object: 8357e7670804ccdb3ff7d5096d76747cadcc343c
   src/funcs/workspacesUpdate.ts:
     id: f0404418dd03
     last_write_checksum: sha1:eabf2b4e7fa9c30fbeb32a37c8574a9e551ad847
@@ -16367,8 +16367,8 @@ trackedFiles:
     pristine_git_object: a187e58707bdb726ca2aff74941efe7493422d4e
   src/lib/config.ts:
     id: 320761608fb3
-    last_write_checksum: sha1:2db63d06b3456607a5fadb41fa4abea9ead61094
-    pristine_git_object: 6dd2299139e05cb83ec2a3dc515960748690c534
+    last_write_checksum: sha1:93b311a986f7e94926c750baf9f514e456955b1b
+    pristine_git_object: 42a4c952edab6490b514bc25b8663173256592dc
   src/lib/dlv.ts:
     id: b1988214835a
     last_write_checksum: sha1:eaac763b22717206a6199104e0403ed17a4e2711
@@ -21276,6 +21276,8 @@ examples:
           application/json: {"error": {"code": 500, "message": "Internal Server Error"}}
         "400":
           application/json: {"error": {"code": 400, "message": "Invalid request parameters"}}
+        "403":
+          application/json: {"error": {"code": 403, "message": "Only management keys can perform this operation"}}
   createGuardrail:
     speakeasy-default-create-guardrail:
       requestBody:
@@ -21305,6 +21307,8 @@ examples:
           application/json: {"error": {"code": 404, "message": "Resource not found"}}
         "500":
           application/json: {"error": {"code": 500, "message": "Internal Server Error"}}
+        "403":
+          application/json: {"error": {"code": 403, "message": "Only management keys can perform this operation"}}
   updateGuardrail:
     speakeasy-default-update-guardrail:
       parameters:
@@ -21341,6 +21345,8 @@ examples:
           application/json: {"error": {"code": 404, "message": "Resource not found"}}
         "500":
           application/json: {"error": {"code": 500, "message": "Internal Server Error"}}
+        "403":
+          application/json: {"error": {"code": 403, "message": "Only management keys can perform this operation"}}
   listKeyAssignments:
     speakeasy-default-list-key-assignments:
       parameters:
@@ -21358,6 +21364,8 @@ examples:
           application/json: {"error": {"code": 400, "message": "Invalid request parameters"}}
         "404":
           application/json: {"error": {"code": 404, "message": "Resource not found"}}
+        "403":
+          application/json: {"error": {"code": 403, "message": "Only management keys can perform this operation"}}
   listMemberAssignments:
     speakeasy-default-list-member-assignments:
       parameters:
@@ -21375,6 +21383,8 @@ examples:
           application/json: {"error": {"code": 400, "message": "Invalid request parameters"}}
         "404":
           application/json: {"error": {"code": 404, "message": "Resource not found"}}
+        "403":
+          application/json: {"error": {"code": 403, "message": "Only management keys can perform this operation"}}
   listGuardrailKeyAssignments:
     speakeasy-default-list-guardrail-key-assignments:
       parameters:
@@ -21392,6 +21402,8 @@ examples:
           application/json: {"error": {"code": 404, "message": "Resource not found"}}
         "500":
           application/json: {"error": {"code": 500, "message": "Internal Server Error"}}
+        "403":
+          application/json: {"error": {"code": 403, "message": "Only management keys can perform this operation"}}
   bulkAssignKeysToGuardrail:
     speakeasy-default-bulk-assign-keys-to-guardrail:
       parameters:
@@ -21429,6 +21441,8 @@ examples:
           application/json: {"error": {"code": 404, "message": "Resource not found"}}
         "500":
           application/json: {"error": {"code": 500, "message": "Internal Server Error"}}
+        "403":
+          application/json: {"error": {"code": 403, "message": "Only management keys can perform this operation"}}
   bulkAssignMembersToGuardrail:
     speakeasy-default-bulk-assign-members-to-guardrail:
       parameters:
@@ -21447,6 +21461,8 @@ examples:
           application/json: {"error": {"code": 404, "message": "Resource not found"}}
         "500":
           application/json: {"error": {"code": 500, "message": "Internal Server Error"}}
+        "403":
+          application/json: {"error": {"code": 403, "message": "Only management keys can perform this operation"}}
   bulkUnassignKeysFromGuardrail:
     speakeasy-default-bulk-unassign-keys-from-guardrail:
       parameters:
@@ -21465,6 +21481,8 @@ examples:
           application/json: {"error": {"code": 404, "message": "Resource not found"}}
         "500":
           application/json: {"error": {"code": 500, "message": "Internal Server Error"}}
+        "403":
+          application/json: {"error": {"code": 403, "message": "Only management keys can perform this operation"}}
   bulkUnassignMembersFromGuardrail:
     speakeasy-default-bulk-unassign-members-from-guardrail:
       parameters:
@@ -21483,6 +21501,8 @@ examples:
           application/json: {"error": {"code": 404, "message": "Resource not found"}}
         "500":
           application/json: {"error": {"code": 500, "message": "Internal Server Error"}}
+        "403":
+          application/json: {"error": {"code": 403, "message": "Only management keys can perform this operation"}}
   exchangeAuthCodeForAPIKey:
     speakeasy-default-exchange-auth-code-for-API-key:
       requestBody:
@@ -21707,6 +21727,8 @@ examples:
           application/json: {"error": {"code": 401, "message": "Missing Authentication header"}}
         "500":
           application/json: {"error": {"code": 500, "message": "Internal Server Error"}}
+        "403":
+          application/json: {"error": {"code": 403, "message": "Only management keys can perform this operation"}}
   createWorkspace:
     speakeasy-default-create-workspace:
       requestBody:
@@ -21754,6 +21776,8 @@ examples:
           application/json: {"error": {"code": 404, "message": "Resource not found"}}
         "500":
           application/json: {"error": {"code": 500, "message": "Internal Server Error"}}
+        "403":
+          application/json: {"error": {"code": 403, "message": "Only management keys can perform this operation"}}
   updateWorkspace:
     speakeasy-default-update-workspace:
       parameters:
@@ -22439,6 +22463,8 @@ examples:
           application/json: {"error": {"code": 404, "message": "Resource not found"}}
         "500":
           application/json: {"error": {"code": 500, "message": "Internal Server Error"}}
+        "403":
+          application/json: {"error": {"code": 403, "message": "Only management keys can perform this operation"}}
   deleteWorkspaceBudget:
     speakeasy-default-delete-workspace-budget:
       parameters:
@@ -22457,6 +22483,8 @@ examples:
           application/json: {"error": {"code": 500, "message": "Internal Server Error"}}
         "400":
           application/json: {"error": {"code": 400, "message": "Invalid request parameters"}}
+        "403":
+          application/json: {"error": {"code": 403, "message": "Only management keys can perform this operation"}}
   upsertWorkspaceBudget:
     speakeasy-default-upsert-workspace-budget:
       parameters:
@@ -22477,6 +22505,8 @@ examples:
           application/json: {"error": {"code": 404, "message": "Resource not found"}}
         "500":
           application/json: {"error": {"code": 500, "message": "Internal Server Error"}}
+        "403":
+          application/json: {"error": {"code": 403, "message": "Only management keys can perform this operation"}}
   getBenchmarks:
     speakeasy-default-get-benchmarks:
       parameters:
@@ -22709,6 +22739,8 @@ examples:
           application/json: {"error": {"code": 404, "message": "Resource not found"}}
         "500":
           application/json: {"error": {"code": 500, "message": "Internal Server Error"}}
+        "403":
+          application/json: {"error": {"code": 403, "message": "Only management keys can perform this operation"}}
   getSessionCost:
     speakeasy-default-get-session-cost:
       parameters:
@@ -25149,4 +25181,21 @@ examples:
         "500":
           application/json: {"error": {"code": 404, "message": "Intern not found"}}
 examplesVersion: 1.0.2
-releaseNotes: "## Typescript SDK Changes:\n* `openrouter.alpha.decisions.create()`: \n  *  `request.decisionsRequest.provider` **Changed**\n* `openrouter.tts.createSpeech()`: \n  *  `request.speechRequest.provider.options.recursive` **Added**\n* `openrouter.stt.createTranscription()`: \n  *  `request.sttRequest.provider.options.recursive` **Added**\n* `openrouter.batch.createBatches()`: \n  *  `request.batchSubmitBody.provider.only[].union(ProviderName).enum(recursive)` **Added**\n* `openrouter.byok.list()`: \n  *  `request.provider` **Changed**\n  *  `response.data[].provider.enum(recursive)` **Added**\n* `openrouter.byok.create()`: \n  *  `request.createByokKeyRequest.provider.enum(recursive)` **Added**\n  *  `response.data.provider.enum(recursive)` **Added**\n* `openrouter.byok.get()`:  `response.data.provider.enum(recursive)` **Added**\n* `openrouter.byok.update()`:  `response.data.provider.enum(recursive)` **Added**\n* `openrouter.embeddings.generate()`: \n  *  `request.requestBody.provider` **Changed**\n* `openrouter.endpoints.listZdrEndpoints()`:  `response.data[].providerName.enum(recursive)` **Added**\n* `openrouter.endpoints.list()`:  `response.data.endpoints[].providerName.enum(recursive)` **Added**\n* `openrouter.generations.getGeneration()`:  `response.data.providerResponses[].providerName.enum(recursive)` **Added**\n* `openrouter.interns.getInternDaemon()`:  `response.viewer` **Added**\n* `openrouter.interns.getInternDaemonAccess()`:  `response.viewer` **Added**\n* `openrouter.organization.listMembers()`:  `error.status[403]` **Added**\n* `openrouter.organization.getSettings()`:  `error.status[403]` **Added**\n* `openrouter.organization.updateSettings()`:  `error.status[403]` **Added**\n* `openrouter.presets.createPresetsChatCompletions()`: \n  *  `request.chatRequest.provider` **Changed**\n* `openrouter.presets.createPresetsMessages()`: \n  *  `request.messagesRequest.provider` **Changed**\n* `openrouter.presets.createPresetsResponses()`: \n  *  `request.responsesRequest.provider` **Changed**\n* `openrouter.privateEndpoints.create()`: \n  *  `request.createPrivateEndpointRequest.pricing` **Changed**\n* `openrouter.privateEndpoints.get()`:  `response.data.pricing` **Changed**\n* `openrouter.privateEndpoints.update()`:  `response.data.pricing` **Changed**\n* `openrouter.privateEndpoints.updatePricing()`: \n  *  `request.updatePrivateEndpointPricingRequest.pricing` **Changed**\n  *  `response.data.pricing` **Changed**\n* `openrouter.rerank.rerank()`: \n  *  `request.requestBody.provider` **Changed**\n* `openrouter.systemOne.create()`: \n  *  `request.decisionsRequest.provider` **Changed**\n* `openrouter.videoGeneration.generate()`: \n  *  `request.videoGenerationRequest.provider.options.recursive` **Added**\n"
+releaseNotes: |
+  ## Typescript SDK Changes:
+  * `openrouter.guardrails.list()`:  `error.status[403]` **Added**
+  * `openrouter.guardrails.delete()`:  `error.status[403]` **Added**
+  * `openrouter.guardrails.get()`:  `error.status[403]` **Added**
+  * `openrouter.guardrails.listGuardrailKeyAssignments()`:  `error.status[403]` **Added**
+  * `openrouter.guardrails.bulkUnassignKeys()`:  `error.status[403]` **Added**
+  * `openrouter.guardrails.listGuardrailMemberAssignments()`:  `error.status[403]` **Added**
+  * `openrouter.guardrails.bulkAssignMembers()`:  `error.status[403]` **Added**
+  * `openrouter.guardrails.bulkUnassignMembers()`:  `error.status[403]` **Added**
+  * `openrouter.guardrails.listKeyAssignments()`:  `error.status[403]` **Added**
+  * `openrouter.guardrails.listMemberAssignments()`:  `error.status[403]` **Added**
+  * `openrouter.workspaces.list()`:  `error.status[403]` **Added**
+  * `openrouter.workspaces.get()`:  `error.status[403]` **Added**
+  * `openrouter.workspaces.listBudgets()`:  `error.status[403]` **Added**
+  * `openrouter.workspaces.deleteBudget()`:  `error.status[403]` **Added**
+  * `openrouter.workspaces.getBudget()`:  `error.status[403]` **Added**
+  * `openrouter.workspaces.setBudget()`:  `error.status[403]` **Added**
