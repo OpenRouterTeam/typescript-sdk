@@ -26537,12 +26537,12 @@ components:
         prompt: '0.0000025'
       properties:
         cache_read:
-          description: 'USD per cache-read prompt token, as a decimal string. Omit it to bill cache reads at the provider pricing strategy''s default, which for most strategies is the prompt rate.'
+          description: 'USD per cache-read prompt token, as a decimal string. When omitted, inherited from the public endpoint of the same model and provider: scaled by its cache-read to prompt ratio, or left at the pricing strategy default when it publishes no cache-read rate. Required when there is no such endpoint and the provider bills cache reads.'
           example: '0.00000025'
           pattern: '^\d+(\.\d+)?$'
           type: 'string'
         cache_write:
-          description: 'USD per cache-write prompt token, as a decimal string. Omit it to bill cache writes at the provider pricing strategy''s default.'
+          description: 'USD per cache-write prompt token, as a decimal string. When omitted, inherited from the public endpoint of the same model and provider: scaled by its cache-write to prompt ratio, or left at the pricing strategy default when it publishes no cache-write rate. Required when there is no such endpoint and the provider bills cache writes.'
           example: '0.000003125'
           pattern: '^\d+(\.\d+)?$'
           type: 'string'
@@ -41110,6 +41110,16 @@ paths:
               schema:
                 $ref: '#/components/schemas/NotFoundResponse'
           description: 'Not Found - Resource does not exist'
+        '409':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 409
+                  message: 'Feedback was already submitted for this generation'
+              schema:
+                $ref: '#/components/schemas/ConflictResponse'
+          description: 'Conflict - Feedback was already submitted for this generation by this account. The first submission is kept.'
         '429':
           content:
             application/json:
@@ -42848,7 +42858,7 @@ paths:
                     retryable: false
               schema:
                 $ref: '#/components/schemas/InternLifecycleError'
-          description: 'The caller is outside the Intern API programme, the intern is hidden, or lifecycle writes are disabled.'
+          description: 'The caller is outside the Intern API programme, or the intern is hidden.'
         '408':
           content:
             application/json:
@@ -42980,6 +42990,14 @@ paths:
           content:
             application/json:
               examples:
+                lifecycle_writes_disabled:
+                  value:
+                    error:
+                      code: 403
+                      message: 'Intern lifecycle writes are not enabled for this account'
+                      metadata:
+                        reason: 'lifecycle_writes_disabled'
+                        retryable: false
                 no_acting_user:
                   value:
                     error:
@@ -42998,7 +43016,7 @@ paths:
                         retryable: false
               schema:
                 $ref: '#/components/schemas/InternLifecycleError'
-          description: 'The key acts as an organization and has no member who can own the intern, the workspace does not allow interns, or regional access is refused.'
+          description: 'The key acts as an organization and has no member who can own the intern, the workspace does not allow interns, lifecycle writes are not enabled for the caller, or regional access is refused.'
         '404':
           content:
             application/json:
@@ -43011,7 +43029,7 @@ paths:
                     retryable: false
               schema:
                 $ref: '#/components/schemas/InternLifecycleError'
-          description: 'The caller is outside the Intern API programme, the intern is hidden, or lifecycle writes are disabled.'
+          description: 'The caller is outside the Intern API programme, or the intern is hidden.'
         '408':
           content:
             application/json:
@@ -43169,10 +43187,13 @@ paths:
               example:
                 error:
                   code: 403
-                  message: 'Forbidden'
+                  message: 'Intern lifecycle writes are not enabled for this account'
+                  metadata:
+                    reason: 'lifecycle_writes_disabled'
+                    retryable: false
               schema:
                 $ref: '#/components/schemas/InternLifecycleError'
-          description: 'The key owner no longer has access, or the request used a regional hostname.'
+          description: 'The key owner no longer has access, the request used a regional hostname, or lifecycle writes are not enabled for the caller (`metadata.reason` is `lifecycle_writes_disabled`).'
         '404':
           content:
             application/json:
@@ -43185,7 +43206,7 @@ paths:
                     retryable: false
               schema:
                 $ref: '#/components/schemas/InternLifecycleError'
-          description: 'The caller is outside the Intern API programme, the intern is hidden, or lifecycle writes are disabled.'
+          description: 'The caller is outside the Intern API programme, or the intern is hidden.'
         '408':
           content:
             application/json:
@@ -43339,7 +43360,7 @@ paths:
                     retryable: false
               schema:
                 $ref: '#/components/schemas/InternLifecycleError'
-          description: 'The caller is outside the Intern API programme, the intern is hidden, or lifecycle writes are disabled.'
+          description: 'The caller is outside the Intern API programme, or the intern is hidden.'
         '408':
           content:
             application/json:
@@ -43447,10 +43468,13 @@ paths:
               example:
                 error:
                   code: 403
-                  message: 'Forbidden'
+                  message: 'Intern lifecycle writes are not enabled for this account'
+                  metadata:
+                    reason: 'lifecycle_writes_disabled'
+                    retryable: false
               schema:
                 $ref: '#/components/schemas/InternLifecycleError'
-          description: 'The key owner no longer has access, or the request used a regional hostname.'
+          description: 'The key owner no longer has access, the request used a regional hostname, or lifecycle writes are not enabled for the caller (`metadata.reason` is `lifecycle_writes_disabled`).'
         '404':
           content:
             application/json:
@@ -43463,7 +43487,7 @@ paths:
                     retryable: false
               schema:
                 $ref: '#/components/schemas/InternLifecycleError'
-          description: 'The caller is outside the Intern API programme, the intern is hidden, or lifecycle writes are disabled.'
+          description: 'The caller is outside the Intern API programme, or the intern is hidden.'
         '408':
           content:
             application/json:
@@ -43851,7 +43875,7 @@ paths:
                     retryable: false
               schema:
                 $ref: '#/components/schemas/InternLifecycleError'
-          description: 'The caller is outside the Intern API programme, the intern is hidden, or lifecycle writes are disabled.'
+          description: 'The caller is outside the Intern API programme, or the intern is hidden.'
         '408':
           content:
             application/json:
@@ -43940,7 +43964,7 @@ paths:
                     retryable: false
               schema:
                 $ref: '#/components/schemas/InternLifecycleError'
-          description: 'The caller is outside the Intern API programme, the intern is hidden, or lifecycle writes are disabled.'
+          description: 'The caller is outside the Intern API programme, or the intern is hidden.'
         '408':
           content:
             application/json:
@@ -44043,7 +44067,7 @@ paths:
                     retryable: false
               schema:
                 $ref: '#/components/schemas/InternLifecycleError'
-          description: 'The caller is outside the Intern API programme, the intern is hidden, or lifecycle writes are disabled.'
+          description: 'The caller is outside the Intern API programme, or the intern is hidden.'
         '408':
           content:
             application/json:
@@ -44168,7 +44192,7 @@ paths:
                     retryable: false
               schema:
                 $ref: '#/components/schemas/InternLifecycleError'
-          description: 'The caller is outside the Intern API programme, the intern is hidden, or lifecycle writes are disabled.'
+          description: 'The caller is outside the Intern API programme, or the intern is hidden.'
         '408':
           content:
             application/json:
@@ -44326,7 +44350,7 @@ paths:
                     retryable: false
               schema:
                 $ref: '#/components/schemas/InternLifecycleError'
-          description: 'The caller is outside the Intern API programme, the intern is hidden, or lifecycle writes are disabled.'
+          description: 'The caller is outside the Intern API programme, or the intern is hidden.'
         '408':
           content:
             application/json:
@@ -44470,7 +44494,7 @@ paths:
                     retryable: false
               schema:
                 $ref: '#/components/schemas/InternLifecycleError'
-          description: 'The caller is outside the Intern API programme, the intern is hidden, or lifecycle writes are disabled.'
+          description: 'The caller is outside the Intern API programme, or the intern is hidden.'
         '408':
           content:
             application/json:
@@ -44769,10 +44793,13 @@ paths:
               example:
                 error:
                   code: 403
-                  message: 'Forbidden'
+                  message: 'Intern lifecycle writes are not enabled for this account'
+                  metadata:
+                    reason: 'lifecycle_writes_disabled'
+                    retryable: false
               schema:
                 $ref: '#/components/schemas/InternLifecycleError'
-          description: 'The key owner no longer has access, or the request used a regional hostname.'
+          description: 'The key owner no longer has access, the request used a regional hostname, or lifecycle writes are not enabled for the caller (`metadata.reason` is `lifecycle_writes_disabled`).'
         '404':
           content:
             application/json:
@@ -44785,7 +44812,7 @@ paths:
                     retryable: false
               schema:
                 $ref: '#/components/schemas/InternLifecycleError'
-          description: 'The caller is outside the Intern API programme, the intern is hidden, or lifecycle writes are disabled.'
+          description: 'The caller is outside the Intern API programme, or the intern is hidden.'
         '408':
           content:
             application/json:
@@ -44925,10 +44952,13 @@ paths:
               example:
                 error:
                   code: 403
-                  message: 'Forbidden'
+                  message: 'Intern lifecycle writes are not enabled for this account'
+                  metadata:
+                    reason: 'lifecycle_writes_disabled'
+                    retryable: false
               schema:
                 $ref: '#/components/schemas/InternLifecycleError'
-          description: 'The key owner no longer has access, or the request used a regional hostname.'
+          description: 'The key owner no longer has access, the request used a regional hostname, or lifecycle writes are not enabled for the caller (`metadata.reason` is `lifecycle_writes_disabled`).'
         '404':
           content:
             application/json:
@@ -44941,7 +44971,7 @@ paths:
                     retryable: false
               schema:
                 $ref: '#/components/schemas/InternLifecycleError'
-          description: 'The caller is outside the Intern API programme, the intern is hidden, or lifecycle writes are disabled.'
+          description: 'The caller is outside the Intern API programme, or the intern is hidden.'
         '408':
           content:
             application/json:
