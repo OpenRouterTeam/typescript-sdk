@@ -41,7 +41,7 @@ jobs:
       # Waits up to ~20 min for that version to reach npm.
       - name: Checkout published commit
         if: github.event_name == 'workflow_run'
-        uses: actions/checkout@v5
+        uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5.1.0
         with:
           ref: ${{ github.event.workflow_run.head_sha }}
           sparse-checkout: package.json
@@ -84,7 +84,7 @@ jobs:
       # cache hit means we already dispatched this version.
       - name: Check dispatch dedupe cache
         id: dedupe
-        uses: actions/cache@v4
+        uses: actions/cache@0057852bfaa89a56745cba8c7296529d2fc39830 # v4.3.0
         with:
           path: .last-dispatched-monorepo-sdk
           key: dispatched-monorepo-sdk-${{ steps.ver.outputs.version }}
@@ -92,7 +92,7 @@ jobs:
       - name: Generate GitHub App token
         if: steps.dedupe.outputs.cache-hit != 'true'
         id: app-token
-        uses: actions/create-github-app-token@v3
+        uses: actions/create-github-app-token@64ab729a6294000f5aa4a4bc0b73d1f32bc45510 # v3.3.0
         with:
           app-id: ${{ secrets.GH_DOCS_SYNC_APP_ID }}
           private-key: ${{ secrets.GH_DOCS_SYNC_APP_PRIVATE_KEY }}
