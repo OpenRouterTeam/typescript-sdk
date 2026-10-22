@@ -43,6 +43,7 @@ export function scimCreate(
     models.CreateScimGroupMappingResponse,
     | errors.BadRequestResponseError
     | errors.UnauthorizedResponseError
+    | errors.ForbiddenResponseError
     | errors.NotFoundResponseError
     | errors.ConflictResponseError
     | errors.InternalServerResponseError
@@ -73,6 +74,7 @@ async function $do(
       models.CreateScimGroupMappingResponse,
       | errors.BadRequestResponseError
       | errors.UnauthorizedResponseError
+      | errors.ForbiddenResponseError
       | errors.NotFoundResponseError
       | errors.ConflictResponseError
       | errors.InternalServerResponseError
@@ -188,6 +190,7 @@ async function $do(
     models.CreateScimGroupMappingResponse,
     | errors.BadRequestResponseError
     | errors.UnauthorizedResponseError
+    | errors.ForbiddenResponseError
     | errors.NotFoundResponseError
     | errors.ConflictResponseError
     | errors.InternalServerResponseError
@@ -203,6 +206,7 @@ async function $do(
     M.json(201, models.CreateScimGroupMappingResponse$inboundSchema),
     M.jsonErr(400, errors.BadRequestResponseError$inboundSchema),
     M.jsonErr(401, errors.UnauthorizedResponseError$inboundSchema),
+    M.jsonErr(403, errors.ForbiddenResponseError$inboundSchema),
     M.jsonErr(404, errors.NotFoundResponseError$inboundSchema),
     M.jsonErr(409, errors.ConflictResponseError$inboundSchema),
     M.jsonErr(500, errors.InternalServerResponseError$inboundSchema),
