@@ -49,6 +49,7 @@ export function externalUsersList(
       operations.ListExternalUsersResponse,
       | errors.BadRequestResponseError
       | errors.UnauthorizedResponseError
+      | errors.ForbiddenResponseError
       | errors.NotFoundResponseError
       | errors.InternalServerResponseError
       | OpenRouterError
@@ -81,6 +82,7 @@ async function $do(
         operations.ListExternalUsersResponse,
         | errors.BadRequestResponseError
         | errors.UnauthorizedResponseError
+        | errors.ForbiddenResponseError
         | errors.NotFoundResponseError
         | errors.InternalServerResponseError
         | OpenRouterError
@@ -204,6 +206,7 @@ async function $do(
     operations.ListExternalUsersResponse,
     | errors.BadRequestResponseError
     | errors.UnauthorizedResponseError
+    | errors.ForbiddenResponseError
     | errors.NotFoundResponseError
     | errors.InternalServerResponseError
     | OpenRouterError
@@ -220,6 +223,7 @@ async function $do(
     }),
     M.jsonErr(400, errors.BadRequestResponseError$inboundSchema),
     M.jsonErr(401, errors.UnauthorizedResponseError$inboundSchema),
+    M.jsonErr(403, errors.ForbiddenResponseError$inboundSchema),
     M.jsonErr(404, errors.NotFoundResponseError$inboundSchema),
     M.jsonErr(500, errors.InternalServerResponseError$inboundSchema),
     M.fail("4XX"),
@@ -241,6 +245,7 @@ async function $do(
         operations.ListExternalUsersResponse,
         | errors.BadRequestResponseError
         | errors.UnauthorizedResponseError
+        | errors.ForbiddenResponseError
         | errors.NotFoundResponseError
         | errors.InternalServerResponseError
         | OpenRouterError
