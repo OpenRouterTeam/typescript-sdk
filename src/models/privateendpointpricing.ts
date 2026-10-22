@@ -14,11 +14,11 @@ import { SDKValidationError } from "./errors/sdkvalidationerror.js";
  */
 export type PrivateEndpointPricing = {
   /**
-   * USD per cache-read prompt token, as a decimal string. Omit it to bill cache reads at the provider pricing strategy's default, which for most strategies is the prompt rate.
+   * USD per cache-read prompt token, as a decimal string. When omitted, inherited from the public endpoint of the same model and provider: scaled by its cache-read to prompt ratio, or left at the pricing strategy default when it publishes no cache-read rate. Required when there is no such endpoint and the provider bills cache reads.
    */
   cacheRead?: string | undefined;
   /**
-   * USD per cache-write prompt token, as a decimal string. Omit it to bill cache writes at the provider pricing strategy's default.
+   * USD per cache-write prompt token, as a decimal string. When omitted, inherited from the public endpoint of the same model and provider: scaled by its cache-write to prompt ratio, or left at the pricing strategy default when it publishes no cache-write rate. Required when there is no such endpoint and the provider bills cache writes.
    */
   cacheWrite?: string | undefined;
   /**

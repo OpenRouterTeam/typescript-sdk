@@ -1,19 +1,19 @@
 lockVersion: ""
 id: ""
 management:
-  docChecksum: 67e79525d81479634dadff7f3e21c8a9
+  docChecksum: c0142ebfb4644dd61d8fd22dcbc56562
   docVersion: 1.0.0
   speakeasyVersion: 1.802.0
   generationVersion: 2.948.4
-  releaseVersion: 1.5.3
-  configChecksum: fca8b29a59563b5950975d21cfff7f85
+  releaseVersion: 1.5.4
+  configChecksum: daad8e48567e068a02b9821eddb544e1
   repoURL: https://github.com/OpenRouterTeam/typescript-sdk.git
   installationURL: https://github.com/OpenRouterTeam/typescript-sdk
   published: true
 persistentEdits:
-  generation_id: 0170b26c-0e30-42ef-a32a-210ddfe8040a
-  pristine_commit_hash: faf95a3cf3618a23ab08b4fd38103a2ea210e2e1
-  pristine_tree_hash: 8180bc07eeb24f8a07cd5e84967bc0ed78c66005
+  generation_id: 3aede982-352e-4726-8d2c-9ce7865f702f
+  pristine_commit_hash: a8fd8966795193e087e6a6a4c7abee0d37b1e452
+  pristine_tree_hash: 67c167edcc594c00307367b80d7c333f4023b9ec
 features:
   typescript:
     acceptHeaders: 2.81.2
@@ -12495,8 +12495,8 @@ trackedFiles:
     pristine_git_object: 454128f02c166d034d115ffd2ad0c1c60b83d6a1
   docs/models/privateendpointpricing.mdx:
     id: 064406fd1903
-    last_write_checksum: sha1:2db4d0cccec4f4614c7a328aa1ae791adb28b37b
-    pristine_git_object: ab0f4623c04d6a6b46554b8a5b243fb7155b0c4e
+    last_write_checksum: sha1:fa01b99c78549cececd0372b44cb4c3c155e1091
+    pristine_git_object: eedb7e5b3563312f44cca7b0cfab01427d0b95d8
   docs/models/privateendpointresponse.mdx:
     id: 860e4fb87f5b
     last_write_checksum: sha1:f0a8bbb593eab9015b37435fba324a885783bafc
@@ -15570,8 +15570,8 @@ trackedFiles:
     pristine_git_object: ad45e8349ac4444c388e9717a942493daa9962c5
   docs/sdks/generations/README.mdx:
     id: a754fecc8514
-    last_write_checksum: sha1:b9f28838b34c0616369a7ad12a036b7d806f09b0
-    pristine_git_object: dc7beaa0b116b99c9a27b43f143f44f6568525da
+    last_write_checksum: sha1:3c52416c249873756d8c3f78459a958c4a65f18d
+    pristine_git_object: b77f2e35addb5be9aa61280407fbd8d7d1af951a
   docs/sdks/guardrails/README.mdx:
     id: a0cd4218b8fa
     last_write_checksum: sha1:d9d70aa53c7d6f7c5084a61356c7ab122b479035
@@ -15723,12 +15723,12 @@ trackedFiles:
     pristine_git_object: 410efafd6a7f50d91ccb87131fedbe0c3d47e15a
   jsr.json:
     id: 7f6ab7767282
-    last_write_checksum: sha1:b65b31183afefd1720656ef92936b55462973bab
-    pristine_git_object: 5baf06a2578d961b28655f21ae0be229470826d0
+    last_write_checksum: sha1:3231556d34c1040656c3ec2d09381f316bd8a4f5
+    pristine_git_object: 54657f27fd2137197024632c3e0ef654b68dba5f
   package.json:
     id: 7030d0b2f71b
-    last_write_checksum: sha1:6007bfc7e05e7db8731fd4d5f414c6d2d60cf7bd
-    pristine_git_object: 6d06e7736fa88578057c3ca81b76bf05989b2cff
+    last_write_checksum: sha1:3c81500edcada1d63d80a82f4f46f991e06d2f40
+    pristine_git_object: f2a89f4b7466b126b721ed8e963f77aeb0f4068b
   src/core.ts:
     id: f431fdbcd144
     last_write_checksum: sha1:5aa66b0b6a5964f3eea7f3098c2eb3c0ee9c0131
@@ -15919,8 +15919,8 @@ trackedFiles:
     pristine_git_object: d9cad5d73d53d3a6b7da3f27b3ddf8a385b873ff
   src/funcs/generationsSubmitFeedback.ts:
     id: 7164852deaac
-    last_write_checksum: sha1:279e57e1cb9653a79eb0221a27cb525661bb533b
-    pristine_git_object: 78b20f58d11747924fd2b4e462f8f932db575d6e
+    last_write_checksum: sha1:2f2a33dab7f806db913351002b911da33552bb1c
+    pristine_git_object: 3ed34a6a9604530c97188215aef657d34f041eaa
   src/funcs/guardrailsBulkAssignKeys.ts:
     id: a97261f248c8
     last_write_checksum: sha1:c4f2630a0bedea542135af4aafa333a935ad6a02
@@ -16367,8 +16367,8 @@ trackedFiles:
     pristine_git_object: a187e58707bdb726ca2aff74941efe7493422d4e
   src/lib/config.ts:
     id: 320761608fb3
-    last_write_checksum: sha1:57b7f3fb5e8716fd9b3f57d8e715f820f6273f27
-    pristine_git_object: 07af418632f01f14e4003a5e7bf39b40bf69fe17
+    last_write_checksum: sha1:ad93ec323f66a2b56b69d407329b6fe802024719
+    pristine_git_object: dd8d0c392424638684b5a19208f26b36cb2144a9
   src/lib/dlv.ts:
     id: b1988214835a
     last_write_checksum: sha1:eaac763b22717206a6199104e0403ed17a4e2711
@@ -19773,8 +19773,8 @@ trackedFiles:
     pristine_git_object: 19644f7c06bbf8a6920dc5206312fb4be5878ede
   src/models/privateendpointpricing.ts:
     id: c780fa3f1dc9
-    last_write_checksum: sha1:b93ef196a71dfa4bb0056aec152d4976afcb0ffb
-    pristine_git_object: 25e43c8fc664f9b2b9baae9b632b61455f62f748
+    last_write_checksum: sha1:b0ee0c8fedde5f44b98d46def8033a8bb6d319fe
+    pristine_git_object: e8f698c2a7ddd76ba5e29886ea3527aeea890651
   src/models/privateendpointresponse.ts:
     id: 852b6135ff3d
     last_write_checksum: sha1:01b7ba92eabd9e66eb54dc8151f3707a8fba0bf8
@@ -22636,6 +22636,8 @@ examples:
           application/json: {"error": {"code": 429, "message": "Rate limit exceeded"}}
         "500":
           application/json: {"error": {"code": 500, "message": "Internal Server Error"}}
+        "409":
+          application/json: {"error": {"code": 409, "message": "Resource conflict. Please try again later."}}
   listScimGroupMappings:
     speakeasy-default-list-scim-group-mappings:
       parameters:
@@ -25211,17 +25213,4 @@ examples:
 examplesVersion: 1.0.2
 releaseNotes: |
   ## Typescript SDK Changes:
-  * `openrouter.byok.list()`:  `error.status[403]` **Added**
-  * `openrouter.byok.delete()`:  `error.status[403]` **Added**
-  * `openrouter.byok.get()`:  `error.status[403]` **Added**
-  * `openrouter.observability.list()`:  `error.status[403]` **Added**
-  * `openrouter.observability.delete()`:  `error.status[403]` **Added**
-  * `openrouter.observability.get()`:  `error.status[403]` **Added**
-  * `openrouter.scim.listMappings()`:  `error.status[403]` **Added**
-  * `openrouter.scim.create()`:  `error.status[403]` **Added**
-  * `openrouter.scim.delete()`:  `error.status[403]` **Added**
-  * `openrouter.scim.read()`:  `error.status[403]` **Added**
-  * `openrouter.scim.update()`:  `error.status[403]` **Added**
-  * `openrouter.scim.listGroups()`:  `error.status[403]` **Added**
-  * `openrouter.scim.createSyncJob()`:  `error.status[403]` **Added**
-  * `openrouter.scim.getSyncJob()`:  `error.status[403]` **Added**
+  * `openrouter.generations.submitFeedback()`:  `error.status[409]` **Added**
