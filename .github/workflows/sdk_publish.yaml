@@ -1,10 +1,18 @@
-name: Publish
+name: Publish # dispatch-agent-bump.yaml and dispatch-monorepo-sdk-bump.yaml match this name exactly
+
+# Publishes @openrouter/sdk to npm and creates the matching GitHub release
+# when a Speakeasy regen lands on main (gen.lock changes). Generation still
+# runs through speakeasy-api/sdk-generation-action; publishing is done here
+# directly rather than through its sdk-publish.yaml reusable workflow.
+#
+# Both steps are idempotent so a failed run can simply be re-run: an npm
+# version that already exists is not republished, and an existing release is
+# left alone.
+
 permissions:
-  checks: write
   contents: write
-  pull-requests: write
-  statuses: write
-  id-token: write
+  id-token: write # npm provenance (publishConfig.provenance) / trusted publishing
+
 "on":
   push:
     branches:
@@ -12,12 +20,100 @@ permissions:
     paths:
       - .speakeasy/gen.lock
   workflow_dispatch: {}
+
+concurrency:
+  group: publish
+  cancel-in-progress: false
+
 jobs:
   publish:
-    uses: speakeasy-api/sdk-generation-action/.github/workflows/sdk-publish.yaml@68f3bfefb79354d39358bf4699863dabd2cea0f6 # v15.60.11
-    with:
-      target: openrouter
-    secrets:
-      github_access_token: ${{ secrets.GITHUB_TOKEN }}
-      npm_token: ${{ secrets.NPM_TOKEN }}
-      speakeasy_api_key: ${{ secrets.SPEAKEASY_API_KEY }}
+    name: Publish to npm
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+
+      - name: Resolve release version
+        id: version
+        run: |
+          VERSION=$(yq '.management.releaseVersion' .speakeasy/gen.lock)
+          PKG_VERSION=$(jq -r .version package.json)
+          PKG_NAME=$(jq -r .name package.json)
+          if [ "$VERSION" != "$PKG_VERSION" ]; then
+            echo "::error::gen.lock releaseVersion ($VERSION) does not match package.json version ($PKG_VERSION)"
+            exit 1
+          fi
+          echo "version=$VERSION" >> "$GITHUB_OUTPUT"
+          echo "name=$PKG_NAME" >> "$GITHUB_OUTPUT"
+          echo "Resolved $PKG_NAME@$VERSION"
+
+      - name: Check npm for existing version
+        id: npm
+        env:
+          SPEC: ${{ steps.version.outputs.name }}@${{ steps.version.outputs.version }}
+        run: |
+          if npm view "$SPEC" version >/dev/null 2>&1; then
+            echo "$SPEC is already on npm — skipping publish"
+            echo "published=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "published=false" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Install pnpm
+        if: steps.npm.outputs.published == 'false'
+        uses: pnpm/action-setup@v4.2.0
+
+      - name: Setup Node.js
+        if: steps.npm.outputs.published == 'false'
+        uses: actions/setup-node@v4
+        with:
+          node-version: "24"
+          cache: pnpm
+          registry-url: "https://registry.npmjs.org"
+
+      - name: Install dependencies
+        if: steps.npm.outputs.published == 'false'
+        # Scripts are skipped here; npm publish runs the build via prepublishOnly.
+        run: pnpm install --frozen-lockfile --ignore-scripts
+
+      - name: Publish
+        if: steps.npm.outputs.published == 'false'
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+          VERSION: ${{ steps.version.outputs.version }}
+        run: |
+          if [[ "$VERSION" == *"-"* ]]; then
+            PRERELEASE=${VERSION#*-}
+            TAG=${PRERELEASE%%.*}
+            echo "Prerelease detected; publishing under dist-tag: $TAG"
+            npm publish --tag "$TAG" --access public
+          else
+            npm publish --access public
+          fi
+
+      - name: Create GitHub release
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          VERSION: ${{ steps.version.outputs.version }}
+          PKG_NAME: ${{ steps.version.outputs.name }}
+        run: |
+          TAG="v$VERSION"
+          if gh release view "$TAG" >/dev/null 2>&1; then
+            echo "Release $TAG already exists — nothing to do"
+            exit 0
+          fi
+
+          {
+            echo "[$PKG_NAME $VERSION](https://www.npmjs.com/package/$PKG_NAME/v/$VERSION)"
+            yq '.releaseNotes // ""' .speakeasy/gen.lock
+            echo "Generated with [Speakeasy CLI $(yq '.management.speakeasyVersion' .speakeasy/gen.lock)](https://github.com/speakeasy-api/speakeasy/releases)"
+          } > "$RUNNER_TEMP/notes.md"
+
+          ARGS=()
+          if [[ "$VERSION" == *"-"* ]]; then
+            ARGS+=(--prerelease --latest=false)
+          fi
+          gh release create "$TAG" \
+            --target "$GITHUB_SHA" \
+            --title "typescript - $TAG - $(date -u '+%Y-%m-%d %H:%M:%S')" \
+            --notes-file "$RUNNER_TEMP/notes.md" \
+            "${ARGS[@]}"
