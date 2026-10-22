@@ -1,19 +1,19 @@
 lockVersion: ""
 id: ""
 management:
-  docChecksum: d74817ae9d726fba2bfae344e5917b67
+  docChecksum: 67e79525d81479634dadff7f3e21c8a9
   docVersion: 1.0.0
   speakeasyVersion: 1.802.0
   generationVersion: 2.948.4
-  releaseVersion: 1.5.2
-  configChecksum: e4cf0592873b78417bac903f688cb291
+  releaseVersion: 1.5.3
+  configChecksum: fca8b29a59563b5950975d21cfff7f85
   repoURL: https://github.com/OpenRouterTeam/typescript-sdk.git
   installationURL: https://github.com/OpenRouterTeam/typescript-sdk
   published: true
 persistentEdits:
-  generation_id: 6798ecf1-d231-4e5b-8a75-bdd9cb9ada8e
-  pristine_commit_hash: b0d8b068096f920818e5fec69d6edf884fbfd4b5
-  pristine_tree_hash: fe46b91c1d25850f6428e220d37649e3e5354d60
+  generation_id: 0170b26c-0e30-42ef-a32a-210ddfe8040a
+  pristine_commit_hash: faf95a3cf3618a23ab08b4fd38103a2ea210e2e1
+  pristine_tree_hash: 8180bc07eeb24f8a07cd5e84967bc0ed78c66005
 features:
   typescript:
     acceptHeaders: 2.81.2
@@ -15507,8 +15507,8 @@ trackedFiles:
     deleted: true
   docs/sdks/byok/README.mdx:
     id: 17792f3b180d
-    last_write_checksum: sha1:9251a19e2d2b7456354cf6de5043e82b335326d2
-    pristine_git_object: ec17b98ef5a454e07101b15e3c1d9d38ccfc63c3
+    last_write_checksum: sha1:8c0550cd903fc46ad02d381ec9107cef04104bd9
+    pristine_git_object: 69ca58060f92d3e20a90ac7d96244f9ec104e47a
   docs/sdks/chat/README.mdx:
     id: 1dd859c23fe1
     last_write_checksum: sha1:e3c187c856b4c3e8b8e9163b4b744d86db8937e9
@@ -15604,8 +15604,8 @@ trackedFiles:
     deleted: true
   docs/sdks/observability/README.mdx:
     id: 75811527e651
-    last_write_checksum: sha1:5579bf2ff6373f91e6203dc90f9f2c6fa50b87fd
-    pristine_git_object: eb5ef840f1a1d0b3664cd6e59b5e1506a9e48f02
+    last_write_checksum: sha1:5e2774361c723168378f15f2308a6f62b831979a
+    pristine_git_object: 1647b05c9a9b75c143effeae5433f3a0d7bdd037
   docs/sdks/organization/README.md:
     id: 69e4232b8432
     last_write_checksum: sha1:52adb5056b0cf654a5079dae45853990709380d3
@@ -15647,8 +15647,8 @@ trackedFiles:
     pristine_git_object: c70fb5603b799d00444f4050217ba93eabecff6c
   docs/sdks/scim/README.mdx:
     id: fd6d8a91a053
-    last_write_checksum: sha1:6f40c308492e0a8105734a7544f761710831b3c8
-    pristine_git_object: 20745c28e87a1b24648a21ac17e54f21e94e67b0
+    last_write_checksum: sha1:b0b0a8110902181b24716b9a83de2f4987519a69
+    pristine_git_object: 006796f6abf9d50d87ae424e304df2b86eb53997
   docs/sdks/stt/README.md:
     id: 0806154492f9
     last_write_checksum: sha1:aa311f9602dfafdcb8dea4d91c4549876cecc37f
@@ -15723,12 +15723,12 @@ trackedFiles:
     pristine_git_object: 410efafd6a7f50d91ccb87131fedbe0c3d47e15a
   jsr.json:
     id: 7f6ab7767282
-    last_write_checksum: sha1:6ed1593afeb2cb76f5114253b3bde05aee9b9e2b
-    pristine_git_object: bab45ea1ea38aa453022e079929a1daf92fb9756
+    last_write_checksum: sha1:b65b31183afefd1720656ef92936b55462973bab
+    pristine_git_object: 5baf06a2578d961b28655f21ae0be229470826d0
   package.json:
     id: 7030d0b2f71b
-    last_write_checksum: sha1:f9408b48c0bae48315dc59ea3b49bc73b421a435
-    pristine_git_object: 9fe73f27373e70766ff72c302f4bee2bfad43eff
+    last_write_checksum: sha1:6007bfc7e05e7db8731fd4d5f414c6d2d60cf7bd
+    pristine_git_object: 6d06e7736fa88578057c3ca81b76bf05989b2cff
   src/core.ts:
     id: f431fdbcd144
     last_write_checksum: sha1:5aa66b0b6a5964f3eea7f3098c2eb3c0ee9c0131
@@ -15799,16 +15799,16 @@ trackedFiles:
     pristine_git_object: 16c9b81a55fcda09de1059b263f68d67d13c8e89
   src/funcs/byokDelete.ts:
     id: 74888a4f7e62
-    last_write_checksum: sha1:cbf9eb39f7b4237f7811a672232583ff57d5eecd
-    pristine_git_object: 3a0a82449c12fe45d79087a301bd8c31dbf17154
+    last_write_checksum: sha1:65b1457cc6cb03dc13ddf03fa8c3db9415f10dd6
+    pristine_git_object: 4085a28188e6a64e2e06479e4d9d392e06101386
   src/funcs/byokGet.ts:
     id: 0b6a02742a16
-    last_write_checksum: sha1:9f51aa25a0901d94cace9e0d69dfd13053558780
-    pristine_git_object: e624f249f9b815e3614aff73f9fe64967a842dff
+    last_write_checksum: sha1:447919918814405c0764c78d451c9568f3fbc4c9
+    pristine_git_object: 0cb5e65e24eaa8cc3c5a4983c05f184137875489
   src/funcs/byokList.ts:
     id: 61b5aac5c0af
-    last_write_checksum: sha1:5cd9b11f1b2fd695bc09472823a596d6128e39ef
-    pristine_git_object: dfb9d43d49aad7afddefd364a0b072818f2e494e
+    last_write_checksum: sha1:30c7f5db70de09c6c14179138a6353e80d6c4710
+    pristine_git_object: edba208a090d5986357a2f2b51bcf6f25f5c003e
   src/funcs/byokUpdate.ts:
     id: af96a7f06850
     last_write_checksum: sha1:31dc0ea3b6283ff54055e81b2c7ccd094cbc02b5
@@ -16083,16 +16083,16 @@ trackedFiles:
     pristine_git_object: 0e256c5bd92dd33c9f37b761c41f2d76f9661731
   src/funcs/observabilityDelete.ts:
     id: 458df48c46c2
-    last_write_checksum: sha1:e9624cbe7b6f5f545058777c2fcb98cda7aeeb48
-    pristine_git_object: db6a79e5a803430c03c0643170ecb6b180649082
+    last_write_checksum: sha1:c54bc60f7237d55a33649ee9168833962f48b6e0
+    pristine_git_object: 6d65633f8b6af70b33136c321ac2b61c2af48426
   src/funcs/observabilityGet.ts:
     id: eaef798f5519
-    last_write_checksum: sha1:39489ac4867c8db59f4f9714b90d4f60e63142c3
-    pristine_git_object: 58ede385945c7875cc6c27741ff174fc837acf73
+    last_write_checksum: sha1:b9c18327599a9a3d7d9dd278b7856a96c0eec7a8
+    pristine_git_object: f36e955d86c34593d79f1e718db3afb5083c8e88
   src/funcs/observabilityList.ts:
     id: 6b759665eae6
-    last_write_checksum: sha1:a8ab343cae82e7007736cd98784b6579979ee58e
-    pristine_git_object: a65df6e6e4f6e5232ed150b53c7d5ac175ed3a76
+    last_write_checksum: sha1:9f186b880d8172adf6e92053f26fb212fbd2b936
+    pristine_git_object: 9169b38e2ae462d7eb87479ffc48b385fdedf184
   src/funcs/observabilityUpdate.ts:
     id: e19afc29658d
     last_write_checksum: sha1:4cc0207e6a32658e09b4b7d363339bda9074c913
@@ -16191,36 +16191,36 @@ trackedFiles:
     pristine_git_object: 07405c1e21bc0dda7fea5a90557dec875a59afc7
   src/funcs/scimCreate.ts:
     id: a8ea14125a34
-    last_write_checksum: sha1:e3bc981f4d91997b9ef34c39fc917b2b55306230
-    pristine_git_object: 0675da1b046ca6741242f9889f57910393df9d9c
+    last_write_checksum: sha1:ee7ce9a0b7f3eea73831aff933ef06ba427aadfd
+    pristine_git_object: c64a624a3d745c4797e379456bec87453d924d45
   src/funcs/scimCreateSyncJob.ts:
     id: e5a91c340b44
-    last_write_checksum: sha1:42f24b615a1a4f4a0ed880108367417e59ddf31e
-    pristine_git_object: e4d2bde2d6e518d82b733e91efe7625732cb9bcb
+    last_write_checksum: sha1:53ac898e069bd1fb45155507065a7b42d9f51fca
+    pristine_git_object: 5793144cb085171c71b055ffe106a83ec8675435
   src/funcs/scimDelete.ts:
     id: 441ae3f88a98
-    last_write_checksum: sha1:20d77e5c8e46e5b00341e630cb81f6d0ef991a8e
-    pristine_git_object: 375fd5d1fd18dd690ed3f59c2b8cf584d8a4c103
+    last_write_checksum: sha1:9c87a5b6a6fe00e50df9d68b8128181b0360b909
+    pristine_git_object: 126ca4804a41eee2461155daee07b38eeabfa13d
   src/funcs/scimGetSyncJob.ts:
     id: 95876bc94c5c
-    last_write_checksum: sha1:65c863d6394131bbb95f79edc0b635cb1d362816
-    pristine_git_object: 1c739f0350864d678de9416fdd4adc4d417a6fce
+    last_write_checksum: sha1:ad1863c540c6eade21ab31200a2dc243a129ec41
+    pristine_git_object: 18c87ed2b4101f54c2f77d59528936327909c399
   src/funcs/scimListGroups.ts:
     id: bf94e6973603
-    last_write_checksum: sha1:031289e6e265a3fbfcc2df9afc625d5e582943a5
-    pristine_git_object: ea6dc7d64a4ed832ddcabee448e44ab96ae0eace
+    last_write_checksum: sha1:068773ac9ba35866d353e21e4c018f577759457a
+    pristine_git_object: 81bc723a08e8ec8176f586b80c8af9c9988251af
   src/funcs/scimListMappings.ts:
     id: 5c9fe26dc2ff
-    last_write_checksum: sha1:94945e1e2e7d043d07effbf3ea2ab9107a9415a5
-    pristine_git_object: bbf986bae87e6981f886984d17ac20719fbbc42a
+    last_write_checksum: sha1:dce6c1023fc138036d958226a636b2f5af029dd1
+    pristine_git_object: 829409eac21adc870d8e97f460cc4f5b87de08b1
   src/funcs/scimRead.ts:
     id: 71d46eb8edca
-    last_write_checksum: sha1:34ffb2e1c5833faf44182a4ea9e8984e37b871bf
-    pristine_git_object: ad2ce6085717eabb32a0d9dc0244cf75a0d29753
+    last_write_checksum: sha1:a46db4559013d981bb082f5e006c4784423cd765
+    pristine_git_object: 7f23f34c300ef3a7181a9502c02545856b4f84dc
   src/funcs/scimUpdate.ts:
     id: 165bac1c9819
-    last_write_checksum: sha1:fef6f4965ccef63730ec9c6696cb92e3c4b834fa
-    pristine_git_object: ee28b4b8436be56ef32d76d072e1681631d3d238
+    last_write_checksum: sha1:ae1390abc16448a58a92cb490bf8e740c4782bae
+    pristine_git_object: c19ce9c7e1a5313ffc6b722251ec4d22dd115ffc
   src/funcs/sttCreateTranscription.ts:
     id: 90b735003ac7
     last_write_checksum: sha1:99b1c14be574145b8a5825774922ccfd7b048db0
@@ -16367,8 +16367,8 @@ trackedFiles:
     pristine_git_object: a187e58707bdb726ca2aff74941efe7493422d4e
   src/lib/config.ts:
     id: 320761608fb3
-    last_write_checksum: sha1:93b311a986f7e94926c750baf9f514e456955b1b
-    pristine_git_object: 42a4c952edab6490b514bc25b8663173256592dc
+    last_write_checksum: sha1:57b7f3fb5e8716fd9b3f57d8e715f820f6273f27
+    pristine_git_object: 07af418632f01f14e4003a5e7bf39b40bf69fe17
   src/lib/dlv.ts:
     id: b1988214835a
     last_write_checksum: sha1:eaac763b22717206a6199104e0403ed17a4e2711
@@ -21949,6 +21949,8 @@ examples:
           application/json: {"error": {"code": 500, "message": "Internal Server Error"}}
         "400":
           application/json: {"error": {"code": 400, "message": "Invalid request parameters"}}
+        "403":
+          application/json: {"error": {"code": 403, "message": "Only management keys can perform this operation"}}
   getBYOKKey:
     speakeasy-default-get-BYOK-key:
       parameters:
@@ -21963,6 +21965,8 @@ examples:
           application/json: {"error": {"code": 404, "message": "Resource not found"}}
         "500":
           application/json: {"error": {"code": 500, "message": "Internal Server Error"}}
+        "403":
+          application/json: {"error": {"code": 403, "message": "Only management keys can perform this operation"}}
   listObservabilityDestinations:
     speakeasy-default-list-observability-destinations:
       parameters:
@@ -21978,6 +21982,8 @@ examples:
           application/json: {"error": {"code": 500, "message": "Internal Server Error"}}
         "400":
           application/json: {"error": {"code": 400, "message": "Invalid request parameters"}}
+        "403":
+          application/json: {"error": {"code": 403, "message": "Only management keys can perform this operation"}}
   getObservabilityDestination:
     speakeasy-default-get-observability-destination:
       parameters:
@@ -21992,6 +21998,8 @@ examples:
           application/json: {"error": {"code": 404, "message": "Resource not found"}}
         "500":
           application/json: {"error": {"code": 500, "message": "Internal Server Error"}}
+        "403":
+          application/json: {"error": {"code": 403, "message": "Only management keys can perform this operation"}}
   createBYOKKey:
     speakeasy-default-create-BYOK-key:
       requestBody:
@@ -22021,6 +22029,8 @@ examples:
           application/json: {"error": {"code": 404, "message": "Resource not found"}}
         "500":
           application/json: {"error": {"code": 500, "message": "Internal Server Error"}}
+        "403":
+          application/json: {"error": {"code": 403, "message": "Only management keys can perform this operation"}}
   updateBYOKKey:
     speakeasy-default-update-BYOK-key:
       parameters:
@@ -22074,6 +22084,8 @@ examples:
           application/json: {"error": {"code": 404, "message": "Resource not found"}}
         "500":
           application/json: {"error": {"code": 500, "message": "Internal Server Error"}}
+        "403":
+          application/json: {"error": {"code": 403, "message": "Only management keys can perform this operation"}}
   updateObservabilityDestination:
     speakeasy-default-update-observability-destination:
       parameters:
@@ -22639,6 +22651,8 @@ examples:
           application/json: {"error": {"code": 404, "message": "Resource not found"}}
         "500":
           application/json: {"error": {"code": 500, "message": "Internal Server Error"}}
+        "403":
+          application/json: {"error": {"code": 403, "message": "Only management keys can perform this operation"}}
   createScimGroupMapping:
     speakeasy-default-create-scim-group-mapping:
       requestBody:
@@ -22656,6 +22670,8 @@ examples:
           application/json: {"error": {"code": 409, "message": "Resource conflict. Please try again later."}}
         "500":
           application/json: {"error": {"code": 500, "message": "Internal Server Error"}}
+        "403":
+          application/json: {"error": {"code": 403, "message": "Only management keys can perform this operation"}}
   deleteScimGroupMapping:
     speakeasy-default-delete-scim-group-mapping:
       parameters:
@@ -22674,6 +22690,8 @@ examples:
           application/json: {"error": {"code": 404, "message": "Resource not found"}}
         "500":
           application/json: {"error": {"code": 500, "message": "Internal Server Error"}}
+        "403":
+          application/json: {"error": {"code": 403, "message": "Only management keys can perform this operation"}}
   getScimGroupMapping:
     speakeasy-default-get-scim-group-mapping:
       parameters:
@@ -22688,6 +22706,8 @@ examples:
           application/json: {"error": {"code": 404, "message": "Resource not found"}}
         "500":
           application/json: {"error": {"code": 500, "message": "Internal Server Error"}}
+        "403":
+          application/json: {"error": {"code": 403, "message": "Only management keys can perform this operation"}}
   updateScimGroupMapping:
     speakeasy-default-update-scim-group-mapping:
       parameters:
@@ -22706,6 +22726,8 @@ examples:
           application/json: {"error": {"code": 404, "message": "Resource not found"}}
         "500":
           application/json: {"error": {"code": 500, "message": "Internal Server Error"}}
+        "403":
+          application/json: {"error": {"code": 403, "message": "Only management keys can perform this operation"}}
   listScimGroups:
     speakeasy-default-list-scim-groups:
       parameters:
@@ -22721,6 +22743,8 @@ examples:
           application/json: {"error": {"code": 404, "message": "Resource not found"}}
         "500":
           application/json: {"error": {"code": 500, "message": "Internal Server Error"}}
+        "403":
+          application/json: {"error": {"code": 403, "message": "Only management keys can perform this operation"}}
   getWorkspaceBudget:
     speakeasy-default-get-workspace-budget:
       parameters:
@@ -22885,6 +22909,8 @@ examples:
           application/json: {"error": {"code": 404, "message": "Resource not found"}}
         "500":
           application/json: {"error": {"code": 500, "message": "Internal Server Error"}}
+        "403":
+          application/json: {"error": {"code": 403, "message": "Only management keys can perform this operation"}}
   getScimSyncJob:
     speakeasy-default-get-scim-sync-job:
       parameters:
@@ -22899,6 +22925,8 @@ examples:
           application/json: {"error": {"code": 404, "message": "Resource not found"}}
         "500":
           application/json: {"error": {"code": 500, "message": "Internal Server Error"}}
+        "403":
+          application/json: {"error": {"code": 403, "message": "Only management keys can perform this operation"}}
   listInternVaultSecrets:
     speakeasy-default-list-intern-vault-secrets:
       parameters:
@@ -25183,19 +25211,17 @@ examples:
 examplesVersion: 1.0.2
 releaseNotes: |
   ## Typescript SDK Changes:
-  * `openrouter.guardrails.list()`:  `error.status[403]` **Added**
-  * `openrouter.guardrails.delete()`:  `error.status[403]` **Added**
-  * `openrouter.guardrails.get()`:  `error.status[403]` **Added**
-  * `openrouter.guardrails.listGuardrailKeyAssignments()`:  `error.status[403]` **Added**
-  * `openrouter.guardrails.bulkUnassignKeys()`:  `error.status[403]` **Added**
-  * `openrouter.guardrails.listGuardrailMemberAssignments()`:  `error.status[403]` **Added**
-  * `openrouter.guardrails.bulkAssignMembers()`:  `error.status[403]` **Added**
-  * `openrouter.guardrails.bulkUnassignMembers()`:  `error.status[403]` **Added**
-  * `openrouter.guardrails.listKeyAssignments()`:  `error.status[403]` **Added**
-  * `openrouter.guardrails.listMemberAssignments()`:  `error.status[403]` **Added**
-  * `openrouter.workspaces.list()`:  `error.status[403]` **Added**
-  * `openrouter.workspaces.get()`:  `error.status[403]` **Added**
-  * `openrouter.workspaces.listBudgets()`:  `error.status[403]` **Added**
-  * `openrouter.workspaces.deleteBudget()`:  `error.status[403]` **Added**
-  * `openrouter.workspaces.getBudget()`:  `error.status[403]` **Added**
-  * `openrouter.workspaces.setBudget()`:  `error.status[403]` **Added**
+  * `openrouter.byok.list()`:  `error.status[403]` **Added**
+  * `openrouter.byok.delete()`:  `error.status[403]` **Added**
+  * `openrouter.byok.get()`:  `error.status[403]` **Added**
+  * `openrouter.observability.list()`:  `error.status[403]` **Added**
+  * `openrouter.observability.delete()`:  `error.status[403]` **Added**
+  * `openrouter.observability.get()`:  `error.status[403]` **Added**
+  * `openrouter.scim.listMappings()`:  `error.status[403]` **Added**
+  * `openrouter.scim.create()`:  `error.status[403]` **Added**
+  * `openrouter.scim.delete()`:  `error.status[403]` **Added**
+  * `openrouter.scim.read()`:  `error.status[403]` **Added**
+  * `openrouter.scim.update()`:  `error.status[403]` **Added**
+  * `openrouter.scim.listGroups()`:  `error.status[403]` **Added**
+  * `openrouter.scim.createSyncJob()`:  `error.status[403]` **Added**
+  * `openrouter.scim.getSyncJob()`:  `error.status[403]` **Added**
