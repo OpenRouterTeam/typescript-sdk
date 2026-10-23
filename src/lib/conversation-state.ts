@@ -9,6 +9,7 @@ import type {
   UnsentToolResult,
 } from './tool-types.js';
 import { normalizeInputToArray } from './turn-context.js';
+import * as z4 from 'zod/v4';
 
 /**
  * Type guard to verify an object is a valid UnsentToolResult
@@ -102,7 +103,8 @@ export function appendToMessages(
  * @param toolCall - The tool call to check
  * @param tools - Available tools
  * @param context - Turn context for the approval check
- * @param callLevelCheck - Optional call-level approval function (overrides tool-level), can be async
+ * @param callLevelCheck - Optional call-level approval function (overrides tool-level), can be async.
+ *   Receives schema-normalized arguments when parsing succeeds and the raw call otherwise.
  */
 export async function toolRequiresApproval<TTools extends readonly Tool[]>(
   toolCall: ParsedToolCall<TTools[number]>,
@@ -110,24 +112,61 @@ export async function toolRequiresApproval<TTools extends readonly Tool[]>(
   context: TurnContext,
   callLevelCheck?: (toolCall: ParsedToolCall<TTools[number]>, context: TurnContext) => boolean | Promise<boolean>
 ): Promise<boolean> {
-  // Call-level check takes precedence
+  const tool = tools.find(t => t.function.name === toolCall.name);
+
+  // Call-level checks always take precedence. Pass a normalized copy when
+  // parsing succeeds (so the check sees the values `execute` will receive),
+  // or the raw call when it does not. The caller's decision is honored either
+  // way; the original call is never mutated.
   if (callLevelCheck) {
-    return callLevelCheck(toolCall, context);
+    if (!tool) {
+      return callLevelCheck(toolCall, context);
+    }
+
+    const parsed = z4.safeParse(tool.function.inputSchema, toolCall.arguments);
+    if (!parsed.success) {
+      return callLevelCheck(toolCall, context);
+    }
+
+    return callLevelCheck(
+      { ...toolCall, arguments: parsed.data } as ParsedToolCall<TTools[number]>,
+      context
+    );
   }
 
   // Fall back to tool-level setting
-  const tool = tools.find(t => t.function.name === toolCall.name);
   if (!tool) return false;
 
   const requireApproval = tool.function.requireApproval;
 
-  // If it's a function, call it with the tool's arguments and context
+  // `toolCall.arguments` is only the JSON-parsed wire payload; it has not been
+  // validated against the tool's inputSchema. The executor validates right
+  // before `execute`, so handing the raw payload to the predicate would let the
+  // two see different values whenever the schema applies a default, coercion,
+  // or transform (e.g. `{ dangerous: z.boolean().default(true) }` with `{}` on
+  // the wire: the predicate sees `undefined`, then `execute` runs with `true`).
+  // Parse with the same schema so the predicate decides on the executed values.
   if (typeof requireApproval === 'function') {
-    return requireApproval(toolCall.arguments, context);
+    const parsed = z4.safeParse(tool.function.inputSchema, toolCall.arguments);
+    if (!parsed.success) {
+      // No trustworthy value to judge. Fail closed rather than waive approval
+      // based on arguments the tool body would never receive.
+      return true;
+    }
+    if (!isRecord(parsed.data)) {
+      // Valid per the schema but not an object: the predicate contract is
+      // Record<string, unknown>, so fail closed.
+      return true;
+    }
+    return requireApproval(parsed.data, context);
   }
 
   // Otherwise treat as boolean
   return requireApproval ?? false;
+}
+
+function isRecord(value: unknown): value is Record<string, unknown> {
+  return typeof value === 'object' && value !== null && !Array.isArray(value);
 }
 
 /**
