@@ -1,19 +1,19 @@
 lockVersion: ""
 id: ""
 management:
-  docChecksum: 2af7d6f5665c307db7ce943d38f8883c
+  docChecksum: 1748ed5c359604c08107e1a5ff1c6b95
   docVersion: 1.0.0
   speakeasyVersion: 1.802.0
   generationVersion: 2.948.4
-  releaseVersion: 1.5.5
-  configChecksum: 135d99ca9b80b01b7d8b64f6cb0d70cb
+  releaseVersion: 1.5.6
+  configChecksum: 1736204e944e47f135ef394e9c48885b
   repoURL: https://github.com/OpenRouterTeam/typescript-sdk.git
   installationURL: https://github.com/OpenRouterTeam/typescript-sdk
   published: true
 persistentEdits:
-  generation_id: 8c8c2adf-382e-4a9b-a302-f3bcc19c35bf
-  pristine_commit_hash: 79c6bcb4f87b1636fd4f5d2dde9a53d1a2d3d13a
-  pristine_tree_hash: 6b62d0f10e83647f35770d3a4b9133870f3a990c
+  generation_id: 2f51b6f0-783f-4339-816c-b38f7a7907b9
+  pristine_commit_hash: 4f820b759d46461b5b5e64fc17f335f84769d9d4
+  pristine_tree_hash: 89de2817909ecca42afe53702380966c7ca8e1ac
 features:
   typescript:
     acceptHeaders: 2.81.2
@@ -15570,8 +15570,8 @@ trackedFiles:
     pristine_git_object: ad45e8349ac4444c388e9717a942493daa9962c5
   docs/sdks/generations/README.mdx:
     id: a754fecc8514
-    last_write_checksum: sha1:3c52416c249873756d8c3f78459a958c4a65f18d
-    pristine_git_object: b77f2e35addb5be9aa61280407fbd8d7d1af951a
+    last_write_checksum: sha1:826dc0ac34b3908d3796fa638198a5d07564471a
+    pristine_git_object: 70ce71a26a997a593ba15c730dbaea5ef4230c80
   docs/sdks/guardrails/README.mdx:
     id: a0cd4218b8fa
     last_write_checksum: sha1:d9d70aa53c7d6f7c5084a61356c7ab122b479035
@@ -15723,12 +15723,12 @@ trackedFiles:
     pristine_git_object: 410efafd6a7f50d91ccb87131fedbe0c3d47e15a
   jsr.json:
     id: 7f6ab7767282
-    last_write_checksum: sha1:b96ba5430c16549a4c994a2e82134ec397fdcc03
-    pristine_git_object: b0dd18126b56fbb0cf2467d782f1477ce8636345
+    last_write_checksum: sha1:cd9f2ea84b06f4ffbeeea7fc02e76a4e46e8a192
+    pristine_git_object: 2116016c1338bfe240744a158f1b80f47965329e
   package.json:
     id: 7030d0b2f71b
-    last_write_checksum: sha1:2c99a6ccbe52cf0427561fb9ff11deb40af99528
-    pristine_git_object: 053da9b9e8907d64ed51fcb0fa1591279db02dba
+    last_write_checksum: sha1:3f634f0bdbcfaac6f92a78107b39429ab7351354
+    pristine_git_object: 71ec115453b94783cff81b17ec8033c5eade7030
   src/core.ts:
     id: f431fdbcd144
     last_write_checksum: sha1:5aa66b0b6a5964f3eea7f3098c2eb3c0ee9c0131
@@ -15911,8 +15911,8 @@ trackedFiles:
     pristine_git_object: dd647a07d00c88e1a1c7c83483cbea7d7049c384
   src/funcs/generationsGetGeneration.ts:
     id: dac2d205a08d
-    last_write_checksum: sha1:53bf624cee288d7b2d7f52c3b2167f8233038411
-    pristine_git_object: 43e40838978d59b57614a866b320cddbbec45657
+    last_write_checksum: sha1:8f053cfbf97e2826d00566cb5e82e005a32fab2d
+    pristine_git_object: 437d0ce3d8abbd0c399cb4d3ed5cb735e64d1530
   src/funcs/generationsListGenerationContent.ts:
     id: 6528b91d944c
     last_write_checksum: sha1:e90765984e215e05058619701c1f1cfe69e2f3ca
@@ -16367,8 +16367,8 @@ trackedFiles:
     pristine_git_object: a187e58707bdb726ca2aff74941efe7493422d4e
   src/lib/config.ts:
     id: 320761608fb3
-    last_write_checksum: sha1:754a51800eec5f95816e57566dca0ec7ef95f3b6
-    pristine_git_object: c7802717dca559dba110a13f0890c2763abbda50
+    last_write_checksum: sha1:b6cf3b582947113387ba46372917df843a707a64
+    pristine_git_object: 7df4c10d2ebc548c3a7fbb6f5ed5805d2ce7f5ae
   src/lib/dlv.ts:
     id: b1988214835a
     last_write_checksum: sha1:eaac763b22717206a6199104e0403ed17a4e2711
@@ -21072,6 +21072,8 @@ examples:
           application/json: {"error": {"code": 529, "message": "Provider returned error"}}
         "400":
           application/json: {"error": {"code": 400, "message": "Invalid request parameters"}}
+        "403":
+          application/json: {"error": {"code": 403, "message": "Only management keys can perform this operation"}}
   listModelsCount:
     speakeasy-default-list-models-count:
       responses:
@@ -25225,11 +25227,4 @@ examples:
 examplesVersion: 1.0.2
 releaseNotes: |
   ## Typescript SDK Changes:
-  * `openrouter.externalUsers.list()`:  `error.status[403]` **Added**
-  * `openrouter.externalUsers.get()`:  `error.status[403]` **Added**
-  * `openrouter.endUsers.list()`:  `error.status[403]` **Added**
-  * `openrouter.endUsers.get()`:  `error.status[403]` **Added**
-  * `openrouter.presets.list()`:  `error.status[403]` **Added**
-  * `openrouter.presets.get()`:  `error.status[403]` **Added**
-  * `openrouter.presets.listVersions()`:  `error.status[403]` **Added**
-  * `openrouter.presets.getVersion()`:  `error.status[403]` **Added**
+  * `openrouter.generations.getGeneration()`:  `error.status[403]` **Added**
