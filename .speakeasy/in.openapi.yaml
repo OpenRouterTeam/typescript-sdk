@@ -40443,6 +40443,16 @@ paths:
               schema:
                 $ref: '#/components/schemas/PaymentRequiredResponse'
           description: 'Payment Required - Insufficient credits or quota to complete request'
+        '403':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 403
+                  message: 'Management key does not have permission for this request'
+              schema:
+                $ref: '#/components/schemas/ForbiddenResponse'
+          description: 'Forbidden - The management key does not have permission for this request'
         '404':
           content:
             application/json:
