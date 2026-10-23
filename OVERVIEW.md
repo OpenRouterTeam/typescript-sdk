@@ -14,10 +14,12 @@ const client = new OpenRouter({
 });
 
 const response = await client.chat.send({
-  model: "minimax/minimax-m2",
-  messages: [
-    { role: "user", content: "Explain quantum computing" }
-  ]
+  chatRequest: {
+    model: "minimax/minimax-m2",
+    messages: [
+      { role: "user", content: "Explain quantum computing" }
+    ]
+  },
 });
 ```
 
@@ -30,7 +32,9 @@ The SDK is automatically generated from OpenRouter's OpenAPI specs and updated w
 ```typescript
 // When new models launch, they're available instantly
 const response = await client.chat.send({
-  model: "minimax/minimax-m2",
+  chatRequest: {
+    model: "minimax/minimax-m2",
+  },
 });
 ```
 
@@ -40,13 +44,15 @@ Every parameter, response field, and configuration option is fully typed. Invali
 
 ```typescript
 const response = await client.chat.send({
-  model: "minimax/minimax-m2",
-  messages: [
-    { role: "user", content: "Hello" }
-    // ← Your IDE validates message structure
-  ],
-  temperature: 0.7, // ← Type-checked
-  stream: true      // ← Response type changes based on this
+  chatRequest: {
+    model: "minimax/minimax-m2",
+    messages: [
+      { role: "user", content: "Hello" }
+      // ← Your IDE validates message structure
+    ],
+    temperature: 0.7, // ← Type-checked
+    stream: true      // ← Response type changes based on this
+  },
 });
 ```
 
@@ -62,9 +68,11 @@ const response = await client.chat.send({
 
 ```typescript
 const stream = await client.chat.send({
-  model: "minimax/minimax-m2",
-  messages: [{ role: "user", content: "Write a story" }],
-  stream: true
+  chatRequest: {
+    model: "minimax/minimax-m2",
+    messages: [{ role: "user", content: "Write a story" }],
+    stream: true
+  },
 });
 
 for await (const chunk of stream) {
@@ -91,10 +99,12 @@ const client = new OpenRouter({
 });
 
 const response = await client.chat.send({
-  model: "minimax/minimax-m2",
-  messages: [
-    { role: "user", content: "Hello!" }
-  ]
+  chatRequest: {
+    model: "minimax/minimax-m2",
+    messages: [
+      { role: "user", content: "Hello!" }
+    ]
+  },
 });
 
 console.log(response.choices[0].message.content);

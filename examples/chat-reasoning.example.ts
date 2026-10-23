@@ -44,9 +44,11 @@ async function multiTurnConversation() {
 
   // First turn
   const result1 = await openRouter.chat.send({
-    model,
-    messages,
-    stream: false,
+    chatRequest: {
+      model,
+      messages,
+      stream: false,
+    },
   });
 
   if (!("choices" in result1)) {
@@ -70,9 +72,11 @@ async function multiTurnConversation() {
 
   // Second turn
   const result2 = await openRouter.chat.send({
-    model,
-    messages,
-    stream: false,
+    chatRequest: {
+      model,
+      messages,
+      stream: false,
+    },
   });
 
   if (!("choices" in result2)) {
@@ -96,9 +100,11 @@ async function multiTurnConversation() {
 
   // Third turn
   const result3 = await openRouter.chat.send({
-    model,
-    messages,
-    stream: false,
+    chatRequest: {
+      model,
+      messages,
+      stream: false,
+    },
   });
 
   if (!("choices" in result3)) {
