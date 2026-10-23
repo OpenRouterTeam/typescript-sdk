@@ -17,8 +17,6 @@ export * from "./gatewaytimeoutresponseerror.js";
 export * from "./goneresponseerror.js";
 export * from "./httpclienterrors.js";
 export * from "./internalserverresponseerror.js";
-export * from "./internchaterrorresponse.js";
-export * from "./internlifecycleerror.js";
 export * from "./notfoundresponseerror.js";
 export * from "./oautherrorresponse.js";
 export * from "./openrouterdefaulterror.js";
