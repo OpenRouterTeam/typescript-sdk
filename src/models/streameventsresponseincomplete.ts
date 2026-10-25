@@ -17,12 +17,12 @@ import {
  * Event emitted when a response is incomplete
  */
 export type StreamEventsResponseIncomplete = {
+  type: "response.incomplete";
   /**
    * Complete non-streaming response from the Responses API
    */
   response: OpenResponsesResult;
   sequenceNumber: number;
-  type: "response.incomplete";
 };
 
 /** @internal */
@@ -30,9 +30,9 @@ export const StreamEventsResponseIncomplete$inboundSchema: z.ZodType<
   StreamEventsResponseIncomplete,
   unknown
 > = z.object({
+  type: z.literal("response.incomplete"),
   response: OpenResponsesResult$inboundSchema,
   sequence_number: z.int(),
-  type: z.literal("response.incomplete"),
 }).transform((v) => {
   return remap$(v, {
     "sequence_number": "sequenceNumber",

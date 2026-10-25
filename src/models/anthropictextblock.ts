@@ -13,9 +13,9 @@ import {
 import { SDKValidationError } from "./errors/sdkvalidationerror.js";
 
 export type AnthropicTextBlock = {
+  type: "text";
   citations: Array<AnthropicTextCitation> | null;
   text: string;
-  type: "text";
 };
 
 /** @internal */
@@ -23,9 +23,9 @@ export const AnthropicTextBlock$inboundSchema: z.ZodType<
   AnthropicTextBlock,
   unknown
 > = z.object({
+  type: z.literal("text"),
   citations: z.nullable(z.array(AnthropicTextCitation$inboundSchema)),
   text: z.string(),
-  type: z.literal("text"),
 });
 
 export function anthropicTextBlockFromJSON(

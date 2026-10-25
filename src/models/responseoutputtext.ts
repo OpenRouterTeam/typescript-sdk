@@ -29,10 +29,10 @@ export type Logprob = {
 };
 
 export type ResponseOutputText = {
+  type: "output_text";
   annotations?: Array<OpenAIResponsesAnnotation> | undefined;
   logprobs?: Array<Logprob> | undefined;
   text: string;
-  type: "output_text";
 };
 
 /** @internal */
@@ -134,17 +134,17 @@ export const ResponseOutputText$inboundSchema: z.ZodType<
   ResponseOutputText,
   unknown
 > = z.object({
+  type: z.literal("output_text"),
   annotations: z.array(OpenAIResponsesAnnotation$inboundSchema).optional(),
   logprobs: z.array(z.lazy(() => Logprob$inboundSchema)).optional(),
   text: z.string(),
-  type: z.literal("output_text"),
 });
 /** @internal */
 export type ResponseOutputText$Outbound = {
+  type: "output_text";
   annotations?: Array<OpenAIResponsesAnnotation$Outbound> | undefined;
   logprobs?: Array<Logprob$Outbound> | undefined;
   text: string;
-  type: "output_text";
 };
 
 /** @internal */
@@ -152,10 +152,10 @@ export const ResponseOutputText$outboundSchema: z.ZodType<
   ResponseOutputText$Outbound,
   ResponseOutputText
 > = z.object({
+  type: z.literal("output_text"),
   annotations: z.array(OpenAIResponsesAnnotation$outboundSchema).optional(),
   logprobs: z.array(z.lazy(() => Logprob$outboundSchema)).optional(),
   text: z.string(),
-  type: z.literal("output_text"),
 });
 
 export function responseOutputTextToJSON(

@@ -10,10 +10,10 @@ Code interpreter call in progress
 import { CodeInterpreterCallInProgressEvent } from "@openrouter/sdk/models";
 
 let value: CodeInterpreterCallInProgressEvent = {
+  type: "response.code_interpreter_call.in_progress",
   itemId: "<id>",
   outputIndex: 359696,
   sequenceNumber: 0,
-  type: "response.code_interpreter_call.in_progress",
 };
 ```
 
@@ -21,7 +21,7 @@ let value: CodeInterpreterCallInProgressEvent = {
 
 | Field                                          | Type                                           | Required                                       | Description                                    |
 | ---------------------------------------------- | ---------------------------------------------- | ---------------------------------------------- | ---------------------------------------------- |
+| `type`                                         | *"response.code_interpreter_call.in_progress"* | ✔️                             | N/A                                            |
 | `itemId`                                       | *string*                                       | ✔️                             | N/A                                            |
 | `outputIndex`                                  | *number*                                       | ✔️                             | N/A                                            |
 | `sequenceNumber`                               | *number*                                       | ✔️                             | N/A                                            |
-| `type`                                         | *"response.code_interpreter_call.in_progress"* | ✔️                             | N/A                                            |

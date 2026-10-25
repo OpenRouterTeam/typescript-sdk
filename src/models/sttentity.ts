@@ -14,6 +14,10 @@ import { SDKValidationError } from "./errors/sdkvalidationerror.js";
  */
 export type STTEntity = {
   /**
+   * Provider entity type label
+   */
+  type: string;
+  /**
    * Zero-based exclusive character offset of the entity end within the response-level text (not seconds)
    */
   endChar: number;
@@ -25,18 +29,14 @@ export type STTEntity = {
    * Entity text as it appears in the transcript
    */
   text: string;
-  /**
-   * Provider entity type label
-   */
-  type: string;
 };
 
 /** @internal */
 export const STTEntity$inboundSchema: z.ZodType<STTEntity, unknown> = z.object({
+  type: z.string(),
   end_char: z.int(),
   start_char: z.int(),
   text: z.string(),
-  type: z.string(),
 }).transform((v) => {
   return remap$(v, {
     "end_char": "endChar",

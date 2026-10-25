@@ -23,6 +23,7 @@ export type OutputShellCallItemAction = {
  * A native `shell_call` output item matching OpenAI's Responses API shape. Emitted for the sandbox-backed `shell` tool.
  */
 export type OutputShellCallItem = {
+  type: "shell_call";
   action?: OutputShellCallItemAction | undefined;
   /**
    * The raw tool-call arguments string as emitted by the model. Echo back unchanged when replaying history; used verbatim to preserve provider prompt-cache prefixes.
@@ -34,7 +35,6 @@ export type OutputShellCallItem = {
    * Status of a shell call or its output.
    */
   status: ShellCallStatus;
-  type: "shell_call";
 };
 
 /** @internal */
@@ -67,12 +67,12 @@ export const OutputShellCallItem$inboundSchema: z.ZodType<
   OutputShellCallItem,
   unknown
 > = z.object({
+  type: z.literal("shell_call"),
   action: z.lazy(() => OutputShellCallItemAction$inboundSchema).optional(),
   arguments: z.nullable(z.string()).optional(),
   call_id: z.string(),
   id: z.string(),
   status: ShellCallStatus$inboundSchema,
-  type: z.literal("shell_call"),
 }).transform((v) => {
   return remap$(v, {
     "call_id": "callId",

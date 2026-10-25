@@ -26,8 +26,8 @@ export type InputAudioInputAudio = {
  * Audio input content item
  */
 export type InputAudio = {
-  inputAudio: InputAudioInputAudio;
   type: "input_audio";
+  inputAudio: InputAudioInputAudio;
 };
 
 /** @internal */
@@ -80,8 +80,8 @@ export function inputAudioInputAudioFromJSON(
 /** @internal */
 export const InputAudio$inboundSchema: z.ZodType<InputAudio, unknown> = z
   .object({
-    input_audio: z.lazy(() => InputAudioInputAudio$inboundSchema),
     type: z.literal("input_audio"),
+    input_audio: z.lazy(() => InputAudioInputAudio$inboundSchema),
   }).transform((v) => {
     return remap$(v, {
       "input_audio": "inputAudio",
@@ -89,8 +89,8 @@ export const InputAudio$inboundSchema: z.ZodType<InputAudio, unknown> = z
   });
 /** @internal */
 export type InputAudio$Outbound = {
-  input_audio: InputAudioInputAudio$Outbound;
   type: "input_audio";
+  input_audio: InputAudioInputAudio$Outbound;
 };
 
 /** @internal */
@@ -98,8 +98,8 @@ export const InputAudio$outboundSchema: z.ZodType<
   InputAudio$Outbound,
   InputAudio
 > = z.object({
-  inputAudio: z.lazy(() => InputAudioInputAudio$outboundSchema),
   type: z.literal("input_audio"),
+  inputAudio: z.lazy(() => InputAudioInputAudio$outboundSchema),
 }).transform((v) => {
   return remap$(v, {
     inputAudio: "input_audio",

@@ -7,6 +7,10 @@ import * as z from "zod/v4";
 
 export type ArmorRule = {
   /**
+   * Display name shown in verdict explanations; defaults to the id.
+   */
+  name?: string | undefined;
+  /**
    * Stable id, unique within its source; reported as the deciding rule when it fires.
    */
   id: string;
@@ -15,10 +19,6 @@ export type ArmorRule = {
    */
   instructions: string;
   /**
-   * Display name shown in verdict explanations; defaults to the id.
-   */
-  name?: string | undefined;
-  /**
    * Probability at or above which the rule counts as matched. Defaults to 0.6 for hard-deny and soft-deny rules and 0.7 for allow rules (an exception needs stronger evidence to clear a matched soft deny).
    */
   threshold?: number | undefined;
@@ -26,9 +26,9 @@ export type ArmorRule = {
 
 /** @internal */
 export type ArmorRule$Outbound = {
+  name?: string | undefined;
   id: string;
   instructions: string;
-  name?: string | undefined;
   threshold?: number | undefined;
 };
 
@@ -37,9 +37,9 @@ export const ArmorRule$outboundSchema: z.ZodType<
   ArmorRule$Outbound,
   ArmorRule
 > = z.object({
+  name: z.string().optional(),
   id: z.string(),
   instructions: z.string(),
-  name: z.string().optional(),
   threshold: z.number().optional(),
 });
 

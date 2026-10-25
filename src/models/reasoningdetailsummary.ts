@@ -17,11 +17,11 @@ import {
  * Reasoning detail summary schema
  */
 export type ReasoningDetailSummary = {
+  type: "reasoning.summary";
+  summary: string;
   format?: ReasoningFormat | null | undefined;
   id?: string | null | undefined;
   index?: number | undefined;
-  summary: string;
-  type: "reasoning.summary";
 };
 
 /** @internal */
@@ -29,19 +29,19 @@ export const ReasoningDetailSummary$inboundSchema: z.ZodType<
   ReasoningDetailSummary,
   unknown
 > = z.object({
+  type: z.literal("reasoning.summary"),
+  summary: z.string(),
   format: z.nullable(ReasoningFormat$inboundSchema).optional(),
   id: z.nullable(z.string()).optional(),
   index: z.int().optional(),
-  summary: z.string(),
-  type: z.literal("reasoning.summary"),
 });
 /** @internal */
 export type ReasoningDetailSummary$Outbound = {
+  type: "reasoning.summary";
+  summary: string;
   format?: string | null | undefined;
   id?: string | null | undefined;
   index?: number | undefined;
-  summary: string;
-  type: "reasoning.summary";
 };
 
 /** @internal */
@@ -49,11 +49,11 @@ export const ReasoningDetailSummary$outboundSchema: z.ZodType<
   ReasoningDetailSummary$Outbound,
   ReasoningDetailSummary
 > = z.object({
+  type: z.literal("reasoning.summary"),
+  summary: z.string(),
   format: z.nullable(ReasoningFormat$outboundSchema).optional(),
   id: z.nullable(z.string()).optional(),
   index: z.int().optional(),
-  summary: z.string(),
-  type: z.literal("reasoning.summary"),
 });
 
 export function reasoningDetailSummaryToJSON(

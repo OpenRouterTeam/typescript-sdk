@@ -22,6 +22,13 @@ import {
   ToolCallStatus$outboundSchema,
 } from "./toolcallstatus.js";
 
+export const FunctionCallOutputItemTypeFunctionCallOutput = {
+  FunctionCallOutput: "function_call_output",
+} as const;
+export type FunctionCallOutputItemTypeFunctionCallOutput = ClosedEnum<
+  typeof FunctionCallOutputItemTypeFunctionCallOutput
+>;
+
 export const FunctionCallOutputItemDetail = {
   Auto: "auto",
   High: "high",
@@ -36,10 +43,10 @@ export type FunctionCallOutputItemDetail = OpenEnum<
  * Image input content item. Provide either an image_url (a URL or a base64 data URL) or the file_id of an uploaded image.
  */
 export type FunctionCallOutputItemOutputInputImage = {
+  type: "input_image";
   detail: FunctionCallOutputItemDetail;
   fileId?: string | null | undefined;
   imageUrl?: string | null | undefined;
-  type: "input_image";
 };
 
 export type FunctionCallOutputItemOutputUnion1 =
@@ -51,25 +58,24 @@ export type FunctionCallOutputItemOutputUnion2 =
   | string
   | Array<InputText | FunctionCallOutputItemOutputInputImage | InputFile>;
 
-export const FunctionCallOutputItemTypeFunctionCallOutput = {
-  FunctionCallOutput: "function_call_output",
-} as const;
-export type FunctionCallOutputItemTypeFunctionCallOutput = ClosedEnum<
-  typeof FunctionCallOutputItemTypeFunctionCallOutput
->;
-
 /**
  * The output from a function call execution
  */
 export type FunctionCallOutputItem = {
+  type: FunctionCallOutputItemTypeFunctionCallOutput;
   callId: string;
   id?: string | null | undefined;
   output:
     | string
     | Array<InputText | FunctionCallOutputItemOutputInputImage | InputFile>;
   status?: ToolCallStatus | null | undefined;
-  type: FunctionCallOutputItemTypeFunctionCallOutput;
 };
+
+/** @internal */
+export const FunctionCallOutputItemTypeFunctionCallOutput$outboundSchema:
+  z.ZodEnum<typeof FunctionCallOutputItemTypeFunctionCallOutput> = z.enum(
+    FunctionCallOutputItemTypeFunctionCallOutput,
+  );
 
 /** @internal */
 export const FunctionCallOutputItemDetail$outboundSchema: z.ZodType<
@@ -79,10 +85,10 @@ export const FunctionCallOutputItemDetail$outboundSchema: z.ZodType<
 
 /** @internal */
 export type FunctionCallOutputItemOutputInputImage$Outbound = {
+  type: "input_image";
   detail: string;
   file_id?: string | null | undefined;
   image_url?: string | null | undefined;
-  type: "input_image";
 };
 
 /** @internal */
@@ -90,10 +96,10 @@ export const FunctionCallOutputItemOutputInputImage$outboundSchema: z.ZodType<
   FunctionCallOutputItemOutputInputImage$Outbound,
   FunctionCallOutputItemOutputInputImage
 > = z.object({
+  type: z.literal("input_image"),
   detail: FunctionCallOutputItemDetail$outboundSchema,
   fileId: z.nullable(z.string()).optional(),
   imageUrl: z.nullable(z.string()).optional(),
-  type: z.literal("input_image"),
 }).transform((v) => {
   return remap$(v, {
     fileId: "file_id",
@@ -171,13 +177,8 @@ export function functionCallOutputItemOutputUnion2ToJSON(
 }
 
 /** @internal */
-export const FunctionCallOutputItemTypeFunctionCallOutput$outboundSchema:
-  z.ZodEnum<typeof FunctionCallOutputItemTypeFunctionCallOutput> = z.enum(
-    FunctionCallOutputItemTypeFunctionCallOutput,
-  );
-
-/** @internal */
 export type FunctionCallOutputItem$Outbound = {
+  type: string;
   call_id: string;
   id?: string | null | undefined;
   output:
@@ -188,7 +189,6 @@ export type FunctionCallOutputItem$Outbound = {
       | InputFile$Outbound
     >;
   status?: string | null | undefined;
-  type: string;
 };
 
 /** @internal */
@@ -196,6 +196,7 @@ export const FunctionCallOutputItem$outboundSchema: z.ZodType<
   FunctionCallOutputItem$Outbound,
   FunctionCallOutputItem
 > = z.object({
+  type: FunctionCallOutputItemTypeFunctionCallOutput$outboundSchema,
   callId: z.string(),
   id: z.nullable(z.string()).optional(),
   output: z.union([
@@ -207,7 +208,6 @@ export const FunctionCallOutputItem$outboundSchema: z.ZodType<
     ])),
   ]),
   status: z.nullable(ToolCallStatus$outboundSchema).optional(),
-  type: FunctionCallOutputItemTypeFunctionCallOutput$outboundSchema,
 }).transform((v) => {
   return remap$(v, {
     callId: "call_id",

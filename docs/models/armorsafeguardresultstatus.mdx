@@ -8,13 +8,13 @@ title: "ArmorSafeguardResultStatus"
 import { ArmorSafeguardResultStatus } from "@openrouter/sdk/models";
 
 let value: ArmorSafeguardResultStatus = {
+  type: "available",
   toolUses: {
     "key": {
-      outcome: "flagged",
       type: "evaluated",
+      outcome: "flagged",
     },
   },
-  type: "available",
 };
 ```
 
@@ -22,5 +22,5 @@ let value: ArmorSafeguardResultStatus = {
 
 | Field                                                      | Type                                                       | Required                                                   | Description                                                |
 | ---------------------------------------------------------- | ---------------------------------------------------------- | ---------------------------------------------------------- | ---------------------------------------------------------- |
-| `toolUses`                                                 | Record\<string, *models.ToolUses*>                          | ✔️                                         | N/A                                                        |
 | `type`                                                     | [models.TypeAvailableEnum](../models/typeavailableenum.mdx) | ✔️                                         | N/A                                                        |
+| `toolUses`                                                 | Record\<string, *models.ToolUses*>                          | ✔️                                         | N/A                                                        |

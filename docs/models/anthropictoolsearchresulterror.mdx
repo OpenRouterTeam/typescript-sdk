@@ -8,9 +8,9 @@ title: "AnthropicToolSearchResultError"
 import { AnthropicToolSearchResultError } from "@openrouter/sdk/models";
 
 let value: AnthropicToolSearchResultError = {
+  type: "tool_search_tool_result_error",
   errorCode: "unavailable",
   errorMessage: "<value>",
-  type: "tool_search_tool_result_error",
 };
 ```
 
@@ -18,6 +18,6 @@ let value: AnthropicToolSearchResultError = {
 
 | Field                                                                            | Type                                                                             | Required                                                                         | Description                                                                      | Example                                                                          |
 | -------------------------------------------------------------------------------- | -------------------------------------------------------------------------------- | -------------------------------------------------------------------------------- | -------------------------------------------------------------------------------- | -------------------------------------------------------------------------------- |
+| `type`                                                                           | *"tool_search_tool_result_error"*                                                | ✔️                                                               | N/A                                                                              |                                                                                  |
 | `errorCode`                                                                      | [models.AnthropicServerToolErrorCode](../models/anthropicservertoolerrorcode.mdx) | ✔️                                                               | N/A                                                                              | unavailable                                                                      |
 | `errorMessage`                                                                   | *string*                                                                         | ✔️                                                               | N/A                                                                              |                                                                                  |
-| `type`                                                                           | *"tool_search_tool_result_error"*                                                | ✔️                                                               | N/A                                                                              |                                                                                  |

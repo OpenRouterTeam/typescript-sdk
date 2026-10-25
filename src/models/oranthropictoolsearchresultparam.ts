@@ -10,16 +10,16 @@ import { remap as remap$ } from "../lib/primitives.js";
  * Router-owned deferred discovery result for continuation.
  */
 export type ORAnthropicToolSearchResultParam = {
+  type: "openrouter_tool_search_result";
   content: { [k: string]: any };
   toolUseId: string;
-  type: "openrouter_tool_search_result";
 };
 
 /** @internal */
 export type ORAnthropicToolSearchResultParam$Outbound = {
+  type: "openrouter_tool_search_result";
   content: { [k: string]: any };
   tool_use_id: string;
-  type: "openrouter_tool_search_result";
 };
 
 /** @internal */
@@ -27,9 +27,9 @@ export const ORAnthropicToolSearchResultParam$outboundSchema: z.ZodType<
   ORAnthropicToolSearchResultParam$Outbound,
   ORAnthropicToolSearchResultParam
 > = z.object({
+  type: z.literal("openrouter_tool_search_result"),
   content: z.record(z.string(), z.any()),
   toolUseId: z.string(),
-  type: z.literal("openrouter_tool_search_result"),
 }).transform((v) => {
   return remap$(v, {
     toolUseId: "tool_use_id",

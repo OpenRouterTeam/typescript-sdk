@@ -10,8 +10,8 @@ Task budget for an agentic turn. The model sees a countdown of remaining tokens 
 import { TaskBudget } from "@openrouter/sdk/models";
 
 let value: TaskBudget = {
-  total: 400000,
   type: "tokens",
+  total: 400000,
 };
 ```
 
@@ -19,6 +19,6 @@ let value: TaskBudget = {
 
 | Field                                        | Type                                         | Required                                     | Description                                  |
 | -------------------------------------------- | -------------------------------------------- | -------------------------------------------- | -------------------------------------------- |
+| `type`                                       | [models.TypeTokens](../models/typetokens.mdx) | ✔️                           | N/A                                          |
 | `remaining`                                  | *number*                                     | ➖                           | N/A                                          |
 | `total`                                      | *number*                                     | ✔️                           | N/A                                          |
-| `type`                                       | [models.TypeTokens](../models/typetokens.mdx) | ✔️                           | N/A                                          |

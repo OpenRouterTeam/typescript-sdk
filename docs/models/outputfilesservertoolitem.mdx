@@ -10,8 +10,8 @@ An openrouter:files server tool output item
 import { OutputFilesServerToolItem } from "@openrouter/sdk/models";
 
 let value: OutputFilesServerToolItem = {
-  status: "completed",
   type: "openrouter:files",
+  status: "completed",
 };
 ```
 
@@ -19,6 +19,7 @@ let value: OutputFilesServerToolItem = {
 
 | Field                                                                              | Type                                                                               | Required                                                                           | Description                                                                        | Example                                                                            |
 | ---------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------- |
+| `type`                                                                             | [models.OutputFilesServerToolItemType](../models/outputfilesservertoolitemtype.mdx) | ✔️                                                                 | N/A                                                                                |                                                                                    |
 | `arguments`                                                                        | *string*                                                                           | ➖                                                                 | The raw tool-call arguments string as emitted by the model.                        |                                                                                    |
 | `callId`                                                                           | *string*                                                                           | ➖                                                                 | The model-generated tool call id from the originating turn.                        |                                                                                    |
 | `error`                                                                            | *string*                                                                           | ➖                                                                 | Error message when the file operation failed.                                      |                                                                                    |
@@ -28,4 +29,3 @@ let value: OutputFilesServerToolItem = {
 | `operation`                                                                        | *string*                                                                           | ➖                                                                 | The file operation performed (list, read, write, or edit).                         |                                                                                    |
 | `result`                                                                           | *string*                                                                           | ➖                                                                 | JSON-serialized result of the file operation.                                      |                                                                                    |
 | `status`                                                                           | [models.ToolCallStatus](../models/toolcallstatus.mdx)                               | ✔️                                                                 | N/A                                                                                | completed                                                                          |
-| `type`                                                                             | [models.OutputFilesServerToolItemType](../models/outputfilesservertoolitemtype.mdx) | ✔️                                                                 | N/A                                                                                |                                                                                    |

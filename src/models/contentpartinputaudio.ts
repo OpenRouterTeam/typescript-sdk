@@ -12,14 +12,14 @@ import {
 } from "./multimodalmedia.js";
 
 export type ContentPartInputAudio = {
-  inputAudio: MultimodalMedia;
   type: "input_audio";
+  inputAudio: MultimodalMedia;
 };
 
 /** @internal */
 export type ContentPartInputAudio$Outbound = {
-  input_audio: MultimodalMedia$Outbound;
   type: "input_audio";
+  input_audio: MultimodalMedia$Outbound;
 };
 
 /** @internal */
@@ -27,8 +27,8 @@ export const ContentPartInputAudio$outboundSchema: z.ZodType<
   ContentPartInputAudio$Outbound,
   ContentPartInputAudio
 > = z.object({
-  inputAudio: MultimodalMedia$outboundSchema,
   type: z.literal("input_audio"),
+  inputAudio: MultimodalMedia$outboundSchema,
 }).transform((v) => {
   return remap$(v, {
     inputAudio: "input_audio",

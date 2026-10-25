@@ -50,23 +50,6 @@ export class Files extends ClientSDK {
   }
 
   /**
-   * Delete a file
-   *
-   * @remarks
-   * Deletes a file owned by the requesting workspace. Deletion is irreversible.
-   */
-  async delete(
-    request: operations.DeleteFileRequest,
-    options?: RequestOptions,
-  ): Promise<models.FileDeleteResponse> {
-    return unwrapAsync(filesDelete(
-      this,
-      request,
-      options,
-    ));
-  }
-
-  /**
    * Get file metadata
    *
    * @remarks
@@ -77,6 +60,23 @@ export class Files extends ClientSDK {
     options?: RequestOptions,
   ): Promise<models.FileResponse> {
     return unwrapAsync(filesRetrieve(
+      this,
+      request,
+      options,
+    ));
+  }
+
+  /**
+   * Delete a file
+   *
+   * @remarks
+   * Deletes a file owned by the requesting workspace. Deletion is irreversible.
+   */
+  async delete(
+    request: operations.DeleteFileRequest,
+    options?: RequestOptions,
+  ): Promise<models.FileDeleteResponse> {
+    return unwrapAsync(filesDelete(
       this,
       request,
       options,

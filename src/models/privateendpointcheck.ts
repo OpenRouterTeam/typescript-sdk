@@ -15,13 +15,13 @@ import {
 
 export type PrivateEndpointCheck = {
   /**
-   * Model the upstream reported serving, when it differs from the request.
-   */
-  actualModel?: string | null | undefined;
-  /**
    * Check name.
    */
   name: string;
+  /**
+   * Model the upstream reported serving, when it differs from the request.
+   */
+  actualModel?: string | null | undefined;
   passed: boolean;
   /**
    * Why the check failed.
@@ -42,8 +42,8 @@ export const PrivateEndpointCheck$inboundSchema: z.ZodType<
   PrivateEndpointCheck,
   unknown
 > = z.object({
-  actual_model: z.nullable(z.string()).optional(),
   name: z.string(),
+  actual_model: z.nullable(z.string()).optional(),
   passed: z.boolean(),
   reason: PrivateEndpointCheckReason$inboundSchema.optional(),
   upstream_message: z.nullable(z.string()).optional(),

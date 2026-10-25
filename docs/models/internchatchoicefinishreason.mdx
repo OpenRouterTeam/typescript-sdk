@@ -1,0 +1,21 @@
+---
+title: "InternChatChoiceFinishReason"
+---
+
+`null` while streaming. `stop` when the run completed, `tool_calls` when the run is waiting for the caller to answer the streamed tool call, `error` on the terminal error chunk.
+
+## Example Usage
+
+```typescript
+import { InternChatChoiceFinishReason } from "@openrouter/sdk/models";
+
+let value: InternChatChoiceFinishReason = "tool_calls";
+
+// Open enum: unrecognized values are captured as Unrecognized<string>
+```
+
+## Values
+
+```typescript
+"error" | "stop" | "tool_calls" | Unrecognized<string>
+```

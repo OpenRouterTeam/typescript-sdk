@@ -30,6 +30,10 @@ export type BYOKKeyDeclaredRegion = OpenEnum<typeof BYOKKeyDeclaredRegion>;
 
 export type BYOKKey = {
   /**
+   * Optional human-readable name for the credential.
+   */
+  name?: string | null | undefined;
+  /**
    * Optional allowlist of OpenRouter API key hashes (`api_keys.hash`) that may use this credential. `null` means no restriction.
    */
   allowedApiKeyHashes: Array<string> | null;
@@ -78,10 +82,6 @@ export type BYOKKey = {
    */
   label: string;
   /**
-   * Optional human-readable name for the credential.
-   */
-  name?: string | null | undefined;
-  /**
    * The upstream provider this credential authenticates against, as a lowercase slug (e.g. `openai`, `anthropic`, `amazon-bedrock`).
    */
   provider: BYOKProviderSlug;
@@ -103,6 +103,7 @@ export const BYOKKeyDeclaredRegion$inboundSchema: z.ZodType<
 
 /** @internal */
 export const BYOKKey$inboundSchema: z.ZodType<BYOKKey, unknown> = z.object({
+  name: z.nullable(z.string()).optional(),
   allowed_api_key_hashes: z.nullable(z.array(z.string())),
   allowed_models: z.nullable(z.array(z.string())),
   allowed_user_ids: z.nullable(z.array(z.string())),
@@ -115,7 +116,6 @@ export const BYOKKey$inboundSchema: z.ZodType<BYOKKey, unknown> = z.object({
   is_fallback: z.boolean(),
   is_required: z.boolean(),
   label: z.string(),
-  name: z.nullable(z.string()).optional(),
   provider: BYOKProviderSlug$inboundSchema,
   sort_order: z.int(),
   workspace_id: z.nullable(z.string()),

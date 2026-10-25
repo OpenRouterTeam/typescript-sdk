@@ -11,8 +11,8 @@ Content part for chat completion messages
 
 ```typescript
 const value: models.ChatContentFile = {
-  file: {},
   type: "file",
+  file: {},
 };
 ```
 
@@ -20,10 +20,10 @@ const value: models.ChatContentFile = {
 
 ```typescript
 const value: models.ChatContentImage = {
+  type: "image_url",
   imageUrl: {
     url: "https://vague-assist.org/",
   },
-  type: "image_url",
 };
 ```
 
@@ -31,11 +31,11 @@ const value: models.ChatContentImage = {
 
 ```typescript
 const value: models.ChatContentAudio = {
+  type: "input_audio",
   inputAudio: {
     data: "<value>",
     format: "<value>",
   },
-  type: "input_audio",
 };
 ```
 
@@ -54,8 +54,8 @@ const value: models.LegacyChatContentVideo = {
 
 ```typescript
 const value: models.ChatContentText = {
-  text: "Hello, world!",
   type: "text",
+  text: "Hello, world!",
 };
 ```
 

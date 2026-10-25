@@ -29,13 +29,13 @@ export type ChatContentVideoInputProcessing = OpenEnum<
  */
 export type ChatContentVideoInput = {
   /**
-   * Video processing mode. `agentic` enables agentic video processing and `static` forces fixed-rate frame sampling on providers that support it (currently Google Gemini).
-   */
-  processing?: ChatContentVideoInputProcessing | undefined;
-  /**
    * URL of the video (data: URLs supported)
    */
   url: string;
+  /**
+   * Video processing mode. `agentic` enables agentic video processing and `static` forces fixed-rate frame sampling on providers that support it (currently Google Gemini).
+   */
+  processing?: ChatContentVideoInputProcessing | undefined;
 };
 
 /** @internal */
@@ -54,13 +54,13 @@ export const ChatContentVideoInput$inboundSchema: z.ZodType<
   ChatContentVideoInput,
   unknown
 > = z.object({
-  processing: ChatContentVideoInputProcessing$inboundSchema.optional(),
   url: z.string(),
+  processing: ChatContentVideoInputProcessing$inboundSchema.optional(),
 });
 /** @internal */
 export type ChatContentVideoInput$Outbound = {
-  processing?: string | undefined;
   url: string;
+  processing?: string | undefined;
 };
 
 /** @internal */
@@ -68,8 +68,8 @@ export const ChatContentVideoInput$outboundSchema: z.ZodType<
   ChatContentVideoInput$Outbound,
   ChatContentVideoInput
 > = z.object({
-  processing: ChatContentVideoInputProcessing$outboundSchema.optional(),
   url: z.string(),
+  processing: ChatContentVideoInputProcessing$outboundSchema.optional(),
 });
 
 export function chatContentVideoInputToJSON(

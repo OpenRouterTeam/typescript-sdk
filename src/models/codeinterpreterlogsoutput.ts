@@ -9,8 +9,8 @@ import { Result as SafeParseResult } from "../types/fp.js";
 import { SDKValidationError } from "./errors/sdkvalidationerror.js";
 
 export type CodeInterpreterLogsOutput = {
-  logs: string;
   type: "logs";
+  logs: string;
 };
 
 /** @internal */
@@ -18,13 +18,13 @@ export const CodeInterpreterLogsOutput$inboundSchema: z.ZodType<
   CodeInterpreterLogsOutput,
   unknown
 > = z.object({
-  logs: z.string(),
   type: z.literal("logs"),
+  logs: z.string(),
 });
 /** @internal */
 export type CodeInterpreterLogsOutput$Outbound = {
-  logs: string;
   type: "logs";
+  logs: string;
 };
 
 /** @internal */
@@ -32,8 +32,8 @@ export const CodeInterpreterLogsOutput$outboundSchema: z.ZodType<
   CodeInterpreterLogsOutput$Outbound,
   CodeInterpreterLogsOutput
 > = z.object({
-  logs: z.string(),
   type: z.literal("logs"),
+  logs: z.string(),
 });
 
 export function codeInterpreterLogsOutputToJSON(

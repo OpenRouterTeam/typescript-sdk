@@ -11,6 +11,16 @@ import { ClosedEnum, OpenEnum } from "../types/enums.js";
 import { Result as SafeParseResult } from "../types/fp.js";
 import { SDKValidationError } from "./errors/sdkvalidationerror.js";
 
+export const TypeCodeInterpreter = {
+  CodeInterpreter: "code_interpreter",
+} as const;
+export type TypeCodeInterpreter = ClosedEnum<typeof TypeCodeInterpreter>;
+
+export const ContainerType = {
+  Auto: "auto",
+} as const;
+export type ContainerType = ClosedEnum<typeof ContainerType>;
+
 export const MemoryLimit = {
   Oneg: "1g",
   Fourg: "4g",
@@ -19,38 +29,30 @@ export const MemoryLimit = {
 } as const;
 export type MemoryLimit = OpenEnum<typeof MemoryLimit>;
 
-export const ContainerType = {
-  Auto: "auto",
-} as const;
-export type ContainerType = ClosedEnum<typeof ContainerType>;
-
 export type ContainerAuto = {
+  type: ContainerType;
   fileIds?: Array<string> | undefined;
   memoryLimit?: MemoryLimit | null | undefined;
-  type: ContainerType;
 };
 
 export type Container = ContainerAuto | string;
-
-export const TypeCodeInterpreter = {
-  CodeInterpreter: "code_interpreter",
-} as const;
-export type TypeCodeInterpreter = ClosedEnum<typeof TypeCodeInterpreter>;
 
 /**
  * Code interpreter tool configuration
  */
 export type CodeInterpreterServerTool = {
-  container: ContainerAuto | string;
   type: TypeCodeInterpreter;
+  container: ContainerAuto | string;
 };
 
 /** @internal */
-export const MemoryLimit$inboundSchema: z.ZodType<MemoryLimit, unknown> =
-  openEnums.inboundSchema(MemoryLimit);
+export const TypeCodeInterpreter$inboundSchema: z.ZodEnum<
+  typeof TypeCodeInterpreter
+> = z.enum(TypeCodeInterpreter);
 /** @internal */
-export const MemoryLimit$outboundSchema: z.ZodType<string, MemoryLimit> =
-  openEnums.outboundSchema(MemoryLimit);
+export const TypeCodeInterpreter$outboundSchema: z.ZodEnum<
+  typeof TypeCodeInterpreter
+> = TypeCodeInterpreter$inboundSchema;
 
 /** @internal */
 export const ContainerType$inboundSchema: z.ZodEnum<typeof ContainerType> = z
@@ -60,11 +62,18 @@ export const ContainerType$outboundSchema: z.ZodEnum<typeof ContainerType> =
   ContainerType$inboundSchema;
 
 /** @internal */
+export const MemoryLimit$inboundSchema: z.ZodType<MemoryLimit, unknown> =
+  openEnums.inboundSchema(MemoryLimit);
+/** @internal */
+export const MemoryLimit$outboundSchema: z.ZodType<string, MemoryLimit> =
+  openEnums.outboundSchema(MemoryLimit);
+
+/** @internal */
 export const ContainerAuto$inboundSchema: z.ZodType<ContainerAuto, unknown> = z
   .object({
+    type: ContainerType$inboundSchema,
     file_ids: z.array(z.string()).optional(),
     memory_limit: z.nullable(MemoryLimit$inboundSchema).optional(),
-    type: ContainerType$inboundSchema,
   }).transform((v) => {
     return remap$(v, {
       "file_ids": "fileIds",
@@ -73,9 +82,9 @@ export const ContainerAuto$inboundSchema: z.ZodType<ContainerAuto, unknown> = z
   });
 /** @internal */
 export type ContainerAuto$Outbound = {
+  type: string;
   file_ids?: Array<string> | undefined;
   memory_limit?: string | null | undefined;
-  type: string;
 };
 
 /** @internal */
@@ -83,9 +92,9 @@ export const ContainerAuto$outboundSchema: z.ZodType<
   ContainerAuto$Outbound,
   ContainerAuto
 > = z.object({
+  type: ContainerType$outboundSchema,
   fileIds: z.array(z.string()).optional(),
   memoryLimit: z.nullable(MemoryLimit$outboundSchema).optional(),
-  type: ContainerType$outboundSchema,
 }).transform((v) => {
   return remap$(v, {
     fileIds: "file_ids",
@@ -134,26 +143,17 @@ export function containerFromJSON(
 }
 
 /** @internal */
-export const TypeCodeInterpreter$inboundSchema: z.ZodEnum<
-  typeof TypeCodeInterpreter
-> = z.enum(TypeCodeInterpreter);
-/** @internal */
-export const TypeCodeInterpreter$outboundSchema: z.ZodEnum<
-  typeof TypeCodeInterpreter
-> = TypeCodeInterpreter$inboundSchema;
-
-/** @internal */
 export const CodeInterpreterServerTool$inboundSchema: z.ZodType<
   CodeInterpreterServerTool,
   unknown
 > = z.object({
-  container: z.union([z.lazy(() => ContainerAuto$inboundSchema), z.string()]),
   type: TypeCodeInterpreter$inboundSchema,
+  container: z.union([z.lazy(() => ContainerAuto$inboundSchema), z.string()]),
 });
 /** @internal */
 export type CodeInterpreterServerTool$Outbound = {
-  container: ContainerAuto$Outbound | string;
   type: string;
+  container: ContainerAuto$Outbound | string;
 };
 
 /** @internal */
@@ -161,8 +161,8 @@ export const CodeInterpreterServerTool$outboundSchema: z.ZodType<
   CodeInterpreterServerTool$Outbound,
   CodeInterpreterServerTool
 > = z.object({
-  container: z.union([z.lazy(() => ContainerAuto$outboundSchema), z.string()]),
   type: TypeCodeInterpreter$outboundSchema,
+  container: z.union([z.lazy(() => ContainerAuto$outboundSchema), z.string()]),
 });
 
 export function codeInterpreterServerToolToJSON(

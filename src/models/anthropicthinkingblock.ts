@@ -9,9 +9,9 @@ import { Result as SafeParseResult } from "../types/fp.js";
 import { SDKValidationError } from "./errors/sdkvalidationerror.js";
 
 export type AnthropicThinkingBlock = {
+  type: "thinking";
   signature: string;
   thinking: string;
-  type: "thinking";
 };
 
 /** @internal */
@@ -19,9 +19,9 @@ export const AnthropicThinkingBlock$inboundSchema: z.ZodType<
   AnthropicThinkingBlock,
   unknown
 > = z.object({
+  type: z.literal("thinking"),
   signature: z.string(),
   thinking: z.string(),
-  type: z.literal("thinking"),
 });
 
 export function anthropicThinkingBlockFromJSON(

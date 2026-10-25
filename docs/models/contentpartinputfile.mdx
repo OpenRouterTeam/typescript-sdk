@@ -8,10 +8,10 @@ title: "ContentPartInputFile"
 import { ContentPartInputFile } from "@openrouter/sdk/models";
 
 let value: ContentPartInputFile = {
+  type: "input_file",
   inputFile: {
     data: "data:application/pdf;base64,JVBERi0xLjQKJeLjz9MKMyAw...",
   },
-  type: "input_file",
 };
 ```
 
@@ -19,5 +19,5 @@ let value: ContentPartInputFile = {
 
 | Field                                                                               | Type                                                                                | Required                                                                            | Description                                                                         | Example                                                                             |
 | ----------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------- |
-| `inputFile`                                                                         | [models.MultimodalMedia](../models/multimodalmedia.mdx)                              | ✔️                                                                  | N/A                                                                                 | \{<br/>"data": "data:audio/wav;base64,UklGRiQAAABXQVZFZm10IBAAAAA...",<br/>"format": "wav"<br/>} |
 | `type`                                                                              | *"input_file"*                                                                      | ✔️                                                                  | N/A                                                                                 |                                                                                     |
+| `inputFile`                                                                         | [models.MultimodalMedia](../models/multimodalmedia.mdx)                              | ✔️                                                                  | N/A                                                                                 | \{<br/>"data": "data:audio/wav;base64,UklGRiQAAABXQVZFZm10IBAAAAA...",<br/>"format": "wav"<br/>} |

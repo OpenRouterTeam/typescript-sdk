@@ -33,15 +33,15 @@ export type AnthropicToolSearchToolBm25Type = OpenEnum<
 >;
 
 export type AnthropicToolSearchToolBm25 = {
+  name: AnthropicToolSearchToolBm25Name;
+  type: AnthropicToolSearchToolBm25Type;
   allowedCallers?: Array<AnthropicAllowedCallers> | undefined;
   /**
    * Enable automatic prompt caching. When set at the top level, the system automatically applies cache breakpoints to the last cacheable block in the request. When set on an individual content block, it marks an explicit cache breakpoint; block-level markers also work on OpenAI models that support explicit prompt caching — OpenRouter converts them to the provider's native format.
    */
   cacheControl?: AnthropicCacheControlDirective | undefined;
   deferLoading?: boolean | undefined;
-  name: AnthropicToolSearchToolBm25Name;
   strict?: boolean | undefined;
-  type: AnthropicToolSearchToolBm25Type;
 };
 
 /** @internal */
@@ -57,12 +57,12 @@ export const AnthropicToolSearchToolBm25Type$outboundSchema: z.ZodType<
 
 /** @internal */
 export type AnthropicToolSearchToolBm25$Outbound = {
+  name: string;
+  type: string;
   allowed_callers?: Array<string> | undefined;
   cache_control?: AnthropicCacheControlDirective$Outbound | undefined;
   defer_loading?: boolean | undefined;
-  name: string;
   strict?: boolean | undefined;
-  type: string;
 };
 
 /** @internal */
@@ -70,12 +70,12 @@ export const AnthropicToolSearchToolBm25$outboundSchema: z.ZodType<
   AnthropicToolSearchToolBm25$Outbound,
   AnthropicToolSearchToolBm25
 > = z.object({
+  name: AnthropicToolSearchToolBm25Name$outboundSchema,
+  type: AnthropicToolSearchToolBm25Type$outboundSchema,
   allowedCallers: z.array(AnthropicAllowedCallers$outboundSchema).optional(),
   cacheControl: AnthropicCacheControlDirective$outboundSchema.optional(),
   deferLoading: z.boolean().optional(),
-  name: AnthropicToolSearchToolBm25Name$outboundSchema,
   strict: z.boolean().optional(),
-  type: AnthropicToolSearchToolBm25Type$outboundSchema,
 }).transform((v) => {
   return remap$(v, {
     allowedCallers: "allowed_callers",

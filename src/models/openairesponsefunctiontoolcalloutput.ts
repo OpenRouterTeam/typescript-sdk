@@ -19,6 +19,13 @@ import {
   ToolCallStatus$inboundSchema,
 } from "./toolcallstatus.js";
 
+export const OpenAIResponseFunctionToolCallOutputType = {
+  FunctionCallOutput: "function_call_output",
+} as const;
+export type OpenAIResponseFunctionToolCallOutputType = ClosedEnum<
+  typeof OpenAIResponseFunctionToolCallOutputType
+>;
+
 export type OpenAIResponseFunctionToolCallOutputOutput1 =
   | InputFile
   | (InputImage & { type: "input_image" })
@@ -34,14 +41,8 @@ export type OpenAIResponseFunctionToolCallOutputOutput2 =
     | discriminatedUnionTypes.Unknown<"type">
   >;
 
-export const OpenAIResponseFunctionToolCallOutputType = {
-  FunctionCallOutput: "function_call_output",
-} as const;
-export type OpenAIResponseFunctionToolCallOutputType = ClosedEnum<
-  typeof OpenAIResponseFunctionToolCallOutputType
->;
-
 export type OpenAIResponseFunctionToolCallOutput = {
+  type: OpenAIResponseFunctionToolCallOutputType;
   callId: string;
   id?: string | null | undefined;
   output:
@@ -53,8 +54,12 @@ export type OpenAIResponseFunctionToolCallOutput = {
       | discriminatedUnionTypes.Unknown<"type">
     >;
   status?: ToolCallStatus | null | undefined;
-  type: OpenAIResponseFunctionToolCallOutputType;
 };
+
+/** @internal */
+export const OpenAIResponseFunctionToolCallOutputType$inboundSchema: z.ZodEnum<
+  typeof OpenAIResponseFunctionToolCallOutputType
+> = z.enum(OpenAIResponseFunctionToolCallOutputType);
 
 /** @internal */
 export const OpenAIResponseFunctionToolCallOutputOutput1$inboundSchema:
@@ -115,15 +120,11 @@ export function openAIResponseFunctionToolCallOutputOutput2FromJSON(
 }
 
 /** @internal */
-export const OpenAIResponseFunctionToolCallOutputType$inboundSchema: z.ZodEnum<
-  typeof OpenAIResponseFunctionToolCallOutputType
-> = z.enum(OpenAIResponseFunctionToolCallOutputType);
-
-/** @internal */
 export const OpenAIResponseFunctionToolCallOutput$inboundSchema: z.ZodType<
   OpenAIResponseFunctionToolCallOutput,
   unknown
 > = z.object({
+  type: OpenAIResponseFunctionToolCallOutputType$inboundSchema,
   call_id: z.string(),
   id: z.nullable(z.string()).optional(),
   output: z.union([
@@ -139,7 +140,6 @@ export const OpenAIResponseFunctionToolCallOutput$inboundSchema: z.ZodType<
     ),
   ]),
   status: z.nullable(ToolCallStatus$inboundSchema).optional(),
-  type: OpenAIResponseFunctionToolCallOutputType$inboundSchema,
 }).transform((v) => {
   return remap$(v, {
     "call_id": "callId",

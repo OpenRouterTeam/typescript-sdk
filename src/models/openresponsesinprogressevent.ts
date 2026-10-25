@@ -17,12 +17,12 @@ import {
  * Event emitted when a response is in progress
  */
 export type OpenResponsesInProgressEvent = {
+  type: "response.in_progress";
   /**
    * Complete non-streaming response from the Responses API
    */
   response: OpenResponsesResult;
   sequenceNumber: number;
-  type: "response.in_progress";
 };
 
 /** @internal */
@@ -30,9 +30,9 @@ export const OpenResponsesInProgressEvent$inboundSchema: z.ZodType<
   OpenResponsesInProgressEvent,
   unknown
 > = z.object({
+  type: z.literal("response.in_progress"),
   response: OpenResponsesResult$inboundSchema,
   sequence_number: z.int(),
-  type: z.literal("response.in_progress"),
 }).transform((v) => {
   return remap$(v, {
     "sequence_number": "sequenceNumber",

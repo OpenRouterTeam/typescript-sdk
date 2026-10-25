@@ -10,6 +10,7 @@ Event emitted when a text delta is streamed
 import { TextDeltaEvent } from "@openrouter/sdk/models";
 
 let value: TextDeltaEvent = {
+  type: "response.output_text.delta",
   contentIndex: 391056,
   delta: "<value>",
   itemId: "<id>",
@@ -21,7 +22,6 @@ let value: TextDeltaEvent = {
   ],
   outputIndex: 776894,
   sequenceNumber: 0,
-  type: "response.output_text.delta",
 };
 ```
 
@@ -29,10 +29,10 @@ let value: TextDeltaEvent = {
 
 | Field                                                | Type                                                 | Required                                             | Description                                          |
 | ---------------------------------------------------- | ---------------------------------------------------- | ---------------------------------------------------- | ---------------------------------------------------- |
+| `type`                                               | *"response.output_text.delta"*                       | ✔️                                   | N/A                                                  |
 | `contentIndex`                                       | *number*                                             | ✔️                                   | N/A                                                  |
 | `delta`                                              | *string*                                             | ✔️                                   | N/A                                                  |
 | `itemId`                                             | *string*                                             | ✔️                                   | N/A                                                  |
 | `logprobs`                                           | [models.StreamLogprob](../models/streamlogprob.mdx)[] | ✔️                                   | N/A                                                  |
 | `outputIndex`                                        | *number*                                             | ✔️                                   | N/A                                                  |
 | `sequenceNumber`                                     | *number*                                             | ✔️                                   | N/A                                                  |
-| `type`                                               | *"response.output_text.delta"*                       | ✔️                                   | N/A                                                  |

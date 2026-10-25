@@ -12,9 +12,9 @@ import { SDKValidationError } from "./errors/sdkvalidationerror.js";
  * The `create_file` variant of an `apply_patch_call.operation`. Carries a V4A diff describing the new file contents.
  */
 export type ApplyPatchCreateFileOperation = {
+  type: "create_file";
   diff: string;
   path: string;
-  type: "create_file";
 };
 
 /** @internal */
@@ -22,15 +22,15 @@ export const ApplyPatchCreateFileOperation$inboundSchema: z.ZodType<
   ApplyPatchCreateFileOperation,
   unknown
 > = z.object({
+  type: z.literal("create_file"),
   diff: z.string(),
   path: z.string(),
-  type: z.literal("create_file"),
 });
 /** @internal */
 export type ApplyPatchCreateFileOperation$Outbound = {
+  type: "create_file";
   diff: string;
   path: string;
-  type: "create_file";
 };
 
 /** @internal */
@@ -38,9 +38,9 @@ export const ApplyPatchCreateFileOperation$outboundSchema: z.ZodType<
   ApplyPatchCreateFileOperation$Outbound,
   ApplyPatchCreateFileOperation
 > = z.object({
+  type: z.literal("create_file"),
   diff: z.string(),
   path: z.string(),
-  type: z.literal("create_file"),
 });
 
 export function applyPatchCreateFileOperationToJSON(

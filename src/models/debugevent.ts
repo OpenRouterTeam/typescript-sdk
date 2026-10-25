@@ -34,9 +34,9 @@ export type DebugEventDebug = {
  * Debug event emitted when debug.echo_upstream_body is true. Contains the transformed upstream request body or timing milestones.
  */
 export type DebugEvent = {
+  type: "response.debug";
   debug: DebugEventDebug;
   sequenceNumber: number;
-  type: "response.debug";
 };
 
 /** @internal */
@@ -96,9 +96,9 @@ export function debugEventDebugFromJSON(
 /** @internal */
 export const DebugEvent$inboundSchema: z.ZodType<DebugEvent, unknown> = z
   .object({
+    type: z.literal("response.debug"),
     debug: z.lazy(() => DebugEventDebug$inboundSchema),
     sequence_number: z.int(),
-    type: z.literal("response.debug"),
   }).transform((v) => {
     return remap$(v, {
       "sequence_number": "sequenceNumber",

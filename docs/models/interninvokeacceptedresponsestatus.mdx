@@ -1,0 +1,21 @@
+---
+title: "InternInvokeAcceptedResponseStatus"
+---
+
+`started` when a new run began. `steered` when the session already had a run going and the prompt was delivered into it instead.
+
+## Example Usage
+
+```typescript
+import { InternInvokeAcceptedResponseStatus } from "@openrouter/sdk/models";
+
+let value: InternInvokeAcceptedResponseStatus = "started";
+
+// Open enum: unrecognized values are captured as Unrecognized<string>
+```
+
+## Values
+
+```typescript
+"started" | "steered" | Unrecognized<string>
+```

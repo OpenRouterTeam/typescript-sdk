@@ -10,8 +10,8 @@ An openrouter:file_search server tool output item
 import { OutputFileSearchServerToolItem } from "@openrouter/sdk/models";
 
 let value: OutputFileSearchServerToolItem = {
-  status: "completed",
   type: "openrouter:file_search",
+  status: "completed",
 };
 ```
 
@@ -19,7 +19,7 @@ let value: OutputFileSearchServerToolItem = {
 
 | Field                                                                                        | Type                                                                                         | Required                                                                                     | Description                                                                                  | Example                                                                                      |
 | -------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------- |
+| `type`                                                                                       | [models.OutputFileSearchServerToolItemType](../models/outputfilesearchservertoolitemtype.mdx) | ✔️                                                                           | N/A                                                                                          |                                                                                              |
 | `id`                                                                                         | *string*                                                                                     | ➖                                                                           | N/A                                                                                          |                                                                                              |
 | `queries`                                                                                    | *string*[]                                                                                   | ➖                                                                           | N/A                                                                                          |                                                                                              |
 | `status`                                                                                     | [models.ToolCallStatus](../models/toolcallstatus.mdx)                                         | ✔️                                                                           | N/A                                                                                          | completed                                                                                    |
-| `type`                                                                                       | [models.OutputFileSearchServerToolItemType](../models/outputfilesearchservertoolitemtype.mdx) | ✔️                                                                           | N/A                                                                                          |                                                                                              |

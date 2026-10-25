@@ -29,6 +29,10 @@ export type CreateBYOKKeyRequestDeclaredRegion = OpenEnum<
 
 export type CreateBYOKKeyRequest = {
   /**
+   * Optional human-readable name for the credential.
+   */
+  name?: string | null | undefined;
+  /**
    * Optional allowlist of OpenRouter API key hashes (`api_keys.hash`) that may use this credential. `null` means no restriction. Must contain at least one hash if provided. Hashes that do not belong to your account return a 400.
    */
   allowedApiKeyHashes?: Array<string> | null | undefined;
@@ -69,10 +73,6 @@ export type CreateBYOKKeyRequest = {
    */
   key: string;
   /**
-   * Optional human-readable name for the credential.
-   */
-  name?: string | null | undefined;
-  /**
    * The upstream provider this credential authenticates against, as a lowercase slug (e.g. `openai`, `anthropic`, `amazon-bedrock`).
    */
   provider: BYOKProviderSlug;
@@ -90,6 +90,7 @@ export const CreateBYOKKeyRequestDeclaredRegion$outboundSchema: z.ZodType<
 
 /** @internal */
 export type CreateBYOKKeyRequest$Outbound = {
+  name?: string | null | undefined;
   allowed_api_key_hashes?: Array<string> | null | undefined;
   allowed_models?: Array<string> | null | undefined;
   allowed_user_ids?: Array<string> | null | undefined;
@@ -100,7 +101,6 @@ export type CreateBYOKKeyRequest$Outbound = {
   is_fallback?: boolean | undefined;
   is_required?: boolean | undefined;
   key: string;
-  name?: string | null | undefined;
   provider: string;
   workspace_id?: string | undefined;
 };
@@ -110,6 +110,7 @@ export const CreateBYOKKeyRequest$outboundSchema: z.ZodType<
   CreateBYOKKeyRequest$Outbound,
   CreateBYOKKeyRequest
 > = z.object({
+  name: z.nullable(z.string()).optional(),
   allowedApiKeyHashes: z.nullable(z.array(z.string())).optional(),
   allowedModels: z.nullable(z.array(z.string())).optional(),
   allowedUserIds: z.nullable(z.array(z.string())).optional(),
@@ -121,7 +122,6 @@ export const CreateBYOKKeyRequest$outboundSchema: z.ZodType<
   isFallback: z.boolean().optional(),
   isRequired: z.boolean().optional(),
   key: z.string(),
-  name: z.nullable(z.string()).optional(),
   provider: BYOKProviderSlug$outboundSchema,
   workspaceId: z.string().optional(),
 }).transform((v) => {

@@ -10,8 +10,8 @@ Stop when the upstream model emits this finish reason (e.g. `length`).
 import { StopServerToolsWhenFinishReasonIs } from "@openrouter/sdk/models";
 
 let value: StopServerToolsWhenFinishReasonIs = {
-  reason: "<value>",
   type: "finish_reason_is",
+  reason: "<value>",
 };
 ```
 
@@ -19,5 +19,5 @@ let value: StopServerToolsWhenFinishReasonIs = {
 
 | Field                | Type                 | Required             | Description          |
 | -------------------- | -------------------- | -------------------- | -------------------- |
-| `reason`             | *string*             | ✔️   | N/A                  |
 | `type`               | *"finish_reason_is"* | ✔️   | N/A                  |
+| `reason`             | *string*             | ✔️   | N/A                  |

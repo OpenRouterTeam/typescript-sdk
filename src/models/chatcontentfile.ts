@@ -28,8 +28,8 @@ export type ChatContentFileFile = {
  * File content part for document processing
  */
 export type ChatContentFile = {
-  file: ChatContentFileFile;
   type: "file";
+  file: ChatContentFileFile;
 };
 
 /** @internal */
@@ -90,13 +90,13 @@ export const ChatContentFile$inboundSchema: z.ZodType<
   ChatContentFile,
   unknown
 > = z.object({
-  file: z.lazy(() => ChatContentFileFile$inboundSchema),
   type: z.literal("file"),
+  file: z.lazy(() => ChatContentFileFile$inboundSchema),
 });
 /** @internal */
 export type ChatContentFile$Outbound = {
-  file: ChatContentFileFile$Outbound;
   type: "file";
+  file: ChatContentFileFile$Outbound;
 };
 
 /** @internal */
@@ -104,8 +104,8 @@ export const ChatContentFile$outboundSchema: z.ZodType<
   ChatContentFile$Outbound,
   ChatContentFile
 > = z.object({
-  file: z.lazy(() => ChatContentFileFile$outboundSchema),
   type: z.literal("file"),
+  file: z.lazy(() => ChatContentFileFile$outboundSchema),
 });
 
 export function chatContentFileToJSON(

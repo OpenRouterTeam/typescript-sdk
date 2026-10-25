@@ -18,16 +18,21 @@ import {
 } from "./observabilityfilterrulesconfig.js";
 
 export type ObservabilityBraintrustDestinationConfig = {
-  apiKey: string;
-  baseUrl: string;
   /**
    * Custom HTTP headers to include in requests to this destination.
    */
   headers?: { [k: string]: string } | undefined;
+  apiKey: string;
+  baseUrl: string;
   projectId: string;
 };
 
 export type ObservabilityBraintrustDestination = {
+  /**
+   * Human-readable name for the destination.
+   */
+  name: string | null;
+  type: "braintrust";
   /**
    * Optional allowlist of OpenRouter API key hashes (`api_keys.hash`) whose traffic is forwarded to this destination. `null` means all keys.
    */
@@ -66,10 +71,6 @@ export type ObservabilityBraintrustDestination = {
    */
   id: string;
   /**
-   * Human-readable name for the destination.
-   */
-  name: string | null;
-  /**
    * When true, request/response bodies are not forwarded to this destination — only metadata.
    */
   privacyMode: boolean;
@@ -81,7 +82,6 @@ export type ObservabilityBraintrustDestination = {
    * Sampling rate for events sent to this destination, between 0.0001 and 1 (1 = 100%).
    */
   samplingRate: number;
-  type: "braintrust";
   /**
    * ISO timestamp of when the destination was last updated.
    */
@@ -97,9 +97,9 @@ export const ObservabilityBraintrustDestinationConfig$inboundSchema: z.ZodType<
   ObservabilityBraintrustDestinationConfig,
   unknown
 > = z.object({
+  headers: z.record(z.string(), z.string()).optional(),
   apiKey: z.string(),
   baseUrl: z.string().default("https://api.braintrust.dev"),
-  headers: z.record(z.string(), z.string()).optional(),
   projectId: z.string(),
 });
 
@@ -124,6 +124,8 @@ export const ObservabilityBraintrustDestination$inboundSchema: z.ZodType<
   ObservabilityBraintrustDestination,
   unknown
 > = z.object({
+  name: z.nullable(z.string()),
+  type: z.literal("braintrust"),
   api_key_hashes: z.nullable(z.array(z.string())),
   broadcast_generation_cost: z.boolean(),
   broadcast_generation_cost_allocation: z.boolean(),
@@ -134,11 +136,9 @@ export const ObservabilityBraintrustDestination$inboundSchema: z.ZodType<
   enabled: z.boolean(),
   filter_rules: z.nullable(ObservabilityFilterRulesConfig$inboundSchema),
   id: z.string(),
-  name: z.nullable(z.string()),
   privacy_mode: z.boolean(),
   regions: z.array(ObservabilityDataRegion$inboundSchema),
   sampling_rate: z.number(),
-  type: z.literal("braintrust"),
   updated_at: z.string(),
   workspace_id: z.string(),
 }).transform((v) => {

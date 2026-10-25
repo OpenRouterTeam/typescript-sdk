@@ -14,7 +14,7 @@ export type VaultSecretWriteRequest = {
    */
   hosts: Array<string>;
   /**
-   * Secret value, 1 to 65536 characters. It is encrypted at rest and never returned.
+   * Secret value, 1 to 985721 characters. It is encrypted at rest and never returned.
    */
   value: string;
 };

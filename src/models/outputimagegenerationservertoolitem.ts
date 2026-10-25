@@ -25,6 +25,7 @@ export type OutputImageGenerationServerToolItemType = ClosedEnum<
  * An openrouter:image_generation server tool output item
  */
 export type OutputImageGenerationServerToolItem = {
+  type: OutputImageGenerationServerToolItemType;
   /**
    * The error message when the tool call failed before producing a result. Set together with `status: 'failed'`; absent on a successful call.
    */
@@ -42,7 +43,6 @@ export type OutputImageGenerationServerToolItem = {
   result?: string | null | undefined;
   revisedPrompt?: string | undefined;
   status: FailableToolCallStatus;
-  type: OutputImageGenerationServerToolItemType;
 };
 
 /** @internal */
@@ -59,6 +59,7 @@ export const OutputImageGenerationServerToolItem$inboundSchema: z.ZodType<
   OutputImageGenerationServerToolItem,
   unknown
 > = z.object({
+  type: OutputImageGenerationServerToolItemType$inboundSchema,
   error: z.string().optional(),
   id: z.string().optional(),
   imageB64: z.string().optional(),
@@ -67,10 +68,10 @@ export const OutputImageGenerationServerToolItem$inboundSchema: z.ZodType<
   result: z.nullable(z.string()).optional(),
   revisedPrompt: z.string().optional(),
   status: FailableToolCallStatus$inboundSchema,
-  type: OutputImageGenerationServerToolItemType$inboundSchema,
 });
 /** @internal */
 export type OutputImageGenerationServerToolItem$Outbound = {
+  type: string;
   error?: string | undefined;
   id?: string | undefined;
   imageB64?: string | undefined;
@@ -79,7 +80,6 @@ export type OutputImageGenerationServerToolItem$Outbound = {
   result?: string | null | undefined;
   revisedPrompt?: string | undefined;
   status: string;
-  type: string;
 };
 
 /** @internal */
@@ -87,6 +87,7 @@ export const OutputImageGenerationServerToolItem$outboundSchema: z.ZodType<
   OutputImageGenerationServerToolItem$Outbound,
   OutputImageGenerationServerToolItem
 > = z.object({
+  type: OutputImageGenerationServerToolItemType$outboundSchema,
   error: z.string().optional(),
   id: z.string().optional(),
   imageB64: z.string().optional(),
@@ -95,7 +96,6 @@ export const OutputImageGenerationServerToolItem$outboundSchema: z.ZodType<
   result: z.nullable(z.string()).optional(),
   revisedPrompt: z.string().optional(),
   status: FailableToolCallStatus$outboundSchema,
-  type: OutputImageGenerationServerToolItemType$outboundSchema,
 });
 
 export function outputImageGenerationServerToolItemToJSON(

@@ -15,6 +15,13 @@ import { InputFile, InputFile$inboundSchema } from "./inputfile.js";
 import { InputImage, InputImage$inboundSchema } from "./inputimage.js";
 import { InputText, InputText$inboundSchema } from "./inputtext.js";
 
+export const OpenAIResponseCustomToolCallOutputType = {
+  CustomToolCallOutput: "custom_tool_call_output",
+} as const;
+export type OpenAIResponseCustomToolCallOutputType = ClosedEnum<
+  typeof OpenAIResponseCustomToolCallOutputType
+>;
+
 export type OpenAIResponseCustomToolCallOutputOutput1 =
   | InputFile
   | (InputImage & { type: "input_image" })
@@ -30,14 +37,8 @@ export type OpenAIResponseCustomToolCallOutputOutput2 =
     | discriminatedUnionTypes.Unknown<"type">
   >;
 
-export const OpenAIResponseCustomToolCallOutputType = {
-  CustomToolCallOutput: "custom_tool_call_output",
-} as const;
-export type OpenAIResponseCustomToolCallOutputType = ClosedEnum<
-  typeof OpenAIResponseCustomToolCallOutputType
->;
-
 export type OpenAIResponseCustomToolCallOutput = {
+  type: OpenAIResponseCustomToolCallOutputType;
   callId: string;
   id?: string | undefined;
   output:
@@ -48,8 +49,12 @@ export type OpenAIResponseCustomToolCallOutput = {
       | InputText
       | discriminatedUnionTypes.Unknown<"type">
     >;
-  type: OpenAIResponseCustomToolCallOutputType;
 };
+
+/** @internal */
+export const OpenAIResponseCustomToolCallOutputType$inboundSchema: z.ZodEnum<
+  typeof OpenAIResponseCustomToolCallOutputType
+> = z.enum(OpenAIResponseCustomToolCallOutputType);
 
 /** @internal */
 export const OpenAIResponseCustomToolCallOutputOutput1$inboundSchema: z.ZodType<
@@ -113,15 +118,11 @@ export function openAIResponseCustomToolCallOutputOutput2FromJSON(
 }
 
 /** @internal */
-export const OpenAIResponseCustomToolCallOutputType$inboundSchema: z.ZodEnum<
-  typeof OpenAIResponseCustomToolCallOutputType
-> = z.enum(OpenAIResponseCustomToolCallOutputType);
-
-/** @internal */
 export const OpenAIResponseCustomToolCallOutput$inboundSchema: z.ZodType<
   OpenAIResponseCustomToolCallOutput,
   unknown
 > = z.object({
+  type: OpenAIResponseCustomToolCallOutputType$inboundSchema,
   call_id: z.string(),
   id: z.string().optional(),
   output: z.union([
@@ -136,7 +137,6 @@ export const OpenAIResponseCustomToolCallOutput$inboundSchema: z.ZodType<
       }),
     ),
   ]),
-  type: OpenAIResponseCustomToolCallOutputType$inboundSchema,
 }).transform((v) => {
   return remap$(v, {
     "call_id": "callId",

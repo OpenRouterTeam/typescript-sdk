@@ -10,9 +10,9 @@ The client's echo of an `apply_patch_call` after applying the patch. `output` is
 import { ApplyPatchCallOutputItem } from "@openrouter/sdk/models";
 
 let value: ApplyPatchCallOutputItem = {
+  type: "apply_patch_call_output",
   callId: "call_abc123",
   status: "completed",
-  type: "apply_patch_call_output",
 };
 ```
 
@@ -20,8 +20,8 @@ let value: ApplyPatchCallOutputItem = {
 
 | Field                                                                                | Type                                                                                 | Required                                                                             | Description                                                                          |
 | ------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------ |
+| `type`                                                                               | [models.ApplyPatchCallOutputItemType](../models/applypatchcalloutputitemtype.mdx)     | ✔️                                                                   | N/A                                                                                  |
 | `callId`                                                                             | *string*                                                                             | ✔️                                                                   | N/A                                                                                  |
 | `id`                                                                                 | *string*                                                                             | ➖                                                                   | N/A                                                                                  |
 | `output`                                                                             | *string*                                                                             | ➖                                                                   | N/A                                                                                  |
 | `status`                                                                             | [models.ApplyPatchCallOutputItemStatus](../models/applypatchcalloutputitemstatus.mdx) | ✔️                                                                   | N/A                                                                                  |
-| `type`                                                                               | [models.ApplyPatchCallOutputItemType](../models/applypatchcalloutputitemtype.mdx)     | ✔️                                                                   | N/A                                                                                  |

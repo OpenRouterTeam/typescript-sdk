@@ -9,14 +9,14 @@ import * as z from "zod/v4";
  * Stop when the upstream model emits this finish reason (e.g. `length`).
  */
 export type StopServerToolsWhenFinishReasonIs = {
-  reason: string;
   type: "finish_reason_is";
+  reason: string;
 };
 
 /** @internal */
 export type StopServerToolsWhenFinishReasonIs$Outbound = {
-  reason: string;
   type: "finish_reason_is";
+  reason: string;
 };
 
 /** @internal */
@@ -24,8 +24,8 @@ export const StopServerToolsWhenFinishReasonIs$outboundSchema: z.ZodType<
   StopServerToolsWhenFinishReasonIs$Outbound,
   StopServerToolsWhenFinishReasonIs
 > = z.object({
-  reason: z.string(),
   type: z.literal("finish_reason_is"),
+  reason: z.string(),
 });
 
 export function stopServerToolsWhenFinishReasonIsToJSON(

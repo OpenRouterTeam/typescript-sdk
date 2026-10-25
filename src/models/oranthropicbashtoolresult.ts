@@ -18,18 +18,19 @@ export type ORAnthropicBashToolResultTypeContainerFileCitation = ClosedEnum<
 >;
 
 export type ORAnthropicBashToolResultFile = {
+  type: ORAnthropicBashToolResultTypeContainerFileCitation;
   containerId: string;
   endIndex: number;
   fileId: string;
   filename: string;
   startIndex: number;
-  type: ORAnthropicBashToolResultTypeContainerFileCitation;
 };
 
 /**
  * Output of an `openrouter:bash` call executed in the OpenRouter sandbox (`engine: 'openrouter'`)
  */
 export type ORAnthropicBashToolResult = {
+  type: "openrouter_bash_tool_result";
   /**
    * The canonical container id the command ran under — the `{container_id}` for the Container Files API, reusable as a `container_reference` in later requests. Present on every sandbox-executed call, even when no files changed.
    */
@@ -40,7 +41,6 @@ export type ORAnthropicBashToolResult = {
    */
   files?: Array<ORAnthropicBashToolResultFile> | undefined;
   toolUseId: string;
-  type: "openrouter_bash_tool_result";
 };
 
 /** @internal */
@@ -54,12 +54,12 @@ export const ORAnthropicBashToolResultFile$inboundSchema: z.ZodType<
   ORAnthropicBashToolResultFile,
   unknown
 > = z.object({
+  type: ORAnthropicBashToolResultTypeContainerFileCitation$inboundSchema,
   container_id: z.string(),
   end_index: z.int(),
   file_id: z.string(),
   filename: z.string(),
   start_index: z.int(),
-  type: ORAnthropicBashToolResultTypeContainerFileCitation$inboundSchema,
 }).transform((v) => {
   return remap$(v, {
     "container_id": "containerId",
@@ -84,12 +84,12 @@ export const ORAnthropicBashToolResult$inboundSchema: z.ZodType<
   ORAnthropicBashToolResult,
   unknown
 > = z.object({
+  type: z.literal("openrouter_bash_tool_result"),
   container_id: z.string().optional(),
   content: z.record(z.string(), z.any()),
   files: z.array(z.lazy(() => ORAnthropicBashToolResultFile$inboundSchema))
     .optional(),
   tool_use_id: z.string(),
-  type: z.literal("openrouter_bash_tool_result"),
 }).transform((v) => {
   return remap$(v, {
     "container_id": "containerId",

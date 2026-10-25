@@ -13,11 +13,11 @@ import { SDKValidationError } from "./errors/sdkvalidationerror.js";
  * Incremental chunk of code being streamed for a `code_interpreter_call`.
  */
 export type CodeInterpreterCallCodeDeltaEvent = {
+  type: "response.code_interpreter_call_code.delta";
   delta: string;
   itemId: string;
   outputIndex: number;
   sequenceNumber: number;
-  type: "response.code_interpreter_call_code.delta";
 };
 
 /** @internal */
@@ -25,11 +25,11 @@ export const CodeInterpreterCallCodeDeltaEvent$inboundSchema: z.ZodType<
   CodeInterpreterCallCodeDeltaEvent,
   unknown
 > = z.object({
+  type: z.literal("response.code_interpreter_call_code.delta"),
   delta: z.string(),
   item_id: z.string(),
   output_index: z.int(),
   sequence_number: z.int(),
-  type: z.literal("response.code_interpreter_call_code.delta"),
 }).transform((v) => {
   return remap$(v, {
     "item_id": "itemId",

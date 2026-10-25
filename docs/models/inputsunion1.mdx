@@ -8,14 +8,14 @@ title: "InputsUnion1"
 
 ```typescript
 const value: models.ReasoningItem = {
-  id: "reasoning-abc123",
+  type: "reasoning",
   summary: [
     {
-      text: "Step by step analysis",
       type: "summary_text",
+      text: "Step by step analysis",
     },
   ],
-  type: "reasoning",
+  id: "reasoning-abc123",
 };
 ```
 
@@ -39,10 +39,10 @@ const value: models.InputMessageItem = {
 
 ```typescript
 const value: models.FunctionCallItem = {
-  arguments: "{\"location\":\"San Francisco\"}",
-  callId: "call-abc123",
   name: "get_weather",
   type: "function_call",
+  arguments: "{\"location\":\"San Francisco\"}",
+  callId: "call-abc123",
 };
 ```
 
@@ -50,9 +50,9 @@ const value: models.FunctionCallItem = {
 
 ```typescript
 const value: models.FunctionCallOutputItem = {
+  type: "function_call_output",
   callId: "call-abc123",
   output: "{\"temperature\":72,\"conditions\":\"sunny\"}",
-  type: "function_call_output",
 };
 ```
 
@@ -60,14 +60,14 @@ const value: models.FunctionCallOutputItem = {
 
 ```typescript
 const value: models.ApplyPatchCallItem = {
+  type: "apply_patch_call",
   callId: "call_abc123",
   operation: {
+    type: "update_file",
     diff: "@@ function main() {\n+  console.log(\"hi\");\n }",
     path: "/src/main.ts",
-    type: "update_file",
   },
   status: "completed",
-  type: "apply_patch_call",
 };
 ```
 
@@ -75,20 +75,20 @@ const value: models.ApplyPatchCallItem = {
 
 ```typescript
 const value: models.ApplyPatchCallOutputItem = {
+  type: "apply_patch_call_output",
   callId: "call_abc123",
   status: "completed",
-  type: "apply_patch_call_output",
 };
 ```
 
-### `models.InputsMessage`
+### `models.InputsAssistant`
 
 ```typescript
-const value: models.InputsMessage = {
+const value: models.InputsAssistant = {
   content: [
     {
-      text: "Hello! How can I help you?",
       type: "output_text",
+      text: "Hello! How can I help you?",
     },
   ],
   id: "msg-123",
@@ -100,14 +100,14 @@ const value: models.InputsMessage = {
 
 ```typescript
 const value: models.InputsReasoning = {
-  id: "reasoning-123",
+  type: "reasoning",
   summary: [
     {
-      text: "Analyzed the problem and found the optimal solution.",
       type: "summary_text",
+      text: "Analyzed the problem and found the optimal solution.",
     },
   ],
-  type: "reasoning",
+  id: "reasoning-123",
 };
 ```
 
@@ -115,9 +115,9 @@ const value: models.InputsReasoning = {
 
 ```typescript
 const value: models.OutputWebSearchCallItem = {
+  type: "web_search_call",
   id: "msg-abc123",
   status: "completed",
-  type: "web_search_call",
 };
 ```
 
@@ -125,12 +125,12 @@ const value: models.OutputWebSearchCallItem = {
 
 ```typescript
 const value: models.OutputFileSearchCallItem = {
+  type: "file_search_call",
   id: "msg-abc123",
   queries: [
     "<value 1>",
   ],
   status: "completed",
-  type: "file_search_call",
 };
 ```
 
@@ -138,9 +138,9 @@ const value: models.OutputFileSearchCallItem = {
 
 ```typescript
 const value: models.OutputImageGenerationCallItem = {
+  type: "image_generation_call",
   id: "msg-abc123",
   status: "completed",
-  type: "image_generation_call",
 };
 ```
 
@@ -148,9 +148,9 @@ const value: models.OutputImageGenerationCallItem = {
 
 ```typescript
 const value: models.OutputCodeInterpreterCallItem = {
+  type: "code_interpreter_call",
   id: "msg-abc123",
   status: "completed",
-  type: "code_interpreter_call",
 };
 ```
 
@@ -158,10 +158,10 @@ const value: models.OutputCodeInterpreterCallItem = {
 
 ```typescript
 const value: models.OutputComputerCallItem = {
+  type: "computer_call",
   callId: "<id>",
   pendingSafetyChecks: [],
   status: "completed",
-  type: "computer_call",
 };
 ```
 
@@ -169,10 +169,10 @@ const value: models.OutputComputerCallItem = {
 
 ```typescript
 const value: models.OutputDatetimeItem = {
+  type: "openrouter:datetime",
   datetime: "2024-12-31T05:26:30.868Z",
   status: "completed",
   timezone: "Europe/Vatican",
-  type: "openrouter:datetime",
 };
 ```
 
@@ -180,8 +180,8 @@ const value: models.OutputDatetimeItem = {
 
 ```typescript
 const value: models.OutputWebSearchServerToolItem = {
-  status: "completed",
   type: "openrouter:web_search",
+  status: "completed",
 };
 ```
 
@@ -189,8 +189,8 @@ const value: models.OutputWebSearchServerToolItem = {
 
 ```typescript
 const value: models.OutputCodeInterpreterServerToolItem = {
-  status: "completed",
   type: "openrouter:code_interpreter",
+  status: "completed",
 };
 ```
 
@@ -198,8 +198,8 @@ const value: models.OutputCodeInterpreterServerToolItem = {
 
 ```typescript
 const value: models.OutputFileSearchServerToolItem = {
-  status: "completed",
   type: "openrouter:file_search",
+  status: "completed",
 };
 ```
 
@@ -207,8 +207,8 @@ const value: models.OutputFileSearchServerToolItem = {
 
 ```typescript
 const value: models.OutputImageGenerationServerToolItem = {
-  status: "completed",
   type: "openrouter:image_generation",
+  status: "completed",
 };
 ```
 
@@ -216,8 +216,8 @@ const value: models.OutputImageGenerationServerToolItem = {
 
 ```typescript
 const value: models.OutputBrowserUseServerToolItem = {
-  status: "completed",
   type: "openrouter:browser_use",
+  status: "completed",
 };
 ```
 
@@ -225,8 +225,8 @@ const value: models.OutputBrowserUseServerToolItem = {
 
 ```typescript
 const value: models.OutputBashServerToolItem = {
-  status: "completed",
   type: "openrouter:bash",
+  status: "completed",
 };
 ```
 
@@ -234,8 +234,8 @@ const value: models.OutputBashServerToolItem = {
 
 ```typescript
 const value: models.OutputTextEditorServerToolItem = {
-  status: "completed",
   type: "openrouter:text_editor",
+  status: "completed",
 };
 ```
 
@@ -243,8 +243,8 @@ const value: models.OutputTextEditorServerToolItem = {
 
 ```typescript
 const value: models.OutputApplyPatchServerToolItem = {
-  status: "completed",
   type: "openrouter:apply_patch",
+  status: "completed",
 };
 ```
 
@@ -261,8 +261,8 @@ const value: models.OutputWebFetchServerToolItem = {
 
 ```typescript
 const value: models.OutputToolSearchServerToolItem = {
-  status: "completed",
   type: "openrouter:tool_search",
+  status: "completed",
 };
 ```
 
@@ -270,8 +270,8 @@ const value: models.OutputToolSearchServerToolItem = {
 
 ```typescript
 const value: models.OutputMemoryServerToolItem = {
-  status: "completed",
   type: "openrouter:memory",
+  status: "completed",
 };
 ```
 
@@ -279,14 +279,14 @@ const value: models.OutputMemoryServerToolItem = {
 
 ```typescript
 const value: models.OutputArmorBlockedItem = {
+  name: "<value>",
+  type: "openrouter:armor_blocked",
   arguments: "<value>",
   callId: "<id>",
   explanation: "<value>",
   id: "msg-abc123",
-  name: "<value>",
   reason: "<value>",
   status: "completed",
-  type: "openrouter:armor_blocked",
 };
 ```
 
@@ -294,8 +294,8 @@ const value: models.OutputArmorBlockedItem = {
 
 ```typescript
 const value: models.OutputMcpServerToolItem = {
-  status: "completed",
   type: "openrouter:mcp",
+  status: "completed",
 };
 ```
 
@@ -303,8 +303,8 @@ const value: models.OutputMcpServerToolItem = {
 
 ```typescript
 const value: models.OutputSearchModelsServerToolItem = {
-  status: "completed",
   type: "openrouter:experimental__search_models",
+  status: "completed",
 };
 ```
 
@@ -321,8 +321,8 @@ const value: models.OutputFusionServerToolItem = {
 
 ```typescript
 const value: models.OutputAdvisorServerToolItem = {
-  status: "completed",
   type: "openrouter:advisor",
+  status: "completed",
 };
 ```
 
@@ -330,8 +330,8 @@ const value: models.OutputAdvisorServerToolItem = {
 
 ```typescript
 const value: models.OutputSubagentServerToolItem = {
-  status: "completed",
   type: "openrouter:subagent",
+  status: "completed",
 };
 ```
 
@@ -339,8 +339,8 @@ const value: models.OutputSubagentServerToolItem = {
 
 ```typescript
 const value: models.OutputFilesServerToolItem = {
-  status: "completed",
   type: "openrouter:files",
+  status: "completed",
 };
 ```
 
@@ -348,8 +348,8 @@ const value: models.OutputFilesServerToolItem = {
 
 ```typescript
 const value: models.OutputShellServerToolItem = {
-  status: "completed",
   type: "openrouter:shell",
+  status: "completed",
 };
 ```
 
@@ -357,7 +357,9 @@ const value: models.OutputShellServerToolItem = {
 
 ```typescript
 const value: models.LocalShellCallItem = {
+  type: "local_shell_call",
   action: {
+    type: "exec",
     command: [
       "ls",
       "-la",
@@ -365,12 +367,10 @@ const value: models.LocalShellCallItem = {
     env: {
       "PATH": "/usr/bin",
     },
-    type: "exec",
   },
   callId: "call-abc123",
   id: "shell-abc123",
   status: "completed",
-  type: "local_shell_call",
 };
 ```
 
@@ -378,9 +378,9 @@ const value: models.LocalShellCallItem = {
 
 ```typescript
 const value: models.LocalShellCallOutputItem = {
+  type: "local_shell_call_output",
   id: "output-abc123",
   output: "total 24\ndrwxr-xr-x  5 user  staff  160 Jan  1 12:00 .",
-  type: "local_shell_call_output",
 };
 ```
 
@@ -388,6 +388,7 @@ const value: models.LocalShellCallOutputItem = {
 
 ```typescript
 const value: models.ShellCallItem = {
+  type: "shell_call",
   action: {
     commands: [
       "ls",
@@ -395,7 +396,6 @@ const value: models.ShellCallItem = {
     ],
   },
   callId: "call-abc123",
-  type: "shell_call",
 };
 ```
 
@@ -403,18 +403,18 @@ const value: models.ShellCallItem = {
 
 ```typescript
 const value: models.ShellCallOutputItem = {
+  type: "shell_call_output",
   callId: "call-abc123",
   output: [
     {
       outcome: {
-        exitCode: 0,
         type: "exit",
+        exitCode: 0,
       },
       stderr: "",
       stdout: "total 0\n",
     },
   ],
-  type: "shell_call_output",
 };
 ```
 
@@ -422,22 +422,22 @@ const value: models.ShellCallOutputItem = {
 
 ```typescript
 const value: models.McpListToolsItem = {
+  type: "mcp_list_tools",
   id: "mcp-list-abc123",
   serverLabel: "database-server",
   tools: [
     {
+      name: "query_database",
       inputSchema: {
+        "type": "object",
         "properties": {
           "query": {
             "type": "string",
           },
         },
-        "type": "object",
       },
-      name: "query_database",
     },
   ],
-  type: "mcp_list_tools",
 };
 ```
 
@@ -445,11 +445,11 @@ const value: models.McpListToolsItem = {
 
 ```typescript
 const value: models.McpApprovalRequestItem = {
+  name: "delete_record",
+  type: "mcp_approval_request",
   arguments: "{\"id\":\"123\"}",
   id: "approval-abc123",
-  name: "delete_record",
   serverLabel: "database-server",
-  type: "mcp_approval_request",
 };
 ```
 
@@ -457,9 +457,9 @@ const value: models.McpApprovalRequestItem = {
 
 ```typescript
 const value: models.McpApprovalResponseItem = {
+  type: "mcp_approval_response",
   approvalRequestId: "approval-abc123",
   approve: true,
-  type: "mcp_approval_response",
 };
 ```
 
@@ -467,11 +467,11 @@ const value: models.McpApprovalResponseItem = {
 
 ```typescript
 const value: models.McpCallItem = {
+  name: "query_database",
+  type: "mcp_call",
   arguments: "{\"query\":\"SELECT * FROM users\"}",
   id: "mcp-call-abc123",
-  name: "query_database",
   serverLabel: "database-server",
-  type: "mcp_call",
 };
 ```
 
@@ -479,10 +479,10 @@ const value: models.McpCallItem = {
 
 ```typescript
 const value: models.CustomToolCallItem = {
-  callId: "call-abc123",
-  input: "*** Begin Patch\n*** End Patch",
   name: "apply_patch",
   type: "custom_tool_call",
+  callId: "call-abc123",
+  input: "*** Begin Patch\n*** End Patch",
 };
 ```
 
@@ -490,9 +490,9 @@ const value: models.CustomToolCallItem = {
 
 ```typescript
 const value: models.CustomToolCallOutputItem = {
+  type: "custom_tool_call_output",
   callId: "call-abc123",
   output: "patch applied successfully",
-  type: "custom_tool_call_output",
 };
 ```
 
@@ -500,8 +500,8 @@ const value: models.CustomToolCallOutputItem = {
 
 ```typescript
 const value: models.CompactionItem = {
-  encryptedContent: "enc_abc123...",
   type: "compaction",
+  encryptedContent: "enc_abc123...",
 };
 ```
 
@@ -517,8 +517,8 @@ const value: models.ContextCompactionItem = {
 
 ```typescript
 const value: models.ItemReferenceItem = {
-  id: "msg-abc123",
   type: "item_reference",
+  id: "msg-abc123",
 };
 ```
 
@@ -526,13 +526,13 @@ const value: models.ItemReferenceItem = {
 
 ```typescript
 const value: models.AdditionalToolsItem = {
+  type: "additional_tools",
   role: "developer",
   tools: [
     {
       type: "function",
     },
   ],
-  type: "additional_tools",
 };
 ```
 
@@ -540,15 +540,15 @@ const value: models.AdditionalToolsItem = {
 
 ```typescript
 const value: models.AgentMessageItem = {
+  type: "agent_message",
   author: "/root/worker",
   content: [
     {
-      text: "Task complete.",
       type: "input_text",
+      text: "Task complete.",
     },
   ],
   recipient: "/root",
-  type: "agent_message",
 };
 ```
 
@@ -556,10 +556,10 @@ const value: models.AgentMessageItem = {
 
 ```typescript
 const value: models.ConfigurationUpdateItem = {
+  type: "configuration_update",
   reasoning: {
     effort: "low",
   },
-  type: "configuration_update",
 };
 ```
 
@@ -567,9 +567,9 @@ const value: models.ConfigurationUpdateItem = {
 
 ```typescript
 const value: models.ToolSearchCallItem = {
+  type: "tool_search_call",
   callId: "call_search_1",
   execution: "client",
-  type: "tool_search_call",
 };
 ```
 
@@ -577,6 +577,7 @@ const value: models.ToolSearchCallItem = {
 
 ```typescript
 const value: models.ToolSearchOutputItem = {
+  type: "tool_search_output",
   callId: "call_search_1",
   execution: "client",
   tools: [
@@ -584,7 +585,6 @@ const value: models.ToolSearchOutputItem = {
       type: "function",
     },
   ],
-  type: "tool_search_output",
 };
 ```
 

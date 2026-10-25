@@ -10,9 +10,9 @@ The output from a custom (freeform-grammar) tool call execution. Mirrors `functi
 import { CustomToolCallOutputItem } from "@openrouter/sdk/models";
 
 let value: CustomToolCallOutputItem = {
+  type: "custom_tool_call_output",
   callId: "call-abc123",
   output: "patch applied successfully",
-  type: "custom_tool_call_output",
 };
 ```
 
@@ -20,7 +20,7 @@ let value: CustomToolCallOutputItem = {
 
 | Field                                                                                                                    | Type                                                                                                                     | Required                                                                                                                 | Description                                                                                                              |
 | ------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------ |
+| `type`                                                                                                                   | [models.CustomToolCallOutputItemTypeCustomToolCallOutput](../models/customtoolcalloutputitemtypecustomtoolcalloutput.mdx) | ✔️                                                                                                       | N/A                                                                                                                      |
 | `callId`                                                                                                                 | *string*                                                                                                                 | ✔️                                                                                                       | N/A                                                                                                                      |
 | `id`                                                                                                                     | *string*                                                                                                                 | ➖                                                                                                       | N/A                                                                                                                      |
 | `output`                                                                                                                 | *models.CustomToolCallOutputItemOutputUnion2*                                                                            | ✔️                                                                                                       | N/A                                                                                                                      |
-| `type`                                                                                                                   | [models.CustomToolCallOutputItemTypeCustomToolCallOutput](../models/customtoolcalloutputitemtypecustomtoolcalloutput.mdx) | ✔️                                                                                                       | N/A                                                                                                                      |

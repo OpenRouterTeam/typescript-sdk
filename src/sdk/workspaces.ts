@@ -59,23 +59,6 @@ export class Workspaces extends ClientSDK {
   }
 
   /**
-   * Delete a workspace
-   *
-   * @remarks
-   * Delete an existing workspace. Workspaces with active API keys cannot be deleted; remove the keys first. Deleting the default workspace requires confirm_default_workspace_deletion=true. Deleting any workspace permanently deletes its budgets and guardrails and disables its classifiers and broadcast destinations. [Management key](/docs/guides/overview/auth/management-api-keys) required.
-   */
-  async delete(
-    request: operations.DeleteWorkspaceRequest,
-    options?: RequestOptions,
-  ): Promise<models.DeleteWorkspaceResponse> {
-    return unwrapAsync(workspacesDelete(
-      this,
-      request,
-      options,
-    ));
-  }
-
-  /**
    * Get a workspace
    *
    * @remarks
@@ -86,6 +69,23 @@ export class Workspaces extends ClientSDK {
     options?: RequestOptions,
   ): Promise<models.GetWorkspaceResponse> {
     return unwrapAsync(workspacesGet(
+      this,
+      request,
+      options,
+    ));
+  }
+
+  /**
+   * Delete a workspace
+   *
+   * @remarks
+   * Delete an existing workspace. Workspaces with active API keys cannot be deleted; remove the keys first. Deleting the default workspace requires confirm_default_workspace_deletion=true. Deleting any workspace permanently deletes its budgets and guardrails and disables its classifiers and broadcast destinations. [Management key](/docs/guides/overview/auth/management-api-keys) required.
+   */
+  async delete(
+    request: operations.DeleteWorkspaceRequest,
+    options?: RequestOptions,
+  ): Promise<models.DeleteWorkspaceResponse> {
+    return unwrapAsync(workspacesDelete(
       this,
       request,
       options,
@@ -180,23 +180,6 @@ export class Workspaces extends ClientSDK {
   }
 
   /**
-   * Delete a workspace budget
-   *
-   * @remarks
-   * Remove the budget for a given interval. [Management key](/docs/guides/overview/auth/management-api-keys) required.
-   */
-  async deleteBudget(
-    request: operations.DeleteWorkspaceBudgetRequest,
-    options?: RequestOptions,
-  ): Promise<models.DeleteWorkspaceBudgetResponse> {
-    return unwrapAsync(workspacesDeleteBudget(
-      this,
-      request,
-      options,
-    ));
-  }
-
-  /**
    * Get a workspace budget
    *
    * @remarks
@@ -224,6 +207,23 @@ export class Workspaces extends ClientSDK {
     options?: RequestOptions,
   ): Promise<models.UpsertWorkspaceBudgetResponse> {
     return unwrapAsync(workspacesSetBudget(
+      this,
+      request,
+      options,
+    ));
+  }
+
+  /**
+   * Delete a workspace budget
+   *
+   * @remarks
+   * Remove the budget for a given interval. [Management key](/docs/guides/overview/auth/management-api-keys) required.
+   */
+  async deleteBudget(
+    request: operations.DeleteWorkspaceBudgetRequest,
+    options?: RequestOptions,
+  ): Promise<models.DeleteWorkspaceBudgetResponse> {
+    return unwrapAsync(workspacesDeleteBudget(
       this,
       request,
       options,

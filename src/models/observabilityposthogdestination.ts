@@ -18,15 +18,20 @@ import {
 } from "./observabilityfilterrulesconfig.js";
 
 export type ObservabilityPosthogDestinationConfig = {
-  apiKey: string;
-  endpoint: string;
   /**
    * Custom HTTP headers to include in requests to this destination.
    */
   headers?: { [k: string]: string } | undefined;
+  apiKey: string;
+  endpoint: string;
 };
 
 export type ObservabilityPosthogDestination = {
+  /**
+   * Human-readable name for the destination.
+   */
+  name: string | null;
+  type: "posthog";
   /**
    * Optional allowlist of OpenRouter API key hashes (`api_keys.hash`) whose traffic is forwarded to this destination. `null` means all keys.
    */
@@ -65,10 +70,6 @@ export type ObservabilityPosthogDestination = {
    */
   id: string;
   /**
-   * Human-readable name for the destination.
-   */
-  name: string | null;
-  /**
    * When true, request/response bodies are not forwarded to this destination — only metadata.
    */
   privacyMode: boolean;
@@ -80,7 +81,6 @@ export type ObservabilityPosthogDestination = {
    * Sampling rate for events sent to this destination, between 0.0001 and 1 (1 = 100%).
    */
   samplingRate: number;
-  type: "posthog";
   /**
    * ISO timestamp of when the destination was last updated.
    */
@@ -96,9 +96,9 @@ export const ObservabilityPosthogDestinationConfig$inboundSchema: z.ZodType<
   ObservabilityPosthogDestinationConfig,
   unknown
 > = z.object({
+  headers: z.record(z.string(), z.string()).optional(),
   apiKey: z.string(),
   endpoint: z.string().default("https://us.i.posthog.com"),
-  headers: z.record(z.string(), z.string()).optional(),
 });
 
 export function observabilityPosthogDestinationConfigFromJSON(
@@ -117,6 +117,8 @@ export const ObservabilityPosthogDestination$inboundSchema: z.ZodType<
   ObservabilityPosthogDestination,
   unknown
 > = z.object({
+  name: z.nullable(z.string()),
+  type: z.literal("posthog"),
   api_key_hashes: z.nullable(z.array(z.string())),
   broadcast_generation_cost: z.boolean(),
   broadcast_generation_cost_allocation: z.boolean(),
@@ -127,11 +129,9 @@ export const ObservabilityPosthogDestination$inboundSchema: z.ZodType<
   enabled: z.boolean(),
   filter_rules: z.nullable(ObservabilityFilterRulesConfig$inboundSchema),
   id: z.string(),
-  name: z.nullable(z.string()),
   privacy_mode: z.boolean(),
   regions: z.array(ObservabilityDataRegion$inboundSchema),
   sampling_rate: z.number(),
-  type: z.literal("posthog"),
   updated_at: z.string(),
   workspace_id: z.string(),
 }).transform((v) => {

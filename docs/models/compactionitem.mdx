@@ -10,8 +10,8 @@ A context compaction marker with encrypted summary
 import { CompactionItem } from "@openrouter/sdk/models";
 
 let value: CompactionItem = {
-  encryptedContent: "enc_abc123...",
   type: "compaction",
+  encryptedContent: "enc_abc123...",
 };
 ```
 
@@ -19,7 +19,7 @@ let value: CompactionItem = {
 
 | Field                                                          | Type                                                           | Required                                                       | Description                                                    | Example                                                        |
 | -------------------------------------------------------------- | -------------------------------------------------------------- | -------------------------------------------------------------- | -------------------------------------------------------------- | -------------------------------------------------------------- |
+| `type`                                                         | [models.CompactionItemType](../models/compactionitemtype.mdx)   | ✔️                                             | N/A                                                            |                                                                |
 | `encryptedContent`                                             | *string*                                                       | ✔️                                             | N/A                                                            |                                                                |
 | `id`                                                           | *string*                                                       | ➖                                             | N/A                                                            |                                                                |
-| `type`                                                         | [models.CompactionItemType](../models/compactionitemtype.mdx)   | ✔️                                             | N/A                                                            |                                                                |
-| `additionalProperties`                                         | Record\<string, *any*>                                          | ➖                                             | N/A                                                            | \{<br/>"encrypted_content": "enc_abc123...",<br/>"type": "compaction"<br/>} |
+| `additionalProperties`                                         | Record\<string, *any*>                                          | ➖                                             | N/A                                                            | \{<br/>"type": "compaction",<br/>"encrypted_content": "enc_abc123..."<br/>} |

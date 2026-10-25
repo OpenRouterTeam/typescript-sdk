@@ -26,6 +26,14 @@ import {
 
 export type CreateGuardrailRequest = {
   /**
+   * Name for the new guardrail
+   */
+  name: string;
+  /**
+   * Description of the guardrail
+   */
+  description?: string | null | undefined;
+  /**
    * Whether ZDR-only requests to google/* models may use endpoints that may retain prompts for safety monitoring. false allows only zero-retention endpoints. A guardrail can only be more restrictive than the account setting. Inherits the account setting when not provided.
    */
   allowSafetyRetentionGoogle?: boolean | null | undefined;
@@ -56,10 +64,6 @@ export type CreateGuardrailRequest = {
    * Custom regex content filters to apply to request messages
    */
   contentFilters?: Array<ContentFilterEntry> | null | undefined;
-  /**
-   * Description of the guardrail
-   */
-  description?: string | null | undefined;
   /**
    * Whether this guardrail allows free endpoints that publish prompts.
    */
@@ -115,10 +119,6 @@ export type CreateGuardrailRequest = {
    */
   limitUsd?: number | null | undefined;
   /**
-   * Name for the new guardrail
-   */
-  name: string;
-  /**
    * Interval at which the limit resets (daily, weekly, monthly)
    */
   resetInterval?: GuardrailInterval | null | undefined;
@@ -130,6 +130,8 @@ export type CreateGuardrailRequest = {
 
 /** @internal */
 export type CreateGuardrailRequest$Outbound = {
+  name: string;
+  description?: string | null | undefined;
   allow_safety_retention_google?: boolean | null | undefined;
   allow_safety_retention_other?: boolean | null | undefined;
   allowed_data_regions?: Array<string> | null | undefined;
@@ -140,7 +142,6 @@ export type CreateGuardrailRequest$Outbound = {
     | null
     | undefined;
   content_filters?: Array<ContentFilterEntry$Outbound> | null | undefined;
-  description?: string | null | undefined;
   enable_free_model_publication?: boolean | null | undefined;
   enable_free_model_training?: boolean | null | undefined;
   enable_paid_model_training?: boolean | null | undefined;
@@ -154,7 +155,6 @@ export type CreateGuardrailRequest$Outbound = {
   ignored_providers?: Array<string> | null | undefined;
   include_byok_in_budgets?: boolean | undefined;
   limit_usd?: number | null | undefined;
-  name: string;
   reset_interval?: string | null | undefined;
   workspace_id?: string | undefined;
 };
@@ -164,6 +164,8 @@ export const CreateGuardrailRequest$outboundSchema: z.ZodType<
   CreateGuardrailRequest$Outbound,
   CreateGuardrailRequest
 > = z.object({
+  name: z.string(),
+  description: z.nullable(z.string()).optional(),
   allowSafetyRetentionGoogle: z.nullable(z.boolean()).optional(),
   allowSafetyRetentionOther: z.nullable(z.boolean()).optional(),
   allowedDataRegions: z.nullable(z.array(GuardrailDataRegion$outboundSchema))
@@ -175,7 +177,6 @@ export const CreateGuardrailRequest$outboundSchema: z.ZodType<
   ).optional(),
   contentFilters: z.nullable(z.array(ContentFilterEntry$outboundSchema))
     .optional(),
-  description: z.nullable(z.string()).optional(),
   enableFreeModelPublication: z.nullable(z.boolean()).optional(),
   enableFreeModelTraining: z.nullable(z.boolean()).optional(),
   enablePaidModelTraining: z.nullable(z.boolean()).optional(),
@@ -189,7 +190,6 @@ export const CreateGuardrailRequest$outboundSchema: z.ZodType<
   ignoredProviders: z.nullable(z.array(z.string())).optional(),
   includeByokInBudgets: z.boolean().optional(),
   limitUsd: z.nullable(z.number()).optional(),
-  name: z.string(),
   resetInterval: z.nullable(GuardrailInterval$outboundSchema).optional(),
   workspaceId: z.string().optional(),
 }).transform((v) => {

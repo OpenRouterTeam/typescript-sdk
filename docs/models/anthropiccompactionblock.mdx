@@ -8,8 +8,8 @@ title: "AnthropicCompactionBlock"
 import { AnthropicCompactionBlock } from "@openrouter/sdk/models";
 
 let value: AnthropicCompactionBlock = {
-  content: "<value>",
   type: "compaction",
+  content: "<value>",
 };
 ```
 
@@ -17,6 +17,6 @@ let value: AnthropicCompactionBlock = {
 
 | Field              | Type               | Required           | Description        |
 | ------------------ | ------------------ | ------------------ | ------------------ |
+| `type`             | *"compaction"*     | ✔️ | N/A                |
 | `content`          | *string*           | ✔️ | N/A                |
 | `encryptedContent` | *string*           | ➖ | N/A                |
-| `type`             | *"compaction"*     | ✔️ | N/A                |

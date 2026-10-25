@@ -8,15 +8,15 @@ title: "OutputItemApplyPatchCall"
 import { OutputItemApplyPatchCall } from "@openrouter/sdk/models";
 
 let value: OutputItemApplyPatchCall = {
+  type: "apply_patch_call",
   callId: "call_abc123",
   id: "apc_abc123",
   operation: {
+    type: "update_file",
     diff: "@@ function main() {\n+  console.log(\"hi\");\n }",
     path: "/src/main.ts",
-    type: "update_file",
   },
   status: "completed",
-  type: "apply_patch_call",
 };
 ```
 
@@ -24,9 +24,9 @@ let value: OutputItemApplyPatchCall = {
 
 | Field                                                                                | Type                                                                                 | Required                                                                             | Description                                                                          |
 | ------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------ |
+| `type`                                                                               | *"apply_patch_call"*                                                                 | ✔️                                                                   | N/A                                                                                  |
 | `callId`                                                                             | *string*                                                                             | ✔️                                                                   | N/A                                                                                  |
 | `createdBy`                                                                          | *string*                                                                             | ➖                                                                   | N/A                                                                                  |
 | `id`                                                                                 | *string*                                                                             | ✔️                                                                   | N/A                                                                                  |
 | `operation`                                                                          | *models.Operation*                                                                   | ✔️                                                                   | N/A                                                                                  |
 | `status`                                                                             | [models.OutputItemApplyPatchCallStatus](../models/outputitemapplypatchcallstatus.mdx) | ✔️                                                                   | N/A                                                                                  |
-| `type`                                                                               | *"apply_patch_call"*                                                                 | ✔️                                                                   | N/A                                                                                  |

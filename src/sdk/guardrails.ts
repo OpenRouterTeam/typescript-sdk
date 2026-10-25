@@ -60,23 +60,6 @@ export class Guardrails extends ClientSDK {
   }
 
   /**
-   * Delete a guardrail
-   *
-   * @remarks
-   * Delete an existing guardrail. [Management key](/docs/guides/overview/auth/management-api-keys) required.
-   */
-  async delete(
-    request: operations.DeleteGuardrailRequest,
-    options?: RequestOptions,
-  ): Promise<models.DeleteGuardrailResponse> {
-    return unwrapAsync(guardrailsDelete(
-      this,
-      request,
-      options,
-    ));
-  }
-
-  /**
    * Get a guardrail
    *
    * @remarks
@@ -87,6 +70,23 @@ export class Guardrails extends ClientSDK {
     options?: RequestOptions,
   ): Promise<models.GetGuardrailResponse> {
     return unwrapAsync(guardrailsGet(
+      this,
+      request,
+      options,
+    ));
+  }
+
+  /**
+   * Delete a guardrail
+   *
+   * @remarks
+   * Delete an existing guardrail. [Management key](/docs/guides/overview/auth/management-api-keys) required.
+   */
+  async delete(
+    request: operations.DeleteGuardrailRequest,
+    options?: RequestOptions,
+  ): Promise<models.DeleteGuardrailResponse> {
+    return unwrapAsync(guardrailsDelete(
       this,
       request,
       options,

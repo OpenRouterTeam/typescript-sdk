@@ -11,6 +11,7 @@ A stored file. The shape is negotiated per request — see the endpoint descript
 
 ```typescript
 const value: models.AnthropicFile = {
+  type: "file",
   shape: "anthropic",
   createdAt: "2025-01-01T00:00:00Z",
   downloadable: false,
@@ -18,7 +19,6 @@ const value: models.AnthropicFile = {
   id: "or_file_011CNha8iCJcU1wXNR6q4V8w",
   mimeType: "application/pdf",
   sizeBytes: 1024000,
-  type: "file",
 };
 ```
 
@@ -41,6 +41,7 @@ const value: models.OpenAIFile = {
 
 ```typescript
 const value: models.OpenRouterFile = {
+  type: "file",
   shape: "openrouter",
   createdAt: "2025-01-01T00:00:00Z",
   downloadable: false,
@@ -48,7 +49,6 @@ const value: models.OpenRouterFile = {
   id: "or_file_011CNha8iCJcU1wXNR6q4V8w",
   mimeType: "application/pdf",
   sizeBytes: 1024000,
-  type: "file",
 };
 ```
 

@@ -18,11 +18,11 @@ export type McpApprovalResponseItemType = ClosedEnum<
  * User response to an MCP tool approval request
  */
 export type McpApprovalResponseItem = {
+  type: McpApprovalResponseItemType;
   approvalRequestId: string;
   approve: boolean;
   id?: string | null | undefined;
   reason?: string | null | undefined;
-  type: McpApprovalResponseItemType;
 };
 
 /** @internal */
@@ -32,11 +32,11 @@ export const McpApprovalResponseItemType$outboundSchema: z.ZodEnum<
 
 /** @internal */
 export type McpApprovalResponseItem$Outbound = {
+  type: string;
   approval_request_id: string;
   approve: boolean;
   id?: string | null | undefined;
   reason?: string | null | undefined;
-  type: string;
 };
 
 /** @internal */
@@ -44,11 +44,11 @@ export const McpApprovalResponseItem$outboundSchema: z.ZodType<
   McpApprovalResponseItem$Outbound,
   McpApprovalResponseItem
 > = z.object({
+  type: McpApprovalResponseItemType$outboundSchema,
   approvalRequestId: z.string(),
   approve: z.boolean(),
   id: z.nullable(z.string()).optional(),
   reason: z.nullable(z.string()).optional(),
-  type: McpApprovalResponseItemType$outboundSchema,
 }).transform((v) => {
   return remap$(v, {
     approvalRequestId: "approval_request_id",

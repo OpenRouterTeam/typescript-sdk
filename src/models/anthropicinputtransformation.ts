@@ -15,9 +15,9 @@ import { SDKValidationError } from "./errors/sdkvalidationerror.js";
  * A server-side transformation Anthropic applied to the request input
  */
 export type AnthropicInputTransformation = {
+  type: string;
   path?: string | null | undefined;
   reason?: string | null | undefined;
-  type: string;
   additionalProperties?: { [k: string]: any } | undefined;
 };
 
@@ -27,9 +27,9 @@ export const AnthropicInputTransformation$inboundSchema: z.ZodType<
   unknown
 > = collectExtraKeys$(
   z.object({
+    type: z.string(),
     path: z.nullable(z.string()).optional(),
     reason: z.nullable(z.string()).optional(),
-    type: z.string(),
   }).catchall(z.any()),
   "additionalProperties",
   true,

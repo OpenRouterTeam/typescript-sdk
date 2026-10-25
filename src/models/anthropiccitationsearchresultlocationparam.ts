@@ -7,24 +7,24 @@ import * as z from "zod/v4";
 import { remap as remap$ } from "../lib/primitives.js";
 
 export type AnthropicCitationSearchResultLocationParam = {
+  type: "search_result_location";
+  title: string | null;
   citedText: string;
   endBlockIndex: number;
   searchResultIndex: number;
   source: string;
   startBlockIndex: number;
-  title: string | null;
-  type: "search_result_location";
 };
 
 /** @internal */
 export type AnthropicCitationSearchResultLocationParam$Outbound = {
+  type: "search_result_location";
+  title: string | null;
   cited_text: string;
   end_block_index: number;
   search_result_index: number;
   source: string;
   start_block_index: number;
-  title: string | null;
-  type: "search_result_location";
 };
 
 /** @internal */
@@ -33,13 +33,13 @@ export const AnthropicCitationSearchResultLocationParam$outboundSchema:
     AnthropicCitationSearchResultLocationParam$Outbound,
     AnthropicCitationSearchResultLocationParam
   > = z.object({
+    type: z.literal("search_result_location"),
+    title: z.nullable(z.string()),
     citedText: z.string(),
     endBlockIndex: z.int(),
     searchResultIndex: z.int(),
     source: z.string(),
     startBlockIndex: z.int(),
-    title: z.nullable(z.string()),
-    type: z.literal("search_result_location"),
   }).transform((v) => {
     return remap$(v, {
       citedText: "cited_text",

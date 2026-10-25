@@ -70,23 +70,6 @@ export class Vault extends ClientSDK {
   }
 
   /**
-   * Delete an intern secret
-   *
-   * @remarks
-   * Deletes a secret stored for one intern. Returns 204 with no body on success and 404 when the secret does not exist in the selected scope. Writes return 503 while vault writes are disabled for the caller. The scope is selected by the API key: workspace routes act on the key's active workspace and intern routes act on one intern inside that workspace. There is no default workspace and no fallback to another scope. Every vault route, including reads, requires access to the Intern API programme and returns 404 outside it. An intern's own API key is confined to that intern: it can always read the intern's secrets and effective secrets, writes to them follow the rules above, and every other intern and every workspace route answers 404. Requests on regional hostnames such as `eu.openrouter.ai` are refused. [API key](/docs/api-reference/authentication) required.
-   */
-  async deleteInternVaultSecret(
-    request: operations.DeleteInternVaultSecretRequest,
-    options?: RequestOptions,
-  ): Promise<void> {
-    return unwrapAsync(vaultDeleteInternVaultSecret(
-      this,
-      request,
-      options,
-    ));
-  }
-
-  /**
    * Store an intern secret
    *
    * @remarks
@@ -97,6 +80,23 @@ export class Vault extends ClientSDK {
     options?: RequestOptions,
   ): Promise<models.VaultSecretResponse> {
     return unwrapAsync(vaultStoreInternVaultSecret(
+      this,
+      request,
+      options,
+    ));
+  }
+
+  /**
+   * Delete an intern secret
+   *
+   * @remarks
+   * Deletes a secret stored for one intern. Returns 204 with no body on success and 404 when the secret does not exist in the selected scope. Writes return 503 while vault writes are disabled for the caller. The scope is selected by the API key: workspace routes act on the key's active workspace and intern routes act on one intern inside that workspace. There is no default workspace and no fallback to another scope. Every vault route, including reads, requires access to the Intern API programme and returns 404 outside it. An intern's own API key is confined to that intern: it can always read the intern's secrets and effective secrets, writes to them follow the rules above, and every other intern and every workspace route answers 404. Requests on regional hostnames such as `eu.openrouter.ai` are refused. [API key](/docs/api-reference/authentication) required.
+   */
+  async deleteInternVaultSecret(
+    request: operations.DeleteInternVaultSecretRequest,
+    options?: RequestOptions,
+  ): Promise<void> {
+    return unwrapAsync(vaultDeleteInternVaultSecret(
       this,
       request,
       options,
@@ -138,23 +138,6 @@ export class Vault extends ClientSDK {
   }
 
   /**
-   * Delete a workspace secret
-   *
-   * @remarks
-   * Deletes a secret from the workspace of the authenticated API key. Returns 204 with no body on success and 404 when the secret does not exist in the selected scope. Writes return 503 while vault writes are disabled for the caller. The scope is selected by the API key: workspace routes act on the key's active workspace and intern routes act on one intern inside that workspace. There is no default workspace and no fallback to another scope. Every vault route, including reads, requires access to the Intern API programme and returns 404 outside it. An intern's own API key is confined to that intern: it can always read the intern's secrets and effective secrets, writes to them follow the rules above, and every other intern and every workspace route answers 404. Requests on regional hostnames such as `eu.openrouter.ai` are refused. [API key](/docs/api-reference/authentication) required.
-   */
-  async deleteVaultSecret(
-    request: operations.DeleteVaultSecretRequest,
-    options?: RequestOptions,
-  ): Promise<void> {
-    return unwrapAsync(vaultDeleteVaultSecret(
-      this,
-      request,
-      options,
-    ));
-  }
-
-  /**
    * Store a workspace secret
    *
    * @remarks
@@ -165,6 +148,23 @@ export class Vault extends ClientSDK {
     options?: RequestOptions,
   ): Promise<models.VaultSecretResponse> {
     return unwrapAsync(vaultStoreVaultSecret(
+      this,
+      request,
+      options,
+    ));
+  }
+
+  /**
+   * Delete a workspace secret
+   *
+   * @remarks
+   * Deletes a secret from the workspace of the authenticated API key. Returns 204 with no body on success and 404 when the secret does not exist in the selected scope. Writes return 503 while vault writes are disabled for the caller. The scope is selected by the API key: workspace routes act on the key's active workspace and intern routes act on one intern inside that workspace. There is no default workspace and no fallback to another scope. Every vault route, including reads, requires access to the Intern API programme and returns 404 outside it. An intern's own API key is confined to that intern: it can always read the intern's secrets and effective secrets, writes to them follow the rules above, and every other intern and every workspace route answers 404. Requests on regional hostnames such as `eu.openrouter.ai` are refused. [API key](/docs/api-reference/authentication) required.
+   */
+  async deleteVaultSecret(
+    request: operations.DeleteVaultSecretRequest,
+    options?: RequestOptions,
+  ): Promise<void> {
+    return unwrapAsync(vaultDeleteVaultSecret(
       this,
       request,
       options,

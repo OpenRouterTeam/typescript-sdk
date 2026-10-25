@@ -8,10 +8,10 @@ title: "ListToolsResponse"
 import { ListToolsResponse } from "@openrouter/sdk/models";
 
 let value: ListToolsResponse = {
-  data: [],
   links: {
     next: null,
   },
+  data: [],
   totalCount: 12,
 };
 ```
@@ -20,6 +20,6 @@ let value: ListToolsResponse = {
 
 | Field                                                                | Type                                                                 | Required                                                             | Description                                                          | Example                                                              |
 | -------------------------------------------------------------------- | -------------------------------------------------------------------- | -------------------------------------------------------------------- | -------------------------------------------------------------------- | -------------------------------------------------------------------- |
-| `data`                                                               | [models.ServerTool](../models/servertool.mdx)[]                       | ✔️                                                   | N/A                                                                  |                                                                      |
 | `links`                                                              | [models.ListToolsResponseLinks](../models/listtoolsresponselinks.mdx) | ✔️                                                   | N/A                                                                  |                                                                      |
+| `data`                                                               | [models.ServerTool](../models/servertool.mdx)[]                       | ✔️                                                   | N/A                                                                  |                                                                      |
 | `totalCount`                                                         | *number*                                                             | ✔️                                                   | Total number of tools                                                | 12                                                                   |

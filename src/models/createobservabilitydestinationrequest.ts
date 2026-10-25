@@ -48,6 +48,14 @@ export type CreateObservabilityDestinationRequestType = OpenEnum<
 
 export type CreateObservabilityDestinationRequest = {
   /**
+   * Human-readable name for the destination.
+   */
+  name: string;
+  /**
+   * The destination type. Only stable destination types are accepted.
+   */
+  type: CreateObservabilityDestinationRequestType;
+  /**
    * Optional allowlist of OpenRouter API key hashes whose traffic is forwarded. `null` or omitted means all keys. Must contain at least one hash if provided.
    */
   apiKeyHashes?: Array<string> | null | undefined;
@@ -80,10 +88,6 @@ export type CreateObservabilityDestinationRequest = {
    */
   filterRules?: ObservabilityFilterRulesConfigNullable | null | undefined;
   /**
-   * Human-readable name for the destination.
-   */
-  name: string;
-  /**
    * When true, request/response bodies are not forwarded — only metadata.
    */
   privacyMode?: boolean | undefined;
@@ -95,10 +99,6 @@ export type CreateObservabilityDestinationRequest = {
    * Sampling rate between 0.0001 and 1 (1 = 100%).
    */
   samplingRate?: number | undefined;
-  /**
-   * The destination type. Only stable destination types are accepted.
-   */
-  type: CreateObservabilityDestinationRequestType;
   /**
    * Optional workspace ID. Defaults to the authenticated entity's default workspace.
    */
@@ -112,6 +112,8 @@ export const CreateObservabilityDestinationRequestType$outboundSchema:
 
 /** @internal */
 export type CreateObservabilityDestinationRequest$Outbound = {
+  name: string;
+  type: string;
   api_key_hashes?: Array<string> | null | undefined;
   broadcast_generation_cost: boolean;
   broadcast_generation_cost_allocation: boolean;
@@ -123,11 +125,9 @@ export type CreateObservabilityDestinationRequest$Outbound = {
     | ObservabilityFilterRulesConfigNullable$Outbound
     | null
     | undefined;
-  name: string;
   privacy_mode: boolean;
   regions?: Array<string> | undefined;
   sampling_rate?: number | undefined;
-  type: string;
   workspace_id?: string | undefined;
 };
 
@@ -136,6 +136,8 @@ export const CreateObservabilityDestinationRequest$outboundSchema: z.ZodType<
   CreateObservabilityDestinationRequest$Outbound,
   CreateObservabilityDestinationRequest
 > = z.object({
+  name: z.string(),
+  type: CreateObservabilityDestinationRequestType$outboundSchema,
   apiKeyHashes: z.nullable(z.array(z.string())).optional(),
   broadcastGenerationCost: z.boolean().default(false),
   broadcastGenerationCostAllocation: z.boolean().default(false),
@@ -145,11 +147,9 @@ export const CreateObservabilityDestinationRequest$outboundSchema: z.ZodType<
   enabled: z.boolean().default(true),
   filterRules: z.nullable(ObservabilityFilterRulesConfigNullable$outboundSchema)
     .optional(),
-  name: z.string(),
   privacyMode: z.boolean().default(false),
   regions: z.array(ObservabilityDataRegionInput$outboundSchema).optional(),
   samplingRate: z.number().optional(),
-  type: CreateObservabilityDestinationRequestType$outboundSchema,
   workspaceId: z.string().optional(),
 }).transform((v) => {
   return remap$(v, {

@@ -10,8 +10,8 @@ The `delete_file` variant of an `apply_patch_call.operation`. Identifies the fil
 import { ApplyPatchDeleteFileOperation } from "@openrouter/sdk/models";
 
 let value: ApplyPatchDeleteFileOperation = {
-  path: "/src/main.ts",
   type: "delete_file",
+  path: "/src/main.ts",
 };
 ```
 
@@ -19,5 +19,5 @@ let value: ApplyPatchDeleteFileOperation = {
 
 | Field              | Type               | Required           | Description        |
 | ------------------ | ------------------ | ------------------ | ------------------ |
-| `path`             | *string*           | ✔️ | N/A                |
 | `type`             | *"delete_file"*    | ✔️ | N/A                |
+| `path`             | *string*           | ✔️ | N/A                |

@@ -17,11 +17,11 @@ export type WebSearchUserLocationServerToolType = ClosedEnum<
  * Approximate user location for location-biased results.
  */
 export type WebSearchUserLocationServerTool = {
+  type?: WebSearchUserLocationServerToolType | undefined;
   city?: string | null | undefined;
   country?: string | null | undefined;
   region?: string | null | undefined;
   timezone?: string | null | undefined;
-  type?: WebSearchUserLocationServerToolType | undefined;
 };
 
 /** @internal */
@@ -31,11 +31,11 @@ export const WebSearchUserLocationServerToolType$outboundSchema: z.ZodEnum<
 
 /** @internal */
 export type WebSearchUserLocationServerTool$Outbound = {
+  type?: string | undefined;
   city?: string | null | undefined;
   country?: string | null | undefined;
   region?: string | null | undefined;
   timezone?: string | null | undefined;
-  type?: string | undefined;
 };
 
 /** @internal */
@@ -43,11 +43,11 @@ export const WebSearchUserLocationServerTool$outboundSchema: z.ZodType<
   WebSearchUserLocationServerTool$Outbound,
   WebSearchUserLocationServerTool
 > = z.object({
+  type: WebSearchUserLocationServerToolType$outboundSchema.optional(),
   city: z.nullable(z.string()).optional(),
   country: z.nullable(z.string()).optional(),
   region: z.nullable(z.string()).optional(),
   timezone: z.nullable(z.string()).optional(),
-  type: WebSearchUserLocationServerToolType$outboundSchema.optional(),
 });
 
 export function webSearchUserLocationServerToolToJSON(

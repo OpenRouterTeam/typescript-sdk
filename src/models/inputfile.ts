@@ -13,20 +13,20 @@ import { SDKValidationError } from "./errors/sdkvalidationerror.js";
  * File input content item
  */
 export type InputFile = {
+  type: "input_file";
   fileData?: string | undefined;
   fileId?: string | null | undefined;
   fileUrl?: string | undefined;
   filename?: string | undefined;
-  type: "input_file";
 };
 
 /** @internal */
 export const InputFile$inboundSchema: z.ZodType<InputFile, unknown> = z.object({
+  type: z.literal("input_file"),
   file_data: z.string().optional(),
   file_id: z.nullable(z.string()).optional(),
   file_url: z.string().optional(),
   filename: z.string().optional(),
-  type: z.literal("input_file"),
 }).transform((v) => {
   return remap$(v, {
     "file_data": "fileData",
@@ -36,11 +36,11 @@ export const InputFile$inboundSchema: z.ZodType<InputFile, unknown> = z.object({
 });
 /** @internal */
 export type InputFile$Outbound = {
+  type: "input_file";
   file_data?: string | undefined;
   file_id?: string | null | undefined;
   file_url?: string | undefined;
   filename?: string | undefined;
-  type: "input_file";
 };
 
 /** @internal */
@@ -48,11 +48,11 @@ export const InputFile$outboundSchema: z.ZodType<
   InputFile$Outbound,
   InputFile
 > = z.object({
+  type: z.literal("input_file"),
   fileData: z.string().optional(),
   fileId: z.nullable(z.string()).optional(),
   fileUrl: z.string().optional(),
   filename: z.string().optional(),
-  type: z.literal("input_file"),
 }).transform((v) => {
   return remap$(v, {
     fileData: "file_data",

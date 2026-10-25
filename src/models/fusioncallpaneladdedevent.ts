@@ -13,11 +13,11 @@ import { SDKValidationError } from "./errors/sdkvalidationerror.js";
  * Emitted when a fusion analysis-panel model starts.
  */
 export type FusionCallPanelAddedEvent = {
+  type: "response.fusion_call.panel.added";
   itemId: string;
   model: string;
   outputIndex: number;
   sequenceNumber: number;
-  type: "response.fusion_call.panel.added";
 };
 
 /** @internal */
@@ -25,11 +25,11 @@ export const FusionCallPanelAddedEvent$inboundSchema: z.ZodType<
   FusionCallPanelAddedEvent,
   unknown
 > = z.object({
+  type: z.literal("response.fusion_call.panel.added"),
   item_id: z.string(),
   model: z.string(),
   output_index: z.int(),
   sequence_number: z.int(),
-  type: z.literal("response.fusion_call.panel.added"),
 }).transform((v) => {
   return remap$(v, {
     "item_id": "itemId",

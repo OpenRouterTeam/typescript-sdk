@@ -55,23 +55,6 @@ export class Scim extends ClientSDK {
   }
 
   /**
-   * Delete a SCIM group mapping
-   *
-   * @remarks
-   * Delete a SCIM group-to-workspace mapping. [Management key](/docs/guides/overview/auth/management-api-keys) required.
-   */
-  async delete(
-    request: operations.DeleteScimGroupMappingRequest,
-    options?: RequestOptions,
-  ): Promise<models.DeleteScimGroupMappingResponse> {
-    return unwrapAsync(scimDelete(
-      this,
-      request,
-      options,
-    ));
-  }
-
-  /**
    * Get a SCIM group mapping
    *
    * @remarks
@@ -82,6 +65,23 @@ export class Scim extends ClientSDK {
     options?: RequestOptions,
   ): Promise<models.GetScimGroupMappingResponse> {
     return unwrapAsync(scimRead(
+      this,
+      request,
+      options,
+    ));
+  }
+
+  /**
+   * Delete a SCIM group mapping
+   *
+   * @remarks
+   * Delete a SCIM group-to-workspace mapping. [Management key](/docs/guides/overview/auth/management-api-keys) required.
+   */
+  async delete(
+    request: operations.DeleteScimGroupMappingRequest,
+    options?: RequestOptions,
+  ): Promise<models.DeleteScimGroupMappingResponse> {
+    return unwrapAsync(scimDelete(
       this,
       request,
       options,

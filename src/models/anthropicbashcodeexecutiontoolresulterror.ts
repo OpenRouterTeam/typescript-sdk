@@ -23,8 +23,8 @@ export type AnthropicBashCodeExecutionToolResultErrorErrorCode = OpenEnum<
 >;
 
 export type AnthropicBashCodeExecutionToolResultError = {
-  errorCode: AnthropicBashCodeExecutionToolResultErrorErrorCode;
   type: "bash_code_execution_tool_result_error";
+  errorCode: AnthropicBashCodeExecutionToolResultErrorErrorCode;
 };
 
 /** @internal */
@@ -37,8 +37,8 @@ export const AnthropicBashCodeExecutionToolResultError$inboundSchema: z.ZodType<
   AnthropicBashCodeExecutionToolResultError,
   unknown
 > = z.object({
-  error_code: AnthropicBashCodeExecutionToolResultErrorErrorCode$inboundSchema,
   type: z.literal("bash_code_execution_tool_result_error"),
+  error_code: AnthropicBashCodeExecutionToolResultErrorErrorCode$inboundSchema,
 }).transform((v) => {
   return remap$(v, {
     "error_code": "errorCode",

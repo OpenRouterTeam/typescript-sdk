@@ -17,17 +17,10 @@ export type AnthropicPlainTextSourceMediaType = ClosedEnum<
   typeof AnthropicPlainTextSourceMediaType
 >;
 
-export const AnthropicPlainTextSourceType = {
-  Text: "text",
-} as const;
-export type AnthropicPlainTextSourceType = ClosedEnum<
-  typeof AnthropicPlainTextSourceType
->;
-
 export type AnthropicPlainTextSource = {
+  type: "text";
   data: string;
   mediaType: AnthropicPlainTextSourceMediaType;
-  type: AnthropicPlainTextSourceType;
 };
 
 /** @internal */
@@ -40,22 +33,13 @@ export const AnthropicPlainTextSourceMediaType$outboundSchema: z.ZodEnum<
 > = AnthropicPlainTextSourceMediaType$inboundSchema;
 
 /** @internal */
-export const AnthropicPlainTextSourceType$inboundSchema: z.ZodEnum<
-  typeof AnthropicPlainTextSourceType
-> = z.enum(AnthropicPlainTextSourceType);
-/** @internal */
-export const AnthropicPlainTextSourceType$outboundSchema: z.ZodEnum<
-  typeof AnthropicPlainTextSourceType
-> = AnthropicPlainTextSourceType$inboundSchema;
-
-/** @internal */
 export const AnthropicPlainTextSource$inboundSchema: z.ZodType<
   AnthropicPlainTextSource,
   unknown
 > = z.object({
+  type: z.literal("text"),
   data: z.string(),
   media_type: AnthropicPlainTextSourceMediaType$inboundSchema,
-  type: AnthropicPlainTextSourceType$inboundSchema,
 }).transform((v) => {
   return remap$(v, {
     "media_type": "mediaType",
@@ -63,9 +47,9 @@ export const AnthropicPlainTextSource$inboundSchema: z.ZodType<
 });
 /** @internal */
 export type AnthropicPlainTextSource$Outbound = {
+  type: "text";
   data: string;
   media_type: string;
-  type: string;
 };
 
 /** @internal */
@@ -73,9 +57,9 @@ export const AnthropicPlainTextSource$outboundSchema: z.ZodType<
   AnthropicPlainTextSource$Outbound,
   AnthropicPlainTextSource
 > = z.object({
+  type: z.literal("text"),
   data: z.string(),
   mediaType: AnthropicPlainTextSourceMediaType$outboundSchema,
-  type: AnthropicPlainTextSourceType$outboundSchema,
 }).transform((v) => {
   return remap$(v, {
     mediaType: "media_type",

@@ -18,14 +18,14 @@ import {
  * Record of an OpenRouter server-tool invocation (e.g. openrouter:fusion), carried in reasoning_details so a prior tool call can be rehydrated into a later turn of the same conversation.
  */
 export type ReasoningDetailServerToolCall = {
-  arguments: string;
+  type: "reasoning.server_tool_call";
   format?: ReasoningFormat | null | undefined;
+  arguments: string;
   id?: string | null | undefined;
   index?: number | undefined;
   result: string;
   toolCallId?: string | null | undefined;
   toolName: string;
-  type: "reasoning.server_tool_call";
 };
 
 /** @internal */
@@ -33,14 +33,14 @@ export const ReasoningDetailServerToolCall$inboundSchema: z.ZodType<
   ReasoningDetailServerToolCall,
   unknown
 > = z.object({
-  arguments: z.string(),
+  type: z.literal("reasoning.server_tool_call"),
   format: z.nullable(ReasoningFormat$inboundSchema).optional(),
+  arguments: z.string(),
   id: z.nullable(z.string()).optional(),
   index: z.int().optional(),
   result: z.string(),
   tool_call_id: z.nullable(z.string()).optional(),
   tool_name: z.string(),
-  type: z.literal("reasoning.server_tool_call"),
 }).transform((v) => {
   return remap$(v, {
     "tool_call_id": "toolCallId",
@@ -49,14 +49,14 @@ export const ReasoningDetailServerToolCall$inboundSchema: z.ZodType<
 });
 /** @internal */
 export type ReasoningDetailServerToolCall$Outbound = {
-  arguments: string;
+  type: "reasoning.server_tool_call";
   format?: string | null | undefined;
+  arguments: string;
   id?: string | null | undefined;
   index?: number | undefined;
   result: string;
   tool_call_id?: string | null | undefined;
   tool_name: string;
-  type: "reasoning.server_tool_call";
 };
 
 /** @internal */
@@ -64,14 +64,14 @@ export const ReasoningDetailServerToolCall$outboundSchema: z.ZodType<
   ReasoningDetailServerToolCall$Outbound,
   ReasoningDetailServerToolCall
 > = z.object({
-  arguments: z.string(),
+  type: z.literal("reasoning.server_tool_call"),
   format: z.nullable(ReasoningFormat$outboundSchema).optional(),
+  arguments: z.string(),
   id: z.nullable(z.string()).optional(),
   index: z.int().optional(),
   result: z.string(),
   toolCallId: z.nullable(z.string()).optional(),
   toolName: z.string(),
-  type: z.literal("reasoning.server_tool_call"),
 }).transform((v) => {
   return remap$(v, {
     toolCallId: "tool_call_id",

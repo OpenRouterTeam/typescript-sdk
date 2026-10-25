@@ -52,6 +52,8 @@ export type OutputReasoningItemStatusUnion =
  * An output item containing reasoning
  */
 export type OutputReasoningItem = {
+  type: "reasoning";
+  summary: Array<ReasoningSummaryText>;
   content?: Array<ReasoningTextContent> | null | undefined;
   encryptedContent?: string | null | undefined;
   id: string;
@@ -60,8 +62,6 @@ export type OutputReasoningItem = {
     | OutputReasoningItemStatusIncomplete
     | OutputReasoningItemStatusInProgress
     | undefined;
-  summary: Array<ReasoningSummaryText>;
-  type: "reasoning";
   format?: ReasoningFormat | null | undefined;
   /**
    * A signature for the reasoning content, used for verification
@@ -109,6 +109,8 @@ export const OutputReasoningItem$inboundSchema: z.ZodType<
   OutputReasoningItem,
   unknown
 > = z.object({
+  type: z.literal("reasoning"),
+  summary: z.array(ReasoningSummaryText$inboundSchema),
   content: z.nullable(z.array(ReasoningTextContent$inboundSchema)).optional(),
   encrypted_content: z.nullable(z.string()).optional(),
   id: z.string(),
@@ -117,8 +119,6 @@ export const OutputReasoningItem$inboundSchema: z.ZodType<
     OutputReasoningItemStatusIncomplete$inboundSchema,
     OutputReasoningItemStatusInProgress$inboundSchema,
   ]).optional(),
-  summary: z.array(ReasoningSummaryText$inboundSchema),
-  type: z.literal("reasoning"),
   format: z.nullable(ReasoningFormat$inboundSchema).optional(),
   signature: z.nullable(z.string()).optional(),
 }).transform((v) => {

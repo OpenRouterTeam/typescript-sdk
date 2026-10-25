@@ -8,11 +8,11 @@ title: "AnthropicBashCodeExecutionContent"
 
 ```typescript
 const value: models.AnthropicBashCodeExecutionResult = {
+  type: "bash_code_execution_result",
   content: [],
   returnCode: 0,
   stderr: "",
   stdout: "Hello",
-  type: "bash_code_execution_result",
 };
 ```
 
@@ -20,8 +20,8 @@ const value: models.AnthropicBashCodeExecutionResult = {
 
 ```typescript
 const value: models.AnthropicBashCodeExecutionToolResultError = {
-  errorCode: "execution_time_exceeded",
   type: "bash_code_execution_tool_result_error",
+  errorCode: "execution_time_exceeded",
 };
 ```
 

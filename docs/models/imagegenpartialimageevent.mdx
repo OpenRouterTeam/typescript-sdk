@@ -10,9 +10,9 @@ Emitted when a partial image becomes available during streaming generation
 import { ImageGenPartialImageEvent } from "@openrouter/sdk/models";
 
 let value: ImageGenPartialImageEvent = {
+  type: "image_generation.partial_image",
   b64Json: "<base64-encoded-partial-image>",
   partialImageIndex: 0,
-  type: "image_generation.partial_image",
 };
 ```
 
@@ -20,6 +20,6 @@ let value: ImageGenPartialImageEvent = {
 
 | Field                                                                | Type                                                                 | Required                                                             | Description                                                          |
 | -------------------------------------------------------------------- | -------------------------------------------------------------------- | -------------------------------------------------------------------- | -------------------------------------------------------------------- |
+| `type`                                                               | *"image_generation.partial_image"*                                   | ✔️                                                   | The event type                                                       |
 | `b64Json`                                                            | *string*                                                             | ✔️                                                   | Base64-encoded partial image data                                    |
 | `partialImageIndex`                                                  | *number*                                                             | ✔️                                                   | 0-based index indicating which partial image this is in the sequence |
-| `type`                                                               | *"image_generation.partial_image"*                                   | ✔️                                                   | The event type                                                       |

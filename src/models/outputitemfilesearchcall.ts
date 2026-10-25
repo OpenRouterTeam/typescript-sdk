@@ -13,10 +13,10 @@ import {
 } from "./websearchstatus.js";
 
 export type OutputItemFileSearchCall = {
+  type: "file_search_call";
   id: string;
   queries: Array<string>;
   status: WebSearchStatus;
-  type: "file_search_call";
 };
 
 /** @internal */
@@ -24,10 +24,10 @@ export const OutputItemFileSearchCall$inboundSchema: z.ZodType<
   OutputItemFileSearchCall,
   unknown
 > = z.object({
+  type: z.literal("file_search_call"),
   id: z.string(),
   queries: z.array(z.string()),
   status: WebSearchStatus$inboundSchema,
-  type: z.literal("file_search_call"),
 });
 
 export function outputItemFileSearchCallFromJSON(

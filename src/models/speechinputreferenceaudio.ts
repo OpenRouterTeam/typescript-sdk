@@ -15,17 +15,17 @@ import {
  * Reference audio input for stateless voice cloning. Up to three parts per request; the Nth audio part is addressable from `input` as `@AudioN` on providers that support multiple references.
  */
 export type SpeechInputReferenceAudio = {
+  type: "input_audio";
   /**
    * Reference audio input object
    */
   inputAudio: SpeechInputReferenceAudioInput;
-  type: "input_audio";
 };
 
 /** @internal */
 export type SpeechInputReferenceAudio$Outbound = {
-  input_audio: SpeechInputReferenceAudioInput$Outbound;
   type: "input_audio";
+  input_audio: SpeechInputReferenceAudioInput$Outbound;
 };
 
 /** @internal */
@@ -33,8 +33,8 @@ export const SpeechInputReferenceAudio$outboundSchema: z.ZodType<
   SpeechInputReferenceAudio$Outbound,
   SpeechInputReferenceAudio
 > = z.object({
-  inputAudio: SpeechInputReferenceAudioInput$outboundSchema,
   type: z.literal("input_audio"),
+  inputAudio: SpeechInputReferenceAudioInput$outboundSchema,
 }).transform((v) => {
   return remap$(v, {
     inputAudio: "input_audio",

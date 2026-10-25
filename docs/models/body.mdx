@@ -53,15 +53,15 @@ const value: models.OpenResponsesResult = {
   object: "response",
   output: [
     {
+      type: "message",
       content: [
         {
-          text: "Hello! How can I help you today?",
           type: "output_text",
+          text: "Hello! How can I help you today?",
         },
       ],
       id: "msg-abc123",
       role: "assistant",
-      type: "message",
     },
   ],
   parallelToolCalls: true,
@@ -74,32 +74,32 @@ const value: models.OpenResponsesResult = {
 };
 ```
 
-### `models.BodyMessage`
+### `models.BodyAssistant`
 
 ```typescript
-const value: models.BodyMessage = {
+const value: models.BodyAssistant = {
+  type: "message",
   container: {
     expiresAt: "2026-04-08T00:00:00Z",
     id: "ctr_01abc",
   },
   content: [
     {
+      type: "text",
       citations: null,
       text: "Hello, world!",
-      type: "text",
     },
   ],
   id: "<id>",
-  model: "Expedition",
+  model: "Accord",
   role: "assistant",
   stopDetails: {
+    type: "refusal",
     category: "cyber",
     explanation: "The request was refused due to policy.",
-    type: "refusal",
   },
   stopReason: "end_turn",
   stopSequence: "<value>",
-  type: "message",
   usage: {
     cacheCreation: null,
     cacheCreationInputTokens: null,

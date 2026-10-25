@@ -10,8 +10,8 @@ Static predicted output content. Supported models can use this to reduce latency
 import { Prediction } from "@openrouter/sdk/models";
 
 let value: Prediction = {
-  content: "Expected response",
   type: "content",
+  content: "Expected response",
 };
 ```
 
@@ -19,5 +19,5 @@ let value: Prediction = {
 
 | Field                                                | Type                                                 | Required                                             | Description                                          |
 | ---------------------------------------------------- | ---------------------------------------------------- | ---------------------------------------------------- | ---------------------------------------------------- |
-| `content`                                            | *models.PredictionContent*                           | ✔️                                   | N/A                                                  |
 | `type`                                               | [models.PredictionType](../models/predictiontype.mdx) | ✔️                                   | N/A                                                  |
+| `content`                                            | *models.PredictionContent*                           | ✔️                                   | N/A                                                  |

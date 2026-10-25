@@ -21,9 +21,9 @@ export type AnthropicFileDeletedType = ClosedEnum<
  * Deletion result in Anthropic's shape.
  */
 export type AnthropicFileDeleted = {
+  type: AnthropicFileDeletedType;
   shape: "anthropic";
   id: string;
-  type: AnthropicFileDeletedType;
 };
 
 /** @internal */
@@ -36,9 +36,9 @@ export const AnthropicFileDeleted$inboundSchema: z.ZodType<
   AnthropicFileDeleted,
   unknown
 > = z.object({
+  type: AnthropicFileDeletedType$inboundSchema,
   _shape: z.literal("anthropic"),
   id: z.string(),
-  type: AnthropicFileDeletedType$inboundSchema,
 }).transform((v) => {
   return remap$(v, {
     "_shape": "shape",

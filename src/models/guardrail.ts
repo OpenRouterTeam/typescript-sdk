@@ -27,6 +27,14 @@ import {
 
 export type Guardrail = {
   /**
+   * Name of the guardrail
+   */
+  name: string;
+  /**
+   * Description of the guardrail
+   */
+  description?: string | null | undefined;
+  /**
    * Whether ZDR-only requests to google/* models may use endpoints that may retain prompts for safety monitoring. false allows only zero-retention endpoints. A guardrail can only be more restrictive than the account setting. Inherits the account setting when not provided.
    */
   allowSafetyRetentionGoogle?: boolean | null | undefined;
@@ -58,10 +66,6 @@ export type Guardrail = {
    * ISO 8601 timestamp of when the guardrail was created
    */
   createdAt: string;
-  /**
-   * Description of the guardrail
-   */
-  description?: string | null | undefined;
   /**
    * Whether this guardrail allows free endpoints that publish prompts.
    */
@@ -121,10 +125,6 @@ export type Guardrail = {
    */
   limitUsd?: number | null | undefined;
   /**
-   * Name of the guardrail
-   */
-  name: string;
-  /**
    * Interval at which the limit resets (daily, weekly, monthly)
    */
   resetInterval?: GuardrailInterval | null | undefined;
@@ -140,6 +140,8 @@ export type Guardrail = {
 
 /** @internal */
 export const Guardrail$inboundSchema: z.ZodType<Guardrail, unknown> = z.object({
+  name: z.string(),
+  description: z.nullable(z.string()).optional(),
   allow_safety_retention_google: z.nullable(z.boolean()).optional(),
   allow_safety_retention_other: z.nullable(z.boolean()).optional(),
   allowed_data_regions: z.nullable(z.array(GuardrailDataRegion$inboundSchema))
@@ -152,7 +154,6 @@ export const Guardrail$inboundSchema: z.ZodType<Guardrail, unknown> = z.object({
   content_filters: z.nullable(z.array(ContentFilterEntry$inboundSchema))
     .optional(),
   created_at: z.string(),
-  description: z.nullable(z.string()).optional(),
   enable_free_model_publication: z.nullable(z.boolean()).optional(),
   enable_free_model_training: z.nullable(z.boolean()).optional(),
   enable_paid_model_training: z.nullable(z.boolean()).optional(),
@@ -167,7 +168,6 @@ export const Guardrail$inboundSchema: z.ZodType<Guardrail, unknown> = z.object({
   ignored_providers: z.nullable(z.array(z.string())).optional(),
   include_byok_in_budgets: z.boolean(),
   limit_usd: z.nullable(z.number()).optional(),
-  name: z.string(),
   reset_interval: z.nullable(GuardrailInterval$inboundSchema).optional(),
   updated_at: z.nullable(z.string()).optional(),
   workspace_id: z.nullable(z.string()),

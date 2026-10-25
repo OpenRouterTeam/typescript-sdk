@@ -20,8 +20,8 @@ export type OutcomeTimeout = {
 };
 
 export type OutcomeExit = {
-  exitCode: number;
   type: "exit";
+  exitCode: number;
   additionalProperties?: { [k: string]: any } | undefined;
 };
 
@@ -91,8 +91,8 @@ export function outcomeTimeoutFromJSON(
 export const OutcomeExit$inboundSchema: z.ZodType<OutcomeExit, unknown> =
   collectExtraKeys$(
     z.object({
-      exit_code: z.int(),
       type: z.literal("exit"),
+      exit_code: z.int(),
     }).catchall(z.any()),
     "additionalProperties",
     true,
@@ -103,8 +103,8 @@ export const OutcomeExit$inboundSchema: z.ZodType<OutcomeExit, unknown> =
   });
 /** @internal */
 export type OutcomeExit$Outbound = {
-  exit_code: number;
   type: "exit";
+  exit_code: number;
   [additionalProperties: string]: unknown;
 };
 
@@ -113,8 +113,8 @@ export const OutcomeExit$outboundSchema: z.ZodType<
   OutcomeExit$Outbound,
   OutcomeExit
 > = z.object({
-  exitCode: z.int(),
   type: z.literal("exit"),
+  exitCode: z.int(),
   additionalProperties: z.record(z.string(), z.any()).optional(),
 }).transform((v) => {
   return {

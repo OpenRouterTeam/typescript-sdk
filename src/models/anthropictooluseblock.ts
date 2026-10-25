@@ -13,11 +13,11 @@ import {
 import { SDKValidationError } from "./errors/sdkvalidationerror.js";
 
 export type AnthropicToolUseBlock = {
+  name: string;
+  type: "tool_use";
   caller: AnthropicCaller;
   id: string;
   input?: any | undefined;
-  name: string;
-  type: "tool_use";
 };
 
 /** @internal */
@@ -25,11 +25,11 @@ export const AnthropicToolUseBlock$inboundSchema: z.ZodType<
   AnthropicToolUseBlock,
   unknown
 > = z.object({
+  name: z.string(),
+  type: z.literal("tool_use"),
   caller: AnthropicCaller$inboundSchema,
   id: z.string(),
   input: z.any().optional(),
-  name: z.string(),
-  type: z.literal("tool_use"),
 });
 
 export function anthropicToolUseBlockFromJSON(

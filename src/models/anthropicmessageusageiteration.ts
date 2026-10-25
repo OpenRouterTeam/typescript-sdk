@@ -27,8 +27,8 @@ export type AnthropicMessageUsageIteration = {
   cacheReadInputTokens?: number | undefined;
   inputTokens?: number | undefined;
   outputTokens?: number | undefined;
-  model?: string | undefined;
   type: AnthropicMessageUsageIterationType;
+  model?: string | undefined;
 };
 
 /** @internal */
@@ -47,8 +47,8 @@ export const AnthropicMessageUsageIteration$inboundSchema: z.ZodType<
   cache_read_input_tokens: z.int().optional(),
   input_tokens: z.int().optional(),
   output_tokens: z.int().optional(),
-  model: z.string().optional(),
   type: AnthropicMessageUsageIterationType$inboundSchema,
+  model: z.string().optional(),
 }).transform((v) => {
   return remap$(v, {
     "cache_creation": "cacheCreation",

@@ -19,12 +19,12 @@ export const FileType = {
 export type FileType = OpenEnum<typeof FileType>;
 
 export type AnthropicTextEditorCodeExecutionViewResult = {
+  type: "text_editor_code_execution_view_result";
   content: string;
   fileType: FileType;
   numLines: number | null;
   startLine: number | null;
   totalLines: number | null;
-  type: "text_editor_code_execution_view_result";
 };
 
 /** @internal */
@@ -34,12 +34,12 @@ export const FileType$inboundSchema: z.ZodType<FileType, unknown> = openEnums
 /** @internal */
 export const AnthropicTextEditorCodeExecutionViewResult$inboundSchema:
   z.ZodType<AnthropicTextEditorCodeExecutionViewResult, unknown> = z.object({
+    type: z.literal("text_editor_code_execution_view_result"),
     content: z.string(),
     file_type: FileType$inboundSchema,
     num_lines: z.nullable(z.int()),
     start_line: z.nullable(z.int()),
     total_lines: z.nullable(z.int()),
-    type: z.literal("text_editor_code_execution_view_result"),
   }).transform((v) => {
     return remap$(v, {
       "file_type": "fileType",

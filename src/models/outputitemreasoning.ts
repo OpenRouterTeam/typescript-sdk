@@ -45,6 +45,8 @@ export type OutputItemReasoningStatusUnion =
   | OutputItemReasoningStatusInProgress;
 
 export type OutputItemReasoning = {
+  type: "reasoning";
+  summary: Array<ReasoningSummaryText>;
   content?: Array<ReasoningTextContent> | undefined;
   encryptedContent?: string | null | undefined;
   id: string;
@@ -53,8 +55,6 @@ export type OutputItemReasoning = {
     | OutputItemReasoningStatusIncomplete
     | OutputItemReasoningStatusInProgress
     | undefined;
-  summary: Array<ReasoningSummaryText>;
-  type: "reasoning";
 };
 
 /** @internal */
@@ -97,6 +97,8 @@ export const OutputItemReasoning$inboundSchema: z.ZodType<
   OutputItemReasoning,
   unknown
 > = z.object({
+  type: z.literal("reasoning"),
+  summary: z.array(ReasoningSummaryText$inboundSchema),
   content: z.array(ReasoningTextContent$inboundSchema).optional(),
   encrypted_content: z.nullable(z.string()).optional(),
   id: z.string(),
@@ -105,8 +107,6 @@ export const OutputItemReasoning$inboundSchema: z.ZodType<
     OutputItemReasoningStatusIncomplete$inboundSchema,
     OutputItemReasoningStatusInProgress$inboundSchema,
   ]).optional(),
-  summary: z.array(ReasoningSummaryText$inboundSchema),
-  type: z.literal("reasoning"),
 }).transform((v) => {
   return remap$(v, {
     "encrypted_content": "encryptedContent",

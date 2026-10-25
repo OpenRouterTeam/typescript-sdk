@@ -12,6 +12,8 @@ import { ImageModelsListResponse } from "@openrouter/sdk/models";
 let value: ImageModelsListResponse = {
   data: [
     {
+      name: "Seedream 4.5",
+      description: "A text-to-image model.",
       architecture: {
         inputModalities: [
           "text",
@@ -21,10 +23,8 @@ let value: ImageModelsListResponse = {
         ],
       },
       created: 1692901234,
-      description: "A text-to-image model.",
       endpoints: "/api/v1/images/models/bytedance-seed/seedream-4.5/endpoints",
       id: "bytedance-seed/seedream-4.5",
-      name: "Seedream 4.5",
       supportedParameters: {
         "resolution": {
           type: "enum",

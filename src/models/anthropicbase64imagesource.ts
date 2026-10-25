@@ -11,16 +11,16 @@ import {
 } from "./anthropicimagemimetype.js";
 
 export type AnthropicBase64ImageSource = {
+  type: "base64";
   data: string;
   mediaType: AnthropicImageMimeType;
-  type: "base64";
 };
 
 /** @internal */
 export type AnthropicBase64ImageSource$Outbound = {
+  type: "base64";
   data: string;
   media_type: string;
-  type: "base64";
 };
 
 /** @internal */
@@ -28,9 +28,9 @@ export const AnthropicBase64ImageSource$outboundSchema: z.ZodType<
   AnthropicBase64ImageSource$Outbound,
   AnthropicBase64ImageSource
 > = z.object({
+  type: z.literal("base64"),
   data: z.string(),
   mediaType: AnthropicImageMimeType$outboundSchema,
-  type: z.literal("base64"),
 }).transform((v) => {
   return remap$(v, {
     mediaType: "media_type",

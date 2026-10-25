@@ -17,11 +17,11 @@ import {
  * Reasoning detail encrypted schema
  */
 export type ReasoningDetailEncrypted = {
-  data: string;
+  type: "reasoning.encrypted";
   format?: ReasoningFormat | null | undefined;
+  data: string;
   id?: string | null | undefined;
   index?: number | undefined;
-  type: "reasoning.encrypted";
 };
 
 /** @internal */
@@ -29,19 +29,19 @@ export const ReasoningDetailEncrypted$inboundSchema: z.ZodType<
   ReasoningDetailEncrypted,
   unknown
 > = z.object({
-  data: z.string(),
+  type: z.literal("reasoning.encrypted"),
   format: z.nullable(ReasoningFormat$inboundSchema).optional(),
+  data: z.string(),
   id: z.nullable(z.string()).optional(),
   index: z.int().optional(),
-  type: z.literal("reasoning.encrypted"),
 });
 /** @internal */
 export type ReasoningDetailEncrypted$Outbound = {
-  data: string;
+  type: "reasoning.encrypted";
   format?: string | null | undefined;
+  data: string;
   id?: string | null | undefined;
   index?: number | undefined;
-  type: "reasoning.encrypted";
 };
 
 /** @internal */
@@ -49,11 +49,11 @@ export const ReasoningDetailEncrypted$outboundSchema: z.ZodType<
   ReasoningDetailEncrypted$Outbound,
   ReasoningDetailEncrypted
 > = z.object({
-  data: z.string(),
+  type: z.literal("reasoning.encrypted"),
   format: z.nullable(ReasoningFormat$outboundSchema).optional(),
+  data: z.string(),
   id: z.nullable(z.string()).optional(),
   index: z.int().optional(),
-  type: z.literal("reasoning.encrypted"),
 });
 
 export function reasoningDetailEncryptedToJSON(

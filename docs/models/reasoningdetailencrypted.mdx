@@ -10,8 +10,8 @@ Reasoning detail encrypted schema
 import { ReasoningDetailEncrypted } from "@openrouter/sdk/models";
 
 let value: ReasoningDetailEncrypted = {
-  data: "encrypted data",
   type: "reasoning.encrypted",
+  data: "encrypted data",
 };
 ```
 
@@ -19,8 +19,8 @@ let value: ReasoningDetailEncrypted = {
 
 | Field                                                  | Type                                                   | Required                                               | Description                                            | Example                                                |
 | ------------------------------------------------------ | ------------------------------------------------------ | ------------------------------------------------------ | ------------------------------------------------------ | ------------------------------------------------------ |
-| `data`                                                 | *string*                                               | ✔️                                     | N/A                                                    |                                                        |
+| `type`                                                 | *"reasoning.encrypted"*                                | ✔️                                     | N/A                                                    |                                                        |
 | `format`                                               | [models.ReasoningFormat](../models/reasoningformat.mdx) | ➖                                     | N/A                                                    | unknown                                                |
+| `data`                                                 | *string*                                               | ✔️                                     | N/A                                                    |                                                        |
 | `id`                                                   | *string*                                               | ➖                                     | N/A                                                    |                                                        |
 | `index`                                                | *number*                                               | ➖                                     | N/A                                                    |                                                        |
-| `type`                                                 | *"reasoning.encrypted"*                                | ✔️                                     | N/A                                                    |                                                        |

@@ -12,14 +12,14 @@ import {
 } from "./multimodalmedia.js";
 
 export type ContentPartInputVideo = {
-  inputVideo: MultimodalMedia;
   type: "input_video";
+  inputVideo: MultimodalMedia;
 };
 
 /** @internal */
 export type ContentPartInputVideo$Outbound = {
-  input_video: MultimodalMedia$Outbound;
   type: "input_video";
+  input_video: MultimodalMedia$Outbound;
 };
 
 /** @internal */
@@ -27,8 +27,8 @@ export const ContentPartInputVideo$outboundSchema: z.ZodType<
   ContentPartInputVideo$Outbound,
   ContentPartInputVideo
 > = z.object({
-  inputVideo: MultimodalMedia$outboundSchema,
   type: z.literal("input_video"),
+  inputVideo: MultimodalMedia$outboundSchema,
 }).transform((v) => {
   return remap$(v, {
     inputVideo: "input_video",

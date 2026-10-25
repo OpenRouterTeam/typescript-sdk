@@ -19,8 +19,8 @@ const value: models.BaseInputsMessage = {
 const value: models.OpenAIResponseInputMessageItem = {
   content: [
     {
-      text: "Hello, how are you?",
       type: "input_text",
+      text: "Hello, how are you?",
     },
   ],
   id: "msg-abc123",
@@ -32,9 +32,9 @@ const value: models.OpenAIResponseInputMessageItem = {
 
 ```typescript
 const value: models.OpenAIResponseFunctionToolCallOutput = {
+  type: "function_call_output",
   callId: "call-abc123",
   output: "{\"temperature\":72,\"conditions\":\"sunny\"}",
-  type: "function_call_output",
 };
 ```
 
@@ -42,10 +42,10 @@ const value: models.OpenAIResponseFunctionToolCallOutput = {
 
 ```typescript
 const value: models.OpenAIResponseFunctionToolCall = {
-  arguments: "{\"location\":\"San Francisco\"}",
-  callId: "call-abc123",
   name: "get_weather",
   type: "function_call",
+  arguments: "{\"location\":\"San Francisco\"}",
+  callId: "call-abc123",
 };
 ```
 
@@ -53,11 +53,11 @@ const value: models.OpenAIResponseFunctionToolCall = {
 
 ```typescript
 const value: models.OutputItemImageGenerationCall = {
+  type: "image_generation_call",
   id: "imagegen-abc123",
   result:
     "iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+M9QDwADhgGAWjR9awAAAABJRU5ErkJggg==",
   status: "completed",
-  type: "image_generation_call",
 };
 ```
 
@@ -65,15 +65,15 @@ const value: models.OutputItemImageGenerationCall = {
 
 ```typescript
 const value: models.OutputMessage = {
+  type: "message",
   content: [
     {
-      text: "Hello! How can I help you today?",
       type: "output_text",
+      text: "Hello! How can I help you today?",
     },
   ],
   id: "msg-abc123",
   role: "assistant",
-  type: "message",
 };
 ```
 
@@ -81,10 +81,10 @@ const value: models.OutputMessage = {
 
 ```typescript
 const value: models.OpenAIResponseCustomToolCall = {
-  callId: "call-abc123",
-  input: "*** Begin Patch\n*** End Patch",
   name: "apply_patch",
   type: "custom_tool_call",
+  callId: "call-abc123",
+  input: "*** Begin Patch\n*** End Patch",
 };
 ```
 
@@ -92,9 +92,9 @@ const value: models.OpenAIResponseCustomToolCall = {
 
 ```typescript
 const value: models.OpenAIResponseCustomToolCallOutput = {
+  type: "custom_tool_call_output",
   callId: "call-abc123",
   output: "patch applied successfully",
-  type: "custom_tool_call_output",
 };
 ```
 
@@ -102,14 +102,14 @@ const value: models.OpenAIResponseCustomToolCallOutput = {
 
 ```typescript
 const value: models.ApplyPatchCallItem = {
+  type: "apply_patch_call",
   callId: "call_abc123",
   operation: {
+    type: "update_file",
     diff: "@@ function main() {\n+  console.log(\"hi\");\n }",
     path: "/src/main.ts",
-    type: "update_file",
   },
   status: "completed",
-  type: "apply_patch_call",
 };
 ```
 
@@ -117,9 +117,9 @@ const value: models.ApplyPatchCallItem = {
 
 ```typescript
 const value: models.ApplyPatchCallOutputItem = {
+  type: "apply_patch_call_output",
   callId: "call_abc123",
   status: "completed",
-  type: "apply_patch_call_output",
 };
 ```
 
@@ -127,10 +127,10 @@ const value: models.ApplyPatchCallOutputItem = {
 
 ```typescript
 const value: models.ConfigurationUpdateItem = {
+  type: "configuration_update",
   reasoning: {
     effort: "low",
   },
-  type: "configuration_update",
 };
 ```
 

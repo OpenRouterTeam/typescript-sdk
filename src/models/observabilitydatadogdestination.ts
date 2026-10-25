@@ -19,13 +19,13 @@ import {
 
 export type ObservabilityDatadogDestinationConfig = {
   /**
-   * Datadog API key must have LLM Observability permissions. Create at:
-   */
-  apiKey: string;
-  /**
    * Custom HTTP headers to include in requests to this destination.
    */
   headers?: { [k: string]: string } | undefined;
+  /**
+   * Datadog API key must have LLM Observability permissions. Create at:
+   */
+  apiKey: string;
   /**
    * Name to identify your application in Datadog LLM Observability
    */
@@ -37,6 +37,11 @@ export type ObservabilityDatadogDestinationConfig = {
 };
 
 export type ObservabilityDatadogDestination = {
+  /**
+   * Human-readable name for the destination.
+   */
+  name: string | null;
+  type: "datadog";
   /**
    * Optional allowlist of OpenRouter API key hashes (`api_keys.hash`) whose traffic is forwarded to this destination. `null` means all keys.
    */
@@ -75,10 +80,6 @@ export type ObservabilityDatadogDestination = {
    */
   id: string;
   /**
-   * Human-readable name for the destination.
-   */
-  name: string | null;
-  /**
    * When true, request/response bodies are not forwarded to this destination — only metadata.
    */
   privacyMode: boolean;
@@ -90,7 +91,6 @@ export type ObservabilityDatadogDestination = {
    * Sampling rate for events sent to this destination, between 0.0001 and 1 (1 = 100%).
    */
   samplingRate: number;
-  type: "datadog";
   /**
    * ISO timestamp of when the destination was last updated.
    */
@@ -106,8 +106,8 @@ export const ObservabilityDatadogDestinationConfig$inboundSchema: z.ZodType<
   ObservabilityDatadogDestinationConfig,
   unknown
 > = z.object({
-  apiKey: z.string(),
   headers: z.record(z.string(), z.string()).optional(),
+  apiKey: z.string(),
   mlApp: z.string(),
   url: z.string().default("https://api.datadoghq.com"),
 });
@@ -128,6 +128,8 @@ export const ObservabilityDatadogDestination$inboundSchema: z.ZodType<
   ObservabilityDatadogDestination,
   unknown
 > = z.object({
+  name: z.nullable(z.string()),
+  type: z.literal("datadog"),
   api_key_hashes: z.nullable(z.array(z.string())),
   broadcast_generation_cost: z.boolean(),
   broadcast_generation_cost_allocation: z.boolean(),
@@ -138,11 +140,9 @@ export const ObservabilityDatadogDestination$inboundSchema: z.ZodType<
   enabled: z.boolean(),
   filter_rules: z.nullable(ObservabilityFilterRulesConfig$inboundSchema),
   id: z.string(),
-  name: z.nullable(z.string()),
   privacy_mode: z.boolean(),
   regions: z.array(ObservabilityDataRegion$inboundSchema),
   sampling_rate: z.number(),
-  type: z.literal("datadog"),
   updated_at: z.string(),
   workspace_id: z.string(),
 }).transform((v) => {

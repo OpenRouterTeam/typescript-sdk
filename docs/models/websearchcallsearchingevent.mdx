@@ -10,10 +10,10 @@ Web search call is searching
 import { WebSearchCallSearchingEvent } from "@openrouter/sdk/models";
 
 let value: WebSearchCallSearchingEvent = {
+  type: "response.web_search_call.searching",
   itemId: "<id>",
   outputIndex: 112521,
   sequenceNumber: 0,
-  type: "response.web_search_call.searching",
 };
 ```
 
@@ -21,7 +21,7 @@ let value: WebSearchCallSearchingEvent = {
 
 | Field                                  | Type                                   | Required                               | Description                            |
 | -------------------------------------- | -------------------------------------- | -------------------------------------- | -------------------------------------- |
+| `type`                                 | *"response.web_search_call.searching"* | ✔️                     | N/A                                    |
 | `itemId`                               | *string*                               | ✔️                     | N/A                                    |
 | `outputIndex`                          | *number*                               | ✔️                     | N/A                                    |
 | `sequenceNumber`                       | *number*                               | ✔️                     | N/A                                    |
-| `type`                                 | *"response.web_search_call.searching"* | ✔️                     | N/A                                    |

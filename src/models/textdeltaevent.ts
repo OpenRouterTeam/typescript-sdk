@@ -14,25 +14,25 @@ import { StreamLogprob, StreamLogprob$inboundSchema } from "./streamlogprob.js";
  * Event emitted when a text delta is streamed
  */
 export type TextDeltaEvent = {
+  type: "response.output_text.delta";
   contentIndex: number;
   delta: string;
   itemId: string;
   logprobs: Array<StreamLogprob>;
   outputIndex: number;
   sequenceNumber: number;
-  type: "response.output_text.delta";
 };
 
 /** @internal */
 export const TextDeltaEvent$inboundSchema: z.ZodType<TextDeltaEvent, unknown> =
   z.object({
+    type: z.literal("response.output_text.delta"),
     content_index: z.int(),
     delta: z.string(),
     item_id: z.string(),
     logprobs: z.array(StreamLogprob$inboundSchema),
     output_index: z.int(),
     sequence_number: z.int(),
-    type: z.literal("response.output_text.delta"),
   }).transform((v) => {
     return remap$(v, {
       "content_index": "contentIndex",

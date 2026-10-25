@@ -21,7 +21,6 @@ export type ServerToolOutputNameApiFormat = OpenEnum<
 >;
 
 export type ServerToolOutputName = {
-  apiFormat: ServerToolOutputNameApiFormat;
   /**
    * Anthropic Messages `server_tool_use` block `name`, when the call surfaces as one
    */
@@ -30,6 +29,7 @@ export type ServerToolOutputName = {
    * Output item `type` on Responses, content block `type` on Anthropic Messages, `reasoning_details[].type` on Chat Completions
    */
   type: string;
+  apiFormat: ServerToolOutputNameApiFormat;
 };
 
 /** @internal */
@@ -43,9 +43,9 @@ export const ServerToolOutputName$inboundSchema: z.ZodType<
   ServerToolOutputName,
   unknown
 > = z.object({
-  api_format: ServerToolOutputNameApiFormat$inboundSchema,
   name: z.string().optional(),
   type: z.string(),
+  api_format: ServerToolOutputNameApiFormat$inboundSchema,
 }).transform((v) => {
   return remap$(v, {
     "api_format": "apiFormat",

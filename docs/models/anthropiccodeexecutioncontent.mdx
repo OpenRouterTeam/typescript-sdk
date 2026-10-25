@@ -8,11 +8,11 @@ title: "AnthropicCodeExecutionContent"
 
 ```typescript
 const value: models.AnthropicCodeExecutionResult = {
+  type: "code_execution_result",
   content: [],
   returnCode: 0,
   stderr: "",
   stdout: "Hello",
-  type: "code_execution_result",
 };
 ```
 
@@ -20,8 +20,8 @@ const value: models.AnthropicCodeExecutionResult = {
 
 ```typescript
 const value: models.AnthropicCodeExecutionToolResultError = {
-  errorCode: "unavailable",
   type: "code_execution_tool_result_error",
+  errorCode: "unavailable",
 };
 ```
 
@@ -29,11 +29,11 @@ const value: models.AnthropicCodeExecutionToolResultError = {
 
 ```typescript
 const value: models.AnthropicEncryptedCodeExecutionResult = {
+  type: "encrypted_code_execution_result",
   content: [],
   encryptedStdout: "<value>",
   returnCode: 0,
   stderr: "",
-  type: "encrypted_code_execution_result",
 };
 ```
 

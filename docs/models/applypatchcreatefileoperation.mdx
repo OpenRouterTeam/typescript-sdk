@@ -10,9 +10,9 @@ The `create_file` variant of an `apply_patch_call.operation`. Carries a V4A diff
 import { ApplyPatchCreateFileOperation } from "@openrouter/sdk/models";
 
 let value: ApplyPatchCreateFileOperation = {
+  type: "create_file",
   diff: "@@\n+console.log(\"hi\");\n",
   path: "/src/main.ts",
-  type: "create_file",
 };
 ```
 
@@ -20,6 +20,6 @@ let value: ApplyPatchCreateFileOperation = {
 
 | Field              | Type               | Required           | Description        |
 | ------------------ | ------------------ | ------------------ | ------------------ |
+| `type`             | *"create_file"*    | ✔️ | N/A                |
 | `diff`             | *string*           | ✔️ | N/A                |
 | `path`             | *string*           | ✔️ | N/A                |
-| `type`             | *"create_file"*    | ✔️ | N/A                |

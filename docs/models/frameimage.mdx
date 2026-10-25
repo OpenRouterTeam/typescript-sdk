@@ -8,10 +8,10 @@ title: "FrameImage"
 import { FrameImage } from "@openrouter/sdk/models";
 
 let value: FrameImage = {
+  type: "image_url",
   imageUrl: {
     url: "https://example.com/image.png",
   },
-  type: "image_url",
   frameType: "first_frame",
 };
 ```
@@ -20,6 +20,6 @@ let value: FrameImage = {
 
 | Field                                                              | Type                                                               | Required                                                           | Description                                                        | Example                                                            |
 | ------------------------------------------------------------------ | ------------------------------------------------------------------ | ------------------------------------------------------------------ | ------------------------------------------------------------------ | ------------------------------------------------------------------ |
-| `imageUrl`                                                         | [models.FrameImageImageUrl](../models/frameimageimageurl.mdx)       | ✔️                                                 | N/A                                                                |                                                                    |
 | `type`                                                             | [models.FrameImageType](../models/frameimagetype.mdx)               | ✔️                                                 | N/A                                                                |                                                                    |
+| `imageUrl`                                                         | [models.FrameImageImageUrl](../models/frameimageimageurl.mdx)       | ✔️                                                 | N/A                                                                |                                                                    |
 | `frameType`                                                        | [models.FrameType](../models/frametype.mdx)                         | ✔️                                                 | Whether this image represents the first or last frame of the video | first_frame                                                        |

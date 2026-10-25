@@ -10,12 +10,12 @@ Event emitted when function call arguments streaming is complete
 import { FunctionCallArgsDoneEvent } from "@openrouter/sdk/models";
 
 let value: FunctionCallArgsDoneEvent = {
+  name: "<value>",
+  type: "response.function_call_arguments.done",
   arguments: "<value>",
   itemId: "<id>",
-  name: "<value>",
   outputIndex: 51328,
   sequenceNumber: 0,
-  type: "response.function_call_arguments.done",
 };
 ```
 
@@ -23,9 +23,9 @@ let value: FunctionCallArgsDoneEvent = {
 
 | Field                                     | Type                                      | Required                                  | Description                               |
 | ----------------------------------------- | ----------------------------------------- | ----------------------------------------- | ----------------------------------------- |
+| `name`                                    | *string*                                  | ✔️                        | N/A                                       |
+| `type`                                    | *"response.function_call_arguments.done"* | ✔️                        | N/A                                       |
 | `arguments`                               | *string*                                  | ✔️                        | N/A                                       |
 | `itemId`                                  | *string*                                  | ✔️                        | N/A                                       |
-| `name`                                    | *string*                                  | ✔️                        | N/A                                       |
 | `outputIndex`                             | *number*                                  | ✔️                        | N/A                                       |
 | `sequenceNumber`                          | *number*                                  | ✔️                        | N/A                                       |
-| `type`                                    | *"response.function_call_arguments.done"* | ✔️                        | N/A                                       |

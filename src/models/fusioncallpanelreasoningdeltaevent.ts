@@ -13,12 +13,12 @@ import { SDKValidationError } from "./errors/sdkvalidationerror.js";
  * Incremental reasoning token from a fusion panel model.
  */
 export type FusionCallPanelReasoningDeltaEvent = {
+  type: "response.fusion_call.panel.reasoning.delta";
   delta: string;
   itemId: string;
   model: string;
   outputIndex: number;
   sequenceNumber: number;
-  type: "response.fusion_call.panel.reasoning.delta";
 };
 
 /** @internal */
@@ -26,12 +26,12 @@ export const FusionCallPanelReasoningDeltaEvent$inboundSchema: z.ZodType<
   FusionCallPanelReasoningDeltaEvent,
   unknown
 > = z.object({
+  type: z.literal("response.fusion_call.panel.reasoning.delta"),
   delta: z.string(),
   item_id: z.string(),
   model: z.string(),
   output_index: z.int(),
   sequence_number: z.int(),
-  type: z.literal("response.fusion_call.panel.reasoning.delta"),
 }).transform((v) => {
   return remap$(v, {
     "item_id": "itemId",

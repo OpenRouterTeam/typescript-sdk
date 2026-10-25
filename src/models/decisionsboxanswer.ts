@@ -16,9 +16,9 @@ export type Box = {
 };
 
 export type DecisionsBoxAnswer = {
+  type: "box";
   box: Box;
   confidence?: number | undefined;
-  type: "box";
 };
 
 /** @internal */
@@ -44,9 +44,9 @@ export const DecisionsBoxAnswer$inboundSchema: z.ZodType<
   DecisionsBoxAnswer,
   unknown
 > = z.object({
+  type: z.literal("box"),
   box: z.lazy(() => Box$inboundSchema),
   confidence: z.number().optional(),
-  type: z.literal("box"),
 });
 
 export function decisionsBoxAnswerFromJSON(

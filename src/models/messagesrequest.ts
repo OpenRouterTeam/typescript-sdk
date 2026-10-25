@@ -232,10 +232,10 @@ export type TriggerInputTokens = {
 };
 
 export type EditCompact20260112 = {
+  type: "compact_20260112";
   instructions?: string | null | undefined;
   pauseAfterCompaction?: boolean | undefined;
   trigger?: TriggerInputTokens | null | undefined;
-  type: "compact_20260112";
 };
 
 export const KeepEnum = {
@@ -255,8 +255,8 @@ export type KeepAll = {
 export type Keep = AnthropicThinkingTurns | KeepAll | KeepEnum;
 
 export type EditClearThinking20251015 = {
-  keep?: AnthropicThinkingTurns | KeepAll | KeepEnum | undefined;
   type: "clear_thinking_20251015";
+  keep?: AnthropicThinkingTurns | KeepAll | KeepEnum | undefined;
 };
 
 export type ClearToolInputs = boolean | Array<string>;
@@ -264,12 +264,12 @@ export type ClearToolInputs = boolean | Array<string>;
 export type Trigger = AnthropicInputTokensTrigger | AnthropicToolUsesTrigger;
 
 export type EditClearToolUses20250919 = {
+  type: "clear_tool_uses_20250919";
   clearAtLeast?: AnthropicInputTokensClearAtLeast | null | undefined;
   clearToolInputs?: boolean | Array<string> | null | undefined;
   excludeTools?: Array<string> | null | undefined;
   keep?: AnthropicToolUsesKeep | undefined;
   trigger?: AnthropicInputTokensTrigger | AnthropicToolUsesTrigger | undefined;
-  type: "clear_tool_uses_20250919";
 };
 
 export type Edit =
@@ -326,9 +326,9 @@ export type ThinkingBetweenTools = {
 };
 
 export type ThinkingAdaptive = {
+  type: "adaptive";
   blockBinding?: AnthropicThinkingBlockBinding | null | undefined;
   display?: AnthropicThinkingDisplay | null | undefined;
-  type: "adaptive";
 };
 
 export type ThinkingDisabled = {
@@ -336,10 +336,10 @@ export type ThinkingDisabled = {
 };
 
 export type ThinkingEnabled = {
+  type: "enabled";
   blockBinding?: AnthropicThinkingBlockBinding | null | undefined;
   budgetTokens: number;
   display?: AnthropicThinkingDisplay | null | undefined;
-  type: "enabled";
 };
 
 export type Thinking =
@@ -349,9 +349,9 @@ export type Thinking =
   | ThinkingBetweenTools;
 
 export type ToolChoiceTool = {
-  disableParallelToolUse?: boolean | undefined;
   name: string;
   type: "tool";
+  disableParallelToolUse?: boolean | undefined;
 };
 
 export type ToolChoiceNone = {
@@ -359,13 +359,13 @@ export type ToolChoiceNone = {
 };
 
 export type ToolChoiceAny = {
-  disableParallelToolUse?: boolean | undefined;
   type: "any";
+  disableParallelToolUse?: boolean | undefined;
 };
 
 export type ToolChoiceAuto = {
-  disableParallelToolUse?: boolean | undefined;
   type: "auto";
+  disableParallelToolUse?: boolean | undefined;
 };
 
 export type ToolChoice =
@@ -390,6 +390,8 @@ export const TypeAdvisor20260301 = {
 export type TypeAdvisor20260301 = ClosedEnum<typeof TypeAdvisor20260301>;
 
 export type ToolAdvisor20260301 = {
+  name: NameAdvisor;
+  type: TypeAdvisor20260301;
   allowedCallers?: Array<AnthropicAllowedCallers> | undefined;
   /**
    * Enable automatic prompt caching. When set at the top level, the system automatically applies cache breakpoints to the last cacheable block in the request. When set on an individual content block, it marks an explicit cache breakpoint; block-level markers also work on OpenAI models that support explicit prompt caching — OpenRouter converts them to the provider's native format.
@@ -399,8 +401,6 @@ export type ToolAdvisor20260301 = {
   deferLoading?: boolean | undefined;
   maxUses?: number | undefined;
   model: string;
-  name: NameAdvisor;
-  type: TypeAdvisor20260301;
 };
 
 export const NameWebSearch2 = {
@@ -414,6 +414,8 @@ export const TypeWebSearch20260209 = {
 export type TypeWebSearch20260209 = ClosedEnum<typeof TypeWebSearch20260209>;
 
 export type ToolWebSearch20260209 = {
+  name: NameWebSearch2;
+  type: TypeWebSearch20260209;
   allowedCallers?: Array<AnthropicAllowedCallers> | undefined;
   allowedDomains?: Array<string> | null | undefined;
   blockedDomains?: Array<string> | null | undefined;
@@ -422,8 +424,6 @@ export type ToolWebSearch20260209 = {
    */
   cacheControl?: AnthropicCacheControlDirective | undefined;
   maxUses?: number | null | undefined;
-  name: NameWebSearch2;
-  type: TypeWebSearch20260209;
   userLocation?: AnthropicWebSearchToolUserLocation | null | undefined;
 };
 
@@ -438,6 +438,8 @@ export const TypeWebSearch20250305 = {
 export type TypeWebSearch20250305 = ClosedEnum<typeof TypeWebSearch20250305>;
 
 export type ToolWebSearch20250305 = {
+  name: NameWebSearch1;
+  type: TypeWebSearch20250305;
   allowedDomains?: Array<string> | null | undefined;
   blockedDomains?: Array<string> | null | undefined;
   /**
@@ -445,8 +447,6 @@ export type ToolWebSearch20250305 = {
    */
   cacheControl?: AnthropicCacheControlDirective | undefined;
   maxUses?: number | null | undefined;
-  name: NameWebSearch1;
-  type: TypeWebSearch20250305;
   userLocation?: AnthropicWebSearchToolUserLocation | null | undefined;
 };
 
@@ -461,12 +461,12 @@ export const TypeTextEditor20250124 = {
 export type TypeTextEditor20250124 = ClosedEnum<typeof TypeTextEditor20250124>;
 
 export type ToolTextEditor20250124 = {
+  name: NameStrReplaceEditor;
+  type: TypeTextEditor20250124;
   /**
    * Enable automatic prompt caching. When set at the top level, the system automatically applies cache breakpoints to the last cacheable block in the request. When set on an individual content block, it marks an explicit cache breakpoint; block-level markers also work on OpenAI models that support explicit prompt caching — OpenRouter converts them to the provider's native format.
    */
   cacheControl?: AnthropicCacheControlDirective | undefined;
-  name: NameStrReplaceEditor;
-  type: TypeTextEditor20250124;
 };
 
 export const NameBash = {
@@ -480,19 +480,12 @@ export const TypeBash20250124 = {
 export type TypeBash20250124 = ClosedEnum<typeof TypeBash20250124>;
 
 export type ToolBash20250124 = {
+  name: NameBash;
+  type: TypeBash20250124;
   /**
    * Enable automatic prompt caching. When set at the top level, the system automatically applies cache breakpoints to the last cacheable block in the request. When set on an individual content block, it marks an explicit cache breakpoint; block-level markers also work on OpenAI models that support explicit prompt caching — OpenRouter converts them to the provider's native format.
    */
   cacheControl?: AnthropicCacheControlDirective | undefined;
-  name: NameBash;
-  type: TypeBash20250124;
-};
-
-export type InputSchema = {
-  properties?: any | undefined;
-  required?: Array<string> | null | undefined;
-  type?: string | undefined;
-  additionalProperties?: { [k: string]: any } | undefined;
 };
 
 export const ToolTypeCustom = {
@@ -500,17 +493,24 @@ export const ToolTypeCustom = {
 } as const;
 export type ToolTypeCustom = ClosedEnum<typeof ToolTypeCustom>;
 
+export type InputSchema = {
+  type?: string | undefined;
+  required?: Array<string> | null | undefined;
+  properties?: any | undefined;
+  additionalProperties?: { [k: string]: any } | undefined;
+};
+
 export type ToolCustom = {
+  name: string;
+  type?: ToolTypeCustom | undefined;
+  description?: string | undefined;
   /**
    * Enable automatic prompt caching. When set at the top level, the system automatically applies cache breakpoints to the last cacheable block in the request. When set on an individual content block, it marks an explicit cache breakpoint; block-level markers also work on OpenAI models that support explicit prompt caching — OpenRouter converts them to the provider's native format.
    */
   cacheControl?: AnthropicCacheControlDirective | undefined;
   deferLoading?: boolean | undefined;
-  description?: string | undefined;
   inputSchema: InputSchema;
-  name: string;
   strict?: boolean | undefined;
-  type?: ToolTypeCustom | undefined;
 };
 
 export type MessagesRequestToolUnion =
@@ -536,6 +536,10 @@ export type MessagesRequestToolUnion =
  * Request schema for Anthropic Messages API endpoint
  */
 export type MessagesRequest = {
+  /**
+   * Metadata for observability and tracing. Known keys (trace_id, trace_name, span_name, generation_name, parent_span_id) have special handling. Additional keys are passed through as custom metadata to configured broadcast destinations.
+   */
+  trace?: TraceConfig | undefined;
   /**
    * Enable automatic prompt caching. When set at the top level, the system automatically applies cache breakpoints to the last cacheable block in the request. When set on an individual content block, it marks an explicit cache breakpoint; block-level markers also work on OpenAI models that support explicit prompt caching — OpenRouter converts them to the provider's native format.
    */
@@ -634,10 +638,6 @@ export type MessagesRequest = {
   topK?: number | undefined;
   topP?: number | undefined;
   /**
-   * Metadata for observability and tracing. Known keys (trace_id, trace_name, span_name, generation_name, parent_span_id) have special handling. Additional keys are passed through as custom metadata to configured broadcast destinations.
-   */
-  trace?: TraceConfig | undefined;
-  /**
    * A unique identifier representing your end-user, which helps distinguish between different users of your app. This allows your app to identify specific users in case of abuse reports, preventing your entire app from being affected by the actions of individual users. Maximum of 256 characters.
    */
   user?: string | undefined;
@@ -673,10 +673,10 @@ export function triggerInputTokensToJSON(
 
 /** @internal */
 export type EditCompact20260112$Outbound = {
+  type: "compact_20260112";
   instructions?: string | null | undefined;
   pause_after_compaction?: boolean | undefined;
   trigger?: TriggerInputTokens$Outbound | null | undefined;
-  type: "compact_20260112";
 };
 
 /** @internal */
@@ -684,11 +684,11 @@ export const EditCompact20260112$outboundSchema: z.ZodType<
   EditCompact20260112$Outbound,
   EditCompact20260112
 > = z.object({
+  type: z.literal("compact_20260112"),
   instructions: z.nullable(z.string()).optional(),
   pauseAfterCompaction: z.boolean().optional(),
   trigger: z.nullable(z.lazy(() => TriggerInputTokens$outboundSchema))
     .optional(),
-  type: z.literal("compact_20260112"),
 }).transform((v) => {
   return remap$(v, {
     pauseAfterCompaction: "pause_after_compaction",
@@ -747,12 +747,12 @@ export function keepToJSON(keep: Keep): string {
 
 /** @internal */
 export type EditClearThinking20251015$Outbound = {
+  type: "clear_thinking_20251015";
   keep?:
     | AnthropicThinkingTurns$Outbound
     | KeepAll$Outbound
     | string
     | undefined;
-  type: "clear_thinking_20251015";
 };
 
 /** @internal */
@@ -760,12 +760,12 @@ export const EditClearThinking20251015$outboundSchema: z.ZodType<
   EditClearThinking20251015$Outbound,
   EditClearThinking20251015
 > = z.object({
+  type: z.literal("clear_thinking_20251015"),
   keep: z.union([
     AnthropicThinkingTurns$outboundSchema,
     z.lazy(() => KeepAll$outboundSchema),
     KeepEnum$outboundSchema,
   ]).optional(),
-  type: z.literal("clear_thinking_20251015"),
 });
 
 export function editClearThinking20251015ToJSON(
@@ -809,6 +809,7 @@ export function triggerToJSON(trigger: Trigger): string {
 
 /** @internal */
 export type EditClearToolUses20250919$Outbound = {
+  type: "clear_tool_uses_20250919";
   clear_at_least?: AnthropicInputTokensClearAtLeast$Outbound | null | undefined;
   clear_tool_inputs?: boolean | Array<string> | null | undefined;
   exclude_tools?: Array<string> | null | undefined;
@@ -817,7 +818,6 @@ export type EditClearToolUses20250919$Outbound = {
     | AnthropicInputTokensTrigger$Outbound
     | AnthropicToolUsesTrigger$Outbound
     | undefined;
-  type: "clear_tool_uses_20250919";
 };
 
 /** @internal */
@@ -825,6 +825,7 @@ export const EditClearToolUses20250919$outboundSchema: z.ZodType<
   EditClearToolUses20250919$Outbound,
   EditClearToolUses20250919
 > = z.object({
+  type: z.literal("clear_tool_uses_20250919"),
   clearAtLeast: z.nullable(AnthropicInputTokensClearAtLeast$outboundSchema)
     .optional(),
   clearToolInputs: z.nullable(z.union([z.boolean(), z.array(z.string())]))
@@ -835,7 +836,6 @@ export const EditClearToolUses20250919$outboundSchema: z.ZodType<
     AnthropicInputTokensTrigger$outboundSchema,
     AnthropicToolUsesTrigger$outboundSchema,
   ]).optional(),
-  type: z.literal("clear_tool_uses_20250919"),
 }).transform((v) => {
   return remap$(v, {
     clearAtLeast: "clear_at_least",
@@ -1011,9 +1011,9 @@ export function thinkingBetweenToolsToJSON(
 
 /** @internal */
 export type ThinkingAdaptive$Outbound = {
+  type: "adaptive";
   block_binding?: AnthropicThinkingBlockBinding$Outbound | null | undefined;
   display?: string | null | undefined;
-  type: "adaptive";
 };
 
 /** @internal */
@@ -1021,10 +1021,10 @@ export const ThinkingAdaptive$outboundSchema: z.ZodType<
   ThinkingAdaptive$Outbound,
   ThinkingAdaptive
 > = z.object({
+  type: z.literal("adaptive"),
   blockBinding: z.nullable(AnthropicThinkingBlockBinding$outboundSchema)
     .optional(),
   display: z.nullable(AnthropicThinkingDisplay$outboundSchema).optional(),
-  type: z.literal("adaptive"),
 }).transform((v) => {
   return remap$(v, {
     blockBinding: "block_binding",
@@ -1062,10 +1062,10 @@ export function thinkingDisabledToJSON(
 
 /** @internal */
 export type ThinkingEnabled$Outbound = {
+  type: "enabled";
   block_binding?: AnthropicThinkingBlockBinding$Outbound | null | undefined;
   budget_tokens: number;
   display?: string | null | undefined;
-  type: "enabled";
 };
 
 /** @internal */
@@ -1073,11 +1073,11 @@ export const ThinkingEnabled$outboundSchema: z.ZodType<
   ThinkingEnabled$Outbound,
   ThinkingEnabled
 > = z.object({
+  type: z.literal("enabled"),
   blockBinding: z.nullable(AnthropicThinkingBlockBinding$outboundSchema)
     .optional(),
   budgetTokens: z.int(),
   display: z.nullable(AnthropicThinkingDisplay$outboundSchema).optional(),
-  type: z.literal("enabled"),
 }).transform((v) => {
   return remap$(v, {
     blockBinding: "block_binding",
@@ -1113,9 +1113,9 @@ export function thinkingToJSON(thinking: Thinking): string {
 
 /** @internal */
 export type ToolChoiceTool$Outbound = {
-  disable_parallel_tool_use?: boolean | undefined;
   name: string;
   type: "tool";
+  disable_parallel_tool_use?: boolean | undefined;
 };
 
 /** @internal */
@@ -1123,9 +1123,9 @@ export const ToolChoiceTool$outboundSchema: z.ZodType<
   ToolChoiceTool$Outbound,
   ToolChoiceTool
 > = z.object({
-  disableParallelToolUse: z.boolean().optional(),
   name: z.string(),
   type: z.literal("tool"),
+  disableParallelToolUse: z.boolean().optional(),
 }).transform((v) => {
   return remap$(v, {
     disableParallelToolUse: "disable_parallel_tool_use",
@@ -1155,8 +1155,8 @@ export function toolChoiceNoneToJSON(toolChoiceNone: ToolChoiceNone): string {
 
 /** @internal */
 export type ToolChoiceAny$Outbound = {
-  disable_parallel_tool_use?: boolean | undefined;
   type: "any";
+  disable_parallel_tool_use?: boolean | undefined;
 };
 
 /** @internal */
@@ -1164,8 +1164,8 @@ export const ToolChoiceAny$outboundSchema: z.ZodType<
   ToolChoiceAny$Outbound,
   ToolChoiceAny
 > = z.object({
-  disableParallelToolUse: z.boolean().optional(),
   type: z.literal("any"),
+  disableParallelToolUse: z.boolean().optional(),
 }).transform((v) => {
   return remap$(v, {
     disableParallelToolUse: "disable_parallel_tool_use",
@@ -1178,8 +1178,8 @@ export function toolChoiceAnyToJSON(toolChoiceAny: ToolChoiceAny): string {
 
 /** @internal */
 export type ToolChoiceAuto$Outbound = {
-  disable_parallel_tool_use?: boolean | undefined;
   type: "auto";
+  disable_parallel_tool_use?: boolean | undefined;
 };
 
 /** @internal */
@@ -1187,8 +1187,8 @@ export const ToolChoiceAuto$outboundSchema: z.ZodType<
   ToolChoiceAuto$Outbound,
   ToolChoiceAuto
 > = z.object({
-  disableParallelToolUse: z.boolean().optional(),
   type: z.literal("auto"),
+  disableParallelToolUse: z.boolean().optional(),
 }).transform((v) => {
   return remap$(v, {
     disableParallelToolUse: "disable_parallel_tool_use",
@@ -1263,14 +1263,14 @@ export const TypeAdvisor20260301$outboundSchema: z.ZodEnum<
 
 /** @internal */
 export type ToolAdvisor20260301$Outbound = {
+  name: string;
+  type: string;
   allowed_callers?: Array<string> | undefined;
   cache_control?: AnthropicCacheControlDirective$Outbound | undefined;
   caching?: AnthropicCacheControlDirective$Outbound | null | undefined;
   defer_loading?: boolean | undefined;
   max_uses?: number | undefined;
   model: string;
-  name: string;
-  type: string;
 };
 
 /** @internal */
@@ -1278,14 +1278,14 @@ export const ToolAdvisor20260301$outboundSchema: z.ZodType<
   ToolAdvisor20260301$Outbound,
   ToolAdvisor20260301
 > = z.object({
+  name: NameAdvisor$outboundSchema,
+  type: TypeAdvisor20260301$outboundSchema,
   allowedCallers: z.array(AnthropicAllowedCallers$outboundSchema).optional(),
   cacheControl: AnthropicCacheControlDirective$outboundSchema.optional(),
   caching: z.nullable(AnthropicCacheControlDirective$outboundSchema).optional(),
   deferLoading: z.boolean().optional(),
   maxUses: z.int().optional(),
   model: z.string(),
-  name: NameAdvisor$outboundSchema,
-  type: TypeAdvisor20260301$outboundSchema,
 }).transform((v) => {
   return remap$(v, {
     allowedCallers: "allowed_callers",
@@ -1314,13 +1314,13 @@ export const TypeWebSearch20260209$outboundSchema: z.ZodEnum<
 
 /** @internal */
 export type ToolWebSearch20260209$Outbound = {
+  name: string;
+  type: string;
   allowed_callers?: Array<string> | undefined;
   allowed_domains?: Array<string> | null | undefined;
   blocked_domains?: Array<string> | null | undefined;
   cache_control?: AnthropicCacheControlDirective$Outbound | undefined;
   max_uses?: number | null | undefined;
-  name: string;
-  type: string;
   user_location?:
     | AnthropicWebSearchToolUserLocation$Outbound
     | null
@@ -1332,13 +1332,13 @@ export const ToolWebSearch20260209$outboundSchema: z.ZodType<
   ToolWebSearch20260209$Outbound,
   ToolWebSearch20260209
 > = z.object({
+  name: NameWebSearch2$outboundSchema,
+  type: TypeWebSearch20260209$outboundSchema,
   allowedCallers: z.array(AnthropicAllowedCallers$outboundSchema).optional(),
   allowedDomains: z.nullable(z.array(z.string())).optional(),
   blockedDomains: z.nullable(z.array(z.string())).optional(),
   cacheControl: AnthropicCacheControlDirective$outboundSchema.optional(),
   maxUses: z.nullable(z.int()).optional(),
-  name: NameWebSearch2$outboundSchema,
-  type: TypeWebSearch20260209$outboundSchema,
   userLocation: z.nullable(AnthropicWebSearchToolUserLocation$outboundSchema)
     .optional(),
 }).transform((v) => {
@@ -1371,12 +1371,12 @@ export const TypeWebSearch20250305$outboundSchema: z.ZodEnum<
 
 /** @internal */
 export type ToolWebSearch20250305$Outbound = {
+  name: string;
+  type: string;
   allowed_domains?: Array<string> | null | undefined;
   blocked_domains?: Array<string> | null | undefined;
   cache_control?: AnthropicCacheControlDirective$Outbound | undefined;
   max_uses?: number | null | undefined;
-  name: string;
-  type: string;
   user_location?:
     | AnthropicWebSearchToolUserLocation$Outbound
     | null
@@ -1388,12 +1388,12 @@ export const ToolWebSearch20250305$outboundSchema: z.ZodType<
   ToolWebSearch20250305$Outbound,
   ToolWebSearch20250305
 > = z.object({
+  name: NameWebSearch1$outboundSchema,
+  type: TypeWebSearch20250305$outboundSchema,
   allowedDomains: z.nullable(z.array(z.string())).optional(),
   blockedDomains: z.nullable(z.array(z.string())).optional(),
   cacheControl: AnthropicCacheControlDirective$outboundSchema.optional(),
   maxUses: z.nullable(z.int()).optional(),
-  name: NameWebSearch1$outboundSchema,
-  type: TypeWebSearch20250305$outboundSchema,
   userLocation: z.nullable(AnthropicWebSearchToolUserLocation$outboundSchema)
     .optional(),
 }).transform((v) => {
@@ -1426,9 +1426,9 @@ export const TypeTextEditor20250124$outboundSchema: z.ZodEnum<
 
 /** @internal */
 export type ToolTextEditor20250124$Outbound = {
-  cache_control?: AnthropicCacheControlDirective$Outbound | undefined;
   name: string;
   type: string;
+  cache_control?: AnthropicCacheControlDirective$Outbound | undefined;
 };
 
 /** @internal */
@@ -1436,9 +1436,9 @@ export const ToolTextEditor20250124$outboundSchema: z.ZodType<
   ToolTextEditor20250124$Outbound,
   ToolTextEditor20250124
 > = z.object({
-  cacheControl: AnthropicCacheControlDirective$outboundSchema.optional(),
   name: NameStrReplaceEditor$outboundSchema,
   type: TypeTextEditor20250124$outboundSchema,
+  cacheControl: AnthropicCacheControlDirective$outboundSchema.optional(),
 }).transform((v) => {
   return remap$(v, {
     cacheControl: "cache_control",
@@ -1465,9 +1465,9 @@ export const TypeBash20250124$outboundSchema: z.ZodEnum<
 
 /** @internal */
 export type ToolBash20250124$Outbound = {
-  cache_control?: AnthropicCacheControlDirective$Outbound | undefined;
   name: string;
   type: string;
+  cache_control?: AnthropicCacheControlDirective$Outbound | undefined;
 };
 
 /** @internal */
@@ -1475,9 +1475,9 @@ export const ToolBash20250124$outboundSchema: z.ZodType<
   ToolBash20250124$Outbound,
   ToolBash20250124
 > = z.object({
-  cacheControl: AnthropicCacheControlDirective$outboundSchema.optional(),
   name: NameBash$outboundSchema,
   type: TypeBash20250124$outboundSchema,
+  cacheControl: AnthropicCacheControlDirective$outboundSchema.optional(),
 }).transform((v) => {
   return remap$(v, {
     cacheControl: "cache_control",
@@ -1493,10 +1493,14 @@ export function toolBash20250124ToJSON(
 }
 
 /** @internal */
+export const ToolTypeCustom$outboundSchema: z.ZodEnum<typeof ToolTypeCustom> = z
+  .enum(ToolTypeCustom);
+
+/** @internal */
 export type InputSchema$Outbound = {
-  properties?: any | undefined;
-  required?: Array<string> | null | undefined;
   type: string;
+  required?: Array<string> | null | undefined;
+  properties?: any | undefined;
   [additionalProperties: string]: unknown;
 };
 
@@ -1505,9 +1509,9 @@ export const InputSchema$outboundSchema: z.ZodType<
   InputSchema$Outbound,
   InputSchema
 > = z.object({
-  properties: z.any().optional(),
-  required: z.nullable(z.array(z.string())).optional(),
   type: z.string().default("object"),
+  required: z.nullable(z.array(z.string())).optional(),
+  properties: z.any().optional(),
   additionalProperties: z.record(z.string(), z.any()).optional(),
 }).transform((v) => {
   return {
@@ -1523,18 +1527,14 @@ export function inputSchemaToJSON(inputSchema: InputSchema): string {
 }
 
 /** @internal */
-export const ToolTypeCustom$outboundSchema: z.ZodEnum<typeof ToolTypeCustom> = z
-  .enum(ToolTypeCustom);
-
-/** @internal */
 export type ToolCustom$Outbound = {
+  name: string;
+  type?: string | undefined;
+  description?: string | undefined;
   cache_control?: AnthropicCacheControlDirective$Outbound | undefined;
   defer_loading?: boolean | undefined;
-  description?: string | undefined;
   input_schema: InputSchema$Outbound;
-  name: string;
   strict?: boolean | undefined;
-  type?: string | undefined;
 };
 
 /** @internal */
@@ -1542,13 +1542,13 @@ export const ToolCustom$outboundSchema: z.ZodType<
   ToolCustom$Outbound,
   ToolCustom
 > = z.object({
+  name: z.string(),
+  type: ToolTypeCustom$outboundSchema.optional(),
+  description: z.string().optional(),
   cacheControl: AnthropicCacheControlDirective$outboundSchema.optional(),
   deferLoading: z.boolean().optional(),
-  description: z.string().optional(),
   inputSchema: z.lazy(() => InputSchema$outboundSchema),
-  name: z.string(),
   strict: z.boolean().optional(),
-  type: ToolTypeCustom$outboundSchema.optional(),
 }).transform((v) => {
   return remap$(v, {
     cacheControl: "cache_control",
@@ -1615,6 +1615,7 @@ export function messagesRequestToolUnionToJSON(
 
 /** @internal */
 export type MessagesRequest$Outbound = {
+  trace?: TraceConfig$Outbound | undefined;
   cache_control?: AnthropicCacheControlDirective$Outbound | undefined;
   context_management?: ContextManagement$Outbound | null | undefined;
   deferred_tools?: DeferredToolsControl$Outbound | undefined;
@@ -1690,7 +1691,6 @@ export type MessagesRequest$Outbound = {
     | undefined;
   top_k?: number | undefined;
   top_p?: number | undefined;
-  trace?: TraceConfig$Outbound | undefined;
   user?: string | undefined;
 };
 
@@ -1699,6 +1699,7 @@ export const MessagesRequest$outboundSchema: z.ZodType<
   MessagesRequest$Outbound,
   MessagesRequest
 > = z.object({
+  trace: TraceConfig$outboundSchema.optional(),
   cacheControl: AnthropicCacheControlDirective$outboundSchema.optional(),
   contextManagement: z.nullable(z.lazy(() => ContextManagement$outboundSchema))
     .optional(),
@@ -1776,7 +1777,6 @@ export const MessagesRequest$outboundSchema: z.ZodType<
   ).optional(),
   topK: z.int().optional(),
   topP: z.number().optional(),
-  trace: TraceConfig$outboundSchema.optional(),
   user: z.string().optional(),
 }).transform((v) => {
   return remap$(v, {

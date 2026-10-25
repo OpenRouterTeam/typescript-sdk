@@ -30,10 +30,10 @@ export type VaultEffectiveSecretScope = OpenEnum<
  * Metadata for the one secret the intern's outbound requests receive under this name. The secret value is never returned. The intern receives it only on requests to a hostname in `hosts`, or on any request when `hosts` is `null`; a request to any other hostname receives no secret under this name, even when another vault holds one. `fingerprint` is comparable only within one vault.
  */
 export type VaultEffectiveSecret = {
+  name: string;
   createdAt: Date;
   fingerprint: string | null;
   hosts: Array<string> | null;
-  name: string;
   /**
    * Where the delivered secret is stored: `intern` for the intern's own vault, `attached` for a vault attached to the intern, `workspace` for the workspace vault.
    */
@@ -51,10 +51,10 @@ export const VaultEffectiveSecret$inboundSchema: z.ZodType<
   VaultEffectiveSecret,
   unknown
 > = z.object({
+  name: z.string(),
   created_at: z.iso.datetime({ offset: true }).transform(v => new Date(v)),
   fingerprint: z.nullable(z.string()),
   hosts: z.nullable(z.array(z.string())),
-  name: z.string(),
   scope: VaultEffectiveSecretScope$inboundSchema,
 }).transform((v) => {
   return remap$(v, {

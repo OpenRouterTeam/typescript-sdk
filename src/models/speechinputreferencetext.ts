@@ -9,17 +9,17 @@ import * as z from "zod/v4";
  * Transcript of an `input_audio` part
  */
 export type SpeechInputReferenceText = {
+  type: "text";
   /**
    * Transcript of an `input_audio` part. With a single clip it may appear before or after the clip; with multiple clips it must immediately follow the clip it transcribes.
    */
   text: string;
-  type: "text";
 };
 
 /** @internal */
 export type SpeechInputReferenceText$Outbound = {
-  text: string;
   type: "text";
+  text: string;
 };
 
 /** @internal */
@@ -27,8 +27,8 @@ export const SpeechInputReferenceText$outboundSchema: z.ZodType<
   SpeechInputReferenceText$Outbound,
   SpeechInputReferenceText
 > = z.object({
-  text: z.string(),
   type: z.literal("text"),
+  text: z.string(),
 });
 
 export function speechInputReferenceTextToJSON(

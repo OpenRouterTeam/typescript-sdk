@@ -8,8 +8,8 @@ title: "MessagesMessageParamContentUnion1"
 
 ```typescript
 const value: models.AnthropicTextBlockParam = {
-  text: "Hello, world!",
   type: "text",
+  text: "Hello, world!",
 };
 ```
 
@@ -17,12 +17,12 @@ const value: models.AnthropicTextBlockParam = {
 
 ```typescript
 const value: models.AnthropicImageBlockParam = {
+  type: "image",
   source: {
+    type: "base64",
     data: "/9j/4AAQ...",
     mediaType: "image/jpeg",
-    type: "base64",
   },
-  type: "image",
 };
 ```
 
@@ -30,8 +30,8 @@ const value: models.AnthropicImageBlockParam = {
 
 ```typescript
 const value: models.ContentToolReference = {
-  toolName: "<value>",
   type: "tool_reference",
+  toolName: "<value>",
 };
 ```
 
@@ -39,15 +39,15 @@ const value: models.ContentToolReference = {
 
 ```typescript
 const value: models.AnthropicSearchResultBlockParam = {
+  type: "search_result",
+  title: "Example Result",
   content: [
     {
-      text: "Result content",
       type: "text",
+      text: "Result content",
     },
   ],
   source: "example_source",
-  title: "Example Result",
-  type: "search_result",
 };
 ```
 
@@ -55,12 +55,12 @@ const value: models.AnthropicSearchResultBlockParam = {
 
 ```typescript
 const value: models.AnthropicDocumentBlockParam = {
+  type: "document",
   source: {
+    type: "text",
     data: "Hello, world!",
     mediaType: "text/plain",
-    type: "text",
   },
-  type: "document",
 };
 ```
 

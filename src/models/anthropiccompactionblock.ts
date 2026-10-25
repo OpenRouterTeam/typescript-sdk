@@ -10,9 +10,9 @@ import { Result as SafeParseResult } from "../types/fp.js";
 import { SDKValidationError } from "./errors/sdkvalidationerror.js";
 
 export type AnthropicCompactionBlock = {
+  type: "compaction";
   content: string | null;
   encryptedContent?: string | null | undefined;
-  type: "compaction";
 };
 
 /** @internal */
@@ -20,9 +20,9 @@ export const AnthropicCompactionBlock$inboundSchema: z.ZodType<
   AnthropicCompactionBlock,
   unknown
 > = z.object({
+  type: z.literal("compaction"),
   content: z.nullable(z.string()),
   encrypted_content: z.nullable(z.string()).optional(),
-  type: z.literal("compaction"),
 }).transform((v) => {
   return remap$(v, {
     "encrypted_content": "encryptedContent",

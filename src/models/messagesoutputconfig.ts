@@ -36,8 +36,8 @@ export type MessagesOutputConfigTypeJSONSchema = ClosedEnum<
  * A schema to specify Claude's output format in responses. See [structured outputs](https://platform.claude.com/docs/en/build-with-claude/structured-outputs).
  */
 export type MessagesOutputConfigFormat = {
-  schema: { [k: string]: any };
   type: MessagesOutputConfigTypeJSONSchema;
+  schema: { [k: string]: any };
 };
 
 export const TypeTokens = {
@@ -49,9 +49,9 @@ export type TypeTokens = ClosedEnum<typeof TypeTokens>;
  * Task budget for an agentic turn. The model sees a countdown of remaining tokens and uses it to prioritize work and wind down gracefully. Advisory — does not enforce a hard cap.
  */
 export type TaskBudget = {
+  type: TypeTokens;
   remaining?: number | null | undefined;
   total: number;
-  type: TypeTokens;
 };
 
 /**
@@ -85,8 +85,8 @@ export const MessagesOutputConfigTypeJSONSchema$outboundSchema: z.ZodEnum<
 
 /** @internal */
 export type MessagesOutputConfigFormat$Outbound = {
-  schema: { [k: string]: any };
   type: string;
+  schema: { [k: string]: any };
 };
 
 /** @internal */
@@ -94,8 +94,8 @@ export const MessagesOutputConfigFormat$outboundSchema: z.ZodType<
   MessagesOutputConfigFormat$Outbound,
   MessagesOutputConfigFormat
 > = z.object({
-  schema: z.record(z.string(), z.any()),
   type: MessagesOutputConfigTypeJSONSchema$outboundSchema,
+  schema: z.record(z.string(), z.any()),
 });
 
 export function messagesOutputConfigFormatToJSON(
@@ -113,9 +113,9 @@ export const TypeTokens$outboundSchema: z.ZodEnum<typeof TypeTokens> = z.enum(
 
 /** @internal */
 export type TaskBudget$Outbound = {
+  type: string;
   remaining?: number | null | undefined;
   total: number;
-  type: string;
 };
 
 /** @internal */
@@ -123,9 +123,9 @@ export const TaskBudget$outboundSchema: z.ZodType<
   TaskBudget$Outbound,
   TaskBudget
 > = z.object({
+  type: TypeTokens$outboundSchema,
   remaining: z.nullable(z.int()).optional(),
   total: z.int(),
-  type: TypeTokens$outboundSchema,
 });
 
 export function taskBudgetToJSON(taskBudget: TaskBudget): string {

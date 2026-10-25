@@ -13,6 +13,10 @@ import { SDKValidationError } from "./errors/sdkvalidationerror.js";
  */
 export type ToolChoiceSupport = {
   /**
+   * Whether the endpoint supports `"tool_choice": "required"`.
+   */
+  required: boolean;
+  /**
    * Whether the endpoint supports `"tool_choice": "auto"`.
    */
   auto: boolean;
@@ -24,10 +28,6 @@ export type ToolChoiceSupport = {
    * Whether the endpoint supports `"tool_choice": "none"`.
    */
   none: boolean;
-  /**
-   * Whether the endpoint supports `"tool_choice": "required"`.
-   */
-  required: boolean;
 };
 
 /** @internal */
@@ -35,10 +35,10 @@ export const ToolChoiceSupport$inboundSchema: z.ZodType<
   ToolChoiceSupport,
   unknown
 > = z.object({
+  required: z.boolean(),
   auto: z.boolean(),
   function: z.boolean(),
   none: z.boolean(),
-  required: z.boolean(),
 });
 
 export function toolChoiceSupportFromJSON(

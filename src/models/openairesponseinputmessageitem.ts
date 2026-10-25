@@ -15,6 +15,13 @@ import { InputFile, InputFile$inboundSchema } from "./inputfile.js";
 import { InputImage, InputImage$inboundSchema } from "./inputimage.js";
 import { InputText, InputText$inboundSchema } from "./inputtext.js";
 
+export const OpenAIResponseInputMessageItemType = {
+  Message: "message",
+} as const;
+export type OpenAIResponseInputMessageItemType = ClosedEnum<
+  typeof OpenAIResponseInputMessageItemType
+>;
+
 export type OpenAIResponseInputMessageItemContent =
   | InputAudio
   | InputFile
@@ -48,14 +55,8 @@ export type OpenAIResponseInputMessageItemRoleUnion =
   | OpenAIResponseInputMessageItemRoleSystem
   | OpenAIResponseInputMessageItemRoleDeveloper;
 
-export const OpenAIResponseInputMessageItemType = {
-  Message: "message",
-} as const;
-export type OpenAIResponseInputMessageItemType = ClosedEnum<
-  typeof OpenAIResponseInputMessageItemType
->;
-
 export type OpenAIResponseInputMessageItem = {
+  type?: OpenAIResponseInputMessageItemType | undefined;
   content: Array<
     | InputAudio
     | InputFile
@@ -68,8 +69,12 @@ export type OpenAIResponseInputMessageItem = {
     | OpenAIResponseInputMessageItemRoleUser
     | OpenAIResponseInputMessageItemRoleSystem
     | OpenAIResponseInputMessageItemRoleDeveloper;
-  type?: OpenAIResponseInputMessageItemType | undefined;
 };
+
+/** @internal */
+export const OpenAIResponseInputMessageItemType$inboundSchema: z.ZodEnum<
+  typeof OpenAIResponseInputMessageItemType
+> = z.enum(OpenAIResponseInputMessageItemType);
 
 /** @internal */
 export const OpenAIResponseInputMessageItemContent$inboundSchema: z.ZodType<
@@ -138,15 +143,11 @@ export function openAIResponseInputMessageItemRoleUnionFromJSON(
 }
 
 /** @internal */
-export const OpenAIResponseInputMessageItemType$inboundSchema: z.ZodEnum<
-  typeof OpenAIResponseInputMessageItemType
-> = z.enum(OpenAIResponseInputMessageItemType);
-
-/** @internal */
 export const OpenAIResponseInputMessageItem$inboundSchema: z.ZodType<
   OpenAIResponseInputMessageItem,
   unknown
 > = z.object({
+  type: OpenAIResponseInputMessageItemType$inboundSchema.optional(),
   content: z.array(discriminatedUnion("type", {
     input_audio: InputAudio$inboundSchema,
     input_file: InputFile$inboundSchema,
@@ -161,7 +162,6 @@ export const OpenAIResponseInputMessageItem$inboundSchema: z.ZodType<
     OpenAIResponseInputMessageItemRoleSystem$inboundSchema,
     OpenAIResponseInputMessageItemRoleDeveloper$inboundSchema,
   ]),
-  type: OpenAIResponseInputMessageItemType$inboundSchema.optional(),
 });
 
 export function openAIResponseInputMessageItemFromJSON(

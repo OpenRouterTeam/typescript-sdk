@@ -72,35 +72,36 @@ import {
   WebFetchServerTool$outboundSchema,
 } from "./webfetchservertool.js";
 
+export const ChatFunctionToolType = {
+  Function: "function",
+} as const;
+export type ChatFunctionToolType = ClosedEnum<typeof ChatFunctionToolType>;
+
 /**
  * Function definition for tool calling
  */
 export type ChatFunctionToolFunctionFunction = {
-  deferLoading?: boolean | undefined;
   /**
    * Function description for the model
    */
   description?: string | undefined;
   /**
-   * Function name (a-z, A-Z, 0-9, underscores, dashes, max 64 chars)
-   */
-  name: string;
-  /**
    * Function parameters as JSON Schema object
    */
   parameters?: { [k: string]: any } | undefined;
+  deferLoading?: boolean | undefined;
+  /**
+   * Function name (a-z, A-Z, 0-9, underscores, dashes, max 64 chars)
+   */
+  name: string;
   /**
    * Enable strict schema adherence
    */
   strict?: boolean | null | undefined;
 };
 
-export const ChatFunctionToolType = {
-  Function: "function",
-} as const;
-export type ChatFunctionToolType = ClosedEnum<typeof ChatFunctionToolType>;
-
 export type ChatFunctionToolFunction = {
+  type: ChatFunctionToolType;
   /**
    * Anthropic-style cache breakpoint for the content part. Interchangeable with the OpenAI-style `prompt_cache_breakpoint` marker: OpenRouter converts between the two based on the provider serving the request.
    */
@@ -110,7 +111,6 @@ export type ChatFunctionToolFunction = {
    * Function definition for tool calling
    */
   function: ChatFunctionToolFunctionFunction;
-  type: ChatFunctionToolType;
 };
 
 /**
@@ -132,11 +132,16 @@ export type ChatFunctionTool =
   | ChatDynamicServerTool;
 
 /** @internal */
+export const ChatFunctionToolType$outboundSchema: z.ZodEnum<
+  typeof ChatFunctionToolType
+> = z.enum(ChatFunctionToolType);
+
+/** @internal */
 export type ChatFunctionToolFunctionFunction$Outbound = {
-  defer_loading?: boolean | undefined;
   description?: string | undefined;
-  name: string;
   parameters?: { [k: string]: any } | undefined;
+  defer_loading?: boolean | undefined;
+  name: string;
   strict?: boolean | null | undefined;
 };
 
@@ -145,10 +150,10 @@ export const ChatFunctionToolFunctionFunction$outboundSchema: z.ZodType<
   ChatFunctionToolFunctionFunction$Outbound,
   ChatFunctionToolFunctionFunction
 > = z.object({
-  deferLoading: z.boolean().optional(),
   description: z.string().optional(),
-  name: z.string(),
   parameters: z.record(z.string(), z.any()).optional(),
+  deferLoading: z.boolean().optional(),
+  name: z.string(),
   strict: z.nullable(z.boolean()).optional(),
 }).transform((v) => {
   return remap$(v, {
@@ -167,16 +172,11 @@ export function chatFunctionToolFunctionFunctionToJSON(
 }
 
 /** @internal */
-export const ChatFunctionToolType$outboundSchema: z.ZodEnum<
-  typeof ChatFunctionToolType
-> = z.enum(ChatFunctionToolType);
-
-/** @internal */
 export type ChatFunctionToolFunction$Outbound = {
+  type: string;
   cache_control?: ChatContentCacheControl$Outbound | undefined;
   defer_loading?: boolean | undefined;
   function: ChatFunctionToolFunctionFunction$Outbound;
-  type: string;
 };
 
 /** @internal */
@@ -184,10 +184,10 @@ export const ChatFunctionToolFunction$outboundSchema: z.ZodType<
   ChatFunctionToolFunction$Outbound,
   ChatFunctionToolFunction
 > = z.object({
+  type: ChatFunctionToolType$outboundSchema,
   cacheControl: ChatContentCacheControl$outboundSchema.optional(),
   deferLoading: z.boolean().optional(),
   function: z.lazy(() => ChatFunctionToolFunctionFunction$outboundSchema),
-  type: ChatFunctionToolType$outboundSchema,
 }).transform((v) => {
   return remap$(v, {
     cacheControl: "cache_control",

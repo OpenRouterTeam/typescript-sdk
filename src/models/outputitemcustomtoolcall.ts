@@ -21,6 +21,8 @@ export type OutputItemCustomToolCallStatus = OpenEnum<
 >;
 
 export type OutputItemCustomToolCall = {
+  name: string;
+  type: "custom_tool_call";
   /**
    * True when the model called a tool declared with `async: true` and may continue its turn before the output is returned. Return the result in a later request as a `function_call_output` with this `call_id`.
    */
@@ -28,13 +30,11 @@ export type OutputItemCustomToolCall = {
   callId: string;
   id?: string | undefined;
   input: string;
-  name: string;
   /**
    * Namespace qualifier for tools registered as part of a namespace tool group (e.g. an MCP server)
    */
   namespace?: string | undefined;
   status?: OutputItemCustomToolCallStatus | undefined;
-  type: "custom_tool_call";
 };
 
 /** @internal */
@@ -48,14 +48,14 @@ export const OutputItemCustomToolCall$inboundSchema: z.ZodType<
   OutputItemCustomToolCall,
   unknown
 > = z.object({
+  name: z.string(),
+  type: z.literal("custom_tool_call"),
   async: z.boolean().optional(),
   call_id: z.string(),
   id: z.string().optional(),
   input: z.string(),
-  name: z.string(),
   namespace: z.string().optional(),
   status: OutputItemCustomToolCallStatus$inboundSchema.optional(),
-  type: z.literal("custom_tool_call"),
 }).transform((v) => {
   return remap$(v, {
     "call_id": "callId",

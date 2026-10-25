@@ -9,8 +9,8 @@ import { Result as SafeParseResult } from "../types/fp.js";
 import { SDKValidationError } from "./errors/sdkvalidationerror.js";
 
 export type AnthropicRedactedThinkingBlock = {
-  data: string;
   type: "redacted_thinking";
+  data: string;
 };
 
 /** @internal */
@@ -18,8 +18,8 @@ export const AnthropicRedactedThinkingBlock$inboundSchema: z.ZodType<
   AnthropicRedactedThinkingBlock,
   unknown
 > = z.object({
-  data: z.string(),
   type: z.literal("redacted_thinking"),
+  data: z.string(),
 });
 
 export function anthropicRedactedThinkingBlockFromJSON(

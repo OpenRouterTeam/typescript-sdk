@@ -10,8 +10,8 @@ Image input content item. Provide either an image_url (a URL or a base64 data UR
 import { EasyInputMessageContentInputImage } from "@openrouter/sdk/models";
 
 let value: EasyInputMessageContentInputImage = {
-  detail: "auto",
   type: "input_image",
+  detail: "auto",
 };
 ```
 
@@ -19,7 +19,7 @@ let value: EasyInputMessageContentInputImage = {
 
 | Field                                                                | Type                                                                 | Required                                                             | Description                                                          |
 | -------------------------------------------------------------------- | -------------------------------------------------------------------- | -------------------------------------------------------------------- | -------------------------------------------------------------------- |
+| `type`                                                               | *"input_image"*                                                      | ✔️                                                   | N/A                                                                  |
 | `detail`                                                             | [models.EasyInputMessageDetail](../models/easyinputmessagedetail.mdx) | ✔️                                                   | N/A                                                                  |
 | `fileId`                                                             | *string*                                                             | ➖                                                   | N/A                                                                  |
 | `imageUrl`                                                           | *string*                                                             | ➖                                                   | N/A                                                                  |
-| `type`                                                               | *"input_image"*                                                      | ✔️                                                   | N/A                                                                  |

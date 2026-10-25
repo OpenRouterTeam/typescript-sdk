@@ -13,25 +13,25 @@ import { SDKValidationError } from "./errors/sdkvalidationerror.js";
  */
 export type FusionSource = {
   /**
-   * Title of the retrieved web page.
-   */
-  title: string;
-  /**
    * URL of the web page a panel or the analyst retrieved during the run.
    */
   url: string;
+  /**
+   * Title of the retrieved web page.
+   */
+  title: string;
 };
 
 /** @internal */
 export const FusionSource$inboundSchema: z.ZodType<FusionSource, unknown> = z
   .object({
-    title: z.string(),
     url: z.string(),
+    title: z.string(),
   });
 /** @internal */
 export type FusionSource$Outbound = {
-  title: string;
   url: string;
+  title: string;
 };
 
 /** @internal */
@@ -39,8 +39,8 @@ export const FusionSource$outboundSchema: z.ZodType<
   FusionSource$Outbound,
   FusionSource
 > = z.object({
-  title: z.string(),
   url: z.string(),
+  title: z.string(),
 });
 
 export function fusionSourceToJSON(fusionSource: FusionSource): string {

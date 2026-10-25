@@ -11,6 +11,13 @@ import { ClosedEnum, OpenEnum } from "../types/enums.js";
 import { Result as SafeParseResult } from "../types/fp.js";
 import { SDKValidationError } from "./errors/sdkvalidationerror.js";
 
+export const ApplyPatchCallOutputItemType = {
+  ApplyPatchCallOutput: "apply_patch_call_output",
+} as const;
+export type ApplyPatchCallOutputItemType = ClosedEnum<
+  typeof ApplyPatchCallOutputItemType
+>;
+
 export const ApplyPatchCallOutputItemStatus = {
   Completed: "completed",
   Failed: "failed",
@@ -19,23 +26,25 @@ export type ApplyPatchCallOutputItemStatus = OpenEnum<
   typeof ApplyPatchCallOutputItemStatus
 >;
 
-export const ApplyPatchCallOutputItemType = {
-  ApplyPatchCallOutput: "apply_patch_call_output",
-} as const;
-export type ApplyPatchCallOutputItemType = ClosedEnum<
-  typeof ApplyPatchCallOutputItemType
->;
-
 /**
  * The client's echo of an `apply_patch_call` after applying the patch. `output` is an optional human-readable log; `status` is `completed` when the patch was applied successfully, `failed` otherwise.
  */
 export type ApplyPatchCallOutputItem = {
+  type: ApplyPatchCallOutputItemType;
   callId: string;
   id?: string | null | undefined;
   output?: string | null | undefined;
   status: ApplyPatchCallOutputItemStatus;
-  type: ApplyPatchCallOutputItemType;
 };
+
+/** @internal */
+export const ApplyPatchCallOutputItemType$inboundSchema: z.ZodEnum<
+  typeof ApplyPatchCallOutputItemType
+> = z.enum(ApplyPatchCallOutputItemType);
+/** @internal */
+export const ApplyPatchCallOutputItemType$outboundSchema: z.ZodEnum<
+  typeof ApplyPatchCallOutputItemType
+> = ApplyPatchCallOutputItemType$inboundSchema;
 
 /** @internal */
 export const ApplyPatchCallOutputItemStatus$inboundSchema: z.ZodType<
@@ -49,24 +58,15 @@ export const ApplyPatchCallOutputItemStatus$outboundSchema: z.ZodType<
 > = openEnums.outboundSchema(ApplyPatchCallOutputItemStatus);
 
 /** @internal */
-export const ApplyPatchCallOutputItemType$inboundSchema: z.ZodEnum<
-  typeof ApplyPatchCallOutputItemType
-> = z.enum(ApplyPatchCallOutputItemType);
-/** @internal */
-export const ApplyPatchCallOutputItemType$outboundSchema: z.ZodEnum<
-  typeof ApplyPatchCallOutputItemType
-> = ApplyPatchCallOutputItemType$inboundSchema;
-
-/** @internal */
 export const ApplyPatchCallOutputItem$inboundSchema: z.ZodType<
   ApplyPatchCallOutputItem,
   unknown
 > = z.object({
+  type: ApplyPatchCallOutputItemType$inboundSchema,
   call_id: z.string(),
   id: z.nullable(z.string()).optional(),
   output: z.nullable(z.string()).optional(),
   status: ApplyPatchCallOutputItemStatus$inboundSchema,
-  type: ApplyPatchCallOutputItemType$inboundSchema,
 }).transform((v) => {
   return remap$(v, {
     "call_id": "callId",
@@ -74,11 +74,11 @@ export const ApplyPatchCallOutputItem$inboundSchema: z.ZodType<
 });
 /** @internal */
 export type ApplyPatchCallOutputItem$Outbound = {
+  type: string;
   call_id: string;
   id?: string | null | undefined;
   output?: string | null | undefined;
   status: string;
-  type: string;
 };
 
 /** @internal */
@@ -86,11 +86,11 @@ export const ApplyPatchCallOutputItem$outboundSchema: z.ZodType<
   ApplyPatchCallOutputItem$Outbound,
   ApplyPatchCallOutputItem
 > = z.object({
+  type: ApplyPatchCallOutputItemType$outboundSchema,
   callId: z.string(),
   id: z.nullable(z.string()).optional(),
   output: z.nullable(z.string()).optional(),
   status: ApplyPatchCallOutputItemStatus$outboundSchema,
-  type: ApplyPatchCallOutputItemType$outboundSchema,
 }).transform((v) => {
   return remap$(v, {
     callId: "call_id",

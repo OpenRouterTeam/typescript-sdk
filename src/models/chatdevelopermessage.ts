@@ -36,6 +36,10 @@ export type ChatDeveloperMessageContent = string | Array<ChatContentText>;
  */
 export type ChatDeveloperMessage = {
   /**
+   * Optional name for the developer message
+   */
+  name?: string | undefined;
+  /**
    * OpenRouter extension. Same as the system message `configuration_update`: changes reasoning effort from this point in the conversation onward without invalidating the prompt cache for the preceding turns.
    */
   configurationUpdate?:
@@ -46,10 +50,6 @@ export type ChatDeveloperMessage = {
    * Developer message content
    */
   content: string | Array<ChatContentText>;
-  /**
-   * Optional name for the developer message
-   */
-  name?: string | undefined;
   role: "developer";
 };
 
@@ -100,12 +100,12 @@ export function chatDeveloperMessageContentToJSON(
 
 /** @internal */
 export type ChatDeveloperMessage$Outbound = {
+  name?: string | undefined;
   configuration_update?:
     | ChatDeveloperMessageConfigurationUpdate$Outbound
     | null
     | undefined;
   content: string | Array<ChatContentText$Outbound>;
-  name?: string | undefined;
   role: "developer";
 };
 
@@ -114,11 +114,11 @@ export const ChatDeveloperMessage$outboundSchema: z.ZodType<
   ChatDeveloperMessage$Outbound,
   ChatDeveloperMessage
 > = z.object({
+  name: z.string().optional(),
   configurationUpdate: z.nullable(
     z.lazy(() => ChatDeveloperMessageConfigurationUpdate$outboundSchema),
   ).optional(),
   content: z.union([z.string(), z.array(ChatContentText$outboundSchema)]),
-  name: z.string().optional(),
   role: z.literal("developer"),
 }).transform((v) => {
   return remap$(v, {

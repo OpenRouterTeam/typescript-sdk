@@ -10,13 +10,6 @@ import { ClosedEnum } from "../types/enums.js";
 import { Result as SafeParseResult } from "../types/fp.js";
 import { SDKValidationError } from "./errors/sdkvalidationerror.js";
 
-export const OutputArmorBlockedItemStatus = {
-  Completed: "completed",
-} as const;
-export type OutputArmorBlockedItemStatus = ClosedEnum<
-  typeof OutputArmorBlockedItemStatus
->;
-
 export const OutputArmorBlockedItemType = {
   OpenrouterArmorBlocked: "openrouter:armor_blocked",
 } as const;
@@ -24,10 +17,22 @@ export type OutputArmorBlockedItemType = ClosedEnum<
   typeof OutputArmorBlockedItemType
 >;
 
+export const OutputArmorBlockedItemStatus = {
+  Completed: "completed",
+} as const;
+export type OutputArmorBlockedItemStatus = ClosedEnum<
+  typeof OutputArmorBlockedItemStatus
+>;
+
 /**
  * A client tool call that OpenRouter Armor blocked. Emitted in place of the call when `plugins[armor].output_mode` is `custom_item`.
  */
 export type OutputArmorBlockedItem = {
+  /**
+   * The name of the tool the model called.
+   */
+  name: string;
+  type: OutputArmorBlockedItemType;
   /**
    * The arguments exactly as the model wrote them.
    */
@@ -42,10 +47,6 @@ export type OutputArmorBlockedItem = {
   explanation: string;
   id: string;
   /**
-   * The name of the tool the model called.
-   */
-  name: string;
-  /**
    * The namespace the tool belongs to, for namespaced tools such as MCP. Absent for a plain function tool.
    */
   namespace?: string | undefined;
@@ -54,17 +55,7 @@ export type OutputArmorBlockedItem = {
    */
   reason: string;
   status: OutputArmorBlockedItemStatus;
-  type: OutputArmorBlockedItemType;
 };
-
-/** @internal */
-export const OutputArmorBlockedItemStatus$inboundSchema: z.ZodEnum<
-  typeof OutputArmorBlockedItemStatus
-> = z.enum(OutputArmorBlockedItemStatus);
-/** @internal */
-export const OutputArmorBlockedItemStatus$outboundSchema: z.ZodEnum<
-  typeof OutputArmorBlockedItemStatus
-> = OutputArmorBlockedItemStatus$inboundSchema;
 
 /** @internal */
 export const OutputArmorBlockedItemType$inboundSchema: z.ZodEnum<
@@ -76,19 +67,28 @@ export const OutputArmorBlockedItemType$outboundSchema: z.ZodEnum<
 > = OutputArmorBlockedItemType$inboundSchema;
 
 /** @internal */
+export const OutputArmorBlockedItemStatus$inboundSchema: z.ZodEnum<
+  typeof OutputArmorBlockedItemStatus
+> = z.enum(OutputArmorBlockedItemStatus);
+/** @internal */
+export const OutputArmorBlockedItemStatus$outboundSchema: z.ZodEnum<
+  typeof OutputArmorBlockedItemStatus
+> = OutputArmorBlockedItemStatus$inboundSchema;
+
+/** @internal */
 export const OutputArmorBlockedItem$inboundSchema: z.ZodType<
   OutputArmorBlockedItem,
   unknown
 > = z.object({
+  name: z.string(),
+  type: OutputArmorBlockedItemType$inboundSchema,
   arguments: z.string(),
   call_id: z.string(),
   explanation: z.string(),
   id: z.string(),
-  name: z.string(),
   namespace: z.string().optional(),
   reason: z.string(),
   status: OutputArmorBlockedItemStatus$inboundSchema,
-  type: OutputArmorBlockedItemType$inboundSchema,
 }).transform((v) => {
   return remap$(v, {
     "call_id": "callId",
@@ -96,15 +96,15 @@ export const OutputArmorBlockedItem$inboundSchema: z.ZodType<
 });
 /** @internal */
 export type OutputArmorBlockedItem$Outbound = {
+  name: string;
+  type: string;
   arguments: string;
   call_id: string;
   explanation: string;
   id: string;
-  name: string;
   namespace?: string | undefined;
   reason: string;
   status: string;
-  type: string;
 };
 
 /** @internal */
@@ -112,15 +112,15 @@ export const OutputArmorBlockedItem$outboundSchema: z.ZodType<
   OutputArmorBlockedItem$Outbound,
   OutputArmorBlockedItem
 > = z.object({
+  name: z.string(),
+  type: OutputArmorBlockedItemType$outboundSchema,
   arguments: z.string(),
   callId: z.string(),
   explanation: z.string(),
   id: z.string(),
-  name: z.string(),
   namespace: z.string().optional(),
   reason: z.string(),
   status: OutputArmorBlockedItemStatus$outboundSchema,
-  type: OutputArmorBlockedItemType$outboundSchema,
 }).transform((v) => {
   return remap$(v, {
     callId: "call_id",

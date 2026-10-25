@@ -13,12 +13,12 @@ import { SDKValidationError } from "./errors/sdkvalidationerror.js";
  * Emitted when a fusion panel model finishes with its full content.
  */
 export type FusionCallPanelCompletedEvent = {
+  type: "response.fusion_call.panel.completed";
   content: string;
   itemId: string;
   model: string;
   outputIndex: number;
   sequenceNumber: number;
-  type: "response.fusion_call.panel.completed";
 };
 
 /** @internal */
@@ -26,12 +26,12 @@ export const FusionCallPanelCompletedEvent$inboundSchema: z.ZodType<
   FusionCallPanelCompletedEvent,
   unknown
 > = z.object({
+  type: z.literal("response.fusion_call.panel.completed"),
   content: z.string(),
   item_id: z.string(),
   model: z.string(),
   output_index: z.int(),
   sequence_number: z.int(),
-  type: z.literal("response.fusion_call.panel.completed"),
 }).transform((v) => {
   return remap$(v, {
     "item_id": "itemId",

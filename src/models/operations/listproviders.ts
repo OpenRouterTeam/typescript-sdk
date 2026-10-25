@@ -569,6 +569,10 @@ export type Headquarters = OpenEnum<typeof Headquarters>;
 
 export type ListProvidersData = {
   /**
+   * Display name of the provider
+   */
+  name: string;
+  /**
    * ISO 3166-1 Alpha-2 country codes of the provider datacenter locations
    */
   datacenters?: Array<Datacenter> | null | undefined;
@@ -576,10 +580,6 @@ export type ListProvidersData = {
    * ISO 3166-1 Alpha-2 country code of the provider headquarters
    */
   headquarters?: Headquarters | null | undefined;
-  /**
-   * Display name of the provider
-   */
-  name: string;
   /**
    * URL to the provider's privacy policy
    */
@@ -647,9 +647,9 @@ export const ListProvidersData$inboundSchema: z.ZodType<
   ListProvidersData,
   unknown
 > = z.object({
+  name: z.string(),
   datacenters: z.nullable(z.array(Datacenter$inboundSchema)).optional(),
   headquarters: z.nullable(Headquarters$inboundSchema).optional(),
-  name: z.string(),
   privacy_policy_url: z.nullable(z.string()),
   slug: z.string(),
   status_page_url: z.nullable(z.string()).optional(),

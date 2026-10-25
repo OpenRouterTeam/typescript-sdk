@@ -10,12 +10,12 @@ Emitted when a fusion panel model finishes with its full content.
 import { FusionCallPanelCompletedEvent } from "@openrouter/sdk/models";
 
 let value: FusionCallPanelCompletedEvent = {
+  type: "response.fusion_call.panel.completed",
   content: "<value>",
   itemId: "<id>",
   model: "XTS",
   outputIndex: 678592,
   sequenceNumber: 0,
-  type: "response.fusion_call.panel.completed",
 };
 ```
 
@@ -23,9 +23,9 @@ let value: FusionCallPanelCompletedEvent = {
 
 | Field                                    | Type                                     | Required                                 | Description                              |
 | ---------------------------------------- | ---------------------------------------- | ---------------------------------------- | ---------------------------------------- |
+| `type`                                   | *"response.fusion_call.panel.completed"* | ✔️                       | N/A                                      |
 | `content`                                | *string*                                 | ✔️                       | N/A                                      |
 | `itemId`                                 | *string*                                 | ✔️                       | N/A                                      |
 | `model`                                  | *string*                                 | ✔️                       | N/A                                      |
 | `outputIndex`                            | *number*                                 | ✔️                       | N/A                                      |
 | `sequenceNumber`                         | *number*                                 | ✔️                       | N/A                                      |
-| `type`                                   | *"response.fusion_call.panel.completed"* | ✔️                       | N/A                                      |

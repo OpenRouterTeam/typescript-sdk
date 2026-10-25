@@ -33,15 +33,15 @@ export type AnthropicToolSearchToolRegexType = OpenEnum<
 >;
 
 export type AnthropicToolSearchToolRegex = {
+  name: AnthropicToolSearchToolRegexName;
+  type: AnthropicToolSearchToolRegexType;
   allowedCallers?: Array<AnthropicAllowedCallers> | undefined;
   /**
    * Enable automatic prompt caching. When set at the top level, the system automatically applies cache breakpoints to the last cacheable block in the request. When set on an individual content block, it marks an explicit cache breakpoint; block-level markers also work on OpenAI models that support explicit prompt caching — OpenRouter converts them to the provider's native format.
    */
   cacheControl?: AnthropicCacheControlDirective | undefined;
   deferLoading?: boolean | undefined;
-  name: AnthropicToolSearchToolRegexName;
   strict?: boolean | undefined;
-  type: AnthropicToolSearchToolRegexType;
 };
 
 /** @internal */
@@ -57,12 +57,12 @@ export const AnthropicToolSearchToolRegexType$outboundSchema: z.ZodType<
 
 /** @internal */
 export type AnthropicToolSearchToolRegex$Outbound = {
+  name: string;
+  type: string;
   allowed_callers?: Array<string> | undefined;
   cache_control?: AnthropicCacheControlDirective$Outbound | undefined;
   defer_loading?: boolean | undefined;
-  name: string;
   strict?: boolean | undefined;
-  type: string;
 };
 
 /** @internal */
@@ -70,12 +70,12 @@ export const AnthropicToolSearchToolRegex$outboundSchema: z.ZodType<
   AnthropicToolSearchToolRegex$Outbound,
   AnthropicToolSearchToolRegex
 > = z.object({
+  name: AnthropicToolSearchToolRegexName$outboundSchema,
+  type: AnthropicToolSearchToolRegexType$outboundSchema,
   allowedCallers: z.array(AnthropicAllowedCallers$outboundSchema).optional(),
   cacheControl: AnthropicCacheControlDirective$outboundSchema.optional(),
   deferLoading: z.boolean().optional(),
-  name: AnthropicToolSearchToolRegexName$outboundSchema,
   strict: z.boolean().optional(),
-  type: AnthropicToolSearchToolRegexType$outboundSchema,
 }).transform((v) => {
   return remap$(v, {
     allowedCallers: "allowed_callers",

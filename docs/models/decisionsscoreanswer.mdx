@@ -8,8 +8,8 @@ title: "DecisionsScoreAnswer"
 import { DecisionsScoreAnswer } from "@openrouter/sdk/models";
 
 let value: DecisionsScoreAnswer = {
-  score: 8873.17,
   type: "score",
+  score: 8873.17,
 };
 ```
 
@@ -17,8 +17,8 @@ let value: DecisionsScoreAnswer = {
 
 | Field                           | Type                            | Required                        | Description                     |
 | ------------------------------- | ------------------------------- | ------------------------------- | ------------------------------- |
+| `type`                          | *"score"*                       | ✔️              | N/A                             |
 | `confidence`                    | *number*                        | ➖              | N/A                             |
 | `legend`                        | Record\<string, *models.Legend*> | ➖              | N/A                             |
 | `probabilities`                 | Record\<string, *number*>        | ➖              | N/A                             |
 | `score`                         | *number*                        | ✔️              | N/A                             |
-| `type`                          | *"score"*                       | ✔️              | N/A                             |

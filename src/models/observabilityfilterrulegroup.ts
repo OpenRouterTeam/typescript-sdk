@@ -32,7 +32,7 @@ export const Field = {
 } as const;
 export type Field = OpenEnum<typeof Field>;
 
-export const Operator = {
+export const OperatorEnum = {
   Equals: "equals",
   NotEquals: "not_equals",
   Contains: "contains",
@@ -47,13 +47,13 @@ export const Operator = {
   Exists: "exists",
   NotExists: "not_exists",
 } as const;
-export type Operator = OpenEnum<typeof Operator>;
+export type OperatorEnum = OpenEnum<typeof OperatorEnum>;
 
 export type ObservabilityFilterRuleGroupValue = string | number;
 
 export type Rule = {
   field: Field;
-  operator: Operator;
+  operator: OperatorEnum;
   value?: string | number | undefined;
 };
 
@@ -77,11 +77,11 @@ export const Field$outboundSchema: z.ZodType<string, Field> = openEnums
   .outboundSchema(Field);
 
 /** @internal */
-export const Operator$inboundSchema: z.ZodType<Operator, unknown> = openEnums
-  .inboundSchema(Operator);
+export const OperatorEnum$inboundSchema: z.ZodType<OperatorEnum, unknown> =
+  openEnums.inboundSchema(OperatorEnum);
 /** @internal */
-export const Operator$outboundSchema: z.ZodType<string, Operator> = openEnums
-  .outboundSchema(Operator);
+export const OperatorEnum$outboundSchema: z.ZodType<string, OperatorEnum> =
+  openEnums.outboundSchema(OperatorEnum);
 
 /** @internal */
 export const ObservabilityFilterRuleGroupValue$inboundSchema: z.ZodType<
@@ -119,7 +119,7 @@ export function observabilityFilterRuleGroupValueFromJSON(
 /** @internal */
 export const Rule$inboundSchema: z.ZodType<Rule, unknown> = z.object({
   field: Field$inboundSchema,
-  operator: Operator$inboundSchema,
+  operator: OperatorEnum$inboundSchema,
   value: z.union([z.string(), z.number()]).optional(),
 });
 /** @internal */
@@ -132,7 +132,7 @@ export type Rule$Outbound = {
 /** @internal */
 export const Rule$outboundSchema: z.ZodType<Rule$Outbound, Rule> = z.object({
   field: Field$outboundSchema,
-  operator: Operator$outboundSchema,
+  operator: OperatorEnum$outboundSchema,
   value: z.union([z.string(), z.number()]).optional(),
 });
 

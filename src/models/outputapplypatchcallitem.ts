@@ -21,6 +21,7 @@ import { SDKValidationError } from "./errors/sdkvalidationerror.js";
  * A native `apply_patch_call` output item matching OpenAI's Responses API shape. Emitted when the client requested the `apply_patch` shorthand.
  */
 export type OutputApplyPatchCallItem = {
+  type: "apply_patch_call";
   callId: string;
   id: string;
   /**
@@ -31,7 +32,6 @@ export type OutputApplyPatchCallItem = {
    * Lifecycle state of an `apply_patch_call` output item.
    */
   status: ApplyPatchCallStatus;
-  type: "apply_patch_call";
 };
 
 /** @internal */
@@ -39,11 +39,11 @@ export const OutputApplyPatchCallItem$inboundSchema: z.ZodType<
   OutputApplyPatchCallItem,
   unknown
 > = z.object({
+  type: z.literal("apply_patch_call"),
   call_id: z.string(),
   id: z.string(),
   operation: ApplyPatchCallOperation$inboundSchema,
   status: ApplyPatchCallStatus$inboundSchema,
-  type: z.literal("apply_patch_call"),
 }).transform((v) => {
   return remap$(v, {
     "call_id": "callId",

@@ -71,6 +71,10 @@ export type ListRequest = {
 
 export type ListData = {
   /**
+   * Name of the API key
+   */
+  name: string;
+  /**
    * Total external BYOK usage (in USD) for the API key
    */
   byokUsage: number;
@@ -134,10 +138,6 @@ export type ListData = {
    * Type of limit reset for the API key
    */
   limitReset: string | null;
-  /**
-   * Name of the API key
-   */
-  name: string;
   /**
    * ISO 8601 timestamp of when the API key was last updated
    */
@@ -212,6 +212,7 @@ export function listRequestToJSON(listRequest: ListRequest): string {
 
 /** @internal */
 export const ListData$inboundSchema: z.ZodType<ListData, unknown> = z.object({
+  name: z.string(),
   byok_usage: z.number(),
   byok_usage_daily: z.number(),
   byok_usage_monthly: z.number(),
@@ -232,7 +233,6 @@ export const ListData$inboundSchema: z.ZodType<ListData, unknown> = z.object({
   limit: z.nullable(z.number()),
   limit_remaining: z.nullable(z.number()),
   limit_reset: z.nullable(z.string()),
-  name: z.string(),
   updated_at: z.nullable(z.string()),
   usage: z.number(),
   usage_daily: z.number(),

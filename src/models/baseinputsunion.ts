@@ -52,6 +52,11 @@ import {
 } from "./outputitemimagegenerationcall.js";
 import { OutputMessage, OutputMessage$inboundSchema } from "./outputmessage.js";
 
+export const BaseInputsType = {
+  Message: "message",
+} as const;
+export type BaseInputsType = ClosedEnum<typeof BaseInputsType>;
+
 export type BaseInputsContent1 =
   | InputAudio
   | InputFile
@@ -117,12 +122,8 @@ export type BaseInputsRoleUnion =
   | BaseInputsRoleAssistant
   | BaseInputsRoleDeveloper;
 
-export const BaseInputsType = {
-  Message: "message",
-} as const;
-export type BaseInputsType = ClosedEnum<typeof BaseInputsType>;
-
 export type BaseInputsMessage = {
+  type?: BaseInputsType | undefined;
   content:
     | Array<
       | InputAudio
@@ -142,7 +143,6 @@ export type BaseInputsMessage = {
     | BaseInputsRoleSystem
     | BaseInputsRoleAssistant
     | BaseInputsRoleDeveloper;
-  type?: BaseInputsType | undefined;
 };
 
 export type BaseInputsUnion1 =
@@ -173,6 +173,10 @@ export type BaseInputsUnion =
     | BaseInputsMessage
     | ConfigurationUpdateItem
   >;
+
+/** @internal */
+export const BaseInputsType$inboundSchema: z.ZodEnum<typeof BaseInputsType> = z
+  .enum(BaseInputsType);
 
 /** @internal */
 export const BaseInputsContent1$inboundSchema: z.ZodType<
@@ -294,14 +298,11 @@ export function baseInputsRoleUnionFromJSON(
 }
 
 /** @internal */
-export const BaseInputsType$inboundSchema: z.ZodEnum<typeof BaseInputsType> = z
-  .enum(BaseInputsType);
-
-/** @internal */
 export const BaseInputsMessage$inboundSchema: z.ZodType<
   BaseInputsMessage,
   unknown
 > = z.object({
+  type: BaseInputsType$inboundSchema.optional(),
   content: z.union([
     z.array(discriminatedUnion("type", {
       input_audio: InputAudio$inboundSchema,
@@ -325,7 +326,6 @@ export const BaseInputsMessage$inboundSchema: z.ZodType<
     BaseInputsRoleAssistant$inboundSchema,
     BaseInputsRoleDeveloper$inboundSchema,
   ]),
-  type: BaseInputsType$inboundSchema.optional(),
 });
 
 export function baseInputsMessageFromJSON(

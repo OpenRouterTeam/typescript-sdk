@@ -28,8 +28,8 @@ export type AnthropicWebFetchToolResultErrorErrorCode = OpenEnum<
 >;
 
 export type AnthropicWebFetchToolResultError = {
-  errorCode: AnthropicWebFetchToolResultErrorErrorCode;
   type: "web_fetch_tool_result_error";
+  errorCode: AnthropicWebFetchToolResultErrorErrorCode;
 };
 
 /** @internal */
@@ -43,8 +43,8 @@ export const AnthropicWebFetchToolResultError$inboundSchema: z.ZodType<
   AnthropicWebFetchToolResultError,
   unknown
 > = z.object({
-  error_code: AnthropicWebFetchToolResultErrorErrorCode$inboundSchema,
   type: z.literal("web_fetch_tool_result_error"),
+  error_code: AnthropicWebFetchToolResultErrorErrorCode$inboundSchema,
 }).transform((v) => {
   return remap$(v, {
     "error_code": "errorCode",

@@ -20,13 +20,13 @@ export type ChatUserMessageContent = string | Array<ChatContentItems>;
  */
 export type ChatUserMessage = {
   /**
-   * User message content
-   */
-  content: string | Array<ChatContentItems>;
-  /**
    * Optional name for the user
    */
   name?: string | undefined;
+  /**
+   * User message content
+   */
+  content: string | Array<ChatContentItems>;
   role: "user";
 };
 
@@ -51,8 +51,8 @@ export function chatUserMessageContentToJSON(
 
 /** @internal */
 export type ChatUserMessage$Outbound = {
-  content: string | Array<ChatContentItems$Outbound>;
   name?: string | undefined;
+  content: string | Array<ChatContentItems$Outbound>;
   role: "user";
 };
 
@@ -61,8 +61,8 @@ export const ChatUserMessage$outboundSchema: z.ZodType<
   ChatUserMessage$Outbound,
   ChatUserMessage
 > = z.object({
-  content: z.union([z.string(), z.array(ChatContentItems$outboundSchema)]),
   name: z.string().optional(),
+  content: z.union([z.string(), z.array(ChatContentItems$outboundSchema)]),
   role: z.literal("user"),
 });
 

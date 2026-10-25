@@ -14,10 +14,10 @@ import {
 import { SDKValidationError } from "./errors/sdkvalidationerror.js";
 
 export type AnthropicWebFetchBlock = {
+  url: string;
   content: AnthropicDocumentBlock;
   retrievedAt: string | null;
   type: "web_fetch_result";
-  url: string;
 };
 
 /** @internal */
@@ -25,10 +25,10 @@ export const AnthropicWebFetchBlock$inboundSchema: z.ZodType<
   AnthropicWebFetchBlock,
   unknown
 > = z.object({
+  url: z.string(),
   content: AnthropicDocumentBlock$inboundSchema,
   retrieved_at: z.nullable(z.string()),
   type: z.literal("web_fetch_result"),
-  url: z.string(),
 }).transform((v) => {
   return remap$(v, {
     "retrieved_at": "retrievedAt",

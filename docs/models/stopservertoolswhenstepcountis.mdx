@@ -10,8 +10,8 @@ Stop after the agent loop has executed this many steps.
 import { StopServerToolsWhenStepCountIs } from "@openrouter/sdk/models";
 
 let value: StopServerToolsWhenStepCountIs = {
-  stepCount: 5,
   type: "step_count_is",
+  stepCount: 5,
 };
 ```
 
@@ -19,5 +19,5 @@ let value: StopServerToolsWhenStepCountIs = {
 
 | Field              | Type               | Required           | Description        |
 | ------------------ | ------------------ | ------------------ | ------------------ |
-| `stepCount`        | *number*           | ✔️ | N/A                |
 | `type`             | *"step_count_is"*  | ✔️ | N/A                |
+| `stepCount`        | *number*           | ✔️ | N/A                |

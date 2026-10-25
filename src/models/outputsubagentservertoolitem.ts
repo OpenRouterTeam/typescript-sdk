@@ -27,6 +27,11 @@ export type OutputSubagentServerToolItemType = ClosedEnum<
  */
 export type OutputSubagentServerToolItem = {
   /**
+   * Configured name of the subagent that executed the task (the `name` on its tool entry). Present only for named subagents; omitted for an unnamed (default) subagent.
+   */
+  name?: string | undefined;
+  type: OutputSubagentServerToolItemType;
+  /**
    * EXPERIMENTAL — subject to change without notice. The `call_id` of the tool call that spawned this subagent. This id will also be included as the `subagent_id` on any `function_call` items created by the subagent. This must be returned in the request so the `function_call` can be matched with the correct subagent. A suspended `in_progress` item is announced once and never re-emitted or terminally closed — completion arrives as a new item with the same `call_id`.
    */
   callId?: string | undefined;
@@ -44,10 +49,6 @@ export type OutputSubagentServerToolItem = {
    */
   model?: string | undefined;
   /**
-   * Configured name of the subagent that executed the task (the `name` on its tool entry). Present only for named subagents; omitted for an unnamed (default) subagent.
-   */
-  name?: string | undefined;
-  /**
    * The worker model's result (the outcome text returned to the delegating model).
    */
   outcome?: string | undefined;
@@ -60,7 +61,6 @@ export type OutputSubagentServerToolItem = {
    * The short task identifier the delegating model supplied.
    */
   taskName?: string | undefined;
-  type: OutputSubagentServerToolItemType;
 };
 
 /** @internal */
@@ -77,17 +77,17 @@ export const OutputSubagentServerToolItem$inboundSchema: z.ZodType<
   OutputSubagentServerToolItem,
   unknown
 > = z.object({
+  name: z.string().optional(),
+  type: OutputSubagentServerToolItemType$inboundSchema,
   call_id: z.string().optional(),
   error: z.string().optional(),
   id: z.string().optional(),
   instance_name: z.string().optional(),
   model: z.string().optional(),
-  name: z.string().optional(),
   outcome: z.string().optional(),
   status: FailableToolCallStatus$inboundSchema,
   task_description: z.string().optional(),
   task_name: z.string().optional(),
-  type: OutputSubagentServerToolItemType$inboundSchema,
 }).transform((v) => {
   return remap$(v, {
     "call_id": "callId",
@@ -98,17 +98,17 @@ export const OutputSubagentServerToolItem$inboundSchema: z.ZodType<
 });
 /** @internal */
 export type OutputSubagentServerToolItem$Outbound = {
+  name?: string | undefined;
+  type: string;
   call_id?: string | undefined;
   error?: string | undefined;
   id?: string | undefined;
   instance_name?: string | undefined;
   model?: string | undefined;
-  name?: string | undefined;
   outcome?: string | undefined;
   status: string;
   task_description?: string | undefined;
   task_name?: string | undefined;
-  type: string;
 };
 
 /** @internal */
@@ -116,17 +116,17 @@ export const OutputSubagentServerToolItem$outboundSchema: z.ZodType<
   OutputSubagentServerToolItem$Outbound,
   OutputSubagentServerToolItem
 > = z.object({
+  name: z.string().optional(),
+  type: OutputSubagentServerToolItemType$outboundSchema,
   callId: z.string().optional(),
   error: z.string().optional(),
   id: z.string().optional(),
   instanceName: z.string().optional(),
   model: z.string().optional(),
-  name: z.string().optional(),
   outcome: z.string().optional(),
   status: FailableToolCallStatus$outboundSchema,
   taskDescription: z.string().optional(),
   taskName: z.string().optional(),
-  type: OutputSubagentServerToolItemType$outboundSchema,
 }).transform((v) => {
   return remap$(v, {
     callId: "call_id",

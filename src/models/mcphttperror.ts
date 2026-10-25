@@ -15,9 +15,9 @@ export type McpHttpErrorType = ClosedEnum<typeof McpHttpErrorType>;
  * The MCP server request failed at the HTTP layer
  */
 export type McpHttpError = {
+  type: McpHttpErrorType;
   code: number;
   message: string;
-  type: McpHttpErrorType;
 };
 
 /** @internal */
@@ -27,9 +27,9 @@ export const McpHttpErrorType$outboundSchema: z.ZodEnum<
 
 /** @internal */
 export type McpHttpError$Outbound = {
+  type: string;
   code: number;
   message: string;
-  type: string;
 };
 
 /** @internal */
@@ -37,9 +37,9 @@ export const McpHttpError$outboundSchema: z.ZodType<
   McpHttpError$Outbound,
   McpHttpError
 > = z.object({
+  type: McpHttpErrorType$outboundSchema,
   code: z.int(),
   message: z.string(),
-  type: McpHttpErrorType$outboundSchema,
 });
 
 export function mcpHttpErrorToJSON(mcpHttpError: McpHttpError): string {

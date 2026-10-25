@@ -1,0 +1,24 @@
+---
+title: "InternChatEchoedToolCallFunction"
+---
+
+The function name and JSON arguments string exactly as streamed.
+
+## Example Usage
+
+```typescript
+import { InternChatEchoedToolCallFunction } from "@openrouter/sdk/models";
+
+let value: InternChatEchoedToolCallFunction = {
+  name: "openrouter.provide_input",
+  arguments:
+    "{\"kind\":\"permission\",\"operation\":\"shell\",\"options\":[\"allow_once\",\"reject_once\"]}",
+};
+```
+
+## Fields
+
+| Field              | Type               | Required           | Description        |
+| ------------------ | ------------------ | ------------------ | ------------------ |
+| `name`             | *string*           | ✔️ | N/A                |
+| `arguments`        | *string*           | ✔️ | N/A                |

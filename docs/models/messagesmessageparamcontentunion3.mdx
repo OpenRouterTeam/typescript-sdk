@@ -9,10 +9,10 @@ title: "MessagesMessageParamContentUnion3"
 ```typescript
 const value: models.AnthropicWebSearchResultBlockParam[] = [
   {
+    url: "https://example.com",
     encryptedContent: "enc_content_0",
     title: "Example Page",
     type: "web_search_result",
-    url: "https://example.com",
   },
 ];
 ```
@@ -21,8 +21,8 @@ const value: models.AnthropicWebSearchResultBlockParam[] = [
 
 ```typescript
 const value: models.ContentWebSearchToolResultError = {
-  errorCode: "unavailable",
   type: "web_search_tool_result_error",
+  errorCode: "unavailable",
 };
 ```
 

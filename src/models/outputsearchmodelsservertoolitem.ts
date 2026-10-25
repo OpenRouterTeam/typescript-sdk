@@ -25,6 +25,7 @@ export type OutputSearchModelsServerToolItemType = ClosedEnum<
  * An openrouter:experimental__search_models server tool output item
  */
 export type OutputSearchModelsServerToolItem = {
+  type: OutputSearchModelsServerToolItemType;
   /**
    * The JSON arguments submitted to the search tool (e.g. {"query":"Claude"})
    */
@@ -36,7 +37,6 @@ export type OutputSearchModelsServerToolItem = {
   id?: string | undefined;
   query?: string | undefined;
   status: FailableToolCallStatus;
-  type: OutputSearchModelsServerToolItemType;
 };
 
 /** @internal */
@@ -53,21 +53,21 @@ export const OutputSearchModelsServerToolItem$inboundSchema: z.ZodType<
   OutputSearchModelsServerToolItem,
   unknown
 > = z.object({
+  type: OutputSearchModelsServerToolItemType$inboundSchema,
   arguments: z.string().optional(),
   error: z.string().optional(),
   id: z.string().optional(),
   query: z.string().optional(),
   status: FailableToolCallStatus$inboundSchema,
-  type: OutputSearchModelsServerToolItemType$inboundSchema,
 });
 /** @internal */
 export type OutputSearchModelsServerToolItem$Outbound = {
+  type: string;
   arguments?: string | undefined;
   error?: string | undefined;
   id?: string | undefined;
   query?: string | undefined;
   status: string;
-  type: string;
 };
 
 /** @internal */
@@ -75,12 +75,12 @@ export const OutputSearchModelsServerToolItem$outboundSchema: z.ZodType<
   OutputSearchModelsServerToolItem$Outbound,
   OutputSearchModelsServerToolItem
 > = z.object({
+  type: OutputSearchModelsServerToolItemType$outboundSchema,
   arguments: z.string().optional(),
   error: z.string().optional(),
   id: z.string().optional(),
   query: z.string().optional(),
   status: FailableToolCallStatus$outboundSchema,
-  type: OutputSearchModelsServerToolItemType$outboundSchema,
 });
 
 export function outputSearchModelsServerToolItemToJSON(

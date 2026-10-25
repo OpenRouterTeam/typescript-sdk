@@ -13,13 +13,13 @@ import { SDKValidationError } from "./errors/sdkvalidationerror.js";
  * Emitted when a fusion panel model fails.
  */
 export type FusionCallPanelFailedEvent = {
+  type: "response.fusion_call.panel.failed";
   error: string;
   itemId: string;
   model: string;
   outputIndex: number;
   sequenceNumber: number;
   statusCode?: number | undefined;
-  type: "response.fusion_call.panel.failed";
 };
 
 /** @internal */
@@ -27,13 +27,13 @@ export const FusionCallPanelFailedEvent$inboundSchema: z.ZodType<
   FusionCallPanelFailedEvent,
   unknown
 > = z.object({
+  type: z.literal("response.fusion_call.panel.failed"),
   error: z.string(),
   item_id: z.string(),
   model: z.string(),
   output_index: z.int(),
   sequence_number: z.int(),
   status_code: z.int().optional(),
-  type: z.literal("response.fusion_call.panel.failed"),
 }).transform((v) => {
   return remap$(v, {
     "item_id": "itemId",

@@ -10,19 +10,24 @@ import { ClosedEnum } from "../types/enums.js";
 import { Result as SafeParseResult } from "../types/fp.js";
 import { SDKValidationError } from "./errors/sdkvalidationerror.js";
 
-export type AlignmentChatImageImageUrl = {
-  url: string;
-};
-
 export const AlignmentChatImageType = {
   ImageUrl: "image_url",
 } as const;
 export type AlignmentChatImageType = ClosedEnum<typeof AlignmentChatImageType>;
 
-export type AlignmentChatImage = {
-  imageUrl: AlignmentChatImageImageUrl;
-  type: AlignmentChatImageType;
+export type AlignmentChatImageImageUrl = {
+  url: string;
 };
+
+export type AlignmentChatImage = {
+  type: AlignmentChatImageType;
+  imageUrl: AlignmentChatImageImageUrl;
+};
+
+/** @internal */
+export const AlignmentChatImageType$inboundSchema: z.ZodEnum<
+  typeof AlignmentChatImageType
+> = z.enum(AlignmentChatImageType);
 
 /** @internal */
 export const AlignmentChatImageImageUrl$inboundSchema: z.ZodType<
@@ -43,17 +48,12 @@ export function alignmentChatImageImageUrlFromJSON(
 }
 
 /** @internal */
-export const AlignmentChatImageType$inboundSchema: z.ZodEnum<
-  typeof AlignmentChatImageType
-> = z.enum(AlignmentChatImageType);
-
-/** @internal */
 export const AlignmentChatImage$inboundSchema: z.ZodType<
   AlignmentChatImage,
   unknown
 > = z.object({
-  image_url: z.lazy(() => AlignmentChatImageImageUrl$inboundSchema),
   type: AlignmentChatImageType$inboundSchema,
+  image_url: z.lazy(() => AlignmentChatImageImageUrl$inboundSchema),
 }).transform((v) => {
   return remap$(v, {
     "image_url": "imageUrl",

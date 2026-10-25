@@ -10,14 +10,14 @@ A compound filter that combines multiple comparison or compound filters
 import { CompoundFilter } from "@openrouter/sdk/models";
 
 let value: CompoundFilter = {
+  type: "and",
   filters: [
     {
-      "key": "author",
       "type": "eq",
+      "key": "author",
       "value": "Alice",
     },
   ],
-  type: "and",
 };
 ```
 
@@ -25,5 +25,5 @@ let value: CompoundFilter = {
 
 | Field                                                        | Type                                                         | Required                                                     | Description                                                  |
 | ------------------------------------------------------------ | ------------------------------------------------------------ | ------------------------------------------------------------ | ------------------------------------------------------------ |
-| `filters`                                                    | Record\<string, *any*>[]                                      | ✔️                                           | N/A                                                          |
 | `type`                                                       | [models.CompoundFilterType](../models/compoundfiltertype.mdx) | ✔️                                           | N/A                                                          |
+| `filters`                                                    | Record\<string, *any*>[]                                      | ✔️                                           | N/A                                                          |

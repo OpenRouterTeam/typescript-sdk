@@ -127,6 +127,14 @@ export type UpscaleFactor = {
 
 export type VideoModel = {
   /**
+   * Display name of the model
+   */
+  name: string;
+  /**
+   * Description of the model
+   */
+  description?: string | undefined;
+  /**
    * List of parameters that are allowed to be passed through to the provider
    */
   allowedPassthroughParameters: Array<string>;
@@ -143,10 +151,6 @@ export type VideoModel = {
    */
   creativity: Array<number> | null;
   /**
-   * Description of the model
-   */
-  description?: string | undefined;
-  /**
    * Whether the model supports generating audio alongside video
    */
   generateAudio: boolean | null;
@@ -158,10 +162,6 @@ export type VideoModel = {
    * Unique identifier for the model
    */
   id: string;
-  /**
-   * Display name of the model
-   */
-  name: string;
   /**
    * Pricing SKUs with provider prefix stripped, values as strings
    */
@@ -238,15 +238,15 @@ export function upscaleFactorFromJSON(
 /** @internal */
 export const VideoModel$inboundSchema: z.ZodType<VideoModel, unknown> = z
   .object({
+    name: z.string(),
+    description: z.string().optional(),
     allowed_passthrough_parameters: z.array(z.string()),
     canonical_slug: z.string(),
     created: z.int(),
     creativity: z.nullable(z.array(z.int())),
-    description: z.string().optional(),
     generate_audio: z.nullable(z.boolean()),
     hugging_face_id: z.nullable(z.string()).optional(),
     id: z.string(),
-    name: z.string(),
     pricing_skus: z.nullable(z.record(z.string(), z.string())).optional(),
     seed: z.nullable(z.boolean()),
     supported_aspect_ratios: z.nullable(

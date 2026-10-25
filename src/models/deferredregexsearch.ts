@@ -10,14 +10,14 @@ import { remap as remap$ } from "../lib/primitives.js";
  * Versioned safe-regex retrieval over supplied tool definitions.
  */
 export type DeferredRegexSearch = {
-  maxResults?: number | undefined;
   type: "regex";
+  maxResults?: number | undefined;
 };
 
 /** @internal */
 export type DeferredRegexSearch$Outbound = {
-  max_results?: number | undefined;
   type: "regex";
+  max_results?: number | undefined;
 };
 
 /** @internal */
@@ -25,8 +25,8 @@ export const DeferredRegexSearch$outboundSchema: z.ZodType<
   DeferredRegexSearch$Outbound,
   DeferredRegexSearch
 > = z.object({
-  maxResults: z.int().optional(),
   type: z.literal("regex"),
+  maxResults: z.int().optional(),
 }).transform((v) => {
   return remap$(v, {
     maxResults: "max_results",

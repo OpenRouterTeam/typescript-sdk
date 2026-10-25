@@ -8,12 +8,12 @@ title: "AnthropicCitationPageLocationParam"
 import { AnthropicCitationPageLocationParam } from "@openrouter/sdk/models";
 
 let value: AnthropicCitationPageLocationParam = {
+  type: "page_location",
   citedText: "Example cited text",
   documentIndex: 0,
   documentTitle: null,
   endPageNumber: 2,
   startPageNumber: 1,
-  type: "page_location",
 };
 ```
 
@@ -21,9 +21,9 @@ let value: AnthropicCitationPageLocationParam = {
 
 | Field              | Type               | Required           | Description        |
 | ------------------ | ------------------ | ------------------ | ------------------ |
+| `type`             | *"page_location"*  | ✔️ | N/A                |
 | `citedText`        | *string*           | ✔️ | N/A                |
 | `documentIndex`    | *number*           | ✔️ | N/A                |
 | `documentTitle`    | *string*           | ✔️ | N/A                |
 | `endPageNumber`    | *number*           | ✔️ | N/A                |
 | `startPageNumber`  | *number*           | ✔️ | N/A                |
-| `type`             | *"page_location"*  | ✔️ | N/A                |

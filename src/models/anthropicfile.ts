@@ -10,20 +10,21 @@ import { ClosedEnum } from "../types/enums.js";
 import { Result as SafeParseResult } from "../types/fp.js";
 import { SDKValidationError } from "./errors/sdkvalidationerror.js";
 
-export const AnthropicFileShape = {
-  Anthropic: "anthropic",
-} as const;
-export type AnthropicFileShape = ClosedEnum<typeof AnthropicFileShape>;
-
 export const AnthropicFileType = {
   File: "file",
 } as const;
 export type AnthropicFileType = ClosedEnum<typeof AnthropicFileType>;
 
+export const AnthropicFileShape = {
+  Anthropic: "anthropic",
+} as const;
+export type AnthropicFileShape = ClosedEnum<typeof AnthropicFileShape>;
+
 /**
  * A stored file in Anthropic's Files API shape.
  */
 export type AnthropicFile = {
+  type: AnthropicFileType;
   shape: AnthropicFileShape;
   createdAt: string;
   downloadable: boolean;
@@ -31,13 +32,7 @@ export type AnthropicFile = {
   id: string;
   mimeType: string;
   sizeBytes: number;
-  type: AnthropicFileType;
 };
-
-/** @internal */
-export const AnthropicFileShape$inboundSchema: z.ZodEnum<
-  typeof AnthropicFileShape
-> = z.enum(AnthropicFileShape);
 
 /** @internal */
 export const AnthropicFileType$inboundSchema: z.ZodEnum<
@@ -45,8 +40,14 @@ export const AnthropicFileType$inboundSchema: z.ZodEnum<
 > = z.enum(AnthropicFileType);
 
 /** @internal */
+export const AnthropicFileShape$inboundSchema: z.ZodEnum<
+  typeof AnthropicFileShape
+> = z.enum(AnthropicFileShape);
+
+/** @internal */
 export const AnthropicFile$inboundSchema: z.ZodType<AnthropicFile, unknown> = z
   .object({
+    type: AnthropicFileType$inboundSchema,
     _shape: AnthropicFileShape$inboundSchema,
     created_at: z.string(),
     downloadable: z.boolean(),
@@ -54,7 +55,6 @@ export const AnthropicFile$inboundSchema: z.ZodType<AnthropicFile, unknown> = z
     id: z.string(),
     mime_type: z.string(),
     size_bytes: z.int(),
-    type: AnthropicFileType$inboundSchema,
   }).transform((v) => {
     return remap$(v, {
       "_shape": "shape",

@@ -10,12 +10,12 @@ Event emitted when refusal streaming is complete
 import { RefusalDoneEvent } from "@openrouter/sdk/models";
 
 let value: RefusalDoneEvent = {
+  type: "response.refusal.done",
   contentIndex: 882616,
   itemId: "<id>",
   outputIndex: 641081,
   refusal: "<value>",
   sequenceNumber: 0,
-  type: "response.refusal.done",
 };
 ```
 
@@ -23,9 +23,9 @@ let value: RefusalDoneEvent = {
 
 | Field                     | Type                      | Required                  | Description               |
 | ------------------------- | ------------------------- | ------------------------- | ------------------------- |
+| `type`                    | *"response.refusal.done"* | ✔️        | N/A                       |
 | `contentIndex`            | *number*                  | ✔️        | N/A                       |
 | `itemId`                  | *string*                  | ✔️        | N/A                       |
 | `outputIndex`             | *number*                  | ✔️        | N/A                       |
 | `refusal`                 | *string*                  | ✔️        | N/A                       |
 | `sequenceNumber`          | *number*                  | ✔️        | N/A                       |
-| `type`                    | *"response.refusal.done"* | ✔️        | N/A                       |

@@ -13,10 +13,10 @@ import { SDKValidationError } from "./errors/sdkvalidationerror.js";
  * Emitted when an openrouter:fusion tool call begins executing.
  */
 export type FusionCallInProgressEvent = {
+  type: "response.fusion_call.in_progress";
   itemId: string;
   outputIndex: number;
   sequenceNumber: number;
-  type: "response.fusion_call.in_progress";
 };
 
 /** @internal */
@@ -24,10 +24,10 @@ export const FusionCallInProgressEvent$inboundSchema: z.ZodType<
   FusionCallInProgressEvent,
   unknown
 > = z.object({
+  type: z.literal("response.fusion_call.in_progress"),
   item_id: z.string(),
   output_index: z.int(),
   sequence_number: z.int(),
-  type: z.literal("response.fusion_call.in_progress"),
 }).transform((v) => {
   return remap$(v, {
     "item_id": "itemId",

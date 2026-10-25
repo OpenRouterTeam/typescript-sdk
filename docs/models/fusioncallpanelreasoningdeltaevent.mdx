@@ -10,12 +10,12 @@ Incremental reasoning token from a fusion panel model.
 import { FusionCallPanelReasoningDeltaEvent } from "@openrouter/sdk/models";
 
 let value: FusionCallPanelReasoningDeltaEvent = {
+  type: "response.fusion_call.panel.reasoning.delta",
   delta: "<value>",
   itemId: "<id>",
   model: "Model X",
   outputIndex: 297989,
   sequenceNumber: 0,
-  type: "response.fusion_call.panel.reasoning.delta",
 };
 ```
 
@@ -23,9 +23,9 @@ let value: FusionCallPanelReasoningDeltaEvent = {
 
 | Field                                          | Type                                           | Required                                       | Description                                    |
 | ---------------------------------------------- | ---------------------------------------------- | ---------------------------------------------- | ---------------------------------------------- |
+| `type`                                         | *"response.fusion_call.panel.reasoning.delta"* | ✔️                             | N/A                                            |
 | `delta`                                        | *string*                                       | ✔️                             | N/A                                            |
 | `itemId`                                       | *string*                                       | ✔️                             | N/A                                            |
 | `model`                                        | *string*                                       | ✔️                             | N/A                                            |
 | `outputIndex`                                  | *number*                                       | ✔️                             | N/A                                            |
 | `sequenceNumber`                               | *number*                                       | ✔️                             | N/A                                            |
-| `type`                                         | *"response.fusion_call.panel.reasoning.delta"* | ✔️                             | N/A                                            |

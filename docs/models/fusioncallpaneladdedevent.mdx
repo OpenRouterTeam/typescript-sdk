@@ -10,11 +10,11 @@ Emitted when a fusion analysis-panel model starts.
 import { FusionCallPanelAddedEvent } from "@openrouter/sdk/models";
 
 let value: FusionCallPanelAddedEvent = {
+  type: "response.fusion_call.panel.added",
   itemId: "<id>",
   model: "Ranchero",
   outputIndex: 348351,
   sequenceNumber: 0,
-  type: "response.fusion_call.panel.added",
 };
 ```
 
@@ -22,8 +22,8 @@ let value: FusionCallPanelAddedEvent = {
 
 | Field                                | Type                                 | Required                             | Description                          |
 | ------------------------------------ | ------------------------------------ | ------------------------------------ | ------------------------------------ |
+| `type`                               | *"response.fusion_call.panel.added"* | ✔️                   | N/A                                  |
 | `itemId`                             | *string*                             | ✔️                   | N/A                                  |
 | `model`                              | *string*                             | ✔️                   | N/A                                  |
 | `outputIndex`                        | *number*                             | ✔️                   | N/A                                  |
 | `sequenceNumber`                     | *number*                             | ✔️                   | N/A                                  |
-| `type`                               | *"response.fusion_call.panel.added"* | ✔️                   | N/A                                  |

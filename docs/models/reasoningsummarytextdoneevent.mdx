@@ -10,12 +10,12 @@ Event emitted when reasoning summary text streaming is complete
 import { ReasoningSummaryTextDoneEvent } from "@openrouter/sdk/models";
 
 let value: ReasoningSummaryTextDoneEvent = {
+  type: "response.reasoning_summary_text.done",
   itemId: "<id>",
   outputIndex: 239944,
   sequenceNumber: 0,
   summaryIndex: 543197,
   text: "<value>",
-  type: "response.reasoning_summary_text.done",
 };
 ```
 
@@ -23,9 +23,9 @@ let value: ReasoningSummaryTextDoneEvent = {
 
 | Field                                    | Type                                     | Required                                 | Description                              |
 | ---------------------------------------- | ---------------------------------------- | ---------------------------------------- | ---------------------------------------- |
+| `type`                                   | *"response.reasoning_summary_text.done"* | ✔️                       | N/A                                      |
 | `itemId`                                 | *string*                                 | ✔️                       | N/A                                      |
 | `outputIndex`                            | *number*                                 | ✔️                       | N/A                                      |
 | `sequenceNumber`                         | *number*                                 | ✔️                       | N/A                                      |
 | `summaryIndex`                           | *number*                                 | ✔️                       | N/A                                      |
 | `text`                                   | *string*                                 | ✔️                       | N/A                                      |
-| `type`                                   | *"response.reasoning_summary_text.done"* | ✔️                       | N/A                                      |

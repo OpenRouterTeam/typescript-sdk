@@ -31,6 +31,7 @@ export type ChatContentTextType = ClosedEnum<typeof ChatContentTextType>;
  * Text content part
  */
 export type ChatContentText = {
+  type: ChatContentTextType;
   /**
    * Anthropic-style cache breakpoint for the content part. Interchangeable with the OpenAI-style `prompt_cache_breakpoint` marker: OpenRouter converts between the two based on the provider serving the request.
    */
@@ -40,7 +41,6 @@ export type ChatContentText = {
    */
   promptCacheBreakpoint?: PromptCacheBreakpoint | null | undefined;
   text: string;
-  type: ChatContentTextType;
 };
 
 /** @internal */
@@ -57,11 +57,11 @@ export const ChatContentText$inboundSchema: z.ZodType<
   ChatContentText,
   unknown
 > = z.object({
+  type: ChatContentTextType$inboundSchema,
   cache_control: ChatContentCacheControl$inboundSchema.optional(),
   prompt_cache_breakpoint: z.nullable(PromptCacheBreakpoint$inboundSchema)
     .optional(),
   text: z.string(),
-  type: ChatContentTextType$inboundSchema,
 }).transform((v) => {
   return remap$(v, {
     "cache_control": "cacheControl",
@@ -70,10 +70,10 @@ export const ChatContentText$inboundSchema: z.ZodType<
 });
 /** @internal */
 export type ChatContentText$Outbound = {
+  type: string;
   cache_control?: ChatContentCacheControl$Outbound | undefined;
   prompt_cache_breakpoint?: PromptCacheBreakpoint$Outbound | null | undefined;
   text: string;
-  type: string;
 };
 
 /** @internal */
@@ -81,11 +81,11 @@ export const ChatContentText$outboundSchema: z.ZodType<
   ChatContentText$Outbound,
   ChatContentText
 > = z.object({
+  type: ChatContentTextType$outboundSchema,
   cacheControl: ChatContentCacheControl$outboundSchema.optional(),
   promptCacheBreakpoint: z.nullable(PromptCacheBreakpoint$outboundSchema)
     .optional(),
   text: z.string(),
-  type: ChatContentTextType$outboundSchema,
 }).transform((v) => {
   return remap$(v, {
     cacheControl: "cache_control",

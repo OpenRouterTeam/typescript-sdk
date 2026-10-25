@@ -10,13 +10,13 @@ import { Result as SafeParseResult } from "../types/fp.js";
 import { SDKValidationError } from "./errors/sdkvalidationerror.js";
 
 export type AnthropicCitationCharLocation = {
+  type: "char_location";
   citedText: string;
   documentIndex: number;
   documentTitle: string | null;
   endCharIndex: number;
   fileId: string | null;
   startCharIndex: number;
-  type: "char_location";
 };
 
 /** @internal */
@@ -24,13 +24,13 @@ export const AnthropicCitationCharLocation$inboundSchema: z.ZodType<
   AnthropicCitationCharLocation,
   unknown
 > = z.object({
+  type: z.literal("char_location"),
   cited_text: z.string(),
   document_index: z.int(),
   document_title: z.nullable(z.string()),
   end_char_index: z.int(),
   file_id: z.nullable(z.string()),
   start_char_index: z.int(),
-  type: z.literal("char_location"),
 }).transform((v) => {
   return remap$(v, {
     "cited_text": "citedText",

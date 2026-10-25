@@ -15,6 +15,7 @@ import {
  * Reference to a container by its canonical id — a previously returned container_id or a fresh name to create a persistent container.
  */
 export type ContainerReferenceEnvironment = {
+  type: "container_reference";
   /**
    * Canonical container id to reuse (max 40 characters, letters/digits/underscores/hyphens). Any container_id previously returned by a bash or shell tool result works here and reattaches to the same container and files — including session-derived ids (sess_...) and generation-derived ids (gen_...). Note that a session-derived id is always sess_ + the sanitized session key, which is not necessarily the raw session id you sent. Using the same container_id from both the bash and shell tools shares the same files, with last-write-wins when both flush concurrently. A fresh name creates a new persistent container. Containers are always scoped to your account and workspace.
    */
@@ -27,15 +28,14 @@ export type ContainerReferenceEnvironment = {
    * Network egress policy for the container. "disabled" blocks all outbound internet; "allowlist" permits only hosts matching the listed hostnames or * glob patterns (ports 80/443, DNS via Cloudflare resolvers). The policy is fixed when a container starts: sending a different policy to a warm container fails the request with a 409. Omitted: defaults to "disabled" (no outbound internet). For unrestricted egress, use an allowlist of ["*"].
    */
   networkPolicy?: ContainerNetworkPolicy | undefined;
-  type: "container_reference";
 };
 
 /** @internal */
 export type ContainerReferenceEnvironment$Outbound = {
+  type: "container_reference";
   container_id: string;
   file_ids?: Array<string> | undefined;
   network_policy?: ContainerNetworkPolicy$Outbound | undefined;
-  type: "container_reference";
 };
 
 /** @internal */
@@ -43,10 +43,10 @@ export const ContainerReferenceEnvironment$outboundSchema: z.ZodType<
   ContainerReferenceEnvironment$Outbound,
   ContainerReferenceEnvironment
 > = z.object({
+  type: z.literal("container_reference"),
   containerId: z.string(),
   fileIds: z.array(z.string()).optional(),
   networkPolicy: ContainerNetworkPolicy$outboundSchema.optional(),
-  type: z.literal("container_reference"),
 }).transform((v) => {
   return remap$(v, {
     containerId: "container_id",

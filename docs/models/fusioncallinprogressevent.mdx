@@ -10,10 +10,10 @@ Emitted when an openrouter:fusion tool call begins executing.
 import { FusionCallInProgressEvent } from "@openrouter/sdk/models";
 
 let value: FusionCallInProgressEvent = {
+  type: "response.fusion_call.in_progress",
   itemId: "<id>",
   outputIndex: 902434,
   sequenceNumber: 0,
-  type: "response.fusion_call.in_progress",
 };
 ```
 
@@ -21,7 +21,7 @@ let value: FusionCallInProgressEvent = {
 
 | Field                                | Type                                 | Required                             | Description                          |
 | ------------------------------------ | ------------------------------------ | ------------------------------------ | ------------------------------------ |
+| `type`                               | *"response.fusion_call.in_progress"* | ✔️                   | N/A                                  |
 | `itemId`                             | *string*                             | ✔️                   | N/A                                  |
 | `outputIndex`                        | *number*                             | ✔️                   | N/A                                  |
 | `sequenceNumber`                     | *number*                             | ✔️                   | N/A                                  |
-| `type`                               | *"response.fusion_call.in_progress"* | ✔️                   | N/A                                  |

@@ -143,6 +143,11 @@ import {
   WebSearchServerToolOpenRouter$outboundSchema,
 } from "./websearchservertoolopenrouter.js";
 
+export const TypeToolSearchOutput = {
+  ToolSearchOutput: "tool_search_output",
+} as const;
+export type TypeToolSearchOutput = ClosedEnum<typeof TypeToolSearchOutput>;
+
 export const ToolSearchOutputItemExecution = {
   Server: "server",
   Client: "client",
@@ -185,8 +190,8 @@ export type ToolSearchOutputItemAllowedCaller = OpenEnum<
  */
 export type ToolSearchOutputItemToolFunction = {
   description?: string | null | undefined;
-  name: string;
   parameters: { [k: string]: any } | null;
+  name: string;
   strict?: boolean | null | undefined;
   type: ToolSearchOutputItemTypeFunction;
   allowedCallers?: Array<ToolSearchOutputItemAllowedCaller> | null | undefined;
@@ -232,15 +237,11 @@ export type ToolSearchOutputItemToolUnion =
   | ToolSearchServerTool
   | ToolSearchOutputItemTool;
 
-export const TypeToolSearchOutput = {
-  ToolSearchOutput: "tool_search_output",
-} as const;
-export type TypeToolSearchOutput = ClosedEnum<typeof TypeToolSearchOutput>;
-
 /**
  * The tools a client-executed tool search loaded
  */
 export type ToolSearchOutputItem = {
+  type: TypeToolSearchOutput;
   callId: string;
   execution: ToolSearchOutputItemExecution;
   id?: string | null | undefined;
@@ -276,8 +277,12 @@ export type ToolSearchOutputItem = {
     | ToolSearchServerTool
     | ToolSearchOutputItemTool
   >;
-  type: TypeToolSearchOutput;
 };
+
+/** @internal */
+export const TypeToolSearchOutput$outboundSchema: z.ZodEnum<
+  typeof TypeToolSearchOutput
+> = z.enum(TypeToolSearchOutput);
 
 /** @internal */
 export const ToolSearchOutputItemExecution$outboundSchema: z.ZodType<
@@ -335,8 +340,8 @@ export const ToolSearchOutputItemAllowedCaller$outboundSchema: z.ZodType<
 /** @internal */
 export type ToolSearchOutputItemToolFunction$Outbound = {
   description?: string | null | undefined;
-  name: string;
   parameters: { [k: string]: any } | null;
+  name: string;
   strict?: boolean | null | undefined;
   type: string;
   allowed_callers?: Array<string> | null | undefined;
@@ -351,8 +356,8 @@ export const ToolSearchOutputItemToolFunction$outboundSchema: z.ZodType<
   ToolSearchOutputItemToolFunction
 > = z.object({
   description: z.nullable(z.string()).optional(),
-  name: z.string(),
   parameters: z.nullable(z.record(z.string(), z.any())),
+  name: z.string(),
   strict: z.nullable(z.boolean()).optional(),
   type: ToolSearchOutputItemTypeFunction$outboundSchema,
   allowedCallers: z.nullable(
@@ -458,12 +463,8 @@ export function toolSearchOutputItemToolUnionToJSON(
 }
 
 /** @internal */
-export const TypeToolSearchOutput$outboundSchema: z.ZodEnum<
-  typeof TypeToolSearchOutput
-> = z.enum(TypeToolSearchOutput);
-
-/** @internal */
 export type ToolSearchOutputItem$Outbound = {
+  type: string;
   call_id: string;
   execution: string;
   id?: string | null | undefined;
@@ -499,7 +500,6 @@ export type ToolSearchOutputItem$Outbound = {
     | ToolSearchServerTool$Outbound
     | ToolSearchOutputItemTool$Outbound
   >;
-  type: string;
 };
 
 /** @internal */
@@ -507,6 +507,7 @@ export const ToolSearchOutputItem$outboundSchema: z.ZodType<
   ToolSearchOutputItem$Outbound,
   ToolSearchOutputItem
 > = z.object({
+  type: TypeToolSearchOutput$outboundSchema,
   callId: z.string(),
   execution: ToolSearchOutputItemExecution$outboundSchema,
   id: z.nullable(z.string()).optional(),
@@ -544,7 +545,6 @@ export const ToolSearchOutputItem$outboundSchema: z.ZodType<
       z.lazy(() => ToolSearchOutputItemTool$outboundSchema),
     ]),
   ),
-  type: TypeToolSearchOutput$outboundSchema,
 }).transform((v) => {
   return remap$(v, {
     callId: "call_id",

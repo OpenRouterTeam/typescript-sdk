@@ -7,35 +7,40 @@ import * as z from "zod/v4";
 import { remap as remap$ } from "../lib/primitives.js";
 import { ClosedEnum } from "../types/enums.js";
 
-export type McpListToolsItemTool = {
-  annotations?: any | undefined;
-  description?: string | null | undefined;
-  inputSchema: { [k: string]: any };
-  name: string;
-};
-
 export const McpListToolsItemType = {
   McpListTools: "mcp_list_tools",
 } as const;
 export type McpListToolsItemType = ClosedEnum<typeof McpListToolsItemType>;
 
+export type McpListToolsItemTool = {
+  name: string;
+  description?: string | null | undefined;
+  annotations?: any | undefined;
+  inputSchema: { [k: string]: any };
+};
+
 /**
  * List of available MCP tools from a server
  */
 export type McpListToolsItem = {
+  type: McpListToolsItemType;
   error?: string | null | undefined;
   id: string;
   serverLabel: string;
   tools: Array<McpListToolsItemTool>;
-  type: McpListToolsItemType;
 };
 
 /** @internal */
+export const McpListToolsItemType$outboundSchema: z.ZodEnum<
+  typeof McpListToolsItemType
+> = z.enum(McpListToolsItemType);
+
+/** @internal */
 export type McpListToolsItemTool$Outbound = {
-  annotations?: any | undefined;
-  description?: string | null | undefined;
-  input_schema: { [k: string]: any };
   name: string;
+  description?: string | null | undefined;
+  annotations?: any | undefined;
+  input_schema: { [k: string]: any };
 };
 
 /** @internal */
@@ -43,10 +48,10 @@ export const McpListToolsItemTool$outboundSchema: z.ZodType<
   McpListToolsItemTool$Outbound,
   McpListToolsItemTool
 > = z.object({
-  annotations: z.any().optional(),
-  description: z.nullable(z.string()).optional(),
-  inputSchema: z.record(z.string(), z.any()),
   name: z.string(),
+  description: z.nullable(z.string()).optional(),
+  annotations: z.any().optional(),
+  inputSchema: z.record(z.string(), z.any()),
 }).transform((v) => {
   return remap$(v, {
     inputSchema: "input_schema",
@@ -62,17 +67,12 @@ export function mcpListToolsItemToolToJSON(
 }
 
 /** @internal */
-export const McpListToolsItemType$outboundSchema: z.ZodEnum<
-  typeof McpListToolsItemType
-> = z.enum(McpListToolsItemType);
-
-/** @internal */
 export type McpListToolsItem$Outbound = {
+  type: string;
   error?: string | null | undefined;
   id: string;
   server_label: string;
   tools: Array<McpListToolsItemTool$Outbound>;
-  type: string;
 };
 
 /** @internal */
@@ -80,11 +80,11 @@ export const McpListToolsItem$outboundSchema: z.ZodType<
   McpListToolsItem$Outbound,
   McpListToolsItem
 > = z.object({
+  type: McpListToolsItemType$outboundSchema,
   error: z.nullable(z.string()).optional(),
   id: z.string(),
   serverLabel: z.string(),
   tools: z.array(z.lazy(() => McpListToolsItemTool$outboundSchema)),
-  type: McpListToolsItemType$outboundSchema,
 }).transform((v) => {
   return remap$(v, {
     serverLabel: "server_label",

@@ -24,11 +24,11 @@ export type InputVideoProcessing = OpenEnum<typeof InputVideoProcessing>;
  * Video input content item
  */
 export type InputVideo = {
+  type: "input_video";
   /**
    * Video processing mode. `agentic` enables agentic video processing and `static` forces fixed-rate frame sampling on providers that support it (currently Google Gemini).
    */
   processing?: InputVideoProcessing | undefined;
-  type: "input_video";
   /**
    * A base64 data URL or remote URL that resolves to a video file
    */
@@ -43,8 +43,8 @@ export const InputVideoProcessing$outboundSchema: z.ZodType<
 
 /** @internal */
 export type InputVideo$Outbound = {
-  processing?: string | undefined;
   type: "input_video";
+  processing?: string | undefined;
   video_url: string;
 };
 
@@ -53,8 +53,8 @@ export const InputVideo$outboundSchema: z.ZodType<
   InputVideo$Outbound,
   InputVideo
 > = z.object({
-  processing: InputVideoProcessing$outboundSchema.optional(),
   type: z.literal("input_video"),
+  processing: InputVideoProcessing$outboundSchema.optional(),
   videoUrl: z.string(),
 }).transform((v) => {
   return remap$(v, {

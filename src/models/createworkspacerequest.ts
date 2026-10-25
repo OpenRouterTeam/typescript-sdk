@@ -28,6 +28,14 @@ export type CreateWorkspaceRequestDisabledServerTool = OpenEnum<
 
 export type CreateWorkspaceRequest = {
   /**
+   * Name for the new workspace
+   */
+  name: string;
+  /**
+   * Description of the workspace
+   */
+  description?: string | null | undefined;
+  /**
    * Default image model for this workspace
    */
   defaultImageModel?: string | null | undefined;
@@ -39,10 +47,6 @@ export type CreateWorkspaceRequest = {
    * Default text model for this workspace
    */
   defaultTextModel?: string | null | undefined;
-  /**
-   * Description of the workspace
-   */
-  description?: string | null | undefined;
   /**
    * OpenRouter server tools that requests in this workspace may not invoke. Requests naming a disabled tool are rejected with 403. An empty array or null clears the list.
    */
@@ -71,10 +75,6 @@ export type CreateWorkspaceRequest = {
    */
   isObservabilityIoLoggingEnabled?: boolean | undefined;
   /**
-   * Name for the new workspace
-   */
-  name: string;
-  /**
    * URL-friendly slug (lowercase alphanumeric segments separated by single hyphens, no leading/trailing hyphens)
    */
   slug: string;
@@ -88,17 +88,17 @@ export const CreateWorkspaceRequestDisabledServerTool$outboundSchema: z.ZodType<
 
 /** @internal */
 export type CreateWorkspaceRequest$Outbound = {
+  name: string;
+  description?: string | null | undefined;
   default_image_model?: string | null | undefined;
   default_provider_sort?: string | null | undefined;
   default_text_model?: string | null | undefined;
-  description?: string | null | undefined;
   disabled_server_tools?: Array<string> | null | undefined;
   io_logging_api_key_ids?: Array<number> | null | undefined;
   io_logging_sampling_rate?: number | undefined;
   is_data_discount_logging_enabled?: boolean | undefined;
   is_observability_broadcast_enabled?: boolean | undefined;
   is_observability_io_logging_enabled?: boolean | undefined;
-  name: string;
   slug: string;
 };
 
@@ -107,10 +107,11 @@ export const CreateWorkspaceRequest$outboundSchema: z.ZodType<
   CreateWorkspaceRequest$Outbound,
   CreateWorkspaceRequest
 > = z.object({
+  name: z.string(),
+  description: z.nullable(z.string()).optional(),
   defaultImageModel: z.nullable(z.string()).optional(),
   defaultProviderSort: z.nullable(z.string()).optional(),
   defaultTextModel: z.nullable(z.string()).optional(),
-  description: z.nullable(z.string()).optional(),
   disabledServerTools: z.nullable(
     z.array(CreateWorkspaceRequestDisabledServerTool$outboundSchema),
   ).optional(),
@@ -119,7 +120,6 @@ export const CreateWorkspaceRequest$outboundSchema: z.ZodType<
   isDataDiscountLoggingEnabled: z.boolean().optional(),
   isObservabilityBroadcastEnabled: z.boolean().optional(),
   isObservabilityIoLoggingEnabled: z.boolean().optional(),
-  name: z.string(),
   slug: z.string(),
 }).transform((v) => {
   return remap$(v, {

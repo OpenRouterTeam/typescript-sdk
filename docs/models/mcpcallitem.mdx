@@ -10,11 +10,11 @@ An MCP tool call with its output or error
 import { McpCallItem } from "@openrouter/sdk/models";
 
 let value: McpCallItem = {
+  name: "query_database",
+  type: "mcp_call",
   arguments: "{\"query\":\"SELECT * FROM users\"}",
   id: "mcp-call-abc123",
-  name: "query_database",
   serverLabel: "database-server",
-  type: "mcp_call",
 };
 ```
 
@@ -22,10 +22,10 @@ let value: McpCallItem = {
 
 | Field                                                                     | Type                                                                      | Required                                                                  | Description                                                               | Example                                                                   |
 | ------------------------------------------------------------------------- | ------------------------------------------------------------------------- | ------------------------------------------------------------------------- | ------------------------------------------------------------------------- | ------------------------------------------------------------------------- |
-| `arguments`                                                               | *string*                                                                  | ✔️                                                        | N/A                                                                       |                                                                           |
-| `error`                                                                   | *models.McpToolCallError*                                                 | ➖                                                        | Error from an MCP tool call, either a plain message or a structured error | \{<br/>"code": 503,<br/>"message": "Service Unavailable",<br/>"type": "http_error"<br/>} |
-| `id`                                                                      | *string*                                                                  | ✔️                                                        | N/A                                                                       |                                                                           |
 | `name`                                                                    | *string*                                                                  | ✔️                                                        | N/A                                                                       |                                                                           |
+| `type`                                                                    | [models.McpCallItemType](../models/mcpcallitemtype.mdx)                    | ✔️                                                        | N/A                                                                       |                                                                           |
+| `arguments`                                                               | *string*                                                                  | ✔️                                                        | N/A                                                                       |                                                                           |
+| `error`                                                                   | *models.McpToolCallError*                                                 | ➖                                                        | Error from an MCP tool call, either a plain message or a structured error | \{<br/>"type": "http_error",<br/>"code": 503,<br/>"message": "Service Unavailable"<br/>} |
+| `id`                                                                      | *string*                                                                  | ✔️                                                        | N/A                                                                       |                                                                           |
 | `output`                                                                  | *string*                                                                  | ➖                                                        | N/A                                                                       |                                                                           |
 | `serverLabel`                                                             | *string*                                                                  | ✔️                                                        | N/A                                                                       |                                                                           |
-| `type`                                                                    | [models.McpCallItemType](../models/mcpcallitemtype.mdx)                    | ✔️                                                        | N/A                                                                       |                                                                           |

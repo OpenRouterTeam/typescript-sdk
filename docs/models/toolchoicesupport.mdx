@@ -10,10 +10,10 @@ Per-variant `tool_choice` support. `tool_choice` in `supported_parameters` only 
 import { ToolChoiceSupport } from "@openrouter/sdk/models";
 
 let value: ToolChoiceSupport = {
+  required: true,
   auto: true,
   function: true,
   none: true,
-  required: true,
 };
 ```
 
@@ -21,7 +21,7 @@ let value: ToolChoiceSupport = {
 
 | Field                                                                                        | Type                                                                                         | Required                                                                                     | Description                                                                                  |
 | -------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------- |
+| `required`                                                                                   | *boolean*                                                                                    | ✔️                                                                           | Whether the endpoint supports `"tool_choice": "required"`.                                   |
 | `auto`                                                                                       | *boolean*                                                                                    | ✔️                                                                           | Whether the endpoint supports `"tool_choice": "auto"`.                                       |
 | `function`                                                                                   | *boolean*                                                                                    | ✔️                                                                           | Whether the endpoint supports naming a function, `"tool_choice": {"type": "function", ...}`. |
 | `none`                                                                                       | *boolean*                                                                                    | ✔️                                                                           | Whether the endpoint supports `"tool_choice": "none"`.                                       |
-| `required`                                                                                   | *boolean*                                                                                    | ✔️                                                                           | Whether the endpoint supports `"tool_choice": "required"`.                                   |

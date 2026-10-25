@@ -13,11 +13,11 @@ import { SDKValidationError } from "./errors/sdkvalidationerror.js";
  * Event emitted when a custom tool call's freeform input is being streamed. Mirrors `response.function_call_arguments.delta` but for `custom` tools whose input is opaque text rather than JSON arguments.
  */
 export type CustomToolCallInputDeltaEvent = {
+  type: "response.custom_tool_call_input.delta";
   delta: string;
   itemId: string;
   outputIndex: number;
   sequenceNumber: number;
-  type: "response.custom_tool_call_input.delta";
 };
 
 /** @internal */
@@ -25,11 +25,11 @@ export const CustomToolCallInputDeltaEvent$inboundSchema: z.ZodType<
   CustomToolCallInputDeltaEvent,
   unknown
 > = z.object({
+  type: z.literal("response.custom_tool_call_input.delta"),
   delta: z.string(),
   item_id: z.string(),
   output_index: z.int(),
   sequence_number: z.int(),
-  type: z.literal("response.custom_tool_call_input.delta"),
 }).transform((v) => {
   return remap$(v, {
     "item_id": "itemId",

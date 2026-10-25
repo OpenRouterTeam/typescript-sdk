@@ -14,11 +14,11 @@ import {
 import { SDKValidationError } from "./errors/sdkvalidationerror.js";
 
 export type AnthropicBashCodeExecutionResult = {
+  type: "bash_code_execution_result";
   content: Array<AnthropicBashCodeExecutionOutput>;
   returnCode: number;
   stderr: string;
   stdout: string;
-  type: "bash_code_execution_result";
 };
 
 /** @internal */
@@ -26,11 +26,11 @@ export const AnthropicBashCodeExecutionResult$inboundSchema: z.ZodType<
   AnthropicBashCodeExecutionResult,
   unknown
 > = z.object({
+  type: z.literal("bash_code_execution_result"),
   content: z.array(AnthropicBashCodeExecutionOutput$inboundSchema),
   return_code: z.int(),
   stderr: z.string(),
   stdout: z.string(),
-  type: z.literal("bash_code_execution_result"),
 }).transform((v) => {
   return remap$(v, {
     "return_code": "returnCode",

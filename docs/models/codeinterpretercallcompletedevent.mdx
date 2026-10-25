@@ -10,10 +10,10 @@ Code interpreter call completed
 import { CodeInterpreterCallCompletedEvent } from "@openrouter/sdk/models";
 
 let value: CodeInterpreterCallCompletedEvent = {
+  type: "response.code_interpreter_call.completed",
   itemId: "<id>",
   outputIndex: 153664,
   sequenceNumber: 0,
-  type: "response.code_interpreter_call.completed",
 };
 ```
 
@@ -21,7 +21,7 @@ let value: CodeInterpreterCallCompletedEvent = {
 
 | Field                                        | Type                                         | Required                                     | Description                                  |
 | -------------------------------------------- | -------------------------------------------- | -------------------------------------------- | -------------------------------------------- |
+| `type`                                       | *"response.code_interpreter_call.completed"* | ✔️                           | N/A                                          |
 | `itemId`                                     | *string*                                     | ✔️                           | N/A                                          |
 | `outputIndex`                                | *number*                                     | ✔️                           | N/A                                          |
 | `sequenceNumber`                             | *number*                                     | ✔️                           | N/A                                          |
-| `type`                                       | *"response.code_interpreter_call.completed"* | ✔️                           | N/A                                          |

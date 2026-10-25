@@ -14,8 +14,8 @@ import {
 import { SDKValidationError } from "./errors/sdkvalidationerror.js";
 
 export type AnthropicToolSearchResult = {
-  toolReferences: Array<AnthropicToolReference>;
   type: "tool_search_tool_search_result";
+  toolReferences: Array<AnthropicToolReference>;
 };
 
 /** @internal */
@@ -23,8 +23,8 @@ export const AnthropicToolSearchResult$inboundSchema: z.ZodType<
   AnthropicToolSearchResult,
   unknown
 > = z.object({
-  tool_references: z.array(AnthropicToolReference$inboundSchema),
   type: z.literal("tool_search_tool_search_result"),
+  tool_references: z.array(AnthropicToolReference$inboundSchema),
 }).transform((v) => {
   return remap$(v, {
     "tool_references": "toolReferences",

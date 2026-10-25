@@ -8,6 +8,7 @@ title: "OutputFileSearchCallItem"
 import { OutputFileSearchCallItem } from "@openrouter/sdk/models";
 
 let value: OutputFileSearchCallItem = {
+  type: "file_search_call",
   id: "msg-abc123",
   queries: [
     "<value 1>",
@@ -15,7 +16,6 @@ let value: OutputFileSearchCallItem = {
     "<value 3>",
   ],
   status: "completed",
-  type: "file_search_call",
 };
 ```
 
@@ -23,7 +23,7 @@ let value: OutputFileSearchCallItem = {
 
 | Field                                                                            | Type                                                                             | Required                                                                         | Description                                                                      | Example                                                                          |
 | -------------------------------------------------------------------------------- | -------------------------------------------------------------------------------- | -------------------------------------------------------------------------------- | -------------------------------------------------------------------------------- | -------------------------------------------------------------------------------- |
+| `type`                                                                           | [models.OutputFileSearchCallItemType](../models/outputfilesearchcallitemtype.mdx) | ✔️                                                               | N/A                                                                              |                                                                                  |
 | `id`                                                                             | *string*                                                                         | ✔️                                                               | N/A                                                                              |                                                                                  |
 | `queries`                                                                        | *string*[]                                                                       | ✔️                                                               | N/A                                                                              |                                                                                  |
 | `status`                                                                         | [models.WebSearchStatus](../models/websearchstatus.mdx)                           | ✔️                                                               | N/A                                                                              | completed                                                                        |
-| `type`                                                                           | [models.OutputFileSearchCallItemType](../models/outputfilesearchcallitemtype.mdx) | ✔️                                                               | N/A                                                                              |                                                                                  |

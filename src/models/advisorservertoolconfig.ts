@@ -16,6 +16,10 @@ import {
  */
 export type AdvisorServerToolConfig = {
   /**
+   * Optional name for this advisor. The model sees one tool per named advisor (and one default for an unnamed entry). Names must be unique across advisor entries. Letters, digits, spaces, underscores, and dashes; trimmed; 1–64 chars.
+   */
+  name?: string | undefined;
+  /**
    * When true, the full parent conversation is forwarded to the advisor so it sees the same context the executor does (and the tool-call `prompt`, if given, is appended as a final user turn). When false or omitted, the advisor receives only the `prompt` the executor passes in the tool call.
    */
   forwardTranscript?: boolean | undefined;
@@ -32,10 +36,6 @@ export type AdvisorServerToolConfig = {
    */
   model?: string | undefined;
   /**
-   * Optional name for this advisor. The model sees one tool per named advisor (and one default for an unnamed entry). Names must be unique across advisor entries. Letters, digits, spaces, underscores, and dashes; trimmed; 1–64 chars.
-   */
-  name?: string | undefined;
-  /**
    * Reasoning configuration forwarded to the advisor call. Use this to control reasoning effort and token budget for models that support extended thinking.
    */
   reasoning?: AdvisorReasoning | undefined;
@@ -51,11 +51,11 @@ export type AdvisorServerToolConfig = {
 
 /** @internal */
 export type AdvisorServerToolConfig$Outbound = {
+  name?: string | undefined;
   forward_transcript?: boolean | undefined;
   instructions?: string | undefined;
   max_completion_tokens?: number | undefined;
   model?: string | undefined;
-  name?: string | undefined;
   reasoning?: AdvisorReasoning$Outbound | undefined;
   stream?: boolean | undefined;
   temperature?: number | undefined;
@@ -66,11 +66,11 @@ export const AdvisorServerToolConfig$outboundSchema: z.ZodType<
   AdvisorServerToolConfig$Outbound,
   AdvisorServerToolConfig
 > = z.object({
+  name: z.string().optional(),
   forwardTranscript: z.boolean().optional(),
   instructions: z.string().optional(),
   maxCompletionTokens: z.int().optional(),
   model: z.string().optional(),
-  name: z.string().optional(),
   reasoning: AdvisorReasoning$outboundSchema.optional(),
   stream: z.boolean().optional(),
   temperature: z.number().optional(),

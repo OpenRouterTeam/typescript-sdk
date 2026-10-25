@@ -26,10 +26,10 @@ export type AnthropicWebSearchToolResultContent =
   | Array<AnthropicWebSearchResult>;
 
 export type AnthropicWebSearchToolResult = {
+  type: "web_search_tool_result";
   caller: AnthropicCaller;
   content: AnthropicWebSearchToolResultError | Array<AnthropicWebSearchResult>;
   toolUseId: string;
-  type: "web_search_tool_result";
 };
 
 /** @internal */
@@ -57,13 +57,13 @@ export const AnthropicWebSearchToolResult$inboundSchema: z.ZodType<
   AnthropicWebSearchToolResult,
   unknown
 > = z.object({
+  type: z.literal("web_search_tool_result"),
   caller: AnthropicCaller$inboundSchema,
   content: z.union([
     AnthropicWebSearchToolResultError$inboundSchema,
     z.array(AnthropicWebSearchResult$inboundSchema),
   ]),
   tool_use_id: z.string(),
-  type: z.literal("web_search_tool_result"),
 }).transform((v) => {
   return remap$(v, {
     "tool_use_id": "toolUseId",

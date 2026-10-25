@@ -8,9 +8,9 @@ title: "OutputImageGenerationCallItem"
 import { OutputImageGenerationCallItem } from "@openrouter/sdk/models";
 
 let value: OutputImageGenerationCallItem = {
+  type: "image_generation_call",
   id: "msg-abc123",
   status: "completed",
-  type: "image_generation_call",
 };
 ```
 
@@ -18,8 +18,8 @@ let value: OutputImageGenerationCallItem = {
 
 | Field                                                                                      | Type                                                                                       | Required                                                                                   | Description                                                                                | Example                                                                                    |
 | ------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------ |
+| `type`                                                                                     | [models.OutputImageGenerationCallItemType](../models/outputimagegenerationcallitemtype.mdx) | ✔️                                                                         | N/A                                                                                        |                                                                                            |
 | `id`                                                                                       | *string*                                                                                   | ✔️                                                                         | N/A                                                                                        |                                                                                            |
 | `result`                                                                                   | *string*                                                                                   | ➖                                                                         | N/A                                                                                        |                                                                                            |
 | `status`                                                                                   | [models.ImageGenerationStatus](../models/imagegenerationstatus.mdx)                         | ✔️                                                                         | N/A                                                                                        | completed                                                                                  |
-| `type`                                                                                     | [models.OutputImageGenerationCallItemType](../models/outputimagegenerationcallitemtype.mdx) | ✔️                                                                         | N/A                                                                                        |                                                                                            |
 | `prompt`                                                                                   | *string*                                                                                   | ➖                                                                         | The prompt (possibly rewritten) that the image was generated from.                         |                                                                                            |

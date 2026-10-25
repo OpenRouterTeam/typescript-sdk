@@ -11,35 +11,40 @@ import {
   ToolCallStatus$outboundSchema,
 } from "./toolcallstatus.js";
 
+export const TypeLocalShellCall = {
+  LocalShellCall: "local_shell_call",
+} as const;
+export type TypeLocalShellCall = ClosedEnum<typeof TypeLocalShellCall>;
+
 export const TypeExec = {
   Exec: "exec",
 } as const;
 export type TypeExec = ClosedEnum<typeof TypeExec>;
 
 export type LocalShellCallItemAction = {
+  type: TypeExec;
   command: Array<string>;
   env: { [k: string]: string };
   timeoutMs?: number | null | undefined;
-  type: TypeExec;
   user?: string | null | undefined;
   workingDirectory?: string | null | undefined;
 };
-
-export const TypeLocalShellCall = {
-  LocalShellCall: "local_shell_call",
-} as const;
-export type TypeLocalShellCall = ClosedEnum<typeof TypeLocalShellCall>;
 
 /**
  * A local shell command execution call
  */
 export type LocalShellCallItem = {
+  type: TypeLocalShellCall;
   action: LocalShellCallItemAction;
   callId: string;
   id: string;
   status: ToolCallStatus;
-  type: TypeLocalShellCall;
 };
+
+/** @internal */
+export const TypeLocalShellCall$outboundSchema: z.ZodEnum<
+  typeof TypeLocalShellCall
+> = z.enum(TypeLocalShellCall);
 
 /** @internal */
 export const TypeExec$outboundSchema: z.ZodEnum<typeof TypeExec> = z.enum(
@@ -48,10 +53,10 @@ export const TypeExec$outboundSchema: z.ZodEnum<typeof TypeExec> = z.enum(
 
 /** @internal */
 export type LocalShellCallItemAction$Outbound = {
+  type: string;
   command: Array<string>;
   env: { [k: string]: string };
   timeout_ms?: number | null | undefined;
-  type: string;
   user?: string | null | undefined;
   working_directory?: string | null | undefined;
 };
@@ -61,10 +66,10 @@ export const LocalShellCallItemAction$outboundSchema: z.ZodType<
   LocalShellCallItemAction$Outbound,
   LocalShellCallItemAction
 > = z.object({
+  type: TypeExec$outboundSchema,
   command: z.array(z.string()),
   env: z.record(z.string(), z.string()),
   timeoutMs: z.nullable(z.int()).optional(),
-  type: TypeExec$outboundSchema,
   user: z.nullable(z.string()).optional(),
   workingDirectory: z.nullable(z.string()).optional(),
 }).transform((v) => {
@@ -83,17 +88,12 @@ export function localShellCallItemActionToJSON(
 }
 
 /** @internal */
-export const TypeLocalShellCall$outboundSchema: z.ZodEnum<
-  typeof TypeLocalShellCall
-> = z.enum(TypeLocalShellCall);
-
-/** @internal */
 export type LocalShellCallItem$Outbound = {
+  type: string;
   action: LocalShellCallItemAction$Outbound;
   call_id: string;
   id: string;
   status: string;
-  type: string;
 };
 
 /** @internal */
@@ -101,11 +101,11 @@ export const LocalShellCallItem$outboundSchema: z.ZodType<
   LocalShellCallItem$Outbound,
   LocalShellCallItem
 > = z.object({
+  type: TypeLocalShellCall$outboundSchema,
   action: z.lazy(() => LocalShellCallItemAction$outboundSchema),
   callId: z.string(),
   id: z.string(),
   status: ToolCallStatus$outboundSchema,
-  type: TypeLocalShellCall$outboundSchema,
 }).transform((v) => {
   return remap$(v, {
     callId: "call_id",

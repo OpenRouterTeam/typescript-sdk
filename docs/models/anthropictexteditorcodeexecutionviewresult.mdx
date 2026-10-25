@@ -8,12 +8,12 @@ title: "AnthropicTextEditorCodeExecutionViewResult"
 import { AnthropicTextEditorCodeExecutionViewResult } from "@openrouter/sdk/models";
 
 let value: AnthropicTextEditorCodeExecutionViewResult = {
+  type: "text_editor_code_execution_view_result",
   content: "file content",
   fileType: "text",
   numLines: 10,
   startLine: 1,
   totalLines: 10,
-  type: "text_editor_code_execution_view_result",
 };
 ```
 
@@ -21,9 +21,9 @@ let value: AnthropicTextEditorCodeExecutionViewResult = {
 
 | Field                                      | Type                                       | Required                                   | Description                                |
 | ------------------------------------------ | ------------------------------------------ | ------------------------------------------ | ------------------------------------------ |
+| `type`                                     | *"text_editor_code_execution_view_result"* | ✔️                         | N/A                                        |
 | `content`                                  | *string*                                   | ✔️                         | N/A                                        |
 | `fileType`                                 | [models.FileType](../models/filetype.mdx)   | ✔️                         | N/A                                        |
 | `numLines`                                 | *number*                                   | ✔️                         | N/A                                        |
 | `startLine`                                | *number*                                   | ✔️                         | N/A                                        |
 | `totalLines`                               | *number*                                   | ✔️                         | N/A                                        |
-| `type`                                     | *"text_editor_code_execution_view_result"* | ✔️                         | N/A                                        |

@@ -18,12 +18,12 @@ import {
 } from "./observabilityfilterrulesconfig.js";
 
 export type ObservabilityLangsmithDestinationConfig = {
-  apiKey: string;
-  endpoint: string;
   /**
    * Custom HTTP headers to include in requests to this destination.
    */
   headers?: { [k: string]: string } | undefined;
+  apiKey: string;
+  endpoint: string;
   /**
    * The name for this project, such as pr-openrouter-demo. Defaults to "main" if not set.
    */
@@ -35,6 +35,11 @@ export type ObservabilityLangsmithDestinationConfig = {
 };
 
 export type ObservabilityLangsmithDestination = {
+  /**
+   * Human-readable name for the destination.
+   */
+  name: string | null;
+  type: "langsmith";
   /**
    * Optional allowlist of OpenRouter API key hashes (`api_keys.hash`) whose traffic is forwarded to this destination. `null` means all keys.
    */
@@ -73,10 +78,6 @@ export type ObservabilityLangsmithDestination = {
    */
   id: string;
   /**
-   * Human-readable name for the destination.
-   */
-  name: string | null;
-  /**
    * When true, request/response bodies are not forwarded to this destination — only metadata.
    */
   privacyMode: boolean;
@@ -88,7 +89,6 @@ export type ObservabilityLangsmithDestination = {
    * Sampling rate for events sent to this destination, between 0.0001 and 1 (1 = 100%).
    */
   samplingRate: number;
-  type: "langsmith";
   /**
    * ISO timestamp of when the destination was last updated.
    */
@@ -104,9 +104,9 @@ export const ObservabilityLangsmithDestinationConfig$inboundSchema: z.ZodType<
   ObservabilityLangsmithDestinationConfig,
   unknown
 > = z.object({
+  headers: z.record(z.string(), z.string()).optional(),
   apiKey: z.string(),
   endpoint: z.string().default("https://api.smith.langchain.com"),
-  headers: z.record(z.string(), z.string()).optional(),
   project: z.string().default("main"),
   workspaceId: z.string().optional(),
 });
@@ -132,6 +132,8 @@ export const ObservabilityLangsmithDestination$inboundSchema: z.ZodType<
   ObservabilityLangsmithDestination,
   unknown
 > = z.object({
+  name: z.nullable(z.string()),
+  type: z.literal("langsmith"),
   api_key_hashes: z.nullable(z.array(z.string())),
   broadcast_generation_cost: z.boolean(),
   broadcast_generation_cost_allocation: z.boolean(),
@@ -142,11 +144,9 @@ export const ObservabilityLangsmithDestination$inboundSchema: z.ZodType<
   enabled: z.boolean(),
   filter_rules: z.nullable(ObservabilityFilterRulesConfig$inboundSchema),
   id: z.string(),
-  name: z.nullable(z.string()),
   privacy_mode: z.boolean(),
   regions: z.array(ObservabilityDataRegion$inboundSchema),
   sampling_rate: z.number(),
-  type: z.literal("langsmith"),
   updated_at: z.string(),
   workspace_id: z.string(),
 }).transform((v) => {

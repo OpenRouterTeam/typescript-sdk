@@ -10,10 +10,10 @@ Changes reasoning effort from this point in the conversation onward without inva
 import { ConfigurationUpdateItem } from "@openrouter/sdk/models";
 
 let value: ConfigurationUpdateItem = {
+  type: "configuration_update",
   reasoning: {
     effort: "low",
   },
-  type: "configuration_update",
 };
 ```
 
@@ -21,6 +21,6 @@ let value: ConfigurationUpdateItem = {
 
 | Field                                                                            | Type                                                                             | Required                                                                         | Description                                                                      | Example                                                                          |
 | -------------------------------------------------------------------------------- | -------------------------------------------------------------------------------- | -------------------------------------------------------------------------------- | -------------------------------------------------------------------------------- | -------------------------------------------------------------------------------- |
+| `type`                                                                           | [models.ConfigurationUpdateItemType](../models/configurationupdateitemtype.mdx)   | ✔️                                                               | N/A                                                                              |                                                                                  |
 | `id`                                                                             | *string*                                                                         | ➖                                                               | N/A                                                                              |                                                                                  |
 | `reasoning`                                                                      | [models.ConfigurationUpdateReasoning](../models/configurationupdatereasoning.mdx) | ✔️                                                               | Reasoning settings applied from this point in the conversation onward            | \{<br/>"effort": "low"<br/>}                                                      |
-| `type`                                                                           | [models.ConfigurationUpdateItemType](../models/configurationupdateitemtype.mdx)   | ✔️                                                               | N/A                                                                              |                                                                                  |

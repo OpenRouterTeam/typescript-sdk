@@ -15,8 +15,8 @@ export type ItemReferenceItemType = ClosedEnum<typeof ItemReferenceItemType>;
  * A reference to a previous response item by ID
  */
 export type ItemReferenceItem = {
-  id: string;
   type: ItemReferenceItemType;
+  id: string;
 };
 
 /** @internal */
@@ -26,8 +26,8 @@ export const ItemReferenceItemType$outboundSchema: z.ZodEnum<
 
 /** @internal */
 export type ItemReferenceItem$Outbound = {
-  id: string;
   type: string;
+  id: string;
 };
 
 /** @internal */
@@ -35,8 +35,8 @@ export const ItemReferenceItem$outboundSchema: z.ZodType<
   ItemReferenceItem$Outbound,
   ItemReferenceItem
 > = z.object({
-  id: z.string(),
   type: ItemReferenceItemType$outboundSchema,
+  id: z.string(),
 });
 
 export function itemReferenceItemToJSON(

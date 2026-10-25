@@ -10,7 +10,9 @@ A local shell command execution call
 import { LocalShellCallItem } from "@openrouter/sdk/models";
 
 let value: LocalShellCallItem = {
+  type: "local_shell_call",
   action: {
+    type: "exec",
     command: [
       "ls",
       "-la",
@@ -18,12 +20,10 @@ let value: LocalShellCallItem = {
     env: {
       "PATH": "/usr/bin",
     },
-    type: "exec",
   },
   callId: "call-abc123",
   id: "shell-abc123",
   status: "completed",
-  type: "local_shell_call",
 };
 ```
 
@@ -31,8 +31,8 @@ let value: LocalShellCallItem = {
 
 | Field                                                                    | Type                                                                     | Required                                                                 | Description                                                              | Example                                                                  |
 | ------------------------------------------------------------------------ | ------------------------------------------------------------------------ | ------------------------------------------------------------------------ | ------------------------------------------------------------------------ | ------------------------------------------------------------------------ |
+| `type`                                                                   | [models.TypeLocalShellCall](../models/typelocalshellcall.mdx)             | ✔️                                                       | N/A                                                                      |                                                                          |
 | `action`                                                                 | [models.LocalShellCallItemAction](../models/localshellcallitemaction.mdx) | ✔️                                                       | N/A                                                                      |                                                                          |
 | `callId`                                                                 | *string*                                                                 | ✔️                                                       | N/A                                                                      |                                                                          |
 | `id`                                                                     | *string*                                                                 | ✔️                                                       | N/A                                                                      |                                                                          |
 | `status`                                                                 | [models.ToolCallStatus](../models/toolcallstatus.mdx)                     | ✔️                                                       | N/A                                                                      | completed                                                                |
-| `type`                                                                   | [models.TypeLocalShellCall](../models/typelocalshellcall.mdx)             | ✔️                                                       | N/A                                                                      |                                                                          |

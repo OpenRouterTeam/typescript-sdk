@@ -14,8 +14,8 @@ import {
 import { SDKValidationError } from "./errors/sdkvalidationerror.js";
 
 export type AnthropicCodeExecutionToolResultError = {
-  errorCode: AnthropicServerToolErrorCode;
   type: "code_execution_tool_result_error";
+  errorCode: AnthropicServerToolErrorCode;
 };
 
 /** @internal */
@@ -23,8 +23,8 @@ export const AnthropicCodeExecutionToolResultError$inboundSchema: z.ZodType<
   AnthropicCodeExecutionToolResultError,
   unknown
 > = z.object({
-  error_code: AnthropicServerToolErrorCode$inboundSchema,
   type: z.literal("code_execution_tool_result_error"),
+  error_code: AnthropicServerToolErrorCode$inboundSchema,
 }).transform((v) => {
   return remap$(v, {
     "error_code": "errorCode",

@@ -49,6 +49,7 @@ export type ChatWebSearchShorthandType = OpenEnum<
  * Web search tool using OpenAI Responses API syntax. Automatically converted to openrouter:web_search.
  */
 export type ChatWebSearchShorthand = {
+  parameters?: WebSearchConfig | undefined;
   /**
    * Limit search results to these domains. Supported by Exa, Firecrawl, Parallel, Perplexity, and most native providers (Anthropic, OpenAI, SpaceXAI). Cannot be used with excluded_domains.
    */
@@ -81,7 +82,6 @@ export type ChatWebSearchShorthand = {
    * Engine-native search mode. Exa supports instant, fast, auto (default), deep-lite, deep, and deep-reasoning. Parallel supports turbo, fast, basic (default), and advanced. Modes unsupported by the selected engine are ignored.
    */
   mode?: WebSearchMode | undefined;
-  parameters?: WebSearchConfig | undefined;
   /**
    * How much context to retrieve per result. Applies to Exa, Parallel, and Perplexity engines; ignored with native provider search and Firecrawl. For Exa, pins a fixed per-result character cap (low=5,000, medium=15,000, high=30,000); when omitted, Exa picks an adaptive size per query and document (typically ~2,000–4,000 characters per result). For Parallel, controls the total characters across all results; when omitted, Parallel uses its own default size. For Perplexity, maps directly to the Search API's native search_context_size parameter. Overridden by `max_characters` when both are set.
    */
@@ -105,6 +105,7 @@ export const ChatWebSearchShorthandType$outboundSchema: z.ZodType<
 
 /** @internal */
 export type ChatWebSearchShorthand$Outbound = {
+  parameters?: WebSearchConfig$Outbound | undefined;
   allowed_domains?: Array<string> | undefined;
   engine?: string | undefined;
   excluded_domains?: Array<string> | undefined;
@@ -113,7 +114,6 @@ export type ChatWebSearchShorthand$Outbound = {
   max_total_results?: number | undefined;
   max_uses?: number | undefined;
   mode?: string | undefined;
-  parameters?: WebSearchConfig$Outbound | undefined;
   search_context_size?: string | undefined;
   type: string;
   user_location?: WebSearchUserLocationServerTool$Outbound | undefined;
@@ -125,6 +125,7 @@ export const ChatWebSearchShorthand$outboundSchema: z.ZodType<
   ChatWebSearchShorthand$Outbound,
   ChatWebSearchShorthand
 > = z.object({
+  parameters: WebSearchConfig$outboundSchema.optional(),
   allowedDomains: z.array(z.string()).optional(),
   engine: WebSearchEngineEnum$outboundSchema.optional(),
   excludedDomains: z.array(z.string()).optional(),
@@ -133,7 +134,6 @@ export const ChatWebSearchShorthand$outboundSchema: z.ZodType<
   maxTotalResults: z.int().optional(),
   maxUses: z.int().optional(),
   mode: WebSearchMode$outboundSchema.optional(),
-  parameters: WebSearchConfig$outboundSchema.optional(),
   searchContextSize: SearchQualityLevel$outboundSchema.optional(),
   type: ChatWebSearchShorthandType$outboundSchema,
   userLocation: WebSearchUserLocationServerTool$outboundSchema.optional(),

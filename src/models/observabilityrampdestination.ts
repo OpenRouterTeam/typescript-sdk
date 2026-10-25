@@ -19,17 +19,22 @@ import {
 
 export type ObservabilityRampDestinationConfig = {
   /**
+   * Custom HTTP headers to include in requests to Ramp.
+   */
+  headers?: { [k: string]: string } | undefined;
+  /**
    * Generate this in your Ramp integration settings.
    */
   apiKey: string;
   baseUrl: string;
-  /**
-   * Custom HTTP headers to include in requests to Ramp.
-   */
-  headers?: { [k: string]: string } | undefined;
 };
 
 export type ObservabilityRampDestination = {
+  /**
+   * Human-readable name for the destination.
+   */
+  name: string | null;
+  type: "ramp";
   /**
    * Optional allowlist of OpenRouter API key hashes (`api_keys.hash`) whose traffic is forwarded to this destination. `null` means all keys.
    */
@@ -68,10 +73,6 @@ export type ObservabilityRampDestination = {
    */
   id: string;
   /**
-   * Human-readable name for the destination.
-   */
-  name: string | null;
-  /**
    * When true, request/response bodies are not forwarded to this destination — only metadata.
    */
   privacyMode: boolean;
@@ -83,7 +84,6 @@ export type ObservabilityRampDestination = {
    * Sampling rate for events sent to this destination, between 0.0001 and 1 (1 = 100%).
    */
   samplingRate: number;
-  type: "ramp";
   /**
    * ISO timestamp of when the destination was last updated.
    */
@@ -99,11 +99,11 @@ export const ObservabilityRampDestinationConfig$inboundSchema: z.ZodType<
   ObservabilityRampDestinationConfig,
   unknown
 > = z.object({
+  headers: z.record(z.string(), z.string()).optional(),
   apiKey: z.string(),
   baseUrl: z.string().default(
     "https://api.ramp.com/developer/v1/ai-usage/openrouter",
   ),
-  headers: z.record(z.string(), z.string()).optional(),
 });
 
 export function observabilityRampDestinationConfigFromJSON(
@@ -122,6 +122,8 @@ export const ObservabilityRampDestination$inboundSchema: z.ZodType<
   ObservabilityRampDestination,
   unknown
 > = z.object({
+  name: z.nullable(z.string()),
+  type: z.literal("ramp"),
   api_key_hashes: z.nullable(z.array(z.string())),
   broadcast_generation_cost: z.boolean(),
   broadcast_generation_cost_allocation: z.boolean(),
@@ -132,11 +134,9 @@ export const ObservabilityRampDestination$inboundSchema: z.ZodType<
   enabled: z.boolean(),
   filter_rules: z.nullable(ObservabilityFilterRulesConfig$inboundSchema),
   id: z.string(),
-  name: z.nullable(z.string()),
   privacy_mode: z.boolean(),
   regions: z.array(ObservabilityDataRegion$inboundSchema),
   sampling_rate: z.number(),
-  type: z.literal("ramp"),
   updated_at: z.string(),
   workspace_id: z.string(),
 }).transform((v) => {

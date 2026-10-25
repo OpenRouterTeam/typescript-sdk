@@ -12,9 +12,9 @@ import { SDKValidationError } from "./errors/sdkvalidationerror.js";
  * A parameter that accepts any value within an inclusive numeric range.
  */
 export type RangeCapability = {
+  type: "range";
   max: number;
   min: number;
-  type: "range";
 };
 
 /** @internal */
@@ -22,9 +22,9 @@ export const RangeCapability$inboundSchema: z.ZodType<
   RangeCapability,
   unknown
 > = z.object({
+  type: z.literal("range"),
   max: z.number(),
   min: z.number(),
-  type: z.literal("range"),
 });
 
 export function rangeCapabilityFromJSON(

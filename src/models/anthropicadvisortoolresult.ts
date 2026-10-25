@@ -10,9 +10,9 @@ import { Result as SafeParseResult } from "../types/fp.js";
 import { SDKValidationError } from "./errors/sdkvalidationerror.js";
 
 export type AnthropicAdvisorToolResult = {
+  type: "advisor_tool_result";
   content: { [k: string]: any };
   toolUseId: string;
-  type: "advisor_tool_result";
 };
 
 /** @internal */
@@ -20,9 +20,9 @@ export const AnthropicAdvisorToolResult$inboundSchema: z.ZodType<
   AnthropicAdvisorToolResult,
   unknown
 > = z.object({
+  type: z.literal("advisor_tool_result"),
   content: z.record(z.string(), z.any()),
   tool_use_id: z.string(),
-  type: z.literal("advisor_tool_result"),
 }).transform((v) => {
   return remap$(v, {
     "tool_use_id": "toolUseId",

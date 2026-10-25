@@ -10,9 +10,9 @@ Emitted when a text chunk becomes available during streaming generation of text-
 import { ImageGenTextChunkEvent } from "@openrouter/sdk/models";
 
 let value: ImageGenTextChunkEvent = {
+  type: "image_generation.text_chunk",
   phase: "content",
   text: "<svg xmlns=\"http://www.w3.org/2000/svg\">",
-  type: "image_generation.text_chunk",
 };
 ```
 
@@ -20,6 +20,6 @@ let value: ImageGenTextChunkEvent = {
 
 | Field                                                                                                                                     | Type                                                                                                                                      | Required                                                                                                                                  | Description                                                                                                                               |
 | ----------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------- |
+| `type`                                                                                                                                    | *"image_generation.text_chunk"*                                                                                                           | ✔️                                                                                                                        | The event type                                                                                                                            |
 | `phase`                                                                                                                                   | [models.ImageGenTextChunkEventPhase](../models/imagegentextchunkeventphase.mdx)                                                            | ✔️                                                                                                                        | The generation phase this chunk belongs to. `content` is the renderable output; `reasoning` and `draft` are intermediate provider phases. |
 | `text`                                                                                                                                    | *string*                                                                                                                                  | ✔️                                                                                                                        | A text fragment of the image being generated (e.g. partial SVG markup)                                                                    |
-| `type`                                                                                                                                    | *"image_generation.text_chunk"*                                                                                                           | ✔️                                                                                                                        | The event type                                                                                                                            |

@@ -206,6 +206,7 @@ export type Pricing = {
  * Information about a specific model endpoint
  */
 export type PublicEndpoint = {
+  name: string;
   contextLength: number;
   /**
    * Latency percentiles in milliseconds over the last 30 minutes. Latency measures time to first token. Only visible when authenticated with an API key or cookie; returns null for unauthenticated requests.
@@ -221,7 +222,6 @@ export type PublicEndpoint = {
    */
   modelId: string;
   modelName: string;
-  name: string;
   /**
    * The server tools this endpoint accepts as the provider's own built-in tool (`engine: "native"`) instead of an OpenRouter engine, keyed by canonical `openrouter:*` name. Each value names the provider tool type the request is translated to. Where that tool runs (provider-side, or returned to the client as with Anthropic bash) is documented per tool. Empty when the provider has none.
    */
@@ -563,13 +563,13 @@ export function pricingFromJSON(
 /** @internal */
 export const PublicEndpoint$inboundSchema: z.ZodType<PublicEndpoint, unknown> =
   z.object({
+    name: z.string(),
     context_length: z.int(),
     latency_last_30m: z.nullable(PercentileStats$inboundSchema),
     max_completion_tokens: z.nullable(z.int()),
     max_prompt_tokens: z.nullable(z.int()),
     model_id: z.string(),
     model_name: z.string(),
-    name: z.string(),
     native_tools: z.record(z.string(), z.lazy(() => NativeTools$inboundSchema)),
     perf_last_30m_by_workload: z.lazy(() => PerfLast30mByWorkload$inboundSchema)
       .optional(),

@@ -8,10 +8,10 @@ title: "OpenAIResponsesAnnotation"
 
 ```typescript
 const value: models.FileCitation = {
+  type: "file_citation",
   fileId: "file-abc123",
   filename: "research_paper.pdf",
   index: 0,
-  type: "file_citation",
 };
 ```
 
@@ -19,11 +19,11 @@ const value: models.FileCitation = {
 
 ```typescript
 const value: models.URLCitation = {
-  endIndex: 582752,
-  startIndex: 114325,
+  url: "https://classic-citizen.biz",
+  endIndex: 485813,
+  startIndex: 302701,
   title: "<value>",
   type: "url_citation",
-  url: "https://dim-jet.biz/",
 };
 ```
 
@@ -31,9 +31,9 @@ const value: models.URLCitation = {
 
 ```typescript
 const value: models.FilePath = {
+  type: "file_path",
   fileId: "file-abc123",
   index: 0,
-  type: "file_path",
 };
 ```
 

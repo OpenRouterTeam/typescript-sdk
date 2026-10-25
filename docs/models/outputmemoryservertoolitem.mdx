@@ -10,8 +10,8 @@ An openrouter:memory server tool output item
 import { OutputMemoryServerToolItem } from "@openrouter/sdk/models";
 
 let value: OutputMemoryServerToolItem = {
-  status: "completed",
   type: "openrouter:memory",
+  status: "completed",
 };
 ```
 
@@ -19,9 +19,9 @@ let value: OutputMemoryServerToolItem = {
 
 | Field                                                                                | Type                                                                                 | Required                                                                             | Description                                                                          | Example                                                                              |
 | ------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------ |
+| `type`                                                                               | [models.OutputMemoryServerToolItemType](../models/outputmemoryservertoolitemtype.mdx) | ✔️                                                                   | N/A                                                                                  |                                                                                      |
 | `action`                                                                             | [models.ActionEnum](../models/actionenum.mdx)                                         | ➖                                                                   | N/A                                                                                  |                                                                                      |
 | `id`                                                                                 | *string*                                                                             | ➖                                                                   | N/A                                                                                  |                                                                                      |
 | `key`                                                                                | *string*                                                                             | ➖                                                                   | N/A                                                                                  |                                                                                      |
 | `status`                                                                             | [models.ToolCallStatus](../models/toolcallstatus.mdx)                                 | ✔️                                                                   | N/A                                                                                  | completed                                                                            |
-| `type`                                                                               | [models.OutputMemoryServerToolItemType](../models/outputmemoryservertoolitemtype.mdx) | ✔️                                                                   | N/A                                                                                  |                                                                                      |
 | `value`                                                                              | *any*                                                                                | ➖                                                                   | N/A                                                                                  |                                                                                      |

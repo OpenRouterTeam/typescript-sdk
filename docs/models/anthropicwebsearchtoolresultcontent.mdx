@@ -9,11 +9,11 @@ title: "AnthropicWebSearchToolResultContent"
 ```typescript
 const value: models.AnthropicWebSearchResult[] = [
   {
+    url: "https://example.com",
     encryptedContent: "enc_content_0",
     pageAge: null,
     title: "Example Page",
     type: "web_search_result",
-    url: "https://example.com",
   },
 ];
 ```
@@ -22,8 +22,8 @@ const value: models.AnthropicWebSearchResult[] = [
 
 ```typescript
 const value: models.AnthropicWebSearchToolResultError = {
-  errorCode: "unavailable",
   type: "web_search_tool_result_error",
+  errorCode: "unavailable",
 };
 ```
 

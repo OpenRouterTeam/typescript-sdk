@@ -51,6 +51,10 @@ export type Questions =
 export type State = string | { [k: string]: any } | Array<any>;
 
 export type DecisionsRequest = {
+  /**
+   * Metadata for observability and tracing. Known keys (trace_id, trace_name, span_name, generation_name, parent_span_id) have special handling. Additional keys are passed through as custom metadata to configured broadcast destinations.
+   */
+  trace?: TraceConfig | undefined;
   model: string;
   provider?: ProviderPreferences | null | undefined;
   questions: {
@@ -68,10 +72,6 @@ export type DecisionsRequest = {
    * The content to evaluate: a plain string, or a JSON object or array of related context.
    */
   state: string | { [k: string]: any } | Array<any>;
-  /**
-   * Metadata for observability and tracing. Known keys (trace_id, trace_name, span_name, generation_name, parent_span_id) have special handling. Additional keys are passed through as custom metadata to configured broadcast destinations.
-   */
-  trace?: TraceConfig | undefined;
   user?: string | undefined;
 };
 
@@ -113,6 +113,7 @@ export function stateToJSON(state: State): string {
 
 /** @internal */
 export type DecisionsRequest$Outbound = {
+  trace?: TraceConfig$Outbound | undefined;
   model: string;
   provider?: ProviderPreferences$Outbound | null | undefined;
   questions: {
@@ -124,7 +125,6 @@ export type DecisionsRequest$Outbound = {
   };
   session_id?: string | undefined;
   state: string | { [k: string]: any } | Array<any>;
-  trace?: TraceConfig$Outbound | undefined;
   user?: string | undefined;
 };
 
@@ -133,6 +133,7 @@ export const DecisionsRequest$outboundSchema: z.ZodType<
   DecisionsRequest$Outbound,
   DecisionsRequest
 > = z.object({
+  trace: TraceConfig$outboundSchema.optional(),
   model: z.string(),
   provider: z.nullable(ProviderPreferences$outboundSchema).optional(),
   questions: z.record(
@@ -146,7 +147,6 @@ export const DecisionsRequest$outboundSchema: z.ZodType<
   ),
   sessionId: z.string().optional(),
   state: z.union([z.string(), z.record(z.string(), z.any()), z.array(z.any())]),
-  trace: TraceConfig$outboundSchema.optional(),
   user: z.string().optional(),
 }).transform((v) => {
   return remap$(v, {

@@ -13,12 +13,12 @@ import { SDKValidationError } from "./errors/sdkvalidationerror.js";
  * Event emitted when reasoning summary text delta is streamed
  */
 export type ReasoningSummaryTextDeltaEvent = {
+  type: "response.reasoning_summary_text.delta";
   delta: string;
   itemId: string;
   outputIndex: number;
   sequenceNumber: number;
   summaryIndex: number;
-  type: "response.reasoning_summary_text.delta";
 };
 
 /** @internal */
@@ -26,12 +26,12 @@ export const ReasoningSummaryTextDeltaEvent$inboundSchema: z.ZodType<
   ReasoningSummaryTextDeltaEvent,
   unknown
 > = z.object({
+  type: z.literal("response.reasoning_summary_text.delta"),
   delta: z.string(),
   item_id: z.string(),
   output_index: z.int(),
   sequence_number: z.int(),
   summary_index: z.int(),
-  type: z.literal("response.reasoning_summary_text.delta"),
 }).transform((v) => {
   return remap$(v, {
     "item_id": "itemId",

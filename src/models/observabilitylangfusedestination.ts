@@ -18,16 +18,21 @@ import {
 } from "./observabilityfilterrulesconfig.js";
 
 export type ObservabilityLangfuseDestinationConfig = {
-  baseUrl: string;
   /**
    * Custom HTTP headers to include in requests to this destination.
    */
   headers?: { [k: string]: string } | undefined;
+  baseUrl: string;
   publicKey: string;
   secretKey: string;
 };
 
 export type ObservabilityLangfuseDestination = {
+  /**
+   * Human-readable name for the destination.
+   */
+  name: string | null;
+  type: "langfuse";
   /**
    * Optional allowlist of OpenRouter API key hashes (`api_keys.hash`) whose traffic is forwarded to this destination. `null` means all keys.
    */
@@ -66,10 +71,6 @@ export type ObservabilityLangfuseDestination = {
    */
   id: string;
   /**
-   * Human-readable name for the destination.
-   */
-  name: string | null;
-  /**
    * When true, request/response bodies are not forwarded to this destination — only metadata.
    */
   privacyMode: boolean;
@@ -81,7 +82,6 @@ export type ObservabilityLangfuseDestination = {
    * Sampling rate for events sent to this destination, between 0.0001 and 1 (1 = 100%).
    */
   samplingRate: number;
-  type: "langfuse";
   /**
    * ISO timestamp of when the destination was last updated.
    */
@@ -97,8 +97,8 @@ export const ObservabilityLangfuseDestinationConfig$inboundSchema: z.ZodType<
   ObservabilityLangfuseDestinationConfig,
   unknown
 > = z.object({
-  baseUrl: z.string().default("https://us.cloud.langfuse.com"),
   headers: z.record(z.string(), z.string()).optional(),
+  baseUrl: z.string().default("https://us.cloud.langfuse.com"),
   publicKey: z.string(),
   secretKey: z.string(),
 });
@@ -119,6 +119,8 @@ export const ObservabilityLangfuseDestination$inboundSchema: z.ZodType<
   ObservabilityLangfuseDestination,
   unknown
 > = z.object({
+  name: z.nullable(z.string()),
+  type: z.literal("langfuse"),
   api_key_hashes: z.nullable(z.array(z.string())),
   broadcast_generation_cost: z.boolean(),
   broadcast_generation_cost_allocation: z.boolean(),
@@ -129,11 +131,9 @@ export const ObservabilityLangfuseDestination$inboundSchema: z.ZodType<
   enabled: z.boolean(),
   filter_rules: z.nullable(ObservabilityFilterRulesConfig$inboundSchema),
   id: z.string(),
-  name: z.nullable(z.string()),
   privacy_mode: z.boolean(),
   regions: z.array(ObservabilityDataRegion$inboundSchema),
   sampling_rate: z.number(),
-  type: z.literal("langfuse"),
   updated_at: z.string(),
   workspace_id: z.string(),
 }).transform((v) => {

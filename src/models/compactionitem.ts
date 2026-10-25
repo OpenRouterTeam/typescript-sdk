@@ -16,9 +16,9 @@ export type CompactionItemType = ClosedEnum<typeof CompactionItemType>;
  * A context compaction marker with encrypted summary
  */
 export type CompactionItem = {
+  type: CompactionItemType;
   encryptedContent: string;
   id?: string | null | undefined;
-  type: CompactionItemType;
   additionalProperties?: { [k: string]: any } | undefined;
 };
 
@@ -29,9 +29,9 @@ export const CompactionItemType$outboundSchema: z.ZodEnum<
 
 /** @internal */
 export type CompactionItem$Outbound = {
+  type: string;
   encrypted_content: string;
   id?: string | null | undefined;
-  type: string;
   [additionalProperties: string]: unknown;
 };
 
@@ -40,9 +40,9 @@ export const CompactionItem$outboundSchema: z.ZodType<
   CompactionItem$Outbound,
   CompactionItem
 > = z.object({
+  type: CompactionItemType$outboundSchema,
   encryptedContent: z.string(),
   id: z.nullable(z.string()).optional(),
-  type: CompactionItemType$outboundSchema,
   additionalProperties: z.record(z.string(), z.any()).optional(),
 }).transform((v) => {
   return {

@@ -7,14 +7,14 @@ import * as z from "zod/v4";
 import { remap as remap$ } from "../lib/primitives.js";
 
 export type AnthropicFileDocumentSource = {
-  fileId: string;
   type: "file";
+  fileId: string;
 };
 
 /** @internal */
 export type AnthropicFileDocumentSource$Outbound = {
-  file_id: string;
   type: "file";
+  file_id: string;
 };
 
 /** @internal */
@@ -22,8 +22,8 @@ export const AnthropicFileDocumentSource$outboundSchema: z.ZodType<
   AnthropicFileDocumentSource$Outbound,
   AnthropicFileDocumentSource
 > = z.object({
-  fileId: z.string(),
   type: z.literal("file"),
+  fileId: z.string(),
 }).transform((v) => {
   return remap$(v, {
     fileId: "file_id",

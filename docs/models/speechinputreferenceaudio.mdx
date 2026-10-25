@@ -10,8 +10,8 @@ Reference audio input for stateless voice cloning. Up to three parts per request
 import { SpeechInputReferenceAudio } from "@openrouter/sdk/models";
 
 let value: SpeechInputReferenceAudio = {
-  inputAudio: {},
   type: "input_audio",
+  inputAudio: {},
 };
 ```
 
@@ -19,5 +19,5 @@ let value: SpeechInputReferenceAudio = {
 
 | Field                                                                                | Type                                                                                 | Required                                                                             | Description                                                                          |
 | ------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------ |
-| `inputAudio`                                                                         | [models.SpeechInputReferenceAudioInput](../models/speechinputreferenceaudioinput.mdx) | ✔️                                                                   | Reference audio input object                                                         |
 | `type`                                                                               | *"input_audio"*                                                                      | ✔️                                                                   | N/A                                                                                  |
+| `inputAudio`                                                                         | [models.SpeechInputReferenceAudioInput](../models/speechinputreferenceaudioinput.mdx) | ✔️                                                                   | Reference audio input object                                                         |

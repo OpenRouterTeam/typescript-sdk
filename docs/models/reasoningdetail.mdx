@@ -8,9 +8,9 @@ title: "ReasoningDetail"
 
 ```typescript
 const value: models.ReasoningDetailSummary = {
+  type: "reasoning.summary",
   summary:
     "The model analyzed the problem by first identifying key constraints, then evaluating possible solutions...",
-  type: "reasoning.summary",
 };
 ```
 
@@ -18,8 +18,8 @@ const value: models.ReasoningDetailSummary = {
 
 ```typescript
 const value: models.ReasoningDetailEncrypted = {
-  data: "encrypted data",
   type: "reasoning.encrypted",
+  data: "encrypted data",
 };
 ```
 
@@ -35,10 +35,10 @@ const value: models.ReasoningDetailText = {
 
 ```typescript
 const value: models.ReasoningDetailServerToolCall = {
+  type: "reasoning.server_tool_call",
   arguments: "{\"prompt\":\"Compare carbon tax proposals\"}",
   result: "{\"status\":\"ok\",\"models\":[\"openai/gpt-4o\"]}",
   toolName: "openrouter:fusion",
-  type: "reasoning.server_tool_call",
 };
 ```
 

@@ -26,18 +26,19 @@ export type OutputShellCallOutputItemTypeContainerFileCitation = ClosedEnum<
 >;
 
 export type OutputShellCallOutputItemFile = {
+  type: OutputShellCallOutputItemTypeContainerFileCitation;
   containerId: string;
   endIndex: number;
   fileId: string;
   filename: string;
   startIndex: number;
-  type: OutputShellCallOutputItemTypeContainerFileCitation;
 };
 
 /**
  * A native `shell_call_output` item matching OpenAI's Responses API shape. Carries per-command stdout, stderr, and the exit/timeout outcome. A sandbox failure terminates the item as `incomplete` with `error` set.
  */
 export type OutputShellCallOutputItem = {
+  type: "shell_call_output";
   callId: string;
   /**
    * The canonical container id the command ran under — the `{container_id}` for the Container Files API, reusable as a `container_reference` in later requests. Present on every sandbox-executed call, even when no files changed.
@@ -58,7 +59,6 @@ export type OutputShellCallOutputItem = {
    * Status of a shell call or its output.
    */
   status: ShellCallStatus;
-  type: "shell_call_output";
 };
 
 /** @internal */
@@ -72,12 +72,12 @@ export const OutputShellCallOutputItemFile$inboundSchema: z.ZodType<
   OutputShellCallOutputItemFile,
   unknown
 > = z.object({
+  type: OutputShellCallOutputItemTypeContainerFileCitation$inboundSchema,
   container_id: z.string(),
   end_index: z.int(),
   file_id: z.string(),
   filename: z.string(),
   start_index: z.int(),
-  type: OutputShellCallOutputItemTypeContainerFileCitation$inboundSchema,
 }).transform((v) => {
   return remap$(v, {
     "container_id": "containerId",
@@ -102,6 +102,7 @@ export const OutputShellCallOutputItem$inboundSchema: z.ZodType<
   OutputShellCallOutputItem,
   unknown
 > = z.object({
+  type: z.literal("shell_call_output"),
   call_id: z.string(),
   container_id: z.string().optional(),
   error: z.string().optional(),
@@ -111,7 +112,6 @@ export const OutputShellCallOutputItem$inboundSchema: z.ZodType<
   max_output_length: z.nullable(z.int()).optional(),
   output: z.array(ShellCallOutputContent$inboundSchema),
   status: ShellCallStatus$inboundSchema,
-  type: z.literal("shell_call_output"),
 }).transform((v) => {
   return remap$(v, {
     "call_id": "callId",

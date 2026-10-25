@@ -12,14 +12,14 @@ import {
 } from "./multimodalmedia.js";
 
 export type ContentPartInputFile = {
-  inputFile: MultimodalMedia;
   type: "input_file";
+  inputFile: MultimodalMedia;
 };
 
 /** @internal */
 export type ContentPartInputFile$Outbound = {
-  input_file: MultimodalMedia$Outbound;
   type: "input_file";
+  input_file: MultimodalMedia$Outbound;
 };
 
 /** @internal */
@@ -27,8 +27,8 @@ export const ContentPartInputFile$outboundSchema: z.ZodType<
   ContentPartInputFile$Outbound,
   ContentPartInputFile
 > = z.object({
-  inputFile: MultimodalMedia$outboundSchema,
   type: z.literal("input_file"),
+  inputFile: MultimodalMedia$outboundSchema,
 }).transform((v) => {
   return remap$(v, {
     inputFile: "input_file",

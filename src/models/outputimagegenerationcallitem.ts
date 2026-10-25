@@ -22,10 +22,10 @@ export type OutputImageGenerationCallItemType = ClosedEnum<
 >;
 
 export type OutputImageGenerationCallItem = {
+  type: OutputImageGenerationCallItemType;
   id: string;
   result?: string | null | undefined;
   status: ImageGenerationStatus;
-  type: OutputImageGenerationCallItemType;
   /**
    * The prompt (possibly rewritten) that the image was generated from.
    */
@@ -46,18 +46,18 @@ export const OutputImageGenerationCallItem$inboundSchema: z.ZodType<
   OutputImageGenerationCallItem,
   unknown
 > = z.object({
+  type: OutputImageGenerationCallItemType$inboundSchema,
   id: z.string(),
   result: z.nullable(z.string()).default(null),
   status: ImageGenerationStatus$inboundSchema,
-  type: OutputImageGenerationCallItemType$inboundSchema,
   prompt: z.string().optional(),
 });
 /** @internal */
 export type OutputImageGenerationCallItem$Outbound = {
+  type: string;
   id: string;
   result: string | null;
   status: string;
-  type: string;
   prompt?: string | undefined;
 };
 
@@ -66,10 +66,10 @@ export const OutputImageGenerationCallItem$outboundSchema: z.ZodType<
   OutputImageGenerationCallItem$Outbound,
   OutputImageGenerationCallItem
 > = z.object({
+  type: OutputImageGenerationCallItemType$outboundSchema,
   id: z.string(),
   result: z.nullable(z.string()).default(null),
   status: ImageGenerationStatus$outboundSchema,
-  type: OutputImageGenerationCallItemType$outboundSchema,
   prompt: z.string().optional(),
 });
 

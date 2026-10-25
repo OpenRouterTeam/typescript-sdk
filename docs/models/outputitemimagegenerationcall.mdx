@@ -8,11 +8,11 @@ title: "OutputItemImageGenerationCall"
 import { OutputItemImageGenerationCall } from "@openrouter/sdk/models";
 
 let value: OutputItemImageGenerationCall = {
+  type: "image_generation_call",
   id: "imagegen-abc123",
   result:
     "iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+M9QDwADhgGAWjR9awAAAABJRU5ErkJggg==",
   status: "completed",
-  type: "image_generation_call",
 };
 ```
 
@@ -20,7 +20,7 @@ let value: OutputItemImageGenerationCall = {
 
 | Field                                                              | Type                                                               | Required                                                           | Description                                                        | Example                                                            |
 | ------------------------------------------------------------------ | ------------------------------------------------------------------ | ------------------------------------------------------------------ | ------------------------------------------------------------------ | ------------------------------------------------------------------ |
+| `type`                                                             | *"image_generation_call"*                                          | ✔️                                                 | N/A                                                                |                                                                    |
 | `id`                                                               | *string*                                                           | ✔️                                                 | N/A                                                                |                                                                    |
 | `result`                                                           | *string*                                                           | ➖                                                 | N/A                                                                |                                                                    |
 | `status`                                                           | [models.ImageGenerationStatus](../models/imagegenerationstatus.mdx) | ✔️                                                 | N/A                                                                | completed                                                          |
-| `type`                                                             | *"image_generation_call"*                                          | ✔️                                                 | N/A                                                                |                                                                    |

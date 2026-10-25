@@ -9,10 +9,10 @@ import { Result as SafeParseResult } from "../types/fp.js";
 import { SDKValidationError } from "./errors/sdkvalidationerror.js";
 
 export type DecisionsChoiceAnswer = {
+  type: "choice";
   choice: string;
   confidence?: number | undefined;
   probabilities?: { [k: string]: number } | undefined;
-  type: "choice";
 };
 
 /** @internal */
@@ -20,10 +20,10 @@ export const DecisionsChoiceAnswer$inboundSchema: z.ZodType<
   DecisionsChoiceAnswer,
   unknown
 > = z.object({
+  type: z.literal("choice"),
   choice: z.string(),
   confidence: z.number().optional(),
   probabilities: z.record(z.string(), z.number()).optional(),
-  type: z.literal("choice"),
 });
 
 export function decisionsChoiceAnswerFromJSON(

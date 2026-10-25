@@ -14,11 +14,11 @@ export type DecisionsBoxQuestionInstructions =
   | Array<any>;
 
 export type DecisionsBoxQuestion = {
+  type: "box";
   /**
    * A plain string, or a JSON object or array of structured guidance.
    */
   instructions: string | { [k: string]: any } | Array<any>;
-  type: "box";
 };
 
 /** @internal */
@@ -44,8 +44,8 @@ export function decisionsBoxQuestionInstructionsToJSON(
 
 /** @internal */
 export type DecisionsBoxQuestion$Outbound = {
-  instructions: string | { [k: string]: any } | Array<any>;
   type: "box";
+  instructions: string | { [k: string]: any } | Array<any>;
 };
 
 /** @internal */
@@ -53,12 +53,12 @@ export const DecisionsBoxQuestion$outboundSchema: z.ZodType<
   DecisionsBoxQuestion$Outbound,
   DecisionsBoxQuestion
 > = z.object({
+  type: z.literal("box"),
   instructions: z.union([
     z.string(),
     z.record(z.string(), z.any()),
     z.array(z.any()),
   ]),
-  type: z.literal("box"),
 });
 
 export function decisionsBoxQuestionToJSON(

@@ -45,6 +45,10 @@ import {
  */
 export type Model = {
   /**
+   * Related API endpoints and resources for this model.
+   */
+  links: ModelLinks;
+  /**
    * Concrete model targeted by this tilde-latest alias, when applicable
    */
   aliasTarget?: ModelAliasTarget | undefined;
@@ -93,10 +97,6 @@ export type Model = {
    */
   knowledgeCutoff?: string | null | undefined;
   /**
-   * Related API endpoints and resources for this model.
-   */
-  links: ModelLinks;
-  /**
    * Display name of the model
    */
   name: string;
@@ -128,6 +128,7 @@ export type Model = {
 
 /** @internal */
 export const Model$inboundSchema: z.ZodType<Model, unknown> = z.object({
+  links: ModelLinks$inboundSchema,
   alias_target: ModelAliasTarget$inboundSchema.optional(),
   architecture: ModelArchitecture$inboundSchema,
   benchmarks: ModelBenchmarks$inboundSchema.optional(),
@@ -140,7 +141,6 @@ export const Model$inboundSchema: z.ZodType<Model, unknown> = z.object({
   hugging_face_id: z.nullable(z.string()).optional(),
   id: z.string(),
   knowledge_cutoff: z.nullable(z.string()).optional(),
-  links: ModelLinks$inboundSchema,
   name: z.string(),
   per_request_limits: z.nullable(PerRequestLimits$inboundSchema),
   pricing: PublicPricing$inboundSchema,

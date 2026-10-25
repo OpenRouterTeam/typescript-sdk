@@ -13,6 +13,10 @@ import { SDKValidationError } from "./errors/sdkvalidationerror.js";
  */
 export type ImageGenStreamErrorEventError = {
   /**
+   * Provider error type, when supplied
+   */
+  type?: string | null | undefined;
+  /**
    * Provider error code, when supplied
    */
   code?: string | null | undefined;
@@ -24,10 +28,6 @@ export type ImageGenStreamErrorEventError = {
    * Request parameter associated with the error, when supplied
    */
   param?: string | null | undefined;
-  /**
-   * Provider error type, when supplied
-   */
-  type?: string | null | undefined;
 };
 
 /**
@@ -35,13 +35,13 @@ export type ImageGenStreamErrorEventError = {
  */
 export type ImageGenStreamErrorEvent = {
   /**
-   * Provider error details
-   */
-  error: ImageGenStreamErrorEventError;
-  /**
    * The event type
    */
   type: "error";
+  /**
+   * Provider error details
+   */
+  error: ImageGenStreamErrorEventError;
 };
 
 /** @internal */
@@ -49,10 +49,10 @@ export const ImageGenStreamErrorEventError$inboundSchema: z.ZodType<
   ImageGenStreamErrorEventError,
   unknown
 > = z.object({
+  type: z.nullable(z.string()).optional(),
   code: z.nullable(z.string()).optional(),
   message: z.string(),
   param: z.nullable(z.string()).optional(),
-  type: z.nullable(z.string()).optional(),
 });
 
 export function imageGenStreamErrorEventErrorFromJSON(
@@ -70,8 +70,8 @@ export const ImageGenStreamErrorEvent$inboundSchema: z.ZodType<
   ImageGenStreamErrorEvent,
   unknown
 > = z.object({
-  error: z.lazy(() => ImageGenStreamErrorEventError$inboundSchema),
   type: z.literal("error"),
+  error: z.lazy(() => ImageGenStreamErrorEventError$inboundSchema),
 });
 
 export function imageGenStreamErrorEventFromJSON(

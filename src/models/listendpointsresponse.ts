@@ -47,15 +47,19 @@ export type Architecture = {
  * List of available endpoints for a model
  */
 export type ListEndpointsResponse = {
+  /**
+   * Display name of the model
+   */
+  name: string;
+  /**
+   * Description of the model
+   */
+  description: string;
   architecture: Architecture;
   /**
    * Unix timestamp of when the model was created
    */
   created: number;
-  /**
-   * Description of the model
-   */
-  description: string;
   /**
    * List of available endpoints for this model
    */
@@ -64,10 +68,6 @@ export type ListEndpointsResponse = {
    * Unique identifier for the model
    */
   id: string;
-  /**
-   * Display name of the model
-   */
-  name: string;
 };
 
 /** @internal */
@@ -101,12 +101,12 @@ export const ListEndpointsResponse$inboundSchema: z.ZodType<
   ListEndpointsResponse,
   unknown
 > = z.object({
+  name: z.string(),
+  description: z.string(),
   architecture: z.lazy(() => Architecture$inboundSchema),
   created: z.int(),
-  description: z.string(),
   endpoints: z.array(PublicEndpoint$inboundSchema),
   id: z.string(),
-  name: z.string(),
 });
 
 export function listEndpointsResponseFromJSON(

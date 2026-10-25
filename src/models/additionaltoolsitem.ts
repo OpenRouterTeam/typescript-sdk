@@ -143,6 +143,11 @@ import {
   WebSearchServerToolOpenRouter$outboundSchema,
 } from "./websearchservertoolopenrouter.js";
 
+export const TypeAdditionalTools = {
+  AdditionalTools: "additional_tools",
+} as const;
+export type TypeAdditionalTools = ClosedEnum<typeof TypeAdditionalTools>;
+
 export const AdditionalToolsItemRole = {
   Unknown: "unknown",
   User: "user",
@@ -180,8 +185,8 @@ export type AdditionalToolsItemAllowedCaller = OpenEnum<
  */
 export type AdditionalToolsItemToolFunction = {
   description?: string | null | undefined;
-  name: string;
   parameters: { [k: string]: any } | null;
+  name: string;
   strict?: boolean | null | undefined;
   type: AdditionalToolsItemTypeFunction;
   allowedCallers?: Array<AdditionalToolsItemAllowedCaller> | null | undefined;
@@ -227,15 +232,11 @@ export type AdditionalToolsItemToolUnion =
   | ToolSearchServerTool
   | AdditionalToolsItemTool;
 
-export const TypeAdditionalTools = {
-  AdditionalTools: "additional_tools",
-} as const;
-export type TypeAdditionalTools = ClosedEnum<typeof TypeAdditionalTools>;
-
 /**
  * Additional tools made available to the model at this point in the input
  */
 export type AdditionalToolsItem = {
+  type: TypeAdditionalTools;
   id?: string | null | undefined;
   role: AdditionalToolsItemRole;
   tools: Array<
@@ -269,8 +270,12 @@ export type AdditionalToolsItem = {
     | ToolSearchServerTool
     | AdditionalToolsItemTool
   >;
-  type: TypeAdditionalTools;
 };
+
+/** @internal */
+export const TypeAdditionalTools$outboundSchema: z.ZodEnum<
+  typeof TypeAdditionalTools
+> = z.enum(TypeAdditionalTools);
 
 /** @internal */
 export const AdditionalToolsItemRole$outboundSchema: z.ZodType<
@@ -322,8 +327,8 @@ export const AdditionalToolsItemAllowedCaller$outboundSchema: z.ZodType<
 /** @internal */
 export type AdditionalToolsItemToolFunction$Outbound = {
   description?: string | null | undefined;
-  name: string;
   parameters: { [k: string]: any } | null;
+  name: string;
   strict?: boolean | null | undefined;
   type: string;
   allowed_callers?: Array<string> | null | undefined;
@@ -338,8 +343,8 @@ export const AdditionalToolsItemToolFunction$outboundSchema: z.ZodType<
   AdditionalToolsItemToolFunction
 > = z.object({
   description: z.nullable(z.string()).optional(),
-  name: z.string(),
   parameters: z.nullable(z.record(z.string(), z.any())),
+  name: z.string(),
   strict: z.nullable(z.boolean()).optional(),
   type: AdditionalToolsItemTypeFunction$outboundSchema,
   allowedCallers: z.nullable(
@@ -445,12 +450,8 @@ export function additionalToolsItemToolUnionToJSON(
 }
 
 /** @internal */
-export const TypeAdditionalTools$outboundSchema: z.ZodEnum<
-  typeof TypeAdditionalTools
-> = z.enum(TypeAdditionalTools);
-
-/** @internal */
 export type AdditionalToolsItem$Outbound = {
+  type: string;
   id?: string | null | undefined;
   role: string;
   tools: Array<
@@ -484,7 +485,6 @@ export type AdditionalToolsItem$Outbound = {
     | ToolSearchServerTool$Outbound
     | AdditionalToolsItemTool$Outbound
   >;
-  type: string;
 };
 
 /** @internal */
@@ -492,6 +492,7 @@ export const AdditionalToolsItem$outboundSchema: z.ZodType<
   AdditionalToolsItem$Outbound,
   AdditionalToolsItem
 > = z.object({
+  type: TypeAdditionalTools$outboundSchema,
   id: z.nullable(z.string()).optional(),
   role: AdditionalToolsItemRole$outboundSchema,
   tools: z.array(
@@ -527,7 +528,6 @@ export const AdditionalToolsItem$outboundSchema: z.ZodType<
       z.lazy(() => AdditionalToolsItemTool$outboundSchema),
     ]),
   ),
-  type: TypeAdditionalTools$outboundSchema,
 });
 
 export function additionalToolsItemToJSON(

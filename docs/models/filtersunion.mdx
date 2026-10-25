@@ -8,8 +8,8 @@ title: "FiltersUnion"
 
 ```typescript
 const value: models.Filters = {
-  key: "<key>",
   type: "eq",
+  key: "<key>",
   value: [],
 };
 ```
@@ -18,14 +18,14 @@ const value: models.Filters = {
 
 ```typescript
 const value: models.CompoundFilter = {
+  type: "and",
   filters: [
     {
-      "key": "author",
       "type": "eq",
+      "key": "author",
       "value": "Alice",
     },
   ],
-  type: "and",
 };
 ```
 

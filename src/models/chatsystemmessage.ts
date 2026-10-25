@@ -36,6 +36,10 @@ export type ChatSystemMessageContent = string | Array<ChatContentText>;
  */
 export type ChatSystemMessage = {
   /**
+   * Optional name for the system message
+   */
+  name?: string | undefined;
+  /**
    * OpenRouter extension. Changes reasoning effort from this point in the conversation onward without invalidating the prompt cache for the preceding turns. Place it on a content-less system message (`content: ""`) directly before the user message it should apply to, and keep it at that position in later requests. Equivalent to the OpenAI Responses `configuration_update` input item and the Anthropic Messages per-message `output_config.effort`.
    */
   configurationUpdate?: ChatSystemMessageConfigurationUpdate | null | undefined;
@@ -43,10 +47,6 @@ export type ChatSystemMessage = {
    * System message content
    */
   content: string | Array<ChatContentText>;
-  /**
-   * Optional name for the system message
-   */
-  name?: string | undefined;
   role: "system";
 };
 
@@ -94,12 +94,12 @@ export function chatSystemMessageContentToJSON(
 
 /** @internal */
 export type ChatSystemMessage$Outbound = {
+  name?: string | undefined;
   configuration_update?:
     | ChatSystemMessageConfigurationUpdate$Outbound
     | null
     | undefined;
   content: string | Array<ChatContentText$Outbound>;
-  name?: string | undefined;
   role: "system";
 };
 
@@ -108,11 +108,11 @@ export const ChatSystemMessage$outboundSchema: z.ZodType<
   ChatSystemMessage$Outbound,
   ChatSystemMessage
 > = z.object({
+  name: z.string().optional(),
   configurationUpdate: z.nullable(
     z.lazy(() => ChatSystemMessageConfigurationUpdate$outboundSchema),
   ).optional(),
   content: z.union([z.string(), z.array(ChatContentText$outboundSchema)]),
-  name: z.string().optional(),
   role: z.literal("system"),
 }).transform((v) => {
   return remap$(v, {

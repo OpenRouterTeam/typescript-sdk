@@ -10,10 +10,10 @@ Reference image. On its own it describes the desired voice (voice design); along
 import { SpeechInputReferenceImage } from "@openrouter/sdk/models";
 
 let value: SpeechInputReferenceImage = {
+  type: "image_url",
   imageUrl: {
     url: "data:image/png;base64,iVBORw0KGgo...",
   },
-  type: "image_url",
 };
 ```
 
@@ -21,5 +21,5 @@ let value: SpeechInputReferenceImage = {
 
 | Field                                                                                | Type                                                                                 | Required                                                                             | Description                                                                          |
 | ------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------ |
-| `imageUrl`                                                                           | [models.SpeechInputReferenceImageInput](../models/speechinputreferenceimageinput.mdx) | ✔️                                                                   | Reference image input object                                                         |
 | `type`                                                                               | *"image_url"*                                                                        | ✔️                                                                   | N/A                                                                                  |
+| `imageUrl`                                                                           | [models.SpeechInputReferenceImageInput](../models/speechinputreferenceimageinput.mdx) | ✔️                                                                   | Reference image input object                                                         |

@@ -10,12 +10,12 @@ Tool call made by the assistant
 import { ChatToolCall } from "@openrouter/sdk/models";
 
 let value: ChatToolCall = {
+  type: "function",
   function: {
-    arguments: "{\"location\": \"Boston, MA\"}",
     name: "get_current_weather",
+    arguments: "{\"location\": \"Boston, MA\"}",
   },
   id: "call_abc123",
-  type: "function",
 };
 ```
 
@@ -23,6 +23,6 @@ let value: ChatToolCall = {
 
 | Field                                                            | Type                                                             | Required                                                         | Description                                                      |
 | ---------------------------------------------------------------- | ---------------------------------------------------------------- | ---------------------------------------------------------------- | ---------------------------------------------------------------- |
+| `type`                                                           | [models.ChatToolCallType](../models/chattoolcalltype.mdx)         | ✔️                                               | N/A                                                              |
 | `function`                                                       | [models.ChatToolCallFunction](../models/chattoolcallfunction.mdx) | ✔️                                               | N/A                                                              |
 | `id`                                                             | *string*                                                         | ✔️                                               | Tool call identifier                                             |
-| `type`                                                           | [models.ChatToolCallType](../models/chattoolcalltype.mdx)         | ✔️                                               | N/A                                                              |

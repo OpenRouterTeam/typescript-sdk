@@ -11,13 +11,13 @@ A Decisions answer using a boolean, choice, score, or image bounding-box evaluat
 
 ```typescript
 const value: models.DecisionsBoxAnswer = {
+  type: "box",
   box: {
     bottom: 9340.36,
     left: 4735.52,
     right: 3044.6,
     top: 1951.55,
   },
-  type: "box",
 };
 ```
 
@@ -25,8 +25,8 @@ const value: models.DecisionsBoxAnswer = {
 
 ```typescript
 const value: models.DecisionsChoiceAnswer = {
-  choice: "<value>",
   type: "choice",
+  choice: "<value>",
 };
 ```
 
@@ -34,8 +34,8 @@ const value: models.DecisionsChoiceAnswer = {
 
 ```typescript
 const value: models.DecisionsNoulAnswer = {
-  noul: 4078.5,
   type: "noul",
+  noul: 4078.5,
 };
 ```
 
@@ -43,8 +43,8 @@ const value: models.DecisionsNoulAnswer = {
 
 ```typescript
 const value: models.DecisionsScoreAnswer = {
-  score: 8873.17,
   type: "score",
+  score: 8873.17,
 };
 ```
 

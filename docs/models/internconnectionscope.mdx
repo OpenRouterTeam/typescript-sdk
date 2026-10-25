@@ -1,0 +1,21 @@
+---
+title: "InternConnectionScope"
+---
+
+`workspace` for a shared connection, `yours` for the key user's personal account, `shared` for a teammate's.
+
+## Example Usage
+
+```typescript
+import { InternConnectionScope } from "@openrouter/sdk/models";
+
+let value: InternConnectionScope = "workspace";
+
+// Open enum: unrecognized values are captured as Unrecognized<string>
+```
+
+## Values
+
+```typescript
+"workspace" | "yours" | "shared" | Unrecognized<string>
+```

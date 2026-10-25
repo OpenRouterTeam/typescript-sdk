@@ -8,9 +8,9 @@ title: "FormatGrammar"
 import { FormatGrammar } from "@openrouter/sdk/models";
 
 let value: FormatGrammar = {
+  type: "grammar",
   definition: "<value>",
   syntax: "lark",
-  type: "grammar",
 };
 ```
 
@@ -18,6 +18,6 @@ let value: FormatGrammar = {
 
 | Field                                | Type                                 | Required                             | Description                          |
 | ------------------------------------ | ------------------------------------ | ------------------------------------ | ------------------------------------ |
+| `type`                               | *"grammar"*                          | ✔️                   | N/A                                  |
 | `definition`                         | *string*                             | ✔️                   | N/A                                  |
 | `syntax`                             | [models.Syntax](../models/syntax.mdx) | ✔️                   | N/A                                  |
-| `type`                               | *"grammar"*                          | ✔️                   | N/A                                  |

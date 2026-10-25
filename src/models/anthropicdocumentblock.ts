@@ -23,11 +23,6 @@ import {
 } from "./anthropicplaintextsource.js";
 import { SDKValidationError } from "./errors/sdkvalidationerror.js";
 
-export type AnthropicDocumentBlockSource =
-  | (AnthropicBase64PdfSource & { mediaType: "application/pdf" })
-  | (AnthropicPlainTextSource & { mediaType: "text/plain" })
-  | discriminatedUnionTypes.Unknown<"mediaType">;
-
 export const AnthropicDocumentBlockType = {
   Document: "document",
 } as const;
@@ -35,32 +30,34 @@ export type AnthropicDocumentBlockType = ClosedEnum<
   typeof AnthropicDocumentBlockType
 >;
 
+export type AnthropicDocumentBlockSource =
+  | AnthropicBase64PdfSource
+  | AnthropicPlainTextSource
+  | discriminatedUnionTypes.Unknown<"type">;
+
 export type AnthropicDocumentBlock = {
+  type: AnthropicDocumentBlockType;
+  title: string | null;
   citations?: AnthropicCitationsConfig | null | undefined;
   source:
-    | (AnthropicBase64PdfSource & { mediaType: "application/pdf" })
-    | (AnthropicPlainTextSource & { mediaType: "text/plain" })
-    | discriminatedUnionTypes.Unknown<"mediaType">;
-  title: string | null;
-  type: AnthropicDocumentBlockType;
+    | AnthropicBase64PdfSource
+    | AnthropicPlainTextSource
+    | discriminatedUnionTypes.Unknown<"type">;
 };
+
+/** @internal */
+export const AnthropicDocumentBlockType$inboundSchema: z.ZodEnum<
+  typeof AnthropicDocumentBlockType
+> = z.enum(AnthropicDocumentBlockType);
 
 /** @internal */
 export const AnthropicDocumentBlockSource$inboundSchema: z.ZodType<
   AnthropicDocumentBlockSource,
   unknown
-> = discriminatedUnion("media_type", {
-  ["application/pdf"]: AnthropicBase64PdfSource$inboundSchema.and(
-    z.object({ media_type: z.literal("application/pdf") }).transform((v) => ({
-      mediaType: v.media_type,
-    })),
-  ),
-  ["text/plain"]: AnthropicPlainTextSource$inboundSchema.and(
-    z.object({ media_type: z.literal("text/plain") }).transform((v) => ({
-      mediaType: v.media_type,
-    })),
-  ),
-}, { outputPropertyName: "mediaType" });
+> = discriminatedUnion("type", {
+  base64: AnthropicBase64PdfSource$inboundSchema,
+  text: AnthropicPlainTextSource$inboundSchema,
+});
 
 export function anthropicDocumentBlockSourceFromJSON(
   jsonString: string,
@@ -73,30 +70,17 @@ export function anthropicDocumentBlockSourceFromJSON(
 }
 
 /** @internal */
-export const AnthropicDocumentBlockType$inboundSchema: z.ZodEnum<
-  typeof AnthropicDocumentBlockType
-> = z.enum(AnthropicDocumentBlockType);
-
-/** @internal */
 export const AnthropicDocumentBlock$inboundSchema: z.ZodType<
   AnthropicDocumentBlock,
   unknown
 > = z.object({
-  citations: z.nullable(AnthropicCitationsConfig$inboundSchema).optional(),
-  source: discriminatedUnion("media_type", {
-    ["application/pdf"]: AnthropicBase64PdfSource$inboundSchema.and(
-      z.object({ media_type: z.literal("application/pdf") }).transform((v) => ({
-        mediaType: v.media_type,
-      })),
-    ),
-    ["text/plain"]: AnthropicPlainTextSource$inboundSchema.and(
-      z.object({ media_type: z.literal("text/plain") }).transform((v) => ({
-        mediaType: v.media_type,
-      })),
-    ),
-  }, { outputPropertyName: "mediaType" }),
-  title: z.nullable(z.string()),
   type: AnthropicDocumentBlockType$inboundSchema,
+  title: z.nullable(z.string()),
+  citations: z.nullable(AnthropicCitationsConfig$inboundSchema).optional(),
+  source: discriminatedUnion("type", {
+    base64: AnthropicBase64PdfSource$inboundSchema,
+    text: AnthropicPlainTextSource$inboundSchema,
+  }),
 });
 
 export function anthropicDocumentBlockFromJSON(

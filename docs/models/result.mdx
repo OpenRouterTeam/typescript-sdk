@@ -10,9 +10,9 @@ import { Result } from "@openrouter/sdk/models";
 let value: Result = {
   customId: "<id>",
   error: {
+    type: "<value>",
     message: "<value>",
     param: "<value>",
-    type: "<value>",
   },
   id: "<id>",
   response: {
@@ -29,15 +29,15 @@ let value: Result = {
       object: "response",
       output: [
         {
+          type: "message",
           content: [
             {
-              text: "Hello! How can I help you today?",
               type: "output_text",
+              text: "Hello! How can I help you today?",
             },
           ],
           id: "msg-abc123",
           role: "assistant",
-          type: "message",
         },
       ],
       parallelToolCalls: true,

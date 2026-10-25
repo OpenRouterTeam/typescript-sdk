@@ -10,8 +10,8 @@ Image input content item. Provide either an image_url (a URL or a base64 data UR
 import { InputImage } from "@openrouter/sdk/models";
 
 let value: InputImage = {
-  detail: "auto",
   type: "input_image",
+  detail: "auto",
 };
 ```
 
@@ -19,7 +19,7 @@ let value: InputImage = {
 
 | Field                                                        | Type                                                         | Required                                                     | Description                                                  |
 | ------------------------------------------------------------ | ------------------------------------------------------------ | ------------------------------------------------------------ | ------------------------------------------------------------ |
+| `type`                                                       | [models.InputImageTypeEnum](../models/inputimagetypeenum.mdx) | ✔️                                           | N/A                                                          |
 | `detail`                                                     | [models.InputImageDetail](../models/inputimagedetail.mdx)     | ✔️                                           | N/A                                                          |
 | `fileId`                                                     | *string*                                                     | ➖                                           | N/A                                                          |
 | `imageUrl`                                                   | *string*                                                     | ➖                                           | N/A                                                          |
-| `type`                                                       | [models.InputImageTypeEnum](../models/inputimagetypeenum.mdx) | ✔️                                           | N/A                                                          |

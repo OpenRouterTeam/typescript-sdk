@@ -23,9 +23,9 @@ export type AnthropicTextEditorCodeExecutionToolResultErrorErrorCode = OpenEnum<
 >;
 
 export type AnthropicTextEditorCodeExecutionToolResultError = {
+  type: "text_editor_code_execution_tool_result_error";
   errorCode: AnthropicTextEditorCodeExecutionToolResultErrorErrorCode;
   errorMessage: string | null;
-  type: "text_editor_code_execution_tool_result_error";
 };
 
 /** @internal */
@@ -39,10 +39,10 @@ export const AnthropicTextEditorCodeExecutionToolResultErrorErrorCode$inboundSch
 export const AnthropicTextEditorCodeExecutionToolResultError$inboundSchema:
   z.ZodType<AnthropicTextEditorCodeExecutionToolResultError, unknown> = z
     .object({
+      type: z.literal("text_editor_code_execution_tool_result_error"),
       error_code:
         AnthropicTextEditorCodeExecutionToolResultErrorErrorCode$inboundSchema,
       error_message: z.nullable(z.string()),
-      type: z.literal("text_editor_code_execution_tool_result_error"),
     }).transform((v) => {
       return remap$(v, {
         "error_code": "errorCode",

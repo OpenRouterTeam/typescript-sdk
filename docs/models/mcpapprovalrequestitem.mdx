@@ -10,11 +10,11 @@ Request for approval to execute an MCP tool
 import { McpApprovalRequestItem } from "@openrouter/sdk/models";
 
 let value: McpApprovalRequestItem = {
+  name: "delete_record",
+  type: "mcp_approval_request",
   arguments: "{\"id\":\"123\"}",
   id: "approval-abc123",
-  name: "delete_record",
   serverLabel: "database-server",
-  type: "mcp_approval_request",
 };
 ```
 
@@ -22,8 +22,8 @@ let value: McpApprovalRequestItem = {
 
 | Field                                                                        | Type                                                                         | Required                                                                     | Description                                                                  |
 | ---------------------------------------------------------------------------- | ---------------------------------------------------------------------------- | ---------------------------------------------------------------------------- | ---------------------------------------------------------------------------- |
+| `name`                                                                       | *string*                                                                     | ✔️                                                           | N/A                                                                          |
+| `type`                                                                       | [models.McpApprovalRequestItemType](../models/mcpapprovalrequestitemtype.mdx) | ✔️                                                           | N/A                                                                          |
 | `arguments`                                                                  | *string*                                                                     | ✔️                                                           | N/A                                                                          |
 | `id`                                                                         | *string*                                                                     | ✔️                                                           | N/A                                                                          |
-| `name`                                                                       | *string*                                                                     | ✔️                                                           | N/A                                                                          |
 | `serverLabel`                                                                | *string*                                                                     | ✔️                                                           | N/A                                                                          |
-| `type`                                                                       | [models.McpApprovalRequestItemType](../models/mcpapprovalrequestitemtype.mdx) | ✔️                                                           | N/A                                                                          |

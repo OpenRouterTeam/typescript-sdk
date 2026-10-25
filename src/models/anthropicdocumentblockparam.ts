@@ -54,18 +54,20 @@ export type AnthropicDocumentBlockParamContent2 =
   | Array<AnthropicImageBlockParam | AnthropicTextBlockParam>;
 
 export type SourceContent = {
-  content: string | Array<AnthropicImageBlockParam | AnthropicTextBlockParam>;
   type: "content";
+  content: string | Array<AnthropicImageBlockParam | AnthropicTextBlockParam>;
 };
 
 export type AnthropicDocumentBlockParamSourceUnion =
-  | (AnthropicBase64PdfSource & { type: "base64" })
-  | (AnthropicPlainTextSource & { type: "text" })
+  | AnthropicBase64PdfSource
+  | AnthropicPlainTextSource
   | SourceContent
   | AnthropicUrlPdfSource
   | AnthropicFileDocumentSource;
 
 export type AnthropicDocumentBlockParam = {
+  type: "document";
+  title?: string | null | undefined;
   /**
    * Enable automatic prompt caching. When set at the top level, the system automatically applies cache breakpoints to the last cacheable block in the request. When set on an individual content block, it marks an explicit cache breakpoint; block-level markers also work on OpenAI models that support explicit prompt caching — OpenRouter converts them to the provider's native format.
    */
@@ -73,13 +75,11 @@ export type AnthropicDocumentBlockParam = {
   citations?: AnthropicDocumentBlockParamCitations | null | undefined;
   context?: string | null | undefined;
   source:
-    | (AnthropicBase64PdfSource & { type: "base64" })
-    | (AnthropicPlainTextSource & { type: "text" })
+    | AnthropicBase64PdfSource
+    | AnthropicPlainTextSource
     | SourceContent
     | AnthropicUrlPdfSource
     | AnthropicFileDocumentSource;
-  title?: string | null | undefined;
-  type: "document";
 };
 
 /** @internal */
@@ -160,12 +160,12 @@ export function anthropicDocumentBlockParamContent2ToJSON(
 
 /** @internal */
 export type SourceContent$Outbound = {
+  type: "content";
   content:
     | string
     | Array<
       AnthropicImageBlockParam$Outbound | AnthropicTextBlockParam$Outbound
     >;
-  type: "content";
 };
 
 /** @internal */
@@ -173,6 +173,7 @@ export const SourceContent$outboundSchema: z.ZodType<
   SourceContent$Outbound,
   SourceContent
 > = z.object({
+  type: z.literal("content"),
   content: z.union([
     z.string(),
     z.array(
@@ -182,7 +183,6 @@ export const SourceContent$outboundSchema: z.ZodType<
       ]),
     ),
   ]),
-  type: z.literal("content"),
 });
 
 export function sourceContentToJSON(sourceContent: SourceContent): string {
@@ -191,8 +191,8 @@ export function sourceContentToJSON(sourceContent: SourceContent): string {
 
 /** @internal */
 export type AnthropicDocumentBlockParamSourceUnion$Outbound =
-  | (AnthropicBase64PdfSource$Outbound & { type: "base64" })
-  | (AnthropicPlainTextSource$Outbound & { type: "text" })
+  | AnthropicBase64PdfSource$Outbound
+  | AnthropicPlainTextSource$Outbound
   | SourceContent$Outbound
   | AnthropicUrlPdfSource$Outbound
   | AnthropicFileDocumentSource$Outbound;
@@ -202,12 +202,8 @@ export const AnthropicDocumentBlockParamSourceUnion$outboundSchema: z.ZodType<
   AnthropicDocumentBlockParamSourceUnion$Outbound,
   AnthropicDocumentBlockParamSourceUnion
 > = z.union([
-  AnthropicBase64PdfSource$outboundSchema.and(
-    z.object({ type: z.literal("base64") }),
-  ),
-  AnthropicPlainTextSource$outboundSchema.and(
-    z.object({ type: z.literal("text") }),
-  ),
+  AnthropicBase64PdfSource$outboundSchema,
+  AnthropicPlainTextSource$outboundSchema,
   z.lazy(() => SourceContent$outboundSchema),
   AnthropicUrlPdfSource$outboundSchema,
   AnthropicFileDocumentSource$outboundSchema,
@@ -226,17 +222,17 @@ export function anthropicDocumentBlockParamSourceUnionToJSON(
 
 /** @internal */
 export type AnthropicDocumentBlockParam$Outbound = {
+  type: "document";
+  title?: string | null | undefined;
   cache_control?: AnthropicCacheControlDirective$Outbound | undefined;
   citations?: AnthropicDocumentBlockParamCitations$Outbound | null | undefined;
   context?: string | null | undefined;
   source:
-    | (AnthropicBase64PdfSource$Outbound & { type: "base64" })
-    | (AnthropicPlainTextSource$Outbound & { type: "text" })
+    | AnthropicBase64PdfSource$Outbound
+    | AnthropicPlainTextSource$Outbound
     | SourceContent$Outbound
     | AnthropicUrlPdfSource$Outbound
     | AnthropicFileDocumentSource$Outbound;
-  title?: string | null | undefined;
-  type: "document";
 };
 
 /** @internal */
@@ -244,24 +240,20 @@ export const AnthropicDocumentBlockParam$outboundSchema: z.ZodType<
   AnthropicDocumentBlockParam$Outbound,
   AnthropicDocumentBlockParam
 > = z.object({
+  type: z.literal("document"),
+  title: z.nullable(z.string()).optional(),
   cacheControl: AnthropicCacheControlDirective$outboundSchema.optional(),
   citations: z.nullable(
     z.lazy(() => AnthropicDocumentBlockParamCitations$outboundSchema),
   ).optional(),
   context: z.nullable(z.string()).optional(),
   source: z.union([
-    AnthropicBase64PdfSource$outboundSchema.and(
-      z.object({ type: z.literal("base64") }),
-    ),
-    AnthropicPlainTextSource$outboundSchema.and(
-      z.object({ type: z.literal("text") }),
-    ),
+    AnthropicBase64PdfSource$outboundSchema,
+    AnthropicPlainTextSource$outboundSchema,
     z.lazy(() => SourceContent$outboundSchema),
     AnthropicUrlPdfSource$outboundSchema,
     AnthropicFileDocumentSource$outboundSchema,
   ]),
-  title: z.nullable(z.string()).optional(),
-  type: z.literal("document"),
 }).transform((v) => {
   return remap$(v, {
     cacheControl: "cache_control",

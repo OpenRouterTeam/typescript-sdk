@@ -57,6 +57,10 @@ export type ChatAssistantMessageRole = ClosedEnum<
  */
 export type ChatAssistantMessage = {
   /**
+   * Optional name for the assistant
+   */
+  name?: string | undefined;
+  /**
    * Audio output data or reference
    */
   audio?: ChatAudioOutput | undefined;
@@ -72,10 +76,6 @@ export type ChatAssistantMessage = {
    * Model that generated this assistant message
    */
   model?: string | undefined;
-  /**
-   * Optional name for the assistant
-   */
-  name?: string | undefined;
   /**
    * Reasoning output
    */
@@ -144,13 +144,13 @@ export const ChatAssistantMessage$inboundSchema: z.ZodType<
   ChatAssistantMessage,
   unknown
 > = z.object({
+  name: z.string().optional(),
   audio: ChatAudioOutput$inboundSchema.optional(),
   content: z.nullable(
     z.union([z.string(), z.array(ChatContentItems$inboundSchema)]),
   ).optional(),
   images: z.array(ChatAssistantImages$inboundSchema).optional(),
   model: z.string().optional(),
-  name: z.string().optional(),
   reasoning: z.nullable(z.string()).optional(),
   reasoning_details: z.array(ReasoningDetailUnion$inboundSchema).optional(),
   refusal: z.nullable(z.string()).optional(),
@@ -164,11 +164,11 @@ export const ChatAssistantMessage$inboundSchema: z.ZodType<
 });
 /** @internal */
 export type ChatAssistantMessage$Outbound = {
+  name?: string | undefined;
   audio?: ChatAudioOutput$Outbound | undefined;
   content?: string | Array<ChatContentItems$Outbound> | null | undefined;
   images?: Array<ChatAssistantImages$Outbound> | undefined;
   model?: string | undefined;
-  name?: string | undefined;
   reasoning?: string | null | undefined;
   reasoning_details?: Array<ReasoningDetailUnion$Outbound> | undefined;
   refusal?: string | null | undefined;
@@ -181,13 +181,13 @@ export const ChatAssistantMessage$outboundSchema: z.ZodType<
   ChatAssistantMessage$Outbound,
   ChatAssistantMessage
 > = z.object({
+  name: z.string().optional(),
   audio: ChatAudioOutput$outboundSchema.optional(),
   content: z.nullable(
     z.union([z.string(), z.array(ChatContentItems$outboundSchema)]),
   ).optional(),
   images: z.array(ChatAssistantImages$outboundSchema).optional(),
   model: z.string().optional(),
-  name: z.string().optional(),
   reasoning: z.nullable(z.string()).optional(),
   reasoningDetails: z.array(ReasoningDetailUnion$outboundSchema).optional(),
   refusal: z.nullable(z.string()).optional(),

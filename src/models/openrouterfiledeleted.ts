@@ -21,9 +21,9 @@ export type OpenRouterFileDeletedType = ClosedEnum<
  * Deletion result in the OpenRouter shape.
  */
 export type OpenRouterFileDeleted = {
+  type: OpenRouterFileDeletedType;
   shape: "openrouter";
   id: string;
-  type: OpenRouterFileDeletedType;
 };
 
 /** @internal */
@@ -36,9 +36,9 @@ export const OpenRouterFileDeleted$inboundSchema: z.ZodType<
   OpenRouterFileDeleted,
   unknown
 > = z.object({
+  type: OpenRouterFileDeletedType$inboundSchema,
   _shape: z.literal("openrouter"),
   id: z.string(),
-  type: OpenRouterFileDeletedType$inboundSchema,
 }).transform((v) => {
   return remap$(v, {
     "_shape": "shape",

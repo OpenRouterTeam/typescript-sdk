@@ -10,8 +10,8 @@ import { OpenAIResponseInputMessageItem } from "@openrouter/sdk/models";
 let value: OpenAIResponseInputMessageItem = {
   content: [
     {
-      text: "Hello, how are you?",
       type: "input_text",
+      text: "Hello, how are you?",
     },
   ],
   id: "msg-abc123",
@@ -23,7 +23,7 @@ let value: OpenAIResponseInputMessageItem = {
 
 | Field                                                                                        | Type                                                                                         | Required                                                                                     | Description                                                                                  |
 | -------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------- |
+| `type`                                                                                       | [models.OpenAIResponseInputMessageItemType](../models/openairesponseinputmessageitemtype.mdx) | ➖                                                                           | N/A                                                                                          |
 | `content`                                                                                    | *models.OpenAIResponseInputMessageItemContent*[]                                             | ✔️                                                                           | N/A                                                                                          |
 | `id`                                                                                         | *string*                                                                                     | ✔️                                                                           | N/A                                                                                          |
 | `role`                                                                                       | *models.OpenAIResponseInputMessageItemRoleUnion*                                             | ✔️                                                                           | N/A                                                                                          |
-| `type`                                                                                       | [models.OpenAIResponseInputMessageItemType](../models/openairesponseinputmessageitemtype.mdx) | ➖                                                                           | N/A                                                                                          |

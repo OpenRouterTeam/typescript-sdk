@@ -8,8 +8,8 @@ title: "AnnotationContentUnion"
 
 ```typescript
 const value: models.ContentText = {
-  text: "<value>",
   type: "text",
+  text: "<value>",
 };
 ```
 
@@ -17,10 +17,10 @@ const value: models.ContentText = {
 
 ```typescript
 const value: models.ContentImageURL = {
+  type: "image_url",
   imageUrl: {
     url: "https://zealous-march.biz/",
   },
-  type: "image_url",
 };
 ```
 

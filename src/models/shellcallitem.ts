@@ -11,21 +11,22 @@ import {
   ToolCallStatus$outboundSchema,
 } from "./toolcallstatus.js";
 
+export const ShellCallItemType = {
+  ShellCall: "shell_call",
+} as const;
+export type ShellCallItemType = ClosedEnum<typeof ShellCallItemType>;
+
 export type ShellCallItemAction = {
   commands: Array<string>;
   maxOutputLength?: number | null | undefined;
   timeoutMs?: number | null | undefined;
 };
 
-export const ShellCallItemType = {
-  ShellCall: "shell_call",
-} as const;
-export type ShellCallItemType = ClosedEnum<typeof ShellCallItemType>;
-
 /**
  * A shell command execution call (newer variant)
  */
 export type ShellCallItem = {
+  type: ShellCallItemType;
   action: ShellCallItemAction;
   /**
    * The raw tool-call arguments string as emitted by the model. Echo back unchanged when replaying history; used verbatim to preserve provider prompt-cache prefixes.
@@ -35,8 +36,12 @@ export type ShellCallItem = {
   environment?: any | undefined;
   id?: string | null | undefined;
   status?: ToolCallStatus | null | undefined;
-  type: ShellCallItemType;
 };
+
+/** @internal */
+export const ShellCallItemType$outboundSchema: z.ZodEnum<
+  typeof ShellCallItemType
+> = z.enum(ShellCallItemType);
 
 /** @internal */
 export type ShellCallItemAction$Outbound = {
@@ -69,19 +74,14 @@ export function shellCallItemActionToJSON(
 }
 
 /** @internal */
-export const ShellCallItemType$outboundSchema: z.ZodEnum<
-  typeof ShellCallItemType
-> = z.enum(ShellCallItemType);
-
-/** @internal */
 export type ShellCallItem$Outbound = {
+  type: string;
   action: ShellCallItemAction$Outbound;
   arguments?: string | null | undefined;
   call_id: string;
   environment?: any | undefined;
   id?: string | null | undefined;
   status?: string | null | undefined;
-  type: string;
 };
 
 /** @internal */
@@ -89,13 +89,13 @@ export const ShellCallItem$outboundSchema: z.ZodType<
   ShellCallItem$Outbound,
   ShellCallItem
 > = z.object({
+  type: ShellCallItemType$outboundSchema,
   action: z.lazy(() => ShellCallItemAction$outboundSchema),
   arguments: z.nullable(z.string()).optional(),
   callId: z.string(),
   environment: z.any().optional(),
   id: z.nullable(z.string()).optional(),
   status: z.nullable(ToolCallStatus$outboundSchema).optional(),
-  type: ShellCallItemType$outboundSchema,
 }).transform((v) => {
   return remap$(v, {
     callId: "call_id",

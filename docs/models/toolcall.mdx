@@ -8,13 +8,13 @@ title: "ToolCall"
 import { ToolCall } from "@openrouter/sdk/models";
 
 let value: ToolCall = {
+  type: "function",
   function: {
-    arguments: "<value>",
     name: "<value>",
+    arguments: "<value>",
   },
   id: "<id>",
   index: 448237,
-  type: "function",
 };
 ```
 
@@ -22,7 +22,7 @@ let value: ToolCall = {
 
 | Field                                                          | Type                                                           | Required                                                       | Description                                                    |
 | -------------------------------------------------------------- | -------------------------------------------------------------- | -------------------------------------------------------------- | -------------------------------------------------------------- |
+| `type`                                                         | [models.ChoiceTypeFunction](../models/choicetypefunction.mdx)   | ✔️                                             | N/A                                                            |
 | `function`                                                     | [models.BatchObjectFunction](../models/batchobjectfunction.mdx) | ✔️                                             | N/A                                                            |
 | `id`                                                           | *string*                                                       | ✔️                                             | N/A                                                            |
 | `index`                                                        | *number*                                                       | ✔️                                             | N/A                                                            |
-| `type`                                                         | [models.ChoiceTypeFunction](../models/choicetypefunction.mdx)   | ✔️                                             | N/A                                                            |

@@ -11,10 +11,10 @@ Reference content part for stateless voice cloning or voice design
 
 ```typescript
 const value: models.SpeechInputReferenceImage = {
+  type: "image_url",
   imageUrl: {
     url: "data:image/png;base64,iVBORw0KGgo...",
   },
-  type: "image_url",
 };
 ```
 
@@ -22,8 +22,8 @@ const value: models.SpeechInputReferenceImage = {
 
 ```typescript
 const value: models.SpeechInputReferenceAudio = {
-  inputAudio: {},
   type: "input_audio",
+  inputAudio: {},
 };
 ```
 
@@ -31,8 +31,8 @@ const value: models.SpeechInputReferenceAudio = {
 
 ```typescript
 const value: models.SpeechInputReferenceText = {
-  text: "I used to rule the world.",
   type: "text",
+  text: "I used to rule the world.",
 };
 ```
 

@@ -8,27 +8,27 @@ title: "ResponsesRequestToolUnion"
 
 ```typescript
 const value: models.ResponsesRequestToolFunction = {
-  name: "get_weather",
   parameters: {
+    "type": "object",
+    "required": [
+      "location",
+    ],
     "properties": {
       "location": {
-        "description": "The city and state",
         "type": "string",
+        "description": "The city and state",
       },
       "unit": {
+        "type": "string",
         "enum": [
           "celsius",
           "fahrenheit",
         ],
-        "type": "string",
         "x-speakeasy-unknown-values": "allow",
       },
     },
-    "required": [
-      "location",
-    ],
-    "type": "object",
   },
+  name: "get_weather",
   type: "function",
 };
 ```
@@ -80,10 +80,10 @@ const value: models.FileSearchServerTool = {
 
 ```typescript
 const value: models.ComputerUseServerTool = {
+  type: "computer_use_preview",
   displayHeight: 768,
   displayWidth: 1024,
   environment: "linux",
-  type: "computer_use_preview",
 };
 ```
 
@@ -91,8 +91,8 @@ const value: models.ComputerUseServerTool = {
 
 ```typescript
 const value: models.CodeInterpreterServerTool = {
-  container: "auto",
   type: "code_interpreter",
+  container: "auto",
 };
 ```
 
@@ -150,15 +150,15 @@ const value: models.CustomTool = {
 
 ```typescript
 const value: models.NamespaceTool = {
-  description: "Tools for spawning and managing sub-agents.",
   name: "multi_agent_v1",
+  type: "namespace",
+  description: "Tools for spawning and managing sub-agents.",
   tools: [
     {
       name: "spawn_agent",
       type: "function",
     },
   ],
-  type: "namespace",
 };
 ```
 

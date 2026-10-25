@@ -8,9 +8,9 @@ title: "AnthropicPlainTextSource"
 import { AnthropicPlainTextSource } from "@openrouter/sdk/models";
 
 let value: AnthropicPlainTextSource = {
+  type: "text",
   data: "Hello, world!",
   mediaType: "text/plain",
-  type: "text",
 };
 ```
 
@@ -18,6 +18,6 @@ let value: AnthropicPlainTextSource = {
 
 | Field                                                                                      | Type                                                                                       | Required                                                                                   | Description                                                                                |
 | ------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------ |
+| `type`                                                                                     | *"text"*                                                                                   | ✔️                                                                         | N/A                                                                                        |
 | `data`                                                                                     | *string*                                                                                   | ✔️                                                                         | N/A                                                                                        |
 | `mediaType`                                                                                | [models.AnthropicPlainTextSourceMediaType](../models/anthropicplaintextsourcemediatype.mdx) | ✔️                                                                         | N/A                                                                                        |
-| `type`                                                                                     | [models.AnthropicPlainTextSourceType](../models/anthropicplaintextsourcetype.mdx)           | ✔️                                                                         | N/A                                                                                        |

@@ -18,14 +18,19 @@ import {
 } from "./observabilityfilterrulesconfig.js";
 
 export type ObservabilityOtelCollectorDestinationConfig = {
-  endpoint: string;
   /**
    * Custom HTTP headers as a JSON object. For Axiom, use {"Authorization": "Bearer xaat-xxx", "X-Axiom-Dataset": "your-dataset"}
    */
   headers?: { [k: string]: string } | undefined;
+  endpoint: string;
 };
 
 export type ObservabilityOtelCollectorDestination = {
+  /**
+   * Human-readable name for the destination.
+   */
+  name: string | null;
+  type: "otel-collector";
   /**
    * Optional allowlist of OpenRouter API key hashes (`api_keys.hash`) whose traffic is forwarded to this destination. `null` means all keys.
    */
@@ -64,10 +69,6 @@ export type ObservabilityOtelCollectorDestination = {
    */
   id: string;
   /**
-   * Human-readable name for the destination.
-   */
-  name: string | null;
-  /**
    * When true, request/response bodies are not forwarded to this destination — only metadata.
    */
   privacyMode: boolean;
@@ -79,7 +80,6 @@ export type ObservabilityOtelCollectorDestination = {
    * Sampling rate for events sent to this destination, between 0.0001 and 1 (1 = 100%).
    */
   samplingRate: number;
-  type: "otel-collector";
   /**
    * ISO timestamp of when the destination was last updated.
    */
@@ -93,8 +93,8 @@ export type ObservabilityOtelCollectorDestination = {
 /** @internal */
 export const ObservabilityOtelCollectorDestinationConfig$inboundSchema:
   z.ZodType<ObservabilityOtelCollectorDestinationConfig, unknown> = z.object({
-    endpoint: z.string(),
     headers: z.record(z.string(), z.string()).optional(),
+    endpoint: z.string(),
   });
 
 export function observabilityOtelCollectorDestinationConfigFromJSON(
@@ -118,6 +118,8 @@ export const ObservabilityOtelCollectorDestination$inboundSchema: z.ZodType<
   ObservabilityOtelCollectorDestination,
   unknown
 > = z.object({
+  name: z.nullable(z.string()),
+  type: z.literal("otel-collector"),
   api_key_hashes: z.nullable(z.array(z.string())),
   broadcast_generation_cost: z.boolean(),
   broadcast_generation_cost_allocation: z.boolean(),
@@ -130,11 +132,9 @@ export const ObservabilityOtelCollectorDestination$inboundSchema: z.ZodType<
   enabled: z.boolean(),
   filter_rules: z.nullable(ObservabilityFilterRulesConfig$inboundSchema),
   id: z.string(),
-  name: z.nullable(z.string()),
   privacy_mode: z.boolean(),
   regions: z.array(ObservabilityDataRegion$inboundSchema),
   sampling_rate: z.number(),
-  type: z.literal("otel-collector"),
   updated_at: z.string(),
   workspace_id: z.string(),
 }).transform((v) => {

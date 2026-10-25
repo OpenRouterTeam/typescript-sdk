@@ -14,13 +14,13 @@ import { SDKValidationError } from "./errors/sdkvalidationerror.js";
 export type Legend = string | { [k: string]: any } | Array<any>;
 
 export type DecisionsScoreAnswer = {
+  type: "score";
   confidence?: number | undefined;
   legend?:
     | { [k: string]: string | { [k: string]: any } | Array<any> }
     | undefined;
   probabilities?: { [k: string]: number } | undefined;
   score: number;
-  type: "score";
 };
 
 /** @internal */
@@ -45,6 +45,7 @@ export const DecisionsScoreAnswer$inboundSchema: z.ZodType<
   DecisionsScoreAnswer,
   unknown
 > = z.object({
+  type: z.literal("score"),
   confidence: z.number().optional(),
   legend: z.record(
     z.string(),
@@ -52,7 +53,6 @@ export const DecisionsScoreAnswer$inboundSchema: z.ZodType<
   ).optional(),
   probabilities: z.record(z.string(), z.number()).optional(),
   score: z.number(),
-  type: z.literal("score"),
 });
 
 export function decisionsScoreAnswerFromJSON(

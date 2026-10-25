@@ -9,17 +9,17 @@ import * as z from "zod/v4";
  * Custom grammar response format
  */
 export type ChatFormatGrammarConfig = {
+  type: "grammar";
   /**
    * Custom grammar for text generation
    */
   grammar: string;
-  type: "grammar";
 };
 
 /** @internal */
 export type ChatFormatGrammarConfig$Outbound = {
-  grammar: string;
   type: "grammar";
+  grammar: string;
 };
 
 /** @internal */
@@ -27,8 +27,8 @@ export const ChatFormatGrammarConfig$outboundSchema: z.ZodType<
   ChatFormatGrammarConfig$Outbound,
   ChatFormatGrammarConfig
 > = z.object({
-  grammar: z.string(),
   type: z.literal("grammar"),
+  grammar: z.string(),
 });
 
 export function chatFormatGrammarConfigToJSON(

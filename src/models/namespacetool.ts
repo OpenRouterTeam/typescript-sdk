@@ -23,29 +23,38 @@ import {
   NamespaceFunctionTool$outboundSchema,
 } from "./namespacefunctiontool.js";
 
-export type NamespaceToolTool =
-  | NamespaceFunctionTool
-  | (CustomTool & { type: "custom" })
-  | discriminatedUnionTypes.Unknown<"type">;
-
 export const NamespaceToolType = {
   Namespace: "namespace",
 } as const;
 export type NamespaceToolType = ClosedEnum<typeof NamespaceToolType>;
 
+export type NamespaceToolTool =
+  | NamespaceFunctionTool
+  | (CustomTool & { type: "custom" })
+  | discriminatedUnionTypes.Unknown<"type">;
+
 /**
  * Groups function/custom tools under a shared namespace
  */
 export type NamespaceTool = {
-  description: string;
   name: string;
+  type: NamespaceToolType;
+  description: string;
   tools: Array<
     | NamespaceFunctionTool
     | (CustomTool & { type: "custom" })
     | discriminatedUnionTypes.Unknown<"type">
   >;
-  type: NamespaceToolType;
 };
+
+/** @internal */
+export const NamespaceToolType$inboundSchema: z.ZodEnum<
+  typeof NamespaceToolType
+> = z.enum(NamespaceToolType);
+/** @internal */
+export const NamespaceToolType$outboundSchema: z.ZodEnum<
+  typeof NamespaceToolType
+> = NamespaceToolType$inboundSchema;
 
 /** @internal */
 export const NamespaceToolTool$inboundSchema: z.ZodType<
@@ -87,19 +96,11 @@ export function namespaceToolToolFromJSON(
 }
 
 /** @internal */
-export const NamespaceToolType$inboundSchema: z.ZodEnum<
-  typeof NamespaceToolType
-> = z.enum(NamespaceToolType);
-/** @internal */
-export const NamespaceToolType$outboundSchema: z.ZodEnum<
-  typeof NamespaceToolType
-> = NamespaceToolType$inboundSchema;
-
-/** @internal */
 export const NamespaceTool$inboundSchema: z.ZodType<NamespaceTool, unknown> = z
   .object({
-    description: z.string(),
     name: z.string(),
+    type: NamespaceToolType$inboundSchema,
+    description: z.string(),
     tools: z.array(
       discriminatedUnion("type", {
         function: NamespaceFunctionTool$inboundSchema,
@@ -108,16 +109,15 @@ export const NamespaceTool$inboundSchema: z.ZodType<NamespaceTool, unknown> = z
         ),
       }),
     ),
-    type: NamespaceToolType$inboundSchema,
   });
 /** @internal */
 export type NamespaceTool$Outbound = {
-  description: string;
   name: string;
+  type: string;
+  description: string;
   tools: Array<
     NamespaceFunctionTool$Outbound | (CustomTool$Outbound & { type: "custom" })
   >;
-  type: string;
 };
 
 /** @internal */
@@ -125,15 +125,15 @@ export const NamespaceTool$outboundSchema: z.ZodType<
   NamespaceTool$Outbound,
   NamespaceTool
 > = z.object({
-  description: z.string(),
   name: z.string(),
+  type: NamespaceToolType$outboundSchema,
+  description: z.string(),
   tools: z.array(
     z.union([
       NamespaceFunctionTool$outboundSchema,
       CustomTool$outboundSchema.and(z.object({ type: z.literal("custom") })),
     ]),
   ),
-  type: NamespaceToolType$outboundSchema,
 });
 
 export function namespaceToolToJSON(namespaceTool: NamespaceTool): string {

@@ -13,11 +13,11 @@ import { SDKValidationError } from "./errors/sdkvalidationerror.js";
  * Emitted when `operation.diff` streaming completes for an `apply_patch_call`.
  */
 export type ApplyPatchCallOperationDiffDoneEvent = {
+  type: "response.apply_patch_call_operation_diff.done";
   diff: string;
   itemId: string;
   outputIndex: number;
   sequenceNumber: number;
-  type: "response.apply_patch_call_operation_diff.done";
 };
 
 /** @internal */
@@ -25,11 +25,11 @@ export const ApplyPatchCallOperationDiffDoneEvent$inboundSchema: z.ZodType<
   ApplyPatchCallOperationDiffDoneEvent,
   unknown
 > = z.object({
+  type: z.literal("response.apply_patch_call_operation_diff.done"),
   diff: z.string(),
   item_id: z.string(),
   output_index: z.int(),
   sequence_number: z.int(),
-  type: z.literal("response.apply_patch_call_operation_diff.done"),
 }).transform((v) => {
   return remap$(v, {
     "item_id": "itemId",

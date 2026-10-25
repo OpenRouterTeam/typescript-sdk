@@ -18,15 +18,20 @@ import {
 } from "./observabilityfilterrulesconfig.js";
 
 export type ObservabilitySentryDestinationConfig = {
-  dsn: string;
   /**
    * Custom HTTP headers to include in requests to this destination.
    */
   headers?: { [k: string]: string } | undefined;
+  dsn: string;
   otlpEndpoint: string;
 };
 
 export type ObservabilitySentryDestination = {
+  /**
+   * Human-readable name for the destination.
+   */
+  name: string | null;
+  type: "sentry";
   /**
    * Optional allowlist of OpenRouter API key hashes (`api_keys.hash`) whose traffic is forwarded to this destination. `null` means all keys.
    */
@@ -65,10 +70,6 @@ export type ObservabilitySentryDestination = {
    */
   id: string;
   /**
-   * Human-readable name for the destination.
-   */
-  name: string | null;
-  /**
    * When true, request/response bodies are not forwarded to this destination — only metadata.
    */
   privacyMode: boolean;
@@ -80,7 +81,6 @@ export type ObservabilitySentryDestination = {
    * Sampling rate for events sent to this destination, between 0.0001 and 1 (1 = 100%).
    */
   samplingRate: number;
-  type: "sentry";
   /**
    * ISO timestamp of when the destination was last updated.
    */
@@ -96,8 +96,8 @@ export const ObservabilitySentryDestinationConfig$inboundSchema: z.ZodType<
   ObservabilitySentryDestinationConfig,
   unknown
 > = z.object({
-  dsn: z.string(),
   headers: z.record(z.string(), z.string()).optional(),
+  dsn: z.string(),
   otlpEndpoint: z.string(),
 });
 
@@ -117,6 +117,8 @@ export const ObservabilitySentryDestination$inboundSchema: z.ZodType<
   ObservabilitySentryDestination,
   unknown
 > = z.object({
+  name: z.nullable(z.string()),
+  type: z.literal("sentry"),
   api_key_hashes: z.nullable(z.array(z.string())),
   broadcast_generation_cost: z.boolean(),
   broadcast_generation_cost_allocation: z.boolean(),
@@ -127,11 +129,9 @@ export const ObservabilitySentryDestination$inboundSchema: z.ZodType<
   enabled: z.boolean(),
   filter_rules: z.nullable(ObservabilityFilterRulesConfig$inboundSchema),
   id: z.string(),
-  name: z.nullable(z.string()),
   privacy_mode: z.boolean(),
   regions: z.array(ObservabilityDataRegion$inboundSchema),
   sampling_rate: z.number(),
-  type: z.literal("sentry"),
   updated_at: z.string(),
   workspace_id: z.string(),
 }).transform((v) => {

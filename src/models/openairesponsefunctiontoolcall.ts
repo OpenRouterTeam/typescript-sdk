@@ -17,11 +17,6 @@ import {
   ToolCallStatus$inboundSchema,
 } from "./toolcallstatus.js";
 
-export type OpenAIResponseFunctionToolCallSubagentItem = {
-  type: string;
-  additionalProperties?: { [k: string]: any } | undefined;
-};
-
 export const OpenAIResponseFunctionToolCallType = {
   FunctionCall: "function_call",
 } as const;
@@ -29,7 +24,14 @@ export type OpenAIResponseFunctionToolCallType = ClosedEnum<
   typeof OpenAIResponseFunctionToolCallType
 >;
 
+export type OpenAIResponseFunctionToolCallSubagentItem = {
+  type: string;
+  additionalProperties?: { [k: string]: any } | undefined;
+};
+
 export type OpenAIResponseFunctionToolCall = {
+  name: string;
+  type: OpenAIResponseFunctionToolCallType;
   arguments: string;
   /**
    * True when the model called a tool declared with `async: true` and may continue its turn before the output is returned. Return the result in a later request as a `function_call_output` with this `call_id`.
@@ -37,7 +39,6 @@ export type OpenAIResponseFunctionToolCall = {
   async?: boolean | undefined;
   callId: string;
   id?: string | undefined;
-  name: string;
   /**
    * Namespace qualifier for tools registered as part of a namespace tool group (e.g. an MCP server)
    */
@@ -51,8 +52,12 @@ export type OpenAIResponseFunctionToolCall = {
    * EXPERIMENTAL — subject to change without notice. The subagent's output items produced on this turn. Treat this as an opaque object; you must replay it in the request so that the subagent can continue execution of the tool with the same context. If a subagent created multiple parallel tool calls, only the first tool call will have this field. The other tool calls will only have `subagent_id`. Present only if the tool call originates from a subagent spawned by the `openrouter:subagent` server tool.
    */
   subagentItems?: Array<OpenAIResponseFunctionToolCallSubagentItem> | undefined;
-  type: OpenAIResponseFunctionToolCallType;
 };
+
+/** @internal */
+export const OpenAIResponseFunctionToolCallType$inboundSchema: z.ZodEnum<
+  typeof OpenAIResponseFunctionToolCallType
+> = z.enum(OpenAIResponseFunctionToolCallType);
 
 /** @internal */
 export const OpenAIResponseFunctionToolCallSubagentItem$inboundSchema:
@@ -82,27 +87,22 @@ export function openAIResponseFunctionToolCallSubagentItemFromJSON(
 }
 
 /** @internal */
-export const OpenAIResponseFunctionToolCallType$inboundSchema: z.ZodEnum<
-  typeof OpenAIResponseFunctionToolCallType
-> = z.enum(OpenAIResponseFunctionToolCallType);
-
-/** @internal */
 export const OpenAIResponseFunctionToolCall$inboundSchema: z.ZodType<
   OpenAIResponseFunctionToolCall,
   unknown
 > = z.object({
+  name: z.string(),
+  type: OpenAIResponseFunctionToolCallType$inboundSchema,
   arguments: z.string(),
   async: z.boolean().optional(),
   call_id: z.string(),
   id: z.string().optional(),
-  name: z.string(),
   namespace: z.string().optional(),
   status: ToolCallStatus$inboundSchema.optional(),
   subagent_id: z.string().optional(),
   subagent_items: z.array(
     z.lazy(() => OpenAIResponseFunctionToolCallSubagentItem$inboundSchema),
   ).optional(),
-  type: OpenAIResponseFunctionToolCallType$inboundSchema,
 }).transform((v) => {
   return remap$(v, {
     "call_id": "callId",

@@ -10,24 +10,24 @@ import { Result as SafeParseResult } from "../types/fp.js";
 import { SDKValidationError } from "./errors/sdkvalidationerror.js";
 
 export type AnthropicTextEditorCodeExecutionStrReplaceResult = {
+  type: "text_editor_code_execution_str_replace_result";
   lines: Array<string> | null;
   newLines: number | null;
   newStart: number | null;
   oldLines: number | null;
   oldStart: number | null;
-  type: "text_editor_code_execution_str_replace_result";
 };
 
 /** @internal */
 export const AnthropicTextEditorCodeExecutionStrReplaceResult$inboundSchema:
   z.ZodType<AnthropicTextEditorCodeExecutionStrReplaceResult, unknown> = z
     .object({
+      type: z.literal("text_editor_code_execution_str_replace_result"),
       lines: z.nullable(z.array(z.string())),
       new_lines: z.nullable(z.int()),
       new_start: z.nullable(z.int()),
       old_lines: z.nullable(z.int()),
       old_start: z.nullable(z.int()),
-      type: z.literal("text_editor_code_execution_str_replace_result"),
     }).transform((v) => {
       return remap$(v, {
         "new_lines": "newLines",

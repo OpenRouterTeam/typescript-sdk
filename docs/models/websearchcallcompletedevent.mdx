@@ -10,10 +10,10 @@ Web search call completed
 import { WebSearchCallCompletedEvent } from "@openrouter/sdk/models";
 
 let value: WebSearchCallCompletedEvent = {
+  type: "response.web_search_call.completed",
   itemId: "<id>",
   outputIndex: 871568,
   sequenceNumber: 0,
-  type: "response.web_search_call.completed",
 };
 ```
 
@@ -21,7 +21,7 @@ let value: WebSearchCallCompletedEvent = {
 
 | Field                                  | Type                                   | Required                               | Description                            |
 | -------------------------------------- | -------------------------------------- | -------------------------------------- | -------------------------------------- |
+| `type`                                 | *"response.web_search_call.completed"* | ✔️                     | N/A                                    |
 | `itemId`                               | *string*                               | ✔️                     | N/A                                    |
 | `outputIndex`                          | *number*                               | ✔️                     | N/A                                    |
 | `sequenceNumber`                       | *number*                               | ✔️                     | N/A                                    |
-| `type`                                 | *"response.web_search_call.completed"* | ✔️                     | N/A                                    |

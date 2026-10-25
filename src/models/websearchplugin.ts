@@ -29,11 +29,11 @@ export type WebSearchPluginType = ClosedEnum<typeof WebSearchPluginType>;
  * Approximate user location for location-biased search results. Passed through to native providers that support it (e.g. Anthropic).
  */
 export type UserLocation = {
+  type: WebSearchPluginType;
   city?: string | null | undefined;
   country?: string | null | undefined;
   region?: string | null | undefined;
   timezone?: string | null | undefined;
-  type: WebSearchPluginType;
 };
 
 export type WebSearchPlugin = {
@@ -78,11 +78,11 @@ export const WebSearchPluginType$outboundSchema: z.ZodEnum<
 
 /** @internal */
 export type UserLocation$Outbound = {
+  type: string;
   city?: string | null | undefined;
   country?: string | null | undefined;
   region?: string | null | undefined;
   timezone?: string | null | undefined;
-  type: string;
 };
 
 /** @internal */
@@ -90,11 +90,11 @@ export const UserLocation$outboundSchema: z.ZodType<
   UserLocation$Outbound,
   UserLocation
 > = z.object({
+  type: WebSearchPluginType$outboundSchema,
   city: z.nullable(z.string()).optional(),
   country: z.nullable(z.string()).optional(),
   region: z.nullable(z.string()).optional(),
   timezone: z.nullable(z.string()).optional(),
-  type: WebSearchPluginType$outboundSchema,
 });
 
 export function userLocationToJSON(userLocation: UserLocation): string {

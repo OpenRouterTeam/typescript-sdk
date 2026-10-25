@@ -10,14 +10,14 @@ import { remap as remap$ } from "../lib/primitives.js";
  * Stop after a tool with this name has been called.
  */
 export type StopServerToolsWhenHasToolCall = {
-  toolName: string;
   type: "has_tool_call";
+  toolName: string;
 };
 
 /** @internal */
 export type StopServerToolsWhenHasToolCall$Outbound = {
-  tool_name: string;
   type: "has_tool_call";
+  tool_name: string;
 };
 
 /** @internal */
@@ -25,8 +25,8 @@ export const StopServerToolsWhenHasToolCall$outboundSchema: z.ZodType<
   StopServerToolsWhenHasToolCall$Outbound,
   StopServerToolsWhenHasToolCall
 > = z.object({
-  toolName: z.string(),
   type: z.literal("has_tool_call"),
+  toolName: z.string(),
 }).transform((v) => {
   return remap$(v, {
     toolName: "tool_name",

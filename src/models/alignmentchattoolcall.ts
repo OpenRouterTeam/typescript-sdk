@@ -9,11 +9,6 @@ import { ClosedEnum } from "../types/enums.js";
 import { Result as SafeParseResult } from "../types/fp.js";
 import { SDKValidationError } from "./errors/sdkvalidationerror.js";
 
-export type AlignmentChatToolCallFunction = {
-  arguments: string;
-  name: string;
-};
-
 export const AlignmentChatToolCallType = {
   Function: "function",
 } as const;
@@ -21,19 +16,29 @@ export type AlignmentChatToolCallType = ClosedEnum<
   typeof AlignmentChatToolCallType
 >;
 
+export type AlignmentChatToolCallFunction = {
+  name: string;
+  arguments: string;
+};
+
 export type AlignmentChatToolCall = {
+  type: AlignmentChatToolCallType;
   function: AlignmentChatToolCallFunction;
   id: string;
-  type: AlignmentChatToolCallType;
 };
+
+/** @internal */
+export const AlignmentChatToolCallType$inboundSchema: z.ZodEnum<
+  typeof AlignmentChatToolCallType
+> = z.enum(AlignmentChatToolCallType);
 
 /** @internal */
 export const AlignmentChatToolCallFunction$inboundSchema: z.ZodType<
   AlignmentChatToolCallFunction,
   unknown
 > = z.object({
-  arguments: z.string(),
   name: z.string(),
+  arguments: z.string(),
 });
 
 export function alignmentChatToolCallFunctionFromJSON(
@@ -47,18 +52,13 @@ export function alignmentChatToolCallFunctionFromJSON(
 }
 
 /** @internal */
-export const AlignmentChatToolCallType$inboundSchema: z.ZodEnum<
-  typeof AlignmentChatToolCallType
-> = z.enum(AlignmentChatToolCallType);
-
-/** @internal */
 export const AlignmentChatToolCall$inboundSchema: z.ZodType<
   AlignmentChatToolCall,
   unknown
 > = z.object({
+  type: AlignmentChatToolCallType$inboundSchema,
   function: z.lazy(() => AlignmentChatToolCallFunction$inboundSchema),
   id: z.string(),
-  type: AlignmentChatToolCallType$inboundSchema,
 });
 
 export function alignmentChatToolCallFromJSON(

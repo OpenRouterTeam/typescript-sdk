@@ -8,13 +8,13 @@ title: "AnthropicToolSearchResult"
 import { AnthropicToolSearchResult } from "@openrouter/sdk/models";
 
 let value: AnthropicToolSearchResult = {
+  type: "tool_search_tool_search_result",
   toolReferences: [
     {
-      toolName: "my_tool",
       type: "tool_reference",
+      toolName: "my_tool",
     },
   ],
-  type: "tool_search_tool_search_result",
 };
 ```
 
@@ -22,5 +22,5 @@ let value: AnthropicToolSearchResult = {
 
 | Field                                                                  | Type                                                                   | Required                                                               | Description                                                            |
 | ---------------------------------------------------------------------- | ---------------------------------------------------------------------- | ---------------------------------------------------------------------- | ---------------------------------------------------------------------- |
-| `toolReferences`                                                       | [models.AnthropicToolReference](../models/anthropictoolreference.mdx)[] | ✔️                                                     | N/A                                                                    |
 | `type`                                                                 | *"tool_search_tool_search_result"*                                     | ✔️                                                     | N/A                                                                    |
+| `toolReferences`                                                       | [models.AnthropicToolReference](../models/anthropictoolreference.mdx)[] | ✔️                                                     | N/A                                                                    |

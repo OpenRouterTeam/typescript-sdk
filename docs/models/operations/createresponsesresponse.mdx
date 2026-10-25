@@ -20,15 +20,15 @@ const value: models.OpenResponsesResult = {
   object: "response",
   output: [
     {
+      type: "message",
       content: [
         {
-          text: "Hello! How can I help you today?",
           type: "output_text",
+          text: "Hello! How can I help you today?",
         },
       ],
       id: "msg-abc123",
       role: "assistant",
-      type: "message",
     },
   ],
   parallelToolCalls: true,

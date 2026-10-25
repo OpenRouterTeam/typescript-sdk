@@ -10,10 +10,10 @@ Emitted when the openrouter:fusion tool call finishes.
 import { FusionCallCompletedEvent } from "@openrouter/sdk/models";
 
 let value: FusionCallCompletedEvent = {
+  type: "response.fusion_call.completed",
   itemId: "<id>",
   outputIndex: 464662,
   sequenceNumber: 0,
-  type: "response.fusion_call.completed",
 };
 ```
 
@@ -21,7 +21,7 @@ let value: FusionCallCompletedEvent = {
 
 | Field                              | Type                               | Required                           | Description                        |
 | ---------------------------------- | ---------------------------------- | ---------------------------------- | ---------------------------------- |
+| `type`                             | *"response.fusion_call.completed"* | ✔️                 | N/A                                |
 | `itemId`                           | *string*                           | ✔️                 | N/A                                |
 | `outputIndex`                      | *number*                           | ✔️                 | N/A                                |
 | `sequenceNumber`                   | *number*                           | ✔️                 | N/A                                |
-| `type`                             | *"response.fusion_call.completed"* | ✔️                 | N/A                                |

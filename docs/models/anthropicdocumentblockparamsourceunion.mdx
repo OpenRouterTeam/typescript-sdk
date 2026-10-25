@@ -8,9 +8,9 @@ title: "AnthropicDocumentBlockParamSourceUnion"
 
 ```typescript
 const value: models.AnthropicBase64PdfSource = {
+  type: "base64",
   data: "JVBERi0x...",
   mediaType: "application/pdf",
-  type: "base64",
 };
 ```
 
@@ -18,9 +18,9 @@ const value: models.AnthropicBase64PdfSource = {
 
 ```typescript
 const value: models.AnthropicPlainTextSource = {
+  type: "text",
   data: "Hello, world!",
   mediaType: "text/plain",
-  type: "text",
 };
 ```
 
@@ -28,8 +28,8 @@ const value: models.AnthropicPlainTextSource = {
 
 ```typescript
 const value: models.SourceContent = {
-  content: "<value>",
   type: "content",
+  content: "<value>",
 };
 ```
 
@@ -37,8 +37,8 @@ const value: models.SourceContent = {
 
 ```typescript
 const value: models.AnthropicUrlPdfSource = {
-  type: "url",
   url: "https://example.com/document.pdf",
+  type: "url",
 };
 ```
 
@@ -46,8 +46,8 @@ const value: models.AnthropicUrlPdfSource = {
 
 ```typescript
 const value: models.AnthropicFileDocumentSource = {
-  fileId: "or_file_011CNha8iCJcU1wXNR6q4V8w",
   type: "file",
+  fileId: "or_file_011CNha8iCJcU1wXNR6q4V8w",
 };
 ```
 

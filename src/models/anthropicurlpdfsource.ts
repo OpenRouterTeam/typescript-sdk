@@ -6,14 +6,14 @@
 import * as z from "zod/v4";
 
 export type AnthropicUrlPdfSource = {
-  type: "url";
   url: string;
+  type: "url";
 };
 
 /** @internal */
 export type AnthropicUrlPdfSource$Outbound = {
-  type: "url";
   url: string;
+  type: "url";
 };
 
 /** @internal */
@@ -21,8 +21,8 @@ export const AnthropicUrlPdfSource$outboundSchema: z.ZodType<
   AnthropicUrlPdfSource$Outbound,
   AnthropicUrlPdfSource
 > = z.object({
-  type: z.literal("url"),
   url: z.string(),
+  type: z.literal("url"),
 });
 
 export function anthropicUrlPdfSourceToJSON(

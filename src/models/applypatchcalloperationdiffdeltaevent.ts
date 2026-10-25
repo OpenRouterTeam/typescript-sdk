@@ -13,11 +13,11 @@ import { SDKValidationError } from "./errors/sdkvalidationerror.js";
  * Incremental chunk of `operation.diff` for an `apply_patch_call`. Matches OpenAI's streaming shape.
  */
 export type ApplyPatchCallOperationDiffDeltaEvent = {
+  type: "response.apply_patch_call_operation_diff.delta";
   delta: string;
   itemId: string;
   outputIndex: number;
   sequenceNumber: number;
-  type: "response.apply_patch_call_operation_diff.delta";
 };
 
 /** @internal */
@@ -25,11 +25,11 @@ export const ApplyPatchCallOperationDiffDeltaEvent$inboundSchema: z.ZodType<
   ApplyPatchCallOperationDiffDeltaEvent,
   unknown
 > = z.object({
+  type: z.literal("response.apply_patch_call_operation_diff.delta"),
   delta: z.string(),
   item_id: z.string(),
   output_index: z.int(),
   sequence_number: z.int(),
-  type: z.literal("response.apply_patch_call_operation_diff.delta"),
 }).transform((v) => {
   return remap$(v, {
     "item_id": "itemId",

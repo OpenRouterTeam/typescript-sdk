@@ -12,6 +12,19 @@ import { Result as SafeParseResult } from "../types/fp.js";
 import { SDKValidationError } from "./errors/sdkvalidationerror.js";
 
 /**
+ * Dataset version.
+ */
+export const UnifiedBenchmarksMetaVersion = {
+  V1: "v1",
+} as const;
+/**
+ * Dataset version.
+ */
+export type UnifiedBenchmarksMetaVersion = ClosedEnum<
+  typeof UnifiedBenchmarksMetaVersion
+>;
+
+/**
  * The source filter applied, or null when all sources are returned.
  */
 export const UnifiedBenchmarksMetaSource = {
@@ -26,20 +39,11 @@ export type UnifiedBenchmarksMetaSource = OpenEnum<
   typeof UnifiedBenchmarksMetaSource
 >;
 
-/**
- * Dataset version.
- */
-export const UnifiedBenchmarksMetaVersion = {
-  V1: "v1",
-} as const;
-/**
- * Dataset version.
- */
-export type UnifiedBenchmarksMetaVersion = ClosedEnum<
-  typeof UnifiedBenchmarksMetaVersion
->;
-
 export type UnifiedBenchmarksMeta = {
+  /**
+   * Dataset version.
+   */
+  version: UnifiedBenchmarksMetaVersion;
   /**
    * ISO-8601 timestamp of when this data was last updated.
    */
@@ -64,11 +68,12 @@ export type UnifiedBenchmarksMeta = {
    * The task_type filter applied, or null if showing all.
    */
   taskType: string | null;
-  /**
-   * Dataset version.
-   */
-  version: UnifiedBenchmarksMetaVersion;
 };
+
+/** @internal */
+export const UnifiedBenchmarksMetaVersion$inboundSchema: z.ZodEnum<
+  typeof UnifiedBenchmarksMetaVersion
+> = z.enum(UnifiedBenchmarksMetaVersion);
 
 /** @internal */
 export const UnifiedBenchmarksMetaSource$inboundSchema: z.ZodType<
@@ -77,22 +82,17 @@ export const UnifiedBenchmarksMetaSource$inboundSchema: z.ZodType<
 > = openEnums.inboundSchema(UnifiedBenchmarksMetaSource);
 
 /** @internal */
-export const UnifiedBenchmarksMetaVersion$inboundSchema: z.ZodEnum<
-  typeof UnifiedBenchmarksMetaVersion
-> = z.enum(UnifiedBenchmarksMetaVersion);
-
-/** @internal */
 export const UnifiedBenchmarksMeta$inboundSchema: z.ZodType<
   UnifiedBenchmarksMeta,
   unknown
 > = z.object({
+  version: UnifiedBenchmarksMetaVersion$inboundSchema,
   as_of: z.string(),
   citation: z.nullable(z.string()),
   model_count: z.int(),
   source: z.nullable(UnifiedBenchmarksMetaSource$inboundSchema),
   source_url: z.nullable(z.string()),
   task_type: z.nullable(z.string()),
-  version: UnifiedBenchmarksMetaVersion$inboundSchema,
 }).transform((v) => {
   return remap$(v, {
     "as_of": "asOf",

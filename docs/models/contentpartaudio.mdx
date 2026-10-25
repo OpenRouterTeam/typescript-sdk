@@ -8,10 +8,10 @@ title: "ContentPartAudio"
 import { ContentPartAudio } from "@openrouter/sdk/models";
 
 let value: ContentPartAudio = {
+  type: "audio_url",
   audioUrl: {
     url: "https://weary-poppy.biz",
   },
-  type: "audio_url",
 };
 ```
 
@@ -19,5 +19,5 @@ let value: ContentPartAudio = {
 
 | Field                                    | Type                                     | Required                                 | Description                              |
 | ---------------------------------------- | ---------------------------------------- | ---------------------------------------- | ---------------------------------------- |
-| `audioUrl`                               | [models.AudioUrl](../models/audiourl.mdx) | ✔️                       | N/A                                      |
 | `type`                                   | *"audio_url"*                            | ✔️                       | N/A                                      |
+| `audioUrl`                               | [models.AudioUrl](../models/audiourl.mdx) | ✔️                       | N/A                                      |

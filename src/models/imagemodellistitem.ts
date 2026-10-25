@@ -21,12 +21,16 @@ import {
  * A single image model in the discovery listing.
  */
 export type ImageModelListItem = {
+  /**
+   * Display name
+   */
+  name: string;
+  description: string;
   architecture: ImageModelArchitecture;
   /**
    * Unix timestamp (seconds) of when the model was created
    */
   created: number;
-  description: string;
   /**
    * Relative URL to the full per-endpoint records for this model
    */
@@ -35,10 +39,6 @@ export type ImageModelListItem = {
    * Model slug
    */
   id: string;
-  /**
-   * Display name
-   */
-  name: string;
   /**
    * Union of supported parameters across every endpoint of this model. Coarse discovery aid; the definitive per-endpoint set is behind the endpoints URL.
    */
@@ -54,12 +54,12 @@ export const ImageModelListItem$inboundSchema: z.ZodType<
   ImageModelListItem,
   unknown
 > = z.object({
+  name: z.string(),
+  description: z.string(),
   architecture: ImageModelArchitecture$inboundSchema,
   created: z.int(),
-  description: z.string(),
   endpoints: z.string(),
   id: z.string(),
-  name: z.string(),
   supported_parameters: z.record(
     z.string(),
     CapabilityDescriptor$inboundSchema,

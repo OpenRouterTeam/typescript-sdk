@@ -95,6 +95,10 @@ export type ProviderPreferencesSort = ProviderSort | ProviderSortConfig;
  */
 export type ProviderPreferences = {
   /**
+   * Provider-specific options keyed by provider slug. Only options for the matched provider are forwarded; the rest are ignored. Unrecognized keys are silently dropped.
+   */
+  options?: ProviderOptions | undefined;
+  /**
    * Whether to allow backup providers to serve requests
    *
    * @remarks
@@ -127,10 +131,6 @@ export type ProviderPreferences = {
    * List of provider slugs to allow. If provided, this list is merged with your account-wide allowed provider settings for this request.
    */
   only?: Array<ProviderName | string> | null | undefined;
-  /**
-   * Provider-specific options keyed by provider slug. Only options for the matched provider are forwarded; the rest are ignored. Unrecognized keys are silently dropped.
-   */
-  options?: ProviderOptions | undefined;
   /**
    * An ordered list of provider slugs. The router will attempt to use the first provider in the subset of this list that supports your requested model, and fall back to the next if it is unavailable. If no providers are available, the request will fail with an error message.
    */
@@ -260,13 +260,13 @@ export function providerPreferencesSortToJSON(
 
 /** @internal */
 export type ProviderPreferences$Outbound = {
+  options?: ProviderOptions$Outbound | undefined;
   allow_fallbacks?: boolean | null | undefined;
   data_collection?: string | null | undefined;
   enforce_distillable_text?: boolean | null | undefined;
   ignore?: Array<string | string> | null | undefined;
   max_price?: MaxPrice$Outbound | undefined;
   only?: Array<string | string> | null | undefined;
-  options?: ProviderOptions$Outbound | undefined;
   order?: Array<string | string> | null | undefined;
   preferred_max_latency?: PreferredMaxLatency$Outbound | null | undefined;
   preferred_min_throughput?: PreferredMinThroughput$Outbound | null | undefined;
@@ -281,6 +281,7 @@ export const ProviderPreferences$outboundSchema: z.ZodType<
   ProviderPreferences$Outbound,
   ProviderPreferences
 > = z.object({
+  options: ProviderOptions$outboundSchema.optional(),
   allowFallbacks: z.nullable(z.boolean()).optional(),
   dataCollection: z.nullable(DataCollection$outboundSchema).optional(),
   enforceDistillableText: z.nullable(z.boolean()).optional(),
@@ -290,7 +291,6 @@ export const ProviderPreferences$outboundSchema: z.ZodType<
   maxPrice: z.lazy(() => MaxPrice$outboundSchema).optional(),
   only: z.nullable(z.array(z.union([ProviderName$outboundSchema, z.string()])))
     .optional(),
-  options: ProviderOptions$outboundSchema.optional(),
   order: z.nullable(z.array(z.union([ProviderName$outboundSchema, z.string()])))
     .optional(),
   preferredMaxLatency: z.nullable(PreferredMaxLatency$outboundSchema)

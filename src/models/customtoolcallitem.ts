@@ -20,6 +20,8 @@ export type CustomToolCallItemType = ClosedEnum<typeof CustomToolCallItemType>;
  * A call to a custom (freeform-grammar) tool created by the model — distinct from `function_call`. Used for tools like Codex CLI's `apply_patch` whose payload is opaque text rather than JSON arguments.
  */
 export type CustomToolCallItem = {
+  name: string;
+  type: CustomToolCallItemType;
   /**
    * True when the model called a tool declared with `async: true` and may continue its turn before the output is returned. Return the result in a later request as a `function_call_output` with this `call_id`.
    */
@@ -27,13 +29,11 @@ export type CustomToolCallItem = {
   callId: string;
   id?: string | null | undefined;
   input: string;
-  name: string;
   /**
    * Namespace qualifier for tools registered as part of a namespace tool group (e.g. an MCP server)
    */
   namespace?: string | null | undefined;
   status?: ToolCallStatus | null | undefined;
-  type: CustomToolCallItemType;
 };
 
 /** @internal */
@@ -43,14 +43,14 @@ export const CustomToolCallItemType$outboundSchema: z.ZodEnum<
 
 /** @internal */
 export type CustomToolCallItem$Outbound = {
+  name: string;
+  type: string;
   async?: boolean | null | undefined;
   call_id: string;
   id?: string | null | undefined;
   input: string;
-  name: string;
   namespace?: string | null | undefined;
   status?: string | null | undefined;
-  type: string;
 };
 
 /** @internal */
@@ -58,14 +58,14 @@ export const CustomToolCallItem$outboundSchema: z.ZodType<
   CustomToolCallItem$Outbound,
   CustomToolCallItem
 > = z.object({
+  name: z.string(),
+  type: CustomToolCallItemType$outboundSchema,
   async: z.nullable(z.boolean()).optional(),
   callId: z.string(),
   id: z.nullable(z.string()).optional(),
   input: z.string(),
-  name: z.string(),
   namespace: z.nullable(z.string()).optional(),
   status: z.nullable(ToolCallStatus$outboundSchema).optional(),
-  type: CustomToolCallItemType$outboundSchema,
 }).transform((v) => {
   return remap$(v, {
     callId: "call_id",

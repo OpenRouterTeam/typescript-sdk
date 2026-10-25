@@ -369,8 +369,8 @@ export type ResponsesRequestAllowedCaller = OpenEnum<
  */
 export type ResponsesRequestToolFunction = {
   description?: string | null | undefined;
-  name: string;
   parameters: { [k: string]: any } | null;
+  name: string;
   strict?: boolean | null | undefined;
   type: "function";
   allowedCallers?: Array<ResponsesRequestAllowedCaller> | null | undefined;
@@ -425,6 +425,10 @@ export type ResponsesRequestToolUnion =
  * Request schema for Responses endpoint
  */
 export type ResponsesRequest = {
+  /**
+   * Metadata for observability and tracing. Known keys (trace_id, trace_name, span_name, generation_name, parent_span_id) have special handling. Additional keys are passed through as custom metadata to configured broadcast destinations.
+   */
+  trace?: TraceConfig | undefined;
   background?: boolean | null | undefined;
   /**
    * Enable automatic prompt caching. When set at the top level, the system automatically applies cache breakpoints to the last cacheable block in the request. When set on an individual content block, it marks an explicit cache breakpoint; block-level markers also work on OpenAI models that support explicit prompt caching — OpenRouter converts them to the provider's native format.
@@ -574,10 +578,6 @@ export type ResponsesRequest = {
   topK?: number | undefined;
   topLogprobs?: number | null | undefined;
   topP?: number | null | undefined;
-  /**
-   * Metadata for observability and tracing. Known keys (trace_id, trace_name, span_name, generation_name, parent_span_id) have special handling. Additional keys are passed through as custom metadata to configured broadcast destinations.
-   */
-  trace?: TraceConfig | undefined;
   truncation?: OpenAIResponsesTruncation | null | undefined;
   /**
    * A unique identifier representing your end-user, which helps distinguish between different users of your app. This allows your app to identify specific users in case of abuse reports, preventing your entire app from being affected by the actions of individual users. Maximum of 256 characters.
@@ -696,8 +696,8 @@ export const ResponsesRequestAllowedCaller$outboundSchema: z.ZodType<
 /** @internal */
 export type ResponsesRequestToolFunction$Outbound = {
   description?: string | null | undefined;
-  name: string;
   parameters: { [k: string]: any } | null;
+  name: string;
   strict?: boolean | null | undefined;
   type: "function";
   allowed_callers?: Array<string> | null | undefined;
@@ -712,8 +712,8 @@ export const ResponsesRequestToolFunction$outboundSchema: z.ZodType<
   ResponsesRequestToolFunction
 > = z.object({
   description: z.nullable(z.string()).optional(),
-  name: z.string(),
   parameters: z.nullable(z.record(z.string(), z.any())),
+  name: z.string(),
   strict: z.nullable(z.boolean()).optional(),
   type: z.literal("function"),
   allowedCallers: z.nullable(
@@ -870,6 +870,7 @@ export function responsesRequestToolUnionToJSON(
 
 /** @internal */
 export type ResponsesRequest$Outbound = {
+  trace?: TraceConfig$Outbound | undefined;
   background?: boolean | null | undefined;
   cache_control?: AnthropicCacheControlDirective$Outbound | undefined;
   debug?: ChatDebugOptions$Outbound | undefined;
@@ -970,7 +971,6 @@ export type ResponsesRequest$Outbound = {
   top_k?: number | undefined;
   top_logprobs?: number | null | undefined;
   top_p?: number | null | undefined;
-  trace?: TraceConfig$Outbound | undefined;
   truncation?: string | null | undefined;
   user?: string | undefined;
 };
@@ -980,6 +980,7 @@ export const ResponsesRequest$outboundSchema: z.ZodType<
   ResponsesRequest$Outbound,
   ResponsesRequest
 > = z.object({
+  trace: TraceConfig$outboundSchema.optional(),
   background: z.nullable(z.boolean()).optional(),
   cacheControl: AnthropicCacheControlDirective$outboundSchema.optional(),
   debug: ChatDebugOptions$outboundSchema.optional(),
@@ -1120,7 +1121,6 @@ export const ResponsesRequest$outboundSchema: z.ZodType<
   topK: z.int().optional(),
   topLogprobs: z.nullable(z.int()).optional(),
   topP: z.nullable(z.number()).optional(),
-  trace: TraceConfig$outboundSchema.optional(),
   truncation: z.nullable(OpenAIResponsesTruncation$outboundSchema).optional(),
   user: z.string().optional(),
 }).transform((v) => {

@@ -8,11 +8,11 @@ title: "DecisionsBoxQuestion"
 import { DecisionsBoxQuestion } from "@openrouter/sdk/models";
 
 let value: DecisionsBoxQuestion = {
+  type: "box",
   instructions: {
     "key": "<value>",
     "key1": "<value>",
   },
-  type: "box",
 };
 ```
 
@@ -20,5 +20,5 @@ let value: DecisionsBoxQuestion = {
 
 | Field                                                             | Type                                                              | Required                                                          | Description                                                       |
 | ----------------------------------------------------------------- | ----------------------------------------------------------------- | ----------------------------------------------------------------- | ----------------------------------------------------------------- |
-| `instructions`                                                    | *models.DecisionsBoxQuestionInstructions*                         | ✔️                                                | A plain string, or a JSON object or array of structured guidance. |
 | `type`                                                            | *"box"*                                                           | ✔️                                                | N/A                                                               |
+| `instructions`                                                    | *models.DecisionsBoxQuestionInstructions*                         | ✔️                                                | A plain string, or a JSON object or array of structured guidance. |

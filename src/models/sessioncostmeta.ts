@@ -23,13 +23,13 @@ export type SessionCostMetaVersion = ClosedEnum<typeof SessionCostMetaVersion>;
 
 export type SessionCostMeta = {
   /**
-   * ISO-8601 timestamp when the response was generated.
-   */
-  asOf: string;
-  /**
    * Dataset version.
    */
   version: SessionCostMetaVersion;
+  /**
+   * ISO-8601 timestamp when the response was generated.
+   */
+  asOf: string;
   /**
    * Number of days in the weekly session sample window, or null when no snapshot is published.
    */
@@ -50,8 +50,8 @@ export const SessionCostMeta$inboundSchema: z.ZodType<
   SessionCostMeta,
   unknown
 > = z.object({
-  as_of: z.string(),
   version: SessionCostMetaVersion$inboundSchema,
+  as_of: z.string(),
   window_days: z.nullable(z.int()),
   window_end_date: z.nullable(z.string()),
 }).transform((v) => {

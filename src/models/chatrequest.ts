@@ -279,6 +279,10 @@ export type ChatRequestStop = string | Array<string>;
  */
 export type ChatRequest = {
   /**
+   * Metadata for observability and tracing. Known keys (trace_id, trace_name, span_name, generation_name, parent_span_id) have special handling. Additional keys are passed through as custom metadata to configured broadcast destinations.
+   */
+  trace?: TraceConfig | undefined;
+  /**
    * Enable automatic prompt caching. When set at the top level, the system automatically applies cache breakpoints to the last cacheable block in the request. When set on an individual content block, it marks an explicit cache breakpoint; block-level markers also work on OpenAI models that support explicit prompt caching — OpenRouter converts them to the provider's native format.
    */
   cacheControl?: AnthropicCacheControlDirective | undefined;
@@ -459,10 +463,6 @@ export type ChatRequest = {
    */
   topP?: number | null | undefined;
   /**
-   * Metadata for observability and tracing. Known keys (trace_id, trace_name, span_name, generation_name, parent_span_id) have special handling. Additional keys are passed through as custom metadata to configured broadcast destinations.
-   */
-  trace?: TraceConfig | undefined;
-  /**
    * Per-end-user identifier for abuse isolation. Use a stable ID, hash, or pseudonym. When a provider requires a user identity, OpenRouter folds it into the hashed identity sent upstream and never forwards it raw. If omitted, requests use an account-level identity, so provider policy blocks can affect the whole account.
    */
   user?: string | undefined;
@@ -601,6 +601,7 @@ export function chatRequestStopToJSON(
 
 /** @internal */
 export type ChatRequest$Outbound = {
+  trace?: TraceConfig$Outbound | undefined;
   cache_control?: AnthropicCacheControlDirective$Outbound | undefined;
   debug?: ChatDebugOptions$Outbound | undefined;
   deferred_tools?: DeferredToolsControl$Outbound | undefined;
@@ -666,7 +667,6 @@ export type ChatRequest$Outbound = {
   top_k?: number | null | undefined;
   top_logprobs?: number | null | undefined;
   top_p?: number | null | undefined;
-  trace?: TraceConfig$Outbound | undefined;
   user?: string | undefined;
 };
 
@@ -675,6 +675,7 @@ export const ChatRequest$outboundSchema: z.ZodType<
   ChatRequest$Outbound,
   ChatRequest
 > = z.object({
+  trace: TraceConfig$outboundSchema.optional(),
   cacheControl: AnthropicCacheControlDirective$outboundSchema.optional(),
   debug: ChatDebugOptions$outboundSchema.optional(),
   deferredTools: DeferredToolsControl$outboundSchema.optional(),
@@ -740,7 +741,6 @@ export const ChatRequest$outboundSchema: z.ZodType<
   topK: z.nullable(z.int()).optional(),
   topLogprobs: z.nullable(z.int()).optional(),
   topP: z.nullable(z.number()).optional(),
-  trace: TraceConfig$outboundSchema.optional(),
   user: z.string().optional(),
 }).transform((v) => {
   return remap$(v, {

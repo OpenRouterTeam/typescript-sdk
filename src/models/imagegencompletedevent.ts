@@ -18,6 +18,10 @@ import {
  */
 export type ImageGenCompletedEvent = {
   /**
+   * The event type
+   */
+  type: "image_generation.completed";
+  /**
    * Base64-encoded final image data
    */
   b64Json: string;
@@ -30,10 +34,6 @@ export type ImageGenCompletedEvent = {
    */
   mediaType?: string | undefined;
   /**
-   * The event type
-   */
-  type: "image_generation.completed";
-  /**
    * Token and cost usage for the image generation request, when available
    */
   usage?: ImageGenerationUsage | undefined;
@@ -44,10 +44,10 @@ export const ImageGenCompletedEvent$inboundSchema: z.ZodType<
   ImageGenCompletedEvent,
   unknown
 > = z.object({
+  type: z.literal("image_generation.completed"),
   b64_json: z.string(),
   created: z.int(),
   media_type: z.string().optional(),
-  type: z.literal("image_generation.completed"),
   usage: ImageGenerationUsage$inboundSchema.optional(),
 }).transform((v) => {
   return remap$(v, {

@@ -8,9 +8,9 @@ title: "AnthropicToolSearchContent"
 
 ```typescript
 const value: models.AnthropicToolSearchResultError = {
+  type: "tool_search_tool_result_error",
   errorCode: "unavailable",
   errorMessage: "<value>",
-  type: "tool_search_tool_result_error",
 };
 ```
 
@@ -18,13 +18,13 @@ const value: models.AnthropicToolSearchResultError = {
 
 ```typescript
 const value: models.AnthropicToolSearchResult = {
+  type: "tool_search_tool_search_result",
   toolReferences: [
     {
-      toolName: "my_tool",
       type: "tool_reference",
+      toolName: "my_tool",
     },
   ],
-  type: "tool_search_tool_search_result",
 };
 ```
 

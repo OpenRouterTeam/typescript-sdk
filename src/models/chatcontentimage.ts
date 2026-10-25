@@ -27,21 +27,21 @@ export type ChatContentImageDetail = OpenEnum<typeof ChatContentImageDetail>;
 
 export type ChatContentImageImageUrl = {
   /**
-   * Image detail level for vision models. `original` is an OpenRouter extension (not in the OpenAI Chat Completions spec) requesting true original-resolution media; it is downgraded to `high` for providers that lack an original-resolution tier.
-   */
-  detail?: ChatContentImageDetail | undefined;
-  /**
    * URL of the image (data: URLs supported)
    */
   url: string;
+  /**
+   * Image detail level for vision models. `original` is an OpenRouter extension (not in the OpenAI Chat Completions spec) requesting true original-resolution media; it is downgraded to `high` for providers that lack an original-resolution tier.
+   */
+  detail?: ChatContentImageDetail | undefined;
 };
 
 /**
  * Image content part for vision models
  */
 export type ChatContentImage = {
-  imageUrl: ChatContentImageImageUrl;
   type: "image_url";
+  imageUrl: ChatContentImageImageUrl;
 };
 
 /** @internal */
@@ -60,13 +60,13 @@ export const ChatContentImageImageUrl$inboundSchema: z.ZodType<
   ChatContentImageImageUrl,
   unknown
 > = z.object({
-  detail: ChatContentImageDetail$inboundSchema.optional(),
   url: z.string(),
+  detail: ChatContentImageDetail$inboundSchema.optional(),
 });
 /** @internal */
 export type ChatContentImageImageUrl$Outbound = {
-  detail?: string | undefined;
   url: string;
+  detail?: string | undefined;
 };
 
 /** @internal */
@@ -74,8 +74,8 @@ export const ChatContentImageImageUrl$outboundSchema: z.ZodType<
   ChatContentImageImageUrl$Outbound,
   ChatContentImageImageUrl
 > = z.object({
-  detail: ChatContentImageDetail$outboundSchema.optional(),
   url: z.string(),
+  detail: ChatContentImageDetail$outboundSchema.optional(),
 });
 
 export function chatContentImageImageUrlToJSON(
@@ -100,8 +100,8 @@ export const ChatContentImage$inboundSchema: z.ZodType<
   ChatContentImage,
   unknown
 > = z.object({
-  image_url: z.lazy(() => ChatContentImageImageUrl$inboundSchema),
   type: z.literal("image_url"),
+  image_url: z.lazy(() => ChatContentImageImageUrl$inboundSchema),
 }).transform((v) => {
   return remap$(v, {
     "image_url": "imageUrl",
@@ -109,8 +109,8 @@ export const ChatContentImage$inboundSchema: z.ZodType<
 });
 /** @internal */
 export type ChatContentImage$Outbound = {
-  image_url: ChatContentImageImageUrl$Outbound;
   type: "image_url";
+  image_url: ChatContentImageImageUrl$Outbound;
 };
 
 /** @internal */
@@ -118,8 +118,8 @@ export const ChatContentImage$outboundSchema: z.ZodType<
   ChatContentImage$Outbound,
   ChatContentImage
 > = z.object({
-  imageUrl: z.lazy(() => ChatContentImageImageUrl$outboundSchema),
   type: z.literal("image_url"),
+  imageUrl: z.lazy(() => ChatContentImageImageUrl$outboundSchema),
 }).transform((v) => {
   return remap$(v, {
     imageUrl: "image_url",

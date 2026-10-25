@@ -56,6 +56,10 @@ export type STTRequestDataCollection = OpenEnum<
  */
 export type STTRequestProvider = {
   /**
+   * Provider-specific options keyed by provider slug. Only options for the matched provider are forwarded; the rest are ignored. Unrecognized keys are silently dropped.
+   */
+  options?: ProviderOptions | undefined;
+  /**
    * Data collection setting. If no available model provider meets the requirement, your request will return an error.
    *
    * @remarks
@@ -64,10 +68,6 @@ export type STTRequestProvider = {
    * - deny: use only providers which do not collect user data.
    */
   dataCollection?: STTRequestDataCollection | null | undefined;
-  /**
-   * Provider-specific options keyed by provider slug. Only options for the matched provider are forwarded; the rest are ignored. Unrecognized keys are silently dropped.
-   */
-  options?: ProviderOptions | undefined;
   /**
    * Whether to restrict routing to only ZDR (Zero Data Retention) endpoints. When true, only endpoints that do not retain prompts will be used.
    */
@@ -92,6 +92,10 @@ export type STTRequestResponseFormat = OpenEnum<
  * Speech-to-text request input. Accepts a JSON body with input_audio containing base64-encoded audio or a URL the provider downloads.
  */
 export type STTRequest = {
+  /**
+   * Metadata for observability and tracing. Known keys (trace_id, trace_name, span_name, generation_name, parent_span_id) have special handling. Additional keys are passed through as custom metadata to configured broadcast destinations.
+   */
+  trace?: TraceConfig | undefined;
   /**
    * Label each word with the speaker who said it. Speaker labels are returned on the words array (speaker, speaker_label), so response_format must be "verbose_json" (a "json" request is rejected with a 400) and word timestamps are included even when timestamp_granularities omits "word". Only supported by some providers; the request is rejected with a 400 when the selected model cannot diarize. Providers may charge extra.
    */
@@ -133,10 +137,6 @@ export type STTRequest = {
    */
   timestampGranularities?: Array<STTTimestampGranularity> | undefined;
   /**
-   * Metadata for observability and tracing. Known keys (trace_id, trace_name, span_name, generation_name, parent_span_id) have special handling. Additional keys are passed through as custom metadata to configured broadcast destinations.
-   */
-  trace?: TraceConfig | undefined;
-  /**
    * A unique identifier representing your end-user. Forwarded to Broadcast and private logging as the end-user id; never sent to the provider.
    */
   user?: string | undefined;
@@ -150,8 +150,8 @@ export const STTRequestDataCollection$outboundSchema: z.ZodType<
 
 /** @internal */
 export type STTRequestProvider$Outbound = {
-  data_collection?: string | null | undefined;
   options?: ProviderOptions$Outbound | undefined;
+  data_collection?: string | null | undefined;
   zdr?: boolean | null | undefined;
 };
 
@@ -160,9 +160,9 @@ export const STTRequestProvider$outboundSchema: z.ZodType<
   STTRequestProvider$Outbound,
   STTRequestProvider
 > = z.object({
+  options: ProviderOptions$outboundSchema.optional(),
   dataCollection: z.nullable(STTRequestDataCollection$outboundSchema)
     .optional(),
-  options: ProviderOptions$outboundSchema.optional(),
   zdr: z.nullable(z.boolean()).optional(),
 }).transform((v) => {
   return remap$(v, {
@@ -186,6 +186,7 @@ export const STTRequestResponseFormat$outboundSchema: z.ZodType<
 
 /** @internal */
 export type STTRequest$Outbound = {
+  trace?: TraceConfig$Outbound | undefined;
   diarize?: boolean | undefined;
   input_audio: STTInputAudio$Outbound;
   keyterms?: Array<string> | undefined;
@@ -196,7 +197,6 @@ export type STTRequest$Outbound = {
   session_id?: string | undefined;
   temperature?: number | undefined;
   timestamp_granularities?: Array<string> | undefined;
-  trace?: TraceConfig$Outbound | undefined;
   user?: string | undefined;
 };
 
@@ -205,6 +205,7 @@ export const STTRequest$outboundSchema: z.ZodType<
   STTRequest$Outbound,
   STTRequest
 > = z.object({
+  trace: TraceConfig$outboundSchema.optional(),
   diarize: z.boolean().optional(),
   inputAudio: STTInputAudio$outboundSchema,
   keyterms: z.array(z.string()).optional(),
@@ -216,7 +217,6 @@ export const STTRequest$outboundSchema: z.ZodType<
   temperature: z.number().optional(),
   timestampGranularities: z.array(STTTimestampGranularity$outboundSchema)
     .optional(),
-  trace: TraceConfig$outboundSchema.optional(),
   user: z.string().optional(),
 }).transform((v) => {
   return remap$(v, {

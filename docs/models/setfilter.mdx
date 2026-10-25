@@ -1,0 +1,26 @@
+---
+title: "SetFilter"
+---
+
+## Example Usage
+
+```typescript
+import { SetFilter } from "@openrouter/sdk/models";
+
+let value: SetFilter = {
+  field: "model",
+  operator: "in",
+  value: [
+    "<value>",
+  ],
+};
+```
+
+## Fields
+
+| Field                                                                                                | Type                                                                                                 | Required                                                                                             | Description                                                                                          | Example                                                                                              |
+| ---------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------- |
+| `field`                                                                                              | *string*                                                                                             | ✔️                                                                                   | Dimension to filter on. Use the /meta endpoint for available dimensions.                             | model                                                                                                |
+| `includeUnset`                                                                                       | *boolean*                                                                                            | ➖                                                                                   | Include rows where the dimension has no value. Applies only to dimensions that have an unset bucket. |                                                                                                      |
+| `operator`                                                                                           | [models.SetFilterOperator](../models/setfilteroperator.mdx)                                           | ✔️                                                                                   | Set-membership operator taking an array filter value.                                                | in                                                                                                   |
+| `value`                                                                                              | *models.SetFilterValue*[]                                                                            | ✔️                                                                                   | N/A                                                                                                  |                                                                                                      |

@@ -17,8 +17,8 @@ export type PredictionContentTextType = ClosedEnum<
  * Text content part for a predicted output.
  */
 export type PredictionContentText = {
-  text: string;
   type: PredictionContentTextType;
+  text: string;
 };
 
 /** @internal */
@@ -28,8 +28,8 @@ export const PredictionContentTextType$outboundSchema: z.ZodEnum<
 
 /** @internal */
 export type PredictionContentText$Outbound = {
-  text: string;
   type: string;
+  text: string;
 };
 
 /** @internal */
@@ -37,8 +37,8 @@ export const PredictionContentText$outboundSchema: z.ZodType<
   PredictionContentText$Outbound,
   PredictionContentText
 > = z.object({
-  text: z.string(),
   type: PredictionContentTextType$outboundSchema,
+  text: z.string(),
 });
 
 export function predictionContentTextToJSON(

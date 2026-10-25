@@ -281,6 +281,11 @@ import {
   ToolSearchOutputItem$outboundSchema,
 } from "./toolsearchoutputitem.js";
 
+export const InputsTypeReasoning = {
+  Reasoning: "reasoning",
+} as const;
+export type InputsTypeReasoning = ClosedEnum<typeof InputsTypeReasoning>;
+
 export const InputsStatusInProgress2 = {
   InProgress: "in_progress",
 } as const;
@@ -305,15 +310,12 @@ export type InputsStatusUnion2 =
   | InputsStatusIncomplete2
   | InputsStatusInProgress2;
 
-export const InputsTypeReasoning = {
-  Reasoning: "reasoning",
-} as const;
-export type InputsTypeReasoning = ClosedEnum<typeof InputsTypeReasoning>;
-
 /**
  * An output item containing reasoning
  */
 export type InputsReasoning = {
+  type: InputsTypeReasoning;
+  summary: Array<ReasoningSummaryText> | null;
   content?: Array<ReasoningTextContent> | null | undefined;
   encryptedContent?: string | null | undefined;
   id: string;
@@ -322,14 +324,17 @@ export type InputsReasoning = {
     | InputsStatusIncomplete2
     | InputsStatusInProgress2
     | undefined;
-  summary: Array<ReasoningSummaryText> | null;
-  type: InputsTypeReasoning;
   format?: ReasoningFormat | null | undefined;
   /**
    * A signature for the reasoning content, used for verification
    */
   signature?: string | null | undefined;
 };
+
+export const InputsTypeMessage = {
+  Message: "message",
+} as const;
+export type InputsTypeMessage = ClosedEnum<typeof InputsTypeMessage>;
 
 export type InputsContent1 = ResponseOutputText | OpenAIResponsesRefusalContent;
 
@@ -381,15 +386,11 @@ export type InputsStatusUnion1 =
   | InputsStatusIncomplete1
   | InputsStatusInProgress1;
 
-export const InputsTypeMessage = {
-  Message: "message",
-} as const;
-export type InputsTypeMessage = ClosedEnum<typeof InputsTypeMessage>;
-
 /**
  * An output message item
  */
-export type InputsMessage = {
+export type InputsAssistant = {
+  type?: InputsTypeMessage | undefined;
   content:
     | Array<ResponseOutputText | OpenAIResponsesRefusalContent>
     | string
@@ -405,7 +406,6 @@ export type InputsMessage = {
     | InputsStatusIncomplete1
     | InputsStatusInProgress1
     | undefined;
-  type?: InputsTypeMessage | undefined;
 };
 
 export type InputsUnion1 =
@@ -425,7 +425,7 @@ export type InputsUnion1 =
   | ReasoningItem
   | FunctionCallOutputItem
   | ApplyPatchCallOutputItem
-  | InputsMessage
+  | InputsAssistant
   | InputsReasoning
   | OutputWebSearchCallItem
   | OutputImageGenerationCallItem
@@ -484,7 +484,7 @@ export type InputsUnion =
     | ReasoningItem
     | FunctionCallOutputItem
     | ApplyPatchCallOutputItem
-    | InputsMessage
+    | InputsAssistant
     | InputsReasoning
     | OutputWebSearchCallItem
     | OutputImageGenerationCallItem
@@ -523,6 +523,11 @@ export type InputsUnion =
   >;
 
 /** @internal */
+export const InputsTypeReasoning$outboundSchema: z.ZodEnum<
+  typeof InputsTypeReasoning
+> = z.enum(InputsTypeReasoning);
+
+/** @internal */
 export const InputsStatusInProgress2$outboundSchema: z.ZodEnum<
   typeof InputsStatusInProgress2
 > = z.enum(InputsStatusInProgress2);
@@ -559,18 +564,13 @@ export function inputsStatusUnion2ToJSON(
 }
 
 /** @internal */
-export const InputsTypeReasoning$outboundSchema: z.ZodEnum<
-  typeof InputsTypeReasoning
-> = z.enum(InputsTypeReasoning);
-
-/** @internal */
 export type InputsReasoning$Outbound = {
+  type: string;
+  summary: Array<ReasoningSummaryText$Outbound> | null;
   content?: Array<ReasoningTextContent$Outbound> | null | undefined;
   encrypted_content?: string | null | undefined;
   id: string;
   status?: string | string | string | undefined;
-  summary: Array<ReasoningSummaryText$Outbound> | null;
-  type: string;
   format?: string | null | undefined;
   signature?: string | null | undefined;
 };
@@ -580,6 +580,8 @@ export const InputsReasoning$outboundSchema: z.ZodType<
   InputsReasoning$Outbound,
   InputsReasoning
 > = z.object({
+  type: InputsTypeReasoning$outboundSchema,
+  summary: z.nullable(z.array(ReasoningSummaryText$outboundSchema)),
   content: z.nullable(z.array(ReasoningTextContent$outboundSchema)).optional(),
   encryptedContent: z.nullable(z.string()).optional(),
   id: z.string(),
@@ -588,8 +590,6 @@ export const InputsReasoning$outboundSchema: z.ZodType<
     InputsStatusIncomplete2$outboundSchema,
     InputsStatusInProgress2$outboundSchema,
   ]).optional(),
-  summary: z.nullable(z.array(ReasoningSummaryText$outboundSchema)),
-  type: InputsTypeReasoning$outboundSchema,
   format: z.nullable(ReasoningFormat$outboundSchema).optional(),
   signature: z.nullable(z.string()).optional(),
 }).transform((v) => {
@@ -603,6 +603,11 @@ export function inputsReasoningToJSON(
 ): string {
   return JSON.stringify(InputsReasoning$outboundSchema.parse(inputsReasoning));
 }
+
+/** @internal */
+export const InputsTypeMessage$outboundSchema: z.ZodEnum<
+  typeof InputsTypeMessage
+> = z.enum(InputsTypeMessage);
 
 /** @internal */
 export type InputsContent1$Outbound =
@@ -717,12 +722,8 @@ export function inputsStatusUnion1ToJSON(
 }
 
 /** @internal */
-export const InputsTypeMessage$outboundSchema: z.ZodEnum<
-  typeof InputsTypeMessage
-> = z.enum(InputsTypeMessage);
-
-/** @internal */
-export type InputsMessage$Outbound = {
+export type InputsAssistant$Outbound = {
+  type: string;
   content:
     | Array<
       ResponseOutputText$Outbound | OpenAIResponsesRefusalContent$Outbound
@@ -733,14 +734,14 @@ export type InputsMessage$Outbound = {
   phase?: string | string | null | undefined;
   role: string;
   status?: string | string | string | undefined;
-  type: string;
 };
 
 /** @internal */
-export const InputsMessage$outboundSchema: z.ZodType<
-  InputsMessage$Outbound,
-  InputsMessage
+export const InputsAssistant$outboundSchema: z.ZodType<
+  InputsAssistant$Outbound,
+  InputsAssistant
 > = z.object({
+  type: InputsTypeMessage$outboundSchema.default("message"),
   content: z.nullable(
     z.union([
       z.array(
@@ -765,11 +766,12 @@ export const InputsMessage$outboundSchema: z.ZodType<
     InputsStatusIncomplete1$outboundSchema,
     InputsStatusInProgress1$outboundSchema,
   ]).optional(),
-  type: InputsTypeMessage$outboundSchema.default("message"),
 });
 
-export function inputsMessageToJSON(inputsMessage: InputsMessage): string {
-  return JSON.stringify(InputsMessage$outboundSchema.parse(inputsMessage));
+export function inputsAssistantToJSON(
+  inputsAssistant: InputsAssistant,
+): string {
+  return JSON.stringify(InputsAssistant$outboundSchema.parse(inputsAssistant));
 }
 
 /** @internal */
@@ -790,7 +792,7 @@ export type InputsUnion1$Outbound =
   | ReasoningItem$Outbound
   | FunctionCallOutputItem$Outbound
   | ApplyPatchCallOutputItem$Outbound
-  | InputsMessage$Outbound
+  | InputsAssistant$Outbound
   | InputsReasoning$Outbound
   | OutputWebSearchCallItem$Outbound
   | OutputImageGenerationCallItem$Outbound
@@ -848,7 +850,7 @@ export const InputsUnion1$outboundSchema: z.ZodType<
   ReasoningItem$outboundSchema,
   FunctionCallOutputItem$outboundSchema,
   ApplyPatchCallOutputItem$outboundSchema,
-  z.lazy(() => InputsMessage$outboundSchema),
+  z.lazy(() => InputsAssistant$outboundSchema),
   z.lazy(() => InputsReasoning$outboundSchema),
   OutputWebSearchCallItem$outboundSchema,
   OutputImageGenerationCallItem$outboundSchema,
@@ -910,7 +912,7 @@ export type InputsUnion$Outbound =
     | ReasoningItem$Outbound
     | FunctionCallOutputItem$Outbound
     | ApplyPatchCallOutputItem$Outbound
-    | InputsMessage$Outbound
+    | InputsAssistant$Outbound
     | InputsReasoning$Outbound
     | OutputWebSearchCallItem$Outbound
     | OutputImageGenerationCallItem$Outbound
@@ -972,7 +974,7 @@ export const InputsUnion$outboundSchema: z.ZodType<
       ReasoningItem$outboundSchema,
       FunctionCallOutputItem$outboundSchema,
       ApplyPatchCallOutputItem$outboundSchema,
-      z.lazy(() => InputsMessage$outboundSchema),
+      z.lazy(() => InputsAssistant$outboundSchema),
       z.lazy(() => InputsReasoning$outboundSchema),
       OutputWebSearchCallItem$outboundSchema,
       OutputImageGenerationCallItem$outboundSchema,

@@ -25,6 +25,7 @@ export type OutputWebFetchServerToolItemType = ClosedEnum<
  * An openrouter:web_fetch server tool output item
  */
 export type OutputWebFetchServerToolItem = {
+  url?: string | undefined;
   content?: string | undefined;
   /**
    * The error message if the fetch failed.
@@ -38,7 +39,6 @@ export type OutputWebFetchServerToolItem = {
   status: ToolCallStatus;
   title?: string | undefined;
   type: OutputWebFetchServerToolItemType;
-  url?: string | undefined;
 };
 
 /** @internal */
@@ -55,6 +55,7 @@ export const OutputWebFetchServerToolItem$inboundSchema: z.ZodType<
   OutputWebFetchServerToolItem,
   unknown
 > = z.object({
+  url: z.string().optional(),
   content: z.string().optional(),
   error: z.string().optional(),
   httpStatus: z.int().optional(),
@@ -62,10 +63,10 @@ export const OutputWebFetchServerToolItem$inboundSchema: z.ZodType<
   status: ToolCallStatus$inboundSchema,
   title: z.string().optional(),
   type: OutputWebFetchServerToolItemType$inboundSchema,
-  url: z.string().optional(),
 });
 /** @internal */
 export type OutputWebFetchServerToolItem$Outbound = {
+  url?: string | undefined;
   content?: string | undefined;
   error?: string | undefined;
   httpStatus?: number | undefined;
@@ -73,7 +74,6 @@ export type OutputWebFetchServerToolItem$Outbound = {
   status: string;
   title?: string | undefined;
   type: string;
-  url?: string | undefined;
 };
 
 /** @internal */
@@ -81,6 +81,7 @@ export const OutputWebFetchServerToolItem$outboundSchema: z.ZodType<
   OutputWebFetchServerToolItem$Outbound,
   OutputWebFetchServerToolItem
 > = z.object({
+  url: z.string().optional(),
   content: z.string().optional(),
   error: z.string().optional(),
   httpStatus: z.int().optional(),
@@ -88,7 +89,6 @@ export const OutputWebFetchServerToolItem$outboundSchema: z.ZodType<
   status: ToolCallStatus$outboundSchema,
   title: z.string().optional(),
   type: OutputWebFetchServerToolItemType$outboundSchema,
-  url: z.string().optional(),
 });
 
 export function outputWebFetchServerToolItemToJSON(

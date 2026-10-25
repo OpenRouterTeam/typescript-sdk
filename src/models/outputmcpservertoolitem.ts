@@ -25,11 +25,11 @@ export type OutputMcpServerToolItemType = ClosedEnum<
  * An openrouter:mcp server tool output item
  */
 export type OutputMcpServerToolItem = {
+  type: OutputMcpServerToolItemType;
   id?: string | undefined;
   serverLabel?: string | undefined;
   status: ToolCallStatus;
   toolName?: string | undefined;
-  type: OutputMcpServerToolItemType;
 };
 
 /** @internal */
@@ -46,19 +46,19 @@ export const OutputMcpServerToolItem$inboundSchema: z.ZodType<
   OutputMcpServerToolItem,
   unknown
 > = z.object({
+  type: OutputMcpServerToolItemType$inboundSchema,
   id: z.string().optional(),
   serverLabel: z.string().optional(),
   status: ToolCallStatus$inboundSchema,
   toolName: z.string().optional(),
-  type: OutputMcpServerToolItemType$inboundSchema,
 });
 /** @internal */
 export type OutputMcpServerToolItem$Outbound = {
+  type: string;
   id?: string | undefined;
   serverLabel?: string | undefined;
   status: string;
   toolName?: string | undefined;
-  type: string;
 };
 
 /** @internal */
@@ -66,11 +66,11 @@ export const OutputMcpServerToolItem$outboundSchema: z.ZodType<
   OutputMcpServerToolItem$Outbound,
   OutputMcpServerToolItem
 > = z.object({
+  type: OutputMcpServerToolItemType$outboundSchema,
   id: z.string().optional(),
   serverLabel: z.string().optional(),
   status: ToolCallStatus$outboundSchema,
   toolName: z.string().optional(),
-  type: OutputMcpServerToolItemType$outboundSchema,
 });
 
 export function outputMcpServerToolItemToJSON(

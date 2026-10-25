@@ -8,8 +8,8 @@ title: "InputMessageItemContentUnion"
 
 ```typescript
 const value: models.InputText = {
-  text: "Hello, how can I help you?",
   type: "input_text",
+  text: "Hello, how can I help you?",
 };
 ```
 
@@ -17,8 +17,8 @@ const value: models.InputText = {
 
 ```typescript
 const value: models.InputMessageItemContentInputImage = {
-  detail: "auto",
   type: "input_image",
+  detail: "auto",
 };
 ```
 
@@ -34,11 +34,11 @@ const value: models.InputFile = {
 
 ```typescript
 const value: models.InputAudio = {
+  type: "input_audio",
   inputAudio: {
     data: "SGVsbG8gV29ybGQ=",
     format: "mp3",
   },
-  type: "input_audio",
 };
 ```
 

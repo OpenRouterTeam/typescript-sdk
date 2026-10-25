@@ -48,6 +48,10 @@ export type UpdateKeysLimitReset = OpenEnum<typeof UpdateKeysLimitReset>;
 
 export type UpdateKeysRequestBody = {
   /**
+   * New name for the API key
+   */
+  name?: string | undefined;
+  /**
    * Whether to disable the API key
    */
   disabled?: boolean | undefined;
@@ -63,10 +67,6 @@ export type UpdateKeysRequestBody = {
    * New limit reset type for the API key (daily, weekly, monthly, or null for no reset). Resets happen automatically at midnight UTC, and weeks are Monday through Sunday.
    */
   limitReset?: UpdateKeysLimitReset | null | undefined;
-  /**
-   * New name for the API key
-   */
-  name?: string | undefined;
   /**
    * Move the API key to this workspace. The key keeps its value; guardrail selections move with it, while other workspace-scoped settings (presets, BYOK keys, broadcast destinations, routing rules) do not. Sending the key's current workspace is a no-op.
    */
@@ -104,6 +104,10 @@ export type UpdateKeysRequest = {
  * The updated API key information
  */
 export type UpdateKeysData = {
+  /**
+   * Name of the API key
+   */
+  name: string;
   /**
    * Total external BYOK usage (in USD) for the API key
    */
@@ -169,10 +173,6 @@ export type UpdateKeysData = {
    */
   limitReset: string | null;
   /**
-   * Name of the API key
-   */
-  name: string;
-  /**
    * ISO 8601 timestamp of when the API key was last updated
    */
   updatedAt: string | null;
@@ -216,11 +216,11 @@ export const UpdateKeysLimitReset$outboundSchema: z.ZodType<
 
 /** @internal */
 export type UpdateKeysRequestBody$Outbound = {
+  name?: string | undefined;
   disabled?: boolean | undefined;
   include_byok_in_limit?: boolean | undefined;
   limit?: number | null | undefined;
   limit_reset?: string | null | undefined;
-  name?: string | undefined;
   workspace_id?: string | undefined;
 };
 
@@ -229,11 +229,11 @@ export const UpdateKeysRequestBody$outboundSchema: z.ZodType<
   UpdateKeysRequestBody$Outbound,
   UpdateKeysRequestBody
 > = z.object({
+  name: z.string().optional(),
   disabled: z.boolean().optional(),
   includeByokInLimit: z.boolean().optional(),
   limit: z.nullable(z.number()).optional(),
   limitReset: z.nullable(UpdateKeysLimitReset$outboundSchema).optional(),
-  name: z.string().optional(),
   workspaceId: z.string().optional(),
 }).transform((v) => {
   return remap$(v, {
@@ -288,6 +288,7 @@ export function updateKeysRequestToJSON(
 /** @internal */
 export const UpdateKeysData$inboundSchema: z.ZodType<UpdateKeysData, unknown> =
   z.object({
+    name: z.string(),
     byok_usage: z.number(),
     byok_usage_daily: z.number(),
     byok_usage_monthly: z.number(),
@@ -308,7 +309,6 @@ export const UpdateKeysData$inboundSchema: z.ZodType<UpdateKeysData, unknown> =
     limit: z.nullable(z.number()),
     limit_remaining: z.nullable(z.number()),
     limit_reset: z.nullable(z.string()),
-    name: z.string(),
     updated_at: z.nullable(z.string()),
     usage: z.number(),
     usage_daily: z.number(),

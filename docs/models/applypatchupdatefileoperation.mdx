@@ -10,9 +10,9 @@ The `update_file` variant of an `apply_patch_call.operation`. Carries a V4A diff
 import { ApplyPatchUpdateFileOperation } from "@openrouter/sdk/models";
 
 let value: ApplyPatchUpdateFileOperation = {
+  type: "update_file",
   diff: "@@ function main() {\n+  console.log(\"hi\");\n }",
   path: "/src/main.ts",
-  type: "update_file",
 };
 ```
 
@@ -20,6 +20,6 @@ let value: ApplyPatchUpdateFileOperation = {
 
 | Field              | Type               | Required           | Description        |
 | ------------------ | ------------------ | ------------------ | ------------------ |
+| `type`             | *"update_file"*    | ✔️ | N/A                |
 | `diff`             | *string*           | ✔️ | N/A                |
 | `path`             | *string*           | ✔️ | N/A                |
-| `type`             | *"update_file"*    | ✔️ | N/A                |

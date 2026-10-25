@@ -57,6 +57,10 @@ export type SpeechRequestDataCollection = OpenEnum<
  */
 export type SpeechRequestProvider = {
   /**
+   * Provider-specific options keyed by provider slug. Only options for the matched provider are forwarded; the rest are ignored. Unrecognized keys are silently dropped.
+   */
+  options?: ProviderOptions | undefined;
+  /**
    * Data collection setting. If no available model provider meets the requirement, your request will return an error.
    *
    * @remarks
@@ -65,10 +69,6 @@ export type SpeechRequestProvider = {
    * - deny: use only providers which do not collect user data.
    */
   dataCollection?: SpeechRequestDataCollection | null | undefined;
-  /**
-   * Provider-specific options keyed by provider slug. Only options for the matched provider are forwarded; the rest are ignored. Unrecognized keys are silently dropped.
-   */
-  options?: ProviderOptions | undefined;
   /**
    * Whether to restrict routing to only ZDR (Zero Data Retention) endpoints. When true, only endpoints that do not retain prompts will be used.
    */
@@ -93,6 +93,10 @@ export type SpeechRequestResponseFormat = OpenEnum<
  * Text-to-speech request input
  */
 export type SpeechRequest = {
+  /**
+   * Metadata for observability and tracing. Known keys (trace_id, trace_name, span_name, generation_name, parent_span_id) have special handling. Additional keys are passed through as custom metadata to configured broadcast destinations.
+   */
+  trace?: TraceConfig | undefined;
   /**
    * Text to synthesize, or a list of turns for multi-speaker input. Each turn has its own text, voice, and instructions. Multi-speaker input is supported by Gemini TTS models and by Fish Audio models other than S1.
    */
@@ -126,10 +130,6 @@ export type SpeechRequest = {
    */
   speed?: number | undefined;
   /**
-   * Metadata for observability and tracing. Known keys (trace_id, trace_name, span_name, generation_name, parent_span_id) have special handling. Additional keys are passed through as custom metadata to configured broadcast destinations.
-   */
-  trace?: TraceConfig | undefined;
-  /**
    * A unique identifier representing your end-user. Forwarded to Broadcast and private logging as the end-user id; never sent to the provider.
    */
   user?: string | undefined;
@@ -147,8 +147,8 @@ export const SpeechRequestDataCollection$outboundSchema: z.ZodType<
 
 /** @internal */
 export type SpeechRequestProvider$Outbound = {
-  data_collection?: string | null | undefined;
   options?: ProviderOptions$Outbound | undefined;
+  data_collection?: string | null | undefined;
   zdr?: boolean | null | undefined;
 };
 
@@ -157,9 +157,9 @@ export const SpeechRequestProvider$outboundSchema: z.ZodType<
   SpeechRequestProvider$Outbound,
   SpeechRequestProvider
 > = z.object({
+  options: ProviderOptions$outboundSchema.optional(),
   dataCollection: z.nullable(SpeechRequestDataCollection$outboundSchema)
     .optional(),
-  options: ProviderOptions$outboundSchema.optional(),
   zdr: z.nullable(z.boolean()).optional(),
 }).transform((v) => {
   return remap$(v, {
@@ -183,6 +183,7 @@ export const SpeechRequestResponseFormat$outboundSchema: z.ZodType<
 
 /** @internal */
 export type SpeechRequest$Outbound = {
+  trace?: TraceConfig$Outbound | undefined;
   input: SpeechInput$Outbound;
   input_references?: Array<SpeechInputReference$Outbound> | undefined;
   instructions?: string | undefined;
@@ -191,7 +192,6 @@ export type SpeechRequest$Outbound = {
   response_format: string;
   session_id?: string | undefined;
   speed?: number | undefined;
-  trace?: TraceConfig$Outbound | undefined;
   user?: string | undefined;
   voice?: string | undefined;
 };
@@ -201,6 +201,7 @@ export const SpeechRequest$outboundSchema: z.ZodType<
   SpeechRequest$Outbound,
   SpeechRequest
 > = z.object({
+  trace: TraceConfig$outboundSchema.optional(),
   input: SpeechInput$outboundSchema,
   inputReferences: z.array(SpeechInputReference$outboundSchema).optional(),
   instructions: z.string().optional(),
@@ -209,7 +210,6 @@ export const SpeechRequest$outboundSchema: z.ZodType<
   responseFormat: SpeechRequestResponseFormat$outboundSchema.default("pcm"),
   sessionId: z.string().optional(),
   speed: z.number().optional(),
-  trace: TraceConfig$outboundSchema.optional(),
   user: z.string().optional(),
   voice: z.string().optional(),
 }).transform((v) => {

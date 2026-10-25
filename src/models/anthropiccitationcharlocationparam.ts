@@ -7,22 +7,22 @@ import * as z from "zod/v4";
 import { remap as remap$ } from "../lib/primitives.js";
 
 export type AnthropicCitationCharLocationParam = {
+  type: "char_location";
   citedText: string;
   documentIndex: number;
   documentTitle: string | null;
   endCharIndex: number;
   startCharIndex: number;
-  type: "char_location";
 };
 
 /** @internal */
 export type AnthropicCitationCharLocationParam$Outbound = {
+  type: "char_location";
   cited_text: string;
   document_index: number;
   document_title: string | null;
   end_char_index: number;
   start_char_index: number;
-  type: "char_location";
 };
 
 /** @internal */
@@ -30,12 +30,12 @@ export const AnthropicCitationCharLocationParam$outboundSchema: z.ZodType<
   AnthropicCitationCharLocationParam$Outbound,
   AnthropicCitationCharLocationParam
 > = z.object({
+  type: z.literal("char_location"),
   citedText: z.string(),
   documentIndex: z.int(),
   documentTitle: z.nullable(z.string()),
   endCharIndex: z.int(),
   startCharIndex: z.int(),
-  type: z.literal("char_location"),
 }).transform((v) => {
   return remap$(v, {
     citedText: "cited_text",

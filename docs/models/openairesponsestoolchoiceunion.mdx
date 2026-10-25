@@ -43,6 +43,7 @@ const value: models.OpenAIResponsesToolChoice = {
 
 ```typescript
 const value: models.ToolChoiceAllowed = {
+  type: "allowed_tools",
   mode: "auto",
   tools: [
     {
@@ -50,7 +51,6 @@ const value: models.ToolChoiceAllowed = {
       "type": "function",
     },
   ],
-  type: "allowed_tools",
 };
 ```
 

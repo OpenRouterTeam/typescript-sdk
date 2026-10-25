@@ -13,12 +13,12 @@ import { SDKValidationError } from "./errors/sdkvalidationerror.js";
  * Event emitted when refusal streaming is complete
  */
 export type RefusalDoneEvent = {
+  type: "response.refusal.done";
   contentIndex: number;
   itemId: string;
   outputIndex: number;
   refusal: string;
   sequenceNumber: number;
-  type: "response.refusal.done";
 };
 
 /** @internal */
@@ -26,12 +26,12 @@ export const RefusalDoneEvent$inboundSchema: z.ZodType<
   RefusalDoneEvent,
   unknown
 > = z.object({
+  type: z.literal("response.refusal.done"),
   content_index: z.int(),
   item_id: z.string(),
   output_index: z.int(),
   refusal: z.string(),
   sequence_number: z.int(),
-  type: z.literal("response.refusal.done"),
 }).transform((v) => {
   return remap$(v, {
     "content_index": "contentIndex",

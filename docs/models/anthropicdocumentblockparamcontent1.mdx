@@ -8,12 +8,12 @@ title: "AnthropicDocumentBlockParamContent1"
 
 ```typescript
 const value: models.AnthropicImageBlockParam = {
+  type: "image",
   source: {
+    type: "base64",
     data: "/9j/4AAQ...",
     mediaType: "image/jpeg",
-    type: "base64",
   },
-  type: "image",
 };
 ```
 
@@ -21,8 +21,8 @@ const value: models.AnthropicImageBlockParam = {
 
 ```typescript
 const value: models.AnthropicTextBlockParam = {
-  text: "Hello, world!",
   type: "text",
+  text: "Hello, world!",
 };
 ```
 

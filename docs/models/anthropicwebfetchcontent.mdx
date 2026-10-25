@@ -8,18 +8,18 @@ title: "AnthropicWebFetchContent"
 
 ```typescript
 const value: models.AnthropicWebFetchBlock = {
+  url: "https://example.com",
   content: {
+    type: "document",
+    title: null,
     source: {
+      type: "text",
       data: "",
       mediaType: "text/plain",
-      type: "text",
     },
-    title: null,
-    type: "document",
   },
   retrievedAt: null,
   type: "web_fetch_result",
-  url: "https://example.com",
 };
 ```
 
@@ -27,8 +27,8 @@ const value: models.AnthropicWebFetchBlock = {
 
 ```typescript
 const value: models.AnthropicWebFetchToolResultError = {
-  errorCode: "url_not_accessible",
   type: "web_fetch_tool_result_error",
+  errorCode: "url_not_accessible",
 };
 ```
 

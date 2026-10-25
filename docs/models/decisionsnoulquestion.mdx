@@ -8,8 +8,8 @@ title: "DecisionsNoulQuestion"
 import { DecisionsNoulQuestion } from "@openrouter/sdk/models";
 
 let value: DecisionsNoulQuestion = {
-  instructions: "<value>",
   type: "noul",
+  instructions: "<value>",
 };
 ```
 
@@ -17,6 +17,6 @@ let value: DecisionsNoulQuestion = {
 
 | Field                                                                              | Type                                                                               | Required                                                                           | Description                                                                        |
 | ---------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------- |
+| `type`                                                                             | *"noul"*                                                                           | ✔️                                                                 | N/A                                                                                |
 | `criteria`                                                                         | [models.DecisionsNoulQuestionCriteria](../models/decisionsnoulquestioncriteria.mdx) | ➖                                                                 | N/A                                                                                |
 | `instructions`                                                                     | *models.DecisionsNoulQuestionInstructions*                                         | ✔️                                                                 | A plain string, or a JSON object or array of structured guidance.                  |
-| `type`                                                                             | *"noul"*                                                                           | ✔️                                                                 | N/A                                                                                |

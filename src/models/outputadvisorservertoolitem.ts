@@ -26,6 +26,7 @@ export type OutputAdvisorServerToolItemType = ClosedEnum<
  * An openrouter:advisor server tool output item
  */
 export type OutputAdvisorServerToolItem = {
+  type: OutputAdvisorServerToolItemType;
   /**
    * The advisor model's response (the advice text returned to the executor).
    */
@@ -48,7 +49,6 @@ export type OutputAdvisorServerToolItem = {
    */
   prompt?: string | undefined;
   status: FailableToolCallStatus;
-  type: OutputAdvisorServerToolItemType;
 };
 
 /** @internal */
@@ -65,6 +65,7 @@ export const OutputAdvisorServerToolItem$inboundSchema: z.ZodType<
   OutputAdvisorServerToolItem,
   unknown
 > = z.object({
+  type: OutputAdvisorServerToolItemType$inboundSchema,
   advice: z.string().optional(),
   error: z.string().optional(),
   id: z.string().optional(),
@@ -72,7 +73,6 @@ export const OutputAdvisorServerToolItem$inboundSchema: z.ZodType<
   model: z.string().optional(),
   prompt: z.string().optional(),
   status: FailableToolCallStatus$inboundSchema,
-  type: OutputAdvisorServerToolItemType$inboundSchema,
 }).transform((v) => {
   return remap$(v, {
     "instance_name": "instanceName",
@@ -80,6 +80,7 @@ export const OutputAdvisorServerToolItem$inboundSchema: z.ZodType<
 });
 /** @internal */
 export type OutputAdvisorServerToolItem$Outbound = {
+  type: string;
   advice?: string | undefined;
   error?: string | undefined;
   id?: string | undefined;
@@ -87,7 +88,6 @@ export type OutputAdvisorServerToolItem$Outbound = {
   model?: string | undefined;
   prompt?: string | undefined;
   status: string;
-  type: string;
 };
 
 /** @internal */
@@ -95,6 +95,7 @@ export const OutputAdvisorServerToolItem$outboundSchema: z.ZodType<
   OutputAdvisorServerToolItem$Outbound,
   OutputAdvisorServerToolItem
 > = z.object({
+  type: OutputAdvisorServerToolItemType$outboundSchema,
   advice: z.string().optional(),
   error: z.string().optional(),
   id: z.string().optional(),
@@ -102,7 +103,6 @@ export const OutputAdvisorServerToolItem$outboundSchema: z.ZodType<
   model: z.string().optional(),
   prompt: z.string().optional(),
   status: FailableToolCallStatus$outboundSchema,
-  type: OutputAdvisorServerToolItemType$outboundSchema,
 }).transform((v) => {
   return remap$(v, {
     instanceName: "instance_name",

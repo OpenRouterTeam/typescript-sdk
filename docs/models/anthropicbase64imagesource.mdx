@@ -8,9 +8,9 @@ title: "AnthropicBase64ImageSource"
 import { AnthropicBase64ImageSource } from "@openrouter/sdk/models";
 
 let value: AnthropicBase64ImageSource = {
+  type: "base64",
   data: "/9j/4AAQ...",
   mediaType: "image/jpeg",
-  type: "base64",
 };
 ```
 
@@ -18,6 +18,6 @@ let value: AnthropicBase64ImageSource = {
 
 | Field                                                                | Type                                                                 | Required                                                             | Description                                                          | Example                                                              |
 | -------------------------------------------------------------------- | -------------------------------------------------------------------- | -------------------------------------------------------------------- | -------------------------------------------------------------------- | -------------------------------------------------------------------- |
+| `type`                                                               | *"base64"*                                                           | ✔️                                                   | N/A                                                                  |                                                                      |
 | `data`                                                               | *string*                                                             | ✔️                                                   | N/A                                                                  |                                                                      |
 | `mediaType`                                                          | [models.AnthropicImageMimeType](../models/anthropicimagemimetype.mdx) | ✔️                                                   | N/A                                                                  | image/jpeg                                                           |
-| `type`                                                               | *"base64"*                                                           | ✔️                                                   | N/A                                                                  |                                                                      |

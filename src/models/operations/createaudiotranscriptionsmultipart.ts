@@ -56,6 +56,10 @@ export type TimestampGranularities = OpenEnum<typeof TimestampGranularities>;
 
 export type CreateAudioTranscriptionsMultipartRequestBody = {
   /**
+   * JSON-encoded trace metadata object (trace_id, trace_name, span_name, generation_name, parent_span_id and custom keys) attached to the Broadcast trace. Must decode to a JSON object.
+   */
+  trace?: string | undefined;
+  /**
    * Label each word with the speaker who said it (words[].speaker, words[].speaker_label). Requires response_format "verbose_json" (400 otherwise); word timestamps are included even when timestamp_granularities[] omits "word". Only supported by some providers; 400 when the selected model cannot diarize.
    */
   diarize?: boolean | undefined;
@@ -99,10 +103,6 @@ export type CreateAudioTranscriptionsMultipartRequestBody = {
    * Timestamp detail levels to include when response_format is "verbose_json". "word" additionally returns word-level timestamps in the words array.
    */
   timestampGranularities?: Array<TimestampGranularities> | undefined;
-  /**
-   * JSON-encoded trace metadata object (trace_id, trace_name, span_name, generation_name, parent_span_id and custom keys) attached to the Broadcast trace. Must decode to a JSON object.
-   */
-  trace?: string | undefined;
   /**
    * A unique identifier representing your end-user. Forwarded to Broadcast and private logging as the end-user id; never sent to the provider.
    */
@@ -175,6 +175,7 @@ export const TimestampGranularities$outboundSchema: z.ZodType<
 
 /** @internal */
 export type CreateAudioTranscriptionsMultipartRequestBody$Outbound = {
+  trace?: string | undefined;
   diarize?: boolean | undefined;
   file?: CreateAudioTranscriptionsMultipartFile$Outbound | Blob | undefined;
   "keyterms[]"?: Array<string> | undefined;
@@ -186,7 +187,6 @@ export type CreateAudioTranscriptionsMultipartRequestBody$Outbound = {
   source_url?: string | undefined;
   temperature?: number | undefined;
   "timestamp_granularities[]"?: Array<string> | undefined;
-  trace?: string | undefined;
   user?: string | undefined;
 };
 
@@ -196,6 +196,7 @@ export const CreateAudioTranscriptionsMultipartRequestBody$outboundSchema:
     CreateAudioTranscriptionsMultipartRequestBody$Outbound,
     CreateAudioTranscriptionsMultipartRequestBody
   > = z.object({
+    trace: z.string().optional(),
     diarize: z.boolean().optional(),
     file: z.lazy(() => CreateAudioTranscriptionsMultipartFile$outboundSchema)
       .or(blobLikeSchema).optional(),
@@ -209,7 +210,6 @@ export const CreateAudioTranscriptionsMultipartRequestBody$outboundSchema:
     temperature: z.number().optional(),
     timestampGranularities: z.array(TimestampGranularities$outboundSchema)
       .optional(),
-    trace: z.string().optional(),
     user: z.string().optional(),
   }).transform((v) => {
     return remap$(v, {

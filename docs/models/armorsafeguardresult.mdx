@@ -10,20 +10,20 @@ The outcome of OpenRouter Armor for each client tool call of the response, keyed
 import { ArmorSafeguardResult } from "@openrouter/sdk/models";
 
 let value: ArmorSafeguardResult = {
+  type: "dangerous_tool_use",
   status: {
+    type: "available",
     toolUses: {
       "call_abc": {
-        outcome: "flagged",
         type: "evaluated",
+        outcome: "flagged",
       },
       "call_def": {
-        outcome: "not_flagged",
         type: "evaluated",
+        outcome: "not_flagged",
       },
     },
-    type: "available",
   },
-  type: "dangerous_tool_use",
 };
 ```
 
@@ -31,5 +31,5 @@ let value: ArmorSafeguardResult = {
 
 | Field                                                                        | Type                                                                         | Required                                                                     | Description                                                                  |
 | ---------------------------------------------------------------------------- | ---------------------------------------------------------------------------- | ---------------------------------------------------------------------------- | ---------------------------------------------------------------------------- |
-| `status`                                                                     | [models.ArmorSafeguardResultStatus](../models/armorsafeguardresultstatus.mdx) | ✔️                                                           | N/A                                                                          |
 | `type`                                                                       | [models.TypeDangerousToolUse](../models/typedangeroustooluse.mdx)             | ✔️                                                           | N/A                                                                          |
+| `status`                                                                     | [models.ArmorSafeguardResultStatus](../models/armorsafeguardresultstatus.mdx) | ✔️                                                           | N/A                                                                          |

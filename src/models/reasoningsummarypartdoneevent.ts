@@ -17,12 +17,12 @@ import {
  * Event emitted when a reasoning summary part is complete
  */
 export type ReasoningSummaryPartDoneEvent = {
+  type: "response.reasoning_summary_part.done";
   itemId: string;
   outputIndex: number;
   part: ReasoningSummaryText;
   sequenceNumber: number;
   summaryIndex: number;
-  type: "response.reasoning_summary_part.done";
 };
 
 /** @internal */
@@ -30,12 +30,12 @@ export const ReasoningSummaryPartDoneEvent$inboundSchema: z.ZodType<
   ReasoningSummaryPartDoneEvent,
   unknown
 > = z.object({
+  type: z.literal("response.reasoning_summary_part.done"),
   item_id: z.string(),
   output_index: z.int(),
   part: ReasoningSummaryText$inboundSchema,
   sequence_number: z.int(),
   summary_index: z.int(),
-  type: z.literal("response.reasoning_summary_part.done"),
 }).transform((v) => {
   return remap$(v, {
     "item_id": "itemId",

@@ -10,14 +10,14 @@ An output item containing reasoning
 import { OutputReasoningItem } from "@openrouter/sdk/models";
 
 let value: OutputReasoningItem = {
-  id: "msg-abc123",
+  type: "reasoning",
   summary: [
     {
-      text: "Analyzed the problem using first principles",
       type: "summary_text",
+      text: "Analyzed the problem using first principles",
     },
   ],
-  type: "reasoning",
+  id: "msg-abc123",
 };
 ```
 
@@ -25,11 +25,11 @@ let value: OutputReasoningItem = {
 
 | Field                                                              | Type                                                               | Required                                                           | Description                                                        | Example                                                            |
 | ------------------------------------------------------------------ | ------------------------------------------------------------------ | ------------------------------------------------------------------ | ------------------------------------------------------------------ | ------------------------------------------------------------------ |
+| `type`                                                             | *"reasoning"*                                                      | ✔️                                                 | N/A                                                                |                                                                    |
+| `summary`                                                          | [models.ReasoningSummaryText](../models/reasoningsummarytext.mdx)[] | ✔️                                                 | N/A                                                                |                                                                    |
 | `content`                                                          | [models.ReasoningTextContent](../models/reasoningtextcontent.mdx)[] | ➖                                                 | N/A                                                                |                                                                    |
 | `encryptedContent`                                                 | *string*                                                           | ➖                                                 | N/A                                                                |                                                                    |
 | `id`                                                               | *string*                                                           | ✔️                                                 | N/A                                                                |                                                                    |
 | `status`                                                           | *models.OutputReasoningItemStatusUnion*                            | ➖                                                 | N/A                                                                |                                                                    |
-| `summary`                                                          | [models.ReasoningSummaryText](../models/reasoningsummarytext.mdx)[] | ✔️                                                 | N/A                                                                |                                                                    |
-| `type`                                                             | *"reasoning"*                                                      | ✔️                                                 | N/A                                                                |                                                                    |
 | `format`                                                           | [models.ReasoningFormat](../models/reasoningformat.mdx)             | ➖                                                 | N/A                                                                | unknown                                                            |
 | `signature`                                                        | *string*                                                           | ➖                                                 | A signature for the reasoning content, used for verification       | EvcBCkgIChABGAIqQKkSDbRuVEQUk9qN1odC098l9SEj...                    |

@@ -10,11 +10,11 @@ Event emitted when an error occurs during streaming
 import { ErrorEvent } from "@openrouter/sdk/models";
 
 let value: ErrorEvent = {
+  type: "error",
   code: "<value>",
   message: "<value>",
   param: "<value>",
   sequenceNumber: 0,
-  type: "error",
 };
 ```
 
@@ -22,8 +22,8 @@ let value: ErrorEvent = {
 
 | Field              | Type               | Required           | Description        |
 | ------------------ | ------------------ | ------------------ | ------------------ |
+| `type`             | *"error"*          | ✔️ | N/A                |
 | `code`             | *string*           | ✔️ | N/A                |
 | `message`          | *string*           | ✔️ | N/A                |
 | `param`            | *string*           | ✔️ | N/A                |
 | `sequenceNumber`   | *number*           | ✔️ | N/A                |
-| `type`             | *"error"*          | ✔️ | N/A                |

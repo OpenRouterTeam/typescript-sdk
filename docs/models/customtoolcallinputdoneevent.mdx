@@ -10,11 +10,11 @@ Event emitted when a custom tool call's freeform input streaming is complete. Mi
 import { CustomToolCallInputDoneEvent } from "@openrouter/sdk/models";
 
 let value: CustomToolCallInputDoneEvent = {
+  type: "response.custom_tool_call_input.done",
   input: "<value>",
   itemId: "<id>",
   outputIndex: 276069,
   sequenceNumber: 0,
-  type: "response.custom_tool_call_input.done",
 };
 ```
 
@@ -22,8 +22,8 @@ let value: CustomToolCallInputDoneEvent = {
 
 | Field                                    | Type                                     | Required                                 | Description                              |
 | ---------------------------------------- | ---------------------------------------- | ---------------------------------------- | ---------------------------------------- |
+| `type`                                   | *"response.custom_tool_call_input.done"* | ✔️                       | N/A                                      |
 | `input`                                  | *string*                                 | ✔️                       | N/A                                      |
 | `itemId`                                 | *string*                                 | ✔️                       | N/A                                      |
 | `outputIndex`                            | *number*                                 | ✔️                       | N/A                                      |
 | `sequenceNumber`                         | *number*                                 | ✔️                       | N/A                                      |
-| `type`                                   | *"response.custom_tool_call_input.done"* | ✔️                       | N/A                                      |

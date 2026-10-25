@@ -133,6 +133,10 @@ export type ImageGenerationRequestResolution = OpenEnum<
  */
 export type ImageGenerationRequest = {
   /**
+   * Metadata for observability and tracing. Known keys (trace_id, trace_name, span_name, generation_name, parent_span_id) have special handling. Additional keys are passed through as custom metadata to configured broadcast destinations.
+   */
+  trace?: TraceConfig | undefined;
+  /**
    * Normalized aspect ratio of the generated image. Providers clamp to their supported subset.
    */
   aspectRatio?: ImageGenerationRequestAspectRatio | undefined;
@@ -193,10 +197,6 @@ export type ImageGenerationRequest = {
    */
   stream?: boolean | undefined;
   /**
-   * Metadata for observability and tracing. Known keys (trace_id, trace_name, span_name, generation_name, parent_span_id) have special handling. Additional keys are passed through as custom metadata to configured broadcast destinations.
-   */
-  trace?: TraceConfig | undefined;
-  /**
    * A stable identifier for your end-users. Used to help detect and prevent abuse. Never sent to providers verbatim: for providers whose data policy requires user IDs, it is folded into a hashed, per-account upstream user identifier.
    */
   user?: string | undefined;
@@ -234,6 +234,7 @@ export const ImageGenerationRequestResolution$outboundSchema: z.ZodType<
 
 /** @internal */
 export type ImageGenerationRequest$Outbound = {
+  trace?: TraceConfig$Outbound | undefined;
   aspect_ratio?: string | undefined;
   background?: string | undefined;
   input_references?: Array<ContentPartImage$Outbound> | undefined;
@@ -249,7 +250,6 @@ export type ImageGenerationRequest$Outbound = {
   session_id?: string | undefined;
   size?: string | undefined;
   stream?: boolean | undefined;
-  trace?: TraceConfig$Outbound | undefined;
   user?: string | undefined;
 };
 
@@ -258,6 +258,7 @@ export const ImageGenerationRequest$outboundSchema: z.ZodType<
   ImageGenerationRequest$Outbound,
   ImageGenerationRequest
 > = z.object({
+  trace: TraceConfig$outboundSchema.optional(),
   aspectRatio: ImageGenerationRequestAspectRatio$outboundSchema.optional(),
   background: ImageGenerationRequestBackground$outboundSchema.optional(),
   inputReferences: z.array(ContentPartImage$outboundSchema).optional(),
@@ -273,7 +274,6 @@ export const ImageGenerationRequest$outboundSchema: z.ZodType<
   sessionId: z.string().optional(),
   size: z.string().optional(),
   stream: z.boolean().optional(),
-  trace: TraceConfig$outboundSchema.optional(),
   user: z.string().optional(),
 }).transform((v) => {
   return remap$(v, {

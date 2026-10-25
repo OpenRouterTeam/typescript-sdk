@@ -19,20 +19,20 @@ import {
  * Text input content item
  */
 export type InputText = {
+  type: "input_text";
   /**
    * Marks an explicit prompt-cache boundary on this content block (OpenAI-style). Everything through the block carrying this marker is part of the candidate cached prefix. Supported natively by OpenAI GPT-5.6 and newer; on providers that use Anthropic-style `cache_control`, OpenRouter converts the marker to that format automatically. `ttl` ("30m" or "12h") overrides the request-level `prompt_cache_options.ttl` for this boundary; 12h writes bill at the higher cache-write rate.
    */
   promptCacheBreakpoint?: PromptCacheBreakpoint | null | undefined;
   text: string;
-  type: "input_text";
 };
 
 /** @internal */
 export const InputText$inboundSchema: z.ZodType<InputText, unknown> = z.object({
+  type: z.literal("input_text"),
   prompt_cache_breakpoint: z.nullable(PromptCacheBreakpoint$inboundSchema)
     .optional(),
   text: z.string(),
-  type: z.literal("input_text"),
 }).transform((v) => {
   return remap$(v, {
     "prompt_cache_breakpoint": "promptCacheBreakpoint",
@@ -40,9 +40,9 @@ export const InputText$inboundSchema: z.ZodType<InputText, unknown> = z.object({
 });
 /** @internal */
 export type InputText$Outbound = {
+  type: "input_text";
   prompt_cache_breakpoint?: PromptCacheBreakpoint$Outbound | null | undefined;
   text: string;
-  type: "input_text";
 };
 
 /** @internal */
@@ -50,10 +50,10 @@ export const InputText$outboundSchema: z.ZodType<
   InputText$Outbound,
   InputText
 > = z.object({
+  type: z.literal("input_text"),
   promptCacheBreakpoint: z.nullable(PromptCacheBreakpoint$outboundSchema)
     .optional(),
   text: z.string(),
-  type: z.literal("input_text"),
 }).transform((v) => {
   return remap$(v, {
     promptCacheBreakpoint: "prompt_cache_breakpoint",

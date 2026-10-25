@@ -10,13 +10,13 @@ import { Result as SafeParseResult } from "../types/fp.js";
 import { SDKValidationError } from "./errors/sdkvalidationerror.js";
 
 export type AnthropicCitationContentBlockLocation = {
+  type: "content_block_location";
   citedText: string;
   documentIndex: number;
   documentTitle: string | null;
   endBlockIndex: number;
   fileId: string | null;
   startBlockIndex: number;
-  type: "content_block_location";
 };
 
 /** @internal */
@@ -24,13 +24,13 @@ export const AnthropicCitationContentBlockLocation$inboundSchema: z.ZodType<
   AnthropicCitationContentBlockLocation,
   unknown
 > = z.object({
+  type: z.literal("content_block_location"),
   cited_text: z.string(),
   document_index: z.int(),
   document_title: z.nullable(z.string()),
   end_block_index: z.int(),
   file_id: z.nullable(z.string()),
   start_block_index: z.int(),
-  type: z.literal("content_block_location"),
 }).transform((v) => {
   return remap$(v, {
     "cited_text": "citedText",

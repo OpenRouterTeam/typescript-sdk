@@ -13,9 +13,19 @@ import { ClosedEnum, OpenEnum } from "../types/enums.js";
 import { Result as SafeParseResult } from "../types/fp.js";
 import { SDKValidationError } from "./errors/sdkvalidationerror.js";
 
+export const TypeDangerousToolUse = {
+  DangerousToolUse: "dangerous_tool_use",
+} as const;
+export type TypeDangerousToolUse = ClosedEnum<typeof TypeDangerousToolUse>;
+
+export const TypeAvailableEnum = {
+  Available: "available",
+} as const;
+export type TypeAvailableEnum = ClosedEnum<typeof TypeAvailableEnum>;
+
 export type ToolUsesUnavailable = {
-  reason: string;
   type: "unavailable";
+  reason: string;
 };
 
 export type ToolUsesSkipped = {
@@ -29,9 +39,9 @@ export const OutcomeEnum = {
 export type OutcomeEnum = OpenEnum<typeof OutcomeEnum>;
 
 export type ToolUsesEvaluated = {
+  type: "evaluated";
   explanation?: string | undefined;
   outcome: OutcomeEnum;
-  type: "evaluated";
 };
 
 export type ToolUses =
@@ -40,12 +50,8 @@ export type ToolUses =
   | ToolUsesUnavailable
   | discriminatedUnionTypes.Unknown<"type">;
 
-export const TypeAvailableEnum = {
-  Available: "available",
-} as const;
-export type TypeAvailableEnum = ClosedEnum<typeof TypeAvailableEnum>;
-
 export type ArmorSafeguardResultStatus = {
+  type: TypeAvailableEnum;
   toolUses: {
     [k: string]:
       | ToolUsesEvaluated
@@ -53,29 +59,33 @@ export type ArmorSafeguardResultStatus = {
       | ToolUsesUnavailable
       | discriminatedUnionTypes.Unknown<"type">;
   };
-  type: TypeAvailableEnum;
 };
-
-export const TypeDangerousToolUse = {
-  DangerousToolUse: "dangerous_tool_use",
-} as const;
-export type TypeDangerousToolUse = ClosedEnum<typeof TypeDangerousToolUse>;
 
 /**
  * The outcome of OpenRouter Armor for each client tool call of the response, keyed by tool-call id, in the same shape Anthropic reports its server-side safeguards.
  */
 export type ArmorSafeguardResult = {
-  status: ArmorSafeguardResultStatus;
   type: TypeDangerousToolUse;
+  status: ArmorSafeguardResultStatus;
 };
+
+/** @internal */
+export const TypeDangerousToolUse$inboundSchema: z.ZodEnum<
+  typeof TypeDangerousToolUse
+> = z.enum(TypeDangerousToolUse);
+
+/** @internal */
+export const TypeAvailableEnum$inboundSchema: z.ZodEnum<
+  typeof TypeAvailableEnum
+> = z.enum(TypeAvailableEnum);
 
 /** @internal */
 export const ToolUsesUnavailable$inboundSchema: z.ZodType<
   ToolUsesUnavailable,
   unknown
 > = z.object({
-  reason: z.string(),
   type: z.literal("unavailable"),
+  reason: z.string(),
 });
 
 export function toolUsesUnavailableFromJSON(
@@ -115,9 +125,9 @@ export const ToolUsesEvaluated$inboundSchema: z.ZodType<
   ToolUsesEvaluated,
   unknown
 > = z.object({
+  type: z.literal("evaluated"),
   explanation: z.string().optional(),
   outcome: OutcomeEnum$inboundSchema,
-  type: z.literal("evaluated"),
 });
 
 export function toolUsesEvaluatedFromJSON(
@@ -149,15 +159,11 @@ export function toolUsesFromJSON(
 }
 
 /** @internal */
-export const TypeAvailableEnum$inboundSchema: z.ZodEnum<
-  typeof TypeAvailableEnum
-> = z.enum(TypeAvailableEnum);
-
-/** @internal */
 export const ArmorSafeguardResultStatus$inboundSchema: z.ZodType<
   ArmorSafeguardResultStatus,
   unknown
 > = z.object({
+  type: TypeAvailableEnum$inboundSchema,
   tool_uses: z.record(
     z.string(),
     discriminatedUnion("type", {
@@ -166,7 +172,6 @@ export const ArmorSafeguardResultStatus$inboundSchema: z.ZodType<
       unavailable: z.lazy(() => ToolUsesUnavailable$inboundSchema),
     }),
   ),
-  type: TypeAvailableEnum$inboundSchema,
 }).transform((v) => {
   return remap$(v, {
     "tool_uses": "toolUses",
@@ -184,17 +189,12 @@ export function armorSafeguardResultStatusFromJSON(
 }
 
 /** @internal */
-export const TypeDangerousToolUse$inboundSchema: z.ZodEnum<
-  typeof TypeDangerousToolUse
-> = z.enum(TypeDangerousToolUse);
-
-/** @internal */
 export const ArmorSafeguardResult$inboundSchema: z.ZodType<
   ArmorSafeguardResult,
   unknown
 > = z.object({
-  status: z.lazy(() => ArmorSafeguardResultStatus$inboundSchema),
   type: TypeDangerousToolUse$inboundSchema,
+  status: z.lazy(() => ArmorSafeguardResultStatus$inboundSchema),
 });
 
 export function armorSafeguardResultFromJSON(

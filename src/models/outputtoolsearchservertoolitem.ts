@@ -15,12 +15,6 @@ import {
   FailableToolCallStatus$outboundSchema,
 } from "./failabletoolcallstatus.js";
 
-export type Match = {
-  definition: { [k: string]: any };
-  schemaDigest: string;
-  toolId: string;
-};
-
 export const OutputToolSearchServerToolItemType = {
   OpenrouterToolSearch: "openrouter:tool_search",
 } as const;
@@ -28,10 +22,17 @@ export type OutputToolSearchServerToolItemType = ClosedEnum<
   typeof OutputToolSearchServerToolItemType
 >;
 
+export type Match = {
+  definition: { [k: string]: any };
+  schemaDigest: string;
+  toolId: string;
+};
+
 /**
  * An openrouter:tool_search server tool output item
  */
 export type OutputToolSearchServerToolItem = {
+  type: OutputToolSearchServerToolItemType;
   /**
    * The error message when the tool call failed before producing a result. Set together with `status: 'failed'`; absent on a successful call.
    */
@@ -40,8 +41,16 @@ export type OutputToolSearchServerToolItem = {
   matches?: Array<Match> | undefined;
   query?: string | undefined;
   status: FailableToolCallStatus;
-  type: OutputToolSearchServerToolItemType;
 };
+
+/** @internal */
+export const OutputToolSearchServerToolItemType$inboundSchema: z.ZodEnum<
+  typeof OutputToolSearchServerToolItemType
+> = z.enum(OutputToolSearchServerToolItemType);
+/** @internal */
+export const OutputToolSearchServerToolItemType$outboundSchema: z.ZodEnum<
+  typeof OutputToolSearchServerToolItemType
+> = OutputToolSearchServerToolItemType$inboundSchema;
 
 /** @internal */
 export const Match$inboundSchema: z.ZodType<Match, unknown> = z.object({
@@ -87,34 +96,25 @@ export function matchFromJSON(
 }
 
 /** @internal */
-export const OutputToolSearchServerToolItemType$inboundSchema: z.ZodEnum<
-  typeof OutputToolSearchServerToolItemType
-> = z.enum(OutputToolSearchServerToolItemType);
-/** @internal */
-export const OutputToolSearchServerToolItemType$outboundSchema: z.ZodEnum<
-  typeof OutputToolSearchServerToolItemType
-> = OutputToolSearchServerToolItemType$inboundSchema;
-
-/** @internal */
 export const OutputToolSearchServerToolItem$inboundSchema: z.ZodType<
   OutputToolSearchServerToolItem,
   unknown
 > = z.object({
+  type: OutputToolSearchServerToolItemType$inboundSchema,
   error: z.string().optional(),
   id: z.string().optional(),
   matches: z.array(z.lazy(() => Match$inboundSchema)).optional(),
   query: z.string().optional(),
   status: FailableToolCallStatus$inboundSchema,
-  type: OutputToolSearchServerToolItemType$inboundSchema,
 });
 /** @internal */
 export type OutputToolSearchServerToolItem$Outbound = {
+  type: string;
   error?: string | undefined;
   id?: string | undefined;
   matches?: Array<Match$Outbound> | undefined;
   query?: string | undefined;
   status: string;
-  type: string;
 };
 
 /** @internal */
@@ -122,12 +122,12 @@ export const OutputToolSearchServerToolItem$outboundSchema: z.ZodType<
   OutputToolSearchServerToolItem$Outbound,
   OutputToolSearchServerToolItem
 > = z.object({
+  type: OutputToolSearchServerToolItemType$outboundSchema,
   error: z.string().optional(),
   id: z.string().optional(),
   matches: z.array(z.lazy(() => Match$outboundSchema)).optional(),
   query: z.string().optional(),
   status: FailableToolCallStatus$outboundSchema,
-  type: OutputToolSearchServerToolItemType$outboundSchema,
 });
 
 export function outputToolSearchServerToolItemToJSON(

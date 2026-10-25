@@ -8,8 +8,8 @@ title: "AnthropicTextEditorCodeExecutionContent"
 
 ```typescript
 const value: models.AnthropicTextEditorCodeExecutionCreateResult = {
-  isFileUpdate: false,
   type: "text_editor_code_execution_create_result",
+  isFileUpdate: false,
 };
 ```
 
@@ -17,6 +17,7 @@ const value: models.AnthropicTextEditorCodeExecutionCreateResult = {
 
 ```typescript
 const value: models.AnthropicTextEditorCodeExecutionStrReplaceResult = {
+  type: "text_editor_code_execution_str_replace_result",
   lines: [
     "<value 1>",
     "<value 2>",
@@ -25,7 +26,6 @@ const value: models.AnthropicTextEditorCodeExecutionStrReplaceResult = {
   newStart: 446855,
   oldLines: 449453,
   oldStart: 595089,
-  type: "text_editor_code_execution_str_replace_result",
 };
 ```
 
@@ -33,9 +33,9 @@ const value: models.AnthropicTextEditorCodeExecutionStrReplaceResult = {
 
 ```typescript
 const value: models.AnthropicTextEditorCodeExecutionToolResultError = {
+  type: "text_editor_code_execution_tool_result_error",
   errorCode: "invalid_tool_input",
   errorMessage: "<value>",
-  type: "text_editor_code_execution_tool_result_error",
 };
 ```
 
@@ -43,12 +43,12 @@ const value: models.AnthropicTextEditorCodeExecutionToolResultError = {
 
 ```typescript
 const value: models.AnthropicTextEditorCodeExecutionViewResult = {
+  type: "text_editor_code_execution_view_result",
   content: "file content",
   fileType: "text",
   numLines: 10,
   startLine: 1,
   totalLines: 10,
-  type: "text_editor_code_execution_view_result",
 };
 ```
 

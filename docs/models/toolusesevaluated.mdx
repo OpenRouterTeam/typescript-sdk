@@ -8,8 +8,8 @@ title: "ToolUsesEvaluated"
 import { ToolUsesEvaluated } from "@openrouter/sdk/models";
 
 let value: ToolUsesEvaluated = {
-  outcome: "flagged",
   type: "evaluated",
+  outcome: "flagged",
 };
 ```
 
@@ -17,6 +17,6 @@ let value: ToolUsesEvaluated = {
 
 | Field                                          | Type                                           | Required                                       | Description                                    |
 | ---------------------------------------------- | ---------------------------------------------- | ---------------------------------------------- | ---------------------------------------------- |
+| `type`                                         | *"evaluated"*                                  | ✔️                             | N/A                                            |
 | `explanation`                                  | *string*                                       | ➖                             | N/A                                            |
 | `outcome`                                      | [models.OutcomeEnum](../models/outcomeenum.mdx) | ✔️                             | N/A                                            |
-| `type`                                         | *"evaluated"*                                  | ✔️                             | N/A                                            |

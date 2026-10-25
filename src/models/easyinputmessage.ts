@@ -28,6 +28,13 @@ import {
   InputVideo$outboundSchema,
 } from "./inputvideo.js";
 
+export const EasyInputMessageTypeMessage = {
+  Message: "message",
+} as const;
+export type EasyInputMessageTypeMessage = ClosedEnum<
+  typeof EasyInputMessageTypeMessage
+>;
+
 export const EasyInputMessageDetail = {
   Auto: "auto",
   High: "high",
@@ -40,10 +47,10 @@ export type EasyInputMessageDetail = OpenEnum<typeof EasyInputMessageDetail>;
  * Image input content item. Provide either an image_url (a URL or a base64 data URL) or the file_id of an uploaded image.
  */
 export type EasyInputMessageContentInputImage = {
+  type: "input_image";
   detail: EasyInputMessageDetail;
   fileId?: string | null | undefined;
   imageUrl?: string | null | undefined;
-  type: "input_image";
 };
 
 export type EasyInputMessageContentUnion1 =
@@ -118,14 +125,8 @@ export type EasyInputMessageRoleUnion =
   | EasyInputMessageRoleAssistant
   | EasyInputMessageRoleDeveloper;
 
-export const EasyInputMessageTypeMessage = {
-  Message: "message",
-} as const;
-export type EasyInputMessageTypeMessage = ClosedEnum<
-  typeof EasyInputMessageTypeMessage
->;
-
 export type EasyInputMessage = {
+  type?: EasyInputMessageTypeMessage | undefined;
   content?:
     | Array<
       | InputText
@@ -150,8 +151,12 @@ export type EasyInputMessage = {
     | EasyInputMessageRoleSystem
     | EasyInputMessageRoleAssistant
     | EasyInputMessageRoleDeveloper;
-  type?: EasyInputMessageTypeMessage | undefined;
 };
+
+/** @internal */
+export const EasyInputMessageTypeMessage$outboundSchema: z.ZodEnum<
+  typeof EasyInputMessageTypeMessage
+> = z.enum(EasyInputMessageTypeMessage);
 
 /** @internal */
 export const EasyInputMessageDetail$outboundSchema: z.ZodType<
@@ -161,10 +166,10 @@ export const EasyInputMessageDetail$outboundSchema: z.ZodType<
 
 /** @internal */
 export type EasyInputMessageContentInputImage$Outbound = {
+  type: "input_image";
   detail: string;
   file_id?: string | null | undefined;
   image_url?: string | null | undefined;
-  type: "input_image";
 };
 
 /** @internal */
@@ -172,10 +177,10 @@ export const EasyInputMessageContentInputImage$outboundSchema: z.ZodType<
   EasyInputMessageContentInputImage$Outbound,
   EasyInputMessageContentInputImage
 > = z.object({
+  type: z.literal("input_image"),
   detail: EasyInputMessageDetail$outboundSchema,
   fileId: z.nullable(z.string()).optional(),
   imageUrl: z.nullable(z.string()).optional(),
-  type: z.literal("input_image"),
 }).transform((v) => {
   return remap$(v, {
     fileId: "file_id",
@@ -336,12 +341,8 @@ export function easyInputMessageRoleUnionToJSON(
 }
 
 /** @internal */
-export const EasyInputMessageTypeMessage$outboundSchema: z.ZodEnum<
-  typeof EasyInputMessageTypeMessage
-> = z.enum(EasyInputMessageTypeMessage);
-
-/** @internal */
 export type EasyInputMessage$Outbound = {
+  type?: string | undefined;
   content?:
     | Array<
       | InputText$Outbound
@@ -355,7 +356,6 @@ export type EasyInputMessage$Outbound = {
     | undefined;
   phase?: string | string | null | undefined;
   role: string | string | string | string;
-  type?: string | undefined;
 };
 
 /** @internal */
@@ -363,6 +363,7 @@ export const EasyInputMessage$outboundSchema: z.ZodType<
   EasyInputMessage$Outbound,
   EasyInputMessage
 > = z.object({
+  type: EasyInputMessageTypeMessage$outboundSchema.optional(),
   content: z.nullable(
     z.union([
       z.array(z.union([
@@ -387,7 +388,6 @@ export const EasyInputMessage$outboundSchema: z.ZodType<
     EasyInputMessageRoleAssistant$outboundSchema,
     EasyInputMessageRoleDeveloper$outboundSchema,
   ]),
-  type: EasyInputMessageTypeMessage$outboundSchema.optional(),
 });
 
 export function easyInputMessageToJSON(

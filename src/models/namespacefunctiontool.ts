@@ -23,16 +23,16 @@ export type NamespaceFunctionToolAllowedCaller = OpenEnum<
  * A function tool grouped inside a namespace tool
  */
 export type NamespaceFunctionTool = {
+  description?: string | null | undefined;
+  parameters?: { [k: string]: any } | null | undefined;
   allowedCallers?: Array<NamespaceFunctionToolAllowedCaller> | null | undefined;
   /**
    * Lets the model keep working after calling this tool instead of waiting for its output. The tool is still executed by the client; return the result in a later request as a `function_call_output` with the original `call_id`. Only honored by providers whose Responses API supports async tools; ignored elsewhere.
    */
   async?: boolean | undefined;
   deferLoading?: boolean | undefined;
-  description?: string | null | undefined;
   name: string;
   outputSchema?: { [k: string]: any } | null | undefined;
-  parameters?: { [k: string]: any } | null | undefined;
   strict?: boolean | null | undefined;
   type: "function";
 };
@@ -53,15 +53,15 @@ export const NamespaceFunctionTool$inboundSchema: z.ZodType<
   NamespaceFunctionTool,
   unknown
 > = z.object({
+  description: z.nullable(z.string()).optional(),
+  parameters: z.nullable(z.record(z.string(), z.any())).optional(),
   allowed_callers: z.nullable(
     z.array(NamespaceFunctionToolAllowedCaller$inboundSchema),
   ).optional(),
   async: z.boolean().optional(),
   defer_loading: z.boolean().optional(),
-  description: z.nullable(z.string()).optional(),
   name: z.string(),
   output_schema: z.nullable(z.record(z.string(), z.any())).optional(),
-  parameters: z.nullable(z.record(z.string(), z.any())).optional(),
   strict: z.nullable(z.boolean()).optional(),
   type: z.literal("function"),
 }).transform((v) => {
@@ -73,13 +73,13 @@ export const NamespaceFunctionTool$inboundSchema: z.ZodType<
 });
 /** @internal */
 export type NamespaceFunctionTool$Outbound = {
+  description?: string | null | undefined;
+  parameters?: { [k: string]: any } | null | undefined;
   allowed_callers?: Array<string> | null | undefined;
   async?: boolean | undefined;
   defer_loading?: boolean | undefined;
-  description?: string | null | undefined;
   name: string;
   output_schema?: { [k: string]: any } | null | undefined;
-  parameters?: { [k: string]: any } | null | undefined;
   strict?: boolean | null | undefined;
   type: "function";
 };
@@ -89,15 +89,15 @@ export const NamespaceFunctionTool$outboundSchema: z.ZodType<
   NamespaceFunctionTool$Outbound,
   NamespaceFunctionTool
 > = z.object({
+  description: z.nullable(z.string()).optional(),
+  parameters: z.nullable(z.record(z.string(), z.any())).optional(),
   allowedCallers: z.nullable(
     z.array(NamespaceFunctionToolAllowedCaller$outboundSchema),
   ).optional(),
   async: z.boolean().optional(),
   deferLoading: z.boolean().optional(),
-  description: z.nullable(z.string()).optional(),
   name: z.string(),
   outputSchema: z.nullable(z.record(z.string(), z.any())).optional(),
-  parameters: z.nullable(z.record(z.string(), z.any())).optional(),
   strict: z.nullable(z.boolean()).optional(),
   type: z.literal("function"),
 }).transform((v) => {

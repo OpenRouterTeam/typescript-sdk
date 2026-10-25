@@ -21,6 +21,10 @@ import {
  */
 export type SubagentServerToolConfig = {
   /**
+   * Optional name for this subagent. The model sees one tool per named subagent (and one default for an unnamed entry). Names must be unique across subagent entries. Letters, digits, spaces, underscores, and dashes; trimmed; 1–64 chars.
+   */
+  name?: string | undefined;
+  /**
    * EXPERIMENTAL — subject to change without notice. When true, the subagent inherits every client function defined in the request's top-level `tools` list. Supported on the Responses API (`/api/v1/responses`) only; other APIs reject it with a `400`.
    */
   inheritFunctions?: boolean | undefined;
@@ -45,10 +49,6 @@ export type SubagentServerToolConfig = {
    */
   model?: string | undefined;
   /**
-   * Optional name for this subagent. The model sees one tool per named subagent (and one default for an unnamed entry). Names must be unique across subagent entries. Letters, digits, spaces, underscores, and dashes; trimmed; 1–64 chars.
-   */
-  name?: string | undefined;
-  /**
    * Reasoning configuration forwarded to the subagent call. Use this to control reasoning effort and token budget for models that support extended thinking.
    */
   reasoning?: SubagentReasoning | undefined;
@@ -64,13 +64,13 @@ export type SubagentServerToolConfig = {
 
 /** @internal */
 export type SubagentServerToolConfig$Outbound = {
+  name?: string | undefined;
   inherit_functions?: boolean | undefined;
   inherited_function_names?: Array<string> | undefined;
   instructions?: string | undefined;
   max_completion_tokens?: number | undefined;
   max_tool_calls?: number | undefined;
   model?: string | undefined;
-  name?: string | undefined;
   reasoning?: SubagentReasoning$Outbound | undefined;
   temperature?: number | undefined;
   tools?: Array<SubagentNestedTool$Outbound> | undefined;
@@ -81,13 +81,13 @@ export const SubagentServerToolConfig$outboundSchema: z.ZodType<
   SubagentServerToolConfig$Outbound,
   SubagentServerToolConfig
 > = z.object({
+  name: z.string().optional(),
   inheritFunctions: z.boolean().optional(),
   inheritedFunctionNames: z.array(z.string()).optional(),
   instructions: z.string().optional(),
   maxCompletionTokens: z.int().optional(),
   maxToolCalls: z.int().optional(),
   model: z.string().optional(),
-  name: z.string().optional(),
   reasoning: SubagentReasoning$outboundSchema.optional(),
   temperature: z.number().optional(),
   tools: z.array(SubagentNestedTool$outboundSchema).optional(),

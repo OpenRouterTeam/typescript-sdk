@@ -18,6 +18,13 @@ import {
   InputText$outboundSchema,
 } from "./inputtext.js";
 
+export const CustomToolCallOutputItemTypeCustomToolCallOutput = {
+  CustomToolCallOutput: "custom_tool_call_output",
+} as const;
+export type CustomToolCallOutputItemTypeCustomToolCallOutput = ClosedEnum<
+  typeof CustomToolCallOutputItemTypeCustomToolCallOutput
+>;
+
 export const CustomToolCallOutputItemDetail = {
   Auto: "auto",
   High: "high",
@@ -32,10 +39,10 @@ export type CustomToolCallOutputItemDetail = OpenEnum<
  * Image input content item. Provide either an image_url (a URL or a base64 data URL) or the file_id of an uploaded image.
  */
 export type CustomToolCallOutputItemOutputInputImage = {
+  type: "input_image";
   detail: CustomToolCallOutputItemDetail;
   fileId?: string | null | undefined;
   imageUrl?: string | null | undefined;
-  type: "input_image";
 };
 
 export type CustomToolCallOutputItemOutputUnion1 =
@@ -47,24 +54,23 @@ export type CustomToolCallOutputItemOutputUnion2 =
   | string
   | Array<InputText | CustomToolCallOutputItemOutputInputImage | InputFile>;
 
-export const CustomToolCallOutputItemTypeCustomToolCallOutput = {
-  CustomToolCallOutput: "custom_tool_call_output",
-} as const;
-export type CustomToolCallOutputItemTypeCustomToolCallOutput = ClosedEnum<
-  typeof CustomToolCallOutputItemTypeCustomToolCallOutput
->;
-
 /**
  * The output from a custom (freeform-grammar) tool call execution. Mirrors `function_call_output` but is matched to a `custom_tool_call` rather than a `function_call`.
  */
 export type CustomToolCallOutputItem = {
+  type: CustomToolCallOutputItemTypeCustomToolCallOutput;
   callId: string;
   id?: string | undefined;
   output:
     | string
     | Array<InputText | CustomToolCallOutputItemOutputInputImage | InputFile>;
-  type: CustomToolCallOutputItemTypeCustomToolCallOutput;
 };
+
+/** @internal */
+export const CustomToolCallOutputItemTypeCustomToolCallOutput$outboundSchema:
+  z.ZodEnum<typeof CustomToolCallOutputItemTypeCustomToolCallOutput> = z.enum(
+    CustomToolCallOutputItemTypeCustomToolCallOutput,
+  );
 
 /** @internal */
 export const CustomToolCallOutputItemDetail$outboundSchema: z.ZodType<
@@ -74,10 +80,10 @@ export const CustomToolCallOutputItemDetail$outboundSchema: z.ZodType<
 
 /** @internal */
 export type CustomToolCallOutputItemOutputInputImage$Outbound = {
+  type: "input_image";
   detail: string;
   file_id?: string | null | undefined;
   image_url?: string | null | undefined;
-  type: "input_image";
 };
 
 /** @internal */
@@ -85,10 +91,10 @@ export const CustomToolCallOutputItemOutputInputImage$outboundSchema: z.ZodType<
   CustomToolCallOutputItemOutputInputImage$Outbound,
   CustomToolCallOutputItemOutputInputImage
 > = z.object({
+  type: z.literal("input_image"),
   detail: CustomToolCallOutputItemDetail$outboundSchema,
   fileId: z.nullable(z.string()).optional(),
   imageUrl: z.nullable(z.string()).optional(),
-  type: z.literal("input_image"),
 }).transform((v) => {
   return remap$(v, {
     fileId: "file_id",
@@ -166,13 +172,8 @@ export function customToolCallOutputItemOutputUnion2ToJSON(
 }
 
 /** @internal */
-export const CustomToolCallOutputItemTypeCustomToolCallOutput$outboundSchema:
-  z.ZodEnum<typeof CustomToolCallOutputItemTypeCustomToolCallOutput> = z.enum(
-    CustomToolCallOutputItemTypeCustomToolCallOutput,
-  );
-
-/** @internal */
 export type CustomToolCallOutputItem$Outbound = {
+  type: string;
   call_id: string;
   id?: string | undefined;
   output:
@@ -182,7 +183,6 @@ export type CustomToolCallOutputItem$Outbound = {
       | CustomToolCallOutputItemOutputInputImage$Outbound
       | InputFile$Outbound
     >;
-  type: string;
 };
 
 /** @internal */
@@ -190,6 +190,7 @@ export const CustomToolCallOutputItem$outboundSchema: z.ZodType<
   CustomToolCallOutputItem$Outbound,
   CustomToolCallOutputItem
 > = z.object({
+  type: CustomToolCallOutputItemTypeCustomToolCallOutput$outboundSchema,
   callId: z.string(),
   id: z.string().optional(),
   output: z.union([
@@ -200,7 +201,6 @@ export const CustomToolCallOutputItem$outboundSchema: z.ZodType<
       InputFile$outboundSchema,
     ])),
   ]),
-  type: CustomToolCallOutputItemTypeCustomToolCallOutput$outboundSchema,
 }).transform((v) => {
   return remap$(v, {
     callId: "call_id",

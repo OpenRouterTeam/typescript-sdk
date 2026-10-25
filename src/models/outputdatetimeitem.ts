@@ -23,6 +23,7 @@ export type OutputDatetimeItemType = ClosedEnum<typeof OutputDatetimeItemType>;
  * An openrouter:datetime server tool output item
  */
 export type OutputDatetimeItem = {
+  type: OutputDatetimeItemType;
   /**
    * ISO 8601 datetime string
    */
@@ -37,7 +38,6 @@ export type OutputDatetimeItem = {
    * IANA timezone name
    */
   timezone: string;
-  type: OutputDatetimeItemType;
 };
 
 /** @internal */
@@ -54,21 +54,21 @@ export const OutputDatetimeItem$inboundSchema: z.ZodType<
   OutputDatetimeItem,
   unknown
 > = z.object({
+  type: OutputDatetimeItemType$inboundSchema,
   datetime: z.string(),
   error: z.string().optional(),
   id: z.string().optional(),
   status: FailableToolCallStatus$inboundSchema,
   timezone: z.string(),
-  type: OutputDatetimeItemType$inboundSchema,
 });
 /** @internal */
 export type OutputDatetimeItem$Outbound = {
+  type: string;
   datetime: string;
   error?: string | undefined;
   id?: string | undefined;
   status: string;
   timezone: string;
-  type: string;
 };
 
 /** @internal */
@@ -76,12 +76,12 @@ export const OutputDatetimeItem$outboundSchema: z.ZodType<
   OutputDatetimeItem$Outbound,
   OutputDatetimeItem
 > = z.object({
+  type: OutputDatetimeItemType$outboundSchema,
   datetime: z.string(),
   error: z.string().optional(),
   id: z.string().optional(),
   status: FailableToolCallStatus$outboundSchema,
   timezone: z.string(),
-  type: OutputDatetimeItemType$outboundSchema,
 });
 
 export function outputDatetimeItemToJSON(

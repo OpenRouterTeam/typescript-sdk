@@ -18,11 +18,11 @@ import {
 } from "./observabilityfilterrulesconfig.js";
 
 export type ObservabilityClickhouseDestinationConfig = {
-  database: string;
   /**
    * Custom HTTP headers to include in requests to this destination.
    */
   headers?: { [k: string]: string } | undefined;
+  database: string;
   host: string;
   password: string;
   /**
@@ -37,6 +37,11 @@ export type ObservabilityClickhouseDestinationConfig = {
 };
 
 export type ObservabilityClickhouseDestination = {
+  /**
+   * Human-readable name for the destination.
+   */
+  name: string | null;
+  type: "clickhouse";
   /**
    * Optional allowlist of OpenRouter API key hashes (`api_keys.hash`) whose traffic is forwarded to this destination. `null` means all keys.
    */
@@ -75,10 +80,6 @@ export type ObservabilityClickhouseDestination = {
    */
   id: string;
   /**
-   * Human-readable name for the destination.
-   */
-  name: string | null;
-  /**
    * When true, request/response bodies are not forwarded to this destination — only metadata.
    */
   privacyMode: boolean;
@@ -90,7 +91,6 @@ export type ObservabilityClickhouseDestination = {
    * Sampling rate for events sent to this destination, between 0.0001 and 1 (1 = 100%).
    */
   samplingRate: number;
-  type: "clickhouse";
   /**
    * ISO timestamp of when the destination was last updated.
    */
@@ -106,8 +106,8 @@ export const ObservabilityClickhouseDestinationConfig$inboundSchema: z.ZodType<
   ObservabilityClickhouseDestinationConfig,
   unknown
 > = z.object({
-  database: z.string(),
   headers: z.record(z.string(), z.string()).optional(),
+  database: z.string(),
   host: z.string(),
   password: z.string(),
   shouldIncludeCacheWriteTokens: z.boolean().default(false),
@@ -136,6 +136,8 @@ export const ObservabilityClickhouseDestination$inboundSchema: z.ZodType<
   ObservabilityClickhouseDestination,
   unknown
 > = z.object({
+  name: z.nullable(z.string()),
+  type: z.literal("clickhouse"),
   api_key_hashes: z.nullable(z.array(z.string())),
   broadcast_generation_cost: z.boolean(),
   broadcast_generation_cost_allocation: z.boolean(),
@@ -146,11 +148,9 @@ export const ObservabilityClickhouseDestination$inboundSchema: z.ZodType<
   enabled: z.boolean(),
   filter_rules: z.nullable(ObservabilityFilterRulesConfig$inboundSchema),
   id: z.string(),
-  name: z.nullable(z.string()),
   privacy_mode: z.boolean(),
   regions: z.array(ObservabilityDataRegion$inboundSchema),
   sampling_rate: z.number(),
-  type: z.literal("clickhouse"),
   updated_at: z.string(),
   workspace_id: z.string(),
 }).transform((v) => {

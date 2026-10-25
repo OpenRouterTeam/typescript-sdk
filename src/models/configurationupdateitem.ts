@@ -26,12 +26,12 @@ export type ConfigurationUpdateItemType = ClosedEnum<
  * Changes reasoning effort from this point in the conversation onward without invalidating the prompt cache for the preceding items. Place it before the user message it should apply to; it stays in effect until another configuration update. Two adjacent configuration updates are rejected. Only supported by models that accept mid-conversation effort changes.
  */
 export type ConfigurationUpdateItem = {
+  type: ConfigurationUpdateItemType;
   id?: string | null | undefined;
   /**
    * Reasoning settings applied from this point in the conversation onward
    */
   reasoning: ConfigurationUpdateReasoning;
-  type: ConfigurationUpdateItemType;
 };
 
 /** @internal */
@@ -48,15 +48,15 @@ export const ConfigurationUpdateItem$inboundSchema: z.ZodType<
   ConfigurationUpdateItem,
   unknown
 > = z.object({
+  type: ConfigurationUpdateItemType$inboundSchema,
   id: z.nullable(z.string()).optional(),
   reasoning: ConfigurationUpdateReasoning$inboundSchema,
-  type: ConfigurationUpdateItemType$inboundSchema,
 });
 /** @internal */
 export type ConfigurationUpdateItem$Outbound = {
+  type: string;
   id?: string | null | undefined;
   reasoning: ConfigurationUpdateReasoning$Outbound;
-  type: string;
 };
 
 /** @internal */
@@ -64,9 +64,9 @@ export const ConfigurationUpdateItem$outboundSchema: z.ZodType<
   ConfigurationUpdateItem$Outbound,
   ConfigurationUpdateItem
 > = z.object({
+  type: ConfigurationUpdateItemType$outboundSchema,
   id: z.nullable(z.string()).optional(),
   reasoning: ConfigurationUpdateReasoning$outboundSchema,
-  type: ConfigurationUpdateItemType$outboundSchema,
 });
 
 export function configurationUpdateItemToJSON(

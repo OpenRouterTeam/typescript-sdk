@@ -18,6 +18,8 @@ export type OpenAIResponseCustomToolCallType = ClosedEnum<
 >;
 
 export type OpenAIResponseCustomToolCall = {
+  name: string;
+  type: OpenAIResponseCustomToolCallType;
   /**
    * True when the model called a tool declared with `async: true` and may continue its turn before the output is returned. Return the result in a later request as a `function_call_output` with this `call_id`.
    */
@@ -25,12 +27,10 @@ export type OpenAIResponseCustomToolCall = {
   callId: string;
   id?: string | undefined;
   input: string;
-  name: string;
   /**
    * Namespace qualifier for tools registered as part of a namespace tool group (e.g. an MCP server)
    */
   namespace?: string | undefined;
-  type: OpenAIResponseCustomToolCallType;
 };
 
 /** @internal */
@@ -43,13 +43,13 @@ export const OpenAIResponseCustomToolCall$inboundSchema: z.ZodType<
   OpenAIResponseCustomToolCall,
   unknown
 > = z.object({
+  name: z.string(),
+  type: OpenAIResponseCustomToolCallType$inboundSchema,
   async: z.boolean().optional(),
   call_id: z.string(),
   id: z.string().optional(),
   input: z.string(),
-  name: z.string(),
   namespace: z.string().optional(),
-  type: OpenAIResponseCustomToolCallType$inboundSchema,
 }).transform((v) => {
   return remap$(v, {
     "call_id": "callId",

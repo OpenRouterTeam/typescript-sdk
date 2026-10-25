@@ -10,13 +10,13 @@ import { Result as SafeParseResult } from "../types/fp.js";
 import { SDKValidationError } from "./errors/sdkvalidationerror.js";
 
 export type AnthropicCitationSearchResultLocation = {
+  type: "search_result_location";
+  title: string | null;
   citedText: string;
   endBlockIndex: number;
   searchResultIndex: number;
   source: string;
   startBlockIndex: number;
-  title: string | null;
-  type: "search_result_location";
 };
 
 /** @internal */
@@ -24,13 +24,13 @@ export const AnthropicCitationSearchResultLocation$inboundSchema: z.ZodType<
   AnthropicCitationSearchResultLocation,
   unknown
 > = z.object({
+  type: z.literal("search_result_location"),
+  title: z.nullable(z.string()),
   cited_text: z.string(),
   end_block_index: z.int(),
   search_result_index: z.int(),
   source: z.string(),
   start_block_index: z.int(),
-  title: z.nullable(z.string()),
-  type: z.literal("search_result_location"),
 }).transform((v) => {
   return remap$(v, {
     "cited_text": "citedText",

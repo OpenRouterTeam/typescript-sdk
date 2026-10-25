@@ -15,11 +15,11 @@ export type AnthropicWebSearchResultBlockParamType = ClosedEnum<
 >;
 
 export type AnthropicWebSearchResultBlockParam = {
+  url: string;
   encryptedContent: string;
   pageAge?: string | null | undefined;
   title: string;
   type: AnthropicWebSearchResultBlockParamType;
-  url: string;
 };
 
 /** @internal */
@@ -29,11 +29,11 @@ export const AnthropicWebSearchResultBlockParamType$outboundSchema: z.ZodEnum<
 
 /** @internal */
 export type AnthropicWebSearchResultBlockParam$Outbound = {
+  url: string;
   encrypted_content: string;
   page_age?: string | null | undefined;
   title: string;
   type: string;
-  url: string;
 };
 
 /** @internal */
@@ -41,11 +41,11 @@ export const AnthropicWebSearchResultBlockParam$outboundSchema: z.ZodType<
   AnthropicWebSearchResultBlockParam$Outbound,
   AnthropicWebSearchResultBlockParam
 > = z.object({
+  url: z.string(),
   encryptedContent: z.string(),
   pageAge: z.nullable(z.string()).optional(),
   title: z.string(),
   type: AnthropicWebSearchResultBlockParamType$outboundSchema,
-  url: z.string(),
 }).transform((v) => {
   return remap$(v, {
     encryptedContent: "encrypted_content",

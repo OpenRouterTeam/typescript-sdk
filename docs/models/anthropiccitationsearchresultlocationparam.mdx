@@ -8,13 +8,13 @@ title: "AnthropicCitationSearchResultLocationParam"
 import { AnthropicCitationSearchResultLocationParam } from "@openrouter/sdk/models";
 
 let value: AnthropicCitationSearchResultLocationParam = {
+  type: "search_result_location",
+  title: "Example Result",
   citedText: "Example cited text",
   endBlockIndex: 1,
   searchResultIndex: 0,
   source: "example_source",
   startBlockIndex: 0,
-  title: "Example Result",
-  type: "search_result_location",
 };
 ```
 
@@ -22,10 +22,10 @@ let value: AnthropicCitationSearchResultLocationParam = {
 
 | Field                      | Type                       | Required                   | Description                |
 | -------------------------- | -------------------------- | -------------------------- | -------------------------- |
+| `type`                     | *"search_result_location"* | ✔️         | N/A                        |
+| `title`                    | *string*                   | ✔️         | N/A                        |
 | `citedText`                | *string*                   | ✔️         | N/A                        |
 | `endBlockIndex`            | *number*                   | ✔️         | N/A                        |
 | `searchResultIndex`        | *number*                   | ✔️         | N/A                        |
 | `source`                   | *string*                   | ✔️         | N/A                        |
 | `startBlockIndex`          | *number*                   | ✔️         | N/A                        |
-| `title`                    | *string*                   | ✔️         | N/A                        |
-| `type`                     | *"search_result_location"* | ✔️         | N/A                        |

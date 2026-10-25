@@ -18,16 +18,16 @@ import {
 } from "./observabilityfilterrulesconfig.js";
 
 export type ObservabilityS3DestinationConfig = {
+  /**
+   * Custom HTTP headers to include in requests to this destination.
+   */
+  headers?: { [k: string]: string } | undefined;
   accessKeyId: string;
   bucketName: string;
   /**
    * Only for S3-compatible services like Cloudflare R2 (https://account-id.r2.cloudflarestorage.com) or MinIO. Leave blank for standard AWS S3.
    */
   endpoint?: string | undefined;
-  /**
-   * Custom HTTP headers to include in requests to this destination.
-   */
-  headers?: { [k: string]: string } | undefined;
   /**
    * Template for S3 object path. The filename ({traceId}-{timestamp}.json) is automatically appended. Available variables: {prefix}, {date}, {year}, {month}, {day}, {apiKeyName}
    */
@@ -39,6 +39,11 @@ export type ObservabilityS3DestinationConfig = {
 };
 
 export type ObservabilityS3Destination = {
+  /**
+   * Human-readable name for the destination.
+   */
+  name: string | null;
+  type: "s3";
   /**
    * Optional allowlist of OpenRouter API key hashes (`api_keys.hash`) whose traffic is forwarded to this destination. `null` means all keys.
    */
@@ -77,10 +82,6 @@ export type ObservabilityS3Destination = {
    */
   id: string;
   /**
-   * Human-readable name for the destination.
-   */
-  name: string | null;
-  /**
    * When true, request/response bodies are not forwarded to this destination — only metadata.
    */
   privacyMode: boolean;
@@ -92,7 +93,6 @@ export type ObservabilityS3Destination = {
    * Sampling rate for events sent to this destination, between 0.0001 and 1 (1 = 100%).
    */
   samplingRate: number;
-  type: "s3";
   /**
    * ISO timestamp of when the destination was last updated.
    */
@@ -108,10 +108,10 @@ export const ObservabilityS3DestinationConfig$inboundSchema: z.ZodType<
   ObservabilityS3DestinationConfig,
   unknown
 > = z.object({
+  headers: z.record(z.string(), z.string()).optional(),
   accessKeyId: z.string(),
   bucketName: z.string(),
   endpoint: z.string().optional(),
-  headers: z.record(z.string(), z.string()).optional(),
   pathTemplate: z.string().default("{prefix}/{date}"),
   prefix: z.string().default("openrouter-traces"),
   region: z.string().optional(),
@@ -134,6 +134,8 @@ export const ObservabilityS3Destination$inboundSchema: z.ZodType<
   ObservabilityS3Destination,
   unknown
 > = z.object({
+  name: z.nullable(z.string()),
+  type: z.literal("s3"),
   api_key_hashes: z.nullable(z.array(z.string())),
   broadcast_generation_cost: z.boolean(),
   broadcast_generation_cost_allocation: z.boolean(),
@@ -144,11 +146,9 @@ export const ObservabilityS3Destination$inboundSchema: z.ZodType<
   enabled: z.boolean(),
   filter_rules: z.nullable(ObservabilityFilterRulesConfig$inboundSchema),
   id: z.string(),
-  name: z.nullable(z.string()),
   privacy_mode: z.boolean(),
   regions: z.array(ObservabilityDataRegion$inboundSchema),
   sampling_rate: z.number(),
-  type: z.literal("s3"),
   updated_at: z.string(),
   workspace_id: z.string(),
 }).transform((v) => {

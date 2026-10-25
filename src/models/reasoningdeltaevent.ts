@@ -13,12 +13,12 @@ import { SDKValidationError } from "./errors/sdkvalidationerror.js";
  * Event emitted when reasoning text delta is streamed
  */
 export type ReasoningDeltaEvent = {
+  type: "response.reasoning_text.delta";
   contentIndex: number;
   delta: string;
   itemId: string;
   outputIndex: number;
   sequenceNumber: number;
-  type: "response.reasoning_text.delta";
 };
 
 /** @internal */
@@ -26,12 +26,12 @@ export const ReasoningDeltaEvent$inboundSchema: z.ZodType<
   ReasoningDeltaEvent,
   unknown
 > = z.object({
+  type: z.literal("response.reasoning_text.delta"),
   content_index: z.int(),
   delta: z.string(),
   item_id: z.string(),
   output_index: z.int(),
   sequence_number: z.int(),
-  type: z.literal("response.reasoning_text.delta"),
 }).transform((v) => {
   return remap$(v, {
     "content_index": "contentIndex",

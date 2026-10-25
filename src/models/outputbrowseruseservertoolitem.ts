@@ -25,11 +25,11 @@ export type OutputBrowserUseServerToolItemType = ClosedEnum<
  * An openrouter:browser_use server tool output item
  */
 export type OutputBrowserUseServerToolItem = {
+  type: OutputBrowserUseServerToolItemType;
   action?: string | undefined;
   id?: string | undefined;
   screenshotB64?: string | undefined;
   status: ToolCallStatus;
-  type: OutputBrowserUseServerToolItemType;
 };
 
 /** @internal */
@@ -46,19 +46,19 @@ export const OutputBrowserUseServerToolItem$inboundSchema: z.ZodType<
   OutputBrowserUseServerToolItem,
   unknown
 > = z.object({
+  type: OutputBrowserUseServerToolItemType$inboundSchema,
   action: z.string().optional(),
   id: z.string().optional(),
   screenshotB64: z.string().optional(),
   status: ToolCallStatus$inboundSchema,
-  type: OutputBrowserUseServerToolItemType$inboundSchema,
 });
 /** @internal */
 export type OutputBrowserUseServerToolItem$Outbound = {
+  type: string;
   action?: string | undefined;
   id?: string | undefined;
   screenshotB64?: string | undefined;
   status: string;
-  type: string;
 };
 
 /** @internal */
@@ -66,11 +66,11 @@ export const OutputBrowserUseServerToolItem$outboundSchema: z.ZodType<
   OutputBrowserUseServerToolItem$Outbound,
   OutputBrowserUseServerToolItem
 > = z.object({
+  type: OutputBrowserUseServerToolItemType$outboundSchema,
   action: z.string().optional(),
   id: z.string().optional(),
   screenshotB64: z.string().optional(),
   status: ToolCallStatus$outboundSchema,
-  type: OutputBrowserUseServerToolItemType$outboundSchema,
 });
 
 export function outputBrowserUseServerToolItemToJSON(

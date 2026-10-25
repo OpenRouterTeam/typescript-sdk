@@ -11,8 +11,8 @@ export type AudioUrl = {
 };
 
 export type ContentPartAudio = {
-  audioUrl: AudioUrl;
   type: "audio_url";
+  audioUrl: AudioUrl;
 };
 
 /** @internal */
@@ -32,8 +32,8 @@ export function audioUrlToJSON(audioUrl: AudioUrl): string {
 
 /** @internal */
 export type ContentPartAudio$Outbound = {
-  audio_url: AudioUrl$Outbound;
   type: "audio_url";
+  audio_url: AudioUrl$Outbound;
 };
 
 /** @internal */
@@ -41,8 +41,8 @@ export const ContentPartAudio$outboundSchema: z.ZodType<
   ContentPartAudio$Outbound,
   ContentPartAudio
 > = z.object({
-  audioUrl: z.lazy(() => AudioUrl$outboundSchema),
   type: z.literal("audio_url"),
+  audioUrl: z.lazy(() => AudioUrl$outboundSchema),
 }).transform((v) => {
   return remap$(v, {
     audioUrl: "audio_url",

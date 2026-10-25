@@ -19,12 +19,12 @@ export type DecisionsScoreQuestionInstructions =
   | Array<any>;
 
 export type DecisionsScoreQuestion = {
+  type: "score";
   criteria: Array<string | { [k: string]: any } | Array<any>>;
   /**
    * A plain string, or a JSON object or array of structured guidance.
    */
   instructions: string | { [k: string]: any } | Array<any>;
-  type: "score";
 };
 
 /** @internal */
@@ -63,9 +63,9 @@ export function decisionsScoreQuestionInstructionsToJSON(
 
 /** @internal */
 export type DecisionsScoreQuestion$Outbound = {
+  type: "score";
   criteria: Array<string | { [k: string]: any } | Array<any>>;
   instructions: string | { [k: string]: any } | Array<any>;
-  type: "score";
 };
 
 /** @internal */
@@ -73,6 +73,7 @@ export const DecisionsScoreQuestion$outboundSchema: z.ZodType<
   DecisionsScoreQuestion$Outbound,
   DecisionsScoreQuestion
 > = z.object({
+  type: z.literal("score"),
   criteria: z.array(
     z.union([z.string(), z.record(z.string(), z.any()), z.array(z.any())]),
   ),
@@ -81,7 +82,6 @@ export const DecisionsScoreQuestion$outboundSchema: z.ZodType<
     z.record(z.string(), z.any()),
     z.array(z.any()),
   ]),
-  type: z.literal("score"),
 });
 
 export function decisionsScoreQuestionToJSON(

@@ -10,19 +10,19 @@ import * as z from "zod/v4";
  */
 export type STTUrlInputAudio = {
   /**
-   * Audio format of the file at the URL. Defaults to the extension of the URL path; required when the path has no extension.
-   */
-  format?: string | undefined;
-  /**
    * Publicly reachable http(s) URL of the audio file. The provider downloads it directly, so the inline upload size limit does not apply. Only supported by some providers.
    */
   url: string;
+  /**
+   * Audio format of the file at the URL. Defaults to the extension of the URL path; required when the path has no extension.
+   */
+  format?: string | undefined;
 };
 
 /** @internal */
 export type STTUrlInputAudio$Outbound = {
-  format?: string | undefined;
   url: string;
+  format?: string | undefined;
 };
 
 /** @internal */
@@ -30,8 +30,8 @@ export const STTUrlInputAudio$outboundSchema: z.ZodType<
   STTUrlInputAudio$Outbound,
   STTUrlInputAudio
 > = z.object({
-  format: z.string().optional(),
   url: z.string(),
+  format: z.string().optional(),
 });
 
 export function sttUrlInputAudioToJSON(

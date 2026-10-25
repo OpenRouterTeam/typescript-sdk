@@ -14,25 +14,25 @@ import { StreamLogprob, StreamLogprob$inboundSchema } from "./streamlogprob.js";
  * Event emitted when text streaming is complete
  */
 export type TextDoneEvent = {
+  type: "response.output_text.done";
   contentIndex: number;
   itemId: string;
   logprobs: Array<StreamLogprob>;
   outputIndex: number;
   sequenceNumber: number;
   text: string;
-  type: "response.output_text.done";
 };
 
 /** @internal */
 export const TextDoneEvent$inboundSchema: z.ZodType<TextDoneEvent, unknown> = z
   .object({
+    type: z.literal("response.output_text.done"),
     content_index: z.int(),
     item_id: z.string(),
     logprobs: z.array(StreamLogprob$inboundSchema),
     output_index: z.int(),
     sequence_number: z.int(),
     text: z.string(),
-    type: z.literal("response.output_text.done"),
   }).transform((v) => {
     return remap$(v, {
       "content_index": "contentIndex",

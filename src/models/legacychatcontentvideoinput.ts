@@ -29,13 +29,13 @@ export type LegacyChatContentVideoInputProcessing = OpenEnum<
  */
 export type LegacyChatContentVideoInput = {
   /**
-   * Video processing mode. `agentic` enables agentic video processing and `static` forces fixed-rate frame sampling on providers that support it (currently Google Gemini).
-   */
-  processing?: LegacyChatContentVideoInputProcessing | undefined;
-  /**
    * URL of the video (data: URLs supported)
    */
   url: string;
+  /**
+   * Video processing mode. `agentic` enables agentic video processing and `static` forces fixed-rate frame sampling on providers that support it (currently Google Gemini).
+   */
+  processing?: LegacyChatContentVideoInputProcessing | undefined;
 };
 
 /** @internal */
@@ -54,13 +54,13 @@ export const LegacyChatContentVideoInput$inboundSchema: z.ZodType<
   LegacyChatContentVideoInput,
   unknown
 > = z.object({
-  processing: LegacyChatContentVideoInputProcessing$inboundSchema.optional(),
   url: z.string(),
+  processing: LegacyChatContentVideoInputProcessing$inboundSchema.optional(),
 });
 /** @internal */
 export type LegacyChatContentVideoInput$Outbound = {
-  processing?: string | undefined;
   url: string;
+  processing?: string | undefined;
 };
 
 /** @internal */
@@ -68,8 +68,8 @@ export const LegacyChatContentVideoInput$outboundSchema: z.ZodType<
   LegacyChatContentVideoInput$Outbound,
   LegacyChatContentVideoInput
 > = z.object({
-  processing: LegacyChatContentVideoInputProcessing$outboundSchema.optional(),
   url: z.string(),
+  processing: LegacyChatContentVideoInputProcessing$outboundSchema.optional(),
 });
 
 export function legacyChatContentVideoInputToJSON(

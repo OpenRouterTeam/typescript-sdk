@@ -21,8 +21,8 @@ export type AnthropicCacheControlDirectiveType = ClosedEnum<
  * Enable automatic prompt caching. When set at the top level, the system automatically applies cache breakpoints to the last cacheable block in the request. When set on an individual content block, it marks an explicit cache breakpoint; block-level markers also work on OpenAI models that support explicit prompt caching — OpenRouter converts them to the provider's native format.
  */
 export type AnthropicCacheControlDirective = {
-  ttl?: AnthropicCacheControlTtl | undefined;
   type: AnthropicCacheControlDirectiveType;
+  ttl?: AnthropicCacheControlTtl | undefined;
 };
 
 /** @internal */
@@ -32,8 +32,8 @@ export const AnthropicCacheControlDirectiveType$outboundSchema: z.ZodEnum<
 
 /** @internal */
 export type AnthropicCacheControlDirective$Outbound = {
-  ttl?: string | undefined;
   type: string;
+  ttl?: string | undefined;
 };
 
 /** @internal */
@@ -41,8 +41,8 @@ export const AnthropicCacheControlDirective$outboundSchema: z.ZodType<
   AnthropicCacheControlDirective$Outbound,
   AnthropicCacheControlDirective
 > = z.object({
-  ttl: AnthropicCacheControlTtl$outboundSchema.optional(),
   type: AnthropicCacheControlDirectiveType$outboundSchema,
+  ttl: AnthropicCacheControlTtl$outboundSchema.optional(),
 });
 
 export function anthropicCacheControlDirectiveToJSON(

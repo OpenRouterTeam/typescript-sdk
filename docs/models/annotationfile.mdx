@@ -8,11 +8,11 @@ title: "AnnotationFile"
 import { AnnotationFile } from "@openrouter/sdk/models";
 
 let value: AnnotationFile = {
+  type: "file",
   file: {
     content: [],
     hash: "<value>",
   },
-  type: "file",
 };
 ```
 
@@ -20,5 +20,5 @@ let value: AnnotationFile = {
 
 | Field                                                  | Type                                                   | Required                                               | Description                                            |
 | ------------------------------------------------------ | ------------------------------------------------------ | ------------------------------------------------------ | ------------------------------------------------------ |
-| `file`                                                 | [models.BatchObjectFile](../models/batchobjectfile.mdx) | ✔️                                     | N/A                                                    |
 | `type`                                                 | *"file"*                                               | ✔️                                     | N/A                                                    |
+| `file`                                                 | [models.BatchObjectFile](../models/batchobjectfile.mdx) | ✔️                                     | N/A                                                    |

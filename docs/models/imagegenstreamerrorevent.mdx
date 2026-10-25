@@ -10,10 +10,10 @@ Emitted when streaming generation fails after the SSE response starts
 import { ImageGenStreamErrorEvent } from "@openrouter/sdk/models";
 
 let value: ImageGenStreamErrorEvent = {
+  type: "error",
   error: {
     message: "The upstream provider returned an error",
   },
-  type: "error",
 };
 ```
 
@@ -21,5 +21,5 @@ let value: ImageGenStreamErrorEvent = {
 
 | Field                                                                              | Type                                                                               | Required                                                                           | Description                                                                        |
 | ---------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------- |
-| `error`                                                                            | [models.ImageGenStreamErrorEventError](../models/imagegenstreamerroreventerror.mdx) | ✔️                                                                 | Provider error details                                                             |
 | `type`                                                                             | *"error"*                                                                          | ✔️                                                                 | The event type                                                                     |
+| `error`                                                                            | [models.ImageGenStreamErrorEventError](../models/imagegenstreamerroreventerror.mdx) | ✔️                                                                 | Provider error details                                                             |

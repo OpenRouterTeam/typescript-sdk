@@ -14,11 +14,11 @@ export type AnthropicWebSearchToolUserLocationType = ClosedEnum<
 >;
 
 export type AnthropicWebSearchToolUserLocation = {
+  type: AnthropicWebSearchToolUserLocationType;
   city?: string | null | undefined;
   country?: string | null | undefined;
   region?: string | null | undefined;
   timezone?: string | null | undefined;
-  type: AnthropicWebSearchToolUserLocationType;
 };
 
 /** @internal */
@@ -28,11 +28,11 @@ export const AnthropicWebSearchToolUserLocationType$outboundSchema: z.ZodEnum<
 
 /** @internal */
 export type AnthropicWebSearchToolUserLocation$Outbound = {
+  type: string;
   city?: string | null | undefined;
   country?: string | null | undefined;
   region?: string | null | undefined;
   timezone?: string | null | undefined;
-  type: string;
 };
 
 /** @internal */
@@ -40,11 +40,11 @@ export const AnthropicWebSearchToolUserLocation$outboundSchema: z.ZodType<
   AnthropicWebSearchToolUserLocation$Outbound,
   AnthropicWebSearchToolUserLocation
 > = z.object({
+  type: AnthropicWebSearchToolUserLocationType$outboundSchema,
   city: z.nullable(z.string()).optional(),
   country: z.nullable(z.string()).optional(),
   region: z.nullable(z.string()).optional(),
   timezone: z.nullable(z.string()).optional(),
-  type: AnthropicWebSearchToolUserLocationType$outboundSchema,
 });
 
 export function anthropicWebSearchToolUserLocationToJSON(

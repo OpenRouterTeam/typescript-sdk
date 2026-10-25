@@ -24,8 +24,8 @@ export type ChatContentAudioInputAudio = {
  * Audio input content part. Supported audio formats vary by provider.
  */
 export type ChatContentAudio = {
-  inputAudio: ChatContentAudioInputAudio;
   type: "input_audio";
+  inputAudio: ChatContentAudioInputAudio;
 };
 
 /** @internal */
@@ -73,8 +73,8 @@ export const ChatContentAudio$inboundSchema: z.ZodType<
   ChatContentAudio,
   unknown
 > = z.object({
-  input_audio: z.lazy(() => ChatContentAudioInputAudio$inboundSchema),
   type: z.literal("input_audio"),
+  input_audio: z.lazy(() => ChatContentAudioInputAudio$inboundSchema),
 }).transform((v) => {
   return remap$(v, {
     "input_audio": "inputAudio",
@@ -82,8 +82,8 @@ export const ChatContentAudio$inboundSchema: z.ZodType<
 });
 /** @internal */
 export type ChatContentAudio$Outbound = {
-  input_audio: ChatContentAudioInputAudio$Outbound;
   type: "input_audio";
+  input_audio: ChatContentAudioInputAudio$Outbound;
 };
 
 /** @internal */
@@ -91,8 +91,8 @@ export const ChatContentAudio$outboundSchema: z.ZodType<
   ChatContentAudio$Outbound,
   ChatContentAudio
 > = z.object({
-  inputAudio: z.lazy(() => ChatContentAudioInputAudio$outboundSchema),
   type: z.literal("input_audio"),
+  inputAudio: z.lazy(() => ChatContentAudioInputAudio$outboundSchema),
 }).transform((v) => {
   return remap$(v, {
     inputAudio: "input_audio",

@@ -10,9 +10,9 @@ Reasoning detail summary schema
 import { ReasoningDetailSummary } from "@openrouter/sdk/models";
 
 let value: ReasoningDetailSummary = {
+  type: "reasoning.summary",
   summary:
     "The model analyzed the problem by first identifying key constraints, then evaluating possible solutions...",
-  type: "reasoning.summary",
 };
 ```
 
@@ -20,8 +20,8 @@ let value: ReasoningDetailSummary = {
 
 | Field                                                  | Type                                                   | Required                                               | Description                                            | Example                                                |
 | ------------------------------------------------------ | ------------------------------------------------------ | ------------------------------------------------------ | ------------------------------------------------------ | ------------------------------------------------------ |
+| `type`                                                 | *"reasoning.summary"*                                  | ✔️                                     | N/A                                                    |                                                        |
+| `summary`                                              | *string*                                               | ✔️                                     | N/A                                                    |                                                        |
 | `format`                                               | [models.ReasoningFormat](../models/reasoningformat.mdx) | ➖                                     | N/A                                                    | unknown                                                |
 | `id`                                                   | *string*                                               | ➖                                     | N/A                                                    |                                                        |
 | `index`                                                | *number*                                               | ➖                                     | N/A                                                    |                                                        |
-| `summary`                                              | *string*                                               | ✔️                                     | N/A                                                    |                                                        |
-| `type`                                                 | *"reasoning.summary"*                                  | ✔️                                     | N/A                                                    |                                                        |

@@ -17,17 +17,10 @@ export type AnthropicBase64PdfSourceMediaType = ClosedEnum<
   typeof AnthropicBase64PdfSourceMediaType
 >;
 
-export const AnthropicBase64PdfSourceType = {
-  Base64: "base64",
-} as const;
-export type AnthropicBase64PdfSourceType = ClosedEnum<
-  typeof AnthropicBase64PdfSourceType
->;
-
 export type AnthropicBase64PdfSource = {
+  type: "base64";
   data: string;
   mediaType: AnthropicBase64PdfSourceMediaType;
-  type: AnthropicBase64PdfSourceType;
 };
 
 /** @internal */
@@ -40,22 +33,13 @@ export const AnthropicBase64PdfSourceMediaType$outboundSchema: z.ZodEnum<
 > = AnthropicBase64PdfSourceMediaType$inboundSchema;
 
 /** @internal */
-export const AnthropicBase64PdfSourceType$inboundSchema: z.ZodEnum<
-  typeof AnthropicBase64PdfSourceType
-> = z.enum(AnthropicBase64PdfSourceType);
-/** @internal */
-export const AnthropicBase64PdfSourceType$outboundSchema: z.ZodEnum<
-  typeof AnthropicBase64PdfSourceType
-> = AnthropicBase64PdfSourceType$inboundSchema;
-
-/** @internal */
 export const AnthropicBase64PdfSource$inboundSchema: z.ZodType<
   AnthropicBase64PdfSource,
   unknown
 > = z.object({
+  type: z.literal("base64"),
   data: z.string(),
   media_type: AnthropicBase64PdfSourceMediaType$inboundSchema,
-  type: AnthropicBase64PdfSourceType$inboundSchema,
 }).transform((v) => {
   return remap$(v, {
     "media_type": "mediaType",
@@ -63,9 +47,9 @@ export const AnthropicBase64PdfSource$inboundSchema: z.ZodType<
 });
 /** @internal */
 export type AnthropicBase64PdfSource$Outbound = {
+  type: "base64";
   data: string;
   media_type: string;
-  type: string;
 };
 
 /** @internal */
@@ -73,9 +57,9 @@ export const AnthropicBase64PdfSource$outboundSchema: z.ZodType<
   AnthropicBase64PdfSource$Outbound,
   AnthropicBase64PdfSource
 > = z.object({
+  type: z.literal("base64"),
   data: z.string(),
   mediaType: AnthropicBase64PdfSourceMediaType$outboundSchema,
-  type: AnthropicBase64PdfSourceType$outboundSchema,
 }).transform((v) => {
   return remap$(v, {
     mediaType: "media_type",

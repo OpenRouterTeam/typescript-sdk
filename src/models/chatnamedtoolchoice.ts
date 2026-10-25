@@ -6,13 +6,6 @@
 import * as z from "zod/v4";
 import { ClosedEnum } from "../types/enums.js";
 
-export type ChatNamedToolChoiceFunction = {
-  /**
-   * Function name to call
-   */
-  name: string;
-};
-
 export const ChatNamedToolChoiceType = {
   Function: "function",
 } as const;
@@ -20,13 +13,25 @@ export type ChatNamedToolChoiceType = ClosedEnum<
   typeof ChatNamedToolChoiceType
 >;
 
+export type ChatNamedToolChoiceFunction = {
+  /**
+   * Function name to call
+   */
+  name: string;
+};
+
 /**
  * Named tool choice for specific function
  */
 export type ChatNamedToolChoice = {
-  function: ChatNamedToolChoiceFunction;
   type: ChatNamedToolChoiceType;
+  function: ChatNamedToolChoiceFunction;
 };
+
+/** @internal */
+export const ChatNamedToolChoiceType$outboundSchema: z.ZodEnum<
+  typeof ChatNamedToolChoiceType
+> = z.enum(ChatNamedToolChoiceType);
 
 /** @internal */
 export type ChatNamedToolChoiceFunction$Outbound = {
@@ -52,14 +57,9 @@ export function chatNamedToolChoiceFunctionToJSON(
 }
 
 /** @internal */
-export const ChatNamedToolChoiceType$outboundSchema: z.ZodEnum<
-  typeof ChatNamedToolChoiceType
-> = z.enum(ChatNamedToolChoiceType);
-
-/** @internal */
 export type ChatNamedToolChoice$Outbound = {
-  function: ChatNamedToolChoiceFunction$Outbound;
   type: string;
+  function: ChatNamedToolChoiceFunction$Outbound;
 };
 
 /** @internal */
@@ -67,8 +67,8 @@ export const ChatNamedToolChoice$outboundSchema: z.ZodType<
   ChatNamedToolChoice$Outbound,
   ChatNamedToolChoice
 > = z.object({
-  function: z.lazy(() => ChatNamedToolChoiceFunction$outboundSchema),
   type: ChatNamedToolChoiceType$outboundSchema,
+  function: z.lazy(() => ChatNamedToolChoiceFunction$outboundSchema),
 });
 
 export function chatNamedToolChoiceToJSON(

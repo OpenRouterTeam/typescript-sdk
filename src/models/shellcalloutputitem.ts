@@ -16,6 +16,13 @@ import {
   ToolCallStatus$outboundSchema,
 } from "./toolcallstatus.js";
 
+export const ShellCallOutputItemTypeShellCallOutput = {
+  ShellCallOutput: "shell_call_output",
+} as const;
+export type ShellCallOutputItemTypeShellCallOutput = ClosedEnum<
+  typeof ShellCallOutputItemTypeShellCallOutput
+>;
+
 export const ShellCallOutputItemTypeContainerFileCitation = {
   ContainerFileCitation: "container_file_citation",
 } as const;
@@ -24,25 +31,19 @@ export type ShellCallOutputItemTypeContainerFileCitation = ClosedEnum<
 >;
 
 export type ShellCallOutputItemFile = {
+  type: ShellCallOutputItemTypeContainerFileCitation;
   containerId: string;
   endIndex: number;
   fileId: string;
   filename: string;
   startIndex: number;
-  type: ShellCallOutputItemTypeContainerFileCitation;
 };
-
-export const ShellCallOutputItemTypeShellCallOutput = {
-  ShellCallOutput: "shell_call_output",
-} as const;
-export type ShellCallOutputItemTypeShellCallOutput = ClosedEnum<
-  typeof ShellCallOutputItemTypeShellCallOutput
->;
 
 /**
  * Output from a shell command execution (newer variant)
  */
 export type ShellCallOutputItem = {
+  type: ShellCallOutputItemTypeShellCallOutput;
   callId: string;
   /**
    * The canonical container id the command ran under — the `{container_id}` for the Container Files API, reusable as a `container_reference` in later requests. Present on every sandbox-executed call, even when no files changed.
@@ -60,8 +61,12 @@ export type ShellCallOutputItem = {
   maxOutputLength?: number | null | undefined;
   output: Array<ShellCallOutputContent>;
   status?: ToolCallStatus | null | undefined;
-  type: ShellCallOutputItemTypeShellCallOutput;
 };
+
+/** @internal */
+export const ShellCallOutputItemTypeShellCallOutput$outboundSchema: z.ZodEnum<
+  typeof ShellCallOutputItemTypeShellCallOutput
+> = z.enum(ShellCallOutputItemTypeShellCallOutput);
 
 /** @internal */
 export const ShellCallOutputItemTypeContainerFileCitation$outboundSchema:
@@ -71,12 +76,12 @@ export const ShellCallOutputItemTypeContainerFileCitation$outboundSchema:
 
 /** @internal */
 export type ShellCallOutputItemFile$Outbound = {
+  type: string;
   container_id: string;
   end_index: number;
   file_id: string;
   filename: string;
   start_index: number;
-  type: string;
 };
 
 /** @internal */
@@ -84,12 +89,12 @@ export const ShellCallOutputItemFile$outboundSchema: z.ZodType<
   ShellCallOutputItemFile$Outbound,
   ShellCallOutputItemFile
 > = z.object({
+  type: ShellCallOutputItemTypeContainerFileCitation$outboundSchema,
   containerId: z.string(),
   endIndex: z.int(),
   fileId: z.string(),
   filename: z.string(),
   startIndex: z.int(),
-  type: ShellCallOutputItemTypeContainerFileCitation$outboundSchema,
 }).transform((v) => {
   return remap$(v, {
     containerId: "container_id",
@@ -108,12 +113,8 @@ export function shellCallOutputItemFileToJSON(
 }
 
 /** @internal */
-export const ShellCallOutputItemTypeShellCallOutput$outboundSchema: z.ZodEnum<
-  typeof ShellCallOutputItemTypeShellCallOutput
-> = z.enum(ShellCallOutputItemTypeShellCallOutput);
-
-/** @internal */
 export type ShellCallOutputItem$Outbound = {
+  type: string;
   call_id: string;
   container_id?: string | undefined;
   error?: string | undefined;
@@ -122,7 +123,6 @@ export type ShellCallOutputItem$Outbound = {
   max_output_length?: number | null | undefined;
   output: Array<ShellCallOutputContent$Outbound>;
   status?: string | null | undefined;
-  type: string;
 };
 
 /** @internal */
@@ -130,6 +130,7 @@ export const ShellCallOutputItem$outboundSchema: z.ZodType<
   ShellCallOutputItem$Outbound,
   ShellCallOutputItem
 > = z.object({
+  type: ShellCallOutputItemTypeShellCallOutput$outboundSchema,
   callId: z.string(),
   containerId: z.string().optional(),
   error: z.string().optional(),
@@ -139,7 +140,6 @@ export const ShellCallOutputItem$outboundSchema: z.ZodType<
   maxOutputLength: z.nullable(z.int()).optional(),
   output: z.array(ShellCallOutputContent$outboundSchema),
   status: z.nullable(ToolCallStatus$outboundSchema).optional(),
-  type: ShellCallOutputItemTypeShellCallOutput$outboundSchema,
 }).transform((v) => {
   return remap$(v, {
     callId: "call_id",

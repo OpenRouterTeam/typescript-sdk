@@ -15,8 +15,8 @@ export const WebSearchSourceType = {
 export type WebSearchSourceType = ClosedEnum<typeof WebSearchSourceType>;
 
 export type WebSearchSource = {
-  type: WebSearchSourceType;
   url: string;
+  type: WebSearchSourceType;
 };
 
 /** @internal */
@@ -33,13 +33,13 @@ export const WebSearchSource$inboundSchema: z.ZodType<
   WebSearchSource,
   unknown
 > = z.object({
-  type: WebSearchSourceType$inboundSchema,
   url: z.string(),
+  type: WebSearchSourceType$inboundSchema,
 });
 /** @internal */
 export type WebSearchSource$Outbound = {
-  type: string;
   url: string;
+  type: string;
 };
 
 /** @internal */
@@ -47,8 +47,8 @@ export const WebSearchSource$outboundSchema: z.ZodType<
   WebSearchSource$Outbound,
   WebSearchSource
 > = z.object({
-  type: WebSearchSourceType$outboundSchema,
   url: z.string(),
+  type: WebSearchSourceType$outboundSchema,
 });
 
 export function webSearchSourceToJSON(

@@ -18,16 +18,21 @@ import {
 } from "./observabilityfilterrulesconfig.js";
 
 export type ObservabilityOpikDestinationConfig = {
-  apiKey: string;
   /**
    * Custom HTTP headers to include in requests to this destination.
    */
   headers?: { [k: string]: string } | undefined;
+  apiKey: string;
   projectName: string;
   workspace: string;
 };
 
 export type ObservabilityOpikDestination = {
+  /**
+   * Human-readable name for the destination.
+   */
+  name: string | null;
+  type: "opik";
   /**
    * Optional allowlist of OpenRouter API key hashes (`api_keys.hash`) whose traffic is forwarded to this destination. `null` means all keys.
    */
@@ -66,10 +71,6 @@ export type ObservabilityOpikDestination = {
    */
   id: string;
   /**
-   * Human-readable name for the destination.
-   */
-  name: string | null;
-  /**
    * When true, request/response bodies are not forwarded to this destination — only metadata.
    */
   privacyMode: boolean;
@@ -81,7 +82,6 @@ export type ObservabilityOpikDestination = {
    * Sampling rate for events sent to this destination, between 0.0001 and 1 (1 = 100%).
    */
   samplingRate: number;
-  type: "opik";
   /**
    * ISO timestamp of when the destination was last updated.
    */
@@ -97,8 +97,8 @@ export const ObservabilityOpikDestinationConfig$inboundSchema: z.ZodType<
   ObservabilityOpikDestinationConfig,
   unknown
 > = z.object({
-  apiKey: z.string(),
   headers: z.record(z.string(), z.string()).optional(),
+  apiKey: z.string(),
   projectName: z.string(),
   workspace: z.string(),
 });
@@ -119,6 +119,8 @@ export const ObservabilityOpikDestination$inboundSchema: z.ZodType<
   ObservabilityOpikDestination,
   unknown
 > = z.object({
+  name: z.nullable(z.string()),
+  type: z.literal("opik"),
   api_key_hashes: z.nullable(z.array(z.string())),
   broadcast_generation_cost: z.boolean(),
   broadcast_generation_cost_allocation: z.boolean(),
@@ -129,11 +131,9 @@ export const ObservabilityOpikDestination$inboundSchema: z.ZodType<
   enabled: z.boolean(),
   filter_rules: z.nullable(ObservabilityFilterRulesConfig$inboundSchema),
   id: z.string(),
-  name: z.nullable(z.string()),
   privacy_mode: z.boolean(),
   regions: z.array(ObservabilityDataRegion$inboundSchema),
   sampling_rate: z.number(),
-  type: z.literal("opik"),
   updated_at: z.string(),
   workspace_id: z.string(),
 }).transform((v) => {

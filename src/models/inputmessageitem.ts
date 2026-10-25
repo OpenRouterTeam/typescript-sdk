@@ -28,6 +28,13 @@ import {
   InputVideo$outboundSchema,
 } from "./inputvideo.js";
 
+export const InputMessageItemTypeMessage = {
+  Message: "message",
+} as const;
+export type InputMessageItemTypeMessage = ClosedEnum<
+  typeof InputMessageItemTypeMessage
+>;
+
 export const InputMessageItemDetail = {
   Auto: "auto",
   High: "high",
@@ -40,10 +47,10 @@ export type InputMessageItemDetail = OpenEnum<typeof InputMessageItemDetail>;
  * Image input content item. Provide either an image_url (a URL or a base64 data URL) or the file_id of an uploaded image.
  */
 export type InputMessageItemContentInputImage = {
+  type: "input_image";
   detail: InputMessageItemDetail;
   fileId?: string | null | undefined;
   imageUrl?: string | null | undefined;
-  type: "input_image";
 };
 
 export type InputMessageItemContentUnion =
@@ -79,14 +86,8 @@ export type InputMessageItemRoleUnion =
   | InputMessageItemRoleSystem
   | InputMessageItemRoleDeveloper;
 
-export const InputMessageItemTypeMessage = {
-  Message: "message",
-} as const;
-export type InputMessageItemTypeMessage = ClosedEnum<
-  typeof InputMessageItemTypeMessage
->;
-
 export type InputMessageItem = {
+  type?: InputMessageItemTypeMessage | undefined;
   content?:
     | Array<
       | InputText
@@ -102,8 +103,12 @@ export type InputMessageItem = {
     | InputMessageItemRoleUser
     | InputMessageItemRoleSystem
     | InputMessageItemRoleDeveloper;
-  type?: InputMessageItemTypeMessage | undefined;
 };
+
+/** @internal */
+export const InputMessageItemTypeMessage$outboundSchema: z.ZodEnum<
+  typeof InputMessageItemTypeMessage
+> = z.enum(InputMessageItemTypeMessage);
 
 /** @internal */
 export const InputMessageItemDetail$outboundSchema: z.ZodType<
@@ -113,10 +118,10 @@ export const InputMessageItemDetail$outboundSchema: z.ZodType<
 
 /** @internal */
 export type InputMessageItemContentInputImage$Outbound = {
+  type: "input_image";
   detail: string;
   file_id?: string | null | undefined;
   image_url?: string | null | undefined;
-  type: "input_image";
 };
 
 /** @internal */
@@ -124,10 +129,10 @@ export const InputMessageItemContentInputImage$outboundSchema: z.ZodType<
   InputMessageItemContentInputImage$Outbound,
   InputMessageItemContentInputImage
 > = z.object({
+  type: z.literal("input_image"),
   detail: InputMessageItemDetail$outboundSchema,
   fileId: z.nullable(z.string()).optional(),
   imageUrl: z.nullable(z.string()).optional(),
-  type: z.literal("input_image"),
 }).transform((v) => {
   return remap$(v, {
     fileId: "file_id",
@@ -212,12 +217,8 @@ export function inputMessageItemRoleUnionToJSON(
 }
 
 /** @internal */
-export const InputMessageItemTypeMessage$outboundSchema: z.ZodEnum<
-  typeof InputMessageItemTypeMessage
-> = z.enum(InputMessageItemTypeMessage);
-
-/** @internal */
 export type InputMessageItem$Outbound = {
+  type?: string | undefined;
   content?:
     | Array<
       | InputText$Outbound
@@ -230,7 +231,6 @@ export type InputMessageItem$Outbound = {
     | undefined;
   id?: string | undefined;
   role: string | string | string;
-  type?: string | undefined;
 };
 
 /** @internal */
@@ -238,6 +238,7 @@ export const InputMessageItem$outboundSchema: z.ZodType<
   InputMessageItem$Outbound,
   InputMessageItem
 > = z.object({
+  type: InputMessageItemTypeMessage$outboundSchema.optional(),
   content: z.nullable(
     z.array(z.union([
       InputText$outboundSchema,
@@ -253,7 +254,6 @@ export const InputMessageItem$outboundSchema: z.ZodType<
     InputMessageItemRoleSystem$outboundSchema,
     InputMessageItemRoleDeveloper$outboundSchema,
   ]),
-  type: InputMessageItemTypeMessage$outboundSchema.optional(),
 });
 
 export function inputMessageItemToJSON(

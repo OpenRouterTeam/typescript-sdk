@@ -34,6 +34,13 @@ import {
 } from "./codeinterpreterlogsoutput.js";
 import { SDKValidationError } from "./errors/sdkvalidationerror.js";
 
+export const OutputCodeInterpreterCallItemType = {
+  CodeInterpreterCall: "code_interpreter_call",
+} as const;
+export type OutputCodeInterpreterCallItemType = ClosedEnum<
+  typeof OutputCodeInterpreterCallItemType
+>;
+
 export type OutputCodeInterpreterCallItemOutput =
   | CodeInterpreterFileOutput
   | CodeInterpreterImageOutput
@@ -51,17 +58,11 @@ export type OutputCodeInterpreterCallItemStatus = OpenEnum<
   typeof OutputCodeInterpreterCallItemStatus
 >;
 
-export const OutputCodeInterpreterCallItemType = {
-  CodeInterpreterCall: "code_interpreter_call",
-} as const;
-export type OutputCodeInterpreterCallItemType = ClosedEnum<
-  typeof OutputCodeInterpreterCallItemType
->;
-
 /**
  * A code interpreter execution call with outputs
  */
 export type OutputCodeInterpreterCallItem = {
+  type: OutputCodeInterpreterCallItemType;
   code?: string | null | undefined;
   containerId?: string | undefined;
   id: string;
@@ -75,9 +76,17 @@ export type OutputCodeInterpreterCallItem = {
     | null
     | undefined;
   status: OutputCodeInterpreterCallItemStatus;
-  type: OutputCodeInterpreterCallItemType;
   additionalProperties?: { [k: string]: any } | undefined;
 };
+
+/** @internal */
+export const OutputCodeInterpreterCallItemType$inboundSchema: z.ZodEnum<
+  typeof OutputCodeInterpreterCallItemType
+> = z.enum(OutputCodeInterpreterCallItemType);
+/** @internal */
+export const OutputCodeInterpreterCallItemType$outboundSchema: z.ZodEnum<
+  typeof OutputCodeInterpreterCallItemType
+> = OutputCodeInterpreterCallItemType$inboundSchema;
 
 /** @internal */
 export const OutputCodeInterpreterCallItemOutput$inboundSchema: z.ZodType<
@@ -136,20 +145,12 @@ export const OutputCodeInterpreterCallItemStatus$outboundSchema: z.ZodType<
 > = openEnums.outboundSchema(OutputCodeInterpreterCallItemStatus);
 
 /** @internal */
-export const OutputCodeInterpreterCallItemType$inboundSchema: z.ZodEnum<
-  typeof OutputCodeInterpreterCallItemType
-> = z.enum(OutputCodeInterpreterCallItemType);
-/** @internal */
-export const OutputCodeInterpreterCallItemType$outboundSchema: z.ZodEnum<
-  typeof OutputCodeInterpreterCallItemType
-> = OutputCodeInterpreterCallItemType$inboundSchema;
-
-/** @internal */
 export const OutputCodeInterpreterCallItem$inboundSchema: z.ZodType<
   OutputCodeInterpreterCallItem,
   unknown
 > = collectExtraKeys$(
   z.object({
+    type: OutputCodeInterpreterCallItemType$inboundSchema,
     code: z.nullable(z.string()).optional(),
     container_id: z.string().optional(),
     id: z.string(),
@@ -163,7 +164,6 @@ export const OutputCodeInterpreterCallItem$inboundSchema: z.ZodType<
       ),
     ).optional(),
     status: OutputCodeInterpreterCallItemStatus$inboundSchema,
-    type: OutputCodeInterpreterCallItemType$inboundSchema,
   }).catchall(z.any()),
   "additionalProperties",
   true,
@@ -174,6 +174,7 @@ export const OutputCodeInterpreterCallItem$inboundSchema: z.ZodType<
 });
 /** @internal */
 export type OutputCodeInterpreterCallItem$Outbound = {
+  type: string;
   code?: string | null | undefined;
   container_id?: string | undefined;
   id: string;
@@ -186,7 +187,6 @@ export type OutputCodeInterpreterCallItem$Outbound = {
     | null
     | undefined;
   status: string;
-  type: string;
   [additionalProperties: string]: unknown;
 };
 
@@ -195,6 +195,7 @@ export const OutputCodeInterpreterCallItem$outboundSchema: z.ZodType<
   OutputCodeInterpreterCallItem$Outbound,
   OutputCodeInterpreterCallItem
 > = z.object({
+  type: OutputCodeInterpreterCallItemType$outboundSchema,
   code: z.nullable(z.string()).optional(),
   containerId: z.string().optional(),
   id: z.string(),
@@ -208,7 +209,6 @@ export const OutputCodeInterpreterCallItem$outboundSchema: z.ZodType<
     ),
   ).optional(),
   status: OutputCodeInterpreterCallItemStatus$outboundSchema,
-  type: OutputCodeInterpreterCallItemType$outboundSchema,
   additionalProperties: z.record(z.string(), z.any()).optional(),
 }).transform((v) => {
   return {

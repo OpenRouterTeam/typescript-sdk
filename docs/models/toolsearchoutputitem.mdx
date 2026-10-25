@@ -10,6 +10,7 @@ The tools a client-executed tool search loaded
 import { ToolSearchOutputItem } from "@openrouter/sdk/models";
 
 let value: ToolSearchOutputItem = {
+  type: "tool_search_output",
   callId: "call_search_1",
   execution: "client",
   tools: [
@@ -17,7 +18,6 @@ let value: ToolSearchOutputItem = {
       type: "function",
     },
   ],
-  type: "tool_search_output",
 };
 ```
 
@@ -25,9 +25,9 @@ let value: ToolSearchOutputItem = {
 
 | Field                                                                              | Type                                                                               | Required                                                                           | Description                                                                        |
 | ---------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------- |
+| `type`                                                                             | [models.TypeToolSearchOutput](../models/typetoolsearchoutput.mdx)                   | ✔️                                                                 | N/A                                                                                |
 | `callId`                                                                           | *string*                                                                           | ✔️                                                                 | N/A                                                                                |
 | `execution`                                                                        | [models.ToolSearchOutputItemExecution](../models/toolsearchoutputitemexecution.mdx) | ✔️                                                                 | N/A                                                                                |
 | `id`                                                                               | *string*                                                                           | ➖                                                                 | N/A                                                                                |
 | `status`                                                                           | [models.ToolSearchOutputItemStatus](../models/toolsearchoutputitemstatus.mdx)       | ➖                                                                 | N/A                                                                                |
 | `tools`                                                                            | *models.ToolSearchOutputItemToolUnion*[]                                           | ✔️                                                                 | N/A                                                                                |
-| `type`                                                                             | [models.TypeToolSearchOutput](../models/typetoolsearchoutput.mdx)                   | ✔️                                                                 | N/A                                                                                |

@@ -10,23 +10,23 @@ import { Result as SafeParseResult } from "../types/fp.js";
 import { SDKValidationError } from "./errors/sdkvalidationerror.js";
 
 export type URLCitation = {
+  url: string;
   content?: string | undefined;
   endIndex: number;
   startIndex: number;
   title: string;
   type: "url_citation";
-  url: string;
 };
 
 /** @internal */
 export const URLCitation$inboundSchema: z.ZodType<URLCitation, unknown> = z
   .object({
+    url: z.string(),
     content: z.string().optional(),
     end_index: z.int(),
     start_index: z.int(),
     title: z.string(),
     type: z.literal("url_citation"),
-    url: z.string(),
   }).transform((v) => {
     return remap$(v, {
       "end_index": "endIndex",
@@ -35,12 +35,12 @@ export const URLCitation$inboundSchema: z.ZodType<URLCitation, unknown> = z
   });
 /** @internal */
 export type URLCitation$Outbound = {
+  url: string;
   content?: string | undefined;
   end_index: number;
   start_index: number;
   title: string;
   type: "url_citation";
-  url: string;
 };
 
 /** @internal */
@@ -48,12 +48,12 @@ export const URLCitation$outboundSchema: z.ZodType<
   URLCitation$Outbound,
   URLCitation
 > = z.object({
+  url: z.string(),
   content: z.string().optional(),
   endIndex: z.int(),
   startIndex: z.int(),
   title: z.string(),
   type: z.literal("url_citation"),
-  url: z.string(),
 }).transform((v) => {
   return remap$(v, {
     endIndex: "end_index",

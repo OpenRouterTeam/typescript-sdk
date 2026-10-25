@@ -26,22 +26,29 @@ import {
   WebSearchStatus$outboundSchema,
 } from "./websearchstatus.js";
 
+export const OutputWebSearchCallItemTypeWebSearchCall = {
+  WebSearchCall: "web_search_call",
+} as const;
+export type OutputWebSearchCallItemTypeWebSearchCall = ClosedEnum<
+  typeof OutputWebSearchCallItemTypeWebSearchCall
+>;
+
 export type OutputWebSearchCallItemActionFindInPage = {
+  url: string;
   pattern: string;
   type: "find_in_page";
-  url: string;
 };
 
 export type OutputWebSearchCallItemActionOpenPage = {
-  type: "open_page";
   url?: string | null | undefined;
+  type: "open_page";
 };
 
 export type OutputWebSearchCallItemActionSearch = {
+  type: "search";
   queries?: Array<string> | undefined;
   query: string;
   sources?: Array<WebSearchSource> | undefined;
-  type: "search";
 };
 
 export type OutputWebSearchCallItemActionUnion =
@@ -50,14 +57,8 @@ export type OutputWebSearchCallItemActionUnion =
   | OutputWebSearchCallItemActionFindInPage
   | discriminatedUnionTypes.Unknown<"type">;
 
-export const OutputWebSearchCallItemTypeWebSearchCall = {
-  WebSearchCall: "web_search_call",
-} as const;
-export type OutputWebSearchCallItemTypeWebSearchCall = ClosedEnum<
-  typeof OutputWebSearchCallItemTypeWebSearchCall
->;
-
 export type OutputWebSearchCallItem = {
+  type: OutputWebSearchCallItemTypeWebSearchCall;
   action?:
     | OutputWebSearchCallItemActionSearch
     | OutputWebSearchCallItemActionOpenPage
@@ -66,24 +67,32 @@ export type OutputWebSearchCallItem = {
     | undefined;
   id: string;
   status: WebSearchStatus;
-  type: OutputWebSearchCallItemTypeWebSearchCall;
   additionalProperties?: { [k: string]: any } | undefined;
 };
+
+/** @internal */
+export const OutputWebSearchCallItemTypeWebSearchCall$inboundSchema: z.ZodEnum<
+  typeof OutputWebSearchCallItemTypeWebSearchCall
+> = z.enum(OutputWebSearchCallItemTypeWebSearchCall);
+/** @internal */
+export const OutputWebSearchCallItemTypeWebSearchCall$outboundSchema: z.ZodEnum<
+  typeof OutputWebSearchCallItemTypeWebSearchCall
+> = OutputWebSearchCallItemTypeWebSearchCall$inboundSchema;
 
 /** @internal */
 export const OutputWebSearchCallItemActionFindInPage$inboundSchema: z.ZodType<
   OutputWebSearchCallItemActionFindInPage,
   unknown
 > = z.object({
+  url: z.string(),
   pattern: z.string(),
   type: z.literal("find_in_page"),
-  url: z.string(),
 });
 /** @internal */
 export type OutputWebSearchCallItemActionFindInPage$Outbound = {
+  url: string;
   pattern: string;
   type: "find_in_page";
-  url: string;
 };
 
 /** @internal */
@@ -91,9 +100,9 @@ export const OutputWebSearchCallItemActionFindInPage$outboundSchema: z.ZodType<
   OutputWebSearchCallItemActionFindInPage$Outbound,
   OutputWebSearchCallItemActionFindInPage
 > = z.object({
+  url: z.string(),
   pattern: z.string(),
   type: z.literal("find_in_page"),
-  url: z.string(),
 });
 
 export function outputWebSearchCallItemActionFindInPageToJSON(
@@ -127,13 +136,13 @@ export const OutputWebSearchCallItemActionOpenPage$inboundSchema: z.ZodType<
   OutputWebSearchCallItemActionOpenPage,
   unknown
 > = z.object({
-  type: z.literal("open_page"),
   url: z.nullable(z.string()).optional(),
+  type: z.literal("open_page"),
 });
 /** @internal */
 export type OutputWebSearchCallItemActionOpenPage$Outbound = {
-  type: "open_page";
   url?: string | null | undefined;
+  type: "open_page";
 };
 
 /** @internal */
@@ -141,8 +150,8 @@ export const OutputWebSearchCallItemActionOpenPage$outboundSchema: z.ZodType<
   OutputWebSearchCallItemActionOpenPage$Outbound,
   OutputWebSearchCallItemActionOpenPage
 > = z.object({
-  type: z.literal("open_page"),
   url: z.nullable(z.string()).optional(),
+  type: z.literal("open_page"),
 });
 
 export function outputWebSearchCallItemActionOpenPageToJSON(
@@ -170,17 +179,17 @@ export const OutputWebSearchCallItemActionSearch$inboundSchema: z.ZodType<
   OutputWebSearchCallItemActionSearch,
   unknown
 > = z.object({
+  type: z.literal("search"),
   queries: z.array(z.string()).optional(),
   query: z.string(),
   sources: z.array(WebSearchSource$inboundSchema).optional(),
-  type: z.literal("search"),
 });
 /** @internal */
 export type OutputWebSearchCallItemActionSearch$Outbound = {
+  type: "search";
   queries?: Array<string> | undefined;
   query: string;
   sources?: Array<WebSearchSource$Outbound> | undefined;
-  type: "search";
 };
 
 /** @internal */
@@ -188,10 +197,10 @@ export const OutputWebSearchCallItemActionSearch$outboundSchema: z.ZodType<
   OutputWebSearchCallItemActionSearch$Outbound,
   OutputWebSearchCallItemActionSearch
 > = z.object({
+  type: z.literal("search"),
   queries: z.array(z.string()).optional(),
   query: z.string(),
   sources: z.array(WebSearchSource$outboundSchema).optional(),
-  type: z.literal("search"),
 });
 
 export function outputWebSearchCallItemActionSearchToJSON(
@@ -262,20 +271,12 @@ export function outputWebSearchCallItemActionUnionFromJSON(
 }
 
 /** @internal */
-export const OutputWebSearchCallItemTypeWebSearchCall$inboundSchema: z.ZodEnum<
-  typeof OutputWebSearchCallItemTypeWebSearchCall
-> = z.enum(OutputWebSearchCallItemTypeWebSearchCall);
-/** @internal */
-export const OutputWebSearchCallItemTypeWebSearchCall$outboundSchema: z.ZodEnum<
-  typeof OutputWebSearchCallItemTypeWebSearchCall
-> = OutputWebSearchCallItemTypeWebSearchCall$inboundSchema;
-
-/** @internal */
 export const OutputWebSearchCallItem$inboundSchema: z.ZodType<
   OutputWebSearchCallItem,
   unknown
 > = collectExtraKeys$(
   z.object({
+    type: OutputWebSearchCallItemTypeWebSearchCall$inboundSchema,
     action: discriminatedUnion("type", {
       search: z.lazy(() => OutputWebSearchCallItemActionSearch$inboundSchema),
       open_page: z.lazy(() =>
@@ -287,13 +288,13 @@ export const OutputWebSearchCallItem$inboundSchema: z.ZodType<
     }).optional(),
     id: z.string(),
     status: WebSearchStatus$inboundSchema,
-    type: OutputWebSearchCallItemTypeWebSearchCall$inboundSchema,
   }).catchall(z.any()),
   "additionalProperties",
   true,
 );
 /** @internal */
 export type OutputWebSearchCallItem$Outbound = {
+  type: string;
   action?:
     | OutputWebSearchCallItemActionSearch$Outbound
     | OutputWebSearchCallItemActionOpenPage$Outbound
@@ -301,7 +302,6 @@ export type OutputWebSearchCallItem$Outbound = {
     | undefined;
   id: string;
   status: string;
-  type: string;
   [additionalProperties: string]: unknown;
 };
 
@@ -310,6 +310,7 @@ export const OutputWebSearchCallItem$outboundSchema: z.ZodType<
   OutputWebSearchCallItem$Outbound,
   OutputWebSearchCallItem
 > = z.object({
+  type: OutputWebSearchCallItemTypeWebSearchCall$outboundSchema,
   action: z.union([
     z.lazy(() => OutputWebSearchCallItemActionSearch$outboundSchema),
     z.lazy(() => OutputWebSearchCallItemActionOpenPage$outboundSchema),
@@ -317,7 +318,6 @@ export const OutputWebSearchCallItem$outboundSchema: z.ZodType<
   ]).optional(),
   id: z.string(),
   status: WebSearchStatus$outboundSchema,
-  type: OutputWebSearchCallItemTypeWebSearchCall$outboundSchema,
   additionalProperties: z.record(z.string(), z.any()).optional(),
 }).transform((v) => {
   return {

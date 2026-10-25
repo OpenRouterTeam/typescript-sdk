@@ -39,6 +39,7 @@ export type ServerToolSupportedApiFormat = OpenEnum<
 >;
 
 export type ServerTool = {
+  name: string;
   /**
    * Every spelling accepted in `tools[].type` for this tool, including the canonical `id`, and what the call surfaces as under each
    */
@@ -61,7 +62,6 @@ export type ServerTool = {
    * JSON Schema of the arguments the model emits when calling the tool
    */
   inputSchema: { [k: string]: any };
-  name: string;
   /**
    * Endpoints whose provider runs this tool itself during inference. Zero for tools no provider runs natively.
    */
@@ -101,6 +101,7 @@ export const ServerToolSupportedApiFormat$inboundSchema: z.ZodType<
 /** @internal */
 export const ServerTool$inboundSchema: z.ZodType<ServerTool, unknown> = z
   .object({
+    name: z.string(),
     aliases: z.array(ServerToolInputName$inboundSchema),
     default_engine: z.nullable(z.string()),
     docs_url: z.string(),
@@ -108,7 +109,6 @@ export const ServerTool$inboundSchema: z.ZodType<ServerTool, unknown> = z
     fallback_engine: z.nullable(z.string()),
     id: z.string(),
     input_schema: z.record(z.string(), z.any()),
-    name: z.string(),
     native_support: ServerToolNativeSupport$inboundSchema,
     output_schema: z.nullable(z.record(z.string(), z.any())),
     parameters_schema: z.record(z.string(), z.any()),

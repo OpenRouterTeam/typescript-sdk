@@ -10,8 +10,8 @@ import { Result as SafeParseResult } from "../types/fp.js";
 import { SDKValidationError } from "./errors/sdkvalidationerror.js";
 
 export type AnthropicCodeExecution20260120Caller = {
-  toolId: string;
   type: "code_execution_20260120";
+  toolId: string;
 };
 
 /** @internal */
@@ -19,8 +19,8 @@ export const AnthropicCodeExecution20260120Caller$inboundSchema: z.ZodType<
   AnthropicCodeExecution20260120Caller,
   unknown
 > = z.object({
-  tool_id: z.string(),
   type: z.literal("code_execution_20260120"),
+  tool_id: z.string(),
 }).transform((v) => {
   return remap$(v, {
     "tool_id": "toolId",

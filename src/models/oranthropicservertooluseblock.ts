@@ -13,11 +13,11 @@ import {
 } from "./oranthropicnullablecaller.js";
 
 export type ORAnthropicServerToolUseBlock = {
+  name: string;
+  type: "server_tool_use";
   caller?: ORAnthropicNullableCaller | null | undefined;
   id: string;
   input?: any | undefined;
-  name: string;
-  type: "server_tool_use";
 };
 
 /** @internal */
@@ -25,11 +25,11 @@ export const ORAnthropicServerToolUseBlock$inboundSchema: z.ZodType<
   ORAnthropicServerToolUseBlock,
   unknown
 > = z.object({
+  name: z.string(),
+  type: z.literal("server_tool_use"),
   caller: z.nullable(ORAnthropicNullableCaller$inboundSchema).optional(),
   id: z.string(),
   input: z.any().optional(),
-  name: z.string(),
-  type: z.literal("server_tool_use"),
 });
 
 export function orAnthropicServerToolUseBlockFromJSON(

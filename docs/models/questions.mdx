@@ -11,11 +11,11 @@ A Decisions question using a boolean, choice, ordered score, or image bounding-b
 
 ```typescript
 const value: models.DecisionsBoxQuestion = {
+  type: "box",
   instructions: {
     "key": "<value>",
     "key1": "<value>",
   },
-  type: "box",
 };
 ```
 
@@ -23,6 +23,7 @@ const value: models.DecisionsBoxQuestion = {
 
 ```typescript
 const value: models.DecisionsChoiceQuestion = {
+  type: "choice",
   criteria: {
     "key": {
       "key": "<value>",
@@ -31,7 +32,6 @@ const value: models.DecisionsChoiceQuestion = {
   instructions: {
     "0": "<value 1>",
   },
-  type: "choice",
 };
 ```
 
@@ -39,8 +39,8 @@ const value: models.DecisionsChoiceQuestion = {
 
 ```typescript
 const value: models.DecisionsNoulQuestion = {
-  instructions: "<value>",
   type: "noul",
+  instructions: "<value>",
 };
 ```
 
@@ -48,13 +48,13 @@ const value: models.DecisionsNoulQuestion = {
 
 ```typescript
 const value: models.DecisionsScoreQuestion = {
+  type: "score",
   criteria: [],
   instructions: {
     "0": "<value 1>",
     "1": "<value 2>",
     "2": "<value 3>",
   },
-  type: "score",
 };
 ```
 

@@ -17,12 +17,12 @@ import {
  * Event emitted when a response is created
  */
 export type OpenResponsesCreatedEvent = {
+  type: "response.created";
   /**
    * Complete non-streaming response from the Responses API
    */
   response: OpenResponsesResult;
   sequenceNumber: number;
-  type: "response.created";
 };
 
 /** @internal */
@@ -30,9 +30,9 @@ export const OpenResponsesCreatedEvent$inboundSchema: z.ZodType<
   OpenResponsesCreatedEvent,
   unknown
 > = z.object({
+  type: z.literal("response.created"),
   response: OpenResponsesResult$inboundSchema,
   sequence_number: z.int(),
-  type: z.literal("response.created"),
 }).transform((v) => {
   return remap$(v, {
     "sequence_number": "sequenceNumber",

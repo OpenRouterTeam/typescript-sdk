@@ -78,14 +78,21 @@ import {
 } from "./oranthropictoolsearchresultparam.js";
 
 export type ContentCompaction = {
+  type: "compaction";
   /**
    * Enable automatic prompt caching. When set at the top level, the system automatically applies cache breakpoints to the last cacheable block in the request. When set on an individual content block, it marks an explicit cache breakpoint; block-level markers also work on OpenAI models that support explicit prompt caching — OpenRouter converts them to the provider's native format.
    */
   cacheControl?: AnthropicCacheControlDirective | undefined;
   content: string | null;
   encryptedContent?: string | null | undefined;
-  type: "compaction";
 };
+
+export const MessagesMessageParamTypeWebSearchToolResultError = {
+  WebSearchToolResultError: "web_search_tool_result_error",
+} as const;
+export type MessagesMessageParamTypeWebSearchToolResultError = ClosedEnum<
+  typeof MessagesMessageParamTypeWebSearchToolResultError
+>;
 
 export const MessagesMessageParamErrorCode = {
   InvalidToolInput: "invalid_tool_input",
@@ -99,16 +106,9 @@ export type MessagesMessageParamErrorCode = OpenEnum<
   typeof MessagesMessageParamErrorCode
 >;
 
-export const MessagesMessageParamTypeWebSearchToolResultError = {
-  WebSearchToolResultError: "web_search_tool_result_error",
-} as const;
-export type MessagesMessageParamTypeWebSearchToolResultError = ClosedEnum<
-  typeof MessagesMessageParamTypeWebSearchToolResultError
->;
-
 export type ContentWebSearchToolResultError = {
-  errorCode: MessagesMessageParamErrorCode;
   type: MessagesMessageParamTypeWebSearchToolResultError;
+  errorCode: MessagesMessageParamErrorCode;
 };
 
 export type MessagesMessageParamContentUnion3 =
@@ -116,6 +116,7 @@ export type MessagesMessageParamContentUnion3 =
   | Array<AnthropicWebSearchResultBlockParam>;
 
 export type ContentWebSearchToolResult = {
+  type: "web_search_tool_result";
   /**
    * Enable automatic prompt caching. When set at the top level, the system automatically applies cache breakpoints to the last cacheable block in the request. When set on an individual content block, it marks an explicit cache breakpoint; block-level markers also work on OpenAI models that support explicit prompt caching — OpenRouter converts them to the provider's native format.
    */
@@ -124,34 +125,33 @@ export type ContentWebSearchToolResult = {
     | ContentWebSearchToolResultError
     | Array<AnthropicWebSearchResultBlockParam>;
   toolUseId: string;
-  type: "web_search_tool_result";
 };
 
 export type ContentServerToolUse = {
+  name: string;
+  type: "server_tool_use";
   /**
    * Enable automatic prompt caching. When set at the top level, the system automatically applies cache breakpoints to the last cacheable block in the request. When set on an individual content block, it marks an explicit cache breakpoint; block-level markers also work on OpenAI models that support explicit prompt caching — OpenRouter converts them to the provider's native format.
    */
   cacheControl?: AnthropicCacheControlDirective | undefined;
   id: string;
   input?: any | undefined;
-  name: string;
-  type: "server_tool_use";
 };
 
 export type ContentRedactedThinking = {
-  data: string;
   type: "redacted_thinking";
+  data: string;
 };
 
 export type ContentThinking = {
+  type: "thinking";
   signature: string;
   thinking: string;
-  type: "thinking";
 };
 
 export type ContentToolReference = {
-  toolName: string;
   type: "tool_reference";
+  toolName: string;
 };
 
 export type MessagesMessageParamContentUnion1 =
@@ -172,6 +172,7 @@ export type MessagesMessageParamContentUnion2 =
   >;
 
 export type ContentToolResult = {
+  type: "tool_result";
   /**
    * Enable automatic prompt caching. When set at the top level, the system automatically applies cache breakpoints to the last cacheable block in the request. When set on an individual content block, it marks an explicit cache breakpoint; block-level markers also work on OpenAI models that support explicit prompt caching — OpenRouter converts them to the provider's native format.
    */
@@ -188,18 +189,17 @@ export type ContentToolResult = {
     | undefined;
   isError?: boolean | undefined;
   toolUseId: string;
-  type: "tool_result";
 };
 
 export type ContentToolUse = {
+  name: string;
+  type: "tool_use";
   /**
    * Enable automatic prompt caching. When set at the top level, the system automatically applies cache breakpoints to the last cacheable block in the request. When set on an individual content block, it marks an explicit cache breakpoint; block-level markers also work on OpenAI models that support explicit prompt caching — OpenRouter converts them to the provider's native format.
    */
   cacheControl?: AnthropicCacheControlDirective | undefined;
   id: string;
   input?: any | undefined;
-  name: string;
-  type: "tool_use";
 };
 
 export type MessagesMessageParamContentUnion4 =
@@ -284,10 +284,10 @@ export type MessagesMessageParam = {
 
 /** @internal */
 export type ContentCompaction$Outbound = {
+  type: "compaction";
   cache_control?: AnthropicCacheControlDirective$Outbound | undefined;
   content: string | null;
   encrypted_content?: string | null | undefined;
-  type: "compaction";
 };
 
 /** @internal */
@@ -295,10 +295,10 @@ export const ContentCompaction$outboundSchema: z.ZodType<
   ContentCompaction$Outbound,
   ContentCompaction
 > = z.object({
+  type: z.literal("compaction"),
   cacheControl: AnthropicCacheControlDirective$outboundSchema.optional(),
   content: z.nullable(z.string()),
   encryptedContent: z.nullable(z.string()).optional(),
-  type: z.literal("compaction"),
 }).transform((v) => {
   return remap$(v, {
     cacheControl: "cache_control",
@@ -315,21 +315,21 @@ export function contentCompactionToJSON(
 }
 
 /** @internal */
-export const MessagesMessageParamErrorCode$outboundSchema: z.ZodType<
-  string,
-  MessagesMessageParamErrorCode
-> = openEnums.outboundSchema(MessagesMessageParamErrorCode);
-
-/** @internal */
 export const MessagesMessageParamTypeWebSearchToolResultError$outboundSchema:
   z.ZodEnum<typeof MessagesMessageParamTypeWebSearchToolResultError> = z.enum(
     MessagesMessageParamTypeWebSearchToolResultError,
   );
 
 /** @internal */
+export const MessagesMessageParamErrorCode$outboundSchema: z.ZodType<
+  string,
+  MessagesMessageParamErrorCode
+> = openEnums.outboundSchema(MessagesMessageParamErrorCode);
+
+/** @internal */
 export type ContentWebSearchToolResultError$Outbound = {
-  error_code: string;
   type: string;
+  error_code: string;
 };
 
 /** @internal */
@@ -337,8 +337,8 @@ export const ContentWebSearchToolResultError$outboundSchema: z.ZodType<
   ContentWebSearchToolResultError$Outbound,
   ContentWebSearchToolResultError
 > = z.object({
-  errorCode: MessagesMessageParamErrorCode$outboundSchema,
   type: MessagesMessageParamTypeWebSearchToolResultError$outboundSchema,
+  errorCode: MessagesMessageParamErrorCode$outboundSchema,
 }).transform((v) => {
   return remap$(v, {
     errorCode: "error_code",
@@ -381,12 +381,12 @@ export function messagesMessageParamContentUnion3ToJSON(
 
 /** @internal */
 export type ContentWebSearchToolResult$Outbound = {
+  type: "web_search_tool_result";
   cache_control?: AnthropicCacheControlDirective$Outbound | undefined;
   content:
     | ContentWebSearchToolResultError$Outbound
     | Array<AnthropicWebSearchResultBlockParam$Outbound>;
   tool_use_id: string;
-  type: "web_search_tool_result";
 };
 
 /** @internal */
@@ -394,13 +394,13 @@ export const ContentWebSearchToolResult$outboundSchema: z.ZodType<
   ContentWebSearchToolResult$Outbound,
   ContentWebSearchToolResult
 > = z.object({
+  type: z.literal("web_search_tool_result"),
   cacheControl: AnthropicCacheControlDirective$outboundSchema.optional(),
   content: z.union([
     z.lazy(() => ContentWebSearchToolResultError$outboundSchema),
     z.array(AnthropicWebSearchResultBlockParam$outboundSchema),
   ]),
   toolUseId: z.string(),
-  type: z.literal("web_search_tool_result"),
 }).transform((v) => {
   return remap$(v, {
     cacheControl: "cache_control",
@@ -418,11 +418,11 @@ export function contentWebSearchToolResultToJSON(
 
 /** @internal */
 export type ContentServerToolUse$Outbound = {
+  name: string;
+  type: "server_tool_use";
   cache_control?: AnthropicCacheControlDirective$Outbound | undefined;
   id: string;
   input?: any | undefined;
-  name: string;
-  type: "server_tool_use";
 };
 
 /** @internal */
@@ -430,11 +430,11 @@ export const ContentServerToolUse$outboundSchema: z.ZodType<
   ContentServerToolUse$Outbound,
   ContentServerToolUse
 > = z.object({
+  name: z.string(),
+  type: z.literal("server_tool_use"),
   cacheControl: AnthropicCacheControlDirective$outboundSchema.optional(),
   id: z.string(),
   input: z.any().optional(),
-  name: z.string(),
-  type: z.literal("server_tool_use"),
 }).transform((v) => {
   return remap$(v, {
     cacheControl: "cache_control",
@@ -451,8 +451,8 @@ export function contentServerToolUseToJSON(
 
 /** @internal */
 export type ContentRedactedThinking$Outbound = {
-  data: string;
   type: "redacted_thinking";
+  data: string;
 };
 
 /** @internal */
@@ -460,8 +460,8 @@ export const ContentRedactedThinking$outboundSchema: z.ZodType<
   ContentRedactedThinking$Outbound,
   ContentRedactedThinking
 > = z.object({
-  data: z.string(),
   type: z.literal("redacted_thinking"),
+  data: z.string(),
 });
 
 export function contentRedactedThinkingToJSON(
@@ -474,9 +474,9 @@ export function contentRedactedThinkingToJSON(
 
 /** @internal */
 export type ContentThinking$Outbound = {
+  type: "thinking";
   signature: string;
   thinking: string;
-  type: "thinking";
 };
 
 /** @internal */
@@ -484,9 +484,9 @@ export const ContentThinking$outboundSchema: z.ZodType<
   ContentThinking$Outbound,
   ContentThinking
 > = z.object({
+  type: z.literal("thinking"),
   signature: z.string(),
   thinking: z.string(),
-  type: z.literal("thinking"),
 });
 
 export function contentThinkingToJSON(
@@ -497,8 +497,8 @@ export function contentThinkingToJSON(
 
 /** @internal */
 export type ContentToolReference$Outbound = {
-  tool_name: string;
   type: "tool_reference";
+  tool_name: string;
 };
 
 /** @internal */
@@ -506,8 +506,8 @@ export const ContentToolReference$outboundSchema: z.ZodType<
   ContentToolReference$Outbound,
   ContentToolReference
 > = z.object({
-  toolName: z.string(),
   type: z.literal("tool_reference"),
+  toolName: z.string(),
 }).transform((v) => {
   return remap$(v, {
     toolName: "tool_name",
@@ -592,6 +592,7 @@ export function messagesMessageParamContentUnion2ToJSON(
 
 /** @internal */
 export type ContentToolResult$Outbound = {
+  type: "tool_result";
   cache_control?: AnthropicCacheControlDirective$Outbound | undefined;
   content?:
     | string
@@ -605,7 +606,6 @@ export type ContentToolResult$Outbound = {
     | undefined;
   is_error?: boolean | undefined;
   tool_use_id: string;
-  type: "tool_result";
 };
 
 /** @internal */
@@ -613,6 +613,7 @@ export const ContentToolResult$outboundSchema: z.ZodType<
   ContentToolResult$Outbound,
   ContentToolResult
 > = z.object({
+  type: z.literal("tool_result"),
   cacheControl: AnthropicCacheControlDirective$outboundSchema.optional(),
   content: z.union([
     z.string(),
@@ -628,7 +629,6 @@ export const ContentToolResult$outboundSchema: z.ZodType<
   ]).optional(),
   isError: z.boolean().optional(),
   toolUseId: z.string(),
-  type: z.literal("tool_result"),
 }).transform((v) => {
   return remap$(v, {
     cacheControl: "cache_control",
@@ -647,11 +647,11 @@ export function contentToolResultToJSON(
 
 /** @internal */
 export type ContentToolUse$Outbound = {
+  name: string;
+  type: "tool_use";
   cache_control?: AnthropicCacheControlDirective$Outbound | undefined;
   id: string;
   input?: any | undefined;
-  name: string;
-  type: "tool_use";
 };
 
 /** @internal */
@@ -659,11 +659,11 @@ export const ContentToolUse$outboundSchema: z.ZodType<
   ContentToolUse$Outbound,
   ContentToolUse
 > = z.object({
+  name: z.string(),
+  type: z.literal("tool_use"),
   cacheControl: AnthropicCacheControlDirective$outboundSchema.optional(),
   id: z.string(),
   input: z.any().optional(),
-  name: z.string(),
-  type: z.literal("tool_use"),
 }).transform((v) => {
   return remap$(v, {
     cacheControl: "cache_control",

@@ -11,20 +11,24 @@ import {
   PredictionContentText$outboundSchema,
 } from "./predictioncontenttext.js";
 
-export type PredictionContent = string | Array<PredictionContentText>;
-
 export const PredictionType = {
   Content: "content",
 } as const;
 export type PredictionType = ClosedEnum<typeof PredictionType>;
 
+export type PredictionContent = string | Array<PredictionContentText>;
+
 /**
  * Static predicted output content. Supported models can use this to reduce latency when much of the response is known in advance.
  */
 export type Prediction = {
-  content: string | Array<PredictionContentText>;
   type: PredictionType;
+  content: string | Array<PredictionContentText>;
 };
+
+/** @internal */
+export const PredictionType$outboundSchema: z.ZodEnum<typeof PredictionType> = z
+  .enum(PredictionType);
 
 /** @internal */
 export type PredictionContent$Outbound =
@@ -46,13 +50,9 @@ export function predictionContentToJSON(
 }
 
 /** @internal */
-export const PredictionType$outboundSchema: z.ZodEnum<typeof PredictionType> = z
-  .enum(PredictionType);
-
-/** @internal */
 export type Prediction$Outbound = {
-  content: string | Array<PredictionContentText$Outbound>;
   type: string;
+  content: string | Array<PredictionContentText$Outbound>;
 };
 
 /** @internal */
@@ -60,8 +60,8 @@ export const Prediction$outboundSchema: z.ZodType<
   Prediction$Outbound,
   Prediction
 > = z.object({
-  content: z.union([z.string(), z.array(PredictionContentText$outboundSchema)]),
   type: PredictionType$outboundSchema,
+  content: z.union([z.string(), z.array(PredictionContentText$outboundSchema)]),
 });
 
 export function predictionToJSON(prediction: Prediction): string {

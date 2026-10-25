@@ -10,14 +10,14 @@ Reasoning output item with signature and format extensions
 import { ReasoningItem } from "@openrouter/sdk/models";
 
 let value: ReasoningItem = {
-  id: "reasoning-abc123",
+  type: "reasoning",
   summary: [
     {
-      text: "Step by step analysis",
       type: "summary_text",
+      text: "Step by step analysis",
     },
   ],
-  type: "reasoning",
+  id: "reasoning-abc123",
 };
 ```
 
@@ -25,11 +25,11 @@ let value: ReasoningItem = {
 
 | Field                                                              | Type                                                               | Required                                                           | Description                                                        | Example                                                            |
 | ------------------------------------------------------------------ | ------------------------------------------------------------------ | ------------------------------------------------------------------ | ------------------------------------------------------------------ | ------------------------------------------------------------------ |
+| `type`                                                             | [models.ReasoningItemType](../models/reasoningitemtype.mdx)         | ✔️                                                 | N/A                                                                |                                                                    |
+| `summary`                                                          | [models.ReasoningSummaryText](../models/reasoningsummarytext.mdx)[] | ✔️                                                 | N/A                                                                |                                                                    |
 | `content`                                                          | [models.ReasoningTextContent](../models/reasoningtextcontent.mdx)[] | ➖                                                 | N/A                                                                |                                                                    |
 | `encryptedContent`                                                 | *string*                                                           | ➖                                                 | N/A                                                                |                                                                    |
 | `id`                                                               | *string*                                                           | ✔️                                                 | N/A                                                                |                                                                    |
 | `status`                                                           | *models.ReasoningItemStatusUnion*                                  | ➖                                                 | N/A                                                                |                                                                    |
-| `summary`                                                          | [models.ReasoningSummaryText](../models/reasoningsummarytext.mdx)[] | ✔️                                                 | N/A                                                                |                                                                    |
-| `type`                                                             | [models.ReasoningItemType](../models/reasoningitemtype.mdx)         | ✔️                                                 | N/A                                                                |                                                                    |
 | `format`                                                           | [models.ReasoningFormat](../models/reasoningformat.mdx)             | ➖                                                 | N/A                                                                | unknown                                                            |
 | `signature`                                                        | *string*                                                           | ➖                                                 | N/A                                                                |                                                                    |

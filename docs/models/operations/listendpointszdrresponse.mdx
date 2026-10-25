@@ -12,6 +12,7 @@ import { ListEndpointsZdrResponse } from "@openrouter/sdk/models/operations";
 let value: ListEndpointsZdrResponse = {
   data: [
     {
+      name: "OpenAI: GPT-4",
       contextLength: 8192,
       latencyLast30m: {
         p50: 0.25,
@@ -23,7 +24,6 @@ let value: ListEndpointsZdrResponse = {
       maxPromptTokens: 8192,
       modelId: "openai/gpt-4",
       modelName: "GPT-4",
-      name: "OpenAI: GPT-4",
       nativeTools: {},
       pricing: {
         completion: "0.00006",
@@ -40,10 +40,10 @@ let value: ListEndpointsZdrResponse = {
       supportsDiarization: false,
       supportsImplicitCaching: true,
       supportsToolChoice: {
+        required: true,
         auto: true,
         function: true,
         none: true,
-        required: true,
       },
       tag: "openai",
       throughputLast30m: {

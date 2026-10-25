@@ -8,13 +8,13 @@ title: "AnthropicDocumentBlock"
 import { AnthropicDocumentBlock } from "@openrouter/sdk/models";
 
 let value: AnthropicDocumentBlock = {
+  type: "document",
+  title: null,
   source: {
+    type: "text",
     data: "Hello, world!",
     mediaType: "text/plain",
-    type: "text",
   },
-  title: null,
-  type: "document",
 };
 ```
 
@@ -22,7 +22,7 @@ let value: AnthropicDocumentBlock = {
 
 | Field                                                                        | Type                                                                         | Required                                                                     | Description                                                                  | Example                                                                      |
 | ---------------------------------------------------------------------------- | ---------------------------------------------------------------------------- | ---------------------------------------------------------------------------- | ---------------------------------------------------------------------------- | ---------------------------------------------------------------------------- |
+| `type`                                                                       | [models.AnthropicDocumentBlockType](../models/anthropicdocumentblocktype.mdx) | ✔️                                                           | N/A                                                                          |                                                                              |
+| `title`                                                                      | *string*                                                                     | ✔️                                                           | N/A                                                                          |                                                                              |
 | `citations`                                                                  | [models.AnthropicCitationsConfig](../models/anthropiccitationsconfig.mdx)     | ➖                                                           | N/A                                                                          | \{<br/>"enabled": true<br/>}                                                  |
 | `source`                                                                     | *models.AnthropicDocumentBlockSource*                                        | ✔️                                                           | N/A                                                                          |                                                                              |
-| `title`                                                                      | *string*                                                                     | ✔️                                                           | N/A                                                                          |                                                                              |
-| `type`                                                                       | [models.AnthropicDocumentBlockType](../models/anthropicdocumentblocktype.mdx) | ✔️                                                           | N/A                                                                          |                                                                              |

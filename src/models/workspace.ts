@@ -11,6 +11,14 @@ import { SDKValidationError } from "./errors/sdkvalidationerror.js";
 
 export type Workspace = {
   /**
+   * Name of the workspace
+   */
+  name: string;
+  /**
+   * Description of the workspace
+   */
+  description: string | null;
+  /**
    * ISO 8601 timestamp of when the workspace was created
    */
   createdAt: string;
@@ -34,10 +42,6 @@ export type Workspace = {
    * Default text model for this workspace
    */
   defaultTextModel: string | null;
-  /**
-   * Description of the workspace
-   */
-  description: string | null;
   /**
    * OpenRouter server tools (e.g. openrouter:web_search) that requests in this workspace may not invoke. Null means no tools are disabled.
    */
@@ -71,10 +75,6 @@ export type Workspace = {
    */
   isObservabilityIoLoggingEnabled: boolean;
   /**
-   * Name of the workspace
-   */
-  name: string;
-  /**
    * URL-friendly slug for the workspace
    */
   slug: string;
@@ -86,13 +86,14 @@ export type Workspace = {
 
 /** @internal */
 export const Workspace$inboundSchema: z.ZodType<Workspace, unknown> = z.object({
+  name: z.string(),
+  description: z.nullable(z.string()),
   created_at: z.string(),
   created_by: z.nullable(z.string()),
   default_guardrail_id: z.string(),
   default_image_model: z.nullable(z.string()),
   default_provider_sort: z.nullable(z.string()),
   default_text_model: z.nullable(z.string()),
-  description: z.nullable(z.string()),
   disabled_server_tools: z.nullable(z.array(z.string())).optional(),
   id: z.string(),
   include_byok_in_budgets: z.boolean().optional(),
@@ -101,7 +102,6 @@ export const Workspace$inboundSchema: z.ZodType<Workspace, unknown> = z.object({
   is_data_discount_logging_enabled: z.boolean(),
   is_observability_broadcast_enabled: z.boolean(),
   is_observability_io_logging_enabled: z.boolean(),
-  name: z.string(),
   slug: z.string(),
   updated_at: z.nullable(z.string()),
 }).transform((v) => {

@@ -10,12 +10,12 @@ Router-owned deferred discovery result containing original selected tool definit
 import { ORAnthropicToolSearchResult } from "@openrouter/sdk/models";
 
 let value: ORAnthropicToolSearchResult = {
+  type: "openrouter_tool_search_result",
   content: {
     "key": "<value>",
     "key1": "<value>",
   },
   toolUseId: "<id>",
-  type: "openrouter_tool_search_result",
 };
 ```
 
@@ -23,6 +23,6 @@ let value: ORAnthropicToolSearchResult = {
 
 | Field                             | Type                              | Required                          | Description                       |
 | --------------------------------- | --------------------------------- | --------------------------------- | --------------------------------- |
+| `type`                            | *"openrouter_tool_search_result"* | ✔️                | N/A                               |
 | `content`                         | Record\<string, *any*>             | ✔️                | N/A                               |
 | `toolUseId`                       | *string*                          | ✔️                | N/A                               |
-| `type`                            | *"openrouter_tool_search_result"* | ✔️                | N/A                               |

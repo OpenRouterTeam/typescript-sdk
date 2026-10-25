@@ -10,18 +10,18 @@ import { remap as remap$ } from "../lib/primitives.js";
  * Caller-executed search returning existing tool identities under result_key.
  */
 export type DeferredCustomSearch = {
+  type: "custom";
   maxResults?: number | undefined;
   resultKey: string;
   toolId: string;
-  type: "custom";
 };
 
 /** @internal */
 export type DeferredCustomSearch$Outbound = {
+  type: "custom";
   max_results?: number | undefined;
   result_key: string;
   tool_id: string;
-  type: "custom";
 };
 
 /** @internal */
@@ -29,10 +29,10 @@ export const DeferredCustomSearch$outboundSchema: z.ZodType<
   DeferredCustomSearch$Outbound,
   DeferredCustomSearch
 > = z.object({
+  type: z.literal("custom"),
   maxResults: z.int().optional(),
   resultKey: z.string(),
   toolId: z.string(),
-  type: z.literal("custom"),
 }).transform((v) => {
   return remap$(v, {
     maxResults: "max_results",

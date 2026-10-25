@@ -10,11 +10,11 @@ Event emitted when function call arguments are being streamed
 import { FunctionCallArgsDeltaEvent } from "@openrouter/sdk/models";
 
 let value: FunctionCallArgsDeltaEvent = {
+  type: "response.function_call_arguments.delta",
   delta: "<value>",
   itemId: "<id>",
   outputIndex: 986115,
   sequenceNumber: 0,
-  type: "response.function_call_arguments.delta",
 };
 ```
 
@@ -22,8 +22,8 @@ let value: FunctionCallArgsDeltaEvent = {
 
 | Field                                      | Type                                       | Required                                   | Description                                |
 | ------------------------------------------ | ------------------------------------------ | ------------------------------------------ | ------------------------------------------ |
+| `type`                                     | *"response.function_call_arguments.delta"* | ✔️                         | N/A                                        |
 | `delta`                                    | *string*                                   | ✔️                         | N/A                                        |
 | `itemId`                                   | *string*                                   | ✔️                         | N/A                                        |
 | `outputIndex`                              | *number*                                   | ✔️                         | N/A                                        |
 | `sequenceNumber`                           | *number*                                   | ✔️                         | N/A                                        |
-| `type`                                     | *"response.function_call_arguments.delta"* | ✔️                         | N/A                                        |

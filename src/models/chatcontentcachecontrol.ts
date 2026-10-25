@@ -25,8 +25,8 @@ export type ChatContentCacheControlType = ClosedEnum<
  * Anthropic-style cache breakpoint for the content part. Interchangeable with the OpenAI-style `prompt_cache_breakpoint` marker: OpenRouter converts between the two based on the provider serving the request.
  */
 export type ChatContentCacheControl = {
-  ttl?: AnthropicCacheControlTtl | undefined;
   type: ChatContentCacheControlType;
+  ttl?: AnthropicCacheControlTtl | undefined;
 };
 
 /** @internal */
@@ -43,13 +43,13 @@ export const ChatContentCacheControl$inboundSchema: z.ZodType<
   ChatContentCacheControl,
   unknown
 > = z.object({
-  ttl: AnthropicCacheControlTtl$inboundSchema.optional(),
   type: ChatContentCacheControlType$inboundSchema,
+  ttl: AnthropicCacheControlTtl$inboundSchema.optional(),
 });
 /** @internal */
 export type ChatContentCacheControl$Outbound = {
-  ttl?: string | undefined;
   type: string;
+  ttl?: string | undefined;
 };
 
 /** @internal */
@@ -57,8 +57,8 @@ export const ChatContentCacheControl$outboundSchema: z.ZodType<
   ChatContentCacheControl$Outbound,
   ChatContentCacheControl
 > = z.object({
-  ttl: AnthropicCacheControlTtl$outboundSchema.optional(),
   type: ChatContentCacheControlType$outboundSchema,
+  ttl: AnthropicCacheControlTtl$outboundSchema.optional(),
 });
 
 export function chatContentCacheControlToJSON(

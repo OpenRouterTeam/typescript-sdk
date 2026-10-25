@@ -8,13 +8,13 @@ title: "AnthropicCitationPageLocation"
 import { AnthropicCitationPageLocation } from "@openrouter/sdk/models";
 
 let value: AnthropicCitationPageLocation = {
+  type: "page_location",
   citedText: "Example text",
   documentIndex: 0,
   documentTitle: null,
   endPageNumber: 366265,
   fileId: null,
   startPageNumber: 736223,
-  type: "page_location",
 };
 ```
 
@@ -22,10 +22,10 @@ let value: AnthropicCitationPageLocation = {
 
 | Field              | Type               | Required           | Description        |
 | ------------------ | ------------------ | ------------------ | ------------------ |
+| `type`             | *"page_location"*  | ✔️ | N/A                |
 | `citedText`        | *string*           | ✔️ | N/A                |
 | `documentIndex`    | *number*           | ✔️ | N/A                |
 | `documentTitle`    | *string*           | ✔️ | N/A                |
 | `endPageNumber`    | *number*           | ✔️ | N/A                |
 | `fileId`           | *string*           | ✔️ | N/A                |
 | `startPageNumber`  | *number*           | ✔️ | N/A                |
-| `type`             | *"page_location"*  | ✔️ | N/A                |

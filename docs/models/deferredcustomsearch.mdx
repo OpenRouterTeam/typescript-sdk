@@ -10,9 +10,9 @@ Caller-executed search returning existing tool identities under result_key.
 import { DeferredCustomSearch } from "@openrouter/sdk/models";
 
 let value: DeferredCustomSearch = {
+  type: "custom",
   resultKey: "<value>",
   toolId: "<id>",
-  type: "custom",
 };
 ```
 
@@ -20,7 +20,7 @@ let value: DeferredCustomSearch = {
 
 | Field              | Type               | Required           | Description        |
 | ------------------ | ------------------ | ------------------ | ------------------ |
+| `type`             | *"custom"*         | ✔️ | N/A                |
 | `maxResults`       | *number*           | ➖ | N/A                |
 | `resultKey`        | *string*           | ✔️ | N/A                |
 | `toolId`           | *string*           | ✔️ | N/A                |
-| `type`             | *"custom"*         | ✔️ | N/A                |

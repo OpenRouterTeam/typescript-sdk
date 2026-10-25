@@ -25,13 +25,13 @@ export type ModelsListResponseLinks = {
  */
 export type ModelsListResponse = {
   /**
-   * List of available models
-   */
-  data: Array<Model>;
-  /**
    * Pagination links
    */
   links: ModelsListResponseLinks;
+  /**
+   * List of available models
+   */
+  data: Array<Model>;
   /**
    * Total number of models matching the query
    */
@@ -61,8 +61,8 @@ export const ModelsListResponse$inboundSchema: z.ZodType<
   ModelsListResponse,
   unknown
 > = z.object({
-  data: z.array(Model$inboundSchema),
   links: z.lazy(() => ModelsListResponseLinks$inboundSchema),
+  data: z.array(Model$inboundSchema),
   total_count: z.int(),
 }).transform((v) => {
   return remap$(v, {

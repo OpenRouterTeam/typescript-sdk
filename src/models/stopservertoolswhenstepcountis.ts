@@ -10,14 +10,14 @@ import { remap as remap$ } from "../lib/primitives.js";
  * Stop after the agent loop has executed this many steps.
  */
 export type StopServerToolsWhenStepCountIs = {
-  stepCount: number;
   type: "step_count_is";
+  stepCount: number;
 };
 
 /** @internal */
 export type StopServerToolsWhenStepCountIs$Outbound = {
-  step_count: number;
   type: "step_count_is";
+  step_count: number;
 };
 
 /** @internal */
@@ -25,8 +25,8 @@ export const StopServerToolsWhenStepCountIs$outboundSchema: z.ZodType<
   StopServerToolsWhenStepCountIs$Outbound,
   StopServerToolsWhenStepCountIs
 > = z.object({
-  stepCount: z.int(),
   type: z.literal("step_count_is"),
+  stepCount: z.int(),
 }).transform((v) => {
   return remap$(v, {
     stepCount: "step_count",

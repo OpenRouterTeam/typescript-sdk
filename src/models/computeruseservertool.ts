@@ -11,6 +11,13 @@ import { ClosedEnum, OpenEnum } from "../types/enums.js";
 import { Result as SafeParseResult } from "../types/fp.js";
 import { SDKValidationError } from "./errors/sdkvalidationerror.js";
 
+export const ComputerUseServerToolType = {
+  ComputerUsePreview: "computer_use_preview",
+} as const;
+export type ComputerUseServerToolType = ClosedEnum<
+  typeof ComputerUseServerToolType
+>;
+
 export const EnvironmentEnum = {
   Windows: "windows",
   Mac: "mac",
@@ -20,22 +27,24 @@ export const EnvironmentEnum = {
 } as const;
 export type EnvironmentEnum = OpenEnum<typeof EnvironmentEnum>;
 
-export const ComputerUseServerToolType = {
-  ComputerUsePreview: "computer_use_preview",
-} as const;
-export type ComputerUseServerToolType = ClosedEnum<
-  typeof ComputerUseServerToolType
->;
-
 /**
  * Computer use preview tool configuration
  */
 export type ComputerUseServerTool = {
+  type: ComputerUseServerToolType;
   displayHeight: number;
   displayWidth: number;
   environment: EnvironmentEnum;
-  type: ComputerUseServerToolType;
 };
+
+/** @internal */
+export const ComputerUseServerToolType$inboundSchema: z.ZodEnum<
+  typeof ComputerUseServerToolType
+> = z.enum(ComputerUseServerToolType);
+/** @internal */
+export const ComputerUseServerToolType$outboundSchema: z.ZodEnum<
+  typeof ComputerUseServerToolType
+> = ComputerUseServerToolType$inboundSchema;
 
 /** @internal */
 export const EnvironmentEnum$inboundSchema: z.ZodType<
@@ -49,23 +58,14 @@ export const EnvironmentEnum$outboundSchema: z.ZodType<
 > = openEnums.outboundSchema(EnvironmentEnum);
 
 /** @internal */
-export const ComputerUseServerToolType$inboundSchema: z.ZodEnum<
-  typeof ComputerUseServerToolType
-> = z.enum(ComputerUseServerToolType);
-/** @internal */
-export const ComputerUseServerToolType$outboundSchema: z.ZodEnum<
-  typeof ComputerUseServerToolType
-> = ComputerUseServerToolType$inboundSchema;
-
-/** @internal */
 export const ComputerUseServerTool$inboundSchema: z.ZodType<
   ComputerUseServerTool,
   unknown
 > = z.object({
+  type: ComputerUseServerToolType$inboundSchema,
   display_height: z.int(),
   display_width: z.int(),
   environment: EnvironmentEnum$inboundSchema,
-  type: ComputerUseServerToolType$inboundSchema,
 }).transform((v) => {
   return remap$(v, {
     "display_height": "displayHeight",
@@ -74,10 +74,10 @@ export const ComputerUseServerTool$inboundSchema: z.ZodType<
 });
 /** @internal */
 export type ComputerUseServerTool$Outbound = {
+  type: string;
   display_height: number;
   display_width: number;
   environment: string;
-  type: string;
 };
 
 /** @internal */
@@ -85,10 +85,10 @@ export const ComputerUseServerTool$outboundSchema: z.ZodType<
   ComputerUseServerTool$Outbound,
   ComputerUseServerTool
 > = z.object({
+  type: ComputerUseServerToolType$outboundSchema,
   displayHeight: z.int(),
   displayWidth: z.int(),
   environment: EnvironmentEnum$outboundSchema,
-  type: ComputerUseServerToolType$outboundSchema,
 }).transform((v) => {
   return remap$(v, {
     displayHeight: "display_height",

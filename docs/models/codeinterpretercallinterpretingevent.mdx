@@ -10,10 +10,10 @@ Code interpreter is executing the code
 import { CodeInterpreterCallInterpretingEvent } from "@openrouter/sdk/models";
 
 let value: CodeInterpreterCallInterpretingEvent = {
+  type: "response.code_interpreter_call.interpreting",
   itemId: "<id>",
   outputIndex: 1184,
   sequenceNumber: 0,
-  type: "response.code_interpreter_call.interpreting",
 };
 ```
 
@@ -21,7 +21,7 @@ let value: CodeInterpreterCallInterpretingEvent = {
 
 | Field                                           | Type                                            | Required                                        | Description                                     |
 | ----------------------------------------------- | ----------------------------------------------- | ----------------------------------------------- | ----------------------------------------------- |
+| `type`                                          | *"response.code_interpreter_call.interpreting"* | ✔️                              | N/A                                             |
 | `itemId`                                        | *string*                                        | ✔️                              | N/A                                             |
 | `outputIndex`                                   | *number*                                        | ✔️                              | N/A                                             |
 | `sequenceNumber`                                | *number*                                        | ✔️                              | N/A                                             |
-| `type`                                          | *"response.code_interpreter_call.interpreting"* | ✔️                              | N/A                                             |

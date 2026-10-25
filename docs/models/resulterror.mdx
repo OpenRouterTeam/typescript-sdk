@@ -8,9 +8,9 @@ title: "ResultError"
 import { ResultError } from "@openrouter/sdk/models";
 
 let value: ResultError = {
+  type: "<value>",
   message: "<value>",
   param: "<value>",
-  type: "<value>",
 };
 ```
 
@@ -18,7 +18,7 @@ let value: ResultError = {
 
 | Field                                                          | Type                                                           | Required                                                       | Description                                                    | Example                                                        |
 | -------------------------------------------------------------- | -------------------------------------------------------------- | -------------------------------------------------------------- | -------------------------------------------------------------- | -------------------------------------------------------------- |
+| `type`                                                         | *string*                                                       | ✔️                                             | N/A                                                            |                                                                |
 | `errorType`                                                    | [models.ApiErrorType](../models/apierrortype.mdx)               | ➖                                             | Canonical OpenRouter error type, stable across all API formats | rate_limit_exceeded                                            |
 | `message`                                                      | *string*                                                       | ✔️                                             | N/A                                                            |                                                                |
 | `param`                                                        | *string*                                                       | ✔️                                             | N/A                                                            |                                                                |
-| `type`                                                         | *string*                                                       | ✔️                                             | N/A                                                            |                                                                |

@@ -25,6 +25,10 @@ export type RankingsDailyMetaVersion = ClosedEnum<
 
 export type RankingsDailyMeta = {
   /**
+   * Dataset version. Field names and grain are stable for the life of `v1`.
+   */
+  version: RankingsDailyMetaVersion;
+  /**
    * ISO-8601 timestamp of when the response was generated. Reflects data-freshness because the underlying materialized view continuously ingests upstream events.
    */
   asOf: string;
@@ -36,10 +40,6 @@ export type RankingsDailyMeta = {
    * Resolved start of the date window (UTC, inclusive).
    */
   startDate: string;
-  /**
-   * Dataset version. Field names and grain are stable for the life of `v1`.
-   */
-  version: RankingsDailyMetaVersion;
 };
 
 /** @internal */
@@ -52,10 +52,10 @@ export const RankingsDailyMeta$inboundSchema: z.ZodType<
   RankingsDailyMeta,
   unknown
 > = z.object({
+  version: RankingsDailyMetaVersion$inboundSchema,
   as_of: z.string(),
   end_date: z.string(),
   start_date: z.string(),
-  version: RankingsDailyMetaVersion$inboundSchema,
 }).transform((v) => {
   return remap$(v, {
     "as_of": "asOf",

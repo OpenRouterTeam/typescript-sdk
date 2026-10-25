@@ -18,11 +18,11 @@ export type McpApprovalRequestItemType = ClosedEnum<
  * Request for approval to execute an MCP tool
  */
 export type McpApprovalRequestItem = {
+  name: string;
+  type: McpApprovalRequestItemType;
   arguments: string;
   id: string;
-  name: string;
   serverLabel: string;
-  type: McpApprovalRequestItemType;
 };
 
 /** @internal */
@@ -32,11 +32,11 @@ export const McpApprovalRequestItemType$outboundSchema: z.ZodEnum<
 
 /** @internal */
 export type McpApprovalRequestItem$Outbound = {
+  name: string;
+  type: string;
   arguments: string;
   id: string;
-  name: string;
   server_label: string;
-  type: string;
 };
 
 /** @internal */
@@ -44,11 +44,11 @@ export const McpApprovalRequestItem$outboundSchema: z.ZodType<
   McpApprovalRequestItem$Outbound,
   McpApprovalRequestItem
 > = z.object({
+  name: z.string(),
+  type: McpApprovalRequestItemType$outboundSchema,
   arguments: z.string(),
   id: z.string(),
-  name: z.string(),
   serverLabel: z.string(),
-  type: McpApprovalRequestItemType$outboundSchema,
 }).transform((v) => {
   return remap$(v, {
     serverLabel: "server_label",

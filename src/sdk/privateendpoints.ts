@@ -54,23 +54,6 @@ export class PrivateEndpoints extends ClientSDK {
   }
 
   /**
-   * Delete a private endpoint
-   *
-   * @remarks
-   * Delete a private endpoint and stop routing to it. Pass `draft_only=true` to refuse (409) when the endpoint has been activated. [Management key](/docs/guides/overview/auth/management-api-keys) required.
-   */
-  async delete(
-    request: operations.DeletePrivateEndpointRequest,
-    options?: RequestOptions,
-  ): Promise<models.DeletePrivateEndpointResponse> {
-    return unwrapAsync(privateEndpointsDelete(
-      this,
-      request,
-      options,
-    ));
-  }
-
-  /**
    * Get a private endpoint
    *
    * @remarks
@@ -81,6 +64,23 @@ export class PrivateEndpoints extends ClientSDK {
     options?: RequestOptions,
   ): Promise<models.PrivateEndpointResponse> {
     return unwrapAsync(privateEndpointsGet(
+      this,
+      request,
+      options,
+    ));
+  }
+
+  /**
+   * Delete a private endpoint
+   *
+   * @remarks
+   * Delete a private endpoint and stop routing to it. Pass `draft_only=true` to refuse (409) when the endpoint has been activated. [Management key](/docs/guides/overview/auth/management-api-keys) required.
+   */
+  async delete(
+    request: operations.DeletePrivateEndpointRequest,
+    options?: RequestOptions,
+  ): Promise<models.DeletePrivateEndpointResponse> {
+    return unwrapAsync(privateEndpointsDelete(
       this,
       request,
       options,

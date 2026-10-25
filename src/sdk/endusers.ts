@@ -52,23 +52,6 @@ export class EndUsers extends ClientSDK {
   }
 
   /**
-   * Deactivate a registered external user
-   *
-   * @remarks
-   * Soft-deactivate a registration while retaining its tracking ID. Repeat deactivation succeeds. This does not block inference; reactivate through PATCH. [Management key](/docs/guides/overview/auth/management-api-keys) required.
-   */
-  async delete(
-    request: operations.DeleteExternalUserRequest,
-    options?: RequestOptions,
-  ): Promise<void> {
-    return unwrapAsync(externalUsersDelete(
-      this,
-      request,
-      options,
-    ));
-  }
-
-  /**
    * Get a registered external user
    *
    * @remarks
@@ -79,6 +62,23 @@ export class EndUsers extends ClientSDK {
     options?: RequestOptions,
   ): Promise<models.ExternalUserResponse> {
     return unwrapAsync(externalUsersGet(
+      this,
+      request,
+      options,
+    ));
+  }
+
+  /**
+   * Deactivate a registered external user
+   *
+   * @remarks
+   * Soft-deactivate a registration while retaining its tracking ID. Repeat deactivation succeeds. This does not block inference; reactivate through PATCH. [Management key](/docs/guides/overview/auth/management-api-keys) required.
+   */
+  async delete(
+    request: operations.DeleteExternalUserRequest,
+    options?: RequestOptions,
+  ): Promise<void> {
+    return unwrapAsync(externalUsersDelete(
       this,
       request,
       options,

@@ -10,6 +10,7 @@ A stored file in Anthropic's Files API shape.
 import { AnthropicFile } from "@openrouter/sdk/models";
 
 let value: AnthropicFile = {
+  type: "file",
   shape: "anthropic",
   createdAt: "2025-01-01T00:00:00Z",
   downloadable: false,
@@ -17,7 +18,6 @@ let value: AnthropicFile = {
   id: "or_file_011CNha8iCJcU1wXNR6q4V8w",
   mimeType: "application/pdf",
   sizeBytes: 1024000,
-  type: "file",
 };
 ```
 
@@ -25,6 +25,7 @@ let value: AnthropicFile = {
 
 | Field                                                        | Type                                                         | Required                                                     | Description                                                  |
 | ------------------------------------------------------------ | ------------------------------------------------------------ | ------------------------------------------------------------ | ------------------------------------------------------------ |
+| `type`                                                       | [models.AnthropicFileType](../models/anthropicfiletype.mdx)   | ✔️                                           | N/A                                                          |
 | `shape`                                                      | [models.AnthropicFileShape](../models/anthropicfileshape.mdx) | ✔️                                           | N/A                                                          |
 | `createdAt`                                                  | *string*                                                     | ✔️                                           | N/A                                                          |
 | `downloadable`                                               | *boolean*                                                    | ✔️                                           | N/A                                                          |
@@ -32,4 +33,3 @@ let value: AnthropicFile = {
 | `id`                                                         | *string*                                                     | ✔️                                           | N/A                                                          |
 | `mimeType`                                                   | *string*                                                     | ✔️                                           | N/A                                                          |
 | `sizeBytes`                                                  | *number*                                                     | ✔️                                           | N/A                                                          |
-| `type`                                                       | [models.AnthropicFileType](../models/anthropicfiletype.mdx)   | ✔️                                           | N/A                                                          |

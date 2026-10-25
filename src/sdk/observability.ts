@@ -55,23 +55,6 @@ export class Observability extends ClientSDK {
   }
 
   /**
-   * Delete an observability destination
-   *
-   * @remarks
-   * Delete an existing observability destination. This performs a soft delete. [Management key](/docs/guides/overview/auth/management-api-keys) required.
-   */
-  async delete(
-    request: operations.DeleteObservabilityDestinationRequest,
-    options?: RequestOptions,
-  ): Promise<models.DeleteObservabilityDestinationResponse> {
-    return unwrapAsync(observabilityDelete(
-      this,
-      request,
-      options,
-    ));
-  }
-
-  /**
    * Get an observability destination
    *
    * @remarks
@@ -82,6 +65,23 @@ export class Observability extends ClientSDK {
     options?: RequestOptions,
   ): Promise<models.GetObservabilityDestinationResponse> {
     return unwrapAsync(observabilityGet(
+      this,
+      request,
+      options,
+    ));
+  }
+
+  /**
+   * Delete an observability destination
+   *
+   * @remarks
+   * Delete an existing observability destination. This performs a soft delete. [Management key](/docs/guides/overview/auth/management-api-keys) required.
+   */
+  async delete(
+    request: operations.DeleteObservabilityDestinationRequest,
+    options?: RequestOptions,
+  ): Promise<models.DeleteObservabilityDestinationResponse> {
+    return unwrapAsync(observabilityDelete(
       this,
       request,
       options,

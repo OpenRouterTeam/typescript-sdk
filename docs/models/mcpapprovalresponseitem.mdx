@@ -10,9 +10,9 @@ User response to an MCP tool approval request
 import { McpApprovalResponseItem } from "@openrouter/sdk/models";
 
 let value: McpApprovalResponseItem = {
+  type: "mcp_approval_response",
   approvalRequestId: "approval-abc123",
   approve: true,
-  type: "mcp_approval_response",
 };
 ```
 
@@ -20,8 +20,8 @@ let value: McpApprovalResponseItem = {
 
 | Field                                                                          | Type                                                                           | Required                                                                       | Description                                                                    |
 | ------------------------------------------------------------------------------ | ------------------------------------------------------------------------------ | ------------------------------------------------------------------------------ | ------------------------------------------------------------------------------ |
+| `type`                                                                         | [models.McpApprovalResponseItemType](../models/mcpapprovalresponseitemtype.mdx) | ✔️                                                             | N/A                                                                            |
 | `approvalRequestId`                                                            | *string*                                                                       | ✔️                                                             | N/A                                                                            |
 | `approve`                                                                      | *boolean*                                                                      | ✔️                                                             | N/A                                                                            |
 | `id`                                                                           | *string*                                                                       | ➖                                                             | N/A                                                                            |
 | `reason`                                                                       | *string*                                                                       | ➖                                                             | N/A                                                                            |
-| `type`                                                                         | [models.McpApprovalResponseItemType](../models/mcpapprovalresponseitemtype.mdx) | ✔️                                                             | N/A                                                                            |

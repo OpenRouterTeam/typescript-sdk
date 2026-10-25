@@ -8,13 +8,13 @@ title: "AnthropicCitationContentBlockLocation"
 import { AnthropicCitationContentBlockLocation } from "@openrouter/sdk/models";
 
 let value: AnthropicCitationContentBlockLocation = {
+  type: "content_block_location",
   citedText: "Example text",
   documentIndex: 0,
   documentTitle: null,
   endBlockIndex: 492861,
   fileId: null,
   startBlockIndex: 521210,
-  type: "content_block_location",
 };
 ```
 
@@ -22,10 +22,10 @@ let value: AnthropicCitationContentBlockLocation = {
 
 | Field                      | Type                       | Required                   | Description                |
 | -------------------------- | -------------------------- | -------------------------- | -------------------------- |
+| `type`                     | *"content_block_location"* | ✔️         | N/A                        |
 | `citedText`                | *string*                   | ✔️         | N/A                        |
 | `documentIndex`            | *number*                   | ✔️         | N/A                        |
 | `documentTitle`            | *string*                   | ✔️         | N/A                        |
 | `endBlockIndex`            | *number*                   | ✔️         | N/A                        |
 | `fileId`                   | *string*                   | ✔️         | N/A                        |
 | `startBlockIndex`          | *number*                   | ✔️         | N/A                        |
-| `type`                     | *"content_block_location"* | ✔️         | N/A                        |

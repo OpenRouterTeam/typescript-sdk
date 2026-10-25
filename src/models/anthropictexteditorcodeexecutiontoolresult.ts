@@ -14,17 +14,17 @@ import {
 import { SDKValidationError } from "./errors/sdkvalidationerror.js";
 
 export type AnthropicTextEditorCodeExecutionToolResult = {
+  type: "text_editor_code_execution_tool_result";
   content: AnthropicTextEditorCodeExecutionContent;
   toolUseId: string;
-  type: "text_editor_code_execution_tool_result";
 };
 
 /** @internal */
 export const AnthropicTextEditorCodeExecutionToolResult$inboundSchema:
   z.ZodType<AnthropicTextEditorCodeExecutionToolResult, unknown> = z.object({
+    type: z.literal("text_editor_code_execution_tool_result"),
     content: AnthropicTextEditorCodeExecutionContent$inboundSchema,
     tool_use_id: z.string(),
-    type: z.literal("text_editor_code_execution_tool_result"),
   }).transform((v) => {
     return remap$(v, {
       "tool_use_id": "toolUseId",

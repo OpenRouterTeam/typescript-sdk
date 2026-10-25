@@ -20,8 +20,8 @@ export type AnthropicContainerSkillType = OpenEnum<
 >;
 
 export type AnthropicContainerSkill = {
-  skillId: string;
   type: AnthropicContainerSkillType;
+  skillId: string;
   version: string;
 };
 
@@ -36,8 +36,8 @@ export const AnthropicContainerSkill$inboundSchema: z.ZodType<
   AnthropicContainerSkill,
   unknown
 > = z.object({
-  skill_id: z.string(),
   type: AnthropicContainerSkillType$inboundSchema,
+  skill_id: z.string(),
   version: z.string(),
 }).transform((v) => {
   return remap$(v, {

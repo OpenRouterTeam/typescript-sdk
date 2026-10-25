@@ -8,13 +8,13 @@ title: "AnthropicTextCitation"
 
 ```typescript
 const value: models.AnthropicCitationCharLocation = {
+  type: "char_location",
   citedText: "Example text",
   documentIndex: 0,
   documentTitle: null,
   endCharIndex: 10,
   fileId: null,
   startCharIndex: 0,
-  type: "char_location",
 };
 ```
 
@@ -22,13 +22,13 @@ const value: models.AnthropicCitationCharLocation = {
 
 ```typescript
 const value: models.AnthropicCitationContentBlockLocation = {
+  type: "content_block_location",
   citedText: "Example text",
   documentIndex: 0,
   documentTitle: null,
   endBlockIndex: 604853,
   fileId: null,
   startBlockIndex: 996471,
-  type: "content_block_location",
 };
 ```
 
@@ -36,13 +36,13 @@ const value: models.AnthropicCitationContentBlockLocation = {
 
 ```typescript
 const value: models.AnthropicCitationPageLocation = {
+  type: "page_location",
   citedText: "Example text",
   documentIndex: 0,
   documentTitle: null,
   endPageNumber: 431333,
   fileId: null,
   startPageNumber: 44719,
-  type: "page_location",
 };
 ```
 
@@ -50,13 +50,13 @@ const value: models.AnthropicCitationPageLocation = {
 
 ```typescript
 const value: models.AnthropicCitationSearchResultLocation = {
-  citedText: "Example text",
-  endBlockIndex: 782840,
-  searchResultIndex: 96845,
-  source: "<value>",
-  startBlockIndex: 145706,
-  title: "<value>",
   type: "search_result_location",
+  title: "<value>",
+  citedText: "Example text",
+  endBlockIndex: 96845,
+  searchResultIndex: 145706,
+  source: "<value>",
+  startBlockIndex: 346438,
 };
 ```
 
@@ -64,11 +64,11 @@ const value: models.AnthropicCitationSearchResultLocation = {
 
 ```typescript
 const value: models.AnthropicCitationWebSearchResultLocation = {
+  url: "https://wealthy-backburn.biz",
   citedText: "Example text",
   encryptedIndex: "<value>",
   title: "<value>",
   type: "web_search_result_location",
-  url: "https://baggy-disconnection.net",
 };
 ```
 

@@ -33,6 +33,7 @@ export type ContentPartAddedEventPart =
  * Event emitted when a new content part is added to an output item
  */
 export type ContentPartAddedEvent = {
+  type: "response.content_part.added";
   contentIndex: number;
   itemId: string;
   outputIndex: number;
@@ -42,7 +43,6 @@ export type ContentPartAddedEvent = {
     | OpenAIResponsesRefusalContent
     | discriminatedUnionTypes.Unknown<"type">;
   sequenceNumber: number;
-  type: "response.content_part.added";
 };
 
 /** @internal */
@@ -72,6 +72,7 @@ export const ContentPartAddedEvent$inboundSchema: z.ZodType<
   ContentPartAddedEvent,
   unknown
 > = z.object({
+  type: z.literal("response.content_part.added"),
   content_index: z.int(),
   item_id: z.string(),
   output_index: z.int(),
@@ -83,7 +84,6 @@ export const ContentPartAddedEvent$inboundSchema: z.ZodType<
     refusal: OpenAIResponsesRefusalContent$inboundSchema,
   }),
   sequence_number: z.int(),
-  type: z.literal("response.content_part.added"),
 }).transform((v) => {
   return remap$(v, {
     "content_index": "contentIndex",

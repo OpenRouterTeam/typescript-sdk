@@ -8,8 +8,8 @@ title: "Content"
 
 ```typescript
 const value: operations.ContentText = {
-  text: "<value>",
   type: "text",
+  text: "<value>",
 };
 ```
 
@@ -17,10 +17,10 @@ const value: operations.ContentText = {
 
 ```typescript
 const value: operations.ContentImageURL = {
+  type: "image_url",
   imageUrl: {
     url: "https://zealous-march.biz/",
   },
-  type: "image_url",
 };
 ```
 
@@ -28,10 +28,10 @@ const value: operations.ContentImageURL = {
 
 ```typescript
 const value: models.ContentPartInputAudio = {
+  type: "input_audio",
   inputAudio: {
     data: "data:audio/wav;base64,UklGRiQAAABXQVZFZm10IBAAAAA...",
   },
-  type: "input_audio",
 };
 ```
 
@@ -39,10 +39,10 @@ const value: models.ContentPartInputAudio = {
 
 ```typescript
 const value: models.ContentPartInputVideo = {
+  type: "input_video",
   inputVideo: {
     data: "data:video/mp4;base64,AAAAGGZ0eXBtcDQyAAAAAGlzb21tcDQy...",
   },
-  type: "input_video",
 };
 ```
 
@@ -50,10 +50,10 @@ const value: models.ContentPartInputVideo = {
 
 ```typescript
 const value: models.ContentPartInputFile = {
+  type: "input_file",
   inputFile: {
     data: "data:application/pdf;base64,JVBERi0xLjQKJeLjz9MKMyAw...",
   },
-  type: "input_file",
 };
 ```
 

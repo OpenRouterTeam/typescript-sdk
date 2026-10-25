@@ -17,12 +17,12 @@ import {
  * Reasoning detail text schema
  */
 export type ReasoningDetailText = {
+  type: "reasoning.text";
   format?: ReasoningFormat | null | undefined;
   id?: string | null | undefined;
   index?: number | undefined;
   signature?: string | null | undefined;
   text?: string | null | undefined;
-  type: "reasoning.text";
 };
 
 /** @internal */
@@ -30,21 +30,21 @@ export const ReasoningDetailText$inboundSchema: z.ZodType<
   ReasoningDetailText,
   unknown
 > = z.object({
+  type: z.literal("reasoning.text"),
   format: z.nullable(ReasoningFormat$inboundSchema).optional(),
   id: z.nullable(z.string()).optional(),
   index: z.int().optional(),
   signature: z.nullable(z.string()).optional(),
   text: z.nullable(z.string()).optional(),
-  type: z.literal("reasoning.text"),
 });
 /** @internal */
 export type ReasoningDetailText$Outbound = {
+  type: "reasoning.text";
   format?: string | null | undefined;
   id?: string | null | undefined;
   index?: number | undefined;
   signature?: string | null | undefined;
   text?: string | null | undefined;
-  type: "reasoning.text";
 };
 
 /** @internal */
@@ -52,12 +52,12 @@ export const ReasoningDetailText$outboundSchema: z.ZodType<
   ReasoningDetailText$Outbound,
   ReasoningDetailText
 > = z.object({
+  type: z.literal("reasoning.text"),
   format: z.nullable(ReasoningFormat$outboundSchema).optional(),
   id: z.nullable(z.string()).optional(),
   index: z.int().optional(),
   signature: z.nullable(z.string()).optional(),
   text: z.nullable(z.string()).optional(),
-  type: z.literal("reasoning.text"),
 });
 
 export function reasoningDetailTextToJSON(

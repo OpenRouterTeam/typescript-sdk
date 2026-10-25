@@ -10,12 +10,12 @@ Emitted when a fusion panel model fails.
 import { FusionCallPanelFailedEvent } from "@openrouter/sdk/models";
 
 let value: FusionCallPanelFailedEvent = {
+  type: "response.fusion_call.panel.failed",
   error: "<value>",
   itemId: "<id>",
   model: "2",
   outputIndex: 930579,
   sequenceNumber: 0,
-  type: "response.fusion_call.panel.failed",
 };
 ```
 
@@ -23,10 +23,10 @@ let value: FusionCallPanelFailedEvent = {
 
 | Field                                 | Type                                  | Required                              | Description                           |
 | ------------------------------------- | ------------------------------------- | ------------------------------------- | ------------------------------------- |
+| `type`                                | *"response.fusion_call.panel.failed"* | ✔️                    | N/A                                   |
 | `error`                               | *string*                              | ✔️                    | N/A                                   |
 | `itemId`                              | *string*                              | ✔️                    | N/A                                   |
 | `model`                               | *string*                              | ✔️                    | N/A                                   |
 | `outputIndex`                         | *number*                              | ✔️                    | N/A                                   |
 | `sequenceNumber`                      | *number*                              | ✔️                    | N/A                                   |
 | `statusCode`                          | *number*                              | ➖                    | N/A                                   |
-| `type`                                | *"response.fusion_call.panel.failed"* | ✔️                    | N/A                                   |

@@ -9,8 +9,8 @@ import { Result as SafeParseResult } from "../types/fp.js";
 import { SDKValidationError } from "./errors/sdkvalidationerror.js";
 
 export type DecisionsNoulAnswer = {
-  noul: number;
   type: "noul";
+  noul: number;
 };
 
 /** @internal */
@@ -18,8 +18,8 @@ export const DecisionsNoulAnswer$inboundSchema: z.ZodType<
   DecisionsNoulAnswer,
   unknown
 > = z.object({
-  noul: z.number(),
   type: z.literal("noul"),
+  noul: z.number(),
 });
 
 export function decisionsNoulAnswerFromJSON(

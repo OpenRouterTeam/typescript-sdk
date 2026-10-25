@@ -25,6 +25,7 @@ export type ServerToolInputNameApiFormat = OpenEnum<
 >;
 
 export type ServerToolInputName = {
+  type: string;
   /**
    * API formats that accept this spelling in `tools[].type`
    */
@@ -33,7 +34,6 @@ export type ServerToolInputName = {
    * What the call surfaces as on each accepting API format when requested under this spelling; a format is absent when the call is not visible to the caller
    */
   outputNames: Array<ServerToolOutputName>;
-  type: string;
 };
 
 /** @internal */
@@ -47,9 +47,9 @@ export const ServerToolInputName$inboundSchema: z.ZodType<
   ServerToolInputName,
   unknown
 > = z.object({
+  type: z.string(),
   api_formats: z.array(ServerToolInputNameApiFormat$inboundSchema),
   output_names: z.array(ServerToolOutputName$inboundSchema),
-  type: z.string(),
 }).transform((v) => {
   return remap$(v, {
     "api_formats": "apiFormats",

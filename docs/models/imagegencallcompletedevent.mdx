@@ -10,10 +10,10 @@ Image generation call completed
 import { ImageGenCallCompletedEvent } from "@openrouter/sdk/models";
 
 let value: ImageGenCallCompletedEvent = {
+  type: "response.image_generation_call.completed",
   itemId: "<id>",
   outputIndex: 56929,
   sequenceNumber: 0,
-  type: "response.image_generation_call.completed",
 };
 ```
 
@@ -21,7 +21,7 @@ let value: ImageGenCallCompletedEvent = {
 
 | Field                                        | Type                                         | Required                                     | Description                                  |
 | -------------------------------------------- | -------------------------------------------- | -------------------------------------------- | -------------------------------------------- |
+| `type`                                       | *"response.image_generation_call.completed"* | ✔️                           | N/A                                          |
 | `itemId`                                     | *string*                                     | ✔️                           | N/A                                          |
 | `outputIndex`                                | *number*                                     | ✔️                           | N/A                                          |
 | `sequenceNumber`                             | *number*                                     | ✔️                           | N/A                                          |
-| `type`                                       | *"response.image_generation_call.completed"* | ✔️                           | N/A                                          |

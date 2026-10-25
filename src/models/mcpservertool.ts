@@ -67,10 +67,10 @@ export type McpServerToolType = ClosedEnum<typeof McpServerToolType>;
  * MCP (Model Context Protocol) tool configuration
  */
 export type McpServerTool = {
+  headers?: { [k: string]: string } | null | undefined;
   allowedTools?: Array<string> | AllowedTools | null | undefined;
   authorization?: string | undefined;
   connectorId?: ConnectorId | undefined;
-  headers?: { [k: string]: string } | null | undefined;
   requireApproval?:
     | RequireApproval
     | RequireApprovalAlways
@@ -346,12 +346,12 @@ export const McpServerToolType$outboundSchema: z.ZodEnum<
 /** @internal */
 export const McpServerTool$inboundSchema: z.ZodType<McpServerTool, unknown> = z
   .object({
+    headers: z.nullable(z.record(z.string(), z.string())).optional(),
     allowed_tools: z.nullable(
       z.union([z.array(z.string()), z.lazy(() => AllowedTools$inboundSchema)]),
     ).optional(),
     authorization: z.string().optional(),
     connector_id: ConnectorId$inboundSchema.optional(),
-    headers: z.nullable(z.record(z.string(), z.string())).optional(),
     require_approval: z.nullable(
       z.union([
         z.lazy(() => RequireApproval$inboundSchema),
@@ -375,10 +375,10 @@ export const McpServerTool$inboundSchema: z.ZodType<McpServerTool, unknown> = z
   });
 /** @internal */
 export type McpServerTool$Outbound = {
+  headers?: { [k: string]: string } | null | undefined;
   allowed_tools?: Array<string> | AllowedTools$Outbound | null | undefined;
   authorization?: string | undefined;
   connector_id?: string | undefined;
-  headers?: { [k: string]: string } | null | undefined;
   require_approval?:
     | RequireApproval$Outbound
     | string
@@ -396,12 +396,12 @@ export const McpServerTool$outboundSchema: z.ZodType<
   McpServerTool$Outbound,
   McpServerTool
 > = z.object({
+  headers: z.nullable(z.record(z.string(), z.string())).optional(),
   allowedTools: z.nullable(
     z.union([z.array(z.string()), z.lazy(() => AllowedTools$outboundSchema)]),
   ).optional(),
   authorization: z.string().optional(),
   connectorId: ConnectorId$outboundSchema.optional(),
-  headers: z.nullable(z.record(z.string(), z.string())).optional(),
   requireApproval: z.nullable(
     z.union([
       z.lazy(() => RequireApproval$outboundSchema),

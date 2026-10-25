@@ -8,8 +8,8 @@ title: "ResponseOutputText"
 import { ResponseOutputText } from "@openrouter/sdk/models";
 
 let value: ResponseOutputText = {
-  text: "The capital of France is Paris.",
   type: "output_text",
+  text: "The capital of France is Paris.",
 };
 ```
 
@@ -17,7 +17,7 @@ let value: ResponseOutputText = {
 
 | Field                                    | Type                                     | Required                                 | Description                              |
 | ---------------------------------------- | ---------------------------------------- | ---------------------------------------- | ---------------------------------------- |
+| `type`                                   | *"output_text"*                          | ✔️                       | N/A                                      |
 | `annotations`                            | *models.OpenAIResponsesAnnotation*[]     | ➖                       | N/A                                      |
 | `logprobs`                               | [models.Logprob](../models/logprob.mdx)[] | ➖                       | N/A                                      |
 | `text`                                   | *string*                                 | ✔️                       | N/A                                      |
-| `type`                                   | *"output_text"*                          | ✔️                       | N/A                                      |

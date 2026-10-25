@@ -25,6 +25,7 @@ export type OutputCodeInterpreterServerToolItemType = ClosedEnum<
  * An openrouter:code_interpreter server tool output item
  */
 export type OutputCodeInterpreterServerToolItem = {
+  type: OutputCodeInterpreterServerToolItemType;
   code?: string | undefined;
   exitCode?: number | undefined;
   id?: string | undefined;
@@ -32,7 +33,6 @@ export type OutputCodeInterpreterServerToolItem = {
   status: ToolCallStatus;
   stderr?: string | undefined;
   stdout?: string | undefined;
-  type: OutputCodeInterpreterServerToolItemType;
 };
 
 /** @internal */
@@ -49,6 +49,7 @@ export const OutputCodeInterpreterServerToolItem$inboundSchema: z.ZodType<
   OutputCodeInterpreterServerToolItem,
   unknown
 > = z.object({
+  type: OutputCodeInterpreterServerToolItemType$inboundSchema,
   code: z.string().optional(),
   exitCode: z.int().optional(),
   id: z.string().optional(),
@@ -56,10 +57,10 @@ export const OutputCodeInterpreterServerToolItem$inboundSchema: z.ZodType<
   status: ToolCallStatus$inboundSchema,
   stderr: z.string().optional(),
   stdout: z.string().optional(),
-  type: OutputCodeInterpreterServerToolItemType$inboundSchema,
 });
 /** @internal */
 export type OutputCodeInterpreterServerToolItem$Outbound = {
+  type: string;
   code?: string | undefined;
   exitCode?: number | undefined;
   id?: string | undefined;
@@ -67,7 +68,6 @@ export type OutputCodeInterpreterServerToolItem$Outbound = {
   status: string;
   stderr?: string | undefined;
   stdout?: string | undefined;
-  type: string;
 };
 
 /** @internal */
@@ -75,6 +75,7 @@ export const OutputCodeInterpreterServerToolItem$outboundSchema: z.ZodType<
   OutputCodeInterpreterServerToolItem$Outbound,
   OutputCodeInterpreterServerToolItem
 > = z.object({
+  type: OutputCodeInterpreterServerToolItemType$outboundSchema,
   code: z.string().optional(),
   exitCode: z.int().optional(),
   id: z.string().optional(),
@@ -82,7 +83,6 @@ export const OutputCodeInterpreterServerToolItem$outboundSchema: z.ZodType<
   status: ToolCallStatus$outboundSchema,
   stderr: z.string().optional(),
   stdout: z.string().optional(),
-  type: OutputCodeInterpreterServerToolItemType$outboundSchema,
 });
 
 export function outputCodeInterpreterServerToolItemToJSON(

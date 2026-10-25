@@ -18,10 +18,10 @@ import {
 import { SDKValidationError } from "./errors/sdkvalidationerror.js";
 
 export type AnthropicWebFetchToolResult = {
+  type: "web_fetch_tool_result";
   caller: AnthropicCaller;
   content: AnthropicWebFetchContent;
   toolUseId: string;
-  type: "web_fetch_tool_result";
 };
 
 /** @internal */
@@ -29,10 +29,10 @@ export const AnthropicWebFetchToolResult$inboundSchema: z.ZodType<
   AnthropicWebFetchToolResult,
   unknown
 > = z.object({
+  type: z.literal("web_fetch_tool_result"),
   caller: AnthropicCaller$inboundSchema,
   content: AnthropicWebFetchContent$inboundSchema,
   tool_use_id: z.string(),
-  type: z.literal("web_fetch_tool_result"),
 }).transform((v) => {
   return remap$(v, {
     "tool_use_id": "toolUseId",

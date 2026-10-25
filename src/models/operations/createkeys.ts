@@ -62,6 +62,10 @@ export type CreateKeysLimitReset = OpenEnum<typeof CreateKeysLimitReset>;
 
 export type CreateKeysRequestBody = {
   /**
+   * Name for the new API key
+   */
+  name: string;
+  /**
    * Optional user ID of the key creator. Only meaningful for organization-owned keys where a specific member is creating the key.
    */
   creatorUserId?: string | null | undefined;
@@ -85,10 +89,6 @@ export type CreateKeysRequestBody = {
    * Type of limit reset for the API key (daily, weekly, monthly, or null for no reset). Resets happen automatically at midnight UTC, and weeks are Monday through Sunday.
    */
   limitReset?: CreateKeysLimitReset | null | undefined;
-  /**
-   * Name for the new API key
-   */
-  name: string;
   /**
    * The workspace to create the API key in. Defaults to the default workspace if not provided.
    */
@@ -122,6 +122,10 @@ export type CreateKeysRequest = {
  * The created API key information
  */
 export type CreateKeysData = {
+  /**
+   * Name of the API key
+   */
+  name: string;
   /**
    * Total external BYOK usage (in USD) for the API key
    */
@@ -186,10 +190,6 @@ export type CreateKeysData = {
    * Type of limit reset for the API key
    */
   limitReset: string | null;
-  /**
-   * Name of the API key
-   */
-  name: string;
   /**
    * ISO 8601 timestamp of when the API key was last updated
    */
@@ -259,13 +259,13 @@ export const CreateKeysLimitReset$outboundSchema: z.ZodType<
 
 /** @internal */
 export type CreateKeysRequestBody$Outbound = {
+  name: string;
   creator_user_id?: string | null | undefined;
   expires_at?: string | null | undefined;
   external?: External$Outbound | undefined;
   include_byok_in_limit?: boolean | undefined;
   limit?: number | null | undefined;
   limit_reset?: string | null | undefined;
-  name: string;
   workspace_id?: string | undefined;
 };
 
@@ -274,13 +274,13 @@ export const CreateKeysRequestBody$outboundSchema: z.ZodType<
   CreateKeysRequestBody$Outbound,
   CreateKeysRequestBody
 > = z.object({
+  name: z.string(),
   creatorUserId: z.nullable(z.string()).optional(),
   expiresAt: z.nullable(z.date().transform(v => v.toISOString())).optional(),
   external: z.lazy(() => External$outboundSchema).optional(),
   includeByokInLimit: z.boolean().optional(),
   limit: z.nullable(z.number()).optional(),
   limitReset: z.nullable(CreateKeysLimitReset$outboundSchema).optional(),
-  name: z.string(),
   workspaceId: z.string().optional(),
 }).transform((v) => {
   return remap$(v, {
@@ -335,6 +335,7 @@ export function createKeysRequestToJSON(
 /** @internal */
 export const CreateKeysData$inboundSchema: z.ZodType<CreateKeysData, unknown> =
   z.object({
+    name: z.string(),
     byok_usage: z.number(),
     byok_usage_daily: z.number(),
     byok_usage_monthly: z.number(),
@@ -355,7 +356,6 @@ export const CreateKeysData$inboundSchema: z.ZodType<CreateKeysData, unknown> =
     limit: z.nullable(z.number()),
     limit_remaining: z.nullable(z.number()),
     limit_reset: z.nullable(z.string()),
-    name: z.string(),
     updated_at: z.nullable(z.string()),
     usage: z.number(),
     usage_daily: z.number(),

@@ -14,9 +14,9 @@ import {
 import { SDKValidationError } from "./errors/sdkvalidationerror.js";
 
 export type AnthropicToolSearchToolResult = {
+  type: "tool_search_tool_result";
   content: AnthropicToolSearchContent;
   toolUseId: string;
-  type: "tool_search_tool_result";
 };
 
 /** @internal */
@@ -24,9 +24,9 @@ export const AnthropicToolSearchToolResult$inboundSchema: z.ZodType<
   AnthropicToolSearchToolResult,
   unknown
 > = z.object({
+  type: z.literal("tool_search_tool_result"),
   content: AnthropicToolSearchContent$inboundSchema,
   tool_use_id: z.string(),
-  type: z.literal("tool_search_tool_result"),
 }).transform((v) => {
   return remap$(v, {
     "tool_use_id": "toolUseId",

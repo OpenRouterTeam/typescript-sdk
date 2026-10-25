@@ -15,13 +15,6 @@ import {
   ToolCallStatus$outboundSchema,
 } from "./toolcallstatus.js";
 
-export const ActionEnum = {
-  Read: "read",
-  Write: "write",
-  Delete: "delete",
-} as const;
-export type ActionEnum = OpenEnum<typeof ActionEnum>;
-
 export const OutputMemoryServerToolItemType = {
   OpenrouterMemory: "openrouter:memory",
 } as const;
@@ -29,24 +22,24 @@ export type OutputMemoryServerToolItemType = ClosedEnum<
   typeof OutputMemoryServerToolItemType
 >;
 
+export const ActionEnum = {
+  Read: "read",
+  Write: "write",
+  Delete: "delete",
+} as const;
+export type ActionEnum = OpenEnum<typeof ActionEnum>;
+
 /**
  * An openrouter:memory server tool output item
  */
 export type OutputMemoryServerToolItem = {
+  type: OutputMemoryServerToolItemType;
   action?: ActionEnum | undefined;
   id?: string | undefined;
   key?: string | undefined;
   status: ToolCallStatus;
-  type: OutputMemoryServerToolItemType;
   value?: any | undefined;
 };
-
-/** @internal */
-export const ActionEnum$inboundSchema: z.ZodType<ActionEnum, unknown> =
-  openEnums.inboundSchema(ActionEnum);
-/** @internal */
-export const ActionEnum$outboundSchema: z.ZodType<string, ActionEnum> =
-  openEnums.outboundSchema(ActionEnum);
 
 /** @internal */
 export const OutputMemoryServerToolItemType$inboundSchema: z.ZodEnum<
@@ -58,24 +51,31 @@ export const OutputMemoryServerToolItemType$outboundSchema: z.ZodEnum<
 > = OutputMemoryServerToolItemType$inboundSchema;
 
 /** @internal */
+export const ActionEnum$inboundSchema: z.ZodType<ActionEnum, unknown> =
+  openEnums.inboundSchema(ActionEnum);
+/** @internal */
+export const ActionEnum$outboundSchema: z.ZodType<string, ActionEnum> =
+  openEnums.outboundSchema(ActionEnum);
+
+/** @internal */
 export const OutputMemoryServerToolItem$inboundSchema: z.ZodType<
   OutputMemoryServerToolItem,
   unknown
 > = z.object({
+  type: OutputMemoryServerToolItemType$inboundSchema,
   action: ActionEnum$inboundSchema.optional(),
   id: z.string().optional(),
   key: z.string().optional(),
   status: ToolCallStatus$inboundSchema,
-  type: OutputMemoryServerToolItemType$inboundSchema,
   value: z.any().optional(),
 });
 /** @internal */
 export type OutputMemoryServerToolItem$Outbound = {
+  type: string;
   action?: string | undefined;
   id?: string | undefined;
   key?: string | undefined;
   status: string;
-  type: string;
   value?: any | undefined;
 };
 
@@ -84,11 +84,11 @@ export const OutputMemoryServerToolItem$outboundSchema: z.ZodType<
   OutputMemoryServerToolItem$Outbound,
   OutputMemoryServerToolItem
 > = z.object({
+  type: OutputMemoryServerToolItemType$outboundSchema,
   action: ActionEnum$outboundSchema.optional(),
   id: z.string().optional(),
   key: z.string().optional(),
   status: ToolCallStatus$outboundSchema,
-  type: OutputMemoryServerToolItemType$outboundSchema,
   value: z.any().optional(),
 });
 

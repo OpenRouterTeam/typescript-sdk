@@ -10,10 +10,10 @@ Image content part for vision models
 import { ChatContentImage } from "@openrouter/sdk/models";
 
 let value: ChatContentImage = {
+  type: "image_url",
   imageUrl: {
     url: "https://vague-assist.org/",
   },
-  type: "image_url",
 };
 ```
 
@@ -21,5 +21,5 @@ let value: ChatContentImage = {
 
 | Field                                                                    | Type                                                                     | Required                                                                 | Description                                                              |
 | ------------------------------------------------------------------------ | ------------------------------------------------------------------------ | ------------------------------------------------------------------------ | ------------------------------------------------------------------------ |
-| `imageUrl`                                                               | [models.ChatContentImageImageUrl](../models/chatcontentimageimageurl.mdx) | ✔️                                                       | N/A                                                                      |
 | `type`                                                                   | *"image_url"*                                                            | ✔️                                                       | N/A                                                                      |
+| `imageUrl`                                                               | [models.ChatContentImageImageUrl](../models/chatcontentimageimageurl.mdx) | ✔️                                                       | N/A                                                                      |

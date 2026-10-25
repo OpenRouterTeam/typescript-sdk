@@ -8,6 +8,11 @@ import { remap as remap$ } from "../lib/primitives.js";
 import * as openEnums from "../types/enums.js";
 import { ClosedEnum, OpenEnum } from "../types/enums.js";
 
+export const ToolSearchCallItemType = {
+  ToolSearchCall: "tool_search_call",
+} as const;
+export type ToolSearchCallItemType = ClosedEnum<typeof ToolSearchCallItemType>;
+
 export const ToolSearchCallItemExecution = {
   Server: "server",
   Client: "client",
@@ -25,22 +30,22 @@ export type ToolSearchCallItemStatus = OpenEnum<
   typeof ToolSearchCallItemStatus
 >;
 
-export const ToolSearchCallItemType = {
-  ToolSearchCall: "tool_search_call",
-} as const;
-export type ToolSearchCallItemType = ClosedEnum<typeof ToolSearchCallItemType>;
-
 /**
  * A tool search call the client executed
  */
 export type ToolSearchCallItem = {
+  type: ToolSearchCallItemType;
   arguments?: any | undefined;
   callId: string;
   execution: ToolSearchCallItemExecution;
   id?: string | null | undefined;
   status?: ToolSearchCallItemStatus | null | undefined;
-  type: ToolSearchCallItemType;
 };
+
+/** @internal */
+export const ToolSearchCallItemType$outboundSchema: z.ZodEnum<
+  typeof ToolSearchCallItemType
+> = z.enum(ToolSearchCallItemType);
 
 /** @internal */
 export const ToolSearchCallItemExecution$outboundSchema: z.ZodType<
@@ -55,18 +60,13 @@ export const ToolSearchCallItemStatus$outboundSchema: z.ZodType<
 > = openEnums.outboundSchema(ToolSearchCallItemStatus);
 
 /** @internal */
-export const ToolSearchCallItemType$outboundSchema: z.ZodEnum<
-  typeof ToolSearchCallItemType
-> = z.enum(ToolSearchCallItemType);
-
-/** @internal */
 export type ToolSearchCallItem$Outbound = {
+  type: string;
   arguments?: any | undefined;
   call_id: string;
   execution: string;
   id?: string | null | undefined;
   status?: string | null | undefined;
-  type: string;
 };
 
 /** @internal */
@@ -74,12 +74,12 @@ export const ToolSearchCallItem$outboundSchema: z.ZodType<
   ToolSearchCallItem$Outbound,
   ToolSearchCallItem
 > = z.object({
+  type: ToolSearchCallItemType$outboundSchema,
   arguments: z.any().optional(),
   callId: z.string(),
   execution: ToolSearchCallItemExecution$outboundSchema,
   id: z.nullable(z.string()).optional(),
   status: z.nullable(ToolSearchCallItemStatus$outboundSchema).optional(),
-  type: ToolSearchCallItemType$outboundSchema,
 }).transform((v) => {
   return remap$(v, {
     callId: "call_id",

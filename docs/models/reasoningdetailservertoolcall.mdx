@@ -10,10 +10,10 @@ Record of an OpenRouter server-tool invocation (e.g. openrouter:fusion), carried
 import { ReasoningDetailServerToolCall } from "@openrouter/sdk/models";
 
 let value: ReasoningDetailServerToolCall = {
+  type: "reasoning.server_tool_call",
   arguments: "{\"prompt\":\"Compare carbon tax proposals\"}",
   result: "{\"status\":\"ok\",\"models\":[\"openai/gpt-4o\"]}",
   toolName: "openrouter:fusion",
-  type: "reasoning.server_tool_call",
 };
 ```
 
@@ -21,11 +21,11 @@ let value: ReasoningDetailServerToolCall = {
 
 | Field                                                  | Type                                                   | Required                                               | Description                                            | Example                                                |
 | ------------------------------------------------------ | ------------------------------------------------------ | ------------------------------------------------------ | ------------------------------------------------------ | ------------------------------------------------------ |
-| `arguments`                                            | *string*                                               | ✔️                                     | N/A                                                    |                                                        |
+| `type`                                                 | *"reasoning.server_tool_call"*                         | ✔️                                     | N/A                                                    |                                                        |
 | `format`                                               | [models.ReasoningFormat](../models/reasoningformat.mdx) | ➖                                     | N/A                                                    | unknown                                                |
+| `arguments`                                            | *string*                                               | ✔️                                     | N/A                                                    |                                                        |
 | `id`                                                   | *string*                                               | ➖                                     | N/A                                                    |                                                        |
 | `index`                                                | *number*                                               | ➖                                     | N/A                                                    |                                                        |
 | `result`                                               | *string*                                               | ✔️                                     | N/A                                                    |                                                        |
 | `toolCallId`                                           | *string*                                               | ➖                                     | N/A                                                    |                                                        |
 | `toolName`                                             | *string*                                               | ✔️                                     | N/A                                                    |                                                        |
-| `type`                                                 | *"reasoning.server_tool_call"*                         | ✔️                                     | N/A                                                    |                                                        |

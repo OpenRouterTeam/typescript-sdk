@@ -13,6 +13,7 @@ import { SDKValidationError } from "./errors/sdkvalidationerror.js";
  * A specific version of a preset, containing config and optional system prompt.
  */
 export type PresetDesignatedVersion = {
+  version: number;
   config: { [k: string]: any };
   createdAt: string;
   creatorId: string;
@@ -20,7 +21,6 @@ export type PresetDesignatedVersion = {
   presetId: string;
   systemPrompt: string | null;
   updatedAt: string;
-  version: number;
 };
 
 /** @internal */
@@ -28,6 +28,7 @@ export const PresetDesignatedVersion$inboundSchema: z.ZodType<
   PresetDesignatedVersion,
   unknown
 > = z.object({
+  version: z.int(),
   config: z.record(z.string(), z.any()),
   created_at: z.string(),
   creator_id: z.string(),
@@ -35,7 +36,6 @@ export const PresetDesignatedVersion$inboundSchema: z.ZodType<
   preset_id: z.string(),
   system_prompt: z.nullable(z.string()),
   updated_at: z.string(),
-  version: z.int(),
 }).transform((v) => {
   return remap$(v, {
     "created_at": "createdAt",

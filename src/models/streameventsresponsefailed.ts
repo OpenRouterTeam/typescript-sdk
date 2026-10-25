@@ -17,12 +17,12 @@ import {
  * Event emitted when a response has failed
  */
 export type StreamEventsResponseFailed = {
+  type: "response.failed";
   /**
    * Complete non-streaming response from the Responses API
    */
   response: OpenResponsesResult;
   sequenceNumber: number;
-  type: "response.failed";
 };
 
 /** @internal */
@@ -30,9 +30,9 @@ export const StreamEventsResponseFailed$inboundSchema: z.ZodType<
   StreamEventsResponseFailed,
   unknown
 > = z.object({
+  type: z.literal("response.failed"),
   response: OpenResponsesResult$inboundSchema,
   sequence_number: z.int(),
-  type: z.literal("response.failed"),
 }).transform((v) => {
   return remap$(v, {
     "sequence_number": "sequenceNumber",

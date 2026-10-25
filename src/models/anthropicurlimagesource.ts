@@ -6,14 +6,14 @@
 import * as z from "zod/v4";
 
 export type AnthropicUrlImageSource = {
-  type: "url";
   url: string;
+  type: "url";
 };
 
 /** @internal */
 export type AnthropicUrlImageSource$Outbound = {
-  type: "url";
   url: string;
+  type: "url";
 };
 
 /** @internal */
@@ -21,8 +21,8 @@ export const AnthropicUrlImageSource$outboundSchema: z.ZodType<
   AnthropicUrlImageSource$Outbound,
   AnthropicUrlImageSource
 > = z.object({
-  type: z.literal("url"),
   url: z.string(),
+  type: z.literal("url"),
 });
 
 export function anthropicUrlImageSourceToJSON(

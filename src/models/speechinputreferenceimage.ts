@@ -15,17 +15,17 @@ import {
  * Reference image. On its own it describes the desired voice (voice design); alongside an `input_audio` part it is a scene image describing the setting the cloned voice speaks in. At most one per request. Only routed to endpoints that support image references.
  */
 export type SpeechInputReferenceImage = {
+  type: "image_url";
   /**
    * Reference image input object
    */
   imageUrl: SpeechInputReferenceImageInput;
-  type: "image_url";
 };
 
 /** @internal */
 export type SpeechInputReferenceImage$Outbound = {
-  image_url: SpeechInputReferenceImageInput$Outbound;
   type: "image_url";
+  image_url: SpeechInputReferenceImageInput$Outbound;
 };
 
 /** @internal */
@@ -33,8 +33,8 @@ export const SpeechInputReferenceImage$outboundSchema: z.ZodType<
   SpeechInputReferenceImage$Outbound,
   SpeechInputReferenceImage
 > = z.object({
-  imageUrl: SpeechInputReferenceImageInput$outboundSchema,
   type: z.literal("image_url"),
+  imageUrl: SpeechInputReferenceImageInput$outboundSchema,
 }).transform((v) => {
   return remap$(v, {
     imageUrl: "image_url",

@@ -10,9 +10,9 @@ Deletion result in Anthropic's shape.
 import { AnthropicFileDeleted } from "@openrouter/sdk/models";
 
 let value: AnthropicFileDeleted = {
+  type: "file_deleted",
   shape: "anthropic",
   id: "or_file_011CNha8iCJcU1wXNR6q4V8w",
-  type: "file_deleted",
 };
 ```
 
@@ -20,6 +20,6 @@ let value: AnthropicFileDeleted = {
 
 | Field                                                                    | Type                                                                     | Required                                                                 | Description                                                              |
 | ------------------------------------------------------------------------ | ------------------------------------------------------------------------ | ------------------------------------------------------------------------ | ------------------------------------------------------------------------ |
+| `type`                                                                   | [models.AnthropicFileDeletedType](../models/anthropicfiledeletedtype.mdx) | ✔️                                                       | N/A                                                                      |
 | `shape`                                                                  | *"anthropic"*                                                            | ✔️                                                       | N/A                                                                      |
 | `id`                                                                     | *string*                                                                 | ✔️                                                       | N/A                                                                      |
-| `type`                                                                   | [models.AnthropicFileDeletedType](../models/anthropicfiledeletedtype.mdx) | ✔️                                                       | N/A                                                                      |

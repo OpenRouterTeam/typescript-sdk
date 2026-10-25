@@ -8,11 +8,11 @@ title: "AnthropicCodeExecutionResult"
 import { AnthropicCodeExecutionResult } from "@openrouter/sdk/models";
 
 let value: AnthropicCodeExecutionResult = {
+  type: "code_execution_result",
   content: [],
   returnCode: 0,
   stderr: "",
   stdout: "Hello",
-  type: "code_execution_result",
 };
 ```
 
@@ -20,8 +20,8 @@ let value: AnthropicCodeExecutionResult = {
 
 | Field                                                                              | Type                                                                               | Required                                                                           | Description                                                                        |
 | ---------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------- |
+| `type`                                                                             | *"code_execution_result"*                                                          | ✔️                                                                 | N/A                                                                                |
 | `content`                                                                          | [models.AnthropicCodeExecutionOutput](../models/anthropiccodeexecutionoutput.mdx)[] | ✔️                                                                 | N/A                                                                                |
 | `returnCode`                                                                       | *number*                                                                           | ✔️                                                                 | N/A                                                                                |
 | `stderr`                                                                           | *string*                                                                           | ✔️                                                                 | N/A                                                                                |
 | `stdout`                                                                           | *string*                                                                           | ✔️                                                                 | N/A                                                                                |
-| `type`                                                                             | *"code_execution_result"*                                                          | ✔️                                                                 | N/A                                                                                |

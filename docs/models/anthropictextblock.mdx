@@ -8,9 +8,9 @@ title: "AnthropicTextBlock"
 import { AnthropicTextBlock } from "@openrouter/sdk/models";
 
 let value: AnthropicTextBlock = {
+  type: "text",
   citations: null,
   text: "Hello, world!",
-  type: "text",
 };
 ```
 
@@ -18,6 +18,6 @@ let value: AnthropicTextBlock = {
 
 | Field                            | Type                             | Required                         | Description                      |
 | -------------------------------- | -------------------------------- | -------------------------------- | -------------------------------- |
+| `type`                           | *"text"*                         | ✔️               | N/A                              |
 | `citations`                      | *models.AnthropicTextCitation*[] | ✔️               | N/A                              |
 | `text`                           | *string*                         | ✔️               | N/A                              |
-| `type`                           | *"text"*                         | ✔️               | N/A                              |

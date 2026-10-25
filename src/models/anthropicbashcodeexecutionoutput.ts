@@ -18,8 +18,8 @@ export type AnthropicBashCodeExecutionOutputType = ClosedEnum<
 >;
 
 export type AnthropicBashCodeExecutionOutput = {
-  fileId: string;
   type: AnthropicBashCodeExecutionOutputType;
+  fileId: string;
 };
 
 /** @internal */
@@ -32,8 +32,8 @@ export const AnthropicBashCodeExecutionOutput$inboundSchema: z.ZodType<
   AnthropicBashCodeExecutionOutput,
   unknown
 > = z.object({
-  file_id: z.string(),
   type: AnthropicBashCodeExecutionOutputType$inboundSchema,
+  file_id: z.string(),
 }).transform((v) => {
   return remap$(v, {
     "file_id": "fileId",

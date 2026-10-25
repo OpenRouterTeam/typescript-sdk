@@ -4,13 +4,22 @@ title: "AnthropicImageBlockParamSource"
 
 ## Supported Types
 
+### `models.AnthropicUrlImageSource`
+
+```typescript
+const value: models.AnthropicUrlImageSource = {
+  url: "https://example.com/image.jpg",
+  type: "url",
+};
+```
+
 ### `models.AnthropicBase64ImageSource`
 
 ```typescript
 const value: models.AnthropicBase64ImageSource = {
+  type: "base64",
   data: "/9j/4AAQ...",
   mediaType: "image/jpeg",
-  type: "base64",
 };
 ```
 
@@ -18,17 +27,8 @@ const value: models.AnthropicBase64ImageSource = {
 
 ```typescript
 const value: models.AnthropicFileDocumentSource = {
-  fileId: "or_file_011CNha8iCJcU1wXNR6q4V8w",
   type: "file",
-};
-```
-
-### `models.AnthropicUrlImageSource`
-
-```typescript
-const value: models.AnthropicUrlImageSource = {
-  type: "url",
-  url: "https://example.com/image.jpg",
+  fileId: "or_file_011CNha8iCJcU1wXNR6q4V8w",
 };
 ```
 

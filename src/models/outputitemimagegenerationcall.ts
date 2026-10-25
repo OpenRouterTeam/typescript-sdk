@@ -13,10 +13,10 @@ import {
 } from "./imagegenerationstatus.js";
 
 export type OutputItemImageGenerationCall = {
+  type: "image_generation_call";
   id: string;
   result: string | null;
   status: ImageGenerationStatus;
-  type: "image_generation_call";
 };
 
 /** @internal */
@@ -24,10 +24,10 @@ export const OutputItemImageGenerationCall$inboundSchema: z.ZodType<
   OutputItemImageGenerationCall,
   unknown
 > = z.object({
+  type: z.literal("image_generation_call"),
   id: z.string(),
   result: z.nullable(z.string()).default(null),
   status: ImageGenerationStatus$inboundSchema,
-  type: z.literal("image_generation_call"),
 });
 
 export function outputItemImageGenerationCallFromJSON(

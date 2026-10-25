@@ -11,10 +11,10 @@ import { FormatJsonSchemaConfig } from "@openrouter/sdk/models";
 
 let value: FormatJsonSchemaConfig = {
   name: "<value>",
+  type: "json_schema",
   schema: {
     "key": "<value>",
   },
-  type: "json_schema",
 };
 ```
 
@@ -22,8 +22,8 @@ let value: FormatJsonSchemaConfig = {
 
 | Field                 | Type                  | Required              | Description           |
 | --------------------- | --------------------- | --------------------- | --------------------- |
-| `description`         | *string*              | ➖    | N/A                   |
 | `name`                | *string*              | ✔️    | N/A                   |
+| `type`                | *"json_schema"*       | ✔️    | N/A                   |
+| `description`         | *string*              | ➖    | N/A                   |
 | `schema`              | Record\<string, *any*> | ✔️    | N/A                   |
 | `strict`              | *boolean*             | ➖    | N/A                   |
-| `type`                | *"json_schema"*       | ✔️    | N/A                   |

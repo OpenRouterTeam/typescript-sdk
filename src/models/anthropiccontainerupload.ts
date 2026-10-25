@@ -10,8 +10,8 @@ import { Result as SafeParseResult } from "../types/fp.js";
 import { SDKValidationError } from "./errors/sdkvalidationerror.js";
 
 export type AnthropicContainerUpload = {
-  fileId: string;
   type: "container_upload";
+  fileId: string;
 };
 
 /** @internal */
@@ -19,8 +19,8 @@ export const AnthropicContainerUpload$inboundSchema: z.ZodType<
   AnthropicContainerUpload,
   unknown
 > = z.object({
-  file_id: z.string(),
   type: z.literal("container_upload"),
+  file_id: z.string(),
 }).transform((v) => {
   return remap$(v, {
     "file_id": "fileId",

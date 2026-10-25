@@ -45,6 +45,8 @@ export type OutputFunctionCallItemSubagentItem = {
 };
 
 export type OutputFunctionCallItem = {
+  name: string;
+  type: "function_call";
   arguments: string;
   /**
    * True when the model called a tool declared with `async: true` and may continue its turn before the output is returned. Return the result in a later request as a `function_call_output` with this `call_id`.
@@ -52,7 +54,6 @@ export type OutputFunctionCallItem = {
   async?: boolean | undefined;
   callId: string;
   id?: string | undefined;
-  name: string;
   /**
    * Namespace qualifier for tools registered as part of a namespace tool group (e.g. an MCP server)
    */
@@ -62,7 +63,6 @@ export type OutputFunctionCallItem = {
     | OutputFunctionCallItemStatusIncomplete
     | OutputFunctionCallItemStatusInProgress
     | undefined;
-  type: "function_call";
   /**
    * EXPERIMENTAL — subject to change without notice. String id that matches the `call_id` of the `openrouter:subagent` server tool call that spawned the subagent. Present on every `function_call` item the subagent projects; absent on ordinary function calls.
    */
@@ -136,18 +136,18 @@ export const OutputFunctionCallItem$inboundSchema: z.ZodType<
   OutputFunctionCallItem,
   unknown
 > = z.object({
+  name: z.string(),
+  type: z.literal("function_call"),
   arguments: z.string(),
   async: z.boolean().optional(),
   call_id: z.string(),
   id: z.string().optional(),
-  name: z.string(),
   namespace: z.string().optional(),
   status: z.union([
     OutputFunctionCallItemStatusCompleted$inboundSchema,
     OutputFunctionCallItemStatusIncomplete$inboundSchema,
     OutputFunctionCallItemStatusInProgress$inboundSchema,
   ]).optional(),
-  type: z.literal("function_call"),
   subagent_id: z.string().optional(),
   subagent_items: z.array(
     z.lazy(() => OutputFunctionCallItemSubagentItem$inboundSchema),

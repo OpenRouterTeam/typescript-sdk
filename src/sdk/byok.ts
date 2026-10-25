@@ -52,23 +52,6 @@ export class BYOK extends ClientSDK {
   }
 
   /**
-   * Delete a BYOK provider credential
-   *
-   * @remarks
-   * Delete (soft-delete) a bring-your-own-key (BYOK) provider credential by its `id`. The encrypted key material is wiped and the record is marked as deleted. [Management key](/docs/guides/overview/auth/management-api-keys) required.
-   */
-  async delete(
-    request: operations.DeleteBYOKKeyRequest,
-    options?: RequestOptions,
-  ): Promise<models.DeleteBYOKKeyResponse> {
-    return unwrapAsync(byokDelete(
-      this,
-      request,
-      options,
-    ));
-  }
-
-  /**
    * Get a BYOK provider credential
    *
    * @remarks
@@ -79,6 +62,23 @@ export class BYOK extends ClientSDK {
     options?: RequestOptions,
   ): Promise<models.GetBYOKKeyResponse> {
     return unwrapAsync(byokGet(
+      this,
+      request,
+      options,
+    ));
+  }
+
+  /**
+   * Delete a BYOK provider credential
+   *
+   * @remarks
+   * Delete (soft-delete) a bring-your-own-key (BYOK) provider credential by its `id`. The encrypted key material is wiped and the record is marked as deleted. [Management key](/docs/guides/overview/auth/management-api-keys) required.
+   */
+  async delete(
+    request: operations.DeleteBYOKKeyRequest,
+    options?: RequestOptions,
+  ): Promise<models.DeleteBYOKKeyResponse> {
+    return unwrapAsync(byokDelete(
       this,
       request,
       options,

@@ -30,6 +30,7 @@ export type ApplyPatchCallItemType = ClosedEnum<typeof ApplyPatchCallItemType>;
  * A tool call emitted by the model requesting a V4A patch operation. The client applies the patch and echoes an `apply_patch_call_output` on the next turn.
  */
 export type ApplyPatchCallItem = {
+  type: ApplyPatchCallItemType;
   callId: string;
   id?: string | null | undefined;
   /**
@@ -40,7 +41,6 @@ export type ApplyPatchCallItem = {
    * Lifecycle state of an `apply_patch_call` output item.
    */
   status: ApplyPatchCallStatus;
-  type: ApplyPatchCallItemType;
 };
 
 /** @internal */
@@ -57,11 +57,11 @@ export const ApplyPatchCallItem$inboundSchema: z.ZodType<
   ApplyPatchCallItem,
   unknown
 > = z.object({
+  type: ApplyPatchCallItemType$inboundSchema,
   call_id: z.string(),
   id: z.nullable(z.string()).optional(),
   operation: ApplyPatchCallOperation$inboundSchema,
   status: ApplyPatchCallStatus$inboundSchema,
-  type: ApplyPatchCallItemType$inboundSchema,
 }).transform((v) => {
   return remap$(v, {
     "call_id": "callId",
@@ -69,11 +69,11 @@ export const ApplyPatchCallItem$inboundSchema: z.ZodType<
 });
 /** @internal */
 export type ApplyPatchCallItem$Outbound = {
+  type: string;
   call_id: string;
   id?: string | null | undefined;
   operation: ApplyPatchCallOperation$Outbound;
   status: string;
-  type: string;
 };
 
 /** @internal */
@@ -81,11 +81,11 @@ export const ApplyPatchCallItem$outboundSchema: z.ZodType<
   ApplyPatchCallItem$Outbound,
   ApplyPatchCallItem
 > = z.object({
+  type: ApplyPatchCallItemType$outboundSchema,
   callId: z.string(),
   id: z.nullable(z.string()).optional(),
   operation: ApplyPatchCallOperation$outboundSchema,
   status: ApplyPatchCallStatus$outboundSchema,
-  type: ApplyPatchCallItemType$outboundSchema,
 }).transform((v) => {
   return remap$(v, {
     callId: "call_id",

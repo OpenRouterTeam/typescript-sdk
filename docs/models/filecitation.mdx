@@ -8,10 +8,10 @@ title: "FileCitation"
 import { FileCitation } from "@openrouter/sdk/models";
 
 let value: FileCitation = {
+  type: "file_citation",
   fileId: "file-abc123",
   filename: "research_paper.pdf",
   index: 0,
-  type: "file_citation",
 };
 ```
 
@@ -19,7 +19,7 @@ let value: FileCitation = {
 
 | Field              | Type               | Required           | Description        |
 | ------------------ | ------------------ | ------------------ | ------------------ |
+| `type`             | *"file_citation"*  | ✔️ | N/A                |
 | `fileId`           | *string*           | ✔️ | N/A                |
 | `filename`         | *string*           | ✔️ | N/A                |
 | `index`            | *number*           | ✔️ | N/A                |
-| `type`             | *"file_citation"*  | ✔️ | N/A                |

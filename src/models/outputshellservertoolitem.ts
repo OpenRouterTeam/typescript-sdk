@@ -21,6 +21,13 @@ import {
   ShellCallOutputContent$outboundSchema,
 } from "./shellcalloutputcontent.js";
 
+export const OutputShellServerToolItemTypeOpenrouterShell = {
+  OpenrouterShell: "openrouter:shell",
+} as const;
+export type OutputShellServerToolItemTypeOpenrouterShell = ClosedEnum<
+  typeof OutputShellServerToolItemTypeOpenrouterShell
+>;
+
 export type OutputShellServerToolItemAction = {
   commands: Array<string>;
   maxOutputLength?: number | null | undefined;
@@ -35,25 +42,19 @@ export type OutputShellServerToolItemTypeContainerFileCitation = ClosedEnum<
 >;
 
 export type OutputShellServerToolItemFile = {
+  type: OutputShellServerToolItemTypeContainerFileCitation;
   containerId: string;
   endIndex: number;
   fileId: string;
   filename: string;
   startIndex: number;
-  type: OutputShellServerToolItemTypeContainerFileCitation;
 };
-
-export const OutputShellServerToolItemTypeOpenrouterShell = {
-  OpenrouterShell: "openrouter:shell",
-} as const;
-export type OutputShellServerToolItemTypeOpenrouterShell = ClosedEnum<
-  typeof OutputShellServerToolItemTypeOpenrouterShell
->;
 
 /**
  * An openrouter:shell server tool output item
  */
 export type OutputShellServerToolItem = {
+  type: OutputShellServerToolItemTypeOpenrouterShell;
   action?: OutputShellServerToolItemAction | undefined;
   /**
    * The raw tool-call arguments string as emitted by the model.
@@ -78,8 +79,17 @@ export type OutputShellServerToolItem = {
   id?: string | undefined;
   output?: Array<ShellCallOutputContent> | undefined;
   status: FailableToolCallStatus;
-  type: OutputShellServerToolItemTypeOpenrouterShell;
 };
+
+/** @internal */
+export const OutputShellServerToolItemTypeOpenrouterShell$inboundSchema:
+  z.ZodEnum<typeof OutputShellServerToolItemTypeOpenrouterShell> = z.enum(
+    OutputShellServerToolItemTypeOpenrouterShell,
+  );
+/** @internal */
+export const OutputShellServerToolItemTypeOpenrouterShell$outboundSchema:
+  z.ZodEnum<typeof OutputShellServerToolItemTypeOpenrouterShell> =
+    OutputShellServerToolItemTypeOpenrouterShell$inboundSchema;
 
 /** @internal */
 export const OutputShellServerToolItemAction$inboundSchema: z.ZodType<
@@ -151,12 +161,12 @@ export const OutputShellServerToolItemFile$inboundSchema: z.ZodType<
   OutputShellServerToolItemFile,
   unknown
 > = z.object({
+  type: OutputShellServerToolItemTypeContainerFileCitation$inboundSchema,
   container_id: z.string(),
   end_index: z.int(),
   file_id: z.string(),
   filename: z.string(),
   start_index: z.int(),
-  type: OutputShellServerToolItemTypeContainerFileCitation$inboundSchema,
 }).transform((v) => {
   return remap$(v, {
     "container_id": "containerId",
@@ -167,12 +177,12 @@ export const OutputShellServerToolItemFile$inboundSchema: z.ZodType<
 });
 /** @internal */
 export type OutputShellServerToolItemFile$Outbound = {
+  type: string;
   container_id: string;
   end_index: number;
   file_id: string;
   filename: string;
   start_index: number;
-  type: string;
 };
 
 /** @internal */
@@ -180,12 +190,12 @@ export const OutputShellServerToolItemFile$outboundSchema: z.ZodType<
   OutputShellServerToolItemFile$Outbound,
   OutputShellServerToolItemFile
 > = z.object({
+  type: OutputShellServerToolItemTypeContainerFileCitation$outboundSchema,
   containerId: z.string(),
   endIndex: z.int(),
   fileId: z.string(),
   filename: z.string(),
   startIndex: z.int(),
-  type: OutputShellServerToolItemTypeContainerFileCitation$outboundSchema,
 }).transform((v) => {
   return remap$(v, {
     containerId: "container_id",
@@ -215,20 +225,11 @@ export function outputShellServerToolItemFileFromJSON(
 }
 
 /** @internal */
-export const OutputShellServerToolItemTypeOpenrouterShell$inboundSchema:
-  z.ZodEnum<typeof OutputShellServerToolItemTypeOpenrouterShell> = z.enum(
-    OutputShellServerToolItemTypeOpenrouterShell,
-  );
-/** @internal */
-export const OutputShellServerToolItemTypeOpenrouterShell$outboundSchema:
-  z.ZodEnum<typeof OutputShellServerToolItemTypeOpenrouterShell> =
-    OutputShellServerToolItemTypeOpenrouterShell$inboundSchema;
-
-/** @internal */
 export const OutputShellServerToolItem$inboundSchema: z.ZodType<
   OutputShellServerToolItem,
   unknown
 > = z.object({
+  type: OutputShellServerToolItemTypeOpenrouterShell$inboundSchema,
   action: z.lazy(() => OutputShellServerToolItemAction$inboundSchema)
     .optional(),
   arguments: z.nullable(z.string()).optional(),
@@ -240,7 +241,6 @@ export const OutputShellServerToolItem$inboundSchema: z.ZodType<
   id: z.string().optional(),
   output: z.array(ShellCallOutputContent$inboundSchema).optional(),
   status: FailableToolCallStatus$inboundSchema,
-  type: OutputShellServerToolItemTypeOpenrouterShell$inboundSchema,
 }).transform((v) => {
   return remap$(v, {
     "call_id": "callId",
@@ -249,6 +249,7 @@ export const OutputShellServerToolItem$inboundSchema: z.ZodType<
 });
 /** @internal */
 export type OutputShellServerToolItem$Outbound = {
+  type: string;
   action?: OutputShellServerToolItemAction$Outbound | undefined;
   arguments?: string | null | undefined;
   call_id?: string | null | undefined;
@@ -258,7 +259,6 @@ export type OutputShellServerToolItem$Outbound = {
   id?: string | undefined;
   output?: Array<ShellCallOutputContent$Outbound> | undefined;
   status: string;
-  type: string;
 };
 
 /** @internal */
@@ -266,6 +266,7 @@ export const OutputShellServerToolItem$outboundSchema: z.ZodType<
   OutputShellServerToolItem$Outbound,
   OutputShellServerToolItem
 > = z.object({
+  type: OutputShellServerToolItemTypeOpenrouterShell$outboundSchema,
   action: z.lazy(() => OutputShellServerToolItemAction$outboundSchema)
     .optional(),
   arguments: z.nullable(z.string()).optional(),
@@ -277,7 +278,6 @@ export const OutputShellServerToolItem$outboundSchema: z.ZodType<
   id: z.string().optional(),
   output: z.array(ShellCallOutputContent$outboundSchema).optional(),
   status: FailableToolCallStatus$outboundSchema,
-  type: OutputShellServerToolItemTypeOpenrouterShell$outboundSchema,
 }).transform((v) => {
   return remap$(v, {
     callId: "call_id",

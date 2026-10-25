@@ -10,14 +10,14 @@ import { remap as remap$ } from "../lib/primitives.js";
  * Stop once cumulative token usage across the loop exceeds this threshold.
  */
 export type StopServerToolsWhenMaxTokensUsed = {
-  maxTokens: number;
   type: "max_tokens_used";
+  maxTokens: number;
 };
 
 /** @internal */
 export type StopServerToolsWhenMaxTokensUsed$Outbound = {
-  max_tokens: number;
   type: "max_tokens_used";
+  max_tokens: number;
 };
 
 /** @internal */
@@ -25,8 +25,8 @@ export const StopServerToolsWhenMaxTokensUsed$outboundSchema: z.ZodType<
   StopServerToolsWhenMaxTokensUsed$Outbound,
   StopServerToolsWhenMaxTokensUsed
 > = z.object({
-  maxTokens: z.int(),
   type: z.literal("max_tokens_used"),
+  maxTokens: z.int(),
 }).transform((v) => {
   return remap$(v, {
     maxTokens: "max_tokens",

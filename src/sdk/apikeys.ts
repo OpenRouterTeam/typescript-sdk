@@ -66,23 +66,6 @@ export class APIKeys extends ClientSDK {
   }
 
   /**
-   * Delete an API key
-   *
-   * @remarks
-   * Delete an existing API key. Authenticate with a [management key](/docs/guides/overview/auth/management-api-keys).
-   */
-  async delete(
-    request: operations.DeleteKeysRequest,
-    options?: RequestOptions,
-  ): Promise<operations.DeleteKeysResponse> {
-    return unwrapAsync(apiKeysDelete(
-      this,
-      request,
-      options,
-    ));
-  }
-
-  /**
    * Get a single API key
    *
    * @remarks
@@ -93,6 +76,23 @@ export class APIKeys extends ClientSDK {
     options?: RequestOptions,
   ): Promise<operations.GetKeyResponse> {
     return unwrapAsync(apiKeysGet(
+      this,
+      request,
+      options,
+    ));
+  }
+
+  /**
+   * Delete an API key
+   *
+   * @remarks
+   * Delete an existing API key. Authenticate with a [management key](/docs/guides/overview/auth/management-api-keys).
+   */
+  async delete(
+    request: operations.DeleteKeysRequest,
+    options?: RequestOptions,
+  ): Promise<operations.DeleteKeysResponse> {
+    return unwrapAsync(apiKeysDelete(
       this,
       request,
       options,

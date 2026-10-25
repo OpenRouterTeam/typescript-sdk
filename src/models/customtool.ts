@@ -13,6 +13,11 @@ import { ClosedEnum, OpenEnum } from "../types/enums.js";
 import { Result as SafeParseResult } from "../types/fp.js";
 import { SDKValidationError } from "./errors/sdkvalidationerror.js";
 
+export const CustomToolTypeCustom = {
+  Custom: "custom",
+} as const;
+export type CustomToolTypeCustom = ClosedEnum<typeof CustomToolTypeCustom>;
+
 export const Syntax = {
   Lark: "lark",
   Regex: "regex",
@@ -20,9 +25,9 @@ export const Syntax = {
 export type Syntax = OpenEnum<typeof Syntax>;
 
 export type FormatGrammar = {
+  type: "grammar";
   definition: string;
   syntax: Syntax;
-  type: "grammar";
 };
 
 export type FormatText = {
@@ -34,29 +39,33 @@ export type Format =
   | FormatGrammar
   | discriminatedUnionTypes.Unknown<"type">;
 
-export const CustomToolTypeCustom = {
-  Custom: "custom",
-} as const;
-export type CustomToolTypeCustom = ClosedEnum<typeof CustomToolTypeCustom>;
-
 /**
  * Custom tool configuration
  */
 export type CustomTool = {
-  /**
-   * Lets the model keep working after calling this tool instead of waiting for its output. The tool is still executed by the client; return the result in a later request as a `function_call_output` with the original `call_id`. Only honored by providers whose Responses API supports async tools; ignored elsewhere.
-   */
-  async?: boolean | undefined;
-  deferLoading?: boolean | undefined;
+  name: string;
+  type: CustomToolTypeCustom;
   description?: string | undefined;
   format?:
     | FormatText
     | FormatGrammar
     | discriminatedUnionTypes.Unknown<"type">
     | undefined;
-  name: string;
-  type: CustomToolTypeCustom;
+  /**
+   * Lets the model keep working after calling this tool instead of waiting for its output. The tool is still executed by the client; return the result in a later request as a `function_call_output` with the original `call_id`. Only honored by providers whose Responses API supports async tools; ignored elsewhere.
+   */
+  async?: boolean | undefined;
+  deferLoading?: boolean | undefined;
 };
+
+/** @internal */
+export const CustomToolTypeCustom$inboundSchema: z.ZodEnum<
+  typeof CustomToolTypeCustom
+> = z.enum(CustomToolTypeCustom);
+/** @internal */
+export const CustomToolTypeCustom$outboundSchema: z.ZodEnum<
+  typeof CustomToolTypeCustom
+> = CustomToolTypeCustom$inboundSchema;
 
 /** @internal */
 export const Syntax$inboundSchema: z.ZodType<Syntax, unknown> = openEnums
@@ -68,15 +77,15 @@ export const Syntax$outboundSchema: z.ZodType<string, Syntax> = openEnums
 /** @internal */
 export const FormatGrammar$inboundSchema: z.ZodType<FormatGrammar, unknown> = z
   .object({
+    type: z.literal("grammar"),
     definition: z.string(),
     syntax: Syntax$inboundSchema,
-    type: z.literal("grammar"),
   });
 /** @internal */
 export type FormatGrammar$Outbound = {
+  type: "grammar";
   definition: string;
   syntax: string;
-  type: "grammar";
 };
 
 /** @internal */
@@ -84,9 +93,9 @@ export const FormatGrammar$outboundSchema: z.ZodType<
   FormatGrammar$Outbound,
   FormatGrammar
 > = z.object({
+  type: z.literal("grammar"),
   definition: z.string(),
   syntax: Syntax$outboundSchema,
-  type: z.literal("grammar"),
 });
 
 export function formatGrammarToJSON(formatGrammar: FormatGrammar): string {
@@ -163,26 +172,17 @@ export function formatFromJSON(
 }
 
 /** @internal */
-export const CustomToolTypeCustom$inboundSchema: z.ZodEnum<
-  typeof CustomToolTypeCustom
-> = z.enum(CustomToolTypeCustom);
-/** @internal */
-export const CustomToolTypeCustom$outboundSchema: z.ZodEnum<
-  typeof CustomToolTypeCustom
-> = CustomToolTypeCustom$inboundSchema;
-
-/** @internal */
 export const CustomTool$inboundSchema: z.ZodType<CustomTool, unknown> = z
   .object({
-    async: z.boolean().optional(),
-    defer_loading: z.boolean().optional(),
+    name: z.string(),
+    type: CustomToolTypeCustom$inboundSchema,
     description: z.string().optional(),
     format: discriminatedUnion("type", {
       text: z.lazy(() => FormatText$inboundSchema),
       grammar: z.lazy(() => FormatGrammar$inboundSchema),
     }).optional(),
-    name: z.string(),
-    type: CustomToolTypeCustom$inboundSchema,
+    async: z.boolean().optional(),
+    defer_loading: z.boolean().optional(),
   }).transform((v) => {
     return remap$(v, {
       "defer_loading": "deferLoading",
@@ -190,12 +190,12 @@ export const CustomTool$inboundSchema: z.ZodType<CustomTool, unknown> = z
   });
 /** @internal */
 export type CustomTool$Outbound = {
-  async?: boolean | undefined;
-  defer_loading?: boolean | undefined;
-  description?: string | undefined;
-  format?: FormatText$Outbound | FormatGrammar$Outbound | undefined;
   name: string;
   type: string;
+  description?: string | undefined;
+  format?: FormatText$Outbound | FormatGrammar$Outbound | undefined;
+  async?: boolean | undefined;
+  defer_loading?: boolean | undefined;
 };
 
 /** @internal */
@@ -203,15 +203,15 @@ export const CustomTool$outboundSchema: z.ZodType<
   CustomTool$Outbound,
   CustomTool
 > = z.object({
-  async: z.boolean().optional(),
-  deferLoading: z.boolean().optional(),
+  name: z.string(),
+  type: CustomToolTypeCustom$outboundSchema,
   description: z.string().optional(),
   format: z.union([
     z.lazy(() => FormatText$outboundSchema),
     z.lazy(() => FormatGrammar$outboundSchema),
   ]).optional(),
-  name: z.string(),
-  type: CustomToolTypeCustom$outboundSchema,
+  async: z.boolean().optional(),
+  deferLoading: z.boolean().optional(),
 }).transform((v) => {
   return remap$(v, {
     deferLoading: "defer_loading",

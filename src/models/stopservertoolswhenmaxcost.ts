@@ -10,14 +10,14 @@ import { remap as remap$ } from "../lib/primitives.js";
  * Stop once cumulative cost across the loop exceeds this dollar threshold.
  */
 export type StopServerToolsWhenMaxCost = {
-  maxCostInDollars: number;
   type: "max_cost";
+  maxCostInDollars: number;
 };
 
 /** @internal */
 export type StopServerToolsWhenMaxCost$Outbound = {
-  max_cost_in_dollars: number;
   type: "max_cost";
+  max_cost_in_dollars: number;
 };
 
 /** @internal */
@@ -25,8 +25,8 @@ export const StopServerToolsWhenMaxCost$outboundSchema: z.ZodType<
   StopServerToolsWhenMaxCost$Outbound,
   StopServerToolsWhenMaxCost
 > = z.object({
-  maxCostInDollars: z.number(),
   type: z.literal("max_cost"),
+  maxCostInDollars: z.number(),
 }).transform((v) => {
   return remap$(v, {
     maxCostInDollars: "max_cost_in_dollars",

@@ -9,8 +9,8 @@ import { Result as SafeParseResult } from "../types/fp.js";
 import { SDKValidationError } from "./errors/sdkvalidationerror.js";
 
 export type CodeInterpreterImageOutput = {
-  type: "image";
   url: string;
+  type: "image";
 };
 
 /** @internal */
@@ -18,13 +18,13 @@ export const CodeInterpreterImageOutput$inboundSchema: z.ZodType<
   CodeInterpreterImageOutput,
   unknown
 > = z.object({
-  type: z.literal("image"),
   url: z.string(),
+  type: z.literal("image"),
 });
 /** @internal */
 export type CodeInterpreterImageOutput$Outbound = {
-  type: "image";
   url: string;
+  type: "image";
 };
 
 /** @internal */
@@ -32,8 +32,8 @@ export const CodeInterpreterImageOutput$outboundSchema: z.ZodType<
   CodeInterpreterImageOutput$Outbound,
   CodeInterpreterImageOutput
 > = z.object({
-  type: z.literal("image"),
   url: z.string(),
+  type: z.literal("image"),
 });
 
 export function codeInterpreterImageOutputToJSON(

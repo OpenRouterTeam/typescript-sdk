@@ -10,15 +10,15 @@ import { remap as remap$ } from "../lib/primitives.js";
  * A server-side safeguard Anthropic evaluates alongside the completion
  */
 export type AnthropicSafeguard = {
-  classifierContext?: { [k: string]: any } | undefined;
   type: string;
+  classifierContext?: { [k: string]: any } | undefined;
   additionalProperties?: { [k: string]: any } | undefined;
 };
 
 /** @internal */
 export type AnthropicSafeguard$Outbound = {
-  classifier_context?: { [k: string]: any } | undefined;
   type: string;
+  classifier_context?: { [k: string]: any } | undefined;
   [additionalProperties: string]: unknown;
 };
 
@@ -27,8 +27,8 @@ export const AnthropicSafeguard$outboundSchema: z.ZodType<
   AnthropicSafeguard$Outbound,
   AnthropicSafeguard
 > = z.object({
-  classifierContext: z.record(z.string(), z.any()).optional(),
   type: z.string(),
+  classifierContext: z.record(z.string(), z.any()).optional(),
   additionalProperties: z.record(z.string(), z.any()).optional(),
 }).transform((v) => {
   return {

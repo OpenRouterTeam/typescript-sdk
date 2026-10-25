@@ -10,10 +10,10 @@ A call the model made to a `tool_search` tool declared with `"execution": "clien
 import { OutputToolSearchCallItem } from "@openrouter/sdk/models";
 
 let value: OutputToolSearchCallItem = {
+  type: "tool_search_call",
   callId: "<id>",
   execution: "client",
   status: "completed",
-  type: "tool_search_call",
 };
 ```
 
@@ -21,9 +21,9 @@ let value: OutputToolSearchCallItem = {
 
 | Field                                                                                      | Type                                                                                       | Required                                                                                   | Description                                                                                | Example                                                                                    |
 | ------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------ |
+| `type`                                                                                     | *"tool_search_call"*                                                                       | ✔️                                                                         | N/A                                                                                        |                                                                                            |
 | `arguments`                                                                                | *any*                                                                                      | ➖                                                                         | N/A                                                                                        |                                                                                            |
 | `callId`                                                                                   | *string*                                                                                   | ✔️                                                                         | N/A                                                                                        |                                                                                            |
 | `execution`                                                                                | [models.OutputToolSearchCallItemExecution](../models/outputtoolsearchcallitemexecution.mdx) | ✔️                                                                         | N/A                                                                                        |                                                                                            |
 | `id`                                                                                       | *string*                                                                                   | ➖                                                                         | N/A                                                                                        |                                                                                            |
 | `status`                                                                                   | [models.ToolCallStatus](../models/toolcallstatus.mdx)                                       | ✔️                                                                         | N/A                                                                                        | completed                                                                                  |
-| `type`                                                                                     | *"tool_search_call"*                                                                       | ✔️                                                                         | N/A                                                                                        |                                                                                            |

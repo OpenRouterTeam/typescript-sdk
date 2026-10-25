@@ -40,6 +40,7 @@ export type OutputItemApplyPatchCallStatus = OpenEnum<
 >;
 
 export type OutputItemApplyPatchCall = {
+  type: "apply_patch_call";
   callId: string;
   createdBy?: string | undefined;
   id: string;
@@ -49,7 +50,6 @@ export type OutputItemApplyPatchCall = {
     | ApplyPatchUpdateFileOperation
     | discriminatedUnionTypes.Unknown<"type">;
   status: OutputItemApplyPatchCallStatus;
-  type: "apply_patch_call";
 };
 
 /** @internal */
@@ -81,6 +81,7 @@ export const OutputItemApplyPatchCall$inboundSchema: z.ZodType<
   OutputItemApplyPatchCall,
   unknown
 > = z.object({
+  type: z.literal("apply_patch_call"),
   call_id: z.string(),
   created_by: z.string().optional(),
   id: z.string(),
@@ -90,7 +91,6 @@ export const OutputItemApplyPatchCall$inboundSchema: z.ZodType<
     update_file: ApplyPatchUpdateFileOperation$inboundSchema,
   }),
   status: OutputItemApplyPatchCallStatus$inboundSchema,
-  type: z.literal("apply_patch_call"),
 }).transform((v) => {
   return remap$(v, {
     "call_id": "callId",

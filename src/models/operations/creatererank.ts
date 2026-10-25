@@ -56,6 +56,10 @@ export type Document = string | DocumentRequest;
  */
 export type CreateRerankRequestBody = {
   /**
+   * Metadata for observability and tracing. Known keys (trace_id, trace_name, span_name, generation_name, parent_span_id) have special handling. Additional keys are passed through as custom metadata to configured broadcast destinations.
+   */
+  trace?: models.TraceConfig | undefined;
+  /**
    * The list of documents to rerank. Documents may be plain strings, or structured objects with `text` and/or `image` for multimodal models.
    */
   documents: Array<string | DocumentRequest>;
@@ -76,10 +80,6 @@ export type CreateRerankRequestBody = {
    * Number of most relevant documents to return
    */
   topN?: number | undefined;
-  /**
-   * Metadata for observability and tracing. Known keys (trace_id, trace_name, span_name, generation_name, parent_span_id) have special handling. Additional keys are passed through as custom metadata to configured broadcast destinations.
-   */
-  trace?: models.TraceConfig | undefined;
   /**
    * A unique identifier representing your end-user. Forwarded to Broadcast and private logging as the end-user id; never sent to the provider.
    */
@@ -221,13 +221,13 @@ export function documentToJSON(document: Document): string {
 
 /** @internal */
 export type CreateRerankRequestBody$Outbound = {
+  trace?: models.TraceConfig$Outbound | undefined;
   documents: Array<string | DocumentRequest$Outbound>;
   model: string;
   provider?: models.ProviderPreferences$Outbound | null | undefined;
   query: string;
   session_id?: string | undefined;
   top_n?: number | undefined;
-  trace?: models.TraceConfig$Outbound | undefined;
   user?: string | undefined;
 };
 
@@ -236,6 +236,7 @@ export const CreateRerankRequestBody$outboundSchema: z.ZodType<
   CreateRerankRequestBody$Outbound,
   CreateRerankRequestBody
 > = z.object({
+  trace: models.TraceConfig$outboundSchema.optional(),
   documents: z.array(
     z.union([z.string(), z.lazy(() => DocumentRequest$outboundSchema)]),
   ),
@@ -244,7 +245,6 @@ export const CreateRerankRequestBody$outboundSchema: z.ZodType<
   query: z.string(),
   sessionId: z.string().optional(),
   topN: z.int().optional(),
-  trace: models.TraceConfig$outboundSchema.optional(),
   user: z.string().optional(),
 }).transform((v) => {
   return remap$(v, {

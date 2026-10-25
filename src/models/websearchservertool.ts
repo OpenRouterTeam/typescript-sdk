@@ -54,6 +54,7 @@ export type WebSearchServerToolType = ClosedEnum<
  * Web search tool configuration (2025-08-26 version)
  */
 export type WebSearchServerTool = {
+  type: WebSearchServerToolType;
   /**
    * Which search engine to use. "auto" (default) uses native if the provider supports it, otherwise Exa. "native" forces the provider's built-in search. "exa" forces the Exa search API. "firecrawl" uses the Firecrawl search API. "parallel" uses the Parallel search API. "perplexity" uses the Perplexity Search API (raw ranked results).
    */
@@ -75,7 +76,6 @@ export type WebSearchServerTool = {
    * Size of the search context for web search tools
    */
   searchContextSize?: SearchContextSizeEnum | undefined;
-  type: WebSearchServerToolType;
   /**
    * User location information for web search
    */
@@ -100,13 +100,13 @@ export const WebSearchServerTool$inboundSchema: z.ZodType<
   WebSearchServerTool,
   unknown
 > = z.object({
+  type: WebSearchServerToolType$inboundSchema,
   engine: WebSearchEngineEnum$inboundSchema.optional(),
   filters: z.nullable(WebSearchDomainFilter$inboundSchema).optional(),
   max_results: z.int().optional(),
   max_uses: z.int().optional(),
   mode: WebSearchMode$inboundSchema.optional(),
   search_context_size: SearchContextSizeEnum$inboundSchema.optional(),
-  type: WebSearchServerToolType$inboundSchema,
   user_location: z.nullable(WebSearchUserLocation$inboundSchema).optional(),
   x_search: XSearchOptions$inboundSchema.optional(),
 }).transform((v) => {
@@ -120,13 +120,13 @@ export const WebSearchServerTool$inboundSchema: z.ZodType<
 });
 /** @internal */
 export type WebSearchServerTool$Outbound = {
+  type: string;
   engine?: string | undefined;
   filters?: WebSearchDomainFilter$Outbound | null | undefined;
   max_results?: number | undefined;
   max_uses?: number | undefined;
   mode?: string | undefined;
   search_context_size?: string | undefined;
-  type: string;
   user_location?: WebSearchUserLocation$Outbound | null | undefined;
   x_search?: XSearchOptions$Outbound | undefined;
 };
@@ -136,13 +136,13 @@ export const WebSearchServerTool$outboundSchema: z.ZodType<
   WebSearchServerTool$Outbound,
   WebSearchServerTool
 > = z.object({
+  type: WebSearchServerToolType$outboundSchema,
   engine: WebSearchEngineEnum$outboundSchema.optional(),
   filters: z.nullable(WebSearchDomainFilter$outboundSchema).optional(),
   maxResults: z.int().optional(),
   maxUses: z.int().optional(),
   mode: WebSearchMode$outboundSchema.optional(),
   searchContextSize: SearchContextSizeEnum$outboundSchema.optional(),
-  type: WebSearchServerToolType$outboundSchema,
   userLocation: z.nullable(WebSearchUserLocation$outboundSchema).optional(),
   xSearch: XSearchOptions$outboundSchema.optional(),
 }).transform((v) => {

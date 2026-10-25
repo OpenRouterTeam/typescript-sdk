@@ -11,6 +11,13 @@ import { ClosedEnum, OpenEnum } from "../types/enums.js";
 import { Result as SafeParseResult } from "../types/fp.js";
 import { SDKValidationError } from "./errors/sdkvalidationerror.js";
 
+export const OutputComputerCallItemType = {
+  ComputerCall: "computer_call",
+} as const;
+export type OutputComputerCallItemType = ClosedEnum<
+  typeof OutputComputerCallItemType
+>;
+
 export type PendingSafetyCheck = {
   code: string;
   id: string;
@@ -26,21 +33,23 @@ export type OutputComputerCallItemStatus = OpenEnum<
   typeof OutputComputerCallItemStatus
 >;
 
-export const OutputComputerCallItemType = {
-  ComputerCall: "computer_call",
-} as const;
-export type OutputComputerCallItemType = ClosedEnum<
-  typeof OutputComputerCallItemType
->;
-
 export type OutputComputerCallItem = {
+  type: OutputComputerCallItemType;
   action?: any | undefined;
   callId: string;
   id?: string | undefined;
   pendingSafetyChecks: Array<PendingSafetyCheck>;
   status: OutputComputerCallItemStatus;
-  type: OutputComputerCallItemType;
 };
+
+/** @internal */
+export const OutputComputerCallItemType$inboundSchema: z.ZodEnum<
+  typeof OutputComputerCallItemType
+> = z.enum(OutputComputerCallItemType);
+/** @internal */
+export const OutputComputerCallItemType$outboundSchema: z.ZodEnum<
+  typeof OutputComputerCallItemType
+> = OutputComputerCallItemType$inboundSchema;
 
 /** @internal */
 export const PendingSafetyCheck$inboundSchema: z.ZodType<
@@ -97,19 +106,11 @@ export const OutputComputerCallItemStatus$outboundSchema: z.ZodType<
 > = openEnums.outboundSchema(OutputComputerCallItemStatus);
 
 /** @internal */
-export const OutputComputerCallItemType$inboundSchema: z.ZodEnum<
-  typeof OutputComputerCallItemType
-> = z.enum(OutputComputerCallItemType);
-/** @internal */
-export const OutputComputerCallItemType$outboundSchema: z.ZodEnum<
-  typeof OutputComputerCallItemType
-> = OutputComputerCallItemType$inboundSchema;
-
-/** @internal */
 export const OutputComputerCallItem$inboundSchema: z.ZodType<
   OutputComputerCallItem,
   unknown
 > = z.object({
+  type: OutputComputerCallItemType$inboundSchema,
   action: z.any().optional(),
   call_id: z.string(),
   id: z.string().optional(),
@@ -117,7 +118,6 @@ export const OutputComputerCallItem$inboundSchema: z.ZodType<
     z.lazy(() => PendingSafetyCheck$inboundSchema),
   ),
   status: OutputComputerCallItemStatus$inboundSchema,
-  type: OutputComputerCallItemType$inboundSchema,
 }).transform((v) => {
   return remap$(v, {
     "call_id": "callId",
@@ -126,12 +126,12 @@ export const OutputComputerCallItem$inboundSchema: z.ZodType<
 });
 /** @internal */
 export type OutputComputerCallItem$Outbound = {
+  type: string;
   action?: any | undefined;
   call_id: string;
   id?: string | undefined;
   pending_safety_checks: Array<PendingSafetyCheck$Outbound>;
   status: string;
-  type: string;
 };
 
 /** @internal */
@@ -139,12 +139,12 @@ export const OutputComputerCallItem$outboundSchema: z.ZodType<
   OutputComputerCallItem$Outbound,
   OutputComputerCallItem
 > = z.object({
+  type: OutputComputerCallItemType$outboundSchema,
   action: z.any().optional(),
   callId: z.string(),
   id: z.string().optional(),
   pendingSafetyChecks: z.array(z.lazy(() => PendingSafetyCheck$outboundSchema)),
   status: OutputComputerCallItemStatus$outboundSchema,
-  type: OutputComputerCallItemType$outboundSchema,
 }).transform((v) => {
   return remap$(v, {
     callId: "call_id",

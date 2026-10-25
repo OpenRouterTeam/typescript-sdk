@@ -25,6 +25,10 @@ export type UpdateBYOKKeyRequestDeclaredRegion = OpenEnum<
 
 export type UpdateBYOKKeyRequest = {
   /**
+   * Optional human-readable name for the credential.
+   */
+  name?: string | null | undefined;
+  /**
    * Optional allowlist of OpenRouter API key hashes (`api_keys.hash`) that may use this credential. `null` clears the restriction. Must contain at least one hash if provided. Hashes that do not belong to your account return a 400.
    */
   allowedApiKeyHashes?: Array<string> | null | undefined;
@@ -64,10 +68,6 @@ export type UpdateBYOKKeyRequest = {
    * A new raw provider API key to rotate the credential in-place. The previous key material is overwritten and the masked label is regenerated. Encrypted at rest and never returned in API responses.
    */
   key?: string | undefined;
-  /**
-   * Optional human-readable name for the credential.
-   */
-  name?: string | null | undefined;
 };
 
 /** @internal */
@@ -78,6 +78,7 @@ export const UpdateBYOKKeyRequestDeclaredRegion$outboundSchema: z.ZodType<
 
 /** @internal */
 export type UpdateBYOKKeyRequest$Outbound = {
+  name?: string | null | undefined;
   allowed_api_key_hashes?: Array<string> | null | undefined;
   allowed_models?: Array<string> | null | undefined;
   allowed_user_ids?: Array<string> | null | undefined;
@@ -88,7 +89,6 @@ export type UpdateBYOKKeyRequest$Outbound = {
   is_fallback?: boolean | undefined;
   is_required?: boolean | undefined;
   key?: string | undefined;
-  name?: string | null | undefined;
 };
 
 /** @internal */
@@ -96,6 +96,7 @@ export const UpdateBYOKKeyRequest$outboundSchema: z.ZodType<
   UpdateBYOKKeyRequest$Outbound,
   UpdateBYOKKeyRequest
 > = z.object({
+  name: z.nullable(z.string()).optional(),
   allowedApiKeyHashes: z.nullable(z.array(z.string())).optional(),
   allowedModels: z.nullable(z.array(z.string())).optional(),
   allowedUserIds: z.nullable(z.array(z.string())).optional(),
@@ -107,7 +108,6 @@ export const UpdateBYOKKeyRequest$outboundSchema: z.ZodType<
   isFallback: z.boolean().optional(),
   isRequired: z.boolean().optional(),
   key: z.string().optional(),
-  name: z.nullable(z.string()).optional(),
 }).transform((v) => {
   return remap$(v, {
     allowedApiKeyHashes: "allowed_api_key_hashes",

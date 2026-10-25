@@ -1,0 +1,27 @@
+---
+title: "CreateInternRequest"
+---
+
+Settings for a new intern.
+
+## Example Usage
+
+```typescript
+import { CreateInternRequest } from "@openrouter/sdk/models";
+
+let value: CreateInternRequest = {
+  name: "research-assistant",
+  provision: true,
+};
+```
+
+## Fields
+
+| Field                                                                                                                                   | Type                                                                                                                                    | Required                                                                                                                                | Description                                                                                                                             |
+| --------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------- |
+| `name`                                                                                                                                  | *string*                                                                                                                                | ✔️                                                                                                                      | Intern name, unique per creator within the workspace.                                                                                   |
+| `description`                                                                                                                           | *string*                                                                                                                                | ➖                                                                                                                      | Free-form description, or null.                                                                                                         |
+| `instructions`                                                                                                                          | *string*                                                                                                                                | ➖                                                                                                                      | Standing instructions the intern boots with, or null.                                                                                   |
+| `provision`                                                                                                                             | *boolean*                                                                                                                               | ➖                                                                                                                      | Start provisioning during this create operation. Defaults to false.                                                                     |
+| `vaultId`                                                                                                                               | *string*                                                                                                                                | ➖                                                                                                                      | Vault owned by another intern in this workspace to attach as a borrowed vault.                                                          |
+| `workspaceId`                                                                                                                           | *string*                                                                                                                                | ➖                                                                                                                      | Workspace that will own the intern. Defaults to the workspace the API key resolves to. When given, it must match the API key workspace. |

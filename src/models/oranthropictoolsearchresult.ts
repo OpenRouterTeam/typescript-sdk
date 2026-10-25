@@ -13,9 +13,9 @@ import { SDKValidationError } from "./errors/sdkvalidationerror.js";
  * Router-owned deferred discovery result containing original selected tool definitions.
  */
 export type ORAnthropicToolSearchResult = {
+  type: "openrouter_tool_search_result";
   content: { [k: string]: any };
   toolUseId: string;
-  type: "openrouter_tool_search_result";
 };
 
 /** @internal */
@@ -23,9 +23,9 @@ export const ORAnthropicToolSearchResult$inboundSchema: z.ZodType<
   ORAnthropicToolSearchResult,
   unknown
 > = z.object({
+  type: z.literal("openrouter_tool_search_result"),
   content: z.record(z.string(), z.any()),
   tool_use_id: z.string(),
-  type: z.literal("openrouter_tool_search_result"),
 }).transform((v) => {
   return remap$(v, {
     "tool_use_id": "toolUseId",

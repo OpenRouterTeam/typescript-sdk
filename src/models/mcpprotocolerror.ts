@@ -15,9 +15,9 @@ export type McpProtocolErrorType = ClosedEnum<typeof McpProtocolErrorType>;
  * The MCP server returned a protocol-level error
  */
 export type McpProtocolError = {
+  type: McpProtocolErrorType;
   code: number;
   message: string;
-  type: McpProtocolErrorType;
 };
 
 /** @internal */
@@ -27,9 +27,9 @@ export const McpProtocolErrorType$outboundSchema: z.ZodEnum<
 
 /** @internal */
 export type McpProtocolError$Outbound = {
+  type: string;
   code: number;
   message: string;
-  type: string;
 };
 
 /** @internal */
@@ -37,9 +37,9 @@ export const McpProtocolError$outboundSchema: z.ZodType<
   McpProtocolError$Outbound,
   McpProtocolError
 > = z.object({
+  type: McpProtocolErrorType$outboundSchema,
   code: z.int(),
   message: z.string(),
-  type: McpProtocolErrorType$outboundSchema,
 });
 
 export function mcpProtocolErrorToJSON(

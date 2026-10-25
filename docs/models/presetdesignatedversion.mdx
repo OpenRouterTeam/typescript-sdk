@@ -10,6 +10,7 @@ A specific version of a preset, containing config and optional system prompt.
 import { PresetDesignatedVersion } from "@openrouter/sdk/models";
 
 let value: PresetDesignatedVersion = {
+  version: 1,
   config: {
     "model": "openai/gpt-4o",
     "temperature": 0.7,
@@ -20,7 +21,6 @@ let value: PresetDesignatedVersion = {
   presetId: "650e8400-e29b-41d4-a716-446655440001",
   systemPrompt: "You are a helpful assistant.",
   updatedAt: "2026-04-20T10:00:00Z",
-  version: 1,
 };
 ```
 
@@ -28,6 +28,7 @@ let value: PresetDesignatedVersion = {
 
 | Field                 | Type                  | Required              | Description           |
 | --------------------- | --------------------- | --------------------- | --------------------- |
+| `version`             | *number*              | ✔️    | N/A                   |
 | `config`              | Record\<string, *any*> | ✔️    | N/A                   |
 | `createdAt`           | *string*              | ✔️    | N/A                   |
 | `creatorId`           | *string*              | ✔️    | N/A                   |
@@ -35,4 +36,3 @@ let value: PresetDesignatedVersion = {
 | `presetId`            | *string*              | ✔️    | N/A                   |
 | `systemPrompt`        | *string*              | ✔️    | N/A                   |
 | `updatedAt`           | *string*              | ✔️    | N/A                   |
-| `version`             | *number*              | ✔️    | N/A                   |

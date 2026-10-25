@@ -8,13 +8,13 @@ title: "DecisionsBoxAnswer"
 import { DecisionsBoxAnswer } from "@openrouter/sdk/models";
 
 let value: DecisionsBoxAnswer = {
+  type: "box",
   box: {
     bottom: 9340.36,
     left: 4735.52,
     right: 3044.6,
     top: 1951.55,
   },
-  type: "box",
 };
 ```
 
@@ -22,6 +22,6 @@ let value: DecisionsBoxAnswer = {
 
 | Field                          | Type                           | Required                       | Description                    |
 | ------------------------------ | ------------------------------ | ------------------------------ | ------------------------------ |
+| `type`                         | *"box"*                        | ✔️             | N/A                            |
 | `box`                          | [models.Box](../models/box.mdx) | ✔️             | N/A                            |
 | `confidence`                   | *number*                       | ➖             | N/A                            |
-| `type`                         | *"box"*                        | ✔️             | N/A                            |

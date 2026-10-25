@@ -27,36 +27,36 @@ import {
 } from "./anthropicurlimagesource.js";
 
 export type AnthropicImageBlockParamSource =
+  | AnthropicUrlImageSource
   | AnthropicBase64ImageSource
-  | AnthropicFileDocumentSource
-  | AnthropicUrlImageSource;
+  | AnthropicFileDocumentSource;
 
 export type AnthropicImageBlockParam = {
+  type: "image";
   /**
    * Enable automatic prompt caching. When set at the top level, the system automatically applies cache breakpoints to the last cacheable block in the request. When set on an individual content block, it marks an explicit cache breakpoint; block-level markers also work on OpenAI models that support explicit prompt caching — OpenRouter converts them to the provider's native format.
    */
   cacheControl?: AnthropicCacheControlDirective | undefined;
   source:
+    | AnthropicUrlImageSource
     | AnthropicBase64ImageSource
-    | AnthropicFileDocumentSource
-    | AnthropicUrlImageSource;
-  type: "image";
+    | AnthropicFileDocumentSource;
 };
 
 /** @internal */
 export type AnthropicImageBlockParamSource$Outbound =
+  | AnthropicUrlImageSource$Outbound
   | AnthropicBase64ImageSource$Outbound
-  | AnthropicFileDocumentSource$Outbound
-  | AnthropicUrlImageSource$Outbound;
+  | AnthropicFileDocumentSource$Outbound;
 
 /** @internal */
 export const AnthropicImageBlockParamSource$outboundSchema: z.ZodType<
   AnthropicImageBlockParamSource$Outbound,
   AnthropicImageBlockParamSource
 > = z.union([
+  AnthropicUrlImageSource$outboundSchema,
   AnthropicBase64ImageSource$outboundSchema,
   AnthropicFileDocumentSource$outboundSchema,
-  AnthropicUrlImageSource$outboundSchema,
 ]);
 
 export function anthropicImageBlockParamSourceToJSON(
@@ -71,12 +71,12 @@ export function anthropicImageBlockParamSourceToJSON(
 
 /** @internal */
 export type AnthropicImageBlockParam$Outbound = {
+  type: "image";
   cache_control?: AnthropicCacheControlDirective$Outbound | undefined;
   source:
+    | AnthropicUrlImageSource$Outbound
     | AnthropicBase64ImageSource$Outbound
-    | AnthropicFileDocumentSource$Outbound
-    | AnthropicUrlImageSource$Outbound;
-  type: "image";
+    | AnthropicFileDocumentSource$Outbound;
 };
 
 /** @internal */
@@ -84,13 +84,13 @@ export const AnthropicImageBlockParam$outboundSchema: z.ZodType<
   AnthropicImageBlockParam$Outbound,
   AnthropicImageBlockParam
 > = z.object({
+  type: z.literal("image"),
   cacheControl: AnthropicCacheControlDirective$outboundSchema.optional(),
   source: z.union([
+    AnthropicUrlImageSource$outboundSchema,
     AnthropicBase64ImageSource$outboundSchema,
     AnthropicFileDocumentSource$outboundSchema,
-    AnthropicUrlImageSource$outboundSchema,
   ]),
-  type: z.literal("image"),
 }).transform((v) => {
   return remap$(v, {
     cacheControl: "cache_control",

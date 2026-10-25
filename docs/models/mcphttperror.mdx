@@ -10,9 +10,9 @@ The MCP server request failed at the HTTP layer
 import { McpHttpError } from "@openrouter/sdk/models";
 
 let value: McpHttpError = {
+  type: "http_error",
   code: 503,
   message: "Service Unavailable",
-  type: "http_error",
 };
 ```
 
@@ -20,6 +20,6 @@ let value: McpHttpError = {
 
 | Field                                                    | Type                                                     | Required                                                 | Description                                              |
 | -------------------------------------------------------- | -------------------------------------------------------- | -------------------------------------------------------- | -------------------------------------------------------- |
+| `type`                                                   | [models.McpHttpErrorType](../models/mcphttperrortype.mdx) | ✔️                                       | N/A                                                      |
 | `code`                                                   | *number*                                                 | ✔️                                       | N/A                                                      |
 | `message`                                                | *string*                                                 | ✔️                                       | N/A                                                      |
-| `type`                                                   | [models.McpHttpErrorType](../models/mcphttperrortype.mdx) | ✔️                                       | N/A                                                      |

@@ -56,6 +56,7 @@ export const PricingSource = {
 export type PricingSource = OpenEnum<typeof PricingSource>;
 
 export type ServerToolEngine = {
+  name: string;
   /**
    * Whether the engine needs the caller's own key, saved in plugin settings: `required` (OpenRouter holds none), `optional` (OpenRouter's key is used unless the caller saved one), or `none`
    */
@@ -76,7 +77,6 @@ export type ServerToolEngine = {
    * The `parameters.engine` value that selects this engine; null for the single engine of a tool without an engine parameter
    */
   id: string | null;
-  name: string;
   /**
    * The rows OpenRouter bills; non-empty exactly when `pricing_source` is `openrouter`
    */
@@ -110,12 +110,12 @@ export const ServerToolEngine$inboundSchema: z.ZodType<
   ServerToolEngine,
   unknown
 > = z.object({
+  name: z.string(),
   byok: BYOK$inboundSchema,
   data_regions: z.array(ServerToolEngineDataRegion$inboundSchema),
   default_mode: z.nullable(z.string()),
   executed_by: ServerToolExecutedBy$inboundSchema,
   id: z.nullable(z.string()),
-  name: z.string(),
   pricing: z.array(ServerToolPrice$inboundSchema),
   pricing_doc_url: z.nullable(z.string()),
   pricing_source: PricingSource$inboundSchema,

@@ -18,8 +18,8 @@ export type ListToolsResponseLinks = {
 };
 
 export type ListToolsResponse = {
-  data: Array<ServerTool>;
   links: ListToolsResponseLinks;
+  data: Array<ServerTool>;
   /**
    * Total number of tools
    */
@@ -49,8 +49,8 @@ export const ListToolsResponse$inboundSchema: z.ZodType<
   ListToolsResponse,
   unknown
 > = z.object({
-  data: z.array(ServerTool$inboundSchema),
   links: z.lazy(() => ListToolsResponseLinks$inboundSchema),
+  data: z.array(ServerTool$inboundSchema),
   total_count: z.int(),
 }).transform((v) => {
   return remap$(v, {

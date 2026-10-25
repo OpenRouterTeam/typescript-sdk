@@ -21,16 +21,16 @@ export type McpCallItemType = ClosedEnum<typeof McpCallItemType>;
  * An MCP tool call with its output or error
  */
 export type McpCallItem = {
+  name: string;
+  type: McpCallItemType;
   arguments: string;
   /**
    * Error from an MCP tool call, either a plain message or a structured error
    */
   error?: McpToolCallError | null | undefined;
   id: string;
-  name: string;
   output?: string | null | undefined;
   serverLabel: string;
-  type: McpCallItemType;
 };
 
 /** @internal */
@@ -39,13 +39,13 @@ export const McpCallItemType$outboundSchema: z.ZodEnum<typeof McpCallItemType> =
 
 /** @internal */
 export type McpCallItem$Outbound = {
+  name: string;
+  type: string;
   arguments: string;
   error?: McpToolCallError$Outbound | null | undefined;
   id: string;
-  name: string;
   output?: string | null | undefined;
   server_label: string;
-  type: string;
 };
 
 /** @internal */
@@ -53,13 +53,13 @@ export const McpCallItem$outboundSchema: z.ZodType<
   McpCallItem$Outbound,
   McpCallItem
 > = z.object({
+  name: z.string(),
+  type: McpCallItemType$outboundSchema,
   arguments: z.string(),
   error: z.nullable(McpToolCallError$outboundSchema).optional(),
   id: z.string(),
-  name: z.string(),
   output: z.nullable(z.string()).optional(),
   serverLabel: z.string(),
-  type: McpCallItemType$outboundSchema,
 }).transform((v) => {
   return remap$(v, {
     serverLabel: "server_label",

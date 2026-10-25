@@ -8,9 +8,9 @@ title: "ImageStreamingResponseData"
 
 ```typescript
 const value: models.ImageGenPartialImageEvent = {
+  type: "image_generation.partial_image",
   b64Json: "<base64-encoded-partial-image>",
   partialImageIndex: 0,
-  type: "image_generation.partial_image",
 };
 ```
 
@@ -18,9 +18,9 @@ const value: models.ImageGenPartialImageEvent = {
 
 ```typescript
 const value: models.ImageGenTextChunkEvent = {
+  type: "image_generation.text_chunk",
   phase: "content",
   text: "<svg xmlns=\"http://www.w3.org/2000/svg\">",
-  type: "image_generation.text_chunk",
 };
 ```
 
@@ -28,9 +28,9 @@ const value: models.ImageGenTextChunkEvent = {
 
 ```typescript
 const value: models.ImageGenCompletedEvent = {
+  type: "image_generation.completed",
   b64Json: "<base64-encoded-final-image>",
   created: 1748372400,
-  type: "image_generation.completed",
 };
 ```
 
@@ -38,10 +38,10 @@ const value: models.ImageGenCompletedEvent = {
 
 ```typescript
 const value: models.ImageGenStreamErrorEvent = {
+  type: "error",
   error: {
     message: "The upstream provider returned an error",
   },
-  type: "error",
 };
 ```
 

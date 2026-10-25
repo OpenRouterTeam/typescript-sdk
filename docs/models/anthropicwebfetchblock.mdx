@@ -8,18 +8,18 @@ title: "AnthropicWebFetchBlock"
 import { AnthropicWebFetchBlock } from "@openrouter/sdk/models";
 
 let value: AnthropicWebFetchBlock = {
+  url: "https://example.com",
   content: {
+    type: "document",
+    title: null,
     source: {
+      type: "text",
       data: "",
       mediaType: "text/plain",
-      type: "text",
     },
-    title: null,
-    type: "document",
   },
   retrievedAt: null,
   type: "web_fetch_result",
-  url: "https://example.com",
 };
 ```
 
@@ -27,7 +27,7 @@ let value: AnthropicWebFetchBlock = {
 
 | Field                                                                                                                                       | Type                                                                                                                                        | Required                                                                                                                                    | Description                                                                                                                                 | Example                                                                                                                                     |
 | ------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------- |
-| `content`                                                                                                                                   | [models.AnthropicDocumentBlock](../models/anthropicdocumentblock.mdx)                                                                        | ✔️                                                                                                                          | N/A                                                                                                                                         | \{<br/>"citations": null,<br/>"source": \{<br/>"data": "Hello, world!",<br/>"media_type": "text/plain",<br/>"type": "text"<br/>},<br/>"title": null,<br/>"type": "document"<br/>} |
+| `url`                                                                                                                                       | *string*                                                                                                                                    | ✔️                                                                                                                          | N/A                                                                                                                                         |                                                                                                                                             |
+| `content`                                                                                                                                   | [models.AnthropicDocumentBlock](../models/anthropicdocumentblock.mdx)                                                                        | ✔️                                                                                                                          | N/A                                                                                                                                         | \{<br/>"type": "document",<br/>"title": null,<br/>"citations": null,<br/>"source": \{<br/>"type": "text",<br/>"data": "Hello, world!",<br/>"media_type": "text/plain"<br/>}<br/>} |
 | `retrievedAt`                                                                                                                               | *string*                                                                                                                                    | ✔️                                                                                                                          | N/A                                                                                                                                         |                                                                                                                                             |
 | `type`                                                                                                                                      | *"web_fetch_result"*                                                                                                                        | ✔️                                                                                                                          | N/A                                                                                                                                         |                                                                                                                                             |
-| `url`                                                                                                                                       | *string*                                                                                                                                    | ✔️                                                                                                                          | N/A                                                                                                                                         |                                                                                                                                             |

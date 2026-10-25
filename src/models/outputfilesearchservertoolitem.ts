@@ -25,10 +25,10 @@ export type OutputFileSearchServerToolItemType = ClosedEnum<
  * An openrouter:file_search server tool output item
  */
 export type OutputFileSearchServerToolItem = {
+  type: OutputFileSearchServerToolItemType;
   id?: string | undefined;
   queries?: Array<string> | undefined;
   status: ToolCallStatus;
-  type: OutputFileSearchServerToolItemType;
 };
 
 /** @internal */
@@ -45,17 +45,17 @@ export const OutputFileSearchServerToolItem$inboundSchema: z.ZodType<
   OutputFileSearchServerToolItem,
   unknown
 > = z.object({
+  type: OutputFileSearchServerToolItemType$inboundSchema,
   id: z.string().optional(),
   queries: z.array(z.string()).optional(),
   status: ToolCallStatus$inboundSchema,
-  type: OutputFileSearchServerToolItemType$inboundSchema,
 });
 /** @internal */
 export type OutputFileSearchServerToolItem$Outbound = {
+  type: string;
   id?: string | undefined;
   queries?: Array<string> | undefined;
   status: string;
-  type: string;
 };
 
 /** @internal */
@@ -63,10 +63,10 @@ export const OutputFileSearchServerToolItem$outboundSchema: z.ZodType<
   OutputFileSearchServerToolItem$Outbound,
   OutputFileSearchServerToolItem
 > = z.object({
+  type: OutputFileSearchServerToolItemType$outboundSchema,
   id: z.string().optional(),
   queries: z.array(z.string()).optional(),
   status: ToolCallStatus$outboundSchema,
-  type: OutputFileSearchServerToolItemType$outboundSchema,
 });
 
 export function outputFileSearchServerToolItemToJSON(

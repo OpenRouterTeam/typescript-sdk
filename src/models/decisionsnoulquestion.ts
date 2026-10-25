@@ -35,12 +35,12 @@ export type DecisionsNoulQuestionInstructions =
   | Array<any>;
 
 export type DecisionsNoulQuestion = {
+  type: "noul";
   criteria?: DecisionsNoulQuestionCriteria | undefined;
   /**
    * A plain string, or a JSON object or array of structured guidance.
    */
   instructions: string | { [k: string]: any } | Array<any>;
-  type: "noul";
 };
 
 /** @internal */
@@ -119,9 +119,9 @@ export function decisionsNoulQuestionInstructionsToJSON(
 
 /** @internal */
 export type DecisionsNoulQuestion$Outbound = {
+  type: "noul";
   criteria?: DecisionsNoulQuestionCriteria$Outbound | undefined;
   instructions: string | { [k: string]: any } | Array<any>;
-  type: "noul";
 };
 
 /** @internal */
@@ -129,6 +129,7 @@ export const DecisionsNoulQuestion$outboundSchema: z.ZodType<
   DecisionsNoulQuestion$Outbound,
   DecisionsNoulQuestion
 > = z.object({
+  type: z.literal("noul"),
   criteria: z.lazy(() => DecisionsNoulQuestionCriteria$outboundSchema)
     .optional(),
   instructions: z.union([
@@ -136,7 +137,6 @@ export const DecisionsNoulQuestion$outboundSchema: z.ZodType<
     z.record(z.string(), z.any()),
     z.array(z.any()),
   ]),
-  type: z.literal("noul"),
 });
 
 export function decisionsNoulQuestionToJSON(

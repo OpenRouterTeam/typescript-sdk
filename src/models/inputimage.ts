@@ -11,6 +11,11 @@ import { ClosedEnum, OpenEnum } from "../types/enums.js";
 import { Result as SafeParseResult } from "../types/fp.js";
 import { SDKValidationError } from "./errors/sdkvalidationerror.js";
 
+export const InputImageTypeEnum = {
+  InputImage: "input_image",
+} as const;
+export type InputImageTypeEnum = ClosedEnum<typeof InputImageTypeEnum>;
+
 export const InputImageDetail = {
   Auto: "auto",
   High: "high",
@@ -19,20 +24,24 @@ export const InputImageDetail = {
 } as const;
 export type InputImageDetail = OpenEnum<typeof InputImageDetail>;
 
-export const InputImageTypeEnum = {
-  InputImage: "input_image",
-} as const;
-export type InputImageTypeEnum = ClosedEnum<typeof InputImageTypeEnum>;
-
 /**
  * Image input content item. Provide either an image_url (a URL or a base64 data URL) or the file_id of an uploaded image.
  */
 export type InputImage = {
+  type: InputImageTypeEnum;
   detail: InputImageDetail;
   fileId?: string | null | undefined;
   imageUrl?: string | null | undefined;
-  type: InputImageTypeEnum;
 };
+
+/** @internal */
+export const InputImageTypeEnum$inboundSchema: z.ZodEnum<
+  typeof InputImageTypeEnum
+> = z.enum(InputImageTypeEnum);
+/** @internal */
+export const InputImageTypeEnum$outboundSchema: z.ZodEnum<
+  typeof InputImageTypeEnum
+> = InputImageTypeEnum$inboundSchema;
 
 /** @internal */
 export const InputImageDetail$inboundSchema: z.ZodType<
@@ -46,21 +55,12 @@ export const InputImageDetail$outboundSchema: z.ZodType<
 > = openEnums.outboundSchema(InputImageDetail);
 
 /** @internal */
-export const InputImageTypeEnum$inboundSchema: z.ZodEnum<
-  typeof InputImageTypeEnum
-> = z.enum(InputImageTypeEnum);
-/** @internal */
-export const InputImageTypeEnum$outboundSchema: z.ZodEnum<
-  typeof InputImageTypeEnum
-> = InputImageTypeEnum$inboundSchema;
-
-/** @internal */
 export const InputImage$inboundSchema: z.ZodType<InputImage, unknown> = z
   .object({
+    type: InputImageTypeEnum$inboundSchema,
     detail: InputImageDetail$inboundSchema,
     file_id: z.nullable(z.string()).optional(),
     image_url: z.nullable(z.string()).optional(),
-    type: InputImageTypeEnum$inboundSchema,
   }).transform((v) => {
     return remap$(v, {
       "file_id": "fileId",
@@ -69,10 +69,10 @@ export const InputImage$inboundSchema: z.ZodType<InputImage, unknown> = z
   });
 /** @internal */
 export type InputImage$Outbound = {
+  type: string;
   detail: string;
   file_id?: string | null | undefined;
   image_url?: string | null | undefined;
-  type: string;
 };
 
 /** @internal */
@@ -80,10 +80,10 @@ export const InputImage$outboundSchema: z.ZodType<
   InputImage$Outbound,
   InputImage
 > = z.object({
+  type: InputImageTypeEnum$outboundSchema,
   detail: InputImageDetail$outboundSchema,
   fileId: z.nullable(z.string()).optional(),
   imageUrl: z.nullable(z.string()).optional(),
-  type: InputImageTypeEnum$outboundSchema,
 }).transform((v) => {
   return remap$(v, {
     fileId: "file_id",

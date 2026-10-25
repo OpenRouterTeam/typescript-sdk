@@ -13,6 +13,7 @@ import { SDKValidationError } from "./errors/sdkvalidationerror.js";
  * Emitted when the fusion analyst starts producing the structured analysis.
  */
 export type FusionCallAnalysisInProgressEvent = {
+  type: "response.fusion_call.analysis.in_progress";
   /**
    * Slug of the model producing the structured analysis.
    */
@@ -26,7 +27,6 @@ export type FusionCallAnalysisInProgressEvent = {
   judgeModel: string;
   outputIndex: number;
   sequenceNumber: number;
-  type: "response.fusion_call.analysis.in_progress";
 };
 
 /** @internal */
@@ -34,12 +34,12 @@ export const FusionCallAnalysisInProgressEvent$inboundSchema: z.ZodType<
   FusionCallAnalysisInProgressEvent,
   unknown
 > = z.object({
+  type: z.literal("response.fusion_call.analysis.in_progress"),
   analyst_model: z.string(),
   item_id: z.string(),
   judge_model: z.string(),
   output_index: z.int(),
   sequence_number: z.int(),
-  type: z.literal("response.fusion_call.analysis.in_progress"),
 }).transform((v) => {
   return remap$(v, {
     "analyst_model": "analystModel",

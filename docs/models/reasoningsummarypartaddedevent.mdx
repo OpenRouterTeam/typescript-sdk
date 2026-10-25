@@ -10,15 +10,15 @@ Event emitted when a reasoning summary part is added
 import { ReasoningSummaryPartAddedEvent } from "@openrouter/sdk/models";
 
 let value: ReasoningSummaryPartAddedEvent = {
+  type: "response.reasoning_summary_part.added",
   itemId: "<id>",
   outputIndex: 648271,
   part: {
-    text: "Analyzed the problem using first principles",
     type: "summary_text",
+    text: "Analyzed the problem using first principles",
   },
   sequenceNumber: 0,
   summaryIndex: 773896,
-  type: "response.reasoning_summary_part.added",
 };
 ```
 
@@ -26,9 +26,9 @@ let value: ReasoningSummaryPartAddedEvent = {
 
 | Field                                                                             | Type                                                                              | Required                                                                          | Description                                                                       | Example                                                                           |
 | --------------------------------------------------------------------------------- | --------------------------------------------------------------------------------- | --------------------------------------------------------------------------------- | --------------------------------------------------------------------------------- | --------------------------------------------------------------------------------- |
+| `type`                                                                            | *"response.reasoning_summary_part.added"*                                         | ✔️                                                                | N/A                                                                               |                                                                                   |
 | `itemId`                                                                          | *string*                                                                          | ✔️                                                                | N/A                                                                               |                                                                                   |
 | `outputIndex`                                                                     | *number*                                                                          | ✔️                                                                | N/A                                                                               |                                                                                   |
-| `part`                                                                            | [models.ReasoningSummaryText](../models/reasoningsummarytext.mdx)                  | ✔️                                                                | N/A                                                                               | \{<br/>"text": "Analyzed the problem using first principles",<br/>"type": "summary_text"<br/>} |
+| `part`                                                                            | [models.ReasoningSummaryText](../models/reasoningsummarytext.mdx)                  | ✔️                                                                | N/A                                                                               | \{<br/>"type": "summary_text",<br/>"text": "Analyzed the problem using first principles"<br/>} |
 | `sequenceNumber`                                                                  | *number*                                                                          | ✔️                                                                | N/A                                                                               |                                                                                   |
 | `summaryIndex`                                                                    | *number*                                                                          | ✔️                                                                | N/A                                                                               |                                                                                   |
-| `type`                                                                            | *"response.reasoning_summary_part.added"*                                         | ✔️                                                                | N/A                                                                               |                                                                                   |

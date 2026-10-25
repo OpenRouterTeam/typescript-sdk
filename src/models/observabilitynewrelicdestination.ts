@@ -36,6 +36,11 @@ export type ObservabilityNewrelicDestinationConfig = {
 
 export type ObservabilityNewrelicDestination = {
   /**
+   * Human-readable name for the destination.
+   */
+  name: string | null;
+  type: "newrelic";
+  /**
    * Optional allowlist of OpenRouter API key hashes (`api_keys.hash`) whose traffic is forwarded to this destination. `null` means all keys.
    */
   apiKeyHashes: Array<string> | null;
@@ -73,10 +78,6 @@ export type ObservabilityNewrelicDestination = {
    */
   id: string;
   /**
-   * Human-readable name for the destination.
-   */
-  name: string | null;
-  /**
    * When true, request/response bodies are not forwarded to this destination — only metadata.
    */
   privacyMode: boolean;
@@ -88,7 +89,6 @@ export type ObservabilityNewrelicDestination = {
    * Sampling rate for events sent to this destination, between 0.0001 and 1 (1 = 100%).
    */
   samplingRate: number;
-  type: "newrelic";
   /**
    * ISO timestamp of when the destination was last updated.
    */
@@ -129,6 +129,8 @@ export const ObservabilityNewrelicDestination$inboundSchema: z.ZodType<
   ObservabilityNewrelicDestination,
   unknown
 > = z.object({
+  name: z.nullable(z.string()),
+  type: z.literal("newrelic"),
   api_key_hashes: z.nullable(z.array(z.string())),
   broadcast_generation_cost: z.boolean(),
   broadcast_generation_cost_allocation: z.boolean(),
@@ -139,11 +141,9 @@ export const ObservabilityNewrelicDestination$inboundSchema: z.ZodType<
   enabled: z.boolean(),
   filter_rules: z.nullable(ObservabilityFilterRulesConfig$inboundSchema),
   id: z.string(),
-  name: z.nullable(z.string()),
   privacy_mode: z.boolean(),
   regions: z.array(ObservabilityDataRegion$inboundSchema),
   sampling_rate: z.number(),
-  type: z.literal("newrelic"),
   updated_at: z.string(),
   workspace_id: z.string(),
 }).transform((v) => {

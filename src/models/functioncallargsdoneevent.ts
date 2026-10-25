@@ -13,12 +13,12 @@ import { SDKValidationError } from "./errors/sdkvalidationerror.js";
  * Event emitted when function call arguments streaming is complete
  */
 export type FunctionCallArgsDoneEvent = {
+  name: string;
+  type: "response.function_call_arguments.done";
   arguments: string;
   itemId: string;
-  name: string;
   outputIndex: number;
   sequenceNumber: number;
-  type: "response.function_call_arguments.done";
 };
 
 /** @internal */
@@ -26,12 +26,12 @@ export const FunctionCallArgsDoneEvent$inboundSchema: z.ZodType<
   FunctionCallArgsDoneEvent,
   unknown
 > = z.object({
+  name: z.string(),
+  type: z.literal("response.function_call_arguments.done"),
   arguments: z.string(),
   item_id: z.string(),
-  name: z.string(),
   output_index: z.int(),
   sequence_number: z.int(),
-  type: z.literal("response.function_call_arguments.done"),
 }).transform((v) => {
   return remap$(v, {
     "item_id": "itemId",

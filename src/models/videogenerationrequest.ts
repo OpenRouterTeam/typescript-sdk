@@ -227,6 +227,10 @@ export type VideoGenerationRequestResolution = OpenEnum<
 
 export type VideoGenerationRequest = {
   /**
+   * Metadata for observability and tracing. Known keys (trace_id, trace_name, span_name, generation_name, parent_span_id) have special handling. Additional keys are passed through as custom metadata to configured broadcast destinations.
+   */
+  trace?: TraceConfig | undefined;
+  /**
    * Aspect ratio of the generated video
    */
   aspectRatio?: VideoGenerationRequestAspectRatio | undefined;
@@ -283,10 +287,6 @@ export type VideoGenerationRequest = {
    * Exact pixel dimensions of the generated video in "WIDTHxHEIGHT" format (e.g. "1280x720"). Interchangeable with resolution + aspect_ratio.
    */
   size?: string | undefined;
-  /**
-   * Metadata for observability and tracing. Known keys (trace_id, trace_name, span_name, generation_name, parent_span_id) have special handling. Additional keys are passed through as custom metadata to configured broadcast destinations.
-   */
-  trace?: TraceConfig | undefined;
   /**
    * Upscale factor for video upscaling models only. This parameter is not supported by video generation models.
    */
@@ -686,6 +686,7 @@ export const VideoGenerationRequestResolution$outboundSchema: z.ZodType<
 
 /** @internal */
 export type VideoGenerationRequest$Outbound = {
+  trace?: TraceConfig$Outbound | undefined;
   aspect_ratio?: string | undefined;
   callback_url?: string | undefined;
   creativity?: number | undefined;
@@ -701,7 +702,6 @@ export type VideoGenerationRequest$Outbound = {
   seed?: number | undefined;
   session_id?: string | undefined;
   size?: string | undefined;
-  trace?: TraceConfig$Outbound | undefined;
   upscale_factor?: number | undefined;
   user?: string | undefined;
 };
@@ -711,6 +711,7 @@ export const VideoGenerationRequest$outboundSchema: z.ZodType<
   VideoGenerationRequest$Outbound,
   VideoGenerationRequest
 > = z.object({
+  trace: TraceConfig$outboundSchema.optional(),
   aspectRatio: VideoGenerationRequestAspectRatio$outboundSchema.optional(),
   callbackUrl: z.string().optional(),
   creativity: z.int().optional(),
@@ -727,7 +728,6 @@ export const VideoGenerationRequest$outboundSchema: z.ZodType<
   seed: z.int().optional(),
   sessionId: z.string().optional(),
   size: z.string().optional(),
-  trace: TraceConfig$outboundSchema.optional(),
   upscaleFactor: z.number().optional(),
   user: z.string().optional(),
 }).transform((v) => {

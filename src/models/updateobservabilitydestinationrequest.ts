@@ -17,6 +17,10 @@ import {
 
 export type UpdateObservabilityDestinationRequest = {
   /**
+   * Human-readable name for the destination.
+   */
+  name?: string | undefined;
+  /**
    * Optional allowlist of OpenRouter API key hashes. `null` clears the filter (all keys). Omitting leaves the current value. Must contain at least one hash if provided.
    */
   apiKeyHashes?: Array<string> | null | undefined;
@@ -46,10 +50,6 @@ export type UpdateObservabilityDestinationRequest = {
   enabled?: boolean | undefined;
   filterRules?: ObservabilityFilterRulesConfigNullable | null | undefined;
   /**
-   * Human-readable name for the destination.
-   */
-  name?: string | undefined;
-  /**
    * When true, request/response bodies are not forwarded — only metadata.
    */
   privacyMode?: boolean | undefined;
@@ -65,6 +65,7 @@ export type UpdateObservabilityDestinationRequest = {
 
 /** @internal */
 export type UpdateObservabilityDestinationRequest$Outbound = {
+  name?: string | undefined;
   api_key_hashes?: Array<string> | null | undefined;
   broadcast_generation_cost?: boolean | undefined;
   broadcast_generation_cost_allocation?: boolean | undefined;
@@ -76,7 +77,6 @@ export type UpdateObservabilityDestinationRequest$Outbound = {
     | ObservabilityFilterRulesConfigNullable$Outbound
     | null
     | undefined;
-  name?: string | undefined;
   privacy_mode?: boolean | undefined;
   regions?: Array<string> | undefined;
   sampling_rate?: number | undefined;
@@ -87,6 +87,7 @@ export const UpdateObservabilityDestinationRequest$outboundSchema: z.ZodType<
   UpdateObservabilityDestinationRequest$Outbound,
   UpdateObservabilityDestinationRequest
 > = z.object({
+  name: z.string().optional(),
   apiKeyHashes: z.nullable(z.array(z.string())).optional(),
   broadcastGenerationCost: z.boolean().optional(),
   broadcastGenerationCostAllocation: z.boolean().optional(),
@@ -96,7 +97,6 @@ export const UpdateObservabilityDestinationRequest$outboundSchema: z.ZodType<
   enabled: z.boolean().optional(),
   filterRules: z.nullable(ObservabilityFilterRulesConfigNullable$outboundSchema)
     .optional(),
-  name: z.string().optional(),
   privacyMode: z.boolean().optional(),
   regions: z.array(ObservabilityDataRegionInput$outboundSchema).optional(),
   samplingRate: z.number().optional(),

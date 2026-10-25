@@ -10,12 +10,12 @@ Advisor tool result from a prior assistant turn, replayed back to the model on t
 import { MessagesAdvisorToolResultBlock } from "@openrouter/sdk/models";
 
 let value: MessagesAdvisorToolResultBlock = {
+  type: "advisor_tool_result",
   content: {
-    "text": "Advisor response text",
     "type": "advisor_result",
+    "text": "Advisor response text",
   },
   toolUseId: "srvtoolu_01abc",
-  type: "advisor_tool_result",
 };
 ```
 
@@ -23,6 +23,6 @@ let value: MessagesAdvisorToolResultBlock = {
 
 | Field                   | Type                    | Required                | Description             |
 | ----------------------- | ----------------------- | ----------------------- | ----------------------- |
+| `type`                  | *"advisor_tool_result"* | ✔️      | N/A                     |
 | `content`               | Record\<string, *any*>   | ✔️      | N/A                     |
 | `toolUseId`             | *string*                | ✔️      | N/A                     |
-| `type`                  | *"advisor_tool_result"* | ✔️      | N/A                     |

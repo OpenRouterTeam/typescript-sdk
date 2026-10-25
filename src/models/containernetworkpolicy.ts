@@ -8,13 +8,13 @@ import { remap as remap$ } from "../lib/primitives.js";
 
 export type ContainerNetworkPolicyAllowlist = {
   /**
-   * Hostnames the container may reach over ports 80/443 (max 50). Entries are lowercase hostnames or glob patterns where * matches any run of characters (e.g. *.example.com). An exact hostname does not cover its subdomains — use a glob or list each hostname. pip needs both pypi.org and files.pythonhosted.org (or *.pythonhosted.org).
-   */
-  allowedDomains: Array<string>;
-  /**
    * Outbound access restricted to the listed domains.
    */
   type: "allowlist";
+  /**
+   * Hostnames the container may reach over ports 80/443 (max 50). Entries are lowercase hostnames or glob patterns where * matches any run of characters (e.g. *.example.com). An exact hostname does not cover its subdomains — use a glob or list each hostname. pip needs both pypi.org and files.pythonhosted.org (or *.pythonhosted.org).
+   */
+  allowedDomains: Array<string>;
 };
 
 export type ContainerNetworkPolicyDisabled = {
@@ -33,8 +33,8 @@ export type ContainerNetworkPolicy =
 
 /** @internal */
 export type ContainerNetworkPolicyAllowlist$Outbound = {
-  allowed_domains: Array<string>;
   type: "allowlist";
+  allowed_domains: Array<string>;
 };
 
 /** @internal */
@@ -42,8 +42,8 @@ export const ContainerNetworkPolicyAllowlist$outboundSchema: z.ZodType<
   ContainerNetworkPolicyAllowlist$Outbound,
   ContainerNetworkPolicyAllowlist
 > = z.object({
-  allowedDomains: z.array(z.string()),
   type: z.literal("allowlist"),
+  allowedDomains: z.array(z.string()),
 }).transform((v) => {
   return remap$(v, {
     allowedDomains: "allowed_domains",

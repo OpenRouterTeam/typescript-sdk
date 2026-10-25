@@ -8,12 +8,12 @@ title: "AnthropicCitationCharLocationParam"
 import { AnthropicCitationCharLocationParam } from "@openrouter/sdk/models";
 
 let value: AnthropicCitationCharLocationParam = {
+  type: "char_location",
   citedText: "Example cited text",
   documentIndex: 0,
   documentTitle: null,
   endCharIndex: 18,
   startCharIndex: 0,
-  type: "char_location",
 };
 ```
 
@@ -21,9 +21,9 @@ let value: AnthropicCitationCharLocationParam = {
 
 | Field              | Type               | Required           | Description        |
 | ------------------ | ------------------ | ------------------ | ------------------ |
+| `type`             | *"char_location"*  | ✔️ | N/A                |
 | `citedText`        | *string*           | ✔️ | N/A                |
 | `documentIndex`    | *number*           | ✔️ | N/A                |
 | `documentTitle`    | *string*           | ✔️ | N/A                |
 | `endCharIndex`     | *number*           | ✔️ | N/A                |
 | `startCharIndex`   | *number*           | ✔️ | N/A                |
-| `type`             | *"char_location"*  | ✔️ | N/A                |

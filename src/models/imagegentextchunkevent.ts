@@ -30,6 +30,10 @@ export type ImageGenTextChunkEventPhase = OpenEnum<
  */
 export type ImageGenTextChunkEvent = {
   /**
+   * The event type
+   */
+  type: "image_generation.text_chunk";
+  /**
    * The generation phase this chunk belongs to. `content` is the renderable output; `reasoning` and `draft` are intermediate provider phases.
    */
   phase: ImageGenTextChunkEventPhase;
@@ -37,10 +41,6 @@ export type ImageGenTextChunkEvent = {
    * A text fragment of the image being generated (e.g. partial SVG markup)
    */
   text: string;
-  /**
-   * The event type
-   */
-  type: "image_generation.text_chunk";
 };
 
 /** @internal */
@@ -54,9 +54,9 @@ export const ImageGenTextChunkEvent$inboundSchema: z.ZodType<
   ImageGenTextChunkEvent,
   unknown
 > = z.object({
+  type: z.literal("image_generation.text_chunk"),
   phase: ImageGenTextChunkEventPhase$inboundSchema,
   text: z.string(),
-  type: z.literal("image_generation.text_chunk"),
 });
 
 export function imageGenTextChunkEventFromJSON(

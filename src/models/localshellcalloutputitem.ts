@@ -21,10 +21,10 @@ export type LocalShellCallOutputItemType = ClosedEnum<
  * Output from a local shell command execution
  */
 export type LocalShellCallOutputItem = {
+  type: LocalShellCallOutputItemType;
   id: string;
   output: string;
   status?: ToolCallStatus | null | undefined;
-  type: LocalShellCallOutputItemType;
 };
 
 /** @internal */
@@ -34,10 +34,10 @@ export const LocalShellCallOutputItemType$outboundSchema: z.ZodEnum<
 
 /** @internal */
 export type LocalShellCallOutputItem$Outbound = {
+  type: string;
   id: string;
   output: string;
   status?: string | null | undefined;
-  type: string;
 };
 
 /** @internal */
@@ -45,10 +45,10 @@ export const LocalShellCallOutputItem$outboundSchema: z.ZodType<
   LocalShellCallOutputItem$Outbound,
   LocalShellCallOutputItem
 > = z.object({
+  type: LocalShellCallOutputItemType$outboundSchema,
   id: z.string(),
   output: z.string(),
   status: z.nullable(ToolCallStatus$outboundSchema).optional(),
-  type: LocalShellCallOutputItemType$outboundSchema,
 });
 
 export function localShellCallOutputItemToJSON(

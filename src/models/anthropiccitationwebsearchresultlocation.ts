@@ -10,11 +10,11 @@ import { Result as SafeParseResult } from "../types/fp.js";
 import { SDKValidationError } from "./errors/sdkvalidationerror.js";
 
 export type AnthropicCitationWebSearchResultLocation = {
+  url: string;
   citedText: string;
   encryptedIndex: string;
   title: string | null;
   type: "web_search_result_location";
-  url: string;
 };
 
 /** @internal */
@@ -22,11 +22,11 @@ export const AnthropicCitationWebSearchResultLocation$inboundSchema: z.ZodType<
   AnthropicCitationWebSearchResultLocation,
   unknown
 > = z.object({
+  url: z.string(),
   cited_text: z.string(),
   encrypted_index: z.string(),
   title: z.nullable(z.string()),
   type: z.literal("web_search_result_location"),
-  url: z.string(),
 }).transform((v) => {
   return remap$(v, {
     "cited_text": "citedText",

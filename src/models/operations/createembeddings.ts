@@ -51,13 +51,13 @@ export type ImageUrl = {
 };
 
 export type ContentImageURL = {
-  imageUrl: ImageUrl;
   type: "image_url";
+  imageUrl: ImageUrl;
 };
 
 export type ContentText = {
-  text: string;
   type: "text";
+  text: string;
 };
 
 export type Content =
@@ -92,6 +92,10 @@ export type InputUnion =
  */
 export type CreateEmbeddingsRequestBody = {
   /**
+   * Metadata for observability and tracing. Known keys (trace_id, trace_name, span_name, generation_name, parent_span_id) have special handling. Additional keys are passed through as custom metadata to configured broadcast destinations.
+   */
+  trace?: models.TraceConfig | undefined;
+  /**
    * The number of dimensions for the output embeddings
    */
   dimensions?: number | undefined;
@@ -121,10 +125,6 @@ export type CreateEmbeddingsRequestBody = {
    * A unique identifier for grouping related requests (e.g., a conversation or agent workflow). Used for observability grouping in Broadcast and private logging; never sent to the provider. If provided in both the request body and the x-session-id header, the body value takes precedence. Maximum of 256 characters.
    */
   sessionId?: string | undefined;
-  /**
-   * Metadata for observability and tracing. Known keys (trace_id, trace_name, span_name, generation_name, parent_span_id) have special handling. Additional keys are passed through as custom metadata to configured broadcast destinations.
-   */
-  trace?: models.TraceConfig | undefined;
   /**
    * A unique identifier for the end-user
    */
@@ -286,8 +286,8 @@ export function imageUrlToJSON(imageUrl: ImageUrl): string {
 
 /** @internal */
 export type ContentImageURL$Outbound = {
-  image_url: ImageUrl$Outbound;
   type: "image_url";
+  image_url: ImageUrl$Outbound;
 };
 
 /** @internal */
@@ -295,8 +295,8 @@ export const ContentImageURL$outboundSchema: z.ZodType<
   ContentImageURL$Outbound,
   ContentImageURL
 > = z.object({
-  imageUrl: z.lazy(() => ImageUrl$outboundSchema),
   type: z.literal("image_url"),
+  imageUrl: z.lazy(() => ImageUrl$outboundSchema),
 }).transform((v) => {
   return remap$(v, {
     imageUrl: "image_url",
@@ -311,8 +311,8 @@ export function contentImageURLToJSON(
 
 /** @internal */
 export type ContentText$Outbound = {
-  text: string;
   type: "text";
+  text: string;
 };
 
 /** @internal */
@@ -320,8 +320,8 @@ export const ContentText$outboundSchema: z.ZodType<
   ContentText$Outbound,
   ContentText
 > = z.object({
-  text: z.string(),
   type: z.literal("text"),
+  text: z.string(),
 });
 
 export function contentTextToJSON(contentText: ContentText): string {
@@ -404,6 +404,7 @@ export function inputUnionToJSON(inputUnion: InputUnion): string {
 
 /** @internal */
 export type CreateEmbeddingsRequestBody$Outbound = {
+  trace?: models.TraceConfig$Outbound | undefined;
   dimensions?: number | undefined;
   encoding_format?: string | undefined;
   input:
@@ -416,7 +417,6 @@ export type CreateEmbeddingsRequestBody$Outbound = {
   model: string;
   provider?: models.ProviderPreferences$Outbound | null | undefined;
   session_id?: string | undefined;
-  trace?: models.TraceConfig$Outbound | undefined;
   user?: string | undefined;
 };
 
@@ -425,6 +425,7 @@ export const CreateEmbeddingsRequestBody$outboundSchema: z.ZodType<
   CreateEmbeddingsRequestBody$Outbound,
   CreateEmbeddingsRequestBody
 > = z.object({
+  trace: models.TraceConfig$outboundSchema.optional(),
   dimensions: z.int().optional(),
   encodingFormat: EncodingFormat$outboundSchema.optional(),
   input: z.union([
@@ -438,7 +439,6 @@ export const CreateEmbeddingsRequestBody$outboundSchema: z.ZodType<
   model: z.string(),
   provider: z.nullable(models.ProviderPreferences$outboundSchema).optional(),
   sessionId: z.string().optional(),
-  trace: models.TraceConfig$outboundSchema.optional(),
   user: z.string().optional(),
 }).transform((v) => {
   return remap$(v, {

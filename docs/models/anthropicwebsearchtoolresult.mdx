@@ -8,15 +8,15 @@ title: "AnthropicWebSearchToolResult"
 import { AnthropicWebSearchToolResult } from "@openrouter/sdk/models";
 
 let value: AnthropicWebSearchToolResult = {
+  type: "web_search_tool_result",
   caller: {
     type: "direct",
   },
   content: {
-    errorCode: "unavailable",
     type: "web_search_tool_result_error",
+    errorCode: "unavailable",
   },
   toolUseId: "<id>",
-  type: "web_search_tool_result",
 };
 ```
 
@@ -24,7 +24,7 @@ let value: AnthropicWebSearchToolResult = {
 
 | Field                                        | Type                                         | Required                                     | Description                                  | Example                                      |
 | -------------------------------------------- | -------------------------------------------- | -------------------------------------------- | -------------------------------------------- | -------------------------------------------- |
+| `type`                                       | *"web_search_tool_result"*                   | ✔️                           | N/A                                          |                                              |
 | `caller`                                     | *models.AnthropicCaller*                     | ✔️                           | N/A                                          | \{<br/>"type": "direct"<br/>}                 |
 | `content`                                    | *models.AnthropicWebSearchToolResultContent* | ✔️                           | N/A                                          |                                              |
 | `toolUseId`                                  | *string*                                     | ✔️                           | N/A                                          |                                              |
-| `type`                                       | *"web_search_tool_result"*                   | ✔️                           | N/A                                          |                                              |

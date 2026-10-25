@@ -10,12 +10,12 @@ Event emitted when reasoning summary text delta is streamed
 import { ReasoningSummaryTextDeltaEvent } from "@openrouter/sdk/models";
 
 let value: ReasoningSummaryTextDeltaEvent = {
+  type: "response.reasoning_summary_text.delta",
   delta: "<value>",
   itemId: "<id>",
   outputIndex: 326373,
   sequenceNumber: 0,
   summaryIndex: 214954,
-  type: "response.reasoning_summary_text.delta",
 };
 ```
 
@@ -23,9 +23,9 @@ let value: ReasoningSummaryTextDeltaEvent = {
 
 | Field                                     | Type                                      | Required                                  | Description                               |
 | ----------------------------------------- | ----------------------------------------- | ----------------------------------------- | ----------------------------------------- |
+| `type`                                    | *"response.reasoning_summary_text.delta"* | ✔️                        | N/A                                       |
 | `delta`                                   | *string*                                  | ✔️                        | N/A                                       |
 | `itemId`                                  | *string*                                  | ✔️                        | N/A                                       |
 | `outputIndex`                             | *number*                                  | ✔️                        | N/A                                       |
 | `sequenceNumber`                          | *number*                                  | ✔️                        | N/A                                       |
 | `summaryIndex`                            | *number*                                  | ✔️                        | N/A                                       |
-| `type`                                    | *"response.reasoning_summary_text.delta"* | ✔️                        | N/A                                       |

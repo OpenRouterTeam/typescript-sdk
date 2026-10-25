@@ -46,6 +46,7 @@ export type OutputItemCodeInterpreterCallStatus = OpenEnum<
 >;
 
 export type OutputItemCodeInterpreterCall = {
+  type: "code_interpreter_call";
   code?: string | null | undefined;
   containerId?: string | undefined;
   id: string;
@@ -59,7 +60,6 @@ export type OutputItemCodeInterpreterCall = {
     | null
     | undefined;
   status: OutputItemCodeInterpreterCallStatus;
-  type: "code_interpreter_call";
   additionalProperties?: { [k: string]: any } | undefined;
 };
 
@@ -96,6 +96,7 @@ export const OutputItemCodeInterpreterCall$inboundSchema: z.ZodType<
   unknown
 > = collectExtraKeys$(
   z.object({
+    type: z.literal("code_interpreter_call"),
     code: z.nullable(z.string()).optional(),
     container_id: z.string().optional(),
     id: z.string(),
@@ -109,7 +110,6 @@ export const OutputItemCodeInterpreterCall$inboundSchema: z.ZodType<
       ),
     ).optional(),
     status: OutputItemCodeInterpreterCallStatus$inboundSchema,
-    type: z.literal("code_interpreter_call"),
   }).catchall(z.any()),
   "additionalProperties",
   true,

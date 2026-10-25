@@ -13,10 +13,10 @@ import { SDKValidationError } from "./errors/sdkvalidationerror.js";
  * Code interpreter call in progress
  */
 export type CodeInterpreterCallInProgressEvent = {
+  type: "response.code_interpreter_call.in_progress";
   itemId: string;
   outputIndex: number;
   sequenceNumber: number;
-  type: "response.code_interpreter_call.in_progress";
 };
 
 /** @internal */
@@ -24,10 +24,10 @@ export const CodeInterpreterCallInProgressEvent$inboundSchema: z.ZodType<
   CodeInterpreterCallInProgressEvent,
   unknown
 > = z.object({
+  type: z.literal("response.code_interpreter_call.in_progress"),
   item_id: z.string(),
   output_index: z.int(),
   sequence_number: z.int(),
-  type: z.literal("response.code_interpreter_call.in_progress"),
 }).transform((v) => {
   return remap$(v, {
     "item_id": "itemId",

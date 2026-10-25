@@ -15,6 +15,13 @@ import {
   ToolCallStatus$outboundSchema,
 } from "./toolcallstatus.js";
 
+export const OutputTextEditorServerToolItemType = {
+  OpenrouterTextEditor: "openrouter:text_editor",
+} as const;
+export type OutputTextEditorServerToolItemType = ClosedEnum<
+  typeof OutputTextEditorServerToolItemType
+>;
+
 export const Command = {
   View: "view",
   Create: "create",
@@ -23,30 +30,16 @@ export const Command = {
 } as const;
 export type Command = OpenEnum<typeof Command>;
 
-export const OutputTextEditorServerToolItemType = {
-  OpenrouterTextEditor: "openrouter:text_editor",
-} as const;
-export type OutputTextEditorServerToolItemType = ClosedEnum<
-  typeof OutputTextEditorServerToolItemType
->;
-
 /**
  * An openrouter:text_editor server tool output item
  */
 export type OutputTextEditorServerToolItem = {
+  type: OutputTextEditorServerToolItemType;
   command?: Command | undefined;
   filePath?: string | undefined;
   id?: string | undefined;
   status: ToolCallStatus;
-  type: OutputTextEditorServerToolItemType;
 };
-
-/** @internal */
-export const Command$inboundSchema: z.ZodType<Command, unknown> = openEnums
-  .inboundSchema(Command);
-/** @internal */
-export const Command$outboundSchema: z.ZodType<string, Command> = openEnums
-  .outboundSchema(Command);
 
 /** @internal */
 export const OutputTextEditorServerToolItemType$inboundSchema: z.ZodEnum<
@@ -58,23 +51,30 @@ export const OutputTextEditorServerToolItemType$outboundSchema: z.ZodEnum<
 > = OutputTextEditorServerToolItemType$inboundSchema;
 
 /** @internal */
+export const Command$inboundSchema: z.ZodType<Command, unknown> = openEnums
+  .inboundSchema(Command);
+/** @internal */
+export const Command$outboundSchema: z.ZodType<string, Command> = openEnums
+  .outboundSchema(Command);
+
+/** @internal */
 export const OutputTextEditorServerToolItem$inboundSchema: z.ZodType<
   OutputTextEditorServerToolItem,
   unknown
 > = z.object({
+  type: OutputTextEditorServerToolItemType$inboundSchema,
   command: Command$inboundSchema.optional(),
   filePath: z.string().optional(),
   id: z.string().optional(),
   status: ToolCallStatus$inboundSchema,
-  type: OutputTextEditorServerToolItemType$inboundSchema,
 });
 /** @internal */
 export type OutputTextEditorServerToolItem$Outbound = {
+  type: string;
   command?: string | undefined;
   filePath?: string | undefined;
   id?: string | undefined;
   status: string;
-  type: string;
 };
 
 /** @internal */
@@ -82,11 +82,11 @@ export const OutputTextEditorServerToolItem$outboundSchema: z.ZodType<
   OutputTextEditorServerToolItem$Outbound,
   OutputTextEditorServerToolItem
 > = z.object({
+  type: OutputTextEditorServerToolItemType$outboundSchema,
   command: Command$outboundSchema.optional(),
   filePath: z.string().optional(),
   id: z.string().optional(),
   status: ToolCallStatus$outboundSchema,
-  type: OutputTextEditorServerToolItemType$outboundSchema,
 });
 
 export function outputTextEditorServerToolItemToJSON(

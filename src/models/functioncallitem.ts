@@ -11,20 +11,22 @@ import {
   ToolCallStatus$outboundSchema,
 } from "./toolcallstatus.js";
 
-export type FunctionCallItemSubagentItem = {
-  type: string;
-  additionalProperties?: { [k: string]: any } | undefined;
-};
-
 export const FunctionCallItemType = {
   FunctionCall: "function_call",
 } as const;
 export type FunctionCallItemType = ClosedEnum<typeof FunctionCallItemType>;
 
+export type FunctionCallItemSubagentItem = {
+  type: string;
+  additionalProperties?: { [k: string]: any } | undefined;
+};
+
 /**
  * A function call initiated by the model
  */
 export type FunctionCallItem = {
+  name: string;
+  type: FunctionCallItemType;
   arguments: string;
   /**
    * True when the model called a tool declared with `async: true` and may continue its turn before the output is returned. Return the result in a later request as a `function_call_output` with this `call_id`.
@@ -32,7 +34,6 @@ export type FunctionCallItem = {
   async?: boolean | null | undefined;
   callId: string;
   id?: string | null | undefined;
-  name: string;
   /**
    * Namespace qualifier for tools registered as part of a namespace tool group (e.g. an MCP server)
    */
@@ -46,8 +47,12 @@ export type FunctionCallItem = {
    * EXPERIMENTAL — subject to change without notice. The subagent's output items produced on this turn. Treat this as an opaque object; you must replay it in the request so that the subagent can continue execution of the tool with the same context. If a subagent created multiple parallel tool calls, only the first tool call will have this field. The other tool calls will only have `subagent_id`. Present only if the tool call originates from a subagent spawned by the `openrouter:subagent` server tool.
    */
   subagentItems?: Array<FunctionCallItemSubagentItem> | null | undefined;
-  type: FunctionCallItemType;
 };
+
+/** @internal */
+export const FunctionCallItemType$outboundSchema: z.ZodEnum<
+  typeof FunctionCallItemType
+> = z.enum(FunctionCallItemType);
 
 /** @internal */
 export type FunctionCallItemSubagentItem$Outbound = {
@@ -82,17 +87,13 @@ export function functionCallItemSubagentItemToJSON(
 }
 
 /** @internal */
-export const FunctionCallItemType$outboundSchema: z.ZodEnum<
-  typeof FunctionCallItemType
-> = z.enum(FunctionCallItemType);
-
-/** @internal */
 export type FunctionCallItem$Outbound = {
+  name: string;
+  type: string;
   arguments: string;
   async?: boolean | null | undefined;
   call_id: string;
   id?: string | null | undefined;
-  name: string;
   namespace?: string | null | undefined;
   status?: string | null | undefined;
   subagent_id?: string | null | undefined;
@@ -100,7 +101,6 @@ export type FunctionCallItem$Outbound = {
     | Array<FunctionCallItemSubagentItem$Outbound>
     | null
     | undefined;
-  type: string;
 };
 
 /** @internal */
@@ -108,18 +108,18 @@ export const FunctionCallItem$outboundSchema: z.ZodType<
   FunctionCallItem$Outbound,
   FunctionCallItem
 > = z.object({
+  name: z.string(),
+  type: FunctionCallItemType$outboundSchema,
   arguments: z.string(),
   async: z.nullable(z.boolean()).optional(),
   callId: z.string(),
   id: z.nullable(z.string()).optional(),
-  name: z.string(),
   namespace: z.nullable(z.string()).optional(),
   status: z.nullable(ToolCallStatus$outboundSchema).optional(),
   subagentId: z.nullable(z.string()).optional(),
   subagentItems: z.nullable(
     z.array(z.lazy(() => FunctionCallItemSubagentItem$outboundSchema)),
   ).optional(),
-  type: FunctionCallItemType$outboundSchema,
 }).transform((v) => {
   return remap$(v, {
     callId: "call_id",

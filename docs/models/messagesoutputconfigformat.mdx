@@ -10,8 +10,8 @@ A schema to specify Claude's output format in responses. See [structured outputs
 import { MessagesOutputConfigFormat } from "@openrouter/sdk/models";
 
 let value: MessagesOutputConfigFormat = {
-  schema: {},
   type: "json_schema",
+  schema: {},
 };
 ```
 
@@ -19,5 +19,5 @@ let value: MessagesOutputConfigFormat = {
 
 | Field                                                                                        | Type                                                                                         | Required                                                                                     | Description                                                                                  |
 | -------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------- |
-| `schema`                                                                                     | Record\<string, *any*>                                                                        | ✔️                                                                           | N/A                                                                                          |
 | `type`                                                                                       | [models.MessagesOutputConfigTypeJSONSchema](../models/messagesoutputconfigtypejsonschema.mdx) | ✔️                                                                           | N/A                                                                                          |
+| `schema`                                                                                     | Record\<string, *any*>                                                                        | ✔️                                                                           | N/A                                                                                          |

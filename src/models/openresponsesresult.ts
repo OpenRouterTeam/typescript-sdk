@@ -132,8 +132,8 @@ export type OpenResponsesResultAllowedCaller = OpenEnum<
  */
 export type OpenResponsesResultToolFunction = {
   description?: string | null | undefined;
-  name: string;
   parameters: { [k: string]: any } | null;
+  name: string;
   strict?: boolean | null | undefined;
   type: "function";
   allowedCallers?: Array<OpenResponsesResultAllowedCaller> | null | undefined;
@@ -313,8 +313,8 @@ export const OpenResponsesResultToolFunction$inboundSchema: z.ZodType<
   unknown
 > = z.object({
   description: z.nullable(z.string()).optional(),
-  name: z.string(),
   parameters: z.nullable(z.record(z.string(), z.any())),
+  name: z.string(),
   strict: z.nullable(z.boolean()).optional(),
   type: z.literal("function"),
   allowed_callers: z.nullable(

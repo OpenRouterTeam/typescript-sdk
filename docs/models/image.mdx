@@ -8,10 +8,10 @@ title: "Image"
 import { Image } from "@openrouter/sdk/models";
 
 let value: Image = {
+  type: "image_url",
   imageUrl: {
     url: "https://inexperienced-derby.org/",
   },
-  type: "image_url",
 };
 ```
 
@@ -19,5 +19,5 @@ let value: Image = {
 
 | Field                                                                | Type                                                                 | Required                                                             | Description                                                          |
 | -------------------------------------------------------------------- | -------------------------------------------------------------------- | -------------------------------------------------------------------- | -------------------------------------------------------------------- |
-| `imageUrl`                                                           | [models.BatchObjectImageUrl](../models/batchobjectimageurl.mdx)       | ✔️                                                   | N/A                                                                  |
 | `type`                                                               | [models.ChoiceTypeImageURLEnum](../models/choicetypeimageurlenum.mdx) | ✔️                                                   | N/A                                                                  |
+| `imageUrl`                                                           | [models.BatchObjectImageUrl](../models/batchobjectimageurl.mdx)       | ✔️                                                   | N/A                                                                  |

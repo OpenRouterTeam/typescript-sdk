@@ -8,13 +8,13 @@ title: "AnthropicCitationCharLocation"
 import { AnthropicCitationCharLocation } from "@openrouter/sdk/models";
 
 let value: AnthropicCitationCharLocation = {
+  type: "char_location",
   citedText: "Example text",
   documentIndex: 0,
   documentTitle: null,
   endCharIndex: 10,
   fileId: null,
   startCharIndex: 0,
-  type: "char_location",
 };
 ```
 
@@ -22,10 +22,10 @@ let value: AnthropicCitationCharLocation = {
 
 | Field              | Type               | Required           | Description        |
 | ------------------ | ------------------ | ------------------ | ------------------ |
+| `type`             | *"char_location"*  | ✔️ | N/A                |
 | `citedText`        | *string*           | ✔️ | N/A                |
 | `documentIndex`    | *number*           | ✔️ | N/A                |
 | `documentTitle`    | *string*           | ✔️ | N/A                |
 | `endCharIndex`     | *number*           | ✔️ | N/A                |
 | `fileId`           | *string*           | ✔️ | N/A                |
 | `startCharIndex`   | *number*           | ✔️ | N/A                |
-| `type`             | *"char_location"*  | ✔️ | N/A                |

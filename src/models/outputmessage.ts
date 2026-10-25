@@ -77,6 +77,7 @@ export type OutputMessageStatusUnion =
   | OutputMessageStatusInProgress;
 
 export type OutputMessage = {
+  type: "message";
   content: Array<
     | ResponseOutputText
     | OpenAIResponsesRefusalContent
@@ -97,7 +98,6 @@ export type OutputMessage = {
     | OutputMessageStatusIncomplete
     | OutputMessageStatusInProgress
     | undefined;
-  type: "message";
 };
 
 /** @internal */
@@ -191,6 +191,7 @@ export function outputMessageStatusUnionFromJSON(
 /** @internal */
 export const OutputMessage$inboundSchema: z.ZodType<OutputMessage, unknown> = z
   .object({
+    type: z.literal("message"),
     content: z.array(
       discriminatedUnion("type", {
         output_text: ResponseOutputText$inboundSchema,
@@ -210,7 +211,6 @@ export const OutputMessage$inboundSchema: z.ZodType<OutputMessage, unknown> = z
       OutputMessageStatusIncomplete$inboundSchema,
       OutputMessageStatusInProgress$inboundSchema,
     ]).optional(),
-    type: z.literal("message"),
   });
 
 export function outputMessageFromJSON(

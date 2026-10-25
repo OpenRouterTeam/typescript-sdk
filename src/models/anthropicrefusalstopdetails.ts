@@ -10,6 +10,13 @@ import { ClosedEnum, OpenEnum } from "../types/enums.js";
 import { Result as SafeParseResult } from "../types/fp.js";
 import { SDKValidationError } from "./errors/sdkvalidationerror.js";
 
+export const AnthropicRefusalStopDetailsType = {
+  Refusal: "refusal",
+} as const;
+export type AnthropicRefusalStopDetailsType = ClosedEnum<
+  typeof AnthropicRefusalStopDetailsType
+>;
+
 export const AnthropicRefusalStopDetailsCategory = {
   Cyber: "cyber",
   Bio: "bio",
@@ -21,21 +28,19 @@ export type AnthropicRefusalStopDetailsCategory = OpenEnum<
   typeof AnthropicRefusalStopDetailsCategory
 >;
 
-export const AnthropicRefusalStopDetailsType = {
-  Refusal: "refusal",
-} as const;
-export type AnthropicRefusalStopDetailsType = ClosedEnum<
-  typeof AnthropicRefusalStopDetailsType
->;
-
 /**
  * Structured information about a refusal
  */
 export type AnthropicRefusalStopDetails = {
+  type: AnthropicRefusalStopDetailsType;
   category: AnthropicRefusalStopDetailsCategory | null;
   explanation: string | null;
-  type: AnthropicRefusalStopDetailsType;
 };
+
+/** @internal */
+export const AnthropicRefusalStopDetailsType$inboundSchema: z.ZodEnum<
+  typeof AnthropicRefusalStopDetailsType
+> = z.enum(AnthropicRefusalStopDetailsType);
 
 /** @internal */
 export const AnthropicRefusalStopDetailsCategory$inboundSchema: z.ZodType<
@@ -44,18 +49,13 @@ export const AnthropicRefusalStopDetailsCategory$inboundSchema: z.ZodType<
 > = openEnums.inboundSchema(AnthropicRefusalStopDetailsCategory);
 
 /** @internal */
-export const AnthropicRefusalStopDetailsType$inboundSchema: z.ZodEnum<
-  typeof AnthropicRefusalStopDetailsType
-> = z.enum(AnthropicRefusalStopDetailsType);
-
-/** @internal */
 export const AnthropicRefusalStopDetails$inboundSchema: z.ZodType<
   AnthropicRefusalStopDetails,
   unknown
 > = z.object({
+  type: AnthropicRefusalStopDetailsType$inboundSchema,
   category: z.nullable(AnthropicRefusalStopDetailsCategory$inboundSchema),
   explanation: z.nullable(z.string()),
-  type: AnthropicRefusalStopDetailsType$inboundSchema,
 });
 
 export function anthropicRefusalStopDetailsFromJSON(

@@ -14,6 +14,10 @@ import { SDKValidationError } from "./errors/sdkvalidationerror.js";
  */
 export type ImageGenPartialImageEvent = {
   /**
+   * The event type
+   */
+  type: "image_generation.partial_image";
+  /**
    * Base64-encoded partial image data
    */
   b64Json: string;
@@ -21,10 +25,6 @@ export type ImageGenPartialImageEvent = {
    * 0-based index indicating which partial image this is in the sequence
    */
   partialImageIndex: number;
-  /**
-   * The event type
-   */
-  type: "image_generation.partial_image";
 };
 
 /** @internal */
@@ -32,9 +32,9 @@ export const ImageGenPartialImageEvent$inboundSchema: z.ZodType<
   ImageGenPartialImageEvent,
   unknown
 > = z.object({
+  type: z.literal("image_generation.partial_image"),
   b64_json: z.string(),
   partial_image_index: z.int(),
-  type: z.literal("image_generation.partial_image"),
 }).transform((v) => {
   return remap$(v, {
     "b64_json": "b64Json",

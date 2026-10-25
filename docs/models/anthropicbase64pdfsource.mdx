@@ -8,9 +8,9 @@ title: "AnthropicBase64PdfSource"
 import { AnthropicBase64PdfSource } from "@openrouter/sdk/models";
 
 let value: AnthropicBase64PdfSource = {
+  type: "base64",
   data: "JVBERi0x...",
   mediaType: "application/pdf",
-  type: "base64",
 };
 ```
 
@@ -18,6 +18,6 @@ let value: AnthropicBase64PdfSource = {
 
 | Field                                                                                      | Type                                                                                       | Required                                                                                   | Description                                                                                |
 | ------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------ |
+| `type`                                                                                     | *"base64"*                                                                                 | ✔️                                                                         | N/A                                                                                        |
 | `data`                                                                                     | *string*                                                                                   | ✔️                                                                         | N/A                                                                                        |
 | `mediaType`                                                                                | [models.AnthropicBase64PdfSourceMediaType](../models/anthropicbase64pdfsourcemediatype.mdx) | ✔️                                                                         | N/A                                                                                        |
-| `type`                                                                                     | [models.AnthropicBase64PdfSourceType](../models/anthropicbase64pdfsourcetype.mdx)           | ✔️                                                                         | N/A                                                                                        |

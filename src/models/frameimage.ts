@@ -8,14 +8,14 @@ import { remap as remap$ } from "../lib/primitives.js";
 import * as openEnums from "../types/enums.js";
 import { ClosedEnum, OpenEnum } from "../types/enums.js";
 
-export type FrameImageImageUrl = {
-  url: string;
-};
-
 export const FrameImageType = {
   ImageUrl: "image_url",
 } as const;
 export type FrameImageType = ClosedEnum<typeof FrameImageType>;
+
+export type FrameImageImageUrl = {
+  url: string;
+};
 
 /**
  * Whether this image represents the first or last frame of the video
@@ -30,13 +30,17 @@ export const FrameType = {
 export type FrameType = OpenEnum<typeof FrameType>;
 
 export type FrameImage = {
-  imageUrl: FrameImageImageUrl;
   type: FrameImageType;
+  imageUrl: FrameImageImageUrl;
   /**
    * Whether this image represents the first or last frame of the video
    */
   frameType: FrameType;
 };
+
+/** @internal */
+export const FrameImageType$outboundSchema: z.ZodEnum<typeof FrameImageType> = z
+  .enum(FrameImageType);
 
 /** @internal */
 export type FrameImageImageUrl$Outbound = {
@@ -60,17 +64,13 @@ export function frameImageImageUrlToJSON(
 }
 
 /** @internal */
-export const FrameImageType$outboundSchema: z.ZodEnum<typeof FrameImageType> = z
-  .enum(FrameImageType);
-
-/** @internal */
 export const FrameType$outboundSchema: z.ZodType<string, FrameType> = openEnums
   .outboundSchema(FrameType);
 
 /** @internal */
 export type FrameImage$Outbound = {
-  image_url: FrameImageImageUrl$Outbound;
   type: string;
+  image_url: FrameImageImageUrl$Outbound;
   frame_type: string;
 };
 
@@ -79,8 +79,8 @@ export const FrameImage$outboundSchema: z.ZodType<
   FrameImage$Outbound,
   FrameImage
 > = z.object({
-  imageUrl: z.lazy(() => FrameImageImageUrl$outboundSchema),
   type: FrameImageType$outboundSchema,
+  imageUrl: z.lazy(() => FrameImageImageUrl$outboundSchema),
   frameType: FrameType$outboundSchema,
 }).transform((v) => {
   return remap$(v, {

@@ -14,9 +14,9 @@ import {
 import { SDKValidationError } from "./errors/sdkvalidationerror.js";
 
 export type AnthropicToolSearchResultError = {
+  type: "tool_search_tool_result_error";
   errorCode: AnthropicServerToolErrorCode;
   errorMessage: string | null;
-  type: "tool_search_tool_result_error";
 };
 
 /** @internal */
@@ -24,9 +24,9 @@ export const AnthropicToolSearchResultError$inboundSchema: z.ZodType<
   AnthropicToolSearchResultError,
   unknown
 > = z.object({
+  type: z.literal("tool_search_tool_result_error"),
   error_code: AnthropicServerToolErrorCode$inboundSchema,
   error_message: z.nullable(z.string()),
-  type: z.literal("tool_search_tool_result_error"),
 }).transform((v) => {
   return remap$(v, {
     "error_code": "errorCode",

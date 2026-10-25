@@ -17,12 +17,12 @@ import {
  * Event emitted when a response has completed successfully
  */
 export type StreamEventsResponseCompleted = {
+  type: "response.completed";
   /**
    * Complete non-streaming response from the Responses API
    */
   response: OpenResponsesResult;
   sequenceNumber: number;
-  type: "response.completed";
 };
 
 /** @internal */
@@ -30,9 +30,9 @@ export const StreamEventsResponseCompleted$inboundSchema: z.ZodType<
   StreamEventsResponseCompleted,
   unknown
 > = z.object({
+  type: z.literal("response.completed"),
   response: OpenResponsesResult$inboundSchema,
   sequence_number: z.int(),
-  type: z.literal("response.completed"),
 }).transform((v) => {
   return remap$(v, {
     "sequence_number": "sequenceNumber",

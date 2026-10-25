@@ -28,6 +28,10 @@ export type STTWordType = OpenEnum<typeof STTWordType>;
  */
 export type STTWord = {
   /**
+   * Kind of entry; omitted or "word" for spoken words, "audio_event" for non-speech sounds the provider tags with timestamps
+   */
+  type?: STTWordType | undefined;
+  /**
    * Zero-based audio channel index for the word, present when the provider transcribes channels separately
    */
   channel?: number | undefined;
@@ -52,10 +56,6 @@ export type STTWord = {
    */
   start: number;
   /**
-   * Kind of entry; omitted or "word" for spoken words, "audio_event" for non-speech sounds the provider tags with timestamps
-   */
-  type?: STTWordType | undefined;
-  /**
    * The transcribed word, or the event tag such as "(laughter)" when type is audio_event
    */
   word: string;
@@ -67,13 +67,13 @@ export const STTWordType$inboundSchema: z.ZodType<STTWordType, unknown> =
 
 /** @internal */
 export const STTWord$inboundSchema: z.ZodType<STTWord, unknown> = z.object({
+  type: STTWordType$inboundSchema.optional(),
   channel: z.int().optional(),
   confidence: z.number().optional(),
   end: z.number(),
   speaker: z.int().optional(),
   speaker_label: z.string().optional(),
   start: z.number(),
-  type: STTWordType$inboundSchema.optional(),
   word: z.string(),
 }).transform((v) => {
   return remap$(v, {

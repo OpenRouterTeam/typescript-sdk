@@ -21,6 +21,8 @@ export type AnthropicSearchResultBlockParamCitations = {
 };
 
 export type AnthropicSearchResultBlockParam = {
+  type: "search_result";
+  title: string;
   /**
    * Enable automatic prompt caching. When set at the top level, the system automatically applies cache breakpoints to the last cacheable block in the request. When set on an individual content block, it marks an explicit cache breakpoint; block-level markers also work on OpenAI models that support explicit prompt caching — OpenRouter converts them to the provider's native format.
    */
@@ -28,8 +30,6 @@ export type AnthropicSearchResultBlockParam = {
   citations?: AnthropicSearchResultBlockParamCitations | undefined;
   content: Array<AnthropicTextBlockParam>;
   source: string;
-  title: string;
-  type: "search_result";
 };
 
 /** @internal */
@@ -58,12 +58,12 @@ export function anthropicSearchResultBlockParamCitationsToJSON(
 
 /** @internal */
 export type AnthropicSearchResultBlockParam$Outbound = {
+  type: "search_result";
+  title: string;
   cache_control?: AnthropicCacheControlDirective$Outbound | undefined;
   citations?: AnthropicSearchResultBlockParamCitations$Outbound | undefined;
   content: Array<AnthropicTextBlockParam$Outbound>;
   source: string;
-  title: string;
-  type: "search_result";
 };
 
 /** @internal */
@@ -71,14 +71,14 @@ export const AnthropicSearchResultBlockParam$outboundSchema: z.ZodType<
   AnthropicSearchResultBlockParam$Outbound,
   AnthropicSearchResultBlockParam
 > = z.object({
+  type: z.literal("search_result"),
+  title: z.string(),
   cacheControl: AnthropicCacheControlDirective$outboundSchema.optional(),
   citations: z.lazy(() =>
     AnthropicSearchResultBlockParamCitations$outboundSchema
   ).optional(),
   content: z.array(AnthropicTextBlockParam$outboundSchema),
   source: z.string(),
-  title: z.string(),
-  type: z.literal("search_result"),
 }).transform((v) => {
   return remap$(v, {
     cacheControl: "cache_control",

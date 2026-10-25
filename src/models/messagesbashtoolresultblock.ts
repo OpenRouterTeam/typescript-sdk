@@ -15,18 +15,19 @@ export type MessagesBashToolResultBlockTypeContainerFileCitation = ClosedEnum<
 >;
 
 export type MessagesBashToolResultBlockFile = {
+  type: MessagesBashToolResultBlockTypeContainerFileCitation;
   containerId: string;
   endIndex: number;
   fileId: string;
   filename: string;
   startIndex: number;
-  type: MessagesBashToolResultBlockTypeContainerFileCitation;
 };
 
 /**
  * Output of a sandbox-executed `openrouter:bash` call from a prior assistant turn. Accepted on replay and dropped before the provider request — Anthropic has no equivalent block.
  */
 export type MessagesBashToolResultBlock = {
+  type: "openrouter_bash_tool_result";
   /**
    * The canonical container id the command ran under — the `{container_id}` for the Container Files API, reusable as a `container_reference` in later requests. Present on every sandbox-executed call, even when no files changed.
    */
@@ -37,7 +38,6 @@ export type MessagesBashToolResultBlock = {
    */
   files?: Array<MessagesBashToolResultBlockFile> | undefined;
   toolUseId: string;
-  type: "openrouter_bash_tool_result";
 };
 
 /** @internal */
@@ -47,12 +47,12 @@ export const MessagesBashToolResultBlockTypeContainerFileCitation$outboundSchema
 
 /** @internal */
 export type MessagesBashToolResultBlockFile$Outbound = {
+  type: string;
   container_id: string;
   end_index: number;
   file_id: string;
   filename: string;
   start_index: number;
-  type: string;
 };
 
 /** @internal */
@@ -60,12 +60,12 @@ export const MessagesBashToolResultBlockFile$outboundSchema: z.ZodType<
   MessagesBashToolResultBlockFile$Outbound,
   MessagesBashToolResultBlockFile
 > = z.object({
+  type: MessagesBashToolResultBlockTypeContainerFileCitation$outboundSchema,
   containerId: z.string(),
   endIndex: z.int(),
   fileId: z.string(),
   filename: z.string(),
   startIndex: z.int(),
-  type: MessagesBashToolResultBlockTypeContainerFileCitation$outboundSchema,
 }).transform((v) => {
   return remap$(v, {
     containerId: "container_id",
@@ -87,11 +87,11 @@ export function messagesBashToolResultBlockFileToJSON(
 
 /** @internal */
 export type MessagesBashToolResultBlock$Outbound = {
+  type: "openrouter_bash_tool_result";
   container_id?: string | undefined;
   content: { [k: string]: any };
   files?: Array<MessagesBashToolResultBlockFile$Outbound> | undefined;
   tool_use_id: string;
-  type: "openrouter_bash_tool_result";
 };
 
 /** @internal */
@@ -99,12 +99,12 @@ export const MessagesBashToolResultBlock$outboundSchema: z.ZodType<
   MessagesBashToolResultBlock$Outbound,
   MessagesBashToolResultBlock
 > = z.object({
+  type: z.literal("openrouter_bash_tool_result"),
   containerId: z.string().optional(),
   content: z.record(z.string(), z.any()),
   files: z.array(z.lazy(() => MessagesBashToolResultBlockFile$outboundSchema))
     .optional(),
   toolUseId: z.string(),
-  type: z.literal("openrouter_bash_tool_result"),
 }).transform((v) => {
   return remap$(v, {
     containerId: "container_id",

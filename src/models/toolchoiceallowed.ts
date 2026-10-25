@@ -9,6 +9,11 @@ import { ClosedEnum } from "../types/enums.js";
 import { Result as SafeParseResult } from "../types/fp.js";
 import { SDKValidationError } from "./errors/sdkvalidationerror.js";
 
+export const ToolChoiceAllowedType = {
+  AllowedTools: "allowed_tools",
+} as const;
+export type ToolChoiceAllowedType = ClosedEnum<typeof ToolChoiceAllowedType>;
+
 export const ModeRequired = {
   Required: "required",
 } as const;
@@ -21,19 +26,23 @@ export type ModeAuto = ClosedEnum<typeof ModeAuto>;
 
 export type Mode = ModeAuto | ModeRequired;
 
-export const ToolChoiceAllowedType = {
-  AllowedTools: "allowed_tools",
-} as const;
-export type ToolChoiceAllowedType = ClosedEnum<typeof ToolChoiceAllowedType>;
-
 /**
  * Constrains the model to a pre-defined set of allowed tools
  */
 export type ToolChoiceAllowed = {
+  type: ToolChoiceAllowedType;
   mode: ModeAuto | ModeRequired;
   tools: Array<{ [k: string]: any }>;
-  type: ToolChoiceAllowedType;
 };
+
+/** @internal */
+export const ToolChoiceAllowedType$inboundSchema: z.ZodEnum<
+  typeof ToolChoiceAllowedType
+> = z.enum(ToolChoiceAllowedType);
+/** @internal */
+export const ToolChoiceAllowedType$outboundSchema: z.ZodEnum<
+  typeof ToolChoiceAllowedType
+> = ToolChoiceAllowedType$inboundSchema;
 
 /** @internal */
 export const ModeRequired$inboundSchema: z.ZodEnum<typeof ModeRequired> = z
@@ -78,28 +87,19 @@ export function modeFromJSON(
 }
 
 /** @internal */
-export const ToolChoiceAllowedType$inboundSchema: z.ZodEnum<
-  typeof ToolChoiceAllowedType
-> = z.enum(ToolChoiceAllowedType);
-/** @internal */
-export const ToolChoiceAllowedType$outboundSchema: z.ZodEnum<
-  typeof ToolChoiceAllowedType
-> = ToolChoiceAllowedType$inboundSchema;
-
-/** @internal */
 export const ToolChoiceAllowed$inboundSchema: z.ZodType<
   ToolChoiceAllowed,
   unknown
 > = z.object({
+  type: ToolChoiceAllowedType$inboundSchema,
   mode: z.union([ModeAuto$inboundSchema, ModeRequired$inboundSchema]),
   tools: z.array(z.record(z.string(), z.any())),
-  type: ToolChoiceAllowedType$inboundSchema,
 });
 /** @internal */
 export type ToolChoiceAllowed$Outbound = {
+  type: string;
   mode: string | string;
   tools: Array<{ [k: string]: any }>;
-  type: string;
 };
 
 /** @internal */
@@ -107,9 +107,9 @@ export const ToolChoiceAllowed$outboundSchema: z.ZodType<
   ToolChoiceAllowed$Outbound,
   ToolChoiceAllowed
 > = z.object({
+  type: ToolChoiceAllowedType$outboundSchema,
   mode: z.union([ModeAuto$outboundSchema, ModeRequired$outboundSchema]),
   tools: z.array(z.record(z.string(), z.any())),
-  type: ToolChoiceAllowedType$outboundSchema,
 });
 
 export function toolChoiceAllowedToJSON(

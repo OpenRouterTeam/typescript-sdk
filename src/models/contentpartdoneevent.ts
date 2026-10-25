@@ -33,6 +33,7 @@ export type ContentPartDoneEventPart =
  * Event emitted when a content part is complete
  */
 export type ContentPartDoneEvent = {
+  type: "response.content_part.done";
   contentIndex: number;
   itemId: string;
   outputIndex: number;
@@ -42,7 +43,6 @@ export type ContentPartDoneEvent = {
     | OpenAIResponsesRefusalContent
     | discriminatedUnionTypes.Unknown<"type">;
   sequenceNumber: number;
-  type: "response.content_part.done";
 };
 
 /** @internal */
@@ -72,6 +72,7 @@ export const ContentPartDoneEvent$inboundSchema: z.ZodType<
   ContentPartDoneEvent,
   unknown
 > = z.object({
+  type: z.literal("response.content_part.done"),
   content_index: z.int(),
   item_id: z.string(),
   output_index: z.int(),
@@ -83,7 +84,6 @@ export const ContentPartDoneEvent$inboundSchema: z.ZodType<
     refusal: OpenAIResponsesRefusalContent$inboundSchema,
   }),
   sequence_number: z.int(),
-  type: z.literal("response.content_part.done"),
 }).transform((v) => {
   return remap$(v, {
     "content_index": "contentIndex",

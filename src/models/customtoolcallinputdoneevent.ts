@@ -13,11 +13,11 @@ import { SDKValidationError } from "./errors/sdkvalidationerror.js";
  * Event emitted when a custom tool call's freeform input streaming is complete. Mirrors `response.function_call_arguments.done` but for `custom` tools.
  */
 export type CustomToolCallInputDoneEvent = {
+  type: "response.custom_tool_call_input.done";
   input: string;
   itemId: string;
   outputIndex: number;
   sequenceNumber: number;
-  type: "response.custom_tool_call_input.done";
 };
 
 /** @internal */
@@ -25,11 +25,11 @@ export const CustomToolCallInputDoneEvent$inboundSchema: z.ZodType<
   CustomToolCallInputDoneEvent,
   unknown
 > = z.object({
+  type: z.literal("response.custom_tool_call_input.done"),
   input: z.string(),
   item_id: z.string(),
   output_index: z.int(),
   sequence_number: z.int(),
-  type: z.literal("response.custom_tool_call_input.done"),
 }).transform((v) => {
   return remap$(v, {
     "item_id": "itemId",

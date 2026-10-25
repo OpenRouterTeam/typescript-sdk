@@ -8,10 +8,10 @@ title: "OutputComputerCallItem"
 import { OutputComputerCallItem } from "@openrouter/sdk/models";
 
 let value: OutputComputerCallItem = {
+  type: "computer_call",
   callId: "<id>",
   pendingSafetyChecks: [],
   status: "completed",
-  type: "computer_call",
 };
 ```
 
@@ -19,9 +19,9 @@ let value: OutputComputerCallItem = {
 
 | Field                                                                            | Type                                                                             | Required                                                                         | Description                                                                      |
 | -------------------------------------------------------------------------------- | -------------------------------------------------------------------------------- | -------------------------------------------------------------------------------- | -------------------------------------------------------------------------------- |
+| `type`                                                                           | [models.OutputComputerCallItemType](../models/outputcomputercallitemtype.mdx)     | ✔️                                                               | N/A                                                                              |
 | `action`                                                                         | *any*                                                                            | ➖                                                               | N/A                                                                              |
 | `callId`                                                                         | *string*                                                                         | ✔️                                                               | N/A                                                                              |
 | `id`                                                                             | *string*                                                                         | ➖                                                               | N/A                                                                              |
 | `pendingSafetyChecks`                                                            | [models.PendingSafetyCheck](../models/pendingsafetycheck.mdx)[]                   | ✔️                                                               | N/A                                                                              |
 | `status`                                                                         | [models.OutputComputerCallItemStatus](../models/outputcomputercallitemstatus.mdx) | ✔️                                                               | N/A                                                                              |
-| `type`                                                                           | [models.OutputComputerCallItemType](../models/outputcomputercallitemtype.mdx)     | ✔️                                                               | N/A                                                                              |

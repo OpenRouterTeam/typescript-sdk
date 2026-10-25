@@ -25,12 +25,12 @@ export type OutputToolSearchCallItemExecution = ClosedEnum<
  * A call the model made to a `tool_search` tool declared with `"execution": "client"`. The client runs the search and replays this item with a `tool_search_output` item.
  */
 export type OutputToolSearchCallItem = {
+  type: "tool_search_call";
   arguments?: any | undefined;
   callId: string;
   execution: OutputToolSearchCallItemExecution;
   id?: string | undefined;
   status: ToolCallStatus;
-  type: "tool_search_call";
 };
 
 /** @internal */
@@ -43,12 +43,12 @@ export const OutputToolSearchCallItem$inboundSchema: z.ZodType<
   OutputToolSearchCallItem,
   unknown
 > = z.object({
+  type: z.literal("tool_search_call"),
   arguments: z.any().optional(),
   call_id: z.string(),
   execution: OutputToolSearchCallItemExecution$inboundSchema,
   id: z.string().optional(),
   status: ToolCallStatus$inboundSchema,
-  type: z.literal("tool_search_call"),
 }).transform((v) => {
   return remap$(v, {
     "call_id": "callId",

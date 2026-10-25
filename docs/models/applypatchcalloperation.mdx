@@ -11,9 +11,9 @@ The patch operation requested by an `apply_patch_call`. `create_file` and `updat
 
 ```typescript
 const value: models.ApplyPatchCreateFileOperation = {
+  type: "create_file",
   diff: "@@\n+console.log(\"hi\");\n",
   path: "/src/main.ts",
-  type: "create_file",
 };
 ```
 
@@ -21,8 +21,8 @@ const value: models.ApplyPatchCreateFileOperation = {
 
 ```typescript
 const value: models.ApplyPatchDeleteFileOperation = {
-  path: "/src/main.ts",
   type: "delete_file",
+  path: "/src/main.ts",
 };
 ```
 
@@ -30,9 +30,9 @@ const value: models.ApplyPatchDeleteFileOperation = {
 
 ```typescript
 const value: models.ApplyPatchUpdateFileOperation = {
+  type: "update_file",
   diff: "@@ function main() {\n+  console.log(\"hi\");\n }",
   path: "/src/main.ts",
-  type: "update_file",
 };
 ```
 

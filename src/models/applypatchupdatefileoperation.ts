@@ -12,9 +12,9 @@ import { SDKValidationError } from "./errors/sdkvalidationerror.js";
  * The `update_file` variant of an `apply_patch_call.operation`. Carries a V4A diff describing edits to an existing file.
  */
 export type ApplyPatchUpdateFileOperation = {
+  type: "update_file";
   diff: string;
   path: string;
-  type: "update_file";
 };
 
 /** @internal */
@@ -22,15 +22,15 @@ export const ApplyPatchUpdateFileOperation$inboundSchema: z.ZodType<
   ApplyPatchUpdateFileOperation,
   unknown
 > = z.object({
+  type: z.literal("update_file"),
   diff: z.string(),
   path: z.string(),
-  type: z.literal("update_file"),
 });
 /** @internal */
 export type ApplyPatchUpdateFileOperation$Outbound = {
+  type: "update_file";
   diff: string;
   path: string;
-  type: "update_file";
 };
 
 /** @internal */
@@ -38,9 +38,9 @@ export const ApplyPatchUpdateFileOperation$outboundSchema: z.ZodType<
   ApplyPatchUpdateFileOperation$Outbound,
   ApplyPatchUpdateFileOperation
 > = z.object({
+  type: z.literal("update_file"),
   diff: z.string(),
   path: z.string(),
-  type: z.literal("update_file"),
 });
 
 export function applyPatchUpdateFileOperationToJSON(

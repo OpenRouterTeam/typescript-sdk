@@ -10,11 +10,11 @@ Emitted when `operation.diff` streaming completes for an `apply_patch_call`.
 import { ApplyPatchCallOperationDiffDoneEvent } from "@openrouter/sdk/models";
 
 let value: ApplyPatchCallOperationDiffDoneEvent = {
+  type: "response.apply_patch_call_operation_diff.done",
   diff: "<value>",
   itemId: "<id>",
   outputIndex: 170720,
   sequenceNumber: 0,
-  type: "response.apply_patch_call_operation_diff.done",
 };
 ```
 
@@ -22,8 +22,8 @@ let value: ApplyPatchCallOperationDiffDoneEvent = {
 
 | Field                                             | Type                                              | Required                                          | Description                                       |
 | ------------------------------------------------- | ------------------------------------------------- | ------------------------------------------------- | ------------------------------------------------- |
+| `type`                                            | *"response.apply_patch_call_operation_diff.done"* | ✔️                                | N/A                                               |
 | `diff`                                            | *string*                                          | ✔️                                | N/A                                               |
 | `itemId`                                          | *string*                                          | ✔️                                | N/A                                               |
 | `outputIndex`                                     | *number*                                          | ✔️                                | N/A                                               |
 | `sequenceNumber`                                  | *number*                                          | ✔️                                | N/A                                               |
-| `type`                                            | *"response.apply_patch_call_operation_diff.done"* | ✔️                                | N/A                                               |

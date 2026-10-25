@@ -12,8 +12,8 @@ import { SDKValidationError } from "./errors/sdkvalidationerror.js";
  * The `delete_file` variant of an `apply_patch_call.operation`. Identifies the file to remove; no diff is required.
  */
 export type ApplyPatchDeleteFileOperation = {
-  path: string;
   type: "delete_file";
+  path: string;
 };
 
 /** @internal */
@@ -21,13 +21,13 @@ export const ApplyPatchDeleteFileOperation$inboundSchema: z.ZodType<
   ApplyPatchDeleteFileOperation,
   unknown
 > = z.object({
-  path: z.string(),
   type: z.literal("delete_file"),
+  path: z.string(),
 });
 /** @internal */
 export type ApplyPatchDeleteFileOperation$Outbound = {
-  path: string;
   type: "delete_file";
+  path: string;
 };
 
 /** @internal */
@@ -35,8 +35,8 @@ export const ApplyPatchDeleteFileOperation$outboundSchema: z.ZodType<
   ApplyPatchDeleteFileOperation$Outbound,
   ApplyPatchDeleteFileOperation
 > = z.object({
-  path: z.string(),
   type: z.literal("delete_file"),
+  path: z.string(),
 });
 
 export function applyPatchDeleteFileOperationToJSON(

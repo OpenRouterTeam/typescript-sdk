@@ -18,8 +18,8 @@ export type AnthropicToolReferenceType = ClosedEnum<
 >;
 
 export type AnthropicToolReference = {
-  toolName: string;
   type: AnthropicToolReferenceType;
+  toolName: string;
 };
 
 /** @internal */
@@ -32,8 +32,8 @@ export const AnthropicToolReference$inboundSchema: z.ZodType<
   AnthropicToolReference,
   unknown
 > = z.object({
-  tool_name: z.string(),
   type: AnthropicToolReferenceType$inboundSchema,
+  tool_name: z.string(),
 }).transform((v) => {
   return remap$(v, {
     "tool_name": "toolName",

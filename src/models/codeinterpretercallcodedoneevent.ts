@@ -13,11 +13,11 @@ import { SDKValidationError } from "./errors/sdkvalidationerror.js";
  * Emitted when code streaming completes for a `code_interpreter_call`.
  */
 export type CodeInterpreterCallCodeDoneEvent = {
+  type: "response.code_interpreter_call_code.done";
   code: string;
   itemId: string;
   outputIndex: number;
   sequenceNumber: number;
-  type: "response.code_interpreter_call_code.done";
 };
 
 /** @internal */
@@ -25,11 +25,11 @@ export const CodeInterpreterCallCodeDoneEvent$inboundSchema: z.ZodType<
   CodeInterpreterCallCodeDoneEvent,
   unknown
 > = z.object({
+  type: z.literal("response.code_interpreter_call_code.done"),
   code: z.string(),
   item_id: z.string(),
   output_index: z.int(),
   sequence_number: z.int(),
-  type: z.literal("response.code_interpreter_call_code.done"),
 }).transform((v) => {
   return remap$(v, {
     "item_id": "itemId",

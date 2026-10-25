@@ -21,6 +21,11 @@ import {
   ReasoningTextContent$outboundSchema,
 } from "./reasoningtextcontent.js";
 
+export const ReasoningItemType = {
+  Reasoning: "reasoning",
+} as const;
+export type ReasoningItemType = ClosedEnum<typeof ReasoningItemType>;
+
 export const ReasoningItemStatusInProgress = {
   InProgress: "in_progress",
 } as const;
@@ -47,15 +52,12 @@ export type ReasoningItemStatusUnion =
   | ReasoningItemStatusIncomplete
   | ReasoningItemStatusInProgress;
 
-export const ReasoningItemType = {
-  Reasoning: "reasoning",
-} as const;
-export type ReasoningItemType = ClosedEnum<typeof ReasoningItemType>;
-
 /**
  * Reasoning output item with signature and format extensions
  */
 export type ReasoningItem = {
+  type: ReasoningItemType;
+  summary: Array<ReasoningSummaryText>;
   content?: Array<ReasoningTextContent> | null | undefined;
   encryptedContent?: string | null | undefined;
   id: string;
@@ -64,11 +66,14 @@ export type ReasoningItem = {
     | ReasoningItemStatusIncomplete
     | ReasoningItemStatusInProgress
     | undefined;
-  summary: Array<ReasoningSummaryText>;
-  type: ReasoningItemType;
   format?: ReasoningFormat | null | undefined;
   signature?: string | null | undefined;
 };
+
+/** @internal */
+export const ReasoningItemType$outboundSchema: z.ZodEnum<
+  typeof ReasoningItemType
+> = z.enum(ReasoningItemType);
 
 /** @internal */
 export const ReasoningItemStatusInProgress$outboundSchema: z.ZodEnum<
@@ -107,18 +112,13 @@ export function reasoningItemStatusUnionToJSON(
 }
 
 /** @internal */
-export const ReasoningItemType$outboundSchema: z.ZodEnum<
-  typeof ReasoningItemType
-> = z.enum(ReasoningItemType);
-
-/** @internal */
 export type ReasoningItem$Outbound = {
+  type: string;
+  summary: Array<ReasoningSummaryText$Outbound>;
   content?: Array<ReasoningTextContent$Outbound> | null | undefined;
   encrypted_content?: string | null | undefined;
   id: string;
   status?: string | string | string | undefined;
-  summary: Array<ReasoningSummaryText$Outbound>;
-  type: string;
   format?: string | null | undefined;
   signature?: string | null | undefined;
 };
@@ -128,6 +128,8 @@ export const ReasoningItem$outboundSchema: z.ZodType<
   ReasoningItem$Outbound,
   ReasoningItem
 > = z.object({
+  type: ReasoningItemType$outboundSchema,
+  summary: z.array(ReasoningSummaryText$outboundSchema),
   content: z.nullable(z.array(ReasoningTextContent$outboundSchema)).optional(),
   encryptedContent: z.nullable(z.string()).optional(),
   id: z.string(),
@@ -136,8 +138,6 @@ export const ReasoningItem$outboundSchema: z.ZodType<
     ReasoningItemStatusIncomplete$outboundSchema,
     ReasoningItemStatusInProgress$outboundSchema,
   ]).optional(),
-  summary: z.array(ReasoningSummaryText$outboundSchema),
-  type: ReasoningItemType$outboundSchema,
   format: z.nullable(ReasoningFormat$outboundSchema).optional(),
   signature: z.nullable(z.string()).optional(),
 }).transform((v) => {

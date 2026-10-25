@@ -10,15 +10,15 @@ Event emitted when a new content part is added to an output item
 import { ContentPartAddedEvent } from "@openrouter/sdk/models";
 
 let value: ContentPartAddedEvent = {
+  type: "response.content_part.added",
   contentIndex: 286298,
   itemId: "<id>",
   outputIndex: 549137,
   part: {
-    text: "The capital of France is Paris.",
     type: "output_text",
+    text: "The capital of France is Paris.",
   },
   sequenceNumber: 0,
-  type: "response.content_part.added",
 };
 ```
 
@@ -26,9 +26,9 @@ let value: ContentPartAddedEvent = {
 
 | Field                              | Type                               | Required                           | Description                        |
 | ---------------------------------- | ---------------------------------- | ---------------------------------- | ---------------------------------- |
+| `type`                             | *"response.content_part.added"*    | ✔️                 | N/A                                |
 | `contentIndex`                     | *number*                           | ✔️                 | N/A                                |
 | `itemId`                           | *string*                           | ✔️                 | N/A                                |
 | `outputIndex`                      | *number*                           | ✔️                 | N/A                                |
 | `part`                             | *models.ContentPartAddedEventPart* | ✔️                 | N/A                                |
 | `sequenceNumber`                   | *number*                           | ✔️                 | N/A                                |
-| `type`                             | *"response.content_part.added"*    | ✔️                 | N/A                                |

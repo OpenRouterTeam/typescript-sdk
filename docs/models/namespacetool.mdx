@@ -10,15 +10,15 @@ Groups function/custom tools under a shared namespace
 import { NamespaceTool } from "@openrouter/sdk/models";
 
 let value: NamespaceTool = {
-  description: "Tools for spawning and managing sub-agents.",
   name: "multi_agent_v1",
+  type: "namespace",
+  description: "Tools for spawning and managing sub-agents.",
   tools: [
     {
       name: "spawn_agent",
       type: "function",
     },
   ],
-  type: "namespace",
 };
 ```
 
@@ -26,7 +26,7 @@ let value: NamespaceTool = {
 
 | Field                                                      | Type                                                       | Required                                                   | Description                                                |
 | ---------------------------------------------------------- | ---------------------------------------------------------- | ---------------------------------------------------------- | ---------------------------------------------------------- |
-| `description`                                              | *string*                                                   | ✔️                                         | N/A                                                        |
 | `name`                                                     | *string*                                                   | ✔️                                         | N/A                                                        |
-| `tools`                                                    | *models.NamespaceToolTool*[]                               | ✔️                                         | N/A                                                        |
 | `type`                                                     | [models.NamespaceToolType](../models/namespacetooltype.mdx) | ✔️                                         | N/A                                                        |
+| `description`                                              | *string*                                                   | ✔️                                         | N/A                                                        |
+| `tools`                                                    | *models.NamespaceToolTool*[]                               | ✔️                                         | N/A                                                        |

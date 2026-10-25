@@ -115,13 +115,13 @@ export type BatchObjectRequestCounts = {
 };
 
 export type ResultError = {
+  type: string;
   /**
    * Canonical OpenRouter error type, stable across all API formats
    */
   errorType?: ApiErrorType | undefined;
   message: string;
   param: string | null;
-  type: string;
 };
 
 /**
@@ -233,15 +233,15 @@ export type BodyList = {
   usage?: BodyUsage3 | undefined;
 };
 
-export const BatchObjectRole = {
-  Assistant: "assistant",
-} as const;
-export type BatchObjectRole = ClosedEnum<typeof BatchObjectRole>;
-
 export const BatchObjectTypeMessage = {
   Message: "message",
 } as const;
 export type BatchObjectTypeMessage = ClosedEnum<typeof BatchObjectTypeMessage>;
+
+export const BatchObjectRole = {
+  Assistant: "assistant",
+} as const;
+export type BatchObjectRole = ClosedEnum<typeof BatchObjectRole>;
 
 export type BodyUsage2 = {
   cacheCreation: AnthropicCacheCreation | null;
@@ -257,7 +257,8 @@ export type BodyUsage2 = {
   speed?: AnthropicSpeed | null | undefined;
 };
 
-export type BodyMessage = {
+export type BodyAssistant = {
+  type: BatchObjectTypeMessage;
   container: AnthropicContainer | null;
   content: Array<ORAnthropicContentBlock>;
   id: string;
@@ -270,7 +271,6 @@ export type BodyMessage = {
   stopDetails: AnthropicRefusalStopDetails | null;
   stopReason: ORAnthropicStopReason | null;
   stopSequence: string | null;
-  type: BatchObjectTypeMessage;
   usage: BodyUsage2;
 };
 
@@ -306,10 +306,10 @@ export type Logprobs = {
 };
 
 export type WebSearchCitation = {
+  url: string;
   citedText?: string | undefined;
   encryptedIndex?: string | undefined;
   title: string | null;
-  url: string;
 };
 
 export type AnnotationWebSearchCitation = {
@@ -318,11 +318,11 @@ export type AnnotationWebSearchCitation = {
 };
 
 export type BatchObjectUrlCitation = {
+  url: string;
   content?: string | undefined;
   endIndex: number;
   startIndex: number;
   title: string;
-  url: string;
 };
 
 export type AnnotationURLCitation = {
@@ -335,13 +335,13 @@ export type ContentImageUrlImageUrl = {
 };
 
 export type ContentImageURL = {
-  imageUrl: ContentImageUrlImageUrl;
   type: "image_url";
+  imageUrl: ContentImageUrlImageUrl;
 };
 
 export type ContentText = {
-  text: string;
   type: "text";
+  text: string;
 };
 
 export type AnnotationContentUnion =
@@ -350,16 +350,16 @@ export type AnnotationContentUnion =
   | discriminatedUnionTypes.Unknown<"type">;
 
 export type BatchObjectFile = {
+  name?: string | undefined;
   content: Array<
     ContentText | ContentImageURL | discriminatedUnionTypes.Unknown<"type">
   >;
   hash: string;
-  name?: string | undefined;
 };
 
 export type AnnotationFile = {
-  file: BatchObjectFile;
   type: "file";
+  file: BatchObjectFile;
 };
 
 export type Annotation =
@@ -368,18 +368,18 @@ export type Annotation =
   | AnnotationWebSearchCitation
   | discriminatedUnionTypes.Unknown<"type">;
 
-export type BatchObjectImageUrl = {
-  url: string;
-};
-
 export const ChoiceTypeImageURLEnum = {
   ImageUrl: "image_url",
 } as const;
 export type ChoiceTypeImageURLEnum = ClosedEnum<typeof ChoiceTypeImageURLEnum>;
 
+export type BatchObjectImageUrl = {
+  url: string;
+};
+
 export type Image = {
-  imageUrl: BatchObjectImageUrl;
   type: ChoiceTypeImageURLEnum;
+  imageUrl: BatchObjectImageUrl;
 };
 
 export type ReasoningDetail =
@@ -394,21 +394,21 @@ export const ChoiceRole = {
 } as const;
 export type ChoiceRole = ClosedEnum<typeof ChoiceRole>;
 
-export type BatchObjectFunction = {
-  arguments: string;
-  name: string;
-};
-
 export const ChoiceTypeFunction = {
   Function: "function",
 } as const;
 export type ChoiceTypeFunction = ClosedEnum<typeof ChoiceTypeFunction>;
 
+export type BatchObjectFunction = {
+  name: string;
+  arguments: string;
+};
+
 export type ToolCall = {
+  type: ChoiceTypeFunction;
   function: BatchObjectFunction;
   id: string;
   index: number;
-  type: ChoiceTypeFunction;
 };
 
 export type Message = {
@@ -603,12 +603,12 @@ export type BodyChatCompletion = {
 
 export type Body =
   | OpenResponsesResult
-  | BodyMessage
+  | BodyAssistant
   | BodyChatCompletion
   | BodyList;
 
 export type BatchObjectResponse = {
-  body: OpenResponsesResult | BodyMessage | BodyChatCompletion | BodyList;
+  body: OpenResponsesResult | BodyAssistant | BodyChatCompletion | BodyList;
   requestId: string | null;
   statusCode: number;
 };
@@ -811,10 +811,10 @@ export function batchObjectRequestCountsFromJSON(
 /** @internal */
 export const ResultError$inboundSchema: z.ZodType<ResultError, unknown> = z
   .object({
+    type: z.string(),
     error_type: ApiErrorType$inboundSchema.optional(),
     message: z.string(),
     param: z.nullable(z.string()),
-    type: z.string(),
   }).transform((v) => {
     return remap$(v, {
       "error_type": "errorType",
@@ -955,13 +955,13 @@ export function bodyListFromJSON(
 }
 
 /** @internal */
-export const BatchObjectRole$inboundSchema: z.ZodEnum<typeof BatchObjectRole> =
-  z.enum(BatchObjectRole);
-
-/** @internal */
 export const BatchObjectTypeMessage$inboundSchema: z.ZodEnum<
   typeof BatchObjectTypeMessage
 > = z.enum(BatchObjectTypeMessage);
+
+/** @internal */
+export const BatchObjectRole$inboundSchema: z.ZodEnum<typeof BatchObjectRole> =
+  z.enum(BatchObjectRole);
 
 /** @internal */
 export const BodyUsage2$inboundSchema: z.ZodType<BodyUsage2, unknown> = z
@@ -1004,8 +1004,9 @@ export function bodyUsage2FromJSON(
 }
 
 /** @internal */
-export const BodyMessage$inboundSchema: z.ZodType<BodyMessage, unknown> = z
+export const BodyAssistant$inboundSchema: z.ZodType<BodyAssistant, unknown> = z
   .object({
+    type: BatchObjectTypeMessage$inboundSchema,
     container: z.nullable(AnthropicContainer$inboundSchema),
     content: z.array(ORAnthropicContentBlock$inboundSchema),
     id: z.string(),
@@ -1017,7 +1018,6 @@ export const BodyMessage$inboundSchema: z.ZodType<BodyMessage, unknown> = z
     stop_details: z.nullable(AnthropicRefusalStopDetails$inboundSchema),
     stop_reason: z.nullable(ORAnthropicStopReason$inboundSchema),
     stop_sequence: z.nullable(z.string()),
-    type: BatchObjectTypeMessage$inboundSchema,
     usage: z.lazy(() => BodyUsage2$inboundSchema),
   }).transform((v) => {
     return remap$(v, {
@@ -1028,13 +1028,13 @@ export const BodyMessage$inboundSchema: z.ZodType<BodyMessage, unknown> = z
     });
   });
 
-export function bodyMessageFromJSON(
+export function bodyAssistantFromJSON(
   jsonString: string,
-): SafeParseResult<BodyMessage, SDKValidationError> {
+): SafeParseResult<BodyAssistant, SDKValidationError> {
   return safeParse(
     jsonString,
-    (x) => BodyMessage$inboundSchema.parse(JSON.parse(x)),
-    `Failed to parse 'BodyMessage' from JSON`,
+    (x) => BodyAssistant$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'BodyAssistant' from JSON`,
   );
 }
 
@@ -1146,10 +1146,10 @@ export const WebSearchCitation$inboundSchema: z.ZodType<
   WebSearchCitation,
   unknown
 > = z.object({
+  url: z.string(),
   cited_text: z.string().optional(),
   encrypted_index: z.string().optional(),
   title: z.nullable(z.string()),
-  url: z.string(),
 }).transform((v) => {
   return remap$(v, {
     "cited_text": "citedText",
@@ -1195,11 +1195,11 @@ export const BatchObjectUrlCitation$inboundSchema: z.ZodType<
   BatchObjectUrlCitation,
   unknown
 > = z.object({
+  url: z.string(),
   content: z.string().optional(),
   end_index: z.int(),
   start_index: z.int(),
   title: z.string(),
-  url: z.string(),
 }).transform((v) => {
   return remap$(v, {
     "end_index": "endIndex",
@@ -1263,8 +1263,8 @@ export const ContentImageURL$inboundSchema: z.ZodType<
   ContentImageURL,
   unknown
 > = z.object({
-  image_url: z.lazy(() => ContentImageUrlImageUrl$inboundSchema),
   type: z.literal("image_url"),
+  image_url: z.lazy(() => ContentImageUrlImageUrl$inboundSchema),
 }).transform((v) => {
   return remap$(v, {
     "image_url": "imageUrl",
@@ -1284,8 +1284,8 @@ export function contentImageURLFromJSON(
 /** @internal */
 export const ContentText$inboundSchema: z.ZodType<ContentText, unknown> = z
   .object({
-    text: z.string(),
     type: z.literal("text"),
+    text: z.string(),
   });
 
 export function contentTextFromJSON(
@@ -1322,6 +1322,7 @@ export const BatchObjectFile$inboundSchema: z.ZodType<
   BatchObjectFile,
   unknown
 > = z.object({
+  name: z.string().optional(),
   content: z.array(
     discriminatedUnion("type", {
       text: z.lazy(() => ContentText$inboundSchema),
@@ -1329,7 +1330,6 @@ export const BatchObjectFile$inboundSchema: z.ZodType<
     }),
   ),
   hash: z.string(),
-  name: z.string().optional(),
 });
 
 export function batchObjectFileFromJSON(
@@ -1345,8 +1345,8 @@ export function batchObjectFileFromJSON(
 /** @internal */
 export const AnnotationFile$inboundSchema: z.ZodType<AnnotationFile, unknown> =
   z.object({
-    file: z.lazy(() => BatchObjectFile$inboundSchema),
     type: z.literal("file"),
+    file: z.lazy(() => BatchObjectFile$inboundSchema),
   });
 
 export function annotationFileFromJSON(
@@ -1380,6 +1380,11 @@ export function annotationFromJSON(
 }
 
 /** @internal */
+export const ChoiceTypeImageURLEnum$inboundSchema: z.ZodEnum<
+  typeof ChoiceTypeImageURLEnum
+> = z.enum(ChoiceTypeImageURLEnum);
+
+/** @internal */
 export const BatchObjectImageUrl$inboundSchema: z.ZodType<
   BatchObjectImageUrl,
   unknown
@@ -1398,14 +1403,9 @@ export function batchObjectImageUrlFromJSON(
 }
 
 /** @internal */
-export const ChoiceTypeImageURLEnum$inboundSchema: z.ZodEnum<
-  typeof ChoiceTypeImageURLEnum
-> = z.enum(ChoiceTypeImageURLEnum);
-
-/** @internal */
 export const Image$inboundSchema: z.ZodType<Image, unknown> = z.object({
-  image_url: z.lazy(() => BatchObjectImageUrl$inboundSchema),
   type: ChoiceTypeImageURLEnum$inboundSchema,
+  image_url: z.lazy(() => BatchObjectImageUrl$inboundSchema),
 }).transform((v) => {
   return remap$(v, {
     "image_url": "imageUrl",
@@ -1449,12 +1449,17 @@ export const ChoiceRole$inboundSchema: z.ZodEnum<typeof ChoiceRole> = z.enum(
 );
 
 /** @internal */
+export const ChoiceTypeFunction$inboundSchema: z.ZodEnum<
+  typeof ChoiceTypeFunction
+> = z.enum(ChoiceTypeFunction);
+
+/** @internal */
 export const BatchObjectFunction$inboundSchema: z.ZodType<
   BatchObjectFunction,
   unknown
 > = z.object({
-  arguments: z.string(),
   name: z.string(),
+  arguments: z.string(),
 });
 
 export function batchObjectFunctionFromJSON(
@@ -1468,16 +1473,11 @@ export function batchObjectFunctionFromJSON(
 }
 
 /** @internal */
-export const ChoiceTypeFunction$inboundSchema: z.ZodEnum<
-  typeof ChoiceTypeFunction
-> = z.enum(ChoiceTypeFunction);
-
-/** @internal */
 export const ToolCall$inboundSchema: z.ZodType<ToolCall, unknown> = z.object({
+  type: ChoiceTypeFunction$inboundSchema,
   function: z.lazy(() => BatchObjectFunction$inboundSchema),
   id: z.string(),
   index: z.int(),
-  type: ChoiceTypeFunction$inboundSchema,
 });
 
 export function toolCallFromJSON(
@@ -1802,7 +1802,7 @@ export function bodyChatCompletionFromJSON(
 /** @internal */
 export const Body$inboundSchema: z.ZodType<Body, unknown> = z.union([
   OpenResponsesResult$inboundSchema,
-  z.lazy(() => BodyMessage$inboundSchema),
+  z.lazy(() => BodyAssistant$inboundSchema),
   z.lazy(() => BodyChatCompletion$inboundSchema),
   z.lazy(() => BodyList$inboundSchema),
 ]);
@@ -1824,7 +1824,7 @@ export const BatchObjectResponse$inboundSchema: z.ZodType<
 > = z.object({
   body: z.union([
     OpenResponsesResult$inboundSchema,
-    z.lazy(() => BodyMessage$inboundSchema),
+    z.lazy(() => BodyAssistant$inboundSchema),
     z.lazy(() => BodyChatCompletion$inboundSchema),
     z.lazy(() => BodyList$inboundSchema),
   ]),

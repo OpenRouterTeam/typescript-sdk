@@ -8,8 +8,8 @@ title: "DecisionsChoiceAnswer"
 import { DecisionsChoiceAnswer } from "@openrouter/sdk/models";
 
 let value: DecisionsChoiceAnswer = {
-  choice: "<value>",
   type: "choice",
+  choice: "<value>",
 };
 ```
 
@@ -17,7 +17,7 @@ let value: DecisionsChoiceAnswer = {
 
 | Field                    | Type                     | Required                 | Description              |
 | ------------------------ | ------------------------ | ------------------------ | ------------------------ |
+| `type`                   | *"choice"*               | ✔️       | N/A                      |
 | `choice`                 | *string*                 | ✔️       | N/A                      |
 | `confidence`             | *number*                 | ➖       | N/A                      |
 | `probabilities`          | Record\<string, *number*> | ➖       | N/A                      |
-| `type`                   | *"choice"*               | ✔️       | N/A                      |

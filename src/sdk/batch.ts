@@ -49,23 +49,6 @@ export class Batch extends ClientSDK {
   }
 
   /**
-   * Delete a batch
-   *
-   * @remarks
-   * Deletes a batch in a terminal status (`completed`, `failed`, `expired`, or `cancelled`) and its stored requests and results. Batches still in progress return `409`. Billing and usage records are kept. See the [Batch API Quickstart](https://openrouter.ai/docs/batch-quickstart).
-   */
-  async delete(
-    request: operations.DeleteBatchRequest,
-    options?: RequestOptions,
-  ): Promise<models.BatchDeletedObject> {
-    return unwrapAsync(batchDelete(
-      this,
-      request,
-      options,
-    ));
-  }
-
-  /**
    * Get a batch
    *
    * @remarks
@@ -76,6 +59,23 @@ export class Batch extends ClientSDK {
     options?: RequestOptions,
   ): Promise<models.BatchObject> {
     return unwrapAsync(batchGetBatches(
+      this,
+      request,
+      options,
+    ));
+  }
+
+  /**
+   * Delete a batch
+   *
+   * @remarks
+   * Deletes a batch in a terminal status (`completed`, `failed`, `expired`, or `cancelled`) and its stored requests and results. Batches still in progress return `409`. Billing and usage records are kept. See the [Batch API Quickstart](https://openrouter.ai/docs/batch-quickstart).
+   */
+  async delete(
+    request: operations.DeleteBatchRequest,
+    options?: RequestOptions,
+  ): Promise<models.BatchDeletedObject> {
+    return unwrapAsync(batchDelete(
       this,
       request,
       options,

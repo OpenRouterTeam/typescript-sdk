@@ -32,6 +32,7 @@ export type OutputApplyPatchServerToolItemType = ClosedEnum<
  * An openrouter:apply_patch server tool output item. The turn halts when validation succeeds so the client can apply the patch and echo an `apply_patch_call_output` on the next turn.
  */
 export type OutputApplyPatchServerToolItem = {
+  type: OutputApplyPatchServerToolItemType;
   callId?: string | undefined;
   /**
    * The error message when the tool call failed before producing a result. Set together with `status: 'failed'`; absent on a successful call.
@@ -43,7 +44,6 @@ export type OutputApplyPatchServerToolItem = {
    */
   operation?: ApplyPatchCallOperation | undefined;
   status: FailableToolCallStatus;
-  type: OutputApplyPatchServerToolItemType;
 };
 
 /** @internal */
@@ -60,12 +60,12 @@ export const OutputApplyPatchServerToolItem$inboundSchema: z.ZodType<
   OutputApplyPatchServerToolItem,
   unknown
 > = z.object({
+  type: OutputApplyPatchServerToolItemType$inboundSchema,
   call_id: z.string().optional(),
   error: z.string().optional(),
   id: z.string().optional(),
   operation: ApplyPatchCallOperation$inboundSchema.optional(),
   status: FailableToolCallStatus$inboundSchema,
-  type: OutputApplyPatchServerToolItemType$inboundSchema,
 }).transform((v) => {
   return remap$(v, {
     "call_id": "callId",
@@ -73,12 +73,12 @@ export const OutputApplyPatchServerToolItem$inboundSchema: z.ZodType<
 });
 /** @internal */
 export type OutputApplyPatchServerToolItem$Outbound = {
+  type: string;
   call_id?: string | undefined;
   error?: string | undefined;
   id?: string | undefined;
   operation?: ApplyPatchCallOperation$Outbound | undefined;
   status: string;
-  type: string;
 };
 
 /** @internal */
@@ -86,12 +86,12 @@ export const OutputApplyPatchServerToolItem$outboundSchema: z.ZodType<
   OutputApplyPatchServerToolItem$Outbound,
   OutputApplyPatchServerToolItem
 > = z.object({
+  type: OutputApplyPatchServerToolItemType$outboundSchema,
   callId: z.string().optional(),
   error: z.string().optional(),
   id: z.string().optional(),
   operation: ApplyPatchCallOperation$outboundSchema.optional(),
   status: FailableToolCallStatus$outboundSchema,
-  type: OutputApplyPatchServerToolItemType$outboundSchema,
 }).transform((v) => {
   return remap$(v, {
     callId: "call_id",

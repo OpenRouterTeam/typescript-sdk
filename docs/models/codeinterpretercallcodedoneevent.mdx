@@ -10,11 +10,11 @@ Emitted when code streaming completes for a `code_interpreter_call`.
 import { CodeInterpreterCallCodeDoneEvent } from "@openrouter/sdk/models";
 
 let value: CodeInterpreterCallCodeDoneEvent = {
+  type: "response.code_interpreter_call_code.done",
   code: "<value>",
   itemId: "<id>",
   outputIndex: 621905,
   sequenceNumber: 0,
-  type: "response.code_interpreter_call_code.done",
 };
 ```
 
@@ -22,8 +22,8 @@ let value: CodeInterpreterCallCodeDoneEvent = {
 
 | Field                                        | Type                                         | Required                                     | Description                                  |
 | -------------------------------------------- | -------------------------------------------- | -------------------------------------------- | -------------------------------------------- |
+| `type`                                       | *"response.code_interpreter_call_code.done"* | ✔️                           | N/A                                          |
 | `code`                                       | *string*                                     | ✔️                           | N/A                                          |
 | `itemId`                                     | *string*                                     | ✔️                           | N/A                                          |
 | `outputIndex`                                | *number*                                     | ✔️                           | N/A                                          |
 | `sequenceNumber`                             | *number*                                     | ✔️                           | N/A                                          |
-| `type`                                       | *"response.code_interpreter_call_code.done"* | ✔️                           | N/A                                          |

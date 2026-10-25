@@ -10,9 +10,9 @@ The MCP server returned a protocol-level error
 import { McpProtocolError } from "@openrouter/sdk/models";
 
 let value: McpProtocolError = {
+  type: "mcp_protocol_error",
   code: 503,
   message: "Service Unavailable",
-  type: "mcp_protocol_error",
 };
 ```
 
@@ -20,6 +20,6 @@ let value: McpProtocolError = {
 
 | Field                                                            | Type                                                             | Required                                                         | Description                                                      |
 | ---------------------------------------------------------------- | ---------------------------------------------------------------- | ---------------------------------------------------------------- | ---------------------------------------------------------------- |
+| `type`                                                           | [models.McpProtocolErrorType](../models/mcpprotocolerrortype.mdx) | ✔️                                               | N/A                                                              |
 | `code`                                                           | *number*                                                         | ✔️                                               | N/A                                                              |
 | `message`                                                        | *string*                                                         | ✔️                                               | N/A                                                              |
-| `type`                                                           | [models.McpProtocolErrorType](../models/mcpprotocolerrortype.mdx) | ✔️                                               | N/A                                                              |

@@ -12,14 +12,14 @@ import {
 } from "./anthropiccachecontroldirective.js";
 
 export type MessagesToolRemovalBlockToolMcpToolsetReference = {
-  serverName: string;
   type: "mcp_toolset_reference";
+  serverName: string;
 };
 
 export type MessagesToolRemovalBlockToolMcpToolReference = {
   name: string;
-  serverName: string;
   type: "mcp_tool_reference";
+  serverName: string;
 };
 
 export type MessagesToolRemovalBlockToolToolReference = {
@@ -36,6 +36,7 @@ export type MessagesToolRemovalBlockToolUnion =
  * Removes a tool from the conversation mid-conversation without invalidating the prompt cache. Only valid in `role: "system"` messages. Not supported on Claude Sonnet 5 or models older than Claude Opus 4.8.
  */
 export type MessagesToolRemovalBlock = {
+  type: "tool_removal";
   /**
    * Enable automatic prompt caching. When set at the top level, the system automatically applies cache breakpoints to the last cacheable block in the request. When set on an individual content block, it marks an explicit cache breakpoint; block-level markers also work on OpenAI models that support explicit prompt caching — OpenRouter converts them to the provider's native format.
    */
@@ -44,13 +45,12 @@ export type MessagesToolRemovalBlock = {
     | MessagesToolRemovalBlockToolToolReference
     | MessagesToolRemovalBlockToolMcpToolReference
     | MessagesToolRemovalBlockToolMcpToolsetReference;
-  type: "tool_removal";
 };
 
 /** @internal */
 export type MessagesToolRemovalBlockToolMcpToolsetReference$Outbound = {
-  server_name: string;
   type: "mcp_toolset_reference";
+  server_name: string;
 };
 
 /** @internal */
@@ -59,8 +59,8 @@ export const MessagesToolRemovalBlockToolMcpToolsetReference$outboundSchema:
     MessagesToolRemovalBlockToolMcpToolsetReference$Outbound,
     MessagesToolRemovalBlockToolMcpToolsetReference
   > = z.object({
-    serverName: z.string(),
     type: z.literal("mcp_toolset_reference"),
+    serverName: z.string(),
   }).transform((v) => {
     return remap$(v, {
       serverName: "server_name",
@@ -81,8 +81,8 @@ export function messagesToolRemovalBlockToolMcpToolsetReferenceToJSON(
 /** @internal */
 export type MessagesToolRemovalBlockToolMcpToolReference$Outbound = {
   name: string;
-  server_name: string;
   type: "mcp_tool_reference";
+  server_name: string;
 };
 
 /** @internal */
@@ -92,8 +92,8 @@ export const MessagesToolRemovalBlockToolMcpToolReference$outboundSchema:
     MessagesToolRemovalBlockToolMcpToolReference
   > = z.object({
     name: z.string(),
-    serverName: z.string(),
     type: z.literal("mcp_tool_reference"),
+    serverName: z.string(),
   }).transform((v) => {
     return remap$(v, {
       serverName: "server_name",
@@ -166,12 +166,12 @@ export function messagesToolRemovalBlockToolUnionToJSON(
 
 /** @internal */
 export type MessagesToolRemovalBlock$Outbound = {
+  type: "tool_removal";
   cache_control?: AnthropicCacheControlDirective$Outbound | undefined;
   tool:
     | MessagesToolRemovalBlockToolToolReference$Outbound
     | MessagesToolRemovalBlockToolMcpToolReference$Outbound
     | MessagesToolRemovalBlockToolMcpToolsetReference$Outbound;
-  type: "tool_removal";
 };
 
 /** @internal */
@@ -179,6 +179,7 @@ export const MessagesToolRemovalBlock$outboundSchema: z.ZodType<
   MessagesToolRemovalBlock$Outbound,
   MessagesToolRemovalBlock
 > = z.object({
+  type: z.literal("tool_removal"),
   cacheControl: AnthropicCacheControlDirective$outboundSchema.optional(),
   tool: z.union([
     z.lazy(() => MessagesToolRemovalBlockToolToolReference$outboundSchema),
@@ -187,7 +188,6 @@ export const MessagesToolRemovalBlock$outboundSchema: z.ZodType<
       MessagesToolRemovalBlockToolMcpToolsetReference$outboundSchema
     ),
   ]),
-  type: z.literal("tool_removal"),
 }).transform((v) => {
   return remap$(v, {
     cacheControl: "cache_control",

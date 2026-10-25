@@ -17,6 +17,7 @@ import {
  * Emitted when the fusion analyst completes with the structured analysis.
  */
 export type FusionCallAnalysisCompletedEvent = {
+  type: "response.fusion_call.analysis.completed";
   /**
    * Structured analysis produced by the fusion analyst model.
    */
@@ -24,7 +25,6 @@ export type FusionCallAnalysisCompletedEvent = {
   itemId: string;
   outputIndex: number;
   sequenceNumber: number;
-  type: "response.fusion_call.analysis.completed";
 };
 
 /** @internal */
@@ -32,11 +32,11 @@ export const FusionCallAnalysisCompletedEvent$inboundSchema: z.ZodType<
   FusionCallAnalysisCompletedEvent,
   unknown
 > = z.object({
+  type: z.literal("response.fusion_call.analysis.completed"),
   analysis: FusionAnalysisResult$inboundSchema,
   item_id: z.string(),
   output_index: z.int(),
   sequence_number: z.int(),
-  type: z.literal("response.fusion_call.analysis.completed"),
 }).transform((v) => {
   return remap$(v, {
     "item_id": "itemId",

@@ -10,20 +10,21 @@ import { ClosedEnum } from "../types/enums.js";
 import { Result as SafeParseResult } from "../types/fp.js";
 import { SDKValidationError } from "./errors/sdkvalidationerror.js";
 
-export const OpenRouterFileShape = {
-  Openrouter: "openrouter",
-} as const;
-export type OpenRouterFileShape = ClosedEnum<typeof OpenRouterFileShape>;
-
 export const OpenRouterFileType = {
   File: "file",
 } as const;
 export type OpenRouterFileType = ClosedEnum<typeof OpenRouterFileType>;
 
+export const OpenRouterFileShape = {
+  Openrouter: "openrouter",
+} as const;
+export type OpenRouterFileShape = ClosedEnum<typeof OpenRouterFileShape>;
+
 /**
  * A stored file in the OpenRouter superset shape: Anthropic-shaped, plus OpenRouter-only fields.
  */
 export type OpenRouterFile = {
+  type: OpenRouterFileType;
   shape: OpenRouterFileShape;
   createdAt: string;
   downloadable: boolean;
@@ -31,13 +32,7 @@ export type OpenRouterFile = {
   id: string;
   mimeType: string;
   sizeBytes: number;
-  type: OpenRouterFileType;
 };
-
-/** @internal */
-export const OpenRouterFileShape$inboundSchema: z.ZodEnum<
-  typeof OpenRouterFileShape
-> = z.enum(OpenRouterFileShape);
 
 /** @internal */
 export const OpenRouterFileType$inboundSchema: z.ZodEnum<
@@ -45,8 +40,14 @@ export const OpenRouterFileType$inboundSchema: z.ZodEnum<
 > = z.enum(OpenRouterFileType);
 
 /** @internal */
+export const OpenRouterFileShape$inboundSchema: z.ZodEnum<
+  typeof OpenRouterFileShape
+> = z.enum(OpenRouterFileShape);
+
+/** @internal */
 export const OpenRouterFile$inboundSchema: z.ZodType<OpenRouterFile, unknown> =
   z.object({
+    type: OpenRouterFileType$inboundSchema,
     _shape: OpenRouterFileShape$inboundSchema,
     created_at: z.string(),
     downloadable: z.boolean(),
@@ -54,7 +55,6 @@ export const OpenRouterFile$inboundSchema: z.ZodType<OpenRouterFile, unknown> =
     id: z.string(),
     mime_type: z.string(),
     size_bytes: z.int(),
-    type: OpenRouterFileType$inboundSchema,
   }).transform((v) => {
     return remap$(v, {
       "_shape": "shape",

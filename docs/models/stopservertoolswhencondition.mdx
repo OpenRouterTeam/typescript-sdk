@@ -11,8 +11,8 @@ A single condition that, when met, halts the server-tool agent loop.
 
 ```typescript
 const value: models.StopServerToolsWhenFinishReasonIs = {
-  reason: "<value>",
   type: "finish_reason_is",
+  reason: "<value>",
 };
 ```
 
@@ -20,8 +20,8 @@ const value: models.StopServerToolsWhenFinishReasonIs = {
 
 ```typescript
 const value: models.StopServerToolsWhenHasToolCall = {
-  toolName: "<value>",
   type: "has_tool_call",
+  toolName: "<value>",
 };
 ```
 
@@ -29,8 +29,8 @@ const value: models.StopServerToolsWhenHasToolCall = {
 
 ```typescript
 const value: models.StopServerToolsWhenMaxCost = {
-  maxCostInDollars: 1543.31,
   type: "max_cost",
+  maxCostInDollars: 1543.31,
 };
 ```
 
@@ -38,8 +38,8 @@ const value: models.StopServerToolsWhenMaxCost = {
 
 ```typescript
 const value: models.StopServerToolsWhenMaxTokensUsed = {
-  maxTokens: 577706,
   type: "max_tokens_used",
+  maxTokens: 577706,
 };
 ```
 
@@ -47,8 +47,8 @@ const value: models.StopServerToolsWhenMaxTokensUsed = {
 
 ```typescript
 const value: models.StopServerToolsWhenStepCountIs = {
-  stepCount: 5,
   type: "step_count_is",
+  stepCount: 5,
 };
 ```
 

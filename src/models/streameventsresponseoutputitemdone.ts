@@ -14,13 +14,13 @@ import { OutputItems, OutputItems$inboundSchema } from "./outputitems.js";
  * Event emitted when an output item is complete
  */
 export type StreamEventsResponseOutputItemDone = {
+  type: "response.output_item.done";
   /**
    * An output item from the response
    */
   item: OutputItems;
   outputIndex: number;
   sequenceNumber: number;
-  type: "response.output_item.done";
 };
 
 /** @internal */
@@ -28,10 +28,10 @@ export const StreamEventsResponseOutputItemDone$inboundSchema: z.ZodType<
   StreamEventsResponseOutputItemDone,
   unknown
 > = z.object({
+  type: z.literal("response.output_item.done"),
   item: OutputItems$inboundSchema,
   output_index: z.int(),
   sequence_number: z.int(),
-  type: z.literal("response.output_item.done"),
 }).transform((v) => {
   return remap$(v, {
     "output_index": "outputIndex",

@@ -26,6 +26,7 @@ export type OutputFilesServerToolItemType = ClosedEnum<
  * An openrouter:files server tool output item
  */
 export type OutputFilesServerToolItem = {
+  type: OutputFilesServerToolItemType;
   /**
    * The raw tool-call arguments string as emitted by the model.
    */
@@ -56,7 +57,6 @@ export type OutputFilesServerToolItem = {
    */
   result?: string | undefined;
   status: ToolCallStatus;
-  type: OutputFilesServerToolItemType;
 };
 
 /** @internal */
@@ -73,6 +73,7 @@ export const OutputFilesServerToolItem$inboundSchema: z.ZodType<
   OutputFilesServerToolItem,
   unknown
 > = z.object({
+  type: OutputFilesServerToolItemType$inboundSchema,
   arguments: z.nullable(z.string()).optional(),
   call_id: z.nullable(z.string()).optional(),
   error: z.string().optional(),
@@ -82,7 +83,6 @@ export const OutputFilesServerToolItem$inboundSchema: z.ZodType<
   operation: z.string().optional(),
   result: z.string().optional(),
   status: ToolCallStatus$inboundSchema,
-  type: OutputFilesServerToolItemType$inboundSchema,
 }).transform((v) => {
   return remap$(v, {
     "call_id": "callId",
@@ -91,6 +91,7 @@ export const OutputFilesServerToolItem$inboundSchema: z.ZodType<
 });
 /** @internal */
 export type OutputFilesServerToolItem$Outbound = {
+  type: string;
   arguments?: string | null | undefined;
   call_id?: string | null | undefined;
   error?: string | undefined;
@@ -100,7 +101,6 @@ export type OutputFilesServerToolItem$Outbound = {
   operation?: string | undefined;
   result?: string | undefined;
   status: string;
-  type: string;
 };
 
 /** @internal */
@@ -108,6 +108,7 @@ export const OutputFilesServerToolItem$outboundSchema: z.ZodType<
   OutputFilesServerToolItem$Outbound,
   OutputFilesServerToolItem
 > = z.object({
+  type: OutputFilesServerToolItemType$outboundSchema,
   arguments: z.nullable(z.string()).optional(),
   callId: z.nullable(z.string()).optional(),
   error: z.string().optional(),
@@ -117,7 +118,6 @@ export const OutputFilesServerToolItem$outboundSchema: z.ZodType<
   operation: z.string().optional(),
   result: z.string().optional(),
   status: ToolCallStatus$outboundSchema,
-  type: OutputFilesServerToolItemType$outboundSchema,
 }).transform((v) => {
   return remap$(v, {
     callId: "call_id",

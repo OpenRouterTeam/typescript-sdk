@@ -14,12 +14,12 @@ import { PresetStatus, PresetStatus$inboundSchema } from "./presetstatus.js";
  * A preset without version details.
  */
 export type Preset = {
+  name: string;
+  description: string | null;
   createdAt: string;
   creatorUserId: string | null;
-  description: string | null;
   designatedVersionId: string | null;
   id: string;
-  name: string;
   slug: string;
   /**
    * The status of a preset.
@@ -32,12 +32,12 @@ export type Preset = {
 
 /** @internal */
 export const Preset$inboundSchema: z.ZodType<Preset, unknown> = z.object({
+  name: z.string(),
+  description: z.nullable(z.string()),
   created_at: z.string(),
   creator_user_id: z.nullable(z.string()),
-  description: z.nullable(z.string()),
   designated_version_id: z.nullable(z.string()),
   id: z.string(),
-  name: z.string(),
   slug: z.string(),
   status: PresetStatus$inboundSchema,
   status_updated_at: z.nullable(z.string()),

@@ -10,11 +10,11 @@ Router-owned deferred discovery result for continuation.
 import { ORAnthropicToolSearchResultParam } from "@openrouter/sdk/models";
 
 let value: ORAnthropicToolSearchResultParam = {
+  type: "openrouter_tool_search_result",
   content: {
     "matches": [],
   },
   toolUseId: "search",
-  type: "openrouter_tool_search_result",
 };
 ```
 
@@ -22,6 +22,6 @@ let value: ORAnthropicToolSearchResultParam = {
 
 | Field                             | Type                              | Required                          | Description                       |
 | --------------------------------- | --------------------------------- | --------------------------------- | --------------------------------- |
+| `type`                            | *"openrouter_tool_search_result"* | ✔️                | N/A                               |
 | `content`                         | Record\<string, *any*>             | ✔️                | N/A                               |
 | `toolUseId`                       | *string*                          | ✔️                | N/A                               |
-| `type`                            | *"openrouter_tool_search_result"* | ✔️                | N/A                               |

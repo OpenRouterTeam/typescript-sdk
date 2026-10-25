@@ -10,12 +10,12 @@ A preset without version details.
 import { Preset } from "@openrouter/sdk/models";
 
 let value: Preset = {
+  name: "my-preset",
+  description: null,
   createdAt: "2026-04-20T10:00:00Z",
   creatorUserId: "user_2dHFtVWx2n56w6HkM0000000000",
-  description: null,
   designatedVersionId: "550e8400-e29b-41d4-a716-446655440000",
   id: "650e8400-e29b-41d4-a716-446655440001",
-  name: "my-preset",
   slug: "my-preset",
   status: "active",
   statusUpdatedAt: null,
@@ -28,12 +28,12 @@ let value: Preset = {
 
 | Field                                            | Type                                             | Required                                         | Description                                      | Example                                          |
 | ------------------------------------------------ | ------------------------------------------------ | ------------------------------------------------ | ------------------------------------------------ | ------------------------------------------------ |
+| `name`                                           | *string*                                         | ✔️                               | N/A                                              |                                                  |
+| `description`                                    | *string*                                         | ✔️                               | N/A                                              |                                                  |
 | `createdAt`                                      | *string*                                         | ✔️                               | N/A                                              |                                                  |
 | `creatorUserId`                                  | *string*                                         | ✔️                               | N/A                                              |                                                  |
-| `description`                                    | *string*                                         | ✔️                               | N/A                                              |                                                  |
 | `designatedVersionId`                            | *string*                                         | ✔️                               | N/A                                              |                                                  |
 | `id`                                             | *string*                                         | ✔️                               | N/A                                              |                                                  |
-| `name`                                           | *string*                                         | ✔️                               | N/A                                              |                                                  |
 | `slug`                                           | *string*                                         | ✔️                               | N/A                                              |                                                  |
 | `status`                                         | [models.PresetStatus](../models/presetstatus.mdx) | ✔️                               | The status of a preset.                          | active                                           |
 | `statusUpdatedAt`                                | *string*                                         | ✔️                               | N/A                                              |                                                  |

@@ -7,20 +7,20 @@ import * as z from "zod/v4";
 import { remap as remap$ } from "../lib/primitives.js";
 
 export type AnthropicCitationWebSearchResultLocationParam = {
+  url: string;
   citedText: string;
   encryptedIndex: string;
   title: string | null;
   type: "web_search_result_location";
-  url: string;
 };
 
 /** @internal */
 export type AnthropicCitationWebSearchResultLocationParam$Outbound = {
+  url: string;
   cited_text: string;
   encrypted_index: string;
   title: string | null;
   type: "web_search_result_location";
-  url: string;
 };
 
 /** @internal */
@@ -29,11 +29,11 @@ export const AnthropicCitationWebSearchResultLocationParam$outboundSchema:
     AnthropicCitationWebSearchResultLocationParam$Outbound,
     AnthropicCitationWebSearchResultLocationParam
   > = z.object({
+    url: z.string(),
     citedText: z.string(),
     encryptedIndex: z.string(),
     title: z.nullable(z.string()),
     type: z.literal("web_search_result_location"),
-    url: z.string(),
   }).transform((v) => {
     return remap$(v, {
       citedText: "cited_text",

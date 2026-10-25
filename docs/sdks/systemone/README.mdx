@@ -33,30 +33,30 @@ async function run() {
       model: "typesafe/jev-1.13",
       questions: {
         "is_bug": {
+          type: "noul",
           criteria: {
             false: "The customer is asking a question or requesting a feature.",
             true: "The customer describes broken or unexpected product behavior.",
           },
           instructions: "Is the customer reporting a software defect?",
-          type: "noul",
         },
         "team": {
+          type: "choice",
           criteria: {
             "account": "Login, permissions, or profile issues.",
             "frontend": "Rendering, layout, or browser compatibility issues.",
             "payments": "Checkout, billing, or payment processing issues.",
           },
           instructions: "Which team should own this ticket?",
-          type: "choice",
         },
         "urgency": {
+          type: "score",
           criteria: [
             "Can wait for the next release",
             "Should be fixed this week",
             "Blocking revenue right now",
           ],
           instructions: "How urgent is this ticket?",
-          type: "score",
         },
       },
       state: {
@@ -95,30 +95,30 @@ async function run() {
       model: "typesafe/jev-1.13",
       questions: {
         "is_bug": {
+          type: "noul",
           criteria: {
             false: "The customer is asking a question or requesting a feature.",
             true: "The customer describes broken or unexpected product behavior.",
           },
           instructions: "Is the customer reporting a software defect?",
-          type: "noul",
         },
         "team": {
+          type: "choice",
           criteria: {
             "account": "Login, permissions, or profile issues.",
             "frontend": "Rendering, layout, or browser compatibility issues.",
             "payments": "Checkout, billing, or payment processing issues.",
           },
           instructions: "Which team should own this ticket?",
-          type: "choice",
         },
         "urgency": {
+          type: "score",
           criteria: [
             "Can wait for the next release",
             "Should be fixed this week",
             "Blocking revenue right now",
           ],
           instructions: "How urgent is this ticket?",
-          type: "score",
         },
       },
       state: {

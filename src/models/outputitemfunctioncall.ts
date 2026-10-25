@@ -37,6 +37,8 @@ export type OutputItemFunctionCallStatusUnion =
   | OutputItemFunctionCallStatusInProgress;
 
 export type OutputItemFunctionCall = {
+  name: string;
+  type: "function_call";
   arguments: string;
   /**
    * True when the model called a tool declared with `async: true` and may continue its turn before the output is returned. Return the result in a later request as a `function_call_output` with this `call_id`.
@@ -44,7 +46,6 @@ export type OutputItemFunctionCall = {
   async?: boolean | undefined;
   callId: string;
   id?: string | undefined;
-  name: string;
   /**
    * Namespace qualifier for tools registered as part of a namespace tool group (e.g. an MCP server)
    */
@@ -54,7 +55,6 @@ export type OutputItemFunctionCall = {
     | OutputItemFunctionCallStatusIncomplete
     | OutputItemFunctionCallStatusInProgress
     | undefined;
-  type: "function_call";
 };
 
 /** @internal */
@@ -97,18 +97,18 @@ export const OutputItemFunctionCall$inboundSchema: z.ZodType<
   OutputItemFunctionCall,
   unknown
 > = z.object({
+  name: z.string(),
+  type: z.literal("function_call"),
   arguments: z.string(),
   async: z.boolean().optional(),
   call_id: z.string(),
   id: z.string().optional(),
-  name: z.string(),
   namespace: z.string().optional(),
   status: z.union([
     OutputItemFunctionCallStatusCompleted$inboundSchema,
     OutputItemFunctionCallStatusIncomplete$inboundSchema,
     OutputItemFunctionCallStatusInProgress$inboundSchema,
   ]).optional(),
-  type: z.literal("function_call"),
 }).transform((v) => {
   return remap$(v, {
     "call_id": "callId",

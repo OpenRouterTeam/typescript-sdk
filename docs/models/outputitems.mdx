@@ -11,15 +11,15 @@ An output item from the response
 
 ```typescript
 const value: models.OutputApplyPatchCallItem = {
+  type: "apply_patch_call",
   callId: "<id>",
   id: "msg-abc123",
   operation: {
+    type: "update_file",
     diff: "@@ function main() {\n+  console.log(\"hi\");\n }",
     path: "/src/main.ts",
-    type: "update_file",
   },
   status: "completed",
-  type: "apply_patch_call",
 };
 ```
 
@@ -27,9 +27,9 @@ const value: models.OutputApplyPatchCallItem = {
 
 ```typescript
 const value: models.OutputCodeInterpreterCallItem = {
+  type: "code_interpreter_call",
   id: "msg-abc123",
   status: "completed",
-  type: "code_interpreter_call",
 };
 ```
 
@@ -37,10 +37,10 @@ const value: models.OutputCodeInterpreterCallItem = {
 
 ```typescript
 const value: models.OutputComputerCallItem = {
+  type: "computer_call",
   callId: "<id>",
   pendingSafetyChecks: [],
   status: "completed",
-  type: "computer_call",
 };
 ```
 
@@ -48,10 +48,10 @@ const value: models.OutputComputerCallItem = {
 
 ```typescript
 const value: models.OutputCustomToolCallItem = {
-  callId: "<id>",
-  input: "<value>",
   name: "<value>",
   type: "custom_tool_call",
+  callId: "<id>",
+  input: "<value>",
 };
 ```
 
@@ -59,12 +59,12 @@ const value: models.OutputCustomToolCallItem = {
 
 ```typescript
 const value: models.OutputFileSearchCallItem = {
+  type: "file_search_call",
   id: "msg-abc123",
   queries: [
     "<value 1>",
   ],
   status: "completed",
-  type: "file_search_call",
 };
 ```
 
@@ -72,10 +72,10 @@ const value: models.OutputFileSearchCallItem = {
 
 ```typescript
 const value: models.OutputFunctionCallItem = {
-  arguments: "<value>",
-  callId: "<id>",
   name: "<value>",
   type: "function_call",
+  arguments: "<value>",
+  callId: "<id>",
 };
 ```
 
@@ -83,9 +83,9 @@ const value: models.OutputFunctionCallItem = {
 
 ```typescript
 const value: models.OutputImageGenerationCallItem = {
+  type: "image_generation_call",
   id: "msg-abc123",
   status: "completed",
-  type: "image_generation_call",
 };
 ```
 
@@ -93,15 +93,15 @@ const value: models.OutputImageGenerationCallItem = {
 
 ```typescript
 const value: models.OutputMessageItem = {
+  type: "message",
   content: [
     {
-      text: "Hello! How can I help you today?",
       type: "output_text",
+      text: "Hello! How can I help you today?",
     },
   ],
   id: "msg-abc123",
   role: "assistant",
-  type: "message",
 };
 ```
 
@@ -109,8 +109,8 @@ const value: models.OutputMessageItem = {
 
 ```typescript
 const value: models.OutputAdvisorServerToolItem = {
-  status: "completed",
   type: "openrouter:advisor",
+  status: "completed",
 };
 ```
 
@@ -118,8 +118,8 @@ const value: models.OutputAdvisorServerToolItem = {
 
 ```typescript
 const value: models.OutputApplyPatchServerToolItem = {
-  status: "completed",
   type: "openrouter:apply_patch",
+  status: "completed",
 };
 ```
 
@@ -127,14 +127,14 @@ const value: models.OutputApplyPatchServerToolItem = {
 
 ```typescript
 const value: models.OutputArmorBlockedItem = {
+  name: "<value>",
+  type: "openrouter:armor_blocked",
   arguments: "<value>",
   callId: "<id>",
   explanation: "<value>",
   id: "msg-abc123",
-  name: "<value>",
   reason: "<value>",
   status: "completed",
-  type: "openrouter:armor_blocked",
 };
 ```
 
@@ -142,8 +142,8 @@ const value: models.OutputArmorBlockedItem = {
 
 ```typescript
 const value: models.OutputBashServerToolItem = {
-  status: "completed",
   type: "openrouter:bash",
+  status: "completed",
 };
 ```
 
@@ -151,8 +151,8 @@ const value: models.OutputBashServerToolItem = {
 
 ```typescript
 const value: models.OutputBrowserUseServerToolItem = {
-  status: "completed",
   type: "openrouter:browser_use",
+  status: "completed",
 };
 ```
 
@@ -160,8 +160,8 @@ const value: models.OutputBrowserUseServerToolItem = {
 
 ```typescript
 const value: models.OutputCodeInterpreterServerToolItem = {
-  status: "completed",
   type: "openrouter:code_interpreter",
+  status: "completed",
 };
 ```
 
@@ -169,10 +169,10 @@ const value: models.OutputCodeInterpreterServerToolItem = {
 
 ```typescript
 const value: models.OutputDatetimeItem = {
+  type: "openrouter:datetime",
   datetime: "2024-12-31T05:26:30.868Z",
   status: "completed",
   timezone: "Europe/Vatican",
-  type: "openrouter:datetime",
 };
 ```
 
@@ -180,8 +180,8 @@ const value: models.OutputDatetimeItem = {
 
 ```typescript
 const value: models.OutputSearchModelsServerToolItem = {
-  status: "completed",
   type: "openrouter:experimental__search_models",
+  status: "completed",
 };
 ```
 
@@ -189,8 +189,8 @@ const value: models.OutputSearchModelsServerToolItem = {
 
 ```typescript
 const value: models.OutputFileSearchServerToolItem = {
-  status: "completed",
   type: "openrouter:file_search",
+  status: "completed",
 };
 ```
 
@@ -198,8 +198,8 @@ const value: models.OutputFileSearchServerToolItem = {
 
 ```typescript
 const value: models.OutputFilesServerToolItem = {
-  status: "completed",
   type: "openrouter:files",
+  status: "completed",
 };
 ```
 
@@ -216,8 +216,8 @@ const value: models.OutputFusionServerToolItem = {
 
 ```typescript
 const value: models.OutputImageGenerationServerToolItem = {
-  status: "completed",
   type: "openrouter:image_generation",
+  status: "completed",
 };
 ```
 
@@ -225,8 +225,8 @@ const value: models.OutputImageGenerationServerToolItem = {
 
 ```typescript
 const value: models.OutputMcpServerToolItem = {
-  status: "completed",
   type: "openrouter:mcp",
+  status: "completed",
 };
 ```
 
@@ -234,8 +234,8 @@ const value: models.OutputMcpServerToolItem = {
 
 ```typescript
 const value: models.OutputMemoryServerToolItem = {
-  status: "completed",
   type: "openrouter:memory",
+  status: "completed",
 };
 ```
 
@@ -243,8 +243,8 @@ const value: models.OutputMemoryServerToolItem = {
 
 ```typescript
 const value: models.OutputShellServerToolItem = {
-  status: "completed",
   type: "openrouter:shell",
+  status: "completed",
 };
 ```
 
@@ -252,8 +252,8 @@ const value: models.OutputShellServerToolItem = {
 
 ```typescript
 const value: models.OutputSubagentServerToolItem = {
-  status: "completed",
   type: "openrouter:subagent",
+  status: "completed",
 };
 ```
 
@@ -261,8 +261,8 @@ const value: models.OutputSubagentServerToolItem = {
 
 ```typescript
 const value: models.OutputTextEditorServerToolItem = {
-  status: "completed",
   type: "openrouter:text_editor",
+  status: "completed",
 };
 ```
 
@@ -270,8 +270,8 @@ const value: models.OutputTextEditorServerToolItem = {
 
 ```typescript
 const value: models.OutputToolSearchServerToolItem = {
-  status: "completed",
   type: "openrouter:tool_search",
+  status: "completed",
 };
 ```
 
@@ -288,8 +288,8 @@ const value: models.OutputWebFetchServerToolItem = {
 
 ```typescript
 const value: models.OutputWebSearchServerToolItem = {
-  status: "completed",
   type: "openrouter:web_search",
+  status: "completed",
 };
 ```
 
@@ -297,14 +297,14 @@ const value: models.OutputWebSearchServerToolItem = {
 
 ```typescript
 const value: models.OutputReasoningItem = {
-  id: "msg-abc123",
+  type: "reasoning",
   summary: [
     {
-      text: "Analyzed the problem using first principles",
       type: "summary_text",
+      text: "Analyzed the problem using first principles",
     },
   ],
-  type: "reasoning",
+  id: "msg-abc123",
 };
 ```
 
@@ -312,10 +312,10 @@ const value: models.OutputReasoningItem = {
 
 ```typescript
 const value: models.OutputShellCallItem = {
+  type: "shell_call",
   callId: "<id>",
   id: "msg-abc123",
   status: "completed",
-  type: "shell_call",
 };
 ```
 
@@ -323,20 +323,20 @@ const value: models.OutputShellCallItem = {
 
 ```typescript
 const value: models.OutputShellCallOutputItem = {
+  type: "shell_call_output",
   callId: "<id>",
   id: "msg-abc123",
   output: [
     {
       outcome: {
-        exitCode: 0,
         type: "exit",
+        exitCode: 0,
       },
       stderr: "",
       stdout: "total 0\n",
     },
   ],
   status: "completed",
-  type: "shell_call_output",
 };
 ```
 
@@ -344,10 +344,10 @@ const value: models.OutputShellCallOutputItem = {
 
 ```typescript
 const value: models.OutputToolSearchCallItem = {
+  type: "tool_search_call",
   callId: "<id>",
   execution: "client",
   status: "completed",
-  type: "tool_search_call",
 };
 ```
 
@@ -355,9 +355,9 @@ const value: models.OutputToolSearchCallItem = {
 
 ```typescript
 const value: models.OutputWebSearchCallItem = {
+  type: "web_search_call",
   id: "msg-abc123",
   status: "completed",
-  type: "web_search_call",
 };
 ```
 

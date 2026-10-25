@@ -18,11 +18,11 @@ export type AnthropicWebSearchResultType = ClosedEnum<
 >;
 
 export type AnthropicWebSearchResult = {
+  url: string;
   encryptedContent: string;
   pageAge: string | null;
   title: string;
   type: AnthropicWebSearchResultType;
-  url: string;
 };
 
 /** @internal */
@@ -35,11 +35,11 @@ export const AnthropicWebSearchResult$inboundSchema: z.ZodType<
   AnthropicWebSearchResult,
   unknown
 > = z.object({
+  url: z.string(),
   encrypted_content: z.string(),
   page_age: z.nullable(z.string()),
   title: z.string(),
   type: AnthropicWebSearchResultType$inboundSchema,
-  url: z.string(),
 }).transform((v) => {
   return remap$(v, {
     "encrypted_content": "encryptedContent",

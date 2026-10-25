@@ -13,10 +13,6 @@ import {
   ProviderSortConfig$outboundSchema,
 } from "./providersortconfig.js";
 
-export type ImageGenerationProviderPreferencesIgnore = ProviderName | string;
-
-export type ImageGenerationProviderPreferencesOnly = ProviderName | string;
-
 /**
  * Provider-specific options keyed by provider slug. Only options for the matched provider are forwarded; the rest are ignored. Unrecognized keys are silently dropped.
  */
@@ -171,6 +167,10 @@ export type ImageGenerationProviderPreferencesOptions = {
   zAi?: { [k: string]: any } | undefined;
 };
 
+export type ImageGenerationProviderPreferencesIgnore = ProviderName | string;
+
+export type ImageGenerationProviderPreferencesOnly = ProviderName | string;
+
 export type ImageGenerationProviderPreferencesOrder = ProviderName | string;
 
 /**
@@ -184,6 +184,7 @@ export type ImageGenerationProviderPreferencesSort =
  * Provider routing preferences and provider-specific passthrough configuration.
  */
 export type ImageGenerationProviderPreferences = {
+  options?: ImageGenerationProviderPreferencesOptions | undefined;
   /**
    * Whether to allow backup providers to serve requests
    *
@@ -200,7 +201,6 @@ export type ImageGenerationProviderPreferences = {
    * List of provider slugs to allow. If provided, this list is merged with your account-wide allowed provider settings for this request.
    */
   only?: Array<ProviderName | string> | null | undefined;
-  options?: ImageGenerationProviderPreferencesOptions | undefined;
   /**
    * An ordered list of provider slugs. The router will attempt to use the first provider in the subset of this list that supports your requested model, and fall back to the next if it is unavailable. If no providers are available, the request will fail with an error message.
    */
@@ -210,46 +210,6 @@ export type ImageGenerationProviderPreferences = {
    */
   sort?: ProviderSort | ProviderSortConfig | null | undefined;
 };
-
-/** @internal */
-export type ImageGenerationProviderPreferencesIgnore$Outbound = string | string;
-
-/** @internal */
-export const ImageGenerationProviderPreferencesIgnore$outboundSchema: z.ZodType<
-  ImageGenerationProviderPreferencesIgnore$Outbound,
-  ImageGenerationProviderPreferencesIgnore
-> = z.union([ProviderName$outboundSchema, z.string()]);
-
-export function imageGenerationProviderPreferencesIgnoreToJSON(
-  imageGenerationProviderPreferencesIgnore:
-    ImageGenerationProviderPreferencesIgnore,
-): string {
-  return JSON.stringify(
-    ImageGenerationProviderPreferencesIgnore$outboundSchema.parse(
-      imageGenerationProviderPreferencesIgnore,
-    ),
-  );
-}
-
-/** @internal */
-export type ImageGenerationProviderPreferencesOnly$Outbound = string | string;
-
-/** @internal */
-export const ImageGenerationProviderPreferencesOnly$outboundSchema: z.ZodType<
-  ImageGenerationProviderPreferencesOnly$Outbound,
-  ImageGenerationProviderPreferencesOnly
-> = z.union([ProviderName$outboundSchema, z.string()]);
-
-export function imageGenerationProviderPreferencesOnlyToJSON(
-  imageGenerationProviderPreferencesOnly:
-    ImageGenerationProviderPreferencesOnly,
-): string {
-  return JSON.stringify(
-    ImageGenerationProviderPreferencesOnly$outboundSchema.parse(
-      imageGenerationProviderPreferencesOnly,
-    ),
-  );
-}
 
 /** @internal */
 export type ImageGenerationProviderPreferencesOptions$Outbound = {
@@ -605,6 +565,46 @@ export function imageGenerationProviderPreferencesOptionsToJSON(
 }
 
 /** @internal */
+export type ImageGenerationProviderPreferencesIgnore$Outbound = string | string;
+
+/** @internal */
+export const ImageGenerationProviderPreferencesIgnore$outboundSchema: z.ZodType<
+  ImageGenerationProviderPreferencesIgnore$Outbound,
+  ImageGenerationProviderPreferencesIgnore
+> = z.union([ProviderName$outboundSchema, z.string()]);
+
+export function imageGenerationProviderPreferencesIgnoreToJSON(
+  imageGenerationProviderPreferencesIgnore:
+    ImageGenerationProviderPreferencesIgnore,
+): string {
+  return JSON.stringify(
+    ImageGenerationProviderPreferencesIgnore$outboundSchema.parse(
+      imageGenerationProviderPreferencesIgnore,
+    ),
+  );
+}
+
+/** @internal */
+export type ImageGenerationProviderPreferencesOnly$Outbound = string | string;
+
+/** @internal */
+export const ImageGenerationProviderPreferencesOnly$outboundSchema: z.ZodType<
+  ImageGenerationProviderPreferencesOnly$Outbound,
+  ImageGenerationProviderPreferencesOnly
+> = z.union([ProviderName$outboundSchema, z.string()]);
+
+export function imageGenerationProviderPreferencesOnlyToJSON(
+  imageGenerationProviderPreferencesOnly:
+    ImageGenerationProviderPreferencesOnly,
+): string {
+  return JSON.stringify(
+    ImageGenerationProviderPreferencesOnly$outboundSchema.parse(
+      imageGenerationProviderPreferencesOnly,
+    ),
+  );
+}
+
+/** @internal */
 export type ImageGenerationProviderPreferencesOrder$Outbound = string | string;
 
 /** @internal */
@@ -648,10 +648,10 @@ export function imageGenerationProviderPreferencesSortToJSON(
 
 /** @internal */
 export type ImageGenerationProviderPreferences$Outbound = {
+  options?: ImageGenerationProviderPreferencesOptions$Outbound | undefined;
   allow_fallbacks?: boolean | null | undefined;
   ignore?: Array<string | string> | null | undefined;
   only?: Array<string | string> | null | undefined;
-  options?: ImageGenerationProviderPreferencesOptions$Outbound | undefined;
   order?: Array<string | string> | null | undefined;
   sort?: string | ProviderSortConfig$Outbound | null | undefined;
 };
@@ -661,15 +661,15 @@ export const ImageGenerationProviderPreferences$outboundSchema: z.ZodType<
   ImageGenerationProviderPreferences$Outbound,
   ImageGenerationProviderPreferences
 > = z.object({
+  options: z.lazy(() =>
+    ImageGenerationProviderPreferencesOptions$outboundSchema
+  ).optional(),
   allowFallbacks: z.nullable(z.boolean()).optional(),
   ignore: z.nullable(
     z.array(z.union([ProviderName$outboundSchema, z.string()])),
   ).optional(),
   only: z.nullable(z.array(z.union([ProviderName$outboundSchema, z.string()])))
     .optional(),
-  options: z.lazy(() =>
-    ImageGenerationProviderPreferencesOptions$outboundSchema
-  ).optional(),
   order: z.nullable(z.array(z.union([ProviderName$outboundSchema, z.string()])))
     .optional(),
   sort: z.nullable(

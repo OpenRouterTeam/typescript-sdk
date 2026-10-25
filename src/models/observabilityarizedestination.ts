@@ -18,12 +18,12 @@ import {
 } from "./observabilityfilterrulesconfig.js";
 
 export type ObservabilityArizeDestinationConfig = {
-  apiKey: string;
-  baseUrl: string;
   /**
    * Custom HTTP headers to include in requests to this destination.
    */
   headers?: { [k: string]: string } | undefined;
+  apiKey: string;
+  baseUrl: string;
   /**
    * The name of the tracing project in Arize AX
    */
@@ -32,6 +32,11 @@ export type ObservabilityArizeDestinationConfig = {
 };
 
 export type ObservabilityArizeDestination = {
+  /**
+   * Human-readable name for the destination.
+   */
+  name: string | null;
+  type: "arize";
   /**
    * Optional allowlist of OpenRouter API key hashes (`api_keys.hash`) whose traffic is forwarded to this destination. `null` means all keys.
    */
@@ -70,10 +75,6 @@ export type ObservabilityArizeDestination = {
    */
   id: string;
   /**
-   * Human-readable name for the destination.
-   */
-  name: string | null;
-  /**
    * When true, request/response bodies are not forwarded to this destination — only metadata.
    */
   privacyMode: boolean;
@@ -85,7 +86,6 @@ export type ObservabilityArizeDestination = {
    * Sampling rate for events sent to this destination, between 0.0001 and 1 (1 = 100%).
    */
   samplingRate: number;
-  type: "arize";
   /**
    * ISO timestamp of when the destination was last updated.
    */
@@ -101,9 +101,9 @@ export const ObservabilityArizeDestinationConfig$inboundSchema: z.ZodType<
   ObservabilityArizeDestinationConfig,
   unknown
 > = z.object({
+  headers: z.record(z.string(), z.string()).optional(),
   apiKey: z.string(),
   baseUrl: z.string().default("https://otlp.arize.com"),
-  headers: z.record(z.string(), z.string()).optional(),
   modelId: z.string(),
   spaceKey: z.string(),
 });
@@ -124,6 +124,8 @@ export const ObservabilityArizeDestination$inboundSchema: z.ZodType<
   ObservabilityArizeDestination,
   unknown
 > = z.object({
+  name: z.nullable(z.string()),
+  type: z.literal("arize"),
   api_key_hashes: z.nullable(z.array(z.string())),
   broadcast_generation_cost: z.boolean(),
   broadcast_generation_cost_allocation: z.boolean(),
@@ -134,11 +136,9 @@ export const ObservabilityArizeDestination$inboundSchema: z.ZodType<
   enabled: z.boolean(),
   filter_rules: z.nullable(ObservabilityFilterRulesConfig$inboundSchema),
   id: z.string(),
-  name: z.nullable(z.string()),
   privacy_mode: z.boolean(),
   regions: z.array(ObservabilityDataRegion$inboundSchema),
   sampling_rate: z.number(),
-  type: z.literal("arize"),
   updated_at: z.string(),
   workspace_id: z.string(),
 }).transform((v) => {

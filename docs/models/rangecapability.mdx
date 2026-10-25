@@ -10,9 +10,9 @@ A parameter that accepts any value within an inclusive numeric range.
 import { RangeCapability } from "@openrouter/sdk/models";
 
 let value: RangeCapability = {
+  type: "range",
   max: 1546.58,
   min: 9138.34,
-  type: "range",
 };
 ```
 
@@ -20,6 +20,6 @@ let value: RangeCapability = {
 
 | Field              | Type               | Required           | Description        |
 | ------------------ | ------------------ | ------------------ | ------------------ |
+| `type`             | *"range"*          | ✔️ | N/A                |
 | `max`              | *number*           | ✔️ | N/A                |
 | `min`              | *number*           | ✔️ | N/A                |
-| `type`             | *"range"*          | ✔️ | N/A                |

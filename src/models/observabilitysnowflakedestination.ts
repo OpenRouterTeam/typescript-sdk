@@ -18,12 +18,12 @@ import {
 } from "./observabilityfilterrulesconfig.js";
 
 export type ObservabilitySnowflakeDestinationConfig = {
-  account: string;
-  database: string;
   /**
    * Custom HTTP headers to include in requests to this destination.
    */
   headers?: { [k: string]: string } | undefined;
+  account: string;
+  database: string;
   schema: string;
   /**
    * Send the cache_write_tokens column (schema v2). Turn this on after the table has that column.
@@ -35,6 +35,11 @@ export type ObservabilitySnowflakeDestinationConfig = {
 };
 
 export type ObservabilitySnowflakeDestination = {
+  /**
+   * Human-readable name for the destination.
+   */
+  name: string | null;
+  type: "snowflake";
   /**
    * Optional allowlist of OpenRouter API key hashes (`api_keys.hash`) whose traffic is forwarded to this destination. `null` means all keys.
    */
@@ -73,10 +78,6 @@ export type ObservabilitySnowflakeDestination = {
    */
   id: string;
   /**
-   * Human-readable name for the destination.
-   */
-  name: string | null;
-  /**
    * When true, request/response bodies are not forwarded to this destination — only metadata.
    */
   privacyMode: boolean;
@@ -88,7 +89,6 @@ export type ObservabilitySnowflakeDestination = {
    * Sampling rate for events sent to this destination, between 0.0001 and 1 (1 = 100%).
    */
   samplingRate: number;
-  type: "snowflake";
   /**
    * ISO timestamp of when the destination was last updated.
    */
@@ -104,9 +104,9 @@ export const ObservabilitySnowflakeDestinationConfig$inboundSchema: z.ZodType<
   ObservabilitySnowflakeDestinationConfig,
   unknown
 > = z.object({
+  headers: z.record(z.string(), z.string()).optional(),
   account: z.string(),
   database: z.string().default("SNOWFLAKE_LEARNING_DB"),
-  headers: z.record(z.string(), z.string()).optional(),
   schema: z.string().default("PUBLIC"),
   shouldIncludeCacheWriteTokens: z.boolean().default(false),
   table: z.string().default("OPENROUTER_TRACES"),
@@ -135,6 +135,8 @@ export const ObservabilitySnowflakeDestination$inboundSchema: z.ZodType<
   ObservabilitySnowflakeDestination,
   unknown
 > = z.object({
+  name: z.nullable(z.string()),
+  type: z.literal("snowflake"),
   api_key_hashes: z.nullable(z.array(z.string())),
   broadcast_generation_cost: z.boolean(),
   broadcast_generation_cost_allocation: z.boolean(),
@@ -145,11 +147,9 @@ export const ObservabilitySnowflakeDestination$inboundSchema: z.ZodType<
   enabled: z.boolean(),
   filter_rules: z.nullable(ObservabilityFilterRulesConfig$inboundSchema),
   id: z.string(),
-  name: z.nullable(z.string()),
   privacy_mode: z.boolean(),
   regions: z.array(ObservabilityDataRegion$inboundSchema),
   sampling_rate: z.number(),
-  type: z.literal("snowflake"),
   updated_at: z.string(),
   workspace_id: z.string(),
 }).transform((v) => {

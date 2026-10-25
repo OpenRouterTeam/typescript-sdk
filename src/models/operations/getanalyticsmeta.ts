@@ -10,6 +10,7 @@ import * as openEnums from "../../types/enums.js";
 import { OpenEnum } from "../../types/enums.js";
 import { Result as SafeParseResult } from "../../types/fp.js";
 import { SDKValidationError } from "../errors/sdkvalidationerror.js";
+import * as models from "../index.js";
 
 export type GetAnalyticsMetaGlobals = {
   /**
@@ -57,19 +58,19 @@ export type GetAnalyticsMetaRequest = {
 
 export type Dimension = {
   /**
-   * Human-readable label
-   */
-  displayLabel: string;
-  /**
    * Dimension identifier used in query requests
    */
   name: string;
+  /**
+   * Human-readable label
+   */
+  displayLabel: string;
 };
 
 /**
  * Granularity identifier
  */
-export const GranularityName = {
+export const Name = {
   Minute: "minute",
   Hour: "hour",
   Day: "day",
@@ -79,17 +80,17 @@ export const GranularityName = {
 /**
  * Granularity identifier
  */
-export type GranularityName = OpenEnum<typeof GranularityName>;
+export type Name = OpenEnum<typeof Name>;
 
 export type Granularity = {
+  /**
+   * Granularity identifier
+   */
+  name: Name;
   /**
    * Human-readable label
    */
   displayLabel: string;
-  /**
-   * Granularity identifier
-   */
-  name: GranularityName;
 };
 
 /**
@@ -109,6 +110,10 @@ export type DisplayFormat = OpenEnum<typeof DisplayFormat>;
 
 export type Metric = {
   /**
+   * Metric identifier used in query requests
+   */
+  name: string;
+  /**
    * How this metric value should be formatted for display (e.g. percent → multiply by 100 and append %, currency → prefix with $)
    */
   displayFormat: DisplayFormat;
@@ -120,58 +125,13 @@ export type Metric = {
    * Whether this metric is a rate/ratio (averaged, not summed)
    */
   isRate: boolean;
-  /**
-   * Metric identifier used in query requests
-   */
-  name: string;
-};
-
-/**
- * Operator identifier used in filter definitions
- */
-export const OperatorName = {
-  Eq: "eq",
-  Neq: "neq",
-  In: "in",
-  NotIn: "not_in",
-  Gt: "gt",
-  Gte: "gte",
-  Lt: "lt",
-  Lte: "lte",
-} as const;
-/**
- * Operator identifier used in filter definitions
- */
-export type OperatorName = OpenEnum<typeof OperatorName>;
-
-/**
- * Whether the operator expects a single value or an array
- */
-export const ValueType = {
-  Scalar: "scalar",
-  Array: "array",
-} as const;
-/**
- * Whether the operator expects a single value or an array
- */
-export type ValueType = OpenEnum<typeof ValueType>;
-
-export type Operator = {
-  /**
-   * Operator identifier used in filter definitions
-   */
-  name: OperatorName;
-  /**
-   * Whether the operator expects a single value or an array
-   */
-  valueType: ValueType;
 };
 
 export type GetAnalyticsMetaData = {
   dimensions: Array<Dimension>;
   granularities: Array<Granularity>;
   metrics: Array<Metric>;
-  operators: Array<Operator>;
+  operators: Array<models.Operator>;
 };
 
 /**
@@ -212,8 +172,8 @@ export function getAnalyticsMetaRequestToJSON(
 
 /** @internal */
 export const Dimension$inboundSchema: z.ZodType<Dimension, unknown> = z.object({
-  display_label: z.string(),
   name: z.string(),
+  display_label: z.string(),
 }).transform((v) => {
   return remap$(v, {
     "display_label": "displayLabel",
@@ -231,16 +191,14 @@ export function dimensionFromJSON(
 }
 
 /** @internal */
-export const GranularityName$inboundSchema: z.ZodType<
-  GranularityName,
-  unknown
-> = openEnums.inboundSchema(GranularityName);
+export const Name$inboundSchema: z.ZodType<Name, unknown> = openEnums
+  .inboundSchema(Name);
 
 /** @internal */
 export const Granularity$inboundSchema: z.ZodType<Granularity, unknown> = z
   .object({
+    name: Name$inboundSchema,
     display_label: z.string(),
-    name: GranularityName$inboundSchema,
   }).transform((v) => {
     return remap$(v, {
       "display_label": "displayLabel",
@@ -263,10 +221,10 @@ export const DisplayFormat$inboundSchema: z.ZodType<DisplayFormat, unknown> =
 
 /** @internal */
 export const Metric$inboundSchema: z.ZodType<Metric, unknown> = z.object({
+  name: z.string(),
   display_format: DisplayFormat$inboundSchema,
   display_label: z.string(),
   is_rate: z.boolean(),
-  name: z.string(),
 }).transform((v) => {
   return remap$(v, {
     "display_format": "displayFormat",
@@ -286,34 +244,6 @@ export function metricFromJSON(
 }
 
 /** @internal */
-export const OperatorName$inboundSchema: z.ZodType<OperatorName, unknown> =
-  openEnums.inboundSchema(OperatorName);
-
-/** @internal */
-export const ValueType$inboundSchema: z.ZodType<ValueType, unknown> = openEnums
-  .inboundSchema(ValueType);
-
-/** @internal */
-export const Operator$inboundSchema: z.ZodType<Operator, unknown> = z.object({
-  name: OperatorName$inboundSchema,
-  value_type: ValueType$inboundSchema,
-}).transform((v) => {
-  return remap$(v, {
-    "value_type": "valueType",
-  });
-});
-
-export function operatorFromJSON(
-  jsonString: string,
-): SafeParseResult<Operator, SDKValidationError> {
-  return safeParse(
-    jsonString,
-    (x) => Operator$inboundSchema.parse(JSON.parse(x)),
-    `Failed to parse 'Operator' from JSON`,
-  );
-}
-
-/** @internal */
 export const GetAnalyticsMetaData$inboundSchema: z.ZodType<
   GetAnalyticsMetaData,
   unknown
@@ -321,7 +251,7 @@ export const GetAnalyticsMetaData$inboundSchema: z.ZodType<
   dimensions: z.array(z.lazy(() => Dimension$inboundSchema)),
   granularities: z.array(z.lazy(() => Granularity$inboundSchema)),
   metrics: z.array(z.lazy(() => Metric$inboundSchema)),
-  operators: z.array(z.lazy(() => Operator$inboundSchema)),
+  operators: z.array(models.Operator$inboundSchema),
 });
 
 export function getAnalyticsMetaDataFromJSON(

@@ -18,17 +18,22 @@ import {
 } from "./observabilityfilterrulesconfig.js";
 
 export type ObservabilityWeaveDestinationConfig = {
-  apiKey: string;
-  baseUrl: string;
-  entity: string;
   /**
    * Custom HTTP headers to include in requests to this destination.
    */
   headers?: { [k: string]: string } | undefined;
+  apiKey: string;
+  baseUrl: string;
+  entity: string;
   project: string;
 };
 
 export type ObservabilityWeaveDestination = {
+  /**
+   * Human-readable name for the destination.
+   */
+  name: string | null;
+  type: "weave";
   /**
    * Optional allowlist of OpenRouter API key hashes (`api_keys.hash`) whose traffic is forwarded to this destination. `null` means all keys.
    */
@@ -67,10 +72,6 @@ export type ObservabilityWeaveDestination = {
    */
   id: string;
   /**
-   * Human-readable name for the destination.
-   */
-  name: string | null;
-  /**
    * When true, request/response bodies are not forwarded to this destination — only metadata.
    */
   privacyMode: boolean;
@@ -82,7 +83,6 @@ export type ObservabilityWeaveDestination = {
    * Sampling rate for events sent to this destination, between 0.0001 and 1 (1 = 100%).
    */
   samplingRate: number;
-  type: "weave";
   /**
    * ISO timestamp of when the destination was last updated.
    */
@@ -98,10 +98,10 @@ export const ObservabilityWeaveDestinationConfig$inboundSchema: z.ZodType<
   ObservabilityWeaveDestinationConfig,
   unknown
 > = z.object({
+  headers: z.record(z.string(), z.string()).optional(),
   apiKey: z.string(),
   baseUrl: z.string().default("https://trace.wandb.ai"),
   entity: z.string(),
-  headers: z.record(z.string(), z.string()).optional(),
   project: z.string(),
 });
 
@@ -121,6 +121,8 @@ export const ObservabilityWeaveDestination$inboundSchema: z.ZodType<
   ObservabilityWeaveDestination,
   unknown
 > = z.object({
+  name: z.nullable(z.string()),
+  type: z.literal("weave"),
   api_key_hashes: z.nullable(z.array(z.string())),
   broadcast_generation_cost: z.boolean(),
   broadcast_generation_cost_allocation: z.boolean(),
@@ -131,11 +133,9 @@ export const ObservabilityWeaveDestination$inboundSchema: z.ZodType<
   enabled: z.boolean(),
   filter_rules: z.nullable(ObservabilityFilterRulesConfig$inboundSchema),
   id: z.string(),
-  name: z.nullable(z.string()),
   privacy_mode: z.boolean(),
   regions: z.array(ObservabilityDataRegion$inboundSchema),
   sampling_rate: z.number(),
-  type: z.literal("weave"),
   updated_at: z.string(),
   workspace_id: z.string(),
 }).transform((v) => {

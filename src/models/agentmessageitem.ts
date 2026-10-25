@@ -13,14 +13,19 @@ import {
   InputText$outboundSchema,
 } from "./inputtext.js";
 
+export const TypeAgentMessage = {
+  AgentMessage: "agent_message",
+} as const;
+export type TypeAgentMessage = ClosedEnum<typeof TypeAgentMessage>;
+
 export type Agent = {
   agentName: string;
   additionalProperties?: { [k: string]: any } | undefined;
 };
 
 export type ContentEncryptedContent = {
-  encryptedContent: string;
   type: "encrypted_content";
+  encryptedContent: string;
   additionalProperties?: { [k: string]: any } | undefined;
 };
 
@@ -36,10 +41,10 @@ export type AgentMessageItemDetail = OpenEnum<typeof AgentMessageItemDetail>;
  * Image input content item. Provide either an image_url (a URL or a base64 data URL) or the file_id of an uploaded image.
  */
 export type AgentMessageItemContentInputImage = {
+  type: "input_image";
   detail: AgentMessageItemDetail;
   fileId?: string | null | undefined;
   imageUrl?: string | null | undefined;
-  type: "input_image";
 };
 
 export type AgentMessageItemContentUnion =
@@ -47,15 +52,11 @@ export type AgentMessageItemContentUnion =
   | AgentMessageItemContentInputImage
   | ContentEncryptedContent;
 
-export const TypeAgentMessage = {
-  AgentMessage: "agent_message",
-} as const;
-export type TypeAgentMessage = ClosedEnum<typeof TypeAgentMessage>;
-
 /**
  * A message routed between agents in a multi-agent session
  */
 export type AgentMessageItem = {
+  type: TypeAgentMessage;
   agent?: Agent | null | undefined;
   author: string;
   content: Array<
@@ -63,9 +64,13 @@ export type AgentMessageItem = {
   >;
   id?: string | null | undefined;
   recipient: string;
-  type: TypeAgentMessage;
   additionalProperties?: { [k: string]: any } | undefined;
 };
+
+/** @internal */
+export const TypeAgentMessage$outboundSchema: z.ZodEnum<
+  typeof TypeAgentMessage
+> = z.enum(TypeAgentMessage);
 
 /** @internal */
 export type Agent$Outbound = {
@@ -93,8 +98,8 @@ export function agentToJSON(agent: Agent): string {
 
 /** @internal */
 export type ContentEncryptedContent$Outbound = {
-  encrypted_content: string;
   type: "encrypted_content";
+  encrypted_content: string;
   [additionalProperties: string]: unknown;
 };
 
@@ -103,8 +108,8 @@ export const ContentEncryptedContent$outboundSchema: z.ZodType<
   ContentEncryptedContent$Outbound,
   ContentEncryptedContent
 > = z.object({
-  encryptedContent: z.string(),
   type: z.literal("encrypted_content"),
+  encryptedContent: z.string(),
   additionalProperties: z.record(z.string(), z.any()).optional(),
 }).transform((v) => {
   return {
@@ -132,10 +137,10 @@ export const AgentMessageItemDetail$outboundSchema: z.ZodType<
 
 /** @internal */
 export type AgentMessageItemContentInputImage$Outbound = {
+  type: "input_image";
   detail: string;
   file_id?: string | null | undefined;
   image_url?: string | null | undefined;
-  type: "input_image";
 };
 
 /** @internal */
@@ -143,10 +148,10 @@ export const AgentMessageItemContentInputImage$outboundSchema: z.ZodType<
   AgentMessageItemContentInputImage$Outbound,
   AgentMessageItemContentInputImage
 > = z.object({
+  type: z.literal("input_image"),
   detail: AgentMessageItemDetail$outboundSchema,
   fileId: z.nullable(z.string()).optional(),
   imageUrl: z.nullable(z.string()).optional(),
-  type: z.literal("input_image"),
 }).transform((v) => {
   return remap$(v, {
     fileId: "file_id",
@@ -191,12 +196,8 @@ export function agentMessageItemContentUnionToJSON(
 }
 
 /** @internal */
-export const TypeAgentMessage$outboundSchema: z.ZodEnum<
-  typeof TypeAgentMessage
-> = z.enum(TypeAgentMessage);
-
-/** @internal */
 export type AgentMessageItem$Outbound = {
+  type: string;
   agent?: Agent$Outbound | null | undefined;
   author: string;
   content: Array<
@@ -206,7 +207,6 @@ export type AgentMessageItem$Outbound = {
   >;
   id?: string | null | undefined;
   recipient: string;
-  type: string;
   [additionalProperties: string]: unknown;
 };
 
@@ -215,6 +215,7 @@ export const AgentMessageItem$outboundSchema: z.ZodType<
   AgentMessageItem$Outbound,
   AgentMessageItem
 > = z.object({
+  type: TypeAgentMessage$outboundSchema,
   agent: z.nullable(z.lazy(() => Agent$outboundSchema)).optional(),
   author: z.string(),
   content: z.array(
@@ -226,7 +227,6 @@ export const AgentMessageItem$outboundSchema: z.ZodType<
   ),
   id: z.nullable(z.string()).optional(),
   recipient: z.string(),
-  type: TypeAgentMessage$outboundSchema,
   additionalProperties: z.record(z.string(), z.any()).optional(),
 }).transform((v) => {
   return {

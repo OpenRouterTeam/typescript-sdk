@@ -10,10 +10,10 @@ A detected entity, returned when the provider runs entity detection
 import { STTEntity } from "@openrouter/sdk/models";
 
 let value: STTEntity = {
+  type: "name",
   endChar: 25,
   startChar: 15,
   text: "John Smith",
-  type: "name",
 };
 ```
 
@@ -21,7 +21,7 @@ let value: STTEntity = {
 
 | Field                                                                                                | Type                                                                                                 | Required                                                                                             | Description                                                                                          | Example                                                                                              |
 | ---------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------- |
+| `type`                                                                                               | *string*                                                                                             | ✔️                                                                                   | Provider entity type label                                                                           | name                                                                                                 |
 | `endChar`                                                                                            | *number*                                                                                             | ✔️                                                                                   | Zero-based exclusive character offset of the entity end within the response-level text (not seconds) | 25                                                                                                   |
 | `startChar`                                                                                          | *number*                                                                                             | ✔️                                                                                   | Zero-based character offset of the entity start within the response-level text (not seconds)         | 15                                                                                                   |
 | `text`                                                                                               | *string*                                                                                             | ✔️                                                                                   | Entity text as it appears in the transcript                                                          |                                                                                                      |
-| `type`                                                                                               | *string*                                                                                             | ✔️                                                                                   | Provider entity type label                                                                           | name                                                                                                 |

@@ -10,14 +10,14 @@ import { remap as remap$ } from "../lib/primitives.js";
  * Deterministic BM25 retrieval over supplied tool definitions.
  */
 export type DeferredBm25Search = {
-  maxResults?: number | undefined;
   type: "bm25";
+  maxResults?: number | undefined;
 };
 
 /** @internal */
 export type DeferredBm25Search$Outbound = {
-  max_results?: number | undefined;
   type: "bm25";
+  max_results?: number | undefined;
 };
 
 /** @internal */
@@ -25,8 +25,8 @@ export const DeferredBm25Search$outboundSchema: z.ZodType<
   DeferredBm25Search$Outbound,
   DeferredBm25Search
 > = z.object({
-  maxResults: z.int().optional(),
   type: z.literal("bm25"),
+  maxResults: z.int().optional(),
 }).transform((v) => {
   return remap$(v, {
     maxResults: "max_results",

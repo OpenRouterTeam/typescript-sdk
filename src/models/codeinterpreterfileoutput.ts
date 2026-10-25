@@ -10,6 +10,7 @@ import { Result as SafeParseResult } from "../types/fp.js";
 import { SDKValidationError } from "./errors/sdkvalidationerror.js";
 
 export type CodeInterpreterFileOutput = {
+  type: "file";
   /**
    * Provider-issued download URL for the generated file. Typically signed and time-limited (see `expires_at`); fetch promptly rather than persisting the URL.
    */
@@ -31,7 +32,6 @@ export type CodeInterpreterFileOutput = {
    * Provider-reported readiness of the generated file (e.g. `ready`). Values other than `ready` indicate the artifact may not be downloadable.
    */
   status?: string | undefined;
-  type: "file";
 };
 
 /** @internal */
@@ -39,6 +39,7 @@ export const CodeInterpreterFileOutput$inboundSchema: z.ZodType<
   CodeInterpreterFileOutput,
   unknown
 > = z.object({
+  type: z.literal("file"),
   download_url: z.string().optional(),
   error_code: z.nullable(z.string()).optional(),
   expires_at: z.string().optional(),
@@ -48,7 +49,6 @@ export const CodeInterpreterFileOutput$inboundSchema: z.ZodType<
   sha256: z.string().optional(),
   size_bytes: z.int().optional(),
   status: z.string().optional(),
-  type: z.literal("file"),
 }).transform((v) => {
   return remap$(v, {
     "download_url": "downloadUrl",
@@ -60,6 +60,7 @@ export const CodeInterpreterFileOutput$inboundSchema: z.ZodType<
 });
 /** @internal */
 export type CodeInterpreterFileOutput$Outbound = {
+  type: "file";
   download_url?: string | undefined;
   error_code?: string | null | undefined;
   expires_at?: string | undefined;
@@ -69,7 +70,6 @@ export type CodeInterpreterFileOutput$Outbound = {
   sha256?: string | undefined;
   size_bytes?: number | undefined;
   status?: string | undefined;
-  type: "file";
 };
 
 /** @internal */
@@ -77,6 +77,7 @@ export const CodeInterpreterFileOutput$outboundSchema: z.ZodType<
   CodeInterpreterFileOutput$Outbound,
   CodeInterpreterFileOutput
 > = z.object({
+  type: z.literal("file"),
   downloadUrl: z.string().optional(),
   errorCode: z.nullable(z.string()).optional(),
   expiresAt: z.string().optional(),
@@ -86,7 +87,6 @@ export const CodeInterpreterFileOutput$outboundSchema: z.ZodType<
   sha256: z.string().optional(),
   sizeBytes: z.int().optional(),
   status: z.string().optional(),
-  type: z.literal("file"),
 }).transform((v) => {
   return remap$(v, {
     downloadUrl: "download_url",

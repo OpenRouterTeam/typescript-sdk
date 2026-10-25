@@ -8,10 +8,10 @@ title: "ContentPartImage"
 import { ContentPartImage } from "@openrouter/sdk/models";
 
 let value: ContentPartImage = {
+  type: "image_url",
   imageUrl: {
     url: "https://example.com/image.png",
   },
-  type: "image_url",
 };
 ```
 
@@ -19,5 +19,5 @@ let value: ContentPartImage = {
 
 | Field                                                                    | Type                                                                     | Required                                                                 | Description                                                              |
 | ------------------------------------------------------------------------ | ------------------------------------------------------------------------ | ------------------------------------------------------------------------ | ------------------------------------------------------------------------ |
-| `imageUrl`                                                               | [models.ContentPartImageImageUrl](../models/contentpartimageimageurl.mdx) | ✔️                                                       | N/A                                                                      |
 | `type`                                                                   | [models.ContentPartImageType](../models/contentpartimagetype.mdx)         | ✔️                                                       | N/A                                                                      |
+| `imageUrl`                                                               | [models.ContentPartImageImageUrl](../models/contentpartimageimageurl.mdx) | ✔️                                                       | N/A                                                                      |

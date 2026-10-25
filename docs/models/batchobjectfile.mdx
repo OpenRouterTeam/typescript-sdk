@@ -10,10 +10,10 @@ import { BatchObjectFile } from "@openrouter/sdk/models";
 let value: BatchObjectFile = {
   content: [
     {
+      type: "image_url",
       imageUrl: {
         url: "https://zealous-march.biz/",
       },
-      type: "image_url",
     },
   ],
   hash: "<value>",
@@ -24,6 +24,6 @@ let value: BatchObjectFile = {
 
 | Field                             | Type                              | Required                          | Description                       |
 | --------------------------------- | --------------------------------- | --------------------------------- | --------------------------------- |
+| `name`                            | *string*                          | ➖                | N/A                               |
 | `content`                         | *models.AnnotationContentUnion*[] | ✔️                | N/A                               |
 | `hash`                            | *string*                          | ✔️                | N/A                               |
-| `name`                            | *string*                          | ➖                | N/A                               |

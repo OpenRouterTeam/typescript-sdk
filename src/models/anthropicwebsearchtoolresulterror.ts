@@ -11,6 +11,13 @@ import { ClosedEnum, OpenEnum } from "../types/enums.js";
 import { Result as SafeParseResult } from "../types/fp.js";
 import { SDKValidationError } from "./errors/sdkvalidationerror.js";
 
+export const AnthropicWebSearchToolResultErrorType = {
+  WebSearchToolResultError: "web_search_tool_result_error",
+} as const;
+export type AnthropicWebSearchToolResultErrorType = ClosedEnum<
+  typeof AnthropicWebSearchToolResultErrorType
+>;
+
 export const AnthropicWebSearchToolResultErrorErrorCode = {
   InvalidToolInput: "invalid_tool_input",
   Unavailable: "unavailable",
@@ -23,22 +30,10 @@ export type AnthropicWebSearchToolResultErrorErrorCode = OpenEnum<
   typeof AnthropicWebSearchToolResultErrorErrorCode
 >;
 
-export const AnthropicWebSearchToolResultErrorType = {
-  WebSearchToolResultError: "web_search_tool_result_error",
-} as const;
-export type AnthropicWebSearchToolResultErrorType = ClosedEnum<
-  typeof AnthropicWebSearchToolResultErrorType
->;
-
 export type AnthropicWebSearchToolResultError = {
-  errorCode: AnthropicWebSearchToolResultErrorErrorCode;
   type: AnthropicWebSearchToolResultErrorType;
+  errorCode: AnthropicWebSearchToolResultErrorErrorCode;
 };
-
-/** @internal */
-export const AnthropicWebSearchToolResultErrorErrorCode$inboundSchema:
-  z.ZodType<AnthropicWebSearchToolResultErrorErrorCode, unknown> = openEnums
-    .inboundSchema(AnthropicWebSearchToolResultErrorErrorCode);
 
 /** @internal */
 export const AnthropicWebSearchToolResultErrorType$inboundSchema: z.ZodEnum<
@@ -46,12 +41,17 @@ export const AnthropicWebSearchToolResultErrorType$inboundSchema: z.ZodEnum<
 > = z.enum(AnthropicWebSearchToolResultErrorType);
 
 /** @internal */
+export const AnthropicWebSearchToolResultErrorErrorCode$inboundSchema:
+  z.ZodType<AnthropicWebSearchToolResultErrorErrorCode, unknown> = openEnums
+    .inboundSchema(AnthropicWebSearchToolResultErrorErrorCode);
+
+/** @internal */
 export const AnthropicWebSearchToolResultError$inboundSchema: z.ZodType<
   AnthropicWebSearchToolResultError,
   unknown
 > = z.object({
-  error_code: AnthropicWebSearchToolResultErrorErrorCode$inboundSchema,
   type: AnthropicWebSearchToolResultErrorType$inboundSchema,
+  error_code: AnthropicWebSearchToolResultErrorErrorCode$inboundSchema,
 }).transform((v) => {
   return remap$(v, {
     "error_code": "errorCode",

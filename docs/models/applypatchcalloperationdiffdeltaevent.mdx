@@ -10,11 +10,11 @@ Incremental chunk of `operation.diff` for an `apply_patch_call`. Matches OpenAI'
 import { ApplyPatchCallOperationDiffDeltaEvent } from "@openrouter/sdk/models";
 
 let value: ApplyPatchCallOperationDiffDeltaEvent = {
+  type: "response.apply_patch_call_operation_diff.delta",
   delta: "<value>",
   itemId: "<id>",
   outputIndex: 790412,
   sequenceNumber: 0,
-  type: "response.apply_patch_call_operation_diff.delta",
 };
 ```
 
@@ -22,8 +22,8 @@ let value: ApplyPatchCallOperationDiffDeltaEvent = {
 
 | Field                                              | Type                                               | Required                                           | Description                                        |
 | -------------------------------------------------- | -------------------------------------------------- | -------------------------------------------------- | -------------------------------------------------- |
+| `type`                                             | *"response.apply_patch_call_operation_diff.delta"* | ✔️                                 | N/A                                                |
 | `delta`                                            | *string*                                           | ✔️                                 | N/A                                                |
 | `itemId`                                           | *string*                                           | ✔️                                 | N/A                                                |
 | `outputIndex`                                      | *number*                                           | ✔️                                 | N/A                                                |
 | `sequenceNumber`                                   | *number*                                           | ✔️                                 | N/A                                                |
-| `type`                                             | *"response.apply_patch_call_operation_diff.delta"* | ✔️                                 | N/A                                                |

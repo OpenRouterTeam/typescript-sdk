@@ -8,11 +8,11 @@ title: "AnthropicBashCodeExecutionResult"
 import { AnthropicBashCodeExecutionResult } from "@openrouter/sdk/models";
 
 let value: AnthropicBashCodeExecutionResult = {
+  type: "bash_code_execution_result",
   content: [],
   returnCode: 0,
   stderr: "",
   stdout: "Hello",
-  type: "bash_code_execution_result",
 };
 ```
 
@@ -20,8 +20,8 @@ let value: AnthropicBashCodeExecutionResult = {
 
 | Field                                                                                      | Type                                                                                       | Required                                                                                   | Description                                                                                |
 | ------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------ |
+| `type`                                                                                     | *"bash_code_execution_result"*                                                             | ✔️                                                                         | N/A                                                                                        |
 | `content`                                                                                  | [models.AnthropicBashCodeExecutionOutput](../models/anthropicbashcodeexecutionoutput.mdx)[] | ✔️                                                                         | N/A                                                                                        |
 | `returnCode`                                                                               | *number*                                                                                   | ✔️                                                                         | N/A                                                                                        |
 | `stderr`                                                                                   | *string*                                                                                   | ✔️                                                                         | N/A                                                                                        |
 | `stdout`                                                                                   | *string*                                                                                   | ✔️                                                                         | N/A                                                                                        |
-| `type`                                                                                     | *"bash_code_execution_result"*                                                             | ✔️                                                                         | N/A                                                                                        |

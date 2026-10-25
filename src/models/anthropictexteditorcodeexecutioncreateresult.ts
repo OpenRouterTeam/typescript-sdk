@@ -10,15 +10,15 @@ import { Result as SafeParseResult } from "../types/fp.js";
 import { SDKValidationError } from "./errors/sdkvalidationerror.js";
 
 export type AnthropicTextEditorCodeExecutionCreateResult = {
-  isFileUpdate: boolean;
   type: "text_editor_code_execution_create_result";
+  isFileUpdate: boolean;
 };
 
 /** @internal */
 export const AnthropicTextEditorCodeExecutionCreateResult$inboundSchema:
   z.ZodType<AnthropicTextEditorCodeExecutionCreateResult, unknown> = z.object({
-    is_file_update: z.boolean(),
     type: z.literal("text_editor_code_execution_create_result"),
+    is_file_update: z.boolean(),
   }).transform((v) => {
     return remap$(v, {
       "is_file_update": "isFileUpdate",

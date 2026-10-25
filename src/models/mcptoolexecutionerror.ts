@@ -17,8 +17,8 @@ export type McpToolExecutionErrorType = ClosedEnum<
  * The MCP tool ran but reported a failure
  */
 export type McpToolExecutionError = {
-  content?: any | undefined;
   type: McpToolExecutionErrorType;
+  content?: any | undefined;
 };
 
 /** @internal */
@@ -28,8 +28,8 @@ export const McpToolExecutionErrorType$outboundSchema: z.ZodEnum<
 
 /** @internal */
 export type McpToolExecutionError$Outbound = {
-  content?: any | undefined;
   type: string;
+  content?: any | undefined;
 };
 
 /** @internal */
@@ -37,8 +37,8 @@ export const McpToolExecutionError$outboundSchema: z.ZodType<
   McpToolExecutionError$Outbound,
   McpToolExecutionError
 > = z.object({
-  content: z.any().optional(),
   type: McpToolExecutionErrorType$outboundSchema,
+  content: z.any().optional(),
 });
 
 export function mcpToolExecutionErrorToJSON(

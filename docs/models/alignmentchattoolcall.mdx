@@ -8,12 +8,12 @@ title: "AlignmentChatToolCall"
 import { AlignmentChatToolCall } from "@openrouter/sdk/models";
 
 let value: AlignmentChatToolCall = {
+  type: "function",
   function: {
-    arguments: "<value>",
     name: "<value>",
+    arguments: "<value>",
   },
   id: "<id>",
-  type: "function",
 };
 ```
 
@@ -21,6 +21,6 @@ let value: AlignmentChatToolCall = {
 
 | Field                                                                              | Type                                                                               | Required                                                                           | Description                                                                        |
 | ---------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------- |
+| `type`                                                                             | [models.AlignmentChatToolCallType](../models/alignmentchattoolcalltype.mdx)         | ✔️                                                                 | N/A                                                                                |
 | `function`                                                                         | [models.AlignmentChatToolCallFunction](../models/alignmentchattoolcallfunction.mdx) | ✔️                                                                 | N/A                                                                                |
 | `id`                                                                               | *string*                                                                           | ✔️                                                                 | N/A                                                                                |
-| `type`                                                                             | [models.AlignmentChatToolCallType](../models/alignmentchattoolcalltype.mdx)         | ✔️                                                                 | N/A                                                                                |
