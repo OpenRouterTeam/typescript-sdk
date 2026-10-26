@@ -1,19 +1,19 @@
 lockVersion: ""
 id: ""
 management:
-  docChecksum: b115a84a0a3064752bee8d6c5de8ed0e
+  docChecksum: e10057cbdca89ba6e38ac0d091edf809
   docVersion: 1.0.0
   speakeasyVersion: 1.802.0
   generationVersion: 2.948.4
-  releaseVersion: 1.5.7
-  configChecksum: 8756d95d94900acf0d093b1b4a2a3c86
+  releaseVersion: 1.5.8
+  configChecksum: f7c624e4b11d4d8596fee3822ba27e32
   repoURL: https://github.com/OpenRouterTeam/typescript-sdk.git
   installationURL: https://github.com/OpenRouterTeam/typescript-sdk
   published: true
 persistentEdits:
-  generation_id: d89ba09f-14f5-4449-94c1-6d28ec76319b
-  pristine_commit_hash: 9592038cdfd3c83b8d00a3ae64c0d3dc557f4ba6
-  pristine_tree_hash: 85f80cca5f78fba731686d07b7d8b66e92668af5
+  generation_id: fdce38a4-5d51-452b-a713-134be86d138c
+  pristine_commit_hash: 533fc3cdae371ef6c605032b3182c36023a4f1cf
+  pristine_tree_hash: ad0208a0cca5bd4a81373d777d9ecf8639daef1e
 features:
   typescript:
     acceptHeaders: 2.81.2
@@ -13654,8 +13654,8 @@ trackedFiles:
     deleted: true
   docs/models/supportedsize.mdx:
     id: bcb235938132
-    last_write_checksum: sha1:8760e16a1c689ef750ba80131ad3cdff3faa0cc8
-    pristine_git_object: 5fe6e0d75f9dafe993374fe618cc0e3ff8082d23
+    last_write_checksum: sha1:9253bde974daf26df56f04ac9c337fff0a4e4304
+    pristine_git_object: c1aa8fd5bdab63b44a75935f895007c47db088e6
   docs/models/switchyardrouterplugin.mdx:
     id: 58f9fabcbcf9
     last_write_checksum: sha1:46f5c565948b7360238ac798a3226518b15cfd48
@@ -15315,12 +15315,12 @@ trackedFiles:
     pristine_git_object: 410efafd6a7f50d91ccb87131fedbe0c3d47e15a
   jsr.json:
     id: 7f6ab7767282
-    last_write_checksum: sha1:55c934a23ae4e6c335951a9d6506b6c0a36b4a92
-    pristine_git_object: 3de1ffd9b175b6513bac5a68802b880eb7daac01
+    last_write_checksum: sha1:08e18f132992dd110e7840fff9fb547b57a6ceb7
+    pristine_git_object: 3def8504e7a0c6bf3cc799eaa17ca480115b2dd3
   package.json:
     id: 7030d0b2f71b
-    last_write_checksum: sha1:5e6f0ffeb964ddf5b964c28c06942a5e34346dd5
-    pristine_git_object: f9b683bbad0b6d8f5ac8fa9747e99c4c68a00c6a
+    last_write_checksum: sha1:16dd32357ac45ee2e52004d01f8dc336b0a7486f
+    pristine_git_object: 5e3d81ded898720bb1bbba9229783d0cad3fadce
   src/core.ts:
     id: f431fdbcd144
     last_write_checksum: sha1:5aa66b0b6a5964f3eea7f3098c2eb3c0ee9c0131
@@ -15899,8 +15899,8 @@ trackedFiles:
     pristine_git_object: a187e58707bdb726ca2aff74941efe7493422d4e
   src/lib/config.ts:
     id: 320761608fb3
-    last_write_checksum: sha1:92c4db15b22b3efc808109c2655ff153f255799e
-    pristine_git_object: e6763e121f709b0ddd101420fd7d1e0f45c101bb
+    last_write_checksum: sha1:eedbb692b22a47dd1e2f25fced2661b5d2fd5eb6
+    pristine_git_object: 6e7deca631aa6f4381a28816c7b85231d045b8ce
   src/lib/dlv.ts:
     id: b1988214835a
     last_write_checksum: sha1:eaac763b22717206a6199104e0403ed17a4e2711
@@ -19841,8 +19841,8 @@ trackedFiles:
     pristine_git_object: edaa1b6b7d0735f2777f7f860d536f3b00eb5ec2
   src/models/videomodel.ts:
     id: 3761c095ec55
-    last_write_checksum: sha1:bb90cbbb56a05108c3272bbd3340e551f16b2cce
-    pristine_git_object: 1f3c4bf86657d0d069b0c7ad8d8bcfc9cabb298b
+    last_write_checksum: sha1:0b1a975ec18da45882f462f1a592b19bb1691692
+    pristine_git_object: ac8525db91e1ee2be414e9ca79f881868213179c
   src/models/videomodelslistresponse.ts:
     id: 3ddde944c8c8
     last_write_checksum: sha1:74c107d5bb0d3221dd465bfab762fecb88d815e3
@@ -24525,19 +24525,3 @@ examples:
         "500":
           application/json: {"error": {"code": 404, "message": "Intern not found"}}
 examplesVersion: 1.0.2
-releaseNotes: |
-  ## Typescript SDK Changes:
-  * `openrouter.interns.listInterns()`: **Removed** (Breaking ⚠️)
-  * `openrouter.interns.createIntern()`: **Removed** (Breaking ⚠️)
-  * `openrouter.interns.deleteIntern()`: **Removed** (Breaking ⚠️)
-  * `openrouter.interns.getIntern()`: **Removed** (Breaking ⚠️)
-  * `openrouter.interns.updateIntern()`: **Removed** (Breaking ⚠️)
-  * `openrouter.interns.getInternConnections()`: **Removed** (Breaking ⚠️)
-  * `openrouter.interns.getInternDaemon()`: **Removed** (Breaking ⚠️)
-  * `openrouter.interns.getInternDaemonAccess()`: **Removed** (Breaking ⚠️)
-  * `openrouter.interns.signInternDaemonAccessRequest()`: **Removed** (Breaking ⚠️)
-  * `openrouter.interns.signInternDaemonRequest()`: **Removed** (Breaking ⚠️)
-  * `openrouter.interns.getInternIcon()`: **Removed** (Breaking ⚠️)
-  * `openrouter.interns.provisionIntern()`: **Removed** (Breaking ⚠️)
-  * `openrouter.interns.suspendIntern()`: **Removed** (Breaking ⚠️)
-  * `openrouter.interns.invoke()`: **Removed** (Breaking ⚠️)
