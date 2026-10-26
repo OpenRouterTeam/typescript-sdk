@@ -111,6 +111,7 @@ export * from "./anthropictoolsearchresulterror.js";
 export * from "./anthropictoolsearchtoolbm25.js";
 export * from "./anthropictoolsearchtoolregex.js";
 export * from "./anthropictoolsearchtoolresult.js";
+export * from "./anthropictoolunion.js";
 export * from "./anthropictooluseblock.js";
 export * from "./anthropictooluseskeep.js";
 export * from "./anthropictoolusestrigger.js";
