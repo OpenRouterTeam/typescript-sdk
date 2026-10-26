@@ -2717,6 +2717,153 @@ components:
         - 'content'
         - 'tool_use_id'
       type: 'object'
+    AnthropicToolUnion:
+      description: 'An Anthropic tool definition: a client-defined tool with a JSON Schema `input_schema`, or a server tool (bash, text editor, web search).'
+      example:
+        description: 'Get the current weather for a city.'
+        input_schema:
+          properties:
+            city:
+              type: 'string'
+          required:
+            - 'city'
+          type: 'object'
+        name: 'get_weather'
+      oneOf:
+        - properties:
+            cache_control:
+              $ref: '#/components/schemas/AnthropicCacheControlDirective'
+            defer_loading:
+              type: 'boolean'
+            description:
+              type: 'string'
+            input_schema:
+              additionalProperties: {}
+              properties:
+                properties: {}
+                required:
+                  items:
+                    type: 'string'
+                  type:
+                    - 'array'
+                    - 'null'
+                type:
+                  enum:
+                    - 'object'
+                  type: 'string'
+              required:
+                - 'type'
+              type: 'object'
+            name:
+              type: 'string'
+            strict:
+              type: 'boolean'
+            type:
+              enum:
+                - 'custom'
+              type: 'string'
+          required:
+            - 'name'
+            - 'input_schema'
+          type: 'object'
+        - properties:
+            cache_control:
+              $ref: '#/components/schemas/AnthropicCacheControlDirective'
+            name:
+              enum:
+                - 'bash'
+              type: 'string'
+            type:
+              enum:
+                - 'bash_20250124'
+              type: 'string'
+          required:
+            - 'type'
+            - 'name'
+          type: 'object'
+        - properties:
+            cache_control:
+              $ref: '#/components/schemas/AnthropicCacheControlDirective'
+            name:
+              enum:
+                - 'str_replace_editor'
+              type: 'string'
+            type:
+              enum:
+                - 'text_editor_20250124'
+              type: 'string'
+          required:
+            - 'type'
+            - 'name'
+          type: 'object'
+        - properties:
+            allowed_domains:
+              items:
+                type: 'string'
+              type:
+                - 'array'
+                - 'null'
+            blocked_domains:
+              items:
+                type: 'string'
+              type:
+                - 'array'
+                - 'null'
+            cache_control:
+              $ref: '#/components/schemas/AnthropicCacheControlDirective'
+            max_uses:
+              type:
+                - 'integer'
+                - 'null'
+            name:
+              enum:
+                - 'web_search'
+              type: 'string'
+            type:
+              enum:
+                - 'web_search_20250305'
+              type: 'string'
+            user_location:
+              $ref: '#/components/schemas/AnthropicWebSearchToolUserLocation'
+          required:
+            - 'type'
+            - 'name'
+          type: 'object'
+        - properties:
+            allowed_callers:
+              $ref: '#/components/schemas/AnthropicAllowedCallers'
+            allowed_domains:
+              items:
+                type: 'string'
+              type:
+                - 'array'
+                - 'null'
+            blocked_domains:
+              items:
+                type: 'string'
+              type:
+                - 'array'
+                - 'null'
+            cache_control:
+              $ref: '#/components/schemas/AnthropicCacheControlDirective'
+            max_uses:
+              type:
+                - 'integer'
+                - 'null'
+            name:
+              enum:
+                - 'web_search'
+              type: 'string'
+            type:
+              enum:
+                - 'web_search_20260209'
+              type: 'string'
+            user_location:
+              $ref: '#/components/schemas/AnthropicWebSearchToolUserLocation'
+          required:
+            - 'type'
+            - 'name'
+          type: 'object'
     AnthropicToolUseBlock:
       example:
         caller:
@@ -17844,7 +17991,7 @@ components:
         - 'data'
       type: 'object'
     MessagesToolAdditionBlock:
-      description: 'Loads a previously deferred tool (declared in `tools` with `defer_loading: true`) mid-conversation without invalidating the prompt cache. Only valid in `role: "system"` messages. Not supported on Claude Sonnet 5 or models older than Claude Opus 4.8.'
+      description: 'Adds a tool mid-conversation without invalidating the prompt cache: either a previously deferred tool (declared in `tools` with `defer_loading: true`, referenced by name) or a full inline `tool_definition`. Only valid in `role: "system"` messages. Not supported on Claude Sonnet 5 or models older than Claude Opus 4.8.'
       example:
         tool:
           name: 'get_forecast'
@@ -17890,6 +18037,17 @@ components:
               required:
                 - 'type'
                 - 'server_name'
+              type: 'object'
+            - properties:
+                definition:
+                  $ref: '#/components/schemas/AnthropicToolUnion'
+                type:
+                  enum:
+                    - 'tool_definition'
+                  type: 'string'
+              required:
+                - 'type'
+                - 'definition'
               type: 'object'
         type:
           enum:
