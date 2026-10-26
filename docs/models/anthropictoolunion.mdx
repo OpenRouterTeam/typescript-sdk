@@ -1,0 +1,56 @@
+---
+title: "AnthropicToolUnion"
+---
+
+An Anthropic tool definition: a client-defined tool with a JSON Schema `input_schema`, or a server tool (bash, text editor, web search).
+
+
+## Supported Types
+
+### `models.AnthropicToolUnionCustom`
+
+```typescript
+const value: models.AnthropicToolUnionCustom = {
+  inputSchema: {
+    type: "object",
+  },
+  name: "get_weather",
+};
+```
+
+### `models.AnthropicToolUnionBash20250124`
+
+```typescript
+const value: models.AnthropicToolUnionBash20250124 = {
+  name: "bash",
+  type: "bash_20250124",
+};
+```
+
+### `models.AnthropicToolUnionTextEditor20250124`
+
+```typescript
+const value: models.AnthropicToolUnionTextEditor20250124 = {
+  name: "str_replace_editor",
+  type: "text_editor_20250124",
+};
+```
+
+### `models.AnthropicToolUnionWebSearch20250305`
+
+```typescript
+const value: models.AnthropicToolUnionWebSearch20250305 = {
+  name: "web_search",
+  type: "web_search_20250305",
+};
+```
+
+### `models.AnthropicToolUnionWebSearch20260209`
+
+```typescript
+const value: models.AnthropicToolUnionWebSearch20260209 = {
+  name: "web_search",
+  type: "web_search_20260209",
+};
+```
+

@@ -403,15 +403,19 @@ export type ToolAdvisor20260301 = {
   type: TypeAdvisor20260301;
 };
 
-export const NameWebSearch2 = {
+export const MessagesRequestNameWebSearch2 = {
   WebSearch: "web_search",
 } as const;
-export type NameWebSearch2 = ClosedEnum<typeof NameWebSearch2>;
+export type MessagesRequestNameWebSearch2 = ClosedEnum<
+  typeof MessagesRequestNameWebSearch2
+>;
 
-export const TypeWebSearch20260209 = {
+export const ToolTypeWebSearch20260209 = {
   WebSearch20260209: "web_search_20260209",
 } as const;
-export type TypeWebSearch20260209 = ClosedEnum<typeof TypeWebSearch20260209>;
+export type ToolTypeWebSearch20260209 = ClosedEnum<
+  typeof ToolTypeWebSearch20260209
+>;
 
 export type ToolWebSearch20260209 = {
   allowedCallers?: Array<AnthropicAllowedCallers> | undefined;
@@ -422,20 +426,24 @@ export type ToolWebSearch20260209 = {
    */
   cacheControl?: AnthropicCacheControlDirective | undefined;
   maxUses?: number | null | undefined;
-  name: NameWebSearch2;
-  type: TypeWebSearch20260209;
+  name: MessagesRequestNameWebSearch2;
+  type: ToolTypeWebSearch20260209;
   userLocation?: AnthropicWebSearchToolUserLocation | null | undefined;
 };
 
-export const NameWebSearch1 = {
+export const MessagesRequestNameWebSearch1 = {
   WebSearch: "web_search",
 } as const;
-export type NameWebSearch1 = ClosedEnum<typeof NameWebSearch1>;
+export type MessagesRequestNameWebSearch1 = ClosedEnum<
+  typeof MessagesRequestNameWebSearch1
+>;
 
-export const TypeWebSearch20250305 = {
+export const ToolTypeWebSearch20250305 = {
   WebSearch20250305: "web_search_20250305",
 } as const;
-export type TypeWebSearch20250305 = ClosedEnum<typeof TypeWebSearch20250305>;
+export type ToolTypeWebSearch20250305 = ClosedEnum<
+  typeof ToolTypeWebSearch20250305
+>;
 
 export type ToolWebSearch20250305 = {
   allowedDomains?: Array<string> | null | undefined;
@@ -445,50 +453,56 @@ export type ToolWebSearch20250305 = {
    */
   cacheControl?: AnthropicCacheControlDirective | undefined;
   maxUses?: number | null | undefined;
-  name: NameWebSearch1;
-  type: TypeWebSearch20250305;
+  name: MessagesRequestNameWebSearch1;
+  type: ToolTypeWebSearch20250305;
   userLocation?: AnthropicWebSearchToolUserLocation | null | undefined;
 };
 
-export const NameStrReplaceEditor = {
+export const MessagesRequestNameStrReplaceEditor = {
   StrReplaceEditor: "str_replace_editor",
 } as const;
-export type NameStrReplaceEditor = ClosedEnum<typeof NameStrReplaceEditor>;
+export type MessagesRequestNameStrReplaceEditor = ClosedEnum<
+  typeof MessagesRequestNameStrReplaceEditor
+>;
 
-export const TypeTextEditor20250124 = {
+export const ToolTypeTextEditor20250124 = {
   TextEditor20250124: "text_editor_20250124",
 } as const;
-export type TypeTextEditor20250124 = ClosedEnum<typeof TypeTextEditor20250124>;
+export type ToolTypeTextEditor20250124 = ClosedEnum<
+  typeof ToolTypeTextEditor20250124
+>;
 
 export type ToolTextEditor20250124 = {
   /**
    * Enable automatic prompt caching. When set at the top level, the system automatically applies cache breakpoints to the last cacheable block in the request. When set on an individual content block, it marks an explicit cache breakpoint; block-level markers also work on OpenAI models that support explicit prompt caching — OpenRouter converts them to the provider's native format.
    */
   cacheControl?: AnthropicCacheControlDirective | undefined;
-  name: NameStrReplaceEditor;
-  type: TypeTextEditor20250124;
+  name: MessagesRequestNameStrReplaceEditor;
+  type: ToolTypeTextEditor20250124;
 };
 
-export const NameBash = {
+export const MessagesRequestNameBash = {
   Bash: "bash",
 } as const;
-export type NameBash = ClosedEnum<typeof NameBash>;
+export type MessagesRequestNameBash = ClosedEnum<
+  typeof MessagesRequestNameBash
+>;
 
-export const TypeBash20250124 = {
+export const ToolTypeBash20250124 = {
   Bash20250124: "bash_20250124",
 } as const;
-export type TypeBash20250124 = ClosedEnum<typeof TypeBash20250124>;
+export type ToolTypeBash20250124 = ClosedEnum<typeof ToolTypeBash20250124>;
 
 export type ToolBash20250124 = {
   /**
    * Enable automatic prompt caching. When set at the top level, the system automatically applies cache breakpoints to the last cacheable block in the request. When set on an individual content block, it marks an explicit cache breakpoint; block-level markers also work on OpenAI models that support explicit prompt caching — OpenRouter converts them to the provider's native format.
    */
   cacheControl?: AnthropicCacheControlDirective | undefined;
-  name: NameBash;
-  type: TypeBash20250124;
+  name: MessagesRequestNameBash;
+  type: ToolTypeBash20250124;
 };
 
-export type InputSchema = {
+export type MessagesRequestInputSchema = {
   properties?: any | undefined;
   required?: Array<string> | null | undefined;
   type?: string | undefined;
@@ -507,7 +521,7 @@ export type ToolCustom = {
   cacheControl?: AnthropicCacheControlDirective | undefined;
   deferLoading?: boolean | undefined;
   description?: string | undefined;
-  inputSchema: InputSchema;
+  inputSchema: MessagesRequestInputSchema;
   name: string;
   strict?: boolean | undefined;
   type?: ToolTypeCustom | undefined;
@@ -1304,13 +1318,14 @@ export function toolAdvisor20260301ToJSON(
 }
 
 /** @internal */
-export const NameWebSearch2$outboundSchema: z.ZodEnum<typeof NameWebSearch2> = z
-  .enum(NameWebSearch2);
+export const MessagesRequestNameWebSearch2$outboundSchema: z.ZodEnum<
+  typeof MessagesRequestNameWebSearch2
+> = z.enum(MessagesRequestNameWebSearch2);
 
 /** @internal */
-export const TypeWebSearch20260209$outboundSchema: z.ZodEnum<
-  typeof TypeWebSearch20260209
-> = z.enum(TypeWebSearch20260209);
+export const ToolTypeWebSearch20260209$outboundSchema: z.ZodEnum<
+  typeof ToolTypeWebSearch20260209
+> = z.enum(ToolTypeWebSearch20260209);
 
 /** @internal */
 export type ToolWebSearch20260209$Outbound = {
@@ -1337,8 +1352,8 @@ export const ToolWebSearch20260209$outboundSchema: z.ZodType<
   blockedDomains: z.nullable(z.array(z.string())).optional(),
   cacheControl: AnthropicCacheControlDirective$outboundSchema.optional(),
   maxUses: z.nullable(z.int()).optional(),
-  name: NameWebSearch2$outboundSchema,
-  type: TypeWebSearch20260209$outboundSchema,
+  name: MessagesRequestNameWebSearch2$outboundSchema,
+  type: ToolTypeWebSearch20260209$outboundSchema,
   userLocation: z.nullable(AnthropicWebSearchToolUserLocation$outboundSchema)
     .optional(),
 }).transform((v) => {
@@ -1361,13 +1376,14 @@ export function toolWebSearch20260209ToJSON(
 }
 
 /** @internal */
-export const NameWebSearch1$outboundSchema: z.ZodEnum<typeof NameWebSearch1> = z
-  .enum(NameWebSearch1);
+export const MessagesRequestNameWebSearch1$outboundSchema: z.ZodEnum<
+  typeof MessagesRequestNameWebSearch1
+> = z.enum(MessagesRequestNameWebSearch1);
 
 /** @internal */
-export const TypeWebSearch20250305$outboundSchema: z.ZodEnum<
-  typeof TypeWebSearch20250305
-> = z.enum(TypeWebSearch20250305);
+export const ToolTypeWebSearch20250305$outboundSchema: z.ZodEnum<
+  typeof ToolTypeWebSearch20250305
+> = z.enum(ToolTypeWebSearch20250305);
 
 /** @internal */
 export type ToolWebSearch20250305$Outbound = {
@@ -1392,8 +1408,8 @@ export const ToolWebSearch20250305$outboundSchema: z.ZodType<
   blockedDomains: z.nullable(z.array(z.string())).optional(),
   cacheControl: AnthropicCacheControlDirective$outboundSchema.optional(),
   maxUses: z.nullable(z.int()).optional(),
-  name: NameWebSearch1$outboundSchema,
-  type: TypeWebSearch20250305$outboundSchema,
+  name: MessagesRequestNameWebSearch1$outboundSchema,
+  type: ToolTypeWebSearch20250305$outboundSchema,
   userLocation: z.nullable(AnthropicWebSearchToolUserLocation$outboundSchema)
     .optional(),
 }).transform((v) => {
@@ -1415,14 +1431,14 @@ export function toolWebSearch20250305ToJSON(
 }
 
 /** @internal */
-export const NameStrReplaceEditor$outboundSchema: z.ZodEnum<
-  typeof NameStrReplaceEditor
-> = z.enum(NameStrReplaceEditor);
+export const MessagesRequestNameStrReplaceEditor$outboundSchema: z.ZodEnum<
+  typeof MessagesRequestNameStrReplaceEditor
+> = z.enum(MessagesRequestNameStrReplaceEditor);
 
 /** @internal */
-export const TypeTextEditor20250124$outboundSchema: z.ZodEnum<
-  typeof TypeTextEditor20250124
-> = z.enum(TypeTextEditor20250124);
+export const ToolTypeTextEditor20250124$outboundSchema: z.ZodEnum<
+  typeof ToolTypeTextEditor20250124
+> = z.enum(ToolTypeTextEditor20250124);
 
 /** @internal */
 export type ToolTextEditor20250124$Outbound = {
@@ -1437,8 +1453,8 @@ export const ToolTextEditor20250124$outboundSchema: z.ZodType<
   ToolTextEditor20250124
 > = z.object({
   cacheControl: AnthropicCacheControlDirective$outboundSchema.optional(),
-  name: NameStrReplaceEditor$outboundSchema,
-  type: TypeTextEditor20250124$outboundSchema,
+  name: MessagesRequestNameStrReplaceEditor$outboundSchema,
+  type: ToolTypeTextEditor20250124$outboundSchema,
 }).transform((v) => {
   return remap$(v, {
     cacheControl: "cache_control",
@@ -1454,14 +1470,14 @@ export function toolTextEditor20250124ToJSON(
 }
 
 /** @internal */
-export const NameBash$outboundSchema: z.ZodEnum<typeof NameBash> = z.enum(
-  NameBash,
-);
+export const MessagesRequestNameBash$outboundSchema: z.ZodEnum<
+  typeof MessagesRequestNameBash
+> = z.enum(MessagesRequestNameBash);
 
 /** @internal */
-export const TypeBash20250124$outboundSchema: z.ZodEnum<
-  typeof TypeBash20250124
-> = z.enum(TypeBash20250124);
+export const ToolTypeBash20250124$outboundSchema: z.ZodEnum<
+  typeof ToolTypeBash20250124
+> = z.enum(ToolTypeBash20250124);
 
 /** @internal */
 export type ToolBash20250124$Outbound = {
@@ -1476,8 +1492,8 @@ export const ToolBash20250124$outboundSchema: z.ZodType<
   ToolBash20250124
 > = z.object({
   cacheControl: AnthropicCacheControlDirective$outboundSchema.optional(),
-  name: NameBash$outboundSchema,
-  type: TypeBash20250124$outboundSchema,
+  name: MessagesRequestNameBash$outboundSchema,
+  type: ToolTypeBash20250124$outboundSchema,
 }).transform((v) => {
   return remap$(v, {
     cacheControl: "cache_control",
@@ -1493,7 +1509,7 @@ export function toolBash20250124ToJSON(
 }
 
 /** @internal */
-export type InputSchema$Outbound = {
+export type MessagesRequestInputSchema$Outbound = {
   properties?: any | undefined;
   required?: Array<string> | null | undefined;
   type: string;
@@ -1501,9 +1517,9 @@ export type InputSchema$Outbound = {
 };
 
 /** @internal */
-export const InputSchema$outboundSchema: z.ZodType<
-  InputSchema$Outbound,
-  InputSchema
+export const MessagesRequestInputSchema$outboundSchema: z.ZodType<
+  MessagesRequestInputSchema$Outbound,
+  MessagesRequestInputSchema
 > = z.object({
   properties: z.any().optional(),
   required: z.nullable(z.array(z.string())).optional(),
@@ -1518,8 +1534,12 @@ export const InputSchema$outboundSchema: z.ZodType<
   };
 });
 
-export function inputSchemaToJSON(inputSchema: InputSchema): string {
-  return JSON.stringify(InputSchema$outboundSchema.parse(inputSchema));
+export function messagesRequestInputSchemaToJSON(
+  messagesRequestInputSchema: MessagesRequestInputSchema,
+): string {
+  return JSON.stringify(
+    MessagesRequestInputSchema$outboundSchema.parse(messagesRequestInputSchema),
+  );
 }
 
 /** @internal */
@@ -1531,7 +1551,7 @@ export type ToolCustom$Outbound = {
   cache_control?: AnthropicCacheControlDirective$Outbound | undefined;
   defer_loading?: boolean | undefined;
   description?: string | undefined;
-  input_schema: InputSchema$Outbound;
+  input_schema: MessagesRequestInputSchema$Outbound;
   name: string;
   strict?: boolean | undefined;
   type?: string | undefined;
@@ -1545,7 +1565,7 @@ export const ToolCustom$outboundSchema: z.ZodType<
   cacheControl: AnthropicCacheControlDirective$outboundSchema.optional(),
   deferLoading: z.boolean().optional(),
   description: z.string().optional(),
-  inputSchema: z.lazy(() => InputSchema$outboundSchema),
+  inputSchema: z.lazy(() => MessagesRequestInputSchema$outboundSchema),
   name: z.string(),
   strict: z.boolean().optional(),
   type: ToolTypeCustom$outboundSchema.optional(),
