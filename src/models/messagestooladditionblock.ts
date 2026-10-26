@@ -10,6 +10,19 @@ import {
   AnthropicCacheControlDirective$Outbound,
   AnthropicCacheControlDirective$outboundSchema,
 } from "./anthropiccachecontroldirective.js";
+import {
+  AnthropicToolUnion,
+  AnthropicToolUnion$Outbound,
+  AnthropicToolUnion$outboundSchema,
+} from "./anthropictoolunion.js";
+
+export type ToolToolDefinition = {
+  /**
+   * An Anthropic tool definition: a client-defined tool with a JSON Schema `input_schema`, or a server tool (bash, text editor, web search).
+   */
+  definition: AnthropicToolUnion;
+  type: "tool_definition";
+};
 
 export type MessagesToolAdditionBlockToolMcpToolsetReference = {
   serverName: string;
@@ -30,10 +43,11 @@ export type MessagesToolAdditionBlockToolToolReference = {
 export type MessagesToolAdditionBlockToolUnion =
   | MessagesToolAdditionBlockToolToolReference
   | MessagesToolAdditionBlockToolMcpToolReference
-  | MessagesToolAdditionBlockToolMcpToolsetReference;
+  | MessagesToolAdditionBlockToolMcpToolsetReference
+  | ToolToolDefinition;
 
 /**
- * Loads a previously deferred tool (declared in `tools` with `defer_loading: true`) mid-conversation without invalidating the prompt cache. Only valid in `role: "system"` messages. Not supported on Claude Sonnet 5 or models older than Claude Opus 4.8.
+ * Adds a tool mid-conversation without invalidating the prompt cache: either a previously deferred tool (declared in `tools` with `defer_loading: true`, referenced by name) or a full inline `tool_definition`. Only valid in `role: "system"` messages. Not supported on Claude Sonnet 5 or models older than Claude Opus 4.8.
  */
 export type MessagesToolAdditionBlock = {
   /**
@@ -43,9 +57,33 @@ export type MessagesToolAdditionBlock = {
   tool:
     | MessagesToolAdditionBlockToolToolReference
     | MessagesToolAdditionBlockToolMcpToolReference
-    | MessagesToolAdditionBlockToolMcpToolsetReference;
+    | MessagesToolAdditionBlockToolMcpToolsetReference
+    | ToolToolDefinition;
   type: "tool_addition";
 };
+
+/** @internal */
+export type ToolToolDefinition$Outbound = {
+  definition: AnthropicToolUnion$Outbound;
+  type: "tool_definition";
+};
+
+/** @internal */
+export const ToolToolDefinition$outboundSchema: z.ZodType<
+  ToolToolDefinition$Outbound,
+  ToolToolDefinition
+> = z.object({
+  definition: AnthropicToolUnion$outboundSchema,
+  type: z.literal("tool_definition"),
+});
+
+export function toolToolDefinitionToJSON(
+  toolToolDefinition: ToolToolDefinition,
+): string {
+  return JSON.stringify(
+    ToolToolDefinition$outboundSchema.parse(toolToolDefinition),
+  );
+}
 
 /** @internal */
 export type MessagesToolAdditionBlockToolMcpToolsetReference$Outbound = {
@@ -142,7 +180,8 @@ export function messagesToolAdditionBlockToolToolReferenceToJSON(
 export type MessagesToolAdditionBlockToolUnion$Outbound =
   | MessagesToolAdditionBlockToolToolReference$Outbound
   | MessagesToolAdditionBlockToolMcpToolReference$Outbound
-  | MessagesToolAdditionBlockToolMcpToolsetReference$Outbound;
+  | MessagesToolAdditionBlockToolMcpToolsetReference$Outbound
+  | ToolToolDefinition$Outbound;
 
 /** @internal */
 export const MessagesToolAdditionBlockToolUnion$outboundSchema: z.ZodType<
@@ -152,6 +191,7 @@ export const MessagesToolAdditionBlockToolUnion$outboundSchema: z.ZodType<
   z.lazy(() => MessagesToolAdditionBlockToolToolReference$outboundSchema),
   z.lazy(() => MessagesToolAdditionBlockToolMcpToolReference$outboundSchema),
   z.lazy(() => MessagesToolAdditionBlockToolMcpToolsetReference$outboundSchema),
+  z.lazy(() => ToolToolDefinition$outboundSchema),
 ]);
 
 export function messagesToolAdditionBlockToolUnionToJSON(
@@ -170,7 +210,8 @@ export type MessagesToolAdditionBlock$Outbound = {
   tool:
     | MessagesToolAdditionBlockToolToolReference$Outbound
     | MessagesToolAdditionBlockToolMcpToolReference$Outbound
-    | MessagesToolAdditionBlockToolMcpToolsetReference$Outbound;
+    | MessagesToolAdditionBlockToolMcpToolsetReference$Outbound
+    | ToolToolDefinition$Outbound;
   type: "tool_addition";
 };
 
@@ -186,6 +227,7 @@ export const MessagesToolAdditionBlock$outboundSchema: z.ZodType<
     z.lazy(() =>
       MessagesToolAdditionBlockToolMcpToolsetReference$outboundSchema
     ),
+    z.lazy(() => ToolToolDefinition$outboundSchema),
   ]),
   type: z.literal("tool_addition"),
 }).transform((v) => {
