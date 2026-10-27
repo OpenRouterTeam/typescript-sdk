@@ -13,6 +13,10 @@ import {
   PrivateEndpointActivation$outboundSchema,
 } from "./privateendpointactivation.js";
 import {
+  PrivateEndpointDeclaredParameter,
+  PrivateEndpointDeclaredParameter$outboundSchema,
+} from "./privateendpointdeclaredparameter.js";
+import {
   PrivateEndpointPricing,
   PrivateEndpointPricing$Outbound,
   PrivateEndpointPricing$outboundSchema,
@@ -43,6 +47,10 @@ export type CreatePrivateEndpointRequest = {
    */
   baseUrl?: string | undefined;
   /**
+   * Parameters the upstream supports beyond the tested ones. Replaces the earlier declaration; tested parameters stay. Order and repeated names are ignored, but the list holds at most as many entries as there are declarable parameters, repeats included. `tool_choice` requires `tools` to be tested or declared.
+   */
+  declaredParameters?: Array<PrivateEndpointDeclaredParameter> | undefined;
+  /**
    * Attest where this deployment processes data.
    */
   declaredRegion?:
@@ -53,6 +61,10 @@ export type CreatePrivateEndpointRequest = {
    * Attest that this deployment retains no prompt or completion data.
    */
   declaredZdr?: boolean | null | undefined;
+  /**
+   * Cap on completion tokens per request. Requests asking for more skip this endpoint, and the default output length stays within it. When omitted, the cap is copied from the public endpoint for the same model and provider, if there is one.
+   */
+  maxCompletionTokens?: number | undefined;
   /**
    * Permanent slug of the model this endpoint serves.
    */
@@ -80,8 +92,10 @@ export const CreatePrivateEndpointRequestDeclaredRegion$outboundSchema:
 export type CreatePrivateEndpointRequest$Outbound = {
   activate?: PrivateEndpointActivation$Outbound | undefined;
   base_url?: string | undefined;
+  declared_parameters?: Array<string> | undefined;
   declared_region?: string | null | undefined;
   declared_zdr?: boolean | null | undefined;
+  max_completion_tokens?: number | undefined;
   model_permaslug: string;
   pricing?: PrivateEndpointPricing$Outbound | undefined;
   provider_slug: string;
@@ -95,10 +109,13 @@ export const CreatePrivateEndpointRequest$outboundSchema: z.ZodType<
 > = z.object({
   activate: PrivateEndpointActivation$outboundSchema.optional(),
   baseUrl: z.string().optional(),
+  declaredParameters: z.array(PrivateEndpointDeclaredParameter$outboundSchema)
+    .optional(),
   declaredRegion: z.nullable(
     CreatePrivateEndpointRequestDeclaredRegion$outboundSchema,
   ).optional(),
   declaredZdr: z.nullable(z.boolean()).optional(),
+  maxCompletionTokens: z.int().optional(),
   modelPermaslug: z.string(),
   pricing: PrivateEndpointPricing$outboundSchema.optional(),
   providerSlug: z.string(),
@@ -106,8 +123,10 @@ export const CreatePrivateEndpointRequest$outboundSchema: z.ZodType<
 }).transform((v) => {
   return remap$(v, {
     baseUrl: "base_url",
+    declaredParameters: "declared_parameters",
     declaredRegion: "declared_region",
     declaredZdr: "declared_zdr",
+    maxCompletionTokens: "max_completion_tokens",
     modelPermaslug: "model_permaslug",
     providerSlug: "provider_slug",
     upstreamModelId: "upstream_model_id",

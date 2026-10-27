@@ -11,6 +11,7 @@ import { privateEndpointsEnable } from "../funcs/privateEndpointsEnable.js";
 import { privateEndpointsGet } from "../funcs/privateEndpointsGet.js";
 import { privateEndpointsList } from "../funcs/privateEndpointsList.js";
 import { privateEndpointsUpdate } from "../funcs/privateEndpointsUpdate.js";
+import { privateEndpointsUpdateParameters } from "../funcs/privateEndpointsUpdateParameters.js";
 import { privateEndpointsUpdatePricing } from "../funcs/privateEndpointsUpdatePricing.js";
 import { privateEndpointsValidate } from "../funcs/privateEndpointsValidate.js";
 import { ClientSDK, RequestOptions } from "../lib/sdks.js";
@@ -149,6 +150,23 @@ export class PrivateEndpoints extends ClientSDK {
     options?: RequestOptions,
   ): Promise<models.ManagedPrivateEndpointResponse> {
     return unwrapAsync(privateEndpointsEnable(
+      this,
+      request,
+      options,
+    ));
+  }
+
+  /**
+   * Set private endpoint supported parameters
+   *
+   * @remarks
+   * Declare which request parameters the upstream supports beyond the ones validation proved. Applies to drafts and active endpoints; routing picks the change up for subsequent requests. The body replaces the earlier declaration and is read as a set: order and repeated names do not matter, but the list holds at most as many entries as there are declarable parameters, repeats included. `tested_parameters` stay. Returns 400 `parameters_invalid` when `tool_choice` is declared without `tools` being tested or declared. [Management key](/docs/guides/overview/auth/management-api-keys) required.
+   */
+  async updateParameters(
+    request: operations.UpdatePrivateEndpointParametersRequest,
+    options?: RequestOptions,
+  ): Promise<models.PrivateEndpointResponse> {
+    return unwrapAsync(privateEndpointsUpdateParameters(
       this,
       request,
       options,

@@ -54,6 +54,10 @@ export type ManagedPrivateEndpoint = {
    * Whether you attest this deployment retains no prompt or completion data. `null` means undeclared.
    */
   declaredZdr: boolean | null;
+  /**
+   * Most completion tokens a request routed to this endpoint can produce, or `null` when the endpoint sets no cap beyond the model context length.
+   */
+  maxCompletionTokens?: number | null | undefined;
 };
 
 /** @internal */
@@ -70,6 +74,7 @@ export const ManagedPrivateEndpoint$inboundSchema: z.ZodType<
   status: PrivateEndpointStatus$inboundSchema,
   declared_region: z.nullable(PrivateEndpointDeclaredRegion$inboundSchema),
   declared_zdr: z.nullable(z.boolean()),
+  max_completion_tokens: z.nullable(z.int()).optional(),
 }).transform((v) => {
   return remap$(v, {
     "created_at": "createdAt",
@@ -79,6 +84,7 @@ export const ManagedPrivateEndpoint$inboundSchema: z.ZodType<
     "provider_name": "providerName",
     "declared_region": "declaredRegion",
     "declared_zdr": "declaredZdr",
+    "max_completion_tokens": "maxCompletionTokens",
   });
 });
 
