@@ -1,19 +1,19 @@
 lockVersion: ""
 id: ""
 management:
-  docChecksum: c9f890b0cf83340464ac12ed871d03b5
+  docChecksum: 994b0f9ce9fbeec025d2b04b944d7886
   docVersion: 1.0.0
   speakeasyVersion: 1.802.0
   generationVersion: 2.948.4
-  releaseVersion: 1.5.12
-  configChecksum: 14b7c6753aa315d1e6a9f04fedb04ba7
+  releaseVersion: 1.5.13
+  configChecksum: 189a27e450c80c7bf20243c1651daaa4
   repoURL: https://github.com/OpenRouterTeam/typescript-sdk.git
   installationURL: https://github.com/OpenRouterTeam/typescript-sdk
   published: true
 persistentEdits:
-  generation_id: c5d90c2a-d4e9-4f07-a447-8087768c074c
-  pristine_commit_hash: fd3edf69f3e77e8052d9e9c52d4bf5f88c3bc04b
-  pristine_tree_hash: 538f1ee5b939c8d040881e2f8877aeff9363ee4a
+  generation_id: 74a2214c-2809-4ad3-ae92-81741a99b12a
+  pristine_commit_hash: 30a2587d0b9eb0b5820506d30c6c79bbc295e163
+  pristine_tree_hash: 58cbee426c7af2e326972238f4e54b07e9a4434e
 features:
   typescript:
     acceptHeaders: 2.81.2
@@ -4305,6 +4305,18 @@ trackedFiles:
     id: da87fadfd34f
     last_write_checksum: sha1:52e137994582816b0e80fba3333f57ab5e38503c
     pristine_git_object: d21c978f3c7eca3963565ad2aec15d1760d38de2
+  docs/models/decisionsimageasset.mdx:
+    id: 4426174c7eb6
+    last_write_checksum: sha1:76fc0d087f9b4470b84e0cfcb80fd50a177c683d
+    pristine_git_object: 6c4b61c3f61bfbd3d9fdafaae6158ab8c82ed3e2
+  docs/models/decisionsimageassetformat.mdx:
+    id: a5886fdac244
+    last_write_checksum: sha1:8bdb6cad6586abd721bbaee96ce80b3c1a6025fa
+    pristine_git_object: 04b4d2127547e11e72928749033ce42f557fd478
+  docs/models/decisionsimageassettype.mdx:
+    id: 1a2f230ada7f
+    last_write_checksum: sha1:ec202d725a72d10a2da97d2580aefede35a774db
+    pristine_git_object: 581cb58acec456a9287314ef7518e958635bfddf
   docs/models/decisionsnoulanswer.mdx:
     id: dde88697c689
     last_write_checksum: sha1:306bd9aaa438b8f6109cd9201e2831c2417532e4
@@ -4323,8 +4335,8 @@ trackedFiles:
     pristine_git_object: 47f98730a5700349a662891d4670a645fb1d0e71
   docs/models/decisionsrequest.mdx:
     id: 8002d8d4ad92
-    last_write_checksum: sha1:43f1ec7d23027ce7594b6c684c6e21a0295ff0e8
-    pristine_git_object: daa8153079e92a1a37039814e7eba001f430b683
+    last_write_checksum: sha1:d41cb5b3f96943b0ec93264c4d4c6bbb30ff7189
+    pristine_git_object: cbdebc8cce9ec7cca88071961823b71518d643fc
   docs/models/decisionsresponse.mdx:
     id: e2be79e574d8
     last_write_checksum: sha1:8cb15a1c1bc0859c7421dbd9a57fc7ccd87b80b8
@@ -5001,10 +5013,6 @@ trackedFiles:
     last_write_checksum: sha1:7a8d68b70b9d7c300bd14cf2801b03392af57f09
     pristine_git_object: 25dbcf70cdc2f8dd25eee7c98cbb3c6aff520624
     deleted: true
-  docs/models/formatenum.mdx:
-    id: 28a61c9d0ea9
-    last_write_checksum: sha1:03d2cab97803e58f322232ebc5a1b9526db77feb
-    pristine_git_object: 35875715687114c665a3bc980dba3feeef5c979b
   docs/models/formatgrammar.md:
     id: dbda5ad4fee4
     last_write_checksum: sha1:5ebfc958ce5d4f3812a1cadcc5addb51087990fe
@@ -5983,6 +5991,10 @@ trackedFiles:
     last_write_checksum: sha1:9794664a5ec3c5e2b730900b5f781c3c32ab89e1
     pristine_git_object: 2963708be20103059fac937356b03d4161969217
     deleted: true
+  docs/models/inputaudioformat.mdx:
+    id: f9189f3d07b5
+    last_write_checksum: sha1:dea4f308471a074ea22f2400b36908dcdd91bd17
+    pristine_git_object: ab62cd475d3235435f3a311a32259d02ec064b36
   docs/models/inputaudioinputaudio.md:
     id: f0d13f50558d
     last_write_checksum: sha1:ada9800494d5bbdba3d8c1d27f93733a8b07fd71
@@ -5990,8 +6002,8 @@ trackedFiles:
     deleted: true
   docs/models/inputaudioinputaudio.mdx:
     id: 8fce20aeda35
-    last_write_checksum: sha1:99fcaf7534ffe05d76bb7f1b63c5d9c2ae369742
-    pristine_git_object: d6d649462d953b6ea2848df5048889ce57736071
+    last_write_checksum: sha1:827a7d5de161fd0ef0be8a33c8e13761e4496fcb
+    pristine_git_object: a97f611eb8fc9309bbb66f2083029892259de524
   docs/models/inputfidelity.md:
     id: f19e94e3f06b
     last_write_checksum: sha1:0c773bdb0e02c5a69c18773b159b396e434af484
@@ -15415,12 +15427,12 @@ trackedFiles:
     pristine_git_object: 410efafd6a7f50d91ccb87131fedbe0c3d47e15a
   jsr.json:
     id: 7f6ab7767282
-    last_write_checksum: sha1:3addaa8d37fde13bb3e5fe68a9456d680f028c67
-    pristine_git_object: 5ac64d087b27896e6dcd049f776a0d05ecb9de88
+    last_write_checksum: sha1:5eee98e025da86a69a50cc64fee5e839ad5253c3
+    pristine_git_object: 619dd3cd0d56f972474e317f767883683212dedd
   package.json:
     id: 7030d0b2f71b
-    last_write_checksum: sha1:c0abec4cb17b9275f02c645ab5dd7ceb6dfef3b3
-    pristine_git_object: 6f41328bb4dbb21edd963e4d33049e4f01024a6d
+    last_write_checksum: sha1:632a2ad7347e07b882604a764bdc30999ee5d3b4
+    pristine_git_object: 5d2c14c27372bbb607ea8f85708a577a8f291ff5
   src/core.ts:
     id: f431fdbcd144
     last_write_checksum: sha1:5aa66b0b6a5964f3eea7f3098c2eb3c0ee9c0131
@@ -16003,8 +16015,8 @@ trackedFiles:
     pristine_git_object: a187e58707bdb726ca2aff74941efe7493422d4e
   src/lib/config.ts:
     id: 320761608fb3
-    last_write_checksum: sha1:6f4d5cd561eea73b02525ea35db19a73f593ed90
-    pristine_git_object: 87d344092d5769f8a81d20fae1ac613fc0148288
+    last_write_checksum: sha1:dc64f4737203cea1bf9c39f1db761cd7f779e332
+    pristine_git_object: 11083b91d9970f23385912fefa76a2e591a6cdd0
   src/lib/dlv.ts:
     id: b1988214835a
     last_write_checksum: sha1:eaac763b22717206a6199104e0403ed17a4e2711
@@ -17255,6 +17267,10 @@ trackedFiles:
     id: 47fb575187d1
     last_write_checksum: sha1:1499e92c6c5d49b5f23e6d5ae3da990ca4532f62
     pristine_git_object: 5221427a4c49746499d573d4a2ded3c7c7a9635d
+  src/models/decisionsimageasset.ts:
+    id: 4869a6173b1c
+    last_write_checksum: sha1:8700ca768ecbdbde19ee8b47f18c5deb7ea4cf1b
+    pristine_git_object: 751b78b5dc49888617a854a9027379c542e3b530
   src/models/decisionsnoulanswer.ts:
     id: da6d759cdb2f
     last_write_checksum: sha1:e72f49202a9b8d1af298d29ba8f9098502360d3b
@@ -17265,8 +17281,8 @@ trackedFiles:
     pristine_git_object: a75ace9f2d6e80102ba0cd20a4cd0de1b86f0052
   src/models/decisionsrequest.ts:
     id: 5ff115bbd9a7
-    last_write_checksum: sha1:23381df3410ab192b902aa2646f9520ffb5d52a0
-    pristine_git_object: 765bf85dbd4b17ce18014aea93247d9db1da7e25
+    last_write_checksum: sha1:555ef9a33d100da5c97f1c1b0edf120af033c5f3
+    pristine_git_object: ebd94507435fad3be03dc9157faf13b26f4d4e9a
   src/models/decisionsresponse.ts:
     id: 5989c9497b2d
     last_write_checksum: sha1:76b985995b79e0da64ed4f93df1df75716717fff
@@ -17825,12 +17841,12 @@ trackedFiles:
     pristine_git_object: 7abdfe096d3adff317db6837dc689c69db92e127
   src/models/index.ts:
     id: f93644b0f37e
-    last_write_checksum: sha1:a7c971745d17a86e55d430cb3b18773dd050c31d
-    pristine_git_object: fbc5712cfd7e1ce7b4c449851dcef64836d60567
+    last_write_checksum: sha1:bb24029749949bf9bb8af95c000a7aa9cd381d61
+    pristine_git_object: 3b7ae71871f9d95d55bf8552e74965c82af3c2c7
   src/models/inputaudio.ts:
     id: 9bdc14c7565f
-    last_write_checksum: sha1:2f8dc4c1d6a9c2927d9eb186e0ecedf7b81838e6
-    pristine_git_object: ac0dcba364afe51b7c878197209049273cd69002
+    last_write_checksum: sha1:cc3b750b39a3c3563b76930fd2989f9bfdb24c1f
+    pristine_git_object: 4109a621eb85427da98d899f1a237a8257e20e58
   src/models/inputfile.ts:
     id: 21319fb604ac
     last_write_checksum: sha1:d926e56a7e4742ee261f00d8350e036e7d6ab9e0
@@ -24697,4 +24713,4 @@ examples:
         "502":
           application/json: {"error": {"code": 502, "message": "Provider returned error"}}
 examplesVersion: 1.0.2
-releaseNotes: "## Typescript SDK Changes:\n* `openrouter.privateEndpoints.updateParameters()`: **Added**\n* `openrouter.privateEndpoints.create()`: \n  *  `request.createPrivateEndpointRequest` **Changed**\n  *  `response.data.maxCompletionTokens` **Added**\n  *  `error.union(CreatePrivateEndpointValidationFailedResponse).data` **Changed**\n* `openrouter.privateEndpoints.get()`:  `response.data` **Changed**\n* `openrouter.privateEndpoints.update()`:  `response.data` **Changed**\n* `openrouter.privateEndpoints.activate()`:  `response.data.maxCompletionTokens` **Added**\n* `openrouter.privateEndpoints.disable()`:  `response.data.maxCompletionTokens` **Added**\n* `openrouter.privateEndpoints.enable()`:  `response.data.maxCompletionTokens` **Added**\n* `openrouter.privateEndpoints.updatePricing()`:  `response.data` **Changed**\n* `openrouter.privateEndpoints.validate()`:  `response.data.parameters` **Added**\n"
+releaseNotes: "## Typescript SDK Changes:\n* `openrouter.alpha.decisions.create()`: \n  *  `request.decisionsRequest.assets` **Added**\n* `openrouter.systemOne.create()`: \n  *  `request.decisionsRequest.assets` **Added**\n"
