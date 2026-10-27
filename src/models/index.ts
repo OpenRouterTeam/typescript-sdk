@@ -300,6 +300,7 @@ export * from "./decisionsboxanswer.js";
 export * from "./decisionsboxquestion.js";
 export * from "./decisionschoiceanswer.js";
 export * from "./decisionschoicequestion.js";
+export * from "./decisionsimageasset.js";
 export * from "./decisionsnoulanswer.js";
 export * from "./decisionsnoulquestion.js";
 export * from "./decisionsrequest.js";
