@@ -22,6 +22,8 @@ targets:
         source: OpenRouter API
         publish:
             npm:
+                # Keep this line: Speakeasy publishes only when npm.token is non-empty, and it does not expand $npm_token.
+                # Publishing authenticates with npm trusted publishing (OIDC); no NPM_TOKEN secret is passed.
                 token: $npm_token
         codeSamples:
             registry:
