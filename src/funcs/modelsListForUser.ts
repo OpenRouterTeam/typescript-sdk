@@ -52,6 +52,7 @@ export function modelsListForUser(
       | errors.ForbiddenResponseError
       | errors.NotFoundResponseError
       | errors.InternalServerResponseError
+      | errors.ServiceUnavailableResponseError
       | OpenRouterError
       | ResponseValidationError
       | ConnectionError
@@ -86,6 +87,7 @@ async function $do(
         | errors.ForbiddenResponseError
         | errors.NotFoundResponseError
         | errors.InternalServerResponseError
+        | errors.ServiceUnavailableResponseError
         | OpenRouterError
         | ResponseValidationError
         | ConnectionError
@@ -213,6 +215,7 @@ async function $do(
     | errors.ForbiddenResponseError
     | errors.NotFoundResponseError
     | errors.InternalServerResponseError
+    | errors.ServiceUnavailableResponseError
     | OpenRouterError
     | ResponseValidationError
     | ConnectionError
@@ -229,6 +232,7 @@ async function $do(
     M.jsonErr(403, errors.ForbiddenResponseError$inboundSchema),
     M.jsonErr(404, errors.NotFoundResponseError$inboundSchema),
     M.jsonErr(500, errors.InternalServerResponseError$inboundSchema),
+    M.jsonErr(503, errors.ServiceUnavailableResponseError$inboundSchema),
     M.fail("4XX"),
     M.fail("5XX"),
   )(response, req, { extraFields: responseFields });
@@ -250,6 +254,7 @@ async function $do(
         | errors.ForbiddenResponseError
         | errors.NotFoundResponseError
         | errors.InternalServerResponseError
+        | errors.ServiceUnavailableResponseError
         | OpenRouterError
         | ResponseValidationError
         | ConnectionError
