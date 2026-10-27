@@ -38368,6 +38368,16 @@ paths:
               schema:
                 $ref: '#/components/schemas/InternalServerResponse'
           description: 'Internal Server Error - Unexpected server error'
+        '503':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 503
+                  message: 'Service temporarily unavailable'
+              schema:
+                $ref: '#/components/schemas/ServiceUnavailableResponse'
+          description: 'Service Unavailable - Service temporarily unavailable'
       summary: 'Preview the impact of ZDR on the available endpoints'
       tags:
         - 'Endpoints'
@@ -39819,6 +39829,16 @@ paths:
               schema:
                 $ref: '#/components/schemas/UnauthorizedResponse'
           description: 'Unauthorized - Authentication required or invalid credentials'
+        '403':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 403
+                  message: 'Only management keys can perform this operation'
+              schema:
+                $ref: '#/components/schemas/ForbiddenResponse'
+          description: 'Forbidden - Authentication successful but insufficient permissions'
         '404':
           content:
             application/json:
@@ -39859,6 +39879,16 @@ paths:
               schema:
                 $ref: '#/components/schemas/InternalServerResponse'
           description: 'Internal Server Error - Unexpected server error'
+        '503':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 503
+                  message: 'Service temporarily unavailable'
+              schema:
+                $ref: '#/components/schemas/ServiceUnavailableResponse'
+          description: 'Service Unavailable - Service temporarily unavailable'
       summary: 'Submit feedback for a generation'
       tags:
         - 'Generations'
@@ -43936,6 +43966,16 @@ paths:
               schema:
                 $ref: '#/components/schemas/InternalServerResponse'
           description: 'Internal Server Error - Unexpected server error'
+        '503':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 503
+                  message: 'Service temporarily unavailable'
+              schema:
+                $ref: '#/components/schemas/ServiceUnavailableResponse'
+          description: 'Service Unavailable - Service temporarily unavailable'
       summary: 'List all models and their properties'
       tags:
         - 'Models'
@@ -44078,6 +44118,16 @@ paths:
               schema:
                 $ref: '#/components/schemas/InternalServerResponse'
           description: 'Internal Server Error - Unexpected server error'
+        '503':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 503
+                  message: 'Service temporarily unavailable'
+              schema:
+                $ref: '#/components/schemas/ServiceUnavailableResponse'
+          description: 'Service Unavailable - Service temporarily unavailable'
       summary: 'List all endpoints for a model'
       tags:
         - 'Endpoints'
@@ -44278,6 +44328,16 @@ paths:
               schema:
                 $ref: '#/components/schemas/InternalServerResponse'
           description: 'Internal Server Error - Unexpected server error'
+        '503':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 503
+                  message: 'Service temporarily unavailable'
+              schema:
+                $ref: '#/components/schemas/ServiceUnavailableResponse'
+          description: 'Service Unavailable - Service temporarily unavailable'
       security:
         - bearer: []
       summary: 'List models filtered by user provider preferences, privacy settings, and guardrails'
@@ -45231,6 +45291,16 @@ paths:
               schema:
                 $ref: '#/components/schemas/InternalServerResponse'
           description: 'Internal Server Error - Unexpected server error'
+        '503':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 503
+                  message: 'Service temporarily unavailable'
+              schema:
+                $ref: '#/components/schemas/ServiceUnavailableResponse'
+          description: 'Service Unavailable - Service temporarily unavailable'
       security:
         - apiKey: []
       summary: 'List presets'
@@ -45343,6 +45413,16 @@ paths:
               schema:
                 $ref: '#/components/schemas/InternalServerResponse'
           description: 'Internal Server Error - Unexpected server error'
+        '503':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 503
+                  message: 'Service temporarily unavailable'
+              schema:
+                $ref: '#/components/schemas/ServiceUnavailableResponse'
+          description: 'Service Unavailable - Service temporarily unavailable'
       security:
         - apiKey: []
       summary: 'Get a preset'
@@ -45822,6 +45902,16 @@ paths:
               schema:
                 $ref: '#/components/schemas/InternalServerResponse'
           description: 'Internal Server Error - Unexpected server error'
+        '503':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 503
+                  message: 'Service temporarily unavailable'
+              schema:
+                $ref: '#/components/schemas/ServiceUnavailableResponse'
+          description: 'Service Unavailable - Service temporarily unavailable'
       security:
         - apiKey: []
       summary: 'List versions of a preset'
@@ -45931,6 +46021,16 @@ paths:
               schema:
                 $ref: '#/components/schemas/InternalServerResponse'
           description: 'Internal Server Error - Unexpected server error'
+        '503':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 503
+                  message: 'Service temporarily unavailable'
+              schema:
+                $ref: '#/components/schemas/ServiceUnavailableResponse'
+          description: 'Service Unavailable - Service temporarily unavailable'
       security:
         - apiKey: []
       summary: 'Get a specific version of a preset'
