@@ -1,19 +1,19 @@
 lockVersion: ""
 id: ""
 management:
-  docChecksum: 8228a16de78adebfe022d172b75cccb9
+  docChecksum: ec14fdf8e1b5c0ddd2afc07761bc639d
   docVersion: 1.0.0
   speakeasyVersion: 1.802.0
   generationVersion: 2.948.4
-  releaseVersion: 1.5.9
-  configChecksum: fba964f8afb0438747ed1966b374262e
+  releaseVersion: 1.5.10
+  configChecksum: cf64e39c991bc9e18a72c5cc15b31b8f
   repoURL: https://github.com/OpenRouterTeam/typescript-sdk.git
   installationURL: https://github.com/OpenRouterTeam/typescript-sdk
   published: true
 persistentEdits:
-  generation_id: 5c0de7c8-47bc-4440-9ac7-5ab42ddac838
-  pristine_commit_hash: 72f1dbd763c2eef55590679dd21f9ff8068c8cc1
-  pristine_tree_hash: 6139716e017b2129c1b70638f5229a8a6366a14e
+  generation_id: df1cd9e0-5650-42de-a189-74647cc335ad
+  pristine_commit_hash: bcf9e0738b852f6027482ac8d8cffb21f469fbad
+  pristine_tree_hash: 8b3bb2c048d0ac830d6ec7c379ad53f8f3f83699
 features:
   typescript:
     acceptHeaders: 2.81.2
@@ -1569,6 +1569,10 @@ trackedFiles:
     id: af1321c2e60a
     last_write_checksum: sha1:f67574edf6d81008f8ed06ad16da4a0e3fa1988b
     pristine_git_object: 631d769d68f71bfc5568ab02bf9c47c3d641ceb5
+  docs/models/authmode.mdx:
+    id: 8b441a3a15a1
+    last_write_checksum: sha1:8352a44fe36da96c3432bda57ab3b9ed87420cea
+    pristine_git_object: 2b55b6aef3d88b03be3341ba457bdcf16184a932
   docs/models/autobetarouterplugin.mdx:
     id: ecc97e45ac41
     last_write_checksum: sha1:29f3663fb35057ca4e897a762644daf0592e2127
@@ -7455,8 +7459,8 @@ trackedFiles:
     deleted: true
   docs/models/observabilitydestination.mdx:
     id: 0d91bf16e1ec
-    last_write_checksum: sha1:b972b71b59471cc221d3495578bb74efe8c671a6
-    pristine_git_object: c9bf64bed2457c234560f8d3a4cb42b8737e0c0d
+    last_write_checksum: sha1:78d7e9dc69e0af580bc7e6d65da0a064ddd3b3bc
+    pristine_git_object: 537707557a9b78d6bb123b7be6195b0c4209345e
   docs/models/observabilityfilterrulegroup.mdx:
     id: b40be32620bd
     last_write_checksum: sha1:4ae96077440d5f31fe11c99654f3321299f8ad97
@@ -7634,8 +7638,8 @@ trackedFiles:
     deleted: true
   docs/models/observabilitys3destination.mdx:
     id: afba0fabeaeb
-    last_write_checksum: sha1:c147c20e3c466c3e9fcd070f0cdf1ddcfe6ed2f8
-    pristine_git_object: 148c06bff8518a29185afe2b6c6b944d6aeffaa4
+    last_write_checksum: sha1:a9860a43ccdf473eb640cf9fb48c22f4e111e78c
+    pristine_git_object: 1c46f95f612b27f51efe3a1b97bcc49a7114274a
   docs/models/observabilitys3destinationconfig.md:
     id: 4c930bc55a1a
     last_write_checksum: sha1:aa373d5cbce0067ea8991ff5fb5798401d9a37df
@@ -7643,8 +7647,8 @@ trackedFiles:
     deleted: true
   docs/models/observabilitys3destinationconfig.mdx:
     id: 93a768ff7501
-    last_write_checksum: sha1:8abb090a8d8f9fda5869d898428fc06867582125
-    pristine_git_object: 522c7ce8d09a674f3a975b737e1e8132b7bae50c
+    last_write_checksum: sha1:d851bf82e5d7aaf18b565f7b4d0f1a77f052e07c
+    pristine_git_object: 473353912494de4d728e67b4d973b3228db8e01a
   docs/models/observabilitysentrydestination.md:
     id: d4cb048bd043
     last_write_checksum: sha1:7a0aa4b54cffcf9caab562717703d874585b25b2
@@ -12268,6 +12272,10 @@ trackedFiles:
     last_write_checksum: sha1:25e4cea3b61a585df4086b56ab75ef61285ba942
     pristine_git_object: 1aed4592b081784d850dd7e95efb8562a3adce14
     deleted: true
+  docs/models/providerenum.mdx:
+    id: 040ee4a43220
+    last_write_checksum: sha1:b204e6c9b583aab309045c462227369d80e5bf3a
+    pristine_git_object: fbeccb448d757089283a6064ee44f22c50f11965
   docs/models/providername.mdx:
     id: 69a9efe649dc
     last_write_checksum: sha1:2ffade9b9df45d099eb0da6d3b9948a95c7e7e52
@@ -15387,12 +15395,12 @@ trackedFiles:
     pristine_git_object: 410efafd6a7f50d91ccb87131fedbe0c3d47e15a
   jsr.json:
     id: 7f6ab7767282
-    last_write_checksum: sha1:7770ce157e9e9c729c2550dd132dde9cefb18568
-    pristine_git_object: 3a6bb460b58d15315c8e66bda3812bd8d59c639f
+    last_write_checksum: sha1:570832c76560ffe61ae5838b600d9c0c9265efb6
+    pristine_git_object: a03cbf08401fe6323c0371f65710745e75148d73
   package.json:
     id: 7030d0b2f71b
-    last_write_checksum: sha1:3d9a1e8c9c9a1d6ea6302fb20578bb60155abe94
-    pristine_git_object: b94bbd7fe0224ba4cb77c1615971c2a380960b7e
+    last_write_checksum: sha1:6460469d2919c1b184de8f1ec65d60ad8b8fe512
+    pristine_git_object: b33166d0cbaf7b77743d0241555c2718914c6a9d
   src/core.ts:
     id: f431fdbcd144
     last_write_checksum: sha1:5aa66b0b6a5964f3eea7f3098c2eb3c0ee9c0131
@@ -15971,8 +15979,8 @@ trackedFiles:
     pristine_git_object: a187e58707bdb726ca2aff74941efe7493422d4e
   src/lib/config.ts:
     id: 320761608fb3
-    last_write_checksum: sha1:7cbe3348afcd128119bead28c38d9557321cee93
-    pristine_git_object: da146bfa32b625c81deb18d0045f2ca710758b1f
+    last_write_checksum: sha1:251f3a7237bc200ac60c883f3b7745874fa8649a
+    pristine_git_object: 26572f93667db723441c253ad4bc71eb1447031f
   src/lib/dlv.ts:
     id: b1988214835a
     last_write_checksum: sha1:eaac763b22717206a6199104e0403ed17a4e2711
@@ -18173,8 +18181,8 @@ trackedFiles:
     pristine_git_object: a76acc96008fd05e8b5565f11592ab298cb9dfcc
   src/models/observabilitys3destination.ts:
     id: a9e50c2b3d64
-    last_write_checksum: sha1:de28ed288b0428803ab8e6d8879d2b43f38fb427
-    pristine_git_object: 57fd3f43e0ed4ed89376a939bc0e948741ec272a
+    last_write_checksum: sha1:0ad28ef0896e62d697035d20048af1b582e141b5
+    pristine_git_object: 38c0ff53999fce6be18fe36491836c3b3822d615
   src/models/observabilitysentrydestination.ts:
     id: 05cd77bde6a0
     last_write_checksum: sha1:c080a3a112c3a2eea53060048bb78cc67f2a9a42
@@ -24601,4 +24609,9 @@ examples:
         "500":
           application/json: {"error": {"code": 404, "message": "Intern not found"}}
 examplesVersion: 1.0.2
-releaseNotes: "## Typescript SDK Changes:\n* `openrouter.presets.createPresetsMessages()`: \n  *  `request.messagesRequest.messages[].content.union(Array<>)[].union(tool_addition).tool.union(tool_definition)` **Added**\n"
+releaseNotes: |
+  ## Typescript SDK Changes:
+  * `openrouter.observability.list()`:  `response.data[].union(s3).config` **Changed**
+  * `openrouter.observability.create()`:  `response.data.union(s3).config` **Changed**
+  * `openrouter.observability.get()`:  `response.data.union(s3).config` **Changed**
+  * `openrouter.observability.update()`:  `response.data.union(s3).config` **Changed**
