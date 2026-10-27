@@ -88,6 +88,7 @@ export const ProviderName = {
   Parasail: "Parasail",
   ParetoAlpha: "ParetoAlpha",
   Poolside: "Poolside",
+  PrimaLabs: "PrimaLabs",
   PrimeIntellect: "PrimeIntellect",
   Perceptron: "Perceptron",
   Perplexity: "Perplexity",
