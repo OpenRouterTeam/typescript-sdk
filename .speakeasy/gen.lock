@@ -1,19 +1,19 @@
 lockVersion: ""
 id: ""
 management:
-  docChecksum: ec14fdf8e1b5c0ddd2afc07761bc639d
+  docChecksum: c50675834ba68b9b33387ef1ce2ac885
   docVersion: 1.0.0
   speakeasyVersion: 1.802.0
   generationVersion: 2.948.4
-  releaseVersion: 1.5.10
-  configChecksum: cf64e39c991bc9e18a72c5cc15b31b8f
+  releaseVersion: 1.5.11
+  configChecksum: 71dbdbbc0c73c344889dfc7b26beacd1
   repoURL: https://github.com/OpenRouterTeam/typescript-sdk.git
   installationURL: https://github.com/OpenRouterTeam/typescript-sdk
   published: true
 persistentEdits:
-  generation_id: df1cd9e0-5650-42de-a189-74647cc335ad
-  pristine_commit_hash: bcf9e0738b852f6027482ac8d8cffb21f469fbad
-  pristine_tree_hash: 8b3bb2c048d0ac830d6ec7c379ad53f8f3f83699
+  generation_id: 48b64290-6c87-4bf8-9bde-c693d193a5ca
+  pristine_commit_hash: 25418d5266f7c34d87fa4167fe2e54db72c22e45
+  pristine_tree_hash: f7aca77e9fb8b026d16886e84d13b63b0a3c9633
 features:
   typescript:
     acceptHeaders: 2.81.2
@@ -15225,8 +15225,8 @@ trackedFiles:
     pristine_git_object: 8d0ceb515b7b34ac5a73821593c9349401dd61b0
   docs/sdks/endpoints/README.mdx:
     id: 62dfac9f7b71
-    last_write_checksum: sha1:e26501a81844e7434d0840ff162b70dd848083eb
-    pristine_git_object: 1af60a72e137106328203074e15abbdef2554679
+    last_write_checksum: sha1:7f9246ee7d984e5c996ee4d8a4dec0367e3a718e
+    pristine_git_object: 88d812e8aecf899d50bdd216d19a08c74405efab
   docs/sdks/endusers/README.mdx:
     id: ba369f05185b
     last_write_checksum: sha1:47402a048e1f7d8c4174810784a14bc27385b9f4
@@ -15246,8 +15246,8 @@ trackedFiles:
     pristine_git_object: ad45e8349ac4444c388e9717a942493daa9962c5
   docs/sdks/generations/README.mdx:
     id: a754fecc8514
-    last_write_checksum: sha1:826dc0ac34b3908d3796fa638198a5d07564471a
-    pristine_git_object: 70ce71a26a997a593ba15c730dbaea5ef4230c80
+    last_write_checksum: sha1:e478d439df21ca73496639f14d3d48cd4a6df1cb
+    pristine_git_object: 921f0180dad4fcd03449b7f5a2a9527c1f5fbc72
   docs/sdks/guardrails/README.mdx:
     id: a0cd4218b8fa
     last_write_checksum: sha1:d9d70aa53c7d6f7c5084a61356c7ab122b479035
@@ -15263,8 +15263,8 @@ trackedFiles:
     pristine_git_object: 06bc2e2f3be351cad390bfac313aeebbc5c944e1
   docs/sdks/models/README.mdx:
     id: 58f1ca464e0b
-    last_write_checksum: sha1:bc2501bc56802273c0ea9965fd4d32fbaa828178
-    pristine_git_object: c1e8efaac9a446b0c12283a55089b14132c7f235
+    last_write_checksum: sha1:e8bb68980ab8c8888a8459a42017bfd9113341d1
+    pristine_git_object: cc71a692a7e17f63c74cf7be457f84f3fc3367a5
   docs/sdks/oauth/README.mdx:
     id: 42b5079343d2
     last_write_checksum: sha1:ce4ab2812cf7097f0596fd72f6200e682e43df78
@@ -15294,8 +15294,8 @@ trackedFiles:
     deleted: true
   docs/sdks/presets/README.mdx:
     id: eeb505928d52
-    last_write_checksum: sha1:728598b81b292cd94c9a71317dcc6af7b04fb098
-    pristine_git_object: e84d126cd155b961f13c2c2017de9372173b4cdf
+    last_write_checksum: sha1:6e4182f47ebe2aafe8b6708b85651f25af42021b
+    pristine_git_object: d55ffc103678c62503718b980a7e55150b155b44
   docs/sdks/privateendpoints/README.mdx:
     id: 54dee70b8cc7
     last_write_checksum: sha1:2819035fff59570f2f76f23f329f5ae941236220
@@ -15395,12 +15395,12 @@ trackedFiles:
     pristine_git_object: 410efafd6a7f50d91ccb87131fedbe0c3d47e15a
   jsr.json:
     id: 7f6ab7767282
-    last_write_checksum: sha1:570832c76560ffe61ae5838b600d9c0c9265efb6
-    pristine_git_object: a03cbf08401fe6323c0371f65710745e75148d73
+    last_write_checksum: sha1:82508dd97ccde762dabfd40267b3e347d2bb627b
+    pristine_git_object: ed30116eafc84a99991f14e84c25a285d4a0ec1c
   package.json:
     id: 7030d0b2f71b
-    last_write_checksum: sha1:6460469d2919c1b184de8f1ec65d60ad8b8fe512
-    pristine_git_object: b33166d0cbaf7b77743d0241555c2718914c6a9d
+    last_write_checksum: sha1:6dad27213859ca7ad1a8164736fe48a3f58f1c26
+    pristine_git_object: eee076b16355336842a72ef5fc8dc7a1395a6a39
   src/core.ts:
     id: f431fdbcd144
     last_write_checksum: sha1:5aa66b0b6a5964f3eea7f3098c2eb3c0ee9c0131
@@ -15535,12 +15535,12 @@ trackedFiles:
     pristine_git_object: 0594f16a7b09935414c086512953889a9fc4c5d6
   src/funcs/endpointsList.ts:
     id: ea932ec09987
-    last_write_checksum: sha1:8b5b468d51af80cfa4be37d98ec9058de70b3e61
-    pristine_git_object: 41037965c651236dd0c82d19e3d206d6f85ca601
+    last_write_checksum: sha1:1e37fa421ab33761519632a411b726d8b60081d5
+    pristine_git_object: b58abfa5ad00cf525924073bf8efac82e3dea9d3
   src/funcs/endpointsListZdrEndpoints.ts:
     id: 4efb7ea3e48f
-    last_write_checksum: sha1:8fd30281b9cd1d8af0ff796cd43016eb6ea089f9
-    pristine_git_object: 148237cafe59040c6de63be6e611e3c69153250d
+    last_write_checksum: sha1:963a64d2c99e18bdf48dd17e8303a7af409e11a9
+    pristine_git_object: dde2399e81842f20cba219e4dcb02d888c6072f7
   src/funcs/externalUsersCreate.ts:
     id: 07f9c7bbadb6
     last_write_checksum: sha1:cc129e2609712fcbc249760762f76654edec96d0
@@ -15591,8 +15591,8 @@ trackedFiles:
     pristine_git_object: d9cad5d73d53d3a6b7da3f27b3ddf8a385b873ff
   src/funcs/generationsSubmitFeedback.ts:
     id: 7164852deaac
-    last_write_checksum: sha1:2f2a33dab7f806db913351002b911da33552bb1c
-    pristine_git_object: 3ed34a6a9604530c97188215aef657d34f041eaa
+    last_write_checksum: sha1:4f518fe90d393fc4d618ff88a938e5390f67f081
+    pristine_git_object: 1bfbd0fc3007b75c5d46227d2f74612d2a380396
   src/funcs/guardrailsBulkAssignKeys.ts:
     id: a97261f248c8
     last_write_checksum: sha1:c4f2630a0bedea542135af4aafa333a935ad6a02
@@ -15667,12 +15667,12 @@ trackedFiles:
     pristine_git_object: ddc7a3b8f144b6e7aede68e57cc3f24e060a9027
   src/funcs/modelsList.ts:
     id: deff050b46c5
-    last_write_checksum: sha1:9b08f756b47a3116054f28b54a14c38c8457f019
-    pristine_git_object: a8df65e7b7abbe3bf8c75417c297d08ce9bb9fb9
+    last_write_checksum: sha1:fd3e6da87e5c995db985dbf8fe1a8b3970b559d6
+    pristine_git_object: e63f74349f2d8b9d0e34dafcf52080a60173add0
   src/funcs/modelsListForUser.ts:
     id: db628dd3c179
-    last_write_checksum: sha1:9161221651619515074c1583488e8a3436f66a76
-    pristine_git_object: 1093f5fe62a9c926edd04aeb2cdb943aaca2a32b
+    last_write_checksum: sha1:a6059d87a5c44812d48bfad90d3ef4429f585682
+    pristine_git_object: 9f414911eab20df5fdb329c03252d08c74a70ee9
   src/funcs/oAuthCreateAuthCode.ts:
     id: 8a79f27722c0
     last_write_checksum: sha1:6c0a0fb185e40ee20a6178c74281bdeef3291350
@@ -15735,20 +15735,20 @@ trackedFiles:
     pristine_git_object: aa823067b875494be20c675fc310393988c46ad2
   src/funcs/presetsGet.ts:
     id: dd59c30d4b79
-    last_write_checksum: sha1:47136d029a3a30778188da795d9fd81d3d37015e
-    pristine_git_object: 0355e3fe6510ac5d0be3f2854fad806fc33918aa
+    last_write_checksum: sha1:25527ebba0fa64b7e2813f2fdb8701a67f39fb72
+    pristine_git_object: 16ddb813545f822e852de4786d44dba20fb34004
   src/funcs/presetsGetVersion.ts:
     id: "565567171e74"
-    last_write_checksum: sha1:a30aa7d1ca68289c9442f75a887cb69c2422d1f5
-    pristine_git_object: 43782916f511116d404d177b16f726a263e9adc6
+    last_write_checksum: sha1:1956f525b8be7c6a9cad3cfde2caef6164251009
+    pristine_git_object: 1a7acc7a066cdbfba2ae3abb9351d561a11343a4
   src/funcs/presetsList.ts:
     id: 8f8ccc701fa7
-    last_write_checksum: sha1:7e6818bd186cb900e5311e72a116be23366b041a
-    pristine_git_object: 83737afee34c34ab0bf214f5526ea7ad8a68496f
+    last_write_checksum: sha1:4648c73c17921421d77616336d2769c63fc4750e
+    pristine_git_object: de3fad7735d821d9e498b1457ed46f794ec73b2c
   src/funcs/presetsListVersions.ts:
     id: 326969b5ca64
-    last_write_checksum: sha1:11e429d6ce9f55ad18f628ba3788512e8479bb28
-    pristine_git_object: b126a7bc83dd64f00a6d75659f139c0468d4dd73
+    last_write_checksum: sha1:73cd0e08e686a3cb1bcf1b5f01f1ab7d97b1ac92
+    pristine_git_object: 61c5d8a01d05a9537e663edb1d51ef753e8efd44
   src/funcs/privateEndpointsActivate.ts:
     id: fb4e7d40387c
     last_write_checksum: sha1:72af23faed27ab7436d385e7e60deb8f9d9f8406
@@ -15979,8 +15979,8 @@ trackedFiles:
     pristine_git_object: a187e58707bdb726ca2aff74941efe7493422d4e
   src/lib/config.ts:
     id: 320761608fb3
-    last_write_checksum: sha1:251f3a7237bc200ac60c883f3b7745874fa8649a
-    pristine_git_object: 26572f93667db723441c253ad4bc71eb1447031f
+    last_write_checksum: sha1:7146e15c1b75f65358325d4925ea38bbd1bdb2aa
+    pristine_git_object: 3aee651fd39e09aa2b271dd3cc3c77535c7daa52
   src/lib/dlv.ts:
     id: b1988214835a
     last_write_checksum: sha1:eaac763b22717206a6199104e0403ed17a4e2711
@@ -20484,6 +20484,8 @@ examples:
           application/json: {"error": {"code": 500, "message": "Internal Server Error"}}
         "403":
           application/json: {"error": {"code": 403, "message": "Only management keys can perform this operation"}}
+        "503":
+          application/json: {"error": {"code": 503, "message": "Service temporarily unavailable"}}
   listModelsUser:
     speakeasy-default-list-models-user:
       parameters:
@@ -20501,6 +20503,8 @@ examples:
           application/json: {"error": {"code": 500, "message": "Internal Server Error"}}
         "403":
           application/json: {"error": {"code": 403, "message": "Only management keys can perform this operation"}}
+        "503":
+          application/json: {"error": {"code": 503, "message": "Service temporarily unavailable"}}
   listEndpoints:
     speakeasy-default-list-endpoints:
       parameters:
@@ -20516,6 +20520,8 @@ examples:
           application/json: {"error": {"code": 500, "message": "Internal Server Error"}}
         "403":
           application/json: {"error": {"code": 403, "message": "Only management keys can perform this operation"}}
+        "503":
+          application/json: {"error": {"code": 503, "message": "Service temporarily unavailable"}}
   listEndpointsZdr:
     speakeasy-default-list-endpoints-zdr:
       responses:
@@ -20525,6 +20531,8 @@ examples:
           application/json: {"error": {"code": 500, "message": "Internal Server Error"}}
         "403":
           application/json: {"error": {"code": 403, "message": "Only management keys can perform this operation"}}
+        "503":
+          application/json: {"error": {"code": 503, "message": "Service temporarily unavailable"}}
   listProviders:
     speakeasy-default-list-providers:
       responses:
@@ -21618,6 +21626,8 @@ examples:
           application/json: {"error": {"code": 500, "message": "Internal Server Error"}}
         "403":
           application/json: {"error": {"code": 403, "message": "Only management keys can perform this operation"}}
+        "503":
+          application/json: {"error": {"code": 503, "message": "Service temporarily unavailable"}}
   getPreset:
     speakeasy-default-get-preset:
       parameters:
@@ -21636,6 +21646,8 @@ examples:
           application/json: {"error": {"code": 500, "message": "Internal Server Error"}}
         "403":
           application/json: {"error": {"code": 403, "message": "Only management keys can perform this operation"}}
+        "503":
+          application/json: {"error": {"code": 503, "message": "Service temporarily unavailable"}}
   listPresetVersions:
     speakeasy-default-list-preset-versions:
       parameters:
@@ -21657,6 +21669,8 @@ examples:
           application/json: {"error": {"code": 500, "message": "Internal Server Error"}}
         "403":
           application/json: {"error": {"code": 403, "message": "Only management keys can perform this operation"}}
+        "503":
+          application/json: {"error": {"code": 503, "message": "Service temporarily unavailable"}}
   getPresetVersion:
     speakeasy-default-get-preset-version:
       parameters:
@@ -21676,6 +21690,8 @@ examples:
           application/json: {"error": {"code": 500, "message": "Internal Server Error"}}
         "403":
           application/json: {"error": {"code": 403, "message": "Only management keys can perform this operation"}}
+        "503":
+          application/json: {"error": {"code": 503, "message": "Service temporarily unavailable"}}
   getAppRankings:
     speakeasy-default-get-app-rankings:
       parameters:
@@ -22032,6 +22048,10 @@ examples:
           application/json: {"error": {"code": 500, "message": "Internal Server Error"}}
         "409":
           application/json: {"error": {"code": 409, "message": "Resource conflict. Please try again later."}}
+        "403":
+          application/json: {"error": {"code": 403, "message": "Only management keys can perform this operation"}}
+        "503":
+          application/json: {"error": {"code": 503, "message": "Service temporarily unavailable"}}
   listScimGroupMappings:
     speakeasy-default-list-scim-group-mappings:
       parameters:
@@ -24611,7 +24631,12 @@ examples:
 examplesVersion: 1.0.2
 releaseNotes: |
   ## Typescript SDK Changes:
-  * `openrouter.observability.list()`:  `response.data[].union(s3).config` **Changed**
-  * `openrouter.observability.create()`:  `response.data.union(s3).config` **Changed**
-  * `openrouter.observability.get()`:  `response.data.union(s3).config` **Changed**
-  * `openrouter.observability.update()`:  `response.data.union(s3).config` **Changed**
+  * `openrouter.endpoints.listZdrEndpoints()`:  `error.status[503]` **Added**
+  * `openrouter.endpoints.list()`:  `error.status[503]` **Added**
+  * `openrouter.generations.submitFeedback()`:  `error` **Changed**
+  * `openrouter.models.list()`:  `error.status[503]` **Added**
+  * `openrouter.models.listForUser()`:  `error.status[503]` **Added**
+  * `openrouter.presets.list()`:  `error.status[503]` **Added**
+  * `openrouter.presets.get()`:  `error.status[503]` **Added**
+  * `openrouter.presets.listVersions()`:  `error.status[503]` **Added**
+  * `openrouter.presets.getVersion()`:  `error.status[503]` **Added**
