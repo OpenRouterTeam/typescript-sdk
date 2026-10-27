@@ -1,0 +1,21 @@
+---
+title: "AuthMode"
+---
+
+IAM role: OpenRouter assumes a role in your AWS account with short-lived STS credentials, so you don't share long-lived keys.
+
+## Example Usage
+
+```typescript
+import { AuthMode } from "@openrouter/sdk/models";
+
+let value: AuthMode = "access_keys";
+
+// Open enum: unrecognized values are captured as Unrecognized<string>
+```
+
+## Values
+
+```typescript
+"access_keys" | "iam_role" | Unrecognized<string>
+```
