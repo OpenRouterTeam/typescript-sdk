@@ -50,7 +50,7 @@ export type CreatePrivateEndpointRequest = {
    */
   appCategories?: string | undefined;
   /**
-   * Retry-safe create: a repeated create with the same key from the same organization returns the endpoint the first request created instead of creating another. The endpoint is returned as it is now. Reusing a key with a different request body (model, provider, base URL, upstream model ID, declared ZDR or region, or pricing) is rejected with 422 `idempotency_key_reused`. `activate` is not compared, and later edits to the endpoint do not affect the comparison.
+   * Retry-safe create: a repeated create with the same key from the same organization returns the endpoint the first request created instead of creating another. The endpoint is returned as it is now. Reusing a key with a different request body (model, provider, base URL, upstream model ID, declared ZDR or region, pricing, or declared parameters) is rejected with 422 `idempotency_key_reused`. Declared parameters are compared as a set, so a retry that reorders or repeats a name replays the endpoint. `activate` and `max_completion_tokens` are not compared, and later edits to the endpoint do not affect the comparison.
    */
   idempotencyKey?: string | undefined;
   createPrivateEndpointRequest: models.CreatePrivateEndpointRequest;

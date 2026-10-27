@@ -11,9 +11,17 @@ import {
   PrivateEndpointCheck,
   PrivateEndpointCheck$inboundSchema,
 } from "./privateendpointcheck.js";
+import {
+  PrivateEndpointParameterCheck,
+  PrivateEndpointParameterCheck$inboundSchema,
+} from "./privateendpointparametercheck.js";
 
 export type PrivateEndpointValidationNullable = {
   checks: Array<PrivateEndpointCheck>;
+  /**
+   * Request parameters probed after the checks passed, each with whether the upstream honored it. Supported ones are recorded in `tested_parameters`. Absent on a failed run and for providers that run no parameter probes; empty when every probe group was already proven.
+   */
+  parameters?: Array<PrivateEndpointParameterCheck> | undefined;
   /**
    * Whether every check passed.
    */
@@ -26,6 +34,7 @@ export const PrivateEndpointValidationNullable$inboundSchema: z.ZodType<
   unknown
 > = z.object({
   checks: z.array(PrivateEndpointCheck$inboundSchema),
+  parameters: z.array(PrivateEndpointParameterCheck$inboundSchema).optional(),
   passed: z.boolean(),
 });
 
