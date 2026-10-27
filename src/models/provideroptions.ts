@@ -115,6 +115,7 @@ export type ProviderOptions = {
   perplexity?: { [k: string]: any } | undefined;
   phala?: { [k: string]: any } | undefined;
   poolside?: { [k: string]: any } | undefined;
+  primalabs?: { [k: string]: any } | undefined;
   primeintellect?: { [k: string]: any } | undefined;
   quiver?: { [k: string]: any } | undefined;
   recraft?: { [k: string]: any } | undefined;
@@ -267,6 +268,7 @@ export type ProviderOptions$Outbound = {
   perplexity?: { [k: string]: any } | undefined;
   phala?: { [k: string]: any } | undefined;
   poolside?: { [k: string]: any } | undefined;
+  primalabs?: { [k: string]: any } | undefined;
   primeintellect?: { [k: string]: any } | undefined;
   quiver?: { [k: string]: any } | undefined;
   recraft?: { [k: string]: any } | undefined;
@@ -422,6 +424,7 @@ export const ProviderOptions$outboundSchema: z.ZodType<
   perplexity: z.record(z.string(), z.any()).optional(),
   phala: z.record(z.string(), z.any()).optional(),
   poolside: z.record(z.string(), z.any()).optional(),
+  primalabs: z.record(z.string(), z.any()).optional(),
   primeintellect: z.record(z.string(), z.any()).optional(),
   quiver: z.record(z.string(), z.any()).optional(),
   recraft: z.record(z.string(), z.any()).optional(),
