@@ -43,10 +43,12 @@ export function generationsSubmitFeedback(
     models.SubmitGenerationFeedbackResponse,
     | errors.BadRequestResponseError
     | errors.UnauthorizedResponseError
+    | errors.ForbiddenResponseError
     | errors.NotFoundResponseError
     | errors.ConflictResponseError
     | errors.TooManyRequestsResponseError
     | errors.InternalServerResponseError
+    | errors.ServiceUnavailableResponseError
     | OpenRouterError
     | ResponseValidationError
     | ConnectionError
@@ -74,10 +76,12 @@ async function $do(
       models.SubmitGenerationFeedbackResponse,
       | errors.BadRequestResponseError
       | errors.UnauthorizedResponseError
+      | errors.ForbiddenResponseError
       | errors.NotFoundResponseError
       | errors.ConflictResponseError
       | errors.TooManyRequestsResponseError
       | errors.InternalServerResponseError
+      | errors.ServiceUnavailableResponseError
       | OpenRouterError
       | ResponseValidationError
       | ConnectionError
@@ -190,10 +194,12 @@ async function $do(
     models.SubmitGenerationFeedbackResponse,
     | errors.BadRequestResponseError
     | errors.UnauthorizedResponseError
+    | errors.ForbiddenResponseError
     | errors.NotFoundResponseError
     | errors.ConflictResponseError
     | errors.TooManyRequestsResponseError
     | errors.InternalServerResponseError
+    | errors.ServiceUnavailableResponseError
     | OpenRouterError
     | ResponseValidationError
     | ConnectionError
@@ -206,10 +212,12 @@ async function $do(
     M.json(200, models.SubmitGenerationFeedbackResponse$inboundSchema),
     M.jsonErr(400, errors.BadRequestResponseError$inboundSchema),
     M.jsonErr(401, errors.UnauthorizedResponseError$inboundSchema),
+    M.jsonErr(403, errors.ForbiddenResponseError$inboundSchema),
     M.jsonErr(404, errors.NotFoundResponseError$inboundSchema),
     M.jsonErr(409, errors.ConflictResponseError$inboundSchema),
     M.jsonErr(429, errors.TooManyRequestsResponseError$inboundSchema),
     M.jsonErr(500, errors.InternalServerResponseError$inboundSchema),
+    M.jsonErr(503, errors.ServiceUnavailableResponseError$inboundSchema),
     M.fail("4XX"),
     M.fail("5XX"),
   )(response, req, { extraFields: responseFields });
