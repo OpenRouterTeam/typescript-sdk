@@ -16,6 +16,11 @@ import {
   DecisionsChoiceQuestion$outboundSchema,
 } from "./decisionschoicequestion.js";
 import {
+  DecisionsImageAsset,
+  DecisionsImageAsset$Outbound,
+  DecisionsImageAsset$outboundSchema,
+} from "./decisionsimageasset.js";
+import {
   DecisionsNoulQuestion,
   DecisionsNoulQuestion$Outbound,
   DecisionsNoulQuestion$outboundSchema,
@@ -51,6 +56,10 @@ export type Questions =
 export type State = string | { [k: string]: any } | Array<any>;
 
 export type DecisionsRequest = {
+  /**
+   * Images keyed by reference string, as in TypeSafe's API. Write a reference wherever the image belongs in `state`, `instructions`, or `criteria`; every asset must be referenced at least once. Jev reads a reference as a whole string value or inside longer text. Other Decisions models read a whole-string reference wherever they read an `image_url` part and reject a reference inside longer text.
+   */
+  assets?: { [k: string]: DecisionsImageAsset } | undefined;
   model: string;
   provider?: ProviderPreferences | null | undefined;
   questions: {
@@ -113,6 +122,7 @@ export function stateToJSON(state: State): string {
 
 /** @internal */
 export type DecisionsRequest$Outbound = {
+  assets?: { [k: string]: DecisionsImageAsset$Outbound } | undefined;
   model: string;
   provider?: ProviderPreferences$Outbound | null | undefined;
   questions: {
@@ -133,6 +143,7 @@ export const DecisionsRequest$outboundSchema: z.ZodType<
   DecisionsRequest$Outbound,
   DecisionsRequest
 > = z.object({
+  assets: z.record(z.string(), DecisionsImageAsset$outboundSchema).optional(),
   model: z.string(),
   provider: z.nullable(ProviderPreferences$outboundSchema).optional(),
   questions: z.record(
