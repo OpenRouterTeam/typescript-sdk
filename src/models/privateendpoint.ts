@@ -27,6 +27,10 @@ export type PrivateEndpoint = {
    */
   baseUrl: string | null;
   /**
+   * Parameters you declared the upstream supports. Requests that use a parameter only route to this endpoint when it is tested or declared.
+   */
+  declaredParameters: Array<string>;
+  /**
    * Where you attest this deployment processes data. `global` means not regional; `null` means undeclared.
    */
   declaredRegion: PrivateEndpointDeclaredRegion | null;
@@ -38,6 +42,10 @@ export type PrivateEndpoint = {
    * Stable identifier of the private endpoint.
    */
   id: string;
+  /**
+   * Most completion tokens a request routed to this endpoint can produce, or `null` when the endpoint sets no cap beyond the model context length.
+   */
+  maxCompletionTokens?: number | null | undefined;
   /**
    * Display name of the model, or `null` when the model is no longer listed.
    */
@@ -67,6 +75,10 @@ export type PrivateEndpoint = {
    */
   status: PrivateEndpointStatus;
   /**
+   * Parameters a validation run proved the upstream honors (`tools`, `tool_choice`, `response_format`, `structured_outputs`, `stop`). Read-only; cleared when the upstream configuration changes.
+   */
+  testedParameters: Array<string>;
+  /**
    * Model or deployment identifier sent to the upstream provider.
    */
   upstreamModelId: string;
@@ -78,9 +90,11 @@ export const PrivateEndpoint$inboundSchema: z.ZodType<
   unknown
 > = z.object({
   base_url: z.nullable(z.string()),
+  declared_parameters: z.array(z.string()),
   declared_region: z.nullable(PrivateEndpointDeclaredRegion$inboundSchema),
   declared_zdr: z.nullable(z.boolean()),
   id: z.string(),
+  max_completion_tokens: z.nullable(z.int()).optional(),
   model_name: z.nullable(z.string()),
   model_permaslug: z.string(),
   model_slug: z.nullable(z.string()),
@@ -88,17 +102,21 @@ export const PrivateEndpoint$inboundSchema: z.ZodType<
   provider_name: z.string(),
   provider_slug: z.nullable(z.string()),
   status: PrivateEndpointStatus$inboundSchema,
+  tested_parameters: z.array(z.string()),
   upstream_model_id: z.string(),
 }).transform((v) => {
   return remap$(v, {
     "base_url": "baseUrl",
+    "declared_parameters": "declaredParameters",
     "declared_region": "declaredRegion",
     "declared_zdr": "declaredZdr",
+    "max_completion_tokens": "maxCompletionTokens",
     "model_name": "modelName",
     "model_permaslug": "modelPermaslug",
     "model_slug": "modelSlug",
     "provider_name": "providerName",
     "provider_slug": "providerSlug",
+    "tested_parameters": "testedParameters",
     "upstream_model_id": "upstreamModelId",
   });
 });
