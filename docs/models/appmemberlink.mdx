@@ -1,0 +1,23 @@
+---
+title: "AppMemberLink"
+---
+
+## Example Usage
+
+```typescript
+import { AppMemberLink } from "@openrouter/sdk/models";
+
+let value: AppMemberLink = {
+  holdsToken: true,
+  login: "Trevion57",
+  via: "token",
+};
+```
+
+## Fields
+
+| Field                                                                         | Type                                                                          | Required                                                                      | Description                                                                   |
+| ----------------------------------------------------------------------------- | ----------------------------------------------------------------------------- | ----------------------------------------------------------------------------- | ----------------------------------------------------------------------------- |
+| `holdsToken`                                                                  | *boolean*                                                                     | ✔️                                                            | N/A                                                                           |
+| `login`                                                                       | *string*                                                                      | ✔️                                                            | N/A                                                                           |
+| `via`                                                                         | [models.Via](../models/via.mdx)                                                | ✔️                                                            | How the vault picks this link for the App, by the same selection egress uses. |

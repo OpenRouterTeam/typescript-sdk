@@ -800,6 +800,7 @@ export * from "./urlcitation.js";
 export * from "./validateprivateendpointrequest.js";
 export * from "./vaulteffectivesecret.js";
 export * from "./vaulteffectivesecretlistresponse.js";
+export * from "./vaultroutingtable.js";
 export * from "./vaultsecret.js";
 export * from "./vaultsecretcopyrequest.js";
 export * from "./vaultsecretcopyresponse.js";

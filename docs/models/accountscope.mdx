@@ -1,0 +1,21 @@
+---
+title: "AccountScope"
+---
+
+`workspace` applies to every intern of the workspace; `intern` to this intern alone.
+
+## Example Usage
+
+```typescript
+import { AccountScope } from "@openrouter/sdk/models";
+
+let value: AccountScope = "intern";
+
+// Open enum: unrecognized values are captured as Unrecognized<string>
+```
+
+## Values
+
+```typescript
+"workspace" | "intern" | Unrecognized<string>
+```
