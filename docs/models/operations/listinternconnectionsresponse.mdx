@@ -11,11 +11,53 @@ import { ListInternConnectionsResponse } from "@openrouter/sdk/models/operations
 
 let value: ListInternConnectionsResponse = {
   data: [],
+  routing: {
+    agentId: "<id>",
+    customOrigins: [],
+    github: {
+      apps: [
+        {
+          appId: "<id>",
+          appSlug: "<value>",
+          installations: [],
+          memberLinks: [],
+          scope: "workspace",
+        },
+      ],
+      tokens: [
+        {
+          holdsToken: false,
+          login: "Concepcion.Brekke95",
+          owner: "<value>",
+          repositoryCount: 274676,
+          scope: "intern",
+        },
+      ],
+    },
+    google: {
+      accounts: [],
+    },
+    hostRules: [],
+    mcpOrigins: [],
+    readAt: new Date("2026-12-07T16:43:23.795Z"),
+    secrets: [],
+    slack: {
+      memberLinks: [
+        {
+          holdsToken: false,
+          slackUserId: "<id>",
+        },
+      ],
+    },
+  },
+  routingText: "<value>",
 };
 ```
 
 ## Fields
 
-| Field                                                                                          | Type                                                                                           | Required                                                                                       | Description                                                                                    |
-| ---------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------- |
-| `data`                                                                                         | [operations.ListInternConnectionsData](../../models/operations/listinternconnectionsdata.mdx)[] | ✔️                                                                             | N/A                                                                                            |
+| Field                                                                                                                                                                           | Type                                                                                                                                                                            | Required                                                                                                                                                                        | Description                                                                                                                                                                     |
+| ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `data`                                                                                                                                                                          | [operations.ListInternConnectionsData](../../models/operations/listinternconnectionsdata.mdx)[]                                                                                  | ✔️                                                                                                                                                              | N/A                                                                                                                                                                             |
+| `routing`                                                                                                                                                                       | [models.VaultRoutingTable](../../models/vaultroutingtable.mdx)                                                                                                                   | ✔️                                                                                                                                                              | The intern's routing table, for the intern's own key only; null for any other caller or when the vault could not build it in time. The keys still list.                         |
+| `routingText`                                                                                                                                                                   | *string*                                                                                                                                                                        | ✔️                                                                                                                                                              | The routing table as the plain lines the intern reads in its instructions' Connections section, or a notice that it could not be read; null for a caller other than the intern. |

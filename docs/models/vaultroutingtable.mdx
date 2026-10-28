@@ -1,0 +1,82 @@
+---
+title: "VaultRoutingTable"
+---
+
+The intern's routing table, for the intern's own key only; null for any other caller or when the vault could not build it in time. The keys still list.
+
+## Example Usage
+
+```typescript
+import { VaultRoutingTable } from "@openrouter/sdk/models";
+
+let value: VaultRoutingTable = {
+  agentId: "<id>",
+  customOrigins: [],
+  github: {
+    apps: [
+      {
+        appId: "<id>",
+        appSlug: "<value>",
+        installations: [],
+        memberLinks: [],
+        scope: "workspace",
+      },
+    ],
+    tokens: [
+      {
+        holdsToken: false,
+        login: "Concepcion.Brekke95",
+        owner: "<value>",
+        repositoryCount: 274676,
+        scope: "intern",
+      },
+    ],
+  },
+  google: {
+    accounts: [],
+  },
+  hostRules: [
+    {
+      holdsSecret: false,
+      host: "splendid-forager.org",
+      secretName: "<value>",
+    },
+  ],
+  mcpOrigins: [
+    {
+      accountKey: "<value>",
+      host: "dark-viability.info",
+      isPersonal: true,
+      routes: [],
+      status: {
+        failure: "<value>",
+        state: "failing",
+      },
+    },
+  ],
+  readAt: new Date("2024-12-01T18:11:20.418Z"),
+  secrets: [],
+  slack: {
+    memberLinks: [
+      {
+        holdsToken: false,
+        slackUserId: "<id>",
+      },
+    ],
+  },
+};
+```
+
+## Fields
+
+| Field                                                                                         | Type                                                                                          | Required                                                                                      | Description                                                                                   |
+| --------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------- |
+| `agentId`                                                                                     | *string*                                                                                      | ✔️                                                                            | N/A                                                                                           |
+| `customOrigins`                                                                               | [models.CustomOrigin](../models/customorigin.mdx)[]                                            | ✔️                                                                            | N/A                                                                                           |
+| `github`                                                                                      | [models.Github](../models/github.mdx)                                                          | ✔️                                                                            | N/A                                                                                           |
+| `google`                                                                                      | [models.Google](../models/google.mdx)                                                          | ✔️                                                                            | N/A                                                                                           |
+| `hostRules`                                                                                   | [models.HostRule](../models/hostrule.mdx)[]                                                    | ✔️                                                                            | Built-in hosts the vault injects a named secret for, and whether that secret is stored.       |
+| `mcpOrigins`                                                                                  | [models.McpOrigin](../models/mcporigin.mdx)[]                                                  | ✔️                                                                            | N/A                                                                                           |
+| `readAt`                                                                                      | [Date](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date) | ✔️                                                                            | N/A                                                                                           |
+| `secrets`                                                                                     | [models.Secret](../models/secret.mdx)[]                                                        | ✔️                                                                            | N/A                                                                                           |
+| `slack`                                                                                       | [models.Slack](../models/slack.mdx)                                                            | ✔️                                                                            | N/A                                                                                           |

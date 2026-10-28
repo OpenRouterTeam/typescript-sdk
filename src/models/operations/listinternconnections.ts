@@ -8,6 +8,7 @@ import { remap as remap$ } from "../../lib/primitives.js";
 import { safeParse } from "../../lib/schemas.js";
 import { Result as SafeParseResult } from "../../types/fp.js";
 import { SDKValidationError } from "../errors/sdkvalidationerror.js";
+import * as models from "../index.js";
 
 export type ListInternConnectionsGlobals = {
   /**
@@ -66,6 +67,14 @@ export type ListInternConnectionsData = {
  */
 export type ListInternConnectionsResponse = {
   data: Array<ListInternConnectionsData>;
+  /**
+   * The intern's routing table, for the intern's own key only; null for any other caller or when the vault could not build it in time. The keys still list.
+   */
+  routing: models.VaultRoutingTable | null;
+  /**
+   * The routing table as the plain lines the intern reads in its instructions' Connections section, or a notice that it could not be read; null for a caller other than the intern.
+   */
+  routingText: string | null;
 };
 
 /** @internal */
@@ -125,6 +134,12 @@ export const ListInternConnectionsResponse$inboundSchema: z.ZodType<
   unknown
 > = z.object({
   data: z.array(z.lazy(() => ListInternConnectionsData$inboundSchema)),
+  routing: z.nullable(models.VaultRoutingTable$inboundSchema),
+  routing_text: z.nullable(z.string()),
+}).transform((v) => {
+  return remap$(v, {
+    "routing_text": "routingText",
+  });
 });
 
 export function listInternConnectionsResponseFromJSON(
