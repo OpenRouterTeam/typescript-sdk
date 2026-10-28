@@ -1,15 +1,15 @@
 ---
-title: "ChatDeveloperMessageConfigurationUpdate"
+title: "ConfigurationUpdate"
 ---
 
-OpenRouter extension. Same as the system message `configuration_update`: changes reasoning effort from this point in the conversation onward without invalidating the prompt cache for the preceding turns.
+Mid-conversation configuration update. Changes reasoning effort from this point onward without invalidating the prompt cache for the preceding turns.
 
 ## Example Usage
 
 ```typescript
-import { ChatDeveloperMessageConfigurationUpdate } from "@openrouter/sdk/models";
+import { ConfigurationUpdate } from "@openrouter/sdk/models";
 
-let value: ChatDeveloperMessageConfigurationUpdate = {
+let value: ConfigurationUpdate = {
   reasoning: {
     effort: "low",
   },
