@@ -75,6 +75,10 @@ export type Guardrail = {
    */
   enablePaidModelTraining?: boolean | null | undefined;
   /**
+   * Whether coding harnesses list only their vendor's own models: Codex lists OpenAI models and Claude Code and Claude Desktop list Anthropic models. Affects only the model list those harnesses request from GET /models; a model the client names directly is still routed. Any true across the workspace default, member, and API key guardrails applies.
+   */
+  enforceFirstPartyHarnessModels?: boolean | null | undefined;
+  /**
    * Deprecated. Use enforce_zdr_anthropic, enforce_zdr_openai, enforce_zdr_google, enforce_zdr_xai, and enforce_zdr_other instead. When provided, its value is copied into any of those per-provider fields that are not explicitly specified on the request.
    *
    * @deprecated field: This will be removed in a future release, please migrate away from it as soon as possible.
@@ -156,6 +160,7 @@ export const Guardrail$inboundSchema: z.ZodType<Guardrail, unknown> = z.object({
   enable_free_model_publication: z.nullable(z.boolean()).optional(),
   enable_free_model_training: z.nullable(z.boolean()).optional(),
   enable_paid_model_training: z.nullable(z.boolean()).optional(),
+  enforce_first_party_harness_models: z.nullable(z.boolean()).optional(),
   enforce_zdr: z.nullable(z.boolean()).optional(),
   enforce_zdr_anthropic: z.nullable(z.boolean()).optional(),
   enforce_zdr_google: z.nullable(z.boolean()).optional(),
@@ -184,6 +189,7 @@ export const Guardrail$inboundSchema: z.ZodType<Guardrail, unknown> = z.object({
     "enable_free_model_publication": "enableFreeModelPublication",
     "enable_free_model_training": "enableFreeModelTraining",
     "enable_paid_model_training": "enablePaidModelTraining",
+    "enforce_first_party_harness_models": "enforceFirstPartyHarnessModels",
     "enforce_zdr": "enforceZdr",
     "enforce_zdr_anthropic": "enforceZdrAnthropic",
     "enforce_zdr_google": "enforceZdrGoogle",
