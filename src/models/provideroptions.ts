@@ -111,6 +111,7 @@ export type ProviderOptions = {
   openai?: { [k: string]: any } | undefined;
   parasail?: { [k: string]: any } | undefined;
   paretoAlpha?: { [k: string]: any } | undefined;
+  particleAi?: { [k: string]: any } | undefined;
   perceptron?: { [k: string]: any } | undefined;
   perplexity?: { [k: string]: any } | undefined;
   phala?: { [k: string]: any } | undefined;
@@ -264,6 +265,7 @@ export type ProviderOptions$Outbound = {
   openai?: { [k: string]: any } | undefined;
   parasail?: { [k: string]: any } | undefined;
   "pareto-alpha"?: { [k: string]: any } | undefined;
+  "particle-ai"?: { [k: string]: any } | undefined;
   perceptron?: { [k: string]: any } | undefined;
   perplexity?: { [k: string]: any } | undefined;
   phala?: { [k: string]: any } | undefined;
@@ -420,6 +422,7 @@ export const ProviderOptions$outboundSchema: z.ZodType<
   openai: z.record(z.string(), z.any()).optional(),
   parasail: z.record(z.string(), z.any()).optional(),
   paretoAlpha: z.record(z.string(), z.any()).optional(),
+  particleAi: z.record(z.string(), z.any()).optional(),
   perceptron: z.record(z.string(), z.any()).optional(),
   perplexity: z.record(z.string(), z.any()).optional(),
   phala: z.record(z.string(), z.any()).optional(),
@@ -494,6 +497,7 @@ export const ProviderOptions$outboundSchema: z.ZodType<
     nexAgi: "nex-agi",
     openInference: "open-inference",
     paretoAlpha: "pareto-alpha",
+    particleAi: "particle-ai",
     sailResearch: "sail-research",
     sakanaAi: "sakana-ai",
     sambanovaCloaked: "sambanova-cloaked",
