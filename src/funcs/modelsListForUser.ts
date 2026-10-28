@@ -51,6 +51,9 @@ export function modelsListForUser(
       | errors.UnauthorizedResponseError
       | errors.ForbiddenResponseError
       | errors.NotFoundResponseError
+      | errors.RequestTimeoutResponseError
+      | errors.ConflictResponseError
+      | errors.TooManyRequestsResponseError
       | errors.InternalServerResponseError
       | errors.ServiceUnavailableResponseError
       | OpenRouterError
@@ -86,6 +89,9 @@ async function $do(
         | errors.UnauthorizedResponseError
         | errors.ForbiddenResponseError
         | errors.NotFoundResponseError
+        | errors.RequestTimeoutResponseError
+        | errors.ConflictResponseError
+        | errors.TooManyRequestsResponseError
         | errors.InternalServerResponseError
         | errors.ServiceUnavailableResponseError
         | OpenRouterError
@@ -214,6 +220,9 @@ async function $do(
     | errors.UnauthorizedResponseError
     | errors.ForbiddenResponseError
     | errors.NotFoundResponseError
+    | errors.RequestTimeoutResponseError
+    | errors.ConflictResponseError
+    | errors.TooManyRequestsResponseError
     | errors.InternalServerResponseError
     | errors.ServiceUnavailableResponseError
     | OpenRouterError
@@ -231,6 +240,9 @@ async function $do(
     M.jsonErr(401, errors.UnauthorizedResponseError$inboundSchema),
     M.jsonErr(403, errors.ForbiddenResponseError$inboundSchema),
     M.jsonErr(404, errors.NotFoundResponseError$inboundSchema),
+    M.jsonErr(408, errors.RequestTimeoutResponseError$inboundSchema),
+    M.jsonErr(409, errors.ConflictResponseError$inboundSchema),
+    M.jsonErr(429, errors.TooManyRequestsResponseError$inboundSchema),
     M.jsonErr(500, errors.InternalServerResponseError$inboundSchema),
     M.jsonErr(503, errors.ServiceUnavailableResponseError$inboundSchema),
     M.fail("4XX"),
@@ -253,6 +265,9 @@ async function $do(
         | errors.UnauthorizedResponseError
         | errors.ForbiddenResponseError
         | errors.NotFoundResponseError
+        | errors.RequestTimeoutResponseError
+        | errors.ConflictResponseError
+        | errors.TooManyRequestsResponseError
         | errors.InternalServerResponseError
         | errors.ServiceUnavailableResponseError
         | OpenRouterError

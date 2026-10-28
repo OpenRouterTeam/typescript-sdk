@@ -73,6 +73,10 @@ export type UpdateGuardrailRequest = {
    */
   enablePaidModelTraining?: boolean | null | undefined;
   /**
+   * Whether coding harnesses list only their vendor's own models: Codex lists OpenAI models and Claude Code and Claude Desktop list Anthropic models. Affects only the model list those harnesses request from GET /models; a model the client names directly is still routed. Any true across the workspace default, member, and API key guardrails applies.
+   */
+  enforceFirstPartyHarnessModels?: boolean | null | undefined;
+  /**
    * Deprecated. Use enforce_zdr_anthropic, enforce_zdr_openai, enforce_zdr_google, enforce_zdr_xai, and enforce_zdr_other instead. When provided, its value is copied into any of those per-provider fields that are not explicitly specified on the request.
    *
    * @deprecated field: This will be removed in a future release, please migrate away from it as soon as possible.
@@ -140,6 +144,7 @@ export type UpdateGuardrailRequest$Outbound = {
   enable_free_model_publication?: boolean | null | undefined;
   enable_free_model_training?: boolean | null | undefined;
   enable_paid_model_training?: boolean | null | undefined;
+  enforce_first_party_harness_models?: boolean | null | undefined;
   enforce_zdr?: boolean | null | undefined;
   enforce_zdr_anthropic?: boolean | null | undefined;
   enforce_zdr_google?: boolean | null | undefined;
@@ -174,6 +179,7 @@ export const UpdateGuardrailRequest$outboundSchema: z.ZodType<
   enableFreeModelPublication: z.nullable(z.boolean()).optional(),
   enableFreeModelTraining: z.nullable(z.boolean()).optional(),
   enablePaidModelTraining: z.nullable(z.boolean()).optional(),
+  enforceFirstPartyHarnessModels: z.nullable(z.boolean()).optional(),
   enforceZdr: z.nullable(z.boolean()).optional(),
   enforceZdrAnthropic: z.nullable(z.boolean()).optional(),
   enforceZdrGoogle: z.nullable(z.boolean()).optional(),
@@ -198,6 +204,7 @@ export const UpdateGuardrailRequest$outboundSchema: z.ZodType<
     enableFreeModelPublication: "enable_free_model_publication",
     enableFreeModelTraining: "enable_free_model_training",
     enablePaidModelTraining: "enable_paid_model_training",
+    enforceFirstPartyHarnessModels: "enforce_first_party_harness_models",
     enforceZdr: "enforce_zdr",
     enforceZdrAnthropic: "enforce_zdr_anthropic",
     enforceZdrGoogle: "enforce_zdr_google",
