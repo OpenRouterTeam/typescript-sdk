@@ -7401,19 +7401,14 @@ components:
         role: 'developer'
       properties:
         configuration_update:
-          additionalProperties: false
+          anyOf:
+            - $ref: '#/components/schemas/ConfigurationUpdate'
+            - type: 'null'
+            - type: 'null'
           description: 'OpenRouter extension. Same as the system message `configuration_update`: changes reasoning effort from this point in the conversation onward without invalidating the prompt cache for the preceding turns.'
           example:
             reasoning:
               effort: 'low'
-          properties:
-            reasoning:
-              $ref: '#/components/schemas/ConfigurationUpdateReasoning'
-          required:
-            - 'reasoning'
-          type:
-            - 'object'
-            - 'null'
         content:
           anyOf:
             - type: 'string'
@@ -8414,19 +8409,14 @@ components:
         role: 'system'
       properties:
         configuration_update:
-          additionalProperties: false
+          anyOf:
+            - $ref: '#/components/schemas/ConfigurationUpdate'
+            - type: 'null'
+            - type: 'null'
           description: 'OpenRouter extension. Changes reasoning effort from this point in the conversation onward without invalidating the prompt cache for the preceding turns. Place it on a content-less system message (`content: ""`) directly before the user message it should apply to, and keep it at that position in later requests. Equivalent to the OpenAI Responses `configuration_update` input item and the Anthropic Messages per-message `output_config.effort`.'
           example:
             reasoning:
               effort: 'low'
-          properties:
-            reasoning:
-              $ref: '#/components/schemas/ConfigurationUpdateReasoning'
-          required:
-            - 'reasoning'
-          type:
-            - 'object'
-            - 'null'
         content:
           anyOf:
             - type: 'string'
@@ -9126,6 +9116,18 @@ components:
         - 'display_height'
         - 'display_width'
         - 'environment'
+      type: 'object'
+    ConfigurationUpdate:
+      additionalProperties: false
+      description: 'Mid-conversation configuration update. Changes reasoning effort from this point onward without invalidating the prompt cache for the preceding turns.'
+      example:
+        reasoning:
+          effort: 'low'
+      properties:
+        reasoning:
+          $ref: '#/components/schemas/ConfigurationUpdateReasoning'
+      required:
+        - 'reasoning'
       type: 'object'
     ConfigurationUpdateItem:
       description: 'Changes reasoning effort from this point in the conversation onward without invalidating the prompt cache for the preceding items. Place it before the user message it should apply to; it stays in effect until another configuration update. Two adjacent configuration updates are rejected. Only supported by models that accept mid-conversation effort changes.'
@@ -33504,6 +33506,7 @@ components:
         - 'searching'
         - 'in_progress'
         - 'failed'
+        - 'incomplete'
       example: 'completed'
       type: 'string'
     WebSearchUserLocation:
@@ -42361,7 +42364,9 @@ paths:
                 limit:
                   description: 'Optional spending limit for the API key in USD'
                   example: 50
+                  exclusiveMaximum: 1000000
                   format: 'double'
+                  minimum: 0
                   type:
                     - 'number'
                     - 'null'
@@ -42379,6 +42384,7 @@ paths:
                 name:
                   description: 'Name for the new API key'
                   example: 'My New API Key'
+                  maxLength: 256
                   minLength: 1
                   type: 'string'
                 workspace_id:
@@ -43084,7 +43090,9 @@ paths:
                 limit:
                   description: 'New spending limit for the API key in USD'
                   example: 75
+                  exclusiveMaximum: 1000000
                   format: 'double'
+                  minimum: 0
                   type:
                     - 'number'
                     - 'null'
@@ -43102,6 +43110,8 @@ paths:
                 name:
                   description: 'New name for the API key'
                   example: 'Updated API Key Name'
+                  maxLength: 256
+                  minLength: 1
                   type: 'string'
                 workspace_id:
                   description: 'Move the API key to this workspace. The key keeps its value; guardrail selections move with it, while other workspace-scoped settings (presets, BYOK keys, broadcast destinations, routing rules) do not. Sending the key''s current workspace is a no-op.'
