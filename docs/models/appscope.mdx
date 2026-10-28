@@ -1,0 +1,21 @@
+---
+title: "AppScope"
+---
+
+`workspace` applies to every intern of the workspace; `intern` to this intern alone.
+
+## Example Usage
+
+```typescript
+import { AppScope } from "@openrouter/sdk/models";
+
+let value: AppScope = "intern";
+
+// Open enum: unrecognized values are captured as Unrecognized<string>
+```
+
+## Values
+
+```typescript
+"workspace" | "intern" | Unrecognized<string>
+```

@@ -1,0 +1,30 @@
+---
+title: "Account"
+---
+
+## Example Usage
+
+```typescript
+import { Account } from "@openrouter/sdk/models";
+
+let value: Account = {
+  delegatedCapabilities: [
+    "<value 1>",
+    "<value 2>",
+  ],
+  email: "Carolanne38@gmail.com",
+  holdsGrant: true,
+  isDelegatedToIntern: false,
+  scope: "intern",
+};
+```
+
+## Fields
+
+| Field                                                                                | Type                                                                                 | Required                                                                             | Description                                                                          |
+| ------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------ |
+| `delegatedCapabilities`                                                              | *string*[]                                                                           | ✔️                                                                   | N/A                                                                                  |
+| `email`                                                                              | *string*                                                                             | ✔️                                                                   | N/A                                                                                  |
+| `holdsGrant`                                                                         | *boolean*                                                                            | ✔️                                                                   | N/A                                                                                  |
+| `isDelegatedToIntern`                                                                | *boolean*                                                                            | ✔️                                                                   | N/A                                                                                  |
+| `scope`                                                                              | [models.AccountScope](../models/accountscope.mdx)                                     | ✔️                                                                   | `workspace` applies to every intern of the workspace; `intern` to this intern alone. |

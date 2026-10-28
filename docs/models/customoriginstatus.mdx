@@ -1,0 +1,23 @@
+---
+title: "CustomOriginStatus"
+---
+
+The vault injection decision for this destination, at `read_at`.
+
+## Example Usage
+
+```typescript
+import { CustomOriginStatus } from "@openrouter/sdk/models";
+
+let value: CustomOriginStatus = {
+  failure: "<value>",
+  state: "no_credential",
+};
+```
+
+## Fields
+
+| Field                                                                  | Type                                                                   | Required                                                               | Description                                                            |
+| ---------------------------------------------------------------------- | ---------------------------------------------------------------------- | ---------------------------------------------------------------------- | ---------------------------------------------------------------------- |
+| `failure`                                                              | *string*                                                               | ✔️                                                     | The credential failure code when `state` is `failing`; null otherwise. |
+| `state`                                                                | [models.CustomOriginState](../models/customoriginstate.mdx)             | ✔️                                                     | N/A                                                                    |
