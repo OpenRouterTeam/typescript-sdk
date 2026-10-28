@@ -32514,6 +32514,355 @@ components:
         - 'data'
         - 'has_more'
       type: 'object'
+    VaultRoutingTable:
+      description: 'The intern''s routing table, for the intern''s own key only; null for any other caller or when the vault could not build it in time. The keys still list.'
+      properties:
+        agent_id:
+          type: 'string'
+        custom_origins:
+          items:
+            properties:
+              host:
+                type: 'string'
+              path_prefix:
+                type:
+                  - 'string'
+                  - 'null'
+              status:
+                description: 'The vault injection decision for this destination, at `read_at`.'
+                properties:
+                  failure:
+                    description: 'The credential failure code when `state` is `failing`; null otherwise.'
+                    type:
+                      - 'string'
+                      - 'null'
+                  state:
+                    enum:
+                      - 'usable'
+                      - 'no_credential'
+                      - 'failing'
+                    type: 'string'
+                required:
+                  - 'state'
+                  - 'failure'
+                type: 'object'
+            required:
+              - 'host'
+              - 'path_prefix'
+              - 'status'
+            type: 'object'
+          type: 'array'
+        github:
+          properties:
+            apps:
+              items:
+                properties:
+                  app_id:
+                    type:
+                      - 'string'
+                      - 'null'
+                  app_slug:
+                    type:
+                      - 'string'
+                      - 'null'
+                  installations:
+                    items:
+                      properties:
+                        account:
+                          description: 'The account the App is installed on, as GitHub spells it.'
+                          type: 'string'
+                        account_type:
+                          enum:
+                            - 'organization'
+                            - 'user'
+                            - null
+                          type:
+                            - 'string'
+                            - 'null'
+                        coverage:
+                          description: 'What GitHub says the installation covers; null until read.'
+                          properties:
+                            checked_at:
+                              description: 'When GitHub answered, through the installation token the vault holds.'
+                              format: 'date-time'
+                              type: 'string'
+                            repository_count:
+                              description: 'Repositories the installation covers; null when GitHub did not count them.'
+                              type:
+                                - 'integer'
+                                - 'null'
+                            selection:
+                              enum:
+                                - 'all'
+                                - 'selected'
+                              type: 'string'
+                          required:
+                            - 'selection'
+                            - 'repository_count'
+                            - 'checked_at'
+                          type:
+                            - 'object'
+                            - 'null'
+                        credential_id:
+                          type: 'string'
+                        holds_token:
+                          description: 'Whether the vault holds a current installation token to inject.'
+                          type: 'boolean'
+                        is_enabled:
+                          type: 'boolean'
+                        is_off_for_intern:
+                          description: 'The workspace turned this shared installation off or hid it for this intern.'
+                          type: 'boolean'
+                        shadowed_by:
+                          description: 'What egress uses instead of this installation for a request to its account: an earlier installation on the same account, or a token pinned to the account. Null when this installation answers.'
+                          enum:
+                            - 'installation'
+                            - 'token'
+                            - null
+                          type:
+                            - 'string'
+                            - 'null'
+                      required:
+                        - 'credential_id'
+                        - 'account'
+                        - 'account_type'
+                        - 'is_enabled'
+                        - 'is_off_for_intern'
+                        - 'holds_token'
+                        - 'coverage'
+                        - 'shadowed_by'
+                      type: 'object'
+                    type: 'array'
+                  member_links:
+                    description: 'Members whose own account the vault would act as on this App''s accounts; GitHub still limits a member''s token to what that member can reach.'
+                    items:
+                      properties:
+                        holds_token:
+                          type: 'boolean'
+                        login:
+                          type: 'string'
+                        via:
+                          description: 'How the vault picks this link for the App, by the same selection egress uses.'
+                          enum:
+                            - 'app_link'
+                            - 'token'
+                            - 'any_link'
+                          type: 'string'
+                      required:
+                        - 'login'
+                        - 'via'
+                        - 'holds_token'
+                      type: 'object'
+                    type: 'array'
+                  scope:
+                    description: '`workspace` applies to every intern of the workspace; `intern` to this intern alone.'
+                    enum:
+                      - 'workspace'
+                      - 'intern'
+                    type: 'string'
+                required:
+                  - 'app_id'
+                  - 'app_slug'
+                  - 'scope'
+                  - 'installations'
+                  - 'member_links'
+                type: 'object'
+              type: 'array'
+            tokens:
+              items:
+                properties:
+                  holds_token:
+                    type: 'boolean'
+                  login:
+                    type: 'string'
+                  owner:
+                    type:
+                      - 'string'
+                      - 'null'
+                  repository_count:
+                    type:
+                      - 'integer'
+                      - 'null'
+                  scope:
+                    description: '`workspace` applies to every intern of the workspace; `intern` to this intern alone.'
+                    enum:
+                      - 'workspace'
+                      - 'intern'
+                    type: 'string'
+                required:
+                  - 'login'
+                  - 'owner'
+                  - 'repository_count'
+                  - 'scope'
+                  - 'holds_token'
+                type: 'object'
+              type: 'array'
+          required:
+            - 'apps'
+            - 'tokens'
+          type: 'object'
+        google:
+          properties:
+            accounts:
+              items:
+                properties:
+                  delegated_capabilities:
+                    items:
+                      type: 'string'
+                    type: 'array'
+                  email:
+                    type: 'string'
+                  holds_grant:
+                    type: 'boolean'
+                  is_delegated_to_intern:
+                    type: 'boolean'
+                  scope:
+                    description: '`workspace` applies to every intern of the workspace; `intern` to this intern alone.'
+                    enum:
+                      - 'workspace'
+                      - 'intern'
+                    type: 'string'
+                required:
+                  - 'email'
+                  - 'scope'
+                  - 'is_delegated_to_intern'
+                  - 'delegated_capabilities'
+                  - 'holds_grant'
+                type: 'object'
+              type: 'array'
+          required:
+            - 'accounts'
+          type: 'object'
+        host_rules:
+          description: 'Built-in hosts the vault injects a named secret for, and whether that secret is stored.'
+          items:
+            properties:
+              holds_secret:
+                type: 'boolean'
+              host:
+                type: 'string'
+              secret_name:
+                type: 'string'
+            required:
+              - 'host'
+              - 'secret_name'
+              - 'holds_secret'
+            type: 'object'
+          type: 'array'
+        mcp_origins:
+          items:
+            properties:
+              account_key:
+                type:
+                  - 'string'
+                  - 'null'
+              host:
+                type: 'string'
+              is_personal:
+                description: 'Members'' own accounts, matched to the acting member per turn.'
+                type: 'boolean'
+              routes:
+                items:
+                  properties:
+                    host:
+                      type: 'string'
+                    path_prefix:
+                      type:
+                        - 'string'
+                        - 'null'
+                  required:
+                    - 'host'
+                    - 'path_prefix'
+                  type: 'object'
+                type: 'array'
+              status:
+                description: 'The vault''s decision for a request to this server; null for members'' own accounts, decided per acting member.'
+                properties:
+                  failure:
+                    description: 'The credential failure code when `state` is `failing`; null otherwise.'
+                    type:
+                      - 'string'
+                      - 'null'
+                  state:
+                    enum:
+                      - 'usable'
+                      - 'no_credential'
+                      - 'failing'
+                    type: 'string'
+                required:
+                  - 'state'
+                  - 'failure'
+                type:
+                  - 'object'
+                  - 'null'
+            required:
+              - 'host'
+              - 'account_key'
+              - 'is_personal'
+              - 'routes'
+              - 'status'
+            type: 'object'
+          type: 'array'
+        read_at:
+          format: 'date-time'
+          type: 'string'
+        secrets:
+          items:
+            properties:
+              created_at:
+                type: 'string'
+              hosts:
+                items:
+                  type: 'string'
+                type:
+                  - 'array'
+                  - 'null'
+              name:
+                type: 'string'
+              scope:
+                enum:
+                  - 'intern'
+                  - 'attached'
+                  - 'workspace'
+                type: 'string'
+            required:
+              - 'name'
+              - 'hosts'
+              - 'scope'
+              - 'created_at'
+            type: 'object'
+          type: 'array'
+        slack:
+          properties:
+            member_links:
+              description: 'Members whose own Slack account the vault can act as; whether the intern''s own Slack app runs is a runtime fact the `connections` tool reports.'
+              items:
+                properties:
+                  holds_token:
+                    type: 'boolean'
+                  slack_user_id:
+                    type: 'string'
+                required:
+                  - 'slack_user_id'
+                  - 'holds_token'
+                type: 'object'
+              type: 'array'
+          required:
+            - 'member_links'
+          type: 'object'
+      required:
+        - 'agent_id'
+        - 'read_at'
+        - 'github'
+        - 'google'
+        - 'slack'
+        - 'mcp_origins'
+        - 'host_rules'
+        - 'custom_origins'
+        - 'secrets'
+      type:
+        - 'object'
+        - 'null'
     VaultSecret:
       additionalProperties: false
       description: 'Metadata for one stored secret. The secret value is never returned. `fingerprint` is an HMAC-SHA-256 of the value keyed with that vault''s own data key, so it is comparable only within one vault: equal fingerprints in one vault mean equal values, and rewriting the same value keeps its fingerprint. The same value stored in two vaults (for example a workspace secret and its intern copy) carries different fingerprints, so comparing fingerprints across vaults cannot show that a copy matches or that a rotation propagated. `hosts` and `fingerprint` are `null` only for legacy rows written before host binding was required; storing the secret again assigns hosts.'
@@ -49556,7 +49905,7 @@ paths:
         - 'Tools'
   /vault/interns/{internId}/connections:
     get:
-      description: 'Lists the connections in scope for the intern, by the key of their card on the dashboard''s Connections tab: `github`, `slack`, `google`, a catalog MCP server such as `linear` or `notion`, or `mcp:<host>` for a custom MCP server. A connection is listed when it is stored, enabled, and not turned off or hidden for this intern, as the Connections tab lists it; whether its last test passed is not part of the rule. `ori features add` checks a feature''s `ori.requires.connections` against this list. Keys only, never credentials. Returns 404 for an intern the key cannot see. The scope is selected by the API key: workspace routes act on the key''s active workspace and intern routes act on one intern inside that workspace. There is no default workspace and no fallback to another scope. Every vault route, including reads, requires access to the Intern API programme and returns 404 outside it. An intern''s own API key is confined to that intern: it can always read the intern''s secrets and effective secrets, writes to them follow the rules above, and every other intern and every workspace route answers 404. Requests on regional hostnames such as `eu.openrouter.ai` are refused. [API key](/docs/api-reference/authentication) required.'
+      description: 'Lists the connections in scope for the intern, by the key of their card on the dashboard''s Connections tab: `github`, `slack`, `google`, a catalog MCP server such as `linear` or `notion`, or `mcp:<host>` for a custom MCP server. A connection is listed when it is stored, enabled, and not turned off or hidden for this intern, as the Connections tab lists it; whether its last test passed is not part of the rule. `ori features add` checks a feature''s `ori.requires.connections` against this list. `routing` is the vault''s routing table for the intern: the credentials it holds and what it would inject each for, from the same lookups the egress proxy picks a credential with, GitHub repository coverage read through the installation token and cached. `routing_text` is that table as the lines the intern reads in its instructions. Never credentials. Returns 404 for an intern the key cannot see. The scope is selected by the API key: workspace routes act on the key''s active workspace and intern routes act on one intern inside that workspace. There is no default workspace and no fallback to another scope. Every vault route, including reads, requires access to the Intern API programme and returns 404 outside it. An intern''s own API key is confined to that intern: it can always read the intern''s secrets and effective secrets, writes to them follow the rules above, and every other intern and every workspace route answers 404. Requests on regional hostnames such as `eu.openrouter.ai` are refused. [API key](/docs/api-reference/authentication) required.'
       operationId: 'listInternConnections'
       parameters:
         - description: 'UUID of an intern in the workspace selected by the API key.'
@@ -49576,6 +49925,55 @@ paths:
                 data:
                   - key: 'github'
                   - key: 'linear'
+                routing:
+                  agent_id: 'intern_123'
+                  custom_origins: []
+                  github:
+                    apps:
+                      - app_id: '71000003'
+                        app_slug: 'openrouter-interns'
+                        installations:
+                          - account: 'OpenRouterTeam'
+                            account_type: 'organization'
+                            coverage:
+                              checked_at: '2026-10-27T19:30:00.000Z'
+                              repository_count: 42
+                              selection: 'all'
+                            credential_id: 'cred_1'
+                            holds_token: true
+                            is_enabled: true
+                            is_off_for_intern: false
+                        member_links:
+                          - holds_token: true
+                            login: 'gfadlallah'
+                            member_user_id: 'user_1'
+                        scope: 'workspace'
+                    tokens: []
+                  google:
+                    accounts: []
+                  host_rules:
+                    - holds_secret: false
+                      host: 'api.openai.com'
+                      secret_name: 'openai_api_key'
+                  mcp_origins:
+                    - account_key: null
+                      holds_secret: true
+                      host: 'mcp.linear.app'
+                      injects: 'bearer'
+                      is_personal: false
+                      routes:
+                        - host: 'mcp.linear.app'
+                          path_prefix: null
+                  read_at: '2026-10-27T20:00:00.000Z'
+                  secrets:
+                    - created_at: '2026-09-15T10:00:00.000Z'
+                      hosts:
+                        - 'api.linear.app'
+                      name: 'linear_api_key'
+                      scope: 'workspace'
+                  slack:
+                    member_links: []
+                routing_text: "## Connections\n\n..."
               schema:
                 properties:
                   data:
@@ -49587,8 +49985,17 @@ paths:
                         - 'key'
                       type: 'object'
                     type: 'array'
+                  routing:
+                    $ref: '#/components/schemas/VaultRoutingTable'
+                  routing_text:
+                    description: 'The routing table as the plain lines the intern reads in its instructions'' Connections section, or a notice that it could not be read; null for a caller other than the intern.'
+                    type:
+                      - 'string'
+                      - 'null'
                 required:
                   - 'data'
+                  - 'routing'
+                  - 'routing_text'
                 type: 'object'
           description: 'The connections the intern can use.'
         '400':
