@@ -246,6 +246,7 @@ export * from "./codexlocalshelltool.js";
 export * from "./compactionitem.js";
 export * from "./compoundfilter.js";
 export * from "./computeruseservertool.js";
+export * from "./configurationupdate.js";
 export * from "./configurationupdateitem.js";
 export * from "./configurationupdatereasoning.js";
 export * from "./conflictresponseerrordata.js";
