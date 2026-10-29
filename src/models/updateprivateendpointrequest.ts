@@ -7,6 +7,20 @@ import * as z from "zod/v4";
 import { remap as remap$ } from "../lib/primitives.js";
 import * as openEnums from "../types/enums.js";
 import { OpenEnum } from "../types/enums.js";
+import {
+  PrivateEndpointDeclaredParameter,
+  PrivateEndpointDeclaredParameter$outboundSchema,
+} from "./privateendpointdeclaredparameter.js";
+import {
+  PrivateEndpointPricing,
+  PrivateEndpointPricing$Outbound,
+  PrivateEndpointPricing$outboundSchema,
+} from "./privateendpointpricing.js";
+import {
+  UpdatePrivateEndpointSettingsRequest,
+  UpdatePrivateEndpointSettingsRequest$Outbound,
+  UpdatePrivateEndpointSettingsRequest$outboundSchema,
+} from "./updateprivateendpointsettingsrequest.js";
 
 /**
  * Attest where this deployment processes data.
@@ -23,11 +37,18 @@ export type UpdatePrivateEndpointRequestDeclaredRegion = OpenEnum<
   typeof UpdatePrivateEndpointRequestDeclaredRegion
 >;
 
+/**
+ * Only the fields present change. `base_url`, `upstream_model_id`, `declared_zdr` and `declared_region` are accepted on a draft only; `pricing` and `declared_parameters` replace their value; `settings` is itself a partial update where `null` clears a limit or restores the provider default.
+ */
 export type UpdatePrivateEndpointRequest = {
   /**
    * HTTPS base URL of your deployment. Required unless the provider derives its URL from the BYOK credential (Azure, Amazon Bedrock, Google Vertex).
    */
   baseUrl?: string | undefined;
+  /**
+   * Parameters the upstream supports beyond the tested ones. Replaces the earlier declaration; tested parameters stay. Order and repeated names are ignored, but the list holds at most as many entries as there are declarable parameters, repeats included. `tool_choice` requires `tools` to be tested or declared.
+   */
+  declaredParameters?: Array<PrivateEndpointDeclaredParameter> | undefined;
   /**
    * Attest where this deployment processes data.
    */
@@ -39,10 +60,12 @@ export type UpdatePrivateEndpointRequest = {
    * Attest that this deployment retains no prompt or completion data.
    */
   declaredZdr?: boolean | null | undefined;
+  pricing?: PrivateEndpointPricing | undefined;
+  settings?: UpdatePrivateEndpointSettingsRequest | undefined;
   /**
    * Model or deployment identifier sent to the upstream provider.
    */
-  upstreamModelId: string;
+  upstreamModelId?: string | undefined;
 };
 
 /** @internal */
@@ -53,9 +76,12 @@ export const UpdatePrivateEndpointRequestDeclaredRegion$outboundSchema:
 /** @internal */
 export type UpdatePrivateEndpointRequest$Outbound = {
   base_url?: string | undefined;
+  declared_parameters?: Array<string> | undefined;
   declared_region?: string | null | undefined;
   declared_zdr?: boolean | null | undefined;
-  upstream_model_id: string;
+  pricing?: PrivateEndpointPricing$Outbound | undefined;
+  settings?: UpdatePrivateEndpointSettingsRequest$Outbound | undefined;
+  upstream_model_id?: string | undefined;
 };
 
 /** @internal */
@@ -64,14 +90,19 @@ export const UpdatePrivateEndpointRequest$outboundSchema: z.ZodType<
   UpdatePrivateEndpointRequest
 > = z.object({
   baseUrl: z.string().optional(),
+  declaredParameters: z.array(PrivateEndpointDeclaredParameter$outboundSchema)
+    .optional(),
   declaredRegion: z.nullable(
     UpdatePrivateEndpointRequestDeclaredRegion$outboundSchema,
   ).optional(),
   declaredZdr: z.nullable(z.boolean()).optional(),
-  upstreamModelId: z.string(),
+  pricing: PrivateEndpointPricing$outboundSchema.optional(),
+  settings: UpdatePrivateEndpointSettingsRequest$outboundSchema.optional(),
+  upstreamModelId: z.string().optional(),
 }).transform((v) => {
   return remap$(v, {
     baseUrl: "base_url",
+    declaredParameters: "declared_parameters",
     declaredRegion: "declared_region",
     declaredZdr: "declared_zdr",
     upstreamModelId: "upstream_model_id",
