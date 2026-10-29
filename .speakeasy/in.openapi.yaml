@@ -8766,6 +8766,70 @@ components:
       required:
         - 'type'
       type: 'object'
+    ClassifierFiltersFilter:
+      anyOf:
+        - $ref: '#/components/schemas/ClassifierScalarFilter'
+        - $ref: '#/components/schemas/ClassifierSetFilter'
+    ClassifierScalarFilter:
+      properties:
+        field:
+          description: 'Classifier dimension name to filter on (snake_case identifier, e.g. "department", "work_type").'
+          example: 'department'
+          pattern: '^[a-zA-Z_][a-zA-Z0-9_]{0,63}$'
+          type: 'string'
+        operator:
+          $ref: '#/components/schemas/ClassifierScalarFilterOperator'
+        value:
+          anyOf:
+            - type: 'string'
+            - format: 'double'
+              type: 'number'
+          description: 'Scalar (string or number) filter value.'
+          example: 'Engineering'
+      required:
+        - 'field'
+        - 'operator'
+        - 'value'
+      type: 'object'
+    ClassifierScalarFilterOperator:
+      description: 'Equality operator taking a scalar filter value. Ordered comparisons are not available because classification values are strings.'
+      enum:
+        - 'eq'
+        - 'neq'
+      example: 'eq'
+      type: 'string'
+    ClassifierSetFilter:
+      properties:
+        field:
+          description: 'Classifier dimension name to filter on (snake_case identifier, e.g. "department", "work_type").'
+          example: 'department'
+          pattern: '^[a-zA-Z_][a-zA-Z0-9_]{0,63}$'
+          type: 'string'
+        operator:
+          $ref: '#/components/schemas/ClassifierSetFilterOperator'
+        value:
+          description: 'Array of scalar filter values.'
+          example:
+            - 'Engineering'
+            - 'Support'
+          items:
+            anyOf:
+              - type: 'string'
+              - format: 'double'
+                type: 'number'
+          type: 'array'
+      required:
+        - 'field'
+        - 'operator'
+        - 'value'
+      type: 'object'
+    ClassifierSetFilterOperator:
+      description: 'Set-membership operator taking an array filter value.'
+      enum:
+        - 'in'
+        - 'not_in'
+      example: 'in'
+      type: 'string'
     ClientClosedRequestResponse:
       description: 'Client Closed Request - The caller cancelled the request'
       example:
@@ -9876,7 +9940,7 @@ components:
           example: 'employee_123'
           maxLength: 512
           minLength: 1
-          pattern: '^[^\u0000]+$'
+          pattern: '^(?!\s)(?![\s\S]*\s$)[^\u0000]+$'
           type: 'string'
       required:
         - 'user'
@@ -11612,7 +11676,7 @@ components:
           example: 'employee_123'
           maxLength: 512
           minLength: 1
-          pattern: '^[^\u0000]+$'
+          pattern: '^(?!\s)(?![\s\S]*\s$)[^\u0000]+$'
           type: 'string'
       required:
         - 'user'
@@ -11889,6 +11953,10 @@ components:
       example: {}
       properties: {}
       type: 'object'
+    Filter:
+      anyOf:
+        - $ref: '#/components/schemas/ScalarFilter'
+        - $ref: '#/components/schemas/SetFilter'
     FinishReason:
       enum:
         - 'stop'
@@ -14148,7 +14216,7 @@ components:
           example: 1
           type: 'integer'
         output_compression:
-          description: 'Compression level (0-100) for webp/jpeg output. Ignored for png and by providers without a compression knob.'
+          description: 'Compression level (0-100) for jpeg/webp output. Ignored by providers without a compression knob; providers that honor it may reject it with other output formats (e.g. OpenAI requires output_format "jpeg" or "webp").'
           example: 100
           type: 'integer'
         output_format:
@@ -14198,7 +14266,7 @@ components:
           maxLength: 256
           type: 'string'
         size:
-          description: 'Optional. A convenience shorthand for output dimensions — pass a tier ("2K", "4K") or explicit pixels ("2048x2048") and we normalize it to the right dimensions for the chosen provider. A tier size is equivalent to setting `resolution` and combines with `aspect_ratio`. An explicit pixel size is authoritative: a mismatched `resolution` or `aspect_ratio` alongside it is rejected with a 400.'
+          description: 'Optional. A convenience shorthand for output dimensions — pass a tier ("2K", "4K") or explicit pixels ("2048x2048"). A tier size is equivalent to setting `resolution` and combines with `aspect_ratio`. Explicit pixel sizes are provider-dependent: providers that accept them treat the value as authoritative and reject a mismatched `resolution` or `aspect_ratio` alongside it with a 400. xAI and Sourceful V2/V2.5 reject explicit pixel sizes (use `resolution` and `aspect_ratio` there); Sourceful V2.6 supports them within its dimension limits and does not allow combining them with `resolution` or `aspect_ratio`.'
           example: '2K'
           type: 'string'
         stream:
@@ -22702,6 +22770,31 @@ components:
       required:
         - 'type'
       type: 'object'
+    Operator:
+      properties:
+        name:
+          description: 'Operator identifier used in filter definitions'
+          enum:
+            - 'eq'
+            - 'neq'
+            - 'in'
+            - 'not_in'
+            - 'gt'
+            - 'gte'
+            - 'lt'
+            - 'lte'
+          example: 'eq'
+          type: 'string'
+        value_type:
+          description: 'Whether the operator expects a single value or an array'
+          enum:
+            - 'scalar'
+            - 'array'
+          type: 'string'
+      required:
+        - 'name'
+        - 'value_type'
+      type: 'object'
     ORAnthropicBashToolResult:
       description: 'Output of an `openrouter:bash` call executed in the OpenRouter sandbox (`engine: ''openrouter''`)'
       example:
@@ -28734,6 +28827,36 @@ components:
         - 'fusion'
       example: 'direct'
       type: 'string'
+    ScalarFilter:
+      properties:
+        field:
+          description: 'Dimension to filter on. Use the /meta endpoint for available dimensions.'
+          example: 'model'
+          type: 'string'
+        operator:
+          $ref: '#/components/schemas/ScalarFilterOperator'
+        value:
+          anyOf:
+            - type: 'string'
+            - format: 'double'
+              type: 'number'
+          description: 'Several dimensions are enriched in responses (returned as human-readable labels), but filters must use the underlying ID: `api_key_id` — numeric ID (from generation metadata) or key hash (64-char hex from GET /api/v1/keys, resolved server-side); `user` — Clerk user ID (e.g. "user_abc123"), not the display name; `workspace` — workspace UUID, not the workspace name (filtering or grouping by the account default workspace also covers activity recorded before workspace resolution existed, which is attributed to that default workspace); `app` — numeric app ID, not the app title; `model` — permaslug (e.g. "openai/gpt-4o"), not the display name. Other dimensions (provider, origin, country, etc.) are not enriched and accept the value as returned.'
+      required:
+        - 'field'
+        - 'operator'
+        - 'value'
+      type: 'object'
+    ScalarFilterOperator:
+      description: 'Comparison operator taking a scalar filter value.'
+      enum:
+        - 'eq'
+        - 'neq'
+        - 'gt'
+        - 'gte'
+        - 'lt'
+        - 'lte'
+      example: 'eq'
+      type: 'string'
     ScimGroup:
       example:
         created_at: '2025-08-24T10:30:00.000Z'
@@ -29345,6 +29468,37 @@ components:
         - 'data'
         - 'meta'
       type: 'object'
+    SetFilter:
+      properties:
+        field:
+          description: 'Dimension to filter on. Use the /meta endpoint for available dimensions.'
+          example: 'model'
+          type: 'string'
+        include_unset:
+          description: 'Include rows where the dimension has no value. Applies only to dimensions that have an unset bucket.'
+          type: 'boolean'
+        operator:
+          $ref: '#/components/schemas/SetFilterOperator'
+        value:
+          items:
+            anyOf:
+              - type: 'string'
+              - format: 'double'
+                type: 'number'
+            description: 'Several dimensions are enriched in responses (returned as human-readable labels), but filters must use the underlying ID: `api_key_id` — numeric ID (from generation metadata) or key hash (64-char hex from GET /api/v1/keys, resolved server-side); `user` — Clerk user ID (e.g. "user_abc123"), not the display name; `workspace` — workspace UUID, not the workspace name (filtering or grouping by the account default workspace also covers activity recorded before workspace resolution existed, which is attributed to that default workspace); `app` — numeric app ID, not the app title; `model` — permaslug (e.g. "openai/gpt-4o"), not the display name. Other dimensions (provider, origin, country, etc.) are not enriched and accept the value as returned.'
+          type: 'array'
+      required:
+        - 'field'
+        - 'operator'
+        - 'value'
+      type: 'object'
+    SetFilterOperator:
+      description: 'Set-membership operator taking an array filter value.'
+      enum:
+        - 'in'
+        - 'not_in'
+      example: 'in'
+      type: 'string'
     ShellCallItem:
       description: 'A shell command execution call (newer variant)'
       example:
@@ -33569,8 +33723,8 @@ components:
           minItems: 1
           type: 'array'
         value:
-          description: 'Secret value, 1 to 65536 characters. It is encrypted at rest and never returned.'
-          maxLength: 65536
+          description: 'Secret value, 1 to 65536 characters; a header-set credential (a JSON object of header name to value) may run to 985721 characters. It is encrypted at rest and never returned.'
+          maxLength: 985721
           minLength: 1
           type: 'string'
       required:
@@ -35009,30 +35163,7 @@ paths:
                         type: 'array'
                       operators:
                         items:
-                          properties:
-                            name:
-                              description: 'Operator identifier used in filter definitions'
-                              enum:
-                                - 'eq'
-                                - 'neq'
-                                - 'in'
-                                - 'not_in'
-                                - 'gt'
-                                - 'gte'
-                                - 'lt'
-                                - 'lte'
-                              example: 'eq'
-                              type: 'string'
-                            value_type:
-                              description: 'Whether the operator expects a single value or an array'
-                              enum:
-                                - 'scalar'
-                                - 'array'
-                              type: 'string'
-                          required:
-                            - 'name'
-                            - 'value_type'
-                          type: 'object'
+                          $ref: '#/components/schemas/Operator'
                         type: 'array'
                     required:
                       - 'metrics'
@@ -35108,6 +35239,7 @@ paths:
                       items:
                         description: 'Classifier dimension name (snake_case identifier). Each name becomes its own column key in the response; providing two names cross-groups results by both dimensions. With no names, the response uses `clf_dimension_name`/`clf_dimension_value` columns (one row per dimension/value pair).'
                         example: 'department'
+                        pattern: '^[a-zA-Z_][a-zA-Z0-9_]{0,63}$'
                         type: 'string'
                       maxItems: 2
                       type: 'array'
@@ -35127,33 +35259,7 @@ paths:
                       type: 'string'
                     filters:
                       items:
-                        properties:
-                          field:
-                            description: 'Classifier dimension name to filter on (snake_case identifier, e.g. "department", "work_type").'
-                            example: 'department'
-                            type: 'string'
-                          operator:
-                            description: 'Filter operator. Only equality/set operators are supported (eq, neq, in, not_in) — ordered comparisons are not available because classification values are strings.'
-                            example: 'eq'
-                            type: 'string'
-                          value:
-                            anyOf:
-                              - type: 'string'
-                              - format: 'double'
-                                type: 'number'
-                              - items:
-                                  anyOf:
-                                    - type: 'string'
-                                    - format: 'double'
-                                      type: 'number'
-                                type: 'array'
-                            description: 'Filter value. Use a scalar (string or number) for eq/neq, or an array for in/not_in.'
-                            example: 'Engineering'
-                        required:
-                          - 'field'
-                          - 'operator'
-                          - 'value'
-                        type: 'object'
+                        $ref: '#/components/schemas/ClassifierFiltersFilter'
                       maxItems: 10
                       minItems: 1
                       type: 'array'
@@ -35170,35 +35276,7 @@ paths:
                   type: 'array'
                 filters:
                   items:
-                    properties:
-                      field:
-                        description: 'Dimension to filter on. Use the /meta endpoint for available dimensions.'
-                        example: 'model'
-                        type: 'string'
-                      include_unset:
-                        description: 'Include rows where the dimension has no value. Applies only to the `in` and `not_in` operators and dimensions that have an unset bucket.'
-                        type: 'boolean'
-                      operator:
-                        description: 'Filter operator'
-                        example: 'eq'
-                        type: 'string'
-                      value:
-                        anyOf:
-                          - type: 'string'
-                          - format: 'double'
-                            type: 'number'
-                          - items:
-                              anyOf:
-                                - type: 'string'
-                                - format: 'double'
-                                  type: 'number'
-                            type: 'array'
-                        description: 'Filter value (scalar or array depending on operator). Several dimensions are enriched in responses (returned as human-readable labels), but filters must use the underlying ID: `api_key_id` — numeric ID (from generation metadata) or key hash (64-char hex from GET /api/v1/keys, resolved server-side); `user` — Clerk user ID (e.g. "user_abc123"), not the display name; `workspace` — workspace UUID, not the workspace name (filtering or grouping by the account default workspace also covers activity recorded before workspace resolution existed, which is attributed to that default workspace); `app` — numeric app ID, not the app title; `model` — permaslug (e.g. "openai/gpt-4o"), not the display name. Other dimensions (provider, origin, country, etc.) are not enriched and accept the value as returned.'
-                    required:
-                      - 'field'
-                      - 'operator'
-                      - 'value'
-                    type: 'object'
+                    $ref: '#/components/schemas/Filter'
                   maxItems: 20
                   type: 'array'
                 granularity:
@@ -35744,7 +35822,9 @@ paths:
                 keyterms[]:
                   description: 'Domain terms, names, or phrases to bias recognition toward; repeat the part once per term (keyterms=... is also accepted). Only supported by some providers; 400 when the selected model cannot use keyterms.'
                   items:
+                    maxLength: 100
                     type: 'string'
+                  maxItems: 1000
                   type: 'array'
                 language:
                   description: 'The language of the input audio (ISO-639-1).'
@@ -35768,9 +35848,12 @@ paths:
                 source_url:
                   description: 'Publicly reachable http(s) URL of the audio file, downloaded by the provider directly (no size limit on our side). The format is derived from the URL path extension. Only supported by some providers; exactly one of file or source_url is required.'
                   format: 'uri'
+                  maxLength: 8000
                   type: 'string'
                 temperature:
                   description: 'The sampling temperature.'
+                  maximum: 1
+                  minimum: 0
                   type: 'number'
                 timestamp_granularities[]:
                   description: 'Timestamp detail levels to include when response_format is "verbose_json". "word" additionally returns word-level timestamps in the words array.'
@@ -39496,7 +39579,7 @@ paths:
             example: 'employee_123'
             maxLength: 512
             minLength: 1
-            pattern: '^[^\u0000]+$'
+            pattern: '^(?!\s)(?![\s\S]*\s$)[^\u0000]+$'
             type: 'string'
         - description: 'Include deactivated registrations.'
           in: 'query'
@@ -39680,7 +39763,7 @@ paths:
             example: 'employee_123'
             maxLength: 512
             minLength: 1
-            pattern: '^[^\u0000]+$'
+            pattern: '^(?!\s)(?![\s\S]*\s$)[^\u0000]+$'
             type: 'string'
       responses:
         '204':
@@ -39743,7 +39826,7 @@ paths:
             example: 'employee_123'
             maxLength: 512
             minLength: 1
-            pattern: '^[^\u0000]+$'
+            pattern: '^(?!\s)(?![\s\S]*\s$)[^\u0000]+$'
             type: 'string'
       responses:
         '200':
@@ -39826,7 +39909,7 @@ paths:
             example: 'employee_123'
             maxLength: 512
             minLength: 1
-            pattern: '^[^\u0000]+$'
+            pattern: '^(?!\s)(?![\s\S]*\s$)[^\u0000]+$'
             type: 'string'
       requestBody:
         content:
@@ -51768,14 +51851,13 @@ paths:
             example: '7c9e6679-7425-40de-944b-e07fc1f90ae7'
             format: 'uuid'
             type: 'string'
-        - description: 'Secret name. Lowercase letters, digits and single underscores, starting with a letter and not ending with an underscore, 1 to 255 characters.'
+        - description: 'Existing secret name. Accepts legacy names stored before the 255-character write bound; new writes still require the documented name format.'
           in: 'path'
           name: 'name'
           required: true
           schema:
-            description: 'Secret name. Lowercase letters, digits and single underscores, starting with a letter and not ending with an underscore, 1 to 255 characters.'
+            description: 'Existing secret name. Accepts legacy names stored before the 255-character write bound; new writes still require the documented name format.'
             example: 'github_token'
-            maxLength: 255
             minLength: 1
             pattern: '^(?!.*__)[a-z]([a-z0-9_]*[a-z0-9])?$'
             type: 'string'
@@ -52104,7 +52186,7 @@ paths:
                       message: 'Request body too large'
               schema:
                 $ref: '#/components/schemas/PayloadTooLargeResponse'
-          description: 'Payload Too Large - The JSON body exceeds 425000 bytes.'
+          description: 'Payload Too Large - The JSON body exceeds 1309643 bytes.'
         '429':
           content:
             application/json:
@@ -52326,7 +52408,7 @@ paths:
                       message: 'Request body too large'
               schema:
                 $ref: '#/components/schemas/PayloadTooLargeResponse'
-          description: 'Payload Too Large - The JSON body exceeds 425000 bytes.'
+          description: 'Payload Too Large - The JSON body exceeds 1309643 bytes.'
         '429':
           content:
             application/json:
@@ -52619,14 +52701,13 @@ paths:
       description: 'Deletes a secret from the workspace of the authenticated API key. Returns 204 with no body on success and 404 when the secret does not exist in the selected scope. Writes return 503 while vault writes are disabled for the caller. The scope is selected by the API key: workspace routes act on the key''s active workspace and intern routes act on one intern inside that workspace. There is no default workspace and no fallback to another scope. Every vault route, including reads, requires access to the Intern API programme and returns 404 outside it. An intern''s own API key is confined to that intern: it can always read the intern''s secrets and effective secrets, writes to them follow the rules above, and every other intern and every workspace route answers 404. Requests on regional hostnames such as `eu.openrouter.ai` are refused. [API key](/docs/api-reference/authentication) required.'
       operationId: 'deleteVaultSecret'
       parameters:
-        - description: 'Secret name. Lowercase letters, digits and single underscores, starting with a letter and not ending with an underscore, 1 to 255 characters.'
+        - description: 'Existing secret name. Accepts legacy names stored before the 255-character write bound; new writes still require the documented name format.'
           in: 'path'
           name: 'name'
           required: true
           schema:
-            description: 'Secret name. Lowercase letters, digits and single underscores, starting with a letter and not ending with an underscore, 1 to 255 characters.'
+            description: 'Existing secret name. Accepts legacy names stored before the 255-character write bound; new writes still require the documented name format.'
             example: 'github_token'
-            maxLength: 255
             minLength: 1
             pattern: '^(?!.*__)[a-z]([a-z0-9_]*[a-z0-9])?$'
             type: 'string'
@@ -52946,7 +53027,7 @@ paths:
                       message: 'Request body too large'
               schema:
                 $ref: '#/components/schemas/PayloadTooLargeResponse'
-          description: 'Payload Too Large - The JSON body exceeds 425000 bytes.'
+          description: 'Payload Too Large - The JSON body exceeds 1309643 bytes.'
         '429':
           content:
             application/json:
