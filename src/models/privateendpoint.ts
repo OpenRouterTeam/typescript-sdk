@@ -17,6 +17,10 @@ import {
   PrivateEndpointPricing$inboundSchema,
 } from "./privateendpointpricing.js";
 import {
+  PrivateEndpointSettings,
+  PrivateEndpointSettings$inboundSchema,
+} from "./privateendpointsettings.js";
+import {
   PrivateEndpointStatus,
   PrivateEndpointStatus$inboundSchema,
 } from "./privateendpointstatus.js";
@@ -71,6 +75,10 @@ export type PrivateEndpoint = {
    */
   providerSlug: string | null;
   /**
+   * Capabilities and limits routing uses for this endpoint. A new endpoint copies them from the public endpoint for the same model and provider, or from the model, and the owner can change them. Rate limits are not part of this object: a private endpoint is billed to its own upstream key, so request limits stay with the provider.
+   */
+  settings: PrivateEndpointSettings;
+  /**
    * Lifecycle state. `draft` endpoints are not routable until validated and activated; `disabled` endpoints are activated but temporarily not routable.
    */
   status: PrivateEndpointStatus;
@@ -101,6 +109,7 @@ export const PrivateEndpoint$inboundSchema: z.ZodType<
   pricing: PrivateEndpointPricing$inboundSchema,
   provider_name: z.string(),
   provider_slug: z.nullable(z.string()),
+  settings: PrivateEndpointSettings$inboundSchema,
   status: PrivateEndpointStatus$inboundSchema,
   tested_parameters: z.array(z.string()),
   upstream_model_id: z.string(),

@@ -29,10 +29,12 @@ import { APICall, APIPromise } from "../types/async.js";
 import { Result } from "../types/fp.js";
 
 /**
- * Set private endpoint pricing
+ * Set private endpoint pricing (deprecated)
  *
  * @remarks
- * Set the negotiated per-token rates reported for requests routed to this endpoint. Applies to drafts and active endpoints; new rates take effect for subsequent requests. The body replaces the whole pricing object: omitting `cache_read` or `cache_write` reverts that rate to the provider pricing strategy's default, even if it was set before. [Management key](/docs/guides/overview/auth/management-api-keys) required.
+ * Deprecated: send `pricing` to `PATCH /private-endpoints/{id}` instead; this route behaves exactly like that call and will be removed. The body replaces the whole pricing object: omitting `cache_read` or `cache_write` reverts that rate to the provider pricing strategy default. [Management key](/docs/guides/overview/auth/management-api-keys) required.
+ *
+ * @deprecated method: This will be removed in a future release, please migrate away from it as soon as possible.
  */
 export function privateEndpointsUpdatePricing(
   client: OpenRouterCore,
