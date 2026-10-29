@@ -30,6 +30,7 @@ import { Observability } from "./observability.js";
 import { Organization } from "./organization.js";
 import { Presets } from "./presets.js";
 import { PrivateEndpoints } from "./privateendpoints.js";
+import { PrivateProviders } from "./privateproviders.js";
 import { Providers } from "./providers.js";
 import { Rerank } from "./rerank.js";
 import { Responses } from "./responses.js";
@@ -188,6 +189,11 @@ export class OpenRouter extends ClientSDK {
   private _privateEndpoints?: PrivateEndpoints;
   get privateEndpoints(): PrivateEndpoints {
     return (this._privateEndpoints ??= new PrivateEndpoints(this._options));
+  }
+
+  private _privateProviders?: PrivateProviders;
+  get privateProviders(): PrivateProviders {
+    return (this._privateProviders ??= new PrivateProviders(this._options));
   }
 
   private _providers?: Providers;

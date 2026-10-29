@@ -36,6 +36,7 @@
       "sdks/organization/README",
       "sdks/presets/README",
       "sdks/privateendpoints/README",
+      "sdks/privateproviders/README",
       "sdks/providers/README",
       "sdks/rerank/README",
       "sdks/responses/README",

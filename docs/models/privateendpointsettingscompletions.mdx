@@ -1,0 +1,21 @@
+---
+title: "PrivateEndpointSettingsCompletions"
+---
+
+## Example Usage
+
+```typescript
+import { PrivateEndpointSettingsCompletions } from "@openrouter/sdk/models";
+
+let value: PrivateEndpointSettingsCompletions = {
+  chat: true,
+  text: false,
+};
+```
+
+## Fields
+
+| Field                                                         | Type                                                          | Required                                                      | Description                                                   |
+| ------------------------------------------------------------- | ------------------------------------------------------------- | ------------------------------------------------------------- | ------------------------------------------------------------- |
+| `chat`                                                        | *boolean*                                                     | ✔️                                            | Serves `/chat/completions`; `null` uses the provider default. |
+| `text`                                                        | *boolean*                                                     | ✔️                                            | Serves `/completions`; `null` uses the provider default.      |

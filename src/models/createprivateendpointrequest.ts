@@ -21,6 +21,11 @@ import {
   PrivateEndpointPricing$Outbound,
   PrivateEndpointPricing$outboundSchema,
 } from "./privateendpointpricing.js";
+import {
+  UpdatePrivateEndpointSettingsRequest,
+  UpdatePrivateEndpointSettingsRequest$Outbound,
+  UpdatePrivateEndpointSettingsRequest$outboundSchema,
+} from "./updateprivateendpointsettingsrequest.js";
 
 /**
  * Attest where this deployment processes data.
@@ -78,6 +83,10 @@ export type CreatePrivateEndpointRequest = {
    */
   providerSlug: string;
   /**
+   * Capabilities and limits to set over the ones copied from the public endpoint for this model and provider (or from the model). Omitted fields keep the copied values.
+   */
+  settings?: UpdatePrivateEndpointSettingsRequest | undefined;
+  /**
    * Model or deployment identifier sent to the upstream provider.
    */
   upstreamModelId: string;
@@ -99,6 +108,7 @@ export type CreatePrivateEndpointRequest$Outbound = {
   model_permaslug: string;
   pricing?: PrivateEndpointPricing$Outbound | undefined;
   provider_slug: string;
+  settings?: UpdatePrivateEndpointSettingsRequest$Outbound | undefined;
   upstream_model_id: string;
 };
 
@@ -119,6 +129,7 @@ export const CreatePrivateEndpointRequest$outboundSchema: z.ZodType<
   modelPermaslug: z.string(),
   pricing: PrivateEndpointPricing$outboundSchema.optional(),
   providerSlug: z.string(),
+  settings: UpdatePrivateEndpointSettingsRequest$outboundSchema.optional(),
   upstreamModelId: z.string(),
 }).transform((v) => {
   return remap$(v, {

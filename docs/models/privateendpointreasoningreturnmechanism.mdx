@@ -1,0 +1,21 @@
+---
+title: "PrivateEndpointReasoningReturnMechanism"
+---
+
+Where the upstream puts reasoning tokens in its response: `reasoning` and `reasoning-content` are response fields, `content-string` is inline in the message, `none` returns no reasoning. `null` uses the provider default.
+
+## Example Usage
+
+```typescript
+import { PrivateEndpointReasoningReturnMechanism } from "@openrouter/sdk/models";
+
+let value: PrivateEndpointReasoningReturnMechanism = "reasoning";
+
+// Open enum: unrecognized values are captured as Unrecognized<string>
+```
+
+## Values
+
+```typescript
+"content-string" | "reasoning-content" | "reasoning" | "none" | Unrecognized<string>
+```

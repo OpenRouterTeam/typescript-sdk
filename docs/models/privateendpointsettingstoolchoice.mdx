@@ -1,0 +1,25 @@
+---
+title: "PrivateEndpointSettingsToolChoice"
+---
+
+## Example Usage
+
+```typescript
+import { PrivateEndpointSettingsToolChoice } from "@openrouter/sdk/models";
+
+let value: PrivateEndpointSettingsToolChoice = {
+  auto: true,
+  function: true,
+  none: false,
+  required: true,
+};
+```
+
+## Fields
+
+| Field                                      | Type                                       | Required                                   | Description                                |
+| ------------------------------------------ | ------------------------------------------ | ------------------------------------------ | ------------------------------------------ |
+| `auto`                                     | *boolean*                                  | ✔️                         | Accepts `tool_choice: "auto"`.             |
+| `function`                                 | *boolean*                                  | ✔️                         | Accepts a named function in `tool_choice`. |
+| `none`                                     | *boolean*                                  | ✔️                         | Accepts `tool_choice: "none"`.             |
+| `required`                                 | *boolean*                                  | ✔️                         | Accepts `tool_choice: "required"`.         |
