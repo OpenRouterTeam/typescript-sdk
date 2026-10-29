@@ -1,19 +1,19 @@
 lockVersion: ""
 id: ""
 management:
-  docChecksum: 6abd6797e8a96f08f4af6e778051f121
+  docChecksum: 56eca4b751933993ddc5af0bb58ac751
   docVersion: 1.0.0
   speakeasyVersion: 1.803.2
   generationVersion: 2.950.13
-  releaseVersion: 1.5.22
-  configChecksum: 926c61f585baf1f5513a490afb631334
+  releaseVersion: 1.5.23
+  configChecksum: 8932260a6c6813aacb0459ebec1b456f
   repoURL: https://github.com/OpenRouterTeam/typescript-sdk.git
   installationURL: https://github.com/OpenRouterTeam/typescript-sdk
   published: true
 persistentEdits:
-  generation_id: 25fc7e68-ec40-43ae-a5cd-ae77b357751c
-  pristine_commit_hash: 0c58f88dc69f5f4acf2ea0bf332780d395f05197
-  pristine_tree_hash: 1f6b2221081121c2206384c925da383ebc4d8389
+  generation_id: 8b04e20a-e8c9-4cf2-85b9-e80fc6bf5308
+  pristine_commit_hash: c8f0f95656b3b5c4e71de37be4e6edecfed43ae6
+  pristine_tree_hash: e2f87818ed3971d1cca26ddea15775d8a6384ab8
 features:
   typescript:
     acceptHeaders: 2.81.2
@@ -6465,8 +6465,8 @@ trackedFiles:
     pristine_git_object: 0260f3a34a0f977f5f9b1bfc684e8d4b11e8156e
   docs/models/jevrouterplugin.mdx:
     id: 60587647c3a6
-    last_write_checksum: sha1:fa7332500422a2ac5e03b47167cad9f21cb1e4da
-    pristine_git_object: 6ded8176c6e7cf0d10c898a7c0a82ca040299d84
+    last_write_checksum: sha1:a237c30c23b04cbd3ab81a0831fcb2e2c0611d5a
+    pristine_git_object: ad43bbdadc39ee64efcd2fc17c7b7d0f059362fb
   docs/models/keep.md:
     id: 3b0eaa027eb1
     last_write_checksum: sha1:b2b81a9391c105953e2394f325b251dcf835f336
@@ -9177,8 +9177,8 @@ trackedFiles:
     pristine_git_object: f667ee034786809b3b9fbdfb6736499ac1963b8b
   docs/models/operations/external.mdx:
     id: d6f7056cb9b4
-    last_write_checksum: sha1:562de038c577177cdd2eb66b42eae525e35b05ec
-    pristine_git_object: 877c80d48e8b33cfa2f8da6b84e36d4eefb78ab7
+    last_write_checksum: sha1:ca9f9b6a76f77855d8bbcaa6e1a545133081ed98
+    pristine_git_object: 3eada74b5afac29360ac87b317047ff5d73d8f32
   docs/models/operations/filet.md:
     id: 405e5ed0c20c
     last_write_checksum: sha1:42136fa48702255a3f2acb5469a2fc830ed25661
@@ -15683,12 +15683,12 @@ trackedFiles:
     pristine_git_object: 410efafd6a7f50d91ccb87131fedbe0c3d47e15a
   jsr.json:
     id: 7f6ab7767282
-    last_write_checksum: sha1:a907386ee3f8d7c9ed817119852ae0f704eaa845
-    pristine_git_object: 961ba35c67e5695128bcd8b3967caaef35b66699
+    last_write_checksum: sha1:d9ce420af1bbf8f75b7fa25c12b3ad7eb371eaf2
+    pristine_git_object: 092cf85f304bf2345bfb8f045b9aea49635958bd
   package.json:
     id: 7030d0b2f71b
-    last_write_checksum: sha1:45d01e2dcb8f369142118b592feaec9879565491
-    pristine_git_object: 71259e09e48992b8305164a334f0de87f1ad3e18
+    last_write_checksum: sha1:7277a039b3d9fe09913f1e5f9e2b1bbc00c46d8d
+    pristine_git_object: e8bde550f5bd968374ccfab50ef2fe270f4f5315
   src/core.ts:
     id: f431fdbcd144
     last_write_checksum: sha1:5aa66b0b6a5964f3eea7f3098c2eb3c0ee9c0131
@@ -16291,8 +16291,8 @@ trackedFiles:
     pristine_git_object: a187e58707bdb726ca2aff74941efe7493422d4e
   src/lib/config.ts:
     id: 320761608fb3
-    last_write_checksum: sha1:293ed22530cc32ccf15ea13a4241deefeadcfed0
-    pristine_git_object: c536189f4c184cbfc2f6d59b96529ae04ea7df62
+    last_write_checksum: sha1:e1514d9ef9c010d1f2b1273b166ae831438cc866
+    pristine_git_object: 37c8b688fb07331d16ab68de25e0ac41f224fba1
   src/lib/dlv.ts:
     id: b1988214835a
     last_write_checksum: sha1:eaac763b22717206a6199104e0403ed17a4e2711
@@ -18177,8 +18177,8 @@ trackedFiles:
     pristine_git_object: 695d6fcfab08f3d071c073a46bf980637f6f791d
   src/models/jevrouterplugin.ts:
     id: 87ebd9753273
-    last_write_checksum: sha1:4c8963a2c9b29fb64df45a4142bb9932d53ee277
-    pristine_git_object: 684509a93d42afc1ec7631409ecc711bb1d0ccfc
+    last_write_checksum: sha1:acd29b8b67bc499fb0065f7a2b98e4ddaca07c35
+    pristine_git_object: a385a19e2ab619752b047c5e1270aebe4a776e44
   src/models/keyassignment.ts:
     id: 0daee4bf9653
     last_write_checksum: sha1:c288ceccf14f08e9b272dd7570c274f1ee802304
@@ -18693,8 +18693,8 @@ trackedFiles:
     pristine_git_object: 0a2ca2582247b2b60db1b464933ef5e599e430b8
   src/models/operations/createkeys.ts:
     id: e7a250c8b7bb
-    last_write_checksum: sha1:f7d49285254f383428ae9dcf661367aa1a7f6aec
-    pristine_git_object: 6c802c21fd86f2d935223b178f308b562b196d89
+    last_write_checksum: sha1:6cceb1d9cb93304a020d8e3e49534161b1e075c9
+    pristine_git_object: 1283382907e49c50665485565de5bb92decdcaee
   src/models/operations/createoauthtoken.ts:
     id: 12bca86790cc
     last_write_checksum: sha1:77633ac2d5775fd1985533de58090095d3459c05
@@ -25181,4 +25181,3 @@ examples:
         "502":
           application/json: {"error": {"code": 502, "message": "Provider returned error"}}
 examplesVersion: 1.0.2
-releaseNotes: "## Typescript SDK Changes:\n* `openrouter.alpha.decisions.create()`: \n  *  `request.decisionsRequest.provider` **Changed**\n* `openrouter.tts.createSpeech()`: \n  *  `request.speechRequest.provider.options.kt` **Added**\n* `openrouter.stt.createTranscription()`: \n  *  `request.sttRequest.provider.options.kt` **Added**\n* `openrouter.batch.createBatches()`: \n  *  `request.batchSubmitBody.provider.only[].union(ProviderName).enum(kt)` **Added**\n* `openrouter.byok.list()`: \n  *  `request.provider` **Changed**\n  *  `response.data[].provider.enum(kt)` **Added**\n* `openrouter.byok.create()`: \n  *  `request.createByokKeyRequest.provider.enum(kt)` **Added**\n  *  `response.data.provider.enum(kt)` **Added**\n* `openrouter.byok.get()`:  `response.data.provider.enum(kt)` **Added**\n* `openrouter.byok.update()`:  `response.data.provider.enum(kt)` **Added**\n* `openrouter.embeddings.generate()`: \n  *  `request.requestBody.provider` **Changed**\n* `openrouter.endpoints.listZdrEndpoints()`:  `response.data[].providerName.enum(kt)` **Added**\n* `openrouter.endpoints.list()`:  `response.data.endpoints[].providerName.enum(kt)` **Added**\n* `openrouter.generations.getGeneration()`:  `response.data.providerResponses[].providerName.enum(kt)` **Added**\n* `openrouter.presets.createPresetsChatCompletions()`: \n  *  `request.chatRequest.provider` **Changed**\n* `openrouter.presets.createPresetsMessages()`: \n  *  `request.messagesRequest.provider` **Changed**\n* `openrouter.presets.createPresetsResponses()`: \n  *  `request.responsesRequest.provider` **Changed**\n* `openrouter.rerank.rerank()`: \n  *  `request.requestBody.provider` **Changed**\n* `openrouter.systemOne.create()`: \n  *  `request.decisionsRequest.provider` **Changed**\n* `openrouter.videoGeneration.generate()`: \n  *  `request.videoGenerationRequest.provider.options.kt` **Added**\n"

@@ -21,7 +21,7 @@ export type JevRouterPlugin = {
   excludedModels?: Array<string> | undefined;
   id: "jev-router";
   /**
-   * Restrict the router to these models. Each entry is a model slug or a wildcard pattern (e.g. "anthropic/*"), matched against the current pool; models outside the pool are ignored. A `~author/family-latest` alias matches every revision of that family. Up to 1024 patterns, each at most 1024 characters, with 65536 total characters across all patterns. When omitted or empty, every model in the pool is a candidate; when no pool model matches, the list is ignored and the whole pool is used (`excluded_models` still apply). `allowed_models` is an alias; entries from both fields are combined.
+   * Restrict the router to these models. Each entry is a model slug or a wildcard pattern (e.g. "anthropic/*"), matched against the current pool; models outside the pool are ignored. A `~author/family-latest` alias matches every revision of that family. Up to 1024 patterns, each at most 1024 characters, with 65536 total characters across all patterns. When omitted or empty, every model in the pool is a candidate; when no pool model matches, the list is ignored and the whole pool is used (`excluded_models` still apply). When no entry matches any catalog model, for example a misspelled slug, the request fails with 404 instead. `allowed_models` is an alias; entries from both fields are combined.
    */
   models?: Array<string> | undefined;
 };
