@@ -10394,20 +10394,29 @@ components:
         base_url:
           description: 'HTTPS base URL of an OpenAI-compatible API, used by private endpoints under this provider that set no URL of their own. Without it, each endpoint must set its own. Private, internal, metadata and OpenRouter hosts are rejected.'
           example: 'https://inference.example.com/v1'
+          minLength: 1
           type: 'string'
         data_policy:
           $ref: '#/components/schemas/PrivateProviderDataPolicy'
         display_name:
           description: 'Defaults to `name`.'
           example: 'Acme'
+          maxLength: 80
+          minLength: 1
           type: 'string'
         name:
           description: 'Provider name, shown in your activity, logs and Broadcast output. 2-64 letters, numbers, spaces, dots, underscores or hyphens. Cannot be changed later. Neither the name nor its slug may match a public provider name or slug (case-insensitive); other customers may use the same name.'
           example: 'Acme'
+          maxLength: 64
+          minLength: 2
+          pattern: '^[A-Za-z0-9][A-Za-z0-9 ._-]*$'
           type: 'string'
         slug:
           description: '2-64 lowercase letters and numbers, separated by single hyphens. Cannot be changed later. Defaults to the name lowercased, with every run of other characters replaced by a hyphen (`Acme Inference` becomes `acme-inference`).'
           example: 'acme'
+          maxLength: 64
+          minLength: 2
+          pattern: '^[a-z0-9]+(?:-[a-z0-9]+)*$'
           type: 'string'
       required:
         - 'name'
@@ -26121,6 +26130,7 @@ components:
         base_url:
           description: 'HTTPS base URL of an OpenAI-compatible API, used by private endpoints under this provider that set no URL of their own. Without it, each endpoint must set its own. Private, internal, metadata and OpenRouter hosts are rejected.'
           example: 'https://inference.example.com/v1'
+          minLength: 1
           type:
             - 'string'
             - 'null'
@@ -26131,6 +26141,8 @@ components:
           properties:
             prompt_retention_days:
               description: 'Days prompts are retained. Must be `null` unless `retains_prompts` is true.'
+              maximum: 3650
+              minimum: 1
               type:
                 - 'integer'
                 - 'null'
@@ -26148,10 +26160,11 @@ components:
             - 'object'
             - 'null'
         display_name:
+          description: 'Human-readable provider name shown in the UI.'
           example: 'Acme'
           type: 'string'
         name:
-          description: 'Provider name, shown in your activity, logs and Broadcast output. 2-64 letters, numbers, spaces, dots, underscores or hyphens. Cannot be changed later. Neither the name nor its slug may match a public provider name or slug (case-insensitive); other customers may use the same name.'
+          description: 'Provider name, shown in your activity, logs and Broadcast output.'
           example: 'Acme'
           type: 'string'
         slug:
@@ -26175,6 +26188,8 @@ components:
       properties:
         prompt_retention_days:
           description: 'Days prompts are retained. Must be `null` unless `retains_prompts` is true.'
+          maximum: 3650
+          minimum: 1
           type:
             - 'integer'
             - 'null'
@@ -32681,11 +32696,14 @@ components:
         base_url:
           description: 'HTTPS base URL of an OpenAI-compatible API, used by private endpoints under this provider that set no URL of their own. Without it, each endpoint must set its own. Private, internal, metadata and OpenRouter hosts are rejected.'
           example: 'https://inference.example.com/v1'
+          minLength: 1
           type: 'string'
         data_policy:
           properties:
             prompt_retention_days:
               description: 'Days prompts are retained. Must be `null` unless `retains_prompts` is true.'
+              maximum: 3650
+              minimum: 1
               type:
                 - 'integer'
                 - 'null'
@@ -32698,6 +32716,8 @@ components:
           type: 'object'
         display_name:
           example: 'Acme'
+          maxLength: 80
+          minLength: 1
           type: 'string'
       type: 'object'
     UpdateScimGroupMappingRequest:
