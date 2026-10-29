@@ -10351,6 +10351,8 @@ components:
           example: 'azure'
           minLength: 1
           type: 'string'
+        settings:
+          $ref: '#/components/schemas/UpdatePrivateEndpointSettingsRequest'
         upstream_model_id:
           description: 'Model or deployment identifier sent to the upstream provider.'
           example: 'gpt-4o-prod'
@@ -10386,6 +10388,29 @@ components:
       required:
         - 'error'
         - 'data'
+      type: 'object'
+    CreatePrivateProviderRequest:
+      properties:
+        base_url:
+          description: 'HTTPS base URL of an OpenAI-compatible API, used by private endpoints under this provider that set no URL of their own. Without it, each endpoint must set its own. Private, internal, metadata and OpenRouter hosts are rejected.'
+          example: 'https://inference.example.com/v1'
+          type: 'string'
+        data_policy:
+          $ref: '#/components/schemas/PrivateProviderDataPolicy'
+        display_name:
+          description: 'Defaults to `name`.'
+          example: 'Acme'
+          type: 'string'
+        name:
+          description: 'Provider name, shown in your activity, logs and Broadcast output. 2-64 letters, numbers, spaces, dots, underscores or hyphens. Cannot be changed later. Neither the name nor its slug may match a public provider name or slug (case-insensitive); other customers may use the same name.'
+          example: 'Acme'
+          type: 'string'
+        slug:
+          description: '2-64 lowercase letters and numbers, separated by single hyphens. Cannot be changed later. Defaults to the name lowercased, with every run of other characters replaced by a hyphen (`Acme Inference` becomes `acme-inference`).'
+          example: 'acme'
+          type: 'string'
+      required:
+        - 'name'
       type: 'object'
     CreateScimGroupMappingRequest:
       properties:
@@ -25492,6 +25517,30 @@ components:
           prompt: '0.0000025'
         provider_name: 'Azure'
         provider_slug: 'azure'
+        settings:
+          completions:
+            chat: true
+            text: false
+          context_length: 128000
+          excluded_parameters:
+            - 'logit_bias'
+          inputs:
+            audio: false
+            base64_files: null
+            base64_images: true
+            file_urls: null
+            image_urls: true
+          max_completion_tokens: 16384
+          max_prompt_tokens: null
+          quantization: 'bf16'
+          reasoning:
+            return_mechanism: 'reasoning'
+            supported: true
+          tool_choice:
+            auto: true
+            function: false
+            none: true
+            required: true
         status: 'active'
         tested_parameters:
           - 'tools'
@@ -25560,6 +25609,8 @@ components:
           type:
             - 'string'
             - 'null'
+        settings:
+          $ref: '#/components/schemas/PrivateEndpointSettings'
         status:
           $ref: '#/components/schemas/PrivateEndpointStatus'
         tested_parameters:
@@ -25590,6 +25641,7 @@ components:
         - 'pricing'
         - 'tested_parameters'
         - 'declared_parameters'
+        - 'settings'
       type: 'object'
     PrivateEndpointActivation:
       description: 'Validate and activate in the same call. On a failed validation the draft is kept and returned with a 422, so fix it and call `/validate` and `/activate` instead of creating it again.'
@@ -25744,12 +25796,218 @@ components:
         - 'prompt'
         - 'completion'
       type: 'object'
+    PrivateEndpointQuantization:
+      description: 'Weight precision the deployment runs at; `unknown` when not stated.'
+      enum:
+        - 'int4'
+        - 'int8'
+        - 'fp4'
+        - 'mxfp4'
+        - 'nvfp4'
+        - 'fp6'
+        - 'fp8'
+        - 'mxfp8'
+        - 'fp16'
+        - 'bf16'
+        - 'fp32'
+        - 'unknown'
+      example: 'bf16'
+      type: 'string'
+    PrivateEndpointReasoningReturnMechanism:
+      description: 'Where the upstream puts reasoning tokens in its response: `reasoning` and `reasoning-content` are response fields, `content-string` is inline in the message, `none` returns no reasoning. `null` uses the provider default.'
+      enum:
+        - 'content-string'
+        - 'reasoning-content'
+        - 'reasoning'
+        - 'none'
+        - null
+      example: 'reasoning'
+      type:
+        - 'string'
+        - 'null'
     PrivateEndpointResponse:
       properties:
         data:
           $ref: '#/components/schemas/PrivateEndpoint'
       required:
         - 'data'
+      type: 'object'
+    PrivateEndpointSettings:
+      description: 'Capabilities and limits routing uses for this endpoint. A new endpoint copies them from the public endpoint for the same model and provider, or from the model, and the owner can change them. Rate limits are not part of this object: a private endpoint is billed to its own upstream key, so request limits stay with the provider.'
+      example:
+        completions:
+          chat: true
+          text: false
+        context_length: 128000
+        excluded_parameters:
+          - 'logit_bias'
+        inputs:
+          audio: false
+          base64_files: null
+          base64_images: true
+          file_urls: null
+          image_urls: true
+        max_completion_tokens: 16384
+        max_prompt_tokens: null
+        quantization: 'bf16'
+        reasoning:
+          return_mechanism: 'reasoning'
+          supported: true
+        tool_choice:
+          auto: true
+          function: false
+          none: true
+          required: true
+      properties:
+        completions:
+          properties:
+            chat:
+              description: 'Serves `/chat/completions`; `null` uses the provider default.'
+              type:
+                - 'boolean'
+                - 'null'
+            text:
+              description: 'Serves `/completions`; `null` uses the provider default.'
+              type:
+                - 'boolean'
+                - 'null'
+          required:
+            - 'chat'
+            - 'text'
+          type: 'object'
+        context_length:
+          description: 'Longest prompt plus completion, in tokens, or `null` to keep the model default.'
+          example: 128000
+          minimum: 1
+          type:
+            - 'integer'
+            - 'null'
+        excluded_parameters:
+          description: 'Request parameters the upstream rejects even though the model supports them; requests using one do not route here. Cannot name a tested parameter.'
+          example:
+            - 'logit_bias'
+          items:
+            enum:
+              - 'temperature'
+              - 'top_p'
+              - 'top_k'
+              - 'min_p'
+              - 'top_a'
+              - 'frequency_penalty'
+              - 'presence_penalty'
+              - 'repetition_penalty'
+              - 'max_tokens'
+              - 'max_completion_tokens'
+              - 'logit_bias'
+              - 'logprobs'
+              - 'top_logprobs'
+              - 'prediction'
+              - 'seed'
+              - 'response_format'
+              - 'structured_outputs'
+              - 'stop'
+              - 'tools'
+              - 'tool_choice'
+              - 'parallel_tool_calls'
+              - 'include_reasoning'
+              - 'reasoning'
+              - 'reasoning_effort'
+              - 'web_search_options'
+              - 'verbosity'
+            type: 'string'
+          type: 'array'
+        inputs:
+          properties:
+            audio:
+              description: 'Accepts audio input. `null` keeps the provider default.'
+              type:
+                - 'boolean'
+                - 'null'
+            base64_files:
+              description: 'Accepts base64 file data. `null` keeps the provider default.'
+              type:
+                - 'boolean'
+                - 'null'
+            base64_images:
+              description: 'Accepts base64 image data. `null` keeps the provider default.'
+              type:
+                - 'boolean'
+                - 'null'
+            file_urls:
+              description: 'Accepts file URLs. `null` keeps the provider default.'
+              type:
+                - 'boolean'
+                - 'null'
+            image_urls:
+              description: 'Accepts image URLs. `null` keeps the provider default.'
+              type:
+                - 'boolean'
+                - 'null'
+          required:
+            - 'image_urls'
+            - 'base64_images'
+            - 'file_urls'
+            - 'base64_files'
+            - 'audio'
+          type: 'object'
+        max_completion_tokens:
+          description: 'Longest completion the upstream returns, in tokens, or `null` to keep the model default.'
+          example: 16384
+          minimum: 1
+          type:
+            - 'integer'
+            - 'null'
+        max_prompt_tokens:
+          description: 'Longest prompt, in tokens, or `null` for no cap below the context length. Cannot exceed `context_length`, or the model context length while `context_length` is `null`.'
+          example: null
+          minimum: 1
+          type:
+            - 'integer'
+            - 'null'
+        quantization:
+          $ref: '#/components/schemas/PrivateEndpointQuantization'
+        reasoning:
+          properties:
+            return_mechanism:
+              $ref: '#/components/schemas/PrivateEndpointReasoningReturnMechanism'
+            supported:
+              description: 'Whether requests with `reasoning` route to this endpoint.'
+              example: true
+              type: 'boolean'
+          required:
+            - 'supported'
+            - 'return_mechanism'
+          type: 'object'
+        tool_choice:
+          properties:
+            auto:
+              description: 'Accepts `tool_choice: "auto"`.'
+              type: 'boolean'
+            function:
+              description: 'Accepts a named function in `tool_choice`.'
+              type: 'boolean'
+            none:
+              description: 'Accepts `tool_choice: "none"`.'
+              type: 'boolean'
+            required:
+              description: 'Accepts `tool_choice: "required"`.'
+              type: 'boolean'
+          required:
+            - 'none'
+            - 'auto'
+            - 'required'
+            - 'function'
+          type: 'object'
+      required:
+        - 'context_length'
+        - 'max_prompt_tokens'
+        - 'max_completion_tokens'
+        - 'quantization'
+        - 'reasoning'
+        - 'inputs'
+        - 'tool_choice'
+        - 'excluded_parameters'
+        - 'completions'
       type: 'object'
     PrivateEndpointStatus:
       description: 'Lifecycle state. `draft` endpoints are not routable until validated and activated; `disabled` endpoints are activated but temporarily not routable.'
@@ -25847,6 +26105,89 @@ components:
           $ref: '#/components/schemas/PrivateEndpointValidation'
       required:
         - 'data'
+      type: 'object'
+    PrivateProvider:
+      example:
+        base_url: 'https://inference.example.com/v1'
+        created_at: '2026-10-06T12:00:00.000Z'
+        data_policy:
+          prompt_retention_days: null
+          retains_prompts: false
+          training: false
+        display_name: 'Acme'
+        name: 'Acme'
+        slug: 'acme'
+      properties:
+        base_url:
+          description: 'HTTPS base URL of an OpenAI-compatible API, used by private endpoints under this provider that set no URL of their own. Without it, each endpoint must set its own. Private, internal, metadata and OpenRouter hosts are rejected.'
+          example: 'https://inference.example.com/v1'
+          type:
+            - 'string'
+            - 'null'
+        created_at:
+          type: 'string'
+        data_policy:
+          description: 'Your declared data policy, or `null` when none was declared.'
+          properties:
+            prompt_retention_days:
+              description: 'Days prompts are retained. Must be `null` unless `retains_prompts` is true.'
+              type:
+                - 'integer'
+                - 'null'
+            retains_prompts:
+              description: 'Whether the provider retains prompts or completions.'
+              type: 'boolean'
+            training:
+              description: 'Whether the provider trains on prompts.'
+              type: 'boolean'
+          required:
+            - 'training'
+            - 'retains_prompts'
+            - 'prompt_retention_days'
+          type:
+            - 'object'
+            - 'null'
+        display_name:
+          example: 'Acme'
+          type: 'string'
+        name:
+          description: 'Provider name, shown in your activity, logs and Broadcast output. 2-64 letters, numbers, spaces, dots, underscores or hyphens. Cannot be changed later. Neither the name nor its slug may match a public provider name or slug (case-insensitive); other customers may use the same name.'
+          example: 'Acme'
+          type: 'string'
+        slug:
+          description: 'The slug you chose, unique within your account. Use it as `provider_slug` when creating private endpoints and BYOK keys, and in `provider.order`, `only` and `ignore`.'
+          example: 'acme'
+          type: 'string'
+      required:
+        - 'name'
+        - 'slug'
+        - 'display_name'
+        - 'base_url'
+        - 'data_policy'
+        - 'created_at'
+      type: 'object'
+    PrivateProviderDataPolicy:
+      description: 'Defaults to training on and retaining prompts, the most conservative declaration. Your own declaration; it applies to your own traffic and OpenRouter does not verify it.'
+      example:
+        prompt_retention_days: null
+        retains_prompts: false
+        training: false
+      properties:
+        prompt_retention_days:
+          description: 'Days prompts are retained. Must be `null` unless `retains_prompts` is true.'
+          type:
+            - 'integer'
+            - 'null'
+        retains_prompts:
+          description: 'Whether the provider retains prompts or completions.'
+          type: 'boolean'
+        training:
+          description: 'Whether the provider trains on prompts.'
+          type: 'boolean'
+      required:
+        - 'training'
+        - 'retains_prompts'
+        - 'prompt_retention_days'
       type: 'object'
     PromptCacheBreakpoint:
       description: 'Marks an explicit prompt-cache boundary on this content block (OpenAI-style). Everything through the block carrying this marker is part of the candidate cached prefix. Supported natively by OpenAI GPT-5.6 and newer; on providers that use Anthropic-style `cache_control`, OpenRouter converts the marker to that format automatically. `ttl` ("30m" or "12h") overrides the request-level `prompt_cache_options.ttl` for this boundary; 12h writes bill at the higher cache-write rate.'
@@ -32154,12 +32495,27 @@ components:
         - 'pricing'
       type: 'object'
     UpdatePrivateEndpointRequest:
+      description: 'Only the fields present change. `base_url`, `upstream_model_id`, `declared_zdr` and `declared_region` are accepted on a draft only; `pricing` and `declared_parameters` replace their value; `settings` is itself a partial update where `null` clears a limit or restores the provider default.'
+      example:
+        declared_parameters:
+          - 'seed'
+        settings:
+          context_length: 128000
       properties:
         base_url:
           description: 'HTTPS base URL of your deployment. Required unless the provider derives its URL from the BYOK credential (Azure, Amazon Bedrock, Google Vertex).'
           example: 'https://contoso.openai.azure.com'
           minLength: 1
           type: 'string'
+        declared_parameters:
+          description: 'Parameters the upstream supports beyond the tested ones. Replaces the earlier declaration; tested parameters stay. Order and repeated names are ignored, but the list holds at most as many entries as there are declarable parameters, repeats included. `tool_choice` requires `tools` to be tested or declared.'
+          example:
+            - 'temperature'
+            - 'seed'
+          items:
+            $ref: '#/components/schemas/PrivateEndpointDeclaredParameter'
+          maxItems: 25
+          type: 'array'
         declared_region:
           description: 'Attest where this deployment processes data.'
           enum:
@@ -32176,13 +32532,173 @@ components:
           type:
             - 'boolean'
             - 'null'
+        pricing:
+          allOf:
+            - $ref: '#/components/schemas/PrivateEndpointPricing'
+            - description: 'Replaces the whole pricing object: omitting `cache_read` or `cache_write` reverts that rate to the pricing strategy default.'
+        settings:
+          allOf:
+            - $ref: '#/components/schemas/UpdatePrivateEndpointSettingsRequest'
+            - description: 'Only the fields present change; an omitted field keeps its stored value and `null` clears a limit or reverts a flag to the provider default.'
         upstream_model_id:
           description: 'Model or deployment identifier sent to the upstream provider.'
           example: 'gpt-4o-prod'
           minLength: 1
           type: 'string'
-      required:
-        - 'upstream_model_id'
+      type: 'object'
+    UpdatePrivateEndpointSettingsRequest:
+      description: 'Capabilities and limits to set over the ones copied from the public endpoint for this model and provider (or from the model). Omitted fields keep the copied values.'
+      example:
+        context_length: 128000
+        reasoning:
+          supported: true
+      properties:
+        completions:
+          properties:
+            chat:
+              description: 'Serves `/chat/completions`; `null` uses the provider default.'
+              type:
+                - 'boolean'
+                - 'null'
+            text:
+              description: 'Serves `/completions`; `null` uses the provider default.'
+              type:
+                - 'boolean'
+                - 'null'
+          type: 'object'
+        context_length:
+          description: 'Longest prompt plus completion, in tokens, or `null` to keep the model default.'
+          example: 128000
+          minimum: 1
+          type:
+            - 'integer'
+            - 'null'
+        excluded_parameters:
+          description: 'Request parameters the upstream rejects even though the model supports them; requests using one do not route here. Cannot name a tested parameter.'
+          example:
+            - 'logit_bias'
+          items:
+            enum:
+              - 'temperature'
+              - 'top_p'
+              - 'top_k'
+              - 'min_p'
+              - 'top_a'
+              - 'frequency_penalty'
+              - 'presence_penalty'
+              - 'repetition_penalty'
+              - 'max_tokens'
+              - 'max_completion_tokens'
+              - 'logit_bias'
+              - 'logprobs'
+              - 'top_logprobs'
+              - 'prediction'
+              - 'seed'
+              - 'response_format'
+              - 'structured_outputs'
+              - 'stop'
+              - 'tools'
+              - 'tool_choice'
+              - 'parallel_tool_calls'
+              - 'include_reasoning'
+              - 'reasoning'
+              - 'reasoning_effort'
+              - 'web_search_options'
+              - 'verbosity'
+            type: 'string'
+          type: 'array'
+        inputs:
+          properties:
+            audio:
+              description: 'Accepts audio input. `null` keeps the provider default.'
+              type:
+                - 'boolean'
+                - 'null'
+            base64_files:
+              description: 'Accepts base64 file data. `null` keeps the provider default.'
+              type:
+                - 'boolean'
+                - 'null'
+            base64_images:
+              description: 'Accepts base64 image data. `null` keeps the provider default.'
+              type:
+                - 'boolean'
+                - 'null'
+            file_urls:
+              description: 'Accepts file URLs. `null` keeps the provider default.'
+              type:
+                - 'boolean'
+                - 'null'
+            image_urls:
+              description: 'Accepts image URLs. `null` keeps the provider default.'
+              type:
+                - 'boolean'
+                - 'null'
+          type: 'object'
+        max_completion_tokens:
+          description: 'Longest completion the upstream returns, in tokens, or `null` to keep the model default.'
+          example: 16384
+          minimum: 1
+          type:
+            - 'integer'
+            - 'null'
+        max_prompt_tokens:
+          description: 'Longest prompt, in tokens, or `null` for no cap below the context length. Cannot exceed `context_length`, or the model context length while `context_length` is `null`.'
+          example: null
+          minimum: 1
+          type:
+            - 'integer'
+            - 'null'
+        quantization:
+          $ref: '#/components/schemas/PrivateEndpointQuantization'
+        reasoning:
+          properties:
+            return_mechanism:
+              $ref: '#/components/schemas/PrivateEndpointReasoningReturnMechanism'
+            supported:
+              description: 'Whether requests with `reasoning` route to this endpoint.'
+              example: true
+              type: 'boolean'
+          type: 'object'
+        tool_choice:
+          properties:
+            auto:
+              description: 'Accepts `tool_choice: "auto"`.'
+              type: 'boolean'
+            function:
+              description: 'Accepts a named function in `tool_choice`.'
+              type: 'boolean'
+            none:
+              description: 'Accepts `tool_choice: "none"`.'
+              type: 'boolean'
+            required:
+              description: 'Accepts `tool_choice: "required"`.'
+              type: 'boolean'
+          type: 'object'
+      type: 'object'
+    UpdatePrivateProviderRequest:
+      properties:
+        base_url:
+          description: 'HTTPS base URL of an OpenAI-compatible API, used by private endpoints under this provider that set no URL of their own. Without it, each endpoint must set its own. Private, internal, metadata and OpenRouter hosts are rejected.'
+          example: 'https://inference.example.com/v1'
+          type: 'string'
+        data_policy:
+          properties:
+            prompt_retention_days:
+              description: 'Days prompts are retained. Must be `null` unless `retains_prompts` is true.'
+              type:
+                - 'integer'
+                - 'null'
+            retains_prompts:
+              description: 'Whether the provider retains prompts or completions.'
+              type: 'boolean'
+            training:
+              description: 'Whether the provider trains on prompts.'
+              type: 'boolean'
+          type: 'object'
+        display_name:
+          example: 'Acme'
+          type: 'string'
       type: 'object'
     UpdateScimGroupMappingRequest:
       properties:
@@ -47023,7 +47539,7 @@ paths:
         - 'Private Endpoints'
       x-speakeasy-name-override: 'get'
     patch:
-      description: 'Replace a draft endpoint''s upstream configuration: send `upstream_model_id`, and `base_url` to change it (an omitted `base_url` keeps the stored one). Omitted data-policy declarations are kept while the upstream is unchanged and cleared when it changes. Any change clears earlier validation. Active endpoints return 409; delete and re-create them instead. [Management key](/docs/guides/overview/auth/management-api-keys) required.'
+      description: 'Change any of the endpoint fields you own in one call; only the fields present change, and the response is the whole endpoint. `pricing` and `declared_parameters` replace their stored value, `settings` changes only the fields it names (`null` clears a limit or restores the provider default); routing picks these up for subsequent requests on drafts and active endpoints alike. `upstream_model_id`, `base_url`, `declared_zdr` and `declared_region` re-point a draft: an omitted `upstream_model_id` or `base_url` keeps the stored one, omitted data-policy declarations are kept while the upstream is unchanged and cleared when it changes, and any upstream change clears earlier validation. Naming an upstream field on an active endpoint returns 409 `already_active` and writes nothing; delete and re-create instead. Every group is checked before anything is written: 400 `parameters_invalid` when `tool_choice` is declared without `tools` tested or declared, 400 `settings_invalid` when `max_prompt_tokens` exceeds the context length, both completion APIs are off, or `excluded_parameters` names a tested parameter, 422 `pricing_invalid` for rates the provider strategy cannot represent. [Management key](/docs/guides/overview/auth/management-api-keys) required.'
       operationId: 'updatePrivateEndpoint'
       parameters:
         - description: 'Stable identifier of the private endpoint.'
@@ -47138,7 +47654,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/BadGatewayResponse'
           description: 'Bad Gateway - Provider/upstream API failure'
-      summary: 'Update a draft private endpoint'
+      summary: 'Update a private endpoint'
       tags:
         - 'Private Endpoints'
       x-speakeasy-name-override: 'update'
@@ -47489,7 +48005,8 @@ paths:
       x-speakeasy-name-override: 'enable'
   /private-endpoints/{id}/parameters:
     put:
-      description: 'Declare which request parameters the upstream supports beyond the ones validation proved. Applies to drafts and active endpoints; routing picks the change up for subsequent requests. The body replaces the earlier declaration and is read as a set: order and repeated names do not matter, but the list holds at most as many entries as there are declarable parameters, repeats included. `tested_parameters` stay. Returns 400 `parameters_invalid` when `tool_choice` is declared without `tools` being tested or declared. [Management key](/docs/guides/overview/auth/management-api-keys) required.'
+      deprecated: true
+      description: 'Deprecated: send `declared_parameters` to `PATCH /private-endpoints/{id}` instead; this route behaves exactly like that call and will be removed. The body replaces the earlier declaration and is read as a set; `tested_parameters` stay. Returns 400 `parameters_invalid` when `tool_choice` is declared without `tools` being tested or declared. [Management key](/docs/guides/overview/auth/management-api-keys) required.'
       operationId: 'updatePrivateEndpointParameters'
       parameters:
         - description: 'Stable identifier of the private endpoint.'
@@ -47604,13 +48121,14 @@ paths:
               schema:
                 $ref: '#/components/schemas/BadGatewayResponse'
           description: 'Bad Gateway - Provider/upstream API failure'
-      summary: 'Set private endpoint supported parameters'
+      summary: 'Set private endpoint supported parameters (deprecated)'
       tags:
         - 'Private Endpoints'
       x-speakeasy-name-override: 'updateParameters'
   /private-endpoints/{id}/pricing:
     put:
-      description: 'Set the negotiated per-token rates reported for requests routed to this endpoint. Applies to drafts and active endpoints; new rates take effect for subsequent requests. The body replaces the whole pricing object: omitting `cache_read` or `cache_write` reverts that rate to the provider pricing strategy''s default, even if it was set before. [Management key](/docs/guides/overview/auth/management-api-keys) required.'
+      deprecated: true
+      description: 'Deprecated: send `pricing` to `PATCH /private-endpoints/{id}` instead; this route behaves exactly like that call and will be removed. The body replaces the whole pricing object: omitting `cache_read` or `cache_write` reverts that rate to the provider pricing strategy default. [Management key](/docs/guides/overview/auth/management-api-keys) required.'
       operationId: 'updatePrivateEndpointPricing'
       parameters:
         - description: 'Stable identifier of the private endpoint.'
@@ -47725,7 +48243,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/BadGatewayResponse'
           description: 'Bad Gateway - Provider/upstream API failure'
-      summary: 'Set private endpoint pricing'
+      summary: 'Set private endpoint pricing (deprecated)'
       tags:
         - 'Private Endpoints'
       x-speakeasy-name-override: 'updatePricing'
@@ -47850,6 +48368,515 @@ paths:
       tags:
         - 'Private Endpoints'
       x-speakeasy-name-override: 'validate'
+  /private-providers:
+    get:
+      description: 'List the organization''s private providers. Requires the private endpoints entitlement. [Management key](/docs/guides/overview/auth/management-api-keys) required.'
+      operationId: 'listPrivateProviders'
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                properties:
+                  data:
+                    items:
+                      $ref: '#/components/schemas/PrivateProvider'
+                    type: 'array'
+                required:
+                  - 'data'
+                type: 'object'
+          description: 'Private providers for the organization'
+        '401':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 401
+                  message: 'Missing Authentication header'
+              schema:
+                $ref: '#/components/schemas/UnauthorizedResponse'
+          description: 'Unauthorized - Authentication required or invalid credentials'
+        '403':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 403
+                  message: 'Only management keys can perform this operation'
+              schema:
+                $ref: '#/components/schemas/ForbiddenResponse'
+          description: 'Forbidden - Authentication successful but insufficient permissions'
+        '500':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 500
+                  message: 'Internal Server Error'
+              schema:
+                $ref: '#/components/schemas/InternalServerResponse'
+          description: 'Internal Server Error - Unexpected server error'
+      summary: 'List private providers'
+      tags:
+        - 'Private Providers'
+      x-speakeasy-name-override: 'list'
+    post:
+      description: 'Create a private, bring-your-own-key provider visible only to your organization. Use its slug as `provider_slug` when creating private endpoints. Requires both the private endpoints and the private providers entitlements. [Management key](/docs/guides/overview/auth/management-api-keys) required.'
+      operationId: 'createPrivateProvider'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreatePrivateProviderRequest'
+        required: true
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                properties:
+                  data:
+                    $ref: '#/components/schemas/PrivateProvider'
+                required:
+                  - 'data'
+                type: 'object'
+          description: 'The provider was created'
+        '400':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 400
+                  message: 'Invalid request parameters'
+              schema:
+                $ref: '#/components/schemas/BadRequestResponse'
+          description: 'Bad Request - Invalid request parameters or malformed input'
+        '401':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 401
+                  message: 'Missing Authentication header'
+              schema:
+                $ref: '#/components/schemas/UnauthorizedResponse'
+          description: 'Unauthorized - Authentication required or invalid credentials'
+        '403':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 403
+                  message: 'Only management keys can perform this operation'
+              schema:
+                $ref: '#/components/schemas/ForbiddenResponse'
+          description: 'Forbidden - Authentication successful but insufficient permissions'
+        '404':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 404
+                  message: 'Resource not found'
+              schema:
+                $ref: '#/components/schemas/NotFoundResponse'
+          description: 'Not Found - Resource does not exist'
+        '408':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 408
+                  message: 'Operation timed out. Please try again later.'
+              schema:
+                $ref: '#/components/schemas/RequestTimeoutResponse'
+          description: 'Request Timeout - Operation exceeded time limit'
+        '409':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 409
+                  message: 'Resource conflict. Please try again later.'
+              schema:
+                $ref: '#/components/schemas/ConflictResponse'
+          description: 'Conflict - Resource conflict or concurrent modification'
+        '422':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 422
+                  message: 'Invalid argument'
+              schema:
+                $ref: '#/components/schemas/UnprocessableEntityResponse'
+          description: 'Unprocessable Entity - Semantic validation failure'
+        '429':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 429
+                  message: 'Rate limit exceeded'
+              schema:
+                $ref: '#/components/schemas/TooManyRequestsResponse'
+          description: 'Too Many Requests - Rate limit exceeded'
+        '500':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 500
+                  message: 'Internal Server Error'
+              schema:
+                $ref: '#/components/schemas/InternalServerResponse'
+          description: 'Internal Server Error - Unexpected server error'
+        '502':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 502
+                  message: 'Provider returned error'
+              schema:
+                $ref: '#/components/schemas/BadGatewayResponse'
+          description: 'Bad Gateway - Provider/upstream API failure'
+      summary: 'Create a private provider'
+      tags:
+        - 'Private Providers'
+      x-speakeasy-name-override: 'create'
+  /private-providers/{slug}:
+    delete:
+      description: 'Delete a private provider. Refuses (409) while any private endpoint still runs under it. [Management key](/docs/guides/overview/auth/management-api-keys) required.'
+      operationId: 'deletePrivateProvider'
+      parameters:
+        - in: 'path'
+          name: 'slug'
+          required: true
+          schema:
+            example: 'acme'
+            type: 'string'
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                properties:
+                  data:
+                    properties:
+                      slug:
+                        description: 'The slug you chose, unique within your account. Use it as `provider_slug` when creating private endpoints and BYOK keys, and in `provider.order`, `only` and `ignore`.'
+                        example: 'acme'
+                        type: 'string'
+                    required:
+                      - 'slug'
+                    type: 'object'
+                required:
+                  - 'data'
+                type: 'object'
+          description: 'The provider was deleted'
+        '400':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 400
+                  message: 'Invalid request parameters'
+              schema:
+                $ref: '#/components/schemas/BadRequestResponse'
+          description: 'Bad Request - Invalid request parameters or malformed input'
+        '401':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 401
+                  message: 'Missing Authentication header'
+              schema:
+                $ref: '#/components/schemas/UnauthorizedResponse'
+          description: 'Unauthorized - Authentication required or invalid credentials'
+        '403':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 403
+                  message: 'Only management keys can perform this operation'
+              schema:
+                $ref: '#/components/schemas/ForbiddenResponse'
+          description: 'Forbidden - Authentication successful but insufficient permissions'
+        '404':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 404
+                  message: 'Resource not found'
+              schema:
+                $ref: '#/components/schemas/NotFoundResponse'
+          description: 'Not Found - Resource does not exist'
+        '408':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 408
+                  message: 'Operation timed out. Please try again later.'
+              schema:
+                $ref: '#/components/schemas/RequestTimeoutResponse'
+          description: 'Request Timeout - Operation exceeded time limit'
+        '409':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 409
+                  message: 'Resource conflict. Please try again later.'
+              schema:
+                $ref: '#/components/schemas/ConflictResponse'
+          description: 'Conflict - Resource conflict or concurrent modification'
+        '422':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 422
+                  message: 'Invalid argument'
+              schema:
+                $ref: '#/components/schemas/UnprocessableEntityResponse'
+          description: 'Unprocessable Entity - Semantic validation failure'
+        '429':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 429
+                  message: 'Rate limit exceeded'
+              schema:
+                $ref: '#/components/schemas/TooManyRequestsResponse'
+          description: 'Too Many Requests - Rate limit exceeded'
+        '500':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 500
+                  message: 'Internal Server Error'
+              schema:
+                $ref: '#/components/schemas/InternalServerResponse'
+          description: 'Internal Server Error - Unexpected server error'
+        '502':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 502
+                  message: 'Provider returned error'
+              schema:
+                $ref: '#/components/schemas/BadGatewayResponse'
+          description: 'Bad Gateway - Provider/upstream API failure'
+      summary: 'Delete a private provider'
+      tags:
+        - 'Private Providers'
+      x-speakeasy-name-override: 'delete'
+    get:
+      description: 'Get one of the organization’s private providers by slug. [Management key](/docs/guides/overview/auth/management-api-keys) required.'
+      operationId: 'getPrivateProvider'
+      parameters:
+        - in: 'path'
+          name: 'slug'
+          required: true
+          schema:
+            example: 'acme'
+            type: 'string'
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                properties:
+                  data:
+                    $ref: '#/components/schemas/PrivateProvider'
+                required:
+                  - 'data'
+                type: 'object'
+          description: 'The private provider'
+        '401':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 401
+                  message: 'Missing Authentication header'
+              schema:
+                $ref: '#/components/schemas/UnauthorizedResponse'
+          description: 'Unauthorized - Authentication required or invalid credentials'
+        '403':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 403
+                  message: 'Only management keys can perform this operation'
+              schema:
+                $ref: '#/components/schemas/ForbiddenResponse'
+          description: 'Forbidden - Authentication successful but insufficient permissions'
+        '404':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 404
+                  message: 'Resource not found'
+              schema:
+                $ref: '#/components/schemas/NotFoundResponse'
+          description: 'Not Found - Resource does not exist'
+        '500':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 500
+                  message: 'Internal Server Error'
+              schema:
+                $ref: '#/components/schemas/InternalServerResponse'
+          description: 'Internal Server Error - Unexpected server error'
+      summary: 'Get a private provider'
+      tags:
+        - 'Private Providers'
+      x-speakeasy-name-override: 'get'
+    patch:
+      description: 'Update a private provider’s details or declared data policy. The name and slug cannot change. Refuses (409) a data-policy change while OpenRouter pins the declared policy on one of its endpoints. [Management key](/docs/guides/overview/auth/management-api-keys) required.'
+      operationId: 'updatePrivateProvider'
+      parameters:
+        - in: 'path'
+          name: 'slug'
+          required: true
+          schema:
+            example: 'acme'
+            type: 'string'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdatePrivateProviderRequest'
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                properties:
+                  data:
+                    $ref: '#/components/schemas/PrivateProvider'
+                required:
+                  - 'data'
+                type: 'object'
+          description: 'The updated provider'
+        '400':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 400
+                  message: 'Invalid request parameters'
+              schema:
+                $ref: '#/components/schemas/BadRequestResponse'
+          description: 'Bad Request - Invalid request parameters or malformed input'
+        '401':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 401
+                  message: 'Missing Authentication header'
+              schema:
+                $ref: '#/components/schemas/UnauthorizedResponse'
+          description: 'Unauthorized - Authentication required or invalid credentials'
+        '403':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 403
+                  message: 'Only management keys can perform this operation'
+              schema:
+                $ref: '#/components/schemas/ForbiddenResponse'
+          description: 'Forbidden - Authentication successful but insufficient permissions'
+        '404':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 404
+                  message: 'Resource not found'
+              schema:
+                $ref: '#/components/schemas/NotFoundResponse'
+          description: 'Not Found - Resource does not exist'
+        '408':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 408
+                  message: 'Operation timed out. Please try again later.'
+              schema:
+                $ref: '#/components/schemas/RequestTimeoutResponse'
+          description: 'Request Timeout - Operation exceeded time limit'
+        '409':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 409
+                  message: 'Resource conflict. Please try again later.'
+              schema:
+                $ref: '#/components/schemas/ConflictResponse'
+          description: 'Conflict - Resource conflict or concurrent modification'
+        '422':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 422
+                  message: 'Invalid argument'
+              schema:
+                $ref: '#/components/schemas/UnprocessableEntityResponse'
+          description: 'Unprocessable Entity - Semantic validation failure'
+        '429':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 429
+                  message: 'Rate limit exceeded'
+              schema:
+                $ref: '#/components/schemas/TooManyRequestsResponse'
+          description: 'Too Many Requests - Rate limit exceeded'
+        '500':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 500
+                  message: 'Internal Server Error'
+              schema:
+                $ref: '#/components/schemas/InternalServerResponse'
+          description: 'Internal Server Error - Unexpected server error'
+        '502':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 502
+                  message: 'Provider returned error'
+              schema:
+                $ref: '#/components/schemas/BadGatewayResponse'
+          description: 'Bad Gateway - Provider/upstream API failure'
+      summary: 'Update a private provider'
+      tags:
+        - 'Private Providers'
+      x-speakeasy-name-override: 'update'
   /providers:
     get:
       operationId: 'listProviders'
@@ -53503,6 +54530,8 @@ tags:
     name: 'Presets'
   - description: 'Private Endpoints endpoints'
     name: 'Private Endpoints'
+  - description: 'Private Providers endpoints'
+    name: 'Private Providers'
   - description: 'Provider information endpoints'
     name: 'Providers'
   - description: 'Rerank endpoints'
