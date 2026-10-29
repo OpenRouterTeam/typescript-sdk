@@ -98,6 +98,7 @@ export const ProviderResponseProviderName = {
   IoNet: "Io Net",
   InferactVLLM: "Inferact vLLM",
   Inflection: "Inflection",
+  Kt: "KT",
   Liquid: "Liquid",
   Makora: "Makora",
   Mara: "Mara",

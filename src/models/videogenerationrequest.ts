@@ -118,6 +118,7 @@ export type VideoGenerationRequestOptions = {
   ionstream?: { [k: string]: any } | undefined;
   klusterai?: { [k: string]: any } | undefined;
   krea?: { [k: string]: any } | undefined;
+  kt?: { [k: string]: any } | undefined;
   lambda?: { [k: string]: any } | undefined;
   lepton?: { [k: string]: any } | undefined;
   liquid?: { [k: string]: any } | undefined;
@@ -377,6 +378,7 @@ export type VideoGenerationRequestOptions$Outbound = {
   ionstream?: { [k: string]: any } | undefined;
   klusterai?: { [k: string]: any } | undefined;
   krea?: { [k: string]: any } | undefined;
+  kt?: { [k: string]: any } | undefined;
   lambda?: { [k: string]: any } | undefined;
   lepton?: { [k: string]: any } | undefined;
   liquid?: { [k: string]: any } | undefined;
@@ -534,6 +536,7 @@ export const VideoGenerationRequestOptions$outboundSchema: z.ZodType<
   ionstream: z.record(z.string(), z.any()).optional(),
   klusterai: z.record(z.string(), z.any()).optional(),
   krea: z.record(z.string(), z.any()).optional(),
+  kt: z.record(z.string(), z.any()).optional(),
   lambda: z.record(z.string(), z.any()).optional(),
   lepton: z.record(z.string(), z.any()).optional(),
   liquid: z.record(z.string(), z.any()).optional(),
