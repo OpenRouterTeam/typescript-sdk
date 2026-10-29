@@ -42,7 +42,7 @@ export type External = {
    */
   apiKey?: string | undefined;
   /**
-   * Partner's end-user identifier for attribution.
+   * Partner's external user identifier for attribution: 1 to 512 characters after surrounding whitespace is trimmed, well-formed Unicode, no NUL. For organization keys outside HIPAA workspaces, the value is registered as an external user if it does not exist yet, and the key is linked to it.
    */
   user: string;
 };
