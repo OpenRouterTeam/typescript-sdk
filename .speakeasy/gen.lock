@@ -1,19 +1,19 @@
 lockVersion: ""
 id: ""
 management:
-  docChecksum: e0f19613393f9198313ffba4d8c1c9c6
+  docChecksum: be0e83bd33389387c3c67b2b7539a5f4
   docVersion: 1.0.0
   speakeasyVersion: 1.803.2
   generationVersion: 2.950.13
-  releaseVersion: 1.5.20
-  configChecksum: 9135ddc1a7cf95d76eb2b407b04b3663
+  releaseVersion: 1.5.21
+  configChecksum: f4f67551b193b799cffef633d14e9a91
   repoURL: https://github.com/OpenRouterTeam/typescript-sdk.git
   installationURL: https://github.com/OpenRouterTeam/typescript-sdk
   published: true
 persistentEdits:
-  generation_id: 99b77dcd-513b-44da-8aff-313e181bb1df
-  pristine_commit_hash: c14bfbaf997bd140883082d90289e4050f74dab7
-  pristine_tree_hash: e57bbfb0d6fffadbce90e67420bae90cabbeba9f
+  generation_id: e65b5b48-2942-4b4a-8371-353fb5c7e09f
+  pristine_commit_hash: 204453f25df7ed50835f829b427ddd64c4851ccc
+  pristine_tree_hash: fa3f1d7b4436ac9168946c247f25680961fdb857
 features:
   typescript:
     acceptHeaders: 2.81.2
@@ -12423,8 +12423,8 @@ trackedFiles:
     pristine_git_object: 6618301c4835cd948b558310fa834ce7a8468c85
   docs/models/privateprovider.mdx:
     id: c625619e5bf3
-    last_write_checksum: sha1:f9a09b78d4ff157281c5b0d112b2314498cd5496
-    pristine_git_object: d679ff6864a297a66ee1345e5d3cd37a9a5cf7d3
+    last_write_checksum: sha1:e59408516af321fcef2d6560206d6e7af4f269ca
+    pristine_git_object: b1450eb9e62415f426449fdc5f26515a0fe7f6f8
   docs/models/privateproviderdatapolicy.mdx:
     id: 6d18a4ee054a
     last_write_checksum: sha1:e8ac545f1fe2160b8f8bbb027a72c260c7fb7f68
@@ -15683,12 +15683,12 @@ trackedFiles:
     pristine_git_object: 410efafd6a7f50d91ccb87131fedbe0c3d47e15a
   jsr.json:
     id: 7f6ab7767282
-    last_write_checksum: sha1:b4bf9009bfd6f47c4c8809e9c6d8b76f28882b1a
-    pristine_git_object: 3ed9d5f6d6abc582b76a445a360b510bd0f6b018
+    last_write_checksum: sha1:eb6e1d861a77b1e65093e6688738d9644fe0069c
+    pristine_git_object: a6b21b70de96bc503656ba036a8c84586e0b8dc1
   package.json:
     id: 7030d0b2f71b
-    last_write_checksum: sha1:d39c1b2b63295bd288431dc411ca0f2a14d62fbf
-    pristine_git_object: 0a3db481dada6dda97016bdeda5ead20063c4c6b
+    last_write_checksum: sha1:917a8b12dfc85b530f77ef91b04d72842c72df69
+    pristine_git_object: 6d5db929a2bca05e6f8fe6c85b746572a614ade5
   src/core.ts:
     id: f431fdbcd144
     last_write_checksum: sha1:5aa66b0b6a5964f3eea7f3098c2eb3c0ee9c0131
@@ -16291,8 +16291,8 @@ trackedFiles:
     pristine_git_object: a187e58707bdb726ca2aff74941efe7493422d4e
   src/lib/config.ts:
     id: 320761608fb3
-    last_write_checksum: sha1:64d6e5146bc4dc240e56f8973bd6a41e1d5f79fb
-    pristine_git_object: 6c8019777e1fc6c6cc29a2af7b63c78b28ca5d3d
+    last_write_checksum: sha1:0ddc4fcda9e09de69c0ea454f374ad5f48e34429
+    pristine_git_object: 27d6c175424d1f3557b1856cde9fdd06e83bd3b4
   src/lib/dlv.ts:
     id: b1988214835a
     last_write_checksum: sha1:eaac763b22717206a6199104e0403ed17a4e2711
@@ -19577,8 +19577,8 @@ trackedFiles:
     pristine_git_object: 31d1f4b970eda9dc80df965ec6b443af4eafa4ac
   src/models/privateprovider.ts:
     id: bae774ca2103
-    last_write_checksum: sha1:ac76c58f556c68288aca6ca4b88d7ae9a8589ccd
-    pristine_git_object: ef9ee9ddb1c2504b17023e1520bdf855759eed3c
+    last_write_checksum: sha1:f307de57f67ab33bbd300f69c9be4b6aedcaf9c6
+    pristine_git_object: 71c470695a304e1463a4fc136f727c65f5efb402
   src/models/privateproviderdatapolicy.ts:
     id: 7a9731f38867
     last_write_checksum: sha1:1622c99d2b819f79d667c09cdbc523bf67051847
@@ -25181,4 +25181,3 @@ examples:
         "502":
           application/json: {"error": {"code": 502, "message": "Provider returned error"}}
 examplesVersion: 1.0.2
-releaseNotes: "## Typescript SDK Changes:\n* `openrouter.privateProviders.list()`: **Added**\n* `openrouter.privateProviders.create()`: **Added**\n* `openrouter.privateProviders.delete()`: **Added**\n* `openrouter.privateProviders.get()`: **Added**\n* `openrouter.privateProviders.update()`: **Added**\n* `openrouter.privateEndpoints.create()`: \n  *  `request.createPrivateEndpointRequest.settings` **Added**\n* `openrouter.privateEndpoints.get()`:  `response.data.settings` **Added**\n* `openrouter.privateEndpoints.update()`: \n  *  `request.updatePrivateEndpointRequest` **Changed**\n  *  `response.data.settings` **Added**\n* `openrouter.privateEndpoints.updateParameters()`: **Deprecated**\n* `openrouter.privateEndpoints.updateParameters()`:  `response.data.settings` **Added**\n* `openrouter.privateEndpoints.updatePricing()`: **Deprecated**\n* `openrouter.privateEndpoints.updatePricing()`:  `response.data.settings` **Added**\n"
