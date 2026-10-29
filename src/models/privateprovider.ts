@@ -37,9 +37,12 @@ export type PrivateProvider = {
    * Your declared data policy, or `null` when none was declared.
    */
   dataPolicy: PrivateProviderDataPolicy1 | null;
+  /**
+   * Human-readable provider name shown in the UI.
+   */
   displayName: string;
   /**
-   * Provider name, shown in your activity, logs and Broadcast output. 2-64 letters, numbers, spaces, dots, underscores or hyphens. Cannot be changed later. Neither the name nor its slug may match a public provider name or slug (case-insensitive); other customers may use the same name.
+   * Provider name, shown in your activity, logs and Broadcast output.
    */
   name: string;
   /**
