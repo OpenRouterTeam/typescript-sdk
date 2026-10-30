@@ -14,14 +14,15 @@ import { SDKValidationError } from "./errors/sdkvalidationerror.js";
 export type ExtractionListAnswerGuess = string | number;
 
 /**
- * Set to `image` when the answer was read from an image rather than the state text.
+ * Set to `image` or `document` when the answer was read from an image or a PDF rather than the state text.
  */
 export const ExtractionListAnswerSource = {
   State: "state",
   Image: "image",
+  Document: "document",
 } as const;
 /**
- * Set to `image` when the answer was read from an image rather than the state text.
+ * Set to `image` or `document` when the answer was read from an image or a PDF rather than the state text.
  */
 export type ExtractionListAnswerSource = OpenEnum<
   typeof ExtractionListAnswerSource
@@ -32,6 +33,10 @@ export type ExtractionListAnswerValue = string | number;
 export type ExtractionListAnswer = {
   confidence?: number | undefined;
   /**
+   * One confidence per item of `value`, in the same order.
+   */
+  confidences?: Array<number> | undefined;
+  /**
    * The most likely value even when `value` is null because `p_null` crossed the threshold.
    */
   guess?: Array<string | number> | undefined;
@@ -40,7 +45,7 @@ export type ExtractionListAnswer = {
    */
   pNull?: number | undefined;
   /**
-   * Set to `image` when the answer was read from an image rather than the state text.
+   * Set to `image` or `document` when the answer was read from an image or a PDF rather than the state text.
    */
   source?: ExtractionListAnswerSource | undefined;
   spans?: Array<Array<number>> | undefined;
@@ -96,6 +101,7 @@ export const ExtractionListAnswer$inboundSchema: z.ZodType<
   unknown
 > = z.object({
   confidence: z.number().optional(),
+  confidences: z.array(z.number()).optional(),
   guess: z.array(z.union([z.string(), z.number()])).optional(),
   p_null: z.number().optional(),
   source: ExtractionListAnswerSource$inboundSchema.optional(),

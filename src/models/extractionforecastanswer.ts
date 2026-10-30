@@ -26,14 +26,15 @@ export type ExtractionForecastAnswerP10 = number | string;
 export type ExtractionForecastAnswerP90 = number | string;
 
 /**
- * Set to `image` when the answer was read from an image rather than the state text.
+ * Set to `image` or `document` when the answer was read from an image or a PDF rather than the state text.
  */
 export const ExtractionForecastAnswerSource = {
   State: "state",
   Image: "image",
+  Document: "document",
 } as const;
 /**
- * Set to `image` when the answer was read from an image rather than the state text.
+ * Set to `image` or `document` when the answer was read from an image or a PDF rather than the state text.
  */
 export type ExtractionForecastAnswerSource = OpenEnum<
   typeof ExtractionForecastAnswerSource
@@ -56,7 +57,7 @@ export type ExtractionForecastAnswer = {
   p10?: Array<number | string> | undefined;
   p90?: Array<number | string> | undefined;
   /**
-   * Set to `image` when the answer was read from an image rather than the state text.
+   * Set to `image` or `document` when the answer was read from an image or a PDF rather than the state text.
    */
   source?: ExtractionForecastAnswerSource | undefined;
   /**

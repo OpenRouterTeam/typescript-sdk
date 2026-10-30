@@ -6,10 +6,10 @@
 import * as z from "zod/v4";
 import { remap as remap$ } from "../lib/primitives.js";
 import {
-  DecisionsImageAsset,
-  DecisionsImageAsset$Outbound,
-  DecisionsImageAsset$outboundSchema,
-} from "./decisionsimageasset.js";
+  ExtractionAsset,
+  ExtractionAsset$Outbound,
+  ExtractionAsset$outboundSchema,
+} from "./extractionasset.js";
 import {
   ExtractionDateField,
   ExtractionDateField$Outbound,
@@ -82,9 +82,9 @@ export type Fields =
 
 export type ExtractionsRequest = {
   /**
-   * Images keyed by reference string, as in TypeSafe's API. Write a reference wherever the image belongs in `state`, `instructions`, or `criteria`; every asset must be referenced at least once. Jev reads a reference as a whole string value or inside longer text. Other Decisions models read a whole-string reference wherever they read an `image_url` part and reject a reference inside longer text.
+   * Assets keyed by reference string. Write a reference wherever the asset belongs in `state` or a field `instructions`; every asset must be referenced at least once. A `state` that is exactly the sole asset's key carries no text of its own and is read as file-only. A model that reads either text or a document per request, not both (ScaleDown Extract with a PDF), needs that form: any other text around the key is state text and is rejected with 400.
    */
-  assets?: { [k: string]: DecisionsImageAsset } | undefined;
+  assets?: { [k: string]: ExtractionAsset } | undefined;
   /**
    * Map of field name to typed field spec.
    */
@@ -153,7 +153,7 @@ export function fieldsToJSON(fields: Fields): string {
 
 /** @internal */
 export type ExtractionsRequest$Outbound = {
-  assets?: { [k: string]: DecisionsImageAsset$Outbound } | undefined;
+  assets?: { [k: string]: ExtractionAsset$Outbound } | undefined;
   fields: {
     [k: string]:
       | ExtractionDateField$Outbound
@@ -180,7 +180,7 @@ export const ExtractionsRequest$outboundSchema: z.ZodType<
   ExtractionsRequest$Outbound,
   ExtractionsRequest
 > = z.object({
-  assets: z.record(z.string(), DecisionsImageAsset$outboundSchema).optional(),
+  assets: z.record(z.string(), ExtractionAsset$outboundSchema).optional(),
   fields: z.record(
     z.string(),
     z.union([
