@@ -77,6 +77,10 @@ export type Model = {
    */
   description?: string | undefined;
   /**
+   * Request API paths that serve this model, derived from the same modality and adapter rules the routers use. A model served only through an alpha surface lists only that path.
+   */
+  endpoints: Array<string>;
+  /**
    * The date after which the model may be removed. ISO 8601 date string (YYYY-MM-DD) or null if no expiration.
    */
   expirationDate?: string | null | undefined;
@@ -136,6 +140,7 @@ export const Model$inboundSchema: z.ZodType<Model, unknown> = z.object({
   created: z.int(),
   default_parameters: z.nullable(DefaultParameters$inboundSchema),
   description: z.string().optional(),
+  endpoints: z.array(z.string()),
   expiration_date: z.nullable(z.string()).optional(),
   hugging_face_id: z.nullable(z.string()).optional(),
   id: z.string(),
