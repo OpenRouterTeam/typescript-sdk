@@ -12,14 +12,15 @@ import { Result as SafeParseResult } from "../types/fp.js";
 import { SDKValidationError } from "./errors/sdkvalidationerror.js";
 
 /**
- * Set to `image` when the answer was read from an image rather than the state text.
+ * Set to `image` or `document` when the answer was read from an image or a PDF rather than the state text.
  */
 export const ExtractionDateAnswerSource = {
   State: "state",
   Image: "image",
+  Document: "document",
 } as const;
 /**
- * Set to `image` when the answer was read from an image rather than the state text.
+ * Set to `image` or `document` when the answer was read from an image or a PDF rather than the state text.
  */
 export type ExtractionDateAnswerSource = OpenEnum<
   typeof ExtractionDateAnswerSource
@@ -36,7 +37,7 @@ export type ExtractionDateAnswer = {
    */
   pNull?: number | undefined;
   /**
-   * Set to `image` when the answer was read from an image rather than the state text.
+   * Set to `image` or `document` when the answer was read from an image or a PDF rather than the state text.
    */
   source?: ExtractionDateAnswerSource | undefined;
   /**

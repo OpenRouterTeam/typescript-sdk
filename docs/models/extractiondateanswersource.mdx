@@ -2,14 +2,14 @@
 title: "ExtractionDateAnswerSource"
 ---
 
-Set to `image` when the answer was read from an image rather than the state text.
+Set to `image` or `document` when the answer was read from an image or a PDF rather than the state text.
 
 ## Example Usage
 
 ```typescript
 import { ExtractionDateAnswerSource } from "@openrouter/sdk/models";
 
-let value: ExtractionDateAnswerSource = "state";
+let value: ExtractionDateAnswerSource = "image";
 
 // Open enum: unrecognized values are captured as Unrecognized<string>
 ```
@@ -17,5 +17,5 @@ let value: ExtractionDateAnswerSource = "state";
 ## Values
 
 ```typescript
-"state" | "image" | Unrecognized<string>
+"state" | "image" | "document" | Unrecognized<string>
 ```
