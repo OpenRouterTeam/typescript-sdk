@@ -10902,6 +10902,26 @@ components:
         - 'debug'
         - 'sequence_number'
       type: 'object'
+    Decisions:
+      properties:
+        latency:
+          allOf:
+            - $ref: '#/components/schemas/PercentileStats'
+            - description: 'Latency percentiles in milliseconds for this workload. Image and video generation report full end-to-end generation time, because their raw latency only measures request acknowledgement; every other workload reports time to first token or result.'
+        request_count:
+          description: 'Total requests admitted for this workload in the window.'
+          type:
+            - 'integer'
+            - 'null'
+        throughput:
+          allOf:
+            - $ref: '#/components/schemas/PercentileStats'
+            - description: 'Throughput percentiles in tokens per second; pN is the speed that N% of requests reached or exceeded, so p90 is lower than p50. Only meaningful for text generation; null for workloads without token throughput.'
+      required:
+        - 'latency'
+        - 'throughput'
+        - 'request_count'
+      type: 'object'
     DecisionsBoxAnswer:
       properties:
         box:
@@ -11570,6 +11590,26 @@ components:
       required:
         - 'code'
         - 'message'
+      type: 'object'
+    Embeddings:
+      properties:
+        latency:
+          allOf:
+            - $ref: '#/components/schemas/PercentileStats'
+            - description: 'Latency percentiles in milliseconds for this workload. Image and video generation report full end-to-end generation time, because their raw latency only measures request acknowledgement; every other workload reports time to first token or result.'
+        request_count:
+          description: 'Total requests admitted for this workload in the window.'
+          type:
+            - 'integer'
+            - 'null'
+        throughput:
+          allOf:
+            - $ref: '#/components/schemas/PercentileStats'
+            - description: 'Throughput percentiles in tokens per second; pN is the speed that N% of requests reached or exceeded, so p90 is lower than p50. Only meaningful for text generation; null for workloads without token throughput.'
+      required:
+        - 'latency'
+        - 'throughput'
+        - 'request_count'
       type: 'object'
     EndpointInfo:
       example:
@@ -15050,6 +15090,26 @@ components:
         - 'type'
         - 'b64_json'
         - 'created'
+      type: 'object'
+    ImageGeneration:
+      properties:
+        latency:
+          allOf:
+            - $ref: '#/components/schemas/PercentileStats'
+            - description: 'Latency percentiles in milliseconds for this workload. Image and video generation report full end-to-end generation time, because their raw latency only measures request acknowledgement; every other workload reports time to first token or result.'
+        request_count:
+          description: 'Total requests admitted for this workload in the window.'
+          type:
+            - 'integer'
+            - 'null'
+        throughput:
+          allOf:
+            - $ref: '#/components/schemas/PercentileStats'
+            - description: 'Throughput percentiles in tokens per second; pN is the speed that N% of requests reached or exceeded, so p90 is lower than p50. Only meaningful for text generation; null for workloads without token throughput.'
+      required:
+        - 'latency'
+        - 'throughput'
+        - 'request_count'
       type: 'object'
     ImageGenerationProviderPreferences:
       description: 'Provider routing preferences and provider-specific passthrough configuration.'
@@ -19831,6 +19891,14 @@ components:
         - 'name'
         - 'description'
         - 'tools'
+      type: 'object'
+    NativeTools:
+      properties:
+        type:
+          description: 'The provider tool type the request is translated to when this tool runs natively, e.g. `web_search_20260209` on Anthropic or `google_search` on Gemini.'
+          type: 'string'
+      required:
+        - 'type'
       type: 'object'
     NotFoundResponse:
       description: 'Not Found - Resource does not exist'
@@ -26174,6 +26242,29 @@ components:
             - 'number'
             - 'null'
       type: 'object'
+    PerfLast30mByWorkload:
+      additionalProperties: false
+      description: 'Endpoint performance over the last 30 minutes, keyed by the kind of request served (e.g. `text_generation`, `image_generation`). Additive to the legacy singular latency and throughput fields; image and video generation report end-to-end latency. Only visible when authenticated with an API key or cookie.'
+      properties:
+        decisions:
+          $ref: '#/components/schemas/Decisions'
+        embeddings:
+          $ref: '#/components/schemas/Embeddings'
+        image_generation:
+          $ref: '#/components/schemas/ImageGeneration'
+        rerank:
+          $ref: '#/components/schemas/Rerank'
+        stt:
+          $ref: '#/components/schemas/STT'
+        text_generation:
+          $ref: '#/components/schemas/TextGeneration'
+        tts:
+          $ref: '#/components/schemas/TTS'
+        unknown:
+          $ref: '#/components/schemas/Unknown'
+        video_generation:
+          $ref: '#/components/schemas/VideoGeneration'
+      type: 'object'
     PerRequestLimits:
       description: 'Per-request token limits'
       example:
@@ -26537,6 +26628,63 @@ components:
       type:
         - 'object'
         - 'null'
+    Pricing:
+      properties:
+        audio:
+          description: 'Price in USD per audio input token'
+          type: 'string'
+        audio_output:
+          description: 'Price in USD per audio output token'
+          type: 'string'
+        completion:
+          description: 'Price in USD per token for completion (output) generation'
+          type: 'string'
+        discount:
+          description: 'Fractional discount applied to this endpoint''s pricing; the price is multiplied by (1 - discount) (0 = no discount, 1 = free)'
+          format: 'double'
+          type: 'number'
+        image:
+          description: 'Price in USD per input image'
+          type: 'string'
+        image_output:
+          description: 'Price in USD per output image'
+          type: 'string'
+        image_token:
+          description: 'Price in USD per image token'
+          type: 'string'
+        input_audio_cache:
+          description: 'Price in USD per cached audio input token'
+          type: 'string'
+        input_cache_read:
+          description: 'Price in USD per cached input token (read)'
+          type: 'string'
+        input_cache_write:
+          description: 'Price per cache-write token, in USD per token. For providers with multiple cache TTLs (e.g. Anthropic), this is the default (5-minute) cache-write rate.'
+          type: 'string'
+        input_cache_write_1h:
+          description: 'Price per 1-hour cache-write token, in USD per token. Only present for providers that price an extended (1-hour) cache TTL separately, such as Anthropic.'
+          type: 'string'
+        internal_reasoning:
+          description: 'Price in USD per internal reasoning token'
+          type: 'string'
+        overrides:
+          description: 'Conditional overrides of the base pricing (e.g. long-context or time-based pricing). An entry applies when all of its condition fields (e.g. min_prompt_tokens, or the utc_start/utc_end time window) match the request; among applicable entries, later entries win per key; price keys absent from an entry inherit the base price. The top-level pricing keys always reflect the price that applies under default conditions.'
+          items:
+            $ref: '#/components/schemas/PricingOverride'
+          type: 'array'
+        prompt:
+          description: 'Price in USD per token for prompt (input) processing'
+          type: 'string'
+        request:
+          description: 'Price in USD per request'
+          type: 'string'
+        web_search:
+          description: 'Price in USD per web search'
+          type: 'string'
+      required:
+        - 'prompt'
+        - 'completion'
+      type: 'object'
     PricingOverride:
       description: 'A conditional override of the base pricing. An entry applies only when all of its condition fields (e.g. min_prompt_tokens, or the utc_start/utc_end time window) match the request; among applicable entries, later entries win per price key; price keys absent from an entry inherit the base price.'
       example:
@@ -28400,260 +28548,16 @@ components:
           type: 'string'
         native_tools:
           additionalProperties:
-            properties:
-              type:
-                description: 'The provider tool type the request is translated to when this tool runs natively, e.g. `web_search_20260209` on Anthropic or `google_search` on Gemini.'
-                type: 'string'
-            required:
-              - 'type'
-            type: 'object'
+            $ref: '#/components/schemas/NativeTools'
           description: 'The server tools this endpoint accepts as the provider''s own built-in tool (`engine: "native"`) instead of an OpenRouter engine, keyed by canonical `openrouter:*` name. Each value names the provider tool type the request is translated to. Where that tool runs (provider-side, or returned to the client as with Anthropic bash) is documented per tool. Empty when the provider has none.'
           example:
             openrouter:web_search:
               type: 'web_search_20260209'
           type: 'object'
         perf_last_30m_by_workload:
-          additionalProperties: false
-          description: 'Endpoint performance over the last 30 minutes, keyed by the kind of request served (e.g. `text_generation`, `image_generation`). Additive to the legacy singular latency and throughput fields; image and video generation report end-to-end latency. Only visible when authenticated with an API key or cookie.'
-          properties:
-            decisions:
-              properties:
-                latency:
-                  allOf:
-                    - $ref: '#/components/schemas/PercentileStats'
-                    - description: 'Latency percentiles in milliseconds for this workload. Image and video generation report full end-to-end generation time, because their raw latency only measures request acknowledgement; every other workload reports time to first token or result.'
-                request_count:
-                  description: 'Total requests admitted for this workload in the window.'
-                  type:
-                    - 'integer'
-                    - 'null'
-                throughput:
-                  allOf:
-                    - $ref: '#/components/schemas/PercentileStats'
-                    - description: 'Throughput percentiles in tokens per second; pN is the speed that N% of requests reached or exceeded, so p90 is lower than p50. Only meaningful for text generation; null for workloads without token throughput.'
-              required:
-                - 'latency'
-                - 'throughput'
-                - 'request_count'
-              type: 'object'
-            embeddings:
-              properties:
-                latency:
-                  allOf:
-                    - $ref: '#/components/schemas/PercentileStats'
-                    - description: 'Latency percentiles in milliseconds for this workload. Image and video generation report full end-to-end generation time, because their raw latency only measures request acknowledgement; every other workload reports time to first token or result.'
-                request_count:
-                  description: 'Total requests admitted for this workload in the window.'
-                  type:
-                    - 'integer'
-                    - 'null'
-                throughput:
-                  allOf:
-                    - $ref: '#/components/schemas/PercentileStats'
-                    - description: 'Throughput percentiles in tokens per second; pN is the speed that N% of requests reached or exceeded, so p90 is lower than p50. Only meaningful for text generation; null for workloads without token throughput.'
-              required:
-                - 'latency'
-                - 'throughput'
-                - 'request_count'
-              type: 'object'
-            image_generation:
-              properties:
-                latency:
-                  allOf:
-                    - $ref: '#/components/schemas/PercentileStats'
-                    - description: 'Latency percentiles in milliseconds for this workload. Image and video generation report full end-to-end generation time, because their raw latency only measures request acknowledgement; every other workload reports time to first token or result.'
-                request_count:
-                  description: 'Total requests admitted for this workload in the window.'
-                  type:
-                    - 'integer'
-                    - 'null'
-                throughput:
-                  allOf:
-                    - $ref: '#/components/schemas/PercentileStats'
-                    - description: 'Throughput percentiles in tokens per second; pN is the speed that N% of requests reached or exceeded, so p90 is lower than p50. Only meaningful for text generation; null for workloads without token throughput.'
-              required:
-                - 'latency'
-                - 'throughput'
-                - 'request_count'
-              type: 'object'
-            rerank:
-              properties:
-                latency:
-                  allOf:
-                    - $ref: '#/components/schemas/PercentileStats'
-                    - description: 'Latency percentiles in milliseconds for this workload. Image and video generation report full end-to-end generation time, because their raw latency only measures request acknowledgement; every other workload reports time to first token or result.'
-                request_count:
-                  description: 'Total requests admitted for this workload in the window.'
-                  type:
-                    - 'integer'
-                    - 'null'
-                throughput:
-                  allOf:
-                    - $ref: '#/components/schemas/PercentileStats'
-                    - description: 'Throughput percentiles in tokens per second; pN is the speed that N% of requests reached or exceeded, so p90 is lower than p50. Only meaningful for text generation; null for workloads without token throughput.'
-              required:
-                - 'latency'
-                - 'throughput'
-                - 'request_count'
-              type: 'object'
-            stt:
-              properties:
-                latency:
-                  allOf:
-                    - $ref: '#/components/schemas/PercentileStats'
-                    - description: 'Latency percentiles in milliseconds for this workload. Image and video generation report full end-to-end generation time, because their raw latency only measures request acknowledgement; every other workload reports time to first token or result.'
-                request_count:
-                  description: 'Total requests admitted for this workload in the window.'
-                  type:
-                    - 'integer'
-                    - 'null'
-                throughput:
-                  allOf:
-                    - $ref: '#/components/schemas/PercentileStats'
-                    - description: 'Throughput percentiles in tokens per second; pN is the speed that N% of requests reached or exceeded, so p90 is lower than p50. Only meaningful for text generation; null for workloads without token throughput.'
-              required:
-                - 'latency'
-                - 'throughput'
-                - 'request_count'
-              type: 'object'
-            text_generation:
-              properties:
-                latency:
-                  allOf:
-                    - $ref: '#/components/schemas/PercentileStats'
-                    - description: 'Latency percentiles in milliseconds for this workload. Image and video generation report full end-to-end generation time, because their raw latency only measures request acknowledgement; every other workload reports time to first token or result.'
-                request_count:
-                  description: 'Total requests admitted for this workload in the window.'
-                  type:
-                    - 'integer'
-                    - 'null'
-                throughput:
-                  allOf:
-                    - $ref: '#/components/schemas/PercentileStats'
-                    - description: 'Throughput percentiles in tokens per second; pN is the speed that N% of requests reached or exceeded, so p90 is lower than p50. Only meaningful for text generation; null for workloads without token throughput.'
-              required:
-                - 'latency'
-                - 'throughput'
-                - 'request_count'
-              type: 'object'
-            tts:
-              properties:
-                latency:
-                  allOf:
-                    - $ref: '#/components/schemas/PercentileStats'
-                    - description: 'Latency percentiles in milliseconds for this workload. Image and video generation report full end-to-end generation time, because their raw latency only measures request acknowledgement; every other workload reports time to first token or result.'
-                request_count:
-                  description: 'Total requests admitted for this workload in the window.'
-                  type:
-                    - 'integer'
-                    - 'null'
-                throughput:
-                  allOf:
-                    - $ref: '#/components/schemas/PercentileStats'
-                    - description: 'Throughput percentiles in tokens per second; pN is the speed that N% of requests reached or exceeded, so p90 is lower than p50. Only meaningful for text generation; null for workloads without token throughput.'
-              required:
-                - 'latency'
-                - 'throughput'
-                - 'request_count'
-              type: 'object'
-            unknown:
-              properties:
-                latency:
-                  allOf:
-                    - $ref: '#/components/schemas/PercentileStats'
-                    - description: 'Latency percentiles in milliseconds for this workload. Image and video generation report full end-to-end generation time, because their raw latency only measures request acknowledgement; every other workload reports time to first token or result.'
-                request_count:
-                  description: 'Total requests admitted for this workload in the window.'
-                  type:
-                    - 'integer'
-                    - 'null'
-                throughput:
-                  allOf:
-                    - $ref: '#/components/schemas/PercentileStats'
-                    - description: 'Throughput percentiles in tokens per second; pN is the speed that N% of requests reached or exceeded, so p90 is lower than p50. Only meaningful for text generation; null for workloads without token throughput.'
-              required:
-                - 'latency'
-                - 'throughput'
-                - 'request_count'
-              type: 'object'
-            video_generation:
-              properties:
-                latency:
-                  allOf:
-                    - $ref: '#/components/schemas/PercentileStats'
-                    - description: 'Latency percentiles in milliseconds for this workload. Image and video generation report full end-to-end generation time, because their raw latency only measures request acknowledgement; every other workload reports time to first token or result.'
-                request_count:
-                  description: 'Total requests admitted for this workload in the window.'
-                  type:
-                    - 'integer'
-                    - 'null'
-                throughput:
-                  allOf:
-                    - $ref: '#/components/schemas/PercentileStats'
-                    - description: 'Throughput percentiles in tokens per second; pN is the speed that N% of requests reached or exceeded, so p90 is lower than p50. Only meaningful for text generation; null for workloads without token throughput.'
-              required:
-                - 'latency'
-                - 'throughput'
-                - 'request_count'
-              type: 'object'
-          type: 'object'
+          $ref: '#/components/schemas/PerfLast30mByWorkload'
         pricing:
-          properties:
-            audio:
-              description: 'Price in USD per audio input token'
-              type: 'string'
-            audio_output:
-              description: 'Price in USD per audio output token'
-              type: 'string'
-            completion:
-              description: 'Price in USD per token for completion (output) generation'
-              type: 'string'
-            discount:
-              description: 'Fractional discount applied to this endpoint''s pricing; the price is multiplied by (1 - discount) (0 = no discount, 1 = free)'
-              format: 'double'
-              type: 'number'
-            image:
-              description: 'Price in USD per input image'
-              type: 'string'
-            image_output:
-              description: 'Price in USD per output image'
-              type: 'string'
-            image_token:
-              description: 'Price in USD per image token'
-              type: 'string'
-            input_audio_cache:
-              description: 'Price in USD per cached audio input token'
-              type: 'string'
-            input_cache_read:
-              description: 'Price in USD per cached input token (read)'
-              type: 'string'
-            input_cache_write:
-              description: 'Price per cache-write token, in USD per token. For providers with multiple cache TTLs (e.g. Anthropic), this is the default (5-minute) cache-write rate.'
-              type: 'string'
-            input_cache_write_1h:
-              description: 'Price per 1-hour cache-write token, in USD per token. Only present for providers that price an extended (1-hour) cache TTL separately, such as Anthropic.'
-              type: 'string'
-            internal_reasoning:
-              description: 'Price in USD per internal reasoning token'
-              type: 'string'
-            overrides:
-              description: 'Conditional overrides of the base pricing (e.g. long-context or time-based pricing). An entry applies when all of its condition fields (e.g. min_prompt_tokens, or the utc_start/utc_end time window) match the request; among applicable entries, later entries win per key; price keys absent from an entry inherit the base price. The top-level pricing keys always reflect the price that applies under default conditions.'
-              items:
-                $ref: '#/components/schemas/PricingOverride'
-              type: 'array'
-            prompt:
-              description: 'Price in USD per token for prompt (input) processing'
-              type: 'string'
-            request:
-              description: 'Price in USD per request'
-              type: 'string'
-            web_search:
-              description: 'Price in USD per web search'
-              type: 'string'
-          required:
-            - 'prompt'
-            - 'completion'
-          type: 'object'
+          $ref: '#/components/schemas/Pricing'
         provider_name:
           $ref: '#/components/schemas/ProviderName'
         quantization:
@@ -28807,6 +28711,56 @@ components:
       type:
         - 'string'
         - 'null'
+    PublicZdrEndpoint:
+      allOf:
+        - $ref: '#/components/schemas/PublicEndpoint'
+        - properties:
+            safety_retention:
+              description: 'Whether the endpoint uses Safety Retention: prompts are not retained by default, but the provider may retain prompts its safety classifiers flag. A ZDR-enforced request reaches these endpoints only when the account allows Safety Retention and no applied guardrail disallows it.'
+              example: false
+              type: 'boolean'
+          required:
+            - 'safety_retention'
+          type: 'object'
+      description: 'An endpoint whose data policy does not retain prompts by default'
+      example:
+        context_length: 1048576
+        latency_last_30m: null
+        max_completion_tokens: 65535
+        max_prompt_tokens: null
+        model_id: 'google/gemini-2.5-flash'
+        model_name: 'Gemini 2.5 Flash'
+        name: 'Google: Gemini 2.5 Flash'
+        native_tools: {}
+        pricing:
+          completion: '0.0000025'
+          image: '0'
+          prompt: '0.0000003'
+          request: '0'
+        provider_name: 'Google'
+        quantization: null
+        safety_retention: true
+        service_tier: null
+        status: 0
+        supported_parameters:
+          - 'temperature'
+          - 'top_p'
+          - 'max_tokens'
+        supports_diarization: false
+        supports_image_reference: false
+        supports_implicit_caching: true
+        supports_multiple_audio_references: false
+        supports_tool_choice:
+          auto: true
+          function: true
+          none: true
+          required: true
+        supports_voice_cloning: false
+        tag: 'google-vertex'
+        throughput_last_30m: null
+        uptime_last_1d: 99.8
+        uptime_last_30m: 99.5
+        uptime_last_5m: 100
     Quantization:
       enum:
         - 'int4'
@@ -29346,6 +29300,26 @@ components:
       required:
         - 'code'
         - 'message'
+      type: 'object'
+    Rerank:
+      properties:
+        latency:
+          allOf:
+            - $ref: '#/components/schemas/PercentileStats'
+            - description: 'Latency percentiles in milliseconds for this workload. Image and video generation report full end-to-end generation time, because their raw latency only measures request acknowledgement; every other workload reports time to first token or result.'
+        request_count:
+          description: 'Total requests admitted for this workload in the window.'
+          type:
+            - 'integer'
+            - 'null'
+        throughput:
+          allOf:
+            - $ref: '#/components/schemas/PercentileStats'
+            - description: 'Throughput percentiles in tokens per second; pN is the speed that N% of requests reached or exceeded, so p90 is lower than p50. Only meaningful for text generation; null for workloads without token throughput.'
+      required:
+        - 'latency'
+        - 'throughput'
+        - 'request_count'
       type: 'object'
     ResponseHealingPlugin:
       example:
@@ -31381,6 +31355,26 @@ components:
           - 111
         logprob: -0.5
         token: 'Hello'
+    STT:
+      properties:
+        latency:
+          allOf:
+            - $ref: '#/components/schemas/PercentileStats'
+            - description: 'Latency percentiles in milliseconds for this workload. Image and video generation report full end-to-end generation time, because their raw latency only measures request acknowledgement; every other workload reports time to first token or result.'
+        request_count:
+          description: 'Total requests admitted for this workload in the window.'
+          type:
+            - 'integer'
+            - 'null'
+        throughput:
+          allOf:
+            - $ref: '#/components/schemas/PercentileStats'
+            - description: 'Throughput percentiles in tokens per second; pN is the speed that N% of requests reached or exceeded, so p90 is lower than p50. Only meaningful for text generation; null for workloads without token throughput.'
+      required:
+        - 'latency'
+        - 'throughput'
+        - 'request_count'
+      type: 'object'
     STTEntity:
       description: 'A detected entity, returned when the provider runs entity detection'
       example:
@@ -32222,6 +32216,26 @@ components:
       example:
         format:
           type: 'text'
+    TextGeneration:
+      properties:
+        latency:
+          allOf:
+            - $ref: '#/components/schemas/PercentileStats'
+            - description: 'Latency percentiles in milliseconds for this workload. Image and video generation report full end-to-end generation time, because their raw latency only measures request acknowledgement; every other workload reports time to first token or result.'
+        request_count:
+          description: 'Total requests admitted for this workload in the window.'
+          type:
+            - 'integer'
+            - 'null'
+        throughput:
+          allOf:
+            - $ref: '#/components/schemas/PercentileStats'
+            - description: 'Throughput percentiles in tokens per second; pN is the speed that N% of requests reached or exceeded, so p90 is lower than p50. Only meaningful for text generation; null for workloads without token throughput.'
+      required:
+        - 'latency'
+        - 'throughput'
+        - 'request_count'
+      type: 'object'
     TokenExchangeRequest:
       description: 'RFC 8693 token exchange request body (application/x-www-form-urlencoded).'
       example:
@@ -32662,6 +32676,26 @@ components:
       type:
         - 'string'
         - 'null'
+    TTS:
+      properties:
+        latency:
+          allOf:
+            - $ref: '#/components/schemas/PercentileStats'
+            - description: 'Latency percentiles in milliseconds for this workload. Image and video generation report full end-to-end generation time, because their raw latency only measures request acknowledgement; every other workload reports time to first token or result.'
+        request_count:
+          description: 'Total requests admitted for this workload in the window.'
+          type:
+            - 'integer'
+            - 'null'
+        throughput:
+          allOf:
+            - $ref: '#/components/schemas/PercentileStats'
+            - description: 'Throughput percentiles in tokens per second; pN is the speed that N% of requests reached or exceeded, so p90 is lower than p50. Only meaningful for text generation; null for workloads without token throughput.'
+      required:
+        - 'latency'
+        - 'throughput'
+        - 'request_count'
+      type: 'object'
     UnauthorizedResponse:
       description: 'Unauthorized - Authentication required or invalid credentials'
       example:
@@ -33165,6 +33199,26 @@ components:
         - 'max_agent_turns'
         - 'reasoning_effort'
         - 'temperature'
+      type: 'object'
+    Unknown:
+      properties:
+        latency:
+          allOf:
+            - $ref: '#/components/schemas/PercentileStats'
+            - description: 'Latency percentiles in milliseconds for this workload. Image and video generation report full end-to-end generation time, because their raw latency only measures request acknowledgement; every other workload reports time to first token or result.'
+        request_count:
+          description: 'Total requests admitted for this workload in the window.'
+          type:
+            - 'integer'
+            - 'null'
+        throughput:
+          allOf:
+            - $ref: '#/components/schemas/PercentileStats'
+            - description: 'Throughput percentiles in tokens per second; pN is the speed that N% of requests reached or exceeded, so p90 is lower than p50. Only meaningful for text generation; null for workloads without token throughput.'
+      required:
+        - 'latency'
+        - 'throughput'
+        - 'request_count'
       type: 'object'
     UnprocessableEntityResponse:
       description: 'Unprocessable Entity - Semantic validation failure'
@@ -34733,6 +34787,26 @@ components:
       required:
         - 'value'
         - 'hosts'
+      type: 'object'
+    VideoGeneration:
+      properties:
+        latency:
+          allOf:
+            - $ref: '#/components/schemas/PercentileStats'
+            - description: 'Latency percentiles in milliseconds for this workload. Image and video generation report full end-to-end generation time, because their raw latency only measures request acknowledgement; every other workload reports time to first token or result.'
+        request_count:
+          description: 'Total requests admitted for this workload in the window.'
+          type:
+            - 'integer'
+            - 'null'
+        throughput:
+          allOf:
+            - $ref: '#/components/schemas/PercentileStats'
+            - description: 'Throughput percentiles in tokens per second; pN is the speed that N% of requests reached or exceeded, so p90 is lower than p50. Only meaningful for text generation; null for workloads without token throughput.'
+      required:
+        - 'latency'
+        - 'throughput'
+        - 'request_count'
       type: 'object'
     VideoGenerationRequest:
       example:
@@ -40661,6 +40735,7 @@ paths:
                       request: '0'
                     provider_name: 'OpenAI'
                     quantization: 'fp16'
+                    safety_retention: false
                     status: 0
                     supported_parameters:
                       - 'temperature'
@@ -40702,6 +40777,7 @@ paths:
                         request: '0'
                       provider_name: 'OpenAI'
                       quantization: 'fp16'
+                      safety_retention: false
                       status: 0
                       supported_parameters:
                         - 'temperature'
@@ -40724,7 +40800,7 @@ paths:
                 properties:
                   data:
                     items:
-                      $ref: '#/components/schemas/PublicEndpoint'
+                      $ref: '#/components/schemas/PublicZdrEndpoint'
                     type: 'array'
                 required:
                   - 'data'
