@@ -7,13 +7,15 @@ title: "Operator"
 ```typescript
 import { Operator } from "@openrouter/sdk/models";
 
-let value: Operator = "ends_with";
-
-// Open enum: unrecognized values are captured as Unrecognized<string>
+let value: Operator = {
+  name: "eq",
+  valueType: "array",
+};
 ```
 
-## Values
+## Fields
 
-```typescript
-"equals" | "not_equals" | "contains" | "not_contains" | "regex" | "starts_with" | "ends_with" | "gt" | "lt" | "gte" | "lte" | "exists" | "not_exists" | Unrecognized<string>
-```
+| Field                                                   | Type                                                    | Required                                                | Description                                             | Example                                                 |
+| ------------------------------------------------------- | ------------------------------------------------------- | ------------------------------------------------------- | ------------------------------------------------------- | ------------------------------------------------------- |
+| `name`                                                  | [models.OperatorName](../models/operatorname.mdx)        | ✔️                                      | Operator identifier used in filter definitions          | eq                                                      |
+| `valueType`                                             | [models.ValueType](../models/valuetype.mdx)              | ✔️                                      | Whether the operator expects a single value or an array |                                                         |

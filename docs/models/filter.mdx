@@ -1,0 +1,28 @@
+---
+title: "Filter"
+---
+
+## Supported Types
+
+### `models.ScalarFilter`
+
+```typescript
+const value: models.ScalarFilter = {
+  field: "model",
+  operator: "eq",
+  value: "<value>",
+};
+```
+
+### `models.SetFilter`
+
+```typescript
+const value: models.SetFilter = {
+  field: "model",
+  operator: "in",
+  value: [
+    "<value>",
+  ],
+};
+```
+
