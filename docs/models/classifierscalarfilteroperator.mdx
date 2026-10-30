@@ -1,0 +1,21 @@
+---
+title: "ClassifierScalarFilterOperator"
+---
+
+Equality operator taking a scalar filter value. Ordered comparisons are not available because classification values are strings.
+
+## Example Usage
+
+```typescript
+import { ClassifierScalarFilterOperator } from "@openrouter/sdk/models";
+
+let value: ClassifierScalarFilterOperator = "eq";
+
+// Open enum: unrecognized values are captured as Unrecognized<string>
+```
+
+## Values
+
+```typescript
+"eq" | "neq" | Unrecognized<string>
+```
