@@ -1,19 +1,19 @@
 lockVersion: ""
 id: ""
 management:
-  docChecksum: 533a322875050d25e25e9e1d799d6728
+  docChecksum: 7097d672cc4ec858a12a2db3514f0d45
   docVersion: 1.0.0
   speakeasyVersion: 1.803.2
   generationVersion: 2.950.13
-  releaseVersion: 1.5.31
-  configChecksum: 661c106dfade53a4c2bab5afa71f1247
+  releaseVersion: 1.5.32
+  configChecksum: 4d3a300d9969055241fee12703201ec8
   repoURL: https://github.com/OpenRouterTeam/typescript-sdk.git
   installationURL: https://github.com/OpenRouterTeam/typescript-sdk
   published: true
 persistentEdits:
-  generation_id: ec94adb0-6c30-40f7-93a9-adb4a30f09b6
-  pristine_commit_hash: d24c72d6ff0a4550d406f1b2f74093bf3e94e928
-  pristine_tree_hash: ba4482c98db23aa4c12cb1216fb129965040dce6
+  generation_id: b9bb059d-6704-41bb-8e48-50bf1e555f47
+  pristine_commit_hash: 6398c2428816d3dece1f701fd01b1b2093ad3b4d
+  pristine_tree_hash: a56efcfc28853a0c1de9ce9fcc0c55e16d887ca2
 features:
   typescript:
     acceptHeaders: 2.81.2
@@ -8932,8 +8932,8 @@ trackedFiles:
     pristine_git_object: 7e98a9d3a62e44c93a8c7af5046204aaadf53cc0
   docs/models/operations/createkeysrequestbody.mdx:
     id: 300993eac8d3
-    last_write_checksum: sha1:797cee55466ca296aeb5ef9dafda253199df7977
-    pristine_git_object: 5b88edca3f0f2ed506473b2031373a3e058532ef
+    last_write_checksum: sha1:65c5c28c481b404b2dc8419df999d8c32f0b7cd0
+    pristine_git_object: 05a7b54bea8d03fcd9f5a4360913ed5088c8253e
   docs/models/operations/createkeysresponse.mdx:
     id: 5135de195ccb
     last_write_checksum: sha1:cbbcb93e90f2b50b6df58cb7c63395a6e1ae4ee3
@@ -10557,8 +10557,8 @@ trackedFiles:
     pristine_git_object: 7d2111597e8437e0b7e03cd06f2c8495be0557d5
   docs/models/operations/listrequest.mdx:
     id: dd2bb74c6178
-    last_write_checksum: sha1:393d57082ab1c0c07900322a3d166f7ab249e66d
-    pristine_git_object: 491cebb7c7f762afa5c80a1ad53169ac1348f990
+    last_write_checksum: sha1:87accdae2efe55379277428c0c74bf5b91fdb61e
+    pristine_git_object: 830d4020b2f6b027d0ac1bbec6c1c31b6c476d36
   docs/models/operations/listresponse.mdx:
     id: 46ed19423815
     last_write_checksum: sha1:96e51fadc5eca7d3fe83337943ee3c677d2873de
@@ -15784,8 +15784,8 @@ trackedFiles:
     pristine_git_object: e30e8f9397fea56bbd0b945e189725d17380e271
   docs/sdks/apikeys/README.mdx:
     id: 27fcaae1c346
-    last_write_checksum: sha1:55b7bc13c41fa4473a8a78bf0de3262fdc7770f8
-    pristine_git_object: c3906140307bf223d76e0c217e6901ad3fa5bde3
+    last_write_checksum: sha1:99e2b5cc2ec000ca6fcca01d8221012d911e1069
+    pristine_git_object: 9bb447ec22a0678a5a3b35680b33bab71c7ca8d9
   docs/sdks/batch/README.mdx:
     id: e367aa4f4295
     last_write_checksum: sha1:12c27414c8696f73cdf67dfe4861eb644b15c8be
@@ -16035,12 +16035,12 @@ trackedFiles:
     pristine_git_object: 410efafd6a7f50d91ccb87131fedbe0c3d47e15a
   jsr.json:
     id: 7f6ab7767282
-    last_write_checksum: sha1:b33934b8d23d5c8998d95196fecfcde4520b3e66
-    pristine_git_object: bfe66f794a1081dbb13b0833bdf59a84d3ee903a
+    last_write_checksum: sha1:90e88be51cbe0eb334b98e500bf7296b2fbdeb4d
+    pristine_git_object: 38e952c8aa2fb9c987ed7403190c5b76c10b897a
   package.json:
     id: 7030d0b2f71b
-    last_write_checksum: sha1:551316155ab2b80147e6507c9299aa00c1bacbeb
-    pristine_git_object: 410705b5c38b78e3cf59b852f4de01147a55d0bb
+    last_write_checksum: sha1:11cb557539661703a467021679d841659adf0ecd
+    pristine_git_object: 5b5bbe8bb071c7ce86c21f90dbb9947b328e3a10
   src/core.ts:
     id: f431fdbcd144
     last_write_checksum: sha1:5aa66b0b6a5964f3eea7f3098c2eb3c0ee9c0131
@@ -16071,20 +16071,20 @@ trackedFiles:
     pristine_git_object: 7bbb75276e7bf5a59da713e97e4d8cc6bfea041e
   src/funcs/apiKeysDelete.ts:
     id: c151c399f75f
-    last_write_checksum: sha1:108d1f042faf8c51e82c93b67dfef5eb0aff351c
-    pristine_git_object: 4e075ca333f3c5428e9afbd7fb645225c090c885
+    last_write_checksum: sha1:85ef969ef44ebd5272d7ac08220eb84aae5f34d6
+    pristine_git_object: 8d43b927de8e22d9049d098a0eaea3be8552bde4
   src/funcs/apiKeysGet.ts:
     id: 12a5c2abbddd
-    last_write_checksum: sha1:2cc24e79fa6c9ce0a45cc234b2d21ece712695c7
-    pristine_git_object: 38dfcfa90661f751ad564373e4e1e80fcdf27db2
+    last_write_checksum: sha1:ba33d8ac7e63c8f34970bd4785f138da06b41634
+    pristine_git_object: 566cce41def5cd0f41c834f413bf110dc460fb8f
   src/funcs/apiKeysGetCurrentKeyMetadata.ts:
     id: d9449cb31931
     last_write_checksum: sha1:8f75a86e09ebe191dcee3f4f4fbce810052837c1
     pristine_git_object: 3663f591c287a545266b761fdfd93e3f4dd0c659
   src/funcs/apiKeysList.ts:
     id: 2afc8d8f1ce0
-    last_write_checksum: sha1:4f55a6d9eb5f5fd21ff82d9098937c493f0dc1f0
-    pristine_git_object: dd39ea2d0464d756e69047e8274082d86a14609a
+    last_write_checksum: sha1:3bbb95d820f0139c4fd2cf573a1689e712d060df
+    pristine_git_object: f134f4a521d94427b2ab2df7ad569aa74bb39d9c
   src/funcs/apiKeysUpdate.ts:
     id: 05700884934b
     last_write_checksum: sha1:5fbd77044f19ca3cf36ebb7270107fcdc6c8507f
@@ -16647,8 +16647,8 @@ trackedFiles:
     pristine_git_object: a187e58707bdb726ca2aff74941efe7493422d4e
   src/lib/config.ts:
     id: 320761608fb3
-    last_write_checksum: sha1:51090403d80e47432685eb1ee8ea8108ab94cbc1
-    pristine_git_object: c7f47efbf79bb485097f577d70bb2adbdcae7331
+    last_write_checksum: sha1:dd338ecc73e0e400948cbfd86cc9c49854df526c
+    pristine_git_object: c327ce8446c4f679b987fea9dfad995117eaf5e3
   src/lib/dlv.ts:
     id: b1988214835a
     last_write_checksum: sha1:eaac763b22717206a6199104e0403ed17a4e2711
@@ -19185,8 +19185,8 @@ trackedFiles:
     pristine_git_object: 0a2ca2582247b2b60db1b464933ef5e599e430b8
   src/models/operations/createkeys.ts:
     id: e7a250c8b7bb
-    last_write_checksum: sha1:6cceb1d9cb93304a020d8e3e49534161b1e075c9
-    pristine_git_object: 1283382907e49c50665485565de5bb92decdcaee
+    last_write_checksum: sha1:9ba1405e308b6cc511a8d2a52a5b6e518e45eeab
+    pristine_git_object: 0563e0dd8dd5672668ad3849ff920b6f822a46ea
   src/models/operations/createoauthtoken.ts:
     id: 12bca86790cc
     last_write_checksum: sha1:77633ac2d5775fd1985533de58090095d3459c05
@@ -19449,8 +19449,8 @@ trackedFiles:
     pristine_git_object: a3cef2333b9c158cd090d650d00342c4732d7cda
   src/models/operations/list.ts:
     id: ce11386ad30f
-    last_write_checksum: sha1:538b86fd8e5c673750fc206984ab142a8492bcda
-    pristine_git_object: 37ce490b5193e0940440058e59f9dc2f3e89411b
+    last_write_checksum: sha1:441bbb36c71ad2f9957522ae188260becdd1d3e3
+    pristine_git_object: ec66529d2c40a1c92f00242ba826a28faa71dd4f
   src/models/operations/listbatches.ts:
     id: ed6b34dc34af
     last_write_checksum: sha1:0782e4c471c79be7643ef1efaaf65380334abf3f
@@ -21519,6 +21519,8 @@ examples:
           application/json: {"error": {"code": 400, "message": "Invalid request parameters"}}
         "404":
           application/json: {"error": {"code": 404, "message": "Resource not found"}}
+        "403":
+          application/json: {"error": {"code": 403, "message": "Only management keys can perform this operation"}}
   createKeys:
     speakeasy-default-create-keys:
       requestBody:
@@ -21594,6 +21596,8 @@ examples:
           application/json: {"error": {"code": 429, "message": "Rate limit exceeded"}}
         "500":
           application/json: {"error": {"code": 500, "message": "Internal Server Error"}}
+        "403":
+          application/json: {"error": {"code": 403, "message": "Only management keys can perform this operation"}}
   getKey:
     speakeasy-default-get-key:
       parameters:
@@ -21610,6 +21614,8 @@ examples:
           application/json: {"error": {"code": 429, "message": "Rate limit exceeded"}}
         "500":
           application/json: {"error": {"code": 500, "message": "Internal Server Error"}}
+        "403":
+          application/json: {"error": {"code": 403, "message": "Only management keys can perform this operation"}}
   getCurrentKey:
     speakeasy-default-get-current-key:
       responses:
@@ -25766,4 +25772,6 @@ examples:
 examplesVersion: 1.0.2
 releaseNotes: |
   ## Typescript SDK Changes:
-  * `openrouter.endpoints.listZdrEndpoints()`:  `response.data[].safetyRetention` **Added**
+  * `openrouter.apiKeys.list()`:  `error.status[403]` **Added**
+  * `openrouter.apiKeys.delete()`:  `error.status[403]` **Added**
+  * `openrouter.apiKeys.get()`:  `error.status[403]` **Added**

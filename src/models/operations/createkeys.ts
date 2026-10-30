@@ -90,7 +90,7 @@ export type CreateKeysRequestBody = {
    */
   name: string;
   /**
-   * The workspace to create the API key in. Defaults to the default workspace if not provided.
+   * The workspace to create the API key in. Defaults to the default workspace for an organization-scoped management key, or to the management key's own workspace for a workspace-scoped one, which cannot create keys elsewhere.
    */
   workspaceId?: string | undefined;
 };
