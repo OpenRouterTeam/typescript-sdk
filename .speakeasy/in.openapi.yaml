@@ -44311,12 +44311,12 @@ paths:
             type:
               - 'integer'
               - 'null'
-        - description: 'Filter API keys by workspace ID. By default, keys in the default workspace are returned.'
+        - description: 'Filter API keys by workspace ID. By default an organization-scoped management key gets the default workspace; a workspace-scoped management key always gets its own workspace and cannot list another.'
           in: 'query'
           name: 'workspace_id'
           required: false
           schema:
-            description: 'Filter API keys by workspace ID. By default, keys in the default workspace are returned.'
+            description: 'Filter API keys by workspace ID. By default an organization-scoped management key gets the default workspace; a workspace-scoped management key always gets its own workspace and cannot list another.'
             example: '0df9e665-d932-5740-b2c7-b52af166bc11'
             format: 'uuid'
             type: 'string'
@@ -44572,6 +44572,16 @@ paths:
               schema:
                 $ref: '#/components/schemas/UnauthorizedResponse'
           description: 'Unauthorized - Authentication required or invalid credentials'
+        '403':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 403
+                  message: 'Only management keys can perform this operation'
+              schema:
+                $ref: '#/components/schemas/ForbiddenResponse'
+          description: 'Forbidden - Authentication successful but insufficient permissions'
         '404':
           content:
             application/json:
@@ -44688,7 +44698,7 @@ paths:
                   minLength: 1
                   type: 'string'
                 workspace_id:
-                  description: 'The workspace to create the API key in. Defaults to the default workspace if not provided.'
+                  description: 'The workspace to create the API key in. Defaults to the default workspace for an organization-scoped management key, or to the management key''s own workspace for a workspace-scoped one, which cannot create keys elsewhere.'
                   example: '0df9e665-d932-5740-b2c7-b52af166bc11'
                   format: 'uuid'
                   type: 'string'
@@ -45030,6 +45040,16 @@ paths:
               schema:
                 $ref: '#/components/schemas/UnauthorizedResponse'
           description: 'Unauthorized - Authentication required or invalid credentials'
+        '403':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 403
+                  message: 'Only management keys can perform this operation'
+              schema:
+                $ref: '#/components/schemas/ForbiddenResponse'
+          description: 'Forbidden - Authentication successful but insufficient permissions'
         '404':
           content:
             application/json:
@@ -45316,6 +45336,16 @@ paths:
               schema:
                 $ref: '#/components/schemas/UnauthorizedResponse'
           description: 'Unauthorized - Authentication required or invalid credentials'
+        '403':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 403
+                  message: 'Only management keys can perform this operation'
+              schema:
+                $ref: '#/components/schemas/ForbiddenResponse'
+          description: 'Forbidden - Authentication successful but insufficient permissions'
         '404':
           content:
             application/json:
