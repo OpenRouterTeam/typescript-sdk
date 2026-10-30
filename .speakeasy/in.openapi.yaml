@@ -11697,6 +11697,914 @@ components:
       required:
         - 'data'
       type: 'object'
+    ExtractionDateAnswer:
+      properties:
+        confidence:
+          format: 'double'
+          type: 'number'
+        guess:
+          description: 'The most likely value even when `value` is null because `p_null` crossed the threshold.'
+          type: 'string'
+        p_null:
+          description: 'Probability that the state contains nothing for this field.'
+          format: 'double'
+          type: 'number'
+        source:
+          description: 'Set to `image` when the answer was read from an image rather than the state text.'
+          enum:
+            - 'state'
+            - 'image'
+          type: 'string'
+        span:
+          description: 'Unicode code point offsets [start, end) into the state text: index code points (not UTF-16 code units or UTF-8 bytes), so an emoji or accented letter counts once.'
+          items:
+            type: 'integer'
+          maxItems: 2
+          minItems: 2
+          type: 'array'
+        spell_confidence:
+          description: 'Confidence in the spelling of text read from an image.'
+          format: 'double'
+          type: 'number'
+        type:
+          enum:
+            - 'date'
+          type: 'string'
+        value:
+          type:
+            - 'string'
+            - 'null'
+      required:
+        - 'type'
+        - 'value'
+      type: 'object'
+    ExtractionDateField:
+      properties:
+        instructions:
+          description: 'What the field should contain.'
+          type: 'string'
+        null_threshold:
+          description: 'Probability of null above which `value` is null. Default 0.5.'
+          format: 'double'
+          maximum: 1
+          minimum: 0
+          type: 'number'
+        type:
+          enum:
+            - 'date'
+          type: 'string'
+      required:
+        - 'type'
+      type: 'object'
+    ExtractionDatetimeAnswer:
+      properties:
+        confidence:
+          format: 'double'
+          type: 'number'
+        guess:
+          description: 'The most likely value even when `value` is null because `p_null` crossed the threshold.'
+          type: 'string'
+        p_null:
+          description: 'Probability that the state contains nothing for this field.'
+          format: 'double'
+          type: 'number'
+        source:
+          description: 'Set to `image` when the answer was read from an image rather than the state text.'
+          enum:
+            - 'state'
+            - 'image'
+          type: 'string'
+        span:
+          description: 'Unicode code point offsets [start, end) into the state text: index code points (not UTF-16 code units or UTF-8 bytes), so an emoji or accented letter counts once.'
+          items:
+            type: 'integer'
+          maxItems: 2
+          minItems: 2
+          type: 'array'
+        spell_confidence:
+          description: 'Confidence in the spelling of text read from an image.'
+          format: 'double'
+          type: 'number'
+        type:
+          enum:
+            - 'datetime'
+          type: 'string'
+        value:
+          type:
+            - 'string'
+            - 'null'
+      required:
+        - 'type'
+        - 'value'
+      type: 'object'
+    ExtractionDatetimeField:
+      properties:
+        instructions:
+          description: 'What the field should contain.'
+          type: 'string'
+        null_threshold:
+          description: 'Probability of null above which `value` is null. Default 0.5.'
+          format: 'double'
+          maximum: 1
+          minimum: 0
+          type: 'number'
+        type:
+          enum:
+            - 'datetime'
+          type: 'string'
+      required:
+        - 'type'
+      type: 'object'
+    ExtractionDurationAnswer:
+      properties:
+        confidence:
+          format: 'double'
+          type: 'number'
+        guess:
+          description: 'The most likely value even when `value` is null because `p_null` crossed the threshold.'
+          format: 'double'
+          type: 'number'
+        p_null:
+          description: 'Probability that the state contains nothing for this field.'
+          format: 'double'
+          type: 'number'
+        source:
+          description: 'Set to `image` when the answer was read from an image rather than the state text.'
+          enum:
+            - 'state'
+            - 'image'
+          type: 'string'
+        span:
+          description: 'Unicode code point offsets [start, end) into the state text: index code points (not UTF-16 code units or UTF-8 bytes), so an emoji or accented letter counts once.'
+          items:
+            type: 'integer'
+          maxItems: 2
+          minItems: 2
+          type: 'array'
+        spell_confidence:
+          description: 'Confidence in the spelling of text read from an image.'
+          format: 'double'
+          type: 'number'
+        type:
+          enum:
+            - 'duration'
+          type: 'string'
+        unit:
+          description: 'The unit `value` is expressed in.'
+          type: 'string'
+        value:
+          format: 'double'
+          type:
+            - 'number'
+            - 'null'
+      required:
+        - 'type'
+        - 'value'
+      type: 'object'
+    ExtractionDurationField:
+      properties:
+        decimals:
+          description: 'Decimal places kept in `value`.'
+          maximum: 6
+          minimum: 0
+          type: 'integer'
+        instructions:
+          description: 'What the field should contain.'
+          type: 'string'
+        integer:
+          type: 'boolean'
+        null_threshold:
+          description: 'Probability of null above which `value` is null. Default 0.5.'
+          format: 'double'
+          maximum: 1
+          minimum: 0
+          type: 'number'
+        type:
+          enum:
+            - 'duration'
+          type: 'string'
+        unit:
+          description: 'seconds, minutes, hours, days, weeks, months or years.'
+          type: 'string'
+      required:
+        - 'type'
+      type: 'object'
+    ExtractionEstimateAnswer:
+      properties:
+        confidence:
+          format: 'double'
+          type: 'number'
+        guess:
+          anyOf:
+            - format: 'double'
+              type: 'number'
+            - type: 'string'
+          description: 'The most likely value even when `value` is null because `p_null` crossed the threshold.'
+        mean:
+          anyOf:
+            - format: 'double'
+              type: 'number'
+            - type: 'string'
+        median:
+          anyOf:
+            - format: 'double'
+              type: 'number'
+            - type: 'string'
+        p_above:
+          description: 'Probability mass above `max`.'
+          format: 'double'
+          type: 'number'
+        p_below:
+          description: 'Probability mass below `min`.'
+          format: 'double'
+          type: 'number'
+        p_null:
+          description: 'Probability that the state contains nothing for this field.'
+          format: 'double'
+          type: 'number'
+        p10:
+          anyOf:
+            - format: 'double'
+              type: 'number'
+            - type: 'string'
+        p90:
+          anyOf:
+            - format: 'double'
+              type: 'number'
+            - type: 'string'
+        quantiles:
+          description: '99 percentiles, present when the provider is asked for quantiles.'
+          items:
+            anyOf:
+              - format: 'double'
+                type: 'number'
+              - type: 'string'
+          type: 'array'
+        source:
+          description: 'Set to `image` when the answer was read from an image rather than the state text.'
+          enum:
+            - 'state'
+            - 'image'
+          type: 'string'
+        spell_confidence:
+          description: 'Confidence in the spelling of text read from an image.'
+          format: 'double'
+          type: 'number'
+        type:
+          enum:
+            - 'estimate'
+          type: 'string'
+        value:
+          anyOf:
+            - format: 'double'
+              type: 'number'
+            - type: 'string'
+            - type: 'null'
+      required:
+        - 'type'
+        - 'value'
+      type: 'object'
+    ExtractionEstimateField:
+      properties:
+        instructions:
+          description: 'What the field should contain.'
+          type: 'string'
+        max:
+          anyOf:
+            - format: 'double'
+              type: 'number'
+            - type: 'string'
+        min:
+          anyOf:
+            - format: 'double'
+              type: 'number'
+            - type: 'string'
+        null_threshold:
+          description: 'Probability of null above which `value` is null. Default 0.5.'
+          format: 'double'
+          maximum: 1
+          minimum: 0
+          type: 'number'
+        scale:
+          enum:
+            - 'linear'
+            - 'log'
+          type: 'string'
+        step:
+          anyOf:
+            - exclusiveMinimum: 0
+              format: 'double'
+              type: 'number'
+            - enum:
+                - 'month'
+              type: 'string'
+            - enum:
+                - 'year'
+              type: 'string'
+        type:
+          enum:
+            - 'estimate'
+          type: 'string'
+        unit:
+          type: 'string'
+      required:
+        - 'type'
+        - 'min'
+        - 'max'
+      type: 'object'
+    ExtractionForecastAnswer:
+      properties:
+        confidence:
+          format: 'double'
+          type: 'number'
+        guess:
+          description: 'The most likely value even when `value` is null because `p_null` crossed the threshold.'
+          items:
+            anyOf:
+              - format: 'double'
+                type: 'number'
+              - type: 'string'
+          type: 'array'
+        mean:
+          items:
+            anyOf:
+              - format: 'double'
+                type: 'number'
+              - type: 'string'
+          type: 'array'
+        median:
+          items:
+            anyOf:
+              - format: 'double'
+                type: 'number'
+              - type: 'string'
+          type: 'array'
+        p_null:
+          description: 'Probability that the state contains nothing for this field.'
+          format: 'double'
+          type: 'number'
+        p10:
+          items:
+            anyOf:
+              - format: 'double'
+                type: 'number'
+              - type: 'string'
+          type: 'array'
+        p90:
+          items:
+            anyOf:
+              - format: 'double'
+                type: 'number'
+              - type: 'string'
+          type: 'array'
+        source:
+          description: 'Set to `image` when the answer was read from an image rather than the state text.'
+          enum:
+            - 'state'
+            - 'image'
+          type: 'string'
+        spell_confidence:
+          description: 'Confidence in the spelling of text read from an image.'
+          format: 'double'
+          type: 'number'
+        steps:
+          items:
+            $ref: '#/components/schemas/ExtractionForecastStep'
+          type: 'array'
+        type:
+          enum:
+            - 'forecast'
+          type: 'string'
+        value:
+          items:
+            anyOf:
+              - format: 'double'
+                type: 'number'
+              - type: 'string'
+          type:
+            - 'array'
+            - 'null'
+      required:
+        - 'type'
+        - 'value'
+      type: 'object'
+    ExtractionForecastField:
+      properties:
+        horizon:
+          description: 'Number of forecast steps.'
+          maximum: 64
+          minimum: 1
+          type: 'integer'
+        instructions:
+          description: 'What the field should contain.'
+          type: 'string'
+        interval:
+          enum:
+            - 'step'
+            - 'minute'
+            - 'hour'
+            - 'day'
+            - 'week'
+            - 'month'
+            - 'quarter'
+            - 'year'
+          type: 'string'
+        max:
+          anyOf:
+            - format: 'double'
+              type: 'number'
+            - type: 'string'
+        min:
+          anyOf:
+            - format: 'double'
+              type: 'number'
+            - type: 'string'
+        null_threshold:
+          description: 'Probability of null above which `value` is null. Default 0.5.'
+          format: 'double'
+          maximum: 1
+          minimum: 0
+          type: 'number'
+        scale:
+          enum:
+            - 'linear'
+            - 'log'
+          type: 'string'
+        step:
+          anyOf:
+            - exclusiveMinimum: 0
+              format: 'double'
+              type: 'number'
+            - enum:
+                - 'month'
+              type: 'string'
+            - enum:
+                - 'year'
+              type: 'string'
+        type:
+          enum:
+            - 'forecast'
+          type: 'string'
+        unit:
+          type: 'string'
+      required:
+        - 'type'
+        - 'min'
+        - 'max'
+        - 'horizon'
+        - 'interval'
+      type: 'object'
+    ExtractionForecastStep:
+      properties:
+        mean:
+          anyOf:
+            - format: 'double'
+              type: 'number'
+            - type: 'string'
+        median:
+          anyOf:
+            - format: 'double'
+              type: 'number'
+            - type: 'string'
+        p_above:
+          description: 'Probability mass above `max`.'
+          format: 'double'
+          type: 'number'
+        p_below:
+          description: 'Probability mass below `min`.'
+          format: 'double'
+          type: 'number'
+        p10:
+          anyOf:
+            - format: 'double'
+              type: 'number'
+            - type: 'string'
+        p90:
+          anyOf:
+            - format: 'double'
+              type: 'number'
+            - type: 'string'
+        quantiles:
+          description: '99 percentiles, present when the provider is asked for quantiles.'
+          items:
+            anyOf:
+              - format: 'double'
+                type: 'number'
+              - type: 'string'
+          type: 'array'
+        value:
+          anyOf:
+            - format: 'double'
+              type: 'number'
+            - type: 'string'
+            - type: 'null'
+      required:
+        - 'value'
+      type: 'object'
+    ExtractionListAnswer:
+      properties:
+        confidence:
+          format: 'double'
+          type: 'number'
+        guess:
+          description: 'The most likely value even when `value` is null because `p_null` crossed the threshold.'
+          items:
+            anyOf:
+              - type: 'string'
+              - format: 'double'
+                type: 'number'
+          type: 'array'
+        p_null:
+          description: 'Probability that the state contains nothing for this field.'
+          format: 'double'
+          type: 'number'
+        source:
+          description: 'Set to `image` when the answer was read from an image rather than the state text.'
+          enum:
+            - 'state'
+            - 'image'
+          type: 'string'
+        spans:
+          items:
+            description: 'Unicode code point offsets [start, end) into the state text: index code points (not UTF-16 code units or UTF-8 bytes), so an emoji or accented letter counts once.'
+            items:
+              type: 'integer'
+            maxItems: 2
+            minItems: 2
+            type: 'array'
+          type: 'array'
+        spell_confidence:
+          description: 'Confidence in the spelling of text read from an image.'
+          format: 'double'
+          type: 'number'
+        type:
+          enum:
+            - 'list'
+          type: 'string'
+        value:
+          items:
+            anyOf:
+              - type: 'string'
+              - format: 'double'
+                type: 'number'
+          type:
+            - 'array'
+            - 'null'
+      required:
+        - 'type'
+        - 'value'
+      type: 'object'
+    ExtractionListField:
+      properties:
+        decimals:
+          description: 'Decimal places kept in `value`.'
+          maximum: 6
+          minimum: 0
+          type: 'integer'
+        instructions:
+          description: 'What the field should contain.'
+          type: 'string'
+        items:
+          enum:
+            - 'text'
+            - 'number'
+            - 'date'
+          type: 'string'
+        null_threshold:
+          description: 'Probability of null above which `value` is null. Default 0.5.'
+          format: 'double'
+          maximum: 1
+          minimum: 0
+          type: 'number'
+        type:
+          enum:
+            - 'list'
+          type: 'string'
+      required:
+        - 'type'
+        - 'items'
+      type: 'object'
+    ExtractionNumberAnswer:
+      properties:
+        confidence:
+          format: 'double'
+          type: 'number'
+        guess:
+          description: 'The most likely value even when `value` is null because `p_null` crossed the threshold.'
+          format: 'double'
+          type: 'number'
+        p_null:
+          description: 'Probability that the state contains nothing for this field.'
+          format: 'double'
+          type: 'number'
+        source:
+          description: 'Set to `image` when the answer was read from an image rather than the state text.'
+          enum:
+            - 'state'
+            - 'image'
+          type: 'string'
+        span:
+          description: 'Unicode code point offsets [start, end) into the state text: index code points (not UTF-16 code units or UTF-8 bytes), so an emoji or accented letter counts once.'
+          items:
+            type: 'integer'
+          maxItems: 2
+          minItems: 2
+          type: 'array'
+        spell_confidence:
+          description: 'Confidence in the spelling of text read from an image.'
+          format: 'double'
+          type: 'number'
+        type:
+          enum:
+            - 'number'
+          type: 'string'
+        value:
+          format: 'double'
+          type:
+            - 'number'
+            - 'null'
+      required:
+        - 'type'
+        - 'value'
+      type: 'object'
+    ExtractionNumberField:
+      properties:
+        decimals:
+          description: 'Decimal places kept in `value`.'
+          maximum: 6
+          minimum: 0
+          type: 'integer'
+        instructions:
+          description: 'What the field should contain.'
+          type: 'string'
+        integer:
+          type: 'boolean'
+        null_threshold:
+          description: 'Probability of null above which `value` is null. Default 0.5.'
+          format: 'double'
+          maximum: 1
+          minimum: 0
+          type: 'number'
+        type:
+          enum:
+            - 'number'
+          type: 'string'
+        unit:
+          type: 'string'
+      required:
+        - 'type'
+      type: 'object'
+    ExtractionsRequest:
+      properties:
+        assets:
+          additionalProperties:
+            $ref: '#/components/schemas/DecisionsImageAsset'
+          description: 'Images keyed by reference string, as in TypeSafe''s API. Write a reference wherever the image belongs in `state`, `instructions`, or `criteria`; every asset must be referenced at least once. Jev reads a reference as a whole string value or inside longer text. Other Decisions models read a whole-string reference wherever they read an `image_url` part and reject a reference inside longer text.'
+          type: 'object'
+        fields:
+          additionalProperties:
+            description: 'A typed field to extract, compute, estimate or forecast from the state. Which types a model answers is model-specific; unsupported types are rejected with 400.'
+            discriminator:
+              mapping:
+                date: '#/components/schemas/ExtractionDateField'
+                datetime: '#/components/schemas/ExtractionDatetimeField'
+                duration: '#/components/schemas/ExtractionDurationField'
+                estimate: '#/components/schemas/ExtractionEstimateField'
+                forecast: '#/components/schemas/ExtractionForecastField'
+                list: '#/components/schemas/ExtractionListField'
+                number: '#/components/schemas/ExtractionNumberField'
+                text: '#/components/schemas/ExtractionTextField'
+                time: '#/components/schemas/ExtractionTimeField'
+              propertyName: 'type'
+            oneOf:
+              - $ref: '#/components/schemas/ExtractionTextField'
+              - $ref: '#/components/schemas/ExtractionNumberField'
+              - $ref: '#/components/schemas/ExtractionDateField'
+              - $ref: '#/components/schemas/ExtractionTimeField'
+              - $ref: '#/components/schemas/ExtractionDatetimeField'
+              - $ref: '#/components/schemas/ExtractionDurationField'
+              - $ref: '#/components/schemas/ExtractionListField'
+              - $ref: '#/components/schemas/ExtractionEstimateField'
+              - $ref: '#/components/schemas/ExtractionForecastField'
+          description: 'Map of field name to typed field spec.'
+          type: 'object'
+        model:
+          type: 'string'
+        provider:
+          allOf:
+            - $ref: '#/components/schemas/ProviderPreferences'
+            - description: 'Provider routing preferences for the request.'
+        reference_date:
+          description: 'ISO date that anchors dates written without a year.'
+          pattern: '^\d{4}-\d{2}-\d{2}$'
+          type: 'string'
+        session_id:
+          description: 'A unique identifier for grouping related requests (e.g., a conversation or agent workflow). Used for observability grouping in Broadcast and private logging; never sent to the provider. If provided in both the request body and the x-session-id header, the body value takes precedence. Maximum of 256 characters.'
+          example: 'session-1234'
+          maxLength: 256
+          type: 'string'
+        state:
+          description: 'The text to read from. May be empty only when the request carries image assets.'
+          type: 'string'
+        trace:
+          $ref: '#/components/schemas/TraceConfig'
+        user:
+          maxLength: 256
+          type: 'string'
+      required:
+        - 'model'
+        - 'state'
+        - 'fields'
+      type: 'object'
+    ExtractionsResponse:
+      properties:
+        answers:
+          additionalProperties:
+            description: 'One answer per requested field. `value` is null when the state does not determine it.'
+            discriminator:
+              mapping:
+                date: '#/components/schemas/ExtractionDateAnswer'
+                datetime: '#/components/schemas/ExtractionDatetimeAnswer'
+                duration: '#/components/schemas/ExtractionDurationAnswer'
+                estimate: '#/components/schemas/ExtractionEstimateAnswer'
+                forecast: '#/components/schemas/ExtractionForecastAnswer'
+                list: '#/components/schemas/ExtractionListAnswer'
+                number: '#/components/schemas/ExtractionNumberAnswer'
+                text: '#/components/schemas/ExtractionTextAnswer'
+                time: '#/components/schemas/ExtractionTimeAnswer'
+              propertyName: 'type'
+            oneOf:
+              - $ref: '#/components/schemas/ExtractionTextAnswer'
+              - $ref: '#/components/schemas/ExtractionNumberAnswer'
+              - $ref: '#/components/schemas/ExtractionDateAnswer'
+              - $ref: '#/components/schemas/ExtractionTimeAnswer'
+              - $ref: '#/components/schemas/ExtractionDatetimeAnswer'
+              - $ref: '#/components/schemas/ExtractionDurationAnswer'
+              - $ref: '#/components/schemas/ExtractionListAnswer'
+              - $ref: '#/components/schemas/ExtractionEstimateAnswer'
+              - $ref: '#/components/schemas/ExtractionForecastAnswer'
+          type: 'object'
+        id:
+          type: 'string'
+        model:
+          type: 'string'
+        provider:
+          type: 'string'
+        state_text:
+          description: 'The text that spans index into, when requested through provider options.'
+          type:
+            - 'string'
+            - 'null'
+        truncated:
+          description: 'True when the provider read only a prefix of the state.'
+          type: 'boolean'
+        usage:
+          $ref: '#/components/schemas/ExtractionsUsage'
+      required:
+        - 'model'
+        - 'answers'
+        - 'usage'
+      type: 'object'
+    ExtractionsUsage:
+      properties:
+        cost:
+          format: 'double'
+          type: 'number'
+        image_tokens:
+          type: 'integer'
+        input_tokens:
+          type: 'integer'
+        output_tokens:
+          type: 'integer'
+        passes:
+          description: 'Number of upstream passes when the fields did not fit in one.'
+          type: 'integer'
+        schema_tokens:
+          type: 'integer'
+        state_tokens:
+          type: 'integer'
+      required:
+        - 'input_tokens'
+        - 'output_tokens'
+      type: 'object'
+    ExtractionTextAnswer:
+      properties:
+        confidence:
+          format: 'double'
+          type: 'number'
+        guess:
+          description: 'The most likely value even when `value` is null because `p_null` crossed the threshold.'
+          type: 'string'
+        p_null:
+          description: 'Probability that the state contains nothing for this field.'
+          format: 'double'
+          type: 'number'
+        source:
+          description: 'Set to `image` when the answer was read from an image rather than the state text.'
+          enum:
+            - 'state'
+            - 'image'
+          type: 'string'
+        span:
+          description: 'Unicode code point offsets [start, end) into the state text: index code points (not UTF-16 code units or UTF-8 bytes), so an emoji or accented letter counts once.'
+          items:
+            type: 'integer'
+          maxItems: 2
+          minItems: 2
+          type: 'array'
+        spell_confidence:
+          description: 'Confidence in the spelling of text read from an image.'
+          format: 'double'
+          type: 'number'
+        type:
+          enum:
+            - 'text'
+          type: 'string'
+        value:
+          type:
+            - 'string'
+            - 'null'
+      required:
+        - 'type'
+        - 'value'
+      type: 'object'
+    ExtractionTextField:
+      properties:
+        instructions:
+          description: 'What the field should contain.'
+          type: 'string'
+        null_threshold:
+          description: 'Probability of null above which `value` is null. Default 0.5.'
+          format: 'double'
+          maximum: 1
+          minimum: 0
+          type: 'number'
+        type:
+          enum:
+            - 'text'
+          type: 'string'
+      required:
+        - 'type'
+      type: 'object'
+    ExtractionTimeAnswer:
+      properties:
+        confidence:
+          format: 'double'
+          type: 'number'
+        guess:
+          description: 'The most likely value even when `value` is null because `p_null` crossed the threshold.'
+          type: 'string'
+        p_null:
+          description: 'Probability that the state contains nothing for this field.'
+          format: 'double'
+          type: 'number'
+        source:
+          description: 'Set to `image` when the answer was read from an image rather than the state text.'
+          enum:
+            - 'state'
+            - 'image'
+          type: 'string'
+        span:
+          description: 'Unicode code point offsets [start, end) into the state text: index code points (not UTF-16 code units or UTF-8 bytes), so an emoji or accented letter counts once.'
+          items:
+            type: 'integer'
+          maxItems: 2
+          minItems: 2
+          type: 'array'
+        spell_confidence:
+          description: 'Confidence in the spelling of text read from an image.'
+          format: 'double'
+          type: 'number'
+        type:
+          enum:
+            - 'time'
+          type: 'string'
+        value:
+          type:
+            - 'string'
+            - 'null'
+      required:
+        - 'type'
+        - 'value'
+      type: 'object'
+    ExtractionTimeField:
+      properties:
+        instructions:
+          description: 'What the field should contain.'
+          type: 'string'
+        null_threshold:
+          description: 'Probability of null above which `value` is null. Default 0.5.'
+          format: 'double'
+          maximum: 1
+          minimum: 0
+          type: 'number'
+        type:
+          enum:
+            - 'time'
+          type: 'string'
+      required:
+        - 'type'
+      type: 'object'
     FailableToolCallStatus:
       enum:
         - 'in_progress'
@@ -13109,6 +14017,7 @@ components:
                 - 'embeddings'
                 - 'rerank'
                 - 'decisions'
+                - 'extractions'
                 - 'video'
                 - 'tts'
                 - 'stt'
@@ -35639,6 +36548,223 @@ paths:
       tags:
         - 'alpha.decisions'
       x-speakeasy-name-override: 'create'
+  /api/alpha/extractions:
+    post:
+      description: 'Extracts, computes, estimates or forecasts typed fields from a state string and image assets using an extraction-style System One model. Alpha: the shape is not stable.'
+      operationId: 'createApiAlphaExtractions'
+      requestBody:
+        content:
+          application/json:
+            example:
+              fields:
+                contacts:
+                  items: 'text'
+                  type: 'list'
+                days_to_pay:
+                  max: 120
+                  min: 0
+                  step: 1
+                  type: 'estimate'
+                due_date:
+                  instructions: 'Issue date plus the net payment days'
+                  type: 'date'
+                invoice_number:
+                  type: 'text'
+                total:
+                  decimals: 2
+                  type: 'number'
+                  unit: 'USD'
+              model: 'cloudflare/clairic'
+              reference_date: '2026-10-28'
+              state: 'Invoice INV-2291 issued 2026-09-02, net 30. Contacts: Dana Ruiz, Priya Shah. Total $1080.'
+            schema:
+              $ref: '#/components/schemas/ExtractionsRequest'
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              example:
+                answers:
+                  contacts:
+                    confidence: 0.9999
+                    spans:
+                      - - 53
+                        - 62
+                      - - 64
+                        - 74
+                    type: 'list'
+                    value:
+                      - 'Dana Ruiz'
+                      - 'Priya Shah'
+                  days_to_pay:
+                    mean: 29.5
+                    median: 30
+                    p10: 21
+                    p90: 38
+                    type: 'estimate'
+                    value: 30
+                  due_date:
+                    guess: '2026-10-02'
+                    p_null: 1.9e-8
+                    type: 'date'
+                    value: '2026-10-02'
+                  invoice_number:
+                    confidence: 1
+                    guess: 'INV-2291'
+                    p_null: 3.8e-10
+                    span:
+                      - 8
+                      - 16
+                    type: 'text'
+                    value: 'INV-2291'
+                  total:
+                    confidence: 0.9999
+                    guess: 1080
+                    p_null: 2.3e-8
+                    type: 'number'
+                    value: 1080
+                id: 'gen-dec-1793251006-X5e5eKGQdvR9rblyX250'
+                model: 'cloudflare/clairic'
+                provider: 'Cloudflare'
+                truncated: false
+                usage:
+                  cost: 0.0000655
+                  image_tokens: 0
+                  input_tokens: 655
+                  output_tokens: 0
+                  passes: 3
+                  schema_tokens: 472
+                  state_tokens: 61
+              schema:
+                $ref: '#/components/schemas/ExtractionsResponse'
+          description: 'Extractions response'
+        '400':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 400
+                  message: 'Invalid request parameters'
+              schema:
+                $ref: '#/components/schemas/BadRequestResponse'
+          description: 'Bad Request - Invalid request parameters or malformed input'
+        '401':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 401
+                  message: 'Missing Authentication header'
+              schema:
+                $ref: '#/components/schemas/UnauthorizedResponse'
+          description: 'Unauthorized - Authentication required or invalid credentials'
+        '402':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 402
+                  message: 'Insufficient credits. Add more using https://openrouter.ai/credits'
+              schema:
+                $ref: '#/components/schemas/PaymentRequiredResponse'
+          description: 'Payment Required - Insufficient credits or quota to complete request'
+        '403':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 403
+                  message: 'Only management keys can perform this operation'
+              schema:
+                $ref: '#/components/schemas/ForbiddenResponse'
+          description: 'Forbidden - Authentication successful but insufficient permissions'
+        '404':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 404
+                  message: 'Resource not found'
+              schema:
+                $ref: '#/components/schemas/NotFoundResponse'
+          description: 'Not Found - Resource does not exist'
+        '413':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 413
+                  message: 'Request payload too large'
+              schema:
+                $ref: '#/components/schemas/PayloadTooLargeResponse'
+          description: 'Payload Too Large - Request payload exceeds size limits'
+        '429':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 429
+                  message: 'Rate limit exceeded'
+              schema:
+                $ref: '#/components/schemas/TooManyRequestsResponse'
+          description: 'Too Many Requests - Rate limit exceeded'
+        '500':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 500
+                  message: 'Internal Server Error'
+              schema:
+                $ref: '#/components/schemas/InternalServerResponse'
+          description: 'Internal Server Error - Unexpected server error'
+        '502':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 502
+                  message: 'Provider returned error'
+              schema:
+                $ref: '#/components/schemas/BadGatewayResponse'
+          description: 'Bad Gateway - Provider/upstream API failure'
+        '503':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 503
+                  message: 'Service temporarily unavailable'
+              schema:
+                $ref: '#/components/schemas/ServiceUnavailableResponse'
+          description: 'Service Unavailable - Service temporarily unavailable'
+        '524':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 524
+                  message: 'Request timed out. Please try again later.'
+              schema:
+                $ref: '#/components/schemas/EdgeNetworkTimeoutResponse'
+          description: 'Infrastructure Timeout - Provider request timed out at edge network'
+        '529':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 529
+                  message: 'Provider returned error'
+              schema:
+                $ref: '#/components/schemas/ProviderOverloadedResponse'
+          description: 'Provider Overloaded - Provider is temporarily overloaded'
+      servers:
+        - url: 'https://openrouter.ai'
+      summary: 'Submit an Extractions request'
+      tags:
+        - 'alpha.extractions'
+      x-speakeasy-name-override: 'create'
   /audio/speech:
     post:
       description: 'Synthesizes audio from the input text. Returns a raw audio bytestream in the requested format (e.g. mp3, pcm, wav).'
@@ -54668,6 +55794,8 @@ tags:
     name: 'Workspaces'
   - description: 'Alpha feature endpoints for Decisions requests'
     name: 'alpha.decisions'
+  - description: 'Alpha feature endpoints for Extractions requests'
+    name: 'alpha.extractions'
 x-retry-strategy:
   initialDelay: 500
   maxAttempts: 3
