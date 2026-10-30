@@ -1,19 +1,19 @@
 lockVersion: ""
 id: ""
 management:
-  docChecksum: 40557a14776ea005282ec0d42ee591f1
+  docChecksum: 2035b8c4508c5267516f242071925582
   docVersion: 1.0.0
   speakeasyVersion: 1.803.2
   generationVersion: 2.950.13
-  releaseVersion: 1.5.29
-  configChecksum: 95854203d6398675e817eb3e70939595
+  releaseVersion: 1.5.30
+  configChecksum: a201cf9b651e2ad77ab05f10cfbc73c5
   repoURL: https://github.com/OpenRouterTeam/typescript-sdk.git
   installationURL: https://github.com/OpenRouterTeam/typescript-sdk
   published: true
 persistentEdits:
-  generation_id: ca168c1d-d22e-4e36-a03d-6115595aaa33
-  pristine_commit_hash: 08396965e94f4a183551c33609a678b4397d2ce1
-  pristine_tree_hash: 7d69315e87ecc74c652e29f880a65a4d3c2ca38d
+  generation_id: 223df3be-eea1-426e-bb01-5cc3c8598685
+  pristine_commit_hash: f51ae28c637ba8818bf3195dea0a9cc2499aca6f
+  pristine_tree_hash: 9e48c1b5002ee6a7dfea729859c2705563809a11
 features:
   typescript:
     acceptHeaders: 2.81.2
@@ -7578,8 +7578,8 @@ trackedFiles:
     pristine_git_object: 20a6bbf7f3b82c286ffeab05843eb22a3df1c16e
   docs/models/model.mdx:
     id: 45d813316ba3
-    last_write_checksum: sha1:9e2c36077aeae971b7b2545fa5881673f4a55ee9
-    pristine_git_object: c44bfa612b75679474adc9c78d53ccc05ad9becd
+    last_write_checksum: sha1:fbbabe79b723a52512cefb43a1f6a2ff2708b11a
+    pristine_git_object: 2f016a5d0b1812accb443a3448cef9a9cef1a9d4
   docs/models/modelaliastarget.mdx:
     id: ab4119151688
     last_write_checksum: sha1:fcdced5013872add146766d3e6de4b5da9390833
@@ -7631,8 +7631,8 @@ trackedFiles:
     deleted: true
   docs/models/modelresponse.mdx:
     id: b41c751b5708
-    last_write_checksum: sha1:cddffd99316e209461b47c2c7fc22989ca30f5f8
-    pristine_git_object: e54cdb70fc9ac704fa408dd812d7f3cdd23517bc
+    last_write_checksum: sha1:911a12a7848d7f7e5610a9b07aeb57ee9ed2a63b
+    pristine_git_object: ceca43a5e0d19729f5320b7b47e2dec9f1420af4
   docs/models/modelscountresponse.mdx:
     id: 9ce251dc48fa
     last_write_checksum: sha1:0cff3e8b6b3a81f304865ec0a168a7c0018098e1
@@ -7648,8 +7648,8 @@ trackedFiles:
     pristine_git_object: d7dff46eef5200f916f309d3dbb9ec88287b2ff3
   docs/models/modelslistresponse.mdx:
     id: e4fca550ce24
-    last_write_checksum: sha1:f21a4fd5f351ea29ff0c5d070fac7ca0568defe8
-    pristine_git_object: de27b649d479c3b6106f77feb41bd39dd89c555e
+    last_write_checksum: sha1:24bfefbd1157cb26f2359c14ac354cefc0451f66
+    pristine_git_object: 2a14e36bfe5ee3c0e09a04f3b055bbede5dcee51
   docs/models/modelslistresponselinks.mdx:
     id: 1d4e86f175c9
     last_write_checksum: sha1:a52272c2b38da6f344c1acdf126c98e8c591cbae
@@ -8689,8 +8689,8 @@ trackedFiles:
     pristine_git_object: 7fc6369e8469929e148866d465497b798ddbcc31
   docs/models/operations/client.mdx:
     id: fbc92d03f310
-    last_write_checksum: sha1:98751414f97f1553d7a973ee9799837b928182a6
-    pristine_git_object: 888acee4fde89c27c5c7e099a34e7768964cec42
+    last_write_checksum: sha1:7ed694bf15fe5d588a2effb1a3b9522febd1fe32
+    pristine_git_object: 51fa375b83e18d5238272295e539c7203a150464
   docs/models/operations/content.mdx:
     id: 3885c021e578
     last_write_checksum: sha1:ea2b60b475e1009a53fadc6944658de69e81a298
@@ -9797,8 +9797,8 @@ trackedFiles:
     pristine_git_object: 42e7be686cb55fdb8008d6a53e004f73188c6998
   docs/models/operations/getmodelsresponse.mdx:
     id: bbb01f4c5cbd
-    last_write_checksum: sha1:616e80e1ecb16e5f373b3f223da8e37ea8c148db
-    pristine_git_object: ea9f80090a505ab29035c5146d609bc798ed7c10
+    last_write_checksum: sha1:e32c796afa2bf534119fc27bb8ff3df86e91e5d1
+    pristine_git_object: 7283df905d175177b24412b30312c5b9d03ed12d
   docs/models/operations/getmodelssort.md:
     id: 3f59089363cd
     last_write_checksum: sha1:a88657099b5d9b6017fb364dca69b25a8fdbf91d
@@ -10142,8 +10142,8 @@ trackedFiles:
     pristine_git_object: 92556aad511a9a0fd01458ff00859395acffa09a
   docs/models/operations/listembeddingsmodelsresponse.mdx:
     id: 6e67db4a0711
-    last_write_checksum: sha1:f6332cb8199c9686ef9e19bed25b50bdae9e5a26
-    pristine_git_object: 0dc33bb2f28588eeef7a0d7c66ac9edfd1f7021b
+    last_write_checksum: sha1:5ff06506f8865e4ba974cbeaa6fbf139cce857c9
+    pristine_git_object: 3e6c6cd33ee3a2fdb917c43c90577f4b71f577fb
   docs/models/operations/listendpointsglobals.mdx:
     id: 1c22e9e770c4
     last_write_checksum: sha1:7f826d4838942edafdd7ea78052ac53edbd69fa6
@@ -10371,12 +10371,12 @@ trackedFiles:
     pristine_git_object: bb86b366108309b366780447688bd1f416b7f925
   docs/models/operations/listmodelsuserrequest.mdx:
     id: 05ad0997f444
-    last_write_checksum: sha1:560a704d20e0395cde9dd6c0b245ab84b2c63bc1
-    pristine_git_object: b48683d988d3537d4c7993ed24c7b9e8b5f344ed
+    last_write_checksum: sha1:162b1a01b44703d99b07b3635068160eda81c061
+    pristine_git_object: 7537421de903cba72958bc141039b7644d447407
   docs/models/operations/listmodelsuserresponse.mdx:
     id: d3822e9ceb84
-    last_write_checksum: sha1:515714c18fff8dfdb13ff2ae495e8bdd8d4d9eb6
-    pristine_git_object: dccd86090d077476c88cd04ae4b531ded2220caa
+    last_write_checksum: sha1:6b20412b3c3bf961cad61b4a06665ae38a7e1c87
+    pristine_git_object: 935a50f98aa3721bc6bc1cdcaac187937563d233
   docs/models/operations/listmodelsusersecurity.mdx:
     id: 74e78a19b4b9
     last_write_checksum: sha1:460e5ac48cc89ec091f62863e24da356cb544248
@@ -16031,12 +16031,12 @@ trackedFiles:
     pristine_git_object: 410efafd6a7f50d91ccb87131fedbe0c3d47e15a
   jsr.json:
     id: 7f6ab7767282
-    last_write_checksum: sha1:7e500e3abbe3495b010c3bfa25542c30e59770d8
-    pristine_git_object: fbea6159fdfb04b456af8c02c8878c511a4f62d6
+    last_write_checksum: sha1:56e0cf60a5ef590ea25eed3930350661d1ccceef
+    pristine_git_object: c6c3e2bc80731f047ca48e2f9be5d2e27fa04d08
   package.json:
     id: 7030d0b2f71b
-    last_write_checksum: sha1:3bba6de2b2f56d4caa8ed3d7db64fc8579d3f751
-    pristine_git_object: 3b2b8ff9459bdd8d204b6a1a9c25684b7ab8af2c
+    last_write_checksum: sha1:c10ae896842d25b3d07b08de471ce5c52fa3e342
+    pristine_git_object: 029997537b52f1c533d5c23ba839697ab8074fbb
   src/core.ts:
     id: f431fdbcd144
     last_write_checksum: sha1:5aa66b0b6a5964f3eea7f3098c2eb3c0ee9c0131
@@ -16643,8 +16643,8 @@ trackedFiles:
     pristine_git_object: a187e58707bdb726ca2aff74941efe7493422d4e
   src/lib/config.ts:
     id: 320761608fb3
-    last_write_checksum: sha1:938e18e57c99f682511f93a8173e76d9ad487da8
-    pristine_git_object: f5e69f8de4515fb5b9d82bf94c4cfedc6e287218
+    last_write_checksum: sha1:66ebe77d5373440d8568200bb45e59a7254322a4
+    pristine_git_object: 5148126b206294c5aa1655882fb8d05ffc0826e1
   src/lib/dlv.ts:
     id: b1988214835a
     last_write_checksum: sha1:eaac763b22717206a6199104e0403ed17a4e2711
@@ -18833,8 +18833,8 @@ trackedFiles:
     pristine_git_object: fe01365b2f672e05779601a08c80f7e8eee154e7
   src/models/model.ts:
     id: b99d4c14e794
-    last_write_checksum: sha1:5b8446cfea4643d848898072767ab8766db75541
-    pristine_git_object: daeac6f44391ca58dd1370aca5c8c3c6fee857ef
+    last_write_checksum: sha1:1091082e5fc06e99a9fa5f2c922d3a6595236e25
+    pristine_git_object: 15789ddd05c66c7d761e03700ec80bb8f39dbaa3
   src/models/modelaliastarget.ts:
     id: 19d90882812d
     last_write_checksum: sha1:5f387329f1ab9864a7439012493e74f358facbeb
@@ -19513,8 +19513,8 @@ trackedFiles:
     pristine_git_object: 3fe643e63d015a44c385ba4c14fc98397e4fb730
   src/models/operations/listmodelsuser.ts:
     id: 0846aac6be02
-    last_write_checksum: sha1:7d1a98d83d8b9447b3edabc1b0365a1a0769d30b
-    pristine_git_object: 50470a8a0d9514469c366df08d063ebd39d88210
+    last_write_checksum: sha1:6a89e229f23aa21793ba77ab44aeea657998a495
+    pristine_git_object: 52d46ba6700dedc8d73b12abf0e94d70992d27ae
   src/models/operations/listoauthjwks.ts:
     id: 63db6f2762a2
     last_write_checksum: sha1:215a7d15237e1ce2f9e0c6235b602e1c0a97d794
@@ -21317,7 +21317,7 @@ examples:
           limit: 500
       responses:
         "200":
-          application/json: {"data": [{"architecture": {"input_modalities": ["text"], "modality": "text->text", "output_modalities": ["text"]}, "canonical_slug": "openai/gpt-4", "context_length": 8192, "created": 1692901234, "default_parameters": null, "id": "openai/gpt-4", "links": {"details": "/api/v1/models/openai/gpt-4/endpoints"}, "name": "GPT-4", "per_request_limits": null, "pricing": {"completion": "0.00006", "prompt": "0.00003"}, "supported_parameters": ["temperature", "top_p", "max_tokens", "frequency_penalty", "presence_penalty"], "supported_voices": null, "top_provider": {"is_moderated": true}}], "links": {"next": "/api/v1/models?offset=500&limit=500"}, "total_count": 150}
+          application/json: {"data": [{"architecture": {"input_modalities": ["text"], "modality": "text->text", "output_modalities": ["text"]}, "canonical_slug": "openai/gpt-4", "context_length": 8192, "created": 1692901234, "default_parameters": null, "endpoints": ["/api/v1/chat/completions", "/api/v1/completions", "/api/v1/messages", "/api/v1/responses"], "id": "openai/gpt-4", "links": {"details": "/api/v1/models/openai/gpt-4/endpoints"}, "name": "GPT-4", "per_request_limits": null, "pricing": {"completion": "0.00006", "prompt": "0.00003"}, "supported_parameters": ["temperature", "top_p", "max_tokens", "frequency_penalty", "presence_penalty"], "supported_voices": null, "top_provider": {"is_moderated": true}}], "links": {"next": "/api/v1/models?offset=500&limit=500"}, "total_count": 150}
         "400":
           application/json: {"error": {"code": 400, "message": "Invalid request parameters"}}
         "500":
@@ -21369,7 +21369,7 @@ examples:
           limit: 500
       responses:
         "200":
-          application/json: {"data": [{"architecture": {"input_modalities": ["text"], "modality": "text->text", "output_modalities": ["text"]}, "canonical_slug": "openai/gpt-4", "context_length": 8192, "created": 1692901234, "default_parameters": null, "id": "openai/gpt-4", "links": {"details": "/api/v1/models/openai/gpt-4/endpoints"}, "name": "GPT-4", "per_request_limits": null, "pricing": {"completion": "0.00006", "prompt": "0.00003"}, "supported_parameters": ["temperature", "top_p", "max_tokens", "frequency_penalty", "presence_penalty"], "supported_voices": null, "top_provider": {"is_moderated": true}}], "links": {"next": "/api/v1/models?offset=500&limit=500"}, "total_count": 150}
+          application/json: {"data": [{"architecture": {"input_modalities": ["text"], "modality": "text->text", "output_modalities": ["text"]}, "canonical_slug": "openai/gpt-4", "context_length": 8192, "created": 1692901234, "default_parameters": null, "endpoints": ["/api/v1/chat/completions", "/api/v1/completions", "/api/v1/messages", "/api/v1/responses"], "id": "openai/gpt-4", "links": {"details": "/api/v1/models/openai/gpt-4/endpoints"}, "name": "GPT-4", "per_request_limits": null, "pricing": {"completion": "0.00006", "prompt": "0.00003"}, "supported_parameters": ["temperature", "top_p", "max_tokens", "frequency_penalty", "presence_penalty"], "supported_voices": null, "top_provider": {"is_moderated": true}}], "links": {"next": "/api/v1/models?offset=500&limit=500"}, "total_count": 150}
         "400":
           application/json: {"error": {"code": 400, "message": "Invalid request parameters"}}
         "500":
@@ -21396,7 +21396,7 @@ examples:
           limit: 500
       responses:
         "200":
-          application/json: {"data": [{"architecture": {"input_modalities": ["text"], "modality": "text->text", "output_modalities": ["text"]}, "canonical_slug": "openai/gpt-4", "context_length": 8192, "created": 1692901234, "default_parameters": null, "id": "openai/gpt-4", "links": {"details": "/api/v1/models/openai/gpt-4/endpoints"}, "name": "GPT-4", "per_request_limits": null, "pricing": {"completion": "0.00006", "prompt": "0.00003"}, "supported_parameters": ["temperature", "top_p", "max_tokens", "frequency_penalty", "presence_penalty"], "supported_voices": null, "top_provider": {"is_moderated": true}}], "links": {"next": "/api/v1/models?offset=500&limit=500"}, "total_count": 150}
+          application/json: {"data": [{"architecture": {"input_modalities": ["text"], "modality": "text->text", "output_modalities": ["text"]}, "canonical_slug": "openai/gpt-4", "context_length": 8192, "created": 1692901234, "default_parameters": null, "endpoints": ["/api/v1/chat/completions", "/api/v1/completions", "/api/v1/messages", "/api/v1/responses"], "id": "openai/gpt-4", "links": {"details": "/api/v1/models/openai/gpt-4/endpoints"}, "name": "GPT-4", "per_request_limits": null, "pricing": {"completion": "0.00006", "prompt": "0.00003"}, "supported_parameters": ["temperature", "top_p", "max_tokens", "frequency_penalty", "presence_penalty"], "supported_voices": null, "top_provider": {"is_moderated": true}}], "links": {"next": "/api/v1/models?offset=500&limit=500"}, "total_count": 150}
         "401":
           application/json: {"error": {"code": 401, "message": "Missing Authentication header"}}
         "404":
@@ -22626,7 +22626,7 @@ examples:
           slug: "gpt-4"
       responses:
         "200":
-          application/json: {"data": {"architecture": {"input_modalities": ["text"], "modality": "text->text", "output_modalities": ["text"]}, "canonical_slug": "openai/gpt-4", "context_length": 8192, "created": 1692901234, "default_parameters": null, "id": "openai/gpt-4", "links": {"details": "/api/v1/models/openai/gpt-4/endpoints"}, "name": "GPT-4", "per_request_limits": null, "pricing": {"completion": "0.00006", "prompt": "0.00003"}, "supported_parameters": ["temperature", "top_p", "max_tokens"], "supported_voices": null, "top_provider": {"is_moderated": true}}}
+          application/json: {"data": {"architecture": {"input_modalities": ["text"], "modality": "text->text", "output_modalities": ["text"]}, "canonical_slug": "openai/gpt-4", "context_length": 8192, "created": 1692901234, "default_parameters": null, "endpoints": ["/api/v1/chat/completions", "/api/v1/completions", "/api/v1/messages", "/api/v1/responses"], "id": "openai/gpt-4", "links": {"details": "/api/v1/models/openai/gpt-4/endpoints"}, "name": "GPT-4", "per_request_limits": null, "pricing": {"completion": "0.00006", "prompt": "0.00003"}, "supported_parameters": ["temperature", "top_p", "max_tokens"], "supported_voices": null, "top_provider": {"is_moderated": true}}}
         "404":
           application/json: {"error": {"code": 404, "message": "Resource not found"}}
         "500":
@@ -25708,4 +25708,9 @@ examples:
         "529":
           application/json: {"error": {"code": 529, "message": "Provider returned error"}}
 examplesVersion: 1.0.2
-releaseNotes: "## Typescript SDK Changes:\n* `openrouter.alpha.extractions.create()`: \n  *  `request.extractionsRequest.assets.Map<ExtractionAsset>` **Changed**\n  *  `response.answers.Map<answers>` **Changed**\n"
+releaseNotes: |
+  ## Typescript SDK Changes:
+  * `openrouter.embeddings.listModels()`:  `response.data[].endpoints` **Added**
+  * `openrouter.models.get()`:  `response.data.endpoints` **Added**
+  * `openrouter.models.list()`:  `response.data[].endpoints` **Added**
+  * `openrouter.models.listForUser()`:  `response.data[].endpoints` **Added**
