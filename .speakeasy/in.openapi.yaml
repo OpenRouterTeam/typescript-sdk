@@ -23424,6 +23424,23 @@ components:
       allOf:
         - $ref: '#/components/schemas/BaseResponsesResult'
         - properties:
+            access_programs:
+              default: null
+              description: 'Access program the upstream provider reported for this response (OpenAI `access_programs`). `null` when the provider reported none, including OpenAI''s implicit Standard program.'
+              example:
+                cyber: 'standard'
+              properties:
+                cyber:
+                  enum:
+                    - 'standard'
+                    - 'daybreak_blue'
+                    - 'daybreak_red'
+                  type: 'string'
+              required:
+                - 'cyber'
+              type:
+                - 'object'
+                - 'null'
             alignment:
               $ref: '#/components/schemas/Alignment'
             error:
@@ -29411,6 +29428,18 @@ components:
             type: 'function'
         top_p: 0.9
       properties:
+        access_programs:
+          description: 'OpenAI access programs for this request. `cyber` selects the Cyber access program: `standard`, `daybreak_blue`, or `daybreak_red`. A program other than `standard` is supported only on BYOK requests that run on your own OpenAI key enrolled in that program; any other endpoint, including OpenRouter''s own OpenAI credentials, rejects it with a 400 error. Requests on OpenRouter''s OpenAI credentials always run `standard`. Omit the field unless your key is enrolled in a Daybreak program.'
+          example:
+            cyber: 'standard'
+          properties:
+            cyber:
+              enum:
+                - 'standard'
+                - 'daybreak_blue'
+                - 'daybreak_red'
+              type: 'string'
+          type: 'object'
         background:
           type:
             - 'boolean'
