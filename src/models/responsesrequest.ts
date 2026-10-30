@@ -301,6 +301,20 @@ import {
   WebSearchServerToolOpenRouter$outboundSchema,
 } from "./websearchservertoolopenrouter.js";
 
+export const ResponsesRequestCyber = {
+  Standard: "standard",
+  DaybreakBlue: "daybreak_blue",
+  DaybreakRed: "daybreak_red",
+} as const;
+export type ResponsesRequestCyber = OpenEnum<typeof ResponsesRequestCyber>;
+
+/**
+ * OpenAI access programs for this request. `cyber` selects the Cyber access program: `standard`, `daybreak_blue`, or `daybreak_red`. A program other than `standard` is supported only on BYOK requests that run on your own OpenAI key enrolled in that program; any other endpoint, including OpenRouter's own OpenAI credentials, rejects it with a 400 error. Requests on OpenRouter's OpenAI credentials always run `standard`. Omit the field unless your key is enrolled in a Daybreak program.
+ */
+export type ResponsesRequestAccessPrograms = {
+  cyber?: ResponsesRequestCyber | undefined;
+};
+
 export type ResponsesRequestPlugin =
   | AlignmentPlugin
   | ArmorPlugin
@@ -425,6 +439,10 @@ export type ResponsesRequestToolUnion =
  * Request schema for Responses endpoint
  */
 export type ResponsesRequest = {
+  /**
+   * OpenAI access programs for this request. `cyber` selects the Cyber access program: `standard`, `daybreak_blue`, or `daybreak_red`. A program other than `standard` is supported only on BYOK requests that run on your own OpenAI key enrolled in that program; any other endpoint, including OpenRouter's own OpenAI credentials, rejects it with a 400 error. Requests on OpenRouter's OpenAI credentials always run `standard`. Omit the field unless your key is enrolled in a Daybreak program.
+   */
+  accessPrograms?: ResponsesRequestAccessPrograms | undefined;
   background?: boolean | null | undefined;
   /**
    * Enable automatic prompt caching. When set at the top level, the system automatically applies cache breakpoints to the last cacheable block in the request. When set on an individual content block, it marks an explicit cache breakpoint; block-level markers also work on OpenAI models that support explicit prompt caching — OpenRouter converts them to the provider's native format.
@@ -584,6 +602,35 @@ export type ResponsesRequest = {
    */
   user?: string | undefined;
 };
+
+/** @internal */
+export const ResponsesRequestCyber$outboundSchema: z.ZodType<
+  string,
+  ResponsesRequestCyber
+> = openEnums.outboundSchema(ResponsesRequestCyber);
+
+/** @internal */
+export type ResponsesRequestAccessPrograms$Outbound = {
+  cyber?: string | undefined;
+};
+
+/** @internal */
+export const ResponsesRequestAccessPrograms$outboundSchema: z.ZodType<
+  ResponsesRequestAccessPrograms$Outbound,
+  ResponsesRequestAccessPrograms
+> = z.object({
+  cyber: ResponsesRequestCyber$outboundSchema.optional(),
+});
+
+export function responsesRequestAccessProgramsToJSON(
+  responsesRequestAccessPrograms: ResponsesRequestAccessPrograms,
+): string {
+  return JSON.stringify(
+    ResponsesRequestAccessPrograms$outboundSchema.parse(
+      responsesRequestAccessPrograms,
+    ),
+  );
+}
 
 /** @internal */
 export type ResponsesRequestPlugin$Outbound =
@@ -870,6 +917,7 @@ export function responsesRequestToolUnionToJSON(
 
 /** @internal */
 export type ResponsesRequest$Outbound = {
+  access_programs?: ResponsesRequestAccessPrograms$Outbound | undefined;
   background?: boolean | null | undefined;
   cache_control?: AnthropicCacheControlDirective$Outbound | undefined;
   debug?: ChatDebugOptions$Outbound | undefined;
@@ -980,6 +1028,8 @@ export const ResponsesRequest$outboundSchema: z.ZodType<
   ResponsesRequest$Outbound,
   ResponsesRequest
 > = z.object({
+  accessPrograms: z.lazy(() => ResponsesRequestAccessPrograms$outboundSchema)
+    .optional(),
   background: z.nullable(z.boolean()).optional(),
   cacheControl: AnthropicCacheControlDirective$outboundSchema.optional(),
   debug: ChatDebugOptions$outboundSchema.optional(),
@@ -1125,6 +1175,7 @@ export const ResponsesRequest$outboundSchema: z.ZodType<
   user: z.string().optional(),
 }).transform((v) => {
   return remap$(v, {
+    accessPrograms: "access_programs",
     cacheControl: "cache_control",
     deferredTools: "deferred_tools",
     frequencyPenalty: "frequency_penalty",

@@ -208,6 +208,22 @@ export type Usage = {
   serverToolUseDetails?: ServerToolUseDetails | null | undefined;
 };
 
+export const OpenResponsesResultCyber = {
+  Standard: "standard",
+  DaybreakBlue: "daybreak_blue",
+  DaybreakRed: "daybreak_red",
+} as const;
+export type OpenResponsesResultCyber = OpenEnum<
+  typeof OpenResponsesResultCyber
+>;
+
+/**
+ * Access program the upstream provider reported for this response (OpenAI `access_programs`). `null` when the provider reported none, including OpenAI's implicit Standard program.
+ */
+export type OpenResponsesResultAccessPrograms = {
+  cyber: OpenResponsesResultCyber;
+};
+
 /**
  * Complete non-streaming response from the Responses API
  */
@@ -281,6 +297,10 @@ export type OpenResponsesResult = {
    */
   usage?: Usage | null | undefined;
   user?: string | null | undefined;
+  /**
+   * Access program the upstream provider reported for this response (OpenAI `access_programs`). `null` when the provider reported none, including OpenAI's implicit Standard program.
+   */
+  accessPrograms?: OpenResponsesResultAccessPrograms | null | undefined;
   /**
    * Beta. The result of the alignment plugin for this request; the shape may change.
    */
@@ -508,6 +528,30 @@ export function usageFromJSON(
 }
 
 /** @internal */
+export const OpenResponsesResultCyber$inboundSchema: z.ZodType<
+  OpenResponsesResultCyber,
+  unknown
+> = openEnums.inboundSchema(OpenResponsesResultCyber);
+
+/** @internal */
+export const OpenResponsesResultAccessPrograms$inboundSchema: z.ZodType<
+  OpenResponsesResultAccessPrograms,
+  unknown
+> = z.object({
+  cyber: OpenResponsesResultCyber$inboundSchema,
+});
+
+export function openResponsesResultAccessProgramsFromJSON(
+  jsonString: string,
+): SafeParseResult<OpenResponsesResultAccessPrograms, SDKValidationError> {
+  return safeParse(
+    jsonString,
+    (x) => OpenResponsesResultAccessPrograms$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'OpenResponsesResultAccessPrograms' from JSON`,
+  );
+}
+
+/** @internal */
 export const OpenResponsesResult$inboundSchema: z.ZodType<
   OpenResponsesResult,
   unknown
@@ -590,6 +634,9 @@ export const OpenResponsesResult$inboundSchema: z.ZodType<
   truncation: z.nullable(Truncation$inboundSchema).optional(),
   usage: z.nullable(z.lazy(() => Usage$inboundSchema)).optional(),
   user: z.nullable(z.string()).optional(),
+  access_programs: z.nullable(
+    z.lazy(() => OpenResponsesResultAccessPrograms$inboundSchema),
+  ).optional(),
   alignment: Alignment$inboundSchema.optional(),
   error_type: ApiErrorType$inboundSchema.optional(),
   openrouter_metadata: OpenRouterMetadata$inboundSchema.optional(),
@@ -613,6 +660,7 @@ export const OpenResponsesResult$inboundSchema: z.ZodType<
     "tool_choice": "toolChoice",
     "top_logprobs": "topLogprobs",
     "top_p": "topP",
+    "access_programs": "accessPrograms",
     "error_type": "errorType",
     "openrouter_metadata": "openrouterMetadata",
     "safeguard_results": "safeguardResults",
