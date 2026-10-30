@@ -5,10 +5,16 @@
 
 import { ClientSDK } from "../lib/sdks.js";
 import { Decisions } from "./decisions.js";
+import { Extractions } from "./extractions.js";
 
 export class Alpha extends ClientSDK {
   private _decisions?: Decisions;
   get decisions(): Decisions {
     return (this._decisions ??= new Decisions(this._options));
+  }
+
+  private _extractions?: Extractions;
+  get extractions(): Extractions {
+    return (this._extractions ??= new Extractions(this._options));
   }
 }

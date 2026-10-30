@@ -1,0 +1,32 @@
+---
+title: "ExtractionForecastField"
+---
+
+## Example Usage
+
+```typescript
+import { ExtractionForecastField } from "@openrouter/sdk/models";
+
+let value: ExtractionForecastField = {
+  horizon: 607770,
+  interval: "day",
+  max: "<value>",
+  min: 8431.08,
+  type: "forecast",
+};
+```
+
+## Fields
+
+| Field                                                                            | Type                                                                             | Required                                                                         | Description                                                                      |
+| -------------------------------------------------------------------------------- | -------------------------------------------------------------------------------- | -------------------------------------------------------------------------------- | -------------------------------------------------------------------------------- |
+| `horizon`                                                                        | *number*                                                                         | ✔️                                                               | Number of forecast steps.                                                        |
+| `instructions`                                                                   | *string*                                                                         | ➖                                                               | What the field should contain.                                                   |
+| `interval`                                                                       | [models.Interval](../models/interval.mdx)                                         | ✔️                                                               | N/A                                                                              |
+| `max`                                                                            | *models.ExtractionForecastFieldMax*                                              | ✔️                                                               | N/A                                                                              |
+| `min`                                                                            | *models.ExtractionForecastFieldMin*                                              | ✔️                                                               | N/A                                                                              |
+| `nullThreshold`                                                                  | *number*                                                                         | ➖                                                               | Probability of null above which `value` is null. Default 0.5.                    |
+| `scale`                                                                          | [models.ExtractionForecastFieldScale](../models/extractionforecastfieldscale.mdx) | ➖                                                               | N/A                                                                              |
+| `step`                                                                           | *models.ExtractionForecastFieldStepUnion*                                        | ➖                                                               | N/A                                                                              |
+| `type`                                                                           | *"forecast"*                                                                     | ✔️                                                               | N/A                                                                              |
+| `unit`                                                                           | *string*                                                                         | ➖                                                               | N/A                                                                              |
