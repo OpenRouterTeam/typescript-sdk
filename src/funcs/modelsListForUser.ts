@@ -123,6 +123,7 @@ async function $do(
   const path = pathToFunc("/models/user")();
 
   const query = encodeFormQuery({
+    "client": payload?.client,
     "limit": payload?.limit,
     "offset": payload?.offset,
     "output_modalities": payload?.output_modalities,

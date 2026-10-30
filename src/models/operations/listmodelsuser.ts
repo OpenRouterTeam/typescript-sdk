@@ -60,6 +60,19 @@ export const ListModelsUserSort = {
  */
 export type ListModelsUserSort = OpenEnum<typeof ListModelsUserSort>;
 
+/**
+ * Filter models and presets by the named harness's eligibility policy: tool calling is required, and when one of your guardrails sets `enforce_first_party_harness_models`, only the harness vendor's own models remain (OpenAI for codex, Anthropic for claude_code and claude_desktop). This filter doesn't apply the harness's ranking, caps or Claude Desktop model ID aliases, so returned IDs stay routable. One of: claude_code, claude_desktop, codex. Omit it to get every model you can use.
+ */
+export const Client = {
+  ClaudeCode: "claude_code",
+  ClaudeDesktop: "claude_desktop",
+  Codex: "codex",
+} as const;
+/**
+ * Filter models and presets by the named harness's eligibility policy: tool calling is required, and when one of your guardrails sets `enforce_first_party_harness_models`, only the harness vendor's own models remain (OpenAI for codex, Anthropic for claude_code and claude_desktop). This filter doesn't apply the harness's ranking, caps or Claude Desktop model ID aliases, so returned IDs stay routable. One of: claude_code, claude_desktop, codex. Omit it to get every model you can use.
+ */
+export type Client = OpenEnum<typeof Client>;
+
 export type ListModelsUserRequest = {
   /**
    * The app identifier should be your app's URL and is used as the primary identifier for rankings.
@@ -96,6 +109,10 @@ export type ListModelsUserRequest = {
    * Sort the returned models server-side. Prefer this over fetching the full list and sorting client-side. Options: pricing-low-to-high, pricing-high-to-low (average prompt/completion price), context-high-to-low (context length), throughput-high-to-low, latency-low-to-high (recent median performance), most-popular, top-weekly (tokens processed in the last week), newest (creation date), intelligence-high-to-low, coding-high-to-low, agentic-high-to-low (Artificial Analysis indices), design-arena-elo-high-to-low (best Design Arena ELO across arenas). Models without a score for the chosen benchmark are placed last. When omitted, the existing default ordering is preserved.
    */
   sort?: ListModelsUserSort | undefined;
+  /**
+   * Filter models and presets by the named harness's eligibility policy: tool calling is required, and when one of your guardrails sets `enforce_first_party_harness_models`, only the harness vendor's own models remain (OpenAI for codex, Anthropic for claude_code and claude_desktop). This filter doesn't apply the harness's ranking, caps or Claude Desktop model ID aliases, so returned IDs stay routable. One of: claude_code, claude_desktop, codex. Omit it to get every model you can use.
+   */
+  client?: Client | undefined;
 };
 
 export type ListModelsUserResponse = {
@@ -130,6 +147,10 @@ export const ListModelsUserSort$outboundSchema: z.ZodType<
 > = openEnums.outboundSchema(ListModelsUserSort);
 
 /** @internal */
+export const Client$outboundSchema: z.ZodType<string, Client> = openEnums
+  .outboundSchema(Client);
+
+/** @internal */
 export type ListModelsUserRequest$Outbound = {
   "HTTP-Referer"?: string | undefined;
   appTitle?: string | undefined;
@@ -138,6 +159,7 @@ export type ListModelsUserRequest$Outbound = {
   limit: number;
   output_modalities?: string | undefined;
   sort?: string | undefined;
+  client?: string | undefined;
 };
 
 /** @internal */
@@ -152,6 +174,7 @@ export const ListModelsUserRequest$outboundSchema: z.ZodType<
   limit: z.int().default(500),
   outputModalities: z.string().optional(),
   sort: ListModelsUserSort$outboundSchema.optional(),
+  client: Client$outboundSchema.optional(),
 }).transform((v) => {
   return remap$(v, {
     httpReferer: "HTTP-Referer",
