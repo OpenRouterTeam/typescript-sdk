@@ -55,6 +55,7 @@ let value: ListEndpointsZdrResponse = {
       uptimeLast1d: 99.8,
       uptimeLast30m: 99.5,
       uptimeLast5m: 100,
+      safetyRetention: false,
     },
   ],
 };
@@ -62,6 +63,6 @@ let value: ListEndpointsZdrResponse = {
 
 ## Fields
 
-| Field                                                     | Type                                                      | Required                                                  | Description                                               |
-| --------------------------------------------------------- | --------------------------------------------------------- | --------------------------------------------------------- | --------------------------------------------------------- |
-| `data`                                                    | [models.PublicEndpoint](../../models/publicendpoint.mdx)[] | ✔️                                        | N/A                                                       |
+| Field                                                           | Type                                                            | Required                                                        | Description                                                     |
+| --------------------------------------------------------------- | --------------------------------------------------------------- | --------------------------------------------------------------- | --------------------------------------------------------------- |
+| `data`                                                          | [models.PublicZdrEndpoint](../../models/publiczdrendpoint.mdx)[] | ✔️                                              | N/A                                                             |
