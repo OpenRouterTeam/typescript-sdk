@@ -336,6 +336,7 @@ export * from "./enumcapability.js";
 export * from "./errorevent.js";
 export * from "./externaluser.js";
 export * from "./externaluserresponse.js";
+export * from "./extractionasset.js";
 export * from "./extractiondateanswer.js";
 export * from "./extractiondatefield.js";
 export * from "./extractiondatetimeanswer.js";

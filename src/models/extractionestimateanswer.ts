@@ -27,14 +27,15 @@ export type ExtractionEstimateAnswerP90 = number | string;
 export type ExtractionEstimateAnswerQuantile = number | string;
 
 /**
- * Set to `image` when the answer was read from an image rather than the state text.
+ * Set to `image` or `document` when the answer was read from an image or a PDF rather than the state text.
  */
 export const ExtractionEstimateAnswerSource = {
   State: "state",
   Image: "image",
+  Document: "document",
 } as const;
 /**
- * Set to `image` when the answer was read from an image rather than the state text.
+ * Set to `image` or `document` when the answer was read from an image or a PDF rather than the state text.
  */
 export type ExtractionEstimateAnswerSource = OpenEnum<
   typeof ExtractionEstimateAnswerSource
@@ -69,7 +70,7 @@ export type ExtractionEstimateAnswer = {
    */
   quantiles?: Array<number | string> | undefined;
   /**
-   * Set to `image` when the answer was read from an image rather than the state text.
+   * Set to `image` or `document` when the answer was read from an image or a PDF rather than the state text.
    */
   source?: ExtractionEstimateAnswerSource | undefined;
   /**

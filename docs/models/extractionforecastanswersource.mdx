@@ -2,14 +2,14 @@
 title: "ExtractionForecastAnswerSource"
 ---
 
-Set to `image` when the answer was read from an image rather than the state text.
+Set to `image` or `document` when the answer was read from an image or a PDF rather than the state text.
 
 ## Example Usage
 
 ```typescript
 import { ExtractionForecastAnswerSource } from "@openrouter/sdk/models";
 
-let value: ExtractionForecastAnswerSource = "image";
+let value: ExtractionForecastAnswerSource = "document";
 
 // Open enum: unrecognized values are captured as Unrecognized<string>
 ```
@@ -17,5 +17,5 @@ let value: ExtractionForecastAnswerSource = "image";
 ## Values
 
 ```typescript
-"state" | "image" | Unrecognized<string>
+"state" | "image" | "document" | Unrecognized<string>
 ```

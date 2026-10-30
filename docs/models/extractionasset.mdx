@@ -1,0 +1,24 @@
+---
+title: "ExtractionAsset"
+---
+
+An image or PDF sent once and referenced by its key in the `assets` map. `data_base64` is the file in standard base64 with no `data:` prefix. PDF is read by document models only.
+
+## Example Usage
+
+```typescript
+import { ExtractionAsset } from "@openrouter/sdk/models";
+
+let value: ExtractionAsset = {
+  dataBase64: "<value>",
+  format: "jpeg",
+};
+```
+
+## Fields
+
+| Field                                                              | Type                                                               | Required                                                           | Description                                                        |
+| ------------------------------------------------------------------ | ------------------------------------------------------------------ | ------------------------------------------------------------------ | ------------------------------------------------------------------ |
+| `dataBase64`                                                       | *string*                                                           | ✔️                                                 | N/A                                                                |
+| `format`                                                           | [models.ExtractionAssetFormat](../models/extractionassetformat.mdx) | ✔️                                                 | N/A                                                                |
+| `type`                                                             | [models.ExtractionAssetType](../models/extractionassettype.mdx)     | ➖                                                 | N/A                                                                |
