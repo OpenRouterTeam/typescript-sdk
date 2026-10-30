@@ -30,7 +30,7 @@ import { SDKValidationError } from "./errors/sdkvalidationerror.js";
 /**
  * A Decisions answer using a boolean, choice, score, or image bounding-box evaluation.
  */
-export type Answers =
+export type DecisionsResponseAnswers =
   | DecisionsBoxAnswer
   | DecisionsChoiceAnswer
   | DecisionsNoulAnswer
@@ -59,21 +59,23 @@ export type DecisionsResponse = {
 };
 
 /** @internal */
-export const Answers$inboundSchema: z.ZodType<Answers, unknown> =
-  discriminatedUnion("type", {
-    box: DecisionsBoxAnswer$inboundSchema,
-    choice: DecisionsChoiceAnswer$inboundSchema,
-    noul: DecisionsNoulAnswer$inboundSchema,
-    score: DecisionsScoreAnswer$inboundSchema,
-  });
+export const DecisionsResponseAnswers$inboundSchema: z.ZodType<
+  DecisionsResponseAnswers,
+  unknown
+> = discriminatedUnion("type", {
+  box: DecisionsBoxAnswer$inboundSchema,
+  choice: DecisionsChoiceAnswer$inboundSchema,
+  noul: DecisionsNoulAnswer$inboundSchema,
+  score: DecisionsScoreAnswer$inboundSchema,
+});
 
-export function answersFromJSON(
+export function decisionsResponseAnswersFromJSON(
   jsonString: string,
-): SafeParseResult<Answers, SDKValidationError> {
+): SafeParseResult<DecisionsResponseAnswers, SDKValidationError> {
   return safeParse(
     jsonString,
-    (x) => Answers$inboundSchema.parse(JSON.parse(x)),
-    `Failed to parse 'Answers' from JSON`,
+    (x) => DecisionsResponseAnswers$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'DecisionsResponseAnswers' from JSON`,
   );
 }
 

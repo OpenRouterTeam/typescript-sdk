@@ -23,6 +23,7 @@ export const ApiType = {
   Embeddings: "embeddings",
   Rerank: "rerank",
   Decisions: "decisions",
+  Extractions: "extractions",
   Video: "video",
   TTS: "tts",
   STT: "stt",

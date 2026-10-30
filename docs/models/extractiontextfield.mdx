@@ -1,0 +1,21 @@
+---
+title: "ExtractionTextField"
+---
+
+## Example Usage
+
+```typescript
+import { ExtractionTextField } from "@openrouter/sdk/models";
+
+let value: ExtractionTextField = {
+  type: "text",
+};
+```
+
+## Fields
+
+| Field                                                         | Type                                                          | Required                                                      | Description                                                   |
+| ------------------------------------------------------------- | ------------------------------------------------------------- | ------------------------------------------------------------- | ------------------------------------------------------------- |
+| `instructions`                                                | *string*                                                      | ➖                                            | What the field should contain.                                |
+| `nullThreshold`                                               | *number*                                                      | ➖                                            | Probability of null above which `value` is null. Default 0.5. |
+| `type`                                                        | *"text"*                                                      | ✔️                                            | N/A                                                           |
