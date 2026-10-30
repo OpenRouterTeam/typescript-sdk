@@ -64,7 +64,7 @@ export type ListRequest = {
    */
   offset?: number | null | undefined;
   /**
-   * Filter API keys by workspace ID. By default, keys in the default workspace are returned.
+   * Filter API keys by workspace ID. By default an organization-scoped management key gets the default workspace; a workspace-scoped management key always gets its own workspace and cannot list another.
    */
   workspaceId?: string | undefined;
 };
