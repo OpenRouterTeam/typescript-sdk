@@ -1,0 +1,24 @@
+---
+title: "ExtractionDurationField"
+---
+
+## Example Usage
+
+```typescript
+import { ExtractionDurationField } from "@openrouter/sdk/models";
+
+let value: ExtractionDurationField = {
+  type: "duration",
+};
+```
+
+## Fields
+
+| Field                                                         | Type                                                          | Required                                                      | Description                                                   |
+| ------------------------------------------------------------- | ------------------------------------------------------------- | ------------------------------------------------------------- | ------------------------------------------------------------- |
+| `decimals`                                                    | *number*                                                      | ➖                                            | Decimal places kept in `value`.                               |
+| `instructions`                                                | *string*                                                      | ➖                                            | What the field should contain.                                |
+| `integer`                                                     | *boolean*                                                     | ➖                                            | N/A                                                           |
+| `nullThreshold`                                               | *number*                                                      | ➖                                            | Probability of null above which `value` is null. Default 0.5. |
+| `type`                                                        | *"duration"*                                                  | ✔️                                            | N/A                                                           |
+| `unit`                                                        | *string*                                                      | ➖                                            | seconds, minutes, hours, days, weeks, months or years.        |

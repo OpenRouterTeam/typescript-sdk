@@ -1,0 +1,24 @@
+---
+title: "ExtractionNumberField"
+---
+
+## Example Usage
+
+```typescript
+import { ExtractionNumberField } from "@openrouter/sdk/models";
+
+let value: ExtractionNumberField = {
+  type: "number",
+};
+```
+
+## Fields
+
+| Field                                                         | Type                                                          | Required                                                      | Description                                                   |
+| ------------------------------------------------------------- | ------------------------------------------------------------- | ------------------------------------------------------------- | ------------------------------------------------------------- |
+| `decimals`                                                    | *number*                                                      | ➖                                            | Decimal places kept in `value`.                               |
+| `instructions`                                                | *string*                                                      | ➖                                            | What the field should contain.                                |
+| `integer`                                                     | *boolean*                                                     | ➖                                            | N/A                                                           |
+| `nullThreshold`                                               | *number*                                                      | ➖                                            | Probability of null above which `value` is null. Default 0.5. |
+| `type`                                                        | *"number"*                                                    | ✔️                                            | N/A                                                           |
+| `unit`                                                        | *string*                                                      | ➖                                            | N/A                                                           |

@@ -1,0 +1,30 @@
+---
+title: "ExtractionsResponse"
+---
+
+## Example Usage
+
+```typescript
+import { ExtractionsResponse } from "@openrouter/sdk/models";
+
+let value: ExtractionsResponse = {
+  answers: {},
+  model: "Taurus",
+  usage: {
+    inputTokens: 732971,
+    outputTokens: 947246,
+  },
+};
+```
+
+## Fields
+
+| Field                                                                    | Type                                                                     | Required                                                                 | Description                                                              |
+| ------------------------------------------------------------------------ | ------------------------------------------------------------------------ | ------------------------------------------------------------------------ | ------------------------------------------------------------------------ |
+| `answers`                                                                | Record\<string, *models.ExtractionsResponseAnswers*>                      | ✔️                                                       | N/A                                                                      |
+| `id`                                                                     | *string*                                                                 | ➖                                                       | N/A                                                                      |
+| `model`                                                                  | *string*                                                                 | ✔️                                                       | N/A                                                                      |
+| `provider`                                                               | *string*                                                                 | ➖                                                       | N/A                                                                      |
+| `stateText`                                                              | *string*                                                                 | ➖                                                       | The text that spans index into, when requested through provider options. |
+| `truncated`                                                              | *boolean*                                                                | ➖                                                       | True when the provider read only a prefix of the state.                  |
+| `usage`                                                                  | [models.ExtractionsUsage](../models/extractionsusage.mdx)                 | ✔️                                                       | N/A                                                                      |

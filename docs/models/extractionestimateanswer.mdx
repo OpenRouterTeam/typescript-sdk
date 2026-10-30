@@ -1,0 +1,33 @@
+---
+title: "ExtractionEstimateAnswer"
+---
+
+## Example Usage
+
+```typescript
+import { ExtractionEstimateAnswer } from "@openrouter/sdk/models";
+
+let value: ExtractionEstimateAnswer = {
+  type: "estimate",
+  value: "<value>",
+};
+```
+
+## Fields
+
+| Field                                                                                   | Type                                                                                    | Required                                                                                | Description                                                                             |
+| --------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------- |
+| `confidence`                                                                            | *number*                                                                                | ➖                                                                      | N/A                                                                                     |
+| `guess`                                                                                 | *models.ExtractionEstimateAnswerGuess*                                                  | ➖                                                                      | The most likely value even when `value` is null because `p_null` crossed the threshold. |
+| `mean`                                                                                  | *models.ExtractionEstimateAnswerMean*                                                   | ➖                                                                      | N/A                                                                                     |
+| `median`                                                                                | *models.ExtractionEstimateAnswerMedian*                                                 | ➖                                                                      | N/A                                                                                     |
+| `pAbove`                                                                                | *number*                                                                                | ➖                                                                      | Probability mass above `max`.                                                           |
+| `pBelow`                                                                                | *number*                                                                                | ➖                                                                      | Probability mass below `min`.                                                           |
+| `pNull`                                                                                 | *number*                                                                                | ➖                                                                      | Probability that the state contains nothing for this field.                             |
+| `p10`                                                                                   | *models.ExtractionEstimateAnswerP10*                                                    | ➖                                                                      | N/A                                                                                     |
+| `p90`                                                                                   | *models.ExtractionEstimateAnswerP90*                                                    | ➖                                                                      | N/A                                                                                     |
+| `quantiles`                                                                             | *models.ExtractionEstimateAnswerQuantile*[]                                             | ➖                                                                      | 99 percentiles, present when the provider is asked for quantiles.                       |
+| `source`                                                                                | [models.ExtractionEstimateAnswerSource](../models/extractionestimateanswersource.mdx)    | ➖                                                                      | Set to `image` when the answer was read from an image rather than the state text.       |
+| `spellConfidence`                                                                       | *number*                                                                                | ➖                                                                      | Confidence in the spelling of text read from an image.                                  |
+| `type`                                                                                  | *"estimate"*                                                                            | ✔️                                                                      | N/A                                                                                     |
+| `value`                                                                                 | *models.ExtractionEstimateAnswerValue*                                                  | ✔️                                                                      | N/A                                                                                     |
