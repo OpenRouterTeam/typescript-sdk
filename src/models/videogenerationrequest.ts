@@ -45,7 +45,7 @@ export type VideoGenerationRequestAspectRatio = OpenEnum<
 >;
 
 /**
- * Provider-specific options keyed by provider slug. Only options for the matched provider are forwarded; the rest are ignored. Unrecognized keys are silently dropped.
+ * Provider-specific options keyed by provider slug. The provider segment is case-insensitive; an endpoint tag after `/` must match the endpoint slug exactly. Only options for the matched provider are forwarded; the rest are ignored. Unrecognized keys are silently dropped.
  */
 export type VideoGenerationRequestOptions = {
   oneai?: { [k: string]: any } | undefined;
