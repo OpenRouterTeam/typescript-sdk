@@ -6,67 +6,17 @@
 import * as z from "zod/v4";
 import { remap as remap$ } from "../lib/primitives.js";
 
-export type UpdatePrivateProviderRequestDataPolicy = {
-  /**
-   * Days prompts are retained. Must be `null` unless `retains_prompts` is true.
-   */
-  promptRetentionDays?: number | null | undefined;
-  /**
-   * Whether the provider retains prompts or completions.
-   */
-  retainsPrompts?: boolean | undefined;
-  /**
-   * Whether the provider trains on prompts.
-   */
-  training?: boolean | undefined;
-};
-
 export type UpdatePrivateProviderRequest = {
   /**
    * HTTPS base URL of an OpenAI-compatible API, used by private endpoints under this provider that set no URL of their own. Without it, each endpoint must set its own. Private, internal, metadata and OpenRouter hosts are rejected.
    */
   baseUrl?: string | undefined;
-  dataPolicy?: UpdatePrivateProviderRequestDataPolicy | undefined;
   displayName?: string | undefined;
 };
 
 /** @internal */
-export type UpdatePrivateProviderRequestDataPolicy$Outbound = {
-  prompt_retention_days?: number | null | undefined;
-  retains_prompts?: boolean | undefined;
-  training?: boolean | undefined;
-};
-
-/** @internal */
-export const UpdatePrivateProviderRequestDataPolicy$outboundSchema: z.ZodType<
-  UpdatePrivateProviderRequestDataPolicy$Outbound,
-  UpdatePrivateProviderRequestDataPolicy
-> = z.object({
-  promptRetentionDays: z.nullable(z.int()).optional(),
-  retainsPrompts: z.boolean().optional(),
-  training: z.boolean().optional(),
-}).transform((v) => {
-  return remap$(v, {
-    promptRetentionDays: "prompt_retention_days",
-    retainsPrompts: "retains_prompts",
-  });
-});
-
-export function updatePrivateProviderRequestDataPolicyToJSON(
-  updatePrivateProviderRequestDataPolicy:
-    UpdatePrivateProviderRequestDataPolicy,
-): string {
-  return JSON.stringify(
-    UpdatePrivateProviderRequestDataPolicy$outboundSchema.parse(
-      updatePrivateProviderRequestDataPolicy,
-    ),
-  );
-}
-
-/** @internal */
 export type UpdatePrivateProviderRequest$Outbound = {
   base_url?: string | undefined;
-  data_policy?: UpdatePrivateProviderRequestDataPolicy$Outbound | undefined;
   display_name?: string | undefined;
 };
 
@@ -76,14 +26,10 @@ export const UpdatePrivateProviderRequest$outboundSchema: z.ZodType<
   UpdatePrivateProviderRequest
 > = z.object({
   baseUrl: z.string().optional(),
-  dataPolicy: z.lazy(() =>
-    UpdatePrivateProviderRequestDataPolicy$outboundSchema
-  ).optional(),
   displayName: z.string().optional(),
 }).transform((v) => {
   return remap$(v, {
     baseUrl: "base_url",
-    dataPolicy: "data_policy",
     displayName: "display_name",
   });
 });
