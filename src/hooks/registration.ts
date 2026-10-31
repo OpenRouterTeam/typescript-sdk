@@ -10,4 +10,28 @@ export function initHooks(_hooks: Hooks) {
   // Add hooks by calling hooks.register{ClientInit/BeforeCreateRequest/BeforeRequest/AfterSuccess/AfterError}Hook
   // with an instance of a hook that implements that specific Hook interface
   // Hooks are registered per SDK instance, and are valid for the lifetime of the SDK instance
+  _hooks.registerBeforeCreateRequestHook({
+    beforeCreateRequest(hookCtx, input) {
+      const { httpReferer, xTitle } = hookCtx.options;
+      if (!httpReferer && !xTitle) {
+        return input;
+      }
+
+      const headers = new Headers(input.options?.headers);
+      if (httpReferer && !headers.has("HTTP-Referer")) {
+        headers.set("HTTP-Referer", httpReferer);
+      }
+      if (xTitle && !headers.has("X-Title")) {
+        headers.set("X-Title", xTitle);
+      }
+
+      return {
+        ...input,
+        options: {
+          ...input.options,
+          headers,
+        },
+      };
+    },
+  });
 }
