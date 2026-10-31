@@ -3,7 +3,7 @@
  *
  * This file demonstrates the automatic tool execution feature.
  * When you provide tools with `execute` functions, they are automatically:
- * 1. Validated using Zod schemas
+ * 1. Validated using Zod or any Standard Schema v1 validator
  * 2. Executed when the model calls them
  * 3. Results sent back to the model
  * 4. Process repeats until stopWhen condition is met (default: stepCountIs(5))
