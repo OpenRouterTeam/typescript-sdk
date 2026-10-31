@@ -10455,14 +10455,18 @@ components:
         - 'data'
       type: 'object'
     CreatePrivateProviderRequest:
+      description: 'A private provider serves only your organization, so its endpoints are recorded as retaining no prompts, training on none and publishing none, and pass every data-policy filter your account or guardrails apply.'
+      example:
+        base_url: 'https://inference.example.com/v1'
+        display_name: 'Acme'
+        name: 'Acme'
+        slug: 'acme'
       properties:
         base_url:
           description: 'HTTPS base URL of an OpenAI-compatible API, used by private endpoints under this provider that set no URL of their own. Without it, each endpoint must set its own. Private, internal, metadata and OpenRouter hosts are rejected.'
           example: 'https://inference.example.com/v1'
           minLength: 1
           type: 'string'
-        data_policy:
-          $ref: '#/components/schemas/PrivateProviderDataPolicy'
         display_name:
           description: 'Defaults to `name`.'
           example: 'Acme'
@@ -27353,10 +27357,6 @@ components:
       example:
         base_url: 'https://inference.example.com/v1'
         created_at: '2026-10-06T12:00:00.000Z'
-        data_policy:
-          prompt_retention_days: null
-          retains_prompts: false
-          training: false
         display_name: 'Acme'
         name: 'Acme'
         slug: 'acme'
@@ -27370,29 +27370,6 @@ components:
             - 'null'
         created_at:
           type: 'string'
-        data_policy:
-          description: 'Your declared data policy, or `null` when none was declared.'
-          properties:
-            prompt_retention_days:
-              description: 'Days prompts are retained. Must be `null` unless `retains_prompts` is true.'
-              maximum: 3650
-              minimum: 1
-              type:
-                - 'integer'
-                - 'null'
-            retains_prompts:
-              description: 'Whether the provider retains prompts or completions.'
-              type: 'boolean'
-            training:
-              description: 'Whether the provider trains on prompts.'
-              type: 'boolean'
-          required:
-            - 'training'
-            - 'retains_prompts'
-            - 'prompt_retention_days'
-          type:
-            - 'object'
-            - 'null'
         display_name:
           description: 'Human-readable provider name shown in the UI.'
           example: 'Acme'
@@ -27410,33 +27387,7 @@ components:
         - 'slug'
         - 'display_name'
         - 'base_url'
-        - 'data_policy'
         - 'created_at'
-      type: 'object'
-    PrivateProviderDataPolicy:
-      description: 'Defaults to training on and retaining prompts, the most conservative declaration. Your own declaration; it applies to your own traffic and OpenRouter does not verify it.'
-      example:
-        prompt_retention_days: null
-        retains_prompts: false
-        training: false
-      properties:
-        prompt_retention_days:
-          description: 'Days prompts are retained. Must be `null` unless `retains_prompts` is true.'
-          maximum: 3650
-          minimum: 1
-          type:
-            - 'integer'
-            - 'null'
-        retains_prompts:
-          description: 'Whether the provider retains prompts or completions.'
-          type: 'boolean'
-        training:
-          description: 'Whether the provider trains on prompts.'
-          type: 'boolean'
-      required:
-        - 'training'
-        - 'retains_prompts'
-        - 'prompt_retention_days'
       type: 'object'
     PromptCacheBreakpoint:
       description: 'Marks an explicit prompt-cache boundary on this content block (OpenAI-style). Everything through the block carrying this marker is part of the candidate cached prefix. Supported natively by OpenAI GPT-5.6 and newer; on providers that use Anthropic-style `cache_control`, OpenRouter converts the marker to that format automatically. `ttl` ("30m" or "12h") overrides the request-level `prompt_cache_options.ttl` for this boundary; 12h writes bill at the higher cache-write rate.'
@@ -33916,22 +33867,6 @@ components:
           example: 'https://inference.example.com/v1'
           minLength: 1
           type: 'string'
-        data_policy:
-          properties:
-            prompt_retention_days:
-              description: 'Days prompts are retained. Must be `null` unless `retains_prompts` is true.'
-              maximum: 3650
-              minimum: 1
-              type:
-                - 'integer'
-                - 'null'
-            retains_prompts:
-              description: 'Whether the provider retains prompts or completions.'
-              type: 'boolean'
-            training:
-              description: 'Whether the provider trains on prompts.'
-              type: 'boolean'
-          type: 'object'
         display_name:
           example: 'Acme'
           maxLength: 80
@@ -50212,7 +50147,7 @@ paths:
         - 'Private Providers'
       x-speakeasy-name-override: 'get'
     patch:
-      description: 'Update a private provider’s details or declared data policy. The name and slug cannot change. Refuses (409) a data-policy change while OpenRouter pins the declared policy on one of its endpoints. [Management key](/docs/guides/overview/auth/management-api-keys) required.'
+      description: 'Update a private provider’s display name or base URL. The name and slug cannot change, and the data policy is fixed by OpenRouter, so a body with no editable field is rejected (400). [Management key](/docs/guides/overview/auth/management-api-keys) required.'
       operationId: 'updatePrivateProvider'
       parameters:
         - in: 'path'
