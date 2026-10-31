@@ -9,34 +9,12 @@ import { safeParse } from "../lib/schemas.js";
 import { Result as SafeParseResult } from "../types/fp.js";
 import { SDKValidationError } from "./errors/sdkvalidationerror.js";
 
-/**
- * Your declared data policy, or `null` when none was declared.
- */
-export type PrivateProviderDataPolicy1 = {
-  /**
-   * Days prompts are retained. Must be `null` unless `retains_prompts` is true.
-   */
-  promptRetentionDays: number | null;
-  /**
-   * Whether the provider retains prompts or completions.
-   */
-  retainsPrompts: boolean;
-  /**
-   * Whether the provider trains on prompts.
-   */
-  training: boolean;
-};
-
 export type PrivateProvider = {
   /**
    * HTTPS base URL of an OpenAI-compatible API, used by private endpoints under this provider that set no URL of their own. Without it, each endpoint must set its own. Private, internal, metadata and OpenRouter hosts are rejected.
    */
   baseUrl: string | null;
   createdAt: string;
-  /**
-   * Your declared data policy, or `null` when none was declared.
-   */
-  dataPolicy: PrivateProviderDataPolicy1 | null;
   /**
    * Human-readable provider name shown in the UI.
    */
@@ -52,40 +30,12 @@ export type PrivateProvider = {
 };
 
 /** @internal */
-export const PrivateProviderDataPolicy1$inboundSchema: z.ZodType<
-  PrivateProviderDataPolicy1,
-  unknown
-> = z.object({
-  prompt_retention_days: z.nullable(z.int()),
-  retains_prompts: z.boolean(),
-  training: z.boolean(),
-}).transform((v) => {
-  return remap$(v, {
-    "prompt_retention_days": "promptRetentionDays",
-    "retains_prompts": "retainsPrompts",
-  });
-});
-
-export function privateProviderDataPolicy1FromJSON(
-  jsonString: string,
-): SafeParseResult<PrivateProviderDataPolicy1, SDKValidationError> {
-  return safeParse(
-    jsonString,
-    (x) => PrivateProviderDataPolicy1$inboundSchema.parse(JSON.parse(x)),
-    `Failed to parse 'PrivateProviderDataPolicy1' from JSON`,
-  );
-}
-
-/** @internal */
 export const PrivateProvider$inboundSchema: z.ZodType<
   PrivateProvider,
   unknown
 > = z.object({
   base_url: z.nullable(z.string()),
   created_at: z.string(),
-  data_policy: z.nullable(
-    z.lazy(() => PrivateProviderDataPolicy1$inboundSchema),
-  ),
   display_name: z.string(),
   name: z.string(),
   slug: z.string(),
@@ -93,7 +43,6 @@ export const PrivateProvider$inboundSchema: z.ZodType<
   return remap$(v, {
     "base_url": "baseUrl",
     "created_at": "createdAt",
-    "data_policy": "dataPolicy",
     "display_name": "displayName",
   });
 });

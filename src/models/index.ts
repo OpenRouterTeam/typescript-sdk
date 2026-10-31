@@ -670,7 +670,6 @@ export * from "./privateendpointvalidation.js";
 export * from "./privateendpointvalidationnullable.js";
 export * from "./privateendpointvalidationresponse.js";
 export * from "./privateprovider.js";
-export * from "./privateproviderdatapolicy.js";
 export * from "./promptcachebreakpoint.js";
 export * from "./promptcacheoptions.js";
 export * from "./promptinjectionscanscope.js";

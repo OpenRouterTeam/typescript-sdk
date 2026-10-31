@@ -5,21 +5,15 @@
 
 import * as z from "zod/v4";
 import { remap as remap$ } from "../lib/primitives.js";
-import {
-  PrivateProviderDataPolicy,
-  PrivateProviderDataPolicy$Outbound,
-  PrivateProviderDataPolicy$outboundSchema,
-} from "./privateproviderdatapolicy.js";
 
+/**
+ * A private provider serves only your organization, so its endpoints are recorded as retaining no prompts, training on none and publishing none, and pass every data-policy filter your account or guardrails apply.
+ */
 export type CreatePrivateProviderRequest = {
   /**
    * HTTPS base URL of an OpenAI-compatible API, used by private endpoints under this provider that set no URL of their own. Without it, each endpoint must set its own. Private, internal, metadata and OpenRouter hosts are rejected.
    */
   baseUrl?: string | undefined;
-  /**
-   * Defaults to training on and retaining prompts, the most conservative declaration. Your own declaration; it applies to your own traffic and OpenRouter does not verify it.
-   */
-  dataPolicy?: PrivateProviderDataPolicy | undefined;
   /**
    * Defaults to `name`.
    */
@@ -37,7 +31,6 @@ export type CreatePrivateProviderRequest = {
 /** @internal */
 export type CreatePrivateProviderRequest$Outbound = {
   base_url?: string | undefined;
-  data_policy?: PrivateProviderDataPolicy$Outbound | undefined;
   display_name?: string | undefined;
   name: string;
   slug?: string | undefined;
@@ -49,14 +42,12 @@ export const CreatePrivateProviderRequest$outboundSchema: z.ZodType<
   CreatePrivateProviderRequest
 > = z.object({
   baseUrl: z.string().optional(),
-  dataPolicy: PrivateProviderDataPolicy$outboundSchema.optional(),
   displayName: z.string().optional(),
   name: z.string(),
   slug: z.string().optional(),
 }).transform((v) => {
   return remap$(v, {
     baseUrl: "base_url",
-    dataPolicy: "data_policy",
     displayName: "display_name",
   });
 });
