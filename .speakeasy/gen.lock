@@ -1,19 +1,19 @@
 lockVersion: ""
 id: ""
 management:
-  docChecksum: a02a52b304c3f290c75aa0c08cc8bf28
+  docChecksum: 40ce82bb34092bad8b4ecc41f5e8d079
   docVersion: 1.0.0
   speakeasyVersion: 1.803.2
   generationVersion: 2.950.13
-  releaseVersion: 1.5.33
-  configChecksum: a31ef88cdf1622af23163613e854821f
+  releaseVersion: 1.5.34
+  configChecksum: 86f1fe045777d18208f2c5bd6ff4c9a0
   repoURL: https://github.com/OpenRouterTeam/typescript-sdk.git
   installationURL: https://github.com/OpenRouterTeam/typescript-sdk
   published: true
 persistentEdits:
-  generation_id: b0c2bc4b-0076-4655-b70e-afdfb0744a9b
-  pristine_commit_hash: 4a590a77d276f69ee4b1e40b2f7035b3d321939e
-  pristine_tree_hash: 0c1286ecfa5b02b93e42db6f43bc40ca7d4d64db
+  generation_id: 11e6e908-91f4-4da3-a413-554a320878f8
+  pristine_commit_hash: 76b0a35ff40d622a94d4862ef2d43ed47aa0eb9a
+  pristine_tree_hash: 8f3bfad8247e2361b8a52265c3127b929eab8730
 features:
   typescript:
     acceptHeaders: 2.81.2
@@ -4033,8 +4033,8 @@ trackedFiles:
     deleted: true
   docs/models/createguardrailrequest.mdx:
     id: 2bd986770c03
-    last_write_checksum: sha1:fd27392367b814c5752874e0959fa98278651147
-    pristine_git_object: f3a515871298a7c1eb8561347c56499e859df84e
+    last_write_checksum: sha1:f899cfa4167b3f1cd1606e6ebd1e11f86e9fb2c6
+    pristine_git_object: 29a1867f3a094d62249b2a016500b6395947b649
   docs/models/createguardrailresponse.md:
     id: 1479b9a825eb
     last_write_checksum: sha1:bee8fafaede91b021bff538b7beefcb0d21395b4
@@ -5879,8 +5879,8 @@ trackedFiles:
     deleted: true
   docs/models/guardrail.mdx:
     id: a2b474ab82ce
-    last_write_checksum: sha1:930d5d5c71195a47aad0772c23ae152cfffc9f0f
-    pristine_git_object: 695d05f62050dbcae51c1cb0be6db8e530452901
+    last_write_checksum: sha1:93b8302f29d2bf0c1d127cbaee7d815af150dbb4
+    pristine_git_object: 08654143908bd4963a831afb32ebec32c983e282
   docs/models/guardraildataregion.mdx:
     id: 3cac5d56218f
     last_write_checksum: sha1:5786c4b0934fc06a17519c6c36d1c30dd9f638ea
@@ -15109,8 +15109,8 @@ trackedFiles:
     deleted: true
   docs/models/updateguardrailrequest.mdx:
     id: 7ec4b1eca0c1
-    last_write_checksum: sha1:1a8aa876c8e3c92f5b32fd5414c5179742cbdb38
-    pristine_git_object: 754a88474b8041c7697d5ade45d5622c55a49303
+    last_write_checksum: sha1:0cf6da1e7839d4ee04d1e53e1394382e493e2561
+    pristine_git_object: 168835f31504769b2c802bb10625b1e4221bd95b
   docs/models/updateguardrailresponse.md:
     id: e651ac0d6e06
     last_write_checksum: sha1:71039f9b33227c294ef56375f70fe8335a0e94de
@@ -16023,12 +16023,12 @@ trackedFiles:
     pristine_git_object: 410efafd6a7f50d91ccb87131fedbe0c3d47e15a
   jsr.json:
     id: 7f6ab7767282
-    last_write_checksum: sha1:826bed661e2cfff339f8bff1c23dfd5ef85c1d66
-    pristine_git_object: 8fd34087989109fb3fbff6dba314bd4a14bcab97
+    last_write_checksum: sha1:448b0e11c5ee34882eee35854c84865ef0c6768e
+    pristine_git_object: ca264f5bf2ecc0a32f022a40199a8b41042d8c6f
   package.json:
     id: 7030d0b2f71b
-    last_write_checksum: sha1:7c72c8171d7b61d8246641a2380a674c53af8369
-    pristine_git_object: e730c1520b0dca8ae7133e9ca3c124819db8000f
+    last_write_checksum: sha1:beab7ff950ae24a4827dcb31d23a1ad3d2361feb
+    pristine_git_object: d1f22db2945b16213be64d9eb81c3d4f49e4f60f
   src/core.ts:
     id: f431fdbcd144
     last_write_checksum: sha1:5aa66b0b6a5964f3eea7f3098c2eb3c0ee9c0131
@@ -16635,8 +16635,8 @@ trackedFiles:
     pristine_git_object: a187e58707bdb726ca2aff74941efe7493422d4e
   src/lib/config.ts:
     id: 320761608fb3
-    last_write_checksum: sha1:c25cc893b6ff1f5fa0f8f73d0aa3f90d523ea98c
-    pristine_git_object: 2f7415400bc77829e6b81da9f5e4370d427375a8
+    last_write_checksum: sha1:837ed77ed20250beeed9da1033de6c4a5ad631d2
+    pristine_git_object: d59c2f82dfd26a623d412fe4a331a840fb22ddaf
   src/lib/dlv.ts:
     id: b1988214835a
     last_write_checksum: sha1:eaac763b22717206a6199104e0403ed17a4e2711
@@ -17813,8 +17813,8 @@ trackedFiles:
     pristine_git_object: ff23af8082b911c16d061e83c3ff26202e52de6b
   src/models/createguardrailrequest.ts:
     id: fbf07f1435fd
-    last_write_checksum: sha1:8a625005397ec65f9b1260e5714a7bd0e465fd88
-    pristine_git_object: c4e182e29387882bbf5fa0d0936e09041463ea3d
+    last_write_checksum: sha1:e2db0dc9a30679e9072366dbf81db5fe9c7695b7
+    pristine_git_object: 8bdea0aa18384c5ba60dbfa342456247756e0567
   src/models/createguardrailresponse.ts:
     id: f0b6f29656b5
     last_write_checksum: sha1:f97971ea73141b6983b75e600b0df08df5511d0f
@@ -18469,8 +18469,8 @@ trackedFiles:
     pristine_git_object: aeb6d01013f040ef578a351c8ae232cb1391dd20
   src/models/guardrail.ts:
     id: 240a4b8d7a7d
-    last_write_checksum: sha1:114198aa9ef7de6d7750fddbe9b37d8964812675
-    pristine_git_object: 8d4da4af23ad1ee7b62b2672e47c0aa89b9af07b
+    last_write_checksum: sha1:40567e31644781bc9920ba482f455841d8a4e4b5
+    pristine_git_object: 0c3d12a13f0469a9af39c7597b3ae4b074722537
   src/models/guardraildataregion.ts:
     id: 5e2e4801b177
     last_write_checksum: sha1:23c7ae839040044e790826a8bf413bffb79cd4f2
@@ -20725,8 +20725,8 @@ trackedFiles:
     pristine_git_object: 555bb0924165ad829d977424a215b9f890252f7f
   src/models/updateguardrailrequest.ts:
     id: 8ae5b029f2d5
-    last_write_checksum: sha1:c984ec681dbfb496d8f778ce413eeed7d784a117
-    pristine_git_object: c2ec289b4527a6cad4f5f71a2f2780789ff12f15
+    last_write_checksum: sha1:70da3070bd638f97c5f066ae87c563d13292ccee
+    pristine_git_object: b4ef5ddaaadd578f363ca66305946c4d789fbed4
   src/models/updateguardrailresponse.ts:
     id: a1debd60e96d
     last_write_checksum: sha1:818ca8d0fdd11a7a768a396708b84b5e171d73c1
@@ -25754,4 +25754,3 @@ examples:
         "529":
           application/json: {"error": {"code": 529, "message": "Provider returned error"}}
 examplesVersion: 1.0.2
-releaseNotes: "## Typescript SDK Changes:\n* `openrouter.privateProviders.list()`:  `response.data[].dataPolicy` **Removed** (Breaking ⚠️)\n* `openrouter.privateProviders.create()`: \n  *  `request.createPrivateProviderRequest.dataPolicy` **Removed** (Breaking ⚠️)\n  *  `response.data.dataPolicy` **Removed** (Breaking ⚠️)\n* `openrouter.privateProviders.get()`:  `response.data.dataPolicy` **Removed** (Breaking ⚠️)\n* `openrouter.privateProviders.update()`: \n  *  `request.updatePrivateProviderRequest.dataPolicy` **Removed** (Breaking ⚠️)\n  *  `response.data.dataPolicy` **Removed** (Breaking ⚠️)\n"
