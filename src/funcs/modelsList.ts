@@ -123,6 +123,7 @@ async function $do(
     "category": payload?.category,
     "context": payload?.context,
     "distillable": payload?.distillable,
+    "endpoints": payload?.endpoints,
     "input_modalities": payload?.input_modalities,
     "limit": payload?.limit,
     "max_age_days": payload?.max_age_days,
