@@ -15,6 +15,7 @@ export const ReasoningFormat = {
   BedrockXaiResponsesV1: "bedrock-xai-responses-v1",
   XaiResponsesV1: "xai-responses-v1",
   MetaResponsesV1: "meta-responses-v1",
+  OpenrouterStealthV1: "openrouter-stealth-v1",
   AnthropicClaudeV1: "anthropic-claude-v1",
   GoogleGeminiV1: "google-gemini-v1",
 } as const;
