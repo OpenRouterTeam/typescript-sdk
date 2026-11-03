@@ -1,19 +1,19 @@
 lockVersion: ""
 id: ""
 management:
-  docChecksum: b100c4fdd4eca81606ada23ee5e7e705
+  docChecksum: 66ebe0f719d14fd874571ea631864893
   docVersion: 1.0.0
   speakeasyVersion: 1.803.2
   generationVersion: 2.950.13
-  releaseVersion: 1.5.38
-  configChecksum: fe1e99a7dc95a59b1da482d362d116cd
+  releaseVersion: 1.5.39
+  configChecksum: f88fd24bb4b6eca1c4e299df42791d21
   repoURL: https://github.com/OpenRouterTeam/typescript-sdk.git
   installationURL: https://github.com/OpenRouterTeam/typescript-sdk
   published: true
 persistentEdits:
-  generation_id: 5d3daf1f-203c-4b86-b7b6-6e8c70e76530
-  pristine_commit_hash: a22b51037b12b6844ee68137d73eff9337a9c03c
-  pristine_tree_hash: cf30886fbf47e84b275722ff5d1262f87ac646a2
+  generation_id: 7c9fdba5-aed0-45d9-a6f3-c9b38b013e44
+  pristine_commit_hash: 3ad623afdad7070283e2907b430514eed02b1dd0
+  pristine_tree_hash: 721b7777bb7e706b03ff1c14c27653853cc6a74e
 features:
   typescript:
     acceptHeaders: 2.81.2
@@ -2389,8 +2389,8 @@ trackedFiles:
     deleted: true
   docs/models/byokproviderslug.mdx:
     id: d719e6f9fe4e
-    last_write_checksum: sha1:2d30b7ba74c53971bb9080e1a5d5612e1688119d
-    pristine_git_object: 9af909292a9030830cd6aeb590c73ce0292bfe0a
+    last_write_checksum: sha1:315689d623421b62f35f995dc6f7a32925bf0d69
+    pristine_git_object: 27f8c299edcf7032a7a531dc00645cf567e6fd5d
   docs/models/cachecontrol.md:
     id: 400a7240e8c2
     last_write_checksum: sha1:0813cddf0350d7885b906084988a79ace1ddea15
@@ -5996,8 +5996,8 @@ trackedFiles:
     pristine_git_object: 066f0ccd9d3131443a40415a988a3ee61be96bc1
   docs/models/imagegenerationproviderpreferencesoptions.mdx:
     id: e3693a97bac5
-    last_write_checksum: sha1:bbbe2fa96a5f35be6b2bf353654b24554fdf5cdc
-    pristine_git_object: e63fe778f8f9f4c3f18f36129b95d17c9480e163
+    last_write_checksum: sha1:20d506f611fa4f0736e1d2e924a8e8b970a764ca
+    pristine_git_object: 5b7e84a2c2435c3ac0cc6f21ca706f6509a22478
   docs/models/imagegenerationproviderpreferencesorder.mdx:
     id: b835062d70fa
     last_write_checksum: sha1:18e3332047c5ad17a5f95caea5161a23f6953200
@@ -10794,8 +10794,8 @@ trackedFiles:
     deleted: true
   docs/models/operations/provider.mdx:
     id: 45f471a16baa
-    last_write_checksum: sha1:91cb0111946c43122aad422727817f828a888bf8
-    pristine_git_object: e5da2534a7cabe8ca9213d5996b42e9ec0a2b3c3
+    last_write_checksum: sha1:2abc2fc7f3da7326e6277ce5df2893daa7523297
+    pristine_git_object: 859a502e0fdb2d781f4fcde7b64492ef224ecbaf
   docs/models/operations/queryanalyticsdata1.md:
     id: ecb6e11852f5
     last_write_checksum: sha1:d7153b0a35bd6b99a27c2239be0212dc6c749a78
@@ -12786,8 +12786,8 @@ trackedFiles:
     pristine_git_object: fbeccb448d757089283a6064ee44f22c50f11965
   docs/models/providername.mdx:
     id: 69a9efe649dc
-    last_write_checksum: sha1:5e3eb22a00a0ca4ea851c0190a580ef11272d1d2
-    pristine_git_object: 3ba344956f03b085e4fc23053d81ab9f1d153577
+    last_write_checksum: sha1:d89e8957bae2c851c356056d3f0e3d0acd0a0f58
+    pristine_git_object: 47b575eed5d82639573ba2d87a5d2c1f3b4b755e
   docs/models/provideroptions.md:
     id: "986859558e93"
     last_write_checksum: sha1:a70e9d925e5666078640593f5a9ce95644449cc1
@@ -12795,8 +12795,8 @@ trackedFiles:
     deleted: true
   docs/models/provideroptions.mdx:
     id: 57715f4036c5
-    last_write_checksum: sha1:eee1a2d9ae3fb3b6713e1a69c38cdb7c675c4af6
-    pristine_git_object: c560d451efb25dcaa27e13c18826afdd0119374f
+    last_write_checksum: sha1:72db4824381fbd6d4ac2f8c2f57588ec3eb3a3bf
+    pristine_git_object: b1643ef5eb1fe18686999c493883ea867f87b3d2
   docs/models/provideroverloadedresponseerrordata.mdx:
     id: e7ee469f118f
     last_write_checksum: sha1:ef880f0f5786e3caf1a1f1f090c9069a747b52c2
@@ -12837,8 +12837,8 @@ trackedFiles:
     deleted: true
   docs/models/providerresponseprovidername.mdx:
     id: b7038468a0e1
-    last_write_checksum: sha1:9a6eeb24dfd5352f2fd278e06e8b6a1d1b12fd60
-    pristine_git_object: ad6aa5a799c7bcb7de6aee9388a4ca99a8b08353
+    last_write_checksum: sha1:1c10eb18f9efa7a64bf7c8303232752b6ce7bec5
+    pristine_git_object: fadf924017909804bb3432b489c14694df0aad12
   docs/models/providersort.mdx:
     id: d43e77bdfc1f
     last_write_checksum: sha1:42f6ec0a34d49f2398c7237ed53a6d46bacfc6e4
@@ -15402,8 +15402,8 @@ trackedFiles:
     deleted: true
   docs/models/videogenerationrequestoptions.mdx:
     id: 3b7f4efdc2d9
-    last_write_checksum: sha1:8a03359fd88a21d27cbd888c6b9f3f8460b1a166
-    pristine_git_object: 109cd77e20effbcb38b4bb891410cebae8ecac9d
+    last_write_checksum: sha1:2e70f3d6c1b5ca137006ba8dee695c8a12751a4f
+    pristine_git_object: c49bf015328806fcf081bcce405bfaacf857d71e
   docs/models/videogenerationrequestprovider.md:
     id: eef166771d33
     last_write_checksum: sha1:aeb8022be1f0662c8f1e9213a81762fe3368c563
@@ -16027,12 +16027,12 @@ trackedFiles:
     pristine_git_object: 410efafd6a7f50d91ccb87131fedbe0c3d47e15a
   jsr.json:
     id: 7f6ab7767282
-    last_write_checksum: sha1:2552b92fce69f34ba2cf9a111ce1de36a97ebb3c
-    pristine_git_object: 2d81c3b7a0e1a799f03b374c100bd02582342aa4
+    last_write_checksum: sha1:404f396b1f192241755a9ccce111a6009b7e20f8
+    pristine_git_object: 881f7f08bb0067ce6ef1a27dded1f27af54d6d35
   package.json:
     id: 7030d0b2f71b
-    last_write_checksum: sha1:19978c04afdf664fa23e90d815ee14ff6653e980
-    pristine_git_object: b1189d55a177160612696e0e5de8c6ee60ad64ff
+    last_write_checksum: sha1:ad536af6bd57711b4e2a423552b2aa8fd6fb9a21
+    pristine_git_object: a3382a1ebdcbd92c16a871446a84baf7d5b38087
   src/core.ts:
     id: f431fdbcd144
     last_write_checksum: sha1:5aa66b0b6a5964f3eea7f3098c2eb3c0ee9c0131
@@ -16639,8 +16639,8 @@ trackedFiles:
     pristine_git_object: a187e58707bdb726ca2aff74941efe7493422d4e
   src/lib/config.ts:
     id: 320761608fb3
-    last_write_checksum: sha1:62f869468eb9f0f2f8822db991bec44626099d5d
-    pristine_git_object: bf1e2d9d13a8d929ada0b9e4329926dd222e5734
+    last_write_checksum: sha1:fb6d84d5ac73220efc90800411f8ffba942fa328
+    pristine_git_object: 085fc50da1d6c8108c968b087cd98f11f7a65a04
   src/lib/dlv.ts:
     id: b1988214835a
     last_write_checksum: sha1:eaac763b22717206a6199104e0403ed17a4e2711
@@ -17433,8 +17433,8 @@ trackedFiles:
     pristine_git_object: 475a1dfebd5aed70a827435702ecd2212e396d8b
   src/models/byokproviderslug.ts:
     id: f8e7a5a4b0a2
-    last_write_checksum: sha1:53a578e534f3d4a372efb0b5da7feb3a910769d0
-    pristine_git_object: fe1a232f1e89153334f610877ccae3abc1d72501
+    last_write_checksum: sha1:8522bafc9b848d2f1acde8b463a5e665f7a55180
+    pristine_git_object: 66e7a49cb62fde233be50bcb1b51909ccd4daa50
   src/models/capabilitydescriptor.ts:
     id: 867d654ac8ab
     last_write_checksum: sha1:85657be17f920009d3e8ee58b548d9bf64995059
@@ -18521,8 +18521,8 @@ trackedFiles:
     pristine_git_object: 99b4113103adb9598a3bd88f555231fe55b3c43d
   src/models/imagegenerationproviderpreferences.ts:
     id: 55445c92cf9f
-    last_write_checksum: sha1:b2c3408f0750ad751303f1ba474118bfc61f46b8
-    pristine_git_object: 3becbe617af2b74b8da19e171e4fbda8ccf95f24
+    last_write_checksum: sha1:e1c93c8bd71a0a062361e0937e8a0b5ed3772997
+    pristine_git_object: 6f06bec5f1376c44c8c5bfa7cf35deffa2a38317
   src/models/imagegenerationrequest.ts:
     id: ea1ffc0d2470
     last_write_checksum: sha1:a68bcc0920590fa9335fbe7043702d61aaec45df
@@ -19453,8 +19453,8 @@ trackedFiles:
     pristine_git_object: 981cefda65db2b82e4e44cea315f6af1a3491547
   src/models/operations/listbyokkeys.ts:
     id: 953de50b8d0e
-    last_write_checksum: sha1:0d8d51d8bb9fd367633c7aea5a30ac7039462cf6
-    pristine_git_object: 96bb6b240311778a5daa075623e40e15e803226b
+    last_write_checksum: sha1:1935b4b684eaa06aafab69610f08eda27216eef8
+    pristine_git_object: 6178fc8d3715eb2a074123323df25729747f65ea
   src/models/operations/listcontainerfiles.ts:
     id: 833ac1772f55
     last_write_checksum: sha1:7926e90cf61acbb59e76ca425201da8ba8ff82f3
@@ -20093,12 +20093,12 @@ trackedFiles:
     pristine_git_object: fbcf0dbcd4bae7f5b06957e0a7c6a75db9b79570
   src/models/providername.ts:
     id: 89e536fb023a
-    last_write_checksum: sha1:ab08d3001e63feb37459536ddc65572bfa73d051
-    pristine_git_object: 1bf51e5441786f7c0da0e02f023792ee6a901c06
+    last_write_checksum: sha1:beda2e25e5288fbbc07fdb9702fa8596b83b94f3
+    pristine_git_object: b72e1236d5de534377e523b7d187a8312817b9d4
   src/models/provideroptions.ts:
     id: 65c45f7034d2
-    last_write_checksum: sha1:7e1a1617992241b9fc9b445ccac6c7143a3555af
-    pristine_git_object: f3ebb5725aa6eaf718a5865ecba4f116a8258145
+    last_write_checksum: sha1:12503f94b48d8bc7dc2c1dc6f13dd0668de454d1
+    pristine_git_object: 0f99f8e862b4911d5129165deabdd286ee669a1c
   src/models/provideroverloadedresponseerrordata.ts:
     id: 379f1256314f
     last_write_checksum: sha1:625dd68dfb8a747ba2f86a1896710d566a78550e
@@ -20109,8 +20109,8 @@ trackedFiles:
     pristine_git_object: 3c13a925041eb0ba951da510117261da8b691587
   src/models/providerresponse.ts:
     id: 7427d17a27bc
-    last_write_checksum: sha1:d3df1e05b7a2cf9ba8ce85dee0a47a81b316bfe0
-    pristine_git_object: 8d4cbf3b67cd4c7033ed84b438ee4c7c6e20db69
+    last_write_checksum: sha1:b4a7bbd1df1d6f52ef519a59b7d5a3a1e5df678e
+    pristine_git_object: 7d9508cbbc9912ee430ee4d2ea16e96aa07dc293
   src/models/providersort.ts:
     id: 7d1e919d1ec3
     last_write_checksum: sha1:4c871e5fc8af6042ca41d12c54ba8640706c0863
@@ -20845,8 +20845,8 @@ trackedFiles:
     pristine_git_object: 6407ea1522468798b8cb892d6b2c85e101a28bb2
   src/models/videogenerationrequest.ts:
     id: e72ea2e4c5b3
-    last_write_checksum: sha1:97f4519b0713aaccc597a47e92254b5c891526ab
-    pristine_git_object: 27e55f8e134c36461339c28f26cec26bbe4ac61d
+    last_write_checksum: sha1:996de06de3c728e37cff9898185397e13c3d87d6
+    pristine_git_object: 14c4dea1f0c1c7d9e6da86e463bf93c069e6274a
   src/models/videogenerationresponse.ts:
     id: 0a96c6ee9eea
     last_write_checksum: sha1:8ff63e11fd935bfd9ddf288b1fdcb7c4bf27c1eb
@@ -25762,7 +25762,4 @@ examples:
         "529":
           application/json: {"error": {"code": 529, "message": "Provider returned error"}}
 examplesVersion: 1.0.2
-releaseNotes: |
-  ## Typescript SDK Changes:
-  * `openrouter.alpha.decisions.create()`:  `response.usage.inputTokensDetails` **Added**
-  * `openrouter.systemOne.create()`:  `response.usage.inputTokensDetails` **Added**
+releaseNotes: "## Typescript SDK Changes:\n* `openrouter.alpha.decisions.create()`: \n  *  `request.decisionsRequest.provider` **Changed**\n* `openrouter.alpha.extractions.create()`: \n  *  `request.extractionsRequest.provider` **Changed**\n* `openrouter.tts.createSpeech()`: \n  *  `request.speechRequest.provider.options.pearlResearch` **Added**\n* `openrouter.stt.createTranscription()`: \n  *  `request.sttRequest.provider.options.pearlResearch` **Added**\n* `openrouter.batch.createBatches()`: \n  *  `request.batchSubmitBody.provider.only[].union(ProviderName).enum(pearlResearch)` **Added**\n* `openrouter.byok.list()`: \n  *  `request.provider` **Changed**\n  *  `response.data[].provider.enum(pearlResearch)` **Added**\n* `openrouter.byok.create()`: \n  *  `request.createByokKeyRequest.provider.enum(pearlResearch)` **Added**\n  *  `response.data.provider.enum(pearlResearch)` **Added**\n* `openrouter.byok.get()`:  `response.data.provider.enum(pearlResearch)` **Added**\n* `openrouter.byok.update()`:  `response.data.provider.enum(pearlResearch)` **Added**\n* `openrouter.embeddings.generate()`: \n  *  `request.requestBody.provider` **Changed**\n* `openrouter.endpoints.listZdrEndpoints()`:  `response.data[].providerName.enum(pearlResearch)` **Added**\n* `openrouter.endpoints.list()`:  `response.data.endpoints[].providerName.enum(pearlResearch)` **Added**\n* `openrouter.generations.getGeneration()`:  `response.data.providerResponses[].providerName.enum(pearlResearch)` **Added**\n* `openrouter.presets.createPresetsChatCompletions()`: \n  *  `request.chatRequest.provider` **Changed**\n* `openrouter.presets.createPresetsMessages()`: \n  *  `request.messagesRequest.provider` **Changed**\n* `openrouter.presets.createPresetsResponses()`: \n  *  `request.responsesRequest.provider` **Changed**\n* `openrouter.rerank.rerank()`: \n  *  `request.requestBody.provider` **Changed**\n* `openrouter.systemOne.create()`: \n  *  `request.decisionsRequest.provider` **Changed**\n* `openrouter.videoGeneration.generate()`: \n  *  `request.videoGenerationRequest.provider.options.pearlResearch` **Added**\n"
