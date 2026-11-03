@@ -6,16 +6,19 @@
 import * as z from "zod/v4";
 
 /**
- * A plain string, or a JSON object or array of structured guidance.
+ * A description of the target to find, naming the image in `state` it is in; not a command, and no `criteria`.
  */
 export type DecisionsBoxQuestionInstructions =
   | string
   | { [k: string]: any }
   | Array<any>;
 
+/**
+ * Finds one target in an image in `state` and answers with one bounding box (`top`, `bottom`, `left`, `right` as fractions of the image). Served by TypeSafe Jev endpoints only; every other provider rejects a box question with `400` before anything is sent upstream.
+ */
 export type DecisionsBoxQuestion = {
   /**
-   * A plain string, or a JSON object or array of structured guidance.
+   * A description of the target to find, naming the image in `state` it is in; not a command, and no `criteria`.
    */
   instructions: string | { [k: string]: any } | Array<any>;
   type: "box";

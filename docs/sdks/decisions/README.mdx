@@ -13,7 +13,7 @@ Alpha feature endpoints for Decisions requests
 
 ## create
 
-Submits a Decisions request to the Decisions router
+Asks a Decisions model typed questions (`noul`, `choice`, `score`, `box`) about the content in `state` and returns one typed answer per question with its probabilities. Images, audio and video go in `state` as `image_url`, `input_audio` and `video_url` parts; PNG and JPEG images can instead go once in `assets` and be referenced by key. Which question types, media parts and asset references an endpoint accepts depends on the provider; a request an endpoint cannot serve fails with `400` before anything is sent upstream. See the [Multimodal Decisions guide](/docs/guides/community/multimodal-decisions) for the per-provider table. Alpha: the shape may change.
 
 ### Example Usage
 
