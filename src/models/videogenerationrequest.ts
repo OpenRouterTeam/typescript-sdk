@@ -57,6 +57,7 @@ export type VideoGenerationRequestOptions = {
   amazonBedrockClaudeOnAws?: { [k: string]: any } | undefined;
   amazonNova?: { [k: string]: any } | undefined;
   ambient?: { [k: string]: any } | undefined;
+  antdigital?: { [k: string]: any } | undefined;
   anthropic?: { [k: string]: any } | undefined;
   anthropic2?: { [k: string]: any } | undefined;
   anyscale?: { [k: string]: any } | undefined;
@@ -318,6 +319,7 @@ export type VideoGenerationRequestOptions$Outbound = {
   "amazon-bedrock/claude-on-aws"?: { [k: string]: any } | undefined;
   "amazon-nova"?: { [k: string]: any } | undefined;
   ambient?: { [k: string]: any } | undefined;
+  antdigital?: { [k: string]: any } | undefined;
   anthropic?: { [k: string]: any } | undefined;
   "anthropic/2"?: { [k: string]: any } | undefined;
   anyscale?: { [k: string]: any } | undefined;
@@ -477,6 +479,7 @@ export const VideoGenerationRequestOptions$outboundSchema: z.ZodType<
   amazonBedrockClaudeOnAws: z.record(z.string(), z.any()).optional(),
   amazonNova: z.record(z.string(), z.any()).optional(),
   ambient: z.record(z.string(), z.any()).optional(),
+  antdigital: z.record(z.string(), z.any()).optional(),
   anthropic: z.record(z.string(), z.any()).optional(),
   anthropic2: z.record(z.string(), z.any()).optional(),
   anyscale: z.record(z.string(), z.any()).optional(),

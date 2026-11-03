@@ -46,6 +46,7 @@ export const Provider = {
   AmazonBedrockClaudeOnAws: "amazon-bedrock/claude-on-aws",
   AmazonNova: "amazon-nova",
   Ambient: "ambient",
+  Antdigital: "antdigital",
   Anthropic: "anthropic",
   Anthropic2: "anthropic/2",
   ArceeAi: "arcee-ai",
