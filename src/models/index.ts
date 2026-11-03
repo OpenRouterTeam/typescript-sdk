@@ -315,6 +315,7 @@ export * from "./decisionsrequest.js";
 export * from "./decisionsresponse.js";
 export * from "./decisionsscoreanswer.js";
 export * from "./decisionsscorequestion.js";
+export * from "./decisionsusageinputtokensdetails.js";
 export * from "./defaultparameters.js";
 export * from "./deferredbm25search.js";
 export * from "./deferredcustomsearch.js";
