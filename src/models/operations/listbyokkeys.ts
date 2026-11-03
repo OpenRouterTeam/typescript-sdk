@@ -119,6 +119,7 @@ export const Provider = {
   Parasail: "parasail",
   ParetoAlpha: "pareto-alpha",
   ParticleAi: "particle-ai",
+  PearlResearch: "pearl-research",
   Perceptron: "perceptron",
   Perplexity: "perplexity",
   Phala: "phala",
