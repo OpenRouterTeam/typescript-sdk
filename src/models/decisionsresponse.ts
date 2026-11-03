@@ -25,6 +25,10 @@ import {
   DecisionsScoreAnswer,
   DecisionsScoreAnswer$inboundSchema,
 } from "./decisionsscoreanswer.js";
+import {
+  DecisionsUsageInputTokensDetails,
+  DecisionsUsageInputTokensDetails$inboundSchema,
+} from "./decisionsusageinputtokensdetails.js";
 import { SDKValidationError } from "./errors/sdkvalidationerror.js";
 
 /**
@@ -40,6 +44,10 @@ export type DecisionsResponseAnswers =
 export type DecisionsResponseUsage = {
   cost?: number | undefined;
   inputTokens: number;
+  /**
+   * Of `input_tokens`, those the provider served from its prompt cache.
+   */
+  inputTokensDetails?: DecisionsUsageInputTokensDetails | undefined;
   outputTokens: number;
 };
 
@@ -86,10 +94,13 @@ export const DecisionsResponseUsage$inboundSchema: z.ZodType<
 > = z.object({
   cost: z.number().optional(),
   input_tokens: z.int(),
+  input_tokens_details: DecisionsUsageInputTokensDetails$inboundSchema
+    .optional(),
   output_tokens: z.int(),
 }).transform((v) => {
   return remap$(v, {
     "input_tokens": "inputTokens",
+    "input_tokens_details": "inputTokensDetails",
     "output_tokens": "outputTokens",
   });
 });
