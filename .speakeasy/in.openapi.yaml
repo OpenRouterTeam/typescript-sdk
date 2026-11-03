@@ -7040,6 +7040,7 @@ components:
         - 'parasail'
         - 'pareto-alpha'
         - 'particle-ai'
+        - 'pearl-research'
         - 'perceptron'
         - 'perplexity'
         - 'phala'
@@ -19037,6 +19038,7 @@ components:
                 - 'Parasail'
                 - 'ParetoAlpha'
                 - 'Particle AI'
+                - 'Pearl Research'
                 - 'Poolside'
                 - 'PrimaLabs'
                 - 'PrimeIntellect'
@@ -27528,6 +27530,7 @@ components:
         - 'Parasail'
         - 'ParetoAlpha'
         - 'Particle AI'
+        - 'Pearl Research'
         - 'Poolside'
         - 'PrimaLabs'
         - 'PrimeIntellect'
@@ -27881,6 +27884,9 @@ components:
           additionalProperties: {}
           type: 'object'
         particle-ai:
+          additionalProperties: {}
+          type: 'object'
+        pearl-research:
           additionalProperties: {}
           type: 'object'
         perceptron:
@@ -28328,6 +28334,7 @@ components:
             - 'Parasail'
             - 'ParetoAlpha'
             - 'Particle AI'
+            - 'Pearl Research'
             - 'Poolside'
             - 'PrimaLabs'
             - 'PrimeIntellect'
@@ -38322,6 +38329,7 @@ paths:
               - 'parasail'
               - 'pareto-alpha'
               - 'particle-ai'
+              - 'pearl-research'
               - 'perceptron'
               - 'perplexity'
               - 'phala'
