@@ -15,8 +15,9 @@ let value: DecisionsResponseUsage = {
 
 ## Fields
 
-| Field              | Type               | Required           | Description        |
-| ------------------ | ------------------ | ------------------ | ------------------ |
-| `cost`             | *number*           | ➖ | N/A                |
-| `inputTokens`      | *number*           | ✔️ | N/A                |
-| `outputTokens`     | *number*           | ✔️ | N/A                |
+| Field                                                                                    | Type                                                                                     | Required                                                                                 | Description                                                                              |
+| ---------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------- |
+| `cost`                                                                                   | *number*                                                                                 | ➖                                                                       | N/A                                                                                      |
+| `inputTokens`                                                                            | *number*                                                                                 | ✔️                                                                       | N/A                                                                                      |
+| `inputTokensDetails`                                                                     | [models.DecisionsUsageInputTokensDetails](../models/decisionsusageinputtokensdetails.mdx) | ➖                                                                       | Of `input_tokens`, those the provider served from its prompt cache.                      |
+| `outputTokens`                                                                           | *number*                                                                                 | ✔️                                                                       | N/A                                                                                      |
