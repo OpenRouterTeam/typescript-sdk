@@ -6967,6 +6967,7 @@ components:
         - 'amazon-bedrock/claude-on-aws'
         - 'amazon-nova'
         - 'ambient'
+        - 'antdigital'
         - 'anthropic'
         - 'anthropic/2'
         - 'arcee-ai'
@@ -18963,6 +18964,7 @@ components:
                 - 'AionLabs'
                 - 'Alibaba'
                 - 'Ambient'
+                - 'Ant Digital'
                 - 'Baidu'
                 - 'Amazon Bedrock'
                 - 'Amazon Nova'
@@ -27455,6 +27457,7 @@ components:
         - 'AionLabs'
         - 'Alibaba'
         - 'Ambient'
+        - 'Ant Digital'
         - 'Baidu'
         - 'Amazon Bedrock'
         - 'Amazon Nova'
@@ -27602,6 +27605,9 @@ components:
           additionalProperties: {}
           type: 'object'
         ambient:
+          additionalProperties: {}
+          type: 'object'
+        antdigital:
           additionalProperties: {}
           type: 'object'
         anthropic:
@@ -28259,6 +28265,7 @@ components:
             - 'AionLabs'
             - 'Alibaba'
             - 'Ambient'
+            - 'Ant Digital'
             - 'Baidu'
             - 'Amazon Bedrock'
             - 'Amazon Nova'
@@ -36472,7 +36479,7 @@ paths:
         - 'Analytics'
   /api/alpha/decisions:
     post:
-      description: 'Asks a Decisions model typed questions (`noul`, `choice`, `score`, `box`) about the content in `state` and returns one typed answer per question with its probabilities. Images, audio and video go in `state` as `image_url`, `input_audio` and `video_url` parts; PNG and JPEG images can instead go once in `assets` and be referenced by key. Which question types, media parts and asset references an endpoint accepts depends on the provider; a request an endpoint cannot serve fails with `400` before anything is sent upstream. See the [Multimodal Decisions guide](/docs/guides/community/multimodal-decisions) for the per-provider table. Alpha: the shape may change.'
+      description: 'Asks a Decisions model typed questions (`noul`, `choice`, `score`, `box`) about the content in `state` and returns one typed answer per question with its probabilities. Images, audio and video go in `state` as `image_url`, `input_audio` and `video_url` parts; PNG and JPEG images can instead go once in `assets` and be referenced by key. Which question types, media parts and asset references an endpoint accepts depends on the provider; a request an endpoint cannot serve fails with `400` before anything is sent upstream. See the [Multimodal Decisions guide](/docs/guides/community/multimodal-decisions) for the per-provider table. Typed fields (text, numbers, dates, lists, estimates, forecasts) come from [`POST /api/alpha/extractions`](/docs/guides/community/extractions), which takes the same envelope with `fields` in place of `questions` (text `state` only; images and PDFs go in `assets`). Alpha: the shape may change.'
       operationId: 'createApiAlphaDecisions'
       requestBody:
         content:
@@ -38256,6 +38263,7 @@ paths:
               - 'amazon-bedrock/claude-on-aws'
               - 'amazon-nova'
               - 'ambient'
+              - 'antdigital'
               - 'anthropic'
               - 'anthropic/2'
               - 'arcee-ai'
@@ -46122,6 +46130,14 @@ paths:
           schema:
             description: 'Filter models by input modality. Comma-separated list of: text, image, audio, file.'
             example: 'text,image'
+            type: 'string'
+        - description: 'Filter models by the request API paths they serve, as listed in each model''s `endpoints` field. Comma-separated; a model must serve every listed path. Valid values: /api/v1/chat/completions, /api/v1/completions, /api/v1/messages, /api/v1/responses, /api/v1/embeddings, /api/v1/rerank, /api/alpha/decisions, /api/alpha/extractions, /api/v1/videos, /api/v1/audio/speech, /api/v1/audio/transcriptions, /api/v1/images, /api/v1/batches. When set without `output_modalities`, models of every output modality are considered (the companion `/api/alpha/extractions` route is served by text and decisions models alike).'
+          in: 'query'
+          name: 'endpoints'
+          required: false
+          schema:
+            description: 'Filter models by the request API paths they serve, as listed in each model''s `endpoints` field. Comma-separated; a model must serve every listed path. Valid values: /api/v1/chat/completions, /api/v1/completions, /api/v1/messages, /api/v1/responses, /api/v1/embeddings, /api/v1/rerank, /api/alpha/decisions, /api/alpha/extractions, /api/v1/videos, /api/v1/audio/speech, /api/v1/audio/transcriptions, /api/v1/images, /api/v1/batches. When set without `output_modalities`, models of every output modality are considered (the companion `/api/alpha/extractions` route is served by text and decisions models alike).'
+            example: '/api/alpha/extractions'
             type: 'string'
         - description: 'Minimum context length (tokens). Models with smaller context are excluded.'
           in: 'query'
