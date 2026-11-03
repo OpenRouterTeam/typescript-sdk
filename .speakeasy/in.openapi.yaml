@@ -11186,6 +11186,8 @@ components:
               type: 'number'
             input_tokens:
               type: 'integer'
+            input_tokens_details:
+              $ref: '#/components/schemas/DecisionsUsageInputTokensDetails'
             output_tokens:
               type: 'integer'
           required:
@@ -11257,6 +11259,14 @@ components:
         - 'type'
         - 'instructions'
         - 'criteria'
+      type: 'object'
+    DecisionsUsageInputTokensDetails:
+      description: 'Of `input_tokens`, those the provider served from its prompt cache.'
+      properties:
+        cached_tokens:
+          type: 'integer'
+      required:
+        - 'cached_tokens'
       type: 'object'
     DefaultParameters:
       additionalProperties: false
