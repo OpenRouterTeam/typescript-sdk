@@ -12450,6 +12450,26 @@ components:
       required:
         - 'type'
       type: 'object'
+    Extractions:
+      properties:
+        latency:
+          allOf:
+            - $ref: '#/components/schemas/PercentileStats'
+            - description: 'Latency percentiles in milliseconds for this workload. Image and video generation report full end-to-end generation time, because their raw latency only measures request acknowledgement; every other workload reports time to first token or result.'
+        request_count:
+          description: 'Total requests admitted for this workload in the window.'
+          type:
+            - 'integer'
+            - 'null'
+        throughput:
+          allOf:
+            - $ref: '#/components/schemas/PercentileStats'
+            - description: 'Throughput percentiles in tokens per second; pN is the speed that N% of requests reached or exceeded, so p90 is lower than p50. Only meaningful for text generation; null for workloads without token throughput.'
+      required:
+        - 'latency'
+        - 'throughput'
+        - 'request_count'
+      type: 'object'
     ExtractionsRequest:
       additionalProperties: false
       properties:
@@ -26266,6 +26286,8 @@ components:
           $ref: '#/components/schemas/Decisions'
         embeddings:
           $ref: '#/components/schemas/Embeddings'
+        extractions:
+          $ref: '#/components/schemas/Extractions'
         image_generation:
           $ref: '#/components/schemas/ImageGeneration'
         rerank:
