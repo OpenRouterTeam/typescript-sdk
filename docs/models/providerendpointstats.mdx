@@ -1,0 +1,37 @@
+---
+title: "ProviderEndpointStats"
+---
+
+## Supported Types
+
+### `models.ProviderEndpointStatsAvailable`
+
+```typescript
+const value: models.ProviderEndpointStatsAvailable = {
+  endpointCount: 12,
+  errorRatePercent: 0.8,
+  latencyMs: {
+    p50: 8645.57,
+    p90: null,
+  },
+  qualityPercent: 1909.68,
+  rateLimitedPercent: 1399.15,
+  reliabilityPercent: 5148.76,
+  requests: 120000,
+  status: "available",
+  throughputTokensPerSecond: {
+    p50: 9007.45,
+    p90: 4097.45,
+  },
+  uptimePercent: 99.2,
+};
+```
+
+### `models.ProviderEndpointStatsUnavailable`
+
+```typescript
+const value: models.ProviderEndpointStatsUnavailable = {
+  status: "unavailable",
+};
+```
+

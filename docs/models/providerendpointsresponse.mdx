@@ -1,0 +1,58 @@
+---
+title: "ProviderEndpointsResponse"
+---
+
+## Example Usage
+
+```typescript
+import { ProviderEndpointsResponse } from "@openrouter/sdk/models";
+
+let value: ProviderEndpointsResponse = {
+  data: {
+    endpoints: [
+      {
+        endpointId: "0198c3f1-7b9a-7c31-a2d4-5e6f7a8b9c0d",
+        modelSlug: "z-ai/glm-5.3",
+        createdAt: "2026-08-20T00:00:00.000Z",
+        modelPermaslug: "z-ai/glm-5.3-20260101",
+        providerModelId: "accounts/fireworks/models/glm-5p3",
+        providerName: "Fireworks",
+        providerRegion: "us",
+        serviceTier: "priority",
+        testProfile: {
+          contextLength: 128000,
+          defaultReasoningReturnMechanism: "none",
+          effectiveAdapterName: "openai",
+          endpointFeatures: {
+            "key": "<value>",
+            "key1": "<value>",
+          },
+          isLabTrusted: false,
+          model: {
+            features: {},
+            inputModalities: [
+              "image",
+            ],
+            outputModalities: [],
+            reasoningConfig: {},
+            slug: "z-ai/glm-5.3",
+            supportsReasoning: false,
+          },
+        },
+        variant: "standard",
+        visibility: "visible",
+      },
+    ],
+    stats: {
+      status: "unavailable",
+    },
+    window: "1d",
+  },
+};
+```
+
+## Fields
+
+| Field                                                      | Type                                                       | Required                                                   | Description                                                |
+| ---------------------------------------------------------- | ---------------------------------------------------------- | ---------------------------------------------------------- | ---------------------------------------------------------- |
+| `data`                                                     | [models.ProviderEndpoints](../models/providerendpoints.mdx) | ✔️                                         | N/A                                                        |

@@ -1,0 +1,21 @@
+---
+title: "ReasoningReturnMechanism"
+---
+
+Default mechanism for returning reasoning tokens. Can be overridden per-endpoint via endpoint features.
+
+## Example Usage
+
+```typescript
+import { ReasoningReturnMechanism } from "@openrouter/sdk/models";
+
+let value: ReasoningReturnMechanism = "content-string";
+
+// Open enum: unrecognized values are captured as Unrecognized<string>
+```
+
+## Values
+
+```typescript
+"content-string" | "reasoning-content" | "reasoning" | "none" | Unrecognized<string>
+```
