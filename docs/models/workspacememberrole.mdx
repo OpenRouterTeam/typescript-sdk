@@ -2,7 +2,7 @@
 title: "WorkspaceMemberRole"
 ---
 
-Role of the member in the workspace
+Role of the member in the workspace. `viewer` and `restricted_viewer` are read-only: `viewer` can view the whole workspace, and `restricted_viewer` can view only their own activity.
 
 ## Example Usage
 
@@ -17,5 +17,5 @@ let value: WorkspaceMemberRole = "member";
 ## Values
 
 ```typescript
-"admin" | "member" | Unrecognized<string>
+"admin" | "member" | "viewer" | "restricted_viewer" | Unrecognized<string>
 ```
