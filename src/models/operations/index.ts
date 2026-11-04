@@ -140,8 +140,6 @@ export * from "./updatekeys.js";
 export * from "./updateobservabilitydestination.js";
 export * from "./updateorganizationsettings.js";
 export * from "./updateprivateendpoint.js";
-export * from "./updateprivateendpointparameters.js";
-export * from "./updateprivateendpointpricing.js";
 export * from "./updateprivateprovider.js";
 export * from "./updatescimgroupmapping.js";
 export * from "./updateworkspace.js";

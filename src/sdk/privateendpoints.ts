@@ -11,8 +11,6 @@ import { privateEndpointsEnable } from "../funcs/privateEndpointsEnable.js";
 import { privateEndpointsGet } from "../funcs/privateEndpointsGet.js";
 import { privateEndpointsList } from "../funcs/privateEndpointsList.js";
 import { privateEndpointsUpdate } from "../funcs/privateEndpointsUpdate.js";
-import { privateEndpointsUpdateParameters } from "../funcs/privateEndpointsUpdateParameters.js";
-import { privateEndpointsUpdatePricing } from "../funcs/privateEndpointsUpdatePricing.js";
 import { privateEndpointsValidate } from "../funcs/privateEndpointsValidate.js";
 import { ClientSDK, RequestOptions } from "../lib/sdks.js";
 import * as models from "../models/index.js";
@@ -150,44 +148,6 @@ export class PrivateEndpoints extends ClientSDK {
     options?: RequestOptions,
   ): Promise<models.ManagedPrivateEndpointResponse> {
     return unwrapAsync(privateEndpointsEnable(
-      this,
-      request,
-      options,
-    ));
-  }
-
-  /**
-   * Set private endpoint supported parameters (deprecated)
-   *
-   * @remarks
-   * Deprecated: send `declared_parameters` to `PATCH /private-endpoints/{id}` instead; this route behaves exactly like that call and will be removed. The body replaces the earlier declaration and is read as a set; `tested_parameters` stay. Returns 400 `parameters_invalid` when `tool_choice` is declared without `tools` being tested or declared. [Management key](/docs/guides/overview/auth/management-api-keys) required.
-   *
-   * @deprecated method: This will be removed in a future release, please migrate away from it as soon as possible.
-   */
-  async updateParameters(
-    request: operations.UpdatePrivateEndpointParametersRequest,
-    options?: RequestOptions,
-  ): Promise<models.PrivateEndpointResponse> {
-    return unwrapAsync(privateEndpointsUpdateParameters(
-      this,
-      request,
-      options,
-    ));
-  }
-
-  /**
-   * Set private endpoint pricing (deprecated)
-   *
-   * @remarks
-   * Deprecated: send `pricing` to `PATCH /private-endpoints/{id}` instead; this route behaves exactly like that call and will be removed. The body replaces the whole pricing object: omitting `cache_read` or `cache_write` reverts that rate to the provider pricing strategy default. [Management key](/docs/guides/overview/auth/management-api-keys) required.
-   *
-   * @deprecated method: This will be removed in a future release, please migrate away from it as soon as possible.
-   */
-  async updatePricing(
-    request: operations.UpdatePrivateEndpointPricingRequest,
-    options?: RequestOptions,
-  ): Promise<models.PrivateEndpointResponse> {
-    return unwrapAsync(privateEndpointsUpdatePricing(
       this,
       request,
       options,
