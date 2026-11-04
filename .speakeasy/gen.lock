@@ -1,19 +1,19 @@
 lockVersion: ""
 id: ""
 management:
-  docChecksum: 167b758820925c13b78a74741708652c
+  docChecksum: 99bb970fafec09976e7e027f115dc5a3
   docVersion: 1.0.0
   speakeasyVersion: 1.803.2
   generationVersion: 2.950.13
-  releaseVersion: 1.5.48
-  configChecksum: 2ebfbf9b8eff4de3a7922b791c7b3954
+  releaseVersion: 1.5.49
+  configChecksum: 7aa539f5a5c600128f52e6004de82706
   repoURL: https://github.com/OpenRouterTeam/typescript-sdk.git
   installationURL: https://github.com/OpenRouterTeam/typescript-sdk
   published: true
 persistentEdits:
-  generation_id: 8cc87171-0b69-4128-a96f-96fe09bf117d
-  pristine_commit_hash: 3644ffd6616825c07abb43401593cc9bfd59e336
-  pristine_tree_hash: 24d584292ea77537d21fbd844c4dba891f23d84b
+  generation_id: abc296ea-42fa-43dd-9325-c53170d5c7f0
+  pristine_commit_hash: e509fd9cd087019a3105602da79f8ba3cf145198
+  pristine_tree_hash: 1befb6352085605537391ad832a545f548d0768f
 features:
   typescript:
     acceptHeaders: 2.81.2
@@ -15787,8 +15787,8 @@ trackedFiles:
     deleted: true
   docs/models/workspacemember.mdx:
     id: c921c84419c7
-    last_write_checksum: sha1:8bac1eb8cb2cbfd8549400268318ec038ccab582
-    pristine_git_object: c8174ef4246625b895b24c1516a2a9b925237410
+    last_write_checksum: sha1:c8cad6265f56622b5a1a42df0ca84eed8aeb81ed
+    pristine_git_object: aad9d0db176aadd92d4e33785ad187befacaf211
   docs/models/workspacememberrole.md:
     id: dd08df2b750b
     last_write_checksum: sha1:5380c4d0dc2238ed971cdb29904fc73de920dc60
@@ -15796,8 +15796,8 @@ trackedFiles:
     deleted: true
   docs/models/workspacememberrole.mdx:
     id: 6927568eef4d
-    last_write_checksum: sha1:f6f5d037dabfb034b82cd109daf12ce0c13d3a1e
-    pristine_git_object: 07badc48366af6a4d60d331fd5a541881c7cc20c
+    last_write_checksum: sha1:1dae3314a9a4448411a489ef981ea6dbd1cd1885
+    pristine_git_object: 0e0ac6ce8c570bee895e9a5ed254f382dc4e9304
   docs/models/xsearchoptions.mdx:
     id: c0b3958e403e
     last_write_checksum: sha1:5c053ba53a004406f619951bb8ccf0bbfdfefe5c
@@ -16059,12 +16059,12 @@ trackedFiles:
     pristine_git_object: 410efafd6a7f50d91ccb87131fedbe0c3d47e15a
   jsr.json:
     id: 7f6ab7767282
-    last_write_checksum: sha1:c794d60dbf4cc1acc8e11ee5ca6b55cf388cfeec
-    pristine_git_object: 7b1faf554833979267fe1d28b8d7406301235f59
+    last_write_checksum: sha1:61f9851a4c07bb15446e3d7c5ee00ba1d4e4d7c0
+    pristine_git_object: 5c90f4ae5ef84c1ffe2d40afc85b158020c16138
   package.json:
     id: 7030d0b2f71b
-    last_write_checksum: sha1:23cc7e115582c66b9f3df02882f3f374923faab4
-    pristine_git_object: a8ec3294ba2dfd5f321b3d27ce7b9e14f5c93412
+    last_write_checksum: sha1:d2db02dced3958022a2696c5621062e4a27d7d7c
+    pristine_git_object: 5d84e3b4c08d14f24747013d6eb9f92def18bec4
   src/core.ts:
     id: f431fdbcd144
     last_write_checksum: sha1:5aa66b0b6a5964f3eea7f3098c2eb3c0ee9c0131
@@ -16663,8 +16663,8 @@ trackedFiles:
     pristine_git_object: a187e58707bdb726ca2aff74941efe7493422d4e
   src/lib/config.ts:
     id: 320761608fb3
-    last_write_checksum: sha1:8b5d19a01aa89d783ec30c6334c36919524e36c4
-    pristine_git_object: 94187996ba71a2dffa7d3ad21a889f6db2258e5d
+    last_write_checksum: sha1:80d833ba808be74df14fe41cd1937e96af7cdf28
+    pristine_git_object: 582f59daa6b5972c5dc28d5f5d77058ec089aa27
   src/lib/dlv.ts:
     id: b1988214835a
     last_write_checksum: sha1:eaac763b22717206a6199104e0403ed17a4e2711
@@ -20977,8 +20977,8 @@ trackedFiles:
     pristine_git_object: 6dd66c95c34053cc23978b9657c68a2c3726fc4f
   src/models/workspacemember.ts:
     id: 42cb4568aa7e
-    last_write_checksum: sha1:5c1e899aafe361dc9b6c6fe23f3550c360f01be0
-    pristine_git_object: 098c6017f5e53f23c61df3df18d2b69a7266e63d
+    last_write_checksum: sha1:cc94998865dfc04e644704900c30d9b7eb1cdeea
+    pristine_git_object: cb753a9e613822903fe7eb001f81c0a8d23d1d72
   src/models/xsearchoptions.ts:
     id: d7a145785d12
     last_write_checksum: sha1:2c9831fd9b7c903f806afe97cec588a076abb251
@@ -25804,4 +25804,7 @@ examples:
         "500":
           application/json: {"error": {"code": 500, "message": "Internal Server Error"}}
 examplesVersion: 1.0.2
-releaseNotes: "## Typescript SDK Changes:\n* `openrouter.providers.listProviderEndpoints()`: **Removed** (Breaking ⚠️)\n* `openrouter.videoGeneration.generate()`: \n  *  `request.videoGenerationRequest.provider` **Changed**\n"
+releaseNotes: |
+  ## Typescript SDK Changes:
+  * `openrouter.workspaces.listMembers()`:  `response.data[].role` **Changed**
+  * `openrouter.workspaces.bulkAddMembers()`:  `response.data[].role` **Changed**
