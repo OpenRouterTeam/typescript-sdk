@@ -23,7 +23,12 @@ import { dirname, resolve } from 'node:path';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
-const TYPES_FILE_PATH = resolve(__dirname, '../src/types/models.ts');
+// The published package ships only the build output (`src/` is excluded by
+// .npmignore), so check it first; the source file covers repo checkouts.
+const TYPES_FILE_PATHS = [
+  resolve(__dirname, '../esm/types/models.js'),
+  resolve(__dirname, '../src/types/models.ts'),
+];
 const API_URL = 'https://openrouter.ai/api/v1/models';
 const TIMEOUT_MS = 5000;
 
@@ -59,6 +64,24 @@ function extractHash(content) {
 }
 
 /**
+ * Read the first types file that exists
+ * @returns {Promise<string | null>} file content, or null if none exists
+ */
+async function readTypesFile() {
+  for (const path of TYPES_FILE_PATHS) {
+    try {
+      return await readFile(path, 'utf-8');
+    } catch (error) {
+      if (isNodeError(error) && error.code === 'ENOENT') {
+        continue;
+      }
+      throw error;
+    }
+  }
+  return null;
+}
+
+/**
  * Fetch models from API with timeout
  * @returns {Promise<string[]>}
  */
@@ -91,17 +114,11 @@ async function main() {
   }
 
   try {
-    /** @type {string | null} */
-    let existingHash;
-    try {
-      const content = await readFile(TYPES_FILE_PATH, 'utf-8');
-      existingHash = extractHash(content);
-    } catch (error) {
-      if (isNodeError(error) && error.code === 'ENOENT') {
-        return;
-      }
-      throw error;
+    const content = await readTypesFile();
+    if (content === null) {
+      return;
     }
+    const existingHash = extractHash(content);
 
     if (!existingHash) {
       return;
