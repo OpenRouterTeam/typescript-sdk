@@ -28,6 +28,7 @@ export const ApiType = {
   TTS: "tts",
   STT: "stt",
   Image: "image",
+  ToolsInvoke: "tools_invoke",
 } as const;
 /**
  * Type of API used for the generation

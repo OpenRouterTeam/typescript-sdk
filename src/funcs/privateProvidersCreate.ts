@@ -31,7 +31,7 @@ import { Result } from "../types/fp.js";
  * Create a private provider
  *
  * @remarks
- * Create a private, bring-your-own-key provider visible only to your organization. Use its slug as `provider_slug` when creating private endpoints. Requires both the private endpoints and the private providers entitlements. [Management key](/docs/guides/overview/auth/management-api-keys) required.
+ * Create a private, bring-your-own-key provider visible only to your organization. Use its slug as `provider_slug` when creating private endpoints. Requires the private endpoints entitlement. [Management key](/docs/guides/overview/auth/management-api-keys) required.
  */
 export function privateProvidersCreate(
   client: OpenRouterCore,
