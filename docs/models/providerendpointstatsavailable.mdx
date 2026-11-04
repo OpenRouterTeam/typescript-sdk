@@ -1,0 +1,43 @@
+---
+title: "ProviderEndpointStatsAvailable"
+---
+
+## Example Usage
+
+```typescript
+import { ProviderEndpointStatsAvailable } from "@openrouter/sdk/models";
+
+let value: ProviderEndpointStatsAvailable = {
+  endpointCount: 12,
+  errorRatePercent: 0.8,
+  latencyMs: {
+    p50: 8645.57,
+    p90: null,
+  },
+  qualityPercent: 1909.68,
+  rateLimitedPercent: 1399.15,
+  reliabilityPercent: 5148.76,
+  requests: 120000,
+  status: "available",
+  throughputTokensPerSecond: {
+    p50: 9007.45,
+    p90: 4097.45,
+  },
+  uptimePercent: 99.2,
+};
+```
+
+## Fields
+
+| Field                                                                      | Type                                                                       | Required                                                                   | Description                                                                | Example                                                                    |
+| -------------------------------------------------------------------------- | -------------------------------------------------------------------------- | -------------------------------------------------------------------------- | -------------------------------------------------------------------------- | -------------------------------------------------------------------------- |
+| `endpointCount`                                                            | *number*                                                                   | ✔️                                                         | Endpoints the stats cover                                                  | 12                                                                         |
+| `errorRatePercent`                                                         | *number*                                                                   | ✔️                                                         | Errored share of requests that count toward uptime, 0-100                  | 0.8                                                                        |
+| `latencyMs`                                                                | [models.LatencyMs](../models/latencyms.mdx)                                 | ✔️                                                         | Request latency, milliseconds                                              |                                                                            |
+| `qualityPercent`                                                           | *number*                                                                   | ✔️                                                         | Routing quality, 0-100                                                     |                                                                            |
+| `rateLimitedPercent`                                                       | *number*                                                                   | ✔️                                                         | Rate-limited share of routed requests, 0-100                               |                                                                            |
+| `reliabilityPercent`                                                       | *number*                                                                   | ✔️                                                         | Routing reliability, 0-100                                                 |                                                                            |
+| `requests`                                                                 | *number*                                                                   | ✔️                                                         | Requests in the window                                                     | 120000                                                                     |
+| `status`                                                                   | *"available"*                                                              | ✔️                                                         | N/A                                                                        |                                                                            |
+| `throughputTokensPerSecond`                                                | [models.ThroughputTokensPerSecond](../models/throughputtokenspersecond.mdx) | ✔️                                                         | Output tokens per second                                                   |                                                                            |
+| `uptimePercent`                                                            | *number*                                                                   | ✔️                                                         | Successful share of requests that count toward uptime, 0-100               | 99.2                                                                       |

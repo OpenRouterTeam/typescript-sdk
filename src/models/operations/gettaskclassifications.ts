@@ -32,13 +32,15 @@ export type GetTaskClassificationsGlobals = {
 /**
  * Trailing time window for the classification data. Currently only `7d` (trailing 7 days) is supported.
  */
-export const Window = {
+export const GetTaskClassificationsWindow = {
   Sevend: "7d",
 } as const;
 /**
  * Trailing time window for the classification data. Currently only `7d` (trailing 7 days) is supported.
  */
-export type Window = ClosedEnum<typeof Window>;
+export type GetTaskClassificationsWindow = ClosedEnum<
+  typeof GetTaskClassificationsWindow
+>;
 
 export type GetTaskClassificationsRequest = {
   /**
@@ -63,11 +65,13 @@ export type GetTaskClassificationsRequest = {
   /**
    * Trailing time window for the classification data. Currently only `7d` (trailing 7 days) is supported.
    */
-  window?: Window | undefined;
+  window?: GetTaskClassificationsWindow | undefined;
 };
 
 /** @internal */
-export const Window$outboundSchema: z.ZodEnum<typeof Window> = z.enum(Window);
+export const GetTaskClassificationsWindow$outboundSchema: z.ZodEnum<
+  typeof GetTaskClassificationsWindow
+> = z.enum(GetTaskClassificationsWindow);
 
 /** @internal */
 export type GetTaskClassificationsRequest$Outbound = {
@@ -85,7 +89,7 @@ export const GetTaskClassificationsRequest$outboundSchema: z.ZodType<
   httpReferer: z.string().optional(),
   appTitle: z.string().optional(),
   appCategories: z.string().optional(),
-  window: Window$outboundSchema.default("7d"),
+  window: GetTaskClassificationsWindow$outboundSchema.default("7d"),
 }).transform((v) => {
   return remap$(v, {
     httpReferer: "HTTP-Referer",

@@ -1,0 +1,21 @@
+---
+title: "InstructionRoleSupport"
+---
+
+How leading instruction (developer/system) messages are mapped before reaching a chat-completions provider. 'developer' keeps the developer role, 'system' downgrades developer to system, 'user-only' downgrades both to a wrapped user message. Overridable per-endpoint.
+
+## Example Usage
+
+```typescript
+import { InstructionRoleSupport } from "@openrouter/sdk/models";
+
+let value: InstructionRoleSupport = "system";
+
+// Open enum: unrecognized values are captured as Unrecognized<string>
+```
+
+## Values
+
+```typescript
+"developer" | "system" | "user-only" | Unrecognized<string>
+```

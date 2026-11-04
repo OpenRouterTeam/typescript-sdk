@@ -1,0 +1,40 @@
+---
+title: "ProviderEndpoints"
+---
+
+## Example Usage
+
+```typescript
+import { ProviderEndpoints } from "@openrouter/sdk/models";
+
+let value: ProviderEndpoints = {
+  endpoints: [],
+  stats: {
+    endpointCount: 12,
+    errorRatePercent: 0.8,
+    latencyMs: {
+      p50: 8645.57,
+      p90: null,
+    },
+    qualityPercent: 1731.61,
+    rateLimitedPercent: null,
+    reliabilityPercent: 170.21,
+    requests: 120000,
+    status: "available",
+    throughputTokensPerSecond: {
+      p50: 9007.45,
+      p90: 4097.45,
+    },
+    uptimePercent: 99.2,
+  },
+  window: "1d",
+};
+```
+
+## Fields
+
+| Field                                                    | Type                                                     | Required                                                 | Description                                              | Example                                                  |
+| -------------------------------------------------------- | -------------------------------------------------------- | -------------------------------------------------------- | -------------------------------------------------------- | -------------------------------------------------------- |
+| `endpoints`                                              | [models.EndpointSummary](../models/endpointsummary.mdx)[] | ✔️                                       | N/A                                                      |                                                          |
+| `stats`                                                  | *models.ProviderEndpointStats*                           | ✔️                                       | N/A                                                      |                                                          |
+| `window`                                                 | [models.Window](../models/window.mdx)                     | ✔️                                       | Time window the provider-wide stats cover                | 1d                                                       |

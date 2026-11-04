@@ -1,0 +1,21 @@
+---
+title: "Window"
+---
+
+Time window the provider-wide stats cover
+
+## Example Usage
+
+```typescript
+import { Window } from "@openrouter/sdk/models";
+
+let value: Window = "1d";
+
+// Open enum: unrecognized values are captured as Unrecognized<string>
+```
+
+## Values
+
+```typescript
+"1hr" | "1d" | "1w" | "1mo" | "1y" | Unrecognized<string>
+```
