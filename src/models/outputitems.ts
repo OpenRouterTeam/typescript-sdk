@@ -42,6 +42,10 @@ import {
   OutputCodeInterpreterServerToolItem$inboundSchema,
 } from "./outputcodeinterpreterservertoolitem.js";
 import {
+  OutputCompactionItem,
+  OutputCompactionItem$inboundSchema,
+} from "./outputcompactionitem.js";
+import {
   OutputComputerCallItem,
   OutputComputerCallItem$inboundSchema,
 } from "./outputcomputercallitem.js";
@@ -148,6 +152,7 @@ import {
 export type OutputItems =
   | OutputApplyPatchCallItem
   | (OutputCodeInterpreterCallItem & { type: "code_interpreter_call" })
+  | OutputCompactionItem
   | (OutputComputerCallItem & { type: "computer_call" })
   | OutputCustomToolCallItem
   | (OutputFileSearchCallItem & { type: "file_search_call" })
@@ -194,6 +199,7 @@ export const OutputItems$inboundSchema: z.ZodType<OutputItems, unknown> =
     code_interpreter_call: OutputCodeInterpreterCallItem$inboundSchema.and(
       z.object({ type: z.literal("code_interpreter_call") }),
     ),
+    compaction: OutputCompactionItem$inboundSchema,
     computer_call: OutputComputerCallItem$inboundSchema.and(
       z.object({ type: z.literal("computer_call") }),
     ),

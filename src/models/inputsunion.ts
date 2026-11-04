@@ -32,6 +32,11 @@ import {
   CompactionItem$outboundSchema,
 } from "./compactionitem.js";
 import {
+  CompactionTriggerItem,
+  CompactionTriggerItem$Outbound,
+  CompactionTriggerItem$outboundSchema,
+} from "./compactiontriggeritem.js";
+import {
   ConfigurationUpdateItem,
   ConfigurationUpdateItem$Outbound,
   ConfigurationUpdateItem$outboundSchema,
@@ -460,6 +465,7 @@ export type InputsUnion1 =
   | ConfigurationUpdateItem
   | EasyInputMessage
   | InputMessageItem
+  | CompactionTriggerItem
   | ContextCompactionItem;
 
 /**
@@ -519,6 +525,7 @@ export type InputsUnion =
     | ConfigurationUpdateItem
     | EasyInputMessage
     | InputMessageItem
+    | CompactionTriggerItem
     | ContextCompactionItem
   >;
 
@@ -825,6 +832,7 @@ export type InputsUnion1$Outbound =
   | ConfigurationUpdateItem$Outbound
   | EasyInputMessage$Outbound
   | InputMessageItem$Outbound
+  | CompactionTriggerItem$Outbound
   | ContextCompactionItem$Outbound;
 
 /** @internal */
@@ -883,6 +891,7 @@ export const InputsUnion1$outboundSchema: z.ZodType<
   ConfigurationUpdateItem$outboundSchema,
   EasyInputMessage$outboundSchema,
   InputMessageItem$outboundSchema,
+  CompactionTriggerItem$outboundSchema,
   ContextCompactionItem$outboundSchema,
 ]);
 
@@ -945,6 +954,7 @@ export type InputsUnion$Outbound =
     | ConfigurationUpdateItem$Outbound
     | EasyInputMessage$Outbound
     | InputMessageItem$Outbound
+    | CompactionTriggerItem$Outbound
     | ContextCompactionItem$Outbound
   >;
 
@@ -1007,6 +1017,7 @@ export const InputsUnion$outboundSchema: z.ZodType<
       ConfigurationUpdateItem$outboundSchema,
       EasyInputMessage$outboundSchema,
       InputMessageItem$outboundSchema,
+      CompactionTriggerItem$outboundSchema,
       ContextCompactionItem$outboundSchema,
     ]),
   ),
