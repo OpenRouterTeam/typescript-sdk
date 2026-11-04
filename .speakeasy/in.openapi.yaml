@@ -7038,6 +7038,7 @@ components:
         - 'ollama'
         - 'open-inference'
         - 'openai'
+        - 'parallel'
         - 'parasail'
         - 'pareto-alpha'
         - 'particle-ai'
@@ -19031,6 +19032,7 @@ components:
                 - 'Ollama'
                 - 'OpenAI'
                 - 'OpenInference'
+                - 'Parallel'
                 - 'Parasail'
                 - 'ParetoAlpha'
                 - 'Particle AI'
@@ -27524,6 +27526,7 @@ components:
         - 'Ollama'
         - 'OpenAI'
         - 'OpenInference'
+        - 'Parallel'
         - 'Parasail'
         - 'ParetoAlpha'
         - 'Particle AI'
@@ -27875,6 +27878,9 @@ components:
           additionalProperties: {}
           type: 'object'
         openai:
+          additionalProperties: {}
+          type: 'object'
+        parallel:
           additionalProperties: {}
           type: 'object'
         parasail:
@@ -28332,6 +28338,7 @@ components:
             - 'Ollama'
             - 'OpenAI'
             - 'OpenInference'
+            - 'Parallel'
             - 'Parasail'
             - 'ParetoAlpha'
             - 'Particle AI'
@@ -38307,6 +38314,7 @@ paths:
               - 'ollama'
               - 'open-inference'
               - 'openai'
+              - 'parallel'
               - 'parasail'
               - 'pareto-alpha'
               - 'particle-ai'
