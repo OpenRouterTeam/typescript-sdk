@@ -3,11 +3,13 @@ import type { InputsUnion, InputsUnion1 } from '../models/inputsunion.js';
 import type { OpenResponsesResult } from '../models/openresponsesresult.js';
 import type {
   ConversationState,
+  InferToolInput,
   ParsedToolCall,
   Tool,
   TurnContext,
   UnsentToolResult,
 } from './tool-types.js';
+import * as z4 from 'zod/v4';
 import { normalizeInputToArray } from './turn-context.js';
 
 /**
@@ -110,24 +112,84 @@ export async function toolRequiresApproval<TTools extends readonly Tool[]>(
   context: TurnContext,
   callLevelCheck?: (toolCall: ParsedToolCall<TTools[number]>, context: TurnContext) => boolean | Promise<boolean>
 ): Promise<boolean> {
+  const tool = tools.find(t => t.function.name === toolCall.name);
+  // Predicates see the arguments the executor will run with (#520)
+  const normalizedCall = tool ? withNormalizedArguments(toolCall, tool) : toolCall;
+
   // Call-level check takes precedence
   if (callLevelCheck) {
-    return callLevelCheck(toolCall, context);
+    return callLevelCheck(normalizedCall, context);
   }
 
   // Fall back to tool-level setting
-  const tool = tools.find(t => t.function.name === toolCall.name);
   if (!tool) return false;
 
   const requireApproval = tool.function.requireApproval;
 
   // If it's a function, call it with the tool's arguments and context
   if (typeof requireApproval === 'function') {
-    return requireApproval(toolCall.arguments, context);
+    return requireApproval(normalizedCall.arguments, context);
   }
 
   // Otherwise treat as boolean
   return requireApproval ?? false;
+}
+
+/**
+ * Return the tool call with its arguments run through the tool's inputSchema,
+ * applying defaults and coercions the same way the executor does. If the
+ * arguments fail validation, the executor rejects the call before `execute`
+ * runs, so the raw arguments are passed through unchanged.
+ *
+ * The original call is not modified: the executor parses `toolCall.arguments`
+ * itself, and parsing already-parsed values would apply transforms twice.
+ */
+function withNormalizedArguments<T extends Tool>(
+  toolCall: ParsedToolCall<T>,
+  tool: T,
+): ParsedToolCall<T> {
+  const parsed = z4.safeParse(tool.function.inputSchema, toolCall.arguments);
+  if (!parsed.success || !conformsToToolInput(tool, parsed.data)) return toolCall;
+  return { ...toolCall, arguments: parsed.data };
+}
+
+/**
+ * Runtime check that a value is valid input for the tool. Parsed output that
+ * no longer matches the schema (for example after a type-changing transform)
+ * fails it, and the caller falls back to the raw arguments.
+ */
+function conformsToToolInput<T extends Tool>(tool: T, value: unknown): value is InferToolInput<T> {
+  return z4.safeParse(tool.function.inputSchema, value).success;
+}
+
+/**
+ * Validate approval decisions before any tool runs (#518).
+ * @throws Error if an ID is listed twice, or is both approved and rejected
+ */
+export function assertValidApprovalDecisions(
+  approveToolCalls: readonly string[],
+  rejectToolCalls: readonly string[],
+): void {
+  const problems = [
+    ...duplicateIds(approveToolCalls).map(id => `"${id}" is listed more than once in approveToolCalls`),
+    ...duplicateIds(rejectToolCalls).map(id => `"${id}" is listed more than once in rejectToolCalls`),
+    ...[...new Set(approveToolCalls)]
+      .filter(id => rejectToolCalls.includes(id))
+      .map(id => `"${id}" is in both approveToolCalls and rejectToolCalls`),
+  ];
+  if (problems.length > 0) {
+    throw new Error(`Invalid approval decisions: ${problems.join('; ')}`);
+  }
+}
+
+function duplicateIds(ids: readonly string[]): string[] {
+  const seen = new Set<string>();
+  const duplicates = new Set<string>();
+  for (const id of ids) {
+    if (seen.has(id)) duplicates.add(id);
+    seen.add(id);
+  }
+  return [...duplicates];
 }
 
 /**

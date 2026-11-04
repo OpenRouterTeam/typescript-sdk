@@ -40,6 +40,7 @@ import {
 } from './async-params.js';
 import {
   appendToMessages,
+  assertValidApprovalDecisions,
   createInitialState,
   createRejectedResult,
   createUnsentResult,
@@ -223,6 +224,8 @@ export class ModelResult<
         'Provide a StateAccessor via the "state" parameter to persist approval decisions.'
       );
     }
+
+    assertValidApprovalDecisions(options.approveToolCalls ?? [], options.rejectToolCalls ?? []);
 
     // Initialize state management
     this.stateAccessor = options.state ?? null;
@@ -1003,9 +1006,10 @@ export class ModelResult<
         if (loadedState) {
           this.currentState = loadedState;
 
-          // Check if we're resuming from awaiting_approval with decisions
-          if (loadedState.status === 'awaiting_approval' &&
-              (this.approvedToolCalls.length > 0 || this.rejectedToolCalls.length > 0)) {
+          // Resuming from awaiting_approval always goes through decision
+          // processing. With no decisions every call stays pending, so the
+          // conversation stays paused instead of advancing (#517).
+          if (loadedState.status === 'awaiting_approval') {
             // Initialize context store before resuming so tools have access
             if (this.options.context !== undefined) {
               const approvalContext: TurnContext = { numberOfTurns: 0 };
