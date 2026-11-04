@@ -1,0 +1,25 @@
+---
+title: "DecisionsUrlCitationAnnotation"
+---
+
+A web source the provider used for this request. Applies to the whole request, not to a specific answer.
+
+## Example Usage
+
+```typescript
+import { DecisionsUrlCitationAnnotation } from "@openrouter/sdk/models";
+
+let value: DecisionsUrlCitationAnnotation = {
+  type: "url_citation",
+  urlCitation: {
+    url: "https://yummy-hyena.info/",
+  },
+};
+```
+
+## Fields
+
+| Field                                                                                                      | Type                                                                                                       | Required                                                                                                   | Description                                                                                                |
+| ---------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------- |
+| `type`                                                                                                     | [models.DecisionsUrlCitationAnnotationType](../models/decisionsurlcitationannotationtype.mdx)               | ✔️                                                                                         | N/A                                                                                                        |
+| `urlCitation`                                                                                              | [models.DecisionsUrlCitationAnnotationUrlCitation](../models/decisionsurlcitationannotationurlcitation.mdx) | ✔️                                                                                         | N/A                                                                                                        |
