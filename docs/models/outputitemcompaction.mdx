@@ -1,0 +1,24 @@
+---
+title: "OutputItemCompaction"
+---
+
+## Example Usage
+
+```typescript
+import { OutputItemCompaction } from "@openrouter/sdk/models";
+
+let value: OutputItemCompaction = {
+  encryptedContent: "enc_abc123...",
+  id: "cmp_abc123",
+  type: "compaction",
+};
+```
+
+## Fields
+
+| Field              | Type               | Required           | Description        |
+| ------------------ | ------------------ | ------------------ | ------------------ |
+| `createdBy`        | *string*           | ➖ | N/A                |
+| `encryptedContent` | *string*           | ✔️ | N/A                |
+| `id`               | *string*           | ✔️ | N/A                |
+| `type`             | *"compaction"*     | ✔️ | N/A                |
