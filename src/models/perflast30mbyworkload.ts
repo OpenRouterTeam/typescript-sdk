@@ -10,6 +10,7 @@ import { Result as SafeParseResult } from "../types/fp.js";
 import { Decisions, Decisions$inboundSchema } from "./decisions.js";
 import { Embeddings, Embeddings$inboundSchema } from "./embeddings.js";
 import { SDKValidationError } from "./errors/sdkvalidationerror.js";
+import { Extractions, Extractions$inboundSchema } from "./extractions.js";
 import {
   ImageGeneration,
   ImageGeneration$inboundSchema,
@@ -33,6 +34,7 @@ import {
 export type PerfLast30mByWorkload = {
   decisions?: Decisions | undefined;
   embeddings?: Embeddings | undefined;
+  extractions?: Extractions | undefined;
   imageGeneration?: ImageGeneration | undefined;
   rerank?: Rerank | undefined;
   stt?: STT | undefined;
@@ -49,6 +51,7 @@ export const PerfLast30mByWorkload$inboundSchema: z.ZodType<
 > = z.object({
   decisions: Decisions$inboundSchema.optional(),
   embeddings: Embeddings$inboundSchema.optional(),
+  extractions: Extractions$inboundSchema.optional(),
   image_generation: ImageGeneration$inboundSchema.optional(),
   rerank: Rerank$inboundSchema.optional(),
   stt: STT$inboundSchema.optional(),

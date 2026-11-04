@@ -355,6 +355,7 @@ export * from "./extractionlistanswer.js";
 export * from "./extractionlistfield.js";
 export * from "./extractionnumberanswer.js";
 export * from "./extractionnumberfield.js";
+export * from "./extractions.js";
 export * from "./extractionsrequest.js";
 export * from "./extractionsresponse.js";
 export * from "./extractionsusage.js";
