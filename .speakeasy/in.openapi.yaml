@@ -645,6 +645,7 @@ components:
           mapping:
             apply_patch_call: '#/components/schemas/OutputItemApplyPatchCall'
             code_interpreter_call: '#/components/schemas/OutputItemCodeInterpreterCall'
+            compaction: '#/components/schemas/OutputItemCompaction'
             custom_tool_call: '#/components/schemas/OutputItemCustomToolCall'
             file_search_call: '#/components/schemas/OutputItemFileSearchCall'
             function_call: '#/components/schemas/OutputItemFunctionCall'
@@ -663,6 +664,7 @@ components:
           - $ref: '#/components/schemas/OutputItemImageGenerationCall'
           - $ref: '#/components/schemas/OutputItemApplyPatchCall'
           - $ref: '#/components/schemas/OutputItemCodeInterpreterCall'
+          - $ref: '#/components/schemas/OutputItemCompaction'
       type: 'array'
     AlignmentRule:
       additionalProperties: false
@@ -4809,6 +4811,7 @@ components:
               mapping:
                 apply_patch_call: '#/components/schemas/OutputItemApplyPatchCall'
                 code_interpreter_call: '#/components/schemas/OutputItemCodeInterpreterCall'
+                compaction: '#/components/schemas/OutputItemCompaction'
                 custom_tool_call: '#/components/schemas/OutputItemCustomToolCall'
                 file_search_call: '#/components/schemas/OutputItemFileSearchCall'
                 function_call: '#/components/schemas/OutputItemFunctionCall'
@@ -4827,6 +4830,7 @@ components:
               - $ref: '#/components/schemas/OutputItemImageGenerationCall'
               - $ref: '#/components/schemas/OutputItemApplyPatchCall'
               - $ref: '#/components/schemas/OutputItemCodeInterpreterCall'
+              - $ref: '#/components/schemas/OutputItemCompaction'
           type: 'array'
         output_text:
           type: 'string'
@@ -9086,6 +9090,18 @@ components:
       required:
         - 'type'
         - 'encrypted_content'
+      type: 'object'
+    CompactionTriggerItem:
+      description: 'Asks the model to compact the preceding input into a compaction item'
+      example:
+        type: 'compaction_trigger'
+      properties:
+        type:
+          enum:
+            - 'compaction_trigger'
+          type: 'string'
+      required:
+        - 'type'
       type: 'object'
     CompletedEvent:
       description: 'Event emitted when a response has completed successfully'
@@ -16291,6 +16307,7 @@ components:
               - $ref: '#/components/schemas/McpCallItem'
               - $ref: '#/components/schemas/CustomToolCallItem'
               - $ref: '#/components/schemas/CustomToolCallOutputItem'
+              - $ref: '#/components/schemas/CompactionTriggerItem'
               - $ref: '#/components/schemas/CompactionItem'
               - $ref: '#/components/schemas/ContextCompactionItem'
               - $ref: '#/components/schemas/ItemReferenceItem'
@@ -24514,6 +24531,28 @@ components:
         - 'status'
         - 'type'
       type: 'object'
+    OutputCompactionItem:
+      description: 'A compaction output item carrying the encrypted summary of the compacted conversation. Emitted in reply to a `compaction_trigger` input item.'
+      example:
+        encrypted_content: 'enc_abc123...'
+        id: 'cmp_abc123'
+        type: 'compaction'
+      properties:
+        created_by:
+          type: 'string'
+        encrypted_content:
+          type: 'string'
+        id:
+          type: 'string'
+        type:
+          enum:
+            - 'compaction'
+          type: 'string'
+      required:
+        - 'type'
+        - 'id'
+        - 'encrypted_content'
+      type: 'object'
     OutputComputerCallItem:
       example:
         action:
@@ -24876,6 +24915,7 @@ components:
             mapping:
               apply_patch_call: '#/components/schemas/OutputItemApplyPatchCall'
               code_interpreter_call: '#/components/schemas/OutputItemCodeInterpreterCall'
+              compaction: '#/components/schemas/OutputItemCompaction'
               custom_tool_call: '#/components/schemas/OutputItemCustomToolCall'
               file_search_call: '#/components/schemas/OutputItemFileSearchCall'
               function_call: '#/components/schemas/OutputItemFunctionCall'
@@ -24894,6 +24934,7 @@ components:
             - $ref: '#/components/schemas/OutputItemImageGenerationCall'
             - $ref: '#/components/schemas/OutputItemApplyPatchCall'
             - $ref: '#/components/schemas/OutputItemCodeInterpreterCall'
+            - $ref: '#/components/schemas/OutputItemCompaction'
         output_index:
           type: 'integer'
         sequence_number:
@@ -25003,6 +25044,27 @@ components:
         - 'id'
         - 'status'
       type: 'object'
+    OutputItemCompaction:
+      example:
+        encrypted_content: 'enc_abc123...'
+        id: 'cmp_abc123'
+        type: 'compaction'
+      properties:
+        created_by:
+          type: 'string'
+        encrypted_content:
+          type: 'string'
+        id:
+          type: 'string'
+        type:
+          enum:
+            - 'compaction'
+          type: 'string'
+      required:
+        - 'type'
+        - 'id'
+        - 'encrypted_content'
+      type: 'object'
     OutputItemCustomToolCall:
       example:
         call_id: 'call-abc123'
@@ -25064,6 +25126,7 @@ components:
             mapping:
               apply_patch_call: '#/components/schemas/OutputItemApplyPatchCall'
               code_interpreter_call: '#/components/schemas/OutputItemCodeInterpreterCall'
+              compaction: '#/components/schemas/OutputItemCompaction'
               custom_tool_call: '#/components/schemas/OutputItemCustomToolCall'
               file_search_call: '#/components/schemas/OutputItemFileSearchCall'
               function_call: '#/components/schemas/OutputItemFunctionCall'
@@ -25082,6 +25145,7 @@ components:
             - $ref: '#/components/schemas/OutputItemImageGenerationCall'
             - $ref: '#/components/schemas/OutputItemApplyPatchCall'
             - $ref: '#/components/schemas/OutputItemCodeInterpreterCall'
+            - $ref: '#/components/schemas/OutputItemCompaction'
         output_index:
           type: 'integer'
         sequence_number:
@@ -25240,6 +25304,7 @@ components:
         mapping:
           apply_patch_call: '#/components/schemas/OutputApplyPatchCallItem'
           code_interpreter_call: '#/components/schemas/OutputCodeInterpreterCallItem'
+          compaction: '#/components/schemas/OutputCompactionItem'
           computer_call: '#/components/schemas/OutputComputerCallItem'
           custom_tool_call: '#/components/schemas/OutputCustomToolCallItem'
           file_search_call: '#/components/schemas/OutputFileSearchCallItem'
@@ -25299,6 +25364,7 @@ components:
         - $ref: '#/components/schemas/OutputTextEditorServerToolItem'
         - $ref: '#/components/schemas/OutputApplyPatchServerToolItem'
         - $ref: '#/components/schemas/OutputApplyPatchCallItem'
+        - $ref: '#/components/schemas/OutputCompactionItem'
         - $ref: '#/components/schemas/OutputShellCallItem'
         - $ref: '#/components/schemas/OutputShellCallOutputItem'
         - $ref: '#/components/schemas/OutputShellServerToolItem'
