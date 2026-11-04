@@ -36054,10 +36054,12 @@ components:
           format: 'uuid'
           type: 'string'
         role:
-          description: 'Role of the member in the workspace'
+          description: 'Role of the member in the workspace. `viewer` and `restricted_viewer` are read-only: `viewer` can view the whole workspace, and `restricted_viewer` can view only their own activity.'
           enum:
             - 'admin'
             - 'member'
+            - 'viewer'
+            - 'restricted_viewer'
           example: 'member'
           type: 'string'
         user_id:
