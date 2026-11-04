@@ -99,6 +99,7 @@ export const BYOKProviderSlug = {
   Perplexity: "perplexity",
   Phala: "phala",
   Poolside: "poolside",
+  Primalabs: "primalabs",
   Primeintellect: "primeintellect",
   Quiver: "quiver",
   Recraft: "recraft",
