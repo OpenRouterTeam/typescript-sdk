@@ -111,6 +111,7 @@ export type ProviderOptions = {
   ollama?: { [k: string]: any } | undefined;
   openInference?: { [k: string]: any } | undefined;
   openai?: { [k: string]: any } | undefined;
+  parallel?: { [k: string]: any } | undefined;
   parasail?: { [k: string]: any } | undefined;
   paretoAlpha?: { [k: string]: any } | undefined;
   particleAi?: { [k: string]: any } | undefined;
@@ -268,6 +269,7 @@ export type ProviderOptions$Outbound = {
   ollama?: { [k: string]: any } | undefined;
   "open-inference"?: { [k: string]: any } | undefined;
   openai?: { [k: string]: any } | undefined;
+  parallel?: { [k: string]: any } | undefined;
   parasail?: { [k: string]: any } | undefined;
   "pareto-alpha"?: { [k: string]: any } | undefined;
   "particle-ai"?: { [k: string]: any } | undefined;
@@ -428,6 +430,7 @@ export const ProviderOptions$outboundSchema: z.ZodType<
   ollama: z.record(z.string(), z.any()).optional(),
   openInference: z.record(z.string(), z.any()).optional(),
   openai: z.record(z.string(), z.any()).optional(),
+  parallel: z.record(z.string(), z.any()).optional(),
   parasail: z.record(z.string(), z.any()).optional(),
   paretoAlpha: z.record(z.string(), z.any()).optional(),
   particleAi: z.record(z.string(), z.any()).optional(),

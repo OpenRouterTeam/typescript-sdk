@@ -90,6 +90,7 @@ export const BYOKProviderSlug = {
   Ollama: "ollama",
   OpenInference: "open-inference",
   Openai: "openai",
+  Parallel: "parallel",
   Parasail: "parasail",
   ParetoAlpha: "pareto-alpha",
   ParticleAi: "particle-ai",
