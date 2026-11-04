@@ -11100,6 +11100,16 @@ components:
         - 'type'
         - 'instructions'
       type: 'object'
+    DecisionsRefusalAnswer:
+      description: 'The provider declined to answer this question; no value or probabilities are returned. Other questions in the same request can still have answers.'
+      properties:
+        type:
+          enum:
+            - 'refusal'
+          type: 'string'
+      required:
+        - 'type'
+      type: 'object'
     DecisionsRequest:
       properties:
         assets:
@@ -11154,14 +11164,20 @@ components:
       type: 'object'
     DecisionsResponse:
       properties:
+        annotations:
+          description: 'Sources for the request as a whole, when the provider returns them. Not attributed to individual answers.'
+          items:
+            $ref: '#/components/schemas/DecisionsUrlCitationAnnotation'
+          type: 'array'
         answers:
           additionalProperties:
-            description: 'A Decisions answer using a boolean, choice, score, or image bounding-box evaluation.'
+            description: 'A Decisions answer using a boolean, choice, score, or image bounding-box evaluation, or a refusal of that question.'
             discriminator:
               mapping:
                 box: '#/components/schemas/DecisionsBoxAnswer'
                 choice: '#/components/schemas/DecisionsChoiceAnswer'
                 noul: '#/components/schemas/DecisionsNoulAnswer'
+                refusal: '#/components/schemas/DecisionsRefusalAnswer'
                 score: '#/components/schemas/DecisionsScoreAnswer'
               propertyName: 'type'
             oneOf:
@@ -11169,6 +11185,7 @@ components:
               - $ref: '#/components/schemas/DecisionsChoiceAnswer'
               - $ref: '#/components/schemas/DecisionsScoreAnswer'
               - $ref: '#/components/schemas/DecisionsBoxAnswer'
+              - $ref: '#/components/schemas/DecisionsRefusalAnswer'
           type: 'object'
         id:
           type: 'string'
@@ -11256,6 +11273,28 @@ components:
         - 'type'
         - 'instructions'
         - 'criteria'
+      type: 'object'
+    DecisionsUrlCitationAnnotation:
+      description: 'A web source the provider used for this request. Applies to the whole request, not to a specific answer.'
+      properties:
+        type:
+          enum:
+            - 'url_citation'
+          type: 'string'
+        url_citation:
+          properties:
+            content:
+              type: 'string'
+            title:
+              type: 'string'
+            url:
+              type: 'string'
+          required:
+            - 'url'
+          type: 'object'
+      required:
+        - 'type'
+        - 'url_citation'
       type: 'object'
     DecisionsUsageInputTokensDetails:
       description: 'Of `input_tokens`, those the provider served from its prompt cache.'
@@ -31333,8 +31372,13 @@ components:
           example: 'mistralai/voxtral-mini-tts-2603'
           type: 'string'
         provider:
-          description: 'Provider configuration: data policy routing preferences (`zdr`, `data_collection`) and provider-specific passthrough options'
+          description: 'Provider configuration: provider routing preferences (`order`, `only`, `ignore`, `allow_fallbacks`), data policy routing preferences (`zdr`, `data_collection`) and provider-specific passthrough options'
           properties:
+            allow_fallbacks:
+              description: "Whether to allow backup providers to serve requests\n- true: (default) when the primary provider (or your custom providers in \"order\") is unavailable, use the next best provider.\n- false: use only the primary/custom provider, and return the upstream error if it's unavailable.\n"
+              type:
+                - 'boolean'
+                - 'null'
             data_collection:
               description: "Data collection setting. If no available model provider meets the requirement, your request will return an error.\n- allow: (default) allow providers which store user data non-transiently and may train on it\n\n- deny: use only providers which do not collect user data."
               enum:
@@ -31346,8 +31390,44 @@ components:
               type:
                 - 'string'
                 - 'null'
+            ignore:
+              description: 'List of provider slugs to ignore. If provided, this list is merged with your account-wide ignored provider settings for this request.'
+              example:
+                - 'openai'
+                - 'anthropic'
+              items:
+                anyOf:
+                  - $ref: '#/components/schemas/ProviderName'
+                  - type: 'string'
+              type:
+                - 'array'
+                - 'null'
+            only:
+              description: 'List of provider slugs to allow. If provided, this list is merged with your account-wide allowed provider settings for this request.'
+              example:
+                - 'openai'
+                - 'anthropic'
+              items:
+                anyOf:
+                  - $ref: '#/components/schemas/ProviderName'
+                  - type: 'string'
+              type:
+                - 'array'
+                - 'null'
             options:
               $ref: '#/components/schemas/ProviderOptions'
+            order:
+              description: 'An ordered list of provider slugs. The router will attempt to use the first provider in the subset of this list that supports your requested model, and fall back to the next if it is unavailable. If no providers are available, the request will fail with an error message.'
+              example:
+                - 'openai'
+                - 'anthropic'
+              items:
+                anyOf:
+                  - $ref: '#/components/schemas/ProviderName'
+                  - type: 'string'
+              type:
+                - 'array'
+                - 'null'
             zdr:
               description: 'Whether to restrict routing to only ZDR (Zero Data Retention) endpoints. When true, only endpoints that do not retain prompts will be used.'
               example: true
@@ -31944,8 +32024,13 @@ components:
           example: 'openai/whisper-large-v3'
           type: 'string'
         provider:
-          description: 'Provider configuration: data policy routing preferences (`zdr`, `data_collection`) and provider-specific passthrough options'
+          description: 'Provider configuration: provider routing preferences (`order`, `only`, `ignore`, `allow_fallbacks`), data policy routing preferences (`zdr`, `data_collection`) and provider-specific passthrough options'
           properties:
+            allow_fallbacks:
+              description: "Whether to allow backup providers to serve requests\n- true: (default) when the primary provider (or your custom providers in \"order\") is unavailable, use the next best provider.\n- false: use only the primary/custom provider, and return the upstream error if it's unavailable.\n"
+              type:
+                - 'boolean'
+                - 'null'
             data_collection:
               description: "Data collection setting. If no available model provider meets the requirement, your request will return an error.\n- allow: (default) allow providers which store user data non-transiently and may train on it\n\n- deny: use only providers which do not collect user data."
               enum:
@@ -31957,8 +32042,44 @@ components:
               type:
                 - 'string'
                 - 'null'
+            ignore:
+              description: 'List of provider slugs to ignore. If provided, this list is merged with your account-wide ignored provider settings for this request.'
+              example:
+                - 'openai'
+                - 'anthropic'
+              items:
+                anyOf:
+                  - $ref: '#/components/schemas/ProviderName'
+                  - type: 'string'
+              type:
+                - 'array'
+                - 'null'
+            only:
+              description: 'List of provider slugs to allow. If provided, this list is merged with your account-wide allowed provider settings for this request.'
+              example:
+                - 'openai'
+                - 'anthropic'
+              items:
+                anyOf:
+                  - $ref: '#/components/schemas/ProviderName'
+                  - type: 'string'
+              type:
+                - 'array'
+                - 'null'
             options:
               $ref: '#/components/schemas/ProviderOptions'
+            order:
+              description: 'An ordered list of provider slugs. The router will attempt to use the first provider in the subset of this list that supports your requested model, and fall back to the next if it is unavailable. If no providers are available, the request will fail with an error message.'
+              example:
+                - 'openai'
+                - 'anthropic'
+              items:
+                anyOf:
+                  - $ref: '#/components/schemas/ProviderName'
+                  - type: 'string'
+              type:
+                - 'array'
+                - 'null'
             zdr:
               description: 'Whether to restrict routing to only ZDR (Zero Data Retention) endpoints. When true, only endpoints that do not retain prompts will be used.'
               example: true
