@@ -7129,6 +7129,7 @@ components:
         - 'perplexity'
         - 'phala'
         - 'poolside'
+        - 'primalabs'
         - 'primeintellect'
         - 'quiver'
         - 'recraft'
@@ -39336,6 +39337,7 @@ paths:
               - 'perplexity'
               - 'phala'
               - 'poolside'
+              - 'primalabs'
               - 'primeintellect'
               - 'quiver'
               - 'recraft'
@@ -45752,7 +45754,7 @@ paths:
                 name: 'My New API Key'
               properties:
                 creator_user_id:
-                  description: 'Optional user ID of the key creator. Only meaningful for organization-owned keys where a specific member is creating the key.'
+                  description: 'Optional user ID of the key creator. Only meaningful for organization-owned keys where a specific member is creating the key. A workspace-scoped management key may only name a member of its own workspace.'
                   example: 'user_2dHFtVWx2n56w6HkM0000000000'
                   minLength: 1
                   type:
