@@ -839,8 +839,6 @@ export * from "./updateguardrailresponse.js";
 export * from "./updateobservabilitydestinationrequest.js";
 export * from "./updateobservabilitydestinationresponse.js";
 export * from "./updateorganizationsettingsrequest.js";
-export * from "./updateprivateendpointparametersrequest.js";
-export * from "./updateprivateendpointpricingrequest.js";
 export * from "./updateprivateendpointrequest.js";
 export * from "./updateprivateendpointsettingsrequest.js";
 export * from "./updateprivateproviderrequest.js";

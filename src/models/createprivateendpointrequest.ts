@@ -67,10 +67,6 @@ export type CreatePrivateEndpointRequest = {
    */
   declaredZdr?: boolean | null | undefined;
   /**
-   * Cap on completion tokens per request. Requests asking for more skip this endpoint, and the default output length stays within it. When omitted, the cap is copied from the public endpoint for the same model and provider, if there is one.
-   */
-  maxCompletionTokens?: number | undefined;
-  /**
    * Permanent slug of the model this endpoint serves.
    */
   modelPermaslug: string;
@@ -104,7 +100,6 @@ export type CreatePrivateEndpointRequest$Outbound = {
   declared_parameters?: Array<string> | undefined;
   declared_region?: string | null | undefined;
   declared_zdr?: boolean | null | undefined;
-  max_completion_tokens?: number | undefined;
   model_permaslug: string;
   pricing?: PrivateEndpointPricing$Outbound | undefined;
   provider_slug: string;
@@ -125,7 +120,6 @@ export const CreatePrivateEndpointRequest$outboundSchema: z.ZodType<
     CreatePrivateEndpointRequestDeclaredRegion$outboundSchema,
   ).optional(),
   declaredZdr: z.nullable(z.boolean()).optional(),
-  maxCompletionTokens: z.int().optional(),
   modelPermaslug: z.string(),
   pricing: PrivateEndpointPricing$outboundSchema.optional(),
   providerSlug: z.string(),
@@ -137,7 +131,6 @@ export const CreatePrivateEndpointRequest$outboundSchema: z.ZodType<
     declaredParameters: "declared_parameters",
     declaredRegion: "declared_region",
     declaredZdr: "declared_zdr",
-    maxCompletionTokens: "max_completion_tokens",
     modelPermaslug: "model_permaslug",
     providerSlug: "provider_slug",
     upstreamModelId: "upstream_model_id",
