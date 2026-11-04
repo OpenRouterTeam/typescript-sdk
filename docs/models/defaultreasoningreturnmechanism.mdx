@@ -1,0 +1,21 @@
+---
+title: "DefaultReasoningReturnMechanism"
+---
+
+Reasoning return mechanism the endpoint uses when neither its features nor the model set one
+
+## Example Usage
+
+```typescript
+import { DefaultReasoningReturnMechanism } from "@openrouter/sdk/models";
+
+let value: DefaultReasoningReturnMechanism = "none";
+
+// Open enum: unrecognized values are captured as Unrecognized<string>
+```
+
+## Values
+
+```typescript
+"content-string" | "reasoning-content" | "reasoning" | "none" | Unrecognized<string>
+```

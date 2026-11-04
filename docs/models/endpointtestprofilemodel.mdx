@@ -1,0 +1,31 @@
+---
+title: "EndpointTestProfileModel"
+---
+
+## Example Usage
+
+```typescript
+import { EndpointTestProfileModel } from "@openrouter/sdk/models";
+
+let value: EndpointTestProfileModel = {
+  features: {},
+  inputModalities: [],
+  outputModalities: [
+    "transcription",
+  ],
+  reasoningConfig: {},
+  slug: "z-ai/glm-5.3",
+  supportsReasoning: true,
+};
+```
+
+## Fields
+
+| Field                                                                                        | Type                                                                                         | Required                                                                                     | Description                                                                                  | Example                                                                                      |
+| -------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------- |
+| `features`                                                                                   | [models.Features](../models/features.mdx)                                                     | ✔️                                                                           | N/A                                                                                          |                                                                                              |
+| `inputModalities`                                                                            | [models.EndpointTestProfileInputModality](../models/endpointtestprofileinputmodality.mdx)[]   | ✔️                                                                           | N/A                                                                                          |                                                                                              |
+| `outputModalities`                                                                           | [models.EndpointTestProfileOutputModality](../models/endpointtestprofileoutputmodality.mdx)[] | ✔️                                                                           | N/A                                                                                          |                                                                                              |
+| `reasoningConfig`                                                                            | [models.EndpointTestProfileReasoningConfig](../models/endpointtestprofilereasoningconfig.mdx) | ✔️                                                                           | N/A                                                                                          |                                                                                              |
+| `slug`                                                                                       | *string*                                                                                     | ✔️                                                                           | Public model slug                                                                            | z-ai/glm-5.3                                                                                 |
+| `supportsReasoning`                                                                          | *boolean*                                                                                    | ✔️                                                                           | N/A                                                                                          |                                                                                              |
