@@ -11640,6 +11640,20 @@ components:
         - 'model'
         - 'selected'
       type: 'object'
+    EndpointRef:
+      properties:
+        endpoint_id:
+          description: 'Endpoint ID'
+          example: '0198c3f1-7b9a-7c31-a2d4-5e6f7a8b9c0d'
+          type: 'string'
+        model_slug:
+          description: 'Public model slug'
+          example: 'z-ai/glm-5.3'
+          type: 'string'
+      required:
+        - 'endpoint_id'
+        - 'model_slug'
+      type: 'object'
     EndpointsMetadata:
       example:
         available:
@@ -11668,6 +11682,334 @@ components:
         - -10
       example: 0
       type: 'integer'
+    EndpointSummary:
+      allOf:
+        - $ref: '#/components/schemas/EndpointRef'
+        - properties:
+            created_at:
+              description: 'When the endpoint was created'
+              example: '2026-08-20T00:00:00.000Z'
+              type: 'string'
+            model_permaslug:
+              description: 'Permanent model slug the endpoint is listed under'
+              example: 'z-ai/glm-5.3-20260101'
+              type: 'string'
+            provider_model_id:
+              description: 'The provider''s own model ID'
+              example: 'accounts/fireworks/models/glm-5p3'
+              type:
+                - 'string'
+                - 'null'
+            provider_name:
+              description: 'Provider name'
+              example: 'Fireworks'
+              type: 'string'
+            provider_region:
+              description: 'Serving region'
+              example: 'us'
+              type:
+                - 'string'
+                - 'null'
+            service_tier:
+              description: 'Service tier; null for the default tier'
+              example: 'priority'
+              type:
+                - 'string'
+                - 'null'
+            test_profile:
+              $ref: '#/components/schemas/EndpointTestProfile'
+            variant:
+              description: 'Endpoint variant'
+              example: 'standard'
+              type: 'string'
+            visibility:
+              description: 'Whether the endpoint is listed on OpenRouter'
+              enum:
+                - 'visible'
+                - 'hidden'
+              example: 'visible'
+              type: 'string'
+          required:
+            - 'model_permaslug'
+            - 'provider_name'
+            - 'provider_model_id'
+            - 'variant'
+            - 'provider_region'
+            - 'service_tier'
+            - 'visibility'
+            - 'created_at'
+            - 'test_profile'
+          type: 'object'
+    EndpointTestProfile:
+      properties:
+        context_length:
+          description: 'Context length the endpoint serves: its override, else the model''s'
+          example: 128000
+          type:
+            - 'integer'
+            - 'null'
+        default_reasoning_return_mechanism:
+          description: 'Reasoning return mechanism the endpoint uses when neither its features nor the model set one'
+          enum:
+            - 'content-string'
+            - 'reasoning-content'
+            - 'reasoning'
+            - 'none'
+            - null
+          type:
+            - 'string'
+            - 'null'
+        effective_adapter_name:
+          description: 'Adapter the endpoint is served through: its provider override, else the provider''s; null when unresolved'
+          example: 'openai'
+          type:
+            - 'string'
+            - 'null'
+        endpoint_features:
+          additionalProperties: {}
+          description: 'Endpoint feature flags; null when unset or invalid'
+          type:
+            - 'object'
+            - 'null'
+        is_lab_trusted:
+          description: 'Whether the endpoint serves a closed lab model through the lab or an official partner'
+          type: 'boolean'
+        model:
+          properties:
+            features:
+              properties:
+                chat_template_config:
+                  properties:
+                    instruction_role_support:
+                      description: 'How leading instruction (developer/system) messages are mapped before reaching a chat-completions provider. ''developer'' keeps the developer role, ''system'' downgrades developer to system, ''user-only'' downgrades both to a wrapped user message. Overridable per-endpoint.'
+                      enum:
+                        - 'developer'
+                        - 'system'
+                        - 'user-only'
+                        - null
+                      type:
+                        - 'string'
+                        - 'null'
+                    should_hoist_and_merge_system_messages:
+                      description: 'Whether to hoist and merge system messages'
+                      type:
+                        - 'boolean'
+                        - 'null'
+                    supports_mid_session_system:
+                      description: 'Whether the model accepts system/developer messages that appear after the first user/assistant turn. When false, mid-session instruction messages are downgraded to wrapped user messages. Overridable per-endpoint.'
+                      type:
+                        - 'boolean'
+                        - 'null'
+                  type:
+                    - 'object'
+                    - 'null'
+                reasoning_config:
+                  properties:
+                    default_reasoning_effort:
+                      enum:
+                        - 'max'
+                        - 'xhigh'
+                        - 'high'
+                        - 'medium'
+                        - 'low'
+                        - 'minimal'
+                        - null
+                      type:
+                        - 'string'
+                        - 'null'
+                    default_reasoning_enabled:
+                      description: 'Default reasoning enabled state for the model. When true, reasoning is enabled by default; when false, disabled by default. User-specified values always override this.'
+                      type:
+                        - 'boolean'
+                        - 'null'
+                    end_token:
+                      type:
+                        - 'string'
+                        - 'null'
+                    is_mandatory_reasoning:
+                      type:
+                        - 'boolean'
+                        - 'null'
+                    reasoning_return_mechanism:
+                      description: 'Default mechanism for returning reasoning tokens. Can be overridden per-endpoint via endpoint features.'
+                      enum:
+                        - 'content-string'
+                        - 'reasoning-content'
+                        - 'reasoning'
+                        - 'none'
+                        - null
+                      type:
+                        - 'string'
+                        - 'null'
+                    start_token:
+                      type:
+                        - 'string'
+                        - 'null'
+                    supported_reasoning_efforts:
+                      description: 'List of reasoning effort values the model accepts upstream'
+                      items:
+                        enum:
+                          - 'max'
+                          - 'xhigh'
+                          - 'high'
+                          - 'medium'
+                          - 'low'
+                          - 'minimal'
+                        type: 'string'
+                      type:
+                        - 'array'
+                        - 'null'
+                    supports_reasoning_effort:
+                      description: 'Whether the model supports reasoning effort'
+                      type:
+                        - 'boolean'
+                        - 'null'
+                    supports_reasoning_max_tokens:
+                      description: 'Whether the model supports reasoning max tokens'
+                      type:
+                        - 'boolean'
+                        - 'null'
+                    system_prompt:
+                      type:
+                        - 'string'
+                        - 'null'
+                  type:
+                    - 'object'
+                    - 'null'
+                required_input_modalities:
+                  description: 'Input modalities every request to the model must include, e.g. ["video"] for video-to-video-only models. Requests missing a required modality are rejected before dispatch. A required text modality is satisfied by the prompt. Currently enforced on the video generation request path.'
+                  items:
+                    enum:
+                      - 'text'
+                      - 'image'
+                      - 'audio'
+                      - 'video'
+                    type: 'string'
+                  type:
+                    - 'array'
+                    - 'null'
+              type:
+                - 'object'
+                - 'null'
+            input_modalities:
+              items:
+                enum:
+                  - 'text'
+                  - 'image'
+                  - 'file'
+                  - 'audio'
+                  - 'video'
+                type: 'string'
+              type: 'array'
+            output_modalities:
+              items:
+                enum:
+                  - 'text'
+                  - 'image'
+                  - 'embeddings'
+                  - 'audio'
+                  - 'video'
+                  - 'rerank'
+                  - 'decisions'
+                  - 'speech'
+                  - 'transcription'
+                type: 'string'
+              type: 'array'
+            reasoning_config:
+              properties:
+                default_reasoning_effort:
+                  enum:
+                    - 'max'
+                    - 'xhigh'
+                    - 'high'
+                    - 'medium'
+                    - 'low'
+                    - 'minimal'
+                    - null
+                  type:
+                    - 'string'
+                    - 'null'
+                default_reasoning_enabled:
+                  description: 'Default reasoning enabled state for the model. When true, reasoning is enabled by default; when false, disabled by default. User-specified values always override this.'
+                  type:
+                    - 'boolean'
+                    - 'null'
+                end_token:
+                  type:
+                    - 'string'
+                    - 'null'
+                is_mandatory_reasoning:
+                  type:
+                    - 'boolean'
+                    - 'null'
+                reasoning_return_mechanism:
+                  description: 'Default mechanism for returning reasoning tokens. Can be overridden per-endpoint via endpoint features.'
+                  enum:
+                    - 'content-string'
+                    - 'reasoning-content'
+                    - 'reasoning'
+                    - 'none'
+                    - null
+                  type:
+                    - 'string'
+                    - 'null'
+                start_token:
+                  type:
+                    - 'string'
+                    - 'null'
+                supported_reasoning_efforts:
+                  description: 'List of reasoning effort values the model accepts upstream'
+                  items:
+                    enum:
+                      - 'max'
+                      - 'xhigh'
+                      - 'high'
+                      - 'medium'
+                      - 'low'
+                      - 'minimal'
+                    type: 'string'
+                  type:
+                    - 'array'
+                    - 'null'
+                supports_reasoning_effort:
+                  description: 'Whether the model supports reasoning effort'
+                  type:
+                    - 'boolean'
+                    - 'null'
+                supports_reasoning_max_tokens:
+                  description: 'Whether the model supports reasoning max tokens'
+                  type:
+                    - 'boolean'
+                    - 'null'
+                system_prompt:
+                  type:
+                    - 'string'
+                    - 'null'
+              type:
+                - 'object'
+                - 'null'
+            slug:
+              description: 'Public model slug'
+              example: 'z-ai/glm-5.3'
+              type: 'string'
+            supports_reasoning:
+              type: 'boolean'
+          required:
+            - 'slug'
+            - 'input_modalities'
+            - 'output_modalities'
+            - 'supports_reasoning'
+            - 'reasoning_config'
+            - 'features'
+          type: 'object'
+      required:
+        - 'model'
+        - 'endpoint_features'
+        - 'default_reasoning_return_mechanism'
+        - 'is_lab_trusted'
+        - 'context_length'
+        - 'effective_adapter_name'
+      type: 'object'
     EnumCapability:
       description: 'A parameter that accepts one of a discrete set of string values.'
       example:
@@ -27468,6 +27810,144 @@ components:
         - 'all_messages'
       example: 'user_only'
       type: 'string'
+    ProviderEndpoints:
+      properties:
+        endpoints:
+          items:
+            $ref: '#/components/schemas/EndpointSummary'
+          type: 'array'
+        stats:
+          $ref: '#/components/schemas/ProviderEndpointStats'
+        window:
+          description: 'Time window the provider-wide stats cover'
+          enum:
+            - '1hr'
+            - '1d'
+            - '1w'
+            - '1mo'
+            - '1y'
+          example: '1d'
+          type: 'string'
+      required:
+        - 'window'
+        - 'endpoints'
+        - 'stats'
+      type: 'object'
+    ProviderEndpointsResponse:
+      properties:
+        data:
+          $ref: '#/components/schemas/ProviderEndpoints'
+      required:
+        - 'data'
+      type: 'object'
+    ProviderEndpointStats:
+      discriminator:
+        mapping:
+          available: '#/components/schemas/ProviderEndpointStatsAvailable'
+          unavailable: '#/components/schemas/ProviderEndpointStatsUnavailable'
+        propertyName: 'status'
+      oneOf:
+        - $ref: '#/components/schemas/ProviderEndpointStatsAvailable'
+        - $ref: '#/components/schemas/ProviderEndpointStatsUnavailable'
+    ProviderEndpointStatsAvailable:
+      properties:
+        endpoint_count:
+          description: 'Endpoints the stats cover'
+          example: 12
+          type: 'integer'
+        error_rate_percent:
+          description: 'Errored share of requests that count toward uptime, 0-100'
+          example: 0.8
+          format: 'double'
+          type: 'number'
+        latency_ms:
+          description: 'Request latency, milliseconds'
+          properties:
+            p50:
+              format: 'double'
+              type:
+                - 'number'
+                - 'null'
+            p90:
+              format: 'double'
+              type:
+                - 'number'
+                - 'null'
+          required:
+            - 'p50'
+            - 'p90'
+          type: 'object'
+        quality_percent:
+          description: 'Routing quality, 0-100'
+          format: 'double'
+          type:
+            - 'number'
+            - 'null'
+        rate_limited_percent:
+          description: 'Rate-limited share of routed requests, 0-100'
+          format: 'double'
+          type:
+            - 'number'
+            - 'null'
+        reliability_percent:
+          description: 'Routing reliability, 0-100'
+          format: 'double'
+          type:
+            - 'number'
+            - 'null'
+        requests:
+          description: 'Requests in the window'
+          example: 120000
+          type: 'integer'
+        status:
+          enum:
+            - 'available'
+          type: 'string'
+        throughput_tokens_per_second:
+          description: 'Output tokens per second'
+          properties:
+            p50:
+              format: 'double'
+              type:
+                - 'number'
+                - 'null'
+            p90:
+              format: 'double'
+              type:
+                - 'number'
+                - 'null'
+          required:
+            - 'p50'
+            - 'p90'
+          type: 'object'
+        uptime_percent:
+          description: 'Successful share of requests that count toward uptime, 0-100'
+          example: 99.2
+          format: 'double'
+          type:
+            - 'number'
+            - 'null'
+      required:
+        - 'status'
+        - 'endpoint_count'
+        - 'requests'
+        - 'uptime_percent'
+        - 'error_rate_percent'
+        - 'reliability_percent'
+        - 'quality_percent'
+        - 'rate_limited_percent'
+        - 'latency_ms'
+        - 'throughput_tokens_per_second'
+      type: 'object'
+    ProviderEndpointStatsUnavailable:
+      properties:
+        status:
+          enum:
+            - 'unavailable'
+          type: 'string'
+      required:
+        - 'status'
+      type: 'object'
     ProviderName:
       enum:
         - 'Modal'
@@ -50686,6 +51166,123 @@ paths:
       tags:
         - 'Providers'
       x-speakeasy-name-override: 'list'
+  /providers/{provider_slug}/endpoints:
+    get:
+      description: 'Returns every endpoint the provider serves, hidden ones included, with the provider-wide uptime, routing, latency and throughput stats over the window. Requires provider ownership, membership, or admin access.'
+      operationId: 'listProviderEndpoints'
+      parameters:
+        - description: 'URL-friendly provider identifier (e.g. "openai", "fireworks")'
+          in: 'path'
+          name: 'provider_slug'
+          required: true
+          schema:
+            description: 'URL-friendly provider identifier (e.g. "openai", "fireworks")'
+            example: 'fireworks'
+            type: 'string'
+        - description: 'Time window the provider-wide stats cover'
+          in: 'query'
+          name: 'window'
+          required: false
+          schema:
+            default: '1mo'
+            description: 'Time window the provider-wide stats cover'
+            enum:
+              - '1hr'
+              - '1d'
+              - '1w'
+              - '1mo'
+              - '1y'
+            example: '1d'
+            type: 'string'
+        - description: 'Workload the latency and throughput stats measure; defaults to the workload most of the endpoints serve'
+          in: 'query'
+          name: 'perf_workload'
+          required: false
+          schema:
+            description: 'Workload the latency and throughput stats measure; defaults to the workload most of the endpoints serve'
+            enum:
+              - 'text_generation'
+              - 'image_generation'
+              - 'video_generation'
+              - 'embeddings'
+              - 'rerank'
+              - 'tts'
+              - 'stt'
+              - 'decisions'
+              - 'extractions'
+              - 'unknown'
+            example: 'text_generation'
+            type: 'string'
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProviderEndpointsResponse'
+          description: 'The provider''s endpoints and provider-wide stats'
+        '400':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 400
+                  message: 'Invalid request parameters'
+              schema:
+                $ref: '#/components/schemas/BadRequestResponse'
+          description: 'Bad Request - Invalid request parameters or malformed input'
+        '401':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 401
+                  message: 'Missing Authentication header'
+              schema:
+                $ref: '#/components/schemas/UnauthorizedResponse'
+          description: 'Unauthorized - Authentication required or invalid credentials'
+        '403':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 403
+                  message: 'Only management keys can perform this operation'
+              schema:
+                $ref: '#/components/schemas/ForbiddenResponse'
+          description: 'Forbidden - Authentication successful but insufficient permissions'
+        '404':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 404
+                  message: 'Resource not found'
+              schema:
+                $ref: '#/components/schemas/NotFoundResponse'
+          description: 'Not Found - Resource does not exist'
+        '429':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 429
+                  message: 'Rate limit exceeded'
+              schema:
+                $ref: '#/components/schemas/TooManyRequestsResponse'
+          description: 'Too Many Requests - Rate limit exceeded'
+        '500':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 500
+                  message: 'Internal Server Error'
+              schema:
+                $ref: '#/components/schemas/InternalServerResponse'
+          description: 'Internal Server Error - Unexpected server error'
+      summary: 'List a provider''s endpoints with provider-wide stats'
+      tags:
+        - 'Providers'
   /rerank:
     post:
       description: 'Submits a rerank request to the rerank router'
