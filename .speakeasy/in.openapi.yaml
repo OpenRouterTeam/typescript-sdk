@@ -27132,7 +27132,8 @@ components:
         passed: true
       properties:
         actual_model:
-          description: 'Model the upstream reported serving, when it differs from the request.'
+          deprecated: true
+          description: 'Deprecated: validation no longer compares the model the upstream reports, so this field is never returned.'
           type:
             - 'string'
             - 'null'
