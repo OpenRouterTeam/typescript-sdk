@@ -7938,6 +7938,12 @@ components:
               type:
                 - 'string'
                 - 'null'
+            max_tokens:
+              description: 'Maximum number of tokens the model may spend on reasoning, for models that take a reasoning token budget instead of an effort level. Cannot be combined with `reasoning.effort` or the top-level `reasoning_effort`: a request that sets both is rejected with "Only one of "reasoning.effort" and "reasoning.max_tokens" can be specified".'
+              example: 2000
+              type:
+                - 'integer'
+                - 'null'
             summary:
               $ref: '#/components/schemas/ChatReasoningSummaryVerbosityEnum'
           type: 'object'
@@ -45421,6 +45427,14 @@ paths:
       tags:
         - 'API Keys'
       x-speakeasy-name-override: 'list'
+      x-speakeasy-pagination:
+        inputs:
+          - in: 'parameters'
+            name: 'offset'
+            type: 'offset'
+        outputs:
+          results: '$.data'
+        type: 'offsetLimit'
     post:
       description: 'Create a new API key for the authenticated user. The plaintext `key` is returned only in this response. Treat it as a write-only, sensitive value; it cannot be retrieved later. Authenticate with a [management key](/docs/guides/overview/auth/management-api-keys). The optional `external` object associates the key with a partner-defined user and lookup key.'
       operationId: 'createKeys'
