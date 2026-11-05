@@ -35,16 +35,18 @@ jobs:
           node-version: '22'
           cache: 'pnpm'
 
-      # Installs the latest GitHub release and verifies its checksum instead of
-      # piping an unpinned install script into sh. .speakeasy/workflow.yaml pins
-      # speakeasyVersion; the CLI switches to that version itself.
+      # Installs the GitHub release that .speakeasy/workflow.yaml pins as
+      # speakeasyVersion and verifies its checksum, instead of piping an
+      # unpinned install script from the upstream main branch into sh.
       - name: Install Speakeasy CLI
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
           set -euo pipefail
+          VERSION="$(sed -n "s/^speakeasyVersion: *//p" .speakeasy/workflow.yaml)"
+          test -n "$VERSION"
           cd "$RUNNER_TEMP"
-          gh release download --repo speakeasy-api/speakeasy --pattern speakeasy_linux_amd64.zip --pattern checksums.txt
+          gh release download "v$VERSION" --repo speakeasy-api/speakeasy --pattern speakeasy_linux_amd64.zip --pattern checksums.txt
           grep " speakeasy_linux_amd64.zip$" checksums.txt | sha256sum -c -
           unzip -q speakeasy_linux_amd64.zip speakeasy -d bin
           echo "$RUNNER_TEMP/bin" >> "$GITHUB_PATH"
