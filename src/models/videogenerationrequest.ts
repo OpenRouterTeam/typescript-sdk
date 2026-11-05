@@ -17,6 +17,7 @@ import {
   InputReference$Outbound,
   InputReference$outboundSchema,
 } from "./inputreference.js";
+import { ProviderName, ProviderName$outboundSchema } from "./providername.js";
 import {
   TraceConfig,
   TraceConfig$Outbound,
@@ -43,6 +44,10 @@ export const VideoGenerationRequestAspectRatio = {
 export type VideoGenerationRequestAspectRatio = OpenEnum<
   typeof VideoGenerationRequestAspectRatio
 >;
+
+export type VideoGenerationRequestIgnore = ProviderName | string;
+
+export type VideoGenerationRequestOnly = ProviderName | string;
 
 /**
  * Provider-specific options keyed by provider slug. The provider segment is case-insensitive; an endpoint tag after `/` must match the endpoint slug exactly. Only options for the matched provider are forwarded; the rest are ignored. Unrecognized keys are silently dropped.
@@ -204,11 +209,25 @@ export type VideoGenerationRequestOptions = {
   zAi?: { [k: string]: any } | undefined;
 };
 
+export type VideoGenerationRequestOrder = ProviderName | string;
+
 /**
- * Provider-specific passthrough configuration
+ * Provider routing preferences (order, only, ignore) and provider-specific passthrough configuration
  */
 export type VideoGenerationRequestProvider = {
+  /**
+   * List of provider slugs to ignore. If provided, this list is merged with your account-wide ignored provider settings for this request.
+   */
+  ignore?: Array<ProviderName | string> | null | undefined;
+  /**
+   * List of provider slugs to allow. If provided, this list is merged with your account-wide allowed provider settings for this request.
+   */
+  only?: Array<ProviderName | string> | null | undefined;
   options?: VideoGenerationRequestOptions | undefined;
+  /**
+   * An ordered list of provider slugs. The router will attempt to use the first provider in the subset of this list that supports your requested model, and fall back to the next if it is unavailable. If no providers are available, the request will fail with an error message.
+   */
+  order?: Array<ProviderName | string> | null | undefined;
 };
 
 /**
@@ -270,7 +289,7 @@ export type VideoGenerationRequest = {
    */
   prompt?: string | undefined;
   /**
-   * Provider-specific passthrough configuration
+   * Provider routing preferences (order, only, ignore) and provider-specific passthrough configuration
    */
   provider?: VideoGenerationRequestProvider | undefined;
   /**
@@ -308,6 +327,42 @@ export const VideoGenerationRequestAspectRatio$outboundSchema: z.ZodType<
   string,
   VideoGenerationRequestAspectRatio
 > = openEnums.outboundSchema(VideoGenerationRequestAspectRatio);
+
+/** @internal */
+export type VideoGenerationRequestIgnore$Outbound = string | string;
+
+/** @internal */
+export const VideoGenerationRequestIgnore$outboundSchema: z.ZodType<
+  VideoGenerationRequestIgnore$Outbound,
+  VideoGenerationRequestIgnore
+> = z.union([ProviderName$outboundSchema, z.string()]);
+
+export function videoGenerationRequestIgnoreToJSON(
+  videoGenerationRequestIgnore: VideoGenerationRequestIgnore,
+): string {
+  return JSON.stringify(
+    VideoGenerationRequestIgnore$outboundSchema.parse(
+      videoGenerationRequestIgnore,
+    ),
+  );
+}
+
+/** @internal */
+export type VideoGenerationRequestOnly$Outbound = string | string;
+
+/** @internal */
+export const VideoGenerationRequestOnly$outboundSchema: z.ZodType<
+  VideoGenerationRequestOnly$Outbound,
+  VideoGenerationRequestOnly
+> = z.union([ProviderName$outboundSchema, z.string()]);
+
+export function videoGenerationRequestOnlyToJSON(
+  videoGenerationRequestOnly: VideoGenerationRequestOnly,
+): string {
+  return JSON.stringify(
+    VideoGenerationRequestOnly$outboundSchema.parse(videoGenerationRequestOnly),
+  );
+}
 
 /** @internal */
 export type VideoGenerationRequestOptions$Outbound = {
@@ -675,8 +730,30 @@ export function videoGenerationRequestOptionsToJSON(
 }
 
 /** @internal */
+export type VideoGenerationRequestOrder$Outbound = string | string;
+
+/** @internal */
+export const VideoGenerationRequestOrder$outboundSchema: z.ZodType<
+  VideoGenerationRequestOrder$Outbound,
+  VideoGenerationRequestOrder
+> = z.union([ProviderName$outboundSchema, z.string()]);
+
+export function videoGenerationRequestOrderToJSON(
+  videoGenerationRequestOrder: VideoGenerationRequestOrder,
+): string {
+  return JSON.stringify(
+    VideoGenerationRequestOrder$outboundSchema.parse(
+      videoGenerationRequestOrder,
+    ),
+  );
+}
+
+/** @internal */
 export type VideoGenerationRequestProvider$Outbound = {
+  ignore?: Array<string | string> | null | undefined;
+  only?: Array<string | string> | null | undefined;
   options?: VideoGenerationRequestOptions$Outbound | undefined;
+  order?: Array<string | string> | null | undefined;
 };
 
 /** @internal */
@@ -684,7 +761,14 @@ export const VideoGenerationRequestProvider$outboundSchema: z.ZodType<
   VideoGenerationRequestProvider$Outbound,
   VideoGenerationRequestProvider
 > = z.object({
+  ignore: z.nullable(
+    z.array(z.union([ProviderName$outboundSchema, z.string()])),
+  ).optional(),
+  only: z.nullable(z.array(z.union([ProviderName$outboundSchema, z.string()])))
+    .optional(),
   options: z.lazy(() => VideoGenerationRequestOptions$outboundSchema)
+    .optional(),
+  order: z.nullable(z.array(z.union([ProviderName$outboundSchema, z.string()])))
     .optional(),
 });
 

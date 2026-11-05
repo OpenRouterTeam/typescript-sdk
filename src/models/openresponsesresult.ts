@@ -42,6 +42,10 @@ import {
   ComputerUseServerTool$inboundSchema,
 } from "./computeruseservertool.js";
 import { CustomTool, CustomTool$inboundSchema } from "./customtool.js";
+import {
+  DeferredToolsDetails,
+  DeferredToolsDetails$inboundSchema,
+} from "./deferredtoolsdetails.js";
 import { SDKValidationError } from "./errors/sdkvalidationerror.js";
 import {
   FileSearchServerTool,
@@ -198,6 +202,10 @@ export type Usage = {
    */
   cost?: number | null | undefined;
   costDetails?: UsageCostDetails | undefined;
+  /**
+   * Totals across every upstream model call of a deferred-tools run. The native usage fields report only the final call; cost covers every call.
+   */
+  deferredToolsDetails?: DeferredToolsDetails | undefined;
   /**
    * Whether a request was made using a Bring Your Own Key configuration
    */
@@ -501,6 +509,7 @@ export const Usage$inboundSchema: z.ZodType<Usage, unknown> = z.object({
   total_tokens: z.int(),
   cost: z.nullable(z.number()).optional(),
   cost_details: z.lazy(() => UsageCostDetails$inboundSchema).optional(),
+  deferred_tools_details: DeferredToolsDetails$inboundSchema.optional(),
   is_byok: z.boolean().optional(),
   server_tool_use_details: z.nullable(ServerToolUseDetails$inboundSchema)
     .optional(),
@@ -512,6 +521,7 @@ export const Usage$inboundSchema: z.ZodType<Usage, unknown> = z.object({
     "output_tokens_details": "outputTokensDetails",
     "total_tokens": "totalTokens",
     "cost_details": "costDetails",
+    "deferred_tools_details": "deferredToolsDetails",
     "is_byok": "isByok",
     "server_tool_use_details": "serverToolUseDetails",
   });
