@@ -18,6 +18,10 @@ import {
   OutputItemCodeInterpreterCall$inboundSchema,
 } from "./outputitemcodeinterpretercall.js";
 import {
+  OutputItemCompaction,
+  OutputItemCompaction$inboundSchema,
+} from "./outputitemcompaction.js";
+import {
   OutputItemCustomToolCall,
   OutputItemCustomToolCall$inboundSchema,
 } from "./outputitemcustomtoolcall.js";
@@ -46,6 +50,7 @@ import { OutputMessage, OutputMessage$inboundSchema } from "./outputmessage.js";
 export type AlignmentResponsesRejected =
   | OutputItemApplyPatchCall
   | OutputItemCodeInterpreterCall
+  | OutputItemCompaction
   | OutputItemCustomToolCall
   | OutputItemFileSearchCall
   | OutputItemFunctionCall
@@ -62,6 +67,7 @@ export const AlignmentResponsesRejected$inboundSchema: z.ZodType<
 > = discriminatedUnion("type", {
   apply_patch_call: OutputItemApplyPatchCall$inboundSchema,
   code_interpreter_call: OutputItemCodeInterpreterCall$inboundSchema,
+  compaction: OutputItemCompaction$inboundSchema,
   custom_tool_call: OutputItemCustomToolCall$inboundSchema,
   file_search_call: OutputItemFileSearchCall$inboundSchema,
   function_call: OutputItemFunctionCall$inboundSchema,

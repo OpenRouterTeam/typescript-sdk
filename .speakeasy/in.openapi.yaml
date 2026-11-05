@@ -645,6 +645,7 @@ components:
           mapping:
             apply_patch_call: '#/components/schemas/OutputItemApplyPatchCall'
             code_interpreter_call: '#/components/schemas/OutputItemCodeInterpreterCall'
+            compaction: '#/components/schemas/OutputItemCompaction'
             custom_tool_call: '#/components/schemas/OutputItemCustomToolCall'
             file_search_call: '#/components/schemas/OutputItemFileSearchCall'
             function_call: '#/components/schemas/OutputItemFunctionCall'
@@ -663,6 +664,7 @@ components:
           - $ref: '#/components/schemas/OutputItemImageGenerationCall'
           - $ref: '#/components/schemas/OutputItemApplyPatchCall'
           - $ref: '#/components/schemas/OutputItemCodeInterpreterCall'
+          - $ref: '#/components/schemas/OutputItemCompaction'
       type: 'array'
     AlignmentRule:
       additionalProperties: false
@@ -4809,6 +4811,7 @@ components:
               mapping:
                 apply_patch_call: '#/components/schemas/OutputItemApplyPatchCall'
                 code_interpreter_call: '#/components/schemas/OutputItemCodeInterpreterCall'
+                compaction: '#/components/schemas/OutputItemCompaction'
                 custom_tool_call: '#/components/schemas/OutputItemCustomToolCall'
                 file_search_call: '#/components/schemas/OutputItemFileSearchCall'
                 function_call: '#/components/schemas/OutputItemFunctionCall'
@@ -4827,6 +4830,7 @@ components:
               - $ref: '#/components/schemas/OutputItemImageGenerationCall'
               - $ref: '#/components/schemas/OutputItemApplyPatchCall'
               - $ref: '#/components/schemas/OutputItemCodeInterpreterCall'
+              - $ref: '#/components/schemas/OutputItemCompaction'
           type: 'array'
         output_text:
           type: 'string'
@@ -7047,6 +7051,7 @@ components:
         - 'perplexity'
         - 'phala'
         - 'poolside'
+        - 'primalabs'
         - 'primeintellect'
         - 'quiver'
         - 'recraft'
@@ -8656,6 +8661,8 @@ components:
             - 'null'
         cost_details:
           $ref: '#/components/schemas/CostDetails'
+        deferred_tools_details:
+          $ref: '#/components/schemas/DeferredToolsDetails'
         is_byok:
           description: 'Whether a request was made using a Bring Your Own Key configuration'
           type: 'boolean'
@@ -9085,6 +9092,18 @@ components:
       required:
         - 'type'
         - 'encrypted_content'
+      type: 'object'
+    CompactionTriggerItem:
+      description: 'Asks the model to compact the preceding input into a compaction item'
+      example:
+        type: 'compaction_trigger'
+      properties:
+        type:
+          enum:
+            - 'compaction_trigger'
+          type: 'string'
+      required:
+        - 'type'
       type: 'object'
     CompletedEvent:
       description: 'Event emitted when a response has completed successfully'
@@ -11100,6 +11119,16 @@ components:
         - 'type'
         - 'instructions'
       type: 'object'
+    DecisionsRefusalAnswer:
+      description: 'The provider declined to answer this question; no value or probabilities are returned. Other questions in the same request can still have answers.'
+      properties:
+        type:
+          enum:
+            - 'refusal'
+          type: 'string'
+      required:
+        - 'type'
+      type: 'object'
     DecisionsRequest:
       properties:
         assets:
@@ -11154,14 +11183,20 @@ components:
       type: 'object'
     DecisionsResponse:
       properties:
+        annotations:
+          description: 'Sources for the request as a whole, when the provider returns them. Not attributed to individual answers.'
+          items:
+            $ref: '#/components/schemas/DecisionsUrlCitationAnnotation'
+          type: 'array'
         answers:
           additionalProperties:
-            description: 'A Decisions answer using a boolean, choice, score, or image bounding-box evaluation.'
+            description: 'A Decisions answer using a boolean, choice, score, or image bounding-box evaluation, or a refusal of that question.'
             discriminator:
               mapping:
                 box: '#/components/schemas/DecisionsBoxAnswer'
                 choice: '#/components/schemas/DecisionsChoiceAnswer'
                 noul: '#/components/schemas/DecisionsNoulAnswer'
+                refusal: '#/components/schemas/DecisionsRefusalAnswer'
                 score: '#/components/schemas/DecisionsScoreAnswer'
               propertyName: 'type'
             oneOf:
@@ -11169,6 +11204,7 @@ components:
               - $ref: '#/components/schemas/DecisionsChoiceAnswer'
               - $ref: '#/components/schemas/DecisionsScoreAnswer'
               - $ref: '#/components/schemas/DecisionsBoxAnswer'
+              - $ref: '#/components/schemas/DecisionsRefusalAnswer'
           type: 'object'
         id:
           type: 'string'
@@ -11256,6 +11292,28 @@ components:
         - 'type'
         - 'instructions'
         - 'criteria'
+      type: 'object'
+    DecisionsUrlCitationAnnotation:
+      description: 'A web source the provider used for this request. Applies to the whole request, not to a specific answer.'
+      properties:
+        type:
+          enum:
+            - 'url_citation'
+          type: 'string'
+        url_citation:
+          properties:
+            content:
+              type: 'string'
+            title:
+              type: 'string'
+            url:
+              type: 'string'
+          required:
+            - 'url'
+          type: 'object'
+      required:
+        - 'type'
+        - 'url_citation'
       type: 'object'
     DecisionsUsageInputTokensDetails:
       description: 'Of `input_tokens`, those the provider served from its prompt cache.'
@@ -11374,9 +11432,10 @@ components:
         validation: 'runtime'
       properties:
         profile:
-          description: 'Loading profile. Only `portable` is available in this release: OpenRouter serves deferral with router-built search and call wrappers on any model.'
+          description: 'Loading profile. `portable` serves the `defer_loading` tools with router-built search and call wrappers on any model and keeps the catalog fixed. `universal` defers every wrappable tool behind the same wrappers so the provider-facing tool list never changes, and rebuilds the catalog from each request so tools can be added or removed mid-conversation.'
           enum:
             - 'portable'
+            - 'universal'
           type: 'string'
         protocol:
           enum:
@@ -11394,6 +11453,34 @@ components:
         - 'profile'
         - 'validation'
         - 'search'
+      type: 'object'
+    DeferredToolsDetails:
+      description: 'Totals across every upstream model call of a deferred-tools run. The native usage fields report only the final call; cost covers every call.'
+      example:
+        completion_tokens: 180
+        prompt_tokens: 2400
+        total_tokens: 2580
+        turns: 2
+      properties:
+        completion_tokens:
+          description: 'Completion tokens summed over every upstream call'
+          type: 'integer'
+        prompt_tokens:
+          description: 'Prompt tokens summed over every upstream call'
+          type: 'integer'
+        total_tokens:
+          description: 'Sum of the above two fields'
+          type: 'integer'
+        turns:
+          description: 'Upstream model calls the run made'
+          exclusiveMinimum: true
+          minimum: 0
+          type: 'integer'
+      required:
+        - 'turns'
+        - 'prompt_tokens'
+        - 'completion_tokens'
+        - 'total_tokens'
       type: 'object'
     DeferredToolsSearchStrategy:
       description: 'Router-local regex/BM25 or caller-owned custom search.'
@@ -11640,20 +11727,6 @@ components:
         - 'model'
         - 'selected'
       type: 'object'
-    EndpointRef:
-      properties:
-        endpoint_id:
-          description: 'Endpoint ID'
-          example: '0198c3f1-7b9a-7c31-a2d4-5e6f7a8b9c0d'
-          type: 'string'
-        model_slug:
-          description: 'Public model slug'
-          example: 'z-ai/glm-5.3'
-          type: 'string'
-      required:
-        - 'endpoint_id'
-        - 'model_slug'
-      type: 'object'
     EndpointsMetadata:
       example:
         available:
@@ -11682,334 +11755,6 @@ components:
         - -10
       example: 0
       type: 'integer'
-    EndpointSummary:
-      allOf:
-        - $ref: '#/components/schemas/EndpointRef'
-        - properties:
-            created_at:
-              description: 'When the endpoint was created'
-              example: '2026-08-20T00:00:00.000Z'
-              type: 'string'
-            model_permaslug:
-              description: 'Permanent model slug the endpoint is listed under'
-              example: 'z-ai/glm-5.3-20260101'
-              type: 'string'
-            provider_model_id:
-              description: 'The provider''s own model ID'
-              example: 'accounts/fireworks/models/glm-5p3'
-              type:
-                - 'string'
-                - 'null'
-            provider_name:
-              description: 'Provider name'
-              example: 'Fireworks'
-              type: 'string'
-            provider_region:
-              description: 'Serving region'
-              example: 'us'
-              type:
-                - 'string'
-                - 'null'
-            service_tier:
-              description: 'Service tier; null for the default tier'
-              example: 'priority'
-              type:
-                - 'string'
-                - 'null'
-            test_profile:
-              $ref: '#/components/schemas/EndpointTestProfile'
-            variant:
-              description: 'Endpoint variant'
-              example: 'standard'
-              type: 'string'
-            visibility:
-              description: 'Whether the endpoint is listed on OpenRouter'
-              enum:
-                - 'visible'
-                - 'hidden'
-              example: 'visible'
-              type: 'string'
-          required:
-            - 'model_permaslug'
-            - 'provider_name'
-            - 'provider_model_id'
-            - 'variant'
-            - 'provider_region'
-            - 'service_tier'
-            - 'visibility'
-            - 'created_at'
-            - 'test_profile'
-          type: 'object'
-    EndpointTestProfile:
-      properties:
-        context_length:
-          description: 'Context length the endpoint serves: its override, else the model''s'
-          example: 128000
-          type:
-            - 'integer'
-            - 'null'
-        default_reasoning_return_mechanism:
-          description: 'Reasoning return mechanism the endpoint uses when neither its features nor the model set one'
-          enum:
-            - 'content-string'
-            - 'reasoning-content'
-            - 'reasoning'
-            - 'none'
-            - null
-          type:
-            - 'string'
-            - 'null'
-        effective_adapter_name:
-          description: 'Adapter the endpoint is served through: its provider override, else the provider''s; null when unresolved'
-          example: 'openai'
-          type:
-            - 'string'
-            - 'null'
-        endpoint_features:
-          additionalProperties: {}
-          description: 'Endpoint feature flags; null when unset or invalid'
-          type:
-            - 'object'
-            - 'null'
-        is_lab_trusted:
-          description: 'Whether the endpoint serves a closed lab model through the lab or an official partner'
-          type: 'boolean'
-        model:
-          properties:
-            features:
-              properties:
-                chat_template_config:
-                  properties:
-                    instruction_role_support:
-                      description: 'How leading instruction (developer/system) messages are mapped before reaching a chat-completions provider. ''developer'' keeps the developer role, ''system'' downgrades developer to system, ''user-only'' downgrades both to a wrapped user message. Overridable per-endpoint.'
-                      enum:
-                        - 'developer'
-                        - 'system'
-                        - 'user-only'
-                        - null
-                      type:
-                        - 'string'
-                        - 'null'
-                    should_hoist_and_merge_system_messages:
-                      description: 'Whether to hoist and merge system messages'
-                      type:
-                        - 'boolean'
-                        - 'null'
-                    supports_mid_session_system:
-                      description: 'Whether the model accepts system/developer messages that appear after the first user/assistant turn. When false, mid-session instruction messages are downgraded to wrapped user messages. Overridable per-endpoint.'
-                      type:
-                        - 'boolean'
-                        - 'null'
-                  type:
-                    - 'object'
-                    - 'null'
-                reasoning_config:
-                  properties:
-                    default_reasoning_effort:
-                      enum:
-                        - 'max'
-                        - 'xhigh'
-                        - 'high'
-                        - 'medium'
-                        - 'low'
-                        - 'minimal'
-                        - null
-                      type:
-                        - 'string'
-                        - 'null'
-                    default_reasoning_enabled:
-                      description: 'Default reasoning enabled state for the model. When true, reasoning is enabled by default; when false, disabled by default. User-specified values always override this.'
-                      type:
-                        - 'boolean'
-                        - 'null'
-                    end_token:
-                      type:
-                        - 'string'
-                        - 'null'
-                    is_mandatory_reasoning:
-                      type:
-                        - 'boolean'
-                        - 'null'
-                    reasoning_return_mechanism:
-                      description: 'Default mechanism for returning reasoning tokens. Can be overridden per-endpoint via endpoint features.'
-                      enum:
-                        - 'content-string'
-                        - 'reasoning-content'
-                        - 'reasoning'
-                        - 'none'
-                        - null
-                      type:
-                        - 'string'
-                        - 'null'
-                    start_token:
-                      type:
-                        - 'string'
-                        - 'null'
-                    supported_reasoning_efforts:
-                      description: 'List of reasoning effort values the model accepts upstream'
-                      items:
-                        enum:
-                          - 'max'
-                          - 'xhigh'
-                          - 'high'
-                          - 'medium'
-                          - 'low'
-                          - 'minimal'
-                        type: 'string'
-                      type:
-                        - 'array'
-                        - 'null'
-                    supports_reasoning_effort:
-                      description: 'Whether the model supports reasoning effort'
-                      type:
-                        - 'boolean'
-                        - 'null'
-                    supports_reasoning_max_tokens:
-                      description: 'Whether the model supports reasoning max tokens'
-                      type:
-                        - 'boolean'
-                        - 'null'
-                    system_prompt:
-                      type:
-                        - 'string'
-                        - 'null'
-                  type:
-                    - 'object'
-                    - 'null'
-                required_input_modalities:
-                  description: 'Input modalities every request to the model must include, e.g. ["video"] for video-to-video-only models. Requests missing a required modality are rejected before dispatch. A required text modality is satisfied by the prompt. Currently enforced on the video generation request path.'
-                  items:
-                    enum:
-                      - 'text'
-                      - 'image'
-                      - 'audio'
-                      - 'video'
-                    type: 'string'
-                  type:
-                    - 'array'
-                    - 'null'
-              type:
-                - 'object'
-                - 'null'
-            input_modalities:
-              items:
-                enum:
-                  - 'text'
-                  - 'image'
-                  - 'file'
-                  - 'audio'
-                  - 'video'
-                type: 'string'
-              type: 'array'
-            output_modalities:
-              items:
-                enum:
-                  - 'text'
-                  - 'image'
-                  - 'embeddings'
-                  - 'audio'
-                  - 'video'
-                  - 'rerank'
-                  - 'decisions'
-                  - 'speech'
-                  - 'transcription'
-                type: 'string'
-              type: 'array'
-            reasoning_config:
-              properties:
-                default_reasoning_effort:
-                  enum:
-                    - 'max'
-                    - 'xhigh'
-                    - 'high'
-                    - 'medium'
-                    - 'low'
-                    - 'minimal'
-                    - null
-                  type:
-                    - 'string'
-                    - 'null'
-                default_reasoning_enabled:
-                  description: 'Default reasoning enabled state for the model. When true, reasoning is enabled by default; when false, disabled by default. User-specified values always override this.'
-                  type:
-                    - 'boolean'
-                    - 'null'
-                end_token:
-                  type:
-                    - 'string'
-                    - 'null'
-                is_mandatory_reasoning:
-                  type:
-                    - 'boolean'
-                    - 'null'
-                reasoning_return_mechanism:
-                  description: 'Default mechanism for returning reasoning tokens. Can be overridden per-endpoint via endpoint features.'
-                  enum:
-                    - 'content-string'
-                    - 'reasoning-content'
-                    - 'reasoning'
-                    - 'none'
-                    - null
-                  type:
-                    - 'string'
-                    - 'null'
-                start_token:
-                  type:
-                    - 'string'
-                    - 'null'
-                supported_reasoning_efforts:
-                  description: 'List of reasoning effort values the model accepts upstream'
-                  items:
-                    enum:
-                      - 'max'
-                      - 'xhigh'
-                      - 'high'
-                      - 'medium'
-                      - 'low'
-                      - 'minimal'
-                    type: 'string'
-                  type:
-                    - 'array'
-                    - 'null'
-                supports_reasoning_effort:
-                  description: 'Whether the model supports reasoning effort'
-                  type:
-                    - 'boolean'
-                    - 'null'
-                supports_reasoning_max_tokens:
-                  description: 'Whether the model supports reasoning max tokens'
-                  type:
-                    - 'boolean'
-                    - 'null'
-                system_prompt:
-                  type:
-                    - 'string'
-                    - 'null'
-              type:
-                - 'object'
-                - 'null'
-            slug:
-              description: 'Public model slug'
-              example: 'z-ai/glm-5.3'
-              type: 'string'
-            supports_reasoning:
-              type: 'boolean'
-          required:
-            - 'slug'
-            - 'input_modalities'
-            - 'output_modalities'
-            - 'supports_reasoning'
-            - 'reasoning_config'
-            - 'features'
-          type: 'object'
-      required:
-        - 'model'
-        - 'endpoint_features'
-        - 'default_reasoning_return_mechanism'
-        - 'is_lab_trusted'
-        - 'context_length'
-        - 'effective_adapter_name'
-      type: 'object'
     EnumCapability:
       description: 'A parameter that accepts one of a discrete set of string values.'
       example:
@@ -15594,12 +15339,30 @@ components:
             - 'opaque'
           example: 'auto'
           type: 'string'
+        frame_count:
+          description: 'Number of animation frames (2-64) when `output_format` is `gif`. Only honored by models that produce animations (OpenAI gpt-image-2.6, generations only); ignored otherwise.'
+          example: 8
+          type: 'integer'
+        frame_duration_ms:
+          description: 'Display time of each animation frame in milliseconds (20-2000) when `output_format` is `gif`. Ignored by models that do not produce animations.'
+          example: 100
+          type: 'integer'
         input_references:
           description: 'Reference images to guide image-to-image generation, as base64 data URLs or HTTP(S) URLs.'
           items:
             $ref: '#/components/schemas/ContentPartImage'
           maxItems: 16
           type: 'array'
+        markup:
+          allOf:
+            - $ref: '#/components/schemas/ContentPartImage'
+            - properties: {}
+              type: 'object'
+          description: 'A transparent PNG overlay (arrows, circles, annotations) with the same dimensions as the first reference image, as a base64 data URL or HTTP(S) URL, guiding where an edit applies. Image-to-image requests only; honored by models with markup-guided editing (OpenAI gpt-image-2.6) and ignored otherwise.'
+          example:
+            image_url:
+              url: 'https://example.com/image.png'
+            type: 'image_url'
         model:
           description: 'The image generation model to use'
           example: 'bytedance-seed/seedream-4.5'
@@ -15613,12 +15376,13 @@ components:
           example: 100
           type: 'integer'
         output_format:
-          description: 'Encoding of the returned image bytes. Most models produce raster formats (png, jpeg, webp). SVG is supported by vectorization models (e.g. Quiver) — the SVG markup is UTF-8 base64-encoded in `b64_json`.'
+          description: 'Encoding of the returned image bytes. Most models produce raster formats (png, jpeg, webp). SVG is supported by vectorization models (e.g. Quiver) — the SVG markup is UTF-8 base64-encoded in `b64_json`. GIF produces an animation on models that support it (OpenAI gpt-image-2.6; see `frame_count`).'
           enum:
             - 'png'
             - 'jpeg'
             - 'webp'
             - 'svg'
+            - 'gif'
           example: 'png'
           type: 'string'
         prompt:
@@ -16576,7 +16340,6 @@ components:
               - $ref: '#/components/schemas/OutputToolSearchServerToolItem'
               - $ref: '#/components/schemas/OutputMemoryServerToolItem'
               - $ref: '#/components/schemas/OutputArmorBlockedItem'
-              - $ref: '#/components/schemas/OutputMcpServerToolItem'
               - $ref: '#/components/schemas/OutputSearchModelsServerToolItem'
               - $ref: '#/components/schemas/OutputFusionServerToolItem'
               - $ref: '#/components/schemas/OutputAdvisorServerToolItem'
@@ -16593,6 +16356,7 @@ components:
               - $ref: '#/components/schemas/McpCallItem'
               - $ref: '#/components/schemas/CustomToolCallItem'
               - $ref: '#/components/schemas/CustomToolCallOutputItem'
+              - $ref: '#/components/schemas/CompactionTriggerItem'
               - $ref: '#/components/schemas/CompactionItem'
               - $ref: '#/components/schemas/ContextCompactionItem'
               - $ref: '#/components/schemas/ItemReferenceItem'
@@ -17666,6 +17430,134 @@ components:
         - 'approval_request_id'
         - 'approve'
       type: 'object'
+    McpCallArgumentsDeltaEvent:
+      description: 'A partial update to the JSON-encoded arguments of an MCP tool call.'
+      example:
+        delta: '{"query":"text-to-image"}'
+        item_id: 'mcp_abc123'
+        output_index: 1
+        sequence_number: 6
+        type: 'response.mcp_call_arguments.delta'
+      properties:
+        delta:
+          type: 'string'
+        item_id:
+          type: 'string'
+        output_index:
+          type: 'integer'
+        sequence_number:
+          type: 'integer'
+        type:
+          enum:
+            - 'response.mcp_call_arguments.delta'
+          type: 'string'
+      required:
+        - 'type'
+        - 'delta'
+        - 'item_id'
+        - 'output_index'
+        - 'sequence_number'
+      type: 'object'
+    McpCallArgumentsDoneEvent:
+      description: 'Emitted when the JSON-encoded arguments of an MCP tool call are finalized.'
+      example:
+        arguments: '{"query":"text-to-image"}'
+        item_id: 'mcp_abc123'
+        output_index: 1
+        sequence_number: 7
+        type: 'response.mcp_call_arguments.done'
+      properties:
+        arguments:
+          type: 'string'
+        item_id:
+          type: 'string'
+        output_index:
+          type: 'integer'
+        sequence_number:
+          type: 'integer'
+        type:
+          enum:
+            - 'response.mcp_call_arguments.done'
+          type: 'string'
+      required:
+        - 'type'
+        - 'arguments'
+        - 'item_id'
+        - 'output_index'
+        - 'sequence_number'
+      type: 'object'
+    McpCallCompletedEvent:
+      description: 'Emitted when an MCP tool call completes successfully.'
+      example:
+        item_id: 'mcp_abc123'
+        output_index: 1
+        sequence_number: 8
+        type: 'response.mcp_call.completed'
+      properties:
+        item_id:
+          type: 'string'
+        output_index:
+          type: 'integer'
+        sequence_number:
+          type: 'integer'
+        type:
+          enum:
+            - 'response.mcp_call.completed'
+          type: 'string'
+      required:
+        - 'type'
+        - 'item_id'
+        - 'output_index'
+        - 'sequence_number'
+      type: 'object'
+    McpCallFailedEvent:
+      description: 'Emitted when an MCP tool call fails.'
+      example:
+        item_id: 'mcp_abc123'
+        output_index: 1
+        sequence_number: 8
+        type: 'response.mcp_call.failed'
+      properties:
+        item_id:
+          type: 'string'
+        output_index:
+          type: 'integer'
+        sequence_number:
+          type: 'integer'
+        type:
+          enum:
+            - 'response.mcp_call.failed'
+          type: 'string'
+      required:
+        - 'type'
+        - 'item_id'
+        - 'output_index'
+        - 'sequence_number'
+      type: 'object'
+    McpCallInProgressEvent:
+      description: 'Emitted when an MCP tool call begins executing.'
+      example:
+        item_id: 'mcp_abc123'
+        output_index: 1
+        sequence_number: 5
+        type: 'response.mcp_call.in_progress'
+      properties:
+        item_id:
+          type: 'string'
+        output_index:
+          type: 'integer'
+        sequence_number:
+          type: 'integer'
+        type:
+          enum:
+            - 'response.mcp_call.in_progress'
+          type: 'string'
+      required:
+        - 'type'
+        - 'item_id'
+        - 'output_index'
+        - 'sequence_number'
+      type: 'object'
     McpCallItem:
       description: 'An MCP tool call with its output or error'
       example:
@@ -17720,6 +17612,78 @@ components:
         - 'type'
         - 'code'
         - 'message'
+      type: 'object'
+    McpListToolsCompletedEvent:
+      description: 'Emitted when tool discovery against an MCP server succeeds.'
+      example:
+        item_id: 'mcpl_abc123'
+        output_index: 0
+        sequence_number: 2
+        type: 'response.mcp_list_tools.completed'
+      properties:
+        item_id:
+          type: 'string'
+        output_index:
+          type: 'integer'
+        sequence_number:
+          type: 'integer'
+        type:
+          enum:
+            - 'response.mcp_list_tools.completed'
+          type: 'string'
+      required:
+        - 'type'
+        - 'item_id'
+        - 'output_index'
+        - 'sequence_number'
+      type: 'object'
+    McpListToolsFailedEvent:
+      description: 'Emitted when tool discovery against an MCP server fails.'
+      example:
+        item_id: 'mcpl_abc123'
+        output_index: 0
+        sequence_number: 2
+        type: 'response.mcp_list_tools.failed'
+      properties:
+        item_id:
+          type: 'string'
+        output_index:
+          type: 'integer'
+        sequence_number:
+          type: 'integer'
+        type:
+          enum:
+            - 'response.mcp_list_tools.failed'
+          type: 'string'
+      required:
+        - 'type'
+        - 'item_id'
+        - 'output_index'
+        - 'sequence_number'
+      type: 'object'
+    McpListToolsInProgressEvent:
+      description: 'Emitted when tool discovery against an MCP server begins.'
+      example:
+        item_id: 'mcpl_abc123'
+        output_index: 0
+        sequence_number: 1
+        type: 'response.mcp_list_tools.in_progress'
+      properties:
+        item_id:
+          type: 'string'
+        output_index:
+          type: 'integer'
+        sequence_number:
+          type: 'integer'
+        type:
+          enum:
+            - 'response.mcp_list_tools.in_progress'
+          type: 'string'
+      required:
+        - 'type'
+        - 'item_id'
+        - 'output_index'
+        - 'sequence_number'
       type: 'object'
     McpListToolsItem:
       description: 'List of available MCP tools from a server'
@@ -19120,6 +19084,28 @@ components:
                         - 'null'
                     cost_details:
                       $ref: '#/components/schemas/CostDetails'
+                    deferred_tools_details:
+                      properties:
+                        completion_tokens:
+                          description: 'Completion tokens summed over every upstream call'
+                          type: 'integer'
+                        prompt_tokens:
+                          description: 'Prompt tokens summed over every upstream call'
+                          type: 'integer'
+                        total_tokens:
+                          description: 'Sum of the above two fields'
+                          type: 'integer'
+                        turns:
+                          description: 'Upstream model calls the run made'
+                          exclusiveMinimum: true
+                          minimum: 0
+                          type: 'integer'
+                      required:
+                        - 'turns'
+                        - 'prompt_tokens'
+                        - 'completion_tokens'
+                        - 'total_tokens'
+                      type: 'object'
                     is_byok:
                       type: 'boolean'
                     iterations:
@@ -24816,6 +24802,28 @@ components:
         - 'status'
         - 'type'
       type: 'object'
+    OutputCompactionItem:
+      description: 'A compaction output item carrying the encrypted summary of the compacted conversation. Emitted in reply to a `compaction_trigger` input item.'
+      example:
+        encrypted_content: 'enc_abc123...'
+        id: 'cmp_abc123'
+        type: 'compaction'
+      properties:
+        created_by:
+          type: 'string'
+        encrypted_content:
+          type: 'string'
+        id:
+          type: 'string'
+        type:
+          enum:
+            - 'compaction'
+          type: 'string'
+      required:
+        - 'type'
+        - 'id'
+        - 'encrypted_content'
+      type: 'object'
     OutputComputerCallItem:
       example:
         action:
@@ -25178,6 +25186,7 @@ components:
             mapping:
               apply_patch_call: '#/components/schemas/OutputItemApplyPatchCall'
               code_interpreter_call: '#/components/schemas/OutputItemCodeInterpreterCall'
+              compaction: '#/components/schemas/OutputItemCompaction'
               custom_tool_call: '#/components/schemas/OutputItemCustomToolCall'
               file_search_call: '#/components/schemas/OutputItemFileSearchCall'
               function_call: '#/components/schemas/OutputItemFunctionCall'
@@ -25196,6 +25205,7 @@ components:
             - $ref: '#/components/schemas/OutputItemImageGenerationCall'
             - $ref: '#/components/schemas/OutputItemApplyPatchCall'
             - $ref: '#/components/schemas/OutputItemCodeInterpreterCall'
+            - $ref: '#/components/schemas/OutputItemCompaction'
         output_index:
           type: 'integer'
         sequence_number:
@@ -25305,6 +25315,27 @@ components:
         - 'id'
         - 'status'
       type: 'object'
+    OutputItemCompaction:
+      example:
+        encrypted_content: 'enc_abc123...'
+        id: 'cmp_abc123'
+        type: 'compaction'
+      properties:
+        created_by:
+          type: 'string'
+        encrypted_content:
+          type: 'string'
+        id:
+          type: 'string'
+        type:
+          enum:
+            - 'compaction'
+          type: 'string'
+      required:
+        - 'type'
+        - 'id'
+        - 'encrypted_content'
+      type: 'object'
     OutputItemCustomToolCall:
       example:
         call_id: 'call-abc123'
@@ -25366,6 +25397,7 @@ components:
             mapping:
               apply_patch_call: '#/components/schemas/OutputItemApplyPatchCall'
               code_interpreter_call: '#/components/schemas/OutputItemCodeInterpreterCall'
+              compaction: '#/components/schemas/OutputItemCompaction'
               custom_tool_call: '#/components/schemas/OutputItemCustomToolCall'
               file_search_call: '#/components/schemas/OutputItemFileSearchCall'
               function_call: '#/components/schemas/OutputItemFunctionCall'
@@ -25384,6 +25416,7 @@ components:
             - $ref: '#/components/schemas/OutputItemImageGenerationCall'
             - $ref: '#/components/schemas/OutputItemApplyPatchCall'
             - $ref: '#/components/schemas/OutputItemCodeInterpreterCall'
+            - $ref: '#/components/schemas/OutputItemCompaction'
         output_index:
           type: 'integer'
         sequence_number:
@@ -25542,11 +25575,14 @@ components:
         mapping:
           apply_patch_call: '#/components/schemas/OutputApplyPatchCallItem'
           code_interpreter_call: '#/components/schemas/OutputCodeInterpreterCallItem'
+          compaction: '#/components/schemas/OutputCompactionItem'
           computer_call: '#/components/schemas/OutputComputerCallItem'
           custom_tool_call: '#/components/schemas/OutputCustomToolCallItem'
           file_search_call: '#/components/schemas/OutputFileSearchCallItem'
           function_call: '#/components/schemas/OutputFunctionCallItem'
           image_generation_call: '#/components/schemas/OutputImageGenerationCallItem'
+          mcp_call: '#/components/schemas/McpCallItem'
+          mcp_list_tools: '#/components/schemas/McpListToolsItem'
           message: '#/components/schemas/OutputMessageItem'
           openrouter:advisor: '#/components/schemas/OutputAdvisorServerToolItem'
           openrouter:apply_patch: '#/components/schemas/OutputApplyPatchServerToolItem'
@@ -25560,7 +25596,6 @@ components:
           openrouter:files: '#/components/schemas/OutputFilesServerToolItem'
           openrouter:fusion: '#/components/schemas/OutputFusionServerToolItem'
           openrouter:image_generation: '#/components/schemas/OutputImageGenerationServerToolItem'
-          openrouter:mcp: '#/components/schemas/OutputMcpServerToolItem'
           openrouter:memory: '#/components/schemas/OutputMemoryServerToolItem'
           openrouter:shell: '#/components/schemas/OutputShellServerToolItem'
           openrouter:subagent: '#/components/schemas/OutputSubagentServerToolItem'
@@ -25601,13 +25636,15 @@ components:
         - $ref: '#/components/schemas/OutputTextEditorServerToolItem'
         - $ref: '#/components/schemas/OutputApplyPatchServerToolItem'
         - $ref: '#/components/schemas/OutputApplyPatchCallItem'
+        - $ref: '#/components/schemas/OutputCompactionItem'
         - $ref: '#/components/schemas/OutputShellCallItem'
         - $ref: '#/components/schemas/OutputShellCallOutputItem'
         - $ref: '#/components/schemas/OutputShellServerToolItem'
         - $ref: '#/components/schemas/OutputWebFetchServerToolItem'
         - $ref: '#/components/schemas/OutputToolSearchServerToolItem'
         - $ref: '#/components/schemas/OutputMemoryServerToolItem'
-        - $ref: '#/components/schemas/OutputMcpServerToolItem'
+        - $ref: '#/components/schemas/McpListToolsItem'
+        - $ref: '#/components/schemas/McpCallItem'
         - $ref: '#/components/schemas/OutputSearchModelsServerToolItem'
         - $ref: '#/components/schemas/OutputFusionServerToolItem'
         - $ref: '#/components/schemas/OutputAdvisorServerToolItem'
@@ -25685,31 +25722,6 @@ components:
         - 'type'
         - 'id'
         - 'status'
-      type: 'object'
-    OutputMcpServerToolItem:
-      description: 'An openrouter:mcp server tool output item'
-      example:
-        id: 'mcp_tmp_abc123'
-        serverLabel: 'my-server'
-        status: 'completed'
-        toolName: 'get_data'
-        type: 'openrouter:mcp'
-      properties:
-        id:
-          type: 'string'
-        serverLabel:
-          type: 'string'
-        status:
-          $ref: '#/components/schemas/ToolCallStatus'
-        toolName:
-          type: 'string'
-        type:
-          enum:
-            - 'openrouter:mcp'
-          type: 'string'
-      required:
-        - 'status'
-        - 'type'
       type: 'object'
     OutputMemoryServerToolItem:
       description: 'An openrouter:memory server tool output item'
@@ -26225,9 +26237,31 @@ components:
         status: 'completed'
         type: 'openrouter:tool_search'
       properties:
+        arguments:
+          description: 'The JSON arguments of the model call, verbatim. Replaying the item reuses them.'
+          example: '{"query":"weather tools"}'
+          type: 'string'
+        call_id:
+          description: 'The ID of the model call that ran the search. Replaying the item reuses it.'
+          example: 'call_search_1'
+          type: 'string'
+        catalog_index:
+          description: 'The deferred-tool index the router showed the model with a pre-search, listing tool sources and names. Replaying the item shows the same index.'
+          example: "Deferred tools, found with tool_search and called with tool_exec:\nSources: mcp__sentry (12)."
+          type: 'string'
         error:
           description: 'The error message when the tool call failed before producing a result. Set together with `status: ''failed''`; absent on a successful call.'
           example: 'Tool execution failed'
+          type: 'string'
+        format:
+          description: 'How the model saw the matches. `compact` means each tool by name, description, and input shape, plus a call example. Replaying the item renders the same result.'
+          enum:
+            - 'compact'
+          example: 'compact'
+          type: 'string'
+        hint:
+          description: 'The guidance the model got when the search matched no tools.'
+          example: 'No tools matched. Search again with other keywords, or load tools by exact name with "select:Name1,Name2".'
           type: 'string'
         id:
           type: 'string'
@@ -26251,6 +26285,14 @@ components:
           type: 'string'
         status:
           $ref: '#/components/schemas/FailableToolCallStatus'
+        turn_call_ids:
+          description: 'The IDs of every tool call in the model response that ran the search, in order. Replaying the item keeps those calls in one turn.'
+          example:
+            - 'call_search_1'
+            - 'call_exec_1'
+          items:
+            type: 'string'
+          type: 'array'
         type:
           enum:
             - 'openrouter:tool_search'
@@ -27285,7 +27327,8 @@ components:
         passed: true
       properties:
         actual_model:
-          description: 'Model the upstream reported serving, when it differs from the request.'
+          deprecated: true
+          description: 'Deprecated: validation no longer compares the model the upstream reports, so this field is never returned.'
           type:
             - 'string'
             - 'null'
@@ -27810,144 +27853,6 @@ components:
         - 'all_messages'
       example: 'user_only'
       type: 'string'
-    ProviderEndpoints:
-      properties:
-        endpoints:
-          items:
-            $ref: '#/components/schemas/EndpointSummary'
-          type: 'array'
-        stats:
-          $ref: '#/components/schemas/ProviderEndpointStats'
-        window:
-          description: 'Time window the provider-wide stats cover'
-          enum:
-            - '1hr'
-            - '1d'
-            - '1w'
-            - '1mo'
-            - '1y'
-          example: '1d'
-          type: 'string'
-      required:
-        - 'window'
-        - 'endpoints'
-        - 'stats'
-      type: 'object'
-    ProviderEndpointsResponse:
-      properties:
-        data:
-          $ref: '#/components/schemas/ProviderEndpoints'
-      required:
-        - 'data'
-      type: 'object'
-    ProviderEndpointStats:
-      discriminator:
-        mapping:
-          available: '#/components/schemas/ProviderEndpointStatsAvailable'
-          unavailable: '#/components/schemas/ProviderEndpointStatsUnavailable'
-        propertyName: 'status'
-      oneOf:
-        - $ref: '#/components/schemas/ProviderEndpointStatsAvailable'
-        - $ref: '#/components/schemas/ProviderEndpointStatsUnavailable'
-    ProviderEndpointStatsAvailable:
-      properties:
-        endpoint_count:
-          description: 'Endpoints the stats cover'
-          example: 12
-          type: 'integer'
-        error_rate_percent:
-          description: 'Errored share of requests that count toward uptime, 0-100'
-          example: 0.8
-          format: 'double'
-          type: 'number'
-        latency_ms:
-          description: 'Request latency, milliseconds'
-          properties:
-            p50:
-              format: 'double'
-              type:
-                - 'number'
-                - 'null'
-            p90:
-              format: 'double'
-              type:
-                - 'number'
-                - 'null'
-          required:
-            - 'p50'
-            - 'p90'
-          type: 'object'
-        quality_percent:
-          description: 'Routing quality, 0-100'
-          format: 'double'
-          type:
-            - 'number'
-            - 'null'
-        rate_limited_percent:
-          description: 'Rate-limited share of routed requests, 0-100'
-          format: 'double'
-          type:
-            - 'number'
-            - 'null'
-        reliability_percent:
-          description: 'Routing reliability, 0-100'
-          format: 'double'
-          type:
-            - 'number'
-            - 'null'
-        requests:
-          description: 'Requests in the window'
-          example: 120000
-          type: 'integer'
-        status:
-          enum:
-            - 'available'
-          type: 'string'
-        throughput_tokens_per_second:
-          description: 'Output tokens per second'
-          properties:
-            p50:
-              format: 'double'
-              type:
-                - 'number'
-                - 'null'
-            p90:
-              format: 'double'
-              type:
-                - 'number'
-                - 'null'
-          required:
-            - 'p50'
-            - 'p90'
-          type: 'object'
-        uptime_percent:
-          description: 'Successful share of requests that count toward uptime, 0-100'
-          example: 99.2
-          format: 'double'
-          type:
-            - 'number'
-            - 'null'
-      required:
-        - 'status'
-        - 'endpoint_count'
-        - 'requests'
-        - 'uptime_percent'
-        - 'error_rate_percent'
-        - 'reliability_percent'
-        - 'quality_percent'
-        - 'rate_limited_percent'
-        - 'latency_ms'
-        - 'throughput_tokens_per_second'
-      type: 'object'
-    ProviderEndpointStatsUnavailable:
-      properties:
-        status:
-          enum:
-            - 'unavailable'
-          type: 'string'
-      required:
-        - 'status'
-      type: 'object'
     ProviderName:
       enum:
         - 'Modal'
@@ -29265,8 +29170,10 @@ components:
         type: 'range'
       properties:
         max:
+          format: 'double'
           type: 'number'
         min:
+          format: 'double'
           type: 'number'
         type:
           enum:
@@ -31213,6 +31120,10 @@ components:
           input_audio: '#/components/schemas/SpeechInputReferenceAudio'
           text: '#/components/schemas/SpeechInputReferenceText'
         propertyName: 'type'
+      example:
+        input_audio:
+          data: 'data:audio/wav;base64,UklGRuQXDABXQVZF...'
+        type: 'input_audio'
       oneOf:
         - $ref: '#/components/schemas/SpeechInputReferenceAudio'
         - $ref: '#/components/schemas/SpeechInputReferenceText'
@@ -31236,6 +31147,8 @@ components:
       type: 'object'
     SpeechInputReferenceAudioInput:
       description: 'Reference audio input object'
+      example:
+        data: 'data:audio/wav;base64,UklGRuQXDABXQVZF...'
       properties:
         data:
           description: 'Base64-encoded reference audio (optionally a data URI). Supported audio formats are provider-specific. Limited to 20 MiB of base64 (15 MiB of decoded audio). Exactly one of `data` or `url` is required.'
@@ -31273,6 +31186,8 @@ components:
       type: 'object'
     SpeechInputReferenceImageInput:
       description: 'Reference image input object'
+      example:
+        url: 'data:image/png;base64,iVBORw0KGgo...'
       properties:
         url:
           description: 'JPEG, PNG, or WebP reference image as a base64 data URI or a public http(s) URL. Remote images are downloaded (15 MiB max) and forwarded as bytes, never as the URL.'
@@ -31333,8 +31248,13 @@ components:
           example: 'mistralai/voxtral-mini-tts-2603'
           type: 'string'
         provider:
-          description: 'Provider configuration: data policy routing preferences (`zdr`, `data_collection`) and provider-specific passthrough options'
+          description: 'Provider configuration: provider routing preferences (`order`, `only`, `ignore`, `allow_fallbacks`), data policy routing preferences (`zdr`, `data_collection`) and provider-specific passthrough options'
           properties:
+            allow_fallbacks:
+              description: "Whether to allow backup providers to serve requests\n- true: (default) when the primary provider (or your custom providers in \"order\") is unavailable, use the next best provider.\n- false: use only the primary/custom provider, and return the upstream error if it's unavailable.\n"
+              type:
+                - 'boolean'
+                - 'null'
             data_collection:
               description: "Data collection setting. If no available model provider meets the requirement, your request will return an error.\n- allow: (default) allow providers which store user data non-transiently and may train on it\n\n- deny: use only providers which do not collect user data."
               enum:
@@ -31346,8 +31266,44 @@ components:
               type:
                 - 'string'
                 - 'null'
+            ignore:
+              description: 'List of provider slugs to ignore. If provided, this list is merged with your account-wide ignored provider settings for this request.'
+              example:
+                - 'openai'
+                - 'anthropic'
+              items:
+                anyOf:
+                  - $ref: '#/components/schemas/ProviderName'
+                  - type: 'string'
+              type:
+                - 'array'
+                - 'null'
+            only:
+              description: 'List of provider slugs to allow. If provided, this list is merged with your account-wide allowed provider settings for this request.'
+              example:
+                - 'openai'
+                - 'anthropic'
+              items:
+                anyOf:
+                  - $ref: '#/components/schemas/ProviderName'
+                  - type: 'string'
+              type:
+                - 'array'
+                - 'null'
             options:
               $ref: '#/components/schemas/ProviderOptions'
+            order:
+              description: 'An ordered list of provider slugs. The router will attempt to use the first provider in the subset of this list that supports your requested model, and fall back to the next if it is unavailable. If no providers are available, the request will fail with an error message.'
+              example:
+                - 'openai'
+                - 'anthropic'
+              items:
+                anyOf:
+                  - $ref: '#/components/schemas/ProviderName'
+                  - type: 'string'
+              type:
+                - 'array'
+                - 'null'
             zdr:
               description: 'Whether to restrict routing to only ZDR (Zero Data Retention) endpoints. When true, only endpoints that do not retain prompts will be used.'
               example: true
@@ -31580,6 +31536,14 @@ components:
           response.image_generation_call.partial_image: '#/components/schemas/ImageGenCallPartialImageEvent'
           response.in_progress: '#/components/schemas/OpenResponsesInProgressEvent'
           response.incomplete: '#/components/schemas/StreamEventsResponseIncomplete'
+          response.mcp_call_arguments.delta: '#/components/schemas/McpCallArgumentsDeltaEvent'
+          response.mcp_call_arguments.done: '#/components/schemas/McpCallArgumentsDoneEvent'
+          response.mcp_call.completed: '#/components/schemas/McpCallCompletedEvent'
+          response.mcp_call.failed: '#/components/schemas/McpCallFailedEvent'
+          response.mcp_call.in_progress: '#/components/schemas/McpCallInProgressEvent'
+          response.mcp_list_tools.completed: '#/components/schemas/McpListToolsCompletedEvent'
+          response.mcp_list_tools.failed: '#/components/schemas/McpListToolsFailedEvent'
+          response.mcp_list_tools.in_progress: '#/components/schemas/McpListToolsInProgressEvent'
           response.output_item.added: '#/components/schemas/StreamEventsResponseOutputItemAdded'
           response.output_item.done: '#/components/schemas/StreamEventsResponseOutputItemDone'
           response.output_text.annotation.added: '#/components/schemas/AnnotationAddedEvent'
@@ -31669,6 +31633,14 @@ components:
         - $ref: '#/components/schemas/FusionCallAnalysisInProgressEvent'
         - $ref: '#/components/schemas/FusionCallAnalysisCompletedEvent'
         - $ref: '#/components/schemas/FusionCallCompletedEvent'
+        - $ref: '#/components/schemas/McpListToolsInProgressEvent'
+        - $ref: '#/components/schemas/McpListToolsCompletedEvent'
+        - $ref: '#/components/schemas/McpListToolsFailedEvent'
+        - $ref: '#/components/schemas/McpCallInProgressEvent'
+        - $ref: '#/components/schemas/McpCallArgumentsDeltaEvent'
+        - $ref: '#/components/schemas/McpCallArgumentsDoneEvent'
+        - $ref: '#/components/schemas/McpCallCompletedEvent'
+        - $ref: '#/components/schemas/McpCallFailedEvent'
         - $ref: '#/components/schemas/DebugEvent'
     StreamEventsResponseCompleted:
       allOf:
@@ -31944,8 +31916,13 @@ components:
           example: 'openai/whisper-large-v3'
           type: 'string'
         provider:
-          description: 'Provider configuration: data policy routing preferences (`zdr`, `data_collection`) and provider-specific passthrough options'
+          description: 'Provider configuration: provider routing preferences (`order`, `only`, `ignore`, `allow_fallbacks`), data policy routing preferences (`zdr`, `data_collection`) and provider-specific passthrough options'
           properties:
+            allow_fallbacks:
+              description: "Whether to allow backup providers to serve requests\n- true: (default) when the primary provider (or your custom providers in \"order\") is unavailable, use the next best provider.\n- false: use only the primary/custom provider, and return the upstream error if it's unavailable.\n"
+              type:
+                - 'boolean'
+                - 'null'
             data_collection:
               description: "Data collection setting. If no available model provider meets the requirement, your request will return an error.\n- allow: (default) allow providers which store user data non-transiently and may train on it\n\n- deny: use only providers which do not collect user data."
               enum:
@@ -31957,8 +31934,44 @@ components:
               type:
                 - 'string'
                 - 'null'
+            ignore:
+              description: 'List of provider slugs to ignore. If provided, this list is merged with your account-wide ignored provider settings for this request.'
+              example:
+                - 'openai'
+                - 'anthropic'
+              items:
+                anyOf:
+                  - $ref: '#/components/schemas/ProviderName'
+                  - type: 'string'
+              type:
+                - 'array'
+                - 'null'
+            only:
+              description: 'List of provider slugs to allow. If provided, this list is merged with your account-wide allowed provider settings for this request.'
+              example:
+                - 'openai'
+                - 'anthropic'
+              items:
+                anyOf:
+                  - $ref: '#/components/schemas/ProviderName'
+                  - type: 'string'
+              type:
+                - 'array'
+                - 'null'
             options:
               $ref: '#/components/schemas/ProviderOptions'
+            order:
+              description: 'An ordered list of provider slugs. The router will attempt to use the first provider in the subset of this list that supports your requested model, and fall back to the next if it is unavailable. If no providers are available, the request will fail with an error message.'
+              example:
+                - 'openai'
+                - 'anthropic'
+              items:
+                anyOf:
+                  - $ref: '#/components/schemas/ProviderName'
+                  - type: 'string'
+              type:
+                - 'array'
+                - 'null'
             zdr:
               description: 'Whether to restrict routing to only ZDR (Zero Data Retention) endpoints. When true, only endpoints that do not retain prompts will be used.'
               example: true
@@ -34624,6 +34637,8 @@ components:
                     - 'upstream_inference_input_cost'
                     - 'upstream_inference_output_cost'
                   type: 'object'
+                deferred_tools_details:
+                  $ref: '#/components/schemas/DeferredToolsDetails'
                 is_byok:
                   description: 'Whether a request was made using a Bring Your Own Key configuration'
                   type: 'boolean'
@@ -35315,8 +35330,32 @@ components:
           example: 'A serene mountain landscape at sunset'
           type: 'string'
         provider:
-          description: 'Provider-specific passthrough configuration'
+          description: 'Provider routing preferences (order, only, ignore) and provider-specific passthrough configuration'
           properties:
+            ignore:
+              description: 'List of provider slugs to ignore. If provided, this list is merged with your account-wide ignored provider settings for this request.'
+              example:
+                - 'openai'
+                - 'anthropic'
+              items:
+                anyOf:
+                  - $ref: '#/components/schemas/ProviderName'
+                  - type: 'string'
+              type:
+                - 'array'
+                - 'null'
+            only:
+              description: 'List of provider slugs to allow. If provided, this list is merged with your account-wide allowed provider settings for this request.'
+              example:
+                - 'openai'
+                - 'anthropic'
+              items:
+                anyOf:
+                  - $ref: '#/components/schemas/ProviderName'
+                  - type: 'string'
+              type:
+                - 'array'
+                - 'null'
             options:
               allOf:
                 - $ref: '#/components/schemas/ProviderOptions'
@@ -35324,6 +35363,18 @@ components:
                     google-vertex:
                       output_config:
                         effort: 'low'
+            order:
+              description: 'An ordered list of provider slugs. The router will attempt to use the first provider in the subset of this list that supports your requested model, and fall back to the next if it is unavailable. If no providers are available, the request will fail with an error message.'
+              example:
+                - 'openai'
+                - 'anthropic'
+              items:
+                anyOf:
+                  - $ref: '#/components/schemas/ProviderName'
+                  - type: 'string'
+              type:
+                - 'array'
+                - 'null'
           type: 'object'
         resolution:
           description: 'Resolution of the generated video'
@@ -35356,6 +35407,7 @@ components:
           description: 'Upscale factor for video upscaling models only. This parameter is not supported by video generation models.'
           example: 2
           exclusiveMinimum: true
+          format: 'double'
           minimum: 0
           type: 'number'
         user:
@@ -36376,10 +36428,12 @@ components:
           format: 'uuid'
           type: 'string'
         role:
-          description: 'Role of the member in the workspace'
+          description: 'Role of the member in the workspace. `viewer` and `restricted_viewer` are read-only: `viewer` can view the whole workspace, and `restricted_viewer` can view only their own activity.'
           enum:
             - 'admin'
             - 'member'
+            - 'viewer'
+            - 'restricted_viewer'
           example: 'member'
           type: 'string'
         user_id:
@@ -38826,6 +38880,7 @@ paths:
               - 'perplexity'
               - 'phala'
               - 'poolside'
+              - 'primalabs'
               - 'primeintellect'
               - 'quiver'
               - 'recraft'
@@ -45085,7 +45140,7 @@ paths:
                 name: 'My New API Key'
               properties:
                 creator_user_id:
-                  description: 'Optional user ID of the key creator. Only meaningful for organization-owned keys where a specific member is creating the key.'
+                  description: 'Optional user ID of the key creator. Only meaningful for organization-owned keys where a specific member is creating the key. A workspace-scoped management key may only name a member of its own workspace.'
                   example: 'user_2dHFtVWx2n56w6HkM0000000000'
                   minLength: 1
                   type:
@@ -48037,10 +48092,11 @@ paths:
                             - 'string'
                             - 'null'
                         role:
-                          description: 'Role of the member in the organization'
+                          description: 'Role of the member in the organization. `org:viewer` is coming soon and not yet available. Once launched, it has read-only organization access: it can view organization settings, billing and workspaces but not change them. Workspace roles can still grant write access in specific workspaces.'
                           enum:
                             - 'org:admin'
                             - 'org:member'
+                            - 'org:viewer'
                           example: 'org:member'
                           type: 'string'
                       required:
@@ -51166,123 +51222,6 @@ paths:
       tags:
         - 'Providers'
       x-speakeasy-name-override: 'list'
-  /providers/{provider_slug}/endpoints:
-    get:
-      description: 'Returns every endpoint the provider serves, hidden ones included, with the provider-wide uptime, routing, latency and throughput stats over the window. Requires provider ownership, membership, or admin access.'
-      operationId: 'listProviderEndpoints'
-      parameters:
-        - description: 'URL-friendly provider identifier (e.g. "openai", "fireworks")'
-          in: 'path'
-          name: 'provider_slug'
-          required: true
-          schema:
-            description: 'URL-friendly provider identifier (e.g. "openai", "fireworks")'
-            example: 'fireworks'
-            type: 'string'
-        - description: 'Time window the provider-wide stats cover'
-          in: 'query'
-          name: 'window'
-          required: false
-          schema:
-            default: '1mo'
-            description: 'Time window the provider-wide stats cover'
-            enum:
-              - '1hr'
-              - '1d'
-              - '1w'
-              - '1mo'
-              - '1y'
-            example: '1d'
-            type: 'string'
-        - description: 'Workload the latency and throughput stats measure; defaults to the workload most of the endpoints serve'
-          in: 'query'
-          name: 'perf_workload'
-          required: false
-          schema:
-            description: 'Workload the latency and throughput stats measure; defaults to the workload most of the endpoints serve'
-            enum:
-              - 'text_generation'
-              - 'image_generation'
-              - 'video_generation'
-              - 'embeddings'
-              - 'rerank'
-              - 'tts'
-              - 'stt'
-              - 'decisions'
-              - 'extractions'
-              - 'unknown'
-            example: 'text_generation'
-            type: 'string'
-      responses:
-        '200':
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ProviderEndpointsResponse'
-          description: 'The provider''s endpoints and provider-wide stats'
-        '400':
-          content:
-            application/json:
-              example:
-                error:
-                  code: 400
-                  message: 'Invalid request parameters'
-              schema:
-                $ref: '#/components/schemas/BadRequestResponse'
-          description: 'Bad Request - Invalid request parameters or malformed input'
-        '401':
-          content:
-            application/json:
-              example:
-                error:
-                  code: 401
-                  message: 'Missing Authentication header'
-              schema:
-                $ref: '#/components/schemas/UnauthorizedResponse'
-          description: 'Unauthorized - Authentication required or invalid credentials'
-        '403':
-          content:
-            application/json:
-              example:
-                error:
-                  code: 403
-                  message: 'Only management keys can perform this operation'
-              schema:
-                $ref: '#/components/schemas/ForbiddenResponse'
-          description: 'Forbidden - Authentication successful but insufficient permissions'
-        '404':
-          content:
-            application/json:
-              example:
-                error:
-                  code: 404
-                  message: 'Resource not found'
-              schema:
-                $ref: '#/components/schemas/NotFoundResponse'
-          description: 'Not Found - Resource does not exist'
-        '429':
-          content:
-            application/json:
-              example:
-                error:
-                  code: 429
-                  message: 'Rate limit exceeded'
-              schema:
-                $ref: '#/components/schemas/TooManyRequestsResponse'
-          description: 'Too Many Requests - Rate limit exceeded'
-        '500':
-          content:
-            application/json:
-              example:
-                error:
-                  code: 500
-                  message: 'Internal Server Error'
-              schema:
-                $ref: '#/components/schemas/InternalServerResponse'
-          description: 'Internal Server Error - Unexpected server error'
-      summary: 'List a provider''s endpoints with provider-wide stats'
-      tags:
-        - 'Providers'
   /rerank:
     post:
       description: 'Submits a rerank request to the rerank router'

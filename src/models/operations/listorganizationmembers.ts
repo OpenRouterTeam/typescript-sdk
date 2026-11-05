@@ -64,14 +64,15 @@ export type ListOrganizationMembersRequest = {
 };
 
 /**
- * Role of the member in the organization
+ * Role of the member in the organization. `org:viewer` is coming soon and not yet available. Once launched, it has read-only organization access: it can view organization settings, billing and workspaces but not change them. Workspace roles can still grant write access in specific workspaces.
  */
 export const Role = {
   OrgAdmin: "org:admin",
   OrgMember: "org:member",
+  OrgViewer: "org:viewer",
 } as const;
 /**
- * Role of the member in the organization
+ * Role of the member in the organization. `org:viewer` is coming soon and not yet available. Once launched, it has read-only organization access: it can view organization settings, billing and workspaces but not change them. Workspace roles can still grant write access in specific workspaces.
  */
 export type Role = OpenEnum<typeof Role>;
 
@@ -93,7 +94,7 @@ export type ListOrganizationMembersData = {
    */
   lastName: string | null;
   /**
-   * Role of the member in the organization
+   * Role of the member in the organization. `org:viewer` is coming soon and not yet available. Once launched, it has read-only organization access: it can view organization settings, billing and workspaces but not change them. Workspace roles can still grant write access in specific workspaces.
    */
   role: Role;
 };

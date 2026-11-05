@@ -4,9 +4,7 @@
  */
 
 import { providersList } from "../funcs/providersList.js";
-import { providersListProviderEndpoints } from "../funcs/providersListProviderEndpoints.js";
 import { ClientSDK, RequestOptions } from "../lib/sdks.js";
-import * as models from "../models/index.js";
 import * as operations from "../models/operations/index.js";
 import { unwrapAsync } from "../types/fp.js";
 
@@ -19,23 +17,6 @@ export class Providers extends ClientSDK {
     options?: RequestOptions,
   ): Promise<operations.ListProvidersResponse> {
     return unwrapAsync(providersList(
-      this,
-      request,
-      options,
-    ));
-  }
-
-  /**
-   * List a provider's endpoints with provider-wide stats
-   *
-   * @remarks
-   * Returns every endpoint the provider serves, hidden ones included, with the provider-wide uptime, routing, latency and throughput stats over the window. Requires provider ownership, membership, or admin access.
-   */
-  async listProviderEndpoints(
-    request: operations.ListProviderEndpointsRequest,
-    options?: RequestOptions,
-  ): Promise<models.ProviderEndpointsResponse> {
-    return unwrapAsync(providersListProviderEndpoints(
       this,
       request,
       options,
