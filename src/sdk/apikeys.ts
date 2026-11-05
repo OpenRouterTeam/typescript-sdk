@@ -12,6 +12,7 @@ import { apiKeysUpdate } from "../funcs/apiKeysUpdate.js";
 import { ClientSDK, RequestOptions } from "../lib/sdks.js";
 import * as operations from "../models/operations/index.js";
 import { unwrapAsync } from "../types/fp.js";
+import { PageIterator, unwrapResultIterator } from "../types/operations.js";
 
 export class APIKeys extends ClientSDK {
   /**
@@ -40,8 +41,8 @@ export class APIKeys extends ClientSDK {
   async list(
     request?: operations.ListRequest | undefined,
     options?: RequestOptions,
-  ): Promise<operations.ListResponse> {
-    return unwrapAsync(apiKeysList(
+  ): Promise<PageIterator<operations.ListResponse, { offset: number }>> {
+    return unwrapResultIterator(apiKeysList(
       this,
       request,
       options,
