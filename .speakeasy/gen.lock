@@ -1,19 +1,19 @@
 lockVersion: ""
 id: ""
 management:
-  docChecksum: cc522dd95e8402eb91f13d3d0224d739
+  docChecksum: c7b24a3bad1d5502c836622e9f459a3a
   docVersion: 1.0.0
   speakeasyVersion: 1.803.2
   generationVersion: 2.950.13
-  releaseVersion: 1.5.51
-  configChecksum: 9005ec367f5093457feecde98a4d65c3
+  releaseVersion: 1.5.52
+  configChecksum: f4a8e47ea4ed5defdb6c097325149fe2
   repoURL: https://github.com/OpenRouterTeam/typescript-sdk.git
   installationURL: https://github.com/OpenRouterTeam/typescript-sdk
   published: true
 persistentEdits:
-  generation_id: a7f30546-f522-41f9-83b4-1c571216b5b3
-  pristine_commit_hash: 02ed4212abe8b539da646239dc73a0c6fa7d1079
-  pristine_tree_hash: fe68d58d48f667d6144032b1bd104dd9de494f18
+  generation_id: cf148aa3-2180-4829-a8ed-1388519214ab
+  pristine_commit_hash: 92d14ad269b0ac47f3bd6c584b9c1ffaefa24f68
+  pristine_tree_hash: 642257d29f9e7ddf663925dfb98798a4564de3eb
 features:
   typescript:
     acceptHeaders: 2.81.2
@@ -12683,8 +12683,8 @@ trackedFiles:
     pristine_git_object: f0f703825f11cdc26a38c97b08f6c33daa0dd1e2
   docs/models/privateendpointcheck.mdx:
     id: c199bff4f246
-    last_write_checksum: sha1:eb77d6523b152d0457d724e26f881d47695c09d5
-    pristine_git_object: 0cc593a6126543b47bad99a850660292b5ebd003
+    last_write_checksum: sha1:0295a207ecaca68cbcdb918064d7c85fcfbfe260
+    pristine_git_object: 26c7c1e9417201addf6db63e5fe4bacfcc3ddb4f
   docs/models/privateendpointcheckreason.mdx:
     id: efb417c042b5
     last_write_checksum: sha1:8dcdb63f8ec9ff45e9317139a765faad2864f76c
@@ -16083,12 +16083,12 @@ trackedFiles:
     pristine_git_object: 410efafd6a7f50d91ccb87131fedbe0c3d47e15a
   jsr.json:
     id: 7f6ab7767282
-    last_write_checksum: sha1:669596e01e606f7ba5bf935d666800458a7f4e81
-    pristine_git_object: 5ffbdebdb3d90ea0b1f92d6b1706b4c8806cf747
+    last_write_checksum: sha1:94cf439ee6d69af65a906c070c48770db0745795
+    pristine_git_object: 8e14e1b7f13e3cad86191dd96925e7dd703119c2
   package.json:
     id: 7030d0b2f71b
-    last_write_checksum: sha1:1a14a4fc2416336135940d95283831ecdd73d584
-    pristine_git_object: d45317307fe4156d15e5c5fb91c8ab4c97134868
+    last_write_checksum: sha1:50db1876345ef26e1aa947bf63a3067d263ee364
+    pristine_git_object: 760928681ecb653253fd7ed2e637e795d7427a26
   src/core.ts:
     id: f431fdbcd144
     last_write_checksum: sha1:5aa66b0b6a5964f3eea7f3098c2eb3c0ee9c0131
@@ -16687,8 +16687,8 @@ trackedFiles:
     pristine_git_object: a187e58707bdb726ca2aff74941efe7493422d4e
   src/lib/config.ts:
     id: 320761608fb3
-    last_write_checksum: sha1:83a467b842ef9be2f499ee91a875758493557c39
-    pristine_git_object: 42998594c4a515ba6d9e2ce3d50d1aee4a3732e1
+    last_write_checksum: sha1:899025358dd15b455ea9d55a3c3bdbf92a97e701
+    pristine_git_object: 4375a70beee9c66ff99c83fdb6f386b699a656c2
   src/lib/dlv.ts:
     id: b1988214835a
     last_write_checksum: sha1:eaac763b22717206a6199104e0403ed17a4e2711
@@ -20085,8 +20085,8 @@ trackedFiles:
     pristine_git_object: d65964fe90f74d8f8565a450db351843961e2116
   src/models/privateendpointcheck.ts:
     id: 680e5562177c
-    last_write_checksum: sha1:4ca9d3fb72facad7e0cc4a57bdb950075f053bca
-    pristine_git_object: a6d8a2ce0ce4ef38ff6dda07d7aa06cc975c8ff2
+    last_write_checksum: sha1:9db0366b3698da60ba12652c24c6b2fc9c51fce5
+    pristine_git_object: 642a921907e3a8804850faf95690bbdb760d4e72
   src/models/privateendpointcheckreason.ts:
     id: 5d4379eaa453
     last_write_checksum: sha1:c1a01c95a323c7cd390982439ab823ac37f61917
@@ -25844,4 +25844,3 @@ examples:
         "500":
           application/json: {"error": {"code": 500, "message": "Internal Server Error"}}
 examplesVersion: 1.0.2
-releaseNotes: "## Typescript SDK Changes:\n* `openrouter.batch.createBatches()`:  `response.results[].response.body.union(OpenResponsesResult)` **Changed**\n* `openrouter.batch.getBatches()`:  `response.results[].response.body.union(OpenResponsesResult)` **Changed**\n* `openrouter.organization.listMembers()`:  `response.data[].role.enum(org:viewer)` **Added**\n* `openrouter.presets.createPresetsChatCompletions()`: \n  *  `request.chatRequest.deferredTools.profile.enum(universal)` **Added**\n* `openrouter.presets.createPresetsMessages()`: \n  *  `request.messagesRequest.deferredTools.profile.enum(universal)` **Added**\n* `openrouter.presets.createPresetsResponses()`: \n  *  `request.responsesRequest` **Changed**\n"
