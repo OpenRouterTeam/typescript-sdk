@@ -11229,12 +11229,18 @@ components:
         usage:
           properties:
             cost:
+              description: 'What OpenRouter charges for the request, in credits. On a BYOK request this is the OpenRouter fee only.'
               format: 'double'
               type: 'number'
+            cost_details:
+              $ref: '#/components/schemas/CostDetails'
             input_tokens:
               type: 'integer'
             input_tokens_details:
               $ref: '#/components/schemas/DecisionsUsageInputTokensDetails'
+            is_byok:
+              description: 'Whether a request was made using a Bring Your Own Key configuration'
+              type: 'boolean'
             output_tokens:
               type: 'integer'
           required:
