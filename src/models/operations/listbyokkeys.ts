@@ -134,6 +134,7 @@ export const Provider = {
   Reka: "reka",
   Relace: "relace",
   Respan: "respan",
+  River: "river",
   Runway: "runway",
   SailResearch: "sail-research",
   Sakana: "sakana",

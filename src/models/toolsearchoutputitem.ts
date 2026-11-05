@@ -88,6 +88,11 @@ import {
   McpServerTool$outboundSchema,
 } from "./mcpservertool.js";
 import {
+  McpServerToolOpenRouter,
+  McpServerToolOpenRouter$Outbound,
+  McpServerToolOpenRouter$outboundSchema,
+} from "./mcpservertoolopenrouter.js";
+import {
   NamespaceTool,
   NamespaceTool$Outbound,
   NamespaceTool$outboundSchema,
@@ -209,6 +214,7 @@ export type ToolSearchOutputItemToolUnion =
   | CodeInterpreterServerTool
   | McpServerTool
   | CustomTool
+  | McpServerToolOpenRouter
   | PreviewWebSearchServerTool
   | Preview20250311WebSearchServerTool
   | LegacyWebSearchServerTool
@@ -253,6 +259,7 @@ export type ToolSearchOutputItem = {
     | CodeInterpreterServerTool
     | McpServerTool
     | CustomTool
+    | McpServerToolOpenRouter
     | PreviewWebSearchServerTool
     | Preview20250311WebSearchServerTool
     | LegacyWebSearchServerTool
@@ -388,6 +395,7 @@ export type ToolSearchOutputItemToolUnion$Outbound =
   | CodeInterpreterServerTool$Outbound
   | McpServerTool$Outbound
   | CustomTool$Outbound
+  | McpServerToolOpenRouter$Outbound
   | PreviewWebSearchServerTool$Outbound
   | Preview20250311WebSearchServerTool$Outbound
   | LegacyWebSearchServerTool$Outbound
@@ -423,6 +431,7 @@ export const ToolSearchOutputItemToolUnion$outboundSchema: z.ZodType<
   CodeInterpreterServerTool$outboundSchema,
   McpServerTool$outboundSchema,
   CustomTool$outboundSchema,
+  McpServerToolOpenRouter$outboundSchema,
   PreviewWebSearchServerTool$outboundSchema,
   Preview20250311WebSearchServerTool$outboundSchema,
   LegacyWebSearchServerTool$outboundSchema,
@@ -476,6 +485,7 @@ export type ToolSearchOutputItem$Outbound = {
     | CodeInterpreterServerTool$Outbound
     | McpServerTool$Outbound
     | CustomTool$Outbound
+    | McpServerToolOpenRouter$Outbound
     | PreviewWebSearchServerTool$Outbound
     | Preview20250311WebSearchServerTool$Outbound
     | LegacyWebSearchServerTool$Outbound
@@ -520,6 +530,7 @@ export const ToolSearchOutputItem$outboundSchema: z.ZodType<
       CodeInterpreterServerTool$outboundSchema,
       McpServerTool$outboundSchema,
       CustomTool$outboundSchema,
+      McpServerToolOpenRouter$outboundSchema,
       PreviewWebSearchServerTool$outboundSchema,
       Preview20250311WebSearchServerTool$outboundSchema,
       LegacyWebSearchServerTool$outboundSchema,

@@ -9,6 +9,10 @@ import * as discriminatedUnionTypes from "../types/discriminatedUnion.js";
 import { discriminatedUnion } from "../types/discriminatedUnion.js";
 import { Result as SafeParseResult } from "../types/fp.js";
 import { SDKValidationError } from "./errors/sdkvalidationerror.js";
+import {
+  McpApprovalRequestItem,
+  McpApprovalRequestItem$inboundSchema,
+} from "./mcpapprovalrequestitem.js";
 import { McpCallItem, McpCallItem$inboundSchema } from "./mcpcallitem.js";
 import {
   McpListToolsItem,
@@ -159,6 +163,7 @@ export type OutputItems =
   | (OutputFileSearchCallItem & { type: "file_search_call" })
   | OutputFunctionCallItem
   | (OutputImageGenerationCallItem & { type: "image_generation_call" })
+  | (McpApprovalRequestItem & { type: "mcp_approval_request" })
   | (McpCallItem & { type: "mcp_call" })
   | (McpListToolsItem & { type: "mcp_list_tools" })
   | OutputMessageItem
@@ -212,6 +217,9 @@ export const OutputItems$inboundSchema: z.ZodType<OutputItems, unknown> =
     function_call: OutputFunctionCallItem$inboundSchema,
     image_generation_call: OutputImageGenerationCallItem$inboundSchema.and(
       z.object({ type: z.literal("image_generation_call") }),
+    ),
+    mcp_approval_request: McpApprovalRequestItem$inboundSchema.and(
+      z.object({ type: z.literal("mcp_approval_request") }),
     ),
     mcp_call: McpCallItem$inboundSchema.and(
       z.object({ type: z.literal("mcp_call") }),
