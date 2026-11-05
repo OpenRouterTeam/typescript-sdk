@@ -1,0 +1,25 @@
+---
+title: "Markup"
+---
+
+A transparent PNG overlay (arrows, circles, annotations) with the same dimensions as the first reference image, as a base64 data URL or HTTP(S) URL, guiding where an edit applies. Image-to-image requests only; honored by models with markup-guided editing (OpenAI gpt-image-2.6) and ignored otherwise.
+
+## Example Usage
+
+```typescript
+import { Markup } from "@openrouter/sdk/models";
+
+let value: Markup = {
+  imageUrl: {
+    url: "https://example.com/image.png",
+  },
+  type: "image_url",
+};
+```
+
+## Fields
+
+| Field                                                                                | Type                                                                                 | Required                                                                             | Description                                                                          |
+| ------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------ |
+| `imageUrl`                                                                           | [models.ImageGenerationRequestImageUrl](../models/imagegenerationrequestimageurl.mdx) | ✔️                                                                   | N/A                                                                                  |
+| `type`                                                                               | [models.ImageGenerationRequestType](../models/imagegenerationrequesttype.mdx)         | ✔️                                                                   | N/A                                                                                  |

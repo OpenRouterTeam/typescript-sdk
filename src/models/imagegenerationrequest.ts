@@ -6,7 +6,7 @@
 import * as z from "zod/v4";
 import { remap as remap$ } from "../lib/primitives.js";
 import * as openEnums from "../types/enums.js";
-import { OpenEnum } from "../types/enums.js";
+import { ClosedEnum, OpenEnum } from "../types/enums.js";
 import {
   ContentPartImage,
   ContentPartImage$Outbound,
@@ -76,17 +76,37 @@ export type ImageGenerationRequestBackground = OpenEnum<
   typeof ImageGenerationRequestBackground
 >;
 
+export type ImageGenerationRequestImageUrl = {
+  url: string;
+};
+
+export const ImageGenerationRequestType = {
+  ImageUrl: "image_url",
+} as const;
+export type ImageGenerationRequestType = ClosedEnum<
+  typeof ImageGenerationRequestType
+>;
+
 /**
- * Encoding of the returned image bytes. Most models produce raster formats (png, jpeg, webp). SVG is supported by vectorization models (e.g. Quiver) — the SVG markup is UTF-8 base64-encoded in `b64_json`.
+ * A transparent PNG overlay (arrows, circles, annotations) with the same dimensions as the first reference image, as a base64 data URL or HTTP(S) URL, guiding where an edit applies. Image-to-image requests only; honored by models with markup-guided editing (OpenAI gpt-image-2.6) and ignored otherwise.
+ */
+export type Markup = {
+  imageUrl: ImageGenerationRequestImageUrl;
+  type: ImageGenerationRequestType;
+};
+
+/**
+ * Encoding of the returned image bytes. Most models produce raster formats (png, jpeg, webp). SVG is supported by vectorization models (e.g. Quiver) — the SVG markup is UTF-8 base64-encoded in `b64_json`. GIF produces an animation on models that support it (OpenAI gpt-image-2.6; see `frame_count`).
  */
 export const ImageGenerationRequestOutputFormat = {
   Png: "png",
   Jpeg: "jpeg",
   Webp: "webp",
   Svg: "svg",
+  Gif: "gif",
 } as const;
 /**
- * Encoding of the returned image bytes. Most models produce raster formats (png, jpeg, webp). SVG is supported by vectorization models (e.g. Quiver) — the SVG markup is UTF-8 base64-encoded in `b64_json`.
+ * Encoding of the returned image bytes. Most models produce raster formats (png, jpeg, webp). SVG is supported by vectorization models (e.g. Quiver) — the SVG markup is UTF-8 base64-encoded in `b64_json`. GIF produces an animation on models that support it (OpenAI gpt-image-2.6; see `frame_count`).
  */
 export type ImageGenerationRequestOutputFormat = OpenEnum<
   typeof ImageGenerationRequestOutputFormat
@@ -141,9 +161,21 @@ export type ImageGenerationRequest = {
    */
   background?: ImageGenerationRequestBackground | undefined;
   /**
+   * Number of animation frames (2-64) when `output_format` is `gif`. Only honored by models that produce animations (OpenAI gpt-image-2.6, generations only); ignored otherwise.
+   */
+  frameCount?: number | undefined;
+  /**
+   * Display time of each animation frame in milliseconds (20-2000) when `output_format` is `gif`. Ignored by models that do not produce animations.
+   */
+  frameDurationMs?: number | undefined;
+  /**
    * Reference images to guide image-to-image generation, as base64 data URLs or HTTP(S) URLs.
    */
   inputReferences?: Array<ContentPartImage> | undefined;
+  /**
+   * A transparent PNG overlay (arrows, circles, annotations) with the same dimensions as the first reference image, as a base64 data URL or HTTP(S) URL, guiding where an edit applies. Image-to-image requests only; honored by models with markup-guided editing (OpenAI gpt-image-2.6) and ignored otherwise.
+   */
+  markup?: Markup | undefined;
   /**
    * The image generation model to use
    */
@@ -157,7 +189,7 @@ export type ImageGenerationRequest = {
    */
   outputCompression?: number | undefined;
   /**
-   * Encoding of the returned image bytes. Most models produce raster formats (png, jpeg, webp). SVG is supported by vectorization models (e.g. Quiver) — the SVG markup is UTF-8 base64-encoded in `b64_json`.
+   * Encoding of the returned image bytes. Most models produce raster formats (png, jpeg, webp). SVG is supported by vectorization models (e.g. Quiver) — the SVG markup is UTF-8 base64-encoded in `b64_json`. GIF produces an animation on models that support it (OpenAI gpt-image-2.6; see `frame_count`).
    */
   outputFormat?: ImageGenerationRequestOutputFormat | undefined;
   /**
@@ -215,6 +247,55 @@ export const ImageGenerationRequestBackground$outboundSchema: z.ZodType<
 > = openEnums.outboundSchema(ImageGenerationRequestBackground);
 
 /** @internal */
+export type ImageGenerationRequestImageUrl$Outbound = {
+  url: string;
+};
+
+/** @internal */
+export const ImageGenerationRequestImageUrl$outboundSchema: z.ZodType<
+  ImageGenerationRequestImageUrl$Outbound,
+  ImageGenerationRequestImageUrl
+> = z.object({
+  url: z.string(),
+});
+
+export function imageGenerationRequestImageUrlToJSON(
+  imageGenerationRequestImageUrl: ImageGenerationRequestImageUrl,
+): string {
+  return JSON.stringify(
+    ImageGenerationRequestImageUrl$outboundSchema.parse(
+      imageGenerationRequestImageUrl,
+    ),
+  );
+}
+
+/** @internal */
+export const ImageGenerationRequestType$outboundSchema: z.ZodEnum<
+  typeof ImageGenerationRequestType
+> = z.enum(ImageGenerationRequestType);
+
+/** @internal */
+export type Markup$Outbound = {
+  image_url: ImageGenerationRequestImageUrl$Outbound;
+  type: string;
+};
+
+/** @internal */
+export const Markup$outboundSchema: z.ZodType<Markup$Outbound, Markup> = z
+  .object({
+    imageUrl: z.lazy(() => ImageGenerationRequestImageUrl$outboundSchema),
+    type: ImageGenerationRequestType$outboundSchema,
+  }).transform((v) => {
+    return remap$(v, {
+      imageUrl: "image_url",
+    });
+  });
+
+export function markupToJSON(markup: Markup): string {
+  return JSON.stringify(Markup$outboundSchema.parse(markup));
+}
+
+/** @internal */
 export const ImageGenerationRequestOutputFormat$outboundSchema: z.ZodType<
   string,
   ImageGenerationRequestOutputFormat
@@ -236,7 +317,10 @@ export const ImageGenerationRequestResolution$outboundSchema: z.ZodType<
 export type ImageGenerationRequest$Outbound = {
   aspect_ratio?: string | undefined;
   background?: string | undefined;
+  frame_count?: number | undefined;
+  frame_duration_ms?: number | undefined;
   input_references?: Array<ContentPartImage$Outbound> | undefined;
+  markup?: Markup$Outbound | undefined;
   model: string;
   n?: number | undefined;
   output_compression?: number | undefined;
@@ -260,7 +344,10 @@ export const ImageGenerationRequest$outboundSchema: z.ZodType<
 > = z.object({
   aspectRatio: ImageGenerationRequestAspectRatio$outboundSchema.optional(),
   background: ImageGenerationRequestBackground$outboundSchema.optional(),
+  frameCount: z.int().optional(),
+  frameDurationMs: z.int().optional(),
   inputReferences: z.array(ContentPartImage$outboundSchema).optional(),
+  markup: z.lazy(() => Markup$outboundSchema).optional(),
   model: z.string(),
   n: z.int().optional(),
   outputCompression: z.int().optional(),
@@ -278,6 +365,8 @@ export const ImageGenerationRequest$outboundSchema: z.ZodType<
 }).transform((v) => {
   return remap$(v, {
     aspectRatio: "aspect_ratio",
+    frameCount: "frame_count",
+    frameDurationMs: "frame_duration_ms",
     inputReferences: "input_references",
     outputCompression: "output_compression",
     outputFormat: "output_format",
