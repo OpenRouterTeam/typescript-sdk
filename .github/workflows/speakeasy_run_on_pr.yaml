@@ -35,15 +35,20 @@ jobs:
           node-version: '22'
           cache: 'pnpm'
 
+      # Installs the latest GitHub release and verifies its checksum instead of
+      # piping an unpinned install script into sh. .speakeasy/workflow.yaml pins
+      # speakeasyVersion; the CLI switches to that version itself.
       - name: Install Speakeasy CLI
+        env:
+          GH_TOKEN: ${{ github.token }}
         run: |
-          curl -fsSL https://raw.githubusercontent.com/speakeasy-api/speakeasy/main/install.sh | sh
-          # Verify speakeasy command is available
-          if ! command -v speakeasy &> /dev/null; then
-            echo "Error: speakeasy command not found after installation"
-            exit 1
-          fi
-          speakeasy --version
+          set -euo pipefail
+          cd "$RUNNER_TEMP"
+          gh release download --repo speakeasy-api/speakeasy --pattern speakeasy_linux_amd64.zip --pattern checksums.txt
+          grep " speakeasy_linux_amd64.zip$" checksums.txt | sha256sum -c -
+          unzip -q speakeasy_linux_amd64.zip speakeasy -d bin
+          echo "$RUNNER_TEMP/bin" >> "$GITHUB_PATH"
+          "$RUNNER_TEMP/bin/speakeasy" --version
 
       - name: Run Speakeasy
         run: speakeasy run
