@@ -1,0 +1,27 @@
+---
+title: "McpListToolsCompletedEvent"
+---
+
+Emitted when tool discovery against an MCP server succeeds.
+
+## Example Usage
+
+```typescript
+import { McpListToolsCompletedEvent } from "@openrouter/sdk/models";
+
+let value: McpListToolsCompletedEvent = {
+  itemId: "<id>",
+  outputIndex: 933978,
+  sequenceNumber: 0,
+  type: "response.mcp_list_tools.completed",
+};
+```
+
+## Fields
+
+| Field                                 | Type                                  | Required                              | Description                           |
+| ------------------------------------- | ------------------------------------- | ------------------------------------- | ------------------------------------- |
+| `itemId`                              | *string*                              | ✔️                    | N/A                                   |
+| `outputIndex`                         | *number*                              | ✔️                    | N/A                                   |
+| `sequenceNumber`                      | *number*                              | ✔️                    | N/A                                   |
+| `type`                                | *"response.mcp_list_tools.completed"* | ✔️                    | N/A                                   |

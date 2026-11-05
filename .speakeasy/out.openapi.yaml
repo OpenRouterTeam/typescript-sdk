@@ -8754,6 +8754,8 @@ components:
             - 'null'
         cost_details:
           $ref: '#/components/schemas/CostDetails'
+        deferred_tools_details:
+          $ref: '#/components/schemas/DeferredToolsDetails'
         is_byok:
           description: 'Whether a request was made using a Bring Your Own Key configuration'
           type: 'boolean'
@@ -11546,10 +11548,12 @@ components:
         validation: 'runtime'
       properties:
         profile:
-          description: 'Loading profile. Only `portable` is available in this release: OpenRouter serves deferral with router-built search and call wrappers on any model.'
+          description: 'Loading profile. `portable` serves the `defer_loading` tools with router-built search and call wrappers on any model and keeps the catalog fixed. `universal` defers every wrappable tool behind the same wrappers so the provider-facing tool list never changes, and rebuilds the catalog from each request so tools can be added or removed mid-conversation.'
           enum:
             - 'portable'
+            - 'universal'
           type: 'string'
+          x-speakeasy-unknown-values: allow
         protocol:
           enum:
             - 'v1'
@@ -11566,6 +11570,34 @@ components:
         - 'profile'
         - 'validation'
         - 'search'
+      type: 'object'
+    DeferredToolsDetails:
+      description: 'Totals across every upstream model call of a deferred-tools run. The native usage fields report only the final call; cost covers every call.'
+      example:
+        completion_tokens: 180
+        prompt_tokens: 2400
+        total_tokens: 2580
+        turns: 2
+      properties:
+        completion_tokens:
+          description: 'Completion tokens summed over every upstream call'
+          type: 'integer'
+        prompt_tokens:
+          description: 'Prompt tokens summed over every upstream call'
+          type: 'integer'
+        total_tokens:
+          description: 'Sum of the above two fields'
+          type: 'integer'
+        turns:
+          description: 'Upstream model calls the run made'
+          exclusiveMinimum: true
+          minimum: 0
+          type: 'integer'
+      required:
+        - 'turns'
+        - 'prompt_tokens'
+        - 'completion_tokens'
+        - 'total_tokens'
       type: 'object'
     DeferredToolsSearchStrategy:
       description: 'Router-local regex/BM25 or caller-owned custom search.'
@@ -15456,12 +15488,30 @@ components:
           example: 'auto'
           type: 'string'
           x-speakeasy-unknown-values: allow
+        frame_count:
+          description: 'Number of animation frames (2-64) when `output_format` is `gif`. Only honored by models that produce animations (OpenAI gpt-image-2.6, generations only); ignored otherwise.'
+          example: 8
+          type: 'integer'
+        frame_duration_ms:
+          description: 'Display time of each animation frame in milliseconds (20-2000) when `output_format` is `gif`. Ignored by models that do not produce animations.'
+          example: 100
+          type: 'integer'
         input_references:
           description: 'Reference images to guide image-to-image generation, as base64 data URLs or HTTP(S) URLs.'
           items:
             $ref: '#/components/schemas/ContentPartImage'
           maxItems: 16
           type: 'array'
+        markup:
+          allOf:
+            - $ref: '#/components/schemas/ContentPartImage'
+            - properties: {}
+              type: 'object'
+          description: 'A transparent PNG overlay (arrows, circles, annotations) with the same dimensions as the first reference image, as a base64 data URL or HTTP(S) URL, guiding where an edit applies. Image-to-image requests only; honored by models with markup-guided editing (OpenAI gpt-image-2.6) and ignored otherwise.'
+          example:
+            image_url:
+              url: 'https://example.com/image.png'
+            type: 'image_url'
         model:
           description: 'The image generation model to use'
           example: 'bytedance-seed/seedream-4.5'
@@ -15475,12 +15525,13 @@ components:
           example: 100
           type: 'integer'
         output_format:
-          description: 'Encoding of the returned image bytes. Most models produce raster formats (png, jpeg, webp). SVG is supported by vectorization models (e.g. Quiver) — the SVG markup is UTF-8 base64-encoded in `b64_json`.'
+          description: 'Encoding of the returned image bytes. Most models produce raster formats (png, jpeg, webp). SVG is supported by vectorization models (e.g. Quiver) — the SVG markup is UTF-8 base64-encoded in `b64_json`. GIF produces an animation on models that support it (OpenAI gpt-image-2.6; see `frame_count`).'
           enum:
             - 'png'
             - 'jpeg'
             - 'webp'
             - 'svg'
+            - 'gif'
           example: 'png'
           type: 'string'
           x-speakeasy-unknown-values: allow
@@ -16456,7 +16507,6 @@ components:
               - $ref: '#/components/schemas/OutputToolSearchServerToolItem'
               - $ref: '#/components/schemas/OutputMemoryServerToolItem'
               - $ref: '#/components/schemas/OutputArmorBlockedItem'
-              - $ref: '#/components/schemas/OutputMcpServerToolItem'
               - $ref: '#/components/schemas/OutputSearchModelsServerToolItem'
               - $ref: '#/components/schemas/OutputFusionServerToolItem'
               - $ref: '#/components/schemas/OutputAdvisorServerToolItem'
@@ -17552,6 +17602,134 @@ components:
         - 'approval_request_id'
         - 'approve'
       type: 'object'
+    McpCallArgumentsDeltaEvent:
+      description: 'A partial update to the JSON-encoded arguments of an MCP tool call.'
+      example:
+        delta: '{"query":"text-to-image"}'
+        item_id: 'mcp_abc123'
+        output_index: 1
+        sequence_number: 6
+        type: 'response.mcp_call_arguments.delta'
+      properties:
+        delta:
+          type: 'string'
+        item_id:
+          type: 'string'
+        output_index:
+          type: 'integer'
+        sequence_number:
+          type: 'integer'
+        type:
+          enum:
+            - 'response.mcp_call_arguments.delta'
+          type: 'string'
+      required:
+        - 'type'
+        - 'delta'
+        - 'item_id'
+        - 'output_index'
+        - 'sequence_number'
+      type: 'object'
+    McpCallArgumentsDoneEvent:
+      description: 'Emitted when the JSON-encoded arguments of an MCP tool call are finalized.'
+      example:
+        arguments: '{"query":"text-to-image"}'
+        item_id: 'mcp_abc123'
+        output_index: 1
+        sequence_number: 7
+        type: 'response.mcp_call_arguments.done'
+      properties:
+        arguments:
+          type: 'string'
+        item_id:
+          type: 'string'
+        output_index:
+          type: 'integer'
+        sequence_number:
+          type: 'integer'
+        type:
+          enum:
+            - 'response.mcp_call_arguments.done'
+          type: 'string'
+      required:
+        - 'type'
+        - 'arguments'
+        - 'item_id'
+        - 'output_index'
+        - 'sequence_number'
+      type: 'object'
+    McpCallCompletedEvent:
+      description: 'Emitted when an MCP tool call completes successfully.'
+      example:
+        item_id: 'mcp_abc123'
+        output_index: 1
+        sequence_number: 8
+        type: 'response.mcp_call.completed'
+      properties:
+        item_id:
+          type: 'string'
+        output_index:
+          type: 'integer'
+        sequence_number:
+          type: 'integer'
+        type:
+          enum:
+            - 'response.mcp_call.completed'
+          type: 'string'
+      required:
+        - 'type'
+        - 'item_id'
+        - 'output_index'
+        - 'sequence_number'
+      type: 'object'
+    McpCallFailedEvent:
+      description: 'Emitted when an MCP tool call fails.'
+      example:
+        item_id: 'mcp_abc123'
+        output_index: 1
+        sequence_number: 8
+        type: 'response.mcp_call.failed'
+      properties:
+        item_id:
+          type: 'string'
+        output_index:
+          type: 'integer'
+        sequence_number:
+          type: 'integer'
+        type:
+          enum:
+            - 'response.mcp_call.failed'
+          type: 'string'
+      required:
+        - 'type'
+        - 'item_id'
+        - 'output_index'
+        - 'sequence_number'
+      type: 'object'
+    McpCallInProgressEvent:
+      description: 'Emitted when an MCP tool call begins executing.'
+      example:
+        item_id: 'mcp_abc123'
+        output_index: 1
+        sequence_number: 5
+        type: 'response.mcp_call.in_progress'
+      properties:
+        item_id:
+          type: 'string'
+        output_index:
+          type: 'integer'
+        sequence_number:
+          type: 'integer'
+        type:
+          enum:
+            - 'response.mcp_call.in_progress'
+          type: 'string'
+      required:
+        - 'type'
+        - 'item_id'
+        - 'output_index'
+        - 'sequence_number'
+      type: 'object'
     McpCallItem:
       description: 'An MCP tool call with its output or error'
       example:
@@ -17606,6 +17784,78 @@ components:
         - 'type'
         - 'code'
         - 'message'
+      type: 'object'
+    McpListToolsCompletedEvent:
+      description: 'Emitted when tool discovery against an MCP server succeeds.'
+      example:
+        item_id: 'mcpl_abc123'
+        output_index: 0
+        sequence_number: 2
+        type: 'response.mcp_list_tools.completed'
+      properties:
+        item_id:
+          type: 'string'
+        output_index:
+          type: 'integer'
+        sequence_number:
+          type: 'integer'
+        type:
+          enum:
+            - 'response.mcp_list_tools.completed'
+          type: 'string'
+      required:
+        - 'type'
+        - 'item_id'
+        - 'output_index'
+        - 'sequence_number'
+      type: 'object'
+    McpListToolsFailedEvent:
+      description: 'Emitted when tool discovery against an MCP server fails.'
+      example:
+        item_id: 'mcpl_abc123'
+        output_index: 0
+        sequence_number: 2
+        type: 'response.mcp_list_tools.failed'
+      properties:
+        item_id:
+          type: 'string'
+        output_index:
+          type: 'integer'
+        sequence_number:
+          type: 'integer'
+        type:
+          enum:
+            - 'response.mcp_list_tools.failed'
+          type: 'string'
+      required:
+        - 'type'
+        - 'item_id'
+        - 'output_index'
+        - 'sequence_number'
+      type: 'object'
+    McpListToolsInProgressEvent:
+      description: 'Emitted when tool discovery against an MCP server begins.'
+      example:
+        item_id: 'mcpl_abc123'
+        output_index: 0
+        sequence_number: 1
+        type: 'response.mcp_list_tools.in_progress'
+      properties:
+        item_id:
+          type: 'string'
+        output_index:
+          type: 'integer'
+        sequence_number:
+          type: 'integer'
+        type:
+          enum:
+            - 'response.mcp_list_tools.in_progress'
+          type: 'string'
+      required:
+        - 'type'
+        - 'item_id'
+        - 'output_index'
+        - 'sequence_number'
       type: 'object'
     McpListToolsItem:
       description: 'List of available MCP tools from a server'
@@ -19010,6 +19260,28 @@ components:
                         - 'null'
                     cost_details:
                       $ref: '#/components/schemas/CostDetails'
+                    deferred_tools_details:
+                      properties:
+                        completion_tokens:
+                          description: 'Completion tokens summed over every upstream call'
+                          type: 'integer'
+                        prompt_tokens:
+                          description: 'Prompt tokens summed over every upstream call'
+                          type: 'integer'
+                        total_tokens:
+                          description: 'Sum of the above two fields'
+                          type: 'integer'
+                        turns:
+                          description: 'Upstream model calls the run made'
+                          exclusiveMinimum: true
+                          minimum: 0
+                          type: 'integer'
+                      required:
+                        - 'turns'
+                        - 'prompt_tokens'
+                        - 'completion_tokens'
+                        - 'total_tokens'
+                      type: 'object'
                     is_byok:
                       type: 'boolean'
                     iterations:
@@ -25511,6 +25783,8 @@ components:
           file_search_call: '#/components/schemas/OutputFileSearchCallItem'
           function_call: '#/components/schemas/OutputFunctionCallItem'
           image_generation_call: '#/components/schemas/OutputImageGenerationCallItem'
+          mcp_call: '#/components/schemas/McpCallItem'
+          mcp_list_tools: '#/components/schemas/McpListToolsItem'
           message: '#/components/schemas/OutputMessageItem'
           openrouter:advisor: '#/components/schemas/OutputAdvisorServerToolItem'
           openrouter:apply_patch: '#/components/schemas/OutputApplyPatchServerToolItem'
@@ -25524,7 +25798,6 @@ components:
           openrouter:files: '#/components/schemas/OutputFilesServerToolItem'
           openrouter:fusion: '#/components/schemas/OutputFusionServerToolItem'
           openrouter:image_generation: '#/components/schemas/OutputImageGenerationServerToolItem'
-          openrouter:mcp: '#/components/schemas/OutputMcpServerToolItem'
           openrouter:memory: '#/components/schemas/OutputMemoryServerToolItem'
           openrouter:shell: '#/components/schemas/OutputShellServerToolItem'
           openrouter:subagent: '#/components/schemas/OutputSubagentServerToolItem'
@@ -25572,7 +25845,8 @@ components:
         - $ref: '#/components/schemas/OutputWebFetchServerToolItem'
         - $ref: '#/components/schemas/OutputToolSearchServerToolItem'
         - $ref: '#/components/schemas/OutputMemoryServerToolItem'
-        - $ref: '#/components/schemas/OutputMcpServerToolItem'
+        - $ref: '#/components/schemas/McpListToolsItem'
+        - $ref: '#/components/schemas/McpCallItem'
         - $ref: '#/components/schemas/OutputSearchModelsServerToolItem'
         - $ref: '#/components/schemas/OutputFusionServerToolItem'
         - $ref: '#/components/schemas/OutputAdvisorServerToolItem'
@@ -25650,31 +25924,6 @@ components:
         - 'type'
         - 'id'
         - 'status'
-      type: 'object'
-    OutputMcpServerToolItem:
-      description: 'An openrouter:mcp server tool output item'
-      example:
-        id: 'mcp_tmp_abc123'
-        serverLabel: 'my-server'
-        status: 'completed'
-        toolName: 'get_data'
-        type: 'openrouter:mcp'
-      properties:
-        id:
-          type: 'string'
-        serverLabel:
-          type: 'string'
-        status:
-          $ref: '#/components/schemas/ToolCallStatus'
-        toolName:
-          type: 'string'
-        type:
-          enum:
-            - 'openrouter:mcp'
-          type: 'string'
-      required:
-        - 'status'
-        - 'type'
       type: 'object'
     OutputMemoryServerToolItem:
       description: 'An openrouter:memory server tool output item'
@@ -26194,9 +26443,31 @@ components:
         status: 'completed'
         type: 'openrouter:tool_search'
       properties:
+        arguments:
+          description: 'The JSON arguments of the model call, verbatim. Replaying the item reuses them.'
+          example: '{"query":"weather tools"}'
+          type: 'string'
+        call_id:
+          description: 'The ID of the model call that ran the search. Replaying the item reuses it.'
+          example: 'call_search_1'
+          type: 'string'
+        catalog_index:
+          description: 'The deferred-tool index the router showed the model with a pre-search, listing tool sources and names. Replaying the item shows the same index.'
+          example: "Deferred tools, found with tool_search and called with tool_exec:\nSources: mcp__sentry (12)."
+          type: 'string'
         error:
           description: 'The error message when the tool call failed before producing a result. Set together with `status: ''failed''`; absent on a successful call.'
           example: 'Tool execution failed'
+          type: 'string'
+        format:
+          description: 'How the model saw the matches. `compact` means each tool by name, description, and input shape, plus a call example. Replaying the item renders the same result.'
+          enum:
+            - 'compact'
+          example: 'compact'
+          type: 'string'
+        hint:
+          description: 'The guidance the model got when the search matched no tools.'
+          example: 'No tools matched. Search again with other keywords, or load tools by exact name with "select:Name1,Name2".'
           type: 'string'
         id:
           type: 'string'
@@ -26220,6 +26491,14 @@ components:
           type: 'string'
         status:
           $ref: '#/components/schemas/FailableToolCallStatus'
+        turn_call_ids:
+          description: 'The IDs of every tool call in the model response that ran the search, in order. Replaying the item keeps those calls in one turn.'
+          example:
+            - 'call_search_1'
+            - 'call_exec_1'
+          items:
+            type: 'string'
+          type: 'array'
         type:
           enum:
             - 'openrouter:tool_search'
@@ -27260,7 +27539,8 @@ components:
         passed: true
       properties:
         actual_model:
-          description: 'Model the upstream reported serving, when it differs from the request.'
+          deprecated: true
+          description: 'Deprecated: validation no longer compares the model the upstream reports, so this field is never returned.'
           type:
             - 'string'
             - 'null'
@@ -29118,8 +29398,10 @@ components:
         type: 'range'
       properties:
         max:
+          format: 'double'
           type: 'number'
         min:
+          format: 'double'
           type: 'number'
         type:
           enum:
@@ -31096,6 +31378,10 @@ components:
           input_audio: '#/components/schemas/SpeechInputReferenceAudio'
           text: '#/components/schemas/SpeechInputReferenceText'
         propertyName: 'type'
+      example:
+        input_audio:
+          data: 'data:audio/wav;base64,UklGRuQXDABXQVZF...'
+        type: 'input_audio'
       oneOf:
         - $ref: '#/components/schemas/SpeechInputReferenceAudio'
         - $ref: '#/components/schemas/SpeechInputReferenceText'
@@ -31119,6 +31405,8 @@ components:
       type: 'object'
     SpeechInputReferenceAudioInput:
       description: 'Reference audio input object'
+      example:
+        data: 'data:audio/wav;base64,UklGRuQXDABXQVZF...'
       properties:
         data:
           description: 'Base64-encoded reference audio (optionally a data URI). Supported audio formats are provider-specific. Limited to 20 MiB of base64 (15 MiB of decoded audio). Exactly one of `data` or `url` is required.'
@@ -31156,6 +31444,8 @@ components:
       type: 'object'
     SpeechInputReferenceImageInput:
       description: 'Reference image input object'
+      example:
+        url: 'data:image/png;base64,iVBORw0KGgo...'
       properties:
         url:
           description: 'JPEG, PNG, or WebP reference image as a base64 data URI or a public http(s) URL. Remote images are downloaded (15 MiB max) and forwarded as bytes, never as the URL.'
@@ -31506,6 +31796,14 @@ components:
           response.image_generation_call.partial_image: '#/components/schemas/ImageGenCallPartialImageEvent'
           response.in_progress: '#/components/schemas/OpenResponsesInProgressEvent'
           response.incomplete: '#/components/schemas/StreamEventsResponseIncomplete'
+          response.mcp_call_arguments.delta: '#/components/schemas/McpCallArgumentsDeltaEvent'
+          response.mcp_call_arguments.done: '#/components/schemas/McpCallArgumentsDoneEvent'
+          response.mcp_call.completed: '#/components/schemas/McpCallCompletedEvent'
+          response.mcp_call.failed: '#/components/schemas/McpCallFailedEvent'
+          response.mcp_call.in_progress: '#/components/schemas/McpCallInProgressEvent'
+          response.mcp_list_tools.completed: '#/components/schemas/McpListToolsCompletedEvent'
+          response.mcp_list_tools.failed: '#/components/schemas/McpListToolsFailedEvent'
+          response.mcp_list_tools.in_progress: '#/components/schemas/McpListToolsInProgressEvent'
           response.output_item.added: '#/components/schemas/StreamEventsResponseOutputItemAdded'
           response.output_item.done: '#/components/schemas/StreamEventsResponseOutputItemDone'
           response.output_text.annotation.added: '#/components/schemas/AnnotationAddedEvent'
@@ -31595,6 +31893,14 @@ components:
         - $ref: '#/components/schemas/FusionCallAnalysisInProgressEvent'
         - $ref: '#/components/schemas/FusionCallAnalysisCompletedEvent'
         - $ref: '#/components/schemas/FusionCallCompletedEvent'
+        - $ref: '#/components/schemas/McpListToolsInProgressEvent'
+        - $ref: '#/components/schemas/McpListToolsCompletedEvent'
+        - $ref: '#/components/schemas/McpListToolsFailedEvent'
+        - $ref: '#/components/schemas/McpCallInProgressEvent'
+        - $ref: '#/components/schemas/McpCallArgumentsDeltaEvent'
+        - $ref: '#/components/schemas/McpCallArgumentsDoneEvent'
+        - $ref: '#/components/schemas/McpCallCompletedEvent'
+        - $ref: '#/components/schemas/McpCallFailedEvent'
         - $ref: '#/components/schemas/DebugEvent'
     StreamEventsResponseCompleted:
       allOf:
@@ -34621,6 +34927,8 @@ components:
                     - 'upstream_inference_input_cost'
                     - 'upstream_inference_output_cost'
                   type: 'object'
+                deferred_tools_details:
+                  $ref: '#/components/schemas/DeferredToolsDetails'
                 is_byok:
                   description: 'Whether a request was made using a Bring Your Own Key configuration'
                   type: 'boolean'
@@ -35402,6 +35710,7 @@ components:
           description: 'Upscale factor for video upscaling models only. This parameter is not supported by video generation models.'
           example: 2
           exclusiveMinimum: true
+          format: 'double'
           minimum: 0
           type: 'number'
         user:
@@ -48352,10 +48661,11 @@ paths:
                             - 'string'
                             - 'null'
                         role:
-                          description: 'Role of the member in the organization'
+                          description: 'Role of the member in the organization. `org:viewer` is coming soon and not yet available. Once launched, it has read-only organization access: it can view organization settings, billing and workspaces but not change them. Workspace roles can still grant write access in specific workspaces.'
                           enum:
                             - 'org:admin'
                             - 'org:member'
+                            - 'org:viewer'
                           example: 'org:member'
                           type: 'string'
                           x-speakeasy-unknown-values: allow

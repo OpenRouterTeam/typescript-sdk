@@ -1,0 +1,29 @@
+---
+title: "McpCallArgumentsDeltaEvent"
+---
+
+A partial update to the JSON-encoded arguments of an MCP tool call.
+
+## Example Usage
+
+```typescript
+import { McpCallArgumentsDeltaEvent } from "@openrouter/sdk/models";
+
+let value: McpCallArgumentsDeltaEvent = {
+  delta: "<value>",
+  itemId: "<id>",
+  outputIndex: 133734,
+  sequenceNumber: 0,
+  type: "response.mcp_call_arguments.delta",
+};
+```
+
+## Fields
+
+| Field                                 | Type                                  | Required                              | Description                           |
+| ------------------------------------- | ------------------------------------- | ------------------------------------- | ------------------------------------- |
+| `delta`                               | *string*                              | ✔️                    | N/A                                   |
+| `itemId`                              | *string*                              | ✔️                    | N/A                                   |
+| `outputIndex`                         | *number*                              | ✔️                    | N/A                                   |
+| `sequenceNumber`                      | *number*                              | ✔️                    | N/A                                   |
+| `type`                                | *"response.mcp_call_arguments.delta"* | ✔️                    | N/A                                   |
