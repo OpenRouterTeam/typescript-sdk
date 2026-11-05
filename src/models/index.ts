@@ -324,6 +324,7 @@ export * from "./deferredbm25search.js";
 export * from "./deferredcustomsearch.js";
 export * from "./deferredregexsearch.js";
 export * from "./deferredtoolscontrol.js";
+export * from "./deferredtoolsdetails.js";
 export * from "./deferredtoolssearchstrategy.js";
 export * from "./deletebyokkeyresponse.js";
 export * from "./deleteguardrailresponse.js";

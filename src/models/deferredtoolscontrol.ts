@@ -4,7 +4,8 @@
  */
 
 import * as z from "zod/v4";
-import { ClosedEnum } from "../types/enums.js";
+import * as openEnums from "../types/enums.js";
+import { ClosedEnum, OpenEnum } from "../types/enums.js";
 import {
   DeferredToolsSearchStrategy,
   DeferredToolsSearchStrategy$Outbound,
@@ -12,15 +13,16 @@ import {
 } from "./deferredtoolssearchstrategy.js";
 
 /**
- * Loading profile. Only `portable` is available in this release: OpenRouter serves deferral with router-built search and call wrappers on any model.
+ * Loading profile. `portable` serves the `defer_loading` tools with router-built search and call wrappers on any model and keeps the catalog fixed. `universal` defers every wrappable tool behind the same wrappers so the provider-facing tool list never changes, and rebuilds the catalog from each request so tools can be added or removed mid-conversation.
  */
 export const Profile = {
   Portable: "portable",
+  Universal: "universal",
 } as const;
 /**
- * Loading profile. Only `portable` is available in this release: OpenRouter serves deferral with router-built search and call wrappers on any model.
+ * Loading profile. `portable` serves the `defer_loading` tools with router-built search and call wrappers on any model and keeps the catalog fixed. `universal` defers every wrappable tool behind the same wrappers so the provider-facing tool list never changes, and rebuilds the catalog from each request so tools can be added or removed mid-conversation.
  */
-export type Profile = ClosedEnum<typeof Profile>;
+export type Profile = OpenEnum<typeof Profile>;
 
 export const Protocol = {
   V1: "v1",
@@ -43,7 +45,7 @@ export type Validation = ClosedEnum<typeof Validation>;
  */
 export type DeferredToolsControl = {
   /**
-   * Loading profile. Only `portable` is available in this release: OpenRouter serves deferral with router-built search and call wrappers on any model.
+   * Loading profile. `portable` serves the `defer_loading` tools with router-built search and call wrappers on any model and keeps the catalog fixed. `universal` defers every wrappable tool behind the same wrappers so the provider-facing tool list never changes, and rebuilds the catalog from each request so tools can be added or removed mid-conversation.
    */
   profile: Profile;
   protocol: Protocol;
@@ -58,9 +60,8 @@ export type DeferredToolsControl = {
 };
 
 /** @internal */
-export const Profile$outboundSchema: z.ZodEnum<typeof Profile> = z.enum(
-  Profile,
-);
+export const Profile$outboundSchema: z.ZodType<string, Profile> = openEnums
+  .outboundSchema(Profile);
 
 /** @internal */
 export const Protocol$outboundSchema: z.ZodEnum<typeof Protocol> = z.enum(
