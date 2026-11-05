@@ -28975,8 +28975,10 @@ components:
         type: 'range'
       properties:
         max:
+          format: 'double'
           type: 'number'
         min:
+          format: 'double'
           type: 'number'
         type:
           enum:
@@ -35186,6 +35188,7 @@ components:
           description: 'Upscale factor for video upscaling models only. This parameter is not supported by video generation models.'
           example: 2
           exclusiveMinimum: true
+          format: 'double'
           minimum: 0
           type: 'number'
         user:
