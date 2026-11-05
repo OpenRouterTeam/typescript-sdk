@@ -19,7 +19,10 @@ describe('Image Generation E2E Tests', () => {
     it('should return images field in response from image generation model', async () => {
       const response = await client.chat.send({
         chatRequest: {
-          model: 'openai/gpt-5-image-mini',
+          // This test checks that `images` survives response parsing, so any image
+          // model works. openai/gpt-5-image-mini currently fails upstream with a 502
+          // ("Complexity 'medium' is not supported for this image model.").
+          model: 'google/gemini-2.5-flash-image',
           messages: [
             {
               role: 'user',
