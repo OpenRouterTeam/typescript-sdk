@@ -1,0 +1,27 @@
+---
+title: "McpCallInProgressEvent"
+---
+
+Emitted when an MCP tool call begins executing.
+
+## Example Usage
+
+```typescript
+import { McpCallInProgressEvent } from "@openrouter/sdk/models";
+
+let value: McpCallInProgressEvent = {
+  itemId: "<id>",
+  outputIndex: 353210,
+  sequenceNumber: 0,
+  type: "response.mcp_call.in_progress",
+};
+```
+
+## Fields
+
+| Field                             | Type                              | Required                          | Description                       |
+| --------------------------------- | --------------------------------- | --------------------------------- | --------------------------------- |
+| `itemId`                          | *string*                          | ✔️                | N/A                               |
+| `outputIndex`                     | *number*                          | ✔️                | N/A                               |
+| `sequenceNumber`                  | *number*                          | ✔️                | N/A                               |
+| `type`                            | *"response.mcp_call.in_progress"* | ✔️                | N/A                               |

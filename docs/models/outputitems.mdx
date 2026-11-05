@@ -99,6 +99,29 @@ const value: models.OutputImageGenerationCallItem = {
 };
 ```
 
+### `models.McpCallItem`
+
+```typescript
+const value: models.McpCallItem = {
+  arguments: "<value>",
+  id: "msg-abc123",
+  name: "<value>",
+  serverLabel: "<value>",
+  type: "mcp_call",
+};
+```
+
+### `models.McpListToolsItem`
+
+```typescript
+const value: models.McpListToolsItem = {
+  id: "msg-abc123",
+  serverLabel: "<value>",
+  tools: [],
+  type: "mcp_list_tools",
+};
+```
+
 ### `models.OutputMessageItem`
 
 ```typescript
@@ -228,15 +251,6 @@ const value: models.OutputFusionServerToolItem = {
 const value: models.OutputImageGenerationServerToolItem = {
   status: "completed",
   type: "openrouter:image_generation",
-};
-```
-
-### `models.OutputMcpServerToolItem`
-
-```typescript
-const value: models.OutputMcpServerToolItem = {
-  status: "completed",
-  type: "openrouter:mcp",
 };
 ```
 
