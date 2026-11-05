@@ -3,7 +3,6 @@ import type { InputsUnion, InputsUnion1 } from '../models/inputsunion.js';
 import type { OpenResponsesResult } from '../models/openresponsesresult.js';
 import type {
   ConversationState,
-  InferToolInput,
   ParsedToolCall,
   Tool,
   TurnContext,
@@ -114,11 +113,11 @@ export async function toolRequiresApproval<TTools extends readonly Tool[]>(
 ): Promise<boolean> {
   const tool = tools.find(t => t.function.name === toolCall.name);
   // Predicates see the arguments the executor will run with (#520)
-  const normalizedCall = tool ? withNormalizedArguments(toolCall, tool) : toolCall;
+  const args = tool ? normalizedArguments(toolCall.arguments, tool) : toolCall.arguments;
 
   // Call-level check takes precedence
-  if (callLevelCheck) {
-    return callLevelCheck(normalizedCall, context);
+  if (isCallApprovalCheck(callLevelCheck)) {
+    return callLevelCheck({ ...toolCall, arguments: args }, context);
   }
 
   // Fall back to tool-level setting
@@ -128,38 +127,45 @@ export async function toolRequiresApproval<TTools extends readonly Tool[]>(
 
   // If it's a function, call it with the tool's arguments and context
   if (typeof requireApproval === 'function') {
-    return requireApproval(normalizedCall.arguments, context);
+    const check: unknown = requireApproval;
+    // Always a function here; the guard only widens its parameter type.
+    return isArgumentsApprovalCheck(check) ? check(args, context) : true;
   }
 
   // Otherwise treat as boolean
   return requireApproval ?? false;
 }
 
-/**
- * Return the tool call with its arguments run through the tool's inputSchema,
- * applying defaults and coercions the same way the executor does. If the
- * arguments fail validation, the executor rejects the call before `execute`
- * runs, so the raw arguments are passed through unchanged.
- *
- * The original call is not modified: the executor parses `toolCall.arguments`
- * itself, and parsing already-parsed values would apply transforms twice.
- */
-function withNormalizedArguments<T extends Tool>(
-  toolCall: ParsedToolCall<T>,
-  tool: T,
-): ParsedToolCall<T> {
-  const parsed = z4.safeParse(tool.function.inputSchema, toolCall.arguments);
-  if (!parsed.success || !conformsToToolInput(tool, parsed.data)) return toolCall;
-  return { ...toolCall, arguments: parsed.data };
+/** A call-level approval check, seen with the arguments as parsed values. */
+type CallApprovalCheck = (
+  toolCall: { id: string; name: string; arguments: unknown },
+  context: TurnContext,
+) => boolean | Promise<boolean>;
+
+/** A tool-level approval check, seen with the arguments as parsed values. */
+type ArgumentsApprovalCheck = (params: unknown, context: TurnContext) => boolean | Promise<boolean>;
+
+function isCallApprovalCheck(value: unknown): value is CallApprovalCheck {
+  return typeof value === 'function';
+}
+
+function isArgumentsApprovalCheck(value: unknown): value is ArgumentsApprovalCheck {
+  return typeof value === 'function';
 }
 
 /**
- * Runtime check that a value is valid input for the tool. Parsed output that
- * no longer matches the schema (for example after a type-changing transform)
- * fails it, and the caller falls back to the raw arguments.
+ * Return the tool-call arguments as the executor will see them: the output of
+ * the tool's inputSchema, with defaults, coercions, and transforms applied.
+ * Arguments that fail validation are returned unchanged; the executor rejects
+ * those calls before `execute` runs.
+ *
+ * The tool call itself is not modified: the executor parses
+ * `toolCall.arguments` again, and parsing already-parsed values would apply
+ * transforms twice.
  */
-function conformsToToolInput<T extends Tool>(tool: T, value: unknown): value is InferToolInput<T> {
-  return z4.safeParse(tool.function.inputSchema, value).success;
+function normalizedArguments(args: unknown, tool: Tool): unknown {
+  const parsed = z4.safeParse(tool.function.inputSchema, args);
+  return parsed.success ? parsed.data : args;
 }
 
 /**

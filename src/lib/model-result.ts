@@ -1367,13 +1367,30 @@ export class ModelResult<
   }
 
   /**
+   * Error for a missing final response. A conversation resumed while still
+   * awaiting approval has no response until a decision is passed.
+   */
+  private responseUnavailableError(): Error {
+    if (this.currentState?.status !== 'awaiting_approval') {
+      return new Error('Response not available');
+    }
+    const pending = (this.currentState.pendingToolCalls ?? [])
+      .map(tc => `${String(tc.name)} (${tc.id})`)
+      .join(', ');
+    return new Error(
+      `Conversation is awaiting approval for tool calls: ${pending}. ` +
+      'Pass approveToolCalls or rejectToolCalls to continue.'
+    );
+  }
+
+  /**
    * Internal helper to get the text after tool execution
    */
   private async getTextInternal(): Promise<string> {
     await this.executeToolsIfNeeded();
 
     if (!this.finalResponse) {
-      throw new Error('Response not available');
+      throw this.responseUnavailableError();
     }
 
     return extractTextFromResponse(this.finalResponse);
@@ -1401,7 +1418,7 @@ export class ModelResult<
     await this.executeToolsIfNeeded();
 
     if (!this.finalResponse) {
-      throw new Error('Response not available');
+      throw this.responseUnavailableError();
     }
 
     return this.finalResponse;

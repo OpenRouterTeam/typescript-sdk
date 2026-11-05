@@ -52,6 +52,23 @@ describe('approval predicates see normalized arguments (#520)', () => {
     expect(await toolRequiresApproval(deleteCall({ destructive: false }), tools, context)).toBe(false);
   });
 
+  it('passes type-changing transform output to the predicate', async () => {
+    const forceTool = tool({
+      name: 'force_push',
+      inputSchema: z.object({ force: z.string().transform((value) => value === 'yes') }),
+      requireApproval: (params) => params.force === true,
+      execute: async () => ({ pushed: true }),
+    });
+    const call: ParsedToolCall<typeof forceTool> = {
+      id: 'call_2',
+      name: 'force_push',
+      arguments: { force: 'yes' },
+    };
+
+    // The executor runs with force === true, so approval must be required.
+    expect(await toolRequiresApproval(call, [forceTool], context)).toBe(true);
+  });
+
   it('does not modify the original tool call', async () => {
     const call = deleteCall({});
     await toolRequiresApproval(call, tools, context);
@@ -116,6 +133,22 @@ describe('resuming a paused conversation without a decision (#517)', () => {
     expect(await result.getPendingToolCalls()).toHaveLength(1);
     expect(requests).toHaveLength(0);
     expect(saved.every((state) => state.status === 'awaiting_approval')).toBe(true);
+  });
+
+  it('explains that approval is pending when the response is requested', async () => {
+    const { client } = recordingClient();
+    const { accessor } = memoryState(pausedState());
+
+    const result = new ModelResult({
+      request: { model: 'openai/gpt-5-mini', input: 'continue' },
+      client,
+      tools,
+      state: accessor,
+    });
+
+    await expect(result.getResponse()).rejects.toThrow(
+      /awaiting approval for tool calls: delete_files \(call_1\)/,
+    );
   });
 });
 
