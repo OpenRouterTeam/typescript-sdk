@@ -8,6 +8,9 @@ importers:
 
   .:
     dependencies:
+      '@standard-schema/spec':
+        specifier: ^1.1.0
+        version: 1.1.0
       zod:
         specifier: ^3.25.0 || ^4.0.0
         version: 4.2.1
@@ -18,6 +21,9 @@ importers:
       '@types/node':
         specifier: ^22.13.12
         version: 22.18.13
+      '@valibot/to-json-schema':
+        specifier: ^1.7.1
+        version: 1.7.1(valibot@1.4.2(typescript@5.8.3))
       dotenv:
         specifier: ^16.4.7
         version: 16.6.1
@@ -33,6 +39,9 @@ importers:
       typescript-eslint:
         specifier: ^8.26.0
         version: 8.46.2(eslint@9.38.0)(typescript@5.8.3)
+      valibot:
+        specifier: ^1.4.2
+        version: 1.4.2(typescript@5.8.3)
       vitest:
         specifier: ^3.2.4
         version: 3.2.4(@types/node@22.18.13)
@@ -374,6 +383,9 @@ packages:
     cpu: [x64]
     os: [win32]
 
+  '@standard-schema/spec@1.1.0':
+    resolution: {integrity: sha512-l2aFy5jALhniG5HgqrD6jXLi/rUWrKvqN/qJx6yoJsgKhblVd+iqqU4RCXavm/jPityDo5TCvKMnpjKnOriy0w==}
+
   '@types/chai@5.2.3':
     resolution: {integrity: sha512-Mw558oeA9fFbv65/y4mHtXDs9bPnFMZAL/jxdPFUpOHHIXX91mcgEHbS5Lahr+pwZFR8A7GQleRWeI6cGFC2UA==}
 
@@ -447,6 +459,11 @@ packages:
   '@typescript-eslint/visitor-keys@8.46.2':
     resolution: {integrity: sha512-tUFMXI4gxzzMXt4xpGJEsBsTox0XbNQ1y94EwlD/CuZwFcQP79xfQqMhau9HsRc/J0cAPA/HZt1dZPtGn9V/7w==}
     engines: {node: ^18.18.0 || ^20.9.0 || >=21.1.0}
+
+  '@valibot/to-json-schema@1.7.1':
+    resolution: {integrity: sha512-3qkmU6KXWh8GIThEAW3kuRHPQBMjWkKy+Ppz3WkUucx53DTpOa6siMn4xDGSOhlVyMrDaJTCTMLYPZVAIk1P0A==}
+    peerDependencies:
+      valibot: ^1.4.0
 
   '@vitest/expect@3.2.4':
     resolution: {integrity: sha512-Io0yyORnB6sikFlt8QW5K7slY4OjqNX9jmJQ02QDda8lyM6B5oNgVWoSoKPac8/kgnCUzuHQKrSLtu/uOqqrig==}
@@ -958,6 +975,14 @@ packages:
   uri-js@4.4.1:
     resolution: {integrity: sha512-7rKUyy33Q1yc98pQ1DAmLtwX109F7TIfWlW1Ydo8Wl1ii1SeHieeh0HHfPeL2fMXK6z0s8ecKs9frCuLJvndBg==}
 
+  valibot@1.4.2:
+    resolution: {integrity: sha512-gjdCvJ6d3RyHAneqxMYMW9QMCwYMb3jpOO0IyHZV1bnRHFBHrX3VkIILt5XYR0WhwHiH7Mty8ovuPZ/O3gamrg==}
+    peerDependencies:
+      typescript: '>=5'
+    peerDependenciesMeta:
+      typescript:
+        optional: true
+
   vite-node@3.2.4:
     resolution: {integrity: sha512-EbKSKh+bh1E1IFxeO0pg1n4dvoOTt0UDiXMd/qn++r98+jPO1xtJilvXldeuQ8giIB5IkpjCgMleHMNEsGH6pg==}
     engines: {node: ^18.0.0 || ^20.0.0 || >=22.0.0}
@@ -1269,6 +1294,8 @@ snapshots:
   '@rollup/rollup-win32-x64-msvc@4.52.5':
     optional: true
 
+  '@standard-schema/spec@1.1.0': {}
+
   '@types/chai@5.2.3':
     dependencies:
       '@types/deep-eql': 4.0.2
@@ -1376,6 +1403,10 @@ snapshots:
     dependencies:
       '@typescript-eslint/types': 8.46.2
       eslint-visitor-keys: 4.2.1
+
+  '@valibot/to-json-schema@1.7.1(valibot@1.4.2(typescript@5.8.3))':
+    dependencies:
+      valibot: 1.4.2(typescript@5.8.3)
 
   '@vitest/expect@3.2.4':
     dependencies:
@@ -1893,6 +1924,10 @@ snapshots:
   uri-js@4.4.1:
     dependencies:
       punycode: 2.3.1
+
+  valibot@1.4.2(typescript@5.8.3):
+    optionalDependencies:
+      typescript: 5.8.3
 
   vite-node@3.2.4(@types/node@22.18.13):
     dependencies:
