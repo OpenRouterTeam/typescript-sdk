@@ -120,6 +120,38 @@ import {
   ImageGenCallPartialImageEvent$inboundSchema,
 } from "./imagegencallpartialimageevent.js";
 import {
+  McpCallArgumentsDeltaEvent,
+  McpCallArgumentsDeltaEvent$inboundSchema,
+} from "./mcpcallargumentsdeltaevent.js";
+import {
+  McpCallArgumentsDoneEvent,
+  McpCallArgumentsDoneEvent$inboundSchema,
+} from "./mcpcallargumentsdoneevent.js";
+import {
+  McpCallCompletedEvent,
+  McpCallCompletedEvent$inboundSchema,
+} from "./mcpcallcompletedevent.js";
+import {
+  McpCallFailedEvent,
+  McpCallFailedEvent$inboundSchema,
+} from "./mcpcallfailedevent.js";
+import {
+  McpCallInProgressEvent,
+  McpCallInProgressEvent$inboundSchema,
+} from "./mcpcallinprogressevent.js";
+import {
+  McpListToolsCompletedEvent,
+  McpListToolsCompletedEvent$inboundSchema,
+} from "./mcplisttoolscompletedevent.js";
+import {
+  McpListToolsFailedEvent,
+  McpListToolsFailedEvent$inboundSchema,
+} from "./mcplisttoolsfailedevent.js";
+import {
+  McpListToolsInProgressEvent,
+  McpListToolsInProgressEvent$inboundSchema,
+} from "./mcplisttoolsinprogressevent.js";
+import {
   OpenResponsesCreatedEvent,
   OpenResponsesCreatedEvent$inboundSchema,
 } from "./openresponsescreatedevent.js";
@@ -234,6 +266,14 @@ export type StreamEvents =
   | ImageGenCallPartialImageEvent
   | OpenResponsesInProgressEvent
   | StreamEventsResponseIncomplete
+  | McpCallArgumentsDeltaEvent
+  | McpCallArgumentsDoneEvent
+  | McpCallCompletedEvent
+  | McpCallFailedEvent
+  | McpCallInProgressEvent
+  | McpListToolsCompletedEvent
+  | McpListToolsFailedEvent
+  | McpListToolsInProgressEvent
   | StreamEventsResponseOutputItemAdded
   | StreamEventsResponseOutputItemDone
   | AnnotationAddedEvent
@@ -311,6 +351,18 @@ export const StreamEvents$inboundSchema: z.ZodType<StreamEvents, unknown> =
       ImageGenCallPartialImageEvent$inboundSchema,
     ["response.in_progress"]: OpenResponsesInProgressEvent$inboundSchema,
     ["response.incomplete"]: StreamEventsResponseIncomplete$inboundSchema,
+    ["response.mcp_call_arguments.delta"]:
+      McpCallArgumentsDeltaEvent$inboundSchema,
+    ["response.mcp_call_arguments.done"]:
+      McpCallArgumentsDoneEvent$inboundSchema,
+    ["response.mcp_call.completed"]: McpCallCompletedEvent$inboundSchema,
+    ["response.mcp_call.failed"]: McpCallFailedEvent$inboundSchema,
+    ["response.mcp_call.in_progress"]: McpCallInProgressEvent$inboundSchema,
+    ["response.mcp_list_tools.completed"]:
+      McpListToolsCompletedEvent$inboundSchema,
+    ["response.mcp_list_tools.failed"]: McpListToolsFailedEvent$inboundSchema,
+    ["response.mcp_list_tools.in_progress"]:
+      McpListToolsInProgressEvent$inboundSchema,
     ["response.output_item.added"]:
       StreamEventsResponseOutputItemAdded$inboundSchema,
     ["response.output_item.done"]:
