@@ -30,7 +30,7 @@ generation:
   requestBodyFieldName: ""
   versioningStrategy: automatic
   persistentEdits:
-    enabled: "true"
+    enabled: never
   tests:
     generateTests: false
     generateNewTests: true
@@ -38,7 +38,7 @@ generation:
   documentation: mintlify
   preApplyUnionDiscriminators: true
 typescript:
-  version: 1.5.56
+  version: 2.0.0
   acceptHeaderEnum: false
   additionalDependencies:
     dependencies:

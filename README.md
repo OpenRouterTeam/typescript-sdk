@@ -6,6 +6,9 @@ The [OpenRouter TypeScript SDK](https://openrouter.ai/docs/sdks/typescript) is t
 
 To learn more about how to use the OpenRouter SDK, check out our [API Reference](https://openrouter.ai/docs/sdks/typescript/reference) and [Documentation](https://openrouter.ai/docs/sdks/typescript).
 
+> [!IMPORTANT]
+> **`callModel` has moved to [`@openrouter/agent`](https://www.npmjs.com/package/@openrouter/agent).** As of v2.0.0, `@openrouter/sdk` no longer includes `callModel` or its helpers (`tool()`, stop conditions, `ModelResult`, Claude/Chat message converters, and related types). Install `@openrouter/agent` to keep using them. See [Migrating from v1](#migrating-from-v1-callmodel-moved-to-openrouteragent).
+
 <!-- No Summary [summary] -->
 
 <!-- No Table of Contents [toc] -->
@@ -44,16 +47,37 @@ yarn add @openrouter/sdk
 > CommonJS, use `await import("@openrouter/sdk")` to import and use this package.
 <!-- End SDK Installation [installation] -->
 
-## Migrating `callModel` to `@openrouter/agent`
+## Migrating from v1: `callModel` moved to `@openrouter/agent`
 
-> [!IMPORTANT]
-> `callModel` and its associated types have moved to the [`@openrouter/agent`](https://www.npmjs.com/package/@openrouter/agent) package. If you are using `callModel`, tool definitions, or related types from `@openrouter/sdk`, you should migrate to `@openrouter/agent`.
->
-> To assist with the migration, run:
->
-> ```bash
-> npx skills add OpenRouterTeam/skills --skill openrouter-agent-migration
-> ```
+v2.0.0 removes `callModel` and its related APIs from `@openrouter/sdk`. Support for them now lives in the [`@openrouter/agent`](https://www.npmjs.com/package/@openrouter/agent) package. This affects:
+
+- `OpenRouter#callModel()` and `ModelResult`
+- `tool()`, `ToolType`, and other tool definition types
+- Stop conditions such as `stepCountIs()`, `hasToolCall()`, and `maxCost()`
+- `fromClaudeMessages()` / `toClaudeMessage()` and `fromChatMessages()` / `toChatMessage()`
+- Deep imports of those helpers, such as `@openrouter/sdk/lib/tool.js`
+
+Everything else in `@openrouter/sdk` (`chat`, `responses`, `embeddings`, `models`, and the other API namespaces) is unchanged.
+
+v2.0.0 also includes one small change to `OPENROUTER_BASE_URL` handling. `new OpenRouter()` still uses `OPENROUTER_BASE_URL` as the default server URL, with the same precedence (`serverURL`, then `server`, then `OPENROUTER_BASE_URL`, then production). The low-level `serverURLFromOptions()` helper, however, now only reads the options you pass it and no longer checks the environment. If you call it directly and rely on the env var, pass it yourself:
+
+```ts
+serverURLFromOptions({ serverURL: process.env.OPENROUTER_BASE_URL });
+```
+
+An invalid `OPENROUTER_BASE_URL` now throws a `TypeError` naming the variable (previously a `ZodError`), still at client construction.
+
+To migrate, install the new package:
+
+```bash
+npm add @openrouter/agent
+```
+
+To get help updating your code automatically, run:
+
+```bash
+npx skills add OpenRouterTeam/skills --skill openrouter-agent-migration
+```
 
 <!-- Start Requirements [requirements] -->
 ## Requirements
