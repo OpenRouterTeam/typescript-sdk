@@ -25,14 +25,16 @@ const openRouter = new OpenRouter({
 
 async function nonStreamingExample() {
   const result = await openRouter.chat.send({
-    model: "qwen/qwen3-max",
-    messages: [
-      {
-        role: "user",
-        content: "Tell me a short joke about programming",
-      },
-    ],
-    stream: false,
+    chatRequest: {
+      model: "qwen/qwen3-max",
+      messages: [
+        {
+          role: "user",
+          content: "Tell me a short joke about programming",
+        },
+      ],
+      stream: false,
+    },
   });
 
   if ("choices" in result) {
@@ -42,16 +44,18 @@ async function nonStreamingExample() {
 
 async function streamingExample() {
   const result = await openRouter.chat.send({
-    model: "qwen/qwen3-max",
-    messages: [
-      {
-        role: "user",
-        content: "Write a haiku about TypeScript",
+    chatRequest: {
+      model: "qwen/qwen3-max",
+      messages: [
+        {
+          role: "user",
+          content: "Write a haiku about TypeScript",
+        },
+      ],
+      stream: true,
+      streamOptions: {
+        includeUsage: true,
       },
-    ],
-    stream: true,
-    streamOptions: {
-      includeUsage: true,
     },
   });
 
