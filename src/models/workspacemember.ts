@@ -12,14 +12,16 @@ import { Result as SafeParseResult } from "../types/fp.js";
 import { SDKValidationError } from "./errors/sdkvalidationerror.js";
 
 /**
- * Role of the member in the workspace
+ * Role of the member in the workspace. `viewer` and `restricted_viewer` are read-only: `viewer` can view the whole workspace, and `restricted_viewer` can view only their own activity.
  */
 export const WorkspaceMemberRole = {
   Admin: "admin",
   Member: "member",
+  Viewer: "viewer",
+  RestrictedViewer: "restricted_viewer",
 } as const;
 /**
- * Role of the member in the workspace
+ * Role of the member in the workspace. `viewer` and `restricted_viewer` are read-only: `viewer` can view the whole workspace, and `restricted_viewer` can view only their own activity.
  */
 export type WorkspaceMemberRole = OpenEnum<typeof WorkspaceMemberRole>;
 
@@ -33,7 +35,7 @@ export type WorkspaceMember = {
    */
   id: string;
   /**
-   * Role of the member in the workspace
+   * Role of the member in the workspace. `viewer` and `restricted_viewer` are read-only: `viewer` can view the whole workspace, and `restricted_viewer` can view only their own activity.
    */
   role: WorkspaceMemberRole;
   /**

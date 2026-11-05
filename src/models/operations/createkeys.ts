@@ -62,7 +62,7 @@ export type CreateKeysLimitReset = OpenEnum<typeof CreateKeysLimitReset>;
 
 export type CreateKeysRequestBody = {
   /**
-   * Optional user ID of the key creator. Only meaningful for organization-owned keys where a specific member is creating the key.
+   * Optional user ID of the key creator. Only meaningful for organization-owned keys where a specific member is creating the key. A workspace-scoped management key may only name a member of its own workspace.
    */
   creatorUserId?: string | null | undefined;
   /**

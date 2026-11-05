@@ -4,7 +4,10 @@
  */
 
 import * as z from "zod/v4";
+import { safeParse } from "../lib/schemas.js";
 import { ClosedEnum } from "../types/enums.js";
+import { Result as SafeParseResult } from "../types/fp.js";
+import { SDKValidationError } from "./errors/sdkvalidationerror.js";
 
 export const McpProtocolErrorType = {
   McpProtocolError: "mcp_protocol_error",
@@ -21,10 +24,23 @@ export type McpProtocolError = {
 };
 
 /** @internal */
-export const McpProtocolErrorType$outboundSchema: z.ZodEnum<
+export const McpProtocolErrorType$inboundSchema: z.ZodEnum<
   typeof McpProtocolErrorType
 > = z.enum(McpProtocolErrorType);
+/** @internal */
+export const McpProtocolErrorType$outboundSchema: z.ZodEnum<
+  typeof McpProtocolErrorType
+> = McpProtocolErrorType$inboundSchema;
 
+/** @internal */
+export const McpProtocolError$inboundSchema: z.ZodType<
+  McpProtocolError,
+  unknown
+> = z.object({
+  code: z.int(),
+  message: z.string(),
+  type: McpProtocolErrorType$inboundSchema,
+});
 /** @internal */
 export type McpProtocolError$Outbound = {
   code: number;
@@ -47,5 +63,14 @@ export function mcpProtocolErrorToJSON(
 ): string {
   return JSON.stringify(
     McpProtocolError$outboundSchema.parse(mcpProtocolError),
+  );
+}
+export function mcpProtocolErrorFromJSON(
+  jsonString: string,
+): SafeParseResult<McpProtocolError, SDKValidationError> {
+  return safeParse(
+    jsonString,
+    (x) => McpProtocolError$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'McpProtocolError' from JSON`,
   );
 }

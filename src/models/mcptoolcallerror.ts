@@ -4,18 +4,24 @@
  */
 
 import * as z from "zod/v4";
+import { safeParse } from "../lib/schemas.js";
+import { Result as SafeParseResult } from "../types/fp.js";
+import { SDKValidationError } from "./errors/sdkvalidationerror.js";
 import {
   McpHttpError,
+  McpHttpError$inboundSchema,
   McpHttpError$Outbound,
   McpHttpError$outboundSchema,
 } from "./mcphttperror.js";
 import {
   McpProtocolError,
+  McpProtocolError$inboundSchema,
   McpProtocolError$Outbound,
   McpProtocolError$outboundSchema,
 } from "./mcpprotocolerror.js";
 import {
   McpToolExecutionError,
+  McpToolExecutionError$inboundSchema,
   McpToolExecutionError$Outbound,
   McpToolExecutionError$outboundSchema,
 } from "./mcptoolexecutionerror.js";
@@ -29,6 +35,16 @@ export type McpToolCallError =
   | McpToolExecutionError
   | string;
 
+/** @internal */
+export const McpToolCallError$inboundSchema: z.ZodType<
+  McpToolCallError,
+  unknown
+> = z.union([
+  McpProtocolError$inboundSchema,
+  McpHttpError$inboundSchema,
+  McpToolExecutionError$inboundSchema,
+  z.string(),
+]);
 /** @internal */
 export type McpToolCallError$Outbound =
   | McpProtocolError$Outbound
@@ -52,5 +68,14 @@ export function mcpToolCallErrorToJSON(
 ): string {
   return JSON.stringify(
     McpToolCallError$outboundSchema.parse(mcpToolCallError),
+  );
+}
+export function mcpToolCallErrorFromJSON(
+  jsonString: string,
+): SafeParseResult<McpToolCallError, SDKValidationError> {
+  return safeParse(
+    jsonString,
+    (x) => McpToolCallError$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'McpToolCallError' from JSON`,
   );
 }

@@ -1,0 +1,26 @@
+---
+title: "OutputCompactionItem"
+---
+
+A compaction output item carrying the encrypted summary of the compacted conversation. Emitted in reply to a `compaction_trigger` input item.
+
+## Example Usage
+
+```typescript
+import { OutputCompactionItem } from "@openrouter/sdk/models";
+
+let value: OutputCompactionItem = {
+  encryptedContent: "<value>",
+  id: "msg-abc123",
+  type: "compaction",
+};
+```
+
+## Fields
+
+| Field              | Type               | Required           | Description        |
+| ------------------ | ------------------ | ------------------ | ------------------ |
+| `createdBy`        | *string*           | ➖ | N/A                |
+| `encryptedContent` | *string*           | ✔️ | N/A                |
+| `id`               | *string*           | ✔️ | N/A                |
+| `type`             | *"compaction"*     | ✔️ | N/A                |

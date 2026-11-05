@@ -117,7 +117,6 @@ export * from "./listpresets.js";
 export * from "./listpresetversions.js";
 export * from "./listprivateendpoints.js";
 export * from "./listprivateproviders.js";
-export * from "./listproviderendpoints.js";
 export * from "./listproviders.js";
 export * from "./listscimgroupmappings.js";
 export * from "./listscimgroups.js";

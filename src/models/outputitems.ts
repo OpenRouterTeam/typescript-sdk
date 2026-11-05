@@ -10,6 +10,15 @@ import { discriminatedUnion } from "../types/discriminatedUnion.js";
 import { Result as SafeParseResult } from "../types/fp.js";
 import { SDKValidationError } from "./errors/sdkvalidationerror.js";
 import {
+  McpApprovalRequestItem,
+  McpApprovalRequestItem$inboundSchema,
+} from "./mcpapprovalrequestitem.js";
+import { McpCallItem, McpCallItem$inboundSchema } from "./mcpcallitem.js";
+import {
+  McpListToolsItem,
+  McpListToolsItem$inboundSchema,
+} from "./mcplisttoolsitem.js";
+import {
   OutputAdvisorServerToolItem,
   OutputAdvisorServerToolItem$inboundSchema,
 } from "./outputadvisorservertoolitem.js";
@@ -41,6 +50,10 @@ import {
   OutputCodeInterpreterServerToolItem,
   OutputCodeInterpreterServerToolItem$inboundSchema,
 } from "./outputcodeinterpreterservertoolitem.js";
+import {
+  OutputCompactionItem,
+  OutputCompactionItem$inboundSchema,
+} from "./outputcompactionitem.js";
 import {
   OutputComputerCallItem,
   OutputComputerCallItem$inboundSchema,
@@ -81,10 +94,6 @@ import {
   OutputImageGenerationServerToolItem,
   OutputImageGenerationServerToolItem$inboundSchema,
 } from "./outputimagegenerationservertoolitem.js";
-import {
-  OutputMcpServerToolItem,
-  OutputMcpServerToolItem$inboundSchema,
-} from "./outputmcpservertoolitem.js";
 import {
   OutputMemoryServerToolItem,
   OutputMemoryServerToolItem$inboundSchema,
@@ -148,11 +157,15 @@ import {
 export type OutputItems =
   | OutputApplyPatchCallItem
   | (OutputCodeInterpreterCallItem & { type: "code_interpreter_call" })
+  | OutputCompactionItem
   | (OutputComputerCallItem & { type: "computer_call" })
   | OutputCustomToolCallItem
   | (OutputFileSearchCallItem & { type: "file_search_call" })
   | OutputFunctionCallItem
   | (OutputImageGenerationCallItem & { type: "image_generation_call" })
+  | (McpApprovalRequestItem & { type: "mcp_approval_request" })
+  | (McpCallItem & { type: "mcp_call" })
+  | (McpListToolsItem & { type: "mcp_list_tools" })
   | OutputMessageItem
   | (OutputAdvisorServerToolItem & { type: "openrouter:advisor" })
   | (OutputApplyPatchServerToolItem & { type: "openrouter:apply_patch" })
@@ -172,7 +185,6 @@ export type OutputItems =
   | (OutputImageGenerationServerToolItem & {
     type: "openrouter:image_generation";
   })
-  | (OutputMcpServerToolItem & { type: "openrouter:mcp" })
   | (OutputMemoryServerToolItem & { type: "openrouter:memory" })
   | (OutputShellServerToolItem & { type: "openrouter:shell" })
   | (OutputSubagentServerToolItem & { type: "openrouter:subagent" })
@@ -194,6 +206,7 @@ export const OutputItems$inboundSchema: z.ZodType<OutputItems, unknown> =
     code_interpreter_call: OutputCodeInterpreterCallItem$inboundSchema.and(
       z.object({ type: z.literal("code_interpreter_call") }),
     ),
+    compaction: OutputCompactionItem$inboundSchema,
     computer_call: OutputComputerCallItem$inboundSchema.and(
       z.object({ type: z.literal("computer_call") }),
     ),
@@ -204,6 +217,15 @@ export const OutputItems$inboundSchema: z.ZodType<OutputItems, unknown> =
     function_call: OutputFunctionCallItem$inboundSchema,
     image_generation_call: OutputImageGenerationCallItem$inboundSchema.and(
       z.object({ type: z.literal("image_generation_call") }),
+    ),
+    mcp_approval_request: McpApprovalRequestItem$inboundSchema.and(
+      z.object({ type: z.literal("mcp_approval_request") }),
+    ),
+    mcp_call: McpCallItem$inboundSchema.and(
+      z.object({ type: z.literal("mcp_call") }),
+    ),
+    mcp_list_tools: McpListToolsItem$inboundSchema.and(
+      z.object({ type: z.literal("mcp_list_tools") }),
     ),
     message: OutputMessageItem$inboundSchema,
     ["openrouter:advisor"]: OutputAdvisorServerToolItem$inboundSchema.and(
@@ -242,9 +264,6 @@ export const OutputItems$inboundSchema: z.ZodType<OutputItems, unknown> =
       OutputImageGenerationServerToolItem$inboundSchema.and(
         z.object({ type: z.literal("openrouter:image_generation") }),
       ),
-    ["openrouter:mcp"]: OutputMcpServerToolItem$inboundSchema.and(
-      z.object({ type: z.literal("openrouter:mcp") }),
-    ),
     ["openrouter:memory"]: OutputMemoryServerToolItem$inboundSchema.and(
       z.object({ type: z.literal("openrouter:memory") }),
     ),
