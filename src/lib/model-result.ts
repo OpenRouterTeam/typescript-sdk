@@ -227,8 +227,16 @@ export class ModelResult<
     // Initialize state management
     this.stateAccessor = options.state ?? null;
     this.requireApprovalFn = options.requireApproval ?? null;
-    this.approvedToolCalls = options.approveToolCalls ?? [];
-    this.rejectedToolCalls = options.rejectToolCalls ?? [];
+    this.approvedToolCalls = [...new Set(options.approveToolCalls ?? [])];
+    this.rejectedToolCalls = [...new Set(options.rejectToolCalls ?? [])];
+
+    const rejectedIds = new Set(this.rejectedToolCalls);
+    const conflictingIds = this.approvedToolCalls.filter(id => rejectedIds.has(id));
+    if (conflictingIds.length > 0) {
+      throw new Error(
+        `Tool calls cannot be both approved and rejected: ${conflictingIds.join(', ')}`
+      );
+    }
   }
 
   /**
@@ -1016,6 +1024,12 @@ export class ModelResult<
             this.isResumingFromApproval = true;
             await this.processApprovalDecisions();
             return; // Skip normal initialization, we're resuming
+          }
+
+          // Resuming without any decision keeps the conversation paused
+          if (loadedState.status === 'awaiting_approval') {
+            this.isResumingFromApproval = true;
+            return;
           }
 
           // Check for interruption flag and handle
