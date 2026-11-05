@@ -38,6 +38,18 @@ import {
   OutputItemImageGenerationCall$inboundSchema,
 } from "./outputitemimagegenerationcall.js";
 import {
+  OutputItemMcpApprovalRequest,
+  OutputItemMcpApprovalRequest$inboundSchema,
+} from "./outputitemmcpapprovalrequest.js";
+import {
+  OutputItemMcpCall,
+  OutputItemMcpCall$inboundSchema,
+} from "./outputitemmcpcall.js";
+import {
+  OutputItemMcpListTools,
+  OutputItemMcpListTools$inboundSchema,
+} from "./outputitemmcplisttools.js";
+import {
   OutputItemReasoning,
   OutputItemReasoning$inboundSchema,
 } from "./outputitemreasoning.js";
@@ -55,6 +67,9 @@ export type AlignmentResponsesRejected =
   | OutputItemFileSearchCall
   | OutputItemFunctionCall
   | OutputItemImageGenerationCall
+  | OutputItemMcpApprovalRequest
+  | OutputItemMcpCall
+  | OutputItemMcpListTools
   | OutputMessage
   | OutputItemReasoning
   | OutputItemWebSearchCall
@@ -72,6 +87,9 @@ export const AlignmentResponsesRejected$inboundSchema: z.ZodType<
   file_search_call: OutputItemFileSearchCall$inboundSchema,
   function_call: OutputItemFunctionCall$inboundSchema,
   image_generation_call: OutputItemImageGenerationCall$inboundSchema,
+  mcp_approval_request: OutputItemMcpApprovalRequest$inboundSchema,
+  mcp_call: OutputItemMcpCall$inboundSchema,
+  mcp_list_tools: OutputItemMcpListTools$inboundSchema,
   message: OutputMessage$inboundSchema,
   reasoning: OutputItemReasoning$inboundSchema,
   web_search_call: OutputItemWebSearchCall$inboundSchema,

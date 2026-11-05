@@ -153,6 +153,11 @@ import {
   McpServerTool$outboundSchema,
 } from "./mcpservertool.js";
 import {
+  McpServerToolOpenRouter,
+  McpServerToolOpenRouter$Outbound,
+  McpServerToolOpenRouter$outboundSchema,
+} from "./mcpservertoolopenrouter.js";
+import {
   ModerationPlugin,
   ModerationPlugin$Outbound,
   ModerationPlugin$outboundSchema,
@@ -433,7 +438,8 @@ export type ResponsesRequestToolUnion =
   | (ApplyPatchServerToolOpenRouter & { type: "openrouter:apply_patch" })
   | (BashServerTool & { type: "openrouter:bash" })
   | (ShellServerToolOpenRouter & { type: "openrouter:shell" })
-  | (ToolSearchServerTool & { type: "openrouter:tool_search" });
+  | (ToolSearchServerTool & { type: "openrouter:tool_search" })
+  | (McpServerToolOpenRouter & { type: "openrouter:mcp" });
 
 /**
  * Request schema for Responses endpoint
@@ -587,6 +593,7 @@ export type ResponsesRequest = {
       | (BashServerTool & { type: "openrouter:bash" })
       | (ShellServerToolOpenRouter & { type: "openrouter:shell" })
       | (ToolSearchServerTool & { type: "openrouter:tool_search" })
+      | (McpServerToolOpenRouter & { type: "openrouter:mcp" })
     >
     | undefined;
   topK?: number | undefined;
@@ -824,7 +831,8 @@ export type ResponsesRequestToolUnion$Outbound =
   })
   | (BashServerTool$Outbound & { type: "openrouter:bash" })
   | (ShellServerToolOpenRouter$Outbound & { type: "openrouter:shell" })
-  | (ToolSearchServerTool$Outbound & { type: "openrouter:tool_search" });
+  | (ToolSearchServerTool$Outbound & { type: "openrouter:tool_search" })
+  | (McpServerToolOpenRouter$Outbound & { type: "openrouter:mcp" });
 
 /** @internal */
 export const ResponsesRequestToolUnion$outboundSchema: z.ZodType<
@@ -904,6 +912,9 @@ export const ResponsesRequestToolUnion$outboundSchema: z.ZodType<
   ),
   ToolSearchServerTool$outboundSchema.and(
     z.object({ type: z.literal("openrouter:tool_search") }),
+  ),
+  McpServerToolOpenRouter$outboundSchema.and(
+    z.object({ type: z.literal("openrouter:mcp") }),
   ),
 ]);
 
@@ -1013,6 +1024,7 @@ export type ResponsesRequest$Outbound = {
       | (BashServerTool$Outbound & { type: "openrouter:bash" })
       | (ShellServerToolOpenRouter$Outbound & { type: "openrouter:shell" })
       | (ToolSearchServerTool$Outbound & { type: "openrouter:tool_search" })
+      | (McpServerToolOpenRouter$Outbound & { type: "openrouter:mcp" })
     >
     | undefined;
   top_k?: number | undefined;
@@ -1164,6 +1176,9 @@ export const ResponsesRequest$outboundSchema: z.ZodType<
       ),
       ToolSearchServerTool$outboundSchema.and(
         z.object({ type: z.literal("openrouter:tool_search") }),
+      ),
+      McpServerToolOpenRouter$outboundSchema.and(
+        z.object({ type: z.literal("openrouter:mcp") }),
       ),
     ]),
   ).optional(),

@@ -14,6 +14,12 @@ import {
   ToolChoiceAllowed$Outbound,
   ToolChoiceAllowed$outboundSchema,
 } from "./toolchoiceallowed.js";
+import {
+  ToolChoiceMcp,
+  ToolChoiceMcp$inboundSchema,
+  ToolChoiceMcp$Outbound,
+  ToolChoiceMcp$outboundSchema,
+} from "./toolchoicemcp.js";
 
 export const OpenAIResponsesToolChoiceTypeShell = {
   Shell: "shell",
@@ -97,6 +103,7 @@ export type OpenAIResponsesToolChoiceAuto = ClosedEnum<
 export type OpenAIResponsesToolChoiceUnion =
   | ToolChoiceAllowed
   | OpenAIResponsesToolChoiceFunction
+  | ToolChoiceMcp
   | OpenAIResponsesToolChoice
   | OpenAIResponsesToolChoiceApplyPatch
   | OpenAIResponsesToolChoiceShell
@@ -375,6 +382,7 @@ export const OpenAIResponsesToolChoiceUnion$inboundSchema: z.ZodType<
 > = z.union([
   ToolChoiceAllowed$inboundSchema,
   z.lazy(() => OpenAIResponsesToolChoiceFunction$inboundSchema),
+  ToolChoiceMcp$inboundSchema,
   z.lazy(() => OpenAIResponsesToolChoice$inboundSchema),
   z.lazy(() => OpenAIResponsesToolChoiceApplyPatch$inboundSchema),
   z.lazy(() => OpenAIResponsesToolChoiceShell$inboundSchema),
@@ -386,6 +394,7 @@ export const OpenAIResponsesToolChoiceUnion$inboundSchema: z.ZodType<
 export type OpenAIResponsesToolChoiceUnion$Outbound =
   | ToolChoiceAllowed$Outbound
   | OpenAIResponsesToolChoiceFunction$Outbound
+  | ToolChoiceMcp$Outbound
   | OpenAIResponsesToolChoice$Outbound
   | OpenAIResponsesToolChoiceApplyPatch$Outbound
   | OpenAIResponsesToolChoiceShell$Outbound
@@ -400,6 +409,7 @@ export const OpenAIResponsesToolChoiceUnion$outboundSchema: z.ZodType<
 > = z.union([
   ToolChoiceAllowed$outboundSchema,
   z.lazy(() => OpenAIResponsesToolChoiceFunction$outboundSchema),
+  ToolChoiceMcp$outboundSchema,
   z.lazy(() => OpenAIResponsesToolChoice$outboundSchema),
   z.lazy(() => OpenAIResponsesToolChoiceApplyPatch$outboundSchema),
   z.lazy(() => OpenAIResponsesToolChoiceShell$outboundSchema),
