@@ -88,6 +88,49 @@ const value: models.OutputItemImageGenerationCall = {
 };
 ```
 
+### `models.OutputItemMcpApprovalRequest`
+
+```typescript
+const value: models.OutputItemMcpApprovalRequest = {
+  arguments: "<value>",
+  id: "<id>",
+  name: "<value>",
+  serverLabel: "<value>",
+  type: "mcp_approval_request",
+};
+```
+
+### `models.OutputItemMcpCall`
+
+```typescript
+const value: models.OutputItemMcpCall = {
+  arguments: "<value>",
+  id: "<id>",
+  name: "<value>",
+  serverLabel: "<value>",
+  type: "mcp_call",
+};
+```
+
+### `models.OutputItemMcpListTools`
+
+```typescript
+const value: models.OutputItemMcpListTools = {
+  id: "<id>",
+  serverLabel: "<value>",
+  tools: [
+    {
+      inputSchema: {
+        "key": "<value>",
+        "key1": "<value>",
+      },
+      name: "<value>",
+    },
+  ],
+  type: "mcp_list_tools",
+};
+```
+
 ### `models.OutputMessage`
 
 ```typescript

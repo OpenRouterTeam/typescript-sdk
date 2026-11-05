@@ -1,0 +1,40 @@
+---
+title: "ErrorT"
+---
+
+## Supported Types
+
+### `string`
+
+```typescript
+const value: string = "<value>";
+```
+
+### `models.ErrorMcpProtocolError`
+
+```typescript
+const value: models.ErrorMcpProtocolError = {
+  code: 697534,
+  message: "<value>",
+  type: "mcp_protocol_error",
+};
+```
+
+### `models.ErrorMcpToolExecutionError`
+
+```typescript
+const value: models.ErrorMcpToolExecutionError = {
+  type: "mcp_tool_execution_error",
+};
+```
+
+### `models.ErrorHTTPError`
+
+```typescript
+const value: models.ErrorHTTPError = {
+  code: 585639,
+  message: "<value>",
+  type: "http_error",
+};
+```
+

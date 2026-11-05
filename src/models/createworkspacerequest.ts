@@ -15,6 +15,7 @@ export const CreateWorkspaceRequestDisabledServerTool = {
   OpenrouterDatetime: "openrouter:datetime",
   OpenrouterFusion: "openrouter:fusion",
   OpenrouterImageGeneration: "openrouter:image_generation",
+  OpenrouterMcp: "openrouter:mcp",
   OpenrouterExperimentalSearchModels: "openrouter:experimental__search_models",
   OpenrouterShell: "openrouter:shell",
   OpenrouterSubagent: "openrouter:subagent",

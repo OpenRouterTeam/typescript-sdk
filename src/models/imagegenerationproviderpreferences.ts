@@ -142,6 +142,7 @@ export type ImageGenerationProviderPreferencesOptions = {
   relace?: { [k: string]: any } | undefined;
   replicate?: { [k: string]: any } | undefined;
   respan?: { [k: string]: any } | undefined;
+  river?: { [k: string]: any } | undefined;
   runway?: { [k: string]: any } | undefined;
   sailResearch?: { [k: string]: any } | undefined;
   sakana?: { [k: string]: any } | undefined;
@@ -380,6 +381,7 @@ export type ImageGenerationProviderPreferencesOptions$Outbound = {
   relace?: { [k: string]: any } | undefined;
   replicate?: { [k: string]: any } | undefined;
   respan?: { [k: string]: any } | undefined;
+  river?: { [k: string]: any } | undefined;
   runway?: { [k: string]: any } | undefined;
   "sail-research"?: { [k: string]: any } | undefined;
   sakana?: { [k: string]: any } | undefined;
@@ -542,6 +544,7 @@ export const ImageGenerationProviderPreferencesOptions$outboundSchema:
     relace: z.record(z.string(), z.any()).optional(),
     replicate: z.record(z.string(), z.any()).optional(),
     respan: z.record(z.string(), z.any()).optional(),
+    river: z.record(z.string(), z.any()).optional(),
     runway: z.record(z.string(), z.any()).optional(),
     sailResearch: z.record(z.string(), z.any()).optional(),
     sakana: z.record(z.string(), z.any()).optional(),

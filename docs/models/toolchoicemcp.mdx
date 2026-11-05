@@ -1,0 +1,24 @@
+---
+title: "ToolChoiceMcp"
+---
+
+Forces a call to the named MCP server; `name` narrows it to one of its tools
+
+## Example Usage
+
+```typescript
+import { ToolChoiceMcp } from "@openrouter/sdk/models";
+
+let value: ToolChoiceMcp = {
+  serverLabel: "huggingface",
+  type: "mcp",
+};
+```
+
+## Fields
+
+| Field                                                      | Type                                                       | Required                                                   | Description                                                |
+| ---------------------------------------------------------- | ---------------------------------------------------------- | ---------------------------------------------------------- | ---------------------------------------------------------- |
+| `name`                                                     | *string*                                                   | ➖                                         | N/A                                                        |
+| `serverLabel`                                              | *string*                                                   | ✔️                                         | N/A                                                        |
+| `type`                                                     | [models.ToolChoiceMcpType](../models/toolchoicemcptype.mdx) | ✔️                                         | N/A                                                        |
