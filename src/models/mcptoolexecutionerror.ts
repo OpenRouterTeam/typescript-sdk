@@ -4,7 +4,10 @@
  */
 
 import * as z from "zod/v4";
+import { safeParse } from "../lib/schemas.js";
 import { ClosedEnum } from "../types/enums.js";
+import { Result as SafeParseResult } from "../types/fp.js";
+import { SDKValidationError } from "./errors/sdkvalidationerror.js";
 
 export const McpToolExecutionErrorType = {
   McpToolExecutionError: "mcp_tool_execution_error",
@@ -22,10 +25,22 @@ export type McpToolExecutionError = {
 };
 
 /** @internal */
-export const McpToolExecutionErrorType$outboundSchema: z.ZodEnum<
+export const McpToolExecutionErrorType$inboundSchema: z.ZodEnum<
   typeof McpToolExecutionErrorType
 > = z.enum(McpToolExecutionErrorType);
+/** @internal */
+export const McpToolExecutionErrorType$outboundSchema: z.ZodEnum<
+  typeof McpToolExecutionErrorType
+> = McpToolExecutionErrorType$inboundSchema;
 
+/** @internal */
+export const McpToolExecutionError$inboundSchema: z.ZodType<
+  McpToolExecutionError,
+  unknown
+> = z.object({
+  content: z.any().optional(),
+  type: McpToolExecutionErrorType$inboundSchema,
+});
 /** @internal */
 export type McpToolExecutionError$Outbound = {
   content?: any | undefined;
@@ -46,5 +61,14 @@ export function mcpToolExecutionErrorToJSON(
 ): string {
   return JSON.stringify(
     McpToolExecutionError$outboundSchema.parse(mcpToolExecutionError),
+  );
+}
+export function mcpToolExecutionErrorFromJSON(
+  jsonString: string,
+): SafeParseResult<McpToolExecutionError, SDKValidationError> {
+  return safeParse(
+    jsonString,
+    (x) => McpToolExecutionError$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'McpToolExecutionError' from JSON`,
   );
 }

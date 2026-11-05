@@ -5,7 +5,10 @@
 
 import * as z from "zod/v4";
 import { remap as remap$ } from "../lib/primitives.js";
+import { safeParse } from "../lib/schemas.js";
 import { ClosedEnum } from "../types/enums.js";
+import { Result as SafeParseResult } from "../types/fp.js";
+import { SDKValidationError } from "./errors/sdkvalidationerror.js";
 
 export type McpListToolsItemTool = {
   annotations?: any | undefined;
@@ -30,6 +33,20 @@ export type McpListToolsItem = {
   type: McpListToolsItemType;
 };
 
+/** @internal */
+export const McpListToolsItemTool$inboundSchema: z.ZodType<
+  McpListToolsItemTool,
+  unknown
+> = z.object({
+  annotations: z.any().optional(),
+  description: z.nullable(z.string()).optional(),
+  input_schema: z.record(z.string(), z.any()),
+  name: z.string(),
+}).transform((v) => {
+  return remap$(v, {
+    "input_schema": "inputSchema",
+  });
+});
 /** @internal */
 export type McpListToolsItemTool$Outbound = {
   annotations?: any | undefined;
@@ -60,12 +77,40 @@ export function mcpListToolsItemToolToJSON(
     McpListToolsItemTool$outboundSchema.parse(mcpListToolsItemTool),
   );
 }
+export function mcpListToolsItemToolFromJSON(
+  jsonString: string,
+): SafeParseResult<McpListToolsItemTool, SDKValidationError> {
+  return safeParse(
+    jsonString,
+    (x) => McpListToolsItemTool$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'McpListToolsItemTool' from JSON`,
+  );
+}
 
+/** @internal */
+export const McpListToolsItemType$inboundSchema: z.ZodEnum<
+  typeof McpListToolsItemType
+> = z.enum(McpListToolsItemType);
 /** @internal */
 export const McpListToolsItemType$outboundSchema: z.ZodEnum<
   typeof McpListToolsItemType
-> = z.enum(McpListToolsItemType);
+> = McpListToolsItemType$inboundSchema;
 
+/** @internal */
+export const McpListToolsItem$inboundSchema: z.ZodType<
+  McpListToolsItem,
+  unknown
+> = z.object({
+  error: z.nullable(z.string()).optional(),
+  id: z.string(),
+  server_label: z.string(),
+  tools: z.array(z.lazy(() => McpListToolsItemTool$inboundSchema)),
+  type: McpListToolsItemType$inboundSchema,
+}).transform((v) => {
+  return remap$(v, {
+    "server_label": "serverLabel",
+  });
+});
 /** @internal */
 export type McpListToolsItem$Outbound = {
   error?: string | null | undefined;
@@ -96,5 +141,14 @@ export function mcpListToolsItemToJSON(
 ): string {
   return JSON.stringify(
     McpListToolsItem$outboundSchema.parse(mcpListToolsItem),
+  );
+}
+export function mcpListToolsItemFromJSON(
+  jsonString: string,
+): SafeParseResult<McpListToolsItem, SDKValidationError> {
+  return safeParse(
+    jsonString,
+    (x) => McpListToolsItem$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'McpListToolsItem' from JSON`,
   );
 }

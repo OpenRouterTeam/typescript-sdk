@@ -290,15 +290,6 @@ const value: models.OutputArmorBlockedItem = {
 };
 ```
 
-### `models.OutputMcpServerToolItem`
-
-```typescript
-const value: models.OutputMcpServerToolItem = {
-  status: "completed",
-  type: "openrouter:mcp",
-};
-```
-
 ### `models.OutputSearchModelsServerToolItem`
 
 ```typescript
@@ -422,21 +413,9 @@ const value: models.ShellCallOutputItem = {
 
 ```typescript
 const value: models.McpListToolsItem = {
-  id: "mcp-list-abc123",
-  serverLabel: "database-server",
-  tools: [
-    {
-      inputSchema: {
-        "properties": {
-          "query": {
-            "type": "string",
-          },
-        },
-        "type": "object",
-      },
-      name: "query_database",
-    },
-  ],
+  id: "msg-abc123",
+  serverLabel: "<value>",
+  tools: [],
   type: "mcp_list_tools",
 };
 ```
@@ -467,10 +446,10 @@ const value: models.McpApprovalResponseItem = {
 
 ```typescript
 const value: models.McpCallItem = {
-  arguments: "{\"query\":\"SELECT * FROM users\"}",
-  id: "mcp-call-abc123",
-  name: "query_database",
-  serverLabel: "database-server",
+  arguments: "<value>",
+  id: "msg-abc123",
+  name: "<value>",
+  serverLabel: "<value>",
   type: "mcp_call",
 };
 ```
@@ -493,6 +472,14 @@ const value: models.CustomToolCallOutputItem = {
   callId: "call-abc123",
   output: "patch applied successfully",
   type: "custom_tool_call_output",
+};
+```
+
+### `models.CompactionTriggerItem`
+
+```typescript
+const value: models.CompactionTriggerItem = {
+  type: "compaction_trigger",
 };
 ```
 
