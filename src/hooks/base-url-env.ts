@@ -48,7 +48,8 @@ function readEnvVar(name: string): string | undefined {
  *
  * This lives in a hook rather than in the generated `lib/config.ts` /
  * `lib/env.ts` so that it survives Speakeasy regeneration without relying on
- * persistent edits.
+ * persistent edits. As a result, only client construction honors the env var:
+ * calling the generated `serverURLFromOptions()` directly does not read it.
  */
 export class BaseURLEnvHook implements SDKInitHook {
   sdkInit(opts: SDKOptions): SDKOptions {

@@ -1,4 +1,5 @@
 import { afterEach, beforeEach, describe, expect, it } from 'vitest';
+import { serverURLFromOptions } from '../../src/lib/config.js';
 import { resetEnv } from '../../src/lib/env.js';
 import { OpenRouter } from '../../src/sdk/sdk.js';
 
@@ -55,6 +56,14 @@ describe('OPENROUTER_BASE_URL default serverURL', () => {
     process.env['OPENROUTER_BASE_URL'] = ENV_URL;
 
     expect(baseURL({ server: 'production' })).toBe(PRODUCTION_URL);
+  });
+
+  it('does not apply the env var to direct serverURLFromOptions calls', () => {
+    process.env['OPENROUTER_BASE_URL'] = ENV_URL;
+
+    expect(serverURLFromOptions({})?.toString().replace(/\/$/, '')).toBe(
+      PRODUCTION_URL,
+    );
   });
 
   it('rejects an env var that is not a valid URL', () => {

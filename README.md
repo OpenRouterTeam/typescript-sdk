@@ -59,6 +59,14 @@ v2.0.0 removes `callModel` and its related APIs from `@openrouter/sdk`. Support 
 
 Everything else in `@openrouter/sdk` (`chat`, `responses`, `embeddings`, `models`, and the other API namespaces) is unchanged.
 
+v2.0.0 also includes one small change to `OPENROUTER_BASE_URL` handling. `new OpenRouter()` still uses `OPENROUTER_BASE_URL` as the default server URL, with the same precedence (`serverURL`, then `server`, then `OPENROUTER_BASE_URL`, then production). The low-level `serverURLFromOptions()` helper, however, now only reads the options you pass it and no longer checks the environment. If you call it directly and rely on the env var, pass it yourself:
+
+```ts
+serverURLFromOptions({ serverURL: process.env.OPENROUTER_BASE_URL });
+```
+
+An invalid `OPENROUTER_BASE_URL` now throws a `TypeError` naming the variable (previously a `ZodError`), still at client construction.
+
 To migrate, install the new package:
 
 ```bash
