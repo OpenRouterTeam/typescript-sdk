@@ -1,3 +1,4 @@
+import type { HookContext } from '../../src/hooks/types.js';
 import type { Fetcher } from '../../src/lib/http.js';
 import type { RetryConfig } from '../../src/lib/retries.js';
 import type { ChatRequest } from '../../src/models/chatrequest.js';
@@ -241,6 +242,57 @@ describe('abort after garbage collection (#1315)', () => {
     await outcome(client.chat.send({ chatRequest }, { retries: noRetries }), 1000);
 
     expect(calls).toBe(0);
+  });
+
+  it('removes a hook by its original function on a cloned HTTPClient', async () => {
+    let calls = 0;
+    const hook = (): void => {
+      calls++;
+    };
+    const fetcher: Fetcher = async () => new Response('{}');
+    const httpClient = new HTTPClient({ fetcher });
+    httpClient.addHook('beforeRequest', hook);
+    // Constructing the SDK wraps the client's existing hooks.
+    new OpenRouter({ apiKey: 'test', serverURL, httpClient });
+
+    const child = httpClient.clone();
+    child.removeHook('beforeRequest', hook);
+    await child.request(new Request(serverURL));
+
+    expect(calls).toBe(0);
+  });
+
+  it('keeps a signal a later hook put on the request', async () => {
+    const inits: Array<RequestInit | undefined> = [];
+    const fetcher: Fetcher = async (_input, init) => {
+      inits.push(init);
+      return new Response('{}');
+    };
+    const httpClient = new HTTPClient({ fetcher });
+    const hook = new SignalTimeoutHook({ fixAbortAfterGC: true });
+    hook.sdkInit({ httpClient });
+    const hookCtx: HookContext = {
+      baseURL: serverURL,
+      operationID: 'test',
+      oAuth2Scopes: null,
+      retryConfig: noRetries,
+      resolvedSecurity: null,
+      options: {},
+    };
+
+    // The caller's signal is captured, then a later hook swaps in another one.
+    const caller = new AbortController();
+    hook.beforeCreateRequest(hookCtx, {
+      url: new URL(serverURL),
+      options: { signal: caller.signal },
+    });
+    const replacement = new AbortController();
+    const request = new Request(serverURL, { signal: replacement.signal });
+    hook.beforeRequest(hookCtx, request);
+    await httpClient.request(request);
+    replacement.abort();
+
+    expect(inits[0]?.signal?.aborted).toBe(true);
   });
 
   it('passes the signal to the fetcher in init', async () => {

@@ -50,6 +50,9 @@ const wrappedClients = new WeakSet<object>();
 /** Wrapped version of each user `HTTPClient` beforeRequest hook. */
 const wrappedHooks = new WeakMap<HTTPBeforeRequestHook, HTTPBeforeRequestHook>();
 
+/** The user hook each wrapped hook came from. */
+const originalHooks = new WeakMap<HTTPBeforeRequestHook, HTTPBeforeRequestHook>();
+
 function isObject(value: unknown): value is object {
   return typeof value === "object" && value !== null;
 }
@@ -134,12 +137,19 @@ function wrapUserHook(fn: HTTPBeforeRequestHook): HTTPBeforeRequestHook {
     return next;
   };
   wrappedHooks.set(fn, wrapped);
+  originalHooks.set(wrapped, fn);
   return wrapped;
 }
 
+/** The user's own hook for a wrapped hook, or the hook itself. */
+function unwrapUserHook(hook: unknown): unknown {
+  return isHTTPBeforeRequestHook(hook) ? originalHooks.get(hook) ?? hook : hook;
+}
+
 /**
- * Wraps beforeRequest hooks already on the client, and patches `addHook` and
- * `removeHook` so hooks added or removed later are handled the same way.
+ * Wraps beforeRequest hooks already on the client, and patches `addHook`,
+ * `removeHook` and `clone` so hooks added or removed later are handled the
+ * same way.
  */
 function wrapClientHooks(client: object): void {
   if (hasRequestHooks(client)) {
@@ -150,9 +160,26 @@ function wrapClientHooks(client: object): void {
 
   const addHook: unknown = Reflect.get(client, "addHook");
   const removeHook: unknown = Reflect.get(client, "removeHook");
-  if (typeof addHook !== "function" || typeof removeHook !== "function") {
+  const clone: unknown = Reflect.get(client, "clone");
+  if (
+    typeof addHook !== "function"
+    || typeof removeHook !== "function"
+    || typeof clone !== "function"
+  ) {
     return;
   }
+
+  // A clone gets the generated, unpatched `removeHook`, so it must hold the
+  // user's own hooks: otherwise removing one by its original function finds
+  // nothing and the wrapped hook keeps running. The clone is wrapped again
+  // only if it is passed to an SDK.
+  Reflect.set(client, "clone", (): unknown => {
+    const child: unknown = Reflect.apply(clone, client, []);
+    if (hasRequestHooks(child)) {
+      child.requestHooks = child.requestHooks.map(unwrapUserHook);
+    }
+    return child;
+  });
 
   Reflect.set(client, "addHook", (...args: unknown[]): unknown => {
     const [kind, fn] = args;
@@ -250,10 +277,17 @@ export class SignalTimeoutHook
     const timeoutSignal = hookCtx.timeoutMs != null && hookCtx.timeoutMs > 0
       ? AbortSignal.timeout(hookCtx.timeoutMs)
       : undefined;
-    const signal = combineSignals(callerSignals.get(hookCtx), timeoutSignal);
-    if (signal) {
-      fetchSignals.set(request, signal);
+    const strongSignal = combineSignals(callerSignals.get(hookCtx), timeoutSignal);
+    if (!strongSignal) {
+      return request;
     }
+    // `request.signal` is included so that a signal a later create-request
+    // hook put on the request still cancels the fetch, instead of the caller's
+    // signal captured above overriding it.
+    fetchSignals.set(
+      request,
+      combineSignals(strongSignal, request.signal) ?? strongSignal,
+    );
     return request;
   }
 }
