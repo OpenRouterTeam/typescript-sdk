@@ -16321,7 +16321,6 @@ components:
               - $ref: '#/components/schemas/OutputToolSearchServerToolItem'
               - $ref: '#/components/schemas/OutputMemoryServerToolItem'
               - $ref: '#/components/schemas/OutputArmorBlockedItem'
-              - $ref: '#/components/schemas/OutputMcpServerToolItem'
               - $ref: '#/components/schemas/OutputSearchModelsServerToolItem'
               - $ref: '#/components/schemas/OutputFusionServerToolItem'
               - $ref: '#/components/schemas/OutputAdvisorServerToolItem'
@@ -17412,6 +17411,134 @@ components:
         - 'approval_request_id'
         - 'approve'
       type: 'object'
+    McpCallArgumentsDeltaEvent:
+      description: 'A partial update to the JSON-encoded arguments of an MCP tool call.'
+      example:
+        delta: '{"query":"text-to-image"}'
+        item_id: 'mcp_abc123'
+        output_index: 1
+        sequence_number: 6
+        type: 'response.mcp_call_arguments.delta'
+      properties:
+        delta:
+          type: 'string'
+        item_id:
+          type: 'string'
+        output_index:
+          type: 'integer'
+        sequence_number:
+          type: 'integer'
+        type:
+          enum:
+            - 'response.mcp_call_arguments.delta'
+          type: 'string'
+      required:
+        - 'type'
+        - 'delta'
+        - 'item_id'
+        - 'output_index'
+        - 'sequence_number'
+      type: 'object'
+    McpCallArgumentsDoneEvent:
+      description: 'Emitted when the JSON-encoded arguments of an MCP tool call are finalized.'
+      example:
+        arguments: '{"query":"text-to-image"}'
+        item_id: 'mcp_abc123'
+        output_index: 1
+        sequence_number: 7
+        type: 'response.mcp_call_arguments.done'
+      properties:
+        arguments:
+          type: 'string'
+        item_id:
+          type: 'string'
+        output_index:
+          type: 'integer'
+        sequence_number:
+          type: 'integer'
+        type:
+          enum:
+            - 'response.mcp_call_arguments.done'
+          type: 'string'
+      required:
+        - 'type'
+        - 'arguments'
+        - 'item_id'
+        - 'output_index'
+        - 'sequence_number'
+      type: 'object'
+    McpCallCompletedEvent:
+      description: 'Emitted when an MCP tool call completes successfully.'
+      example:
+        item_id: 'mcp_abc123'
+        output_index: 1
+        sequence_number: 8
+        type: 'response.mcp_call.completed'
+      properties:
+        item_id:
+          type: 'string'
+        output_index:
+          type: 'integer'
+        sequence_number:
+          type: 'integer'
+        type:
+          enum:
+            - 'response.mcp_call.completed'
+          type: 'string'
+      required:
+        - 'type'
+        - 'item_id'
+        - 'output_index'
+        - 'sequence_number'
+      type: 'object'
+    McpCallFailedEvent:
+      description: 'Emitted when an MCP tool call fails.'
+      example:
+        item_id: 'mcp_abc123'
+        output_index: 1
+        sequence_number: 8
+        type: 'response.mcp_call.failed'
+      properties:
+        item_id:
+          type: 'string'
+        output_index:
+          type: 'integer'
+        sequence_number:
+          type: 'integer'
+        type:
+          enum:
+            - 'response.mcp_call.failed'
+          type: 'string'
+      required:
+        - 'type'
+        - 'item_id'
+        - 'output_index'
+        - 'sequence_number'
+      type: 'object'
+    McpCallInProgressEvent:
+      description: 'Emitted when an MCP tool call begins executing.'
+      example:
+        item_id: 'mcp_abc123'
+        output_index: 1
+        sequence_number: 5
+        type: 'response.mcp_call.in_progress'
+      properties:
+        item_id:
+          type: 'string'
+        output_index:
+          type: 'integer'
+        sequence_number:
+          type: 'integer'
+        type:
+          enum:
+            - 'response.mcp_call.in_progress'
+          type: 'string'
+      required:
+        - 'type'
+        - 'item_id'
+        - 'output_index'
+        - 'sequence_number'
+      type: 'object'
     McpCallItem:
       description: 'An MCP tool call with its output or error'
       example:
@@ -17466,6 +17593,78 @@ components:
         - 'type'
         - 'code'
         - 'message'
+      type: 'object'
+    McpListToolsCompletedEvent:
+      description: 'Emitted when tool discovery against an MCP server succeeds.'
+      example:
+        item_id: 'mcpl_abc123'
+        output_index: 0
+        sequence_number: 2
+        type: 'response.mcp_list_tools.completed'
+      properties:
+        item_id:
+          type: 'string'
+        output_index:
+          type: 'integer'
+        sequence_number:
+          type: 'integer'
+        type:
+          enum:
+            - 'response.mcp_list_tools.completed'
+          type: 'string'
+      required:
+        - 'type'
+        - 'item_id'
+        - 'output_index'
+        - 'sequence_number'
+      type: 'object'
+    McpListToolsFailedEvent:
+      description: 'Emitted when tool discovery against an MCP server fails.'
+      example:
+        item_id: 'mcpl_abc123'
+        output_index: 0
+        sequence_number: 2
+        type: 'response.mcp_list_tools.failed'
+      properties:
+        item_id:
+          type: 'string'
+        output_index:
+          type: 'integer'
+        sequence_number:
+          type: 'integer'
+        type:
+          enum:
+            - 'response.mcp_list_tools.failed'
+          type: 'string'
+      required:
+        - 'type'
+        - 'item_id'
+        - 'output_index'
+        - 'sequence_number'
+      type: 'object'
+    McpListToolsInProgressEvent:
+      description: 'Emitted when tool discovery against an MCP server begins.'
+      example:
+        item_id: 'mcpl_abc123'
+        output_index: 0
+        sequence_number: 1
+        type: 'response.mcp_list_tools.in_progress'
+      properties:
+        item_id:
+          type: 'string'
+        output_index:
+          type: 'integer'
+        sequence_number:
+          type: 'integer'
+        type:
+          enum:
+            - 'response.mcp_list_tools.in_progress'
+          type: 'string'
+      required:
+        - 'type'
+        - 'item_id'
+        - 'output_index'
+        - 'sequence_number'
       type: 'object'
     McpListToolsItem:
       description: 'List of available MCP tools from a server'
@@ -25363,6 +25562,8 @@ components:
           file_search_call: '#/components/schemas/OutputFileSearchCallItem'
           function_call: '#/components/schemas/OutputFunctionCallItem'
           image_generation_call: '#/components/schemas/OutputImageGenerationCallItem'
+          mcp_call: '#/components/schemas/McpCallItem'
+          mcp_list_tools: '#/components/schemas/McpListToolsItem'
           message: '#/components/schemas/OutputMessageItem'
           openrouter:advisor: '#/components/schemas/OutputAdvisorServerToolItem'
           openrouter:apply_patch: '#/components/schemas/OutputApplyPatchServerToolItem'
@@ -25376,7 +25577,6 @@ components:
           openrouter:files: '#/components/schemas/OutputFilesServerToolItem'
           openrouter:fusion: '#/components/schemas/OutputFusionServerToolItem'
           openrouter:image_generation: '#/components/schemas/OutputImageGenerationServerToolItem'
-          openrouter:mcp: '#/components/schemas/OutputMcpServerToolItem'
           openrouter:memory: '#/components/schemas/OutputMemoryServerToolItem'
           openrouter:shell: '#/components/schemas/OutputShellServerToolItem'
           openrouter:subagent: '#/components/schemas/OutputSubagentServerToolItem'
@@ -25424,7 +25624,8 @@ components:
         - $ref: '#/components/schemas/OutputWebFetchServerToolItem'
         - $ref: '#/components/schemas/OutputToolSearchServerToolItem'
         - $ref: '#/components/schemas/OutputMemoryServerToolItem'
-        - $ref: '#/components/schemas/OutputMcpServerToolItem'
+        - $ref: '#/components/schemas/McpListToolsItem'
+        - $ref: '#/components/schemas/McpCallItem'
         - $ref: '#/components/schemas/OutputSearchModelsServerToolItem'
         - $ref: '#/components/schemas/OutputFusionServerToolItem'
         - $ref: '#/components/schemas/OutputAdvisorServerToolItem'
@@ -25502,31 +25703,6 @@ components:
         - 'type'
         - 'id'
         - 'status'
-      type: 'object'
-    OutputMcpServerToolItem:
-      description: 'An openrouter:mcp server tool output item'
-      example:
-        id: 'mcp_tmp_abc123'
-        serverLabel: 'my-server'
-        status: 'completed'
-        toolName: 'get_data'
-        type: 'openrouter:mcp'
-      properties:
-        id:
-          type: 'string'
-        serverLabel:
-          type: 'string'
-        status:
-          $ref: '#/components/schemas/ToolCallStatus'
-        toolName:
-          type: 'string'
-        type:
-          enum:
-            - 'openrouter:mcp'
-          type: 'string'
-      required:
-        - 'status'
-        - 'type'
       type: 'object'
     OutputMemoryServerToolItem:
       description: 'An openrouter:memory server tool output item'
@@ -31333,6 +31509,14 @@ components:
           response.image_generation_call.partial_image: '#/components/schemas/ImageGenCallPartialImageEvent'
           response.in_progress: '#/components/schemas/OpenResponsesInProgressEvent'
           response.incomplete: '#/components/schemas/StreamEventsResponseIncomplete'
+          response.mcp_call_arguments.delta: '#/components/schemas/McpCallArgumentsDeltaEvent'
+          response.mcp_call_arguments.done: '#/components/schemas/McpCallArgumentsDoneEvent'
+          response.mcp_call.completed: '#/components/schemas/McpCallCompletedEvent'
+          response.mcp_call.failed: '#/components/schemas/McpCallFailedEvent'
+          response.mcp_call.in_progress: '#/components/schemas/McpCallInProgressEvent'
+          response.mcp_list_tools.completed: '#/components/schemas/McpListToolsCompletedEvent'
+          response.mcp_list_tools.failed: '#/components/schemas/McpListToolsFailedEvent'
+          response.mcp_list_tools.in_progress: '#/components/schemas/McpListToolsInProgressEvent'
           response.output_item.added: '#/components/schemas/StreamEventsResponseOutputItemAdded'
           response.output_item.done: '#/components/schemas/StreamEventsResponseOutputItemDone'
           response.output_text.annotation.added: '#/components/schemas/AnnotationAddedEvent'
@@ -31422,6 +31606,14 @@ components:
         - $ref: '#/components/schemas/FusionCallAnalysisInProgressEvent'
         - $ref: '#/components/schemas/FusionCallAnalysisCompletedEvent'
         - $ref: '#/components/schemas/FusionCallCompletedEvent'
+        - $ref: '#/components/schemas/McpListToolsInProgressEvent'
+        - $ref: '#/components/schemas/McpListToolsCompletedEvent'
+        - $ref: '#/components/schemas/McpListToolsFailedEvent'
+        - $ref: '#/components/schemas/McpCallInProgressEvent'
+        - $ref: '#/components/schemas/McpCallArgumentsDeltaEvent'
+        - $ref: '#/components/schemas/McpCallArgumentsDoneEvent'
+        - $ref: '#/components/schemas/McpCallCompletedEvent'
+        - $ref: '#/components/schemas/McpCallFailedEvent'
         - $ref: '#/components/schemas/DebugEvent'
     StreamEventsResponseCompleted:
       allOf:
