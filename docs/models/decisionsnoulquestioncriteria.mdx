@@ -7,18 +7,12 @@ title: "DecisionsNoulQuestionCriteria"
 ```typescript
 import { DecisionsNoulQuestionCriteria } from "@openrouter/sdk/models";
 
-let value: DecisionsNoulQuestionCriteria = {
-  false: "<value>",
-  true: {
-    "0": "<value 1>",
-    "1": "<value 2>",
-  },
-};
+let value: DecisionsNoulQuestionCriteria = {};
 ```
 
 ## Fields
 
 | Field                                                             | Type                                                              | Required                                                          | Description                                                       |
 | ----------------------------------------------------------------- | ----------------------------------------------------------------- | ----------------------------------------------------------------- | ----------------------------------------------------------------- |
-| `false`                                                           | *models.False*                                                    | ✔️                                                | A plain string, or a JSON object or array of structured guidance. |
-| `true`                                                            | *models.True*                                                     | ✔️                                                | A plain string, or a JSON object or array of structured guidance. |
+| `false`                                                           | *models.False*                                                    | ➖                                                | A plain string, or a JSON object or array of structured guidance. |
+| `true`                                                            | *models.True*                                                     | ➖                                                | A plain string, or a JSON object or array of structured guidance. |

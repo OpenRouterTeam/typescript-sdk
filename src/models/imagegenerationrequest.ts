@@ -161,7 +161,7 @@ export type ImageGenerationRequest = {
    */
   background?: ImageGenerationRequestBackground | undefined;
   /**
-   * Number of animation frames (2-64) when `output_format` is `gif`. Only honored by models that produce animations (OpenAI gpt-image-2.6, generations only); ignored otherwise.
+   * Number of animation frames (2-64) when `output_format` is `gif`. Only honored by models that produce animations; each accepts its own range and rejects values outside it. Ignored otherwise.
    */
   frameCount?: number | undefined;
   /**

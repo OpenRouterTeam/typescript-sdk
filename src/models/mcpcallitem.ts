@@ -6,7 +6,8 @@
 import * as z from "zod/v4";
 import { remap as remap$ } from "../lib/primitives.js";
 import { safeParse } from "../lib/schemas.js";
-import { ClosedEnum } from "../types/enums.js";
+import * as openEnums from "../types/enums.js";
+import { ClosedEnum, OpenEnum } from "../types/enums.js";
 import { Result as SafeParseResult } from "../types/fp.js";
 import { SDKValidationError } from "./errors/sdkvalidationerror.js";
 import {
@@ -15,6 +16,15 @@ import {
   McpToolCallError$Outbound,
   McpToolCallError$outboundSchema,
 } from "./mcptoolcallerror.js";
+
+export const McpCallItemStatus = {
+  InProgress: "in_progress",
+  Completed: "completed",
+  Incomplete: "incomplete",
+  Calling: "calling",
+  Failed: "failed",
+} as const;
+export type McpCallItemStatus = OpenEnum<typeof McpCallItemStatus>;
 
 export const McpCallItemType = {
   McpCall: "mcp_call",
@@ -25,6 +35,7 @@ export type McpCallItemType = ClosedEnum<typeof McpCallItemType>;
  * An MCP tool call with its output or error
  */
 export type McpCallItem = {
+  approvalRequestId?: string | null | undefined;
   arguments: string;
   /**
    * Error from an MCP tool call, either a plain message or a structured error
@@ -34,8 +45,20 @@ export type McpCallItem = {
   name: string;
   output?: string | null | undefined;
   serverLabel: string;
+  status?: McpCallItemStatus | undefined;
   type: McpCallItemType;
 };
+
+/** @internal */
+export const McpCallItemStatus$inboundSchema: z.ZodType<
+  McpCallItemStatus,
+  unknown
+> = openEnums.inboundSchema(McpCallItemStatus);
+/** @internal */
+export const McpCallItemStatus$outboundSchema: z.ZodType<
+  string,
+  McpCallItemStatus
+> = openEnums.outboundSchema(McpCallItemStatus);
 
 /** @internal */
 export const McpCallItemType$inboundSchema: z.ZodEnum<typeof McpCallItemType> =
@@ -47,26 +70,31 @@ export const McpCallItemType$outboundSchema: z.ZodEnum<typeof McpCallItemType> =
 /** @internal */
 export const McpCallItem$inboundSchema: z.ZodType<McpCallItem, unknown> = z
   .object({
+    approval_request_id: z.nullable(z.string()).optional(),
     arguments: z.string(),
     error: z.nullable(McpToolCallError$inboundSchema).optional(),
     id: z.string(),
     name: z.string(),
     output: z.nullable(z.string()).optional(),
     server_label: z.string(),
+    status: McpCallItemStatus$inboundSchema.optional(),
     type: McpCallItemType$inboundSchema,
   }).transform((v) => {
     return remap$(v, {
+      "approval_request_id": "approvalRequestId",
       "server_label": "serverLabel",
     });
   });
 /** @internal */
 export type McpCallItem$Outbound = {
+  approval_request_id?: string | null | undefined;
   arguments: string;
   error?: McpToolCallError$Outbound | null | undefined;
   id: string;
   name: string;
   output?: string | null | undefined;
   server_label: string;
+  status?: string | undefined;
   type: string;
 };
 
@@ -75,15 +103,18 @@ export const McpCallItem$outboundSchema: z.ZodType<
   McpCallItem$Outbound,
   McpCallItem
 > = z.object({
+  approvalRequestId: z.nullable(z.string()).optional(),
   arguments: z.string(),
   error: z.nullable(McpToolCallError$outboundSchema).optional(),
   id: z.string(),
   name: z.string(),
   output: z.nullable(z.string()).optional(),
   serverLabel: z.string(),
+  status: McpCallItemStatus$outboundSchema.optional(),
   type: McpCallItemType$outboundSchema,
 }).transform((v) => {
   return remap$(v, {
+    approvalRequestId: "approval_request_id",
     serverLabel: "server_label",
   });
 });
