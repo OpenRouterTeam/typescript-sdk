@@ -31101,6 +31101,10 @@ components:
           input_audio: '#/components/schemas/SpeechInputReferenceAudio'
           text: '#/components/schemas/SpeechInputReferenceText'
         propertyName: 'type'
+      example:
+        input_audio:
+          data: 'data:audio/wav;base64,UklGRuQXDABXQVZF...'
+        type: 'input_audio'
       oneOf:
         - $ref: '#/components/schemas/SpeechInputReferenceAudio'
         - $ref: '#/components/schemas/SpeechInputReferenceText'
@@ -31124,6 +31128,8 @@ components:
       type: 'object'
     SpeechInputReferenceAudioInput:
       description: 'Reference audio input object'
+      example:
+        data: 'data:audio/wav;base64,UklGRuQXDABXQVZF...'
       properties:
         data:
           description: 'Base64-encoded reference audio (optionally a data URI). Supported audio formats are provider-specific. Limited to 20 MiB of base64 (15 MiB of decoded audio). Exactly one of `data` or `url` is required.'
@@ -31161,6 +31167,8 @@ components:
       type: 'object'
     SpeechInputReferenceImageInput:
       description: 'Reference image input object'
+      example:
+        url: 'data:image/png;base64,iVBORw0KGgo...'
       properties:
         url:
           description: 'JPEG, PNG, or WebP reference image as a base64 data URI or a public http(s) URL. Remote images are downloaded (15 MiB max) and forwarded as bytes, never as the URL.'
