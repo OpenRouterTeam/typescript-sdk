@@ -7,17 +7,19 @@ The OpenRouter TypeScript SDK is a type-safe toolkit for building AI application
 Integrating AI models into applications involves handling different provider APIs, managing model-specific requirements, and avoiding common implementation mistakes. The OpenRouter SDK standardizes these integrations and protects you from footguns.
 
 ```typescript
-import OpenRouter from '@openrouter/sdk';
+import { OpenRouter } from '@openrouter/sdk';
 
 const client = new OpenRouter({
   apiKey: process.env.OPENROUTER_API_KEY
 });
 
 const response = await client.chat.send({
-  model: "minimax/minimax-m2",
-  messages: [
-    { role: "user", content: "Explain quantum computing" }
-  ]
+  chatRequest: {
+    model: "minimax/minimax-m2",
+    messages: [
+      { role: "user", content: "Explain quantum computing" }
+    ]
+  }
 });
 ```
 
@@ -30,7 +32,10 @@ The SDK is automatically generated from OpenRouter's OpenAPI specs and updated w
 ```typescript
 // When new models launch, they're available instantly
 const response = await client.chat.send({
-  model: "minimax/minimax-m2",
+  chatRequest: {
+    model: "minimax/minimax-m2",
+    messages: [{ role: "user", content: "Hello" }]
+  }
 });
 ```
 
@@ -40,13 +45,15 @@ Every parameter, response field, and configuration option is fully typed. Invali
 
 ```typescript
 const response = await client.chat.send({
-  model: "minimax/minimax-m2",
-  messages: [
-    { role: "user", content: "Hello" }
-    // ← Your IDE validates message structure
-  ],
-  temperature: 0.7, // ← Type-checked
-  stream: true      // ← Response type changes based on this
+  chatRequest: {
+    model: "minimax/minimax-m2",
+    messages: [
+      { role: "user", content: "Hello" }
+      // ← Your IDE validates message structure
+    ],
+    temperature: 0.7, // ← Type-checked
+    stream: true      // ← Response type changes based on this
+  }
 });
 ```
 
@@ -62,9 +69,11 @@ const response = await client.chat.send({
 
 ```typescript
 const stream = await client.chat.send({
-  model: "minimax/minimax-m2",
-  messages: [{ role: "user", content: "Write a story" }],
-  stream: true
+  chatRequest: {
+    model: "minimax/minimax-m2",
+    messages: [{ role: "user", content: "Write a story" }],
+    stream: true
+  }
 });
 
 for await (const chunk of stream) {
@@ -84,18 +93,20 @@ Get your API key from [openrouter.ai/settings/keys](https://openrouter.ai/settin
 ## Quick start
 
 ```typescript
-import OpenRouter from '@openrouter/sdk';
+import { OpenRouter } from '@openrouter/sdk';
 
 const client = new OpenRouter({
   apiKey: process.env.OPENROUTER_API_KEY
 });
 
 const response = await client.chat.send({
-  model: "minimax/minimax-m2",
-  messages: [
-    { role: "user", content: "Hello!" }
-  ]
+  chatRequest: {
+    model: "minimax/minimax-m2",
+    messages: [
+      { role: "user", content: "Hello!" }
+    ]
+  }
 });
 
-console.log(response.choices[0].message.content);
+console.log(response.choices[0]?.message.content);
 ```
