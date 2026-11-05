@@ -1,19 +1,19 @@
 lockVersion: ""
 id: ""
 management:
-  docChecksum: 3a61d3bea3b76b041d86eee1e9ec4213
+  docChecksum: 5c8ee5f74504ff268ca2f26308978bb3
   docVersion: 1.0.0
   speakeasyVersion: 1.803.2
   generationVersion: 2.950.13
-  releaseVersion: 1.5.54
-  configChecksum: cf5f619abced3b6124cb6e30d78b3d11
+  releaseVersion: 1.5.55
+  configChecksum: 30acb9600c0665d3bfb65b35682d7a53
   repoURL: https://github.com/OpenRouterTeam/typescript-sdk.git
   installationURL: https://github.com/OpenRouterTeam/typescript-sdk
   published: true
 persistentEdits:
-  generation_id: cc92b56f-42db-49b3-b429-1d57bf05b586
-  pristine_commit_hash: 5ab61fe8b727f16eee752ef1558065dd94514661
-  pristine_tree_hash: a8e9f38c16ae5fbbc327abf5cf1c35a50e6d74ee
+  generation_id: 00767728-fb84-456f-bc74-37661212c247
+  pristine_commit_hash: 6c5bd7f23ca0325882e96fa395a4898a23ddbecf
+  pristine_tree_hash: 36f146fa10eb984e204cd8e1b9efb4cddce815e7
 features:
   typescript:
     acceptHeaders: 2.81.2
@@ -13932,16 +13932,16 @@ trackedFiles:
     pristine_git_object: a03f5f3401eba71192d69dc880a7c376240b2725
   docs/models/speechinputreferenceaudio.mdx:
     id: 396eede2c948
-    last_write_checksum: sha1:608f33307d579c46100ff72e32c7e480b51a137d
-    pristine_git_object: 3e0de3ca68a94696f31f2d2255c61547bdba75d7
+    last_write_checksum: sha1:3af6dce0987d3b006e43cc0ac6bbf6d95b5c7fab
+    pristine_git_object: 2c82531c11823e134dde811be68cb5080021b119
   docs/models/speechinputreferenceaudioinput.mdx:
     id: 38c61bd6aa17
     last_write_checksum: sha1:5994f9509e9c4f553b7efcd56139c962db0bce1f
     pristine_git_object: 779a3094e803f5e909f37a3b51acf3d4755042a6
   docs/models/speechinputreferenceimage.mdx:
     id: 1230dca41222
-    last_write_checksum: sha1:a7fb1bdb3b8fddd2f599afd6b7fa85e8323b1b43
-    pristine_git_object: dccefa838c9faf721efcbe69885415f362a3d9e5
+    last_write_checksum: sha1:1503ff3d4b61033a832e401608c27a6974aad610
+    pristine_git_object: a098fe515377c1fc2903af5ad58749d8b703584b
   docs/models/speechinputreferenceimageinput.mdx:
     id: ff3c72c30311
     last_write_checksum: sha1:a9428193fede3c01634c80bf2bbf9c04ab1af74e
@@ -16107,12 +16107,12 @@ trackedFiles:
     pristine_git_object: 410efafd6a7f50d91ccb87131fedbe0c3d47e15a
   jsr.json:
     id: 7f6ab7767282
-    last_write_checksum: sha1:c420342386b30a6eac827f4341ec90cac02af4e5
-    pristine_git_object: e2d3667f8c3035f07eb3eed5b77743a39d97cd27
+    last_write_checksum: sha1:d531689bdd4dff8d525ca0995925f406f3319c03
+    pristine_git_object: f48b7103367b1269f6458dea490a0a6b85683f89
   package.json:
     id: 7030d0b2f71b
-    last_write_checksum: sha1:f9a972695e8658ab11fa063ead1226e9b7eb968e
-    pristine_git_object: 7ce09d63de5a369538ead1cdf983ef7f228f86ee
+    last_write_checksum: sha1:0d709abcfc6d8c4b72539615e296ae29e09b9071
+    pristine_git_object: 757438557ebd0bfe0a98d127b02b9b522be17904
   src/core.ts:
     id: f431fdbcd144
     last_write_checksum: sha1:5aa66b0b6a5964f3eea7f3098c2eb3c0ee9c0131
@@ -16711,8 +16711,8 @@ trackedFiles:
     pristine_git_object: a187e58707bdb726ca2aff74941efe7493422d4e
   src/lib/config.ts:
     id: 320761608fb3
-    last_write_checksum: sha1:776b2fa30eaabd728c3a16b810c3df4e82fca88f
-    pristine_git_object: 65dc7c6c9b97aca37f1c10b5b4213a09f2857f0d
+    last_write_checksum: sha1:936944a5e8ce970497e4b2ebb7aaf767dd15de9e
+    pristine_git_object: c860fc39a862ca9b1f4ba89a67b9f8720ddd889b
   src/lib/dlv.ts:
     id: b1988214835a
     last_write_checksum: sha1:eaac763b22717206a6199104e0403ed17a4e2711
@@ -25896,4 +25896,3 @@ examples:
         "500":
           application/json: {"error": {"code": 500, "message": "Internal Server Error"}}
 examplesVersion: 1.0.2
-releaseNotes: "## Typescript SDK Changes:\n* `openrouter.batch.createBatches()`:  `response.results[].response.body.union(OpenResponsesResult).output[]` **Changed** (Breaking ⚠️)\n* `openrouter.batch.getBatches()`:  `response.results[].response.body.union(OpenResponsesResult).output[]` **Changed** (Breaking ⚠️)\n* `openrouter.presets.createPresetsResponses()`: \n  *  `request.responsesRequest.input.union(Array<>)[].union(OutputMcpServerToolItem)` **Removed** (Breaking ⚠️)\n"
