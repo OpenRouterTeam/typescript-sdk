@@ -2,7 +2,7 @@
 title: "DecisionsResponseAnswers"
 ---
 
-A Decisions answer using a boolean, choice, score, or image bounding-box evaluation.
+A Decisions answer using a boolean, choice, score, or image bounding-box evaluation, or a refusal of that question.
 
 
 ## Supported Types
@@ -36,6 +36,14 @@ const value: models.DecisionsChoiceAnswer = {
 const value: models.DecisionsNoulAnswer = {
   noul: 4078.5,
   type: "noul",
+};
+```
+
+### `models.DecisionsRefusalAnswer`
+
+```typescript
+const value: models.DecisionsRefusalAnswer = {
+  type: "refusal",
 };
 ```
 

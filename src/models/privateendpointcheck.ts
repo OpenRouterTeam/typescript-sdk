@@ -15,7 +15,9 @@ import {
 
 export type PrivateEndpointCheck = {
   /**
-   * Model the upstream reported serving, when it differs from the request.
+   * Deprecated: validation no longer compares the model the upstream reports, so this field is never returned.
+   *
+   * @deprecated field: This will be removed in a future release, please migrate away from it as soon as possible.
    */
   actualModel?: string | null | undefined;
   /**

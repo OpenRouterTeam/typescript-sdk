@@ -1,0 +1,27 @@
+---
+title: "DeferredToolsDetails"
+---
+
+Totals across every upstream model call of a deferred-tools run. The native usage fields report only the final call; cost covers every call.
+
+## Example Usage
+
+```typescript
+import { DeferredToolsDetails } from "@openrouter/sdk/models";
+
+let value: DeferredToolsDetails = {
+  completionTokens: 180,
+  promptTokens: 2400,
+  totalTokens: 2580,
+  turns: 2,
+};
+```
+
+## Fields
+
+| Field                                             | Type                                              | Required                                          | Description                                       |
+| ------------------------------------------------- | ------------------------------------------------- | ------------------------------------------------- | ------------------------------------------------- |
+| `completionTokens`                                | *number*                                          | ✔️                                | Completion tokens summed over every upstream call |
+| `promptTokens`                                    | *number*                                          | ✔️                                | Prompt tokens summed over every upstream call     |
+| `totalTokens`                                     | *number*                                          | ✔️                                | Sum of the above two fields                       |
+| `turns`                                           | *number*                                          | ✔️                                | Upstream model calls the run made                 |

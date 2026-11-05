@@ -22,9 +22,17 @@ import {
   DecisionsNoulAnswer$inboundSchema,
 } from "./decisionsnoulanswer.js";
 import {
+  DecisionsRefusalAnswer,
+  DecisionsRefusalAnswer$inboundSchema,
+} from "./decisionsrefusalanswer.js";
+import {
   DecisionsScoreAnswer,
   DecisionsScoreAnswer$inboundSchema,
 } from "./decisionsscoreanswer.js";
+import {
+  DecisionsUrlCitationAnnotation,
+  DecisionsUrlCitationAnnotation$inboundSchema,
+} from "./decisionsurlcitationannotation.js";
 import {
   DecisionsUsageInputTokensDetails,
   DecisionsUsageInputTokensDetails$inboundSchema,
@@ -32,12 +40,13 @@ import {
 import { SDKValidationError } from "./errors/sdkvalidationerror.js";
 
 /**
- * A Decisions answer using a boolean, choice, score, or image bounding-box evaluation.
+ * A Decisions answer using a boolean, choice, score, or image bounding-box evaluation, or a refusal of that question.
  */
 export type DecisionsResponseAnswers =
   | DecisionsBoxAnswer
   | DecisionsChoiceAnswer
   | DecisionsNoulAnswer
+  | DecisionsRefusalAnswer
   | DecisionsScoreAnswer
   | discriminatedUnionTypes.Unknown<"type">;
 
@@ -52,11 +61,16 @@ export type DecisionsResponseUsage = {
 };
 
 export type DecisionsResponse = {
+  /**
+   * Sources for the request as a whole, when the provider returns them. Not attributed to individual answers.
+   */
+  annotations?: Array<DecisionsUrlCitationAnnotation> | undefined;
   answers: {
     [k: string]:
       | DecisionsBoxAnswer
       | DecisionsChoiceAnswer
       | DecisionsNoulAnswer
+      | DecisionsRefusalAnswer
       | DecisionsScoreAnswer
       | discriminatedUnionTypes.Unknown<"type">;
   };
@@ -74,6 +88,7 @@ export const DecisionsResponseAnswers$inboundSchema: z.ZodType<
   box: DecisionsBoxAnswer$inboundSchema,
   choice: DecisionsChoiceAnswer$inboundSchema,
   noul: DecisionsNoulAnswer$inboundSchema,
+  refusal: DecisionsRefusalAnswer$inboundSchema,
   score: DecisionsScoreAnswer$inboundSchema,
 });
 
@@ -120,12 +135,14 @@ export const DecisionsResponse$inboundSchema: z.ZodType<
   DecisionsResponse,
   unknown
 > = z.object({
+  annotations: z.array(DecisionsUrlCitationAnnotation$inboundSchema).optional(),
   answers: z.record(
     z.string(),
     discriminatedUnion("type", {
       box: DecisionsBoxAnswer$inboundSchema,
       choice: DecisionsChoiceAnswer$inboundSchema,
       noul: DecisionsNoulAnswer$inboundSchema,
+      refusal: DecisionsRefusalAnswer$inboundSchema,
       score: DecisionsScoreAnswer$inboundSchema,
     }),
   ),

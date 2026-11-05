@@ -33,6 +33,16 @@ const value: models.OutputCodeInterpreterCallItem = {
 };
 ```
 
+### `models.OutputCompactionItem`
+
+```typescript
+const value: models.OutputCompactionItem = {
+  encryptedContent: "<value>",
+  id: "msg-abc123",
+  type: "compaction",
+};
+```
+
 ### `models.OutputComputerCallItem`
 
 ```typescript
@@ -86,6 +96,29 @@ const value: models.OutputImageGenerationCallItem = {
   id: "msg-abc123",
   status: "completed",
   type: "image_generation_call",
+};
+```
+
+### `models.McpCallItem`
+
+```typescript
+const value: models.McpCallItem = {
+  arguments: "<value>",
+  id: "msg-abc123",
+  name: "<value>",
+  serverLabel: "<value>",
+  type: "mcp_call",
+};
+```
+
+### `models.McpListToolsItem`
+
+```typescript
+const value: models.McpListToolsItem = {
+  id: "msg-abc123",
+  serverLabel: "<value>",
+  tools: [],
+  type: "mcp_list_tools",
 };
 ```
 
@@ -218,15 +251,6 @@ const value: models.OutputFusionServerToolItem = {
 const value: models.OutputImageGenerationServerToolItem = {
   status: "completed",
   type: "openrouter:image_generation",
-};
-```
-
-### `models.OutputMcpServerToolItem`
-
-```typescript
-const value: models.OutputMcpServerToolItem = {
-  status: "completed",
-  type: "openrouter:mcp",
 };
 ```
 

@@ -4,7 +4,10 @@
  */
 
 import * as z from "zod/v4";
+import { safeParse } from "../lib/schemas.js";
 import { ClosedEnum } from "../types/enums.js";
+import { Result as SafeParseResult } from "../types/fp.js";
+import { SDKValidationError } from "./errors/sdkvalidationerror.js";
 
 export const McpHttpErrorType = {
   HttpError: "http_error",
@@ -21,10 +24,21 @@ export type McpHttpError = {
 };
 
 /** @internal */
-export const McpHttpErrorType$outboundSchema: z.ZodEnum<
+export const McpHttpErrorType$inboundSchema: z.ZodEnum<
   typeof McpHttpErrorType
 > = z.enum(McpHttpErrorType);
+/** @internal */
+export const McpHttpErrorType$outboundSchema: z.ZodEnum<
+  typeof McpHttpErrorType
+> = McpHttpErrorType$inboundSchema;
 
+/** @internal */
+export const McpHttpError$inboundSchema: z.ZodType<McpHttpError, unknown> = z
+  .object({
+    code: z.int(),
+    message: z.string(),
+    type: McpHttpErrorType$inboundSchema,
+  });
 /** @internal */
 export type McpHttpError$Outbound = {
   code: number;
@@ -44,4 +58,13 @@ export const McpHttpError$outboundSchema: z.ZodType<
 
 export function mcpHttpErrorToJSON(mcpHttpError: McpHttpError): string {
   return JSON.stringify(McpHttpError$outboundSchema.parse(mcpHttpError));
+}
+export function mcpHttpErrorFromJSON(
+  jsonString: string,
+): SafeParseResult<McpHttpError, SDKValidationError> {
+  return safeParse(
+    jsonString,
+    (x) => McpHttpError$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'McpHttpError' from JSON`,
+  );
 }

@@ -8,6 +8,10 @@ import { remap as remap$ } from "../lib/primitives.js";
 import { safeParse } from "../lib/schemas.js";
 import { Result as SafeParseResult } from "../types/fp.js";
 import { CostDetails, CostDetails$inboundSchema } from "./costdetails.js";
+import {
+  DeferredToolsDetails,
+  DeferredToolsDetails$inboundSchema,
+} from "./deferredtoolsdetails.js";
 import { SDKValidationError } from "./errors/sdkvalidationerror.js";
 import {
   ServerToolUseDetails,
@@ -78,6 +82,10 @@ export type ChatUsage = {
    * Breakdown of upstream inference costs
    */
   costDetails?: CostDetails | null | undefined;
+  /**
+   * Totals across every upstream model call of a deferred-tools run. The native usage fields report only the final call; cost covers every call.
+   */
+  deferredToolsDetails?: DeferredToolsDetails | undefined;
   /**
    * Whether a request was made using a Bring Your Own Key configuration
    */
@@ -164,6 +172,7 @@ export const ChatUsage$inboundSchema: z.ZodType<ChatUsage, unknown> = z.object({
   ).optional(),
   cost: z.nullable(z.number()).optional(),
   cost_details: z.nullable(CostDetails$inboundSchema).optional(),
+  deferred_tools_details: DeferredToolsDetails$inboundSchema.optional(),
   is_byok: z.boolean().optional(),
   prompt_tokens: z.int(),
   prompt_tokens_details: z.nullable(
@@ -177,6 +186,7 @@ export const ChatUsage$inboundSchema: z.ZodType<ChatUsage, unknown> = z.object({
     "completion_tokens": "completionTokens",
     "completion_tokens_details": "completionTokensDetails",
     "cost_details": "costDetails",
+    "deferred_tools_details": "deferredToolsDetails",
     "is_byok": "isByok",
     "prompt_tokens": "promptTokens",
     "prompt_tokens_details": "promptTokensDetails",
