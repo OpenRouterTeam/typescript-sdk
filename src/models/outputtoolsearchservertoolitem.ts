@@ -15,6 +15,19 @@ import {
   FailableToolCallStatus$outboundSchema,
 } from "./failabletoolcallstatus.js";
 
+/**
+ * How the model saw the matches. `compact` means each tool by name, description, and input shape, plus a call example. Replaying the item renders the same result.
+ */
+export const OutputToolSearchServerToolItemFormat = {
+  Compact: "compact",
+} as const;
+/**
+ * How the model saw the matches. `compact` means each tool by name, description, and input shape, plus a call example. Replaying the item renders the same result.
+ */
+export type OutputToolSearchServerToolItemFormat = ClosedEnum<
+  typeof OutputToolSearchServerToolItemFormat
+>;
+
 export type Match = {
   definition: { [k: string]: any };
   schemaDigest: string;
@@ -33,15 +46,48 @@ export type OutputToolSearchServerToolItemType = ClosedEnum<
  */
 export type OutputToolSearchServerToolItem = {
   /**
+   * The JSON arguments of the model call, verbatim. Replaying the item reuses them.
+   */
+  arguments?: string | undefined;
+  /**
+   * The ID of the model call that ran the search. Replaying the item reuses it.
+   */
+  callId?: string | undefined;
+  /**
+   * The deferred-tool index the router showed the model with a pre-search, listing tool sources and names. Replaying the item shows the same index.
+   */
+  catalogIndex?: string | undefined;
+  /**
    * The error message when the tool call failed before producing a result. Set together with `status: 'failed'`; absent on a successful call.
    */
   error?: string | undefined;
+  /**
+   * How the model saw the matches. `compact` means each tool by name, description, and input shape, plus a call example. Replaying the item renders the same result.
+   */
+  format?: OutputToolSearchServerToolItemFormat | undefined;
+  /**
+   * The guidance the model got when the search matched no tools.
+   */
+  hint?: string | undefined;
   id?: string | undefined;
   matches?: Array<Match> | undefined;
   query?: string | undefined;
   status: FailableToolCallStatus;
+  /**
+   * The IDs of every tool call in the model response that ran the search, in order. Replaying the item keeps those calls in one turn.
+   */
+  turnCallIds?: Array<string> | undefined;
   type: OutputToolSearchServerToolItemType;
 };
+
+/** @internal */
+export const OutputToolSearchServerToolItemFormat$inboundSchema: z.ZodEnum<
+  typeof OutputToolSearchServerToolItemFormat
+> = z.enum(OutputToolSearchServerToolItemFormat);
+/** @internal */
+export const OutputToolSearchServerToolItemFormat$outboundSchema: z.ZodEnum<
+  typeof OutputToolSearchServerToolItemFormat
+> = OutputToolSearchServerToolItemFormat$inboundSchema;
 
 /** @internal */
 export const Match$inboundSchema: z.ZodType<Match, unknown> = z.object({
@@ -100,20 +146,38 @@ export const OutputToolSearchServerToolItem$inboundSchema: z.ZodType<
   OutputToolSearchServerToolItem,
   unknown
 > = z.object({
+  arguments: z.string().optional(),
+  call_id: z.string().optional(),
+  catalog_index: z.string().optional(),
   error: z.string().optional(),
+  format: OutputToolSearchServerToolItemFormat$inboundSchema.optional(),
+  hint: z.string().optional(),
   id: z.string().optional(),
   matches: z.array(z.lazy(() => Match$inboundSchema)).optional(),
   query: z.string().optional(),
   status: FailableToolCallStatus$inboundSchema,
+  turn_call_ids: z.array(z.string()).optional(),
   type: OutputToolSearchServerToolItemType$inboundSchema,
+}).transform((v) => {
+  return remap$(v, {
+    "call_id": "callId",
+    "catalog_index": "catalogIndex",
+    "turn_call_ids": "turnCallIds",
+  });
 });
 /** @internal */
 export type OutputToolSearchServerToolItem$Outbound = {
+  arguments?: string | undefined;
+  call_id?: string | undefined;
+  catalog_index?: string | undefined;
   error?: string | undefined;
+  format?: string | undefined;
+  hint?: string | undefined;
   id?: string | undefined;
   matches?: Array<Match$Outbound> | undefined;
   query?: string | undefined;
   status: string;
+  turn_call_ids?: Array<string> | undefined;
   type: string;
 };
 
@@ -122,12 +186,24 @@ export const OutputToolSearchServerToolItem$outboundSchema: z.ZodType<
   OutputToolSearchServerToolItem$Outbound,
   OutputToolSearchServerToolItem
 > = z.object({
+  arguments: z.string().optional(),
+  callId: z.string().optional(),
+  catalogIndex: z.string().optional(),
   error: z.string().optional(),
+  format: OutputToolSearchServerToolItemFormat$outboundSchema.optional(),
+  hint: z.string().optional(),
   id: z.string().optional(),
   matches: z.array(z.lazy(() => Match$outboundSchema)).optional(),
   query: z.string().optional(),
   status: FailableToolCallStatus$outboundSchema,
+  turnCallIds: z.array(z.string()).optional(),
   type: OutputToolSearchServerToolItemType$outboundSchema,
+}).transform((v) => {
+  return remap$(v, {
+    callId: "call_id",
+    catalogIndex: "catalog_index",
+    turnCallIds: "turn_call_ids",
+  });
 });
 
 export function outputToolSearchServerToolItemToJSON(
