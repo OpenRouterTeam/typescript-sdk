@@ -615,13 +615,16 @@ export class ModelResult<
    * @param toolCalls - The tool calls to check
    * @param currentRound - The current execution round (1-indexed)
    * @param currentResponse - The current response to save if pausing
+   * @param stopConditionMet - When true, auto-approved calls are not executed;
+   *   they are saved as skipped results so the paused turn stays well-formed
    * @returns True if execution should pause for approval, false to continue
    * @throws Error if approval is required but no state accessor is configured
    */
   private async handleApprovalCheck(
     toolCalls: ParsedToolCall<Tool>[],
     currentRound: number,
-    currentResponse: OpenResponsesResult
+    currentResponse: OpenResponsesResult,
+    stopConditionMet = false
   ): Promise<boolean> {
     if (!this.options.tools) return false;
 
@@ -648,8 +651,12 @@ export class ModelResult<
       );
     }
 
-    // Execute auto-approve tools
-    const unsentResults = await this.executeAutoApproveTools(autoExecute, turnContext);
+    // Execute auto-approve tools, unless stopWhen already says no tool may run
+    const unsentResults: UnsentToolResult<TTools>[] = stopConditionMet
+      ? autoExecute.map((tc) =>
+          createRejectedResult<TTools>(tc.id, String(tc.name), 'Tool execution skipped: stop condition met')
+        )
+      : await this.executeAutoApproveTools(autoExecute, turnContext);
 
     // Save state with pending approvals
     const stateUpdates: Partial<Omit<ConversationState<TTools>, 'id' | 'createdAt' | 'updatedAt'>> = {
@@ -1278,8 +1285,12 @@ export class ModelResult<
       // Extract and check tool calls
       const toolCalls = extractToolCallsFromResponse(currentResponse);
 
+      // Evaluate stopWhen before the approval check so a met stop condition
+      // also blocks the auto-approved siblings of an approval-gated call
+      const stopConditionMet = await this.shouldStopExecution();
+
       // Check for approval requirements
-      if (await this.handleApprovalCheck(toolCalls, 0, currentResponse)) {
+      if (await this.handleApprovalCheck(toolCalls, 0, currentResponse, stopConditionMet)) {
         return; // Paused for approval
       }
 
