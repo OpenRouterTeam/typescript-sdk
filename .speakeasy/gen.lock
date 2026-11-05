@@ -1,19 +1,19 @@
 lockVersion: ""
 id: ""
 management:
-  docChecksum: 3e4da721b83e0f9892ddaf8f3f7ce376
+  docChecksum: d69f91c9f595ff19ce808d4402590717
   docVersion: 1.0.0
   speakeasyVersion: 1.803.2
   generationVersion: 2.950.13
-  releaseVersion: 1.5.57
-  configChecksum: f5275f0be96dec0b6c1d1a61bdf07893
+  releaseVersion: 1.5.58
+  configChecksum: c9bf5cbcaa8f427fba5011b4237770b0
   repoURL: https://github.com/OpenRouterTeam/typescript-sdk.git
   installationURL: https://github.com/OpenRouterTeam/typescript-sdk
   published: true
 persistentEdits:
-  generation_id: a2ecb345-6b5d-4882-b18e-2eeafd209760
-  pristine_commit_hash: f8decdfa10a1af87f95cc9b576d6624851cf63dd
-  pristine_tree_hash: f409d135c69927a95e8a36cfd831f8f6d7abb750
+  generation_id: 3e5d5f28-d976-4765-9eb2-ba70362c0556
+  pristine_commit_hash: d622a3babbfa7fdca267165ee97a1664b7c91b5d
+  pristine_tree_hash: 148afbb62e21fe9e0ad2f88fbbf24c9a79a88ca7
 features:
   typescript:
     acceptHeaders: 2.81.2
@@ -4407,8 +4407,8 @@ trackedFiles:
     pristine_git_object: c8c8afdc772ff3eafdc3e760770505f0f29f3c46
   docs/models/decisionsresponseusage.mdx:
     id: 4946cd3605c7
-    last_write_checksum: sha1:d5573c58b4d00b830adb0a28e4bc4540011d6495
-    pristine_git_object: 073f332b73e2bbbf8c7a9adb19a5b33c276c8a8a
+    last_write_checksum: sha1:cea1b80f067b287866bceb7cb93b8dd6c3df1830
+    pristine_git_object: 032a4f506963a0231535432f2ca972f20a621b77
   docs/models/decisionsscoreanswer.mdx:
     id: dfa149de1c96
     last_write_checksum: sha1:bf4e4bfc9205630ba8c2d6c8e9d48298ea5e740d
@@ -16219,12 +16219,12 @@ trackedFiles:
     pristine_git_object: 410efafd6a7f50d91ccb87131fedbe0c3d47e15a
   jsr.json:
     id: 7f6ab7767282
-    last_write_checksum: sha1:538d6af6a5824c837f4182524bb9085c08ca1965
-    pristine_git_object: 83f0b77f485b612ba4bd90955611f7a2ffa8a835
+    last_write_checksum: sha1:b6a3a0edb4b87e1f9941bb4e264b5d54f35d8c69
+    pristine_git_object: fec85a9de1c5b2b0a3b6efed5658a4517d854667
   package.json:
     id: 7030d0b2f71b
-    last_write_checksum: sha1:f282ae24b33a538657c3d326716223603a66dcfa
-    pristine_git_object: fee9e4ff75125366ee2b7f5131becfa9cf0d1462
+    last_write_checksum: sha1:9147cccf5e138e6b5e4dd3507becee01a7a839e2
+    pristine_git_object: 93dbbe0ef4c4a4a621ef87448ab87ba9ec4c33e5
   src/core.ts:
     id: f431fdbcd144
     last_write_checksum: sha1:5aa66b0b6a5964f3eea7f3098c2eb3c0ee9c0131
@@ -16823,8 +16823,8 @@ trackedFiles:
     pristine_git_object: a187e58707bdb726ca2aff74941efe7493422d4e
   src/lib/config.ts:
     id: 320761608fb3
-    last_write_checksum: sha1:bc8287cb7ed1abf5df964d5c86c54411da5233e2
-    pristine_git_object: deb942e21b1c482edc513982fd94c6a5d5df9dc4
+    last_write_checksum: sha1:40d4276d616c9c55f9b9db96807b48e3761df2a2
+    pristine_git_object: b42df8b30ad78ee4ea9c2ebd57786ed757270fe7
   src/lib/dlv.ts:
     id: b1988214835a
     last_write_checksum: sha1:eaac763b22717206a6199104e0403ed17a4e2711
@@ -18133,8 +18133,8 @@ trackedFiles:
     pristine_git_object: 85294afa2eb94d31d4be73fbb603cb24a239c404
   src/models/decisionsresponse.ts:
     id: 5989c9497b2d
-    last_write_checksum: sha1:07e4ccba00c70b0a4bcb9e4e4124a1bab41f1327
-    pristine_git_object: 0af53e7ee7450c413653ab0c7059c8e1ea39d67d
+    last_write_checksum: sha1:689e7645eb9bc6a7388fbfcbd5f417f6ebd611b7
+    pristine_git_object: 22bd838dad351785f1d8094b5c6e40626345e62e
   src/models/decisionsscoreanswer.ts:
     id: 40ca541d040e
     last_write_checksum: sha1:bc877b7e9a1ef408a0c97c5202d377154eb30226
@@ -26032,4 +26032,7 @@ examples:
         "500":
           application/json: {"error": {"code": 500, "message": "Internal Server Error"}}
 examplesVersion: 1.0.2
-releaseNotes: "## Typescript SDK Changes:\n* `openrouter.batch.createBatches()`: \n  *  `request.batchSubmitBody.provider.only[].union(ProviderName).enum(river)` **Added**\n  *  `response.results[].response.body.union(OpenResponsesResult)` **Changed** (Breaking ⚠️)\n* `openrouter.presets.createPresetsResponses()`: \n  *  `request.responsesRequest` **Changed** (Breaking ⚠️)\n* `openrouter.batch.getBatches()`:  `response.results[].response.body.union(OpenResponsesResult)` **Changed** (Breaking ⚠️)\n* `openrouter.embeddings.generate()`: \n  *  `request.requestBody.provider` **Changed**\n* `openrouter.endpoints.list()`:  `response.data.endpoints[].providerName.enum(river)` **Added**\n* `openrouter.tts.createSpeech()`: \n  *  `request.speechRequest.provider` **Changed**\n* `openrouter.byok.list()`: \n  *  `request.provider` **Changed**\n  *  `response.data[].provider.enum(river)` **Added**\n* `openrouter.byok.create()`: \n  *  `request.createByokKeyRequest.provider.enum(river)` **Added**\n  *  `response.data.provider.enum(river)` **Added**\n* `openrouter.byok.get()`:  `response.data.provider.enum(river)` **Added**\n* `openrouter.byok.update()`:  `response.data.provider.enum(river)` **Added**\n* `openrouter.alpha.decisions.create()`: \n  *  `request.decisionsRequest` **Changed**\n* `openrouter.endpoints.listZdrEndpoints()`:  `response.data[].providerName.enum(river)` **Added**\n* `openrouter.stt.createTranscription()`: \n  *  `request.sttRequest.provider` **Changed**\n* `openrouter.generations.getGeneration()`:  `response.data.providerResponses[].providerName.enum(river)` **Added**\n* `openrouter.presets.createPresetsChatCompletions()`: \n  *  `request.chatRequest.provider` **Changed**\n* `openrouter.presets.createPresetsMessages()`: \n  *  `request.messagesRequest.provider` **Changed**\n* `openrouter.alpha.extractions.create()`: \n  *  `request.extractionsRequest.provider` **Changed**\n* `openrouter.rerank.rerank()`: \n  *  `request.requestBody.provider` **Changed**\n* `openrouter.systemOne.create()`: \n  *  `request.decisionsRequest` **Changed**\n* `openrouter.videoGeneration.generate()`: \n  *  `request.videoGenerationRequest.provider` **Changed**\n* `openrouter.workspaces.create()`: \n  *  `request.createWorkspaceRequest.disabledServerTools[].enum(openrouter:mcp)` **Added**\n* `openrouter.workspaces.update()`: \n  *  `request.updateWorkspaceRequest.disabledServerTools[].enum(openrouter:mcp)` **Added**\n"
+releaseNotes: |
+  ## Typescript SDK Changes:
+  * `openrouter.alpha.decisions.create()`:  `response.usage` **Changed**
+  * `openrouter.systemOne.create()`:  `response.usage` **Changed**
