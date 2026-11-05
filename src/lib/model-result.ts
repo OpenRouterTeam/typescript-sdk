@@ -560,6 +560,29 @@ export class ModelResult<
   }
 
   /**
+   * Refuse a batch the loop would execute when two of its `function_call`
+   * items share a `call_id`. Tool outputs, approval decisions and pending
+   * calls are all matched by that id, so an approval meant for one call could
+   * run another. Batches with no executable calls are left to the caller, who
+   * owns correlation for manual tools.
+   */
+  private assertUniqueCallIds(toolCalls: ParsedToolCall<Tool>[]): void {
+    if (!this.hasExecutableToolCalls(toolCalls)) {
+      return;
+    }
+    const seen = new Set<string>();
+    for (const toolCall of toolCalls) {
+      if (seen.has(toolCall.id)) {
+        throw new Error(
+          `Response contains more than one function_call with call_id "${toolCall.id}"; ` +
+            'refusing to execute the batch because tool outputs are matched to calls by call_id.',
+        );
+      }
+      seen.add(toolCall.id);
+    }
+  }
+
+  /**
    * Execute tools that can auto-execute (don't require approval) in parallel.
    *
    * @param toolCalls - The tool calls to execute
@@ -1111,6 +1134,20 @@ export class ModelResult<
     const pendingCalls = this.currentState.pendingToolCalls ?? [];
     const unsentResults = [...(this.currentState.unsentToolResults ?? [])];
 
+    // Saved state can predate the per-round check, so re-check before any
+    // decision runs a tool: a call id must name exactly one row.
+    const savedCallIds = new Set(unsentResults.map(r => r.callId));
+    for (const tc of pendingCalls) {
+      if (savedCallIds.has(tc.id)) {
+        throw new Error(
+          `Saved state has more than one tool call with call_id "${tc.id}"; ` +
+            'refusing to apply approval decisions because they are matched to calls by call_id.',
+        );
+      }
+      savedCallIds.add(tc.id);
+    }
+    const handled = new Set<ParsedToolCall<TTools[number]>>();
+
     // Build turn context - numberOfTurns represents the current turn (1-indexed after initial)
     const turnContext: TurnContext = {
       numberOfTurns: this.allToolExecutionRounds.length + 1,
@@ -1119,8 +1156,9 @@ export class ModelResult<
 
     // Process approvals - execute the approved tools
     for (const callId of this.approvedToolCalls) {
-      const toolCall = pendingCalls.find(tc => tc.id === callId);
+      const toolCall = pendingCalls.find(tc => tc.id === callId && !handled.has(tc));
       if (!toolCall) continue;
+      handled.add(toolCall);
 
       const tool = this.options.tools?.find(t => t.function.name === toolCall.name);
       if (!tool || !hasExecuteFunction(tool)) {
@@ -1140,15 +1178,15 @@ export class ModelResult<
 
     // Process rejections
     for (const callId of this.rejectedToolCalls) {
-      const toolCall = pendingCalls.find(tc => tc.id === callId);
+      const toolCall = pendingCalls.find(tc => tc.id === callId && !handled.has(tc));
       if (!toolCall) continue;
+      handled.add(toolCall);
 
       unsentResults.push(createRejectedResult(callId, String(toolCall.name), 'Rejected by user'));
     }
 
-    // Remove processed calls from pending
-    const processedIds = new Set([...this.approvedToolCalls, ...this.rejectedToolCalls]);
-    const remainingPending = pendingCalls.filter(tc => !processedIds.has(tc.id));
+    // Remove only the rows that were handled above
+    const remainingPending = pendingCalls.filter(tc => !handled.has(tc));
 
     // Update state - conditionally include optional properties only if they have values
     const stateUpdates: Partial<Omit<ConversationState<TTools>, 'id' | 'createdAt' | 'updatedAt'>> = {
@@ -1277,6 +1315,7 @@ export class ModelResult<
 
       // Extract and check tool calls
       const toolCalls = extractToolCallsFromResponse(currentResponse);
+      this.assertUniqueCallIds(toolCalls);
 
       // Check for approval requirements
       if (await this.handleApprovalCheck(toolCalls, 0, currentResponse)) {
@@ -1307,6 +1346,7 @@ export class ModelResult<
         if (currentToolCalls.length === 0) {
           break;
         }
+        this.assertUniqueCallIds(currentToolCalls);
 
         // Check for approval requirements
         if (await this.handleApprovalCheck(currentToolCalls, currentRound + 1, currentResponse)) {
