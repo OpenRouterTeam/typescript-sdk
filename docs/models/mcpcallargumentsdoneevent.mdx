@@ -1,0 +1,29 @@
+---
+title: "McpCallArgumentsDoneEvent"
+---
+
+Emitted when the JSON-encoded arguments of an MCP tool call are finalized.
+
+## Example Usage
+
+```typescript
+import { McpCallArgumentsDoneEvent } from "@openrouter/sdk/models";
+
+let value: McpCallArgumentsDoneEvent = {
+  arguments: "<value>",
+  itemId: "<id>",
+  outputIndex: 207509,
+  sequenceNumber: 0,
+  type: "response.mcp_call_arguments.done",
+};
+```
+
+## Fields
+
+| Field                                | Type                                 | Required                             | Description                          |
+| ------------------------------------ | ------------------------------------ | ------------------------------------ | ------------------------------------ |
+| `arguments`                          | *string*                             | ✔️                   | N/A                                  |
+| `itemId`                             | *string*                             | ✔️                   | N/A                                  |
+| `outputIndex`                        | *number*                             | ✔️                   | N/A                                  |
+| `sequenceNumber`                     | *number*                             | ✔️                   | N/A                                  |
+| `type`                               | *"response.mcp_call_arguments.done"* | ✔️                   | N/A                                  |
