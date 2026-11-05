@@ -8661,6 +8661,8 @@ components:
             - 'null'
         cost_details:
           $ref: '#/components/schemas/CostDetails'
+        deferred_tools_details:
+          $ref: '#/components/schemas/DeferredToolsDetails'
         is_byok:
           description: 'Whether a request was made using a Bring Your Own Key configuration'
           type: 'boolean'
@@ -11430,9 +11432,10 @@ components:
         validation: 'runtime'
       properties:
         profile:
-          description: 'Loading profile. Only `portable` is available in this release: OpenRouter serves deferral with router-built search and call wrappers on any model.'
+          description: 'Loading profile. `portable` serves the `defer_loading` tools with router-built search and call wrappers on any model and keeps the catalog fixed. `universal` defers every wrappable tool behind the same wrappers so the provider-facing tool list never changes, and rebuilds the catalog from each request so tools can be added or removed mid-conversation.'
           enum:
             - 'portable'
+            - 'universal'
           type: 'string'
         protocol:
           enum:
@@ -11450,6 +11453,34 @@ components:
         - 'profile'
         - 'validation'
         - 'search'
+      type: 'object'
+    DeferredToolsDetails:
+      description: 'Totals across every upstream model call of a deferred-tools run. The native usage fields report only the final call; cost covers every call.'
+      example:
+        completion_tokens: 180
+        prompt_tokens: 2400
+        total_tokens: 2580
+        turns: 2
+      properties:
+        completion_tokens:
+          description: 'Completion tokens summed over every upstream call'
+          type: 'integer'
+        prompt_tokens:
+          description: 'Prompt tokens summed over every upstream call'
+          type: 'integer'
+        total_tokens:
+          description: 'Sum of the above two fields'
+          type: 'integer'
+        turns:
+          description: 'Upstream model calls the run made'
+          exclusiveMinimum: true
+          minimum: 0
+          type: 'integer'
+      required:
+        - 'turns'
+        - 'prompt_tokens'
+        - 'completion_tokens'
+        - 'total_tokens'
       type: 'object'
     DeferredToolsSearchStrategy:
       description: 'Router-local regex/BM25 or caller-owned custom search.'
@@ -18835,6 +18866,28 @@ components:
                         - 'null'
                     cost_details:
                       $ref: '#/components/schemas/CostDetails'
+                    deferred_tools_details:
+                      properties:
+                        completion_tokens:
+                          description: 'Completion tokens summed over every upstream call'
+                          type: 'integer'
+                        prompt_tokens:
+                          description: 'Prompt tokens summed over every upstream call'
+                          type: 'integer'
+                        total_tokens:
+                          description: 'Sum of the above two fields'
+                          type: 'integer'
+                        turns:
+                          description: 'Upstream model calls the run made'
+                          exclusiveMinimum: true
+                          minimum: 0
+                          type: 'integer'
+                      required:
+                        - 'turns'
+                        - 'prompt_tokens'
+                        - 'completion_tokens'
+                        - 'total_tokens'
+                      type: 'object'
                     is_byok:
                       type: 'boolean'
                     iterations:
@@ -25989,9 +26042,31 @@ components:
         status: 'completed'
         type: 'openrouter:tool_search'
       properties:
+        arguments:
+          description: 'The JSON arguments of the model call, verbatim. Replaying the item reuses them.'
+          example: '{"query":"weather tools"}'
+          type: 'string'
+        call_id:
+          description: 'The ID of the model call that ran the search. Replaying the item reuses it.'
+          example: 'call_search_1'
+          type: 'string'
+        catalog_index:
+          description: 'The deferred-tool index the router showed the model with a pre-search, listing tool sources and names. Replaying the item shows the same index.'
+          example: "Deferred tools, found with tool_search and called with tool_exec:\nSources: mcp__sentry (12)."
+          type: 'string'
         error:
           description: 'The error message when the tool call failed before producing a result. Set together with `status: ''failed''`; absent on a successful call.'
           example: 'Tool execution failed'
+          type: 'string'
+        format:
+          description: 'How the model saw the matches. `compact` means each tool by name, description, and input shape, plus a call example. Replaying the item renders the same result.'
+          enum:
+            - 'compact'
+          example: 'compact'
+          type: 'string'
+        hint:
+          description: 'The guidance the model got when the search matched no tools.'
+          example: 'No tools matched. Search again with other keywords, or load tools by exact name with "select:Name1,Name2".'
           type: 'string'
         id:
           type: 'string'
@@ -26015,6 +26090,14 @@ components:
           type: 'string'
         status:
           $ref: '#/components/schemas/FailableToolCallStatus'
+        turn_call_ids:
+          description: 'The IDs of every tool call in the model response that ran the search, in order. Replaying the item keeps those calls in one turn.'
+          example:
+            - 'call_search_1'
+            - 'call_exec_1'
+          items:
+            type: 'string'
+          type: 'array'
         type:
           enum:
             - 'openrouter:tool_search'
@@ -34332,6 +34415,8 @@ components:
                     - 'upstream_inference_input_cost'
                     - 'upstream_inference_output_cost'
                   type: 'object'
+                deferred_tools_details:
+                  $ref: '#/components/schemas/DeferredToolsDetails'
                 is_byok:
                   description: 'Whether a request was made using a Bring Your Own Key configuration'
                   type: 'boolean'
@@ -47784,10 +47869,11 @@ paths:
                             - 'string'
                             - 'null'
                         role:
-                          description: 'Role of the member in the organization'
+                          description: 'Role of the member in the organization. `org:viewer` is coming soon and not yet available. Once launched, it has read-only organization access: it can view organization settings, billing and workspaces but not change them. Workspace roles can still grant write access in specific workspaces.'
                           enum:
                             - 'org:admin'
                             - 'org:member'
+                            - 'org:viewer'
                           example: 'org:member'
                           type: 'string'
                       required:
